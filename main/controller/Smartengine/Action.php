@@ -81,7 +81,7 @@ class Action {
             $user = \App::user()->getEntity();
 
             /** @var \Model\Product\Category\BasicEntity|null $category */
-            $category = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
+            $category = $product->getMainCategory() ? $product->getMainCategory() : null;
             if (!$category) {
                 $categories = $product->getCategory();
                 $category = reset($categories);

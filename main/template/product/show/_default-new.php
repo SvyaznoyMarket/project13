@@ -12,14 +12,20 @@
  * @var $shopStates        \Model\Product\ShopState\Entity[]
  * @var $creditData        array
  */
-?>
 
+$showLinkToProperties = true;
+$countModels = count($product->getModel());
+$countProperties = count($product->getProperty());
+$is_showed = [];
+
+
+?>
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
 <div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
 
-    <div class="bProductDescShop">
+    <div class="bProductDesc">
         <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
         <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
@@ -28,14 +34,45 @@
 
         <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
 
-        <div class="bProductDescShop__eText">
-            <?= $product->getTagline() ?>
-            <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div>
-        </div>
+            <?
+            // new Card Properties Begin {
+            if ( $product->getTagline() ) {
+                ?>
+                <div class="bProductDescShop__eText">
+                    <?= $product->getTagline() ?>
+                    <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
+                </div>
+            <?
+            } elseif (
+                (!$countModels) &&
+                ( !isset($product->getDescription) || (isset($product->getDescription) && !$product->getDescription) ) &&
+                ($countProperties < 16)
+            ) {
+                // Выводим все характеристики товара в центральном блоке первого экрана карточки
+                $showLinkToProperties = false;
+                echo $helper->render('product/__propertiesSimple', ['product' => $product, 'showLinkToProperties' => $showLinkToProperties]);
+                $is_showed[] = 'all_properties';
+            }
 
-        <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
+            if ( $countProperties < 8 and empty($is_showed) ) {
+                // выводим все характеристики в первом экране, сразу под отзывами.
+                $showLinkToProperties = false;
+                echo $helper->render('product/__propertiesSimple', ['product' => $product, 'showLinkToProperties' => $showLinkToProperties]);
+                $is_showed[] = 'all_properties';
 
-        <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
+            }
+
+            if (!in_array('all_properties', $is_showed)) { // Если ранее не были показаны характеристики все,
+                // (во всех остальных случаях) выводим главные характеристики (productExpanded)
+                echo $helper->render('product/__propertiesSimple', ['product' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]);
+                $is_showed[] = 'main_properties';
+            }
+            // } /end of new Card Properties
+            ?>
+
+            <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
+
+            <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
     </div><!--/product shop description section -->
 
     <div class="clear"></div>
@@ -86,7 +123,12 @@
         ]) ?>
     <? endif ?>
 
-    <?= $helper->render('product/__groupedProperty', ['product' => $product]) // Характеристики ?>
+    <?
+    if (!in_array('all_properties', $is_showed)) {
+        // показываем все характеристики (сгруппированые), если ранее они не были показаны
+        echo $helper->render('product/__groupedProperty', ['product' => $product]); // Характеристики
+    }
+    ?>
 
     <div class="bReviews">
         <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
@@ -119,7 +161,7 @@
         <? endif ?>
 </div><!--/left section -->
 
-<div class="bProductSection__eRight">
+<div class="bProductSectionRightCol">
     <div class="bWidgetBuy mWidget">
         <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
 

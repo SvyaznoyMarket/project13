@@ -16,7 +16,7 @@ class Actionpay {
         try {
             $actionpayId = \App::request()->cookies->get('actionpay');
             if (!$actionpayId) {
-                \App::logger()->error(sprintf('В куках отсутсвует actionpay'), ['partner', ['actionpay']]);
+                \App::logger()->error(['action' => __METHOD__, 'message' => 'В куках отсутсвует actionpay'], ['partner', 'actionpay']);
             }
 
             /** @var \Model\Order\Entity $order */

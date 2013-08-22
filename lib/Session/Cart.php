@@ -18,6 +18,8 @@ class Cart {
     private $certificates = null;
     /** @var \Model\Cart\Coupon\Entity[] */
     private $coupons = null;
+    /** @var \Model\Cart\Blackcard\Entity[] */
+    private $blackcards = null;
     /** @var array */
     private $actions = null;
     /** @var int */
@@ -41,6 +43,7 @@ class Cart {
                 'warrantyList'    => [],
                 'certificateList' => [],
                 'couponList'      => [],
+                'blackcardList'   => [],
             ]);
             return;
         }
@@ -75,6 +78,12 @@ class Cart {
             $this->storage->set($this->sessionName, $data);
         }
 
+        if (!array_key_exists('blackcardList', $session[$this->sessionName])) {
+            $data = $this->storage->get($this->sessionName);
+            $data['blackcardList'] = [];
+            $this->storage->set($this->sessionName, $data);
+        }
+
         // лимит товаров
         $data = $this->storage->get($this->sessionName);
         $productCount = count($data['productList']);
@@ -100,6 +109,7 @@ class Cart {
         $this->warranties = null;
         $this->certificates = null;
         $this->coupons = null;
+        $this->blackcards = null;
     }
 
     /**
@@ -493,6 +503,7 @@ class Cart {
         $data['certificateList'][] = [
             'number' => $certificate->getNumber(),
         ];
+        $this->certificates[] = $certificate;
 
         $this->fill();
 
@@ -532,6 +543,7 @@ class Cart {
         $data['couponList'][] = [
             'number' => $coupon->getNumber(),
         ];
+        $this->coupons[] = $coupon;
 
         $this->fill();
 
@@ -562,6 +574,46 @@ class Cart {
     }
 
     /**
+     * @param \Model\Cart\Blackcard\Entity $blackcard
+     */
+    public function setBlackcard(\Model\Cart\Blackcard\Entity $blackcard) {
+        $this->clearBlackcards();
+
+        $data = $this->storage->get($this->sessionName);
+        $data['blackcardList'][] = [
+            'number' => $blackcard->getNumber(),
+        ];
+        $this->blackcards[] = $blackcard;
+
+        $this->fill();
+
+        $this->storage->set($this->sessionName, $data);
+    }
+
+    public function clearBlackcards() {
+        $data = $this->storage->get($this->sessionName);
+        $data['blackcardList'] = [];
+
+        $this->fill();
+
+        $this->storage->set($this->sessionName, $data);
+    }
+
+    /**
+     * @return \Model\Cart\Blackcard\Entity[]
+     */
+    public function getBlackcards() {
+        if (null === $this->blackcards) {
+            $data = $this->storage->get($this->sessionName);
+            foreach ($data['blackcardList'] as $blackcardData) {
+                $this->blackcards[$blackcardData['number']] = new \Model\Cart\Blackcard\Entity($blackcardData);
+            }
+        }
+
+        return $this->blackcards ?: [];
+    }
+
+    /**
      * @return array
      */
     public function getActionData() {
@@ -575,12 +627,13 @@ class Cart {
     public function fill() {
         // получаем список цен
         $default = [
-            'product_list'  => [],
-            'service_list'  => [],
-            'warranty_list' => [],
-            'card_f1_list'  => [],
-            'coupon_list'   => [],
-            'price_total'   => 0,
+            'product_list'   => [],
+            'service_list'   => [],
+            'warranty_list'  => [],
+            'card_f1_list'   => [],
+            'coupon_list'    => [],
+            'blackcard_list' => [],
+            'price_total'    => 0,
         ];
 
         try {
@@ -588,15 +641,22 @@ class Cart {
             if (((bool)$this->getProductsQuantity() || (bool)$this->getServicesQuantity())) {
                 $response = $default;
 
-                // если есть сертификат или купон
+                // сертификат
                 $certificates = $this->getCertificates();
                 $certificate = is_array($certificates) ? reset($certificates) : null;
 
+                // купоны
                 $coupons = $this->getCoupons();
                 $coupon = is_array($coupons) ? reset($coupons) : null;
+
+                // черные карты
+                $blackcards = $this->getBlackcards();
+                $blackcard = is_array($blackcards) ? reset($blackcards) : null;
+
                 if (
                     (\App::config()->f1Certificate['enabled'] && $certificate instanceof \Model\Cart\Certificate\Entity)
                     || (\App::config()->coupon['enabled'] && $coupon instanceof \Model\Cart\Coupon\Entity)
+                    || (\App::config()->blackcard['enabled'] && $blackcard instanceof \Model\Cart\Blackcard\Entity)
                 ) {
                     $data = [
                         'user_id'       => \App::user()->getEntity() ? \App::user()->getEntity()->getId() : 0,
@@ -610,10 +670,16 @@ class Cart {
                                 ['number' => $certificate->getNumber()],
                             ]
                             : [],
-                        'coupon_list'  =>
+                        'coupon_list'   =>
                             $coupon
                             ? [
                                 ['number' => $coupon->getNumber()],
+                            ]
+                            : [],
+                        'blackcard_list' =>
+                            $blackcard
+                            ? [
+                                ['number' => $blackcard->getNumber()],
                             ]
                             : [],
                     ];
@@ -694,6 +760,16 @@ class Cart {
                     \App::logger()->error($couponData['error'], ['cart']);
                 }
                 $this->coupons[$couponData['number']] = new \Model\Cart\Coupon\Entity($couponData);
+            }
+        }
+
+        $this->blackcards = [];
+        if (array_key_exists('blackcard_list', $response)) {
+            foreach ($response['blackcard_list'] as $blackcardData) {
+                if (isset($blackcardData['error']) && (bool)$blackcardData['error']) {
+                    \App::logger()->error($blackcardData['error'], ['cart']);
+                }
+                $this->blackcards[$blackcardData['number']] = new \Model\Cart\Blackcard\Entity($blackcardData);
             }
         }
 

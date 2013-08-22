@@ -98,7 +98,7 @@
 		return false;
 	}
 
-	var widgetBox = $('.bWidgetBuy__eDelivery'),
+	var widgetBox = $('.bDelivery'),
 		deliveryData = widgetBox.data('value'),
 		url = deliveryData.url,
 		deliveryShops = (deliveryData.delivery.length) ? deliveryData.delivery[0].shop : [],
@@ -164,8 +164,8 @@
 		 * @param	{Number}	shopLen			Количество магазинов
 		 */
 		fillAvalShopTmpl = function fillAvalShopTmpl( shops ) {
-			var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now'),
-				toggleBtn = nowBox.find('.bWidgetBuy__eDelivery-nowClick'),
+			var nowBox = widgetBox.find('.mDeliveryNow'),
+				toggleBtn = nowBox.find('.bDeliveryNowClick'),
 				shopList = nowBox.find('.bDeliveryFreeAddress'),
 				templateNow = '',
 				shopInfo = {},
@@ -225,7 +225,7 @@
 			for ( var i = deliveryInfo.length - 1; i >= 0; i-- ) {
 				switch (deliveryInfo[i].token){
 					case 'standart':
-						var standartBox = widgetBox.find('.bWidgetBuy__eDelivery-price'),
+						var standartBox = widgetBox.find('.mDeliveryPrice'),
 							standartData = {
 								price: deliveryInfo[i].price,
 								dateString: deliveryInfo[i].date.name
@@ -237,7 +237,7 @@
 						break;
 
 					case 'self':
-						var selfBox = widgetBox.find('.bWidgetBuy__eDelivery-free'),
+						var selfBox = widgetBox.find('.mDeliveryFree'),
 							selfData = {
 								price: deliveryInfo[i].price,
 								dateString: deliveryInfo[i].date.name
@@ -273,9 +273,9 @@
 	}
 
 	$(document).ready(function() {
-		if ( $('.bWidgetBuy__eDelivery-nowClick').length && $('.bWidgetBuy__eDelivery-nowClick').hasClass('hf') ) {
-			$('.bWidgetBuy__eDelivery-nowClick').click();
-			$('.bWidgetBuy__eDelivery-now.mOpen').css('background-image','none');
+		if ( $('.bDeliveryNowClick').length && $('.bDeliveryNowClick').hasClass('hf') ) {
+			$('.bDeliveryNowClick').click();
+			$('.bDeliveryNow.mOpen').css('background-image','none');
 		}
 	});
 }());
@@ -306,11 +306,11 @@
 	 * @param	{Number}	nowLeft		Текущий отступ слева
 	 */
 	var initFotoSlider = function(){
-		var slider = $('.bPhotoActionOtherPhoto');
-		var fotoBox = slider.find('.bPhotoActionOtherPhotoList');
-		var leftArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mPrev');
-		var rightArr = slider.find('.bPhotoActionOtherPhoto__eBtn.mNext');
-		var photos = fotoBox.find('.bPhotoActionOtherPhotoItem');
+		var slider = $('.bPhotoSlider');
+		var fotoBox = slider.find('.bPhotoSliderGallery');
+		var leftArr = slider.find('.bPhotoSlider__eBtn.mPrev');
+		var rightArr = slider.find('.bPhotoSlider__eBtn.mNext');
+		var photos = fotoBox.find('.bPhotoSliderGallery__eItem');
 
 		if (!photos.length){
 			return false;
@@ -366,7 +366,7 @@
 	};
 
 	$(document).ready(function() {
-		if ( $('.bPhotoActionOtherPhoto').length){
+		if ( $('.bPhotoSlider').length){
 			initFotoSlider();
 		}
 	});
@@ -403,7 +403,7 @@
 				if ( !$('#3dImgContainer').length ) {
 					var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
 					AnimFramePlayer.DoLoadModel(data);
-					$('.bPhotoActionOtherAction__eGrad360.3dimg').bind('click', furniture3dPopupShow);
+					$('.mGrad360.3dimg').bind('click', furniture3dPopupShow);
 				}
 			}
 			catch ( err ) {
@@ -673,10 +673,7 @@
 		};
 
 		var lowPriceNitiferSubmit = function(){
-			if (submitBtn.hasClass('mDisabled')){
-				error.show().html('Неправильный email');
-				return false;
-			}
+
 
 			var submitUrl = submitBtn.data('url');
 			submitUrl += encodeURI('?email='+input.val());
@@ -699,15 +696,7 @@
 			return false;
 		};
 
-		input.placeholder().emailValidate({
-			onValid: function(){
-				submitBtn.removeClass('mDisabled');
-				error.hide();
-			},
-			onInvalid: function(){
-				submitBtn.addClass('mDisabled');
-			}
-		});
+		
 		submitBtn.bind('click', lowPriceNitiferSubmit);
 		notiferButton.bind('click', lowPriceNitiferShow);
 	};
@@ -764,7 +753,7 @@
 				return false;
 			};
 
-			$('.bPhotoActionOtherAction__eGrad360.maybe3d').bind('click', maybe3dPopupShow);
+			$('.mGrad360.maybe3d').bind('click', maybe3dPopupShow);
 		};
 
 		$LAB.script('swfobject.min.js').wait(afterLoad);
@@ -1137,7 +1126,7 @@ $(document).ready(function() {
 		var videoStartTime = 0;
 		var videoEndTime = 0;
 		var productUrl = document.location.href;
-		var shield = $('.bPhotoActionOtherAction__eVideo');
+		var shield = $('.mVideo');
 		var iframe = $('#productVideo .productVideo_iframe').html();
 
 		var openVideo = function(){
@@ -1171,7 +1160,7 @@ $(document).ready(function() {
 	};
 
 	$(document).ready(function() {
-		if ($('.bPhotoActionOtherAction__eVideo').length){
+		if ($('.mVideo').length){
 			initVideo();
 		}
 	});

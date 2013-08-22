@@ -22,13 +22,13 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
         <div class="pb5">Ваше имя:</div>
         <div class="pb5">
             <? if ($error = $form->getError('first_name')) echo $page->render('_formError', array('error' => $error)) ?>
-            <input required="required" type="text" id="register_first_name" class="text width315 mb10" name="register[first_name]" value="<?= $form->getFirstName() ?>" tabindex="5"/>
+            <input type="text" id="register_first_name" class="text width315 mb10" name="register[first_name]" value="<?= $form->getFirstName() ?>" tabindex="5"/>
         </div>
         <div class="pb5 clearfix"><span class="registerAnotherWay">Ваш e-mail</span>:<a class="registerAnotherWayBtn font10 fr" href="#">У меня нет e-mail</a></div>
         <div class="pb5">
             <? if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
             <span class="registerPhonePH">+7</span>
-            <input required="required" type="text" id="register_username" class="text width315 mb10" name="register[username]" value="<?= $form->getUsername() ?>" tabindex="6"/>
+            <input type="text" id="register_username" class="text width315 mb10" name="register[username]" value="<?= $form->getUsername() ?>" tabindex="6"/>
             
         </div>
         <label class="bSubscibe fl checked">

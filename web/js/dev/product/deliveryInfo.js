@@ -15,7 +15,7 @@
 		return false;
 	}
 
-	var widgetBox = $('.bWidgetBuy__eDelivery'),
+	var widgetBox = $('.bDelivery'),
 		deliveryData = widgetBox.data('value'),
 		url = deliveryData.url,
 		deliveryShops = (deliveryData.delivery.length) ? deliveryData.delivery[0].shop : [],
@@ -81,8 +81,8 @@
 		 * @param	{Number}	shopLen			Количество магазинов
 		 */
 		fillAvalShopTmpl = function fillAvalShopTmpl( shops ) {
-			var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now'),
-				toggleBtn = nowBox.find('.bWidgetBuy__eDelivery-nowClick'),
+			var nowBox = widgetBox.find('.mDeliveryNow'),
+				toggleBtn = nowBox.find('.bDeliveryNowClick'),
 				shopList = nowBox.find('.bDeliveryFreeAddress'),
 				templateNow = '',
 				shopInfo = {},
@@ -142,7 +142,7 @@
 			for ( var i = deliveryInfo.length - 1; i >= 0; i-- ) {
 				switch (deliveryInfo[i].token){
 					case 'standart':
-						var standartBox = widgetBox.find('.bWidgetBuy__eDelivery-price'),
+						var standartBox = widgetBox.find('.mDeliveryPrice'),
 							standartData = {
 								price: deliveryInfo[i].price,
 								dateString: deliveryInfo[i].date.name
@@ -154,7 +154,7 @@
 						break;
 
 					case 'self':
-						var selfBox = widgetBox.find('.bWidgetBuy__eDelivery-free'),
+						var selfBox = widgetBox.find('.mDeliveryFree'),
 							selfData = {
 								price: deliveryInfo[i].price,
 								dateString: deliveryInfo[i].date.name
@@ -190,9 +190,9 @@
 	}
 
 	$(document).ready(function() {
-		if ( $('.bWidgetBuy__eDelivery-nowClick').length && $('.bWidgetBuy__eDelivery-nowClick').hasClass('hf') ) {
-			$('.bWidgetBuy__eDelivery-nowClick').click();
-			$('.bWidgetBuy__eDelivery-now.mOpen').css('background-image','none');
+		if ( $('.bDeliveryNowClick').length && $('.bDeliveryNowClick').hasClass('hf') ) {
+			$('.bDeliveryNowClick').click();
+			$('.bDeliveryNow.mOpen').css('background-image','none');
 		}
 	});
 }());

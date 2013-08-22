@@ -503,6 +503,17 @@ $.ajaxSetup({
 		},
 
 
+        /**
+         * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
+         */
+        addToRetailRocket = function addToRetailRocket( data ) {
+            var product = data.product;
+            if( typeof(rcApi) !== 'undefined' ){
+                rcApi.addToBasket(product.id);
+            }
+        },
+
+
 		/**
 		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
 		 */
@@ -525,6 +536,8 @@ $.ajaxSetup({
 			googleAnalytics(data);
 			myThingsAnalytics(data);
 			adAdriver(data);
+            addToRetailRocket(data);
+
 
 			if ( !window.blackBox ) {
 				return false;
@@ -1339,7 +1352,7 @@ $(document).ready(function(){
 			}
 		});
 
-		if ( window.docCookies.getItem( 'infScroll' ) === 1 ) {	
+		if ( window.docCookies.getItem( 'infScroll' ) == 1 ) {
 			$('.bAllPager:first').trigger('click');
 		}
 	}
@@ -1540,6 +1553,9 @@ $(document).ready(function(){
 	});
   
 	/* Side Filter Block handlers */
+	
+	$(".bigfilter dd[style='display: block;']").prev(".bigfilter dt").addClass("current");
+
 	$(".bigfilter dt").click(function(){
 		if ( $(this).hasClass('submit') ){
 			return true;
@@ -2364,7 +2380,8 @@ $(document).ready(function(){
  * @param	{Number}	suggestLen			Количество результатов поиска
  */
 ;(function() {
-	var searchInput = $('.searchbox .searchtext'),
+	var searchForm = $('div.searchbox form'),
+        searchInput = searchForm.find('input.searchtext'),
 		suggestWrapper = $('#searchAutocomplete'),
 		suggestItem = $('.bSearchSuggest__eRes'),
 
@@ -2511,7 +2528,7 @@ $(document).ready(function(){
 		},
 
 		searchSubmit = function searchSubmit() {
-			var text = $('.searchbox .searchtext').attr('value');
+			var text = searchInput.attr('value');
 
 			if ( text.length === 0 ) {
 				return false;
@@ -2551,8 +2568,8 @@ $(document).ready(function(){
 		searchInput.bind('keyup', suggestKeyUp);
 
 		searchInput.bind('focus', searchInputFocusin);
-		searchInput.bind('submit', searchSubmit);
-		
+        searchForm.bind('submit', searchSubmit);
+
 		searchInput.placeholder();
 
 		$('body').bind('click', suggestCloser);

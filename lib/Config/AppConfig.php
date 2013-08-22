@@ -212,6 +212,7 @@ class AppConfig {
     public $productCategory = [
         'url'             => [],
         'jewelController' => null,
+        'newShow'         => null,
     ];
     /** @var array */
     public $service = [
@@ -288,6 +289,10 @@ class AppConfig {
         'enabled' => null,
     ];
     /** @var array */
+    public $blackcard = [
+        'enabled' => null,
+    ];
+    /** @var array */
     public $cart = [
         'productLimit'    => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
     ];
@@ -328,8 +333,11 @@ class AppConfig {
     ];
     /** @var array  */
     public $order = [
-        'enableMetaTag' => null,
-        'newCreate'     => null,
+        'cookieName'     => null,
+        'sessionName'    => null,
+        'enableMetaTag'  => null,
+        'newCreate'      => null,
+        'maxSumOnline'   => null,
     ];
     /** @var array */
     public $maybe3d = [

@@ -14,7 +14,10 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('friendship/page-index');
+        $return = $this->render('friendship/page-index');
+        // Используется также на стр /enter-friends, /view/Content/IndexPage
+        $return .= $this->render('partner-counter/_flocktory_popup', $this->params);
+        return $return;
     }
 
     public function slotBodyClassAttribute() {

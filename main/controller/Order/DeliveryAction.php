@@ -3,6 +3,8 @@
 namespace Controller\Order;
 
 class DeliveryAction {
+    use ResponseDataTrait;
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -16,11 +18,25 @@ class DeliveryAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
+        return new \Http\JsonResponse($this->getResponseData());
+    }
+
+    /**
+     * @return array
+     */
+    public function getResponseData() {
         $router = \App::router();
         $client = \App::coreClientV2();
         $user = \App::user();
         $region = $user->getRegion();
         $cart = $user->getCart();
+        $helper = new \View\Helper();
+
+        // данные для JsonResponse
+        $responseData = [
+            'time'   => strtotime(date('Y-m-d'), 0) * 1000,
+            'action' => [],
+        ];
 
         try {
             // проверка на пустую корзину
@@ -41,6 +57,7 @@ class DeliveryAction {
                 ],
                 function($data) use (&$result, &$shops) {
                     $result = $data;
+                    \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
                 },
                 function (\Exception $e) use (&$exception) {
                     $exception = $e;
@@ -48,27 +65,26 @@ class DeliveryAction {
                 \App::config()->coreV2['timeout'] * 2
             );
             $client->execute();
-            if ($exception instanceof \Curl\Exception) {
-                // TODO
+            if ($exception instanceof \Exception) {
                 throw $exception;
             }
 
-            $responseData = [
-                'time'            => time(),
-                'deliveryTypes'   => [
-                    'standart' => [
-                        'token'       => 'standart',
-                        'name'        => 'Доставка заказа курьером',
-                        'description' => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
-                        'states'      => ['standart_furniture', 'standart_other', 'self', 'now'],
-                    ],
-                    'self'     => [
-                        'token'       => 'self',
-                        'name'        => 'Самостоятельно заберу в магазине',
-                        'description' => 'Вы можете самостоятельно забрать товар из ближайшего к вам магазина Enter. Услуга бесплатная! Резерв товара сохраняется 3 дня. Пожалуйста, выберите магазин.',
-                        'states'      => ['self', 'now', 'standart_furniture', 'standart_other'],
-                    ],
-                ],
+            // типы доставок
+            $deliveryTypeData = [];
+            foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
+                $deliveryTypeData[$deliveryType->getToken()] =  [
+                    'id'          => $deliveryType->getId(),
+                    'token'       => $deliveryType->getToken(),
+                    'name'        => $deliveryType->getName(),
+                    'shortName'   => $deliveryType->getShortName(),
+                    'description' => $deliveryType->getDescription(),
+                    'states'      => $deliveryType->getPossibleMethodTokens(),
+                    'ownStates'   => $deliveryType->getMethodTokens(),
+                ];
+            }
+
+            $responseData = array_merge($responseData, [
+                'deliveryTypes'   => $deliveryTypeData,
                 'deliveryStates'  => [
                     'self'               => [
                         'name'     => 'Самовывоз',
@@ -93,10 +109,11 @@ class DeliveryAction {
                 ],
                 'products'        => [],
                 'shops'           => [],
-            ];
+                'discounts'       => [],
+            ]);
 
             // костыль
-            $getDates = function(array $dateData) {
+            $getDates = function(array $dateData) use (&$helper) {
                 $return = [];
 
                 foreach ($dateData as $dateItem) {
@@ -111,7 +128,7 @@ class DeliveryAction {
                     }
 
                     $return[] = [
-                        'name'      => date('Y-m-d', $time),
+                        'name'      => str_replace(' ' . date('Y') . ' г.', '', $helper->dateToRu(date('Y-m-d', $time)) . ' г.'),
                         'value'     => strtotime($dateItem['date'], 0) * 1000,
                         'day'       => (int)date('j', $time),
                         'dayOfWeek' => (int)date('w', $time),
@@ -126,16 +143,17 @@ class DeliveryAction {
             $productIdsByShop = [];
 
             foreach ($result['products'] as $productItem) {
+                $productId = (string)$productItem['id'];
+
                 /** @var $cartProduct \Model\Cart\Product\Entity|null */
-                $cartProduct = $cart->getProductById($productItem['id']);
+                $cartProduct = $cart->getProductById($productId);
                 if (!$cartProduct) {
-                    \App::logger()->error(sprintf('Товар %s не найден в корзине', $productItem['id']));
+                    \App::logger()->error(sprintf('Товар %s не найден в корзине', $productId));
                     continue;
                 }
 
                 $deliveryData = [];
                 foreach ($productItem['deliveries'] as $deliveryItemToken => $deliveryItem) {
-                    $productId = (string)$productItem['id'];
                     list($deliveryItemTokenPrefix, $pointId) = array_pad(explode('_', $deliveryItemToken), 2, null);
 
                     // если доставка, модифицируем префикс токена и точку получения товаров
@@ -152,7 +170,7 @@ class DeliveryAction {
                         $productIdsByShop[$pointId][] = $productId;
                     }
 
-                    // добавляем ид товара в соответствующий способ доставки
+                    // добавляем ид товара в соответствующий метод доставки
                     if (!isset($responseData['deliveryStates'][$deliveryItemTokenPrefix])) {
                         $responseData['deliveryStates'][$deliveryItemTokenPrefix] = [
                             'products' => [],
@@ -171,7 +189,16 @@ class DeliveryAction {
                     ];
                 }
 
-                $responseData['products'][$productItem['id']] = [
+                if (!(bool)$deliveryData) {
+                    $e = new \Curl\Exception('Товар недоступен для продажи', 800);
+                    $e->setContent(['product_error_list' => [
+                        ['code' => $e->getCode(), 'message' => $e->getMessage(), 'id' => $productId],
+                    ]]);
+
+                    throw $e;
+                }
+
+                $responseData['products'][$productId] = [
                     'id'         => $productId,
                     'name'       => $productItem['name'],
                     'price'      => (int)$productItem['price'],
@@ -180,106 +207,72 @@ class DeliveryAction {
                     'stock'      => (int)$productItem['stock'],
                     'image'      => $productItem['media_image'],
                     'url'        => $productItem['link'],
-                    'addUrl'     => $router->generate('cart.product.set', ['productId' => $productItem['id'], 'quantity' => $productItem['quantity']]),
-                    'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $productItem['id']]),
+                    'setUrl'     => $router->generate('cart.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]),
+                    'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $productId]),
                     'deliveries' => $deliveryData,
                 ];
             }
 
+            // магазины
             foreach ($result['shops'] as $shopItem) {
                 $shopId = (string)$shopItem['id'];
                 $responseData['shops'][] = [
                     'id'         => $shopId,
                     'name'       => $shopItem['name'],
                     'address'    => $shopItem['address'],
-                    'regime'     => $shopItem['working_time'],
+                    'regtime'     => $shopItem['working_time'],
                     'latitude'   => (float)$shopItem['coord_lat'],
                     'longitude'  => (float)$shopItem['coord_long'],
                     'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
                 ];
             }
 
-            // удаляем способы доставок, в которых нет товаров
+            // купоны
+            foreach ($cart->getCoupons() as $coupon) {
+                $responseData['discounts'][] = [
+                    'type'      => 'coupon',
+                    'name'      => $coupon->getName(),
+                    'sum'       => $coupon->getDiscountSum(),
+                    'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?: 'Неудалось активировать купон'] : null,
+                    'deleteUrl' => $router->generate('cart.coupon.delete'),
+                ];
+            }
+
+            // черные карты
+            foreach ($cart->getBlackcards() as $blackcard) {
+                $responseData['discounts'][] = [
+                    'type'      => 'blackcard',
+                    'name'      => $blackcard->getName(),
+                    'sum'       => $blackcard->getDiscountSum(),
+                    'error'     => $blackcard->getError() ? ['code' => $blackcard->getError()->getCode(), 'message' => \Model\Cart\Blackcard\Entity::getErrorMessage($blackcard->getError()->getCode()) ?: 'Неудалось активировать карту'] : null,
+                    'deleteUrl' => $router->generate('cart.blackcard.delete'),
+                ];
+            }
+
+            // удаляем методы доставок, в которых нет товаров
             foreach ($responseData['deliveryStates'] as $i => $deliveryStateItem) {
                 if (!(bool)$deliveryStateItem['products']) {
                     unset($responseData['deliveryStates'][$i]);
                 }
             }
 
+            // удаляем типы доставок, у которых не осталось методов доставок
+            foreach ($responseData['deliveryTypes'] as $i => $deliveryTypeItem) {
+
+                if (!(bool)array_intersect($deliveryTypeItem['ownStates'], array_keys($responseData['deliveryStates']))) {
+                    unset($responseData['deliveryTypes'][$i]);
+                }
+            }
+            if (!(bool)$responseData['deliveryTypes']) {
+                throw new \Exception('Не вычеслено ни одного типа доставки');
+            }
+
             $responseData['deliveryTypes'] = array_values($responseData['deliveryTypes']);
             $responseData['success'] = true;
         } catch(\Exception $e) {
-            if ($e instanceof \Curl\Exception) {
-                $errorData = (array)$e->getContent();
-                $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : [];
-                if ((bool)$errorData) {
-                    \App::exception()->remove($e);
-
-                    // приукрашиваем сообщение об ошибке
-                    switch ($e->getCode()) {
-                        case 770:
-                            $message = 'Невозможно расчитать доставку';
-                            break;
-                        default:
-                            $message = 'Невозможно расчитать доставку';
-                            break;
-                    }
-                    $e = new \Exception($message, $e->getCode());
-                }
-
-                $productDataById = [];
-                foreach ($errorData as $errorItem) {
-                    switch ($errorItem['code']) {
-                        case 708:
-                            $errorItem['message'] = !empty($errorItem['quantity_available']) ? sprintf('Доступно только %s шт.', $errorItem['quantity_available']) : $errorItem['message'];
-                            break;
-                        case 800:
-                            $errorItem['message'] = 'Товар недоступен для продажи';
-                            break;
-                        default:
-                            $errorItem['message'] = 'Товар не может быть заказан';
-                            break;
-                    }
-
-                    $productDataById[$errorItem['id']] = [
-                        'id'    => $errorItem['id'],
-                        'error' => ['code' => $errorItem['code'], 'message' => $errorItem['message']],
-                    ];
-                }
-
-                foreach (array_chunk(array_keys($productDataById), 100) as $idsInChunk) {
-                    \RepositoryManager::product()->prepareCollectionById($idsInChunk, $region, function($data) use (&$productDataById, &$router, &$cart) {
-                        foreach ($data as $item) {
-                            $cartProduct = $cart->getProductById($item['id']);
-                            if (!$cartProduct) {
-                                \App::logger()->error(sprintf('Товар #%s не найден в корзине', $item['id']), ['order']);
-                                continue;
-                            }
-                            $productDataById[$item['id']] = array_merge([
-                                'id'         => (string)$item['id'],
-                                'name'       => $item['name'],
-                                'price'      => (int)$item['price'],
-                                'sum'        => $cartProduct->getSum(),
-                                'quantity'   => $cartProduct->getQuantity(),
-                                'stock'      => (int)$item['stock'],
-                                'image'      => $item['media_image'],
-                                'url'        => $item['link'],
-                                'addUrl'     => $router->generate('cart.product.set', ['productId' => $item['id'], 'quantity' => $cartProduct->getQuantity()]),
-                                'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $item['id']]),
-                                'deliveries' => [],
-                            ], $productDataById[$item['id']]);
-                        }
-                    });
-                }
-                \App::coreClientV2()->execute();
-
-                $responseData['products'] = $productDataById;
-            }
-
-            $responseData['success'] = false;
-            $responseData['error'] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
+            $this->failResponseData($e, $responseData);
         }
 
-        return new \Http\JsonResponse($responseData);
+        return $responseData;
     }
 }

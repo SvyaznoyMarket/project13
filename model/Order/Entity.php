@@ -108,6 +108,8 @@ class Entity {
     private $paySum;
     /** @var Credit\Entity|null */
     private $credit;
+    /** @var int */
+    private $subway_id;
 
     /**
      * @param array $data
@@ -189,6 +191,7 @@ class Entity {
         }
         if (array_key_exists('pay_sum', $data)) $this->setPaySum($data['pay_sum']);
         if (array_key_exists('credit', $data) && (bool)$data['credit']) $this->setCredit(new Credit\Entity($data['credit']));
+        if (array_key_exists('subway_id', $data)) $this->setSubwayId($data['subway_id']);
     }
 
     public function dump() {
@@ -837,5 +840,19 @@ class Entity {
         }
 
         return $sum;
+    }
+
+    /**
+     * @param int $subwayId
+     */
+    public function setSubwayId($subwayId) {
+        $this->subway_id = $subwayId ? (int)$subwayId : null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSubwayId() {
+        return $this->subway_id;
     }
 }

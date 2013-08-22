@@ -188,8 +188,8 @@ class Action {
             }
 
             if (!$deliveryCalcResult) {
-                $e = new \Exception('Калькулятор доставки вернул пустой результат', ['order']);
-                \App::logger()->error($e->getMessage());
+                $e = new \Exception('Калькулятор доставки вернул пустой результат');
+                \App::logger()->error($e->getMessage(), ['order']);
 
                 throw $e;
             }
@@ -242,6 +242,11 @@ class Action {
                     ];
                 }
 
+                // сохранение заказов в ядре
+                $saveOrderResult = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
+                $orderNumbers = $saveOrderResult['orderNumbers'];
+                $paymentUrl = $saveOrderResult['paymentUrl'];
+
                 // подписка
                 $isSubscribe = $request->request->get('subscribe');
                 $email = $form->getEmail();
@@ -266,10 +271,11 @@ class Action {
                     $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
                 }
 
-                // сохранение заказов в ядре
-                $saveOrderResult = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
-                $orderNumbers = $saveOrderResult['orderNumbers'];
-                $paymentUrl = $saveOrderResult['paymentUrl'];
+                // TODO: прибавить к totalSum стоимость доставки
+                $totalSum = $user->getCart()->getSum();
+                if ($totalSum > \App::config()->order['maxSumOnline'] && in_array($form->getPaymentMethodId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID])) {
+                    throw new \Exception(sprintf('Невозможно оформить заказ на %d рублей с выбранным способом оплаты (%d)', $totalSum, $form->getPaymentMethodId()));
+                }
 
                 // сохранение заказов в сессии
                 \App::session()->set(self::ORDER_SESSION_NAME, array_map(function($orderNumber) use ($form) {
@@ -316,9 +322,16 @@ class Action {
             } catch (\Exception $e) {
                 $errors = [];
 
-                if (735 == $e->getCode()) {
+                $errcode = $e->getCode();
+                if (735 == $errcode) {
                     \App::exception()->remove($e);
                     $errors['order[sclub_card_number]'] = 'Неверный код карты Связной-Клуб';
+                }else if (742 == $errcode) {
+                    \App::exception()->remove($e);
+                    $errors['order[cardpin]'] = 'Неверный пин-код подарочного сертификата';
+                }else if (743 == $errcode) {
+                    \App::exception()->remove($e);
+                    $errors['order[cardnumber]'] = 'Подарочный сертификат не найден';
                 }
 
                 $response = new \Http\JsonResponse([
@@ -708,8 +721,9 @@ class Action {
     }
 
     /**
-     * @param \View\Order\Form             $form        Валидная форма заказа
+     * @param \View\Order\Form $form        Валидная форма заказа
      * @param \View\Order\DeliveryCalc\Map $deliveryMap Ката доставки заказов
+     * @param $products
      * @throws \Exception
      * @return array Номера созданных заказов
      */
@@ -876,11 +890,14 @@ class Action {
                             if (\Partner\Counter\MyThings::isTracking()) {
                                 $partners[] = \Partner\Counter\MyThings::NAME;
                             }
-                            if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at')) {
-                                if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { //30days
-                                    $partners[] = \Smartengine\Client::NAME;
-                                } else {
-                                    \App::user()->deleteRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at');
+
+                            foreach ( \Controller\Product\BasicRecommendedAction::$recomendedPartners as $recomPartnerName) {
+                                if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {
+                                    if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { //30days
+                                        $partners[] = $recomPartnerName;
+                                    } else {
+                                        \App::user()->deleteRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at');
+                                    }
                                 }
                             }
                             $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(
@@ -908,6 +925,8 @@ class Action {
         if (!is_array($result)) {
             throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
         }
+
+        \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
 
         $orderNumbers = [];
         $paymentUrls = [];
@@ -1413,7 +1432,6 @@ class Action {
         $orderData = array_map(function ($orderItem) {
             return array_merge(['number' => null, 'phone' => null], $orderItem);
         }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
-        //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
 
         /** @var $orders \Model\Order\Entity[] */
         $orders = [];
@@ -1429,6 +1447,8 @@ class Action {
                 \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem, JSON_UNESCAPED_UNICODE)), ['order']);
                 continue;
             }
+            // TODO: осторожно, хак
+            $order->setMobilePhone($orderItem['phone']);
 
             $orders[] = $order;
         }
