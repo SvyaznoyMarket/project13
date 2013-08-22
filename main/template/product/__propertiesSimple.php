@@ -1,6 +1,72 @@
 <?php
 
+// all grouped properties (!!)
+return function (
+    \Helper\TemplateHelper $helper,
+    $product,
+    $showLinkToProperties = true
+) {
 
+    if (
+        $product instanceof \Model\Product\ExpandedEntity ||
+        $product instanceof \Model\Product\Entity
+    ) {
+
+        $groupedProperties = $product->getGroupedProperties();
+
+    }else{
+
+        return '';
+
+    }
+
+    ?>
+    <div class="jewel mb15">
+        <div class="bSpecifications mSimpleProperty">
+
+            <? if (count($groupedProperties) > 0) { ?>
+                <dl class="bSpecificationsList clearfix">
+                    <? foreach ($groupedProperties as $group) { ?>
+                        <? if (!(bool)$group['properties']) continue ?>
+
+                        <? foreach ($group['properties'] as $property) { ?>
+                            <? // @var $property \Model\Product\Property\Entity ?>
+                            <dd class="bSpecificationsList__eName">
+                            <span class="bName">
+                                <?= $property->getName() ?>
+                                <? if ($property->getHint()): ?>
+                                    <?= $helper->render('__hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
+                                <? endif ?>
+                            </span>
+                            </dd>
+                            <dt class="bSpecificationsList__eValue">
+                            <span>
+                                <?= $property->getStringValue() ?>
+                                <? if ($property->getValueHint()): ?>
+                                    <?= $helper->render('__hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
+                                <? endif ?>
+                            </span>
+                            </dt>
+                        <? } //endforeach $group ?>
+                    <? } //endforeach $groupedProperties ?>
+                </dl>
+            <? } ?>
+
+            <? if ($showLinkToProperties): ?>
+                <div class="bTextMore">
+                    <a class="jsGoToId" data-goto="productspecification" href="">Все характеристики</a>
+                </div>
+            <? endif; ?>
+
+        </div>
+    </div>
+<?
+}; //end function
+
+
+
+
+/* //all-all properties (!!)
 return function (
     \Helper\TemplateHelper $helper,
     $product,
@@ -28,7 +94,7 @@ return function (
             <? if (count($properties) > 0) { ?>
                 <dl class="bSpecificationsList clearfix">
                     <? foreach ($properties as $property): ?>
-                        <? /* @var $property \Model\Product\Property\Entity */
+                        <? // @var $property \Model\Product\Property\Entity
                         if ( !$property->getValue() ) continue;
                         ?>
                         <dd class="bSpecificationsList__eName">
@@ -60,4 +126,4 @@ return function (
         </div>
     </div>
 <?
-}; //end function
+}; **/ //end function

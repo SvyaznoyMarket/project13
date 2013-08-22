@@ -20,12 +20,15 @@ $countModels = count($product->getModel());
 //$countProperties = count($product->getGroupedProperties());
 $countProperties = 0;
 
-foreach ($product->getProperty() as $property) {
-    if ( $property->getValue() ) $countProperties++;
+//foreach ($product->getProperty() as $property) if ( $property->getValue() ) $countProperties++;
+foreach ($product->getGroupedProperties() as $group) {
+    if (!(bool)$group['properties']) continue;
+    foreach ($group['properties'] as $property) {
+        $countProperties++;
+    }
 }
 
 $is_showed = [];
-
 
 ?>
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
