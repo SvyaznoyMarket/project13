@@ -23,7 +23,7 @@ trait FormTrait {
             );
             $form->setEmail($userEntity->getEmail());
             // иначе, если пользователь неавторизован, то вытащить из куки значения для формы
-        } elseif (false) { // TODO: вернуть взад
+        } else {
             $cookieValue = $request->cookies->get(\App::config()->order['cookieName'], 'last_order');
             if (!empty($cookieValue)) {
                 try {
