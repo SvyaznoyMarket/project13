@@ -213,6 +213,8 @@ class IndexPage extends \View\DefaultLayout {
             'товар'     => $product->getName(),
             'анонс товара'     => $product->getAnnounce(),
             'цена'      => $product->getPrice() . ' руб',
+            'префикс'     => $product->getPrefix(),
+            'web_name'     => $product->getWebName(),
         ];
         $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['категория'] = $data;
