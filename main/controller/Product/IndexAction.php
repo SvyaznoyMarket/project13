@@ -91,7 +91,9 @@ class IndexAction {
         // трастфакторы
         $trustfactorTop = null;
         $trustfactorRight = null;
-        if(empty($catalogJson['trustfactor_exclude_token']) || empty(array_intersect($productCategoryTokens, $catalogJson['trustfactor_exclude_token']))) {
+        $trustfactorExcludeToken = empty($catalogJson['trustfactor_exclude_token']) ? [] : $catalogJson['trustfactor_exclude_token'];
+        $excludeTokens = array_intersect($productCategoryTokens, $trustfactorExcludeToken);
+        if(empty($excludeTokens)) {
             if(!empty($catalogJson['trustfactor_top'])) $trustfactorTop = $catalogJson['trustfactor_top'];
             if(!empty($catalogJson['trustfactor_right'])) {
                 \App::contentClient()->addQuery(
