@@ -28,6 +28,9 @@ return function (
             <? if (count($properties) > 0) { ?>
                 <dl class="bSpecificationsList clearfix">
                     <? foreach ($properties as $property): ?>
+                        <? /* @var $property \Model\Product\Property\Entity */
+                        if ( !$property->getValue() ) continue;
+                        ?>
                         <dd class="bSpecificationsList__eName">
                             <span class="bName">
                                 <?= $property->getName() ?>
