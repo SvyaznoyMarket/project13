@@ -118,6 +118,8 @@ $c->yandexMetrika['enabled'] = true;
 $c->partners['criteo']['enabled'] = true;
 $c->partners['criteo']['account'] = 10442;
 $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
+$c->partners['Admitad']['enabled'] = true;
+$c->partners['Admitad']['code'] = '9ce8886713';
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [

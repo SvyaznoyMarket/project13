@@ -310,6 +310,72 @@ window.ANALYTICS = {
         RetailRocket.action();
     },
 
+    AdmitadJS : function() {
+        window._ad = window._ad || [];
+
+        //console.log('inint');
+        var ad_data = $('#AdmitadJS').data('value');
+        //console.log(ad_data);
+        if (ad_data) {
+
+            console.log(ad_data);
+
+            if (ad_data.ad_data) {
+                //console.log('###');
+                //console.log(ad_data.ad_data);
+            }
+
+            /*
+            if (ad_data.routeName == 'product.category') {
+                var ad_category = "Category_ID"; // required
+            }else if (ad_data.routeName == 'product') {
+                var ad_product = {
+                    "id": "", // required
+                    "vendor": "",
+                    "price": "",
+                    "url": "",
+                    "picture": "",
+                    "name": "",
+                    "category": ""
+                };
+            } else if (ad_data.routeName == 'order.complete') {
+                RetailRocket.transaction(ad_data.sendData)
+            } else if (ad_data.routeName == 'cart') {
+                var ad_products = [
+                    {
+                        "id": "", // required
+                        "number": ""
+                    }
+                    // other products
+                ];
+            } else if (ad_data.routeName == 'order.complete') {
+                var ad_order = ""; // required
+                var ad_amount = "";
+                var ad_products = [
+                    {
+                        "id": "",
+                        "number": ""
+                    }
+                    // other products
+                ];
+            }*/
+
+            if (ad_data.pushData) {
+                window._ad.push(ad_data.sendData);
+            }
+        }
+
+
+/*
+        (function () {
+            var s=document.createElement("script");
+            s.async=true;
+            s.src=(document.location.protocol == "https:" ? "https:" : "http:") + "//сdn.admitad.com/static/js/retag.js";
+            var a=document.getElementsByTagName("script")[0]
+            a.parentNode.insertBefore(s, a);
+        })()*/
+    },
+
     marketgidProd : function() {
         var MGDate = new Date();
         document.write('<iframe src ="http://'
