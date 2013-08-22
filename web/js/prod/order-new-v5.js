@@ -1047,7 +1047,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			},
 
 			0: function( res ) {
-                console.warn('обработка ошибок формы')
+				console.warn('обработка ошибок формы')
 				var formError = null;
 
 				if ( res.redirect ) {
@@ -1330,22 +1330,21 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 
 	/**
+	 * Включение автокомплита метро
 	 * Подстановка станции метро по id
 	 */
-    if ( subwayArray !== undefined ) {
-        subwayField.autocomplete(subwayAutocompleteConfig);
-        subwayField.bind('change', subwayChange);
+	if ( subwayArray !== undefined ) {
+		subwayField.autocomplete(subwayAutocompleteConfig);
+		subwayField.bind('change', subwayChange);
 
-//        for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
-//            console.log(subwayArray[i].val)
-//            console.log(typeof subwayArray[i].val)
-//            if ( parseInt(metroIdFiled.val(), 10) === subwayArray[i].val ) {
-//                subwayField.val(subwayArray[i].label);
-//
-//                break;
-//            }
-//        }
-    }
+		for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
+			if ( parseInt(metroIdFiled.val(), 10) === subwayArray[i].val ) {
+				subwayField.val(subwayArray[i].label);
+
+				break;
+			}
+		}
+	}
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
