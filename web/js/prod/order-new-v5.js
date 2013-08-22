@@ -1277,11 +1277,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		});
 	}
 
-	if ( subwayArray !== undefined ) {
-		subwayField.autocomplete(subwayAutocompleteConfig);
-		subwayField.bind('change', subwayChange);
-	}
-
 
 	/**
 	 * Подстановка значений в поля
@@ -1314,19 +1309,20 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	/**
 	 * Подстановка станции метро по id
 	 */
-//    console.warn('Подстановка станции метро по id');
-//    console.log(metroIdFiled.val())
-//    console.log(typeof parseInt(metroIdFiled.val(), 10))
-//    console.log('====')
-//    for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
-//        console.log(subwayArray[i].val)
-//        console.log(typeof subwayArray[i].val)
-//		if ( parseInt(metroIdFiled.val(), 10) === subwayArray[i].val ) {
-//			subwayField.val(subwayArray[i].label);
+    if ( subwayArray !== undefined ) {
+        subwayField.autocomplete(subwayAutocompleteConfig);
+        subwayField.bind('change', subwayChange);
+
+//        for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
+//            console.log(subwayArray[i].val)
+//            console.log(typeof subwayArray[i].val)
+//            if ( parseInt(metroIdFiled.val(), 10) === subwayArray[i].val ) {
+//                subwayField.val(subwayArray[i].label);
 //
-//            break;
-//		}
-//	}
+//                break;
+//            }
+//        }
+    }
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
