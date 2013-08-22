@@ -699,7 +699,6 @@
 		 */
 		renderOrderData = function renderOrderData( res ) {
 			if ( !res.success ) {
-				// TODO: написать обработчки ошибок
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);
 				allErrorHandler(res);
@@ -764,7 +763,6 @@
 	// end of functions
 
 	$('body').on('click', '.shopchoose', selectPointOnBaloon);
-
 
 	renderOrderData( serverData );
 

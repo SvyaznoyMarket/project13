@@ -1314,13 +1314,19 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	/**
 	 * Подстановка станции метро по id
 	 */
-	for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
-		if ( parseInt(metroIdFiled.val(), 10) === subwayArray[i].val ) {
-			subwayField.val(subwayArray[i].label);
-
-            break;
-		}
-	}
+//    console.warn('Подстановка станции метро по id');
+//    console.log(metroIdFiled.val())
+//    console.log(typeof parseInt(metroIdFiled.val(), 10))
+//    console.log('====')
+//    for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
+//        console.log(subwayArray[i].val)
+//        console.log(typeof subwayArray[i].val)
+//		if ( parseInt(metroIdFiled.val(), 10) === subwayArray[i].val ) {
+//			subwayField.val(subwayArray[i].label);
+//
+//            break;
+//		}
+//	}
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
@@ -2033,7 +2039,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		renderOrderData = function renderOrderData( res ) {
 			if ( !res.success ) {
-				// TODO: написать обработчки ошибок
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);
 				allErrorHandler(res);
@@ -2098,7 +2103,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	// end of functions
 
 	$('body').on('click', '.shopchoose', selectPointOnBaloon);
-
 
 	renderOrderData( serverData );
 
