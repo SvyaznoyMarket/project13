@@ -216,6 +216,8 @@ class DeliveryAction {
             // магазины
             foreach ($result['shops'] as $shopItem) {
                 $shopId = (string)$shopItem['id'];
+                if (!isset($productIdsByShop[$shopId])) continue;
+
                 $responseData['shops'][] = [
                     'id'         => $shopId,
                     'name'       => $shopItem['name'],
