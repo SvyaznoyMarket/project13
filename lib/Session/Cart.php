@@ -513,6 +513,7 @@ class Cart {
     public function clearCertificates() {
         $data = $this->storage->get($this->sessionName);
         $data['certificateList'] = [];
+        $this->certificates = null;
 
         $this->fill();
 
@@ -553,6 +554,7 @@ class Cart {
     public function clearCoupons() {
         $data = $this->storage->get($this->sessionName);
         $data['couponList'] = [];
+        $this->coupons = null;
 
         $this->fill();
 
@@ -593,6 +595,7 @@ class Cart {
     public function clearBlackcards() {
         $data = $this->storage->get($this->sessionName);
         $data['blackcardList'] = [];
+        $this->blackcards = null;
 
         $this->fill();
 
