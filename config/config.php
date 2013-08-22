@@ -324,6 +324,7 @@ $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
 $c->abtest['bestBefore'] = '2013-09-23';
 
+/*
 $c->abtest['test']       = [
     // smartengine
     [
@@ -347,5 +348,6 @@ $c->abtest['test']       = [
         'ga_event' => 'Hybrid',
     ],
 ];
+*/
 
 return $c;
