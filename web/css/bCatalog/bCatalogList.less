@@ -1,0 +1,64 @@
+.bCatalogList {
+
+	&__eItem {
+		.rounded(4px);
+		float: left;
+
+		width: 298px;
+		height: 48px;
+		margin: 0 20px 20px 0;
+
+		border: 1px solid @typLightGray;
+		background: #f6f6f6;
+
+		&.mLast {
+			margin-right: 0;
+		}
+	}
+
+	&__eLink {
+		display: block;
+
+		height: 48px;
+
+		font-size: 14px;
+
+		&:hover {
+			text-decoration: none;
+
+			.bCategoriesName {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.bCategoriesImg {
+		display: inline-block;
+		float: left;
+
+		width: 48px;
+		height: 48px;
+		margin: 0 5px 0 0;
+
+		text-align: center;
+
+		background: #ffffff;
+
+		&__eImg {
+			width: 42px;
+			max-height: 42px;
+		}
+	}
+
+	.bCategoriesName {
+		display: table-cell;
+		zoom: 1;
+
+		width: 242px;
+		height: 48px;
+
+		vertical-align: middle;
+
+		*display: inline;
+	}
+}
