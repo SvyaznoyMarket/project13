@@ -43,6 +43,14 @@
 		margin: 0 0 10px;	
 	}
 
+	&__eEmptyBlock {
+		display: block;
+
+		padding: 13px 0 0;
+
+		font-size: 14px;
+	}
+
 	.mSaleInput {
 		display: inline-block;
 
@@ -61,10 +69,21 @@
 
 		vertical-align: top;
 
-		font: bold 14px/33px Tahoma;
+		cursor: pointer;
+
+		font: normal 14px/33px Tahoma;
 
 		*display: inline;
 		zoom: 1;
+
+		&.mDisabled {
+			background: #f3f3f3;
+			border: 1px solid #a6a6a6;
+
+			color: #a6a6a6;
+
+			cursor: default;
+		}
 	}
 }
 

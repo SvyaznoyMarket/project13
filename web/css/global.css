@@ -11717,6 +11717,11 @@
   .bSaleData .bTitle {
     margin: 0 0 10px;
   }
+  .bSaleData__eEmptyBlock {
+    display: block;
+    padding: 13px 0 0;
+    font-size: 14px;
+  }
   .bSaleData .mSaleInput {
     display: inline-block;
     width: 288px;
@@ -11729,9 +11734,16 @@
     height: 33px;
     padding: 0;
     vertical-align: top;
-    font: bold 14px/33px Tahoma;
+    cursor: pointer;
+    font: normal 14px/33px Tahoma;
     *display: inline;
     zoom: 1;
+  }
+  .bSaleData .mSaleBtn.mDisabled {
+    background: #f3f3f3;
+    border: 1px solid #a6a6a6;
+    color: #a6a6a6;
+    cursor: default;
   }
   .bSaleList {
     margin: 0 0 12px 0;
