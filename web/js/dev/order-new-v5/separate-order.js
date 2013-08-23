@@ -660,7 +660,7 @@
 
 			// Cоздаем массив продуктов содержащих ошибки
 			for ( product in res.products ) {
-				if ( res.products[product].error.code ) {
+				if ( res.products[product].error && res.products[product].error.code ) {
 					productsWithError.push(res.products[product]);
 				}
 			}
@@ -687,7 +687,9 @@
 
 			errorCatcher(productsWithError.length - 1, function() {
 				console.warn('1 этап закончен');
-				document.location.href = res.redirect;
+				if ( res.redirect ) {
+					document.location.href = res.redirect;
+				}
 			});
 		},
 
