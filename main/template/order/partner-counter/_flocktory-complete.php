@@ -39,5 +39,5 @@ if (!empty($userForm) && $userForm instanceof \View\Order\Form && !empty($order)
 ?>
 
 <? if ((bool)$flocktoryData): ?>
-    <div id="jsOrderFlocktory" data-value="<?= $page->json($flocktoryData) ?>"></div>
+    <div id="jsOrderFlocktory" class="jsanalytics" data-value="<?= $page->json($flocktoryData) ?>"></div>
 <? endif ?>
