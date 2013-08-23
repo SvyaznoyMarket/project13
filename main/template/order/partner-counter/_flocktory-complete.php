@@ -6,7 +6,6 @@
  */
 ?>
 
-
 <?
 $flocktoryData = [];
 if (!empty($userForm) && $userForm instanceof \View\Order\Form && !empty($order)) {
