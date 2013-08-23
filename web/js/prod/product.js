@@ -98,6 +98,8 @@
 		return false;
 	}
 
+  var nowPresent = false;
+
 	var widgetBox = $('.bDelivery'),
 		deliveryData = widgetBox.data('value'),
 		url = deliveryData.url,
@@ -272,12 +274,6 @@
 		});
 	}
 
-	$(document).ready(function() {
-		if ( $('.bDeliveryNowClick').length && $('.bDeliveryNowClick').hasClass('hf') ) {
-			$('.bDeliveryNowClick').click();
-			$('.bDeliveryNow.mOpen').css('background-image','none');
-		}
-	});
 }());
  
  
