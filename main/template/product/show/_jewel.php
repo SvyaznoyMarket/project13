@@ -15,7 +15,15 @@
 
 $showLinkToProperties = true;
 $countModels = count($product->getModel());
-$countProperties = count($product->getProperty());
+//$countProperties = count($product->getProperty());
+$countProperties = 0;
+foreach ($product->getGroupedProperties() as $group) {
+    if (!(bool)$group['properties']) continue;
+    foreach ($group['properties'] as $property) {
+        $countProperties++;
+    }
+}
+
 $is_showed = [];
 
 
@@ -72,7 +80,7 @@ $is_showed = [];
 
             if (!in_array('all_properties', $is_showed)) { // Если ранее не были показаны характеристики все,
                 // (во всех остальных случаях) выводим главные характеристики (productExpanded)
-                echo $helper->render('product/__propertiesSimple', ['product' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]);
+                echo $helper->render('product/__propertiesExpanded', ['productExpanded' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]);
                 $is_showed[] = 'main_properties';
             }
             // } /end of new Card Properties
@@ -90,6 +98,15 @@ $is_showed = [];
     <div class="bDescriptionProduct">
         <?= $product->getDescription() ?>
     </div>
+
+    <div class="clear"></div>
+
+    <? if ( $mainProduct && count($mainProduct->getKit()) ): ?>
+        <?= $helper->render('product/__slider', [
+            'title'     => 'Состав набора &laquo;' . $line->getName() . '&raquo;',
+            'products'  => $parts,
+        ]) ?>
+    <? endif ?>
 
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
         <?= $helper->render('product/__slider', [

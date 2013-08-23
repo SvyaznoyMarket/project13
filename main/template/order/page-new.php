@@ -206,6 +206,8 @@ foreach (array_reverse($productsById) as $product) {
 				<div class="bSaleData" data-bind="couponsVisible: couponsBox()">
 
 					<div class="bTitle">Вид скидки:</div>
+					
+					<div class="bSaleData__eEmptyBlock">Скидок больше нет</div>
 
 					<ul class="bSaleList bInputList clearfix">
                         <? if (\App::config()->coupon['enabled']): ?>
@@ -373,7 +375,7 @@ foreach (array_reverse($productsById) as $product) {
 				<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
 					<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
 					<div class="bBuyingLine__eRight mSClub">
-						<input id="sclub-number" type="text" class="bBuyingLine__eText" name="" />
+						<input id="sclub-number" type="text" class="bBuyingLine__eText" name="order[sclub_card_number]" />
 						<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
 					</div>
 				</div>
@@ -442,7 +444,7 @@ foreach (array_reverse($productsById) as $product) {
 <!-- /Общая обертка оформления заказа -->
 
 <div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery') ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
-<div id="jsForm" data-value="<?= $page->json([
+<div id="jsOrderForm" data-value="<?= $page->json([
 	'order[recipient_first_name]'   => $form->getFirstName(),
 	'order[recipient_last_name]'    => $form->getLastName(),
 	'order[recipient_email]'        => $form->getEmail(),

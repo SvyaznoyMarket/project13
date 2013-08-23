@@ -57,7 +57,7 @@ class Entity {
      * @param int $price
      */
     public function setPrice($price) {
-        $this->price = $price;
+        $this->price = (int)$price;
     }
 
     /**
