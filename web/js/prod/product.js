@@ -98,6 +98,8 @@
 		return false;
 	}
 
+  var nowPresent = false;
+
 	var widgetBox = $('.bDelivery'),
 		deliveryData = widgetBox.data('value'),
 		url = deliveryData.url,
@@ -107,7 +109,8 @@
 			'product':[
 				{'id': productInfo.id}
 			]
-		};
+		},
+    nowPresent = false;
 	// end of vars
 
 		/**
@@ -250,9 +253,14 @@
 
 					case 'now':
 						fillAvalShopTmpl( deliveryInfo[i].shop );
+            nowPresent = true;
 						break;
 				}
 			}
+
+      if( nowPresent ) {
+        $('.bDeliveryNowClick').click();
+      }
 
 			widgetBox.removeClass('mLoader');
 		};
@@ -273,8 +281,8 @@
 	}
 
 	$(document).ready(function() {
-		if ( $('.bDeliveryNowClick').length && $('.bDeliveryNowClick').hasClass('hf') ) {
-			$('.bDeliveryNowClick').click();
+		$('.bDeliveryNowClick').click();
+		if ( $('.bDeliveryNowClick').hasClass('hf') ) {
 			$('.bDeliveryNow.mOpen').css('background-image','none');
 		}
 	});
