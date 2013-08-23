@@ -247,7 +247,7 @@ class DeliveryAction {
                 ];
             }
             // сортировка магазинов
-            if ($region->getLatitude() && $region->getLongitude()) {
+            if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
                 usort($responseData['shops'], function($a, $b) use (&$region) {
                     if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
                         return 0;
