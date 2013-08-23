@@ -26,8 +26,7 @@
 			'product':[
 				{'id': productInfo.id}
 			]
-		},
-    nowPresent = false;
+		};
 	// end of vars
 
 		/**
@@ -170,14 +169,9 @@
 
 					case 'now':
 						fillAvalShopTmpl( deliveryInfo[i].shop );
-            nowPresent = true;
 						break;
 				}
 			}
-
-      if( nowPresent ) {
-        $('.bDeliveryNowClick').click();
-      }
 
 			widgetBox.removeClass('mLoader');
 		};
@@ -197,10 +191,4 @@
 		});
 	}
 
-	$(document).ready(function() {
-		$('.bDeliveryNowClick').click();
-		if ( $('.bDeliveryNowClick').hasClass('hf') ) {
-			$('.bDeliveryNow.mOpen').css('background-image','none');
-		}
-	});
 }());
