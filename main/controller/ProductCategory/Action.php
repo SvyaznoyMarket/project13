@@ -255,7 +255,7 @@ class Action {
         });
 
         // выполнение 3-го пакета запросов
-        $client->execute();
+        $client->execute(\App::config()->coreV2['retryTimeout']['long']);
 
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
@@ -752,7 +752,7 @@ class Action {
                                 $ancestorFilters[] = new \Model\Product\Filter\Entity($item);
                             }
                         });
-                        \App::coreClientV2()->execute();
+                        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long']);
                     } catch (\Exception $e) {
                         $ancestorFilters = [];
                     }

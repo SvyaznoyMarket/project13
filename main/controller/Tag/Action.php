@@ -727,7 +727,7 @@ class Action {
                                 $ancestorFilters[] = new \Model\Product\Filter\Entity($item);
                             }
                         });
-                        \App::coreClientV2()->execute();
+                        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long']);
                     } catch (\Exception $e) {
                         $ancestorFilters = [];
                     }
