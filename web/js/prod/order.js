@@ -83,7 +83,7 @@
 
                 console.log(toKISS_productInfo);
 
-                _kmq.push(['set', toKISS_pr]);
+                _kmq.push(['set', toKISS_productInfo]);
             }
 
             console.log(toKISS_orderInfo);
@@ -100,16 +100,6 @@
     };
 
     $(document).ready(function () {
-        newOrderAnalytics();
-
-        /* order final analytics*/
-        if ( ($('body').attr('data-template') === 'order_complete') && (typeof orderAnalyticsRun !== 'undefined') ) {
-            console.info('запуск старой аналитики зашитой в шаблоне php');
-            orderAnalyticsRun();
-        }
-        console.log('аналитика завершена');
-
-
         if ( $('.socnet-ico-list-link').length ) {
             $('.socnet-ico-list-link').bind('click', function() {
                 var type = $(this).data('type');
@@ -586,6 +576,16 @@
                 });
             }
         })();
+
+
+        /* order final analytics*/
+        newOrderAnalytics();
+        
+        if ( ($('body').attr('data-template') === 'order_complete') && (typeof orderAnalyticsRun !== 'undefined') ) {
+            console.info('запуск старой аналитики зашитой в шаблоне php');
+            orderAnalyticsRun();
+        }
+        console.log('аналитика завершена');
     });
 
 }(this));
