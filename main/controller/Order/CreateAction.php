@@ -356,11 +356,10 @@ class CreateAction {
         }
 
         $result = \App::coreClientV2()->query('order/create-packet', $params, $data);
-        if (!is_array($result)) {
-            throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
-        }
-
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
+        if (!is_array($result)) {
+            throw new \Exception('Заказ не подтвержден');
+        }
 
         /** @var $createdOrders \Model\Order\CreatedEntity[] */
         $createdOrders = [];
