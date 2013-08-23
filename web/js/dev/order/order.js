@@ -103,9 +103,12 @@
         newOrderAnalytics();
 
         /* order final analytics*/
-        if ( ($('body').attr('data-template') === 'order_complete') && (typeof orderAnalyticsRun !== 'undefined') ){
+        if ( ($('body').attr('data-template') === 'order_complete') && (typeof orderAnalyticsRun !== 'undefined') ) {
+            console.info('запуск старой аналитики зашитой в шаблоне php');
             orderAnalyticsRun();
         }
+        console.log('аналитика завершена');
+
 
         if ( $('.socnet-ico-list-link').length ) {
             $('.socnet-ico-list-link').bind('click', function() {
@@ -478,100 +481,111 @@
         })();
 
         /* Credit Widget */
-        //window.onbeforeunload = function (){ return false }    // DEBUG    
-        if ( ! $('#credit-widget').length ) {
-            return;
-        }
+        ;(function () {
+            //window.onbeforeunload = function (){ return false }    // DEBUG    
+            if ( ! $('#credit-widget').length ) {
+                console.warn('кредитный виджет не найден');
 
-        var creditWidget = $('#credit-widget').data('value');
+                return;
+            }
 
-        if ( ! 'widget' in creditWidget ) {
-            return;
-        }
+            var creditWidget = $('#credit-widget').data('value');
 
-        if ( creditWidget.widget === 'direct-credit' ) {
-            $LAB.script( 'JsHttpRequest.min.js' )
-            .script( 'http://direct-credit.ru/widget/script_utf.js' )
-            .wait( function() { 
-                // fill cart
-                for ( var i = creditWidget.vars.items.length - 1; i >= 0; i-- ) {
-                    var item = creditWidget.vars.items[i];
+            if ( ! 'widget' in creditWidget ) {
+                console.warn('тип виджета не найден в данных');
+                console.log(creditWidget);
 
-                    dc_getCreditForTheProduct(
-                        '4427',
-                        creditWidget.vars.number,
-                        'addProductToBuyOnCredit',
-                        {
-                            name : item.articul,
-                            count: item.quantity,
-                            articul: item.articul,
-                            price: item.price,
-                            type: item.type
-                        },
-                        function( result ) {
-                            openWidget();
-                        }
-                    );
-                }
-                
-                function openWidget() {
-                    dc_getCreditForTheProduct(
-                        '4427', 
-                        creditWidget.vars.number ,// session
-                        'orderProductToBuyOnCredit',
-                        { order_id: creditWidget.vars.number,
-                        region: creditWidget.vars.region }
-                    );
-                }
-            });
-        }
+                return;
+            }
 
-        var backURL = 'http://' + window.location.hostname;
+            console.info('обрабатываем как '+creditWidget.widget);
 
-        if ( creditWidget.widget === 'kupivkredit' ) {
-            //console.info('kupivkredit')
-            var callback_close = function( decision ) {
-                setTimeout(function() {
-                    document.location = backURL;
-                }, 3000);
-                // var result = ''
-                // switch(decision) {
-                //     case 'ver':
-                //         result = 'Ваша заявка предварительно одобрена.'
-                //         break
-                //     case 'agr':
-                //         result = 'Ваша заявка одобрена! Поздравляем!'
-                //         break
-                //     case 'rej':
-                //         result = 'К сожалению, заявка отклонена банком.'
-                //         break
-                //     case '':
-                //         result = 'Вы не заполнили заявку до конца'
-                //         break
-                //     default:
-                //         result = 'Ваша заявка находится на рассмотрении'
-                //         break
-                // }
-                // alert(result)
-            };
+            if ( creditWidget.widget === 'direct-credit' ) {
+                $LAB.script( 'JsHttpRequest.min.js' )
+                .script( 'http://direct-credit.ru/widget/script_utf.js' )
+                .wait( function() {
+                    console.info('скрипты загружены для кредитного виджета. начинаем обработку');
+                    // fill cart
+                    for ( var i = creditWidget.vars.items.length - 1; i >= 0; i-- ) {
+                        var item = creditWidget.vars.items[i];
 
-            var callback_decision = function(decision) {
-                //console.info( 'Пришел статус: ' + decision )
-            };
-            
-            $LAB.script( 'https://www.kupivkredit.ru/widget/vkredit.js')
-            .wait( function() {
-                var vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
-                    order: creditWidget.vars.order,
-                    sig: creditWidget.vars.sig,
-                    callbackUrl: window.location.href,
-                    onClose: callback_close, 
-                    onDecision: callback_decision 
+                        dc_getCreditForTheProduct(
+                            '4427',
+                            creditWidget.vars.number,
+                            'addProductToBuyOnCredit',
+                            {
+                                name : item.articul,
+                                count: item.quantity,
+                                articul: item.articul,
+                                price: item.price,
+                                type: item.type
+                            },
+                            function( result ) {
+                                console.log('обработка завершена. открываем виджет');
+                                openWidget();
+                            }
+                        );
+                    }
+                    
+                    function openWidget() {
+                        dc_getCreditForTheProduct(
+                            '4427', 
+                            creditWidget.vars.number ,// session
+                            'orderProductToBuyOnCredit',
+                            { order_id: creditWidget.vars.number,
+                            region: creditWidget.vars.region }
+                        );
+                    }
                 });
+            }
 
-                vkredit.openWidget();
-            });
-        }
+            var backURL = 'http://' + window.location.hostname;
+
+            if ( creditWidget.widget === 'kupivkredit' ) {
+                //console.info('kupivkredit')
+                var callback_close = function( decision ) {
+                    setTimeout(function() {
+                        document.location = backURL;
+                    }, 3000);
+                    // var result = ''
+                    // switch(decision) {
+                    //     case 'ver':
+                    //         result = 'Ваша заявка предварительно одобрена.'
+                    //         break
+                    //     case 'agr':
+                    //         result = 'Ваша заявка одобрена! Поздравляем!'
+                    //         break
+                    //     case 'rej':
+                    //         result = 'К сожалению, заявка отклонена банком.'
+                    //         break
+                    //     case '':
+                    //         result = 'Вы не заполнили заявку до конца'
+                    //         break
+                    //     default:
+                    //         result = 'Ваша заявка находится на рассмотрении'
+                    //         break
+                    // }
+                    // alert(result)
+                };
+
+                var callback_decision = function(decision) {
+                    //console.info( 'Пришел статус: ' + decision )
+                };
+                
+                $LAB.script( 'https://www.kupivkredit.ru/widget/vkredit.js')
+                .wait( function() {
+                    var vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
+                        order: creditWidget.vars.order,
+                        sig: creditWidget.vars.sig,
+                        callbackUrl: window.location.href,
+                        onClose: callback_close, 
+                        onDecision: callback_decision 
+                    });
+
+                    vkredit.openWidget();
+                });
+            }
+        })();
     });
 
 }(this));
