@@ -246,6 +246,16 @@ class DeliveryAction {
                     'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
                 ];
             }
+            // сортировка магазинов
+            if ($region->getLatitude() && $region->getLongitude()) {
+                usort($responseData['shops'], function($a, $b) use (&$region) {
+                    if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
+                        return 0;
+                    }
+
+                    return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
+                });
+            }
 
             // купоны
             foreach ($cart->getCoupons() as $coupon) {
