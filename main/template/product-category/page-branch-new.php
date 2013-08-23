@@ -94,7 +94,19 @@
 			<a class="bFilterToggle mClose" href=""><span class="bToggleText">Бренды и параметры</span></a>
 
 			<div class="bFilterPrice">
-			</div>
+				<span class="bFilterPrice__eTitle">Цена</span>
+				<input class="bFilterPrice__eInput" name="" value="1 000" type="text"  />
+
+	            <div class="bFilterSlider">
+	            	<div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 0%; width: 50%;"></div>
+	            	<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: -14px;"></a>
+	            	<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 50%;"></a>
+	            </div>
+
+	            <input class="bFilterPrice__eInput" name="" value="10 000" type="text"  /> 
+
+	            <span class="bFilterPrice__eRub rubl">p</span>
+		    </div>
 
 			<ul class="bPopularSection">
 				<li class="bPopularSection__eItem mTitle">Популярные бренды</li>
@@ -112,7 +124,19 @@
 			<a class="bFilterToggle mOpen" href=""><span class="bToggleText">Бренды и параметры</span></a>
 
 			<div class="bFilterPrice">
-			</div>
+				<span class="bFilterPrice__eTitle">Цена</span>
+				<input class="bFilterPrice__eInput" name="" value="1 000" type="text"  />
+
+	            <div class="bFilterSlider">
+	            	<div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 0%; width: 50%;"></div>
+	            	<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: -14px;"></a>
+	            	<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 50%;"></a>
+	            </div>
+
+	            <input class="bFilterPrice__eInput" name="" value="10 000" type="text"  /> 
+
+	            <span class="bFilterPrice__eRub rubl">p</span>
+		    </div>
 		</div>
 
 		<div class="bFilterCont">
@@ -240,12 +264,11 @@
 		    },
 
 		    function(){
-		        $(this).children(".bListingItem__eInner").css('z-index', '5');
+		        $(".bListingItem__eInner").css('z-index', '5');
 		    }
 		    );
 		});
 	</script>
-
 
 	<ul class="bListing clearfix">
 		<li class="bListingItem">
@@ -554,17 +577,16 @@
 		</li>
 	</ul>
 
-	<div class="bSortingLine clearfix">
-		<ul class="bSortingList mPagerBottom">
+	<div class="bSortingLine mPagerBottom clearfix">
+		<ul class="bSortingList">
 			<li class="bSortingList__eItem mTitle">Страницы</li>
 
 			<li class="bSortingList__eItem mSortItem mActive"><a class="bSortingList__eLink" href="">1</a></li>
 			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">2</a></li>
 			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">3</a></li>
-			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">4</a></li>
-			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">8</a></li>
 			<li class="bSortingList__eItem mSortItem">&#8230;</li>
-			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">&#8734;</a></li>
+			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">48</a></li>
+			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink mMore" href="">&#8734;</a></li>
 		</ul>
 	</div>
 </div>

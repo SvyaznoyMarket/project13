@@ -12171,7 +12171,7 @@
     background: -moz-linear-gradient(top, #505050 0%, #040404 100%);
     /* FF3.6+ */
   
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #373737), color-stop(100%, #040404));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #505050), color-stop(100%, #040404));
     /* Chrome,Safari4+ */
   
     background: -webkit-linear-gradient(top, #505050 0%, #040404 100%);
@@ -12198,6 +12198,7 @@
     color: #ffffff;
     border: 1px solid #a1a1a1;
     font: bold 12px/30px Tahoma;
+    vertical-align: top;
   }
   .bFilterHead .bFilterToggle:hover {
     text-decoration: none;
@@ -12361,6 +12362,86 @@
   }
 }
 @media all {
+  .bFilterPrice {
+    display: inline-block;
+    width: 550px;
+    margin: 3px 0 0 25px;
+  }
+  .bFilterPrice__eTitle {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .bFilterPrice__eInput {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    display: inline-block;
+    width: 65px;
+    height: 24px;
+    margin: 0 10px;
+    padding: 0 0 0 5px;
+    vertical-align: top;
+    border: 1px solid #a3a3a3;
+    font-size: 13px;
+    line-height: 26px;
+  }
+  .bFilterPrice__eRub {
+    display: inline-block;
+    vertical-align: top;
+    color: #929292;
+    font-size: 16px;
+    line-height: 26px;
+  }
+  .bFilterSlider {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #cbcbcb;
+    /* Old browsers */
+  
+    background: -moz-linear-gradient(top, #cbcbcb 0%, #ebebeb 100%);
+    /* FF3.6+ */
+  
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #cbcbcb), color-stop(100%, #ebebeb));
+    /* Chrome,Safari4+ */
+  
+    background: -webkit-linear-gradient(top, #cbcbcb 0%, #ebebeb 100%);
+    /* Chrome10+,Safari5.1+ */
+  
+    background: -o-linear-gradient(top, #cbcbcb 0%, #ebebeb 100%);
+    /* Opera 11.10+ */
+  
+    background: -ms-linear-gradient(top, #cbcbcb 0%, #ebebeb 100%);
+    /* IE10+ */
+  
+    background: linear-gradient(to bottom, #cbcbcb 0%, #ebebeb 100%);
+    /* W3C */
+  
+    position: relative;
+    display: inline-block;
+    margin: 12px 10px 0 20px;
+    width: 233px;
+    height: 4px;
+  }
+  .bFilterSlider .ui-slider-range {
+    position: absolute;
+    z-index: 1;
+    height: 3px;
+    background: #fbc05f;
+  }
+  .bFilterSlider .ui-slider-handle {
+    position: absolute;
+    z-index: 2;
+    top: -13px;
+    display: block;
+    width: 28px;
+    height: 28px;
+    background: url('/css/bCatalog/img/bBtnSlider.png') no-repeat 0 0;
+  }
+}
+@media all {
   .bSortingLine {
     -webkit-border-radius: 3px 3px 0 0;
     -moz-border-radius: 3px 3px 0 0;
@@ -12369,6 +12450,25 @@
     padding: 5px 10px;
     border-bottom: 1px solid #c7c7c7;
     background: #f6f6f6;
+  }
+  .bSortingLine.mPagerBottom {
+    border-bottom: none;
+    border-top: 1px solid #c7c7c7;
+  }
+  .bSortingLine.mPagerBottom .bSortingList {
+    float: right;
+    margin-right: -5px;
+  }
+  .bSortingLine.mPagerBottom .bSortingList .bSortingList__eItem.mTitle {
+    float: left;
+    margin: 4px 5px 0 0;
+  }
+  .bSortingLine.mPagerBottom .bSortingList .bSortingList__eLink {
+    padding: 0 6px;
+  }
+  .bSortingLine.mPagerBottom .bSortingList .bSortingList__eLink.mMore {
+    width: 30px;
+    padding: 0 5px;
   }
   .bSortingList {
     float: left;
@@ -12440,14 +12540,6 @@
   }
   .bSortingList.mViewer .bSortingList__eLink:hover .bIcoLine {
     background-position: -14px -14px;
-  }
-  .bSortingList.mPagerBottom {
-    float: right;
-    margin-right: -5px;
-  }
-  .bSortingList.mPagerBottom .bSortingList__eItem.mTitle {
-    float: left;
-    margin: 4px 5px 0 0;
   }
 }
 /*---END---СТИЛИ КАТАЛОГА---*/
