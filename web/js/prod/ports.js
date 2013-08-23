@@ -331,6 +331,7 @@ window.ANALYTICS = {
                 }
 
                 if (ad_data.ad_data.ad_products) {
+                    ad_data.ad_data.ad_products.url = document.location;
                     var ad_products = ad_data.ad_data.ad_products;
                     console.log('### ad_products');
                     console.log(ad_products);
@@ -346,24 +347,27 @@ window.ANALYTICS = {
                     var ad_amount = ad_data.ad_data.ad_amount;
                     console.log('### ad_amount');
                     console.log(ad_amount);
+
                 }
 
             }
 
             if (ad_data.pushData) {
-                window._ad.push(ad_data.sendData);
+                window._ad.push(ad_data.pushData);
+                console.log('### ad_data.pushData');
+                console.log(ad_data.pushData);
             }
         }
 
 
-/*
+
         (function () {
             var s=document.createElement("script");
             s.async=true;
             s.src=(document.location.protocol == "https:" ? "https:" : "http:") + "//сdn.admitad.com/static/js/retag.js";
             var a=document.getElementsByTagName("script")[0]
             a.parentNode.insertBefore(s, a);
-        })()*/
+        })()
     },
 
     marketgidProd : function() {
