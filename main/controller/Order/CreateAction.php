@@ -300,10 +300,7 @@ class CreateAction {
                 }
 
                 // скидки
-                $actionData = $user->getCart()->getActionData();
-                if ((bool)$actionData) {
-                    $orderData['action'] = $actionData;
-                }
+                $orderData['action'] = (array)$user->getCart()->getActionData();
 
                 // мета-теги
                 if (\App::config()->order['enableMetaTag'] && !$bMeta) {
