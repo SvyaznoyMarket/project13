@@ -177,7 +177,13 @@
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val),
-				node = $(element);
+
+				node = $(element),
+				fieldNode = node.find('.mSaleInput'),
+				buttonNode = node.find('.mSaleBtn'),
+				titleNode = node.find('.bTitle'),
+
+				emptyBlock = node.find('.bSaleData__eEmptyBlock');
 			// end of vars
 
 			$('.bSaleList__eItem').removeClass('hidden');
@@ -187,10 +193,14 @@
 			}
 
 			if ( !$('.bSaleList__eItem.hidden').length ) {
-				node.show();
+				fieldNode.removeAttr('disabled');
+				buttonNode.removeAttr('disabled').removeClass('mDisabled');
+				emptyBlock.hide();
 			}
 			else {
-				node.hide();
+				fieldNode.attr('disabled', 'disabled');
+				buttonNode.attr('disabled', 'disabled').addClass('mDisabled');
+				emptyBlock.show();
 			}
 		}
 	};
@@ -689,7 +699,6 @@
 		 */
 		renderOrderData = function renderOrderData( res ) {
 			if ( !res.success ) {
-				// TODO: написать обработчки ошибок
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);
 				allErrorHandler(res);
@@ -754,7 +763,6 @@
 	// end of functions
 
 	$('body').on('click', '.shopchoose', selectPointOnBaloon);
-
 
 	renderOrderData( serverData );
 

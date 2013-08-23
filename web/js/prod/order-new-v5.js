@@ -1032,7 +1032,22 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * Обработка ошибок из ответа сервера
 		 */
 		serverErrorHandler = {
+			default: function( res ) {
+				console.log('обработчик ошибки');
+
+				if ( res.error && res.error.message ) {
+					showError(res.error.message, function() {
+						document.location.href = res.redirect;
+					});
+
+					return;
+				}
+
+				document.location.href = res.redirect;
+			},
+
 			0: function( res ) {
+				console.warn('обработка ошибок формы')
 				var formError = null;
 
 				if ( res.redirect ) {
@@ -1053,7 +1068,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 				$.scrollTo($('.mError').eq(0), 500, {offset:-15});
 			},
-			
+
 			743: function( res ) {
 				showError(res.error.message);
 			}
@@ -1084,15 +1099,25 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		processingResponse = function processingResponse( res ) {
 			console.info('данные отправлены. получен ответ от сервера');
+			
 			ajaxStop = new Date().getTime();
 			ajaxDelta = ajaxStop - ajaxStart;
 
-			global.OrderModel.blockScreen.unblock();
 			console.log(res);
 
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
-				serverErrorHandler[res.error.code](res);
+
+				global.OrderModel.blockScreen.unblock();
+
+				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
+					console.log('есть обработчик')
+					serverErrorHandler[res.error.code](res);
+				}
+				else {
+					console.log('дефолтный обработчик')
+					serverErrorHandler['default'](res);
+				}
 
 				return false;
 			}
@@ -1275,11 +1300,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		});
 	}
 
-	if ( subwayArray !== undefined ) {
-		subwayField.autocomplete(subwayAutocompleteConfig);
-		subwayField.bind('change', subwayChange);
-	}
-
 
 	/**
 	 * Подстановка значений в поля
@@ -1294,19 +1314,37 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				console.log('для поля есть значение '+fields[field]);
 				fieldNode = $('input[name="'+field+'"]');
 
-				// поле текстовое	
-				if ( fieldNode.attr('type') === 'text' ) {
-					fieldNode.val( fields[field] );
-				}
-
 				// радио кнопка
 				if ( fieldNode.attr('type') === 'radio' ) {
 					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked');
+
+					continue;
 				}
+
+				// поле текстовое	
+				fieldNode.val( fields[field] );
 			}
 		}
 	};
 	defaultValueToField($('#jsOrderForm').data('value'));
+
+
+	/**
+	 * Включение автокомплита метро
+	 * Подстановка станции метро по id
+	 */
+	if ( subwayArray !== undefined ) {
+		subwayField.autocomplete(subwayAutocompleteConfig);
+		subwayField.bind('change', subwayChange);
+
+		for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
+			if ( parseInt(metroIdFiled.val(), 10) === subwayArray[i].val ) {
+				subwayField.val(subwayArray[i].label);
+
+				break;
+			}
+		}
+	}
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
@@ -1497,7 +1535,13 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val),
-				node = $(element);
+
+				node = $(element),
+				fieldNode = node.find('.mSaleInput'),
+				buttonNode = node.find('.mSaleBtn'),
+				titleNode = node.find('.bTitle'),
+
+				emptyBlock = node.find('.bSaleData__eEmptyBlock');
 			// end of vars
 
 			$('.bSaleList__eItem').removeClass('hidden');
@@ -1507,10 +1551,14 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 
 			if ( !$('.bSaleList__eItem.hidden').length ) {
-				node.show();
+				fieldNode.removeAttr('disabled');
+				buttonNode.removeAttr('disabled').removeClass('mDisabled');
+				emptyBlock.hide();
 			}
 			else {
-				node.hide();
+				fieldNode.attr('disabled', 'disabled');
+				buttonNode.attr('disabled', 'disabled').addClass('mDisabled');
+				emptyBlock.show();
 			}
 		}
 	};
@@ -2009,7 +2057,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		renderOrderData = function renderOrderData( res ) {
 			if ( !res.success ) {
-				// TODO: написать обработчки ошибок
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);
 				allErrorHandler(res);
@@ -2074,7 +2121,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	// end of functions
 
 	$('body').on('click', '.shopchoose', selectPointOnBaloon);
-
 
 	renderOrderData( serverData );
 

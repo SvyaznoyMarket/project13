@@ -1,51 +1,52 @@
 <?php
 
 /**
- * Выводим все сгруппированные характеристики.
- * Функция не сработает для \Model\Product\ExpandedEntity
- * Важно знать, что есть также характеристики не имеющие группы.
+ * Выводим все характеристики productExpanded
+ * где в $productExpanded храняться главные характеристики.
+ * Но если вместо $productExpanded передать $product, то выведуться все.
+ * В принципе можно использовать не только для для \Model\Product\ExpandedEntity, но и для \Model\Product\Entity
+ * Важно знать, что есть также сгруппированные характеристики и характеристики, не имеющие группы.
  */
 return function (
     \Helper\TemplateHelper $helper,
-    $product,
+    $productExpanded,
     $showLinkToProperties = true
 ) {
 
-    if ( $product instanceof \Model\Product\Entity ) {
-        $groupedProperties = $product->getGroupedProperties();
+    if ( $productExpanded instanceof \Model\Product\ExpandedEntity ) {
+        $properties = $productExpanded->getProperty();
     }else{
         return '';
     }
+
 
     ?>
     <div class="jewel mb15">
         <div class="bSpecifications mSimpleProperty">
 
-            <? if (count($groupedProperties) > 0) { ?>
+            <? if (count($properties) > 0) { ?>
                 <dl class="bSpecificationsList clearfix">
-                    <? foreach ($groupedProperties as $group) { ?>
-                        <? if (!(bool)$group['properties']) continue ?>
-
-                        <? foreach ($group['properties'] as $property) { ?>
-                            <? // @var $property \Model\Product\Property\Entity ?>
-                            <dd class="bSpecificationsList__eName">
+                    <? foreach ($properties as $property): ?>
+                        <? // @var $property \Model\Product\Property\Entity
+                        if ( !$property->getValue() ) continue;
+                        ?>
+                        <dd class="bSpecificationsList__eName">
                             <span class="bName">
                                 <?= $property->getName() ?>
                                 <? if ($property->getHint()): ?>
                                     <?= $helper->render('__hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
                                 <? endif ?>
                             </span>
-                            </dd>
-                            <dt class="bSpecificationsList__eValue">
+                        </dd>
+                        <dt class="bSpecificationsList__eValue">
                             <span>
                                 <?= $property->getStringValue() ?>
                                 <? if ($property->getValueHint()): ?>
                                     <?= $helper->render('__hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
                                 <? endif ?>
                             </span>
-                            </dt>
-                        <? } //endforeach $group ?>
-                    <? } //endforeach $groupedProperties ?>
+                        </dt>
+                    <? endforeach; ?>
                 </dl>
             <? } ?>
 
@@ -58,4 +59,4 @@ return function (
         </div>
     </div>
 <?
-}; //end function
+};

@@ -11,11 +11,11 @@ class Client
     public function __construct(array $config, \Logger\LoggerInterface $logger = null)
     {
         $this->config = array_merge([
-            'apiUrl' => 'http://retailrocket.ru/api/',
-            'account' => \App::config()->partners['RetailRocket']['account'],
-            'timeout' => 0.5, //в секундах
-            'logEnabled' => false,
-            'logDataEnabled' => false,
+            'apiUrl'         =>    \App::config()->partners['RetailRocket']['apiUrl'],
+            'account'        =>    \App::config()->partners['RetailRocket']['account'],
+            'timeout'        =>    \App::config()->partners['RetailRocket']['timeout'], //в секундах
+            'logEnabled'     =>    false,
+            'logDataEnabled' =>    false,
         ], $config);
 
         $this->logger = $logger;
