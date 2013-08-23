@@ -232,6 +232,328 @@
 		</ul>
 	</div>
 
+	<script>
+		$(document).ready(function(){
+		    $(".bListingItem").hover(
+		    function(){
+		        $(this).children(".bListingItem__eInner").css('z-index', '10');
+		    },
+
+		    function(){
+		        $(this).children(".bListingItem__eInner").css('z-index', '5');
+		    }
+		    );
+		});
+	</script>
+
+
+	<ul class="bListing clearfix">
+		<li class="bListingItem">
+			<div class="bListingItem__eInner">
+				<div class="bSimplyDesc">
+					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<ul class="bSimplyDescStikers">
+						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
+
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+					</ul>
+				</div>
+
+				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs03.enter.ru/1/1/500/f3/207661.jpg" /></a>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPriceOld"><strong class="bDecor">8 592</strong> <span class="rubl">p</span></span>
+					<span class="bAvailible">Только в магазинах</span>
+				</div>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPrice"><strong>8 592</strong> <span class="rubl">p</span></span>
+					<span class="bOptions"><span class="bDecor">Варианты</span></span>
+				</div>
+
+				<div class="bOptionsSection">
+					<i class="bCorner"></i>
+					<i class="bCornerDark"></i>
+
+					<ul class="bOptionsList">
+						<li class="bOptionsList__eItem">Цвет обивки</li>
+						<li class="bOptionsList__eItem">Наличие подъемного механизма</li>
+					</ul>
+				</div>
+
+				<div class="bBtnLine clearfix">
+					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
+					<a class="btnView" href="">Посмотреть</a>
+				</div>
+			</div>
+		</li>
+
+		<li class="bListingItem">
+			<div class="bListingItem__eInner">
+				<div class="bSimplyDesc">
+					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм</p>
+				</div>
+
+				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs09.enter.ru/1/1/500/75/167449.jpg" /></a>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPriceOld"><strong class="bDecor">8 592</strong> <span class="rubl">p</span></span>
+					<span class="bAvailible">Только в магазинах</span>
+				</div>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPrice"><strong>8 592</strong> <span class="rubl">p</span></span>
+				</div>
+
+				<div class="bBtnLine clearfix">
+					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
+					<a class="btnView" href="">Посмотреть</a>
+				</div>
+			</div>
+		</li>
+
+		<li class="bListingItem">
+			<div class="bListingItem__eInner">
+				<div class="bSimplyDesc">
+					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<ul class="bSimplyDescStikers">
+						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
+
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+					</ul>
+				</div>
+
+				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs03.enter.ru/1/1/500/f3/207661.jpg" /></a>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPriceOld"><strong class="bDecor">8 592</strong> <span class="rubl">p</span></span>
+					<span class="bAvailible">Только в магазинах</span>
+				</div>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPrice"><strong>8 592</strong> <span class="rubl">p</span></span>
+					<span class="bOptions"><span class="bDecor">Варианты</span></span>
+				</div>
+
+				<div class="bOptionsSection">
+					<i class="bCorner"></i>
+					<i class="bCornerDark"></i>
+
+					<ul class="bOptionsList">
+						<li class="bOptionsList__eItem">Цвет обивки</li>
+						<li class="bOptionsList__eItem">Наличие подъемного механизма</li>
+					</ul>
+				</div>
+
+				<div class="bBtnLine clearfix">
+					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
+					<a class="btnView" href="">Посмотреть</a>
+				</div>
+			</div>
+		</li>
+
+		<li class="bListingItem mLast">
+			<div class="bListingItem__eInner">
+				<div class="bSimplyDesc">
+					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<ul class="bSimplyDescStikers">
+						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
+
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+					</ul>
+				</div>
+
+				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs09.enter.ru/1/1/500/75/167449.jpg" /></a>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPrice"><strong>8 592</strong> <span class="rubl">p</span></span>
+				</div>
+
+				<div class="bBtnLine clearfix">
+					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
+					<a class="btnView" href="">Посмотреть</a>
+				</div>
+			</div>
+		</li>
+
+		<li class="bListingItem">
+			<div class="bListingItem__eInner">
+				<div class="bSimplyDesc">
+					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок</p>
+					<ul class="bSimplyDescStikers">
+						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
+
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+					</ul>
+				</div>
+
+				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs09.enter.ru/1/1/500/75/167449.jpg" /></a>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPriceOld"><strong class="bDecor">8 592</strong> <span class="rubl">p</span></span>
+					<span class="bAvailible">Только в магазинах</span>
+				</div>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPrice"><strong>8 592</strong> <span class="rubl">p</span></span>
+					<span class="bOptions"><span class="bDecor">Варианты</span></span>
+				</div>
+
+				<div class="bOptionsSection">
+					<i class="bCorner"></i>
+					<i class="bCornerDark"></i>
+
+					<ul class="bOptionsList">
+						<li class="bOptionsList__eItem">Цвет обивки</li>
+						<li class="bOptionsList__eItem">Наличие подъемного механизма</li>
+					</ul>
+				</div>
+
+				<div class="bBtnLine clearfix">
+					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
+					<a class="btnView" href="">Посмотреть</a>
+				</div>
+			</div>
+		</li>
+
+		<li class="bListingItem">
+			<div class="bListingItem__eInner">
+				<div class="bSimplyDesc">
+					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+				</div>
+
+				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs03.enter.ru/1/1/500/f3/207661.jpg" /></a>
+
+				<div class="bPriceLine clearfix">
+					<span class="bAvailible">Только в магазинах</span>
+				</div>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPrice"><strong>8 592</strong> <span class="rubl">p</span></span>
+					<span class="bOptions"><span class="bDecor">Варианты</span></span>
+				</div>
+
+				<div class="bOptionsSection">
+					<i class="bCorner"></i>
+					<i class="bCornerDark"></i>
+
+					<ul class="bOptionsList">
+						<li class="bOptionsList__eItem">Цвет обивки</li>
+						<li class="bOptionsList__eItem">Наличие подъемного механизма</li>
+					</ul>
+				</div>
+
+				<div class="bBtnLine clearfix">
+					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
+					<a class="btnView" href="">Посмотреть</a>
+				</div>
+			</div>
+		</li>
+
+		<li class="bListingItem">
+			<div class="bListingItem__eInner">
+				<div class="bSimplyDesc">
+					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<ul class="bSimplyDescStikers">
+						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
+
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+					</ul>
+				</div>
+
+				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs03.enter.ru/1/1/500/f3/207661.jpg" /></a>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPriceOld"><strong class="bDecor">8 592</strong> <span class="rubl">p</span></span>
+				</div>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPrice"><strong>8 592</strong> <span class="rubl">p</span></span>
+				</div>
+
+				<div class="bBtnLine clearfix">
+					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
+					<a class="btnView" href="">Посмотреть</a>
+				</div>
+			</div>
+		</li>
+
+		<li class="bListingItem mLast">
+			<div class="bListingItem__eInner">
+				<div class="bSimplyDesc">
+					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<ul class="bSimplyDescStikers">
+						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
+
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+					</ul>
+				</div>
+
+				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs03.enter.ru/1/1/500/f3/207661.jpg" /></a>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPriceOld"><strong class="bDecor">8 592</strong> <span class="rubl">p</span></span>
+				</div>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPrice"><strong>8 592</strong> <span class="rubl">p</span></span>
+				</div>
+
+				<div class="bBtnLine clearfix">
+					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
+					<a class="btnView" href="">Посмотреть</a>
+				</div>
+			</div>
+		</li>
+
+		<li class="bListingItem">
+			<div class="bListingItem__eInner">
+				<div class="bSimplyDesc">
+					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<ul class="bSimplyDescStikers">
+						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
+
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+					</ul>
+				</div>
+
+				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs03.enter.ru/1/1/500/f3/207661.jpg" /></a>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPriceOld"><strong class="bDecor">8 592</strong> <span class="rubl">p</span></span>
+					<span class="bAvailible">Только в магазинах</span>
+				</div>
+
+				<div class="bPriceLine clearfix">
+					<span class="bPrice"><strong>8 592</strong> <span class="rubl">p</span></span>
+					<span class="bOptions"><span class="bDecor">Варианты</span></span>
+				</div>
+
+				<div class="bOptionsSection">
+					<i class="bCorner"></i>
+					<i class="bCornerDark"></i>
+
+					<ul class="bOptionsList">
+						<li class="bOptionsList__eItem">Цвет обивки</li>
+						<li class="bOptionsList__eItem">Наличие подъемного механизма</li>
+					</ul>
+				</div>
+
+				<div class="bBtnLine clearfix">
+					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
+					<a class="btnView" href="">Посмотреть</a>
+				</div>
+			</div>
+		</li>
+	</ul>
+
 	<div class="bSortingLine clearfix">
 		<ul class="bSortingList mPagerBottom">
 			<li class="bSortingList__eItem mTitle">Страницы</li>

@@ -10023,7 +10023,6 @@
     text-align: center;
     color: #ffffff;
     border: 1px solid #fb9c00;
-    border: 1px solid #fb9c00;
     font-size: 18px;
     line-height: 35px;
   }
@@ -11905,13 +11904,180 @@
     background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
     filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
-    border: 1px solid #c7c7c7;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     -webkit-box-shadow: 1px 1px 3px #c7c7c7;
     -moz-box-shadow: 1px 1px 3px #c7c7c7;
     box-shadow: 1px 1px 3px #c7c7c7;
+    border: 1px solid #c7c7c7;
+  }
+  .bListing .bListingItem {
+    position: relative;
+    float: left;
+    width: 210px;
+    height: 275px;
+    margin: 0 30px 50px 0;
+  }
+  .bListing .bListingItem.mLast {
+    margin-right: 0;
+  }
+  .bListing .bListingItem__eInner {
+    position: relative;
+    z-index: 5;
+    width: 198px;
+    padding: 10px;
+    border: 1px solid #fff;
+  }
+  .bListing .bListingItem:hover .bListingItem__eInner {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 2px 5px #c7c7c7;
+    -moz-box-shadow: 0 2px 5px #c7c7c7;
+    box-shadow: 0 2px 5px #c7c7c7;
+    border: 1px solid #929292;
+    background: #ffffff;
+  }
+  .bListing .bListingItem:hover .bOptionsSection,
+  .bListing .bListingItem:hover .bBtnLine {
+    display: block;
+  }
+  .bListing .bListingItem:hover .bSimplyDescStikers {
+    opacity: 0.3;
+  }
+  .bListing .bSimplyDesc {
+    position: absolute;
+    z-index: 2;
+    top: 10px;
+    left: 10px;
+    width: 200px;
+    padding: 0 0 5px;
+    background: url('/css/bCatalog/img/bSimplyDesc.png') repeat 0 0;
+  }
+  .bListing .bSimplyDesc__eText {
+    margin: 0;
+  }
+  .bListing .bSimplyDescStikers {
+    margin: 15px 0 0;
+  }
+  .bListing .bSimplyDescStikers__eItem {
+    float: right;
+    margin-right: 5px;
+  }
+  .bListing .bSimplyDescStikers__eItem.mLeftStiker {
+    float: left;
+  }
+  .bListing .bProductImg {
+    display: block;
+    width: 200px;
+    height: 200px;
+    margin: 25px 0 15px;
+  }
+  .bListing .bProductImg__eImg {
+    width: 200px;
+    height: 200px;
+  }
+  .bListing .bPriceLine .bPriceOld {
+    color: #919291;
+    font-size: 14px;
+  }
+  .bListing .bPriceLine .bPriceOld .bDecor {
+    text-decoration: line-through;
+    font-weight: normal;
+  }
+  .bListing .bPriceLine .bAvailible {
+    float: right;
+    color: #919291;
+  }
+  .bListing .bPriceLine .bPrice {
+    font-size: 20px;
+  }
+  .bListing .bPriceLine .bOptions {
+    float: right;
+    margin: 4px 0 0;
+    padding: 0 0 0 27px;
+    background: url('/css/bCatalog/img/bOptions.png') no-repeat 0 0;
+  }
+  .bListing .bPriceLine .bOptions .bDecor {
+    border-bottom: 1px dotted;
+  }
+  .bListing .bOptionsSection {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    position: relative;
+    display: none;
+    margin: 12px 0 0;
+    padding: 5px;
+    border: 1px solid #e6e6e6;
+    background: #f6f6f6;
+  }
+  .bListing .bOptionsSection .bCorner {
+    position: absolute;
+    z-index: 2;
+    top: -10px;
+    right: 29px;
+    display: block;
+    width: 0;
+    height: 0;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #f6f6f6;
+    border-left: 10px solid transparent;
+  }
+  .bListing .bOptionsSection .bCornerDark {
+    position: absolute;
+    top: -11px;
+    right: 28px;
+    display: block;
+    width: 0;
+    height: 0;
+    border-right: 11px solid transparent;
+    border-bottom: 11px solid #e6e6e6;
+    border-left: 11px solid transparent;
+  }
+  .bListing .bOptionsList__eItem {
+    margin: 0 0 0 18px;
+    list-style-type: disc;
+  }
+  .bListing .bBtnLine {
+    display: none;
+    margin: 10px 0 0;
+  }
+  .bListing .bBtnLine .btnBuy {
+    float: left;
+    width: 70px;
+    height: 25px;
+  }
+  .bListing .bBtnLine .btnBuy__eLink {
+    width: 79px;
+    height: 25px;
+    font-size: 13px;
+    line-height: 25px;
+  }
+  .bListing .bBtnLine .btnView {
+    background: #e5e5e5;
+    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    display: block;
+    float: right;
+    width: 90px;
+    height: 25px;
+    text-align: center;
+    border: 1px solid #f5f5f5;
+    font-size: 13px;
+    line-height: 25px;
   }
 }
 @media all {
