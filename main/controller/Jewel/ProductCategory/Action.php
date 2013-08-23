@@ -101,7 +101,7 @@ class Action extends \Controller\ProductCategory\Action {
         });
 
         // выполнение 3-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['long']);
+        $client->execute();
 
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
