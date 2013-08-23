@@ -30,6 +30,11 @@ class NotificationAction {
                 throw new \Exception('Не передан email для подписки');
             }
 
+            $emailValidator = new \Validator\Email();
+            if (!$emailValidator->isValid($email)) {
+                throw new \Exception('Некорректный email');
+            }
+
             $params = [
                 'email'      => $email,
                 'geo_id'     => $region->getId(),
