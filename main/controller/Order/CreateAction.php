@@ -44,6 +44,8 @@ class CreateAction {
                 throw new \Exception(sprintf('Запрос не содержит параметра %s %s', 'order', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
             }
 
+            \App::logger()->info(['request.order' => $request->get('order')], ['order']);
+
             // обновление формы из параметров запроса
             $form->fromArray($request->get('order'));
             // валидация формы
@@ -248,7 +250,7 @@ class CreateAction {
 
             // данные для самовывоза [self, now]
             if (in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_SELF, \Model\DeliveryType\Entity::TYPE_NOW])) {
-                if ($orderPart->getPointId() && array_key_exists($orderPart->getPointId(), $shopsById)) {
+                if ($orderPart->getPointId()) {
                     $orderData['shop_id'] = $orderPart->getPointId();
                     $orderData['subway_id'] = null;
                 } else {
