@@ -317,57 +317,43 @@ window.ANALYTICS = {
         if (ad_data) {
 
             if (ad_data.ad_data) {
-
+                /**
+                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
+                 */
                 if (ad_data.ad_data.ad_category) {
-                    var ad_category = ad_data.ad_data.ad_category;
-                    console.log('### ad_category');
-                    console.log(ad_category);
+                    window.ad_category = ad_data.ad_data.ad_category;
                 }
 
                 if (ad_data.ad_data.ad_product) {
-                    var ad_product = ad_data.ad_data.ad_product;
-                    console.log('### ad_product');
-                    console.log(ad_product);
+                    window.ad_product = ad_data.ad_data.ad_product;
                 }
 
                 if (ad_data.ad_data.ad_products) {
-                    ad_data.ad_data.ad_products.url = document.location;
-                    var ad_products = ad_data.ad_data.ad_products;
-                    console.log('### ad_products');
-                    console.log(ad_products);
+                    window.ad_products = ad_data.ad_data.ad_products;
                 }
 
                 if (ad_data.ad_data.ad_order) {
-                    var ad_order = ad_data.ad_data.ad_order;
-                    console.log('### ad_order');
-                    console.log(ad_order);
+                    window.ad_order = ad_data.ad_data.ad_order;
                 }
 
                 if (ad_data.ad_data.ad_amount) {
-                    var ad_amount = ad_data.ad_data.ad_amount;
-                    console.log('### ad_amount');
-                    console.log(ad_amount);
-
+                    window.ad_amount = ad_data.ad_data.ad_amount;
                 }
 
             }
 
             if (ad_data.pushData) {
                 window._ad.push(ad_data.pushData);
-                console.log('### ad_data.pushData');
-                console.log(ad_data.pushData);
             }
         }
 
-
-
-        (function () {
+        (function(d){
             var s=document.createElement("script");
             s.async=true;
-            s.src=(document.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
-            var a=document.getElementsByTagName("script")[0]
+            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
+            var a=d.getElementsByTagName("script")[0];
             a.parentNode.insertBefore(s, a);
-        })()
+        }(document));
     },
 
     marketgidProd : function() {

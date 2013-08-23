@@ -9,6 +9,9 @@ class Admitad
     private $returnData;
 
 
+    /**
+     * @param $routeName  =  \App::request()->attributes->get('route')
+     */
     public function __construct($routeName)
     {
         $this->routeName = $routeName;
@@ -18,9 +21,10 @@ class Admitad
     }
 
 
+
     /**
      * @param array $ad_data
-     * @return mixed
+     * @return $this->$returnData
      */
     public function toSend($ad_data = [])
     {
@@ -30,17 +34,14 @@ class Admitad
         $data['code'] = $this->code;
         $data['level'] = $this->level;
 
-        /*print '<pre>';
-        print_r($this->returnData); // for debug
-        print '</pre>';*/
         return $this->returnData;
     }
 
 
 
     /**
-     * @param $category
-     * @return mixed
+     * @param \Model\Product\Category\Entity $category
+     * @return $this->$returnData
      */
     public function category($category) {
         $this->level = 1;
@@ -55,8 +56,8 @@ class Admitad
 
 
     /**
-     * @param $product
-     * @return mixed
+     * @param \Model\Product\Entity $product
+     * @return $this->$returnData
      */
     public function product($product)
     {
@@ -64,14 +65,11 @@ class Admitad
         $ad_data = [];
 
         if ($product instanceof \Model\Product\Entity) {
-            print '</pre>';
-            print_r($product->getPath());
-            print '</pre>';
             $ad_data['ad_product'] = [
                 'id' => $product->getId(),
                 "vendor" => $product->getBrand()->getName(),
                 "price" => $product->getPrice(),
-                "url" => $product->getPath(),
+                "url" => \App::router()->generate('product', ['productPath' => $product->getPath()], true),
                 "picture" => $product->getImageUrl(3),
                 "name" => $product->getName(),
                 "category" => $product->getMainCategory()->getId(),
@@ -84,19 +82,22 @@ class Admitad
 
 
     /**
-     * @param $cartProductsById
-     * @return mixed
+     * @param \Model\Cart\Product\Entity[] $cartProductsById
+     * @return $this->$returnData
      */
     public function cart($cartProductsById)
     {
         $this->level = 3;
         $ad_data = [];
-        if ($cartProductsById instanceof \Model\Cart\Product\Entity) {
-            $ad_data['ad_products'] = [
-                'id' => $cartProductsById->getId(),
-                'number' => $cartProductsById->getQuantity(),
+        $ad_data['ad_products'] = [];
+        foreach ($cartProductsById as $cartProd) {
+            if (! ($cartProd instanceof \Model\Cart\Product\Entity) ) continue;
+            $ad_data['ad_products'][] = [
+                'id' => $cartProd->getId(),
+                'number' => $cartProd->getQuantity(),
             ];
         }
+
         return $this->toSend($ad_data);
     }
 
@@ -104,37 +105,31 @@ class Admitad
 
     /**
      * @param \Model\Order\Entity[] $orders
-     * @return mixed
+     * @return $this->$returnData
      */
     public function ordercomplete($orders)
     {
         $this->level = 4;
         $ad_data = [];
 
-        if ( is_array($orders) and !empty($orders) ) {
-            $orderSum = 0;
-            foreach ($orders as $order) {
+        $orderSum = 0;
+        foreach ($orders as $order) {
+            if (!($order instanceof \Model\Order\Entity)) continue;
+            $orderSum += $order->getPaySum();
+            $ad_data['ad_order'] = $order->getNumber();
+            $ad_data['items'] = [];
+            foreach ($order->getProduct() as $prod) {
+                $ad_data['ad_products'][] = [
+                    //'id' => $prod->getArticle(), // несущуствующий метод! // see comment to task SITE-1572
+                    'id' => $prod->getId(),
+                    'number' => $prod->getQuantity(),
+                    //'price' => $prod->getPrice(),
+                ];
+            } // end of foreach (products)
 
-                $orderSum += $order->getPaySum();
-                if ( !($order instanceof \Model\Order\Entity) ) {
-                    continue;
-                }
-                $ad_data['ad_order'] = $order->getNumber();
-                $ad_data['items'] = [];
-                foreach ($order->getProduct() as $prod) {
-                    $ad_data['items'][] = [
-                        //'id' => $prod->getArticle(), // несущуствующий метод! // see comment to task SITE-1572
-                        'id' => $prod->getId(),
-                        'number' => $prod->getQuantity(),
-                        //'price' => $prod->getPrice(),
-                    ];
-                } // end of foreach (products)
+        } // end of foreach ($orders)
 
-            } // end of foreach ($orders)
-
-            if ($orderSum) $ad_data['ad_amount'] = $orderSum;
-
-        }
+        if ($orderSum) $ad_data['ad_amount'] = $orderSum;
 
         return $this->toSend($ad_data);
     }
