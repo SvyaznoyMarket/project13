@@ -121,6 +121,39 @@ class IndexAction {
         $useLens = true;
         if ( isset($catalogJson['use_lens']) ) $useLens = (bool) $catalogJson['use_lens'];
 
+
+
+        // Если набор, то получим $productLine
+        $productLine = $product->getLine();
+
+        $mainProduct = null;
+        $line = null;
+        $parts = [];
+
+        if ( $productLine instanceof \Model\Product\Line\Entity ) {
+            // Если набор, то получаем главный продукт
+            $productRepository = \RepositoryManager::product();
+            $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
+            $mainProduct = $productRepository->getEntityById($line->getMainProductId());
+
+            // Запрашиваю составные части набора
+            if ( (bool)$mainProduct->getKit() ) {
+                $productRepository->setEntityClass('\Model\Product\CompactEntity');
+                $partId = [];
+                foreach ($mainProduct->getKit() as $part) {
+                    $partId[] = $part->getId();
+                }
+                try {
+                    $parts = $productRepository->getCollectionById($partId);
+                } catch (\Exception $e) {
+                    \App::exception()->add($e);
+                    \App::logger()->error($e);
+                }
+            }
+        }
+
+
+
         /*
         if ($categoryClass) {
             $controller = '\\Controller\\'.ucfirst($categoryClass).'\\Product\\IndexAction';
@@ -278,6 +311,9 @@ class IndexAction {
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactorTop', $trustfactorTop);
         $page->setParam('trustfactorRight', $trustfactorRight);
+        $page->setParam('mainProduct', $mainProduct);
+        $page->setParam('parts', $parts);
+        $page->setParam('line', $line);
 
         return new \Http\Response($page->show());
     }
