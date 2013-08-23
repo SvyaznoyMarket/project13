@@ -962,8 +962,8 @@ $(document).ready(function(){
 			checkInputs(e);
 		});
 
-		firstNameInput.bind('keyup',function(){
-			checkInputs();
+		firstNameInput.bind('keyup',function(e){
+			checkInputs(e);
 		});
 	}());
 	
