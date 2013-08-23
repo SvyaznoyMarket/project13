@@ -114,6 +114,9 @@
 		console.info('Созданные блоки:');
 		console.log(global.OrderModel.createdBox);
 
+		// выбираем URL для проверки купонов - первый видимый купон
+		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
+
 		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
 		}
@@ -192,15 +195,19 @@
 				node.find('.bSaleList__eItem[data-type="'+unwrapVal[i].type+'"]').addClass('hidden');
 			}
 
-			if ( !$('.bSaleList__eItem.hidden').length ) {
-				fieldNode.removeAttr('disabled');
-				buttonNode.removeAttr('disabled').removeClass('mDisabled');
-				emptyBlock.hide();
-			}
-			else {
+			if ( $('.bSaleList__eItem.hidden').length === $('.bSaleList__eItem').length ) {
+				// если все скидки применены
+				
 				fieldNode.attr('disabled', 'disabled');
 				buttonNode.attr('disabled', 'disabled').addClass('mDisabled');
 				emptyBlock.show();
+			}
+			else {
+				// не все скидки применены
+				
+				fieldNode.removeAttr('disabled');
+				buttonNode.removeAttr('disabled').removeClass('mDisabled');
+				emptyBlock.hide();
 			}
 		}
 	};
@@ -286,7 +293,7 @@
 		/**
 		 * URL по которому нужно проверять карту
 		 */
-		couponUrl: ko.observable($('.bSaleData .jsCustomRadio').eq(0).val()),
+		couponUrl: ko.observable(),
 
 		/**
 		 * Ошибки сертификата
