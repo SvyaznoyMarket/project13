@@ -316,7 +316,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$('#forgot-pwd-trigger').on('click', function() {
+	$('#auth-block').on('click', '#forgot-pwd-trigger', function() {
 		$('#reset-pwd-form').show();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').hide();
