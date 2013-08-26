@@ -87,6 +87,20 @@ class DeliveryAction {
                 throw $exception;
             }
 
+            if (\App::config()->blackcard['enabled'] && array_key_exists('blackcard_list', $result)) {
+                foreach ($result['blackcard_list'] as $blackcardItem) {
+                    $blackcardItem = array_merge([
+                        'number'       => null,
+                        'name'         => 'Карта',
+                        'discount_sum' => 0,
+                    ], (array)$blackcardItem);
+
+                    $blackcard = new \Model\Cart\Blackcard\Entity($blackcardItem);
+                    $cart->clearBlackcards();
+                    $cart->setBlackcard($blackcard);
+                }
+            }
+
             // типы доставок
             $deliveryTypeData = [];
             foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {

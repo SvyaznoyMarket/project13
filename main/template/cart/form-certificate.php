@@ -68,7 +68,7 @@ if (!isset($isForm)) $isForm = true;
             <a class="ml90 underline bold db pt20" href="/coupons">Условия применения купонов</a>
         <? endif ?>
 
-        <div class="bF1SaleCard_eForm pt20 ml90 m2Coupon" style="display:block">
+        <div class="bF1SaleCard_eForm pt20 ml90 m2Coupon" style="display:none">
             <div class="bF1SaleCard_eRadiogroup">
                 <label class="bF1SaleCard_eLabel"><input id="cartCertificateAll" class="bF1SaleCard_eRadio" name="coupon" type="radio" checked="checked" data-url="<?= $page->url('cart.coupon.apply') ?>" /> Код скидки на товары</label>
                 <!--<label class="bF1SaleCard_eLabel"><input id="cartCertificateF1" class="bF1SaleCard_eRadio" name="coupon" type="radio" data-url="<?//= $page->url('cart.certificate.apply') ?>" /> Скидки на услуги F1 по карте «Под защитой F1»</label>-->
