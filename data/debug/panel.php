@@ -93,10 +93,11 @@ if (!\App::request()->isXmlHttpRequest()) {
         <br />
 
     <? foreach ($debug->getAll() as $item) { ?>
-        <?
-            $isHidden = mb_strlen(strip_tags($item['value'])) > 40;
-            if ($isHidden) $item['value'] = '<pre>' . $item['value'] . '</pre>';
-        ?>
+    <?
+        if (!is_scalar($item['value'])) continue;
+        $isHidden = mb_strlen(strip_tags($item['value'])) > 40;
+        if ($isHidden) $item['value'] = '<pre>' . $item['value'] . '</pre>';
+    ?>
         <span style="color: #ffffff"><?= $item['name'] ?>:</span>
 
         <? if ($isHidden) { ?>

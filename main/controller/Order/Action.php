@@ -595,10 +595,7 @@ class Action {
             }
         }
 
-        // TODO: удалять из сессии успешный заказ, время создания которого больше 1 часа
-
-        //$paymentUrl = \App::session()->get('paymentUrl');
-        $paymentUrl = $order->getPaymentUrl();
+        $paymentUrl = $order->getPaymentUrl(); // раньше было: $paymentUrl = \App::session()->get('paymentUrl');
 
         // crossss
         if (\App::config()->crossss['enabled']) {
