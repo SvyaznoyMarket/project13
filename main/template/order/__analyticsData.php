@@ -51,6 +51,7 @@ return function(
             $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
             if (!$product) {
                 \App::logger()->error(sprintf('Товар #%s не найден', $orderProduct->getId()), ['order']);
+                continue;
             }
 
             $orderData['products'][] = [
