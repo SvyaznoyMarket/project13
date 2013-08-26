@@ -121,7 +121,7 @@ class CreateAction {
             switch ($e->getCode()) {
                 case 735:
                     \App::exception()->remove($e);
-                    $form->setError('sclub_card_number', 'Неверный код карты Связной-Клуб');
+                    $form->setError('sclub_card_number', 'Неверный код карты &laquo;Связной-Клуб&raquo;');
                     break;
                 case 742:
                     \App::exception()->remove($e);
