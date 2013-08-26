@@ -47,11 +47,11 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 ?>
 
 <? if ($hasFurnitureConstructor): ?>
-    <? require __DIR__ . '/show/_furniture.php' ?>
+    <? require __DIR__ . '/show/_furniture-new.php' ?>
 <? elseif ($categoryClass && file_exists(__DIR__ . '/show/_' . $categoryClass . '.php')): ?>
     <? require __DIR__ . '/show/_' . $categoryClass . '.php' ?>
 <? else: ?>
-    <? require __DIR__ . '/show/_default.php' ?>
+    <? require __DIR__ . '/show/_default-new.php' ?>
 <? endif ?>
 
 <? if ($product->getIsBuyable()): ?>
