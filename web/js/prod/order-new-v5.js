@@ -1472,6 +1472,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		console.info('Созданные блоки:');
 		console.log(global.OrderModel.createdBox);
 
+		// выбираем URL для проверки купонов - первый видимый купон
+		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
+
 		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
 		}
@@ -1550,15 +1553,19 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				node.find('.bSaleList__eItem[data-type="'+unwrapVal[i].type+'"]').addClass('hidden');
 			}
 
-			if ( !$('.bSaleList__eItem.hidden').length ) {
-				fieldNode.removeAttr('disabled');
-				buttonNode.removeAttr('disabled').removeClass('mDisabled');
-				emptyBlock.hide();
-			}
-			else {
+			if ( $('.bSaleList__eItem.hidden').length === $('.bSaleList__eItem').length ) {
+				// если все скидки применены
+				
 				fieldNode.attr('disabled', 'disabled');
 				buttonNode.attr('disabled', 'disabled').addClass('mDisabled');
 				emptyBlock.show();
+			}
+			else {
+				// не все скидки применены
+				
+				fieldNode.removeAttr('disabled');
+				buttonNode.removeAttr('disabled').removeClass('mDisabled');
+				emptyBlock.hide();
 			}
 		}
 	};
@@ -1644,7 +1651,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		/**
 		 * URL по которому нужно проверять карту
 		 */
-		couponUrl: ko.observable($('.bSaleData .jsCustomRadio').eq(0).val()),
+		couponUrl: ko.observable(),
 
 		/**
 		 * Ошибки сертификата
@@ -2018,7 +2025,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			// Cоздаем массив продуктов содержащих ошибки
 			for ( product in res.products ) {
-				if ( res.products[product].error.code ) {
+				if ( res.products[product].error && res.products[product].error.code ) {
 					productsWithError.push(res.products[product]);
 				}
 			}
@@ -2045,7 +2052,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			errorCatcher(productsWithError.length - 1, function() {
 				console.warn('1 этап закончен');
-				document.location.href = res.redirect;
+				if ( res.redirect ) {
+					document.location.href = res.redirect;
+				}
 			});
 		},
 

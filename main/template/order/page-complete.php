@@ -73,7 +73,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 <? else: ?>
     <? if(!empty($form)) { ?>
         <?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
-        <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $form]) ?>
+        <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $form, 'productsById' => $productsById]) ?>
     <? } ?>
     <div class="mt32" style="text-align: center">
         <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
