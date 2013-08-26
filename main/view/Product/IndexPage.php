@@ -90,10 +90,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        //return $this->render('product/page-index', $this->params);
-        $return  = $this->render('product/page-index-new', $this->params);
-        $return .= $this->render('partner-counter/_flocktory_popup', $this->params);
-        return $return;
+        return $this->render('product/page-index', $this->params) . PHP_EOL . $this->render('partner-counter/_flocktory_popup', $this->params);
     }
 
     public function slotBodyDataAttribute() {
