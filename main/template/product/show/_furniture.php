@@ -1,80 +1,138 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
+ * @var $page              \View\Product\IndexPage
+ * @var $product           \Model\Product\Entity
+ * @var $productVideos     \Model\Product\Video\Entity[]
+ * @var $user              \Session\User
+ * @var $accessories       \Model\Product\Entity[]
+ * @var $accessoryCategory \Model\Product\Category\Entity[]
+ * @var $related           \Model\Product\Entity[]
+ * @var $kit               \Model\Product\Entity[]
+ * @var $additionalData    array
+ * @var $shopStates        \Model\Product\ShopState\Entity[]
+ * @var $creditData        array
  */
 ?>
 
-<div class="bProductCard__eArticle clearfix">
-	<span>Артикул: <span itemprop="productID"><?= $product->getArticle() ?></span></span>
+<div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
+
+<div class="bProductSectionLeftCol">
+        <div id="planner3D" class="bPlanner3D fl" data-cart-sum-url="<?= $page->url('cart.sum') ?>" data-product="<?= $page->json(['id' => $product->getId()]) ?>"></div>
+
+        <?= $helper->render('product/__likeButtons', [] ); // Insert LikeButtons (www.addthis.com) ?>
+
+        <div class="bDescriptionProduct">
+            <?= $product->getDescription() ?>
+        </div>
+
+        <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
+            <?= $helper->render('product/__slider', [
+                'type'           => 'accessorize',
+                'title'          => 'Аксессуары',
+                'products'       => array_values($accessories),
+                'categories'     => $accessoryCategory,
+                'count'          => count($product->getAccessoryId()),
+                'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
+                'page'           => 1,
+                //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
+                'gaEvent'        => 'Accessorize',
+                'additionalData' => $additionalData,
+            ]) ?>
+        <? endif ?>
+
+        <? if (\App::config()->smartengine['pull']): ?>
+            <?= $helper->render('product/__slider', [
+                'type'     => 'also_viewed',
+                'title'    => 'С этим товаром также смотрят',
+                'products' => [],
+                'count'    => null,
+                'limit'    => \App::config()->product['itemsInSlider'],
+                'page'     => 1,
+                'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
+            ]) ?>
+        <? endif ?>
+
+        <? if ((bool)$related && \App::config()->product['showRelated']): ?>
+            <?= $helper->render('product/__slider', [
+                'type'           => 'also_bought',
+                'title'          => 'С этим товаром также покупают',
+                'products'       => array_values($related),
+                'count'          => count($product->getRelatedId()),
+                'limit'          => \App::config()->product['itemsInSlider'],
+                'page'           => 1,
+                //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
+                'additionalData' => $additionalData,
+            ]) ?>
+        <? endif ?>
+
+        <?= $helper->render('product/__groupedProperty', ['product' => $product]) // Характеристики ?>
+
+        <div class="bReviews">
+            <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
+            <h3 class="bHeadSection" id="bHeadSectionReviews">Обзоры и отзывы</h3>
+
+            <div class="bReviewsSummary clearfix">
+                <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
+            </div>
+
+        <? if (!empty($reviewsData['review_list'])) { ?>
+            <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+                <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
+                <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
+                    <? } ?>
+                    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
+                </div>
+                <? endif ?>
+            </div>
+
+            <? if (\App::config()->smartengine['pull']): ?>
+                <?= $helper->render('product/__slider', [
+                    'type'     => 'similar',
+                    'title'    => 'Похожие товары',
+                    'products' => [],
+                    'count'    => null,
+                    'limit'    => \App::config()->product['itemsInSlider'],
+                    'page'     => 1,
+                    'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
+                ]) ?>
+            <? endif ?>
+</div><!--/left section -->
+
+<div class="bProductSectionRightCol">
+    <div class="bWidgetBuy mWidget">
+        <div class="bStoreDesc">
+            <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
+
+            <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
+
+            <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
+
+            <?//= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
+        </div>
+
+        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+
+        <div id="coupeError" class="red" style="display:none"></div>
+
+        <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
+
+        <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
+    </div><!--/widget delivery -->
+
+    <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
+
+    <?= $helper->render('product/__trustfactorRight', ['trustfactorRight' => $trustfactorRight]) ?>
+</div><!--/right section -->
+
+<div class="bBottomBuy clearfix">
+    <div class="bBottomBuy__eHead">
+        <div class="bBottomBuy__eSubtitle"><?= $product->getType()->getName() ?></div>
+        <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
+    </div>
+
+    <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+
+    <div class="bPrice"><strong class="jsPrice"><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 </div>
 
-<div id="planner3D" class="bPlanner3D fl" data-cart-sum-url="<?= $page->url('cart.sum') ?>" data-product="<?= $page->json(['id' => $product->getId()]) ?>"></div>
-
-<div class="bProductCardRightCol fr">
-	<div class="bProductCardRightCol__eInner">
-		<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-			<? if ($product->getIsBuyable()): ?>
-				<link itemprop="availability" href="http://schema.org/InStock" />
-				<div class="pb5"><strong class="orange">Есть в наличии</strong></div>
-			<? elseif (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-				<link itemprop="availability" href="http://schema.org/InStoreOnly" />
-			<? else: ?>
-				<link itemprop="availability" href="http://schema.org/OutOfStock" />
-			<? endif ?>
-			
-			<? if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
-	            <div style="text-decoration: line-through; font: normal 18px verdana; letter-spacing: -0.05em; color: #6a6a6a;"><span class="price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
-	        <? elseif($showAveragePrice): ?>
-	            <div class="mOurGray">
-	                Средняя цена в магазинах города*<br/><div class='mOurGray mIco'><span class="price"><?= $page->helper->formatPrice($product->getPriceAverage()) ?></span> <span class="rubl">p</span> &nbsp;</div>
-	            </div>
-	            <div class="clear"></div>
-	            <div class="clear mOur pt10 <? if ($product->hasSaleLabel()) echo 'red'; ?>">Наша цена</div>
-	        <? endif ?>
-			<div class="mb10 <? if ($product->hasSaleLabel()) echo 'red'; ?>">
-				<span class="bProductCardRightCol__ePrice" itemprop="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <meta itemprop="priceCurrency" content="RUB"><span class="bProductCardRightCol__eCurrency rubl">p</span>
-			</div>
-		</div>
-
-		<? if ($product->getIsBuyable()): ?>
-			<? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
-				<div class="bProductCardRightCol__eCreditBox creditbox">
-					<div class="creditboxinner">
-						<label class="bigcheck" for="creditinput"><b></b>
-							<span class="bProductCardRightCol__eCreditBox-Take">Беру в кредит</span>
-							<input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/>
-						</label>
-						<div class="bProductCardRightCol__eCreditBox-Sum">от <span class=""><b class="price"></b> <b class="rubl">p</b></span> в месяц</div>
-					</div>
-				</div>
-			<? endif; ?>
-
-			<? if ($dataForCredit['creditIsAllowed']) : ?>
-				<input data-model="<?= $page->escape($dataForCredit['creditData']) ?>" id="dc_buy_on_credit_<?= $product->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
-			<? endif; ?>
-
-		<? elseif ($user->getRegion()->getHasTransportCompany()): ?>
-			<? if (\App::config()->product['globalListEnabled'] && (bool)$product->getNearestCity()): ?>
-				<?= $page->render('product/_nearestCity', ['product' => $product]) ?>
-			<? else: ?>
-				<p>Этот товар мы доставляем только в регионах нашего присутствия</p>
-			<? endif ?>
-		<?php endif ?>
-
-		<div class="goodsbarbig mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-			<? if ($product->getIsBuyable()): ?>
-				<!-- <div class='bCountSet'>
-					<a class="bCountSet__eM <? if ($user->getCart()->hasProduct($product->getId())) echo 'disabled'; ?>" href="#">-</a>
-					<span><?= $user->getCart()->hasProduct($product->getId()) ? $user->getCart()->getQuantityByProduct($product->getId()) : 1 ?></span>
-					<a class="bCountSet__eP <? if ($user->getCart()->hasProduct($product->getId())) echo 'disabled'; ?>" href="#">+</a> шт.
-				</div> -->
-			<?php endif ?>
-			<?= $page->render('cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'url' => $page->url('cart.product.setList')]) ?>
-			<div id="coupeError" class="red" style="display:none"></div>
-		</div>
-	</div>
-	<? if ($product->getIsBuyable()): ?>
-		<?= $page->render('service/_listByProduct', ['product' => $product]) ?>
-		<?= $page->render('warranty/_listByProduct', ['product' => $product]) ?>
-	<? endif ?>
-</div>
+<div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
