@@ -10,13 +10,16 @@
 
 <div class="bCatalog">
 
+	<!-- Хлебные крохи -->
 	<ul class="bBreadcrumbs clearfix">
 		<li class="bBreadcrumbs__eItem"><a class="bBreadcrumbs__eLink" href="">Товары на каждый день</a></li>
 		<li class="bBreadcrumbs__eItem mLast"><a class="bBreadcrumbs__eLink" href="">Товары для дома</a></li>
 	</ul>
+	<!-- /Хлебные крохи -->
 
 	<h1  class="bTitlePage">Товары для дома</h1>
 
+	<!-- Категории товаров -->
 	<ul class="bCatalogList clearfix">
 		<li class="bCatalogList__eItem">
 			<a class="bCatalogList__eLink" href="">
@@ -88,11 +91,14 @@
 			</a>
 		</li>
 	</ul>
+	<!-- /Категории товаров -->
  
+ 	<!-- Фильтр товаров -->
 	<div class="bFilter clearfix">
 		<div class="bFilterHead">
 			<a class="bFilterToggle mClose" href=""><span class="bToggleText">Бренды и параметры</span></a>
 
+			<!-- Фильтр по цене -->
 			<div class="bFilterPrice">
 				<span class="bFilterPrice__eTitle">Цена</span>
 				<input class="bFilterPrice__eInput" name="" value="1 000" type="text"  />
@@ -107,7 +113,9 @@
 
 	            <span class="bFilterPrice__eRub rubl">p</span>
 		    </div>
+		    <!-- /Фильтр по цене -->
 
+		    <!-- Фильтр по популярным позициям -->
 			<ul class="bPopularSection">
 				<li class="bPopularSection__eItem mTitle">Популярные бренды</li>
 				<li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Samsung</strong></li>
@@ -116,8 +124,10 @@
 				<li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Dr. Buchman</strong></li>
 				<li class="bPopularSection__eItem"><strong class="bPopularSection__eText"></strong></li>
 			</ul>
+			<!-- /Фильтр по популярным позициям -->
 		</div>
 	</div>
+	<!-- Фильтр товаров -->
 
 	<div class="bFilter clearfix">
 		<div class="bFilterHead">
@@ -139,7 +149,9 @@
 		    </div>
 		</div>
 
+		<!-- Фильтр по выбранным параметрам -->
 		<div class="bFilterCont">
+			<!-- Список названий параметров -->
 			<ul class="bFilterParams">
 				<li class="bFilterParams__eItem mActive"><span class="bParamName">Бренд</span></li>
 				<li class="bFilterParams__eItem"><span class="bParamName">Тип</span></li>
@@ -149,7 +161,9 @@
 				<li class="bFilterParams__eItem"><span class="bParamName">Страна-производитель</span></li>
 				<li class="bFilterParams__eItem"><span class="bParamName">Периодичность использования</span></li>
 			</ul>
+			<!-- /Список названий параметров -->
 
+			<!-- Список значений параметров -->
 			<div class="bFilterValues">
 				<div class="bFilterValuesItem clearfix">
 
@@ -205,8 +219,11 @@
 
 				<div class="bBtnPick clearfix"><a class="bBtnPick__eLink mBtnGrey" href="">Подобрать</a></div>
 			</div>
+			<!-- /Список значений параметров -->
 		</div>
+		<!-- /Фильтр по выбранным параметрам -->
 
+		<!-- Списоки выбранных параметров -->
 		<div class="bFilterFoot">
 			<ul class="bFilterCheckedParams clearfix">
 				<li class="bFilterCheckedParams__eItem mTitle">Цена</li>
@@ -228,9 +245,12 @@
 				<li class="bFilterCheckedParams__eItem mParams mClearAll"><a class="bDelete" href=""><strong class="bParamsName">Очистить все</strong></a></li> <!-- Добаялется только в списке идущем по очереди последним -->
 			</ul>
 		</div>
+		<!-- /Списоки выбранных параметров -->
 	</div>
 
+	<!-- Сортировка товаров на странице -->
 	<div class="bSortingLine clearfix">
+		<!-- Сортировка товаров по параметрам -->
 		<ul class="bSortingList mSorting">
 			<li class="bSortingList__eItem mTitle">Сортировать</li>
 
@@ -240,39 +260,34 @@
 			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">Сначала недорогие</a></li>
 			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">Сначала дорогие</a></li>
 		</ul>
+		<!-- /Сортировка товаров по параметрам -->
 
+		<!-- Выбор варианта отображения списка товаров на странице -->
 		<ul class="bSortingList mViewer">
 			<li class="bSortingList__eItem mTitle">Вид</li>
 
 			<li class="bSortingList__eItem mSortItem mActive"><a class="bSortingList__eLink mTable" href=""><span class="bIco mIcoTable"></span></a></li>
 			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink mLine" href=""><span class="bIco mIcoLine"></span></a></li>
 		</ul>
+		<!-- /Выбор варианта отображения списка товаров на странице -->
 
+		<!-- Выбор вывода товаров на странице страницами/простыней -->
 		<ul class="bSortingList mPager">
 			<li class="bSortingList__eItem mTitle">Страницы</li>
 
 			<li class="bSortingList__eItem mSortItem mActive"><a class="bSortingList__eLink" href="">123</a></li>
 			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">&#8734;</a></li>
 		</ul>
+		<!-- /Выбор вывода товаров на странице страницами/простыней -->
 	</div>
+	<!-- /Сортировка товаров на странице -->
 
-	<script>
-		$(document).ready(function(){
-		    $(".bListingItem").hover(
-		    function(){
-		        $(this).children(".bListingItem__eInner").css('z-index', '10');
-		    },
-
-		    function(){
-		        $(".bListingItem__eInner").css('z-index', '5');
-		    }
-		    );
-		});
-	</script>
-
+	<!-- Листинг товаров -->
 	<ul class="bListing clearfix">
+		<!-- Элемент листинга/продукт -->
 		<li class="bListingItem">
 			<div class="bListingItem__eInner">
+				<!-- Блок с именем продукта и иконками доп. просмотра товара -->
 				<div class="bSimplyDesc">
 					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
 					<ul class="bSimplyDescStikers">
@@ -282,6 +297,7 @@
 						<li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
 					</ul>
 				</div>
+				<!-- /Блок с именем продукта и иконками доп. просмотра товара -->
 
 				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs03.enter.ru/1/1/500/f3/207661.jpg" /></a>
 
@@ -311,6 +327,7 @@
 				</div>
 			</div>
 		</li>
+		<!-- /Элемент листинга/продукт -->
 
 		<li class="bListingItem">
 			<div class="bListingItem__eInner">
@@ -576,6 +593,7 @@
 			</div>
 		</li>
 	</ul>
+	<!-- /Листинг товаров -->
 
 	<div class="bSortingLine mPagerBottom clearfix">
 		<ul class="bSortingList">
