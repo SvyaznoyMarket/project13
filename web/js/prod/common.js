@@ -857,20 +857,21 @@ $(document).ready(function(){
  */
  
  
-$(document).ready(function(){
+$(document).ready(function() {
 
-	(function(){
+	(function() {
 		/*register e-mail check*/
-		if ( !$('#register_username').length ){
+		if ( !$('#register_username').length ) {
 			return false;
 		}
 
-		var chEmail = true; // проверяем ли как e-mail
-		var register = false;
-		var firstNameInput = $('#register_first_name');
-		var mailPhoneInput = $('#register_username');
-		var subscibe = mailPhoneInput.parents('#register-form').find('.bSubscibe');
-		var regBtn = mailPhoneInput.parents('#register-form').find('.bigbutton');
+		var chEmail = true, // проверяем ли как e-mail
+			register = false,
+			firstNameInput = $('#register_first_name'),
+			mailPhoneInput = $('#register_username'),
+			subscibe = mailPhoneInput.parents('#register-form').find('.bSubscibe'),
+			regBtn = mailPhoneInput.parents('#register-form').find('.bigbutton');
+		// end of vars
 
 		subscibe.show();
 
@@ -918,8 +919,8 @@ $(document).ready(function(){
 		 * проверка заполненности инпутов
 		 * @param  {Event} e
 		 */
-		var checkInputs = function(e){
-			if (chEmail){ 
+		var checkInputs = function( e ) {
+			if ( chEmail ) { 
 				// проверяем как e-mail
 				if (	( mailPhoneInput.val().search('@') !== -1 ) && 
 						( firstNameInput.val().length > 0 ) ) {
@@ -958,13 +959,8 @@ $(document).ready(function(){
 			}
 		};
 
-		mailPhoneInput.bind('keyup',function(e){
-			checkInputs(e);
-		});
-
-		firstNameInput.bind('keyup',function(){
-			checkInputs();
-		});
+		mailPhoneInput.bind('keyup', checkInputs);
+		firstNameInput.bind('keyup', checkInputs);
 	}());
 	
 
