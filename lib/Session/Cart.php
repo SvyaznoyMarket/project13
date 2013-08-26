@@ -766,6 +766,7 @@ class Cart {
             }
         }
 
+        /*
         $this->blackcards = [];
         if (array_key_exists('blackcard_list', $response)) {
             foreach ($response['blackcard_list'] as $blackcardData) {
@@ -775,6 +776,7 @@ class Cart {
                 $this->blackcards[$blackcardData['number']] = new \Model\Cart\Blackcard\Entity($blackcardData);
             }
         }
+        */
 
         $this->products = [];
         if (array_key_exists('product_list', $response)) {
