@@ -44,6 +44,7 @@ class Cart {
                 'certificateList' => [],
                 'couponList'      => [],
                 'blackcardList'   => [],
+                'actionData'      => [],
             ]);
             return;
         }
@@ -84,6 +85,12 @@ class Cart {
             $this->storage->set($this->sessionName, $data);
         }
 
+        if (!array_key_exists('actionData', $session[$this->sessionName])) {
+            $data = $this->storage->get($this->sessionName);
+            $data['actionData'] = [];
+            $this->storage->set($this->sessionName, $data);
+        }
+
         // лимит товаров
         $data = $this->storage->get($this->sessionName);
         $productCount = count($data['productList']);
@@ -110,6 +117,7 @@ class Cart {
         $this->certificates = null;
         $this->coupons = null;
         $this->blackcards = null;
+        $this->actions = null;
     }
 
     /**
@@ -617,10 +625,25 @@ class Cart {
     }
 
     /**
+     * @param array $actionData
+     */
+    public function setActionData(array $actionData) {
+        $data = $this->storage->get($this->sessionName);
+        $data['actionData'] = $actionData;
+        $this->actions = $actionData;
+
+        $this->storage->set($this->sessionName, $data);
+    }
+
+    /**
      * @return array
      */
     public function getActionData() {
-        if (null === $this->actions) {
+        $data = $this->storage->get($this->sessionName);
+
+        if (!empty($data['actionData'])) {
+            $this->actions = $data['actionData'];
+        } elseif (null === $this->actions) {
             $this->fill();
         }
 
@@ -745,7 +768,7 @@ class Cart {
         $this->sum = array_key_exists('sum', $response) ? $response['sum'] : 0;
         $this->originalSum = array_key_exists('original_sum', $response) ? $response['original_sum'] : 0;
 
-        if (array_key_exists('action_list', $response)) {
+        if ((null !== $this->actions) && array_key_exists('action_list', $response)) {
             $this->actions = $response['action_list'];
         }
 
