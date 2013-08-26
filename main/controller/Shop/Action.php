@@ -14,19 +14,6 @@ class Action {
 
         // подготовка 1-го пакета запросов
 
-        // запрашиваем пользователя, если он авторизован
-        /*if ($user->getToken()) {
-            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
-                if ((bool)$data) {
-                    \App::user()->setEntity(new \Model\User\Entity($data));
-                }
-            }, function (\Exception $e) {
-                \App::exception()->remove($e);
-                $token = \App::user()->removeToken();
-                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
-            });
-        }*/
-
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
@@ -136,19 +123,6 @@ class Action {
         $user = \App::user();
 
         // подготовка 1-го пакета запросов
-
-        // запрашиваем пользователя, если он авторизован
-        if ($user->getToken()) {
-            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
-                if ((bool)$data) {
-                    \App::user()->setEntity(new \Model\User\Entity($data));
-                }
-            }, function (\Exception $e) {
-                \App::exception()->remove($e);
-                $token = \App::user()->removeToken();
-                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
-            });
-        }
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
