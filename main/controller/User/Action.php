@@ -217,6 +217,8 @@ class Action {
                     \App::exception()->remove($e);
                     switch ($e->getCode()) {
                         case 684:
+                            $form->setError('username', 'Неправильный email');
+                            break;
                         case 686:
                             $form->setError('username', 'Такой пользователь уже зарегистрирован.');
                             break;
