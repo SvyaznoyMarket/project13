@@ -2290,13 +2290,16 @@ $(document).ready(function() {
 					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>');
 					window.docCookies.setItem('subscribed', 1, 157680000, '/');
 
-					if( typeof(_gaq) !== 'undefined' ) {
-						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
-					}
-
 					setTimeout(function() {
 						subPopup.slideUp(300);
 					}, 3000);
+
+					// analytics
+					if ( typeof _gaq !== 'undefined' ) {
+						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
+					}
+
+					subPopup.append('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'/" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
 				});
 
 				return false;
