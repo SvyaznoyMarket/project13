@@ -87,6 +87,20 @@ class DeliveryAction {
                 throw $exception;
             }
 
+            if (\App::config()->blackcard['enabled'] && array_key_exists('blackcard_list', $result)) {
+                foreach ($result['blackcard_list'] as $blackcardItem) {
+                    $blackcardItem = array_merge([
+                        'number'       => null,
+                        'name'         => 'Карта',
+                        'discount_sum' => 0,
+                    ], (array)$blackcardItem);
+
+                    $blackcard = new \Model\Cart\Blackcard\Entity($blackcardItem);
+                    $cart->clearBlackcards();
+                    $cart->setBlackcard($blackcard);
+                }
+            }
+
             // типы доставок
             $deliveryTypeData = [];
             foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
@@ -245,6 +259,16 @@ class DeliveryAction {
                     'longitude'  => (float)$shopItem['coord_long'],
                     'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
                 ];
+            }
+            // сортировка магазинов
+            if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
+                usort($responseData['shops'], function($a, $b) use (&$region) {
+                    if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
+                        return 0;
+                    }
+
+                    return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
+                });
             }
 
             // купоны

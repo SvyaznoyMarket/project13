@@ -95,10 +95,6 @@ $is_showed = [];
 
     <?= $helper->render('product/__likeButtons', [] ); // Insert LikeButtons (www.addthis.com) ?>
 
-    <div class="bDescriptionProduct">
-        <?= $product->getDescription() ?>
-    </div>
-
     <div class="clear"></div>
 
     <? if ( $mainProduct && count($mainProduct->getKit()) ): ?>
@@ -122,6 +118,10 @@ $is_showed = [];
             'additionalData' => $additionalData,
         ]) ?>
     <? endif ?>
+
+    <div class="bDescriptionProduct">
+        <?= $product->getDescription() ?>
+    </div>
 
     <? if (\App::config()->smartengine['pull']): ?>
         <?= $helper->render('product/__slider', [
@@ -196,7 +196,7 @@ $is_showed = [];
 
         <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
 
-        <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
+        <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
     </div><!--/widget delivery -->
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
@@ -210,7 +210,6 @@ $is_showed = [];
 
 <div class="bBottomBuy clearfix">
     <div class="bBottomBuy__eHead">
-        <div class="bBottomBuy__eSubtitle"><?= $product->getType()->getName() ?></div>
         <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
     </div>
 

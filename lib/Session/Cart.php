@@ -497,7 +497,7 @@ class Cart {
      * @param \Model\Cart\Certificate\Entity $certificate
      */
     public function setCertificate(\Model\Cart\Certificate\Entity $certificate) {
-        $this->clearCertificates();
+        $this->clearCertificates(); // возможно активировать только один сертификат
 
         $data = $this->storage->get($this->sessionName);
         $data['certificateList'][] = [
@@ -538,7 +538,7 @@ class Cart {
      * @param \Model\Cart\Coupon\Entity $coupon
      */
     public function setCoupon(\Model\Cart\Coupon\Entity $coupon) {
-        $this->clearCoupons();
+        $this->clearCoupons(); // возможно активировать только один купон
 
         $data = $this->storage->get($this->sessionName);
         $data['couponList'][] = [
@@ -579,7 +579,7 @@ class Cart {
      * @param \Model\Cart\Blackcard\Entity $blackcard
      */
     public function setBlackcard(\Model\Cart\Blackcard\Entity $blackcard) {
-        $this->clearBlackcards();
+        $this->clearBlackcards(); // возможно активировать только одну черную карту
 
         $data = $this->storage->get($this->sessionName);
         $data['blackcardList'][] = [
@@ -766,6 +766,7 @@ class Cart {
             }
         }
 
+        /*
         $this->blackcards = [];
         if (array_key_exists('blackcard_list', $response)) {
             foreach ($response['blackcard_list'] as $blackcardData) {
@@ -775,6 +776,7 @@ class Cart {
                 $this->blackcards[$blackcardData['number']] = new \Model\Cart\Blackcard\Entity($blackcardData);
             }
         }
+        */
 
         $this->products = [];
         if (array_key_exists('product_list', $response)) {

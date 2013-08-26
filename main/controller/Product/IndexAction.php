@@ -90,18 +90,19 @@ class IndexAction {
 
         // трастфакторы
         $trustfactorTop = null;
-        $trustfactorRight = null;
+        $trustfactorMain = null;
+        $trustfactorRight = [];
         $trustfactorExcludeToken = empty($catalogJson['trustfactor_exclude_token']) ? [] : $catalogJson['trustfactor_exclude_token'];
         $excludeTokens = array_intersect($productCategoryTokens, $trustfactorExcludeToken);
         if(empty($excludeTokens)) {
             if(!empty($catalogJson['trustfactor_top'])) $trustfactorTop = $catalogJson['trustfactor_top'];
-            if(!empty($catalogJson['trustfactor_right'])) {
+            if(!empty($catalogJson['trustfactor_main'])) {
                 \App::contentClient()->addQuery(
-                    trim((string)$catalogJson['trustfactor_right']),
+                    trim((string)$catalogJson['trustfactor_main']),
                     [],
-                    function($data) use (&$trustfactorRight) {
+                    function($data) use (&$trustfactorMain) {
                         if (!empty($data['content'])) {
-                            $trustfactorRight = $data['content'];
+                            $trustfactorMain = $data['content'];
                         }
                     },
                     function(\Exception $e) {
@@ -109,6 +110,25 @@ class IndexAction {
                         \App::exception()->add($e);
                     }
                 );
+                \App::contentClient()->execute();
+            }
+            if(!empty($catalogJson['trustfactor_right'])) {
+                if(!is_array($catalogJson['trustfactor_right'])) $catalogJson['trustfactor_right'] = [$catalogJson['trustfactor_right']];
+                foreach ($catalogJson['trustfactor_right'] as $trustfactorRightToken) {
+                    \App::contentClient()->addQuery(
+                        trim((string)$trustfactorRightToken),
+                        [],
+                        function($data) use (&$trustfactorRight) {
+                            if (!empty($data['content'])) {
+                                $trustfactorRight[] = $data['content'];
+                            }
+                        },
+                        function(\Exception $e) {
+                            \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                            \App::exception()->add($e);
+                        }
+                    );
+                }
                 \App::contentClient()->execute();
             }
         }
@@ -310,6 +330,7 @@ class IndexAction {
         $page->setParam('useLens', $useLens);
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactorTop', $trustfactorTop);
+        $page->setParam('trustfactorMain', $trustfactorMain);
         $page->setParam('trustfactorRight', $trustfactorRight);
         $page->setParam('mainProduct', $mainProduct);
         $page->setParam('parts', $parts);
