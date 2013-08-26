@@ -294,6 +294,14 @@ window.ANALYTICS = {
                 }
             },
 
+            category: function (data) {
+                window.rcAsyncInit = function () {
+                    rcApi.categoryView(data);
+                    console.log('catego222ry');
+                    console.log(data);
+                }
+            },
+
             transaction: function (data) {
                 window.rcAsyncInit = function () {
                     rrApi.order(data);
@@ -304,9 +312,11 @@ window.ANALYTICS = {
                 var rr_data = $('#RetailRocketJS').data('value');
                 if (rr_data && rr_data.routeName && rr_data.sendData) {
                     if (rr_data.routeName == 'product') {
-                        RetailRocket.product(rr_data.sendData)
+                        RetailRocket.product(rr_data.sendData);
+                    } else if (rr_data.routeName == 'product.category') {
+                        RetailRocket.category(rr_data.sendData);
                     } else if (rr_data.routeName == 'order.complete') {
-                        RetailRocket.transaction(rr_data.sendData)
+                        RetailRocket.transaction(rr_data.sendData);
                     }
                 }
             },
