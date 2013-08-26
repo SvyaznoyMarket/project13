@@ -32,6 +32,8 @@
 			text-decoration: none;
 
 			color: @white;
+
+			background: @black;
 		}
 	}
 
@@ -94,7 +96,7 @@
 	background: #f6f6f6;
 
 	.bBtnPick {
-		margin: 10px 10px 0;
+		margin: 10px 0 0;
 
 		&__eLink {
 			display: block;
@@ -109,12 +111,11 @@
 }
 
 .bFilterParams {
-	display: inline-block;
+	float: left;
 
 	width: 160px;
 
-	*display: inline;
-	zoom: 1;
+	behavior: url(@displayTable);
 
 	&__eItem {
 		cursor: pointer;
@@ -147,13 +148,10 @@
 }
 
 .bFilterValues {
-	display: inline-block;
-
-	*display: inline;
-	zoom: 1;
+	float: left;
 
 	width: 745px;
-	margin: 20px 0 0 15px;
+	margin: 20px 0 0 20px;
 
 	vertical-align: top;
 

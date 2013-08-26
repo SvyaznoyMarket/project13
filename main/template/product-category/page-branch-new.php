@@ -109,7 +109,7 @@
 	            	<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 50%;"></a>
 	            </div>
 
-	            <input class="bFilterPrice__eInput" name="" value="10 000" type="text"  /> 
+	            <input class="bFilterPrice__eInput mLast" name="" value="10 000" type="text"  /> 
 
 	            <span class="bFilterPrice__eRub rubl">p</span>
 		    </div>
@@ -143,14 +143,14 @@
 	            	<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 50%;"></a>
 	            </div>
 
-	            <input class="bFilterPrice__eInput" name="" value="10 000" type="text"  /> 
+	            <input class="bFilterPrice__eInput mLast" name="" value="10 000" type="text"  /> 
 
 	            <span class="bFilterPrice__eRub rubl">p</span>
 		    </div>
 		</div>
 
 		<!-- Фильтр по выбранным параметрам -->
-		<div class="bFilterCont">
+		<div class="bFilterCont clearfix">
 			<!-- Список названий параметров -->
 			<ul class="bFilterParams">
 				<li class="bFilterParams__eItem mActive"><span class="bParamName">Бренд</span></li>
@@ -212,6 +212,34 @@
 					<div class="bFilterValuesCol">
 						<input class="bInputHidden" type="checkbox" id="check7" name="" hidden />
 						<label class="bFilterCheckbox" for="check7">
+							Ahava
+						</label>
+					</div>
+
+					<div class="bFilterValuesCol">
+						<input class="bInputHidden" type="checkbox" id="check8" name="" hidden />
+						<label class="bFilterCheckbox" for="check8">
+							Ahava
+						</label>
+					</div>
+
+					<div class="bFilterValuesCol">
+						<input class="bInputHidden" type="checkbox" id="check9" name="" hidden />
+						<label class="bFilterCheckbox" for="check9">
+							Ahava
+						</label>
+					</div>
+
+					<div class="bFilterValuesCol">
+						<input class="bInputHidden" type="checkbox" id="check10" name="" hidden />
+						<label class="bFilterCheckbox" for="check10">
+							Ahava
+						</label>
+					</div>
+
+					<div class="bFilterValuesCol">
+						<input class="bInputHidden" type="checkbox" id="check11" name="" hidden />
+						<label class="bFilterCheckbox" for="check11">
 							Ahava
 						</label>
 					</div>
@@ -289,7 +317,7 @@
 			<div class="bListingItem__eInner">
 				<!-- Блок с именем продукта и иконками доп. просмотра товара -->
 				<div class="bSimplyDesc">
-					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<p class="bSimplyDesc__eText"><a href="">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм</a></p>
 					<ul class="bSimplyDescStikers">
 						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
 
@@ -323,7 +351,7 @@
 
 				<div class="bBtnLine clearfix">
 					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
-					<a class="btnView" href="">Посмотреть</a>
+					<a class="btnView mBtnGrey" href="">Посмотреть</a>
 				</div>
 			</div>
 		</li>
@@ -332,7 +360,7 @@
 		<li class="bListingItem">
 			<div class="bListingItem__eInner">
 				<div class="bSimplyDesc">
-					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм</p>
+					<p class="bSimplyDesc__eText"><a href="">Универсальный набор</a></p>
 				</div>
 
 				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs09.enter.ru/1/1/500/75/167449.jpg" /></a>
@@ -348,7 +376,7 @@
 
 				<div class="bBtnLine clearfix">
 					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
-					<a class="btnView" href="">Посмотреть</a>
+					<a class="btnView mBtnGrey" href="">Посмотреть</a>
 				</div>
 			</div>
 		</li>
@@ -356,7 +384,7 @@
 		<li class="bListingItem">
 			<div class="bListingItem__eInner">
 				<div class="bSimplyDesc">
-					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<p class="bSimplyDesc__eText"><a href="">Универсальный набор (инструментальный ящик)</a></p>
 					<ul class="bSimplyDescStikers">
 						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
 
@@ -389,7 +417,7 @@
 
 				<div class="bBtnLine clearfix">
 					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
-					<a class="btnView" href="">Посмотреть</a>
+					<a class="btnView mBtnGrey" href="">Посмотреть</a>
 				</div>
 			</div>
 		</li>
@@ -397,7 +425,7 @@
 		<li class="bListingItem mLast">
 			<div class="bListingItem__eInner">
 				<div class="bSimplyDesc">
-					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<p class="bSimplyDesc__eText"><a href="">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201</a></p>
 					<ul class="bSimplyDescStikers">
 						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
 
@@ -414,7 +442,7 @@
 
 				<div class="bBtnLine clearfix">
 					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
-					<a class="btnView" href="">Посмотреть</a>
+					<a class="btnView mBtnGrey" href="">Посмотреть</a>
 				</div>
 			</div>
 		</li>
@@ -422,7 +450,7 @@
 		<li class="bListingItem">
 			<div class="bListingItem__eInner">
 				<div class="bSimplyDesc">
-					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок</p>
+					<p class="bSimplyDesc__eText"><a href="">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок</a></p>
 					<ul class="bSimplyDescStikers">
 						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
 
@@ -455,7 +483,7 @@
 
 				<div class="bBtnLine clearfix">
 					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
-					<a class="btnView" href="">Посмотреть</a>
+					<a class="btnView mBtnGrey" href="">Посмотреть</a>
 				</div>
 			</div>
 		</li>
@@ -463,7 +491,7 @@
 		<li class="bListingItem">
 			<div class="bListingItem__eInner">
 				<div class="bSimplyDesc">
-					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<p class="bSimplyDesc__eText"><a href="">Универсальный набор</a></p>
 				</div>
 
 				<a href="" class="bProductImg"><img class="bProductImg__eImg" src="http://fs03.enter.ru/1/1/500/f3/207661.jpg" /></a>
@@ -489,7 +517,7 @@
 
 				<div class="bBtnLine clearfix">
 					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
-					<a class="btnView" href="">Посмотреть</a>
+					<a class="btnView mBtnGrey" href="">Посмотреть</a>
 				</div>
 			</div>
 		</li>
@@ -497,7 +525,7 @@
 		<li class="bListingItem">
 			<div class="bListingItem__eInner">
 				<div class="bSimplyDesc">
-					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<p class="bSimplyDesc__eText"><a href="">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм</a></p>
 					<ul class="bSimplyDescStikers">
 						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
 
@@ -518,7 +546,7 @@
 
 				<div class="bBtnLine clearfix">
 					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
-					<a class="btnView" href="">Посмотреть</a>
+					<a class="btnView mBtnGrey" href="">Посмотреть</a>
 				</div>
 			</div>
 		</li>
@@ -526,7 +554,7 @@
 		<li class="bListingItem mLast">
 			<div class="bListingItem__eInner">
 				<div class="bSimplyDesc">
-					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<p class="bSimplyDesc__eText"><a href="">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201</a></p>
 					<ul class="bSimplyDescStikers">
 						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
 
@@ -547,7 +575,7 @@
 
 				<div class="bBtnLine clearfix">
 					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
-					<a class="btnView" href="">Посмотреть</a>
+					<a class="btnView mBtnGrey" href="">Посмотреть</a>
 				</div>
 			</div>
 		</li>
@@ -555,7 +583,7 @@
 		<li class="bListingItem">
 			<div class="bListingItem__eInner">
 				<div class="bSimplyDesc">
-					<p class="bSimplyDesc__eText">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм, угловых ключей 1,5-10 мм, отверток, 66 предметов</p>
+					<p class="bSimplyDesc__eText"><a href="">Универсальный набор (инструментальный ящик) Jonnesway C-3DH201 торцевых головок 1/2" DR, 10-32 мм, ключей 6-22 мм</a></p>
 					<ul class="bSimplyDescStikers">
 						<li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
 
@@ -588,7 +616,7 @@
 
 				<div class="bBtnLine clearfix">
 					<div class="btnBuy"><a class="btnBuy__eLink" href="">Купить</a></div>
-					<a class="btnView" href="">Посмотреть</a>
+					<a class="btnView mBtnGrey" href="">Посмотреть</a>
 				</div>
 			</div>
 		</li>
@@ -602,7 +630,7 @@
 			<li class="bSortingList__eItem mSortItem mActive"><a class="bSortingList__eLink" href="">1</a></li>
 			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">2</a></li>
 			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">3</a></li>
-			<li class="bSortingList__eItem mSortItem">&#8230;</li>
+			<li class="bSortingList__eItem mSortItem mDotted">&#8230;</li>
 			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">48</a></li>
 			<li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink mMore" href="">&#8734;</a></li>
 		</ul>

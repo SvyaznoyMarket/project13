@@ -11912,6 +11912,17 @@
     box-shadow: 1px 1px 3px #c7c7c7;
     border: 1px solid #c7c7c7;
   }
+  .mBtnGrey:hover {
+    text-decoration: none;
+    background: #c5c5c5;
+    background: -moz-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #c5c5c5));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #c5c5c5 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#c5c5c5', GradientType=0);
+  }
   .bListing .bListingItem {
     position: relative;
     float: left;
@@ -11950,6 +11961,9 @@
   .bListing .bListingItem:hover .bSimplyDescStikers {
     opacity: 0.3;
   }
+  .bListing .bListingItem:hover .bSimplyDesc__eText {
+    height: auto;
+  }
   .bListing .bSimplyDesc {
     position: absolute;
     z-index: 2;
@@ -11961,6 +11975,8 @@
   }
   .bListing .bSimplyDesc__eText {
     margin: 0;
+    height: 28px;
+    overflow: hidden;
   }
   .bListing .bSimplyDescStikers {
     margin: 15px 0 0;
@@ -11985,6 +12001,8 @@
   .bListing .bPriceLine .bPriceOld {
     color: #919291;
     font-size: 14px;
+    float: left;
+    width: 80px;
   }
   .bListing .bPriceLine .bPriceOld .bDecor {
     text-decoration: line-through;
@@ -11992,15 +12010,20 @@
   }
   .bListing .bPriceLine .bAvailible {
     float: right;
+    width: 116px;
+    text-align: right;
     color: #919291;
   }
   .bListing .bPriceLine .bPrice {
     font-size: 20px;
+    float: left;
+    width: 112px;
   }
   .bListing .bPriceLine .bOptions {
     float: right;
     margin: 4px 0 0;
     padding: 0 0 0 27px;
+    width: 55px;
     background: url('/css/bCatalog/img/bOptions.png') no-repeat 0 0;
   }
   .bListing .bPriceLine .bOptions .bDecor {
@@ -12060,26 +12083,11 @@
     line-height: 25px;
   }
   .bListing .bBtnLine .btnView {
-    background: #e5e5e5;
-    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
-    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     display: block;
     float: right;
     width: 90px;
     height: 25px;
     text-align: center;
-    border: 1px solid #f5f5f5;
     font-size: 13px;
     line-height: 25px;
   }
@@ -12212,6 +12220,7 @@
   .bFilterHead .bFilterToggle:hover {
     text-decoration: none;
     color: #ffffff;
+    background: #000000;
   }
   .bFilterHead .bToggleText {
     padding-left: 15px;
@@ -12253,7 +12262,7 @@
     background: #f6f6f6;
   }
   .bFilterCont .bBtnPick {
-    margin: 10px 10px 0;
+    margin: 10px 0 0;
   }
   .bFilterCont .bBtnPick__eLink {
     display: block;
@@ -12263,10 +12272,9 @@
     text-align: center;
   }
   .bFilterParams {
-    display: inline-block;
+    float: left;
     width: 160px;
-    *display: inline;
-    zoom: 1;
+    behavior: url("/css/common/display-table.min.htc");
   }
   .bFilterParams__eItem {
     cursor: pointer;
@@ -12289,11 +12297,9 @@
     background: #f6f6f6;
   }
   .bFilterValues {
-    display: inline-block;
-    *display: inline;
-    zoom: 1;
+    float: left;
     width: 745px;
-    margin: 20px 0 0 15px;
+    margin: 20px 0 0 20px;
     vertical-align: top;
   }
   .bFilterValues .bFilterValuesCol {
@@ -12389,6 +12395,8 @@
     display: inline-block;
     width: 550px;
     margin: 3px 0 0 25px;
+    *display: inline;
+    zoom: 1;
   }
   .bFilterPrice__eTitle {
     display: inline-block;
@@ -12410,9 +12418,12 @@
     vertical-align: top;
     border: 1px solid #a3a3a3;
     font-size: 13px;
-    line-height: 26px;
+    line-height: 24px;
     *display: inline;
     zoom: 1;
+  }
+  .bFilterPrice__eInput.mLast {
+    margin-right: 5px;
   }
   .bFilterPrice__eRub {
     display: inline-block;
@@ -12450,7 +12461,7 @@
   
     position: relative;
     display: inline-block;
-    margin: 12px 10px 0 20px;
+    margin: 12px 10px 0 10px;
     width: 233px;
     height: 4px;
     *display: inline;
@@ -12540,6 +12551,9 @@
   }
   .bSortingList .mIcoLine {
     background-position: -14px 0;
+  }
+  .bSortingList .mDotted {
+    padding-top: 4px;
   }
   .bSortingList .mActive .bSortingList__eLink {
     background: #000000;
