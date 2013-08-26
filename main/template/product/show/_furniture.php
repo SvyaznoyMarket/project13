@@ -17,85 +17,85 @@
 <div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
 
 <div class="bProductSectionLeftCol">
-        <div id="planner3D" class="bPlanner3D fl" data-cart-sum-url="<?= $page->url('cart.sum') ?>" data-product="<?= $page->json(['id' => $product->getId()]) ?>"></div>
+    <div id="planner3D" class="bPlanner3D fl" data-cart-sum-url="<?= $page->url('cart.sum') ?>" data-product="<?= $page->json(['id' => $product->getId()]) ?>"></div>
 
-        <?= $helper->render('product/__likeButtons', [] ); // Insert LikeButtons (www.addthis.com) ?>
+    <?= $helper->render('product/__likeButtons', [] ); // Insert LikeButtons (www.addthis.com) ?>
 
-        <div class="bDescriptionProduct">
-            <?= $product->getDescription() ?>
+    <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'           => 'accessorize',
+            'title'          => 'Аксессуары',
+            'products'       => array_values($accessories),
+            'categories'     => $accessoryCategory,
+            'count'          => count($product->getAccessoryId()),
+            'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
+            'page'           => 1,
+            //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
+            'gaEvent'        => 'Accessorize',
+            'additionalData' => $additionalData,
+        ]) ?>
+    <? endif ?>
+
+    <div class="bDescriptionProduct">
+        <?= $product->getDescription() ?>
+    </div>
+
+    <? if (\App::config()->smartengine['pull']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'also_viewed',
+            'title'    => 'С этим товаром также смотрят',
+            'products' => [],
+            'count'    => null,
+            'limit'    => \App::config()->product['itemsInSlider'],
+            'page'     => 1,
+            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
+        ]) ?>
+    <? endif ?>
+
+    <? if ((bool)$related && \App::config()->product['showRelated']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'           => 'also_bought',
+            'title'          => 'С этим товаром также покупают',
+            'products'       => array_values($related),
+            'count'          => count($product->getRelatedId()),
+            'limit'          => \App::config()->product['itemsInSlider'],
+            'page'           => 1,
+            //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
+            'additionalData' => $additionalData,
+        ]) ?>
+    <? endif ?>
+
+    <?= $helper->render('product/__groupedProperty', ['product' => $product]) // Характеристики ?>
+
+    <div class="bReviews">
+    <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
+        <h3 class="bHeadSection" id="bHeadSectionReviews">Обзоры и отзывы</h3>
+
+        <div class="bReviewsSummary clearfix">
+            <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
         </div>
 
-        <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
-            <?= $helper->render('product/__slider', [
-                'type'           => 'accessorize',
-                'title'          => 'Аксессуары',
-                'products'       => array_values($accessories),
-                'categories'     => $accessoryCategory,
-                'count'          => count($product->getAccessoryId()),
-                'limit'          => (bool)$accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'],
-                'page'           => 1,
-                //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
-                'gaEvent'        => 'Accessorize',
-                'additionalData' => $additionalData,
-            ]) ?>
-        <? endif ?>
+    <? if (!empty($reviewsData['review_list'])) { ?>
+        <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+    <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
+        <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
+    <? } ?>
+        <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
+        </div>
+    <? endif ?>
+    </div>
 
-        <? if (\App::config()->smartengine['pull']): ?>
-            <?= $helper->render('product/__slider', [
-                'type'     => 'also_viewed',
-                'title'    => 'С этим товаром также смотрят',
-                'products' => [],
-                'count'    => null,
-                'limit'    => \App::config()->product['itemsInSlider'],
-                'page'     => 1,
-                'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
-            ]) ?>
-        <? endif ?>
-
-        <? if ((bool)$related && \App::config()->product['showRelated']): ?>
-            <?= $helper->render('product/__slider', [
-                'type'           => 'also_bought',
-                'title'          => 'С этим товаром также покупают',
-                'products'       => array_values($related),
-                'count'          => count($product->getRelatedId()),
-                'limit'          => \App::config()->product['itemsInSlider'],
-                'page'           => 1,
-                //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
-                'additionalData' => $additionalData,
-            ]) ?>
-        <? endif ?>
-
-        <?= $helper->render('product/__groupedProperty', ['product' => $product]) // Характеристики ?>
-
-        <div class="bReviews">
-            <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
-            <h3 class="bHeadSection" id="bHeadSectionReviews">Обзоры и отзывы</h3>
-
-            <div class="bReviewsSummary clearfix">
-                <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
-            </div>
-
-        <? if (!empty($reviewsData['review_list'])) { ?>
-            <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
-                <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
-                <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
-                    <? } ?>
-                    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
-                </div>
-                <? endif ?>
-            </div>
-
-            <? if (\App::config()->smartengine['pull']): ?>
-                <?= $helper->render('product/__slider', [
-                    'type'     => 'similar',
-                    'title'    => 'Похожие товары',
-                    'products' => [],
-                    'count'    => null,
-                    'limit'    => \App::config()->product['itemsInSlider'],
-                    'page'     => 1,
-                    'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
-                ]) ?>
-            <? endif ?>
+    <? if (\App::config()->smartengine['pull']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'similar',
+            'title'    => 'Похожие товары',
+            'products' => [],
+            'count'    => null,
+            'limit'    => \App::config()->product['itemsInSlider'],
+            'page'     => 1,
+            'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
+        ]) ?>
+    <? endif ?>
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
