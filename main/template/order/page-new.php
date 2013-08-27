@@ -382,9 +382,9 @@ foreach (array_reverse($productsById) as $product) {
 			</div>
 
 			<!-- Methods of payment -->
-			<h2 class="bBuyingSteps__eTitle">Оплата</h2>
+			<h2 class="bBuyingSteps__eTitle" data-bind="css: { hidden: paypalECS }">Оплата</h2>
 
-			<div class="bBuyingLine clearfix mPayMethods">
+			<div class="bBuyingLine clearfix mPayMethods" data-bind="css: { hidden: paypalECS }">
 				<div class="bBuyingLine__eLeft"></div>
 				<div class="bBuyingLine__eRight bInputList">
 					<?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
