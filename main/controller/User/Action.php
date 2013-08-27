@@ -175,15 +175,15 @@ class Action {
                 ];
                 if (strpos($form->getUsername(), '@')) {
                     $data['email'] = $form->getUsername();
+                    $data['is_subscribe'] = (bool)$request->get('subscribe', false);
                 }
                 else {
                     $phone = $form->getUsername();
                     $phone = preg_replace('/^\+7/', '8', $phone);
                     $phone = preg_replace('/[^\d]/', '', $phone);
                     $data['mobile'] = $phone;
+                    $data['is_sms_subscribe'] = (bool)$request->get('subscribe', false);
                 }
-
-                $data['is_subscribe'] = (bool)$request->get('subscribe', false);
 
                 try {
                     $result = \App::coreClientV2()->query('user/create', [], $data);
