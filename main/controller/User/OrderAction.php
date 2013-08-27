@@ -106,7 +106,7 @@ class OrderAction {
 
         // товары
         if ((bool)$productsById) {
-            $chunksProductsById = array_chunk($productsById, 50, true);
+            $chunksProductsById = array_chunk($productsById, \App::config()->coreV2['chunk_size'], true);
 
             foreach ($chunksProductsById as $i => $chunk) {
                 \RepositoryManager::product()->prepareCollectionById(array_keys($chunk), $region, function($data) use(&$productsById) {
