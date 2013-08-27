@@ -5,7 +5,10 @@ return function (
     \Model\Product\BasicEntity $product
 ) {
 
-    if (!$product->getIsBuyable()) {
+    if (
+        !\App::config()->payment['paypalECS']
+        || !$product->getIsBuyable()
+    ) {
         return '';
     }
 
