@@ -122,6 +122,7 @@ class Layout extends \View\DefaultLayout {
      */
     private function applySeoPattern(\Model\Page\Entity $page) {
         $dataStore = \App::dataStoreClient();
+        $shopScript = \App::shopScriptClient();
 
         /** @var $category \Model\Product\Category\Entity */
         $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
@@ -144,22 +145,26 @@ class Layout extends \View\DefaultLayout {
         $categoryTokens[] = $category->getToken();
 
         if ($brand) {
-            $dataStore->addQuery(sprintf('seo/brand/%s/%s.json', implode('/', $categoryTokens), $category->getToken() . '-' . $brand->getToken()), [], function ($data) use (&$seoTemplate) {
+            $shopScript->addQuery(sprintf('?seo/brand/%s/%s.json', implode('/', $categoryTokens), $category->getToken() . '-' . $brand->getToken()), [], [], function ($data) use (&$seoTemplate) {
                 $seoTemplate = array_merge([
-                    'title'       => null,
-                    'description' => null,
-                    'keywords'    => null,
+                    'seo_title'       => null,
+                    'seo_description' => null,
+                    'seo_keywords'    => null,
                 ], $data);
             });
         } else {
-            $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+            $shopScript->addQuery(sprintf('?seo/catalog/%s.json', implode('/', $categoryTokens)), [
+                    'slug' => []
+                ], [], function ($data) use (&$seoTemplate) {
                 $seoTemplate = array_merge([
-                    'title'       => null,
-                    'description' => null,
-                    'keywords'    => null,
+                    'seo_title'       => null,
+                    'seo_description' => null,
+                    'seo_keywords'    => null,
                 ], $data);
             });
         }
+
+        $shopScript->execute();
 
         // данные для шаблона
         $patterns = [
@@ -186,13 +191,13 @@ class Layout extends \View\DefaultLayout {
         if (!$seoTemplate) return;
 
         $replacer = new \Util\InflectReplacer($patterns);
-        if ($value = $replacer->get($seoTemplate['title'])) {
+        if ($value = $replacer->get($seoTemplate['seo_title'])) {
             $page->setTitle($value);
         }
-        if ($value = $replacer->get($seoTemplate['description'])) {
+        if ($value = $replacer->get($seoTemplate['seo_description'])) {
             $page->setDescription($value);
         }
-        if ($value = $replacer->get($seoTemplate['keywords'])) {
+        if ($value = $replacer->get($seoTemplate['seo_keywords'])) {
             $page->setKeywords($value);
         }
     }

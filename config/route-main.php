@@ -624,6 +624,13 @@ return [
         'method'  => ['POST'],
     ],
 
+    // TMP SS API EMU
+    // TODO: remove
+    'shopscript' => [
+        'pattern' => '/shopscript/api',
+        'action'  => ['ShopScript\Action', 'execute'],
+    ],
+
     //content
     'content' => [
         'pattern' => '/{token}',
