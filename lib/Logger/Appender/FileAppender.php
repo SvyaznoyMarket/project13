@@ -14,6 +14,6 @@ class FileAppender implements AppenderInterface {
             $message = implode(' ', $message);
         } if (isset($message)) unset($message);
 
-        file_put_contents($this->file, implode("\n", $messages) . "\n", FILE_APPEND | LOCK_EX);
+        file_put_contents($this->file, PHP_EOL . implode(PHP_EOL, $messages) . PHP_EOL, FILE_APPEND | LOCK_EX);
     }
 }
