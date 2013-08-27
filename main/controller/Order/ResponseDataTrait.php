@@ -53,7 +53,7 @@ trait ResponseDataTrait {
                 ];
             }
 
-            foreach (array_chunk(array_keys($productDataById), 50) as $idsInChunk) {
+            foreach (array_chunk(array_keys($productDataById), \App::config()->coreV2['chunk_size']) as $idsInChunk) {
                 \RepositoryManager::product()->prepareCollectionById($idsInChunk, $region, function($data) use (&$productDataById, &$router, &$cart, &$quantitiesByProduct) {
                     foreach ($data as $item) {
                         $cartProduct = $cart->getProductById($item['id']);
