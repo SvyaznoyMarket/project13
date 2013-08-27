@@ -234,8 +234,9 @@ class AppConfig {
     ];
     /** @var array */
     public $payment = [
-        'creditEnabled' => null,
-        'blockedIds'    => [],
+        'creditEnabled'    => null,
+        'paypalECS' => null,
+        'blockedIds'       => [],
     ];
     /** @var array */
     public $creditProvider = [

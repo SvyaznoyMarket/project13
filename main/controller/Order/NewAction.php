@@ -34,6 +34,9 @@ class NewAction {
                 $productsById[$item['id']] = new \Model\Product\Entity($item);
             }
         });
+        $productsById = array_filter($productsById, function ($product) {
+            return $product instanceof \Model\Product\BasicEntity;
+        });
 
         // запрашиваем список способов оплаты
         /** @var $paymentMethods \Model\PaymentMethod\Entity[] */

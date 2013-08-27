@@ -261,6 +261,7 @@ $c->banner['url'] = [
 $c->cart['productLimit'] = 50;
 
 $c->payment['creditEnabled'] = true;
+$c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
 $c->smartengine['pull']           = true;
