@@ -99,6 +99,10 @@ class DeliveryAction {
                     $cart->clearBlackcards();
                     $cart->setBlackcard($blackcard);
                 }
+
+                if (array_key_exists('action_list', $result)) {
+                    $cart->setActionData((array)$result['action_list']);
+                }
             }
 
             // типы доставок
