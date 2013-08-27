@@ -336,6 +336,11 @@ return [
         'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
     ],
+    // добавление товара в корзину
+    'cart.paypal.product.set' => [
+        'pattern' => '/cart/paypal/add-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'set'],
+    ],
     // удаление товара из корзины
     'cart.product.delete' => [
         'pattern' => '/cart/delete-product/{productId}',

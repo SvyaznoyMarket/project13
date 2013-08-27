@@ -192,6 +192,8 @@ $is_showed = [];
 
         <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
 
+        <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
+
         <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
 
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>

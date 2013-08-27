@@ -45,6 +45,7 @@ class Cart {
                 'couponList'      => [],
                 'blackcardList'   => [],
                 'actionData'      => [],
+                'paypalProduct'   => [],
             ]);
             return;
         }
@@ -88,6 +89,12 @@ class Cart {
         if (!array_key_exists('actionData', $session[$this->sessionName])) {
             $data = $this->storage->get($this->sessionName);
             $data['actionData'] = [];
+            $this->storage->set($this->sessionName, $data);
+        }
+
+        if (!array_key_exists('paypalProduct', $session[$this->sessionName])) {
+            $data = $this->storage->get($this->sessionName);
+            $data['paypalProduct'] = [];
             $this->storage->set($this->sessionName, $data);
         }
 
@@ -440,6 +447,30 @@ class Cart {
         $data = $this->getData();
 
         return count($data['warrantyList']);
+    }
+
+    /**
+     * @param \Model\Cart\Product\Entity $product
+     */
+    public function setPaypalProduct(\Model\Cart\Product\Entity $product) {
+        $data = $this->storage->get($this->sessionName);
+        $data['paypalProduct'][$product->getId()] = [
+            'id'       => $product->getId(),
+            'quantity' => $product->getQuantity(),
+        ];
+
+        $this->storage->set($this->sessionName, $data);
+        $this->clearEmpty();
+    }
+
+    /**
+     * @return \Model\Cart\Product\Entity|null
+     */
+    public function getPaypalProduct() {
+        $data = $this->storage->get($this->sessionName);
+        $item = reset($data['paypalProduct']);
+
+        return is_array($item) ? new \Model\Cart\Product\Entity($item) : null;
     }
 
     /**
@@ -894,6 +925,11 @@ class Cart {
                     unset($data['warrantyList'][$warrantyId]);
                 }
             }
+        }
+        // товары, оплачиваемые через PayPal
+        $item = reset($data['paypalProduct']);
+        if (isset($item['quantity']) && !$item['quantity']) {
+            $data['paypalProduct'] = [];
         }
 
         $this->storage->set($this->sessionName, $data);
