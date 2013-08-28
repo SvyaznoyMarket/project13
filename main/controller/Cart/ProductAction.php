@@ -130,7 +130,7 @@ class ProductAction {
                 throw new \Exception('Не собраны ид товаров');
             }
 
-            foreach (array_chunk(array_keys($productsById), 50, true) as $productsInChunk) {
+            foreach (array_chunk(array_keys($productsById), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
                 \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
                     foreach ($data as $item) {
                         $productsById[$item['id']] = new \Model\Product\Entity($item);
