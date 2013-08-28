@@ -161,11 +161,13 @@ class DeliveryAction {
                     $time = strtotime($dateItem['date']);
 
                     $intervalData = [];
-                    foreach ($dateItem['interval'] as $intervalItem) {
-                        $intervalData[] = [
-                            'start' => $intervalItem['time_begin'],
-                            'end'   => $intervalItem['time_end'],
-                        ];
+                    if (isset($dateItem['interval'])) {
+                        foreach ((array)$dateItem['interval'] as $intervalItem) {
+                            $intervalData[] = [
+                                'start' => $intervalItem['time_begin'],
+                                'end'   => $intervalItem['time_end'],
+                            ];
+                        }
                     }
 
                     $return[] = [
