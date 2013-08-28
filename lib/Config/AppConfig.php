@@ -59,6 +59,7 @@ class AppConfig {
         'timeout'      => null,
         'retryTimeout' => [],
         'retryCount'   => null,
+        'chunk_size'   => null,
     ];
     /** @var array */
     public $corePrivate = [
