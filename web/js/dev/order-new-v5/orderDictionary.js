@@ -88,7 +88,7 @@ OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
 	// end of vars
 	
 	pointId = pointId+'';
-
+	
 	for ( var i = points.length - 1; i >= 0; i-- ) {
 		if ( points[i].id === pointId ) {
 			return window.cloneObject(points[i]);
