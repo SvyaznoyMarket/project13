@@ -196,7 +196,7 @@ $c->product['totalCount']             = 30000;
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
-$c->product['allowBuyOnlyInshop']     = false;
+$c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
 $c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
