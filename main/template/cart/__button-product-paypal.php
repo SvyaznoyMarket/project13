@@ -22,7 +22,7 @@ return function (
 
 ?>
 <div class="bWidgetBuy__eBuy btnBuy">
-    <a href="<?= $url ?>" data-group="<?= $product->getId() ?>">Оплатите с помощью PayPal</a>
+    <a class="jsBuyButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Оплатите с помощью PayPal</a>
 </div>
 
 <? };

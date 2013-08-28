@@ -70,7 +70,7 @@ $(document).ready(function(){
 	 * form register corporate
 	 */
 	if ( $('#corp_select').length ) {
-        $('form[action="/corporate-register"]').bind('submit', function(){
+        $('form[action="/b2b"]').bind('submit', function(){
             if ( $('#corp_select').find('option:selected').val() === 'Другая форма' ) {
                 return false;
             }

@@ -18,44 +18,42 @@ return function (
     }
 
     ?>
-    <div class="jewel mb15">
-        <div class="bSpecifications mSimpleProperty">
+    <div class="bSpecifications mSimpleProperty">
 
-            <? if (count($groupedProperties) > 0) { ?>
-                <dl class="bSpecificationsList clearfix">
-                    <? foreach ($groupedProperties as $group) { ?>
-                        <? if (!(bool)$group['properties']) continue ?>
+        <? if (count($groupedProperties) > 0) { ?>
+            <dl class="bSpecificationsList clearfix">
+                <? foreach ($groupedProperties as $group) { ?>
+                    <? if (!(bool)$group['properties']) continue ?>
 
-                        <? foreach ($group['properties'] as $property) { ?>
-                            <? // @var $property \Model\Product\Property\Entity ?>
-                            <dd class="bSpecificationsList__eName">
-                            <span class="bName">
-                                <?= $property->getName() ?>
-                                <? if ($property->getHint()): ?>
-                                    <?= $helper->render('__hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
-                                <? endif ?>
-                            </span>
-                            </dd>
-                            <dt class="bSpecificationsList__eValue">
-                            <span>
-                                <?= $property->getStringValue() ?>
-                                <? if ($property->getValueHint()): ?>
-                                    <?= $helper->render('__hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
-                                <? endif ?>
-                            </span>
-                            </dt>
-                        <? } //endforeach $group ?>
-                    <? } //endforeach $groupedProperties ?>
-                </dl>
-            <? } ?>
+                    <? foreach ($group['properties'] as $property) { ?>
+                        <? // @var $property \Model\Product\Property\Entity ?>
+                        <dd class="bSpecificationsList__eName">
+                        <span class="bName">
+                            <?= $property->getName() ?>
+                            <? if ($property->getHint()): ?>
+                                <?= $helper->render('__hint', ['name' => $property->getName(), 'value' => $property->getHint()]) ?>
+                            <? endif ?>
+                        </span>
+                        </dd>
+                        <dt class="bSpecificationsList__eValue">
+                        <span>
+                            <?= $property->getStringValue() ?>
+                            <? if ($property->getValueHint()): ?>
+                                <?= $helper->render('__hint', ['name' => $property->getStringValue(), 'value' => $property->getValueHint()]) ?>
+                            <? endif ?>
+                        </span>
+                        </dt>
+                    <? } //endforeach $group ?>
+                <? } //endforeach $groupedProperties ?>
+            </dl>
+        <? } ?>
 
-            <? if ($showLinkToProperties): ?>
-                <div class="bTextMore">
-                    <a class="jsGoToId" data-goto="productspecification" href="">Все характеристики</a>
-                </div>
-            <? endif; ?>
+        <? if ($showLinkToProperties): ?>
+            <div class="bTextMore">
+                <a class="jsGoToId" data-goto="productspecification" href="">Все характеристики</a>
+            </div>
+        <? endif; ?>
 
-        </div>
     </div>
 <?
 }; //end function

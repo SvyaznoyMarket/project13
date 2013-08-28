@@ -50,7 +50,7 @@ return [
     ],
     // регистрация корпоративного пользователя
     'user.registerCorporate' => [
-        'pattern' => '/corporate-register',
+        'pattern' => '/b2b',
         'action'  => ['User\Action', 'registerCorporate'],
     ],
     // выход пользователя
