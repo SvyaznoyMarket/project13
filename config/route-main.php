@@ -447,6 +447,11 @@ return [
         'pattern' => '/orders/paypal/new',
         'action'  => ['Order\Paypal\NewAction', 'execute'],
     ],
+    'order.paypal.create' => [
+        'pattern' => '/orders/paypal/create',
+        'action'  => ['Order\Paypal\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
     'order.bill' => [
         'pattern' => '/private/orders/{orderNumber}/bill',
         'action'  => ['Order\BillAction', 'execute'],

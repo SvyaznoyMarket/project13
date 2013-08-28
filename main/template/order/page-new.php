@@ -14,6 +14,7 @@
 
 <?
 $helper = new \Helper\TemplateHelper();
+$paypalECS = isset($paypalECS) && (true === $paypalECS);
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
@@ -296,7 +297,7 @@ foreach (array_reverse($productsById) as $product) {
 			и вы сможете использовать ранее введенные данные
 		</div>
 		
-		<form id="order-form" action="<?= $page->url('order.create') ?>" method="post">
+		<form id="order-form" action="<?= $paypalECS ? $page->url('order.paypal.create') : $page->url('order.create') ?>" method="post">
 			<!-- Info about customer -->
 			<div class="bBuyingLine mBuyingFields">
 				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
@@ -406,7 +407,12 @@ foreach (array_reverse($productsById) as $product) {
 					<p class="bFootenote">* Поля обязательные для заполнения</p>
 
 					<div>
-						<a id="completeOrder" class="bBigOrangeButton" href="#">Завершить оформление</a>
+						<a
+                            id="completeOrder"
+                            class="bBigOrangeButton"
+                            href="#"
+                            <? if ($paypalECS): ?>data-alt-text="Подтвердить сумму"<? endif ?>
+                        >Завершить оформление</a>
 					</div>
 				</div>
 			</div>
@@ -443,7 +449,7 @@ foreach (array_reverse($productsById) as $product) {
 </div>
 <!-- /Общая обертка оформления заказа -->
 
-<div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery') ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
+<div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery', $paypalECS ? ['paypalECS' => 1] : []) ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
 <div id="jsOrderForm" data-value="<?= $page->json([
 	'order[recipient_first_name]'   => $form->getFirstName(),
 	'order[recipient_last_name]'    => $form->getLastName(),

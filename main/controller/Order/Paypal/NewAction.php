@@ -80,7 +80,10 @@ class NewAction {
         $creditData = [];
 
         $page = new \View\Order\NewPage();
-        $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData());
+        $page->setParam('paypalECS', true);
+        $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(
+            [$cart->getPaypalProduct()]
+        ));
         $page->setParam('productsById', $productsById);
         $page->setParam('paymentMethods', $paymentMethods);
         $page->setParam('subways', $subways);
