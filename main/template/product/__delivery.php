@@ -15,7 +15,6 @@ return function (
     foreach ($shopStates as $shopState) {
         $shop = $shopState->getShop();
         if (!$shop instanceof \Model\Shop\Entity) continue;
-
         $shopData[] = [
             'id'        => $shop->getId(),
             'name'      => $shop->getName(),
@@ -72,7 +71,6 @@ return function (
     <div id="ymaps-avalshops"></div>
     <a href="#" class="bOrangeButton fr mt5">Перейти к магазину</a>
 </div>
-
 
 <ul class="bDelivery mLoader" data-value="<?= $helper->json([
     'url'      => $product->getIsBuyable() ? $helper->url('product.delivery') : '',

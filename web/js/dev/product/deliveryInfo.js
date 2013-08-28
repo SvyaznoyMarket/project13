@@ -90,7 +90,6 @@
 				shopInfo = {},
 				shopLen = shops.length;
 			// end of var
-			
 
 			/**
 			 * Обработчик переключения состояния листа магазинов открыто или закрыто
@@ -99,8 +98,7 @@
 				nowBox.toggleClass('mOpen');
 				nowBox.toggleClass('mClose');
 			};
-			
-			
+
 			if ( !shopLen ) {
 				return;
 			}
@@ -177,17 +175,15 @@
 		};
 	// end of functions
 
-	fillAvalShopTmpl( deliveryShops );
-	
-	if ( url !== '' ) {
+	if ( url === '' ) {
+		fillAvalShopTmpl( deliveryShops );
+	}
+	else {
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: dataToSend,
-			success: function(data) {
-				console.log(data)
-				resFromSerever(data)
-			}
+			success: resFromSerever
 		});
 	}
 
