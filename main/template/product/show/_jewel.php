@@ -125,7 +125,7 @@ $is_showed = [];
 
     <? if (\App::config()->smartengine['pull']): ?>
         <?= $helper->render('product/__slider', [
-            'type'     => 'also_viewed',
+            'type'     => 'alsoViewed',
             'title'    => 'С этим товаром также смотрят',
             'products' => [],
             'count'    => null,
@@ -137,7 +137,7 @@ $is_showed = [];
 
     <? if ((bool)$related && \App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
-            'type'           => 'also_bought',
+            'type'           => 'alsoBought',
             'title'          => 'С этим товаром также покупают',
             'products'       => array_values($related),
             'count'          => count($product->getRelatedId()),

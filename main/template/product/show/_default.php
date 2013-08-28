@@ -123,7 +123,7 @@ $is_showed = [];
 
     <? if (\App::config()->smartengine['pull']): ?>
         <?= $helper->render('product/__slider', [
-            'type'     => 'also_viewed',
+            'type'     => 'alsoViewed',
             'title'    => 'С этим товаром также смотрят',
             'products' => [],
             'count'    => null,
@@ -135,7 +135,7 @@ $is_showed = [];
 
     <? if ((bool)$related && \App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
-            'type'           => 'also_bought',
+            'type'           => 'alsoBought',
             'title'          => 'С этим товаром также покупают',
             'products'       => array_values($related),
             'count'          => count($product->getRelatedId()),
@@ -191,6 +191,8 @@ $is_showed = [];
         <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
         <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
+
+        <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
 
         <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
 

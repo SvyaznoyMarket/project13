@@ -1,21 +1,21 @@
 /**
- * Для страницы тыры пыры
+ * Для страницы регистрации юредических лиц
  */
-;(function() {
+;(function( global ) {
 	var companyData = $('.bCompanyData'),
 		bCompanyDataLink = companyData.find('.bCompanyDataLink'),
-		toggleBtn = bCompanyDataLink.find('.bCompanyDataLink__eText'),
-		toggleSection = companyData.find('.bCompanyDataSection')
-		// end of var
+		toggleRegBtn = bCompanyDataLink.find('.bCompanyDataLink__eText'),
+		toggleRegSection = companyData.find('.bCompanyDataSection')
+	// end of var
 
-			/**
-			 * Обработчик переключения состояния листа магазинов открыто или закрыто
-			 */
-			var companyRegToggle = function shopToggle() {
-				bCompanyDataLink.toggleClass('mOpen');
-				bCompanyDataLink.toggleClass('mClose');
-				toggleSection.toggle();
-			};
+	/**
+	 * Обработчик переключения состояния ввода реквизитов организации открыто или закрыто
+	 */
+	var companyRegToggle = function compRegToggle() {
+		bCompanyDataLink.toggleClass('mOpen');
+		bCompanyDataLink.toggleClass('mClose');
+		toggleRegSection.toggle();
+	};
 
-			toggleBtn.bind('click', companyRegToggle);
+	toggleRegBtn.bind('click', companyRegToggle);
 }(this));

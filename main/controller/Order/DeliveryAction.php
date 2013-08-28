@@ -18,13 +18,31 @@ class DeliveryAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        return new \Http\JsonResponse($this->getResponseData());
+        $cart = \App::user()->getCart();
+
+        $isPaypal = 1 === (int)$request->get('paypalECS');
+
+        if ($isPaypal) {
+            $responseData = $this->getResponseData([$cart->getPaypalProduct()]);
+            $responseData['paypalECS'] = true;
+        } else {
+            $responseData = $this->getResponseData(
+                $cart->getProducts(),
+                $cart->getCoupons(),
+                $cart->getBlackcards()
+            );
+        }
+
+        return new \Http\JsonResponse($responseData);
     }
 
     /**
+     * @param \Model\Cart\Product\Entity[] $cartProducts
+     * @param \Model\Cart\Coupon\Entity[] $coupons
+     * @param \Model\Cart\Blackcard\Entity[] $blackcards
      * @return array
      */
-    public function getResponseData() {
+    public function getResponseData(array $cartProducts, array $coupons = [], array $blackcards = []) {
         $router = \App::router();
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -40,12 +58,11 @@ class DeliveryAction {
 
         try {
             // проверка на пустую корзину
-            if ($cart->isEmpty()) {
+            if (!(bool)$cartProducts) {
                 throw new \Exception('Корзина пустая');
             }
 
             // купоны
-            $coupons = $cart->getCoupons();
             $couponData = (\App::config()->coupon['enabled'] && ($coupon = reset($coupons)))
                 ? [
                     ['number' => $coupon->getNumber()],
@@ -53,7 +70,6 @@ class DeliveryAction {
                 : [];
 
             // черные карты
-            $blackcards = $cart->getBlackcards();
             $blackcardData = (\App::config()->blackcard['enabled'] && ($blackcard = reset($blackcards)))
                 ? [
                     ['number' => $blackcard->getNumber()],
@@ -68,8 +84,13 @@ class DeliveryAction {
                     'geo_id'  => $region->getId(),
                 ],
                 [
-                    'product'        => $cart->getProductData(),
-                    'service'        => $cart->getServiceData(),
+                    'product'        => array_map(function(\Model\Cart\Product\Entity $cartProduct) {
+                        return [
+                            'id'       => $cartProduct->getId(),
+                            'quantity' => $cartProduct->getQuantity(),
+                        ];
+                    }, $cartProducts),
+                    'service'        => [],
                     'coupon_list'    => $couponData,
                     'blackcard_list' => $blackcardData,
                 ],
@@ -98,6 +119,10 @@ class DeliveryAction {
                     $blackcard = new \Model\Cart\Blackcard\Entity($blackcardItem);
                     $cart->clearBlackcards();
                     $cart->setBlackcard($blackcard);
+                }
+
+                if (array_key_exists('action_list', $result)) {
+                    $cart->setActionData((array)$result['action_list']);
                 }
             }
 
@@ -144,6 +169,11 @@ class DeliveryAction {
                 'discounts'       => [],
             ]);
 
+            // если недоступен заказ товара из магазина
+            if (!\App::config()->product['allowBuyOnlyInshop'] && isset($responseData['deliveryStates']['now'])) {
+                unset($responseData['deliveryStates']['now']);
+            }
+
             // костыль
             $getDates = function(array $dateData) use (&$helper) {
                 $return = [];
@@ -152,11 +182,13 @@ class DeliveryAction {
                     $time = strtotime($dateItem['date']);
 
                     $intervalData = [];
-                    foreach ($dateItem['interval'] as $intervalItem) {
-                        $intervalData[] = [
-                            'start' => $intervalItem['time_begin'],
-                            'end'   => $intervalItem['time_end'],
-                        ];
+                    if (isset($dateItem['interval'])) {
+                        foreach ((array)$dateItem['interval'] as $intervalItem) {
+                            $intervalData[] = [
+                                'start' => $intervalItem['time_begin'],
+                                'end'   => $intervalItem['time_end'],
+                            ];
+                        }
                     }
 
                     $return[] = [
