@@ -18,31 +18,16 @@ class DeliveryAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        $cart = \App::user()->getCart();
+        $paypalECS = 1 === (int)$request->get('paypalECS');
 
-        $isPaypal = 1 === (int)$request->get('paypalECS');
-
-        if ($isPaypal) {
-            $responseData = $this->getResponseData([$cart->getPaypalProduct()]);
-            $responseData['paypalECS'] = true;
-        } else {
-            $responseData = $this->getResponseData(
-                $cart->getProducts(),
-                $cart->getCoupons(),
-                $cart->getBlackcards()
-            );
-        }
-
-        return new \Http\JsonResponse($responseData);
+        return new \Http\JsonResponse($this->getResponseData($paypalECS));
     }
 
     /**
-     * @param \Model\Cart\Product\Entity[] $cartProducts
-     * @param \Model\Cart\Coupon\Entity[] $coupons
-     * @param \Model\Cart\Blackcard\Entity[] $blackcards
+     * @param bool $paypalECS
      * @return array
      */
-    public function getResponseData(array $cartProducts, array $coupons = [], array $blackcards = []) {
+    public function getResponseData($paypalECS = false) {
         $router = \App::router();
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -55,6 +40,19 @@ class DeliveryAction {
             'time'   => strtotime(date('Y-m-d'), 0) * 1000,
             'action' => [],
         ];
+
+        if ($paypalECS) {
+            $responseData['paypalECS'] = true;
+            $responseData['cart']['sum'] = $cart->getSum();
+
+            $cartProducts = [$cart->getPaypalProduct()];
+            $coupons = [];
+            $blackcards = [];
+        } else {
+            $cartProducts = $cart->getProducts();
+            $coupons = $cart->getCoupons();
+            $blackcards = $cart->getBlackcards();
+        }
 
         try {
             // проверка на пустую корзину
@@ -167,6 +165,7 @@ class DeliveryAction {
                 'products'        => [],
                 'shops'           => [],
                 'discounts'       => [],
+                'cart'            => [],
             ]);
 
             // если недоступен заказ товара из магазина
