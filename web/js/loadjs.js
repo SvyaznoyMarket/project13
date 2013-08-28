@@ -21,10 +21,13 @@
 		 */
 	var getWithVersion = function getWithVersion( filename ) {
 			if ( typeof( global.release['version']) !== 'undefined' ) {
-				if ( debug ) {
+				if ( !debug ) {
 					filename = filename.replace('js', 'min.js');
 					filename += '?t=' + global.release['version'];
-				}	
+				}
+				else {
+					filename += '?t=' + global.release['version'];
+				}
 			} 
 
 			return filename;
