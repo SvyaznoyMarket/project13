@@ -173,16 +173,19 @@ class Action {
                     'first_name' => $form->getFirstName(),
                     'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
                 ];
+
+                $isSubscribe = (bool)$request->get('subscribe', false);
+
                 if (strpos($form->getUsername(), '@')) {
                     $data['email'] = $form->getUsername();
-                    $data['is_subscribe'] = (bool)$request->get('subscribe', false);
+                    $data['is_subscribe'] = $isSubscribe;
                 }
                 else {
                     $phone = $form->getUsername();
                     $phone = preg_replace('/^\+7/', '8', $phone);
                     $phone = preg_replace('/[^\d]/', '', $phone);
                     $data['mobile'] = $phone;
-                    $data['is_sms_subscribe'] = (bool)$request->get('subscribe', false);
+                    $data['is_sms_subscribe'] = $isSubscribe;
                 }
 
                 try {
