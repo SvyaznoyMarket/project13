@@ -34,9 +34,6 @@ class NewAction {
                 $productsById[$item['id']] = new \Model\Product\Entity($item);
             }
         });
-        $productsById = array_filter($productsById, function ($product) {
-            return $product instanceof \Model\Product\BasicEntity;
-        });
 
         // запрашиваем список способов оплаты
         /** @var $paymentMethods \Model\PaymentMethod\Entity[] */
@@ -89,6 +86,10 @@ class NewAction {
         });
 
         \App::coreClientV2()->execute();
+
+        $productsById = array_filter($productsById, function ($product) {
+            return $product instanceof \Model\Product\BasicEntity;
+        });
 
         // метод оплаты по умолчанию
         if ($request->cookies->get('credit_on') && $isCreditAllowed) { // если пользователь положил товар в корзину со включенной галкой "Беру в кредит", то ...

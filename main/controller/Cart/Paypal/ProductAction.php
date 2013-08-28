@@ -45,7 +45,7 @@ class ProductAction {
             $cart->setPaypalProduct($cartProduct);
 
             // crossss
-            if (\App::config()->crossss['enabled'] && ($quantity > 0)) {
+            if (false && \App::config()->crossss['enabled'] && ($quantity > 0)) {
                 (new \Controller\Crossss\CartAction())->product($product);
             }
 
@@ -56,7 +56,7 @@ class ProductAction {
                 'link'  =>  $product->getLink(),
                 'price' =>  $product->getPrice(),
             ];
-            if (\App::config()->kissmentrics['enabled']) {
+            if (false && \App::config()->kissmentrics['enabled']) {
                 try {
                     $kissInfo = \Kissmetrics\Manager::getCartEvent($product);
                     $productInfo = array_merge($productInfo, $kissInfo['product']);
@@ -65,25 +65,43 @@ class ProductAction {
                 }
             }
 
-            $createdOrders = (new \Controller\Order\Paypal\CreateAction())->saveOrders();
-            /** @var $createdOrder \Model\Order\CreatedEntity|null */
-            $createdOrder = reset($createdOrders);
-            if (!$createdOrder) {
-                throw new \Exception('Заказ не создан');
-            }
-            if (!$createdOrder->getPaymentUrl()) {
-                \App::logger()->error(['order.id' => $createdOrder->getId()], ['order', 'paypal']);
-                throw new \Exception('Не получен урл для заказа');
+            $result = \App::coreClientV2()->query(
+                'payment/paypal-set-checkout',
+                [
+                    'geo_id' => \App::user()->getRegion()->getId(),
+                ],
+                [
+                    'amount'          => $product->getPrice(),
+                    'delivery_amount' => 0,
+                    'currency'        => 'USD',
+                    'return_url'      => \App::router()->generate('order.paypal.new', [], true),
+                    'product'         => [
+                        [
+                            'id'       => $cartProduct->getId(),
+                            'quantity' => $cartProduct->getQuantity(),
+                        ],
+                    ],
+                    'service'         => [],
+                ]
+            );
+            \App::logger()->info(['core.response' => $result], ['order', 'paypal']);
+
+            if (empty($result['payment_url'])) {
+                throw new \Exception('Не получен урл для редиректа');
             }
 
-            $responseData['success'] = true;
-            $responseData['cart']    = [
+            $createdOrder = new \Model\Order\CreatedEntity($result);
+            \App::logger()->info(['paymentUrl' => $createdOrder->getPaymentUrl()], ['order', 'paypal']);
+
+            $responseData['success']  = true;
+            $responseData['redirect'] = $createdOrder->getPaymentUrl();
+            $responseData['cart']     = [
                 'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
                 'quantity'      => $quantity,
                 'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
                 'full_price'    => $cart->getSum(),
                 'old_price'     => $cart->getOriginalSum(),
-                'link'          => $createdOrder->getPaymentUrl(),
+                'link'          => $product->getLink(),
                 'order'         => [
                     'number' => $createdOrder->getNumber(),
                     'sum'    => $createdOrder->getSum(),
