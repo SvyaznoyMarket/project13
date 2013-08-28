@@ -41,20 +41,24 @@ class DeliveryAction {
             'action' => [],
         ];
 
-        if ($paypalECS) {
-            $responseData['paypalECS'] = true;
-            $responseData['cart']['sum'] = $cart->getSum();
-
-            $cartProducts = [$cart->getPaypalProduct()];
-            $coupons = [];
-            $blackcards = [];
-        } else {
-            $cartProducts = $cart->getProducts();
-            $coupons = $cart->getCoupons();
-            $blackcards = $cart->getBlackcards();
-        }
-
         try {
+            if ($paypalECS) {
+                $cartProduct = $cart->getPaypalProduct();
+                if ($cartProduct) {
+                    $responseData['cart']['sum'] = $cartProduct->getSum() * $cartProduct->getQuantity();
+                }
+
+                $responseData['paypalECS'] = true;
+
+                $cartProducts = $cartProduct ? [$cartProduct] : [];
+                $coupons = [];
+                $blackcards = [];
+            } else {
+                $cartProducts = $cart->getProducts();
+                $coupons = $cart->getCoupons();
+                $blackcards = $cart->getBlackcards();
+            }
+
             // проверка на пустую корзину
             if (!(bool)$cartProducts) {
                 throw new \Exception('Корзина пустая');
@@ -106,7 +110,7 @@ class DeliveryAction {
                 throw $exception;
             }
 
-            if (\App::config()->blackcard['enabled'] && array_key_exists('blackcard_list', $result)) {
+            if (!$paypalECS && \App::config()->blackcard['enabled'] && array_key_exists('blackcard_list', $result)) {
                 foreach ($result['blackcard_list'] as $blackcardItem) {
                     $blackcardItem = array_merge([
                         'number'       => null,
@@ -209,7 +213,7 @@ class DeliveryAction {
                 $productId = (string)$productItem['id'];
 
                 /** @var $cartProduct \Model\Cart\Product\Entity|null */
-                $cartProduct = $cart->getProductById($productId);
+                $cartProduct = $paypalECS ? reset($cartProducts) : $cart->getProductById($productId);
                 if (!$cartProduct) {
                     \App::logger()->error(sprintf('Товар %s не найден в корзине', $productId));
                     continue;
@@ -303,26 +307,31 @@ class DeliveryAction {
             }
 
             // купоны
-            foreach ($cart->getCoupons() as $coupon) {
-                $responseData['discounts'][] = [
-                    'type'      => 'coupon',
-                    'name'      => $coupon->getName(),
-                    'sum'       => $coupon->getDiscountSum(),
-                    'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?: 'Неудалось активировать купон'] : null,
-                    'deleteUrl' => $router->generate('cart.coupon.delete'),
-                ];
+            if (!$paypalECS) {
+                foreach ($cart->getCoupons() as $coupon) {
+                    $responseData['discounts'][] = [
+                        'type'      => 'coupon',
+                        'name'      => $coupon->getName(),
+                        'sum'       => $coupon->getDiscountSum(),
+                        'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?: 'Неудалось активировать купон'] : null,
+                        'deleteUrl' => $router->generate('cart.coupon.delete'),
+                    ];
+                }
             }
 
             // черные карты
-            foreach ($cart->getBlackcards() as $blackcard) {
-                $responseData['discounts'][] = [
-                    'type'      => 'blackcard',
-                    'name'      => $blackcard->getName(),
-                    'sum'       => $blackcard->getDiscountSum(),
-                    'error'     => $blackcard->getError() ? ['code' => $blackcard->getError()->getCode(), 'message' => \Model\Cart\Blackcard\Entity::getErrorMessage($blackcard->getError()->getCode()) ?: 'Неудалось активировать карту'] : null,
-                    'deleteUrl' => $router->generate('cart.blackcard.delete'),
-                ];
+            if (!$paypalECS) {
+                foreach ($cart->getBlackcards() as $blackcard) {
+                    $responseData['discounts'][] = [
+                        'type'      => 'blackcard',
+                        'name'      => $blackcard->getName(),
+                        'sum'       => $blackcard->getDiscountSum(),
+                        'error'     => $blackcard->getError() ? ['code' => $blackcard->getError()->getCode(), 'message' => \Model\Cart\Blackcard\Entity::getErrorMessage($blackcard->getError()->getCode()) ?: 'Неудалось активировать карту'] : null,
+                        'deleteUrl' => $router->generate('cart.blackcard.delete'),
+                    ];
+                }
             }
+
 
             // удаляем методы доставок, в которых нет товаров
             foreach ($responseData['deliveryStates'] as $i => $deliveryStateItem) {
@@ -333,7 +342,6 @@ class DeliveryAction {
 
             // удаляем типы доставок, у которых не осталось методов доставок
             foreach ($responseData['deliveryTypes'] as $i => $deliveryTypeItem) {
-
                 if (!(bool)array_intersect($deliveryTypeItem['ownStates'], array_keys($responseData['deliveryStates']))) {
                     unset($responseData['deliveryTypes'][$i]);
                 }
