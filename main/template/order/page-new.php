@@ -80,7 +80,7 @@ foreach (array_reverse($productsById) as $product) {
 
 					<? if(count($deliveryData['shops']) > 1) { ?>
 						<!-- кнопка сменить магазин -->
-						<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery,
+						<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery && box.pointList.length > 1,
 													text: 'Сменить магазин',
 													click: box.changePoint">
 						</a>
