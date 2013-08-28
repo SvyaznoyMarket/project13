@@ -289,7 +289,7 @@
 
         <div class="bCont__eRight">
             <ul class="bServicesList">
-                <li class="bServicesList__eItem mCatItem"><a class="bServicesList__eLink" href="">Каталог товаров</a></li>
+                <li class="bServicesList__eItem mCatItem"><a class="bServicesList__eLink" href="http://www.enter.ru/tags/b2b">Каталог товаров</a></li>
                 <!--li class="bServicesList__eItem"><a class="bServicesList__eLink" href="">Специальные предложения</a></li>
                 <li class="bServicesList__eItem"><a class="bServicesList__eLink" href="">Идеи для вашего бизнеса</a></li-->
             </ul>
