@@ -99,7 +99,7 @@ trait ResponseDataTrait {
             }
         }
 
-        \App::logger()->error(['error' => $exception], ['order']);
+        \App::logger()->error(['error' => ['code' => $exception->getCode(), 'message' => $exception->getMessage(), 'trace' => $exception->getTraceAsString()]], ['order']);
 
         // приукрашиваем сообщение об ошибке
         switch ($exception->getCode()) {

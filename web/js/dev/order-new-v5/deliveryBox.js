@@ -80,7 +80,9 @@ function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
 
 	if ( !self.products.length ) {
 		// если после распределения в блоке не осталось товаров
-		console.warn('в блоке '+self.token+' неосталось товаров');
+		console.warn('в блоке '+self.token+' не осталось товаров');
+
+		delete self.OrderModel.createdBox[self.token];
 
 		return;
 	}
@@ -102,13 +104,13 @@ DeliveryBox.prototype._makePointList = function() {
 	/**
 	 * Перебираем точки доставки для первого товара
 	 */
-	for ( var point in self.products[0].deliveries ) {
+	for ( var point in self.products[0].deliveries[self.state] ) {
 
 		/**
 		 * Перебираем все товары в блоке, проверяя доступна ли данная точка доставки для них
 		 */
 		for ( var i = self.products.length - 1; i >= 0; i-- ) {
-			res = self.products[i].deliveries.hasOwnProperty(point);
+			res = self.products[i].deliveries[self.state].hasOwnProperty(point);
 
 			if ( !res ) {
 				break;
@@ -125,7 +127,7 @@ DeliveryBox.prototype._makePointList = function() {
 
 /**
  * Смена пункта доставки. Переименовываем token блока
- * Удаляем старый блок из массива блоков и добавлчем туда новый с новым токеном
+ * Удаляем старый блок из массива блоков и добавяем туда новый с новым токеном
  * Если уже есть блок с таким токеном, необходиом добавить товары из текущего блока в него
  *
  * @this	{DeliveryBox}
@@ -170,7 +172,7 @@ DeliveryBox.prototype.changePoint = function( ) {
 	for ( var i = self.pointList.length - 1; i >= 0; i-- ) {
 		self.pointList[i].parentBoxToken = self.token;
 	}
-	
+
 	self.OrderModel.popupWithPoints({
 		header: 'Выберите точку доставки',
 		points: self.pointList
