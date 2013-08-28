@@ -208,7 +208,9 @@ DeliveryBox.prototype._addProduct = function( product ) {
 		productDeliveryPrice = null,
 		token = null,
 		firstAvaliblePoint = null,
-		tempProductArray = [];
+		tempProductArray = [],
+
+		tmpProduct = {};
 	// end of vars
 
 
@@ -239,19 +241,23 @@ DeliveryBox.prototype._addProduct = function( product ) {
 	productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
 	self.deliveryPrice = ( self.deliveryPrice > productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
 
-	// Добавляем стоимость продукта к общей стоимости блока доставки
-	self.fullPrice += product.sum;
-
-	self.products.push({
+	tmpProduct = {
 		id: product.id,
 		name: product.name,
-		price: product.sum,
+		price: (product.sum) ? product.sum : product.price,
 		quantity: product.quantity,
 		deleteUrl: product.deleteUrl,
 		productUrl: product.url,
-		productImg: product.image,
-		deliveries: product.deliveries[self.state]
-	});
+		productImg: (product.image) ? product.image : product.productImg,
+		deliveries: {}
+	};
+
+	tmpProduct.deliveries[self.state] = product.deliveries[self.state];
+
+	// Добавляем стоимость продукта к общей стоимости блока доставки
+	self.fullPrice += tmpProduct.price,
+
+	self.products.push(tmpProduct);
 };
 
 /**
@@ -276,9 +282,11 @@ DeliveryBox.prototype.updateTotalPrice = function() {
  */
 DeliveryBox.prototype.addProductGroup = function( products ) {
 	var self = this;
-
+	console.info('добавляем товары в блок');
 	// добавляем товары в блок
 	for ( var i = products.length - 1; i >= 0; i-- ) {
+		console.log(i+'ый пошел...');
+		console.log(products[i]);
 		self._addProduct(products[i]);
 	}
 
@@ -342,7 +350,7 @@ DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
 	 * Перебор всех продуктов в блоке
 	 */
 	for (var i = self.products.length - 1; i >= 0; i--) {
-		nowProductDates = self.products[i].deliveries[self.choosenPoint().id].dates;
+		nowProductDates = self.products[i].deliveries[self.state][self.choosenPoint().id].dates;
 
 		/**
 		 * Перебор всех дат доставок в блоке
@@ -399,14 +407,19 @@ DeliveryBox.prototype.calculateDate = function() {
 	var self = this,
 		todayTS = self.OrderModel.orderDictionary.getToday(),
 		nowProductDates = null,
-		nowTS = null;
+		nowTS = null,
+
+		newToken = '',
+		tempProduct = null,
+		tempProductArray = [];
+	// end of vars
 
 	console.log('Сегодняшняя дата с сервера '+todayTS);
 
 	/**
 	 * Перебираем даты в первом товаре
 	 */
-	nowProductDates = self.products[0].deliveries[self.choosenPoint().id].dates;
+	nowProductDates = self.products[0].deliveries[self.state][self.choosenPoint().id].dates;
 
 	for ( var i = 0, len = nowProductDates.length; i < len; i++ ) {
 		nowTS = nowProductDates[i].value;
@@ -417,6 +430,23 @@ DeliveryBox.prototype.calculateDate = function() {
 
 			self.allDatesForBlock.push(nowProductDates[i]);
 		}
+	}
+
+	if ( !self.allDatesForBlock().length ) {
+		console.warn('нет общих дат для блока. Необходимо разделить продукты в блоке');
+
+		tempProduct = self.products.pop();
+		tempProductArray.push(tempProduct);
+		newToken = self.state+'_'+self.choosenPoint().id+'_'+Math.floor( (Math.random() * 10000) + 1 );
+		console.log('новый токен '+newToken);
+		console.log(self);
+
+		console.warn('отделяем блок')
+		self.OrderModel.createdBox[newToken] = new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id, self.OrderModel);
+
+		self.calculateDate();
+
+		return;
 	}
 
 	// выбираем ближайшую доступную дату
@@ -434,47 +464,91 @@ DeliveryBox.prototype.calculateDate = function() {
  * @this	{DeliveryBox}
  */
 DeliveryBox.prototype.makeCalendar = function() {
+	console.info('Создание календаря, округление до целых недель');
+
 	var self = this,
 		addCountDays = 0,
 		dayOfWeek = null,
 		tmpDay = {},
 		tmpVal = null,
+		tmpDate = null,
 
-		ONE_DAY = 24*60*60*1000;
+		ONE_DAY = 24*60*60*1000,
+
+		i, j, k;
 	// end of vars
+	
+	/**
+	 * Проверка дат на разрывы  вчислах
+	 * Если меются разрывы в числах - заполнить пробелы датами
+	 */
+	for ( k = 0; k <= self.allDatesForBlock().length - 1; k++ ) {
+		if ( self.allDatesForBlock()[k + 1] === undefined ) {
+			console.info('следущая дата последняя. заканчиваем цикл');
+			break;
+		}
 
+		tmpDay = {};
+		tmpVal = self.allDatesForBlock()[k].value + ONE_DAY;
+		console.log(tmpVal)
+		tmpDate = new Date(tmpVal);
+
+		if ( tmpVal !== self.allDatesForBlock()[k + 1].value ) {
+			tmpDay = {
+				value: tmpVal,
+				avalible: false,
+				humanDayOfWeek: self._getNameDayOfWeek(tmpDate.getDay()),
+				dayOfWeek: tmpDate.getDay(),
+				day: tmpDate.getDate()
+			};
+
+			console.log('предыдущая дата была '+new Date(self.allDatesForBlock()[k].value).getDate()+' новая дата вклинилась '+tmpDate.getDate()+' следущая дата '+new Date(self.allDatesForBlock()[k + 1].value).getDate());
+			self.allDatesForBlock.splice(k+1, 0, tmpDay);
+		}
+	}
+	
+
+	/**
+	 * Проверка первой даты
+	 * Если она не понедельник - достроить календарь в начале до понедельника
+	 */
 	if ( self.allDatesForBlock()[0].dayOfWeek !== 1 ) {
 		addCountDays = ( self.allDatesForBlock()[0].dayOfWeek === 0 ) ? 6 : self.allDatesForBlock()[0].dayOfWeek - 1;
 		tmpVal = self.allDatesForBlock()[0].value;
 
-		for ( var i = addCountDays; i > 0; i-- ) {
-			dayOfWeek = self.allDatesForBlock()[0].dayOfWeek - 1;
+		for ( i = addCountDays; i > 0; i-- ) {
 			tmpVal -= ONE_DAY;
+			tmpDate = new Date(tmpVal);
 
 			tmpDay = {
 				avalible: false,
-				humanDayOfWeek: self._getNameDayOfWeek(dayOfWeek),
-				dayOfWeek: dayOfWeek,
-				day: new Date(tmpVal).getDate()
+				humanDayOfWeek: self._getNameDayOfWeek(tmpDate.getDay()),
+				dayOfWeek: tmpDate.getDay(),
+				day: tmpDate.getDate()
 			};
 
 			self.allDatesForBlock.unshift(tmpDay);
 		}
 	}
 
+	/**
+	 * Проверка последней даты
+	 * Если она не воскресение - достроить календарь в конце до воскресения
+	 */
 	if ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek !== 0 ) {
 		addCountDays = 7 - self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek;
 		tmpVal = self.allDatesForBlock()[self.allDatesForBlock().length - 1].value;
 
-		for ( var j = addCountDays; j > 0; j-- ) {
-			dayOfWeek = ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1 === 7 ) ? 0 : self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1;
+		for ( j = addCountDays; j > 0; j-- ) {
+			// dayOfWeek = ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1 === 7 ) ? 0 : self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1;
 			tmpVal += ONE_DAY;
+			tmpDate = new Date(tmpVal);
 
 			tmpDay = {
 				avalible: false,
-				humanDayOfWeek: self._getNameDayOfWeek(dayOfWeek),
-				dayOfWeek: dayOfWeek,
-				day: new Date(tmpVal).getDate()
+				humanDayOfWeek: self._getNameDayOfWeek(tmpDate.getDay()),
+				dayOfWeek: tmpDate.getDay(),
+				day: tmpDate.getDate()
 			};
 
 			self.allDatesForBlock.push(tmpDay);
