@@ -87,6 +87,10 @@ class NewAction {
 
         \App::coreClientV2()->execute();
 
+        $productsById = array_filter($productsById, function ($product) {
+            return $product instanceof \Model\Product\BasicEntity;
+        });
+
         // метод оплаты по умолчанию
         if ($request->cookies->get('credit_on') && $isCreditAllowed) { // если пользователь положил товар в корзину со включенной галкой "Беру в кредит", то ...
             foreach ($paymentMethods as $paymentMethod) {
@@ -119,7 +123,11 @@ class NewAction {
         }
 
         $page = new \View\Order\NewPage();
-        $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData());
+        $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(
+            $cart->getProducts(),
+            $cart->getCoupons(),
+            $cart->getBlackcards()
+        ));
         $page->setParam('productsById', $productsById);
         $page->setParam('paymentMethods', $paymentMethods);
         $page->setParam('subways', $subways);

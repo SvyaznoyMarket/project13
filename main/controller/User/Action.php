@@ -160,7 +160,7 @@ class Action {
 
         $form = new \View\User\RegistrationForm();
         if ($request->isMethod('post')) {
-            $form->fromArray($request->request->get('register'));
+            $form->fromArray((array)$request->request->get('register'));
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
             }
@@ -217,6 +217,8 @@ class Action {
                     \App::exception()->remove($e);
                     switch ($e->getCode()) {
                         case 684:
+                            $form->setError('username', 'Неправильный email');
+                            break;
                         case 686:
                             $form->setError('username', 'Такой пользователь уже зарегистрирован.');
                             break;

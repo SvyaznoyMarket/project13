@@ -14,6 +14,7 @@
 
 <?
 $helper = new \Helper\TemplateHelper();
+$paypalECS = isset($paypalECS) && (true === $paypalECS);
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
@@ -206,6 +207,8 @@ foreach (array_reverse($productsById) as $product) {
 				<div class="bSaleData" data-bind="couponsVisible: couponsBox()">
 
 					<div class="bTitle">Вид скидки:</div>
+					
+					<div class="bSaleData__eEmptyBlock">Скидок больше нет</div>
 
 					<ul class="bSaleList bInputList clearfix">
                         <? if (\App::config()->coupon['enabled']): ?>
@@ -294,7 +297,7 @@ foreach (array_reverse($productsById) as $product) {
 			и вы сможете использовать ранее введенные данные
 		</div>
 		
-		<form id="order-form" action="<?= $page->url('order.create') ?>" method="post">
+		<form id="order-form" action="<?= $paypalECS ? $page->url('order.paypal.create') : $page->url('order.create') ?>" method="post">
 			<!-- Info about customer -->
 			<div class="bBuyingLine mBuyingFields">
 				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
@@ -373,16 +376,16 @@ foreach (array_reverse($productsById) as $product) {
 				<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
 					<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
 					<div class="bBuyingLine__eRight mSClub">
-						<input id="sclub-number" type="text" class="bBuyingLine__eText" name="" />
+						<input id="sclub-number" type="text" class="bBuyingLine__eText" name="order[sclub_card_number]" />
 						<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
 					</div>
 				</div>
 			</div>
 
 			<!-- Methods of payment -->
-			<h2 class="bBuyingSteps__eTitle">Оплата</h2>
+			<h2 class="bBuyingSteps__eTitle" data-bind="css: { hidden: paypalECS }">Оплата</h2>
 
-			<div class="bBuyingLine clearfix mPayMethods">
+			<div class="bBuyingLine clearfix mPayMethods" data-bind="css: { hidden: paypalECS }">
 				<div class="bBuyingLine__eLeft"></div>
 				<div class="bBuyingLine__eRight bInputList">
 					<?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
@@ -404,7 +407,12 @@ foreach (array_reverse($productsById) as $product) {
 					<p class="bFootenote">* Поля обязательные для заполнения</p>
 
 					<div>
-						<a id="completeOrder" class="bBigOrangeButton" href="#">Завершить оформление</a>
+						<a
+                            id="completeOrder"
+                            class="bBigOrangeButton"
+                            href="#"
+                            <? if ($paypalECS): ?>data-alt-text="Подтвердить сумму"<? endif ?>
+                        >Завершить оформление</a>
 					</div>
 				</div>
 			</div>
@@ -441,7 +449,7 @@ foreach (array_reverse($productsById) as $product) {
 </div>
 <!-- /Общая обертка оформления заказа -->
 
-<div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery') ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
+<div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery', $paypalECS ? ['paypalECS' => 1] : []) ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
 <div id="jsOrderForm" data-value="<?= $page->json([
 	'order[recipient_first_name]'   => $form->getFirstName(),
 	'order[recipient_last_name]'    => $form->getLastName(),

@@ -521,13 +521,21 @@ class Repository {
      * Возвращает массив с аксессуарами, сгруппированными по категориям
      *
      * @param $product
+     * @param $accessoryItems
      * @param int|null $category
      * @param int|null $limit
+     * @param array|null $catalogJson
      * @return array
      */
-    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null) {
+    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null, $catalogJson = null) {
         // массив токенов категорий, разрешенных в json
-        $jsonCategoryToken = self::getJsonCategoryToken($product);
+        if(is_null($catalogJson)) {
+            $jsonCategoryToken = self::getJsonCategoryToken($product);
+        } elseif(empty($catalogJson)) {
+            $jsonCategoryToken = null;
+        } else {
+            $jsonCategoryToken = isset($catalogJson['accessory_category_token']) ? $catalogJson['accessory_category_token'] : null;
+        }
 
         if(empty($jsonCategoryToken)) {
             return [];

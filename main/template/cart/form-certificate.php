@@ -68,11 +68,13 @@ if (!isset($isForm)) $isForm = true;
             <a class="ml90 underline bold db pt20" href="/coupons">Условия применения купонов</a>
         <? endif ?>
 
-        <div class="bF1SaleCard_eForm pt20 ml90 <? if ($user->getCart()->hasServices()): ?> m2Coupon<? endif ?>" style="display:block">
+        <div class="bF1SaleCard_eForm pt20 ml90 m2Coupon" style="display:none">
             <div class="bF1SaleCard_eRadiogroup">
                 <label class="bF1SaleCard_eLabel"><input id="cartCertificateAll" class="bF1SaleCard_eRadio" name="coupon" type="radio" checked="checked" data-url="<?= $page->url('cart.coupon.apply') ?>" /> Код скидки на товары</label>
-                <label class="bF1SaleCard_eLabel"><input id="cartCertificateF1" class="bF1SaleCard_eRadio" name="coupon" type="radio" data-url="<?= $page->url('cart.certificate.apply') ?>" /> Скидки на услуги F1 по карте «Под защитой F1»</label>
-                <label class="bF1SaleCard_eLabel"><input id="cartCertificateBlack" class="bF1SaleCard_eRadio" name="coupon" type="radio" data-url="<?= $page->url('cart.blackcard.apply') ?>" /> «Черная карта»</label>
+                <!--<label class="bF1SaleCard_eLabel"><input id="cartCertificateF1" class="bF1SaleCard_eRadio" name="coupon" type="radio" data-url="<?//= $page->url('cart.certificate.apply') ?>" /> Скидки на услуги F1 по карте «Под защитой F1»</label>-->
+                <? if (\App::config()->blackcard['enabled']): ?>
+                    <label class="bF1SaleCard_eLabel"><input id="cartCertificateBlack" class="bF1SaleCard_eRadio" name="coupon" type="radio" data-url="<?= $page->url('cart.blackcard.apply') ?>" /> «Черная карта»</label>
+                <? endif ?>
             </div>
             <input id="F1SaleCard_number" class="mr20 width370" type="text" placeholder="Код скидки"/><input id="F1SaleCard_btn" class="yellowbutton button" type="button" value="Применить" />
             <p id="bF1SaleCard_eErr" class="bF1SaleCard_eErr"></p>

@@ -134,7 +134,22 @@
 		 * Обработка ошибок из ответа сервера
 		 */
 		serverErrorHandler = {
+			default: function( res ) {
+				console.log('обработчик ошибки');
+
+				if ( res.error && res.error.message ) {
+					showError(res.error.message, function() {
+						document.location.href = res.redirect;
+					});
+
+					return;
+				}
+
+				document.location.href = res.redirect;
+			},
+
 			0: function( res ) {
+				console.warn('обработка ошибок формы')
 				var formError = null;
 
 				if ( res.redirect ) {
@@ -155,7 +170,7 @@
 
 				$.scrollTo($('.mError').eq(0), 500, {offset:-15});
 			},
-			
+
 			743: function( res ) {
 				showError(res.error.message);
 			}
@@ -186,15 +201,25 @@
 		 */
 		processingResponse = function processingResponse( res ) {
 			console.info('данные отправлены. получен ответ от сервера');
+			
 			ajaxStop = new Date().getTime();
 			ajaxDelta = ajaxStop - ajaxStart;
 
-			global.OrderModel.blockScreen.unblock();
 			console.log(res);
 
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
-				serverErrorHandler[res.error.code](res);
+
+				global.OrderModel.blockScreen.unblock();
+
+				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
+					console.log('есть обработчик')
+					serverErrorHandler[res.error.code](res);
+				}
+				else {
+					console.log('дефолтный обработчик')
+					serverErrorHandler['default'](res);
+				}
 
 				return false;
 			}
@@ -377,11 +402,6 @@
 		});
 	}
 
-	if ( subwayArray !== undefined ) {
-		subwayField.autocomplete(subwayAutocompleteConfig);
-		subwayField.bind('change', subwayChange);
-	}
-
 
 	/**
 	 * Подстановка значений в поля
@@ -396,19 +416,37 @@
 				console.log('для поля есть значение '+fields[field]);
 				fieldNode = $('input[name="'+field+'"]');
 
-				// поле текстовое	
-				if ( fieldNode.attr('type') === 'text' ) {
-					fieldNode.val( fields[field] );
-				}
-
 				// радио кнопка
 				if ( fieldNode.attr('type') === 'radio' ) {
 					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked');
+
+					continue;
 				}
+
+				// поле текстовое	
+				fieldNode.val( fields[field] );
 			}
 		}
 	};
 	defaultValueToField($('#jsOrderForm').data('value'));
+
+
+	/**
+	 * Включение автокомплита метро
+	 * Подстановка станции метро по id
+	 */
+	if ( subwayArray !== undefined ) {
+		subwayField.autocomplete(subwayAutocompleteConfig);
+		subwayField.bind('change', subwayChange);
+
+		for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
+			if ( parseInt(metroIdFiled.val(), 10) === subwayArray[i].val ) {
+				subwayField.val(subwayArray[i].label);
+
+				break;
+			}
+		}
+	}
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);

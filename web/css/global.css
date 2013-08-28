@@ -4597,6 +4597,23 @@
     list-style-type: disc;
     margin: 0 0 10px 17px;
   }
+  .goodsbox .photo .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small,
+  .goodsbox .photo .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small:hover {
+    background: url('/css/item/img/videoStiker_small.png') no-repeat 0 0;
+    right: 0;
+    top: 130px;
+    width: 42px;
+    height: 35px;
+  }
+  .goodsbox .photo .goodsphoto_eGrad360.goodsphoto_eGrad360_small,
+  .goodsbox .photo .goodsphoto_eGrad360.goodsphoto_eGrad360_small:hover {
+    background: url('/css/item/img/3dStiker_small.png') no-repeat 0 0;
+    position: absolute;
+    z-index: 3;
+    top: 130px;
+    width: 42px;
+    height: 35px;
+  }
 }
 /*страница с промо каталогом */
 @media all {
@@ -11716,6 +11733,11 @@
   .bSaleData .bTitle {
     margin: 0 0 10px;
   }
+  .bSaleData__eEmptyBlock {
+    display: block;
+    padding: 13px 0 0;
+    font-size: 14px;
+  }
   .bSaleData .mSaleInput {
     display: inline-block;
     width: 288px;
@@ -11728,9 +11750,16 @@
     height: 33px;
     padding: 0;
     vertical-align: top;
-    font: bold 14px/33px Tahoma;
+    cursor: pointer;
+    font: normal 14px/33px Tahoma;
     *display: inline;
     zoom: 1;
+  }
+  .bSaleData .mSaleBtn.mDisabled {
+    background: #f3f3f3;
+    border: 1px solid #a6a6a6;
+    color: #a6a6a6;
+    cursor: default;
   }
   .bSaleList {
     margin: 0 0 12px 0;

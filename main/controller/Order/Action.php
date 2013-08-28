@@ -325,7 +325,7 @@ class Action {
                 $errcode = $e->getCode();
                 if (735 == $errcode) {
                     \App::exception()->remove($e);
-                    $errors['order[sclub_card_number]'] = 'Неверный код карты Связной-Клуб';
+                    $errors['order[sclub_card_number]'] = 'Неверный код карты &laquo;Связной-Клуб&raquo;';
                 }else if (742 == $errcode) {
                     \App::exception()->remove($e);
                     $errors['order[cardpin]'] = 'Неверный пин-код подарочного сертификата';
@@ -595,9 +595,7 @@ class Action {
             }
         }
 
-        // TODO: удалять из сессии успешный заказ, время создания которого больше 1 часа
-
-        $paymentUrl = \App::session()->get('paymentUrl');
+        $paymentUrl = $order->getPaymentUrl(); // раньше было: $paymentUrl = \App::session()->get('paymentUrl');
 
         // crossss
         if (\App::config()->crossss['enabled']) {
