@@ -443,6 +443,10 @@ return [
         'pattern' => '/orders/fail_payment',
         'action'  => ['Order\Action', 'paymentFail'],
     ],
+    'order.paypal.new' => [
+        'pattern' => '/orders/paypal/new',
+        'action'  => ['Order\Paypal\NewAction', 'execute'],
+    ],
     'order.bill' => [
         'pattern' => '/private/orders/{orderNumber}/bill',
         'action'  => ['Order\BillAction', 'execute'],
