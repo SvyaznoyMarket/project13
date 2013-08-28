@@ -37,7 +37,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 
 <? foreach ($orders as $order): ?>
     <p class="title-font16 font16">Сейчас он отправлен на склад для сборки!<br/>
-Ожидайте смс или звонок от оператора контакт-сEnter по статусу доставки!</p>
+Ожидайте смс или звонок от оператора контакт-сEnter по статусу заказа!</p>
     <p class="font19">Номер заказа: <?= $order->getNumber() ?></p>
 
     <? if ($order->getDeliveredAt() instanceof \DateTime): ?>
