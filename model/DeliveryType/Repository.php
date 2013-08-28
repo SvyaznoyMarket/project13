@@ -63,6 +63,7 @@ class Repository {
 
         $collection = [];
         foreach ($data as $item) {
+            if (('now' === $item['token']) && !\App::config()->product['allowBuyOnlyInshop']) continue;
             $collection[] = new Entity($item);
         }
 
