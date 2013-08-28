@@ -1,4 +1,32 @@
 /**
+ * Для страницы тыры пыры
+ */
+;(function() {
+	var companyData = $('.bCompanyData'),
+		bCompanyDataLink = companyData.find('.bCompanyDataLink'),
+		toggleBtn = bCompanyDataLink.find('.bCompanyDataLink__eText'),
+		toggleSection = companyData.find('.bCompanyDataSection')
+		// end of var
+
+			/**
+			 * Обработчик переключения состояния листа магазинов открыто или закрыто
+			 */
+			var companyRegToggle = function shopToggle() {
+				bCompanyDataLink.toggleClass('mOpen');
+				bCompanyDataLink.toggleClass('mClose');
+				toggleSection.toggle();
+			};
+
+			toggleBtn.bind('click', companyRegToggle);
+}(this));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
  * Обработчик страницы оффлайновых заданий
  *
  * @author    Trushkevich Anton
@@ -180,7 +208,7 @@ $(document).ready(function(){
 	 * form register corporate
 	 */
 	if ( $('#corp_select').length ) {
-        $('form[action="/corporate-register"]').bind('submit', function(){
+        $('form[action="/b2b"]').bind('submit', function(){
             if ( $('#corp_select').find('option:selected').val() === 'Другая форма' ) {
                 return false;
             }
