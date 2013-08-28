@@ -9358,9 +9358,9 @@
   }
   .bSpecifications .bSpecificationsList__eName .bName {
     position: relative;
+    top: 4px;
     padding-right: 5px;
     background: #ffffff;
-    top: 4px;
   }
   .bSpecifications .bSpecificationsList__eValue {
     float: right;
@@ -9368,8 +9368,28 @@
     margin: 5px 0;
     padding: 4px 0 0;
   }
-  .mSimpleProperty .bSpecificationsList__eName .bName {
+  .bSpecifications.mSimpleProperty {
+    margin: 10px 0 15px;
+    color: #6E6E6E;
+    font-size: 12px;
+  }
+  .bSpecifications.mSimpleProperty .bSpecificationsList__eName {
+    width: 145px;
+    margin: 0 0 5px;
+    padding-left: 7px;
+    border: none;
+    background: url("/css/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
+  }
+  .bSpecifications.mSimpleProperty .bSpecificationsList__eName .bName {
     top: 0;
+  }
+  .bSpecifications.mSimpleProperty .bSpecificationsList__eValue {
+    width: 125px;
+    margin: 0 0 5px;
+    padding: 0;
+  }
+  .pluso {
+    margin: 15px 0 0;
   }
 }
 @media all {
@@ -10766,26 +10786,6 @@
   }
   .jewel .bProductSection .bSliderAction__eList .btnBuy {
     margin: 0 0 0 1px;
-  }
-  .jewel .bSpecifications {
-    color: #6E6E6E;
-    font-size: 12px;
-    margin: 10px 0 0;
-  }
-  .jewel .bSpecifications dd {
-    background: url("/css/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
-    padding-left: 7px;
-    margin: 0 0 5px;
-    border: none;
-    width: 145px;
-  }
-  .jewel .bSpecifications dt {
-    padding: 0;
-    width: 125px;
-    margin: 0 0 5px;
-  }
-  .jewel .bProductSection .bSpecificationsList .bName {
-    bottom: 0;
   }
   .jewel .bigbuttonlink {
     background: #000000;
