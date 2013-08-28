@@ -181,11 +181,11 @@
 		 */
 		completeAnalytics = function completeAnalytics() {
 			if ( typeof _gaq !== 'undefined') {
-				for ( var i in global.OrderModel.createdBox ) {
-					_gaq.push(['_trackEvent', 'Order card', 'Completed', 'выбрана '+global.OrderModel.choosenDeliveryTypeId+' доставят '+global.OrderModel.createdBox[i].state]);
+				for ( var i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
+					_gaq.push(['_trackEvent', 'Order card', 'Completed', 'выбрана '+global.OrderModel.choosenDeliveryTypeId+' доставят '+global.OrderModel.deliveryBoxes()[i].state]);
 				}
 
-				_gaq.push(['_trackEvent', 'Order complete', global.getKeysLength(global.OrderModel.createdBox), global.OrderModel.orderDictionary.products.length]);
+				_gaq.push(['_trackEvent', 'Order complete', global.OrderModel.deliveryBoxes().length, global.OrderModel.orderDictionary.products.length]);
 				_gaq.push(['_trackTiming', 'Order complete', 'DB response', ajaxDelta]);
 			}
 
@@ -247,9 +247,9 @@
 			 * Перебираем блоки доставки
 			 */
 			console.info('Перебираем блоки доставки');
-			for ( var i in global.OrderModel.createdBox ) {
+			for ( var i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
 				tmpPart = {};
-				currentDeliveryBox = global.OrderModel.createdBox[i];
+				currentDeliveryBox = global.OrderModel.deliveryBoxes()[i];
 				console.log(currentDeliveryBox);
 
 				tmpPart = {
