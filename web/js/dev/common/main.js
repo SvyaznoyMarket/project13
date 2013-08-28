@@ -316,14 +316,14 @@ $(document).ready(function() {
 		});
 	});
 
-	$('#auth-block').on('click', '#forgot-pwd-trigger', function() {
+	$('body').on('click', '#forgot-pwd-trigger', function() {
 		$('#reset-pwd-form').show();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').hide();
 		return false;
 	});
 
-	$('#remember-pwd-trigger,#remember-pwd-trigger2').click(function() {
+	$('body').on('click', '#remember-pwd-trigger,#remember-pwd-trigger2', function() {
 		$('#reset-pwd-form').hide();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').show();

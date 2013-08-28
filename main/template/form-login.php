@@ -27,7 +27,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
         </div>
 
         <div class="pb5">
-            <a id="forgot-pwd-trigger" href="<?= $page->url('user.forgot') ?>" class="fr orange underline">Забыли пароль?</a>
+            <a id="forgot-pwd-trigger" href="javascript:void(0)" class="fr orange underline">Забыли пароль?</a>
             Пароль:
         </div>
         <div class="pb5">
