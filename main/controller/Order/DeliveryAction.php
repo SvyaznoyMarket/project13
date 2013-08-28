@@ -144,6 +144,11 @@ class DeliveryAction {
                 'discounts'       => [],
             ]);
 
+            // если недоступен заказ товара из магазина
+            if (!\App::config()->product['allowBuyOnlyInshop'] && isset($responseData['deliveryStates']['now'])) {
+                unset($responseData['deliveryStates']['now']);
+            }
+
             // костыль
             $getDates = function(array $dateData) use (&$helper) {
                 $return = [];

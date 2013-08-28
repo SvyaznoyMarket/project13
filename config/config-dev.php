@@ -76,10 +76,6 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key']          = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
-$c->product['lowerPriceNotification'] = true;
-
-$c->product['allowBuyOnlyInshop'] = true;
-
 $c->requestMainMenu = false;
 
 return $c;
