@@ -2183,6 +2183,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * @param	{Object}	orderData		Данные о заказе
 		 */
 		analyticsStep_1 = function analyticsStep1( orderData ) {
+			console.info('analyticsStep_1');
+
 			var totalPrice = 0,
 				totalQuan = 0,
 
@@ -2190,8 +2192,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			// end of vars
 
 			for ( var product in orderData.products ) {
-				totalPrice += product[product].price;
-				totalQuan += product[product].quantity;
+				totalPrice += orderData.products[product].price;
+				totalQuan += orderData.products[product].quantity;
 			}
 
 			toKISS = {
@@ -2199,6 +2201,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				'Checkout Step 1 SKU Total': totalPrice,
 				'Checkout Step 1 Order Type': 'cart order'
 			};
+
+			console.log(toKISS)
 
 			if ( typeof _gaq !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'New order', 'Items', totalQuan]);
@@ -2214,8 +2218,5 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 	renderOrderData( serverData );
 
-	// запуск аналитики
-	if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
-		analyticsStep_1( serverData );
-	}
+	analyticsStep_1( serverData );
 }(this));
