@@ -497,6 +497,8 @@
 		 * Обновление данных
 		 */
 		modelUpdate: function() {
+            var tID = null;
+
 			console.info('обновление данных с сервера');
 
 			var updateResponceHandler = function updateResponceHandler( res ) {
@@ -506,11 +508,14 @@
 				separateOrder( global.OrderModel.statesPriority );
 			};
 
-			$.ajax({
-				type: 'GET',
-				url: global.OrderModel.updateUrl,
-				success: updateResponceHandler
-			});
+            tID = setTimeout(function() {
+                clearTimeout(tID);
+                $.ajax({
+                    type: 'GET',
+                    url: global.OrderModel.updateUrl,
+                    success: updateResponceHandler
+                });
+            }, 1200);
 		},
 
 		/**
