@@ -6,9 +6,5 @@
  **/
 ?>
 <? if (!empty($prod_cats)): ?>
-<script type="text/javascript">
-    var sonar_product = {
-        category : <?= $prod_cats."\n" ?>
-    };
-</script>
+  <div id="sociomanticCategoryPage" data-prod-cats="<?= $prod_cats."\n" ?>" class="jsanalytics"></div>
 <? endif; ?>
