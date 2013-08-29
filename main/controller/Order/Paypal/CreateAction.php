@@ -176,7 +176,7 @@ class CreateAction {
                 $responseData['redirect'] = $createdOrder->getPaymentUrl();
             } else {
                 // создание заказов в ядре
-                $createdOrders = $this->saveOrders($form);
+                $createdOrders = $this->saveOrders($form, $paypalToken);
 
                 // сохранение заказов в сессии
                 \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
@@ -279,10 +279,11 @@ class CreateAction {
 
     /**
      * @param Form $form
+     * @param $paypalToken
      * @throws \Exception
      * @return \Model\Order\CreatedEntity[]
      */
-    private function saveOrders(Form $form) {
+    private function saveOrders(Form $form, $paypalToken) {
         $request = \App::request();
         $user = \App::user();
         $userEntity = $user->getEntity();
@@ -445,9 +446,11 @@ class CreateAction {
             $data[] = $orderData;
         }
 
-        $params = [];
+        $params = [
+            'token' => $paypalToken,
+        ];
         if ($userEntity && $userEntity->getToken()) {
-            $params['token'] = $userEntity->getToken();
+            $params['user_token'] = $userEntity->getToken();
         }
 
         $result = \App::coreClientV2()->query('payment/paypal-create-order', $params, $data);
