@@ -65,7 +65,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                 Привет, <a href="<?= $page->url('user') ?>"><?= $user->getEntity()->getName() ?></a>
             <? else: ?>
                 Уже покупали у нас?
-                <strong><a class="auth-link underline" data-update-url="<?//php echo url_for('order_getUser') ?>" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
+                <strong><a class="underline" data-update-url="<?//php echo url_for('order_getUser') ?>" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
                 и вы сможете использовать ранее введенные данные
             <? endif ?>
         </div>

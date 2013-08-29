@@ -32,7 +32,6 @@ $sonarBasket['amount']      = $orderSum;
 $sonarBasket['currency']    = 'RUB';
 $sonarBasket['zzz']    = 'zzz';
 
-
 /* example:
 { identifier: '461-1177', amount: 4990.00, currency: 'RUB', quantity: 1 },
 { identifier: '452-9682', amount: 23990.00, currency: 'RUB', quantity: 1 }

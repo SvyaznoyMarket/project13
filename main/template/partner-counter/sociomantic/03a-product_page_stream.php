@@ -14,7 +14,7 @@ if ($product instanceof \Model\Product\Entity) {
     $region_id = \App::user()->getRegion()->getId();
 
     $photo = null;
-    $tmp = $product->getImageUrl(4);
+    $tmp = $product->getImageUrl(3);
     if ($tmp) $photo = $tmp;
 
     $brand = $product->getBrand() ? $product->getBrand()->getName() : null;

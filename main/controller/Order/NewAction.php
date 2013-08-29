@@ -123,11 +123,7 @@ class NewAction {
         }
 
         $page = new \View\Order\NewPage();
-        $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(
-            $cart->getProducts(),
-            $cart->getCoupons(),
-            $cart->getBlackcards()
-        ));
+        $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(false));
         $page->setParam('productsById', $productsById);
         $page->setParam('paymentMethods', $paymentMethods);
         $page->setParam('subways', $subways);
