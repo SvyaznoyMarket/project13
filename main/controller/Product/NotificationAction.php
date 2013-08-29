@@ -3,6 +3,9 @@
 namespace Controller\Product;
 
 class NotificationAction {
+
+    const SUBSCRIPTION_EXISTS_CODE = 920;
+
     /**
      * @param $productId
      * @param \Http\Request $request
@@ -58,14 +61,18 @@ class NotificationAction {
 
             $responseData = ['success' => true];
         } catch (\Exception $e) {
-            \App::logger()->error($e);
-            $responseData = [
-                'success' => false,
-                'error' => [
-                    'code'    => $e->getCode(),
-                    'message' => 'Не удалось создать подписку' . (\App::config()->debug ? sprintf(': %s', $e->getMessage()) : ''),
-                ],
-            ];
+            if($e->getCode() == self::SUBSCRIPTION_EXISTS_CODE) {
+                $responseData = ['success' => true];
+            } else {
+                \App::logger()->error($e);
+                $responseData = [
+                    'success' => false,
+                    'error' => [
+                        'code'    => $e->getCode(),
+                        'message' => 'Не удалось создать подписку' . (\App::config()->debug ? sprintf(': %s', $e->getMessage()) : ''),
+                    ],
+                ];
+            }
         }
 
         return new \Http\JsonResponse($responseData);
