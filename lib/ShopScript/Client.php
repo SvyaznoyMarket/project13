@@ -37,6 +37,9 @@ class Client {
     public function query($action, array $params = [], array $data = [], $timeout = null) {
         \Debug\Timer::start('ShopScript');
 
+        $data['http_user'] = \App::config()->shopScript['user'];
+        $data['http_password'] = \App::config()->shopScript['password'];
+
         $response = $this->curl->query($this->getUrl($action, $params), $data, $timeout);
 
         \Debug\Timer::stop('ShopScript');
@@ -59,6 +62,9 @@ class Client {
         if (null === $timeout) {
             $timeout = $this->config['timeout'];
         }
+
+        $data['http_user'] = \App::config()->shopScript['user'];
+        $data['http_password'] = \App::config()->shopScript['password'];
 
         $result = $this->curl->addQuery($this->getUrl($action, $params), $data, $successCallback, $failCallback, $timeout);
 

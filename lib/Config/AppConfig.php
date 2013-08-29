@@ -98,6 +98,8 @@ class AppConfig {
         'timeout'      => null,
         'retryTimeout' => [],
         'retryCount'   => null,
+        'user'         => null,
+        'password'     => null,
     ];
     /** @var array */
     public $company = [

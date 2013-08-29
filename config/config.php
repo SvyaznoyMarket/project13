@@ -103,7 +103,9 @@ $c->dataStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->shopScript['url'] = 'http://enter.loc/shopscript/api';
+$c->shopScript['url'] = 'http://admin.enter.ru/v2/';
+$c->shopScript['user'] = 'admin';
+$c->shopScript['password'] = 'booToo9x';
 $c->shopScript['timeout'] = 3;
 $c->shopScript['retryCount'] = 4;
 $c->shopScript['retryTimeout'] = [
