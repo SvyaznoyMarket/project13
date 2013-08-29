@@ -135,7 +135,7 @@
 		 */
 		serverErrorHandler = {
 			default: function( res ) {
-				console.log('обработчик ошибки');
+				console.log('Обработчик ошибки');
 
 				if ( res.error && res.error.message ) {
 					showError(res.error.message, function() {
@@ -149,7 +149,8 @@
 			},
 
 			0: function( res ) {
-				console.warn('обработка ошибок формы')
+				console.warn('Обработка ошибок формы');
+
 				var formError = null;
 
 				if ( res.redirect ) {
@@ -190,7 +191,7 @@
 			}
 
 			if ( typeof yaCounter10503055 !== 'undefined' ) {
-				yaCounter10503055.reachGoal('\orders\complete');
+				yaCounter10503055.reachGoal('\\orders\\complete');
 			}
 		},
 
@@ -213,11 +214,13 @@
 				global.OrderModel.blockScreen.unblock();
 
 				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
-					console.log('есть обработчик')
+					console.log('Есть обработчик');
+
 					serverErrorHandler[res.error.code](res);
 				}
 				else {
-					console.log('дефолтный обработчик')
+					console.log('Стандартный обработчик');
+
 					serverErrorHandler['default'](res);
 				}
 
@@ -281,16 +284,14 @@
 			$.ajax({
 				url: orderForm.attr('action'),
 				timeout: 120000,
-				type: "POST",
+				type: 'POST',
 				data: dataToSend,
 				success: processingResponse,
 				statusCode: {
 					500: function() {
-						console.log(this.statusCode)
 						showError('Неудалось создать заказ. Попробуйте позднее.');
 					},
 					504: function() {
-						console.log(this.statusCode)
 						showError('Неудалось создать заказ. Попробуйте позднее.');
 					}
 				}
@@ -301,7 +302,7 @@
 		 * Обработчик нажатия на кнопку завершения заказа
 		 */
 		orderCompleteBtnHandler = function orderCompleteBtnHandler() {
-			console.info('завершить оформление заказа');
+			console.info('Завершить оформление заказа');
 
 			orderValidator.validate({
 				onInvalid: function( err ) {
@@ -386,9 +387,9 @@
 		};
 	// end of functions
 	
-	sclub.mask("* ****** ******", { placeholder: "*" } );
-	qiwiPhone.mask("(999) 999-99-99");
-	phoneField.mask("(999) 999-99-99");
+	sclub.mask('* ****** ******', { placeholder: '*' } );
+	qiwiPhone.mask('(999) 999-99-99');
+	phoneField.mask('(999) 999-99-99');
 
 	/**
 	 * AB-test

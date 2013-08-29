@@ -10,7 +10,7 @@
 		}
 
 		return temp;
-	}
+	};
 }(this));
  
  
@@ -35,7 +35,7 @@
 		}
 		
 		return len;
-	}
+	};
 }(this));
  
  
@@ -1790,12 +1790,9 @@ function CreateMap( nodeId, points, baloonTemplate ) {
 	console.log(points);
 
 	this.points = points;
-	console.log(baloonTemplate)
 	this.template = baloonTemplate.html();
-
-	console.log(this.template);
-
 	this.center = this._calcCenter();
+
 	console.log(this.center);
 
 	this.mapWS = new ymaps.Map(nodeId, {
@@ -1830,12 +1827,13 @@ CreateMap.prototype._calcCenter = function() {
 	};
 
 	return mapCenter;
-}
+};
 
 CreateMap.prototype._showMarkers = function() {
 	var tmpPointInfo = null,
 		tmpPlacemark = null,
 		pointsCollection = new ymaps.GeoObjectArray();
+	// end of vars
 
 	// layout for baloon
 	var pointContentLayout = ymaps.templateLayoutFactory.createClass(this.template);
@@ -1878,7 +1876,7 @@ CreateMap.prototype._showMarkers = function() {
 	});
 
 	this.mapWS.geoObjects.add(pointsCollection);
-}
+};
  
  
 /** 
@@ -2073,11 +2071,11 @@ BlackBox.prototype.init = function() {
 		 */
 	var startAction = function startAction( action ) {
 			if ( action.subscribe !== undefined ) {
-				$("body").trigger("showsubscribe", [action.subscribe]);
+				$('body').trigger('showsubscribe', [action.subscribe]);
 			}
 			if ( action.cartButton !== undefined ) {
-				$("body").trigger("markcartbutton", [action.cartButton]);
-				$("body").trigger("updatespinner", [action.cartButton]);
+				$('body').trigger('markcartbutton', [action.cartButton]);
+				$('body').trigger('updatespinner', [action.cartButton]);
 			}
 		},
 
@@ -2572,7 +2570,7 @@ FormValidator.prototype.validate = function( callbacks ) {
 /**
  * Получить тип валидации для поля
  *
- * @param	{Object} 			fieldToFind		Ссылка на jQuery объект поля для которого нужно получить параметры валидации
+ * @param	{Object}			fieldToFind		Ссылка на jQuery объект поля для которого нужно получить параметры валидации
  * 
  * @return	{Object|Boolean}					Возвращает или конфигурацию валидации для поля, или false
  * 
@@ -2677,11 +2675,11 @@ FormValidator.prototype.addFieldToValidate = function( field ) {
  */
 var UpdateUrlString = function(key, value) {
 	var url = this.toString();
-	var re = new RegExp("([?|&])" + key + "=.*?(&|#|$)(.*)", "gi");
+	var re = new RegExp('([?|&])' + key + '=.*?(&|#|$)(.*)', 'gi');
 
 	if (re.test(url)) {
 		if (typeof value !== 'undefined' && value !== null){
-			return url.replace(re, '$1' + key + "=" + value + '$2$3');
+			return url.replace(re, '$1' + key + '=' + value + '$2$3');
 		}
 		else {
 			return url.replace(re, '$1$3').replace(/(&|\?)$/, '');

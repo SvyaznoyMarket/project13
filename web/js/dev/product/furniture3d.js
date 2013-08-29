@@ -2,18 +2,20 @@
  * 3D для мебели
  */
 ;(function() {
-	var loadFurniture3D = function() {
-		var furnitureAfterLoad = function() {
+	var loadFurniture3D = function loadFurniture3D() {
+		var furnitureAfterLoad = function furnitureAfterLoad() {
 
 			var object = $('#3dModelImg'),
 				data = object.data('value'),
-				host = object.data('host');
+				host = object.data('host'),
+
+				AnimFramePlayer = null;
 			// end of vars
 
 			var furniture3dPopupShow = function furniture3dPopupShow() {
 				$('#3dModelImg').lightbox_me({
 					centered: true,
-					closeSelector: ".close"
+					closeSelector: '.close'
 				});
 
 				return false;
@@ -21,7 +23,8 @@
 
 			try {
 				if ( !$('#3dImgContainer').length ) {
-					var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
+					AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
+
 					AnimFramePlayer.DoLoadModel(data);
 					$('.mGrad360.3dimg').bind('click', furniture3dPopupShow);
 				}
@@ -30,7 +33,7 @@
 				var pageID = $('body').data('id'),
 					dataToLog = {
 						event: '3dimg',
-						type:'ошибка загрузки 3dimg для мебели',
+						type: 'ошибка загрузки 3dimg для мебели',
 						pageID: pageID,
 						err: err
 					};

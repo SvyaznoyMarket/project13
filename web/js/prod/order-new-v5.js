@@ -263,7 +263,7 @@ DeliveryBox.prototype._addProduct = function( product ) {
 	tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
 	// Добавляем стоимость продукта к общей стоимости блока доставки
-	self.fullPrice += tmpProduct.price,
+	self.fullPrice += tmpProduct.price;
 
 	self.products.push(tmpProduct);
 };
@@ -458,7 +458,6 @@ DeliveryBox.prototype.calculateDate = function() {
 		console.log('новый токен '+newToken);
 		console.log(self);
 
-		console.warn('отделяем блок')
 		self.OrderModel.createdBox[newToken] = new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id, self.OrderModel);
 
 		self.calculateDate();
@@ -516,13 +515,13 @@ DeliveryBox.prototype.makeCalendar = function() {
 	 */
 	for ( k = 0; k <= self.allDatesForBlock().length - 1; k++ ) {
 		if ( self.allDatesForBlock()[k + 1] === undefined ) {
-			console.info('следущая дата последняя. заканчиваем цикл');
+			console.info('Следущая дата последняя. заканчиваем цикл');
+			
 			break;
 		}
 
 		tmpDay = {};
 		tmpVal = self.allDatesForBlock()[k].value + ONE_DAY;
-		console.log(tmpVal)
 		tmpDate = new Date(tmpVal);
 
 		if ( tmpVal !== self.allDatesForBlock()[k + 1].value ) {
@@ -663,9 +662,9 @@ ko.bindingHandlers.calendarSlider = {
 		// end of vars
 
 		var selectBank = function selectBank() {
-			var chosenBankLink = $("option:selected", select).attr('data-link'),
-				chosenBankId = $("option:selected", select).val(),
-				chosenBankName = $("option:selected", select).html();
+			var chosenBankLink = $('option:selected', select).attr('data-link'),
+				chosenBankId = $('option:selected', select).val(),
+				chosenBankName = $('option:selected', select).html();
 			// end of vars
 
 			bankName.html(chosenBankName);
@@ -674,7 +673,7 @@ ko.bindingHandlers.calendarSlider = {
 			bankLink.attr('href', chosenBankLink);
 		};
 
-		$("option", select).eq(0).attr('selected','selected');
+		$('option', select).eq(0).attr('selected','selected');
 
 		select.change(selectBank);
 		selectBank();
@@ -778,9 +777,7 @@ OrderDictionary.prototype.hasPointDelivery = function( state ) {
  * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
-	var points = this.getAllPointsByState(state),
-		findedPoint = null;
-	// end of vars
+	var points = this.getAllPointsByState(state);
 	
 	pointId = pointId+'';
 	
@@ -802,9 +799,7 @@ OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
  * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getFirstPointByState = function( state ) {
-	var points = this.getAllPointsByState(state),
-		findedPoint = null;
-	// end of vars
+	var points = this.getAllPointsByState(state);
 
 	return window.cloneObject(points[0]);
 };
@@ -865,7 +860,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
  
 	/* Sertificate */
 ;(function( global ) {
-	if( !$('#paymentMethod-10').length ) {
+	if ( !$('#paymentMethod-10').length ) {
 		console.warn('нет метода оплаты сертификатом');
 
 		return false;
@@ -898,7 +893,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			},
 
 			isActive = function isActive() {
-				if( checked && ( getCode() !== '' ) && getCode().length === 14 && ( getPIN() !== '' ) && getPIN().length === 4) {
+				if ( checked &&
+					getCode() !== '' &&
+					getCode().length === 14 &&
+					getPIN() !== '' &&
+					getPIN().length === 4 ) {
 					return true;
 				}
 
@@ -918,11 +917,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 				setProcessingStatus( 'mOrange', 'Проверка по номеру карты' );
 				$.post( urlCheck, getParams(), function( data ) {
-					if( !('success' in data) ) {
+					if ( !('success' in data) ) {
 						return false;
 					}
 
-					if( !data.success ) {
+					if ( !data.success ) {
 						var err = ( typeof(data.error) !== 'undefined' ) ? data.error : 'ERROR';
 
 						setProcessingStatus( 'mRed', err );
@@ -945,7 +944,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					blockProcess.remove();
 				}
 
-				switch( status ) {
+				switch ( status ) {
 					case 'mOrange':
 						options.text = data;
 						checked = false;
@@ -957,7 +956,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 						break;
 					case 'mGreen':
-						if( 'activated' in data ) {
+						if ( 'activated' in data ) {
 							options.text = 'Карта '+ data.code + ' на сумму ' + data.sum + ' активирована!';
 						}
 						else {
@@ -1140,7 +1139,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		serverErrorHandler = {
 			default: function( res ) {
-				console.log('обработчик ошибки');
+				console.log('Обработчик ошибки');
 
 				if ( res.error && res.error.message ) {
 					showError(res.error.message, function() {
@@ -1154,7 +1153,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			},
 
 			0: function( res ) {
-				console.warn('обработка ошибок формы')
+				console.warn('Обработка ошибок формы');
+
 				var formError = null;
 
 				if ( res.redirect ) {
@@ -1195,7 +1195,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 
 			if ( typeof yaCounter10503055 !== 'undefined' ) {
-				yaCounter10503055.reachGoal('\orders\complete');
+				yaCounter10503055.reachGoal('\\orders\\complete');
 			}
 		},
 
@@ -1218,11 +1218,13 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				global.OrderModel.blockScreen.unblock();
 
 				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
-					console.log('есть обработчик')
+					console.log('Есть обработчик');
+
 					serverErrorHandler[res.error.code](res);
 				}
 				else {
-					console.log('дефолтный обработчик')
+					console.log('Стандартный обработчик');
+
 					serverErrorHandler['default'](res);
 				}
 
@@ -1286,16 +1288,14 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			$.ajax({
 				url: orderForm.attr('action'),
 				timeout: 120000,
-				type: "POST",
+				type: 'POST',
 				data: dataToSend,
 				success: processingResponse,
 				statusCode: {
 					500: function() {
-						console.log(this.statusCode)
 						showError('Неудалось создать заказ. Попробуйте позднее.');
 					},
 					504: function() {
-						console.log(this.statusCode)
 						showError('Неудалось создать заказ. Попробуйте позднее.');
 					}
 				}
@@ -1306,7 +1306,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * Обработчик нажатия на кнопку завершения заказа
 		 */
 		orderCompleteBtnHandler = function orderCompleteBtnHandler() {
-			console.info('завершить оформление заказа');
+			console.info('Завершить оформление заказа');
 
 			orderValidator.validate({
 				onInvalid: function( err ) {
@@ -1391,9 +1391,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		};
 	// end of functions
 	
-	sclub.mask("* ****** ******", { placeholder: "*" } );
-	qiwiPhone.mask("(999) 999-99-99");
-	phoneField.mask("(999) 999-99-99");
+	sclub.mask('* ****** ******', { placeholder: '*' } );
+	qiwiPhone.mask('(999) 999-99-99');
+	phoneField.mask('(999) 999-99-99');
 
 	/**
 	 * AB-test
@@ -1659,7 +1659,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				node = $(element),
 				fieldNode = node.find('.mSaleInput'),
 				buttonNode = node.find('.mSaleBtn'),
-				titleNode = node.find('.bTitle'),
 
 				emptyBlock = node.find('.bSaleData__eEmptyBlock');
 			// end of vars
@@ -1999,7 +1998,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			global.OrderModel.blockScreen.block('Удаляем');
 
 			var itemDeleteAnalytics = function itemDeleteAnalytics() {
-					var products = global.OrderModel.orderDictionary.products;
+					var products = global.OrderModel.orderDictionary.products,
 						totalPrice = 0,
 						totalQuan = 0,
 
@@ -2278,8 +2277,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				'Checkout Step 1 SKU Total': totalPrice,
 				'Checkout Step 1 Order Type': 'cart order'
 			};
-
-			console.log(toKISS)
 
 			if ( typeof _gaq !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'New order', 'Items', totalQuan]);

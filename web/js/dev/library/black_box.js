@@ -185,11 +185,11 @@ BlackBox.prototype.init = function() {
 		 */
 	var startAction = function startAction( action ) {
 			if ( action.subscribe !== undefined ) {
-				$("body").trigger("showsubscribe", [action.subscribe]);
+				$('body').trigger('showsubscribe', [action.subscribe]);
 			}
 			if ( action.cartButton !== undefined ) {
-				$("body").trigger("markcartbutton", [action.cartButton]);
-				$("body").trigger("updatespinner", [action.cartButton]);
+				$('body').trigger('markcartbutton', [action.cartButton]);
+				$('body').trigger('updatespinner', [action.cartButton]);
 			}
 		},
 

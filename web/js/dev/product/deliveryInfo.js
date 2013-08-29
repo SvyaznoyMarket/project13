@@ -15,8 +15,6 @@
 		return false;
 	}
 
-  var nowPresent = false;
-
 	var widgetBox = $('.bDelivery'),
 		deliveryData = widgetBox.data('value'),
 		url = deliveryData.url,

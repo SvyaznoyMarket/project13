@@ -103,5 +103,5 @@
 		}
 	};
 
-	$("body").bind('showsubscribe', lboxCheckSubscribe);
+	$('body').bind('showsubscribe', lboxCheckSubscribe);
 }());

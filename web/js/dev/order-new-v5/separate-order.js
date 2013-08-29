@@ -194,7 +194,6 @@
 				node = $(element),
 				fieldNode = node.find('.mSaleInput'),
 				buttonNode = node.find('.mSaleBtn'),
-				titleNode = node.find('.bTitle'),
 
 				emptyBlock = node.find('.bSaleData__eEmptyBlock');
 			// end of vars
@@ -534,7 +533,7 @@
 			global.OrderModel.blockScreen.block('Удаляем');
 
 			var itemDeleteAnalytics = function itemDeleteAnalytics() {
-					var products = global.OrderModel.orderDictionary.products;
+					var products = global.OrderModel.orderDictionary.products,
 						totalPrice = 0,
 						totalQuan = 0,
 
@@ -813,8 +812,6 @@
 				'Checkout Step 1 SKU Total': totalPrice,
 				'Checkout Step 1 Order Type': 'cart order'
 			};
-
-			console.log(toKISS)
 
 			if ( typeof _gaq !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'New order', 'Items', totalQuan]);

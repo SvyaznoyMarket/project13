@@ -69,7 +69,7 @@ $(document).ready(function() {
 			$('.jsOrder1click').addClass('mDisabled');
 		};
 
-		$("body").bind('addtocart', afterBuy);
+		$('body').bind('addtocart', afterBuy);
 	})();
 	
 

@@ -263,7 +263,7 @@ DeliveryBox.prototype._addProduct = function( product ) {
 	tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
 	// Добавляем стоимость продукта к общей стоимости блока доставки
-	self.fullPrice += tmpProduct.price,
+	self.fullPrice += tmpProduct.price;
 
 	self.products.push(tmpProduct);
 };
@@ -458,7 +458,6 @@ DeliveryBox.prototype.calculateDate = function() {
 		console.log('новый токен '+newToken);
 		console.log(self);
 
-		console.warn('отделяем блок')
 		self.OrderModel.createdBox[newToken] = new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id, self.OrderModel);
 
 		self.calculateDate();
@@ -516,13 +515,13 @@ DeliveryBox.prototype.makeCalendar = function() {
 	 */
 	for ( k = 0; k <= self.allDatesForBlock().length - 1; k++ ) {
 		if ( self.allDatesForBlock()[k + 1] === undefined ) {
-			console.info('следущая дата последняя. заканчиваем цикл');
+			console.info('Следущая дата последняя. заканчиваем цикл');
+			
 			break;
 		}
 
 		tmpDay = {};
 		tmpVal = self.allDatesForBlock()[k].value + ONE_DAY;
-		console.log(tmpVal)
 		tmpDate = new Date(tmpVal);
 
 		if ( tmpVal !== self.allDatesForBlock()[k + 1].value ) {

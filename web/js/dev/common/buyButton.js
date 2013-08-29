@@ -28,7 +28,7 @@
 			button.removeClass('mLoading');
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
-			$("body").trigger("addtocart", [data]);
+			$('body').trigger('addtocart', [data]);
 		};
 
 		$.get(url, addToCart);
@@ -178,7 +178,7 @@
 			if ( typeof MyThings !== 'undefined' ) {
 				MyThings.Track({
 					EventType: MyThings.Event.Visit,
-					Action: "1013",
+					Action: '1013',
 					ProductId: productData.id
 				});
 			}
@@ -248,10 +248,10 @@
 			adAdriver(data);
             addToRetailRocket(data);
 
-            if ( data.redirect ) {
-            	document.location.href = data.redirect;
-            }
-            else if ( window.blackBox ) {
+			if ( data.redirect ) {
+				document.location.href = data.redirect;
+			}
+			else if ( window.blackBox ) {
 				window.blackBox.basket().add( tmpitem );
 			}
 
@@ -259,6 +259,6 @@
 	//end of vars
 
 	$(document).ready(function() {
-		$("body").bind('addtocart', buyProcessing);
+		$('body').bind('addtocart', buyProcessing);
 	});
 }());

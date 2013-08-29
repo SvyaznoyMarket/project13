@@ -319,7 +319,7 @@ $.ajaxSetup({
 			button.removeClass('mLoading');
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
-			$("body").trigger("addtocart", [data]);
+			$('body').trigger('addtocart', [data]);
 		};
 
 		$.get(url, addToCart);
@@ -469,7 +469,7 @@ $.ajaxSetup({
 			if ( typeof MyThings !== 'undefined' ) {
 				MyThings.Track({
 					EventType: MyThings.Event.Visit,
-					Action: "1013",
+					Action: '1013',
 					ProductId: productData.id
 				});
 			}
@@ -539,10 +539,10 @@ $.ajaxSetup({
 			adAdriver(data);
             addToRetailRocket(data);
 
-            if ( data.redirect ) {
-            	document.location.href = data.redirect;
-            }
-            else if ( window.blackBox ) {
+			if ( data.redirect ) {
+				document.location.href = data.redirect;
+			}
+			else if ( window.blackBox ) {
 				window.blackBox.basket().add( tmpitem );
 			}
 
@@ -550,7 +550,7 @@ $.ajaxSetup({
 	//end of vars
 
 	$(document).ready(function() {
-		$("body").bind('addtocart', buyProcessing);
+		$('body').bind('addtocart', buyProcessing);
 	});
 }());
  
@@ -684,7 +684,7 @@ $(document).ready(function(){
 
 
 	// hover imitation for IE
-	if ( window.navigator.userAgent.indexOf("MSIE") >= 0 ) {
+	if ( window.navigator.userAgent.indexOf('MSIE') >= 0 ) {
 		$('.allpageinner').on( 'hover', '.goodsbox__inner', function() {
 			$(this).toggleClass('hover');
 		});
@@ -837,15 +837,15 @@ $(document).ready(function(){
  */
 ;(function() {
 	$.ajax({
-		url: "https://jira.enter.ru/s/ru_RU-istibo/773/3/1.2.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2e17c5d6",
-		type: "get",
+		url: 'https://jira.enter.ru/s/ru_RU-istibo/773/3/1.2.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?collectorId=2e17c5d6',
+		type: 'get',
 		cache: true,
-		dataType: "script"
+		dataType: 'script'
 	});
 	
 	window.ATL_JQ_PAGE_PROPS = {
-		"triggerFunction": function( showCollectorDialog ) {
-			$("#jira").click(function( e ) {
+		'triggerFunction': function( showCollectorDialog ) {
+			$('#jira').click(function( e ) {
 				e.preventDefault();
 				showCollectorDialog();
 			});
@@ -1117,7 +1117,7 @@ $(document).ready(function() {
 		var wholemessage = form.serializeArray();
 
 		form.find('[type="submit"]:first').attr('disabled', true).val('login-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...');
-		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val();
+		wholemessage['redirect_to'] = form.find('[name="redirect_to"]:first').val();
 
 		var authFromServer = function( response ) {
 			if ( !response.success ) {
@@ -1227,7 +1227,7 @@ $(document).ready(function() {
 	
 	/* Infinity scroll */
 	var ableToLoad = true;
-	var compact = $("div.goodslist").length;
+	var compact = $('div.goodslist').length;
 	var custom_jewel = $('.items-section__list').length;
 
 	function liveScroll( lsURL, filters, pageid ) {
@@ -1244,13 +1244,13 @@ $(document).ready(function() {
 		}
 
 		var loader =
-			"<div id='ajaxgoods' class='bNavLoader'>" +
-				"<div class='bNavLoader__eIco'><img src='/images/ajar.gif'></div>" +
-				"<div class='bNavLoader__eM'>" +
-					"<p class='bNavLoader__eText'>Подождите немного</p>"+
-					"<p class='bNavLoader__eText'>Идет загрузка</p>"+
-				"</div>" +
-			"</div>";
+			'<div id="ajaxgoods" class="bNavLoader">' +
+				'<div class="bNavLoader__eIco"><img src="/images/ajar.gif"></div>' +
+				'<div class="bNavLoader__eM">' +
+					'<p class="bNavLoader__eText">Подождите немного</p>'+
+					'<p class="bNavLoader__eText">Идет загрузка</p>'+
+				'</div>' +
+			'</div>';
 
 		tmpnode.after( loader );
 
@@ -1262,7 +1262,7 @@ $(document).ready(function() {
 		}
 
 		$.get( lsURL, params, function(data) {
-			if ( data != "" && !data.data ) { // JSON === error
+			if ( data != '' && !data.data ) { // JSON === error
 				ableToLoad = true;
 				if ( compact || custom_jewel ) {
 					tmpnode.append(data);
@@ -1361,7 +1361,7 @@ $(document).ready(function() {
 		source: function( request, response ) {
 			$.ajax({
 				url: $('#jscity').data('url-autocomplete'),
-				dataType: "json",
+				dataType: 'json',
 				data: {
 					q: request.term
 				},
@@ -1383,10 +1383,10 @@ $(document).ready(function() {
 			$('#jschangecity').removeClass('mDisabled');
 		},
 		open: function() {
-			$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+			$( this ).removeClass( 'ui-corner-all' ).addClass( 'ui-corner-top' );
 		},
 		close: function() {
-			$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+			$( this ).removeClass( 'ui-corner-top' ).addClass( 'ui-corner-all' );
 		}
 	});
 	
@@ -1402,7 +1402,7 @@ $(document).ready(function() {
 			onClose: function() {			
 				if( !window.docCookies.hasItem('geoshop') ) {
 					var id = $('#jsregion').data('region-id');
-					window.docCookies.setItem("geoshop", id, 31536e3, "/");
+					window.docCookies.setItem('geoshop', id, 31536e3, '/');
 					// document.location.reload()
 				}
 			}
@@ -1438,7 +1438,7 @@ $(document).ready(function() {
 			
 		};
 
-		var autoResolve = $(this).data("autoresolve-url");
+		var autoResolve = $(this).data('autoresolve-url');
 
 		if ( autoResolve !=='undefined' ) {
 			$.ajax({
@@ -1551,27 +1551,27 @@ $(document).ready(function() {
   
 	/* Side Filter Block handlers */
 	
-	$(".bigfilter dd[style='display: block;']").prev(".bigfilter dt").addClass("current");
+	$('.bigfilter dd[style="display: block;"]').prev('.bigfilter dt').addClass('current');
 
-	$(".bigfilter dt").click(function(){
+	$('.bigfilter dt').click(function(){
 		if ( $(this).hasClass('submit') ){
 			return true;
 		}
 
-		$(this).next(".bigfilter dd").slideToggle(200);
-		$(this).toggleClass("current");
+		$(this).next('.bigfilter dd').slideToggle(200);
+		$(this).toggleClass('current');
 		return false;
 	});
 	
-	$(".f1list dt B").click(function(){
-		$(this).parent("dt").next(".f1list dd").slideToggle(200);
-		$(this).toggleClass("current");
+	$('.f1list dt B').click(function(){
+		$(this).parent('dt').next('.f1list dd').slideToggle(200);
+		$(this).toggleClass('current');
 		return false;
 	});
 
-	$(".tagslist dt").click(function(){
-		$(this).next(".tagslist dd").slideToggle(200);
-		$(this).toggleClass("current");
+	$('.tagslist dt').click(function(){
+		$(this).next('.tagslist dd').slideToggle(200);
+		$(this).toggleClass('current');
 		return false;
 	});
 	
@@ -1667,7 +1667,7 @@ $(document).ready(function() {
 
 				var firstli = null;
 
-				if ( el.is("div") ) { //triggered from filter slider !
+				if ( el.is('div') ) { //triggered from filter slider !
 					firstli = el;
 				}
 				else {
@@ -1702,7 +1702,7 @@ $(document).ready(function() {
 
 		var wholemessage = form.serializeArray();
 
-		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val();
+		wholemessage['redirect_to'] = form.find('[name="redirect_to"]:first').val();
 		$.ajax({
 			type: 'GET',
 			url: form.data('action-count'),
@@ -2152,58 +2152,7 @@ $(document).ready(function() {
 
 		dajax.post( dlvr_node.data('calclink'), coreid );
 	}
-	
-// 	// if ( $('.delivery-info').length ) { // Product Card
-// 	// 	var dlvr_node = $('.delivery-info')
-// 	// 	var dajax = new Dlvrajax()
-// 	// 	var isSupplied = false
-// 	// 	if ($('#productInfo').length){
-// 	// 		var prData = $('#productInfo').data('value')
-// 	// 		isSupplied = prData.isSupplied
-// 	// 	}
-// 	// 	dajax.node = dlvr_node
-// 	// 	Dlvrajax.prototype.processHTML = function( id ) {
-// 	// 		var self = this.self,
-// 	// 			other = this.other    	
-// 	// 		var html = '<h4>Как получить заказ?</h4><ul>'
-// 	// 		if( self )
-// 	// 			html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине ' +
-// 	// 					self + '</h5><div>&mdash; <a target="blank" href="' +
-// 	// 					dlvr_node.data('shoplink') + '">В каких магазинах ENTER можно забрать?</a></div></li>'	
-// 	// 		// console.log(other.length)
-// 	// 		if( other.length > 0 ){
-// 	// 			html += '<li><h5>Можно заказать сейчас с доставкой</h5>'
-// 	// 		}
-// 	// 		for(var i in other) {
-// 	// 			// console.info(other[i].date)
-// 	// 			// console.info(this.formatPrice(other[i].price))
-// 	// 			if (other[i].date !== undefined){
-// 	// 				html += '<div>&mdash; Можем доставить '+ other[i].date + this.formatPrice(other[i].price) +'</div>'
-// 	// 			}
-// 	// 			if( other[i].tc ) {
-// 	// 				html += '<div>&mdash; <a href="/how_get_order">Доставка осуществляется партнерскими транспортными компаниями</a></div>'
-// 	// 			}
-// 	// 		}
-// 	// 		if( other.length > 0 && isSupplied){
-// 	// 			html = '<h4>Доставка</h4><p>Через ~'+other[0].days+' дней<br/>планируемая дата поставки '+other[0].origin_date+'</p><p>Оператор контакт-cENTER согласует точную дату за 2-3 дня</p>'
-// 	// 			if (other[i].price === 0){
-// 	// 				html += '<p class="price">Бесплатно</p>'
-// 	// 			}
-// 	// 			else{
-// 	// 				html += '<p class="price">'+other[i].price+' <span class="rubl">p</span></p>'
-// 	// 			}
-// 	// 		}
-// 	// 		else{
-// 	// 			html += '</ul>'	
-// 	// 		}
-			
-// 	// 		dlvr_node.html(html)
-// 	// 	}
-	
-// 	// 	var coreid = [ dlvr_node.attr('id').replace('product-id-', '') ]
-		
-// 	// 	dajax.post( dlvr_node.data('calclink'), coreid )
-// 	// }
+
 
 
 	if ( $('.searchtextClear').length ){
@@ -2356,7 +2305,7 @@ $(document).ready(function() {
 		}
 	};
 
-	$("body").bind('showsubscribe', lboxCheckSubscribe);
+	$('body').bind('showsubscribe', lboxCheckSubscribe);
 }());
  
  

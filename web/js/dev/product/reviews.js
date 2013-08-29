@@ -1,25 +1,27 @@
 ;(function(){
 	// текущая страница для каждой вкладки
 	var reviewCurrentPage = {
-		user: -1,
-		pro: -1
-	};
-	// количество страниц для каждой вкладки
-	var reviewPageCount = {
-		user: 0,
-		pro: 0
-	};
-	var reviewsProductId = null;
-	var reviewsType = null;
-	var reviewsContainerClass = null;
+			user: -1,
+			pro: -1
+		},
+		// количество страниц для каждой вкладки
+		reviewPageCount = {
+			user: 0,
+			pro: 0
+		},
+		reviewsProductId = null,
+		reviewsType = null,
+		reviewsContainerClass = null,
 
-	//nodes
-	var moreReviewsButton = $('.jsGetReviews');
-	var reviewTab = $('.bReviewsTabs__eTab');
-	var reviewWrap = $('.bReviewsWrapper');
-	var reviewContent = $('.bReviewsContent');
+		//nodes
+		moreReviewsButton = $('.jsGetReviews'),
+		reviewTab = $('.bReviewsTabs__eTab'),
+		reviewWrap = $('.bReviewsWrapper'),
+		reviewContent = $('.bReviewsContent');
+	// end of vars
+
 	// получение отзывов
-	var getReviews = function(productId, type, containerClass) {
+	var getReviews = function( productId, type, containerClass ) {
 		var page = reviewCurrentPage[type] + 1;
 		
 		var layout = false;
@@ -46,7 +48,7 @@
 	};
 
 	// карточка товара - отзывы - переключение по табам
-	if(reviewTab.length) {
+	if ( reviewTab.length ) {
 		// начальная инициализация
 		var initialType = reviewWrap.attr('data-reviews-type');
 
@@ -60,9 +62,10 @@
 		reviewsType = reviewWrap.attr('data-reviews-type');
 		reviewsContainerClass = reviewWrap.attr('data-container');
 
-		reviewTab.click(function(){
+		reviewTab.click(function() {
 			reviewsContainerClass = $(this).attr('data-container');
-			if (reviewsContainerClass === undefined){
+
+			if ( reviewsContainerClass === undefined ) {
 				return;
 			}
 
@@ -73,44 +76,50 @@
 			$('.'+reviewsContainerClass).show();
 
 			moreReviewsButton.hide();
+
 			if (reviewsType === 'user') {
 				moreReviewsButton.html('Показать ещё отзывы');
-			} else if(reviewsType === 'pro') {
+			}
+			else if ( reviewsType === 'pro' ) {
 				moreReviewsButton.html('Показать ещё обзоры');
 			}
 
-			if(!$('.'+reviewsContainerClass).html()) {
+			if ( !$('.'+reviewsContainerClass).html() ) {
 				getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
-			} else {
+			}
+			else {
 				// проверяем что делать с кнопкой "показать еще" - скрыть/показать
-				if(reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType]) {
+				if ( reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType] ) {
 					moreReviewsButton.hide();
-				} else {
+				}
+				else {
 					moreReviewsButton.show();
 				}
 			}
 		});
 
-		moreReviewsButton.click(function(){
+		moreReviewsButton.click(function() {
 			getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
 		});
 	}
 
-	var leaveReview = function(){
-		if (!$('#jsProductCard').length){
+	var leaveReview = function() {
+		if ( !$('#jsProductCard').length ) {
 			return false;
 		}
 		
-		var productInfo = $('#jsProductCard').data('value');
-		var pid = $(this).data('pid');
-		var name = productInfo.name;
-		var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
+		var productInfo = $('#jsProductCard').data('value'),
+			pid = $(this).data('pid'),
+			name = productInfo.name,
+			src = 'http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&' + $.param({key: pid, name: name});
+		// end of vars
 
-		$(".reviewPopup").lightbox_me({
+		$('.reviewPopup').lightbox_me({
 			onLoad: function() {
-				$("#rframe").attr("src", src);
+				$('#rframe').attr('src', src);
 			}
 		});
+
 		return false;
 	};
 
