@@ -366,8 +366,8 @@ class CreateAction {
 
             // товары
             foreach ($orderPart->getProductIds() as $productId) {
-                $cartProduct = $user->getCart()->getProductById($productId);
-                if (!$cartProduct) {
+                $cartProduct = $user->getCart()->getPaypalProduct();
+                if (!$cartProduct || ($cartProduct->getId() != $productId)) {
                     \App::logger()->error(sprintf('Товар #%s не найден в корзине', json_encode($productId, JSON_UNESCAPED_UNICODE)), ['order']);
                     continue;
                 }
