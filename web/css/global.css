@@ -11872,6 +11872,10 @@
     width: 400px;
     text-transform: uppercase;
   }
+  .bBusinessReg .bStaticBanner {
+    text-align: center;
+    margin: 0 0 30px;
+  }
   .bBusinessReg .bHeadRegLink {
     float: right;
     margin: 16px 0 0;
@@ -11889,7 +11893,6 @@
   }
   .bBusinessReg .bCont__eLeft a {
     text-decoration: underline;
-    color: #49c7ed;
   }
   .bBusinessReg .bCont__eLeft .bMail {
     color: #000;
@@ -11930,7 +11933,6 @@
   }
   .bBusinessReg .bDownList__eLink {
     text-decoration: underline;
-    color: #49c7ed;
   }
   .bBusinessReg .bServicesList__eItem {
     background: #ffffff;
@@ -11963,12 +11965,22 @@
   }
   .bBusinessReg .bServicesList .mCatItem {
     text-align: left;
-    text-transform: uppercase;
   }
   .bBusinessReg .bServicesList .mCatItem .bServicesList__eLink {
     margin-left: 25px;
     padding: 0 0 0 103px;
     background: url('/css/bBusinessReg/img/mCatItem.png') no-repeat 0 35px;
+  }
+  .bBusinessReg .bServicesList .mSertificat {
+    text-align: left;
+    font: normal 36px/34px "Enter Type";
+    padding: 25px 0 0;
+    height: 95px;
+  }
+  .bBusinessReg .bServicesList .mSertificat .bServicesList__eLink {
+    margin-left: 25px;
+    padding: 0 0 0 103px;
+    background: url('/css/bBusinessReg/img/mSertificat.png') no-repeat 0 6px;
   }
   .bBusinessReg .bServicesList__eLink {
     display: block;
