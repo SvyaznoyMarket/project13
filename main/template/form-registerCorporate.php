@@ -28,7 +28,7 @@
                     <ul class="bBusinessRegSubList">
                         <li class="bBusinessRegSubList__eItem"><span class="bText">на сайте;</span></li>
                         <li class="bBusinessRegSubList__eItem"><span class="bText">через круглосуточный Контакт-cENTER<br/><strong>8 (800) 700-00-09</strong> (звонок бесплатный);</span></li>
-                        <li class="bBusinessRegSubList__eItem"><span class="bText">а также при помощи персонального менеджера по прямому номеру <strong>+7 (495) 775-78-85</strong> или по e-mail по email: <strong><a class="bMail" href="mailto:partner@enter.ru">partner@enter.ru</a></strong> или в магазинах Enter.</span></li>
+                        <li class="bBusinessRegSubList__eItem"><span class="bText">а также при помощи персонального менеджера по прямому номеру <strong>+7 (495) 775-78-85</strong> или по e-mail: <strong><a class="bMail" href="mailto:partner@enter.ru">partner@enter.ru</a></strong> или в магазинах Enter.</span></li>
                     </ul>
                 </li>
 
