@@ -14,6 +14,7 @@
 
 <form action="<?= $page->url('user.edit') ?>" class="form" method="post">
     <div class="fl width430">
+        <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
 
         <div class="pb10">
             <label for="user_first_name">Имя</label>:
