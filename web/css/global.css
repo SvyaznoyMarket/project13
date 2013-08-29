@@ -10043,6 +10043,34 @@
     width: 170px;
     height: 35px;
   }
+  .btnBuy.mBtnPayPal {
+    width: 195px;
+    height: 42px;
+  }
+  .btnBuy.mBtnPayPal .bPayPalLink {
+    width: 195px;
+    height: 42px;
+    display: block;
+  }
+  .btnBuy.mBtnPayPal .bPayPalLink.mLoading {
+    cursor: default;
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    -webkit-opacity: 0.5;
+    opacity: 0.5;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    filter: alpha(opacity=50);
+  }
+  .btnBuy.mBtnPayPal .bPayPalLink.mBought {
+    text-indent: -9999px;
+    background: url("https://www.paypalobjects.com/ru_RU/i/btn/btn_xpressCheckout.gif");
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    -webkit-opacity: 0.5;
+    opacity: 0.5;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    filter: alpha(opacity=50);
+  }
   .btnBuy .btnBuy__eLink {
     background: #ffc000;
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));

@@ -14,6 +14,8 @@
 
 <?
 $helper = new \Helper\TemplateHelper();
+$request = \App::request();
+
 $paypalECS = isset($paypalECS) && (true === $paypalECS);
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
@@ -295,11 +297,11 @@ foreach (array_reverse($productsById) as $product) {
 
 		<div class="bHeadnote">
 			Уже покупали у нас?
-			<strong><a id="auth-link" class="underline" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
+			<strong><a id="auth-link" class="underline bAuthLink" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
 			и вы сможете использовать ранее введенные данные
 		</div>
 		
-		<form id="order-form" action="<?= $paypalECS ? $page->url('order.paypal.create') : $page->url('order.create') ?>" method="post">
+		<form id="order-form" action="<?= $paypalECS ? $page->url('order.paypal.create', ['token' => $request->get('token'), 'PayerID' => $request->get('PayerID')]) : $page->url('order.create') ?>" method="post">
 			<!-- Info about customer -->
 			<div class="bBuyingLine mBuyingFields">
 				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>

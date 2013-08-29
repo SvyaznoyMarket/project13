@@ -4,6 +4,7 @@ namespace Controller\Order\Paypal;
 
 class NewAction {
     use \Controller\Order\FormTrait;
+    use \Controller\Order\PaypalTrait;
 
     /**
      * @param \Http\Request $request
@@ -24,6 +25,19 @@ class NewAction {
             if (!$cartProduct) {
                 return new \Http\RedirectResponse(\App::router()->generate('cart'));
             }
+
+            $paypalToken = trim((string)$request->get('token'));
+            if (!$paypalToken) {
+                throw new \Exception\NotFoundException('Не передан параметр token');
+            }
+
+            $paypalPayerId = trim((string)$request->get('PayerID'));
+            if (!$paypalToken) {
+                throw new \Exception\NotFoundException('Не передан параметр PayerID');
+            }
+
+            // проверка paypal
+            $result = $this->getPaypalCheckout($paypalToken, $paypalPayerId);
 
             // форма
             $form = $this->getForm();
