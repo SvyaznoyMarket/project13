@@ -169,7 +169,6 @@ class DeliveryAction {
                 'products'        => [],
                 'shops'           => [],
                 'discounts'       => [],
-                'cart'            => [],
             ]);
 
             // если недоступен заказ товара из магазина
