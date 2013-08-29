@@ -1727,6 +1727,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		paypalECS: ko.observable(false),
 
 		/**
+		 * Первоначальная сумма корзины
+		 */
+		cartSum: null,
+
+		/**
 		 * Ссылка на словарь
 		 */
 		orderDictionary: null,
@@ -2207,6 +2212,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			if ( res.paypalECS ) {
 				console.info('paypal true');
 				global.OrderModel.paypalECS(true);
+			}
+
+			if ( res.cart && res.cart.sum ) {
+				console.info('Есть первоначальная сумма корзины : '+res.cart.sum);
+				global.OrderModel.cartSum = res.cart.sum;
 			}
 
 			global.OrderModel.deliveryTypes(res.deliveryTypes);
