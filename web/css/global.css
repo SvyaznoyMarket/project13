@@ -8184,12 +8184,6 @@
     color: #a6a6a6;
     text-decoration: line-through;
   }
-  .bEmptyCart {
-    background: url("/css/basket/img/bgEmptyCart.gif") no-repeat 0 0;
-    height: 329px;
-    width: 889px;
-    margin: -47px 0 20px 38px;
-  }
 }
 /*---END---СТИЛИ КОРЗИНЫ---*/
 /*-------СТИЛИ ПОДСКАЗОК ПОИСКА-----*/
@@ -12075,6 +12069,41 @@
   }
 }
 /*---END---СТИЛИ СТРАНИЦЫ РЕГИСТРАЦИИ ЮР. ЛИЦ---*/
+/*------СТИЛИ ПУСТОЙ КОРЗИНЫ------*/
+@media all {
+  .bEmptyCart {
+    background: url("/css/bEmptyCart/img/bEmptyCart.gif") no-repeat 0 0;
+    padding: 100px 0 0 110px;
+    margin: -40px 0 0 15px;
+  }
+  .bEmptyCart .bEmptyCartText {
+    font-size: 24px;
+    color: #8a8a8a;
+    width: 200px;
+    float: left;
+  }
+  .bEmptyCart .bEmptyCartList {
+    float: right;
+    width: 250px;
+  }
+  .bEmptyCart .bEmptyCartList__eItem {
+    font: normal 22px/24px "Enter";
+    text-transform: uppercase;
+    margin: 0 0 20px;
+  }
+  .bEmptyCart .bEmptyCartList .bOrange {
+    color: #f79a31;
+  }
+  .bEmptyCart .bEmptyCartList .bBlue {
+    color: #44c7ee;
+    text-decoration: underline;
+  }
+  .bEmptyCart .bEmptyCartList .bGreyText {
+    font: normal 16px/18px "Enter Type";
+    text-transform: none;
+  }
+}
+/*---END---СТИЛИ ПУСТОЙ КОРЗИНЫ---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
 /*------СТИЛИ ОПРОСА------*/
