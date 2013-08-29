@@ -79,12 +79,14 @@ foreach (array_reverse($productsById) as $product) {
 
 					<div class="bDeliverySelf"><span data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></span></div>
 
-					<!-- кнопка сменить магазин -->
-					<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery,
-												text: 'Сменить магазин',
-												click: box.changePoint">
-					</a>
-					<!-- /кнопка сменить магазин -->
+					<? if (isset($deliveryData['shops']) && (count($deliveryData['shops']) > 1)): ?>
+						<!-- кнопка сменить магазин -->
+						<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery && box.pointList.length > 1,
+													text: 'Сменить магазин',
+													click: box.changePoint">
+						</a>
+						<!-- /кнопка сменить магазин -->
+					<? endif ?>
 				</div>
 
 				<div class="bBuyingLine__eRight">
@@ -189,7 +191,7 @@ foreach (array_reverse($productsById) as $product) {
 
     <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 	<!-- Sale section -->
-	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length">
+	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length, css: { hidden: paypalECS }">
 		<div class="bBuyingLine">
 			<div class="bBuyingLine__eLeft">
 				<h2 class="bBuyingSteps__eTitle">

@@ -457,6 +457,7 @@ class Cart {
         $data['paypalProduct'][$product->getId()] = [
             'id'       => $product->getId(),
             'quantity' => $product->getQuantity(),
+            'sum'      => $product->getSum(),
         ];
 
         $this->storage->set($this->sessionName, $data);

@@ -422,7 +422,14 @@ DeliveryBox.prototype.calculateDate = function() {
 	var self = this,
 		todayTS = self.OrderModel.orderDictionary.getToday(),
 		nowProductDates = null,
-		nowTS = null;
+		nowTS = null,
+
+		newToken = '',
+		tempProduct = null,
+		tempProductArray = [],
+		dateFromCookie = null,
+		intervalFromCookie = null;
+	// end of vars
 
 	console.log('Сегодняшняя дата с сервера '+todayTS);
 
@@ -442,8 +449,40 @@ DeliveryBox.prototype.calculateDate = function() {
 		}
 	}
 
-	// выбираем ближайшую доступную дату
-	self.choosenDate( self.allDatesForBlock()[0] );
+	if ( !self.allDatesForBlock().length ) {
+		console.warn('нет общих дат для блока. Необходимо разделить продукты в блоке');
+
+		tempProduct = self.products.pop();
+		tempProductArray.push(tempProduct);
+		newToken = self.state+'_'+self.choosenPoint().id+'_'+Math.floor( (Math.random() * 10000) + 1 );
+		console.log('новый токен '+newToken);
+		console.log(self);
+
+		console.warn('отделяем блок')
+		self.OrderModel.createdBox[newToken] = new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id, self.OrderModel);
+
+		self.calculateDate();
+
+		return;
+	}
+
+	/**
+	 * Выбираем ближайшую доступную дату
+	 * Если включен PayPal ECS и уже есть сохраненная дата в куки - берем ее из куки
+	 */
+	if ( self.OrderModel.paypalECS() && window.docCookies.hasItem('chDate_paypalECS') ) {
+		console.info('PayPal ECS включен. Необходимо взять выбранную дату из cookie');
+
+		dateFromCookie = window.docCookies.getItem('chDate_paypalECS');
+		self.choosenDate( JSON.parse(dateFromCookie) );
+	}
+	else {
+		self.choosenDate( self.allDatesForBlock()[0] );
+	}
+
+	/**
+	 * Выбираем первый интервал
+	 */
 	self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.allDatesForBlock()[0].dayOfWeek) );
 	// выбираем первый интервал
 	self.choosenInterval( self.choosenDate().intervals[0] );
@@ -600,6 +639,7 @@ ko.bindingHandlers.calendarSlider = {
 		slider.animate({'left': nowLeft});
 	}
 };
+
  
  
 /** 

@@ -21,6 +21,7 @@ class CreateAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
+        $client = \App::coreClientV2();
         $user = \App::user();
         $cart = $user->getCart();
 
@@ -56,19 +57,104 @@ class CreateAction {
                 throw new \Exception('Форма заполнена неверно');
             }
 
-            // создание заказов в ядре
-            $createdOrders = $this->saveOrders($form);
+            // проверка на изменение цены
+            /** @var $cartProduct \Model\Cart\Product\Entity */
+            $cartProduct = reset($cartProducts);
 
-            // сохранение заказов в сессии
-            \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
-                return ['number' => $createdOrder->getNumber(), 'phone' => $form->getMobilePhone()];
-            }, $createdOrders));
+            $parts = $form->getPart();
+            /** @var $part \View\Order\NewForm\PartField|null */
+            $part = reset($parts);
+            if (!$part instanceof \View\Order\NewForm\PartField) {
+                throw new \Exception('Подзаказ не получен');
+            }
 
-            // подписка пользователя
-            $this->subscribeUser($form);
+            $result = null;
+            $exception = null;
+            $client->addQuery(
+                'order/calc-tmp',
+                [
+                    'geo_id'  => $user->getRegion()->getId(),
+                ],
+                [
+                    'product'        => array_map(function(\Model\Cart\Product\Entity $cartProduct) {
+                        return [
+                            'id'       => $cartProduct->getId(),
+                            'quantity' => $cartProduct->getQuantity(),
+                        ];
+                    }, $cartProducts),
+                    'service'        => [],
+                    'coupon_list'    => [],
+                    'blackcard_list' => [],
+                ],
+                function($data) use (&$result, &$shops) {
+                    $result = $data;
+                    \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
+                },
+                function (\Exception $e) use (&$exception) {
+                    $exception = $e;
+                },
+                \App::config()->coreV2['timeout'] * 2
+            );
+            $client->execute();
+            if ($exception instanceof \Exception) {
+                throw $exception;
+            }
+
+            \App::logger()->info(['core.response' => $result], ['order', 'paypal']);
+
+            $productData = (isset($result['products']) && is_array($result['products'])) ? reset($result['products']) : null;
+            if (!$productData) {
+                throw new \Exception('не получено ни одного товара');
+            }
+            $deliveryMethodToken = (0 === strpos($part->getDeliveryMethodToken(), 'standart')) ? $part->getDeliveryMethodToken() : ($part->getDeliveryMethodToken() . '_' . $part->getPointId());
+            \App::logger()->info(sprintf('Проверка стоимости %s', $deliveryMethodToken), ['order', 'paypal']);
+            $deliveryPrice = isset($productData['deliveries'][$deliveryMethodToken]['price']) ? (int)$productData['deliveries'][$deliveryMethodToken]['price'] : 0;
+            if ($cartProduct->getSum() < ($deliveryPrice + $cartProduct->getPrice() * $cartProduct->getQuantity())) {
+                $result = \App::coreClientV2()->query(
+                    'payment/paypal-set-checkout',
+                    [
+                        'geo_id' => \App::user()->getRegion()->getId(),
+                    ],
+                    [
+                        'amount'          => $cartProduct->getPrice() + $deliveryPrice,
+                        'delivery_amount' => 0,
+                        'currency'        => 'USD',
+                        'return_url'      => \App::router()->generate('order.paypal.new', [], true),
+                        'product'         => [
+                            [
+                                'id'       => $cartProduct->getId(),
+                                'quantity' => $cartProduct->getQuantity(),
+                            ],
+                        ],
+                        'service'         => [],
+                    ]
+                );
+                \App::logger()->info(['core.response' => $result], ['order', 'paypal']);
+
+                if (empty($result['payment_url'])) {
+                    throw new \Exception('Не получен урл для редиректа');
+                }
+
+                $createdOrder = new \Model\Order\CreatedEntity($result);
+                \App::logger()->info(['paymentUrl' => $createdOrder->getPaymentUrl()], ['order', 'paypal']);
+
+                $responseData['redirect'] = $createdOrder->getPaymentUrl();
+            } else {
+                // создание заказов в ядре
+                $createdOrders = $this->saveOrders($form);
+
+                // сохранение заказов в сессии
+                \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
+                    return ['number' => $createdOrder->getNumber(), 'phone' => $form->getMobilePhone()];
+                }, $createdOrders));
+
+                // подписка пользователя
+                $this->subscribeUser($form);
+
+                $responseData['redirect'] = \App::router()->generate('order.complete');
+            }
 
             $responseData['success'] = true;
-            $responseData['redirect'] = \App::router()->generate('order.complete');
 
             try {
                 // сохранение заказа в куках
