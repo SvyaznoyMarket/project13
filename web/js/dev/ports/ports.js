@@ -1,3 +1,7 @@
+// используется sociomantic
+var sonar_product = null;
+var sonar_basket = null;
+
 window.ANALYTICS = {
 	
 	// todo SITE-1049
@@ -134,6 +138,35 @@ window.ANALYTICS = {
             s.src   = ('https:'==document.location.protocol?'https://':'http://')
                 + 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
             x.parentNode.insertBefore( s, x );
+        })();
+    },
+
+    sociomanticCategoryPage : function() {
+        (function(){
+            sonar_product = {
+                category : $('#sociomanticCategoryPage').data('prod-cats')
+            };
+        })();
+    },
+
+    sociomanticProductPageStream : function() {
+        (function(){
+            sonar_product = $('#sociomanticProductPageStream').data('scr-product');
+            sonar_product.category = $('#sociomanticProductPageStream').data('prod-cats');
+        })();
+    },
+
+    sociomanticBasket : function() {
+        (function(){
+            sonar_basket = {
+                products: $('#sociomanticBasket').data('cart-prods')
+            };
+        })();
+    },
+
+    sociomanticConfirmationPage : function() {
+        (function(){
+            sonar_basket = $('#sociomanticConfirmationPage').data('sonar-basket');
         })();
     },
 
