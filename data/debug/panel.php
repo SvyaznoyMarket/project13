@@ -29,7 +29,7 @@ if (\App::user()->getToken()) {
 }
 
 // server
-if ('live' != \App::$env) {
+if (\App::config()->debug) {
     $debug->add('server', json_encode(isset($_SERVER) ? $_SERVER : [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 134);
 }
 
