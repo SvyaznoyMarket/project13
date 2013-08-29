@@ -447,7 +447,7 @@ class CreateAction {
 
         $params = [];
         if ($userEntity && $userEntity->getToken()) {
-            $params['token'] = $userEntity->getToken();
+            $params['user_token'] = $userEntity->getToken();
         }
 
         $result = \App::coreClientV2()->query('payment/paypal-create-order', $params, $data);
