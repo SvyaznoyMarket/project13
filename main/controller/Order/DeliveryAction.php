@@ -42,7 +42,7 @@ class DeliveryAction {
         ];
 
         try {
-            if ($paypalECS) {
+            if (true === $paypalECS) {
                 $cartProduct = $cart->getPaypalProduct();
                 if ($cartProduct) {
                     $responseData['cart']['sum'] = $cartProduct->getSum() * $cartProduct->getQuantity();

@@ -14,6 +14,7 @@ class NewAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $client = \App::coreClientV2();
         $user = \App::user();
         $region = $user->getRegion();
         $cart = $user->getCart();
@@ -23,6 +24,30 @@ class NewAction {
             $cartProduct = $cart->getPaypalProduct();
             if (!$cartProduct) {
                 return new \Http\RedirectResponse(\App::router()->generate('cart'));
+            }
+
+            $token = trim((string)$request->get('token'));
+            if (!$token) {
+                throw new \Exception\NotFoundException('Не передан параметр token');
+            }
+
+            $payerId = trim((string)$request->get('PayerID'));
+            if (!$token) {
+                throw new \Exception\NotFoundException('Не передан параметр PayerID');
+            }
+
+            // проверка paypal
+            $result = \App::coreClientV2()->query(
+                'payment/paypal-get-checkout',
+                [
+                    'token'   => $token,
+                    'PayerID' => $payerId,
+                ]
+            );
+            \App::logger()->info(['core.response' => $result], ['order', 'paypal']);
+
+            if (empty($result['payment_amount'])) {
+                throw new \Exception('Не получена сумма оплаты');
             }
 
             // форма
