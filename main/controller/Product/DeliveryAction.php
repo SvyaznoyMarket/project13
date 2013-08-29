@@ -118,8 +118,8 @@ class DeliveryAction {
 
                                 $shop = [
                                     'id'        => (int)$shopItem['id'],
-                                    //'name'      => $shopData[$shopItem['id']]['name'],
-                                    'name'      => $address,
+                                    'name'      => $shopData[$shopItem['id']]['name'],
+                                    // 'name'      => $address,
                                     'regime'    => $shopData[$shopItem['id']]['working_time'], // что за описка "regtime"?
                                     'latitude'  => $shopData[$shopItem['id']]['coord_lat'],
                                     'longitude' => $shopData[$shopItem['id']]['coord_long'],
@@ -129,6 +129,21 @@ class DeliveryAction {
                                     $delivery['shop'][] = $shop;
                                 }
                             }
+
+                            // добавляем url к магазинам
+                            $shops = \RepositoryManager::shop()->getCollectionById(
+                                array_map(function($shopItem){
+                                    return (int)$shopItem['id'];
+                                }, $dateItem['shop_list'])
+                            );
+                            foreach ($shops as $shop) {
+                                foreach ($delivery['shop'] as $key => $shopItem) {
+                                    if($shopItem['id'] == $shop->getId()) {
+                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', array('regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()));
+                                    }
+                                }
+                            }
+
                         }
                     }
 
