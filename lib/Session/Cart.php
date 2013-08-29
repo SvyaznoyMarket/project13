@@ -127,6 +127,13 @@ class Cart {
         $this->actions = null;
     }
 
+    public function clearPaypal() {
+        $data = $this->storage->get($this->sessionName);
+        $data['paypalProduct'] = [];
+
+        $this->storage->set($this->sessionName, $data);
+    }
+
     /**
      * @param \Model\Product\Entity $product
      * @param int $quantity
