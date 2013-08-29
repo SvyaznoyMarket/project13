@@ -293,7 +293,7 @@ foreach (array_reverse($productsById) as $product) {
 
 		<div class="bHeadnote">
 			Уже покупали у нас?
-			<strong><a id="auth-link" class="underline" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
+			<strong><a id="auth-link" class="underline bAuthLink" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
 			и вы сможете использовать ранее введенные данные
 		</div>
 		

@@ -178,7 +178,7 @@ $(document).ready(function() {
 		window.open(el.attr('href'), 'oauthWindow', 'status = 1, width = 540, height = 420').focus();
 	});
 		
-	$('#auth-link').click(function() {
+	$('.bAuthLink').click(function() {
 		$('#auth-block').lightbox_me({
 			centered: true,
 			autofocus: true,

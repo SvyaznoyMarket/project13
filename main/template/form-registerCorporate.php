@@ -144,7 +144,7 @@
 
         <ul class="bHeadRegLink">
             <li class="bHeadRegLink__eItem"><a data-goto="bCorpRegFormHead" class="bHeadRegLink__eLink jsGoToId" href="">Регистрация</a></li>
-            <li class="bHeadRegLink__eItem"><a class="bHeadRegLink__eLink" href="">Вход в личный кабинет</a></li>
+            <li class="bHeadRegLink__eItem"><a class="bHeadRegLink__eLink bAuthLink" href="">Вход в личный кабинет</a></li>
         </ul>
     </div>
 

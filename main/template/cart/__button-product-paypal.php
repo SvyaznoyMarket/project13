@@ -21,8 +21,8 @@ return function (
     $url = $helper->url('cart.paypal.product.set', $urlParams);
 
 ?>
-<div class="bWidgetBuy__eBuy btnBuy">
-    <a class="jsBuyButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Оплатите с помощью PayPal</a>
+<div class="bWidgetBuy__eBuy btnBuy mBtnPayPal">
+    <a class="bPayPalLink jsBuyButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>"><img src="https://www.paypalobjects.com/ru_RU/i/btn/btn_xpressCheckout.gif" /></a>
 </div>
 
 <? };
