@@ -60,7 +60,6 @@ class CreateAction {
             // проверка на изменение цены
             /** @var $cartProduct \Model\Cart\Product\Entity */
             $cartProduct = reset($cartProducts);
-            $cartSum = $cartProduct->getSum() * $cartProduct->getQuantity();
 
             $parts = $form->getPart();
             /** @var $part \View\Order\NewForm\PartField|null */
@@ -110,7 +109,7 @@ class CreateAction {
             $deliveryMethodToken = (0 === strpos($part->getDeliveryMethodToken(), 'standart')) ? $part->getDeliveryMethodToken() : ($part->getDeliveryMethodToken() . '_' . $part->getPointId());
             \App::logger()->info(sprintf('Проверка стоимости %s', $deliveryMethodToken), ['order', 'paypal']);
             $deliveryPrice = isset($productData['deliveries'][$deliveryMethodToken]['price']) ? (int)$productData['deliveries'][$deliveryMethodToken]['price'] : 0;
-            if ($deliveryPrice > 0) {
+            if ($cartProduct->getSum() < ($deliveryPrice + $cartProduct->getPrice() * $cartProduct->getQuantity())) {
                 $result = \App::coreClientV2()->query(
                     'payment/paypal-set-checkout',
                     [
