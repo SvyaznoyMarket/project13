@@ -36,6 +36,7 @@
 			token = null,
 			nowState = null,
 			nowProduct = null,
+			choosenBlock = null,
 
 			discounts = global.OrderModel.orderDictionary.orderData.discounts;
 		// end of vars
@@ -51,7 +52,6 @@
 
 
 		// очищаем объект созданых блоков, удаляем блоки из модели
-		global.OrderModel.createdBox = {};
 		global.OrderModel.deliveryBoxes.removeAll();
 
 		// Маркируем выбранный способ доставки
@@ -110,19 +110,20 @@
 
 				token = nowState+'_'+choosenPointForBox;
 
-				if ( global.OrderModel.createdBox[token] !== undefined ) {
+				if ( global.OrderModel.hasDeliveryBox(token) ) {
 					// Блок для этого типа доставки в этот пункт уже существует
-					global.OrderModel.createdBox[token].addProductGroup( productsToNewBox );
+					choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
+					choosenBlock.addProductGroup( productsToNewBox );
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					global.OrderModel.createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, global.OrderModel );
+					new DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
 				}
 			}
 		}
 
 		console.info('Созданные блоки:');
-		console.log(global.OrderModel.createdBox);
+		console.log(global.OrderModel.deliveryBoxes());
 
 		// выбираем URL для проверки купонов - первый видимый купон
 		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
@@ -226,7 +227,11 @@
 	 * === ORDER MODEL ===
 	 */
 	global.OrderModel = {
+		/**
+		 * URL для обновления данных с сервера
+		 */
 		updateUrl: $('#jsOrderDelivery').data('url'),
+
 		/**
 		 * Флаг завершения обработки данных
 		 */
@@ -289,11 +294,6 @@
 		 * Массив блоков доставок
 		 */
 		deliveryBoxes: ko.observableArray([]),
-
-		/**
-		 * Хранилище блоков доставки
-		 */
-		createdBox: {},
 
 		/**
 		 * Объект данных для отображения окна с пунктами доставок
@@ -364,6 +364,60 @@
 		},
 
 		/**
+		 * Существует ли блок доставки
+		 * @param	String}		token	Токен блока доставки
+		 * @return	{boolean}
+		 */
+		hasDeliveryBox: function( token ) {
+			console.info('Существует ли блок доставки '+token);
+
+			var i = null;
+
+			for ( i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i--) {
+				if ( global.OrderModel.deliveryBoxes()[i].token === token ) {
+					return true;
+				}
+			}
+
+			return false;
+		},
+
+		/**
+		 * Получить ссылку на блок по токену
+		 * @param	String}		token	Токен блока доставки
+		 * @return	{Object}			Объект блока
+		 */
+		getDeliveryBoxByToken: function( token ) {
+			console.info('Получить ссылку на блок по токену '+token);
+
+			var i = null;
+
+			for ( i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i--) {
+				if ( global.OrderModel.deliveryBoxes()[i].token === token ) {
+					return global.OrderModel.deliveryBoxes()[i];
+				}
+			}
+		},
+
+		/**
+		 * Удаление блока доставки по токену
+		 * @param	String}		token	Токен блока доставки
+		 */
+		removeDeliveryBox: function( token ) {
+			console.info('Удаление блока по токену '+token);
+
+			var i = null;
+
+			for ( i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i--) {
+				if ( global.OrderModel.deliveryBoxes()[i].token === token ) {
+					global.OrderModel.deliveryBoxes().splice(i, 1);
+
+					return;
+				}
+			}
+		},
+
+		/**
 		 * Проверка сертификата
 		 */
 		checkCoupon: function() {
@@ -427,9 +481,12 @@
 			console.info('point selected...');
 			console.log(data.parentBoxToken);
 
+			var choosenBlock = null;
+
 			if ( data.parentBoxToken ) {
-				console.log(global.OrderModel.createdBox[data.parentBoxToken]);
-				global.OrderModel.createdBox[data.parentBoxToken].selectPoint.apply(global.OrderModel.createdBox[data.parentBoxToken],[data]);
+				choosenBlock = global.OrderModel.getDeliveryBoxByToken(data.parentBoxToken);
+				console.log(choosenBlock);
+				choosenBlock.selectPoint.apply(choosenBlock,[data]);
 
 				return false;
 			}
@@ -823,9 +880,8 @@
 		};
 	// end of functions
 
-	$('body').on('click', '.shopchoose', selectPointOnBaloon);
-
 	renderOrderData( serverData );
-
 	analyticsStep_1( serverData );
+
+	$('body').on('click', '.shopchoose', selectPointOnBaloon);
 }(this));
