@@ -461,6 +461,7 @@ class Cart {
      */
     public function setPaypalProduct(\Model\Cart\Product\Entity $product) {
         $data = $this->storage->get($this->sessionName);
+        $data['paypalProduct'] = [];
         $data['paypalProduct'][$product->getId()] = [
             'id'       => $product->getId(),
             'quantity' => $product->getQuantity(),
