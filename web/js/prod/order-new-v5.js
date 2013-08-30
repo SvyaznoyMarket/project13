@@ -1441,8 +1441,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
  * @author	Zaytsev Alexandr
  */
 ;(function( global ) {
-	console.info('Логика разбиения заказа для оформления заказа v.5');
-
 	var serverData = $('#jsOrderDelivery').data('value');
 
 	/**
@@ -1478,6 +1476,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		global.OrderModel.createdBox = {};
 		global.OrderModel.deliveryBoxes.removeAll();
 
+		// обнуляем примененный купон
+		global.OrderModel.hasCoupons(false);
+
 		// Маркируем выбранный способ доставки
 		$('#'+global.OrderModel.deliveryTypesButton).attr('checked','checked');
 			
@@ -1487,9 +1488,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		// Обнуляем блоки с доставкой на дом и генерируем событие об этом
 		global.OrderModel.hasHomeDelivery(false);
 		$('body').trigger('orderdeliverychange',[false]);
-
-		// Добавляем купоны
-		global.OrderModel.couponsBox(discounts);
 
 
 		/**
@@ -1548,8 +1546,33 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		console.info('Созданные блоки:');
 		console.log(global.OrderModel.createdBox);
 
+		// Добавляем купоны
+		global.OrderModel.couponsBox(discounts);
+
 		// выбираем URL для проверки купонов - первый видимый купон
 		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
+
+		/**
+		 * Проверка примененных купонов
+		 *
+		 * Если заказ разбился, то купон применять нельзя или
+		 * Если сумма заказа меньше либо равана размеру скидки купона
+		 */
+		if ( ( global.OrderModel.hasCoupons() && global.OrderModel.deliveryBoxes().length > 1 ) || 
+			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) {
+			console.warn('Нужно удалить купон');
+
+			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
+
+			var callback = function() {
+				console.log('удаление');
+				global.OrderModel.deleteItem(global.OrderModel.appliedCoupon());
+			};
+
+			$.when(showError(msg)).then(callback);
+
+			return false;
+		}
 
 		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
@@ -1627,9 +1650,17 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			for ( var i = unwrapVal.length - 1; i >= 0; i-- ) {
 				node.find('.bSaleList__eItem[data-type="'+unwrapVal[i].type+'"]').addClass('hidden');
+
+				if ( unwrapVal[i].type === 'coupon' ) {
+					console.log('Есть примененный купон');
+
+					global.OrderModel.hasCoupons(true);
+					global.OrderModel.appliedCoupon(unwrapVal[i]);
+				}
 			}
 
-			if ( $('.bSaleList__eItem.hidden').length === $('.bSaleList__eItem').length ) {
+			if ( $('.bSaleList__eItem.hidden').length === $('.bSaleList__eItem').length ||
+				$('.bSaleList__eItem:hidden').length === $('.bSaleList__eItem').length ) {
 				// если все скидки применены
 				
 				fieldNode.attr('disabled', 'disabled');
@@ -1718,6 +1749,16 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * Общая сумма заказа
 		 */
 		totalSum: ko.observable(0),
+
+		/**
+		 * Есть ли примененные купоны
+		 */
+		hasCoupons: ko.observable(false),
+
+		/**
+		 * Размер скидки примененного купона
+		 */
+		appliedCoupon: ko.observable(),
 
 		/**
 		 * Номер введенного сертификата
