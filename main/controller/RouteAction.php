@@ -17,13 +17,24 @@ class RouteAction {
             throw new \Exception('Не перадан обязательный параметр request');
         }
 
+        $responseData = [];
         foreach ($actions as $action) {
             $action = array_merge([
-                'url'  => null,
-                'data' => [],
+                'url'    => null,
+                'method' => 'GET',
+                'data'   => [],
             ], (array)$action);
             if (!is_array($action['data'])) {
                 $action['data'] = [];
+            }
+
+            try {
+                $router->match($action['url'], $action['method']);
+            } catch (\Exception $e) {
+                $responseData[$action['url']] = [
+                    'success' => false,
+                    'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+                ];
             }
         }
 
