@@ -157,6 +157,7 @@ class Layout extends \View\DefaultLayout {
                     'slug' => $category->getToken(),
                     'geo_id' => \App::user()->getRegion()->getId(),
                 ], [], function ($data) use (&$seoTemplate) {
+                if($data && is_array($data)) $data = reset($data);
                 $seoTemplate = array_merge([
                     'seo_title'       => null,
                     'seo_description' => null,
