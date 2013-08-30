@@ -127,6 +127,7 @@ class CreateAction {
             $deliveryMethodToken = (0 === strpos($part->getDeliveryMethodToken(), 'standart')) ? $part->getDeliveryMethodToken() : ($part->getDeliveryMethodToken() . '_' . $part->getPointId());
             \App::logger()->info(sprintf('Проверка стоимости %s', $deliveryMethodToken), ['order', 'paypal']);
             $deliveryPrice = isset($productData['deliveries'][$deliveryMethodToken]['price']) ? (int)$productData['deliveries'][$deliveryMethodToken]['price'] : 0;
+            \App::logger()->info(sprintf('Стоимость доставки %s', $deliveryPrice));
             // TODO: внимание, заглушка!!!
             $deliveryPrice = $deliveryPrice ? 1 : 0;
 
@@ -167,8 +168,6 @@ class CreateAction {
                 if (empty($result['payment_url'])) {
                     throw new \Exception('Не получен урл для редиректа');
                 }
-
-
 
                 $createdOrder = new \Model\Order\CreatedEntity($result);
                 \App::logger()->info(['paymentUrl' => $createdOrder->getPaymentUrl()], ['order', 'paypal']);
@@ -273,6 +272,8 @@ class CreateAction {
         if ($responseData['success']) {
             $user->setCacheCookie($response);
         }
+
+        \App::logger()->info(['site.response' => $responseData], ['order', 'paypal']);
 
         return $response;
     }
@@ -400,7 +401,8 @@ class CreateAction {
                 }
 
                 // скидки
-                $orderData['action'] = (array)$user->getCart()->getActionData();
+                //$orderData['action'] = (array)$user->getCart()->getActionData();
+                $orderData['action'] = [];
 
                 // мета-теги
                 if (\App::config()->order['enableMetaTag'] && !$bMeta) {
