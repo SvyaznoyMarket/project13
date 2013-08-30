@@ -145,16 +145,17 @@ class Layout extends \View\DefaultLayout {
         $categoryTokens[] = $category->getToken();
 
         if ($brand) {
-            $shopScript->addQuery(sprintf('?seo/brand/%s/%s.json', implode('/', $categoryTokens), $category->getToken() . '-' . $brand->getToken()), [], [], function ($data) use (&$seoTemplate) {
+            $dataStore->addQuery(sprintf('seo/brand/%s/%s.json', implode('/', $categoryTokens), $category->getToken() . '-' . $brand->getToken()), [], function ($data) use (&$seoTemplate) {
                 $seoTemplate = array_merge([
-                    'seo_title'       => null,
-                    'seo_description' => null,
-                    'seo_keywords'    => null,
+                    'title'       => null,
+                    'description' => null,
+                    'keywords'    => null,
                 ], $data);
             });
         } else {
-            $shopScript->addQuery(sprintf('?seo/catalog/%s.json', implode('/', $categoryTokens)), [
-                    'slug' => []
+            $shopScript->addQuery('category/get-seo', [
+                    'slug' => $category->getToken(),
+                    'geo_id' => \App::user()->getRegion()->getId(),
                 ], [], function ($data) use (&$seoTemplate) {
                 $seoTemplate = array_merge([
                     'seo_title'       => null,
@@ -162,9 +163,8 @@ class Layout extends \View\DefaultLayout {
                     'seo_keywords'    => null,
                 ], $data);
             });
+            $shopScript->execute();
         }
-
-        $shopScript->execute();
 
         // данные для шаблона
         $patterns = [
@@ -190,14 +190,18 @@ class Layout extends \View\DefaultLayout {
 
         if (!$seoTemplate) return;
 
+        if(isset($seoTemplate['seo_title'])) $seoTemplate['title'] = $seoTemplate['seo_title'];
+        if(isset($seoTemplate['seo_description'])) $seoTemplate['description'] = $seoTemplate['seo_description'];
+        if(isset($seoTemplate['seo_keywords'])) $seoTemplate['keywords'] = $seoTemplate['seo_keywords'];
+
         $replacer = new \Util\InflectReplacer($patterns);
-        if ($value = $replacer->get($seoTemplate['seo_title'])) {
+        if ($value = $replacer->get($seoTemplate['title'])) {
             $page->setTitle($value);
         }
-        if ($value = $replacer->get($seoTemplate['seo_description'])) {
+        if ($value = $replacer->get($seoTemplate['description'])) {
             $page->setDescription($value);
         }
-        if ($value = $replacer->get($seoTemplate['seo_keywords'])) {
+        if ($value = $replacer->get($seoTemplate['keywords'])) {
             $page->setKeywords($value);
         }
     }
