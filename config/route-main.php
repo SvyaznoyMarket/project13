@@ -551,6 +551,13 @@ return [
         'action'  => ['User\ChangePasswordAction', 'execute'],
     ],
 
+    // маршрутизатор нескольких запросов
+    'route' => [
+        'pattern' => '/route',
+        'action'  => ['RouteAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+
     // подписка
     'friendship' => [
         'pattern' => '/be-friends',
