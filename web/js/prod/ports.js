@@ -1,7 +1,3 @@
-// используется sociomantic
-var sonar_product = null;
-var sonar_basket = null;
-
 window.ANALYTICS = {
 	
 	// todo SITE-1049
@@ -143,7 +139,7 @@ window.ANALYTICS = {
 
     sociomanticCategoryPage : function() {
         (function(){
-            sonar_product = {
+            window.sonar_product = {
                 category : $('#sociomanticCategoryPage').data('prod-cats')
             };
         })();
@@ -151,14 +147,14 @@ window.ANALYTICS = {
 
     sociomanticProductPageStream : function() {
         (function(){
-            sonar_product = $('#sociomanticProductPageStream').data('scr-product');
-            sonar_product.category = $('#sociomanticProductPageStream').data('prod-cats');
+            window.sonar_product = $('#sociomanticProductPageStream').data('scr-product');
+            window.sonar_product.category = $('#sociomanticProductPageStream').data('prod-cats');
         })();
     },
 
     sociomanticBasket : function() {
         (function(){
-            sonar_basket = {
+            window.sonar_basket = {
                 products: $('#sociomanticBasket').data('cart-prods')
             };
         })();
@@ -166,7 +162,7 @@ window.ANALYTICS = {
 
     sociomanticConfirmationPage : function() {
         (function(){
-            sonar_basket = $('#sociomanticConfirmationPage').data('sonar-basket');
+            window.sonar_basket = $('#sociomanticConfirmationPage').data('sonar-basket');
         })();
     },
 
