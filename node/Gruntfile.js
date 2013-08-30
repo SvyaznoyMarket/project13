@@ -255,10 +255,6 @@ module.exports = function(grunt) {
 				files: [jsDevPath+'order/*.js'],
 				tasks: ['concat:orderJS','uglify:orderJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
 			},
-			orderNewJS:{
-				files: [jsDevPath+'order-new/*.js'],
-				tasks: ['concat:orderNewJS','uglify:orderNewJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
-			},
 			orderNewV5JS:{
 				files: [jsDevPath+'order-new-v5/*.js'],
 				tasks: ['concat:orderNewV5JS','uglify:orderNewV5JS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
@@ -324,10 +320,6 @@ module.exports = function(grunt) {
 			orderJS : {
 				src: [jsDevPath+'order/*.js'],
 				dest: jsProdPath+'order.js'
-			},
-			orderNewJS : {
-				src: [jsDevPath+'order-new/*.js'],
-				dest: jsProdPath+'order-new.js'
 			},
 			orderNewV5JS : {
 				src: [jsDevPath+'order-new-v5/*.js'],
@@ -436,12 +428,6 @@ module.exports = function(grunt) {
 			orderJS: {
 				files: {
 					'../web/js/prod/order.min.js': [jsDevPath+'order/*.js']
-				}
-			},
-
-			orderNewJS: {
-				files: {
-					'../web/js/prod/order-new.min.js': [jsDevPath+'order-new/*.js']
 				}
 			},
 
