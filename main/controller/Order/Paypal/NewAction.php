@@ -38,6 +38,8 @@ class NewAction {
 
             // проверка paypal
             $result = $this->getPaypalCheckout($paypalToken, $paypalPayerId);
+            $paymentAmount = isset($result['payment_amount']) ? (int)$result['payment_amount'] : 0;
+            \App::logger()->info(['paypal.payment_amount' => $paymentAmount], ['order', 'paypal']);
 
             // форма
             $form = $this->getForm();

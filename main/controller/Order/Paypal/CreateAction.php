@@ -86,47 +86,18 @@ class CreateAction {
                 throw new \Exception('Подзаказ не получен');
             }
 
-            $result = null;
-            $exception = null;
-            $client->addQuery(
-                'order/calc-tmp',
-                [
-                    'geo_id'  => $user->getRegion()->getId(),
-                ],
-                [
-                    'product'        => array_map(function(\Model\Cart\Product\Entity $cartProduct) {
-                        return [
-                            'id'       => $cartProduct->getId(),
-                            'quantity' => $cartProduct->getQuantity(),
-                        ];
-                    }, $cartProducts),
-                    'service'        => [],
-                    'coupon_list'    => [],
-                    'blackcard_list' => [],
-                ],
-                function($data) use (&$result, &$shops) {
-                    $result = $data;
-                    \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
-                },
-                function (\Exception $e) use (&$exception) {
-                    $exception = $e;
-                },
-                \App::config()->coreV2['timeout'] * 2
-            );
-            $client->execute();
-            if ($exception instanceof \Exception) {
-                throw $exception;
-            }
+            // расчет доставки для paypal
+            $deliveryData = (new \Controller\Order\DeliveryAction())->getResponseData(true);
 
-            \App::logger()->info(['core.response' => $result], ['order', 'paypal']);
-
-            $productData = (isset($result['products']) && is_array($result['products'])) ? reset($result['products']) : null;
+            $productData = isset($deliveryData['products'][$product->getId()]) ? $deliveryData['products'][$product->getId()] : null;
             if (!$productData) {
                 throw new \Exception('не получено ни одного товара');
             }
-            $deliveryMethodToken = (0 === strpos($part->getDeliveryMethodToken(), 'standart')) ? $part->getDeliveryMethodToken() : ($part->getDeliveryMethodToken() . '_' . $part->getPointId());
-            \App::logger()->info(sprintf('Проверка стоимости %s', $deliveryMethodToken), ['order', 'paypal']);
-            $deliveryPrice = isset($productData['deliveries'][$deliveryMethodToken]['price']) ? (int)$productData['deliveries'][$deliveryMethodToken]['price'] : 0;
+
+            $deliveryMethodToken = $part->getDeliveryMethodToken();
+            $pointId = $part->getPointId();
+            \App::logger()->info(sprintf('Проверка стоимости %s', $part->getDeliveryMethodToken()), ['order', 'paypal']);
+            $deliveryPrice = isset($productData['deliveries'][$deliveryMethodToken][$pointId]['price']) ? (int)$productData['deliveries'][$deliveryMethodToken][$pointId]['price'] : 0;
             \App::logger()->info(sprintf('Стоимость доставки %s', $deliveryPrice));
             // TODO: внимание, заглушка!!!
             $deliveryPrice = $deliveryPrice ? 1 : 0;

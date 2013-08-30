@@ -35,6 +35,8 @@ class DeliveryAction {
         $cart = $user->getCart();
         $helper = new \View\Helper();
 
+        \App::logger()->info(['action' => __METHOD__, 'paypalECS' => $paypalECS], ['order']);
+
         // данные для JsonResponse
         $responseData = [
             'time'   => strtotime(date('Y-m-d'), 0) * 1000,
