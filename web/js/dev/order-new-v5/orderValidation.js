@@ -211,7 +211,7 @@
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
 
-				global.OrderModel.blockScreen.unblock();
+				global.blockScreen.unblock();
 
 				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
 					console.log('Есть обработчик');
@@ -244,7 +244,12 @@
 				orderForm = $('#order-form');
 			// end of vars
 			
-			global.OrderModel.blockScreen.block('Ваш заказ оформляется');
+			if ( global.OrderModel.paypalECS() ) {
+				global.blockScreen.block('Передача данных в PayPal');
+			}
+			else {
+				global.blockScreen.block('Ваш заказ оформляется');
+			}
 
 			/**
 			 * Перебираем блоки доставки

@@ -173,7 +173,12 @@
 		};
 	// end of functions
 
-	if ( url === '' ) {
+	if ( url === '' && deliveryShops.length === 0 ) {
+		console.warn('URL отсутствует. Список магазинов пуст.');
+		
+		widgetBox.removeClass('mLoader');
+	}
+	else if ( url === '' ) {
 		fillAvalShopTmpl( deliveryShops );
 	}
 	else {
