@@ -416,7 +416,7 @@ foreach (array_reverse($productsById) as $product) {
                             class="bBigOrangeButton"
                             href="#"
                             <? if ($paypalECS): ?>data-alt-text="Подтвердить сумму"<? endif ?>
-                            data-bind="text: (paypalECS && totalSum() !== cartSum) ? 'Подтвердить сумму' : 'Завершить оформление' "
+                            data-bind="text: ( paypalECS && cartSum && totalSum() !== cartSum ) ? 'Подтвердить сумму' : 'Завершить оформление' "
                         ></a>
 					</div>
 				</div>

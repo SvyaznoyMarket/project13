@@ -229,6 +229,16 @@
 
 			completeAnalytics();
 
+			if ( global.OrderModel.paypalECS() ) {
+				console.info('PayPal ECS включен. Необходимо удалить выбранные параметры из cookie');
+
+				window.docCookies.removeItem('chDate_paypalECS');
+				window.docCookies.removeItem('chTypeBtn_paypalECS');
+				window.docCookies.removeItem('chPoint_paypalECS');
+				window.docCookies.removeItem('chTypeId_paypalECS');
+				window.docCookies.removeItem('chStetesPriority_paypalECS');
+			}
+
 			document.location.href = res.redirect;
 		},
 

@@ -144,7 +144,7 @@ DeliveryBox.prototype.selectPoint = function( data ) {
 	// end of vars
 
 	if ( window.OrderModel.hasDeliveryBox(newToken) ) {
-		choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
+		choosenBlock = global.OrderModel.getDeliveryBoxByToken(newToken);
 		choosenBlock.addProductGroup( self.products );
 
 		window.OrderModel.removeDeliveryBox(self.token);
@@ -1250,6 +1250,16 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 
 			completeAnalytics();
+
+			if ( global.OrderModel.paypalECS() ) {
+				console.info('PayPal ECS включен. Необходимо удалить выбранные параметры из cookie');
+
+				window.docCookies.removeItem('chDate_paypalECS');
+				window.docCookies.removeItem('chTypeBtn_paypalECS');
+				window.docCookies.removeItem('chPoint_paypalECS');
+				window.docCookies.removeItem('chTypeId_paypalECS');
+				window.docCookies.removeItem('chStetesPriority_paypalECS');
+			}
 
 			document.location.href = res.redirect;
 		},

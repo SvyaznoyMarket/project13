@@ -144,7 +144,7 @@ DeliveryBox.prototype.selectPoint = function( data ) {
 	// end of vars
 
 	if ( window.OrderModel.hasDeliveryBox(newToken) ) {
-		choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
+		choosenBlock = global.OrderModel.getDeliveryBoxByToken(newToken);
 		choosenBlock.addProductGroup( self.products );
 
 		window.OrderModel.removeDeliveryBox(self.token);
