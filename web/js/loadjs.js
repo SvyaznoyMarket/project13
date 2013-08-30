@@ -180,12 +180,12 @@
 	 */
 	extendApp('ENTER.utils');
 	global.ENTER.utils.extendApp = extendApp;
+	global.ENTER.utils.logError = logError;
 
 	extendApp('ENTER.config');
 	global.ENTER.config.debug = debug;
 	global.ENTER.config.startTime = startTime;
 	global.ENTER.config.pageConfig = pageConfig;
-	global.ENTER.utils.logError = logError;
 
 	console.info('Создан единый namespace проекта');
 	console.log(global.ENTER);
