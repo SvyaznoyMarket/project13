@@ -99,8 +99,9 @@ class CreateAction {
             \App::logger()->info(sprintf('Проверка стоимости %s', $part->getDeliveryMethodToken()), ['order', 'paypal']);
             $deliveryPrice = isset($productData['deliveries'][$deliveryMethodToken][$pointId]['price']) ? (int)$productData['deliveries'][$deliveryMethodToken][$pointId]['price'] : 0;
             \App::logger()->info(sprintf('Стоимость доставки %s', $deliveryPrice));
+
             // TODO: внимание, заглушка!!!
-            $deliveryPrice = $deliveryPrice ? 1 : 0;
+            //$deliveryPrice = $deliveryPrice ? 1 : 0;
 
             // проверка paypal
             $result = $this->getPaypalCheckout($paypalToken, $paypalPayerId);
@@ -110,7 +111,8 @@ class CreateAction {
             // обновляем стоимость товара
             $cartProduct->setSum($deliveryPrice + $cartProduct->getPrice() * $cartProduct->getQuantity());
             // TODO: внимание, заглушка!!!
-            $cartProduct->setSum($deliveryPrice + 1);
+            //$cartProduct->setSum($deliveryPrice + 1);
+
             $cart->setPaypalProduct($cartProduct);
             \App::logger()->info(['cart.paypalProduct' => ['id' => $cartProduct->getId(), 'price' => $cartProduct->getPrice(), 'quantity' => $cartProduct->getQuantity(), 'sum' => $cartProduct->getSum()]], ['order', 'paypal']);
 
