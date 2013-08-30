@@ -1,49 +1,21 @@
-;(function( global ) {
-	var pageConfig = $('#page-config').data('value');
-
-	/**
-	 * Логирование данных с клиента на сервер
-	 * https://wiki.enter.ru/pages/viewpage.action?pageId=11239960
-	 * 
-	 * @param  {Object} data данные отсылаемы на сервер
-	 */
-	global.logError = function logError( data ) {
-		if ( data.ajaxUrl === '/log-json' ) {
-			return;
-		}
-
-		if ( !pageConfig.jsonLog ) {
-			return false;
-		}
-
-		$.ajax({
-			type: 'POST',
-			global: false,
-			url: '/log-json',
-			data: data
-		});
-	};
-}(this));
-
-
 /**
  * Общие настройки AJAX
+ *
+ * @requires	jQuery, ENTER.utils.logError
  */
 $.ajaxSetup({
 	timeout: 10000,
 	statusCode: {
 		404: function() { 
 			var ajaxUrl = this.url,
-				pageID = $('body').data('id'),
 				data = {
 					event: 'ajax_error',
-					type:'404 ошибка',
-					pageID: pageID,
-					ajaxUrl:ajaxUrl
+					type: '404 ошибка',
+					ajaxUrl: ajaxUrl
 				};
 			// end of vars
 
-			window.logError(data);
+			window.ENTER.utils.logError(data);
 
 			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
@@ -58,7 +30,7 @@ $.ajaxSetup({
 					}
 				});
 			}
-			else{
+			else {
 				if ( typeof(_gaq) !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '401 ошибка, авторизуйтесь заново']);
 				}
@@ -67,16 +39,14 @@ $.ajaxSetup({
 		},
 		500: function() {
 			var ajaxUrl = this.url,
-				pageID = $('body').data('id'),
 				data = {
 					event: 'ajax_error',
-					type:'500 ошибка',
-					pageID: pageID,
-					ajaxUrl:ajaxUrl
+					type: '500 ошибка',
+					ajaxUrl: ajaxUrl
 				};
 			// end of vars
 
-			window.logError(data);
+			window.ENTER.utils.logError(data);
 
 			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен']);
@@ -84,16 +54,14 @@ $.ajaxSetup({
 		},
 		503: function() {
 			var ajaxUrl = this.url,
-				pageID = $('body').data('id'),
 				data = {
 					event: 'ajax_error',
-					type:'503 ошибка',
-					pageID: pageID,
-					ajaxUrl:ajaxUrl
+					type: '503 ошибка',
+					ajaxUrl: ajaxUrl
 				};
 			// end of vars
 
-			window.logError(data);
+			window.ENTER.utils.logError(data);
 
 			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен']);
@@ -101,16 +69,14 @@ $.ajaxSetup({
 		},
 		504: function() {
 			var ajaxUrl = this.url,
-				pageID = $('body').data('id'),
 				data = {
 					event: 'ajax_error',
-					type:'504 ошибка',
-					pageID: pageID,
-					ajaxUrl:ajaxUrl
+					type: '504 ошибка',
+					ajaxUrl: ajaxUrl
 				};
 			// end of vars
 
-			window.logError(data);
+			window.ENTER.utils.logError(data);
 
 			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом']);
@@ -119,23 +85,21 @@ $.ajaxSetup({
 	},
 	error: function ( jqXHR, textStatus, errorThrown ) {
 		var ajaxUrl = this.url,
-			pageID = $('body').data('id'),
 			data = {
 				event: 'ajax_error',
-				type:'неизвестная ajax ошибка',
-				pageID: pageID,
-				ajaxUrl:ajaxUrl
+				type: 'неизвестная ajax ошибка',
+				ajaxUrl: ajaxUrl
 			};
 		// end of vars
 		
 		if ( jqXHR.statusText === 'error' ) {
-			window.logError(data);
+			window.ENTER.utils.logError(data);
 
 			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
 			}
 		}
-		else if (textStatus === 'timeout') {
+		else if ( textStatus === 'timeout' ) {
 			return;
 		}
 	}

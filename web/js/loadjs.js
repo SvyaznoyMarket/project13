@@ -1,7 +1,7 @@
 ;(function( global ) {
-	global.startTime = new Date().getTime();
-	 
 	var _gaq = global._gaq || [],
+
+		startTime = new Date().getTime(),
 
 		knockoutUrl = '',
 		optimizelyUrl = '//cdn.optimizely.com/js/204544654.js',
@@ -13,8 +13,10 @@
 		templateType = document.body.getAttribute('data-template');
 	// end of vars
 
+
 		/**
 		 * Версионность файлов и загрузка неминифицированных скриптов в debug режиме
+		 * 
 		 * @param	{String}	filename	Имя файла который нужно загрузить
 		 * 
 		 * @return	{String}				Новое имя файла
@@ -31,6 +33,66 @@
 			} 
 
 			return filename;
+		},
+
+
+		/**
+		 * Логирование данных с клиента на сервер
+		 * 
+		 * https://wiki.enter.ru/pages/viewpage.action?pageId=11239960
+		 * 
+		 * @param  {Object} data данные отсылаемы на сервер
+		 */
+		logError = function logError( data ) {
+			if ( data.ajaxUrl === '/log-json' ) {
+				return;
+			}
+
+			if ( !pageConfig.jsonLog ) {
+				return false;
+			}
+
+			data.pageID = data.pageID || document.body.getAttribute('data-id');
+
+			$.ajax({
+				type: 'POST',
+				global: false,
+				url: '/log-json',
+				data: data
+			});
+		},
+
+		/**
+		 * Функция расширения нэймспейса проекта
+		 * 
+		 * @param 	{String}	ns_string	Строка отображающая глубину вложенности модуля
+		 * 
+		 * @return	{Object}				Созданный модуль в нэймспейсе
+		 */
+		extendApp = function extend( ns_string ) {
+			window.ENTER = window.ENTER || {};
+
+			var parts = ns_string.split('.'),
+				parent = window.ENTER,
+				pl, i;
+			// end of vars
+
+			if ( parts[0] == 'ENTER' ) {
+				parts = parts.slice(1);
+			}
+
+			pl = parts.length;
+
+			for ( i = 0; i < pl; i++ ) {
+				//create a property if it doesnt exist  
+				if ( typeof parent[parts[i]] === 'undefined' ) {
+					parent[parts[i]] = {};
+				}
+
+				parent = parent[parts[i]];
+			}
+
+			return parent;  
 		},
 
 		/**
@@ -54,25 +116,6 @@
 					};
 				})(methods[i]);
 			}
-		},
-
-		/**
-		 * Логирование открытие страницы и старта загрузки скриптов
-		 */
-		logPageInit = function logPageInit() {
-			var pageID = document.body.getAttribute('data-id'),
-				dataToLog = {
-					event: 'page_load',
-					pageID: pageID
-				};
-			// end of vars
-
-			$.ajax({
-				type: 'POST',
-				global: false,
-				url: '/log-json',
-				data: dataToLog
-			});
 		},
 
 		/**
@@ -107,22 +150,45 @@
 	 */
 	if ( document.body.getAttribute('data-debug') === 'true') {
 		console.warn('Включен debug режим');
+
 		debug = true;
 	}
 	else if ( document.location.search.match(/jsdbg/) ) {
 		console.warn('Включен debug режим');
+
 		debug = true;
 	}
 
-	// Если в конфигурации разрешено логирование, логируем загрузку страницы
+	/**
+	 * Логирование открытие страницы и старта загрузки скриптов
+	 */
 	if ( pageConfig.jsonLog ) {
-		logPageInit();
+		logError({
+					event: 'page_load'
+				});
 	}
 
 	// Если продуктивный режим - заглушить консоль
 	if ( !debug ) {
 		disableConsole();
 	}
+
+	/**
+	 * Создаем единый нэймспейс для проекта
+	 * Добавляем модуль utils с функцией расширения нэймспейса
+	 * Добавляем модуль config с основными конфигурациями клиентской стороны
+	 */
+	extendApp('ENTER.utils');
+	global.ENTER.utils.extendApp = extendApp;
+
+	extendApp('ENTER.config');
+	global.ENTER.config.debug = debug;
+	global.ENTER.config.startTime = startTime;
+	global.ENTER.config.pageConfig = pageConfig;
+	global.ENTER.utils.logError = logError;
+
+	console.info('Создан единый namespace проекта');
+	console.log(global.ENTER);
 
 	if ( typeof $LAB === 'undefined' ) {
 		throw new Error( 'Невозможно загрузить файлы JavaScript' );

@@ -2,9 +2,8 @@
  * Обработчик для кнопок купить
  *
  * @author		Zaytsev Alexandr
- * @requires	jQuery, BlackBox
- * @param		{event}		e
- * @param		{Boolean}	anyway Если true событие будет все равно выполнено
+ * 
+ * @requires	jQuery, ENTER.utils.BlackBox
  */
 ;(function() {
 
@@ -92,7 +91,8 @@
  * @param		{event}		event 
  * @param		{Object}	data	данные о том что кладется в корзину
  */
-(function() {
+(function( global ) {
+	var blackBox = global.ENTER.utils.blackBox;
 		/**
 		 * KISS Аналитика для добавления в корзину
 		 */
@@ -251,8 +251,8 @@
 			if ( data.redirect ) {
 				document.location.href = data.redirect;
 			}
-			else if ( window.blackBox ) {
-				window.blackBox.basket().add( tmpitem );
+			else if ( blackBox ) {
+				blackBox.basket().add( tmpitem );
 			}
 
 		};
@@ -261,4 +261,4 @@
 	$(document).ready(function() {
 		$('body').bind('addtocart', buyProcessing);
 	});
-}());
+}(this));

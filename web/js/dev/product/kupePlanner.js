@@ -1,9 +1,9 @@
 /**
  * Планировщик шкафов купе
  *
- * @requires jQuery
+ * @requires jQuery, ENTER.utils.logError
  */
-;(function(global) {
+;(function( global ) {
 	/**
 	 * Имя объекта для конструктора шкафов купе
 	 *
@@ -89,8 +89,10 @@
 			return false;
 		}
 
-		var structure = global.Planner3dKupeConstructor.GetBasketContent();
-		var url = $(this).attr('href');
+		var structure = global.Planner3dKupeConstructor.GetBasketContent(),
+			url = $(this).attr('href'),
+			product = {};
+		// end of vars
 
 		var resFromServer = function( res ) {
 			if ( !res.success ) {
@@ -107,8 +109,6 @@
 			
 			$('body').trigger('addtocart', [res]);
 		};
-
-		var product = {};
 
 		product.product = structure;
 
@@ -130,16 +130,14 @@
 			global.Planner3dKupeConstructor.Initialize('/js/KupeConstructorData.json', coupeInfo.id);
 		}
 		catch ( err ) {
-			var pageID = $('body').data('id'),
-				dataToLog = {
+			var dataToLog = {
 					event: 'Kupe3dConstructor error',
 					type:'ошибка загрузки Kupe3dConstructor',
-					pageID: pageID,
 					err: err
 				};
 			// end of vars
 			
-			logError(dataToLog);
+			global.ENTER.utils.logError(dataToLog);
 		}
 
 		$('.jsBuyButton').off();

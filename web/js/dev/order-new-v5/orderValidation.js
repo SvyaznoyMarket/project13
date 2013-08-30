@@ -211,7 +211,7 @@
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
 
-				global.blockScreen.unblock();
+				global.ENTER.utils.blockScreen.unblock();
 
 				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
 					console.log('Есть обработчик');
@@ -255,10 +255,10 @@
 			// end of vars
 			
 			if ( global.OrderModel.paypalECS() ) {
-				global.blockScreen.block('Передача данных в PayPal');
+				global.ENTER.utils.blockScreen.block('Передача данных в PayPal');
 			}
 			else {
-				global.blockScreen.block('Ваш заказ оформляется');
+				global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
 			}
 
 			/**

@@ -876,7 +876,12 @@ OrderDictionary.prototype.getProductById = function( productId ) {
  */
  
  
-	/* Sertificate */
+/**
+ * Sertificate
+ *
+ * 
+ * @requires	jQuery
+ */
 ;(function( global ) {
 	if ( !$('#paymentMethod-10').length ) {
 		console.warn('нет метода оплаты сертификатом');
@@ -1233,7 +1238,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
 
-				global.blockScreen.unblock();
+				global.ENTER.utils.blockScreen.unblock();
 
 				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
 					console.log('Есть обработчик');
@@ -1277,10 +1282,10 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			// end of vars
 			
 			if ( global.OrderModel.paypalECS() ) {
-				global.blockScreen.block('Передача данных в PayPal');
+				global.ENTER.utils.blockScreen.block('Передача данных в PayPal');
 			}
 			else {
-				global.blockScreen.block('Ваш заказ оформляется');
+				global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
 			}
 
 			/**
@@ -1935,11 +1940,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			// end of vars
 
 			var couponResponceHandler = function couponResponceHandler( res ) {
-				global.blockScreen.block('Применяем купон');
+				global.ENTER.utils.blockScreen.block('Применяем купон');
 
 				if ( !res.success ) {
 					global.OrderModel.couponError(res.error.message);
-					global.blockScreen.unblock();
+					global.ENTER.utils.blockScreen.unblock();
 
 					return;
 				}
@@ -2069,7 +2074,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			var updateResponceHandler = function updateResponceHandler( res ) {
 				renderOrderData(res);
-				global.blockScreen.unblock();
+				global.ENTER.utils.blockScreen.unblock();
 
 				separateOrder( global.OrderModel.statesPriority );
 			};
@@ -2092,7 +2097,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		deleteItem: function( data ) {
 			console.info('удаление');
 
-			global.blockScreen.block('Удаляем');
+			global.ENTER.utils.blockScreen.block('Удаляем');
 
 			var itemDeleteAnalytics = function itemDeleteAnalytics() {
 					var products = global.OrderModel.orderDictionary.products,
@@ -2129,7 +2134,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					console.log( res );
 					if ( !res.success ) {
 						console.warn('не удалось удалить товар');
-						global.blockScreen.unblock();
+						global.ENTER.utils.blockScreen.unblock();
 
 						return false;
 					}

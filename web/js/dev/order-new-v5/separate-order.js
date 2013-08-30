@@ -437,11 +437,11 @@
 			// end of vars
 
 			var couponResponceHandler = function couponResponceHandler( res ) {
-				global.blockScreen.block('Применяем купон');
+				global.ENTER.utils.blockScreen.block('Применяем купон');
 
 				if ( !res.success ) {
 					global.OrderModel.couponError(res.error.message);
-					global.blockScreen.unblock();
+					global.ENTER.utils.blockScreen.unblock();
 
 					return;
 				}
@@ -571,7 +571,7 @@
 
 			var updateResponceHandler = function updateResponceHandler( res ) {
 				renderOrderData(res);
-				global.blockScreen.unblock();
+				global.ENTER.utils.blockScreen.unblock();
 
 				separateOrder( global.OrderModel.statesPriority );
 			};
@@ -594,7 +594,7 @@
 		deleteItem: function( data ) {
 			console.info('удаление');
 
-			global.blockScreen.block('Удаляем');
+			global.ENTER.utils.blockScreen.block('Удаляем');
 
 			var itemDeleteAnalytics = function itemDeleteAnalytics() {
 					var products = global.OrderModel.orderDictionary.products,
@@ -631,7 +631,7 @@
 					console.log( res );
 					if ( !res.success ) {
 						console.warn('не удалось удалить товар');
-						global.blockScreen.unblock();
+						global.ENTER.utils.blockScreen.unblock();
 
 						return false;
 					}
