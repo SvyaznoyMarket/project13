@@ -1614,6 +1614,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		// Добавляем купоны
 		global.OrderModel.couponsBox(discounts);
 
+		// Добавляем купоны
+		global.OrderModel.couponsBox(discounts);
+
 		// выбираем URL для проверки купонов - первый видимый купон
 		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
 
