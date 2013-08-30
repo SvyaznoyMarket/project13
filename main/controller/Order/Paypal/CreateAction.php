@@ -123,7 +123,7 @@ class CreateAction {
                         'geo_id' => \App::user()->getRegion()->getId(),
                     ],
                     [
-                        'amount'          => $cartProduct->getSum(),
+                        'amount'          => $cartProduct->getPrice() * $cartProduct->getQuantity(),
                         'delivery_amount' => $deliveryPrice,
                         'currency'        => 'USD',
                         'return_url'      => \App::router()->generate('order.paypal.new', [], true),
