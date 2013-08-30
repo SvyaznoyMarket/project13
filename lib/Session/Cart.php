@@ -44,6 +44,8 @@ class Cart {
                 'certificateList' => [],
                 'couponList'      => [],
                 'blackcardList'   => [],
+                'actionData'      => [],
+                'paypalProduct'   => [],
             ]);
             return;
         }
@@ -84,6 +86,18 @@ class Cart {
             $this->storage->set($this->sessionName, $data);
         }
 
+        if (!array_key_exists('actionData', $session[$this->sessionName])) {
+            $data = $this->storage->get($this->sessionName);
+            $data['actionData'] = [];
+            $this->storage->set($this->sessionName, $data);
+        }
+
+        if (!array_key_exists('paypalProduct', $session[$this->sessionName])) {
+            $data = $this->storage->get($this->sessionName);
+            $data['paypalProduct'] = [];
+            $this->storage->set($this->sessionName, $data);
+        }
+
         // лимит товаров
         $data = $this->storage->get($this->sessionName);
         $productCount = count($data['productList']);
@@ -110,6 +124,14 @@ class Cart {
         $this->certificates = null;
         $this->coupons = null;
         $this->blackcards = null;
+        $this->actions = null;
+    }
+
+    public function clearPaypal() {
+        $data = $this->storage->get($this->sessionName);
+        $data['paypalProduct'] = [];
+
+        $this->storage->set($this->sessionName, $data);
     }
 
     /**
@@ -435,6 +457,32 @@ class Cart {
     }
 
     /**
+     * @param \Model\Cart\Product\Entity $product
+     */
+    public function setPaypalProduct(\Model\Cart\Product\Entity $product) {
+        $data = $this->storage->get($this->sessionName);
+        $data['paypalProduct'] = [];
+        $data['paypalProduct'][$product->getId()] = [
+            'id'       => $product->getId(),
+            'quantity' => $product->getQuantity(),
+            'sum'      => $product->getSum(),
+        ];
+
+        $this->storage->set($this->sessionName, $data);
+        $this->clearEmpty();
+    }
+
+    /**
+     * @return \Model\Cart\Product\Entity|null
+     */
+    public function getPaypalProduct() {
+        $data = $this->storage->get($this->sessionName);
+        $item = reset($data['paypalProduct']);
+
+        return is_array($item) ? new \Model\Cart\Product\Entity($item) : null;
+    }
+
+    /**
      * @return array
      */
     public function getProductData() {
@@ -617,10 +665,25 @@ class Cart {
     }
 
     /**
+     * @param array $actionData
+     */
+    public function setActionData(array $actionData) {
+        $data = $this->storage->get($this->sessionName);
+        $data['actionData'] = $actionData;
+        $this->actions = $actionData;
+
+        $this->storage->set($this->sessionName, $data);
+    }
+
+    /**
      * @return array
      */
     public function getActionData() {
-        if (null === $this->actions) {
+        $data = $this->storage->get($this->sessionName);
+
+        if (!empty($data['actionData'])) {
+            $this->actions = $data['actionData'];
+        } elseif (null === $this->actions) {
             $this->fill();
         }
 
@@ -702,6 +765,7 @@ class Cart {
                         }
                     );
                     \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long']);
+                    \App::logger()->info(['core.response' => $response], ['cart']);
 
                     // если запрос со скидками провалился, используем обычный запрос
                     if ($isFailed) {
@@ -746,7 +810,7 @@ class Cart {
         $this->originalSum = array_key_exists('original_sum', $response) ? $response['original_sum'] : 0;
 
         if (array_key_exists('action_list', $response)) {
-            $this->actions = $response['action_list'];
+            $this->setActionData($response['action_list']);
         }
 
         $this->certificates = [];
@@ -871,6 +935,11 @@ class Cart {
                     unset($data['warrantyList'][$warrantyId]);
                 }
             }
+        }
+        // товары, оплачиваемые через PayPal
+        $item = reset($data['paypalProduct']);
+        if (isset($item['quantity']) && !$item['quantity']) {
+            $data['paypalProduct'] = [];
         }
 
         $this->storage->set($this->sessionName, $data);

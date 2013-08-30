@@ -115,7 +115,16 @@ class OneClickAction {
                 $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $formData['recipient_phonenumbers']);
                 if (!$order) {
                     \App::logger()->error(sprintf('Заказ №%s не найден в ядре', $result['number']), ['order']);
-                    $order = new \Model\Order\Entity(array('number' => $result['number']));
+                    $order = new \Model\Order\Entity([
+                        'number'  => $result['number'],
+                        'product' => [
+                            [
+                                'id'       => $product->getId(),
+                                'price'    => $product->getPrice(),
+                                'quantity' => $productQuantity,
+                            ],
+                        ]
+                    ]);
                 }
             } catch (\Exception $e) {
                 \App::logger()->warn($e, ['order']);
@@ -146,12 +155,6 @@ class OneClickAction {
             $orderProducts = $order->getProduct();
             /** @var $orderProduct \Model\Order\Product\Entity */
             $orderProduct = reset($orderProducts);
-            try {
-                $product = $orderProduct ? \RepositoryManager::product()->getEntityById($orderProduct->getId()) : null;
-            } catch (\Exception $e) {
-                \App::logger()->error($e, ['order']);
-                $product = null;
-            }
 
             $categoryData = [];
             foreach ($product->getCategory() as $category) {

@@ -14,5 +14,5 @@
 		}
 		
 		return len;
-	}
+	};
 }(this));

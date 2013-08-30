@@ -18,7 +18,7 @@ if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->get
 <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
 
 <? // в зависимости от настроек категории в json показываем иконки или линейки (линейки по умолчанию) ?>
-<? if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons'): ?>
+<? if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons' && empty($forceSliders)): ?>
     <div class="goodslist clearfix">
     <? foreach ($category->getChild() as $child): ?>
         <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category, 'catalogJsonBulk' => $catalogJsonBulk)) ?>

@@ -389,6 +389,7 @@ class Action {
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
             $page = new \View\ProductCategory\BranchPage();
+            $page->setParam('forceSliders', true);
             $setPageParameters($page);
 
             return $this->branchCategory($category, $productFilter, $page, $request);

@@ -21,12 +21,11 @@
 
 			.bName {
 				position: relative;
+				top: 4px;
 
 				padding-right: 5px;
 
 				background: @white;
-
-				top: 4px;
 			}
 		}
 
@@ -38,11 +37,35 @@
 			padding: 4px 0 0;
 		}
 	}
+
+	&.mSimpleProperty {
+	    margin: 10px 0 15px;
+
+		color: #6E6E6E;
+
+	    font-size: 12px;
+
+	    .bSpecificationsList__eName {
+	      width: 145px;
+	      margin: 0 0 5px;
+	      padding-left: 7px;
+
+	      border: none;
+	      background: url("@{base-url}/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
+
+	        .bName {
+		    	top: 0;
+		    }
+	    }
+
+	    .bSpecificationsList__eValue {
+	      width: 125px;
+	      margin: 0 0 5px;
+	      padding: 0;
+	    }
+	}
 }
 
-.mSimpleProperty {
-
-	.bSpecificationsList__eName .bName {
-		top: 0;
-	}
+.pluso {
+	margin: 15px 0 0;
 }

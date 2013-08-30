@@ -7,7 +7,7 @@ class IndexPage extends \View\DefaultLayout {
 
     public function prepare() {
         $this->setTitle('Корзина - Enter.ru');
-        $this->setParam('title', 'Моя корзина');
+        $this->setParam('title', 'Корзина');
     }
 
     public function slotContent() {

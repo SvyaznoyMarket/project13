@@ -15,8 +15,6 @@
 		return false;
 	}
 
-  var nowPresent = false;
-
 	var widgetBox = $('.bDelivery'),
 		deliveryData = widgetBox.data('value'),
 		url = deliveryData.url,
@@ -90,7 +88,6 @@
 				shopInfo = {},
 				shopLen = shops.length;
 			// end of var
-			
 
 			/**
 			 * Обработчик переключения состояния листа магазинов открыто или закрыто
@@ -99,8 +96,7 @@
 				nowBox.toggleClass('mOpen');
 				nowBox.toggleClass('mClose');
 			};
-			
-			
+
 			if ( !shopLen ) {
 				return;
 			}
@@ -177,17 +173,20 @@
 		};
 	// end of functions
 
-	fillAvalShopTmpl( deliveryShops );
-	
-	if ( url !== '' ) {
+	if ( url === '' && deliveryShops.length === 0 ) {
+		console.warn('URL отсутствует. Список магазинов пуст.');
+		
+		widgetBox.removeClass('mLoader');
+	}
+	else if ( url === '' ) {
+		fillAvalShopTmpl( deliveryShops );
+	}
+	else {
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: dataToSend,
-			success: function(data) {
-				console.log(data)
-				resFromSerever(data)
-			}
+			success: resFromSerever
 		});
 	}
 

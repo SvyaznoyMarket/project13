@@ -83,12 +83,10 @@ OrderDictionary.prototype.hasPointDelivery = function( state ) {
  * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
-	var points = this.getAllPointsByState(state),
-		findedPoint = null;
-	// end of vars
+	var points = this.getAllPointsByState(state);
 	
 	pointId = pointId+'';
-
+	
 	for ( var i = points.length - 1; i >= 0; i-- ) {
 		if ( points[i].id === pointId ) {
 			return window.cloneObject(points[i]);
@@ -107,9 +105,7 @@ OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
  * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getFirstPointByState = function( state ) {
-	var points = this.getAllPointsByState(state),
-		findedPoint = null;
-	// end of vars
+	var points = this.getAllPointsByState(state);
 
 	return window.cloneObject(points[0]);
 };

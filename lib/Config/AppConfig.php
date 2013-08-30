@@ -59,6 +59,7 @@ class AppConfig {
         'timeout'      => null,
         'retryTimeout' => [],
         'retryCount'   => null,
+        'chunk_size'   => null,
     ];
     /** @var array */
     public $corePrivate = [
@@ -243,8 +244,9 @@ class AppConfig {
     ];
     /** @var array */
     public $payment = [
-        'creditEnabled' => null,
-        'blockedIds'    => [],
+        'creditEnabled'    => null,
+        'paypalECS' => null,
+        'blockedIds'       => [],
     ];
     /** @var array */
     public $creditProvider = [

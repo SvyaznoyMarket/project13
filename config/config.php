@@ -36,6 +36,7 @@ $c->redirect301['enabled'] = true;
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
+$c->coreV2['chunk_size']   = 50;
 $c->coreV2['timeout']      = null;
 $c->coreV2['retryCount']   = 3;
 $c->coreV2['retryTimeout'] = [
@@ -211,7 +212,7 @@ $c->product['totalCount']             = 30000;
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
-$c->product['allowBuyOnlyInshop']     = false;
+$c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
 $c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
@@ -276,6 +277,7 @@ $c->banner['url'] = [
 $c->cart['productLimit'] = 50;
 
 $c->payment['creditEnabled'] = true;
+$c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
 $c->smartengine['pull']           = true;

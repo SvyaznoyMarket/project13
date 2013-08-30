@@ -98,8 +98,6 @@
 		return false;
 	}
 
-  var nowPresent = false;
-
 	var widgetBox = $('.bDelivery'),
 		deliveryData = widgetBox.data('value'),
 		url = deliveryData.url,
@@ -173,7 +171,6 @@
 				shopInfo = {},
 				shopLen = shops.length;
 			// end of var
-			
 
 			/**
 			 * Обработчик переключения состояния листа магазинов открыто или закрыто
@@ -182,8 +179,7 @@
 				nowBox.toggleClass('mOpen');
 				nowBox.toggleClass('mClose');
 			};
-			
-			
+
 			if ( !shopLen ) {
 				return;
 			}
@@ -260,17 +256,20 @@
 		};
 	// end of functions
 
-	fillAvalShopTmpl( deliveryShops );
-	
-	if ( url !== '' ) {
+	if ( url === '' && deliveryShops.length === 0 ) {
+		console.warn('URL отсутствует. Список магазинов пуст.');
+		
+		widgetBox.removeClass('mLoader');
+	}
+	else if ( url === '' ) {
+		fillAvalShopTmpl( deliveryShops );
+	}
+	else {
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: dataToSend,
-			success: function(data) {
-				console.log(data)
-				resFromSerever(data)
-			}
+			success: resFromSerever
 		});
 	}
 
@@ -378,18 +377,20 @@
  * 3D для мебели
  */
 ;(function() {
-	var loadFurniture3D = function() {
-		var furnitureAfterLoad = function() {
+	var loadFurniture3D = function loadFurniture3D() {
+		var furnitureAfterLoad = function furnitureAfterLoad() {
 
 			var object = $('#3dModelImg'),
 				data = object.data('value'),
-				host = object.data('host');
+				host = object.data('host'),
+
+				AnimFramePlayer = null;
 			// end of vars
 
 			var furniture3dPopupShow = function furniture3dPopupShow() {
 				$('#3dModelImg').lightbox_me({
 					centered: true,
-					closeSelector: ".close"
+					closeSelector: '.close'
 				});
 
 				return false;
@@ -397,7 +398,8 @@
 
 			try {
 				if ( !$('#3dImgContainer').length ) {
-					var AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
+					AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
+
 					AnimFramePlayer.DoLoadModel(data);
 					$('.mGrad360.3dimg').bind('click', furniture3dPopupShow);
 				}
@@ -406,7 +408,7 @@
 				var pageID = $('body').data('id'),
 					dataToLog = {
 						event: '3dimg',
-						type:'ошибка загрузки 3dimg для мебели',
+						type: 'ошибка загрузки 3dimg для мебели',
 						pageID: pageID,
 						err: err
 					};
@@ -495,147 +497,156 @@
  *
  * @requires jQuery
  */
-;(function(){
-		/**
-		 * Имя объекта для конструктора шкафов купе
-		 *
-		 * ВНИМАНИЕ
-		 * Имя переменной менять нельзя. Захардкожено в файле KupeConstructorScript.js
-		 * Переменная должна находится в глобальной области видимости
-		 */
-		Planner3dKupeConstructor = null;
+;(function(global) {
+	/**
+	 * Имя объекта для конструктора шкафов купе
+	 *
+	 * ВНИМАНИЕ
+	 * Имя переменной менять нельзя. Захардкожено в файле KupeConstructorScript.js
+	 * Переменная должна находится в глобальной области видимости
+	 */
+	global.Planner3dKupeConstructor = null;
 
 
-		/**
-		 * Callback Инициализации конструктора шкафов
-		 *
-		 * ВНИМАНИЕ
-		 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
-		 * Функция должна находится в глобальной области видимости
-		 */
-		Planner3d_Init = function (ApiIds){
-			// console.info(ApiIds)
-		};
+	/**
+	 * Callback Инициализации конструктора шкафов
+	 *
+	 * ВНИМАНИЕ
+	 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
+	 * Функция должна находится в глобальной области видимости
+	 */
+	global.Planner3d_Init = function ( ApiIds ) {
+		// console.info(ApiIds)
+	};
 
 
-		/**
-		 * Callback изменений в конструкторе шкафов
-		 * 
-		 * ВНИМАНИЕ
-		 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
-		 * Функция должна находится в глобальной области видимости
-		 */
-		Planner3d_UpdatePrice = function (IdsWithInfo) {
-			var url = $('#planner3D').data('cart-sum-url');
-			var product = {};
-			product.product = {};
+	/**
+	 * Callback изменений в конструкторе шкафов
+	 * 
+	 * ВНИМАНИЕ
+	 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
+	 * Функция должна находится в глобальной области видимости
+	 */
+	global.Planner3d_UpdatePrice = function ( IdsWithInfo ) {
+		var url = $('#planner3D').data('cart-sum-url'),
+			product = {};
+		// end of vars
 
-			var authFromServer = function(res){
-				if (!res.success){
-					return false;
-				}
+		product.product = {};
 
-				$('.jsPrice').html(printPrice(res.sum));
-			};
-
-			for (var i = 0, len = IdsWithInfo.length; i < len; i++){
-				var prodID = IdsWithInfo[i].id;
-
-				if (IdsWithInfo[i].error !== ''){
-					$('.jsBuyButton').addClass('mDisabled');
-					$('#coupeError').html('Вставки продаются только парами!').show();
-					return false;
-				}
-				$('.jsBuyButton').removeClass('mDisabled');
-				$('#coupeError').hide();
-
-				if (product.product[prodID+''] !== undefined){
-					product.product[prodID+''].quantity++;
-				}
-				else{
-					product.product[prodID+''] = {
-						id : prodID,
-						quantity : 1
-					};
-				}
-			}
-
-			$.ajax({
-				type: 'POST',
-				url: url,
-				data: product,
-				success: authFromServer
-			});
-		};
-
-
-		/**
-		 * Добавление шкафа купе в корзину
-		 */
-		var kupe2basket = function(){
-			if ($(this).hasClass('mDisabled')){
+		var authFromServer = function( res ) {
+			if ( !res.success ) {
 				return false;
 			}
 
-			var structure = Planner3dKupeConstructor.GetBasketContent();
-			var url = $(this).attr('href');
-
-			var resFromServer = function(res){
-				if ( !res.success ) {
-					return false;
-				}
-				$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
-
-				/* костыль */
-				res.product.name = $('.bMainContainer__eHeader-title').html();
-				res.product.price = $('.jsPrice').eq('1').html();
-				res.product.article = $('.bMainContainer__eHeader-article').html();
-				/* */
-				
-				$("body").trigger("addtocart", [res]);
-			};
-
-			var product = {};
-
-			product.product = structure;
-			$.ajax({
-				type: 'POST',
-				url: url,
-				data: product,
-				success: resFromServer
-			});
-			return false;
+			$('.jsPrice').html(printPrice(res.sum));
 		};
 
-		var initPlanner = function(){
-			try {
-				var coupeInfo = $('#planner3D').data('product');
-				
-				Planner3dKupeConstructor = new DKupe3dConstructor(document.getElementById('planner3D'),'/css/item/coupe_img/','/css/item/coupe_tex/', '/css/item/test_coupe_icons/');
-				Planner3dKupeConstructor.Initialize('/js/KupeConstructorData.json', coupeInfo.id);
+		for ( var i = 0, len = IdsWithInfo.length; i < len; i++ ) {
+			var prodID = IdsWithInfo[i].id;
+
+			if ( IdsWithInfo[i].error !== '' ) {
+				$('.jsBuyButton').addClass('mDisabled');
+				$('#coupeError').html('Вставки продаются только парами!').show();
+
+				return false;
 			}
-			catch (err){
-				var pageID = $('body').data('id');
-				var dataToLog = {
+
+			$('.jsBuyButton').removeClass('mDisabled');
+			$('#coupeError').hide();
+
+			if ( product.product[prodID+''] !== undefined ) {
+				product.product[prodID+''].quantity++;
+			}
+			else {
+				product.product[prodID+''] = {
+					id : prodID,
+					quantity : 1
+				};
+			}
+		}
+
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: product,
+			success: authFromServer
+		});
+	};
+
+
+	/**
+	 * Добавление шкафа купе в корзину
+	 */
+	var kupe2basket = function() {
+		if ( $(this).hasClass('mDisabled') ) {
+			return false;
+		}
+
+		var structure = global.Planner3dKupeConstructor.GetBasketContent();
+		var url = $(this).attr('href');
+
+		var resFromServer = function( res ) {
+			if ( !res.success ) {
+				return false;
+			}
+
+			$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
+
+			/* костыль */
+			res.product.name = $('.bMainContainer__eHeader-title').html();
+			res.product.price = $('.jsPrice').eq('1').html();
+			res.product.article = $('.bMainContainer__eHeader-article').html();
+			/* */
+			
+			$('body').trigger('addtocart', [res]);
+		};
+
+		var product = {};
+
+		product.product = structure;
+
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: product,
+			success: resFromServer
+		});
+
+		return false;
+	};
+
+	var initPlanner = function() {
+		try {
+			var coupeInfo = $('#planner3D').data('product');
+			
+			global.Planner3dKupeConstructor = new DKupe3dConstructor(document.getElementById('planner3D'),'/css/item/coupe_img/','/css/item/coupe_tex/', '/css/item/test_coupe_icons/');
+			global.Planner3dKupeConstructor.Initialize('/js/KupeConstructorData.json', coupeInfo.id);
+		}
+		catch ( err ) {
+			var pageID = $('body').data('id'),
+				dataToLog = {
 					event: 'Kupe3dConstructor error',
 					type:'ошибка загрузки Kupe3dConstructor',
 					pageID: pageID,
 					err: err
 				};
-				logError(dataToLog);
-			}
+			// end of vars
+			
+			logError(dataToLog);
+		}
 
-			$('.jsBuyButton').off();
-			$('.jsBuyButton').bind('click', kupe2basket);
-		};
+		$('.jsBuyButton').off();
+		$('.jsBuyButton').bind('click', kupe2basket);
+	};
 
 
 	$(document).ready(function() {
-		if ($('#planner3D').length){
+		if ( $('#planner3D').length ) {
 			$LAB.script( 'KupeConstructorScript.min.js' ).script( 'three.min.js' ).wait(initPlanner);
 		}
 	});
-})();
+}(this));
  
  
 /** 
@@ -728,7 +739,7 @@
 					swfobject.embedSWF(data.init.swf, data.init.container, data.init.width, data.init.height, data.init.version, data.init.install, data.flashvars, data.params, data.attributes);
 					$('#maybe3dModelPopup').lightbox_me({
 						centered: true,
-						closeSelector: ".close",
+						closeSelector: '.close',
 						onClose: function() {
 							swfobject.removeSWF(data.attributes.id);
 						}
@@ -828,82 +839,6 @@ $(document).ready(function() {
 			document.location.href = url;
 		}
 	});
-
-
-	/**
-	 * Аналитика для карточки товара
-	 *
-	 * @requires jQuery
-	 */
-	(function() {
-		var productInfo = {},
-			toKISS = {};
-		// end of vars
-		
-		if ( !$('#jsProductCard').length ) {
-			return false;
-		}
-
-		productInfo = $('#jsProductCard').data('value');
-				
-		toKISS = {
-			'Viewed Product SKU':productInfo.article,
-			'Viewed Product Product Name':productInfo.name,
-			'Viewed Product Product Status':productInfo.stockState
-		};
-
-		if ( typeof(_kmq) !== 'undefined' ) {
-			_kmq.push(['record', 'Viewed Product', toKISS]);
-		}
-
-
-		// KISS for goods sliders
-		var kissForGoodsSliders = function kissForGoodsSliders(){
-			var data = $(this).data('product'),
-				toKISS = {};
-			// end of vars
-			
-			switch ( data.type ) {
-				case 'Accessorize':
-					toKISS = {
-						'Recommended Item Clicked Accessorize Recommendation Place':'product',
-						'Recommended Item Clicked Accessorize Clicked SKU':data.article,
-						'Recommended Item Clicked Accessorize Clicked Product Name':data.name,
-						'Recommended Item Clicked Accessorize Product Position':data.position
-					};
-
-					if ( typeof(_kmq) !== 'undefined' ) {
-						_kmq.push(['record', 'Recommended Item Clicked Accessorize', toKISS]);
-					}
-					break;
-				case 'Also Bought':
-					toKISS = {
-						'Recommended Item Clicked Also Bought Recommendation Place':'product',
-						'Recommended Item Clicked Also Bought Clicked SKU':data.article,
-						'Recommended Item Clicked Also Bought Clicked Product Name':data.name,
-						'Recommended Item Clicked Also Bought Product Position':data.position
-					};
-
-					if ( typeof(_kmq) !== 'undefined' ) {
-						_kmq.push(['record', 'Recommended Item Clicked Also Bought', toKISS]);
-					}
-					break;
-				case 'Also Viewed':
-					toKISS = {
-						'Recommended Item Clicked Also Viewed Recommendation Place':'product',
-						'Recommended Item Clicked Also Viewed Clicked SKU':data.article,
-						'Recommended Item Clicked Also Viewed Clicked Product Name':data.name,
-						'Recommended Item Clicked Also Viewed Product Position':data.position
-					};
-
-					if ( typeof(_kmq) !== 'undefined' ) {
-						_kmq.push(['record', 'Recommended Item Clicked Also Viewed', toKISS]);
-					}
-					break;
-			}
-		};
-		// $('body').on('click', '.bSliderAction__eItem', kissForGoodsSliders);
-	})();
 	
 
 	/**
@@ -917,7 +852,50 @@ $(document).ready(function() {
 			$('.jsOrder1click').addClass('mDisabled');
 		};
 
-		$("body").bind('addtocart', afterBuy);
+		$('body').bind('addtocart', afterBuy);
+	})();
+
+
+	/**
+	 * Обработчик кнопки PayPal в карточке товара
+	 */
+	(function() {
+		if ( !$('.jsPayPalButton').length ) {
+			console.warn('Нет кнопки paypal');
+
+			return;
+		}
+
+		console.info('Кнопка paypal существует');
+
+		var payPalResHandler = function payPalResHandler( res ) {
+				console.info('payPal ajax complete');
+
+				if ( !res.success || !res.redirect ) {
+					window.blockScreen.unblock();
+
+					return;
+				}
+
+				document.location.href = res.redirect;
+			},
+
+			payPalEcsHandler = function payPalEcsHandler() {
+				console.info('payPal click');
+
+				var button = $(this),
+					url = button.attr('href');
+				// end of vars
+
+				window.blockScreen.block('Загрузка');
+
+				$.get(url, payPalResHandler);
+
+				return false;
+			};
+		// end of functions
+
+		$('.jsPayPalButton').bind('click', payPalEcsHandler);
 	})();
 	
 
@@ -981,28 +959,142 @@ $(document).ready(function() {
  */
  
  
+/**
+ * Аналитика просмотра карточки товара
+ *
+ * @requires jQuery
+ */
+(function() {
+	var productInfo = {},
+		toKISS = {};
+	// end of vars
+	
+	if ( !$('#jsProductCard').length ) {
+		return false;
+	}
+
+	productInfo = $('#jsProductCard').data('value');
+			
+	toKISS = {
+		'Viewed Product SKU': productInfo.article,
+		'Viewed Product Product Name': productInfo.name,
+		'Viewed Product Product Status': productInfo.stockState
+	};
+
+	if ( typeof _kmq !== 'undefined' ) {
+		_kmq.push(['record', 'Viewed Product', toKISS]);
+	}
+})();
+
+
+/**
+ * Аналитика для слайдеров
+ */
+(function() {
+		/**
+		 * Аналитика по типу слайдера
+		 *
+		 * @param	{Object}	productData	Данные о продукте на который произошел клик
+		 */
+	var trackAs = {
+			accessorize: function( productData ) {
+				console.log(productData);
+
+				var toKISS = {
+					'Recommended Item Clicked Accessorize Recommendation Place': 'product',
+					'Recommended Item Clicked Accessorize Clicked SKU': productData.article,
+					'Recommended Item Clicked Accessorize Clicked Product Name': productData.name,
+					'Recommended Item Clicked Accessorize Product Position': productData.position
+				};
+
+				if ( typeof _kmq !== 'undefined' ) {
+					_kmq.push(['record', 'Recommended Item Clicked Accessorize', toKISS]);
+				}
+			},
+
+			alsoBought: function( productData ) {
+				console.log(productData);
+
+				var toKISS = {
+					'Recommended Item Clicked Also Bought Recommendation Place': 'product',
+					'Recommended Item Clicked Also Bought Clicked SKU': productData.article,
+					'Recommended Item Clicked Also Bought Clicked Product Name': productData.name,
+					'Recommended Item Clicked Also Bought Product Position': productData.position
+				};
+
+				if ( typeof _kmq !== 'undefined' ) {
+					_kmq.push(['record', 'Recommended Item Clicked Also Bought', toKISS]);
+				}
+
+			},
+
+			alsoViewed: function( productData ) {
+				console.log(productData);
+
+				var toKISS = {
+					'Recommended Item Clicked Also Viewed Recommendation Place': 'product',
+					'Recommended Item Clicked Also Viewed Clicked SKU': productData.article,
+					'Recommended Item Clicked Also Viewed Clicked Product Name': productData.name,
+					'Recommended Item Clicked Also Viewed Product Position': productData.position
+				};
+
+				if ( typeof _kmq !== 'undefined' ) {
+					_kmq.push(['record', 'Recommended Item Clicked Also Viewed', toKISS]);
+				}
+			}
+		},
+
+		sliderAnalytics = function sliderAnalytics() {
+			console.info('click!');
+
+			var sliderData = $(this).parents('.bGoodsSlider').data('slider'),
+				sliderType = sliderData.type,
+
+				productData = $(this).data('product');
+			// end of vars
+			
+			console.log(sliderType);
+			productData.position = $(this).index();
+
+			if ( trackAs.hasOwnProperty(sliderType) ) {
+				trackAs[sliderType](productData);
+			}
+		};
+	// end of functions
+
+	$('.bGoodsSlider').on('click', '.bSliderAction__eItem', sliderAnalytics);
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
 ;(function(){
 	// текущая страница для каждой вкладки
 	var reviewCurrentPage = {
-		user: -1,
-		pro: -1
-	};
-	// количество страниц для каждой вкладки
-	var reviewPageCount = {
-		user: 0,
-		pro: 0
-	};
-	var reviewsProductId = null;
-	var reviewsType = null;
-	var reviewsContainerClass = null;
+			user: -1,
+			pro: -1
+		},
+		// количество страниц для каждой вкладки
+		reviewPageCount = {
+			user: 0,
+			pro: 0
+		},
+		reviewsProductId = null,
+		reviewsType = null,
+		reviewsContainerClass = null,
 
-	//nodes
-	var moreReviewsButton = $('.jsGetReviews');
-	var reviewTab = $('.bReviewsTabs__eTab');
-	var reviewWrap = $('.bReviewsWrapper');
-	var reviewContent = $('.bReviewsContent');
+		//nodes
+		moreReviewsButton = $('.jsGetReviews'),
+		reviewTab = $('.bReviewsTabs__eTab'),
+		reviewWrap = $('.bReviewsWrapper'),
+		reviewContent = $('.bReviewsContent');
+	// end of vars
+
 	// получение отзывов
-	var getReviews = function(productId, type, containerClass) {
+	var getReviews = function( productId, type, containerClass ) {
 		var page = reviewCurrentPage[type] + 1;
 		
 		var layout = false;
@@ -1029,7 +1121,7 @@ $(document).ready(function() {
 	};
 
 	// карточка товара - отзывы - переключение по табам
-	if(reviewTab.length) {
+	if ( reviewTab.length ) {
 		// начальная инициализация
 		var initialType = reviewWrap.attr('data-reviews-type');
 
@@ -1043,9 +1135,10 @@ $(document).ready(function() {
 		reviewsType = reviewWrap.attr('data-reviews-type');
 		reviewsContainerClass = reviewWrap.attr('data-container');
 
-		reviewTab.click(function(){
+		reviewTab.click(function() {
 			reviewsContainerClass = $(this).attr('data-container');
-			if (reviewsContainerClass === undefined){
+
+			if ( reviewsContainerClass === undefined ) {
 				return;
 			}
 
@@ -1056,44 +1149,50 @@ $(document).ready(function() {
 			$('.'+reviewsContainerClass).show();
 
 			moreReviewsButton.hide();
+
 			if (reviewsType === 'user') {
 				moreReviewsButton.html('Показать ещё отзывы');
-			} else if(reviewsType === 'pro') {
+			}
+			else if ( reviewsType === 'pro' ) {
 				moreReviewsButton.html('Показать ещё обзоры');
 			}
 
-			if(!$('.'+reviewsContainerClass).html()) {
+			if ( !$('.'+reviewsContainerClass).html() ) {
 				getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
-			} else {
+			}
+			else {
 				// проверяем что делать с кнопкой "показать еще" - скрыть/показать
-				if(reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType]) {
+				if ( reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType] ) {
 					moreReviewsButton.hide();
-				} else {
+				}
+				else {
 					moreReviewsButton.show();
 				}
 			}
 		});
 
-		moreReviewsButton.click(function(){
+		moreReviewsButton.click(function() {
 			getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
 		});
 	}
 
-	var leaveReview = function(){
-		if (!$('#jsProductCard').length){
+	var leaveReview = function() {
+		if ( !$('#jsProductCard').length ) {
 			return false;
 		}
 		
-		var productInfo = $('#jsProductCard').data('value');
-		var pid = $(this).data('pid');
-		var name = productInfo.name;
-		var src = "http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&" + $.param({key: pid, name: name});
+		var productInfo = $('#jsProductCard').data('value'),
+			pid = $(this).data('pid'),
+			name = productInfo.name,
+			src = 'http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&' + $.param({key: pid, name: name});
+		// end of vars
 
-		$(".reviewPopup").lightbox_me({
+		$('.reviewPopup').lightbox_me({
 			onLoad: function() {
-				$("#rframe").attr("src", src);
+				$('#rframe').attr('src', src);
 			}
 		});
+
 		return false;
 	};
 
@@ -1113,40 +1212,42 @@ $(document).ready(function() {
  * @author		Zaytsev Alexandr
  * @requires	jQuery, jQuery.lightbox_me
  */
-;(function(){
-	var initVideo = function(){
-		if (!$('#productVideo').length){
+;(function() {
+	var initVideo = function() {
+		if ( !$('#productVideo').length ) {
 			return false;
 		}
 
-		var videoStartTime = 0;
-		var videoEndTime = 0;
-		var productUrl = document.location.href;
-		var shield = $('.mVideo');
-		var iframe = $('#productVideo .productVideo_iframe').html();
+		var videoStartTime = 0,
+			videoEndTime = 0,
+			productUrl = document.location.href,
+			shield = $('.mVideo'),
+			iframe = $('#productVideo .productVideo_iframe').html();
+		// end of vars
 
-		var openVideo = function(){
+		var openVideo = function() {
 			$('#productVideo .productVideo_iframe').append(iframe);
-			$(".productVideo_iframe iframe").attr("src", $(".productVideo_iframe iframe").attr("src")+"?autoplay=1");
+			$('.productVideo_iframe iframe').attr('src', $('.productVideo_iframe iframe').attr('src')+'?autoplay=1');
 			$('#productVideo').lightbox_me({ 
 				centered: true,
-				onLoad: function(){
+				onLoad: function() {
 					videoStartTime = new Date().getTime();
 
 					if (typeof(_gaq) !== 'undefined') {
 						_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
 					}
 				},
-				onClose: function(){
+				onClose: function() {
 					$('#productVideo .productVideo_iframe').empty();
 					videoEndTime = new Date().getTime();
 					var videoSpent = videoEndTime - videoStartTime;
 
-					if (typeof(_gaq) !== 'undefined') {
+					if ( typeof _gaq !== 'undefined' ) {
 						_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
 					}
 				}
 			});
+
 			return false;
 		};
 
@@ -1156,7 +1257,7 @@ $(document).ready(function() {
 	};
 
 	$(document).ready(function() {
-		if ($('.mVideo').length){
+		if ( $('.mVideo').length ) {
 			initVideo();
 		}
 	});

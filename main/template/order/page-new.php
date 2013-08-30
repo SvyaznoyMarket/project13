@@ -14,6 +14,9 @@
 
 <?
 $helper = new \Helper\TemplateHelper();
+$request = \App::request();
+
+$paypalECS = isset($paypalECS) && (true === $paypalECS);
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
@@ -78,12 +81,14 @@ foreach (array_reverse($productsById) as $product) {
 
 					<div class="bDeliverySelf"><span data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></span></div>
 
-					<!-- кнопка сменить магазин -->
-					<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery,
-												text: 'Сменить магазин',
-												click: box.changePoint">
-					</a>
-					<!-- /кнопка сменить магазин -->
+					<? if (isset($deliveryData['shops']) && (count($deliveryData['shops']) > 1)): ?>
+						<!-- кнопка сменить магазин -->
+						<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery && box.pointList.length > 1,
+													text: 'Сменить магазин',
+													click: box.changePoint">
+						</a>
+						<!-- /кнопка сменить магазин -->
+					<? endif ?>
 				</div>
 
 				<div class="bBuyingLine__eRight">
@@ -117,7 +122,7 @@ foreach (array_reverse($productsById) as $product) {
 						<span data-bind="text: box.deliveryName"></span> <strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span> <span data-bind="visible: !hasPointDelivery">*</span>
 					</div>
 
-					<div class="bSelectWrap mFastInpSmall">
+					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length">
 						<span class="bSelectWrap_eText" data-bind="text: 'c '+ box.choosenInterval().start + ' до ' + box.choosenInterval().end"></span>
 						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
 															value: box.choosenInterval,
@@ -188,7 +193,7 @@ foreach (array_reverse($productsById) as $product) {
 
     <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 	<!-- Sale section -->
-	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length">
+	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length, css: { hidden: paypalECS }">
 		<div class="bBuyingLine">
 			<div class="bBuyingLine__eLeft">
 				<h2 class="bBuyingSteps__eTitle">
@@ -211,7 +216,7 @@ foreach (array_reverse($productsById) as $product) {
 
 					<ul class="bSaleList bInputList clearfix">
                         <? if (\App::config()->coupon['enabled']): ?>
-						<li class="bSaleList__eItem" data-type="coupon">
+						<li class="bSaleList__eItem" data-type="coupon" data-bind="visible: (deliveryBoxes().length == 1)">
 							<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
 							<label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
 						</li>
@@ -292,11 +297,11 @@ foreach (array_reverse($productsById) as $product) {
 
 		<div class="bHeadnote">
 			Уже покупали у нас?
-			<strong><a id="auth-link" class="underline" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
+			<strong><a id="auth-link" class="underline bAuthLink" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
 			и вы сможете использовать ранее введенные данные
 		</div>
 		
-		<form id="order-form" action="<?= $page->url('order.create') ?>" method="post">
+		<form id="order-form" action="<?= $paypalECS ? $page->url('order.paypal.create', ['token' => $request->get('token'), 'PayerID' => $request->get('PayerID')]) : $page->url('order.create') ?>" method="post">
 			<!-- Info about customer -->
 			<div class="bBuyingLine mBuyingFields">
 				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
@@ -382,9 +387,9 @@ foreach (array_reverse($productsById) as $product) {
 			</div>
 
 			<!-- Methods of payment -->
-			<h2 class="bBuyingSteps__eTitle">Оплата</h2>
+			<h2 class="bBuyingSteps__eTitle" data-bind="css: { hidden: paypalECS }">Оплата</h2>
 
-			<div class="bBuyingLine clearfix mPayMethods">
+			<div class="bBuyingLine clearfix mPayMethods" data-bind="css: { hidden: paypalECS }">
 				<div class="bBuyingLine__eLeft"></div>
 				<div class="bBuyingLine__eRight bInputList">
 					<?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
@@ -406,7 +411,13 @@ foreach (array_reverse($productsById) as $product) {
 					<p class="bFootenote">* Поля обязательные для заполнения</p>
 
 					<div>
-						<a id="completeOrder" class="bBigOrangeButton" href="#">Завершить оформление</a>
+						<a
+                            id="completeOrder"
+                            class="bBigOrangeButton"
+                            href="#"
+                            <? if ($paypalECS): ?>data-alt-text="Подтвердить сумму"<? endif ?>
+                            data-bind="text: ( paypalECS && cartSum && totalSum() !== cartSum ) ? 'Подтвердить сумму' : 'Завершить оформление' "
+                        ></a>
 					</div>
 				</div>
 			</div>
@@ -443,7 +454,7 @@ foreach (array_reverse($productsById) as $product) {
 </div>
 <!-- /Общая обертка оформления заказа -->
 
-<div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery') ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
+<div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery', $paypalECS ? ['paypalECS' => 1] : []) ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
 <div id="jsOrderForm" data-value="<?= $page->json([
 	'order[recipient_first_name]'   => $form->getFirstName(),
 	'order[recipient_last_name]'    => $form->getLastName(),
