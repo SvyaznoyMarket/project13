@@ -216,7 +216,7 @@ foreach (array_reverse($productsById) as $product) {
 
 					<ul class="bSaleList bInputList clearfix">
                         <? if (\App::config()->coupon['enabled']): ?>
-						<li class="bSaleList__eItem" data-type="coupon">
+						<li class="bSaleList__eItem" data-type="coupon" data-bind="visible: (deliveryBoxes().length == 1)">
 							<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
 							<label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
 						</li>
