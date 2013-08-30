@@ -71,6 +71,49 @@ $(document).ready(function() {
 
 		$('body').bind('addtocart', afterBuy);
 	})();
+
+
+	/**
+	 * Обработчик кнопки PayPal в карточке товара
+	 */
+	(function() {
+		if ( !$('.jsPayPalButton').length ) {
+			console.warn('Нет кнопки paypal');
+
+			return;
+		}
+
+		console.info('Кнопка paypal существует');
+
+		var payPalResHandler = function payPalResHandler( res ) {
+				console.info('payPal ajax complete');
+
+				if ( !res.success || !res.redirect ) {
+					window.blockScreen.unblock();
+
+					return;
+				}
+
+				document.location.href = res.redirect;
+			},
+
+			payPalEcsHandler = function payPalEcsHandler() {
+				console.info('payPal click');
+
+				var button = $(this),
+					url = button.attr('href');
+				// end of vars
+
+				window.blockScreen.block('Загрузка');
+
+				$.get(url, payPalResHandler);
+
+				return false;
+			};
+		// end of functions
+
+		$('.jsPayPalButton').bind('click', payPalEcsHandler);
+	})();
 	
 
 

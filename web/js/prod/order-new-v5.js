@@ -1233,7 +1233,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
 
-				global.OrderModel.blockScreen.unblock();
+				global.blockScreen.unblock();
 
 				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
 					console.log('Есть обработчик');
@@ -1266,7 +1266,12 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				orderForm = $('#order-form');
 			// end of vars
 			
-			global.OrderModel.blockScreen.block('Ваш заказ оформляется');
+			if ( global.OrderModel.paypalECS() ) {
+				global.blockScreen.block('Передача данных в PayPal');
+			}
+			else {
+				global.blockScreen.block('Ваш заказ оформляется');
+			}
 
 			/**
 			 * Перебираем блоки доставки
@@ -1808,43 +1813,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		couponsBox: ko.observableArray([]),
 
-		/**
-		 * Блокер экрана
-		 *
-		 * @param	{Object}		noti		Объект jQuery блокера экрана
-		 * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
-		 * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
-		 */
-		blockScreen: {
-			noti: null,
-			block: function( text ) {
-				var self = this;
-
-				console.warn('block screen');
-
-				if ( self.noti ) {
-					self.unblock();
-				}
-
-				self.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
-				self.noti.appendTo('body');
-
-				self.noti.lightbox_me({
-					centered:true,
-					closeClick:false,
-					closeEsc:false,
-					onClose: function() {
-						self.noti.remove();
-					}
-				});
-			},
-
-			unblock: function() {
-				console.warn('unblock screen');
-
-				this.noti.trigger('close');
-			}
-		},
 
 		/**
 		 * Существует ли блок доставки
@@ -1913,11 +1881,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			// end of vars
 
 			var couponResponceHandler = function couponResponceHandler( res ) {
-				global.OrderModel.blockScreen.block('Применяем купон');
+				global.blockScreen.block('Применяем купон');
 
 				if ( !res.success ) {
 					global.OrderModel.couponError(res.error.message);
-					global.OrderModel.blockScreen.unblock();
+					global.blockScreen.unblock();
 
 					return;
 				}
@@ -2047,7 +2015,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			var updateResponceHandler = function updateResponceHandler( res ) {
 				renderOrderData(res);
-				global.OrderModel.blockScreen.unblock();
+				global.blockScreen.unblock();
 
 				separateOrder( global.OrderModel.statesPriority );
 			};
@@ -2070,7 +2038,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		deleteItem: function( data ) {
 			console.info('удаление');
 
-			global.OrderModel.blockScreen.block('Удаляем');
+			global.blockScreen.block('Удаляем');
 
 			var itemDeleteAnalytics = function itemDeleteAnalytics() {
 					var products = global.OrderModel.orderDictionary.products,
@@ -2107,7 +2075,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					console.log( res );
 					if ( !res.success ) {
 						console.warn('не удалось удалить товар');
-						global.OrderModel.blockScreen.unblock();
+						global.blockScreen.unblock();
 
 						return false;
 					}

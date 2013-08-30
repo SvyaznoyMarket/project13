@@ -325,43 +325,6 @@
 		 */
 		couponsBox: ko.observableArray([]),
 
-		/**
-		 * Блокер экрана
-		 *
-		 * @param	{Object}		noti		Объект jQuery блокера экрана
-		 * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
-		 * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
-		 */
-		blockScreen: {
-			noti: null,
-			block: function( text ) {
-				var self = this;
-
-				console.warn('block screen');
-
-				if ( self.noti ) {
-					self.unblock();
-				}
-
-				self.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
-				self.noti.appendTo('body');
-
-				self.noti.lightbox_me({
-					centered:true,
-					closeClick:false,
-					closeEsc:false,
-					onClose: function() {
-						self.noti.remove();
-					}
-				});
-			},
-
-			unblock: function() {
-				console.warn('unblock screen');
-
-				this.noti.trigger('close');
-			}
-		},
 
 		/**
 		 * Существует ли блок доставки
@@ -430,11 +393,11 @@
 			// end of vars
 
 			var couponResponceHandler = function couponResponceHandler( res ) {
-				global.OrderModel.blockScreen.block('Применяем купон');
+				global.blockScreen.block('Применяем купон');
 
 				if ( !res.success ) {
 					global.OrderModel.couponError(res.error.message);
-					global.OrderModel.blockScreen.unblock();
+					global.blockScreen.unblock();
 
 					return;
 				}
@@ -564,7 +527,7 @@
 
 			var updateResponceHandler = function updateResponceHandler( res ) {
 				renderOrderData(res);
-				global.OrderModel.blockScreen.unblock();
+				global.blockScreen.unblock();
 
 				separateOrder( global.OrderModel.statesPriority );
 			};
@@ -587,7 +550,7 @@
 		deleteItem: function( data ) {
 			console.info('удаление');
 
-			global.OrderModel.blockScreen.block('Удаляем');
+			global.blockScreen.block('Удаляем');
 
 			var itemDeleteAnalytics = function itemDeleteAnalytics() {
 					var products = global.OrderModel.orderDictionary.products,
@@ -624,7 +587,7 @@
 					console.log( res );
 					if ( !res.success ) {
 						console.warn('не удалось удалить товар');
-						global.OrderModel.blockScreen.unblock();
+						global.blockScreen.unblock();
 
 						return false;
 					}
