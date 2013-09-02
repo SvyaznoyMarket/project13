@@ -175,9 +175,9 @@ class Layout extends \View\DefaultLayout {
                 ], [], function ($data) use (&$seoTemplate) {
                 if($data && is_array($data)) $data = reset($data);
                 $seoTemplate = array_merge([
-                    'seo_title'       => null,
-                    'seo_description' => null,
-                    'seo_keywords'    => null,
+                    'title'       => null,
+                    'description' => null,
+                    'keywords'    => null,
                 ], $data);
             });
             $shopScript->execute();
@@ -206,10 +206,6 @@ class Layout extends \View\DefaultLayout {
         $dataStore->execute();
 
         if (!$seoTemplate) return;
-
-        if(isset($seoTemplate['seo_title'])) $seoTemplate['title'] = $seoTemplate['seo_title'];
-        if(isset($seoTemplate['seo_description'])) $seoTemplate['description'] = $seoTemplate['seo_description'];
-        if(isset($seoTemplate['seo_keywords'])) $seoTemplate['keywords'] = $seoTemplate['seo_keywords'];
 
         $replacer = new \Util\InflectReplacer($patterns);
         if ($value = $replacer->get($seoTemplate['title'])) {

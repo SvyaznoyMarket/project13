@@ -399,12 +399,6 @@ class Repository {
             $shopScript->execute();
         }
 
-        if(isset($seoJson['seo_title'])) $seoJson['title'] = $seoJson['seo_title'];
-        if(isset($seoJson['seo_description'])) $seoJson['description'] = $seoJson['seo_description'];
-        if(isset($seoJson['seo_keywords'])) $seoJson['keywords'] = $seoJson['seo_keywords'];
-        if(isset($seoJson['seo_header'])) $seoJson['header'] = $seoJson['seo_header'];
-        if(isset($seoJson['seo_text'])) $seoJson['content'] = $seoJson['seo_text'];
-
         // данные для шаблона
         $patterns = [
             'категория' => [$category->getName()],
