@@ -118,7 +118,8 @@ $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
 $c->partners['livetex']['login'] = 'anastasiya.vs@enter.ru';
-$c->partners['livetex']['password'] = 'enter1chat2';// login и пароль используются только для страницы статистики
+$c->partners['livetex']['password'] = 'enter1chat2'; // login и пароль используются только для страницы статистики
+$c->partners['livetex']['timeout'] = 0.8; // timeout curl'a для статистики
 
 
 

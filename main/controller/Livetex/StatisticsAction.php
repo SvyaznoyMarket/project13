@@ -37,7 +37,10 @@ class StatisticsAction {
         include_once '../lib/Partner/LiveTex/API.php';
         $login = \App::config()->partners['livetex']['login'];
         $password = \App::config()->partners['livetex']['password'];
-        $this->API = \Partner\LiveTex\Api::getInstance($login, $password); //LiveTex/API Class
+        $timeout = \App::config()->partners['livetex']['timeout'];
+
+        $this->API = \Partner\LiveTex\Api::getInstance($login, $password, $timeout); //LiveTex/API Class
+
         $this->siteId = \App::config()->partners['livetex']['liveTexID'];
     }
 

@@ -20,13 +20,14 @@ class API {
     private $api_url = 'http://api.livetex.ru/';
     private $api_login_url = 'http://api.livetex.ru/login.php';
     private $count_login_errors = 0;
-    private $timeout = 0.8;
+    private $timeout = null;
 
 
     private function __clone() {}
-    private function __construct($log, $pass) {
+    private function __construct($log, $pass, $timeout = 0.8) {
         $this->login = $log;
         $this->password = $pass;
+        $this->timeout = $timeout;
     }
 
 
