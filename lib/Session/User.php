@@ -115,7 +115,7 @@ class User {
      *
      * @param \Http\Response|\Http\RedirectResponse|null $response
      */
-    public function removeToken(&$response = null) {
+    public function removeToken($response = null) {
         $token = $this->getToken();
         \App::session()->remove($this->tokenName);
 
