@@ -2747,9 +2747,11 @@ String.prototype.addParameterToUrl = UpdateUrlString;
 		},
 
 		unblock: function() {
-			console.warn('unblock screen');
-
-			this.noti.trigger('close');
+			if ( this.noti ) {
+				console.warn('unblock screen');
+				
+				this.noti.trigger('close');
+			}
 		}
 	};
 }(this));

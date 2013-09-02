@@ -2085,7 +2085,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			console.info('обновление данных с сервера');
 
 			renderOrderData(res);
-			utils.blockScreen.unblock();
 
 			separateOrder( global.OrderModel.statesPriority );
 		},
@@ -2324,6 +2323,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * @param	{Object}	res		Данные о заказе
 		 */
 		renderOrderData = function renderOrderData( res ) {
+			utils.blockScreen.unblock();
+			
 			if ( !res.success ) {
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);
