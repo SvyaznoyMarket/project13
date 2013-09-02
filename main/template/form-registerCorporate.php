@@ -63,6 +63,10 @@ if (empty($rootCategories)) $rootCategories = [];
 
                 <? if ($error = $form->getError('global')) echo $page->render('_formError', ['error' => $error]) ?>
 
+                <label class="bCorpRegForm__eLabel">Фамилия:</label>
+                <input type="text" class="bCorpRegForm__eInput" name="register[last_name]" value="<?= $form->getLastName() ?>" />
+                <? if ($error = $form->getError('last_name')) echo $page->render('_formError', ['error' => $error]) ?>
+
                 <label class="bCorpRegForm__eLabel">Имя:</label>
                 <input type="text" class="bCorpRegForm__eInput" name="register[first_name]" value="<?= $form->getFirstName() ?>" />
                 <? if ($error = $form->getError('first_name')) echo $page->render('_formError', ['error' => $error]) ?>
@@ -70,10 +74,6 @@ if (empty($rootCategories)) $rootCategories = [];
                 <label class="bCorpRegForm__eLabel">Отчество:</label>
                 <input type="text" class="bCorpRegForm__eInput" name="register[middle_name]" value="<?= $form->getMiddleName() ?>" />
                 <? if ($error = $form->getError('middle_name')) echo $page->render('_formError', ['error' => $error]) ?>
-
-                <label class="bCorpRegForm__eLabel">Фамилия:</label>
-                <input type="text" class="bCorpRegForm__eInput" name="register[last_name]" value="<?= $form->getLastName() ?>" />
-                <? if ($error = $form->getError('last_name')) echo $page->render('_formError', ['error' => $error]) ?>
 
                 <label class="bCorpRegForm__eLabel">E-mail:</label>
                 <input type="text" class="bCorpRegForm__eInput" name="register[email]" value="<?= $form->getEmail() ?>" />
