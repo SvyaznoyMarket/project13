@@ -35,7 +35,7 @@ if ($product instanceof \Model\Product\Entity) {
 ?>
 
 <? if (!empty($scr_product)): ?>
-    <div id="sociomanticProductPageStream" data-scr-product="<?= $page->json($scr_product) ?>" data-prod-cats="<?= $page->json(json_decode($prod_cats)) ?>" class="jsanalytics"></div>
+    <div id="sociomanticProductPageStream" data-scr-product="<?= $page->json($scr_product) ?>" data-prod-cats="<?= $page->json($prod_cats) ?>" class="jsanalytics"></div>
 <? endif;
 
 /* example: <!--
