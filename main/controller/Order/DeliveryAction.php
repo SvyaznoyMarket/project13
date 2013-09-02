@@ -18,13 +18,16 @@ class DeliveryAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        return new \Http\JsonResponse($this->getResponseData());
+        $paypalECS = 1 === (int)$request->get('paypalECS');
+
+        return new \Http\JsonResponse($this->getResponseData($paypalECS));
     }
 
     /**
+     * @param bool $paypalECS
      * @return array
      */
-    public function getResponseData() {
+    public function getResponseData($paypalECS = false) {
         $router = \App::router();
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -38,11 +41,38 @@ class DeliveryAction {
             'action' => [],
         ];
 
+        if ($paypalECS) {
+            $responseData['paypalECS'] = true;
+            $responseData['cart']['sum'] = $cart->getSum();
+
+            $cartProducts = [$cart->getPaypalProduct()];
+            $coupons = [];
+            $blackcards = [];
+        } else {
+            $cartProducts = $cart->getProducts();
+            $coupons = $cart->getCoupons();
+            $blackcards = $cart->getBlackcards();
+        }
+
         try {
             // проверка на пустую корзину
-            if ($cart->isEmpty()) {
+            if (!(bool)$cartProducts) {
                 throw new \Exception('Корзина пустая');
             }
+
+            // купоны
+            $couponData = (\App::config()->coupon['enabled'] && ($coupon = reset($coupons)))
+                ? [
+                    ['number' => $coupon->getNumber()],
+                ]
+                : [];
+
+            // черные карты
+            $blackcardData = (\App::config()->blackcard['enabled'] && ($blackcard = reset($blackcards)))
+                ? [
+                    ['number' => $blackcard->getNumber()],
+                ]
+                : [];
 
             $result = null;
             $exception = null;
@@ -52,8 +82,15 @@ class DeliveryAction {
                     'geo_id'  => $region->getId(),
                 ],
                 [
-                    'product' => $cart->getProductData(),
-                    'service' => $cart->getServiceData(),
+                    'product'        => array_map(function(\Model\Cart\Product\Entity $cartProduct) {
+                        return [
+                            'id'       => $cartProduct->getId(),
+                            'quantity' => $cartProduct->getQuantity(),
+                        ];
+                    }, $cartProducts),
+                    'service'        => [],
+                    'coupon_list'    => $couponData,
+                    'blackcard_list' => $blackcardData,
                 ],
                 function($data) use (&$result, &$shops) {
                     $result = $data;
@@ -67,6 +104,24 @@ class DeliveryAction {
             $client->execute();
             if ($exception instanceof \Exception) {
                 throw $exception;
+            }
+
+            if (\App::config()->blackcard['enabled'] && array_key_exists('blackcard_list', $result)) {
+                foreach ($result['blackcard_list'] as $blackcardItem) {
+                    $blackcardItem = array_merge([
+                        'number'       => null,
+                        'name'         => 'Карта',
+                        'discount_sum' => 0,
+                    ], (array)$blackcardItem);
+
+                    $blackcard = new \Model\Cart\Blackcard\Entity($blackcardItem);
+                    $cart->clearBlackcards();
+                    $cart->setBlackcard($blackcard);
+                }
+
+                if (array_key_exists('action_list', $result)) {
+                    $cart->setActionData((array)$result['action_list']);
+                }
             }
 
             // типы доставок
@@ -110,7 +165,13 @@ class DeliveryAction {
                 'products'        => [],
                 'shops'           => [],
                 'discounts'       => [],
+                'cart'            => [],
             ]);
+
+            // если недоступен заказ товара из магазина
+            if (!\App::config()->product['allowBuyOnlyInshop'] && isset($responseData['deliveryStates']['now'])) {
+                unset($responseData['deliveryStates']['now']);
+            }
 
             // костыль
             $getDates = function(array $dateData) use (&$helper) {
@@ -120,11 +181,13 @@ class DeliveryAction {
                     $time = strtotime($dateItem['date']);
 
                     $intervalData = [];
-                    foreach ($dateItem['interval'] as $intervalItem) {
-                        $intervalData[] = [
-                            'start' => $intervalItem['time_begin'],
-                            'end'   => $intervalItem['time_end'],
-                        ];
+                    if (isset($dateItem['interval'])) {
+                        foreach ((array)$dateItem['interval'] as $intervalItem) {
+                            $intervalData[] = [
+                                'start' => $intervalItem['time_begin'],
+                                'end'   => $intervalItem['time_end'],
+                            ];
+                        }
                     }
 
                     $return[] = [
@@ -216,6 +279,8 @@ class DeliveryAction {
             // магазины
             foreach ($result['shops'] as $shopItem) {
                 $shopId = (string)$shopItem['id'];
+                if (!isset($productIdsByShop[$shopId])) continue;
+
                 $responseData['shops'][] = [
                     'id'         => $shopId,
                     'name'       => $shopItem['name'],
@@ -225,6 +290,16 @@ class DeliveryAction {
                     'longitude'  => (float)$shopItem['coord_long'],
                     'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
                 ];
+            }
+            // сортировка магазинов
+            if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
+                usort($responseData['shops'], function($a, $b) use (&$region) {
+                    if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
+                        return 0;
+                    }
+
+                    return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
+                });
             }
 
             // купоны

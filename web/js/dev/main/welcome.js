@@ -1,3 +1,15 @@
+var addKISSmetricsEvent = function(eventName, bannerId, banner) {
+    var centerImageUrl = banner.attr('src');
+    var bannerUrl = banner.data('url');
+    if (typeof(_kmq) !== 'undefined') {
+        _kmq.push(['record', eventName, {
+            'Banner id': bannerId,
+            'Center Image URL': centerImageUrl,
+            'Banner URL': bannerUrl
+        }]);
+    }
+}
+
 $(document).ready(function () {
     // promo block after header GA
     $('.bPromoCategory a').bind('click', function(){
@@ -44,6 +56,7 @@ $(document).ready(function () {
             .click(function () {
                 if (typeof(_gaq) !== 'undefined' && typeof(promos[0].ga) !== 'undefined')
                     _gaq.push(['_trackEvent', 'BannerClick', promos[0].ga ]);
+                addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
                 location.href = $(this).data('url')
             })
         return
@@ -100,6 +113,7 @@ $(document).ready(function () {
         clearTimeout(idto)
         if (typeof(_gaq) !== 'undefined' && typeof(initis[1].ga) !== 'undefined')
             _gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
+        addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
         location.href = $(this).data('url')
     })
     $('.promos').click(function () {
@@ -179,5 +193,6 @@ $(document).ready(function () {
             })
         sideBanner($('.leftImage'), 0)
         sideBanner($('.rightImage'), 2)
+        addKISSmetricsEvent('Carousel banner click', 'bigbanner', $('.centerImage'));
     }
 })

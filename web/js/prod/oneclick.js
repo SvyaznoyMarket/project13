@@ -809,18 +809,19 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 				ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ); // this way, Lukas!
 				OC_MVM.noDelivery( true );
 				$('.jsOrder1click').remove();
+
 				return false;
 			}
 
 			Deliveries = data.data;
 			selfAvailable = 'self' in Deliveries;
-			if( selfAvailable ) {
+			if ( selfAvailable ) {
 				mapCenter = calcMCenter( Deliveries['self'].shops );
 			}			
 			OC_MVM = new OneCViewModel();
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ); // this way, Lukas!
 			
-			if( selfAvailable ) {
+			if ( selfAvailable ) {
 				var mapCallback = function() {
 					window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL );
 				};
@@ -835,6 +836,16 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
 			oneClickIsReady = true;
 			enableHandlers();
+
+
+			/**
+			 * Открытие окна, если есть хэш oneclick
+			 *
+			 * https://jira.enter.ru/browse/SITE-1778
+			 */
+			if ( document.location.hash.match(/oneclick/) ) {
+				$('.jsOrder1click').trigger('click');
+			}
 		});
 
 		var pickStoreMVMCL = function ( node ) {

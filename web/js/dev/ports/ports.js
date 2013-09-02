@@ -148,6 +148,26 @@ window.ANALYTICS = {
         }
     },
 
+    jsOrderFlocktory : function() {
+    	console.info('foctory order complete');
+    	console.log($('#jsOrderFlocktory').data('value'));
+
+    	var _flocktory = window._flocktory = _flocktory || [],
+    		flocktoryData = $('#jsOrderFlocktory').data('value');
+    	// end of vars
+    	
+    	_flocktory.push(flocktoryData);
+
+        (function () {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = "//api.flocktory.com/1/hello.2.js";
+            var l = document.getElementsByTagName('script')[0];
+            l.parentNode.insertBefore(s, l);
+        })();
+    },
+
     flocktoryJS : function() {
         (function () {
             var s = document.createElement('script');
@@ -274,6 +294,14 @@ window.ANALYTICS = {
                 }
             },
 
+            category: function (data) {
+                window.rcAsyncInit = function () {
+                    rcApi.categoryView(data);
+                    console.log('catego222ry');
+                    console.log(data);
+                }
+            },
+
             transaction: function (data) {
                 window.rcAsyncInit = function () {
                     rrApi.order(data);
@@ -284,9 +312,11 @@ window.ANALYTICS = {
                 var rr_data = $('#RetailRocketJS').data('value');
                 if (rr_data && rr_data.routeName && rr_data.sendData) {
                     if (rr_data.routeName == 'product') {
-                        RetailRocket.product(rr_data.sendData)
+                        RetailRocket.product(rr_data.sendData);
+                    } else if (rr_data.routeName == 'product.category') {
+                        RetailRocket.category(rr_data.sendData);
                     } else if (rr_data.routeName == 'order.complete') {
-                        RetailRocket.transaction(rr_data.sendData)
+                        RetailRocket.transaction(rr_data.sendData);
                     }
                 }
             },
@@ -406,6 +436,9 @@ window.ANALYTICS = {
 		document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
 	},
 
+  pluso: function() {
+    if (window.pluso) if (typeof window.pluso.start == "function") return; var d = document, s = d.createElement('script'), g = 'getElementsByTagName'; s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true; s.src = ('https:' == window.location.protocol ? 'https' : 'http') + '://share.pluso.ru/pluso-like.js'; var h=d[g]('head')[0] || d[g]('body')[0]; h.appendChild(s);
+  },
 
 	enable : true
 }

@@ -17,6 +17,8 @@ class CreatedEntity {
     private $paySum;
     /** @var string */
     private $paymentUrl;
+    /** @var \DateTime */
+    private $deliveredAt;
 
     /**
      * @param array $data
@@ -29,6 +31,13 @@ class CreatedEntity {
         if (array_key_exists('price', $data)) $this->setSum($data['price']);
         if (array_key_exists('pay_sum', $data)) $this->setPaySum($data['pay_sum']);
         if (array_key_exists('payment_url', $data)) $this->setPaymentUrl($data['payment_url']);
+        if (array_key_exists('delivery_date', $data) && $data['delivery_date'] && ('0000-00-00' != $data['delivery_date'])) {
+            try {
+                $this->setDeliveredAt(new \DateTime($data['delivery_date']));
+            } catch(\Exception $e) {
+                \App::logger()->error($e);
+            }
+        }
     }
 
     /**
@@ -43,6 +52,20 @@ class CreatedEntity {
      */
     public function getConfirmed() {
         return $this->confirmed;
+    }
+
+    /**
+     * @param \DateTime $deliveredAt
+     */
+    public function setDeliveredAt(\DateTime $deliveredAt = null) {
+        $this->deliveredAt = $deliveredAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeliveredAt() {
+        return $this->deliveredAt;
     }
 
     /**

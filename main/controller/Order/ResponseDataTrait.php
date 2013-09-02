@@ -93,11 +93,13 @@ trait ResponseDataTrait {
                     $cartProduct = reset($cartProducts);
                     $product = $cartProduct ? \RepositoryManager::product()->getEntityById($cartProduct->getId()) : null;
                     if ($product) {
-                        $responseData['redirect'] = $product->getLink() . '#one-click';
+                        $responseData['redirect'] = $product->getLink() . '#oneclick';
                     }
                 }
             }
         }
+
+        \App::logger()->error(['error' => $exception], ['order']);
 
         // приукрашиваем сообщение об ошибке
         switch ($exception->getCode()) {
@@ -111,9 +113,17 @@ trait ResponseDataTrait {
                 $message = 'Ошибка формирования заказа';
                 break;
         }
-        $exception = new \Exception($message, $exception->getCode());
+
+        if (isset($responseData['form']['error']) && (bool)$responseData['form']['error']) {
+            $exception = new \Exception('Форма заполнена неверно', 0);
+            unset($responseData['redirect']);
+        } else {
+            $exception = new \Exception($message, $exception->getCode());
+        }
 
         $responseData['success'] = false;
         $responseData['error'] = ['code' => $exception->getCode(), 'message' => $exception->getMessage()];
+
+        \App::logger()->error(['site.response' => $responseData], ['order']);
     }
 }

@@ -15,7 +15,15 @@
 
 $showLinkToProperties = true;
 $countModels = count($product->getModel());
-$countProperties = count($product->getProperty());
+//$countProperties = count($product->getProperty());
+$countProperties = 0;
+foreach ($product->getGroupedProperties() as $group) {
+    if (!(bool)$group['properties']) continue;
+    foreach ($group['properties'] as $property) {
+        $countProperties++;
+    }
+}
+
 $is_showed = [];
 
 
@@ -72,7 +80,7 @@ $is_showed = [];
 
             if (!in_array('all_properties', $is_showed)) { // Если ранее не были показаны характеристики все,
                 // (во всех остальных случаях) выводим главные характеристики (productExpanded)
-                echo $helper->render('product/__propertiesSimple', ['product' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]);
+                echo $helper->render('product/__propertiesExpanded', ['productExpanded' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]);
                 $is_showed[] = 'main_properties';
             }
             // } /end of new Card Properties
@@ -87,9 +95,14 @@ $is_showed = [];
 
     <?= $helper->render('product/__likeButtons', [] ); // Insert LikeButtons (www.addthis.com) ?>
 
-    <div class="bDescriptionProduct">
-        <?= $product->getDescription() ?>
-    </div>
+    <div class="clear"></div>
+
+    <? if ( $mainProduct && count($mainProduct->getKit()) ): ?>
+        <?= $helper->render('product/__slider', [
+            'title'     => 'Состав набора &laquo;' . $line->getName() . '&raquo;',
+            'products'  => $parts,
+        ]) ?>
+    <? endif ?>
 
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
         <?= $helper->render('product/__slider', [
@@ -106,9 +119,13 @@ $is_showed = [];
         ]) ?>
     <? endif ?>
 
+    <div class="bDescriptionProduct">
+        <?= $product->getDescription() ?>
+    </div>
+
     <? if (\App::config()->smartengine['pull']): ?>
         <?= $helper->render('product/__slider', [
-            'type'     => 'also_viewed',
+            'type'     => 'alsoViewed',
             'title'    => 'С этим товаром также смотрят',
             'products' => [],
             'count'    => null,
@@ -120,7 +137,7 @@ $is_showed = [];
 
     <? if ((bool)$related && \App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
-            'type'           => 'also_bought',
+            'type'           => 'alsoBought',
             'title'          => 'С этим товаром также покупают',
             'products'       => array_values($related),
             'count'          => count($product->getRelatedId()),
@@ -179,7 +196,7 @@ $is_showed = [];
 
         <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
 
-        <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
+        <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
     </div><!--/widget delivery -->
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
@@ -187,11 +204,12 @@ $is_showed = [];
     <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
 
     <?//= $helper->render('product/__service', ['product' => $product]) ?>
+
+    <?= $helper->render('product/__trustfactorRight', ['trustfactorRight' => $trustfactorRight]) ?>
 </div><!--/right section -->
 
 <div class="bBottomBuy clearfix">
     <div class="bBottomBuy__eHead">
-        <div class="bBottomBuy__eSubtitle"><?= $product->getType()->getName() ?></div>
         <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
     </div>
 

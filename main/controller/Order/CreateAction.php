@@ -44,6 +44,8 @@ class CreateAction {
                 throw new \Exception(sprintf('Запрос не содержит параметра %s %s', 'order', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
             }
 
+            \App::logger()->info(['request.order' => $request->get('order')], ['order']);
+
             // обновление формы из параметров запроса
             $form->fromArray($request->get('order'));
             // валидация формы
@@ -119,7 +121,7 @@ class CreateAction {
             switch ($e->getCode()) {
                 case 735:
                     \App::exception()->remove($e);
-                    $form->setError('sclub_card_number', 'Неверный код карты Связной-Клуб');
+                    $form->setError('sclub_card_number', 'Неверный код карты &laquo;Связной-Клуб&raquo;');
                     break;
                 case 742:
                     \App::exception()->remove($e);
@@ -248,7 +250,7 @@ class CreateAction {
 
             // данные для самовывоза [self, now]
             if (in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_SELF, \Model\DeliveryType\Entity::TYPE_NOW])) {
-                if ($orderPart->getPointId() && array_key_exists($orderPart->getPointId(), $shopsById)) {
+                if ($orderPart->getPointId()) {
                     $orderData['shop_id'] = $orderPart->getPointId();
                     $orderData['subway_id'] = null;
                 } else {
@@ -298,10 +300,7 @@ class CreateAction {
                 }
 
                 // скидки
-                $actionData = $user->getCart()->getActionData();
-                if ((bool)$actionData) {
-                    $orderData['action'] = $actionData;
-                }
+                $orderData['action'] = (array)$user->getCart()->getActionData();
 
                 // мета-теги
                 if (\App::config()->order['enableMetaTag'] && !$bMeta) {
@@ -354,11 +353,10 @@ class CreateAction {
         }
 
         $result = \App::coreClientV2()->query('order/create-packet', $params, $data);
-        if (!is_array($result)) {
-            throw new \Exception(sprintf('Заказ не подтвержден. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
-        }
-
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
+        if (!is_array($result)) {
+            throw new \Exception('Заказ не подтвержден');
+        }
 
         /** @var $createdOrders \Model\Order\CreatedEntity[] */
         $createdOrders = [];

@@ -151,6 +151,12 @@ DeliveryBox.prototype.selectPoint = function( data ) {
 		self.token = newToken;
 		self.choosenPoint(self.OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
 		console.log(self.OrderModel.createdBox);
+
+		if ( self.OrderModel.paypalECS() ) {
+			console.info('PayPal ECS включен. Необходимо сохранить выбранную точку доставки в cookie');
+
+			window.docCookies.setItem('chPoint_paypalECS', data.id, 10 * 60);
+		}
 	}
 
 	self.OrderModel.showPopupWithPoints(false);
@@ -383,6 +389,13 @@ DeliveryBox.prototype.clickCalendarDay = function( data ) {
 		return false;
 	}
 
+	// Если включен PayPal ECS необходимо сохранить выбранную дату в cookie
+	if ( self.OrderModel.paypalECS() ) {
+		console.info('PayPal ECS включен. Необходимо сохранить выбранную дату в cookie');
+
+		window.docCookies.setItem('chDate_paypalECS', JSON.stringify(data), 10 * 60);
+	}
+
 	self.choosenNameOfWeek(self._getFullNameDayOfWeek(data.dayOfWeek));
 	self.choosenDate(data);
 };
@@ -399,7 +412,10 @@ DeliveryBox.prototype.calculateDate = function() {
 	var self = this,
 		todayTS = self.OrderModel.orderDictionary.getToday(),
 		nowProductDates = null,
-		nowTS = null;
+		nowTS = null,
+		dateFromCookie = null,
+		intervalFromCookie = null;
+	// end of vars
 
 	console.log('Сегодняшняя дата с сервера '+todayTS);
 
@@ -419,12 +435,25 @@ DeliveryBox.prototype.calculateDate = function() {
 		}
 	}
 
-	// выбираем ближайшую доступную дату
-	self.choosenDate( self.allDatesForBlock()[0] );
-	self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.allDatesForBlock()[0].dayOfWeek) );
-	// выбираем первый интервал
-	self.choosenInterval( self.choosenDate().intervals[0] );
+	/**
+	 * Выбираем ближайшую доступную дату
+	 * Если включен PayPal ECS и уже есть сохраненная дата в куки - берем ее из куки
+	 */
+	if ( self.OrderModel.paypalECS() && window.docCookies.hasItem('chDate_paypalECS') ) {
+		console.info('PayPal ECS включен. Необходимо взять выбранную дату из cookie');
 
+		dateFromCookie = window.docCookies.getItem('chDate_paypalECS');
+		self.choosenDate( JSON.parse(dateFromCookie) );
+	}
+	else {
+		self.choosenDate( self.allDatesForBlock()[0] );
+	}
+
+	/**
+	 * Выбираем первый интервал
+	 */
+	self.choosenInterval( self.choosenDate().intervals[0] );
+	self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.choosenDate().dayOfWeek) );
 	self.makeCalendar();
 };
 

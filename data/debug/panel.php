@@ -11,7 +11,8 @@ if ((bool)\App::exception()->all()) {
 }
 
 $debug->add('id', \App::$id, 145);
-$debug->add('env', \App::$name . '.' . \App::$env, 144);
+//$debug->add('env', \App::$name . '.' . \App::$env, 144);
+$debug->add('env', \App::$env, 144);
 $debug->add(
     'git',
     shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir)))
@@ -93,10 +94,11 @@ if (!\App::request()->isXmlHttpRequest()) {
         <br />
 
     <? foreach ($debug->getAll() as $item) { ?>
-        <?
-            $isHidden = mb_strlen(strip_tags($item['value'])) > 40;
-            if ($isHidden) $item['value'] = '<pre>' . $item['value'] . '</pre>';
-        ?>
+    <?
+        if (!is_scalar($item['value'])) continue;
+        $isHidden = mb_strlen(strip_tags($item['value'])) > 40;
+        if ($isHidden) $item['value'] = '<pre>' . $item['value'] . '</pre>';
+    ?>
         <span style="color: #ffffff"><?= $item['name'] ?>:</span>
 
         <? if ($isHidden) { ?>

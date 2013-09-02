@@ -16,7 +16,7 @@ class RetailRocket
 
     /**
      * @param \Model\Order\Entity[] $orders
-     * @return mixed
+     * @return array    $returnData
      */
     public function transaction($orders)
     {
@@ -33,7 +33,7 @@ class RetailRocket
             // transaction — свойство $order и по смыслу у всего $orders должно быть одно
             foreach ($order->getProduct() as $prod) {
                 $data['items'][] = [
-                    //'id' => $prod->getArticle(), // несущуствующий метод! // see comment to task SITE-1572
+                    //'id' => $prod->getArticle(), // несущeствующий метод! // see comment to task SITE-1572
                     'id' => $prod->getId(),
                     'qnt' => $prod->getQuantity(),
                     'price' => $prod->getPrice(),
@@ -47,15 +47,31 @@ class RetailRocket
 
 
     /**
-     * @param \Model\Product\Entity $product
-     * @return mixed
+     * @param \Model\Product\Entity|null    $product
+     * @return array    $returnData
      */
-    public function product(\Model\Product\Entity $product)
+    public function product($product)
     {
         $data = & $this->returnData['sendData'];
 
         if ($product instanceof \Model\Product\Entity) {
             $data = $product->getId();
+        }
+
+        return $this->returnData;
+    }
+
+
+    /**
+     * @param \Model\Product\Category\Entity|null   $category
+     * @return array    $returnData
+     */
+    public function category($category)
+    {
+        $data = & $this->returnData['sendData'];
+
+        if ($category instanceof \Model\Product\Category\Entity) {
+            $data = $category->getId();
         }
 
         return $this->returnData;
