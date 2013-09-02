@@ -308,6 +308,7 @@ class AppConfig {
         'bestBefore' => null,
         'enabled'    => null,
         'test'       => [],
+        'blocked'    => true,
     ];
     /** @var array */
     public $database = [
@@ -326,6 +327,7 @@ class AppConfig {
         'pidFile' => null,
         'workerLimit' => null,
         'maxLockTime' => null,
+        'blocked'     => true,
     ];
     /** @var boolean */
     public $requestMainMenu = null;
@@ -358,6 +360,7 @@ class AppConfig {
     public $sphinx = [
         'showFacets' => null,
         'showListingSearchBar' => null,
+        'blocked'    => true,
     ];
 
     public function __construct() {
