@@ -94,41 +94,44 @@ class Entity {
     public static function getErrorMessage($code) {
         $message = null;
         switch ($code) {
-            case 300: case 303: case 305: case 306: case 307: case 308: case 309: case 310: case 311: case 312: case 313:
-                $message = 'Купона с таким номером не существует';
+            case 1000: case 1005: case 1006: case 1007: case 1008: case 1009: case 1010: case 1011: case 1012: case 1013:
+                $message = 'Карты с таким номером не существует';
                 break;
-            case 301: case 304:
-                $message = 'Купон неактивный';
+            case 1001:
+                $message = 'Карта неактивна',
                 break;
-            case 302:
-                $message = 'Купон уже был использован ранее';
+            case 1002:
+                $message = 'Карта уже была использована ранее',
                 break;
-            case 314:
+            case 1014:
                 $message = 'Скидка не действует на такие товары в корзине';
                 break;
-            case 315:
+            case 1015:
                 $message = 'Слишком высокая общая стоимость товаров в корзине';
                 break;
-            case 316:
+            case 1016:
                 $message = 'Слишком низкая общая стоимость товаров в корзине';
                 break;
-            case 317:
+            case 1017:
                 $message = 'Слишком много товаров в корзине';
                 break;
-            case 318:
+            case 1018:
                 $message = 'Слишком мало товаров в корзине';
                 break;
-            case 319:
+            case 1019:
                 $message = 'Слишком много наименований товаров в корзине';
                 break;
-            case 320:
+            case 1020:
                 $message = 'Слишком мало наименований товаров в корзине';
                 break;
-            case 321:
+            case 1021:
                 $message = 'Скидка не может быть применена сегодня';
                 break;
-            case 322:
-                $message = 'Купон просрочен';
+            case 1022:
+                $message = 'Карта просрочена';
+                break;
+            case 2000:
+                $message = 'Возможно требуется переопределение метода',
                 break;
         }
 

@@ -342,6 +342,11 @@ return [
         'action'  => ['Cart\Paypal\ProductAction', 'set'],
     ],
     // удаление товара из корзины
+    'cart.paypal.product.delete' => [
+        'pattern' => '/cart/paypal/delete-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
+    ],
+    // удаление товара из корзины
     'cart.product.delete' => [
         'pattern' => '/cart/delete-product/{productId}',
         'action'  => ['Cart\ProductAction', 'delete'],

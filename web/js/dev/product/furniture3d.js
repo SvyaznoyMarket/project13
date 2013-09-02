@@ -1,7 +1,13 @@
 /**
  * 3D для мебели
+ *
+ * @requires jQuery, ENTER.utils.logError, ENTER.config
  */
-;(function() {
+;(function( global ) {
+	var pageConfig = global.ENTER.config.pageConfig,
+		utils = global.ENTER.utils;
+	// end of vars
+	
 	var loadFurniture3D = function loadFurniture3D() {
 		var furnitureAfterLoad = function furnitureAfterLoad() {
 
@@ -30,16 +36,14 @@
 				}
 			}
 			catch ( err ) {
-				var pageID = $('body').data('id'),
-					dataToLog = {
+				var dataToLog = {
 						event: '3dimg',
 						type: 'ошибка загрузки 3dimg для мебели',
-						pageID: pageID,
 						err: err
 					};
 				// end of vars
 
-				logError(dataToLog);
+				utils.logError(dataToLog);
 			}
 		};
 
@@ -47,10 +51,8 @@
 	};
 
 	$(document).ready(function() {
-		var pageConfig = $('#page-config').data('value');
-
 		if ( pageConfig['product.img3d'] ) {
 			loadFurniture3D();
 		}
 	});
-})();
+}(this));

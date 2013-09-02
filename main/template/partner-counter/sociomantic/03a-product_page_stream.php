@@ -14,7 +14,7 @@ if ($product instanceof \Model\Product\Entity) {
     $region_id = \App::user()->getRegion()->getId();
 
     $photo = null;
-    $tmp = $product->getImageUrl(4);
+    $tmp = $product->getImageUrl(3);
     if ($tmp) $photo = $tmp;
 
     $brand = $product->getBrand() ? $product->getBrand()->getName() : null;
@@ -32,24 +32,12 @@ if ($product instanceof \Model\Product\Entity) {
     $scr_product['photo'] = $photo;
 }
 
-if (!empty($scr_product)):
 ?>
-<script type="text/javascript">
-var sonar_product = { <?
-    foreach($scr_product as $key => $value):
-        if (!empty($value)):
-            $i++;
-            if ($i>1) echo ","; // считаем, что identifier полуюбому существует у продукта, иначе запятая будет не в тему
-            echo PHP_EOL;
-            echo $key.": " . $smantic->wrapEscapeQuotes($value);
-        endif;
-    endforeach;
-    echo PHP_EOL;
-    ?>
-};
-</script>
-<?
-endif;
+
+<? if (!empty($scr_product)): ?>
+    <div id="sociomanticProductPageStream" data-scr-product="<?= $page->json($scr_product) ?>" data-prod-cats="<?= $page->json($prod_cats) ?>" class="jsanalytics"></div>
+<? endif;
+
 /* example: <!--
 <script type="text/javascript">
     var sonar_product = {

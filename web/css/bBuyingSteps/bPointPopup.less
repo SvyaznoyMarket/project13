@@ -10,8 +10,9 @@
 .bPointInPopup {
   display: block;
 
-  width: 240px;
-  padding: 5px 15px 5px 5px;
+  width: 245px;
+  padding: 5px 10px 5px 5px;
+  margin: 5px 0;
 
   cursor: pointer;
 
@@ -19,8 +20,25 @@
     background: #fff1d8;
   }
 
+  &__eListNum {
+    vertical-align: top;
+  }
+
   &__eName {
     font-size: 14px;
+    display: inline-block;
+    vertical-align: top;
+
+    *display: inline;
+    zoom: 1;
+
+    width: 190px;
+  }
+
+  .bTime {
+    display: block;
+    font-size: 12px;
+    margin-top: 5px;
   }
 }
 

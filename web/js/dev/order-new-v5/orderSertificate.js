@@ -1,4 +1,9 @@
-	/* Sertificate */
+/**
+ * Sertificate
+ *
+ * 
+ * @requires	jQuery
+ */
 ;(function( global ) {
 	if ( !$('#paymentMethod-10').length ) {
 		console.warn('нет метода оплаты сертификатом');

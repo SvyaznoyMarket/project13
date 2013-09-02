@@ -47,7 +47,7 @@ class DeliveryAction {
             if (true === $paypalECS) {
                 $cartProduct = $cart->getPaypalProduct();
                 if ($cartProduct) {
-                    $responseData['cart']['sum'] = $cartProduct->getSum() * $cartProduct->getQuantity();
+                    $responseData['cart']['sum'] = $cartProduct->getSum();
                 }
 
                 $responseData['paypalECS'] = true;
@@ -275,8 +275,16 @@ class DeliveryAction {
                     'stock'      => (int)$productItem['stock'],
                     'image'      => $productItem['media_image'],
                     'url'        => $productItem['link'],
-                    'setUrl'     => $router->generate('cart.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]),
-                    'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $productId]),
+                    'setUrl'     =>
+                        $paypalECS
+                        ? $router->generate('cart.paypal.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']])
+                        : $router->generate('cart.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']])
+                    ,
+                    'deleteUrl'  =>
+                        $paypalECS
+                        ? $router->generate('cart.paypal.product.delete', ['productId' => $productId])
+                        : $router->generate('cart.product.delete', ['productId' => $productId])
+                    ,
                     'deliveries' => $deliveryData,
                 ];
             }

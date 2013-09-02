@@ -2909,32 +2909,32 @@
 /*окно с выбором магазина*/
 @media all {
   #orderMapPopup {
-    background: #F1F1F1;
-    height: 572px;
-    left: 14%;
-    padding: 30px 0;
     position: absolute;
     top: 12%;
+    left: 14%;
     width: 950px;
+    height: 572px;
+    padding: 30px 0;
+    background: #F1F1F1;
   }
   #orderMapPopup .bMapShops__eList {
-    background: #ffffff;
-    height: 100%;
     overflow-y: scroll;
     width: 287px;
+    height: 100%;
+    background: #ffffff;
   }
   #orderMapPopup .bMapShops__eList h3 {
-    font: 18px Tahoma, sans-serif;
     margin-bottom: 0px;
     padding: 0px 35px 0px 20px;
+    font: 18px Tahoma, sans-serif;
   }
   #orderMapPopup .bMapShops__eList ul {
     padding: 0px;
   }
   #orderMapPopup .bMapShops__eList li {
+    padding: 12px 35px 12px 20px;
     cursor: pointer;
     font: 14px Tahoma, sans-serif;
-    padding: 12px 35px 12px 20px;
   }
   #orderMapPopup .bMapShops__eList li:hover {
     background: #fff1d8;
@@ -2945,29 +2945,31 @@
     line-height: 26px;
   }
   #mapPopup {
-    height: 570px;
     width: 660px;
+    height: 570px;
     border: 1px solid #c7c7c7;
   }
   .bMapShops__eListNum {
+    display: inline-block;
+    width: 43px;
+    height: 39px;
+    margin-right: 5px;
+    padding-top: 4px;
+    text-align: center;
     color: #ffffff;
-    float: left;
     font-family: Tahoma, sans-serif;
     font-size: 12px;
     font-weight: bold;
-    height: 39px;
-    margin-right: 24px;
-    padding-top: 4px;
-    text-align: center;
-    width: 24px;
+    *display: inline;
+    zoom: 1;
   }
   .bMapShops__ePopupRel {
-    padding: 8px;
     position: relative;
+    padding: 8px;
   }
   .bMapShops__ePopupRel h3 {
-    font: 18px Tahoma, sans-serif;
     margin: 0px 0px 15px;
+    font: 18px Tahoma, sans-serif;
   }
   .bMapShops__ePopupRel span {
     font: 12px Tahoma, sans-serif;
@@ -10029,6 +10031,9 @@
     border-radius: 5px;
     margin: 0 0 10px;
   }
+  .adfoxWrapper {
+    margin: 0 0 10px;
+  }
 }
 /*---END---СТИЛИ ПРАВОЙ КОЛОНКИ КАРТОЧКИ ТОВАРА---*/
 /*------СТИЛИ КНОПКИ "КУПИТЬ"------*/
@@ -11829,15 +11834,29 @@
   }
   .bPointInPopup {
     display: block;
-    width: 240px;
-    padding: 5px 15px 5px 5px;
+    width: 245px;
+    padding: 5px 10px 5px 5px;
+    margin: 5px 0;
     cursor: pointer;
   }
   .bPointInPopup:hover {
     background: #fff1d8;
   }
+  .bPointInPopup__eListNum {
+    vertical-align: top;
+  }
   .bPointInPopup__eName {
     font-size: 14px;
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+    width: 190px;
+  }
+  .bPointInPopup .bTime {
+    display: block;
+    font-size: 12px;
+    margin-top: 5px;
   }
   .bPointList {
     float: left;
@@ -12075,6 +12094,7 @@
     background: url("/css/bEmptyCart/img/bEmptyCart.gif") no-repeat 0 0;
     padding: 100px 0 0 110px;
     margin: -40px 0 0 15px;
+    min-height: 160px;
   }
   .bEmptyCart .bEmptyCartText {
     font-size: 24px;

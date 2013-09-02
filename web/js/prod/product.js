@@ -375,8 +375,14 @@
  
 /**
  * 3D для мебели
+ *
+ * @requires jQuery, ENTER.utils.logError, ENTER.config
  */
-;(function() {
+;(function( global ) {
+	var pageConfig = global.ENTER.config.pageConfig,
+		utils = global.ENTER.utils;
+	// end of vars
+	
 	var loadFurniture3D = function loadFurniture3D() {
 		var furnitureAfterLoad = function furnitureAfterLoad() {
 
@@ -405,16 +411,14 @@
 				}
 			}
 			catch ( err ) {
-				var pageID = $('body').data('id'),
-					dataToLog = {
+				var dataToLog = {
 						event: '3dimg',
 						type: 'ошибка загрузки 3dimg для мебели',
-						pageID: pageID,
 						err: err
 					};
 				// end of vars
 
-				logError(dataToLog);
+				utils.logError(dataToLog);
 			}
 		};
 
@@ -422,13 +426,11 @@
 	};
 
 	$(document).ready(function() {
-		var pageConfig = $('#page-config').data('value');
-
 		if ( pageConfig['product.img3d'] ) {
 			loadFurniture3D();
 		}
 	});
-})();
+}(this));
  
  
 /** 
@@ -495,9 +497,9 @@
 /**
  * Планировщик шкафов купе
  *
- * @requires jQuery
+ * @requires jQuery, ENTER.utils.logError
  */
-;(function(global) {
+;(function( global ) {
 	/**
 	 * Имя объекта для конструктора шкафов купе
 	 *
@@ -583,8 +585,10 @@
 			return false;
 		}
 
-		var structure = global.Planner3dKupeConstructor.GetBasketContent();
-		var url = $(this).attr('href');
+		var structure = global.Planner3dKupeConstructor.GetBasketContent(),
+			url = $(this).attr('href'),
+			product = {};
+		// end of vars
 
 		var resFromServer = function( res ) {
 			if ( !res.success ) {
@@ -601,8 +605,6 @@
 			
 			$('body').trigger('addtocart', [res]);
 		};
-
-		var product = {};
 
 		product.product = structure;
 
@@ -624,16 +626,14 @@
 			global.Planner3dKupeConstructor.Initialize('/js/KupeConstructorData.json', coupeInfo.id);
 		}
 		catch ( err ) {
-			var pageID = $('body').data('id'),
-				dataToLog = {
+			var dataToLog = {
 					event: 'Kupe3dConstructor error',
 					type:'ошибка загрузки Kupe3dConstructor',
-					pageID: pageID,
 					err: err
 				};
 			// end of vars
 			
-			logError(dataToLog);
+			global.ENTER.utils.logError(dataToLog);
 		}
 
 		$('.jsBuyButton').off();
@@ -723,8 +723,14 @@
  
 /**
  * Maybe3D
+ *
+ * @requires jQuery, ENTER.utils.logError, ENTER.config
  */
-;(function() {
+;(function( global ) {
+	var pageConfig = global.ENTER.config.pageConfig,
+		utils = global.ENTER.utils;
+	// end of vars
+	
 	var loadMaybe3D = function() {
 		var data = $('#maybe3dModelPopup').data('value');
 
@@ -746,16 +752,14 @@
 					});
 				}
 				catch ( err ) {
-					var pageID = $('body').data('id'),
-						dataToLog = {
+					var dataToLog = {
 							event: 'swfobject_error',
 							type:'ошибка загрузки swf maybe3d',
-							pageID: pageID,
 							err: err
 						};
 					// end of vars
 
-					logError(dataToLog);
+					utils.logError(dataToLog);
 				}
 				return false;
 			};
@@ -767,13 +771,11 @@
 	};
 
 	$(document).ready(function() {
-		var pageConfig = $('#page-config').data('value');
-
 		if ( pageConfig['product.maybe3d'] ) {
 			loadMaybe3D();
 		}
 	});
-}());
+}(this));
  
  
 /** 
@@ -872,7 +874,7 @@ $(document).ready(function() {
 				console.info('payPal ajax complete');
 
 				if ( !res.success || !res.redirect ) {
-					window.blockScreen.unblock();
+					window.ENTER.utils.blockScreen.unblock();
 
 					return;
 				}
@@ -887,7 +889,7 @@ $(document).ready(function() {
 					url = button.attr('href');
 				// end of vars
 
-				window.blockScreen.block('Загрузка');
+				window.ENTER.utils.blockScreen.block('Загрузка');
 
 				$.get(url, payPalResHandler);
 
@@ -937,14 +939,14 @@ $(document).ready(function() {
 
 	
 	// карточка товара - характеристики товара краткие/полные
-	if ($('#productDescriptionToggle').length) {
+	if ( $('#productDescriptionToggle').length ) {
 		$('#productDescriptionToggle').toggle(
-			function(e){
+			function( e ) {
 				e.preventDefault();
 				$(this).parent().parent().find('.descriptionlist:not(.short)').show();
 				$(this).html('Скрыть все характеристики');
 			},
-			function(e){
+			function( e ) {
 				e.preventDefault();
 				$(this).parent().parent().find('.descriptionlist:not(.short)').hide();
 				$(this).html('Показать все характеристики');

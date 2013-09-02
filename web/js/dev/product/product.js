@@ -89,7 +89,7 @@ $(document).ready(function() {
 				console.info('payPal ajax complete');
 
 				if ( !res.success || !res.redirect ) {
-					window.blockScreen.unblock();
+					window.ENTER.utils.blockScreen.unblock();
 
 					return;
 				}
@@ -104,7 +104,7 @@ $(document).ready(function() {
 					url = button.attr('href');
 				// end of vars
 
-				window.blockScreen.block('Загрузка');
+				window.ENTER.utils.blockScreen.block('Загрузка');
 
 				$.get(url, payPalResHandler);
 
@@ -154,14 +154,14 @@ $(document).ready(function() {
 
 	
 	// карточка товара - характеристики товара краткие/полные
-	if ($('#productDescriptionToggle').length) {
+	if ( $('#productDescriptionToggle').length ) {
 		$('#productDescriptionToggle').toggle(
-			function(e){
+			function( e ) {
 				e.preventDefault();
 				$(this).parent().parent().find('.descriptionlist:not(.short)').show();
 				$(this).html('Скрыть все характеристики');
 			},
-			function(e){
+			function( e ) {
 				e.preventDefault();
 				$(this).parent().parent().find('.descriptionlist:not(.short)').hide();
 				$(this).html('Показать все характеристики');
