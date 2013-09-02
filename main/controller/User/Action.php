@@ -130,8 +130,6 @@ class Action {
 
         $user = \App::user();
 
-        $user->removeToken();
-
         $referer = $request->headers->get('referer');
         if(!$referer || $referer && preg_match('/(\/private\/)|(\/private$)/', $referer)) {
             $redirect_to = \App::router()->generate('homepage');
@@ -139,6 +137,8 @@ class Action {
             $redirect_to = $referer;
         }
         $response = new \Http\RedirectResponse($redirect_to); 
+
+        $user->removeToken($response);
         $user->setCacheCookie($response);
 
         return $response;

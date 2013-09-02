@@ -25,8 +25,7 @@ class OrderAction {
                 }
             }, function (\Exception $e) {
                 \App::exception()->remove($e);
-                $token = \App::user()->removeToken();
-                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
+                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $user->getToken()));
             });
         }
 
