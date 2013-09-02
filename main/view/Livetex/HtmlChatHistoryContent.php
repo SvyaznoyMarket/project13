@@ -44,7 +44,8 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
         // Суммирование и сохранение общих данных по всем чатам
         $operId = $item->member;
-        if ( $operId ) {
+        if ( $this->chatAnswerStatus($item) ) {
+        //if ( $operId ) {
             //print_r($item->mvote); print ' | '; // tod tmp
             $this->count_chats++; // Чатов с операторами
             $this->chat_times += $this->timeInSeconds($item->chattime); // Общее время чата с операторами
@@ -148,6 +149,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
                 $this->duration_cross_operators[$operId] = array(
                     'count_chats' => 0,
                     'all_chattime' => 0,
+                    'answered' => 0,
                     'unanswered' => 0,
                     'all_firstanswer' => 0,
                     'all_positive_votes' => 0,
@@ -160,6 +162,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
                 $this->duration_cross_operators[self::ID4ALL_OPS] = array(
                     'count_chats' => 0,
                     'all_chattime' => 0,
+                    'answered' => 0,
                     'unanswered' => 0,
                     'all_firstanswer' => 0,
                     'all_positive_votes' => 0,
@@ -181,14 +184,42 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $allOps['all_positive_votes'] += $vvote_positive;
             $allOps['all_negative_votes'] += $vvote_negative;
 
-            if ( (!$item->count) || (!$item->chattime) ) { // условие, по которому можем считать чат неотвеченным
+            if ( -1 == $this->chatAnswerStatus($item) ) {
                 $this->duration_cross_operators[$operId]['unanswered']++; // не отвеченные чаты
                 $allOps['unanswered']++;
+            }elseif (1 == $this->chatAnswerStatus($item) ) {
+                $this->duration_cross_operators[$operId]['answered']++; // состоявшееся чаты
+                $allOps['answered']++;
             }
 
         }
 
         return $out;
+    }
+
+
+
+
+    protected function chatAnswerStatus($item) {
+
+        if (
+            $item->member &&
+            $item->firstanswer
+        ) {
+            if (
+                $item->firstanswer < $item->chattime &&
+                $item->count > 1 &&
+                $item->chattime > 20
+            ) {
+                // условие, по которому можем считать чат отвеченным:
+                return 1;
+            }
+
+            // условие, по которому можем считать чат упущенным:
+            return -1;
+        }
+
+        return 0;
     }
 
 
@@ -252,7 +283,7 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $unanswered = $val['unanswered'];
             $all_positive_votes = $val['all_positive_votes'];
             $all_negative_votes = $val['all_negative_votes'];
-            $answered = $count_chats - $unanswered;
+            $answered = $val['answered'];;
 
             if ($count_chats) {
                 $SLA = (string) ( 100*round( $answered / $count_chats , 3) ) . '%'; /// SLA = отвеченых / все
