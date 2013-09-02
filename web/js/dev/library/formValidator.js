@@ -435,7 +435,7 @@ FormValidator.prototype.validate = function( callbacks ) {
 /**
  * Получить тип валидации для поля
  *
- * @param	{Object} 			fieldToFind		Ссылка на jQuery объект поля для которого нужно получить параметры валидации
+ * @param	{Object}			fieldToFind		Ссылка на jQuery объект поля для которого нужно получить параметры валидации
  * 
  * @return	{Object|Boolean}					Возвращает или конфигурацию валидации для поля, или false
  * 

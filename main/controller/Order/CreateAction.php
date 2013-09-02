@@ -189,6 +189,8 @@ class CreateAction {
         $user = \App::user();
         $userEntity = $user->getEntity();
 
+        //$user->getCart()->fill();
+
         if (!$form->isValid()) {
             throw new \Exception('Невалидная форма заказа %s');
         }

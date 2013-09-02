@@ -1,7 +1,13 @@
 /**
  * Maybe3D
+ *
+ * @requires jQuery, ENTER.utils.logError, ENTER.config
  */
-;(function() {
+;(function( global ) {
+	var pageConfig = global.ENTER.config.pageConfig,
+		utils = global.ENTER.utils;
+	// end of vars
+	
 	var loadMaybe3D = function() {
 		var data = $('#maybe3dModelPopup').data('value');
 
@@ -16,23 +22,21 @@
 					swfobject.embedSWF(data.init.swf, data.init.container, data.init.width, data.init.height, data.init.version, data.init.install, data.flashvars, data.params, data.attributes);
 					$('#maybe3dModelPopup').lightbox_me({
 						centered: true,
-						closeSelector: ".close",
+						closeSelector: '.close',
 						onClose: function() {
 							swfobject.removeSWF(data.attributes.id);
 						}
 					});
 				}
 				catch ( err ) {
-					var pageID = $('body').data('id'),
-						dataToLog = {
+					var dataToLog = {
 							event: 'swfobject_error',
 							type:'ошибка загрузки swf maybe3d',
-							pageID: pageID,
 							err: err
 						};
 					// end of vars
 
-					logError(dataToLog);
+					utils.logError(dataToLog);
 				}
 				return false;
 			};
@@ -44,10 +48,8 @@
 	};
 
 	$(document).ready(function() {
-		var pageConfig = $('#page-config').data('value');
-
 		if ( pageConfig['product.maybe3d'] ) {
 			loadMaybe3D();
 		}
 	});
-}());
+}(this));

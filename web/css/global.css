@@ -2909,32 +2909,32 @@
 /*окно с выбором магазина*/
 @media all {
   #orderMapPopup {
-    background: #F1F1F1;
-    height: 572px;
-    left: 14%;
-    padding: 30px 0;
     position: absolute;
     top: 12%;
+    left: 14%;
     width: 950px;
+    height: 572px;
+    padding: 30px 0;
+    background: #F1F1F1;
   }
   #orderMapPopup .bMapShops__eList {
-    background: #ffffff;
-    height: 100%;
     overflow-y: scroll;
     width: 287px;
+    height: 100%;
+    background: #ffffff;
   }
   #orderMapPopup .bMapShops__eList h3 {
-    font: 18px Tahoma, sans-serif;
     margin-bottom: 0px;
     padding: 0px 35px 0px 20px;
+    font: 18px Tahoma, sans-serif;
   }
   #orderMapPopup .bMapShops__eList ul {
     padding: 0px;
   }
   #orderMapPopup .bMapShops__eList li {
+    padding: 12px 35px 12px 20px;
     cursor: pointer;
     font: 14px Tahoma, sans-serif;
-    padding: 12px 35px 12px 20px;
   }
   #orderMapPopup .bMapShops__eList li:hover {
     background: #fff1d8;
@@ -2945,29 +2945,31 @@
     line-height: 26px;
   }
   #mapPopup {
-    height: 570px;
     width: 660px;
+    height: 570px;
     border: 1px solid #c7c7c7;
   }
   .bMapShops__eListNum {
+    display: inline-block;
+    width: 43px;
+    height: 39px;
+    margin-right: 5px;
+    padding-top: 4px;
+    text-align: center;
     color: #ffffff;
-    float: left;
     font-family: Tahoma, sans-serif;
     font-size: 12px;
     font-weight: bold;
-    height: 39px;
-    margin-right: 24px;
-    padding-top: 4px;
-    text-align: center;
-    width: 24px;
+    *display: inline;
+    zoom: 1;
   }
   .bMapShops__ePopupRel {
-    padding: 8px;
     position: relative;
+    padding: 8px;
   }
   .bMapShops__ePopupRel h3 {
-    font: 18px Tahoma, sans-serif;
     margin: 0px 0px 15px;
+    font: 18px Tahoma, sans-serif;
   }
   .bMapShops__ePopupRel span {
     font: 12px Tahoma, sans-serif;
@@ -8184,12 +8186,6 @@
     color: #a6a6a6;
     text-decoration: line-through;
   }
-  .bEmptyCart {
-    background: url("/css/basket/img/bgEmptyCart.gif") no-repeat 0 0;
-    height: 329px;
-    width: 889px;
-    margin: -47px 0 20px 38px;
-  }
 }
 /*---END---СТИЛИ КОРЗИНЫ---*/
 /*-------СТИЛИ ПОДСКАЗОК ПОИСКА-----*/
@@ -10035,6 +10031,9 @@
     border-radius: 5px;
     margin: 0 0 10px;
   }
+  .adfoxWrapper {
+    margin: 0 0 10px;
+  }
 }
 /*---END---СТИЛИ ПРАВОЙ КОЛОНКИ КАРТОЧКИ ТОВАРА---*/
 /*------СТИЛИ КНОПКИ "КУПИТЬ"------*/
@@ -10042,6 +10041,34 @@
   .btnBuy {
     width: 170px;
     height: 35px;
+  }
+  .btnBuy.mBtnPayPal {
+    width: 195px;
+    height: 42px;
+  }
+  .btnBuy.mBtnPayPal .bPayPalLink {
+    width: 195px;
+    height: 42px;
+    display: block;
+  }
+  .btnBuy.mBtnPayPal .bPayPalLink.mLoading {
+    cursor: default;
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    -webkit-opacity: 0.5;
+    opacity: 0.5;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    filter: alpha(opacity=50);
+  }
+  .btnBuy.mBtnPayPal .bPayPalLink.mBought {
+    text-indent: -9999px;
+    background: url("https://www.paypalobjects.com/ru_RU/i/btn/btn_xpressCheckout.gif");
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    -webkit-opacity: 0.5;
+    opacity: 0.5;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    filter: alpha(opacity=50);
   }
   .btnBuy .btnBuy__eLink {
     background: #ffc000;
@@ -11807,15 +11834,29 @@
   }
   .bPointInPopup {
     display: block;
-    width: 240px;
-    padding: 5px 15px 5px 5px;
+    width: 245px;
+    padding: 5px 10px 5px 5px;
+    margin: 5px 0;
     cursor: pointer;
   }
   .bPointInPopup:hover {
     background: #fff1d8;
   }
+  .bPointInPopup__eListNum {
+    vertical-align: top;
+  }
   .bPointInPopup__eName {
     font-size: 14px;
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+    width: 190px;
+  }
+  .bPointInPopup .bTime {
+    display: block;
+    font-size: 12px;
+    margin-top: 5px;
   }
   .bPointList {
     float: left;
@@ -11844,6 +11885,10 @@
     width: 400px;
     text-transform: uppercase;
   }
+  .bBusinessReg .bStaticBanner {
+    text-align: center;
+    margin: 0 0 30px;
+  }
   .bBusinessReg .bHeadRegLink {
     float: right;
     margin: 16px 0 0;
@@ -11861,7 +11906,6 @@
   }
   .bBusinessReg .bCont__eLeft a {
     text-decoration: underline;
-    color: #49c7ed;
   }
   .bBusinessReg .bCont__eLeft .bMail {
     color: #000;
@@ -11902,7 +11946,6 @@
   }
   .bBusinessReg .bDownList__eLink {
     text-decoration: underline;
-    color: #49c7ed;
   }
   .bBusinessReg .bServicesList__eItem {
     background: #ffffff;
@@ -11935,12 +11978,22 @@
   }
   .bBusinessReg .bServicesList .mCatItem {
     text-align: left;
-    text-transform: uppercase;
   }
   .bBusinessReg .bServicesList .mCatItem .bServicesList__eLink {
     margin-left: 25px;
     padding: 0 0 0 103px;
     background: url('/css/bBusinessReg/img/mCatItem.png') no-repeat 0 35px;
+  }
+  .bBusinessReg .bServicesList .mSertificat {
+    text-align: left;
+    font: normal 36px/34px "Enter Type";
+    padding: 25px 0 0;
+    height: 95px;
+  }
+  .bBusinessReg .bServicesList .mSertificat .bServicesList__eLink {
+    margin-left: 25px;
+    padding: 0 0 0 103px;
+    background: url('/css/bBusinessReg/img/mSertificat.png') no-repeat 0 6px;
   }
   .bBusinessReg .bServicesList__eLink {
     display: block;
@@ -12035,6 +12088,42 @@
   }
 }
 /*---END---СТИЛИ СТРАНИЦЫ РЕГИСТРАЦИИ ЮР. ЛИЦ---*/
+/*------СТИЛИ ПУСТОЙ КОРЗИНЫ------*/
+@media all {
+  .bEmptyCart {
+    background: url("/css/bEmptyCart/img/bEmptyCart.gif") no-repeat 0 0;
+    padding: 100px 0 0 110px;
+    margin: -40px 0 0 15px;
+    min-height: 160px;
+  }
+  .bEmptyCart .bEmptyCartText {
+    font-size: 24px;
+    color: #8a8a8a;
+    width: 200px;
+    float: left;
+  }
+  .bEmptyCart .bEmptyCartList {
+    float: right;
+    width: 250px;
+  }
+  .bEmptyCart .bEmptyCartList__eItem {
+    font: normal 22px/24px "Enter";
+    text-transform: uppercase;
+    margin: 0 0 20px;
+  }
+  .bEmptyCart .bEmptyCartList .bOrange {
+    color: #f79a31;
+  }
+  .bEmptyCart .bEmptyCartList .bBlue {
+    color: #44c7ee;
+    text-decoration: underline;
+  }
+  .bEmptyCart .bEmptyCartList .bGreyText {
+    font: normal 16px/18px "Enter Type";
+    text-transform: none;
+  }
+}
+/*---END---СТИЛИ ПУСТОЙ КОРЗИНЫ---*/
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
 /*------СТИЛИ ОПРОСА------*/

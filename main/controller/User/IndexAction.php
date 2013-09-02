@@ -70,6 +70,11 @@ class IndexAction {
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('orderCount', $orderCount);
 
+        if($user->getEntity()->getIsSubscribedViaSms() && !(bool)($user->getEntity()->getMobilePhone())) {
+            $page->setParam('smsTmpCheck', true);
+            $page->setParam('error', \Controller\User\SubscribeAction::EMPTY_PHONE_ERROR);
+        }
+
         $form = new \View\User\ConsultationForm();
         $page->setParam('form', $form);
 

@@ -7,11 +7,11 @@
  */
 var UpdateUrlString = function(key, value) {
 	var url = this.toString();
-	var re = new RegExp("([?|&])" + key + "=.*?(&|#|$)(.*)", "gi");
+	var re = new RegExp('([?|&])' + key + '=.*?(&|#|$)(.*)', 'gi');
 
 	if (re.test(url)) {
 		if (typeof value !== 'undefined' && value !== null){
-			return url.replace(re, '$1' + key + "=" + value + '$2$3');
+			return url.replace(re, '$1' + key + '=' + value + '$2$3');
 		}
 		else {
 			return url.replace(re, '$1$3').replace(/(&|\?)$/, '');

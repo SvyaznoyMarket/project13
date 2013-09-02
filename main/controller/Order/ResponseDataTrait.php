@@ -83,10 +83,13 @@ trait ResponseDataTrait {
             $responseData['redirect'] = $router->generate('order');
         }
 
+        $message = null;
+
         // если ошибочные товары не найдены
         if (!(bool)$productDataById) {
             if ($cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
                 $responseData['redirect'] = $router->generate('cart');
+                $message = 'Пустая корзина';
             } else {
                 if (1 == $cart->getProductsQuantity()) { // если в корзине всего один товар, то предлагаем попробовать заказ в один клик
                     $cartProducts = $cart->getProducts();
@@ -102,16 +105,18 @@ trait ResponseDataTrait {
         \App::logger()->error(['error' => ['code' => $exception->getCode(), 'message' => $exception->getMessage(), 'trace' => $exception->getTraceAsString()]], ['order']);
 
         // приукрашиваем сообщение об ошибке
-        switch ($exception->getCode()) {
-            case 705:
-                $message = 'Одного или нескольких товаров нет в наличии';
-                break;
-            case 770:
-                $message = 'Невозможно расчитать доставку';
-                break;
-            default:
-                $message = 'Ошибка формирования заказа';
-                break;
+        if (!$message) {
+            switch ($exception->getCode()) {
+                case 705:
+                    $message = 'Одного или нескольких товаров нет в наличии';
+                    break;
+                case 770:
+                    $message = 'Невозможно расчитать доставку';
+                    break;
+                default:
+                    $message = 'Ошибка формирования заказа';
+                    break;
+            }
         }
 
         if (isset($responseData['form']['error']) && (bool)$responseData['form']['error']) {

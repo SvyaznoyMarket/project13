@@ -56,9 +56,9 @@
 
 				var toKISS = {
 					'Recommended Item Clicked Also Bought Recommendation Place': 'product',
-					'Recommended Item Clicked Also Bought Clicked SKU': data.article,
-					'Recommended Item Clicked Also Bought Clicked Product Name': data.name,
-					'Recommended Item Clicked Also Bought Product Position': data.position
+					'Recommended Item Clicked Also Bought Clicked SKU': productData.article,
+					'Recommended Item Clicked Also Bought Clicked Product Name': productData.name,
+					'Recommended Item Clicked Also Bought Product Position': productData.position
 				};
 
 				if ( typeof _kmq !== 'undefined' ) {
@@ -72,9 +72,9 @@
 
 				var toKISS = {
 					'Recommended Item Clicked Also Viewed Recommendation Place': 'product',
-					'Recommended Item Clicked Also Viewed Clicked SKU': data.article,
-					'Recommended Item Clicked Also Viewed Clicked Product Name': data.name,
-					'Recommended Item Clicked Also Viewed Product Position': data.position
+					'Recommended Item Clicked Also Viewed Clicked SKU': productData.article,
+					'Recommended Item Clicked Also Viewed Clicked Product Name': productData.name,
+					'Recommended Item Clicked Also Viewed Product Position': productData.position
 				};
 
 				if ( typeof _kmq !== 'undefined' ) {
