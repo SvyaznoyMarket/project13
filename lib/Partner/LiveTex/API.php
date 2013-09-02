@@ -20,6 +20,7 @@ class API {
     private $api_url = 'http://api.livetex.ru/';
     private $api_login_url = 'http://api.livetex.ru/login.php';
     private $count_login_errors = 0;
+    private $timeout = 0.8;
 
 
     private function __clone() {}
@@ -45,6 +46,10 @@ class API {
             curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $post_arr );
+            if ($this->timeout) {
+                curl_setopt($curl, CURLOPT_NOSIGNAL, 1);
+                curl_setopt($curl, CURLOPT_TIMEOUT_MS, $this->timeout * 1000);
+            }
             $out = curl_exec($curl);
             curl_close($curl);
             return json_decode($out);

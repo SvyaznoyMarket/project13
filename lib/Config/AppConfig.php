@@ -125,8 +125,8 @@ class AppConfig {
         'livetex' => [
             'enabled' => null,
             'liveTexID' => null,
-            'login' => 'anastasiya.vs@enter.ru',
-            'password' => 'enter1chat2',
+            'login' => null,
+            'password' => null,
         ],
         'criteo' => [
             'enabled' => null,
