@@ -955,7 +955,6 @@
     font: 14px Tahoma, sans-serif;
     padding: 6px 15px;
     zoom: 1;
-    behavior: url("/css/common/PIE.htc");
   }
   .bOrangeButton i {
     background: url("/css/common/img/in_deliver.png") 0px 0px no-repeat;
@@ -1020,7 +1019,6 @@
     cursor: pointer;
     font-weight: bold;
     overflow: visible;
-    behavior: url("/css/common/PIE.htc");
   }
   .bBlueButton .link1,
   .whitelink {
@@ -3800,7 +3798,6 @@
     border-radius: 5px;
     border: 1px solid #f99b1c;
     margin: 15px 0px;
-    behavior: url('/css/common/PIE.htc');
   }
   .bSpec.noBorder {
     border: none;
@@ -3827,7 +3824,6 @@
     margin: 0px 0px 15px;
     padding: 6px 0px 0px 10px;
     position: relative;
-    behavior: url('/css/common/PIE.htc');
   }
   .bSpec .filterHeader i {
     border-left: 5px solid transparent;
@@ -4289,7 +4285,6 @@
     -webkit-box-shadow: 0 0 6px 2px #e6e6e6;
     -moz-box-shadow: 0 0 6px 2px #e6e6e6;
     box-shadow: 0 0 6px 2px #e6e6e6;
-    behavior: url('/css/common/PIE.htc');
   }
   .goodsbox__inner .notBuying .corner {
     right: 8px;
@@ -4953,7 +4948,6 @@
     top: 0px;
     width: 78px;
     zoom: 1;
-    behavior: url("/css/common/PIE.htc");
   }
   .bCountSet a {
     color: #959595;
@@ -5058,7 +5052,6 @@
     height: 44px;
     overflow: hidden;
     width: 44px;
-    behavior: url("/css/common/PIE.htc");
   }
   .previewlist a:hover,
   .previewlist a.current {
@@ -7810,7 +7803,6 @@
     -webkit-box-shadow: 0 0 6px 2px #e6e6e6;
     -moz-box-shadow: 0 0 6px 2px #e6e6e6;
     box-shadow: 0 0 6px 2px #e6e6e6;
-    behavior: url('/css/common/PIE.htc');
   }
   .servicebox:hover .icon1 {
     background-position: 0px -85px;
@@ -8614,7 +8606,6 @@
     padding: 0 0 0 10px;
     position: relative;
     width: 840px;
-    behavior: url('/css/common/PIE.htc');
     -webkit-appearance: none;
   }
   .searchbox .searchbutton {
@@ -9181,7 +9172,6 @@
     margin: 16px 0;
     padding: 0 0 0 10px;
     position: relative;
-    behavior: url('/css/common/PIE.htc');
     -webkit-appearance: none;
     width: 308px;
   }
@@ -9823,7 +9813,7 @@
     width: 24px;
     height: 46px;
     margin: 6px auto 0;
-    background-image: url("/css/newProductCard/img/btn_slider.png");
+    background-image: url("/css/bProductSection/img/btn_slider.png");
     background-repeat: no-repeat;
   }
   .bSliderAction__eBtn.mNext {
