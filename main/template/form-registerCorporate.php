@@ -1,6 +1,13 @@
 <?php
-/** @var $page \View\User\CorporateRegistrationPage */
-/** @var $form \View\User\CorporateRegistrationForm */
+/**
+ * @var $page           \View\User\CorporateRegistrationPage
+ * @var $form           \View\User\CorporateRegistrationForm
+ * @var $rootCategories \Model\Product\Category\Entity[]
+ */
+?>
+
+<?
+if (empty($rootCategories)) $rootCategories = [];
 ?>
 
 <div class="bBusinessReg">
@@ -27,16 +34,20 @@
 
                     <ul class="bBusinessRegSubList">
                         <li class="bBusinessRegSubList__eItem"><span class="bText">на сайте;</span></li>
-                        <li class="bBusinessRegSubList__eItem"><span class="bText">через круглосуточный Контакт-cENTER<br/><strong>8 (800) 700-00-09</strong> (звонок бесплатный);</span></li>
+                        <li class="bBusinessRegSubList__eItem"><span class="bText">через круглосуточный Контакт-cENTER<br/><strong><?= \App::config()->company['phone'] ?></strong> (звонок бесплатный);</span></li>
                         <li class="bBusinessRegSubList__eItem"><span class="bText">а также при помощи персонального менеджера по прямому номеру <strong>+7 (495) 775-78-85</strong> или по e-mail: <strong><a class="bMail" href="mailto:partner@enter.ru">partner@enter.ru</a></strong> или в магазинах Enter.</span></li>
                     </ul>
                 </li>
 
                 <li class="bBusinessRegList__eItem"><span class="bText">Мы поможем сориентироваться в нашем ассортименте<br/>и выставим счет в ваш личный кабинет в течение 30 минут.</span></li>
 
-                <li class="bBusinessRegList__eItem"><span class="bText">Десятки тысяч товаров в 15 категориях:<br/>
-                <a href="/catalog/furniture">мебель</a>, <a href="/catalog/appliances">бытовая техника</a>, <a href="/catalog/electronics">электроника</a>, <a href="/catalog/children">детские товары</a>,<br/><a href="/catalog/household">товары для дома</a>, <a href="/catalog/do_it_yourself/tovari-dlya-sada-311">сад и огород</a>, <a href="/catalog/gift_hobby">подарки и хобби</a>, <a href="/catalog/do_it_yourself">сделай сам</a>, <a href="/catalog/sport">спорт и отдых</a>, <a href="/catalog/do_it_yourself/aksessuari-dlya-avtomobiley-225">аксессуары для автомобилей</a>, <a href="/catalog/parfyumeriya-i-kosmetika">парфюмерия и косметика</a>, <a href="/catalog/jewel">ювелирные украшения и часы</a>, <a href="/catalog/electronics/muzikalnie-instrumenti-2396">музыкальные инструменты</a>, <a href="/catalog/tovari-dlya-givotnih">зоотовары</a>, <a href="/catalog/appliances/krasota-i-zdorove-21">красота и здоровье</a>,
-                a так же подарочные карты для сотрудников и партнеров вашей компании.</span></li>
+                <? if ((bool)$rootCategories): ?>
+                    <li class="bBusinessRegList__eItem"><span class="bText">Десятки тысяч товаров в <?= count($rootCategories) ?> категориях:<br/>
+                    <? foreach ($rootCategories as $rootCategory): ?>
+                        <a href="<?= $rootCategory->getLink() ?>"><?= mb_strtolower($rootCategory->getName(), 'UTF-8') ?></a>,
+                    <? endforeach ?>
+                    a так же подарочные карты для сотрудников и партнеров вашей компании.</span></li>
+                <? endif ?>
 
                 <li class="bBusinessRegList__eItem"><span class="bText">WOW-ЦЕНЫ и бесплатная доставка на первый заказ.</span></li>
             </ul>
@@ -50,27 +61,27 @@
 
             <form class="bCorpRegForm" action="<?= $page->url('user.registerCorporate') ?>" method="post">
 
-                <? if ($error = $form->getError('global')) echo $page->render('_formError', array('error' => $error)) ?>
-
-                <label class="bCorpRegForm__eLabel">Имя:</label>
-                <input type="text" class="bCorpRegForm__eInput" name="register[first_name]" value="<?= $form->getFirstName() ?>" />
-                <? if ($error = $form->getError('first_name')) echo $page->render('_formError', array('error' => $error)) ?>
-
-                <label class="bCorpRegForm__eLabel">Отчество:</label>
-                <input type="text" class="bCorpRegForm__eInput" name="register[middle_name]" value="<?= $form->getMiddleName() ?>" />
-                <? if ($error = $form->getError('middle_name')) echo $page->render('_formError', array('error' => $error)) ?>
+                <? if ($error = $form->getError('global')) echo $page->render('_formError', ['error' => $error]) ?>
 
                 <label class="bCorpRegForm__eLabel">Фамилия:</label>
                 <input type="text" class="bCorpRegForm__eInput" name="register[last_name]" value="<?= $form->getLastName() ?>" />
-                <? if ($error = $form->getError('last_name')) echo $page->render('_formError', array('error' => $error)) ?>
+                <? if ($error = $form->getError('last_name')) echo $page->render('_formError', ['error' => $error]) ?>
+
+                <label class="bCorpRegForm__eLabel">Имя:</label>
+                <input type="text" class="bCorpRegForm__eInput" name="register[first_name]" value="<?= $form->getFirstName() ?>" />
+                <? if ($error = $form->getError('first_name')) echo $page->render('_formError', ['error' => $error]) ?>
+
+                <label class="bCorpRegForm__eLabel">Отчество:</label>
+                <input type="text" class="bCorpRegForm__eInput" name="register[middle_name]" value="<?= $form->getMiddleName() ?>" />
+                <? if ($error = $form->getError('middle_name')) echo $page->render('_formError', ['error' => $error]) ?>
 
                 <label class="bCorpRegForm__eLabel">E-mail:</label>
                 <input type="text" class="bCorpRegForm__eInput" name="register[email]" value="<?= $form->getEmail() ?>" />
-                <? if ($error = $form->getError('email')) echo $page->render('_formError', array('error' => $error)) ?>
+                <? if ($error = $form->getError('email')) echo $page->render('_formError', ['error' => $error]) ?>
 
                 <label class="bCorpRegForm__eLabel">Мобильный телефон:</label>
                 <input type="text" class="bCorpRegForm__eInput" name="register[phone]" value="<?= $form->getPhone() ?>" maxlength="11" placeholder="89ХХХХХХХХХ" />
-                <? if ($error = $form->getError('phone')) echo $page->render('_formError', array('error' => $error)) ?>
+                <? if ($error = $form->getError('phone')) echo $page->render('_formError', ['error' => $error]) ?>
 
                 <div class="bInputList">
                     <input type="checkbox" id="subscribeCheck" name="subscribe" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox" checked="checked" hidden />
@@ -91,52 +102,52 @@
 
                     <label class="bCorpRegForm__eLabel m2Line">Наименование организации:</label>
                     <input type="text" class="bCorpRegForm__eInput" name="register[corp_name]" value="<?= $form->getCorpName() ?>" />
-                    <? if ($error = $form->getError('corp_name')) echo $page->render('_formError', array('error' => $error)) ?>
+                    <? if ($error = $form->getError('corp_name')) echo $page->render('_formError', ['error' => $error]) ?>
 
                     <label class="bCorpRegForm__eLabel">Юридический адрес:</label>
                     <input type="text" class="bCorpRegForm__eInput" name="register[corp_legal_address]" value="<?= $form->getCorpLegalAddress() ?>" />
-                    <? if ($error = $form->getError('corp_legal_address')) echo $page->render('_formError', array('error' => $error)) ?>
+                    <? if ($error = $form->getError('corp_legal_address')) echo $page->render('_formError', ['error' => $error]) ?>
 
                     <label class="bCorpRegForm__eLabel">Фактический адрес:</label>
                     <input type="text" class="bCorpRegForm__eInput" name="register[corp_real_address]" value="<?= $form->getCorpRealAddress() ?>" />
-                    <? if ($error = $form->getError('corp_real_address')) echo $page->render('_formError', array('error' => $error)) ?>
+                    <? if ($error = $form->getError('corp_real_address')) echo $page->render('_formError', ['error' => $error]) ?>
 
                     <label class="bCorpRegForm__eLabel">ИНН:</label>
                     <input type="text" class="bCorpRegForm__eInput" name="register[corp_inn]" value="<?= $form->getCorpINN() ?>" />
-                    <? if ($error = $form->getError('corp_inn')) echo $page->render('_formError', array('error' => $error)) ?>
+                    <? if ($error = $form->getError('corp_inn')) echo $page->render('_formError', ['error' => $error]) ?>
 
                     <label class="bCorpRegForm__eLabel">КПП:</label>
                     <input type="text" class="bCorpRegForm__eInput" name="register[corp_kpp]" value="<?= $form->getCorpKPP() ?>" />
-                    <? if ($error = $form->getError('corp_kpp')) echo $page->render('_formError', array('error' => $error)) ?>
+                    <? if ($error = $form->getError('corp_kpp')) echo $page->render('_formError', ['error' => $error]) ?>
 
 
                     <label class="bCorpRegForm__eLabel">Расчетный счет:</label>
                     <input type="text" class="bCorpRegForm__eInput" name="register[corp_account]" value="<?= $form->getCorpAccount() ?>" />
-                    <? if ($error = $form->getError('corp_account')) echo $page->render('_formError', array('error' => $error)) ?>
+                    <? if ($error = $form->getError('corp_account')) echo $page->render('_formError', ['error' => $error]) ?>
 
                     <label class="bCorpRegForm__eLabel m2Line">Корреспондентский счет:</label>
                     <input type="text" class="bCorpRegForm__eInput" name="register[corp_korr_acount]" value="<?= $form->getCorpKorrAccount() ?>" />
-                    <? if ($error = $form->getError('corp_korr_account')) echo $page->render('_formError', array('error' => $error)) ?>
+                    <? if ($error = $form->getError('corp_korr_account')) echo $page->render('_formError', ['error' => $error]) ?>
 
                     <label class="bCorpRegForm__eLabel">БИК:</label>
                     <input type="text" class="bCorpRegForm__eInput" name="register[corp_bik]" value="<?= $form->getCorpBIK() ?>" />
-                    <? if ($error = $form->getError('corp_bik')) echo $page->render('_formError', array('error' => $error)) ?>
+                    <? if ($error = $form->getError('corp_bik')) echo $page->render('_formError', ['error' => $error]) ?>
 
                     <label class="bCorpRegForm__eLabel">Код ОКПО:</label>
                     <input type="text" class="bCorpRegForm__eInput" name="register[corp_okpo]" value="<?= $form->getCorpOKPO() ?>" />
-                    <? if ($error = $form->getError('corp_okpo')) echo $page->render('_formError', array('error' => $error)) ?>
+                    <? if ($error = $form->getError('corp_okpo')) echo $page->render('_formError', ['error' => $error]) ?>
 
                     <? if (false): ?>
                         <label class="bCorpRegForm__eLabel">Код ОКВЭД:</label>
-                        <? //if ($error = $form->getError('corp_okved')) echo $page->render('_formError', array('error' => $error)) ?>
+                        <? //if ($error = $form->getError('corp_okved')) echo $page->render('_formError', ['error' => $error]) ?>
                         <input type="text" class="bCorpRegForm__eInput" name="register[corp_okved]" />
 
                         <label class="bCorpRegForm__eLabel">E-mail:</label>
-                        <? //if ($error = $form->getError('corp_email')) echo $page->render('_formError', array('error' => $error)) ?>
+                        <? //if ($error = $form->getError('corp_email')) echo $page->render('_formError', ['error' => $error]) ?>
                         <input type="text" class="bCorpRegForm__eInput" name="register[corp_email]" />
 
                         <label class="bCorpRegForm__eLabel">Телефон:</label>
-                        <? //if ($error = $form->getError('corp_phone')) echo $page->render('_formError', array('error' => $error)) ?>
+                        <? //if ($error = $form->getError('corp_phone')) echo $page->render('_formError', ['error' => $error]) ?>
                         <input type="text" class="bCorpRegForm__eInput" name="register[corp_phone]" />
                     <? endif ?>
                 </div>

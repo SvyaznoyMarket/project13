@@ -715,7 +715,7 @@
 		 */
 		productError = {
 			// Товар недоступен для продажи
-			800: function( product ) {
+			'default': function( product ) {
 				var msg = 'Товар '+product.name+' недоступен для продажи.',
 
 					productErrorIsResolve = $.Deferred();
@@ -784,6 +784,8 @@
 
 				code = productsWithError[i].error.code;
 
+				code = ( productError.hasOwnProperty(code) ) ? code : 'default';
+
 				$.when( productError[code](productsWithError[i]) ).then(function() {
 					var newI = i - 1;
 
@@ -791,12 +793,25 @@
 				});
 			};
 
-			errorCatcher(productsWithError.length - 1, function() {
-				console.warn('1 этап закончен');
-				if ( res.redirect ) {
-					document.location.href = res.redirect;
-				}
-			});
+			/**
+			 * Если ошибок в продуктах нет, но есть сообщаение об ошибке, вывести сообщение
+			 * Иначе начать обработку ошибок в продуктах
+			 */
+			if ( productsWithError.length === 0 && res.error.message ) {
+				$.when(showError(res.error.message)).then(function() {
+					if ( res.redirect ) {
+						document.location.href = res.redirect;
+					}
+				});
+			}
+			else {
+				errorCatcher(productsWithError.length - 1, function() {
+					console.warn('1 этап закончен');
+					if ( res.redirect ) {
+						document.location.href = res.redirect;
+					}
+				});
+			}
 		},
 
 		/**
