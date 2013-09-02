@@ -53,7 +53,14 @@ $formName = \View\Product\FilterForm::$name;
             } ?>
 
             <? if (!$filter->getIsInList()) continue ?>
-            <? if ('price' == $filter->getId() || 'brand' == $filter->getId()) {
+            <?
+            $isPrice = ( 'price' == $filter->getId() );
+            if ( $isPrice ) {
+                $filter->setStepType('price');
+            }
+            ?>
+
+            <? if ( $isPrice || 'brand' == $filter->getId()) {
                 $isOpened = true;
             } elseif ($openNum < 5) {
                 $openNum++;
