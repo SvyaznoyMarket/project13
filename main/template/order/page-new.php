@@ -50,7 +50,6 @@ foreach (array_reverse($productsById) as $product) {
 
 	<div class="bBuyingLine"><a class="bBackCart" href="<?= $backLink ?>">&lt; Вернуться к покупкам</a></div>
 
-
 	 <!-- Order Method -->
 	<div class="bBuyingLine clearfix mOrderMethod">
 		<h2 class="bBuyingSteps__eTitle">Информация о заказе</h2>
@@ -443,8 +442,7 @@ foreach (array_reverse($productsById) as $product) {
 		<ul class="bPointList" data-bind="foreach: { data: popupWithPoints().points }">
 			<li class="bPointInPopup" data-bind="click: $root.selectPoint">
 				<div class="bMapShops__eListNum"><img alt="" src="/images/shop.png"></div>
-				<div class="bPointInPopup__eName" data-bind="text: $data.name"></div>
-				<span data-bind="text: $data.regtime"></span>
+				<div class="bPointInPopup__eName"><span data-bind="text: $data.name"></span> <span class="bTime" data-bind="text: $data.regtime"></span></div>
 			</li>
 		</ul>
 		<div class="bPointPopupMap" id="pointPopupMap"></div>
