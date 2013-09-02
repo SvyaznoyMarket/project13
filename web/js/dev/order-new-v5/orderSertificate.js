@@ -1,6 +1,11 @@
-	/* Sertificate */
+/**
+ * Sertificate
+ *
+ * 
+ * @requires	jQuery
+ */
 ;(function( global ) {
-	if( !$('#paymentMethod-10').length ) {
+	if ( !$('#paymentMethod-10').length ) {
 		console.warn('нет метода оплаты сертификатом');
 
 		return false;
@@ -33,7 +38,11 @@
 			},
 
 			isActive = function isActive() {
-				if( checked && ( getCode() !== '' ) && getCode().length === 14 && ( getPIN() !== '' ) && getPIN().length === 4) {
+				if ( checked &&
+					getCode() !== '' &&
+					getCode().length === 14 &&
+					getPIN() !== '' &&
+					getPIN().length === 4 ) {
 					return true;
 				}
 
@@ -53,11 +62,11 @@
 
 				setProcessingStatus( 'mOrange', 'Проверка по номеру карты' );
 				$.post( urlCheck, getParams(), function( data ) {
-					if( !('success' in data) ) {
+					if ( !('success' in data) ) {
 						return false;
 					}
 
-					if( !data.success ) {
+					if ( !data.success ) {
 						var err = ( typeof(data.error) !== 'undefined' ) ? data.error : 'ERROR';
 
 						setProcessingStatus( 'mRed', err );
@@ -80,7 +89,7 @@
 					blockProcess.remove();
 				}
 
-				switch( status ) {
+				switch ( status ) {
 					case 'mOrange':
 						options.text = data;
 						checked = false;
@@ -92,7 +101,7 @@
 
 						break;
 					case 'mGreen':
-						if( 'activated' in data ) {
+						if ( 'activated' in data ) {
 							options.text = 'Карта '+ data.code + ' на сумму ' + data.sum + ' активирована!';
 						}
 						else {

@@ -86,49 +86,22 @@ class CreateAction {
                 throw new \Exception('Подзаказ не получен');
             }
 
-            $result = null;
-            $exception = null;
-            $client->addQuery(
-                'order/calc-tmp',
-                [
-                    'geo_id'  => $user->getRegion()->getId(),
-                ],
-                [
-                    'product'        => array_map(function(\Model\Cart\Product\Entity $cartProduct) {
-                        return [
-                            'id'       => $cartProduct->getId(),
-                            'quantity' => $cartProduct->getQuantity(),
-                        ];
-                    }, $cartProducts),
-                    'service'        => [],
-                    'coupon_list'    => [],
-                    'blackcard_list' => [],
-                ],
-                function($data) use (&$result, &$shops) {
-                    $result = $data;
-                    \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
-                },
-                function (\Exception $e) use (&$exception) {
-                    $exception = $e;
-                },
-                \App::config()->coreV2['timeout'] * 2
-            );
-            $client->execute();
-            if ($exception instanceof \Exception) {
-                throw $exception;
-            }
+            // расчет доставки для paypal
+            $deliveryData = (new \Controller\Order\DeliveryAction())->getResponseData(true);
 
-            \App::logger()->info(['core.response' => $result], ['order', 'paypal']);
-
-            $productData = (isset($result['products']) && is_array($result['products'])) ? reset($result['products']) : null;
+            $productData = isset($deliveryData['products'][$product->getId()]) ? $deliveryData['products'][$product->getId()] : null;
             if (!$productData) {
                 throw new \Exception('не получено ни одного товара');
             }
-            $deliveryMethodToken = (0 === strpos($part->getDeliveryMethodToken(), 'standart')) ? $part->getDeliveryMethodToken() : ($part->getDeliveryMethodToken() . '_' . $part->getPointId());
-            \App::logger()->info(sprintf('Проверка стоимости %s', $deliveryMethodToken), ['order', 'paypal']);
-            $deliveryPrice = isset($productData['deliveries'][$deliveryMethodToken]['price']) ? (int)$productData['deliveries'][$deliveryMethodToken]['price'] : 0;
+
+            $deliveryMethodToken = $part->getDeliveryMethodToken();
+            $pointId = $part->getPointId();
+            \App::logger()->info(sprintf('Проверка стоимости %s', $part->getDeliveryMethodToken()), ['order', 'paypal']);
+            $deliveryPrice = isset($productData['deliveries'][$deliveryMethodToken][$pointId]['price']) ? (int)$productData['deliveries'][$deliveryMethodToken][$pointId]['price'] : 0;
+            \App::logger()->info(sprintf('Стоимость доставки %s', $deliveryPrice));
+
             // TODO: внимание, заглушка!!!
-            $deliveryPrice = $deliveryPrice ? 1 : 0;
+            //$deliveryPrice = $deliveryPrice ? 1 : 0;
 
             // проверка paypal
             $result = $this->getPaypalCheckout($paypalToken, $paypalPayerId);
@@ -138,7 +111,8 @@ class CreateAction {
             // обновляем стоимость товара
             $cartProduct->setSum($deliveryPrice + $cartProduct->getPrice() * $cartProduct->getQuantity());
             // TODO: внимание, заглушка!!!
-            $cartProduct->setSum($deliveryPrice + 1);
+            //$cartProduct->setSum($deliveryPrice + 1);
+
             $cart->setPaypalProduct($cartProduct);
             \App::logger()->info(['cart.paypalProduct' => ['id' => $cartProduct->getId(), 'price' => $cartProduct->getPrice(), 'quantity' => $cartProduct->getQuantity(), 'sum' => $cartProduct->getSum()]], ['order', 'paypal']);
 
@@ -149,7 +123,7 @@ class CreateAction {
                         'geo_id' => \App::user()->getRegion()->getId(),
                     ],
                     [
-                        'amount'          => $cartProduct->getSum(),
+                        'amount'          => $cartProduct->getPrice() * $cartProduct->getQuantity(),
                         'delivery_amount' => $deliveryPrice,
                         'currency'        => 'USD',
                         'return_url'      => \App::router()->generate('order.paypal.new', [], true),
@@ -167,8 +141,6 @@ class CreateAction {
                 if (empty($result['payment_url'])) {
                     throw new \Exception('Не получен урл для редиректа');
                 }
-
-
 
                 $createdOrder = new \Model\Order\CreatedEntity($result);
                 \App::logger()->info(['paymentUrl' => $createdOrder->getPaymentUrl()], ['order', 'paypal']);
@@ -273,6 +245,8 @@ class CreateAction {
         if ($responseData['success']) {
             $user->setCacheCookie($response);
         }
+
+        \App::logger()->info(['site.response' => $responseData], ['order', 'paypal']);
 
         return $response;
     }
@@ -400,7 +374,8 @@ class CreateAction {
                 }
 
                 // скидки
-                $orderData['action'] = (array)$user->getCart()->getActionData();
+                //$orderData['action'] = (array)$user->getCart()->getActionData();
+                $orderData['action'] = [];
 
                 // мета-теги
                 if (\App::config()->order['enableMetaTag'] && !$bMeta) {

@@ -669,8 +669,10 @@ class Cart {
      */
     public function setActionData(array $actionData) {
         $data = $this->storage->get($this->sessionName);
-        $data['actionData'] = $actionData;
-        $this->actions = $actionData;
+        \App::logger()->info(['action' => __METHOD__,  'cart.actionData' => $data['actionData']], ['cart']);
+        $data['actionData'] = $data['actionData'] + $actionData;
+        \App::logger()->info(['action' => __METHOD__, 'cart.actionData' => $data['actionData']], ['cart']);
+        $this->actions = $data['actionData'] + $actionData;
 
         $this->storage->set($this->sessionName, $data);
     }
@@ -765,6 +767,7 @@ class Cart {
                         }
                     );
                     \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long']);
+                    \App::logger()->info(['core.response' => $response], ['cart']);
 
                     // если запрос со скидками провалился, используем обычный запрос
                     if ($isFailed) {
@@ -808,8 +811,8 @@ class Cart {
         $this->sum = array_key_exists('sum', $response) ? $response['sum'] : 0;
         $this->originalSum = array_key_exists('original_sum', $response) ? $response['original_sum'] : 0;
 
-        if ((null !== $this->actions) && array_key_exists('action_list', $response)) {
-            $this->actions = $response['action_list'];
+        if (array_key_exists('action_list', $response)) {
+            $this->setActionData((array)$response['action_list']);
         }
 
         $this->certificates = [];

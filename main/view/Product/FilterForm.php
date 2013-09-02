@@ -25,10 +25,29 @@ class FilterForm {
                 case FilterEntity::TYPE_NUMBER:
                     if (empty($value['from']) && empty($value['to'])) continue;
                     $name = [];
-                    if (isset($value['from']) && !($this->isEqualNumeric($value['from'], $filter->getMin()))) $name[] = sprintf('от %d', $value['from']);
-                    if (isset($value['to']) && !($this->isEqualNumeric($value['to'], $filter->getMax()))) $name[] = sprintf('до %d', $value['to']);
+                    $is_price = ($filter->getId() == 'price') ? true : false;
+
+                    $tmp = $filter->getName();
+                    $pos = strpos($tmp, ' ');
+                    if ($pos) $tmp = substr($tmp, 0, $pos);
+                    $name[] =  $tmp . ': '; // подсказка по критерию фильтрации
+
+                    if (isset($value['from']) && !($this->isEqualNumeric($value['from'], $filter->getMin()))) {
+                        if ($is_price){
+                            $name[] = sprintf('от %d', $value['from']);
+                        }else{
+                            $name[] = 'от ' . round($value['from'], 1);
+                        }
+                    }
+                    if (isset($value['to']) && !($this->isEqualNumeric($value['to'], $filter->getMax()))) {
+                        if ($is_price){
+                            $name[] = sprintf('до %d', $value['to']);
+                        }else{
+                            $name[] = 'до ' . round($value['to'], 1);
+                        }
+                    }
                     if (!$name) continue;
-                    if ($filter->getId() == 'price') $name[] .= 'р.';
+                    if ($is_price) $name[] .= 'р.';
                     $return[] = array(
                         'type' => $filter->getId() == 'brand' ? 'creator' : 'parameter',
                         'name'  => implode(' ', $name),

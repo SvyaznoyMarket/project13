@@ -22,7 +22,7 @@ return function (
 
 ?>
 <div class="bWidgetBuy__eBuy btnBuy mBtnPayPal">
-    <a class="bPayPalLink jsBuyButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>"><img src="https://www.paypalobjects.com/ru_RU/i/btn/btn_xpressCheckout.gif" /></a>
+    <a class="bPayPalLink jsPayPalButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>"><img src="https://www.paypalobjects.com/ru_RU/i/btn/btn_xpressCheckout.gif" /></a>
 </div>
 
 <? };

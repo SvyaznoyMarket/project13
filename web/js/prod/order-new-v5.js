@@ -15,12 +15,12 @@
  * 
  * @constructor
  */
-function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
+function DeliveryBox( products, state, choosenPointForBox ) {
 	console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
 
 	var self = this;
 
-	self.OrderModel = OrderModel;
+	// Токен блока
 	self.token = state+'_'+choosenPointForBox;
 
 	// Продукты в блоке
@@ -30,7 +30,7 @@ function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
 	// Метод доставки
 	self.state = state;
 	// Название метода доставки
-	self.deliveryName = self.OrderModel.orderDictionary.getNameOfState(state);
+	self.deliveryName = window.OrderModel.orderDictionary.getNameOfState(state);
 	// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
 	self.deliveryPrice = Number.POSITIVE_INFINITY;
 
@@ -46,30 +46,30 @@ function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
 	self.showPopupWithPoints = ko.observable(false);
 
 	// Есть ли доступные точки доставки
-	self.hasPointDelivery = self.OrderModel.orderDictionary.hasPointDelivery(state);
+	self.hasPointDelivery = window.OrderModel.orderDictionary.hasPointDelivery(state);
 
 	// Массив всех доступных дат для блока
 	self.allDatesForBlock = ko.observableArray([]);
 	// Массив всех точек доставок
 	self.pointList = [];
 
-	if ( self.hasPointDelivery && !self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
+	if ( self.hasPointDelivery && !window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
 		// Доставка в выбранный пункт
 		console.info('есть точки доставки для выбранного метода доставки, но выбранная точка не доступна для этого метода доставки. Берем первую точку для выбранного метода доставки');
 
-		self.choosenPoint( self.OrderModel.orderDictionary.getFirstPointByState(self.state) );
+		self.choosenPoint( window.OrderModel.orderDictionary.getFirstPointByState(self.state) );
 	}
 	else if ( self.hasPointDelivery ) {
 		// Доставка в первый пункт для данного метода доставки
 		console.info('есть точки доставки для выбранного метода доставки, и выбранная точка доступна для этого метода доставки');
 
-		self.choosenPoint( self.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
+		self.choosenPoint( window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
 	}
 	else {
 		console.info('для выбранного метода доставки не нужна точка доставки');
 
 		// Передаем в модель, что есть блок с доставкой домой и генерируем событие об этом
-		self.OrderModel.hasHomeDelivery(true);
+		window.OrderModel.hasHomeDelivery(true);
 		$('body').trigger('orderdeliverychange',[true]);
 	}
 
@@ -78,16 +78,14 @@ function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
 
 	self.addProductGroup(products);
 
-	if ( !self.products.length ) {
+	if ( self.products.length === 0 ) {
 		// если после распределения в блоке не осталось товаров
 		console.warn('в блоке '+self.token+' не осталось товаров');
-
-		delete self.OrderModel.createdBox[self.token];
 
 		return;
 	}
 
-	self.OrderModel.deliveryBoxes.push(self);
+	window.OrderModel.deliveryBoxes.push(self);
 }
 
 /**
@@ -96,6 +94,8 @@ function DeliveryBox( products, state, choosenPointForBox, OrderModel ) {
  * @this	{DeliveryBox}
  */
 DeliveryBox.prototype._makePointList = function() {
+	console.info('Создание списка точек доставки');
+
 	var self = this,
 		res = true,
 		tmpPoint = null;
@@ -119,10 +119,13 @@ DeliveryBox.prototype._makePointList = function() {
 
 		if ( res ) {
 			// Точка достаки доступна для всех товаров в блоке
-			tmpPoint = self.OrderModel.orderDictionary.getPointByStateAndId(self.state, point);
+			tmpPoint = window.OrderModel.orderDictionary.getPointByStateAndId(self.state, point);
 			self.pointList.push( tmpPoint );
 		}
 	}
+
+	console.log('Точки доставки созданы');
+	console.log(self.pointList);
 };
 
 /**
@@ -136,32 +139,33 @@ DeliveryBox.prototype._makePointList = function() {
  */
 DeliveryBox.prototype.selectPoint = function( data ) {
 	var self = this,
-		newToken = self.state+'_'+data.id;
+		newToken = self.state+'_'+data.id,
+		choosenBlock = null;
+	// end of vars
 
-	if ( self.OrderModel.createdBox[newToken] !== undefined ) {
-		self.OrderModel.createdBox[newToken].addProductGroup(self.products);
+	if ( window.OrderModel.hasDeliveryBox(newToken) ) {
+		choosenBlock = global.OrderModel.getDeliveryBoxByToken(newToken);
+		choosenBlock.addProductGroup( self.products );
 
-		delete self.OrderModel.createdBox[self.token];
+		window.OrderModel.removeDeliveryBox(self.token);
 	}
 	else {
 		console.info('удаляем старый блок');
 		console.log('старый токен '+self.token);
 		console.log('новый токен '+newToken);
-		self.OrderModel.createdBox[newToken] = self.OrderModel.createdBox[self.token];
-		delete self.OrderModel.createdBox[self.token];
 
 		self.token = newToken;
-		self.choosenPoint(self.OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
-		console.log(self.OrderModel.createdBox);
+		self.choosenPoint(window.OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
+		console.log(window.OrderModel.deliveryBoxes());
 
-		if ( self.OrderModel.paypalECS() ) {
+		if ( window.OrderModel.paypalECS() ) {
 			console.info('PayPal ECS включен. Необходимо сохранить выбранную точку доставки в cookie');
 
 			window.docCookies.setItem('chPoint_paypalECS', data.id, 10 * 60);
 		}
 	}
 
-	self.OrderModel.showPopupWithPoints(false);
+	window.OrderModel.showPopupWithPoints(false);
 
 	return false;
 };
@@ -179,12 +183,12 @@ DeliveryBox.prototype.changePoint = function( ) {
 		self.pointList[i].parentBoxToken = self.token;
 	}
 
-	self.OrderModel.popupWithPoints({
+	window.OrderModel.popupWithPoints({
 		header: 'Выберите точку доставки',
 		points: self.pointList
 	});
 
-	self.OrderModel.showPopupWithPoints(true);
+	window.OrderModel.showPopupWithPoints(true);
 
 	return false;
 };
@@ -218,6 +222,8 @@ DeliveryBox.prototype._addProduct = function( product ) {
 		firstAvaliblePoint = null,
 		tempProductArray = [],
 
+		choosenBlock = null,
+
 		tmpProduct = {};
 	// end of vars
 
@@ -233,13 +239,17 @@ DeliveryBox.prototype._addProduct = function( product ) {
 
 		tempProductArray.push(product);
 
-		if ( self.OrderModel.createdBox[token] !== undefined ) {
-			// Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок
-			self.OrderModel.createdBox[token].addProductGroup( product );
+		if ( window.OrderModel.hasDeliveryBox(token) ) {
+			console.log('Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок');
+
+			choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
+			choosenBlock.addProductGroup( product );
+			window.OrderModel.removeDeliveryBox(self.token);
 		}
 		else {
-			// Блока для этого типа доставки в этот пункт еще существует
-			self.OrderModel.createdBox[token] = new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.OrderModel );
+			console.log('Блока для этого типа доставки в этот пункт еще существует');
+
+			new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
 		}
 
 		return;
@@ -263,7 +273,7 @@ DeliveryBox.prototype._addProduct = function( product ) {
 	tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
 	// Добавляем стоимость продукта к общей стоимости блока доставки
-	self.fullPrice += tmpProduct.price,
+	self.fullPrice += tmpProduct.price;
 
 	self.products.push(tmpProduct);
 };
@@ -272,12 +282,16 @@ DeliveryBox.prototype._addProduct = function( product ) {
  * Перерасчет общей стоимости заказа
  */
 DeliveryBox.prototype.updateTotalPrice = function() {
+	console.info('Перерасчет общей стоимости заказа');
+
 	var self = this,
-		nowTotalSum = self.OrderModel.totalSum();
+		nowTotalSum = window.OrderModel.totalSum();
 	// end of vars
 
 	nowTotalSum += self.fullPrice + self.deliveryPrice;
-	self.OrderModel.totalSum(nowTotalSum);
+	window.OrderModel.totalSum(nowTotalSum);
+
+	console.log(window.OrderModel.totalSum());
 };
 
 /**
@@ -309,6 +323,8 @@ DeliveryBox.prototype.addProductGroup = function( products ) {
 	self.updateTotalPrice();
 
 	if ( self.hasPointDelivery ) {
+		console.info('У товара есть точки доставки. Создаем список точек доставки');
+
 		self._makePointList();
 	}
 };
@@ -400,7 +416,7 @@ DeliveryBox.prototype.clickCalendarDay = function( data ) {
 	}
 
 	// Если включен PayPal ECS необходимо сохранить выбранную дату в cookie
-	if ( self.OrderModel.paypalECS() ) {
+	if ( window.OrderModel.paypalECS() ) {
 		console.info('PayPal ECS включен. Необходимо сохранить выбранную дату в cookie');
 
 		window.docCookies.setItem('chDate_paypalECS', JSON.stringify(data), 10 * 60);
@@ -420,7 +436,7 @@ DeliveryBox.prototype.calculateDate = function() {
 	console.info('Вычисление общей даты для продуктов в блоке');
 
 	var self = this,
-		todayTS = self.OrderModel.orderDictionary.getToday(),
+		todayTS = window.OrderModel.orderDictionary.getToday(),
 		nowProductDates = null,
 		nowTS = null,
 
@@ -458,19 +474,16 @@ DeliveryBox.prototype.calculateDate = function() {
 		console.log('новый токен '+newToken);
 		console.log(self);
 
-		console.warn('отделяем блок')
-		self.OrderModel.createdBox[newToken] = new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id, self.OrderModel);
+		new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id );
 
 		self.calculateDate();
-
-		return;
 	}
 
 	/**
 	 * Выбираем ближайшую доступную дату
 	 * Если включен PayPal ECS и уже есть сохраненная дата в куки - берем ее из куки
 	 */
-	if ( self.OrderModel.paypalECS() && window.docCookies.hasItem('chDate_paypalECS') ) {
+	if ( window.OrderModel.paypalECS() && window.docCookies.hasItem('chDate_paypalECS') ) {
 		console.info('PayPal ECS включен. Необходимо взять выбранную дату из cookie');
 
 		dateFromCookie = window.docCookies.getItem('chDate_paypalECS');
@@ -481,12 +494,16 @@ DeliveryBox.prototype.calculateDate = function() {
 	}
 
 	/**
+	 * Человекочитаемы день недели
+	 */
+	self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.choosenDate().dayOfWeek) );
+	/**
 	 * Выбираем первый интервал
 	 */
-	self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.allDatesForBlock()[0].dayOfWeek) );
-	// выбираем первый интервал
-	self.choosenInterval( self.choosenDate().intervals[0] );
-	self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.choosenDate().dayOfWeek) );
+	if ( self.choosenDate().intervals.length !== 0 ) {
+		self.choosenInterval( self.choosenDate().intervals[0] );
+	}
+	
 	self.makeCalendar();
 };
 
@@ -516,13 +533,13 @@ DeliveryBox.prototype.makeCalendar = function() {
 	 */
 	for ( k = 0; k <= self.allDatesForBlock().length - 1; k++ ) {
 		if ( self.allDatesForBlock()[k + 1] === undefined ) {
-			console.info('следущая дата последняя. заканчиваем цикл');
+			console.info('Следущая дата последняя. заканчиваем цикл');
+			
 			break;
 		}
 
 		tmpDay = {};
 		tmpVal = self.allDatesForBlock()[k].value + ONE_DAY;
-		console.log(tmpVal)
 		tmpDate = new Date(tmpVal);
 
 		if ( tmpVal !== self.allDatesForBlock()[k + 1].value ) {
@@ -534,8 +551,8 @@ DeliveryBox.prototype.makeCalendar = function() {
 				day: tmpDate.getDate()
 			};
 
-			console.log('предыдущая дата была '+new Date(self.allDatesForBlock()[k].value).getDate()+' новая дата вклинилась '+tmpDate.getDate()+' следущая дата '+new Date(self.allDatesForBlock()[k + 1].value).getDate());
-			self.allDatesForBlock.splice(k+1, 0, tmpDay);
+			console.log('предыдущая дата была ' + new Date(self.allDatesForBlock()[k].value).getDate() + ' новая дата вклинилась ' + tmpDate.getDate() + ' следущая дата ' + new Date(self.allDatesForBlock()[k + 1].value).getDate());
+			self.allDatesForBlock.splice(k + 1, 0, tmpDay);
 		}
 	}
 	
@@ -663,9 +680,9 @@ ko.bindingHandlers.calendarSlider = {
 		// end of vars
 
 		var selectBank = function selectBank() {
-			var chosenBankLink = $("option:selected", select).attr('data-link'),
-				chosenBankId = $("option:selected", select).val(),
-				chosenBankName = $("option:selected", select).html();
+			var chosenBankLink = $('option:selected', select).attr('data-link'),
+				chosenBankId = $('option:selected', select).val(),
+				chosenBankName = $('option:selected', select).html();
 			// end of vars
 
 			bankName.html(chosenBankName);
@@ -674,7 +691,7 @@ ko.bindingHandlers.calendarSlider = {
 			bankLink.attr('href', chosenBankLink);
 		};
 
-		$("option", select).eq(0).attr('selected','selected');
+		$('option', select).eq(0).attr('selected','selected');
 
 		select.change(selectBank);
 		selectBank();
@@ -778,9 +795,7 @@ OrderDictionary.prototype.hasPointDelivery = function( state ) {
  * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
-	var points = this.getAllPointsByState(state),
-		findedPoint = null;
-	// end of vars
+	var points = this.getAllPointsByState(state);
 	
 	pointId = pointId+'';
 	
@@ -802,9 +817,7 @@ OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
  * @return	{Object}				Данные о точке доставки
  */
 OrderDictionary.prototype.getFirstPointByState = function( state ) {
-	var points = this.getAllPointsByState(state),
-		findedPoint = null;
-	// end of vars
+	var points = this.getAllPointsByState(state);
 
 	return window.cloneObject(points[0]);
 };
@@ -863,9 +876,14 @@ OrderDictionary.prototype.getProductById = function( productId ) {
  */
  
  
-	/* Sertificate */
+/**
+ * Sertificate
+ *
+ * 
+ * @requires	jQuery
+ */
 ;(function( global ) {
-	if( !$('#paymentMethod-10').length ) {
+	if ( !$('#paymentMethod-10').length ) {
 		console.warn('нет метода оплаты сертификатом');
 
 		return false;
@@ -898,7 +916,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			},
 
 			isActive = function isActive() {
-				if( checked && ( getCode() !== '' ) && getCode().length === 14 && ( getPIN() !== '' ) && getPIN().length === 4) {
+				if ( checked &&
+					getCode() !== '' &&
+					getCode().length === 14 &&
+					getPIN() !== '' &&
+					getPIN().length === 4 ) {
 					return true;
 				}
 
@@ -918,11 +940,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 				setProcessingStatus( 'mOrange', 'Проверка по номеру карты' );
 				$.post( urlCheck, getParams(), function( data ) {
-					if( !('success' in data) ) {
+					if ( !('success' in data) ) {
 						return false;
 					}
 
-					if( !data.success ) {
+					if ( !data.success ) {
 						var err = ( typeof(data.error) !== 'undefined' ) ? data.error : 'ERROR';
 
 						setProcessingStatus( 'mRed', err );
@@ -945,7 +967,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					blockProcess.remove();
 				}
 
-				switch( status ) {
+				switch ( status ) {
 					case 'mOrange':
 						options.text = data;
 						checked = false;
@@ -957,7 +979,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 						break;
 					case 'mGreen':
-						if( 'activated' in data ) {
+						if ( 'activated' in data ) {
 							options.text = 'Карта '+ data.code + ' на сумму ' + data.sum + ' активирована!';
 						}
 						else {
@@ -1140,7 +1162,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		serverErrorHandler = {
 			default: function( res ) {
-				console.log('обработчик ошибки');
+				console.log('Обработчик ошибки');
 
 				if ( res.error && res.error.message ) {
 					showError(res.error.message, function() {
@@ -1154,7 +1176,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			},
 
 			0: function( res ) {
-				console.warn('обработка ошибок формы')
+				console.warn('Обработка ошибок формы');
+
 				var formError = null;
 
 				if ( res.redirect ) {
@@ -1195,7 +1218,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 
 			if ( typeof yaCounter10503055 !== 'undefined' ) {
-				yaCounter10503055.reachGoal('\orders\complete');
+				yaCounter10503055.reachGoal('\\orders\\complete');
 			}
 		},
 
@@ -1215,14 +1238,16 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
 
-				global.OrderModel.blockScreen.unblock();
+				global.ENTER.utils.blockScreen.unblock();
 
 				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
-					console.log('есть обработчик')
+					console.log('Есть обработчик');
+
 					serverErrorHandler[res.error.code](res);
 				}
 				else {
-					console.log('дефолтный обработчик')
+					console.log('Стандартный обработчик');
+
 					serverErrorHandler['default'](res);
 				}
 
@@ -1230,6 +1255,16 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			}
 
 			completeAnalytics();
+
+			if ( global.OrderModel.paypalECS() ) {
+				console.info('PayPal ECS включен. Необходимо удалить выбранные параметры из cookie');
+
+				window.docCookies.removeItem('chDate_paypalECS');
+				window.docCookies.removeItem('chTypeBtn_paypalECS');
+				window.docCookies.removeItem('chPoint_paypalECS');
+				window.docCookies.removeItem('chTypeId_paypalECS');
+				window.docCookies.removeItem('chStetesPriority_paypalECS');
+			}
 
 			document.location.href = res.redirect;
 		},
@@ -1246,7 +1281,12 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				orderForm = $('#order-form');
 			// end of vars
 			
-			global.OrderModel.blockScreen.block('Ваш заказ оформляется');
+			if ( global.OrderModel.paypalECS() ) {
+				global.ENTER.utils.blockScreen.block('Передача данных в PayPal');
+			}
+			else {
+				global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
+			}
 
 			/**
 			 * Перебираем блоки доставки
@@ -1286,16 +1326,14 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			$.ajax({
 				url: orderForm.attr('action'),
 				timeout: 120000,
-				type: "POST",
+				type: 'POST',
 				data: dataToSend,
 				success: processingResponse,
 				statusCode: {
 					500: function() {
-						console.log(this.statusCode)
 						showError('Неудалось создать заказ. Попробуйте позднее.');
 					},
 					504: function() {
-						console.log(this.statusCode)
 						showError('Неудалось создать заказ. Попробуйте позднее.');
 					}
 				}
@@ -1306,7 +1344,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * Обработчик нажатия на кнопку завершения заказа
 		 */
 		orderCompleteBtnHandler = function orderCompleteBtnHandler() {
-			console.info('завершить оформление заказа');
+			console.info('Завершить оформление заказа');
 
 			orderValidator.validate({
 				onInvalid: function( err ) {
@@ -1391,9 +1429,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		};
 	// end of functions
 	
-	sclub.mask("* ****** ******", { placeholder: "*" } );
-	qiwiPhone.mask("(999) 999-99-99");
-	phoneField.mask("(999) 999-99-99");
+	sclub.mask('* ****** ******', { placeholder: '*' } );
+	qiwiPhone.mask('(999) 999-99-99');
+	phoneField.mask('(999) 999-99-99');
 
 	/**
 	 * AB-test
@@ -1472,10 +1510,10 @@ OrderDictionary.prototype.getProductById = function( productId ) {
  * @author	Zaytsev Alexandr
  */
 ;(function( global ) {
-	console.info('Логика разбиения заказа для оформления заказа v.5');
+	var serverData = $('#jsOrderDelivery').data('value'),
+		utils = global.ENTER.utils;
+	// end of vars
 
-	var serverData = $('#jsOrderDelivery').data('value');
-	//var serverData = {"time":1377547200000,"action":[],"deliveryTypes":[{"id":1,"token":"standart","name":"\u0414\u043e\u0441\u0442\u0430\u0432\u043a\u0430 \u0437\u0430\u043a\u0430\u0437\u0430 \u043a\u0443\u0440\u044c\u0435\u0440\u043e\u043c","shortName":"\u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0430","description":"\u041c\u044b \u043f\u0440\u0438\u0432\u0435\u0437\u0435\u043c \u0437\u0430\u043a\u0430\u0437 \u043f\u043e \u043b\u044e\u0431\u043e\u043c\u0443 \u0443\u0434\u043e\u0431\u043d\u043e\u043c\u0443 \u0432\u0430\u043c \u0430\u0434\u0440\u0435\u0441\u0443. \u041f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0443\u043a\u0430\u0436\u0438\u0442\u0435 \u0434\u0430\u0442\u0443 \u0438 \u0432\u0440\u0435\u043c\u044f \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0438.","states":["standart_furniture","standart_other","self","now"],"ownStates":["standart_furniture","standart_other"]},{"id":3,"token":"self","name":"\u0421\u0430\u043c\u043e\u0441\u0442\u043e\u044f\u0442\u0435\u043b\u044c\u043d\u043e \u0437\u0430\u0431\u0435\u0440\u0443 \u0432 \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0435","shortName":"\u0441\u0430\u043c\u043e\u0432\u044b\u0432\u043e\u0437","description":"\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0441\u0430\u043c\u043e\u0441\u0442\u043e\u044f\u0442\u0435\u043b\u044c\u043d\u043e \u0437\u0430\u0431\u0440\u0430\u0442\u044c \u0442\u043e\u0432\u0430\u0440 \u0438\u0437 \u0431\u043b\u0438\u0436\u0430\u0439\u0448\u0435\u0433\u043e \u043a \u0432\u0430\u043c \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0430 Enter. \u0423\u0441\u043b\u0443\u0433\u0430 \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u0430\u044f! \u0420\u0435\u0437\u0435\u0440\u0432 \u0442\u043e\u0432\u0430\u0440\u0430 \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442\u0441\u044f 3 \u0434\u043d\u044f. \u041f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0432\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043c\u0430\u0433\u0430\u0437\u0438\u043d.","states":["self","now","standart_furniture","standart_other"],"ownStates":["self"]},{"id":4,"token":"now","name":"\u0417\u0430\u0431\u0435\u0440\u0443 \u0441\u0435\u0439\u0447\u0430\u0441 \u0438\u0437 \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0430","shortName":"\u043f\u043e\u043a\u0443\u043f\u043a\u0430 \u0432 \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0435","description":"\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0437\u0430\u0431\u0440\u0430\u0442\u044c \u0442\u043e\u0432\u0430\u0440 \u0438\u0437 \u044d\u0442\u043e\u0433\u043e \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0430 \u043f\u0440\u044f\u043c\u043e \u0441\u0435\u0439\u0447\u0430\u0441","states":["now","self","standart_furniture","standart_other"],"ownStates":["now"]}],"deliveryStates":{"self":{"name":"\u0421\u0430\u043c\u043e\u0432\u044b\u0432\u043e\u0437","products":["91622"]},"now":{"name":"\u0421\u0430\u043c\u043e\u0432\u044b\u0432\u043e\u0437","products":["91622"]},"standart_other":{"name":"\u0414\u043e\u0441\u0442\u0430\u0432\u0438\u043c","products":["91622"]}},"pointsByDelivery":{"self":"shops","now":"shops"},"products":{"91622":{"id":"91622","name":"\u0421\u043c\u0430\u0440\u0442\u0444\u043e\u043d Sony Xperia V \u0431\u0435\u043b\u044b\u0439","price":14990,"sum":14990,"quantity":1,"stock":2,"image":"http:\/\/fs01.enter.ru\/1\/1\/60\/f8\/171427.jpg","url":"\/product\/electronics\/smartfon-sony-xperia-v-beliy-2060302004630","setUrl":"\/cart\/add-product\/91622?quantity=1","deleteUrl":"\/cart\/delete-product\/91622","deliveries":{"now":{"2":{"price":0,"dates":[{"name":"27 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377547200000,"day":27,"dayOfWeek":2,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]}]},"3":{"price":0,"dates":[{"name":"27 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377547200000,"day":27,"dayOfWeek":2,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]}]},"68":{"price":0,"dates":[{"name":"27 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377547200000,"day":27,"dayOfWeek":2,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]}]},"135":{"price":0,"dates":[{"name":"27 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377547200000,"day":27,"dayOfWeek":2,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]}]}},"self":{"1":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"2":{"price":0,"dates":[{"name":"27 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377547200000,"day":27,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"3":{"price":0,"dates":[{"name":"27 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377547200000,"day":27,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"13":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"14":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"48":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"68":{"price":0,"dates":[{"name":"27 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377547200000,"day":27,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"69":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"75":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"81":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"87":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"88":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"134":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"135":{"price":0,"dates":[{"name":"27 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377547200000,"day":27,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"138":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]},"144":{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"16:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"16:00","end":"21:00"}]}]}},"standart_other":[{"price":0,"dates":[{"name":"29 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377720000000,"day":29,"dayOfWeek":4,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"30 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377806400000,"day":30,"dayOfWeek":5,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"31 \u0430\u0432\u0433\u0443\u0441\u0442\u0430","value":1377892800000,"day":31,"dayOfWeek":6,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"1 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1377979200000,"day":1,"dayOfWeek":0,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"2 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378065600000,"day":2,"dayOfWeek":1,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"3 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378152000000,"day":3,"dayOfWeek":2,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"4 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378238400000,"day":4,"dayOfWeek":3,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"5 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378324800000,"day":5,"dayOfWeek":4,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"6 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378411200000,"day":6,"dayOfWeek":5,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"7 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378497600000,"day":7,"dayOfWeek":6,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"8 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378584000000,"day":8,"dayOfWeek":0,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"9 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378670400000,"day":9,"dayOfWeek":1,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"10 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378756800000,"day":10,"dayOfWeek":2,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"11 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378843200000,"day":11,"dayOfWeek":3,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"12 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1378929600000,"day":12,"dayOfWeek":4,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"13 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379016000000,"day":13,"dayOfWeek":5,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"14 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379102400000,"day":14,"dayOfWeek":6,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"15 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379188800000,"day":15,"dayOfWeek":0,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"16 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379275200000,"day":16,"dayOfWeek":1,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"17 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379361600000,"day":17,"dayOfWeek":2,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"18 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379448000000,"day":18,"dayOfWeek":3,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"19 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379534400000,"day":19,"dayOfWeek":4,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"20 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379620800000,"day":20,"dayOfWeek":5,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"21 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379707200000,"day":21,"dayOfWeek":6,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"22 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379793600000,"day":22,"dayOfWeek":0,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"23 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379880000000,"day":23,"dayOfWeek":1,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"24 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1379966400000,"day":24,"dayOfWeek":2,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]},{"name":"25 \u0441\u0435\u043d\u0442\u044f\u0431\u0440\u044f","value":1380052800000,"day":25,"dayOfWeek":3,"intervals":[{"start":"09:00","end":"18:00"},{"start":"09:00","end":"14:00"},{"start":"14:00","end":"18:00"},{"start":"18:00","end":"21:00"}]}]}]}}},"shops":[{"id":"1","name":"\u043c. \u0411\u0435\u043b\u043e\u0440\u0443\u0441\u0441\u043a\u0430\u044f, \u0443\u043b. \u0413\u0440\u0443\u0437\u0438\u043d\u0441\u043a\u0438\u0439 \u0432\u0430\u043b, \u0434. 31","address":"\u0443\u043b. \u0413\u0440\u0443\u0437\u0438\u043d\u0441\u043a\u0438\u0439 \u0412\u0430\u043b, \u0434. 31","regtime":"\u0441 9.00 \u0434\u043e 22.00","latitude":55.775004,"longitude":37.581675,"products":["91622"]},{"id":"2","name":"\u043c. \u041b\u0435\u043d\u0438\u043d\u0441\u043a\u0438\u0439 \u043f\u0440\u043e\u0441\u043f\u0435\u043a\u0442, \u0443\u043b. \u041e\u0440\u0434\u0436\u043e\u043d\u0438\u043a\u0438\u0434\u0437\u0435, \u0434. 11, \u0441\u0442\u0440. 10","address":"\u0443\u043b. \u041e\u0440\u0434\u0436\u043e\u043d\u0438\u043a\u0438\u0434\u0437\u0435, \u0434. 11, \u0441\u0442\u0440. 10","regtime":"\u0441 9.00 \u0434\u043e 21.00","latitude":55.706488,"longitude":37.596997,"products":["91622","91622"]},{"id":"3","name":"\u043c. \u041a\u0438\u0435\u0432\u0441\u043a\u0430\u044f, \u0443\u043b. \u0411. \u0414\u043e\u0440\u043e\u0433\u043e\u043c\u0438\u043b\u043e\u0432\u0441\u043a\u0430\u044f, \u0434. 8","address":"\u0443\u043b. \u0411. \u0414\u043e\u0440\u043e\u0433\u043e\u043c\u0438\u043b\u043e\u0432\u0441\u043a\u0430\u044f, \u0434. 8","regtime":"\u0441 8.00 \u0434\u043e 23.00","latitude":55.746197,"longitude":37.565389,"products":["91622","91622"]},{"id":"13","name":"\u043c. \u041a\u0443\u0437\u044c\u043c\u0438\u043d\u043a\u0438, \u0412\u043e\u043b\u0433\u043e\u0433\u0440\u0430\u0434\u0441\u043a\u0438\u0439 \u043f\u0440-\u0442, \u0434. 119\u0430.","address":"\u0412\u043e\u043b\u0433\u043e\u0433\u0440\u0430\u0434\u0441\u043a\u0438\u0439 \u043f\u0440-\u0442, \u0434. 119\u0430.","regtime":"\u0441 9.00 \u0434\u043e 23.00","latitude":55.706279,"longitude":37.765371,"products":["91622"]},{"id":"14","name":"\u043c. \u0421\u0445\u043e\u0434\u043d\u0435\u043d\u0441\u043a\u0430\u044f, \u0425\u0438\u043c\u043a\u0438\u043d\u0441\u043a\u0438\u0439 \u0431\u0443\u043b\u044c\u0432\u0430\u0440, \u0434. 16, \u043a\u043e\u0440\u043f. 1.","address":"\u0425\u0438\u043c\u043a\u0438\u043d\u0441\u043a\u0438\u0439 \u0431\u0443\u043b\u044c\u0432\u0430\u0440, \u0434. 16, \u043a\u043e\u0440\u043f. 1.","regtime":"\u0441 9.00 \u0434\u043e 22.00","latitude":55.851993,"longitude":37.442905,"products":["91622"]},{"id":"48","name":"\u041f\u0443\u043d\u043a\u0442 \u0432\u044b\u0434\u0430\u0447\u0438, \u043c. \u0422\u0443\u0448\u0438\u043d\u0441\u043a\u0430\u044f, \u0412\u043e\u043b\u043e\u043a\u043e\u043b\u0430\u043c\u0441\u043a\u043e\u0435 \u0448\u043e\u0441\u0441\u0435, \u0434. 92","address":"\u0412\u043e\u043b\u043e\u043a\u043e\u043b\u0430\u043c\u0441\u043a\u043e\u0435 \u0448\u043e\u0441\u0441\u0435, \u0434. 92","regtime":"\u0441 9.00 \u0434\u043e 21.00","latitude":55.824635,"longitude":37.434667,"products":["91622"]},{"id":"68","name":"\u043c. \u041d\u043e\u0432\u043e\u0433\u0438\u0440\u0435\u0435\u0432\u043e, \u0421\u0432\u043e\u0431\u043e\u0434\u043d\u044b\u0439 \u043f\u0440-\u043a\u0442, \u0434. 33","address":"\u0421\u0432\u043e\u0431\u043e\u0434\u043d\u044b\u0439 \u043f\u0440-\u043a\u0442, \u0434. 33","regtime":"\u0441 9.00 \u0434\u043e 23.00","latitude":55.752796,"longitude":37.819324,"products":["91622","91622"]},{"id":"69","name":"\u043c. \u0421\u043e\u043a\u043e\u043b, \u041b\u0435\u043d\u0438\u043d\u0433\u0440\u0430\u0434\u0441\u043a\u0438\u0439 \u043f\u0440-\u043a\u0442, \u0434. 78","address":"\u041b\u0435\u043d\u0438\u043d\u0433\u0440\u0430\u0434\u0441\u043a\u0438\u0439 \u043f\u0440-\u043a\u0442, \u0434. 78","regtime":"\u0441 9.00 \u0434\u043e 22.00","latitude":55.806052,"longitude":37.513107,"products":["91622"]},{"id":"75","name":"\u043c. \u041e\u043a\u0442\u044f\u0431\u0440\u044c\u0441\u043a\u0430\u044f, \u0443\u043b. \u0411. \u042f\u043a\u0438\u043c\u0430\u043d\u043a\u0430, \u0434. 54","address":"\u0411. \u042f\u043a\u0438\u043c\u0430\u043d\u043a\u0430, \u0434. 54","regtime":"\u0441 9.00 \u0434\u043e 22.00","latitude":55.731337,"longitude":37.611474,"products":["91622"]},{"id":"81","name":"\u041f\u0443\u043d\u043a\u0442 \u0432\u044b\u0434\u0430\u0447\u0438, \u043c. \u041a\u0440\u044b\u043b\u0430\u0442\u0441\u043a\u043e\u0435, \u041e\u0441\u0435\u043d\u043d\u0438\u0439 \u0431\u0443\u043b\u044c\u0432\u0430\u0440, \u0434. 5, \u043a\u043e\u0440\u043f\u0443\u0441 1","address":"\u041e\u0441\u0435\u043d\u043d\u0438\u0439 \u0431\u0443\u043b\u044c\u0432\u0430\u0440, \u0434. 5, \u043a\u043e\u0440\u043f\u0443\u0441 1","regtime":"\u0441 9.00 \u0434\u043e 21.00","latitude":55.756967,"longitude":37.407103,"products":["91622"]},{"id":"87","name":"\u043c. \u0411\u0440\u0430\u0442\u0438\u0441\u043b\u0430\u0432\u0441\u043a\u0430\u044f, \u0443\u043b. \u0411\u0440\u0430\u0442\u0438\u0441\u043b\u0430\u0432\u0441\u043a\u0430\u044f \u0434. 14","address":"\u0443\u043b. \u0411\u0440\u0430\u0442\u0438\u0441\u043b\u0430\u0432\u0441\u043a\u0430\u044f \u0434. 14","regtime":"\u0441 9.00 \u0434\u043e 22.00","latitude":55.659082,"longitude":37.755054,"products":["91622"]},{"id":"88","name":"\u043c. \u0411\u0430\u0443\u043c\u0430\u043d\u0441\u043a\u0430\u044f, \u0443\u043b. \u041b\u0430\u0434\u043e\u0436\u0441\u043a\u0430\u044f, \u0434. 7","address":"\u0443\u043b. \u041b\u0430\u0434\u043e\u0436\u0441\u043a\u0430\u044f, \u0434. 7","regtime":"\u0441 9.00 \u0434\u043e 21.00","latitude":55.77163,"longitude":37.68303,"products":["91622"]},{"id":"134","name":"\u043c. \u0412\u0414\u041d\u0425, \u043f\u0440-\u043a\u0442 \u041c\u0438\u0440\u0430, \u0434. 211, \u0422\u0420\u0426 \u0022\u0417\u043e\u043b\u043e\u0442\u043e\u0439 \u0412\u0430\u0432\u0438\u043b\u043e\u043d\u0022","address":"\u043f\u0440-\u043a\u0442 \u041c\u0438\u0440\u0430, \u0434. 211","regtime":"\u0441 10.00 \u0434\u043e 22.00","latitude":55.846214,"longitude":37.663198,"products":["91622"]},{"id":"135","name":"\u043c. \u041a\u043e\u043d\u044c\u043a\u043e\u0432\u043e, \u0443\u043b. \u041f\u0440\u043e\u0444\u0441\u043e\u044e\u0437\u043d\u0430\u044f, \u0432\u043b. 118, \u0422\u0426 \u0022\u0422\u0440\u043e\u043f\u0430\u0022","address":"\u0443\u043b. \u041f\u0440\u043e\u0444\u0441\u043e\u044e\u0437\u043d\u0430\u044f, \u0432\u043b. 118","regtime":"\u0441 10.00 \u0434\u043e 22.00","latitude":55.636122,"longitude":37.521042,"products":["91622","91622"]},{"id":"138","name":"\u043c. \u042d\u043b\u0435\u043a\u0442\u0440\u043e\u0437\u0430\u0432\u043e\u0434\u0441\u043a\u0430\u044f, \u0443\u043b. \u0411\u043e\u043b\u044c\u0448\u0430\u044f \u0421\u0435\u043c\u0435\u043d\u043e\u0432\u0441\u043a\u0430\u044f, \u0434. 27, \u043a\u043e\u0440\u043f. 1.","address":"\u0443\u043b. \u0411\u043e\u043b\u044c\u0448\u0430\u044f \u0421\u0435\u043c\u0435\u043d\u043e\u0432\u0441\u043a\u0430\u044f, \u0434. 27, \u043a\u043e\u0440\u043f. 1","regtime":"\u0441 9.00 \u0434\u043e 22.00","latitude":55.782309,"longitude":37.708922,"products":["91622"]},{"id":"144","name":"\u043c. \u041f\u0435\u0440\u0432\u043e\u043c\u0430\u0439\u0441\u043a\u0430\u044f, \u0443\u043b. \u041f\u0435\u0440\u0432\u043e\u043c\u0430\u0439\u0441\u043a\u0430\u044f, \u0434. 81","address":"\u0443\u043b. \u041f\u0435\u0440\u0432\u043e\u043c\u0430\u0439\u0441\u043a\u0430\u044f, \u0434. 81","regtime":"\u0441 9.00 \u0434\u043e 21.00","latitude":55.793556,"longitude":37.801574,"products":["91622"]}],"discounts":[],"success":true, "paypalECS": true};
 
 	/**
 	 * Логика разбиения заказа на подзаказы
@@ -1501,6 +1539,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			token = null,
 			nowState = null,
 			nowProduct = null,
+			choosenBlock = null,
 
 			discounts = global.OrderModel.orderDictionary.orderData.discounts;
 		// end of vars
@@ -1516,8 +1555,10 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 
 		// очищаем объект созданых блоков, удаляем блоки из модели
-		global.OrderModel.createdBox = {};
 		global.OrderModel.deliveryBoxes.removeAll();
+
+		// обнуляем примененный купон
+		global.OrderModel.hasCoupons(false);
 
 		// Маркируем выбранный способ доставки
 		$('#'+global.OrderModel.deliveryTypesButton).attr('checked','checked');
@@ -1528,9 +1569,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		// Обнуляем блоки с доставкой на дом и генерируем событие об этом
 		global.OrderModel.hasHomeDelivery(false);
 		$('body').trigger('orderdeliverychange',[false]);
-
-		// Добавляем купоны
-		global.OrderModel.couponsBox(discounts);
 
 
 		/**
@@ -1575,22 +1613,51 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 				token = nowState+'_'+choosenPointForBox;
 
-				if ( global.OrderModel.createdBox[token] !== undefined ) {
+				if ( global.OrderModel.hasDeliveryBox(token) ) {
 					// Блок для этого типа доставки в этот пункт уже существует
-					global.OrderModel.createdBox[token].addProductGroup( productsToNewBox );
+					choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
+					choosenBlock.addProductGroup( productsToNewBox );
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					global.OrderModel.createdBox[token] = new DeliveryBox( productsToNewBox, nowState, choosenPointForBox, global.OrderModel );
+					new DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
 				}
 			}
 		}
 
 		console.info('Созданные блоки:');
-		console.log(global.OrderModel.createdBox);
+		console.log(global.OrderModel.deliveryBoxes());
+
+		// Добавляем купоны
+		global.OrderModel.couponsBox(discounts);
+
+		// Добавляем купоны
+		global.OrderModel.couponsBox(discounts);
 
 		// выбираем URL для проверки купонов - первый видимый купон
 		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
+
+		/**
+		 * Проверка примененных купонов
+		 *
+		 * Если заказ разбился, то купон применять нельзя или
+		 * Если сумма заказа меньше либо равана размеру скидки купона
+		 */
+		if ( ( global.OrderModel.hasCoupons() && global.OrderModel.deliveryBoxes().length > 1 ) || 
+			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) {
+			console.warn('Нужно удалить купон');
+
+			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
+
+			var callback = function() {
+				console.log('удаление');
+				global.OrderModel.deleteItem(global.OrderModel.appliedCoupon());
+			};
+
+			$.when(showError(msg)).then(callback);
+
+			return false;
+		}
 
 		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
@@ -1659,7 +1726,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				node = $(element),
 				fieldNode = node.find('.mSaleInput'),
 				buttonNode = node.find('.mSaleBtn'),
-				titleNode = node.find('.bTitle'),
 
 				emptyBlock = node.find('.bSaleData__eEmptyBlock');
 			// end of vars
@@ -1668,9 +1734,17 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			for ( var i = unwrapVal.length - 1; i >= 0; i-- ) {
 				node.find('.bSaleList__eItem[data-type="'+unwrapVal[i].type+'"]').addClass('hidden');
+
+				if ( unwrapVal[i].type === 'coupon' ) {
+					console.log('Есть примененный купон');
+
+					global.OrderModel.hasCoupons(true);
+					global.OrderModel.appliedCoupon(unwrapVal[i]);
+				}
 			}
 
-			if ( $('.bSaleList__eItem.hidden').length === $('.bSaleList__eItem').length ) {
+			if ( $('.bSaleList__eItem.hidden').length === $('.bSaleList__eItem').length ||
+				$('.bSaleList__eItem:hidden').length === $('.bSaleList__eItem').length ) {
 				// если все скидки применены
 				
 				fieldNode.attr('disabled', 'disabled');
@@ -1692,7 +1766,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	 * === ORDER MODEL ===
 	 */
 	global.OrderModel = {
+		/**
+		 * URL для обновления данных с сервера
+		 */
 		updateUrl: $('#jsOrderDelivery').data('url'),
+
 		/**
 		 * Флаг завершения обработки данных
 		 */
@@ -1727,6 +1805,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		paypalECS: ko.observable(false),
 
 		/**
+		 * Первоначальная сумма корзины
+		 */
+		cartSum: null,
+
+		/**
 		 * Ссылка на словарь
 		 */
 		orderDictionary: null,
@@ -1752,11 +1835,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		deliveryBoxes: ko.observableArray([]),
 
 		/**
-		 * Хранилище блоков доставки
-		 */
-		createdBox: {},
-
-		/**
 		 * Объект данных для отображения окна с пунктами доставок
 		 */
 		popupWithPoints: ko.observable({}),
@@ -1765,6 +1843,16 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * Общая сумма заказа
 		 */
 		totalSum: ko.observable(0),
+
+		/**
+		 * Есть ли примененные купоны
+		 */
+		hasCoupons: ko.observable(false),
+
+		/**
+		 * Размер скидки примененного купона
+		 */
+		appliedCoupon: ko.observable(),
 
 		/**
 		 * Номер введенного сертификата
@@ -1786,41 +1874,58 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		couponsBox: ko.observableArray([]),
 
+
 		/**
-		 * Блокер экрана
-		 *
-		 * @param	{Object}		noti		Объект jQuery блокера экрана
-		 * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
-		 * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
+		 * Существует ли блок доставки
+		 * @param	String}		token	Токен блока доставки
+		 * @return	{boolean}
 		 */
-		blockScreen: {
-			noti: null,
-			block: function( text ) {
-				var self = this;
+		hasDeliveryBox: function( token ) {
+			console.info('Существует ли блок доставки '+token);
 
-				console.warn('block screen');
+			var i = null;
 
-				if ( self.noti ) {
-					self.unblock();
+			for ( i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i--) {
+				if ( global.OrderModel.deliveryBoxes()[i].token === token ) {
+					return true;
 				}
+			}
 
-				self.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
-				self.noti.appendTo('body');
+			return false;
+		},
 
-				self.noti.lightbox_me({
-					centered:true,
-					closeClick:false,
-					closeEsc:false,
-					onClose: function() {
-						self.noti.remove();
-					}
-				});
-			},
+		/**
+		 * Получить ссылку на блок по токену
+		 * @param	String}		token	Токен блока доставки
+		 * @return	{Object}			Объект блока
+		 */
+		getDeliveryBoxByToken: function( token ) {
+			console.info('Получить ссылку на блок по токену '+token);
 
-			unblock: function() {
-				console.warn('unblock screen');
+			var i = null;
 
-				this.noti.trigger('close');
+			for ( i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i--) {
+				if ( global.OrderModel.deliveryBoxes()[i].token === token ) {
+					return global.OrderModel.deliveryBoxes()[i];
+				}
+			}
+		},
+
+		/**
+		 * Удаление блока доставки по токену
+		 * @param	String}		token	Токен блока доставки
+		 */
+		removeDeliveryBox: function( token ) {
+			console.info('Удаление блока по токену '+token);
+
+			var i = null;
+
+			for ( i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i--) {
+				if ( global.OrderModel.deliveryBoxes()[i].token === token ) {
+					global.OrderModel.deliveryBoxes().splice(i, 1);
+
+					return;
+				}
 			}
 		},
 
@@ -1833,20 +1938,21 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			var dataToSend = {
 					number: global.OrderModel.couponNumber(),
 				},
-				url = global.OrderModel.couponUrl();
+
+				url = global.OrderModel.couponUrl(),
+
+				reqArray;
 			// end of vars
 
 			var couponResponceHandler = function couponResponceHandler( res ) {
-				global.OrderModel.blockScreen.block('Применяем купон');
+				utils.blockScreen.block('Применяем купон');
 
 				if ( !res.success ) {
 					global.OrderModel.couponError(res.error.message);
-					global.OrderModel.blockScreen.unblock();
+					utils.blockScreen.unblock();
 
 					return;
 				}
-
-				global.OrderModel.modelUpdate();
 			};
 
 			global.OrderModel.couponError('');
@@ -1865,12 +1971,23 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				return;
 			}
 
-			$.ajax({
-				type: 'POST',
-				url: url,
-				data: dataToSend,
-				success: couponResponceHandler
-			});
+			reqArray = [
+				{
+					type: 'POST',
+					url: url,
+					data: dataToSend,
+					callback: couponResponceHandler
+				},
+				{
+					type: 'GET',
+					url: global.OrderModel.updateUrl,
+					callback: global.OrderModel.modelUpdate
+				},
+			];
+
+			utils.packageReq(reqArray);
+
+			return false;
 		},
 
 		/**
@@ -1888,9 +2005,12 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			console.info('point selected...');
 			console.log(data.parentBoxToken);
 
+			var choosenBlock = null;
+
 			if ( data.parentBoxToken ) {
-				console.log(global.OrderModel.createdBox[data.parentBoxToken]);
-				global.OrderModel.createdBox[data.parentBoxToken].selectPoint.apply(global.OrderModel.createdBox[data.parentBoxToken],[data]);
+				choosenBlock = global.OrderModel.getDeliveryBoxByToken(data.parentBoxToken);
+				console.log(choosenBlock);
+				choosenBlock.selectPoint.apply(choosenBlock,[data]);
 
 				return false;
 			}
@@ -1961,26 +2081,13 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		/**
 		 * Обновление данных
 		 */
-		modelUpdate: function() {
-            var tID = null;
-
+		modelUpdate: function( res ) {
 			console.info('обновление данных с сервера');
 
-			var updateResponceHandler = function updateResponceHandler( res ) {
-				renderOrderData(res);
-				global.OrderModel.blockScreen.unblock();
+			renderOrderData(res);
+			utils.blockScreen.unblock();
 
-				separateOrder( global.OrderModel.statesPriority );
-			};
-
-            tID = setTimeout(function() {
-                clearTimeout(tID);
-                $.ajax({
-                    type: 'GET',
-                    url: global.OrderModel.updateUrl,
-                    success: updateResponceHandler
-                });
-            }, 1200);
+			separateOrder( global.OrderModel.statesPriority );
 		},
 
 		/**
@@ -1991,10 +2098,12 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		deleteItem: function( data ) {
 			console.info('удаление');
 
-			global.OrderModel.blockScreen.block('Удаляем');
+			var reqArray = null;
+
+			utils.blockScreen.block('Удаляем');
 
 			var itemDeleteAnalytics = function itemDeleteAnalytics() {
-					var products = global.OrderModel.orderDictionary.products;
+					var products = global.OrderModel.orderDictionary.products,
 						totalPrice = 0,
 						totalQuan = 0,
 
@@ -2025,16 +2134,15 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				},
 
 				deleteItemResponceHandler = function deleteItemResponceHandler( res ) {
+					console.info('deleteItemResponceHandler');
 					console.log( res );
+
 					if ( !res.success ) {
 						console.warn('не удалось удалить товар');
-						global.OrderModel.blockScreen.unblock();
+						utils.blockScreen.unblock();
 
 						return false;
 					}
-
-					// обновление модели
-					global.OrderModel.modelUpdate();
 
 					// запуск аналитики
 					if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
@@ -2045,11 +2153,20 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			console.log(data.deleteUrl);
 
-			$.ajax({
-				type: 'GET',
-				url: data.deleteUrl,
-				success: deleteItemResponceHandler
-			});
+			reqArray = [
+				{
+					type: 'GET',
+					url: data.deleteUrl,
+					callback: deleteItemResponceHandler
+				},
+				{
+					type: 'GET',
+					url: global.OrderModel.updateUrl,
+					callback: window.OrderModel.modelUpdate
+				},
+			];
+
+			utils.packageReq(reqArray);
 
 			return false;
 		}
@@ -2101,7 +2218,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 */
 		productError = {
 			// Товар недоступен для продажи
-			800: function( product ) {
+			'default': function( product ) {
 				var msg = 'Товар '+product.name+' недоступен для продажи.',
 
 					productErrorIsResolve = $.Deferred();
@@ -2170,6 +2287,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 				code = productsWithError[i].error.code;
 
+				code = ( productError.hasOwnProperty(code) ) ? code : 'default';
+
 				$.when( productError[code](productsWithError[i]) ).then(function() {
 					var newI = i - 1;
 
@@ -2177,12 +2296,25 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				});
 			};
 
-			errorCatcher(productsWithError.length - 1, function() {
-				console.warn('1 этап закончен');
-				if ( res.redirect ) {
-					document.location.href = res.redirect;
-				}
-			});
+			/**
+			 * Если ошибок в продуктах нет, но есть сообщаение об ошибке, вывести сообщение
+			 * Иначе начать обработку ошибок в продуктах
+			 */
+			if ( productsWithError.length === 0 && res.error.message ) {
+				$.when(showError(res.error.message)).then(function() {
+					if ( res.redirect ) {
+						document.location.href = res.redirect;
+					}
+				});
+			}
+			else {
+				errorCatcher(productsWithError.length - 1, function() {
+					console.warn('1 этап закончен');
+					if ( res.redirect ) {
+						document.location.href = res.redirect;
+					}
+				});
+			}
 		},
 
 		/**
@@ -2207,6 +2339,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			if ( res.paypalECS ) {
 				console.info('paypal true');
 				global.OrderModel.paypalECS(true);
+			}
+
+			if ( res.cart && res.cart.sum ) {
+				console.info('Есть первоначальная сумма корзины : '+res.cart.sum);
+				global.OrderModel.cartSum = res.cart.sum;
 			}
 
 			global.OrderModel.deliveryTypes(res.deliveryTypes);
@@ -2269,8 +2406,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				'Checkout Step 1 Order Type': 'cart order'
 			};
 
-			console.log(toKISS)
-
 			if ( typeof _gaq !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'New order', 'Items', totalQuan]);
 			}
@@ -2281,9 +2416,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		};
 	// end of functions
 
-	$('body').on('click', '.shopchoose', selectPointOnBaloon);
-
 	renderOrderData( serverData );
-
 	analyticsStep_1( serverData );
+
+	$('body').on('click', '.shopchoose', selectPointOnBaloon);
 }(this));

@@ -137,6 +137,35 @@ window.ANALYTICS = {
         })();
     },
 
+    sociomanticCategoryPage : function() {
+        (function(){
+            window.sonar_product = {
+                category : $('#sociomanticCategoryPage').data('prod-cats')
+            };
+        })();
+    },
+
+    sociomanticProductPageStream : function() {
+        (function(){
+            window.sonar_product = $('#sociomanticProductPageStream').data('scr-product');
+            window.sonar_product.category = $('#sociomanticProductPageStream').data('prod-cats');
+        })();
+    },
+
+    sociomanticBasket : function() {
+        (function(){
+            window.sonar_basket = {
+                products: $('#sociomanticBasket').data('cart-prods')
+            };
+        })();
+    },
+
+    sociomanticConfirmationPage : function() {
+        (function(){
+            window.sonar_basket = $('#sociomanticConfirmationPage').data('sonar-basket');
+        })();
+    },
+
     criteoJS : function() {
         window.criteo_q = window.criteo_q || [];
         var criteo_arr =  $('#criteoJS').data('value');

@@ -122,7 +122,7 @@ foreach (array_reverse($productsById) as $product) {
 						<span data-bind="text: box.deliveryName"></span> <strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span> <span data-bind="visible: !hasPointDelivery">*</span>
 					</div>
 
-					<div class="bSelectWrap mFastInpSmall">
+					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length">
 						<span class="bSelectWrap_eText" data-bind="text: 'c '+ box.choosenInterval().start + ' до ' + box.choosenInterval().end"></span>
 						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
 															value: box.choosenInterval,
@@ -216,7 +216,7 @@ foreach (array_reverse($productsById) as $product) {
 
 					<ul class="bSaleList bInputList clearfix">
                         <? if (\App::config()->coupon['enabled']): ?>
-						<li class="bSaleList__eItem" data-type="coupon">
+						<li class="bSaleList__eItem" data-type="coupon" data-bind="visible: (deliveryBoxes().length == 1)">
 							<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
 							<label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
 						</li>
@@ -416,7 +416,8 @@ foreach (array_reverse($productsById) as $product) {
                             class="bBigOrangeButton"
                             href="#"
                             <? if ($paypalECS): ?>data-alt-text="Подтвердить сумму"<? endif ?>
-                        >Завершить оформление</a>
+                            data-bind="text: ( paypalECS && cartSum && totalSum() !== cartSum ) ? 'Подтвердить сумму' : 'Завершить оформление' "
+                        ></a>
 					</div>
 				</div>
 			</div>

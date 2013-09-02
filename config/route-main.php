@@ -342,6 +342,11 @@ return [
         'action'  => ['Cart\Paypal\ProductAction', 'set'],
     ],
     // удаление товара из корзины
+    'cart.paypal.product.delete' => [
+        'pattern' => '/cart/paypal/delete-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
+    ],
+    // удаление товара из корзины
     'cart.product.delete' => [
         'pattern' => '/cart/delete-product/{productId}',
         'action'  => ['Cart\ProductAction', 'delete'],
@@ -554,6 +559,13 @@ return [
     'user.changePassword' => [
         'pattern' => '/private/password',
         'action'  => ['User\ChangePasswordAction', 'execute'],
+    ],
+
+    // маршрутизатор нескольких запросов
+    'route' => [
+        'pattern' => '/route',
+        'action'  => ['RouteAction', 'execute'],
+        'method'  => ['POST'],
     ],
 
     // подписка

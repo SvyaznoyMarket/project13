@@ -69,7 +69,50 @@ $(document).ready(function() {
 			$('.jsOrder1click').addClass('mDisabled');
 		};
 
-		$("body").bind('addtocart', afterBuy);
+		$('body').bind('addtocart', afterBuy);
+	})();
+
+
+	/**
+	 * Обработчик кнопки PayPal в карточке товара
+	 */
+	(function() {
+		if ( !$('.jsPayPalButton').length ) {
+			console.warn('Нет кнопки paypal');
+
+			return;
+		}
+
+		console.info('Кнопка paypal существует');
+
+		var payPalResHandler = function payPalResHandler( res ) {
+				console.info('payPal ajax complete');
+
+				if ( !res.success || !res.redirect ) {
+					window.ENTER.utils.blockScreen.unblock();
+
+					return;
+				}
+
+				document.location.href = res.redirect;
+			},
+
+			payPalEcsHandler = function payPalEcsHandler() {
+				console.info('payPal click');
+
+				var button = $(this),
+					url = button.attr('href');
+				// end of vars
+
+				window.ENTER.utils.blockScreen.block('Загрузка');
+
+				$.get(url, payPalResHandler);
+
+				return false;
+			};
+		// end of functions
+
+		$('.jsPayPalButton').bind('click', payPalEcsHandler);
 	})();
 	
 
@@ -111,14 +154,14 @@ $(document).ready(function() {
 
 	
 	// карточка товара - характеристики товара краткие/полные
-	if ($('#productDescriptionToggle').length) {
+	if ( $('#productDescriptionToggle').length ) {
 		$('#productDescriptionToggle').toggle(
-			function(e){
+			function( e ) {
 				e.preventDefault();
 				$(this).parent().parent().find('.descriptionlist:not(.short)').show();
 				$(this).html('Скрыть все характеристики');
 			},
-			function(e){
+			function( e ) {
 				e.preventDefault();
 				$(this).parent().parent().find('.descriptionlist:not(.short)').hide();
 				$(this).html('Показать все характеристики');

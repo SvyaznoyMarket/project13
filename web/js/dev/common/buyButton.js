@@ -2,9 +2,8 @@
  * Обработчик для кнопок купить
  *
  * @author		Zaytsev Alexandr
- * @requires	jQuery, BlackBox
- * @param		{event}		e
- * @param		{Boolean}	anyway Если true событие будет все равно выполнено
+ * 
+ * @requires	jQuery, ENTER.utils.BlackBox
  */
 ;(function() {
 
@@ -28,7 +27,7 @@
 			button.removeClass('mLoading');
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
-			$("body").trigger("addtocart", [data]);
+			$('body').trigger('addtocart', [data]);
 		};
 
 		$.get(url, addToCart);
@@ -92,7 +91,8 @@
  * @param		{event}		event 
  * @param		{Object}	data	данные о том что кладется в корзину
  */
-(function() {
+(function( global ) {
+	var blackBox = global.ENTER.utils.blackBox;
 		/**
 		 * KISS Аналитика для добавления в корзину
 		 */
@@ -178,7 +178,7 @@
 			if ( typeof MyThings !== 'undefined' ) {
 				MyThings.Track({
 					EventType: MyThings.Event.Visit,
-					Action: "1013",
+					Action: '1013',
 					ProductId: productData.id
 				});
 			}
@@ -248,17 +248,17 @@
 			adAdriver(data);
             addToRetailRocket(data);
 
-            if ( data.redirect ) {
-            	document.location.href = data.redirect;
-            }
-            else if ( window.blackBox ) {
-				window.blackBox.basket().add( tmpitem );
+			if ( data.redirect ) {
+				document.location.href = data.redirect;
+			}
+			else if ( blackBox ) {
+				blackBox.basket().add( tmpitem );
 			}
 
 		};
 	//end of vars
 
 	$(document).ready(function() {
-		$("body").bind('addtocart', buyProcessing);
+		$('body').bind('addtocart', buyProcessing);
 	});
-}());
+}(this));
