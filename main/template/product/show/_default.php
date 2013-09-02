@@ -52,7 +52,7 @@ $is_showed = [];
             // new Card Properties Begin {
             if ( $product->getTagline() ) {
                 ?>
-                <div class="bProductDescShop__eText">
+                <div class="bProductDescText">
                     <?= $product->getTagline() ?>
                     <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
                 </div>

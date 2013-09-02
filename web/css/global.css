@@ -9365,9 +9365,12 @@
     padding: 4px 0 0;
   }
   .bSpecifications.mSimpleProperty {
-    margin: 10px 0 15px;
+    margin: 25px 0 25px;
     color: #6E6E6E;
     font-size: 12px;
+  }
+  .bSpecifications.mSimpleProperty .bSpecificationsList {
+    margin: 0;
   }
   .bSpecifications.mSimpleProperty .bSpecificationsList__eName {
     width: 145px;
@@ -9551,7 +9554,7 @@
     font-size: 14px;
   }
   .bProductDesc .bTextMore {
-    margin: 4px 0 0;
+    margin: 5px 0 0 7px;
   }
   .bProductDesc .bTextMore a {
     text-decoration: underline;
@@ -9895,7 +9898,7 @@
 @media all {
   .bWidgetBuy {
     border: 1px solid #c7c7c7;
-    padding: 10px 5px;
+    padding: 10px 5px 0;
   }
   .bWidgetBuy__eClick {
     font-size: 14px;
@@ -9909,7 +9912,7 @@
     text-decoration: none;
   }
   .bWidgetBuy .bDelivery {
-    margin: 30px 0 0;
+    margin: 30px 0 20px;
   }
   .bWidgetBuy .bDelivery__eItem {
     padding-left: 25px;
