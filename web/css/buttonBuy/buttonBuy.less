@@ -2,6 +2,29 @@
 .btnBuy {
     width: 170px;
     height: 35px;
+
+    &.mBtnPayPal {
+        width: 195px;
+        height: 42px;
+
+        .bPayPalLink {
+            width: 195px;
+            height: 42px;
+            display: block;
+
+            &.mLoading {
+                cursor: default;
+                .opacity(0.5);
+            }
+
+            &.mBought {
+                text-indent: -9999px;
+                background: url("https://www.paypalobjects.com/ru_RU/i/btn/btn_xpressCheckout.gif");
+                .opacity(0.5);
+            }
+        }
+    }
+
     .btnBuy__eLink {
         .gradient(#ffc000, #ffaa01, #ffc000);
         .rounded(5px);

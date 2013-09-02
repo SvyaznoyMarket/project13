@@ -36,6 +36,7 @@ $c->redirect301['enabled'] = true;
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
+$c->coreV2['chunk_size']   = 50;
 $c->coreV2['timeout']      = null;
 $c->coreV2['retryCount']   = 3;
 $c->coreV2['retryTimeout'] = [
@@ -120,7 +121,8 @@ $c->partners['criteo']['account'] = 10442;
 $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 $c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
 $c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
-
+$c->partners['Admitad']['enabled'] = true;
+$c->partners['Admitad']['code'] = '9ce8886713';
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
@@ -196,7 +198,7 @@ $c->product['totalCount']             = 30000;
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
-$c->product['allowBuyOnlyInshop']     = false;
+$c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
 $c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;

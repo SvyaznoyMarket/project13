@@ -150,14 +150,14 @@ class IndexAction {
         $line = null;
         $parts = [];
 
-        if ( $productLine instanceof \Model\Product\Line\Entity ) {
+        if ($productLine instanceof \Model\Product\Line\Entity ) {
             // Если набор, то получаем главный продукт
             $productRepository = \RepositoryManager::product();
             $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
             $mainProduct = $productRepository->getEntityById($line->getMainProductId());
 
             // Запрашиваю составные части набора
-            if ( (bool)$mainProduct->getKit() ) {
+            if ($mainProduct && (bool)$mainProduct->getKit() ) {
                 $productRepository->setEntityClass('\Model\Product\CompactEntity');
                 $partId = [];
                 foreach ($mainProduct->getKit() as $part) {

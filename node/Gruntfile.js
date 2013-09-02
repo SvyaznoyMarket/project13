@@ -46,6 +46,7 @@ module.exports = function(grunt) {
 		jsDevPath+'library/black_box.js',
 		jsDevPath+'library/formValidator.js',
 		jsDevPath+'library/addParameterToUrl.js',
+		jsDevPath+'library/blockScreen.js',
 		jsDevPath+'library/*.js'
 	];
 
@@ -80,30 +81,33 @@ module.exports = function(grunt) {
 				src: [jsDevPath+'**/*.js', 'Gruntfile.js'],
 			},
 			options: {
-				"-W034": true,
-				"curly": true,
-				"eqeqeq": true,
-				"immed": true,
-				"latedef": true,
-				"newcap": true,
-				"noarg": true,
-				"sub": true,
-				"undef": true,
-				"boss": true,
-				"eqnull": true,
-				"node": true,
-				"browser": true,
-				"globals": {
-					"jQuery": true,
-					"$": true,
-					"google": true,
-					"ymaps": true,
-					"_gaq": true,
-					"escape": true,
-					"unescape": true,
-					"tmpl": true,
-					"_kmq": true,
-					"ko": true
+				'-W034': true,
+				'curly': true,
+				'eqeqeq': true,
+				'immed': true,
+				'latedef': true,
+				'newcap': true,
+				'noarg': true,
+				'sub': true,
+				'undef': true,
+				'boss': true,
+				'eqnull': true,
+				'node': true,
+				'browser': true,
+				'funcscope': true,
+				'quotmark': 'single',
+				// 'onevar': true,
+				'globals': {
+					'jQuery': true,
+					'$': true,
+					'google': true,
+					'ymaps': true,
+					'_gaq': true,
+					'escape': true,
+					'unescape': true,
+					'tmpl': true,
+					'_kmq': true,
+					'ko': true
 				},
 			},
 		},
@@ -251,10 +255,6 @@ module.exports = function(grunt) {
 				files: [jsDevPath+'order/*.js'],
 				tasks: ['concat:orderJS','uglify:orderJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
 			},
-			orderNewJS:{
-				files: [jsDevPath+'order-new/*.js'],
-				tasks: ['concat:orderNewJS','uglify:orderNewJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
-			},
 			orderNewV5JS:{
 				files: [jsDevPath+'order-new-v5/*.js'],
 				tasks: ['concat:orderNewV5JS','uglify:orderNewV5JS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
@@ -320,10 +320,6 @@ module.exports = function(grunt) {
 			orderJS : {
 				src: [jsDevPath+'order/*.js'],
 				dest: jsProdPath+'order.js'
-			},
-			orderNewJS : {
-				src: [jsDevPath+'order-new/*.js'],
-				dest: jsProdPath+'order-new.js'
 			},
 			orderNewV5JS : {
 				src: [jsDevPath+'order-new-v5/*.js'],
@@ -432,12 +428,6 @@ module.exports = function(grunt) {
 			orderJS: {
 				files: {
 					'../web/js/prod/order.min.js': [jsDevPath+'order/*.js']
-				}
-			},
-
-			orderNewJS: {
-				files: {
-					'../web/js/prod/order-new.min.js': [jsDevPath+'order-new/*.js']
 				}
 			},
 

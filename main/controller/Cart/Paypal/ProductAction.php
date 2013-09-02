@@ -40,6 +40,7 @@ class ProductAction {
                 'id'       => $product->getId(),
                 'price'    => $product->getPrice(),
                 'quantity' => $quantity,
+                'sum'      => $product->getPrice() * $quantity,
             ]);
 
             $cart->setPaypalProduct($cartProduct);

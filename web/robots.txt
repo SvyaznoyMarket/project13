@@ -18,7 +18,7 @@ Disallow: /*comments/new
 Disallow: /qr/*
 Disallow: /*//
 Disallow: /product/*/change/
-Disallow: /corporate-register
+Disallow: /b2b
 Disallow: /request-password
 Disallow: /*?from=enter_
 Disallow: /index.php

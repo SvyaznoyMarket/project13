@@ -10,7 +10,7 @@
 		}
 
 		return temp;
-	}
+	};
 }(this));
  
  
@@ -35,7 +35,7 @@
 		}
 		
 		return len;
-	}
+	};
 }(this));
  
  
@@ -891,38 +891,38 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 |*|
 \*/
 
-;(function(global){	
+;(function( global ) {	
 	global.docCookies = {
 		getItem:function ( sKey ) {
-			return unescape(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+			return unescape(document.cookie.replace(new RegExp('(?:(?:^|.*;)\\s*' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*([^;]*).*$)|^.*$'), '$1')) || null;
 		},
 
 		setItem: function ( sKey, sValue, vEnd, sPath, sDomain, bSecure ) {
-			if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
+			if ( !sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey) ) {
 
 				return false;
 			}
 
-			var sExpires = "";
+			var sExpires = '';
 
 			if ( vEnd ) {
 				switch ( vEnd.constructor ) {
 					case Number:
-						sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+						sExpires = vEnd === Infinity ? '; expires=Fri, 31 Dec 9999 23:59:59 GMT' : '; max-age=' + vEnd;
 						break;
 					case String:
-						sExpires = "; expires=" + vEnd;
+						sExpires = '; expires=' + vEnd;
 						break;
 					case Date:
-						sExpires = "; expires=" + vEnd.toGMTString();
+						sExpires = '; expires=' + vEnd.toGMTString();
 						break;
 				}
 			}
 
-			document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain:
-						"") + (sPath ? "; path=" + sPath:
-						"") + (bSecure ? "; secure":
-						"");
+			document.cookie = escape(sKey) + '=' + escape(sValue) + sExpires + (sDomain ? '; domain=' + sDomain:
+						'') + (sPath ? '; path=' + sPath:
+						'') + (bSecure ? '; secure':
+						'');
 						
 			return true;
 		},
@@ -932,18 +932,18 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 				return false;
 			}
 			
-			document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sPath ? "; path=" + sPath: "");
+			document.cookie = escape(sKey) + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT' + (sPath ? '; path=' + sPath: '');
 
 			return true;
 		},
 
 		hasItem: function ( sKey ) {
-			return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+			return (new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie);
 		},
 
 		/* optional method: you can safely remove it! */ 
 		keys: function () {
-			var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+			var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, '').split(/\s*(?:\=[^;]*)?;\s*/);
 
 			for (var nIdx = 0; nIdx < aKeys.length; nIdx++) {
 				aKeys[nIdx] = unescape(aKeys[nIdx]);
@@ -1790,12 +1790,9 @@ function CreateMap( nodeId, points, baloonTemplate ) {
 	console.log(points);
 
 	this.points = points;
-	console.log(baloonTemplate)
 	this.template = baloonTemplate.html();
-
-	console.log(this.template);
-
 	this.center = this._calcCenter();
+
 	console.log(this.center);
 
 	this.mapWS = new ymaps.Map(nodeId, {
@@ -1830,12 +1827,13 @@ CreateMap.prototype._calcCenter = function() {
 	};
 
 	return mapCenter;
-}
+};
 
 CreateMap.prototype._showMarkers = function() {
 	var tmpPointInfo = null,
 		tmpPlacemark = null,
 		pointsCollection = new ymaps.GeoObjectArray();
+	// end of vars
 
 	// layout for baloon
 	var pointContentLayout = ymaps.templateLayoutFactory.createClass(this.template);
@@ -1878,7 +1876,7 @@ CreateMap.prototype._showMarkers = function() {
 	});
 
 	this.mapWS.geoObjects.add(pointsCollection);
-}
+};
  
  
 /** 
@@ -1887,246 +1885,249 @@ CreateMap.prototype._showMarkers = function() {
  
  
 /**
- * WARNING!
- *
- * @requires jQuery, simple_templating, docCookies
+ * @requires jQuery, simple_templating, docCookies, ENTER.utils, ENTER.config
  */
-
-
-/**
- * Создает объект для обновления данных с сервера и отображения текущих покупок
- *
- * @author	Zaytsev Alexandr
- * @this	{BlackBox}
- * @param	{String}		updateUrl URL по которому будут запрашиватся данные о пользователе и корзине.
- * @param	{jQuery}		mainNode  DOM элемент бокса
- * @constructor
- */
-function BlackBox( updateUrl, mainContatiner ) {
-	this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
-	this.mainNode = mainContatiner;
-}
-
-/**
- * Объект по работе с корзиной
- *
- * @author	Zaytsev Alexandr
- * @this	{BlackBox}
- * @return	{function} update	обновление данных о корзине
- * @return	{function} add		добавление в корзину
- */
-BlackBox.prototype.basket = function() {
-	var self = this,
-
-		headQ = $('#topBasket'),
-		bottomQ = self.mainNode.find('.bBlackBox__eCartQuan'),
-		bottomSum = self.mainNode.find('.bBlackBox__eCartSum'),
-		total = self.mainNode.find('.bBlackBox__eCartTotal'),
-		bottomCart = self.mainNode.find('.bBlackBox__eCart'),
-		flyboxBasket = self.mainNode.find('.bBlackBox__eFlybox.mBasket'),
-		flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner');
-	// end of vars
-
-		/**
-		 * Уничтожение содержимого flybox и его скрытие
-		 *
-		 * @author	Zaytsev Alexandr
-		 * @private
-		 */
-	var flyboxDestroy = function flyboxDestroy() {
-			flyboxBasket.hide(0, function() {
-				flyboxInner.remove();
-			});
-		},
-
-		/**
-		 * Закрытие flybox по клику
-		 * 
-		 * @author	Zaytsev Alexandr
-		 * @param	{Event} e
-		 * @private
-		 */
-		flyboxcloser = function flyboxcloser( e ) {
-			var targ = e.target.className;
-
-			if ( !(targ.indexOf('bBlackBox__eFlybox') + 1) || !(targ.indexOf('fillup') + 1) ) {
-				flyboxDestroy();
-				$('body').unbind('click', flyboxcloser);
-			}
-		},
-
-		/**
-		 * Обновление данных о корзине
-		 *
-		 * @author	Zaytsev Alexandr
-		 * @param	{Object} basketInfo			Информация о корзине
-		 * @param	{Number} basketInfo.cartQ	Количество товаров в корзине
-		 * @param	{Number} basketInfo.cartSum	Стоимость товаров в корзине
-		 * @public
-		 */
-		update = function update( basketInfo ) {
-			headQ.html('(' + basketInfo.cartQ + ')');
-			bottomQ.html(basketInfo.cartQ);
-			bottomSum.html(basketInfo.cartSum);
-			bottomCart.addClass('mBought');
-			total.show();
-		},
-
-		/**
-		 * Добавление товара в корзину
-		 *
-		 * @author	Zaytsev Alexandr
-		 * @param	{Object} item
-		 * @param	{String} item.title			Название товара
-		 * @param	{Number} item.price			Стоимость товара
-		 * @param	{String} item.imgSrc		Ссылка на изображение товара
-		 * @param	{Number} item.TotalQuan		Общее количество товаров в корзине
-		 * @param	{Number} item.totalSum		Общая стоимость корзины
-		 * @param	{String} item.linkToOrder	Ссылка на оформление заказа
-		 * @public
-		 */
-		add = function add ( item ) {
-			var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item),
-					nowBasket = {
-					cartQ: item.totalQuan,
-					cartSum: item.totalSum
-				};
-			// end of vars
-
-			flyboxDestroy();
-			flyboxBasket.append(flyboxTmpl);
-			flyboxBasket.show(300);
-
-			self.basket().update(nowBasket);
-
-			$('body').bind('click', flyboxcloser);
-
-		};
-	//end of functions
-
-	return {
-		'update': update,
-		'add': add
-	};
-};
-
-/**
- * Объект по работе с данными пользователя
- *
- * @author	Zaytsev Alexandr
- * @this	{BlackBox}
- * @return	{function} update
- */
-BlackBox.prototype.user = function() {
-	var self = this;
-
+;(function( global ) {
 	/**
-	 * Обновление пользователя
+	 * Создает объект для обновления данных с сервера и отображения текущих покупок
 	 *
 	 * @author	Zaytsev Alexandr
-	 * @param	{String} userName Имя пользователя
-	 * @public
+	 * @this	{BlackBox}
+	 * @param	{String}		updateUrl URL по которому будут запрашиватся данные о пользователе и корзине.
+	 * @param	{jQuery}		mainNode  DOM элемент бокса
+	 * @constructor
 	 */
-	var update = function update ( userName ) {
-		var topAuth = $('#auth-link'),
-			bottomAuth = self.mainNode.find('.bBlackBox__eUserLink'),
-			dtmpl = {},
-			show_user = '';
-		//end of vars
+	function BlackBox( updateUrl, mainContatiner ) {
+		this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
+		this.mainNode = mainContatiner;
+	}
 
-		if ( userName !== null ) {
-			dtmpl = {
-				user: userName
-			};
-			show_user = tmpl('auth_tmpl', dtmpl);
-			
-			topAuth.hide();
-			topAuth.after(show_user);
-			bottomAuth.html(userName).addClass('mAuth');
-		}
-		else {
-			topAuth.show();
-		}
-	}; 
-	
-	return {
-		'update': update
-	};
-};
+	/**
+	 * Объект по работе с корзиной
+	 *
+	 * @author	Zaytsev Alexandr
+	 * @this	{BlackBox}
+	 * @return	{function} update	обновление данных о корзине
+	 * @return	{function} add		добавление в корзину
+	 */
+	BlackBox.prototype.basket = function() {
+		var self = this,
 
+			headQ = $('#topBasket'),
+			bottomQ = self.mainNode.find('.bBlackBox__eCartQuan'),
+			bottomSum = self.mainNode.find('.bBlackBox__eCartSum'),
+			total = self.mainNode.find('.bBlackBox__eCartTotal'),
+			bottomCart = self.mainNode.find('.bBlackBox__eCart'),
+			flyboxBasket = self.mainNode.find('.bBlackBox__eFlybox.mBasket'),
+			flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner');
+		// end of vars
 
-/**
- * Инициализация BlackBox.
- * Получение данных о корзине и пользователе с сервера.
- *
- * @author	Zaytsev Alexandr
- * @this	{BlackBox}
- */
-BlackBox.prototype.init = function() {
-	var self = this;
+			/**
+			 * Уничтожение содержимого flybox и его скрытие
+			 *
+			 * @author	Zaytsev Alexandr
+			 * @private
+			 */
+		var flyboxDestroy = function flyboxDestroy() {
+				flyboxBasket.hide(0, function() {
+					flyboxInner.remove();
+				});
+			},
 
-		/**
-		 * Обработчик Action присланных с сервера
-		 * 
-		 * @param	{Object} action Список действий которые необходимо выполнить
-		 * @private
-		 */
-	var startAction = function startAction( action ) {
-			if ( action.subscribe !== undefined ) {
-				$("body").trigger("showsubscribe", [action.subscribe]);
-			}
-			if ( action.cartButton !== undefined ) {
-				$("body").trigger("markcartbutton", [action.cartButton]);
-				$("body").trigger("updatespinner", [action.cartButton]);
-			}
-		},
+			/**
+			 * Закрытие flybox по клику
+			 * 
+			 * @author	Zaytsev Alexandr
+			 * @param	{Event} e
+			 * @private
+			 */
+			flyboxcloser = function flyboxcloser( e ) {
+				var targ = e.target.className;
 
-		/**
-		 * Обработчик данных о корзине и пользователе
-		 * 
-		 * @param	{Object} data
-		 * @private
-		 */ 
-		parseUserInfo = function parseUserInfo( data ) {
-			var userInfo = data.user,
-				cartInfo = data.cart,
-				actionInfo = data.action,
-				nowBasket = {};
-			//end of vars
-			
-			if (data.success !== true) {
-				return false;
-			}
+				if ( !(targ.indexOf('bBlackBox__eFlybox') + 1) || !(targ.indexOf('fillup') + 1) ) {
+					flyboxDestroy();
+					$('body').unbind('click', flyboxcloser);
+				}
+			},
 
-			self.user().update(userInfo.name);
+			/**
+			 * Обновление данных о корзине
+			 *
+			 * @author	Zaytsev Alexandr
+			 * @param	{Object} basketInfo			Информация о корзине
+			 * @param	{Number} basketInfo.cartQ	Количество товаров в корзине
+			 * @param	{Number} basketInfo.cartSum	Стоимость товаров в корзине
+			 * @public
+			 */
+			update = function update( basketInfo ) {
+				headQ.html('(' + basketInfo.cartQ + ')');
+				bottomQ.html(basketInfo.cartQ);
+				bottomSum.html(basketInfo.cartSum);
+				bottomCart.addClass('mBought');
+				total.show();
+			},
 
-			if ( cartInfo.quantity !== 0 ) {
-				nowBasket = {
-					cartQ: cartInfo.quantity,
-					cartSum: cartInfo.sum
-				};
+			/**
+			 * Добавление товара в корзину
+			 *
+			 * @author	Zaytsev Alexandr
+			 * @param	{Object} item
+			 * @param	{String} item.title			Название товара
+			 * @param	{Number} item.price			Стоимость товара
+			 * @param	{String} item.imgSrc		Ссылка на изображение товара
+			 * @param	{Number} item.TotalQuan		Общее количество товаров в корзине
+			 * @param	{Number} item.totalSum		Общая стоимость корзины
+			 * @param	{String} item.linkToOrder	Ссылка на оформление заказа
+			 * @public
+			 */
+			add = function add ( item ) {
+				var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item),
+						nowBasket = {
+						cartQ: item.totalQuan,
+						cartSum: item.totalSum
+					};
+				// end of vars
+
+				flyboxDestroy();
+				flyboxBasket.append(flyboxTmpl);
+				flyboxBasket.show(300);
+
 				self.basket().update(nowBasket);
-			}
 
-			if ( actionInfo !== undefined ) {
-				startAction(actionInfo);
-			}
+				$('body').bind('click', flyboxcloser);
+
+			};
+		//end of functions
+
+		return {
+			'update': update,
+			'add': add
 		};
-	//end of functions
+	};
 
-	$.get(self.updUrl, parseUserInfo);
-};
+	/**
+	 * Объект по работе с данными пользователя
+	 *
+	 * @author	Zaytsev Alexandr
+	 * @this	{BlackBox}
+	 * @return	{function} update
+	 */
+	BlackBox.prototype.user = function() {
+		var self = this;
+
+		/**
+		 * Обновление пользователя
+		 *
+		 * @author	Zaytsev Alexandr
+		 * @param	{String} userName Имя пользователя
+		 * @public
+		 */
+		var update = function update ( userName ) {
+			var topAuth = $('#auth-link'),
+				bottomAuth = self.mainNode.find('.bBlackBox__eUserLink'),
+				dtmpl = {},
+				show_user = '';
+			//end of vars
+
+			if ( userName !== null ) {
+				dtmpl = {
+					user: userName
+				};
+
+				show_user = tmpl('auth_tmpl', dtmpl);
+				
+				topAuth.hide();
+				topAuth.after(show_user);
+				bottomAuth.html(userName).addClass('mAuth');
+			}
+			else {
+				topAuth.show();
+			}
+		}; 
+		
+		return {
+			'update': update
+		};
+	};
 
 
-(function( global ) {
-	var pageConfig = $('#page-config').data('value');
+	/**
+	 * Инициализация BlackBox.
+	 * Получение данных о корзине и пользователе с сервера.
+	 *
+	 * @author	Zaytsev Alexandr
+	 * @this	{BlackBox}
+	 */
+	BlackBox.prototype.init = function() {
+		var self = this;
+
+			/**
+			 * Обработчик Action присланных с сервера
+			 * 
+			 * @param	{Object} action Список действий которые необходимо выполнить
+			 * @private
+			 */
+		var startAction = function startAction( action ) {
+				if ( action.subscribe !== undefined ) {
+					$('body').trigger('showsubscribe', [action.subscribe]);
+				}
+				if ( action.cartButton !== undefined ) {
+					$('body').trigger('markcartbutton', [action.cartButton]);
+					$('body').trigger('updatespinner', [action.cartButton]);
+				}
+			},
+
+			/**
+			 * Обработчик данных о корзине и пользователе
+			 * 
+			 * @param	{Object} data
+			 * @private
+			 */ 
+			parseUserInfo = function parseUserInfo( data ) {
+				var userInfo = data.user,
+					cartInfo = data.cart,
+					actionInfo = data.action,
+					nowBasket = {};
+				//end of vars
+				
+				if ( data.success !== true ) {
+					return false;
+				}
+
+				self.user().update(userInfo.name);
+
+				if ( cartInfo.quantity !== 0 ) {
+					nowBasket = {
+						cartQ: cartInfo.quantity,
+						cartSum: cartInfo.sum
+					};
+
+					self.basket().update(nowBasket);
+				}
+
+				if ( actionInfo !== undefined ) {
+					startAction(actionInfo);
+				}
+			};
+		//end of functions
+
+		$.get(self.updUrl, parseUserInfo);
+	};
+	/**
+	 * === END BLACKBOX ===
+	 */
 	
+
+	var userUrl = global.ENTER.config.pageConfig.userUrl,
+		utils = global.ENTER.utils;
+	// end of vars
+
 	/**
 	 * Создание и иницилизация объекта для работы с корзиной и данными пользователя
 	 * @type	{BlackBox}
 	 */
-	global.blackBox = new BlackBox(pageConfig.userUrl, $('.bBlackBox__eInner'));
-	global.blackBox.init();
+	utils.blackBox = new BlackBox(userUrl, $('.bBlackBox__eInner'));
+	utils.blackBox.init();
 }(this));
  
  
@@ -2572,7 +2573,7 @@ FormValidator.prototype.validate = function( callbacks ) {
 /**
  * Получить тип валидации для поля
  *
- * @param	{Object} 			fieldToFind		Ссылка на jQuery объект поля для которого нужно получить параметры валидации
+ * @param	{Object}			fieldToFind		Ссылка на jQuery объект поля для которого нужно получить параметры валидации
  * 
  * @return	{Object|Boolean}					Возвращает или конфигурацию валидации для поля, или false
  * 
@@ -2677,11 +2678,11 @@ FormValidator.prototype.addFieldToValidate = function( field ) {
  */
 var UpdateUrlString = function(key, value) {
 	var url = this.toString();
-	var re = new RegExp("([?|&])" + key + "=.*?(&|#|$)(.*)", "gi");
+	var re = new RegExp('([?|&])' + key + '=.*?(&|#|$)(.*)', 'gi');
 
 	if (re.test(url)) {
 		if (typeof value !== 'undefined' && value !== null){
-			return url.replace(re, '$1' + key + "=" + value + '$2$3');
+			return url.replace(re, '$1' + key + '=' + value + '$2$3');
 		}
 		else {
 			return url.replace(re, '$1$3').replace(/(&|\?)$/, '');
@@ -2703,6 +2704,109 @@ var UpdateUrlString = function(key, value) {
 	}
 };
 String.prototype.addParameterToUrl = UpdateUrlString;
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Блокер экрана
+ *
+ * @param	{Object}		noti		Объект jQuery блокера экрана
+ * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
+ * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
+ */
+
+;(function( global ) {
+	var utils = global.ENTER.utils;
+	
+	utils.blockScreen = {
+		noti: null,
+		block: function( text ) {
+			var self = this;
+
+			console.warn('block screen');
+
+			if ( self.noti ) {
+				self.unblock();
+			}
+
+			self.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
+			self.noti.appendTo('body');
+
+			self.noti.lightbox_me({
+				centered:true,
+				closeClick:false,
+				closeEsc:false,
+				onClose: function() {
+					self.noti.remove();
+				}
+			});
+		},
+
+		unblock: function() {
+			console.warn('unblock screen');
+
+			this.noti.trigger('close');
+		}
+	};
+}(this));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Пакетная отправка данных на сервер
+ *
+ * @author	Zaytsev Alexandr
+ */
+;(function( global ) {
+	var pageConfig = global.ENTER.config.pageConfig,
+		utils = global.ENTER.utils;
+	// end of vars
+
+	utils.packageReq = function packageReq( reqArray ) {
+		console.info('Пакетный запрос');
+
+		var dataToSend = {},
+			callbacks = [],
+
+			i, len;
+		// end of vars
+		
+		dataToSend.actions = [];
+		
+		var resHandler = function resHandler( res ) {
+			console.info('Обработка ответа пакетого запроса');
+
+			for ( i = 0, len = res.length - 1; i <= len; i++ ) {
+				callbacks[i](res[i]);
+			}
+		};
+
+		for ( i = 0, len = reqArray.length - 1; i <= len; i++ ) {
+			dataToSend.actions.push({
+				url: reqArray[i].url,
+				method: reqArray[i].type,
+				data: reqArray[i].data || null
+			});
+
+			callbacks[i] = reqArray[i].callback;
+		}
+
+		$.ajax({
+			url: pageConfig.routeUrl,
+			type: 'POST',
+			data: dataToSend,
+			success: resHandler
+		});
+	};
+}(this));
  
  
 /** 

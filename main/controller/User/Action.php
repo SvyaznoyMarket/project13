@@ -173,17 +173,20 @@ class Action {
                     'first_name' => $form->getFirstName(),
                     'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
                 ];
+
+                $isSubscribe = (bool)$request->get('subscribe', false);
+
                 if (strpos($form->getUsername(), '@')) {
                     $data['email'] = $form->getUsername();
+                    $data['is_subscribe'] = $isSubscribe;
                 }
                 else {
                     $phone = $form->getUsername();
                     $phone = preg_replace('/^\+7/', '8', $phone);
                     $phone = preg_replace('/[^\d]/', '', $phone);
                     $data['mobile'] = $phone;
+                    $data['is_sms_subscribe'] = $isSubscribe;
                 }
-
-                $data['is_subscribe'] = (bool)$request->get('subscribe', false);
 
                 try {
                     $result = \App::coreClientV2()->query('user/create', [], $data);
@@ -265,9 +268,11 @@ class Action {
                 : new \Http\RedirectResponse(\App::router()->generate('user'));
         }
 
+        \App::logger()->info(['action' => __METHOD__, 'request.request' => $request->request->all()], ['user']);
+
         $form = new \View\User\CorporateRegistrationForm();
         if ($request->isMethod('post')) {
-            $form->fromArray($request->request->get('register'));
+            $form->fromArray((array)$request->get('register'));
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
             }
@@ -351,6 +356,7 @@ class Action {
                     $result = \App::coreClientV2()->query('user/create-legal', [
                         'geo_id' => \App::user()->getRegion()->getId(),
                     ], $data);
+                    \App::logger()->info(['core.response' => $result], ['user']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
@@ -435,8 +441,12 @@ class Action {
             }
         }
 
+        // список рутовых категорий
+        $rootCategories = \RepositoryManager::productCategory()->getRootCollection();
+
         $page = new \View\User\CorporateRegistrationPage();
         $page->setParam('form', $form);
+        $page->setParam('rootCategories', $rootCategories);
 
         return new \Http\Response($page->show());
     }

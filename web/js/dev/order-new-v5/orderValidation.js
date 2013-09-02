@@ -135,7 +135,7 @@
 		 */
 		serverErrorHandler = {
 			default: function( res ) {
-				console.log('обработчик ошибки');
+				console.log('Обработчик ошибки');
 
 				if ( res.error && res.error.message ) {
 					showError(res.error.message, function() {
@@ -149,7 +149,8 @@
 			},
 
 			0: function( res ) {
-				console.warn('обработка ошибок формы')
+				console.warn('Обработка ошибок формы');
+
 				var formError = null;
 
 				if ( res.redirect ) {
@@ -181,16 +182,16 @@
 		 */
 		completeAnalytics = function completeAnalytics() {
 			if ( typeof _gaq !== 'undefined') {
-				for ( var i in global.OrderModel.createdBox ) {
-					_gaq.push(['_trackEvent', 'Order card', 'Completed', 'выбрана '+global.OrderModel.choosenDeliveryTypeId+' доставят '+global.OrderModel.createdBox[i].state]);
+				for ( var i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
+					_gaq.push(['_trackEvent', 'Order card', 'Completed', 'выбрана '+global.OrderModel.choosenDeliveryTypeId+' доставят '+global.OrderModel.deliveryBoxes()[i].state]);
 				}
 
-				_gaq.push(['_trackEvent', 'Order complete', global.getKeysLength(global.OrderModel.createdBox), global.OrderModel.orderDictionary.products.length]);
+				_gaq.push(['_trackEvent', 'Order complete', global.OrderModel.deliveryBoxes().length, global.OrderModel.orderDictionary.products.length]);
 				_gaq.push(['_trackTiming', 'Order complete', 'DB response', ajaxDelta]);
 			}
 
 			if ( typeof yaCounter10503055 !== 'undefined' ) {
-				yaCounter10503055.reachGoal('\orders\complete');
+				yaCounter10503055.reachGoal('\\orders\\complete');
 			}
 		},
 
@@ -210,14 +211,16 @@
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
 
-				global.OrderModel.blockScreen.unblock();
+				global.ENTER.utils.blockScreen.unblock();
 
 				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
-					console.log('есть обработчик')
+					console.log('Есть обработчик');
+
 					serverErrorHandler[res.error.code](res);
 				}
 				else {
-					console.log('дефолтный обработчик')
+					console.log('Стандартный обработчик');
+
 					serverErrorHandler['default'](res);
 				}
 
@@ -225,6 +228,16 @@
 			}
 
 			completeAnalytics();
+
+			if ( global.OrderModel.paypalECS() ) {
+				console.info('PayPal ECS включен. Необходимо удалить выбранные параметры из cookie');
+
+				window.docCookies.removeItem('chDate_paypalECS');
+				window.docCookies.removeItem('chTypeBtn_paypalECS');
+				window.docCookies.removeItem('chPoint_paypalECS');
+				window.docCookies.removeItem('chTypeId_paypalECS');
+				window.docCookies.removeItem('chStetesPriority_paypalECS');
+			}
 
 			document.location.href = res.redirect;
 		},
@@ -241,15 +254,20 @@
 				orderForm = $('#order-form');
 			// end of vars
 			
-			global.OrderModel.blockScreen.block('Ваш заказ оформляется');
+			if ( global.OrderModel.paypalECS() ) {
+				global.ENTER.utils.blockScreen.block('Передача данных в PayPal');
+			}
+			else {
+				global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
+			}
 
 			/**
 			 * Перебираем блоки доставки
 			 */
 			console.info('Перебираем блоки доставки');
-			for ( var i in global.OrderModel.createdBox ) {
+			for ( var i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
 				tmpPart = {};
-				currentDeliveryBox = global.OrderModel.createdBox[i];
+				currentDeliveryBox = global.OrderModel.deliveryBoxes()[i];
 				console.log(currentDeliveryBox);
 
 				tmpPart = {
@@ -281,16 +299,14 @@
 			$.ajax({
 				url: orderForm.attr('action'),
 				timeout: 120000,
-				type: "POST",
+				type: 'POST',
 				data: dataToSend,
 				success: processingResponse,
 				statusCode: {
 					500: function() {
-						console.log(this.statusCode)
 						showError('Неудалось создать заказ. Попробуйте позднее.');
 					},
 					504: function() {
-						console.log(this.statusCode)
 						showError('Неудалось создать заказ. Попробуйте позднее.');
 					}
 				}
@@ -301,7 +317,7 @@
 		 * Обработчик нажатия на кнопку завершения заказа
 		 */
 		orderCompleteBtnHandler = function orderCompleteBtnHandler() {
-			console.info('завершить оформление заказа');
+			console.info('Завершить оформление заказа');
 
 			orderValidator.validate({
 				onInvalid: function( err ) {
@@ -386,9 +402,9 @@
 		};
 	// end of functions
 	
-	sclub.mask("* ****** ******", { placeholder: "*" } );
-	qiwiPhone.mask("(999) 999-99-99");
-	phoneField.mask("(999) 999-99-99");
+	sclub.mask('* ****** ******', { placeholder: '*' } );
+	qiwiPhone.mask('(999) 999-99-99');
+	phoneField.mask('(999) 999-99-99');
 
 	/**
 	 * AB-test

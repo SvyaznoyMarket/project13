@@ -14,9 +14,9 @@
 		// end of vars
 
 		var selectBank = function selectBank() {
-			var chosenBankLink = $("option:selected", select).attr('data-link'),
-				chosenBankId = $("option:selected", select).val(),
-				chosenBankName = $("option:selected", select).html();
+			var chosenBankLink = $('option:selected', select).attr('data-link'),
+				chosenBankId = $('option:selected', select).val(),
+				chosenBankName = $('option:selected', select).html();
 			// end of vars
 
 			bankName.html(chosenBankName);
@@ -25,7 +25,7 @@
 			bankLink.attr('href', chosenBankLink);
 		};
 
-		$("option", select).eq(0).attr('selected','selected');
+		$('option', select).eq(0).attr('selected','selected');
 
 		select.change(selectBank);
 		selectBank();
