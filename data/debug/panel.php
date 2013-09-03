@@ -55,16 +55,16 @@ $debug->add('time.total', sprintf('%s ms', round($appTimer['total'], 3) * 1000),
 
 
 // add in debug panel properties from class \Config\AppConfig
-$reflection = new ReflectionClass( "Config\\AppConfig" );
+$reflection = new ReflectionClass(\App::config());
 $options = '<span style="color: #cccccc;">\Config\AppConfig:</span><br />';
-foreach ($reflection->getProperties() as $option) {
-    $docblock = $option->getDocComment();
+foreach ($reflection->getProperties() as $property) {
+    $docblock = $property->getDocComment();
     if (false === strpos($docblock, '@hidden')) {
-        $options .= '<li>' . $option->getName() . ' ' . $docblock . '</li>';
+        $options .= '<li>' . $property->getName() . ': ' . json_encode($property->getValue(\App::config()), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . ' ' . '</li>';
     }
 }
 $reflection = null;
-$debug->add('AppConfig', '<ul>' . $options . '</ul>', 90);
+$debug->add('config', '<ul>' . $options . '</ul>', 90);
 
 
 // ab test
@@ -99,7 +99,7 @@ $debug->add('query', $queryString, 80);
 
 if (!\App::request()->isXmlHttpRequest()) {
 ?>
-    <span style="position: fixed; bottom: 30px; left: 2px; z-index: 999; background: #000000; color: #11ff11; opacity: 0.9; padding: 4px 6px; border-radius: 5px; font-size: 11px; font-weight: normal; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <span style="position: fixed; bottom: 30px; left: 2px; z-index: 999; background: #000000; color: #33ff33; opacity: 0.9; padding: 4px 6px; border-radius: 5px; font-size: 12px; font-weight: normal; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
         <span onclick="$(this).parent().remove()" style="cursor: pointer; font-size: 16px; color: #999999;" title="закрыть">&times;</span>
         <? if (\App::request()->attributes->get('route')): ?>
             <span onclick="window.location.replace('<?= $page->helper->replacedUrl(['APPLICATION_DEBUG' => 0]) ?>')" style="cursor: pointer; font-size: 16px; color: #999999;" title="отключить">■</span>

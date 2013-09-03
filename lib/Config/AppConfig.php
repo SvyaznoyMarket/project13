@@ -7,31 +7,58 @@ require_once __DIR__ . '/Oauth/OdnoklassnikiConfig.php';
 require_once __DIR__ . '/Oauth/FacebookConfig.php';
 
 class AppConfig {
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $encoding;
     /** @var bool */
     public $debug;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $appName;
     /** @var string */
     public $appDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $configDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $libDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $dataDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $logDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $webDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $templateDir;
     /** @var string */
     public $cmsDir;
     /** @var string */
     public $surveyDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $controllerPrefix;
     /** @var string */
     public $routePrefix;
@@ -66,7 +93,10 @@ class AppConfig {
         'chunk_size'   => null,
     ];
 
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $corePrivate = [
         'url'          => null,
         'client_id'    => null,
@@ -134,7 +164,10 @@ class AppConfig {
     ];
 
 
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $myThings = [
         'feeByCategory' => [],
         'cookieName'    =>  null,
@@ -153,11 +186,20 @@ class AppConfig {
     /** @var string */
     public $mobileHost = null;
     /** @var array */
-    /** @var Oauth\VkontakteConfig */
+    /**
+     * @var Oauth\VkontakteConfig
+     * @hidden
+     */
     public $vkontakteOauth;
-    /** @var Oauth\OdnoklassnikiConfig */
+    /**
+     * @var Oauth\OdnoklassnikiConfig
+     * @hidden
+     */
     public $odnoklassnikiOauth;
-    /** @var Oauth\FacebookConfig */
+    /**
+     * @var Oauth\FacebookConfig
+     * @hidden
+     */
     public $facebookOauth;
     /** @var array */
     public $onlineCall = [
@@ -244,7 +286,10 @@ class AppConfig {
         'paypalECS' => null,
         'blockedIds'       => [],
     ];
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $creditProvider = [
         'kupivkredit' => [
             'partnerId'   => null,
@@ -252,7 +297,10 @@ class AppConfig {
             'signature'   => null,
         ],
     ];
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $paymentPsb = [
         'terminal'     => null,
         'merchant'     => null,
@@ -260,12 +308,19 @@ class AppConfig {
         'key'          => null,
         'payUrl'       => null,
     ];
+    /**
+     * @var array
+     * @hidden
+     */
     public $paymentPsbInvoice = [
         'contractorId' => null,
         'key'          => null,
         'payUrl'       => null,
     ];
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $smartengine = [
         'pull'           => null,
         'push'           => null,
@@ -275,7 +330,10 @@ class AppConfig {
         'logEnabled'     => null,
         'logDataEnabled' => null,
     ];
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $crossss = [
         'enabled' => null,
         'timeout' => null,
@@ -356,7 +414,10 @@ class AppConfig {
         'newCreate'      => null,
         'maxSumOnline'   => null,
     ];
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $maybe3d = [
         'xmlUrl' => null,
         'customerId' => null,
@@ -369,10 +430,7 @@ class AppConfig {
         'numSidebarCategoriesShown' => null,
     ];
 
-    /**
-     * @var array
-     * @hidden
-     */
+    /** @var array */
     public $sphinx = [
         'showFacets' => null,
         'showListingSearchBar' => null,
