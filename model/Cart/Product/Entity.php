@@ -25,6 +25,7 @@ class Entity {
         if (array_key_exists('quantity', $data)) $this->setQuantity($data['quantity']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('sum', $data)) $this->setSum($data['sum']);
+        if (array_key_exists('deliverySum', $data)) $this->setDeliverySum($data['deliverySum']);
         if (array_key_exists('error', $data)){
             // TODO: подумать - а надо ли это
             $this->setQuantity(0);
