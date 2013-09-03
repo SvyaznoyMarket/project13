@@ -19,15 +19,23 @@ class Img3dImportAction {
         \App::logger()->debug('Exec ' . __METHOD__);
         clearstatcache();
 
+        if (!is_dir($pathToData)) throw new \RuntimeException('Указан не правильный путь до папки с исходными json-файлами');
+
         if (!$pathToCms) $pathToCms = \App::config()->img3d['cmsFolder'];
         if (!is_dir($pathToCms)) throw new \RuntimeException('Указан не правильный путь до cms');
 
-        try {
-            /** @var  $models array */
-            $models = simplexml_load_file($maybe3dUrl);
-        } catch (\RuntimeException $e) {
-            throw new \RuntimeException('Не удалось получить xml файл!');
+echo '>>>>>>>>>>>' . PHP_EOL;
+echo $pathToData . PHP_EOL;
+echo $pathToCms . PHP_EOL;
+
+        foreach (scandir($pathToData) as $inJsonFile) {
+            if(is_file($pathToData.$inJsonFile)) {
+                $inJson = json_decode(file_get_contents($pathToData.$inJsonFile));
+echo json_encode($inJson) . PHP_EOL . PHP_EOL;
+            }
         }
+
+return;
 
         $i = 0;
         foreach ($models as $model) {
