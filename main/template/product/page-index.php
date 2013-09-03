@@ -22,27 +22,6 @@ if (!isset($categoryClass)) $categoryClass = null;
 
 $hasFurnitureConstructor = \App::config()->product['furnitureConstructor'] && $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
 
-$productData = [
-    'id'      => $product->getId(),
-    'token'   => $product->getToken(),
-    'article' => $product->getArticle(),
-    'name'    => $product->getName(),
-    'price'   => $product->getPrice(),
-    'image'   => [
-        'default' => $product->getImageUrl(3),
-        'big'     => $product->getImageUrl(2),
-    ],
-    'isSupplied'  => $product->getState() ? $product->getState()->getIsSupplier() : false,
-    'stockState'  =>
-    $product->getIsBuyable()
-        ? 'in stock'
-        : (
-    ($product->getState() && $product->getState()->getIsShop())
-        ? 'at shop'
-        : 'out of stock'
-    ),
-];
-
 $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro['review_list']));
 ?>
 
