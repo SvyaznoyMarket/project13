@@ -34,13 +34,13 @@ $warranties = $product->getWarranty();
                         </a>
                     <?  $i++; endforeach ?>
                 </div>
-                <div class="bGoodImgBlock_eMainImg">
+                <div class="bGoodImgBlock_eMainImg jsRedirect" data-screentype='media' data-productid='<?= $product->getId() ?>' data-imageindex='0'>
                     <? if ($product->getLabel()): ?>
                         <img class="bLabels" src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $product->getLabel()->getName() ?>" />
                     <? endif ?>
-                    <a class="jsRedirect" data-screentype='media' data-productid='<?= $product->getId() ?>' data-imageindex='0' href="#"><img width="480" src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>"/></a>
+                    <a class="bGoodImgBlock_eMainImgLink"  href="#"><img width="480" src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>"/></a>
                 </div>
-                <a class="bGoodImgBlock_eEnlarge jsRedirect" data-screentype='media' data-productid='<?= $product->getId() ?>' data-imageindex='0' href="#"></a>
+                <a class="bGoodImgBlock_eEnlarge" href="#"></a>
             </div>
             
             <div class="bGoodDescBlock mFr mW570 mPad15_30">
