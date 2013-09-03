@@ -10,55 +10,16 @@
 if (empty($rootCategories)) $rootCategories = [];
 ?>
 
+
 <div class="bBusinessReg">
     <div class="bHead clearfix">
         <h1 class="bHead__eTitle">Enter Business*</h1>
-
-        <ul class="bHeadRegLink">
-            <li class="bHeadRegLink__eItem"><a data-goto="bCorpRegFormHead" class="bHeadRegLink__eLink jsGoToId" href="">Регистрация</a></li>
-            <li class="bHeadRegLink__eItem"><a class="bHeadRegLink__eLink bAuthLink" href="">Вход в личный кабинет</a></li>
-        </ul>
     </div>
 
+    <?= $content ?>
 
     <div class="bCont clearfix">
-
-        <div class="bStaticBanner"><img src="css/bBusinessReg/img/staticBanner.jpg" /></div>
         <div class="bCont__eLeft">
-            <h2 class="bTitle">Enter – это новый способ покупать!<br/>Почему?</h2>
-
-            <ul class="bBusinessRegList">
-                <li class="bBusinessRegList__eItem"><span class="bText">Уже более 3500 компаний выбрали нас и стали нашими постоянными клиентами!</span></li>
-
-                <li class="bBusinessRegList__eItem"><span class="bText">Заказать товар можно любым удобным способом: <br/></span>
-
-                    <ul class="bBusinessRegSubList">
-                        <li class="bBusinessRegSubList__eItem"><span class="bText">на сайте;</span></li>
-                        <li class="bBusinessRegSubList__eItem"><span class="bText">через круглосуточный Контакт-cENTER<br/><strong><?= \App::config()->company['phone'] ?></strong> (звонок бесплатный);</span></li>
-                        <li class="bBusinessRegSubList__eItem"><span class="bText">а также при помощи персонального менеджера по прямому номеру <strong>+7 (495) 775-78-85</strong> или по e-mail: <strong><a class="bMail" href="mailto:partner@enter.ru">partner@enter.ru</a></strong> или в магазинах Enter.</span></li>
-                    </ul>
-                </li>
-
-                <li class="bBusinessRegList__eItem"><span class="bText">Мы поможем сориентироваться в нашем ассортименте<br/>и выставим счет в ваш личный кабинет в течение 30 минут.</span></li>
-
-                <? if ((bool)$rootCategories): ?>
-                    <li class="bBusinessRegList__eItem"><span class="bText">Десятки тысяч товаров в <?= count($rootCategories) ?> категориях:<br/>
-                    <? foreach ($rootCategories as $rootCategory): ?>
-                        <a href="<?= $rootCategory->getLink() ?>"><?= mb_strtolower($rootCategory->getName(), 'UTF-8') ?></a>,
-                    <? endforeach ?>
-                    a так же подарочные карты для сотрудников и партнеров вашей компании.</span></li>
-                <? endif ?>
-
-                <li class="bBusinessRegList__eItem"><span class="bText">WOW-ЦЕНЫ и бесплатная доставка на первый заказ.</span></li>
-            </ul>
-
-            <ul class="bDownList">
-                <li class="bDownList__eItem mPdf"><a class="bDownList__eLink" href="http://content.enter.ru/wp-content/uploads/2013/08/Презентация-для-юр.лиц_август-2013_Russian.pdf">Скачать презентацию</a> 2,4 Мб</li>
-                <!--li class="bDownList__eItem"><a class="bDownList__eLink" href="">Как начать сотрудничество?</a></li-->
-            </ul>
-
-            <h2 class="bTitle" id="bCorpRegFormHead">Регистрация юридического лица</h2>
-
             <form class="bCorpRegForm" action="<?= $page->url('user.registerCorporate') ?>" method="post">
 
                 <? if ($error = $form->getError('global')) echo $page->render('_formError', ['error' => $error]) ?>
