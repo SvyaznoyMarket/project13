@@ -72,7 +72,7 @@ class ProductAction {
                     'geo_id' => \App::user()->getRegion()->getId(),
                 ],
                 [
-                    'amount'          => $product->getPrice(),
+                    'amount'          => $cartProduct->getSum(),
                     'delivery_amount' => 0,
                     'currency'        => 'USD',
                     'return_url'      => \App::router()->generate('order.paypal.new', [], true),

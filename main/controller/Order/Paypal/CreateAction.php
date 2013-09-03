@@ -100,30 +100,26 @@ class CreateAction {
             $deliveryPrice = isset($productData['deliveries'][$deliveryMethodToken][$pointId]['price']) ? (int)$productData['deliveries'][$deliveryMethodToken][$pointId]['price'] : 0;
             \App::logger()->info(sprintf('Стоимость доставки %s', $deliveryPrice));
 
-            // TODO: внимание, заглушка!!!
-            //$deliveryPrice = $deliveryPrice ? 1 : 0;
-
             // проверка paypal
             $result = $this->getPaypalCheckout($paypalToken, $paypalPayerId);
             $paymentAmount = isset($result['payment_amount']) ? (int)$result['payment_amount'] : 0;
             \App::logger()->info(['paypal.payment_amount' => $paymentAmount], ['order', 'paypal']);
 
             // обновляем стоимость товара
-            $cartProduct->setSum($deliveryPrice + $cartProduct->getPrice() * $cartProduct->getQuantity());
-            // TODO: внимание, заглушка!!!
-            //$cartProduct->setSum($deliveryPrice + 1);
+            $cartProduct->setSum($cartProduct->getPrice() * $cartProduct->getQuantity());
+            $cartProduct->setDeliverySum($deliveryPrice);
 
             $cart->setPaypalProduct($cartProduct);
             \App::logger()->info(['cart.paypalProduct' => ['id' => $cartProduct->getId(), 'price' => $cartProduct->getPrice(), 'quantity' => $cartProduct->getQuantity(), 'sum' => $cartProduct->getSum()]], ['order', 'paypal']);
 
-            if ($paymentAmount != ($cartProduct->getSum())) {
+            if ($paymentAmount != ($cartProduct->getSum() + $cartProduct->getDeliverySum())) {
                 $result = \App::coreClientV2()->query(
                     'payment/paypal-set-checkout',
                     [
                         'geo_id' => \App::user()->getRegion()->getId(),
                     ],
                     [
-                        'amount'          => $cartProduct->getPrice() * $cartProduct->getQuantity(),
+                        'amount'          => $cartProduct->getSum(),
                         'delivery_amount' => $deliveryPrice,
                         'currency'        => 'USD',
                         'return_url'      => \App::router()->generate('order.paypal.new', [], true),
