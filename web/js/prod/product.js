@@ -203,11 +203,21 @@
 		},
 
 		/**
+		 * Обработка ошибки получения списка магазинов с сервера
+		 * 
+		 * @param	{Object}	res	Ответ от сервера
+		 */
+		errorHandler = function errorHandler() {
+			widgetBox.removeClass('mLoader');
+			widgetBox.remove();
+		},
+
+		/**
 		 * Обработка данных с сервера
 		 * 
 		 * @param	{Object}	res	Ответ от сервера
 		 */
-		resFromSerever = function resFromSerever( res ) {
+		resFromServer = function resFromServer( res ) {
 			/**
 			 * Полученнный с сервера массив вариантов доставок для текущего товара
 			 * @type	{Array}
@@ -215,8 +225,7 @@
 			var deliveryInfo = res.product[0].delivery;
 
 			if ( !res.success ) {
-				widgetBox.remove();
-
+				errorHandler();
 				return false;
 			}
 
@@ -251,7 +260,6 @@
 						break;
 				}
 			}
-
 			widgetBox.removeClass('mLoader');
 		};
 	// end of functions
@@ -269,7 +277,11 @@
 			type: 'POST',
 			url: url,
 			data: dataToSend,
-			success: resFromSerever
+			success: resFromServer,
+			statusCode: {
+					500: errorHandler,
+					503: errorHandler
+				}
 		});
 	}
 
