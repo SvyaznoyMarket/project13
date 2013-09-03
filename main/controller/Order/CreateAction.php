@@ -227,11 +227,11 @@ class CreateAction {
                 'first_name'                => $form->getFirstName(),
                 'email'                     => $form->getEmail(),
                 'mobile'                    => $form->getMobilePhone(),
-                'address_street'            => $form->getAddressStreet(),
-                'address_number'            => $form->getAddressNumber(),
-                'address_building'          => $form->getAddressBuilding(),
-                'address_apartment'         => $form->getAddressApartment(),
-                'address_floor'             => $form->getAddressFloor(),
+                'address_street'            => null,
+                'address_number'            => null,
+                'address_building'          => null,
+                'address_apartment'         => null,
+                'address_floor'             => null,
                 'extra'                     => $form->getComment(),
                 'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
                 'delivery_type_id'          => $deliveryType->getId(),
@@ -248,6 +248,14 @@ class CreateAction {
             // станция метро
             if ($user->getRegion()->getHasSubway()) {
                 $orderData['subway_id'] = $form->getSubwayId();
+            }
+
+            if (!in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_SELF, \Model\DeliveryType\Entity::TYPE_NOW])) {
+                $orderData['address_street'] = $form->getAddressStreet();
+                $orderData['address_number'] = $form->getAddressNumber();
+                $orderData['address_building'] = $form->getAddressBuilding();
+                $orderData['address_apartment'] = $form->getAddressApartment();
+                $orderData['address_floor'] = $form->getAddressFloor();
             }
 
             // данные для самовывоза [self, now]
