@@ -208,7 +208,7 @@ class OldDeliveryAction {
 
                             if(isset($response['interval_list']) && is_array($response['interval_list'])) {
                                 foreach ($response['interval_list'] as $interval) {
-                                    if (in_array($interval['id'], $dateShopData['interval_list'])) {
+                                    if (isset($dateShopData['interval_list']) && is_array($dateShopData['interval_list']) && in_array($interval['id'], $dateShopData['interval_list'])) {
                                         $date['shopIds'][] = (int)$dateShopData['id'];
                                     }
                                 }
