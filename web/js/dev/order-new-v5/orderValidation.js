@@ -134,7 +134,7 @@
 		 * Обработка ошибок из ответа сервера
 		 */
 		serverErrorHandler = {
-			default: function( res ) {
+			'default': function( res ) {
 				console.log('Обработчик ошибки');
 
 				if ( res.error && res.error.message ) {
@@ -434,8 +434,8 @@
 
 				// радио кнопка
 				if ( fieldNode.attr('type') === 'radio' ) {
-					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked');
-
+					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked').trigger('change');
+					console.log('11111111')
 					continue;
 				}
 
@@ -466,4 +466,5 @@
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
+
 }(this));
