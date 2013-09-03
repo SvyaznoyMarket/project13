@@ -1,5 +1,5 @@
 // product slider
-.bSliderAction {
+.bSlider {
 	position: relative;
 	z-index: 10;
 
@@ -23,14 +23,6 @@
 
 		width: 5000px;
 		height: 225px;
-
-		.reviewSection__star {
-			float: none;
-
-			margin: 0;
-
-			text-align: center;
-		}
 
 		.productImg {
 			display: table-cell;
@@ -67,12 +59,14 @@
 			width: 100px;
 			height: 25px;
 			margin: 0 0 0 -1px;
+
 			.btnBuy__eLink {
 				width: 100px;
 				height: 25px;
 
 				font-size: 14px;
 				line-height: 25px;
+				
 				&.mShopsOnly {
 		            font-size: 10px;
 		        }
@@ -182,6 +176,7 @@
 
 	&__eCatItem {
 		cursor: pointer;
+
 		span {
 			display: inline-block;
 
@@ -205,14 +200,14 @@
 		}
 	}
 
-	&.mWithCategory .bSliderAction {
+	&.mWithCategory .bSlider {
 		float: right;
 
 		width: 459px;
 		padding: 5px 0 0 20px;
 
 		border-top: 1px solid #c7c7c7;
-		
+
 		&__eInner {
 			width: 360px;
 		}

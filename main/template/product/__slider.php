@@ -40,15 +40,15 @@ return function (
         </div>
     <? endif ?>
 
-    <div class="bSliderAction<? if ($class): ?> <?= $class ?><? endif ?>">
+    <div class="bSlider<? if ($class): ?> <?= $class ?><? endif ?>">
 
-        <div class="bSliderAction__eInner mLoader">
-            <ul class="bSliderAction__eList clearfix">
+        <div class="bSlider__eInner mLoader">
+            <ul class="bSlider__eList clearfix">
             <? foreach ($products as $product): ?>
             <?
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
-                <li class="bSliderAction__eItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>" data-product="<?= $helper->json([
+                <li class="bSlider__eItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>" data-product="<?= $helper->json([
                         'article' => $product->getArticle(),
                         'name' => $product->getName(),
                     ]) ?>">
@@ -64,8 +64,8 @@ return function (
             </ul>
         </div>
 
-        <div class="bSliderAction__eBtn mPrev mDisabled"><span></span></div>
-        <div class="bSliderAction__eBtn mNext mDisabled"><span></span></div>
+        <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>
+        <div class="bSlider__eBtn mNext mDisabled"><span></span></div>
     </div>
 
 </div><!--/product accessory section -->
