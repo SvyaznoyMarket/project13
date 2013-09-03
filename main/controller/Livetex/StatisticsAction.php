@@ -304,6 +304,13 @@ class StatisticsAction {
         $content = & $this->content;
 
         $this->heads['General']['big_head'] = 'LiveTex: Общая статистика';
+
+        /*$content['ChatStat'] = $API->method('Site.ChatStat', [
+            'date_begin' => $this->date_begin,
+            'date_end' => $this->date_end,
+            'site_id' => $this->siteId,
+        ]);*/
+
         $content['General'] = $API->method('Site.ChatHistory', [
             'date_begin' => $this->date_begin,
             'date_end' => $this->date_end,

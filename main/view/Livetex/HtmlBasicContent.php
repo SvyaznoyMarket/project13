@@ -56,9 +56,12 @@ class HtmlBasicContent{
                 foreach ($res as $item) {
                     if ( $this->inCycleCondition( $item) ) {
                         if ( $tobe_ul ) $out .= '<li class="lts_li">';
-                        $out .= '<div class="lts_item">';
-                        $out .= $this->inCycle($item);
-                        $out .= '</div>';
+                        $outItem = $this->inCycle($item);
+                        if ($outItem) {
+                            $out .= '<div class="lts_item">';
+                            $out .= $outItem;
+                            $out .= '</div>';
+                        }
                         if ( $tobe_ul ) $out .= '</li>';
                     }else{
                         return $this->noitems($item);

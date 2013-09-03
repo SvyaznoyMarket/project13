@@ -39,109 +39,48 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
 
     protected function inCycle( $item ) {
-        $out = '';
         $this->count_iterations++;
+        $chatAnswerStatus = $this->chatAnswerStatus($item);
 
         // Суммирование и сохранение общих данных по всем чатам
-        $operId = $item->member;
-        if ( $this->chatAnswerStatus($item) ) {
-        //if ( $operId ) {
-            //print_r($item->mvote); print ' | '; // tod tmp
+        if ( $chatAnswerStatus ) { // сработает для статуса == 1 и статуса == -1
+            // для состоявшихся и несостоявшихся чатов:
+
+            $out = '';
+            $operId = $item->member;
             $this->count_chats++; // Чатов с операторами
             $this->chat_times += $this->timeInSeconds($item->chattime); // Общее время чата с операторами
             $this->count_messages += $item->count; // Общее количество сообщений
             $item->member = $this->operator_info($operId, 'name') . " (ID: $operId)";
             $item->member = $this->operator_link($operId, $item->member);
-        }
-
-        $vvote_positive = $vvote_negative = 0;
-
-        $vvote = 'Оценка не поставлена'; // mvote - оценка чата посетителем
-        if ($item->vvote == 1) {
-            $vvote = 'Положительная оценка';
-            $this->count_positive_votes++;
-            $vvote_positive = 1;
-        } else if ($item->vvote == 2) {
-            $vvote = 'Отрицательная оценка';
-            $this->count_negative_votes++;
-            $vvote_negative = 1;
-        }
 
 
-        $mvote = $item->mvote; // mvote - id оценки чата оператором
-        if ( !isset( $this->mvotes_arr[$mvote] ) ) $this->mvotes_arr[$mvote] = 1;
+
+            /**
+             * Обработка оценки чата посетителем
+             */
+            $vvote_positive = $vvote_negative = 0;
+
+            $vvote = 'Оценка не поставлена'; // mvote - оценка чата посетителем
+            if ($item->vvote == 1) {
+                $vvote = 'Положительная оценка';
+                $this->count_positive_votes++;
+                $vvote_positive = 1;
+            } else if ($item->vvote == 2) {
+                $vvote = 'Отрицательная оценка';
+                $this->count_negative_votes++;
+                $vvote_negative = 1;
+            }
+
+            $mvote = $item->mvote; // mvote - id оценки чата оператором
+            if ( !isset( $this->mvotes_arr[$mvote] ) ) $this->mvotes_arr[$mvote] = 1;
             else $this->mvotes_arr[$mvote]++;
 
-        if ( $operId ) {
-            $voarr = &$this->mvotes_cross_operators_arr;
-
-            if ( !isset( $voarr[$operId] ) ) {
-                $voarr[$operId] = [];
-            }
-            if ( !isset( $voarr[$operId][$mvote] ) ) {
-                $voarr[$operId][$mvote] = 1;
-            }else{
-                $voarr[$operId][$mvote]++;
-            }
 
 
-
-            // Данные по всем операторам {
-            // на примере "виртуального" квази-оператора с ID = self::ID4ALL_OPS
-            if ( !isset( $voarr[self::ID4ALL_OPS] ) ) {
-                $voarr[self::ID4ALL_OPS] = [];
-            }
-
-            if ( !isset( $voarr[self::ID4ALL_OPS][$mvote] ) ) {
-                $voarr[self::ID4ALL_OPS][$mvote] = 1;
-            }else{
-                $voarr[self::ID4ALL_OPS][$mvote]++;
-            }
-            // } /Данные по всем операторам
-        }
-
-
-
-        $out .= '<div class="id_oper"><span class="param_name">Идентификатор чата: </span>' . $item->id . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Идентификатор посетителя: </span>' . $item->visitor . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Оператор: </span>' . $item->member . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Оценка чата посетителем: </span>' . $vvote . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Идентификатор оценки чата оператором: </span>' . $mvote . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Дата: </span>' . date($this->date_format, $item->timestamp) . '</div>';
-
-        if ( !empty($item->firstanswer) ) {
-            $s = $this->timeInSeconds( $item->firstanswer );
-            if ( $operId ) {
-                $this->first_answers_time = (int) $this->first_answers_time + (int) $s; // общее время ответов на первые сообщения
-                $this->count_first_answers++; // кол-во реакций на первое сообщение
-            }
-            $item->firstanswer = (string) $s . ' c ';
-        }
-        $out .= '<div class="id_oper"><span class="param_name">Время ответа на первое сообщение посетителя: </span>' . $item->firstanswer . '</div>';
-
-        $out .= '<div class="id_oper"><span class="param_name">Длительность чата: </span>' . $this->timeFromSeconds($item->chattime) . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Идентификатор сайта, на котором происходил чат: </span>' . $item->site . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Имя посетителя: </span>' . $item->name . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Страна посетителя (определяется автоматически): </span>' . $item->country . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Город посетителя (определяется автоматически): </span>' . $item->city . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Идентификатор группы оператора: </span>' . $item->group . '</div>';
-        $out .= '<div class="id_oper"><span class="param_name">Идентификатор первого сообщения: </span>' . $item->message . '</div>';
-
-
-        /*if ( $this->count_messages == 1 ) {
-            $this->count_noanswer++;
-        }*/
-
-        $out .= '<div class="id_oper"><span class="param_name">Количество сообщений в чате: </span>' . $item->count . '</div>';
-
-        $alink = base64_decode($item->referrer);
-        $alink = '<a href="' . $alink . '">' . $alink . '</a>';
-        $out .= '<div class="id_oper"><span class="param_name">Адрес страницы, с которой посетитель вызвал чат: </span>' . $alink . '</div>';
-
-
-
-        /// Суммирование полученны данных по операторам:
-        if ( $operId ) {
+            /**
+             * Обработка полученных данных продолжительности разговоров (duration_cross_operators) по операторам:
+             */
             $item->chattime = $this->timeInSeconds($item->chattime);
 
             if ( !isset( $this->duration_cross_operators[$operId] ) ) {
@@ -171,7 +110,6 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             }
             $allOps = &$this->duration_cross_operators[self::ID4ALL_OPS];
 
-
             $this->duration_cross_operators[$operId]['count_chats']++; // кол-во чатов
             $this->duration_cross_operators[$operId]['all_chattime'] += $item->chattime; // общее время чатов
             $this->duration_cross_operators[$operId]['all_firstanswer'] += $item->firstanswer; // общее время firstanswer
@@ -184,17 +122,80 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
             $allOps['all_positive_votes'] += $vvote_positive;
             $allOps['all_negative_votes'] += $vvote_negative;
 
-            if ( -1 == $this->chatAnswerStatus($item) ) {
+            if ( -1 == $chatAnswerStatus ) {
                 $this->duration_cross_operators[$operId]['unanswered']++; // не отвеченные чаты
                 $allOps['unanswered']++;
-            }elseif (1 == $this->chatAnswerStatus($item) ) {
+            }elseif (1 == $chatAnswerStatus ) {
                 $this->duration_cross_operators[$operId]['answered']++; // состоявшееся чаты
                 $allOps['answered']++;
             }
 
+
+
+            /**
+             * Обработка данных оценки оператором (member) чатов (mvotes_cross_operators_arr)
+             * Фактически — цель обращения по мнению оператора
+             */
+            $voarr = &$this->mvotes_cross_operators_arr;
+
+            // Данные оценки по каждому из операторов
+            if ( !isset( $voarr[$operId] ) ) {
+                $voarr[$operId] = [];
+            }
+            if ( !isset( $voarr[$operId][$mvote] ) ) {
+                $voarr[$operId][$mvote] = 1;
+            }else{
+                $voarr[$operId][$mvote]++;
+            }
+
+            // Данные оценки суммарные по всем операторам {
+            // на примере "виртуального" квази-оператора с ID = self::ID4ALL_OPS
+            if ( !isset( $voarr[self::ID4ALL_OPS] ) ) {
+                $voarr[self::ID4ALL_OPS] = [];
+            }
+
+            if ( !isset( $voarr[self::ID4ALL_OPS][$mvote] ) ) {
+                $voarr[self::ID4ALL_OPS][$mvote] = 1;
+            }else{
+                $voarr[self::ID4ALL_OPS][$mvote]++;
+            }
+            // } /Данные оценки суммарные по всем операторам
+
+
+
+
+            /**
+             * Вывод сводки для каждого чата
+             */
+            $out .= '<div class="id_oper"><span class="param_name">Идентификатор чата: </span>' . $item->id . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Идентификатор посетителя: </span>' . $item->visitor . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Оператор: </span>' . $item->member . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Оценка чата посетителем: </span>' . $vvote . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Идентификатор оценки чата оператором: </span>' . $mvote . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Дата: </span>' . date($this->date_format, $item->timestamp) . '</div>';
+            if ( !empty($item->firstanswer) ) {
+                $s = $this->timeInSeconds($item->firstanswer);
+                $this->first_answers_time = (int)$this->first_answers_time + (int)$s; // общее время ответов на первые сообщения
+                $this->count_first_answers++; // кол-во реакций на первое сообщение
+                $item->firstanswer = (string)$s . ' c ';
+            }
+            $out .= '<div class="id_oper"><span class="param_name">Время ответа на первое сообщение посетителя: </span>' . $item->firstanswer . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Длительность чата: </span>' . $this->timeFromSeconds($item->chattime) . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Идентификатор сайта, на котором происходил чат: </span>' . $item->site . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Имя посетителя: </span>' . $item->name . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Страна посетителя (определяется автоматически): </span>' . $item->country . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Город посетителя (определяется автоматически): </span>' . $item->city . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Идентификатор группы оператора: </span>' . $item->group . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Идентификатор первого сообщения: </span>' . $item->message . '</div>';
+            $out .= '<div class="id_oper"><span class="param_name">Количество сообщений в чате: </span>' . $item->count . '</div>';
+            $alink = base64_decode($item->referrer);
+            $alink = '<a href="' . $alink . '">' . $alink . '</a>';
+            $out .= '<div class="id_oper"><span class="param_name">Адрес страницы, с которой посетитель вызвал чат: </span>' . $alink . '</div>';
+
+            return $out;
         }
 
-        return $out;
+        return false;
     }
 
 
@@ -204,19 +205,25 @@ class HtmlChatHistoryContent extends HtmlBasicContent {
 
         if (
             $item->member &&
-            $item->firstanswer
+            $item->chattime > 20
         ) {
+            // условие, по которому можем считать чат отвеченным:
             if (
+                $item->firstanswer &&
                 $item->firstanswer < $item->chattime &&
-                $item->count > 1 &&
-                $item->chattime > 20
+                $item->count > 1
             ) {
-                // условие, по которому можем считать чат отвеченным:
                 return 1;
             }
 
             // условие, по которому можем считать чат упущенным:
-            return -1;
+            if (
+                ($item->count == 1) || //  либо нет ответа от оператора (но есть сообщение посетителя),
+                ($item->firstanswer > $item->chattime && $item->count > 1) // либо ответ после закрытия чата
+            ) {
+                return -1;
+            }
+
         }
 
         return 0;
