@@ -51,10 +51,10 @@ class Img3dImportAction {
                                 $outJson = json_encode($outProductJson, JSON_PRETTY_PRINT);
                                 try {
                                     file_put_contents($outJsonFilePath, $outJson);
+                                    $copiedCount++;
                                 } catch (\Exception $e) {
                                     \App::logger()->error("Fail save json to file: {$outJsonFilePath}");
                                 }
-                                $copiedCount++;
                             }
                         } catch (\Exception $e) {
                             \App::logger()->error("Fail decode json from one of files: {$inJsonFilePath} or {$outJsonFilePath}");
@@ -65,8 +65,6 @@ class Img3dImportAction {
                 } else {
                     $noOutFilesCount++;
                 }
-
-            } elseif(is_file(($inJsonFilePath)) && file_exists($inJsonFilePath)) {
             }
         }
 
