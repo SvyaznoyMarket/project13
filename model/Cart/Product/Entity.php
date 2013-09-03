@@ -11,6 +11,8 @@ class Entity {
     private $price;
     /** @var int  */
     private $sum;
+    /** @var int  */
+    private $deliverySum;
     /** @var bool */
     private $isBuyable = true;
     /** @var \Model\Cart\Service\Entity[] */
@@ -43,6 +45,20 @@ class Entity {
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * @param int $deliverySum
+     */
+    public function setDeliverySum($deliverySum) {
+        $this->deliverySum = (int)$deliverySum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeliverySum() {
+        return $this->deliverySum;
     }
 
     /**
