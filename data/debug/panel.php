@@ -54,6 +54,19 @@ $debug->add('time.closureRenderer', sprintf('%s ms [%s]', round($closureRenderer
 $debug->add('time.total', sprintf('%s ms', round($appTimer['total'], 3) * 1000), 94);
 
 
+// add in debug panel properties from class \Config\AppConfig
+$reflection = new ReflectionClass( "Config\\AppConfig" );
+$options = '<span style="color: #cccccc;">\Config\AppConfig:</span><br />';
+foreach ($reflection->getProperties() as $option) {
+    $docblock = $option->getDocComment();
+    if (false === strpos($docblock, '@hidden')) {
+        $options .= '<li>' . $option->getName() . ' ' . $docblock . '</li>';
+    }
+}
+$reflection = null;
+$debug->add('AppConfig', '<ul>' . $options . '</ul>', 90);
+
+
 // ab test
 if ((bool)\App::config()->abtest['enabled']) {
     $options = '<span style="color: #cccccc;">Тестирование проводится до </span><span style="color: #00ffff;">' . date('d-m-Y H:i', strtotime(\App::config()->abtest['bestBefore'])) . '</span><br />';

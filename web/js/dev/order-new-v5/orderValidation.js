@@ -229,8 +229,8 @@
 
 			completeAnalytics();
 
-			if ( global.OrderModel.paypalECS() ) {
-				console.info('PayPal ECS включен. Необходимо удалить выбранные параметры из cookie');
+			if ( global.OrderModel.paypalECS() && !orderCompleteBtn.hasClass('mConfirm') ) {
+				console.info('PayPal ECS включен. Заказ оформлен. Необходимо удалить выбранные параметры из cookie');
 
 				window.docCookies.removeItem('chDate_paypalECS');
 				window.docCookies.removeItem('chTypeBtn_paypalECS');
@@ -254,7 +254,7 @@
 				orderForm = $('#order-form');
 			// end of vars
 			
-			if ( global.OrderModel.paypalECS() ) {
+			if ( global.OrderModel.paypalECS() && orderCompleteBtn.hasClass('mConfirm') ) {
 				global.ENTER.utils.blockScreen.block('Передача данных в PayPal');
 			}
 			else {
