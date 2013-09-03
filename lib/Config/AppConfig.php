@@ -52,7 +52,11 @@ class AppConfig {
     public $redirect301 = [
         'enabled' => null,
     ];
-    /** @var array */
+
+    /**
+     * @var array
+     * @hidden
+     */
     public $coreV2 = [
         'url'          => null,
         'client_id'    => null,
@@ -61,6 +65,7 @@ class AppConfig {
         'retryCount'   => null,
         'chunk_size'   => null,
     ];
+
     /** @var array */
     public $corePrivate = [
         'url'          => null,
@@ -302,14 +307,18 @@ class AppConfig {
     public $user = [
         'corporateRegister' => null,
     ];
-    /** @var array */
+
+    /**
+     * @var array
+     * @hidden
+     */
     public $abtest = [
         'cookieName' => null,
         'bestBefore' => null,
         'enabled'    => null,
         'test'       => [],
-        'blocked'    => true,
     ];
+
     /** @var array */
     public $database = [
         'host'     => null,
@@ -322,13 +331,17 @@ class AppConfig {
         'enabled'    => null,
         'cookieName' => null,
     ];
-    /** @var array */
+
+    /**
+     * @var array
+     * @hidden
+     */
     public $queue = [
         'pidFile' => null,
         'workerLimit' => null,
         'maxLockTime' => null,
-        'blocked'     => true,
     ];
+
     /** @var boolean */
     public $requestMainMenu = null;
     /** @var array */
@@ -356,11 +369,13 @@ class AppConfig {
         'numSidebarCategoriesShown' => null,
     ];
 
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $sphinx = [
         'showFacets' => null,
         'showListingSearchBar' => null,
-        'blocked'    => true,
     ];
 
     public function __construct() {

@@ -58,10 +58,9 @@ $debug->add('time.total', sprintf('%s ms', round($appTimer['total'], 3) * 1000),
 $reflection = new ReflectionClass( "Config\\AppConfig" );
 $options = '<span style="color: #cccccc;">\Config\AppConfig:</span><br />';
 foreach ($reflection->getProperties() as $option) {
-    $val = $option->getValue( \App::config() );
-    $blocked = ( $val && is_array($val) && isset($val['blocked']) ) ? $blocked = $val['blocked'] : false;
-    if (!$blocked ) {
-        $options .= '<li>' . $option->getName() . ' ' . $option->getDocComment() . '</li>';
+    $docblock = $option->getDocComment();
+    if (false === strpos($docblock, '@hidden')) {
+        $options .= '<li>' . $option->getName() . ' ' . $docblock . '</li>';
     }
 }
 $reflection = null;
