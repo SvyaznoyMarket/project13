@@ -28,8 +28,9 @@ class CreateAction {
         $form = $this->getForm();
         // данные для тела JsonResponse
         $responseData = [
-            'time'   => strtotime(date('Y-m-d'), 0) * 1000,
-            'action' => [],
+            'time'      => strtotime(date('Y-m-d'), 0) * 1000,
+            'action'    => [],
+            'paypalECS' => false,
         ];
         // массив кукисов
         $cookies = [];

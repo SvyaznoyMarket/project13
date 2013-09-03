@@ -22,7 +22,6 @@ class CreateAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        $client = \App::coreClientV2();
         $user = \App::user();
         $cart = $user->getCart();
 
@@ -40,8 +39,9 @@ class CreateAction {
         $form = $this->getForm();
         // данные для тела JsonResponse
         $responseData = [
-            'time'   => strtotime(date('Y-m-d'), 0) * 1000,
-            'action' => [],
+            'time'      => strtotime(date('Y-m-d'), 0) * 1000,
+            'action'    => [],
+            'paypalECS' => true,
         ];
         // массив кукисов
         $cookies = [];

@@ -39,8 +39,10 @@ class DeliveryAction {
 
         // данные для JsonResponse
         $responseData = [
-            'time'   => strtotime(date('Y-m-d'), 0) * 1000,
-            'action' => [],
+            'time'      => strtotime(date('Y-m-d'), 0) * 1000,
+            'action'    => [],
+            'paypalECS' => false,
+            'cart'      => [],
         ];
 
         try {
