@@ -443,4 +443,13 @@ class DefaultLayout extends Layout {
     }
 
 
+    public function slotEnterleads()
+    {
+        $routeToken = \App::request()->attributes->get('token');
+        if ('subscribe_friends' == $routeToken) {
+            return '<div id="enterleadsJS" class="jsanalytics" ></div>';
+        }
+        return;
+    }
+
 }
