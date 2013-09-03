@@ -10211,6 +10211,9 @@
   .bInputList .mCustomCheckBig:checked + .bCustomLabel {
     background-position: 0 -54px;
   }
+  .bInputList .mCustomLabelBig.mChecked {
+    background-position: 0 -54px;
+  }
   .bInputList .mCustomLabelRadioBig {
     line-height: 1;
     padding-left: 22px;
@@ -10219,6 +10222,9 @@
     background: url("/css/leftNav/img/radioBtn.png") no-repeat 0 -21px;
   }
   .bInputList .mCustomRadioBig:checked + .bCustomLabel {
+    background-position: 0 0;
+  }
+  .bInputList .mCustomLabelRadioBig.mChecked {
     background-position: 0 0;
   }
   .bInputList .bCustomLabel {
