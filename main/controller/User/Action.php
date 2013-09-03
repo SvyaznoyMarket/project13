@@ -268,7 +268,22 @@ class Action {
                 : new \Http\RedirectResponse(\App::router()->generate('user'));
         }
 
+
         \App::logger()->info(['action' => __METHOD__, 'request.request' => $request->request->all()], ['user']);
+
+        $content = null;
+        \App::contentClient()->addQuery('reg_corp_user_cont', [],
+            function($data) use (&$content) {
+                if (!empty($data['content'])) {
+                    $content = $data['content'];
+                }
+            },
+            function(\Exception $e) {
+                \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                \App::exception()->add($e);
+            }
+        );
+        \App::contentClient()->execute();
 
         $form = new \View\User\CorporateRegistrationForm();
         if ($request->isMethod('post')) {
@@ -374,6 +389,7 @@ class Action {
                                 'content' => \App::templating()->render('form-registerCorporate', [
                                     'page'    => new \View\Layout(),
                                     'form'    => $form,
+                                    'content' => $content,
                                     'request' => \App::request(),
                                 ]),
                             ],
@@ -434,6 +450,7 @@ class Action {
                         'content' => \App::templating()->render('form-registerCorporate', [
                             'page'    => new \View\Layout(),
                             'form'    => $form,
+                            'content' => $content,
                             'request' => \App::request(),
                         ]),
                     ],
@@ -447,6 +464,7 @@ class Action {
         $page = new \View\User\CorporateRegistrationPage();
         $page->setParam('form', $form);
         $page->setParam('rootCategories', $rootCategories);
+        $page->setParam('content', $content);
 
         return new \Http\Response($page->show());
     }
