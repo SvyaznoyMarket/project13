@@ -186,11 +186,11 @@
 	};
 
 	$.fn.goodsSlider.defaults = {
-		leftArrowSelector: '.bSliderAction__eBtn.mPrev',
-		rightArrowSelector: '.bSliderAction__eBtn.mNext',
-		sliderWrapperSelector: '.bSliderAction__eInner',
-		sliderSelector: '.bSliderAction__eList',
-		itemSelector: '.bSliderAction__eItem',
+		leftArrowSelector: '.bSlider__eBtn.mPrev',
+		rightArrowSelector: '.bSlider__eBtn.mNext',
+		sliderWrapperSelector: '.bSlider__eInner',
+		sliderSelector: '.bSlider__eList',
+		itemSelector: '.bSlider__eItem',
 		categoryItemSelector: '.bGoodsSlider__eCatItem'
 	};
 
