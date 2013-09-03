@@ -54,7 +54,7 @@ $c->corePrivate['password']     = 'dEl23sTOas';
 $c->corePrivate['timeout']      = null;
 $c->corePrivate['retryCount']   = 3;
 $c->corePrivate['retryTimeout'] = [
-    'default' => 0.5,
+    'default' => 1.5,
     'tiny'    => 0.05,
     'short'   => 0.2,
     'medium'  => 0.5,
@@ -294,7 +294,7 @@ $c->database['password'] = 'qazwsxedc';
 
 $c->creditProvider['kupivkredit']['partnerId'] = '1-6ADAEAT';
 $c->creditProvider['kupivkredit']['partnerName'] = 'ООО «Enter»';
-$c->creditProvider['kupivkredit']['signature'] = 'enter-secret-werj7537';
+$c->creditProvider['kupivkredit']['signature'] = 'enter-secret-7X5dwb92';
 
 $c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
 $c->queue['workerLimit'] = 10;
