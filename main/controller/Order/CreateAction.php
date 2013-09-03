@@ -250,6 +250,7 @@ class CreateAction {
                 $orderData['subway_id'] = $form->getSubwayId();
             }
 
+            // адрес
             if (!in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_SELF, \Model\DeliveryType\Entity::TYPE_NOW])) {
                 $orderData['address_street'] = $form->getAddressStreet();
                 $orderData['address_number'] = $form->getAddressNumber();
