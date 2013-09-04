@@ -11564,9 +11564,9 @@
   .mPayMethods .mCustomRadioBig:checked ~ .bProcess {
     display: block;
   }
-  .mPayMethods .bPayMethodAction,
-  .mPayMethods .bProcess {
-    display: block \9 !important;
+  .mPayMethods .ie8 .bPayMethodAction,
+  .mPayMethods .ie8 .bProcess {
+    display: block;
   }
   .mPayMethods .bBankWrap {
     margin: 5px 0;
