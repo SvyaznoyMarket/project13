@@ -22,7 +22,7 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 <p class="title-font16 font16">
   Произошла ошибка или Вы решили не оплачивать заказ выбранным способом ?<br>
   Если Вы все еще желаете получить заказ, свяжитесь с оператором контакт-сEnter по номеру<br>
-  <span class="mBold">8 (800) 700-00-09</span> !
+  <span class="mBold"><?= \App::config()->company['phone'] ?></span> !
 </p>
 
 <div class="line pb15"></div>
