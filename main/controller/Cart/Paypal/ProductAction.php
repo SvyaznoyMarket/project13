@@ -94,6 +94,8 @@ class ProductAction {
             $createdOrder = new \Model\Order\CreatedEntity($result);
             \App::logger()->info(['paymentUrl' => $createdOrder->getPaymentUrl()], ['order', 'paypal']);
 
+            $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
+
             $responseData['success']  = true;
             $responseData['redirect'] = $createdOrder->getPaymentUrl();
             $responseData['cart']     = [
@@ -108,6 +110,7 @@ class ProductAction {
                     'sum'    => $createdOrder->getSum(),
                     'paySum' => $createdOrder->getPaySum(),
                 ],
+                'category_id' => $parentCategoryId,
             ];
             $responseData['product'] = $productInfo;
         } catch (\Exception $e) {
