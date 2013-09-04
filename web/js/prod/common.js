@@ -829,6 +829,8 @@ $(document).ready(function() {
 	 * Custom inputs
 	 */
 	(function() {
+		var inputs = $('input.bCustomInput');
+
 		var updateState = function updateState() {
 			console.info('updateState');
 
@@ -866,13 +868,13 @@ $(document).ready(function() {
 		};
 
 
-		$('body').on('updateState', 'input', updateState);
+		$('body').on('updateState', '.bCustomInput', updateState);
 
-		$('body').on( 'change', 'input', function() {
+		$('body').on( 'change', '.bCustomInput', function() {
 			$(this).trigger('updateState');
 		});
 
-		$('input').trigger('updateState');
+		inputs.trigger('updateState');
 	}());
 
 	(function() {
