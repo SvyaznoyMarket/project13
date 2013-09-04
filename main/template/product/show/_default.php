@@ -34,7 +34,8 @@ foreach ($product->getGroupedProperties() as $group) {
 $is_showed = [];
 
 ?>
-<div id="jsProductCard" data-value="<?= $page->json(  $product->getProductDataArray()  ) ?>"></div>
+
+<?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>

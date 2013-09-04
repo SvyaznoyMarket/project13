@@ -15,7 +15,7 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 <div class="mProductSectionSet">
-    <div id="jsProductCard" data-value="<?= $page->json(  $mainProduct->getProductDataArray()  ) ?>"></div>
+    <?= $helper->render('product/__data', ['product' => $mainProduct]) ?>
 
 	<div class="bProductSectionLeftCol" data-value="<?= $page->json([
         'jsref' =>   $mainProduct->getToken(),
