@@ -3,72 +3,45 @@
  * @var $page     \View\ProductCategory\RootPage
  * @var $category \Model\Product\Category\Entity
  */
+
 ?>
 
-<h1  class="bTitlePage">Товары для дома</h1>
+    <h1 class="bTitlePage"><?= $category->getName() ?></h1>
 
-<ul class="bCatalogRoot clearfix">
-	<li class="bCatalogRoot__eItem">
-		<a class="bCatalogRoot__eImgLink" href=""><img class="bCatalogRoot__eImg" src="http://fs01.enter.ru/6/1/163/e5/213900.jpg" /></a>
+<? if (count($category->getChild())): ?>
+    <ul class="bCatalogRoot clearfix">
+        <? $j = 0; ?>
+        <? foreach ($category->getChild() as $child): ?>
+            <?php
+            $productCount = $child->getProductCount() ? : $child->getGlobalProductCount();
 
-		<a class="bCatalogRoot__eNameLink" href="">Моющие средства для посуды</a>
+            $totalText = $productCount . ' ' . ($child->getHasLine()
+                ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
+                : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
+            );
 
-		<div class="bCatalogRoot__eCount">1240 товаров</div>
-	</li>
+            $link = $child->getLink() . (\App::request()->get('instore') ? '?instore=1' : '');
 
-	<li class="bCatalogRoot__eItem">
-		<a class="bCatalogRoot__eImgLink" href=""><img class="bCatalogRoot__eImg" src="http://fs10.enter.ru/6/1/163/70/214936.jpg" /></a>
+            ?>
 
-		<a class="bCatalogRoot__eNameLink" href="">Моющие средства для посуды</a>
+            <li class="bCatalogRoot__eItem <?= !(++$j % 4) ? 'mLast' : '' ?>">
+                <a class="bCatalogRoot__eImgLink"
+                   href="<?= $link ?>"
+                   title="<?= $child->getName() ?> - <?= $category->getName() ?>">
+                    <img class="bCatalogRoot__eImg"
+                         src="<?= $child->getImageUrl() ?>"
+                         alt="<?= $child->getName() ?> - <?= $category->getName() ?>"/>
+                </a>
 
-		<div class="bCatalogRoot__eCount">1240 товаров</div>
-	</li>
+                <a class="bCatalogRoot__eNameLink"
+                   href="<?= $link ?>"
+                   title="<?= $child->getName() ?> - <?= $category->getName() ?>">
+                    <?= $child->getName() ?>
+                </a>
 
-	<li class="bCatalogRoot__eItem">
-		<a class="bCatalogRoot__eImgLink" href=""><img class="bCatalogRoot__eImg" src="http://fs01.enter.ru/6/1/163/e5/213900.jpg" /></a>
+                <div class="bCatalogRoot__eCount"><?= $totalText ?></div>
+            </li>
 
-		<a class="bCatalogRoot__eNameLink" href="">Моющие средства для посуды</a>
-
-		<div class="bCatalogRoot__eCount">1240 товаров</div>
-	</li>
-
-	<li class="bCatalogRoot__eItem mLast">
-		<a class="bCatalogRoot__eImgLink" href=""><img class="bCatalogRoot__eImg" src="http://fs10.enter.ru/6/1/163/70/214936.jpg" /></a>
-
-		<a class="bCatalogRoot__eNameLink" href="">Моющие средства для посуды средства для посуды</a>
-
-		<div class="bCatalogRoot__eCount">1240 товаров</div>
-	</li>
-
-	<li class="bCatalogRoot__eItem">
-		<a class="bCatalogRoot__eImgLink" href=""><img class="bCatalogRoot__eImg" src="http://fs01.enter.ru/6/1/163/e5/213900.jpg" /></a>
-
-		<a class="bCatalogRoot__eNameLink" href="">Моющие средства для посуды</a>
-
-		<div class="bCatalogRoot__eCount">1240 товаров</div>
-	</li>
-
-	<li class="bCatalogRoot__eItem">
-		<a class="bCatalogRoot__eImgLink" href=""><img class="bCatalogRoot__eImg" src="http://fs01.enter.ru/6/1/163/e5/213900.jpg" /></a>
-
-		<a class="bCatalogRoot__eNameLink" href="">Моющие средства для посуды</a>
-
-		<div class="bCatalogRoot__eCount">1240 товаров</div>
-	</li>
-
-	<li class="bCatalogRoot__eItem">
-		<a class="bCatalogRoot__eImgLink" href=""><img class="bCatalogRoot__eImg" src="http://fs01.enter.ru/6/1/163/e5/213900.jpg" /></a>
-
-		<a class="bCatalogRoot__eNameLink" href="">Моющие средства для посуды</a>
-
-		<div class="bCatalogRoot__eCount">1240 товаров</div>
-	</li>
-
-	<li class="bCatalogRoot__eItem mLast">
-		<a class="bCatalogRoot__eImgLink" href=""><img class="bCatalogRoot__eImg" src="http://fs10.enter.ru/6/1/163/70/214936.jpg" /></a>
-
-		<a class="bCatalogRoot__eNameLink" href="">Моющие средства для посуды</a>
-
-		<div class="bCatalogRoot__eCount">1240 товаров</div>
-	</li>
-</ul>
+        <? endforeach ?>
+    </ul>
+<? endif; ?>
