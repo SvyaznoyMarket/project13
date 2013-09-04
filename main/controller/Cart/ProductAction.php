@@ -68,6 +68,8 @@ class ProductAction {
                 }
             }
 
+            $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
+
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,
@@ -80,6 +82,7 @@ class ProductAction {
                         'link'          => \App::router()->generate('order'),
                     ],
                     'product'  => $productInfo,
+                    'category_id' => $parentCategoryId,
                 ])
                 : new \Http\RedirectResponse($returnRedirect);
         } catch (\Exception $e) {

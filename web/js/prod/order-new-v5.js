@@ -2108,52 +2108,67 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			utils.blockScreen.block('Удаляем');
 
 			var itemDeleteAnalytics = function itemDeleteAnalytics() {
-				var products = global.OrderModel.orderDictionary.products,
-					totalPrice = 0,
-					totalQuan = 0,
+					var products = global.OrderModel.orderDictionary.products,
+						totalPrice = 0,
+						totalQuan = 0,
 
-					toKISS = {};
-				// end of vars
+						toKISS = {};
+					// end of vars
 
-				if ( !data.product ) {
-					return false;
-				}
+					if ( !data.product ) {
+						return false;
+					}
 
-				for ( var product in products ) {
-					totalPrice += product[product].price;
-					totalQuan += product[product].quantity;
-				}
+					for ( var product in products ) {
+						totalPrice += product[product].price;
+						totalQuan += product[product].quantity;
+					}
 
-				toKISS = {
-					'Checkout Step 1 SKU Quantity': totalQuan,
-					'Checkout Step 1 SKU Total': totalPrice,
+					toKISS = {
+						'Checkout Step 1 SKU Quantity': totalQuan,
+						'Checkout Step 1 SKU Total': totalPrice,
+					};
+
+					if ( typeof _kmq !== 'undefined' ) {
+						_kmq.push(['set', toKISS]);
+					}
+
+					if ( typeof _gaq !== 'undefined' ) {
+						_gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
+					}
+				},
+
+				deleteItemResponceHandler = function deleteItemResponceHandler( res ) {
+					console.info('deleteItemResponceHandler');
+					console.log( res );
+
+					if ( !res.success ) {
+						console.warn('не удалось удалить товар');
+						utils.blockScreen.unblock();
+
+						return false;
+					}
+
+					// запуск аналитики
+					if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
+						itemDeleteAnalytics();
+					}
+
+					var productId = res.product.id;
+					var categoryId = res.category_id;
+
+					// Soloway
+					// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
+					(function(s){
+					    var d = document, i = d.createElement('IMG'), b = d.body;
+					    s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
+					    i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
+					    i.onload = i.onerror = function(){b.removeChild(i); i = b = null}
+					    i.src = s;
+					    b.insertBefore(i, b.firstChild);
+					})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=del_basket&bt=55&pz=0&custom=10='+productId+';11='+categoryId+'&![rnd]');
+
 				};
-
-				if ( typeof _kmq !== 'undefined' ) {
-					_kmq.push(['set', toKISS]);
-				}
-
-				if ( typeof _gaq !== 'undefined' ) {
-					_gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
-				}
-			},
-
-			deleteItemResponceHandler = function deleteItemResponceHandler( res ) {
-				console.info('deleteItemResponceHandler');
-				console.log( res );
-
-				if ( !res.success ) {
-					console.warn('не удалось удалить товар');
-					utils.blockScreen.unblock();
-
-					return false;
-				}
-
-				// запуск аналитики
-				if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
-					itemDeleteAnalytics();
-				}
-			};
 			// end of functions
 
 			console.log(data.deleteUrl);
