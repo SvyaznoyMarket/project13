@@ -2786,14 +2786,18 @@ String.prototype.addParameterToUrl = UpdateUrlString;
 		var resHandler = function resHandler( res ) {
 			console.info('Обработка ответа пакетого запроса');
 
-			for ( i = 0, len = res.length - 1; i < len; i++ ) {
+			for ( i = 0, len = res.length - 1; i <= len; i++ ) {
 				callbacks[i](res[i]);
 			}
 		};
 
-		for ( i = 0, len = reqArray.length - 1; i < len; i++ ) {
+		for ( i = 0, len = reqArray.length - 1; i <= len; i++ ) {
 			console.log(i);
-			console.log(reqArray[i].url);
+
+			// Обход странного бага с IE
+			if ( !reqArray[i] || !reqArray[i].url ) {
+				continue;
+			}
 
 			dataToSend.actions.push({
 				url: reqArray[i].url,
