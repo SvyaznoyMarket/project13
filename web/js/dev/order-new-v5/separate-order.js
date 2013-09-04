@@ -604,52 +604,52 @@
 			utils.blockScreen.block('Удаляем');
 
 			var itemDeleteAnalytics = function itemDeleteAnalytics() {
-					var products = global.OrderModel.orderDictionary.products,
-						totalPrice = 0,
-						totalQuan = 0,
+				var products = global.OrderModel.orderDictionary.products,
+					totalPrice = 0,
+					totalQuan = 0,
 
-						toKISS = {};
-					// end of vars
+					toKISS = {};
+				// end of vars
 
-					if ( !data.product ) {
-						return false;
-					}
+				if ( !data.product ) {
+					return false;
+				}
 
-					for ( var product in products ) {
-						totalPrice += product[product].price;
-						totalQuan += product[product].quantity;
-					}
+				for ( var product in products ) {
+					totalPrice += product[product].price;
+					totalQuan += product[product].quantity;
+				}
 
-					toKISS = {
-						'Checkout Step 1 SKU Quantity': totalQuan,
-						'Checkout Step 1 SKU Total': totalPrice,
-					};
-
-					if ( typeof _kmq !== 'undefined' ) {
-						_kmq.push(['set', toKISS]);
-					}
-
-					if ( typeof _gaq !== 'undefined' ) {
-						_gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
-					}
-				},
-
-				deleteItemResponceHandler = function deleteItemResponceHandler( res ) {
-					console.info('deleteItemResponceHandler');
-					console.log( res );
-
-					if ( !res.success ) {
-						console.warn('не удалось удалить товар');
-						utils.blockScreen.unblock();
-
-						return false;
-					}
-
-					// запуск аналитики
-					if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
-						itemDeleteAnalytics();
-					}
+				toKISS = {
+					'Checkout Step 1 SKU Quantity': totalQuan,
+					'Checkout Step 1 SKU Total': totalPrice,
 				};
+
+				if ( typeof _kmq !== 'undefined' ) {
+					_kmq.push(['set', toKISS]);
+				}
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
+				}
+			},
+
+			deleteItemResponceHandler = function deleteItemResponceHandler( res ) {
+				console.info('deleteItemResponceHandler');
+				console.log( res );
+
+				if ( !res.success ) {
+					console.warn('не удалось удалить товар');
+					utils.blockScreen.unblock();
+
+					return false;
+				}
+
+				// запуск аналитики
+				if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
+					itemDeleteAnalytics();
+				}
+			};
 			// end of functions
 
 			console.log(data.deleteUrl);
