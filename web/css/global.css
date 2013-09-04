@@ -9303,6 +9303,8 @@
     *display: inline;
   }
   .bBottomBuy {
+    position: relative;
+    z-index: 10;
     clear: both;
     margin: 0 0 20px;
   }
