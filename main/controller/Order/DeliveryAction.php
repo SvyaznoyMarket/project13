@@ -39,15 +39,17 @@ class DeliveryAction {
 
         // данные для JsonResponse
         $responseData = [
-            'time'   => strtotime(date('Y-m-d'), 0) * 1000,
-            'action' => [],
+            'time'      => strtotime(date('Y-m-d'), 0) * 1000,
+            'action'    => [],
+            'paypalECS' => false,
+            'cart'      => [],
         ];
 
         try {
             if (true === $paypalECS) {
                 $cartProduct = $cart->getPaypalProduct();
                 if ($cartProduct) {
-                    $responseData['cart']['sum'] = $cartProduct->getSum();
+                    $responseData['cart']['sum'] = $cartProduct->getSum() + $cartProduct->getDeliverySum();
                 }
 
                 $responseData['paypalECS'] = true;

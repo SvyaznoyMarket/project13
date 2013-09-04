@@ -58,7 +58,8 @@
 		global.OrderModel.hasCoupons(false);
 
 		// Маркируем выбранный способ доставки
-		$('#'+global.OrderModel.deliveryTypesButton).attr('checked','checked');
+		console.log('Маркируем выбранный способ доставки');
+		$('#'+global.OrderModel.deliveryTypesButton).attr('checked','checked').trigger('change');
 			
 		// Обнуляем общую стоимость заказа
 		global.OrderModel.totalSum(0);
@@ -133,6 +134,7 @@
 
 		// выбираем URL для проверки купонов - первый видимый купон
 		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
+		$('.bSaleList__eItem:visible .jsCustomRadio').eq(0).trigger('change');
 
 		/**
 		 * Проверка примененных купонов
@@ -141,7 +143,8 @@
 		 * Если сумма заказа меньше либо равана размеру скидки купона
 		 */
 		if ( ( global.OrderModel.hasCoupons() && global.OrderModel.deliveryBoxes().length > 1 ) || 
-			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) {
+			( global.OrderModel.appliedCoupon() && global.OrderModel.appliedCoupon().sum && 
+			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) ) {
 			console.warn('Нужно удалить купон');
 
 			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
@@ -159,6 +162,8 @@
 		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
 		}
+
+		console.warn('end');
 	};
 
 
@@ -582,7 +587,6 @@
 			console.info('обновление данных с сервера');
 
 			renderOrderData(res);
-			utils.blockScreen.unblock();
 
 			separateOrder( global.OrderModel.statesPriority );
 		},
@@ -821,6 +825,8 @@
 		 * @param	{Object}	res		Данные о заказе
 		 */
 		renderOrderData = function renderOrderData( res ) {
+			utils.blockScreen.unblock();
+			
 			if ( !res.success ) {
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);

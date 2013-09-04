@@ -1,5 +1,55 @@
 $(document).ready(function() {
 
+	/**
+	 * Custom inputs
+	 */
+	(function() {
+		var updateState = function updateState() {
+			console.info('updateState');
+
+			if ( !$(this).is('[type=checkbox]') && !$(this).is('[type=radio]') ) {
+				return;
+			}
+
+			var $self = $(this),
+				id = $self.attr('id'),
+				type = ( $self.is('[type=checkbox]') ) ? 'checkbox' : 'radio',
+				groupName = $self.attr('name') || '',
+				label = $('label[for="'+id+'"]');
+
+			if ( type === 'checkbox' ) {
+
+				if ( $self.is(':checked') ) {
+					label.addClass('mChecked');
+				}
+				else {
+					label.removeClass('mChecked');
+				}
+			}
+
+
+			if ( type === 'radio' && $self.is(':checked') ) {
+				$('input[name="'+groupName+'"]').each(function() {
+					var currElement = $(this),
+						currId = currElement.attr('id');
+
+					$('label[for="'+currId+'"]').removeClass('mChecked');
+				});
+
+				label.addClass('mChecked');
+			}
+		};
+
+
+		$('body').on('updateState', 'input', updateState);
+
+		$('body').on( 'change', 'input', function() {
+			$(this).trigger('updateState');
+		});
+
+		$('input').trigger('updateState');
+	}());
+
 	(function() {
 		/*register e-mail check*/
 		if ( !$('#register_username').length ) {

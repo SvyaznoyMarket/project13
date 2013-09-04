@@ -130,6 +130,13 @@ class Entity {
     /**
      * @return bool
      */
+    public function isCash() {
+        return self::CASH_ID == $this->id;
+    }
+
+    /**
+     * @return bool
+     */
     public function isCertificate() {
         return self::CERTIFICATE_ID == $this->id;
     }

@@ -87,7 +87,10 @@ trait ResponseDataTrait {
 
         // если ошибочные товары не найдены
         if (!(bool)$productDataById) {
-            if ($cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
+            if ((true === $responseData['paypalECS']) && !$cart->getPaypalProduct()) {
+                $responseData['redirect'] = $router->generate('cart');
+                $message = 'Пустая корзина';
+            } else if ((false === $responseData['paypalECS']) && $cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
                 $responseData['redirect'] = $router->generate('cart');
                 $message = 'Пустая корзина';
             } else {

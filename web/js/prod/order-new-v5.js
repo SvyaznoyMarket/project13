@@ -1161,7 +1161,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * Обработка ошибок из ответа сервера
 		 */
 		serverErrorHandler = {
-			default: function( res ) {
+			'default': function( res ) {
 				console.log('Обработчик ошибки');
 
 				if ( res.error && res.error.message ) {
@@ -1256,8 +1256,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			completeAnalytics();
 
-			if ( global.OrderModel.paypalECS() ) {
-				console.info('PayPal ECS включен. Необходимо удалить выбранные параметры из cookie');
+			if ( global.OrderModel.paypalECS() && !orderCompleteBtn.hasClass('mConfirm') ) {
+				console.info('PayPal ECS включен. Заказ оформлен. Необходимо удалить выбранные параметры из cookie');
 
 				window.docCookies.removeItem('chDate_paypalECS');
 				window.docCookies.removeItem('chTypeBtn_paypalECS');
@@ -1281,7 +1281,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				orderForm = $('#order-form');
 			// end of vars
 			
-			if ( global.OrderModel.paypalECS() ) {
+			if ( global.OrderModel.paypalECS() && orderCompleteBtn.hasClass('mConfirm') ) {
 				global.ENTER.utils.blockScreen.block('Передача данных в PayPal');
 			}
 			else {
@@ -1461,8 +1461,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 				// радио кнопка
 				if ( fieldNode.attr('type') === 'radio' ) {
-					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked');
-
+					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked').trigger('change');
+					console.log('11111111')
 					continue;
 				}
 
@@ -1493,6 +1493,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
+
 }(this));
  
  
@@ -1561,7 +1562,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		global.OrderModel.hasCoupons(false);
 
 		// Маркируем выбранный способ доставки
-		$('#'+global.OrderModel.deliveryTypesButton).attr('checked','checked');
+		console.log('Маркируем выбранный способ доставки');
+		$('#'+global.OrderModel.deliveryTypesButton).attr('checked','checked').trigger('change');
 			
 		// Обнуляем общую стоимость заказа
 		global.OrderModel.totalSum(0);
@@ -1636,6 +1638,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 		// выбираем URL для проверки купонов - первый видимый купон
 		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
+		$('.bSaleList__eItem:visible .jsCustomRadio').eq(0).trigger('change');
 
 		/**
 		 * Проверка примененных купонов
@@ -1644,7 +1647,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * Если сумма заказа меньше либо равана размеру скидки купона
 		 */
 		if ( ( global.OrderModel.hasCoupons() && global.OrderModel.deliveryBoxes().length > 1 ) || 
-			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) {
+			( global.OrderModel.appliedCoupon() && global.OrderModel.appliedCoupon().sum && 
+			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) ) {
 			console.warn('Нужно удалить купон');
 
 			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
@@ -1662,6 +1666,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
 		}
+
+		console.warn('end');
 	};
 
 
@@ -2085,7 +2091,6 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			console.info('обновление данных с сервера');
 
 			renderOrderData(res);
-			utils.blockScreen.unblock();
 
 			separateOrder( global.OrderModel.statesPriority );
 		},
@@ -2324,6 +2329,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		 * @param	{Object}	res		Данные о заказе
 		 */
 		renderOrderData = function renderOrderData( res ) {
+			utils.blockScreen.unblock();
+			
 			if ( !res.success ) {
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);
