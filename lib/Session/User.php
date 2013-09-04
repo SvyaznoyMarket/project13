@@ -112,10 +112,16 @@ class User {
 
     /**
      * Удаляет токен из сессии
+     *
+     * @param \Http\Response|\Http\RedirectResponse|null $response
      */
-    public function removeToken() {
+    public function removeToken($response = null) {
         $token = $this->getToken();
         \App::session()->remove($this->tokenName);
+
+        if($response) {
+            $response->headers->clearCookie(\App::config()->authToken['name'], '/', preg_replace('/^www./', '.', \App::config()->mainHost));
+        }
 
         return $token;
     }
