@@ -44,12 +44,6 @@ $(document).ready(function() {
 		$('body').on('updateState', 'input', updateState);
 
 		$('body').on( 'change', 'input', function() {
-			console.info('change');
-			$(this).trigger('updateState');
-		});
-
-		$('body').on( 'click', 'input', function() {
-			console.info('click');
 			$(this).trigger('updateState');
 		});
 

@@ -10175,7 +10175,19 @@
     font-size: 12px;
   }
   .bInputList .bCustomInput {
-    display: none;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    overflow: hidden;
+    zoom: 1;
+    height: 0;
+    width: 0;
+    line-height: 0;
+    font-size: 0;
+    padding: 0;
   }
   .bInputList .bCustomLabel {
     display: inline-block;
