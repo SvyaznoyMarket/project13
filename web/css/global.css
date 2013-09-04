@@ -9295,6 +9295,8 @@
     *display: inline;
   }
   .bBottomBuy {
+    position: relative;
+    z-index: 10;
     clear: both;
     margin: 0 0 20px;
   }
@@ -11555,6 +11557,10 @@
     display: block;
   }
   .mPayMethods .mCustomRadioBig:checked ~ .bProcess {
+    display: block;
+  }
+  .mPayMethods .ie8 .bPayMethodAction,
+  .mPayMethods .ie8 .bProcess {
     display: block;
   }
   .mPayMethods .bBankWrap {
