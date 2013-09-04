@@ -27,9 +27,9 @@
 
         <div class="headerContactPhone fl" >
             <p class="fl headerContactPhone__ePhones">
-                8 (800) 700-00-09
+                <?= \App::config()->company['phone'] ?><br/>
                 <div class="bPhonesRegion fl">
-                    8 (495) 775-00-06<br/>
+                    <?= \App::config()->company['moscowPhone'] ?><br/>
                     8 (812) 703-77-30
                 </div>
             </p>
