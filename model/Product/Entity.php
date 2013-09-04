@@ -889,31 +889,4 @@ class Entity extends BasicEntity {
     public function addNearestCity(\Model\Region\Entity $city) {
         $this->nearestCity[] = $city;
     }
-
-
-    public function getProductDataArray()
-    {
-        $productData = [
-            'id'      => $this->getId(),
-            'token'   => $this->getToken(),
-            'article' => $this->getArticle(),
-            'name'    => $this->getName(),
-            'price'   => $this->getPrice(),
-            'image'   => [
-                'default' => $this->getImageUrl(3),
-                'big'     => $this->getImageUrl(2),
-            ],
-            'isSupplied'  => $this->getState() ? $this->getState()->getIsSupplier() : false,
-            'stockState'  =>
-            $this->getIsBuyable()
-                ? 'in stock'
-                : (
-            ($this->getState() && $this->getState()->getIsShop())
-                ? 'at shop'
-                : 'out of stock'
-            ),
-        ];
-        return $productData;
-    }
-
 }
