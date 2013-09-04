@@ -28,7 +28,7 @@ $is_showed = [];
 
 
 ?>
-<div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
+<div id="jsProductCard" data-value="<?= $page->json( $product->getProductDataArray() ) ?>"></div>
 
 <div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
