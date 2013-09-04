@@ -159,6 +159,15 @@
 					$self.remove();
 					newSlider.goodsSlider();
 
+				},
+
+				/**
+				 * Неудача при получении данных с сервера
+				 */
+				errorStatusCode = function errorStatusCode() {
+					console.warn('Слайдер товаров: Неудача при получении данных с сервера');
+					
+					$self.remove();
 				};
 			// end of function
 		
@@ -167,7 +176,12 @@
 				$.ajax({
 					type: 'GET',
 					url: sliderParams.url,
-					success: authFromServer
+					success: authFromServer,
+					statusCode: {
+						500: errorStatusCode,
+						503: errorStatusCode,
+						504: errorStatusCode
+					}
 				});
 			}
 			else {
