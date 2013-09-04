@@ -1259,11 +1259,11 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 			if ( global.OrderModel.paypalECS() && !orderCompleteBtn.hasClass('mConfirm') ) {
 				console.info('PayPal ECS включен. Заказ оформлен. Необходимо удалить выбранные параметры из cookie');
 
-				window.docCookies.removeItem('chDate_paypalECS');
-				window.docCookies.removeItem('chTypeBtn_paypalECS');
-				window.docCookies.removeItem('chPoint_paypalECS');
-				window.docCookies.removeItem('chTypeId_paypalECS');
-				window.docCookies.removeItem('chStetesPriority_paypalECS');
+				window.docCookies.removeItem('chDate_paypalECS', '/');
+				window.docCookies.removeItem('chTypeBtn_paypalECS', '/');
+				window.docCookies.removeItem('chPoint_paypalECS', '/');
+				window.docCookies.removeItem('chTypeId_paypalECS', '/');
+				window.docCookies.removeItem('chStetesPriority_paypalECS', '/');
 			}
 
 			document.location.href = res.redirect;

@@ -2875,7 +2875,7 @@ String.prototype.addParameterToUrl = UpdateUrlString;
                 width: '+=' + sbWidthDiff,
                 height: '+=' + sbHeightDiff
             }, 250, function() {
-                window.docCookies.removeItem( cookieNameCollapsed );
+                window.docCookies.removeItem( cookieNameCollapsed, '/' );
                 $(toggle).html('Скрыть опрос');
                 $('.surveyBox__content').show();
                 $('.surveyBox').addClass('expanded');
