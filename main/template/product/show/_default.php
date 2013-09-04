@@ -34,7 +34,8 @@ foreach ($product->getGroupedProperties() as $group) {
 $is_showed = [];
 
 ?>
-<div id="jsProductCard" data-value="<?= $page->json(  $product->getProductDataArray()  ) ?>"></div>
+
+<?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
@@ -196,7 +197,9 @@ $is_showed = [];
 
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
 
-        <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
+        <? if (\App::config()->payment['paypalECS']): ?>
+            <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
+        <? endif ?>
     </div><!--/widget delivery -->
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
