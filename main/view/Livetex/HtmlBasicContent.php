@@ -12,6 +12,7 @@ class HtmlBasicContent{
     protected $big_head = 'LiveTex: Статистика.';
     protected $helper = '';
     protected $params;
+    protected $count_iterations = 0;
     const ID4ALL_OPS = -5; // id for all operators in arrays // ID "виртуального" оператора, отвечающего за сумму данных по всем операторам
     const EMPTY_TD = ''; // содержимое пустой ячейки таблицы. Можно выводить пустую строку, можно 0, можно прочерк "—", можно "null" ...
 
@@ -96,11 +97,15 @@ class HtmlBasicContent{
 
 
     // прототипы функций, обычно, переопределяемые в потомках:
-    protected function analytics() {return false;}
     protected function beforeCycle() {return false;}
     protected function inCycleCondition( &$item ) {return isset( $item );}
 
+    protected function analytics() {
+        return '<div class="basic_html"> [ Count iterations = ' . print_r($this->count_iterations, 1) . '] </div>';
+    }
+
     protected function inCycle( $item ) {
+        $this->count_iterations++;
         $out = '<div class="basic_html"> [ <pre>' . print_r($item,1) . '</pre> ] </div>';
         return $out;
     }

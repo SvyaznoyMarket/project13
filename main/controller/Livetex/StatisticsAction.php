@@ -367,7 +367,7 @@ class StatisticsAction {
     }
 
     
-    
+
 
     /**
      * выбираем нужные действия
@@ -395,6 +395,23 @@ class StatisticsAction {
             $this->addAction('General');
             //$actions[] = 'site';
             //$actions[] = 'allOperators';
+        }
+
+
+        if ( $request->get('method') ) {
+            $content = &$this->content;
+            $actions = [];
+            $actions[] = $request->get('method');
+
+            $params = [];
+            $params['date_begin'] = $this->date_begin;
+            $params['date_end'] = $this->date_end;
+            $params['site_id'] = $this->siteId;
+            //if ($this->operId) $params['operator_id'] = $this->operId;
+            //if ($this->chatId) $params['chat_id'] = $this->chatId;
+
+            $content['Method'] = $this->API->method( $request->get('method'), $params);
+            $this->heads['Method']['big_head'] = 'LiveTex: Custom Method';
         }
 
         $actions = array_unique($actions);
