@@ -83,9 +83,6 @@ class DefaultLayout extends Layout {
             $response = array('content' => '');
         }
 
-        $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
-
-
         return $response['content'];
     }
 
