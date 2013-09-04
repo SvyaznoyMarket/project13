@@ -263,23 +263,15 @@ class Action {
         $promoContent = '';
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
         if (!empty($catalogJson['category_layout_type']) &&
-            $catalogJson['category_layout_type'] == 'promo' &&
-            !empty($catalogJson['promo_token'])
+            $catalogJson['category_layout_type'] == 'promo'
         ) {
-            \App::contentClient()->addQuery(
-                trim((string)$catalogJson['promo_token']),
-                [],
-                function($data) use (&$promoContent) {
-                    if (!empty($data['content'])) {
-                        $promoContent = $data['content'];
-                    }
-                },
-                function(\Exception $e) {
-                    \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
-                    \App::exception()->add($e);
-                }
-            );
-            \App::contentClient()->execute();
+            //промо родительское, если есть:
+            $promoToken = isset($catalogJson['parent_promo_token']) ? $catalogJson['parent_promo_token'] : null;
+            $promoContent .= $this->queryPromoToken($promoToken);
+
+            //промо родное, если есть:
+            $promoToken = isset($catalogJson['promo_token']) ? $catalogJson['promo_token'] : null;;
+            $promoContent .= $this->queryPromoToken($promoToken);
         }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
@@ -792,4 +784,41 @@ class Action {
     public static function inStore() {
         return (bool)\App::request()->get('instore');
     }
+
+
+    /**
+     * @param   string      $promoToken
+     * @return  string      $promoContent
+     */
+    private function queryPromoToken($promoToken) {
+
+        if (empty($promoToken)) return '';
+
+        $promoContent = '';
+
+        $client = \App::contentClient();
+
+        $client->addQuery(
+            trim((string)$promoToken),
+            [],
+            function ($data) use (&$promoContent) {
+                if (!empty($data['content'])) {
+                    $promoContent .= $data['content'];
+                }
+            },
+            function (\Exception $e) {
+                \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                \App::exception()->add($e);
+            }
+        );
+
+        $client->execute();
+        /**
+         * Если сначала сделать дважды addQuery(), и единожды execute(), то
+         * может содержимое от "promo_token" появиться выше,чем от "parent_promo_token", что неправильно.
+         */
+        return $promoContent;
+
+    }
+
 }
