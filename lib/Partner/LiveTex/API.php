@@ -21,6 +21,7 @@ class API {
     private $api_login_url = 'http://api.livetex.ru/login.php';
     private $count_login_errors = 0;
     private $timeout = null;
+    private $logMethods = [];
 
 
     private function __clone() {}
@@ -121,6 +122,11 @@ class API {
             }
         }
 
+        $this->logMethods[] = [
+            $method => isset($response->error) ? $response->error  : 'null',
+            'count_login_errors' => $this->count_login_errors
+        ];
+
         return $response;
 
     }
@@ -168,6 +174,11 @@ class API {
     private function unsetSession() {
         \App::session()->remove('ltstat_authKey');
         \App::session()->remove('ltstat_chief_id');
+    }
+
+
+    public function getLogMethods() {
+        return $this->logMethods;
     }
 
 

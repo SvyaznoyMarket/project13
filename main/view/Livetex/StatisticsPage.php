@@ -21,6 +21,7 @@ class StatisticsPage extends \View\DefaultLayout {
         $content = $this->params['content'];
         $heads = $this->params['heads'];
         $infomess = $this->params['infomess'];
+        $LogMethods = $this->params['LogMethods'];
 
 
         foreach ($content as $key => $value) {
@@ -57,6 +58,7 @@ class StatisticsPage extends \View\DefaultLayout {
         $html_out = $this->slotSidebar() . $this->wr($html_out,'bPromoCatalog'); // добавим сайдбар
         $html_out = $this->wr($html_out, 'lts_wrap'); // обернём во враппер
         $html_out .= '<center> <p></p> <p>< -- end of Statistics page --></p> <p><img /></p> </center>';
+        $html_out .= '<pre><p>Log LiveTexAPI Methods:</p>'.print_r($LogMethods,1).'</pre>'; // лог вызываемых у АПИ методов
 
         return $html_out;
     }

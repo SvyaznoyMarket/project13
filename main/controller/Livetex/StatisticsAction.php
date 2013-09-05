@@ -231,6 +231,7 @@ class StatisticsAction {
         $page->setParam('actions', $actions);
         $page->setParam('aside_menu', $this->aside_menu);
         $page->setParam('infomess', $this->infomess);
+        $page->setParam('LogMethods', $API->getLogMethods() );
         //$this->l($content,'content'); //tmp //debug
 
         return new \Http\Response( $page->show() );
