@@ -400,7 +400,7 @@ foreach (array_reverse($productsById) as $product) {
 				<h2 class="bBuyingSteps__eTitle mPaypal">Оплата</h2>
 
 				<div class="bPaypalTotal">
-					Итого к оплате: <span class="bPaypalTotal__eSum"><strong>4 990 <span class="rubl">p</span></strong></span>
+					Итого к оплате: <span class="bPaypalTotal__eSum"><strong class="mr5" data-bind="text: window.printPrice( totalSum() )"></strong><span class="rubl">p</span></span>
 
 					<div data-bind="visible: ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) )" class="bPaypalTotalChanged"><strong>Сумма оплаты изменилась</strong></div>
 				</div>
