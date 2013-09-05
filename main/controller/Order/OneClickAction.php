@@ -30,14 +30,14 @@ class OneClickAction {
                 throw $e;
             }
 
-            $formData = (array)$request->request->get('order');
+            $formData = (array)$request->get('order');
             if (!(bool)$formData) {
                 $e = new \Exception\NotFoundException(sprintf('В POST запросе %s не содержится данных о заказе в один клик', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
                 \App::logger()->error($e, ['order']);
                 throw $e;
             }
 
-            $formData = array_merge(array(
+            $formData = array_merge([
                 'product_quantity'       => 0,
                 'delivered_at'           => null,
                 'recipient_first_name'   => null,
@@ -45,7 +45,7 @@ class OneClickAction {
                 'recipient_phonenumbers' => null,
                 'recipient_scCard'       => null,
                 'shop_id'                => null,
-            ), $formData);
+            ], $formData);
 
             $productQuantity = (int)$formData['product_quantity'];
             $product = \RepositoryManager::product()->getEntityByToken($productToken);
@@ -55,21 +55,12 @@ class OneClickAction {
                 throw $e;
             }
 
-            $productsInCart = [];
-            if ((bool)$product->getKit()) {
-                foreach($product->getKit() as $kit) {
-                    $productsInCart[] = array('id' => $kit->getId(), 'quantity' => ($kit->getCount() * $productQuantity));
-                }
-            } else {
-                $productsInCart = array(array('id' => $product->getId(), 'quantity' => $productQuantity));
-            }
+            $productsInCart = [
+                ['id' => $product->getId(), 'quantity' => $productQuantity]
+            ];
 
-            $deliveryType = \RepositoryManager::deliveryType()->getEntityByToken(
-                $formData['shop_id']
-                ? $formData['delivery_type_id'] == 4 ? \Model\DeliveryType\Entity::TYPE_NOW : \Model\DeliveryType\Entity::TYPE_SELF
-                : \Model\DeliveryType\Entity::TYPE_STANDART
-            );
-            if (!$deliveryType) {
+            $deliveryTypeId = (int)$formData['delivery_type_id'];
+            if (!$deliveryTypeId) {
                 throw new \Exception('Не определен метод доставки для заказа в один клик');
             }
 
@@ -83,11 +74,11 @@ class OneClickAction {
             }
             $formData['recipient_phonenumbers'] = $phone;
 
-            $data = array(
+            $data = [
                 'geo_id'                    => \App::user()->getRegion()->getId(),
                 'type_id'                   => \Model\Order\Entity::TYPE_1CLICK,
-                'delivery_type_id'          => $deliveryType->getId(),
-                'payment_id'                => 1, // оплата наличными
+                'delivery_type_id'          => $deliveryTypeId,
+                'payment_id'                => \Model\PaymentMethod\Entity::CASH_ID, // оплата наличными
                 'delivery_date'             => (string)$formData['delivered_at'],
                 'first_name'                => (string)$formData['recipient_first_name'],
                 'mobile'                    => trim((string)$formData['recipient_phonenumbers']),
@@ -95,7 +86,7 @@ class OneClickAction {
                 'product'                   => $productsInCart,
                 'extra'                     => 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.',
                 'ip'                        => $request->getClientIp(),
-            );
+            ];
             if ($formData['shop_id']) {
                 $data['shop_id'] = (int)$formData['shop_id'];
             }
@@ -130,18 +121,18 @@ class OneClickAction {
                 \App::logger()->warn($e, ['order']);
                 \App::exception()->remove($e);
 
-                return new \Http\JsonResponse(array(
+                return new \Http\JsonResponse([
                     'success' => false,
                     'message' => 'Не удалось создать заказ.' . (735 == $e->getCode() ? ' Невалидный номер карты Связного клуба' : ''),
-                ));
+                ]);
             }
 
-            $orderData = array (
+            $orderData = [
                 'order_article'    => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getId(); }, $order->getProduct())),
                 'order_id'         => $order->getNumber(),
                 'order_total'      => $order->getSum(),
                 'product_quantity' => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getQuantity(); }, $order->getProduct())),
-            );
+            ];
 
             $shop = null;
             if ($order->getShopId()) {
@@ -188,31 +179,31 @@ class OneClickAction {
                 $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
             }
 
-            return new \Http\JsonResponse(array(
+            return new \Http\JsonResponse([
                 'success' => true,
                 'message' => 'Заказ успешно создан',
-                'data'    => array(
+                'data'    => [
                     'title'   => 'Ваш заказ принят, спасибо!',
-                    'content' => \App::templating()->render('order/_oneClick', array(
+                    'content' => \App::templating()->render('order/_oneClick', [
                         'page'              => new \View\Layout(),
                         'order'             => $order,
                         'orderData'         => $orderData,
                         'shop'              => $shop,
                         'orderProduct'      => $orderProduct,
                         'product'           => $product,
-                    )),
+                    ]),
                     'shop'    => $shop,
                     'orderNumber' => $order->getNumber(),
                     'productArticle' => $product->getArticle(),
                     'productCategory' => $categoryData,
 
-                ),
-            ));
+                ],
+            ]);
         } catch(\InvalidArgumentException $e){
-            return new \Http\JsonResponse(array(
+            return new \Http\JsonResponse([
                 'success' => false,
                 'message' => 'Не удалось создать заказ' . (\App::config()->debug ? ('. ' . $e) : ''),
-            ));
+            ]);
         }
     }
 }
