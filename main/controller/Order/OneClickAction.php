@@ -90,6 +90,9 @@ class OneClickAction {
             if ($formData['shop_id']) {
                 $data['shop_id'] = (int)$formData['shop_id'];
             }
+            $data['meta_data'] = [];
+            $data['meta_data']['user_agent'] = $request->server->get('HTTP_USER_AGENT');
+            $data['meta_data']['kiss_session'] = $request->request->get('kiss_session');
 
             // мета-теги
             try {
