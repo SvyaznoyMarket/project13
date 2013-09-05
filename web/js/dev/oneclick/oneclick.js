@@ -497,6 +497,10 @@ $(document).ready(function() {
 				}
 				postData['subscribe'] = $('#order1click-container-new .bSubscibe input[name="subscribe"]').val();
 
+	      if ( typeof(window.KM) !== 'undefined' ) {
+					postData['kiss_session'] = window.KM.i;
+	      }
+
 				$.ajax( {
 					type: 'POST',
                     timeout: 60000,
