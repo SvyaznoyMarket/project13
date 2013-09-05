@@ -813,10 +813,16 @@ $(document).ready(function() {
 	
 	var ajaxFilterCounter = 0;
 	
+
 	$('.product_filter-block').bind('change', function(e) {
 		var el = $(e.target);
 
 		if ( el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox'])) ) {
+
+			if( el.hasClass('shopFilter') && el.parent().data('onclick-location') ) {
+				document.location = el.parent().data('onclick-location');
+			}
+
 			el.trigger('preview');
 		}
 	}).bind('preview', function(e) {
