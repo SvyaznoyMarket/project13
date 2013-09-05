@@ -121,9 +121,17 @@ class OneClickAction {
                 \App::logger()->warn($e, ['order']);
                 \App::exception()->remove($e);
 
+                $errorMes = '';
+                if (735 == $e->getCode()) {
+                    $errorMes = ' Невалидный номер карты &laquo;Связного клуба&raquo;';
+                } else {
+                    $errorObj = json_decode($e->getMessage());
+                    if (isset($errorObj->error->message)) $errorMes = $errorObj->error->message;
+                }
+
                 return new \Http\JsonResponse([
                     'success' => false,
-                    'message' => 'Не удалось создать заказ.' . (735 == $e->getCode() ? ' Невалидный номер карты Связного клуба' : ''),
+                    'message' => 'Не удалось создать заказ. ' . $errorMes,
                 ]);
             }
 
