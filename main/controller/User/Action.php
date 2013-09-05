@@ -262,10 +262,8 @@ class Action {
     public function registerCorporate(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::user()->getEntity()) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(['success' => true])
-                : new \Http\RedirectResponse(\App::router()->generate('user'));
+        if (\App::user()->getEntity() && $request->isXmlHttpRequest() ) {
+            return new \Http\JsonResponse(['success' => true]);
         }
 
 
