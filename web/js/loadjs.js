@@ -1,3 +1,79 @@
+/**
+ * Улучшения консоли
+ *
+ * https://github.com/theshock/console-cap
+ */
+;(function ( console ) {
+	var i,
+		global  = this,
+		fnProto = Function.prototype,
+		fnApply = fnProto.apply,
+		fnBind  = fnProto.bind,
+		bind    = function ( context, fn ) {
+			return fnBind ?
+				fnBind.call( fn, context ) :
+				function () {
+					return fnApply.call( fn, context, arguments );
+				};
+		},
+		methods = 'assert count debug dir dirxml error group groupCollapsed groupEnd info log markTimeline profile profileEnd table time timeEnd trace warn'.split(' '),
+		emptyFn = function(){},
+		empty   = {},
+		timeCounters;
+
+	for ( i = methods.length; i-- ; ) empty[methods[i]] = emptyFn;
+
+	if ( console ) {
+		
+		if ( !console.time ) {
+			console.timeCounters = timeCounters = {};
+			
+			console.time = function( name, reset ) {
+				if ( name ) {
+					var time = +new Date, key = "KEY" + name.toString();
+					if (reset || !timeCounters[key]) timeCounters[key] = time;
+				}
+			};
+
+			console.timeEnd = function( name ) {
+				var diff,
+					time = +new Date,
+					key = "KEY" + name.toString(),
+					timeCounter = timeCounters[key];
+				
+				if ( timeCounter ) {
+					diff  = time - timeCounter;
+					console.info( name + ": " + diff + "ms" );
+					delete timeCounters[key];
+				}
+				
+				return diff;
+			};
+		}
+		
+		for ( i = methods.length; i-- ; ) {
+			console[methods[i]] = methods[i] in console ?
+				bind(console, console[methods[i]]) : emptyFn;
+		}
+
+		console.disable = function () {
+			global.console = empty;
+		};
+
+		empty.enable  = function () {
+			global.console = console;
+		};
+		
+		empty.disable = console.enable = emptyFn;
+		
+	}
+	else {
+		console = global.console = empty;
+		console.disable = console.enable = emptyFn;
+	}
+})( typeof console === 'undefined' ? null : console );
+
+
 ;(function( global ) {
 	var _gaq = global._gaq || [],
 
@@ -96,29 +172,6 @@
 		},
 
 		/**
-		 * Перехват вывода в консоль на продуктиве
-		 */
-		disableConsole = function disableConsole() {
-			var original = global.console,
-				console  = global.console = {},
-
-			// список методов
-				methods = ['assert', 'count', 'debug', 'dir', 'dirxml', 'error', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log', 'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd', 'trace', 'warn'];
-
-			// обход все элементов массива в обратном порядке
-			for ( var i = methods.length; i-- ; ) {
-				// обратите внимание, что обязательно необходима анонимная функция,
-				// иначе любой метод нашей консоли всегда будет вызывать метод 'assert'
-				(function ( methodName ) {
-					// определяем новый метод
-					console[methodName] = function () {
-						return false;
-					};
-				})(methods[i]);
-			}
-		},
-
-		/**
 		 * LAB.js переопределяет document.write
 		 * Для того чтобы метод document.write корректно работал, мы делаем для него замену
 		 */
@@ -170,8 +223,9 @@
 
 	// Если продуктивный режим - заглушить консоль
 	if ( !debug ) {
-		disableConsole();
+		console.disable();
 	}
+
 
 	/**
 	 * Создаем единый нэймспейс для проекта
