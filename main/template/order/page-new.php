@@ -402,7 +402,7 @@ foreach (array_reverse($productsById) as $product) {
 				<div class="bPaypalTotal">
 					Итого к оплате: <span class="bPaypalTotal__eSum"><strong>4 990 <span class="rubl">p</span></strong></span>
 
-					<div data-bind="visible: (paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ))" class="bPaypalTotalChanged"><strong>Сумма оплаты изменилась</strong></div>
+					<div data-bind="visible: ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) )" class="bPaypalTotalChanged"><strong>Сумма оплаты изменилась</strong></div>
 				</div>
 			</div>
 			<!--/ PayPal сумма заказа -->
@@ -430,7 +430,7 @@ foreach (array_reverse($productsById) as $product) {
                             			css: { mConfirm : ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) ) }"
                         ></a>
 
-                        <!-- Сообщение о редиректе на сайт PayPal --><div class="bPaypalFootnote" data-bind="visible: (paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ))">Вы будете перенаправлены на сайт <img class="bPaypalImgIco" src="/css/bBuyingSteps/img/bPayPalIcoSmall.gif" /></div><!-- Сообщение о редиректе на сайт PayPal -->
+                        <!-- Сообщение о редиректе на сайт PayPal --><div class="bPaypalFootnote" data-bind="visible: ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) )">Вы будете перенаправлены на сайт <img class="bPaypalImgIco" src="/css/bBuyingSteps/img/bPayPalIcoSmall.gif" /></div><!-- Сообщение о редиректе на сайт PayPal -->
 					</div>
 				</div>
 			</div>
