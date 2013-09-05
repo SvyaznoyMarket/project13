@@ -128,7 +128,7 @@ class HtmlBasicContent{
     protected function nodata() {
         $out = '';
         $out .= '<div class="lts_item">';
-        $out .= '<div class="noresponse">Нет ответа. Попробуйте обновить страницу немного позже. Возможно, вы слишком часто обращаетесь к API LiveTex</div>';
+        $out .= '<div class="noresponse">Нет ответа. Проверьте дату начала и окончания и попробуйте обновить страницу немного позже. Возможно, не верно указана дата либо вы слишком часто обращаетесь к API LiveTex</div>';
         $out .= '</div>';
         return $out;
     }
