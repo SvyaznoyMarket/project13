@@ -274,8 +274,8 @@
 					deliveryMethod_token: currentDeliveryBox.state,
 					date: currentDeliveryBox.choosenDate().value,
 					interval: [
-						currentDeliveryBox.choosenInterval().start,
-						currentDeliveryBox.choosenInterval().end
+						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().start : '',
+						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : '',
 					],
 					point_id: currentDeliveryBox.choosenPoint().id,
 					products : []
@@ -284,6 +284,8 @@
 				for ( var j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {
 					tmpPart.products.push(currentDeliveryBox.products[j].id);
 				}
+
+				console.log(tmpPart);
 
 				parts.push(tmpPart);
 			}

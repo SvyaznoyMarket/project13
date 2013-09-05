@@ -11963,6 +11963,7 @@
   .bCorpRegForm .bInputList {
     font-size: 12px;
     padding: 0 0 0 3px;
+    margin: 0 0 10px;
   }
   .bCorpRegForm .bInputList .mCustomCheckbox + .bCustomLabel {
     background: url("/css/leftNav/img/checkBtn.png") 0px 0px no-repeat;
