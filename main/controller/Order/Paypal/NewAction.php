@@ -44,15 +44,17 @@ class NewAction {
             // форма
             $form = $this->getForm();
 
-            // обновление данных от PayPal
-            if (!empty($result['payment_user_email'])) {
-                $form->setEmail($result['payment_user_email']);
-            }
-            if (!empty($result['payment_user_firstname'])) {
-                $form->setFirstName($result['payment_user_firstname']);
-            }
-            if (!empty($result['payment_user_lastname'])) {
-                $form->setLastName($result['payment_user_lastname']);
+            if (0 === $cartProduct->getDeliverySum()) {
+                // обновление данных от PayPal
+                if (!empty($result['payment_user_email'])) {
+                    $form->setEmail($result['payment_user_email']);
+                }
+                if (!empty($result['payment_user_firstname'])) {
+                    $form->setFirstName($result['payment_user_firstname']);
+                }
+                if (!empty($result['payment_user_lastname'])) {
+                    $form->setLastName($result['payment_user_lastname']);
+                }
             }
 
             /** @var $productsById \Model\Product\Entity[] */

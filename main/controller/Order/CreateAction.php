@@ -95,20 +95,8 @@ class CreateAction {
             $responseData['redirect'] = \App::router()->generate('order.complete');
 
             try {
-                // сохранение заказа в куках
-                $cookieValue = [
-                    'recipient_first_name'   => $form->getFirstName(),
-                    'recipient_last_name'    => $form->getLastName(),
-                    'recipient_phonenumbers' => $form->getMobilePhone(),
-                    'recipient_email'        => $form->getEmail(),
-                    'address_street'         => $form->getAddressStreet(),
-                    'address_number'         => $form->getAddressNumber(),
-                    'address_building'       => $form->getAddressBuilding(),
-                    'address_apartment'      => $form->getAddressApartment(),
-                    'address_floor'          => $form->getAddressFloor(),
-                    'subway_id'              => $form->getSubwayId(),
-                ];
-                $cookies[] = new \Http\Cookie(\App::config()->order['cookieName'] ?: 'last_order', strtr(base64_encode(serialize($cookieValue)), '+/', '-_'), strtotime('+1 year' ));
+                // сохранение формы в кукисах
+                $this->saveForm($form, $cookies);
 
                 // удаление флага "Беру в кредит"
                 $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
