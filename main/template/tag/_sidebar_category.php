@@ -50,11 +50,13 @@
             <span><?= $tag->getName() ?></span>
           </a>
         </li>
+        <? if ( $categoriesByToken[$category->getToken()] instanceof \Model\Product\Category\TreeEntity ) : ?>
         <li class="bCtg__eL2 mBold">
           <a href="<?= $page->url('tag.category', ['tagToken' => $tag->getToken(), 'categoryToken' => $category->getToken()]); ?>">
             <span><?= $categoriesByToken[$category->getToken()]->getName() ?></span>
           </a>
         </li>
+        <? endif; ?>
         <ul>
           <? foreach (array_keys($sidebarCategoriesTree[$category->getToken()]) as $parentToken) { ?>
             <li class="bCtg__eL3">
