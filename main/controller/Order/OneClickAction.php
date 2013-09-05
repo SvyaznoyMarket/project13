@@ -218,7 +218,7 @@ class OneClickAction {
                 'success' => false,
                 'message' => $message,
                 'error'   => ['code' => $e->getCode(), 'message' => $message],
-                'debug'   => \App::debug() ? $e : [],
+                'debug'   => \App::config()->debug ? $e : [],
             ]);
         }
     }
