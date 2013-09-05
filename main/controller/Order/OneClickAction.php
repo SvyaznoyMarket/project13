@@ -126,7 +126,7 @@ class OneClickAction {
 
                 return new \Http\JsonResponse([
                     'success' => false,
-                    'message' => 'Не удалось создать заказ.' . (735 == $e->getCode() ? ' Невалидный номер карты Связного клуба' : ''),
+                    'message' => 'Не удалось создать заказ.' . (735 == $e->getCode() ? ' Невалидный номер карты &laquo;Связного клуба&raquo;' : ''),
                 ]);
             }
 
