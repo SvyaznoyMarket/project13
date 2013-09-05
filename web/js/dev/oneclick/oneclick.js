@@ -46,7 +46,7 @@ $(document).ready(function() {
 				return status;
 			}, this);
 
-			var scNum = window.docCookies.getItem("scId"); //берем номер карты связного клуба из куки
+			var scNum = window.docCookies.getItem("scId"); //берем номер карты «связного клуба» из куки
 
 			self.showMap = ko.observable( false );
 			self.textfields = [];
