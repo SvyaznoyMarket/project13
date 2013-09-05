@@ -74,6 +74,10 @@ class OneClickAction {
             }
             $formData['recipient_phonenumbers'] = $phone;
 
+            if (empty($formData['recipient_phonenumbers'])) {
+                throw new \Exception('Не указан телефонный номер', 400);
+            }
+
             $data = [
                 'geo_id'                    => \App::user()->getRegion()->getId(),
                 'type_id'                   => \Model\Order\Entity::TYPE_1CLICK,
@@ -123,11 +127,6 @@ class OneClickAction {
             } catch (\Exception $e) {
                 \App::logger()->warn($e, ['order']);
                 \App::exception()->remove($e);
-
-                return new \Http\JsonResponse([
-                    'success' => false,
-                    'message' => 'Не удалось создать заказ.' . (735 == $e->getCode() ? ' Невалидный номер карты &laquo;Связного клуба&raquo;' : ''),
-                ]);
             }
 
             $orderData = [
@@ -202,10 +201,24 @@ class OneClickAction {
 
                 ],
             ]);
-        } catch(\InvalidArgumentException $e){
+        } catch(\Exception $e){
+            switch ($e->getCode()) {
+                case 400:
+                    $message = $e->getMessage();
+                    break;
+                case 735:
+                    $message = 'Невалидный номер карты Связного клуба';
+                    break;
+                default:
+                    $message = 'Не удалось создать заказ';
+                    break;
+            }
+
             return new \Http\JsonResponse([
                 'success' => false,
-                'message' => 'Не удалось создать заказ' . (\App::config()->debug ? ('. ' . $e) : ''),
+                'message' => $message,
+                'error'   => ['code' => $e->getCode(), 'message' => $message],
+                'debug'   => \App::config()->debug ? $e : [],
             ]);
         }
     }
