@@ -38,7 +38,7 @@
   body {
     background: #f6f1e9;
     color: #000000;
-    font: normal 75% tahoma, verdana, arial, helvetica, sans-serif;
+    font: normal 75% Tahoma, Geneva, sans-serif, helvetica, sans-serif;
     height: auto !important;
     margin: 0px;
     padding: 0px;
@@ -9260,7 +9260,7 @@
     font-family: tahoma, verdana, arial, helvetica, sans-serif;
   }
   .bPageHead__eArticle {
-    color: #9d9d9d;
+    font-size: 16px;
   }
   .bProductSection .bDescriptionProduct {
     font-size: 14px;

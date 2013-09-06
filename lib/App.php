@@ -401,6 +401,9 @@ class App {
                 case 'request_compatible':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/site_page_time.log'), 'RequestLogger', $config[$name]['level']);
                     break;
+                case 'order':
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/order.log'), $name, $config[$name]['level']);
+                    break;
                 default:
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log'), $name, $config[$name]['level']);
                     //$instances[$name] = new \Logger\NullLogger();

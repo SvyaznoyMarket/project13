@@ -254,12 +254,7 @@
 				orderForm = $('#order-form');
 			// end of vars
 			
-			if ( global.OrderModel.paypalECS() && orderCompleteBtn.hasClass('mConfirm') ) {
-				global.ENTER.utils.blockScreen.block('Передача данных в PayPal');
-			}
-			else {
-				global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
-			}
+			global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
 
 			/**
 			 * Перебираем блоки доставки

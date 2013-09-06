@@ -141,6 +141,7 @@ class CreateAction {
                 $createdOrder = new \Model\Order\CreatedEntity($result);
                 \App::logger()->info(['paymentUrl' => $createdOrder->getPaymentUrl()], ['order', 'paypal']);
 
+                /*
                 $responseData['redirect'] = $createdOrder->getPaymentUrl();
 
                 try {
@@ -149,32 +150,34 @@ class CreateAction {
                 } catch (\Exception $e) {
                     \App::logger()->error($e, ['order']);
                 }
-            } else {
-                // создание заказов в ядре
-                $createdOrders = $this->saveOrders($form, $paypalToken, $paypalPayerId);
+                */
+            }
 
-                // сохранение заказов в сессии
-                \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
-                    return ['number' => $createdOrder->getNumber(), 'phone' => $form->getMobilePhone()];
-                }, $createdOrders));
 
-                // подписка пользователя
-                $this->subscribeUser($form);
+            // создание заказов в ядре
+            $createdOrders = $this->saveOrders($form, $paypalToken, $paypalPayerId);
 
-                $responseData['redirect'] = \App::router()->generate('order.complete');
+            // сохранение заказов в сессии
+            \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
+                return ['number' => $createdOrder->getNumber(), 'phone' => $form->getMobilePhone()];
+            }, $createdOrders));
 
-                try {
-                    // сохранение формы в кукисах
-                    $this->saveForm($form, $cookies);
+            // подписка пользователя
+            $this->subscribeUser($form);
 
-                    // удаление флага "Беру в кредит"
-                    $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
+            $responseData['redirect'] = \App::router()->generate('order.complete');
 
-                    // очистка корзины
-                    $user->getCart()->clearPaypal();
-                } catch (\Exception $e) {
-                    \App::logger()->error($e, ['order']);
-                }
+            try {
+                // сохранение формы в кукисах
+                $this->saveForm($form, $cookies);
+
+                // удаление флага "Беру в кредит"
+                $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
+
+                // очистка корзины
+                $user->getCart()->clearPaypal();
+            } catch (\Exception $e) {
+                \App::logger()->error($e, ['order']);
             }
 
             $responseData['success'] = true;
