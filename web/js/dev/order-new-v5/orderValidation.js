@@ -436,7 +436,7 @@
 				// радио кнопка
 				if ( fieldNode.attr('type') === 'radio' ) {
 					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked').trigger('change');
-					console.log('11111111')
+					
 					continue;
 				}
 

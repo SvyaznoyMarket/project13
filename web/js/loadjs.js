@@ -241,6 +241,8 @@
 	global.ENTER.config.startTime = startTime;
 	global.ENTER.config.pageConfig = pageConfig;
 
+	extendApp('ENTER.constructors');
+
 	console.info('Создан единый namespace проекта');
 	console.log(global.ENTER);
 
