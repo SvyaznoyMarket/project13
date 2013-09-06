@@ -6,6 +6,7 @@ $c = require __DIR__ . '/config.php';
 $c->debug = true;
 
 $c->coreV2['url']          = 'http://tester.core.ent3.ru/v2/';
+$c->payment['paypalECS'] = true;
 $c->coreV2['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.6,
