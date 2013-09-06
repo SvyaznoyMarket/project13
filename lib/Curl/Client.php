@@ -99,7 +99,7 @@ class Client {
 
             $this->logger->error([
                 'message' => 'Fail curl',
-                'error'   => $e,
+                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
                 'url'     => $url,
                 'data'    => $data,
                 'info'    => isset($info) ? $info : null,
@@ -247,7 +247,7 @@ class Client {
 
                         $this->logger->error([
                             'message'      => 'Fail curl',
-                            'error'        => $e,
+                            'error'        => ['code' => $e->getCode(), 'message' => $e->getMessage()],
                             'url'          => isset($info['url']) ? $info['url'] : null,
                             'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
                             'info'         => isset($info) ? $info : null,
@@ -449,7 +449,7 @@ class Client {
 
         if (is_array($decoded)) {
             if (array_key_exists('error', $decoded)) {
-                $e = new Exception('В ответе содержится ошибка', (int)$decoded['error']['code']);
+                $e = new Exception(((isset($decoded['error']['message']) && is_scalar($decoded['error']['message'])) ? $decoded['error']['message'] : 'В ответе содержится ошибка'), (int)$decoded['error']['code']);
 
                 /**
                  * $e->setContent нужен для того, чтобы сохранять ошибки от /v2/order/calc-tmp:

@@ -94,7 +94,7 @@ class RequestLogger {
     public function getStatistics() {
         $request = \App::request();
 
-        $data = [
+        return [
             'request_id'  => $this->getId(),
             'request_uri' => $request->getRequestUri(),
             'user_agent'  => $request->server->get('HTTP_USER_AGENT'),
@@ -103,7 +103,5 @@ class RequestLogger {
             'type'        => 'dark',
             'api_queries' => $this->request,
         ];
-
-        return $data;
     }
 }
