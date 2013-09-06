@@ -374,7 +374,7 @@ class CreateAction {
                         'QUERY_STRING',
                         'REQUEST_TIME_FLOAT',
                     ]),
-                    'queries' => \Util\RequestLogger::getInstance()->getStatistics()['api_queries'],
+                    'query'  => \Util\RequestLogger::getInstance()->getStatistics()['api_queries'],
                 ]);
             }
 
