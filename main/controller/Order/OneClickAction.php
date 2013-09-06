@@ -125,8 +125,10 @@ class OneClickAction {
                     ]);
                 }
             } catch (\Exception $e) {
-                \App::logger()->warn($e, ['order']);
+                \App::logger()->error($e, ['order']);
                 \App::exception()->remove($e);
+
+                throw $e;
             }
 
             $orderData = [
@@ -203,6 +205,18 @@ class OneClickAction {
             ]);
         } catch(\Exception $e){
             switch ($e->getCode()) {
+                case 705:
+                    $message = 'Запрошенного количества товара нет в наличии';
+                    if ($e instanceof \Curl\Exception) {
+                        $errorData = $e->getContent();
+                        $availableQuantity = isset($errorData['product_error_list'][0]['quantity_available']) ? (int)$errorData['product_error_list'][0]['quantity_available'] : null;
+                        $message .=
+                            $availableQuantity
+                            ? (': доступно только <strong>' . $availableQuantity . ' шт</strong>.')
+                            : '';
+                    }
+
+                    break;
                 case 400:
                     $message = $e->getMessage();
                     break;
