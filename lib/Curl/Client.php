@@ -49,6 +49,8 @@ class Client {
     public function query($url, array $data = [], $timeout = null) {
         \Debug\Timer::start('curl');
 
+        $startedAt = microtime(true);
+
         $connection = $this->create($url, $data, $timeout);
         $response = curl_exec($connection);
         try {
@@ -56,21 +58,24 @@ class Client {
                 throw new \RuntimeException(curl_error($connection), curl_errno($connection));
             }
             $info = curl_getinfo($connection);
-            if (null === $response) {
-                throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($data)));
-            }
-            $header = $this->header($response, true);
 
             \Util\RequestLogger::getInstance()->addLog(
                 $info['url'],
                 $data,
                 $info['total_time'],
-                (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?')
+                (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?'),
+                $startedAt,
+                microtime(true)
             );
 
             if ($info['http_code'] >= 300) {
                 throw new \RuntimeException('Invalid http code: ' . $info['http_code']);
             }
+
+            if (null === $response) {
+                throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($data)));
+            }
+            $header = $this->header($response, true);
 
             $decodedResponse = $this->decode($response);
             curl_close($connection);
@@ -167,7 +172,8 @@ class Client {
             return;
         }
 
-        $active = null;
+        $startedAt = microtime(true);
+
         $error = null;
         try {
             $absoluteTimeout = microtime(true);
@@ -199,29 +205,26 @@ class Client {
                     $info = curl_getinfo($handler);
                     //$this->logger->debug('Curl response resource: ' . $handler, ['curl']);
                     //$this->logger->debug('Curl response info: ' . $this->encodeInfo($info), ['curl']);
-                    if (curl_errno($handler) > 0) {
-                        $spend = \Debug\Timer::stop('curl');
-                        \Util\RequestLogger::getInstance()->addLog(
-                            $info['url'],
-                            $this->queries[$this->queryIndex[(string)$handler]]['query']['data'],
-                            $info['total_time'],
-                            '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' '
-                        );
-                        throw new \RuntimeException(curl_error($handler), curl_errno($handler));
-                    }
 
                     try {
-                        $content = curl_multi_getcontent($handler);
-                        if (null === $content) {
-                            throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($this->queries[$this->queryIndex[(string)$handler]]['query']['data'])));
+                        if (curl_errno($handler) > 0) {
+                            throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                         }
+
+                        $content = curl_multi_getcontent($handler);
                         $header = $this->header($content, true);
 
                         \Util\RequestLogger::getInstance()->addLog(
                             $info['url'],
                             $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'],
-                            '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?')
+                            '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?'),
+                            $startedAt,
+                            microtime(true)
                         );
+
+                        if (null === $content) {
+                            throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($this->queries[$this->queryIndex[(string)$handler]]['query']['data'])));
+                        }
 
                         unset($this->queries[$this->queryIndex[(string)$handler]]);
 
@@ -242,16 +245,18 @@ class Client {
                         $spend = \Debug\Timer::stop('curl');
 
                         $this->logger->error([
-                            'message' => 'Fail curl',
-                            'error'   => $e,
-                            'url'     => isset($info['url']) ? $info['url'] : null,
-                            'data'    => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
-                            'info'    => isset($info) ? $info : null,
-                            'header'  => isset($header) ? $header : null,
-                            'resonse' => isset($content) ? $content : null,
+                            'message'      => 'Fail curl',
+                            'error'        => $e,
+                            'url'          => isset($info['url']) ? $info['url'] : null,
+                            'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
+                            'info'         => isset($info) ? $info : null,
+                            'header'       => isset($header) ? $header : null,
+                            'resonse'      => isset($content) ? $content : null,
+                            'retryTimeout' => $retryTimeout,
+                            'retryCount'   => $retryCount,
                             //'timeout' => null,
-                            'spend'   => $spend,
-                            'endAt'   => microtime(true),
+                            'spend'        => $spend,
+                            'endAt'        => microtime(true),
                         ], ['curl']);
 
                         $callback = $this->failCallbacks[(string)$handler];
@@ -323,10 +328,11 @@ class Client {
         $spend = \Debug\Timer::stop('curl');
 
         $this->logger->info([
-            'message' => 'End curl executing',
-            'timeout' => $timeout,
-            'spend'   => $spend,
-            'endAt'   => microtime(true),
+            'message'      => 'End curl executing',
+            'retryTimeout' => $retryTimeout,
+            'retryCount'   => $retryCount,
+            'spend'        => $spend,
+            'endAt'        => microtime(true),
         ], ['curl']);
     }
 
