@@ -87,6 +87,13 @@ class IndexAction {
         // выполнение 2-го пакета запросов
         $client->execute();
 
+        $categoryIdByProductId = [];
+        foreach ($productEntities as $key => $productEntity) {
+            if($productEntity->getParentCategory()) {
+                $categoryIdByProductId[$productEntity->getId()] = $productEntity->getParentCategory()->getId();
+            }
+        }
+
         // подготовка 3-го пакета запросов
         $hasAnyoneKit = false;
         $productKitsById = [];
@@ -116,6 +123,7 @@ class IndexAction {
         $page->setParam('cartProductsById', $cartProductsById);
         $page->setParam('cartServicesById', $cartServicesById);
         $page->setParam('productKitsById', $productKitsById);
+        $page->setParam('categoryIdByProductId', $categoryIdByProductId);
 
         return new \Http\Response($page->show());
     }
