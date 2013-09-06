@@ -56,11 +56,11 @@ $debug->add('time.total', sprintf('%s ms', round($appTimer['total'], 3) * 1000),
 
 // add in debug panel properties from class \Config\AppConfig
 $reflection = new ReflectionClass(\App::config());
-$options = '<span style="color: #cccccc;">\Config\AppConfig:</span><br />';
+$options = '<br />';
 foreach ($reflection->getProperties() as $property) {
     $docblock = $property->getDocComment();
     if (false === strpos($docblock, '@hidden')) {
-        $options .= '<li>' . $property->getName() . ': ' . json_encode($property->getValue(\App::config()), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . ' ' . '</li>';
+        $options .= '<li><span style="color: #00ffff">' . $property->getName() . '</span>: ' . json_encode($property->getValue(\App::config()), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . ' ' . '</li>';
     }
 }
 $reflection = null;

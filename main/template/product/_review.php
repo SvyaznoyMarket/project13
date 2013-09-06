@@ -1,4 +1,6 @@
-<? if($review['origin'] != 'enter') { ?>
+<?
+$isEnter = ( 'enter' == $review['origin'] );
+if (!$isEnter) { ?>
   <noindex>
 <? } ?>
 <div class="bReview clearfix productReview">
@@ -39,9 +41,11 @@
       <? if(!empty($review['url']) && $review['type'] == 'pro') { ?>
         </a>
       <? } ?>
+    <? } elseif ($isEnter) { ?>
+        <div class="logoEnter fr"></div>
     <? } ?>
   </div>
 </div>
-<? if($review['origin'] != 'enter') { ?>
+<? if (!$isEnter) { ?>
 </noindex>
 <? } ?>

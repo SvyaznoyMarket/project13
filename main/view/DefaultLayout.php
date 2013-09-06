@@ -83,6 +83,9 @@ class DefaultLayout extends Layout {
             $response = array('content' => '');
         }
 
+        $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
+
+
         return $response['content'];
     }
 
@@ -442,5 +445,14 @@ class DefaultLayout extends Layout {
         return;
     }
 
+
+    public function slotEnterleads()
+    {
+        $routeToken = \App::request()->attributes->get('token');
+        if ('subscribe_friends' == $routeToken) {
+            return '<div id="enterleadsJS" class="jsanalytics" ></div>';
+        }
+        return;
+    }
 
 }

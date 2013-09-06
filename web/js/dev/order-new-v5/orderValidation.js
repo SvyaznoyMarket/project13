@@ -274,8 +274,8 @@
 					deliveryMethod_token: currentDeliveryBox.state,
 					date: currentDeliveryBox.choosenDate().value,
 					interval: [
-						currentDeliveryBox.choosenInterval().start,
-						currentDeliveryBox.choosenInterval().end
+						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().start : '',
+						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : '',
 					],
 					point_id: currentDeliveryBox.choosenPoint().id,
 					products : []
@@ -285,12 +285,18 @@
 					tmpPart.products.push(currentDeliveryBox.products[j].id);
 				}
 
+				console.log(tmpPart);
+
 				parts.push(tmpPart);
 			}
 
 			dataToSend = orderForm.serializeArray();
 			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
 			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
+
+      if ( typeof(window.KM) !== 'undefined' ) {
+				dataToSend.push({ name: 'kiss_session', value: window.KM.i });
+      }
 
 			console.log(dataToSend);
 

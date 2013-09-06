@@ -9295,6 +9295,8 @@
     *display: inline;
   }
   .bBottomBuy {
+    position: relative;
+    z-index: 10;
     clear: both;
     margin: 0 0 20px;
   }
@@ -10416,6 +10418,12 @@
   .mReviewSectionCat {
     margin: 10px 0;
   }
+  .logoEnter {
+    background: url(/css/order/img/orderSprite.png) no-repeat scroll -55px 0 transparent;
+    height: 87px;
+    width: 96px;
+    overflow: hidden;
+  }
 }
 /*---END---СТИЛИ ОТЗЫВОВ---*/
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA------*/
@@ -11233,6 +11241,34 @@
     padding: 0 0 15px;
     font-size: 18px;
   }
+  .bBuyingSteps__eTitle.mPaypal {
+    background: url("/css/bBuyingSteps/img/bPayPalIco.gif") no-repeat 70px 0;
+    padding: 0 100px 11px 0;
+    float: left;
+  }
+  .mPaypalLine {
+    margin: 20px 0;
+  }
+  .mPaypalLine .bPaypalTotal {
+    float: right;
+    width: 270px;
+    font-size: 14px;
+  }
+  .mPaypalLine .bPaypalTotal__eSum {
+    float: right;
+    font-size: 20px;
+  }
+  .mPaypalLine .bPaypalTotal .bPaypalTotalChanged {
+    color: #ffa901;
+    margin: 20px 0 0;
+  }
+  .bPaypalFootnote {
+    padding: 10px 0 0 64px;
+  }
+  .bPaypalFootnote .bPaypalImgIco {
+    display: inline;
+    vertical-align: middle;
+  }
   .bBuyingLineWrap {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -11579,6 +11615,10 @@
   }
   .mPayMethods .bSelectWrap_eText {
     color: #616161;
+  }
+  .ie8 .mPayMethods .bPayMethodAction,
+  .ie8 .mPayMethods .bProcess {
+    display: block;
   }
 }
 @media all {
@@ -11929,6 +11969,7 @@
   .bCorpRegForm .bInputList {
     font-size: 12px;
     padding: 0 0 0 3px;
+    margin: 0 0 10px;
   }
   .bCorpRegForm .bInputList .mCustomCheckbox + .bCustomLabel {
     background: url("/css/leftNav/img/checkBtn.png") 0px 0px no-repeat;

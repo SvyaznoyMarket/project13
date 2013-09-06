@@ -51,7 +51,7 @@ if (!isset($redirect)) $redirect = '';
 		<div class="clear"></div>
 		<a id="hideLoginform" class="font18 dashed" href="#">У меня уже есть логин и пароль</a>
 		<div class="clearfix"><?= $page->render('form-forgot') ?></div>
-		<form id="login-form" method="post" class="form hf" action="<?= $page->url('user.login') ?>" id="login-form">
+		<form id="login-form" method="post" class="form hf" action="<?= $page->url('user.login') ?>">
 			<input type="hidden" value="<?= $redirect ?: $page->url('user.login') ?>" name="redirect_to">
 			<div class="width327 bLoginForm clearfix">
 				<h2 class="bLoginForm_eTitle">У меня есть логин и пароль</h2>
@@ -60,7 +60,7 @@ if (!isset($redirect)) $redirect = '';
 					<input type="text" name="signin[username]" value="" tabindex="1" class="text width315 mb10" id="signin_username" />
 				</div>
 				<div class="pb5">
-					<a class="fr orange underline" href="<?= $page->url('user.forgot') ?>" id="forgot-pwd-trigger">Забыли пароль?</a>
+					<a class="fr orange underline" href="javascript:void(0)" id="forgot-pwd-trigger">Забыли пароль?</a>
 					Пароль:
 				</div>
 				<div class="pb5">

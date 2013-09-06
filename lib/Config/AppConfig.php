@@ -435,6 +435,10 @@ class AppConfig {
         'timeout' => null,
     ];
     /** @var array */
+    public $img3d = [
+        'cmsFolder' => null,
+    ];
+    /** @var array */
     public $tag = [
         'numSidebarCategoriesShown' => null,
     ];

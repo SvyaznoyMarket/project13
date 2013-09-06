@@ -14,7 +14,7 @@
  */
 ?>
 
-<div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
+<?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
     <div id="planner3D" class="bPlanner3D fl" data-cart-sum-url="<?= $page->url('cart.sum') ?>" data-product="<?= $page->json(['id' => $product->getId()]) ?>"></div>

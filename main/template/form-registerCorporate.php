@@ -36,19 +36,16 @@ if (empty($rootCategories)) $rootCategories = [];
         <input type="text" class="bCorpRegForm__eInput" name="register[email]" value="<?= $form->getEmail() ?>" />
         <? if ($error = $form->getError('email')) echo $page->render('_formError', ['error' => $error]) ?>
 
-        <label class="bCorpRegForm__eLabel">Мобильный телефон:</label>
-        <input type="text" class="bCorpRegForm__eInput" name="register[phone]" value="<?= $form->getPhone() ?>" maxlength="11" placeholder="89ХХХХХХХХХ" />
-        <? if ($error = $form->getError('phone')) echo $page->render('_formError', ['error' => $error]) ?>
-
         <div class="bInputList">
             <input type="checkbox" id="subscribeCheck" name="subscribe" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox" checked="checked" hidden />
             <label class="bCustomLabel" for="subscribeCheck">Хочу знать об интересных предложениях</label>
         </div>
 
-        <div class="bCompanyData">
-        <div class="bCompanyDataLink mClose"><span class="bCompanyDataLink__eText">Указать реквизиты:</span></div>
+        <label class="bCorpRegForm__eLabel">Мобильный телефон:</label>
+        <input type="text" class="bCorpRegForm__eInput" name="register[phone]" value="<?= $form->getPhone() ?>" maxlength="11" placeholder="89ХХХХХХХХХ" />
+        <? if ($error = $form->getError('phone')) echo $page->render('_formError', ['error' => $error]) ?>
 
-        <div class="bCompanyDataSection" style="display: none;">
+        <div class="bCompanyDataSection">
             <label class="bCorpRegForm__eLabel m2Line">Организационно правовая форма:</label>
             <select id="corp_select" name="register[corp_form]" class="bCorpRegForm__eSelect">
             <? foreach ($form->getCorpFormSelection() as $value => $name): ?>
@@ -108,7 +105,6 @@ if (empty($rootCategories)) $rootCategories = [];
                 <input type="text" class="bCorpRegForm__eInput" name="register[corp_phone]" />
             <? endif ?>
         </div>
-    </div>
 
     <input type="submit" tabindex="4" value="Регистрация" class="button bigbutton" />
 

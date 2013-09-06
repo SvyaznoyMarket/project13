@@ -12,9 +12,13 @@ class AccessDeniedAction {
         ], ['security']);
 
         if ($request->isXmlHttpRequest()) {
-            return new \Http\Response('', 403);
+            $response = new \Http\Response('', 403);
+        } else {
+            $response = new \Http\RedirectResponse(\App::router()->generate('user.login'));
         }
 
-        return new \Http\RedirectResponse(\App::router()->generate('user.login'));
+        \App::user()->removeToken($response);
+
+        return $response;
     }
 }
