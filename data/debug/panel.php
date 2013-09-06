@@ -83,7 +83,7 @@ if ('live' != \App::$env) {
 
 $requestLogger = \Util\RequestLogger::getInstance();
 $requestData = $requestLogger->getStatistics();
-$requestData = json_decode($requestData, true);
+$requestData = $requestData;
 if (!isset($requestData['api_queries'])) $requestData = ['api_queries' => []];
 $queryString = '';
 foreach ((array)$requestData['api_queries'] as $query) {

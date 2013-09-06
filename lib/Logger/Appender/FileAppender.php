@@ -11,7 +11,7 @@ class FileAppender implements AppenderInterface {
 
     public function dump($messages) {
         foreach ($messages as &$message) {
-            $message = implode(' ', $message);
+            $message = json_encode($message, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         } if (isset($message)) unset($message);
 
         file_put_contents($this->file, PHP_EOL . implode(PHP_EOL, $messages) . PHP_EOL, FILE_APPEND | LOCK_EX);

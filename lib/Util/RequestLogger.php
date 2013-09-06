@@ -83,12 +83,27 @@ class RequestLogger {
     }
 
     public function getStatistics() {
-        $data = ['request_id' => $this->getId(), 'request_uri' => $_SERVER['REQUEST_URI'], 'api_queries' => [], 'total_time' => (microtime(true) - $this->startTime), 'type' => 'dark'];
+        $request = \App::request();
+
+        $data = [
+            'request_id'  => $this->getId(),
+            'request_uri' => $_SERVER['REQUEST_URI'],
+            'user_agent'  => $request->server->get('HTTP_USER_AGENT'),
+            'ip'          => $request->getClientIp(),
+            'total_time'  => (microtime(true) - $this->startTime),
+            'type'        => 'dark',
+            'api_queries' => [],
+        ];
 
         foreach ($this->request as $log) {
-            $data['api_queries'][] = ['host' => $log['host'], 'url' => $log['url'], 'post' => $log['post'], 'time' => $log['time']];
+            $data['api_queries'][] =[
+                'host' => $log['host'],
+                'url'  => $log['url'],
+                'post' => $log['post'],
+                'time' => $log['time']
+            ];
         }
 
-        return json_encode($data);
+        return $data;
     }
 }
