@@ -106,9 +106,10 @@ foreach ($products as $product) {
 <? foreach ($products as $product): ?>
 <?
     $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
+    $categoryId = isset($categoryIdByProductId[$product->getId()]) ? $categoryIdByProductId[$product->getId()] : null;
     if (!$cartProduct) continue;
 ?>
-    <div class="basketline mWrap" ref="<?= $product->getId() ?>">
+    <div class="basketline mWrap" ref="<?= $product->getId() ?>" data-product-id="<?= $product->getId() ?>" data-category-id="<?= $categoryId ?>">
         <div class="basketleft">
             <a href="<?= $product->getLink() ?>">
                 <img src="<?= $product->getImageUrl() ?>" alt="<?= $product->getName() ?>" />
