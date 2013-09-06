@@ -60,24 +60,36 @@ class DefaultLogger implements LoggerInterface {
 
         if ($message instanceof \Exception) {
             $message = [
-                'error' => '#' . $message->getCode() . ' ' . $message->getMessage(),
-                'file'  => $message->getFile() . ' (' . $message->getLine() . ')',
-                'trace' => $message->getTrace(),
+                'error' => [
+                    'code'    => $message->getCode(),
+                    'message' => $message->getMessage(),
+                    'file'    => $message->getFile() . ' (' . $message->getLine() . ')',
+                    'trace'   => $message->getTrace()
+                ],
             ];
         }
 
-        $logData = [
+        $item = [
+            '_id'      => $this->id,
+            '_time'    => date('M d H:i:s'),
+            '_type'    => $this->levelNames[$level],
+            '_tag'     => $tags,
+        ] + (is_array($message) ? $message : ['message' => $message]);
+
+        /*
+        $item = [
+            'id'      => $this->id,
             'time'    => date('M d H:i:s'),
-            //'name'    => $this->name,
-            'name'    => $this->id,
-            'level'   => $this->levelNames[$level],
-            'message' => !is_string($message) ? json_encode($message, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : $message,
+            'type'    => $this->levelNames[$level],
+            'message' => $message,
             'tag'     => (bool)$tags ? ('+' . implode('+', $tags)) : '',
         ];
+        */
+
         if ($this->immediatelyDump) {
-            $this->appender->dump([$logData]);
+            $this->appender->dump([$item]);
         } else {
-            $this->messages[] = $logData;
+            $this->messages[] = $item;
         }
     }
 
