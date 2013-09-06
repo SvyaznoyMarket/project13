@@ -125,6 +125,13 @@ window.ANALYTICS = {
 	//     })(document, window, "yandex_metrika_callbacks");
 	// },
 
+    yaParamsJS : function() {
+        var yap = $('#yaParamsJS').data('vars');
+        if (yap) {
+            window.yaParams = yap;
+        }
+    },
+
     enterleadsJS : function() { // SITE-1911
         (function () {
             try {
