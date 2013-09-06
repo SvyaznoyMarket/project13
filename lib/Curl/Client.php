@@ -49,6 +49,8 @@ class Client {
     public function query($url, array $data = [], $timeout = null) {
         \Debug\Timer::start('curl');
 
+        $startedAt = microtime(true);
+
         $connection = $this->create($url, $data, $timeout);
         $response = curl_exec($connection);
         try {
@@ -56,36 +58,58 @@ class Client {
                 throw new \RuntimeException(curl_error($connection), curl_errno($connection));
             }
             $info = curl_getinfo($connection);
-            //$this->logger->debug('Curl response resource: ' . $connection, ['curl']);
-            //$this->logger->debug('Curl response info: ' . $this->encodeInfo($info), ['curl']);
-            if (null === $response) {
-                throw new \RuntimeException(sprintf('Пустой ответ %s %s', $info['url'], json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
-            }
-            $header = $this->header($response, true);
 
             \Util\RequestLogger::getInstance()->addLog(
                 $info['url'],
                 $data,
                 $info['total_time'],
-                (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?')
+                (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?'),
+                $startedAt,
+                microtime(true)
             );
 
             if ($info['http_code'] >= 300) {
-                $this->logger->error(['action' => __METHOD__, 'curl.info' => $info, 'response.header' => $header, 'response' => $response], ['curl']);
-                throw new \RuntimeException(sprintf('Invalid http code: %d', $info['http_code']));
+                throw new \RuntimeException('Invalid http code: ' . $info['http_code']);
             }
-            //$this->logger->debug('Curl response: ' . $response, ['curl']);
+
+            if (null === $response) {
+                throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($data)));
+            }
+            $header = $this->header($response, true);
+
             $decodedResponse = $this->decode($response);
             curl_close($connection);
 
             $spend = \Debug\Timer::stop('curl');
-            $this->logger->info('End curl ' . $url . ' in ' . $spend, ['curl']);
+            $this->logger->info([
+                'message' => 'End curl',
+                'url'     => $url,
+                'data'    => $data,
+                'info'    => isset($info) ? $info : null,
+                'header'  => isset($header) ? $header : null,
+                'timeout' => $timeout,
+                'spend'   => $spend,
+                'endAt'   => microtime(true),
+            ], ['curl']);
 
             return $decodedResponse;
         } catch (\RuntimeException $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('curl');
-            $this->logger->error('Fail curl ' . $url . ' in ' . $spend . ((bool)$data ? (' ' . $this->encode($data)) : '') . ' response: ' . $this->encode($response) . ' with ' . $e, ['curl']);
+
+            $this->logger->error([
+                'message' => 'Fail curl',
+                'error'   => $e,
+                'url'     => $url,
+                'data'    => $data,
+                'info'    => isset($info) ? $info : null,
+                'header'  => isset($header) ? $header : null,
+                'resonse' => $response,
+                'timeout' => $timeout,
+                'spend'   => $spend,
+                'endAt'   => microtime(true),
+            ], ['curl']);
+
             \App::exception()->add($e);
 
             throw $e;
@@ -106,7 +130,8 @@ class Client {
         }
         $resource = $this->create($url, $data, $timeout);
         if (0 !== curl_multi_add_handle($this->isMultiple, $resource)) {
-            $this->logger->error('Adding multi query error: ' . curl_error($resource), ['curl']);
+            $this->logger->error(['message' => 'Fail query', 'error'   => curl_error($resource),], ['curl']);
+
             return false;
         };
         $this->successCallbacks[(string)$resource] = $successCallback;
@@ -143,11 +168,13 @@ class Client {
     public function execute($retryTimeout = null, $retryCount = 0) {
         \Debug\Timer::start('curl');
         if (!$this->isMultiple) {
-            $this->logger->error('No query to execute', ['curl']);
+            $this->logger->error(['message' => 'No query to execute'], ['curl']);
             return;
         }
 
-        $active = null;
+        $startedAt = microtime(true);
+        $this->logger->info(['message' => 'Curl execute', 'query.count' => count($this->queries)]);
+
         $error = null;
         try {
             $absoluteTimeout = microtime(true);
@@ -179,44 +206,35 @@ class Client {
                     $info = curl_getinfo($handler);
                     //$this->logger->debug('Curl response resource: ' . $handler, ['curl']);
                     //$this->logger->debug('Curl response info: ' . $this->encodeInfo($info), ['curl']);
-                    if (curl_errno($handler) > 0) {
-                        $spend = \Debug\Timer::stop('curl');
-                        \Util\RequestLogger::getInstance()->addLog(
-                            $info['url'],
-                            $this->queries[$this->queryIndex[(string)$handler]]['query']['data'],
-                            $info['total_time'],
-                            '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' '
-                        );
-                        throw new \RuntimeException(curl_error($handler), curl_errno($handler));
-                    }
 
                     try {
-                        $content = curl_multi_getcontent($handler);
-                        if (null === $content) {
-                            throw new \RuntimeException(sprintf('Пустой ответ %s %s %s', $info['url'], json_encode($this->queries[$this->queryIndex[(string)$handler]]['query']['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), json_encode($info, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
+                        if (curl_errno($handler) > 0) {
+                            throw new \RuntimeException(curl_error($handler), curl_errno($handler));
                         }
+
+                        $content = curl_multi_getcontent($handler);
                         $header = $this->header($content, true);
 
                         \Util\RequestLogger::getInstance()->addLog(
                             $info['url'],
                             $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'],
-                            '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?')
+                            '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?'),
+                            $startedAt,
+                            microtime(true)
                         );
+
+                        if (null === $content) {
+                            throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($this->queries[$this->queryIndex[(string)$handler]]['query']['data'])));
+                        }
 
                         unset($this->queries[$this->queryIndex[(string)$handler]]);
 
                         if ($info['http_code'] >= 300) {
-                            $this->logger->error(['action' => __METHOD__, 'curl.info' => $info, 'response.header' => $header, 'response' => $content], ['curl']);
-                            throw new \RuntimeException(sprintf('Invalid http code %d', $info['http_code']));
+                            throw new \RuntimeException('Invalid http code ' . $info['http_code']);
                         }
 
-                        try {
-                            $decodedResponse = $this->decode($content);
-                        } catch (\Exception $e) {
-                            $this->logger->error(['action' => __METHOD__, 'curl.info' => $info, 'response.header' => $header], ['curl']);
-                            throw $e;
-                        }
-                        //$this->logger->debug('Curl response data: ' . $this->encode($decodedResponse), ['curl']);
+                        $decodedResponse = $this->decode($content);
+
                         $callback = $this->successCallbacks[(string)$handler];
                         if (is_callable($callback)) {
                             $callback($decodedResponse, (int)$handler);
@@ -225,8 +243,23 @@ class Client {
                         }
                     } catch (\Exception $e) {
                         \App::exception()->add($e);
-                        $this->logger->error($e, ['curl']);
                         $spend = \Debug\Timer::stop('curl');
+
+                        $this->logger->error([
+                            'message'      => 'Fail curl',
+                            'error'        => $e,
+                            'url'          => isset($info['url']) ? $info['url'] : null,
+                            'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
+                            'info'         => isset($info) ? $info : null,
+                            'header'       => isset($header) ? $header : null,
+                            'resonse'      => isset($content) ? $content : null,
+                            'retryTimeout' => $retryTimeout,
+                            'retryCount'   => $retryCount,
+                            //'timeout' => null,
+                            'spend'        => $spend,
+                            'endAt'        => microtime(true),
+                        ], ['curl']);
+
                         $callback = $this->failCallbacks[(string)$handler];
                         if ($callback) {
                             $callback($e, (int)$handler);
@@ -261,6 +294,11 @@ class Client {
                         foreach ($this->queries as $query) {
                             if (count($query['resources']) >= $retryCount) continue;
                             //$this->logger->debug(microtime(true) . ': посылаю еще один запрос в ядро: ' . $query['query']['url'], ['curl']);
+                            $this->logger->info([
+                                'message' => 'Query retry',
+                                'url'     => $query['query']['url'],
+                                'data'    => $query['query']['data'],
+                            ], ['curl']);
                             $this->addQuery(
                                 $query['query']['url'],
                                 $query['query']['data'],
@@ -285,13 +323,18 @@ class Client {
         $this->resources = [];
         if (!is_null($error)) {
             \App::exception()->add($error);
-            $this->logger->error('Error:' . (string)$error . ' Response: ' . print_r(isset($content) ? $content : null, true), ['curl']);
-            $spend = \Debug\Timer::stop('curl');
-            //throw $error;
+            $this->logger->error(['message' => 'Curl response', 'response' => isset($content) ? $content : null], ['curl']);
         }
 
         $spend = \Debug\Timer::stop('curl');
-        $this->logger->info('End curl executing in ' . $spend, ['curl']);
+
+        $this->logger->info([
+            'message'      => 'End curl executing',
+            'retryTimeout' => $retryTimeout,
+            'retryCount'   => $retryCount,
+            'spend'        => $spend,
+            'endAt'        => microtime(true),
+        ], ['curl']);
     }
 
     /**
@@ -301,7 +344,13 @@ class Client {
      * @return resource
      */
     private function create($url, array $data = [], $timeout = null) {
-        $this->logger->info('Start curl ' . $url . ((bool)$data ? ' ' . $this->encode($data) : '') . ($timeout ? (' timeout: ' . $timeout) : ''), ['curl']);
+        $this->logger->info([
+            'message' => 'Start curl',
+            'url'     => $url,
+            'data'    => $data,
+            'timeout' => $timeout,
+            'startAt' => microtime(true),
+        ], ['curl']);
 
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_HEADER, 1);
@@ -376,34 +425,31 @@ class Client {
         if ($code = json_last_error()) {
             switch ($code) {
                 case JSON_ERROR_DEPTH:
-                    $error = 'Maximum stack depth exceeded';
+                    $message = 'Maximum stack depth exceeded';
                     break;
                 case JSON_ERROR_STATE_MISMATCH:
-                    $error = 'Underflow or the modes mismatch';
+                    $message = 'Underflow or the modes mismatch';
                     break;
                 case JSON_ERROR_CTRL_CHAR:
-                    $error = 'Unexpected control character found';
+                    $message = 'Unexpected control character found';
                     break;
                 case JSON_ERROR_SYNTAX:
-                    $error = 'Syntax error, malformed JSON';
+                    $message = 'Syntax error, malformed JSON';
                     break;
                 case JSON_ERROR_UTF8:
-                    $error = 'Malformed UTF-8 characters, possibly incorrectly encoded';
+                    $message = 'Malformed UTF-8 characters, possibly incorrectly encoded';
                     break;
                 default:
-                    $error = 'Unknown error';
+                    $message = 'Unknown error';
                     break;
             }
-            $e = new \RuntimeException(sprintf('Json error: "%s", Response: "%s"', $error, $response), $code);
-            throw $e;
+
+            throw new \RuntimeException($message, $code);
         }
 
         if (is_array($decoded)) {
             if (array_key_exists('error', $decoded)) {
-                $e = new Exception(
-                    $this->encode($decoded),
-                    (int)$decoded['error']['code']
-                );
+                $e = new Exception('В ответе содержится ошибка', (int)$decoded['error']['code']);
 
                 /**
                  * $e->setContent нужен для того, чтобы сохранять ошибки от /v2/order/calc-tmp:
@@ -420,26 +466,5 @@ class Client {
         }
 
         return $decoded;
-    }
-
-    /**
-     * @param array $data
-     * @return string
-     */
-    private function encode($data) {
-        return json_encode($data, JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * @param array $info
-     * @return string
-     */
-    private function encodeInfo($info) {
-        return $this->encode(array_intersect_key($info, array_flip([
-            'content_type', 'http_code', 'header_size', 'request_size',
-            'redirect_count', 'total_time', 'namelookup_time', 'connect_time', 'pretransfer_time', 'size_upload',
-            'size_download', 'speed_download',
-            'starttransfer_time', 'redirect_time', 'certinfo', 'redirect_url'
-        ])));
     }
 }

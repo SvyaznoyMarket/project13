@@ -77,18 +77,33 @@ class RequestLogger {
      * @param array $postData
      * @param string $time
      * @param $host
+     * @param float $startAt
+     * @param float $endAt
      */
-    public function addLog($url, $postData, $time, $host) {
-        $this->request[] = ['time' => $time, 'host' => $host, 'url' => str_replace(["\r", "\n"], '', $url), 'post' => $postData];
+    public function addLog($url, $postData, $time, $host, $startAt = null, $endAt = null) {
+        $this->request[] = [
+            'host'  => $host,
+            'url'   => str_replace(["\r", "\n"], '', $url),
+            'post'  => $postData,
+            'time'  => $time,
+            'start' => $startAt,
+            'end'   => $endAt,
+        ];
     }
 
     public function getStatistics() {
-        $data = ['request_id' => $this->getId(), 'request_uri' => $_SERVER['REQUEST_URI'], 'api_queries' => [], 'total_time' => (microtime(true) - $this->startTime), 'type' => 'dark'];
+        $request = \App::request();
 
-        foreach ($this->request as $log) {
-            $data['api_queries'][] = ['host' => $log['host'], 'url' => $log['url'], 'post' => $log['post'], 'time' => $log['time']];
-        }
+        $data = [
+            'request_id'  => $this->getId(),
+            'request_uri' => $request->getRequestUri(),
+            'user_agent'  => $request->server->get('HTTP_USER_AGENT'),
+            'ip'          => $request->getClientIp(),
+            'total_time'  => (microtime(true) - $this->startTime),
+            'type'        => 'dark',
+            'api_queries' => $this->request,
+        ];
 
-        return json_encode($data);
+        return $data;
     }
 }
