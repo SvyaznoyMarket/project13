@@ -173,6 +173,7 @@ class Client {
         }
 
         $startedAt = microtime(true);
+        $this->logger->info(['message' => 'Curl execute', 'query.count' => count($this->queries)]);
 
         $error = null;
         try {
