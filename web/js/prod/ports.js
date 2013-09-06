@@ -125,6 +125,13 @@ window.ANALYTICS = {
 	//     })(document, window, "yandex_metrika_callbacks");
 	// },
 
+    yaParamsJS : function() {
+        var yap = $('#yaParamsJS').data('vars');
+        if (yap) {
+            window.yaParams = yap;
+        }
+    },
+
     enterleadsJS : function() { // SITE-1911
         (function () {
             try {
@@ -526,10 +533,6 @@ window.ANALYTICS = {
 	testFreak : function() {
 		document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
 	},
-
-  pluso: function() {
-    if (window.pluso) if (typeof window.pluso.start == "function") return; var d = document, s = d.createElement('script'), g = 'getElementsByTagName'; s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true; s.src = ('https:' == window.location.protocol ? 'https' : 'http') + '://share.pluso.ru/pluso-like.js'; var h=d[g]('head')[0] || d[g]('body')[0]; h.appendChild(s);
-  },
 
 	enable : true
 }
