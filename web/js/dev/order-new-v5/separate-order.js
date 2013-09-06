@@ -118,7 +118,7 @@
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					new DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
+					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
 				}
 			}
 		}
@@ -179,7 +179,7 @@
 
 			if ( unwrapVal ) {
 				// create map
-				map = new CreateMap('pointPopupMap', global.OrderModel.popupWithPoints().points, $('#mapInfoBlock'));
+				map = new global.ENTER.constructors.CreateMap('pointPopupMap', global.OrderModel.popupWithPoints().points, $('#mapInfoBlock'));
 
 				$(element).lightbox_me({
 					centered: true,
@@ -220,6 +220,41 @@
 		}
 	};
 
+	/**
+	 * Кастомный бинд для смены недель, анимирование слайдера
+	 */
+	ko.bindingHandlers.calendarSlider = {
+		update: function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext ) {
+			var slider = $(element),
+				nowLeft = valueAccessor(),
+
+				dateItem = slider.find('.bBuyingDatesItem'),
+				dateItemW = dateItem.width() + parseInt(dateItem.css('marginRight'), 10) + parseInt(dateItem.css('marginLeft'), 10);
+			// end of vars
+
+			slider.width(dateItem.length * dateItemW);
+
+			if ( nowLeft > 0 ) {
+				nowLeft -= 380;
+				bindingContext.box.calendarSliderLeft(nowLeft);
+
+				return;
+			}
+
+			if ( nowLeft < -slider.width() ) {
+				nowLeft += 380;
+				bindingContext.box.calendarSliderLeft(nowLeft);
+
+				return;
+			}
+
+			slider.animate({'left': nowLeft});
+		}
+	};
+
+	/**
+	 * Кастомынй бинд отображения и смены купонов
+	 */
 	ko.bindingHandlers.couponsVisible = {
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
@@ -677,6 +712,9 @@
 	/**
 	 * ===  END ORDER MODEL ===
 	 */
+	
+
+
 
 		/**
 		 * Показ сообщений об ошибках
@@ -837,7 +875,7 @@
 
 			console.info('Данные с сервера получены');
 
-			global.OrderModel.orderDictionary = new OrderDictionary(res);
+			global.OrderModel.orderDictionary = new global.ENTER.constructors.OrderDictionary(res);
 
 			if ( res.paypalECS ) {
 				console.info('paypal true');
