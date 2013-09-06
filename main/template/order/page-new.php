@@ -430,7 +430,7 @@ foreach (array_reverse($productsById) as $product) {
                             			css: { mConfirm : ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) ) }"
                         ></a>
 
-                        <!-- Сообщение о редиректе на сайт PayPal --><div class="bPaypalFootnote" data-bind="visible: ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) )">Вы будете перенаправлены на сайт <img class="bPaypalImgIco" src="/css/bBuyingSteps/img/bPayPalIcoSmall.gif" /></div><!-- Сообщение о редиректе на сайт PayPal -->
+                        <!-- Сообщение о редиректе на сайт PayPal <div class="bPaypalFootnote" data-bind="visible: ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) )">Вы будете перенаправлены на сайт <img class="bPaypalImgIco" src="/css/bBuyingSteps/img/bPayPalIcoSmall.gif" /></div> -->
 					</div>
 				</div>
 			</div>

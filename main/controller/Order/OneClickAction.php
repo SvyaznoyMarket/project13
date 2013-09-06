@@ -104,7 +104,34 @@ class OneClickAction {
                 if ($userEntity && $userEntity->getToken()) {
                     $params['token'] = $userEntity->getToken();
                 }
-                $result = \App::coreClientV2()->query('order/create', $params, $data);
+
+                try {
+                    $result = \App::coreClientV2()->query('order/create', $params, $data);
+                } catch (\Exception $e) {
+                    if (!in_array($e->getCode(), [705, 708, 800])) {
+                        \App::logger('order')->error([
+                            'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
+                            'url'     => 'order/create' . ((bool)$params ? ('?' . http_build_query($params)) : ''),
+                            'data'    => $data,
+                            'request' => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
+                                'HTTP_USER_AGENT',
+                                'HTTP_ACCEPT',
+                                'HTTP_ACCEPT_LANGUAGE',
+                                'HTTP_ACCEPT_ENCODING',
+                                'HTTP_X_REQUESTED_WITH',
+                                'HTTP_REFERER',
+                                'HTTP_COOKIE',
+                                'REQUEST_METHOD',
+                                'QUERY_STRING',
+                                'REQUEST_TIME_FLOAT',
+                            ]),
+                            'query'  => \Util\RequestLogger::getInstance()->getStatistics()['api_queries'],
+                        ]);
+                    }
+
+                    throw $e;
+                }
+
                 $orderNumber = !empty($result['number']) ? (string)$result['number'] : null;
                 if (!$orderNumber) {
                     throw new \Exception(sprintf('Не получен номер заказа. Ответ ядра: %s', json_encode($result, JSON_UNESCAPED_UNICODE)));
@@ -125,8 +152,10 @@ class OneClickAction {
                     ]);
                 }
             } catch (\Exception $e) {
-                \App::logger()->warn($e, ['order']);
+                \App::logger()->error($e, ['order']);
                 \App::exception()->remove($e);
+
+                throw $e;
             }
 
             $orderData = [
@@ -203,6 +232,18 @@ class OneClickAction {
             ]);
         } catch(\Exception $e){
             switch ($e->getCode()) {
+                case 705:
+                    $message = 'Запрошенного количества товара нет в наличии';
+                    if ($e instanceof \Curl\Exception) {
+                        $errorData = $e->getContent();
+                        $availableQuantity = isset($errorData['product_error_list'][0]['quantity_available']) ? (int)$errorData['product_error_list'][0]['quantity_available'] : null;
+                        $message .=
+                            $availableQuantity
+                            ? (': доступно только <strong>' . $availableQuantity . ' шт</strong>.')
+                            : '';
+                    }
+
+                    break;
                 case 400:
                     $message = $e->getMessage();
                     break;

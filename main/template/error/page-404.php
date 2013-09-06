@@ -28,8 +28,8 @@
                 <a class='bOrangeButton' href onclick="document.getElementById('searchForm').submit(); return false;">Найти</a>
             </form>
             <br>
-            <span>или позвоните нам в Контакт-сENTER <b>8 (800) 700 00 09</b><br> Звонок бесплатный. Радость в подарок.</span><br><br>
-            <a class='bBigOrangeButton' href='/'>Перейти на главную</a>
+            <span>или позвоните нам в&nbsp;Контакт-сENTER <b>8 (800) 700 00 09</b><br> Звонок бесплатный. Радость в&nbsp;подарок.</span><br><br>
+            <a class='bBigOrangeButton' href='/'>Перейти на&nbsp;главную</a>
         </div>
     </td>
 </table>

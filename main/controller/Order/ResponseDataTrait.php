@@ -23,7 +23,13 @@ trait ResponseDataTrait {
         $productDataById = [];
         if ($exception instanceof \Curl\Exception) {
             $errorData = (array)$exception->getContent();
-            $errorData = isset($errorData['product_error_list']) ? (array)$errorData['product_error_list'] : [];
+            if (isset($errorData['product_error_list'])) {
+                $errorData =  (array)$errorData['product_error_list'];
+            } else if (isset($errorData['detail']['product_error_list'])) {
+                $errorData =  (array)$errorData['detail']['product_error_list'];
+            } else {
+                $errorData = [];
+            }
 
             $quantitiesByProduct = [];
             foreach ($errorData as $errorItem) {
@@ -34,7 +40,7 @@ trait ResponseDataTrait {
                 $errorItem = array_merge(['code' => 0, 'message' => 'Неизвестная ошибка', 'id' => null], $errorItem);
 
                 switch ($errorItem['code']) {
-                    case 708:
+                    case 705: case 708:
                         $quantity = isset($errorItem['quantity_available']) ? $errorItem['quantity_available'] : 0;
                         $quantitiesByProduct[(int)$errorItem['id']] = $errorItem['quantity_available'];
                         $errorItem['message'] = !empty($quantity) ? sprintf('Доступно только %s шт.', $quantity) : $errorItem['message'];

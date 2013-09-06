@@ -9,7 +9,7 @@
 $list = [];
 
 $active = $productSorting->getActive();
-$activeUrl = $page->helper->replacedUrl(array('sort' => implode('-', array($active['name'], $active['direction']))));
+$activeUrl = $page->helper->replacedUrl(array('sort' => implode('-', [$active['name'], $active['direction']])));
 if(!preg_match('/.*scrollTo=.*/', $activeUrl)) {
     $activeUrl .= preg_match('/.*\?.*/', $activeUrl) ? '&' : '?';
     $activeUrl .= 'scrollTo='.$scrollTo;
@@ -19,7 +19,7 @@ foreach ($productSorting->getAll() as $item)
 {
     if ($active['name'] == $item['name'] && $active['direction'] == $item['direction']) continue;
 
-    $url = $page->helper->replacedUrl(array('page' => '1', 'sort' => implode('-', array($item['name'], $item['direction']))));
+    $url = $page->helper->replacedUrl(array('page' => '1', 'sort' => implode('-', [$item['name'], $item['direction']])));
     if(!preg_match('/.*scrollTo=.*/', $url)) {
         $url .= preg_match('/.*\?.*/', $url) ? '&' : '?';
         $url .= 'scrollTo='.$scrollTo;
@@ -31,7 +31,7 @@ foreach ($productSorting->getAll() as $item)
 
 <!-- Filter -->
 
-    <li id="sorting" class="last" data-sort="<?= implode('-', array($active['name'], $active['direction'])) ?>">
+    <li id="sorting" class="last" data-sort="<?= $active['url'] ?>">
         <div class="filter-section__title">Сортировать</div>
         <div class="filter-section__value">
             <a href="<?= $active['url'] ?>"><?= $active['title'] ?></a>
