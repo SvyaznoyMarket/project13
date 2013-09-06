@@ -77,7 +77,7 @@
 ;(function( global ) {
 	var _gaq = global._gaq || [],
 
-		startTime = new Date().getTime(),
+		jsStartTime = new Date().getTime(),
 
 		knockoutUrl = '',
 		optimizelyUrl = '//cdn.optimizely.com/js/204544654.js',
@@ -128,6 +128,7 @@
 				return false;
 			}
 
+			data.templateType = templateType;
 			data.pageID = data.pageID || document.body.getAttribute('data-id');
 
 			$.ajax({
@@ -135,6 +136,24 @@
 				global: false,
 				url: '/log-json',
 				data: data
+			});
+		},
+
+		logTimeAfterOurScript = function logTimeAfterOurScript() {
+			global.ENTER.config.partnerJsStartTime = new Date().getTime();
+
+			logError({
+				event: 'our js time',
+				time: global.ENTER.config.partnerJsStartTime - jsStartTime
+			});
+		},
+
+		logTimeAfterPartnerScript = function logTimeAfterPartnerScript() {
+			global.ENTER.config.partnerJsEndTime = new Date().getTime();
+
+			logError({
+				event: 'partner script time',
+				time: global.ENTER.config.partnerJsEndTime - global.ENTER.config.partnerJsStartTime
 			});
 		},
 
@@ -215,11 +234,18 @@
 	/**
 	 * Логирование открытие страницы и старта загрузки скриптов
 	 */
-	if ( pageConfig.jsonLog ) {
-		logError({
-					event: 'page_load'
-				});
-	}
+	logError({
+		event: 'page_load'
+	});
+
+	/**
+	 * Логирование времени до начала работы JS
+	 */
+	logError({
+		event: 'html time before js',
+		time: jsStartTime - window.htmlStartTime
+	});
+
 
 	// Если продуктивный режим - заглушить консоль
 	if ( !debug ) {
@@ -238,7 +264,8 @@
 
 	extendApp('ENTER.config');
 	global.ENTER.config.debug = debug;
-	global.ENTER.config.startTime = startTime;
+	global.ENTER.config.jsStartTime = jsStartTime;
+	global.ENTER.config.htmlStartTime = window.htmlStartTime;
 	global.ENTER.config.pageConfig = pageConfig;
 
 	extendApp('ENTER.constructors');
@@ -271,7 +298,8 @@
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
 					.wait()
-					.script( getWithVersion('common.js') );
+					.script( getWithVersion('common.js') )
+					.script( logTimeAfterOurScript );
 			}).runQueue();
 		},
 
@@ -283,10 +311,12 @@
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('main.js') )
 					.wait()
+					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
-					.script( getWithVersion('ports.js') );
+					.script( getWithVersion('ports.js') )
+					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
 
@@ -297,10 +327,12 @@
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
+					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
-					.script( getWithVersion('ports.js') );
+					.script( getWithVersion('ports.js') )
+					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
 
@@ -312,10 +344,12 @@
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('infopage.js') )
 					.wait()
+					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
-					.script( getWithVersion('ports.js') );
+					.script( getWithVersion('ports.js') )
+					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
 
@@ -330,10 +364,12 @@
 					.wait()
 					.script( getWithVersion('cart.js') )
 					.wait()
+					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
-					.script( getWithVersion('ports.js') );
+					.script( getWithVersion('ports.js') )
+					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
 
@@ -349,10 +385,12 @@
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new.js') )
 						.wait()
+						.script( logTimeAfterOurScript )
 						.script( optimizelyUrl )
 						.script('adfox.asyn.code.ver3.min.js')
 						.wait()
-						.script( getWithVersion('ports.js') );
+						.script( getWithVersion('ports.js') )
+						.script( logTimeAfterPartnerScript );
 				}).runQueue();
 		},
 
@@ -366,7 +404,8 @@
 						.script( directCreditUrl )
 						.wait()
 						.script( getWithVersion('common.js') )
-						.script( getWithVersion('order-new-v5.js') );
+						.script( getWithVersion('order-new-v5.js') )
+						.script( logTimeAfterOurScript );
 				}).runQueue();
 		},
 
@@ -378,10 +417,12 @@
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('order.js') )
 					.wait()
+					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
-					.script( getWithVersion('ports.js') );
+					.script( getWithVersion('ports.js') )
+					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
 
@@ -394,7 +435,9 @@
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('order.js') )
 					.wait()
-					.script( optimizelyUrl );
+					.script( logTimeAfterOurScript )
+					.script( optimizelyUrl )
+					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
 
@@ -406,10 +449,12 @@
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('pandora.js') )
 					.wait()
+					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
-					.script( getWithVersion('ports.js') );
+					.script( getWithVersion('ports.js') )
+					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
 
@@ -426,10 +471,12 @@
 						.script( getWithVersion('product.js') )
 						.script( getWithVersion('oneclick.js') )
 						.wait()
+						.script( logTimeAfterOurScript )
 						.script( optimizelyUrl )
 						.script('adfox.asyn.code.ver3.min.js')
 						.wait()
-						.script( getWithVersion('ports.js') );
+						.script( getWithVersion('ports.js') )
+						.script( logTimeAfterPartnerScript );
 				}).runQueue();
 		},
 
@@ -440,10 +487,12 @@
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
+					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
-					.script( getWithVersion('ports.js') );
+					.script( getWithVersion('ports.js') )
+					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
 
@@ -458,7 +507,9 @@
 						.wait()
 						.script('tour.min.js')
 						.wait()
-						.script( optimizelyUrl );
+						.script( logTimeAfterOurScript )
+						.script( optimizelyUrl )
+						.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
 
@@ -475,10 +526,12 @@
 						.script( getWithVersion('product.js') )
 						.script( getWithVersion('oneclick.js') )
 						.wait()
+						.script( logTimeAfterOurScript )
 						.script( optimizelyUrl )
 						.script('adfox.asyn.code.ver3.min.js')
 						.wait()
 						.script( getWithVersion('ports.js') )
+						.script( logTimeAfterPartnerScript );
 				}).runQueue();
 		}
 	}
