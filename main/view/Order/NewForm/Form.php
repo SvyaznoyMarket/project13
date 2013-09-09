@@ -97,13 +97,13 @@ class Form implements \JsonSerializable {
             try {
                 foreach ($this->jsonDecodeAssoc($data['part']) as $partData) {
                     if (!is_array($partData)) {
-                        \App::logger()->error(sprintf('Неправильные данные для подзаказа %s', json_encode($partData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                        \App::logger()->error(['message' => 'Неправильные данные для подзаказа', 'partData' => $partData], ['order']);
                         continue;
                     }
                     $this->addPart(new PartField($partData));
                 }
             } catch (\Exception $e) {
-                \App::logger()->error(sprintf('Невалидные части заказа %s', json_encode($data['part'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => '', 'part' => $data['part']], ['order']);
             }
         }
         if (array_key_exists('delivery_type_id', $data))       $this->setDeliveryTypeId($data['delivery_type_id']);
