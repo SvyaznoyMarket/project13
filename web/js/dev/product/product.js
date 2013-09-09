@@ -56,21 +56,6 @@ $(document).ready(function() {
 			document.location.href = url;
 		}
 	});
-	
-
-	/**
-	 * Затемнение всех контролов после добавления в корзину
-	 *
-	 * @requires jQuery
-	 */
-	(function() {
-		var afterBuy = function afterBuy() {
-			$('.bCountSection').addClass('mDisabled').find('input').attr('disabled','disabled');
-			$('.jsOrder1click').addClass('mDisabled');
-		};
-
-		$('body').bind('addtocart', afterBuy);
-	})();
 
 
 	/**

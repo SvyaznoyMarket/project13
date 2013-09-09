@@ -10427,60 +10427,46 @@
 /*---END---СТИЛИ ОТЗЫВОВ---*/
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA------*/
 @media all {
-  .logo-section {
-    background: url("/css/pandoraCatalog/img/pandora_logo.gif") no-repeat 370px 2px;
-    font-size: 20px;
-    font-family: 'Enter Type';
-    text-transform: uppercase;
-    padding: 12px 0 0 20px;
-    margin: 0 0 25px;
-  }
-  .brand-nav {
+  .bBrandNavList {
+    width: 100%;
     border-top: 2px solid #EDEDED;
   }
-  .brand-nav .brand-nav__list {
-    width: 100%;
-  }
-  .brand-nav .brand-nav__list tr td {
-    font-size: 16px;
-    font-family: 'Enter Type';
+  .bBrandNavList__eCell {
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
     text-transform: uppercase;
     border-right: 1px solid #EDEDED;
-    text-align: center;
+    font-family: 'Enter Type';
+    font-size: 16px;
   }
-  .brand-nav .brand-nav__list tr td:last-child {
+  .bBrandNavList__eCell:last-child {
     border: none;
   }
-  .brand-nav .brand-nav__list tr td a {
+  .bBrandNavList__eLink {
     display: block;
-    line-height: 50px;
-  }
-  .brand-nav .brand-nav__list .row_2line a {
-    padding-top: 8px;
-    padding-bottom: 6px;
-    line-height: 18px;
   }
   .items-section {
-    margin: 0 0 30px;
-    top: -4px;
     position: relative;
     z-index: 1;
+    top: -4px;
+    margin: 0 0 30px;
   }
   .items-section .items-section__list {
     border-top: 1px solid #f9f9f9;
   }
   .items-section .items-section__list li {
-    width: 240px;
     float: left;
+    width: 240px;
     height: 240px;
   }
   .items-section .items-section__list li .item-price {
-    position: absolute;
-    bottom: 0;
-    left: 80px;
     -webkit-transition: left 0 ease-in-out;
     -moz-transition: left 0 ease-in-out;
     transition: left 0 ease-in-out;
+    position: absolute;
+    bottom: 0;
+    left: 80px;
     -webkit-backface-visibility: hidden;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   }
@@ -10499,8 +10485,8 @@
     text-align: center;
   }
   .items-section .items-section__list li:hover .goodsbox {
-    border: 1px solid #AAAAAA;
     z-index: 10;
+    border: 1px solid #AAAAAA;
   }
   .items-section .items-section__list li:hover .item-name {
     -moz-opacity: 1;
@@ -10519,10 +10505,10 @@
     filter: alpha(opacity=100);
   }
   .items-section .items-section__list li:hover .item-price {
-    left: 0;
     -webkit-transition: left 0.1s ease-in-out;
     -moz-transition: left 0.1s ease-in-out;
     transition: left 0.1s ease-in-out;
+    left: 0;
     -webkit-backface-visibility: hidden;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   }
@@ -10533,30 +10519,30 @@
   }
   .banner-categories .banner-categories__img {
     position: absolute;
+    z-index: 1;
     top: 0;
     left: 0;
-    z-index: 1;
   }
   .banner-categories .banner-categories__title {
-    font-size: 48px;
-    font-family: 'Enter Type';
-    text-transform: uppercase;
-    padding: 95px 0 0 15px;
     position: relative;
     z-index: 2;
+    padding: 95px 0 0 15px;
+    text-transform: uppercase;
+    font-family: 'Enter Type';
+    font-size: 48px;
   }
   .brand-subnav {
-    border-bottom: 2px solid #5E5E5E;
-    text-transform: uppercase;
-    padding: 0 5px;
     margin: 7px 10px 10px;
+    padding: 0 5px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #5E5E5E;
   }
   .brand-subnav .brand-subnav__title {
+    float: left;
+    margin-top: 3px;
     color: #5E5E5E;
     font-family: 'Enter Type';
     font-size: 16px;
-    float: left;
-    margin-top: 3px;
   }
   .brand-subnav .brand-subnav__list {
     float: right;
@@ -10564,29 +10550,29 @@
   }
   .brand-subnav .brand-subnav__list li {
     float: left;
+    margin: 3px 5px 2px 0;
     font-family: Tahoma;
     font-size: 11px;
-    margin: 3px 5px 2px 0;
   }
   .brand-subnav .brand-subnav__list li a {
     display: block;
     padding: 0 7px;
-    line-height: 18px;
     border: 1px solid #fff;
+    line-height: 18px;
   }
   .brand-subnav .brand-subnav__list li a:hover,
   .brand-subnav .brand-subnav__list li .active {
-    background: #D7D7D7;
-    border: 1px solid #5E5E5E;
     text-decoration: none;
     color: #000;
+    border: 1px solid #5E5E5E;
+    background: #D7D7D7;
   }
   .filter-section {
-    margin: 0;
-    font-family: tahoma;
-    background: url("/css/pandoraCatalog/img/bg_items_list.png") repeat-x 0 100%;
-    z-index: 2;
     position: relative;
+    z-index: 2;
+    margin: 0;
+    background: url("/css/pandoraCatalog/img/bg_items_list.png") repeat-x 0 100%;
+    font-family: tahoma;
   }
   .filter-section ul {
     padding: 0 0 0 15px;
@@ -10601,17 +10587,17 @@
     margin-right: 20px;
   }
   .filter-section .filter-section__title {
+    margin: 0 0 2px;
     color: #A6A6A6;
     font-family: Tahoma;
-    margin: 0 0 2px;
   }
   .filter-section .filter-section__value {
     position: relative;
   }
   .filter-section .filter-section__value a {
-    background: url("/css/pandoraCatalog/img/categories_corner.gif") no-repeat 100% 7px;
-    text-decoration: underline;
     padding-right: 11px;
+    text-decoration: underline;
+    background: url("/css/pandoraCatalog/img/categories_corner.gif") no-repeat 100% 7px;
   }
   .filter-section .filter-section__value a:hover {
     text-decoration: none;
@@ -10620,26 +10606,26 @@
     -webkit-box-shadow: 0px 0px 5px #bbbbbb;
     -moz-box-shadow: 0px 0px 5px #bbbbbb;
     box-shadow: 0px 0px 5px #bbbbbb;
-    background: #ffffff;
-    border: 1px solid #aeaeae;
-    display: none;
-    left: -10px;
-    width: 100%;
-    padding-bottom: 7px;
     position: absolute;
-    top: 17px;
     z-index: 100;
-    padding-left: 0;
+    top: 17px;
+    left: -10px;
+    display: none;
+    width: 100%;
     width: 145px;
+    padding-bottom: 7px;
+    padding-left: 0;
+    border: 1px solid #aeaeae;
+    background: #ffffff;
   }
   .filter-section .filter-section__value .filter-section__value__dd li {
-    padding: 5px 0 5px 10px;
     float: none;
     margin: 0;
+    padding: 5px 0 5px 10px;
   }
   .filter-section .filter-section__value .filter-section__value__dd li a {
-    background: none;
     padding: 0;
+    background: none;
   }
   .filter-section li.last .filter-section__value__dd {
     left: -92px;
@@ -10649,12 +10635,12 @@
     display: block;
   }
   .filter-section .reset_filters {
-    margin-top: -3px;
     display: inline-block;
-    border: 1px solid #444;
+    margin-top: -3px;
     padding: 3px;
-    border-radius: 4px;
     text-align: center;
+    border: 1px solid #444;
+    border-radius: 4px;
   }
   .filter-section .reset_filters:hover a {
     text-decoration: none!important;
@@ -10687,14 +10673,14 @@
     margin-right: 20px;
   }
   .brandSectionPandora__catalog .goodsbox {
-    padding: 0;
-    margin: 0;
+    position: relative;
     width: 218px;
-    border: 1px solid #f9f9f9;
     height: 220px;
     min-height: 220px;
+    margin: 0;
+    padding: 0;
     padding: 7px 10px 10px;
-    position: relative;
+    border: 1px solid #f9f9f9;
     border-top: 1px solid #ffffff;
     border-left: 1px solid #ffffff;
   }
@@ -10708,24 +10694,18 @@
     display: none;
   }
   .brandSectionPandora__catalog .goodsbox__inner {
-    margin: 0;
-    padding: 0;
-    position: relative;
-    box-shadow: none;
-    border: none !important;
-    width: 218px;
-    height: 221px;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
+    position: relative;
+    width: 218px;
+    height: 221px;
+    margin: 0;
+    padding: 0;
+    border: none !important;
+    box-shadow: none;
   }
   .brandSectionPandora__catalog .goodsbox__inner .btnBuy__eLink {
-    width: auto;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background: #000;
-    color: #ffffff;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -10735,26 +10715,32 @@
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    text-align: center;
-    line-height: 21px;
-    display: block;
-    height: 23px;
-    padding: 0 10px;
-    text-shadow: none;
     -webkit-transition: opacity 0.1s ease-in-out;
     -moz-transition: opacity 0.1s ease-in-out;
     transition: opacity 0.1s ease-in-out;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: block;
+    width: auto;
+    height: 23px;
+    padding: 0 10px;
+    text-align: center;
+    text-indent: 0;
+    color: #ffffff;
     border: 1px solid #000;
+    background: #000;
+    text-shadow: none;
     font: normal 12px tahoma, verdana, arial, helvetica, sans-serif;
     line-height: 21px;
-    text-indent: 0;
+    line-height: 21px;
   }
   .brandSectionPandora__catalog .goodsbox__inner .btnBuy__eLink.mBought {
-    background: #fff;
-    border: 1px solid #000;
-    color: #000;
-    height: 21px;
     width: auto;
+    height: 21px;
+    color: #000;
+    border: 1px solid #000;
+    background: #fff;
   }
   .brandSectionPandora__catalog .bNavLoader__eIco {
     background: url("/css/ajaxPopup/img/arrow_bg_b.png") no-repeat;
@@ -11615,8 +11601,8 @@
   .mPayMethods .bSelectWrap_eText {
     color: #616161;
   }
-  .ie8 .mPayMethods .bPayMethodAction,
-  .ie8 .mPayMethods .bProcess {
+  .lt-ie8 .mPayMethods .bPayMethodAction,
+  .lt-ie8 .mPayMethods .bProcess {
     display: block;
   }
 }
