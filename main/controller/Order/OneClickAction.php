@@ -248,7 +248,7 @@ class OneClickAction {
                     $message = $e->getMessage();
                     break;
                 case 735:
-                    $message = 'Невалидный номер карты Связного клуба';
+                    $message = 'Невалидный номер карты &laquo;Связного клуба&raquo;';
                     break;
                 default:
                     $message = 'Не удалось создать заказ';
