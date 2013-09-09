@@ -357,7 +357,7 @@ class CreateAction {
         try {
             $result = \App::coreClientV2()->query('order/create-packet', $params, $data);
         } catch(\Exception $e) {
-            if (!in_array($e->getCode(), [705, 708, 800])) {
+            if (!in_array($e->getCode(), [705, 708, 735, 800])) {
                 \App::logger('order')->error([
                     'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
                     'url'     => 'order/create-packet' . ((bool)$params ? ('?' . http_build_query($params)) : ''),
