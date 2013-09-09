@@ -31,11 +31,21 @@ class Img3dImportAction {
         $noOutFilesCount = 0;
 
         foreach (scandir($pathToData) as $inJsonFile) {
+            if(in_array($inJsonFile, ['.','..'])) continue;
             $inJsonFilePath = $pathToData . $inJsonFile;
-            $outJsonFilePath = $pathToCms . $inJsonFile;
+            $inJsonFilenameParts = explode('_', $inJsonFile);
+            $productId = empty($inJsonFilenameParts) ? null : reset($inJsonFilenameParts);
+            $outJsonFilePath = $productId ? $pathToCms . $productId . '.json' : null;
 
-            if (is_file(($inJsonFilePath)) && file_exists($inJsonFilePath)) {
+            if (is_file(($inJsonFilePath)) && $productId) {
+                print 'Copying from: ' . $inJsonFilePath . PHP_EOL;
+                print 'Copying to: ' . $outJsonFilePath . PHP_EOL;
                 $inFilesCount++;
+
+                if($outJsonFilePath && !file_exists($outJsonFilePath)) {
+                    touch($outJsonFilePath);
+                }
+
                 if(file_exists($outJsonFilePath)) {
                     try {
                         $inJson = file_get_contents($inJsonFilePath);
@@ -45,16 +55,15 @@ class Img3dImportAction {
                             /** @var  $productJson array */
                             $inProductJson = json_decode($inJson, true);
                             $outProductJson = json_decode($outJson, true);
+                            if (!isset($outProductJson[0])) $outProductJson[] = [];
 
-                            if (isset($outProductJson[0])) {
-                                $outProductJson[0]['img3d'] = $inProductJson;
-                                $outJson = json_encode($outProductJson, JSON_PRETTY_PRINT);
-                                try {
-                                    file_put_contents($outJsonFilePath, $outJson);
-                                    $copiedCount++;
-                                } catch (\Exception $e) {
-                                    \App::logger()->error("Fail save json to file: {$outJsonFilePath}");
-                                }
+                            $outProductJson[0]['img3d'] = $inProductJson;
+                            $outJson = json_encode($outProductJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+                            try {
+                                file_put_contents($outJsonFilePath, $outJson);
+                                $copiedCount++;
+                            } catch (\Exception $e) {
+                                \App::logger()->error("Fail save json to file: {$outJsonFilePath}");
                             }
                         } catch (\Exception $e) {
                             \App::logger()->error("Fail decode json from one of files: {$inJsonFilePath} or {$outJsonFilePath}");

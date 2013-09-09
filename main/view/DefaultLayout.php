@@ -135,6 +135,7 @@ class DefaultLayout extends Layout {
         foreach ([
             \App::config()->debug ? 'http://code.jquery.com/jquery-1.8.3.js' : 'http://yandex.st/jquery/1.8.3/jquery.min.js',
             '/js/prod/LAB.min.js',
+            \App::config()->debug ? '/js/vendor/html5.js' : '/js/prod/html5.min.js',
         ] as $javascript) {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
         }
