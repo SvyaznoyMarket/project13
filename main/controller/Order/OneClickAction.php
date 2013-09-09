@@ -113,7 +113,7 @@ class OneClickAction {
                             'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
                             'url'     => 'order/create' . ((bool)$params ? ('?' . http_build_query($params)) : ''),
                             'data'    => $data,
-                            'request' => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
+                            'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
                                 'HTTP_USER_AGENT',
                                 'HTTP_ACCEPT',
                                 'HTTP_ACCEPT_LANGUAGE',

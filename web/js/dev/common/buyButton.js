@@ -28,6 +28,7 @@
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
 			$('body').trigger('addtocart', [data]);
+			$('body').trigger('updatespinner',[groupBtn]);
 		};
 
 		$.get(url, addToCart);
