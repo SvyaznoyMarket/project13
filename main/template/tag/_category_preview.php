@@ -26,13 +26,15 @@ $showImage = !empty($catalogJsonBulk[$token]) && !empty($catalogJsonBulk[$token]
               <img src="<?= $category->getImageUrl() ?>" alt="<?= $category->getName() . (empty($rootCategory) ? '' : ' - ' . $rootCategory->getName()) ?>" title="<?= $category->getName() . (empty($rootCategory) ? '' : ' - ' . $rootCategory->getName()) ?>" width="160" height="160"/>
           </a>
       </div>
-      <h2><a href="<?= $link ?>" class="underline">
-        <? if($showImage) { ?>
-            <img src="<?= $catalogJsonBulk[$token]['logo_path'] ?>">
-        <? } else { ?>
-            <?= $category->getName() ?>
-        <? } ?>
-      </a></h2>
+        <div class="h2">
+            <a href="<?= $link ?>" class="underline">
+                <? if ($showImage) { ?>
+                    <img src="<?= $catalogJsonBulk[$token]['logo_path'] ?>">
+                <? } else { ?>
+                    <?= $category->getName() ?>
+                <? } ?>
+            </a>
+        </div>
     <div class="font11">
           <a href="<?= $link ?>" class="underline gray"><?= $totalText ?></a>
       </div>

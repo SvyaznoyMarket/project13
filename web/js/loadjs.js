@@ -299,6 +299,7 @@
 					.script( getWithVersion('library.js') )
 					.wait()
 					.script( getWithVersion('common.js') )
+					.wait()
 					.script( logTimeAfterOurScript );
 			}).runQueue();
 		},
@@ -316,6 +317,7 @@
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
 					.script( getWithVersion('ports.js') )
+					.wait()
 					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
@@ -332,6 +334,7 @@
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
 					.script( getWithVersion('ports.js') )
+					.wait()
 					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
@@ -349,6 +352,7 @@
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
 					.script( getWithVersion('ports.js') )
+					.wait()
 					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
@@ -369,6 +373,7 @@
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
 					.script( getWithVersion('ports.js') )
+					.wait()
 					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
@@ -390,6 +395,7 @@
 						.script('adfox.asyn.code.ver3.min.js')
 						.wait()
 						.script( getWithVersion('ports.js') )
+						.wait()
 						.script( logTimeAfterPartnerScript );
 				}).runQueue();
 		},
@@ -405,6 +411,7 @@
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new-v5.js') )
+						.wait()
 						.script( logTimeAfterOurScript );
 				}).runQueue();
 		},
@@ -422,6 +429,7 @@
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
 					.script( getWithVersion('ports.js') )
+					.wait()
 					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
@@ -437,6 +445,7 @@
 					.wait()
 					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
+					.wait()
 					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
@@ -454,6 +463,7 @@
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
 					.script( getWithVersion('ports.js') )
+					.wait()
 					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
@@ -476,6 +486,7 @@
 						.script('adfox.asyn.code.ver3.min.js')
 						.wait()
 						.script( getWithVersion('ports.js') )
+						.wait()
 						.script( logTimeAfterPartnerScript );
 				}).runQueue();
 		},
@@ -492,6 +503,7 @@
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
 					.script( getWithVersion('ports.js') )
+					.wait()
 					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
@@ -509,6 +521,7 @@
 						.wait()
 						.script( logTimeAfterOurScript )
 						.script( optimizelyUrl )
+						.wait()
 						.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
@@ -531,6 +544,7 @@
 						.script('adfox.asyn.code.ver3.min.js')
 						.wait()
 						.script( getWithVersion('ports.js') )
+						.wait()
 						.script( logTimeAfterPartnerScript );
 				}).runQueue();
 		}
