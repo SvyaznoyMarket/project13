@@ -10,8 +10,8 @@
 ?>
 
 <? if (!$isAjax): // убрать декорацию div-ом, если ajax-запрос ?>
-  <div class="items-section">
-    <ul class="items-section__list clearfix">
+  <div class="bBrandGoods">
+    <ul class="bBrandGoodsList clearfix">
 <? endif ?>
 
     <? $i = 0; foreach ($pager as $product): $i++ ?>
