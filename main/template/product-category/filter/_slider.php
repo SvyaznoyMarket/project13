@@ -9,14 +9,26 @@
  * @var $formName      string
  */
 
-$from = $page->helper->clearZeroValue($productFilter->getValueMin($filter));
-$to = $page->helper->clearZeroValue($productFilter->getValueMax($filter));
+$helper = &$page->helper;
 
-$min_from = $page->helper->clearZeroValue($filter->getMin());
-$max_to = $page->helper->clearZeroValue($filter->getMax());
 
-if ($from > $min_from) $from = round($from,1);
-if ($to< $max_to) $to = round($to,1);
+$from = $productFilter->getValueMin($filter);
+$to = $productFilter->getValueMax($filter);
+$min_from = $filter->getMin();
+$max_to = $filter->getMax();
+
+
+$from = $helper->roundToOneDecimal($from);
+$to = $helper->roundToOneDecimal($to, true);
+$min_from = $helper->roundToOneDecimal($min_from);
+$max_to = $helper->roundToOneDecimal($max_to, true);
+
+
+$from = $helper->clearZeroValue( $from );
+$to = $helper->clearZeroValue( $to );
+$min_from = $helper->clearZeroValue( $min_from );
+$max_to = $helper->clearZeroValue( $to );
+
 ?>
 
 <dt<? if (5 > $index) { ?> class="<?= ((1 == $index) ? ' first' : '') ?>"<? } ?>>
