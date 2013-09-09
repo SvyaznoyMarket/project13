@@ -5480,7 +5480,7 @@
     overflow: auto;
     top: 20px;
     width: 350px;
-    z-index: 2;
+    z-index: 12;
   }
   .bHint-text span,
   .bHint-text p {
