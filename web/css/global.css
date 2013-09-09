@@ -63,6 +63,7 @@
     width: 100%;
   }
   /* for IE7 */
+  .h2,
   td,
   th,
   ul,
@@ -100,12 +101,14 @@
     margin: 0px;
     width: 100%;
   }
+  .h2,
   h2 {
     font-size: 16px;
     font-weight: normal;
     margin: 0px;
     padding: 0px 0px 11px;
   }
+  .h2.bold,
   h2.bold {
     font-weight: bold;
   }
@@ -4257,6 +4260,7 @@
     height: 163px;
     text-align: center;
   }
+  .goodsbox .h2,
   .goodsbox h2 {
     margin: 0px;
     padding-bottom: 10px;
@@ -11616,8 +11620,8 @@
   .mPayMethods .bSelectWrap_eText {
     color: #616161;
   }
-  .ie8 .mPayMethods .bPayMethodAction,
-  .ie8 .mPayMethods .bProcess {
+  .lt-ie8 .mPayMethods .bPayMethodAction,
+  .lt-ie8 .mPayMethods .bProcess {
     display: block;
   }
 }

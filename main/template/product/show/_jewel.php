@@ -211,7 +211,7 @@ $is_showed = [];
 
 <div class="bBottomBuy clearfix">
     <div class="bBottomBuy__eHead">
-        <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
+        <div class="bBottomBuy__eTitle"><?= $title ?></div>
     </div>
 
     <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
