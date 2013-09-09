@@ -6,6 +6,7 @@ $c = require __DIR__ . '/config.php';
 $c->debug = true;
 
 $c->coreV2['url']          = 'http://tester.core.ent3.ru/v2/';
+$c->payment['paypalECS'] = true;
 $c->coreV2['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.6,
@@ -75,10 +76,6 @@ $c->paymentPsb['payUrl']       = 'http://193.200.10.117:8080/cgi-bin/cgi_link';
 $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key']          = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
-
-$c->product['lowerPriceNotification'] = true;
-
-$c->product['allowBuyOnlyInshop'] = true;
 
 $c->requestMainMenu = false;
 

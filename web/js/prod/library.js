@@ -1,3 +1,55 @@
+;(function( ENTER ) {
+	var utils = ENTER.utils;
+
+	utils.cloneObject = function cloneObject( obj ) {
+		if  ( obj == null || typeof( obj ) !== 'object' ) {
+			return obj;
+		}
+
+		var temp = {},
+			key;
+
+		for ( key in obj ) {
+			if ( obj.hasOwnProperty(key) ) {
+				temp[key] = cloneObject(obj[key]);
+			}
+		}
+
+		return temp;
+	};
+}(window.ENTER));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Получение количества свойств объекта
+ */
+;(function ( global ) {
+	global.getKeysLength = function getKeysLength( obj ) {
+		var len = 0;
+		
+		for ( var i in obj ) {
+			if ( !obj.hasOwnProperty(i) ){
+				continue;
+			}
+			
+			len++;
+		}
+		
+		return len;
+	};
+}(this));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
 /*
 	http://www.JSON.org/json2.js
 	2011-10-19
@@ -792,7 +844,7 @@ var PubSub = {};
  */
 function isTrueEmail(){
 	var t = this.toString(),
-		re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		re = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i;
 	return re.test(t);
 }
 String.prototype.isEmail = isTrueEmail; // добавляем методом для всех строк
@@ -845,38 +897,38 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 |*|
 \*/
 
-;(function(global){	
+;(function( global ) {	
 	global.docCookies = {
 		getItem:function ( sKey ) {
-			return unescape(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+			return unescape(document.cookie.replace(new RegExp('(?:(?:^|.*;)\\s*' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*([^;]*).*$)|^.*$'), '$1')) || null;
 		},
 
 		setItem: function ( sKey, sValue, vEnd, sPath, sDomain, bSecure ) {
-			if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
+			if ( !sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey) ) {
 
 				return false;
 			}
 
-			var sExpires = "";
+			var sExpires = '';
 
 			if ( vEnd ) {
 				switch ( vEnd.constructor ) {
 					case Number:
-						sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+						sExpires = vEnd === Infinity ? '; expires=Fri, 31 Dec 9999 23:59:59 GMT' : '; max-age=' + vEnd;
 						break;
 					case String:
-						sExpires = "; expires=" + vEnd;
+						sExpires = '; expires=' + vEnd;
 						break;
 					case Date:
-						sExpires = "; expires=" + vEnd.toGMTString();
+						sExpires = '; expires=' + vEnd.toGMTString();
 						break;
 				}
 			}
 
-			document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain:
-						"") + (sPath ? "; path=" + sPath:
-						"") + (bSecure ? "; secure":
-						"");
+			document.cookie = escape(sKey) + '=' + escape(sValue) + sExpires + (sDomain ? '; domain=' + sDomain:
+						'') + (sPath ? '; path=' + sPath:
+						'') + (bSecure ? '; secure':
+						'');
 						
 			return true;
 		},
@@ -886,18 +938,18 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 				return false;
 			}
 			
-			document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sPath ? "; path=" + sPath: "");
+			document.cookie = escape(sKey) + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT' + (sPath ? '; path=' + sPath: '');
 
 			return true;
 		},
 
 		hasItem: function ( sKey ) {
-			return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+			return (new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie);
 		},
 
 		/* optional method: you can safely remove it! */ 
 		keys: function () {
-			var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+			var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, '').split(/\s*(?:\=[^;]*)?;\s*/);
 
 			for (var nIdx = 0; nIdx < aKeys.length; nIdx++) {
 				aKeys[nIdx] = unescape(aKeys[nIdx]);
@@ -1736,248 +1788,963 @@ window.MapInterface = (function() {
  */
  
  
-/**
- * WARNING!
- *
- * @requires jQuery, simple_templating, docCookies
+;(function( ENTER ) {
+	var userUrl = ENTER.config.pageConfig.userUrl,
+		constructors = ENTER.constructors;
+	// end of vars
+
+	
+	/**
+	 * Новый класс по работе с картой
+	 *
+	 * @author	Zaytsev Alexandr
+	 * 
+	 * @this	{CreateMap}
+	 *
+	 * @param	{Object}	args			DOM объект в который необходимо вывести карту
+	 * @param	{Array}		points			Массив точек, которые необходимо вывести на карту
+	 * @param	{Object}	baloonTemplate	Шаблон для балунов на карте
+	 *
+	 * @constructor
+	 */
+	constructors.CreateMap = (function() {
+		'use strict';
+	
+		function CreateMap( nodeId, points, baloonTemplate ) {
+			// enforces new
+			if ( !(this instanceof CreateMap) ) {
+				return new CreateMap(nodeId, points, baloonTemplate);
+			}
+			// constructor body
+			
+			console.info('CreateMap');
+			console.log(points);
+
+			this.points = points;
+			this.template = baloonTemplate.html();
+			this.center = this._calcCenter();
+
+			console.log(this.center);
+
+			this.mapWS = new ymaps.Map(nodeId, {
+				center: [this.center.latitude, this.center.longitude],
+				zoom: 10
+			});
+
+			this.mapWS.controls.add('zoomControl');
+
+			this._showMarkers();
+		}
+
+		/**
+		 * Расчет центра карты для исходного массива точек
+		 */
+		CreateMap.prototype._calcCenter = function() {
+			console.info('calcCenter');
+
+			var latitude = 0,
+				longitude = 0,
+				l = 0,
+				i = 0,
+
+				mapCenter = {};
+			// end of vars
+
+			for ( i = this.points.length - 1; i >= 0; i-- ) {
+				latitude  += this.points[i].latitude * 1;
+				longitude += this.points[i].longitude * 1;
+
+				l++;
+			}
+
+			mapCenter = {
+				latitude  : latitude / l,
+				longitude : longitude / l
+			};
+
+			return mapCenter;
+		};
+
+		CreateMap.prototype._showMarkers = function() {
+			var tmpPointInfo = null,
+				tmpPlacemark = null,
+				pointsCollection = new ymaps.GeoObjectArray();
+			// end of vars
+
+			// layout for baloon
+			var pointContentLayout = ymaps.templateLayoutFactory.createClass(this.template);
+
+			for ( var i = this.points.length - 1; i >= 0; i--) {
+				tmpPointInfo = {
+					id: this.points[i].id,
+					name: this.points[i].name,
+					address: this.points[i].address,
+					link: this.points[i].link,
+					regtime: this.points[i].regtime,
+					parentBoxToken: this.points[i].parentBoxToken
+				};
+
+				tmpPlacemark = new ymaps.Placemark(
+					// координаты точки
+					[
+						this.points[i].latitude,
+						this.points[i].longitude
+					],
+
+					// данные для шаблона
+					tmpPointInfo,
+
+					// оформление метки на карте
+					{
+						iconImageHref: '/images/marker.png', // картинка иконки
+						iconImageSize: [39, 59],
+						iconImageOffset: [-19, -57]
+					}
+				);
+
+				pointsCollection.add(tmpPlacemark);
+			}
+
+			ymaps.layout.storage.add('my#superlayout', pointContentLayout);
+			pointsCollection.options.set({
+				balloonContentBodyLayout:'my#superlayout',
+				balloonMaxWidth: 350
+			});
+
+			this.mapWS.geoObjects.add(pointsCollection);
+		};
+	
+	
+		return CreateMap;
+	
+	}());
+}(window.ENTER));
+
+ 
+ 
+/** 
+ * NEW FILE!!! 
  */
-
-
+ 
+ 
 /**
- * Создает объект для обновления данных с сервера и отображения текущих покупок
- *
+ * @requires jQuery, simple_templating, docCookies, ENTER.utils, ENTER.config
  * @author	Zaytsev Alexandr
- * @this	{BlackBox}
- * @param	{String}		updateUrl URL по которому будут запрашиватся данные о пользователе и корзине.
- * @param	{jQuery}		mainNode  DOM элемент бокса
+ *
+ * @param	{Object}	ENTER	Enter namespace
+ */
+;(function( ENTER ) {
+	var userUrl = ENTER.config.pageConfig.userUrl,
+		utils = ENTER.utils;
+	// end of vars
+	
+
+	/**
+	 * === BLACKBOX CONSTRUCTOR ===
+	 */
+	var BlackBox = (function() {
+		'use strict';
+	
+		/**
+		 * Создает объект для обновления данных с сервера и отображения текущих покупок
+		 *
+		 * @author	Zaytsev Alexandr
+		 * @this	{BlackBox}
+		 * 
+		 * @param	{String}		updateUrl	URL по которому будут запрашиватся данные о пользователе и корзине.
+		 * @param	{Object}		mainNode	DOM элемент бокса
+		 * 
+		 * @constructor
+		 */
+		function BlackBox( updateUrl, mainContatiner ) {
+			// enforces new
+			if ( !(this instanceof BlackBox) ) {
+				return new BlackBox(updateUrl, mainContatiner);
+			}
+			// constructor body
+			
+			this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
+			this.mainNode = mainContatiner;
+		}
+	
+		
+		/**
+		 * Объект по работе с корзиной
+		 *
+		 * @author	Zaytsev Alexandr
+		 * @this	{BlackBox}
+		 * 
+		 * @return	{Function} update	обновление данных о корзине
+		 * @return	{Function} add		добавление в корзину
+		 */
+		BlackBox.prototype.basket = function() {
+			var self = this,
+
+				headQ = $('#topBasket'),
+				bottomQ = self.mainNode.find('.bBlackBox__eCartQuan'),
+				bottomSum = self.mainNode.find('.bBlackBox__eCartSum'),
+				total = self.mainNode.find('.bBlackBox__eCartTotal'),
+				bottomCart = self.mainNode.find('.bBlackBox__eCart'),
+				flyboxBasket = self.mainNode.find('.bBlackBox__eFlybox.mBasket'),
+				flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner');
+			// end of vars
+
+				/**
+				 * Уничтожение содержимого flybox и его скрытие
+				 *
+				 * @author	Zaytsev Alexandr
+				 * 
+				 * @private
+				 */
+			var flyboxDestroy = function flyboxDestroy() {
+					flyboxBasket.hide(0, function() {
+						flyboxInner.remove();
+					});
+				},
+
+				/**
+				 * Закрытие flybox по клику
+				 * 
+				 * @author	Zaytsev Alexandr
+				 * 
+				 * @param	{Event}	e
+				 * 
+				 * @private
+				 */
+				flyboxcloser = function flyboxcloser( e ) {
+					var targ = e.target.className;
+
+					if ( !(targ.indexOf('bBlackBox__eFlybox') + 1) || !(targ.indexOf('fillup') + 1) ) {
+						flyboxDestroy();
+						$('body').unbind('click', flyboxcloser);
+					}
+				},
+
+				/**
+				 * Обновление данных о корзине
+				 *
+				 * @author	Zaytsev Alexandr
+				 * 
+				 * @param	{Object}	basketInfo			Информация о корзине
+				 * @param	{Number}	basketInfo.cartQ	Количество товаров в корзине
+				 * @param	{Number}	basketInfo.cartSum	Стоимость товаров в корзине
+				 * 
+				 * @public
+				 */
+				update = function update( basketInfo ) {
+					headQ.html('(' + basketInfo.cartQ + ')');
+					bottomQ.html(basketInfo.cartQ);
+					bottomSum.html(basketInfo.cartSum);
+					bottomCart.addClass('mBought');
+					total.show();
+				},
+
+				/**
+				 * Добавление товара в корзину
+				 *
+				 * @author	Zaytsev Alexandr
+				 * 
+				 * @param	{Object}	item
+				 * @param	{String}	item.title			Название товара
+				 * @param	{Number}	item.price			Стоимость товара
+				 * @param	{String}	item.imgSrc			Ссылка на изображение товара
+				 * @param	{Number}	item.TotalQuan		Общее количество товаров в корзине
+				 * @param	{Number}	item.totalSum		Общая стоимость корзины
+				 * @param	{String}	item.linkToOrder	Ссылка на оформление заказа
+				 * 
+				 * @public
+				 */
+				add = function add ( item ) {
+					var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item),
+							nowBasket = {
+							cartQ: item.totalQuan,
+							cartSum: item.totalSum
+						};
+					// end of vars
+
+					flyboxDestroy();
+					flyboxBasket.append(flyboxTmpl);
+					flyboxBasket.show(300);
+
+					self.basket().update(nowBasket);
+
+					$('body').bind('click', flyboxcloser);
+
+				};
+			//end of functions
+
+			return {
+				'update': update,
+				'add': add
+			};
+		};
+
+		/**
+		 * Объект по работе с данными пользователя
+		 *
+		 * @author	Zaytsev Alexandr
+		 * 
+		 * @this	{BlackBox}
+		 * 
+		 * @return	{Function}	update
+		 */
+		BlackBox.prototype.user = function() {
+			var self = this;
+
+			/**
+			 * Обновление пользователя
+			 *
+			 * @author	Zaytsev Alexandr
+			 * 
+			 * @param	{String}	userName	Имя пользователя
+			 * 
+			 * @public
+			 */
+			var update = function update ( userName ) {
+				var topAuth = $('#auth-link'),
+					bottomAuth = self.mainNode.find('.bBlackBox__eUserLink'),
+					dtmpl = {},
+					show_user = '';
+				//end of vars
+
+				if ( userName !== null ) {
+					dtmpl = {
+						user: userName
+					};
+
+					show_user = tmpl('auth_tmpl', dtmpl);
+					
+					topAuth.hide();
+					topAuth.after(show_user);
+					bottomAuth.html(userName).addClass('mAuth');
+				}
+				else {
+					topAuth.show();
+				}
+			}; 
+			
+			return {
+				'update': update
+			};
+		};
+
+
+		/**
+		 * Инициализация BlackBox.
+		 * Получение данных о корзине и пользователе с сервера.
+		 *
+		 * @author	Zaytsev Alexandr
+		 * 
+		 * @this	{BlackBox}
+		 */
+		BlackBox.prototype.init = function() {
+			var self = this;
+
+				/**
+				 * Обработчик Action присланных с сервера
+				 * 
+				 * @param	{Object}	action	Список действий которые необходимо выполнить
+				 * 
+				 * @private
+				 */
+			var startAction = function startAction( action ) {
+					if ( action.subscribe !== undefined ) {
+						$('body').trigger('showsubscribe', [action.subscribe]);
+					}
+					if ( action.cartButton !== undefined ) {
+						$('body').trigger('markcartbutton', [action.cartButton]);
+						$('body').trigger('updatespinner', [action.cartButton]);
+					}
+				},
+
+				/**
+				 * Обработчик данных о корзине и пользователе
+				 * 
+				 * @param	{Object}	data
+				 * 
+				 * @private
+				 */ 
+				parseUserInfo = function parseUserInfo( data ) {
+					var userInfo = data.user,
+						cartInfo = data.cart,
+						actionInfo = data.action,
+						nowBasket = {};
+					//end of vars
+					
+					if ( data.success !== true ) {
+						return false;
+					}
+
+					self.user().update(userInfo.name);
+
+					if ( cartInfo.quantity !== 0 ) {
+						nowBasket = {
+							cartQ: cartInfo.quantity,
+							cartSum: cartInfo.sum
+						};
+
+						self.basket().update(nowBasket);
+					}
+
+					if ( actionInfo !== undefined ) {
+						startAction(actionInfo);
+					}
+				};
+			//end of functions
+
+			$.get(self.updUrl, parseUserInfo);
+		};
+	
+		return BlackBox;
+	
+	}());
+	/**
+	 * === END BLACKBOX CONSTRUCTOR ===
+	 */
+
+
+	/**
+	 * Создание и иницилизация объекта для работы с корзиной и данными пользователя
+	 * 
+	 * @type	{BlackBox}
+	 */
+	utils.blackBox = new BlackBox(userUrl, $('.bBlackBox__eInner'));
+	utils.blackBox.init();
+	
+}(window.ENTER));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Валидатор форм
+ *
+ * @author		Zaytsev Alexandr
+ * @this		{FormValidator}
+ * @requires	jQuery
  * @constructor
  */
-function BlackBox( updateUrl, mainContatiner ) {
-	this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
-	this.mainNode = mainContatiner;
+function FormValidator( config ) {
+	if ( !config.fields.length ) {
+		return;
+	}
+
+	this.config = $.extend(
+						{},
+						this._defaultsConfig,
+						config );
+
+	this._enableHandlers();
 }
 
 /**
- * Объект по работе с корзиной
- *
- * @author	Zaytsev Alexandr
- * @this	{BlackBox}
- * @return	{function} update	обновление данных о корзине
- * @return	{function} add		добавление в корзину
+ * ============ PRIVATE METHODS ===================
  */
-BlackBox.prototype.basket = function() {
-	var self = this,
 
-		headQ = $('#topBasket'),
-		bottomQ = self.mainNode.find('.bBlackBox__eCartQuan'),
-		bottomSum = self.mainNode.find('.bBlackBox__eCartSum'),
-		total = self.mainNode.find('.bBlackBox__eCartTotal'),
-		bottomCart = self.mainNode.find('.bBlackBox__eCart'),
-		flyboxBasket = self.mainNode.find('.bBlackBox__eFlybox.mBasket'),
-		flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner');
-	// end of vars
-
-		/**
-		 * Уничтожение содержимого flybox и его скрытие
-		 *
-		 * @author	Zaytsev Alexandr
-		 * @private
-		 */
-	var flyboxDestroy = function flyboxDestroy() {
-			flyboxBasket.hide(0, function() {
-				flyboxInner.remove();
-			});
-		},
-
-		/**
-		 * Закрытие flybox по клику
-		 * 
-		 * @author	Zaytsev Alexandr
-		 * @param	{Event} e
-		 * @private
-		 */
-		flyboxcloser = function flyboxcloser( e ) {
-			var targ = e.target.className;
-
-			if ( !(targ.indexOf('bBlackBox__eFlybox') + 1) || !(targ.indexOf('fillup') + 1) ) {
-				flyboxDestroy();
-				$('body').unbind('click', flyboxcloser);
-			}
-		},
-
-		/**
-		 * Обновление данных о корзине
-		 *
-		 * @author	Zaytsev Alexandr
-		 * @param	{Object} basketInfo			Информация о корзине
-		 * @param	{Number} basketInfo.cartQ	Количество товаров в корзине
-		 * @param	{Number} basketInfo.cartSum	Стоимость товаров в корзине
-		 * @public
-		 */
-		update = function update( basketInfo ) {
-			headQ.html('(' + basketInfo.cartQ + ')');
-			bottomQ.html(basketInfo.cartQ);
-			bottomSum.html(basketInfo.cartSum);
-			bottomCart.addClass('mBought');
-			total.show();
-		},
-
-		/**
-		 * Добавление товара в корзину
-		 *
-		 * @author	Zaytsev Alexandr
-		 * @param	{Object} item
-		 * @param	{String} item.title			Название товара
-		 * @param	{Number} item.price			Стоимость товара
-		 * @param	{String} item.imgSrc		Ссылка на изображение товара
-		 * @param	{Number} item.TotalQuan		Общее количество товаров в корзине
-		 * @param	{Number} item.totalSum		Общая стоимость корзины
-		 * @param	{String} item.linkToOrder	Ссылка на оформление заказа
-		 * @public
-		 */
-		add = function add ( item ) {
-			var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item),
-					nowBasket = {
-					cartQ: item.totalQuan,
-					cartSum: item.totalSum
-				};
-			// end of vars
-
-			flyboxDestroy();
-			flyboxBasket.append(flyboxTmpl);
-			flyboxBasket.show(300);
-
-			self.basket().update(nowBasket);
-
-			$('body').bind('click', flyboxcloser);
-
-		};
-	//end of functions
-
-	return {
-		'update': update,
-		'add': add
-	};
+/**
+ * Стандартные настройки валидатора
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._defaultsConfig = {
+	errorClass: 'mError'
 };
 
 /**
- * Объект по работе с данными пользователя
- *
- * @author	Zaytsev Alexandr
- * @this	{BlackBox}
- * @return	{function} update
+ * Поля, на которые уже навешен обработчик валидации на ходу
  */
-BlackBox.prototype.user = function() {
-	var self = this;
+FormValidator.prototype._validateOnChangeFields = {
+};
 
-	/**
-	 * Обновление пользователя
-	 *
-	 * @author	Zaytsev Alexandr
-	 * @param	{String} userName Имя пользователя
-	 * @public
-	 */
-	var update = function update ( userName ) {
-		var topAuth = $('#auth-link'),
-			bottomAuth = self.mainNode.find('.bBlackBox__eUserLink'),
-			dtmpl = {},
-			show_user = '';
-		//end of vars
+/**
+ * Проверка обязательных к заполнению полей
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._requireAs = {
+	checkbox : function( fieldNode ) {
+		var value = fieldNode.attr('checked');
 
-		if ( userName !== null ) {
-			dtmpl = {
-				user: userName
+		if ( value === undefined ) {
+			return {
+				hasError: true,
+				errorMsg : 'Поле обязательно для заполнения'
 			};
-			show_user = tmpl('auth_tmpl', dtmpl);
-			
-			topAuth.hide();
-			topAuth.after(show_user);
-			bottomAuth.html(userName).addClass('mAuth');
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
+	radio: function( fieldNode ) {
+		var checked = fieldNode.filter(':checked').val();
+
+		if ( checked === undefined ) {
+			return {
+				hasError: true,
+				errorMsg : 'Необходимо выбрать пункт из списка'
+			};
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
+	text: function( fieldNode ) {
+		var value = fieldNode.val();
+
+		if ( value.length === 0 ) {
+			return {
+				hasError: true,
+				errorMsg : 'Поле обязательно для заполнения'
+			};
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
+	textarea: function( fieldNode ) {
+		var value = fieldNode.text();
+
+		if ( value.length === 0 ) {
+			return {
+				hasError: true,
+				errorMsg : 'Поле обязательно для заполнения'
+			};
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
+	select: function( fieldNode ) {
+		if ( fieldNode.val() ) {
+			return {
+				hasError: false
+			};
+		}
+
+		return {
+			hasError: true,
+			errorMsg : 'Необходимо выбрать значение из списка'
+		};
+	}
+};
+
+/**
+ * Валидирование поля
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._validBy = {
+	isEmail: function( fieldNode ) {
+		var re = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i,
+			value = fieldNode.val();
+
+		if ( re.test(value) ) {
+			return {
+				hasError: false
+			};
 		}
 		else {
-			topAuth.show();
+			return {
+				hasError: true,
+				errorMsg : 'Некорректно введен e-mail'
+			};
 		}
-	}; 
+	},
+
+	isPhone: function( fieldNode ) {
+		var re = /(\+7|8)(-|\s)?(\(\d(-|\s)?\d(-|\s)?\d\s?\)|\d(-|\s)?\d(-|\s)?\d\s?)(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d$/i,
+			value = fieldNode.val();
+
+		if ( re.test(value) ) {
+			return {
+				hasError: false
+			};
+		}
+		else {
+			return {
+				hasError: true,
+				errorMsg : 'Некорректно введен телефон'
+			};
+		}
+	},
+
+	isNumber: function( fieldNode ) {
+		var re = /^[0-9]+$/,
+			value = fieldNode.val();
+
+		if ( re.test(value) ) {
+			return {
+				hasError: false
+			};
+		}
+		else {
+			return {
+				hasError: true,
+				errorMsg : 'Поле может содержать только числа'
+			};
+		}
+	}
+};
+
+/**
+ * Валидация поля
+ * 
+ * @param	{Object}	field			Объект поля для валидации
+ * @param	{Object}	field.fieldNode	Ссылка на jQuery объект поля
+ * @param	{String}	field.validBy	Тип валидации поля
+ * @param	{Boolean}	field.require	Является ли поле обязательным к заполению
+ * @param	{String}	field.customErr	Сообщение об ошибке, если поле не прошло валидацию
+ *
+ * @return	{Object}	error			Объект с ошибкой
+ * @return	{Boolean}	error.hasError	Есть ли ошибка
+ * @return	{Boolean}	error.errorMsg	Сообщение об ошибке
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._validateField = function( field ) {
+	var self = this,
+
+		elementType = null,
+
+		fieldNode = null,
+		validBy = null,
+		require = null,
+		customErr = '',
+
+		error = {
+			hasError: false
+		},
+		result = {};
+	// end of vars
+
+	fieldNode = field.fieldNode;
+	require = ( fieldNode.attr('required') === 'required' ) ? true : field.require; // если у элемента формы есть required то поле обязательное, иначе брать из конфига
+	validBy = field.validBy;
+	customErr = field.customErr;
+
+	elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
+
+	/**
+	 * Проверка обязательно ли поле для заполенения
+	 */
+	if ( require ) {
+		/**
+		 * Проверка существования метода проверки на обязательность для данного типа поля
+		 */
+		if ( self._requireAs.hasOwnProperty(elementType) ) {
+			result = self._requireAs[elementType](fieldNode);
+
+			if ( result.hasError ) {
+				error = {
+					hasError: true,
+					errorMsg : ( customErr !== undefined ) ? customErr : result.errorMsg
+				};
+
+				return error;
+			}
+		}
+		else {
+			error = {
+				hasError: true,
+				errorMsg : 'Обязательное поле. Неизвестный метод проверки для '+elementType
+			};
+
+			return error;
+		}
+	}
+
+	/**
+	 * Проверка существоаания метода валидации
+	 * Валидация поля, если не пустое
+	 */
+	if ( self._validBy.hasOwnProperty(validBy) && field.fieldNode.val().length !==0 ) {
+		result = self._validBy[validBy](fieldNode);
+
+		if ( result.hasError ) {
+			error = {
+				hasError: true,
+				errorMsg: ( customErr !== undefined ) ? customErr : result.errorMsg
+			};
+		}
+	}
+	else if ( validBy !== undefined && field.fieldNode.val().length !==0 ) {
+		error = {
+			hasError: true,
+			errorMsg : 'Неизвестный метод валидации '+validBy
+		};
+	}
+
+	return error;
+};
+
+FormValidator.prototype._unmarkFieldError = function( fieldNode ) {
+	console.info('Снимаем маркировку');
+
+	fieldNode.removeClass(this.config.errorClass);
+	fieldNode.parent().find('.bErrorText').remove();
+};
+
+FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
+	console.info('маркируем');
+	console.log(errorMsg);
 	
+	fieldNode.addClass(this.config.errorClass);
+	fieldNode.before('<div class="bErrorText"><div class="bErrorText__eInner">'+errorMsg+'</div></div>');
+};
+
+/**
+ * Активация хандлеров для полей
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._enableHandlers = function() {
+	console.info('_enableHandlers');
+	var self = this,
+		fields = this.config.fields,
+		currentField = null;
+		
+	// end of vars
+
+	var validateOnBlur = function validateOnBlur( that ) {
+			var result = {},
+				findedField = self._findFieldByNode( that );
+			// end of vars
+
+			if ( findedField.finded ) {
+				result = self._validateField(findedField.field);
+
+				if ( result.hasError ) {
+					self._markFieldError(that, result.errorMsg);
+				}
+			}
+			else {
+				console.log('поле не найдено или тип валидации не существует, хандлер нужно убрать');
+				that.unbind('blur', validateOnBlur);
+			}
+
+			return false;
+		},
+
+		blurHandler = function blurHandler( ) {
+			var that = $(this),
+				timeout_id = null;
+			// end of vars
+			
+			clearTimeout(timeout_id);
+			timeout_id = window.setTimeout(function(){
+				validateOnBlur(that);
+			}, 5);
+		},
+
+		clearError = function clearError() {
+			self._unmarkFieldError($(this));
+		};
+	// end of functions
+
+	for (var i = fields.length - 1; i >= 0; i--) {
+		currentField = fields[i];
+
+		if ( currentField.validateOnChange ) {
+			if ( self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] ) {
+				console.log('уже вешали');
+				continue;
+			}
+
+			currentField.fieldNode.bind('blur', blurHandler);
+			currentField.fieldNode.bind('focus', clearError);
+			self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] = true;
+		}
+	}
+
+	console.log(self);
+};
+
+/**
+ * Поиск поля
+ * 
+ * @param	{Object}	nodeToFind		Ссылка на jQuery объект поля которое нужно найти
+ * @return	{Object}    Object			Объект с параметрами найденой ноды
+ * @return	{Boolean}	Object.finded	Было ли поле найдено
+ * @return	{Object}	Object.field	Объект поля из конфига
+ * @return	{Number}	Object.index	Порядковый номер поля
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._findFieldByNode = function( nodeToFind ) {
+	var fields = this.config.fields;
+
+	for ( var i = fields.length - 1; i >= 0; i-- ) {
+		if ( fields[i].fieldNode.get(0) === nodeToFind.get(0) ) {
+			return {
+				finded: true,
+				field: fields[i],
+				index: i
+			};
+		}
+	}
+
 	return {
-		'update': update
+		finded: false
 	};
 };
 
 
+
 /**
- * Инициализация BlackBox.
- * Получение данных о корзине и пользователе с сервера.
- *
- * @author	Zaytsev Alexandr
- * @this	{BlackBox}
+ * ============ PUBLIC METHODS ===================
  */
-BlackBox.prototype.init = function() {
-	var self = this;
 
-		/**
-		 * Обработчик Action присланных с сервера
-		 * 
-		 * @param	{Object} action Список действий которые необходимо выполнить
-		 * @private
-		 */
-	var startAction = function startAction( action ) {
-			if ( action.subscribe !== undefined ) {
-				$("body").trigger("showsubscribe", [action.subscribe]);
-			}
-			if ( action.cartButton !== undefined ) {
-				$("body").trigger("markcartbutton", [action.cartButton]);
-				$("body").trigger("updatespinner", [action.cartButton]);
-			}
-		},
 
-		/**
-		 * Обработчик данных о корзине и пользователе
-		 * 
-		 * @param	{Object} data
-		 * @private
-		 */ 
-		parseUserInfo = function parseUserInfo( data ) {
-			var userInfo = data.user,
-				cartInfo = data.cart,
-				actionInfo = data.action,
-				nowBasket = {};
-			//end of vars
-			
-			if (data.success !== true) {
-				return false;
-			}
+/**
+ * Запуск валидации полей
+ *
+ * @param	{Object}	callbacks				Объект со ссылками на функции обратных вызовов
+ * @param	{Function}	callbacks.onInvalid		Функция обратного вызова, если поля не прошли валидацию. В функцию передается массив объектов ошибок.
+ * @param	{Function}	callbacks.onValid		Функция обратного вызова, если поля прошли валидацию
+ *
+ * @this	{FormValidator}
+ * @public
+ */
+FormValidator.prototype.validate = function( callbacks ) {
+	var self = this,
+		fields = this.config.fields,
+		i = 0,
+		errors = [],
+		result = {};
+	// end of vars	
+	
+	for ( i = fields.length - 1; i >= 0; i-- ) { // перебираем поля из конфига
+		result = self._validateField(fields[i]);
 
-			self.user().update(userInfo.name);
+		if ( result.hasError ) {
+			self._markFieldError(fields[i].fieldNode, result.errorMsg);
+			errors.push({
+				fieldNode: fields[i].fieldNode,
+				errorMsg: result.errorMsg
+			});
+		}
+		else {
+			self._unmarkFieldError(fields[i].fieldNode);
+		}
+	}
 
-			if ( cartInfo.quantity !== 0 ) {
-				nowBasket = {
-					cartQ: cartInfo.quantity,
-					cartSum: cartInfo.sum
-				};
-				self.basket().update(nowBasket);
-			}
-
-			if ( actionInfo !== undefined ) {
-				startAction(actionInfo);
-			}
-		};
-	//end of functions
-
-	$.get(self.updUrl, parseUserInfo);
+	if ( errors.length ) {
+		callbacks.onInvalid(errors);
+	}
+	else {
+		callbacks.onValid();
+	}
 };
 
+/**
+ * Получить тип валидации для поля
+ *
+ * @param	{Object}			fieldToFind		Ссылка на jQuery объект поля для которого нужно получить параметры валидации
+ * 
+ * @return	{Object|Boolean}					Возвращает или конфигурацию валидации для поля, или false
+ * 
+ * @this	{FormValidator}
+ * @public
+ */
+FormValidator.prototype.getValidate = function( fieldToFind ) {
+	var findedField = this._findFieldByNode(fieldToFind);
 
-(function( global ) {
-	var pageConfig = $('#page-config').data('value');
-	
-	/**
-	 * Создание и иницилизация объекта для работы с корзиной и данными пользователя
-	 * @type	{BlackBox}
-	 */
-	global.blackBox = new BlackBox(pageConfig.userUrl, $('.bBlackBox__eInner'));
-	global.blackBox.init();
-}(this));
+	if ( findedField.finded ) {
+		return findedField.field;
+	}
+
+	return false;
+};
+
+/**
+ * Установить новый тип валидации для поля. Если поле не найдено, создает новое с указанными параметрами.
+ *
+ * @param	{Object}	fieldNodeToCange					Ссылка на jQuery объект поля для которого нужно изменить параметры валидации
+ * @param	{Object}	paramsToChange						Новые свойства валидации поля
+ * @param	{String}	paramsToChange.validBy				Тип валидации поля
+ * @param	{Boolean}	paramsToChange.require				Является ли поле обязательным к заполению
+ * @param	{String}	paramsToChange.customErr			Сообщение об ошибке, если поле не прошло валидацию
+ * @param	{Boolean}	paramsToChange.validateOnChange		Нужно ли валидировать поле при его изменении
+ *
+ * @this	{FormValidator}
+ * @public
+ */
+FormValidator.prototype.setValidate = function( fieldNodeToCange, paramsToChange ) {
+	var findedField = this._findFieldByNode(fieldNodeToCange),
+		addindField = null;
+
+	if ( findedField.finded ) {
+		addindField = $.extend(
+						{},
+						findedField.field,
+						paramsToChange );
+		this.config.fields.splice(findedField.index, 1);
+
+	}
+	else {
+		paramsToChange.fieldNode = fieldNodeToCange;
+		addindField = paramsToChange;
+	}
+
+	this.addFieldToValidate(addindField);
+};
+
+/**
+ * Удалить поле для валидации
+ * 
+ * @param	{Object}	fieldNodeToRemove	Ссылка на jQuery объект поля которое нужно удалить из списка валидации
+ *
+ * @return	{Boolean}						Был ли удален объект из массива полей для валидации
+ *
+ * @this	{FormValidator}
+ * @public
+ */
+FormValidator.prototype.removeFieldToValidate = function( fieldNodeToRemove ) {
+	var findedField = this._findFieldByNode(fieldNodeToRemove);
+
+	if ( findedField.finded ) {
+		this.config.fields.splice(findedField.index, 1);
+
+		return true;
+	}
+
+	return false;
+};
+
+/**
+ * Добавить поле для валидации
+ * 
+ * @param	{Object}	field					Объект поля для валидации
+ * @param	{Object}	field.fieldNode			Ссылка на jQuery объект поля
+ * @param	{String}	field.validBy			Тип валидации поля
+ * @param	{Boolean}	field.require			Является ли поле обязательным к заполению
+ * @param	{String}	field.customErr			Сообщение об ошибке, если поле не прошло валидацию
+ * @param	{Boolean}	field.validateOnChange	Нужно ли валидировать поле при его изменении
+ *
+ * @this	{FormValidator}
+ * @public
+ */
+FormValidator.prototype.addFieldToValidate = function( field ) {
+	this.config.fields.push(field);
+	this._enableHandlers();
+};
  
  
 /** 
@@ -1994,11 +2761,11 @@ BlackBox.prototype.init = function() {
  */
 var UpdateUrlString = function(key, value) {
 	var url = this.toString();
-	var re = new RegExp("([?|&])" + key + "=.*?(&|#|$)(.*)", "gi");
+	var re = new RegExp('([?|&])' + key + '=.*?(&|#|$)(.*)', 'gi');
 
 	if (re.test(url)) {
 		if (typeof value !== 'undefined' && value !== null){
-			return url.replace(re, '$1' + key + "=" + value + '$2$3');
+			return url.replace(re, '$1' + key + '=' + value + '$2$3');
 		}
 		else {
 			return url.replace(re, '$1$3').replace(/(&|\?)$/, '');
@@ -2020,6 +2787,121 @@ var UpdateUrlString = function(key, value) {
 	}
 };
 String.prototype.addParameterToUrl = UpdateUrlString;
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Блокер экрана
+ *
+ * @requires jQuery, jQuery.lightbox_me, ENTER.utils
+ *
+ * @author	Zaytsev Alexandr
+ *
+ * @param	{Object}		noti		Объект jQuery блокера экрана
+ * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
+ * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
+ */
+;(function( ENTER ) {
+	var utils = ENTER.utils;
+	
+	utils.blockScreen = {
+		noti: null,
+		block: function( text ) {
+			var self = this;
+
+			console.warn('block screen');
+
+			if ( self.noti ) {
+				self.unblock();
+			}
+
+			self.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
+			self.noti.appendTo('body');
+
+			self.noti.lightbox_me({
+				centered:true,
+				closeClick:false,
+				closeEsc:false,
+				onClose: function() {
+					self.noti.remove();
+				}
+			});
+		},
+
+		unblock: function() {
+			if ( this.noti ) {
+				console.warn('unblock screen');
+				
+				this.noti.trigger('close');
+			}
+		}
+	};
+}(window.ENTER));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Пакетная отправка данных на сервер
+ *
+ * @author	Zaytsev Alexandr
+ */
+;(function( global ) {
+	var pageConfig = global.ENTER.config.pageConfig,
+		utils = global.ENTER.utils;
+	// end of vars
+
+	utils.packageReq = function packageReq( reqArray ) {
+		console.info('Пакетный запрос');
+
+		var dataToSend = {},
+			callbacks = [],
+
+			i, len;
+		// end of vars
+		
+		dataToSend.actions = [];
+		
+		var resHandler = function resHandler( res ) {
+			console.info('Обработка ответа пакетого запроса');
+
+			for ( i = 0, len = res.length - 1; i <= len; i++ ) {
+				callbacks[i](res[i]);
+			}
+		};
+
+		for ( i = 0, len = reqArray.length - 1; i <= len; i++ ) {
+			console.log(i);
+
+			// Обход странного бага с IE
+			if ( !reqArray[i] || !reqArray[i].url ) {
+				continue;
+			}
+
+			dataToSend.actions.push({
+				url: reqArray[i].url,
+				method: reqArray[i].type,
+				data: reqArray[i].data || null
+			});
+
+			callbacks[i] = reqArray[i].callback;
+		}
+
+		$.ajax({
+			url: pageConfig.routeUrl,
+			type: 'POST',
+			data: dataToSend,
+			success: resHandler
+		});
+	};
+}(this));
  
  
 /** 

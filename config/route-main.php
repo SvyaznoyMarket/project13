@@ -50,7 +50,7 @@ return [
     ],
     // регистрация корпоративного пользователя
     'user.registerCorporate' => [
-        'pattern' => '/corporate-register',
+        'pattern' => '/b2b',
         'action'  => ['User\Action', 'registerCorporate'],
     ],
     // выход пользователя
@@ -336,6 +336,16 @@ return [
         'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
     ],
+    // добавление товара в корзину
+    'cart.paypal.product.set' => [
+        'pattern' => '/cart/paypal/add-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'set'],
+    ],
+    // удаление товара из корзины
+    'cart.paypal.product.delete' => [
+        'pattern' => '/cart/paypal/delete-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
+    ],
     // удаление товара из корзины
     'cart.product.delete' => [
         'pattern' => '/cart/delete-product/{productId}',
@@ -386,6 +396,14 @@ return [
         'pattern' => '/cart/coupon/delete',
         'action'  => ['Cart\CouponAction', 'delete'],
     ],
+    'cart.blackcard.apply' => [
+        'pattern' => '/cart/blackcard',
+        'action'  => ['Cart\BlackcardAction', 'apply'],
+    ],
+    'cart.blackcard.delete' => [
+        'pattern' => '/cart/blackcard/delete',
+        'action'  => ['Cart\BlackcardAction', 'delete'],
+    ],
     'cart.sum' => [
         'pattern' => '/cart/sum',
         'action'  => ['Cart\SumAction', 'execute'],
@@ -430,6 +448,15 @@ return [
         'pattern' => '/orders/fail_payment',
         'action'  => ['Order\Action', 'paymentFail'],
     ],
+    'order.paypal.new' => [
+        'pattern' => '/orders/paypal/new',
+        'action'  => ['Order\Paypal\NewAction', 'execute'],
+    ],
+    'order.paypal.create' => [
+        'pattern' => '/orders/paypal/create',
+        'action'  => ['Order\Paypal\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
     'order.bill' => [
         'pattern' => '/private/orders/{orderNumber}/bill',
         'action'  => ['Order\BillAction', 'execute'],
@@ -437,6 +464,16 @@ return [
     'order.clearPaymentUrl' => [
         'pattern' => '/orders/clearPaymentUrl',
         'action'  => ['Order\Action', 'clearPaymentUrl'],
+    ],
+
+    // paypal
+    'order.paypal.complete' => [
+        'pattern' => '/orders/paypal-complete',
+        'action'  => ['Order\PaypalAction', 'complete'],
+    ],
+    'order.paypal.fail' => [
+        'pattern' => '/orders/paypal-fail',
+        'action'  => ['Order\PaypalAction', 'fail'],
     ],
 
     // услуги
@@ -473,14 +510,16 @@ return [
         'action' => ['Jewel\Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
-    'product.similar' => [
+    'product.similar' => [ /// executed SmartEngine or RetailRocker
         'pattern' => '/ajax/product-similar/{productId}',
         'action' => ['Product\SimilarAction', 'execute'],
+        //'action' => ['Product\SimilarAction', 'debug'], // just for debug
         'require' => ['productId' => '\d+'],
     ],
-    'product.alsoViewed' => [
+    'product.alsoViewed' => [ /// executed SmartEngine or RetailRocker
         'pattern' => '/ajax/product-also-viewed/{productId}',
         'action' => ['Product\AlsoViewedAction', 'execute'],
+        //'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
         'require' => ['productId' => '\d+'],
     ],
     /*
@@ -520,6 +559,13 @@ return [
     'user.changePassword' => [
         'pattern' => '/private/password',
         'action'  => ['User\ChangePasswordAction', 'execute'],
+    ],
+
+    // маршрутизатор нескольких запросов
+    'route' => [
+        'pattern' => '/route',
+        'action'  => ['RouteAction', 'execute'],
+        'method'  => ['POST'],
     ],
 
     // подписка

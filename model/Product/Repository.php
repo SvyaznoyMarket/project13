@@ -201,7 +201,7 @@ class Repository {
 
         $client = clone $this->client;
 
-        $chunckedIds = array_chunk($ids, 60);
+        $chunckedIds = array_chunk($ids, \App::config()->coreV2['chunk_size']);
 
         $collection = [];
         $entityClass = $this->entityClass;
@@ -372,7 +372,7 @@ class Repository {
         $collection = [];
         $entityClass = $this->entityClass;
         if (!empty($response['list'])) {
-            foreach (array_chunk($response['list'], 60) as $idsInChunk) {
+            foreach (array_chunk($response['list'], \App::config()->coreV2['chunk_size']) as $idsInChunk) {
                 $client->addQuery('product/get',
                     [
                         'select_type' => 'id',
@@ -472,7 +472,7 @@ class Repository {
 
         if ((bool)$ids) {
             $entityClass = $this->entityClass;
-            foreach (array_chunk($ids, 60) as $idsInChunk) {
+            foreach (array_chunk($ids, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
                 $client->addQuery('product/get',
                     [
                         'select_type' => 'id',
@@ -521,13 +521,21 @@ class Repository {
      * Возвращает массив с аксессуарами, сгруппированными по категориям
      *
      * @param $product
+     * @param $accessoryItems
      * @param int|null $category
      * @param int|null $limit
+     * @param array|null $catalogJson
      * @return array
      */
-    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null) {
+    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null, $catalogJson = null) {
         // массив токенов категорий, разрешенных в json
-        $jsonCategoryToken = self::getJsonCategoryToken($product);
+        if(is_null($catalogJson)) {
+            $jsonCategoryToken = self::getJsonCategoryToken($product);
+        } elseif(empty($catalogJson)) {
+            $jsonCategoryToken = null;
+        } else {
+            $jsonCategoryToken = isset($catalogJson['accessory_category_token']) ? $catalogJson['accessory_category_token'] : null;
+        }
 
         if(empty($jsonCategoryToken)) {
             return [];

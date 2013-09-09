@@ -49,7 +49,7 @@ class Repository {
                 'token'                  => 'now',
                 'short_name'             => 'покупка в магазине',
                 'name'                   => 'Заберу сейчас из магазина',
-                'description'            => 'Вы можете забрать товар из этого магазина прямо сейчас',
+                'description'            => 'Вы можете забрать товар из магазина прямо сейчас',
                 'method_tokens'          => ['now'],
                 'possible_method_tokens' => ['now', 'self', 'standart_furniture', 'standart_other'],
             ],
@@ -63,6 +63,7 @@ class Repository {
 
         $collection = [];
         foreach ($data as $item) {
+            if (('now' === $item['token']) && !\App::config()->product['allowBuyOnlyInshop']) continue;
             $collection[] = new Entity($item);
         }
 
@@ -100,4 +101,22 @@ class Repository {
 
         return null;
     }
+
+    /**
+     * @param int $methodToken
+     * @return Entity|null
+     */
+    public function getEntityByMethodToken($methodToken) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        foreach ($this->getCollection() as $entity) {
+            if (in_array($methodToken, $entity->getMethodTokens())) {
+                return $entity;
+            }
+        }
+
+        return null;
+    }
+
+
 }

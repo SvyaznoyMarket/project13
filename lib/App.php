@@ -341,6 +341,20 @@ class App {
     }
 
     /**
+     * @static
+     * @return \RetailRocket\Client
+     */
+    public static function retailrocketClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \RetailRocket\Client(self::$config->partners['RetailRocket'], \App::logger());
+        }
+
+        return $instance;
+    }
+
+    /**
      * @param $name
      * @return \Oauth\ProviderInterface
      * @throws InvalidArgumentException
@@ -386,6 +400,9 @@ class App {
                     break;
                 case 'request_compatible':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/site_page_time.log'), 'RequestLogger', $config[$name]['level']);
+                    break;
+                case 'order':
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/order.log'), $name, $config[$name]['level']);
                     break;
                 default:
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log'), $name, $config[$name]['level']);

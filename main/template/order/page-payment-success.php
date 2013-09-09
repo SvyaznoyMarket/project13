@@ -21,7 +21,7 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 
 <p class="title-font16 font16">
   Сейчас он отправлен на склад для сборки!<br>
-  Ожидайте смс или звонок от оператора контакт-сEnter по статусу доставки!
+  Ожидайте смс или звонок от оператора контакт-сEnter по статусу заказа!
 </p>
 
 <div class="line pb15"></div>

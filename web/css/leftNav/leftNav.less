@@ -178,7 +178,6 @@ dt.bCtg__eOrange {
     border: none;
   }
   margin: 15px 0px;
-  behavior: url('@{pie}');
   .filterHeader {
     .border-radius(2px 2px 0px 0px);
     border-top:none;
@@ -190,7 +189,6 @@ dt.bCtg__eOrange {
     margin: 0px 0px 15px;
     padding: 6px 0px 0px 10px;
     position: relative;
-    behavior: url('@{pie}');
     i {
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
@@ -310,25 +308,15 @@ label.radio {
   line-height: 15px;
 }
 label.radio span.holder {
-  background: url("@{base-url}/leftNav/img/radioBtn.png") no-repeat 0 -13px;
-  top: 0;
+  background: url("@{base-url}/leftNav/img/radioBtn.png") no-repeat 0 -21px;
+  top: 0 !important;
   height: 13px;
-}
-label.checkbox:hover span.holder,
-label.radio:hover span.holder {
-  top: 0px;
 }
 label.checked span.holder {
  background-position: 0 -16px;
 }
 label.radio.checked span.holder {
   background-position: 0 0;
-}
-label.checked:hover span.holder {
- background-position: 0 -16px;
-}
-label.radio.checked:hover span.holder {
- background-position: 0 0;
 }
 input.hiddenCheckbox {
   position: absolute;

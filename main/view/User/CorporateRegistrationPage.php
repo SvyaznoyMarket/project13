@@ -21,8 +21,8 @@ class CorporateRegistrationPage extends \View\DefaultLayout {
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
 
-        $this->setTitle('Регистрация юридического лица - Enter');
-        $this->setParam('title', 'Регистрация юридического лица');
+        $this->setTitle('Enter Business');
+        $this->setParam('title', '');
     }
 
     public function slotContent() {

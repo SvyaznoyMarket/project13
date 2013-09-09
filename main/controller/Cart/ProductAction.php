@@ -68,6 +68,8 @@ class ProductAction {
                 }
             }
 
+            $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
+
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,
@@ -80,6 +82,7 @@ class ProductAction {
                         'link'          => \App::router()->generate('order'),
                     ],
                     'product'  => $productInfo,
+                    'category_id' => $parentCategoryId,
                 ])
                 : new \Http\RedirectResponse($returnRedirect);
         } catch (\Exception $e) {
@@ -130,7 +133,7 @@ class ProductAction {
                 throw new \Exception('Не собраны ид товаров');
             }
 
-            foreach (array_chunk(array_keys($productsById), 50, true) as $productsInChunk) {
+            foreach (array_chunk(array_keys($productsById), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
                 \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
                     foreach ($data as $item) {
                         $productsById[$item['id']] = new \Model\Product\Entity($item);

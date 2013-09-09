@@ -11,9 +11,13 @@ class RedirectAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $uri = $request->getRequestUri();
+        $uri = $request->getPathInfo();
         // если главная страница, то игнорируем
         if ('/' == $uri) {
+            return;
+        }
+        // если ajax-запрос, то игнорируем
+        if ($request->isXmlHttpRequest()) {
             return;
         }
 
@@ -34,6 +38,10 @@ class RedirectAction {
         \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny']);
         if (!$redirectUrl) {
             return;
+        }
+
+        if ((false === strpos($redirectUrl, '?')) && $request->getQueryString()) {
+            $redirectUrl .= '?' . $request->getQueryString();
         }
 
         return new \Http\RedirectResponse($redirectUrl, 301);

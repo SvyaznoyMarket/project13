@@ -15,7 +15,6 @@ return function (
     foreach ($shopStates as $shopState) {
         $shop = $shopState->getShop();
         if (!$shop instanceof \Model\Shop\Entity) continue;
-
         $shopData[] = [
             'id'        => $shop->getId(),
             'name'      => $shop->getName(),
@@ -73,7 +72,6 @@ return function (
     <a href="#" class="bOrangeButton fr mt5">Перейти к магазину</a>
 </div>
 
-
 <ul class="bDelivery mLoader" data-value="<?= $helper->json([
     'url'      => $product->getIsBuyable() ? $helper->url('product.delivery') : '',
     'delivery' => $deliveryData,
@@ -83,8 +81,8 @@ return function (
     <li class="bDelivery__eItem mDeliveryFree">
     </li>
 
-    <li class="bDelivery__eItem mDeliveryNow <?= $product->getIsBuyable() ? 'mOpen' : 'mClose'?>">
-        <? $hideShopHeader = (!$product->getIsBuyable() && $product->getState()->getIsShop()) ? true : false; ?>
+    <? $hideShopHeader = (!$product->getIsBuyable() && $product->getState()->getIsShop()) ? true : false; ?>
+    <li class="bDelivery__eItem mDeliveryNow <?= !$product->getIsBuyable() ? 'mOpen' : 'mClose'?>" style="<?= $hideShopHeader ? 'background-image: none;' : '' ?>">
         <span class="bDeliveryNowClick dotted<?= $hideShopHeader ? ' hf' : '' ?>">Есть в магазинах</span>
         <div class="<?= $hideShopHeader ? ' hf' : '' ?>">Cегодня, без предзаказа</div>
         <ul class="bDeliveryFreeAddress">

@@ -6,21 +6,23 @@
  * @author		Zaytsev Alexandr
  */
 ;(function(){
-	var discountSubscribing = function(e){
+	var discountSubscribing = function( e ){
 		e.preventDefault();
 
-		var form = $('#subscribe-form');
-		var wholemessage = form.serializeArray();
+		var form = $('#subscribe-form'),
+			wholemessage = form.serializeArray();
+		// end of vars
 
-		var authFromServer = function(response) {
+		var authFromServer = function( response ) {
 			if ( !response.success ) {
 				return false;
 			}
+
 			form.find('label').hide();
 			form.find('#subscribeSaleSubmit').empty().addClass('font18').html('Спасибо, уже скоро в вашей почте информация об уцененных товарах.');
 		};
 
-		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val();
+		wholemessage['redirect_to'] = form.find('[name="redirect_to"]:first').val();
 
 		$.ajax({
 			type: 'POST',
@@ -33,7 +35,7 @@
 	};
 
 	$(document).ready(function(){
-		if (!$('#subscribe-form').length){
+		if ( !$('#subscribe-form').length ) {
 			return false;
 		}
 		

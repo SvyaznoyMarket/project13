@@ -125,49 +125,27 @@ window.ANALYTICS = {
 	//     })(document, window, "yandex_metrika_callbacks");
 	// },
 
+    yaParamsJS : function() {
+        var yap = $('#yaParamsJS').data('vars');
+        if (yap) {
+            window.yaParams = yap;
+        }
+    },
 
-    LiveTexJS: function () {
-        var LTData = $('#LiveTexJS').data('value');
-        var liveTexID = LTData.livetexID,
-            liveTex_object = true;
+    enterleadsJS : function() { // SITE-1911
+        (function () {
+            try {
+                var script = document.createElement('script');
 
-        window.LiveTex = {
-            onLiveTexReady: function () {
-                window.LiveTex.setName(LTData.username);
-            },
+                script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') +
+                    unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denterleads%26cost%3D') + escape(0) +
+                    unescape('%26order%3D') + escape(0) + unescape('%26r%3D') + Math.random();
 
-            invitationShowing: false,
+                document.getElementsByTagName('head')[0].appendChild(script);
 
-            addToCart: function (productData) {
-                var userid = ( LTData.userid ) ? LTData.userid : 0;
-                window.LiveTex.setManyPrechatFields({
-                    'Department': 'Marketing',
-                    'Product': productData.article,
-                    'Ref': window.location.href,
-                    'userid': userid
-                });
-
-                if ( (!window.LiveTex.invitationShowing) && (typeof(window.LiveTex.showInvitation) == 'function') ) {
-                    window.LiveTex.showInvitation('Здравствуйте! Вы добавили корзину ' + productData.name + '. Может, у вас возникли вопросы и я могу чем-то помочь?');
-                    window.LiveTex.invitationShowing = true;
-                }
-
-            } // end of addToCart function
-
-        }; // end of LiveTex Object
-
-        //$(document).load(function() {
-        (function() {
-            var lt = document.createElement('script');
-            lt.type ='text/javascript';
-            lt.async = true;
-            lt.src = 'http://cs15.livetex.ru/js/client.js';
-            var sc = document.getElementsByTagName('script')[0];
-            if ( sc ) sc.parentNode.insertBefore(lt, sc);
-            else  document.documentElement.firstChild.appendChild(lt);
+            } catch (e) {
+            }
         })();
-        //});
-
     },
 
     sociomantic : function() {
@@ -182,6 +160,35 @@ window.ANALYTICS = {
         })();
     },
 
+    sociomanticCategoryPage : function() {
+        (function(){
+            window.sonar_product = {
+                category : $('#sociomanticCategoryPage').data('prod-cats')
+            };
+        })();
+    },
+
+    sociomanticProductPageStream : function() {
+        (function(){
+            window.sonar_product = $('#sociomanticProductPageStream').data('scr-product');
+            window.sonar_product.category = $('#sociomanticProductPageStream').data('prod-cats');
+        })();
+    },
+
+    sociomanticBasket : function() {
+        (function(){
+            window.sonar_basket = {
+                products: $('#sociomanticBasket').data('cart-prods')
+            };
+        })();
+    },
+
+    sociomanticConfirmationPage : function() {
+        (function(){
+            window.sonar_basket = $('#sociomanticConfirmationPage').data('sonar-basket');
+        })();
+    },
+
     criteoJS : function() {
         window.criteo_q = window.criteo_q || [];
         var criteo_arr =  $('#criteoJS').data('value');
@@ -191,6 +198,26 @@ window.ANALYTICS = {
             } catch(e) {
             }
         }
+    },
+
+    jsOrderFlocktory : function() {
+    	console.info('foctory order complete');
+    	console.log($('#jsOrderFlocktory').data('value'));
+
+    	var _flocktory = window._flocktory = _flocktory || [],
+    		flocktoryData = $('#jsOrderFlocktory').data('value');
+    	// end of vars
+    	
+    	_flocktory.push(flocktoryData);
+
+        (function () {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = "//api.flocktory.com/1/hello.2.js";
+            var l = document.getElementsByTagName('script')[0];
+            l.parentNode.insertBefore(s, l);
+        })();
     },
 
     flocktoryJS : function() {
@@ -210,19 +237,21 @@ window.ANALYTICS = {
              * popup_bind(elem)  связывает событие  subscribing_friend()  с элементом (elem)
              * subscribing_friend()  проверяет емейл/телефон и вызывает  popup_open()
              *
-             * flk - сокращение от flacktory
+             * flk - сокращение от flocktory
              */
+            name : '',
+            mail : '',
 
-            subscribing_friend : function( ) {
+            popup_prepare : function () {
                 var flk_mail = $('.flocktory_email'); // Проверим эти элементы
                 if ( !flk_mail.length ) flk_mail = $('.subscribe-form__email');
                 if ( !flk_mail.length ) flk_mail = $('#recipientEmail');
                 flk_mail = flk_mail.val();
 
                 var flk_name = $('input.bFastInner__eInput').val(); // используем имя пользователя, если существует
-                if ( !flk_name.length && flk_mail.length ) flk_name = flk_mail;
+                if (flk_name && !flk_name.length && flk_mail && flk_mail.length ) flk_name = flk_mail;
 
-                if ( !flk_mail.length ) {
+                if ( !flk_mail || !flk_mail.length ) {
                     // если нет емейла, глянем телефон и передадим его вместо мейла
                     var flk_tlf = $('#phonemask').val().replace(' ','');
                     //flk_mail = $('.flocktory_tlf').val() + '@email.tlf';
@@ -231,9 +260,29 @@ window.ANALYTICS = {
                 }
 
                 if ( flk_mail.search('@') !== -1 ) {
-                    if (!flk_name.length) flk_name = 'Покупатель';
-                    Flocktory.popup_open( flk_mail, flk_name );
+                    //if (!flk_name || !flk_name.length) flk_name = 'Покупатель';
+                    if (!flk_name || !flk_name.length) flk_name = flk_mail;
+                    window.Flocktory.name = flk_name;
+                    window.Flocktory.mail = flk_mail;
+                    return true;
                 }
+                return false;
+            },
+
+            subscribing_friend: function () {
+                if ( Flocktory.popup_prepare() ) {
+                    return Flocktory.popup_subscribe(Flocktory.mail, Flocktory.name);
+                }
+                return false;
+            },
+
+            popup_opder : function ( toFLK_order )  {
+                if ( Flocktory.popup_prepare() ) {
+                    toFLK_order.email = Flocktory.mail;
+                    toFLK_order.name = Flocktory.name;
+                    return Flocktory.popup(toFLK_order);
+                }
+                return false;
             },
 
             popup_bind : function( jq_el ) { // передаётся элемент вида — $('.jquery_elem')
@@ -251,15 +300,18 @@ window.ANALYTICS = {
                 Flocktory.popup_bind( $('.subscribe-form__btn') );
             },
 
-            popup_open : function ( flk_mail, flk_name ) {
+            popup: function (toFLK) {
+                var _fl = window._flocktory = _flocktory || [];
+                return _fl.push(toFLK);
+            },
+
+            popup_subscribe : function ( flk_mail, flk_name ) {
                 //flk_mail = 'hello@flocktory.com'; // tmp, for debug
                 flk_name = flk_name || flk_mail;
                 var date = new Date();
-                var date_str = date.getFullYear() + '' + date.getMonth() + '' + date.getDay() + '' + date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000);
-                var _fl = window._flocktory = _flocktory || [];
 
-                return _fl.push({
-                    "order_id": date_str,
+                var toFLK = {
+                    "order_id": date.getFullYear() + '' + date.getMonth() + '' + date.getDay() + '' + date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000),
                     "email": flk_mail,
                     "name": flk_name,
                     "price": 0,
@@ -271,7 +323,9 @@ window.ANALYTICS = {
                         "image": "",
                         "count":  1
                     }]
-                });
+                };
+
+                return Flocktory.popup(toFLK);
             }
 
         } // end of window.Flocktory object
@@ -292,6 +346,14 @@ window.ANALYTICS = {
                 }
             },
 
+            category: function (data) {
+                window.rcAsyncInit = function () {
+                    rcApi.categoryView(data);
+                    console.log('catego222ry');
+                    console.log(data);
+                }
+            },
+
             transaction: function (data) {
                 window.rcAsyncInit = function () {
                     rrApi.order(data);
@@ -302,9 +364,11 @@ window.ANALYTICS = {
                 var rr_data = $('#RetailRocketJS').data('value');
                 if (rr_data && rr_data.routeName && rr_data.sendData) {
                     if (rr_data.routeName == 'product') {
-                        RetailRocket.product(rr_data.sendData)
+                        RetailRocket.product(rr_data.sendData);
+                    } else if (rr_data.routeName == 'product.category') {
+                        RetailRocket.category(rr_data.sendData);
                     } else if (rr_data.routeName == 'order.complete') {
-                        RetailRocket.transaction(rr_data.sendData)
+                        RetailRocket.transaction(rr_data.sendData);
                     }
                 }
             },
@@ -326,6 +390,52 @@ window.ANALYTICS = {
 
         RetailRocket.init();
         RetailRocket.action();
+    },
+
+    AdmitadJS : function() {
+        window._ad = window._ad || [];
+        var ad_data = $('#AdmitadJS').data('value');
+
+        if (ad_data) {
+
+            if (ad_data.ad_data) {
+                /**
+                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
+                 */
+                if (ad_data.ad_data.ad_category) {
+                    window.ad_category = ad_data.ad_data.ad_category;
+                }
+
+                if (ad_data.ad_data.ad_product) {
+                    window.ad_product = ad_data.ad_data.ad_product;
+                }
+
+                if (ad_data.ad_data.ad_products) {
+                    window.ad_products = ad_data.ad_data.ad_products;
+                }
+
+                if (ad_data.ad_data.ad_order) {
+                    window.ad_order = ad_data.ad_data.ad_order;
+                }
+
+                if (ad_data.ad_data.ad_amount) {
+                    window.ad_amount = ad_data.ad_data.ad_amount;
+                }
+
+            }
+
+            if (ad_data.pushData) {
+                window._ad.push(ad_data.pushData);
+            }
+        }
+
+        (function(d){
+            var s=document.createElement("script");
+            s.async=true;
+            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
+            var a=d.getElementsByTagName("script")[0];
+            a.parentNode.insertBefore(s, a);
+        }(document));
     },
 
     marketgidProd : function() {
@@ -423,7 +533,6 @@ window.ANALYTICS = {
 	testFreak : function() {
 		document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
 	},
-
 
 	enable : true
 }

@@ -29,14 +29,14 @@ if (!isset($redirect)) $redirect = '';
 
 				<div class="pb5">Ваше имя:</div>
 				<div class="pb5">
-					<input type="text" tabindex="5" value="" name="register[first_name]" class="text width315 mb10" id="register_first_name" required="required">
+					<input type="text" tabindex="5" value="" name="register[first_name]" class="text width315 mb10" id="register_first_name">
 				</div>
 				<div class="pb5 clearfix">
 					<span class="registerAnotherWay">Ваш e-mail</span>:<a href="#" class="registerAnotherWayBtn font10 fr">У меня нет e-mail</a>
 				</div>
 				<div class="pb5">
 					<span class="registerPhonePH">+7</span>
-					<input type="text" tabindex="6" value="" name="register[username]" class="text width315 mb10" id="register_username" required="required">
+					<input type="text" tabindex="6" value="" name="register[username]" class="text width315 mb10" id="register_username">
 				</div>
 				<label class="bSubscibe fl checked" style="display: inline;">
 					<b></b> Хочу знать об интересных<br>предложениях
@@ -51,20 +51,20 @@ if (!isset($redirect)) $redirect = '';
 		<div class="clear"></div>
 		<a id="hideLoginform" class="font18 dashed" href="#">У меня уже есть логин и пароль</a>
 		<div class="clearfix"><?= $page->render('form-forgot') ?></div>
-		<form id="login-form" method="post" class="form hf" action="<?= $page->url('user.login') ?>" id="login-form">
+		<form id="login-form" method="post" class="form hf" action="<?= $page->url('user.login') ?>">
 			<input type="hidden" value="<?= $redirect ?: $page->url('user.login') ?>" name="redirect_to">
 			<div class="width327 bLoginForm clearfix">
 				<h2 class="bLoginForm_eTitle">У меня есть логин и пароль</h2>
 				<div class="pb5">E-mail или мобильный телефон:</div>
 				<div class="pb5">
-					<input type="text" name="signin[username]" value="" tabindex="1" class="text width315 mb10" id="signin_username" required="required" />
+					<input type="text" name="signin[username]" value="" tabindex="1" class="text width315 mb10" id="signin_username" />
 				</div>
 				<div class="pb5">
-					<a class="fr orange underline" href="<?= $page->url('user.forgot') ?>" id="forgot-pwd-trigger">Забыли пароль?</a>
+					<a class="fr orange underline" href="javascript:void(0)" id="forgot-pwd-trigger">Забыли пароль?</a>
 					Пароль:
 				</div>
 				<div class="pb5">
-					<input type="password" tabindex="2" name="signin[password]" class="text width315 mb10" id="signin_password" required="required" />
+					<input type="password" tabindex="2" name="signin[password]" class="text width315 mb10" id="signin_password" />
 				</div>
 				<input type="submit" tabindex="3" value="Войти" class="fr button bigbutton">
 			</div>

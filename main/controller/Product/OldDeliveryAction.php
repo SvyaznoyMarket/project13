@@ -161,7 +161,7 @@ class OldDeliveryAction {
             });
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['forever'], \App::config()->coreV2['retryCount']);
 
-            $productData = $response['product_list'];
+            $productData = (array)$response['product_list'];
             $productData = array_pop($productData);
             $shopData = $response['shop_list'];
             $regionData = [];
@@ -206,9 +206,11 @@ class OldDeliveryAction {
                                 $shops[] = $shop;
                             }
 
-                            foreach ($response['interval_list'] as $interval) {
-                                if (in_array($interval['id'], $dateShopData['interval_list'])) {
-                                    $date['shopIds'][] = (int)$dateShopData['id'];
+                            if(isset($response['interval_list']) && is_array($response['interval_list'])) {
+                                foreach ($response['interval_list'] as $interval) {
+                                    if (isset($dateShopData['interval_list']) && is_array($dateShopData['interval_list']) && in_array($interval['id'], $dateShopData['interval_list'])) {
+                                        $date['shopIds'][] = (int)$dateShopData['id'];
+                                    }
                                 }
                             }
                         }

@@ -159,15 +159,28 @@
 					$self.remove();
 					newSlider.goodsSlider();
 
+				},
+
+				/**
+				 * Неудача при получении данных с сервера
+				 */
+				errorStatusCode = function errorStatusCode() {
+					console.warn('Слайдер товаров: Неудача при получении данных с сервера');
+					
+					$self.remove();
 				};
 			// end of function
-		
 
 			if ( sliderParams.url !== null ) {
 				$.ajax({
 					type: 'GET',
 					url: sliderParams.url,
-					success: authFromServer
+					success: authFromServer,
+					statusCode: {
+						500: errorStatusCode,
+						503: errorStatusCode,
+						504: errorStatusCode
+					}
 				});
 			}
 			else {
@@ -186,11 +199,11 @@
 	};
 
 	$.fn.goodsSlider.defaults = {
-		leftArrowSelector: '.bSliderAction__eBtn.mPrev',
-		rightArrowSelector: '.bSliderAction__eBtn.mNext',
-		sliderWrapperSelector: '.bSliderAction__eInner',
-		sliderSelector: '.bSliderAction__eList',
-		itemSelector: '.bSliderAction__eItem',
+		leftArrowSelector: '.bSlider__eBtn.mPrev',
+		rightArrowSelector: '.bSlider__eBtn.mNext',
+		sliderWrapperSelector: '.bSlider__eInner',
+		sliderSelector: '.bSlider__eList',
+		itemSelector: '.bSlider__eItem',
 		categoryItemSelector: '.bGoodsSlider__eCatItem'
 	};
 

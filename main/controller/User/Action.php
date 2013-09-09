@@ -130,8 +130,6 @@ class Action {
 
         $user = \App::user();
 
-        $user->removeToken();
-
         $referer = $request->headers->get('referer');
         if(!$referer || $referer && preg_match('/(\/private\/)|(\/private$)/', $referer)) {
             $redirect_to = \App::router()->generate('homepage');
@@ -139,6 +137,8 @@ class Action {
             $redirect_to = $referer;
         }
         $response = new \Http\RedirectResponse($redirect_to); 
+
+        $user->removeToken($response);
         $user->setCacheCookie($response);
 
         return $response;
@@ -160,7 +160,7 @@ class Action {
 
         $form = new \View\User\RegistrationForm();
         if ($request->isMethod('post')) {
-            $form->fromArray($request->request->get('register'));
+            $form->fromArray((array)$request->request->get('register'));
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
             }
@@ -173,17 +173,20 @@ class Action {
                     'first_name' => $form->getFirstName(),
                     'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
                 ];
+
+                $isSubscribe = (bool)$request->get('subscribe', false);
+
                 if (strpos($form->getUsername(), '@')) {
                     $data['email'] = $form->getUsername();
+                    $data['is_subscribe'] = $isSubscribe;
                 }
                 else {
                     $phone = $form->getUsername();
                     $phone = preg_replace('/^\+7/', '8', $phone);
                     $phone = preg_replace('/[^\d]/', '', $phone);
                     $data['mobile'] = $phone;
+                    $data['is_sms_subscribe'] = $isSubscribe;
                 }
-
-                $data['is_subscribe'] = (bool)$request->get('subscribe', false);
 
                 try {
                     $result = \App::coreClientV2()->query('user/create', [], $data);
@@ -217,6 +220,8 @@ class Action {
                     \App::exception()->remove($e);
                     switch ($e->getCode()) {
                         case 684:
+                            $form->setError('username', 'Неправильный email');
+                            break;
                         case 686:
                             $form->setError('username', 'Такой пользователь уже зарегистрирован.');
                             break;
@@ -257,15 +262,30 @@ class Action {
     public function registerCorporate(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::user()->getEntity()) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(['success' => true])
-                : new \Http\RedirectResponse(\App::router()->generate('user'));
+        if (\App::user()->getEntity() && $request->isXmlHttpRequest() ) {
+            return new \Http\JsonResponse(['success' => true]);
         }
+
+
+        \App::logger()->info(['action' => __METHOD__, 'request.request' => $request->request->all()], ['user']);
+
+        $content = null;
+        \App::contentClient()->addQuery('reg_corp_user_cont', [],
+            function($data) use (&$content) {
+                if (!empty($data['content'])) {
+                    $content = $data['content'];
+                }
+            },
+            function(\Exception $e) {
+                \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                \App::exception()->add($e);
+            }
+        );
+        \App::contentClient()->execute();
 
         $form = new \View\User\CorporateRegistrationForm();
         if ($request->isMethod('post')) {
-            $form->fromArray($request->request->get('register'));
+            $form->fromArray((array)$request->get('register'));
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
             }
@@ -349,6 +369,7 @@ class Action {
                     $result = \App::coreClientV2()->query('user/create-legal', [
                         'geo_id' => \App::user()->getRegion()->getId(),
                     ], $data);
+                    \App::logger()->info(['core.response' => $result], ['user']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
@@ -366,6 +387,7 @@ class Action {
                                 'content' => \App::templating()->render('form-registerCorporate', [
                                     'page'    => new \View\Layout(),
                                     'form'    => $form,
+                                    'content' => $content,
                                     'request' => \App::request(),
                                 ]),
                             ],
@@ -426,6 +448,7 @@ class Action {
                         'content' => \App::templating()->render('form-registerCorporate', [
                             'page'    => new \View\Layout(),
                             'form'    => $form,
+                            'content' => $content,
                             'request' => \App::request(),
                         ]),
                     ],
@@ -433,8 +456,13 @@ class Action {
             }
         }
 
+        // список рутовых категорий
+        $rootCategories = \RepositoryManager::productCategory()->getRootCollection();
+
         $page = new \View\User\CorporateRegistrationPage();
         $page->setParam('form', $form);
+        $page->setParam('rootCategories', $rootCategories);
+        $page->setParam('content', $content);
 
         return new \Http\Response($page->show());
     }

@@ -2,7 +2,7 @@
 
 namespace View\Order\NewForm;
 
-class Form {
+class Form implements \JsonSerializable {
     use \Util\JsonDecodeAssocTrait;
 
     /** @var PartField[] */
@@ -77,18 +77,33 @@ class Form {
         $this->fromArray($data);
     }
 
+    /**
+     * @return array
+     */
+    public function jsonSerialize() {
+        $return = [];
+        foreach (get_object_vars($this) as $name => $value) {
+            $return[$name] = $value;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param array $data
+     */
     public function fromArray(array $data) {
         if (array_key_exists('part', $data)) {
             try {
                 foreach ($this->jsonDecodeAssoc($data['part']) as $partData) {
                     if (!is_array($partData)) {
-                        \App::logger()->error(sprintf('Неправильные данные для подзаказа %s', json_encode($partData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                        \App::logger()->error(['message' => 'Неправильные данные для подзаказа', 'partData' => $partData], ['order']);
                         continue;
                     }
                     $this->addPart(new PartField($partData));
                 }
             } catch (\Exception $e) {
-                \App::logger()->error(sprintf('Невалидные части заказа %s', json_encode($data['part'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => '', 'part' => $data['part']], ['order']);
             }
         }
         if (array_key_exists('delivery_type_id', $data))       $this->setDeliveryTypeId($data['delivery_type_id']);
@@ -370,13 +385,6 @@ class Form {
      */
     public function getSubwayId() {
         return $this->subwayId;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasSubway() {
-        return \App::user()->getRegion()->getHasSubway();
     }
 
     /**

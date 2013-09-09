@@ -13,24 +13,31 @@
  */
 ?>
 
-<?php
+<?
+$helper = new \Helper\TemplateHelper();
+
 $isCorporative = $user->getEntity() ? $user->getEntity()->getIsCorporative() : false;
 // TODO: доделать
 $isCredit = (bool)$creditData;
 $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
+
+if (!isset($paymentUrl)) $paymentUrl = null;
 ?>
 
 <!-- Header -->
-<div class='bBuyingHead'>
-    <a href="<?= $page->url('homepage') ?>"></a>
-    <i>Оформление заказа</i><br>
-    <span><?= $isCredit ? 'Покупка в кредит' : 'Ваш заказ принят, спасибо!' ?></span>
+<div class='bBuyingHead clearfix'>
+    <a class="bBuyingHead__eLogo" href="<?= $page->url('homepage') ?>"></a>
+
+    <div class="bBuyingHead__eTitle">
+        <span class="bSubTitle">Оформление заказа</span><br>
+        <span class="bTitle"><?= $isCredit ? 'Покупка в кредит' : 'Ваш заказ принят, спасибо!' ?></span>
+    </div>
 </div>
 <!-- /Header -->
 
 <? foreach ($orders as $order): ?>
     <p class="title-font16 font16">Сейчас он отправлен на склад для сборки!<br/>
-Ожидайте смс или звонок от оператора контакт-сEnter по статусу доставки!</p>
+Ожидайте смс или звонок от оператора контакт-сEnter по статусу заказа!</p>
     <p class="font19">Номер заказа: <?= $order->getNumber() ?></p>
 
     <? if ($order->getDeliveredAt() instanceof \DateTime): ?>
@@ -66,7 +73,9 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 <? else: ?>
     <? if(!empty($form)) { ?>
         <?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
-        <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $form]) ?>
+        <? if($paymentMethod && $paymentMethod->isCash()) { ?>
+            <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $form, 'productsById' => $productsById]) ?>
+        <? } ?>
     <? } ?>
     <div class="mt32" style="text-align: center">
         <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
@@ -119,3 +128,5 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
     'productsById' => $productsById,
 ]) ?>
 
+
+<?= $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]) ?>

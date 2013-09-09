@@ -188,8 +188,8 @@ class Action {
             }
 
             if (!$deliveryCalcResult) {
-                $e = new \Exception('Калькулятор доставки вернул пустой результат', ['order']);
-                \App::logger()->error($e->getMessage());
+                $e = new \Exception('Калькулятор доставки вернул пустой результат');
+                \App::logger()->error($e->getMessage(), ['order']);
 
                 throw $e;
             }
@@ -277,11 +277,6 @@ class Action {
                     throw new \Exception(sprintf('Невозможно оформить заказ на %d рублей с выбранным способом оплаты (%d)', $totalSum, $form->getPaymentMethodId()));
                 }
 
-                // сохранение заказов в ядре
-                $saveOrderResult = $this->saveOrder($form, $deliveryMap, $productsForRetargeting);
-                $orderNumbers = $saveOrderResult['orderNumbers'];
-                $paymentUrl = $saveOrderResult['paymentUrl'];
-
                 // сохранение заказов в сессии
                 \App::session()->set(self::ORDER_SESSION_NAME, array_map(function($orderNumber) use ($form) {
                     return ['number' => $orderNumber, 'phone' => $form->getMobilePhone()];
@@ -330,7 +325,7 @@ class Action {
                 $errcode = $e->getCode();
                 if (735 == $errcode) {
                     \App::exception()->remove($e);
-                    $errors['order[sclub_card_number]'] = 'Неверный код карты Связной-Клуб';
+                    $errors['order[sclub_card_number]'] = 'Неверный код карты &laquo;Связной-Клуб&raquo;';
                 }else if (742 == $errcode) {
                     \App::exception()->remove($e);
                     $errors['order[cardpin]'] = 'Неверный пин-код подарочного сертификата';
@@ -600,9 +595,7 @@ class Action {
             }
         }
 
-        // TODO: удалять из сессии успешный заказ, время создания которого больше 1 часа
-
-        $paymentUrl = \App::session()->get('paymentUrl');
+        $paymentUrl = $order->getPaymentUrl(); // раньше было: $paymentUrl = \App::session()->get('paymentUrl');
 
         // crossss
         if (\App::config()->crossss['enabled']) {
@@ -765,7 +758,7 @@ class Action {
         $bMeta = false;
         foreach ($deliveryData['deliveryTypes'] as $deliveryItem) {
             if (!isset($deliveryTypesById[$deliveryItem['id']])) {
-                \App::logger()->error(sprintf('Неизвестный тип доставки %s', json_encode($deliveryItem, JSON_UNESCAPED_UNICODE)), ['order']);
+                \App::logger()->error(['message' => 'Неизвестный тип доставки', 'item' => $deliveryItem], ['order']);
                 continue;
             }
 
@@ -810,7 +803,7 @@ class Action {
             if (in_array($deliveryType->getToken(), ['self', 'now'])) {
                 $shopId = (int)$deliveryItem['shop']['id'];
                 if (!array_key_exists($shopId, $shopsById)) {
-                    \App::logger()->error(sprintf('Неизвестный магазин %s', json_encode($deliveryItem['shop'], JSON_UNESCAPED_UNICODE)), ['order']);
+                    \App::logger()->error(sprintf('Неизвестный магазин %s', $shopId), ['order']);
                 }
                 $orderData['shop_id'] = $shopId;
                 $orderData['subway_id'] = null;
@@ -826,7 +819,7 @@ class Action {
 
             foreach ($deliveryItem['items'] as $itemToken) {
                 if (false === strpos($itemToken, '-')) {
-                    \App::logger()->error(sprintf('Неправильный элемент заказа %s', json_encode($itemToken, JSON_UNESCAPED_UNICODE)), ['order']);
+                    \App::logger()->error(['message' => 'Неправильный элемент заказа', 'itemToken' => $itemToken], ['order']);
                     continue;
                 }
 
@@ -836,7 +829,7 @@ class Action {
                 if ('product' == $itemType) {
                     $cartProduct = $user->getCart()->getProductById($itemId);
                     if (!$cartProduct) {
-                        \App::logger()->error(sprintf('Элемент заказа %s не найден в корзине', json_encode($itemToken, JSON_UNESCAPED_UNICODE)), ['order']);
+                        \App::logger()->error(['message' => 'Элемент заказа не найден в корзине', 'itemToken' => $itemToken], ['order']);
                         continue;
                     }
 
@@ -869,7 +862,7 @@ class Action {
                 } else if ('service' == $itemType) {
                     $cartService = $user->getCart()->getServiceById($itemId);
                     if (!$cartService) {
-                        \App::logger()->error(sprintf('Элемент заказа %s не найден в корзине', json_encode($itemToken, JSON_UNESCAPED_UNICODE)), ['order']);
+                        \App::logger()->error(['message' => 'Элемент заказа не найден в корзине', 'itemToken' => $itemToken], ['order']);
                         continue;
                     }
                     $orderData['service'][] = [
@@ -895,11 +888,14 @@ class Action {
                             if (\Partner\Counter\MyThings::isTracking()) {
                                 $partners[] = \Partner\Counter\MyThings::NAME;
                             }
-                            if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at')) {
-                                if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { //30days
-                                    $partners[] = \Smartengine\Client::NAME;
-                                } else {
-                                    \App::user()->deleteRecommendedProductByParams($product->getId(), \Smartengine\Client::NAME, 'viewed_at');
+
+                            foreach ( \Controller\Product\BasicRecommendedAction::$recomendedPartners as $recomPartnerName) {
+                                if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {
+                                    if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { //30days
+                                        $partners[] = $recomPartnerName;
+                                    } else {
+                                        \App::user()->deleteRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at');
+                                    }
                                 }
                             }
                             $orderData['meta_data'] =  \App::partner()->fabricateCompleteMeta(
@@ -934,7 +930,7 @@ class Action {
         $paymentUrls = [];
         foreach ($result as $orderData) {
             if (empty($orderData['number'])) {
-                \App::logger()->error(sprintf('Ошибка при создании заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE)), ['order']);
+                \App::logger()->error(['message' => 'Не передан номер заказа', 'orderData' => $orderData], ['order']);
                 continue;
             }
             \App::logger()->debug(sprintf('Заказ %s успешно создан %s', $orderData['number'], json_encode($orderData, JSON_UNESCAPED_UNICODE)));
@@ -1434,22 +1430,23 @@ class Action {
         $orderData = array_map(function ($orderItem) {
             return array_merge(['number' => null, 'phone' => null], $orderItem);
         }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
-        //$orderData = array(array('number' => 'XX013863', 'phone' => '80000000000'));
 
         /** @var $orders \Model\Order\Entity[] */
         $orders = [];
         foreach ($orderData as $orderItem) {
             if (!$orderItem['number'] || !$orderItem['phone']) {
-                \App::logger()->error(sprintf('Невалидные данные о заказе в сессии %s', json_encode($orderItem, JSON_UNESCAPED_UNICODE)), ['order']);
+                \App::logger()->error(['message' => 'Невалидные данные о заказе в сессии', 'orderItem' => $orderItem], ['order']);
                 continue;
             }
 
             // TODO: запрашивать несколько заказов асинхронно
             $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderItem['number'], $orderItem['phone']);
             if (!$order) {
-                \App::logger()->error(sprintf('Заказ из сессии не найден %s', json_encode($orderItem, JSON_UNESCAPED_UNICODE)), ['order']);
+                \App::logger()->error(['message' => 'Заказ из сессии не найден', 'orderItem' => $orderItem], ['order']);
                 continue;
             }
+            // TODO: осторожно, хак
+            $order->setMobilePhone($orderItem['phone']);
 
             $orders[] = $order;
         }

@@ -2,7 +2,9 @@
  * Расчет доставки
  *
  * @author		Zaytsev Alexandr
+ * 
  * @requires	jQuery, simple_templating
+ * 
  * @param		{Object}	widgetBox		Контейнер с доступными вариантами доставки
  * @param		{Object}	deliveryData	Данные необходимые для отображения доставки
  * @param		{String}	url				Адрес по которому необходимо запросить данные с расчитанной доставкой для текущего продукта
@@ -11,21 +13,26 @@
  * @param		{Object}	dataToSend		Данные для отправки на сервер и получение расчитанной доставки
  */
 (function() {
-	if ( !$('#jsProductCard').length ) {
-		return false;
-	}
+	console.info('Расчет доставки');
 
 	var widgetBox = $('.bDelivery'),
 		deliveryData = widgetBox.data('value'),
 		url = deliveryData.url,
-		deliveryShops = (deliveryData.delivery.length) ? deliveryData.delivery[0].shop : [],
-		productInfo = $('#jsProductCard').data('value'),
-		dataToSend = {
-			'product':[
-				{'id': productInfo.id}
-			]
-		};
+		deliveryShops = ( deliveryData.delivery.length ) ? deliveryData.delivery[0].shop : [],
+		productInfo = $('#jsProductCard'),
+		productInfoVal = ( productInfo ) ? productInfo.data('value') : null,
+		dataToSend = {};
 	// end of vars
+	
+	if ( !productInfo || !productInfoVal ) {
+		console.warn('Недостаточно данных для расчета доставки');
+		console.log(productInfo);
+		console.log(productInfoVal);
+
+		widgetBox.removeClass('mLoader');
+
+		return false;
+	}
 
 		/**
 		 * Показ попапа с магазином
@@ -88,7 +95,6 @@
 				shopInfo = {},
 				shopLen = shops.length;
 			// end of var
-			
 
 			/**
 			 * Обработчик переключения состояния листа магазинов открыто или закрыто
@@ -97,8 +103,7 @@
 				nowBox.toggleClass('mOpen');
 				nowBox.toggleClass('mClose');
 			};
-			
-			
+
 			if ( !shopLen ) {
 				return;
 			}
@@ -174,25 +179,30 @@
 			widgetBox.removeClass('mLoader');
 		};
 	// end of functions
-
-	fillAvalShopTmpl( deliveryShops );
 	
-	if ( url !== '' ) {
+	dataToSend = {
+		'product':[
+			{
+				'id': productInfoVal.id
+			}
+		]
+	}
+
+	if ( url === '' && deliveryShops.length === 0 ) {
+		console.warn('URL отсутствует. Список магазинов пуст.');
+		
+		widgetBox.removeClass('mLoader');
+	}
+	else if ( url === '' ) {
+		fillAvalShopTmpl( deliveryShops );
+	}
+	else {
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: dataToSend,
-			success: function(data) {
-				console.log(data)
-				resFromSerever(data)
-			}
+			success: resFromSerever
 		});
 	}
 
-	$(document).ready(function() {
-		if ( $('.bDeliveryNowClick').length && $('.bDeliveryNowClick').hasClass('hf') ) {
-			$('.bDeliveryNowClick').click();
-			$('.bDeliveryNow.mOpen').css('background-image','none');
-		}
-	});
 }());

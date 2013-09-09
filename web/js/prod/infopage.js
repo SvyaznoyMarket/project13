@@ -6,47 +6,56 @@
  */
 (function(){
 	var handleLinksToggle = function() {
-		var toggle = $(this);
-		var linksContainer = toggle.siblings('.links_response');
-		var task = $(this).data('task');
-    if(toggle.hasClass('expanded')) {
+		var toggle = $(this),
+			linksContainer = toggle.siblings('.links_response'),
+			task = $(this).data('task');
+		// end of vars
+
+		if ( toggle.hasClass('expanded') ) {
 			linksContainer.html('');
 			toggle.html('Ссылки');
-      toggle.removeClass('expanded');
-    } else {
+			toggle.removeClass('expanded');
+		}
+		else {
 			$.get('/cron/'+task+'/links', {}, function(data){
 				if (data.success === true) {
 					toggle.html('Скрыть ссылки');
 					linksContainer.html(data.data);
 				}
 			});
-      toggle.addClass('expanded');
-    }
-    return false;
+
+			toggle.addClass('expanded');
+		}
+
+		return false;
 	};
 
 	var handleCronReportStart = function() {
 		var toggle = $(this);
-    if(toggle.hasClass('expanded')) {
+
+		if ( toggle.hasClass('expanded') ) {
 			$('#report_start_response').html('');
 			toggle.html('Сгенерировать');
-      toggle.removeClass('expanded');
-    } else {
+			toggle.removeClass('expanded');
+		}
+		else {
 			$.get('/cron/report', {}, function(data){
 				if (data.success === true) {
 					toggle.html('Скрыть информацию');
 					$('#report_start_response').html(data.data);
 				}
 			});
-      toggle.addClass('expanded');
-    }
-    return false;
+
+			toggle.addClass('expanded');
+		}
+
+		return false;
 	};
 
 
-	$(document).ready(function(){
-	  $('.cron_report_start').bind('click', handleCronReportStart);
-	  $('.cronLinks').bind('click', handleLinksToggle);
+	$(document).ready(function() {
+		$('.cron_report_start').bind('click', handleCronReportStart);
+		$('.cronLinks').bind('click', handleLinksToggle);
 	});
 }());
 
@@ -67,21 +76,23 @@
  * @author		Zaytsev Alexandr
  */
 ;(function(){
-	var discountSubscribing = function(e){
+	var discountSubscribing = function( e ){
 		e.preventDefault();
 
-		var form = $('#subscribe-form');
-		var wholemessage = form.serializeArray();
+		var form = $('#subscribe-form'),
+			wholemessage = form.serializeArray();
+		// end of vars
 
-		var authFromServer = function(response) {
+		var authFromServer = function( response ) {
 			if ( !response.success ) {
 				return false;
 			}
+
 			form.find('label').hide();
 			form.find('#subscribeSaleSubmit').empty().addClass('font18').html('Спасибо, уже скоро в вашей почте информация об уцененных товарах.');
 		};
 
-		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val();
+		wholemessage['redirect_to'] = form.find('[name="redirect_to"]:first').val();
 
 		$.ajax({
 			type: 'POST',
@@ -94,7 +105,7 @@
 	};
 
 	$(document).ready(function(){
-		if (!$('#subscribe-form').length){
+		if ( !$('#subscribe-form').length ) {
 			return false;
 		}
 		
@@ -130,7 +141,7 @@ $(document).ready(function(){
 					form.html('<div class="subscribe-form__title">Спасибо! подтверждение подписки отправлено на указанный e-mail</div>');
 					window.docCookies.setItem('subscribed', 1, 157680000, '/');
 
-					form.after('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
+					form.after('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
 
 					if( typeof(_gaq) !== 'undefined' ){
 						_gaq.push(['_trackEvent', 'subscribe', email, utm_source]);
@@ -180,7 +191,7 @@ $(document).ready(function(){
 	 * form register corporate
 	 */
 	if ( $('#corp_select').length ) {
-        $('form[action="/corporate-register"]').bind('submit', function(){
+        $('form[action="/b2b"]').bind('submit', function(){
             if ( $('#corp_select').find('option:selected').val() === 'Другая форма' ) {
                 return false;
             }
@@ -190,7 +201,7 @@ $(document).ready(function(){
 			if ( $(this).find('option:selected').val() === 'Другая форма' ) {
 				$('#corpNotice').lightbox_me({
 					centered: true,
-					closeSelector: ".close"
+					closeSelector: '.close'
 				});
 			}
 		});
@@ -217,8 +228,8 @@ $(document).ready(function(){
 		});
 		
 		if ( typeof( $.mask ) !== 'undefined' ) {
-			$.mask.definitions['n'] = "[()0-9\ \-]";
-			$("#phonemask").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } );
+			$.mask.definitions['n'] = '[()0-9\ \-]';
+			$('#phonemask').mask('8nnnnnnnnnnnnnnnnn', { placeholder: ' ', maxlength: 10 } );
 		}
 		
 		var emptyValidation = function emptyValidation( node ) {
@@ -299,7 +310,7 @@ $(document).ready(function(){
 
 	/* Credits inline */
 	if ( $('.bCreditLine').length ) {
-		document.getElementById("requirementsFullInfoHref").style.cursor="pointer";
+		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer';
 
 		$('#requirementsFullInfoHref').bind('click', function() {
 			$('.bCreditLine2').toggle();
@@ -311,7 +322,8 @@ $(document).ready(function(){
 
 		for ( var i = 0; i < creditOptions.length; i++){
 			var creditOption = creditOptions[i];
-			$('<option>').val(creditOption.id).text(creditOption.name).appendTo("#productSelector");
+
+			$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
 		}
 
 		$('#productSelector').change(function() {
@@ -330,13 +342,13 @@ $(document).ready(function(){
 				
 
 				for ( var j in bankRelations[i] ) {
-					programNames += "<h4>" + bankInfo[i].programs[bankRelations[i][j]].name + "</h4>\r\n<ul>";
+					programNames += '<h4>' + bankInfo[i].programs[bankRelations[i][j]].name + '</h4>\r\n<ul>';
 
 					for ( var k in bankInfo[i].programs[bankRelations[i][j]].params ) {
-						programNames += "\t<li>" + bankInfo[i].programs[bankRelations[i][j]].params[k] + "</li>\r\n";
+						programNames += '\t<li>' + bankInfo[i].programs[bankRelations[i][j]].params[k] + '</li>\r\n';
 					}
 
-					programNames += "</ul>";
+					programNames += '</ul>';
 				}
 
 				dtmpl.programNames = programNames;
@@ -366,7 +378,7 @@ $(document).ready(function(){
 		};
 
 		$('body').bind('click.mob', hideQRpopup);
-		$("div.bMobDown").click(function( e ) {
+		$('div.bMobDown').click(function( e ) {
 			e.stopPropagation();
 		});
 
@@ -376,20 +388,20 @@ $(document).ready(function(){
 			return false;
 		});
 
-		$(".android-load").click(function () {
-			showQRpopup(".android-block");
+		$('.android-load').click(function () {
+			showQRpopup('.android-block');
 
 			return false;
 		});
 
-		$(".iphone-load").click(function () {
-			showQRpopup(".iphone-block");
+		$('.iphone-load').click(function () {
+			showQRpopup('.iphone-block');
 
 			return false;
 		});
 
-		$(".symbian-load").click(function () {
-			showQRpopup(".symbian-block");
+		$('.symbian-load').click(function () {
+			showQRpopup('.symbian-block');
 
 			return false;
 		});
@@ -525,7 +537,7 @@ $(document).ready(function(){
 
 		var initSlider = function initSlider() {
 			for ( var slide in data ) {
-				var slideTmpl = tmpl("slide_tmpl",data[slide]);
+				var slideTmpl = tmpl('slide_tmpl', data[slide]);
 
 				$('.bPromoCatalogSliderWrap').append(slideTmpl);
 
@@ -539,9 +551,8 @@ $(document).ready(function(){
 
 		initSlider(); //запуск слайдера
 
-		//переменные
 		var slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width(),	// ширина одного слайда
-			slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2)),	// установка ширины обертки
+			// slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2)),	// установка ширины обертки
 			nowSlide = 0;	//текущий слайд
 		// end of vars
 
@@ -587,7 +598,7 @@ $(document).ready(function(){
 				nowSlide = slide;
 			});
 
-			window.location.hash = "slide" + (slide + 1);
+			window.location.hash = 'slide' + (slide + 1);
 			catalogPaginator.setActive(slide);
 		};
 

@@ -4,7 +4,6 @@
     
 //основной путь всех файлов
 @base-url:"/css";
-@pie:"@{base-url}/common/PIE.htc";
 @displayTable:"@{base-url}/common/display-table.min.htc";
 
 //--------МИКСИНЫ----------
@@ -101,11 +100,6 @@
 /*-------СТИЛИ АПСЕЙЛА-----*/
 @import "upsale/upsale.less" all;
 /*---END---СТИЛИ АПСЕЙЛА---*/
-
-/*-------СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА-----*/
-@import "order/order.less" all;
-// @import "order/orderFinal.less" all;
-/*---END---СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА---*/
 
 /*-------СТИЛИ СТРАНИЦЫ ГДЕ КУПИТЬ-----*/
 @import "whereBuy/whereBuy.less" all;
@@ -212,7 +206,7 @@
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНЕЙКИ---*/
 
 /*------СТИЛИ СЛАЙДЕРА------*/
-@import "slider/slider.less" all;
+@import "bGoodsSlider/bGoodsSlider.less" all;
 /*---END---СТИЛИ СЛАЙДЕРА---*/
 
 /*------СТИЛИ ПРАВОЙ КОЛОНКИ КАРТОЧКИ ТОВАРА------*/
@@ -232,7 +226,7 @@
 /*---END---СТИЛИ ОТЗЫВОВ---*/
 
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA------*/
-@import "pandoraCatalog/pandoraCatalog.less" all;
+@import "bJewelCatalog/bJewelCatalog.less" all;
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
 
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
@@ -254,6 +248,28 @@
 /*------СТИЛИ ВЕРХНЕГО БЛОКА СОРТИРОВКИ В КАТАЛОГЕ------*/
 @import "bViewPageLine/bViewPageLine.less" all;
 /*---END---СТИЛИ ВЕРХНЕГО БЛОКА СОРТИРОВКИ В КАТАЛОГЕ---*/
+
+/*------СТИЛИ ОФОРМЛЕНИЕ ЗАКАЗА------*/
+@import "bBuyingSteps/bBuyingSteps.less" all;
+
+@import "bBuyingSteps/bBuyingInfo.less" all;
+
+@import "bBuyingSteps/bBuyingDates.less" all;
+
+@import "bBuyingSteps/bInputAddress.less" all;
+
+@import "bBuyingSteps/bBuyingSale.less" all;
+
+@import "bBuyingSteps/bPointPopup.less" all;
+/*---END---СТИЛИ ОФОРМЛЕНИЕ ЗАКАЗА---*/
+
+/*------СТИЛИ СТРАНИЦЫ РЕГИСТРАЦИИ ЮР. ЛИЦ------*/
+@import "bBusinessReg/bBusinessReg.less" all;
+/*---END---СТИЛИ СТРАНИЦЫ РЕГИСТРАЦИИ ЮР. ЛИЦ---*/
+
+/*------СТИЛИ ПУСТОЙ КОРЗИНЫ------*/
+@import "bEmptyCart/bEmptyCart.less" all;
+/*---END---СТИЛИ ПУСТОЙ КОРЗИНЫ---*/
 
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 // @import "newYearTheme/newYearTheme.less" all;

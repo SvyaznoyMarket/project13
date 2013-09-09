@@ -25,8 +25,7 @@ class OrderAction {
                 }
             }, function (\Exception $e) {
                 \App::exception()->remove($e);
-                $token = \App::user()->removeToken();
-                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
+                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $user->getToken()));
             });
         }
 
@@ -106,7 +105,7 @@ class OrderAction {
 
         // товары
         if ((bool)$productsById) {
-            $chunksProductsById = array_chunk($productsById, 50, true);
+            $chunksProductsById = array_chunk($productsById, \App::config()->coreV2['chunk_size'], true);
 
             foreach ($chunksProductsById as $i => $chunk) {
                 \RepositoryManager::product()->prepareCollectionById(array_keys($chunk), $region, function($data) use(&$productsById) {

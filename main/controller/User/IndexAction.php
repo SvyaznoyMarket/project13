@@ -25,8 +25,7 @@ class IndexAction {
                 }
             }, function (\Exception $e) {
                 \App::exception()->remove($e);
-                $token = \App::user()->removeToken();
-                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
+                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $user->getToken()));
             });
         }
 
@@ -70,6 +69,11 @@ class IndexAction {
         $page = new \View\User\IndexPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('orderCount', $orderCount);
+
+        if($user->getEntity()->getIsSubscribedViaSms() && !(bool)($user->getEntity()->getMobilePhone())) {
+            $page->setParam('smsTmpCheck', true);
+            $page->setParam('error', \Controller\User\SubscribeAction::EMPTY_PHONE_ERROR);
+        }
 
         $form = new \View\User\ConsultationForm();
         $page->setParam('form', $form);

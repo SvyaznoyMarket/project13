@@ -16,7 +16,7 @@ class Actionpay {
         try {
             $actionpayId = \App::request()->cookies->get('actionpay');
             if (!$actionpayId) {
-                \App::logger()->error(sprintf('В куках отсутсвует actionpay'), ['partner', ['actionpay']]);
+                \App::logger()->error(['action' => __METHOD__, 'message' => 'В куках отсутсвует actionpay'], ['partner', 'actionpay']);
             }
 
             /** @var \Model\Order\Entity $order */
@@ -27,7 +27,6 @@ class Actionpay {
 
             $orderSum = 0;
             foreach ($orders as $order) {
-                $orderSum = 0;
                 foreach ($order->getProduct() as $orderProduct) {
                     /** @var $product \Model\Product\Entity */
                     $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
@@ -42,7 +41,7 @@ class Actionpay {
                         continue;
                     }
 
-                    $categoryRate = 0;
+                    $categoryRate = 0.005; //на неопределенные товары по умолчанию ставим минимальный процент, для web-мастеров =0,5%
                     switch ($category->getId()) {
                         case 80:  // Мебель
                             $categoryRate = 0.136;
@@ -86,6 +85,11 @@ class Actionpay {
                         case 647: // Спорт и отдых
                             $categoryRate = 0.148;
                             break;
+                        default:
+                            if ( 'cpo' == \App::request()->cookies->get('utm_medium') ) {
+                                //для всех товаров по которым не удалось расчитать %
+                                $categoryRate = 0.0065; // CPO агрегатора = 0,65%
+                            }
                     }
 
                     $orderSum += $orderProduct->getPrice() * $categoryRate * $orderProduct->getQuantity();

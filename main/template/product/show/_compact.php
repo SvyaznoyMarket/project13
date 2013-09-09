@@ -21,28 +21,10 @@ $productVideo = reset($productVideos);
 $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
 /** @var string $model3dImg */
 $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getImg3d() : null;
+
 ?>
 
-<style type="text/css">
-    .goodsbox .photo .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small,
-    .goodsbox .photo .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small:hover {
-        background: url('/css/item/img/videoStiker_small.png') no-repeat 0 0;
-        right: 0;
-        top: 130px;
-        width: 42px;
-        height: 35px;
-    }
-    .goodsbox .photo .goodsphoto_eGrad360.goodsphoto_eGrad360_small,
-    .goodsbox .photo .goodsphoto_eGrad360.goodsphoto_eGrad360_small:hover {
-        background: url('/css/item/img/3dStiker_small.png') no-repeat 0 0;
-        position: absolute;
-        z-index: 3;
-        top: 130px;
-        width: 42px;
-        height: 35px;
-    }
-</style>
-<div class="goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?= $product->getToken(); ?>">
+<div class="goodsbox <? echo ($isHidden)? 'hidden': '' ?>" ref="<?= $product->getToken(); ?>">
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
     	<div class="photo">
             <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>

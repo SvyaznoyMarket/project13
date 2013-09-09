@@ -122,7 +122,7 @@ $(document).ready(function(){
 
 
 	// hover imitation for IE
-	if ( window.navigator.userAgent.indexOf("MSIE") >= 0 ) {
+	if ( window.navigator.userAgent.indexOf('MSIE') >= 0 ) {
 		$('.allpageinner').on( 'hover', '.goodsbox__inner', function() {
 			$(this).toggleClass('hover');
 		});

@@ -3,12 +3,16 @@
 namespace Model\PaymentMethod;
 
 class Entity {
+    const CASH_ID = 1;
+    const CARD_ID = 2;
     const CERTIFICATE_ID = 10;
     const WEBMONEY_ID = 11;
     const QIWI_ID = 12;
+    const PAYPAL_ID = 13;
 
     const TYPE_NOW = 0;
     const TYPE_ON_RECEIPT = 1;
+    const TYPE_ALL = 2;
 
     /** @var int */
     private $id;
@@ -126,6 +130,13 @@ class Entity {
     /**
      * @return bool
      */
+    public function isCash() {
+        return self::CASH_ID == $this->id;
+    }
+
+    /**
+     * @return bool
+     */
     public function isCertificate() {
         return self::CERTIFICATE_ID == $this->id;
     }
@@ -145,6 +156,13 @@ class Entity {
     }
 
     /**
+     * @return bool
+     */
+    public function isPaypal() {
+        return self::PAYPAL_ID == $this->id;
+    }
+
+    /**
      * @param int $payOnReceipt
      */
     public function setPayOnReceipt($payOnReceipt) {
@@ -157,5 +175,4 @@ class Entity {
     public function getPayOnReceipt() {
         return $this->payOnReceipt;
     }
-
 }

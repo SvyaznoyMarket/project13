@@ -11,7 +11,8 @@ if ((bool)\App::exception()->all()) {
 }
 
 $debug->add('id', \App::$id, 145);
-$debug->add('env', \App::$name . '.' . \App::$env, 144);
+//$debug->add('env', \App::$name . '.' . \App::$env, 144);
+$debug->add('env', \App::$env, 144);
 $debug->add(
     'git',
     shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir)))
@@ -53,6 +54,19 @@ $debug->add('time.closureRenderer', sprintf('%s ms [%s]', round($closureRenderer
 $debug->add('time.total', sprintf('%s ms', round($appTimer['total'], 3) * 1000), 94);
 
 
+// add in debug panel properties from class \Config\AppConfig
+$reflection = new ReflectionClass(\App::config());
+$options = '<br />';
+foreach ($reflection->getProperties() as $property) {
+    $docblock = $property->getDocComment();
+    if (false === strpos($docblock, '@hidden')) {
+        $options .= '<li><span style="color: #00ffff">' . $property->getName() . '</span>: ' . json_encode($property->getValue(\App::config()), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . ' ' . '</li>';
+    }
+}
+$reflection = null;
+$debug->add('config', '<ul>' . $options . '</ul>', 90);
+
+
 // ab test
 if ((bool)\App::config()->abtest['enabled']) {
     $options = '<span style="color: #cccccc;">Тестирование проводится до </span><span style="color: #00ffff;">' . date('d-m-Y H:i', strtotime(\App::config()->abtest['bestBefore'])) . '</span><br />';
@@ -69,7 +83,7 @@ if ('live' != \App::$env) {
 
 $requestLogger = \Util\RequestLogger::getInstance();
 $requestData = $requestLogger->getStatistics();
-$requestData = json_decode($requestData, true);
+$requestData = $requestData;
 if (!isset($requestData['api_queries'])) $requestData = ['api_queries' => []];
 $queryString = '';
 foreach ((array)$requestData['api_queries'] as $query) {
@@ -85,7 +99,7 @@ $debug->add('query', $queryString, 80);
 
 if (!\App::request()->isXmlHttpRequest()) {
 ?>
-    <span style="position: fixed; bottom: 30px; left: 2px; z-index: 999; background: #000000; color: #11ff11; opacity: 0.9; padding: 4px 6px; border-radius: 5px; font-size: 11px; font-weight: normal; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <span style="position: fixed; bottom: 30px; left: 2px; z-index: 999; background: #000000; color: #33ff33; opacity: 0.9; padding: 4px 6px; border-radius: 5px; font-size: 12px; font-weight: normal; font-family: Courier New; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
         <span onclick="$(this).parent().remove()" style="cursor: pointer; font-size: 16px; color: #999999;" title="закрыть">&times;</span>
         <? if (\App::request()->attributes->get('route')): ?>
             <span onclick="window.location.replace('<?= $page->helper->replacedUrl(['APPLICATION_DEBUG' => 0]) ?>')" style="cursor: pointer; font-size: 16px; color: #999999;" title="отключить">■</span>
@@ -93,10 +107,11 @@ if (!\App::request()->isXmlHttpRequest()) {
         <br />
 
     <? foreach ($debug->getAll() as $item) { ?>
-        <?
-            $isHidden = mb_strlen(strip_tags($item['value'])) > 40;
-            if ($isHidden) $item['value'] = '<pre>' . $item['value'] . '</pre>';
-        ?>
+    <?
+        if (!is_scalar($item['value'])) continue;
+        $isHidden = mb_strlen(strip_tags($item['value'])) > 40;
+        if ($isHidden) $item['value'] = '<pre>' . $item['value'] . '</pre>';
+    ?>
         <span style="color: #ffffff"><?= $item['name'] ?>:</span>
 
         <? if ($isHidden) { ?>

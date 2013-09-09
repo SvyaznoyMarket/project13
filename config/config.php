@@ -36,6 +36,7 @@ $c->redirect301['enabled'] = true;
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
+$c->coreV2['chunk_size']   = 50;
 $c->coreV2['timeout']      = null;
 $c->coreV2['retryCount']   = 3;
 $c->coreV2['retryTimeout'] = [
@@ -54,7 +55,7 @@ $c->corePrivate['password']     = 'dEl23sTOas';
 $c->corePrivate['timeout']      = null;
 $c->corePrivate['retryCount']   = 3;
 $c->corePrivate['retryTimeout'] = [
-    'default' => 0.5,
+    'default' => 1.5,
     'tiny'    => 0.05,
     'short'   => 0.2,
     'medium'  => 0.5,
@@ -126,6 +127,11 @@ $c->partners['livetex']['timeout'] = 1.5; // timeout curl'a для статис�
 // TODO: Вынести сюда же настройки для sociomantic and get4click
 $c->partners['criteo']['enabled'] = true;
 $c->partners['criteo']['account'] = 10442;
+$c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
+$c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
+$c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
+$c->partners['Admitad']['enabled'] = true;
+$c->partners['Admitad']['code'] = '9ce8886713';
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
@@ -201,7 +207,7 @@ $c->product['totalCount']             = 30000;
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
-$c->product['allowBuyOnlyInshop']     = false;
+$c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
 $c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
@@ -232,6 +238,7 @@ $c->productCategory['url'] = [
     0 => '/6/1/163/',
 ];
 $c->productCategory['jewelController'] = true;
+$c->productCategory['newShow'] = false;
 
 $c->service['url'] = [
     0 => '/11/1/160/',
@@ -265,6 +272,7 @@ $c->banner['url'] = [
 $c->cart['productLimit'] = 50;
 
 $c->payment['creditEnabled'] = true;
+$c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
 $c->smartengine['pull']           = true;
@@ -286,6 +294,7 @@ $c->crossss['apiKey']  = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;
 $c->coupon['enabled'] = true;
+$c->blackcard['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
 
@@ -296,40 +305,11 @@ $c->database['password'] = 'qazwsxedc';
 
 $c->creditProvider['kupivkredit']['partnerId'] = '1-6ADAEAT';
 $c->creditProvider['kupivkredit']['partnerName'] = 'ООО «Enter»';
-$c->creditProvider['kupivkredit']['signature'] = 'enter-secret-werj7537';
+$c->creditProvider['kupivkredit']['signature'] = 'enter-secret-7X5dwb92';
 
 $c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
 $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
-
-$c->abtest['cookieName'] = 'switch';
-$c->abtest['enabled']    = true;
-$c->abtest['bestBefore'] = '2013-08-20';
-$c->abtest['test']       = [
-    [
-        'traffic'  => '50',
-        'key'      => 'emails',
-        'name'     => "Обязательные e-mail'ы",
-        'ga_event' => 'MandatoryEmail',
-    ],
-];
-/*
-$c->abtest['bestBefore'] = '2013-04-23';
-$c->abtest['test']       = [
-    [
-        'traffic'  => '40',
-        'key'      => 'upsell',
-        'name'     => 'Страница tocart',
-        'ga_event' => 'tocart',
-    ],
-    [
-        'traffic'  => '40',
-        'key'      => 'order2cart',
-        'name'     => 'Страница cart',
-        'ga_event' => 'cart',
-    ],
-];
-*/
 
 $c->subscribe['enabled'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
@@ -341,8 +321,8 @@ $c->mobileModify['enabled'] = true;
 $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
-$c->order['newCreate'] = false;
 $c->order['maxSumOnline'] = 15000;
+$c->order['newCreate'] = true;
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
@@ -350,9 +330,39 @@ $c->maybe3d['swfUrl']     = 'http://fs01.enter.ru/3d/flash/';
 $c->maybe3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
 $c->maybe3d['timeout']    = 30;
 
+$c->img3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
+
 $c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
+
+$c->abtest['cookieName'] = 'switch';
+$c->abtest['enabled']    = true;
+$c->abtest['bestBefore'] = '2013-09-23';
+
+$c->abtest['test']       = [
+    // smartengine
+    [
+        'traffic'  => 33,
+        'key'      => 'smartengine',
+        'name'     => "Похожие товары от SmartEngine",
+        'ga_event' => 'SmartEngine',
+    ],
+    // retailrocket
+    [
+        'traffic'  => 33,
+        'key'      => 'retailrocket',
+        'name'     => "С этим товаром также смотрят от RetailRocket",
+        'ga_event' => 'RetailRocket',
+    ],
+    // hybrid
+    [
+        'traffic'  => 33,
+        'key'      => 'hybrid',
+        'name'     => "С этим товаром также смотрят - от RetailRocket, Похожие товары - от SmartEngine",
+        'ga_event' => 'Hybrid',
+    ],
+];
 
 return $c;
