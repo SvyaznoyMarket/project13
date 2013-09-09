@@ -16,7 +16,7 @@ $count = count($regions);
 
 <div class="popup popupRegion clearfix" style="display:none">
     <a href="#" class="close">Закрыть</a>
-    <h2 class="popuptitle">Ваш город</h2>
+    <div class="popuptitle">Ваш город</div>
     <p class="font14 popupRegion__eTopText">Выберите город, в котором собираетесь получать товары.<br/>
 От выбора зависит стоимость товаров и доставки.</p>
     <form class="ui-css popupRegion__eForm">

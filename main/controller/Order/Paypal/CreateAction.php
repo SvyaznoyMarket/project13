@@ -347,7 +347,7 @@ class CreateAction {
             foreach ($orderPart->getProductIds() as $productId) {
                 $cartProduct = $user->getCart()->getPaypalProduct();
                 if (!$cartProduct || ($cartProduct->getId() != $productId)) {
-                    \App::logger()->error(sprintf('Товар #%s не найден в корзине', json_encode($productId, JSON_UNESCAPED_UNICODE)), ['order']);
+                    \App::logger()->error(sprintf('Товар #%s не найден в корзине', $productId), ['order']);
                     continue;
                 }
 
@@ -445,23 +445,23 @@ class CreateAction {
         $createdOrders = [];
         foreach ($result as $orderData) {
             if (!is_array($orderData)) {
-                \App::logger()->error(sprintf('Получены неверные данные для созданного заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Получены неверные данные для созданного заказа', 'orderData' => $orderData], ['order']);
                 continue;
             }
             $createdOrder = new \Model\Order\CreatedEntity($orderData);
 
             // если не получен номер заказа
             if (!$createdOrder->getNumber()) {
-                \App::logger()->error(sprintf('Не получен номер заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Не получен номер заказа', 'orderData' => $orderData], ['order']);
                 continue;
             }
             // если заказ не подтвержден
             if (!$createdOrder->getConfirmed()) {
-                \App::logger()->error(sprintf('Заказ не подтвержден %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Заказ не подтвержден', 'orderData' => $orderData], ['order']);
             }
 
             $createdOrders[] = $createdOrder;
-            \App::logger()->info(sprintf('Заказ успешно создан %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+            \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
         }
 
         return $createdOrders;
