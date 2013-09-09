@@ -32,9 +32,9 @@ if (\App::request()->get('shop')) {
 <!-- Carousel -->
 <div class="carouseltitle">
     <div class="rubrictitle">
-        <h2>
+        <div class="h2">
             <a href="<?= $categoryLink ?>" class="underline"><?= $category->getName()?></a>
-        </h2>
+        </div>
     </div>
 
     <? if ($pager->count() > 3) { ?>
