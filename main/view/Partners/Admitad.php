@@ -66,13 +66,13 @@ class Admitad
 
         if ($product instanceof \Model\Product\Entity) {
             $ad_data['ad_product'] = [
-                'id' => $product->getId(),
-                "vendor" => ( $product->getBrand() instanceof \Model\Brand\Entity ) ? $product->getBrand()->getName() : '',
-                "price" => $product->getPrice(),
-                "url" => \App::router()->generate('product', ['productPath' => $product->getPath()], true),
-                "picture" => $product->getImageUrl(3),
-                "name" => $product->getName(),
-                "category" => $product->getMainCategory()->getId(),
+                'id'       => $product->getId(),
+                'vendor'   => ($product->getBrand() instanceof \Model\Brand\Entity) ? $product->getBrand()->getName() : '',
+                'price'    => $product->getPrice(),
+                'url'      => \App::router()->generate('product', ['productPath' => $product->getPath()], true),
+                'picture'  => $product->getImageUrl(3),
+                'name'     => $product->getName(),
+                'category' => $product->getMainCategory() ? $product->getMainCategory()->getId() : null,
             ];
         }
 
