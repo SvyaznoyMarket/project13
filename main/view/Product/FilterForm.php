@@ -17,6 +17,7 @@ class FilterForm {
     }
 
     public function getSelected() {
+        $helper = &$this->page->helper;
         $return = [];
         foreach ($this->productFilter->getFilterCollection() as $filter) {
             $value = $this->productFilter->getValue($filter);
@@ -34,16 +35,16 @@ class FilterForm {
 
                     if (isset($value['from']) && !($this->isEqualNumeric($value['from'], $filter->getMin()))) {
                         if ($is_price){
-                            $name[] = sprintf('от %d', $value['from']);
+                            $name[] = 'до ' . $helper->formatPrice( intval( $value['from'] ) );
                         }else{
-                            $name[] = 'от ' . round($value['from'], 1);
+                            $name[] = 'от ' . $this->formatPriceView( $value['from'] );
                         }
                     }
                     if (isset($value['to']) && !($this->isEqualNumeric($value['to'], $filter->getMax()))) {
                         if ($is_price){
-                            $name[] = sprintf('до %d', $value['to']);
+                            $name[] = 'до ' . $helper->formatPrice( intval( $value['to'] ) );
                         }else{
-                            $name[] = 'до ' . round($value['to'], 1);
+                            $name[] = 'до ' . $this->formatPriceView( $value['to'] );
                         }
                     }
                     if (!$name) continue;
@@ -120,5 +121,26 @@ class FilterForm {
         $second = $this->page->helper->clearZeroValue((float)$second);
 
         return $first == $second;
+    }
+
+
+    private function  formatPriceView($value, $numDecimals = 1)
+    {
+        $helper = & $this->page->helper;
+        if (!$numDecimals) $numDecimals = 1;
+        $decimals = $numDecimals * 10;
+        //$old_val = $value;
+
+        if (
+            is_int($value) ||
+            abs(intval($value) - $value) < (1 / $decimals)
+        ) {
+
+            return $helper->formatPrice($value, 0);
+
+        }
+
+        return $helper->formatPrice($value, $numDecimals);
+
     }
 }
