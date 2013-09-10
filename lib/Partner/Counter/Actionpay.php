@@ -38,7 +38,12 @@ class Actionpay {
                     $category = $product->getMainCategory();
                     if (!$category) {
                         \App::logger()->warn(sprintf('В заказе @%s не найдена категория для товара #%s', $order->getNumber(), $orderProduct->getId()));
-                        continue;
+                        //continue;
+
+                        $categoriesArr = $product->getCategory();
+                        if ($categoriesArr) $category = reset($categoriesArr);
+
+                        if (!$category) $category = $product->getParentCategory();
                     }
 
                     $categoryRate = 0.005; //на неопределенные товары по умолчанию ставим минимальный процент, для web-мастеров =0,5%
