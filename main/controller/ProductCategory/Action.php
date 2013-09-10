@@ -551,6 +551,14 @@ class Action {
 
         $catalogJson = $page->getParam('catalogJson');
 
+// file_put_contents('/tmp/logger.txt', json_encode(\App::config()->abtest).PHP_EOL, FILE_APPEND);
+
+        // AB-test по сортировкам SITE-1991
+        if (\App::abTest()->shouldOverrideByJson($catalogJson)) {
+        }
+
+// file_put_contents('/tmp/logger.txt', json_encode(\App::config()->abtest).PHP_EOL, FILE_APPEND);
+
         // сортировка
         $productSorting = new \Model\Product\Sorting();
         list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
@@ -653,7 +661,14 @@ class Action {
             'SubCategory' => $category->getName()
         ]);
 
-        return new \Http\Response($page->show());
+        $response = new \Http\Response($page->show());
+
+        // AB-test по сортировкам SITE-1991
+        if (\App::abTest()->shouldOverrideByJson($catalogJson)) {
+            \App::abTest()->overrideByJson($catalogJson);
+        }
+
+        return $response;
     }
 
     /**

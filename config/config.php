@@ -328,10 +328,10 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
+// настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
 $c->abtest['bestBefore'] = '2013-09-23';
-
 $c->abtest['test']       = [
     // smartengine
     [
