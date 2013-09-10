@@ -49,6 +49,10 @@ class Img3dImportAction {
                 if(file_exists($outJsonFilePath)) {
                     try {
                         $inJson = file_get_contents($inJsonFilePath);
+
+                        // если ссылки не абсолютные, заменяем на абсолютные к fs01
+                        $inJson = preg_replace('/(?<!http)[^"]+(?=\/\d+_\d+-\d+\/.*)/', 'http://fs01.enter.ru/3d/images', $inJson);
+
                         $outJson = file_get_contents($outJsonFilePath);
 
                         try {
