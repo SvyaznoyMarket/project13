@@ -8,90 +8,20 @@
  */
 ?>
 
+<?
+$helper = new \Helper\TemplateHelper();
+
+$count = 0;
+if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
+?>
+
 <div class="bCatalog">
 
-	<!-- Хлебные крохи -->
-	<ul class="bBreadcrumbs clearfix">
-		<li class="bBreadcrumbs__eItem"><a class="bBreadcrumbs__eLink" href="">Товары на каждый день</a></li>
-		<li class="bBreadcrumbs__eItem mLast"><a class="bBreadcrumbs__eLink" href="">Товары для дома</a></li>
-	</ul>
-	<!-- /Хлебные крохи -->
+    <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) ?>
 
-	<h1  class="bTitlePage">Товары для дома</h1>
+	<h1  class="bTitlePage"><?= $category->getName() ?></h1>
 
-	<!-- Категории товаров -->
-	<ul class="bCatalogList clearfix">
-		<li class="bCatalogList__eItem">
-			<a class="bCatalogList__eLink" href="">
-				<span class="bCategoriesImg">
-					<img class="bCategoriesImg__eImg" src="http://fs10.enter.ru/6/1/163/70/214936.jpg" alt="" />
-				</span>
-
-				<span class="bCategoriesName">Освежители воздуха</span>
-			</a>
-		</li>
-
-		<li class="bCatalogList__eItem">
-			<a class="bCatalogList__eLink" href="">
-				<span class="bCategoriesImg">
-					<img class="bCategoriesImg__eImg" src="http://fs10.enter.ru/6/1/163/70/214936.jpg" alt="" />
-				</span>
-
-				<span class="bCategoriesName">Освежители воздуха</span>
-			</a>
-		</li>
-
-		<li class="bCatalogList__eItem mLast">
-			<a class="bCatalogList__eLink" href="">
-				<span class="bCategoriesImg">
-					<img class="bCategoriesImg__eImg" src="http://fs10.enter.ru/6/1/163/70/214936.jpg" alt="" />
-				</span>
-
-				<span class="bCategoriesName">Освежители воздуха</span>
-			</a>
-		</li>
-
-		<li class="bCatalogList__eItem">
-			<a class="bCatalogList__eLink" href="">
-				<span class="bCategoriesImg">
-					<img class="bCategoriesImg__eImg" src="http://fs10.enter.ru/6/1/163/70/214936.jpg" alt="" />
-				</span>
-
-				<span class="bCategoriesName">Млющие средства для посуды и освежители воздуха</span>
-			</a>
-		</li>
-
-		<li class="bCatalogList__eItem">
-			<a class="bCatalogList__eLink" href="">
-				<span class="bCategoriesImg">
-					<img class="bCategoriesImg__eImg" src="http://fs10.enter.ru/6/1/163/70/214936.jpg" alt="" />
-				</span>
-
-				<span class="bCategoriesName">Освежители воздуха</span>
-			</a>
-		</li>
-
-		<li class="bCatalogList__eItem mLast">
-			<a class="bCatalogList__eLink" href="">
-				<span class="bCategoriesImg">
-					<img class="bCategoriesImg__eImg" src="http://fs10.enter.ru/6/1/163/70/214936.jpg" alt="" />
-				</span>
-
-				<span class="bCategoriesName">Освежители воздуха</span>
-			</a>
-		</li>
-
-		<li class="bCatalogList__eItem">
-			<a class="bCatalogList__eLink" href="">
-				<span class="bCategoriesImg">
-					<img class="bCategoriesImg__eImg" src="http://fs10.enter.ru/6/1/163/70/214936.jpg" alt="" />
-				</span>
-
-				<span class="bCategoriesName">Освежители воздуха</span>
-			</a>
-		</li>
-	</ul>
-	<!-- /Категории товаров -->
+    <?= $helper->render('product-category/__children', ['category' => $category]) ?>
  
  	<!-- Фильтр товаров -->
 	<div class="bFilter clearfix">
