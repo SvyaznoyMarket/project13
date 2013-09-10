@@ -224,7 +224,7 @@ class Entity {
     }
 
     /**
-     * @param string $step_type
+     * @param $stepType
      */
     public function setStepType($stepType)
     {
@@ -249,5 +249,19 @@ class Entity {
             }
             default: return false;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrice() {
+        return 'price' == $this->getId();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBrand() {
+        return 'brand' == $this->getId();
     }
 }
