@@ -9,7 +9,7 @@ return function(
     <ul class="bCatalogList clearfix">
     <? foreach ($category->getChild() as $child): ?>
         <li class="bCatalogList__eItem">
-            <a class="bCatalogList__eLink" href="">
+            <a class="bCatalogList__eLink" href="<?= $child->getLink() ?>">
 				<span class="bCategoriesImg">
 					<img class="bCategoriesImg__eImg" src="<?= $child->getImageUrl() ?>" alt="<?= $helper->escape($child->getName())?>" />
 				</span>

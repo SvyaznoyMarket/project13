@@ -44,4 +44,14 @@ class Id {
     public static function cartButtonForService($serviceId) {
         return sprintf('id-cartButton-service-%s', $serviceId);
     }
+
+    /**
+     * Генерирует ид фильтра в каталоге товаров
+     *
+     * @param $filterId
+     * @return string
+     */
+    public static function productCategoryFilter($filterId) {
+        return sprintf('id-productCategory-filter-%s', $filterId);
+    }
 }
