@@ -63,9 +63,10 @@ class Helper extends \Templating\Helper {
      */
     public function roundToOneDecimal($value, $increase = false) {
 
+        $old_value = $value;
         if ( !is_numeric($value) ) return false;
         $value = (int) ( $value * 10 );
-        if ($increase) $value++;
+        if ( $increase && (10*$old_value - $value)> 1 ) $value++;
         $ret = ( ($value) ) / 10;
 
         return $ret;
