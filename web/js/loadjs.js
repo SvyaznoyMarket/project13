@@ -121,23 +121,28 @@
 		 * @param  {Object} data данные отсылаемы на сервер
 		 */
 		logError = function logError( data ) {
-			if ( data.ajaxUrl === '/log-json' ) {
-				return;
-			}
+			var s = document.createElement('script'),
+				l = document.getElementsByTagName('script')[0];
+			// end of vars
 
-			if ( !pageConfig.jsonLog ) {
-				return false;
-			}
 
 			data.templateType = templateType;
 			data.pageID = data.pageID || document.body.getAttribute('data-id');
 
-			$.ajax({
-				type: 'POST',
-				global: false,
-				url: '/log-json',
-				data: data
-			});
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = '/log-json';
+
+            for ( key in data ) {
+            	if ( data.hasOwnProperty(key) ) {
+            		s.src += ( s.src.indexOf('?') !== -1 ) ? '&' : '?';
+            		s.src += key+'='+data[key];
+            	}
+            }
+
+            console.log(s.src);
+
+            l.parentNode.insertBefore(s, l);
 		},
 
 		logTimeAfterOurScript = function logTimeAfterOurScript() {
