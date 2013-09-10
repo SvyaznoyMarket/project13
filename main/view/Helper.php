@@ -66,7 +66,7 @@ class Helper extends \Templating\Helper {
         $old_value = $value;
         if ( !is_numeric($value) ) return false;
         $value = (int) ( $value * 10 );
-        if ( $increase && (10*$old_value - $value)> 1 ) $value++;
+        if ( $increase && (10*$old_value - $value)> 0.1 ) $value++;
         $ret = ( ($value) ) / 10;
 
         return $ret;
