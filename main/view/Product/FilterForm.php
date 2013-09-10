@@ -48,7 +48,7 @@ class FilterForm {
                         }
                     }
                     if (!$name) continue;
-                    if ($is_price) $name[] .= 'р.';
+                    if ($is_price) $name[] .= 'р.'; else $name[] .= $filter->getUnit();
                     $return[] = array(
                         'type' => $filter->getId() == 'brand' ? 'creator' : 'parameter',
                         'name'  => implode(' ', $name),
