@@ -27,7 +27,7 @@ $max_to = $helper->roundToOneDecimal($max_to, true);
 $from = $helper->clearZeroValue( $from );
 $to = $helper->clearZeroValue( $to );
 $min_from = $helper->clearZeroValue( $min_from );
-$max_to = $helper->clearZeroValue( $to );
+$max_to = $helper->clearZeroValue( $max_to );
 
 ?>
 
