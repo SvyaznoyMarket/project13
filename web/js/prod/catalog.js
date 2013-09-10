@@ -21,7 +21,7 @@
 			firstName: "Alexandr",
 			lastName: "Zaytsev"
 		},
-		template = "<h1>{{firstName}} {{lastName}}</h1>test out with Mustache",
+		template = "<h1>{{firstName}} {{lastName}}</h1>test out with Mustache<br/><a class='jsHistoryLink' href='/newurl'>test history api</a>",
 		html = Mustache.to_html(template, person),
 		testOut = $('<div>').addClass('popup').html(html);
 	// end of vars
@@ -32,5 +32,33 @@
 		centered: true
 	});
 	// ==== END Mustache test out
+	
+	var historyLinkHandler = function historyLinkHandler() {
+		var state = {
+			title: 'history link to '+$(this).attr('href'),
+			url: $(this).attr('href')
+		}
+
+		history.pushState( state, state.title, state.url );
+
+		alert('перешли на новую страницу')
+
+		return false;
+	};
+
+	/**
+	 * Обработка back\forward
+	 */
+	var backForwardHandler = function backForwardHandler() {
+		alert('Возврат!');
+
+		var returnLocation = history.location || document.location;
+
+		console.info(returnLocation);
+		console.log( JSON.stringify(history.state) );
+	};
+
+	$(window).on('popstate', backForwardHandler)
+	$('body').on('click', '.jsHistoryLink', historyLinkHandler);
 
 }(window.ENTER));

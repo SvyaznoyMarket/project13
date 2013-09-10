@@ -83,6 +83,7 @@
 		optimizelyUrl = '//cdn.optimizely.com/js/204544654.js',
 		yandexMapUrl = '',
 		mustacheUrl = '',
+		historyUrl = '',
 		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
 
 		debug = false,
@@ -289,6 +290,7 @@
 	knockoutUrl = ( debug ) ? 'http://knockoutjs.com/downloads/knockout-2.2.1.debug.js' : 'http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js';
 	yandexMapUrl = ( debug ) ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU&mode=release';
 	mustacheUrl = ( debug ) ? '/js/vendor/mustache.js' : '/js/prod/mustache.min.js';
+	historyUrl = ( debug ) ? '/js/vendor/history.js?redirect=true&basepath=/' : '/js/prod/history.min.js?redirect=true&basepath=/';
 
 
 	/**
@@ -475,6 +477,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
+					.script( historyUrl )
 					.script( mustacheUrl )
 					.wait()
 					.script( getWithVersion('common.js') )
