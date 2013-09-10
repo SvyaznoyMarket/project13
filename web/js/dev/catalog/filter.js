@@ -39,9 +39,10 @@
 			url: $(this).attr('href')
 		}
 
-		history.pushState( state, state.title, state.url );
+		console.info('link handler. push state '+state.url);
 
-		alert('перешли на новую страницу')
+		History.pushState(state, state.title, state.url);
+		// history.pushState( state, state.title, state.url );
 
 		return false;
 	};
@@ -58,7 +59,19 @@
 		console.log( JSON.stringify(history.state) );
 	};
 
-	$(window).on('popstate', backForwardHandler)
+	var stateChangeHandler = function stateChangeHandler() {
+		var state = History.getState(),
+			url = state.url;
+		// end of vars
+		
+		console.info('statechange');
+
+		console.log(url);
+		console.log(state);
+	};
+
+	History.Adapter.bind(window, "statechange", stateChangeHandler);
+	// $(window).on('popstate', backForwardHandler)
 	$('body').on('click', '.jsHistoryLink', historyLinkHandler);
 
 }(window.ENTER));
