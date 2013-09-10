@@ -35,16 +35,16 @@ class FilterForm {
 
                     if (isset($value['from']) && !($this->isEqualNumeric($value['from'], $filter->getMin()))) {
                         if ($is_price){
-                            $name[] = 'до ' . $helper->formatPrice( intval( $value['from'] ) );
+                            $name[] = 'до&nbsp;' . $helper->formatPrice( intval( $value['from'] ) );
                         }else{
-                            $name[] = 'от ' . $this->formatPriceView( $value['from'] );
+                            $name[] = 'от&nbsp;' . $this->formatPriceView( $value['from'] );
                         }
                     }
                     if (isset($value['to']) && !($this->isEqualNumeric($value['to'], $filter->getMax()))) {
                         if ($is_price){
-                            $name[] = 'до ' . $helper->formatPrice( intval( $value['to'] ) );
+                            $name[] = 'до&nbsp;' . $helper->formatPrice( intval( $value['to'] ) );
                         }else{
-                            $name[] = 'до ' . $this->formatPriceView( $value['to'] );
+                            $name[] = 'до&nbsp;' . $this->formatPriceView( $value['to'] );
                         }
                     }
                     if (!$name) continue;
