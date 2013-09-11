@@ -150,8 +150,13 @@ $(document).ready(function(){
 				'Viewed Category Category ID':data.id
 			};
         window.KISS = window.KISS || {};
-        window.KISS.cat = window.KISS.cat || [];
-        window.KISS.cat = toKISS;
+        window.KISS.cat = {
+            'type': data.type,
+            'level': data.level,
+            'parent_category':data.parent_category,
+            'name':data.category,
+            'id':data.id
+        };
         // end of vars
 
 		if ( typeof(_kmq) !== 'undefined' ) {
@@ -161,37 +166,37 @@ $(document).ready(function(){
 
 
     var kissForProductOfCategory = function kissForProductOfCategory() {
-        console.log('test11');
         $( "a.kiss_cat_clicked" ).bind( "click", function() {
-            if ( typeof(_kmq) !== 'undefined' ) {
-                console.log('test12');
-                var toKISS = window.ANALYTICS.KISS.cat;
-                console.log(toKISS);
+            var data = window.KISS.cat,
+                datap = $(this).parents('div.goodsbox__inner').data('tokiss'),
+                toKISS = {
+                    'Category Results Clicked Category Type': data.type,
+                    'Category Results Clicked Category Level': data.level,
+                    'Category Results Clicked Parent category': data.parent_category,
+                    'Category Results Clicked Category name': data.category,
+                    'Category Results Clicked Category ID': data.id,
+                    'Category Results Clicked SKU': datap.sku,
+                    'Category Results Clicked Product Name': datap.name,
+                    'Category Results Clicked Page Number': datap.number,
+                    'Category Results Clicked Product Position': datap.position
+                };
+            //if (toKISSprod) toKISS = $.extend(toKISScat, toKISSprod)
 
-                console.log('<- test TO KISS');
+            //console.log(toKISS);
+            //console.log('test IN CLICK');
 
-                toKISS = $(this).parents('div.goodsbox__inner').data('toKISS');
-                console.log(toKISS);
-
-                console.log('<- test TO KISS');
-                console.log('test13');
-
-                //_kmq.push(['record', 'Viewed Category', toKISS]);
+            if (typeof(_kmq) !== 'undefined') {
+                _kmq.push(['record', 'Category Results Clicked', toKISS]);
             }
 
-
-            console.log('***');
-            event.preventDefault();
-            return false;
+            //event.preventDefault();
+            //return false;
         });
-        console.log('test22');
     };
 
 
 	if ( $('#_categoryData').length ) {
-        console.log('test01');
 		kissForCategory();
-        console.log('test02');
         kissForProductOfCategory();
 	}
 
