@@ -270,6 +270,14 @@ class Action extends \Controller\ProductCategory\Action {
                 $sort = $productSorting->dump();
             }
 
+            // AB-test по сортировкам SITE-1991
+            $abTestJson = \App::abTestJson($catalogJson);
+            $abTestJsonKey = $abTestJson->getCase()->getKey();
+            $abTestJsonValues = $abTestJson->getValues();
+            if(array_key_exists($abTestJsonKey, $abTestJsonValues)) {
+                $sort = $abTestJsonValues[$abTestJsonKey];
+            }
+
             // вид товаров
             $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
             // листалка
@@ -330,7 +338,7 @@ class Action extends \Controller\ProductCategory\Action {
             ]);
             // бесконечный скролл
             if(empty($scrollTo)) {
-                return new \Http\Response($responseData['products']);
+                $response = new \Http\Response($responseData['products']);
             }
             // фильтры, сортировка и товары с пагинацией
             else {
@@ -366,8 +374,12 @@ class Action extends \Controller\ProductCategory\Action {
                 ]);
                 $responseData['query_string'] = $request->getQueryString();
 
-                return new \Http\JsonResponse($responseData);
+                $response = new \Http\JsonResponse($responseData);
             }
+            // AB-test по сортировкам SITE-1991
+            $abTestJson->setCookie($response);
+
+            return $response;
         }
 
         $page->setParam('productPager', $productPager);
@@ -383,7 +395,12 @@ class Action extends \Controller\ProductCategory\Action {
             'SubCategory' => $category->getName()
         ]);
 
-        return new \Http\Response($page->show());
+        $response = new \Http\Response($page->show());
+
+        // AB-test по сортировкам SITE-1991
+        $abTestJson->setCookie($response);
+
+        return $response;
     }
 
 }

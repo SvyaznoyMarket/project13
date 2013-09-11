@@ -482,6 +482,16 @@ class Repository {
         );
         $dataStore->execute();
 
+        // AB-test по сортировкам SITE-1991
+        // $abTestJson = \App::abTestJson($catalogJson);
+        // $abTestJsonKey = $abTestJson->getCase()->getKey();
+        // $abTestJsonValues = $abTestJson->getValues();
+
+// file_put_contents('/tmp/logger.txt', json_encode($catalogJson).PHP_EOL, FILE_APPEND);
+// file_put_contents('/tmp/logger.txt', json_encode($abTestJson).PHP_EOL, FILE_APPEND);
+// file_put_contents('/tmp/logger.txt', json_encode($abTestJsonKey).PHP_EOL, FILE_APPEND);
+// file_put_contents('/tmp/logger.txt', json_encode($abTestJsonValues).PHP_EOL, FILE_APPEND);
+
         return $catalogJson;
     }
 
