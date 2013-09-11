@@ -149,15 +149,50 @@ $(document).ready(function(){
 				'Viewed Category Category name':data.category,
 				'Viewed Category Category ID':data.id
 			};
-		// end of vars
-		
+        window.KISS = window.KISS || {};
+        window.KISS.cat = window.KISS.cat || [];
+        window.KISS.cat = toKISS;
+        // end of vars
+
 		if ( typeof(_kmq) !== 'undefined' ) {
 			_kmq.push(['record', 'Viewed Category', toKISS]);
 		}
 	};
 
+
+    var kissForProductOfCategory = function kissForProductOfCategory() {
+        console.log('test11');
+        $( "a.kiss_cat_clicked" ).bind( "click", function() {
+            if ( typeof(_kmq) !== 'undefined' ) {
+                console.log('test12');
+                var toKISS = window.ANALYTICS.KISS.cat;
+                console.log(toKISS);
+
+                console.log('<- test TO KISS');
+
+                toKISS = $(this).parents('div.goodsbox__inner').data('toKISS');
+                console.log(toKISS);
+
+                console.log('<- test TO KISS');
+                console.log('test13');
+
+                //_kmq.push(['record', 'Viewed Category', toKISS]);
+            }
+
+
+            console.log('***');
+            event.preventDefault();
+            return false;
+        });
+        console.log('test22');
+    };
+
+
 	if ( $('#_categoryData').length ) {
+        console.log('test01');
 		kissForCategory();
+        console.log('test02');
+        kissForProductOfCategory();
 	}
 
 	/**

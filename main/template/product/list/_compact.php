@@ -19,7 +19,7 @@ $hasLastLine = isset($hasLastLine) ? $hasLastLine : true;
 <? endif ?>
 
     <? $i = 0; foreach ($pager as $product): $i++ ?>
-        <?= $page->render('product/show/_compact', array('product' => $product, 'productVideos' => isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [], 'addInfo' => $isAddInfo?\Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()):[])) ?>
+        <?= $page->render('product/show/_compact', array('product' => $product, 'pager' => $pager, 'productPosition' => $i, 'productVideos' => isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [], 'addInfo' => $isAddInfo?\Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()):[])) ?>
         <? if (!($i % $itemsPerRow) && ($i == $pager->count() ? $hasLastLine : true)): ?>
             <div class="clear"></div>
         <? endif ?>
