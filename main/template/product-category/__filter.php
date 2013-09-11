@@ -104,19 +104,19 @@ return function(
                 <a class="bFilterToggle mClose" href=""><span class="bToggleText">Бренды и параметры</span></a>
 
                 <!-- Фильтр по цене -->
-                <div class="bFilterPrice">
-                    <span class="bFilterPrice__eTitle">Цена</span>
-                    <input class="bFilterPrice__eInput" name="" value="1 000" type="text"  />
+                <div class="bRangeSlider">
+                    <span class="bRangeSlider__eTitle">Цена</span>
+                    <input class="bRangeSlider__eInput mFromRange" name="" value="1 000" type="text"  />
 
-                    <div class="bFilterSlider">
+                    <div class="bFilterSlider" data-config="{&quot;min&quot;:2990,&quot;max&quot;:113990,&quot;step&quot;:0.1}">
                         <div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 0%; width: 50%;"></div>
                         <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: -14px;"></a>
                         <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 50%;"></a>
                     </div>
 
-                    <input class="bFilterPrice__eInput mLast" name="" value="10 000" type="text"  />
+                    <input class="bRangeSlider__eInput mLast mToRange" name="" value="10 000" type="text"  />
 
-                    <span class="bFilterPrice__eRub rubl">p</span>
+                    <span class="bRangeSlider__eRub rubl">p</span>
                 </div>
                 <!-- /Фильтр по цене -->
 
