@@ -8,11 +8,18 @@
  * @param	{Object}	global	Enter namespace
  */
 ;(function( ENTER ) {
-	var userUrl = ENTER.config.pageConfig.userUrl,
-		utils = ENTER.utils;
-	// end of vars
-	
 	console.info('New catalog init: filter.js');
+
+	var userUrl = ENTER.config.pageConfig.userUrl,
+		utils = ENTER.utils,
+
+		filterBlock = $('.bFilter'),
+		filterToggleBtn = filterBlock.find('.bFilterToggle'),
+		filterContent = filterBlock.find('.bFilterCont'),
+
+		filterMenuItem = filterBlock.find('.bFilterParams__eItem'),
+		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem');
+	// end of vars
 
 	// ==== Mustache test out
 	console.log('Mustache is '+typeof Mustache);
@@ -70,5 +77,57 @@
 
 	History.Adapter.bind(window, "statechange", stateChangeHandler);
 	$('body').on('click', '.jsHistoryLink', historyLinkHandler);
+
+
+
+	/**
+	 * Обработчик кнопки переключения между расширенным и компактным видом фильтра
+	 */
+	var toggleFilterViewHandler = function toggleFilterViewHandler() {
+		var openClass = 'mOpen',
+			closeClass = 'mClose',
+			open = filterToggleBtn.hasClass(openClass);
+		// end of vars
+
+		if ( open ) {
+			filterToggleBtn.removeClass(openClass).addClass(closeClass);
+			filterContent.slideUp(400);
+		}
+		else {
+			filterToggleBtn.removeClass(closeClass).addClass(openClass);
+			filterContent.slideDown(400);
+		}
+
+		return false;
+	};
+
+	/**
+	 * Обработчик выбора категории фильтра
+	 */
+	var selectFilterCategoryHandler = function selectFilterCategoryHandler() {
+		var self = $(this),
+			activeClass = 'mActive',
+			isActiveTab = self.hasClass(activeClass),
+			categoryId = self.data('ref');
+		// end of vars
+		
+		if ( isActiveTab ) {
+			return false;
+		}
+
+		filterMenuItem.removeClass(activeClass);
+		self.addClass(activeClass);
+
+		console.log(categoryId);
+
+		filterCategoryBlocks.fadeOut(300, function(){
+			$('#'+categoryId).fadeIn(300);
+		});
+
+		return false;
+	};
+
+	filterToggleBtn.on('click', toggleFilterViewHandler);
+	filterMenuItem.on('click', selectFilterCategoryHandler);
 
 }(window.ENTER));

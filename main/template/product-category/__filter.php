@@ -48,8 +48,8 @@ return function(
 
                 $viewId = \View\Id::productCategoryFilter($filter->getId());
             ?>
-                <li class="bFilterParams__eItem<? if (0 == $i): ?> mActive<? endif ?>">
-                    <span class="bParamName" data-ref="<?= $viewId ?>"><?= $filter->getName() ?></span>
+                <li class="bFilterParams__eItem<? if (0 == $i): ?> mActive<? endif ?>" data-ref="<?= $viewId ?>">
+                    <span class="bParamName"><?= $filter->getName() ?></span>
                 </li>
             <? $i++; endforeach ?>
             </ul>
