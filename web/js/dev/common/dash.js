@@ -149,15 +149,7 @@ $(document).ready(function(){
 				'Viewed Category Category name':data.category,
 				'Viewed Category Category ID':data.id
 			};
-        window.KISS = window.KISS || {};
-        window.KISS.cat = {
-            'type': data.type,
-            'level': data.level,
-            'parent_category':data.parent_category,
-            'name':data.category,
-            'id':data.id
-        };
-        // end of vars
+		// end of vars
 
 		if ( typeof(_kmq) !== 'undefined' ) {
 			_kmq.push(['record', 'Viewed Category', toKISS]);
@@ -167,7 +159,7 @@ $(document).ready(function(){
 
     var kissForProductOfCategory = function kissForProductOfCategory() {
         $( "a.kiss_cat_clicked" ).bind( "click", function() {
-            var data = window.KISS.cat,
+            var data = data = $('#_categoryData').data('category'),
                 datap = $(this).parents('div.goodsbox__inner').data('tokiss'),
                 toKISS = {
                     'Category Results Clicked Category Type': data.type,
@@ -180,17 +172,18 @@ $(document).ready(function(){
                     'Category Results Clicked Page Number': datap.number,
                     'Category Results Clicked Product Position': datap.position
                 };
-            //if (toKISSprod) toKISS = $.extend(toKISScat, toKISSprod)
 
-            //console.log(toKISS);
-            //console.log('test IN CLICK');
+            console.log(data.category);
+            console.log('*** test IN CLICK BEGIN { ');
+            console.log(toKISS);
+            console.log('*** } test IN CLICK END');
 
             if (typeof(_kmq) !== 'undefined') {
                 _kmq.push(['record', 'Category Results Clicked', toKISS]);
             }
 
-            //event.preventDefault();
-            //return false;
+            event.preventDefault();
+            return false;
         });
     };
 

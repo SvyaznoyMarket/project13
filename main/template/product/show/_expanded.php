@@ -22,6 +22,13 @@ $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $
 /** @var string $model3dImg */
 $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getImg3d() : null;
 
+$toKISS = [
+    'sku' => $product->getArticle(),
+    'name' => $product->getName(),
+    'number' => $pager->getPage(),
+    'position' => $productPosition,
+];
+
 ?>
 
 <div class="goodsbox goodsline bNewGoodsBox <? echo ($isHidden)? 'hidden': '' ?>" ref="<?= $product->getToken() ?>">

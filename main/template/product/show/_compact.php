@@ -55,7 +55,7 @@ $toKISS = [
             <?= $page->render('product/_reviewsStarsCompact', ['product' => $product]) ?>
         <? endif ?>
 
-	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
+	    <h3><a href="<?= $product->getLink() ?>" class="kiss_cat_clicked"><?= $product->getName() ?></a></h3>
         <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
 	    <div class="font18 pb10 mSmallBtns">
             <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
@@ -70,7 +70,7 @@ $toKISS = [
             </div>
 		<? endif ?>
 	    <? if ($hasModel): ?>
-        <a href="<?= $product->getLink() ?>">
+        <a href="<?= $product->getLink() ?>" class="kiss_cat_clicked">
             <div class="bListVariants">
                 Доступно в разных вариантах<br>
                 (<?= $product->getModel()->getVariations() ?>)
