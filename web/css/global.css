@@ -12658,14 +12658,14 @@
   }
 }
 @media all {
-  .bFilterPrice {
+  .bRangeSlider {
     display: inline-block;
     width: 550px;
     margin: 3px 0 0 25px;
     *display: inline;
     zoom: 1;
   }
-  .bFilterPrice__eTitle {
+  .bRangeSlider__eTitle {
     display: inline-block;
     vertical-align: top;
     font-size: 16px;
@@ -12673,7 +12673,7 @@
     *display: inline;
     zoom: 1;
   }
-  .bFilterPrice__eInput {
+  .bRangeSlider__eInput {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -12689,10 +12689,10 @@
     *display: inline;
     zoom: 1;
   }
-  .bFilterPrice__eInput.mLast {
+  .bRangeSlider__eInput.mLast {
     margin-right: 5px;
   }
-  .bFilterPrice__eRub {
+  .bRangeSlider__eRub {
     display: inline-block;
     vertical-align: top;
     color: #929292;
