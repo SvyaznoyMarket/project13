@@ -109,9 +109,8 @@ return function(
                     <input class="bRangeSlider__eInput mFromRange" name="" value="1 000" type="text"  />
 
                     <div class="bFilterSlider" data-config="{&quot;min&quot;:2990,&quot;max&quot;:113990,&quot;step&quot;:0.1}">
-                        <div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 0%; width: 50%;"></div>
-                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: -14px;"></a>
-                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 50%;"></a>
+                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
+                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
                     </div>
 
                     <input class="bRangeSlider__eInput mLast mToRange" name="" value="10 000" type="text"  />
