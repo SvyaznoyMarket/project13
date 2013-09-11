@@ -383,7 +383,7 @@ class Action {
             $page->setParam('forceSliders', true);
             $setPageParameters($page);
 
-            return $this->branchCategory($category, $productFilter, $page, $request);
+            return $this->leafCategory($category, $productFilter, $page, $request);
         }
         // иначе, если категория самого верхнего уровня
         else if ($category->isRoot()) {
@@ -396,7 +396,7 @@ class Action {
         $page = new \View\ProductCategory\BranchPage();
         $setPageParameters($page);
 
-        return $this->branchCategory($category, $productFilter, $page, $request);
+        return $this->leafCategory($category, $productFilter, $page, $request);
     }
 
     /**

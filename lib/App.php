@@ -452,4 +452,26 @@ class App {
 
         return $instance;
     }
+
+    /**
+     * @return Mustache_Engine
+     */
+    public static function mustache() {
+        static $instance;
+
+        if (!$instance) {
+            require \App::config()->appDir . '/vendor/mustache/src/Mustache/Autoloader.php';
+            Mustache_Autoloader::register(\App::config()->appDir . '/vendor/mustache/src');
+            $instance = new Mustache_Engine([
+                'cache'           => (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache',
+                'loader'          => new Mustache_Loader_FilesystemLoader(App::config()->templateDir),
+                'partials_loader' => new Mustache_Loader_FilesystemLoader(App::config()->templateDir),
+                'escape'          => [new \Helper\TemplateHelper(), 'escape'],
+                'charset'         => 'UTF-8',
+                'logger'          => null,
+            ]);
+        }
+
+        return $instance;
+    }
 }
