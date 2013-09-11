@@ -46,7 +46,7 @@ return function(
                 <?
                     $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' .$filter->getId());
                 ?>
-                    <div class="bFilterValuesItem clearfix" id="<?= $viewId ?>">
+                    <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?>" id="<?= $viewId ?>">
 
                     <? switch ($filter->getTypeId()) {
                         case \Model\Product\Filter\Entity::TYPE_NUMBER:
