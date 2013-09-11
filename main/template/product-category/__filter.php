@@ -22,20 +22,7 @@ return function(
         <div class="bFilterHead">
             <a class="bFilterToggle mOpen" href=""><span class="bToggleText">Бренды и параметры</span></a>
 
-            <div class="bFilterPrice">
-                <span class="bFilterPrice__eTitle"><?= $priceFilter->getName() ?></span>
-                <input class="bFilterPrice__eInput" name="" value="<?= $priceFilter->getMin() ?>" type="text" />
-
-                <div class="bFilterSlider">
-                    <div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 0%; width: 50%;"></div>
-                    <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: -14px;"></a>
-                    <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 50%;"></a>
-                </div>
-
-                <input class="bFilterPrice__eInput mLast" name="" value="<?= $priceFilter->getMax() ?>" type="text" />
-
-                <span class="bFilterPrice__eRub rubl">p</span>
-            </div>
+            <?= $helper->render('product-category/filter/__price', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
         </div>
 
         <!-- Фильтр по выбранным параметрам -->
@@ -64,7 +51,7 @@ return function(
                     <? switch ($filter->getTypeId()) {
                         case \Model\Product\Filter\Entity::TYPE_NUMBER:
                         case \Model\Product\Filter\Entity::TYPE_SLIDER:
-                            //echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $filter]);
+                            echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $filter]);
                             break;
                         case \Model\Product\Filter\Entity::TYPE_LIST:
                             echo $helper->render('product-category/filter/__list', ['productFilter' => $productFilter, 'filter' => $filter]);
