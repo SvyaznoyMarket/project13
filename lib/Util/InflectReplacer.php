@@ -30,37 +30,42 @@ class InflectReplacer {
             }
 
             $matches = [];
-            if (preg_match_all('/{' . $pattern . '\|([а-я]+)}/ui', $value, $matches)) {
-                foreach ($matches[0] as $i => $match) {
-                    $case = !empty($matches[1][$i]) ? $matches[1][$i] : null;
+            $pattern = str_replace('/', '\/',$pattern); // экранируем слеш в паттерне
+            try{
+                if (preg_match_all('/{' . $pattern . '\|([а-я]+)}/ui', $value, $matches)) {
+                    foreach ($matches[0] as $i => $match) {
+                        $case = !empty($matches[1][$i]) ? $matches[1][$i] : null;
 
-                    if (!$case) {
-                        throw new \Exception(sprintf('Не получено название падежа для %s', $match));
-                    }
-                    if (!isset($this->caseIndexes[$case])) {
-                        throw new \Exception(sprintf('Неправильное обозначение падежа %s', $case));
-                    }
+                        if (!$case) {
+                            throw new \Exception(sprintf('Не получено название падежа для %s', $match));
+                        }
+                        if (!isset($this->caseIndexes[$case])) {
+                            throw new \Exception(sprintf('Неправильное обозначение падежа %s', $case));
+                        }
 
-                    $caseIndex = $this->caseIndexes[$case];
-                    if (empty($this->patterns[$pattern][$caseIndex])) {
-                        \App::logger()->debug(sprintf('Не найден падеж %s для %s', $case, $pattern));
-                        $caseIndex = 0;
-                    }
+                        $caseIndex = $this->caseIndexes[$case];
+                        if (empty($this->patterns[$pattern][$caseIndex])) {
+                            \App::logger()->debug(sprintf('Не найден падеж %s для %s', $case, $pattern));
+                            $caseIndex = 0;
+                        }
 
-                    if (empty($replaces[$caseIndex])) {
+                        if (empty($replaces[$caseIndex])) {
+                            $replace = reset($replaces);
+                        } else {
+                            $replace = $replaces[$caseIndex];
+                        }
+
+                        $value = str_replace($match, $replace, $value);
+                    }
+                } else if (preg_match_all('/{' . $pattern . '}/ui', $value, $matches)) {
+                    foreach ($matches[0] as $match) {
                         $replace = reset($replaces);
-                    } else {
-                        $replace = $replaces[$caseIndex];
+
+                        $value = str_replace($match, $replace, $value);
                     }
-
-                    $value = str_replace($match, $replace, $value);
                 }
-            } else if (preg_match_all('/{' . $pattern . '}/ui', $value, $matches)) {
-                foreach ($matches[0] as $match) {
-                    $replace = reset($replaces);
-
-                    $value = str_replace($match, $replace, $value);
-                }
+            }catch (\Exception $e) {
+                \App::logger()->error($e);
             }
         }
 
