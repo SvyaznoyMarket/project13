@@ -18,7 +18,18 @@ class FilterForm {
 
     public function getSelected() {
         $return = [];
+
+        $selectedFilters = $this->productFilter->dump();
+        $selectedFiltersIds = array_map(function($filter){
+            return reset($filter);
+        }, $selectedFilters);
+
         foreach ($this->productFilter->getFilterCollection() as $filter) {
+
+            if(!in_array($filter->getId(), $selectedFiltersIds)) {
+                continue;
+            }
+
             $value = $this->productFilter->getValue($filter);
             switch ($filter->getTypeId()) {
                 case FilterEntity::TYPE_SLIDER:
