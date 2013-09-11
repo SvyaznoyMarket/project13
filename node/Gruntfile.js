@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 		'jquery.lightbox_me.js',
 		'jquery.scrollto.js',
 		'jquery.placeholder.js',
-		'prettyCheckboxes.js',
+		// 'prettyCheckboxes.js',
 		'jquery.infinityCarousel.js',
 		'typewriter.js',
 		'jquery.maskedinput.js',
