@@ -17,7 +17,7 @@ return function(
     ?>
     <div class="bFilterValuesCol">
         <input
-            class="bInputHidden"
+            class="bInputHidden bCustomInput"
             type="checkbox"
             id="<?= $viewId ?>"
             name=""
