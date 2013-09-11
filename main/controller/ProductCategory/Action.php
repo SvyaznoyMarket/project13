@@ -260,17 +260,6 @@ class Action {
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
-// file_put_contents('/tmp/logger.txt', json_encode($catalogJson).PHP_EOL, FILE_APPEND);
-
-        // AB-test по сортировкам SITE-1991
-        // $abTestJson = \App::abTestJson($catalogJson);
-        // $abTestJsonKey = $abTestJson->getCase()->getKey();
-        // $abTestJsonValues = $abTestJson->getValues();
-        // if(array_key_exists($abTestJsonKey, $abTestJsonValues)) {
-        //     // $sort = $abTestJsonValues[$abTestJsonKey];
-        // }
-
-
         $promoContent = '';
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
         if (!empty($catalogJson['category_layout_type']) &&
@@ -562,14 +551,6 @@ class Action {
 
         $catalogJson = $page->getParam('catalogJson');
 
-
-// file_put_contents('/tmp/logger.txt', json_encode(\App::config()->abtest).PHP_EOL, FILE_APPEND);
-
-        // if (\App::abTest()->shouldOverrideByJson($catalogJson)) {
-        // }
-
-// file_put_contents('/tmp/logger.txt', json_encode(\App::config()->abtest).PHP_EOL, FILE_APPEND);
-
         // сортировка
         $productSorting = new \Model\Product\Sorting();
         list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
@@ -582,14 +563,6 @@ class Action {
         } else {
             $sort = $productSorting->dump();
         }
-
-        // AB-test по сортировкам SITE-1991
-        // $abTestJson = \App::abTestJson($catalogJson);
-        // $abTestJsonKey = $abTestJson->getCase()->getKey();
-        // $abTestJsonValues = $abTestJson->getValues();
-        // if(array_key_exists($abTestJsonKey, $abTestJsonValues)) {
-        //     $sort = $abTestJsonValues[$abTestJsonKey];
-        // }
 
         // вид товаров
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
@@ -658,16 +631,13 @@ class Action {
 
         // ajax
         if ($request->isXmlHttpRequest()) {
-            $response = new \Http\Response(\App::templating()->render('product/_list', array(
+            return new \Http\Response(\App::templating()->render('product/_list', array(
                 'page'                   => new \View\Layout(),
                 'pager'                  => $productPager,
                 'view'                   => $productView,
                 'productVideosByProduct' => $productVideosByProduct,
                 'isAjax'                 => true,
             )));
-            // AB-test по сортировкам SITE-1991
-            // $abTestJson->setCookie($response);
-            return $response;
         }
 
         $page->setParam('productPager', $productPager);
@@ -683,12 +653,7 @@ class Action {
             'SubCategory' => $category->getName()
         ]);
 
-        $response = new \Http\Response($page->show());
-
-        // AB-test по сортировкам SITE-1991
-        // $abTestJson->setCookie($response);
-
-        return $response;
+        return new \Http\Response($page->show());
     }
 
     /**

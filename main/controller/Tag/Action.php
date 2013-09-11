@@ -104,14 +104,6 @@ class Action {
                 $sort = $productSorting->dump();
             }
 
-            // AB-test по сортировкам SITE-1991
-            $abTestJson = \App::abTestJson($catalogJson);
-            $abTestJsonKey = $abTestJson->getCase()->getKey();
-            $abTestJsonValues = $abTestJson->getValues();
-            if(array_key_exists($abTestJsonKey, $abTestJsonValues)) {
-                $sort = $abTestJsonValues[$abTestJsonKey];
-            }
-
             // вид товаров
             $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
             // фильтры
@@ -146,15 +138,12 @@ class Action {
 
             // ajax
             if ($request->isXmlHttpRequest()) {
-                $response = new \Http\Response(\App::templating()->render('product/_list', array(
+                return new \Http\Response(\App::templating()->render('product/_list', array(
                     'page'   => new \View\Layout(),
                     'pager'  => $productPager,
                     'view'   => $productView,
                     'isAjax' => true,
                 )));
-                // AB-test по сортировкам SITE-1991
-                $abTestJson->setCookie($response);
-                return $response;
             }
 
             $setPageParameters = function(\View\Layout $page) use (
@@ -171,8 +160,7 @@ class Action {
                 &$seoContent,
                 &$sidebarCategoriesTree,
                 &$categoriesByToken,
-                &$catalogJson,
-                &$abTestJson
+                &$catalogJson
             ) {
                 $page->setParam('tag', $tag);
                 $page->setParam('productPager', $productPager);
@@ -189,7 +177,6 @@ class Action {
                 $page->setParam('sidebarCategoriesTree', $sidebarCategoriesTree);
                 $page->setParam('categoriesByToken', $categoriesByToken);
                 $page->setParam('catalogJson', $catalogJson);
-                $page->setParam('abTestJson', $abTestJson);
             };
         } else {
             $setPageParameters = function(\View\Layout $page) use (
@@ -672,16 +659,13 @@ class Action {
 
         // ajax
         if ($request->isXmlHttpRequest()) {
-            $response = new \Http\Response(\App::templating()->render('product/_list', array(
+            return new \Http\Response(\App::templating()->render('product/_list', array(
                 'page'                   => new \View\Layout(),
                 'pager'                  => $productPager,
                 'view'                   => $productView,
                 'productVideosByProduct' => $productVideosByProduct,
                 'isAjax'                 => true,
             )));
-            // AB-test по сортировкам SITE-1991
-            $page->getParam('abTestJson')->setCookie($response);
-            return $response;
         }
 
         $page->setParam('productPager', $productPager);
@@ -697,12 +681,7 @@ class Action {
             'SubCategory' => $category->getName()
         ]);
 
-        $response = new \Http\Response($page->show());
-    
-        // AB-test по сортировкам SITE-1991
-        $page->getParam('abTestJson')->setCookie($response);
-    
-        return $response;
+        return new \Http\Response($page->show());
     }
 
     /**

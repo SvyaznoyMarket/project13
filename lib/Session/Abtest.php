@@ -78,7 +78,7 @@ class Abtest {
             $cookie = new \Http\Cookie(
                 $this->config['cookieName'],
                 'default',
-                0,
+                time() + 10,//\App::config()->abtest['checkPeriod'],
                 '/',
                 null,
                 false,

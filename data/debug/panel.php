@@ -77,11 +77,13 @@ if ((bool)\App::config()->abtest['enabled']) {
 $debug->add('abTest', $options, 89);
 
 // ab test json
-if (\App::abTestJson() && (bool)\App::abTestJson()->getConfig()['enabled']) {
+if (\App::abTestJson() && (bool)\App::abTestJson()->getConfig()['enabled'] && \App::abTestJson()->hasEnoughData()) {
     $options = '<span style="color: #cccccc;">Тестирование проводится до </span><span style="color: #00ffff;">' . date('d-m-Y H:i', strtotime(\App::abTestJson()->getConfig()['bestBefore'])) . '</span><br />';
     foreach (\App::abTestJson()->getOption() as $option) {
         $options .= '<span style="color: #' . ($option->getKey() == \App::abTestJson()->getCase()->getKey() ? 'color: #11ff11' : 'cccccc') . ';">' . $option->getTraffic() . ($option->getTraffic() === '*' ? ' ' : '% ') . $option->getKey() . ' ' . $option->getName() . '</span><br />';
     }
+} elseif (\App::abTestJson() && (bool)\App::abTestJson()->getConfig()['enabled'] && !\App::abTestJson()->hasEnoughData()) {
+    $options = '<span style="color: #cccccc;">в JSON недостаточно данных для запуска АБ-теста (отсутствуют значения для текущего ключа)</span>';
 } else {
     $options = '<span style="color: #cccccc;">неактивно</span>';
 }

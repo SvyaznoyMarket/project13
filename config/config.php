@@ -331,6 +331,7 @@ $c->sphinx['showListingSearchBar'] = false;
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
+$c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
 $c->abtest['bestBefore'] = '2013-09-23';
 $c->abtest['test']       = [
     // smartengine
