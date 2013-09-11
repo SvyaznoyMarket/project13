@@ -1,11 +1,13 @@
 <?php
 /**
- * @var $page          \View\Layout
- * @var $product       \Model\Product\CompactEntity
- * @var $isHidden      bool
- * @var $kit           \Model\Product\Kit\Entity
- * @var $productVideos \Model\Product\Video\Entity[]
- * @var $addInfo       array
+ * @var $page                   \View\Layout
+ * @var $pager                  \Iterator\EntityPager
+ * @var $productPosition        integer
+ * @var $product                \Model\Product\CompactEntity
+ * @var $isHidden               bool
+ * @var $kit                    \Model\Product\Kit\Entity
+ * @var $productVideos          \Model\Product\Video\Entity[]
+ * @var $addInfo                array
  **/
 ?>
 
@@ -25,11 +27,11 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
 ?>
 
 <div class="goodsbox <? echo ($isHidden)? 'hidden': '' ?>" ref="<?= $product->getToken(); ?>">
-    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
+    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?= (count($addInfo)) ? 'data-add="' . $page->json($addInfo) . '"' : ''; ?>>
     	<div class="photo">
             <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
             <? if ($model3dExternalUrl || $model3dImg): ?><a style="right:<?= $productVideo && $productVideo->getContent() ? '42' : '0' ?>px;" class="goodsphoto_eGrad360 goodsphoto_eGrad360_small" href="<?= $product->getLink() ?>"></a><? endif ?>
-	        <a href="<?= $product->getLink() ?>">
+	        <a href="<?= $product->getLink() ?>" class="kiss_cat_clicked">
 	            <? if (!empty($kit) && $kit->getCount()): ?>
 	                <div class="bLabelsQuantity" src="/images/quantity_shild.png"><?= $kit->getCount() ?> шт.</div>
 	            <? endif ?>
@@ -46,7 +48,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             <?= $page->render('product/_reviewsStarsCompact', ['product' => $product]) ?>
         <? endif ?>
 
-	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
+	    <h3><a href="<?= $product->getLink() ?>" class="kiss_cat_clicked"><?= $product->getName() ?></a></h3>
         <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
 	    <div class="font18 pb10 mSmallBtns">
             <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
@@ -61,7 +63,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             </div>
 		<? endif ?>
 	    <? if ($hasModel): ?>
-        <a href="<?= $product->getLink() ?>">
+        <a href="<?= $product->getLink() ?>" class="kiss_cat_clicked">
             <div class="bListVariants">
                 Доступно в разных вариантах<br>
                 (<?= $product->getModel()->getVariations() ?>)
