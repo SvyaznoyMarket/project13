@@ -725,22 +725,23 @@ $(document).ready(function(){
 
         $( "a.kiss_cat_clicked" ).bind( "click", function() {
             var data = data = $('#_categoryData').data('category'),
-                datap = $(this).parents('div.goodsbox__inner').data('tokiss'),
+                datap = $(this).parents('div.goodsbox__inner').data('add'),
                 toKISS = {
                     'Category Results Clicked Category Type': data.type,
                     'Category Results Clicked Category Level': data.level,
                     'Category Results Clicked Parent category': data.parent_category,
                     'Category Results Clicked Category name': data.category,
                     'Category Results Clicked Category ID': data.id,
-                    'Category Results Clicked SKU': datap.sku,
+                    'Category Results Clicked SKU': datap.article,
                     'Category Results Clicked Product Name': datap.name,
-                    'Category Results Clicked Page Number': datap.number,
+                    'Category Results Clicked Page Number': datap.page,
                     'Category Results Clicked Product Position': datap.position
                 };
 
             console.log(data.category);
             console.log('*** test IN CLICK BEGIN { ');
             console.log(toKISS);
+            alert(log(toKISS));
             console.log('*** } test IN CLICK END');
 
             if (typeof(_kmq) !== 'undefined') {
