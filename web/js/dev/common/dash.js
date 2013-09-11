@@ -158,6 +158,8 @@ $(document).ready(function(){
 
 
     var kissForProductOfCategory = function kissForProductOfCategory() {
+        console.log('* kissForProductOfCategory');
+
         $( "a.kiss_cat_clicked" ).bind( "click", function() {
             var data = data = $('#_categoryData').data('category'),
                 datap = $(this).parents('div.goodsbox__inner').data('tokiss'),
