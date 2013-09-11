@@ -64,11 +64,30 @@ if ('main' == \App::$name) {
 $response = null;
 
 \App::init($env, $config, function() use (&$response) {
+    $request = \App::request();
+
     $error = error_get_last();
     if ($error && (error_reporting() & $error['type'])) {
 
         $spend = \Debug\Timer::stop('app');
-        \App::logger()->error('Fail app ' . $spend . ' ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb ' . \App::request()->getMethod()  . ' ' . \App::request()->getRequestUri() . ' with error ' . json_encode($error, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . ' server: ' . json_encode(isset($_SERVER) ? $_SERVER : [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+        \App::logger()->info([
+            'message' => 'Fail app',
+            'error'   => $error,
+            'env'     => \App::$env,
+            'spend'   => $spend,
+            'memory'  => round(memory_get_peak_usage() / 1048576, 2) . 'Mb',
+            'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
+                'REQUEST_METHOD',
+                'REQUEST_URI',
+                'QUERY_STRING',
+                'HTTP_X_REQUESTED_WITH',
+                'HTTP_COOKIE',
+                'HTTP_USER_AGENT',
+                'HTTP_REFERER',
+                'REQUEST_TIME_FLOAT',
+            ]),
+        ]);
 
         // очищаем буфер вывода
         $previous = null;
@@ -86,7 +105,7 @@ $response = null;
         }
     } else {
         $spend = \Debug\Timer::stop('app');
-        \App::logger()->info('End app in ' . $spend . ' used ' . round(memory_get_peak_usage() / 1048576, 2) . 'Mb');
+        \App::logger()->info(['message' => 'End app', 'env' => \App::$env, 'spend' => $spend, 'memory' => round(memory_get_peak_usage() / 1048576, 2) . 'Mb']);
     }
 
     if ($response instanceof \Http\Response) {
@@ -119,7 +138,7 @@ $response = null;
 
 });
 
-\App::logger()->info('Start app in ' . \App::$env . ' env');
+\App::logger()->info(['message' => 'Start app', 'env' => \App::$env]);
 $requestLogger = \Util\RequestLogger::getInstance();
 $requestLogger->setId(\App::$id);
 
@@ -136,7 +155,7 @@ try {
     // если предыдущие контроллеры не вернули Response, ...
     if (!$response instanceof \Http\Response) {
         $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
-        \App::logger()->info('Match route ' . $request->attributes->get('route') . ' by ' . $request->getMethod()  . ' ' . $request->getRequestUri());
+        \App::logger()->info(['message' => 'Match route', 'route' => $request->attributes->get('route'), 'uri' => $request->getRequestUri(), 'method' => $request->getMethod()]);
 
         // action resolver
         $resolver = \App::actionResolver();

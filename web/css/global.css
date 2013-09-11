@@ -5480,7 +5480,7 @@
     overflow: auto;
     top: 20px;
     width: 350px;
-    z-index: 2;
+    z-index: 12;
   }
   .bHint-text span,
   .bHint-text p {
@@ -9280,6 +9280,9 @@
   .bProductSectionRightCol .btnBuy {
     margin: 0 auto;
   }
+  .bProductSectionRightCol .adfoxWrapper {
+    margin: 0 0 10px;
+  }
   .bProductSectionLeftCol {
     display: inline-block;
     float: left;
@@ -10021,9 +10024,6 @@
     border-radius: 5px;
     margin: 0 0 10px;
   }
-  .adfoxWrapper {
-    margin: 0 0 10px;
-  }
 }
 /*---END---СТИЛИ ПРАВОЙ КОЛОНКИ КАРТОЧКИ ТОВАРА---*/
 /*------СТИЛИ КНОПКИ "КУПИТЬ"------*/
@@ -10594,7 +10594,7 @@
   }
   .filter-section li {
     float: left;
-    margin: 0 55px 0 0;
+    margin: 0 40px 0 0;
     padding-bottom: 10px;
   }
   .filter-section .last {
