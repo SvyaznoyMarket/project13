@@ -118,9 +118,8 @@
 		filterMenuItem.removeClass(activeClass);
 		self.addClass(activeClass);
 
-		console.log(categoryId);
-
-		filterCategoryBlocks.fadeOut(300, function(){
+		filterCategoryBlocks.fadeOut(300);
+		filterCategoryBlocks.promise().done(function() {
 			$('#'+categoryId).fadeIn(300);
 		});
 
