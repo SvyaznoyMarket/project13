@@ -30,7 +30,11 @@ if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->get
 
     <?= $helper->render('product/__sorting', ['pager' => $productPager]) // сортировка ?>
 
-    <?= $helper->render('product/__list', ['pager' => $productPager, 'view' => $productView]) // листинг ?>
+    <?= $helper->render('product/__list', [
+        'pager'                  => $productPager,
+        'view'                   => $productView,
+        'productVideosByProduct' => $productVideosByProduct,
+    ]) // листинг ?>
 
     <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
 

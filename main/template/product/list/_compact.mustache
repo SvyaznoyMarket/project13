@@ -8,10 +8,17 @@
             <div class="bSimplyDesc">
                 <p class="bSimplyDesc__eText"><a href="{{link}}">{{name}}</a></p>
                 <ul class="bSimplyDescStikers">
-                    <li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/stiker.png" /></li>
+                    {{#label}}
+                        <li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="{{image}}" alt="{{name}}" /></li>
+                    {{/label}}
 
-                    <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
-                    <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+                    {{#hasVideo}}
+                        <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+                    {{/hasVideo}}
+
+                    {{#has360}}
+                        <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+                    {{/has360}}
                 </ul>
             </div>
             <!-- /Блок с именем продукта и иконками доп. просмотра товара -->
@@ -22,23 +29,30 @@
                 {{#oldPrice}}
                     <span class="bPriceOld"><strong class="bDecor">{{oldPrice}}</strong> <span class="rubl">p</span></span>
                 {{/oldPrice}}
-                <span class="bAvailible">Только в магазинах</span>
+                {{#onlyInShop}}
+                    <span class="bAvailible">Только в магазинах</span>
+                {{/onlyInShop}}
             </div>
 
             <div class="bPriceLine clearfix">
                 <span class="bPrice"><strong>{{price}}</strong> <span class="rubl">p</span></span>
+                {{#variations}}
                 <span class="bOptions"><span class="bDecor">Варианты</span></span>
+                {{/variations}}
             </div>
 
+            {{#variations}}
             <div class="bOptionsSection">
                 <i class="bCorner"></i>
                 <i class="bCornerDark"></i>
 
                 <ul class="bOptionsList">
-                    <li class="bOptionsList__eItem">Цвет обивки</li>
-                    <li class="bOptionsList__eItem">Наличие подъемного механизма</li>
+                {{#variations}}
+                    <li class="bOptionsList__eItem">{{name}}</li>
+                {{/variations}}
                 </ul>
             </div>
+            {{/variations}}
 
             <div class="bBtnLine clearfix">
                 <div class="btnBuy"><a class="btnBuy__eLink" href="{{cart.addLink}}">Купить</a></div>
