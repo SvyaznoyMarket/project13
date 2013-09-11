@@ -47,6 +47,8 @@ class Actionpay {
                     }
 
                     $categoryRate = 0.005; //на неопределенные товары по умолчанию ставим минимальный процент, для web-мастеров =0,5%
+
+                    if ($category)
                     switch ($category->getId()) {
                         case 80:  // Мебель
                             $categoryRate = 0.136;
