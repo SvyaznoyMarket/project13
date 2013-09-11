@@ -47,7 +47,7 @@ class Mustache_Autoloader
     public static function register($baseDir = null)
     {
         $loader = new self($baseDir);
-        spl_autoload_register(array($loader, 'autoload'));
+        spl_autoload_register(array($loader, 'autoload'), true, true);
 
         return $loader;
     }
