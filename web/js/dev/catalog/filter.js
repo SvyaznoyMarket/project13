@@ -26,12 +26,13 @@
 		testOut = $('<div>').addClass('popup').html(html);
 	// end of vars
 
-	testOut.appendTo('body');
+	// testOut.appendTo('body');
 
-	testOut.lightbox_me({
-		centered: true
-	});
+	// testOut.lightbox_me({
+	// 	centered: true
+	// });
 	// ==== END Mustache test out
+	
 	
 	var historyLinkHandler = function historyLinkHandler() {
 		var state = {
@@ -42,7 +43,6 @@
 		console.info('link handler. push state '+state.url);
 
 		History.pushState(state, state.title, state.url);
-		// history.pushState( state, state.title, state.url );
 
 		return false;
 	};
@@ -51,8 +51,6 @@
 	 * Обработка back\forward
 	 */
 	var backForwardHandler = function backForwardHandler() {
-		alert('Возврат!');
-
 		var returnLocation = history.location || document.location;
 
 		console.info(returnLocation);
@@ -71,7 +69,6 @@
 	};
 
 	History.Adapter.bind(window, "statechange", stateChangeHandler);
-	// $(window).on('popstate', backForwardHandler)
 	$('body').on('click', '.jsHistoryLink', historyLinkHandler);
 
 }(window.ENTER));
