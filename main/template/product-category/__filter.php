@@ -44,9 +44,7 @@ return function(
             <ul class="bFilterParams">
             <? $i = 0; foreach ($filters as $filter): ?>
             <?
-                if ($filter->isPrice()) continue;
-
-                $viewId = \View\Id::productCategoryFilter($filter->getId());
+                $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' .$filter->getId());
             ?>
                 <li class="bFilterParams__eItem<? if (0 == $i): ?> mActive<? endif ?>">
                     <span class="bParamName" data-ref="<?= $viewId ?>"><?= $filter->getName() ?></span>
@@ -58,6 +56,9 @@ return function(
             <!-- Список значений параметров -->
             <div class="bFilterValues">
                 <? $i = 0; foreach ($filters as $filter): ?>
+                <?
+                    $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' .$filter->getId());
+                ?>
                     <div class="bFilterValuesItem clearfix" id="<?= $viewId ?>">
 
                     <? switch ($filter->getTypeId()) {
