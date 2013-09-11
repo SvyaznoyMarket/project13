@@ -9280,6 +9280,9 @@
   .bProductSectionRightCol .btnBuy {
     margin: 0 auto;
   }
+  .bProductSectionRightCol .adfoxWrapper {
+    margin: 0 0 10px;
+  }
   .bProductSectionLeftCol {
     display: inline-block;
     float: left;
