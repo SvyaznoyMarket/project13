@@ -31,13 +31,13 @@ foreach ($productSorting->getAll() as $item)
 
 <!-- Filter -->
 
-    <li id="sorting" class="last" data-sort="<?= $active['url'] ?>">
-        <div class="filter-section__title">Сортировать</div>
-        <div class="filter-section__value">
-            <a href="<?= $active['url'] ?>"><?= $active['title'] ?></a>
-            <ul class="filter-section__value__dd">
+    <li id="sorting" class="bBrandSortingList__eItem mLast" data-sort="<?= $active['url'] ?>">
+        <div class="bBrandSortingTitle">Сортировать</div>
+        <div class="bBrandSortingOption">
+            <a class="bBrandSortingOption__eLink" href="<?= $active['url'] ?>"><?= $active['title'] ?></a>
+            <ul class="bBrandSortingOption__eDropDown">
                 <? foreach ($list as $item): ?>
-                    <li><a href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
+                    <li class="bDropDownItem"><a class="bDropDownItem__eLink" href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
                 <? endforeach ?>
             </ul>
         </div>

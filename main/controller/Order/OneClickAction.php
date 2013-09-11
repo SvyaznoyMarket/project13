@@ -108,7 +108,7 @@ class OneClickAction {
                 try {
                     $result = \App::coreClientV2()->query('order/create', $params, $data);
                 } catch (\Exception $e) {
-                    if (!in_array($e->getCode(), [705, 708, 800])) {
+                    if (!in_array($e->getCode(), [705, 708, 735, 800])) {
                         \App::logger('order')->error([
                             'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
                             'url'     => 'order/create' . ((bool)$params ? ('?' . http_build_query($params)) : ''),
@@ -248,7 +248,7 @@ class OneClickAction {
                     $message = $e->getMessage();
                     break;
                 case 735:
-                    $message = 'Невалидный номер карты Связного клуба';
+                    $message = 'Невалидный номер карты &laquo;Связного клуба&raquo;';
                     break;
                 default:
                     $message = 'Не удалось создать заказ';

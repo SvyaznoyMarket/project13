@@ -35,6 +35,11 @@ class EditAction {
             $form->fromArray($userData);
 
             try {
+                $tmp = rtrim( $form->getEmail() ) . rtrim($form->getMobilePhone());
+                if ( empty($tmp) ) {
+                    throw new \Exception("E-mail и телефон не могут быть одновременно пустыми. Укажите ваш мобильный телефон либо e-mail.");
+                }
+
                 $response = \App::coreClientV2()->query('user/update', array('token' => \App::user()->getToken()), [
                     'first_name'  => $form->getFirstName(),
                     'middle_name' => $form->getMiddleName(),
@@ -49,7 +54,7 @@ class EditAction {
                 ]);
 
                 if (!isset($response['confirmed']) || !$response['confirmed']) {
-                    throw new \Exception('Не удалось сохранить форму');
+                    throw new \Exception('Не получен ответ от сервера.');
                 }
 
                 $session->set('flash', 'Данные сохранены');
@@ -59,7 +64,8 @@ class EditAction {
                 \App::exception()->remove($e);
                 \App::logger()->error($e, ['user']);
 
-                $form->setError('global', 'Не удалось сохранить форму');
+                $errorMess = $e->getMessage();
+                $form->setError('global', 'Не удалось сохранить форму. ' . $errorMess);
             }
         }
 
