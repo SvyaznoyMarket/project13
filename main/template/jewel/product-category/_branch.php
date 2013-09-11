@@ -48,5 +48,4 @@ if (!empty($catalogJson['show_branch_menu']) && ($parent && !$parent->isRoot() |
         </table>
     </div>
 <? } else { ?>
-    <div class="pt20 pb20"></div>
 <? } ?>
