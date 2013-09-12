@@ -54,7 +54,7 @@ class Abtest {
             return $this->case;
         }
 
-        if (strtotime($this->config['bestBefore']) <= strtotime('now') || !(bool)$this->config['enabled']) {
+        if (!$this->isActive()) {
             return $this->option['default'];
         }
         if (\App::request()->cookies->has($this->config['cookieName'])) {
@@ -73,7 +73,7 @@ class Abtest {
 
         /* @var $response \Http\Response */
 
-        if (strtotime($this->config['bestBefore']) <= strtotime('now') || !(bool)$this->config['enabled'])
+        if (!$this->isActive())
         {
             $cookie = new \Http\Cookie(
                 $this->config['cookieName'],
@@ -141,6 +141,14 @@ class Abtest {
             'name'     => 'пусто',
             'ga_event' => 'default',
         ]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive() {
+        return (bool)$this->config['enabled'] &&
+               (strtotime($this->config['bestBefore']) > strtotime('now'));
     }
 
 }

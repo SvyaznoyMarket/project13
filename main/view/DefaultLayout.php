@@ -55,6 +55,10 @@ class DefaultLayout extends Layout {
         return $this->tryRender('_googleAnalytics');
     }
 
+    public function slotKissMetrics() {
+        return $this->tryRender('_kissMetrics');
+    }
+
     public function slotBodyDataAttribute() {
         return 'default';
     }
