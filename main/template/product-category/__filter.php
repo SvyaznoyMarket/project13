@@ -22,20 +22,7 @@ return function(
         <div class="bFilterHead">
             <a class="bFilterToggle mOpen" href=""><span class="bToggleText">Бренды и параметры</span></a>
 
-            <div class="bFilterPrice">
-                <span class="bFilterPrice__eTitle"><?= $priceFilter->getName() ?></span>
-                <input class="bFilterPrice__eInput" name="" value="<?= $priceFilter->getMin() ?>" type="text" />
-
-                <div class="bFilterSlider">
-                    <div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 0%; width: 50%;"></div>
-                    <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: -14px;"></a>
-                    <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 50%;"></a>
-                </div>
-
-                <input class="bFilterPrice__eInput mLast" name="" value="<?= $priceFilter->getMax() ?>" type="text" />
-
-                <span class="bFilterPrice__eRub rubl">p</span>
-            </div>
+            <?= $helper->render('product-category/filter/__price', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
         </div>
 
         <!-- Фильтр по выбранным параметрам -->
@@ -59,12 +46,12 @@ return function(
                 <?
                     $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' .$filter->getId());
                 ?>
-                    <div class="bFilterValuesItem clearfix" id="<?= $viewId ?>">
+                    <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?>" id="<?= $viewId ?>">
 
                     <? switch ($filter->getTypeId()) {
                         case \Model\Product\Filter\Entity::TYPE_NUMBER:
                         case \Model\Product\Filter\Entity::TYPE_SLIDER:
-                            //echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $filter]);
+                            echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $filter]);
                             break;
                         case \Model\Product\Filter\Entity::TYPE_LIST:
                             echo $helper->render('product-category/filter/__list', ['productFilter' => $productFilter, 'filter' => $filter]);
@@ -117,19 +104,18 @@ return function(
                 <a class="bFilterToggle mClose" href=""><span class="bToggleText">Бренды и параметры</span></a>
 
                 <!-- Фильтр по цене -->
-                <div class="bFilterPrice">
-                    <span class="bFilterPrice__eTitle">Цена</span>
-                    <input class="bFilterPrice__eInput" name="" value="1 000" type="text"  />
+                <div class="bRangeSlider">
+                    <span class="bRangeSlider__eTitle">Цена</span>
+                    <input class="bRangeSlider__eInput mFromRange" name="" value="1 000" type="text"  />
 
-                    <div class="bFilterSlider">
-                        <div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 0%; width: 50%;"></div>
-                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: -14px;"></a>
-                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 50%;"></a>
+                    <div class="bFilterSlider" data-config="{&quot;min&quot;:2990,&quot;max&quot;:113990,&quot;step&quot;:0.1}">
+                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
+                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
                     </div>
 
-                    <input class="bFilterPrice__eInput mLast" name="" value="10 000" type="text"  />
+                    <input class="bRangeSlider__eInput mLast mToRange" name="" value="10 000" type="text"  />
 
-                    <span class="bFilterPrice__eRub rubl">p</span>
+                    <span class="bRangeSlider__eRub rubl">p</span>
                 </div>
                 <!-- /Фильтр по цене -->
 

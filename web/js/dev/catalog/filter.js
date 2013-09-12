@@ -118,9 +118,8 @@
 		filterMenuItem.removeClass(activeClass);
 		self.addClass(activeClass);
 
-		console.log(categoryId);
-
-		filterCategoryBlocks.fadeOut(300, function(){
+		filterCategoryBlocks.fadeOut(300);
+		filterCategoryBlocks.promise().done(function() {
 			$('#'+categoryId).fadeIn(300);
 		});
 
@@ -129,5 +128,43 @@
 
 	filterToggleBtn.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
+
+	/**
+	 * Слайдеры в фильтре
+	 */
+	var initSliderRange = function initSliderRange() {
+		var sliderWrap = $(this),
+			slider = sliderWrap.find('.bFilterSlider'),
+			sliderConfig = slider.data('config'),
+			sliderFromInput = sliderWrap.find('.mFromRange'),
+			sliderToInput = sliderWrap.find('.mToRange'),
+
+			min = sliderConfig.min,
+			max = sliderConfig.max,
+			step = sliderConfig.step;
+		// end of vars
+		
+		slider.slider({
+			range: true,
+			step: step,
+			min: min,
+			max: max,
+			values: [
+				sliderFromInput.val(),
+				sliderToInput.val()
+			],
+
+			slide: function( e, ui ) {
+				sliderFromInput.val( ui.values[ 0 ] );
+				sliderToInput.val( ui.values[ 1 ] );
+			},
+
+			change: function( e, ui ) {
+				console.log('change slider');
+			}
+		});
+	};
+
+	$('.bRangeSlider').each(initSliderRange);
 
 }(window.ENTER));
