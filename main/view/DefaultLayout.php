@@ -321,7 +321,7 @@ class DefaultLayout extends Layout {
 
             $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
             $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'category');
-            $return .= $this->render($smantic_path . '02-category_page', ['category' => $category, 'smantic' => &$smantic, 'prod_cats' => $prod_cats]);
+            $return .= $this->render($smantic_path . '02-category_page', ['prod_cats' => $prod_cats]);
 
         } else if ($routeName == 'product') {
 
