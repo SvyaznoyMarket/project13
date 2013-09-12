@@ -153,6 +153,8 @@ $(document).ready(function() {
 
 					self.chosenShop( self.shops()[0] );
 					self.pickedShop( self.shops()[0] );
+
+					// self.showMap(true)
 				}
 				else {
 					var leer = { address: '', regtime: '', id : 1 };
@@ -168,9 +170,10 @@ $(document).ready(function() {
 			}, this);
 			
 			self.changeDlvr = function() {
+				console.info('changeDlvr');
 				var typeDlvr = self.chosenDlvr().type;
 				self.dates.removeAll();
-				while( self.dates().length ){
+				while( self.dates().length ) {
 					self.dates.pop();
 				}
 
@@ -179,10 +182,12 @@ $(document).ready(function() {
 				}
 
 				self.chosenDate( self.dates()[0] );
-				if( self.showMap() ){
+				
+				if ( self.showMap() ) {
 					self.showMap( false );
 				}
-				if (typeof(window.regionMap)=='undefined'){
+				if ( typeof(window.regionMap)=='undefined' ) {
+					console.warn('region map undefined');
 					$('.bFast__eMapLink').remove();
 				}
 			};
@@ -855,9 +860,11 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 				};
 
 				try {
+					console.info('грузим карту');
 					MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateIWCL );
 				}
 				catch( e ) {
+					console.warn('карта не загрузилась');
 					$('.bFast__eMapLink').remove();
 				}
 			}

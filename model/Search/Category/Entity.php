@@ -68,7 +68,7 @@ class Entity {
      */
     public function getLink()
     {
-        return $this->link;
+        return rtrim($this->link, '/');
     }
 
     /**
