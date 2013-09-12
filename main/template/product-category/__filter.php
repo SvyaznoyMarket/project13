@@ -17,9 +17,9 @@ return function(
 
 ?>
 
-    <div class="bFilter clearfix">
+    <form class="bFilter clearfix" action="" method="GET">
         <div class="bFilterHead">
-            <a class="bFilterToggle mOpen" href=""><span class="bToggleText">Бренды и параметры</span></a>
+            <a class="bFilterToggle mOpen" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
             <?= $helper->render('product-category/filter/__price', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
         </div>
@@ -63,14 +63,16 @@ return function(
                     </div>
                 <? $i++; endforeach ?>
 
-                <div class="bBtnPick clearfix"><a class="bBtnPick__eLink mBtnGrey" href="">Подобрать</a></div>
+                <div class="bBtnPick clearfix">
+                    <button type="submit" class="bBtnPick__eLink mBtnGrey">Подобрать</button>
+                </div>
             </div>
             <!-- /Список значений параметров -->
         </div>
         <!-- /Фильтр по выбранным параметрам -->
 
         <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter]) ?>
-    </div>
+    </form>
 
 
 

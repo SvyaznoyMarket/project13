@@ -8,12 +8,12 @@ return function(
     $data = [
         'min' => $helper->clearZeroValue($filter->getMin()),
         'max' => $helper->clearZeroValue($filter->getMax()),
-        'step' => 0.1
+        'step' => $filter->getStepByFilter()
     ];
 ?>
 
 
-    <div class="bRangeSlider" data-step="<?= $helper->json($filter->getStepByFilter()) ?>">
+    <div class="bRangeSlider">
         <span class="bRangeSlider__eTitle"><?= $filter->getName() ?></span>
         <input class="bRangeSlider__eInput mFromRange" name="" value="<?= $helper->clearZeroValue($filter->getMin()) ?>" type="text" />
 
