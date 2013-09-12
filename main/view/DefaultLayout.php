@@ -401,6 +401,11 @@ class DefaultLayout extends Layout {
         return $return;
     }
 
+    public function slotLiveTex() {
+        $return = $this->tryRender('partner-counter/livetex/_slot_liveTex');
+        return $return;
+    }
+
 
 
 
