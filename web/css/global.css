@@ -9284,6 +9284,9 @@
   .bProductSectionRightCol .btnBuy {
     margin: 0 auto;
   }
+  .bProductSectionRightCol .adfoxWrapper {
+    margin: 0 0 10px;
+  }
   .bProductSectionLeftCol {
     display: inline-block;
     float: left;
@@ -10023,9 +10026,6 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    margin: 0 0 10px;
-  }
-  .adfoxWrapper {
     margin: 0 0 10px;
   }
 }
