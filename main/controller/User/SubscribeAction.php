@@ -6,6 +6,7 @@ class SubscribeAction {
 
     const EMPTY_PHONE_ERROR = 'Не указан мобильный телефон';
     const INVALID_PHONE_ERROR = 'Номер мобильного телефона должен содержать 11 цифр';
+    const OCCUPIED_PHONE_ERROR = 'Такой номер уже занят';
     const SAVE_FAILED_ERROR = 'Не удалось сохранить данные';
 
     public function __construct() {
@@ -45,7 +46,7 @@ class SubscribeAction {
                 } elseif (11 != strlen($mobilePhone)) {
                     $error = self::INVALID_PHONE_ERROR;
                 } else {
-                    $userData['mobile_phone'] = $mobilePhone;
+                    $userData['mobile'] = $mobilePhone;
                 }
                 $smsTmpCheck = true;
             }
@@ -69,6 +70,7 @@ class SubscribeAction {
                 switch ($e->getMessage()) {
                     case self::EMPTY_PHONE_ERROR:
                     case self::INVALID_PHONE_ERROR:
+                    case self::OCCUPIED_PHONE_ERROR:
                     case self::SAVE_FAILED_ERROR:
                         $error = $e->getMessage();
                         break;

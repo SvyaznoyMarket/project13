@@ -112,7 +112,7 @@ $.ajaxSetup({
  
  
 /**
- * Обработчи для личного кабинета
+ * Обработчик для личного кабинета
  *
  * @author    Trushkevich Anton
  * @requires  jQuery
@@ -123,6 +123,7 @@ $.ajaxSetup({
   var handleSubscribeSms = function() {
     if ( checked ) {
       $('#mobilePhoneWrapper').hide();
+      $('#mobilePhoneWrapper').parent().find('.red').html('');
       checked = false;
     } else {
       $('#mobilePhoneWrapper').show();
