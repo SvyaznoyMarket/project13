@@ -144,6 +144,25 @@
 					console.log('change slider');
 				}
 			});
+
+			var inputUpdates = function inputUpdates() {
+				var val = '0' + $(this).val();
+
+				val = parseInt(val, 10);
+				val = ( val > max ) ? max : ( val < min ) ? min : val;
+
+				$(this).val(val);
+
+				slider.slider({
+					values: [
+						sliderFromInput.val(),
+						sliderToInput.val()
+					]
+				});
+			};
+
+			sliderToInput.on('change', inputUpdates);
+			sliderFromInput.on('change', inputUpdates);
 		};
 	// end of functions
 
