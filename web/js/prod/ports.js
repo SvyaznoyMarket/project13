@@ -125,6 +125,29 @@ window.ANALYTICS = {
 	//     })(document, window, "yandex_metrika_callbacks");
 	// },
 
+    yaParamsJS : function() {
+        var yap = $('#yaParamsJS').data('vars');
+        if (yap) {
+            window.yaParams = yap;
+        }
+    },
+
+    enterleadsJS : function() { // SITE-1911
+        (function () {
+            try {
+                var script = document.createElement('script');
+
+                script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') +
+                    unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denterleads%26cost%3D') + escape(0) +
+                    unescape('%26order%3D') + escape(0) + unescape('%26r%3D') + Math.random();
+
+                document.getElementsByTagName('head')[0].appendChild(script);
+
+            } catch (e) {
+            }
+        })();
+    },
+
     sociomantic : function() {
         (function(){
             var s   = document.createElement('script');
@@ -510,10 +533,6 @@ window.ANALYTICS = {
 	testFreak : function() {
 		document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
 	},
-
-  pluso: function() {
-    if (window.pluso) if (typeof window.pluso.start == "function") return; var d = document, s = d.createElement('script'), g = 'getElementsByTagName'; s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true; s.src = ('https:' == window.location.protocol ? 'https' : 'http') + '://share.pluso.ru/pluso-like.js'; var h=d[g]('head')[0] || d[g]('body')[0]; h.appendChild(s);
-  },
 
 	enable : true
 }

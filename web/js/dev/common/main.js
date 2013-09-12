@@ -367,14 +367,14 @@ $(document).ready(function() {
 		});
 	});
 
-	$('#auth-block').on('click', '#forgot-pwd-trigger', function() {
+	$('body').on('click', '#forgot-pwd-trigger', function() {
 		$('#reset-pwd-form').show();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').hide();
 		return false;
 	});
 
-	$('#remember-pwd-trigger,#remember-pwd-trigger2').click(function() {
+	$('body').on('click', '#remember-pwd-trigger,#remember-pwd-trigger2', function() {
 		$('#reset-pwd-form').hide();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').show();
@@ -419,7 +419,7 @@ $(document).ready(function() {
 	/* Infinity scroll */
 	var ableToLoad = true;
 	var compact = $('div.goodslist').length;
-	var custom_jewel = $('.items-section__list').length;
+	var custom_jewel = $('.bGoodsList').length;
 
 	function liveScroll( lsURL, filters, pageid ) {
 		var params = [];
@@ -431,7 +431,7 @@ $(document).ready(function() {
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last');
 
 		if ( custom_jewel ) {
-			tmpnode = $('.items-section__list');
+			tmpnode = $('.bGoodsList');
 		}
 
 		var loader =
@@ -1367,7 +1367,7 @@ $(document).ready(function() {
 	}
 
 	;(function() {
-		$(".items-section__list .item").hover(
+		$(".bGoodsList .bGoodsList__eItem").hover(
 		function() {
 			$(this).addClass('hover')
 		},

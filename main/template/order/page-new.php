@@ -302,7 +302,7 @@ foreach (array_reverse($productsById) as $product) {
 		
 		<form id="order-form" action="<?= $paypalECS ? $page->url('order.paypal.create', ['token' => $request->get('token'), 'PayerID' => $request->get('PayerID')]) : $page->url('order.create') ?>" method="post">
 			<!-- Info about customer -->
-			<div class="bBuyingLine mBuyingFields">
+			<div class="bBuyingLine mBuyingFields clearfix">
 				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
 				<div class="bBuyingLine__eRight">
 					<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
@@ -395,6 +395,18 @@ foreach (array_reverse($productsById) as $product) {
 				</div>
 			</div>
 
+			<!-- PayPal сумма заказа -->
+			<div data-bind="visible: paypalECS" class="bBuyingLine mPaypalLine clearfix">
+				<h2 class="bBuyingSteps__eTitle mPaypal">Оплата</h2>
+
+				<div class="bPaypalTotal">
+					Итого к оплате: <span class="bPaypalTotal__eSum"><strong class="mr5" data-bind="text: window.printPrice( totalSum() )"></strong><span class="rubl">p</span></span>
+
+					<div data-bind="visible: ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) )" class="bPaypalTotalChanged"><strong>Сумма оплаты изменилась</strong></div>
+				</div>
+			</div>
+			<!--/ PayPal сумма заказа -->
+
 			<div class="bBuyingLine clearfix">
 				<div class="bBuyingLine__eLeft"></div>
 
@@ -417,6 +429,8 @@ foreach (array_reverse($productsById) as $product) {
                             data-bind="text: ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) ) ? 'Подтвердить сумму' : 'Завершить оформление',
                             			css: { mConfirm : ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) ) }"
                         ></a>
+
+                        <!-- Сообщение о редиректе на сайт PayPal <div class="bPaypalFootnote" data-bind="visible: ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) )">Вы будете перенаправлены на сайт <img class="bPaypalImgIco" src="/css/bBuyingSteps/img/bPayPalIcoSmall.gif" /></div> -->
 					</div>
 				</div>
 			</div>

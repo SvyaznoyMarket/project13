@@ -95,20 +95,8 @@ class CreateAction {
             $responseData['redirect'] = \App::router()->generate('order.complete');
 
             try {
-                // сохранение заказа в куках
-                $cookieValue = [
-                    'recipient_first_name'   => $form->getFirstName(),
-                    'recipient_last_name'    => $form->getLastName(),
-                    'recipient_phonenumbers' => $form->getMobilePhone(),
-                    'recipient_email'        => $form->getEmail(),
-                    'address_street'         => $form->getAddressStreet(),
-                    'address_number'         => $form->getAddressNumber(),
-                    'address_building'       => $form->getAddressBuilding(),
-                    'address_apartment'      => $form->getAddressApartment(),
-                    'address_floor'          => $form->getAddressFloor(),
-                    'subway_id'              => $form->getSubwayId(),
-                ];
-                $cookies[] = new \Http\Cookie(\App::config()->order['cookieName'] ?: 'last_order', strtr(base64_encode(serialize($cookieValue)), '+/', '-_'), strtotime('+1 year' ));
+                // сохранение формы в кукисах
+                $this->saveForm($form, $cookies);
 
                 // удаление флага "Беру в кредит"
                 $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
@@ -266,7 +254,7 @@ class CreateAction {
                     $orderData['shop_id'] = $orderPart->getPointId();
                     $orderData['subway_id'] = null;
                 } else {
-                    \App::logger()->error(sprintf('Неизвестный магазин %s', $orderPart->getPointId()), ['order']);
+                    \App::logger()->error(sprintf('Неизвестный магазин #%s', $orderPart->getPointId()), ['order']);
                 }
             }
 
@@ -282,7 +270,7 @@ class CreateAction {
             foreach ($orderPart->getProductIds() as $productId) {
                 $cartProduct = $user->getCart()->getProductById($productId);
                 if (!$cartProduct) {
-                    \App::logger()->error(sprintf('Товар #%s не найден в корзине', json_encode($productId, JSON_UNESCAPED_UNICODE)), ['order']);
+                    \App::logger()->error(sprintf('Товар #%s не найден в корзине', $productId), ['order']);
                     continue;
                 }
 
@@ -347,6 +335,8 @@ class CreateAction {
                                 isset($orderData['meta_data']) ? $orderData['meta_data'] : [],
                                 \App::partner()->fabricateMetaByPartners($partners, $product)
                             );
+                            $orderData['meta_data']['user_agent'] = $request->server->get('HTTP_USER_AGENT');
+                            $orderData['meta_data']['kiss_session'] = $request->request->get('kiss_session');
                         }
                         \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($orderData['meta_data']['partner'])), ['order', 'partner']);
                     } catch (\Exception $e) {
@@ -364,7 +354,30 @@ class CreateAction {
             $params['token'] = $userEntity->getToken();
         }
 
-        $result = \App::coreClientV2()->query('order/create-packet', $params, $data);
+        try {
+            $result = \App::coreClientV2()->query('order/create-packet', $params, $data);
+        } catch(\Exception $e) {
+            if (!in_array($e->getCode(), [705, 708, 735, 800])) {
+                \App::logger('order')->error([
+                    'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
+                    'url'     => 'order/create-packet' . ((bool)$params ? ('?' . http_build_query($params)) : ''),
+                    'data'    => $data,
+                    'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
+                        'HTTP_USER_AGENT',
+                        'HTTP_X_REQUESTED_WITH',
+                        'HTTP_REFERER',
+                        'HTTP_COOKIE',
+                        'REQUEST_METHOD',
+                        'QUERY_STRING',
+                        'REQUEST_TIME_FLOAT',
+                    ]),
+                    'query'  => \Util\RequestLogger::getInstance()->getStatistics()['api_queries'],
+                ]);
+            }
+
+            throw $e;
+        }
+
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
         if (!is_array($result)) {
             throw new \Exception('Заказ не подтвержден');
@@ -374,23 +387,23 @@ class CreateAction {
         $createdOrders = [];
         foreach ($result as $orderData) {
             if (!is_array($orderData)) {
-                \App::logger()->error(sprintf('Получены неверные данные для созданного заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Получены неверные данные для созданного заказа', 'orderData' => $orderData], ['order']);
                 continue;
             }
             $createdOrder = new \Model\Order\CreatedEntity($orderData);
 
             // если не получен номер заказа
             if (!$createdOrder->getNumber()) {
-                \App::logger()->error(sprintf('Не получен номер заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Не получен номер заказа', 'orderData' => $orderData], ['order']);
                 continue;
             }
             // если заказ не подтвержден
             if (!$createdOrder->getConfirmed()) {
-                \App::logger()->error(sprintf('Заказ не подтвержден %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Заказ не подтвержден', 'orderData' => $orderData], ['order']);
             }
 
             $createdOrders[] = $createdOrder;
-            \App::logger()->info(sprintf('Заказ успешно создан %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+            \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
         }
 
         return $createdOrders;

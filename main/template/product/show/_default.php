@@ -34,7 +34,8 @@ foreach ($product->getGroupedProperties() as $group) {
 $is_showed = [];
 
 ?>
-<div id="jsProductCard" data-value="<?= $page->json(  $product->getProductDataArray()  ) ?>"></div>
+
+<?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
@@ -56,12 +57,15 @@ $is_showed = [];
                     <?= $product->getTagline() ?>
                     <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
                 </div>
+                <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
             <?
             } elseif (
                 (!$countModels) &&
                 ( !isset($product->getDescription) || (isset($product->getDescription) && !$product->getDescription) ) &&
                 ($countProperties < 16)
             ) {
+                echo $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]);
+
                 // Выводим все характеристики товара в центральном блоке первого экрана карточки
                 $showLinkToProperties = false;
                 echo $helper->render('product/__propertiesSimple', ['product' => $product, 'showLinkToProperties' => $showLinkToProperties]);
@@ -83,8 +87,6 @@ $is_showed = [];
             }
             // } /end of new Card Properties
             ?>
-
-            <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
 
             <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
     </div><!--/product shop description section -->
@@ -211,7 +213,7 @@ $is_showed = [];
 
 <div class="bBottomBuy clearfix">
     <div class="bBottomBuy__eHead">
-        <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
+        <div class="bBottomBuy__eTitle"><?= $title ?></div>
     </div>
 
     <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>

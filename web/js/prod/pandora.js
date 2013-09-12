@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  if($('body.jewel .filter-section').length) {
+  if($('body.jewel .bBrandSorting').length) {
 
     // handle_url_hash()
 
@@ -10,8 +10,8 @@ $(document).ready(function(){
 })
 
 // function handle_small_tabs() {
-//   $('.brand-subnav__list a').click(function(event){
-//     $('.brand-subnav__list a').removeClass('active')
+//   $('.bBrandSubNavList .bBrandSubNavList__eLink').click(function(event){
+//     $('.bBrandSubNavList .bBrandSubNavList__eLink').removeClass('active')
 //     $(this).addClass('active')
 //     get_jewel_content($(this).attr('href'))
 //     event.stopPropagation()
@@ -32,7 +32,7 @@ $(document).ready(function(){
 var ableToLoadJewel = true
 function liveScrollJewel( lsURL, filters, pageid ) {
   var params = []
-  var tmpnodeJewel = $('.items-section__list')
+  var tmpnodeJewel = $('.bBrandGoodsList')
 
   $('#ajaxgoods').show()
 
@@ -71,7 +71,7 @@ function handle_jewel_infinity_scroll() {
     var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
     var vinit = vnext - 1
     var vlast = parseInt('0' + $(this).data('lastpage') , 10)
-    var tmpnodeJewel = $('.items-section__list')
+    var tmpnodeJewel = $('.bBrandGoodsList')
 
     checkScrollJewel = function(){
       if ( ableToLoadJewel && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){

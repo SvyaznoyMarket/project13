@@ -141,45 +141,43 @@ class CreateAction {
                 $createdOrder = new \Model\Order\CreatedEntity($result);
                 \App::logger()->info(['paymentUrl' => $createdOrder->getPaymentUrl()], ['order', 'paypal']);
 
+                /*
                 $responseData['redirect'] = $createdOrder->getPaymentUrl();
-            } else {
-                // создание заказов в ядре
-                $createdOrders = $this->saveOrders($form, $paypalToken, $paypalPayerId);
-
-                // сохранение заказов в сессии
-                \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
-                    return ['number' => $createdOrder->getNumber(), 'phone' => $form->getMobilePhone()];
-                }, $createdOrders));
-
-                // подписка пользователя
-                $this->subscribeUser($form);
-
-                $responseData['redirect'] = \App::router()->generate('order.complete');
 
                 try {
-                    // сохранение заказа в куках
-                    $cookieValue = [
-                        'recipient_first_name'   => $form->getFirstName(),
-                        'recipient_last_name'    => $form->getLastName(),
-                        'recipient_phonenumbers' => $form->getMobilePhone(),
-                        'recipient_email'        => $form->getEmail(),
-                        'address_street'         => $form->getAddressStreet(),
-                        'address_number'         => $form->getAddressNumber(),
-                        'address_building'       => $form->getAddressBuilding(),
-                        'address_apartment'      => $form->getAddressApartment(),
-                        'address_floor'          => $form->getAddressFloor(),
-                        'subway_id'              => $form->getSubwayId(),
-                    ];
-                    $cookies[] = new \Http\Cookie(\App::config()->order['cookieName'] ?: 'last_order', strtr(base64_encode(serialize($cookieValue)), '+/', '-_'), strtotime('+1 year' ));
-
-                    // удаление флага "Беру в кредит"
-                    $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
-
-                    // очистка корзины
-                    $user->getCart()->clearPaypal();
+                    // сохранение формы в кукисах
+                    $this->saveForm($form, $cookies);
                 } catch (\Exception $e) {
                     \App::logger()->error($e, ['order']);
                 }
+                */
+            }
+
+
+            // создание заказов в ядре
+            $createdOrders = $this->saveOrders($form, $paypalToken, $paypalPayerId);
+
+            // сохранение заказов в сессии
+            \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
+                return ['number' => $createdOrder->getNumber(), 'phone' => $form->getMobilePhone()];
+            }, $createdOrders));
+
+            // подписка пользователя
+            $this->subscribeUser($form);
+
+            $responseData['redirect'] = \App::router()->generate('order.complete');
+
+            try {
+                // сохранение формы в кукисах
+                $this->saveForm($form, $cookies);
+
+                // удаление флага "Беру в кредит"
+                $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
+
+                // очистка корзины
+                $user->getCart()->clearPaypal();
+            } catch (\Exception $e) {
+                \App::logger()->error($e, ['order']);
             }
 
             $responseData['success'] = true;
@@ -349,7 +347,7 @@ class CreateAction {
             foreach ($orderPart->getProductIds() as $productId) {
                 $cartProduct = $user->getCart()->getPaypalProduct();
                 if (!$cartProduct || ($cartProduct->getId() != $productId)) {
-                    \App::logger()->error(sprintf('Товар #%s не найден в корзине', json_encode($productId, JSON_UNESCAPED_UNICODE)), ['order']);
+                    \App::logger()->error(sprintf('Товар #%s не найден в корзине', $productId), ['order']);
                     continue;
                 }
 
@@ -415,6 +413,8 @@ class CreateAction {
                                 isset($orderData['meta_data']) ? $orderData['meta_data'] : [],
                                 \App::partner()->fabricateMetaByPartners($partners, $product)
                             );
+                            $orderData['meta_data']['user_agent'] = $request->server->get('HTTP_USER_AGENT');
+                            $orderData['meta_data']['kiss_session'] = $request->request->get('kiss_session');
                         }
                         \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($orderData['meta_data']['partner'])), ['order', 'partner']);
                     } catch (\Exception $e) {
@@ -445,23 +445,23 @@ class CreateAction {
         $createdOrders = [];
         foreach ($result as $orderData) {
             if (!is_array($orderData)) {
-                \App::logger()->error(sprintf('Получены неверные данные для созданного заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Получены неверные данные для созданного заказа', 'orderData' => $orderData], ['order']);
                 continue;
             }
             $createdOrder = new \Model\Order\CreatedEntity($orderData);
 
             // если не получен номер заказа
             if (!$createdOrder->getNumber()) {
-                \App::logger()->error(sprintf('Не получен номер заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Не получен номер заказа', 'orderData' => $orderData], ['order']);
                 continue;
             }
             // если заказ не подтвержден
             if (!$createdOrder->getConfirmed()) {
-                \App::logger()->error(sprintf('Заказ не подтвержден %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Заказ не подтвержден', 'orderData' => $orderData], ['order']);
             }
 
             $createdOrders[] = $createdOrder;
-            \App::logger()->info(sprintf('Заказ успешно создан %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+            \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
         }
 
         return $createdOrders;

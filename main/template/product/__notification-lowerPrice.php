@@ -20,12 +20,12 @@ return function(
         <span class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
         <div class="bLowPriceNotiferPopup popup">
             <i class="close"></i>
-            <h2 class="bLowPriceNotiferPopup__eTitle">
+            <div class="bLowPriceNotiferPopup__eTitle">
                 Вы получите письмо,<br/>когда цена станет ниже
                 <? if ($price && ($price < $product->getPrice())): ?>
                     <strong class="price"><?= $helper->formatPrice($price) ?></strong> <span class="rubl">p</span>
                 <? endif ?>
-            </h2>
+            </div>
             <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
             <p class="bLowPriceNotiferPopup__eError red"></p>
             <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink mDisabled" data-url="<?= $helper->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>

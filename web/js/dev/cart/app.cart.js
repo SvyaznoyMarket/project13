@@ -383,7 +383,8 @@ $(document).ready(function() {
 				
 			// }
 
-			// PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
+			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
+
 			// if( $('#selectCredit').length ) {
 			// 	var sufx = ''
 			// 	if( $('#selectCredit').val()*1 )

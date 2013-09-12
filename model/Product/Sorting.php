@@ -10,6 +10,11 @@ class Sorting {
             'title'     => 'Автоматически',
             'direction' => 'desc',
         ),
+        'hits_desc'  => array(
+            'name'      => 'hits',
+            'title'     => 'Хиты продаж',
+            'direction' => 'desc',
+        ),
         'price_asc'   => array(
             'name'      => 'price',
             'title'     => 'По цене &#8595;',

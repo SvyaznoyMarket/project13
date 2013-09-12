@@ -334,9 +334,6 @@ $(document).ready(function() {
 				var productId = data.product.id;
 				var categoryId = data.category_id;
 
-console.log(productId)
-console.log(categoryId)
-
 				// Soloway
 				// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
 				(function(s){
@@ -386,7 +383,8 @@ console.log(categoryId)
 				
 			// }
 
-			// PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
+			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
+
 			// if( $('#selectCredit').length ) {
 			// 	var sufx = ''
 			// 	if( $('#selectCredit').val()*1 )

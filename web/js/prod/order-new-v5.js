@@ -1,661 +1,656 @@
-/**
- * Создает блок доставки.
- * Если для товара недоступна выбранная точка доставки, создается новый блок
- * Стоимость блока расчитывается из суммы всех товаров.
- * Стоимость доставки считается минимальная из стоимостей доставок всех товаров в блоке
- *
- * @author	Zaytsev Alexandr
- * @this	{DeliveryBox}
- * 
- * @param	{Array}			products			Массив продуктов которые необходимо добавить в блок
- * @param	{String}		state				Текущий метод доставки для блока
- * @param	{Number}		choosenPointForBox	Выбранная точка доставки
- * 
- * @param	{Object}		OrderModel			Модель оформления заказа
- * 
- * @constructor
- */
-function DeliveryBox( products, state, choosenPointForBox ) {
-	console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
-
-	var self = this;
-
-	// Токен блока
-	self.token = state+'_'+choosenPointForBox;
-
-	// Продукты в блоке
-	self.products = [];
-	// Общая стоимость блока
-	self.fullPrice = 0;
-	// Метод доставки
-	self.state = state;
-	// Название метода доставки
-	self.deliveryName = window.OrderModel.orderDictionary.getNameOfState(state);
-	// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
-	self.deliveryPrice = Number.POSITIVE_INFINITY;
-
-	// Выбранная дата доставки
-	self.choosenDate = ko.observable();
-
-	self.choosenNameOfWeek = ko.observable();
-	// Выбранная точка доставки
-	self.choosenPoint = ko.observable({id:choosenPointForBox});
-	// Выбранный интервал доставки
-	self.choosenInterval = ko.observable();
-
-	self.showPopupWithPoints = ko.observable(false);
-
-	// Есть ли доступные точки доставки
-	self.hasPointDelivery = window.OrderModel.orderDictionary.hasPointDelivery(state);
-
-	// Массив всех доступных дат для блока
-	self.allDatesForBlock = ko.observableArray([]);
-	// Массив всех точек доставок
-	self.pointList = [];
-
-	if ( self.hasPointDelivery && !window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
-		// Доставка в выбранный пункт
-		console.info('есть точки доставки для выбранного метода доставки, но выбранная точка не доступна для этого метода доставки. Берем первую точку для выбранного метода доставки');
-
-		self.choosenPoint( window.OrderModel.orderDictionary.getFirstPointByState(self.state) );
-	}
-	else if ( self.hasPointDelivery ) {
-		// Доставка в первый пункт для данного метода доставки
-		console.info('есть точки доставки для выбранного метода доставки, и выбранная точка доступна для этого метода доставки');
-
-		self.choosenPoint( window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
-	}
-	else {
-		console.info('для выбранного метода доставки не нужна точка доставки');
-
-		// Передаем в модель, что есть блок с доставкой домой и генерируем событие об этом
-		window.OrderModel.hasHomeDelivery(true);
-		$('body').trigger('orderdeliverychange',[true]);
-	}
-
-	// Отступ слайдера дат
-	self.calendarSliderLeft = ko.observable(0);
-
-	self.addProductGroup(products);
-
-	if ( self.products.length === 0 ) {
-		// если после распределения в блоке не осталось товаров
-		console.warn('в блоке '+self.token+' не осталось товаров');
-
-		return;
-	}
-
-	window.OrderModel.deliveryBoxes.push(self);
-}
-
-/**
- * Делаем список общих для всех товаров в блоке точек доставок для данного метода доставки
- *
- * @this	{DeliveryBox}
- */
-DeliveryBox.prototype._makePointList = function() {
-	console.info('Создание списка точек доставки');
-
-	var self = this,
-		res = true,
-		tmpPoint = null;
+;(function( ENTER ) {
+	var userUrl = ENTER.config.pageConfig.userUrl,
+		constructors = ENTER.constructors;
 	// end of vars
 
-	/**
-	 * Перебираем точки доставки для первого товара
-	 */
-	for ( var point in self.products[0].deliveries[self.state] ) {
-
+	constructors.DeliveryBox = (function() {
+		'use strict';
+	
 		/**
-		 * Перебираем все товары в блоке, проверяя доступна ли данная точка доставки для них
+		 * Создает блок доставки.
+		 * Если для товара недоступна выбранная точка доставки, создается новый блок
+		 * Стоимость блока расчитывается из суммы всех товаров.
+		 * Стоимость доставки считается минимальная из стоимостей доставок всех товаров в блоке
+		 *
+		 * @author	Zaytsev Alexandr
+		 * 
+		 * @this	{DeliveryBox}
+		 * 
+		 * @param	{Array}			products			Массив продуктов которые необходимо добавить в блок
+		 * @param	{String}		state				Текущий метод доставки для блока
+		 * @param	{Number}		choosenPointForBox	Выбранная точка доставки
+		 * 
+		 * @constructor
 		 */
-		for ( var i = self.products.length - 1; i >= 0; i-- ) {
-			res = self.products[i].deliveries[self.state].hasOwnProperty(point);
-
-			if ( !res ) {
-				break;
+		function DeliveryBox( products, state, choosenPointForBox ) {
+			// enforces new
+			if ( !(this instanceof DeliveryBox) ) {
+				return new DeliveryBox(products, state, choosenPointForBox);
 			}
-		}
+			// constructor body
+			
+			console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
 
-		if ( res ) {
-			// Точка достаки доступна для всех товаров в блоке
-			tmpPoint = window.OrderModel.orderDictionary.getPointByStateAndId(self.state, point);
-			self.pointList.push( tmpPoint );
-		}
-	}
+			var self = this;
 
-	console.log('Точки доставки созданы');
-	console.log(self.pointList);
-};
+			// Токен блока
+			self.token = state+'_'+choosenPointForBox;
 
-/**
- * Смена пункта доставки. Переименовываем token блока
- * Удаляем старый блок из массива блоков и добавяем туда новый с новым токеном
- * Если уже есть блок с таким токеном, необходиом добавить товары из текущего блока в него
- *
- * @this	{DeliveryBox}
- * 
- * @param	{Object}	data	Данные о пункте доставки
- */
-DeliveryBox.prototype.selectPoint = function( data ) {
-	var self = this,
-		newToken = self.state+'_'+data.id,
-		choosenBlock = null;
-	// end of vars
+			// Продукты в блоке
+			self.products = [];
+			// Общая стоимость блока
+			self.fullPrice = 0;
+			// Метод доставки
+			self.state = state;
+			// Название метода доставки
+			self.deliveryName = window.OrderModel.orderDictionary.getNameOfState(state);
+			// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
+			self.deliveryPrice = Number.POSITIVE_INFINITY;
 
-	if ( window.OrderModel.hasDeliveryBox(newToken) ) {
-		choosenBlock = global.OrderModel.getDeliveryBoxByToken(newToken);
-		choosenBlock.addProductGroup( self.products );
+			// Выбранная дата доставки
+			self.choosenDate = ko.observable();
 
-		window.OrderModel.removeDeliveryBox(self.token);
-	}
-	else {
-		console.info('удаляем старый блок');
-		console.log('старый токен '+self.token);
-		console.log('новый токен '+newToken);
+			self.choosenNameOfWeek = ko.observable();
+			// Выбранная точка доставки
+			self.choosenPoint = ko.observable({id:choosenPointForBox});
+			// Выбранный интервал доставки
+			self.choosenInterval = ko.observable();
 
-		self.token = newToken;
-		self.choosenPoint(window.OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
-		console.log(window.OrderModel.deliveryBoxes());
+			self.showPopupWithPoints = ko.observable(false);
 
-		if ( window.OrderModel.paypalECS() ) {
-			console.info('PayPal ECS включен. Необходимо сохранить выбранную точку доставки в cookie');
+			// Есть ли доступные точки доставки
+			self.hasPointDelivery = window.OrderModel.orderDictionary.hasPointDelivery(state);
 
-			window.docCookies.setItem('chPoint_paypalECS', data.id, 10 * 60);
-		}
-	}
+			// Массив всех доступных дат для блока
+			self.allDatesForBlock = ko.observableArray([]);
+			// Массив всех точек доставок
+			self.pointList = [];
 
-	window.OrderModel.showPopupWithPoints(false);
+			if ( self.hasPointDelivery && !window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
+				// Доставка в выбранный пункт
+				console.info('есть точки доставки для выбранного метода доставки, но выбранная точка не доступна для этого метода доставки. Берем первую точку для выбранного метода доставки');
 
-	return false;
-};
+				self.choosenPoint( window.OrderModel.orderDictionary.getFirstPointByState(self.state) );
+			}
+			else if ( self.hasPointDelivery ) {
+				// Доставка в первый пункт для данного метода доставки
+				console.info('есть точки доставки для выбранного метода доставки, и выбранная точка доступна для этого метода доставки');
 
-/**
- * Показ окна с пунктами доставки
- *
- * @this	{DeliveryBox}
- */
-DeliveryBox.prototype.changePoint = function( ) {
-	var self = this;
-
-	// запонимаем токен бокса которому она принадлежит
-	for ( var i = self.pointList.length - 1; i >= 0; i-- ) {
-		self.pointList[i].parentBoxToken = self.token;
-	}
-
-	window.OrderModel.popupWithPoints({
-		header: 'Выберите точку доставки',
-		points: self.pointList
-	});
-
-	window.OrderModel.showPopupWithPoints(true);
-
-	return false;
-};
-
-
-/**
- * Получить имя первого свойства объекта
- *
- * @this	{DeliveryBox}
- * 
- * @param	{Object}	obj		Объект у которого необходимо получить первое свойство
- * @return	{Object}			Возвращает свойство объекта
- */
-DeliveryBox.prototype._getFirstPropertyName = function( obj ) {
-	for ( var i in obj ) {
-		return i;
-	}
-};
-
-/**
- * Добавление продукта в блок доставки
- *
- * @this	{DeliveryBox}
- * 
- * @param	{Object}		product		Продукт который нужно добавить
- */
-DeliveryBox.prototype._addProduct = function( product ) {
-	var self = this,
-		productDeliveryPrice = null,
-		token = null,
-		firstAvaliblePoint = null,
-		tempProductArray = [],
-
-		choosenBlock = null,
-
-		tmpProduct = {};
-	// end of vars
-
-
-	/**
-	 * Если для продукта нет доставки в выбранный пункт доставки, то нужно создать новый блок доставки
-	 */
-	if ( !product.deliveries[self.state].hasOwnProperty(self.choosenPoint().id) ) {
-		console.warn('Для товара '+product.id+' нет пункта доставки '+self.choosenPoint().id+' Необходимо создать новый блок');
-
-		firstAvaliblePoint = self._getFirstPropertyName(product.deliveries[self.state]);
-		token = self.state+'_'+firstAvaliblePoint;
-
-		tempProductArray.push(product);
-
-		if ( window.OrderModel.hasDeliveryBox(token) ) {
-			console.log('Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок');
-
-			choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
-			choosenBlock.addProductGroup( product );
-			window.OrderModel.removeDeliveryBox(self.token);
-		}
-		else {
-			console.log('Блока для этого типа доставки в этот пункт еще существует');
-
-			new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
-		}
-
-		return;
-	}
-
-	// Определение стоимости доставки. Если стоимость доставки данного товара ниже стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
-	productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
-	self.deliveryPrice = ( self.deliveryPrice > productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
-
-	tmpProduct = {
-		id: product.id,
-		name: product.name,
-		price: (product.sum) ? product.sum : product.price,
-		quantity: product.quantity,
-		deleteUrl: product.deleteUrl,
-		productUrl: product.url,
-		productImg: (product.image) ? product.image : product.productImg,
-		deliveries: {}
-	};
-
-	tmpProduct.deliveries[self.state] = product.deliveries[self.state];
-
-	// Добавляем стоимость продукта к общей стоимости блока доставки
-	self.fullPrice += tmpProduct.price;
-
-	self.products.push(tmpProduct);
-};
-
-/**
- * Перерасчет общей стоимости заказа
- */
-DeliveryBox.prototype.updateTotalPrice = function() {
-	console.info('Перерасчет общей стоимости заказа');
-
-	var self = this,
-		nowTotalSum = window.OrderModel.totalSum();
-	// end of vars
-
-	nowTotalSum += self.fullPrice + self.deliveryPrice;
-	window.OrderModel.totalSum(nowTotalSum);
-
-	console.log(window.OrderModel.totalSum());
-};
-
-/**
- * Добавление нескольких товаров в блок доставки
- * После добавления продуктов запускает получение общей даты доставки и наполнение списка точек доставок, если они доступны
- * 
- * @this	{DeliveryBox}
- * 
- * @param	{Array}			products	Продукты которые нужно добавить
- */
-DeliveryBox.prototype.addProductGroup = function( products ) {
-	var self = this;
-	console.info('добавляем товары в блок');
-	// добавляем товары в блок
-	for ( var i = products.length - 1; i >= 0; i-- ) {
-		console.log(i+'ый пошел...');
-		console.log(products[i]);
-		self._addProduct(products[i]);
-	}
-
-	if ( !self.products.length ) {
-		console.warn('в блоке '+self.token+' нет товаров');
-
-		return;
-	}
-
-
-	self.calculateDate();
-	self.updateTotalPrice();
-
-	if ( self.hasPointDelivery ) {
-		console.info('У товара есть точки доставки. Создаем список точек доставки');
-
-		self._makePointList();
-	}
-};
-
-/**
- * Получение сокращенного человекочитаемого названия дня недели
- * 
- * @param	{Number}	dateFromModel	Номер дня недели
- * @return	{String}					Человекочитаемый день недели
- */
-DeliveryBox.prototype._getNameDayOfWeek = function( dayOfWeek ) {
-	var days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-
-	return days[dayOfWeek];
-};
-
-/**
- * Получение полного человекочитаемого названия дня недели
- * 
- * @param	{Number}	dateFromModel	Номер дня недели
- * @return	{String}					Человекочитаемый день недели
- */
-DeliveryBox.prototype._getFullNameDayOfWeek = function( dayOfWeek ) {
-	var days = ['воскресение', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
-
-	return days[dayOfWeek];
-};
-
-/**
- * Проверка даты, доступна ли дата доставки для всех товаров в боксе
- *
- * @this	{DeliveryBox}
- *
- * @param	{Number}	checkTS		Таймштамп даты, которую необходимо проверить
- * 
- * @return	{Boolean}
- */
-DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
-	var self = this,
-		nowProductDates = null,
-		nowTS = null,
-
-		res = true;
-	// end of vars
-
-	/**
-	 * Перебор всех продуктов в блоке
-	 */
-	for (var i = self.products.length - 1; i >= 0; i--) {
-		nowProductDates = self.products[i].deliveries[self.state][self.choosenPoint().id].dates;
-
-		/**
-		 * Перебор всех дат доставок в блоке
-		 */
-		for ( var j = 0, len = nowProductDates.length; j < len; j++ ) {
-			nowTS = nowProductDates[j].value;
-
-			if ( nowTS === checkTS ) {
-				res = true;
-
-				break;
+				self.choosenPoint( window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
 			}
 			else {
-				res = false;
+				console.info('для выбранного метода доставки не нужна точка доставки');
+
+				// Передаем в модель, что есть блок с доставкой домой и генерируем событие об этом
+				window.OrderModel.hasHomeDelivery(true);
+				$('body').trigger('orderdeliverychange',[true]);
 			}
+
+			// Отступ слайдера дат
+			self.calendarSliderLeft = ko.observable(0);
+
+			self.addProductGroup(products);
+
+			if ( self.products.length === 0 ) {
+				// если после распределения в блоке не осталось товаров
+				console.warn('в блоке '+self.token+' не осталось товаров');
+
+				return;
+			}
+
+			window.OrderModel.deliveryBoxes.push(self);
 		}
 
-		if ( !res ) {
-			break;
-		}
-	}
 
-	return res;
-};
+		/**
+		 * Делаем список общих для всех товаров в блоке точек доставок для данного метода доставки
+		 *
+		 * @this	{DeliveryBox}
+		 */
+		DeliveryBox.prototype._makePointList = function() {
+			console.info('Создание списка точек доставки');
+
+			var self = this,
+				res = true,
+				tmpPoint = null;
+			// end of vars
+
+			/**
+			 * Перебираем точки доставки для первого товара
+			 */
+			for ( var point in self.products[0].deliveries[self.state] ) {
+
+				/**
+				 * Перебираем все товары в блоке, проверяя доступна ли данная точка доставки для них
+				 */
+				for ( var i = self.products.length - 1; i >= 0; i-- ) {
+					res = self.products[i].deliveries[self.state].hasOwnProperty(point);
+
+					if ( !res ) {
+						break;
+					}
+				}
+
+				if ( res ) {
+					// Точка достаки доступна для всех товаров в блоке
+					tmpPoint = window.OrderModel.orderDictionary.getPointByStateAndId(self.state, point);
+					self.pointList.push( tmpPoint );
+				}
+			}
+
+			console.log('Точки доставки созданы');
+			console.log(self.pointList);
+		};
 
 
-/**
- * Выбор новой даты в календаре
- *
- * @this	{DeliveryBox}
- *
- * @param	{Object}	data		Данные о новой дате
- */
-DeliveryBox.prototype.clickCalendarDay = function( data ) {
-	var self = this;
-	
-	if ( !data.avalible ) {
-		return false;
-	}
+		/**
+		 * Смена пункта доставки. Переименовываем token блока
+		 * Удаляем старый блок из массива блоков и добавяем туда новый с новым токеном
+		 * Если уже есть блок с таким токеном, необходиом добавить товары из текущего блока в него
+		 *
+		 * @this	{DeliveryBox}
+		 * 
+		 * @param	{Object}	data	Данные о пункте доставки
+		 */
+		DeliveryBox.prototype.selectPoint = function( data ) {
+			var self = this,
+				newToken = self.state+'_'+data.id,
+				choosenBlock = null;
+			// end of vars
 
-	// Если включен PayPal ECS необходимо сохранить выбранную дату в cookie
-	if ( window.OrderModel.paypalECS() ) {
-		console.info('PayPal ECS включен. Необходимо сохранить выбранную дату в cookie');
+			if ( window.OrderModel.hasDeliveryBox(newToken) ) {
+				choosenBlock = global.OrderModel.getDeliveryBoxByToken(newToken);
+				choosenBlock.addProductGroup( self.products );
 
-		window.docCookies.setItem('chDate_paypalECS', JSON.stringify(data), 10 * 60);
-	}
+				window.OrderModel.removeDeliveryBox(self.token);
+			}
+			else {
+				console.info('удаляем старый блок');
+				console.log('старый токен '+self.token);
+				console.log('новый токен '+newToken);
 
-	self.choosenNameOfWeek(self._getFullNameDayOfWeek(data.dayOfWeek));
-	self.choosenDate(data);
-};
+				self.token = newToken;
+				self.choosenPoint(window.OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
+				console.log(window.OrderModel.deliveryBoxes());
 
-/**
- * Получение общей ближайшей даты доставки
- * Заполнение массива общих дат
- *
- * @this	{DeliveryBox}
- */
-DeliveryBox.prototype.calculateDate = function() {
-	console.info('Вычисление общей даты для продуктов в блоке');
+				if ( window.OrderModel.paypalECS() ) {
+					console.info('PayPal ECS включен. Необходимо сохранить выбранную точку доставки в cookie');
 
-	var self = this,
-		todayTS = window.OrderModel.orderDictionary.getToday(),
-		nowProductDates = null,
-		nowTS = null,
+					window.docCookies.setItem('chPoint_paypalECS', data.id, 10 * 60);
+				}
+			}
 
-		newToken = '',
-		tempProduct = null,
-		tempProductArray = [],
-		dateFromCookie = null,
-		intervalFromCookie = null;
-	// end of vars
+			window.OrderModel.showPopupWithPoints(false);
 
-	console.log('Сегодняшняя дата с сервера '+todayTS);
+			return false;
+		};
+		
+		/**
+		 * Показ окна с пунктами доставки
+		 *
+		 * @this	{DeliveryBox}
+		 */
+		DeliveryBox.prototype.changePoint = function( ) {
+			var self = this;
 
-	/**
-	 * Перебираем даты в первом товаре
-	 */
-	nowProductDates = self.products[0].deliveries[self.state][self.choosenPoint().id].dates;
+			// запонимаем токен бокса которому она принадлежит
+			for ( var i = self.pointList.length - 1; i >= 0; i-- ) {
+				self.pointList[i].parentBoxToken = self.token;
+			}
 
-	for ( var i = 0, len = nowProductDates.length; i < len; i++ ) {
-		nowTS = nowProductDates[i].value;
+			window.OrderModel.popupWithPoints({
+				header: 'Выберите точку доставки',
+				points: self.pointList
+			});
 
-		if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
-			nowProductDates[i].avalible = true;
-			nowProductDates[i].humanDayOfWeek = self._getNameDayOfWeek(nowProductDates[i].dayOfWeek);
+			window.OrderModel.showPopupWithPoints(true);
 
-			self.allDatesForBlock.push(nowProductDates[i]);
-		}
-	}
+			return false;
+		};
 
-	if ( !self.allDatesForBlock().length ) {
-		console.warn('нет общих дат для блока. Необходимо разделить продукты в блоке');
 
-		tempProduct = self.products.pop();
-		tempProductArray.push(tempProduct);
-		newToken = self.state+'_'+self.choosenPoint().id+'_'+Math.floor( (Math.random() * 10000) + 1 );
-		console.log('новый токен '+newToken);
-		console.log(self);
+		/**
+		 * Получить имя первого свойства объекта
+		 *
+		 * @this	{DeliveryBox}
+		 * 
+		 * @param	{Object}	obj		Объект у которого необходимо получить первое свойство
+		 * @return	{Object}			Возвращает свойство объекта
+		 */
+		DeliveryBox.prototype._getFirstPropertyName = function( obj ) {
+			for ( var i in obj ) {
+				return i;
+			}
+		};
 
-		new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id );
+		/**
+		 * Добавление продукта в блок доставки
+		 *
+		 * @this	{DeliveryBox}
+		 * 
+		 * @param	{Object}		product		Продукт который нужно добавить
+		 */
+		DeliveryBox.prototype._addProduct = function( product ) {
+			var self = this,
+				productDeliveryPrice = null,
+				token = null,
+				firstAvaliblePoint = null,
+				tempProductArray = [],
 
-		self.calculateDate();
-	}
+				choosenBlock = null,
 
-	/**
-	 * Выбираем ближайшую доступную дату
-	 * Если включен PayPal ECS и уже есть сохраненная дата в куки - берем ее из куки
-	 */
-	if ( window.OrderModel.paypalECS() && window.docCookies.hasItem('chDate_paypalECS') ) {
-		console.info('PayPal ECS включен. Необходимо взять выбранную дату из cookie');
+				tmpProduct = {};
+			// end of vars
 
-		dateFromCookie = window.docCookies.getItem('chDate_paypalECS');
-		self.choosenDate( JSON.parse(dateFromCookie) );
-	}
-	else {
-		self.choosenDate( self.allDatesForBlock()[0] );
-	}
 
-	/**
-	 * Человекочитаемы день недели
-	 */
-	self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.choosenDate().dayOfWeek) );
-	/**
-	 * Выбираем первый интервал
-	 */
-	if ( self.choosenDate().intervals.length !== 0 ) {
-		self.choosenInterval( self.choosenDate().intervals[0] );
-	}
-	
-	self.makeCalendar();
-};
+			/**
+			 * Если для продукта нет доставки в выбранный пункт доставки, то нужно создать новый блок доставки
+			 */
+			if ( !product.deliveries[self.state].hasOwnProperty(self.choosenPoint().id) ) {
+				console.warn('Для товара '+product.id+' нет пункта доставки '+self.choosenPoint().id+' Необходимо создать новый блок');
 
-/**
- * Создание календаря, округление до целых недель
- *
- * @this	{DeliveryBox}
- */
-DeliveryBox.prototype.makeCalendar = function() {
-	console.info('Создание календаря, округление до целых недель');
+				firstAvaliblePoint = self._getFirstPropertyName(product.deliveries[self.state]);
+				token = self.state+'_'+firstAvaliblePoint;
 
-	var self = this,
-		addCountDays = 0,
-		dayOfWeek = null,
-		tmpDay = {},
-		tmpVal = null,
-		tmpDate = null,
+				tempProductArray.push(product);
 
-		ONE_DAY = 24*60*60*1000,
+				if ( window.OrderModel.hasDeliveryBox(token) ) {
+					console.log('Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок');
 
-		i, j, k;
-	// end of vars
-	
-	/**
-	 * Проверка дат на разрывы  вчислах
-	 * Если меются разрывы в числах - заполнить пробелы датами
-	 */
-	for ( k = 0; k <= self.allDatesForBlock().length - 1; k++ ) {
-		if ( self.allDatesForBlock()[k + 1] === undefined ) {
-			console.info('Следущая дата последняя. заканчиваем цикл');
+					choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
+					choosenBlock.addProductGroup( product );
+					window.OrderModel.removeDeliveryBox(self.token);
+				}
+				else {
+					console.log('Блока для этого типа доставки в этот пункт еще существует');
+
+					new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
+				}
+
+				return;
+			}
+
+			// Определение стоимости доставки. Если стоимость доставки данного товара ниже стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
+			productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
+			self.deliveryPrice = ( self.deliveryPrice > productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
+
+			tmpProduct = {
+				id: product.id,
+				name: product.name,
+				price: (product.sum) ? product.sum : product.price,
+				quantity: product.quantity,
+				deleteUrl: product.deleteUrl,
+				productUrl: product.url,
+				productImg: (product.image) ? product.image : product.productImg,
+				deliveries: {}
+			};
+
+			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
+
+			// Добавляем стоимость продукта к общей стоимости блока доставки
+			self.fullPrice += tmpProduct.price;
+
+			self.products.push(tmpProduct);
+		};
+
+		/**
+		 * Перерасчет общей стоимости заказа
+		 */
+		DeliveryBox.prototype.updateTotalPrice = function() {
+			console.info('Перерасчет общей стоимости заказа');
+
+			var self = this,
+				nowTotalSum = window.OrderModel.totalSum();
+			// end of vars
+
+			nowTotalSum += self.fullPrice + self.deliveryPrice;
+			window.OrderModel.totalSum(nowTotalSum);
+
+			console.log(window.OrderModel.totalSum());
+		};
+
+		/**
+		 * Добавление нескольких товаров в блок доставки
+		 * После добавления продуктов запускает получение общей даты доставки и наполнение списка точек доставок, если они доступны
+		 * 
+		 * @this	{DeliveryBox}
+		 * 
+		 * @param	{Array}			products	Продукты которые нужно добавить
+		 */
+		DeliveryBox.prototype.addProductGroup = function( products ) {
+			var self = this;
+			console.info('добавляем товары в блок');
+			// добавляем товары в блок
+			for ( var i = products.length - 1; i >= 0; i-- ) {
+				console.log(i+'ый пошел...');
+				console.log(products[i]);
+				self._addProduct(products[i]);
+			}
+
+			if ( !self.products.length ) {
+				console.warn('в блоке '+self.token+' нет товаров');
+
+				return;
+			}
+
+
+			self.calculateDate();
+			self.updateTotalPrice();
+
+			if ( self.hasPointDelivery ) {
+				console.info('У товара есть точки доставки. Создаем список точек доставки');
+
+				self._makePointList();
+			}
+		};
+
+		/**
+		 * Получение сокращенного человекочитаемого названия дня недели
+		 * 
+		 * @param	{Number}	dateFromModel	Номер дня недели
+		 * @return	{String}					Человекочитаемый день недели
+		 */
+		DeliveryBox.prototype._getNameDayOfWeek = function( dayOfWeek ) {
+			var days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+
+			return days[dayOfWeek];
+		};
+
+		/**
+		 * Получение полного человекочитаемого названия дня недели
+		 * 
+		 * @param	{Number}	dateFromModel	Номер дня недели
+		 * @return	{String}					Человекочитаемый день недели
+		 */
+		DeliveryBox.prototype._getFullNameDayOfWeek = function( dayOfWeek ) {
+			var days = ['воскресение', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
+
+			return days[dayOfWeek];
+		};
+
+		/**
+		 * Проверка даты, доступна ли дата доставки для всех товаров в боксе
+		 *
+		 * @this	{DeliveryBox}
+		 *
+		 * @param	{Number}	checkTS		Таймштамп даты, которую необходимо проверить
+		 * 
+		 * @return	{Boolean}
+		 */
+		DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
+			var self = this,
+				nowProductDates = null,
+				nowTS = null,
+
+				res = true;
+			// end of vars
+
+			/**
+			 * Перебор всех продуктов в блоке
+			 */
+			for (var i = self.products.length - 1; i >= 0; i--) {
+				nowProductDates = self.products[i].deliveries[self.state][self.choosenPoint().id].dates;
+
+				/**
+				 * Перебор всех дат доставок в блоке
+				 */
+				for ( var j = 0, len = nowProductDates.length; j < len; j++ ) {
+					nowTS = nowProductDates[j].value;
+
+					if ( nowTS === checkTS ) {
+						res = true;
+
+						break;
+					}
+					else {
+						res = false;
+					}
+				}
+
+				if ( !res ) {
+					break;
+				}
+			}
+
+			return res;
+		};
+
+
+		/**
+		 * Выбор новой даты в календаре
+		 *
+		 * @this	{DeliveryBox}
+		 *
+		 * @param	{Object}	data		Данные о новой дате
+		 */
+		DeliveryBox.prototype.clickCalendarDay = function( data ) {
+			var self = this;
 			
-			break;
-		}
+			if ( !data.avalible ) {
+				return false;
+			}
 
-		tmpDay = {};
-		tmpVal = self.allDatesForBlock()[k].value + ONE_DAY;
-		tmpDate = new Date(tmpVal);
+			// Если включен PayPal ECS необходимо сохранить выбранную дату в cookie
+			if ( window.OrderModel.paypalECS() ) {
+				console.info('PayPal ECS включен. Необходимо сохранить выбранную дату в cookie');
 
-		if ( tmpVal !== self.allDatesForBlock()[k + 1].value ) {
-			tmpDay = {
-				value: tmpVal,
-				avalible: false,
-				humanDayOfWeek: self._getNameDayOfWeek(tmpDate.getDay()),
-				dayOfWeek: tmpDate.getDay(),
-				day: tmpDate.getDate()
-			};
+				window.docCookies.setItem('chDate_paypalECS', JSON.stringify(data), 10 * 60);
+			}
 
-			console.log('предыдущая дата была ' + new Date(self.allDatesForBlock()[k].value).getDate() + ' новая дата вклинилась ' + tmpDate.getDate() + ' следущая дата ' + new Date(self.allDatesForBlock()[k + 1].value).getDate());
-			self.allDatesForBlock.splice(k + 1, 0, tmpDay);
-		}
-	}
-	
+			self.choosenNameOfWeek(self._getFullNameDayOfWeek(data.dayOfWeek));
+			self.choosenDate(data);
+		};
 
-	/**
-	 * Проверка первой даты
-	 * Если она не понедельник - достроить календарь в начале до понедельника
-	 */
-	if ( self.allDatesForBlock()[0].dayOfWeek !== 1 ) {
-		addCountDays = ( self.allDatesForBlock()[0].dayOfWeek === 0 ) ? 6 : self.allDatesForBlock()[0].dayOfWeek - 1;
-		tmpVal = self.allDatesForBlock()[0].value;
+		/**
+		 * Получение общей ближайшей даты доставки
+		 * Заполнение массива общих дат
+		 *
+		 * @this	{DeliveryBox}
+		 */
+		DeliveryBox.prototype.calculateDate = function() {
+			console.info('Вычисление общей даты для продуктов в блоке');
 
-		for ( i = addCountDays; i > 0; i-- ) {
-			tmpVal -= ONE_DAY;
-			tmpDate = new Date(tmpVal);
+			var self = this,
+				todayTS = window.OrderModel.orderDictionary.getToday(),
+				nowProductDates = null,
+				nowTS = null,
 
-			tmpDay = {
-				avalible: false,
-				humanDayOfWeek: self._getNameDayOfWeek(tmpDate.getDay()),
-				dayOfWeek: tmpDate.getDay(),
-				day: tmpDate.getDate()
-			};
+				newToken = '',
+				tempProduct = null,
+				tempProductArray = [],
+				dateFromCookie = null,
+				intervalFromCookie = null;
+			// end of vars
 
-			self.allDatesForBlock.unshift(tmpDay);
-		}
-	}
+			console.log('Сегодняшняя дата с сервера '+todayTS);
 
-	/**
-	 * Проверка последней даты
-	 * Если она не воскресение - достроить календарь в конце до воскресения
-	 */
-	if ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek !== 0 ) {
-		addCountDays = 7 - self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek;
-		tmpVal = self.allDatesForBlock()[self.allDatesForBlock().length - 1].value;
+			/**
+			 * Перебираем даты в первом товаре
+			 */
+			nowProductDates = self.products[0].deliveries[self.state][self.choosenPoint().id].dates;
 
-		for ( j = addCountDays; j > 0; j-- ) {
-			// dayOfWeek = ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1 === 7 ) ? 0 : self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1;
-			tmpVal += ONE_DAY;
-			tmpDate = new Date(tmpVal);
+			for ( var i = 0, len = nowProductDates.length; i < len; i++ ) {
+				nowTS = nowProductDates[i].value;
 
-			tmpDay = {
-				avalible: false,
-				humanDayOfWeek: self._getNameDayOfWeek(tmpDate.getDay()),
-				dayOfWeek: tmpDate.getDay(),
-				day: tmpDate.getDate()
-			};
+				if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
+					nowProductDates[i].avalible = true;
+					nowProductDates[i].humanDayOfWeek = self._getNameDayOfWeek(nowProductDates[i].dayOfWeek);
 
-			self.allDatesForBlock.push(tmpDay);
-		}
-	}
-};
+					self.allDatesForBlock.push(nowProductDates[i]);
+				}
+			}
+
+			if ( !self.allDatesForBlock().length ) {
+				console.warn('нет общих дат для блока. Необходимо разделить продукты в блоке');
+
+				tempProduct = self.products.pop();
+				tempProductArray.push(tempProduct);
+				newToken = self.state+'_'+self.choosenPoint().id+'_'+Math.floor( (Math.random() * 10000) + 1 );
+				console.log('новый токен '+newToken);
+				console.log(self);
+
+				new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id );
+
+				self.calculateDate();
+			}
+
+			/**
+			 * Выбираем ближайшую доступную дату
+			 * Если включен PayPal ECS и уже есть сохраненная дата в куки - берем ее из куки
+			 */
+			if ( window.OrderModel.paypalECS() && window.docCookies.hasItem('chDate_paypalECS') ) {
+				console.info('PayPal ECS включен. Необходимо взять выбранную дату из cookie');
+
+				dateFromCookie = window.docCookies.getItem('chDate_paypalECS');
+				self.choosenDate( JSON.parse(dateFromCookie) );
+			}
+			else {
+				self.choosenDate( self.allDatesForBlock()[0] );
+			}
+
+			/**
+			 * Человекочитаемы день недели
+			 */
+			self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.choosenDate().dayOfWeek) );
+			/**
+			 * Выбираем первый интервал
+			 */
+			if ( self.choosenDate().intervals.length !== 0 ) {
+				self.choosenInterval( self.choosenDate().intervals[0] );
+			}
+			
+			self.makeCalendar();
+		};
+
+		/**
+		 * Создание календаря, округление до целых недель
+		 *
+		 * @this	{DeliveryBox}
+		 */
+		DeliveryBox.prototype.makeCalendar = function() {
+			console.info('Создание календаря, округление до целых недель');
+
+			var self = this,
+				addCountDays = 0,
+				dayOfWeek = null,
+				tmpDay = {},
+				tmpVal = null,
+				tmpDate = null,
+
+				ONE_DAY = 24*60*60*1000,
+
+				i, j, k;
+			// end of vars
+			
+			/**
+			 * Проверка дат на разрывы  вчислах
+			 * Если меются разрывы в числах - заполнить пробелы датами
+			 */
+			for ( k = 0; k <= self.allDatesForBlock().length - 1; k++ ) {
+				if ( self.allDatesForBlock()[k + 1] === undefined ) {
+					console.info('Следущая дата последняя. заканчиваем цикл');
+					
+					break;
+				}
+
+				tmpDay = {};
+				tmpVal = self.allDatesForBlock()[k].value + ONE_DAY;
+				tmpDate = new Date(tmpVal);
+
+				if ( tmpVal !== self.allDatesForBlock()[k + 1].value ) {
+					tmpDay = {
+						value: tmpVal,
+						avalible: false,
+						humanDayOfWeek: self._getNameDayOfWeek(tmpDate.getDay()),
+						dayOfWeek: tmpDate.getDay(),
+						day: tmpDate.getDate()
+					};
+
+					console.log('предыдущая дата была ' + new Date(self.allDatesForBlock()[k].value).getDate() + ' новая дата вклинилась ' + tmpDate.getDate() + ' следущая дата ' + new Date(self.allDatesForBlock()[k + 1].value).getDate());
+					self.allDatesForBlock.splice(k + 1, 0, tmpDay);
+				}
+			}
+			
+
+			/**
+			 * Проверка первой даты
+			 * Если она не понедельник - достроить календарь в начале до понедельника
+			 */
+			if ( self.allDatesForBlock()[0].dayOfWeek !== 1 ) {
+				addCountDays = ( self.allDatesForBlock()[0].dayOfWeek === 0 ) ? 6 : self.allDatesForBlock()[0].dayOfWeek - 1;
+				tmpVal = self.allDatesForBlock()[0].value;
+
+				for ( i = addCountDays; i > 0; i-- ) {
+					tmpVal -= ONE_DAY;
+					tmpDate = new Date(tmpVal);
+
+					tmpDay = {
+						avalible: false,
+						humanDayOfWeek: self._getNameDayOfWeek(tmpDate.getDay()),
+						dayOfWeek: tmpDate.getDay(),
+						day: tmpDate.getDate()
+					};
+
+					self.allDatesForBlock.unshift(tmpDay);
+				}
+			}
+
+			/**
+			 * Проверка последней даты
+			 * Если она не воскресение - достроить календарь в конце до воскресения
+			 */
+			if ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek !== 0 ) {
+				addCountDays = 7 - self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek;
+				tmpVal = self.allDatesForBlock()[self.allDatesForBlock().length - 1].value;
+
+				for ( j = addCountDays; j > 0; j-- ) {
+					// dayOfWeek = ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1 === 7 ) ? 0 : self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1;
+					tmpVal += ONE_DAY;
+					tmpDate = new Date(tmpVal);
+
+					tmpDay = {
+						avalible: false,
+						humanDayOfWeek: self._getNameDayOfWeek(tmpDate.getDay()),
+						dayOfWeek: tmpDate.getDay(),
+						day: tmpDate.getDate()
+					};
+
+					self.allDatesForBlock.push(tmpDay);
+				}
+			}
+		};
 
 
-/**
- * =========== CALENDAR SLIDER ===================
- */
-DeliveryBox.prototype.calendarLeftBtn = function() {
-	var self = this,
-		nowLeft = parseInt(self.calendarSliderLeft(), 10);
-	// end of vars
-	
-	nowLeft += 380;
-	self.calendarSliderLeft(nowLeft);
-};
-
-DeliveryBox.prototype.calendarRightBtn = function() {
-	var self = this,
-		nowLeft = parseInt(self.calendarSliderLeft(), 10);
-	// end of vars
-	
-	nowLeft -= 380;
-	self.calendarSliderLeft(nowLeft);
-};
-
-
-ko.bindingHandlers.calendarSlider = {
-	update: function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext ) {
-		var slider = $(element),
-			nowLeft = valueAccessor(),
-
-			dateItem = slider.find('.bBuyingDatesItem'),
-			dateItemW = dateItem.width() + parseInt(dateItem.css('marginRight'), 10) + parseInt(dateItem.css('marginLeft'), 10);
-		// end of vars
-
-		slider.width(dateItem.length * dateItemW);
-
-		if ( nowLeft > 0 ) {
-			nowLeft -= 380;
-			bindingContext.box.calendarSliderLeft(nowLeft);
-
-			return;
-		}
-
-		if ( nowLeft < -slider.width() ) {
+		/**
+		 * =========== CALENDAR SLIDER ===================
+		 */
+		DeliveryBox.prototype.calendarLeftBtn = function() {
+			var self = this,
+				nowLeft = parseInt(self.calendarSliderLeft(), 10);
+			// end of vars
+			
 			nowLeft += 380;
-			bindingContext.box.calendarSliderLeft(nowLeft);
+			self.calendarSliderLeft(nowLeft);
+		};
 
-			return;
-		}
+		DeliveryBox.prototype.calendarRightBtn = function() {
+			var self = this,
+				nowLeft = parseInt(self.calendarSliderLeft(), 10);
+			// end of vars
+			
+			nowLeft -= 380;
+			self.calendarSliderLeft(nowLeft);
+		};
+		/**
+		 * =========== END CALENDAR SLIDER ================
+		 */
 
-		slider.animate({'left': nowLeft});
-	}
-};
+	
+		return DeliveryBox;
+	
+	}());
+
+}(window.ENTER));
 
  
  
@@ -710,165 +705,187 @@ ko.bindingHandlers.calendarSlider = {
  */
  
  
-/**
- * Вспомагательная обертка вокруг данных приходящих с сервера
- * Явлется неким драйвером для доступа к данным
- *
- * @author	Zaytsev Alexandr
- * @this	{OrderDictionary}
- *
- * @param	{Object}	orderData	Данные о доставке
- *
- * @constructor
- */
-function OrderDictionary( orderData ) {
-	this.orderData = orderData;
+;(function( ENTER ) {
+	var userUrl = ENTER.config.pageConfig.userUrl,
+		constructors = ENTER.constructors;
+	// end of vars
 
-	// alias
-	this.serverTime = this.orderData.time;
-	this.deliveryTypes = this.orderData.deliveryTypes;
-	this.deliveryStates = this.orderData.deliveryStates;
-	this.pointsByDelivery = this.orderData.pointsByDelivery;
-	this.products = this.orderData.products;
-}
 
-/**
- * Получить имя метода доставки
- *
- * @this	{OrderDictionary}
- * 
- * @param	{String}	state	Метод доставки
- * @return	{String}			Имя метода доставки
- */
-OrderDictionary.prototype.getNameOfState = function( state ) {
-	if ( !this.hasDeliveryState(state) ) {
-		console.warn('Не найден метод доставки '+state);
-		
-		return false;
-	}
+	constructors.OrderDictionary = (function() {
+		'use strict';
 
-	return this.deliveryStates[state].name;
-};
+		/**
+		 * Вспомагательная обертка вокруг данных приходящих с сервера
+		 * Явлется неким драйвером для доступа к данным
+		 *
+		 * @author	Zaytsev Alexandr
+		 * @this	{OrderDictionary}
+		 *
+		 * @param	{Object}	orderData	Данные о доставке
+		 *
+		 * @constructor
+		 */
+		function OrderDictionary( orderData ) {
+			// enforces new
+			if ( !(this instanceof OrderDictionary) ) {
+				return new OrderDictionary(orderData);
+			}
+			// constructor body
+			
+			this.orderData = orderData;
 
-/**
- * Получить таймштамп от которого нужно вести расчет
- *
- * @this	{OrderDictionary}
- * 
- * @return	{Number}	Таймштамп
- */
-OrderDictionary.prototype.getToday = function() {
-	return this.serverTime;
-};
-
-/**
- * Есть ли метод доставки
- *
- * @this	{OrderDictionary}
- * 
- * @param	{String}	state	Метод доставки
- * @return	{Boolean}
- */
-OrderDictionary.prototype.hasDeliveryState = function( state ) {
-	return this.deliveryStates.hasOwnProperty(state);
-};
-
-/**
- * Есть ли для метода доставки пункты доставки
- *
- * @this	{OrderDictionary}
- * 
- * @param	{String}	state	Метод доставки
- * @return	{Boolean}
- */
-OrderDictionary.prototype.hasPointDelivery = function( state ) {
-	return this.pointsByDelivery.hasOwnProperty(state);
-};
-
-/**
- * Получить данные о точке доставки по методу доставки и идетификатору точки доставки
- *
- * @this	{OrderDictionary}
- * 
- * @param	{String}	state		Метод доставки
- * @param	{String}	pointId		Идентификатор точки доставки
- * @return	{Object}				Данные о точке доставки
- */
-OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
-	var points = this.getAllPointsByState(state);
-	
-	pointId = pointId+'';
-	
-	for ( var i = points.length - 1; i >= 0; i-- ) {
-		if ( points[i].id === pointId ) {
-			return window.cloneObject(points[i]);
+			// alias
+			this.serverTime = this.orderData.time;
+			this.deliveryTypes = this.orderData.deliveryTypes;
+			this.deliveryStates = this.orderData.deliveryStates;
+			this.pointsByDelivery = this.orderData.pointsByDelivery;
+			this.products = this.orderData.products;
 		}
-	}
 
-	return false;
-};
+		/**
+		 * Получить имя метода доставки
+		 *
+		 * @this	{OrderDictionary}
+		 * 
+		 * @param	{String}	state	Метод доставки
+		 * @return	{String}			Имя метода доставки
+		 */
+		OrderDictionary.prototype.getNameOfState = function( state ) {
+			if ( !this.hasDeliveryState(state) ) {
+				console.warn('Не найден метод доставки '+state);
+				
+				return false;
+			}
 
-/**
- * Получение первой точки доставки для метода доставки
- *
- * @this	{OrderDictionary}
- * 
- * @param	{String}	state		Метод доставки
- * @return	{Object}				Данные о точке доставки
- */
-OrderDictionary.prototype.getFirstPointByState = function( state ) {
-	var points = this.getAllPointsByState(state);
+			return this.deliveryStates[state].name;
+		};
 
-	return window.cloneObject(points[0]);
-};
+		/**
+		 * Получить таймштамп от которого нужно вести расчет
+		 *
+		 * @this	{OrderDictionary}
+		 * 
+		 * @return	{Number}	Таймштамп
+		 */
+		OrderDictionary.prototype.getToday = function() {
+			return this.serverTime;
+		};
 
-/**
- * @this	{OrderDictionary}
- *
- * @param	{String}	state	Метод доставки
- */
-OrderDictionary.prototype.getAllPointsByState = function( state ) {
-	var pointName = this.pointsByDelivery[state];
+		/**
+		 * Есть ли метод доставки
+		 *
+		 * @this	{OrderDictionary}
+		 * 
+		 * @param	{String}	state	Метод доставки
+		 * @return	{Boolean}
+		 */
+		OrderDictionary.prototype.hasDeliveryState = function( state ) {
+			return this.deliveryStates.hasOwnProperty(state);
+		};
 
-	return this.orderData[pointName];
-};
+		/**
+		 * Есть ли для метода доставки пункты доставки
+		 *
+		 * @this	{OrderDictionary}
+		 * 
+		 * @param	{String}	state	Метод доставки
+		 * @return	{Boolean}
+		 */
+		OrderDictionary.prototype.hasPointDelivery = function( state ) {
+			return this.pointsByDelivery.hasOwnProperty(state);
+		};
+
+		/**
+		 * Получить данные о точке доставки по методу доставки и идетификатору точки доставки
+		 *
+		 * @this	{OrderDictionary}
+		 * 
+		 * @param	{String}	state		Метод доставки
+		 * @param	{String}	pointId		Идентификатор точки доставки
+		 * @return	{Object}				Данные о точке доставки
+		 */
+		OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
+			var points = this.getAllPointsByState(state);
+			
+			pointId = pointId+'';
+			
+			for ( var i = points.length - 1; i >= 0; i-- ) {
+				if ( points[i].id === pointId ) {
+					return window.ENTER.utils.cloneObject(points[i]);
+				}
+			}
+
+			return false;
+		};
+
+		/**
+		 * Получение первой точки доставки для метода доставки
+		 *
+		 * @this	{OrderDictionary}
+		 * 
+		 * @param	{String}	state		Метод доставки
+		 * @return	{Object}				Данные о точке доставки
+		 */
+		OrderDictionary.prototype.getFirstPointByState = function( state ) {
+			var points = this.getAllPointsByState(state);
+
+			return window.cloneObject(points[0]);
+		};
+
+		/**
+		 * @this	{OrderDictionary}
+		 *
+		 * @param	{String}	state	Метод доставки
+		 */
+		OrderDictionary.prototype.getAllPointsByState = function( state ) {
+			var pointName = this.pointsByDelivery[state];
+
+			return this.orderData[pointName];
+		};
 
 
-/**
- * Получить спискок продуктов для которых доступен данный метод доставки
- * 
- * @this	{OrderDictionary}
- * 
- * @param	{String}	state	Метод доставки
- * @return	{Array}				Массив идентификаторов продуктов
- */
-OrderDictionary.prototype.getProductFromState = function( state ) {
-	if ( !this.hasDeliveryState(state) ) {
-		console.warn('Не найден метод доставки '+state);
+		/**
+		 * Получить спискок продуктов для которых доступен данный метод доставки
+		 * 
+		 * @this	{OrderDictionary}
+		 * 
+		 * @param	{String}	state	Метод доставки
+		 * @return	{Array}				Массив идентификаторов продуктов
+		 */
+		OrderDictionary.prototype.getProductFromState = function( state ) {
+			if ( !this.hasDeliveryState(state) ) {
+				console.warn('Не найден метод доставки '+state);
 
-		return false;
-	}
+				return false;
+			}
 
-	return this.deliveryStates[state].products;
-};
+			return this.deliveryStates[state].products;
+		};
 
-/**
- * Получить данные о продукте по идентификатору продукта
- *
- * @this	{OrderDictionary}
- * 
- * @param	{Number}	productId	Идентификатор продукта
- * @return	{Object}				Данные о продукте
- */
-OrderDictionary.prototype.getProductById = function( productId ) {
-	if ( !this.products.hasOwnProperty(productId) ) {
-		console.warn('Такого продукта не найдено');
+		/**
+		 * Получить данные о продукте по идентификатору продукта
+		 *
+		 * @this	{OrderDictionary}
+		 * 
+		 * @param	{Number}	productId	Идентификатор продукта
+		 * @return	{Object}				Данные о продукте
+		 */
+		OrderDictionary.prototype.getProductById = function( productId ) {
+			if ( !this.products.hasOwnProperty(productId) ) {
+				console.warn('Такого продукта не найдено');
 
-		return false;
-	}
+				return false;
+			}
 
-	return this.products[productId];
-};
+			return this.products[productId];
+		};
+	
+	
+		return OrderDictionary;
+	
+	}());
+	
+}(window.ENTER));
  
  
 /** 
@@ -1281,12 +1298,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				orderForm = $('#order-form');
 			// end of vars
 			
-			if ( global.OrderModel.paypalECS() && orderCompleteBtn.hasClass('mConfirm') ) {
-				global.ENTER.utils.blockScreen.block('Передача данных в PayPal');
-			}
-			else {
-				global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
-			}
+			global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
 
 			/**
 			 * Перебираем блоки доставки
@@ -1301,8 +1313,8 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					deliveryMethod_token: currentDeliveryBox.state,
 					date: currentDeliveryBox.choosenDate().value,
 					interval: [
-						currentDeliveryBox.choosenInterval().start,
-						currentDeliveryBox.choosenInterval().end
+						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().start : '',
+						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : '',
 					],
 					point_id: currentDeliveryBox.choosenPoint().id,
 					products : []
@@ -1312,12 +1324,18 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 					tmpPart.products.push(currentDeliveryBox.products[j].id);
 				}
 
+				console.log(tmpPart);
+
 				parts.push(tmpPart);
 			}
 
 			dataToSend = orderForm.serializeArray();
 			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
 			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
+
+      if ( typeof(window.KM) !== 'undefined' ) {
+				dataToSend.push({ name: 'kiss_session', value: window.KM.i });
+      }
 
 			console.log(dataToSend);
 
@@ -1462,7 +1480,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				// радио кнопка
 				if ( fieldNode.attr('type') === 'radio' ) {
 					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked').trigger('change');
-					console.log('11111111')
+					
 					continue;
 				}
 
@@ -1622,7 +1640,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					new DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
+					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
 				}
 			}
 		}
@@ -1683,7 +1701,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			if ( unwrapVal ) {
 				// create map
-				map = new CreateMap('pointPopupMap', global.OrderModel.popupWithPoints().points, $('#mapInfoBlock'));
+				map = new global.ENTER.constructors.CreateMap('pointPopupMap', global.OrderModel.popupWithPoints().points, $('#mapInfoBlock'));
 
 				$(element).lightbox_me({
 					centered: true,
@@ -1724,6 +1742,41 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 		}
 	};
 
+	/**
+	 * Кастомный бинд для смены недель, анимирование слайдера
+	 */
+	ko.bindingHandlers.calendarSlider = {
+		update: function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext ) {
+			var slider = $(element),
+				nowLeft = valueAccessor(),
+
+				dateItem = slider.find('.bBuyingDatesItem'),
+				dateItemW = dateItem.width() + parseInt(dateItem.css('marginRight'), 10) + parseInt(dateItem.css('marginLeft'), 10);
+			// end of vars
+
+			slider.width(dateItem.length * dateItemW);
+
+			if ( nowLeft > 0 ) {
+				nowLeft -= 380;
+				bindingContext.box.calendarSliderLeft(nowLeft);
+
+				return;
+			}
+
+			if ( nowLeft < -slider.width() ) {
+				nowLeft += 380;
+				bindingContext.box.calendarSliderLeft(nowLeft);
+
+				return;
+			}
+
+			slider.animate({'left': nowLeft});
+		}
+	};
+
+	/**
+	 * Кастомынй бинд отображения и смены купонов
+	 */
 	ko.bindingHandlers.couponsVisible = {
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
@@ -2196,6 +2249,9 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 	/**
 	 * ===  END ORDER MODEL ===
 	 */
+	
+
+
 
 		/**
 		 * Показ сообщений об ошибках
@@ -2356,7 +2412,7 @@ OrderDictionary.prototype.getProductById = function( productId ) {
 
 			console.info('Данные с сервера получены');
 
-			global.OrderModel.orderDictionary = new OrderDictionary(res);
+			global.OrderModel.orderDictionary = new global.ENTER.constructors.OrderDictionary(res);
 
 			if ( res.paypalECS ) {
 				console.info('paypal true');

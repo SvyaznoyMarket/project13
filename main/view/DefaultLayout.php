@@ -83,6 +83,9 @@ class DefaultLayout extends Layout {
             $response = array('content' => '');
         }
 
+        $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
+
+
         return $response['content'];
     }
 
@@ -132,6 +135,9 @@ class DefaultLayout extends Layout {
         foreach ([
             \App::config()->debug ? 'http://code.jquery.com/jquery-1.8.3.js' : 'http://yandex.st/jquery/1.8.3/jquery.min.js',
             '/js/prod/LAB.min.js',
+
+            \App::config()->debug ? '/js/vendor/html5.js' : '/js/prod/html5.min.js',
+            
         ] as $javascript) {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
         }
@@ -442,5 +448,14 @@ class DefaultLayout extends Layout {
         return;
     }
 
+
+    public function slotEnterleads()
+    {
+        $routeToken = \App::request()->attributes->get('token');
+        if ('subscribe_friends' == $routeToken) {
+            return '<div id="enterleadsJS" class="jsanalytics" ></div>';
+        }
+        return;
+    }
 
 }

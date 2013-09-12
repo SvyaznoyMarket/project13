@@ -46,7 +46,7 @@ $(document).ready(function() {
 				return status;
 			}, this);
 
-			var scNum = window.docCookies.getItem("scId"); //берем номер карты связного клуба из куки
+			var scNum = window.docCookies.getItem("scId"); //берем номер карты «связного клуба» из куки
 
 			self.showMap = ko.observable( false );
 			self.textfields = [];
@@ -107,7 +107,7 @@ $(document).ready(function() {
 			self.chosenShop = ko.observable( {} );
 			self.pickedShop = ko.observable( {} );
 
-			self.dynModel = function( Deliveries ) {	
+			self.dynModel = function( Deliveries ) {
 				var chosenType = self.chosenDlvr().type;
 
 				if ( !chosenType ){
@@ -117,7 +117,7 @@ $(document).ready(function() {
 				self.dlvrs.removeAll();
 				// self.chosenDlvr({});
 
-				for(var obj in Deliveries ) {
+				for ( var obj in Deliveries ) {
 					self.dlvrs.push( {
 						type: obj,
 						name: Deliveries[obj].name,
@@ -130,18 +130,33 @@ $(document).ready(function() {
 					}
 				}
 
-				if( ! ('type' in self.chosenDlvr() ) ){
+				if ( !('type' in self.chosenDlvr() ) ){
 					self.chosenDlvr( self.dlvrs()[ 0 ] );
 				}
 				
+				console.log(self.chosenDlvr());
+
 				self.dates( Deliveries[ self.chosenDlvr().type+'' ].dates.slice(0) );
 				self.chosenDate( self.dates()[0] );
+				
+				console.log(selfAvailable);
 
-				if( selfAvailable ) {
-					self.shops( Deliveries['self'].shops.slice(0) );
+				if ( selfAvailable ) {
+					if ( Deliveries.hasOwnProperty('self') ) {
+						console.log('self shops');
+						self.shops( Deliveries['self'].shops.slice(0) );
+					}
+					else {
+						console.log('now shops');
+						self.shops( Deliveries['now'].shops.slice(0) );
+					}
+
 					self.chosenShop( self.shops()[0] );
 					self.pickedShop( self.shops()[0] );
-				} else {
+
+					// self.showMap(true)
+				}
+				else {
 					var leer = { address: '', regtime: '', id : 1 };
 					self.chosenShop( leer );
 					self.pickedShop( leer );
@@ -155,9 +170,10 @@ $(document).ready(function() {
 			}, this);
 			
 			self.changeDlvr = function() {
+				console.info('changeDlvr');
 				var typeDlvr = self.chosenDlvr().type;
 				self.dates.removeAll();
-				while( self.dates().length ){
+				while( self.dates().length ) {
 					self.dates.pop();
 				}
 
@@ -166,10 +182,12 @@ $(document).ready(function() {
 				}
 
 				self.chosenDate( self.dates()[0] );
-				if( self.showMap() ){
+				
+				if ( self.showMap() ) {
 					self.showMap( false );
 				}
-				if (typeof(window.regionMap)=='undefined'){
+				if ( typeof(window.regionMap)=='undefined' ) {
+					console.warn('region map undefined');
 					$('.bFast__eMapLink').remove();
 				}
 			};
@@ -230,11 +248,11 @@ $(document).ready(function() {
 			};
 			
 			self.preparedData = function( data ) {
-				if( data.type === 'self' ) {
+				if ( data.type === 'self' || data.type === 'now' ) {
 					self.formStatus('reserve');
 
-					for(var i=0, l=self.dlvrs().length; i<l; i++ ){
-						if( self.dlvrs()[i].type == 'self' ) {
+					for ( var i = 0, l = self.dlvrs().length; i < l; i++ ) {
+						if ( self.dlvrs()[i].type === 'self' || self.dlvrs()[i].type === 'now') {
 							self.chosenDlvr( self.dlvrs()[i] );
 							break;
 						}
@@ -253,7 +271,7 @@ $(document).ready(function() {
 				else if( data.type === 'courier' ) {
 					self.formStatus('reserve');
 					for(var j = 0, len = self.dlvrs().length; j < len; j++ ){
-						if( self.dlvrs()[j].type != 'self' ) {
+						if ( self.dlvrs()[j].type !== 'self' &&  self.dlvrs()[j].type !== 'now' ) {
 							self.chosenDlvr( self.dlvrs()[j]  );
 							break;
 						}
@@ -266,7 +284,7 @@ $(document).ready(function() {
 			};
 			
 			self.loadData = function( momentq, direction ) {
-				// console.info('loadData')
+				console.info('loadData')
 				if( ( direction > 0 && self.quantity() > momentq ) || ( direction < 0 && self.quantity() < momentq ) ){
 					return;
 				}
@@ -297,12 +315,15 @@ $(document).ready(function() {
 					else {
 						self.noDelivery(false);
 					}
-					selfAvailable = 'self' in Deliveries;
+					selfAvailable = ('self' in Deliveries) || ('now' in Deliveries);
+
+					console.log(selfAvailable);
+
 					self.dynModel(Deliveries);
-					if( selfAvailable && typeof(mapCenter) == 'undefined') {
+					if ( selfAvailable && typeof(mapCenter) == 'undefined') {
 						mapCenter = calcMCenter( Deliveries['self'].shops );
 					}						
-					if( selfAvailable && ! ('regionMap' in window ) ) {
+					if ( selfAvailable && ! ('regionMap' in window ) ) {
 						var mapCallback = function() {
 							window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL );
 						};
@@ -440,11 +461,11 @@ $(document).ready(function() {
 			};
 
 			self.validateForm = function() {
-				if( self.noDelivery() ){
+				if ( self.noDelivery() ){
 					return false;
 				}
 
-				if( self.formStatus() !== 'typing' && self.formStatus() !== 'reserve' ){ // double or repeated click
+				if ( self.formStatus() !== 'typing' && self.formStatus() !== 'reserve' ) { // double or repeated click
 					return;
 				}
 				//change title
@@ -469,10 +490,10 @@ $(document).ready(function() {
 				var postData = {
 					'order[product_quantity]' : self.quantity(),
 					'order[delivered_at]' : self.chosenDate().value,
-					'order[delivery_type_id]': (self.chosenDate().isNow) ? 4 : self.chosenDlvr().modeID
+					'order[delivery_type_id]': ( self.chosenDate().isNow ) ? 4 : self.chosenDlvr().modeID
 				};
 
-				if( self.chosenDlvr().type == 'self' ){
+				if ( self.chosenDlvr().type == 'self' || self.chosenDlvr().type == 'now' ) {
 					postData[ 'order[shop_id]' ] = self.chosenShop().id;
 				}
 
@@ -480,6 +501,10 @@ $(document).ready(function() {
 					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value;
 				}
 				postData['subscribe'] = $('#order1click-container-new .bSubscibe input[name="subscribe"]').val();
+
+	      if ( typeof(window.KM) !== 'undefined' ) {
+					postData['kiss_session'] = window.KM.i;
+	      }
 
 				$.ajax( {
 					type: 'POST',
@@ -810,10 +835,22 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			}
 
 			Deliveries = data.data;
-			selfAvailable = 'self' in Deliveries;
+
+			console.info('data recive');
+			selfAvailable = 'self' in Deliveries || 'now' in Deliveries;
+			console.log(selfAvailable);
+
 			if ( selfAvailable ) {
-				mapCenter = calcMCenter( Deliveries['self'].shops );
-			}			
+				if ( Deliveries.hasOwnProperty('self') ) {
+					console.log('self shops');
+					mapCenter = calcMCenter( Deliveries['self'].shops );
+				}
+				else {
+					console.log('now shops');
+					mapCenter = calcMCenter( Deliveries['now'].shops );
+				}
+			}
+
 			OC_MVM = new OneCViewModel();
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ); // this way, Lukas!
 			
@@ -822,10 +859,12 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 					window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL );
 				};
 
-				try{
+				try {
+					console.info('грузим карту');
 					MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateIWCL );
 				}
-				catch(e){
+				catch( e ) {
+					console.warn('карта не загрузилась');
 					$('.bFast__eMapLink').remove();
 				}
 			}

@@ -170,7 +170,6 @@
 					$self.remove();
 				};
 			// end of function
-		
 
 			if ( sliderParams.url !== null ) {
 				$.ajax({
