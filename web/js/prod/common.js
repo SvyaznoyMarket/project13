@@ -507,6 +507,19 @@ $.ajaxSetup({
 
 
         /**
+         * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
+         */
+        addToLiveTex = function addToLiveTex(data) {
+            if (typeof(LiveTex.addToCart) == 'function') {
+                try {
+                    LiveTex.addToCart(data.product);
+                } catch (err) {
+                }
+            }
+        },
+
+
+        /**
          * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
          */
         addToRetailRocket = function addToRetailRocket( data ) {
@@ -540,6 +553,7 @@ $.ajaxSetup({
 			myThingsAnalytics(data);
 			adAdriver(data);
             addToRetailRocket(data);
+            addToLiveTex(data);
 
 			if ( data.redirect ) {
 				document.location.href = data.redirect;

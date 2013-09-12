@@ -125,6 +125,49 @@ window.ANALYTICS = {
 	//     })(document, window, "yandex_metrika_callbacks");
 	// },
 
+    LiveTexJS: function () {
+        var LTData = $('#LiveTexJS').data('value');
+        var liveTexID = LTData.livetexID,
+            liveTex_object = true;
+
+        window.LiveTex = {
+            onLiveTexReady: function () {
+                window.LiveTex.setName(LTData.username);
+            },
+
+            invitationShowing: false,
+
+            addToCart: function (productData) {
+                var userid = ( LTData.userid ) ? LTData.userid : 0;
+                window.LiveTex.setManyPrechatFields({
+                    'Department': 'Marketing',
+                    'Product': productData.article,
+                    'Ref': window.location.href,
+                    'userid': userid
+                });
+
+                if ( (!window.LiveTex.invitationShowing) && (typeof(window.LiveTex.showInvitation) == 'function') ) {
+                    LiveTex.showInvitation('Здравствуйте! Вы добавили корзину ' + productData.name + '. Может, у вас возникли вопросы и я могу чем-то помочь?');
+                    LiveTex.invitationShowing = true;
+                }
+
+            } // end of addToCart function
+
+        }; // end of LiveTex Object
+
+        //$(document).load(function() {
+        (function() {
+            var lt = document.createElement('script');
+            lt.type ='text/javascript';
+            lt.async = true;
+            lt.src = 'http://cs15.livetex.ru/js/client.js';
+            var sc = document.getElementsByTagName('script')[0];
+            if ( sc ) sc.parentNode.insertBefore(lt, sc);
+            else  document.documentElement.firstChild.appendChild(lt);
+        })();
+        //});
+    },
+
     yaParamsJS : function() {
         var yap = $('#yaParamsJS').data('vars');
         if (yap) {
@@ -349,8 +392,6 @@ window.ANALYTICS = {
             category: function (data) {
                 window.rcAsyncInit = function () {
                     rcApi.categoryView(data);
-                    console.log('catego222ry');
-                    console.log(data);
                 }
             },
 

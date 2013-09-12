@@ -22,7 +22,7 @@ class Sociomantic
         if ($ctype == 'category') $useLastItem = true;
 
         if ($breadcrumbs and is_array($breadcrumbs)) {
-            $prod_cats = $this->breadcrumbsToString($breadcrumbs, $useLastItem);
+            $prod_cats = $this->breadcrumbsToArray($breadcrumbs, $useLastItem);
         } else {
             if ($category) $prod_cats = $category->getName();
         }
@@ -184,11 +184,11 @@ class Sociomantic
     */
 
     /**
-     * Конвертирует хлебные крошки в строку
+     * Конвертирует хлебные крошки в массив
      * @param $breadcrumbs
      * @return bool|string
      */
-    private function breadcrumbsToString( $breadcrumbs, $useLastItem = false )
+    private function breadcrumbsToArray( $breadcrumbs, $useLastItem = false )
     {
         if ( !empty($breadcrumbs) && is_array($breadcrumbs) ) {
 
@@ -199,21 +199,11 @@ class Sociomantic
             foreach ($breadcrumbs as $item) {
                 $i++;
                 if ( ( !$useLastItem && $i < $count) || ($useLastItem || $i==1) ) {
-                    $str = $item['name'];
-                    if ($str) {
-                        $str = str_replace("'", '"', $str);
-                        $str = "'" . $str . "'";
-                    }
-                    $arr[] = $str;
+                    $arr[] = $item['name'];
                 }
             }
 
-            $str = implode(', ', $arr);
-            if ($str) {
-                $str = '[' . $str . ']';
-                return $str;
-            }
-
+            return $arr;
         }
 
         return false;
