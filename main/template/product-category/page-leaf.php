@@ -32,4 +32,5 @@ if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->get
     'category'               => $category,
     'view'                   => $productView,
     'productVideosByProduct' => $productVideosByProduct,
+    'isAddInfo'       => true,
 )) ?>

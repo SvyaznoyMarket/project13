@@ -13,7 +13,6 @@
 $isHidden = isset($isHidden) && $isHidden;
 $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
 if (!isset($productVideos)) $productVideos = [];
-$addInfo = isset($addInfo)?$addInfo:[];
 
 /** @var $productVideo \Model\Product\Video\Entity|null */
 $productVideo = reset($productVideos);
