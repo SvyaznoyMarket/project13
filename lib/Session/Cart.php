@@ -643,7 +643,7 @@ class Cart {
     public function clearBlackcards() {
         $data = $this->storage->get($this->sessionName);
         $data['blackcardList'] = [];
-        $this->blackcards = null;
+        $this->blackcards = [];
 
         $this->fill();
 
