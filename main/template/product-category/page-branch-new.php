@@ -28,7 +28,11 @@ if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->get
 
     <?= $helper->render('product-category/__filter', ['category' => $category, 'productFilter' => $productFilter]) // фильтры ?>
 
-    <?= $helper->render('product/__sorting', ['pager' => $productPager, 'productSorting' => $productSorting]) // сортировка ?>
+    <?= $helper->render('product/__listAction', [
+        'category'       => $category,
+        'pager'          => $productPager,
+        'productSorting' => $productSorting,
+    ]) // сортировка, режим просмотра, режим листания ?>
 
     <?= $helper->render('product/__list', [
         'pager'                  => $productPager,
