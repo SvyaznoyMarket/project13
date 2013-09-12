@@ -57,7 +57,7 @@ return function(
                             echo $helper->render('product-category/filter/__list', ['productFilter' => $productFilter, 'filter' => $filter]);
                             break;
                         case \Model\Product\Filter\Entity::TYPE_BOOLEAN:
-                            //echo $helper->render('product-category/filter/__choice', ['productFilter' => $productFilter, 'filter' => $filter]);
+                            echo $helper->render('product-category/filter/__choice', ['productFilter' => $productFilter, 'filter' => $filter]);
                             break;
                     } ?>
 

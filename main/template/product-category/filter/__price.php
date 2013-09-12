@@ -13,7 +13,7 @@ return function(
 ?>
 
 
-    <div class="bRangeSlider">
+    <div class="bRangeSlider" data-step="<?= $helper->json($filter->getStepByFilter()) ?>">
         <span class="bRangeSlider__eTitle"><?= $filter->getName() ?></span>
         <input class="bRangeSlider__eInput mFromRange" name="" value="<?= $helper->clearZeroValue($filter->getMin()) ?>" type="text" />
 
