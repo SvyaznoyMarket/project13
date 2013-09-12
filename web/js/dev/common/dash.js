@@ -192,10 +192,10 @@ $(document).ready(function(){
             }
 
 
-            if (datap) {
+            //if (datap) {
                 event.preventDefault();
                 return false;
-            }
+            //}
 
         });
     };
