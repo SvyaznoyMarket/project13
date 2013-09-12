@@ -60,7 +60,7 @@ if (\App::request()->get('shop')) {
             'product'       => $product,
             'isHidden'      => $i > $itemsInSlider,
             'productVideos' => isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [],
-            'addInfo'       => $isAddInfo?\Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()):[])) ?>
+            'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : []
         )) ?>
     <? } ?>
 </div>
