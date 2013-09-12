@@ -15,7 +15,7 @@ $orderSum = 0;
 $orderNumber = '';
 foreach($orders as $order) {
     $orderSum += $order->getPaySum();
-    $i++; if ($i>1) $orderNumber .= ', '; // $orders не может быть полноценным массивом и иметь несколько номеров заказов, но всё же
+    $i++; if ($i>1) $orderNumber .= ', ';
     $orderNumber .= $order->getNumber();
     foreach ($order->getProduct() as $prod) {
         $sonarBasket['products'][] = (object)[
@@ -30,7 +30,6 @@ foreach($orders as $order) {
 $sonarBasket['transaction'] = $orderNumber;
 $sonarBasket['amount']      = $orderSum;
 $sonarBasket['currency']    = 'RUB';
-$sonarBasket['zzz']    = 'zzz';
 
 /* example:
 { identifier: '461-1177', amount: 4990.00, currency: 'RUB', quantity: 1 },
