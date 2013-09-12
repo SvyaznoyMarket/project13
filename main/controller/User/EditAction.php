@@ -22,11 +22,24 @@ class EditAction {
         $message = $session->get('flash');
         $session->remove('flash');
 
+        $redirect = (false !== strpos($request->get('redirect_to'), \App::config()->mainHost))
+            ? $request->get('redirect_to')
+            : \App::router()->generate('user.edit');
+
+        if(!preg_match('/^(\/|http).*/i', $redirect)) {
+            $redirect = 'http://'.$redirect;
+        }
+
         if ($request->isMethod('post')) {
             $userData = (array)$request->request->get('user');
             $form->fromArray($userData);
 
             try {
+                $tmp = rtrim( $form->getEmail() ) . rtrim($form->getMobilePhone());
+                if ( empty($tmp) ) {
+                    throw new \Exception("E-mail и телефон не могут быть одновременно пустыми. Укажите ваш мобильный телефон либо e-mail.");
+                }
+
                 $response = \App::coreClientV2()->query('user/update', array('token' => \App::user()->getToken()), [
                     'first_name'  => $form->getFirstName(),
                     'middle_name' => $form->getMiddleName(),
@@ -41,23 +54,25 @@ class EditAction {
                 ]);
 
                 if (!isset($response['confirmed']) || !$response['confirmed']) {
-                    throw new \Exception('Не удалось сохранить форму');
+                    throw new \Exception('Не получен ответ от сервера.');
                 }
 
                 $session->set('flash', 'Данные сохранены');
 
-                return new \Http\RedirectResponse(\App::router()->generate('user.edit'));
+                return new \Http\RedirectResponse($redirect);
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
                 \App::logger()->error($e, ['user']);
 
-                $form->setError('global', 'Не удалось сохранить форму');
+                $errorMess = $e->getMessage();
+                $form->setError('global', 'Не удалось сохранить форму. ' . $errorMess);
             }
         }
 
         $page = new \View\User\EditPage();
         $page->setParam('form', $form);
         $page->setParam('message', $message);
+        $page->setParam('redirect', $redirect);
 
         return new \Http\Response($page->show());
     }

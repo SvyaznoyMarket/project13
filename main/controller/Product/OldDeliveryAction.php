@@ -154,12 +154,13 @@ class OldDeliveryAction {
             \App::coreClientV2()->addQuery('delivery/calc', ['geo_id' => $regionId, 'days_num' => 7], $params, function ($data) use (&$response) {
                 if ((bool)$data) {
                     $response = $data;
-                    if (!isset($response['product_list'])) $response['product_list'] = [];
-                    if (!isset($response['geo_list'])) $response['geo_list'] = [];
-                    if (!isset($response['shop_list'])) $response['shop_list'] = [];
                 }
             });
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['forever'], \App::config()->coreV2['retryCount']);
+
+            if (!isset($response['product_list'])) $response['product_list'] = [];
+            if (!isset($response['geo_list'])) $response['geo_list'] = [];
+            if (!isset($response['shop_list'])) $response['shop_list'] = [];
 
             $productData = (array)$response['product_list'];
             $productData = array_pop($productData);
@@ -206,9 +207,11 @@ class OldDeliveryAction {
                                 $shops[] = $shop;
                             }
 
-                            foreach ($response['interval_list'] as $interval) {
-                                if (in_array($interval['id'], $dateShopData['interval_list'])) {
-                                    $date['shopIds'][] = (int)$dateShopData['id'];
+                            if(isset($response['interval_list']) && is_array($response['interval_list'])) {
+                                foreach ($response['interval_list'] as $interval) {
+                                    if (isset($dateShopData['interval_list']) && is_array($dateShopData['interval_list']) && in_array($interval['id'], $dateShopData['interval_list'])) {
+                                        $date['shopIds'][] = (int)$dateShopData['id'];
+                                    }
                                 }
                             }
                         }

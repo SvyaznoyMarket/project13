@@ -1,5 +1,57 @@
 $(document).ready(function() {
 
+	/**
+	 * Custom inputs
+	 */
+	(function() {
+		var inputs = $('input.bCustomInput');
+
+		var updateState = function updateState() {
+			console.info('updateState');
+
+			if ( !$(this).is('[type=checkbox]') && !$(this).is('[type=radio]') ) {
+				return;
+			}
+
+			var $self = $(this),
+				id = $self.attr('id'),
+				type = ( $self.is('[type=checkbox]') ) ? 'checkbox' : 'radio',
+				groupName = $self.attr('name') || '',
+				label = $('label[for="'+id+'"]');
+
+			if ( type === 'checkbox' ) {
+
+				if ( $self.is(':checked') ) {
+					label.addClass('mChecked');
+				}
+				else {
+					label.removeClass('mChecked');
+				}
+			}
+
+
+			if ( type === 'radio' && $self.is(':checked') ) {
+				$('input[name="'+groupName+'"]').each(function() {
+					var currElement = $(this),
+						currId = currElement.attr('id');
+
+					$('label[for="'+currId+'"]').removeClass('mChecked');
+				});
+
+				label.addClass('mChecked');
+			}
+		};
+
+
+		$('body').on('updateState', '.bCustomInput', updateState);
+
+		$('body').on( 'change', '.bCustomInput', function() {
+			$(this).trigger('updateState');
+		});
+
+		inputs.trigger('updateState');
+	}());
+
 	(function() {
 		/*register e-mail check*/
 		if ( !$('#register_username').length ) {
@@ -315,14 +367,14 @@ $(document).ready(function() {
 		});
 	});
 
-	$('#auth-block').on('click', '#forgot-pwd-trigger', function() {
+	$('body').on('click', '#forgot-pwd-trigger', function() {
 		$('#reset-pwd-form').show();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').hide();
 		return false;
 	});
 
-	$('#remember-pwd-trigger,#remember-pwd-trigger2').click(function() {
+	$('body').on('click', '#remember-pwd-trigger,#remember-pwd-trigger2', function() {
 		$('#reset-pwd-form').hide();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').show();
@@ -367,7 +419,7 @@ $(document).ready(function() {
 	/* Infinity scroll */
 	var ableToLoad = true;
 	var compact = $('div.goodslist').length;
-	var custom_jewel = $('.items-section__list').length;
+	var custom_jewel = $('.bGoodsList').length;
 
 	function liveScroll( lsURL, filters, pageid ) {
 		var params = [];
@@ -379,7 +431,7 @@ $(document).ready(function() {
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last');
 
 		if ( custom_jewel ) {
-			tmpnode = $('.items-section__list');
+			tmpnode = $('.bGoodsList');
 		}
 
 		var loader =
@@ -1315,7 +1367,7 @@ $(document).ready(function() {
 	}
 
 	;(function() {
-		$(".items-section__list .item").hover(
+		$(".bGoodsList .bGoodsList__eItem").hover(
 		function() {
 			$(this).addClass('hover')
 		},

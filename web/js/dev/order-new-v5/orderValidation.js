@@ -134,7 +134,7 @@
 		 * Обработка ошибок из ответа сервера
 		 */
 		serverErrorHandler = {
-			default: function( res ) {
+			'default': function( res ) {
 				console.log('Обработчик ошибки');
 
 				if ( res.error && res.error.message ) {
@@ -229,8 +229,8 @@
 
 			completeAnalytics();
 
-			if ( global.OrderModel.paypalECS() ) {
-				console.info('PayPal ECS включен. Необходимо удалить выбранные параметры из cookie');
+			if ( global.OrderModel.paypalECS() && !orderCompleteBtn.hasClass('mConfirm') ) {
+				console.info('PayPal ECS включен. Заказ оформлен. Необходимо удалить выбранные параметры из cookie');
 
 				window.docCookies.removeItem('chDate_paypalECS');
 				window.docCookies.removeItem('chTypeBtn_paypalECS');
@@ -254,12 +254,7 @@
 				orderForm = $('#order-form');
 			// end of vars
 			
-			if ( global.OrderModel.paypalECS() ) {
-				global.ENTER.utils.blockScreen.block('Передача данных в PayPal');
-			}
-			else {
-				global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
-			}
+			global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
 
 			/**
 			 * Перебираем блоки доставки
@@ -274,8 +269,8 @@
 					deliveryMethod_token: currentDeliveryBox.state,
 					date: currentDeliveryBox.choosenDate().value,
 					interval: [
-						currentDeliveryBox.choosenInterval().start,
-						currentDeliveryBox.choosenInterval().end
+						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().start : '',
+						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : '',
 					],
 					point_id: currentDeliveryBox.choosenPoint().id,
 					products : []
@@ -285,12 +280,18 @@
 					tmpPart.products.push(currentDeliveryBox.products[j].id);
 				}
 
+				console.log(tmpPart);
+
 				parts.push(tmpPart);
 			}
 
 			dataToSend = orderForm.serializeArray();
 			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
 			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
+
+      if ( typeof(window.KM) !== 'undefined' ) {
+				dataToSend.push({ name: 'kiss_session', value: window.KM.i });
+      }
 
 			console.log(dataToSend);
 
@@ -434,8 +435,8 @@
 
 				// радио кнопка
 				if ( fieldNode.attr('type') === 'radio' ) {
-					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked');
-
+					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked').trigger('change');
+					
 					continue;
 				}
 
@@ -466,4 +467,5 @@
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
+
 }(this));

@@ -55,7 +55,7 @@ $c->corePrivate['password']     = 'dEl23sTOas';
 $c->corePrivate['timeout']      = null;
 $c->corePrivate['retryCount']   = 3;
 $c->corePrivate['retryTimeout'] = [
-    'default' => 0.5,
+    'default' => 1.5,
     'tiny'    => 0.05,
     'short'   => 0.2,
     'medium'  => 0.5,
@@ -121,7 +121,8 @@ $c->partners['criteo']['account'] = 10442;
 $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 $c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
 $c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
-
+$c->partners['Admitad']['enabled'] = true;
+$c->partners['Admitad']['code'] = '9ce8886713';
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
@@ -295,7 +296,7 @@ $c->database['password'] = 'qazwsxedc';
 
 $c->creditProvider['kupivkredit']['partnerId'] = '1-6ADAEAT';
 $c->creditProvider['kupivkredit']['partnerName'] = 'ООО «Enter»';
-$c->creditProvider['kupivkredit']['signature'] = 'enter-secret-werj7537';
+$c->creditProvider['kupivkredit']['signature'] = 'enter-secret-7X5dwb92';
 
 $c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
 $c->queue['workerLimit'] = 10;
@@ -319,6 +320,8 @@ $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
 $c->maybe3d['swfUrl']     = 'http://fs01.enter.ru/3d/flash/';
 $c->maybe3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
 $c->maybe3d['timeout']    = 30;
+
+$c->img3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
 
 $c->tag['numSidebarCategoriesShown'] = 3;
 

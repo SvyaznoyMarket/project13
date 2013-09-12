@@ -22,7 +22,6 @@ class CreateAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        $client = \App::coreClientV2();
         $user = \App::user();
         $cart = $user->getCart();
 
@@ -40,8 +39,9 @@ class CreateAction {
         $form = $this->getForm();
         // данные для тела JsonResponse
         $responseData = [
-            'time'   => strtotime(date('Y-m-d'), 0) * 1000,
-            'action' => [],
+            'time'      => strtotime(date('Y-m-d'), 0) * 1000,
+            'action'    => [],
+            'paypalECS' => true,
         ];
         // массив кукисов
         $cookies = [];
@@ -100,30 +100,26 @@ class CreateAction {
             $deliveryPrice = isset($productData['deliveries'][$deliveryMethodToken][$pointId]['price']) ? (int)$productData['deliveries'][$deliveryMethodToken][$pointId]['price'] : 0;
             \App::logger()->info(sprintf('Стоимость доставки %s', $deliveryPrice));
 
-            // TODO: внимание, заглушка!!!
-            //$deliveryPrice = $deliveryPrice ? 1 : 0;
-
             // проверка paypal
             $result = $this->getPaypalCheckout($paypalToken, $paypalPayerId);
             $paymentAmount = isset($result['payment_amount']) ? (int)$result['payment_amount'] : 0;
             \App::logger()->info(['paypal.payment_amount' => $paymentAmount], ['order', 'paypal']);
 
             // обновляем стоимость товара
-            $cartProduct->setSum($deliveryPrice + $cartProduct->getPrice() * $cartProduct->getQuantity());
-            // TODO: внимание, заглушка!!!
-            //$cartProduct->setSum($deliveryPrice + 1);
+            $cartProduct->setSum($cartProduct->getPrice() * $cartProduct->getQuantity());
+            $cartProduct->setDeliverySum($deliveryPrice);
 
             $cart->setPaypalProduct($cartProduct);
             \App::logger()->info(['cart.paypalProduct' => ['id' => $cartProduct->getId(), 'price' => $cartProduct->getPrice(), 'quantity' => $cartProduct->getQuantity(), 'sum' => $cartProduct->getSum()]], ['order', 'paypal']);
 
-            if ($paymentAmount != ($cartProduct->getSum())) {
+            if ($paymentAmount != ($cartProduct->getSum() + $cartProduct->getDeliverySum())) {
                 $result = \App::coreClientV2()->query(
                     'payment/paypal-set-checkout',
                     [
                         'geo_id' => \App::user()->getRegion()->getId(),
                     ],
                     [
-                        'amount'          => $cartProduct->getPrice() * $cartProduct->getQuantity(),
+                        'amount'          => $cartProduct->getSum(),
                         'delivery_amount' => $deliveryPrice,
                         'currency'        => 'USD',
                         'return_url'      => \App::router()->generate('order.paypal.new', [], true),
@@ -145,45 +141,43 @@ class CreateAction {
                 $createdOrder = new \Model\Order\CreatedEntity($result);
                 \App::logger()->info(['paymentUrl' => $createdOrder->getPaymentUrl()], ['order', 'paypal']);
 
+                /*
                 $responseData['redirect'] = $createdOrder->getPaymentUrl();
-            } else {
-                // создание заказов в ядре
-                $createdOrders = $this->saveOrders($form, $paypalToken, $paypalPayerId);
-
-                // сохранение заказов в сессии
-                \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
-                    return ['number' => $createdOrder->getNumber(), 'phone' => $form->getMobilePhone()];
-                }, $createdOrders));
-
-                // подписка пользователя
-                $this->subscribeUser($form);
-
-                $responseData['redirect'] = \App::router()->generate('order.complete');
 
                 try {
-                    // сохранение заказа в куках
-                    $cookieValue = [
-                        'recipient_first_name'   => $form->getFirstName(),
-                        'recipient_last_name'    => $form->getLastName(),
-                        'recipient_phonenumbers' => $form->getMobilePhone(),
-                        'recipient_email'        => $form->getEmail(),
-                        'address_street'         => $form->getAddressStreet(),
-                        'address_number'         => $form->getAddressNumber(),
-                        'address_building'       => $form->getAddressBuilding(),
-                        'address_apartment'      => $form->getAddressApartment(),
-                        'address_floor'          => $form->getAddressFloor(),
-                        'subway_id'              => $form->getSubwayId(),
-                    ];
-                    $cookies[] = new \Http\Cookie(\App::config()->order['cookieName'] ?: 'last_order', strtr(base64_encode(serialize($cookieValue)), '+/', '-_'), strtotime('+1 year' ));
-
-                    // удаление флага "Беру в кредит"
-                    $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
-
-                    // очистка корзины
-                    $user->getCart()->clearPaypal();
+                    // сохранение формы в кукисах
+                    $this->saveForm($form, $cookies);
                 } catch (\Exception $e) {
                     \App::logger()->error($e, ['order']);
                 }
+                */
+            }
+
+
+            // создание заказов в ядре
+            $createdOrders = $this->saveOrders($form, $paypalToken, $paypalPayerId);
+
+            // сохранение заказов в сессии
+            \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
+                return ['number' => $createdOrder->getNumber(), 'phone' => $form->getMobilePhone()];
+            }, $createdOrders));
+
+            // подписка пользователя
+            $this->subscribeUser($form);
+
+            $responseData['redirect'] = \App::router()->generate('order.complete');
+
+            try {
+                // сохранение формы в кукисах
+                $this->saveForm($form, $cookies);
+
+                // удаление флага "Беру в кредит"
+                $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
+
+                // очистка корзины
+                $user->getCart()->clearPaypal();
+            } catch (\Exception $e) {
+                \App::logger()->error($e, ['order']);
             }
 
             $responseData['success'] = true;
@@ -299,11 +293,11 @@ class CreateAction {
                 'first_name'                => $form->getFirstName(),
                 'email'                     => $form->getEmail(),
                 'mobile'                    => $form->getMobilePhone(),
-                'address_street'            => $form->getAddressStreet(),
-                'address_number'            => $form->getAddressNumber(),
-                'address_building'          => $form->getAddressBuilding(),
-                'address_apartment'         => $form->getAddressApartment(),
-                'address_floor'             => $form->getAddressFloor(),
+                'address_street'            => null,
+                'address_number'            => null,
+                'address_building'          => null,
+                'address_apartment'         => null,
+                'address_floor'             => null,
                 'extra'                     => $form->getComment(),
                 'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
                 'delivery_type_id'          => $deliveryType->getId(),
@@ -320,6 +314,15 @@ class CreateAction {
             // станция метро
             if ($user->getRegion()->getHasSubway()) {
                 $orderData['subway_id'] = $form->getSubwayId();
+            }
+
+            // адрес
+            if (!in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_SELF, \Model\DeliveryType\Entity::TYPE_NOW])) {
+                $orderData['address_street'] = $form->getAddressStreet();
+                $orderData['address_number'] = $form->getAddressNumber();
+                $orderData['address_building'] = $form->getAddressBuilding();
+                $orderData['address_apartment'] = $form->getAddressApartment();
+                $orderData['address_floor'] = $form->getAddressFloor();
             }
 
             // данные для самовывоза [self, now]
@@ -344,7 +347,7 @@ class CreateAction {
             foreach ($orderPart->getProductIds() as $productId) {
                 $cartProduct = $user->getCart()->getPaypalProduct();
                 if (!$cartProduct || ($cartProduct->getId() != $productId)) {
-                    \App::logger()->error(sprintf('Товар #%s не найден в корзине', json_encode($productId, JSON_UNESCAPED_UNICODE)), ['order']);
+                    \App::logger()->error(sprintf('Товар #%s не найден в корзине', $productId), ['order']);
                     continue;
                 }
 
@@ -410,6 +413,8 @@ class CreateAction {
                                 isset($orderData['meta_data']) ? $orderData['meta_data'] : [],
                                 \App::partner()->fabricateMetaByPartners($partners, $product)
                             );
+                            $orderData['meta_data']['user_agent'] = $request->server->get('HTTP_USER_AGENT');
+                            $orderData['meta_data']['kiss_session'] = $request->request->get('kiss_session');
                         }
                         \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($orderData['meta_data']['partner'])), ['order', 'partner']);
                     } catch (\Exception $e) {
@@ -440,23 +445,23 @@ class CreateAction {
         $createdOrders = [];
         foreach ($result as $orderData) {
             if (!is_array($orderData)) {
-                \App::logger()->error(sprintf('Получены неверные данные для созданного заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Получены неверные данные для созданного заказа', 'orderData' => $orderData], ['order']);
                 continue;
             }
             $createdOrder = new \Model\Order\CreatedEntity($orderData);
 
             // если не получен номер заказа
             if (!$createdOrder->getNumber()) {
-                \App::logger()->error(sprintf('Не получен номер заказа %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Не получен номер заказа', 'orderData' => $orderData], ['order']);
                 continue;
             }
             // если заказ не подтвержден
             if (!$createdOrder->getConfirmed()) {
-                \App::logger()->error(sprintf('Заказ не подтвержден %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+                \App::logger()->error(['message' => 'Заказ не подтвержден', 'orderData' => $orderData], ['order']);
             }
 
             $createdOrders[] = $createdOrder;
-            \App::logger()->info(sprintf('Заказ успешно создан %s', json_encode($orderData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)), ['order']);
+            \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
         }
 
         return $createdOrders;

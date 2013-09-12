@@ -28,6 +28,13 @@
 		};
 
 		for ( i = 0, len = reqArray.length - 1; i <= len; i++ ) {
+			console.log(i);
+
+			// Обход странного бага с IE
+			if ( !reqArray[i] || !reqArray[i].url ) {
+				continue;
+			}
+
 			dataToSend.actions.push({
 				url: reqArray[i].url,
 				method: reqArray[i].type,

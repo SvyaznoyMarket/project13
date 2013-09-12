@@ -72,7 +72,7 @@ class ProductAction {
                     'geo_id' => \App::user()->getRegion()->getId(),
                 ],
                 [
-                    'amount'          => $product->getPrice(),
+                    'amount'          => $cartProduct->getSum(),
                     'delivery_amount' => 0,
                     'currency'        => 'USD',
                     'return_url'      => \App::router()->generate('order.paypal.new', [], true),
@@ -94,6 +94,8 @@ class ProductAction {
             $createdOrder = new \Model\Order\CreatedEntity($result);
             \App::logger()->info(['paymentUrl' => $createdOrder->getPaymentUrl()], ['order', 'paypal']);
 
+            $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
+
             $responseData['success']  = true;
             $responseData['redirect'] = $createdOrder->getPaymentUrl();
             $responseData['cart']     = [
@@ -108,6 +110,7 @@ class ProductAction {
                     'sum'    => $createdOrder->getSum(),
                     'paySum' => $createdOrder->getPaySum(),
                 ],
+                'category_id' => $parentCategoryId,
             ];
             $responseData['product'] = $productInfo;
         } catch (\Exception $e) {

@@ -14,7 +14,7 @@
  */
 ?>
 
-<div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
+<?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
     <div id="planner3D" class="bPlanner3D fl" data-cart-sum-url="<?= $page->url('cart.sum') ?>" data-product="<?= $page->json(['id' => $product->getId()]) ?>"></div>
@@ -126,7 +126,7 @@
 
 <div class="bBottomBuy clearfix">
     <div class="bBottomBuy__eHead">
-        <h1 class="bBottomBuy__eTitle"><?= $title ?></h1>
+        <div class="bBottomBuy__eTitle"><?= $title ?></div>
     </div>
 
     <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>

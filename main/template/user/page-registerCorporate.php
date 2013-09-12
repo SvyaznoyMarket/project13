@@ -6,7 +6,7 @@
  */
 ?>
 
-<?= $page->render('form-registerCorporate', ['form' => $form, 'rootCategories' => $rootCategories]) ?>
+<?= $page->render('form-registerCorporate', ['form' => $form, 'rootCategories' => $rootCategories, 'content' => $content]) ?>
 
 <br class="clear" />
 

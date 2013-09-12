@@ -262,13 +262,26 @@ class Action {
     public function registerCorporate(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::user()->getEntity()) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(['success' => true])
-                : new \Http\RedirectResponse(\App::router()->generate('user'));
+        if (\App::user()->getEntity() && $request->isXmlHttpRequest() ) {
+            return new \Http\JsonResponse(['success' => true]);
         }
 
+
         \App::logger()->info(['action' => __METHOD__, 'request.request' => $request->request->all()], ['user']);
+
+        $content = null;
+        \App::contentClient()->addQuery('reg_corp_user_cont', [],
+            function($data) use (&$content) {
+                if (!empty($data['content'])) {
+                    $content = $data['content'];
+                }
+            },
+            function(\Exception $e) {
+                \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                \App::exception()->add($e);
+            }
+        );
+        \App::contentClient()->execute();
 
         $form = new \View\User\CorporateRegistrationForm();
         if ($request->isMethod('post')) {
@@ -374,6 +387,7 @@ class Action {
                                 'content' => \App::templating()->render('form-registerCorporate', [
                                     'page'    => new \View\Layout(),
                                     'form'    => $form,
+                                    'content' => $content,
                                     'request' => \App::request(),
                                 ]),
                             ],
@@ -434,6 +448,7 @@ class Action {
                         'content' => \App::templating()->render('form-registerCorporate', [
                             'page'    => new \View\Layout(),
                             'form'    => $form,
+                            'content' => $content,
                             'request' => \App::request(),
                         ]),
                     ],
@@ -447,6 +462,7 @@ class Action {
         $page = new \View\User\CorporateRegistrationPage();
         $page->setParam('form', $form);
         $page->setParam('rootCategories', $rootCategories);
+        $page->setParam('content', $content);
 
         return new \Http\Response($page->show());
     }

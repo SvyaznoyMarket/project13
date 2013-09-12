@@ -125,6 +125,29 @@ window.ANALYTICS = {
 	//     })(document, window, "yandex_metrika_callbacks");
 	// },
 
+    yaParamsJS : function() {
+        var yap = $('#yaParamsJS').data('vars');
+        if (yap) {
+            window.yaParams = yap;
+        }
+    },
+
+    enterleadsJS : function() { // SITE-1911
+        (function () {
+            try {
+                var script = document.createElement('script');
+
+                script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') +
+                    unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denterleads%26cost%3D') + escape(0) +
+                    unescape('%26order%3D') + escape(0) + unescape('%26r%3D') + Math.random();
+
+                document.getElementsByTagName('head')[0].appendChild(script);
+
+            } catch (e) {
+            }
+        })();
+    },
+
     sociomantic : function() {
         (function(){
             var s   = document.createElement('script');
@@ -369,6 +392,52 @@ window.ANALYTICS = {
         RetailRocket.action();
     },
 
+    AdmitadJS : function() {
+        window._ad = window._ad || [];
+        var ad_data = $('#AdmitadJS').data('value');
+
+        if (ad_data) {
+
+            if (ad_data.ad_data) {
+                /**
+                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
+                 */
+                if (ad_data.ad_data.ad_category) {
+                    window.ad_category = ad_data.ad_data.ad_category;
+                }
+
+                if (ad_data.ad_data.ad_product) {
+                    window.ad_product = ad_data.ad_data.ad_product;
+                }
+
+                if (ad_data.ad_data.ad_products) {
+                    window.ad_products = ad_data.ad_data.ad_products;
+                }
+
+                if (ad_data.ad_data.ad_order) {
+                    window.ad_order = ad_data.ad_data.ad_order;
+                }
+
+                if (ad_data.ad_data.ad_amount) {
+                    window.ad_amount = ad_data.ad_data.ad_amount;
+                }
+
+            }
+
+            if (ad_data.pushData) {
+                window._ad.push(ad_data.pushData);
+            }
+        }
+
+        (function(d){
+            var s=document.createElement("script");
+            s.async=true;
+            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
+            var a=d.getElementsByTagName("script")[0];
+            a.parentNode.insertBefore(s, a);
+        }(document));
+    },
+
     marketgidProd : function() {
         var MGDate = new Date();
         document.write('<iframe src ="http://'
@@ -464,10 +533,6 @@ window.ANALYTICS = {
 	testFreak : function() {
 		document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
 	},
-
-  pluso: function() {
-    if (window.pluso) if (typeof window.pluso.start == "function") return; var d = document, s = d.createElement('script'), g = 'getElementsByTagName'; s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true; s.src = ('https:' == window.location.protocol ? 'https' : 'http') + '://share.pluso.ru/pluso-like.js'; var h=d[g]('head')[0] || d[g]('body')[0]; h.appendChild(s);
-  },
 
 	enable : true
 }

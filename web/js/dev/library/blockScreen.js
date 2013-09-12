@@ -1,13 +1,16 @@
 /**
  * Блокер экрана
  *
+ * @requires jQuery, jQuery.lightbox_me, ENTER.utils
+ *
+ * @author	Zaytsev Alexandr
+ *
  * @param	{Object}		noti		Объект jQuery блокера экрана
  * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
  * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
  */
-
-;(function( global ) {
-	var utils = global.ENTER.utils;
+;(function( ENTER ) {
+	var utils = ENTER.utils;
 	
 	utils.blockScreen = {
 		noti: null,
@@ -34,9 +37,11 @@
 		},
 
 		unblock: function() {
-			console.warn('unblock screen');
-
-			this.noti.trigger('close');
+			if ( this.noti ) {
+				console.warn('unblock screen');
+				
+				this.noti.trigger('close');
+			}
 		}
 	};
-}(this));
+}(window.ENTER));

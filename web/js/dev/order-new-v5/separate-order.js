@@ -58,7 +58,8 @@
 		global.OrderModel.hasCoupons(false);
 
 		// Маркируем выбранный способ доставки
-		$('#'+global.OrderModel.deliveryTypesButton).attr('checked','checked');
+		console.log('Маркируем выбранный способ доставки');
+		$('#'+global.OrderModel.deliveryTypesButton).attr('checked','checked').trigger('change');
 			
 		// Обнуляем общую стоимость заказа
 		global.OrderModel.totalSum(0);
@@ -117,7 +118,7 @@
 				}
 				else {
 					// Блока для этого типа доставки в этот пункт еще существует
-					new DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
+					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
 				}
 			}
 		}
@@ -133,6 +134,7 @@
 
 		// выбираем URL для проверки купонов - первый видимый купон
 		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
+		$('.bSaleList__eItem:visible .jsCustomRadio').eq(0).trigger('change');
 
 		/**
 		 * Проверка примененных купонов
@@ -141,7 +143,8 @@
 		 * Если сумма заказа меньше либо равана размеру скидки купона
 		 */
 		if ( ( global.OrderModel.hasCoupons() && global.OrderModel.deliveryBoxes().length > 1 ) || 
-			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) {
+			( global.OrderModel.appliedCoupon() && global.OrderModel.appliedCoupon().sum && 
+			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) ) {
 			console.warn('Нужно удалить купон');
 
 			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
@@ -159,6 +162,8 @@
 		if ( preparedProducts.length !== global.OrderModel.orderDictionary.orderData.products.length ) {
 			console.warn('не все товары были обработаны');
 		}
+
+		console.warn('end');
 	};
 
 
@@ -174,7 +179,7 @@
 
 			if ( unwrapVal ) {
 				// create map
-				map = new CreateMap('pointPopupMap', global.OrderModel.popupWithPoints().points, $('#mapInfoBlock'));
+				map = new global.ENTER.constructors.CreateMap('pointPopupMap', global.OrderModel.popupWithPoints().points, $('#mapInfoBlock'));
 
 				$(element).lightbox_me({
 					centered: true,
@@ -215,6 +220,41 @@
 		}
 	};
 
+	/**
+	 * Кастомный бинд для смены недель, анимирование слайдера
+	 */
+	ko.bindingHandlers.calendarSlider = {
+		update: function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext ) {
+			var slider = $(element),
+				nowLeft = valueAccessor(),
+
+				dateItem = slider.find('.bBuyingDatesItem'),
+				dateItemW = dateItem.width() + parseInt(dateItem.css('marginRight'), 10) + parseInt(dateItem.css('marginLeft'), 10);
+			// end of vars
+
+			slider.width(dateItem.length * dateItemW);
+
+			if ( nowLeft > 0 ) {
+				nowLeft -= 380;
+				bindingContext.box.calendarSliderLeft(nowLeft);
+
+				return;
+			}
+
+			if ( nowLeft < -slider.width() ) {
+				nowLeft += 380;
+				bindingContext.box.calendarSliderLeft(nowLeft);
+
+				return;
+			}
+
+			slider.animate({'left': nowLeft});
+		}
+	};
+
+	/**
+	 * Кастомынй бинд отображения и смены купонов
+	 */
 	ko.bindingHandlers.couponsVisible = {
 		update: function( element, valueAccessor ) {
 			var val = valueAccessor(),
@@ -582,7 +622,6 @@
 			console.info('обновление данных с сервера');
 
 			renderOrderData(res);
-			utils.blockScreen.unblock();
 
 			separateOrder( global.OrderModel.statesPriority );
 		},
@@ -645,6 +684,21 @@
 					if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
 						itemDeleteAnalytics();
 					}
+
+					var productId = res.product.id;
+					var categoryId = res.category_id;
+
+					// Soloway
+					// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
+					(function(s){
+					    var d = document, i = d.createElement('IMG'), b = d.body;
+					    s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
+					    i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
+					    i.onload = i.onerror = function(){b.removeChild(i); i = b = null}
+					    i.src = s;
+					    b.insertBefore(i, b.firstChild);
+					})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=del_basket&bt=55&pz=0&custom=10='+productId+';11='+categoryId+'&![rnd]');
+
 				};
 			// end of functions
 
@@ -673,6 +727,9 @@
 	/**
 	 * ===  END ORDER MODEL ===
 	 */
+	
+
+
 
 		/**
 		 * Показ сообщений об ошибках
@@ -821,6 +878,8 @@
 		 * @param	{Object}	res		Данные о заказе
 		 */
 		renderOrderData = function renderOrderData( res ) {
+			utils.blockScreen.unblock();
+			
 			if ( !res.success ) {
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);
@@ -831,7 +890,7 @@
 
 			console.info('Данные с сервера получены');
 
-			global.OrderModel.orderDictionary = new OrderDictionary(res);
+			global.OrderModel.orderDictionary = new global.ENTER.constructors.OrderDictionary(res);
 
 			if ( res.paypalECS ) {
 				console.info('paypal true');
