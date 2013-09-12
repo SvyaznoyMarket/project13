@@ -221,7 +221,7 @@ module.exports = function(grunt) {
 			},
 			vendorScripts: {
 				files: ['../web/js/vendor/*.js'],
-				tasks: ['concat:vendorScripts','uglify:vendorScripts', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['uglify:vendorScripts', 'jshint', 'exec:getVersion']
 			},
 			cartJS:{
 				files: [jsDevPath+'cart/*.js'],

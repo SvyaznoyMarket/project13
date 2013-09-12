@@ -154,12 +154,13 @@ class OldDeliveryAction {
             \App::coreClientV2()->addQuery('delivery/calc', ['geo_id' => $regionId, 'days_num' => 7], $params, function ($data) use (&$response) {
                 if ((bool)$data) {
                     $response = $data;
-                    if (!isset($response['product_list'])) $response['product_list'] = [];
-                    if (!isset($response['geo_list'])) $response['geo_list'] = [];
-                    if (!isset($response['shop_list'])) $response['shop_list'] = [];
                 }
             });
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['forever'], \App::config()->coreV2['retryCount']);
+
+            if (!isset($response['product_list'])) $response['product_list'] = [];
+            if (!isset($response['geo_list'])) $response['geo_list'] = [];
+            if (!isset($response['shop_list'])) $response['shop_list'] = [];
 
             $productData = (array)$response['product_list'];
             $productData = array_pop($productData);
