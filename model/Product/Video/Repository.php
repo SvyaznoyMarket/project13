@@ -36,4 +36,56 @@ class Repository {
             'id' => $productIds,
         ], $done, $fail);
     }
+
+
+
+    /**
+     * @param $productPagersByCategory
+     */
+    public function getVideoByProductCategoryPagers( $productPagersByCategory ) {
+        $productVideosByProduct = [];
+        foreach ($productPagersByCategory as $productPager) {
+            foreach ($productPager as $product) {
+                /** @var $product \Model\Product\Entity */
+                $productVideosByProduct[$product->getId()] = [];
+            }
+        }
+        return $this->getVideosByProduct($productVideosByProduct);
+    }
+
+
+    /**
+     * @param $productPager
+     * @return mixed
+     */
+    public function getVideoByProductPager($productPager)
+    {
+        foreach ($productPager as $product) {
+            /** @var $product \Model\Product\Entity */
+            $productVideosByProduct[$product->getId()] = [];
+        }
+        return $this->getVideosByProduct($productVideosByProduct);
+    }
+
+
+    /**
+     * @param $productVideosByProduct
+     * @return mixed
+     */
+    private function getVideosByProduct( $productVideosByProduct ) {
+        if ((bool)$productVideosByProduct) {
+            $this->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
+                foreach ($data as $id => $items) {
+                    if (!is_array($items)) continue;
+                    foreach ($items as $item) {
+                        if (!$item) continue;
+                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
+                    }
+                }
+            });
+            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
+        }
+        return $productVideosByProduct;
+    }
+
 }
