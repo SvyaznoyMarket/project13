@@ -158,6 +158,9 @@ class Action {
             return new \Http\RedirectResponse(reset($products)->getLink());
         }
 
+
+        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideoByProductPager( $productPager );
+
         // страница
         $page = new \View\Search\IndexPage();
         $page->setParam('searchQuery', $searchQuery);
@@ -170,6 +173,7 @@ class Action {
         $page->setParam('selectedCategory', $selectedCategory);
         $page->setParam('productView', $productView);
         $page->setParam('productCount', $selectedCategory ? $selectedCategory->getProductCount() : $result['count']);
+        $page->setParam('productVideosByProduct', $productVideosByProduct);
 
         return new \Http\Response($page->show());
     }
