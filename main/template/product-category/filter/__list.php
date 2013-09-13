@@ -20,7 +20,7 @@ return function(
             class="bInputHidden bCustomInput"
             type="checkbox"
             id="<?= $viewId ?>"
-            name=""
+            name="f-<?= $filter->getId() . '-' . \Util\String::slugify($option->getName()) ?>"
             value="<?= $optionId ?>"
             hidden
             <? if (in_array($optionId, $values)) { ?> checked="checked"<? } ?>

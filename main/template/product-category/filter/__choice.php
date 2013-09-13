@@ -19,7 +19,7 @@ return function(
                 class="bInputHidden bCustomInput"
                 type="checkbox"
                 id="<?= $viewId ?>"
-                name=""
+                name="f-<?= $filter->getId() ?>"
                 value="<?= $id ?>"
                 hidden
                 <? if (in_array($id, $values)) { ?> checked="checked"<? } ?>
