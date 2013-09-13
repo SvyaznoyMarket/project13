@@ -236,6 +236,29 @@ class Action {
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
+        // если shopscript вернул редирект
+        $shopScript = \App::shopScriptClient();
+
+        $shopScriptSeo = [];
+        $shopScript->addQuery('category/get-seo', [
+                'slug' => $categoryToken,
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ], [], function ($data) use (&$shopScriptSeo) {
+            if($data && is_array($data)) $shopScriptSeo = reset($data);
+        });
+        $shopScript->execute();
+
+        if(!empty($shopScriptSeo['redirect']['link'])) {
+            $redirect = $shopScriptSeo['redirect']['link'];
+            if(!preg_match('/^http/', $redirect)) {
+                $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
+                            \App::config()->mainHost .
+                            (preg_match('/^\//', $redirect) ? '' : '/') .
+                            $redirect;
+            }
+            return new \Http\RedirectResponse($redirect);
+        }
+
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
         }
@@ -283,7 +306,7 @@ class Action {
             if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
                 $controller = new \Controller\Jewel\ProductCategory\Action();
 
-                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
             }
 
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
@@ -315,7 +338,7 @@ class Action {
 
         // получаем из json данные о горячих ссылках и content
         try {
-            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
+            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category, null, $shopScriptSeo);
             // получаем горячие ссылки
             $hotlinks = \RepositoryManager::productCategory()->getHotlinksBySeoCatalogJson($seoCatalogJson);
 
@@ -349,7 +372,8 @@ class Action {
             &$hotlinks,
             &$seoContent,
             &$catalogJson,
-            &$promoContent
+            &$promoContent,
+            &$shopScriptSeo
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -359,6 +383,7 @@ class Action {
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
+            $page->setParam('shopScriptSeo', $shopScriptSeo);
             if ( \App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) $page->setGlobalParam('shops', \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()));
         };
 
