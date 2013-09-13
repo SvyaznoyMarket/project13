@@ -7,6 +7,9 @@ class SubscribeAction {
     const EMPTY_PHONE_ERROR = 'Не указан мобильный телефон';
     const INVALID_PHONE_ERROR = 'Номер мобильного телефона должен содержать 11 цифр';
     const OCCUPIED_PHONE_ERROR = 'Такой номер уже занят';
+    const EMPTY_EMAIL_ERROR = 'Не указан email';
+    const INVALID_EMAIL_ERROR = 'Указан некорректный email';
+    const OCCUPIED_EMAIL_ERROR = 'Такой email уже занят';
     const SAVE_FAILED_ERROR = 'Не удалось сохранить данные';
 
     public function __construct() {
@@ -17,6 +20,8 @@ class SubscribeAction {
 
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
+
+        $helper = new \View\Helper();
 
         $isSubscribe = (bool)$request->request->get('subscribe', false);
         $isSubscribeViaSms = (bool)$request->request->get('subscribe_sms', false);
@@ -30,8 +35,12 @@ class SubscribeAction {
             $mobilePhone = '8' . $mobilePhone;
         }
 
+        // email
+        $email = $request->request->get('email', false);
+
         $error = null;
         $smsTmpCheck = null;
+        $emailTmpCheck = null;
         
         if ($request->isMethod('post')) {
 
@@ -43,12 +52,27 @@ class SubscribeAction {
             if($isSubscribeViaSms) {
                 if(empty($mobilePhone)) {
                     $error = self::EMPTY_PHONE_ERROR;
+                    $smsTmpCheck = true;
                 } elseif (11 != strlen($mobilePhone)) {
                     $error = self::INVALID_PHONE_ERROR;
+                    $smsTmpCheck = true;
                 } else {
                     $userData['mobile'] = $mobilePhone;
                 }
-                $smsTmpCheck = true;
+            }
+
+
+            $emailValidator = new \Validator\Email();
+            if($isSubscribe) {
+                if(empty($email)) {
+                    $error .= empty($error) ? self::EMPTY_EMAIL_ERROR : ', ' . $helper->mbyte_ucfirst(self::EMPTY_EMAIL_ERROR);
+                    $emailTmpCheck = true;
+                } elseif (!$emailValidator->isValid($email)) {
+                    $error .= empty($error) ? self::INVALID_EMAIL_ERROR : ', ' . $helper->mbyte_ucfirst(self::INVALID_EMAIL_ERROR);
+                    $emailTmpCheck = true;
+                } else {
+                    $userData['email'] = $email;
+                }
             }
 
             try {
@@ -71,6 +95,15 @@ class SubscribeAction {
                     case self::EMPTY_PHONE_ERROR:
                     case self::INVALID_PHONE_ERROR:
                     case self::OCCUPIED_PHONE_ERROR:
+                        $smsTmpCheck = true;
+                        $error = $e->getMessage();
+                        break;
+                    case self::EMPTY_EMAIL_ERROR:
+                    case self::INVALID_EMAIL_ERROR:
+                    case self::OCCUPIED_EMAIL_ERROR:
+                        $emailTmpCheck = true;
+                        $error = $e->getMessage();
+                        break;
                     case self::SAVE_FAILED_ERROR:
                         $error = $e->getMessage();
                         break;
@@ -85,6 +118,7 @@ class SubscribeAction {
         $page = new \View\User\IndexPage();
         $page->setParam('error', $error);
         $page->setParam('smsTmpCheck', $smsTmpCheck);
+        $page->setParam('emailTmpCheck', $emailTmpCheck);
 
         return new \Http\Response($page->show());
     }

@@ -36,10 +36,16 @@
         <li>
             Акции, новости и специальные предложения
             <form action="<?= $page->url('user.subscribe') ?>" method="post">
-                <label class="bSubscibe clearfix <? if ($user->getEntity()->getIsSubscribed()): ?>checked<? endif ?>">
+                <label class="emailCheckbox bSubscibe clearfix <? if ($user->getEntity()->getIsSubscribed()): ?>checked<? endif ?>">
                     <b></b> Email
                     <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribed()): ?> checked="checked" <? endif ?> />
                 </label>
+
+                <div id="emailWrapper" class="pt10 width418 <?= !empty($emailTmpCheck) ? '' : 'hf' ?>">
+                    <span class="width205">Email:</span>
+                    <input type="text" id="user_email" value="<?= $user->getEntity()->getEmail() ?>" name="email" class="text width205" />
+                </div>
+
                 <label class="smsCheckbox bSubscibe clearfix <? if ($user->getEntity()->getIsSubscribedViaSms() || !empty($smsTmpCheck)): ?>checked<? endif ?>">
                     <b></b> SMS
                     <input type="checkbox" name="subscribe_sms" value="1" autocomplete="off" class="smsCheckbox subscibe"<? if ($user->getEntity()->getIsSubscribedViaSms() || !empty($smsTmpCheck)): ?> checked="checked" <? endif ?> />

@@ -118,23 +118,39 @@ $.ajaxSetup({
  * @requires  jQuery
  */
 (function(){
-  var checked = false;
+  var checkedSms = false;
+  var checkedEmail = false;
 
   var handleSubscribeSms = function() {
-    if ( checked ) {
+    if ( checkedSms ) {
       $('#mobilePhoneWrapper').hide();
       $('#mobilePhoneWrapper').parent().find('.red').html('');
-      checked = false;
+      checkedSms = false;
     } else {
       $('#mobilePhoneWrapper').show();
-      checked = true;
+      checkedSms = true;
+    }
+  };
+
+  var handleSubscribeEmail = function() {
+    if ( checkedEmail ) {
+      $('#emailWrapper').hide();
+      $('#emailWrapper').parent().find('.red').html('');
+      checkedEmail = false;
+    } else {
+      $('#emailWrapper').show();
+      checkedEmail = true;
     }
   };
 
   $(document).ready(function(){
-    checked = $('.smsCheckbox').hasClass('checked');
+    checkedSms = $('.smsCheckbox').hasClass('checked');
     if ( !$('#user_mobile_phone').val() ) {
       $('.smsCheckbox').bind('click', handleSubscribeSms);
+    }
+    checkedEmail = $('.emailCheckbox').hasClass('checked');
+    if ( !$('#user_email').val() ) {
+      $('.emailCheckbox').bind('click', handleSubscribeEmail);
     }
   });
 }());
