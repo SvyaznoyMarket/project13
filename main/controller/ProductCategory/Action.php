@@ -679,8 +679,26 @@ class Action {
         // регион для фильтров
         $region = $isGlobal ? null : \App::user()->getRegion();
 
+        // добывание фильтров из http-запроса
+        $requestData = ('POST'== $request->getMethod()) ? $request->request : $request->query;
+
+        $values = [];
+        foreach ($requestData as $k => $v) {
+            if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
+            $parts = array_pad(explode('-', $k), 3, null);
+
+            if (!isset($values[$parts[1]])) {
+                $values[$parts[1]] = [];
+            }
+            if (('from' == $parts[2]) || ('to' == $parts[2])) {
+                $values[$parts[1]][$parts[2]] = $v;
+            } else {
+                $values[$parts[1]][] = $v;
+            }
+        }
+
         // filter values
-        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        //$values = (array)$request->get(\View\Product\FilterForm::$name, []);
         if ($isGlobal) {
             $values['global'] = 1;
         }
