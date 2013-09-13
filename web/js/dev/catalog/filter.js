@@ -54,6 +54,8 @@
 
 			console.log(formData);
 
+			catalog.history.gotoUrl(formData);
+
 			return false;
 		},
 

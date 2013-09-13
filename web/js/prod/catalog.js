@@ -29,7 +29,6 @@
 				return;
 			}
 
-			state.url.addParameterToUrl('ajax', 'true');
 			console.info('link handler. push state new url: '+state.url);
 			History.pushState(state, state.title, state.url);
 
@@ -48,6 +47,11 @@
 			return false;
 		},
 
+		resHandler = function resHandler( res ) {
+			console.info('resHandler');
+			console.log(res);
+		},
+
 		/**
 		 * Обработчик изменения состояния истории в браузере
 		 */
@@ -58,8 +62,16 @@
 			
 			console.info('statechange');
 
+			url.addParameterToUrl('ajax', 'true');
+
 			console.log(url);
 			console.log(state);
+
+			$.ajax({
+				type: 'GET',
+				url: url,
+				success: resHandler
+			});
 		};
 	// end of functions
 
@@ -67,7 +79,7 @@
 	History.Adapter.bind(window, 'statechange', stateChangeHandler);
 	$('body').on('click', '.jsHistoryLink', historyLinkHandler);
 
-}(window.ENTER));
+}(window.ENTER));	
  
  
 /** 
@@ -130,6 +142,8 @@
 			var formData = filterBlock.serialize();
 
 			console.log(formData);
+
+			catalog.history.gotoUrl(formData);
 
 			return false;
 		},
