@@ -18,7 +18,7 @@
 	catalog.history = {
 		gotoUrl: function gotoUrl( url ) {
 			var state = {
-				title: 'history link to '+url,
+				title: 'Enter - это выход!',
 				url: url
 			};
 
