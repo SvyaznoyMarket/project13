@@ -40,11 +40,16 @@ class Client {
         $data['http_user'] = \App::config()->shopScript['user'];
         $data['http_password'] = \App::config()->shopScript['password'];
 
-        $response = $this->curl->query($this->getUrl($action, $params), $data, $timeout);
+        $result = $this->curl->addQuery($this->getUrl($action, $params), $data, $successCallback, function($e) {
+            \App::exception()->remove($e);
+            \App::logger()->info('Fail ShopScript request with ' . $e, ['shopScript']);
+        }, $timeout);
+
+        $this->curl->execute($this->config['retryTimeout']['default'], $this->config['retryCount']);
 
         \Debug\Timer::stop('ShopScript');
 
-        return $response;
+        return $result;
     }
 
     /**
@@ -66,7 +71,10 @@ class Client {
         $data['http_user'] = \App::config()->shopScript['user'];
         $data['http_password'] = \App::config()->shopScript['password'];
 
-        $result = $this->curl->addQuery($this->getUrl($action, $params), $data, $successCallback, $failCallback, $timeout);
+        $result = $this->curl->addQuery($this->getUrl($action, $params), $data, $successCallback, function($e) {
+            \App::exception()->remove($e);
+            \App::logger()->info('Fail ShopScript request with ' . $e, ['shopScript']);
+        }, $timeout);
 
         \Debug\Timer::stop('ShopScript');
 

@@ -129,18 +129,22 @@ class Layout extends \View\DefaultLayout {
         }
         $categoryTokens[] = $category->getToken();
 
-        $shopScript->addQuery('category/get-seo', [
-                'slug' => $category->getToken(),
-                'geo_id' => \App::user()->getRegion()->getId(),
-            ], [], function ($data) use (&$seoTemplate) {
-            if($data && is_array($data)) $data = reset($data);
-            $seoTemplate = array_merge([
-                'title'       => null,
-                'description' => null,
-                'keywords'    => null,
-            ], $data);
-        });
-        $shopScript->execute();
+        $shopScriptSeo = $this->getParam('shopScriptSeo');
+        while(!empty($shopScriptSeo['redirect']['token'])) {
+            $shopScript->addQuery('category/get-seo', [
+                    'slug' => $shopScriptSeo['redirect']['token'],
+                    'geo_id' => \App::user()->getRegion()->getId(),
+                ], [], function ($data) use (&$shopScriptSeo) {
+                if($data && is_array($data)) $shopScriptSeo = reset($data);
+            });
+            $shopScript->execute();
+        }
+
+        $seoTemplate = array_merge([
+            'title'       => null,
+            'description' => null,
+            'keywords'    => null,
+        ], $shopScriptSeo);
 
         // данные для шаблона
         $patterns = [
