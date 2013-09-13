@@ -1,10 +1,15 @@
 /*
  *	jQuery elevateZoom 2.5.6
+ *	+ fix by Alexandr Zaytcev: 
+ * 				- mLoading, when swap image
+ * 				- disableZoom option
+ * 
  *	Demo's and documentation:
  *	www.elevateweb.co.uk/image-zoom
  *
  *	Copyright (c) 2012 Andrew Eades
  *	www.elevateweb.co.uk
+ *
  *
  *	Dual licensed under the GPL and MIT licenses.
  *	http://en.wikipedia.org/wiki/MIT_License
@@ -118,7 +123,6 @@ if ( typeof Object.create !== 'function' ) {
 				//calculate the width ratio of the large/small image
 				self.widthRatio = (self.largeWidth/self.options.zoomLevel) / self.nzWidth;
 				self.heightRatio = (self.largeHeight/self.options.zoomLevel) / self.nzHeight; 
-
 
 				//if window zoom        
 				if(self.options.zoomType == "window") {
@@ -296,12 +300,18 @@ if ( typeof Object.create !== 'function' ) {
 				}
 				/*-------------------END THE ZOOM WINDOW AND LENS----------------------------------*/
 				//touch events
-				self.$elem.bind('touchmove', function(e){    
+				if ( self.options.disableZoom ) {
+					console.log('disableZoom');
+					return;
+				}
+				
+				self.$elem.bind('touchmove', function( e ) { 
 					e.preventDefault();
 					var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];  
 					self.setPosition(touch); 
-				});  
-				self.zoomContainer.bind('touchmove', function(e){ 
+				});
+
+				self.zoomContainer.bind('touchmove', function( e ) {
 					if(self.options.zoomType == "inner") {
 						if(self.options.zoomWindowFadeIn){        
 							self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
@@ -313,35 +323,36 @@ if ( typeof Object.create !== 'function' ) {
 					var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];  
 					self.setPosition(touch); 
 
-				});  	
-				self.zoomContainer.bind('touchend', function(e){ 
+				});  
+
+				self.zoomContainer.bind('touchend', function( e ) {
 					self.zoomWindow.hide();
 					if(self.options.showLens) {self.zoomLens.hide();}
 					if(self.options.tint) {self.zoomTint.hide();}
 				});  	
 
-				self.$elem.bind('touchend', function(e){ 
+				self.$elem.bind('touchend', function( e ) {
 					self.zoomWindow.hide();
 					if(self.options.showLens) {self.zoomLens.hide();}
 					if(self.options.tint) {self.zoomTint.hide();}
-				});  	
+				});
+
 				if(self.options.showLens) {
-					self.zoomLens.bind('touchmove', function(e){ 
-
+					self.zoomLens.bind('touchmove', function( e ) {
 						e.preventDefault();
 						var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];  
 						self.setPosition(touch); 
 					});    
 
 
-					self.zoomLens.bind('touchend', function(e){ 
+					self.zoomLens.bind('touchend', function( e ) {
 						self.zoomWindow.hide();
 						if(self.options.showLens) {self.zoomLens.hide();}
 						if(self.options.tint) {self.zoomTint.hide();}
 					});  
 				}
 				//Needed to work in IE
-				self.$elem.bind('mousemove', function(e){
+				self.$elem.bind('mousemove', function( e ) {
 					//make sure on orientation change the setposition is not fired
 					if(self.lastX !== e.clientX || self.lastY !== e.clientY){
 						self.setPosition(e);
@@ -351,14 +362,15 @@ if ( typeof Object.create !== 'function' ) {
 
 				});  	
 
-				self.zoomContainer.bind('mousemove', function(e){  
+				self.zoomContainer.bind('mousemove', function( e ) {
 					//make sure on orientation change the setposition is not fired 
 					if(self.lastX !== e.clientX || self.lastY !== e.clientY){
 						self.setPosition(e);
 					}   
 					self.lastX = e.clientX;
 					self.lastY = e.clientY;    
-				});  	
+				});
+
 				if(self.options.zoomType != "inner") {
 					self.zoomLens.bind('mousemove', function(e){ 
 						//make sure on orientation change the setposition is not fired
@@ -369,8 +381,9 @@ if ( typeof Object.create !== 'function' ) {
 						self.lastY = e.clientY;    
 					});
 				}
+
 				if(self.options.tint) {
-					self.zoomTint.bind('mousemove', function(e){ 
+					self.zoomTint.bind('mousemove', function( e ) {
 						//make sure on orientation change the setposition is not fired
 						if(self.lastX !== e.clientX || self.lastY !== e.clientY){
 							self.setPosition(e);
@@ -380,8 +393,9 @@ if ( typeof Object.create !== 'function' ) {
 					});
 
 				}
+
 				if(self.options.zoomType == "inner") {
-					self.zoomWindow.bind('mousemove', function(e) {
+					self.zoomWindow.bind('mousemove', function( e ) {
 						//make sure on orientation change the setposition is not fired
 						if(self.lastX !== e.clientX || self.lastY !== e.clientY){
 							self.setPosition(e);
@@ -394,8 +408,7 @@ if ( typeof Object.create !== 'function' ) {
 
 
 				//  lensFadeOut: 500,  zoomTintFadeIn
-				self.zoomContainer.mouseenter(function(){
-
+				self.zoomContainer.mouseenter(function() {
 					if(self.options.zoomType == "inner") {
 						if(self.options.zoomWindowFadeIn){        
 							self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
@@ -430,8 +443,7 @@ if ( typeof Object.create !== 'function' ) {
 
 
 					}
-				}).mouseleave(function(){
-
+				}).mouseleave(function() {
 					self.zoomWindow.hide();
 					if(self.options.showLens) {self.zoomLens.hide();}
 
@@ -442,7 +454,6 @@ if ( typeof Object.create !== 'function' ) {
 				//end ove image
 
 				self.$elem.mouseenter(function(){
-
 					if(self.options.zoomType == "inner") {
 						if(self.options.zoomWindowFadeIn){        
 							self.zoomWindow.stop(true, true).fadeIn(self.options.zoomWindowFadeIn);
@@ -477,8 +488,7 @@ if ( typeof Object.create !== 'function' ) {
 
 
 					}
-				}).mouseleave(function(){
-
+				}).mouseleave(function() {
 					self.zoomWindow.hide();
 					if(self.options.showLens) {self.zoomLens.hide();}
 
@@ -611,6 +621,7 @@ if ( typeof Object.create !== 'function' ) {
 					self.Eloppos = (self.mouseLeft < 0+((self.zoomLens.width()/2))); 
 					self.Eroppos = (self.mouseLeft > (self.nzWidth - (self.zoomLens.width()/2)-(self.options.lensBorderSize*2)));  
 				}
+
 				//calculate the bound regions - but only for inner zoom
 				if(self.options.zoomType == "inner"){ 
 					self.Etoppos = (self.mouseTop < (self.nzHeight/2)/self.heightRatio );
@@ -1080,6 +1091,7 @@ if ( typeof Object.create !== 'function' ) {
 	};
 
 	$.fn.elevateZoom.options = {
+			disableZoom: false,
 			zoomLevel: 1,
 			easing: false,
 			easingAmount: 12,

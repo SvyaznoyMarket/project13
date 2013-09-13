@@ -825,7 +825,8 @@ $(document).ready(function() {
 		zoomWindowOffetx: 19,
 		zoomWindowWidth: 519,
 		borderSize: 1,
-		borderColour: '#C7C7C7'
+		borderColour: '#C7C7C7',
+		disableZoom: false
 	});
 
 
