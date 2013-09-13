@@ -141,8 +141,6 @@ class IndexAction {
         $useLens = true;
         if ( isset($catalogJson['use_lens']) ) $useLens = (bool) $catalogJson['use_lens'];
 
-
-
         // Если набор, то получим $productLine
         $productLine = $product->getLine();
 
@@ -151,10 +149,14 @@ class IndexAction {
         $parts = [];
 
         if ($productLine instanceof \Model\Product\Line\Entity ) {
-            // Если набор, то получаем главный продукт
             $productRepository = \RepositoryManager::product();
             $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
-            $mainProduct = $productRepository->getEntityById($line->getMainProductId());
+            if(!$product->getKit()) {
+                // Если набор, то получаем главный продукт
+                $mainProduct = $productRepository->getEntityById($line->getMainProductId());
+            } else {
+                $mainProduct = $product;
+            }
 
             // Запрашиваю составные части набора
             if ($mainProduct && (bool)$mainProduct->getKit() ) {
@@ -171,8 +173,6 @@ class IndexAction {
                 }
             }
         }
-
-
 
         /*
         if ($categoryClass) {
