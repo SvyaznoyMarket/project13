@@ -16,7 +16,7 @@ return function(
         : 0;
 ?>
 
-    <div class="priceSale">
+    <div class="priceSale<?= $user->getEntity()?'': ' hidden' ?>">
         <span class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
         <div class="bLowPriceNotiferPopup popup">
             <i class="close"></i>
