@@ -9,7 +9,7 @@ return function(
 
     $user = \App::user();
 
-    $products = [];
+    $productData = [];
     foreach ($pager as $product) {
         $productVideos = isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [];
         /** @var $productVideo \Model\Product\Video\Entity|null */
@@ -19,7 +19,7 @@ return function(
         /** @var string $model3dImg */
         $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getImg3d() : null;
 
-        $products[] = [
+        $productItem = [
             'name'         => $product->getName(),
             'link'         => $product->getLink(),
             'label'        =>
@@ -27,15 +27,14 @@ return function(
                 ? ['name' => $product->getLabel()->getName(), 'image' => $product->getLabel()->getImageUrl()]
                 : null
             ,
-            'cart'         => [
-                'addLink' => $helper->url('cart.product.set', ['productId' => $product->getId()]),
-            ],
+            'cartButton'   => [],
             'image'        => $product->getImageUrl(2),
             'price'        => $helper->formatPrice($product->getPrice()),
             'oldPrice'     => ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany())
                 ? $helper->formatPrice($product->getPriceOld())
                 : null
             ,
+            'isBuyable'    => $product->getIsBuyable(),
             'onlyInShop'   => !$product->getIsBuyable() && $product->getState()->getIsShop(),
             'variations'   =>
                 ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty())
@@ -49,7 +48,29 @@ return function(
             'hasVideo' => $productVideo && $productVideo->getContent(),
             'has360'   => $model3dExternalUrl || $model3dImg,
         ];
+
+        // cart
+        if (!$product->getIsBuyable()) {
+            $productItem['cartButton']['url'] = '#';
+
+            if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
+                $productItem['cartButton']['value'] = 'Только в магазинах';
+            } else {
+                $productItem['cartButton']['value'] = 'Нет в наличии';
+            }
+        } else if (!isset($url)) {
+            $urlParams = [
+                'productId' => $product->getId(),
+            ];
+            if ($helper->hasParam('sender')) {
+                $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
+            }
+            $productItem['cartButton']['url'] = $helper->url('cart.product.set', $urlParams);
+            $productItem['cartButton']['value'] = 'Купить';
+        }
+
+        $productData[] = $productItem;
     }
 
-    echo $helper->renderWithMustache('product/list/_compact', ['products' => $products]);
+    echo $helper->renderWithMustache('product/list/_compact', ['products' => $productData]);
 };
