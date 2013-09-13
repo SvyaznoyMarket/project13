@@ -62,7 +62,7 @@
 			
 			console.info('statechange');
 
-			url.addParameterToUrl('ajax', 'true');
+			url = url.addParameterToUrl('ajax', 'true');
 
 			console.log(url);
 			console.log(state);
