@@ -349,8 +349,6 @@ window.ANALYTICS = {
             category: function (data) {
                 window.rcAsyncInit = function () {
                     rcApi.categoryView(data);
-                    console.log('catego222ry');
-                    console.log(data);
                 }
             },
 
