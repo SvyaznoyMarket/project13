@@ -157,52 +157,51 @@ $(document).ready(function(){
 	};
 
 
-    var kissForProductOfCategory = function kissForProductOfCategory() {
-        console.log('* kissForProductOfCategory TEST');
+    var kissForProductOfCategory = function kissForProductOfCategory(event) {
+        event.preventDefault(); // tmp
+        console.log('*** clickeD!!! '); // tmp
 
-        //$( "a.kiss_cat_clicked" ).bind( "click", function() {
-        $( "div.goodsbox__inner" ).delegate( "a", "click", function() {
-            console.log('*** clickeD!!! ');
-            //console.log( $(this) );
-            var data = data = $('#_categoryData').data('category'),
-                datap = $(this).parents('div.goodsbox__inner').data('add'),
-                toKISS = {
-                    'Category Results Clicked Category Type': data.type,
-                    'Category Results Clicked Category Level': data.level,
-                    'Category Results Clicked Parent category': data.parent_category,
-                    'Category Results Clicked Category name': data.category,
-                    'Category Results Clicked Category ID': data.id,
-                    'Category Results Clicked SKU': datap.article,
-                    'Category Results Clicked Product Name': datap.name,
-                    'Category Results Clicked Page Number': datap.page,
-                    'Category Results Clicked Product Position': datap.position
-                };
+        var t = $(this), box, datap, toKISS = false,
+            datac = $('#_categoryData').data('category');
+
+        box = t.parents('div.goodsbox__inner');
+        if ( !box.length ) box = t.parents('div.goodsboxlink');
+        datap = box.length ? box.data('add') : false;
 
 
+        if (datap && datac)
+        toKISS = {
+            'Category Results Clicked Category Type': datac.type,
+            'Category Results Clicked Category Level': datac.level,
+            'Category Results Clicked Parent category': datac.parent_category,
+            'Category Results Clicked Category name': datac.category,
+            'Category Results Clicked Category ID': datac.id,
+            'Category Results Clicked SKU': datap.article,
+            'Category Results Clicked Product Name': datap.name,
+            'Category Results Clicked Page Number': datap.page,
+            'Category Results Clicked Product Position': datap.position
+        };
 
-            /****/
-            //console.log(data.category);
-            console.log('*** test IN CLICK BEGIN { ');
-            console.log(toKISS);
-            console.log('*** } test IN CLICK END');
-            /****/
 
-            if (typeof(_kmq) !== 'undefined') {
-                _kmq.push(['record', 'Category Results Clicked', toKISS]);
-            }
+        /****/
+        console.log('*** test IN CLICK BEGIN { ');
+        if (toKISS) console.log(toKISS);
+        console.log('*** } test IN CLICK END');
+        /****/
 
 
-            //if (datap) {
-                event.preventDefault();
-                return false;
-            //}
+        if (toKISS && typeof(_kmq) !== 'undefined') {
+            _kmq.push(['record', 'Category Results Clicked', toKISS]);
+        }
 
-        });
+        return false;
     };
 
-	if ( $('#_categoryData').length ) {
+
+    if ( $('#_categoryData').length ) {
+        console.log('*** It is categoryData!!!'); // tmp
 		kissForCategory();
-        kissForProductOfCategory();
+        $('body').delegate("div.goodsbox a", "click",kissForProductOfCategory);
 	}
 
 	/**
