@@ -201,6 +201,7 @@ $(document).ready(function(){
     if ( $('#_categoryData').length ) {
         console.log('*** It is categoryData!!!'); // tmp
 		kissForCategory();
+        /** Вызываем kissForProductOfCategory() для всех категорий - в том числе слайдеров, аджаксов и тп **/
         $('body').delegate("div.goodsbox a", "click",kissForProductOfCategory);
 	}
 
