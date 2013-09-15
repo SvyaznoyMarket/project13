@@ -38,11 +38,10 @@ class Repository {
     }
 
 
-
-
     /**
-     * @param $productPager
-     * @return Array
+     * @param \Iterator\EntityPager $productPager
+     * @param array                 $productVideosByProduct
+     * @return array
      */
     public function getVideoByProductPager($productPager, $productVideosByProduct = [])
     {
@@ -55,8 +54,8 @@ class Repository {
 
 
     /**
-     * @param $productVideosByProduct
-     * @return Array [productId => array [Model\Product\Video\Entity] ]
+     * @param array     $productVideosByProduct
+     * @return array    [productId => array [Model\Product\Video\Entity] ]
      */
     public function getVideosByProduct( $productVideosByProduct ) {
         if ((bool)$productVideosByProduct) {
