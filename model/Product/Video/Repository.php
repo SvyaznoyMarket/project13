@@ -39,26 +39,12 @@ class Repository {
 
 
 
-    /**
-     * @param $productPagersByCategory
-     */
-    public function getVideoByProductCategoryPagers( $productPagersByCategory ) {
-        $productVideosByProduct = [];
-        foreach ($productPagersByCategory as $productPager) {
-            foreach ($productPager as $product) {
-                /** @var $product \Model\Product\Entity */
-                $productVideosByProduct[$product->getId()] = [];
-            }
-        }
-        return $this->getVideosByProduct($productVideosByProduct);
-    }
-
 
     /**
      * @param $productPager
-     * @return mixed
+     * @return Array
      */
-    public function getVideoByProductPager($productPager)
+    public function getVideoByProductPager($productPager, $productVideosByProduct = [])
     {
         foreach ($productPager as $product) {
             /** @var $product \Model\Product\Entity */
@@ -70,9 +56,9 @@ class Repository {
 
     /**
      * @param $productVideosByProduct
-     * @return mixed
+     * @return Array [productId => array [Model\Product\Video\Entity] ]
      */
-    private function getVideosByProduct( $productVideosByProduct ) {
+    public function getVideosByProduct( $productVideosByProduct ) {
         if ((bool)$productVideosByProduct) {
             $this->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
                 foreach ($data as $id => $items) {

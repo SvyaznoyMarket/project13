@@ -470,6 +470,7 @@ class Action {
         /** @var $child \Model\Product\Category\Entity */
         $child = reset($childrenById);
         $productPagersByCategory = [];
+        $productVideosByProduct = [];
         $productCount = 0;
 
         foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
@@ -478,13 +479,18 @@ class Action {
             $productPagersByCategory[$child->getId()] = $productPager;
             $productCount += $productPager->count();
 
+            foreach ($productPager as $product) {
+                /** @var $product \Model\Product\Entity */
+                $productVideosByProduct[$product->getId()] = [];
+            }
+
             $child = next($childrenById);
             if (!$child) {
                 break;
             }
         }
 
-        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideoByProductCategoryPagers( $productPagersByCategory );
+        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideosByProduct( $productVideosByProduct );
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
