@@ -7,6 +7,7 @@
  * @var $productVideos \Model\Product\Video\Entity[]
  * @var $addInfo       array
  **/
+//print_r($addInfo);
 ?>
 
 <?php
