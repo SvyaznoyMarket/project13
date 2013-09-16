@@ -71,6 +71,12 @@ return function(
 
         $productData[] = $productItem;
     }
+?>
 
-    echo $helper->renderWithMustache('product/list/_compact', ['products' => $productData]);
-};
+    <?= $helper->renderWithMustache('product/list/_compact', ['products' => $productData]) ?>
+
+    <script type="text/html">
+        <?= include __DIR__ . '/list/_compact.mustache' ?>
+    </script>
+
+<? };
