@@ -226,16 +226,17 @@ class Action {
                     return $response;
                 } catch(\Exception $e) {
                     \App::exception()->remove($e);
+                    $errorMess = $e->getMessage();
                     switch ($e->getCode()) {
-                        case 684:
-                            $form->setError('username', 'Неправильный email');
-                            break;
                         case 686:
-                            $form->setError('username', 'Такой пользователь уже зарегистрирован.');
+                        case 684:
+                        case 689:
+                        case 690:
+                            $form->setError('username', $errorMess );
                             break;
                         case 609:
                         default:
-                            $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
+                            $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $e->getMessage()) : '') );
                             break;
                     }
                 }
