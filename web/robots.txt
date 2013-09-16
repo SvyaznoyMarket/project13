@@ -18,12 +18,13 @@ Disallow: /*comments/new
 Disallow: /qr/*
 Disallow: /*//
 Disallow: /product/*/change/
-Disallow: /b2b
+Disallow: /corporate-register
 Disallow: /request-password
 Disallow: /*?from=enter_
 Disallow: /index.php
 Disallow: /*stock   
-Disallow: /*?shop=  
+Disallow: /*?shop=
+Disallow: /*?sender=
 
 Host: www.enter.ru
 

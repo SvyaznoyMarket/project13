@@ -50,7 +50,6 @@ class CouponAction {
 
             if (in_array($e->getCode(), [300,  303,  305, 306, 307, 308, 309, 310, 311, 312, 313])) {
                 $cart->clearCoupons();
-                $responseData['success'] = false;
             }
 
             $responseData = [

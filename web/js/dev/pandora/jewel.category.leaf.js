@@ -1,17 +1,17 @@
 $(document).ready(function(){
-  if($('body.jewel .bBrandSorting').length) {
+  if($('body.jewel .filter-section').length) {
 
     // handle_url_hash()
 
     // var prevent_request_on_hashchange = false
     // handle_jewel_items()
-    handle_jewel_infinity_scroll()
+    handle_jewel_infinity_scroll();
   }
-})
+});
 
 // function handle_small_tabs() {
-//   $('.bBrandSubNavList .bBrandSubNavList__eLink').click(function(event){
-//     $('.bBrandSubNavList .bBrandSubNavList__eLink').removeClass('active')
+//   $('.brand-subnav__list a').click(function(event){
+//     $('.brand-subnav__list a').removeClass('active')
 //     $(this).addClass('active')
 //     get_jewel_content($(this).attr('href'))
 //     event.stopPropagation()
@@ -29,70 +29,75 @@ $(document).ready(function(){
 // }
 
 /* Infinity scroll */
-var ableToLoadJewel = true
+var ableToLoadJewel = true;
 function liveScrollJewel( lsURL, filters, pageid ) {
-  var params = []
-  var tmpnodeJewel = $('.bBrandGoodsList')
+  var params = [];
+  var tmpnodeJewel = $('.items-section__list');
 
-  $('#ajaxgoods').show()
+  $('#ajaxgoods').show();
 
-  if( lsURL.match(/\?/) )
-    lsURL += '&page=' + pageid
-  else
-    lsURL += '?page=' + pageid
+  if ( lsURL.match(/\?/) ) {
+    lsURL += '&page=' + pageid;
+  }
+  else {
+    lsURL += '?page=' + pageid;
+  }
 
   $.get( lsURL, params, function(data){
     if ( data != "" && !data.data ) { // JSON === error
-      ableToLoadJewel = true
-      tmpnodeJewel.append(data.products)
-      handle_jewel_items()
+      ableToLoadJewel = true;
+      tmpnodeJewel.append(data.products);
+      // handle_jewel_items();
     }
-    $('#ajaxgoods').hide()
-    if( $('#dlvrlinks').length ) {
-      var coreid = []
-      var nodd = $('<div>').html( data.products )
+
+    $('#ajaxgoods').hide();
+
+    if ( $('#dlvrlinks').length ) {
+      var coreid = [];
+      var nodd = $('<div>').html( data.products );
       nodd.find('div.boxhover, div.goodsboxlink').each( function() {
-        var cid = $(this).data('cid') || 0
-        if( cid )
-          coreid.push( cid )
-      })
-      dajax.post( dlvr_node.data('calclink'), coreid )
+        var cid = $(this).data('cid') || 0;
+        if( cid ) {
+          coreid.push( cid );
+        }
+      });
+      dajax.post( dlvr_node.data('calclink'), coreid );
     }
     // handle_custom_items()
-  })
+  });
 }
 
 
 function handle_jewel_infinity_scroll() {
-  var checkScrollJewel = function(){}
+  var checkScrollJewel = function(){};
   $('div.allpagerJewel').each(function() {
-    var lsURL = $(this).data('url') 
-    var filters = ''//$(this).data('filter')
-    var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
-    var vinit = vnext - 1
-    var vlast = parseInt('0' + $(this).data('lastpage') , 10)
-    var tmpnodeJewel = $('.bBrandGoodsList')
+    var lsURL = $(this).data('url');
+    var filters = '';//$(this).data('filter')
+    var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2;
+    var vinit = vnext - 1;
+    var vlast = parseInt('0' + $(this).data('lastpage') , 10);
+    var tmpnodeJewel = $('.items-section__list');
 
     checkScrollJewel = function(){
       if ( ableToLoadJewel && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
-        ableToLoadJewel = false
+        ableToLoadJewel = false;
         if( vlast + vinit > vnext ) {
-          liveScrollJewel( lsURL, filters, ((vnext % vlast) ? (vnext % vlast) : vnext ))
+          liveScrollJewel( lsURL, filters, ((vnext % vlast) ? (vnext % vlast) : vnext ));
         }
-        vnext += 1
+        vnext += 1;
       }
     }
 
-    $(this).unbind('click')
+    $(this).unbind('click');
     $(this).bind('click', function(){
-      switch_to_scroll(checkScrollJewel)
+      switch_to_scroll(checkScrollJewel);
     })
   })
   setTimeout(function(){
     if( window.docCookies.hasItem( 'infScroll' ) ) {
-      switch_to_scroll(checkScrollJewel)
+      switch_to_scroll(checkScrollJewel);
     }
-  },600)
+  },600);
 }
 
 // function get_jewel_content(url, slide, browser_buttons) {
@@ -129,27 +134,30 @@ function handle_jewel_infinity_scroll() {
 // }
 
 function switch_to_scroll(checkScrollJewel) {
-  window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' )
-  var next = $('div.pageslist:first li:first')
-  if( next.hasClass('current') )
+  window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
+  var next = $('div.pageslist:first li:first');
+
+  if ( next.hasClass('current') ) {
     next = next.next()
+  }
+
   var next_a = next.find('a')
           .html('<span>123</span>')
-          .addClass('borderedR')
-  next_a.attr('href', next_a.attr('href').replace(/page=\d+/,'') )
-  $('div.pageslist li').remove()
+          .addClass('borderedR');
+  next_a.attr('href', next_a.attr('href').replace(/page=\d+/,'') );
+  $('div.pageslist li').remove();
   $('div.pageslist ul').append( next )
              .find('a')
              .bind('click', function(event){
-                window.docCookies.removeItem( 'infScroll' )
+                window.docCookies.removeItem( 'infScroll', '/' )
                 // ableToLoadJewel = true
                 // $(window).unbind('scroll')
                 // return false
-              })
+              });
   // handle_jewel_filters_pagination()
-  $('div.allpagerJewel').addClass('mChecked')
-  checkScrollJewel()
-  $(window).scroll(checkScrollJewel)
+  $('div.allpagerJewel').addClass('mChecked');
+  checkScrollJewel();
+  $(window).scroll(checkScrollJewel);
 }
 
 // function handle_url_hash(browser_buttons) {

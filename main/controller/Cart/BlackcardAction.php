@@ -33,6 +33,10 @@ class BlackcardAction {
 
             $cart->setBlackcard($blackcard);
 
+            $result = (new \Controller\Order\DeliveryAction())->getResponseData(false);
+            var_dump($result);
+            exit();
+
             foreach ($cart->getBlackcards() as $blackcard) {
                 if ($number === $blackcard->getNumber()) {
                     if ($blackcard->getError() instanceof \Exception) {
@@ -46,6 +50,10 @@ class BlackcardAction {
             \App::exception()->remove($e);
 
             $message = \Model\Cart\Blackcard\Entity::getErrorMessage($e->getCode()) ?: 'Неудалось активировать карту';
+
+            if (in_array($e->getCode(), [1000, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013])) {
+                $cart->clearBlackcards();
+            }
 
             $responseData = [
                 'success' => false,

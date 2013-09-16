@@ -167,6 +167,12 @@ class AppConfig {
 
     /** @var array */
     public $partners = [
+        'livetex' => [
+            'enabled' => null,
+            'liveTexID' => null,
+            'login' => null,
+            'password' => null,
+        ],
         'criteo' => [
             'enabled' => null,
         ]

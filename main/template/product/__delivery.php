@@ -44,20 +44,20 @@ return function (
 
 <script id="widget_delivery_standart" type="text/html">
     <% if (price === 0) { %>
-        <span>Доставка <strong>бесплатно</strong></span>
+        <span><span class="bJustText">Доставка</span> <strong>бесплатно</strong></span>
     <% } else { %>
-        <span>Доставка <strong><%=price%></strong> <span class="rubl">p</span></span>
+        <span><span class="bJustText">Доставка</span> <strong><%=price%></strong> <span class="rubl">p</span></span>
     <% } %>
-        <div><%=dateString%></div>
+        <div class="bJustText"><%=dateString%></div>
 </script>
 
 <script id="widget_delivery_self" type="text/html">
     <% if (price === 0) { %>
-        <span>Самовывоз <strong>бесплатно</strong></span>
+        <span><span class="bJustText">Самовывоз</span> <strong>бесплатно</strong></span>
     <% } else { %>
-        <span>Самовывоз <strong><%=price%></strong> <span class="rubl">p</span></span>
+        <span><span class="bJustText">Самовывоз</span> <strong><%=price%></strong> <span class="rubl">p</span></span>
     <% } %>
-        <div><%=dateString%></div>
+        <div class="bJustText"><%=dateString%></div>
 </script>
 
 <script id="widget_delivery_shop" type="text/html">
