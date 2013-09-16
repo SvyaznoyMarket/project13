@@ -82,6 +82,29 @@ class Action extends \Controller\ProductCategory\Action {
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
+        // если shopscript вернул редирект
+        $shopScript = \App::shopScriptClient();
+
+        $shopScriptSeo = [];
+        $shopScript->addQuery('category/get-seo', [
+                'slug' => $categoryToken,
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ], [], function ($data) use (&$shopScriptSeo) {
+            if($data && is_array($data)) $shopScriptSeo = reset($data);
+        });
+        $shopScript->execute();
+
+        if(!empty($shopScriptSeo['redirect']['link'])) {
+            $redirect = $shopScriptSeo['redirect']['link'];
+            if(!preg_match('/^http/', $redirect)) {
+                $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
+                            \App::config()->mainHost .
+                            (preg_match('/^\//', $redirect) ? '' : '/') .
+                            $redirect;
+            }
+            return new \Http\RedirectResponse($redirect);
+        }
+
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
         }
@@ -106,7 +129,7 @@ class Action extends \Controller\ProductCategory\Action {
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
-        return $this->category($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+        return $this->category($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
     }
 
 
@@ -116,10 +139,11 @@ class Action extends \Controller\ProductCategory\Action {
      * @param \Model\Brand\Entity|null        $brand
      * @param \Http\Request                   $request
      * @param \Model\Region\Entity[]          $regionsToSelect
+     * @param array                           $shopScriptSeo
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent) {
+    public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo) {
         // убираем/показываем уши
         if(isset($catalogJson['show_side_panels'])) {
             \App::config()->adFox['enabled'] = (bool)$catalogJson['show_side_panels'];
@@ -140,7 +164,7 @@ class Action extends \Controller\ProductCategory\Action {
 
         // получаем из json данные о горячих ссылках и content
         try {
-            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
+            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category, null, $shopScriptSeo);
             $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
             // в json-файле в свойстве content содержится массив
             if (empty($brand)) {
@@ -168,7 +192,8 @@ class Action extends \Controller\ProductCategory\Action {
             &$hotlinks,
             &$seoContent,
             &$catalogJson,
-            &$promoContent
+            &$promoContent,
+            &$shopScriptSeo
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -180,6 +205,7 @@ class Action extends \Controller\ProductCategory\Action {
             $page->setParam('promoContent', $promoContent);
             $page->setParam('itemsPerRow', \App::config()->product['itemsPerRowJewel']);
             $page->setParam('scrollTo', 'smalltabs');
+            $page->setParam('shopScriptSeo', $shopScriptSeo);
         };
 
         // если категория содержится во внешнем узле дерева

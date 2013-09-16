@@ -365,7 +365,7 @@ class Repository {
      * @param $brand
      * @return array
      */
-    public static function getSeoJson($category, $brand = null) {
+    public static function getSeoJson($category, $brand = null, $shopScriptSeo = []) {
         $dataStore = \App::dataStoreClient();
         $shopScript = \App::shopScriptClient();
 
@@ -387,16 +387,8 @@ class Repository {
             $dataStore->addQuery($query, [], function ($data) use (&$seoJson) {
                 if($data) $seoJson = $data;
             });
-        } else {
-            $shopScript->addQuery('category/get-seo', [
-                    'slug' => $category->getToken(),
-                    'geo_id' => \App::user()->getRegion()->getId(),
-                ], [], function ($data) use (&$seoJson) {
-                if($data) {
-                    $seoJson = is_array($data) ? reset($data) : $data;
-                }
-            });
-            $shopScript->execute();
+        } elseif(!empty($shopScriptSeo)) {
+            $seoJson = $shopScriptSeo;
         }
 
         // данные для шаблона
