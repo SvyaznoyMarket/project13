@@ -8,6 +8,8 @@
  * @var $itemsInSlider          int
  * @var $productVideosByProduct array
  */
+
+if (!isset($isAddInfo)) $isAddInfo = true;
 ?>
 
 <?
@@ -58,6 +60,7 @@ if (\App::request()->get('shop')) {
             'product'       => $product,
             'isHidden'      => $i > $itemsInSlider,
             'productVideos' => isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [],
+            'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : []
         )) ?>
     <? } ?>
 </div>

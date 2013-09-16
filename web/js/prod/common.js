@@ -733,8 +733,54 @@ $(document).ready(function(){
 		}
 	};
 
-	if ( $('#_categoryData').length ) {
+
+    var kissForProductOfCategory = function kissForProductOfCategory(ev) {
+        //ev.preventDefault(); // tmp
+        //console.log('*** clickeD!!! '); // tmp
+
+        var t = $(this), box, datap, toKISS = false,
+            datac = $('#_categoryData').data('category');
+
+        box = t.parents('div.goodsbox__inner');
+        if ( !box.length ) box = t.parents('div.goodsboxlink');
+        datap = box.length ? box.data('add') : false;
+
+        if (datap && datac)
+        toKISS = {
+            'Category Results Clicked Category Type': datac.type,
+            'Category Results Clicked Category Level': datac.level,
+            'Category Results Clicked Parent category': datac.parent_category,
+            'Category Results Clicked Category name': datac.category,
+            'Category Results Clicked Category ID': datac.id,
+            'Category Results Clicked SKU': datap.article,
+            'Category Results Clicked Product Name': datap.name,
+            'Category Results Clicked Page Number': datap.page,
+            'Category Results Clicked Product Position': datap.position
+        };
+
+        /** For Debug:  **/
+        /*
+        console.log('*** test IN CLICK BEGIN { ');
+        if (toKISS) console.log(toKISS);
+        if (!datap) console.log('!!! DataP is empty!');
+        if (!datac) console.log('!!! DataP is empty!');
+        console.log('*** } test IN CLICK END');
+        */
+        /** **/
+
+        if (toKISS && typeof(_kmq) !== 'undefined') {
+            _kmq.push(['record', 'Category Results Clicked', toKISS]);
+        }
+
+        //return false; // tmp
+    };
+
+
+    if ( $('#_categoryData').length ) {
+        console.log('*** It is categoryData!!!'); // tmp
 		kissForCategory();
+        /** Вызываем kissForProductOfCategory() для всех категорий - в том числе слайдеров, аджаксов и тп **/
+        $('body').delegate("div.goodsbox a", "click",kissForProductOfCategory);
 	}
 
 	/**
