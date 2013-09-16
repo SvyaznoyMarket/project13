@@ -2,7 +2,8 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Filter $productFilter
+    \Model\Product\Filter $productFilter,
+    \Model\Product\Category\Entity $category
 ) {
     /** @var $filters \Model\Product\Filter\Entity[] */
     $filters = [];
@@ -17,7 +18,7 @@ return function(
 
 ?>
 
-    <form class="bFilter clearfix" action="" method="GET">
+    <form class="bFilter clearfix" action="<?= $helper->url('product.category', ['categoryPath' => $category->getPath()]) ?>" method="GET">
         <div class="bFilterHead">
             <a class="bFilterToggle mOpen" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
