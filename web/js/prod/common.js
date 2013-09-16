@@ -1528,7 +1528,16 @@ $(document).ready(function() {
 			$('.popupRegion').trigger('close');
 		}
 	});
-	
+
+	$('body').on('keyup click', '#jscity', function(e) {
+		if( $(this).val() ) {
+			$('.inputClear').show();
+		}
+		else{
+			$('.inputClear').hide();
+		}
+	});
+
 	$('.inputClear').bind('click', function(e) {
 		e.preventDefault();
 		$('#jscity').val('');
