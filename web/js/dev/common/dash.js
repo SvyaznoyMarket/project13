@@ -157,8 +157,8 @@ $(document).ready(function(){
 	};
 
 
-    var kissForProductOfCategory = function kissForProductOfCategory(ev) {
-        ev.preventDefault(); // tmp
+    var kissForProductOfCategory = function kissForProductOfCategory(event) {
+        event.preventDefault(); // tmp
         console.log('*** clickeD!!! '); // tmp
 
         var t = $(this), box, datap, toKISS = false,
