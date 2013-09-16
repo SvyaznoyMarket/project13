@@ -195,7 +195,7 @@ $(document).ready(function(){
             _kmq.push(['record', 'Category Results Clicked', toKISS]);
         }
 
-        //return false; // tmp
+        return false; // tmp
     };
 
 
