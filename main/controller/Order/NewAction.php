@@ -92,7 +92,7 @@ class NewAction {
         });
 
         // метод оплаты по умолчанию
-        if ($request->cookies->get('credit_on') && $isCreditAllowed) { // если пользователь положил товар в корзину со включенной галкой "Беру в кредит", то ...
+        if ($request->cookies->get('credit_on') && $isCreditAllowed) { // если пользователь положил товар в корзину со включенной галкой "Купи в кредит", то ...
             foreach ($paymentMethods as $paymentMethod) {
                 if ($paymentMethod->getIsCredit()) {
                     $form->setPaymentMethodId($paymentMethod->getId());

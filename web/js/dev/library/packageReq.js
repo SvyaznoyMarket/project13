@@ -32,6 +32,8 @@
 
 			// Обход странного бага с IE
 			if ( !reqArray[i] || !reqArray[i].url ) {
+				console.info('continue');
+
 				continue;
 			}
 

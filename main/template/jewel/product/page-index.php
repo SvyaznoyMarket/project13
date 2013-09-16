@@ -291,7 +291,7 @@ $productVideo = reset($productVideos);
     <? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
       <div class="creditbox">
         <div class="creditboxinner clearfix">
-          <div class="fl"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
+          <div class="fl"><label class="bigcheck " for="creditinput"><b></b>Купи в кредит
             <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label>
           </div>
           <div class="creditLeft">от <span><b class="price"></b> P в месяц</div>
@@ -642,7 +642,11 @@ $productVideo = reset($productVideos);
     <div class="line"></div>
     <div style="width: 940px; float: none; margin: 0;" class="goodslist">
         <? $i = 0; foreach ($product->getKit() as $part): $i++ ?>
-        <?= $page->render('jewel/product/show/_compact', array('product' => $kit[$part->getId()], 'kit' => $part)) ?>
+        <?= $page->render('jewel/product/show/_compact', [
+                    'product'   =>  $kit[$part->getId()],
+                    'kit'       =>  $part,
+                    'addInfo'   =>  $addInfo
+                ]) ?>
         <? if (0 == ($i % 4)): ?><br class="clear" /><? endif ?>
         <? endforeach ?>
 

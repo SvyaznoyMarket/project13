@@ -341,6 +341,7 @@ class Action extends \Controller\ProductCategory\Action {
                 'view'                   => $productView,
                 'productVideosByProduct' => $productVideosByProduct,
                 'isAjax'                 => true,
+                'isAddInfo'              => true,
                 'itemsPerRow'            => \App::config()->product['itemsPerRowJewel'],
             ]);
             // бесконечный скролл
@@ -355,6 +356,7 @@ class Action extends \Controller\ProductCategory\Action {
                     'productFilter'     => $productFilter,
                     'category'          => $page->getParam('category'),
                     'scrollTo'          => $scrollTo,
+                    'isAddInfo'         => true,
                 ]);
                 $responseData['filters'] = \App::templating()->render('jewel/product-category/_filters', [
                     'page'              => new \View\Layout(),
@@ -366,6 +368,7 @@ class Action extends \Controller\ProductCategory\Action {
                     'category'          => $page->getParam('category'),
                     'scrollTo'          => $scrollTo,
                     'isAjax'            => true,
+                    'isAddInfo'         => true,
                 ]);
                 $responseData['pager'] = \App::templating()->render('jewel/product/_pager', [
                     'page'                      => new \View\Layout(),
@@ -378,6 +381,7 @@ class Action extends \Controller\ProductCategory\Action {
                     'productVideosByProduct'    => $productVideosByProduct,
                     'view'                      => $productView,
                     'itemsPerRow'               => $page->getParam('itemsPerRow'),
+                    'isAddInfo'                 => true,
                 ]);
                 $responseData['query_string'] = $request->getQueryString();
 
