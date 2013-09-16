@@ -49,7 +49,6 @@
 
 		resHandler = function resHandler( res ) {
 			console.info('resHandler');
-			console.log(res);
 		},
 
 		/**

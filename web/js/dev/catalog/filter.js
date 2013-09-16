@@ -50,11 +50,16 @@
 		 * Получение ответа от сервера
 		 */
 		sendFilter: function() {
-			var formData = filterBlock.serialize();
+			var formData = filterBlock.serialize(),
+				url = filterBlock.attr('action');
+			// end of vars
 
+			url += '?' + formData;
+
+			console.log(url);
 			console.log(formData);
 
-			catalog.history.gotoUrl(formData);
+			catalog.history.gotoUrl(url);
 
 			return false;
 		},
