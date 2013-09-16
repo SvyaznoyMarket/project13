@@ -121,7 +121,7 @@ class CreateAction {
                     [
                         'amount'          => $cartProduct->getSum(),
                         'delivery_amount' => $deliveryPrice,
-                        'currency'        => 'USD',
+                        //'currency'        => 'USD',
                         'return_url'      => \App::router()->generate('order.paypal.new', [], true),
                         'product'         => [
                             [
