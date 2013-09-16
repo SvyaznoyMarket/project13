@@ -33,7 +33,7 @@
         'productFilter'     => $productFilter,
         'category'          => $category,
         'scrollTo'          => $scrollTo,
-        'isAddInfo'       => true,
+        'isAddInfo'         => true,
     ]) ?>
   </div>
 
@@ -48,7 +48,7 @@
         'category'          => $category,
         'scrollTo'          => $scrollTo,
         'isAjax'            => true,
-        'isAddInfo'       => true,
+        'isAddInfo'         => true,
     ]) ?>
   </div>
 
@@ -64,7 +64,7 @@
       'view'                   => $productView,
       'productVideosByProduct' => $productVideosByProduct,
       'itemsPerRow'            => $itemsPerRow,
-      'isAddInfo'       => true,
+      'isAddInfo'              => true,
   )) ?>
 
 
