@@ -54,7 +54,7 @@ $helper = new \Helper\TemplateHelper();
 
                 <?= $helper->render('product/__notification-lowerPrice', ['product' => $mainProduct]) // Узнать о снижении цены ?>
 
-                <?//= $helper->render('product/__credit', ['product' => $mainProduct, 'creditData' => $creditData]) // Беру в кредит ?>
+                <?//= $helper->render('product/__credit', ['product' => $mainProduct, 'creditData' => $creditData]) // Купи в кредит ?>
         	</div>
 
             <?= $helper->render('cart/__button-product', ['product' => $mainProduct, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить ?>
