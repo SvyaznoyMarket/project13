@@ -181,7 +181,6 @@ $(document).ready(function(){
             'Category Results Clicked Product Position': datap.position
         };
 
-
         /** For Debug:  **/
         /*
         console.log('*** test IN CLICK BEGIN { ');
@@ -191,7 +190,6 @@ $(document).ready(function(){
         console.log('*** } test IN CLICK END');
         */
         /** **/
-
 
         if (toKISS && typeof(_kmq) !== 'undefined') {
             _kmq.push(['record', 'Category Results Clicked', toKISS]);

@@ -720,9 +720,9 @@ $(document).ready(function(){
 	};
 
 
-    var kissForProductOfCategory = function kissForProductOfCategory(event) {
-        event.preventDefault(); // tmp
-        console.log('*** clickeD!!! '); // tmp
+    var kissForProductOfCategory = function kissForProductOfCategory(ev) {
+        //ev.preventDefault(); // tmp
+        //console.log('*** clickeD!!! '); // tmp
 
         var t = $(this), box, datap, toKISS = false,
             datac = $('#_categoryData').data('category');
@@ -730,7 +730,6 @@ $(document).ready(function(){
         box = t.parents('div.goodsbox__inner');
         if ( !box.length ) box = t.parents('div.goodsboxlink');
         datap = box.length ? box.data('add') : false;
-
 
         if (datap && datac)
         toKISS = {
@@ -745,23 +744,21 @@ $(document).ready(function(){
             'Category Results Clicked Product Position': datap.position
         };
 
-
-
-        /****/
+        /** For Debug:  **/
+        /*
         console.log('*** test IN CLICK BEGIN { ');
         if (toKISS) console.log(toKISS);
         if (!datap) console.log('!!! DataP is empty!');
         if (!datac) console.log('!!! DataP is empty!');
         console.log('*** } test IN CLICK END');
-        /****/
-
-
+        */
+        /** **/
 
         if (toKISS && typeof(_kmq) !== 'undefined') {
             _kmq.push(['record', 'Category Results Clicked', toKISS]);
         }
 
-        return false;
+        //return false; // tmp
     };
 
 
