@@ -137,7 +137,7 @@ class Action {
             $redirect_to = $referer;
         }
 
-        if(!empty($request->get('redirect_to'))) {
+        if ($request->get('redirect_to')) {
             $redirect_to = $request->get('redirect_to');
             if(!preg_match('/^(\/|http).*/i', $redirect_to)) {
                 $redirect_to = 'http://' . $redirect_to;
