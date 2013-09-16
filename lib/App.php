@@ -452,4 +452,19 @@ class App {
 
         return $instance;
     }
+
+    /**
+     * @static
+     * @return \ShopScript\Client
+     */
+    public static function shopScriptClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \ShopScript\Client(self::config()->shopScript, self::curl());
+        }
+
+        return $instance;
+    }
+
 }

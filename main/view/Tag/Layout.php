@@ -110,6 +110,7 @@ class Layout extends \View\DefaultLayout {
      */
     private function applySeoPattern(\Model\Page\Entity $page) {
         $dataStore = \App::dataStoreClient();
+        $shopScript = \App::shopScriptClient();
 
         /** @var $category \Model\Product\Category\Entity */
         $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
@@ -128,13 +129,18 @@ class Layout extends \View\DefaultLayout {
         }
         $categoryTokens[] = $category->getToken();
 
-        $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+        $shopScript->addQuery('category/get-seo', [
+                'slug' => $category->getToken(),
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ], [], function ($data) use (&$seoTemplate) {
+            if($data && is_array($data)) $data = reset($data);
             $seoTemplate = array_merge([
                 'title'       => null,
                 'description' => null,
                 'keywords'    => null,
             ], $data);
         });
+        $shopScript->execute();
 
         // данные для шаблона
         $patterns = [
