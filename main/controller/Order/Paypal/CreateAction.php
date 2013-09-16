@@ -171,7 +171,7 @@ class CreateAction {
                 // сохранение формы в кукисах
                 $this->saveForm($form, $cookies);
 
-                // удаление флага "Беру в кредит"
+                // удаление флага "Купи в кредит"
                 $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
 
                 // очистка корзины

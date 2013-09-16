@@ -291,7 +291,7 @@ $productVideo = reset($productVideos);
     <? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
       <div class="creditbox">
         <div class="creditboxinner clearfix">
-          <div class="fl"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
+          <div class="fl"><label class="bigcheck " for="creditinput"><b></b>Купи в кредит
             <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label>
           </div>
           <div class="creditLeft">от <span><b class="price"></b> P в месяц</div>
