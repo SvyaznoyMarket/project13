@@ -34,4 +34,23 @@ class Action {
 
         return new \Http\Response($page->show());
     }
+
+
+    public function serviceha(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $dataStore = \App::dataStoreClient();
+
+        $serviceJson = [];
+        $dataStore->addQuery('service_ha/*.json', [], function ($data) use (&$serviceJson) {
+            if($data) $serviceJson = $data;
+        });
+        $dataStore->execute();
+
+        $page = new \View\Content\ServicehaPage();
+        $page->setParam('serviceJson', $serviceJson);
+        
+        return new \Http\Response($page->show());
+    }
+
 }
