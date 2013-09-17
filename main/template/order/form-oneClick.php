@@ -63,7 +63,7 @@ $formData = array(
                                         </select>
                                     </div>
                                 </td></tr>
-                            <!-- ko if: chosenDlvr().type == 'self' || 'now' -->
+                            <!-- ko if: $root.chosenDlvr().type == ('self' || 'now') -->
                             <tr data-bind="visible: !noDelivery()"><td>Магазин для самовывоза:</td>
                                 <td>
                                     <div class="bSelectWrap mFastInpBig" data-bind="css: { mDisabled : disabledSelectors() }">
