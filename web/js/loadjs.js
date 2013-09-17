@@ -269,7 +269,7 @@
 		'default': function() {
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
-					.script( getWithVersion('library.js') )
+					.script( 'library.js' )
 					.wait()
 					.script( getWithVersion('common.js') );
 			}).runQueue();
@@ -278,7 +278,7 @@
 		'main': function() {
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
-					.script( getWithVersion('library.js') )
+					.script( 'library.js' )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('main.js') )
@@ -293,7 +293,7 @@
 		'tag-category': function() {
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
-					.script( getWithVersion('library.js') )
+					.script( 'library.js' )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -307,7 +307,7 @@
 		'infopage': function() {
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
-					.script( getWithVersion('library.js') )
+					.script( 'library.js' )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('infopage.js') )
@@ -323,7 +323,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
 					.script('JsHttpRequest.min.js')
-					.script( getWithVersion('library.js') )
+					.script( 'library.js' )
 					.script( directCreditUrl )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -343,7 +343,7 @@
 				.queueWait( function() {
 					$LAB.script('jquery-plugins.min.js')
 						.script('JsHttpRequest.min.js')
-						.script( getWithVersion('library.js') )
+						.script( 'library.js' )
 						.script( directCreditUrl )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -362,7 +362,7 @@
 				.queueWait( function() {
 					$LAB.script('jquery-plugins.min.js')
 						.script('JsHttpRequest.min.js')
-						.script( getWithVersion('library.js') )
+						.script( 'library.js' )
 						.script( directCreditUrl )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -373,7 +373,7 @@
 		'order_complete': function() {
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
-					.script( getWithVersion('library.js') )
+					.script( 'library.js' )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('order.js') )
@@ -389,7 +389,7 @@
 		'order_error': function() {
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
-					.script( getWithVersion('library.js') )
+					.script( 'library.js' )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('order.js') )
@@ -401,7 +401,7 @@
 		'product_catalog': function() {
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
-					.script( getWithVersion('library.js') )
+					.script( 'library.js' )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('pandora.js') )
@@ -418,7 +418,7 @@
 				.queueScript( yandexMapUrl )
 				.queueWait( function() {
 					$LAB.script('jquery-plugins.min.js')
-						.script( getWithVersion('library.js') )
+						.script( 'library.js' )
 						.script('JsHttpRequest.min.js')			
 						.script( directCreditUrl )
 						.wait()
@@ -436,7 +436,7 @@
 		'service': function() {
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
-					.script( getWithVersion('library.js') )
+					.script( 'library.js' )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -451,7 +451,7 @@
 			$LAB.queueScript( yandexMapUrl )
 				.queueWait( function() {
 					$LAB.script('jquery-plugins.min.js')
-						.script( getWithVersion('library.js') )
+						.script( 'library.js' )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('shop.js') )
@@ -468,7 +468,7 @@
 				.queueScript( knockoutUrl )
 				.queueWait( function() {
 					$LAB.script('jquery-plugins.min.js')
-						.script( getWithVersion('library.js') )
+						.script( 'library.js' )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.wait()
