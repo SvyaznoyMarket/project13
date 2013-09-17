@@ -54,26 +54,4 @@ class TerminalEntity extends Entity {
         return $this->isInShop;
     }
 
-    /**
-     * @param int $shopId
-     * @return bool
-     */
-    public function getIsInShowroom($shopId) {
-        $shopId = (int)$shopId;
-        if (!$shopId) return false;
-
-        if (!is_null($this->isInShopShowroom)) {
-            return $this->isInShopShowroom;
-        }
-
-        $this->isInShopShowroom = false;
-        foreach ($this->getStock() as $stock) {
-            if ($stock->getShopId() == $shopId) {
-                $this->isInShopShowroom = $stock->getQuantityShowroom() > 0;
-                break;
-            }
-        }
-
-        return $this->isInShopShowroom;
-    }
 }

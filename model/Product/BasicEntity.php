@@ -39,6 +39,8 @@ class BasicEntity {
     protected $avgStarScore;
     /** @var int */
     protected $numReviews;
+    /** @var int */
+    protected $inQuantityShopShowroom;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -332,6 +334,46 @@ class BasicEntity {
     public function getNumReviews()
     {
         return $this->numReviews;
+    }
+
+    /**
+     * @param int $shopId
+     * @return bool
+     */
+    public function getIsInShowroom($shopId) {
+        $shopId = (int)$shopId;
+        if (!$shopId) return false;
+
+        if (!is_null($this->isInShopShowroom)) {
+            return $this->isInShopShowroom;
+        }
+
+        $this->isInShopShowroom = false;
+        foreach ($this->getStock() as $stock) {
+            if ($stock->getShopId() == $shopId) {
+                $this->isInShopShowroom = $stock->getQuantityShowroom() > 0;
+                break;
+            }
+        }
+
+        return $this->isInShopShowroom;
+    }
+
+
+    public function getQuantityShopShowroom() {
+        if (!is_null($this->inQuantityShopShowroom)) {
+            return $this->inQuantityShopShowroom;
+        }
+        $this->inQuantityShopShowroom = false;
+
+        foreach ($this->getStock() as $stock) {
+            $quant = $stock->getQuantityShowroom();
+            if ( $quant ) {
+                $this->inQuantityShopShowroom +=  $quant;
+            }
+        }
+
+        return $this->inQuantityShopShowroom;
     }
 
 }
