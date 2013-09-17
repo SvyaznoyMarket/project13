@@ -70,6 +70,10 @@
 				// Доставка в выбранный пункт
 				console.info('есть точки доставки для выбранного метода доставки, но выбранная точка не доступна для этого метода доставки. Берем первую точку для выбранного метода доставки');
 
+				console.log(self.state);
+				console.log(window.OrderModel.orderDictionary.getFirstPointByState(self.state));
+
+
 				self.choosenPoint( window.OrderModel.orderDictionary.getFirstPointByState(self.state) );
 			}
 			else if ( self.hasPointDelivery ) {
@@ -829,7 +833,7 @@
 		OrderDictionary.prototype.getFirstPointByState = function( state ) {
 			var points = this.getAllPointsByState(state);
 
-			return window.cloneObject(points[0]);
+			return window.ENTER.utils.cloneObject(points[0]);
 		};
 
 		/**

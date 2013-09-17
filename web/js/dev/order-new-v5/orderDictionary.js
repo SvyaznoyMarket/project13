@@ -122,7 +122,7 @@
 		OrderDictionary.prototype.getFirstPointByState = function( state ) {
 			var points = this.getAllPointsByState(state);
 
-			return window.cloneObject(points[0]);
+			return window.ENTER.utils.cloneObject(points[0]);
 		};
 
 		/**
