@@ -17,9 +17,23 @@ class Action {
 
         $page = new \View\Content\IndexPage();
         $page->setTitle($content['title']);
-        $page->setParam('content', $content['content']);
         $page->setParam('token', $token);
-        
+
+        switch ($token) {
+            case 'service_ha':
+            case 'services_ha':
+                $htmlContent = preg_replace('/<script.*script>/sm', '', $content['content']);
+                $serviceJson = $this->getServiceJson();
+                $page->setParam('data', $serviceJson);
+                break;
+            default:
+                $htmlContent = $content['content'];
+                $page->setParam('data', []);
+                break;
+        }
+
+        $page->setParam('htmlContent', $htmlContent);
+
         //нужно для увеличения отступа от заголовкой и строки поика
         $page->setParam('extendedMargin', true);
         if (!(bool)$content['layout'])
@@ -36,7 +50,7 @@ class Action {
     }
 
 
-    public function serviceha(\Http\Request $request) {
+    private function getServiceJson() {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $dataStore = \App::dataStoreClient();
@@ -47,10 +61,7 @@ class Action {
         });
         $dataStore->execute();
 
-        $page = new \View\Content\ServicehaPage();
-        $page->setParam('serviceJson', $serviceJson);
-        
-        return new \Http\Response($page->show());
+        return $serviceJson;
     }
 
 }

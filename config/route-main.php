@@ -656,12 +656,6 @@ return [
         'method'  => ['POST'],
     ],
 
-    //TMP 
-    'serviceha' => [
-        'pattern' => '/serviceha',
-        'action'  => ['Content\Action', 'serviceha'],
-    ],
-
     //content
     'content' => [
         'pattern' => '/{token}',

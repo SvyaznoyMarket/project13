@@ -6,19 +6,40 @@
  */
 (function(){
 
-  var buildTable = function( table, rows ) {
-    for (var i = 0; i < rows.length; i++) {
-      table.find('tbody').append(i + ' ' + rows[i]['Стоимость'] + ' ' + rows[i]['Услуга']);
-    };
+  var buildTable = function( table, data ) {
+    table.find('tbody').html('');
+    var rows = data[$('#region_list').val()];
+    if ( rows ) {
+      appendRows( table, rows );
+    }
   }
+
+  var appendRows = function( table, rows ) {
+    for (var i = 0; i < rows.length; i++) {
+      var rowData = {
+        counter: i + 1,
+        service: rows[i]['Услуга'],
+        price: rows[i]['Стоимость']
+      };
+
+      table.find('tbody').append( tmpl('rowTemplate', rowData) );
+    }
+  };
 
   $(document).ready(function() {
     if ( $('#region_list').length ) {
-      data = $('#region_list').data('service');
-      table = $('.bServicesTable');
+      var data = $('#contentPageData').data('data');
+
+      $('#regionListPlaceholder').replaceWith( $('#region_list') );
+      $('#bServicesTablePlaceholder').replaceWith( $('.bServicesTable') );
+
+      var table = $('.bServicesTable');
 
       if ( data ) {
-        buildTable( table, data[$('#region_list').val()] );
+        buildTable( table, data );
+        $('#region_list').on('change', function(){
+          buildTable( table, data );
+        });
       }
     }
   });
