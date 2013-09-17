@@ -17,7 +17,7 @@ class Action {
                 : new \Http\RedirectResponse(\App::router()->generate('user'));
         }
 
-        $redirect = (false !== strpos($request->get('redirect_to'), \App::config()->mainHost))
+        $redirect = $request->get('redirect_to')
             ? $request->get('redirect_to')
             : \App::router()->generate('user');
 
@@ -131,7 +131,7 @@ class Action {
         $user = \App::user();
 
         $referer = $request->headers->get('referer');
-        if(!$referer || $referer && preg_match('/(\/private\/)|(\/private$)/', $referer)) {
+        if (!$referer || $referer && preg_match('/(\/private\/)|(\/private$)/', $referer)) {
             $redirect_to = \App::router()->generate('homepage');
         } else {
             $redirect_to = $referer;
@@ -139,7 +139,7 @@ class Action {
 
         if ($request->get('redirect_to')) {
             $redirect_to = $request->get('redirect_to');
-            if(!preg_match('/^(\/|http).*/i', $redirect_to)) {
+            if (!preg_match('/^(\/|http).*/i', $redirect_to)) {
                 $redirect_to = 'http://' . $redirect_to;
             }
         }
