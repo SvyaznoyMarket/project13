@@ -54,12 +54,17 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             <? endif ?>
             <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
         </div>
-        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+        <? if (!$product->getIsBuyable()): ?>
         	<div class="notBuying font12">
+                <div class="corner"><div></div></div>
+                Витринный товар
+            </div>
+		<? elseif (!$product->getState()->getIsShop()): ?>
+            <div class="notBuying font12">
                 <div class="corner"><div></div></div>
                 Только в магазинах
             </div>
-		<? endif ?>
+        <? endif ?>
 	    <? if ($hasModel): ?>
         <a href="<?= $product->getLink() ?>">
             <div class="bListVariants">

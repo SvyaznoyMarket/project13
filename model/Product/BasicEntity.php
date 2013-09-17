@@ -360,6 +360,7 @@ class BasicEntity {
     }
 
 
+    /*
     public function getQuantityShopShowroom() {
         if (!is_null($this->inQuantityShopShowroom)) {
             return $this->inQuantityShopShowroom;
@@ -375,5 +376,6 @@ class BasicEntity {
 
         return $this->inQuantityShopShowroom;
     }
+    */
 
 }
