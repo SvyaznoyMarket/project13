@@ -26,7 +26,14 @@ if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->get
 
     <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
 
-    <?= $helper->render('product-category/__filter', ['category' => $category, 'productFilter' => $productFilter]) // фильтры ?>
+    <?= $helper->render('product-category/__filter', [
+        'baseUrl'       =>
+            ('product.category.brand' == \App::request()->attributes->get('route') || \App::request()->get('shop'))
+            ? $helper->url('product.category', ['categoryPath' => $category->getPath()])
+            : ''
+        ,
+        'productFilter' => $productFilter,
+    ]) // фильтры ?>
 
     <?= $helper->render('product/__listAction', [
         'category'       => $category,

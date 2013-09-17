@@ -3,7 +3,7 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
-    \Model\Product\Category\Entity $category
+    $baseUrl
 ) {
     /** @var $filters \Model\Product\Filter\Entity[] */
     $filters = [];
@@ -19,7 +19,7 @@ return function(
 
 ?>
 
-    <form class="bFilter clearfix" action="<?= $helper->url('product.category', ['categoryPath' => $category->getPath()]) ?>" method="GET">
+    <form class="bFilter clearfix" action="<?= $baseUrl ?>" method="GET">
         <div class="bFilterHead">
             <a class="bFilterToggle mOpen" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
@@ -32,7 +32,8 @@ return function(
             <ul class="bFilterParams">
             <? $i = 0; foreach ($filters as $filter): ?>
             <?
-                $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' .$filter->getId());
+                if (!$filter->getIsInList()) continue;
+                $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId());
             ?>
                 <li class="bFilterParams__eItem<? if (0 == $i): ?> mActive<? endif ?>" data-ref="<?= $viewId ?>">
                     <span class="bParamName"><?= $filter->getName() ?></span>
@@ -45,6 +46,7 @@ return function(
             <div class="bFilterValues">
                 <? $i = 0; foreach ($filters as $filter): ?>
                 <?
+                    if (!$filter->getIsInList()) continue;
                     $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' .$filter->getId());
                 ?>
                     <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?>" id="<?= $viewId ?>">
@@ -73,7 +75,7 @@ return function(
         </div>
         <!-- /Фильтр по выбранным параметрам -->
 
-        <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $helper->url('product.category', ['categoryPath' => $category->getPath()])]) ?>
+        <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
     </form>
 
 
