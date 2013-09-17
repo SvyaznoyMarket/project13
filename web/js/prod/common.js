@@ -734,8 +734,8 @@ $(document).ready(function(){
 	};
 
 
-    var kissForProductOfCategory = function kissForProductOfCategory(ev) {
-        //ev.preventDefault(); // tmp
+    var kissForProductOfCategory = function kissForProductOfCategory(event) {
+        //event.preventDefault(); // tmp
         //console.log('*** clickeD!!! '); // tmp
 
         var t = $(this), box, datap, toKISS = false,
@@ -777,10 +777,9 @@ $(document).ready(function(){
 
 
     if ( $('#_categoryData').length ) {
-        console.log('*** It is categoryData!!!'); // tmp
 		kissForCategory();
         /** Вызываем kissForProductOfCategory() для всех категорий - в том числе слайдеров, аджаксов и тп **/
-        $('body').delegate("div.goodsbox a", "click",kissForProductOfCategory);
+        $('body').delegate('div.goodsbox a', 'click', kissForProductOfCategory);
 	}
 
 	/**
