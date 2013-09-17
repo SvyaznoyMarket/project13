@@ -166,7 +166,7 @@ class TemplateHelper {
         if (0 == $frac) {
             return intval($value);
         } else {
-            return rtrim($value, '0');
+            return (float)rtrim($value, '0');
         }
     }
 }

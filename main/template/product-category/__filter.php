@@ -23,7 +23,7 @@ return function(
         <div class="bFilterHead">
             <a class="bFilterToggle mOpen" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
-            <?= $helper->render('product-category/filter/__price', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
+            <?= $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
         </div>
 
         <!-- Фильтр по выбранным параметрам -->
@@ -47,7 +47,7 @@ return function(
                 <? $i = 0; foreach ($filters as $filter): ?>
                 <?
                     if (!$filter->getIsInList()) continue;
-                    $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' .$filter->getId());
+                    $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId());
                 ?>
                     <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?>" id="<?= $viewId ?>">
 

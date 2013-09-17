@@ -44,7 +44,7 @@ return function(
                 }
                 if (isset($value['to']) && !($isEqualNumeric($value['to'], $filter->getMax()))) {
                     $links[] = [
-                        'name' => $isPrice ? sprintf('до %sр', $helper->formatPrice($value['from'])) : sprintf('до %s', round($value['from'], 1)),
+                        'name' => $isPrice ? sprintf('до %sр', $helper->formatPrice($value['to'])) : sprintf('до %s', round($value['to'], 1)),
                         'url'  => $helper->replacedUrl(['f-' . $filter->getId() . '-to' => null]),
                     ];
                 }

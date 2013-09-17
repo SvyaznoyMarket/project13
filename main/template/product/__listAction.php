@@ -3,8 +3,15 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Sorting $productSorting,
+    \Iterator\EntityPager $pager,
     \Model\Product\Category\Entity $category
-) { ?>
+) {
+
+    if (!$pager->hasPages()) {
+        return;
+    }
+
+?>
 
     <!-- Сортировка товаров на странице -->
     <div class="bSortingLine clearfix">
