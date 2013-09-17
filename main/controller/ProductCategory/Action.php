@@ -674,8 +674,9 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      * @param \Model\Product\Category\Entity $category
-     * @param \Model\Brand\Entity|null       $brand
+     * @param \Model\Brand\Entity|null $brand
      * @param \Http\Request $request
+     * @param \Model\Shop\Entity|null $shop
      * @return \Model\Product\Filter
      */
     protected function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {

@@ -11,6 +11,7 @@ return function(
     foreach ($productFilter->getFilterCollection() as $filter) {
         if ($filter->isPrice()) {
             $priceFilter = $filter;
+            $priceFilter->setStepType('price');
         } else {
             $filters[] = $filter;
         }
