@@ -45,3 +45,7 @@
         <li class="socnet-ico-list__fb"><a target="_blank" class="socnet-ico-list-link" data-type="FaceBook" href="http://www.facebook.com/enter.ru"></a></li>
     </ul>
 </div>
+
+<div class="mt32" style="text-align: center">
+    <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
+</div>

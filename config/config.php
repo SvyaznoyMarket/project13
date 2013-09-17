@@ -273,7 +273,7 @@ $c->cart['productLimit'] = 50;
 
 $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
-$c->payment['blockedIds'] = [];
+$c->payment['blockedIds'] = [13];
 
 $c->smartengine['pull']           = true;
 $c->smartengine['push']           = true;
