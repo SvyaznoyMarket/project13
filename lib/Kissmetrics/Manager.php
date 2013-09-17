@@ -101,7 +101,8 @@ class Manager {
      * @return array
      */
     public static function getProductSearchEvent($product, $position = 1, $page = 1) {
-        $position = (($page - 1) * \App::config()->product['itemsPerPage']) + $position;
+        if ($page>1) $position = (($page - 1) * \App::config()->product['itemsPerPage']) + $position;
+            else $page = 1;
         $return = [
             'article'   =>  $product->getArticle(),
             'name'      =>  $product->getName(),
