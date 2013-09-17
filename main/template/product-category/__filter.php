@@ -72,7 +72,7 @@ return function(
         </div>
         <!-- /Фильтр по выбранным параметрам -->
 
-        <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter]) ?>
+        <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $helper->url('product.category', ['categoryPath' => $category->getPath()])]) ?>
     </form>
 
 

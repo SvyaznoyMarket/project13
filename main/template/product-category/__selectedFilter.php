@@ -2,7 +2,8 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Filter $productFilter
+    \Model\Product\Filter $productFilter,
+    $baseUrl
 ) {
 
     $selected = [];
@@ -19,25 +20,7 @@ return function(
         return $first == $second;
     };
 
-    $getUrl = function($filterId, $value = null) use (&$helper, &$productFilter) {
-        $data = $productFilter->getValues();
-        if (array_key_exists($filterId, $data)) {
-            if (null == $value) {
-                unset($data[$filterId]);
-            } else foreach ($data[$filterId] as $k => $v) {
-                if ($v == $value) {
-                    unset($data[$filterId][$k]);
-                }
-            }
-        }
-
-        return $helper->url('product.category', [
-            'categoryPath'                  => $productFilter->getCategory()->getPath(),
-            \View\Product\FilterForm::$name => $data,
-        ]);
-    };
-
-    $filters = [];
+    $listById = [];
     foreach ($productFilter->getFilterCollection() as $filter) {
 
         if (!in_array($filter->getId(), $selected)) {
@@ -45,99 +28,81 @@ return function(
         }
 
         $value = $productFilter->getValue($filter);
+        $isPrice = $filter->isPrice();
+
+        $links = [];
         switch ($filter->getTypeId()) {
             case \Model\Product\Filter\Entity::TYPE_SLIDER:
             case \Model\Product\Filter\Entity::TYPE_NUMBER:
                 if (empty($value['from']) && empty($value['to'])) continue;
-                $name = [];
-                $isPrice = $filter->isPrice();
-
-                $links = [];
 
                 if (isset($value['from']) && !($isEqualNumeric($value['from'], $filter->getMin()))) {
-                    if ($isPrice) {
-                        $links[] = [
-                            'name' => sprintf('от %d', $value['from']),
-                            'url'  => $getUrl($filter->getId()),
-                        ];
-                    } else {
-                        $links[] = [
-                            'name' => 'от ' . round($value['from'], 1),
-                            'url'  => $getUrl($filter->getId()),
-                        ];
-                    }
+                    $links[] = [
+                        'name' => $isPrice ? sprintf('от %sр', $helper->formatPrice($value['from'])) : sprintf('от %s', round($value['from'], 1)),
+                        'url'  => $helper->replacedUrl(['f-' . $filter->getId() . '-from' => null]),
+                    ];
                 }
                 if (isset($value['to']) && !($isEqualNumeric($value['to'], $filter->getMax()))) {
-                    if ($isPrice) {
-                        $name[] = sprintf('до %d', $value['to']);
-                    } else {
-                        $name[] = 'до ' . round($value['to'], 1);
-                    }
+                    $links[] = [
+                        'name' => $isPrice ? sprintf('до %sр', $helper->formatPrice($value['from'])) : sprintf('до %s', round($value['from'], 1)),
+                        'url'  => $helper->replacedUrl(['f-' . $filter->getId() . '-to' => null]),
+                    ];
                 }
-                if (!$name) continue;
-                if ($isPrice) $name[] .= 'р.';
-                $filters[] = [
-                    'name'  => $filter->getName(),
-                    'links' => $links,
-                ];
+
                 break;
             case \Model\Product\Filter\Entity::TYPE_BOOLEAN:
                 if (!is_array($value) || count($value) == 0) continue;
                 foreach ($value as $v) {
-                    $filters[] = [
-                        'name'  => $filter->getName(),
-                        'links' => [
-                            ['name' => $v == 1 ? 'да' : 'нет', 'url' => $getUrl($filter->getId(), $v)]
-                        ],
+                    $links[] = [
+                        'name' => ($v == 1) ? 'да' : 'нет',
+                        'url'  => $helper->replacedUrl(['f- ' . $filter->getId() => null]),
                     ];
                 }
                 break;
             case \Model\Product\Filter\Entity::TYPE_LIST:
                 if (!is_array($value) || count($value) == 0) continue;
                 foreach ($filter->getOption() as $option) {
-                    if (in_array($option->getId(), $value)) {
-                        $filters[] = [
-                            'name'  => $filter->getName(),
-                            'links'   => [
-                                ['name' => $option->getName(), 'url' => $getUrl($filter->getId(), $option->getId())]
-                            ],
-                        ];
-                    }
+                    if (!in_array($option->getId(), $value)) continue;
+                    $links[] = [
+                        'name' => $option->getName(),
+                        'url'  => $helper->replacedUrl(['f-' . $filter->getId() . '-' . \Util\String::slugify($option->getName()) => null]),
+                    ];
                 }
                 break;
             default:
                 continue;
         }
+
+        if (!(bool)$links) continue;
+
+        if (!isset($listById[$filter->getId()])) {
+            $listById[$filter->getId()] = ['name' => $filter->getName(), 'links' => []];
+        }
+        $listById[$filter->getId()]['links'] += $links;
     }
 
-    //var_dump($filters);
+    //var_dump($listById);
 
-    if (!(bool)$filters) {
-        //return;
+    if (!(bool)$listById) {
+        return;
     }
 ?>
 
     <!-- Списоки выбранных параметров -->
     <div class="bFilterFoot">
-        <ul class="bFilterCheckedParams clearfix">
-            <li class="bFilterCheckedParams__eItem mTitle">Цена</li>
+        <? $i = 1; $count = count($listById); foreach ($listById as $item): ?>
+            <ul class="bFilterCheckedParams clearfix">
+                <li class="bFilterCheckedParams__eItem mTitle"><?= $item['name'] ?></li>
 
-            <li class="bFilterCheckedParams__eItem mParams"><a class="bDelete" href=""></a><span class="bParamsName">от 2 000p</span></li>
+                <? foreach ($item['links'] as $link): ?>
+                    <li class="bFilterCheckedParams__eItem mParams"><a class="bDelete" href="<?= $link['url'] ?>"></a><span class="bParamsName"><?= $link['name'] ?></span></li>
+                <? endforeach ?>
 
-            <li class="bFilterCheckedParams__eItem mParams"><a class="bDelete" href=""></a><span class="bParamsName">до 1 000 000p</span></li>
-        </ul>
-
-        <ul class="bFilterCheckedParams clearfix mLast">
-            <li class="bFilterCheckedParams__eItem mTitle">Бренд</li>
-
-            <li class="bFilterCheckedParams__eItem mParams"><a class="bDelete" href=""></a><span class="bParamsName">Ahava</span></li>
-
-            <li class="bFilterCheckedParams__eItem mParams"><a class="bDelete" href=""></a><span class="bParamsName">Bubchen</span></li>
-
-            <li class="bFilterCheckedParams__eItem mParams"><a class="bDelete" href=""></a><span class="bParamsName">Агентство старинных развлечений "Работорцы"</span></li>
-
-            <li class="bFilterCheckedParams__eItem mParams mClearAll"><a class="bDelete" href=""><strong class="bParamsName">Очистить все</strong></a></li> <!-- Добаялется только в списке идущем по очереди последним -->
-        </ul>
+                <? if ($i === $count): ?>
+                    <li class="bFilterCheckedParams__eItem mParams mClearAll"><a class="bDelete" href="<?= $baseUrl ?>"><strong class="bParamsName">Очистить все</strong></a></li>
+                <? endif ?>
+            </ul>
+        <? $i++; endforeach ?>
     </div>
     <!-- /Списоки выбранных параметров -->
 
