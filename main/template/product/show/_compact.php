@@ -59,7 +59,8 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
                 <div class="corner"><div></div></div>
                 Витринный товар
             </div>
-		<? elseif (!$product->getState()->getIsShop()): ?>
+		<? elseif ( $product->hasStockWithoutShowroom() && $product->getState()->getIsShop() ): ?>
+		<? //elseif ( $product->getState()->getIsShop() ): ?>
             <div class="notBuying font12">
                 <div class="corner"><div></div></div>
                 Только в магазинах
