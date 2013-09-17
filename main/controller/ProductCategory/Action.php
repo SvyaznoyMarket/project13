@@ -240,10 +240,16 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
         }
 
+        // получаем catalog json для категории (например, тип раскладки)
+        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
+
+        // получаем token-ы категорий, которые будем игнорировать
+        $excludeTokens = empty($catalogJson['promo_exclude_token']) ? [] : $catalogJson['promo_exclude_token'];
+
         // подготовка 3-го пакета запросов
 
         // запрашиваем дерево категорий
-        \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
+        \RepositoryManager::productCategory()->prepareEntityBranch($category, $region, $excludeTokens);
 
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
@@ -257,8 +263,6 @@ class Action {
         // выполнение 3-го пакета запросов
         $client->execute();
 
-        // получаем catalog json для категории (например, тип раскладки)
-        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
         $promoContent = '';
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
@@ -266,30 +270,20 @@ class Action {
             $catalogJson['category_layout_type'] == 'promo' &&
             !empty($catalogJson['promo_token'])
         ) {
-
-            $promoExcludeToken = empty($catalogJson['promo_exclude_token']) ? [] : $catalogJson['promo_exclude_token'];
-            //$promoCategoryTokens = [ $catalogJson['promo_token'] ];
-            //$excludeTokens = array_intersect($promoCategoryTokens, $promoExcludeToken);
-
-            // Делаем запрос, если нет совпадений
-            //if (empty($excludeTokens)) {
-            if ( !in_array( $catalogJson['promo_token'],  $promoExcludeToken) ) {
-                \App::contentClient()->addQuery(
-                    trim((string)$catalogJson['promo_token']),
-                    [],
-                    function($data) use (&$promoContent) {
-                        if (!empty($data['content'])) {
-                            $promoContent = $data['content'];
-                        }
-                    },
-                    function(\Exception $e) {
-                        \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
-                        \App::exception()->add($e);
+            \App::contentClient()->addQuery(
+                trim((string)$catalogJson['promo_token']),
+                [],
+                function ($data) use (&$promoContent) {
+                    if (!empty($data['content'])) {
+                        $promoContent = $data['content'];
                     }
-                );
-                \App::contentClient()->execute();
-            }
-
+                },
+                function (\Exception $e) {
+                    \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                    \App::exception()->add($e);
+                }
+            );
+            \App::contentClient()->execute();
         }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
