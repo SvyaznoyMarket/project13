@@ -9712,6 +9712,9 @@
     z-index: 10;
     height: 210px;
   }
+  .bSlider:hover {
+    z-index: 100;
+  }
   .bSlider__eInner {
     position: relative;
     overflow: hidden;
