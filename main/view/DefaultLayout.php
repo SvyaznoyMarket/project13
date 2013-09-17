@@ -457,10 +457,14 @@ class DefaultLayout extends Layout {
     public function slotEnterleads()
     {
         $routeToken = \App::request()->attributes->get('token');
-        if ('subscribe_friends' == $routeToken) {
-            return '<div id="enterleadsJS" class="jsanalytics" ></div>';
-        }
-        return;
+        $onPages = [
+            'internet_price',
+            'subscribe_friends',
+            'enter-friends'
+        ];
+        if ( !in_array($routeToken, $onPages) ) return;
+
+        return '<div id="enterleadsJS" class="jsanalytics" ></div>';
     }
 
 }
