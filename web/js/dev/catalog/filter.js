@@ -24,42 +24,116 @@
 
 
 	// ==== Mustache test out
-	// console.log('Mustache is '+typeof Mustache);
-	// 
-	// var person = {
-	// 		firstName: "Alexandr",
-	// 		lastName: "Zaytsev"
-	// 	},
-	// 	template = "<h1>{{firstName}} {{lastName}}</h1>test out with Mustache<br/><a class='jsHistoryLink' href='/newurl'>test history api</a>",
-	// 	html = Mustache.to_html(template, person),
-	// 	testOut = $('<div>').addClass('popup').html(html);
+	console.log('Mustache is '+typeof Mustache);
+	
+	var person = {
+			firstName: "Егор",
+			lastName: "!"
+		},
+		template = "<h1>{{firstName}} {{lastName}}</h1><p>Ты снова не передаешь action к форме. Из-за этого я не могу формировать правильный url</p>",
+		html = Mustache.to_html(template, person),
+		testOut = $('<div>').addClass('popup').html(html);
 	// end of vars
 
-	// testOut.appendTo('body');
+	testOut.appendTo('body');
 
-	// testOut.lightbox_me({
-	// 	centered: true
-	// });
-	// 
+	testOut.lightbox_me({
+		centered: true
+	});
+	
 	// ==== END Mustache test out
 	
 	
 	catalog.filter = {
 		/**
+		 * Получение изменненых и неизменненых полей слайдеров
+		 * 
+		 * @return	{Object}	res
+		 * @return	{Object}	res.changedSliders		Массив имен измененных полей
+		 * @return	{Object}	res.unchangedSliders	Массив имен неизмененных полей
+		 */
+		getSlidersInputState: function() {
+			console.info('getSlidersInputState');
+
+			var sliders = $('.bRangeSlider'),
+				res = {
+					changedSliders: [],
+					unchangedSliders: []
+				};
+			// end of vars
+
+			var sortSliders = function sortSliders() {
+				var sliderWrap = $(this),
+					slider = sliderWrap.find('.bFilterSlider'),
+					sliderConfig = slider.data('config'),
+					sliderFromInput = sliderWrap.find('.mFromRange'),
+					sliderToInput = sliderWrap.find('.mToRange'),
+
+					min = sliderConfig.min,
+					max = sliderConfig.max;
+				// end of vars
+				
+
+				if ( sliderFromInput.val() * 1 === min ) {
+					res.unchangedSliders.push(sliderFromInput.attr('name'));
+				}
+				else {
+					res.changedSliders.push(sliderFromInput.attr('name'));
+				}
+
+				if ( sliderToInput.val() * 1 === max ) {
+					res.unchangedSliders.push(sliderToInput.attr('name'));
+				}
+				else {
+					res.changedSliders.push(sliderToInput.attr('name'));
+				}
+			};
+
+			sliders.each(sortSliders);
+
+			return res;
+		},
+		/**
+		 * Формирование URL для получения результатов фильтра
+		 * 
+		 * @return	{String}	url
+		 */
+		getFilterUrl: function() {
+			var formData = filterBlock.serializeArray(),
+				url = filterBlock.attr('action'),
+				slidersInputState = catalog.filter.getSlidersInputState(),
+				formSerizalizeData;
+			// end of vars
+
+			for ( var i = formData.length - 1; i >= 0; i-- ) {
+				if ( slidersInputState.unchangedSliders.indexOf(formData[i].name) !== -1 ) {
+					console.log('slider input '+formData[i].name+' unchanged');
+
+					formData.splice(i,1);
+				}
+			}
+
+			formSerizalizeData = $.param( formData );
+
+			if ( formSerizalizeData.length !== 0 ) {
+				url += '?' + formSerizalizeData;
+			}
+
+			console.log(url);
+
+			return url;
+		},
+
+		/**
 		 * Отправка результатов фильтров
 		 * Получение ответа от сервера
 		 */
 		sendFilter: function() {
-			var formData = filterBlock.serialize(),
-				url = filterBlock.attr('action');
-			// end of vars
+			var url = catalog.filter.getFilterUrl();
 
-			url += '?' + formData;
-
-			console.log(url);
-			console.log(formData);
-
-			catalog.history.gotoUrl(url);
+			if ( url.length ) {
+				catalog.history.gotoUrl(url);
+			}
 
 			return false;
 		},
