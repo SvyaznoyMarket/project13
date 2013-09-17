@@ -343,7 +343,6 @@ class DeliveryAction {
                 }
             }
 
-
             // удаляем методы доставок, в которых нет товаров
             foreach ($responseData['deliveryStates'] as $i => $deliveryStateItem) {
                 if (!(bool)$deliveryStateItem['products']) {
@@ -358,7 +357,7 @@ class DeliveryAction {
                 }
             }
             if (!(bool)$responseData['deliveryTypes']) {
-                throw new \Exception('Не вычеслено ни одного типа доставки');
+                throw new \Exception('Не вычислено ни одного типа доставки');
             }
 
             $responseData['deliveryTypes'] = array_values($responseData['deliveryTypes']);
