@@ -10,13 +10,16 @@ return function (
 
 $class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;
 
-if (!$product->getIsBuyable()) {
+if ($product->getIsBuyable()) {
     $url = '#';
     $class .= ' mDisabled';
 
-    if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
+    if ($product->getState()->getIsShop()) {
         $class .= ' mShopsOnly';
         $value = 'Только в магазинах';
+    } elseif ($product->getIsInShowroomsOnly()) {
+        $class .= ' mShopsOnly'; /*TODO: возможно, нужно добавить css class - .mShowroomsOnly */
+        $value = 'На витрине';
     } else {
         $value = 'Нет в наличии';
     }

@@ -32,11 +32,6 @@ $btnText = $inCart ? 'В корзине' : 'Купить';
       <? endif ?>
     </div>
 
-    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-      <div class="notBuying font12" style="bottom:0;left:0;">
-          <div class="corner"><div></div></div>
-          Только в магазинах
-      </div>
-    <? endif ?>
+      <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
   </div>
 </li>
