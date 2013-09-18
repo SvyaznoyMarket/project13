@@ -5,7 +5,6 @@ return function(
     \Model\Product\Filter $productFilter,
     $baseUrl
 ) {
-
     $selected = [];
     foreach ($productFilter->dump() as $item) {
         if (!is_array($item)) continue;
@@ -21,6 +20,17 @@ return function(
     };
 
     $listById = [];
+
+    $shop = $helper->getParam('shop') && \App::config()->shop['enabled'] ? $helper->getParam('shop') : null;
+    if ($shop instanceof \Model\Shop\Entity) {
+        $listById['shop'] = [
+            'name'  => 'Наличие в магазинах',
+            'links' => [
+                ['name' => sprintf('Только товары из магазина <strong>%s</strong>', $shop->getAddress()), 'url' => $helper->replacedUrl(['page' => null, 'shop' => null])],
+            ],
+        ];
+    }
+
     foreach ($productFilter->getFilterCollection() as $filter) {
 
         if (!in_array($filter->getId(), $selected)) {
@@ -80,8 +90,6 @@ return function(
         }
         $listById[$filter->getId()]['links'] += $links;
     }
-
-    //var_dump($listById);
 
     if (!(bool)$listById) {
         return;

@@ -8,7 +8,28 @@ return function(
     /** @var $filters \Model\Product\Filter\Entity[] */
     $filters = [];
     $priceFilter = null;
-    foreach ($productFilter->getFilterCollection() as $filter) {
+    foreach ($productFilter->getFilterCollection() as $i => $filter) {
+        // фильтр "Наличие в магазинах"
+        if (1 == $i) {
+            /** @var $shops \Model\Shop\Entity[] */
+            $shops = $helper->getParam('shops');
+
+            $shopFilter = new \Model\Product\Filter\Entity();
+            $shopFilter->setId('shop');
+            $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+            $shopFilter->setName('Наличие в магазинах');
+            $shopFilter->getIsInList(true);
+            $shopFilter->setIsMultiple(false);
+
+            foreach ($shops as $shop) {
+                $option = new \Model\Product\Filter\Option\Entity();
+                $option->setId($shop->getId());
+                $option->setName($shop->getName());
+                $shopFilter->addOption($option);
+            }
+            $filters[] = $shopFilter;
+        }
+
         if ($filter->isPrice()) {
             $priceFilter = $filter;
             $priceFilter->setStepType('price');

@@ -5,7 +5,6 @@ return function(
     \Model\Product\Filter $productFilter,
     \Model\Product\Filter\Entity $filter
 ) {
-
     $values = $productFilter->getValue($filter);
 ?>
 
@@ -14,13 +13,14 @@ return function(
     <?
         $optionId = $option->getId();
         $viewId = \View\Id::productCategoryFilter($filter->getId()) . '-option-' . $optionId;
+        $name = ('shop' === $filter->getId()) ? 'shop' : ('f-' . $filter->getId() . ($filter->getIsMultiple() ? ('-' . \Util\String::slugify($option->getName())) : ''));
     ?>
     <div class="bFilterValuesCol">
         <input
             class="bInputHidden bCustomInput"
-            type="checkbox"
+            type="<?= $filter->getIsMultiple() ? 'checkbox' : 'radio' ?>"
             id="<?= $viewId ?>"
-            name="f-<?= $filter->getId() . '-' . \Util\String::slugify($option->getName()) ?>"
+            name="<?= $name ?>"
             value="<?= $optionId ?>"
             hidden
             <? if (in_array($optionId, $values)) { ?> checked="checked"<? } ?>
