@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 	 * @type {Array}
 	 */
 	var bigjqueryFiles = [
-		'custom-form-elements.js',
+		// 'custom-form-elements.js',
 		'jquery.email_validate.js',
 		'jquery.lightbox_me.js',
 		'jquery.scrollto.js',
