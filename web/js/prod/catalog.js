@@ -31,8 +31,7 @@
 
 			catalog.history._callback = callback;
 
-			// Для старых браузеров просто переходим по ссылке
-			if ( !History.enabled ) {
+			if ( !catalog.enableHistoryAPI ) {
 				document.location.href = url;
 
 				return;
@@ -57,6 +56,13 @@
 		},
 
 		/**
+		 * Обработка ошибки загрузки данных
+		 */
+		errorHandler = function errorHandler() {
+			utils.blockScreen.unblock();
+		},
+
+		/**
 		 * Получение данных от сервера
 		 * Перенаправление данных в функцию обратного вызова
 		 * 
@@ -73,6 +79,8 @@
 				console.log(typeof res);
 				console.log(typeof catalog.history._callback);
 			}
+
+			utils.blockScreen.unblock();
 		},
 
 		/**
@@ -85,6 +93,8 @@
 			
 			console.info('statechange');
 
+			utils.blockScreen.block('Загрузка товаров');
+
 			url = url.addParameterToUrl('ajax', 'true');
 
 			console.log(url);
@@ -93,7 +103,11 @@
 			$.ajax({
 				type: 'GET',
 				url: url,
-				success: resHandler
+				success: resHandler,
+				statusCode: {
+					500: errorHandler,
+					503: errorHandler
+				}
 			});
 		};
 	// end of functions
@@ -139,8 +153,15 @@
 	console.log('Mustache is '+typeof Mustache);
 	// ==== END Mustache test out
 	
+	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
+	
 	
 	catalog.filter = {
+		/**
+		 * Отрисовка шаблона продуктов
+		 * 
+		 * @param	{Object}	res		Данные для шаблона
+		 */
 		renderTmpl: function( res ) {
 			console.info('callback: renderTmpl');
 
@@ -148,14 +169,18 @@
 				compactListingTmpl = compactListing.html(),
 				partials = compactListing.data('partial'),
 				listingWrap = $('.bListing'),
-				html = '';
+				html;
 			// end of vars
 			
 			console.log(listingWrap);
 			console.log(partials);
 
-			html = Mustache.to_html(compactListingTmpl, res, partials);
+			html = Mustache.render(compactListingTmpl, res, partials);
+			// html = Mustache.to_html(compactListingTmpl, res, partials);
 
+			console.log(html);
+
+			listingWrap.empty();
 			listingWrap.html(html);
 			console.log('end of render');
 		},
@@ -245,17 +270,18 @@
 		sendFilter: function() {
 			var url = catalog.filter.getFilterUrl();
 
-			console.log(document.location);
-
 			if ( url !== (document.location.pathname + document.location.search) ) {
 				console.info('goto url '+url);
-				console.log('now url '+document.location.pathname);
+
 				catalog.history.gotoUrl(url, catalog.filter.renderTmpl);
 			}
 
 			return false;
 		},
 
+		/**
+		 * Обновление значений фильтра
+		 */
 		updateFilter: function() {
 			console.info('update filter');
 		}

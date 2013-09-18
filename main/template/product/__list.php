@@ -20,6 +20,6 @@ return function(
     </ul>
 
     <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
-        <?= include __DIR__ . '/list/_compact.mustache' ?>
+        <?= file_get_contents(\App::config()->templateDir . '/product/list/_compact.mustache') ?>
     </script>
 <? };

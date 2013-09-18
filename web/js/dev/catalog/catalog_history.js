@@ -31,8 +31,7 @@
 
 			catalog.history._callback = callback;
 
-			// Для старых браузеров просто переходим по ссылке
-			if ( !History.enabled ) {
+			if ( !catalog.enableHistoryAPI ) {
 				document.location.href = url;
 
 				return;
@@ -57,6 +56,13 @@
 		},
 
 		/**
+		 * Обработка ошибки загрузки данных
+		 */
+		errorHandler = function errorHandler() {
+			utils.blockScreen.unblock();
+		},
+
+		/**
 		 * Получение данных от сервера
 		 * Перенаправление данных в функцию обратного вызова
 		 * 
@@ -73,6 +79,8 @@
 				console.log(typeof res);
 				console.log(typeof catalog.history._callback);
 			}
+
+			utils.blockScreen.unblock();
 		},
 
 		/**
@@ -85,6 +93,8 @@
 			
 			console.info('statechange');
 
+			utils.blockScreen.block('Загрузка товаров');
+
 			url = url.addParameterToUrl('ajax', 'true');
 
 			console.log(url);
@@ -93,7 +103,11 @@
 			$.ajax({
 				type: 'GET',
 				url: url,
-				success: resHandler
+				success: resHandler,
+				statusCode: {
+					500: errorHandler,
+					503: errorHandler
+				}
 			});
 		};
 	// end of functions

@@ -27,8 +27,15 @@
 	console.log('Mustache is '+typeof Mustache);
 	// ==== END Mustache test out
 	
+	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
+	
 	
 	catalog.filter = {
+		/**
+		 * Отрисовка шаблона продуктов
+		 * 
+		 * @param	{Object}	res		Данные для шаблона
+		 */
 		renderTmpl: function( res ) {
 			console.info('callback: renderTmpl');
 
@@ -36,14 +43,18 @@
 				compactListingTmpl = compactListing.html(),
 				partials = compactListing.data('partial'),
 				listingWrap = $('.bListing'),
-				html = '';
+				html;
 			// end of vars
 			
 			console.log(listingWrap);
 			console.log(partials);
 
-			html = Mustache.to_html(compactListingTmpl, res, partials);
+			html = Mustache.render(compactListingTmpl, res, partials);
+			// html = Mustache.to_html(compactListingTmpl, res, partials);
 
+			console.log(html);
+
+			listingWrap.empty();
 			listingWrap.html(html);
 			console.log('end of render');
 		},
@@ -133,17 +144,18 @@
 		sendFilter: function() {
 			var url = catalog.filter.getFilterUrl();
 
-			console.log(document.location);
-
 			if ( url !== (document.location.pathname + document.location.search) ) {
 				console.info('goto url '+url);
-				console.log('now url '+document.location.pathname);
+
 				catalog.history.gotoUrl(url, catalog.filter.renderTmpl);
 			}
 
 			return false;
 		},
 
+		/**
+		 * Обновление значений фильтра
+		 */
 		updateFilter: function() {
 			console.info('update filter');
 		}
