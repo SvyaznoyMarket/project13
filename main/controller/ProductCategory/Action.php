@@ -627,14 +627,12 @@ class Action {
         }
 
         // ajax
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('product/_list', array(
-                'page'                   => new \View\Layout(),
-                'pager'                  => $productPager,
-                'view'                   => $productView,
-                'productVideosByProduct' => $productVideosByProduct,
-                'isAjax'                 => true,
-            )));
+        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+            return new \Http\JsonResponse((new \View\Product\ListAction())->execute(
+                \App::closureTemplating()->getParam('helper'),
+                $productPager,
+                $productVideosByProduct
+            ));
         }
 
         $page->setParam('productPager', $productPager);
