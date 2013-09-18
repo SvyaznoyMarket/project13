@@ -12,7 +12,7 @@ return function(
     );
 
     $partials = [
-        'cart/_button-product' => '<p>PARTIAL</p>'
+        'cart/_button-product' => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache'),
     ];
 ?>
     <ul class="bListing clearfix">
