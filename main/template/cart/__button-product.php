@@ -10,7 +10,7 @@ return function (
 
 $class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;
 
-if ($product->getIsBuyable()) {
+if (!$product->getIsBuyable()) {
     $url = '#';
     $class .= ' mDisabled';
 
