@@ -45,18 +45,11 @@
 				listingWrap = $('.bListing'),
 				html;
 			// end of vars
-			
-			console.log(listingWrap);
-			console.log(partials);
 
 			html = Mustache.render(compactListingTmpl, res, partials);
-			// html = Mustache.to_html(compactListingTmpl, res, partials);
-
-			console.log(html);
 
 			listingWrap.empty();
 			listingWrap.html(html);
-			console.log('end of render');
 		},
 
 		/**
