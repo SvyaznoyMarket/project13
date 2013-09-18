@@ -17,7 +17,10 @@ if (!$product->getIsBuyable()) {
     if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
         $class .= ' mShopsOnly';
         $value = 'Только в магазинах';
-    } else {
+    } elseif( $product->getIsInShowroomsOnly() ) {
+        $class .= ' mShopsOnly'; /*TODO: возможно, нужно добавить css class - .mShowroomsOnly */
+        $value = 'Витринный товар';
+    }else{
         $value = 'Нет в наличии';
     }
 } else if (!isset($url)) {
