@@ -25,6 +25,14 @@
       </tbody><!-- тело таблицы -->
   </table>
 
+  <script type="text/html" id="groupHeaderTemplate">
+    <tr>
+      <th></th>
+      <th><strong><%=group%></strong></th>
+      <th></th>
+    </tr>
+  </script><!-- заголовок группы -->
+
   <script type="text/html" id="rowTemplate">
     <tr>
       <td><%=counter%></td>

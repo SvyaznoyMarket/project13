@@ -6,13 +6,13 @@
  */
 (function(){
 
-  var buildTable = function( table, data ) {
-    table.find('tbody').html('');
-    var rows = data[$('#region_list').val()];
-    if ( rows ) {
-      appendRows( table, rows );
-    }
-  }
+  var appendGroupHeader = function( table, group ) {
+    var groupData = {
+      group: group
+    };
+
+    table.find('tbody').append( tmpl('groupHeaderTemplate', groupData) );
+  };
 
   var appendRows = function( table, rows ) {
     for (var i = 0; i < rows.length; i++) {
@@ -25,6 +25,25 @@
       table.find('tbody').append( tmpl('rowTemplate', rowData) );
     }
   };
+
+  var buildGroup = function( table, group, rows ) {
+    if ( group ) {
+      appendGroupHeader( table, group );
+    }
+
+    if ( rows ) {
+      appendRows( table, rows );
+    }
+  }
+
+  var buildTable = function( table, data ) {
+    table.find('tbody').html('');
+    var groups = data[ $('#region_list').val() ];
+
+    for(group in groups) {
+      buildGroup( table, group, groups[group] )
+    }
+  }
 
   $(document).ready(function() {
     if ( $('#region_list').length ) {
