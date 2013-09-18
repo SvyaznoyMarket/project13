@@ -387,7 +387,7 @@ class Action {
         }
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
-            $page = new \View\ProductCategory\BranchPage();
+            $page = new \View\ProductCategory\LeafPage();
             $page->setParam('forceSliders', true);
             $setPageParameters($page);
 
@@ -401,7 +401,7 @@ class Action {
             return $this->rootCategory($category, $productFilter, $page, $request);
         }
 
-        $page = new \View\ProductCategory\BranchPage();
+        $page = new \View\ProductCategory\LeafPage();
         $setPageParameters($page);
 
         return $this->leafCategory($category, $productFilter, $page, $request);
