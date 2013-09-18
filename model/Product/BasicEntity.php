@@ -40,7 +40,8 @@ class BasicEntity {
     /** @var int */
     protected $numReviews;
     /** @var bool */
-    protected $hasStockWithoutShowroom;
+    protected $isInShowroomsOnly;
+
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -359,22 +360,23 @@ class BasicEntity {
         return $this->isInShopShowroom;
     }
 
+
     /**
      * @return bool
      */
-    public function hasStockWithoutShowroom() {
-        if (!is_null($this->hasStockWithoutShowroom)) {
-            return $this->hasStockWithoutShowroom;
+    public function getIsInShowroomsOnly() {
+        if (!is_null($this->isInShowroomsOnly)) {
+            return $this->isInShowroomsOnly;
         }
 
-        $this->hasStockWithoutShowroom = false;
+        $this->isInShowroomsOnly = true;
         foreach ($this->getStock() as $stock) {
             if ( $stock->getQuantityShowroom() == 0 ) {
-                $this->hasStockWithoutShowroom = true;
+                $this->isInShowroomsOnly = false;
                 break;
             }
         }
-        return $this->hasStockWithoutShowroom;
+        return $this->isInShowroomsOnly;
     }
 
 }

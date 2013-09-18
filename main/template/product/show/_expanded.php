@@ -71,13 +71,8 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             <? endif ?>
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
-            <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
-            <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-                <div class="notBuying font12">
-                    <div class="corner"><div></div></div>
-                    Только в магазинах
-                </div>
-            <? endif ?>
+            <?= $page->render('cart/_button', ['product' => $product]) ?>
+            <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
             <? if ($product->getIsBuyable()): ?>
             <noindex>
                 <ul class="bNGB__eUl">

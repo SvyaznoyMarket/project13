@@ -22,7 +22,7 @@ if (empty($quantity)) {
 
 if (empty($value)) $value = 'Купить';
 
-$disabled = !$product->getIsBuyable();
+$disabled = !$product->getIsBuyable() || $product->getIsInShowroomsOnly();
 if ($disabled) {
     $url = '#';
     $class .= ' mDisabled';
