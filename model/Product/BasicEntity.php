@@ -365,7 +365,6 @@ class BasicEntity {
      * @return bool
      */
     public function getIsInShowroomsOnly() {
-        return true;
         if (!is_null($this->isInShowroomsOnly)) {
             return $this->isInShowroomsOnly;
         }

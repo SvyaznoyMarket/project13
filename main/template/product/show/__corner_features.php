@@ -13,6 +13,6 @@
 <? elseif ( $product->getIsInShowroomsOnly() ): ?>
     <div class="notBuying font12">
         <div class="corner"><div></div></div>
-        Витринный товар
+        На витрине
     </div>
 <? endif ?>
