@@ -16,11 +16,20 @@
 	// end of vars
 
 	catalog.history = {
-		gotoUrl: function gotoUrl( url ) {
+		/**
+		 * Обработка перехода на URL
+		 * Если браузер не поддерживает History API происходит обычный переход по ссылке
+		 * 
+		 * @param	{String}	url			Адрес на который необходимо выполнить переход
+		 * @param	{Function}	callback	Функция которая будет вызвана после получения данных от сервера
+		 */
+		gotoUrl: function gotoUrl( url, callback ) {
 			var state = {
 				title: 'Enter - это выход!',
 				url: url
 			};
+
+			catalog.history._callback = callback;
 
 			// Для старых браузеров просто переходим по ссылке
 			if ( !History.enabled ) {
@@ -47,8 +56,23 @@
 			return false;
 		},
 
+		/**
+		 * Получение данных от сервера
+		 * Перенаправление данных в функцию обратного вызова
+		 * 
+		 * @param	{Object}	res	Полученные данные
+		 */
 		resHandler = function resHandler( res ) {
 			console.info('resHandler');
+
+			if ( typeof res === 'object' && typeof catalog.history._callback === 'function' ) {
+				catalog.history._callback(res);
+			}
+			else {
+				console.warn('res isn\'t object or catalog.history._callback isn\'t function');
+				console.log(typeof res);
+				console.log(typeof catalog.history._callback);
+			}
 		},
 
 		/**
@@ -117,6 +141,25 @@
 	
 	
 	catalog.filter = {
+		renderTmpl: function( res ) {
+			console.info('callback: renderTmpl');
+
+			var compactListing = $('#listing_compact_tmpl'),
+				compactListingTmpl = compactListing.html(),
+				partials = compactListing.data('partial'),
+				listingWrap = $('.bListing'),
+				html = '';
+			// end of vars
+			
+			console.log(listingWrap);
+			console.log(partials);
+
+			html = Mustache.to_html(compactListingTmpl, res, partials);
+
+			listingWrap.html(html);
+			console.log('end of render');
+		},
+
 		/**
 		 * Получение изменненых и неизменненых полей слайдеров
 		 * 
@@ -165,6 +208,7 @@
 
 			return res;
 		},
+
 		/**
 		 * Формирование URL для получения результатов фильтра
 		 * 
@@ -191,8 +235,6 @@
 				url += '?' + formSerizalizeData;
 			}
 
-			console.log(url);
-
 			return url;
 		},
 
@@ -203,8 +245,12 @@
 		sendFilter: function() {
 			var url = catalog.filter.getFilterUrl();
 
-			if ( url.length ) {
-				catalog.history.gotoUrl(url);
+			console.log(document.location);
+
+			if ( url !== (document.location.pathname + document.location.search) ) {
+				console.info('goto url '+url);
+				console.log('now url '+document.location.pathname);
+				catalog.history.gotoUrl(url, catalog.filter.renderTmpl);
 			}
 
 			return false;

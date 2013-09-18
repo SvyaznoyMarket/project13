@@ -16,11 +16,20 @@
 	// end of vars
 
 	catalog.history = {
-		gotoUrl: function gotoUrl( url ) {
+		/**
+		 * Обработка перехода на URL
+		 * Если браузер не поддерживает History API происходит обычный переход по ссылке
+		 * 
+		 * @param	{String}	url			Адрес на который необходимо выполнить переход
+		 * @param	{Function}	callback	Функция которая будет вызвана после получения данных от сервера
+		 */
+		gotoUrl: function gotoUrl( url, callback ) {
 			var state = {
 				title: 'Enter - это выход!',
 				url: url
 			};
+
+			catalog.history._callback = callback;
 
 			// Для старых браузеров просто переходим по ссылке
 			if ( !History.enabled ) {
@@ -47,8 +56,23 @@
 			return false;
 		},
 
+		/**
+		 * Получение данных от сервера
+		 * Перенаправление данных в функцию обратного вызова
+		 * 
+		 * @param	{Object}	res	Полученные данные
+		 */
 		resHandler = function resHandler( res ) {
 			console.info('resHandler');
+
+			if ( typeof res === 'object' && typeof catalog.history._callback === 'function' ) {
+				catalog.history._callback(res);
+			}
+			else {
+				console.warn('res isn\'t object or catalog.history._callback isn\'t function');
+				console.log(typeof res);
+				console.log(typeof catalog.history._callback);
+			}
 		},
 
 		/**

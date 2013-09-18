@@ -29,6 +29,25 @@
 	
 	
 	catalog.filter = {
+		renderTmpl: function( res ) {
+			console.info('callback: renderTmpl');
+
+			var compactListing = $('#listing_compact_tmpl'),
+				compactListingTmpl = compactListing.html(),
+				partials = compactListing.data('partial'),
+				listingWrap = $('.bListing'),
+				html = '';
+			// end of vars
+			
+			console.log(listingWrap);
+			console.log(partials);
+
+			html = Mustache.to_html(compactListingTmpl, res, partials);
+
+			listingWrap.html(html);
+			console.log('end of render');
+		},
+
 		/**
 		 * Получение изменненых и неизменненых полей слайдеров
 		 * 
@@ -77,6 +96,7 @@
 
 			return res;
 		},
+
 		/**
 		 * Формирование URL для получения результатов фильтра
 		 * 
@@ -103,8 +123,6 @@
 				url += '?' + formSerizalizeData;
 			}
 
-			console.log(url);
-
 			return url;
 		},
 
@@ -115,8 +133,12 @@
 		sendFilter: function() {
 			var url = catalog.filter.getFilterUrl();
 
-			if ( url.length ) {
-				catalog.history.gotoUrl(url);
+			console.log(document.location);
+
+			if ( url !== (document.location.pathname + document.location.search) ) {
+				console.info('goto url '+url);
+				console.log('now url '+document.location.pathname);
+				catalog.history.gotoUrl(url, catalog.filter.renderTmpl);
 			}
 
 			return false;
