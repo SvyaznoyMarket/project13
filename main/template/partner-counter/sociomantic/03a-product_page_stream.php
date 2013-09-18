@@ -26,6 +26,7 @@ if ($product instanceof \Model\Product\Entity) {
     $scr_product['brand'] = $brand;
     $scr_product['price'] = $product->getPrice(); //стоимость со скидкой
     $scr_product['amount'] = $product->getPriceOld(); // стоимость без скидки
+    if (!$scr_product['amount']) $scr_product['amount'] = $scr_product['price'];
     $scr_product['currency'] = 'RUB';
     /*$scr_product['url'] = 'http://' . $domain . $product->getLink(); */
     $scr_product['url'] = 'http://' . $domain . $_SERVER['REQUEST_URI'];
