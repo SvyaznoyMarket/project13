@@ -9,12 +9,12 @@
     <? if ($product->getState()->getIsShop()):/* ?>
         <div class="notBuying font12">
             <div class="corner"><div></div></div>
-            Только в магазинах
+            Только в магазине
         </div>
     <? elseif ($product->getIsInShowroomsOnly()): */?>
         <div class="notBuying font12">
             <div class="corner"><div></div></div>
-            На витрине
+            Только на витрине
         </div>
     <? else: ?>
         <div class="notBuying font12">

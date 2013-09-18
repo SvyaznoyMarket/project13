@@ -19,7 +19,7 @@ if (!$product->getIsBuyable()) {
         $value = 'Только в магазинах';
     } elseif ($product->getIsInShowroomsOnly()) {*/
         $class .= ' mShopsOnly';
-        $value = 'На витрине';
+        $value = 'Витринный товар';
     } else {
         $value = 'Нет в наличии';
     }

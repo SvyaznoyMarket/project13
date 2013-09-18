@@ -29,7 +29,7 @@ if (!$product->getIsBuyable()) {
     if ($product->getState()->getIsShop()) {/*
         $value = 'Только в магазинах';
     } elseif ($product->getIsInShowroomsOnly()) {*/
-        $value = 'На витрине';
+        $value = 'Витринный товар';
     } else {
         $value = 'Нет в наличии';
     }
