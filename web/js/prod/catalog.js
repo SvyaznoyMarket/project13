@@ -113,22 +113,6 @@
 
 	// ==== Mustache test out
 	console.log('Mustache is '+typeof Mustache);
-	
-	var person = {
-			firstName: "Егор",
-			lastName: "!"
-		},
-		template = "<h1>{{firstName}} {{lastName}}</h1><p>Ты снова не передаешь action к форме. Из-за этого я не могу формировать правильный url</p>",
-		html = Mustache.to_html(template, person),
-		testOut = $('<div>').addClass('popup').html(html);
-	// end of vars
-
-	testOut.appendTo('body');
-
-	testOut.lightbox_me({
-		centered: true
-	});
-	
 	// ==== END Mustache test out
 	
 	
