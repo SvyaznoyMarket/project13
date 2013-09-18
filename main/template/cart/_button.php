@@ -26,11 +26,11 @@ $disabled = false;
 
 if (!$product->getIsBuyable()) {
     $disabled = true;
-    if ($product->getState()->getIsShop()) {
+    if ($product->getState()->getIsShop()) {/*
         $value = 'Только в магазинах';
-    }elseif ($product->getIsInShowroomsOnly()) {
+    } elseif ($product->getIsInShowroomsOnly()) {*/
         $value = 'На витрине';
-    }else{
+    } else {
         $value = 'Нет в наличии';
     }
 }
