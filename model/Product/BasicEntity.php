@@ -39,6 +39,9 @@ class BasicEntity {
     protected $avgStarScore;
     /** @var int */
     protected $numReviews;
+    /** @var bool */
+    protected $isInShowroomsOnly;
+
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -332,6 +335,49 @@ class BasicEntity {
     public function getNumReviews()
     {
         return $this->numReviews;
+    }
+
+
+    /**
+     * @param int $shopId
+     * @return bool
+     */
+    public function getIsInShowroom($shopId) {
+        $shopId = (int)$shopId;
+        if (!$shopId) return false;
+
+        if (!is_null($this->isInShopShowroom)) {
+            return $this->isInShopShowroom;
+        }
+
+        $this->isInShopShowroom = false;
+        foreach ($this->getStock() as $stock) {
+            if ($stock->getShopId() == $shopId) {
+                $this->isInShopShowroom = $stock->getQuantityShowroom() > 0;
+                break;
+            }
+        }
+
+        return $this->isInShopShowroom;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function getIsInShowroomsOnly() {
+        if (!is_null($this->isInShowroomsOnly)) {
+            return $this->isInShowroomsOnly;
+        }
+
+        $this->isInShowroomsOnly = true;
+        foreach ($this->getStock() as $stock) {
+            if ( $stock->getQuantityShowroom() == 0 ) {
+                $this->isInShowroomsOnly = false;
+                break;
+            }
+        }
+        return $this->isInShowroomsOnly;
     }
 
 }

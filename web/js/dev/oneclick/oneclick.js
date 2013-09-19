@@ -899,7 +899,9 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			success: shopListSuccessHandler,
 			statusCode: {
 					500: shopListErrorHandler,
-					503: shopListErrorHandler
+					502: shopListErrorHandler,
+					503: shopListErrorHandler,
+					504: shopListErrorHandler
 				}
 		});
 
