@@ -23,7 +23,7 @@ class OrderAction {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
-            }, function (\Exception $e) {
+            }, function (\Exception $e) use (&$user) {
                 \App::exception()->remove($e);
                 throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $user->getToken()));
             });
