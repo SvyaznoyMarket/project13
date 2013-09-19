@@ -26,9 +26,9 @@ $disabled = false;
 
 if (!$product->getIsBuyable()) {
     $disabled = true;
-    if ($product->getState()->getIsShop()) {/*
+    if ($product->getIsInShopsOnly()) {
         $value = 'Только в магазинах';
-    } elseif ($product->getIsInShowroomsOnly()) {*/
+    } elseif ($product->getState()->getIsShop()) {
         $value = 'Витринный товар';
     } else {
         $value = 'Нет в наличии';
