@@ -5,7 +5,7 @@
  * 
  * @author	Zaytsev Alexandr
  *
- * @param	{Object}	global	Enter namespace
+ * @param	{Object}	ENTER	Enter namespace
  */
 ;(function( ENTER ) {
 	console.info('New catalog init: filter.js');
@@ -15,11 +15,18 @@
 		catalog = utils.extendApp('ENTER.catalog'),
 
 		filterBlock = $('.bFilter'),
+
 		filterToggleBtn = filterBlock.find('.bFilterToggle'),
 		filterContent = filterBlock.find('.bFilterCont'),
-
+		filterSliders = filterBlock.find('.bRangeSlider'),
 		filterMenuItem = filterBlock.find('.bFilterParams__eItem'),
-		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem');
+		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem'),
+
+		viewParamPanel = $('.bSortingLine'),
+
+		sortingItemsBtns = viewParamPanel.find('.mSorting .mSortItem'),
+		changeViewItemsBtns = viewParamPanel.find('.mViewer .mSortItem'),
+		changePaginationBtns = viewParamPanel.find('.mViewer .mPager');
 	// end of vars
 	
 	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
@@ -59,8 +66,7 @@
 		getSlidersInputState: function() {
 			console.info('getSlidersInputState');
 
-			var sliders = $('.bRangeSlider'),
-				res = {
+			var res = {
 					changedSliders: [],
 					unchangedSliders: []
 				};
@@ -93,7 +99,7 @@
 				}
 			};
 
-			sliders.each(sortSliders);
+			filterSliders.each(sortSliders);
 
 			return res;
 		},
@@ -261,16 +267,36 @@
 
 			sliderToInput.on('change', inputUpdates);
 			sliderFromInput.on('change', inputUpdates);
+		},
+	
+		/**
+		 * Сортировка элементов
+		 */
+		sortingItemsHandler = function sortingItemsHandler() {
+			var self = $(this),
+				url = self.attr('href'),
+				parentItem = self.parent();
+			// end of vars
+			 
+			sortingItemsBtns.removeClass('mActive');
+			parentItem.addClass('mActive');
+			catalog.history.gotoUrl(url, catalog.filter.renderTmpl);
+
+			return false;
 		};
 	// end of functions
 
-	
+
 	// Handlers
 	filterToggleBtn.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
 	filterBlock.on('change', catalog.filter.changeFilterHandler);
 	filterBlock.on('submit', catalog.filter.sendFilter);
 
-	$('.bRangeSlider').each(initSliderRange);
+	// Sorting items
+	sortingItemsBtns.on('click', '.bSortingList__eLink', sortingItemsHandler);
+	
+	// Init sliders
+	filterSliders.each(initSliderRange);
 
 }(window.ENTER));

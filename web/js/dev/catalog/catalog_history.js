@@ -1,19 +1,19 @@
 /**
  * Работа с HISTORY API
  *
- * @requires jQuery, History.js
+ * @requires	jQuery, History.js
  *
- * @author	Zaytsev Alexandr
+ * @author		Zaytsev Alexandr
  *
- * @param	{Object}	global	Enter namespace
+ * @param		{Object}	global	Enter namespace
  */
 ;(function( ENTER ) {
-	console.info('New catalog history module');
-
 	var pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog');
 	// end of vars
+
+	console.info('New catalog history module');
 
 	catalog.history = {
 		/**
@@ -25,9 +25,10 @@
 		 */
 		gotoUrl: function gotoUrl( url, callback ) {
 			var state = {
-				title: 'Enter - это выход!',
-				url: url
-			};
+					title: 'Enter - это выход!',
+					url: url
+				};
+			// end of vars
 
 			catalog.history._callback = callback;
 
@@ -44,21 +45,11 @@
 		}
 	};
 
-		/**
-		 * Обработчик нажатия на линк завязанный на history api
-		 */
-	var historyLinkHandler = function historyLinkHandler() {
-			var url = $(this).attr('href');
-
-			catalog.history.gotoUrl(url);
-
-			return false;
-		},
 
 		/**
 		 * Обработка ошибки загрузки данных
 		 */
-		errorHandler = function errorHandler() {
+	var errorHandler = function errorHandler() {
 			utils.blockScreen.unblock();
 		},
 
@@ -112,8 +103,6 @@
 		};
 	// end of functions
 
-
 	History.Adapter.bind(window, 'statechange', stateChangeHandler);
-	$('body').on('click', '.jsHistoryLink', historyLinkHandler);
-
+	
 }(window.ENTER));	

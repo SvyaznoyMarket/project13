@@ -1,19 +1,19 @@
 /**
  * Работа с HISTORY API
  *
- * @requires jQuery, History.js
+ * @requires	jQuery, History.js
  *
- * @author	Zaytsev Alexandr
+ * @author		Zaytsev Alexandr
  *
- * @param	{Object}	global	Enter namespace
+ * @param		{Object}	global	Enter namespace
  */
 ;(function( ENTER ) {
-	console.info('New catalog history module');
-
 	var pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog');
 	// end of vars
+
+	console.info('New catalog history module');
 
 	catalog.history = {
 		/**
@@ -25,9 +25,10 @@
 		 */
 		gotoUrl: function gotoUrl( url, callback ) {
 			var state = {
-				title: 'Enter - это выход!',
-				url: url
-			};
+					title: 'Enter - это выход!',
+					url: url
+				};
+			// end of vars
 
 			catalog.history._callback = callback;
 
@@ -44,21 +45,11 @@
 		}
 	};
 
-		/**
-		 * Обработчик нажатия на линк завязанный на history api
-		 */
-	var historyLinkHandler = function historyLinkHandler() {
-			var url = $(this).attr('href');
-
-			catalog.history.gotoUrl(url);
-
-			return false;
-		},
 
 		/**
 		 * Обработка ошибки загрузки данных
 		 */
-		errorHandler = function errorHandler() {
+	var errorHandler = function errorHandler() {
 			utils.blockScreen.unblock();
 		},
 
@@ -112,10 +103,8 @@
 		};
 	// end of functions
 
-
 	History.Adapter.bind(window, 'statechange', stateChangeHandler);
-	$('body').on('click', '.jsHistoryLink', historyLinkHandler);
-
+	
 }(window.ENTER));	
  
  
@@ -131,7 +120,7 @@
  * 
  * @author	Zaytsev Alexandr
  *
- * @param	{Object}	global	Enter namespace
+ * @param	{Object}	ENTER	Enter namespace
  */
 ;(function( ENTER ) {
 	console.info('New catalog init: filter.js');
@@ -141,11 +130,18 @@
 		catalog = utils.extendApp('ENTER.catalog'),
 
 		filterBlock = $('.bFilter'),
+
 		filterToggleBtn = filterBlock.find('.bFilterToggle'),
 		filterContent = filterBlock.find('.bFilterCont'),
-
+		filterSliders = filterBlock.find('.bRangeSlider'),
 		filterMenuItem = filterBlock.find('.bFilterParams__eItem'),
-		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem');
+		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem'),
+
+		viewParamPanel = $('.bSortingLine'),
+
+		sortingItemsBtns = viewParamPanel.find('.mSorting .mSortItem'),
+		changeViewItemsBtns = viewParamPanel.find('.mViewer .mSortItem'),
+		changePaginationBtns = viewParamPanel.find('.mViewer .mPager');
 	// end of vars
 	
 	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
@@ -185,8 +181,7 @@
 		getSlidersInputState: function() {
 			console.info('getSlidersInputState');
 
-			var sliders = $('.bRangeSlider'),
-				res = {
+			var res = {
 					changedSliders: [],
 					unchangedSliders: []
 				};
@@ -219,7 +214,7 @@
 				}
 			};
 
-			sliders.each(sortSliders);
+			filterSliders.each(sortSliders);
 
 			return res;
 		},
@@ -387,16 +382,36 @@
 
 			sliderToInput.on('change', inputUpdates);
 			sliderFromInput.on('change', inputUpdates);
+		},
+	
+		/**
+		 * Сортировка элементов
+		 */
+		sortingItemsHandler = function sortingItemsHandler() {
+			var self = $(this),
+				url = self.attr('href'),
+				parentItem = self.parent();
+			// end of vars
+			 
+			sortingItemsBtns.removeClass('mActive');
+			parentItem.addClass('mActive');
+			catalog.history.gotoUrl(url, catalog.filter.renderTmpl);
+
+			return false;
 		};
 	// end of functions
 
-	
+
 	// Handlers
 	filterToggleBtn.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
 	filterBlock.on('change', catalog.filter.changeFilterHandler);
 	filterBlock.on('submit', catalog.filter.sendFilter);
 
-	$('.bRangeSlider').each(initSliderRange);
+	// Sorting items
+	sortingItemsBtns.on('click', '.bSortingList__eLink', sortingItemsHandler);
+	
+	// Init sliders
+	filterSliders.each(initSliderRange);
 
 }(window.ENTER));
