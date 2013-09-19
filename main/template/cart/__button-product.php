@@ -5,15 +5,14 @@ return function (
     \Model\Product\BasicEntity $product,
     $url = null,
     $class = null,
-    $value = 'Купить'
+    $value = null
 ) {
-
     $class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;
 
-    if ($product->getIsInShopsOnly()) {
+    if ($product->isInShopStockOnly()) {
         $class .= ' mShopsOnly';
-        $value = 'Только в магазинах';
-    } elseif ($product->getState()->getIsShop()) {
+        //$value = 'Только в магазинах';
+    } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
         $value = 'Витринный товар';
     }
@@ -21,7 +20,9 @@ return function (
     if (!$product->getIsBuyable()) {
         $url = '#';
         $class .= ' mDisabled';
-        $value = 'Нет в наличии';
+        if (!$value) {
+            $value = 'Нет в наличии';
+        }
     } else if (!isset($url)) {
         $urlParams = [
             'productId' => $product->getId(),
@@ -32,7 +33,11 @@ return function (
         $url = $helper->url('cart.product.set', $urlParams);
     }
 
-    ?>
+    if (null === $value) {
+        $value = 'Купить';
+    }
+
+?>
     <div class="bWidgetBuy__eBuy btnBuy">
         <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
     </div>
