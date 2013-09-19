@@ -391,7 +391,7 @@ class BasicEntity {
             return $this->isInShopsOnly;
         }
 
-        $shopsIds = [];
+        $inShop = false;
         $this->isInShopsOnly = true;
         foreach ($this->getStock() as $stock) {
             if ($stock->getStoreId() != null) {
@@ -399,14 +399,10 @@ class BasicEntity {
                 break;
             }
 
-            if ($stock->getShopId()) {
-                $shopsIds[] = $stock->getShopId();
-            }
+            if ($stock->getShopId()) $inShop = true;
         }
 
-        if (empty($shopsIds)) {
-            $this->isInShowroomsOnly = false;
-        }
+        if (!$inShop) $this->isInShowroomsOnly = false;
 
         return $this->isInShowroomsOnly;
 
