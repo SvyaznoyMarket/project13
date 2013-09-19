@@ -14,12 +14,12 @@ if (!$product->getIsBuyable()) {
     $url = '#';
     $class .= ' mDisabled';
 
-    if ($product->getState()->getIsShop()) {
+    if ($product->getState()->getIsShop()) {/*
         $class .= ' mShopsOnly';
         $value = 'Только в магазинах';
-    } elseif ($product->getIsInShowroomsOnly()) {
-        $class .= ' mShopsOnly'; /*TODO: возможно, нужно добавить css class - .mShowroomsOnly */
-        $value = 'На витрине';
+    } elseif ($product->getIsInShowroomsOnly()) {*/
+        $class .= ' mShopsOnly';
+        $value = 'Витринный товар';
     } else {
         $value = 'Нет в наличии';
     }
