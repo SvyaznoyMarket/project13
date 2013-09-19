@@ -55,6 +55,10 @@ class DefaultLayout extends Layout {
         return $this->tryRender('_googleAnalytics');
     }
 
+    public function slotKissMetrics() {
+        return $this->tryRender('_kissMetrics');
+    }
+
     public function slotBodyDataAttribute() {
         return 'default';
     }
@@ -220,7 +224,7 @@ class DefaultLayout extends Layout {
             }, function(\Exception $e) use (&$isFailed) {
                 \App::exception()->remove($e);
                 $isFailed = true;
-            });
+            }, 5);
             $client->execute();
 
             if ($isFailed) {

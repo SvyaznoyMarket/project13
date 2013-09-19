@@ -441,6 +441,22 @@ class App {
     }
 
     /**
+     * @return array|null $catalogJson
+     * @return \Session\AbtestJson|null
+     */
+    public static function abTestJson($catalogJson = null) {
+        static $instance;
+
+        if (!$instance && $catalogJson) {
+            $instance = new \Session\AbtestJson($catalogJson);
+        } elseif(!$instance && !$catalogJson) {
+            return null;
+        }
+
+        return $instance;
+    }
+
+    /**
      * @return \Partner\Manager
      */
     public static function partner() {

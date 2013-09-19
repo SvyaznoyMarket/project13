@@ -22,22 +22,16 @@ if (empty($quantity)) {
 
 if (empty($value)) $value = 'Купить';
 
-$disabled = false;
+$disabled = !$product->getIsBuyable();
 
-if (!$product->getIsBuyable()) {
-    $disabled = true;
-    if ($product->getState()->getIsShop()) {/*
-        $value = 'Только в магазинах';
-    } elseif ($product->getIsInShowroomsOnly()) {*/
-        $value = 'Витринный товар';
-    } else {
-        $value = 'Нет в наличии';
-    }
+if ($product->isInShopStockOnly()) {
+    $value = 'Только в магазинах';
 }
 
 if ($disabled) {
     $url = '#';
     $class .= ' mDisabled';
+    $value = $product->isInShopShowroomOnly() ? 'Витринный товар' : 'Нет в наличии';
 } else if (!isset($url)) {
     $urlParams = [
         'productId' => $product->getId(),

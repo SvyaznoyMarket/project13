@@ -166,6 +166,9 @@ try {
 
         //сохраняю данные для abtest
         \App::abTest()->setCookie($response);
+
+        //сохраняю данные для abtest на json
+        if(\App::abTestJson()) \App::abTestJson()->setCookie($response);
     }
 } catch (\Exception\NotFoundException $e) {
     $action = new \Controller\Error\NotFoundAction();

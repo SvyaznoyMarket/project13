@@ -112,28 +112,45 @@ $.ajaxSetup({
  
  
 /**
- * Обработчи для личного кабинета
+ * Обработчик для личного кабинета
  *
  * @author    Trushkevich Anton
  * @requires  jQuery
  */
 (function(){
-  var checked = false;
+  var checkedSms = false;
+  var checkedEmail = false;
 
   var handleSubscribeSms = function() {
-    if ( checked ) {
+    if ( checkedSms ) {
       $('#mobilePhoneWrapper').hide();
-      checked = false;
+      $('#mobilePhoneWrapper').parent().find('.red').html('');
+      checkedSms = false;
     } else {
       $('#mobilePhoneWrapper').show();
-      checked = true;
+      checkedSms = true;
+    }
+  };
+
+  var handleSubscribeEmail = function() {
+    if ( checkedEmail ) {
+      $('#emailWrapper').hide();
+      $('#emailWrapper').parent().find('.red').html('');
+      checkedEmail = false;
+    } else {
+      $('#emailWrapper').show();
+      checkedEmail = true;
     }
   };
 
   $(document).ready(function(){
-    checked = $('.smsCheckbox').hasClass('checked');
+    checkedSms = $('.smsCheckbox').hasClass('checked');
     if ( !$('#user_mobile_phone').val() ) {
       $('.smsCheckbox').bind('click', handleSubscribeSms);
+    }
+    checkedEmail = $('.emailCheckbox').hasClass('checked');
+    if ( !$('#user_email').val() ) {
+      $('.emailCheckbox').bind('click', handleSubscribeEmail);
     }
   });
 }());
@@ -1734,10 +1751,16 @@ $(document).ready(function() {
 	
 	var ajaxFilterCounter = 0;
 	
+
 	$('.product_filter-block').bind('change', function(e) {
 		var el = $(e.target);
 
 		if ( el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox'])) ) {
+
+			if( el.hasClass('shopFilter') && el.parent().data('onclick-location') ) {
+				document.location = el.parent().data('onclick-location');
+			}
+
 			el.trigger('preview');
 		}
 	}).bind('preview', function(e) {

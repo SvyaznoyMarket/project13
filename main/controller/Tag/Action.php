@@ -107,6 +107,14 @@ class Action {
             list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
             $productSorting->setActive($sortingName, $sortingDirection);
 
+            // если сортировка по умолчанию и в json заданы настройки сортировок,
+            // то применяем их
+            if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
+                $sort = $catalogJson['sort'];
+            } else {
+                $sort = $productSorting->dump();
+            }
+
             // вид товаров
             $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
             // фильтры
@@ -127,7 +135,7 @@ class Action {
                 );
                 $productPager = $repository->getIteratorByFilter(
                     $productFilter->dump(),
-                    $productSorting->dump(),
+                    $sort,
                     ($pageNum - 1) * $limit,
                     $limit
                 );
@@ -138,8 +146,6 @@ class Action {
                     throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
                 }
             }
-
-            $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
             // ajax
             if ($request->isXmlHttpRequest()) {
@@ -156,6 +162,7 @@ class Action {
                 &$productPager,
                 &$productFilter,
                 &$productSorting,
+                &$sort,
                 &$productView,
                 &$category,
                 &$categoryToken,
@@ -171,6 +178,7 @@ class Action {
                 $page->setParam('productPager', $productPager);
                 $page->setParam('productFilter', $productFilter);
                 $page->setParam('productSorting', $productSorting);
+                $page->setParam('sort', $sort);
                 $page->setParam('productView', $productView);
                 $page->setParam('category', $category);
                 $page->setParam('categoryToken', $categoryToken);
@@ -617,7 +625,7 @@ class Action {
             }
             $pagerAll = $repository->getIteratorByFilter(
                 $filtersWithoutShop,
-                $productSorting->dump(),
+                $page->getParam('sort'),
                 ($pageNum - 1) * $limit,
                 $limit
             );
@@ -626,7 +634,7 @@ class Action {
 
         $productPager = $repository->getIteratorByFilter(
             $productFilter->dump(),
-            $productSorting->dump(),
+            $page->getParam('sort'),
             ($pageNum - 1) * $limit,
             $limit
         );

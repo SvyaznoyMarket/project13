@@ -89,4 +89,14 @@ class TemplateHelper {
 
         return $choices[ ($number % 100 > 4 && $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
     }
+
+    /**
+     * @param string $text
+     * @param string $cp
+     * @return string
+     */
+    public static function mbyte_ucfirst($text, $cp = 'UTF-8') {
+      return mb_strtoupper( mb_substr( $text, 0, 1, $cp ), $cp ) . mb_strtolower( mb_substr( $text, 1, mb_strlen( $text, $cp ) - 1, $cp ), $cp );
+    }
+
 }

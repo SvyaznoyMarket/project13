@@ -7,35 +7,31 @@ return function (
     $class = null,
     $value = 'Купить'
 ) {
+    $class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;
 
-$class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;
-
-if (!$product->getIsBuyable()) {
-    $url = '#';
-    $class .= ' mDisabled';
-
-    if ($product->getState()->getIsShop()) {/*
+    if ($product->isInShopStockOnly()) {
         $class .= ' mShopsOnly';
-        $value = 'Только в магазинах';
-    } elseif ($product->getIsInShowroomsOnly()) {*/
+    } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
-        $value = 'Витринный товар';
-    } else {
-        $value = 'Нет в наличии';
     }
-} else if (!isset($url)) {
-    $urlParams = [
-        'productId' => $product->getId(),
-    ];
-    if ($helper->hasParam('sender')) {
-        $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
+
+    if (!$product->getIsBuyable()) {
+        $url = '#';
+        $class .= ' mDisabled';
+        $value = $product->isInShopShowroomOnly() ? 'Витринный товар' : 'Нет в наличии';
+    } else if (!isset($url)) {
+        $urlParams = [
+            'productId' => $product->getId(),
+        ];
+        if ($helper->hasParam('sender')) {
+            $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
+        }
+        $url = $helper->url('cart.product.set', $urlParams);
     }
-    $url = $helper->url('cart.product.set', $urlParams);
-}
 
 ?>
-<div class="bWidgetBuy__eBuy btnBuy">
-    <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
-</div>
+    <div class="bWidgetBuy__eBuy btnBuy">
+        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
+    </div>
 
 <? };

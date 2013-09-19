@@ -4363,6 +4363,7 @@
     float: none;
     clear: both;
     margin-top: 0px;
+    margin-bottom: 15px;
   }
   .goodsline .notBuying .corner {
     left: 175px;
@@ -9026,6 +9027,9 @@
     margin-top: 5px;
     line-height: 25px;
   }
+  .leftmenu .hidden {
+    display: none;
+  }
   .cabinethelp {
     padding: 20px 0px 10px;
     background: url("/css/user/img/attention.gif") no-repeat 0px 0px;
@@ -9611,7 +9615,7 @@
     float: right;
   }
   .bProductDesc .creditbox {
-    margin: 5px 0 0;
+    margin: 5px 0 10px;
     border: none;
     font-size: 14px;
   }

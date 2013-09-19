@@ -3,10 +3,12 @@
 namespace Model\Product;
 
 class Sorting {
+    const NAME_DEFAULT = 'default';
+
     /** @var array */
     private $list = array(
         'default'  => array(
-            'name'      => 'default',
+            'name'      => self::NAME_DEFAULT,
             'title'     => 'Автоматически',
             'direction' => 'desc',
         ),
@@ -85,5 +87,14 @@ class Sorting {
         $active = $this->getActive();
 
         return array($active['name'] => $active['direction']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefault() {
+        $active = $this->getActive();
+
+        return $active['name'] == self::NAME_DEFAULT;
     }
 }

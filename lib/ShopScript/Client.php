@@ -40,7 +40,13 @@ class Client {
         $data['http_user'] = \App::config()->shopScript['user'];
         $data['http_password'] = \App::config()->shopScript['password'];
 
-        $result = $this->curl->addQuery($this->getUrl($action, $params), $data, $successCallback, function($e) {
+        if (null === $timeout) {
+            $timeout = $this->config['timeout'];
+        }
+
+        $this->curl->addQuery($this->getUrl($action, $params), $data, function($data) use (&$result) {
+            $result = $data;
+        }, function($e) {
             \App::exception()->remove($e);
             \App::logger()->info('Fail ShopScript request with ' . $e, ['shopScript']);
         }, $timeout);
