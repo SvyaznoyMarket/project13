@@ -22,7 +22,7 @@ Disallow: /corporate-register
 Disallow: /request-password
 Disallow: /*?from=enter_
 Disallow: /index.php
-Disallow: /*stock   
+Disallow: /*/stock$  
 Disallow: /*?shop=
 Disallow: /*?sender=
 
