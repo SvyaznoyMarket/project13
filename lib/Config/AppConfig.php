@@ -88,7 +88,7 @@ class AppConfig {
         'url'          => null,
         'client_id'    => null,
         'timeout'      => null,
-        'hugeTimeout'      => null,
+        'hugeTimeout'  => null,
         'retryTimeout' => [],
         'retryCount'   => null,
         'chunk_size'   => null,
