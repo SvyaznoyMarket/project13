@@ -45,12 +45,15 @@ class BasicRecommendedAction {
 
             \App::logger()->info(sprintf('abTest.key=%s, response.cookie.switch=%s', $key, $request->cookies->get('switch')));
 
-            if ('retailrocket' == $key) {
-                $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);
-            } elseif ('hybrid' == $key) {
-                $products = $this->getProductsHybrid($product, $request, $this->retailrocketMethodName);
-            } else {
+            $categoryBranch = $product->getCategory();
+            $rootCategory = $categoryBranch[1];
+
+            if(!empty($categoryBranch[1]) && 
+                in_array($categoryBranch[1]->getToken(), ['muzikalnie-instrumenti-2422', 'muzikalnie-instrumenti-2396']) &&
+                (new \DateTime('now')) < (new \DateTime('2013-10-11'))) {
                 $products = $this->getProductsFromSmartengine($product, $request, $this->smartengineMethodName);
+            } else {
+                $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);
             }
 
             if ( !is_array($products) ) {
