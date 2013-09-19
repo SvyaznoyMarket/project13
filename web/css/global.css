@@ -4363,6 +4363,7 @@
     float: none;
     clear: both;
     margin-top: 0px;
+    margin-bottom: 15px;
   }
   .goodsline .notBuying .corner {
     left: 175px;
@@ -9611,7 +9612,7 @@
     float: right;
   }
   .bProductDesc .creditbox {
-    margin: 5px 0 0;
+    margin: 5px 0 10px;
     border: none;
     font-size: 14px;
   }
