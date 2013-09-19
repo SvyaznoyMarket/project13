@@ -76,9 +76,22 @@ if ((bool)\App::config()->abtest['enabled']) {
 }
 $debug->add('abTest', $options, 89);
 
+// ab test json
+if (\App::abTestJson() && (bool)\App::abTestJson()->isActive() && \App::abTestJson()->hasEnoughData()) {
+    $options = '<span style="color: #cccccc;">Тестирование проводится до </span><span style="color: #00ffff;">' . date('d-m-Y H:i', strtotime(\App::abTestJson()->getConfig()['bestBefore'])) . '</span><br />';
+    foreach (\App::abTestJson()->getOption() as $option) {
+        $options .= '<span style="color: #' . ($option->getKey() == \App::abTestJson()->getCase()->getKey() ? 'color: #11ff11' : 'cccccc') . ';">' . $option->getTraffic() . ($option->getTraffic() === '*' ? ' ' : '% ') . $option->getKey() . ' ' . $option->getName() . '</span><br />';
+    }
+} elseif (\App::abTestJson() && (bool)\App::abTestJson()->isActive() && !\App::abTestJson()->hasEnoughData()) {
+    $options = '<span style="color: #cccccc;">в JSON недостаточно данных для запуска АБ-теста (отсутствуют значения для текущего ключа)</span>';
+} else {
+    $options = '<span style="color: #cccccc;">неактивно</span>';
+}
+$debug->add('abTestJson', $options, 88);
+
 // log
 if ('live' != \App::$env) {
-    $debug->add('log', '<a style="color: #00ffff" href="/debug/log/' . \App::$id . '" onclick="var el = $(this); $.post(el.attr(\'href\'), function(response) { el.html(\'\'); el.after(\'<pre>\' + response + \'</pre>\'); el.next(\'pre\').css({\'color\': \'#ffffff\', \'max-height\': \'300px\', \'max-width\': \'1200px\', \'overflow\': \'auto\'}) }); return false">...</a>', 88);
+    $debug->add('log', '<a style="color: #00ffff" href="/debug/log/' . \App::$id . '" onclick="var el = $(this); $.post(el.attr(\'href\'), function(response) { el.html(\'\'); el.after(\'<pre>\' + response + \'</pre>\'); el.next(\'pre\').css({\'color\': \'#ffffff\', \'max-height\': \'300px\', \'max-width\': \'1200px\', \'overflow\': \'auto\'}) }); return false">...</a>', 87);
 }
 
 $requestLogger = \Util\RequestLogger::getInstance();
