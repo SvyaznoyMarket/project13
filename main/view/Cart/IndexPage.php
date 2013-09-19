@@ -23,15 +23,15 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotFooter() {
         try {
-            $response = \App::contentClient()->query('footer_compact');
+            $response = \App::contentClient()->query('footer_cart');
         } catch (\Exception $e) {
             \App::exception()->add($e);
             \App::logger()->error($e);
 
-            $response = array('content' => '');
+            $response = ['content' => ''];
         }
 
-        return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
+        return $response['content'];
     }
 
     public function slotInnerJavascript() {

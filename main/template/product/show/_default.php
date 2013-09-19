@@ -198,9 +198,7 @@ $is_showed = [];
 
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
 
-        <? if (\App::config()->payment['paypalECS']): ?>
-            <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
-        <? endif ?>
+        <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
     </div><!--/widget delivery -->
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>

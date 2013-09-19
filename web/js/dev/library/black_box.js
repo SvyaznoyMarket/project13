@@ -14,7 +14,6 @@
 	 * === BLACKBOX CONSTRUCTOR ===
 	 */
 	var BlackBox = (function() {
-		'use strict';
 	
 		/**
 		 * Создает объект для обновления данных с сервера и отображения текущих покупок
