@@ -146,8 +146,9 @@ class Client {
                     $resource,
                 ],
                 'query' => [
-                    'url'  => $url,
-                    'data' => $data,
+                    'url'     => $url,
+                    'data'    => $data,
+                    'timeout' => $timeout,
                 ],
             ];
         } else {
@@ -303,7 +304,8 @@ class Client {
                                 $query['query']['url'],
                                 $query['query']['data'],
                                 $this->successCallbacks[(string)$query['resources'][0]],
-                                isset($this->failCallbacks[(string)$query['resources'][0]]) ? $this->failCallbacks[(string)$query['resources'][0]] : null
+                                isset($this->failCallbacks[(string)$query['resources'][0]]) ? $this->failCallbacks[(string)$query['resources'][0]] : null,
+                                isset($query['query']['timeout']) ? $query['query']['timeout'] : null
                             );
                         }
                     }
