@@ -21,14 +21,11 @@
 		filterMenuItem = filterBlock.find('.bFilterParams__eItem'),
 		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem');
 	// end of vars
-
-
-	// ==== Mustache test out
-	console.log('Mustache is '+typeof Mustache);
-	// ==== END Mustache test out
 	
 	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
-	
+
+	console.info('Mustache is '+ typeof Mustache);
+	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
 	
 	catalog.filter = {
 		/**
@@ -128,6 +125,13 @@
 			}
 
 			return url;
+		},
+
+		/**
+		 * Изменение параметров фильтра
+		 */
+		changeFilterHandler: function() {
+			console.info('change filter');
 		},
 
 		/**
@@ -234,6 +238,8 @@
 
 				change: function( e, ui ) {
 					console.log('change slider');
+
+					filterBlock.trigger('change');
 				}
 			});
 
@@ -262,6 +268,7 @@
 	// Handlers
 	filterToggleBtn.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
+	filterBlock.on('change', catalog.filter.changeFilterHandler);
 	filterBlock.on('submit', catalog.filter.sendFilter);
 
 	$('.bRangeSlider').each(initSliderRange);
