@@ -6,20 +6,21 @@
 
 ?>
 <? if (!$product->getIsBuyable()) { ?>
-    <? if ($product->getIsInShopsOnly()): ?>
-        <div class="notBuying font12">
-            <div class="corner"><div></div></div>
-            Только в магазине
-        </div>
-    <? elseif($product->getState()->getIsShop()): ?>
-        <div class="notBuying font12">
-            <div class="corner"><div></div></div>
-            Только на витрине
-        </div>
-    <? else: ?>
-        <div class="notBuying font12">
-            <div class="corner"><div></div></div>
-            Нет в наличии
-        </div>
-    <? endif ?>
-<? }
+    <div class="notBuying font12">
+        <div class="corner"><div></div></div>
+        Нет в наличии
+    </div>
+<? } ?>
+
+<? if ($product->getIsInShopsOnly()): ?>
+    <div class="notBuying font12">
+        <div class="corner"><div></div></div>
+        Только в магазине
+    </div>
+<? elseif ($product->getState()->getIsShop()): ?>
+    <div class="notBuying font12">
+        <div class="corner"><div></div></div>
+        Только на витрине
+    </div>
+<? endif ?>
+<?
