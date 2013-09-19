@@ -236,27 +236,28 @@ class Action {
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
-        // если shopscript вернул редирект
-        $shopScript = \App::shopScriptClient();
-
         $shopScriptSeo = [];
-        $shopScript->addQuery('category/get-seo', [
-                'slug' => $categoryToken,
-                'geo_id' => \App::user()->getRegion()->getId(),
-            ], [], function ($data) use (&$shopScriptSeo) {
-            if($data && is_array($data)) $shopScriptSeo = reset($data);
-        });
-        $shopScript->execute();
+        if(\App::config()->shopScript['enabled']) {
+            $shopScript = \App::shopScriptClient();
+            $shopScript->addQuery('category/get-seo', [
+                    'slug' => $categoryToken,
+                    'geo_id' => \App::user()->getRegion()->getId(),
+                ], [], function ($data) use (&$shopScriptSeo) {
+                if($data && is_array($data)) $shopScriptSeo = reset($data);
+            });
+            $shopScript->execute();
 
-        if(!empty($shopScriptSeo['redirect']['link'])) {
-            $redirect = $shopScriptSeo['redirect']['link'];
-            if(!preg_match('/^http/', $redirect)) {
-                $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
-                            \App::config()->mainHost .
-                            (preg_match('/^\//', $redirect) ? '' : '/') .
-                            $redirect;
+            // если shopscript вернул редирект
+            if(!empty($shopScriptSeo['redirect']['link'])) {
+                $redirect = $shopScriptSeo['redirect']['link'];
+                if(!preg_match('/^http/', $redirect)) {
+                    $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
+                                \App::config()->mainHost .
+                                (preg_match('/^\//', $redirect) ? '' : '/') .
+                                $redirect;
+                }
+                return new \Http\RedirectResponse($redirect);
             }
-            return new \Http\RedirectResponse($redirect);
         }
 
         if (!$category) {

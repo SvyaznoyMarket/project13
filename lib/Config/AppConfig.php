@@ -130,6 +130,7 @@ class AppConfig {
     ];
     /** @var array */
     public $shopScript = [
+        'enabled'      => null,
         'url'          => null,
         'timeout'      => null,
         'retryTimeout' => [],

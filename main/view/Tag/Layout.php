@@ -129,22 +129,31 @@ class Layout extends \View\DefaultLayout {
         }
         $categoryTokens[] = $category->getToken();
 
-        $shopScriptSeo = $this->getParam('shopScriptSeo');
-        while(!empty($shopScriptSeo['redirect']['token'])) {
-            $shopScript->addQuery('category/get-seo', [
-                    'slug' => $shopScriptSeo['redirect']['token'],
-                    'geo_id' => \App::user()->getRegion()->getId(),
-                ], [], function ($data) use (&$shopScriptSeo) {
-                if($data && is_array($data)) $shopScriptSeo = reset($data);
+        if(\App::config()->shopScript['enabled']) {
+            $shopScriptSeo = $this->getParam('shopScriptSeo');
+            while(!empty($shopScriptSeo['redirect']['token'])) {
+                $shopScript->addQuery('category/get-seo', [
+                        'slug' => $shopScriptSeo['redirect']['token'],
+                        'geo_id' => \App::user()->getRegion()->getId(),
+                    ], [], function ($data) use (&$shopScriptSeo) {
+                    if($data && is_array($data)) $shopScriptSeo = reset($data);
+                });
+                $shopScript->execute();
+            }
+            $seoTemplate = array_merge([
+                'title'       => null,
+                'description' => null,
+                'keywords'    => null,
+            ], $shopScriptSeo);
+        } else {
+            $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+                 $seoTemplate = array_merge([
+                    'title'       => null,
+                    'description' => null,
+                    'keywords'    => null,
+                ], $data);
             });
-            $shopScript->execute();
         }
-
-        $seoTemplate = array_merge([
-            'title'       => null,
-            'description' => null,
-            'keywords'    => null,
-        ], $shopScriptSeo);
 
         // данные для шаблона
         $patterns = [
