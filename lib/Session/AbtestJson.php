@@ -26,11 +26,6 @@ class AbtestJson extends Abtest {
         $this->values = empty($catalogJson['abtest_values']) ? [] : $catalogJson['abtest_values'];
         $this->catalogJson = $catalogJson;
 
-        if(empty($this->config['cookieName'])) $this->config['cookieName'] = 'switch_json';
-        if(empty($this->config['bestBeforecookieName'])) $this->config['bestBefore'] = "2000-01-01";
-        if(empty($this->config['enabled'])) $this->config['enabled'] = false;
-        if(empty($this->config['test'])) $this->config['test'] = [];
-
         if (isset($this->config['test']) && is_array($this->config['test'])) {
             foreach ($this->config['test'] as $option) {
                 $this->option[$option['key']] = new \Model\Abtest\Entity($option);
