@@ -89,16 +89,18 @@ class Action {
         }
 
         if($category) {
-            // seo их shopscript
-            $shopScript = \App::shopScriptClient();
+            // seo из shopscript
             $shopScriptSeo = [];
-            $shopScript->addQuery('category/get-seo', [
-                    'slug' => $category->getToken(),
-                    'geo_id' => \App::user()->getRegion()->getId(),
-                ], [], function ($data) use (&$shopScriptSeo) {
-                if($data && is_array($data)) $shopScriptSeo = reset($data);
-            });
-            $shopScript->execute();
+            if(\App::config()->shopScript['enabled']) {
+                $shopScript = \App::shopScriptClient();
+                $shopScript->addQuery('category/get-seo', [
+                        'slug' => $category->getToken(),
+                        'geo_id' => \App::user()->getRegion()->getId(),
+                    ], [], function ($data) use (&$shopScriptSeo) {
+                    if($data && is_array($data)) $shopScriptSeo = reset($data);
+                });
+                $shopScript->execute();
+            }
 
             // сортировка
             $productSorting = new \Model\Product\Sorting();
