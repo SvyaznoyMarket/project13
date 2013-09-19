@@ -458,9 +458,12 @@ class Repository {
         $branch = [$category->getToken()];
         if(!$category->isRoot()) {
             $currentCategory = $category;
-            while($parent = $currentCategory->getParent()) {
-                array_unshift($branch, $parent->getToken());
-                $currentCategory = $parent;
+            while($currentCategory = $currentCategory->getParent()) {
+                array_unshift($branch, $currentCategory->getToken());
+            }
+            $root = $category->getRoot();
+            if($root && !in_array($root->getToken(), $branch)) {
+                array_unshift($branch, $root->getToken());
             }
         }
 
@@ -481,6 +484,12 @@ class Repository {
             }
         );
         $dataStore->execute();
+
+        // AB-test по сортировкам SITE-1991
+        $abTestJson = \App::abTestJson($catalogJson);
+        if($abTestJson->getCase()->getKey() != 'default') {
+            return $abTestJson->getTestCatalogJson();
+        }
 
         return $catalogJson;
     }
