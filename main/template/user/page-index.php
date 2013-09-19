@@ -4,6 +4,10 @@
  * @var $user       \Session\User
  * @var $orderCount int
  */
+
+
+$userEntity = $user->getEntity();
+$userMail = $userEntity->getEmail();
 ?>
 
 <div class="fl width315">
@@ -36,7 +40,10 @@
         <li>
             Акции, новости и специальные предложения
             <form action="<?= $page->url('user.subscribe') ?>" method="post">
-                <label class="bSubscibe clearfix <? if ($user->getEntity()->getIsSubscribed()): ?>checked<? endif ?>">
+                <label class="bSubscibe clearfix <?=($userMail) ?
+                    (
+                        ($user->getEntity()->getIsSubscribed()) ? 'checked' : ''
+                    ) : 'hidden' ?>">
                     <b></b> Email
                     <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribed()): ?> checked="checked" <? endif ?> />
                 </label>
