@@ -20,8 +20,8 @@ if (!$page->hasGlobalParam('shops')) {
     <dt>Наличие в магазинах</dt>
     <dd style="display: <?= $shop ? 'block' : 'none' ?>;">
     <ul class="checkbox_list">
-        <li onclick="document.location='<?=$page->helper->replacedUrl(array('page' => null, 'shop' => null), null, $request->attributes->get('route'))?>';">
-            <input name="shop" id="shop_0" type="radio" class="hiddenCheckbox"/>
+        <li data-onclick-location="<?=$page->helper->replacedUrl(array('page' => null, 'shop' => null), null, $request->attributes->get('route'))?>">
+            <input name="shop" id="shop_0" type="radio" class="hiddenCheckbox shopFilter"/>
             <label for="shop_0" class="prettyCheckbox radio list <?=$shop?'':'checked';?> ">
                 Не важно
             </label>
@@ -31,8 +31,8 @@ if (!$page->hasGlobalParam('shops')) {
                 $link = $page->helper->replacedUrl(array('page' => null, 'shop' => null), null, $request->attributes->get('route'));
                 $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. $singleShop->getId();
             ?>
-            <li onclick="document.location='<?=$link?>';">
-                <input name="shop" id="shop_<?=$i+1?>" type="radio" class="hiddenCheckbox"/>
+            <li data-onclick-location="<?=$link?>">
+                <input name="shop" id="shop_<?=$i+1?>" type="radio" class="hiddenCheckbox shopFilter"/>
                 <label for="shop_<?=$i+1?>" class="prettyCheckbox radio list <?=($shop&&$shop->getId() == $singleShop->getId())?'checked':'';?>">
                     <?=$singleShop->getAddress();?>
                 </label>
