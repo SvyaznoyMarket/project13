@@ -25,7 +25,7 @@
 		 */
 		gotoUrl: function gotoUrl( url, callback ) {
 			var state = {
-					title: 'Enter - это выход!',
+					title: document.title,
 					url: url
 				};
 			// end of vars
