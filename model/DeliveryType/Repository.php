@@ -62,8 +62,8 @@ class Repository {
             [
                 'id'                     => 6,
                 'token'                  => 'pickpoint',
-                'short_name'             => 'PickPoint',
-                'name'                   => 'PickPoint',
+                'short_name'             => 'Pickpoint',
+                'name'                   => 'Pickpoint',
                 'description'            => '',
                 'method_tokens'          => ['pickpoint'],
                 'possible_method_tokens' => ['pickpoint'],

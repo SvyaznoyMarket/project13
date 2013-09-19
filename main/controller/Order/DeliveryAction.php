@@ -165,13 +165,19 @@ class DeliveryAction {
                         'name'     => 'Доставим',
                         'products' => [],
                     ],
+                    'pickpoint' => [
+                        'name'     => '',
+                        'products' => [],
+                    ],
                 ],
                 'pointsByDelivery'=> [
                     'self' => 'shops',
                     'now'  => 'shops',
+                    'pickpoint' => 'pickpoints',
                 ],
                 'products'        => [],
                 'shops'           => [],
+                'pickpoints'      => [],
                 'discounts'       => [],
             ]);
 
@@ -211,6 +217,8 @@ class DeliveryAction {
 
             // ид товаров для каждого магазина
             $productIdsByShop = [];
+            // ид товаров для каждого пикпоинта
+            $productIdsByPickpoint = [];
 
             foreach ($result['products'] as $productItem) {
                 $productId = (string)$productItem['id'];
@@ -238,6 +246,14 @@ class DeliveryAction {
                             $productIdsByShop[$pointId] = [];
                         }
                         $productIdsByShop[$pointId][] = $productId;
+                    }
+
+                    // если пикпоинт, то добавляем ид товара в соответствующий пикпоинт
+                    if (in_array($deliveryItemTokenPrefix, ['pickpoint'])) {
+                        if (!isset($productIdsByPickpoint[$pointId])) {
+                            $productIdsByPickpoint[$pointId] = [];
+                        }
+                        $productIdsByPickpoint[$pointId][] = $productId;
                     }
 
                     // добавляем ид товара в соответствующий метод доставки
@@ -309,6 +325,74 @@ class DeliveryAction {
             // сортировка магазинов
             if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
                 usort($responseData['shops'], function($a, $b) use (&$region) {
+                    if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
+                        return 0;
+                    }
+
+                    return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
+                });
+            }
+
+            $pickpoints = [];
+
+            // if(!empty($productIdsByPickpoint)) {
+                $ppClient = \App::pickpointClient();
+                $ppClient->addQuery('postamatlist', [], [],
+                    function($data) use (&$pickpoints) {
+                        // Статус постамата: 1 – новый, 2 – рабочий, 3 - закрытый
+                        $pickpoints = array_filter($data, function($pickpointItem) {
+                            return in_array((int)$pickpointItem['Status'], [1,2]);
+                        });
+                    },
+                    function (\Exception $e) use (&$exception) {
+                        $exception = $e;
+                    },
+                    \App::config()->pickpoint['timeout'] * 2
+                );
+                $ppClient->execute();
+            // }
+
+// file_put_contents('/tmp/logger.txt', json_encode($pickpoints).PHP_EOL, FILE_APPEND);
+file_put_contents('/tmp/logger.txt', json_encode($productIdsByPickpoint).PHP_EOL, FILE_APPEND);
+
+// TODO убрать хардкод
+$result['pickpoints'] = [
+        "1" => [
+            "id" => 1,
+            "name" => "м. Белорусская, ул. Грузинский вал, д. 31",
+            "address" => "ул. Грузинский Вал, д. 31",
+            "working_time" => "с 9.00 до 22.00",
+            "coord_long" => "37.581675",
+            "coord_lat" => "55.775004"
+        ],
+        "2" => [
+            "id" => 2,
+            "name" => "м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10",
+            "address" => "ул. Орджоникидзе, д. 11, стр. 10",
+            "working_time" => "с 9.00 до 21.00",
+            "coord_long" => "37.596997",
+            "coord_lat" => "55.706488"
+        ],
+];
+
+            // пикпоинты
+            foreach ($result['pickpoints'] as $pickpointItem) {
+                $pickpointId = (string)$pickpointItem['id'];
+                if (!isset($productIdsByPickpoint[$pickpointId])) continue;
+
+                $responseData['pickpoints'][] = [
+                    'id'         => $pickpointId,
+                    'name'       => $pickpointItem['name'],
+                    'address'    => $pickpointItem['address'],
+                    'regtime'     => $pickpointItem['working_time'],
+                    'latitude'   => (float)$pickpointItem['coord_lat'],
+                    'longitude'  => (float)$pickpointItem['coord_long'],
+                    'products'   => isset($productIdsByPickpoint[$pickpointId]) ? $productIdsByPickpoint[$pickpointId] : [],
+                ];
+            }
+            // сортировка пикпоинтов
+            if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
+                usort($responseData['pickpoints'], function($a, $b) use (&$region) {
                     if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
                         return 0;
                     }

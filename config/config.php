@@ -104,6 +104,19 @@ $c->dataStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
+$c->pickpoint['timeout'] = 0.8;
+$c->pickpoint['retryCount'] = 3;
+$c->pickpoint['retryTimeout'] = [
+    'default' => 0.04,
+    'tiny'    => 0.04,
+    'short'   => 0.08,
+    'medium'  => 0.1,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
+
 $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['moscowPhone'] = '8 (495) 775-00-06';
 $c->company['icq'] = '648198963';

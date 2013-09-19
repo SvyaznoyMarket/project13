@@ -129,6 +129,13 @@ class AppConfig {
         'retryCount'   => null,
     ];
     /** @var array */
+    public $pickpoint = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+    /** @var array */
     public $company = [
         'phone' => null,
         'moscowPhone' => null,
