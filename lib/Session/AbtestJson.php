@@ -16,7 +16,13 @@ class AbtestJson extends Abtest {
             $catalogJson['abtest']['cookieName'] .= '_json';
         }
 
-        $this->config = empty($catalogJson['abtest']) ? [] : $catalogJson['abtest'];
+        $this->config = array_merge([
+            'cookieName' => 'switch_json',
+            'bestBefore' => "2000-01-01",
+            'enabled'    => false,
+            'test'       => [],
+        ], empty($catalogJson['abtest']) ? [] : $catalogJson['abtest']);
+
         $this->values = empty($catalogJson['abtest_values']) ? [] : $catalogJson['abtest_values'];
         $this->catalogJson = $catalogJson;
 
