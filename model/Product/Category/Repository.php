@@ -280,7 +280,7 @@ class Repository {
      * @param Entity               $category
      * @param \Model\Region\Entity $region
      */
-    public function prepareEntityBranch(Entity $category, \Model\Region\Entity $region = null) {
+    public function prepareEntityBranch(Entity $category, \Model\Region\Entity $region = null, $excludeTokens = []) {
         $params = [
             'root_id'         => $category->getHasChild() ? $category->getId() : $category->getParentId(),
             'max_level'       => 5,
@@ -289,7 +289,7 @@ class Repository {
         if ($region) {
             $params['region_id'] = $region->getId();
         }
-        $this->client->addQuery('category/tree', $params, [], function($data) use (&$category, &$region) {
+        $this->client->addQuery('category/tree', $params, [], function($data) use (&$category, &$region, &$excludeTokens) {
             /**
              * Загрузка дочерних и родительских узлов категории
              *
@@ -297,7 +297,7 @@ class Repository {
              * @param array $data
              * @use \Model\Region\Entity $region
              */
-            $loadBranch = function(\Model\Product\Category\Entity $category, array $data) use (&$region) {
+            $loadBranch = function(\Model\Product\Category\Entity $category, array $data) use (&$region, &$excludeTokens) {
                 // только при загрузке дерева ядро может отдать нам количество товаров в ней
                 if ($region && isset($data['product_count'])) {
                     $category->setProductCount($data['product_count']);
@@ -308,7 +308,9 @@ class Repository {
 
                 // добавляем дочерние узлы
                 if (isset($data['children']) && is_array($data['children'])) {
+                    $excluding = empty($excludeTokens) ? false : true;
                     foreach ($data['children'] as $childData) {
+                        if ( $excluding && in_array($childData['token'], $excludeTokens) ) continue;
                         $category->addChild(new \Model\Product\Category\Entity($childData));
                     }
                 }
@@ -471,6 +473,7 @@ class Repository {
         $catalogJson = [];
         $dataStore = \App::dataStoreClient();
         $query = sprintf('catalog/%s.json', implode('/', $branch));
+
         $dataStore->addQuery(
             $query,
             [],
