@@ -17,13 +17,30 @@
 
 	catalog.history = {
 		/**
+		 * Флаг обновления данных с сервера
+		 * true - только обновить URL, false - запросить новые данные с сервера
+		 * 
+		 * @type {Boolean}
+		 */
+		_onlychange: false,
+
+		/**
+		 * Функция обратного вызова после получения данных с сервера
+		 * 
+		 * @type	{Function}
+		 */
+		_callback: null,
+
+
+		/**
 		 * Обработка перехода на URL
 		 * Если браузер не поддерживает History API происходит обычный переход по ссылке
 		 * 
 		 * @param	{String}	url			Адрес на который необходимо выполнить переход
 		 * @param	{Function}	callback	Функция которая будет вызвана после получения данных от сервера
+		 * @param	{Boolean}	onlychange	Показывает что необходимо только изменить URL и не запрашивать данные
 		 */
-		gotoUrl: function gotoUrl( url, callback ) {
+		gotoUrl: function gotoUrl( url, callback, onlychange ) {
 			var state = {
 					title: document.title,
 					url: url
@@ -31,6 +48,7 @@
 			// end of vars
 
 			catalog.history._callback = callback;
+			catalog.history._onlychange = ( onlychange ) ? true : false;
 
 			if ( !catalog.enableHistoryAPI ) {
 				document.location.href = url;
@@ -64,6 +82,7 @@
 
 			if ( typeof res === 'object' && typeof catalog.history._callback === 'function' ) {
 				catalog.history._callback(res);
+				catalog.history._callback = null;
 			}
 			else {
 				console.warn('res isn\'t object or catalog.history._callback isn\'t function');
@@ -75,21 +94,14 @@
 		},
 
 		/**
-		 * Обработчик изменения состояния истории в браузере
+		 * Запросить новые данные с сервера по url
+		 * 
+		 * @param	{String}	url
 		 */
-		stateChangeHandler = function stateChangeHandler() {
-			var state = History.getState(),
-				url = state.url;
-			// end of vars
+		getDataFromServer = function getDataFromServer( url ) {
+			console.info('getDataFromServer ' + url);
 			
-			console.info('statechange');
-
 			utils.blockScreen.block('Загрузка товаров');
-
-			url = url.addParameterToUrl('ajax', 'true');
-
-			console.log(url);
-			console.log(state);
 
 			$.ajax({
 				type: 'GET',
@@ -100,6 +112,30 @@
 					503: errorHandler
 				}
 			});
+		},
+
+		/**
+		 * Обработчик изменения состояния истории в браузере
+		 */
+		stateChangeHandler = function stateChangeHandler() {
+			var state = History.getState(),
+				url = state.url;
+			// end of vars
+			
+			console.info('statechange');
+			console.log(state);
+
+			if ( catalog.history._onlychange && typeof catalog.history._callback === 'function' ) {
+				console.info('only update url ' + url);
+
+				catalog.history._callback();
+				catalog.history._onlychange = false;
+				catalog.history._callback = null;
+			}
+			else {
+				url = url.addParameterToUrl('ajax', 'true');
+				getDataFromServer(url);
+			}
 		};
 	// end of functions
 
@@ -151,32 +187,57 @@
 	
 	catalog.filter = {
 		/**
+		 * Последние загруженные данные
+		 * 
+		 * @type	{Object}
+		 */
+		lastRes: null,
+
+		/**
+		 * Получение текущего режима просмотра
+		 * 
+		 * @return	{String}	Текущий режим просмотра
+		 */
+		getViewType: function() {
+			return changeViewItemsBtns.filter('.mActive').data('type');
+		},
+
+		/**
 		 * Отрисовка шаблона продуктов
 		 * 
 		 * @param	{Object}	res		Данные для шаблона
 		 */
-		renderTmpl: function( res ) {
-			console.info('callback: renderTmpl');
+		renderCatalogPage: function( res ) {
+			console.info('renderCatalogPage');
+			console.log(( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default');
 
-			var compactListing = $('#listing_compact_tmpl'),
-				compactListingTmpl = compactListing.html(),
-				partials = compactListing.data('partial'),
+			var templateType = ( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default',
+				template = {
+					'compact': $('#listing_compact_tmpl'),
+					'expanded': $('#listing_compact_tmpl'), // Заменить когда будет шаблон расширенного вида
+					'default': $('#listing_compact_tmpl')
+				},
+				dataToRender = ( res ) ? res : catalog.filter.lastRes,
+				listingTemplate = template[templateType].html(),
+				partials = template[templateType].data('partial'),
 				listingWrap = $('.bListing'),
 				html;
 			// end of vars
 
-			html = Mustache.render(compactListingTmpl, res, partials);
+			html = Mustache.render(listingTemplate, dataToRender, partials);
 
 			listingWrap.empty();
 			listingWrap.html(html);
+
+			catalog.filter.lastRes = dataToRender;
 		},
 
 		/**
 		 * Получение изменненых и неизменненых полей слайдеров
 		 * 
 		 * @return	{Object}	res
-		 * @return	{Object}	res.changedSliders		Массив имен измененных полей
-		 * @return	{Object}	res.unchangedSliders	Массив имен неизмененных полей
+		 * @return	{Array}		res.changedSliders		Массив имен измененных полей
+		 * @return	{Array}		res.unchangedSliders	Массив имен неизмененных полей
 		 */
 		getSlidersInputState: function() {
 			console.info('getSlidersInputState');
@@ -265,7 +326,7 @@
 			if ( url !== (document.location.pathname + document.location.search) ) {
 				console.info('goto url '+url);
 
-				catalog.history.gotoUrl(url, catalog.filter.renderTmpl);
+				catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage);
 			}
 
 			return false;
@@ -368,7 +429,10 @@
 				var val = '0' + $(this).val();
 
 				val = parseInt(val, 10);
-				val = ( val > max ) ? max : ( val < min ) ? min : val;
+				val =
+					( val > max ) ? max :
+					( val < min ) ? min :
+					val;
 
 				$(this).val(val);
 
@@ -383,6 +447,28 @@
 			sliderToInput.on('change', inputUpdates);
 			sliderFromInput.on('change', inputUpdates);
 		},
+
+		/**
+		 * Смена отображения каталога
+		 */
+		changeViewItemsHandler = function changeViewItemsHandler() {
+			var self = $(this),
+				url = self.attr('href'),
+				parentItem = self.parent();
+			// end of vars
+			
+			changeViewItemsBtns.removeClass('mActive');
+			parentItem.addClass('mActive');
+
+			if ( catalog.filter.lastRes ) {
+				catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage, true);
+			}
+			else {
+				catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage);
+			}
+
+			return false;
+		},
 	
 		/**
 		 * Сортировка элементов
@@ -395,7 +481,7 @@
 			 
 			sortingItemsBtns.removeClass('mActive');
 			parentItem.addClass('mActive');
-			catalog.history.gotoUrl(url, catalog.filter.renderTmpl);
+			catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage);
 
 			return false;
 		};
@@ -410,6 +496,9 @@
 
 	// Sorting items
 	sortingItemsBtns.on('click', '.bSortingList__eLink', sortingItemsHandler);
+
+	// Change view mode
+	changeViewItemsBtns.on('click', '.bSortingList__eLink', changeViewItemsHandler)
 	
 	// Init sliders
 	filterSliders.each(initSliderRange);

@@ -36,32 +36,57 @@
 	
 	catalog.filter = {
 		/**
+		 * Последние загруженные данные
+		 * 
+		 * @type	{Object}
+		 */
+		lastRes: null,
+
+		/**
+		 * Получение текущего режима просмотра
+		 * 
+		 * @return	{String}	Текущий режим просмотра
+		 */
+		getViewType: function() {
+			return changeViewItemsBtns.filter('.mActive').data('type');
+		},
+
+		/**
 		 * Отрисовка шаблона продуктов
 		 * 
 		 * @param	{Object}	res		Данные для шаблона
 		 */
-		renderTmpl: function( res ) {
-			console.info('callback: renderTmpl');
+		renderCatalogPage: function( res ) {
+			console.info('renderCatalogPage');
+			console.log(( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default');
 
-			var compactListing = $('#listing_compact_tmpl'),
-				compactListingTmpl = compactListing.html(),
-				partials = compactListing.data('partial'),
+			var templateType = ( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default',
+				template = {
+					'compact': $('#listing_compact_tmpl'),
+					'expanded': $('#listing_compact_tmpl'), // Заменить когда будет шаблон расширенного вида
+					'default': $('#listing_compact_tmpl')
+				},
+				dataToRender = ( res ) ? res : catalog.filter.lastRes,
+				listingTemplate = template[templateType].html(),
+				partials = template[templateType].data('partial'),
 				listingWrap = $('.bListing'),
 				html;
 			// end of vars
 
-			html = Mustache.render(compactListingTmpl, res, partials);
+			html = Mustache.render(listingTemplate, dataToRender, partials);
 
 			listingWrap.empty();
 			listingWrap.html(html);
+
+			catalog.filter.lastRes = dataToRender;
 		},
 
 		/**
 		 * Получение изменненых и неизменненых полей слайдеров
 		 * 
 		 * @return	{Object}	res
-		 * @return	{Object}	res.changedSliders		Массив имен измененных полей
-		 * @return	{Object}	res.unchangedSliders	Массив имен неизмененных полей
+		 * @return	{Array}		res.changedSliders		Массив имен измененных полей
+		 * @return	{Array}		res.unchangedSliders	Массив имен неизмененных полей
 		 */
 		getSlidersInputState: function() {
 			console.info('getSlidersInputState');
@@ -150,7 +175,7 @@
 			if ( url !== (document.location.pathname + document.location.search) ) {
 				console.info('goto url '+url);
 
-				catalog.history.gotoUrl(url, catalog.filter.renderTmpl);
+				catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage);
 			}
 
 			return false;
@@ -253,7 +278,10 @@
 				var val = '0' + $(this).val();
 
 				val = parseInt(val, 10);
-				val = ( val > max ) ? max : ( val < min ) ? min : val;
+				val =
+					( val > max ) ? max :
+					( val < min ) ? min :
+					val;
 
 				$(this).val(val);
 
@@ -268,6 +296,28 @@
 			sliderToInput.on('change', inputUpdates);
 			sliderFromInput.on('change', inputUpdates);
 		},
+
+		/**
+		 * Смена отображения каталога
+		 */
+		changeViewItemsHandler = function changeViewItemsHandler() {
+			var self = $(this),
+				url = self.attr('href'),
+				parentItem = self.parent();
+			// end of vars
+			
+			changeViewItemsBtns.removeClass('mActive');
+			parentItem.addClass('mActive');
+
+			if ( catalog.filter.lastRes ) {
+				catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage, true);
+			}
+			else {
+				catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage);
+			}
+
+			return false;
+		},
 	
 		/**
 		 * Сортировка элементов
@@ -280,7 +330,7 @@
 			 
 			sortingItemsBtns.removeClass('mActive');
 			parentItem.addClass('mActive');
-			catalog.history.gotoUrl(url, catalog.filter.renderTmpl);
+			catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage);
 
 			return false;
 		};
@@ -295,6 +345,9 @@
 
 	// Sorting items
 	sortingItemsBtns.on('click', '.bSortingList__eLink', sortingItemsHandler);
+
+	// Change view mode
+	changeViewItemsBtns.on('click', '.bSortingList__eLink', changeViewItemsHandler)
 	
 	// Init sliders
 	filterSliders.each(initSliderRange);

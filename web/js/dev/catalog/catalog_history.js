@@ -17,13 +17,30 @@
 
 	catalog.history = {
 		/**
+		 * Флаг обновления данных с сервера
+		 * true - только обновить URL, false - запросить новые данные с сервера
+		 * 
+		 * @type {Boolean}
+		 */
+		_onlychange: false,
+
+		/**
+		 * Функция обратного вызова после получения данных с сервера
+		 * 
+		 * @type	{Function}
+		 */
+		_callback: null,
+
+
+		/**
 		 * Обработка перехода на URL
 		 * Если браузер не поддерживает History API происходит обычный переход по ссылке
 		 * 
 		 * @param	{String}	url			Адрес на который необходимо выполнить переход
 		 * @param	{Function}	callback	Функция которая будет вызвана после получения данных от сервера
+		 * @param	{Boolean}	onlychange	Показывает что необходимо только изменить URL и не запрашивать данные
 		 */
-		gotoUrl: function gotoUrl( url, callback ) {
+		gotoUrl: function gotoUrl( url, callback, onlychange ) {
 			var state = {
 					title: document.title,
 					url: url
@@ -31,6 +48,7 @@
 			// end of vars
 
 			catalog.history._callback = callback;
+			catalog.history._onlychange = ( onlychange ) ? true : false;
 
 			if ( !catalog.enableHistoryAPI ) {
 				document.location.href = url;
@@ -64,6 +82,7 @@
 
 			if ( typeof res === 'object' && typeof catalog.history._callback === 'function' ) {
 				catalog.history._callback(res);
+				catalog.history._callback = null;
 			}
 			else {
 				console.warn('res isn\'t object or catalog.history._callback isn\'t function');
@@ -75,21 +94,14 @@
 		},
 
 		/**
-		 * Обработчик изменения состояния истории в браузере
+		 * Запросить новые данные с сервера по url
+		 * 
+		 * @param	{String}	url
 		 */
-		stateChangeHandler = function stateChangeHandler() {
-			var state = History.getState(),
-				url = state.url;
-			// end of vars
+		getDataFromServer = function getDataFromServer( url ) {
+			console.info('getDataFromServer ' + url);
 			
-			console.info('statechange');
-
 			utils.blockScreen.block('Загрузка товаров');
-
-			url = url.addParameterToUrl('ajax', 'true');
-
-			console.log(url);
-			console.log(state);
 
 			$.ajax({
 				type: 'GET',
@@ -100,6 +112,30 @@
 					503: errorHandler
 				}
 			});
+		},
+
+		/**
+		 * Обработчик изменения состояния истории в браузере
+		 */
+		stateChangeHandler = function stateChangeHandler() {
+			var state = History.getState(),
+				url = state.url;
+			// end of vars
+			
+			console.info('statechange');
+			console.log(state);
+
+			if ( catalog.history._onlychange && typeof catalog.history._callback === 'function' ) {
+				console.info('only update url ' + url);
+
+				catalog.history._callback();
+				catalog.history._onlychange = false;
+				catalog.history._callback = null;
+			}
+			else {
+				url = url.addParameterToUrl('ajax', 'true');
+				getDataFromServer(url);
+			}
 		};
 	// end of functions
 
