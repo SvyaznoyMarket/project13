@@ -41,6 +41,8 @@ class BasicEntity {
     protected $numReviews;
     /** @var bool */
     protected $isInShowroomsOnly;
+    /** @var bool */
+    protected $isInShopsOnly;
 
 
     public function __construct(array $data = []) {
@@ -378,6 +380,36 @@ class BasicEntity {
             }
         }
         return $this->isInShowroomsOnly;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function getIsInShopsOnly() {
+        if (!is_null($this->isInShopsOnly)) {
+            return $this->isInShopsOnly;
+        }
+
+        $shopsIds = [];
+        $this->isInShopsOnly = true;
+        foreach ($this->getStock() as $stock) {
+            if ($stock->getStoreId() != null) {
+                $this->isInShowroomsOnly = false;
+                break;
+            }
+
+            if ($stock->getShopId()) {
+                $shopsIds[] = $stock->getShopId();
+            }
+        }
+
+        if (empty($shopsIds)) {
+            $this->isInShowroomsOnly = false;
+        }
+
+        return $this->isInShowroomsOnly;
+
     }
 
 }
