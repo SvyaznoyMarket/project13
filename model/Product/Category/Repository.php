@@ -382,12 +382,12 @@ class Repository {
         // формируем запрос к апи и получаем json с SEO-данными
         $seoJson = [];
 
-        if($brand) {
-            $query = sprintf('seo/brand/%s.json', implode('/', $branch).$brand->getToken());
+        if($brand || !\App::config()->shopScript['enabled']) {
+            $query = sprintf('seo/'.($brand ? 'brand' : 'catalog').'/%s.json', implode('/', $branch).(empty($brand) ? '' : '-'.$brand->getToken()));
             $dataStore->addQuery($query, [], function ($data) use (&$seoJson) {
                 if($data) $seoJson = $data;
             });
-        } elseif(!empty($shopScriptSeo)) {
+        } else {
             $seoJson = $shopScriptSeo;
         }
 
