@@ -6,12 +6,12 @@
 
 ?>
 <? if (!$product->getIsBuyable()) { ?>
-    <? if ($product->getState()->getIsShop()):/* ?>
+    <? if ($product->getIsInShopsOnly()): ?>
         <div class="notBuying font12">
             <div class="corner"><div></div></div>
             Только в магазине
         </div>
-    <? elseif ($product->getIsInShowroomsOnly()): */?>
+    <? elseif($product->getState()->getIsShop()): ?>
         <div class="notBuying font12">
             <div class="corner"><div></div></div>
             Только на витрине
