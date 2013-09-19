@@ -20,7 +20,7 @@ class CurlAction {
         }
 
         try {
-            $result = \App::curl()->query($url, $data);
+            $result = \App::curl()->query($url, $data, 10);
         } catch (\Exception $e) {
             $result = (string)$e;
         }

@@ -224,7 +224,7 @@ class DefaultLayout extends Layout {
             }, function(\Exception $e) use (&$isFailed) {
                 \App::exception()->remove($e);
                 $isFailed = true;
-            });
+            }, 5);
             $client->execute();
 
             if ($isFailed) {

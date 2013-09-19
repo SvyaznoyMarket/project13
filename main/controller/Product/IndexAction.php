@@ -53,7 +53,7 @@ class IndexAction {
         $product = null;
         $productExpanded = null;
         $dataR = null;
-        \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product, &$productExpanded) {
+        $repository->prepareEntityByToken($productToken, $region, function($data) use (&$product, &$productExpanded) {
             $data = reset($data);
 
             if ((bool)$data) {

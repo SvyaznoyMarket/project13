@@ -38,6 +38,10 @@ class ClientV2 implements ClientInterface {
     public function query($action, array $params = [], array $data = [], $timeout = null) {
         \Debug\Timer::start('core');
 
+        if (null === $timeout) {
+            $timeout = $this->config['timeout'];
+        }
+
         $response = $this->curl->query($this->getUrl($action, $params), $data, $timeout);
 
         \Debug\Timer::stop('core');
