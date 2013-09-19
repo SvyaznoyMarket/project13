@@ -557,10 +557,20 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
         }
 
+        $catalogJson = $page->getParam('catalogJson');
+
         // сортировка
         $productSorting = new \Model\Product\Sorting();
         list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
         $productSorting->setActive($sortingName, $sortingDirection);
+
+        // если сортировка по умолчанию и в json заданы настройки сортировок,
+        // то применяем их
+        if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
+            $sort = $catalogJson['sort'];
+        } else {
+            $sort = $productSorting->dump();
+        }
 
         // вид товаров
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
@@ -582,7 +592,7 @@ class Action {
             }
             $pagerAll = $repository->getIteratorByFilter(
                 $filtersWithoutShop,
-                $productSorting->dump(),
+                $sort,
                 ($pageNum - 1) * $limit,
                 $limit
             );
@@ -591,7 +601,7 @@ class Action {
 
         $productPager = $repository->getIteratorByFilter(
             $productFilter->dump(),
-            $productSorting->dump(),
+            $sort,
             ($pageNum - 1) * $limit,
             $limit
         );
