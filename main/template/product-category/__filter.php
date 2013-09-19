@@ -6,6 +6,7 @@ return function(
     $baseUrl
 ) {
     /** @var $filters \Model\Product\Filter\Entity[] */
+    $openFilter = false;
     $filters = [];
     $priceFilter = null;
     foreach ($productFilter->getFilterCollection() as $i => $filter) {
@@ -42,13 +43,13 @@ return function(
 
     <form class="bFilter clearfix" action="<?= $baseUrl ?>" method="GET">
         <div class="bFilterHead">
-            <a class="bFilterToggle mOpen" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+            <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
             <?= $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
         </div>
 
         <!-- Фильтр по выбранным параметрам -->
-        <div class="bFilterCont clearfix">
+        <div class="bFilterCont clearfix" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
             <!-- Список названий параметров -->
             <ul class="bFilterParams">
             <? $i = 0; foreach ($filters as $filter): ?>
