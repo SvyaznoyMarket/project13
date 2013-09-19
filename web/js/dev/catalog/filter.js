@@ -1,7 +1,7 @@
 /**
  * Filters
  *
- * @requires jQuery, Mustache, ENTER.utils, ENTER.config
+ * @requires jQuery, Mustache, ENTER.utils, ENTER.config, ENTER.catalog.history
  * 
  * @author	Zaytsev Alexandr
  *

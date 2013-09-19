@@ -1,7 +1,7 @@
 /**
  * Работа с HISTORY API
  *
- * @requires	jQuery, History.js
+ * @requires	jQuery, History.js, ENTER.utils, ENTER.config, ENTER.catalog
  *
  * @author		Zaytsev Alexandr
  *
@@ -100,7 +100,7 @@
 		 */
 		getDataFromServer = function getDataFromServer( url ) {
 			console.info('getDataFromServer ' + url);
-			
+
 			utils.blockScreen.block('Загрузка товаров');
 
 			$.ajax({
