@@ -5,24 +5,20 @@ return function (
     \Model\Product\BasicEntity $product,
     $url = null,
     $class = null,
-    $value = null
+    $value = 'Купить'
 ) {
     $class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;
 
     if ($product->isInShopStockOnly()) {
         $class .= ' mShopsOnly';
-        //$value = 'Только в магазинах';
     } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
-        $value = 'Витринный товар';
     }
 
     if (!$product->getIsBuyable()) {
         $url = '#';
         $class .= ' mDisabled';
-        if (!$value) {
-            $value = 'Нет в наличии';
-        }
+        $value = $product->isInShopShowroomOnly() ? 'Витринный товар' : 'Нет в наличии';
     } else if (!isset($url)) {
         $urlParams = [
             'productId' => $product->getId(),
@@ -31,10 +27,6 @@ return function (
             $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
         }
         $url = $helper->url('cart.product.set', $urlParams);
-    }
-
-    if (null === $value) {
-        $value = 'Купить';
     }
 
 ?>
