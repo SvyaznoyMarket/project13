@@ -166,7 +166,7 @@ class DeliveryAction {
                         'products' => [],
                     ],
                     'pickpoints' => [
-                        'name'     => '',
+                        'name'     => 'PickPoint',
                         'products' => [],
                     ],
                 ],
@@ -358,6 +358,17 @@ class DeliveryAction {
                 $ppClient->execute();
             }
 
+//             foreach ($result['products'] as $key => $productItem) {
+//                 $productId = (string)$productItem['id'];
+//                 foreach ($productItem['deliveries'] as $deliveryItemToken => $deliveryItem) {
+//                     // если пикпоинт, то добавляем ид товара в соответствующий пикпоинт
+//                     if (in_array($deliveryItemTokenPrefix, ['pickpoint'])) {
+//                         // $pickpointProductIds[] = $productId;
+// file_put_contents('/tmp/logger.txt', json_encode($productItem).PHP_EOL, FILE_APPEND);
+//                     }
+//                 }
+//             }
+
             // пикпоинты
             foreach ($pickpoints as $pickpointItem) {
                 $responseData['pickpoints'][] = [
@@ -429,6 +440,18 @@ class DeliveryAction {
             $responseData['success'] = true;
         } catch(\Exception $e) {
             $this->failResponseData($e, $responseData);
+        }
+
+        foreach ($responseData['products'] as $keyPi => $productItem) {
+            foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
+                if($keyDi == 'pickpoint') {
+                    $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
+                    $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
+                    foreach ($pickpoints as $keyPp => $pickpoint) {
+                        $responseData['products'][$keyPi]['deliveries'][$keyDi][$keyPp] = $dateData;
+                    }
+                }
+            }
         }
 
         return $responseData;

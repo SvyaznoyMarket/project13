@@ -335,20 +335,7 @@ class CreateAction {
                 }
             }
 
-
-
-            // данные для pickpoint [pickpoint]
-            if (in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_PICKPOINT])) {
-                if ($orderPart->getPointId()) {
-                    $orderData['shop_id'] = $orderPart->getPointId();
-                    $orderData['subway_id'] = null;
-                } else {
-                    \App::logger()->error(sprintf('Неизвестный магазин %s', $orderPart->getPointId()), ['order']);
-                }
-            }
-
-(new \Helper\ApplicationHelper())->getMethodValues($orderPart);
-return false;
+            // TODO: pickpoint
 
             // подарочный сертификат
             if (1 == count($form->getPart()) && $form->getPaymentMethodId() == \Model\PaymentMethod\Entity::CERTIFICATE_ID) {

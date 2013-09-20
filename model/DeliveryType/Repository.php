@@ -66,7 +66,7 @@ class Repository {
                 'name'                   => 'Pickpoint',
                 'description'            => '',
                 'method_tokens'          => ['pickpoint'],
-                'possible_method_tokens' => ['pickpoint'],
+                'possible_method_tokens' => ['pickpoint', 'now', 'self', 'standart_furniture', 'standart_other'],
             ],
         ];
 
