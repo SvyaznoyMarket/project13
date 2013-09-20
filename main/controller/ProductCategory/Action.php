@@ -639,6 +639,10 @@ class Action {
                     $productFilter,
                     \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
                 )
+                + (new \View\PaginationAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productPager
+                )
             );
         }
 
