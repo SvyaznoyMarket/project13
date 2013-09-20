@@ -926,8 +926,10 @@
 			console.log('selectPointOnBaloon');
 			console.log(event);
 
+console.log('=====================================')
 			console.log($(this).data('pointid'));
 			console.log($(this).data('parentbox'));
+console.log('=====================================')
 
 			global.OrderModel.selectPoint({
 				id: $(this).data('pointid'),

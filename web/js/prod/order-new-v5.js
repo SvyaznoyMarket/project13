@@ -2063,12 +2063,10 @@
 		selectPoint: function( data ) {
 			console.info('point selected...');
 			console.log(data.parentBoxToken);
-console.log(11111111111111111)
+
 			var choosenBlock = null;
-console.log(222222222222)
 
 			if ( data.parentBoxToken ) {
-console.log(333333333333333)
 				choosenBlock = global.OrderModel.getDeliveryBoxByToken(data.parentBoxToken);
 				console.log(choosenBlock);
 				choosenBlock.selectPoint.apply(choosenBlock,[data]);
@@ -2078,19 +2076,15 @@ console.log(333333333333333)
 
 			// Сохраняем приоритет методов доставок
 			global.OrderModel.statesPriority = global.OrderModel.tmpStatesPriority;
-console.log(4444444444444)
 
 			// Сохраняем выбранную приоритетную точку доставки
 			global.OrderModel.choosenPoint(data.id);
-console.log(55555555555555)
 
 			// Скрываем окно с выбором точек доставок
 			global.OrderModel.showPopupWithPoints(false);
-console.log(6666666666666666)
 
 			// Разбиваем на подзаказы
 			separateOrder( global.OrderModel.statesPriority );
-console.log(7777777777777777777777)
 
 			return false;
 		},
@@ -2454,8 +2448,10 @@ console.log(7777777777777777777777)
 			console.log('selectPointOnBaloon');
 			console.log(event);
 
+console.log('=====================================')
 			console.log($(this).data('pointid'));
 			console.log($(this).data('parentbox'));
+console.log('=====================================')
 
 			global.OrderModel.selectPoint({
 				id: $(this).data('pointid'),
