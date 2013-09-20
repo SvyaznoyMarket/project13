@@ -38,7 +38,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             </a>
         </div>
         <div class="info">
-            <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
+            <div class="h3"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
             <span class="gray bNGB__eArt mInlineBlock">
                 Артикул #<?= $product->getArticle() ?>
 
