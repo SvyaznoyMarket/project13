@@ -1894,9 +1894,13 @@ window.MapInterface = (function() {
 					topAuth.hide();
 					topAuth.after(show_user);
 					bottomAuth.html(userName).addClass('mAuth');
+                    //console.log('### User is Entered!');
+                    $('body').addClass('isEntered').removeClass('isNotEntered');
 				}
 				else {
 					topAuth.show();
+                    //console.log('### User is Not Entered!');
+                    $('body').removeClass('isEntered').addClass('isNotEntered');
 				}
 			}; 
 			

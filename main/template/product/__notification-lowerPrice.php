@@ -20,15 +20,20 @@ return function(
         <span class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
         <div class="bLowPriceNotiferPopup popup">
             <i class="close"></i>
-            <div class="bLowPriceNotiferPopup__eTitle">
+            <div class="bLowPriceNotiferPopup__eTitle uNotEntered">
+                <?= $this->render('user/_uShouldEnter'); ?>
+            </div>
+            <div class="bLowPriceNotiferPopup__eTitle uEntered">
                 Вы получите письмо,<br/>когда цена станет ниже
                 <? if ($price && ($price < $product->getPrice())): ?>
                     <strong class="price"><?= $helper->formatPrice($price) ?></strong> <span class="rubl">p</span>
                 <? endif ?>
             </div>
-            <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
-            <p class="bLowPriceNotiferPopup__eError red"></p>
-            <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink mDisabled" data-url="<?= $helper->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>
+            <div class="uEntered">
+                <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
+                <p class="bLowPriceNotiferPopup__eError red"></p>
+                <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink mDisabled" data-url="<?= $helper->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>
+            </div>
         </div>
     </div>
 
