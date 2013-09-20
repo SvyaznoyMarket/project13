@@ -165,7 +165,7 @@ class DeliveryAction {
                         'name'     => 'Доставим',
                         'products' => [],
                     ],
-                    'pickpoints' => [
+                    'pickpoint' => [
                         'name'     => 'PickPoint',
                         'products' => [],
                     ],
@@ -357,17 +357,6 @@ class DeliveryAction {
                 );
                 $ppClient->execute();
             }
-
-//             foreach ($result['products'] as $key => $productItem) {
-//                 $productId = (string)$productItem['id'];
-//                 foreach ($productItem['deliveries'] as $deliveryItemToken => $deliveryItem) {
-//                     // если пикпоинт, то добавляем ид товара в соответствующий пикпоинт
-//                     if (in_array($deliveryItemTokenPrefix, ['pickpoint'])) {
-//                         // $pickpointProductIds[] = $productId;
-// file_put_contents('/tmp/logger.txt', json_encode($productItem).PHP_EOL, FILE_APPEND);
-//                     }
-//                 }
-//             }
 
             // пикпоинты
             foreach ($pickpoints as $pickpointItem) {
