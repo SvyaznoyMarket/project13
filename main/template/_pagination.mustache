@@ -1,19 +1,17 @@
-<div class="bSortingLine mPagerBottom clearfix">
-    <ul class="bSortingList">
-        <li class="bSortingList__eItem mTitle">Страницы</li>
+<ul class="bSortingList">
+    <li class="bSortingList__eItem mTitle">Страницы</li>
 
-        {{#pages}}
-            {{#name}}
-            <li class="bSortingList__eItem mSortItem{{#active}} mActive{{/active}}">
-                <a class="bSortingList__eLink" href="{{url}}">{{name}}</a>
-            </li>
-            {{/name}}
+    {{#pages}}
+        {{#name}}
+        <li class="bSortingList__eItem mSortItem{{#active}} mActive{{/active}}">
+            <a class="bSortingList__eLink jsHistoryLink" href="{{url}}">{{name}}</a>
+        </li>
+        {{/name}}
 
-            {{^name}}
-                <li class="bSortingList__eItem mSortItem mDotted">&#8230;</li>
-            {{/name}}
-        {{/pages}}
+        {{^name}}
+            <li class="bSortingList__eItem mSortItem mDotted">&#8230;</li>
+        {{/name}}
+    {{/pages}}
 
-        <li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink mMore" href="#">&#8734;</a></li>
-    </ul>
-</div>
+    <li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink mMore" href="#">&#8734;</a></li>
+</ul>

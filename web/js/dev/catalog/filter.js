@@ -29,11 +29,6 @@
 		changePaginationBtns = viewParamPanel.find('.mViewer .mPager');
 	// end of vars
 	
-	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
-
-	console.info('Mustache is '+ typeof Mustache);
-	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
-	
 	catalog.filter = {
 		/**
 		 * Последние загруженные данные
@@ -66,14 +61,13 @@
 					},
 					listingTemplate = template[templateType].html(),
 					partials = template[templateType].data('partial'),
-					listingWrap = $('.bListing'),
 					html;
 				// end of vars
 
 				html = Mustache.render(listingTemplate, data, partials);
 
-				listingWrap.empty();
-				listingWrap.html(html);
+				catalog.listingWrap.empty();
+				catalog.listingWrap.html(html);
 
 				console.log('end of render products');
 			},
@@ -83,7 +77,7 @@
 				console.log(data);
 
 				var template = $('#tplSelectedFilter'),
-					filterTemplate = $('#tplSelectedFilter').html(),
+					filterTemplate = template.html(),
 					filterFooterWrap = filterBlock.find('.bFilterFoot'),
 					partials = template.data('partial'),
 					html;
@@ -95,6 +89,24 @@
 				filterFooterWrap.html(html);
 
 				console.log('end of render filter');
+			},
+
+			pages: function( data ) {
+				console.info('render pages');
+
+				var template = $('#tplPagination'),
+					paginationTemplate = template.html(),
+					paginationWrap = $('.bSortingLine.mPagerBottom'),
+					partials = template.data('partial'),
+					html;
+				// end of vars
+				
+				html = Mustache.render(paginationTemplate, data, partials);
+
+				paginationWrap.empty();
+				paginationWrap.html(html);
+
+				console.log('end of render paginaton');
 			}
 		},
 
@@ -106,14 +118,13 @@
 		renderCatalogPage: function( res ) {
 			console.info('renderCatalogPage');
 			
-			var dataToRender = ( res ) ? res : catalog.filter.lastRes;
+			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
+				key;
 
 			for ( key in dataToRender ) {
 				if ( catalog.filter.render.hasOwnProperty(key) ) {
 					catalog.filter.render[key]( dataToRender );
 				}
-
-				console.log(key);
 			}
 
 			catalog.filter.lastRes = dataToRender;
@@ -391,7 +402,7 @@
 	sortingItemsBtns.on('click', '.bSortingList__eLink', sortingItemsHandler);
 
 	// Change view mode
-	changeViewItemsBtns.on('click', '.bSortingList__eLink', changeViewItemsHandler)
+	changeViewItemsBtns.on('click', '.bSortingList__eLink', changeViewItemsHandler);
 	
 	// Init sliders
 	filterSliders.each(initSliderRange);

@@ -1,4 +1,63 @@
 /**
+ * Filters
+ *
+ * @requires jQuery, Mustache, ENTER.utils, ENTER.config, ENTER.catalog.history
+ * 
+ * @author	Zaytsev Alexandr
+ *
+ * @param	{Object}	ENTER	Enter namespace
+ */
+;(function( ENTER ) {
+	console.info('New catalog init: catalog.js');
+
+	var pageConfig = ENTER.config.pageConfig,
+		utils = ENTER.utils,
+		catalog = utils.extendApp('ENTER.catalog');
+	// end of vars
+	
+
+	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
+	catalog.listingWrap = $('.bListing')
+	catalog.liveScroll = false;
+
+	console.info('Mustache is '+ typeof Mustache);
+	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
+
+	catalog.loader = {
+		_loader: null,
+		loading: function() {
+			if ( catalog.loader._loader ) {
+				return;
+			}
+
+			catalog.loader._loader = $('<li>').addClass('mLoader');
+
+			if ( catalog.liveScroll ) {
+				catalog.listingWrap.append(catalog.loader._loader);
+			}
+			else {
+				catalog.listingWrap.empty();
+				catalog.listingWrap.append(catalog.loader._loader);
+			}
+		},
+
+		complete: function() {
+			if ( catalog.loader._loader ) {
+				catalog.loader._loader.remove();
+				catalog.loader._loader = null;
+			}
+		}		
+	}
+
+}(window.ENTER));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
  * Работа с HISTORY API
  *
  * @requires	jQuery, History.js, ENTER.utils, ENTER.config, ENTER.catalog
@@ -86,13 +145,16 @@
 		getDataFromServer = function getDataFromServer( url, callback ) {
 			console.info('getDataFromServer ' + url);
 
-			utils.blockScreen.block('Загрузка товаров');
+			catalog.loader.loading();
+
+			// utils.blockScreen.block('Загрузка товаров');
 
 				/**
 				 * Обработка ошибки загрузки данных
 				 */
 			var errorHandler = function errorHandler() {
-					utils.blockScreen.unblock();
+					// utils.blockScreen.unblock();
+					catalog.loader.complete();
 				},
 
 				/**
@@ -112,7 +174,8 @@
 						console.log(typeof res);
 					}
 
-					utils.blockScreen.unblock();
+					// utils.blockScreen.unblock();
+					catalog.loader.complete();
 				};
 			// end of functions
 
@@ -196,11 +259,6 @@
 		changePaginationBtns = viewParamPanel.find('.mViewer .mPager');
 	// end of vars
 	
-	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
-
-	console.info('Mustache is '+ typeof Mustache);
-	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
-	
 	catalog.filter = {
 		/**
 		 * Последние загруженные данные
@@ -233,14 +291,13 @@
 					},
 					listingTemplate = template[templateType].html(),
 					partials = template[templateType].data('partial'),
-					listingWrap = $('.bListing'),
 					html;
 				// end of vars
 
 				html = Mustache.render(listingTemplate, data, partials);
 
-				listingWrap.empty();
-				listingWrap.html(html);
+				catalog.listingWrap.empty();
+				catalog.listingWrap.html(html);
 
 				console.log('end of render products');
 			},
@@ -250,7 +307,7 @@
 				console.log(data);
 
 				var template = $('#tplSelectedFilter'),
-					filterTemplate = $('#tplSelectedFilter').html(),
+					filterTemplate = template.html(),
 					filterFooterWrap = filterBlock.find('.bFilterFoot'),
 					partials = template.data('partial'),
 					html;
@@ -262,6 +319,24 @@
 				filterFooterWrap.html(html);
 
 				console.log('end of render filter');
+			},
+
+			pages: function( data ) {
+				console.info('render pages');
+
+				var template = $('#tplPagination'),
+					paginationTemplate = template.html(),
+					paginationWrap = $('.bSortingLine.mPagerBottom'),
+					partials = template.data('partial'),
+					html;
+				// end of vars
+				
+				html = Mustache.render(paginationTemplate, data, partials);
+
+				paginationWrap.empty();
+				paginationWrap.html(html);
+
+				console.log('end of render paginaton');
 			}
 		},
 
@@ -273,14 +348,13 @@
 		renderCatalogPage: function( res ) {
 			console.info('renderCatalogPage');
 			
-			var dataToRender = ( res ) ? res : catalog.filter.lastRes;
+			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
+				key;
 
 			for ( key in dataToRender ) {
 				if ( catalog.filter.render.hasOwnProperty(key) ) {
 					catalog.filter.render[key]( dataToRender );
 				}
-
-				console.log(key);
 			}
 
 			catalog.filter.lastRes = dataToRender;
@@ -558,7 +632,7 @@
 	sortingItemsBtns.on('click', '.bSortingList__eLink', sortingItemsHandler);
 
 	// Change view mode
-	changeViewItemsBtns.on('click', '.bSortingList__eLink', changeViewItemsHandler)
+	changeViewItemsBtns.on('click', '.bSortingList__eLink', changeViewItemsHandler);
 	
 	// Init sliders
 	filterSliders.each(initSliderRange);

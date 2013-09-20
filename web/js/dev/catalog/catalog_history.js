@@ -86,13 +86,16 @@
 		getDataFromServer = function getDataFromServer( url, callback ) {
 			console.info('getDataFromServer ' + url);
 
-			utils.blockScreen.block('Загрузка товаров');
+			catalog.loader.loading();
+
+			// utils.blockScreen.block('Загрузка товаров');
 
 				/**
 				 * Обработка ошибки загрузки данных
 				 */
 			var errorHandler = function errorHandler() {
-					utils.blockScreen.unblock();
+					// utils.blockScreen.unblock();
+					catalog.loader.complete();
 				},
 
 				/**
@@ -112,7 +115,8 @@
 						console.log(typeof res);
 					}
 
-					utils.blockScreen.unblock();
+					// utils.blockScreen.unblock();
+					catalog.loader.complete();
 				};
 			// end of functions
 
