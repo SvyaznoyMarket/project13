@@ -165,7 +165,7 @@ class DeliveryAction {
                         'name'     => 'Доставим',
                         'products' => [],
                     ],
-                    'pickpoint' => [
+                    'pickpoints' => [
                         'name'     => '',
                         'products' => [],
                     ],
@@ -218,7 +218,7 @@ class DeliveryAction {
             // ид товаров для каждого магазина
             $productIdsByShop = [];
             // ид товаров для каждого пикпоинта
-            $productIdsByPickpoint = [];
+            $pickpointProductIds = [];
 
             foreach ($result['products'] as $productItem) {
                 $productId = (string)$productItem['id'];
@@ -232,6 +232,7 @@ class DeliveryAction {
 
                 $deliveryData = [];
                 foreach ($productItem['deliveries'] as $deliveryItemToken => $deliveryItem) {
+
                     list($deliveryItemTokenPrefix, $pointId) = array_pad(explode('_', $deliveryItemToken), 2, null);
 
                     // если доставка, модифицируем префикс токена и точку получения товаров
@@ -250,10 +251,7 @@ class DeliveryAction {
 
                     // если пикпоинт, то добавляем ид товара в соответствующий пикпоинт
                     if (in_array($deliveryItemTokenPrefix, ['pickpoint'])) {
-                        if (!isset($productIdsByPickpoint[$pointId])) {
-                            $productIdsByPickpoint[$pointId] = [];
-                        }
-                        $productIdsByPickpoint[$pointId][] = $productId;
+                        $pickpointProductIds[] = $productId;
                     }
 
                     // добавляем ид товара в соответствующий метод доставки
@@ -335,61 +333,44 @@ class DeliveryAction {
 
             $pickpoints = [];
 
-            // if(!empty($productIdsByPickpoint)) {
+            if(!empty($pickpointProductIds)) {
+                $deliveryRegions = [];
+                if(!empty(reset($result['products'])['deliveries']['pickpoint']['regions'])) {
+                    $deliveryRegions = array_map(function($regionItem) {
+                        return $regionItem['region'];
+                    }, reset($result['products'])['deliveries']['pickpoint']['regions']);
+                }
+
                 $ppClient = \App::pickpointClient();
                 $ppClient->addQuery('postamatlist', [], [],
-                    function($data) use (&$pickpoints) {
+                    function($data) use (&$pickpoints, &$deliveryRegions) {
                         // Статус постамата: 1 – новый, 2 – рабочий, 3 - закрытый
-                        $pickpoints = array_filter($data, function($pickpointItem) {
-                            return in_array((int)$pickpointItem['Status'], [1,2]);
+                        $pickpoints = array_filter($data, function($pickpointItem) use (&$deliveryRegions) {
+                            return in_array((int)$pickpointItem['Status'], [1,2]) &&
+                                   in_array($pickpointItem['CitiName'], $deliveryRegions);
                         });
                     },
                     function (\Exception $e) use (&$exception) {
                         $exception = $e;
                     },
-                    \App::config()->pickpoint['timeout'] * 2
+                    \App::config()->pickpoint['timeout']
                 );
                 $ppClient->execute();
-            // }
-
-// file_put_contents('/tmp/logger.txt', json_encode($pickpoints).PHP_EOL, FILE_APPEND);
-file_put_contents('/tmp/logger.txt', json_encode($productIdsByPickpoint).PHP_EOL, FILE_APPEND);
-
-// TODO убрать хардкод
-$result['pickpoints'] = [
-        "1" => [
-            "id" => 1,
-            "name" => "м. Белорусская, ул. Грузинский вал, д. 31",
-            "address" => "ул. Грузинский Вал, д. 31",
-            "working_time" => "с 9.00 до 22.00",
-            "coord_long" => "37.581675",
-            "coord_lat" => "55.775004"
-        ],
-        "2" => [
-            "id" => 2,
-            "name" => "м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10",
-            "address" => "ул. Орджоникидзе, д. 11, стр. 10",
-            "working_time" => "с 9.00 до 21.00",
-            "coord_long" => "37.596997",
-            "coord_lat" => "55.706488"
-        ],
-];
+            }
 
             // пикпоинты
-            foreach ($result['pickpoints'] as $pickpointItem) {
-                $pickpointId = (string)$pickpointItem['id'];
-                if (!isset($productIdsByPickpoint[$pickpointId])) continue;
-
+            foreach ($pickpoints as $pickpointItem) {
                 $responseData['pickpoints'][] = [
-                    'id'         => $pickpointId,
-                    'name'       => $pickpointItem['name'],
-                    'address'    => $pickpointItem['address'],
-                    'regtime'     => $pickpointItem['working_time'],
-                    'latitude'   => (float)$pickpointItem['coord_lat'],
-                    'longitude'  => (float)$pickpointItem['coord_long'],
-                    'products'   => isset($productIdsByPickpoint[$pickpointId]) ? $productIdsByPickpoint[$pickpointId] : [],
+                    'id'         => (string)$pickpointItem['Id'],
+                    'name'       => $pickpointItem['Name'],
+                    'address'    => $pickpointItem['Address'],
+                    'regtime'     => preg_replace('/noday/i', 'выходной', $pickpointItem['WorkTime']),
+                    'latitude'   => (float)$pickpointItem['Latitude'],
+                    'longitude'  => (float)$pickpointItem['Longitude'],
+                    'products'   => $pickpointProductIds,
                 ];
             }
+
             // сортировка пикпоинтов
             if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
                 usort($responseData['pickpoints'], function($a, $b) use (&$region) {

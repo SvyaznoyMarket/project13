@@ -105,7 +105,7 @@ $c->dataStore['retryTimeout'] = [
 ];
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
-$c->pickpoint['timeout'] = 0.8;
+$c->pickpoint['timeout'] = 20;
 $c->pickpoint['retryCount'] = 3;
 $c->pickpoint['retryTimeout'] = [
     'default' => 0.04,
