@@ -151,22 +151,27 @@ class DeliveryAction {
                 'deliveryStates'  => [
                     'self'               => [
                         'name'     => 'Самовывоз',
+                        'uniq'     => false,
                         'products' => [],
                     ],
                     'now'                => [
                         'name'     => 'Самовывоз',
+                        'uniq'     => false,
                         'products' => [],
                     ],
                     'standart_other'     => [
                         'name'     => 'Доставим',
+                        'uniq'     => false,
                         'products' => [],
                     ],
                     'standart_furniture' => [
                         'name'     => 'Доставим',
+                        'uniq'     => false,
                         'products' => [],
                     ],
                     'pickpoint' => [
                         'name'     => 'Pickpoint',
+                        'uniq'     => true,
                         'products' => [],
                     ],
                 ],
@@ -431,13 +436,15 @@ class DeliveryAction {
             $this->failResponseData($e, $responseData);
         }
 
-        foreach ($responseData['products'] as $keyPi => $productItem) {
-            foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
-                if($keyDi == 'pickpoint') {
-                    $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
-                    $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
-                    foreach ($pickpoints as $keyPp => $pickpoint) {
-                        $responseData['products'][$keyPi]['deliveries'][$keyDi][$keyPp] = $dateData;
+        if(!empty($responseData['products'])) {
+            foreach ($responseData['products'] as $keyPi => $productItem) {
+                foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
+                    if($keyDi == 'pickpoint') {
+                        $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
+                        $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
+                        foreach ($pickpoints as $keyPp => $pickpoint) {
+                            $responseData['products'][$keyPi]['deliveries'][$keyDi][$pickpoint['Id']] = $dateData;
+                        }
                     }
                 }
             }
