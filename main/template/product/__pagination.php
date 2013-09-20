@@ -4,10 +4,6 @@ return function(
     \Helper\TemplateHelper $helper,
     \Iterator\EntityPager $pager
 ) {
-    if (!$pager->hasPages()) {
-        return;
-    }
-
     $first = 1;
     $last = $pager->getLastPage();
     $current = $pager->getPage();
