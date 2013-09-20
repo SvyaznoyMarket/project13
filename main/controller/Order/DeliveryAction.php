@@ -166,7 +166,7 @@ class DeliveryAction {
                         'products' => [],
                     ],
                     'pickpoint' => [
-                        'name'     => 'PickPoint',
+                        'name'     => 'Pickpoint',
                         'products' => [],
                     ],
                 ],
