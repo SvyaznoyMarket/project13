@@ -11,7 +11,9 @@ return function(
     <div class="bSortingLine clearfix">
         <?= $helper->render('product/__list-sorting', ['productSorting' => $productSorting, 'category' => $category]) // сортировка ?>
 
-        <?= $helper->render('product/__list-view', ['productSorting' => $productSorting]) // режим просмотра ?>
+        <? if (false): ?>
+            <?= $helper->render('product/__list-view', ['productSorting' => $productSorting]) // режим просмотра ?>
+        <? endif ?>
 
         <!-- Выбор вывода товаров на странице страницами/простыней -->
         <ul class="bSortingList mPager">
