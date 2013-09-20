@@ -310,7 +310,7 @@
 			parentItem.addClass('mActive');
 
 			if ( catalog.filter.lastRes ) {
-				catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage, true);
+				catalog.history.updateUrl(url, catalog.filter.renderCatalogPage);
 			}
 			else {
 				catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage);
