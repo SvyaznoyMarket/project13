@@ -51,6 +51,53 @@
 			return changeViewItemsBtns.filter('.mActive').data('type');
 		},
 
+
+		render: {
+
+			products: function( data ) {
+				console.info('render products');
+				console.log(( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default');
+
+				var templateType = ( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default',
+					template = {
+						'compact': $('#listing_compact_tmpl'),
+						'expanded': $('#listing_compact_tmpl'), // Заменить когда будет шаблон расширенного вида
+						'default': $('#listing_compact_tmpl')
+					},
+					listingTemplate = template[templateType].html(),
+					partials = template[templateType].data('partial'),
+					listingWrap = $('.bListing'),
+					html;
+				// end of vars
+
+				html = Mustache.render(listingTemplate, data, partials);
+
+				listingWrap.empty();
+				listingWrap.html(html);
+
+				console.log('end of render products');
+			},
+
+			filters: function( data ) {
+				console.info('render filter');
+				console.log(data);
+
+				var template = $('#tplSelectedFilter'),
+					filterTemplate = $('#tplSelectedFilter').html(),
+					filterFooterWrap = filterBlock.find('.bFilterFoot'),
+					partials = template.data('partial'),
+					html;
+				// end of vars
+				
+				html = Mustache.render(filterTemplate, data, partials);
+
+				filterFooterWrap.empty();
+				filterFooterWrap.html(html);
+
+				console.log('end of render filter');
+			}
+		},
+
 		/**
 		 * Отрисовка шаблона продуктов
 		 * 
@@ -58,25 +105,16 @@
 		 */
 		renderCatalogPage: function( res ) {
 			console.info('renderCatalogPage');
-			console.log(( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default');
+			
+			var dataToRender = ( res ) ? res : catalog.filter.lastRes;
 
-			var templateType = ( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default',
-				template = {
-					'compact': $('#listing_compact_tmpl'),
-					'expanded': $('#listing_compact_tmpl'), // Заменить когда будет шаблон расширенного вида
-					'default': $('#listing_compact_tmpl')
-				},
-				dataToRender = ( res ) ? res : catalog.filter.lastRes,
-				listingTemplate = template[templateType].html(),
-				partials = template[templateType].data('partial'),
-				listingWrap = $('.bListing'),
-				html;
-			// end of vars
+			for ( key in dataToRender ) {
+				if ( catalog.filter.render.hasOwnProperty(key) ) {
+					catalog.filter.render[key]( dataToRender );
+				}
 
-			html = Mustache.render(listingTemplate, dataToRender, partials);
-
-			listingWrap.empty();
-			listingWrap.html(html);
+				console.log(key);
+			}
 
 			catalog.filter.lastRes = dataToRender;
 		},
@@ -175,7 +213,7 @@
 			if ( url !== (document.location.pathname + document.location.search) ) {
 				console.info('goto url '+url);
 
-				catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage);
+				catalog.history.gotoUrl(url);
 			}
 
 			return false;
@@ -190,6 +228,12 @@
 	};
 
 
+	/**
+	 * Ссылка на функцию обратного вызова по-умолчанию после получения данных с сервера при изменении history state
+	 * 
+	 * @type	{Function}
+	 */
+	catalog.history._defaultCallback = catalog.filter.renderCatalogPage;
 
 		/**
 		 * Обработчик кнопки переключения между расширенным и компактным видом фильтра
@@ -310,10 +354,10 @@
 			parentItem.addClass('mActive');
 
 			if ( catalog.filter.lastRes ) {
-				catalog.history.updateUrl(url, catalog.filter.renderCatalogPage);
+				catalog.history.updateUrl(url);
 			}
 			else {
-				catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage);
+				catalog.history.gotoUrl(url);
 			}
 
 			return false;
@@ -330,7 +374,7 @@
 			 
 			sortingItemsBtns.removeClass('mActive');
 			parentItem.addClass('mActive');
-			catalog.history.gotoUrl(url, catalog.filter.renderCatalogPage);
+			catalog.history.gotoUrl(url);
 
 			return false;
 		};
