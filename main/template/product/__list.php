@@ -4,15 +4,9 @@ return function(
     \Helper\TemplateHelper $helper,
     \Iterator\EntityPager $pager,
     array $productVideosByProduct
-) {
-    $data = (new \View\Product\ListAction())->execute(
-        $helper,
-        $pager,
-        $productVideosByProduct
-    );
-?>
+) { ?>
     <ul class="bListing clearfix">
-        <?= $helper->renderWithMustache('product/list/_compact', $data) ?>
+        <?= $helper->renderWithMustache('product/list/_compact', (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct)) ?>
     </ul>
 
     <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json(['cart/_button-product' => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache')]) ?>">
