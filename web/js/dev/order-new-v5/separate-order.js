@@ -86,7 +86,7 @@
 			}
 
 			productInState = global.OrderModel.orderDictionary.getProductFromState(nowState);
-			
+
 			/**
 			 * Перебор продуктов в текущем deliveryStates
 			 */
@@ -111,12 +111,19 @@
 
 				token = nowState+'_'+choosenPointForBox;
 
+console.log('=====================================')
+console.log(choosenPointForBox)
+console.log(token)
+console.log('=====================================')
+
 				if ( global.OrderModel.hasDeliveryBox(token) ) {
 					// Блок для этого типа доставки в этот пункт уже существует
 					choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
 				else {
+console.log(productsToNewBox)
+console.log('=====================================')
 					// Блока для этого типа доставки в этот пункт еще существует
 					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
 				}
@@ -685,20 +692,21 @@
 						itemDeleteAnalytics();
 					}
 
-					var productId = res.product.id;
-					var categoryId = res.category_id;
+					if ( res.product ) {
+						var productId = res.product.id;
+						var categoryId = res.category_id;
 
-					// Soloway
-					// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
-					(function(s){
-					    var d = document, i = d.createElement('IMG'), b = d.body;
-					    s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
-					    i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
-					    i.onload = i.onerror = function(){b.removeChild(i); i = b = null}
-					    i.src = s;
-					    b.insertBefore(i, b.firstChild);
-					})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=del_basket&bt=55&pz=0&custom=10='+productId+';11='+categoryId+'&![rnd]');
-
+						// Soloway
+						// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
+						(function(s){
+							var d = document, i = d.createElement('IMG'), b = d.body;
+							s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
+							i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
+							i.onload = i.onerror = function(){b.removeChild(i); i = b = null}
+							i.src = s;
+							b.insertBefore(i, b.firstChild);
+						})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=del_basket&bt=55&pz=0&custom=10='+productId+';11='+categoryId+'&![rnd]');
+					}
 				};
 			// end of functions
 
@@ -926,10 +934,8 @@
 			console.log('selectPointOnBaloon');
 			console.log(event);
 
-console.log('=====================================')
 			console.log($(this).data('pointid'));
 			console.log($(this).data('parentbox'));
-console.log('=====================================')
 
 			global.OrderModel.selectPoint({
 				id: $(this).data('pointid'),
