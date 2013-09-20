@@ -1,22 +1,20 @@
 <!-- Списоки выбранных параметров -->
-<div class="bFilterFoot">
-    {{#filters}}
-    <ul class="bFilterCheckedParams clearfix">
-        <li class="bFilterCheckedParams__eItem mTitle">{{name}}</li>
+{{#filters}}
+<ul class="bFilterCheckedParams clearfix">
+    <li class="bFilterCheckedParams__eItem mTitle">{{name}}</li>
 
-        {{#links}}
-            {{^last}}
-                <li class="bFilterCheckedParams__eItem mParams">
-                    <a class="bDelete" href="{{url}}"></a><span class="bParamsName">{{name}}</span>
-                </li>
-            {{/last}}
-            {{#last}}
-                <li class="bFilterCheckedParams__eItem mParams mClearAll">
-                    <a class="bDelete" href="{{url}}"><strong class="bParamsName">Очистить все</strong></a>
-                </li>
-            {{/last}}
-        {{/links}}
-    </ul>
-    {{/filters}}
-</div>
+    {{#links}}
+        {{^last}}
+            <li class="bFilterCheckedParams__eItem mParams">
+                <a class="bDelete jsHistoryLink" href="{{url}}"></a><span class="bParamsName">{{name}}</span>
+            </li>
+        {{/last}}
+        {{#last}}
+            <li class="bFilterCheckedParams__eItem mParams mClearAll">
+                <a class="bDelete jsHistoryLink" href="{{url}}"><strong class="bParamsName">Очистить все</strong></a>
+            </li>
+        {{/last}}
+    {{/links}}
+</ul>
+{{/filters}}
 <!-- /Списоки выбранных параметров -->

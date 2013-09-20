@@ -16,12 +16,13 @@
 	console.info('New catalog history module');
 
 	catalog.history = {
+
 		/**
-		 * Функция обратного вызова после получения данных с сервера
+		 * Кастомная функция обратного вызова после получения данных с сервера
 		 * 
 		 * @type	{Function}
 		 */
-		_callback: null,
+		_customCallback: null,
 
 		/**
 		 * Обработка перехода на URL
@@ -31,10 +32,9 @@
 		 * @param	{Function}	callback	Функция которая будет вызвана после получения данных от сервера
 		 * @param	{Boolean}	onlychange	Показывает что необходимо только изменить URL и не запрашивать данные
 		 */
-		gotoUrl: function gotoUrl( url, callback, onlychange ) {
+		gotoUrl: function gotoUrl( url, customCallback, onlychange ) {
 			console.info('gotoUrl');
-			var _callback = callback,
-				state = {
+			var state = {
 					title: document.title,
 					url: url,
 					data: {
@@ -49,7 +49,7 @@
 				return;
 			}
 
-			catalog.history._callback = callback;
+			catalog.history._customCallback = (customCallback) ? customCallback : null;
 
 			console.info('link handler. push state new url: ' + state.url);
 			History.pushState(state, state.title, state.url);
@@ -57,20 +57,33 @@
 			return;
 		},
 
-		updateUrl: function updateUrl( url, callback ) {
-			catalog.history.gotoUrl( url, callback, true );
+		updateUrl: function updateUrl( url, customCallback ) {
+			var customCallback = (customCallback) ? customCallback : null;
+
+			catalog.history.gotoUrl( url, customCallback, true );
 
 			return;
 		}
 	};
+		/**
+		 * Обработка нажатий на ссылки завязанные на живую подгрузку данных
+		 */
+	var jsHistoryLinkHandler = function jsHistoryLinkHandler() {
+			var self = $(this),
+				url = self.attr('href');
+			// end of vars
+			
+			catalog.history.gotoUrl(url);
 
+			return false;
+		},
 
 		/**
 		 * Запросить новые данные с сервера по url
 		 * 
 		 * @param	{String}	url
 		 */
-	var getDataFromServer = function getDataFromServer( url, callback ) {
+		getDataFromServer = function getDataFromServer( url, callback ) {
 			console.info('getDataFromServer ' + url);
 
 			utils.blockScreen.block('Загрузка товаров');
@@ -91,13 +104,12 @@
 				resHandler = function resHandler( res ) {
 					console.info('resHandler');
 
-					if ( typeof res === 'object' && typeof callback === 'function' ) {
+					if ( typeof res === 'object') {
 						callback(res);
 					}
 					else {
-						console.warn('res isn\'t object or catalog.history._callback isn\'t function');
+						console.warn('res isn\'t object');
 						console.log(typeof res);
-						console.log(typeof callback);
 					}
 
 					utils.blockScreen.unblock();
@@ -121,26 +133,28 @@
 		stateChangeHandler = function stateChangeHandler() {
 			var state = History.getState(),
 				url = state.url,
-				data = state.data.data;
+				data = state.data.data,
+				callback = ( typeof catalog.history._customCallback === 'function' ) ? catalog.history._customCallback : catalog.history._defaultCallback;
 			// end of vars
 			
 			console.info('statechange');
 			console.log(state);
 
-			if ( data._onlychange && typeof catalog.history._callback === 'function' ) {
+			if ( data._onlychange ) {
 				console.info('only update url ' + url);
 
-				catalog.history._callback();
+				callback();
 			}
 			else {
 				url = url.addParameterToUrl('ajax', 'true');
-				getDataFromServer(url, catalog.history._callback);
+				getDataFromServer(url, callback);
 			}
 
-			catalog.history._callback = null;
+			catalog.history._customCallback = null;
 		};
 	// end of functions
 
 	History.Adapter.bind(window, 'statechange', stateChangeHandler);
+	$('body').on('click', '.jsHistoryLink', jsHistoryLinkHandler);
 	
 }(window.ENTER));	
