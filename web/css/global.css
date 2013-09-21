@@ -917,14 +917,6 @@
     min-height: 50px;
     display: block;
   }
-  .isEntered .uNotEntered,
-  .isNotEntered .uEntered {
-    display: none;
-  }
-  .isNotEntered .uNotEntered,
-  .isEntered .uEntered {
-    display: block;
-  }
 }
 @media all {
   .bGrayButton {

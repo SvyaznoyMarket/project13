@@ -187,15 +187,11 @@
 					topAuth.hide();
 					topAuth.after(show_user);
 					bottomAuth.html(userName).addClass('mAuth');
-                    //console.log('### User is Entered!');
-                    $('body').addClass('isEntered').removeClass('isNotEntered');
 				}
 				else {
 					topAuth.show();
-                    //console.log('### User is Not Entered!');
-                    $('body').removeClass('isEntered').addClass('isNotEntered');
 				}
-			}; 
+			};
 			
 			return {
 				'update': update
@@ -213,6 +209,26 @@
 		 */
 		BlackBox.prototype.init = function() {
 			var self = this;
+
+            /**
+             * Авторизованность пользователя
+             * Вызывается событием «userLogged» у body
+             *
+             * @param event
+             * @param userInfo — данные пользователя (если существуют)
+             */
+            var userLogged = function userLogin(event, userInfo) {
+                if (userInfo && userInfo.name) {
+                    $('.uEntered').show();
+                    $('.uNotEntered').hide();
+                    $('body').addClass('isEntered');
+                } else {
+                    $('.uEntered').hide();
+                    $('.uNotEntered').show();
+                    $('body').removeClass('isEntered');
+                }
+            };
+            $('body').bind('userLogged', userLogged);
 
 				/**
 				 * Обработчик Action присланных с сервера
@@ -263,6 +279,8 @@
 					if ( actionInfo !== undefined ) {
 						startAction(actionInfo);
 					}
+
+                    $('body').trigger('userLogged', [userInfo]);
 				};
 			//end of functions
 
