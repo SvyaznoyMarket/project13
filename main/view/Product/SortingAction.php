@@ -16,17 +16,17 @@ class SortingAction {
         $links = [];
 
         $active = $productSorting->getActive();
-        $active['url'] = $helper->replacedUrl(['sort' => implode('-', [$active['name'], $active['direction']])]);
+        $active['url'] = $helper->replacedUrl(['sort' => implode('-', [$active['name'], $active['direction']]), 'ajax' => null]);
 
         if ($active['name'] == 'default' && !empty($inSearch)) {
-            $active['url'] = $helper->replacedUrl(['sort' => null]);
+            $active['url'] = $helper->replacedUrl(['sort' => null, 'ajax' => null]);
         }
 
         foreach ($productSorting->getAll() as $item) {
-            $item['url'] = $helper->replacedUrl(['page' => '1', 'sort' => implode('-', [$item['name'], $item['direction']])]);
+            $item['url'] = $helper->replacedUrl(['page' => '1', 'sort' => implode('-', [$item['name'], $item['direction']]), 'ajax' => null]);
 
             if ($item['name'] == 'default' && !empty($inSearch)) {
-                $item['url'] = $helper->replacedUrl(['sort' => null]);
+                $item['url'] = $helper->replacedUrl(['sort' => null, 'ajax' => null]);
             }
 
             if ($active['name'] == $item['name'] && $active['direction'] == $item['direction']) {
