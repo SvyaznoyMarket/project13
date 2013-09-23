@@ -36,11 +36,6 @@ $btnText = $inCart ? 'В корзине' : 'Купить';
 
 	    <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></div>
 
-	    <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-        	<div class="notBuying font12">
-                <div class="corner"><div></div></div>
-                Только в магазинах
-            </div>
-		<? endif ?>
+        <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
     </div>
 </div>

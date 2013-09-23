@@ -52,7 +52,7 @@
  
 /*
     json2.js
-    2012-10-08
+    2013-05-26
 
     Public Domain.
 
@@ -225,7 +225,7 @@ if (typeof JSON !== 'object') {
 
     if (typeof Date.prototype.toJSON !== 'function') {
 
-        Date.prototype.toJSON = function (key) {
+        Date.prototype.toJSON = function () {
 
             return isFinite(this.valueOf())
                 ? this.getUTCFullYear()     + '-' +
@@ -239,7 +239,7 @@ if (typeof JSON !== 'object') {
 
         String.prototype.toJSON      =
             Number.prototype.toJSON  =
-            Boolean.prototype.toJSON = function (key) {
+            Boolean.prototype.toJSON = function () {
                 return this.valueOf();
             };
     }
@@ -536,6 +536,7 @@ if (typeof JSON !== 'object') {
         };
     }
 }());
+
  
  
 /** 
@@ -1720,7 +1721,6 @@ window.MapInterface = (function() {
 	 * === BLACKBOX CONSTRUCTOR ===
 	 */
 	var BlackBox = (function() {
-		'use strict';
 	
 		/**
 		 * Создает объект для обновления данных с сервера и отображения текущих покупок

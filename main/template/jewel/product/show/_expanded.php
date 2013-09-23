@@ -28,7 +28,7 @@ $productVideo = reset($productVideos);
 </style>
 
 <div class="goodsbox goodsline bNewGoodsBox" ref="<?= $product->getToken() ?>">
-    <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?> <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
+    <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
         <div class="photo">
             <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
             <a href="<?= $product->getLink() ?>">
@@ -70,14 +70,9 @@ $productVideo = reset($productVideos);
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
             <div class="goodsbar mSmallBtns">
-                <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+                <?= $page->render('cart/_button', ['product' => $product]) ?>
             </div>
-            <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-                <div class="notBuying font12">
-                    <div class="corner"><div></div></div>
-                    Только в магазинах
-                </div>
-            <? endif ?>
+            <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
             <? if ($product->getIsBuyable()): ?>
             <noindex>
                 <ul class="bNGB__eUl">

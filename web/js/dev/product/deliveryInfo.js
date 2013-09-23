@@ -212,7 +212,9 @@
 			success: resFromServer,
 			statusCode: {
 					500: errorHandler,
-					503: errorHandler
+					502: errorHandler,
+					503: errorHandler,
+					504: errorHandler
 				}
 		});
 	}

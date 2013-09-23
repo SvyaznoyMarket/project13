@@ -169,4 +169,13 @@ class TemplateHelper {
             return (float)rtrim($value, '0');
         }
     }
+
+    /**
+     * @param string $text
+     * @param string $cp
+     * @return string
+     */
+    public static function mbyte_ucfirst($text, $cp = 'UTF-8') {
+      return mb_strtoupper( mb_substr( $text, 0, 1, $cp ), $cp ) . mb_strtolower( mb_substr( $text, 1, mb_strlen( $text, $cp ) - 1, $cp ), $cp );
+    }
 }

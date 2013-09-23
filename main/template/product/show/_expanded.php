@@ -25,7 +25,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
 ?>
 
 <div class="goodsbox goodsline bNewGoodsBox <? echo ($isHidden)? 'hidden': '' ?>" ref="<?= $product->getToken() ?>">
-    <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?> <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
+    <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
         <div class="photo">
             <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
             <? if ($model3dExternalUrl || $model3dImg): ?><a style="right:<?= $productVideo && $productVideo->getContent() ? '42' : '0' ?>px;" class="goodsphoto_eGrad360 goodsphoto_eGrad360_small" href="<?= $product->getLink() ?>"></a><? endif ?>
@@ -38,7 +38,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             </a>
         </div>
         <div class="info">
-            <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
+            <div class="h3"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
             <span class="gray bNGB__eArt mInlineBlock">
                 Артикул #<?= $product->getArticle() ?>
 
@@ -72,12 +72,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
             <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
-            <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-                <div class="notBuying font12">
-                    <div class="corner"><div></div></div>
-                    Только в магазинах
-                </div>
-            <? endif ?>
+            <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
             <? if ($product->getIsBuyable()): ?>
             <noindex>
                 <ul class="bNGB__eUl">

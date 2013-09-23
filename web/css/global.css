@@ -4266,7 +4266,7 @@
     padding-bottom: 10px;
     font-weight: bold;
   }
-  .goodsbox h3 {
+  .goodsbox .h3 {
     margin: 0px;
     padding-bottom: 5px;
     font-size: 12px;
@@ -4313,7 +4313,7 @@
     margin: 1px 5px 0px 0px;
     vertical-align: top;
   }
-  .bNewGoodsBox h3 a {
+  .bNewGoodsBox .h3 a {
     text-decoration: underline;
     font: 18px Tahoma, sans-serif;
   }
@@ -4363,6 +4363,7 @@
     float: none;
     clear: both;
     margin-top: 0px;
+    margin-bottom: 15px;
   }
   .goodsline .notBuying .corner {
     left: 175px;
@@ -4388,7 +4389,7 @@
     margin-right: 10px;
     padding: 0px 0px 0px 12px;
   }
-  .goodsline h3 {
+  .goodsline .h3 {
     margin: 0px;
     padding-bottom: 5px;
     font-size: 14px;
@@ -7564,10 +7565,10 @@
 }
 /*страница мобильных приложений*/
 @media all {
-  .bMobDown h2 {
+  .bMobDown .h2 {
     font: 30px 'Enter';
     font-weight: 100;
-    margin: 0px;
+    margin: 0 0 18px 24px;
     padding: 0px;
     text-transform: uppercase;
   }
@@ -8837,15 +8838,14 @@
   .bannersbox {
     left: 0px;
     overflow: hidden;
-    padding: 50px 0 50px;
     position: absolute;
-    top: 234px;
+    top: 236px;
     width: 100%;
   }
   .bannersboxinner {
     font-size: 0px;
     height: 300px;
-    line-height: 300px;
+    line-height: 1;
     margin: 0px auto;
     position: relative;
     width: 920px;
@@ -8860,6 +8860,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
     filter: alpha(opacity=50);
     position: absolute;
+    height: 100%;
   }
   .banner3 {
     bottom: 0px;
@@ -8870,7 +8871,7 @@
     left: -245px;
   }
   .bCarouselWrap {
-    padding: 50px 0px 50px;
+    margin: 30px 0px 50px;
     text-align: center;
     width: 100%;
   }
@@ -9025,6 +9026,9 @@
     display: block;
     margin-top: 5px;
     line-height: 25px;
+  }
+  .leftmenu .hidden {
+    display: none;
   }
   .cabinethelp {
     padding: 20px 0px 10px;
@@ -9261,14 +9265,20 @@
   }
   .bPageHead__eTitle {
     padding: 0 0 7px;
+  }
+  .bPageHead__eTitle h1 {
+    display: inline;
+    float: left;
+    padding-right: 10px;
+    width: auto;
     font-family: tahoma, verdana, arial, helvetica, sans-serif;
   }
   .bPageHead__eArticle {
     font-size: 16px;
   }
   .bProductSection .bDescriptionProduct {
-    font-size: 14px;
     margin: 15px 0 0;
+    font-size: 14px;
   }
   .bProductSection .bHeadSection {
     margin: 21px 0 10px;
@@ -9277,9 +9287,9 @@
   }
   .bProductSectionRightCol {
     float: right;
-    zoom: 1;
-    width: 220px;
     margin: 15px 0 0 16px;
+    width: 220px;
+    zoom: 1;
   }
   .bProductSectionRightCol .btnBuy {
     margin: 0 auto;
@@ -9290,8 +9300,8 @@
   .bProductSectionLeftCol {
     display: inline-block;
     float: left;
-    width: 700px;
     margin: 15px 0 0;
+    width: 700px;
   }
   .bTags {
     margin: 0 0 0 10px;
@@ -9310,8 +9320,8 @@
   .bBottomBuy__eHead {
     float: left;
     width: 435px;
-    font-size: 14px;
     font-weight: bold;
+    font-size: 14px;
   }
   .bBottomBuy__eTitle {
     font: 800 16px/1.2 tahoma, verdana, arial, helvetica, sans-serif;
@@ -9611,7 +9621,7 @@
     float: right;
   }
   .bProductDesc .creditbox {
-    margin: 5px 0 0;
+    margin: 5px 0 10px;
     border: none;
     font-size: 14px;
   }
@@ -9711,6 +9721,9 @@
     position: relative;
     z-index: 10;
     height: 210px;
+  }
+  .bSlider:hover {
+    z-index: 100;
   }
   .bSlider__eInner {
     position: relative;

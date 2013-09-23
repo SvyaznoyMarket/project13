@@ -181,6 +181,8 @@ class Entity extends BasicEntity {
                 $this->groupedProperties[$property->getGroupId()]['properties'][] = $property;
             }
         }
+
+        $this->calculateState();
     }
 
     /**

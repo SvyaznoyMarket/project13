@@ -46,20 +46,15 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             <?= $page->render('product/_reviewsStarsCompact', ['product' => $product]) ?>
         <? endif ?>
 
-	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
-        <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+	    <div class="h3"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
+        <?= $page->render('cart/_button', ['product' => $product]) ?>
 	    <div class="font18 pb10 mSmallBtns">
             <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
             <p class="font16 crossText"><span class="old_price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>
             <? endif ?>
             <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
         </div>
-        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-        	<div class="notBuying font12">
-                <div class="corner"><div></div></div>
-                Только в магазинах
-            </div>
-		<? endif ?>
+        <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
 	    <? if ($hasModel): ?>
         <a href="<?= $product->getLink() ?>">
             <div class="bListVariants">

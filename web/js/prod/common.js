@@ -112,28 +112,45 @@ $.ajaxSetup({
  
  
 /**
- * Обработчи для личного кабинета
+ * Обработчик для личного кабинета
  *
  * @author    Trushkevich Anton
  * @requires  jQuery
  */
 (function(){
-  var checked = false;
+  var checkedSms = false;
+  var checkedEmail = false;
 
   var handleSubscribeSms = function() {
-    if ( checked ) {
+    if ( checkedSms ) {
       $('#mobilePhoneWrapper').hide();
-      checked = false;
+      $('#mobilePhoneWrapper').parent().find('.red').html('');
+      checkedSms = false;
     } else {
       $('#mobilePhoneWrapper').show();
-      checked = true;
+      checkedSms = true;
+    }
+  };
+
+  var handleSubscribeEmail = function() {
+    if ( checkedEmail ) {
+      $('#emailWrapper').hide();
+      $('#emailWrapper').parent().find('.red').html('');
+      checkedEmail = false;
+    } else {
+      $('#emailWrapper').show();
+      checkedEmail = true;
     }
   };
 
   $(document).ready(function(){
-    checked = $('.smsCheckbox').hasClass('checked');
+    checkedSms = $('.smsCheckbox').hasClass('checked');
     if ( !$('#user_mobile_phone').val() ) {
       $('.smsCheckbox').bind('click', handleSubscribeSms);
+    }
+    checkedEmail = $('.emailCheckbox').hasClass('checked');
+    if ( !$('#user_email').val() ) {
+      $('.emailCheckbox').bind('click', handleSubscribeEmail);
     }
   });
 }());
@@ -954,8 +971,8 @@ $(document).ready(function(){
 	};
 
 
-    var kissForProductOfCategory = function kissForProductOfCategory(ev) {
-        //ev.preventDefault(); // tmp
+    var kissForProductOfCategory = function kissForProductOfCategory(event) {
+        //event.preventDefault(); // tmp
         //console.log('*** clickeD!!! '); // tmp
 
         var t = $(this), box, datap, toKISS = false,
@@ -997,10 +1014,9 @@ $(document).ready(function(){
 
 
     if ( $('#_categoryData').length ) {
-        console.log('*** It is categoryData!!!'); // tmp
 		kissForCategory();
         /** Вызываем kissForProductOfCategory() для всех категорий - в том числе слайдеров, аджаксов и тп **/
-        $('body').delegate("div.goodsbox a", "click",kissForProductOfCategory);
+        $('body').delegate('div.goodsbox a', 'click', kissForProductOfCategory);
 	}
 
 	/**
@@ -1635,7 +1651,7 @@ $(document).ready(function() {
 	// 	}
 	// }
 
-	
+
 	// /* Services Toggler */
 	// if ( $('.serviceblock').length ) {
 	// 	$('.info h3').css('cursor', 'pointer').click( function() {
@@ -1647,11 +1663,11 @@ $(document).ready(function() {
 	// 	}
 	// }
 	
-	// // /* prettyCheckboxes */ , 
+	// // /* prettyCheckboxes */ ,
 	// $('.form input[type="checkbox"]').prettyCheckboxes();
 	// $('.form input[type="radio"]').prettyCheckboxes();
 
-	
+
 	/* tags */
 	$('.fm').toggle( 
 		function(){
@@ -1757,7 +1773,7 @@ $(document).ready(function() {
 // 			filterlist.hide();
 // 			filterlink.show();
 // 		});
-// 	}	
+// 	}
 	
 // 	var ajaxFilterCounter = 0;
 	
@@ -1947,7 +1963,7 @@ $(document).ready(function() {
 // 			}
 // 		};
 
-// 		var shiftme = function() {	
+// 		var shiftme = function() {
 // 			var boxes = $(nodes.wrap).find('.goodsbox');
 // 			$(boxes).hide();
 // 			var le = boxes.length;
@@ -1970,7 +1986,7 @@ $(document).ready(function() {
 // 				return false;
 // 			}
 
-// 			if ( current + 1 === max ) { 
+// 			if ( current + 1 === max ) {
 
 // 				var boxes = $(nodes.wrap).find('.goodsbox');
 // 				$(boxes).hide();
@@ -2247,7 +2263,7 @@ $(document).ready(function() {
 
 	// 				that.processHTML( coreid[i] );
 	// 				that.self = '';
-	// 				that.other = [];			
+	// 				that.other = [];
 	// 			}
 	// 		});
 	// 	};

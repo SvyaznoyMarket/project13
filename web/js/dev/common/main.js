@@ -493,7 +493,7 @@ $(document).ready(function() {
 	// 	}
 	// }
 
-	
+
 	// /* Services Toggler */
 	// if ( $('.serviceblock').length ) {
 	// 	$('.info h3').css('cursor', 'pointer').click( function() {
@@ -505,11 +505,11 @@ $(document).ready(function() {
 	// 	}
 	// }
 	
-	// // /* prettyCheckboxes */ , 
+	// // /* prettyCheckboxes */ ,
 	// $('.form input[type="checkbox"]').prettyCheckboxes();
 	// $('.form input[type="radio"]').prettyCheckboxes();
 
-	
+
 	/* tags */
 	$('.fm').toggle( 
 		function(){
@@ -615,7 +615,7 @@ $(document).ready(function() {
 // 			filterlist.hide();
 // 			filterlink.show();
 // 		});
-// 	}	
+// 	}
 	
 // 	var ajaxFilterCounter = 0;
 	
@@ -805,7 +805,7 @@ $(document).ready(function() {
 // 			}
 // 		};
 
-// 		var shiftme = function() {	
+// 		var shiftme = function() {
 // 			var boxes = $(nodes.wrap).find('.goodsbox');
 // 			$(boxes).hide();
 // 			var le = boxes.length;
@@ -828,7 +828,7 @@ $(document).ready(function() {
 // 				return false;
 // 			}
 
-// 			if ( current + 1 === max ) { 
+// 			if ( current + 1 === max ) {
 
 // 				var boxes = $(nodes.wrap).find('.goodsbox');
 // 				$(boxes).hide();
@@ -1105,7 +1105,7 @@ $(document).ready(function() {
 
 	// 				that.processHTML( coreid[i] );
 	// 				that.self = '';
-	// 				that.other = [];			
+	// 				that.other = [];
 	// 			}
 	// 		});
 	// 	};

@@ -28,7 +28,7 @@ class IndexPage extends \View\DefaultLayout {
             \App::exception()->add($e);
             \App::logger()->error($e);
 
-            $response = array('content' => '');
+            $response = ['content' => ''];
         }
 
         return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];

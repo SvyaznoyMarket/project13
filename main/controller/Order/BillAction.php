@@ -30,7 +30,7 @@ class BillAction {
             ]), [], function ($data) use (&$content) {
                 $bill = reset($data);
                 $content = base64_decode($bill['bill']);
-            });
+            }, \App::config()->coreV2['hugeTimeout']);
             $client->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
 
             if (!empty($content)) {

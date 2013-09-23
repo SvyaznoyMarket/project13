@@ -75,6 +75,11 @@ class IndexAction {
             $page->setParam('error', \Controller\User\SubscribeAction::EMPTY_PHONE_ERROR);
         }
 
+        if($user->getEntity()->getIsSubscribed() && !(bool)($user->getEntity()->getEmail())) {
+            $page->setParam('emailTmpCheck', true);
+            $page->setParam('error', \Controller\User\SubscribeAction::EMPTY_EMAIL_ERROR);
+        }
+
         $form = new \View\User\ConsultationForm();
         $page->setParam('form', $form);
 

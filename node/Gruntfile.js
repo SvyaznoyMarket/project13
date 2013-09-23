@@ -416,9 +416,8 @@ module.exports = function(grunt) {
 			},
 
 			libraryJS: {
-				files: {
-					'../web/js/prod/library.min.js': libraryFiles
-				}
+				src: '../web/js/prod/library.js',
+        		dest: '../web/js/prod/library.min.js'
 			},
 
 			mainJS: {
