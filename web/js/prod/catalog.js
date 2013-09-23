@@ -221,6 +221,7 @@
 		viewParamPanel = $('.bSortingLine');
 	// end of vars
 
+	
 	catalog.infScroll = {
 		load: function() {
 
@@ -228,6 +229,8 @@
 
 		enable: function() {
 			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
+
+			console.info('infinity scroll enable');
 		},
 
 		disable: function() {
@@ -235,11 +238,17 @@
 		}
 	};
 
-	if ( window.docCookies.getItem( 'infScroll' ) === 1 ) {
+	var infBtnHandler = function infBtnHandler() {
+		catalog.infScroll.enable();
+
+		return false;
+	}
+
+	if ( window.docCookies.getItem( 'infScroll' ) === '1' ) {
 		catalog.infScroll.enable();
 	}
 
-	viewParamPanel.on('click', '.bSortingList__eLink.mMore', catalog.infScroll.enable);
+	viewParamPanel.on('click', '.mInfinity', infBtnHandler);
 
 }(window.ENTER));
  
