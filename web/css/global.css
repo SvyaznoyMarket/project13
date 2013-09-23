@@ -10191,10 +10191,15 @@
     overflow: hidden;
     zoom: 1;
     height: 0;
+    border: none;
+    display: inline;
+    float: left;
     width: 0;
     line-height: 0;
     font-size: 0;
     padding: 0;
+    margin-top: 0;
+    visibility: hidden;
   }
   .bInputList .bCustomLabel {
     display: inline-block;
@@ -11475,6 +11480,9 @@
     z-index: 9;
     background: #fff;
     padding: 0 5px;
+  }
+  .mRules {
+    position: relative;
   }
   .mRules .bErrorText__eInner {
     top: 20px;
