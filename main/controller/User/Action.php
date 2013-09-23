@@ -3,6 +3,35 @@
 namespace Controller\User;
 
 class Action {
+    private $redirect;
+
+    /**
+     * @param \Http\Request $request
+     * @return bool|\Http\JsonResponse|\Http\RedirectResponse
+     */
+    private function checkRedirect(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $this->redirect = \App::router()->generate('user');
+        $redirectTo = $request->get('redirect_to');
+        if ($redirectTo) {
+            $this->redirect = $redirectTo;
+        }
+
+        if (\App::user()->getEntity()) { // if user is logged in
+            if (empty($redirectTo)) {
+                return $request->isXmlHttpRequest()
+                    ? new \Http\JsonResponse(['success' => true])
+                    : new \Http\RedirectResponse(\App::router()->generate('user'));
+            } else { // if redirect isset:
+                return new \Http\RedirectResponse($redirectTo);
+            }
+        }
+
+        return false;
+    }
+
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -11,15 +40,8 @@ class Action {
     public function login(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::user()->getEntity()) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(['success' => true])
-                : new \Http\RedirectResponse(\App::router()->generate('user'));
-        }
-
-        $redirect = $request->get('redirect_to')
-            ? $request->get('redirect_to')
-            : \App::router()->generate('user');
+        $checkRedirect = $this->checkRedirect($request);
+        if ($checkRedirect) return $checkRedirect;
 
         $form = new \View\User\LoginForm();
         if ($request->isMethod('post')) {
@@ -116,7 +138,7 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-        $page->setParam('redirect', $redirect);
+        $page->setParam('redirect', $this->redirect);
 
         return new \Http\Response($page->show());
     }
@@ -165,6 +187,10 @@ class Action {
                 ? new \Http\JsonResponse(['success' => true])
                 : new \Http\RedirectResponse(\App::router()->generate('user'));
         }
+
+        $redirect = $request->get('redirect_to')
+            ? $request->get('redirect_to')
+            : \App::router()->generate('user');
 
         $form = new \View\User\RegistrationForm();
         if ($request->isMethod('post')) {
@@ -218,6 +244,7 @@ class Action {
                                     'request' => \App::request(),
                                 ]),
                             ],
+                            'link' => $redirect,
                         ])
                         : new \Http\RedirectResponse(\App::router()->generate('user'));
 
