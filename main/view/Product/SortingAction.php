@@ -3,6 +3,11 @@
 namespace View\Product;
 
 class SortingAction {
+    /**
+     * @param \Helper\TemplateHelper $helper
+     * @param \Model\Product\Sorting $productSorting
+     * @return array
+     */
     public function execute(
         \Helper\TemplateHelper $helper,
         \Model\Product\Sorting $productSorting
@@ -25,7 +30,7 @@ class SortingAction {
             }
 
             if ($active['name'] == $item['name'] && $active['direction'] == $item['direction']) {
-                $active['active'] = true;
+                $item['active'] = true;
             }
 
             $links[] = $item;

@@ -3,6 +3,11 @@
 namespace View;
 
 class PaginationAction {
+    /**
+     * @param \Helper\TemplateHelper $helper
+     * @param \Iterator\EntityPager $pager
+     * @return array
+     */
     public function execute(
         \Helper\TemplateHelper $helper,
         \Iterator\EntityPager $pager
