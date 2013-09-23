@@ -1,14 +1,14 @@
 /**
- * Filters
+ * Catalog main config
  *
- * @requires jQuery, Mustache, ENTER.utils, ENTER.config, ENTER.catalog.history
+ * @requires jQuery, Mustache, ENTER.utils, ENTER.config
  * 
  * @author	Zaytsev Alexandr
  *
  * @param	{Object}	ENTER	Enter namespace
  */
 ;(function( ENTER ) {
-	console.info('New catalog init: catalog.js');
+	console.info('Catalog init: catalog.js');
 
 	var pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
@@ -17,36 +17,10 @@
 	
 
 	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
-	catalog.listingWrap = $('.bListing')
+	catalog.listingWrap = $('.bListing');
 	catalog.liveScroll = false;
 
 	console.info('Mustache is '+ typeof Mustache);
 	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
-
-	catalog.loader = {
-		_loader: null,
-		loading: function() {
-			if ( catalog.loader._loader ) {
-				return;
-			}
-
-			catalog.loader._loader = $('<li>').addClass('mLoader');
-
-			if ( catalog.liveScroll ) {
-				catalog.listingWrap.append(catalog.loader._loader);
-			}
-			else {
-				catalog.listingWrap.empty();
-				catalog.listingWrap.append(catalog.loader._loader);
-			}
-		},
-
-		complete: function() {
-			if ( catalog.loader._loader ) {
-				catalog.loader._loader.remove();
-				catalog.loader._loader = null;
-			}
-		}		
-	}
 
 }(window.ENTER));

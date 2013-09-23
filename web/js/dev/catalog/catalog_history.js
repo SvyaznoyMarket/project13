@@ -58,9 +58,9 @@
 		},
 
 		updateUrl: function updateUrl( url, customCallback ) {
-			var customCallback = (customCallback) ? customCallback : null;
+			var callback = (customCallback) ? customCallback : null;
 
-			catalog.history.gotoUrl( url, customCallback, true );
+			catalog.history.gotoUrl( url, callback, true );
 
 			return;
 		}

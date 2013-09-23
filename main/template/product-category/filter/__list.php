@@ -25,7 +25,7 @@ return function(
             hidden
             <? if (in_array($optionId, $values)) { ?> checked="checked"<? } ?>
         />
-        <label class="bFilterCheckbox" for="<?= $viewId ?>">
+        <label class="bFilterCheckbox<? if (!$filter->getIsMultiple()) { ?> mCustomLabelRadio<? } ?>" for="<?= $viewId ?>">
             <?= $option->getName() ?>
         </label>
     </div>
