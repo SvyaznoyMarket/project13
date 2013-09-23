@@ -638,22 +638,26 @@ class Action {
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
-            return new \Http\JsonResponse(
-                (new \View\Product\ListAction())->execute(
+            return new \Http\JsonResponse([
+                'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
                     $productVideosByProduct
-                )
-                + (new \View\ProductCategory\SelectedFilterAction())->execute(
+                ),
+                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productFilter,
                     \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
-                )
-                + (new \View\PaginationAction())->execute(
+                ),
+                'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager
-                )
-            );
+                ),
+                'sorting'        => (new \View\Product\SortingAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productSorting
+                ),
+            ]);
         }
 
         $page->setParam('productPager', $productPager);

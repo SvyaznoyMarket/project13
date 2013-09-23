@@ -1,7 +1,7 @@
 <ul class="bSortingList">
     <li class="bSortingList__eItem mTitle">Страницы</li>
 
-    {{#pages}}
+    {{#links}}
         {{#name}}
         <li class="bSortingList__eItem mSortItem{{#active}} mActive{{/active}}">
             <a class="bSortingList__eLink jsPagination" href="{{url}}">{{name}}</a>
@@ -11,7 +11,7 @@
         {{^name}}
             <li class="bSortingList__eItem mSortItem mDotted">&#8230;</li>
         {{/name}}
-    {{/pages}}
+    {{/links}}
 
     <li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink mMore jsInfinity" href="#">&#8734;</a></li>
 </ul>

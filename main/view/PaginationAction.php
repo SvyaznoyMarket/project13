@@ -39,7 +39,7 @@ class PaginationAction {
         }
 
         return [
-            'pages' => $pageData,
+            'links' => $pageData,
         ];
     }
 }
