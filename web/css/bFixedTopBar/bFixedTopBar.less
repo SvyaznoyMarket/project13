@@ -1,0 +1,124 @@
+.bFixedTopBar {
+	.drop-shadow(0, 0, 22px, 0.3);
+	.rounded (0 0 4px 4px);
+	position: fixed;
+	top: 0;
+	left: 50%;
+	z-index: 999;
+	display: none;
+	margin-left: -480px;
+	width: 960px;
+	height: 50px;
+	background: @white;
+
+	&__eTop {
+		float: left;
+		padding: 8px 10px 0;
+		height: 42px;
+		background: #e0e0e0;
+	}
+
+	&__eTopLink {
+		.blackGrad();
+		.rounded(4px);
+		display: inline-block;
+		padding-left: 15px;
+
+		width: 190px;
+		border: 1px solid #a1a1a1;
+
+		color: @white;
+
+		vertical-align: top;
+
+		font: bold 12px/30px Tahoma;
+		zoom: 1;
+
+		*display: inline;
+
+		 &:hover {
+			background: @black;
+
+			color: @white;
+			text-decoration: none;
+		}
+	}	
+
+	&__eCrumbs {
+		float: left;
+		padding: 0 5px;
+	}
+
+	&__eCrumbsCatImg {
+		display: inline-block;
+
+		vertical-align: top;
+
+		.bCatImg {
+			margin-right: 5px;
+			width: 50px;
+			height: 50px;
+		}
+	}
+
+	&__eCrumbsList {
+		display: inline-block;
+		margin: 8px 0 0;
+		vertical-align: top;
+	}
+
+	&__eCrumbsListItem {
+		display: inline-block;
+		margin: 0 0 2px;
+		padding-right: 10px;
+		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCMjhGREUyOEZEQUMxMUUyOTI4QjkyMzRGMEUwRjlGQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozNjE4NUIwNjAwRDQxMUUzOTI4QjkyMzRGMEUwRjlGQyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkIyOEZERTI2RkRBQzExRTI5MjhCOTIzNEYwRTBGOUZDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkIyOEZERTI3RkRBQzExRTI5MjhCOTIzNEYwRTBGOUZDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+DzYFVQAAAGlJREFUeNpimDRp0u/fv//DAIONjY2bm9vHjx+h/JcvX1pYWGhraz948ADEB+Lv378HBweLi4sD5ZgYGEBKbt68qaSkxMXFxXDy5EmgTHh4OFAVSL2+vn5VVdW/f/+g5u3fv/8/EgAIMACh4VPB4p8Q3wAAAABJRU5ErkJggg==);
+		background-position: 100% 4px;
+		background-repeat: no-repeat;
+		vertical-align: top;
+
+		&.mLast {
+			display: block;
+			background: none;
+		}
+	}
+
+	&__eCart {
+		float: right;
+		padding: 5px 0 0 10px;
+		width: 100px;
+		height: 45px;
+		background: #fff5e0;
+	}
+
+	&__eCartLink {
+		display: block;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
+	&__eCartTitle {
+		display: inline-block;
+		padding: 3px 2px 0 0;
+		text-decoration: underline;
+	}
+
+	&__eCartQuan {
+		.rounded(10px);
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		background: #f88a08;
+		color: @white;
+		vertical-align: top;
+		text-align: center;
+		line-height: 20px;
+	}
+
+	&__eCartPrice {
+		display: block;
+		padding-top: 2px;
+		font-weight: bold;
+	}
+}
