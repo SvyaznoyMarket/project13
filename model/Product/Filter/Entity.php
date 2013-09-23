@@ -21,7 +21,7 @@ class Entity {
     /** @var string */
     private $unit;
     /** @var bool */
-    private $isMultiple;
+    private $isMultiple = true;
     /** @var bool */
     private $isSlider;
     /** @var float */
