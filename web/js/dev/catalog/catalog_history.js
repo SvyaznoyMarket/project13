@@ -65,25 +65,14 @@
 			return;
 		}
 	};
-		/**
-		 * Обработка нажатий на ссылки завязанные на живую подгрузку данных
-		 */
-	var jsHistoryLinkHandler = function jsHistoryLinkHandler() {
-			var self = $(this),
-				url = self.attr('href');
-			// end of vars
-			
-			catalog.history.gotoUrl(url);
 
-			return false;
-		},
 
 		/**
 		 * Запросить новые данные с сервера по url
 		 * 
 		 * @param	{String}	url
 		 */
-		getDataFromServer = function getDataFromServer( url, callback ) {
+	var getDataFromServer = function getDataFromServer( url, callback ) {
 			console.info('getDataFromServer ' + url);
 
 			catalog.loader.loading();
@@ -159,6 +148,5 @@
 	// end of functions
 
 	History.Adapter.bind(window, 'statechange', stateChangeHandler);
-	$('body').on('click', '.jsHistoryLink', jsHistoryLinkHandler);
 	
 }(window.ENTER));	

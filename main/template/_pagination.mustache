@@ -4,7 +4,7 @@
     {{#pages}}
         {{#name}}
         <li class="bSortingList__eItem mSortItem{{#active}} mActive{{/active}}">
-            <a class="bSortingList__eLink jsHistoryLink" href="{{url}}">{{name}}</a>
+            <a class="bSortingList__eLink jsPagination" href="{{url}}">{{name}}</a>
         </li>
         {{/name}}
 
@@ -13,5 +13,5 @@
         {{/name}}
     {{/pages}}
 
-    <li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink mMore mInfinity" href="#">&#8734;</a></li>
+    <li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink mMore jsInfinity" href="#">&#8734;</a></li>
 </ul>

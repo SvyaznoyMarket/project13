@@ -44,6 +44,6 @@
 		catalog.infScroll.enable();
 	}
 
-	viewParamPanel.on('click', '.mInfinity', infBtnHandler);
+	viewParamPanel.on('click', '.jsInfinity', infBtnHandler);
 
 }(window.ENTER));
