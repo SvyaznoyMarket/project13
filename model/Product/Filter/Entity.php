@@ -21,7 +21,7 @@ class Entity {
     /** @var string */
     private $unit;
     /** @var bool */
-    private $isMultiple = true;
+    private $isMultiple;
     /** @var bool */
     private $isSlider;
     /** @var float */
@@ -98,7 +98,9 @@ class Entity {
      * @return bool
      */
     public function getIsMultiple() {
-        return $this->isMultiple;
+        // TODO: осторожно, костыль
+        return (self::TYPE_LIST == $this->typeId) && !in_array($this->id, ['shop']);
+        //return $this->isMultiple;
     }
 
     /**
