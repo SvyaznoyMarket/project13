@@ -45,13 +45,17 @@ class BasicRecommendedAction {
 
             \App::logger()->info(sprintf('abTest.key=%s, response.cookie.switch=%s', $key, $request->cookies->get('switch')));
 
-            if ('retailrocket' == $key) {
+            /*if ('retailrocket' == $key) {
                 $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);
             } elseif ('hybrid' == $key) {
                 $products = $this->getProductsHybrid($product, $request, $this->retailrocketMethodName);
             } else {
                 $products = $this->getProductsFromSmartengine($product, $request, $this->smartengineMethodName);
-            }
+            }*/
+            /*
+             * UPD: Отключаем Smartengine СОВСЕМ
+            */
+            $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName); // UPD
 
             if ( !is_array($products) ) {
                 throw new \Exception(sprintf('Not found products data in response. ActionType: %s', $this->actionType));
@@ -143,6 +147,8 @@ class BasicRecommendedAction {
     {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        //print '** This is Smartengine Method. Should be disabled **'; // tmp, for debug
+
         $client = \App::smartengineClient();
         $user = \App::user()->getEntity();
 
@@ -195,6 +201,8 @@ class BasicRecommendedAction {
      */
     protected function getProductsFromRetailrocket( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
         \App::logger()->debug('Exec ' . __METHOD__);
+
+        //print '** This is Smartengine Method. Should be ENABLED **'; // tmp, form debug
 
         $client = \App::retailrocketClient();
 
