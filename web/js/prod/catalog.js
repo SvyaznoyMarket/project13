@@ -324,11 +324,7 @@
 		filterMenuItem = filterBlock.find('.bFilterParams__eItem'),
 		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem'),
 
-		viewParamPanel = $('.bSortingLine'),
-
-		sortingItemsBtns = viewParamPanel.find('.mSorting .mSortItem'),
-		changeViewItemsBtns = viewParamPanel.find('.mViewer .mSortItem'),
-		changePaginationBtns = viewParamPanel.find('.mViewer .mPager');
+		viewParamPanel = $('.bSortingLine');
 	// end of vars
 	
 	catalog.filter = {
@@ -345,6 +341,8 @@
 		 * @return	{String}	Текущий режим просмотра
 		 */
 		getViewType: function() {
+			var changeViewItemsBtns = viewParamPanel.find('.mViewer .mSortItem');
+
 			return changeViewItemsBtns.filter('.mActive').data('type');
 		},
 
@@ -715,6 +713,7 @@
 				url = self.attr('href'),
 				activeClass = 'mActive',
 				parentItem = self.parent(),
+				changeViewItemsBtns = viewParamPanel.find('.mViewer .mSortItem'),
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
 			
@@ -744,6 +743,7 @@
 				url = self.attr('href'),
 				activeClass = 'mActive',
 				parentItem = self.parent(),
+				sortingItemsBtns = viewParamPanel.find('.mSorting .mSortItem'),
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
 			
@@ -767,10 +767,10 @@
 	filterBlock.on('submit', catalog.filter.sendFilter);
 
 	// Sorting items
-	sortingItemsBtns.on('click', '.bSortingList__eLink', sortingItemsHandler);
+	viewParamPanel.on('click', '.jsSorting', sortingItemsHandler);
 
 	// Change view mode
-	changeViewItemsBtns.on('click', '.bSortingList__eLink', changeViewItemsHandler);
+	viewParamPanel.on('click', '.jsChangeView', changeViewItemsHandler);
 
 	// Pagination
 	viewParamPanel.on('click', '.jsPagination', jsPaginationLinkHandler);

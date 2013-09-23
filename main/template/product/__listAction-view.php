@@ -18,10 +18,10 @@ return function(
         <li class="bSortingList__eItem mTitle">Вид</li>
 
         <li class="bSortingList__eItem mSortItem<? if ('compact' == $view): ?> mActive<? endif ?>" data-type="compact">
-            <a title="Компактный режим просмотра" class="bSortingList__eLink mTable" href="<?= $helper->replacedUrl(['view' => 'compact'], $excluded) ?>"><span class="bIco mIcoTable"></span></a>
+            <a title="Компактный режим просмотра" class="bSortingList__eLink mTable jsChangeView" href="<?= $helper->replacedUrl(['view' => 'compact'], $excluded) ?>"><span class="bIco mIcoTable"></span></a>
         </li>
         <li class="bSortingList__eItem mSortItem<? if ('expanded' == $view): ?> mActive<? endif ?>" data-type="expanded">
-            <a title="Расширенный режим просмотра" class="bSortingList__eLink mLine" href="<?= $helper->replacedUrl(['view' => 'expanded'], $excluded) ?>"><span class="bIco mIcoLine"></span></a>
+            <a title="Расширенный режим просмотра" class="bSortingList__eLink mLine jsChangeView" href="<?= $helper->replacedUrl(['view' => 'expanded'], $excluded) ?>"><span class="bIco mIcoLine"></span></a>
         </li>
     </ul>
     <!-- /Выбор варианта отображения списка товаров на странице -->
