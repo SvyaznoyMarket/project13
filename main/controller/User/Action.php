@@ -12,7 +12,7 @@ class Action {
     private function checkRedirect(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $this->redirect = \App::router()->generate('user');
+        $this->redirect = \App::router()->generate('user'); // default redirect to the /private page (Личный кабинет)
         $redirectTo = $request->get('redirect_to');
         if ($redirectTo) {
             $this->redirect = $redirectTo;
@@ -100,10 +100,10 @@ class Action {
                                     'last_name'    => $userEntity->getLastName(),
                                     'mobile_phone' => $userEntity->getMobilePhone(),
                                 ],
-                                'link' => $redirect,
+                                'link' => $this->redirect,
                             ],
                         ])
-                        : new \Http\RedirectResponse($redirect);
+                        : new \Http\RedirectResponse($this->redirect);
 
                     \App::user()->signIn($userEntity, $response);
 
@@ -182,15 +182,8 @@ class Action {
     public function register(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::user()->getEntity()) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(['success' => true])
-                : new \Http\RedirectResponse(\App::router()->generate('user'));
-        }
-
-        $redirect = $request->get('redirect_to')
-            ? $request->get('redirect_to')
-            : \App::router()->generate('user');
+        $checkRedirect = $this->checkRedirect($request);
+        if ($checkRedirect) return $checkRedirect;
 
         $form = new \View\User\RegistrationForm();
         if ($request->isMethod('post')) {
@@ -244,9 +237,9 @@ class Action {
                                     'request' => \App::request(),
                                 ]),
                             ],
-                            'link' => $redirect,
+                            'link' => $this->redirect,
                         ])
-                        : new \Http\RedirectResponse(\App::router()->generate('user'));
+                        : new \Http\RedirectResponse($this->redirect);
 
                     \App::user()->signIn($user, $response);
 
