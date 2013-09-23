@@ -98,7 +98,9 @@ class Entity {
      * @return bool
      */
     public function getIsMultiple() {
-        return $this->isMultiple;
+        // TODO: осторожно, костыль
+        return (self::TYPE_LIST == $this->typeId) && !in_array($this->id, ['shop']);
+        //return $this->isMultiple;
     }
 
     /**

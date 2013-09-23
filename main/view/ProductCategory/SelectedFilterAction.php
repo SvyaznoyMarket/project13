@@ -84,7 +84,10 @@ class SelectedFilterAction {
                         if (!in_array($option->getId(), $value)) continue;
                         $links[] = [
                             'name' => $option->getName(),
-                            'url'  => $helper->replacedUrl(['f-' . $filter->getId() . '-' . \Util\String::slugify($option->getName()) => null, 'ajax' => null]),
+                            'url'  => $helper->replacedUrl([
+                                ('shop' === $filter->getId()) ? 'shop' : ('f-' . $filter->getId() . ($filter->getIsMultiple() ? ('-' . \Util\String::slugify($option->getName())) : '')) => null,
+                                'ajax' => null
+                            ]),
                         ];
                     }
                     break;
