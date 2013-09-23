@@ -15,6 +15,7 @@ return function(
             <?= $helper->render('product/__list-view', ['productSorting' => $productSorting]) // режим просмотра ?>
         <? endif ?>
 
+        <? if (false): ?>
         <!-- Выбор вывода товаров на странице страницами/простыней -->
         <ul class="bSortingList mPager">
             <li class="bSortingList__eItem mTitle">Страницы</li>
@@ -23,6 +24,10 @@ return function(
             <li class="bSortingList__eItem mSortItem"><a class="bSortingList__eLink" href="">&#8734;</a></li>
         </ul>
         <!-- /Выбор вывода товаров на странице страницами/простыней -->
+        <? endif ?>
+
+        <?= $helper->render('product/__pagination', ['pager' => $pager]) // листалка ?>
+
     </div>
     <!-- /Сортировка товаров на странице -->
 
