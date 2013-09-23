@@ -12880,3 +12880,140 @@
   }
 }
 /*---END---СТИЛИ КАТАЛОГА---*/
+/*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
+@media all {
+  .bFixedTopBar {
+    -webkit-box-shadow: 0 0 22px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 22px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 22px rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    z-index: 999;
+    display: none;
+    margin-left: -480px;
+    width: 960px;
+    height: 50px;
+    background: #ffffff;
+  }
+  .bFixedTopBar__eTop {
+    float: left;
+    padding: 8px 10px 0;
+    height: 42px;
+    background: #e0e0e0;
+  }
+  .bFixedTopBar__eTopLink {
+    background: #040404;
+    /* Old browsers */
+  
+    background: -moz-linear-gradient(top, #505050 0%, #040404 100%);
+    /* FF3.6+ */
+  
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #505050), color-stop(100%, #040404));
+    /* Chrome,Safari4+ */
+  
+    background: -webkit-linear-gradient(top, #505050 0%, #040404 100%);
+    /* Chrome10+,Safari5.1+ */
+  
+    background: -o-linear-gradient(top, #505050 0%, #040404 100%);
+    /* Opera 11.10+ */
+  
+    background: -ms-linear-gradient(top, #505050 0%, #040404 100%);
+    /* IE10+ */
+  
+    background: linear-gradient(to bottom, #505050 0%, #040404 100%);
+    /* W3C */
+  
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#505050', endColorstr='#040404', GradientType=0);
+    /* IE6-9 */
+  
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    padding-left: 15px;
+    width: 190px;
+    border: 1px solid #a1a1a1;
+    color: #ffffff;
+    vertical-align: top;
+    font: bold 12px/30px Tahoma;
+    zoom: 1;
+    *display: inline;
+  }
+  .bFixedTopBar__eTopLink:hover {
+    background: #000000;
+    color: #ffffff;
+    text-decoration: none;
+  }
+  .bFixedTopBar__eCrumbs {
+    float: left;
+    padding: 0 5px;
+  }
+  .bFixedTopBar__eCrumbsCatImg {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .bFixedTopBar__eCrumbsCatImg .bCatImg {
+    margin-right: 5px;
+    width: 50px;
+    height: 50px;
+  }
+  .bFixedTopBar__eCrumbsList {
+    display: inline-block;
+    margin: 8px 0 0;
+    vertical-align: top;
+  }
+  .bFixedTopBar__eCrumbsListItem {
+    display: inline-block;
+    margin: 0 0 2px;
+    padding-right: 10px;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCMjhGREUyOEZEQUMxMUUyOTI4QjkyMzRGMEUwRjlGQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozNjE4NUIwNjAwRDQxMUUzOTI4QjkyMzRGMEUwRjlGQyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkIyOEZERTI2RkRBQzExRTI5MjhCOTIzNEYwRTBGOUZDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkIyOEZERTI3RkRBQzExRTI5MjhCOTIzNEYwRTBGOUZDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+DzYFVQAAAGlJREFUeNpimDRp0u/fv//DAIONjY2bm9vHjx+h/JcvX1pYWGhraz948ADEB+Lv378HBweLi4sD5ZgYGEBKbt68qaSkxMXFxXDy5EmgTHh4OFAVSL2+vn5VVdW/f/+g5u3fv/8/EgAIMACh4VPB4p8Q3wAAAABJRU5ErkJggg==);
+    background-position: 100% 4px;
+    background-repeat: no-repeat;
+    vertical-align: top;
+  }
+  .bFixedTopBar__eCrumbsListItem.mLast {
+    display: block;
+    background: none;
+  }
+  .bFixedTopBar__eCart {
+    float: right;
+    padding: 5px 0 0 10px;
+    width: 100px;
+    height: 45px;
+    background: #fff5e0;
+  }
+  .bFixedTopBar__eCartLink {
+    display: block;
+  }
+  .bFixedTopBar__eCartLink:hover {
+    text-decoration: none;
+  }
+  .bFixedTopBar__eCartTitle {
+    display: inline-block;
+    padding: 3px 2px 0 0;
+    text-decoration: underline;
+  }
+  .bFixedTopBar__eCartQuan {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: #f88a08;
+    color: #ffffff;
+    vertical-align: top;
+    text-align: center;
+    line-height: 20px;
+  }
+  .bFixedTopBar__eCartPrice {
+    display: block;
+    padding-top: 2px;
+    font-weight: bold;
+  }
+}
+/*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
