@@ -16,7 +16,7 @@ return function(
     ?>
         <div class="bFilterValuesCol">
             <input
-                class="bInputHidden bCustomInput"
+                class="bInputHidden bCustomInput jsCustomRadio"
                 type="checkbox"
                 id="<?= $viewId ?>"
                 name="f-<?= $filter->getId() ?>"

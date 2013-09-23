@@ -46,6 +46,10 @@ return function(
             <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
             <?= $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
+
+            <div class="bBtnPick clearfix">
+                <button type="submit" class="bBtnPick__eLink mBtnGrey">Подобрать</button>
+            </div>
         </div>
 
         <!-- Фильтр по выбранным параметрам -->
@@ -88,10 +92,6 @@ return function(
 
                     </div>
                 <? $i++; endforeach ?>
-
-                <div class="bBtnPick clearfix">
-                    <button type="submit" class="bBtnPick__eLink mBtnGrey">Подобрать</button>
-                </div>
             </div>
             <!-- /Список значений параметров -->
         </div>
