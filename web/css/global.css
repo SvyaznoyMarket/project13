@@ -12579,14 +12579,13 @@
     filter: alpha(opacity=0);
     overflow: hidden;
     zoom: 1;
-    float: left;
-    display: inline;
     height: 0;
+    float: left;
     width: 0;
     line-height: 0;
     font-size: 0;
     padding: 0;
-    visibility: hidden;
+    margin-top: 0;
   }
   .bFilterValues .bFilterCheckbox {
     -webkit-border-radius: 4px;
