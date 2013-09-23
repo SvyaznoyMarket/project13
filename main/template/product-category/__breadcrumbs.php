@@ -3,14 +3,22 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Category\Entity $category
-) { ?>
-    <!-- Хлебные крохи -->
-    <ul class="bBreadcrumbs clearfix">
-    <? $i = 1; $count = count($category->getAncestor()); foreach ($category->getAncestor() as $ancestor): ?>
-        <li class="bBreadcrumbs__eItem<? if ($i == $count): ?> mLast<? endif ?>">
-            <a class="bBreadcrumbs__eLink" href="<?= $ancestor->getLink() ?>"><?= $ancestor->getName() ?></a>
-        </li>
-    <? $i++; endforeach ?>
-    </ul>
-    <!-- /Хлебные крохи -->
+) {
+
+    $links = [];
+    $count = count($category->getAncestor());
+    $i = 1;
+    foreach ($category->getAncestor() as $ancestor) {
+        $links[] = [
+            'url'  => $ancestor->getLink(),
+            'name' => $ancestor->getName(),
+            'last' => $i == $count,
+        ];
+
+        $i++;
+    }
+?>
+
+    <?= $helper->renderWithMustache('_breadcrumbs', ['links' => $links]) ?>
+
 <? };

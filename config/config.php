@@ -238,7 +238,7 @@ $c->productCategory['url'] = [
     0 => '/6/1/163/',
 ];
 $c->productCategory['jewelController'] = true;
-$c->productCategory['newShow'] = true;
+$c->product['newList'] = true;
 
 $c->service['url'] = [
     0 => '/11/1/160/',

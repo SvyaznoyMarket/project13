@@ -12,10 +12,8 @@
 ?>
 
 <?
-$helper = new \Helper\TemplateHelper();
-
-$count = 0;
-if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
+    $helper = new \Helper\TemplateHelper();
+    if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
 ?>
 
 <div class="bCatalog">
