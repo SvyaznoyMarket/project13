@@ -249,6 +249,7 @@ class AppConfig {
         'reviewEnabled'          => null, // отзывы о товаре
         'lowerPriceNotification' => null,
         'furnitureConstructor'   => null, // конструктор шкафов-купе
+        'newList'                => null, // новый дизайн листингов
     ];
     /** @var array */
     public $productPhoto = [
@@ -266,7 +267,6 @@ class AppConfig {
     public $productCategory = [
         'url'             => [],
         'jewelController' => null,
-        'newShow'         => null,
     ];
     /** @var array */
     public $service = [
