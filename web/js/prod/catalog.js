@@ -351,8 +351,8 @@
 
 		render: {
 
-			products: function( data ) {
-				console.info('render products');
+			list: function( data ) {
+				console.info('render list');
 				console.log(( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default');
 
 				var templateType = ( typeof catalog.filter.getViewType() !== 'undefined' ) ? catalog.filter.getViewType() : 'default',
@@ -371,12 +371,11 @@
 				catalog.listingWrap.empty();
 				catalog.listingWrap.html(html);
 
-				console.log('end of render products');
+				console.log('end of render list');
 			},
 
-			filters: function( data ) {
-				console.info('render filter');
-				console.log(data);
+			selectedFilter: function( data ) {
+				console.info('render selectedFilter');
 
 				var template = $('#tplSelectedFilter'),
 					filterTemplate = template.html(),
@@ -390,11 +389,29 @@
 				filterFooterWrap.empty();
 				filterFooterWrap.html(html);
 
-				console.log('end of render filter');
+				console.log('end of render selectedFilter');
 			},
 
-			pages: function( data ) {
-				console.info('render pages');
+			sorting: function( data ) {
+				console.info('render sorting');
+
+				var template = $('#tplSorting'),
+					sortingTemplate = template.html(),
+					sortingWrap = viewParamPanel.find('.bSortingList.mSorting'),
+					partials = template.data('partial'),
+					html;
+				// end of vars
+				
+				html = Mustache.render(sortingTemplate, data, partials);
+
+				sortingWrap.empty();
+				sortingWrap.html(html);
+
+				console.log('end of render sorting');
+			},
+
+			pagination: function( data ) {
+				console.info('render pagination');
 
 				var template = $('#tplPagination'),
 					paginationTemplate = template.html(),
@@ -425,7 +442,7 @@
 
 			for ( key in dataToRender ) {
 				if ( catalog.filter.render.hasOwnProperty(key) ) {
-					catalog.filter.render[key]( dataToRender );
+					catalog.filter.render[key]( dataToRender[key] );
 				}
 			}
 
