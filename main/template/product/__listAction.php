@@ -3,13 +3,12 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Sorting $productSorting,
-    \Iterator\EntityPager $pager,
-    \Model\Product\Category\Entity $category
+    \Iterator\EntityPager $pager
 ) { ?>
 
     <!-- Сортировка товаров на странице -->
     <div class="bSortingLine clearfix">
-        <?= $helper->render('product/__list-sorting', ['productSorting' => $productSorting, 'category' => $category]) // сортировка ?>
+        <?= $helper->render('product/__list-sorting', ['productSorting' => $productSorting]) // сортировка ?>
 
         <? if (false): ?>
             <?= $helper->render('product/__list-view', ['productSorting' => $productSorting]) // режим просмотра ?>
