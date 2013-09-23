@@ -1,6 +1,5 @@
 <?php
 /**
-/**
  * @var $page                   \View\ProductCategory\LeafPage
  * @var $category               \Model\Product\Category\Entity
  * @var $productFilter          \Model\Product\Filter

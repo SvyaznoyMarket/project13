@@ -8,10 +8,10 @@ return function(
 
     <!-- Сортировка товаров на странице -->
     <div class="bSortingLine clearfix">
-        <?= $helper->render('product/__list-sorting', ['productSorting' => $productSorting]) // сортировка ?>
+        <?= $helper->render('product/__listAction-sorting', ['productSorting' => $productSorting]) // сортировка ?>
 
         <? if (false): ?>
-            <?= $helper->render('product/__list-view', ['productSorting' => $productSorting]) // режим просмотра ?>
+            <?= $helper->render('product/__listAction-view', ['productSorting' => $productSorting]) // режим просмотра ?>
         <? endif ?>
 
         <? if (false): ?>
