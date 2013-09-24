@@ -10,7 +10,7 @@ return function(
     $productVideo = reset($productVideos);
 
     // TODO: SITE-1822
-    $useLens = true;
+    //$useLens = true;
 
     /** @var string $model3dExternalUrl */
     $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
@@ -100,11 +100,12 @@ return function(
     <? endif ?>
 
     <div class="bProductDescImgBig">
-        <img class="bProductDescImgBig__eImg<?= $useLens ? ' bZoomedImg' : '' ?>"
+        <img class="bProductDescImgBig__eImg bZoomedImg"
              src="<?= $product->getImageUrl(3) ?>"
              <? if ($useLens): ?>
                 data-zoom-image="<?= $product->getImageUrl(5) ?>"
              <? endif ?>
+             data-zoom-disable="<?= $useLens ? false : true ?>"
              alt="<?= $helper->escape($product->getName()) ?>"
         />
     </div><!--/product big image section -->
