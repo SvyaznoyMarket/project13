@@ -413,7 +413,7 @@
 
 				var template = $('#tplPagination'),
 					paginationTemplate = template.html(),
-					paginationWrap = $('.bSortingLine.mPagerBottom'),
+					paginationWrap = $('.bSortingList.mPager'),
 					partials = template.data('partial'),
 					html;
 				// end of vars
