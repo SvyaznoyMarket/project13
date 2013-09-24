@@ -12810,13 +12810,6 @@
     float: left;
     margin: 4px 5px 0 0;
   }
-  .bSortingLine.mPagerBottom .bSortingList .bSortingList__eLink {
-    padding: 0 6px;
-  }
-  .bSortingLine.mPagerBottom .bSortingList .bSortingList__eLink.mMore {
-    width: 30px;
-    padding: 0 5px;
-  }
   .bSortingList {
     float: left;
   }
@@ -12877,6 +12870,7 @@
   }
   .bSortingList.mPager .bSortingList__eLink {
     width: 30px;
+    padding: 0;
   }
   .bSortingList.mViewer {
     margin: 0 0 0 145px;

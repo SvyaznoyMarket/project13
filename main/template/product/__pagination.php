@@ -5,7 +5,7 @@ return function(
     \Iterator\EntityPager $pager
 ) { ?>
 
-	<div class="bSortingLine mPagerBottom clearfix">
+	<div class="bSortingList mPager">
 	    <?= $helper->renderWithMustache('_pagination', (new \View\PaginationAction())->execute(
 	        $helper,
 	        $pager

@@ -39,6 +39,7 @@
         'productVideosByProduct' => $productVideosByProduct,
     ]) // листинг ?>
 
-    <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
-
+    <div class="bSortingLine mPagerBottom clearfix">
+        <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+    </div>
 </div>
