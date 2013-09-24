@@ -12387,7 +12387,7 @@
     border-radius: 4px;
     float: left;
     width: 298px;
-    height: 48px;
+    height: 106px;
     margin: 0 20px 20px 0;
     border: 1px solid #e6e6e6;
     background: #f6f6f6;
@@ -12397,7 +12397,7 @@
   }
   .bCatalogList__eLink {
     display: block;
-    height: 48px;
+    height: 106px;
     font-size: 14px;
   }
   .bCatalogList__eLink:hover {
@@ -12409,23 +12409,28 @@
   .bCatalogList .bCategoriesImg {
     display: inline-block;
     float: left;
-    width: 48px;
-    height: 48px;
-    margin: 0 5px 0 0;
+    width: 106px;
+    height: 106px;
+    margin: 0 10px 0 0;
     text-align: center;
     background: #ffffff;
     *display: inline;
     zoom: 1;
+    -webkit-border-radius: 4px 0 0 4px;
+    -moz-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+    overflow: hidden;
   }
   .bCatalogList .bCategoriesImg__eImg {
-    width: 42px;
-    max-height: 42px;
+    width: 96px;
+    max-height: 96px;
+    margin-top: 5px;
   }
   .bCatalogList .bCategoriesName {
     display: table-cell;
     zoom: 1;
     width: 242px;
-    height: 48px;
+    height: 106px;
     vertical-align: middle;
     *display: inline;
     zoom: 1;
