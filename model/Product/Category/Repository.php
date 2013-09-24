@@ -69,6 +69,24 @@ class Repository {
     }
 
     /**
+     * @param string               $ui
+     * @param \Model\Region\Entity $region
+     * @param                      $callback
+     */
+    public function prepareEntityByUi($ui, \Model\Region\Entity $region = null, $callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $params = [
+            'ui' => [$ui],
+        ];
+        if ($region instanceof \Model\Region\Entity) {
+            $params['geo_id'] = $region->getId();
+        }
+
+        $this->client->addQuery('category/get', $params, [], $callback);
+    }
+
+    /**
      * @param int $id
      * @return Entity|null
      */

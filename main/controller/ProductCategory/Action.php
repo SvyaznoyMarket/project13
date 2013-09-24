@@ -211,10 +211,38 @@ class Action {
 
         // TODO: запрашиваем меню
 
-        // запрашиваем категорию по токену
+        $shopScriptSeo = [];
+        if(\App::config()->shopScript['enabled']) {
+            $shopScript = \App::shopScriptClient();
+            $shopScript->addQuery('category/get-seo', [
+                'slug' => $categoryToken,
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ], [], function ($data) use (&$shopScriptSeo) {
+                if($data && is_array($data)) $shopScriptSeo = reset($data);
+            });
+            $shopScript->execute();
+
+            // если shopscript вернул редирект
+            if(!empty($shopScriptSeo['redirect']['link'])) {
+                $redirect = $shopScriptSeo['redirect']['link'];
+                if(!preg_match('/^http/', $redirect)) {
+                    $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
+                        \App::config()->mainHost .
+                        (preg_match('/^\//', $redirect) ? '' : '/') .
+                        $redirect;
+                }
+                return new \Http\RedirectResponse($redirect);
+            }
+        }
+
+        if (empty($shopScriptSeo['ui'])) {
+            throw new \Exception\NotFoundException(sprintf('ui для категории товара @%s не найден', $categoryToken));
+        }
+
+        // запрашиваем категорию по ui
         /** @var $category \Model\Product\Category\Entity */
         $category = null;
-        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+        \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
             $data = reset($data);
             if ((bool)$data) {
                 $category = new \Model\Product\Category\Entity($data);
@@ -235,30 +263,6 @@ class Action {
 
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
-
-        $shopScriptSeo = [];
-        if(\App::config()->shopScript['enabled']) {
-            $shopScript = \App::shopScriptClient();
-            $shopScript->addQuery('category/get-seo', [
-                    'slug' => $categoryToken,
-                    'geo_id' => \App::user()->getRegion()->getId(),
-                ], [], function ($data) use (&$shopScriptSeo) {
-                if($data && is_array($data)) $shopScriptSeo = reset($data);
-            });
-            $shopScript->execute();
-
-            // если shopscript вернул редирект
-            if(!empty($shopScriptSeo['redirect']['link'])) {
-                $redirect = $shopScriptSeo['redirect']['link'];
-                if(!preg_match('/^http/', $redirect)) {
-                    $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
-                                \App::config()->mainHost .
-                                (preg_match('/^\//', $redirect) ? '' : '/') .
-                                $redirect;
-                }
-                return new \Http\RedirectResponse($redirect);
-            }
-        }
 
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
