@@ -13,14 +13,13 @@ return function(
     <?
         $optionId = $option->getId();
         $viewId = \View\Id::productCategoryFilter($filter->getId()) . '-option-' . $optionId;
-        $name = ('shop' === $filter->getId()) ? 'shop' : ('f-' . $filter->getId() . ($filter->getIsMultiple() ? ('-' . \Util\String::slugify($option->getName())) : ''));
     ?>
     <div class="bFilterValuesCol">
         <input
             class="bInputHidden bCustomInput jsCustomRadio"
             type="<?= $filter->getIsMultiple() ? 'checkbox' : 'radio' ?>"
             id="<?= $viewId ?>"
-            name="<?= $name ?>"
+            name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"
             value="<?= $optionId ?>"
             hidden
             <? if (in_array($optionId, $values)) { ?> checked="checked"<? } ?>

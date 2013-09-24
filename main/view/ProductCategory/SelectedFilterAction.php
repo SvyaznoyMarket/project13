@@ -58,13 +58,19 @@ class SelectedFilterAction {
                     if (isset($value['from']) && !($isEqualNumeric($value['from'], $filter->getMin()))) {
                         $links[] = [
                             'name' => $isPrice ? sprintf('от %sр', $helper->formatPrice($value['from'])) : sprintf('от %s', round($value['from'], 1)),
-                            'url'  => $helper->replacedUrl(['f-' . $filter->getId() . '-from' => null, 'ajax' => null]),
+                            'url'  => $helper->replacedUrl([
+                                \View\Name::productCategoryFilter($filter, 'from') => null,
+                                'ajax'                                             => null
+                            ]),
                         ];
                     }
                     if (isset($value['to']) && !($isEqualNumeric($value['to'], $filter->getMax()))) {
                         $links[] = [
                             'name' => $isPrice ? sprintf('до %sр', $helper->formatPrice($value['to'])) : sprintf('до %s', round($value['to'], 1)),
-                            'url'  => $helper->replacedUrl(['f-' . $filter->getId() . '-to' => null, 'ajax' => null]),
+                            'url'  => $helper->replacedUrl([
+                                \View\Name::productCategoryFilter($filter, 'to') => null,
+                                'ajax'                                           => null
+                            ]),
                         ];
                     }
 
@@ -74,7 +80,10 @@ class SelectedFilterAction {
                     foreach ($value as $v) {
                         $links[] = [
                             'name' => ($v == 1) ? 'да' : 'нет',
-                            'url'  => $helper->replacedUrl(['f- ' . $filter->getId() => null, 'ajax' => null]),
+                            'url'  => $helper->replacedUrl([
+                                \View\Name::productCategoryFilter($filter) => null,
+                                'ajax'                                     => null
+                            ]),
                         ];
                     }
                     break;
@@ -85,8 +94,8 @@ class SelectedFilterAction {
                         $links[] = [
                             'name' => $option->getName(),
                             'url'  => $helper->replacedUrl([
-                                ('shop' === $filter->getId()) ? 'shop' : ('f-' . $filter->getId() . ($filter->getIsMultiple() ? ('-' . \Util\String::slugify($option->getName())) : '')) => null,
-                                'ajax' => null
+                                \View\Name::productCategoryFilter($filter, $option) => null,
+                                'ajax'                                              => null
                             ]),
                         ];
                     }
