@@ -668,6 +668,7 @@
     border: 1px solid #c9c9c9;
     height: 22px;
     padding: 0px 5px;
+    line-height: 22px;
   }
   .text:hover {
     border-color: #ffd073;
