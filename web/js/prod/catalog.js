@@ -32,275 +32,6 @@
  
  
 /**
- * Работа с HISTORY API
- *
- * @requires	jQuery, History.js, ENTER.utils, ENTER.config, ENTER.catalog
- *
- * @author		Zaytsev Alexandr
- *
- * @param		{Object}	global	Enter namespace
- */
-;(function( ENTER ) {
-	var pageConfig = ENTER.config.pageConfig,
-		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog');
-	// end of vars
-
-	console.info('New catalog history module');
-
-	catalog.history = {
-
-		/**
-		 * Кастомная функция обратного вызова после получения данных с сервера
-		 * 
-		 * @type	{Function}
-		 */
-		_customCallback: null,
-
-		/**
-		 * Обработка перехода на URL
-		 * Если браузер не поддерживает History API происходит обычный переход по ссылке
-		 * 
-		 * @param	{String}	url			Адрес на который необходимо выполнить переход
-		 * @param	{Function}	callback	Функция которая будет вызвана после получения данных от сервера
-		 * @param	{Boolean}	onlychange	Показывает что необходимо только изменить URL и не запрашивать данные
-		 */
-		gotoUrl: function gotoUrl( url, customCallback, onlychange ) {
-			console.info('gotoUrl');
-			var state = {
-					title: document.title,
-					url: url,
-					data: {
-						_onlychange: (onlychange) ? true : false
-					}
-				};
-			// end of vars
-
-			if ( !catalog.enableHistoryAPI ) {
-				document.location.href = url;
-
-				return;
-			}
-
-			catalog.history._customCallback = (customCallback) ? customCallback : null;
-
-			console.info('link handler. push state new url: ' + state.url);
-			History.pushState(state, state.title, state.url);
-
-			return;
-		},
-
-		updateUrl: function updateUrl( url, customCallback ) {
-			var callback = (customCallback) ? customCallback : null;
-
-			catalog.history.gotoUrl( url, callback, true );
-
-			return;
-		}
-	};
-
-
-		/**
-		 * Запросить новые данные с сервера по url
-		 * 
-		 * @param	{String}	url
-		 */
-	var getDataFromServer = function getDataFromServer( url, callback ) {
-			console.info('getDataFromServer ' + url);
-
-			catalog.loader.loading();
-
-			// utils.blockScreen.block('Загрузка товаров');
-
-				/**
-				 * Обработка ошибки загрузки данных
-				 */
-			var errorHandler = function errorHandler() {
-					// utils.blockScreen.unblock();
-					catalog.loader.complete();
-				},
-
-				/**
-				 * Получение данных от сервера
-				 * Перенаправление данных в функцию обратного вызова
-				 * 
-				 * @param	{Object}	res	Полученные данные
-				 */
-				resHandler = function resHandler( res ) {
-					console.info('resHandler');
-
-					if ( typeof res === 'object') {
-						callback(res);
-					}
-					else {
-						console.warn('res isn\'t object');
-						console.log(typeof res);
-					}
-
-					// utils.blockScreen.unblock();
-					catalog.loader.complete();
-				};
-			// end of functions
-
-			$.ajax({
-				type: 'GET',
-				url: url,
-				success: resHandler,
-				statusCode: {
-					500: errorHandler,
-					503: errorHandler
-				}
-			});
-		},
-
-		/**
-		 * Обработчик изменения состояния истории в браузере
-		 */
-		stateChangeHandler = function stateChangeHandler() {
-			var state = History.getState(),
-				url = state.url,
-				data = state.data.data,
-				callback = ( typeof catalog.history._customCallback === 'function' ) ? catalog.history._customCallback : catalog.history._defaultCallback;
-			// end of vars
-			
-			console.info('statechange');
-			console.log(state);
-
-			if ( data._onlychange ) {
-				console.info('only update url ' + url);
-
-				callback();
-			}
-			else {
-				url = url.addParameterToUrl('ajax', 'true');
-				getDataFromServer(url, callback);
-			}
-
-			catalog.history._customCallback = null;
-		};
-	// end of functions
-
-	History.Adapter.bind(window, 'statechange', stateChangeHandler);
-	
-}(window.ENTER));	
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
-/**
- * Catalog infinity scroll
- *
- * @requires jQuery, Mustache, docCookies, ENTER.utils, ENTER.config, ENTER.catalog.history
- * 
- * @author	Zaytsev Alexandr
- *
- * @param	{Object}	ENTER	Enter namespace
- */
-;(function( ENTER ) {
-	console.info('Catalog init: catalog_infinityScroll.js');
-
-	var pageConfig = ENTER.config.pageConfig,
-		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog'),
-
-		viewParamPanel = $('.bSortingLine');
-	// end of vars
-
-	
-	catalog.infScroll = {
-		load: function() {
-
-		},
-
-		enable: function() {
-			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
-
-			console.info('infinity scroll enable');
-		},
-
-		disable: function() {
-			window.docCookies.setItem('infScroll', 0, 0, '/' );
-		}
-	};
-
-	var infBtnHandler = function infBtnHandler() {
-		catalog.infScroll.enable();
-
-		return false;
-	}
-
-	if ( window.docCookies.getItem( 'infScroll' ) === '1' ) {
-		catalog.infScroll.enable();
-	}
-
-	viewParamPanel.on('click', '.jsInfinity', infBtnHandler);
-
-}(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
-/**
- * Catalog loader
- *
- * @requires jQuery, Mustache, ENTER.utils, ENTER.config, ENTER.catalog.history
- * 
- * @author	Zaytsev Alexandr
- *
- * @param	{Object}	ENTER	Enter namespace
- */
-;(function( ENTER ) {
-	console.info('New catalog init: loader.js');
-
-	var pageConfig = ENTER.config.pageConfig,
-		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog');
-	// end of vars
-
-	console.info('Mustache is '+ typeof Mustache);
-	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
-
-	catalog.loader = {
-		_loader: null,
-		loading: function() {
-			if ( catalog.loader._loader ) {
-				return;
-			}
-
-			catalog.loader._loader = $('<li>').addClass('mLoader');
-
-			if ( catalog.liveScroll ) {
-				catalog.listingWrap.append(catalog.loader._loader);
-			}
-			else {
-				catalog.listingWrap.empty();
-				catalog.listingWrap.append(catalog.loader._loader);
-			}
-		},
-
-		complete: function() {
-			if ( catalog.loader._loader ) {
-				catalog.loader._loader.remove();
-				catalog.loader._loader = null;
-			}
-		}		
-	};
-
-}(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
-/**
  * Filters
  *
  * @requires jQuery, Mustache, ENTER.utils, ENTER.config, ENTER.catalog.history
@@ -346,6 +77,35 @@
 			return changeViewItemsBtns.filter('.mActive').data('type');
 		},
 
+		applyTemplate: {
+			list: function( html ) {
+				console.info('applyTemplate list');
+				catalog.listingWrap.empty();
+				catalog.listingWrap.html(html);
+			},
+
+			selectedFilter: function( html ) {
+				var filterFooterWrap = filterBlock.find('.bFilterFoot');
+
+				filterFooterWrap.empty();
+				filterFooterWrap.html(html);
+			},
+
+			sorting: function( html ) {
+				var sortingWrap = viewParamPanel.find('.bSortingList.mSorting');
+
+				sortingWrap.empty();
+				sortingWrap.html(html);
+			},
+
+			pagination: function( html ) {
+				var paginationWrap = $('.bSortingList.mPager');
+
+				paginationWrap.empty();
+				paginationWrap.html(html);
+			}
+		},
+
 
 		render: {
 
@@ -366,10 +126,9 @@
 
 				html = Mustache.render(listingTemplate, data, partials);
 
-				catalog.listingWrap.empty();
-				catalog.listingWrap.html(html);
-
 				console.log('end of render list');
+
+				return html;
 			},
 
 			selectedFilter: function( data ) {
@@ -377,17 +136,15 @@
 
 				var template = $('#tplSelectedFilter'),
 					filterTemplate = template.html(),
-					filterFooterWrap = filterBlock.find('.bFilterFoot'),
 					partials = template.data('partial'),
 					html;
 				// end of vars
 				
 				html = Mustache.render(filterTemplate, data, partials);
 
-				filterFooterWrap.empty();
-				filterFooterWrap.html(html);
-
 				console.log('end of render selectedFilter');
+
+				return html;
 			},
 
 			sorting: function( data ) {
@@ -395,17 +152,15 @@
 
 				var template = $('#tplSorting'),
 					sortingTemplate = template.html(),
-					sortingWrap = viewParamPanel.find('.bSortingList.mSorting'),
 					partials = template.data('partial'),
 					html;
 				// end of vars
 				
 				html = Mustache.render(sortingTemplate, data, partials);
 
-				sortingWrap.empty();
-				sortingWrap.html(html);
-
 				console.log('end of render sorting');
+
+				return html;
 			},
 
 			pagination: function( data ) {
@@ -413,17 +168,15 @@
 
 				var template = $('#tplPagination'),
 					paginationTemplate = template.html(),
-					paginationWrap = $('.bSortingList.mPager'),
 					partials = template.data('partial'),
 					html;
 				// end of vars
 				
 				html = Mustache.render(paginationTemplate, data, partials);
 
-				paginationWrap.empty();
-				paginationWrap.html(html);
-
 				console.log('end of render paginaton');
+
+				return html;
 			}
 		},
 
@@ -436,13 +189,18 @@
 			console.info('renderCatalogPage');
 			
 			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
-				key;
+				key,
+				template;
+			// end of vars
 
 			for ( key in dataToRender ) {
-				if ( catalog.filter.render.hasOwnProperty(key) ) {
-					catalog.filter.render[key]( dataToRender[key] );
+				if ( catalog.filter.render.hasOwnProperty(key) && catalog.filter.applyTemplate.hasOwnProperty(key) ) {
+					template = catalog.filter.render[key]( dataToRender[key] );
+					catalog.filter.applyTemplate[key](template);
 				}
 			}
+
+			catalog.infScroll.checkInfinity();
 
 			catalog.filter.lastRes = dataToRender;
 		},
@@ -554,14 +312,6 @@
 			console.info('update filter');
 		}
 	};
-
-
-	/**
-	 * Ссылка на функцию обратного вызова по-умолчанию после получения данных с сервера при изменении history state
-	 * 
-	 * @type	{Function}
-	 */
-	catalog.history._defaultCallback = catalog.filter.renderCatalogPage;
 
 
 		/**
@@ -780,5 +530,374 @@
 
 	// Init sliders
 	filterSliders.each(initSliderRange);
+
+}(window.ENTER));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Работа с HISTORY API
+ *
+ * @requires	jQuery, History.js, ENTER.utils, ENTER.config, ENTER.catalog
+ *
+ * @author		Zaytsev Alexandr
+ *
+ * @param		{Object}	global	Enter namespace
+ */
+;(function( ENTER ) {
+	var pageConfig = ENTER.config.pageConfig,
+		utils = ENTER.utils,
+		catalog = utils.extendApp('ENTER.catalog');
+	// end of vars
+
+	console.info('New catalog history module');
+
+	catalog.history = {
+		/**
+		 * Ссылка на функцию обратного вызова по-умолчанию после получения данных с сервера при изменении history state
+		 * 
+		 * @type	{Function}
+		 */
+		_defaultCallback: catalog.filter.renderCatalogPage,
+
+		/**
+		 * Кастомная функция обратного вызова после получения данных с сервера
+		 * 
+		 * @type	{Function}
+		 */
+		_customCallback: null,
+
+		/**
+		 * Обработка перехода на URL
+		 * Если браузер не поддерживает History API происходит обычный переход по ссылке
+		 * 
+		 * @param	{String}	url			Адрес на который необходимо выполнить переход
+		 * @param	{Function}	callback	Функция которая будет вызвана после получения данных от сервера
+		 * @param	{Boolean}	onlychange	Показывает что необходимо только изменить URL и не запрашивать данные
+		 */
+		gotoUrl: function gotoUrl( url, customCallback, onlychange ) {
+			console.info('gotoUrl');
+			var state = {
+					title: document.title,
+					url: url,
+					data: {
+						_onlychange: (onlychange) ? true : false
+					}
+				};
+			// end of vars
+
+			if ( !catalog.enableHistoryAPI ) {
+				document.location.href = url;
+
+				return;
+			}
+
+			catalog.history._customCallback = (customCallback) ? customCallback : null;
+
+			console.info('link handler. push state new url: ' + state.url);
+			History.pushState(state, state.title, state.url);
+
+			return;
+		},
+
+		updateUrl: function updateUrl( url, customCallback ) {
+			var callback = (customCallback) ? customCallback : null;
+
+			catalog.history.gotoUrl( url, callback, true );
+
+			return;
+		},
+
+		/**
+		 * Запросить новые данные с сервера по url
+		 * 
+		 * @param	{String}	url
+		 */
+		getDataFromServer: function getDataFromServer( url, callback ) {
+			console.info('getDataFromServer ' + url);
+
+			catalog.loader.loading();
+
+			// utils.blockScreen.block('Загрузка товаров');
+
+				/**
+				 * Обработка ошибки загрузки данных
+				 */
+			var errorHandler = function errorHandler() {
+					// utils.blockScreen.unblock();
+					catalog.loader.complete();
+				},
+
+				/**
+				 * Получение данных от сервера
+				 * Перенаправление данных в функцию обратного вызова
+				 * 
+				 * @param	{Object}	res	Полученные данные
+				 */
+				resHandler = function resHandler( res ) {
+					console.info('resHandler');
+
+					if ( typeof res === 'object') {
+						callback(res);
+					}
+					else {
+						console.warn('res isn\'t object');
+						console.log(typeof res);
+					}
+
+					// utils.blockScreen.unblock();
+					catalog.loader.complete();
+				};
+			// end of functions
+
+			$.ajax({
+				type: 'GET',
+				url: url,
+				success: resHandler,
+				statusCode: {
+					500: errorHandler,
+					503: errorHandler
+				}
+			});
+		}
+	};
+
+		/**
+		 * Обработчик изменения состояния истории в браузере
+		 */
+	var stateChangeHandler = function stateChangeHandler() {
+			var state = History.getState(),
+				url = state.url,
+				data = state.data.data,
+				callback = ( typeof catalog.history._customCallback === 'function' ) ? catalog.history._customCallback : catalog.history._defaultCallback;
+			// end of vars
+			
+			console.info('statechange');
+			console.log(state);
+
+			if ( data._onlychange ) {
+				console.info('only update url ' + url);
+
+				callback();
+			}
+			else {
+				url = url.addParameterToUrl('ajax', 'true');
+				catalog.history.getDataFromServer(url, callback);
+			}
+
+			catalog.history._customCallback = null;
+		};
+	// end of functions
+
+	History.Adapter.bind(window, 'statechange', stateChangeHandler);
+	
+}(window.ENTER));	
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Catalog infinity scroll
+ *
+ * @requires jQuery, Mustache, docCookies, ENTER.utils, ENTER.config, ENTER.catalog.history
+ * 
+ * @author	Zaytsev Alexandr
+ *
+ * @param	{Object}	ENTER	Enter namespace
+ */
+;(function( ENTER ) {
+	console.info('Catalog init: catalog_infinityScroll.js');
+
+	var pageConfig = ENTER.config.pageConfig,
+		utils = ENTER.utils,
+		catalog = utils.extendApp('ENTER.catalog'),
+
+		viewParamPanel = $('.bSortingLine');
+	// end of vars
+
+	
+	catalog.infScroll = {
+		loading: false,
+
+		nowPage: 1,
+
+		checkInfinity: function() {
+			console.info('checkInfinity');
+			if ( window.docCookies.getItem( 'infScroll' ) === '1' ) {
+				catalog.infScroll.enable();
+			}
+		},
+
+		checkScroll: function() {
+			console.info('checkscroll');
+
+			var w = $(window),
+				d = $(document);
+			// end of vars
+
+			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height() ) {
+				console.warn('checkscroll true. load');
+				catalog.infScroll.nowPage += 1;
+				catalog.infScroll.load();
+			}
+		},
+
+		load: function() {
+			console.info('load page');
+
+			var url = catalog.filter.getFilterUrl();
+
+			var resHandler = function resHandler( res ) {
+				var html;
+
+				html = catalog.filter.render['list']( res['list'] );
+				catalog.infScroll.loading = false;
+
+				catalog.listingWrap.append(html);
+			};
+
+			catalog.liveScroll = true;
+			catalog.infScroll.loading = true;
+			url = url.addParameterToUrl('page', catalog.infScroll.nowPage);
+			url = url.addParameterToUrl('ajax', 'true');
+
+			catalog.history.getDataFromServer(url, resHandler);
+		},
+
+		enable: function() {
+			console.info('enable...');
+
+			var activeClass = 'mActive',
+				infBtn = viewParamPanel.find('.mInfinity'),
+				pagingBtn = viewParamPanel.find('.mPaging'),
+				pageBtn = viewParamPanel.find('.bSortingList__eItem.mPage'),
+				url = catalog.filter.getFilterUrl();
+			// end of vars
+
+			pagingBtn.show();
+			pageBtn.hide();
+			infBtn.addClass(activeClass);
+
+			catalog.infScroll.nowPage = 1;
+
+			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
+			$(window).on('scroll', catalog.infScroll.checkScroll);
+
+			catalog.history.gotoUrl(url);
+
+			console.log('infinity scroll enable');
+		},
+
+		disable: function() {
+			console.info('disable...');
+
+			var url = catalog.filter.getFilterUrl();
+			// end of vars
+
+			catalog.liveScroll = false;
+			url = url.addParameterToUrl('ajax', 'true');
+
+			window.docCookies.setItem('infScroll', 0, 0, '/' );
+			$(window).off('scroll', catalog.infScroll.checkScroll);
+			catalog.history.getDataFromServer(url, catalog.filter.renderCatalogPage);
+
+			console.log('infinity scroll disable');
+		}
+	};
+
+	var infBtnHandler = function infBtnHandler() {
+			var activeClass = 'mActive',
+				infBtn = viewParamPanel.find('.mInfinity'),
+				isActiveTab = infBtn.hasClass(activeClass);
+			// end of vars
+			
+			if ( isActiveTab ) {
+				return false;
+			}
+
+			catalog.infScroll.enable();
+
+			return false;
+		},
+
+		paginationBtnHandler = function paginationBtnHandler() {
+			var activeClass = 'mActive',
+				infBtn = viewParamPanel.find('.mInfinity'),
+				isActiveTab = infBtn.hasClass(activeClass);
+			// end of vars
+			
+			if ( isActiveTab ) {
+				catalog.infScroll.disable();
+			}
+
+			return false;
+		};
+	// end of functions
+
+	catalog.infScroll.checkInfinity();
+
+	viewParamPanel.on('click', '.jsPaginationEnable', paginationBtnHandler);
+	viewParamPanel.on('click', '.jsInfinityEnable', infBtnHandler);
+
+}(window.ENTER));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Catalog loader
+ *
+ * @requires jQuery, Mustache, ENTER.utils, ENTER.config, ENTER.catalog.history
+ * 
+ * @author	Zaytsev Alexandr
+ *
+ * @param	{Object}	ENTER	Enter namespace
+ */
+;(function( ENTER ) {
+	console.info('New catalog init: loader.js');
+
+	var pageConfig = ENTER.config.pageConfig,
+		utils = ENTER.utils,
+		catalog = utils.extendApp('ENTER.catalog');
+	// end of vars
+
+	console.info('Mustache is '+ typeof Mustache);
+	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
+
+	catalog.loader = {
+		_loader: null,
+		loading: function() {
+			if ( catalog.loader._loader ) {
+				return;
+			}
+
+			catalog.loader._loader = $('<li>').addClass('mLoader');
+
+			if ( catalog.liveScroll ) {
+				catalog.listingWrap.append(catalog.loader._loader);
+			}
+			else {
+				catalog.listingWrap.empty();
+				catalog.listingWrap.append(catalog.loader._loader);
+			}
+		},
+
+		complete: function() {
+			if ( catalog.loader._loader ) {
+				catalog.loader._loader.remove();
+				catalog.loader._loader = null;
+			}
+		}		
+	};
 
 }(window.ENTER));

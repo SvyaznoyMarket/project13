@@ -19,31 +19,126 @@
 
 	
 	catalog.infScroll = {
-		load: function() {
+		loading: false,
 
+		nowPage: 1,
+
+		checkInfinity: function() {
+			console.info('checkInfinity');
+			if ( window.docCookies.getItem( 'infScroll' ) === '1' ) {
+				catalog.infScroll.enable();
+			}
+		},
+
+		checkScroll: function() {
+			console.info('checkscroll');
+
+			var w = $(window),
+				d = $(document);
+			// end of vars
+
+			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height() ) {
+				console.warn('checkscroll true. load');
+				catalog.infScroll.nowPage += 1;
+				catalog.infScroll.load();
+			}
+		},
+
+		load: function() {
+			console.info('load page');
+
+			var url = catalog.filter.getFilterUrl();
+
+			var resHandler = function resHandler( res ) {
+				var html;
+
+				html = catalog.filter.render['list']( res['list'] );
+				catalog.infScroll.loading = false;
+
+				catalog.listingWrap.append(html);
+			};
+
+			catalog.liveScroll = true;
+			catalog.infScroll.loading = true;
+			url = url.addParameterToUrl('page', catalog.infScroll.nowPage);
+			url = url.addParameterToUrl('ajax', 'true');
+
+			catalog.history.getDataFromServer(url, resHandler);
 		},
 
 		enable: function() {
-			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
+			console.info('enable...');
 
-			console.info('infinity scroll enable');
+			var activeClass = 'mActive',
+				infBtn = viewParamPanel.find('.mInfinity'),
+				pagingBtn = viewParamPanel.find('.mPaging'),
+				pageBtn = viewParamPanel.find('.bSortingList__eItem.mPage'),
+				url = catalog.filter.getFilterUrl();
+			// end of vars
+
+			pagingBtn.show();
+			pageBtn.hide();
+			infBtn.addClass(activeClass);
+
+			catalog.infScroll.nowPage = 1;
+
+			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
+			$(window).on('scroll', catalog.infScroll.checkScroll);
+
+			catalog.history.gotoUrl(url);
+
+			console.log('infinity scroll enable');
 		},
 
 		disable: function() {
+			console.info('disable...');
+
+			var url = catalog.filter.getFilterUrl();
+			// end of vars
+
+			catalog.liveScroll = false;
+			url = url.addParameterToUrl('ajax', 'true');
+
 			window.docCookies.setItem('infScroll', 0, 0, '/' );
+			$(window).off('scroll', catalog.infScroll.checkScroll);
+			catalog.history.getDataFromServer(url, catalog.filter.renderCatalogPage);
+
+			console.log('infinity scroll disable');
 		}
 	};
 
 	var infBtnHandler = function infBtnHandler() {
-		catalog.infScroll.enable();
+			var activeClass = 'mActive',
+				infBtn = viewParamPanel.find('.mInfinity'),
+				isActiveTab = infBtn.hasClass(activeClass);
+			// end of vars
+			
+			if ( isActiveTab ) {
+				return false;
+			}
 
-		return false;
-	}
+			catalog.infScroll.enable();
 
-	if ( window.docCookies.getItem( 'infScroll' ) === '1' ) {
-		catalog.infScroll.enable();
-	}
+			return false;
+		},
 
-	viewParamPanel.on('click', '.jsInfinity', infBtnHandler);
+		paginationBtnHandler = function paginationBtnHandler() {
+			var activeClass = 'mActive',
+				infBtn = viewParamPanel.find('.mInfinity'),
+				isActiveTab = infBtn.hasClass(activeClass);
+			// end of vars
+			
+			if ( isActiveTab ) {
+				catalog.infScroll.disable();
+			}
+
+			return false;
+		};
+	// end of functions
+
+	catalog.infScroll.checkInfinity();
+
+	viewParamPanel.on('click', '.jsPaginationEnable', paginationBtnHandler);
+	viewParamPanel.on('click', '.jsInfinityEnable', infBtnHandler);
 
 }(window.ENTER));

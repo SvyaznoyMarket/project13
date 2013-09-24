@@ -44,6 +44,35 @@
 			return changeViewItemsBtns.filter('.mActive').data('type');
 		},
 
+		applyTemplate: {
+			list: function( html ) {
+				console.info('applyTemplate list');
+				catalog.listingWrap.empty();
+				catalog.listingWrap.html(html);
+			},
+
+			selectedFilter: function( html ) {
+				var filterFooterWrap = filterBlock.find('.bFilterFoot');
+
+				filterFooterWrap.empty();
+				filterFooterWrap.html(html);
+			},
+
+			sorting: function( html ) {
+				var sortingWrap = viewParamPanel.find('.bSortingList.mSorting');
+
+				sortingWrap.empty();
+				sortingWrap.html(html);
+			},
+
+			pagination: function( html ) {
+				var paginationWrap = $('.bSortingList.mPager');
+
+				paginationWrap.empty();
+				paginationWrap.html(html);
+			}
+		},
+
 
 		render: {
 
@@ -64,10 +93,9 @@
 
 				html = Mustache.render(listingTemplate, data, partials);
 
-				catalog.listingWrap.empty();
-				catalog.listingWrap.html(html);
-
 				console.log('end of render list');
+
+				return html;
 			},
 
 			selectedFilter: function( data ) {
@@ -75,17 +103,15 @@
 
 				var template = $('#tplSelectedFilter'),
 					filterTemplate = template.html(),
-					filterFooterWrap = filterBlock.find('.bFilterFoot'),
 					partials = template.data('partial'),
 					html;
 				// end of vars
 				
 				html = Mustache.render(filterTemplate, data, partials);
 
-				filterFooterWrap.empty();
-				filterFooterWrap.html(html);
-
 				console.log('end of render selectedFilter');
+
+				return html;
 			},
 
 			sorting: function( data ) {
@@ -93,17 +119,15 @@
 
 				var template = $('#tplSorting'),
 					sortingTemplate = template.html(),
-					sortingWrap = viewParamPanel.find('.bSortingList.mSorting'),
 					partials = template.data('partial'),
 					html;
 				// end of vars
 				
 				html = Mustache.render(sortingTemplate, data, partials);
 
-				sortingWrap.empty();
-				sortingWrap.html(html);
-
 				console.log('end of render sorting');
+
+				return html;
 			},
 
 			pagination: function( data ) {
@@ -111,17 +135,15 @@
 
 				var template = $('#tplPagination'),
 					paginationTemplate = template.html(),
-					paginationWrap = $('.bSortingList.mPager'),
 					partials = template.data('partial'),
 					html;
 				// end of vars
 				
 				html = Mustache.render(paginationTemplate, data, partials);
 
-				paginationWrap.empty();
-				paginationWrap.html(html);
-
 				console.log('end of render paginaton');
+
+				return html;
 			}
 		},
 
@@ -134,13 +156,18 @@
 			console.info('renderCatalogPage');
 			
 			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
-				key;
+				key,
+				template;
+			// end of vars
 
 			for ( key in dataToRender ) {
-				if ( catalog.filter.render.hasOwnProperty(key) ) {
-					catalog.filter.render[key]( dataToRender[key] );
+				if ( catalog.filter.render.hasOwnProperty(key) && catalog.filter.applyTemplate.hasOwnProperty(key) ) {
+					template = catalog.filter.render[key]( dataToRender[key] );
+					catalog.filter.applyTemplate[key](template);
 				}
 			}
+
+			catalog.infScroll.checkInfinity();
 
 			catalog.filter.lastRes = dataToRender;
 		},
@@ -252,14 +279,6 @@
 			console.info('update filter');
 		}
 	};
-
-
-	/**
-	 * Ссылка на функцию обратного вызова по-умолчанию после получения данных с сервера при изменении history state
-	 * 
-	 * @type	{Function}
-	 */
-	catalog.history._defaultCallback = catalog.filter.renderCatalogPage;
 
 
 		/**

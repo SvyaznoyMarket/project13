@@ -16,6 +16,12 @@
 	console.info('New catalog history module');
 
 	catalog.history = {
+		/**
+		 * Ссылка на функцию обратного вызова по-умолчанию после получения данных с сервера при изменении history state
+		 * 
+		 * @type	{Function}
+		 */
+		_defaultCallback: catalog.filter.renderCatalogPage,
 
 		/**
 		 * Кастомная функция обратного вызова после получения данных с сервера
@@ -63,16 +69,14 @@
 			catalog.history.gotoUrl( url, callback, true );
 
 			return;
-		}
-	};
-
+		},
 
 		/**
 		 * Запросить новые данные с сервера по url
 		 * 
 		 * @param	{String}	url
 		 */
-	var getDataFromServer = function getDataFromServer( url, callback ) {
+		getDataFromServer: function getDataFromServer( url, callback ) {
 			console.info('getDataFromServer ' + url);
 
 			catalog.loader.loading();
@@ -118,12 +122,13 @@
 					503: errorHandler
 				}
 			});
-		},
+		}
+	};
 
 		/**
 		 * Обработчик изменения состояния истории в браузере
 		 */
-		stateChangeHandler = function stateChangeHandler() {
+	var stateChangeHandler = function stateChangeHandler() {
 			var state = History.getState(),
 				url = state.url,
 				data = state.data.data,
@@ -140,7 +145,7 @@
 			}
 			else {
 				url = url.addParameterToUrl('ajax', 'true');
-				getDataFromServer(url, callback);
+				catalog.history.getDataFromServer(url, callback);
 			}
 
 			catalog.history._customCallback = null;
