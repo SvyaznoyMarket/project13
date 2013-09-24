@@ -11612,8 +11612,8 @@
   .mPayMethods .bSelectWrap_eText {
     color: #616161;
   }
-  .lt-ie8 .mPayMethods .bPayMethodAction,
-  .lt-ie8 .mPayMethods .bProcess {
+  .lt-ie9 .mPayMethods .bPayMethodAction,
+  .lt-ie9 .mPayMethods .bProcess {
     display: block;
   }
 }
