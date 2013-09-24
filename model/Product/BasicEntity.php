@@ -378,6 +378,13 @@ class BasicEntity {
         return $this->isInShopsOnly;
     }
 
+    /**
+     * @return bool
+     */
+    public function isInShopOnly() {
+        return $this->isInShopStockOnly() || $this->isInShopShowroomOnly();
+    }
+
     public function calculateState() {
 
         $inStore = false;
