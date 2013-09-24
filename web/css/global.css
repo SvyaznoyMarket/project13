@@ -12827,9 +12827,13 @@
     float: right;
     margin-right: -5px;
   }
+  .bSortingLine.mPagerBottom .bSortingList .bSortingList__eItem.mSortItem {
+    width: 30px;
+  }
   .bSortingLine.mPagerBottom .bSortingList .bSortingList__eItem.mTitle {
     float: left;
     margin: 4px 5px 0 0;
+    width: auto;
   }
   .bSortingList {
     float: left;
