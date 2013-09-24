@@ -31,7 +31,7 @@ class SelectedFilterAction {
         $filterLinkData = [];
         $filterValueData = [];
 
-        $shop = $helper->getParam('shop') && \App::config()->shop['enabled'] ? $helper->getParam('shop') : null;
+        $shop = ($helper->getParam('shop') && \App::config()->shop['enabled']) ? $helper->getParam('shop') : null;
         if ($shop instanceof \Model\Shop\Entity) {
             $filterLinkData['shop'] = [
                 'name'  => 'Наличие в магазинах',
@@ -39,6 +39,7 @@ class SelectedFilterAction {
                     ['name' => sprintf('Только товары из магазина <strong>%s</strong>', $shop->getAddress()), 'url' => $helper->replacedUrl(['shop' => null, 'page' => null, 'ajax' => null])],
                 ],
             ];
+            $filterValueData['shop'] = $shop->getId();
         }
 
         foreach ($productFilter->getFilterCollection() as $filter) {
