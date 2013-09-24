@@ -5,19 +5,7 @@
     <div class="bListingItem__eInner">
         <!-- Блок с именем продукта и иконками доп. просмотра товара -->
         <div class="bSimplyDesc">
-            <!-- Блок отзыввов -->
-            <div class="bSimplyDescReviews">
-                <div class="bSimplyDescReviews__eStars">
-                    <img class="bSimplyDescReviews__eStarsImg" src="/images/reviews_star.png">
-                    <img class="bSimplyDescReviews__eStarsImg" src="/images/reviews_star.png">
-                    <img class="bSimplyDescReviews__eStarsImg" src="/images/reviews_star.png">
-                    <img class="bSimplyDescReviews__eStarsImg" src="/images/reviews_star.png">
-                    <img class="bSimplyDescReviews__eStarsImg" src="/images/reviews_star_half.png">
-                </div>
-
-                <div class="bSimplyDescReviews__eLink"><span>(4)</span></div>
-            </div>
-            <!--/ Блок отзыввов -->
+            {{#review}}{{> product/_review-compact }}{{/review}}
             <p class="bSimplyDesc__eText"><a href="{{link}}">{{name}}</a></p>
             <ul class="bSimplyDescStikers clearfix">
                 {{#label}}

@@ -58,6 +58,7 @@ class ListAction {
                 ,
                 'hasVideo' => $productVideo && $productVideo->getContent(),
                 'has360'   => $model3dExternalUrl || $model3dImg,
+                'review'   => (new \View\Product\ReviewCompactAction())->execute($helper, $product),
             ];
 
             // cart
