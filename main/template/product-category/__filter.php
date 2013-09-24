@@ -9,9 +9,19 @@ return function(
     $openFilter = false;
     $filters = [];
     $priceFilter = null;
-    foreach ($productFilter->getFilterCollection() as $i => $filter) {
+
+    $i = 1;
+    foreach ($productFilter->getFilterCollection() as $filter) {
+        if ($filter->isPrice()) {
+            $priceFilter = $filter;
+            $priceFilter->setStepType('price');
+        } else {
+            $filters[] = $filter;
+            $i++;
+        }
+
         // фильтр "Наличие в магазинах"
-        if (1 == $i) {
+        if (3 == $i) {
             /** @var $shops \Model\Shop\Entity[] */
             $shops = $helper->getParam('shops');
 
@@ -29,13 +39,7 @@ return function(
                 $shopFilter->addOption($option);
             }
             $filters[] = $shopFilter;
-        }
-
-        if ($filter->isPrice()) {
-            $priceFilter = $filter;
-            $priceFilter->setStepType('price');
-        } else {
-            $filters[] = $filter;
+            $i++;
         }
     }
 
