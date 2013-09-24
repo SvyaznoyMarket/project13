@@ -46,7 +46,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             <?= $page->render('product/_reviewsStarsCompact', ['product' => $product]) ?>
         <? endif ?>
 
-	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
+	    <div class="h3"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
         <?= $page->render('cart/_button', ['product' => $product]) ?>
 	    <div class="font18 pb10 mSmallBtns">
             <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>

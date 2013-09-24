@@ -154,7 +154,7 @@ foreach (array_reverse($productsById) as $product) {
 									<a class="bDelItem" data-bind="attr: { href: product.deleteUrl }, text: 'удалить', click: $root.deleteItem"></a>
 								</div>
 
-								<div class="bItemsRow mItemRight"> <span data-bind="text: window.printPrice(product.price)"></span> <span class="rubl">p</span></div>
+								<div class="bItemsRow mItemRight"> <span data-bind="text: window.printPrice(product.price)"></span>&nbsp;<span class="rubl">p</span></div>
 							</div>
 						</div>
 					</div>
@@ -171,8 +171,7 @@ foreach (array_reverse($productsById) as $product) {
 					<span data-bind="text: hasPointDelivery ? 'Самовывоз:&nbsp;&nbsp;': 'Доставка:&nbsp;&nbsp;' "></span>
 					
 					<span class="bDelivery">
-						<span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>
-						<span class="rubl" data-bind="visible: box.deliveryPrice">p</span>
+						<span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>&nbsp;<span class="rubl" data-bind="visible: box.deliveryPrice">p</span>
 					</span>
 				</li>
 
@@ -180,8 +179,7 @@ foreach (array_reverse($productsById) as $product) {
 					Итого с доставкой:&nbsp;&nbsp;
 
 					<span class="bDelivery">
-						<span data-bind="text: window.printPrice( box.fullPrice + box.deliveryPrice )"></span> 
-						<span class="rubl">p</span>
+						<span data-bind="text: window.printPrice( box.fullPrice + box.deliveryPrice )"></span>&nbsp;<span class="rubl">p</span>
 					</span>
 				</li>
 			</ul>
@@ -286,7 +284,7 @@ foreach (array_reverse($productsById) as $product) {
 
 		<div class="bTotalSumm">
 			Сумма всех заказов:
-			<span class="bTotalSumm__ePrice" data-bind="text: window.printPrice( totalSum() )"></span> <span class="rubl">p</span>
+			<span class="bTotalSumm__ePrice" data-bind="text: window.printPrice( totalSum() )"></span>&nbsp;<span class="rubl">p</span>
 		</div>
 	</div>
 
