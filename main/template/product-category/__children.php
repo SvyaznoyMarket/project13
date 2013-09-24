@@ -3,22 +3,19 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Category\Entity $category
-) { ?>
+) {
 
-    <!-- Категории товаров -->
-    <ul class="bCatalogList clearfix">
-    <? foreach ($category->getChild() as $child): ?>
-        <li class="bCatalogList__eItem">
-            <a class="bCatalogList__eLink" href="<?= $child->getLink() ?>">
-				<span class="bCategoriesImg">
-					<img class="bCategoriesImg__eImg" src="<?= $child->getImageUrl() ?>" alt="<?= $helper->escape($child->getName())?>" />
-				</span>
+    $links = [];
+    foreach ($category->getChild() as $child) {
+        $links[] = [
+            'name'   => $child->getName(),
+            'url'    => $child->getLink(),
+            'image'  => $child->getImageUrl(),
+            'active' => false,
+        ];
+    }
+?>
 
-                <span class="bCategoriesName"><?= $child->getName() ?></span>
-            </a>
-        </li>
-    <? endforeach ?>
-    </ul>
-    <!-- /Категории товаров -->
+    <?= $helper->renderWithMustache('product-category/_listInFilter', ['links' => $links]) ?>
 
 <? };
