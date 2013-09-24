@@ -109,6 +109,10 @@
 				
 				html = Mustache.render(filterTemplate, data, partials);
 
+				if ( data.hasOwnProperty('values') ) {
+					catalog.filter.updateFilter( data['values'] );
+				}
+
 				console.log('end of render selectedFilter');
 
 				return html;
@@ -159,6 +163,8 @@
 				key,
 				template;
 			// end of vars
+
+			catalog.filter.resetForm();
 
 			for ( key in dataToRender ) {
 				if ( catalog.filter.render.hasOwnProperty(key) && catalog.filter.applyTemplate.hasOwnProperty(key) ) {
@@ -277,6 +283,7 @@
 		 */
 		resetForm: function() {
 			console.info('resetForm');
+			// return;
 
 			var resetRadio = function resetRadio( nf, input ) {
 					var self = $(input),
@@ -320,8 +327,54 @@
 		/**
 		 * Обновление значений фильтра
 		 */
-		updateFilter: function() {
+		updateFilter: function( values ) {
 			console.info('update filter');
+
+			var input,
+				val,
+				type,
+				fieldName;
+			// end of vars
+
+			console.info(values);
+
+			var updateInput = {
+				'text': function( input, val ) {
+					input.val(val).trigger('change');
+				},
+
+				'radio': function( input, val ) {
+					var self = input.filter('[value="'+val+'"]'),
+						id = self.attr('id'),
+						label = filterBlock.find('label[for="'+id+'"]');
+					// end of vars
+					
+					self.attr('checked', 'checked');
+					label.addClass('mChecked');
+				},
+
+				'checkbox': function( input, val ) {
+					input.filter('[value="'+val+'"]').attr('checked', 'checked').trigger('change');
+				}
+			};
+
+			for ( fieldName in values ) {
+				if ( !values.hasOwnProperty(fieldName) ) {
+					return;
+				}
+
+				input = filterBlock.find('input[name="'+fieldName+'"]');
+				val = values[fieldName];
+				type = input.attr('type');
+
+				console.log(input);
+				console.log(val);
+				console.log(type);
+
+				if ( updateInput.hasOwnProperty(type) ) {
+					updateInput[type](input, val);
+				}
+			}
 		}
 	};
 
