@@ -83,7 +83,8 @@ class ProductAction {
                         ],
                     ],
                     'service'         => [],
-                ]
+                ],
+                \App::config()->coreV2['hugeTimeout']
             );
             \App::logger()->info(['core.response' => $result], ['order', 'paypal']);
 
