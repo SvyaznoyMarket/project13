@@ -273,6 +273,51 @@
 		},
 
 		/**
+		 * Обнуление значений формы
+		 */
+		resetForm: function() {
+			console.info('resetForm');
+
+			var resetRadio = function resetRadio( nf, input ) {
+					var self = $(input),
+						id = self.attr('id'),
+						label = filterBlock.find('label[for="'+id+'"]');
+					// end of vars
+
+					console.info(id);
+					console.info(label);
+
+					self.removeAttr('checked');
+					label.removeClass('mChecked');
+				},
+
+				resetCheckbox = function resetCheckbox( nf, input ) {
+					$(input).removeAttr('checked').trigger('change');
+				},
+
+				resetSliders = function resetSliders() {
+					var sliderWrap = $(this),
+						slider = sliderWrap.find('.bFilterSlider'),
+						sliderConfig = slider.data('config'),
+						sliderFromInput = sliderWrap.find('.mFromRange'),
+						sliderToInput = sliderWrap.find('.mToRange'),
+
+						min = sliderConfig.min,
+						max = sliderConfig.max;
+					// end of vars
+					
+					sliderFromInput.val(min).trigger('change');
+					sliderToInput.val(max).trigger('change');
+				};
+			// end of functions
+
+
+			filterBlock.find(':input:radio:checked').each(resetRadio);
+			filterBlock.find(':input:checkbox:checked').each(resetCheckbox);
+			filterSliders.each(resetSliders);
+		},
+
+		/**
 		 * Обновление значений фильтра
 		 */
 		updateFilter: function() {
