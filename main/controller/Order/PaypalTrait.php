@@ -15,7 +15,9 @@ trait PaypalTrait {
             [
                 'token'   => $token,
                 'PayerID' => $payerId,
-            ]
+            ],
+            [],
+            \App::config()->coreV2['hugeTimeout']
         );
         \App::logger()->info(['core.response' => $result], ['order', 'paypal']);
 

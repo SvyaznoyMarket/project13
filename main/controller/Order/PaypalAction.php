@@ -25,7 +25,8 @@ class PaypalAction {
                     'token'   => $token,
                     'PayerID' => $payerId,
                 ],
-                []
+                [],
+                \App::config()->coreV2['hugeTimeout']
             );
             \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order', 'paypal']);
 
