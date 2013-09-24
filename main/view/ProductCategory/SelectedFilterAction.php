@@ -28,14 +28,15 @@ class SelectedFilterAction {
             return $first == $second;
         };
 
-        $filterData = [];
+        $filterLinkData = [];
+        $filterValueData = [];
 
         $shop = $helper->getParam('shop') && \App::config()->shop['enabled'] ? $helper->getParam('shop') : null;
         if ($shop instanceof \Model\Shop\Entity) {
-            $filterData['shop'] = [
+            $filterLinkData['shop'] = [
                 'name'  => 'Наличие в магазинах',
                 'links' => [
-                    ['name' => sprintf('Только товары из магазина <strong>%s</strong>', $shop->getAddress()), 'url' => $helper->replacedUrl(['page' => null, 'shop' => null, 'ajax' => null])],
+                    ['name' => sprintf('Только товары из магазина <strong>%s</strong>', $shop->getAddress()), 'url' => $helper->replacedUrl(['shop' => null, 'page' => null, 'ajax' => null])],
                 ],
             ];
         }
@@ -56,48 +57,56 @@ class SelectedFilterAction {
                     if (empty($value['from']) && empty($value['to'])) continue;
 
                     if (isset($value['from']) && !($isEqualNumeric($value['from'], $filter->getMin()))) {
+                        $paramName = \View\Name::productCategoryFilter($filter, 'from');
                         $links[] = [
                             'name' => $isPrice ? sprintf('от %sр', $helper->formatPrice($value['from'])) : sprintf('от %s', round($value['from'], 1)),
                             'url'  => $helper->replacedUrl([
-                                \View\Name::productCategoryFilter($filter, 'from') => null,
-                                'ajax'                                             => null
+                                $paramName => null,
+                                'ajax'     => null
                             ]),
                         ];
+                        $filterValueData[$paramName] = $value['from'];
                     }
                     if (isset($value['to']) && !($isEqualNumeric($value['to'], $filter->getMax()))) {
+                        $paramName = \View\Name::productCategoryFilter($filter, 'to');
                         $links[] = [
                             'name' => $isPrice ? sprintf('до %sр', $helper->formatPrice($value['to'])) : sprintf('до %s', round($value['to'], 1)),
                             'url'  => $helper->replacedUrl([
-                                \View\Name::productCategoryFilter($filter, 'to') => null,
-                                'ajax'                                           => null
+                                $paramName => null,
+                                'ajax'     => null
                             ]),
                         ];
+                        $filterValueData[$paramName] = $value['to'];
                     }
 
                     break;
                 case \Model\Product\Filter\Entity::TYPE_BOOLEAN:
                     if (!is_array($value) || count($value) == 0) continue;
                     foreach ($value as $v) {
+                        $paramName = \View\Name::productCategoryFilter($filter);
                         $links[] = [
                             'name' => ($v == 1) ? 'да' : 'нет',
                             'url'  => $helper->replacedUrl([
-                                \View\Name::productCategoryFilter($filter) => null,
-                                'ajax'                                     => null
+                                $paramName => null,
+                                'ajax'    => null
                             ]),
                         ];
+                        $filterValueData[$paramName] = $v;
                     }
                     break;
                 case \Model\Product\Filter\Entity::TYPE_LIST:
                     if (!is_array($value) || count($value) == 0) continue;
                     foreach ($filter->getOption() as $option) {
-                        if (!in_array($option->getId(), $value)) continue;
+                        if (false === $valueIndex = array_search($option->getId(), $value)) continue;
+                        $paramName = \View\Name::productCategoryFilter($filter, $option);
                         $links[] = [
                             'name' => $option->getName(),
                             'url'  => $helper->replacedUrl([
-                                \View\Name::productCategoryFilter($filter, $option) => null,
-                                'ajax'                                              => null
+                                $paramName => null,
+                                'ajax'     => null
                             ]),
                         ];
+                        $filterValueData[$paramName] = $value[$valueIndex];
                     }
                     break;
                 default:
@@ -106,26 +115,28 @@ class SelectedFilterAction {
 
             if (!(bool)$links) continue;
 
-            if (!isset($filterData[$filter->getId()])) {
-                $filterData[$filter->getId()] = ['name' => $filter->getName(), 'links' => []];
+            if (!isset($filterLinkData[$filter->getId()])) {
+                $filterLinkData[$filter->getId()] = ['name' => $filter->getName(), 'links' => []];
             }
-            $filterData[$filter->getId()]['links'] += $links;
+            $filterLinkData[$filter->getId()]['links'] += $links;
         }
 
-        $filterData = array_values($filterData);
+        $filterLinkData = array_values($filterLinkData);
 
-        $filterItem = end($filterData);
+        // TODO: убрать отсюда - рисовать всегда в шаблоне
+        $filterItem = end($filterLinkData);
         if (is_array($filterItem)) {
             $filterItem['links'][] = [
                 'name' => 'Очистить все',
                 'url'  => $baseUrl,
                 'last' => true,
             ];
-            $filterData[key($filterData)] = $filterItem;
+            $filterLinkData[key($filterLinkData)] = $filterItem;
         }
 
         return [
-            'filters' => $filterData,
+            'filters' => $filterLinkData,
+            'values'  => $filterValueData,
         ];
     }
 }

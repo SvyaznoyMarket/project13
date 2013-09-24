@@ -3,6 +3,11 @@
 namespace View;
 
 class Name {
+    /**
+     * @param \Model\Product\Filter\Entity $filter
+     * @param \Model\Product\Filter\Option\Entity|string|null $option
+     * @return string
+     */
     public static function productCategoryFilter(\Model\Product\Filter\Entity $filter, $option = null) {
         switch ($filter->getTypeId()) {
             case \Model\Product\Filter\Entity::TYPE_SLIDER:
