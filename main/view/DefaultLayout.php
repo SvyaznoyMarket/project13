@@ -259,6 +259,7 @@ class DefaultLayout extends Layout {
 
         if (\App::config()->analytics['enabled']) {
             $routeName = \App::request()->attributes->get('route');
+            $routeToken = \App::request()->attributes->get('token');
 
             // на всех страницах сайта, кроме...
             if (!in_array($routeName, [
@@ -292,6 +293,11 @@ class DefaultLayout extends Layout {
                 'order.complete',
             ])) {
                 $return .= $this->tryRender('partner-counter/_actionpay', ['routeName' => $routeName] );
+            }
+
+
+            if ('subscribe_friends' == $routeToken) {
+                $return .= $this->tryRender('partner-counter/_am15_net');
             }
 
         }
