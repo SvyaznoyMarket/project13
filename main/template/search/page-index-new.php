@@ -25,7 +25,11 @@
         'count'       => $productCount,
     ]) ?>
 
-    <?//= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
+    <?= $helper->render('search/__category', [
+        'searchQuery'      => $searchQuery,
+        'categories'       => $categories,
+        'selectedCategory' => $selectedCategory,
+    ]) // категории товаров ?>
 
     <?= $helper->render('product/__listAction', [
         'pager'          => $productPager,

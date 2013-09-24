@@ -97,6 +97,7 @@ class Action {
             }
         }
 
+        /** @var $categoriesById \Model\Product\Category\Entity[] */
         $categoriesById = [];
         foreach ($result['category_list'] as $item) {
             $categoriesById[$item['category_id']] = new \Model\Product\Category\Entity(array(
@@ -108,6 +109,14 @@ class Action {
                 ,
             ));
         }
+        \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), \App::user()->getRegion(), function($data) use (&$categoriesById) {
+            foreach ($data as $item) {
+                if (!isset($categoriesById[$item['id']])) continue;
+                $categoriesById[$item['id']]->setImage($item['media_image']);
+            }
+        });
+
+        $categoriesById = array_filter($categoriesById);
 
         // если ид категории из http-запроса нет в коллекции категорий ...
         if ($categoryId && !isset($categoriesById[$categoryId])) {
