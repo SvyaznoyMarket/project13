@@ -317,7 +317,7 @@ $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = true;
 
-$c->mobileModify['enabled'] = true;
+$c->mobileModify['enabled'] = false;
 
 $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
