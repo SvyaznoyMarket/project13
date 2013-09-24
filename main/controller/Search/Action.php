@@ -152,14 +152,42 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
+        // video
+        $productVideosByProduct = [];
+        foreach ($productPager as $product) {
+            /** @var $product \Model\Product\Entity */
+            $productVideosByProduct[$product->getId()] = [];
+        }
+        if ((bool)$productVideosByProduct) {
+            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
+                foreach ($data as $id => $items) {
+                    if (!is_array($items)) continue;
+                    foreach ($items as $item) {
+                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
+                    }
+                }
+            });
+            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
+        }
+
         // ajax
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('product/_list', array(
-                'page'   => new \View\Layout(),
-                'pager'  => $productPager,
-                'view'   => $productView,
-                'isAjax' => true,
-            )));
+        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+            return new \Http\JsonResponse([
+                'list'           => (new \View\Product\ListAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productPager,
+                    $productVideosByProduct
+                ),
+                'selectedFilter' => null,
+                'pagination'     => (new \View\PaginationAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productPager
+                ),
+                'sorting'        => (new \View\Product\SortingAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productSorting
+                ),
+            ]);
         }
 
         // если по поиску нашелся только один товар и это первая стр. поиска, то редиректим сразу в карточку товара
