@@ -75,7 +75,7 @@ return function(
                     if (!$filter->getIsInList()) continue;
                     $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId());
                 ?>
-                    <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?>" id="<?= $viewId ?>">
+                    <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if ('shop' == $filter->getId()): ?> mLineItem<? endif ?>" id="<?= $viewId ?>">
 
                     <? switch ($filter->getTypeId()) {
                         case \Model\Product\Filter\Entity::TYPE_NUMBER:

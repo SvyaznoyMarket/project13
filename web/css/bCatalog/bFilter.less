@@ -116,10 +116,22 @@
 
 	width: 160px;
 
+	margin: -1px 0;
+
 	behavior: url(@displayTable);
 
-	&__eItem {
+	border-bottom: 1px solid @typLightGray;
 
+	max-height: 481px;
+
+	overflow: auto;
+
+	position: relative;
+
+	z-index: 10;
+	
+
+	&__eItem {
 		border-top: 1px solid @typLightGray;
 		border-right: 1px solid @typLightGray;
 		cursor: pointer;
@@ -150,11 +162,31 @@
 
 .bFilterValues {
 	float: left;
-	margin: 20px 0 0 20px;
+	padding: 20px 10px 0 20px;
 
 	width: 748px;
 
+	margin-left: -1px;
+
+	max-height: 457px;
+
+	overflow: auto;
+
+	border-left: 1px solid @typLightGray;
+
 	.bFilterValuesItem {
+
+		&.mLineItem {
+
+			.bFilterValuesCol {
+				float: none;
+				width: auto;
+
+				.bFilterCheckbox {
+					width: auto;
+				}
+			}
+		}
 
 	}
 

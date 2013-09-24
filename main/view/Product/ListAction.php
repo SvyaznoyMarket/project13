@@ -18,6 +18,8 @@ class ListAction {
 
         $user = \App::user();
 
+        $productButtonAction = new \View\Cart\ProductButtonAction();
+
         $productData = [];
         foreach ($pager as $product) {
             $productVideos = isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [];
@@ -44,7 +46,7 @@ class ListAction {
                     : null
                 ,
                 'isBuyable'    => $product->getIsBuyable(),
-                'onlyInShop'   => !$product->getIsBuyable() && $product->getState()->getIsShop(),
+                'onlyInShop'   => $product->isInShopOnly(),
                 'variations'   =>
                 ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty())
                     ? array_map(function(\Model\Product\Model\Property\Entity $property) {
@@ -59,24 +61,7 @@ class ListAction {
             ];
 
             // cart
-            if (!$product->getIsBuyable()) {
-                $productItem['cartButton']['url'] = '#';
-
-                if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
-                    $productItem['cartButton']['value'] = 'Только в магазинах';
-                } else {
-                    $productItem['cartButton']['value'] = 'Нет в наличии';
-                }
-            } else if (!isset($url)) {
-                $urlParams = [
-                    'productId' => $product->getId(),
-                ];
-                if ($helper->hasParam('sender')) {
-                    $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
-                }
-                $productItem['cartButton']['url'] = $helper->url('cart.product.set', $urlParams);
-                $productItem['cartButton']['value'] = 'Купить';
-            }
+            $productItem['cartButton'] = $productButtonAction->execute($helper, $product);
 
             $productData[] = $productItem;
         }

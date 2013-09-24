@@ -1,8 +1,8 @@
 <div class="btnBuy">
     <a
-        class="jsBuyButton btnBuy__eLink{{^isBuyable}} mDisabled{{/isBuyable}}{{#onlyInShop}} mShopsOnly{{/onlyInShop}}"
-        href="{{cartButton.url}}"
+        class="jsBuyButton btnBuy__eLink{{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
+        href="{{url}}"
     >
-        {{cartButton.value}}
+        {{value}}
     </a>
 </div>
