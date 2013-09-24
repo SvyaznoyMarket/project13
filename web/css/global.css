@@ -12563,7 +12563,13 @@
   .bFilterParams {
     float: left;
     width: 160px;
+    margin: -1px 0;
     behavior: url("/css/common/display-table.min.htc");
+    border-bottom: 1px solid #e6e6e6;
+    max-height: 481px;
+    overflow: auto;
+    position: relative;
+    z-index: 10;
   }
   .bFilterParams__eItem {
     border-top: 1px solid #e6e6e6;
@@ -12587,8 +12593,19 @@
   }
   .bFilterValues {
     float: left;
-    margin: 20px 0 0 20px;
+    padding: 20px 10px 0 20px;
     width: 748px;
+    margin-left: -1px;
+    max-height: 457px;
+    overflow: auto;
+    border-left: 1px solid #e6e6e6;
+  }
+  .bFilterValues .bFilterValuesItem.mLineItem .bFilterValuesCol {
+    float: none;
+    width: auto;
+  }
+  .bFilterValues .bFilterValuesItem.mLineItem .bFilterValuesCol .bFilterCheckbox {
+    width: auto;
   }
   .bFilterValues .bFilterValuesCol {
     position: relative;
