@@ -19,7 +19,7 @@ return function(
                 class="bInputHidden bCustomInput jsCustomRadio"
                 type="checkbox"
                 id="<?= $viewId ?>"
-                name="f-<?= $filter->getId() ?>"
+                name="<?= \View\Name::productCategoryFilter($filter) ?>"
                 value="<?= $id ?>"
                 hidden
                 <? if (in_array($id, $values)) { ?> checked="checked"<? } ?>
