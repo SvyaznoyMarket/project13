@@ -19,6 +19,7 @@ class ListAction {
         $user = \App::user();
 
         $productButtonAction = new \View\Cart\ProductButtonAction();
+        $reviewCompactAction = new \View\Product\ReviewCompactAction();
 
         $productData = [];
         foreach ($pager as $product) {
@@ -48,7 +49,7 @@ class ListAction {
                 'isBuyable'    => $product->getIsBuyable(),
                 'onlyInShop'   => $product->isInShopOnly(),
                 'variations'   =>
-                ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty())
+                ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty()) // TODO: перенести в \View\*Action
                     ? array_map(function(\Model\Product\Model\Property\Entity $property) {
                     return [
                         'name' => $property->getName(),
@@ -58,7 +59,7 @@ class ListAction {
                 ,
                 'hasVideo' => $productVideo && $productVideo->getContent(),
                 'has360'   => $model3dExternalUrl || $model3dImg,
-                'review'   => (new \View\Product\ReviewCompactAction())->execute($helper, $product),
+                'review'   => $reviewCompactAction->execute($helper, $product),
             ];
 
             // cart
