@@ -898,11 +898,12 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			data: postData,
 			success: shopListSuccessHandler,
 			statusCode: {
-					500: shopListErrorHandler,
-					502: shopListErrorHandler,
-					503: shopListErrorHandler,
-					504: shopListErrorHandler
-				}
+				500: shopListErrorHandler,
+				502: shopListErrorHandler,
+				503: shopListErrorHandler,
+				504: shopListErrorHandler
+			},
+			error: shopListErrorHandler
 		});
 
 		var pickStoreMVMCL = function ( node ) {

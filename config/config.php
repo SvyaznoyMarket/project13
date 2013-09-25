@@ -215,8 +215,10 @@ $c->product['reviewEnabled']          = true;
 $c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
 // jewel
-$c->product['itemsPerPageJewel']     = 24;
-$c->product['itemsPerRowJewel']      = 4;
+$c->product['itemsPerPageJewel']      = 24;
+$c->product['itemsPerRowJewel']       = 4;
+$c->product['pullRecommendation']     = true;
+$c->product['pushRecommendation']     = true;
 
 $c->productPhoto['url'] = [
     0 => '/1/1/60/',
@@ -278,8 +280,6 @@ $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
-$c->smartengine['pull']           = true;
-$c->smartengine['push']           = true;
 $c->smartengine['cert']           = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 $c->smartengine['apiUrl']         = 'https://www.selightprod.smartengine.at/se-light/api/1.0/json/';
 $c->smartengine['apiKey']         = 'c41851b19511c20acc84f47b7816fb8e';

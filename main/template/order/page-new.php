@@ -78,7 +78,7 @@ foreach (array_reverse($productsById) as $product) {
 						<span data-bind="text: box.deliveryName"></span>
 					</h2>
 
-					<div class="bDeliverySelf"><span data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></span></div>
+					<div class="bDeliverySelf"><span data-bind="visible: box.hasPointDelivery, html: box.choosenPoint().name"></span></div>
 
 					<? if (isset($deliveryData['shops']) && (count($deliveryData['shops']) > 1)): ?>
 						<!-- кнопка сменить магазин -->
@@ -454,7 +454,7 @@ foreach (array_reverse($productsById) as $product) {
 		<ul class="bPointList" data-bind="foreach: { data: popupWithPoints().points }">
 			<li class="bPointInPopup" data-bind="click: $root.selectPoint">
 				<div class="bMapShops__eListNum"><img alt="" src="/images/shop.png"></div>
-				<div class="bPointInPopup__eName"><span data-bind="text: $data.name"></span> <span class="bTime" data-bind="text: $data.regtime"></span></div>
+				<div class="bPointInPopup__eName"><span data-bind="html: $data.name"></span> <span class="bTime" data-bind="text: $data.regtime"></span></div>
 			</li>
 		</ul>
 		<div class="bPointPopupMap" id="pointPopupMap"></div>

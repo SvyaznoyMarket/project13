@@ -40,7 +40,7 @@
         <?= $product->getDescription() ?>
     </div>
 
-    <? if (\App::config()->smartengine['pull']): ?>
+    <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'alsoViewed',
             'title'    => 'С этим товаром также смотрят',
@@ -85,7 +85,7 @@
     <? endif ?>
     </div>
 
-    <? if (\App::config()->smartengine['pull']): ?>
+    <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'similar',
             'title'    => 'Похожие товары',
