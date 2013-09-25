@@ -81,6 +81,7 @@
 			infBtn.addClass(activeClass);
 
 			catalog.infScroll.nowPage = 1;
+			catalog.infScroll.loading = false;
 
 			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
 			$(window).on('scroll', catalog.infScroll.checkScroll);

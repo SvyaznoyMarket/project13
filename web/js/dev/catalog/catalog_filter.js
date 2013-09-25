@@ -110,6 +110,8 @@
 				html = Mustache.render(filterTemplate, data, partials);
 
 				if ( data.hasOwnProperty('values') ) {
+					console.info('run update filter!');
+
 					catalog.filter.updateFilter( data['values'] );
 				}
 
@@ -419,7 +421,9 @@
 			var inputUpdates = function inputUpdates() {
 				var val = '0' + $(this).val();
 
-				val = parseInt(val, 10);
+				val = parseFloat(val);
+				console.info('inputUpdates');
+				console.log(val);
 				val =
 					( val > max ) ? max :
 					( val < min ) ? min :

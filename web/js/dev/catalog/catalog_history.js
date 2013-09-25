@@ -120,7 +120,8 @@
 				statusCode: {
 					500: errorHandler,
 					503: errorHandler
-				}
+				},
+				error: errorHandler
 			});
 		}
 	};
