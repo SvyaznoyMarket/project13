@@ -1332,6 +1332,7 @@
 			dataToSend = orderForm.serializeArray();
 			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
 			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
+            console.log(JSON.stringify(parts));
 
       if ( typeof(window.KM) !== 'undefined' ) {
 				dataToSend.push({ name: 'kiss_session', value: window.KM.i });
@@ -1644,8 +1645,14 @@ console.log('=====================================')
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
 				else {
+console.log('*** productsToNewBox:')
 console.log(productsToNewBox)
-console.log('=====================================')
+console.log('=====================================');
+
+                    if ( 'pickpoint' == nowState ) {
+                        productsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
+                    }
+
 					// Блока для этого типа доставки в этот пункт еще существует
 					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
 				}
@@ -2250,7 +2257,27 @@ console.log('=====================================')
 			utils.packageReq(reqArray);
 
 			return false;
-		}
+		},
+
+
+
+        prepareProductsByUniq: function (productsToNewBox) {
+            var productsUniq = [],
+                nowProduct,
+                j,k;
+
+            for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
+                nowProduct = productsToNewBox[j];
+                for ( k = 0; k <= nowProduct.quantity; k++ ) {
+                    nowProduct.quantity = 1;
+                    nowProduct.sum = nowProduct.price;
+                    productsUniq.push(nowProduct);
+                }
+            }
+
+            if (productsUniq) productsToNewBox = productsUniq;
+            return productsToNewBox;
+        }
 	};
 
 	ko.applyBindings(global.OrderModel);

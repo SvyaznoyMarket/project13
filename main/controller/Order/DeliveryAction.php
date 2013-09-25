@@ -5,6 +5,17 @@ namespace Controller\Order;
 class DeliveryAction {
     use ResponseDataTrait;
 
+    /*private function d($var){
+        file_put_contents('t.txt', print_r($var, 1) . "\n" . PHP_EOL, FILE_APPEND);
+    }
+
+    private function pr($var, $hint = null){
+        print '<pre>';
+        if ($hint) print '### '.$hint."\n".PHP_EOL;
+        print_r($var);
+        print '</pre>';
+    }*/
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -341,9 +352,12 @@ class DeliveryAction {
             if(!empty($pickpointProductIds)) {
                 $deliveryRegions = [];
                 if(!empty(reset($result['products'])['deliveries']['pickpoint']['regions'])) {
-                    $deliveryRegions = array_map(function($regionItem) {
-                        return $regionItem['region'];
-                    }, reset($result['products'])['deliveries']['pickpoint']['regions']);
+                    $deliveryRegions = array_map(
+                        function($regionItem) {
+                            return $regionItem['region'];
+                        },
+                        reset($result['products'])['deliveries']['pickpoint']['regions']
+                    );
                 }
 
                 $ppClient = \App::pickpointClient();
