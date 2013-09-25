@@ -111,7 +111,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 )) ?>
 
 
-<? if (\App::config()->smartengine['push']): ?>
+<? if (false && \App::config()->product['pushRecommendation']): // TODO: почистить ?>
     <? foreach ($orders as $order): ?>
     <?
         $jsonOrdersData = array('order' => array('id' => $order->getId(), 'product' => array_map(function ($orderProduct) {
