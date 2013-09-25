@@ -76,6 +76,24 @@
 			return this.deliveryStates.hasOwnProperty(state);
 		};
 
+
+        /**
+         * Флаг уникальности для типа доставки state.
+         * Например, для типа доставки pickpoint должен быть false (задаётся в РНР-коде на сервере)
+         *
+         * @this	{OrderDictionary}
+         *
+         * @param	    {String}	state	Метод доставки
+         * @returns     {Boolean}
+         */
+        OrderDictionary.prototype.isUniqueDeliveryState = function( state ) {
+            if ( this.deliveryStates.hasOwnProperty(state) ) {
+                var st = this.deliveryStates[state];
+                return st['unique'];
+            }
+            return false;
+        };
+
 		/**
 		 * Есть ли для метода доставки пункты доставки
 		 *

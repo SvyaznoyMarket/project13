@@ -22,7 +22,7 @@
 		 * 
 		 * @constructor
 		 */
-		function DeliveryBox( products, state, choosenPointForBox ) {
+		function DeliveryBox( products, state, choosenPointForBox, isUnique ) {
 			// enforces new
 			if ( !(this instanceof DeliveryBox) ) {
 				return new DeliveryBox(products, state, choosenPointForBox);
@@ -36,6 +36,8 @@
 			// Токен блока
 			self.token = state+'_'+choosenPointForBox;
 
+            // Уникальность продуктов в этом типе доставки
+            self.isUnique = isUnique || false;
 			// Продукты в блоке
 			self.products = [];
 			// Общая стоимость блока
@@ -782,6 +784,24 @@
 		OrderDictionary.prototype.hasDeliveryState = function( state ) {
 			return this.deliveryStates.hasOwnProperty(state);
 		};
+
+
+        /**
+         * Флаг уникальности для типа доставки state.
+         * Например, для типа доставки pickpoint должен быть false (задаётся в РНР-коде на сервере)
+         *
+         * @this	{OrderDictionary}
+         *
+         * @param	    {String}	state	Метод доставки
+         * @returns     {Boolean}
+         */
+        OrderDictionary.prototype.isUniqueDeliveryState = function( state ) {
+            if ( this.deliveryStates.hasOwnProperty(state) ) {
+                var st = this.deliveryStates[state];
+                return st['unique'];
+            }
+            return false;
+        };
 
 		/**
 		 * Есть ли для метода доставки пункты доставки
@@ -1669,11 +1689,13 @@
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
 				else {
-                    if ( 'pickpoint' == nowState ) {
+                    var isUnique = false;
+                    if ( global.OrderModel.orderDictionary.isUniqueDeliveryState(nowState) ) {
                         productsToNewBox = global.OrderModel.orderDictionary.prepareProductsByUniq(productsToNewBox);
+                        isUnique = true;
                     }
 					// Блока для этого типа доставки в этот пункт еще существует, создадим его:
-					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
+					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox, isUnique);
 				}
 			}
 		}
@@ -2474,7 +2496,7 @@
 				global.OrderModel.choosenDeliveryTypeId = window.docCookies.getItem('chTypeId_paypalECS');
 				global.OrderModel.statesPriority = JSON.parse( window.docCookies.getItem('chStetesPriority_paypalECS') );
 
-				separateOrder( global.OrderModel.statesPriority );
+                separateOrder( global.OrderModel.statesPriority );
 			}
 		},
 

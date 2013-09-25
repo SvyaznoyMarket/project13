@@ -22,7 +22,7 @@
 		 * 
 		 * @constructor
 		 */
-		function DeliveryBox( products, state, choosenPointForBox ) {
+		function DeliveryBox( products, state, choosenPointForBox, isUnique ) {
 			// enforces new
 			if ( !(this instanceof DeliveryBox) ) {
 				return new DeliveryBox(products, state, choosenPointForBox);
@@ -36,6 +36,8 @@
 			// Токен блока
 			self.token = state+'_'+choosenPointForBox;
 
+            // Уникальность продуктов в этом типе доставки
+            self.isUnique = isUnique || false;
 			// Продукты в блоке
 			self.products = [];
 			// Общая стоимость блока

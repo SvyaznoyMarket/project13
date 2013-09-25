@@ -119,11 +119,13 @@
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
 				else {
-                    if ( 'pickpoint' == nowState ) {
+                    var isUnique = false;
+                    if ( global.OrderModel.orderDictionary.isUniqueDeliveryState(nowState) ) {
                         productsToNewBox = global.OrderModel.orderDictionary.prepareProductsByUniq(productsToNewBox);
+                        isUnique = true;
                     }
 					// Блока для этого типа доставки в этот пункт еще существует, создадим его:
-					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
+					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox, isUnique);
 				}
 			}
 		}
@@ -924,7 +926,7 @@
 				global.OrderModel.choosenDeliveryTypeId = window.docCookies.getItem('chTypeId_paypalECS');
 				global.OrderModel.statesPriority = JSON.parse( window.docCookies.getItem('chStetesPriority_paypalECS') );
 
-				separateOrder( global.OrderModel.statesPriority );
+                separateOrder( global.OrderModel.statesPriority );
 			}
 		},
 
