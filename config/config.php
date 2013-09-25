@@ -38,7 +38,7 @@ $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
 $c->coreV2['chunk_size']   = 50;
 $c->coreV2['timeout']      = 5;
-$c->coreV2['hugeTimeout']  = 60;
+$c->coreV2['hugeTimeout']  = 90;
 $c->coreV2['retryCount']   = 3;
 $c->coreV2['retryTimeout'] = [
     'default' => 0.5,
@@ -213,8 +213,10 @@ $c->product['reviewEnabled']          = true;
 $c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
 // jewel
-$c->product['itemsPerPageJewel']     = 24;
-$c->product['itemsPerRowJewel']      = 4;
+$c->product['itemsPerPageJewel']      = 24;
+$c->product['itemsPerRowJewel']       = 4;
+$c->product['pullRecommendation']     = true;
+$c->product['pushRecommendation']     = true;
 
 $c->productPhoto['url'] = [
     0 => '/1/1/60/',
@@ -276,8 +278,6 @@ $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
-$c->smartengine['pull']           = true;
-$c->smartengine['push']           = true;
 $c->smartengine['cert']           = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 $c->smartengine['apiUrl']         = 'https://www.selightprod.smartengine.at/se-light/api/1.0/json/';
 $c->smartengine['apiKey']         = 'c41851b19511c20acc84f47b7816fb8e';
@@ -317,7 +317,7 @@ $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = true;
 
-$c->mobileModify['enabled'] = true;
+$c->mobileModify['enabled'] = false;
 
 $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
@@ -346,24 +346,17 @@ $c->abtest['bestBefore'] = '2013-09-23';
 $c->abtest['test']       = [
     // smartengine
     [
-        'traffic'  => 33,
-        'key'      => 'smartengine',
-        'name'     => "Похожие товары от SmartEngine",
-        'ga_event' => 'SmartEngine',
+        'traffic'  => 50,
+        'key'      => 'retailrocket',
+        'name'     => "Похожие товары от RetailRocket",
+        'ga_event' => 'RetailRocket',
     ],
     // retailrocket
     [
-        'traffic'  => 33,
+        'traffic'  => 50,
         'key'      => 'retailrocket',
         'name'     => "С этим товаром также смотрят от RetailRocket",
         'ga_event' => 'RetailRocket',
-    ],
-    // hybrid
-    [
-        'traffic'  => 33,
-        'key'      => 'hybrid',
-        'name'     => "С этим товаром также смотрят - от RetailRocket, Похожие товары - от SmartEngine",
-        'ga_event' => 'Hybrid',
     ],
 ];
 

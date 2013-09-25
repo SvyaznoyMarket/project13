@@ -251,6 +251,8 @@ class AppConfig {
         'lowerPriceNotification' => null,
         'furnitureConstructor'   => null, // конструктор шкафов-купе
         'newList'                => null, // новый дизайн листингов
+        'recommendationPull'     => null, // подтягивать информацию о рекоммендованных товарах
+        'recommendationPush'     => null, // отправлять данные для расчета рекоммендованных товаров
     ];
     /** @var array */
     public $productPhoto = [
@@ -329,8 +331,6 @@ class AppConfig {
      * @hidden
      */
     public $smartengine = [
-        'pull'           => null,
-        'push'           => null,
         'apiUrl'         => null,
         'apiKey'         => null,
         'tenantid'       => null,

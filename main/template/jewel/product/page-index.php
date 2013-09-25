@@ -168,7 +168,7 @@ $productVideo = reset($productVideos);
 <div id="jsProductCard" data-value="<?= $page->json( $product->getProductDataArray() ) ?>"></div>
 
 <!-- похожие товары -->
-<? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
+<? if (!$product->getIsBuyable() && $product->getState()->getIsShop() && \App::config()->product['pullRecommendation']): ?>
 <div class="clear"></div>
 
 <div class="lifted">
@@ -480,17 +480,17 @@ $productVideo = reset($productVideos);
     <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related.jewel', ['productToken' => $product->getToken()]), 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
-<? if (false && \App::config()->smartengine['pull']): ?>
+<? if (false && \App::config()->product['pullRecommendation']): ?>
 <!--div class="clear"></div>
 <div id="product_also_bought-container" data-url="<? //echo url_for('smartengine_alsoBought', ['product' => $product->getId()]) ?>" style="margin-top: 20px;"></div-->
 <? endif ?>
 
-<?php if (\App::config()->smartengine['pull']): ?>
+<?php if (\App::config()->product['pullRecommendation']): ?>
 <div class="clear"></div>
 <div id="product_user-also_viewed-container" data-url="<?= $page->url('product.recommended.jewel', ['productId' => $product->getId()]) ?>" style="margin-top: 20px;"></div>
 <? endif ?>
 
-<? if (false && \App::config()->smartengine['pull']): ?>
+<? if (false && \App::config()->product['pullRecommendation']): ?>
 <!--div class="clear"></div>
 <div id="product_user-recommendation-container" data-url="<? //echo url_for('smartengine_userRecommendation', ['product' => $product->getId()]) ?>" style="margin-top: 20px;"><h3>Recommendations for user...</h3></div-->
 <? endif ?>
@@ -718,8 +718,8 @@ $productVideo = reset($productVideos);
 
 <?= $page->tryrender('jewel/product/_tag', ['product' => $product]) ?>
 
-<? if (\App::config()->smartengine['push']): ?>
-<div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
+<? if (false && \App::config()->product['pushRecommendation']): // TODO: почистить ?>
+    <div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
 <? endif ?>
 
 <? if ($product->getIsBuyable()): echo $page->render('order/form-oneClick'); endif; ?>

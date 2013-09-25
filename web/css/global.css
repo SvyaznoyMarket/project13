@@ -668,6 +668,7 @@
     border: 1px solid #c9c9c9;
     height: 22px;
     padding: 0px 5px;
+    line-height: 22px;
   }
   .text:hover {
     border-color: #ffd073;
@@ -10206,10 +10207,12 @@
     overflow: hidden;
     zoom: 1;
     height: 0;
+    float: left;
     width: 0;
     line-height: 0;
     font-size: 0;
     padding: 0;
+    margin-top: 0;
   }
   .bInputList .bCustomLabel {
     display: inline-block;
@@ -11491,6 +11494,9 @@
     background: #fff;
     padding: 0 5px;
   }
+  .mRules {
+    position: relative;
+  }
   .mRules .bErrorText__eInner {
     top: 20px;
     left: 16px;
@@ -11622,8 +11628,8 @@
   .mPayMethods .bSelectWrap_eText {
     color: #616161;
   }
-  .lt-ie8 .mPayMethods .bPayMethodAction,
-  .lt-ie8 .mPayMethods .bProcess {
+  .lt-ie9 .mPayMethods .bPayMethodAction,
+  .lt-ie9 .mPayMethods .bProcess {
     display: block;
   }
 }
