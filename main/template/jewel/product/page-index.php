@@ -168,7 +168,7 @@ $productVideo = reset($productVideos);
 <div id="jsProductCard" data-value="<?= $page->json( $product->getProductDataArray() ) ?>"></div>
 
 <!-- похожие товары -->
-<? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
+<? if (!$product->getIsBuyable() && $product->getState()->getIsShop() && \App::config()->smartengine['pull']): ?>
 <div class="clear"></div>
 
 <div class="lifted">
@@ -718,8 +718,8 @@ $productVideo = reset($productVideos);
 
 <?= $page->tryrender('jewel/product/_tag', ['product' => $product]) ?>
 
-<? if (\App::config()->smartengine['push']): ?>
-<div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
+<? if (false && \App::config()->smartengine['push']): // TODO: почистить ?>
+    <div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
 <? endif ?>
 
 <? if ($product->getIsBuyable()): echo $page->render('order/form-oneClick'); endif; ?>
