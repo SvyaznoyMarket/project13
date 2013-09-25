@@ -879,6 +879,34 @@
 
 			return this.products[productId];
 		};
+
+
+
+
+        /**
+         *  Раразбивка массива товаров в массив по уникальным единицам (для PickPoint)
+         *  т.е. вместо продукта в количестве 2 шт, будут 2 проудкта по 1 шт.
+         *
+         * @param       {Array}   productsToNewBox
+         * @returns     {Array}   {*}
+         */
+        OrderDictionary.prototype.prepareProductsByUniq = function (productsToNewBox) {
+            var productsUniq = [],
+                nowProduct,
+                j,k;
+
+            for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
+                nowProduct = productsToNewBox[j];
+                for ( k = 0; k <= nowProduct.quantity; k++ ) {
+                    nowProduct.quantity = 1;
+                    nowProduct.sum = nowProduct.price;
+                    productsUniq.push(nowProduct);
+                }
+            }
+
+            if (productsUniq) productsToNewBox = productsUniq;
+            return productsToNewBox;
+        };
 	
 	
 		return OrderDictionary;
@@ -1533,6 +1561,8 @@
 		utils = global.ENTER.utils;
 	// end of vars
 
+    console.log('*** serverData');
+    console.log(serverData);
 
 	/**
 	 * Логика разбиения заказа на подзаказы
@@ -1640,7 +1670,7 @@
 				}
 				else {
                     if ( 'pickpoint' == nowState ) {
-                        productsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
+                        productsToNewBox = global.OrderModel.orderDictionary.prepareProductsByUniq(productsToNewBox);
                     }
 					// Блока для этого типа доставки в этот пункт еще существует, создадим его:
 					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
@@ -2246,32 +2276,7 @@
 			utils.packageReq(reqArray);
 
 			return false;
-		},
-
-        /**
-         *  Раразбивка массива товаров в массив по уникальным единицам (для PickPoint)
-         *  т.е. вместо продукта в количестве 2 шт, будут 2 проудкта по 1 шт.
-         *
-         * @param       {Array}   productsToNewBox
-         * @returns     {Array}   {*}
-         */
-        prepareProductsByUniq: function (productsToNewBox) {
-            var productsUniq = [],
-                nowProduct,
-                j,k;
-
-            for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
-                nowProduct = productsToNewBox[j];
-                for ( k = 0; k <= nowProduct.quantity; k++ ) {
-                    nowProduct.quantity = 1;
-                    nowProduct.sum = nowProduct.price;
-                    productsUniq.push(nowProduct);
-                }
-            }
-
-            if (productsUniq) productsToNewBox = productsUniq;
-            return productsToNewBox;
-        }
+		}
 	};
 
 	ko.applyBindings(global.OrderModel);

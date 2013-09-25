@@ -162,27 +162,27 @@ class DeliveryAction {
                 'deliveryStates'  => [
                     'self'               => [
                         'name'     => 'Самовывоз',
-                        'uniq'     => false,
+                        'unique'     => false,
                         'products' => [],
                     ],
                     'now'                => [
                         'name'     => 'Самовывоз',
-                        'uniq'     => false,
+                        'unique'     => false,
                         'products' => [],
                     ],
                     'standart_other'     => [
                         'name'     => 'Доставим',
-                        'uniq'     => false,
+                        'unique'     => false,
                         'products' => [],
                     ],
                     'standart_furniture' => [
                         'name'     => 'Доставим',
-                        'uniq'     => false,
+                        'unique'     => false,
                         'products' => [],
                     ],
                     'pickpoint' => [
                         'name'     => 'Pickpoint',
-                        'uniq'     => true,
+                        'unique'     => true,
                         'products' => [],
                     ],
                 ],
