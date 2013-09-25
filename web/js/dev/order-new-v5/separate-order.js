@@ -111,26 +111,16 @@
 
 				token = nowState+'_'+choosenPointForBox;
 
-console.log('=====================================')
-console.log(choosenPointForBox)
-console.log(token)
-console.log('=====================================')
-
 				if ( global.OrderModel.hasDeliveryBox(token) ) {
 					// Блок для этого типа доставки в этот пункт уже существует
 					choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
 				else {
-console.log('*** productsToNewBox:')
-console.log(productsToNewBox)
-console.log('=====================================');
-
                     if ( 'pickpoint' == nowState ) {
                         productsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
                     }
-
-					// Блока для этого типа доставки в этот пункт еще существует
+					// Блока для этого типа доставки в этот пункт еще существует, создадим его:
 					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
 				}
 			}
@@ -736,8 +726,13 @@ console.log('=====================================');
 			return false;
 		},
 
-
-
+        /**
+         *  Раразбивка массива товаров в массив по уникальным единицам (для PickPoint)
+         *  т.е. вместо продукта в количестве 2 шт, будут 2 проудкта по 1 шт.
+         *
+         * @param       {Array}   productsToNewBox
+         * @returns     {Array}   {*}
+         */
         prepareProductsByUniq: function (productsToNewBox) {
             var productsUniq = [],
                 nowProduct,
