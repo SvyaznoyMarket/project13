@@ -139,8 +139,6 @@
             	}
             }
 
-            console.log(s.src);
-
             l.parentNode.insertBefore(s, l);
 		},
 
