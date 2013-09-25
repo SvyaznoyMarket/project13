@@ -136,8 +136,6 @@ class OneClickAction {
                             throw $e;
                         }
                     }
-
-                    throw $e;
                 }
 
                 $orderNumber = !empty($result['number']) ? (string)$result['number'] : null;
