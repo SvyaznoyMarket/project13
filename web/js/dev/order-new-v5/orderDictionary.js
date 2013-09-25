@@ -215,7 +215,9 @@
                 }
             }
 
-            if (productsUniq) productsToNewBox = productsUniq;
+            if (productsUniq) {
+                productsToNewBox = productsUniq;
+            }
             return productsToNewBox;
         };
 	

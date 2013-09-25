@@ -119,13 +119,27 @@
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
 				else {
+                    // Блока для этого типа доставки в этот пункт еще существует, создадим его:
+
                     var isUnique = false;
                     if ( global.OrderModel.orderDictionary.isUniqueDeliveryState(nowState) ) {
-                        productsToNewBox = global.OrderModel.orderDictionary.prepareProductsByUniq(productsToNewBox);
+                        // Если есть флаг уникальности, каждый товар в отдельном блоке будет
                         isUnique = true;
+
+                        // Разделим товары, продуктом считаем уникальную единицу товара:
+                        // Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
+                        productsToNewBox = global.OrderModel.orderDictionary.prepareProductsByUniq(productsToNewBox);
+
+                        for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
+                            nowProduct = productsToNewBox[j];
+                            global.ENTER.constructors.DeliveryBox( [nowProduct], nowState, choosenPointForBox, isUnique);
+                        }
+
+                    }else{
+                        // Без флага уникальности, все товары скопом:
+                        // Пример: 5 тетрадок ==> 1 товар количеством 5 шт
+                        global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
                     }
-					// Блока для этого типа доставки в этот пункт еще существует, создадим его:
-					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox, isUnique);
 				}
 			}
 		}

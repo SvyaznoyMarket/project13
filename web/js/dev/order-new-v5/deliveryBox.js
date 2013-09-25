@@ -160,6 +160,11 @@
 				choosenBlock = null;
 			// end of vars
 
+            if (self.isUnique) {
+                var randSuff = new Date().getTime();
+                newToken += '_' + randSuff;
+            }
+
 			if ( window.OrderModel.hasDeliveryBox(newToken) ) {
 				choosenBlock = global.OrderModel.getDeliveryBoxByToken(newToken);
 				choosenBlock.addProductGroup( self.products );
