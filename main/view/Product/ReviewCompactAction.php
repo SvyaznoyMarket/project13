@@ -19,17 +19,17 @@ class ReviewCompactAction {
 
         $stars = [];
         if (empty($score)) {
-            for ($i=5; $i > ceil($score); $i--) {
+            for ($i = 5; $i > ceil($score); $i--) {
                 $stars[] = ['image' => $emptyImage];
             }
         } else {
-            for ($i=0; $i < (int)$score; $i++) {
+            for ($i = 0; $i < (int)$score; $i++) {
                 $stars[] = ['image' => $defaultImage];
             }
             if (ceil($score) > $score) {
                 $stars[] = ['image' => $halfImage];
             }
-            for ($i=5; $i > ceil($score); $i--) {
+            for ($i = 5; $i > ceil($score); $i--) {
                 $stars[] = ['image' => $emptyImage];
             }
         }

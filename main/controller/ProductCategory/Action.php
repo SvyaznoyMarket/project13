@@ -356,7 +356,8 @@ class Action {
             &$hotlinks,
             &$seoContent,
             &$catalogJson,
-            &$promoContent
+            &$promoContent,
+            &$shop
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -366,6 +367,7 @@ class Action {
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
+            $page->setGlobalParam('shop', $shop);
             if ( \App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) $page->setGlobalParam('shops', \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()));
         };
 
