@@ -135,6 +135,7 @@ class OneClickAction {
 
                             throw $e;
                         }
+                        \App::exception()->remove($e);
                     }
                 }
 
