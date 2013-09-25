@@ -33,11 +33,14 @@
 
 			var self = this;
 
-			// Токен блока
-			self.token = state+'_'+choosenPointForBox;
-
             // Уникальность продуктов в этом типе доставки
             self.isUnique = isUnique || false;
+			// Токен блока
+			self.token = state+'_'+choosenPointForBox;
+            /*if (self.isUnique) {
+                self.token += self.addUniqueSuffix();
+            }*/
+
 			// Продукты в блоке
 			self.products = [];
 			// Общая стоимость блока
@@ -145,6 +148,22 @@
 		};
 
 
+        /**
+         * Генерирует случайное окончание (суффикс) для строки
+         *
+         * @param       {string}      str
+         * @returns     {string}      str
+         */
+        DeliveryBox.prototype.addUniqueSuffix = function( str ) {
+            str = str || '';
+            var randSuff;
+            //randSuff = new Date().getTime();
+            randSuff = Math.floor( (Math.random() * 10000) + 1 );
+            str += '_' + randSuff;
+            return str;
+        };
+
+
 		/**
 		 * Смена пункта доставки. Переименовываем token блока
 		 * Удаляем старый блок из массива блоков и добавяем туда новый с новым токеном
@@ -161,8 +180,7 @@
 			// end of vars
 
             if (self.isUnique) {
-                var randSuff = new Date().getTime();
-                newToken += '_' + randSuff;
+                newToken += self.addUniqueSuffix();
             }
 
 			if ( window.OrderModel.hasDeliveryBox(newToken) ) {
@@ -370,7 +388,7 @@
 		 * @return	{String}					Человекочитаемый день недели
 		 */
 		DeliveryBox.prototype._getFullNameDayOfWeek = function( dayOfWeek ) {
-			var days = ['воскресение', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
+			var days = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
 
 			return days[dayOfWeek];
 		};
@@ -492,7 +510,7 @@
 
 				tempProduct = self.products.pop();
 				tempProductArray.push(tempProduct);
-				newToken = self.state+'_'+self.choosenPoint().id+'_'+Math.floor( (Math.random() * 10000) + 1 );
+                newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();
 				console.log('новый токен '+newToken);
 				console.log(self);
 
