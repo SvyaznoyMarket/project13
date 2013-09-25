@@ -7,6 +7,7 @@
  * @var $productVideosByProduct  array
  */
 $count = 0;
+if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
 ?>
 
 <? if (\App::config()->adFox['enabled']): ?>
@@ -17,20 +18,25 @@ $count = 0;
 <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
 
 <? // в зависимости от настроек категории в json показываем иконки или линейки (линейки по умолчанию) ?>
-<? if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons'): ?>
+<? if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons' && empty($forceSliders)): ?>
     <div class="goodslist clearfix">
     <? foreach ($category->getChild() as $child): ?>
-        <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category)) ?>
+        <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category, 'catalogJsonBulk' => $catalogJsonBulk)) ?>
     <? endforeach ?>
     </div>
 <? elseif(!empty($promoContent)): ?>
     <?= $promoContent ?>
 <? else: ?>
+    <? foreach ($category->getChild() as $child) {
+        $pager = $productPagersByCategory[$child->getId()];
+        if (!$pager || !$pager->count()) continue;
+        $count += $pager->count();
+    } ?>
+    <?= $page->render('product/_inshop', ['count' => $count, 'category' => $category]); ?>
     <? foreach ($category->getChild() as $child) { ?>
         <?
         $pager = $productPagersByCategory[$child->getId()];
         if (!$pager || !$pager->count()) continue;
-        $count += $pager->count();
         ?>
         <?= $page->render('product/_slider-inCategory', array(
             'category'               => $child,
@@ -39,7 +45,6 @@ $count = 0;
             'productVideosByProduct' => $productVideosByProduct,
         )) ?>
     <? }
-    if (!$count) print "нет товаров";
     $page->setGlobalParam('productCount', $count);
     ?>
 <? endif ?>

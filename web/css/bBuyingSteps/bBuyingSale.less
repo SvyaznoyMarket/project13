@@ -1,0 +1,134 @@
+.bBuyingSale {
+	padding-bottom: 8px;
+
+	.bSumOrderInfo__eLine {
+		margin: 0 0 2px;
+	}
+
+	.bDelivery {
+		font-size: 18px;
+	}
+
+	.mOldPrice {
+		color: #898989;
+		text-decoration: line-through;
+		font-size: 14px;
+	}
+
+	.mItemImg {
+		background: url("@{base-url}/bBuyingSteps/img/bgStatusSale.gif") no-repeat 0 0;
+		height: 20px;
+
+		&.mError {
+			background-position: 0 -35px;
+		}
+	}
+
+	.bSumOrderInfo {
+		margin-top: 15px;
+	}
+}
+
+.bSaleData {
+	display: inline-block;
+
+	width: 427px;
+
+	vertical-align: top;
+
+	*display: inline;
+	zoom: 1;
+
+	.bTitle {
+		margin: 0 0 10px;	
+	}
+
+	&__eEmptyBlock {
+		display: block;
+
+		padding: 13px 0 0;
+
+		font-size: 14px;
+	}
+
+	.mSaleInput {
+		display: inline-block;
+
+		width: 288px;
+
+		*display: inline;
+		zoom: 1;
+	}
+
+	.mSaleBtn {
+		display: inline-block;
+
+		width: 95px;
+		height: 33px;
+		padding: 0;
+
+		vertical-align: top;
+
+		cursor: pointer;
+
+		font: normal 14px/33px Tahoma;
+
+		*display: inline;
+		zoom: 1;
+
+		&.mDisabled {
+			background: #f3f3f3;
+			border: 1px solid #a6a6a6;
+
+			color: #a6a6a6;
+
+			cursor: default;
+		}
+	}
+}
+
+.bSaleList {
+	margin: 0 0 12px 0;
+
+	&__eItem {
+		float: left;
+
+		margin-right: 14px;
+
+		vertical-align: top;
+		border: 1px solid #dddddd;
+		
+		.rounded(4px);
+
+		padding: 4px 5px 4px 8px;
+		width: 87px;
+
+		text-transform: uppercase;
+	}
+
+	.bCustomLabel {
+		font-family: "Enter";
+	}
+
+	.mEnterSpa {
+    	background: #000;
+
+    	.bCustomLabel {
+			color: #fff;
+		}
+   }
+}
+
+.bSaleCheck {
+	background: url("@{base-url}/bBuyingSteps/img/bCheck.jpg") no-repeat 0 0;
+	width: 178px;
+	height: 95px;
+	float: right;
+	display: inline-block;
+	margin: 20px 0 0;
+}
+
+.bSaleError {
+   	color: #ec434f;
+}
+

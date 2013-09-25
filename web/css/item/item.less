@@ -92,7 +92,6 @@
   top: 0px;
   width:78px;
   zoom: 1;
-  behavior: url(@pie);
   a {
     color: #959595;
     cursor: pointer;
@@ -199,7 +198,6 @@
     height: 44px;
     overflow: hidden;
     width: 44px;
-    behavior: url(@pie);
     &:hover,
     &.current{
       border: 2px solid @firmOrange;
@@ -606,6 +604,8 @@
 .bHint{
   margin-bottom: -5px;
   position: relative;
+  display: inline-block;
+  vertical-align: top;
   &_eLink{
     background: @white url('@{base-url}/item/img/hintQ.gif') no-repeat left center;
     cursor: pointer;
@@ -613,7 +613,7 @@
     font-size: 0;
     height: 16px;
     text-indent: -10000px;
-    width: 20px;
+    width: 16px;
   }
   &_ePopup{
     display: none;
@@ -623,10 +623,11 @@
     overflow: auto;
     top: 20px;
     width: 350px;
-    z-index: 2;
+    z-index: 12;
   }
   /*** принудительное форматирование подсказок ***/
-  .bHint-text span {
+  &-text span,
+  &-text p {
     font-size: 13px !important;
     font-family: Tahoma !important;
     line-height: 1.2 !important;
@@ -634,13 +635,13 @@
 }
 
 .tag-section {
-  margin: 0 0 0 10px;
+  margin: 0;
 }
 /** **/
 .categoriesmenu {
   float: left;
   width: 190px;
-  margin-left: -19px;
+  margin-left: -10px;
   margin-top: 12px;
 }
   .categoriesmenuitem {
@@ -696,11 +697,11 @@
       background: url("@{base-url}/item/img/btn_acess_box.png") no-repeat -20px 50% #f6f6f6;
     }
     .scroll .srcoll_link_button.back {
-      left: 174px;
+      left: 183px;
     }
     .scroll .srcoll_link_button.forvard {
       background-position: -20px 50%;
-      right: -12px;
+      right: -10px;
   }
  }
   .bigcarousel .goodsbox .buy {

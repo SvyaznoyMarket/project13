@@ -8,6 +8,7 @@
  * @var $productView            string
  * @var $productVideosByProduct array
  */
+if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
 ?>
 
 <? if (\App::config()->adFox['enabled']): ?>
@@ -21,7 +22,7 @@
 
 <div class="clear"></div>
 <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
-
+<?= $page->render('product/_inshop', ['count' => $productPager->count(), 'renderInfo' => false, 'category' => $category]); ?>
 <?= $page->render('product/_pager', array(
     'request'                => $request,
     'pager'                  => $productPager,
@@ -31,4 +32,5 @@
     'category'               => $category,
     'view'                   => $productView,
     'productVideosByProduct' => $productVideosByProduct,
+    'isAddInfo'       => true,
 )) ?>

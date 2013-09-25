@@ -37,7 +37,7 @@ class IndexAction {
         // подготовка 2-го пакета запросов
         // запрашиваем товары
         if ((bool)$productsById) {
-            foreach (array_chunk(array_keys($productsById), 50) as $ids) {
+            foreach (array_chunk(array_keys($productsById), \App::config()->coreV2['chunk_size']) as $ids) {
                 \RepositoryManager::product()->prepareCollectionById($ids, $region, function($data) use (&$productsById) {
                     foreach ($data as $item) {
                         $productsById[(int)$item['id']] = new \Model\Product\BasicEntity($item);

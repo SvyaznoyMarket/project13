@@ -23,11 +23,11 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
 
 <? require __DIR__ . '/_show.php' ?>
 
-<?= $page->render('cart/form-certificate') ?>
+<?//= $page->render('cart/form-certificate') ?>
 
 <div id="_cartKiss" style="display: none" data-cart="<?=$page->json(['count'=>(count($cart->getProducts()) + count($cart->getServices())), 'price'=>$cart->getSum()]);?>"></div>
 
-<div class="fl width345 font14">
+<div class="fl width345 font14 mNoPrint">
     <? if ($creditEnabled): ?>
     <div id="creditFlag" style="display:none">
         <label class="bigcheck <? if ($selectCredit): ?> checked<? endif ?>" for="selectCredit">
@@ -94,10 +94,10 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
 
 <div class="clear pb25"></div>
 <div class="line pb30"></div>
-<div class="fl font14 pt10">&lt; <a class="underline" href="/">Вернуться к покупкам</a></div>
+<div class="fl font14 pt10 mNoPrint">&lt; <a class="underline" href="/">Вернуться к покупкам</a></div>
 
-<div class="width500 auto">
-    <a href="<?= $page->url('order.create') ?>" class="bBigOrangeButton width345">Оформить заказ</a>
+<div class="width500 mNoPrint auto">
+    <a href="<?= $page->url('order') ?>" class="bBigOrangeButton width345">Оформить заказ</a>
 </div>
 <div class="clear"></div>
 
@@ -106,6 +106,5 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
     <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779415&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script>
     <!--Трэкер "Корзина"-->
 
-    <?= $page->tryRender('cart/partner-counter/_etargeting') ?>
     <?= $page->tryRender('cart/partner-counter/_cityads') ?>
 <? endif ?>

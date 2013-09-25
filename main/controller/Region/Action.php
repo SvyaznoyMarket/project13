@@ -2,6 +2,8 @@
 
 namespace Controller\Region;
 
+use Templating\Helper;
+
 class Action {
     public function init(\Http\Request $request) {
 
@@ -13,7 +15,7 @@ class Action {
      * @return \Http\RedirectResponse
      * @throws \Exception\NotFoundException
      */
-    public function change($regionId, \Http\Request $request) {
+    public function change($regionId, \Http\Request $request, $uri = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $regionId = (int)$regionId;
@@ -22,7 +24,18 @@ class Action {
             return new \Http\RedirectResponse(\App::router()->generate('homepage'));
         }
 
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
+        if ($uri) {
+            $link = $uri;
+        } else {
+            $link = parse_url($request->headers->get('referer') ?: \App::router()->generate('homepage'));
+            if (isset($link['query']) && isset($link['path'])) {
+                parse_str(urldecode($link['query']), $variables);
+                if (isset($variables['shop'])) unset($variables['shop']);
+                $link = $link['path'] . ( count($variables) ? '?' . http_build_query($variables) : '' );
+            } else $link = $request->headers->get('referer') ?: \App::router()->generate('homepage');
+        }
+
+        $response = new \Http\RedirectResponse($link);
 
         $region = null;
         \RepositoryManager::region()->prepareEntityById($regionId, function($data) use (&$region) {
@@ -40,10 +53,10 @@ class Action {
         }
 
         \App::user()->changeRegion($region, $response);
-        $response->headers->clearCookie(\App::config()->shop['cookieName']);
 
         if (\App::user()->getToken()) {
             try {
+                $response->headers->clearCookie(\App::config()->shop['cookieName']);
                 \App::coreClientV2()->query('user/update', ['token' => \App::user()->getToken()], [
                     'geo_id' => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
                 ]);

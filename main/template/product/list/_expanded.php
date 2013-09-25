@@ -9,5 +9,9 @@
 ?>
 
 <? foreach ($pager as $i => $product): ?>
-    <?= $page->render('product/show/_expanded', array('product' => $product, 'productVideos' => isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [], 'addInfo' => $isAddInfo?\Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()):[])) ?>
+    <?= $page->render('product/show/_expanded', [
+        'product'       => $product,
+        'productVideos' => isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [],
+        'addInfo'       => \Kissmetrics\Manager::getProductSearchEvent($product, $i+1, $pager->getPage()),
+    ]); ?>
 <?php endforeach ?>

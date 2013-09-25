@@ -6,9 +6,9 @@
 ?>
 
 <div class="bSubscribeLightboxPopup clearfix">
-    <h3 class="bSubscribeLightboxPopup__eTitle fl">Дружить с нами приятно!</h3>
-    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Оставьте ваш email и узнайте почему"/>
-    <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>">Хочу все знать</button>
+    <h3 class="bSubscribeLightboxPopup__eTitle fl">Дарим подарки новым друзьям!</h3>
+    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Подпишитесь и получите подарок"/>
+    <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>">Хочу подарок</button>
     <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
 </div>
 <!-- Topbar -->
@@ -16,12 +16,22 @@
     <div class="bRegion">
         <a class="fl" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>" id="jsregion" data-url="<?= $page->url('region.init') ?>" data-region-id="<?= $user->getRegion()->getId() ?>" data-autoresolve-url="<?= $page->url('region.autoresolve') ?>"><?= ((mb_strlen($user->getRegion()->getName()) > 20) ? (mb_substr($user->getRegion()->getName(), 0, 20) . '...') : $user->getRegion()->getName()) ?></a>
         
-        <div class="headerContactPhone fl" >
+        <? /*<div class="headerContactPhone fl" >
             <p class="fl headerContactPhone__eTitle">Контакт-cENTER</p>
             <p class="fl headerContactPhone__ePhones"><?= \App::config()->company['phone'] ?>
                 <? if (14974 == $user->getRegion()->getId() || 83 == $user->getRegion()->getParentId()): ?>
                 <br/><?= \App::config()->company['moscowPhone'] ?>
                 <? endif ?>
+            </p>
+        </div> */ ?>
+
+        <div itemscope itemtype="http://schema.org/Organization" class="headerContactPhone fl" >
+            <p class="fl headerContactPhone__ePhones">
+                <span itemprop="telephone"><?= \App::config()->company['phone'] ?></span><br/>
+                <div class="bPhonesRegion fl">
+                    <span itemprop="telephone"><?= \App::config()->company['moscowPhone'] ?></span><br/>
+                    <span itemprop="telephone">8 (812) 703-77-30</span>
+                </div>
             </p>
         </div>
 

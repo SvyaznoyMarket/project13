@@ -4,7 +4,7 @@
     
 //основной путь всех файлов
 @base-url:"/css";
-@pie:"@{base-url}/common/PIE.htc";
+@displayTable:"@{base-url}/common/display-table.min.htc";
 
 //--------МИКСИНЫ----------
 @import "common/mixins.less";
@@ -76,6 +76,10 @@
 @import "item/itemComment.less" all;
 /*новые стили отзывов к продукту*/
 @import "item/itemReviews.less" all;
+/*планировщик мебели*/
+@import "item/3dPlanner.less" all;
+/* новая карточка товара*/
+@import "item/newProductCard.less" all;
 /*---END---СТИЛИ КАРТОЧКИ ТОВАРА---*/
 
 /*-------СТИЛИ РАСШИРЕННОЙ ГАРАНТИИ-----*/
@@ -96,11 +100,6 @@
 /*-------СТИЛИ АПСЕЙЛА-----*/
 @import "upsale/upsale.less" all;
 /*---END---СТИЛИ АПСЕЙЛА---*/
-
-/*-------СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА-----*/
-@import "order/order.less" all;
-// @import "order/orderFinal.less" all;
-/*---END---СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА---*/
 
 /*-------СТИЛИ СТРАНИЦЫ ГДЕ КУПИТЬ-----*/
 @import "whereBuy/whereBuy.less" all;
@@ -192,6 +191,98 @@
 @import "subscribe/subscribe.less" all;
 /*---END---СТИЛИ СТРАНИЦЫ ПОДПИСКИ НА РАССЫЛКУ---*/
 
+/*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА------*/
+@import "bProductSection/bProductSection.less" all;
+
+@import "bProductSection/bSpecifications.less" all;
+
+@import "bProductSection/bProductDescImg.less" all;
+
+@import "bProductSection/bProductDesc.less" all;
+/*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА---*/
+
+/*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНЕЙКИ------*/
+@import "productCardSet/productCardSet.less" all;
+/*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНЕЙКИ---*/
+
+/*------СТИЛИ СЛАЙДЕРА------*/
+@import "bGoodsSlider/bGoodsSlider.less" all;
+/*---END---СТИЛИ СЛАЙДЕРА---*/
+
+/*------СТИЛИ ПРАВОЙ КОЛОНКИ КАРТОЧКИ ТОВАРА------*/
+@import "rightBarCard/rightBarCard.less" all;
+/*---END---СТИЛИ ПРАВОЙ КОЛОНКИ КАРТОЧКИ ТОВАРА---*/
+
+/*------СТИЛИ КНОПКИ "КУПИТЬ"------*/
+@import "buttonBuy/buttonBuy.less" all;
+/*---END---СТИЛИ КНОПКИ "КУПИТЬ"---*/
+
+/*------СТИЛИ ПОЛЬЗОВАТЕЛЬСКИЕ СТИЛИ ЭЛЕМЕНТОВ ФОРМ------*/
+@import "customInput/customInput.less" all;
+/*---END---СТИЛИ ПОЛЬЗОВАТЕЛЬСКИЕ СТИЛИ ЭЛЕМЕНТОВ ФОРМ---*/
+
+/*------СТИЛИ ОТЗЫВОВ------*/
+@import "reviews/reviews.less" all;
+/*---END---СТИЛИ ОТЗЫВОВ---*/
+
+/*------СТИЛИ БРЕНД РАЗДЕЛА------*/
+@import "bBrandCatalog/bBrandCatalog.less" all;
+
+@import "bBrandCatalog/bBrandNavList.less" all;
+
+@import "bBrandCatalog/bBrandGoods.less" all;
+
+@import "bBrandCatalog/bBrandSorting.less" all;
+
+@import "bBrandCatalog/bBrandSubNav.less" all;
+/*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
+
+/*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
+@import "pandoraProduct/pandoraProduct.less" all;
+/*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
+
+/*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
+@import "pandoraPopups/pandoraPopups.less" all;
+/*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
+
+/*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ------*/
+@import "productCardPrint/productCardPrint.less" print;
+/*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
+
+/*------СТИЛИ КОРЗИНЫ - ВЕРСИЯ ДЛЯ ПЕЧАТИ------*/
+@import "orderPrint/orderPrint.less" print;
+/*---END---СТИЛИ КОРЗИНЫ - ВЕРСИЯ ДЛЯ ПЕЧАТИ---*/
+
+/*------СТИЛИ ВЕРХНЕГО БЛОКА СОРТИРОВКИ В КАТАЛОГЕ------*/
+@import "bViewPageLine/bViewPageLine.less" all;
+/*---END---СТИЛИ ВЕРХНЕГО БЛОКА СОРТИРОВКИ В КАТАЛОГЕ---*/
+
+/*------СТИЛИ ОФОРМЛЕНИЕ ЗАКАЗА------*/
+@import "bBuyingSteps/bBuyingSteps.less" all;
+
+@import "bBuyingSteps/bBuyingInfo.less" all;
+
+@import "bBuyingSteps/bBuyingDates.less" all;
+
+@import "bBuyingSteps/bInputAddress.less" all;
+
+@import "bBuyingSteps/bBuyingSale.less" all;
+
+@import "bBuyingSteps/bPointPopup.less" all;
+/*---END---СТИЛИ ОФОРМЛЕНИЕ ЗАКАЗА---*/
+
+/*------СТИЛИ СТРАНИЦЫ РЕГИСТРАЦИИ ЮР. ЛИЦ------*/
+@import "bBusinessReg/bBusinessReg.less" all;
+/*---END---СТИЛИ СТРАНИЦЫ РЕГИСТРАЦИИ ЮР. ЛИЦ---*/
+
+/*------СТИЛИ ПУСТОЙ КОРЗИНЫ------*/
+@import "bEmptyCart/bEmptyCart.less" all;
+/*---END---СТИЛИ ПУСТОЙ КОРЗИНЫ---*/
+
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 // @import "newYearTheme/newYearTheme.less" all;
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
+
+/*------СТИЛИ ОПРОСА------*/
+@import "survey/survey.less" all;
+/*---END---СТИЛИ ОПРОСА---*/

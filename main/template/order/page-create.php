@@ -50,13 +50,13 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 
 <div id="map-info_window-container" style="display:none"></div>
 
-<div class="pb15"><a class="motton font14" href="<?= $backLink ?>" style="font-weight: bold">&lt; Вернуться к покупкам</a></div>
+<div class="bBuyingLine"><a class="bBackCart" href="<?= $backLink ?>">&lt; Вернуться к покупкам</a></div>
 
 
 <input id="order-delivery_map-data" type="hidden" data-value='<?= $page->json($deliveryMap) ?>'/>
 <?= $page->render('order/_formTemplate') ?>
 
-<form id="order-form" style="display:none" data-validator="#order-validator" method="post" action="<?= $page->url('order.create') ?>">
+<form id="order-form" style="display:none" data-validator="#order-validator" method="post" action="<?= $page->url('order') ?>">
     <div class='bBuyingInfo'>
         <h2>Информация о счастливом получателе</h2>
 
@@ -70,169 +70,139 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
             <? endif ?>
         </div>
 
-        <dl class='bBuyingLine'>
-            <dt>Имя получателя*</dt>
-            <dd>
-                <div>
-                    <p></p>
-                    <input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="<?= $form->getFirstName() ?>"/>
-                </div>
-            </dd>
-        </dl>
+        <div class='bBuyingLine mOrderFields'>
+            <label class="bBuyingLine__eLeft">Имя получателя*</label>
 
-        <dl class='bBuyingLine'>
-            <dt>Фамилия получателя</dt>
-            <dd>
-                <div>
-                    <p></p>
-                    <input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="<?= $form->getLastName() ?>"/>
-                </div>
-            </dd>
-        </dl>
+            <div class="bBuyingLine__eRight">
+                <input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="<?= $form->getFirstName() ?>"/>
+            </div>
 
-        <dl class='bBuyingLine'>
-            <dt>E-mail</dt>
-            <dd>
-                <div>
-                    <p></p>
-                    <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong" name="order[recipient_email]" value="<?= $form->getEmail() ?>"/>
-                </div>
-            </dd>
-        </dl>
+            <label class="bBuyingLine__eLeft">Фамилия получателя</label>
 
-        <dl class='bBuyingLine'>
-            <dt>Телефон для связи*</dt>
-            <dd>
+            <div class="bBuyingLine__eRight">
+                <input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="<?= $form->getLastName() ?>"/>
+            </div>
+
+            <label class="bBuyingLine__eLeft">E-mail</label>
+
+            <div class="bBuyingLine__eRight">
+                <? $email = $form->getEmail() ?>
+                <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong" name="order[recipient_email]" value="<?= $email ?>" />
+                
+                <label class="bSubscibe checked" style="visibility:<?= empty($email) ? 'hidden' : 'visible' ?>;">
+                    <b></b> Хочу знать об интересных<br />предложениях
+                    <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
+                </label>
+            </div>
+
+            <label class="bBuyingLine__eLeft">Телефон для связи*</label>
+
+            <div class="bBuyingLine__eRight">
                 <div class="phonePH">
                     <span class="placeholder">+7</span> 
                     <input id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="<?= $form->getMobilePhone() ?>"/>
                 </div>
-            </dd>
-        </dl>
+            </div>
 
+            <label class="bBuyingLine__eLeft">Адрес доставки*</label>
 
-        <dl class='bBuyingLine' id="addressField">
-            <dt>Адрес доставки*</dt>
-            <dd>
+            <div class="bBuyingLine__eRight" style="width: 640px;">
                 <div>
                     <p></p>
                     <strong><?= $region->getName() ?></strong> ( <a id="jsregion" data-region-id="<?= $user->getRegion()->getId() ?>" data-url="<?= $page->url('region.init') ?>" href="<?= $page->url('region.change', array('regionId' => $region->getId())) ?>" style="font-weight: normal">изменить</a> )
                 </div>
 
                 <? if ($form->hasSubway()): ?>
-                    <div class="ui-css">
+                    <div class="bInputAddress ui-css">
                         <span class="placeholder">Метро</span>
-                        <input type="text" id="order_address_metro" title="Метро" class="placeholder-input bBuyingLine__eText mInputLong ui-autocomplete-input" name="order[address_metro]" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" />
+                        <input class="bInputAddress__eField bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" type="text" title="Метро" name="order[address_metro]" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" />
                         <div id="metrostations" data-name="<?= $page->json($subwayData) ?>"></div>
                         <input type="hidden" id="order_subway_id" name="order[subway_id]" value="<?= $form->getSubwayId() ?>" />
                     </div>
                 <? endif ?>
 
-                <div class="street">
+                <div class="bInputAddress">
                     <span class="placeholder">Улица</span>
-                    <input type="text" id="order_address_street" title="Улица" class="placeholder-input bBuyingLine__eText mInputLong" name="order[address_street]" value="<?= $form->getAddressStreet() ?>" />
+                    <input type="text" class="bBuyingLine__eText mInputLong mInputStreet" title="Улица" name="order[address_street]" value="<?= $form->getAddressStreet() ?>" />
                 </div>
 
-                <div class="number">
+                <div class="bInputAddress placeholder-input">
                     <span class="placeholder">Дом</span>
-                    <input type="text" id="order_address_building" title="Дом" class="placeholder-input bBuyingLine__eText mInputShort" name="order[address_building]" value="<?= $form->getAddressBuilding() ?>" />
+                    <input type="text" class="bBuyingLine__eText mInputShort mInputBuild" title="Дом" name="order[address_building]" value="<?= $form->getAddressBuilding() ?>" />
                 </div>
 
-                <div class="building">
+                <div class="bInputAddress placeholder-input">
                     <span class="placeholder">Корпус</span>
-                    <input type="text" id="order_address_number" title="Корпус" class="placeholder-input bBuyingLine__eText mInputShort" name="order[address_number]" value="<?= $form->getAddressNumber() ?>" />
+                    <input type="text" class="bBuyingLine__eText mInputShort mInputNumber" title="Корпус" name="order[address_number]" value="<?= $form->getAddressNumber() ?>" />
                 </div>
-                <div class="apartament">
+
+                <div class="bInputAddress placeholder-input">
                     <span class="placeholder">Квартира</span>
-                    <input type="text" id="order_address_apartment" title="Квартира" class="placeholder-input bBuyingLine__eText mInputShort" name="order[address_apartment]" value="<?= $form->getAddressApartment() ?>" />
+                    <input type="text" class="bBuyingLine__eText mInputShort mInputApartament" title="Квартира" name="order[address_apartment]" value="<?= $form->getAddressApartment() ?>" />
                 </div>
-                <div class="floor">
+
+                <div class="bInputAddress placeholder-input">
                     <span class="placeholder">Этаж</span>
-                    <input type="text" id="order_address_floor" title="Этаж" class="placeholder-input bBuyingLine__eText mInputShort" name="order[address_floor]" value="<?= $form->getAddressFloor() ?>" />
+                    <input type="text" class="bBuyingLine__eText mInputShort mInputFloor" title="Этаж" name="order[address_floor]" value="<?= $form->getAddressFloor() ?>" />
                 </div>
-            </dd>
-        </dl>
+            </div>
 
-        <dl class='bBuyingLine'>
-            <dt>Пожелания и дополнения</dt>
-            <dd>
-                <div>
-                    <p></p>
-                    <textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
-                </div>
-            </dd>
-        </dl>
+            <label class="bBuyingLine__eLeft">Пожелания и дополнения</label>
 
-        <dl class='bBuyingLine<?= $isCorporative ? ' hidden' : '' ?>'>
-            <dt>Если у вас есть карта<br/>&laquo;Связной-Клуб&raquo;, вы можете указать ее номер</dt>
-            <dd class="bSClub">
-                <div class="bSClub__eWrap pb25">
-                    <input type="text" id="order_sclub_card_number" class="bBuyingLine__eText mInputShort mb15" name="order[sclub_card_number]" />
-                    <i class="mILong">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный
-                        на обороте под штрихкодом</i>
-                </div>
-                <!--<label><b></b> <h5>Сохранить мои данные для следующих покупок</h5> <input class='bBuyingLine__eRadio' name='r1' type='radio'></label>-->
-            </dd>
-        </dl>
+            <div class="bBuyingLine__eRight">
+                <textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
+            </div>
 
-        <h2>Об оплате</h2>
+        </div>
 
-        <dl class='bBuyingLine'>
-            <dt>Выберите удобный для вас способ*</dt>
-            <dd id="payTypes">
-                <? foreach ($paymentMethods as $paymentMethod): ?>
-                <div id="payment_method_<?= $paymentMethod->getId() ?>-field">
-                    <p></p>
-                    <label class="<? if ($paymentMethod->getId() == $selectedPaymentMethodId) echo 'mChecked' ?>" for="order_payment_method_id_<?= $paymentMethod->getId() ?>">
-                        <b></b> <?= $paymentMethod->getName() ?>
-                        <input id="order_payment_method_id_<?= $paymentMethod->getId() ?>" class='bBuyingLine__eRadio' name="order[payment_method_id]" type='radio' value="<?= $paymentMethod->getId() ?>" <? if ($paymentMethod->getId() == $selectedPaymentMethodId) echo 'checked="checked"' ?> />
-                    </label>
-                    <i>
-                        <div><?= $paymentMethod->getDescription() // ?></div>
-                        <? if ($paymentMethod->getIsCredit() && ($bank = reset($banks))) {  ?>
-                        <div class="innerType" id="creditInfo" <? if ($paymentMethod->getId() != $selectedPaymentMethodId) echo 'style="display:none"' ?> >
-                            <div>Выберите банк:</div>
-                            <div class="bankWrap">
-                                <div class="bSelectWrap mFastInpSmall fl">
-                                    <span class="bSelectWrap_eText"><?= $bank->getName() ?></span>
-                                    <select class='bSelect mFastInpSmall' data-value="<?= $page->json($bankData) ?>">
-                                    </select>
-                                </div>
+        <div class='bBuyingLine<?= $isCorporative ? ' hidden' : '' ?> mOrderFields'>
+            <div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
+            
+            <div class="bBuyingLine__eRight bSClub">
+                <input type="text" id="order_sclub_card_number" class="bBuyingLine__eText mInputShort mb15" name="order[sclub_card_number]" />
+                <div class="mILong">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+            </div>
+        </div>
 
-                                <div class="fl creditHref"><a target="_blank" href="<?= $bank->getLink() ?>">Условия кредита <span>(<?= $bank->getName() ?>)</span></a></div>
-                                <div class="clear"></div>
-                            </div>
-                            <input type='hidden' name='order[credit_bank_id]' value='<?= $bank->getId(); ?>' />
-                            <div id="tsCreditCart" data-value="<?= $page->json($creditData) ?>" ></div>
-                            <!--div>Сумма заказа: <span class="rubl">p</span></div-->
-                            <div>
-                                <strong style="font-size:160%; color: #000;">Ежемесячный платеж<sup>**</sup>:
-                                    <span id="creditPrice"></span> <span class="rubl"> p</span>
-                                </strong>
-                            </div>
-                            <div><sup>**</sup> Кредит не распространяется на услуги F1 и доставку. Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.</div>
-                        </div>
-                        <?php } else if ($paymentMethod->isCertificate()) { ?>
-                        <div class="orderFinal__certificate hidden innerType">
-                            <script type="text/html" id="processBlock">
-                                <div class="process">
-                                    <div class="img <%=typeNum%>"></div>
-                                    <p><%=text%></p>
-                                    <div class="clear"></div>
-                                </div>
-                            </script>
-                            <div id="sertificateFields">
-                                <input name="order[cardnumber]" type="text" class="bBuyingLine__eText cardNumber" placeholder="Номер" />
-                                <input name="order[cardpin]" type="text" class="bBuyingLine__eText cardPin" placeholder="ПИН" />
-                            </div>
-                            <div id="processing"></div>
-                        </div>
-                        <?php } ?>
-                    </i>
-                </div>
-                <?php endforeach ?>
-            </dd>
-        </dl>
+        <h2 class="bOrderView__eTitle">Оплата</h2>
+
+        <div class='bBuyingLine mPayMethods' data-max-sum-online="<?= \App::config()->order['maxSumOnline'] ?>">
+            <div class="bBuyingLine__eLeft"></div>
+            <div class="bBuyingLine__eRight" id="payTypes">
+
+                <?
+                    $byPayOnReceipt = [
+                        \Model\PaymentMethod\Entity::TYPE_ON_RECEIPT => [],
+                        \Model\PaymentMethod\Entity::TYPE_NOW => [],
+                    ];
+                    foreach($paymentMethods as $paymentMethod) { 
+                        $payOnReceipt = $paymentMethod->getPayOnReceipt();
+                        $byPayOnReceipt[$payOnReceipt][] = $paymentMethod;
+                    }
+                    foreach ($byPayOnReceipt as $payOnReceipt => $paymentMethods) { ?>
+
+                        <? if($payOnReceipt == \Model\PaymentMethod\Entity::TYPE_ON_RECEIPT) {
+                            $payOnReceiptHeader = 'При получении заказа';
+                        } elseif($payOnReceipt == \Model\PaymentMethod\Entity::TYPE_NOW) {
+                            $payOnReceiptHeader = 'Прямо сейчас';
+                        } else {
+                            $payOnReceiptHeader = null;
+                        } ?>
+
+                        <h2><?= $payOnReceiptHeader ?></h2>
+                        <?= $page->render('order/payment/_methods', [
+                            'bankData' => $bankData,
+                            'creditData' => $creditData,
+                            'banks' => $banks,
+                            'form' => $form,
+                            'selectedPaymentMethodId' => $selectedPaymentMethodId,
+                            'payOnReceipt' => $payOnReceipt,
+                            'paymentMethods' => $paymentMethods,
+                        ]) ?>
+                    <? }
+                ?>
+            </div>
+        </div>
 
         <div class='line'></div>
 
@@ -287,7 +257,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
     <div id="marketgidOrder" class="jsanalytics"></div>
     <?= $page->tryRender('order/_kissmetrics-create') ?>
 
-    <?= $page->tryRender('order/partner-counter/_etargeting-create') ?>
     <?= $page->tryRender('order/partner-counter/_cityads-create') ?>
+    <?= $page->tryRender('order/partner-counter/_reactive-create') ?>
     <?= $page->tryRender('order/partner-counter/_ad4u-create') ?>
 <?php endif ?>

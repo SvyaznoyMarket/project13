@@ -22,7 +22,7 @@ class InfoAction {
             'service'     => [],
             'certificate' => [],
             'sum'         => $cart->getSum(),
-            'oldSum'   => $cart->getOriginalSum(),
+            'oldSum'      => $cart->getOriginalSum(),
         ];
 
         foreach ($cart->getProducts() as $cartProduct) {

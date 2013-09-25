@@ -12,7 +12,7 @@ $current = $pager->getPage();
 ?>
 
 <div class="pageslist">
-    <span>Страницы:</span>
+    <span class="bTitle">Страницы</span>
     <ul>
         <? if ($current > ($first + 2)): ?>
             <li class="next"><a href="<?= $page->helper->replacedUrl(array('page' => $first)) ?>"><?= $first ?>...</a></li>
@@ -23,13 +23,17 @@ $current = $pager->getPage();
                 <li class="current"><a href="#"><?= $num ?></a></li>
 
             <? elseif ($num >= $current - 2 && $num <= $current + 2): ?>
-                <li><a href="<?= $page->helper->replacedUrl(array('page' => $num)) ?>"><?= $num ?></a></li>
+                <li class="<?= in_array($last, [2,3]) && $last == $num ? 'next' : '' ?>"><a href="<?= $page->helper->replacedUrl(array('page' => $num)) ?>"><?= $num ?></a></li>
 
             <? endif ?>
         <? endforeach ?>
 
         <? if ($current < $last - 2): ?>
-            <li class="next"><a href="<?= $page->helper->replacedUrl(array('page' => $last)) ?>">...<?= $last ?></a></li>
+            <li class="next"><a href="<?= $page->helper->replacedUrl(array('page' => $last)) ?>">
+            <? if ($last > 4) { ?>
+                ...
+            <? } ?>
+            <?= $last ?></a></li>
         <? endif ?>
     </ul>
 </div>

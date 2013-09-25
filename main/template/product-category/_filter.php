@@ -14,14 +14,31 @@ $formName = \View\Product\FilterForm::$name;
 ?>
 
 <!-- Filter -->
-<form class="product_filter-block" action="<?= 'product.category.brand' == \App::request()->attributes->get('route') ? $page->url('product.category', ['categoryPath' => $category->getPath()]) : '' ?>" method="get" data-action-count="<?= $page->url('product.category.count', array('categoryPath' => $category->getPath())) ?>">
+<?
+    if ('product.category.brand' == \App::request()->attributes->get('route') || \App::request()->get('shop')) {
+        $link = $page->url('product.category', ['categoryPath' => $category->getPath()]);
+    } else $link = '';
+
+    $linkCount = $page->url('product.category.count', array('categoryPath' => $category->getPath()));
+    //if (\App::request()->get('shop')) $linkCount .= (false === strpos($linkCount, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
+
+?>
+<form class="product_filter-block" action="<?=$link?>" method="get" data-action-count="<?= $linkCount ?>">
 	<div class="filterresult product_count-block">
 		<div class="corner"><div></div></div>
 		Выбрано <span class="result">result.data</span> модел<span class="ending">ending</span><br/>
 		<a>Показать</a>
 	</div>
-    <dl class="bigfilter form bSpec">
-        <dt class="filterHeader">Выбираем:<i></i></dt>
+    <dl class="bigfilter form bSpec<?= \App::config()->sphinx['showListingSearchBar'] ? ' noBorder' : '' ?>">
+        <? if(\App::config()->sphinx['showListingSearchBar']) { ?>
+            <div class="pb5">
+                <input type="text" value="" class="text mb10 orangeIcon" placeholder="Поиск в категории">
+                <input type="hidden" value="" name="f[text]">
+                <img class="mb10 orangeIcon" src="/css/search/img/searchBtn.png">
+            </div>
+        <? } else { ?>
+            <dt class="filterHeader">Выбираем:<i></i></dt>
+        <? } ?>
         <? require __DIR__ . '/_selectedFilter.php' ?>
 
         <? if ($category->getIsFurniture()): ?>
@@ -36,7 +53,14 @@ $formName = \View\Product\FilterForm::$name;
             } ?>
 
             <? if (!$filter->getIsInList()) continue ?>
-            <? if ('price' == $filter->getId() || 'brand' == $filter->getId()) {
+            <?
+            $isPrice = ( 'price' == $filter->getId() );
+            if ( $isPrice ) {
+                $filter->setStepType('price');
+            }
+            ?>
+
+            <? if ( $isPrice || 'brand' == $filter->getId()) {
                 $isOpened = true;
             } elseif ($openNum < 5) {
                 $openNum++;

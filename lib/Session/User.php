@@ -21,7 +21,6 @@ class User {
     /** @var array */
     private $recommendedProduct;
 
-
     public function __construct() {
         $this->tokenName = \App::config()->authToken['name'];
         $this->token = \App::session()->get($this->tokenName);
@@ -74,8 +73,24 @@ class User {
      * @param \Http\Response $response
      */
     public function signIn(\Model\User\Entity $user, \Http\Response $response) {
+        $token = $user->getToken();
+
         $user->setIpAddress(\App::request()->getClientIp());
-        $this->setToken($user->getToken());
+        $this->setToken($token);
+
+        // SITE-1260 {
+        $cookie = new \Http\Cookie(
+            $this->tokenName,
+            $token,
+            time() + \App::config()->session['cookie_lifetime'],
+            '/',
+            preg_replace('/^www./', '.', \App::config()->mainHost),
+            false,
+            true // важно httpOnly=true, чтобы js не мог получить куку
+        );
+        $response->headers->setCookie($cookie);
+        // }
+
         //\RepositoryManager::getUser()->saveEntity($user);
 
         $this->setCacheCookie($response);
@@ -97,10 +112,22 @@ class User {
 
     /**
      * Удаляет токен из сессии
+     *
+     * @param \Http\Response|\Http\RedirectResponse|null $response
      */
-    public function removeToken() {
+    public function removeToken($response = null) {
         $token = $this->getToken();
         \App::session()->remove($this->tokenName);
+
+        $domainParts = explode('.', \App::config()->mainHost);
+        $tld = array_pop($domainParts);
+        $domain = array_pop($domainParts);
+        $subdomain = array_pop($domainParts);
+
+        if($response) {
+            $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$domain.$tld");
+            $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$subdomain.$domain.$tld");
+        }
 
         return $token;
     }
@@ -329,4 +356,21 @@ class User {
     {
         return $this->recommendedProduct;
     }
+
+    /**
+     * @param array $params
+     */
+    public function setParams($params)
+    {
+        $this->params = $params;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams()
+    {
+        return $this->params;
+    }
+
 }

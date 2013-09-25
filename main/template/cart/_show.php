@@ -45,12 +45,12 @@ foreach ($products as $product) {
         </td>
         <td class="mEdit">
             <div class="numerbox mInlineBlock mVAMiddle">
-                <a ref="<?= $page->url('cart.service.add', array('serviceId' => 'F1ID', 'quantity' => -1, 'productId' => 'PRID')); ?>"
+                <a ref="<?= $page->url('cart.service.set', array('serviceId' => 'F1ID', 'quantity' => -1, 'productId' => 'PRID')); ?>"
                    href="#">
                     <b class="ajaless" title="Уменьшить"></b>
                 </a>
                 <input maxlength="2" class="ajaquant" value="1"/>
-                <a href="<?= $page->url('cart.service.add', array('serviceId' => 'F1ID', 'quantity' => 1, 'productId' => 'PRID')); ?>">
+                <a href="<?= $page->url('cart.service.set', array('serviceId' => 'F1ID', 'quantity' => 1, 'productId' => 'PRID')); ?>">
                     <b class="ajamore" title="Увеличить"></b>
                 </a>
             </div>
@@ -106,9 +106,10 @@ foreach ($products as $product) {
 <? foreach ($products as $product): ?>
 <?
     $cartProduct = isset($cartProductsById[$product->getId()]) ? $cartProductsById[$product->getId()] : null;
+    $categoryId = isset($categoryIdByProductId[$product->getId()]) ? $categoryIdByProductId[$product->getId()] : null;
     if (!$cartProduct) continue;
 ?>
-    <div class="basketline mWrap" ref="<?= $product->getId() ?>">
+    <div class="basketline mWrap" ref="<?= $product->getId() ?>" data-product-id="<?= $product->getId() ?>" data-category-id="<?= $categoryId ?>">
         <div class="basketleft">
             <a href="<?= $product->getLink() ?>">
                 <img src="<?= $product->getImageUrl() ?>" alt="<?= $product->getName() ?>" />
@@ -132,8 +133,8 @@ foreach ($products as $product) {
                 <div class="right">
                     <?= $page->render('_spinner', array(
                         'quantity' => $cartProduct->getQuantity(),
-                        'incUrl'   => $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => 1)),
-                        'decUrl'   => $page->url('cart.product.add', array('productId' => $product->getId(), 'quantity' => -1)),
+                        'incUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => 1)),
+                        'decUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => -1)),
                     ))?>
                 </div>
             </div>
@@ -219,8 +220,8 @@ foreach ($products as $product) {
                 <div class="right">
                     <?= $page->render('_spinner', array(
                         'quantity' => $cartService->getQuantity(),
-                       'incUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => 0, 'quantity' => 1)),
-                       'decUrl'   => $page->url('cart.service.add', array('serviceId' => $service->getId(), 'productId' => 0, 'quantity' => -1)),
+                       'incUrl'   => $page->url('cart.service.set', array('serviceId' => $service->getId(), 'productId' => 0, 'quantity' => 1)),
+                       'decUrl'   => $page->url('cart.service.set', array('serviceId' => $service->getId(), 'productId' => 0, 'quantity' => -1)),
                     ))?>
                 </div>
             </div>

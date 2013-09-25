@@ -374,10 +374,6 @@ class Repository {
                 array_unshift($branch, $parent->getToken());
                 $currentCategory = $parent;
             }
-
-            if ($category->getRoot()) {
-                array_unshift($branch, $category->getRoot()->getToken());
-            }
         }
 
         // формируем запрос к апи и получаем json с SEO-данными
@@ -416,6 +412,37 @@ class Repository {
         return empty($seoJson) ? [] : $seoJson;
     }
 
+    /**
+     * Получает горячие ссылки из seoCatalogJson
+     *
+     * @param $seoCatalogJson
+     * @return array
+     */
+    public function getHotlinksBySeoCatalogJson($seoCatalogJson) {
+        $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
+        $autohotlinks = empty($seoCatalogJson['autohotlinks']) ? [] : $seoCatalogJson['autohotlinks'];
+
+        // удаляем дубликаты из autohotlinks, встречающиеся в hotlinks
+        // такой подход кроме прочего позволяет в hotlinks отключать показ горячей ссылки
+        // даже если в autohotlinks она активна
+        foreach ($hotlinks as $key => $hotlink) {
+            foreach ($autohotlinks as $autokey => $autohotlink) {
+                if($autohotlink['title'] == $hotlink['title']) {
+                    unset($autohotlinks[$autokey]);
+                }
+            }
+        }
+
+        $hotlinks = array_merge($hotlinks, $autohotlinks);
+
+        // оставляем только активные (ссылки у которых не задан active считаем активными для
+        // поддержки старого json)
+        $hotlinks = array_values(array_filter($hotlinks, function($hotlink) {
+            return !isset($hotlink['active']) || isset($hotlink['active']) && (bool)$hotlink['active'];
+        }));
+
+        return $hotlinks;
+    }
 
     /**
      * Получает catalog json для данной категории
@@ -425,17 +452,18 @@ class Repository {
      * @return array
      */
     public function getCatalogJson($category) {
-         // формируем ветку категорий для последующего формирования запроса к json-апи
+        if(empty($category) || !is_object($category)) return [];
+
+        // формируем ветку категорий для последующего формирования запроса к json-апи
         $branch = [$category->getToken()];
         if(!$category->isRoot()) {
             $currentCategory = $category;
-            while($parent = $currentCategory->getParent()) {
-                array_unshift($branch, $parent->getToken());
-                $currentCategory = $parent;
+            while($currentCategory = $currentCategory->getParent()) {
+                array_unshift($branch, $currentCategory->getToken());
             }
-
-            if ($category->getRoot()) {
-                array_unshift($branch, $category->getRoot()->getToken());
+            $root = $category->getRoot();
+            if($root && !in_array($root->getToken(), $branch)) {
+                array_unshift($branch, $root->getToken());
             }
         }
 
@@ -443,12 +471,139 @@ class Repository {
         $catalogJson = [];
         $dataStore = \App::dataStoreClient();
         $query = sprintf('catalog/%s.json', implode('/', $branch));
-        $dataStore->addQuery($query, [], function ($data) use (&$catalogJson) {
-            if($data) $catalogJson = $data;
-        });
+        $dataStore->addQuery(
+            $query,
+            [],
+            function ($data) use (&$catalogJson) {
+                if ($data) {
+                    $catalogJson = $data;
+                }
+            },
+            function(\Exception $e) {
+                \App::exception()->add($e);
+            }
+        );
         $dataStore->execute();
+
+        // AB-test по сортировкам SITE-1991
+        $abTestJson = \App::abTestJson($catalogJson);
+        if($abTestJson->getCase()->getKey() != 'default') {
+            return $abTestJson->getTestCatalogJson();
+        }
 
         return $catalogJson;
     }
 
+    /**
+     * Получает catalog json для всех категорий
+     * Возвращает массив с токенами категорий в качестве ключей и их catalogJson'ом (raw)
+     * в качестве значений
+     *
+     * @return array
+     */
+    public function getCatalogJsonBulk() {
+        // формируем запрос к апи и получаем json
+        $catalogJsonBulk = [];
+        $dataStore = \App::dataStoreClient();
+        $dataStore->addQuery('catalog/*.json', [], function ($data) use (&$catalogJsonBulk) {
+            if($data) $catalogJsonBulk = $data;
+        });
+        $dataStore->execute();
+
+        return $catalogJsonBulk;
+    }
+
+    /**
+     * Получает html-контент из catalog'а для данной категории
+     * Возвращает html в виде строки
+     *
+     * @param $category
+     * @return array
+     */
+    public function getCatalogHtml($category) {
+        // наследования здесь нет, поэтому обращаемся напрямую по токену категории
+        // формируем запрос к апи и получаем html
+        $catalogHtml = [];
+        $dataStore = \App::dataStoreClient();
+        $query = sprintf('catalog/html/%s.json', $category->getToken());
+
+        $dataStore->addQuery($query, [], function ($data) use (&$catalogHtml) {
+            if($data) $catalogHtml = $data;
+        });
+        $dataStore->execute();
+
+        return isset($catalogHtml['html']) ? $catalogHtml['html'] : '';
+    }
+
+    /**
+     * Получает seo catalog json для всех категорий
+     * Возвращает массив с токенами категорий в качестве ключей и их catalogJson'ом (raw)
+     * в качестве значений
+     *
+     * @param $category
+     * @return array
+     */
+    public function getSeoCatalogJsonBulk() {
+        // формируем запрос к апи и получаем json
+        $seoCatalogJsonBulk = [];
+        $dataStore = \App::dataStoreClient();
+        $dataStore->addQuery('seo/catalog/*.json', [], function ($data) use (&$seoCatalogJsonBulk) {
+            if($data) $seoCatalogJsonBulk = $data;
+        });
+        $dataStore->execute();
+
+        return $seoCatalogJsonBulk;
+    }
+
+    /**
+     * Получает seo tag json для всех тэгов
+     * Возвращает массив с токенами тэгов в качестве ключей и их seo json'ом (raw)
+     * в качестве значений
+     *
+     * @param $category
+     * @return array
+     */
+    public function getSeoTagJsonBulk() {
+        // формируем запрос к апи и получаем json
+        $seoTagJsonBulk = [];
+        $dataStore = \App::dataStoreClient();
+        $dataStore->addQuery('seo/tag/*.json', [], function ($data) use (&$seoTagJsonBulk) {
+            if($data) $seoTagJsonBulk = $data;
+        });
+        $dataStore->execute();
+
+        return $seoTagJsonBulk;
+    }
+
+    /**
+     * Получает catalog html для всех категорий
+     * Возвращает массив с токенами категорий в качестве ключей и их промо html'ем
+     * в качестве значений
+     *
+     * @param $catalogJsonBulk
+     * @return array
+     */
+    public function getPromoHtmlBulk($catalogJsonBulk) {
+        // формируем запрос к апи и получаем json
+        $catalogHtmlBulk = [];
+        $dataStore = \App::dataStoreClient();
+        $dataStore->addQuery('catalog/html/*.json', [], function ($data) use (&$catalogHtmlBulk) {
+            if($data) $catalogHtmlBulk = $data;
+        });
+        $dataStore->execute();
+
+        foreach ($catalogJsonBulk as $token => $settings) {
+            if(in_array($token, array_keys($catalogHtmlBulk)) ||
+                empty($catalogJsonBulk[$token]['use_promo_in_menu']) ||
+                empty($catalogJsonBulk[$token]['promo_token_menu'])) continue;
+
+            $contentClient = \App::contentClient();
+            $content = $contentClient->query($settings['promo_token_menu'], [], false);
+            $promoContent = empty($content['content']) ? '' : $content['content'];
+
+            $catalogHtmlBulk[$token]['menu_promo'] = $promoContent;
+        }
+
+        return $catalogHtmlBulk;
+    }
 }

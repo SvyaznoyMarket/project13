@@ -2,7 +2,7 @@
   font-size: 14px;
   font-family:Tahoma, sans-serif;
   // height: 25px;
-  padding-top: 7px;
+  padding: 10px 0 0;
   .bRegion, .usermenu {
     float:left;
     a {
@@ -13,7 +13,7 @@
     }
   }
   .bRegion{
-  	width: 600px;
+  	width: 630px;
   }
   .usermenu {
     float: right;
@@ -26,13 +26,18 @@
 
 .headerContactPhone{
   font-weight: bold;
+  padding: 0 20px;
 
   &__eTitle{
     margin: 0 5px 0 15px;
   }
 
   &__ePhones{
-    margin: 0 15px 0 5px;
+    margin: 0 10px 0 0;
+  }
+  .bPhonesRegion {
+  	font-size: 14px;
+  	font-weight: normal;
   }
 }
 
@@ -55,25 +60,26 @@
 	position: relative;
 	width: 90px;
 	text-indent: -10000px;
+	margin-right: 10px;
 }
 
 .bMainMenuLevel-1{
 	position: relative;
 	display: table;
+	
 	float: left;
 	width: 810px;
 	z-index: 998;
+	behavior: url(@displayTable);
+	dt-display: table;
 
 	&__eItem{
 		display: table-cell;
 		position: relative;
-		*display: block;
-		*float: left;
-		// *margin: 12px 5px;
 		vertical-align: middle;
-		*width: 60px;
 		z-index: 999;
-		*zoom: 1;
+		
+		-dt-display: table-cell;
 
 		&.bMainMenuLevel-1__eSeparator{
 			background: url('@{base-url}/header/img/headerSeparator.gif') no-repeat center center;
@@ -91,18 +97,19 @@
 		}
 
 		&:hover{
+			.bMainMenuLevel-1__eIcon,
+			.bMainMenuLevel-1__eTitle{
+				color: @firmOrange;
+				text-decoration: none;
+			}
+		}
 
+		&.hover{
 			.bMainMenuLevel-2{
 				display: block;
 				// opacity: 1;
 				// transform: translate(0px, 0px);
 				// transition: all 0.5s ease-in-out;
-			}
-
-			.bMainMenuLevel-1__eIcon,
-			.bMainMenuLevel-1__eTitle{
-				color: @firmOrange;
-				text-decoration: none;
 			}
 
 			.bCorner{
@@ -113,6 +120,7 @@
 
 		// кнопка еще товары
 		&.mMore{
+			width: 45px;
 			.bMainMenuLevel-2__eTitle{
 				text-transform: uppercase;
 
@@ -263,7 +271,7 @@
 		// display: inline-table;
 		display: block;
 		// width: 195px;
-		&:hover{
+		&.hover{
 
 			.bMainMenuLevel-2__eTitle{
 				background: @typLightGray;
@@ -315,8 +323,8 @@
 
 	.mMore &{
 		background: @black;
-		right: 0;
 		width: 200px;
+		right: -11px;
 	}
 }
 
@@ -333,7 +341,11 @@
 	padding-right: 10px;
 	position: absolute;
 	top: -5px;
-	width: 160px;
+
+	&.noPadding {
+		padding-left: 231px;
+		padding-right: 0;
+	}
 
 	.opacity(0);
 	// .transition(all 0s ease);
@@ -378,4 +390,40 @@
 		display: block;
 	}
 
+}
+
+.mMenuLeft {
+	.bMainMenuLevel-2{
+		margin-left: -109px;
+		&:hover{
+			.transition(all 0.2s ease);
+			width: 230px;
+		}
+
+		&__eItem{
+			display: block;
+
+			&:hover, &.hover {
+
+				.bMainMenuLevel-2__eTitle{
+					background: @typLightGray;
+					color: @black;
+					text-decoration: underline;
+				}
+
+				.bMainMenuLevel-3{
+					left: -200px;
+					.opacity(1);
+				}
+			}
+		}
+	}
+
+	.bMainMenuLevel-3 {
+		padding-left: 10px;
+		padding-right: 238px;
+		width: 180px;
+		background-position: 195px 0;
+		border-width: 5px 2px 2px 2px;
+	}
 }

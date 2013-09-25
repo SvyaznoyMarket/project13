@@ -11,9 +11,20 @@ class Action {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $searchQuery = trim((string)$request->get('q'));
+        $searchQuery = (string)$request->get('q');
+        $encode = mb_detect_encoding($searchQuery, array('UTF-8', 'Windows-1251'), TRUE);
+        switch ($encode) {
+            case 'Windows-1251': {
+                $searchQuery = iconv('Windows-1251', 'UTF-8', $searchQuery);
+            }
+        }
+        $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
+
         if (empty($searchQuery)) {
-            throw new \Exception\NotFoundException(sprintf('Пустая фраза поиска.', $searchQuery));
+            $page = new \View\Search\EmptyPage();
+            $page->setParam('searchQuery', $searchQuery);
+            return new \Http\Response($page->show());
+            //throw new \Exception\NotFoundException(sprintf('Пустая фраза поиска.', $searchQuery));
         }
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
@@ -26,18 +37,27 @@ class Action {
         if (!$categoryId) $categoryId = null;
 
         // параметры ядерного запроса
-        $params = array(
+        $params = [
             'request'  => $searchQuery,
             'geo_id'   => \App::user()->getRegion()->getId(),
             'start'    => $offset,
             'limit'    => $limit,
             'use_mean' => true,
-        );
+        ];
         if ($categoryId) {
             $params['product_category_id'] = $categoryId;
         } else {
             //$params['is_product_category_first_only'] = false;
         }
+
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+        $productSorting->setActive($sortingName, $sortingDirection);
+        if(!empty($sortingName) && !empty($sortingDirection)) {
+            $params['product'] = ['sort' =>[$sortingName => $sortingDirection]];
+        }
+
         // ядерный запрос
         $result = [];
         \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
@@ -133,8 +153,8 @@ class Action {
             )));
         }
 
-        // если по поиску нашелся только один товар, то редиректим сразу в карточку товара
-        if(count($products) == 1) {
+        // если по поиску нашелся только один товар и это первая стр. поиска, то редиректим сразу в карточку товара
+        if ( count($products) == 1 && !$offset) {
             return new \Http\RedirectResponse(reset($products)->getLink());
         }
 
@@ -144,6 +164,7 @@ class Action {
         $page->setParam('meanQuery', $meanQuery);
         $page->setParam('forceMean', $forceMean);
         $page->setParam('productPager', $productPager);
+        $page->setParam('productSorting', $productSorting);
         $page->setParam('categories', $categoriesById);
         $page->setParam('categoriesFound', $categoriesFound);
         $page->setParam('selectedCategory', $selectedCategory);

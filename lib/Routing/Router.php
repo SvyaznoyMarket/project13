@@ -65,7 +65,7 @@ class Router {
             }
         }
 
-        throw new \Exception\NotFoundException(sprintf('Не найден маршрут для пути "%s".', $path));
+        throw new \Exception\NotFoundException(sprintf('Не найден маршрут для пути "%s".', preg_replace('/[^(\x20-\x7F)]*/', '', $path)));
     }
 
     /**

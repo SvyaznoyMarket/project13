@@ -6,7 +6,7 @@ html {
 body {
   background: #f6f1e9;
   color: @black;
-  font: normal 75% tahoma, verdana, arial, helvetica, sans-serif;
+  font: normal 75% Tahoma, Geneva, sans-serif, helvetica, sans-serif;
   height: auto !important;
   margin: 0px;
   padding: 0px;
@@ -16,8 +16,8 @@ body {
   height: auto;
   margin: 0px auto;
   min-height: 100%;
-  padding: 0px 20px;
-  width: 920px;
+  padding: 0px 10px;
+  width: 940px;
 }
 * html .allpage {
   height: 100%;
@@ -31,6 +31,7 @@ body {
   width: 100%;
 }
 /* for IE7 */
+.h2,
 td,
 th,
 ul,
@@ -69,6 +70,7 @@ h1 {
   margin: 0px;
   width: 100%;
 }
+.h2,
 h2 {
   font-size: 16px;
   font-weight: normal;
@@ -170,7 +172,7 @@ a.motton:hover {
 *:first-child+html .clearfix { zoom: 1; } /* IE7 */
 .float100 {
   float: right;
-  margin-right: -5px;
+  // margin-right: -5px;
   // width: 100%;
 }
 
@@ -257,6 +259,9 @@ table {
 /*.customalign h2.pb30 {
   padding-bottom: 30px;
 }*/
+.pt40 {
+  padding-top: 40px;
+}
 .pb40 {
   padding-bottom: 40px;
 }
@@ -268,6 +273,36 @@ table {
 }
 .pl235 {
   padding-left: 235px;
+}
+.pr5 {
+  padding-right: 5px;
+}
+.pr10 {
+  padding-right: 10px;
+}
+.pr20 {
+  padding-right: 20px;
+}
+.pr30 {
+  padding-right: 30px;
+}
+.pr40 {
+  padding-right: 40px;
+}
+.pl5 {
+  padding-left: 5px;
+}
+.pl10 {
+  padding-left: 10px;
+}
+.pl20 {
+  padding-left: 20px;
+}
+.pl30 {
+  padding-left: 30px;
+}
+.pl40 {
+  padding-left: 40px;
 }
 .mb5 {
   margin-bottom: 5px;
@@ -286,6 +321,12 @@ table {
 }
 .mt5 {
   margin-top: 5px;
+}
+.mt10 {
+  margin-top: 10px;
+}
+.mt15 {
+  margin-top: 15px;
 }
 .mt-30 {
   margin-top: -30px;
@@ -389,6 +430,9 @@ ul.lh15 li {
 }
 .width181 {
   width: 181px;
+}
+.width205 {
+  width: 205px;
 }
 .width215 {
   width: 215px;
@@ -584,6 +628,7 @@ ul.lh15 li {
   border: 1px solid #c9c9c9;
   height: 22px;
   padding: 0px 5px;
+  line-height: 22px;
   &:hover {
     border-color: #ffd073;
   }
@@ -594,6 +639,23 @@ ul.lh15 li {
   &.textdisabled {
     border-color: #e4e4e4;
     color: @typGray;
+  }
+  &.orangeIcon {
+    height: 26px;
+    width: 165px;
+    .rounded(5px 0 0 5px);
+    margin-right: -6px;
+    padding-right: 0;
+  }
+}
+img {
+  &.orangeIcon {
+    vertical-align: middle;
+    cursor: pointer;
+    &:hover {
+      filter: e("progid:DXImageTransform.Microsoft.Alpha(opacity=90)");
+      .opacity(0.9);
+    }
   }
 }
 .crossText{
@@ -782,4 +844,11 @@ ul.lh15 li {
 }
 .mb35 {
   margin-bottom: 35px;
+}
+
+
+.mLoader {
+  background: url('@{base-url}/common/img/preloader.gif') no-repeat center center;
+  min-height: 50px;
+  display: block;
 }

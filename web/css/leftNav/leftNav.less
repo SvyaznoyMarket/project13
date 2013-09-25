@@ -163,16 +163,21 @@ dt.bCtg__eOrange {
     }
     label {
       cursor: pointer;
-      display: block;
       font-size: 12px;
+      display: inline-block;
+      *display: inline;
+      zoom: 1;
+      width: 200px;
     }
   }
 }
 .bSpec {
   .rounded(5px);
   border: 1px solid #f99b1c;
+  &.noBorder {
+    border: none;
+  }
   margin: 15px 0px;
-  behavior: url('@{pie}');
   .filterHeader {
     .border-radius(2px 2px 0px 0px);
     border-top:none;
@@ -184,7 +189,6 @@ dt.bCtg__eOrange {
     margin: 0px 0px 15px;
     padding: 6px 0px 0px 10px;
     position: relative;
-    behavior: url('@{pie}');
     i {
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
@@ -206,7 +210,7 @@ dt.bCtg__eOrange {
     padding-left: 10px;
   }
   li {
-    padding: 5px 5px 5px 35px;
+    padding: 5px 5px 5px 10px;
   }
 }
 /*.bigfilter DT.first {
@@ -298,42 +302,34 @@ dt.bCtg__eOrange {
 }
 label.checkbox span.holder {
   background: url("@{leftNavSprite-url}") 0px 0px no-repeat;
-  height: 32px;
+  height: 13px;
 }
 label.radio {
   line-height: 15px;
 }
 label.radio span.holder {
-  background: url("@{leftNavSprite-url}") -14px -164px no-repeat;
+  background: url("@{base-url}/leftNav/img/radioBtn.png") no-repeat 0 -21px;
   top: 0 !important;
-  height: 32px;
-}
-label.checkbox:hover span.holder,
-label.radio:hover span.holder {
-  top: 0px !important;
+  height: 13px;
 }
 label.checked span.holder {
-  top: -16px !important;
+ background-position: 0 -16px;
 }
 label.radio.checked span.holder {
-  background-position: 0 -164px;
-  top: 0 !important;
-}
-label.checked:hover span.holder {
-  top: -16px !important;
-}
-label.radio.checked:hover span.holder {
-  top: 0 !important;
+  background-position: 0 0;
 }
 input.hiddenCheckbox {
-  left: -10000px;
   position: absolute;
+  filter: e("progid:DXImageTransform.Microsoft.Alpha(opacity=0)");
+  .opacity(0);
+  position: absolute;
+  z-index: -1;
+
 }
 label.prettyCheckbox span.holderWrap {
   display: block;
   float: left;
-  margin: 1px 5px 0px -18px;
-  *margin-left: -20px;
+  margin: 1px 5px 0px 0;
   overflow: hidden;
   position: relative;
 }

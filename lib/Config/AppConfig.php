@@ -7,29 +7,58 @@ require_once __DIR__ . '/Oauth/OdnoklassnikiConfig.php';
 require_once __DIR__ . '/Oauth/FacebookConfig.php';
 
 class AppConfig {
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $encoding;
     /** @var bool */
     public $debug;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $appName;
     /** @var string */
     public $appDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $configDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $libDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $dataDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $logDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $webDir;
-    /** @var string */
+    /**
+     * @var string
+     * @hidden
+     */
     public $templateDir;
     /** @var string */
     public $cmsDir;
     /** @var string */
+    public $surveyDir;
+    /**
+     * @var string
+     * @hidden
+     */
     public $controllerPrefix;
     /** @var string */
     public $routePrefix;
@@ -47,14 +76,28 @@ class AppConfig {
     /** @var string */
     public $cacheCookieName = null;
     /** @var array */
+    public $redirect301 = [
+        'enabled' => null,
+    ];
+
+    /**
+     * @var array
+     * @hidden
+     */
     public $coreV2 = [
         'url'          => null,
         'client_id'    => null,
         'timeout'      => null,
+        'hugeTimeout'  => null,
         'retryTimeout' => [],
         'retryCount'   => null,
+        'chunk_size'   => null,
     ];
-    /** @var array */
+
+    /**
+     * @var array
+     * @hidden
+     */
     public $corePrivate = [
         'url'          => null,
         'client_id'    => null,
@@ -69,6 +112,8 @@ class AppConfig {
         'url'            => null,
         'timeout'        => null,
         'throwException' => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
     ];
     /** @var array */
     public $dataStore = [
@@ -98,6 +143,14 @@ class AppConfig {
         'optimizelyEnabled' => null,
     ];
     /** @var array */
+    public $kissmentrics = [
+        'enabled'   =>  null,
+    ];
+    /** @var array  */
+    public $jsonLog = [
+        'enabled' => null,
+    ];
+    /** @var array */
     public $googleAnalytics = [
         'enabled' => null,
     ];
@@ -105,7 +158,25 @@ class AppConfig {
     public $yandexMetrika = [
         'enabled' => null,
     ];
+
     /** @var array */
+    public $partners = [
+        'livetex' => [
+            'enabled' => null,
+            'liveTexID' => null,
+            'login' => null,
+            'password' => null,
+        ],
+        'criteo' => [
+            'enabled' => null,
+        ]
+    ];
+
+
+    /**
+     * @var array
+     * @hidden
+     */
     public $myThings = [
         'feeByCategory' => [],
         'cookieName'    =>  null,
@@ -124,11 +195,20 @@ class AppConfig {
     /** @var string */
     public $mobileHost = null;
     /** @var array */
-    /** @var Oauth\VkontakteConfig */
+    /**
+     * @var Oauth\VkontakteConfig
+     * @hidden
+     */
     public $vkontakteOauth;
-    /** @var Oauth\OdnoklassnikiConfig */
+    /**
+     * @var Oauth\OdnoklassnikiConfig
+     * @hidden
+     */
     public $odnoklassnikiOauth;
-    /** @var Oauth\FacebookConfig */
+    /**
+     * @var Oauth\FacebookConfig
+     * @hidden
+     */
     public $facebookOauth;
     /** @var array */
     public $onlineCall = [
@@ -146,6 +226,7 @@ class AppConfig {
         'cookieName'     => null,
         'cookieLifetime' => null,
         'autoresolve'    => null,
+        'enabled'        => null,
     ];
     /** @var bool */
     public $loadMediaHost = null;
@@ -170,6 +251,7 @@ class AppConfig {
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
         'lowerPriceNotification' => null,
+        'furnitureConstructor'   => null, // конструктор шкафов-купе
     ];
     /** @var array */
     public $productPhoto = [
@@ -185,7 +267,9 @@ class AppConfig {
     ];
     /** @var array */
     public $productCategory = [
-        'url' => [],
+        'url'             => [],
+        'jewelController' => null,
+        'newShow'         => null,
     ];
     /** @var array */
     public $service = [
@@ -207,9 +291,14 @@ class AppConfig {
     ];
     /** @var array */
     public $payment = [
-        'creditEnabled' => null,
+        'creditEnabled'    => null,
+        'paypalECS' => null,
+        'blockedIds'       => [],
     ];
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $creditProvider = [
         'kupivkredit' => [
             'partnerId'   => null,
@@ -217,7 +306,10 @@ class AppConfig {
             'signature'   => null,
         ],
     ];
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $paymentPsb = [
         'terminal'     => null,
         'merchant'     => null,
@@ -225,12 +317,19 @@ class AppConfig {
         'key'          => null,
         'payUrl'       => null,
     ];
+    /**
+     * @var array
+     * @hidden
+     */
     public $paymentPsbInvoice = [
         'contractorId' => null,
         'key'          => null,
         'payUrl'       => null,
     ];
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $smartengine = [
         'pull'           => null,
         'push'           => null,
@@ -240,7 +339,10 @@ class AppConfig {
         'logEnabled'     => null,
         'logDataEnabled' => null,
     ];
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $crossss = [
         'enabled' => null,
         'timeout' => null,
@@ -261,6 +363,10 @@ class AppConfig {
         'enabled' => null,
     ];
     /** @var array */
+    public $blackcard = [
+        'enabled' => null,
+    ];
+    /** @var array */
     public $cart = [
         'productLimit'    => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
     ];
@@ -268,13 +374,19 @@ class AppConfig {
     public $user = [
         'corporateRegister' => null,
     ];
-    /** @var array */
+
+    /**
+     * @var array
+     * @hidden
+     */
     public $abtest = [
-        'cookieName' => null,
-        'bestBefore' => null,
-        'enabled'    => null,
-        'test'       => [],
+        'cookieName'  => null,
+        'bestBefore'  => null,
+        'enabled'     => null,
+        'checkPeriod' => null,
+        'test'        => [],
     ];
+
     /** @var array */
     public $database = [
         'host'     => null,
@@ -287,12 +399,17 @@ class AppConfig {
         'enabled'    => null,
         'cookieName' => null,
     ];
-    /** @var array */
+
+    /**
+     * @var array
+     * @hidden
+     */
     public $queue = [
         'pidFile' => null,
         'workerLimit' => null,
         'maxLockTime' => null,
     ];
+
     /** @var boolean */
     public $requestMainMenu = null;
     /** @var array */
@@ -301,15 +418,36 @@ class AppConfig {
     ];
     /** @var array  */
     public $order = [
-        'enableMetaTag'   => null,
+        'cookieName'     => null,
+        'sessionName'    => null,
+        'enableMetaTag'  => null,
+        'newCreate'      => null,
+        'maxSumOnline'   => null,
     ];
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $maybe3d = [
         'xmlUrl' => null,
         'customerId' => null,
         'swfUrl' => null,
         'cmsFolder' => null,
         'timeout' => null,
+    ];
+    /** @var array */
+    public $img3d = [
+        'cmsFolder' => null,
+    ];
+    /** @var array */
+    public $tag = [
+        'numSidebarCategoriesShown' => null,
+    ];
+
+    /** @var array */
+    public $sphinx = [
+        'showFacets' => null,
+        'showListingSearchBar' => null,
     ];
 
     public function __construct() {

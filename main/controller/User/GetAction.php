@@ -11,7 +11,12 @@ class GetAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         try {
-            $user = \App::user()->getEntity();
+            $token = trim((string)$request->get('token'));
+            if (!$token) {
+                throw new \Exception('Не передан token');
+            }
+
+            $user = \RepositoryManager::user()->getEntityByToken($token);
             if (!$user) {
                 throw new \Exception('Пользователь не найден', 404);
             }

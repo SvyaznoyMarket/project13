@@ -26,14 +26,18 @@ class Layout extends \View\DefaultLayout {
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
             foreach ($category->getAncestor() as $ancestor) {
+                $link = $ancestor->getLink();
+                if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
                 $breadcrumbs[] = array(
                     'name' => $ancestor->getName(),
-                    'url'  => $ancestor->getLink(),
+                    'url'  => $link,
                 );
             }
+            $link = $category->getLink();
+            if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
             $breadcrumbs[] = array(
                 'name' => $category->getName(),
-                'url'  => $category->getLink(),
+                'url'  => $link,
             );
 
             $this->setParam('breadcrumbs', $breadcrumbs);
@@ -192,4 +196,17 @@ class Layout extends \View\DefaultLayout {
             $page->setKeywords($value);
         }
     }
+
+    public function slotMetaOg() {
+        /** @var \Model\Product\Category\Entity $category  */
+        $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
+        if (!$category) return '';
+
+        return "<meta property=\"og:title\" content=\"" . $this->escape($category->getName()) . "\"/>\r\n" .
+            "<meta property=\"og:image\" content=\"" . $this->escape($category->getImageUrl().'?'.time()) . "\"/>\r\n".
+            "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
+            "<meta property=\"og:type\" content=\"website\"/>\r\n";
+
+    }
+
 }

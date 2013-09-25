@@ -14,6 +14,7 @@ $c->logDir = $c->appDir . '/log';
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 $c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
+$c->surveyDir = $c->webDir . '/survey';
 
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
@@ -31,9 +32,13 @@ $c->cacheCookieName = 'enter_auth';
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
+$c->redirect301['enabled'] = true;
+
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
-$c->coreV2['timeout']      = null;
+$c->coreV2['chunk_size']   = 50;
+$c->coreV2['timeout']      = 5;
+$c->coreV2['hugeTimeout']  = 90;
 $c->coreV2['retryCount']   = 3;
 $c->coreV2['retryTimeout'] = [
     'default' => 0.5,
@@ -48,10 +53,10 @@ $c->coreV2['retryTimeout'] = [
 $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
 $c->corePrivate['password']     = 'dEl23sTOas';
-$c->corePrivate['timeout']      = null;
+$c->corePrivate['timeout']      = 5;
 $c->corePrivate['retryCount']   = 3;
 $c->corePrivate['retryTimeout'] = [
-    'default' => 0.5,
+    'default' => 1.5,
     'tiny'    => 0.05,
     'short'   => 0.2,
     'medium'  => 0.5,
@@ -74,19 +79,29 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 2;
+$c->wordpress['timeout'] = 3;
 $c->wordpress['throwException'] = true;
+$c->wordpress['retryCount'] = 4;
+$c->wordpress['retryTimeout'] = [
+    'default' => 0.3,
+    'tiny'    => 0.1,
+    'short'   => 0.2,
+    'medium'  => 0.3,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
-$c->dataStore['timeout'] = 0.25;
+$c->dataStore['timeout'] = 0.8;
 $c->dataStore['retryCount'] = 3;
 $c->dataStore['retryTimeout'] = [
-    'default' => 0.1,
-    'tiny'    => 0.01,
-    'short'   => 0.05,
+    'default' => 0.04,
+    'tiny'    => 0.04,
+    'short'   => 0.08,
     'medium'  => 0.1,
-    'long'    => 0.2,
-    'huge'    => 0.5,
+    'long'    => 0.5,
+    'huge'    => 1,
     'forever' => 0,
 ];
 
@@ -96,10 +111,31 @@ $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['moscowPhone'] = '8 (495) 775-00-06';
 $c->company['icq'] = '648198963';
 
+$c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
 $c->analytics['optimizelyEnabled'] = true;
+$c->kissmentrics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
+
+$c->partners['livetex']['enabled'] = true;
+$c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
+//$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
+$c->partners['livetex']['login'] = 'anastasiya.vs@enter.ru';
+$c->partners['livetex']['password'] = 'enter1chat2'; // login и пароль используются только для страницы статистики
+$c->partners['livetex']['timeout'] = 1.5; // timeout curl'a для статистики
+
+
+
+// TODO: Вынести сюда же настройки для sociomantic and get4click
+$c->partners['criteo']['enabled'] = true;
+$c->partners['criteo']['account'] = 10442;
+$c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
+$c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
+$c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
+$c->partners['Admitad']['enabled'] = true;
+$c->partners['Admitad']['code'] = '9ce8886713';
+
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
     80      => 0.105,   //Мебель
@@ -146,6 +182,7 @@ $c->loadMediaHost = true;
 $c->shop['cookieName'] = 'shopid';
 $c->shop['cookieLifetime'] = 31536000; // 365 дней
 $c->shop['autoresolve']    = true;
+$c->shop['enabled'] = true;
 
 $c->mediaHost = [
     0 => 'http://fs01.enter.ru',
@@ -173,9 +210,13 @@ $c->product['totalCount']             = 30000;
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
-$c->product['allowBuyOnlyInshop']     = false;
+$c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
-$c->product['lowerPriceNotification'] = false;
+$c->product['lowerPriceNotification'] = true;
+$c->product['furnitureConstructor']   = true;
+// jewel
+$c->product['itemsPerPageJewel']     = 24;
+$c->product['itemsPerRowJewel']      = 4;
 
 $c->productPhoto['url'] = [
     0 => '/1/1/60/',
@@ -183,6 +224,7 @@ $c->productPhoto['url'] = [
     2 => '/1/1/163/',
     3 => '/1/1/500/',
     4 => '/1/1/2500/',
+    5 => '/1/1/1500/',
 ];
 
 $c->productPhoto3d['url'] = [
@@ -198,6 +240,8 @@ $c->productLabel['url'] = [
 $c->productCategory['url'] = [
     0 => '/6/1/163/',
 ];
+$c->productCategory['jewelController'] = true;
+$c->productCategory['newShow'] = false;
 
 $c->service['url'] = [
     0 => '/11/1/160/',
@@ -231,6 +275,8 @@ $c->banner['url'] = [
 $c->cart['productLimit'] = 50;
 
 $c->payment['creditEnabled'] = true;
+$c->payment['paypalECS'] = false;
+$c->payment['blockedIds'] = [];
 
 $c->smartengine['pull']           = true;
 $c->smartengine['push']           = true;
@@ -251,6 +297,7 @@ $c->crossss['apiKey']  = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;
 $c->coupon['enabled'] = true;
+$c->blackcard['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
 
@@ -261,32 +308,58 @@ $c->database['password'] = 'qazwsxedc';
 
 $c->creditProvider['kupivkredit']['partnerId'] = '1-6ADAEAT';
 $c->creditProvider['kupivkredit']['partnerName'] = 'ООО «Enter»';
-$c->creditProvider['kupivkredit']['signature'] = 'enter-secret-werj7537';
+$c->creditProvider['kupivkredit']['signature'] = 'enter-secret-7X5dwb92';
 
 $c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
 $c->queue['workerLimit'] = 10;
 $c->queue['maxLockTime'] = 600;
-
-$c->abtest = [
-    'cookieName' => 'switch',
-    'bestBefore' => '2013-01-01', //кука умрет в 00:00
-    'enabled'    => false,
-    'test'       => [],
-];
 
 $c->subscribe['enabled'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = true;
 
-$c->mobileModify['enabled'] = true;
+$c->mobileModify['enabled'] = false;
 
+$c->order['cookieName'] = 'last_order';
+$c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
+$c->order['maxSumOnline'] = 15000;
+$c->order['newCreate'] = true;
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
 $c->maybe3d['swfUrl']     = 'http://fs01.enter.ru/3d/flash/';
 $c->maybe3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
 $c->maybe3d['timeout']    = 30;
+
+$c->img3d['cmsFolder']  = '/opt/wwwroot/cms.enter.ru/wwwroot/v1/video/product/';
+
+$c->tag['numSidebarCategoriesShown'] = 3;
+
+$c->sphinx['showFacets'] = false;
+$c->sphinx['showListingSearchBar'] = false;
+
+// настройки для АБ-тестов могут быть переопределены в json
+$c->abtest['cookieName'] = 'switch';
+$c->abtest['enabled']    = true;
+$c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
+$c->abtest['bestBefore'] = '2013-09-23';
+$c->abtest['test']       = [
+    // smartengine
+    [
+        'traffic'  => 50,
+        'key'      => 'retailrocket',
+        'name'     => "Похожие товары от RetailRocket",
+        'ga_event' => 'RetailRocket',
+    ],
+    // retailrocket
+    [
+        'traffic'  => 50,
+        'key'      => 'retailrocket',
+        'name'     => "С этим товаром также смотрят от RetailRocket",
+        'ga_event' => 'RetailRocket',
+    ],
+];
 
 return $c;

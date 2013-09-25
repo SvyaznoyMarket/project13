@@ -61,8 +61,11 @@ class Action {
         } catch (\Exception $e) {
             \App::exception()->remove($e);
             \App::logger()->warn('Error when checking certificate ' . $e);
-            if (743 == $e->getCode()) {
-                $error = 'Сертификат не найден';
+            $errcode = $e->getCode();
+            if (743 == $errcode) {
+                $error = 'Сертификат не найден.';
+            }else if (742 == $errcode) {
+                $error = 'Неверный пин-код сертификата';
             }
         }
 

@@ -37,10 +37,10 @@ class SitemapAction {
         \App::logger()->info('Sitemap: каталог товаров готов', ['sitemap']);
         $this->fillProduct();
         \App::logger()->info('Sitemap: товары готовы', ['sitemap']);
-        $this->fillServiceCategory();
-        \App::logger()->info('Sitemap: категории услуг готовы', ['sitemap']);
-        $this->fillService();
-        \App::logger()->info('Sitemap: услуги готовы', ['sitemap']);
+        //$this->fillServiceCategory();
+        //\App::logger()->info('Sitemap: категории услуг готовы', ['sitemap']);
+        //$this->fillService();
+        //\App::logger()->info('Sitemap: услуги готовы', ['sitemap']);
         $this->fillShop();
         \App::logger()->info('Sitemap: магазины готовы', ['sitemap']);
         $this->fillPage();
@@ -135,25 +135,28 @@ class SitemapAction {
                     '0.8'
                 );
 
-                try {
-                    for ($i = 0; $i < 10; $i++) {
-                        foreach (\RepositoryManager::brand()->getCollectionByCategory($category, $i * 100, 100) as $brand) {
-                            if (!$brand->getToken()) {
-                                \App::logger()->warn(sprintf('Бренд #%s не содержит токена', $brand->getId()));
-                                continue;
+                // генерируем категория+бренд страницы только для нерутовых категорий
+                if ($category->getLevel() > 1) {
+                    try {
+                        for ($i = 0; $i < 10; $i++) {
+                            foreach (\RepositoryManager::brand()->getCollectionByCategory($category, $i * 100, 100) as $brand) {
+                                if (!$brand->getToken()) {
+                                    \App::logger()->warn(sprintf('Бренд #%s не содержит токена', $brand->getId()));
+                                    continue;
+                                }
+                                $this->putContent(
+                                    $this->router->generate('product.category.brand', [
+                                        'brandToken'   => $brand->getToken(),
+                                        'categoryPath' => $category->getPath(),
+                                    ]),
+                                    'daily',
+                                    '0.8'
+                                );
                             }
-                            $this->putContent(
-                                $this->router->generate('product.category.brand', [
-                                    'brandToken'   => $brand->getToken(),
-                                    'categoryPath' => $category->getPath(),
-                                ]),
-                                'daily',
-                                '0.8'
-                            );
                         }
+                    } catch (\Exception $e) {
+                        \App::logger()->error($e, ['sitemap']);
                     }
-                } catch (\Exception $e) {
-                    \App::logger()->error($e, ['sitemap']);
                 }
 
                 if ((bool)$category->getChild()) {

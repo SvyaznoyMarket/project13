@@ -30,8 +30,13 @@ return [
 
     // инфо пользователя
     'user.info' => [
-        'pattern' => '/user/shortinfo',
+        'pattern' => '/ajax/user/info',
         'action'  => ['User\InfoAction', 'execute'],
+    ],
+    // инфо пользователя
+    'old.user.info' => [
+        'pattern' => '/user/shortinfo',
+        'action'  => ['User\OldInfoAction', 'execute'],
     ],
     // вход пользователя
     'user.login' => [
@@ -45,7 +50,7 @@ return [
     ],
     // регистрация корпоративного пользователя
     'user.registerCorporate' => [
-        'pattern' => '/corporate-register',
+        'pattern' => '/b2b',
         'action'  => ['User\Action', 'registerCorporate'],
     ],
     // выход пользователя
@@ -70,8 +75,8 @@ return [
         'action'  => ['User\IndexAction', 'execute'],
     ],
     // данные по авторизованному пользователю
-    'user.getAuth' => [
-        'pattern' => '/user/get-auth',
+    'user.get' => [
+        'pattern' => '/user/get',
         'action'  => ['User\GetAction', 'execute'],
     ],
     // вход через социальные сети
@@ -147,15 +152,15 @@ return [
         'action'  => ['ProductCategory\Action', 'setInstore'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
-    // показать товары в конкретном магазине
-    'product.category.shop' => [
-        'pattern' => '/catalog/{categoryPath}/_inshop',
-        'action'  => ['ProductCategory\Action', 'setShopId'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
     // каталог товаров
     'product.category' => [
         'pattern' => '/catalog/{categoryPath}',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
+    ],
+    // бесконечная листалка в категориях
+    'product.category.sliderInfinity' => [
+        'pattern' => '/catalog/{categoryPath}/_sliderInfinity',
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
@@ -189,6 +194,11 @@ return [
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
     ],
+    'product.category.brand.sliderInfinity' => [
+        'pattern' => '/catalog/{categoryPath}/{brandToken}/_sliderInfinity',
+        'action'  => ['ProductCategory\Action', 'category'],
+        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
+    ],
     // слайдер рекомендованных товаров
     'product.category.recommended.slider' => [
         'pattern' => '/ajax/catalog/{categoryPath}/_slider-recommended',
@@ -208,14 +218,20 @@ return [
         'action'  => ['Product\LineAction', 'execute'],
     ],
     // расчет доставки товара
-    'product.delivery' => [
+    'old.product.delivery' => [
         'pattern' => '/product/delivery-info',
-        'action'  => ['Product\DeliveryAction', 'info'],
+        'action'  => ['Product\OldDeliveryAction', 'info'],
         'method'  => ['POST'],
     ],
     'product.delivery_1click' => [
         'pattern' => '/product/delivery1click',
-        'action'  => ['Product\DeliveryAction', 'oneClick'],
+        'action'  => ['Product\OldDeliveryAction', 'oneClick'],
+    ],
+    // расчет доставки товара
+    'product.delivery' => [
+        'pattern' => '/ajax/product/delivery',
+        'action'  => ['Product\DeliveryAction', 'execute'],
+        'method'  => ['POST'],
     ],
     'product.stock' => [
         'pattern' => '/product/{productPath}/stock',
@@ -227,9 +243,19 @@ return [
         'action'  => ['Product\AccessoryAction', 'execute'],
         'require' => ['productToken' => '[\w\d-_]+'],
     ],
+    'product.accessory.jewel' => [
+        'pattern' => '/jewel/products/accessories/{productToken}',
+        'action'  => ['Jewel\Product\AccessoryAction', 'execute'],
+        'require' => ['productToken' => '[\w\d-_]+'],
+    ],
     'product.related' => [
         'pattern' => '/products/related/{productToken}',
         'action'  => ['Product\RelatedAction', 'execute'],
+        'require' => ['productToken' => '[\w\d-_]+'],
+    ],
+    'product.related.jewel' => [
+        'pattern' => '/jewel/products/related/{productToken}',
+        'action'  => ['Jewel\Product\RelatedAction', 'execute'],
         'require' => ['productToken' => '[\w\d-_]+'],
     ],
     'product.comment' => [
@@ -255,6 +281,11 @@ return [
         'pattern' => '/product-reviews/{productId}',
         'require' => ['productId' => '\d+'],
         'action'  => ['Product\ReviewsAction', 'execute'],
+    ],
+    'product.notification.lowerPrice' => [
+        'pattern' => '/ajax/product-notification/{productId}',
+        'require' => ['productId' => '\d+'],
+        'action'  => ['Product\NotificationAction', 'lowerPrice'],
     ],
 
     'tag' => [
@@ -301,43 +332,51 @@ return [
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление товара в корзину
-    'cart.product.add' => [
-        'pattern' => '/cart/add/{productId}/_quantity/{quantity}', // TODO: сделать поприличнее - '/cart/add-product/{productId}/{quantity}'
+    'cart.product.set' => [
+        'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
+    ],
+    // добавление товара в корзину
+    'cart.paypal.product.set' => [
+        'pattern' => '/cart/paypal/add-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'set'],
+    ],
+    // удаление товара из корзины
+    'cart.paypal.product.delete' => [
+        'pattern' => '/cart/paypal/delete-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
     ],
     // удаление товара из корзины
     'cart.product.delete' => [
-        'pattern' => '/cart/delete/{productId}/_service', // TODO: сделать поприличнее - '/cart/delete-product/{productId}'
+        'pattern' => '/cart/delete-product/{productId}',
         'action'  => ['Cart\ProductAction', 'delete'],
-    ],
-    'old.cart.product.add' => [
-        'pattern' => '/cart/add/{productId}/_quantity', // TODO: Убить, когда полностью переедем на dark, переписать js с учетом наличия кол-ва
-        'action'  => ['Cart\ProductAction', 'set'],
     ],
     // добавление списка товаров в корзину
     'cart.product.setList' => [
         'pattern' => '/cart/set-products',
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
-    // удаление услуги из корзины
-    'cart.service.delete' => [
-        'pattern' => '/cart/delete_service/{productId}/_service/{serviceId}',
-        'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
-        'action'  => ['Cart\ServiceAction', 'delete'],
-    ],
     // добавление услуги в корзину
-    'cart.service.add' => [
-        'pattern' => '/cart/add_service/{productId}/_service/{serviceId}/_quantity/{quantity}',
+    'cart.service.set' => [
+        'pattern' => '/cart/add-service/{serviceId}/for-product/{productId}',
         'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
         'action'  => ['Cart\ServiceAction', 'set'],
     ],
+    // удаление услуги из корзины
+    'cart.service.delete' => [
+        'pattern' => '/cart/delete-service/{serviceId}/for-product/{productId}',
+        'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
+        'action'  => ['Cart\ServiceAction', 'delete'],
+    ],
+    // добавление гарантии в корзину
     'cart.warranty.set' => [
-        'pattern' => '/cart/warranty/{productId}/set/{warrantyId}/_quantity/{quantity}',
+        'pattern' => '/cart/add-warranty/{warrantyId}/for-product/{productId}',
         'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
         'action'  => ['Cart\WarrantyAction', 'set'],
     ],
+    // удаление гарантии из корзины
     'cart.warranty.delete' => [
-        'pattern' => '/cart/warranty/{productId}/delete/{warrantyId}',
+        'pattern' => '/cart/delete-warranty/{warrantyId}/for-product/{productId}',
         'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
         'action'  => ['Cart\WarrantyAction', 'delete'],
     ],
@@ -357,6 +396,18 @@ return [
         'pattern' => '/cart/coupon/delete',
         'action'  => ['Cart\CouponAction', 'delete'],
     ],
+    'cart.blackcard.apply' => [
+        'pattern' => '/cart/blackcard',
+        'action'  => ['Cart\BlackcardAction', 'apply'],
+    ],
+    'cart.blackcard.delete' => [
+        'pattern' => '/cart/blackcard/delete',
+        'action'  => ['Cart\BlackcardAction', 'delete'],
+    ],
+    'cart.sum' => [
+        'pattern' => '/cart/sum',
+        'action'  => ['Cart\SumAction', 'execute'],
+    ],
 
     // заказ
     'order.1click' => [
@@ -364,9 +415,18 @@ return [
         'action'  => ['Order\OneClickAction', 'execute'],
         'method'  => ['POST'],
     ],
-    'order.create' => [
+    'order' => [
         'pattern' => '/orders/new',
         'action'  => ['Order\Action', 'create'],
+    ],
+    'order.create' => [
+        'pattern' => '/orders/create',
+        'action'  => ['Order\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'order.delivery' => [
+        'pattern' => '/ajax/order-delivery',
+        'action'  => ['Order\DeliveryAction', 'execute'],
     ],
     'order.externalCreate' => [
         'pattern' => '/orders/create-external',
@@ -380,9 +440,40 @@ return [
         'pattern' => '/orders/payment/{orderNumber}',
         'action'  => ['Order\Action', 'paymentComplete'],
     ],
+    'order.paymentSuccess' => [
+        'pattern' => '/orders/complete_payment',
+        'action'  => ['Order\Action', 'paymentSuccess'],
+    ],
+    'order.paymentFail' => [
+        'pattern' => '/orders/fail_payment',
+        'action'  => ['Order\Action', 'paymentFail'],
+    ],
+    'order.paypal.new' => [
+        'pattern' => '/orders/paypal/new',
+        'action'  => ['Order\Paypal\NewAction', 'execute'],
+    ],
+    'order.paypal.create' => [
+        'pattern' => '/orders/paypal/create',
+        'action'  => ['Order\Paypal\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
     'order.bill' => [
         'pattern' => '/private/orders/{orderNumber}/bill',
         'action'  => ['Order\BillAction', 'execute'],
+    ],
+    'order.clearPaymentUrl' => [
+        'pattern' => '/orders/clearPaymentUrl',
+        'action'  => ['Order\Action', 'clearPaymentUrl'],
+    ],
+
+    // paypal
+    'order.paypal.complete' => [
+        'pattern' => '/orders/paypal-complete',
+        'action'  => ['Order\PaypalAction', 'complete'],
+    ],
+    'order.paypal.fail' => [
+        'pattern' => '/orders/paypal-fail',
+        'action'  => ['Order\PaypalAction', 'fail'],
     ],
 
     // услуги
@@ -414,11 +505,30 @@ return [
         'action' => ['Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
+    'product.recommended.jewel' => [
+        'pattern' => '/jewel/product-also-viewed/{productId}',
+        'action' => ['Jewel\Product\RecommendedAction', 'execute'],
+        'require' => ['productId' => '\d+'],
+    ],
+    'product.similar' => [ /// executed SmartEngine or RetailRocker
+        'pattern' => '/ajax/product-similar/{productId}',
+        'action' => ['Product\SimilarAction', 'execute'],
+        //'action' => ['Product\SimilarAction', 'debug'], // just for debug
+        'require' => ['productId' => '\d+'],
+    ],
+    'product.alsoViewed' => [ /// executed SmartEngine or RetailRocker
+        'pattern' => '/ajax/product-also-viewed/{productId}',
+        'action' => ['Product\AlsoViewedAction', 'execute'],
+        //'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
+        'require' => ['productId' => '\d+'],
+    ],
+    /*
     'smartengine.pull.product_similar' => [
         'pattern' => '/product-similar/{productId}',
         'action' => ['Smartengine\Action', 'pullProductSimilar'],
         'require' => ['productId' => '\d+'],
     ],
+    */
     'smartengine.push.product_view' => [
         'pattern' => '/product-view/{productId}',
         'action' => ['Smartengine\Action', 'pushView'],
@@ -449,6 +559,13 @@ return [
     'user.changePassword' => [
         'pattern' => '/private/password',
         'action'  => ['User\ChangePasswordAction', 'execute'],
+    ],
+
+    // маршрутизатор нескольких запросов
+    'route' => [
+        'pattern' => '/route',
+        'action'  => ['RouteAction', 'execute'],
+        'method'  => ['POST'],
     ],
 
     // подписка
@@ -506,6 +623,12 @@ return [
         'method'  => ['POST'],
     ],
 
+    'git.pull' => [
+        'pattern' => '/git/pull',
+        'action'  => ['GitAction', 'pull'],
+        'method'  => ['GET'],
+    ],
+
     //cron
     'cron-index' => [
         'pattern' => '/cron',
@@ -518,6 +641,19 @@ return [
     'cron-task-links' => [
         'pattern' => '/cron/{task}/links',
         'action'  => ['Cron\LinksAction', 'execute'],
+    ],
+
+    // LiveTex Statistics:
+    'livetex.statistics' => [
+        'pattern' => '/livetex-statistics',
+        'action' => ['Livetex\StatisticsAction', 'execute'],
+    ],
+
+    //survey
+    'survey.submit-answer' => [
+        'pattern' => '/survey/submit-answer',
+        'action'  => ['Survey\Action', 'submitAnswer'],
+        'method'  => ['POST'],
     ],
 
     //content

@@ -11,6 +11,8 @@ class Entity {
     private $price;
     /** @var int  */
     private $sum;
+    /** @var int  */
+    private $deliverySum;
     /** @var bool */
     private $isBuyable = true;
     /** @var \Model\Cart\Service\Entity[] */
@@ -23,6 +25,7 @@ class Entity {
         if (array_key_exists('quantity', $data)) $this->setQuantity($data['quantity']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('sum', $data)) $this->setSum($data['sum']);
+        if (array_key_exists('deliverySum', $data)) $this->setDeliverySum($data['deliverySum']);
         if (array_key_exists('error', $data)){
             // TODO: подумать - а надо ли это
             $this->setQuantity(0);
@@ -43,6 +46,20 @@ class Entity {
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * @param int $deliverySum
+     */
+    public function setDeliverySum($deliverySum) {
+        $this->deliverySum = (int)$deliverySum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeliverySum() {
+        return $this->deliverySum;
     }
 
     /**

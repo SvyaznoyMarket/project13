@@ -27,6 +27,7 @@ class Repository {
         $client = clone $this->client;
 
         $result = [];
+
         $client->addQuery('list', [
                 'product_id' => $productId,
                 'current_page' => $currentPage,

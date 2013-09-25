@@ -6,6 +6,7 @@ class Manager {
     private $cookieName;
     private $cookieLifetime;
     private $cookieNames = [];
+    private $params4get = [ 'utm_source','utm_content','utm_term', 'actionpay', 'prx', 'aip', 'webmaster_id', 'admitad_uid', 'affiliate_id' ];
 
     public function __construct() {
         $this->cookieName = \App::config()->partner['cookieName'];
@@ -20,17 +21,42 @@ class Manager {
         try {
             $request = \App::request();
             $cookie = null;
+            //$session = \App::session(); // Можно сделать и через сессию
 
-            $utmSource = $request->get('utm_source');
+            $getParams = [];
+            foreach( $this->params4get as $param ){
+                $getParams[$param] = $request->get($param) ?: '';
+            }
+
+            $utmSource = $getParams['utm_source'];
+
+            foreach( $getParams as $key => $value ){
+                if (!empty($value)) {
+                    $response->headers->setCookie(new \Http\Cookie(
+                        $key,
+                        $value, time() + $this->cookieLifetime, '/', null, false, true
+                    ));
+                    // $session->remove($key); $session->set($key, $value); // Можно сделать и через сессию
+                }
+            }
+
             $sender = $request->get('sender');
 
-            //SmartEngine & SmartAssistant
+            //(SmartEngine & SmartAssistant) & RetailRocket
             if ((bool)$sender) {
                 $sender = explode('|', $sender); // ?sender=SmartEngine|product_id
                 if ((bool)$sender[0] && (bool)$sender[1]) {
-                    switch ($sender[0]) {
+                    switch ($sender[0]) { // не забывать про строчные (маленькие) буквы
                         case \Smartengine\Client::NAME: {
-                            \App::user()->setRecommendedProductByParams($sender[1], \Smartengine\Client::NAME, 'viewed_at', time());
+                            \App::user()->setRecommendedProductByParams(
+                                $sender[1], \Smartengine\Client::NAME, 'viewed_at', time()
+                            );
+                            break;
+                        }
+                        case \RetailRocket\Client::NAME: {
+                            \App::user()->setRecommendedProductByParams(
+                                $sender[1], \RetailRocket\Client::NAME, 'viewed_at', time()
+                            );
                             break;
                         }
                     }
@@ -38,7 +64,7 @@ class Manager {
             }
 
             // myThings
-            if (0 === strpos($utmSource, 'mythings')) {
+            if (0 === strpos($utmSource, 'mythinqs')) {
                 $cookie = new \Http\Cookie(
                     $this->cookieNames[\Partner\Counter\MyThings::NAME],
                     \Partner\Counter\MyThings::NAME,
@@ -64,17 +90,6 @@ class Manager {
                 $cookie = new \Http\Cookie(
                     $this->cookieName,
                     \Partner\Counter\CityAds::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // eTargeting
-            } if (0 === strpos($utmSource, 'etargeting')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\Counter\Etargeting::NAME,
                     time() + $this->cookieLifetime,
                     '/',
                     null,
@@ -134,6 +149,17 @@ class Manager {
                     false,
                     true
                 );
+            // Reactive
+            } else if ((0 === strpos($utmSource, 'vk.com')) && (0 === strpos($request->get('utm_campaing'), 'social_target'))) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\Counter\Reactive::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
             }
 
             if ($cookie instanceof \Http\Cookie) {
@@ -165,11 +191,6 @@ class Manager {
                     $prefix . '.' . \Partner\Counter\CityAds::NAME . '.prx' => $request->cookies->get('prx'),
                 ];
                 break;
-            case \Partner\Counter\Etargeting::NAME:
-                $return = [
-                    $prefix => [\Partner\Counter\Etargeting::NAME],
-                ];
-                break;
             case \Partner\Counter\Actionpay::NAME:
                 $return = [
                     $prefix => [\Partner\Counter\Actionpay::NAME],
@@ -197,6 +218,11 @@ class Manager {
                     $prefix => [\Smartengine\Client::NAME],
                 ];
                 break;
+            case \Partner\Counter\Reactive::NAME:
+                $return = [
+                    'name' => \Partner\Counter\Reactive::NAME,
+                ];
+                break;
         }
 
         if ((bool)$product) {
@@ -209,6 +235,15 @@ class Manager {
                 $keyName .= '.id.' . $product->getId();
             }
             if ($product->getMainCategory()) $return[$keyName . '.category'] = $product->getMainCategory()->getId();
+        }
+
+
+        foreach ($this->params4get as $param) {
+            $tmp = $request->get($param) ? : $request->cookies->get($param);
+            if ( !empty( $tmp ) ) {
+                $return[$param] = $tmp;
+                //$return[$tmp] = $session->get($tmp); // Можно сделать и через сессию
+            }
         }
 
         return $return;

@@ -3,6 +3,37 @@
 namespace Controller\User;
 
 class Action {
+    private $redirect;
+    private $requestRedirect;
+
+    /**
+     * @param \Http\Request $request
+     * @return bool|\Http\JsonResponse|\Http\RedirectResponse
+     */
+    private function checkRedirect(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $this->redirect = \App::router()->generate('user'); // default redirect to the /private page (Личный кабинет)
+        $redirectTo = $request->get('redirect_to');
+        if ($redirectTo) {
+            $this->redirect = $redirectTo;
+            $this->requestRedirect = $redirectTo;
+        }
+
+        if (\App::user()->getEntity()) { // if user is logged in
+            if (empty($redirectTo)) {
+                return $request->isXmlHttpRequest()
+                    ? new \Http\JsonResponse(['success' => true])
+                    : new \Http\RedirectResponse(\App::router()->generate('user'));
+            } else { // if redirect isset:
+                return new \Http\RedirectResponse($redirectTo);
+            }
+        }
+
+        return false;
+    }
+
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -11,15 +42,8 @@ class Action {
     public function login(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::user()->getEntity()) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(['success' => true])
-                : new \Http\RedirectResponse(\App::router()->generate('user'));
-        }
-
-        $redirect = (false !== strpos($request->get('redirect_to'), \App::config()->mainHost))
-            ? $request->get('redirect_to')
-            : \App::router()->generate('user');
+        $checkRedirect = $this->checkRedirect($request);
+        if ($checkRedirect) return $checkRedirect;
 
         $form = new \View\User\LoginForm();
         if ($request->isMethod('post')) {
@@ -78,10 +102,10 @@ class Action {
                                     'last_name'    => $userEntity->getLastName(),
                                     'mobile_phone' => $userEntity->getMobilePhone(),
                                 ],
-                                'link' => $redirect,
+                                'link' => $this->redirect,
                             ],
                         ])
-                        : new \Http\RedirectResponse($redirect);
+                        : new \Http\RedirectResponse($this->redirect);
 
                     \App::user()->signIn($userEntity, $response);
 
@@ -116,22 +140,37 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-        $page->setParam('redirect', $redirect);
+        $page->setParam('redirect', $this->redirect);
 
         return new \Http\Response($page->show());
     }
 
     /**
+     * @param \Http\Request $request
      * @return \Http\RedirectResponse
      */
-    public function logout() {
+    public function logout(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user();
 
-        $user->removeToken();
+        $referer = $request->headers->get('referer');
+        if (!$referer || $referer && preg_match('/(\/private\/)|(\/private$)/', $referer)) {
+            $redirect_to = \App::router()->generate('homepage');
+        } else {
+            $redirect_to = $referer;
+        }
 
-        $response = new \Http\RedirectResponse(\App::router()->generate('user.login'));
+        if ($request->get('redirect_to')) {
+            $redirect_to = $request->get('redirect_to');
+            if (!preg_match('/^(\/|http).*/i', $redirect_to)) {
+                $redirect_to = 'http://' . $redirect_to;
+            }
+        }
+
+        $response = new \Http\RedirectResponse($redirect_to); 
+
+        $user->removeToken($response);
         $user->setCacheCookie($response);
 
         return $response;
@@ -145,15 +184,12 @@ class Action {
     public function register(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::user()->getEntity()) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(['success' => true])
-                : new \Http\RedirectResponse(\App::router()->generate('user'));
-        }
+        $checkRedirect = $this->checkRedirect($request);
+        if ($checkRedirect) return $checkRedirect;
 
         $form = new \View\User\RegistrationForm();
         if ($request->isMethod('post')) {
-            $form->fromArray($request->request->get('register'));
+            $form->fromArray((array)$request->request->get('register'));
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
             }
@@ -166,17 +202,20 @@ class Action {
                     'first_name' => $form->getFirstName(),
                     'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
                 ];
+
+                $isSubscribe = (bool)$request->get('subscribe', false);
+
                 if (strpos($form->getUsername(), '@')) {
                     $data['email'] = $form->getUsername();
+                    $data['is_subscribe'] = $isSubscribe;
                 }
                 else {
                     $phone = $form->getUsername();
                     $phone = preg_replace('/^\+7/', '8', $phone);
                     $phone = preg_replace('/[^\d]/', '', $phone);
                     $data['mobile'] = $phone;
+                    $data['is_sms_subscribe'] = $isSubscribe;
                 }
-
-                $data['is_subscribe'] = (bool)$request->get('subscribe', false);
 
                 try {
                     $result = \App::coreClientV2()->query('user/create', [], $data);
@@ -199,23 +238,27 @@ class Action {
                                     'form'    => $form,
                                     'request' => \App::request(),
                                 ]),
+                                'link' => $this->redirect,
                             ],
                         ])
-                        : new \Http\RedirectResponse(\App::router()->generate('user'));
+                        : new \Http\RedirectResponse($this->redirect);
 
                     \App::user()->signIn($user, $response);
 
                     return $response;
                 } catch(\Exception $e) {
                     \App::exception()->remove($e);
+                    $errorMess = $e->getMessage();
                     switch ($e->getCode()) {
-                        case 684:
                         case 686:
-                            $form->setError('username', 'Такой пользователь уже зарегистрирован.');
+                        case 684:
+                        case 689:
+                        case 690:
+                            $form->setError('username', $errorMess );
                             break;
                         case 609:
                         default:
-                            $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
+                            $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $errorMess) : '') );
                             break;
                     }
                 }
@@ -238,6 +281,9 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
+        if ( $this->requestRedirect ) {
+            $page->setParam('redirect', $this->requestRedirect);
+        }
 
         return new \Http\Response($page->show());
     }
@@ -250,15 +296,30 @@ class Action {
     public function registerCorporate(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::user()->getEntity()) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(['success' => true])
-                : new \Http\RedirectResponse(\App::router()->generate('user'));
+        if (\App::user()->getEntity() && $request->isXmlHttpRequest() ) {
+            return new \Http\JsonResponse(['success' => true]);
         }
+
+
+        \App::logger()->info(['action' => __METHOD__, 'request.request' => $request->request->all()], ['user']);
+
+        $content = null;
+        \App::contentClient()->addQuery('reg_corp_user_cont', [],
+            function($data) use (&$content) {
+                if (!empty($data['content'])) {
+                    $content = $data['content'];
+                }
+            },
+            function(\Exception $e) {
+                \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                \App::exception()->add($e);
+            }
+        );
+        \App::contentClient()->execute();
 
         $form = new \View\User\CorporateRegistrationForm();
         if ($request->isMethod('post')) {
-            $form->fromArray($request->request->get('register'));
+            $form->fromArray((array)$request->get('register'));
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
             }
@@ -342,6 +403,7 @@ class Action {
                     $result = \App::coreClientV2()->query('user/create-legal', [
                         'geo_id' => \App::user()->getRegion()->getId(),
                     ], $data);
+                    \App::logger()->info(['core.response' => $result], ['user']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
@@ -359,6 +421,7 @@ class Action {
                                 'content' => \App::templating()->render('form-registerCorporate', [
                                     'page'    => new \View\Layout(),
                                     'form'    => $form,
+                                    'content' => $content,
                                     'request' => \App::request(),
                                 ]),
                             ],
@@ -419,6 +482,7 @@ class Action {
                         'content' => \App::templating()->render('form-registerCorporate', [
                             'page'    => new \View\Layout(),
                             'form'    => $form,
+                            'content' => $content,
                             'request' => \App::request(),
                         ]),
                     ],
@@ -426,8 +490,13 @@ class Action {
             }
         }
 
+        // список рутовых категорий
+        $rootCategories = \RepositoryManager::productCategory()->getRootCollection();
+
         $page = new \View\User\CorporateRegistrationPage();
         $page->setParam('form', $form);
+        $page->setParam('rootCategories', $rootCategories);
+        $page->setParam('content', $content);
 
         return new \Http\Response($page->show());
     }

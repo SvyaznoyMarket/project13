@@ -25,10 +25,8 @@ use Model\Product\Filter\Entity as FilterEntity;
         <li<? if ($i > 4) { ?> class="hf" style="display: none"<? } ?>>
             <input name="<?= $formName ?>[<?= $filter->getId()?>][]" type="checkbox" value="<?= $id ?>"<? if (in_array($id, $values)) { ?> checked="checked"<? } ?> id="<?= $formName ?>_<?= $filter->getId() ?>_<?= $id ?>" class="hiddenCheckbox" />
             <label for="<?= $formName ?>_<?= $filter->getId() ?>_<?= $id?>" class="prettyCheckbox checkbox list">
-                <span class="holderWrap" style="width: 13px; height: 13px; ">
-                    <span class="holder" style="width: 13px; "></span>
-                </span>
-                <?= $option->getName() ?>
+                <? $quantity = empty(\App::config()->sphinx['showFacets']) ? 0 : $option->getQuantity() ?>
+                <?= $option->getName() ?> <? if(!empty($quantity)): ?><span class="gray">(<?= $quantity ?>)</span><? endif ?>
             </label>
         </li>
         <? $i++; } ?>

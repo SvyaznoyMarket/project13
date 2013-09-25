@@ -147,4 +147,25 @@ class Repository {
 
         return $collection;
     }
+
+    /**
+     * @param array $ids
+     * @param $done
+     * @param null $fail
+     * @return array
+     */
+    public function prepareCollectionById(array $ids = [], $done, $fail = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        if (!(bool)$ids) return [];
+
+        $this->client->addQuery('shop/get',
+            [
+                'id' => $ids,
+            ],
+            [],
+            $done,
+            $fail
+        );
+    }
 }

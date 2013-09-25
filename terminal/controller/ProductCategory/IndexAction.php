@@ -82,10 +82,11 @@ class IndexAction {
 
         $productFilter = null;
         if ((bool)$filters) {
-            $productFilter = new \Model\Product\Filter($filters);
+            $productFilter = new \Model\Product\Filter($filters, false);
             $productFilter->setCategory($category);
             $productFilter->setValues($filterData);
         }
+
 
         $response = [];
         $client->addQuery('listing/list', [

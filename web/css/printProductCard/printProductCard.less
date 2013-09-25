@@ -1,0 +1,44 @@
+.topbar, #header, .breadcrumbs, .bWidgetBuy__eDelivery-now, .searchbox, #upper, .priceOld, .bGoodsSlider, .bBreadCrumbsBottom, .bReviews, .footer, .bBlackBox, .bBottomBuy, .priceSale, .creditbox, .bProductDesc__eStore-text, .bReviewSection, .bCountSection, .bWidgetBuy__eBuy, .bWidgetBuy__eClick, .bPhotoAction {
+	display: none !important;
+}
+.bWidgetBuy {
+	border: none;
+	&__eDelivery {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+.bProductSection {
+	.bProductDesc {
+		margin: 0;
+	}
+	.bDescriptionProduct {
+		width: 900px;
+	}
+	.bSpecifications__eList {
+		width: 900px; 
+		dt {
+			width: 625px;
+		}
+	}	
+}
+
+.jewel {
+	.bProductDesc__eStore-text {
+		display: block !important;
+	}
+	.bProductSection {
+		.bSpecifications__eList {
+			width: 300px; 
+			color: @black;
+			dd {
+			 	background: none; 
+			 	padding-left: 0;
+			}
+			dt {
+			 	width: 125px;
+			}
+		}
+	}	
+}

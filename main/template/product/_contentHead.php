@@ -1,22 +1,19 @@
 <?php
 /**
- * @var $page            \View\Layout
- * @var $title           string|null
- * @var $breadcrumbs     array('url' => null, 'name' => null)[]
- * @var $hasSearch       bool
- * @var $hasSeparateLine bool
- * @var $extendedMargin  bool
+ * @var $page        \View\Layout
+ * @var $title       string|null
+ * @var $breadcrumbs array('url' => null, 'name' => null)[]
+ * @var $hasSearch   bool
+ * @var $product     \Model\Product\Entity
  */
 ?>
 
 <?
 $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
-$hasSeparateLine = isset($hasSeparateLine) ? (bool)$hasSeparateLine : false;
-$extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
+if (!isset($titlePrefix)) $titlePrefix = null;
 ?>
 
-<div class="pagehead">
-
+<div class="bProductSection clearfix">
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
     <? if ($hasSearch): ?>
@@ -28,12 +25,16 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
     </noindex>
     <? endif ?>
 
-    <div class="clear"></div>
+    <div class="bPageHead">
+        <? if ($product->getPrefix()): ?>
+        <div class="bPageHead__eSubtitle"><?= $product->getPrefix() ?></div>
+        <? endif ?>
+        <div class="bPageHead__eTitle clearfix">
+            <h1><?= $product->getWebName() ?></h1>
+            <? if(!empty($trustfactorTop)) { ?>
+                <img src="<?= $trustfactorTop ?>" style="vertical-align: bottom;">
+            <? } ?>
+        </div>
+        <span class="bPageHead__eArticle">Артикул: <?= $product->getArticle() ?></span>
+    </div><!--/head section -->
 
-    <? if ($title): ?><h1 itemprop="name"><?= $title ?></h1><? endif ?>
-
-    <div class="clear<? if ($extendedMargin): ?> pb20<? endif ?>"></div>
-    <? if ($hasSeparateLine): ?>
-    <div class="line"></div>
-    <? endif ?>
-</div>

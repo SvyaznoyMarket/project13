@@ -6,19 +6,18 @@ class ServiceAction {
     /**
      * @param int           $serviceId
      * @param int           $productId
-     * @param int           $quantity
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse
      * @throws \Exception
      */
-    public function set($serviceId, $productId, $quantity = 1, \Http\Request $request) {
+    public function set($serviceId, $productId, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $cart = \App::user()->getCart();
 
         $serviceId = (int)$serviceId;
         $productId = (int)$productId;
-        $quantity = (int)$quantity;
+        $quantity = (int)$request->get('quantity', 1);
 
         try {
             if ($quantity < 0) {
@@ -40,7 +39,7 @@ class ServiceAction {
 
             // если в корзине нет товара
             if ($product && !$cart->hasProduct($product->getId())) {
-                (new ProductAction())->set($product->getId(), $quantity, $request);
+                (new ProductAction())->set($product->getId(), $request);
             }
 
             $service = \RepositoryManager::service()->getEntityById($serviceId, \App::user()->getRegion());
@@ -58,39 +57,60 @@ class ServiceAction {
                 $cartService = $cart->getServiceById($service->getId());
             }
 
+            $productInfo = [];
+            $serviceInfo = [];
+            if ($product) {
+                $productInfo = [
+                    'name'  =>  $product->getName(),
+                    'img'   =>  $product->getImageUrl(2),
+                    'link'  =>  $product->getLink(),
+                    'price' =>  $product->getPrice(),
+                ];
+            }
+            if (\App::config()->kissmentrics['enabled']) {
+                $kissInfo = \Kissmetrics\Manager::getCartEvent($product, $service);
+                if (isset($kissInfo['product'])) $productInfo = array_merge($productInfo, $kissInfo['product']);
+                if (isset($kissInfo['service'])) $serviceInfo = $kissInfo['service'];
+            }
+
+            $completeInfo = [
+                'success'   => true,
+                'cart'      => [
+                    'sum'           => $cartService ? $cartService->getSum() : 0,
+                    'quantity'      => $quantity,
+                    'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
+                    'full_price'    => $cart->getSum(),
+                    'old_price'     => $cart->getOriginalSum(),
+                    'link'          => \App::router()->generate('order'),
+                ],
+            ];
+            if ($productInfo) $completeInfo['product'] = $productInfo;
+            if ($serviceInfo) $completeInfo['service'] = $serviceInfo;
+
             return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse([
-                    'success' => true,
-                    'data'    => [
-                        'sum'           => $cartService ? $cartService->getSum() : 0,
-                        'quantity'      => $quantity,
-                        'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
-                        'full_price'    => $cart->getSum(),
-                        'old_price'     => $cart->getOriginalSum(),
-                        'link'          => \App::router()->generate('order.create'),
-                    ],
-                    'result'  => \Kissmetrics\Manager::getCartEvent($product, $service),
-                ])
+                ? new \Http\JsonResponse($completeInfo)
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         } catch (\Exception $e) {
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => false,
-                    'data'    => ['error' => 'Не удалось добавить услугу в корзину', 'debug' => $e->getMessage()],
+                    'cart'    => ['error' => 'Не удалось добавить услугу в корзину', 'debug' => $e->getMessage()],
                 ])
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }
     }
 
     /**
-     * @param $serviceId
-     * @param $productId
      * @param \Http\Request $request
+     * @param $serviceId
+     * @param null $productId
      * @return \Http\JsonResponse|\Http\RedirectResponse
      */
     public function delete(\Http\Request $request, $serviceId, $productId = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        return $this->set($serviceId, $productId, 0, $request);
+        $request->query->set('quantity', 0);
+
+        return $this->set($serviceId, $productId, $request);
     }
 }

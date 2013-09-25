@@ -1,0 +1,31 @@
+.bBuyButton{
+	.rounded(4px);
+	.orangeGradLight();
+	display: block;
+
+	text-decoration: none;
+
+	color: @white;
+	border: none;
+
+	font-size: 14px;
+	font-weight: bold;
+
+	text-align: center;
+
+	&.mWithIcon{
+		width: 150px;
+	}
+
+	&.mWithoutIcon{
+		width: 50px;
+	}
+
+	&:hover{
+		.orangeGradDark();
+	}
+
+	&.mDisabled{
+		.grayGradDark2();
+	}
+}

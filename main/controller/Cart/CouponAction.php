@@ -5,7 +5,7 @@ namespace Controller\Cart;
 class CouponAction {
     /**
      * @param \Http\Request $request
-     * @throws \Exception\ActionException
+     * @throws \Exception|null
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
@@ -16,11 +16,11 @@ class CouponAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        $client = \App::coreClientV2();
         $cart = \App::user()->getCart();
 
         $number = trim((string)$request->get('number'));
 
+        $responseData = [];
         try {
             if (!$number) {
                 throw new \Exception\ActionException('Не передан номер карты');
@@ -28,35 +28,37 @@ class CouponAction {
 
             $cart->clearCoupons();
 
-            $data = $client->query('cart/check-coupon', ['number' => $number]);
-            if (true !== $data) {
-                throw new \Exception();
-            }
-
             $coupon = new \Model\Cart\Coupon\Entity();
             $coupon->setNumber($number);
 
             $cart->setCoupon($coupon);
 
-            $result = [
-                'success' => true,
-            ];
+            foreach ($cart->getCoupons() as $coupon) {
+                if ($number === $coupon->getNumber()) {
+                    if ($coupon->getError() instanceof \Exception) {
+                        throw $coupon->getError();
+                    }
+                }
+            }
+
+            $responseData['success'] = true;
 
         } catch (\Exception $e) {
             \App::exception()->remove($e);
 
             $message = \Model\Cart\Coupon\Entity::getErrorMessage($e->getCode()) ?: 'Неудалось активировать купон';
 
-            $result = [
-                'success' => false,
-                'error'   => (\App::config()->debug ? sprintf('Ошибка #%s: ', $e->getCode()) : '') . $message,
-            ];
-            if (\App::config()->debug) {
-                $result['error'] = $e;
+            if (in_array($e->getCode(), [300,  303,  305, 306, 307, 308, 309, 310, 311, 312, 313])) {
+                $cart->clearCoupons();
             }
+
+            $responseData = [
+                'success' => false,
+                'error'   => ['code' => $e->getCode(), 'message' => $message],
+            ];
         }
 
-        return new \Http\JsonResponse($result);
+        return new \Http\JsonResponse($responseData);
     }
 
     /**
@@ -67,28 +69,20 @@ class CouponAction {
     public function delete(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (!$request->isXmlHttpRequest()) {
-            throw new \Exception\NotFoundException('Request is not xml http request');
-        }
-
+        $responseData = [];
         try {
             \App::user()->getCart()->clearCoupons();
 
-            $result = [
-                'success' => true,
-            ];
+            $responseData['success'] = true;
         } catch (\Exception\ActionException $e) {
             \App::exception()->remove($e);
 
-            $result = [
+            $responseData = [
                 'success' => false,
-                'error'   => $e instanceof \Exception\ActionException ? $e->getMessage() : 'Неудалось активировать карту',
+                'error'   => ['code' => $e->getCode(), 'message' => 'Неудалось удалить купон'],
             ];
-            if (\App::config()->debug) {
-                $result['error'] = $e;
-            }
         }
 
-        return new \Http\JsonResponse($result);
+        return $request->isXmlHttpRequest() ? new \Http\JsonResponse($responseData) : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('cart'));
     }
 }

@@ -1,0 +1,1291 @@
+/**
+ * Кредит для карточки товара
+ *
+ * @author		Kotov Ivan, Zaytsev Alexandr
+ * @requires	jQuery, printPrice, docCookies, JsHttpRequest.js
+ */
+;(function() {
+	if( $('.creditbox').length ) {
+		var creditBoxNode = $('.creditbox'),
+			priceNode = creditBoxNode.find('.creditbox__sum strong');
+		// end of vars
+
+		window.creditBox = {
+			cookieTimeout: null,
+			
+			toggleCookie: function( state ) {
+				clearTimeout( this.cookieTimeout );
+				this.cookieTimeout = setTimeout( function(){
+					window.docCookies.setItem('credit_on', state ? 1 : 0 , 60*60, '/');
+				}, 200 );
+			},
+
+			init: function() {
+				var self = this,
+					creditd = $('input[name=dc_buy_on_credit]').data('model');
+				// end of vars
+
+				$('.creditbox label').click(function( e ) {
+					var target = $(e.target);
+
+					e.stopPropagation();
+
+					if ( target.is('input') ) {
+						return false;
+					}
+					
+					$(this).toggleClass('checked');
+					self.toggleCookie( $(this).hasClass('checked') );
+				});
+
+				if ( this.getState() === 1 ) {
+					$('.creditbox label').addClass('checked');
+				}
+
+				creditd.count = 1;
+				creditd.cart = '/cart';
+
+				dc_getCreditForTheProduct(
+					4427,
+					window.docCookies.getItem('enter_auth'),
+					'getPayment',
+					{ price : creditd.price, count : creditd.count, type : creditd.product_type },
+					function( result ) {
+						if( ! 'payment' in result ){
+							return;
+						}
+						if( result.payment > 0 ) {
+							priceNode.html( printPrice( Math.ceil(result.payment) ) );
+							creditBoxNode.show();
+						}
+					}
+				);
+			},
+			
+			getState: function() {
+				if( ! window.docCookies.hasItem('credit_on') ) {
+					return 0;
+				}
+
+				return window.docCookies.getItem('credit_on');
+			}
+		};
+		
+		creditBox.init();
+	}
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Расчет доставки
+ *
+ * @author		Zaytsev Alexandr
+ * 
+ * @requires	jQuery, simple_templating
+ * 
+ * @param		{Object}	widgetBox		Контейнер с доступными вариантами доставки
+ * @param		{Object}	deliveryData	Данные необходимые для отображения доставки
+ * @param		{String}	url				Адрес по которому необходимо запросить данные с расчитанной доставкой для текущего продукта
+ * @param		{String}	deliveryShops	Список магазинов из которых можно забрать сегодня (только если товар не доступен для продажи)
+ * @param		{Object}	productInfo		Данные о текущем продукте
+ * @param		{Object}	dataToSend		Данные для отправки на сервер и получение расчитанной доставки
+ */
+(function() {
+	console.info('Расчет доставки');
+
+	var widgetBox = $('.bDelivery'),
+		deliveryData = widgetBox.data('value'),
+		url = deliveryData.url,
+		deliveryShops = ( deliveryData.delivery.length ) ? deliveryData.delivery[0].shop : [],
+		productInfo = $('#jsProductCard'),
+		productInfoVal = ( productInfo ) ? productInfo.data('value') : null,
+		dataToSend = {};
+	// end of vars
+	
+	if ( !productInfo || !productInfoVal ) {
+		console.warn('Недостаточно данных для расчета доставки');
+		console.log(productInfo);
+		console.log(productInfoVal);
+
+		widgetBox.removeClass('mLoader');
+
+		return false;
+	}
+
+		/**
+		 * Показ попапа с магазином
+		 *
+		 * @param	{Object}	popup		Контейнер с попапом
+		 * @param	{Object}	button		Кнопка «перейти к магазину» в попапе
+		 * @param	{Object}	position	Координаты магазина, зашитые в ссылку
+		 * @param	{String}	url			Ссылка на магазин
+		 * @return	{Boolean}
+		 */
+	var showAvalShop = function showAvalShop() {
+			var popup = $('#avalibleShop'),
+				button = popup.find('.bOrangeButton'),
+				position = {
+					latitude: $(this).data('lat'),
+					longitude: $(this).data('lng')
+				},
+				url = $(this).attr('href');
+			// end of vars
+
+			button.attr('href', url);
+			$('#ymaps-avalshops').css({'width':600, 'height':400});
+
+			$.when(MapInterface.ready( 'yandex', {
+				yandex: $('#infowindowtmpl'), 
+				google: $('#infowindowtmpl')
+			})).done(function(){
+				MapInterface.onePoint( position, 'ymaps-avalshops' );
+			});
+
+			popup.css({'width':600, 'height':425});
+			popup.lightbox_me({
+				centered: true,
+				onLoad: function() {
+				},
+				onClose: function(){
+					$('#ymaps-avalshops').empty();
+				}
+			});
+
+			return false;
+		},
+
+		/**
+		 * Заполнение шаблона с доступными для самовывоза магазинами
+		 * 
+		 * @param	{Array}		shops			Массив магазинов
+		 * @param	{Object}	nowBox			Контейнер для элементов текущего типа доставки
+		 * @param	{Object}	toggleBtn		Кнопка переключения состояния листа магазинов открыто или закрыто
+		 * @param	{Object}	shopList		Контейнер для вывода списка магазинов
+		 * @param	{String}	templateNow		Готовый шаблон магазина
+		 * @param	{Object}	shopInfo		Данные для подстановки в шаблон магазина
+		 * @param	{Number}	shopLen			Количество магазинов
+		 */
+		fillAvalShopTmpl = function fillAvalShopTmpl( shops ) {
+			var nowBox = widgetBox.find('.mDeliveryNow'),
+				toggleBtn = nowBox.find('.bDeliveryNowClick'),
+				shopList = nowBox.find('.bDeliveryFreeAddress'),
+				templateNow = '',
+				shopInfo = {},
+				shopLen = shops.length;
+			// end of var
+
+			/**
+			 * Обработчик переключения состояния листа магазинов открыто или закрыто
+			 */
+			var shopToggle = function shopToggle() {
+				nowBox.toggleClass('mOpen');
+				nowBox.toggleClass('mClose');
+			};
+
+			if ( !shopLen ) {
+				return;
+			}
+
+			for ( var j = shopLen - 1; j >= 0; j-- ) {
+				shopInfo = {
+					name: shops[j].name,
+					lat: shops[j].latitude,
+					lng: shops[j].longitude,
+					url: shops[j].url
+				};
+
+				templateNow = tmpl('widget_delivery_shop',shopInfo);
+				shopList.append(templateNow);
+			}
+			
+			widgetBox.removeClass('mLoader');
+			nowBox.show();
+			$('.bDeliveryFreeAddress__eLink').bind('click', showAvalShop);
+			toggleBtn.bind('click', shopToggle);
+		},
+
+		/**
+		 * Обработка ошибки получения списка магазинов с сервера
+		 * 
+		 * @param	{Object}	res	Ответ от сервера
+		 */
+		errorHandler = function errorHandler() {
+			widgetBox.removeClass('mLoader');
+			widgetBox.remove();
+		},
+
+		/**
+		 * Обработка данных с сервера
+		 * 
+		 * @param	{Object}	res	Ответ от сервера
+		 */
+		resFromServer = function resFromServer( res ) {
+			/**
+			 * Полученнный с сервера массив вариантов доставок для текущего товара
+			 * @type	{Array}
+			 */
+			var deliveryInfo = res.product[0].delivery;
+
+			if ( !res.success ) {
+				errorHandler();
+				return false;
+			}
+
+			for ( var i = deliveryInfo.length - 1; i >= 0; i-- ) {
+				switch (deliveryInfo[i].token){
+					case 'standart':
+						var standartBox = widgetBox.find('.mDeliveryPrice'),
+							standartData = {
+								price: deliveryInfo[i].price,
+								dateString: deliveryInfo[i].date.name
+							},
+							templateStandart = tmpl('widget_delivery_standart', standartData);
+						// end of var
+
+						standartBox.html(templateStandart);
+						break;
+
+					case 'self':
+						var selfBox = widgetBox.find('.mDeliveryFree'),
+							selfData = {
+								price: deliveryInfo[i].price,
+								dateString: deliveryInfo[i].date.name
+							},
+							templateSelf = tmpl('widget_delivery_self', selfData);
+						// end of var
+
+						selfBox.html(templateSelf);
+						break;
+
+					case 'now':
+						fillAvalShopTmpl( deliveryInfo[i].shop );
+						break;
+				}
+			}
+			widgetBox.removeClass('mLoader');
+		};
+	// end of functions
+	
+	dataToSend = {
+		'product':[
+			{
+				'id': productInfoVal.id
+			}
+		]
+	}
+
+	if ( url === '' && deliveryShops.length === 0 ) {
+		console.warn('URL отсутствует. Список магазинов пуст.');
+		
+		widgetBox.removeClass('mLoader');
+	}
+	else if ( url === '' ) {
+		fillAvalShopTmpl( deliveryShops );
+	}
+	else {
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: dataToSend,
+			success: resFromServer,
+			statusCode: {
+					500: errorHandler,
+					502: errorHandler,
+					503: errorHandler,
+					504: errorHandler
+				}
+		});
+	}
+
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Слайдер изображений товара
+ *
+ * @author	Zaytsev Alexandr
+ * @requires jQuery
+ */
+;(function(){
+
+	/**
+	 * Инициализация слайдера
+	 *
+	 * @param	{Object}	slider		Элемент слайдера
+	 * @param	{Object}	fotoBox		Элемент контейнера с фотографиями
+	 * @param	{Object}	leftArr		Стрелка влево
+	 * @param	{Object}	rightArr	Стрелка вправо
+	 * @param	{Object}	photos		Карточки фотографий
+	 * @param	{Number}	itemW		Ширина одной карточки с фотографией
+	 * @param	{Number}	nowLeft		Текущий отступ слева
+	 */
+	var initFotoSlider = function(){
+		var slider = $('.bPhotoSlider');
+		var fotoBox = slider.find('.bPhotoSliderGallery');
+		var leftArr = slider.find('.bPhotoSlider__eBtn.mPrev');
+		var rightArr = slider.find('.bPhotoSlider__eBtn.mNext');
+		var photos = fotoBox.find('.bPhotoSliderGallery__eItem');
+
+		if (!photos.length){
+			return false;
+		}
+
+		var itemW = photos.width() + parseInt(photos.css('marginLeft'),10) + parseInt(photos.css('marginRight'),10);
+		var nowLeft = 0;
+
+		fotoBox.css({'width': photos.length*itemW, 'left':nowLeft});
+		/**
+		 * Проверка стрелок
+		 */
+		var checkArrow = function(){
+			if (nowLeft > 0){
+				leftArr.show();
+			}
+			else {
+				leftArr.hide();	
+			}
+
+			if (nowLeft < fotoBox.width()-slider.width()){
+				rightArr.show();
+			}
+			else {
+				rightArr.hide();
+			}
+		};
+
+		/**
+		 * Предыдущее фото
+		 */
+		var prevFoto = function(){
+			nowLeft = nowLeft - itemW;
+			fotoBox.animate({'left':-nowLeft});
+			checkArrow();
+			return false;
+		};
+
+		/**
+		 * Следущее фото
+		 */
+		var nextFoto = function(){
+			nowLeft = nowLeft + itemW;
+			fotoBox.animate({'left':-nowLeft});
+			checkArrow();
+			return false;
+		};
+
+		checkArrow();
+
+		leftArr.bind('click', prevFoto);
+		rightArr.bind('click', nextFoto);
+	};
+
+	$(document).ready(function() {
+		if ( $('.bPhotoSlider').length){
+			initFotoSlider();
+		}
+	});
+})();
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * 3D для мебели
+ *
+ * @requires jQuery, ENTER.utils.logError, ENTER.config
+ */
+;(function( global ) {
+	var pageConfig = global.ENTER.config.pageConfig,
+		utils = global.ENTER.utils;
+	// end of vars
+	
+	var loadFurniture3D = function loadFurniture3D() {
+		var furnitureAfterLoad = function furnitureAfterLoad() {
+
+			var object = $('#3dModelImg'),
+				data = object.data('value'),
+				host = object.data('host'),
+
+				AnimFramePlayer = null;
+			// end of vars
+
+			var furniture3dPopupShow = function furniture3dPopupShow() {
+				$('#3dModelImg').lightbox_me({
+					centered: true,
+					closeSelector: '.close'
+				});
+
+				return false;
+			};
+
+			try {
+				if ( !$('#3dImgContainer').length ) {
+					AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
+
+					AnimFramePlayer.DoLoadModel(data);
+					$('.mGrad360.3dimg').bind('click', furniture3dPopupShow);
+				}
+			}
+			catch ( err ) {
+				var dataToLog = {
+						event: '3dimg',
+						type: 'ошибка загрузки 3dimg для мебели',
+						err: err
+					};
+				// end of vars
+
+				utils.logError(dataToLog);
+			}
+		};
+
+		$LAB.script( 'DAnimFramePlayer.min.js' ).wait(furnitureAfterLoad);
+	};
+
+	$(document).ready(function() {
+		if ( pageConfig['product.img3d'] ) {
+			loadFurniture3D();
+		}
+	});
+}(this));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Подсказки к характеристикам
+ *
+ * @author	Zaytsev Alexandr
+ * @requires jQuery
+ */
+(function(){
+	var hintShower = function(){
+		var hintPopup = $('.bHint_ePopup');
+		var hintLnk = $('.bHint_eLink');
+		var hintCloseLnk = $('.bHint_ePopup .close');
+
+		var hintAnalytics = function(data){
+			if (typeof(_gaq) !== 'undefined') {
+				_gaq.push(['_trackEvent', 'Hints', data.hintTitle, data.url]);
+			}
+		};
+
+		var hintShow = function(){
+			hintPopup.hide();
+			$(this).parent().find('.bHint_ePopup').fadeIn(150);
+
+			var analyticsData = {
+				hintTitle: $(this).html(),
+				url: window.location.href
+			};
+			hintAnalytics(analyticsData);
+
+			return false;
+		};
+
+		var hintClose = function(){
+			hintPopup.fadeOut(150);
+			return false;
+		};
+
+
+		hintLnk.bind('click', hintShow);
+
+		hintCloseLnk.bind('click', hintClose);
+	};
+
+
+	$(document).ready(function() {
+		if ($('.bHint').length){
+			hintShower();
+		}
+	});
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Планировщик шкафов купе
+ *
+ * @requires jQuery, ENTER.utils.logError
+ */
+;(function( global ) {
+	/**
+	 * Имя объекта для конструктора шкафов купе
+	 *
+	 * ВНИМАНИЕ
+	 * Имя переменной менять нельзя. Захардкожено в файле KupeConstructorScript.js
+	 * Переменная должна находится в глобальной области видимости
+	 */
+	global.Planner3dKupeConstructor = null;
+
+
+	/**
+	 * Callback Инициализации конструктора шкафов
+	 *
+	 * ВНИМАНИЕ
+	 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
+	 * Функция должна находится в глобальной области видимости
+	 */
+	global.Planner3d_Init = function ( ApiIds ) {
+		// console.info(ApiIds)
+	};
+
+
+	/**
+	 * Callback изменений в конструкторе шкафов
+	 * 
+	 * ВНИМАНИЕ
+	 * Название функции менять нельзя. Захардкожено в файле KupeConstructorScript.js
+	 * Функция должна находится в глобальной области видимости
+	 */
+	global.Planner3d_UpdatePrice = function ( IdsWithInfo ) {
+		var url = $('#planner3D').data('cart-sum-url'),
+			product = {};
+		// end of vars
+
+		product.product = {};
+
+		var authFromServer = function( res ) {
+			if ( !res.success ) {
+				return false;
+			}
+
+			$('.jsPrice').html(printPrice(res.sum));
+		};
+
+		for ( var i = 0, len = IdsWithInfo.length; i < len; i++ ) {
+			var prodID = IdsWithInfo[i].id;
+
+			if ( IdsWithInfo[i].error !== '' ) {
+				$('.jsBuyButton').addClass('mDisabled');
+				$('#coupeError').html('Вставки продаются только парами!').show();
+
+				return false;
+			}
+
+			$('.jsBuyButton').removeClass('mDisabled');
+			$('#coupeError').hide();
+
+			if ( product.product[prodID+''] !== undefined ) {
+				product.product[prodID+''].quantity++;
+			}
+			else {
+				product.product[prodID+''] = {
+					id : prodID,
+					quantity : 1
+				};
+			}
+		}
+
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: product,
+			success: authFromServer
+		});
+	};
+
+
+	/**
+	 * Добавление шкафа купе в корзину
+	 */
+	var kupe2basket = function() {
+		if ( $(this).hasClass('mDisabled') ) {
+			return false;
+		}
+
+		var structure = global.Planner3dKupeConstructor.GetBasketContent(),
+			url = $(this).attr('href'),
+			product = {};
+		// end of vars
+
+		var resFromServer = function( res ) {
+			if ( !res.success ) {
+				return false;
+			}
+
+			$('.jsBuyButton').html('В корзине').addClass('mBought').attr('href','/cart');
+
+			/* костыль */
+			res.product.name = $('.bMainContainer__eHeader-title').html();
+			res.product.price = $('.jsPrice').eq('1').html();
+			res.product.article = $('.bMainContainer__eHeader-article').html();
+			/* */
+			
+			$('body').trigger('addtocart', [res]);
+		};
+
+		product.product = structure;
+
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: product,
+			success: resFromServer
+		});
+
+		return false;
+	};
+
+	var initPlanner = function() {
+		try {
+			var coupeInfo = $('#planner3D').data('product');
+			
+			global.Planner3dKupeConstructor = new DKupe3dConstructor(document.getElementById('planner3D'),'/css/item/coupe_img/','/css/item/coupe_tex/', '/css/item/test_coupe_icons/');
+			global.Planner3dKupeConstructor.Initialize('/js/KupeConstructorData.json', coupeInfo.id);
+		}
+		catch ( err ) {
+			var dataToLog = {
+					event: 'Kupe3dConstructor error',
+					type:'ошибка загрузки Kupe3dConstructor',
+					err: err
+				};
+			// end of vars
+			
+			global.ENTER.utils.logError(dataToLog);
+		}
+
+		$('.jsBuyButton').off();
+		$('.jsBuyButton').bind('click', kupe2basket);
+	};
+
+
+	$(document).ready(function() {
+		if ( $('#planner3D').length ) {
+			$LAB.script( 'KupeConstructorScript.min.js' ).script( 'three.min.js' ).wait(initPlanner);
+		}
+	});
+}(this));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Подписка на снижение цены
+ *
+ * @author	Zaytsev Alexandr
+ * @requires jQuery, jQuery.placeholder plugin, jQuery.emailValidate plugin
+ */
+;(function(){
+	var lowPriceNotifer = function(){
+		var notiferButton = $('.jsLowPriceNotifer');
+		var submitBtn = $('.bLowPriceNotiferPopup__eSubmitEmail');
+		var input = $('.bLowPriceNotiferPopup__eInputEmail');
+		var notiferPopup = $('.bLowPriceNotiferPopup');
+		var error = $('.bLowPriceNotiferPopup__eError');
+
+		var lowPriceNitiferHide = function(){
+			notiferPopup.fadeOut(300);
+			return false;
+		};
+
+		var lowPriceNitiferShow = function(){
+			notiferPopup.fadeIn(300);
+			notiferPopup.find('.close').bind('click', lowPriceNitiferHide);
+			return false;
+		};
+
+		var lowPriceNitiferSubmit = function(){
+
+
+			var submitUrl = submitBtn.data('url');
+			submitUrl += encodeURI('?email='+input.val());
+
+			var resFromServer = function(res){
+				if (!res.success){
+					input.addClass('red');
+					if (res.error.message){
+						error.show().html(res.error.message);
+					}
+					return false;
+				}
+
+				lowPriceNitiferHide();
+				notiferPopup.remove();
+				notiferButton.remove();
+			};
+			$.get( submitUrl, resFromServer);
+
+			return false;
+		};
+
+		
+		submitBtn.bind('click', lowPriceNitiferSubmit);
+		notiferButton.bind('click', lowPriceNitiferShow);
+	};
+
+	$(document).ready(function() {
+		if ($('.jsLowPriceNotifer').length){
+			lowPriceNotifer();
+		}
+	});
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Maybe3D
+ *
+ * @requires jQuery, ENTER.utils.logError, ENTER.config
+ */
+;(function( global ) {
+	var pageConfig = global.ENTER.config.pageConfig,
+		utils = global.ENTER.utils;
+	// end of vars
+	
+	var loadMaybe3D = function() {
+		var data = $('#maybe3dModelPopup').data('value');
+
+		var afterLoad = function() {
+			var maybe3dPopupShow = function( e ) {
+				e.stopPropagation();
+				try {
+					if ( !$('#maybe3dModel').length ) {
+						$('#maybe3dModelPopup_inner').append('<div id="maybe3dModel"></div>');
+					}
+
+					swfobject.embedSWF(data.init.swf, data.init.container, data.init.width, data.init.height, data.init.version, data.init.install, data.flashvars, data.params, data.attributes);
+					$('#maybe3dModelPopup').lightbox_me({
+						centered: true,
+						closeSelector: '.close',
+						onClose: function() {
+							swfobject.removeSWF(data.attributes.id);
+						}
+					});
+				}
+				catch ( err ) {
+					var dataToLog = {
+							event: 'swfobject_error',
+							type:'ошибка загрузки swf maybe3d',
+							err: err
+						};
+					// end of vars
+
+					utils.logError(dataToLog);
+				}
+				return false;
+			};
+
+			$('.mGrad360.maybe3d').bind('click', maybe3dPopupShow);
+		};
+
+		$LAB.script('swfobject.min.js').wait(afterLoad);
+	};
+
+	$(document).ready(function() {
+		if ( pageConfig['product.maybe3d'] ) {
+			loadMaybe3D();
+		}
+	});
+}(this));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+$(document).ready(function() {
+
+
+	/**
+	 * Подключение нового зумера
+	 *
+	 * @requires jQuery, jQuery.elevateZoom
+	 */
+	(function () {
+		if ( !$('.bZoomedImg').length ) {
+			console.warn('Нет изображения для elevateZoom');
+
+			return;
+		}
+
+		var zoomDisable = ( $('.bZoomedImg').data('zoom-disable') ) ? $('.bZoomedImg').data('zoom-disable') : false;
+
+		$('.bZoomedImg').elevateZoom({
+			gallery: 'productImgGallery',
+			galleryActiveClass: 'mActive',
+			zoomWindowOffety: 0,
+			zoomWindowOffetx: 19,
+			zoomWindowWidth: 519,
+			borderSize: 1,
+			borderColour: '#C7C7C7',
+			disableZoom: zoomDisable
+		});
+	})();
+
+
+	/**
+	 * Каутер товара
+	 *
+	 * @requires	jQuery, jQuery.goodsCounter
+	 * @param		{Number} count Возвращает текущее значение каунтера
+	 */
+	$('.bCountSection').goodsCounter({
+		onChange:function( count ){
+			var spinnerFor = $('.bCountSection').attr('data-spinner-for'),
+				bindButton = $('.'+spinnerFor),
+				newHref = bindButton.attr('href');
+			// end of vars
+
+			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
+
+			// добавление в корзину после обновления спиннера
+			// if (bindButton.hasClass('mBought')){
+			// 	bindButton.eq('0').trigger('buy');
+			// }
+		}
+	});
+
+
+	/**
+	 * Подключение слайдера товаров
+	 */
+	$('.bGoodsSlider').goodsSlider();
+
+
+	/**
+	 * Подключение кастомных дропдаунов
+	 */
+	$('.bDescSelectItem').customDropDown({
+		changeHandler: function( option ) {
+			var url = option.data('url');
+
+			document.location.href = url;
+		}
+	});
+
+
+	/**
+	 * Обработчик кнопки PayPal в карточке товара
+	 */
+	(function() {
+		if ( !$('.jsPayPalButton').length ) {
+			console.warn('Нет кнопки paypal');
+
+			return;
+		}
+
+		console.info('Кнопка paypal существует');
+
+		var payPalResHandler = function payPalResHandler( res ) {
+				console.info('payPal ajax complete');
+
+				if ( !res.success || !res.redirect ) {
+					window.ENTER.utils.blockScreen.unblock();
+
+					return;
+				}
+
+				document.location.href = res.redirect;
+			},
+
+			payPalEcsHandler = function payPalEcsHandler() {
+				console.info('payPal click');
+
+				var button = $(this),
+					url = button.attr('href');
+				// end of vars
+
+				window.ENTER.utils.blockScreen.block('Загрузка');
+
+				$.get(url, payPalResHandler);
+
+				return false;
+			};
+		// end of functions
+
+		$('.jsPayPalButton').bind('click', payPalEcsHandler);
+	})();
+	
+
+
+	/**
+	 * Media library
+	 *
+	 * Для вызова нашего старого лампового 3D
+	 */
+	//var lkmv = null
+	// var api = {
+	// 	'makeLite' : '#turnlite',
+	// 	'makeFull' : '#turnfull',
+	// 	'loadbar'  : '#percents',
+	// 	'zoomer'   : '#bigpopup .scale',
+	// 	'rollindex': '.scrollbox div b',
+	// 	'propriate': ['.versioncontrol','.scrollbox']
+	// }
+	
+	// if( typeof( product_3d_small ) !== 'undefined' && typeof( product_3d_big ) !== 'undefined' )
+	// 	lkmv = new likemovie('#photobox', api, product_3d_small, product_3d_big )
+	// if( $('#bigpopup').length )
+	// 	var mLib = new mediaLib( $('#bigpopup') )
+
+	// $('.viewme').click( function(){
+	// 	if ($(this).hasClass('maybe3d')){
+			
+	// 		return false
+	// 	}
+	// 	if ($(this).hasClass('3dimg')){
+
+	// 	}
+		
+	// 	if( mLib )
+	// 		mLib.show( $(this).attr('ref') , $(this).attr('href'))
+	// 	return false
+	// });
+
+
+	
+	// карточка товара - характеристики товара краткие/полные
+	if ( $('#productDescriptionToggle').length ) {
+		$('#productDescriptionToggle').toggle(
+			function( e ) {
+				e.preventDefault();
+				$(this).parent().parent().find('.descriptionlist:not(.short)').show();
+				$(this).html('Скрыть все характеристики');
+			},
+			function( e ) {
+				e.preventDefault();
+				$(this).parent().parent().find('.descriptionlist:not(.short)').hide();
+				$(this).html('Показать все характеристики');
+			}
+		);
+	}
+});
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Аналитика просмотра карточки товара
+ *
+ * @requires jQuery
+ */
+(function() {
+	var productInfo = {},
+		toKISS = {};
+	// end of vars
+	
+	if ( !$('#jsProductCard').length ) {
+		return false;
+	}
+
+	productInfo = $('#jsProductCard').data('value');
+			
+	toKISS = {
+		'Viewed Product SKU': productInfo.article,
+		'Viewed Product Product Name': productInfo.name,
+		'Viewed Product Product Status': productInfo.stockState
+	};
+
+	if ( typeof _kmq !== 'undefined' ) {
+		_kmq.push(['record', 'Viewed Product', toKISS]);
+	}
+})();
+
+
+/**
+ * Аналитика для слайдеров
+ */
+(function() {
+		/**
+		 * Аналитика по типу слайдера
+		 *
+		 * @param	{Object}	productData	Данные о продукте на который произошел клик
+		 */
+	var trackAs = {
+			accessorize: function( productData ) {
+				console.log(productData);
+
+				var toKISS = {
+					'Recommended Item Clicked Accessorize Recommendation Place': 'product',
+					'Recommended Item Clicked Accessorize Clicked SKU': productData.article,
+					'Recommended Item Clicked Accessorize Clicked Product Name': productData.name,
+					'Recommended Item Clicked Accessorize Product Position': productData.position
+				};
+
+				if ( typeof _kmq !== 'undefined' ) {
+					_kmq.push(['record', 'Recommended Item Clicked Accessorize', toKISS]);
+				}
+			},
+
+			alsoBought: function( productData ) {
+				console.log(productData);
+
+				var toKISS = {
+					'Recommended Item Clicked Also Bought Recommendation Place': 'product',
+					'Recommended Item Clicked Also Bought Clicked SKU': productData.article,
+					'Recommended Item Clicked Also Bought Clicked Product Name': productData.name,
+					'Recommended Item Clicked Also Bought Product Position': productData.position
+				};
+
+				if ( typeof _kmq !== 'undefined' ) {
+					_kmq.push(['record', 'Recommended Item Clicked Also Bought', toKISS]);
+				}
+
+			},
+
+			alsoViewed: function( productData ) {
+				console.log(productData);
+
+				var toKISS = {
+					'Recommended Item Clicked Also Viewed Recommendation Place': 'product',
+					'Recommended Item Clicked Also Viewed Clicked SKU': productData.article,
+					'Recommended Item Clicked Also Viewed Clicked Product Name': productData.name,
+					'Recommended Item Clicked Also Viewed Product Position': productData.position
+				};
+
+				if ( typeof _kmq !== 'undefined' ) {
+					_kmq.push(['record', 'Recommended Item Clicked Also Viewed', toKISS]);
+				}
+			}
+		},
+
+		sliderAnalytics = function sliderAnalytics() {
+			console.info('click!');
+
+			var sliderData = $(this).parents('.bGoodsSlider').data('slider'),
+				sliderType = sliderData.type,
+
+				productData = $(this).data('product');
+			// end of vars
+			
+			console.log(sliderType);
+			productData.position = $(this).index();
+
+			if ( trackAs.hasOwnProperty(sliderType) ) {
+				trackAs[sliderType](productData);
+			}
+		};
+	// end of functions
+
+	$('.bGoodsSlider').on('click', '.bSliderAction__eItem', sliderAnalytics);
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+;(function(){
+	// текущая страница для каждой вкладки
+	var reviewCurrentPage = {
+			user: -1,
+			pro: -1
+		},
+		// количество страниц для каждой вкладки
+		reviewPageCount = {
+			user: 0,
+			pro: 0
+		},
+		reviewsProductId = null,
+		reviewsType = null,
+		reviewsContainerClass = null,
+
+		//nodes
+		moreReviewsButton = $('.jsGetReviews'),
+		reviewTab = $('.bReviewsTabs__eTab'),
+		reviewWrap = $('.bReviewsWrapper'),
+		reviewContent = $('.bReviewsContent');
+	// end of vars
+
+	// получение отзывов
+	var getReviews = function( productId, type, containerClass ) {
+		var page = reviewCurrentPage[type] + 1;
+		
+		var layout = false;
+		if($('body').hasClass('jewel')) {
+			layout = 'jewel';
+		}
+
+		$.get('/product-reviews/'+productId, {
+			page: page,
+			type: type,
+			layout: layout
+		}, 
+		function(data){
+			$('.'+containerClass).html($('.'+containerClass).html() + data.content);
+			reviewCurrentPage[type]++;
+			reviewPageCount[type] = data.pageCount;
+			if(reviewCurrentPage[type] + 1 >= reviewPageCount[type]) {
+				moreReviewsButton.hide();
+			}
+			else {
+				moreReviewsButton.show();
+			}
+		});
+	};
+
+	// карточка товара - отзывы - переключение по табам
+	if ( reviewTab.length ) {
+		// начальная инициализация
+		var initialType = reviewWrap.attr('data-reviews-type');
+
+		reviewCurrentPage[initialType]++;
+		reviewPageCount[initialType] = reviewWrap.attr('data-page-count');
+
+		if(reviewPageCount[initialType] > 1) {
+			moreReviewsButton.show();
+		}
+		reviewsProductId = reviewWrap.attr('data-product-id');
+		reviewsType = reviewWrap.attr('data-reviews-type');
+		reviewsContainerClass = reviewWrap.attr('data-container');
+
+		reviewTab.click(function() {
+			reviewsContainerClass = $(this).attr('data-container');
+
+			if ( reviewsContainerClass === undefined ) {
+				return;
+			}
+
+			reviewsType = $(this).attr('data-reviews-type');
+			reviewTab.removeClass('active');
+			$(this).addClass('active');
+			reviewContent.hide();
+			$('.'+reviewsContainerClass).show();
+
+			moreReviewsButton.hide();
+
+			if (reviewsType === 'user') {
+				moreReviewsButton.html('Показать ещё отзывы');
+			}
+			else if ( reviewsType === 'pro' ) {
+				moreReviewsButton.html('Показать ещё обзоры');
+			}
+
+			if ( !$('.'+reviewsContainerClass).html() ) {
+				getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
+			}
+			else {
+				// проверяем что делать с кнопкой "показать еще" - скрыть/показать
+				if ( reviewCurrentPage[reviewsType] + 1 >= reviewPageCount[reviewsType] ) {
+					moreReviewsButton.hide();
+				}
+				else {
+					moreReviewsButton.show();
+				}
+			}
+		});
+
+		moreReviewsButton.click(function() {
+			getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
+		});
+	}
+
+	var leaveReview = function() {
+		if ( !$('#jsProductCard').length ) {
+			return false;
+		}
+		
+		var productInfo = $('#jsProductCard').data('value'),
+			pid = $(this).data('pid'),
+			name = productInfo.name,
+			src = 'http://reviews.testfreaks.com/reviews/new?client_id=enter.ru&' + $.param({key: pid, name: name});
+		// end of vars
+
+		$('.reviewPopup').lightbox_me({
+			onLoad: function() {
+				$('#rframe').attr('src', src);
+			}
+		});
+
+		return false;
+	};
+
+	$('.jsLeaveReview').on('click', leaveReview);
+
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Видео в карточке товара
+ *
+ * @author		Zaytsev Alexandr
+ * @requires	jQuery, jQuery.lightbox_me
+ */
+;(function() {
+	var initVideo = function() {
+		if ( !$('#productVideo').length ) {
+			return false;
+		}
+
+		var videoStartTime = 0,
+			videoEndTime = 0,
+			productUrl = document.location.href,
+			shield = $('.mVideo'),
+			iframe = $('#productVideo .productVideo_iframe').html();
+		// end of vars
+
+		var openVideo = function() {
+			$('#productVideo .productVideo_iframe').append(iframe);
+			$('.productVideo_iframe iframe').attr('src', $('.productVideo_iframe iframe').attr('src')+'?autoplay=1');
+			$('#productVideo').lightbox_me({ 
+				centered: true,
+				onLoad: function() {
+					videoStartTime = new Date().getTime();
+
+					if (typeof(_gaq) !== 'undefined') {
+						_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
+					}
+				},
+				onClose: function() {
+					$('#productVideo .productVideo_iframe').empty();
+					videoEndTime = new Date().getTime();
+					var videoSpent = videoEndTime - videoStartTime;
+
+					if ( typeof _gaq !== 'undefined' ) {
+						_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
+					}
+				}
+			});
+
+			return false;
+		};
+
+		$('#productVideo .productVideo_iframe').empty();
+
+		shield.bind('click', openVideo);
+	};
+
+	$(document).ready(function() {
+		if ( $('.mVideo').length ) {
+			initVideo();
+		}
+	});
+}());

@@ -6,7 +6,7 @@ class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-oneColumn';
 
     public function prepare() {
-        $this->setParam('title', 'Дружить с нами интересно!');
+        $this->setParam('title', 'ДРУЖИТЬ С НАМИ ВЫГОДНО И ИНТЕРЕСНО!');
     }
 
     public function slotBodyDataAttribute() {
@@ -14,7 +14,10 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('friendship/page-index');
+        $return = $this->render('friendship/page-index');
+        // Используется также на стр /enter-friends, /view/Content/IndexPage
+        $return .= $this->render('partner-counter/_flocktory_popup', $this->params);
+        return $return;
     }
 
     public function slotBodyClassAttribute() {

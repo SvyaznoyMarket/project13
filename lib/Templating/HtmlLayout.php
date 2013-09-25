@@ -70,6 +70,8 @@ class HtmlLayout {
      */
     public function setGlobalParam($name, $value) {
         $this->globalParams[$name] = $value;
+        // временный костыль
+        \App::closureTemplating()->setParam($name, $value);
     }
 
     /**
@@ -167,8 +169,10 @@ class HtmlLayout {
      */
     public function addStylesheet($stylesheet) {
         try {
-            $timestamp = filectime(\App::config()->webDir . '/' . trim($stylesheet, '/'));
-            $stylesheet .= '?' . $timestamp;
+            if (0 === strpos($stylesheet, '/')) {
+                $timestamp = filectime(\App::config()->webDir . '/' . trim($stylesheet, '/'));
+                $stylesheet .= '?' . $timestamp;
+            }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['view']);
         }
@@ -188,8 +192,10 @@ class HtmlLayout {
      */
     public function addJavascript($javascript) {
         try {
-            $timestamp = filectime(\App::config()->webDir . '/' . trim($javascript, '/'));
-            $javascript .= '?' . $timestamp;
+            if (0 === strpos($javascript, '/')) {
+                $timestamp = filectime(\App::config()->webDir . '/' . trim($javascript, '/'));
+                $javascript .= '?t=' . $timestamp;
+            }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['view']);
         }
@@ -225,7 +231,13 @@ class HtmlLayout {
      * @throws \InvalidArgumentException
      */
     public function addMeta($name, $content) {
-        $this->metas[$name] = (string)$content;
+        if (null === $content) return;
+
+        if (is_scalar($content)) {
+            $this->metas[$name] = (string)$content;
+        } else {
+            \App::logger()->error(['action' => __METHOD__, 'cms.meta' => ['name' => $name, 'content' => $content]], ['view']);
+        }
     }
 
     /**

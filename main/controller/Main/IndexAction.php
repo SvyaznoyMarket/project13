@@ -169,12 +169,27 @@ class IndexAction {
 
         $bannerData = array_values($bannerData);
 
+
+
+        $seoPageJson = \Model\Page\Repository::getSeoJson();
+        $seoPage = [];
+        foreach ($seoPageJson as $key => $val){
+            if ($key == 'title') {
+                $seoPage['title'] = $val;
+            }else if ($key == 'content') {
+                $seoPage['content'] = $val;
+            }else{
+                $seoPage['metas'][$key] = $val;
+            }
+        }
+
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);
         $page->setParam('myThingsData', [
             'EventType' => 'MyThings.Event.Visit',
             'Action'    => '200'
         ]);
+        $page->setParam('seoPage', $seoPage);
 
         return new \Http\Response($page->show());
     }

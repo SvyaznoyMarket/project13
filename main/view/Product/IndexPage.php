@@ -68,6 +68,9 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
+        /** @var $product \Model\Product\Entity */
+        $product = $this->getParam('product');
+
         // заголовок контента страницы
         if (!$this->hasParam('title')) {
             $this->setParam('title', null);
@@ -78,14 +81,24 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         return $this->render('product/_contentHead', $this->params);
+        /*
+        return $this->render('product/_contentHead', array_merge($this->params, [
+            'titlePrefix' => $product->getPrefix(),
+            'title'       => $product->getWebName(),
+        ]));
+        */
     }
 
     public function slotContent() {
-        return $this->render('product/page-index', $this->params);
+        return $this->render('product/page-index', $this->params) . PHP_EOL . $this->render('partner-counter/_flocktory_popup', $this->params);
     }
 
     public function slotBodyDataAttribute() {
         return 'product_card';
+    }
+
+    public function slotBodyClassAttribute() {
+        return $this->hasParam('categoryClass') ? $this->getParam('categoryClass') : '';
     }
 
     public function slotInnerJavascript() {
@@ -95,7 +108,6 @@ class IndexPage extends \View\DefaultLayout {
         $category = array_pop($categories);
 
         return ''
-            . ($product ? $this->tryRender('product/partner-counter/_etargeting', array('product' => $product)) : '')
             . "\n\n"
             . ($product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => ($category) ? $category->getToken() : '', 'pvalue' => $product->getPrice()]]) : '')
             . "\n\n"
@@ -120,7 +132,7 @@ class IndexPage extends \View\DefaultLayout {
 
         return "<meta property=\"og:title\" content=\"" . $this->escape($product->getName()) . "\"/>\r\n" .
                 "<meta property=\"og:description\" content=\"" . $this->escape($description) . "\"/>\r\n" .
-                "<meta property=\"og:image\" content=\"" . $this->escape($product->getImageUrl(3)) . "\"/>\r\n".
+            "<meta property=\"og:image\" content=\"" . $this->escape($product->getImageUrl(3).'?'.time()) . "\"/>\r\n".
                 "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
                 "<meta property=\"og:type\" content=\"website\"/>\r\n";
     }
@@ -198,6 +210,8 @@ class IndexPage extends \View\DefaultLayout {
             'товар'     => $product->getName(),
             'анонс товара'     => $product->getAnnounce(),
             'цена'      => $product->getPrice() . ' руб',
+            'префикс'     => $product->getPrefix(),
+            'web_name'     => $product->getWebName(),
         ];
         $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['категория'] = $data;
@@ -251,6 +265,13 @@ class IndexPage extends \View\DefaultLayout {
             }
             if ($productVideo->getMaybe3d()) {
                 $config['product.maybe3d'] = true;
+            }
+        }
+
+        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+        if ($product instanceof \Model\Product\Entity) {
+            if ((bool)$product->getPhoto3d()) {
+                $config['product.native3d'] = true;
             }
         }
 

@@ -38,7 +38,11 @@ class Form {
     /** @var string */
     private $certificatePin;
     /** @var bool */
+    private $qiwiPhone;
+    /** @var bool */
     private $agreed;
+    /** @var bool */
+    private $oneClick;
 
     /** @var array */
     private $errors = array(
@@ -61,6 +65,8 @@ class Form {
         'cardnumber'             => null,
         'cardpin'                => null,
         'subway_id'              => null,
+        'qiwi_phone'             => null,
+        'one_click'              => null,
     );
 
     public function __construct(array $data = []) {
@@ -86,6 +92,8 @@ class Form {
         if (array_key_exists('cardnumber', $data))             $this->setCertificateCardnumber($data['cardnumber']);
         if (array_key_exists('cardpin', $data))                $this->setCertificatePin($data['cardpin']);
         if (array_key_exists('subway_id', $data))              $this->setSubwayId($data['subway_id']);
+        if (array_key_exists('qiwi_phone', $data))             $this->setQiwiPhone($data['qiwi_phone']);
+        if (array_key_exists('one_click', $data))              $this->setOneClick($data['one_click']);
     }
 
     /**
@@ -349,6 +357,19 @@ class Form {
         return $this->email;
     }
 
+    /**
+     * @param string $qiwiPhone
+     */
+    public function setQiwiPhone($qiwiPhone) {
+        $this->qiwiPhone = trim((string)$qiwiPhone);
+    }
+
+    /**
+     * @return string
+     */
+    public function getQiwiPhone() {
+        return $this->qiwiPhone;
+    }
 
     /**
      * @param $name
@@ -397,4 +418,19 @@ class Form {
 
         return $isValid;
     }
+
+    /**
+     * @param boolean $oneClick
+     */
+    public function setOneClick($oneClick) {
+        $this->oneClick = (bool)$oneClick;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getOneClick() {
+        return $this->oneClick;
+    }
+
 }

@@ -10,26 +10,39 @@
  */
 ?>
 
-<?php
-if (empty($view)) {
-    $view = 'default';
+<?
+if (!isset($class)) {
+    $class = '';
 }
+$class .= ' ' . \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton';
 
 if (empty($quantity)) {
     $quantity = 1;
 }
 
+if (empty($value)) $value = 'Купить';
+
 $disabled = !$product->getIsBuyable();
 
-$gaEvent = !empty($gaEvent) ? $gaEvent : null;
-$gaTitle = !empty($gaTitle) ? $gaTitle : null;
+if ($product->isInShopStockOnly()) {
+    $value = 'Только в магазинах';
+}
 
-switch ($view) {
-    case 'default':
-        require __DIR__ . '/button/default.php';
-        break;
-    case 'large':
-        require __DIR__ . '/button/large.php';
-        break;
+if ($disabled) {
+    $url = '#';
+    $class .= ' mDisabled';
+    $value = $product->isInShopShowroomOnly() ? 'Витринный товар' : 'Нет в наличии';
+} else if (!isset($url)) {
+    $urlParams = [
+        'productId' => $product->getId(),
+    ];
+    if ($page->hasGlobalParam('sender')) {
+        $urlParams['sender'] = $page->getGlobalParam('sender') . '|' . $product->getId();
+    }
+    $url = $page->url('cart.product.set', $urlParams);
 }
 ?>
+
+<div class="bWidgetBuy__eBuy btnBuy">
+    <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
+</div>

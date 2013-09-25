@@ -5,6 +5,7 @@ namespace Model\DeliveryType;
 class Entity {
     const TYPE_STANDART = 'standart';
     const TYPE_SELF = 'self';
+    const TYPE_NOW = 'now';
 
     /** @var int */
     private $id;
@@ -13,7 +14,16 @@ class Entity {
     /** @var string */
     private $name;
     /** @var string */
+    private $shortName;
+    /** @var string */
     private $description;
+    /** @var array */
+    private $methodTokens = [];
+    /**
+     * Возможные токены методов доставки для данного типа доставки
+     * @var array
+     */
+    private $possibleMethodTokens = [];
 
     /**
      * @param array $data
@@ -22,7 +32,10 @@ class Entity {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
+        if (array_key_exists('short_name', $data)) $this->setShortName($data['short_name']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
+        if (array_key_exists('method_tokens', $data)) $this->setMethodTokens((array)$data['method_tokens']);
+        if (array_key_exists('possible_method_tokens', $data)) $this->setPossibleMethodTokens((array)$data['possible_method_tokens']);
     }
 
     /**
@@ -79,5 +92,47 @@ class Entity {
      */
     public function getToken() {
         return $this->token;
+    }
+
+    /**
+     * @param string $shortName
+     */
+    public function setShortName($shortName) {
+        $this->shortName = (string)$shortName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortName() {
+        return $this->shortName;
+    }
+
+    /**
+     * @param array $methodTokens
+     */
+    public function setMethodTokens(array $methodTokens) {
+        $this->methodTokens = $methodTokens;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMethodTokens() {
+        return $this->methodTokens;
+    }
+
+    /**
+     * @param array $stateTokens
+     */
+    public function setPossibleMethodTokens(array $stateTokens) {
+        $this->possibleMethodTokens = $stateTokens;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPossibleMethodTokens() {
+        return $this->possibleMethodTokens;
     }
 }

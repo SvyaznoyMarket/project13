@@ -8,6 +8,17 @@ class IndexPage extends \View\DefaultLayout {
     protected function prepare() {
         $this->addMeta('viewport', 'width=960');
         $this->addMeta('mailru', 'b0645ac6fd99f8f2');
+
+        // Seo-теги загружаем из json (для главной страницы, например)
+        if ( $this->hasParam('seoPage') ) {
+            $seoPage = $this->getParam('seoPage');
+            if ( isset($seoPage['title']) and !empty($seoPage['title']) ) $this->setTitle( $seoPage['title'] );
+
+            if ( isset($seoPage['metas']) and is_array($seoPage['metas']) )
+            foreach( $seoPage['metas'] as $key => $val){
+                $this->addMeta($key, $val);
+            }
+        }
     }
 
     public function slotBanner() {
@@ -23,15 +34,16 @@ class IndexPage extends \View\DefaultLayout {
             \App::exception()->add($e);
             \App::logger()->error($e);
 
-            $response = array('content' => '');
+            $response = ['content' => ''];
         }
+
+        $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
 
         return $response['content'];
     }
 
     public function slotInnerJavascript() {
         return ''
-            . $this->tryRender('main/partner-counter/_etargeting')
             . "\n\n"
             . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'homepage']])
             . "\n\n"

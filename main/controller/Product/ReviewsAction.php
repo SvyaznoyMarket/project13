@@ -14,22 +14,25 @@ class ReviewsAction {
 
         $page = $request->get('page', 0);
         $reviewsType = $request->get('type', 'user');
+        $layout = $request->get('layout', false);
 
         $reviewsData = \RepositoryManager::review()->getReviews($productId, $reviewsType, $page);
 
-        $response = '';
+        $response = $reviewsType == 'user' ? 'Нет отзывов' : 'Нет обзоров';
 
         if(!empty($reviewsData['review_list'])) {
+            $response = '';
             foreach ($reviewsData['review_list'] as $key => $review) {
                 $response .= \App::templating()->render('product/_review', [
                     'page' => (new \View\Product\IndexPage()),
                     'review' => $review,
-                    'last' => empty($reviewsData['review_list'][$key + 1])
+                    'last' => empty($reviewsData['review_list'][$key + 1]),
+                    'layout' => $layout
                 ]);
             }
         }
 
-        return new \Http\JsonResponse(['content' => $response, 'pageCount' => $reviewsData['page_count']]);
+        return new \Http\JsonResponse(['content' => $response, 'pageCount' => empty($reviewsData['page_count']) ? 0 : $reviewsData['page_count']]);
     }
 
 }

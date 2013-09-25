@@ -7,7 +7,7 @@ class IndexPage extends \View\DefaultLayout {
 
     public function prepare() {
         $this->setTitle('Корзина - Enter.ru');
-        $this->setParam('title', 'Моя корзина');
+        $this->setParam('title', 'Корзина');
     }
 
     public function slotContent() {
@@ -28,7 +28,7 @@ class IndexPage extends \View\DefaultLayout {
             \App::exception()->add($e);
             \App::logger()->error($e);
 
-            $response = array('content' => '');
+            $response = ['content' => ''];
         }
 
         return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];

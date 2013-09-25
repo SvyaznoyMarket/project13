@@ -209,6 +209,21 @@ class App {
 
     /**
      * @static
+     * @return Templating\PhpClosureEngine
+     */
+    public static function closureTemplating() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Templating\PhpClosureEngine(self::$config->templateDir);
+            $instance->setParam('helper', new \Helper\TemplateHelper());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
      * @return Curl\Client
      */
     public static function curl() {
@@ -326,6 +341,20 @@ class App {
     }
 
     /**
+     * @static
+     * @return \RetailRocket\Client
+     */
+    public static function retailrocketClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \RetailRocket\Client(self::$config->partners['RetailRocket'], \App::logger());
+        }
+
+        return $instance;
+    }
+
+    /**
      * @param $name
      * @return \Oauth\ProviderInterface
      * @throws InvalidArgumentException
@@ -372,6 +401,9 @@ class App {
                 case 'request_compatible':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/site_page_time.log'), 'RequestLogger', $config[$name]['level']);
                     break;
+                case 'order':
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/order.log'), $name, $config[$name]['level']);
+                    break;
                 default:
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log'), $name, $config[$name]['level']);
                     //$instances[$name] = new \Logger\NullLogger();
@@ -403,6 +435,22 @@ class App {
 
         if (!$instance) {
             $instance = new \Session\Abtest(self::config()->abtest);
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return array|null $catalogJson
+     * @return \Session\AbtestJson|null
+     */
+    public static function abTestJson($catalogJson = null) {
+        static $instance;
+
+        if (!$instance && $catalogJson) {
+            $instance = new \Session\AbtestJson($catalogJson);
+        } elseif(!$instance && !$catalogJson) {
+            return null;
         }
 
         return $instance;
