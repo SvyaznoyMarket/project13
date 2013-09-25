@@ -4,6 +4,7 @@ namespace Controller\User;
 
 class Action {
     private $redirect;
+    private $requestRedirect;
 
     /**
      * @param \Http\Request $request
@@ -16,6 +17,7 @@ class Action {
         $redirectTo = $request->get('redirect_to');
         if ($redirectTo) {
             $this->redirect = $redirectTo;
+            $this->requestRedirect = $redirectTo;
         }
 
         if (\App::user()->getEntity()) { // if user is logged in
@@ -279,6 +281,9 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
+        if ( $this->requestRedirect ) {
+            $page->setParam('redirect', $this->requestRedirect);
+        }
 
         return new \Http\Response($page->show());
     }
