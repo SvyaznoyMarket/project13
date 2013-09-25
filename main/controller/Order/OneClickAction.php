@@ -135,7 +135,12 @@ class OneClickAction {
 
                             throw $e;
                         }
+                        // все ок, создали заказ без мета-данных
                         \App::exception()->remove($e);
+                    } else {
+                        \App::exception()->remove($e);
+
+                        throw $e;
                     }
                 }
 
