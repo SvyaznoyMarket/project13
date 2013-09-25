@@ -12200,7 +12200,8 @@
     margin: 0 30px 30px 0;
     z-index: 0;
   }
-  .bListing .bListingItem.mLast {
+  .bListing .bListingItem.mBanner2Item {
+    width: 0;
     margin-right: 0;
   }
   .bListing .bListingItem__eInner {
