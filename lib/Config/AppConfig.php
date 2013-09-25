@@ -88,6 +88,7 @@ class AppConfig {
         'url'          => null,
         'client_id'    => null,
         'timeout'      => null,
+        'hugeTimeout'  => null,
         'retryTimeout' => [],
         'retryCount'   => null,
         'chunk_size'   => null,
@@ -384,10 +385,11 @@ class AppConfig {
      * @hidden
      */
     public $abtest = [
-        'cookieName' => null,
-        'bestBefore' => null,
-        'enabled'    => null,
-        'test'       => [],
+        'cookieName'  => null,
+        'bestBefore'  => null,
+        'enabled'     => null,
+        'checkPeriod' => null,
+        'test'        => [],
     ];
 
     /** @var array */

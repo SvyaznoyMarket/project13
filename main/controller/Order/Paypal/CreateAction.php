@@ -121,7 +121,7 @@ class CreateAction {
                     [
                         'amount'          => $cartProduct->getSum(),
                         'delivery_amount' => $deliveryPrice,
-                        'currency'        => 'USD',
+                        //'currency'        => 'USD',
                         'return_url'      => \App::router()->generate('order.paypal.new', [], true),
                         'product'         => [
                             [
@@ -130,7 +130,8 @@ class CreateAction {
                             ],
                         ],
                         'service'         => [],
-                    ]
+                    ],
+                    \App::config()->coreV2['hugeTimeout']
                 );
                 \App::logger()->info(['core.response' => $result], ['order', 'paypal']);
 
@@ -435,7 +436,7 @@ class CreateAction {
             $params['user_token'] = $userEntity->getToken();
         }
 
-        $result = \App::coreClientV2()->query('payment/paypal-create-order', $params, $data);
+        $result = \App::coreClientV2()->query('payment/paypal-create-order', $params, $data, \App::config()->coreV2['hugeTimeout']);
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $result], ['order']);
         if (!is_array($result)) {
             throw new \Exception('Заказ не подтвержден');

@@ -55,6 +55,10 @@ class DefaultLayout extends Layout {
         return $this->tryRender('_googleAnalytics');
     }
 
+    public function slotKissMetrics() {
+        return $this->tryRender('_kissMetrics');
+    }
+
     public function slotBodyDataAttribute() {
         return 'default';
     }
@@ -220,7 +224,7 @@ class DefaultLayout extends Layout {
             }, function(\Exception $e) use (&$isFailed) {
                 \App::exception()->remove($e);
                 $isFailed = true;
-            });
+            }, 5);
             $client->execute();
 
             if ($isFailed) {
@@ -255,6 +259,7 @@ class DefaultLayout extends Layout {
 
         if (\App::config()->analytics['enabled']) {
             $routeName = \App::request()->attributes->get('route');
+            $routeToken = \App::request()->attributes->get('token');
 
             // на всех страницах сайта, кроме...
             if (!in_array($routeName, [
@@ -288,6 +293,11 @@ class DefaultLayout extends Layout {
                 'order.complete',
             ])) {
                 $return .= $this->tryRender('partner-counter/_actionpay', ['routeName' => $routeName] );
+            }
+
+
+            if ('subscribe_friends' == $routeToken) {
+                $return .= $this->tryRender('partner-counter/_am15_net');
             }
 
         }
@@ -457,10 +467,14 @@ class DefaultLayout extends Layout {
     public function slotEnterleads()
     {
         $routeToken = \App::request()->attributes->get('token');
-        if ('subscribe_friends' == $routeToken) {
-            return '<div id="enterleadsJS" class="jsanalytics" ></div>';
-        }
-        return;
+        $onPages = [
+            'internet_price',
+            'subscribe_friends',
+            'enter-friends'
+        ];
+        if ( !in_array($routeToken, $onPages) ) return;
+
+        return '<div id="enterleadsJS" class="jsanalytics" ></div>';
     }
 
 }

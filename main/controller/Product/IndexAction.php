@@ -53,7 +53,7 @@ class IndexAction {
         $product = null;
         $productExpanded = null;
         $dataR = null;
-        \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product, &$productExpanded) {
+        $repository->prepareEntityByToken($productToken, $region, function($data) use (&$product, &$productExpanded) {
             $data = reset($data);
 
             if ((bool)$data) {
@@ -138,8 +138,18 @@ class IndexAction {
         // карточку показываем в обычном лэйауте, если включена соответствующая настройка
         if(!empty($catalogJson['regular_product_page'])) $categoryClass = null;
 
-        $useLens = true;
-        if ( isset($catalogJson['use_lens']) ) $useLens = (bool) $catalogJson['use_lens'];
+        $useLens = false;
+        if ( isset($catalogJson['use_lens']) ) {
+            if ( $catalogJson['use_lens'] ) $useLens = true;
+        }
+        else {
+            $photos = $product->getPhoto();
+            if ( isset($photos[0]) ) {
+                if ( $photos[0]->getHeight() > 750 || $photos[0]->getWidth() > 750 ) {
+                    $useLens = true;
+                }
+            }
+        }
 
         // Если набор, то получим $productLine
         $productLine = $product->getLine();

@@ -37,7 +37,8 @@ $c->redirect301['enabled'] = true;
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
 $c->coreV2['chunk_size']   = 50;
-$c->coreV2['timeout']      = null;
+$c->coreV2['timeout']      = 5;
+$c->coreV2['hugeTimeout']  = 90;
 $c->coreV2['retryCount']   = 3;
 $c->coreV2['retryTimeout'] = [
     'default' => 0.5,
@@ -52,7 +53,7 @@ $c->coreV2['retryTimeout'] = [
 $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
 $c->corePrivate['password']     = 'dEl23sTOas';
-$c->corePrivate['timeout']      = null;
+$c->corePrivate['timeout']      = 5;
 $c->corePrivate['retryCount']   = 3;
 $c->corePrivate['retryTimeout'] = [
     'default' => 1.5,
@@ -329,7 +330,7 @@ $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = true;
 
-$c->mobileModify['enabled'] = true;
+$c->mobileModify['enabled'] = false;
 
 $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
@@ -350,31 +351,25 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
+// настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
+$c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
 $c->abtest['bestBefore'] = '2013-09-23';
-
 $c->abtest['test']       = [
     // smartengine
     [
-        'traffic'  => 33,
-        'key'      => 'smartengine',
-        'name'     => "Похожие товары от SmartEngine",
-        'ga_event' => 'SmartEngine',
+        'traffic'  => 50,
+        'key'      => 'retailrocket',
+        'name'     => "Похожие товары от RetailRocket",
+        'ga_event' => 'RetailRocket',
     ],
     // retailrocket
     [
-        'traffic'  => 33,
+        'traffic'  => 50,
         'key'      => 'retailrocket',
         'name'     => "С этим товаром также смотрят от RetailRocket",
         'ga_event' => 'RetailRocket',
-    ],
-    // hybrid
-    [
-        'traffic'  => 33,
-        'key'      => 'hybrid',
-        'name'     => "С этим товаром также смотрят - от RetailRocket, Похожие товары - от SmartEngine",
-        'ga_event' => 'Hybrid',
     ],
 ];
 

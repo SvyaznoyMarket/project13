@@ -24,6 +24,9 @@
 <? if (\App::config()->abtest['enabled']): ?>
     _gaq.push(['_setCustomVar', 1, 'User segment', '<?= \App::abTest()->getCase()->getGaEvent() ?>', 2]);
 <? endif ?>
+<? if (\App::abtestJson() && \App::abtestJson()->isActive()) : ?>
+    _gaq.push(['_setCustomVar', 1, 'User segment', '<?= \App::abTestJson()->getCase()->getGaEvent() ?>', 2]);
+<? endif ?>
     _gaq.push(['_trackPageview']);
     _gaq.push(['_trackPageLoadTime']);
 

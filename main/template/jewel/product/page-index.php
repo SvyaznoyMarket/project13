@@ -642,7 +642,11 @@ $productVideo = reset($productVideos);
     <div class="line"></div>
     <div style="width: 940px; float: none; margin: 0;" class="goodslist">
         <? $i = 0; foreach ($product->getKit() as $part): $i++ ?>
-        <?= $page->render('jewel/product/show/_compact', array('product' => $kit[$part->getId()], 'kit' => $part)) ?>
+        <?= $page->render('jewel/product/show/_compact', [
+                    'product'   =>  $kit[$part->getId()],
+                    'kit'       =>  $part,
+                    'addInfo'   =>  $addInfo
+                ]) ?>
         <? if (0 == ($i % 4)): ?><br class="clear" /><? endif ?>
         <? endforeach ?>
 

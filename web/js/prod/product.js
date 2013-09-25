@@ -295,7 +295,9 @@
 			success: resFromServer,
 			statusCode: {
 					500: errorHandler,
-					503: errorHandler
+					502: errorHandler,
+					503: errorHandler,
+					504: errorHandler
 				}
 		});
 	}
@@ -818,16 +820,26 @@ $(document).ready(function() {
 	 *
 	 * @requires jQuery, jQuery.elevateZoom
 	 */
-	$('.bZoomedImg').elevateZoom({
-		gallery: 'productImgGallery',
-		galleryActiveClass: 'mActive',
-		zoomWindowOffety: 0,
-		zoomWindowOffetx: 19,
-		zoomWindowWidth: 519,
-		borderSize: 1,
-		borderColour: '#C7C7C7',
-		disableZoom: false
-	});
+	(function () {
+		if ( !$('.bZoomedImg').length ) {
+			console.warn('Нет изображения для elevateZoom');
+
+			return;
+		}
+
+		var zoomDisable = ( $('.bZoomedImg').data('zoom-disable') ) ? $('.bZoomedImg').data('zoom-disable') : false;
+
+		$('.bZoomedImg').elevateZoom({
+			gallery: 'productImgGallery',
+			galleryActiveClass: 'mActive',
+			zoomWindowOffety: 0,
+			zoomWindowOffetx: 19,
+			zoomWindowWidth: 519,
+			borderSize: 1,
+			borderColour: '#C7C7C7',
+			disableZoom: zoomDisable
+		});
+	})();
 
 
 	/**

@@ -112,28 +112,45 @@ $.ajaxSetup({
  
  
 /**
- * Обработчи для личного кабинета
+ * Обработчик для личного кабинета
  *
  * @author    Trushkevich Anton
  * @requires  jQuery
  */
 (function(){
-  var checked = false;
+  var checkedSms = false;
+  var checkedEmail = false;
 
   var handleSubscribeSms = function() {
-    if ( checked ) {
+    if ( checkedSms ) {
       $('#mobilePhoneWrapper').hide();
-      checked = false;
+      $('#mobilePhoneWrapper').parent().find('.red').html('');
+      checkedSms = false;
     } else {
       $('#mobilePhoneWrapper').show();
-      checked = true;
+      checkedSms = true;
+    }
+  };
+
+  var handleSubscribeEmail = function() {
+    if ( checkedEmail ) {
+      $('#emailWrapper').hide();
+      $('#emailWrapper').parent().find('.red').html('');
+      checkedEmail = false;
+    } else {
+      $('#emailWrapper').show();
+      checkedEmail = true;
     }
   };
 
   $(document).ready(function(){
-    checked = $('.smsCheckbox').hasClass('checked');
+    checkedSms = $('.smsCheckbox').hasClass('checked');
     if ( !$('#user_mobile_phone').val() ) {
       $('.smsCheckbox').bind('click', handleSubscribeSms);
+    }
+    checkedEmail = $('.emailCheckbox').hasClass('checked');
+    if ( !$('#user_email').val() ) {
+      $('.emailCheckbox').bind('click', handleSubscribeEmail);
     }
   });
 }());
@@ -733,8 +750,53 @@ $(document).ready(function(){
 		}
 	};
 
-	if ( $('#_categoryData').length ) {
+
+    var kissForProductOfCategory = function kissForProductOfCategory(event) {
+        //event.preventDefault(); // tmp
+        //console.log('*** clickeD!!! '); // tmp
+
+        var t = $(this), box, datap, toKISS = false,
+            datac = $('#_categoryData').data('category');
+
+        box = t.parents('div.goodsbox__inner');
+        if ( !box.length ) box = t.parents('div.goodsboxlink');
+        datap = box.length ? box.data('add') : false;
+
+        if (datap && datac)
+        toKISS = {
+            'Category Results Clicked Category Type': datac.type,
+            'Category Results Clicked Category Level': datac.level,
+            'Category Results Clicked Parent category': datac.parent_category,
+            'Category Results Clicked Category name': datac.category,
+            'Category Results Clicked Category ID': datac.id,
+            'Category Results Clicked SKU': datap.article,
+            'Category Results Clicked Product Name': datap.name,
+            'Category Results Clicked Page Number': datap.page,
+            'Category Results Clicked Product Position': datap.position
+        };
+
+        /** For Debug:  **/
+        /*
+        console.log('*** test IN CLICK BEGIN { ');
+        if (toKISS) console.log(toKISS);
+        if (!datap) console.log('!!! DataP is empty!');
+        if (!datac) console.log('!!! DataP is empty!');
+        console.log('*** } test IN CLICK END');
+        */
+        /** **/
+
+        if (toKISS && typeof(_kmq) !== 'undefined') {
+            _kmq.push(['record', 'Category Results Clicked', toKISS]);
+        }
+
+        //return false; // tmp
+    };
+
+
+    if ( $('#_categoryData').length ) {
 		kissForCategory();
+        /** Вызываем kissForProductOfCategory() для всех категорий - в том числе слайдеров, аджаксов и тп **/
+        $('body').delegate('div.goodsbox a', 'click', kissForProductOfCategory);
 	}
 
 	/**
@@ -1689,10 +1751,16 @@ $(document).ready(function() {
 	
 	var ajaxFilterCounter = 0;
 	
+
 	$('.product_filter-block').bind('change', function(e) {
 		var el = $(e.target);
 
 		if ( el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox'])) ) {
+
+			if( el.hasClass('shopFilter') && el.parent().data('onclick-location') ) {
+				document.location = el.parent().data('onclick-location');
+			}
+
 			el.trigger('preview');
 		}
 	}).bind('preview', function(e) {

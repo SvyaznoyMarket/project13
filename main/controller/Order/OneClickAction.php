@@ -106,7 +106,7 @@ class OneClickAction {
                 }
 
                 try {
-                    $result = \App::coreClientV2()->query('order/create', $params, $data);
+                    $result = \App::coreClientV2()->query('order/create', $params, $data, \App::config()->coreV2['hugeTimeout']);
                 } catch (\Exception $e) {
                     if (!in_array($e->getCode(), [705, 708, 735, 800])) {
                         \App::logger('order')->error([
@@ -248,7 +248,7 @@ class OneClickAction {
                     $message = $e->getMessage();
                     break;
                 case 735:
-                    $message = 'Невалидный номер карты &laquo;Связного клуба&raquo;';
+                    $message = 'Невалидный номер карты &laquo;Связной-Клуб&raquo;';
                     break;
                 default:
                     $message = 'Не удалось создать заказ';

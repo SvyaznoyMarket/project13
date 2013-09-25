@@ -25,12 +25,12 @@
             </p>
         </div> */ ?>
 
-        <div class="headerContactPhone fl" >
+        <div itemscope itemtype="http://schema.org/Organization" class="headerContactPhone fl" >
             <p class="fl headerContactPhone__ePhones">
-                <?= \App::config()->company['phone'] ?><br/>
+                <span itemprop="telephone"><?= \App::config()->company['phone'] ?></span><br/>
                 <div class="bPhonesRegion fl">
-                    <?= \App::config()->company['moscowPhone'] ?><br/>
-                    8 (812) 703-77-30
+                    <span itemprop="telephone"><?= \App::config()->company['moscowPhone'] ?></span><br/>
+                    <span itemprop="telephone">8 (812) 703-77-30</span>
                 </div>
             </p>
         </div>

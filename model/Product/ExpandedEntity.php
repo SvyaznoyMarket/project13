@@ -66,6 +66,8 @@ class ExpandedEntity extends BasicEntity {
             return new Stock\Entity($data);
         }, $data['stock']));
         if (array_key_exists('ean', $data)) $this->setEan($data['ean']);
+
+        $this->calculateState();
     }
 
     /**
