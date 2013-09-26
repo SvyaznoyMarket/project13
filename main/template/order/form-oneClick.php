@@ -96,7 +96,7 @@ $formData = array(
                                 </div>
                                 <div id="map-info_window-container-ya" style="display:none">
                                   <div class='bMapShops__ePopupRel'>
-                                    <h3>$[properties.name]</h3>
+                                    <div class="bMapShops__ePopupRelTitle">$[properties.name]</div>
                                     <span>$[properties.regtime]</span><br>
                                     <span class="shopnum" style="display:none">$[properties.id]</span>
                                     <a href class='bGrayButton shopchoose' >Забрать из этого магазина</a>
