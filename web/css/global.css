@@ -12111,11 +12111,11 @@
 @media all {
   .bTitlePage {
     margin: 0 0 35px;
-    font-family: Tahoma;
     font-size: 25px;
+    font-family: Tahoma;
   }
   .bCatalogRoot {
-    margin: 0 0 15px;
+    margin: 0 -20px 15px 0;
   }
   .bCatalogRoot__eItem {
     -webkit-border-radius: 4px;
@@ -12123,29 +12123,37 @@
     border-radius: 4px;
     position: relative;
     float: left;
-    width: 198px;
-    height: 258px;
     margin: 0 20px 20px 0;
     padding: 10px;
+    width: 198px;
+    height: 258px;
     border: 1px solid #e6e6e6;
     background: #f6f6f6;
   }
-  .bCatalogRoot__eItem.mLast {
+  .bCatalogRoot__eItem.mBanner2Item {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
     margin-right: 0;
+    padding: 0;
+    width: 0;
+    border: none;
+    background: none;
+    height: 280px;
   }
   .bCatalogRoot__eImgLink {
     display: inline-block;
+    margin: 0 auto 10px;
     width: 200px;
     height: 200px;
-    margin: 0 auto 10px;
-    text-align: center;
-    vertical-align: middle;
     background: #ffffff;
+    vertical-align: middle;
+    text-align: center;
   }
   .bCatalogRoot__eImg {
     display: inline-block;
-    width: 180px;
     max-height: 180px;
+    width: 180px;
     vertical-align: middle;
   }
   .bCatalogRoot__eNameLink {

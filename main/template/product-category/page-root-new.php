@@ -6,10 +6,12 @@
 
 ?>
 
-    <h1 class="bTitlePage"><?= $category->getName() ?></h1>
+<h1 class="bTitlePage"><?= $category->getName() ?></h1>
 
 <? if (count($category->getChild())): ?>
     <ul class="bCatalogRoot clearfix">
+        <li class="bCatalogRoot__eItem mBanner2Item" style="width: 0px;"></li>
+        <!-- место для баннеры 460х260, при этом родительский элемент имеет ширину 480 -->
         <? $j = 0; ?>
         <? foreach ($category->getChild() as $child): ?>
             <?php
@@ -24,7 +26,7 @@
 
             ?>
 
-            <li class="bCatalogRoot__eItem <?= !(++$j % 4) ? 'mLast' : '' ?>">
+            <li class="bCatalogRoot__eItem">
                 <a class="bCatalogRoot__eImgLink"
                    href="<?= $link ?>"
                    title="<?= $child->getName() ?> - <?= $category->getName() ?>">
