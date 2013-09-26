@@ -179,10 +179,6 @@
 				choosenBlock = null;
 			// end of vars
 
-            if (self.isUnique) {
-                newToken += self.addUniqueSuffix();
-            }
-
 			if ( window.OrderModel.hasDeliveryBox(newToken) ) {
 				choosenBlock = global.OrderModel.getDeliveryBoxByToken(newToken);
 				choosenBlock.addProductGroup( self.products );
@@ -190,6 +186,10 @@
 				window.OrderModel.removeDeliveryBox(self.token);
 			}
 			else {
+
+                if (self.isUnique) {
+                    newToken += self.addUniqueSuffix();
+                }
 				console.info('удаляем старый блок');
 				console.log('старый токен '+self.token);
 				console.log('новый токен '+newToken);

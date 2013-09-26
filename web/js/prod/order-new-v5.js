@@ -179,10 +179,6 @@
 				choosenBlock = null;
 			// end of vars
 
-            if (self.isUnique) {
-                newToken += self.addUniqueSuffix();
-            }
-
 			if ( window.OrderModel.hasDeliveryBox(newToken) ) {
 				choosenBlock = global.OrderModel.getDeliveryBoxByToken(newToken);
 				choosenBlock.addProductGroup( self.products );
@@ -190,6 +186,10 @@
 				window.OrderModel.removeDeliveryBox(self.token);
 			}
 			else {
+
+                if (self.isUnique) {
+                    newToken += self.addUniqueSuffix();
+                }
 				console.info('удаляем старый блок');
 				console.log('старый токен '+self.token);
 				console.log('новый токен '+newToken);
@@ -924,36 +924,6 @@
 		};
 
 
-
-
-        /**
-         *  Раразбивка массива товаров в массив по уникальным единицам (для PickPoint)
-         *  т.е. вместо продукта в количестве 2 шт, будут 2 проудкта по 1 шт.
-         *
-         * @param       {Array}   productsToNewBox
-         * @returns     {Array}   {*}
-         */
-        OrderDictionary.prototype.prepareProductsByUniq = function (productsToNewBox) {
-            var productsUniq = [],
-                nowProduct,
-                j,k;
-
-            for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
-                nowProduct = productsToNewBox[j];
-                for ( k = 0; k <= nowProduct.quantity; k++ ) {
-                    nowProduct.quantity = 1;
-                    nowProduct.sum = nowProduct.price;
-                    productsUniq.push(nowProduct);
-                }
-            }
-
-            if (productsUniq) {
-                productsToNewBox = productsUniq;
-            }
-            return productsToNewBox;
-        };
-	
-	
 		return OrderDictionary;
 	
 	}());
@@ -1634,6 +1604,7 @@
 			nowState = null,
 			nowProduct = null,
 			choosenBlock = null,
+            isUnique = null;
 
 			discounts = global.OrderModel.orderDictionary.orderData.discounts;
 		// end of vars
@@ -1671,8 +1642,9 @@
 		 */
 		for ( var i = 0, len = statesPriority.length; i < len; i++ ) {
 			nowState = statesPriority[i];
+            isUnique = global.OrderModel.orderDictionary.isUniqueDeliveryState(nowState);
 
-			console.info('перебирем метод '+nowState);
+            console.info('перебирем ' + (isUnique ? 'уникальный* ' : '') + 'метод ' + nowState);
 
 			productsToNewBox = [];
 
@@ -1713,29 +1685,25 @@
 					choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
-				else {
+                else if (isUnique) {
                     // Блока для этого типа доставки в этот пункт еще существует, создадим его:
+                    // Если есть флаг уникальности, каждый товар в отдельном блоке будет
 
-                    var isUnique = false;
-                    if ( global.OrderModel.orderDictionary.isUniqueDeliveryState(nowState) ) {
-                        // Если есть флаг уникальности, каждый товар в отдельном блоке будет
-                        isUnique = true;
+                    // Разделим товары, продуктом считаем уникальную единицу товара:
+                    // Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
+                    productsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
 
-                        // Разделим товары, продуктом считаем уникальную единицу товара:
-                        // Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
-                        productsToNewBox = global.OrderModel.orderDictionary.prepareProductsByUniq(productsToNewBox);
-
-                        for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
-                            nowProduct = productsToNewBox[j];
-                            global.ENTER.constructors.DeliveryBox( [nowProduct], nowState, choosenPointForBox, isUnique);
-                        }
-
-                    }else{
-                        // Без флага уникальности, все товары скопом:
-                        // Пример: 5 тетрадок ==> 1 товар количеством 5 шт
-                        global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
+                    for (j = productsToNewBox.length - 1; j >= 0; j--) {
+                        nowProduct = productsToNewBox[j];
+                        global.ENTER.constructors.DeliveryBox([nowProduct], nowState, choosenPointForBox, isUnique);
                     }
-				}
+
+                } else {
+                    // Блока для этого типа доставки в этот пункт еще существует, создадим его:
+                    // Без флага уникальности, все товары скопом:
+                    // Пример: 5 тетрадок ==> 1 товар количеством 5 шт
+                    global.ENTER.constructors.DeliveryBox(productsToNewBox, nowState, choosenPointForBox);
+                }
 			}
 		}
 
@@ -2089,7 +2057,7 @@
 			console.info('проверяем купон');
 
 			var dataToSend = {
-					number: global.OrderModel.couponNumber(),
+					number: global.OrderModel.couponNumber()
 				},
 
 				url = global.OrderModel.couponUrl(),
@@ -2135,7 +2103,7 @@
 					type: 'GET',
 					url: global.OrderModel.updateUrl,
 					callback: global.OrderModel.modelUpdate
-				},
+				}
 			];
 
 			utils.packageReq(reqArray);
@@ -2273,7 +2241,7 @@
 
 					toKISS = {
 						'Checkout Step 1 SKU Quantity': totalQuan,
-						'Checkout Step 1 SKU Total': totalPrice,
+						'Checkout Step 1 SKU Total': totalPrice
 					};
 
 					if ( typeof _kmq !== 'undefined' ) {
@@ -2331,12 +2299,40 @@
 					type: 'GET',
 					url: global.OrderModel.updateUrl,
 					callback: window.OrderModel.modelUpdate
-				},
+				}
 			];
 
 			utils.packageReq(reqArray);
 
 			return false;
+		},
+
+
+        /**
+         *  Раразбивка массива товаров в массив по уникальным единицам (для PickPoint)
+         *  т.е. вместо продукта в количестве 2 шт, будут 2 проудкта по 1 шт.
+         *
+         * @param       {Array}   productsToNewBox
+         * @returns     {Array}   {*}
+         */
+        prepareProductsByUniq: function prepareProductsByUniq(productsToNewBox) {
+            var productsUniq = [],
+                nowProduct,
+                j, k;
+
+            for (j = productsToNewBox.length - 1; j >= 0; j--) {
+                nowProduct = productsToNewBox[j];
+                for (k = 0; k <= nowProduct.quantity; k++) {
+                    nowProduct.quantity = 1;
+                    nowProduct.sum = nowProduct.price;
+                    productsUniq.push(nowProduct);
+                }
+            }
+
+            if (productsUniq) {
+                productsToNewBox = productsUniq;
+            }
+            return productsToNewBox;
 		}
 	};
 
