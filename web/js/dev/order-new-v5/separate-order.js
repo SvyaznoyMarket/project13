@@ -11,8 +11,6 @@
 		utils = global.ENTER.utils;
 	// end of vars
 
-    console.log('*** serverData');
-    console.log(serverData);
 
 	/**
 	 * Логика разбиения заказа на подзаказы
@@ -40,7 +38,7 @@
 			nowProduct = null,
 			choosenBlock = null,
             isUnique = null,
-            nowProductsToNewBox;
+            nowProductsToNewBox = [];
 
 			discounts = global.OrderModel.orderDictionary.orderData.discounts;
 		// end of vars
@@ -128,7 +126,6 @@
                     // Разделим товары, продуктом считаем уникальную единицу товара:
                     // Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
                     nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
-
                     for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
                         nowProduct = [ nowProductsToNewBox[j] ];
                         global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox, isUnique);
@@ -754,14 +751,12 @@
         prepareProductsByUniq: function prepareProductsByUniq( productsToNewBox ) {
             var productsUniq = [],
                 nowProduct,
-                nowQuan = 0,
                 j, k;
 
             for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
-                nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]); //!!!!!!!!!!!!!!!!!!!!!!!!
-                //nowProduct = productsToNewBox[j];
-                nowQuan = productsToNewBox[j].quantity;
-                for ( k = nowQuan - 1; k >= 0; k-- ) {
+                //!!! важно клонировать объект, дабы не портить для др. типов доставки
+                nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
+                for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
                     nowProduct.quantity = 1;
                     nowProduct.sum = nowProduct.price;
                     productsUniq.push(nowProduct);
@@ -967,7 +962,7 @@
 				global.OrderModel.choosenDeliveryTypeId = window.docCookies.getItem('chTypeId_paypalECS');
 				global.OrderModel.statesPriority = JSON.parse( window.docCookies.getItem('chStetesPriority_paypalECS') );
 
-                separateOrder( global.OrderModel.statesPriority );
+				separateOrder( global.OrderModel.statesPriority );
 			}
 		},
 

@@ -25,7 +25,7 @@
 		function DeliveryBox( products, state, choosenPointForBox, isUnique ) {
 			// enforces new
 			if ( !(this instanceof DeliveryBox) ) {
-				return new DeliveryBox(products, state, choosenPointForBox);
+				return new DeliveryBox(products, state, choosenPointForBox, isUnique);
 			}
 			// constructor body
 			
@@ -34,7 +34,8 @@
 			var self = this;
 
             // Уникальность продуктов в этом типе доставки
-            self.isUnique = isUnique || false;
+            //self.isUnique = isUnique || false;
+            self.isUnique = isUnique || window.OrderModel.orderDictionary.isUniqueDeliveryState();
 			// Токен блока
 			self.token = state+'_'+choosenPointForBox;
             /*if (self.isUnique) {
@@ -289,7 +290,7 @@
 				else {
 					console.log('Блока для этого типа доставки в этот пункт еще существует');
 
-					new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
+					new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.isUnique );
 				}
 
 				return;
@@ -472,8 +473,7 @@
 		 *
 		 * @this	{DeliveryBox}
 		 */
-		DeliveryBox.prototype.calculateDate = function(calcIter) {
-            calcIter = calcIter || 0;
+		DeliveryBox.prototype.calculateDate = function() {
 			console.info('Вычисление общей даты для продуктов в блоке');
 
 			var self = this,
@@ -495,7 +495,7 @@
 			 */
 			nowProductDates = self.products[0].deliveries[self.state][self.choosenPoint().id].dates;
 
-			for ( var i = 0, len = nowProductDates.length; i < len; i++ ) {
+            for ( var i = 0, len = ENTER.utils.objLen(nowProductDates); i < len; i++ ) {
 				nowTS = nowProductDates[i].value;
 
 				if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
@@ -511,17 +511,14 @@
 
 				tempProduct = self.products.pop();
 				tempProductArray.push(tempProduct);
-                newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();
+                newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();;
 				console.log('новый токен '+newToken);
 				console.log(self);
 
-				new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id );
+                /////console.log('#### ERROR the eternal cycle in case of Object Cloning !!!! *************** ');
+				new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id, self.isUnique );
 
-				if ( ++calcIter < 10 ) {
-                    console.log('calcItercalcItercalcItercalcItercalcItercalcItercalcItercalcIter');
-                    console.log(calcIter);
-                    self.calculateDate(calcIter);
-                }
+				self.calculateDate();
 			}
 
 			/**

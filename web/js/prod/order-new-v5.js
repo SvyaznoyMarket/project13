@@ -25,7 +25,7 @@
 		function DeliveryBox( products, state, choosenPointForBox, isUnique ) {
 			// enforces new
 			if ( !(this instanceof DeliveryBox) ) {
-				return new DeliveryBox(products, state, choosenPointForBox);
+				return new DeliveryBox(products, state, choosenPointForBox, isUnique);
 			}
 			// constructor body
 			
@@ -34,7 +34,8 @@
 			var self = this;
 
             // Уникальность продуктов в этом типе доставки
-            self.isUnique = isUnique || false;
+            //self.isUnique = isUnique || false;
+            self.isUnique = isUnique || window.OrderModel.orderDictionary.isUniqueDeliveryState();
 			// Токен блока
 			self.token = state+'_'+choosenPointForBox;
             /*if (self.isUnique) {
@@ -289,7 +290,7 @@
 				else {
 					console.log('Блока для этого типа доставки в этот пункт еще существует');
 
-					new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
+					new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.isUnique );
 				}
 
 				return;
@@ -472,8 +473,7 @@
 		 *
 		 * @this	{DeliveryBox}
 		 */
-		DeliveryBox.prototype.calculateDate = function(calcIter) {
-            calcIter = calcIter || 0;
+		DeliveryBox.prototype.calculateDate = function() {
 			console.info('Вычисление общей даты для продуктов в блоке');
 
 			var self = this,
@@ -495,7 +495,7 @@
 			 */
 			nowProductDates = self.products[0].deliveries[self.state][self.choosenPoint().id].dates;
 
-			for ( var i = 0, len = nowProductDates.length; i < len; i++ ) {
+            for ( var i = 0, len = ENTER.utils.objLen(nowProductDates); i < len; i++ ) {
 				nowTS = nowProductDates[i].value;
 
 				if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
@@ -511,17 +511,14 @@
 
 				tempProduct = self.products.pop();
 				tempProductArray.push(tempProduct);
-                newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();
+                newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();;
 				console.log('новый токен '+newToken);
 				console.log(self);
 
-				new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id );
+                /////console.log('#### ERROR the eternal cycle in case of Object Cloning !!!! *************** ');
+				new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id, self.isUnique );
 
-				if ( ++calcIter < 10 ) {
-                    console.log('calcItercalcItercalcItercalcItercalcItercalcItercalcItercalcIter');
-                    console.log(calcIter);
-                    self.calculateDate(calcIter);
-                }
+				self.calculateDate();
 			}
 
 			/**
@@ -1581,8 +1578,6 @@
 		utils = global.ENTER.utils;
 	// end of vars
 
-    console.log('*** serverData');
-    console.log(serverData);
 
 	/**
 	 * Логика разбиения заказа на подзаказы
@@ -1610,7 +1605,7 @@
 			nowProduct = null,
 			choosenBlock = null,
             isUnique = null,
-            nowProductsToNewBox;
+            nowProductsToNewBox = [];
 
 			discounts = global.OrderModel.orderDictionary.orderData.discounts;
 		// end of vars
@@ -1698,7 +1693,6 @@
                     // Разделим товары, продуктом считаем уникальную единицу товара:
                     // Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
                     nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
-
                     for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
                         nowProduct = [ nowProductsToNewBox[j] ];
                         global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox, isUnique);
@@ -2324,14 +2318,12 @@
         prepareProductsByUniq: function prepareProductsByUniq( productsToNewBox ) {
             var productsUniq = [],
                 nowProduct,
-                nowQuan = 0,
                 j, k;
 
             for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
-                nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]); //!!!!!!!!!!!!!!!!!!!!!!!!
-                //nowProduct = productsToNewBox[j];
-                nowQuan = productsToNewBox[j].quantity;
-                for ( k = nowQuan - 1; k >= 0; k-- ) {
+                //!!! важно клонировать объект, дабы не портить для др. типов доставки
+                nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
+                for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
                     nowProduct.quantity = 1;
                     nowProduct.sum = nowProduct.price;
                     productsUniq.push(nowProduct);
@@ -2537,7 +2529,7 @@
 				global.OrderModel.choosenDeliveryTypeId = window.docCookies.getItem('chTypeId_paypalECS');
 				global.OrderModel.statesPriority = JSON.parse( window.docCookies.getItem('chStetesPriority_paypalECS') );
 
-                separateOrder( global.OrderModel.statesPriority );
+				separateOrder( global.OrderModel.statesPriority );
 			}
 		},
 
