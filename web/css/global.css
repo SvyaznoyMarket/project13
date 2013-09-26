@@ -2865,7 +2865,8 @@
   #order1click-container-new table td:first-child {
     border-left: none;
   }
-  #order1click-container-new table td h3 {
+  #order1click-container-new table td h3,
+  #order1click-container-new table td .bMapShops__ePopupRelTitle {
     font-size: 18px;
     margin: 0px;
     padding: 0px;
