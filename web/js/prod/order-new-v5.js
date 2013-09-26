@@ -1604,7 +1604,9 @@
 			nowState = null,
 			nowProduct = null,
 			choosenBlock = null,
-            isUnique = null;
+            isUnique = null,
+            nowQuan = 0,
+            nowProductsToNewBox;
 
 			discounts = global.OrderModel.orderDictionary.orderData.discounts;
 		// end of vars
@@ -1691,10 +1693,14 @@
 
                     // Разделим товары, продуктом считаем уникальную единицу товара:
                     // Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
-                    productsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
+                    nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
+                    ///var ttt = ENTER.utils.cloneObject(ttt); // <- TODO fix
+                    //console.log(ttt);
+                    //console.log('^&^&^&^');
 
-                    for (j = productsToNewBox.length - 1; j >= 0; j--) {
-                        nowProduct = productsToNewBox[j];
+                    nowQuan = nowProductsToNewBox.length;
+                    for (j = nowQuan - 1; j >= 0; j--) {
+                        nowProduct = nowProductsToNewBox[j];
                         global.ENTER.constructors.DeliveryBox([nowProduct], nowState, choosenPointForBox, isUnique);
                     }
 
@@ -2313,7 +2319,7 @@
          *  т.е. вместо продукта в количестве 2 шт, будут 2 проудкта по 1 шт.
          *
          * @param       {Array}   productsToNewBox
-         * @returns     {Array}   {*}
+         * @returns     {Array}   productsUniq
          */
         prepareProductsByUniq: function prepareProductsByUniq(productsToNewBox) {
             var productsUniq = [],
@@ -2329,10 +2335,7 @@
                 }
             }
 
-            if (productsUniq) {
-                productsToNewBox = productsUniq;
-            }
-            return productsToNewBox;
+            return productsUniq;
 		}
 	};
 
