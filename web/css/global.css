@@ -12110,7 +12110,7 @@
 /*------СТИЛИ РУТОВОГО КАТАЛОГА------*/
 @media all {
   .bTitlePage {
-    margin: 0 0 35px;
+    margin: 0 0 20px;
     font-size: 25px;
     font-family: Tahoma;
   }
@@ -12591,7 +12591,7 @@
     margin: -1px 0;
     behavior: url("/css/common/display-table.min.htc");
     border-bottom: 1px solid #e6e6e6;
-    max-height: 481px;
+    max-height: 310px;
     overflow: auto;
     position: relative;
     z-index: 10;
@@ -12621,7 +12621,7 @@
     padding: 20px 10px 0 20px;
     width: 748px;
     margin-left: -1px;
-    max-height: 457px;
+    max-height: 289px;
     overflow: auto;
     border-left: 1px solid #e6e6e6;
   }
@@ -12635,7 +12635,7 @@
   .bFilterValues .bFilterValuesCol {
     position: relative;
     float: left;
-    margin: 0 20px 20px 0;
+    margin: 0 20px 17px 0;
     width: 220px;
   }
   .bFilterValues .bFilterValuesCol:hover .bFilterCheckbox {
