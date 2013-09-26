@@ -282,15 +282,16 @@ class Repository {
         $count = 0;
         $client->addQuery('listing/list',
             [
+                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+            ],
+            [
                 'filter' => [
                     'filters' => $filter,
                     'sort'    => [],
                     'offset'  => null,
                     'limit'   => null,
                 ],
-                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
             ],
-            [],
             function($data) use(&$count){
                 $count = !empty($data['count']) ? (int)$data['count'] : 0;
             }
@@ -316,15 +317,16 @@ class Repository {
         $client = clone $this->client;
         $client->addQuery('listing/list',
             [
+                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+            ],
+            [
                 'filter' => [
                     'filters' => $filter,
                     'sort'    => $sort,
                     'offset'  => $offset,
                     'limit'   => $limit,
                 ],
-                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
             ],
-            [],
             function($data) use(&$response) {
                 $response = $data;
             }
@@ -361,16 +363,18 @@ class Repository {
         $client = clone $this->client;
 
         $response = [];
-        $client->addQuery('listing/list', [
-            'filter' => [
+        $client->addQuery('listing/list',
+            [
+                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+            ],
+            [
+                'filter' => [
                     'filters' => $filter,
                     'sort'    => $sort,
                     'offset'  => $offset,
                     'limit'   => $limit,
                 ],
-                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
             ],
-            [],
             function($data) use(&$response) {
                 $response = $data;
             }
@@ -418,15 +422,19 @@ class Repository {
         $client = clone $this->client;
 
         $response = [];
-        $client->addQuery('listing/list', [
-            'filter' => [
-                'filters' => $filter,
-                'sort'    => $sort,
-                'offset'  => $offset,
-                'limit'   => $limit,
+        $client->addQuery('listing/list',
+            [
+                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
             ],
-            'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ], [], function($data) use(&$response) {
+            [
+                'filter' => [
+                    'filters' => $filter,
+                    'sort'    => $sort,
+                    'offset'  => $offset,
+                    'limit'   => $limit,
+                ],
+            ],
+            function($data) use(&$response) {
             $response = $data;
         });
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);

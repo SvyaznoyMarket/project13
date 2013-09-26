@@ -157,10 +157,10 @@ class Action {
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 
-        return new \Http\JsonResponse(array(
+        return new \Http\JsonResponse([
             'success' => true,
-            'data'    => $count,
-        ));
+            'count'   => $count,
+        ]);
     }
 
     /**

@@ -25,6 +25,7 @@
 
     <?= $helper->render('product-category/__filter', [
         'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
+        'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
         'productFilter' => $productFilter,
     ]) // фильтры ?>
 
