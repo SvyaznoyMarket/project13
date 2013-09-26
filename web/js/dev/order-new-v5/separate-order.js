@@ -40,7 +40,6 @@
 			nowProduct = null,
 			choosenBlock = null,
             isUnique = null,
-            nowQuan = 0,
             nowProductsToNewBox;
 
 			discounts = global.OrderModel.orderDictionary.orderData.discounts;
@@ -122,19 +121,15 @@
 					choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
-                else if (isUnique) {
+                else if ( isUnique ) {
                     // Блока для этого типа доставки в этот пункт еще существует, создадим его:
                     // Если есть флаг уникальности, каждый товар в отдельном блоке будет
 
                     // Разделим товары, продуктом считаем уникальную единицу товара:
                     // Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
                     nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
-                    ///var ttt = ENTER.utils.cloneObject(ttt); // <- TODO fix
-                    //console.log(ttt);
-                    //console.log('^&^&^&^');
 
-                    nowQuan = nowProductsToNewBox.length;
-                    for (j = nowQuan - 1; j >= 0; j--) {
+                    for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
                         nowProduct = nowProductsToNewBox[j];
                         global.ENTER.constructors.DeliveryBox([nowProduct], nowState, choosenPointForBox, isUnique);
                     }
@@ -756,14 +751,17 @@
          * @param       {Array}   productsToNewBox
          * @returns     {Array}   productsUniq
          */
-        prepareProductsByUniq: function prepareProductsByUniq(productsToNewBox) {
+        prepareProductsByUniq: function prepareProductsByUniq( productsToNewBox ) {
             var productsUniq = [],
                 nowProduct,
+                nowQuan = 0,
                 j, k;
 
-            for (j = productsToNewBox.length - 1; j >= 0; j--) {
+            for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
+                //nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 nowProduct = productsToNewBox[j];
-                for (k = 0; k <= nowProduct.quantity; k++) {
+                nowQuan = productsToNewBox[j].quantity;
+                for ( k = nowQuan - 1; k >= 0; k-- ) {
                     nowProduct.quantity = 1;
                     nowProduct.sum = nowProduct.price;
                     productsUniq.push(nowProduct);
