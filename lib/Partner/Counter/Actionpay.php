@@ -113,9 +113,36 @@ class Actionpay {
                 '{sum}'         => $orderSum,
             ]);
         } catch (\Exception $e) {
-            \App::logger()->error($e, ['partner', 'actionpay']);
+            \App::logger()->error($e, ['partner', 'actionpay ' . __METHOD__]);
         }
 
         return $link;
     }
+
+
+    /**
+     * @return null|string
+     */
+    public static function getSubscribeLink() {
+        $link = null;
+
+        try {
+            $actionpayId = \App::request()->cookies->get('actionpay');
+            if (!$actionpayId) {
+                \App::logger()->error(['action' => __METHOD__, 'message' => 'В куках отсутсвует actionpay'], ['partner', 'actionpay']);
+            }
+
+            $appid = \App::request()->cookies->get('appid') ?: 0;
+
+            $link = strtr('actionpay={actionpayId}&apid={appid}', [
+                '{actionpayId}' => $actionpayId,
+                '{appid}'    => $appid,
+            ]);
+        } catch (\Exception $e) {
+            \App::logger()->error($e, ['partner', 'actionpay ' . __METHOD__]);
+        }
+
+        return $link;
+    }
+
 }
