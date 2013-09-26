@@ -472,7 +472,8 @@
 		 *
 		 * @this	{DeliveryBox}
 		 */
-		DeliveryBox.prototype.calculateDate = function() {
+		DeliveryBox.prototype.calculateDate = function(calcIter) {
+            calcIter = calcIter || 0;
 			console.info('Вычисление общей даты для продуктов в блоке');
 
 			var self = this,
@@ -503,11 +504,6 @@
 
 					self.allDatesForBlock.push(nowProductDates[i]);
 				}
-
-                if ( i>10 ) {
-                    console.log('!!!!!!!!!!!!!!!!!!!!!!!');
-                    break;
-                }
 			}
 
 			if ( !self.allDatesForBlock().length ) {
@@ -521,7 +517,11 @@
 
 				new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id );
 
-				self.calculateDate();
+				if ( ++calcIter < 10 ) {
+                    console.log('calcItercalcItercalcItercalcItercalcItercalcItercalcItercalcIter');
+                    console.log(calcIter);
+                    self.calculateDate(calcIter);
+                }
 			}
 
 			/**
@@ -1692,7 +1692,6 @@
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
                 else if ( isUnique ) {
-                    console.log('else if ( isUnique )');
                     // Блока для этого типа доставки в этот пункт еще существует, создадим его:
                     // Если есть флаг уникальности, каждый товар в отдельном блоке будет
 
@@ -1701,12 +1700,11 @@
                     nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
 
                     for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
-                        nowProduct = nowProductsToNewBox[j];
-                        global.ENTER.constructors.DeliveryBox([nowProduct], nowState, choosenPointForBox, isUnique);
+                        nowProduct = [ nowProductsToNewBox[j] ];
+                        global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox, isUnique);
                     }
 
                 } else {
-                    console.log('else {}');
                     // Блока для этого типа доставки в этот пункт еще существует, создадим его:
                     // Без флага уникальности, все товары скопом:
                     // Пример: 5 тетрадок ==> 1 товар количеством 5 шт
@@ -2330,11 +2328,10 @@
                 j, k;
 
             for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
-                nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
+                nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]); //!!!!!!!!!!!!!!!!!!!!!!!!
                 //nowProduct = productsToNewBox[j];
                 nowQuan = productsToNewBox[j].quantity;
                 for ( k = nowQuan - 1; k >= 0; k-- ) {
-                    console.log('&&&&&&&&&&&&&??');
                     nowProduct.quantity = 1;
                     nowProduct.sum = nowProduct.price;
                     productsUniq.push(nowProduct);

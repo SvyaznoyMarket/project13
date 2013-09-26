@@ -472,7 +472,8 @@
 		 *
 		 * @this	{DeliveryBox}
 		 */
-		DeliveryBox.prototype.calculateDate = function() {
+		DeliveryBox.prototype.calculateDate = function(calcIter) {
+            calcIter = calcIter || 0;
 			console.info('Вычисление общей даты для продуктов в блоке');
 
 			var self = this,
@@ -516,7 +517,11 @@
 
 				new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id );
 
-				self.calculateDate();
+				if ( ++calcIter < 10 ) {
+                    console.log('calcItercalcItercalcItercalcItercalcItercalcItercalcItercalcIter');
+                    console.log(calcIter);
+                    self.calculateDate(calcIter);
+                }
 			}
 
 			/**

@@ -130,8 +130,8 @@
                     nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
 
                     for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
-                        nowProduct = nowProductsToNewBox[j];
-                        global.ENTER.constructors.DeliveryBox([nowProduct], nowState, choosenPointForBox, isUnique);
+                        nowProduct = [ nowProductsToNewBox[j] ];
+                        global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox, isUnique);
                     }
 
                 } else {
@@ -758,8 +758,8 @@
                 j, k;
 
             for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
-                //nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                nowProduct = productsToNewBox[j];
+                nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]); //!!!!!!!!!!!!!!!!!!!!!!!!
+                //nowProduct = productsToNewBox[j];
                 nowQuan = productsToNewBox[j].quantity;
                 for ( k = nowQuan - 1; k >= 0; k-- ) {
                     nowProduct.quantity = 1;
