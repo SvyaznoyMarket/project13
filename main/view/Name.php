@@ -14,7 +14,7 @@ class Name {
             case \Model\Product\Filter\Entity::TYPE_NUMBER:
                 return 'f-' . $filter->getId() . (is_scalar($option) ? ('-' . $option) : '');
             case \Model\Product\Filter\Entity::TYPE_BOOLEAN:
-                return 'f- ' . $filter->getId();
+                return 'f-' . $filter->getId();
             case \Model\Product\Filter\Entity::TYPE_LIST:
                 return ('shop' == $filter->getId())
                     ? 'shop'
