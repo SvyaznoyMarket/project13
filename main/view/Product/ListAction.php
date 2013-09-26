@@ -60,7 +60,10 @@ class ListAction {
                 'hasVideo' => $productVideo && $productVideo->getContent(),
                 'has360'   => $model3dExternalUrl || $model3dImg,
                 'review'   => $reviewCompactAction->execute($helper, $product),
-                'line'     => $product->getLine() ? ['name' => $product->getLine()->getName(), 'productCount' => $product->getLine()->getProductCount()] : null,
+                'line'     =>
+                ($line = $product->getLine())
+                    ? ['name' => $line->getName(), 'productCount' => $line->getProductCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
+                    : null
             ];
 
             // cart
