@@ -22,10 +22,10 @@
 		 * 
 		 * @constructor
 		 */
-		function DeliveryBox( products, state, choosenPointForBox, isUnique ) {
+		function DeliveryBox( products, state, choosenPointForBox ) {
 			// enforces new
 			if ( !(this instanceof DeliveryBox) ) {
-				return new DeliveryBox(products, state, choosenPointForBox, isUnique);
+				return new DeliveryBox(products, state, choosenPointForBox);
 			}
 			// constructor body
 			
@@ -35,7 +35,7 @@
 
             // Уникальность продуктов в этом типе доставки
             //self.isUnique = isUnique || false;
-            self.isUnique = isUnique || window.OrderModel.orderDictionary.isUniqueDeliveryState();
+            self.isUnique = window.OrderModel.orderDictionary.isUniqueDeliveryState();
 			// Токен блока
 			self.token = state+'_'+choosenPointForBox;
             /*if (self.isUnique) {
@@ -290,7 +290,7 @@
 				else {
 					console.log('Блока для этого типа доставки в этот пункт еще существует');
 
-					new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint, self.isUnique );
+					new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
 				}
 
 				return;
@@ -495,7 +495,7 @@
 			 */
 			nowProductDates = self.products[0].deliveries[self.state][self.choosenPoint().id].dates;
 
-            for ( var i = 0, len = ENTER.utils.objLen(nowProductDates); i < len; i++ ) {
+			for ( var i = 0, len = nowProductDates.length; i < len; i++ ) {
 				nowTS = nowProductDates[i].value;
 
 				if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
@@ -515,8 +515,7 @@
 				console.log('новый токен '+newToken);
 				console.log(self);
 
-                /////console.log('#### ERROR the eternal cycle in case of Object Cloning !!!! *************** ');
-				new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id, self.isUnique );
+				new DeliveryBox( tempProductArray, self.state, self.choosenPoint().id );
 
 				self.calculateDate();
 			}
