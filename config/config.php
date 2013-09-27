@@ -213,7 +213,7 @@ $c->mediaHost = [
 
 $c->search['itemLimit'] = 1000;
 
-$c->product['itemsPerPage']           = 18;
+$c->product['itemsPerPage']           = 20;
 $c->product['showAccessories']        = true;
 $c->product['showRelated']            = true;
 $c->product['itemsInSlider']          = 5;
@@ -257,7 +257,7 @@ $c->productCategory['url'] = [
     0 => '/6/1/163/',
 ];
 $c->productCategory['jewelController'] = true;
-$c->productCategory['newShow'] = false;
+$c->product['newList'] = true;
 
 $c->service['url'] = [
     0 => '/11/1/160/',

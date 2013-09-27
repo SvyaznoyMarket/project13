@@ -260,6 +260,7 @@ class AppConfig {
         'reviewEnabled'          => null, // отзывы о товаре
         'lowerPriceNotification' => null,
         'furnitureConstructor'   => null, // конструктор шкафов-купе
+        'newList'                => null, // новый дизайн листингов
         'recommendationPull'     => null, // подтягивать информацию о рекоммендованных товарах
         'recommendationPush'     => null, // отправлять данные для расчета рекоммендованных товаров
     ];
@@ -279,7 +280,6 @@ class AppConfig {
     public $productCategory = [
         'url'             => [],
         'jewelController' => null,
-        'newShow'         => null,
     ];
     /** @var array */
     public $service = [

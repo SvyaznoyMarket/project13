@@ -138,5 +138,6 @@
 		SertificateCard.checkCard();
 	});
 
-	pin.mask('9999', { completed: SertificateCard.checkCard, placeholder: '*' } );
+	$.mask.definitions['n'] = '[0-9]';
+	pin.mask('nnnn', { completed: SertificateCard.checkCard, placeholder: '*' } );
 }(this));

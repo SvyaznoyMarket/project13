@@ -6,6 +6,10 @@ class Autoloader {
      */
     public static function register($basePath) {
         spl_autoload_register(function ($class) use ($basePath) {
+            if (0 === strpos($class, 'Mustache')) {
+                return;
+            }
+
             if ('\\' == $class[0]) {
                 $class = substr($class, 1);
             }

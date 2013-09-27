@@ -1,0 +1,156 @@
+<?php
+
+return function(
+    \Helper\TemplateHelper $helper,
+    \Model\Product\Filter $productFilter,
+    $baseUrl,
+    $countUrl
+) {
+    /** @var $filters \Model\Product\Filter\Entity[] */
+    $openFilter = false;
+    $filters = [];
+    $priceFilter = null;
+
+    $i = 1;
+    foreach ($productFilter->getFilterCollection() as $filter) {
+        if ($filter->isPrice()) {
+            $priceFilter = $filter;
+            $priceFilter->setStepType('price');
+        } else {
+            $filters[] = $filter;
+            $i++;
+        }
+
+        // фильтр "Наличие в магазинах"
+        if (3 == $i) {
+            /** @var $shops \Model\Shop\Entity[] */
+            $shops = $helper->getParam('shops');
+
+            $shopFilter = new \Model\Product\Filter\Entity();
+            $shopFilter->setId('shop');
+            $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+            $shopFilter->setName('Наличие в магазинах');
+            $shopFilter->getIsInList(true);
+            $shopFilter->setIsMultiple(false);
+
+            foreach ($shops as $shop) {
+                $option = new \Model\Product\Filter\Option\Entity();
+                $option->setId($shop->getId());
+                $option->setName($shop->getName());
+                $shopFilter->addOption($option);
+            }
+            $filters[] = $shopFilter;
+            $i++;
+        }
+    }
+
+?>
+
+    <form class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+        <div class="bFilterHead">
+            <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+
+            <?= $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
+
+            <div class="bBtnPick clearfix">
+                <button type="submit" class="bBtnPick__eLink mBtnGrey">Подобрать</button>
+            </div>
+
+            <!-- SEO теги -->
+            <ul class="bPopularSection">
+                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Samsung</span></li>
+                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Nokia</span></li>
+                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Roga und Koppentenganger</span></li>
+                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Dr. Buchman</span></li>
+                <li class="bPopularSection__eItem"><span class="bPopularSection__eText"></span></li>
+            </ul>
+            <!-- SEO теги -->
+        </div>
+
+        <!-- Фильтр по выбранным параметрам -->
+        <div class="bFilterCont clearfix" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
+            <!-- Список названий параметров -->
+            <ul class="bFilterParams">
+            <? $i = 0; foreach ($filters as $filter): ?>
+            <?
+                if (!$filter->getIsInList()) continue;
+                $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId());
+            ?>
+                <li class="bFilterParams__eItem<? if (0 == $i): ?> mActive<? endif ?>" data-ref="<?= $viewId ?>">
+                    <span class="bParamName"><?= $filter->getName() ?></span>
+                </li>
+            <? $i++; endforeach ?>
+            </ul>
+            <!-- /Список названий параметров -->
+
+            <!-- Список значений параметров -->
+            <div class="bFilterValues">
+                <? $i = 0; foreach ($filters as $filter): ?>
+                <?
+                    if (!$filter->getIsInList()) continue;
+                    $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId());
+                ?>
+                    <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if ('shop' == $filter->getId()): ?> mLineItem<? endif ?>" id="<?= $viewId ?>">
+
+                    <? switch ($filter->getTypeId()) {
+                        case \Model\Product\Filter\Entity::TYPE_NUMBER:
+                        case \Model\Product\Filter\Entity::TYPE_SLIDER:
+                            echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $filter]);
+                            break;
+                        case \Model\Product\Filter\Entity::TYPE_LIST:
+                            echo $helper->render('product-category/filter/__list', ['productFilter' => $productFilter, 'filter' => $filter]);
+                            break;
+                        case \Model\Product\Filter\Entity::TYPE_BOOLEAN:
+                            echo $helper->render('product-category/filter/__choice', ['productFilter' => $productFilter, 'filter' => $filter]);
+                            break;
+                    } ?>
+
+                    </div>
+                <? $i++; endforeach ?>
+            </div>
+            <!-- /Список значений параметров -->
+        </div>
+        <!-- /Фильтр по выбранным параметрам -->
+
+        <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
+    </form>
+
+
+
+    <? if (false): ?>
+        <!-- Фильтр товаров -->
+        <div class="bFilter clearfix">
+            <div class="bFilterHead">
+                <a class="bFilterToggle mClose" href=""><span class="bToggleText">Бренды и параметры</span></a>
+
+                <!-- Фильтр по цене -->
+                <div class="bRangeSlider">
+                    <span class="bRangeSlider__eTitle">Цена</span>
+                    <input class="bRangeSlider__eInput mFromRange" name="" value="1 000" type="text"  />
+
+                    <div class="bFilterSlider" data-config="{&quot;min&quot;:2990,&quot;max&quot;:113990,&quot;step&quot;:0.1}">
+                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
+                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
+                    </div>
+
+                    <input class="bRangeSlider__eInput mLast mToRange" name="" value="10 000" type="text"  />
+
+                    <span class="bRangeSlider__eRub rubl">p</span>
+                </div>
+                <!-- /Фильтр по цене -->
+            </div>
+            <!-- Фильтр по популярным позициям -->
+            <ul class="bPopularSection">
+                <li class="bPopularSection__eItem mTitle">Популярные бренды</li>
+                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Samsung</strong></li>
+                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Nokia</strong></li>
+                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Roga und Koppentenganger</strong></li>
+                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Dr. Buchman</strong></li>
+                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText"></strong></li>
+            </ul>
+            <!-- /Фильтр по популярным позициям -->
+        </div>
+        <!-- Фильтр товаров -->
+    <? endif ?>
+
+<? };

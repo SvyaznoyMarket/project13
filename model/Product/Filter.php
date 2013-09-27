@@ -71,39 +71,39 @@ class Filter {
                             $value['from'] = null;
                         }
                         if ($filter->getMax() != $value['to'] || $filter->getMin() != $value['from']) {
-                            $return[] = array($filter->getId(), 2, $value['from'], $value['to']);
+                            $return[] = [$filter->getId(), 2, $value['from'], $value['to']];
                         }
                         break;
                     case FilterEntity::TYPE_STRING:
-                        $return[] = array($filter->getId(), 3, $value);
+                        $return[] = [$filter->getId(), 3, $value];
                         break;
                     default:
-                        $return[] = array($filter->getId(), 1, $value);
+                        $return[] = [$filter->getId(), 1, $value];
                         break;
                 }
             }
         }
 
         if (empty($return)) {
-            $return[] = array('is_model', 1, array(true));
+            $return[] = ['is_model', 1, [true]];
         }
 
-        $return[] = array('is_view_list', 1, array(true));
+        $return[] = ['is_view_list', 1, [true]];
 
         if ($this->category) {
-            $return[] = array('category', 1, $this->category->getId());
+            $return[] = ['category', 1, $this->category->getId()];
         }
 
         if (array_key_exists('global', $this->values) && $this->values['global']) {
-            $return[] = array('is_global_buyable', 1, 1);
+            $return[] = ['is_global_buyable', 1, 1];
         }
 
         if (array_key_exists('instore', $this->values) && $this->values['instore']) {
-            $return[] = array('is_store', 1, 1);
+            $return[] = ['is_store', 1, 1];
         }
 
         if (array_key_exists('shop', $this->values) && $this->values['shop'] && $this->shop && $this->shop instanceof \Model\Shop\Entity) {
-            $return[] = array('shop', 1, $this->shop->getId());
+            $return[] = ['shop', 1, $this->shop->getId()];
         }
 
         return $return;

@@ -1033,7 +1033,8 @@
 		SertificateCard.checkCard();
 	});
 
-	pin.mask('9999', { completed: SertificateCard.checkCard, placeholder: '*' } );
+	$.mask.definitions['n'] = '[0-9]';
+	pin.mask('nnnn', { completed: SertificateCard.checkCard, placeholder: '*' } );
 }(this));
  
  
@@ -1447,9 +1448,12 @@
 		};
 	// end of functions
 	
-	sclub.mask('* ****** ******', { placeholder: '*' } );
-	qiwiPhone.mask('(999) 999-99-99');
-	phoneField.mask('(999) 999-99-99');
+	$.mask.definitions['n'] = '[0-9]';
+	sclub.mask('2 98nnnn nnnnn', {
+		placeholder: '*'
+	});
+	qiwiPhone.mask('(nnn) nnn-nn-nn');
+	phoneField.mask('(nnn) nnn-nn-nn');
 
 	/**
 	 * AB-test
