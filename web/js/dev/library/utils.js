@@ -3,19 +3,19 @@
 
 
     /**
-     * Возвращает колчество элементов в объекте.
+     * Возвращает колчество свойств в объекте.
      *
      * @param       {object}        obj
      * @returns     {number}        count
      */
     utils.objLen = function objLen(obj) {
-        var count = 0, p;
+        var len = 0, p;
         for ( p in obj ) {
             if ( obj.hasOwnProperty(p) ) {
-                count++;
+                len++;
             }
         }
-        return count;
+        return len;
     }
 
 
