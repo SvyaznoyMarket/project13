@@ -4,7 +4,8 @@ return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
     $baseUrl,
-    $countUrl
+    $countUrl,
+    $hotlinks
 ) {
     /** @var $filters \Model\Product\Filter\Entity[] */
     $openFilter = false;
@@ -57,13 +58,13 @@ return function(
             </div>
 
             <!-- SEO теги -->
-            <ul class="bPopularSection">
-                <li class="bPopularSection__eItem"><a class="bPopularSection__eText">Samsung</a></li>
-                <li class="bPopularSection__eItem"><a class="bPopularSection__eText">Nokia</a></li>
-                <li class="bPopularSection__eItem"><a class="bPopularSection__eText">Roga und Koppentenganger</a></li>
-                <li class="bPopularSection__eItem"><a class="bPopularSection__eText">Dr. Buchman</a></li>
-                <li class="bPopularSection__eItem"><a class="bPopularSection__eText"></a></li>
-            </ul>
+            <? if(!empty($hotlinks)): ?>
+                <ul class="bPopularSection">
+                    <? foreach ($hotlinks as $hotlink): ?>
+                        <li class="bPopularSection__eItem"><a class="bPopularSection__eText" href="<?= $hotlink['url'] ?>"><?= $hotlink['title'] ?></a></li>
+                    <? endforeach ?>
+                </ul>
+            <? endif ?>
             <!-- SEO теги -->
         </div>
 
