@@ -6,6 +6,7 @@ class Entity {
     const TYPE_STANDART = 'standart';
     const TYPE_SELF = 'self';
     const TYPE_NOW = 'now';
+    const TYPE_PICKPOINT = 'pickpoint';
 
     /** @var int */
     private $id;

@@ -2,47 +2,49 @@
 	var utils = ENTER.utils;
 
 	utils.cloneObject = function cloneObject( obj ) {
-		if  ( obj == null || typeof( obj ) !== 'object' ) {
+		var copy,
+			attr,
+			i,
+			len;
+		
+		// Handle the 3 simple types, and null or undefined
+		if ( obj == null || typeof obj !== 'object' ) {
 			return obj;
 		}
-
-		var temp = {},
-			key;
-
-		for ( key in obj ) {
-			if ( obj.hasOwnProperty(key) ) {
-				temp[key] = cloneObject(obj[key]);
-			}
-		}
-
-		return temp;
-	};
-}(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
-/**
- * Получение количества свойств объекта
- */
-;(function ( global ) {
-	global.getKeysLength = function getKeysLength( obj ) {
-		var len = 0;
 		
-		for ( var i in obj ) {
-			if ( !obj.hasOwnProperty(i) ){
-				continue;
+		// Handle Date
+		if ( obj instanceof Date ) {
+			copy = new Date();
+			copy.setTime(obj.getTime());
+
+			return copy;
+		}
+		
+		// Handle Array
+		if ( obj instanceof Array ) {
+			copy = [];
+			
+			for ( i = 0, len = obj.length; i < len; i++ ) {
+				copy[i] = cloneObject(obj[i]);
 			}
 			
-			len++;
+			return copy;
 		}
 		
-		return len;
+		// Handle Object
+		if ( obj instanceof Object ) {
+			copy = {};
+			
+			for ( attr in obj ) {
+				if ( obj.hasOwnProperty(attr) ) {
+					copy[attr] = cloneObject(obj[attr]);
+				}
+			}
+			
+			return copy;
+		}
 	};
-}(this));
+}(window.ENTER));
  
  
 /** 
@@ -2871,3 +2873,33 @@ if ( !Array.prototype.indexOf ) {
         }
     });
 }());
+
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+;(function (ENTER) {
+    var utils = ENTER.utils;
+
+
+    /**
+     * Возвращает колчество свойств в объекте.
+     *
+     * @param       {object}        obj
+     * @returns     {number}        count
+     */
+    utils.objLen = function objLen(obj) {
+        var len = 0, p;
+        for ( p in obj ) {
+            if ( obj.hasOwnProperty(p) ) {
+                len++;
+            }
+        }
+        return len;
+    }
+
+
+}(window.ENTER));

@@ -46,6 +46,8 @@ $c->wordpress['throwException'] = false;
 
 $c->dataStore['timeout'] = 2.5;
 
+$c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
+
 $c->database['host'] = 'localhost';
 
 $c->mobileHost = 'm.ent3.ru';
