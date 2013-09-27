@@ -2,6 +2,7 @@
 /**
  * @var $page             \View\Search\IndexPage
  * @var $request          \Http\Request
+ * @var $searchQuery      string
  * @var $meanQuery        string
  * @var $forceMean        string
  * @var $productCount     int
@@ -18,18 +19,27 @@
 
 <div class="bCatalog">
 
+    <? if ($selectedCategory): ?>
+        <?= $helper->render('search/__breadcrumbs', [
+            'searchQuery' => $searchQuery,
+        ]) // хлебные крошки ?>
+    <? endif ?>
+
     <?= $helper->render('search/__title', [
         'searchQuery' => $searchQuery,
         'meanQuery'   => $meanQuery,
         'forceMean'   => $forceMean,
         'count'       => $productCount,
+        'category'    => $selectedCategory,
     ]) ?>
 
-    <?= $helper->render('search/__category', [
-        'searchQuery'      => $searchQuery,
-        'categories'       => $categories,
-        'selectedCategory' => $selectedCategory,
-    ]) // категории товаров ?>
+    <? if (!$selectedCategory): ?>
+        <?= $helper->render('search/__category', [
+            'searchQuery'      => $searchQuery,
+            'categories'       => $categories,
+            'selectedCategory' => $selectedCategory,
+        ]) // категории товаров ?>
+    <? endif ?>
 
     <?= $helper->render('product/__listAction', [
         'pager'          => $productPager,
