@@ -61,7 +61,7 @@ return function(
             <? if(!empty($hotlinks)): ?>
                 <ul class="bPopularSection">
                     <? foreach ($hotlinks as $hotlink): ?>
-                        <li class="bPopularSection__eItem"><a href="<?= $hotlink['url'] ?>"><span class="bPopularSection__eText"><?= $hotlink['title'] ?></span></a></li>
+                        <li class="bPopularSection__eItem"><a class="bPopularSection__eText" href="<?= $hotlink['url'] ?>"><?= $hotlink['title'] ?></a></li>
                     <? endforeach ?>
                 </ul>
             <? endif ?>
