@@ -555,6 +555,8 @@
 				$('#'+categoryId).fadeIn(300);
 			});
 
+			$.scrollTo(filterBlock, 500);
+
 			return false;
 		},
 
