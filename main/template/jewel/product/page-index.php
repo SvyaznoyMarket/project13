@@ -425,7 +425,11 @@ $productVideo = reset($productVideos);
               <? } else { ?>
                   <span>Отзывов нет</span>
               <? } ?>
-              <span class="reviewSection__link__write jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
+
+              <? if (\App::config()->product['pushReview']): ?>
+                  <span class="reviewSection__link__write jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
+              <? endif ?>
+
               <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
           </div>
           <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
