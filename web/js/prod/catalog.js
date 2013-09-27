@@ -310,6 +310,8 @@
 				catalog.history.gotoUrl(url);
 			}
 
+			$.scrollTo(filterBlock.find('.bFilterFoot'), 500);
+
 			return false;
 		},
 
