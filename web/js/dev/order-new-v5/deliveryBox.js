@@ -35,7 +35,7 @@
 
             // Уникальность продуктов в этом типе доставки
             //self.isUnique = isUnique || false;
-            self.isUnique = window.OrderModel.orderDictionary.isUniqueDeliveryState();
+            self.isUnique = window.OrderModel.orderDictionary.isUniqueDeliveryState(state);
 			// Токен блока
 			self.token = state+'_'+choosenPointForBox;
             /*if (self.isUnique) {

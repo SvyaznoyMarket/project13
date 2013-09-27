@@ -128,7 +128,7 @@
                     nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
                     for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
                         nowProduct = [ nowProductsToNewBox[j] ];
-                        global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox, isUnique);
+                        global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox);
                     }
 
                 } else {
