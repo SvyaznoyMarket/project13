@@ -51,5 +51,5 @@
         <div class="bSeoText">
             <?= $seoContent ?>
         </div>
-    <? endif; ?>
+    <? endif ?>
 </div>

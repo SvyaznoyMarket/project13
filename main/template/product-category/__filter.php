@@ -64,7 +64,7 @@ return function(
                         <li class="bPopularSection__eItem"><a href="<?= $hotlink['url'] ?>"><span class="bPopularSection__eText"><?= $hotlink['title'] ?></span></a></li>
                     <? endforeach ?>
                 </ul>
-            <? endif; ?>
+            <? endif ?>
             <!-- SEO теги -->
         </div>
 
