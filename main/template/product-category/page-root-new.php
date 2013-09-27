@@ -8,6 +8,8 @@
 
 <h1 class="bTitlePage"><?= $category->getName() ?></h1>
 
+<!-- Баннер --><div class="bBannerBox"></div><!--/ Баннер -->
+
 <? if (count($category->getChild())): ?>
     <ul class="bCatalogRoot clearfix">
         <li class="bCatalogRoot__eItem mBanner2Item" style="width: 0px;"></li>

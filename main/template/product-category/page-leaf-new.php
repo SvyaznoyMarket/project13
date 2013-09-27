@@ -21,6 +21,8 @@
 
 	<h1  class="bTitlePage"><?= $category->getName() ?></h1>
 
+    <!-- Баннер --><div class="bBannerBox"></div><!--/ Баннер -->
+
     <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
 
     <?= $helper->render('product-category/__filter', [

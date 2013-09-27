@@ -12115,6 +12115,10 @@
     font-size: 25px;
     font-family: Tahoma;
   }
+  .bBannerBox {
+    margin: 0 0 20px;
+    text-align: center;
+  }
   .bCatalogRoot {
     margin: 0 -20px 15px 0;
   }
