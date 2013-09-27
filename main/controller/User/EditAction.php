@@ -22,12 +22,12 @@ class EditAction {
         $message = $session->get('flash');
         $session->remove('flash');
 
-        $redirect = (false !== strpos($request->get('redirect_to'), \App::config()->mainHost))
+        $redirect = $request->get('redirect_to')
             ? $request->get('redirect_to')
             : \App::router()->generate('user.edit');
 
         if(!preg_match('/^(\/|http).*/i', $redirect)) {
-            $redirect = 'http://'.$redirect;
+            $redirect = 'http://' . $redirect;
         }
 
         if ($request->isMethod('post')) {
