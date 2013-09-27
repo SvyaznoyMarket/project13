@@ -13095,3 +13095,18 @@
   }
 }
 /*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
+/*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
+@media all {
+  .bSeoText {
+    margin: 20px 0;
+  }
+  .bSeoText__eList {
+    margin: 15px 0;
+  }
+  .bSeoText__eListItem {
+    list-style: disc;
+    margin: 0 0 0px 20px;
+    line-height: 1.3;
+  }
+}
+/*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/

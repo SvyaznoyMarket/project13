@@ -55,6 +55,16 @@ return function(
             <div class="bBtnPick clearfix">
                 <button type="submit" class="bBtnPick__eLink mBtnGrey">Подобрать</button>
             </div>
+
+            <!-- SEO теги -->
+            <ul class="bPopularSection">
+                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Samsung</span></li>
+                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Nokia</span></li>
+                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Roga und Koppentenganger</span></li>
+                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Dr. Buchman</span></li>
+                <li class="bPopularSection__eItem"><span class="bPopularSection__eText"></span></li>
+            </ul>
+            <!-- SEO теги -->
         </div>
 
         <!-- Фильтр по выбранным параметрам -->
@@ -128,18 +138,17 @@ return function(
                     <span class="bRangeSlider__eRub rubl">p</span>
                 </div>
                 <!-- /Фильтр по цене -->
-
-                <!-- Фильтр по популярным позициям -->
-                <ul class="bPopularSection">
-                    <li class="bPopularSection__eItem mTitle">Популярные бренды</li>
-                    <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Samsung</strong></li>
-                    <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Nokia</strong></li>
-                    <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Roga und Koppentenganger</strong></li>
-                    <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Dr. Buchman</strong></li>
-                    <li class="bPopularSection__eItem"><strong class="bPopularSection__eText"></strong></li>
-                </ul>
-                <!-- /Фильтр по популярным позициям -->
             </div>
+            <!-- Фильтр по популярным позициям -->
+            <ul class="bPopularSection">
+                <li class="bPopularSection__eItem mTitle">Популярные бренды</li>
+                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Samsung</strong></li>
+                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Nokia</strong></li>
+                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Roga und Koppentenganger</strong></li>
+                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Dr. Buchman</strong></li>
+                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText"></strong></li>
+            </ul>
+            <!-- /Фильтр по популярным позициям -->
         </div>
         <!-- Фильтр товаров -->
     <? endif ?>
