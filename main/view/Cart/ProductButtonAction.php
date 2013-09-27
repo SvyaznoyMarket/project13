@@ -30,7 +30,7 @@ class ProductButtonAction {
         if (!$product->getIsBuyable()) {
             $data['disabled'] = true;
             $data['url'] = '#';
-            $data['value'] = $product->isInShopShowroomOnly() ? 'Витринный товар' : 'Нет в наличии';
+            $data['value'] = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет в наличии';
         } else {
             $urlParams = [
                 'productId' => $product->getId(),

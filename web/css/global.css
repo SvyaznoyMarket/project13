@@ -12706,8 +12706,11 @@
   .bFilterFoot__eInner {
     padding: 10px 10px 0;
   }
+  .bFilterFoot__eInner:last-child {
+    padding-bottom: 10px;
+  }
   .bFilterCheckedParams {
-    margin: 0 0 10px;
+    margin: 0;
   }
   .bFilterCheckedParams__eItem {
     float: left;
@@ -12765,6 +12768,7 @@
   .bRangeSlider {
     display: inline-block;
     width: 550px;
+    height: 29px;
     margin: 3px 0 0 25px;
     *display: inline;
     zoom: 1;
