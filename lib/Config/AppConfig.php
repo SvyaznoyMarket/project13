@@ -258,6 +258,7 @@ class AppConfig {
         'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
+        'pushReview'             => null, // возможность добавлять отзывы
         'lowerPriceNotification' => null,
         'furnitureConstructor'   => null, // конструктор шкафов-купе
         'newList'                => null, // новый дизайн листингов

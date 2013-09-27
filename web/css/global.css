@@ -12115,6 +12115,10 @@
     font-size: 25px;
     font-family: Tahoma;
   }
+  .bBannerBox {
+    margin: 0 0 20px;
+    text-align: center;
+  }
   .bCatalogRoot {
     margin: 0 -20px 15px 0;
   }
@@ -12582,6 +12586,9 @@
   .bPopularSection__eText {
     border-bottom: 1px dotted;
   }
+  .bPopularSection__eText:hover {
+    text-decoration: none;
+  }
   .bFilterCont {
     position: relative;
     background: #f6f6f6;
@@ -12704,14 +12711,18 @@
     background-position: 5px 7px;
   }
   .bFilterFoot__eInner {
-    padding: 10px 10px 0;
+    padding: 5px 10px 0;
+  }
+  .bFilterFoot__eInner:last-child {
+    padding-bottom: 10px;
   }
   .bFilterCheckedParams {
-    margin: 0 0 10px;
+    margin: 0;
   }
   .bFilterCheckedParams__eItem {
     float: left;
     margin: 0 10px 0 0;
+    margin-top: 5px;
   }
   .bFilterCheckedParams__eItem.mTitle {
     color: #515151;
@@ -12746,7 +12757,7 @@
   }
   .bFilterCheckedParams .mClearAll {
     float: right;
-    margin: 1px 0 0;
+    margin: 6px 0 0;
     border: none;
     background: none;
   }
@@ -12765,6 +12776,7 @@
   .bRangeSlider {
     display: inline-block;
     width: 550px;
+    height: 29px;
     margin: 3px 0 0 25px;
     *display: inline;
     zoom: 1;

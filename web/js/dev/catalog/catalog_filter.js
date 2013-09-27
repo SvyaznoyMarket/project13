@@ -277,6 +277,8 @@
 				catalog.history.gotoUrl(url);
 			}
 
+			$.scrollTo(filterBlock.find('.bFilterFoot'), 500);
+
 			return false;
 		},
 
@@ -519,6 +521,8 @@
 			filterCategoryBlocks.promise().done(function() {
 				$('#'+categoryId).fadeIn(300);
 			});
+
+			$.scrollTo(filterBlock, 500);
 
 			return false;
 		},
