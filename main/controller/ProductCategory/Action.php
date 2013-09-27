@@ -211,8 +211,11 @@ class Action {
 
         // TODO: запрашиваем меню
 
+        /** @var $category \Model\Product\Category\Entity */
+        $category = null;
+
         $shopScriptSeo = [];
-        if(\App::config()->shopScript['enabled']) {
+        if (\App::config()->shopScript['enabled']) {
             $shopScript = \App::shopScriptClient();
             $shopScript->addQuery('category/get-seo', [
                 'slug' => $categoryToken,
@@ -233,21 +236,26 @@ class Action {
                 }
                 return new \Http\RedirectResponse($redirect);
             }
-        }
 
-        if (empty($shopScriptSeo['ui'])) {
-            throw new \Exception\NotFoundException(sprintf('ui для категории товара @%s не найден', $categoryToken));
-        }
-
-        // запрашиваем категорию по ui
-        /** @var $category \Model\Product\Category\Entity */
-        $category = null;
-        \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
-            $data = reset($data);
-            if ((bool)$data) {
-                $category = new \Model\Product\Category\Entity($data);
+            if (empty($shopScriptSeo['ui'])) {
+                throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
             }
-        });
+
+            // запрашиваем категорию по ui
+            \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $category = new \Model\Product\Category\Entity($data);
+                }
+            });
+        } else {
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $category = new \Model\Product\Category\Entity($data);
+                }
+            });
+        }
 
         // запрашиваем бренд по токену
         /** @var $brand \Model\Brand\Entity */
