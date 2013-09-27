@@ -1,7 +1,9 @@
 <!-- Списоки выбранных параметров -->
 {{#filters}}
+<div class="bFilterFoot__eInner">
     <ul class="bFilterCheckedParams clearfix">
         <li class="bFilterCheckedParams__eItem mTitle">{{name}}</li>
+
         {{#links}}
             {{^last}}
                 <li class="bFilterCheckedParams__eItem mParams">
@@ -15,5 +17,6 @@
             {{/last}}
         {{/links}}
     </ul>
+</div>
 {{/filters}}
 <!-- /Списоки выбранных параметров -->

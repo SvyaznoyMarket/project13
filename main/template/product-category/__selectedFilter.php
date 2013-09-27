@@ -7,13 +7,11 @@ return function(
 ) {
 ?>
     <div class="bFilterFoot">
-        <div class="bFilterFoot__eInner">
-            <?= $helper->renderWithMustache('product-category/_selectedFilter', (new \View\ProductCategory\SelectedFilterAction())->execute(
-                $helper,
-                $productFilter,
-                $baseUrl
-            )) ?>
-        </div>
+        <?= $helper->renderWithMustache('product-category/_selectedFilter', (new \View\ProductCategory\SelectedFilterAction())->execute(
+            $helper,
+            $productFilter,
+            $baseUrl
+        )) ?>
     </div>
     <script id="tplSelectedFilter" type="text/html" data-partial="<?= $helper->json([]) ?>">
         <?= file_get_contents(\App::config()->templateDir . '/product-category/_selectedFilter.mustache') ?>
