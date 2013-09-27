@@ -58,11 +58,11 @@ return function(
 
             <!-- SEO теги -->
             <ul class="bPopularSection">
-                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Samsung</span></li>
-                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Nokia</span></li>
-                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Roga und Koppentenganger</span></li>
-                <li class="bPopularSection__eItem"><span class="bPopularSection__eText">Dr. Buchman</span></li>
-                <li class="bPopularSection__eItem"><span class="bPopularSection__eText"></span></li>
+                <li class="bPopularSection__eItem"><a class="bPopularSection__eText">Samsung</a></li>
+                <li class="bPopularSection__eItem"><a class="bPopularSection__eText">Nokia</a></li>
+                <li class="bPopularSection__eItem"><a class="bPopularSection__eText">Roga und Koppentenganger</a></li>
+                <li class="bPopularSection__eItem"><a class="bPopularSection__eText">Dr. Buchman</a></li>
+                <li class="bPopularSection__eItem"><a class="bPopularSection__eText"></a></li>
             </ul>
             <!-- SEO теги -->
         </div>

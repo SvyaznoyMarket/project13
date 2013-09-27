@@ -12586,6 +12586,9 @@
   .bPopularSection__eText {
     border-bottom: 1px dotted;
   }
+  .bPopularSection__eText:hover {
+    text-decoration: none;
+  }
   .bFilterCont {
     position: relative;
     background: #f6f6f6;
