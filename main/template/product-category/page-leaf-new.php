@@ -7,6 +7,8 @@
  * @var $productSorting         \Model\Product\Sorting
  * @var $productView            string
  * @var $productVideosByProduct array
+ * @var $hotlinks               array
+ * @var $seoContent             string
  */
 ?>
 
@@ -27,6 +29,7 @@
         'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
         'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
         'productFilter' => $productFilter,
+        'hotlinks'      => $hotlinks,
     ]) // фильтры ?>
 
     <?= $helper->render('product/__listAction', [
@@ -44,17 +47,9 @@
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
 
-    <div class="bSeoText">
-        <p class="bSeoText__eText">Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дубликации "Здесь ваш текст.. Здесь ваш текст.. </p>
-
-        <ul class="bSeoText__eList">
-            <li class="bSeoText__eListItem">Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться</li>
-
-            <li class="bSeoText__eListItem">Здесь ваш текст.." Многие программы электронной вёрстки и редакторы HTML </li>
-
-            <li class="bSeoText__eListItem">За прошедшие годы текст Lorem Ipsum получил много версий.</li>
-        </ul>
-
-        <p class="bSeoText__eText">Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дубликации "Здесь ваш текст.. Здесь ваш текст.. </p>
-    </div>
+    <? if(!empty($seoContent)): ?>
+        <div class="bSeoText">
+            <?= $seoContent ?>
+        </div>
+    <? endif; ?>
 </div>
