@@ -7,6 +7,8 @@ class Client {
     private $config;
     /** @var \Curl\Client */
     private $curl;
+    /** @var array */
+    private $daysNames;
 
     /**
      * @param array $config
@@ -21,6 +23,8 @@ class Client {
         ], $config);
 
         $this->curl = $curl;
+
+        $this->daysNames = \App::config()->daysShortNames;
     }
 
     public function __clone() {
@@ -94,5 +98,62 @@ class Client {
      */
     private function getUrl($action, array $params = []) {
         return $this->config['url'] . $action . '?' . http_build_query($params);
+    }
+
+
+    /**
+     * Преобразовывает строку времени работы постамата в человекочитаемый вид
+     *
+     * @param       string      $workTimesString
+     * @return      string
+     */
+    public function worksTimePrepare($workTimesString)
+    {
+        $workTimes = explode(',', $workTimesString);
+        $ppTimes = $ppDays =[];
+
+        $countTimes = count($workTimes);
+        for ($i = 0; $i < $countTimes; $i++) {
+            $key = array_search($workTimes[$i], $ppTimes);
+            if (false === $key) {
+                $ppTimes[] = $workTimes[$i];
+                $ppDays[] = [ $this->daysNames[$i] ];
+            } else {
+                $ppDays[$key][] = $this->daysNames[$i];
+            }
+        }
+
+
+        if (empty($ppDays) || empty($ppTimes)) {
+
+            // При ошибке вернём почти первоночальное значение
+            return preg_replace('/noday/i', 'выходной', $workTimesString);
+
+        } elseif (7 == count($ppDays[0])) {
+
+            // При ежедневной работе постомата
+            $ret = $ppTimes[0] . ', eжедневно';
+
+        } else {
+
+            // Во всех остальных случаях выведем время работы постамата, разбитое по дням
+            $ret = '';
+            $countTimes = count($ppTimes);
+            for ($i = 0; $i < $countTimes; $i++) {
+                $countDays = count($ppDays[$i]);
+                $ppTimes[$i] = preg_replace('/noday/i', 'выходной', $ppTimes[$i]);
+                if ($countDays > 3) {
+                    // Интервал дней через "-"
+                    $ret .= $ppDays[$i][0] . '-' . $ppDays[$i][$countDays - 1] . ': ' . $ppTimes[$i];
+                } else {
+                    // Перечисление дней через запятую
+                    $ret .= implode(', ', $ppDays[$i]) . ': ' . $ppTimes[$i];
+                }
+                if ($countTimes - $i - 1 > 0) $ret .= '; ' /*. "<br/>" */;
+            }
+
+        }
+
+        return $ret;
     }
 }

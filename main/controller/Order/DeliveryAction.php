@@ -383,7 +383,7 @@ class DeliveryAction {
                     'id'         => (string)$pickpointItem['Id'],
                     'name'       => $pickpointItem['Name'],
                     'address'    => $pickpointItem['Address'],
-                    'regtime'     => preg_replace('/noday/i', 'выходной', $pickpointItem['WorkTime']),
+                    'regtime'     => $ppClient->worksTimePrepare($pickpointItem['WorkTime']),
                     'latitude'   => (float)$pickpointItem['Latitude'],
                     'longitude'  => (float)$pickpointItem['Longitude'],
                     'products'   => $pickpointProductIds,
