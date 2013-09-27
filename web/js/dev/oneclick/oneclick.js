@@ -766,7 +766,8 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 		$("#phonemask").parent().prepend('<span id="phonePH">+7</span>');
 
 		if( typeof( $.mask ) !== 'undefined' ) {
-			$("#phonemask").mask("(999) 999-99-99");
+			$.mask.definitions['n'] = '[0-9]';
+			$("#phonemask").mask("(nnn) nnn-nn-nn");
 
 			if( $("#phonemask")[0].getAttribute('value') ){
 				$("#phonemask").val( $("#phonemask")[0].getAttribute('value') );
@@ -783,7 +784,9 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 				if( $(this).val() === "* ****** ******" ) {
 					$(this).trigger('unmask').val('');
 					$(this).focus( function() {
-						$("#scCard").mask("* ****** ******", { placeholder: "*" } );
+						$("#scCard").mask('2 98nnnn nnnnn', {
+							placeholder: '*'
+						});
 					});
 				}
 			});
