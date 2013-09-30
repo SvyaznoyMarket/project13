@@ -926,14 +926,18 @@
 
             if ( 1 == res.deliveryTypes.length ) {
                 data = res.deliveryTypes[0];
+                console.log('**************************');
                 console.log('Обнаружен только 1 способ доставки: ' + data.name +' — выбираем его.');
-                console.log(data);
+                console.log( data );
+
+                global.OrderModel.statesPriority = data.states;
                 global.OrderModel.deliveryTypesButton = 'method_' + data.id;
                 global.OrderModel.choosenDeliveryTypeId = data.id;
                 global.OrderModel.choosenPoint(data.id);
-                global.OrderModel.statesPriority = data.states;
-                console.log('Прячем кнопки выбора способа доставки, ибо выбор предопределён.');
-                $('div.mOrderMethod').hide();
+
+                //var ttt =  global.OrderModel.orderDictionary.getFirstPointByState( data.states[0] );
+                //console.log( ttt );
+                //console.log('<<<');
                 separateOrder( global.OrderModel.statesPriority );
             }
 		},

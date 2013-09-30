@@ -13,7 +13,7 @@
     <div class="bOrderView" data-bind="visible: $root.showForm()" style="display:none">
         <h2 class="bOrderView__eTitle">Информация о заказе</h2>
 
-        <div class="bBuyingLine mOrderMethod">
+        <div class="bBuyingLine mOrderMethod" data-bind="visible: OrderModel.deliveryTypes().length > 1">
             <div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
             <div class="bBuyingLine__eRight">
                 <!-- ko if: dlvrCourierEnable() -->

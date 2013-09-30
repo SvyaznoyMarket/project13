@@ -827,9 +827,10 @@
 		 * @return	{Object}				Данные о точке доставки
 		 */
 		OrderDictionary.prototype.getFirstPointByState = function( state ) {
-			var points = this.getAllPointsByState(state);
-
-			return window.ENTER.utils.cloneObject(points[0]);
+			var points = this.getAllPointsByState(state),
+                ret = 0;
+            if (points[0]) ret = window.ENTER.utils.cloneObject(points[0]);
+            return ret;
 		};
 
 		/**
@@ -838,9 +839,9 @@
 		 * @param	{String}	state	Метод доставки
 		 */
 		OrderDictionary.prototype.getAllPointsByState = function( state ) {
-			var pointName = this.pointsByDelivery[state];
-
-			return this.orderData[pointName];
+			var pointName = this.pointsByDelivery[state],
+                ret = this.orderData[pointName] || 0;
+			return ret;
 		};
 
 
@@ -2452,14 +2453,18 @@
 
             if ( 1 == res.deliveryTypes.length ) {
                 data = res.deliveryTypes[0];
+                console.log('**************************');
                 console.log('Обнаружен только 1 способ доставки: ' + data.name +' — выбираем его.');
-                console.log(data);
+                console.log( data );
+
+                global.OrderModel.statesPriority = data.states;
                 global.OrderModel.deliveryTypesButton = 'method_' + data.id;
                 global.OrderModel.choosenDeliveryTypeId = data.id;
                 global.OrderModel.choosenPoint(data.id);
-                global.OrderModel.statesPriority = data.states;
-                console.log('Прячем кнопки выбора способа доставки, ибо выбор предопределён.');
-                $('div.mOrderMethod').hide();
+
+                //var ttt =  global.OrderModel.orderDictionary.getFirstPointByState( data.states[0] );
+                //console.log( ttt );
+                //console.log('<<<');
                 separateOrder( global.OrderModel.statesPriority );
             }
 		},
