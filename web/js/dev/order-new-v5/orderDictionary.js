@@ -120,9 +120,10 @@
 		 * @return	{Object}				Данные о точке доставки
 		 */
 		OrderDictionary.prototype.getFirstPointByState = function( state ) {
-			var points = this.getAllPointsByState(state),
-                ret = 0;
-            if (points[0]) ret = window.ENTER.utils.cloneObject(points[0]);
+			var points = this.getAllPointsByState(state), ret = false;
+            if ( points[0] ) {
+                ret = window.ENTER.utils.cloneObject(points[0]);
+            }
             return ret;
 		};
 
@@ -133,7 +134,7 @@
 		 */
 		OrderDictionary.prototype.getAllPointsByState = function( state ) {
 			var pointName = this.pointsByDelivery[state],
-                ret = this.orderData[pointName] || 0;
+                ret = this.orderData[pointName] || false;
 			return ret;
 		};
 

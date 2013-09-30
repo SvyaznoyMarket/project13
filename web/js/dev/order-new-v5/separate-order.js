@@ -879,7 +879,7 @@
 		 * @param	{Object}	res		Данные о заказе
 		 */
 		renderOrderData = function renderOrderData( res ) {
-            var data;
+            var data, firstPoint;
 			utils.blockScreen.unblock();
 
 			if ( !res.success ) {
@@ -924,20 +924,18 @@
 			}
 
 
-            if ( 1 == res.deliveryTypes.length ) {
+            if ( 1 === res.deliveryTypes.length ) {
                 data = res.deliveryTypes[0];
-                console.log('**************************');
+                //console.log('**************************');
                 console.log('Обнаружен только 1 способ доставки: ' + data.name +' — выбираем его.');
-                console.log( data );
-
+                //console.log( data );
                 global.OrderModel.statesPriority = data.states;
                 global.OrderModel.deliveryTypesButton = 'method_' + data.id;
                 global.OrderModel.choosenDeliveryTypeId = data.id;
-                global.OrderModel.choosenPoint(data.id);
-
-                //var ttt =  global.OrderModel.orderDictionary.getFirstPointByState( data.states[0] );
-                //console.log( ttt );
-                //console.log('<<<');
+                firstPoint =  global.OrderModel.orderDictionary.getFirstPointByState( data.states[0] ) || data.id;
+                console.log('Выбран первый пункт* доставки:');
+                console.log( firstPoint );
+                global.OrderModel.choosenPoint( firstPoint );
                 separateOrder( global.OrderModel.statesPriority );
             }
 		},
