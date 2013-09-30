@@ -242,6 +242,21 @@
 
 				font-size: 13px;
 				line-height: 25px;
+
+				&.mBought {
+		            .box-shadow(none);
+		            cursor: default;
+
+		            color: @typGray;
+		            border: 1px solid @typLightGray;
+		            background: @typLightGray;
+		            
+		            &:hover {
+		                color: @typGray;
+		                border: 1px solid @typLightGray;
+		                background: @typLightGray;
+		            }
+		        }
 			}
 		}
 
