@@ -8,7 +8,7 @@
 
 <h1 class="bTitlePage"><?= $category->getName() ?></h1>
 
-<!-- Баннер --><div id="adfox683" class="bBannerBox"></div><!--/ Баннер -->
+<!-- Баннер --><div id="adfox683" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
 
 <? if (count($category->getChild())): ?>
     <ul class="bCatalogRoot clearfix">
