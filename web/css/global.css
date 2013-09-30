@@ -12248,16 +12248,13 @@
     height: auto;
     min-height: 30px;
   }
-  .bListing .bListingItem:hover .bSimplyDesc {
-    background: none;
-  }
   .bListing .bSimplyDesc {
     position: absolute;
     z-index: 2;
     top: 10px;
     left: 10px;
     width: 200px;
-    padding: 0 0 5px;
+    padding: 0;
     background: url('/css/bCatalog/img/bSimplyDesc.png') repeat 0 0;
   }
   .bListing .bSimplyDesc__eText {
