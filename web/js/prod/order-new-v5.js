@@ -740,8 +740,6 @@
 			this.deliveryStates = this.orderData.deliveryStates;
 			this.pointsByDelivery = this.orderData.pointsByDelivery;
 			this.products = this.orderData.products;
-
-            console.log('Dictionary CONSTRUCT');
 		}
 
 		/**
@@ -2456,15 +2454,13 @@
 
             if ( 1 === res.deliveryTypes.length ) {
                 data = res.deliveryTypes[0];
-                //console.log('**************************');
+                firstPoint =  global.OrderModel.orderDictionary.getFirstPointByState( data.states[0] ) || data.id;
                 console.log('Обнаружен только 1 способ доставки: ' + data.name +' — выбираем его.');
-                //console.log( data );
+                console.log('Выбран первый пункт* доставки:');
+                console.log( firstPoint );
                 global.OrderModel.statesPriority = data.states;
                 global.OrderModel.deliveryTypesButton = 'method_' + data.id;
                 global.OrderModel.choosenDeliveryTypeId = data.id;
-                firstPoint =  global.OrderModel.orderDictionary.getFirstPointByState( data.states[0] ) || data.id;
-                console.log('Выбран первый пункт* доставки:');
-                console.log( firstPoint );
                 global.OrderModel.choosenPoint( firstPoint );
                 separateOrder( global.OrderModel.statesPriority );
             }
