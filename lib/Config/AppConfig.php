@@ -456,6 +456,9 @@ class AppConfig {
         'showListingSearchBar' => null,
     ];
 
+    /** @var array */
+    public $daysShortNames = [];
+
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();
         $this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
