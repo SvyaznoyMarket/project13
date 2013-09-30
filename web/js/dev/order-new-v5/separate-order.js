@@ -583,13 +583,20 @@
 				checkedInputId = event.target.htmlFor;
 			// end of vars
 
+            console.log('*** antitest');
+
+
 			if ( $('#'+checkedInputId).attr('checked') ) {
 				return false;
 			}
 
 			global.OrderModel.deliveryTypesButton = checkedInputId;
-			global.OrderModel.tmpStatesPriority = data.states;
+			global.OrderModel.tmpStastsPriority = data.states;
 			global.OrderModel.choosenDeliveryTypeId = data.id;
+
+            console.log(data);
+            console.log(event);
+            console.log(checkedInputId);
 
 			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
 			if ( global.OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
@@ -879,8 +886,9 @@
 		 * @param	{Object}	res		Данные о заказе
 		 */
 		renderOrderData = function renderOrderData( res ) {
-			utils.blockScreen.unblock();
-			
+            var data;
+            utils.blockScreen.unblock();
+
 			if ( !res.success ) {
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);
@@ -921,6 +929,20 @@
 
 				separateOrder( global.OrderModel.statesPriority );
 			}
+
+
+            if ( 1 == res.deliveryTypes.length ) {
+                data = res.deliveryTypes[0];
+                console.log('Обнаружен только 1 способ доставки: ' + data.name +' — выбираем его.');
+                console.log(data);
+                global.OrderModel.deliveryTypesButton = 'method_' + data.id;
+                global.OrderModel.choosenDeliveryTypeId = data.id;
+                global.OrderModel.choosenPoint(data.id);
+                global.OrderModel.statesPriority = data.states;
+                console.log('Прячем кнопки выбора способа доставки, ибо выбор предопределён.');
+                $('div.mOrderMethod').hide();
+                separateOrder( global.OrderModel.statesPriority );
+            }
 		},
 
 		selectPointOnBaloon = function selectPointOnBaloon( event ) {
