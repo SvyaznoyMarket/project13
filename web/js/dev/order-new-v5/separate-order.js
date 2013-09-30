@@ -879,8 +879,9 @@
 		 * @param	{Object}	res		Данные о заказе
 		 */
 		renderOrderData = function renderOrderData( res ) {
+            var data;
 			utils.blockScreen.unblock();
-			
+
 			if ( !res.success ) {
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);
@@ -921,6 +922,20 @@
 
 				separateOrder( global.OrderModel.statesPriority );
 			}
+
+
+            if ( 1 == res.deliveryTypes.length ) {
+                data = res.deliveryTypes[0];
+                console.log('Обнаружен только 1 способ доставки: ' + data.name +' — выбираем его.');
+                console.log(data);
+                global.OrderModel.deliveryTypesButton = 'method_' + data.id;
+                global.OrderModel.choosenDeliveryTypeId = data.id;
+                global.OrderModel.choosenPoint(data.id);
+                global.OrderModel.statesPriority = data.states;
+                console.log('Прячем кнопки выбора способа доставки, ибо выбор предопределён.');
+                $('div.mOrderMethod').hide();
+                separateOrder( global.OrderModel.statesPriority );
+            }
 		},
 
 		selectPointOnBaloon = function selectPointOnBaloon( event ) {
