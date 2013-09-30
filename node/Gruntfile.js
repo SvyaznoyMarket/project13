@@ -21,6 +21,7 @@ module.exports = function(grunt) {
 		'jquery.put_cursor_at_end.js',
 		'goodsCounter.js',
 		'jquery.elevatezoom.js',
+		'jquery.animate-shadow.js',
 		// 'customRadio.js',
 		'customDropDown.js',
 		'goodsSlider.js',

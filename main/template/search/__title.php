@@ -5,7 +5,8 @@ return function(
     $searchQuery,
     $meanQuery,
     $forceMean,
-    $count
+    $count,
+    \Model\Product\Category\BasicEntity $category = null
 ) { ?>
 
     <? if ($count) { // если товары найдены ?>
@@ -13,7 +14,10 @@ return function(
         <? if (!$forceMean) { // если принудительный поиск не был использован ?>
         <h1 class="bTitlePage">
             Ура! Нашли <span class="orange">&quot;<?= $helper->escape($searchQuery) ?>&quot;</span>
-            <?= $count . ' ' . $helper->numberChoice($count, ['товар', 'товара', 'товаров']) ?>
+            <? if ($category): ?>
+                в категории "<?= $category->getName() ?>"
+            <? endif ?>
+            <!--<?//= $count . ' ' . $helper->numberChoice($count, ['товар', 'товара', 'товаров']) ?>-->
         </h1>
 
         <? } else { // ...иначе, если принудительный поиск использован ?>
