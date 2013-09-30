@@ -583,20 +583,13 @@
 				checkedInputId = event.target.htmlFor;
 			// end of vars
 
-            console.log('*** antitest');
-
-
 			if ( $('#'+checkedInputId).attr('checked') ) {
 				return false;
 			}
 
 			global.OrderModel.deliveryTypesButton = checkedInputId;
-			global.OrderModel.tmpStastsPriority = data.states;
+			global.OrderModel.tmpStatesPriority = data.states;
 			global.OrderModel.choosenDeliveryTypeId = data.id;
-
-            console.log(data);
-            console.log(event);
-            console.log(checkedInputId);
 
 			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
 			if ( global.OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
@@ -887,7 +880,7 @@
 		 */
 		renderOrderData = function renderOrderData( res ) {
             var data;
-            utils.blockScreen.unblock();
+			utils.blockScreen.unblock();
 
 			if ( !res.success ) {
 				console.warn('Данные содержат ошибки');
