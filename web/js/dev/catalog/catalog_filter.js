@@ -240,6 +240,8 @@
 			var formData = filterBlock.serializeArray(),
 				url = filterBlock.attr('action'),
 				slidersInputState = catalog.filter.getSlidersInputState(),
+				activeSort = viewParamPanel.find('.mSortItem.mActive').find('.jsSorting'),
+				sortUrl = activeSort.data('sort'),
 				formSerizalizeData;
 			// end of vars
 
@@ -256,6 +258,8 @@
 			if ( formSerizalizeData.length !== 0 ) {
 				url += '?' + formSerizalizeData;
 			}
+
+			url = url.addParameterToUrl('sort', sortUrl);
 
 			return url;
 		},
