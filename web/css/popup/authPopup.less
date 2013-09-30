@@ -1,31 +1,31 @@
 #auth-block{
   width: 694px;
   .registerbox .loginForm{
-    border-right: 1px solid @typLightGray;
     margin-right: -2px;
     padding-right: 20px;
+    border-right: 1px solid @typLightGray;
   }
 }
 #register-form .bSubscibe{
 	display: none;
 }
 .bSubscibe{
-	font-family: Tahoma,sans-serif;
-	font-size: 12px;
 	vertical-align: top;
+	font-size: 12px;
+	font-family: Tahoma,sans-serif;
 	b{
-		background: url("@{base-url}/common/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
-		cursor: pointer;
-		float: left;
 		display: block;
-		height: 24px;
+		float: left;
 		margin:3px 10px 0 0;
 		width: 24px;
+		height: 24px;
+		background: url("@{base-url}/common/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
+		cursor: pointer;
 	}
 	.subscibe{
-		opacity: 0;
 		position: absolute;
 		z-index: -1;
+		opacity: 0;
 	}
 	&.checked{
 		b{
@@ -34,20 +34,124 @@
 	}
 }
 .registerAnotherWayBtn{
-	color: @typGray;
-	border-bottom: 1px dotted;
 	margin-right: 20px;
+	border-bottom: 1px dotted;
+	color: @typGray;
 	&:hover{
 		text-decoration: none;
 	}
 }
 .registerPhonePH{
-	display: none;
-	line-height: 24px;
-	margin: 0 10px;
 	position: absolute;
+	display: none;
+	margin: 0 10px;
+	line-height: 24px;
 }
 .registerPhone{
 	padding-left: 9%;
 	width: 89%;
+}
+
+
+.bPopupTitle {
+	margin: 0 0 15px;
+	text-transform: uppercase;
+	font-size: 30px;
+	font-family: "Enter";
+}
+
+.bFormLogin {
+
+	&__ePlace {
+		display: inline-block;
+		margin-right: 30px;
+		padding: 0;
+		width: 327px;
+		border: none;
+		vertical-align: top;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	&__ePlaceTitle {
+		margin: 0 0 10px;
+		font-size: 16px;
+	}
+
+	&__eLabel {
+		display: inline-block;
+		margin: 0 0 5px;
+	}
+
+	&__eInput {
+		display: block;
+		margin: 0 0 15px;
+		padding: 0px 5px;
+		width: 315px;
+		height: 28px;
+		line-height: 28px;
+	}
+
+	&__eLinkHint {
+		float: right;
+
+		&.mForgotPassword {
+			color: #ffa901;
+			text-decoration: underline;
+		}
+
+		&.eMail {
+			color: #a6a6a6;
+			border-bottom: 1px dotted;
+			font-size: 10px;
+		}
+	}
+
+	&__eBtnSubmit {
+		.rounded(5px);
+		display: inline-block;
+		float: right;
+		padding: 0px 15px 3px;
+		height: 30px;
+		border: none;
+		font-size: 14px;
+		line-height: 30px;
+		cursor: pointer;
+		border: 1px solid #f28900;
+
+		&.mDisabled {
+			border-color: #e4e4e4;
+		}
+	}
+
+	.bInputList {
+		color: #ffa901;
+		float: left;
+		font-size: 12px;
+
+		.mCustomLabelBig {
+			line-height: 12px;
+		}
+	}
+
+	.bRulesText {
+		clear: both;
+		margin: 10px 0;
+		float: left;
+
+		a {
+			text-decoration: underline;
+		}
+	}
+
+	.bAuthCompany {
+		clear: both;
+
+		a {
+			color: #ffa901;
+			text-decoration: underline;
+		}
+	}
 }
