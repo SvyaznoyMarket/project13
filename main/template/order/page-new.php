@@ -122,11 +122,11 @@ foreach (array_reverse($productsById) as $product) {
 					</div>
 
 					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length">
-						<span class="bSelectWrap_eText" data-bind="text: 'c '+ box.choosenInterval().start + ' до ' + box.choosenInterval().end"></span>
+						<span class="bSelectWrap_eText" data-bind="text: 'до ' + box.choosenInterval().end"></span>
 						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
 															value: box.choosenInterval,
 															optionsText: function(item) {
-																return 'c '+ item.start + ' до ' + item.end;
+																return 'до ' + item.end;
 															}">
 						</select>
 					</div>

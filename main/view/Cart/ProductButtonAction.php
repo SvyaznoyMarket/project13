@@ -19,6 +19,10 @@ class ProductButtonAction {
             'url'        => null,
             'value'      => null,
             'inShopOnly' => null,
+            'data'       => [
+                'group' => $product->getId(),
+            ],
+            'class'      => \View\Id::cartButtonForProduct($product->getId()),
         ];
 
 
