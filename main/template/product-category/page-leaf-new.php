@@ -24,7 +24,7 @@
 
 	<h1  class="bTitlePage"><?= $title ?></h1>
 
-    <!-- Баннер --><div class="bBannerBox"></div><!--/ Баннер -->
+    <!-- Баннер --><div id="adfox683sub" class="bBannerBox"></div><!--/ Баннер -->
 
     <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
 
