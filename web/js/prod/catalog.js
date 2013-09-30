@@ -56,7 +56,9 @@
 		filterMenuItem = filterBlock.find('.bFilterParams__eItem'),
 		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem'),
 
-		viewParamPanel = $('.bSortingLine');
+		viewParamPanel = $('.bSortingLine'),
+
+		tID;
 	// end of vars
 	
 	catalog.filter = {
@@ -299,6 +301,10 @@
 			console.log(e);
 			console.log(needUpdate);
 
+			var sendUpdate = function sendUpdate() {
+				filterBlock.trigger('submit');
+			}
+
 			if ( typeof e === 'object' && e.isTrigger && !needUpdate ) {
 				console.warn('it\'s trigger event!');
 
@@ -307,8 +313,9 @@
 
 			console.info('need update from server...');
 
-			filterBlock.trigger('submit');
-			catalog.filter.sendFilter( true );
+			clearTimeout(tID);
+
+			tID = setTimeout(sendUpdate, 300);
 		},
 
 		/**
