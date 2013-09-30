@@ -4,6 +4,8 @@ namespace View\ProductCategory;
 
 class LeafPage extends Layout {
     public function prepare() {
+        parent::prepare();
+
         if (\App::config()->product['newList']) {
             $this->layout = 'layout-oneColumn';
         }

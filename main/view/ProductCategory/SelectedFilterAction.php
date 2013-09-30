@@ -84,9 +84,9 @@ class SelectedFilterAction {
                 case \Model\Product\Filter\Entity::TYPE_BOOLEAN:
                     if (!is_array($value) || count($value) == 0) continue;
                     foreach ($value as $v) {
-                        $paramName = \View\Name::productCategoryFilter($filter);
+                        $paramName = \View\Name::productCategoryFilter($filter, $v);
                         $links[] = [
-                            'name' => ($v == 1) ? 'да' : 'нет',
+                            'name' => (1 == $v) ? 'да' : 'нет',
                             'url'  => $helper->replacedUrl([
                                 $paramName => null,
                                 'ajax'    => null

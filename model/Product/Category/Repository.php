@@ -511,7 +511,7 @@ class Repository {
 
         // AB-test по сортировкам SITE-1991
         $abTestJson = \App::abTestJson($catalogJson);
-        if($abTestJson->getCase()->getKey() != 'default') {
+        if ($abTestJson && $abTestJson->getCase()->getKey() != 'default') {
             return $abTestJson->getTestCatalogJson();
         }
 

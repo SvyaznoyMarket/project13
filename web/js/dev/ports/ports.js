@@ -434,7 +434,7 @@ window.ANALYTICS = {
     },
 
     AdmitadJS : function() {
-        window._ad = window._ad || [];
+        window._retag = window._retag || [];
         var ad_data = $('#AdmitadJS').data('value');
 
         if (ad_data) {
@@ -466,7 +466,7 @@ window.ANALYTICS = {
             }
 
             if (ad_data.pushData) {
-                window._ad.push(ad_data.pushData);
+                window._retag.push(ad_data.pushData);
             }
         }
 
