@@ -315,6 +315,12 @@
 				return;
 			}
 
+			if ( !catalog.enableHistoryAPI ) {
+				console.warn('history api off');
+
+				return;
+			}
+
 			console.info('need update from server...');
 
 			clearTimeout(tID);
@@ -349,8 +355,8 @@
 					}, 300, 'swing');
 				});
 			}
-			else if ( typeof e === 'object' ) {
-				console.warn('it\'s true event');
+			else if ( typeof e === 'object' && catalog.enableHistoryAPI ) {
+				console.warn('it\'s true event and HistoryAPI enable');
 
 				$.scrollTo(filterBlock.find('.bFilterFoot'), 500);
 			}
