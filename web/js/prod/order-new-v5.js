@@ -1449,7 +1449,7 @@
 	// end of functions
 	
 	$.mask.definitions['n'] = '[0-9]';
-	sclub.mask('2 98nnnn nnnnn', {
+	sclub.mask('2 98nnnn nnnnnn', {
 		placeholder: '*'
 	});
 	qiwiPhone.mask('(nnn) nnn-nn-nn');
