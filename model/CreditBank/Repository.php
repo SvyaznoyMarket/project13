@@ -22,7 +22,11 @@ class Repository
     public static function getCreditTypeByCategoryToken($categoryToken) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        return in_array($categoryToken, ['electronics', 'sport', 'appliances', 'do_it_yourself', 'furniture', 'household'])
+        return
+            in_array(
+                $categoryToken,
+                ['electronics', 'sport', 'appliances', 'do_it_yourself', 'furniture', 'household', 'jewel']
+            )
             ? $categoryToken
             : 'another';
     }
