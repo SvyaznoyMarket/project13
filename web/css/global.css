@@ -12147,6 +12147,18 @@
     background: none;
     height: 280px;
   }
+  .bCatalogRoot__eItem.mBannerItem {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    padding: 0;
+    width: 0;
+    border: none;
+    background: none;
+    height: 270px;
+    margin-right: 0;
+    padding-top: 10px;
+  }
   .bCatalogRoot__eImgLink {
     display: inline-block;
     margin: 0 auto 10px;
@@ -12217,6 +12229,12 @@
   .bListing .bListingItem.mBanner2Item {
     width: 0;
     margin-right: 0;
+  }
+  .bListing .bListingItem.mBannerItem {
+    margin-right: 0;
+    padding-top: 30px;
+    height: 265px;
+    padding-left: 10px;
   }
   .bListing .bListingItem__eInner {
     position: relative;

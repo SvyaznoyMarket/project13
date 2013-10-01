@@ -12,8 +12,8 @@
 
 <? if (count($category->getChild())): ?>
     <ul class="bCatalogRoot clearfix">
-        <li class="bCatalogRoot__eItem mBanner2Item" style="width: 0px;"></li>
-        <!-- место для баннеры 460х260, при этом родительский элемент имеет ширину 480 -->
+        <li class="bCatalogRoot__eItem mBannerItem" style="width: 0px;"><div class="adfoxWrapper" id="adfox215"></div></li>
+        <!-- место для баннеры 460х260, при этом родительский элемент имеет ширину 240 -->
         <? $j = 0; ?>
         <? foreach ($category->getChild() as $child): ?>
             <?php
