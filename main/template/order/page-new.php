@@ -51,7 +51,7 @@ foreach (array_reverse($productsById) as $product) {
 	<div class="bBuyingLine"><a class="bBackCart" href="<?= $backLink ?>">&lt; Вернуться к покупкам</a></div>
 
 	 <!-- Order Method -->
-	<div class="bBuyingLine clearfix mOrderMethod">
+	<div class="bBuyingLine clearfix mOrderMethod" data-bind="visible: deliveryTypes().length > 1">
 		<h2 class="bBuyingSteps__eTitle">Информация о заказе</h2>
 
 		<div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
