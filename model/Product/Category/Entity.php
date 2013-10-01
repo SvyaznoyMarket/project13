@@ -8,8 +8,6 @@ class Entity extends BasicEntity {
     /** @var bool */
     protected $isFurniture;
     /** @var string */
-    protected $image;
-    /** @var string */
     protected $rootImage;
     /** @var bool */
     protected $hasLine;
@@ -106,20 +104,6 @@ class Entity extends BasicEntity {
      */
     public function getHasLine() {
         return $this->hasLine;
-    }
-
-    /**
-     * @param string $image
-     */
-    public function setImage($image) {
-        $this->image = (string)$image;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImage() {
-        return $this->image;
     }
 
     /**
@@ -298,16 +282,6 @@ class Entity extends BasicEntity {
      */
     public function getHasChild() {
         return $this->hasChild;
-    }
-
-    public function getImageUrl($size = 0) {
-        if ($this->image) {
-            $urls = \App::config()->productCategory['url'];
-
-            return $this->getHost() . $urls[$size] . $this->image;
-        } else {
-            return null;
-        }
     }
 
     /**

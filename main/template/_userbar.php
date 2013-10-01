@@ -28,6 +28,31 @@
     </div>
 </div>
 
+<!-- новый юзер бар -->
+
+<!--div class="bFixedTopBar">
+    <div class="bFixedTopBar__eTop"><a class="bFixedTopBar__eTopLink" href=""><span class="bFixedTopBar__eTopText">Бренды и параметры</span></a></div>
+
+    <div class="bFixedTopBar__eCrumbs">
+        <a class="bFixedTopBar__eCrumbsCatImg" href=""><img class="bCatImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></a>
+
+        <ul class="bFixedTopBar__eCrumbsList">
+            <li class="bFixedTopBar__eCrumbsListItem"><a href="">Товары на каждый день</a></li>
+            <li class="bFixedTopBar__eCrumbsListItem"><a href="">Товары для дома</a></li>
+            <li class="bFixedTopBar__eCrumbsListItem mLast"><strong>Бытовая химия</strong></li>
+        </ul>
+    </div>
+
+    <div class="bFixedTopBar__eCart">
+        <a class="bFixedTopBar__eCartLink" href="">
+            <span class="bFixedTopBar__eCartTitle">Корзина</span> <strong class="bFixedTopBar__eCartQuan">5</strong>
+            <span class="bFixedTopBar__eCartPrice">74 987 <span class="rubl">p</span></span>
+        </a>
+    </div>
+</div-->
+
+<!--/ новый юзер бар -->
+
 <script type="text/html" id="blackbox_basketshow_tmpl">
     <div class="bBlackBox__eFlyboxInner">
         <div class="font16 pb20">Только что был добавлен в корзину:</div>

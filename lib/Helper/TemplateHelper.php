@@ -13,6 +13,19 @@ class TemplateHelper {
     }
 
     /**
+     * @param string $template
+     * @param array $params
+     * @return string
+     */
+    public function renderWithMustache($template, $params = []) {
+        \Debug\Timer::start('mustacheRenderer.get');
+        $return = \App::mustache()->render($template, $params);
+        \Debug\Timer::stop('mustacheRenderer.get');
+
+        return $return;
+    }
+
+    /**
      * @param string $routeName
      * @param array $params
      * @param bool $absolute
@@ -20,6 +33,60 @@ class TemplateHelper {
      */
     public function url($routeName, array $params = [], $absolute = false) {
         return \App::router()->generate($routeName, $params, $absolute);
+    }
+
+    /**
+     * @param array $replaces
+     * @param array $excluded
+     * @param null $route
+     * @return mixed
+     * @throws \RuntimeException
+     */
+    public function replacedUrl(array $replaces, array $excluded = null, $route = null) {
+        $request = \App::request();
+
+        if (null == $route) {
+            if (!$request->attributes->has('route')) {
+                throw new \RuntimeException('В атрибутах запроса не задан параметр route');
+            }
+
+            $route = $request->attributes->get('route');
+        }
+
+        $excluded = (null == $excluded) ? ['page' => '1'] : $excluded;
+
+        $params = [];
+        foreach (array_diff(array_keys($request->attributes->all()), ['pattern', 'method', 'action', 'route', 'require']) as $k) {
+            $params[$k] = $request->attributes->get($k);
+        }
+        foreach ($request->query->all() as $k => $v) {
+            $params[$k] = $v;
+        }
+
+        foreach ($replaces as $k => $v) {
+            if(preg_match('/([^\[]+)\[([^\[]+)\]/', $k, $matches)) {
+                $mainKey = $matches[1];
+                $subKey = $matches[2];
+
+                if (null === $v) {
+                    if (isset($params[$mainKey][$subKey])) unset($params[$mainKey][$subKey]);
+                    continue;
+                }
+
+                $params[$mainKey][$subKey] = $v;
+            } else {
+                if (null === $v) {
+                    if (isset($params[$k])) unset($params[$k]);
+                    continue;
+                }
+
+                $params[$k] = $v;
+            }
+        }
+
+        $params = array_diff_assoc($params, $excluded);
+
+        return \App::router()->generate($route, $params);
     }
 
     /**
@@ -91,6 +158,19 @@ class TemplateHelper {
     }
 
     /**
+     * @param $value
+     * @return int|string
+     */
+    public function clearZeroValue($value) {
+        $frac = $value - floor($value);
+        if (0 == $frac) {
+            return intval($value);
+        } else {
+            return (float)rtrim($value, '0');
+        }
+    }
+
+    /**
      * @param string $text
      * @param string $cp
      * @return string
@@ -98,5 +178,4 @@ class TemplateHelper {
     public static function mbyte_ucfirst($text, $cp = 'UTF-8') {
       return mb_strtoupper( mb_substr( $text, 0, 1, $cp ), $cp ) . mb_strtolower( mb_substr( $text, 1, mb_strlen( $text, $cp ) - 1, $cp ), $cp );
     }
-
 }

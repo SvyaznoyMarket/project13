@@ -157,10 +157,10 @@ class Action {
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 
-        return new \Http\JsonResponse(array(
+        return new \Http\JsonResponse([
             'success' => true,
-            'data'    => $count,
-        ));
+            'count'   => $count,
+        ]);
     }
 
     /**
@@ -285,7 +285,6 @@ class Action {
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 
-        //$categoryClass = 'jewel';
         if ($categoryClass) {
             $controller = null;
             if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
@@ -357,7 +356,8 @@ class Action {
             &$hotlinks,
             &$seoContent,
             &$catalogJson,
-            &$promoContent
+            &$promoContent,
+            &$shop
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -367,6 +367,7 @@ class Action {
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
+            $page->setGlobalParam('shop', $shop);
             if ( \App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) $page->setGlobalParam('shops', \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()));
         };
 
@@ -388,11 +389,11 @@ class Action {
         }
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
-            $page = new \View\ProductCategory\BranchPage();
+            $page = new \View\ProductCategory\LeafPage();
             $page->setParam('forceSliders', true);
             $setPageParameters($page);
 
-            return $this->branchCategory($category, $productFilter, $page, $request);
+            return $this->leafCategory($category, $productFilter, $page, $request);
         }
         // иначе, если категория самого верхнего уровня
         else if ($category->isRoot()) {
@@ -402,10 +403,10 @@ class Action {
             return $this->rootCategory($category, $productFilter, $page, $request);
         }
 
-        $page = new \View\ProductCategory\BranchPage();
+        $page = new \View\ProductCategory\LeafPage();
         $setPageParameters($page);
 
-        return $this->branchCategory($category, $productFilter, $page, $request);
+        return $this->leafCategory($category, $productFilter, $page, $request);
     }
 
     /**
@@ -638,14 +639,27 @@ class Action {
         }
 
         // ajax
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('product/_list', array(
-                'page'                   => new \View\Layout(),
-                'pager'                  => $productPager,
-                'view'                   => $productView,
-                'productVideosByProduct' => $productVideosByProduct,
-                'isAjax'                 => true,
-            )));
+        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+            return new \Http\JsonResponse([
+                'list'           => (new \View\Product\ListAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productPager,
+                    $productVideosByProduct
+                ),
+                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productFilter,
+                    \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
+                ),
+                'pagination'     => (new \View\PaginationAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productPager
+                ),
+                'sorting'        => (new \View\Product\SortingAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productSorting
+                ),
+            ]);
         }
 
         $page->setParam('productPager', $productPager);
@@ -685,11 +699,12 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      * @param \Model\Product\Category\Entity $category
-     * @param \Model\Brand\Entity|null       $brand
+     * @param \Model\Brand\Entity|null $brand
      * @param \Http\Request $request
+     * @param \Model\Shop\Entity|null $shop
      * @return \Model\Product\Filter
      */
-    protected function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
+    protected function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity &$brand = null, \Http\Request $request, $shop = null) {
         // флаг глобального списка в параметрах запроса
         $isGlobal = self::isGlobal();
         //
@@ -698,8 +713,26 @@ class Action {
         // регион для фильтров
         $region = $isGlobal ? null : \App::user()->getRegion();
 
+        // добывание фильтров из http-запроса
+        $requestData = ('POST'== $request->getMethod()) ? $request->request : $request->query;
+
+        $values = [];
+        foreach ($requestData as $k => $v) {
+            if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
+            $parts = array_pad(explode('-', $k), 3, null);
+
+            if (!isset($values[$parts[1]])) {
+                $values[$parts[1]] = [];
+            }
+            if (('from' == $parts[2]) || ('to' == $parts[2])) {
+                $values[$parts[1]][$parts[2]] = $v;
+            } else {
+                $values[$parts[1]][] = $v;
+            }
+        }
+
         // filter values
-        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        //$values = (array)$request->get(\View\Product\FilterForm::$name, []);
         if ($isGlobal) {
             $values['global'] = 1;
         }
