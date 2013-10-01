@@ -5,13 +5,13 @@ namespace Session;
 class Abtest {
 
     /** @var array */
-    private $config = [];
+    protected $config = [];
 
     /** @var \Model\Abtest\Entity[] */
-    private $option = [];
+    protected $option = [];
 
     /** @var \Model\Abtest\Entity */
-    private $case;
+    protected $case;
 
     public function __construct(array $config) {
         $this->config = $config;
@@ -22,12 +22,7 @@ class Abtest {
             }
         }
 
-        $this->option['default'] = new \Model\Abtest\Entity([
-            'traffic'  => '*',
-            'key'      => 'default',
-            'name'     => 'пусто',
-            'ga_event' => 'default',
-        ]);
+        $this->option['default'] = $this->getDefaultOption();
 
         $this->case = $this->getCase();
         if (!(bool)$this->case) {
@@ -35,7 +30,7 @@ class Abtest {
         }
    }
 
-    private function setCase() {
+    protected function setCase() {
         $luck = mt_rand(0, 99);
         $total = 0;
 
@@ -59,7 +54,7 @@ class Abtest {
             return $this->case;
         }
 
-        if (strtotime($this->config['bestBefore']) <= strtotime('now') || !(bool)$this->config['enabled']) {
+        if (!$this->isActive()) {
             return $this->option['default'];
         }
         if (\App::request()->cookies->has($this->config['cookieName'])) {
@@ -78,12 +73,12 @@ class Abtest {
 
         /* @var $response \Http\Response */
 
-        if (strtotime($this->config['bestBefore']) <= strtotime('now') || !(bool)$this->config['enabled'])
+        if (!$this->isActive())
         {
             $cookie = new \Http\Cookie(
                 $this->config['cookieName'],
                 'default',
-                0,
+                time() + 10,//\App::config()->abtest['checkPeriod'],
                 '/',
                 null,
                 false,
@@ -109,6 +104,13 @@ class Abtest {
     }
 
     /**
+     * @return array
+     */
+    public function getConfig() {
+        return $this->config;
+    }
+
+    /**
      * @return array|\Model\Abtest\Entity[]
      */
     public function getOption() {
@@ -119,11 +121,34 @@ class Abtest {
      * @param string $case
      * @return bool
      */
-    private function isValid($case) {
+    protected function isValid($case) {
         foreach ($this->option as $test) {
             if ($test->getKey() == $case) return true;
         }
 
         return false;
     }
+
+    /**
+     * Возвращает опцию по умолчанию
+     *
+     * @return \Model\Abtest\Entity
+     */
+    protected function getDefaultOption() {
+        return new \Model\Abtest\Entity([
+            'traffic'  => '*',
+            'key'      => 'default',
+            'name'     => 'пусто',
+            'ga_event' => 'default',
+        ]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive() {
+        return (bool)$this->config['enabled'] &&
+               (strtotime($this->config['bestBefore']) > strtotime('now'));
+    }
+
 }

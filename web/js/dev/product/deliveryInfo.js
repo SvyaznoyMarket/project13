@@ -189,12 +189,10 @@
 	// end of functions
 	
 	dataToSend = {
-		'product':[
-			{
-				'id': productInfoVal.id
-			}
-		]
-	}
+		'product':[{
+			'id': productInfoVal.id
+		}]
+	};
 
 	if ( url === '' && deliveryShops.length === 0 ) {
 		console.warn('URL отсутствует. Список магазинов пуст.');
@@ -211,9 +209,12 @@
 			data: dataToSend,
 			success: resFromServer,
 			statusCode: {
-					500: errorHandler,
-					503: errorHandler
-				}
+				500: errorHandler,
+				502: errorHandler,
+				503: errorHandler,
+				504: errorHandler
+			},
+			error: errorHandler
 		});
 	}
 

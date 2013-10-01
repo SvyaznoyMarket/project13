@@ -40,7 +40,7 @@
         <?= $product->getDescription() ?>
     </div>
 
-    <? if (\App::config()->smartengine['pull']): ?>
+    <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'alsoViewed',
             'title'    => 'С этим товаром также смотрят',
@@ -85,7 +85,7 @@
     <? endif ?>
     </div>
 
-    <? if (\App::config()->smartengine['pull']): ?>
+    <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'similar',
             'title'    => 'Похожие товары',
@@ -107,7 +107,7 @@
 
             <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
 
-            <?//= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
+            <?//= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
         </div>
 
         <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>

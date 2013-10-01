@@ -46,6 +46,8 @@ $c->wordpress['throwException'] = false;
 
 $c->dataStore['timeout'] = 2.5;
 
+$c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
+
 $c->database['host'] = 'localhost';
 
 $c->mobileHost = 'm.ent3.ru';
@@ -59,8 +61,9 @@ $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->adFox['enabled'] = false;
 
-$c->smartengine['pull']      = true;
-$c->smartengine['push']      = false;
+$c->product['pullRecommendation'] = true;
+$c->product['pushRecommendation'] = false;
+
 $c->smartengine['apiUrl']    = 'https://selightstage.smartengine.at/se-light/api/1.0/json/';
 $c->smartengine['cert']      = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 $c->smartengine['sslVerify'] = false;

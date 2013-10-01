@@ -5,6 +5,17 @@ namespace Controller\Order;
 class DeliveryAction {
     use ResponseDataTrait;
 
+    /*private function d($var){
+        file_put_contents('t.txt', print_r($var, 1) . "\n" . PHP_EOL, FILE_APPEND);
+    }
+
+    private function pr($var, $hint = null){
+        print '<pre>';
+        if ($hint) print '### '.$hint."\n".PHP_EOL;
+        print_r($var);
+        print '</pre>';
+    }*/
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -151,27 +162,38 @@ class DeliveryAction {
                 'deliveryStates'  => [
                     'self'               => [
                         'name'     => 'Самовывоз',
+                        'unique'     => false,
                         'products' => [],
                     ],
                     'now'                => [
                         'name'     => 'Самовывоз',
+                        'unique'     => false,
                         'products' => [],
                     ],
                     'standart_other'     => [
                         'name'     => 'Доставим',
+                        'unique'     => false,
                         'products' => [],
                     ],
                     'standart_furniture' => [
                         'name'     => 'Доставим',
+                        'unique'     => false,
+                        'products' => [],
+                    ],
+                    'pickpoint' => [
+                        'name'     => 'Pickpoint',
+                        'unique'     => true,
                         'products' => [],
                     ],
                 ],
                 'pointsByDelivery'=> [
                     'self' => 'shops',
                     'now'  => 'shops',
+                    'pickpoint' => 'pickpoints',
                 ],
                 'products'        => [],
                 'shops'           => [],
+                'pickpoints'      => [],
                 'discounts'       => [],
             ]);
 
@@ -211,6 +233,8 @@ class DeliveryAction {
 
             // ид товаров для каждого магазина
             $productIdsByShop = [];
+            // ид товаров для каждого пикпоинта
+            $pickpointProductIds = [];
 
             foreach ($result['products'] as $productItem) {
                 $productId = (string)$productItem['id'];
@@ -224,6 +248,7 @@ class DeliveryAction {
 
                 $deliveryData = [];
                 foreach ($productItem['deliveries'] as $deliveryItemToken => $deliveryItem) {
+
                     list($deliveryItemTokenPrefix, $pointId) = array_pad(explode('_', $deliveryItemToken), 2, null);
 
                     // если доставка, модифицируем префикс токена и точку получения товаров
@@ -238,6 +263,11 @@ class DeliveryAction {
                             $productIdsByShop[$pointId] = [];
                         }
                         $productIdsByShop[$pointId][] = $productId;
+                    }
+
+                    // если пикпоинт, то добавляем ид товара в соответствующий пикпоинт
+                    if (in_array($deliveryItemTokenPrefix, ['pickpoint'])) {
+                        $pickpointProductIds[] = $productId;
                     }
 
                     // добавляем ид товара в соответствующий метод доставки
@@ -317,6 +347,60 @@ class DeliveryAction {
                 });
             }
 
+            $pickpoints = [];
+
+            if(!empty($pickpointProductIds)) {
+                $deliveryRegions = [];
+                if(!empty(reset($result['products'])['deliveries']['pickpoint']['regions'])) {
+                    $deliveryRegions = array_map(
+                        function($regionItem) {
+                            return $regionItem['region'];
+                        },
+                        reset($result['products'])['deliveries']['pickpoint']['regions']
+                    );
+                }
+
+                $ppClient = \App::pickpointClient();
+                $ppClient->addQuery('postamatlist', [], [],
+                    function($data) use (&$pickpoints, &$deliveryRegions) {
+                        // Статус постамата: 1 – новый, 2 – рабочий, 3 - закрытый
+                        $pickpoints = array_filter($data, function($pickpointItem) use (&$deliveryRegions) {
+                            return in_array((int)$pickpointItem['Status'], [1,2]) &&
+                                   in_array($pickpointItem['CitiName'], $deliveryRegions);
+                        });
+                    },
+                    function (\Exception $e) use (&$exception) {
+                        $exception = $e;
+                    },
+                    \App::config()->pickpoint['timeout']
+                );
+                $ppClient->execute();
+            }
+
+            // пикпоинты
+            foreach ($pickpoints as $pickpointItem) {
+                $responseData['pickpoints'][] = [
+                    'id'         => (string)$pickpointItem['Id'],
+                    'name'       => $pickpointItem['Name'] . '; ' . $pickpointItem['Address'],
+                    'address'    => $pickpointItem['Address'],
+                    'regtime'     => $ppClient->worksTimePrepare($pickpointItem['WorkTime']),
+                    'latitude'   => (float)$pickpointItem['Latitude'],
+                    'longitude'  => (float)$pickpointItem['Longitude'],
+                    'products'   => $pickpointProductIds,
+                ];
+            }
+
+            // сортировка пикпоинтов
+            if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
+                usort($responseData['pickpoints'], function($a, $b) use (&$region) {
+                    if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
+                        return 0;
+                    }
+
+                    return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
+                });
+            }
+
             // купоны
             if (!$paypalECS) {
                 foreach ($cart->getCoupons() as $coupon) {
@@ -343,7 +427,6 @@ class DeliveryAction {
                 }
             }
 
-
             // удаляем методы доставок, в которых нет товаров
             foreach ($responseData['deliveryStates'] as $i => $deliveryStateItem) {
                 if (!(bool)$deliveryStateItem['products']) {
@@ -358,13 +441,27 @@ class DeliveryAction {
                 }
             }
             if (!(bool)$responseData['deliveryTypes']) {
-                throw new \Exception('Не вычеслено ни одного типа доставки');
+                throw new \Exception('Не вычислено ни одного типа доставки');
             }
 
             $responseData['deliveryTypes'] = array_values($responseData['deliveryTypes']);
             $responseData['success'] = true;
         } catch(\Exception $e) {
             $this->failResponseData($e, $responseData);
+        }
+
+        if(!empty($responseData['products'])) {
+            foreach ($responseData['products'] as $keyPi => $productItem) {
+                foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
+                    if($keyDi == 'pickpoint') {
+                        $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
+                        $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
+                        foreach ($pickpoints as $keyPp => $pickpoint) {
+                            $responseData['products'][$keyPi]['deliveries'][$keyDi][$pickpoint['Id']] = $dateData;
+                        }
+                    }
+                }
+            }
         }
 
         return $responseData;

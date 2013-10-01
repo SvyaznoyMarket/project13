@@ -106,30 +106,42 @@ class OneClickAction {
                 }
 
                 try {
-                    $result = \App::coreClientV2()->query('order/create', $params, $data);
+                    $result = \App::coreClientV2()->query('order/create', $params, $data, \App::config()->coreV2['hugeTimeout']);
                 } catch (\Exception $e) {
                     if (!in_array($e->getCode(), [705, 708, 735, 800])) {
-                        \App::logger('order')->error([
-                            'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
-                            'url'     => 'order/create' . ((bool)$params ? ('?' . http_build_query($params)) : ''),
-                            'data'    => $data,
-                            'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
-                                'HTTP_USER_AGENT',
-                                'HTTP_ACCEPT',
-                                'HTTP_ACCEPT_LANGUAGE',
-                                'HTTP_ACCEPT_ENCODING',
-                                'HTTP_X_REQUESTED_WITH',
-                                'HTTP_REFERER',
-                                'HTTP_COOKIE',
-                                'REQUEST_METHOD',
-                                'QUERY_STRING',
-                                'REQUEST_TIME_FLOAT',
-                            ]),
-                            'query'  => \Util\RequestLogger::getInstance()->getStatistics()['api_queries'],
-                        ]);
-                    }
+                        try {
+                            // пробуем создать заказ без мета-данных
+                            $data['meta_data'] = [];
+                            $result = \App::coreClientV2()->query('order/create', $params, $data, \App::config()->coreV2['hugeTimeout']);
+                        } catch (\Exception $e) {
+                            \App::logger('order')->error([
+                                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
+                                'url'     => 'order/create' . ((bool)$params ? ('?' . http_build_query($params)) : ''),
+                                'data'    => $data,
+                                'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
+                                    'HTTP_USER_AGENT',
+                                    'HTTP_ACCEPT',
+                                    'HTTP_ACCEPT_LANGUAGE',
+                                    'HTTP_ACCEPT_ENCODING',
+                                    'HTTP_X_REQUESTED_WITH',
+                                    'HTTP_REFERER',
+                                    'HTTP_COOKIE',
+                                    'REQUEST_METHOD',
+                                    'QUERY_STRING',
+                                    'REQUEST_TIME_FLOAT',
+                                ]),
+                                'query'  => \Util\RequestLogger::getInstance()->getStatistics()['api_queries'],
+                            ]);
 
-                    throw $e;
+                            throw $e;
+                        }
+                        // все ок, создали заказ без мета-данных
+                        \App::exception()->remove($e);
+                    } else {
+                        \App::exception()->remove($e);
+
+                        throw $e;
+                    }
                 }
 
                 $orderNumber = !empty($result['number']) ? (string)$result['number'] : null;
@@ -248,7 +260,7 @@ class OneClickAction {
                     $message = $e->getMessage();
                     break;
                 case 735:
-                    $message = 'Невалидный номер карты &laquo;Связного клуба&raquo;';
+                    $message = 'Невалидный номер карты &laquo;Связной-Клуб&raquo;';
                     break;
                 default:
                     $message = 'Не удалось создать заказ';

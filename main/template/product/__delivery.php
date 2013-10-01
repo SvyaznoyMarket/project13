@@ -81,10 +81,10 @@ return function (
     <li class="bDelivery__eItem mDeliveryFree">
     </li>
 
-    <? $hideShopHeader = (!$product->getIsBuyable() && $product->getState()->getIsShop()) ? true : false; ?>
-    <li class="bDelivery__eItem mDeliveryNow <?= !$product->getIsBuyable() ? 'mOpen' : 'mClose'?>" style="<?= $hideShopHeader ? 'background-image: none;' : '' ?>">
-        <span class="bDeliveryNowClick dotted<?= $hideShopHeader ? ' hf' : '' ?>">Есть в магазинах</span>
-        <div class="<?= $hideShopHeader ? ' hf' : '' ?>">Cегодня, без предзаказа</div>
+    <? $closed = !$product->isInShopOnly() ? true : false ?>
+    <li class="bDelivery__eItem mDeliveryNow <?= $closed ? 'mClose' : 'mOpen' ?>" style="<?= $closed ? 'background-image: none;' : '' ?>">
+        <span class="bDeliveryNowClick dotted<?= $closed ? ' hf' : '' ?>">Есть в магазинах</span>
+        <div class="<?= $closed ? ' hf' : '' ?>">Cегодня, без предзаказа</div>
         <ul class="bDeliveryFreeAddress">
         </ul>
     </li>

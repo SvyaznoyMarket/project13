@@ -1,0 +1,296 @@
+.bCatalog {
+
+}
+
+.mBtnGrey {
+	.grayGradDark();
+	.rounded(5px);
+	.box-shadow(1px 1px 3px #c7c7c7);
+	border: 1px solid #c7c7c7;
+
+	&:hover {
+		text-decoration: none;
+		.grayGradDark2();
+	} 
+}
+
+.bListing {
+	margin-right: -20px;
+
+	.bListingItem {
+		position: relative;
+
+		float: left;
+
+		width: 210px;
+		height: 295px;
+		margin: 0 30px 30px 0;
+		z-index: 0;
+
+		&.mBanner2Item {
+			width: 0;
+			margin-right: 0;
+		}
+
+		&__eInner {
+			position: relative;
+			z-index: 5;
+
+			width: 198px;
+			padding: 10px;
+
+			border: 1px solid #fff;
+		}
+		
+
+		&:hover {
+			z-index: 10;
+
+			.bListingItem__eInner {
+				.rounded(3px);
+				.box-shadow(0 2px 5px #c7c7c7);
+				border: 1px solid #929292;
+				background: @white;
+			} 
+
+			.bOptionsSection, .bBtnLine {
+				display: block;
+			}
+
+			.bSimplyDescStikers {
+				opacity: 0.2;
+			}
+
+			.bSimplyDesc__eText {
+				height: auto;
+
+				min-height: 30px;
+			}
+
+			// .bSimplyDesc {
+			// 	background: none;
+			// }
+		}
+	}
+
+	.bSimplyDesc {
+		position: absolute;
+		z-index: 2;
+		top: 10px;
+		left: 10px;
+
+		width: 200px;
+		padding: 0;
+
+		background: url('@{base-url}/bCatalog/img/bSimplyDesc.png') repeat 0 0;
+
+		&__eText {
+			margin: 0;
+			height: 30px;
+			overflow: hidden;
+			line-height: 1.3;
+		}
+	}
+
+	.bSimplyDescStikers {
+		margin: 5px 0 0;
+
+		&__eItem {
+			float: right;
+
+			margin-right: 5px;
+
+			&.mLeftStiker {
+				float: left;
+			}
+		}
+	}
+
+	.bProductImg {
+		display: block;
+
+		width: 200px;
+		height: 200px;
+		margin: 45px 0 15px;
+
+		&__eImg {
+			width: 200px;
+			height: 200px;
+		}
+	}
+
+	.bPriceLine {
+
+		.bPriceOld {
+			color: #919291;
+
+			font-size: 14px;
+
+			float: left;
+
+			width: 80px;
+
+			.bDecor {
+				text-decoration: line-through;
+
+				font-weight: normal;
+			}
+		}
+
+		.bAvailible {
+			float: right;
+
+			width: 116px;
+
+			text-align: right;
+
+			color: #919291;
+		}
+
+		.bPrice {
+			font-size: 20px;
+
+			float: left;
+
+			width: 112px;
+		}
+
+		.bOptions {
+			float: right;
+
+			margin: 4px 0 0;
+			padding: 0 0 0 27px;
+
+			width: 55px;
+
+			background: url('@{base-url}/bCatalog/img/bOptions.png') no-repeat 0 0;
+
+			.bDecor {
+				border-bottom: 1px dotted;
+			}
+		}
+	}
+
+	.bOptionsSection {
+		.rounded(3px);
+		position: relative;
+
+		display: none;
+
+		margin: 12px 0 0;
+		padding: 5px;
+
+		border: 1px solid #e6e6e6;
+		background: #f6f6f6;
+
+		.bCorner {
+			position: absolute;
+			z-index: 2;
+			top: -10px;
+			right: 29px;
+
+			display: block;
+
+			width: 0;
+			height: 0;
+
+			border-right: 10px solid transparent;
+			border-bottom: 10px solid #f6f6f6;
+			border-left: 10px solid transparent;
+		}
+
+		.bCornerDark {
+			position: absolute;
+			top: -11px;
+			right: 28px;
+
+			display: block;
+
+			width: 0;
+			height: 0;
+
+			border-right: 11px solid transparent;
+			border-bottom: 11px solid #e6e6e6;
+			border-left: 11px solid transparent;
+
+		}
+	}
+
+	.bOptionsList {
+
+		&__eItem {
+			margin: 0 0 0 18px;
+
+			list-style-type: disc;
+		}
+	}
+
+	.bBtnLine {
+		display: none;
+
+		margin: 10px 0 0;
+
+		.btnBuy {
+			float: left;
+
+			width: 70px;
+			height: 25px;
+
+			&__eLink {
+				width: 79px;
+				height: 25px;
+
+				font-size: 13px;
+				line-height: 25px;
+
+				&.mBought {
+		            .box-shadow(none);
+		            cursor: default;
+
+		            color: @typGray;
+		            border: 1px solid @typLightGray;
+		            background: @typLightGray;
+
+		            &:hover {
+		                color: @typGray;
+		                border: 1px solid @typLightGray;
+		                background: @typLightGray;
+		            }
+		        }
+			}
+		}
+
+		.btnView {
+			display: block;
+			float: right;
+
+			width: 90px;
+			height: 25px;
+
+			text-align: center;
+
+			font-size: 13px;
+			line-height: 25px;
+		}
+	}
+
+	.bSimplyDescReviews {
+		margin: 0 0 5px;
+
+		&__eStars {
+			display: inline-block;
+		}
+
+		&__eStarsImg {
+			display: inline-block;
+			height: 10px;
+			width: 10px;
+		}
+
+		&__eLink {
+			display: inline-block;
+			color: #a6a6a6;
+			font-size: 11px;
+		}
+	}
+}

@@ -23,9 +23,15 @@ if (empty($quantity)) {
 if (empty($value)) $value = 'Купить';
 
 $disabled = !$product->getIsBuyable();
+
+if ($product->isInShopStockOnly()) {
+    $value = 'Только в магазинах';
+}
+
 if ($disabled) {
     $url = '#';
     $class .= ' mDisabled';
+    $value = $product->isInShopShowroomOnly() ? 'Витринный товар' : 'Нет в наличии';
 } else if (!isset($url)) {
     $urlParams = [
         'productId' => $product->getId(),

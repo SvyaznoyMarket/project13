@@ -41,7 +41,7 @@ $is_showed = [];
 
             <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
 
-            <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Беру в кредит ?>
+            <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
 
             <? /* // Old Card Properties
             <div class="bProductDescText">
@@ -125,7 +125,7 @@ $is_showed = [];
         <?= $product->getDescription() ?>
     </div>
 
-    <? if (\App::config()->smartengine['pull']): ?>
+    <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'alsoViewed',
             'title'    => 'С этим товаром также смотрят',
@@ -175,7 +175,7 @@ $is_showed = [];
             <? endif ?>
         </div>
 
-        <? if (\App::config()->smartengine['pull']): ?>
+        <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product/__slider', [
                 'type'     => 'similar',
                 'title'    => 'Похожие товары',
@@ -199,6 +199,8 @@ $is_showed = [];
         <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
 
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
+
+        <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
     </div><!--/widget delivery -->
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>

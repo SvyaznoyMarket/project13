@@ -88,6 +88,7 @@ class AppConfig {
         'url'          => null,
         'client_id'    => null,
         'timeout'      => null,
+        'hugeTimeout'  => null,
         'retryTimeout' => [],
         'retryCount'   => null,
         'chunk_size'   => null,
@@ -123,6 +124,13 @@ class AppConfig {
     ];
     /** @var array */
     public $reviewsStore = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+    /** @var array */
+    public $pickpoint = [
         'url'          => null,
         'timeout'      => null,
         'retryTimeout' => [],
@@ -247,8 +255,12 @@ class AppConfig {
         'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
+        'pushReview'             => null, // возможность добавлять отзывы
         'lowerPriceNotification' => null,
         'furnitureConstructor'   => null, // конструктор шкафов-купе
+        'newList'                => null, // новый дизайн листингов
+        'recommendationPull'     => null, // подтягивать информацию о рекоммендованных товарах
+        'recommendationPush'     => null, // отправлять данные для расчета рекоммендованных товаров
     ];
     /** @var array */
     public $productPhoto = [
@@ -266,7 +278,6 @@ class AppConfig {
     public $productCategory = [
         'url'             => [],
         'jewelController' => null,
-        'newShow'         => null,
     ];
     /** @var array */
     public $service = [
@@ -328,8 +339,6 @@ class AppConfig {
      * @hidden
      */
     public $smartengine = [
-        'pull'           => null,
-        'push'           => null,
         'apiUrl'         => null,
         'apiKey'         => null,
         'tenantid'       => null,
@@ -377,10 +386,11 @@ class AppConfig {
      * @hidden
      */
     public $abtest = [
-        'cookieName' => null,
-        'bestBefore' => null,
-        'enabled'    => null,
-        'test'       => [],
+        'cookieName'  => null,
+        'bestBefore'  => null,
+        'enabled'     => null,
+        'checkPeriod' => null,
+        'test'        => [],
     ];
 
     /** @var array */
@@ -445,6 +455,9 @@ class AppConfig {
         'showFacets' => null,
         'showListingSearchBar' => null,
     ];
+
+    /** @var array */
+    public $daysShortNames = [];
 
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();

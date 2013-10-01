@@ -13,7 +13,10 @@
 <? endif ?>
 
     <? $i = 0; foreach ($pager as $product): $i++ ?>
-    <?= $page->render('product/show/_line', array('product' => $product, 'addInfo' => $isAddInfo?\Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()):[])) ?>
+    <?= $page->render('product/show/_line', [
+        'product'       => $product,
+        'addInfo'       => \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage())
+    ]); ?>
 
     <? if (!($i % 3) && !$isAjax): ?>
         <div class="line"></div>

@@ -51,7 +51,7 @@ foreach (array_reverse($productsById) as $product) {
 	<div class="bBuyingLine"><a class="bBackCart" href="<?= $backLink ?>">&lt; Вернуться к покупкам</a></div>
 
 	 <!-- Order Method -->
-	<div class="bBuyingLine clearfix mOrderMethod">
+	<div class="bBuyingLine clearfix mOrderMethod" data-bind="visible: deliveryTypes().length > 1">
 		<h2 class="bBuyingSteps__eTitle">Информация о заказе</h2>
 
 		<div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
@@ -78,7 +78,7 @@ foreach (array_reverse($productsById) as $product) {
 						<span data-bind="text: box.deliveryName"></span>
 					</h2>
 
-					<div class="bDeliverySelf"><span data-bind="visible: box.hasPointDelivery, text: box.choosenPoint().name"></span></div>
+					<div class="bDeliverySelf"><span data-bind="visible: box.hasPointDelivery, html: box.choosenPoint().name"></span></div>
 
 					<? if (isset($deliveryData['shops']) && (count($deliveryData['shops']) > 1)): ?>
 						<!-- кнопка сменить магазин -->
@@ -122,11 +122,11 @@ foreach (array_reverse($productsById) as $product) {
 					</div>
 
 					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length">
-						<span class="bSelectWrap_eText" data-bind="text: 'c '+ box.choosenInterval().start + ' до ' + box.choosenInterval().end"></span>
+						<span class="bSelectWrap_eText" data-bind="text: 'до ' + box.choosenInterval().end"></span>
 						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
 															value: box.choosenInterval,
 															optionsText: function(item) {
-																return 'c '+ item.start + ' до ' + item.end;
+																return 'до ' + item.end;
 															}">
 						</select>
 					</div>
@@ -154,7 +154,7 @@ foreach (array_reverse($productsById) as $product) {
 									<a class="bDelItem" data-bind="attr: { href: product.deleteUrl }, text: 'удалить', click: $root.deleteItem"></a>
 								</div>
 
-								<div class="bItemsRow mItemRight"> <span data-bind="text: window.printPrice(product.price)"></span> <span class="rubl">p</span></div>
+								<div class="bItemsRow mItemRight"> <span data-bind="text: window.printPrice(product.price)"></span>&nbsp;<span class="rubl">p</span></div>
 							</div>
 						</div>
 					</div>
@@ -171,8 +171,7 @@ foreach (array_reverse($productsById) as $product) {
 					<span data-bind="text: hasPointDelivery ? 'Самовывоз:&nbsp;&nbsp;': 'Доставка:&nbsp;&nbsp;' "></span>
 					
 					<span class="bDelivery">
-						<span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>
-						<span class="rubl" data-bind="visible: box.deliveryPrice">p</span>
+						<span data-bind="text: box.deliveryPrice === 0 ? 'Бесплатно' : box.deliveryPrice"></span>&nbsp;<span class="rubl" data-bind="visible: box.deliveryPrice">p</span>
 					</span>
 				</li>
 
@@ -180,8 +179,7 @@ foreach (array_reverse($productsById) as $product) {
 					Итого с доставкой:&nbsp;&nbsp;
 
 					<span class="bDelivery">
-						<span data-bind="text: window.printPrice( box.fullPrice + box.deliveryPrice )"></span> 
-						<span class="rubl">p</span>
+						<span data-bind="text: window.printPrice( box.fullPrice + box.deliveryPrice )"></span>&nbsp;<span class="rubl">p</span>
 					</span>
 				</li>
 			</ul>
@@ -286,7 +284,7 @@ foreach (array_reverse($productsById) as $product) {
 
 		<div class="bTotalSumm">
 			Сумма всех заказов:
-			<span class="bTotalSumm__ePrice" data-bind="text: window.printPrice( totalSum() )"></span> <span class="rubl">p</span>
+			<span class="bTotalSumm__ePrice" data-bind="text: window.printPrice( totalSum() )"></span>&nbsp;<span class="rubl">p</span>
 		</div>
 	</div>
 
@@ -456,7 +454,7 @@ foreach (array_reverse($productsById) as $product) {
 		<ul class="bPointList" data-bind="foreach: { data: popupWithPoints().points }">
 			<li class="bPointInPopup" data-bind="click: $root.selectPoint">
 				<div class="bMapShops__eListNum"><img alt="" src="/images/shop.png"></div>
-				<div class="bPointInPopup__eName"><span data-bind="text: $data.name"></span> <span class="bTime" data-bind="text: $data.regtime"></span></div>
+				<div class="bPointInPopup__eName"><span data-bind="html: $data.name"></span> <span class="bTime" data-bind="text: $data.regtime"></span></div>
 			</li>
 		</ul>
 		<div class="bPointPopupMap" id="pointPopupMap"></div>

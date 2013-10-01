@@ -74,7 +74,7 @@ class ProductAction {
                 [
                     'amount'          => $cartProduct->getSum(),
                     'delivery_amount' => 0,
-                    'currency'        => 'USD',
+                    //'currency'        => 'USD',
                     'return_url'      => \App::router()->generate('order.paypal.new', [], true),
                     'product'         => [
                         [
@@ -83,7 +83,8 @@ class ProductAction {
                         ],
                     ],
                     'service'         => [],
-                ]
+                ],
+                \App::config()->coreV2['hugeTimeout']
             );
             \App::logger()->info(['core.response' => $result], ['order', 'paypal']);
 

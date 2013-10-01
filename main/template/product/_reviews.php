@@ -11,9 +11,11 @@
   ?>
   <li class="bReviewsTabs__eTab bReviewsTabs__ePro pro<?= $tabProClass ?>" data-container="reviewsPro" data-reviews-type="pro"><span>Обзоры экспертов</span></li>
 
-  <li class="jsLeaveReview bReviewsTabs__eTab bReviewsTabs__eLast" data-pid="<?= $product->getId() ?>">
-    <span>Оставить отзыв</span>
-  </li> 
+  <? if (\App::config()->product['pushReview']): ?>
+      <li class="jsLeaveReview bReviewsTabs__eTab bReviewsTabs__eLast" data-pid="<?= $product->getId() ?>">
+        <span>Оставить отзыв</span>
+      </li>
+  <? endif ?>
 </ul>
 
 <? if(!empty($reviewsData['review_list'])) { ?>

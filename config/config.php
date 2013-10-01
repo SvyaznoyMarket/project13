@@ -37,7 +37,8 @@ $c->redirect301['enabled'] = true;
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
 $c->coreV2['chunk_size']   = 50;
-$c->coreV2['timeout']      = null;
+$c->coreV2['timeout']      = 5;
+$c->coreV2['hugeTimeout']  = 90;
 $c->coreV2['retryCount']   = 3;
 $c->coreV2['retryTimeout'] = [
     'default' => 0.5,
@@ -52,7 +53,7 @@ $c->coreV2['retryTimeout'] = [
 $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
 $c->corePrivate['password']     = 'dEl23sTOas';
-$c->corePrivate['timeout']      = null;
+$c->corePrivate['timeout']      = 5;
 $c->corePrivate['retryCount']   = 3;
 $c->corePrivate['retryTimeout'] = [
     'default' => 1.5,
@@ -95,6 +96,19 @@ $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
 $c->dataStore['timeout'] = 0.8;
 $c->dataStore['retryCount'] = 3;
 $c->dataStore['retryTimeout'] = [
+    'default' => 0.04,
+    'tiny'    => 0.04,
+    'short'   => 0.08,
+    'medium'  => 0.1,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
+
+$c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
+$c->pickpoint['timeout'] = 20;
+$c->pickpoint['retryCount'] = 3;
+$c->pickpoint['retryTimeout'] = [
     'default' => 0.04,
     'tiny'    => 0.04,
     'short'   => 0.08,
@@ -196,7 +210,7 @@ $c->mediaHost = [
 
 $c->search['itemLimit'] = 1000;
 
-$c->product['itemsPerPage']           = 18;
+$c->product['itemsPerPage']           = 20;
 $c->product['showAccessories']        = true;
 $c->product['showRelated']            = true;
 $c->product['itemsInSlider']          = 5;
@@ -209,11 +223,14 @@ $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
+$c->product['pushReview']             = false;
 $c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
 // jewel
-$c->product['itemsPerPageJewel']     = 24;
-$c->product['itemsPerRowJewel']      = 4;
+$c->product['itemsPerPageJewel']      = 24;
+$c->product['itemsPerRowJewel']       = 4;
+$c->product['pullRecommendation']     = true;
+$c->product['pushRecommendation']     = true;
 
 $c->productPhoto['url'] = [
     0 => '/1/1/60/',
@@ -238,7 +255,7 @@ $c->productCategory['url'] = [
     0 => '/6/1/163/',
 ];
 $c->productCategory['jewelController'] = true;
-$c->productCategory['newShow'] = false;
+$c->product['newList'] = true;
 
 $c->service['url'] = [
     0 => '/11/1/160/',
@@ -275,8 +292,6 @@ $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
-$c->smartengine['pull']           = true;
-$c->smartengine['push']           = true;
 $c->smartengine['cert']           = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 $c->smartengine['apiUrl']         = 'https://www.selightprod.smartengine.at/se-light/api/1.0/json/';
 $c->smartengine['apiKey']         = 'c41851b19511c20acc84f47b7816fb8e';
@@ -316,7 +331,7 @@ $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = true;
 
-$c->mobileModify['enabled'] = true;
+$c->mobileModify['enabled'] = false;
 
 $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
@@ -337,31 +352,28 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
+// Короткие названия дней недели. Используется, например, для времени работы пикпойнтов
+$c->daysShortNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
+// настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
+$c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
 $c->abtest['bestBefore'] = '2013-09-23';
-
 $c->abtest['test']       = [
     // smartengine
     [
-        'traffic'  => 33,
-        'key'      => 'smartengine',
-        'name'     => "Похожие товары от SmartEngine",
-        'ga_event' => 'SmartEngine',
+        'traffic'  => 50,
+        'key'      => 'retailrocket',
+        'name'     => "Похожие товары от RetailRocket",
+        'ga_event' => 'RetailRocket',
     ],
     // retailrocket
     [
-        'traffic'  => 33,
+        'traffic'  => 50,
         'key'      => 'retailrocket',
         'name'     => "С этим товаром также смотрят от RetailRocket",
         'ga_event' => 'RetailRocket',
-    ],
-    // hybrid
-    [
-        'traffic'  => 33,
-        'key'      => 'hybrid',
-        'name'     => "С этим товаром также смотрят - от RetailRocket, Похожие товары - от SmartEngine",
-        'ga_event' => 'Hybrid',
     ],
 ];
 

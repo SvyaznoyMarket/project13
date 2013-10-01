@@ -7,13 +7,13 @@
  * @var $productVideos \Model\Product\Video\Entity[]
  * @var $addInfo       array
  **/
+//print_r($addInfo);
 ?>
 
 <?php
 $isHidden = isset($isHidden) && $isHidden;
 $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
 if (!isset($productVideos)) $productVideos = [];
-$addInfo = isset($addInfo)?$addInfo:[];
 
 /** @var $productVideo \Model\Product\Video\Entity|null */
 $productVideo = reset($productVideos);
@@ -25,7 +25,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
 ?>
 
 <div class="goodsbox <? echo ($isHidden)? 'hidden': '' ?>" ref="<?= $product->getToken(); ?>">
-    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
+    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
     	<div class="photo">
             <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
             <? if ($model3dExternalUrl || $model3dImg): ?><a style="right:<?= $productVideo && $productVideo->getContent() ? '42' : '0' ?>px;" class="goodsphoto_eGrad360 goodsphoto_eGrad360_small" href="<?= $product->getLink() ?>"></a><? endif ?>
@@ -46,20 +46,15 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             <?= $page->render('product/_reviewsStarsCompact', ['product' => $product]) ?>
         <? endif ?>
 
-	    <h3><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></h3>
-        <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+	    <div class="h3"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
+        <?= $page->render('cart/_button', ['product' => $product]) ?>
 	    <div class="font18 pb10 mSmallBtns">
             <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
             <p class="font16 crossText"><span class="old_price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>
             <? endif ?>
             <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
         </div>
-        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-        	<div class="notBuying font12">
-                <div class="corner"><div></div></div>
-                Только в магазинах
-            </div>
-		<? endif ?>
+        <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
 	    <? if ($hasModel): ?>
         <a href="<?= $product->getLink() ?>">
             <div class="bListVariants">

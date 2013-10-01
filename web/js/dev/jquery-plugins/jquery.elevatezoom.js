@@ -227,46 +227,46 @@ if ( typeof Object.create !== 'function' ) {
 				//create the div's                                                + ""
 				//self.zoomContainer = $('<div/>').addClass('zoomContainer').css({"position":"relative", "height":self.nzHeight, "width":self.nzWidth});
 
-				self.zoomContainer = $('<div class="zoomContainer" style="-webkit-transform: translateZ(0);position:absolute;left:'+self.nzOffset.left+'px;top:'+self.nzOffset.top+'px;height:'+self.nzHeight+'px;width:'+self.nzWidth+'px;"></div>');
-				$('body').append(self.zoomContainer);	
+				if ( !self.options.disableZoom ) {
+					self.zoomContainer = $('<div class="zoomContainer" style="-webkit-transform: translateZ(0);position:absolute;left:'+self.nzOffset.left+'px;top:'+self.nzOffset.top+'px;height:'+self.nzHeight+'px;width:'+self.nzWidth+'px;"></div>');
+					$('body').append(self.zoomContainer);	
 
 
-				//this will add overflow hidden and contrain the lens on lens mode       
-				if(self.options.containLensZoom && self.options.zoomType == "lens"){
-					self.zoomContainer.css("overflow", "hidden");
+					//this will add overflow hidden and contrain the lens on lens mode       
+					if ( self.options.containLensZoom && self.options.zoomType == "lens" ) {
+						self.zoomContainer.css("overflow", "hidden");
+					}
+					if ( self.options.zoomType != "inner" ) {
+						self.zoomLens = $("<div class='zoomLens' style='" + self.lensStyle + self.lensRound +"'>&nbsp;</div>")
+						.appendTo(self.zoomContainer)
+						.click(function () {
+							self.$elem.trigger('click');
+						});
+					}
+
+
+
+					if ( self.options.tint ) {
+						self.tintContainer = $('<div/>').addClass('tintContainer');	
+						self.zoomTint = $("<div class='zoomTint' style='"+self.tintStyle+"'></div>");
+
+
+						self.zoomLens.wrap(self.tintContainer);
+
+
+						self.zoomTintcss = self.zoomLens.after(self.zoomTint);	
+
+						//if tint enabled - set an image to show over the tint
+
+						self.zoomTintImage = $('<img style="position: absolute; left: 0px; top: 0px; max-width: none; width: '+self.nzWidth+'px; height: '+self.nzHeight+'px;" src="'+self.imageSrc+'">')
+						.appendTo(self.zoomLens)
+						.click(function () {
+
+							self.$elem.trigger('click');
+						});
+
+					}
 				}
-				if(self.options.zoomType != "inner") {
-					self.zoomLens = $("<div class='zoomLens' style='" + self.lensStyle + self.lensRound +"'>&nbsp;</div>")
-					.appendTo(self.zoomContainer)
-					.click(function () {
-						self.$elem.trigger('click');
-					});
-				}
-
-
-
-				if(self.options.tint) {
-					self.tintContainer = $('<div/>').addClass('tintContainer');	
-					self.zoomTint = $("<div class='zoomTint' style='"+self.tintStyle+"'></div>");
-
-
-					self.zoomLens.wrap(self.tintContainer);
-
-
-					self.zoomTintcss = self.zoomLens.after(self.zoomTint);	
-
-					//if tint enabled - set an image to show over the tint
-
-					self.zoomTintImage = $('<img style="position: absolute; left: 0px; top: 0px; max-width: none; width: '+self.nzWidth+'px; height: '+self.nzHeight+'px;" src="'+self.imageSrc+'">')
-					.appendTo(self.zoomLens)
-					.click(function () {
-
-						self.$elem.trigger('click');
-					});
-
-				}
-
-
 
 				//create zoom window 
 				if(isNaN(self.options.zoomWindowPosition)){
@@ -300,11 +300,12 @@ if ( typeof Object.create !== 'function' ) {
 				}
 				/*-------------------END THE ZOOM WINDOW AND LENS----------------------------------*/
 				//touch events
+				
 				if ( self.options.disableZoom ) {
 					console.log('disableZoom');
-					return;
+					return false;
 				}
-				
+
 				self.$elem.bind('touchmove', function( e ) { 
 					e.preventDefault();
 					var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];  

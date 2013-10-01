@@ -98,7 +98,7 @@ class CreateAction {
                 // сохранение формы в кукисах
                 $this->saveForm($form, $cookies);
 
-                // удаление флага "Беру в кредит"
+                // удаление флага "Купи в кредит"
                 $cookies[] = new \Http\Cookie('credit_on', '', time() - 3600);
 
                 // очистка корзины
@@ -355,7 +355,7 @@ class CreateAction {
         }
 
         try {
-            $result = \App::coreClientV2()->query('order/create-packet', $params, $data);
+            $result = \App::coreClientV2()->query('order/create-packet', $params, $data, \App::config()->coreV2['hugeTimeout']);
         } catch(\Exception $e) {
             if (!in_array($e->getCode(), [705, 708, 735, 800])) {
                 \App::logger('order')->error([

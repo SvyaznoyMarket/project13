@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  if($('body.jewel .filter-section').length) {
+  if($('body.jewel .allpagerJewel').length) {
 
     // handle_url_hash()
 
@@ -32,7 +32,7 @@ $(document).ready(function(){
 var ableToLoadJewel = true;
 function liveScrollJewel( lsURL, filters, pageid ) {
   var params = [];
-  var tmpnodeJewel = $('.items-section__list');
+  var tmpnodeJewel = $('.bBrandGoodsList');
 
   $('#ajaxgoods').show();
 
@@ -134,6 +134,8 @@ function handle_jewel_infinity_scroll() {
 // }
 
 function switch_to_scroll(checkScrollJewel) {
+console.log(1111)
+
   window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
   var next = $('div.pageslist:first li:first');
 

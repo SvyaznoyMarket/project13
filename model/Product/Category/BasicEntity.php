@@ -16,6 +16,8 @@ class BasicEntity {
     protected $link;
     /** @var string */
     protected $token;
+    /** @var string */
+    protected $image;
     /** @var int */
     protected $level;
     /** @var BasicEntity[] */
@@ -33,6 +35,7 @@ class BasicEntity {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('level', $data)) $this->setLevel($data['level']);
         if (array_key_exists('children', $data) && is_array($data['children'])) foreach ($data['children'] as $childData) {
             $this->addChild(new BasicEntity($childData));
@@ -93,6 +96,20 @@ class BasicEntity {
      */
     public function getToken() {
         return $this->token;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage($image) {
+        $this->image = (string)$image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage() {
+        return $this->image;
     }
 
     /**
@@ -204,5 +221,15 @@ class BasicEntity {
      */
     public function getPath() {
         return trim(preg_replace('/^\/catalog\//' , '', $this->link), '/');
+    }
+
+    public function getImageUrl($size = 0) {
+        if ($this->image) {
+            $urls = \App::config()->productCategory['url'];
+
+            return $this->getHost() . $urls[$size] . $this->image;
+        } else {
+            return null;
+        }
     }
 }

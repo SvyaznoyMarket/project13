@@ -14,7 +14,7 @@ return function(
 
 <div class="creditbox">
     <label class="bigcheck" for="creditinput"><b></b>
-        <span class="dotted">Беру в кредит</span>
+        <span class="dotted">Купи в кредит</span>
         <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off">
     </label>
 

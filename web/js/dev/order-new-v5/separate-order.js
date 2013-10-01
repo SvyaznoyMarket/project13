@@ -37,6 +37,8 @@
 			nowState = null,
 			nowProduct = null,
 			choosenBlock = null,
+            isUnique = null,
+            nowProductsToNewBox = [];
 
 			discounts = global.OrderModel.orderDictionary.orderData.discounts;
 		// end of vars
@@ -74,8 +76,9 @@
 		 */
 		for ( var i = 0, len = statesPriority.length; i < len; i++ ) {
 			nowState = statesPriority[i];
+            isUnique = global.OrderModel.orderDictionary.isUniqueDeliveryState(nowState);
 
-			console.info('перебирем метод '+nowState);
+            console.info('перебирем ' + (isUnique ? 'уникальный* ' : '') + 'метод ' + nowState);
 
 			productsToNewBox = [];
 
@@ -86,7 +89,7 @@
 			}
 
 			productInState = global.OrderModel.orderDictionary.getProductFromState(nowState);
-			
+
 			/**
 			 * Перебор продуктов в текущем deliveryStates
 			 */
@@ -116,10 +119,24 @@
 					choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
-				else {
-					// Блока для этого типа доставки в этот пункт еще существует
-					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
-				}
+                else if ( isUnique ) {
+                    // Блока для этого типа доставки в этот пункт еще существует, создадим его:
+                    // Если есть флаг уникальности, каждый товар в отдельном блоке будет
+
+                    // Разделим товары, продуктом считаем уникальную единицу товара:
+                    // Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
+                    nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
+                    for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
+                        nowProduct = [ nowProductsToNewBox[j] ];
+                        global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox);
+                    }
+
+                } else {
+                    // Блока для этого типа доставки в этот пункт еще существует, создадим его:
+                    // Без флага уникальности, все товары скопом:
+                    // Пример: 5 тетрадок ==> 1 товар количеством 5 шт
+                    global.ENTER.constructors.DeliveryBox(productsToNewBox, nowState, choosenPointForBox);
+                }
 			}
 		}
 
@@ -473,7 +490,7 @@
 			console.info('проверяем купон');
 
 			var dataToSend = {
-					number: global.OrderModel.couponNumber(),
+					number: global.OrderModel.couponNumber()
 				},
 
 				url = global.OrderModel.couponUrl(),
@@ -519,7 +536,7 @@
 					type: 'GET',
 					url: global.OrderModel.updateUrl,
 					callback: global.OrderModel.modelUpdate
-				},
+				}
 			];
 
 			utils.packageReq(reqArray);
@@ -657,7 +674,7 @@
 
 					toKISS = {
 						'Checkout Step 1 SKU Quantity': totalQuan,
-						'Checkout Step 1 SKU Total': totalPrice,
+						'Checkout Step 1 SKU Total': totalPrice
 					};
 
 					if ( typeof _kmq !== 'undefined' ) {
@@ -685,20 +702,21 @@
 						itemDeleteAnalytics();
 					}
 
-					var productId = res.product.id;
-					var categoryId = res.category_id;
+					if ( res.product ) {
+						var productId = res.product.id;
+						var categoryId = res.category_id;
 
-					// Soloway
-					// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
-					(function(s){
-					    var d = document, i = d.createElement('IMG'), b = d.body;
-					    s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
-					    i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
-					    i.onload = i.onerror = function(){b.removeChild(i); i = b = null}
-					    i.src = s;
-					    b.insertBefore(i, b.firstChild);
-					})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=del_basket&bt=55&pz=0&custom=10='+productId+';11='+categoryId+'&![rnd]');
-
+						// Soloway
+						// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
+						(function(s){
+							var d = document, i = d.createElement('IMG'), b = d.body;
+							s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
+							i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
+							i.onload = i.onerror = function(){b.removeChild(i); i = b = null}
+							i.src = s;
+							b.insertBefore(i, b.firstChild);
+						})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=del_basket&bt=55&pz=0&custom=10='+productId+';11='+categoryId+'&![rnd]');
+					}
 				};
 			// end of functions
 
@@ -714,12 +732,38 @@
 					type: 'GET',
 					url: global.OrderModel.updateUrl,
 					callback: window.OrderModel.modelUpdate
-				},
+				}
 			];
 
 			utils.packageReq(reqArray);
 
 			return false;
+		},
+
+
+        /**
+         *  Раразбивка массива товаров в массив по уникальным единицам (для PickPoint)
+         *  т.е. вместо продукта в количестве 2 шт, будут 2 проудкта по 1 шт.
+         *
+         * @param       {Array}   productsToNewBox
+         * @returns     {Array}   productsUniq
+         */
+        prepareProductsByUniq: function prepareProductsByUniq( productsToNewBox ) {
+            var productsUniq = [],
+                nowProduct,
+                j, k;
+
+            for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
+                //!!! важно клонировать объект, дабы не портить для др. типов доставки
+                nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
+                for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
+                    nowProduct.quantity = 1;
+                    nowProduct.sum = nowProduct.price;
+                    productsUniq.push(nowProduct);
+                }
+            }
+
+            return productsUniq;
 		}
 	};
 
@@ -878,8 +922,9 @@
 		 * @param	{Object}	res		Данные о заказе
 		 */
 		renderOrderData = function renderOrderData( res ) {
+            var data, firstPoint;
 			utils.blockScreen.unblock();
-			
+
 			if ( !res.success ) {
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);
@@ -920,6 +965,20 @@
 
 				separateOrder( global.OrderModel.statesPriority );
 			}
+
+
+            if ( 1 === res.deliveryTypes.length ) {
+                data = res.deliveryTypes[0];
+                firstPoint =  global.OrderModel.orderDictionary.getFirstPointByState( data.states[0] ) || data.id;
+                console.log('Обнаружен только 1 способ доставки: ' + data.name +' — выбираем его.');
+                console.log('Выбран первый пункт* доставки:');
+                console.log( firstPoint );
+                global.OrderModel.statesPriority = data.states;
+                global.OrderModel.deliveryTypesButton = 'method_' + data.id;
+                global.OrderModel.choosenDeliveryTypeId = data.id;
+                global.OrderModel.choosenPoint( firstPoint );
+                separateOrder( global.OrderModel.statesPriority );
+            }
 		},
 
 		selectPointOnBaloon = function selectPointOnBaloon( event ) {
