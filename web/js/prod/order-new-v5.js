@@ -33,8 +33,14 @@
 
 			var self = this;
 
+            // Уникальность продуктов в этом типе доставки
+            //self.isUnique = isUnique || false;
+            self.isUnique = window.OrderModel.orderDictionary.isUniqueDeliveryState();
 			// Токен блока
 			self.token = state+'_'+choosenPointForBox;
+            /*if (self.isUnique) {
+                self.token += self.addUniqueSuffix();
+            }*/
 
 			// Продукты в блоке
 			self.products = [];
@@ -143,6 +149,22 @@
 		};
 
 
+        /**
+         * Генерирует случайное окончание (суффикс) для строки
+         *
+         * @param       {string}      str
+         * @returns     {string}      str
+         */
+        DeliveryBox.prototype.addUniqueSuffix = function( str ) {
+            str = str || '';
+            var randSuff;
+            //randSuff = new Date().getTime();
+            randSuff = Math.floor( (Math.random() * 10000) + 1 );
+            str += '_' + randSuff;
+            return str;
+        };
+
+
 		/**
 		 * Смена пункта доставки. Переименовываем token блока
 		 * Удаляем старый блок из массива блоков и добавяем туда новый с новым токеном
@@ -165,6 +187,10 @@
 				window.OrderModel.removeDeliveryBox(self.token);
 			}
 			else {
+
+                if (self.isUnique) {
+                    newToken += self.addUniqueSuffix();
+                }
 				console.info('удаляем старый блок');
 				console.log('старый токен '+self.token);
 				console.log('новый токен '+newToken);
@@ -363,7 +389,7 @@
 		 * @return	{String}					Человекочитаемый день недели
 		 */
 		DeliveryBox.prototype._getFullNameDayOfWeek = function( dayOfWeek ) {
-			var days = ['воскресение', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
+			var days = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
 
 			return days[dayOfWeek];
 		};
@@ -485,7 +511,7 @@
 
 				tempProduct = self.products.pop();
 				tempProductArray.push(tempProduct);
-				newToken = self.state+'_'+self.choosenPoint().id+'_'+Math.floor( (Math.random() * 10000) + 1 );
+                newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();;
 				console.log('новый токен '+newToken);
 				console.log(self);
 
@@ -783,6 +809,24 @@
 			return this.deliveryStates.hasOwnProperty(state);
 		};
 
+
+        /**
+         * Флаг уникальности для типа доставки state.
+         * Например, для типа доставки pickpoint должен быть false (задаётся в РНР-коде на сервере)
+         *
+         * @this	{OrderDictionary}
+         *
+         * @param	    {String}	state	Метод доставки
+         * @returns     {Boolean}
+         */
+        OrderDictionary.prototype.isUniqueDeliveryState = function( state ) {
+            if ( this.deliveryStates.hasOwnProperty(state) ) {
+                var st = this.deliveryStates[state];
+                return st['unique'];
+            }
+            return false;
+        };
+
 		/**
 		 * Есть ли для метода доставки пункты доставки
 		 *
@@ -879,8 +923,8 @@
 
 			return this.products[productId];
 		};
-	
-	
+
+
 		return OrderDictionary;
 	
 	}());
@@ -1563,6 +1607,8 @@
 			nowState = null,
 			nowProduct = null,
 			choosenBlock = null,
+            isUnique = null,
+            nowProductsToNewBox = [];
 
 			discounts = global.OrderModel.orderDictionary.orderData.discounts;
 		// end of vars
@@ -1600,8 +1646,9 @@
 		 */
 		for ( var i = 0, len = statesPriority.length; i < len; i++ ) {
 			nowState = statesPriority[i];
+            isUnique = global.OrderModel.orderDictionary.isUniqueDeliveryState(nowState);
 
-			console.info('перебирем метод '+nowState);
+            console.info('перебирем ' + (isUnique ? 'уникальный* ' : '') + 'метод ' + nowState);
 
 			productsToNewBox = [];
 
@@ -1612,7 +1659,7 @@
 			}
 
 			productInState = global.OrderModel.orderDictionary.getProductFromState(nowState);
-			
+
 			/**
 			 * Перебор продуктов в текущем deliveryStates
 			 */
@@ -1642,10 +1689,24 @@
 					choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
-				else {
-					// Блока для этого типа доставки в этот пункт еще существует
-					global.ENTER.constructors.DeliveryBox( productsToNewBox, nowState, choosenPointForBox);
-				}
+                else if ( isUnique ) {
+                    // Блока для этого типа доставки в этот пункт еще существует, создадим его:
+                    // Если есть флаг уникальности, каждый товар в отдельном блоке будет
+
+                    // Разделим товары, продуктом считаем уникальную единицу товара:
+                    // Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
+                    nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
+                    for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
+                        nowProduct = [ nowProductsToNewBox[j] ];
+                        global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox, isUnique);
+                    }
+
+                } else {
+                    // Блока для этого типа доставки в этот пункт еще существует, создадим его:
+                    // Без флага уникальности, все товары скопом:
+                    // Пример: 5 тетрадок ==> 1 товар количеством 5 шт
+                    global.ENTER.constructors.DeliveryBox(productsToNewBox, nowState, choosenPointForBox);
+                }
 			}
 		}
 
@@ -1999,7 +2060,7 @@
 			console.info('проверяем купон');
 
 			var dataToSend = {
-					number: global.OrderModel.couponNumber(),
+					number: global.OrderModel.couponNumber()
 				},
 
 				url = global.OrderModel.couponUrl(),
@@ -2045,7 +2106,7 @@
 					type: 'GET',
 					url: global.OrderModel.updateUrl,
 					callback: global.OrderModel.modelUpdate
-				},
+				}
 			];
 
 			utils.packageReq(reqArray);
@@ -2183,7 +2244,7 @@
 
 					toKISS = {
 						'Checkout Step 1 SKU Quantity': totalQuan,
-						'Checkout Step 1 SKU Total': totalPrice,
+						'Checkout Step 1 SKU Total': totalPrice
 					};
 
 					if ( typeof _kmq !== 'undefined' ) {
@@ -2241,12 +2302,38 @@
 					type: 'GET',
 					url: global.OrderModel.updateUrl,
 					callback: window.OrderModel.modelUpdate
-				},
+				}
 			];
 
 			utils.packageReq(reqArray);
 
 			return false;
+		},
+
+
+        /**
+         *  Раразбивка массива товаров в массив по уникальным единицам (для PickPoint)
+         *  т.е. вместо продукта в количестве 2 шт, будут 2 проудкта по 1 шт.
+         *
+         * @param       {Array}   productsToNewBox
+         * @returns     {Array}   productsUniq
+         */
+        prepareProductsByUniq: function prepareProductsByUniq( productsToNewBox ) {
+            var productsUniq = [],
+                nowProduct,
+                j, k;
+
+            for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
+                //!!! важно клонировать объект, дабы не портить для др. типов доставки
+                nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
+                for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
+                    nowProduct.quantity = 1;
+                    nowProduct.sum = nowProduct.price;
+                    productsUniq.push(nowProduct);
+                }
+            }
+
+            return productsUniq;
 		}
 	};
 

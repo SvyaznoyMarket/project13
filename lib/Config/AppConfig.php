@@ -130,6 +130,13 @@ class AppConfig {
         'retryCount'   => null,
     ];
     /** @var array */
+    public $pickpoint = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+    /** @var array */
     public $company = [
         'phone' => null,
         'moscowPhone' => null,
@@ -448,6 +455,9 @@ class AppConfig {
         'showFacets' => null,
         'showListingSearchBar' => null,
     ];
+
+    /** @var array */
+    public $daysShortNames = [];
 
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();

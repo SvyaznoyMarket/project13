@@ -355,6 +355,20 @@ class App {
     }
 
     /**
+     * @static
+     * @return \Pickpoint\Client
+     */
+    public static function pickpointClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Pickpoint\Client(self::config()->pickpoint, self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
      * @param $name
      * @return \Oauth\ProviderInterface
      * @throws InvalidArgumentException
