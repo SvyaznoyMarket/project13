@@ -12711,7 +12711,10 @@
   .bFilterValues .bInputHidden + .bFilterCheckbox {
     background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat 5px 7px #ffffff;
   }
-  .bFilterValues .bInputHidden:checked + .bFilterCheckbox,
+  .bFilterValues .bInputHidden:checked + .bFilterCheckbox {
+    border: 1px solid #c7c7c7;
+    background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat 5px -20px #fbebd2;
+  }
   .bFilterValues .bFilterCheckbox.mChecked {
     border: 1px solid #c7c7c7;
     background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat 5px -20px #fbebd2;
@@ -12720,7 +12723,10 @@
     background-image: url("/css/leftNav/img/radioBtn.png");
     background-position: 5px -14px;
   }
-  .bFilterValues .bInputHidden:checked + .mCustomLabelRadio,
+  .bFilterValues .bInputHidden:checked + .mCustomLabelRadio {
+    background-image: url("/css/leftNav/img/radioBtn.png");
+    background-position: 5px 7px;
+  }
   .bFilterValues .mCustomLabelRadio.mChecked {
     background-image: url("/css/leftNav/img/radioBtn.png");
     background-position: 5px 7px;
