@@ -104,6 +104,12 @@
 			selectedFilter: function( data ) {
 				console.info('render selectedFilter');
 
+				if ( !data ) {
+					console.warn('nothing to render');
+					
+					return;
+				}
+
 				var template = $('#tplSelectedFilter'),
 					filterTemplate = template.html(),
 					partials = template.data('partial'),
@@ -237,8 +243,10 @@
 		 * @return	{String}	url
 		 */
 		getFilterUrl: function() {
+			console.info('getFilterUrl');
+
 			var formData = filterBlock.serializeArray(),
-				url = filterBlock.attr('action'),
+				url = filterBlock.attr('action') || '',
 				slidersInputState = catalog.filter.getSlidersInputState(),
 				activeSort = viewParamPanel.find('.mSortItem.mActive').find('.jsSorting'),
 				sortUrl = activeSort.data('sort'),
@@ -258,6 +266,8 @@
 			if ( formSerizalizeData.length !== 0 ) {
 				url += '?' + formSerizalizeData;
 			}
+			console.info('url == ');
+			console.log(url);
 
 			url = url.addParameterToUrl('sort', sortUrl);
 
