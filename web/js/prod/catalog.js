@@ -943,7 +943,9 @@
 			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
 			$(window).on('scroll', catalog.infScroll.checkScroll);
 
-			catalog.history.gotoUrl(url);
+			if ( catalog.enableHistoryAPI ) {
+				catalog.history.gotoUrl(url);
+			}
 
 			console.log('infinity scroll enable');
 		},
