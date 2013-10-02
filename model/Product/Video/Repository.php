@@ -36,4 +36,41 @@ class Repository {
             'id' => $productIds,
         ], $done, $fail);
     }
+
+
+    /**
+     * @param \Iterator\EntityPager $productPager
+     * @param array                 $productVideosByProduct
+     * @return array
+     */
+    public function getVideoByProductPager($productPager, $productVideosByProduct = [])
+    {
+        foreach ($productPager as $product) {
+            /** @var $product \Model\Product\Entity */
+            $productVideosByProduct[$product->getId()] = [];
+        }
+        return $this->getVideosByProduct($productVideosByProduct);
+    }
+
+
+    /**
+     * @param array     $productVideosByProduct
+     * @return array    [productId => array [Model\Product\Video\Entity] ]
+     */
+    public function getVideosByProduct( $productVideosByProduct ) {
+        if ((bool)$productVideosByProduct) {
+            $this->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
+                foreach ($data as $id => $items) {
+                    if (!is_array($items)) continue;
+                    foreach ($items as $item) {
+                        if (!$item) continue;
+                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
+                    }
+                }
+            });
+            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
+        }
+        return $productVideosByProduct;
+    }
+
 }

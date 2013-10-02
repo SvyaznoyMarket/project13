@@ -479,6 +479,7 @@ class Action {
         /** @var $child \Model\Product\Category\Entity */
         $child = reset($childrenById);
         $productPagersByCategory = [];
+        $productVideosByProduct = [];
         $productCount = 0;
 
         foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
@@ -487,32 +488,18 @@ class Action {
             $productPagersByCategory[$child->getId()] = $productPager;
             $productCount += $productPager->count();
 
+            foreach ($productPager as $product) {
+                /** @var $product \Model\Product\Entity */
+                $productVideosByProduct[$product->getId()] = [];
+            }
+
             $child = next($childrenById);
             if (!$child) {
                 break;
             }
         }
 
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPagersByCategory as $productPager) {
-            foreach ($productPager as $product) {
-                /** @var $product \Model\Product\Entity */
-                $productVideosByProduct[$product->getId()] = [];
-            }
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        if (!$item) continue;
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
+        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideosByProduct( $productVideosByProduct );
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
