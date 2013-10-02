@@ -13,7 +13,8 @@ class SelectedFilterAction {
         \Helper\TemplateHelper $helper,
         \Model\Product\Filter $productFilter,
         $baseUrl,
-        $useBaseUrl = false
+        $useBaseUrl = false,
+        $pageTitle = false
     ) {
         $selected = [];
         foreach ($productFilter->dump() as $item) {
@@ -141,9 +142,17 @@ class SelectedFilterAction {
             $filterLinkData[key($filterLinkData)] = $filterItem;
         }
 
+
+        $pageValueData = [];
+        if ( $pageTitle ) {
+            $pageValueData['title'] = $pageTitle;
+        }
+
+
         return [
-            'filters' => $filterLinkData,
-            'values'  => $filterValueData,
+            'filters'   => $filterLinkData,
+            'values'    => $filterValueData,
+            'page'      => $pageValueData
         ];
     }
 }

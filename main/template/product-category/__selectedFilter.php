@@ -3,7 +3,8 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
-    $baseUrl
+    $baseUrl,
+    $pageTitle
 ) {
     $useBaseUrl = true;
 ?>
@@ -12,7 +13,8 @@ return function(
             $helper,
             $productFilter,
             $baseUrl,
-            $useBaseUrl
+            $useBaseUrl,
+            $pageTitle
         )) ?>
     </div>
     <script id="tplSelectedFilter" type="text/html" data-partial="<?= $helper->json([]) ?>">
