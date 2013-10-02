@@ -3,14 +3,18 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
-    $baseUrl
+    $baseUrl,
+    $pageTitle
 ) {
+    $useBaseUrl = true;
 ?>
     <div class="bFilterFoot">
         <?= $helper->renderWithMustache('product-category/_selectedFilter', (new \View\ProductCategory\SelectedFilterAction())->execute(
             $helper,
             $productFilter,
-            $baseUrl
+            $baseUrl,
+            $useBaseUrl,
+            $pageTitle
         )) ?>
     </div>
     <script id="tplSelectedFilter" type="text/html" data-partial="<?= $helper->json([]) ?>">

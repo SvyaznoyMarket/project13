@@ -5,7 +5,8 @@ return function(
     \Model\Product\Filter $productFilter,
     $baseUrl,
     $countUrl,
-    $hotlinks
+    $hotlinks,
+    $pageTitle = false
 ) {
     /** @var $filters \Model\Product\Filter\Entity[] */
     $openFilter = false;
@@ -117,7 +118,7 @@ return function(
         </div>
         <!-- /Фильтр по выбранным параметрам -->
 
-        <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
+        <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl, 'pageTitle' => $pageTitle]) ?>
     </form>
 
 

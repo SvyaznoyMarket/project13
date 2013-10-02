@@ -35,6 +35,7 @@
         'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
         'productFilter' => $productFilter,
         'hotlinks'      => $hotlinks,
+        'pageTitle'     => $title
     ]) // фильтры ?>
 
     <?= $helper->render('product/__listAction', [
