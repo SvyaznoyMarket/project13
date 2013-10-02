@@ -786,8 +786,12 @@
 		 */
 		getDataFromServer: function getDataFromServer( url, callback ) {
 			console.info('getDataFromServer ' + url);
+			
+			if ( catalog.loader ) {
+				catalog.loader.loading();
+			}
 
-			catalog.loader.loading();
+			console.log('getDataFromServer::loading');
 
 			// utils.blockScreen.block('Загрузка товаров');
 
@@ -796,7 +800,9 @@
 				 */
 			var errorHandler = function errorHandler() {
 					// utils.blockScreen.unblock();
-					catalog.loader.complete();
+					if ( catalog.loader ) {
+						catalog.loader.complete();
+					}
 				},
 
 				/**
@@ -817,7 +823,9 @@
 					}
 
 					// utils.blockScreen.unblock();
-					catalog.loader.complete();
+					if ( catalog.loader ) {
+						catalog.loader.complete();
+					}
 				};
 			// end of functions
 
