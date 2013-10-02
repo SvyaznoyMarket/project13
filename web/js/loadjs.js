@@ -485,6 +485,7 @@
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('catalog.js') )
+					.script( getWithVersion('pandora.js') )
 					.wait()
 					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
