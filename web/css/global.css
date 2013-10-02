@@ -12517,6 +12517,26 @@
     zoom: 1;
     *display: inline;
   }
+  .bSearchCategoryRoot .bCatalogList__eItem {
+    width: 298px;
+    height: 48px;
+  }
+  .bSearchCategoryRoot .bCatalogList__eLink {
+    height: 48px;
+  }
+  .bSearchCategoryRoot .bCatalogList .bCategoriesImg {
+    width: 48px;
+    height: 46px;
+  }
+  .bSearchCategoryRoot .bCatalogList .bCategoriesImg__eImg {
+    max-height: 46px;
+    width: 48px;
+    margin-top: 0;
+  }
+  .bSearchCategoryRoot .bCatalogList .bCategoriesName {
+    width: 242px;
+    height: 48px;
+  }
 }
 @media all {
   .bFilter {
