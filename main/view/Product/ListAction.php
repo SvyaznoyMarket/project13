@@ -62,7 +62,7 @@ class ListAction {
                 'review'   => $reviewCompactAction->execute($helper, $product),
                 'line'     =>
                 ($line = $product->getLine())
-                    ? ['name' => $line->getName(), 'productCount' => $line->getProductCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
+                    ? ['name' => $line->getName(), 'productCount' => $line->getLineCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
                     : null
             ];
 
