@@ -23,40 +23,46 @@
 
     <div class="bPopupTitle">ВХОД В ENTER</div>
 
-	<form class="bFormLogin">
-		<fieldset class="bFormLogin__ePlace">
-			<legend class="bFormLogin__ePlaceTitle">У меня есть логин и пароль</legend>
+    <div class="bFormLogin">
+        <?= $page->render('form-forgot') ?>
+        <?= $page->render('form-login') ?>
+        <?= $page->render('form-register') ?>
+    </div>
 
-			<label class="bFormLogin__eLabel">E-mail или мобильный телефон:</label>
-			<input class="text bFormLogin__eInput" type="text" />
+    <!--<form class="bFormLogin">
+        <fieldset class="bFormLogin__ePlace">
+            <legend class="bFormLogin__ePlaceTitle">У меня есть логин и пароль</legend>
 
-			<label class="bFormLogin__eLabel">Пароль:</label>
-			<a class="bFormLogin__eLinkHint mForgotPassword" href="">Забыли пароль?</a>
-			<input class="text bFormLogin__eInput" type="text" />
+            <label class="bFormLogin__eLabel">E-mail или мобильный телефон:</label>
+            <input class="text bFormLogin__eInput" type="text" />
 
-			<button class="bigbutton bFormLogin__eBtnSubmit">Войти</button>
-		</fieldset>
+            <label class="bFormLogin__eLabel">Пароль:</label>
+            <a class="bFormLogin__eLinkHint mForgotPassword" href="">Забыли пароль?</a>
+            <input class="text bFormLogin__eInput" type="text" />
 
-		<fieldset class="bFormLogin__ePlace">
-			<legend class="bFormLogin__ePlaceTitle">Я новый пользователь</legend>
+            <button class="bigbutton bFormLogin__eBtnSubmit">Войти</button>
+        </fieldset>
 
-			<label class="bFormLogin__eLabel">Ваше имя:</label>
-			<input class="text bFormLogin__eInput" type="text" />
+        <fieldset class="bFormLogin__ePlace">
+            <legend class="bFormLogin__ePlaceTitle">Я новый пользователь</legend>
 
-			<label class="bFormLogin__eLabel">Ваш e-mail:</label>
-			<a class="bFormLogin__eLinkHint eMail" href="">У меня нет e-mail</a>
-			<input class="text bFormLogin__eInput" type="text" />
+            <label class="bFormLogin__eLabel">Ваше имя:</label>
+            <input class="text bFormLogin__eInput" type="text" />
 
-			<div class="bInputList">
-				<input class="jsCustomRadio bCustomInput mCustomCheckBig" name="subscribe" id="subscribe" type="checkbox" hidden />
-				<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
-			</div>
+            <label class="bFormLogin__eLabel">Ваш e-mail:</label>
+            <a class="bFormLogin__eLinkHint eMail" href="">У меня нет e-mail</a>
+            <input class="text bFormLogin__eInput" type="text" />
 
-			<button class="bigbutton bFormLogin__eBtnSubmit mDisabled">Регистрация</button>
+            <div class="bInputList">
+                <input class="jsCustomRadio bCustomInput mCustomCheckBig" name="subscribe" id="subscribe" type="checkbox" hidden />
+                <label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
+            </div>
 
-			<p class="bRulesText">Нажимая кнопку «Регистрация», я подтверждаю свое согласие с <a href="">Условиями продажи...</a></p>
+            <button class="bigbutton bFormLogin__eBtnSubmit mDisabled">Регистрация</button>
 
-			<div class="bAuthCompany"><a href="">Регистрация юридического лица</a></div>
-		</fieldset>
-	</form>
+            <p class="bRulesText">Нажимая кнопку «Регистрация», я подтверждаю свое согласие с <a href="">Условиями продажи...</a></p>
+
+            <div class="bAuthCompany"><a href="">Регистрация юридического лица</a></div>
+        </fieldset>
+    </form>-->
 </div>

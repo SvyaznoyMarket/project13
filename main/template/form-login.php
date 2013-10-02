@@ -12,6 +12,7 @@ if (empty($redirect)) $redirect = $request->getUri();
 if (!isset($form)) $form = new \View\User\LoginForm();
 ?>
 
+<?/*?>
 <form id="login-form" action="<?= $page->url('user.login') ?>" class="form" method="post">
     <input type="hidden" name="redirect_to" value="<?= $redirect ?>"/>
 
@@ -37,4 +38,25 @@ if (!isset($form)) $form = new \View\User\LoginForm();
 
         <input type="submit" class="fr button bigbutton" value="Войти" tabindex="3"/>
     </div>
+</form>
+<?*/?>
+
+<form id="login-form" action="<?= $page->url('user.login') ?>" class="form bFormLogin__ePlace" method="post">
+
+    <input type="hidden" name="redirect_to" value="<?= $redirect ?>"/>
+
+    <legend class="bFormLogin__ePlaceTitle">У меня есть логин и пароль</legend>
+
+    <? if ($error = $form->getError('global')) echo $page->render('_formError', array('error' => $error)) ?>
+
+    <label class="bFormLogin__eLabel">E-mail или мобильный телефон:</label>
+    <? if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
+    <input id="signin_username" class="text bFormLogin__eInput" type="text" value="<?= $form->getUsername() ?>" name="signin[username]" />
+
+    <label class="bFormLogin__eLabel">Пароль:</label>
+    <a class="bFormLogin__eLinkHint mForgotPassword" id="forgot-pwd-trigger" href="javascript:void(0)">Забыли пароль?</a>
+    <? if ($error = $form->getError('password')) echo $page->render('_formError', array('error' => $error)) ?>
+    <input class="text bFormLogin__eInput" type="password" id="signin_password" name="signin[password]" />
+
+    <input type="submit" class="bigbutton bFormLogin__eBtnSubmit" value="Войти" />
 </form>
