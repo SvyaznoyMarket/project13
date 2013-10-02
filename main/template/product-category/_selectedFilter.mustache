@@ -7,12 +7,15 @@
         {{#links}}
             {{^last}}
                 <li class="bFilterCheckedParams__eItem mParams">
-                    <a class="bDelete jsHistoryLink" href="{{url}}"></a><span class="bParamsName">{{&name}}</span>
+                    <a class="bDelete jsHistoryLink" data-action="delete" href="{{url}}"></a>
+                    <span class="bParamsName">{{&name}}</span>
                 </li>
             {{/last}}
             {{#last}}
                 <li class="bFilterCheckedParams__eItem mParams mClearAll">
-                    <a class="bDelete jsHistoryLink" href="{{url}}"><strong class="bParamsName">Очистить все</strong></a>
+                    <a class="bDelete jsHistoryLink" href="{{url}}">
+                        <strong class="bParamsName">Очистить все</strong>
+                    </a>
                 </li>
             {{/last}}
         {{/links}}

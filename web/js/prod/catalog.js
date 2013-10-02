@@ -544,8 +544,13 @@
 		 */
 		jsHistoryLinkHandler = function jsHistoryLinkHandler() {
 			var self = $(this),
-				url = self.attr('href');
-			// end of vars
+				url = self.attr('href'),
+				action = self.data('action');
+            // end of vars
+
+            if ( action && action === 'delete' && url.indexOf('?') < 0 ) {
+                url = url.replace(/\/[a-zA-Z0-9_\-]+$/, '');
+            }
 
 			catalog.history.gotoUrl(url);
 
