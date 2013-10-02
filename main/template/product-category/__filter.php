@@ -51,7 +51,11 @@ return function(
         <div class="bFilterHead">
             <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
-            <?= $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?>
+            <? if ( $priceFilter && $productFilter ) {
+                /**@var     $productFilter      \Model\Product\Filter
+                 **@var     $priceFilter        \Model\Product\Filter\Entity **/
+                echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]);
+            } ?>
 
             <div class="bBtnPick clearfix">
                 <button type="submit" class="bBtnPick__eLink mBtnGrey">Подобрать</button>
