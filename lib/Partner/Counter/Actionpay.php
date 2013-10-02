@@ -132,7 +132,15 @@ class Actionpay {
                 \App::logger()->error(['action' => __METHOD__, 'message' => 'В куках отсутсвует actionpay'], ['partner', 'actionpay']);
             }
 
-            $appid = \App::request()->cookies->get('utm_source') ?: 0;
+            $appid = null;
+            $user = \App::user();
+            if ( $user ) {
+                $appid = 0;
+                $uEntity = $user->getEntity();
+                if ( $uEntity ) {
+                    $appid = $uEntity->getEmail();
+                }
+            }
 
             $link = strtr('actionpay={actionpayId}&apid={appid}', [
                 '{actionpayId}' => $actionpayId,
