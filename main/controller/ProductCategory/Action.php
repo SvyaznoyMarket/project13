@@ -719,7 +719,10 @@ class Action {
         }
 
         // filter values
-        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        if ($request->get('scrollTo')) {
+            $values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        }
+
         if ($isGlobal) {
             $values['global'] = 1;
         }
