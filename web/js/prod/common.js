@@ -1157,16 +1157,83 @@ $(document).ready(function(){
  
  
 /**
+ * Предупреждения при вводе текста
+ *
+ * @author      Shaposhnik Vitaly
+ * @requires    jQuery
+ */
+
+;(function($) {
+    $.fn.warnings = function() {
+        var rwn = $('<strong id="ruschars" class="pswwarning">RUS</strong>');
+
+        rwn.css({
+            'border': '1px solid red',
+            'color': 'red',
+            'border-radius': '3px',
+            'background-color':'#fff',
+            'position': 'absolute',
+            'height': '16px',
+            'padding': '1px 3px',
+            'margin-top': '2px'
+        });
+
+        var cln = rwn.clone().attr('id','capslock').html('CAPS LOCK').css('marginLeft', '-78px');
+
+        $(this).keypress(function(e) {
+            var s = String.fromCharCode( e.which );
+
+            if ( s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey ) {
+                if ( !$('#capslock').length ) {
+                    $(this).after(cln);
+                }
+            }
+            else {
+                if ( $('#capslock').length ) {
+                    $('#capslock').remove();
+                }
+            }
+        });
+
+        $(this).keyup(function(e) {
+            if( /[а-яА-ЯёЁ]/.test( $(this).val() ) ) {
+                if ( !$('#ruschars').length ) {
+                    if ( $('#capslock').length ) {
+                        rwn.css('marginLeft','-116px');
+                    }
+                    else {
+                        rwn.css('marginLeft','-36px');
+                    }
+                    $(this).after(rwn);
+                }
+            }
+            else {
+                if ( $('#ruschars').length ) {
+                    $('#ruschars').remove();
+                }
+            }
+        });
+    };
+})(jQuery);
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
  * Окно входа на сайт
  *
  * @author      Shaposhnik Vitaly
  * @requires    jQuery
  */
+
+
 var Login = new (function () {
-    /**
-     * Vars
-     */
-    var firstNameInput = $('#register_first_name'), // поле "Ваше имя" на форме регистрации
+
+    var register = false, // корректность регистрационных данных
+        firstNameInput = $('#register_first_name'), // поле "Ваше имя" на форме регистрации
         mailPhoneInput = $('#register_username'),
         regBtn = $('#register-form .bigbutton');
     // end of vars
@@ -1175,59 +1242,79 @@ var Login = new (function () {
     /**
      * Проверяем как e-mail
      */
-    this.chEmail = true;
-    /**
-     * Корректность регистрационных данных
-     */
-    this.register = false;
+    this.checkEmail = function checkEmail() {
+        if ( mailPhoneInput.hasClass('registerPhone') ) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
 
 
     /**
-     * Переключение типов проверки
+     * Дисейблим кнопку регистрации
      */
-    this.registerAnotherWay = function () {
-        Login.registerWayChange();
-        mailPhoneInput.val('');
-        this.register = false;
+    this.registerBtnDisable = function registerBtnDisable() {
+        register = false;
         regBtn.addClass('mDisabled');
+    };
+
+
+    /**
+     * Енейблим кнопку регистрации
+     */
+    this.registerBtnEnable = function registerBtnEnable() {
+        register = true;
+        regBtn.removeClass('mDisabled');
     };
 
 
     /**
      * Переключение типов проверки
      */
-    this.registerWayChange = function () {
-        var label = $('.registerAnotherWay'),
-            btn = $('.registerAnotherWayBtn');
+    this.registerAnotherWay = function registerAnotherWay() {
+        this.registerWayChange();
+        mailPhoneInput.val('');
+        this.registerBtnDisable();
+    };
 
-        if ( this.chEmail ) {
-            this.chEmail = false;
+
+    /**
+     * Изменение типа проверки
+     */
+    this.registerWayChange = function registerWayChange() {
+        var label = $('.registerAnotherWay'),
+            btn = $('.registerAnotherWayBtn'),
+            registerPhonePH = $('.registerPhonePH');
+
+        if ( this.checkEmail() ) {
             label.html('Ваш мобильный телефон:');
             btn.html('Ввести e-mail');
             mailPhoneInput.attr('maxlength', 10);
             mailPhoneInput.addClass('registerPhone');
+            registerPhonePH.show();
         }
         else {
-            this.chEmail = true;
             label.html('Ваш e-mail:');
             btn.html('У меня нет e-mail');
             mailPhoneInput.removeAttr('maxlength');
             mailPhoneInput.removeClass('registerPhone');
+            registerPhonePH.hide();
         }
-        $('.registerPhonePH').toggle();
     };
 
 
     /**
      * Клик ...
      */
-    this.registerBtnClick = function () {
-        if ( !this.register ) {
+    this.registerBtnClick = function registerBtnClick() {
+        if ( !register ) {
             return false;
         }
 
         if ( typeof(_gaq) !== 'undefined' ) {
-            var type = ( this.chEmail ) ? 'email' : 'mobile';
+            var type = ( this.checkEmail() ) ? 'email' : 'mobile';
 
             _gaq.push(['_trackEvent', 'Account', 'Create account', type]);
         }
@@ -1237,41 +1324,32 @@ var Login = new (function () {
     /**
      * Проверка заполненности инпутов
      */
-    this.checkInputs = function ( e ) {
-        if ( this.chEmail ) {
+    this.checkInputs = function checkInputs( e ) {
+        if ( this.checkEmail() ) {
             // проверяем как e-mail
-            if ( ( mailPhoneInput.val().search('@') !== -1 ) &&
-                ( firstNameInput.val().length > 0 ) ) {
-                this.register = true;
-                regBtn.removeClass('mDisabled');
+            if ( (mailPhoneInput.val().search('@') !== -1) && (firstNameInput.val().length > 0) ) {
+                this.registerBtnEnable();
             }
             else {
-                this.register = false;
-                regBtn.addClass('mDisabled');
+                this.registerBtnDisable();
             }
         }
         else {
             // проверяем как телефон
-            if ( ( (e.which >= 96) && (e.which <= 105) ) ||
-                ( (e.which >= 48) && (e.which <= 57) ) ||
-                (e.which === 8) ) {
+            if ( ((e.which >= 96) && (e.which <= 105)) || ((e.which >= 48) && (e.which <= 57)) || (e.which === 8) ) {
                 //если это цифра или бэкспэйс
-
             }
             else {
                 // если это не цифра
                 var clearVal = mailPhoneInput.val().replace(/\D/g, '');
-
                 mailPhoneInput.val(clearVal);
             }
 
             if ( (mailPhoneInput.val().length === 10) && (firstNameInput.val().length > 0) ) {
-                regBtn.removeClass('mDisabled');
-                this.register = true;
+                this.registerBtnEnable();
             }
             else {
-                this.register = false;
-                regBtn.addClass('mDisabled');
+                this.registerBtnDisable();
             }
         }
     };
@@ -1280,7 +1358,7 @@ var Login = new (function () {
     /**
      * Authorization process
      */
-    this.openAuth = function () {
+    this.openAuth = function openAuth() {
         $('#auth-block').lightbox_me({
             centered: true,
             autofocus: true,
@@ -1296,16 +1374,14 @@ var Login = new (function () {
     /**
      * Сабмит формы регистрации или авторизации
      */
-    this.formSubmit = function ( e, param ) {
+    this.formSubmit = function formSubmit( e, param ) {
         e.preventDefault();
 
-        var form = $(this), //$(e.target)
-            wholemessage = form.serializeArray();
+        var form = $(this),
+            wholemessage = form.serializeArray(),
+            form_id = form.attr('id');
 
-        form.find('[type="submit"]:first').attr('disabled', true).val('login-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...');
-        wholemessage['redirect_to'] = form.find('[name="redirect_to"]:first').val();
-
-        var authFromServer = function ( response ) {
+        var authFromServer = function authFromServer( response ) {
             if ( !response.success ) {
                 form.html($(response.data.content).html());
                 regEmailValid();
@@ -1313,7 +1389,7 @@ var Login = new (function () {
                 return false;
             }
 
-            if ( 'login-form' == form.attr('id') ) {
+            if ( 'login-form' == form_id ) {
                 if ( typeof(_gaq) !== 'undefined' ) {
                     var type = ( (form.find('#signin_username').val().search('@')) !== -1 ) ? 'email' : 'mobile';
 
@@ -1331,7 +1407,7 @@ var Login = new (function () {
             }
 
             if ( form.data('redirect') ) {
-                if (response.data.link) {
+                if ( response.data.link ) {
                     window.location = response.data.link;
                 }
                 else {
@@ -1354,19 +1430,17 @@ var Login = new (function () {
             }
         };
 
-        $.ajax({
-            type: 'POST',
-            url: form.attr('action'),
-            data: wholemessage,
-            success: authFromServer
-        });
+        form.find('[type="submit"]:first').attr('disabled', true).val('login-form' == form_id ? 'Вхожу...' : 'Регистрируюсь...');
+        wholemessage['redirect_to'] = form.find('[name="redirect_to"]:first').val();
+
+        $.post(form.attr('action'), wholemessage, authFromServer, 'json');
     };
 
 
     /**
      * Отображение формы "Забыли пароль"
      */
-    this.forgotFormToggle = function () {
+    this.forgotFormToggle = function forgotFormToggle() {
         $('#reset-pwd-form').toggle();
         $('#login-form').toggle();
         return false;
@@ -1376,13 +1450,10 @@ var Login = new (function () {
     /**
      * Сабмит формы "Забыли пароль"
      */
-    this.forgotFormSubmit = function () {
+    this.forgotFormSubmit = function forgotFormSubmit() {
         var form = $(this);
 
-        form.find('.error_list').html('Запрос отправлен. Идет обработка...');
-        form.find('.whitebutton').attr('disabled', 'disabled');
-
-        $.post(form.prop('action'), form.serializeArray(), function( resp ) {
+        var ajaxSuccess = function ajaxSuccess( resp ) {
             if ( resp.success ) {
                 if ( typeof(_gaq) !== 'undefined' ) {
                     var type = ( (form.find('input.text').val().search('@')) !== -1 ) ? 'email' : 'mobile';
@@ -1405,13 +1476,21 @@ var Login = new (function () {
                 form.find('.whitebutton').removeAttr('disabled');
             }
 
-        }, 'json');
+        }
+
+        form.find('.error_list').html('Запрос отправлен. Идет обработка...');
+        form.find('.whitebutton').attr('disabled', 'disabled');
+
+        $.post(form.prop('action'), form.serializeArray(), ajaxSuccess, 'json');
 
         return false;
     };
 
 
-    this.logoutLinkClick = function () {
+    /**
+     * Клик кнопки "Выход"
+     */
+    this.logoutLinkClick = function logoutLinkClick() {
         if ( typeof(_kmq) !== 'undefined' ) {
             _kmq.push(['clearIdentity']);
         }
@@ -1421,22 +1500,23 @@ var Login = new (function () {
     /**
      * Инизиализация
      */
-    this.init = function () {
+    this.init = function init() {
         // register e-mail check
-        if ( !$('#register_username').length ) {
+        if ( !mailPhoneInput.length ) {
             return false;
         }
 
-        $(document).on('click', '.registerAnotherWayBtn', this.registerAnotherWay);
+        $(document).on('click', '.registerAnotherWayBtn', $.proxy(this.registerAnotherWay, this));
         regBtn.on('click', this.registerBtnClick);
-        mailPhoneInput.on('keyup', this.checkInputs);
-        firstNameInput.on('keyup', this.checkInputs);
+        mailPhoneInput.on('keyup', $.proxy(this.checkInputs, this));
+        firstNameInput.on('keyup', $.proxy(this.checkInputs, this));
         $(document).on('click', '.bAuthLink', this.openAuth);
         $('#login-form, #register-form').data('redirect', true).on('submit', this.formSubmit);
         $(document).on('click', '#forgot-pwd-trigger', this.forgotFormToggle);
         $(document).on('click', '#remember-pwd-trigger', this.forgotFormToggle);
         $(document).on('submit', '#reset-pwd-form', this.forgotFormSubmit);
         $(document).on('click', '#bUserlogoutLink', this.logoutLinkClick);
+        $('#signin_password').warnings();
     };
 })
 
@@ -1454,7 +1534,7 @@ $(document).ready(function () {
  
 $(document).ready(function() {
 
-	(function() {
+	//(function() {
 		/*register e-mail check*/
 		/*if ( !$('#register_username').length ) {
 			return false;
@@ -1555,7 +1635,7 @@ $(document).ready(function() {
 
 		mailPhoneInput.bind('keyup', checkInputs);
 		firstNameInput.bind('keyup', checkInputs);*/
-	}());
+	//}());
 	
 
 	/**
@@ -1642,7 +1722,7 @@ $(document).ready(function() {
 		return false;
 	});*/
 
-	;(function($) {
+	/*;(function($) {
 		$.fn.warnings = function() {
 			var rwn = $('<strong id="ruschars" class="pswwarning">RUS</strong>');
 
@@ -1695,7 +1775,7 @@ $(document).ready(function() {
 		};
 	})(jQuery);
 
-	$('#signin_password').warnings();
+	$('#signin_password').warnings();*/
 
 	/*$('#bUserlogoutLink').on('click', function() {
 		if ( typeof(_kmq) !== 'undefined' ) {

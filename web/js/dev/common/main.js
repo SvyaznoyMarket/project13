@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	(function() {
+	//(function() {
 		/*register e-mail check*/
 		/*if ( !$('#register_username').length ) {
 			return false;
@@ -101,7 +101,7 @@ $(document).ready(function() {
 
 		mailPhoneInput.bind('keyup', checkInputs);
 		firstNameInput.bind('keyup', checkInputs);*/
-	}());
+	//}());
 	
 
 	/**
@@ -188,7 +188,7 @@ $(document).ready(function() {
 		return false;
 	});*/
 
-	;(function($) {
+	/*;(function($) {
 		$.fn.warnings = function() {
 			var rwn = $('<strong id="ruschars" class="pswwarning">RUS</strong>');
 
@@ -241,7 +241,7 @@ $(document).ready(function() {
 		};
 	})(jQuery);
 
-	$('#signin_password').warnings();
+	$('#signin_password').warnings();*/
 
 	/*$('#bUserlogoutLink').on('click', function() {
 		if ( typeof(_kmq) !== 'undefined' ) {
