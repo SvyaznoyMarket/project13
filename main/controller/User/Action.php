@@ -134,6 +134,8 @@ class Action {
                             'request' => \App::request(),
                         ]),
                     ],
+                    //'error' => !$form->isValid() ? ['code' => 0, 'message' => 'Форма заполнена неверно'] : null,
+                    'form' => ['errors' => $form->getErrors()],
                 ]);
             }
         }
