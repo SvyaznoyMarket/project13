@@ -719,7 +719,11 @@ class Action {
         }
 
         // filter values
-        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        if ($request->get('scrollTo')) {
+            // TODO: SITE-2218 сделать однотипные фильтры для ювелирки и неювелирки
+            $values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        }
+
         if ($isGlobal) {
             $values['global'] = 1;
         }
