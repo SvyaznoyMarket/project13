@@ -4,6 +4,7 @@ namespace Controller\ProductCategory;
 
 class Action {
     private static $globalCookieName = 'global';
+    protected $pageTitle;
 
     /**
      * @param string        $categoryPath
@@ -380,6 +381,9 @@ class Action {
             }
         }
 
+        // Формируем заголовок страницы (пока используется только в ajax)
+        $this->setPageTitle($category, $brand);
+
         // если категория содержится во внешнем узле дерева
         if ($category->isLeaf() || $textSearched) {
             $page = new \View\ProductCategory\LeafPage();
@@ -646,6 +650,9 @@ class Action {
                     \App::closureTemplating()->getParam('helper'),
                     $productSorting
                 ),
+                'page'          => [
+                    'title'     => $this->getPageTitle()
+                ],
             ]);
         }
 
@@ -825,5 +832,38 @@ class Action {
      */
     public static function inStore() {
         return (bool)\App::request()->get('instore');
+    }
+
+
+    /**
+     * @return mixed
+     */
+    protected function getPageTitle() {
+        return $this->pageTitle;
+    }
+
+
+    /**
+     * @param $category         \Model\Product\Category\Entity|null
+     * @param $brand            \Model\Brand\Entity|null
+     * @param bool|string       $defaultTitle
+     * @return bool
+     */
+    protected function setPageTitle($category, $brand, $defaultTitle = false)
+    {
+        if ( $category ) {
+            /**@var $category \Model\Product\Category\Entity **/
+            $this->pageTitle = $category->getName();
+            if ( $brand ) {
+                /**@var $brand \Model\Brand\Entity **/
+                $this->pageTitle .= ' ' . $brand->getName();
+            }
+            return true;
+        }
+
+        if ( $defaultTitle ) {
+            return $this->pageTitle = $defaultTitle;
+        }
+        return false;
     }
 }
