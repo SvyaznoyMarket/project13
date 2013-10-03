@@ -5,7 +5,8 @@
  * @param	{Object}	ENTER	Enter namespace
  */
 ;(function( ENTER ) {
-	var userUrl = ENTER.config.pageConfig.userUrl,
+	var config = ENTER.config,
+		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils;
 	// end of vars
 	
@@ -187,6 +188,8 @@
 					topAuth.hide();
 					topAuth.after(show_user);
 					bottomAuth.html(userName).addClass('mAuth');
+				
+					config.authUser = userName;
 				}
 				else {
 					topAuth.show();

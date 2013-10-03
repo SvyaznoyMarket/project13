@@ -385,7 +385,9 @@ window.ANALYTICS = {
 
             product: function (data) {
                 window.rcAsyncInit = function () {
-                    rcApi.view(data);
+                    var user = window.ENTER.config.authUser || '';
+
+                    rcApi.view(data, user);
                 }
             },
 
