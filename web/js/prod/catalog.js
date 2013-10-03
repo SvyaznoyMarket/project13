@@ -106,6 +106,13 @@
 
 				paginationWrap.empty();
 				paginationWrap.html(html);
+			},
+
+			page: function( html ) {
+				var title = $('.bTitlePage');
+
+				title.empty();
+				title.html(html);
 			}
 		},
 
@@ -192,6 +199,12 @@
 				console.log('end of render paginaton');
 
 				return html;
+			},
+
+			page: function( data ) {
+				var title = data.title;
+
+				return title;
 			}
 		},
 
@@ -211,8 +224,11 @@
 			catalog.filter.resetForm();
 
 			for ( key in dataToRender ) {
-				if ( catalog.filter.render.hasOwnProperty(key) && catalog.filter.applyTemplate.hasOwnProperty(key) ) {
+				if ( catalog.filter.render.hasOwnProperty(key) ) {
 					template = catalog.filter.render[key]( dataToRender[key] );
+				}
+
+				if ( catalog.filter.applyTemplate.hasOwnProperty(key) ) {
 					catalog.filter.applyTemplate[key](template);
 				}
 			}
@@ -954,7 +970,8 @@
 				infBtn = viewParamPanel.find('.mInfinity'),
 				pagingBtn = viewParamPanel.find('.mPaging'),
 				pageBtn = viewParamPanel.find('.bSortingList__eItem.mPage'),
-				url = catalog.filter.getFilterUrl();
+				url = catalog.filter.getFilterUrl(),
+				hasPaging = document.location.search.match('page=');
 			// end of vars
 
 			pagingBtn.show();
@@ -967,7 +984,9 @@
 			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
 			$(window).on('scroll', catalog.infScroll.checkScroll);
 
-			if ( catalog.enableHistoryAPI ) {
+			console.info(hasPaging);
+
+			if ( catalog.enableHistoryAPI && hasPaging ) {
 				catalog.history.gotoUrl(url);
 			}
 

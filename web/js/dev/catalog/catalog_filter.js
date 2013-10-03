@@ -73,6 +73,13 @@
 
 				paginationWrap.empty();
 				paginationWrap.html(html);
+			},
+
+			page: function( html ) {
+				var title = $('.bTitlePage');
+
+				title.empty();
+				title.html(html);
 			}
 		},
 
@@ -159,6 +166,12 @@
 				console.log('end of render paginaton');
 
 				return html;
+			},
+
+			page: function( data ) {
+				var title = data.title;
+
+				return title;
 			}
 		},
 
@@ -178,8 +191,11 @@
 			catalog.filter.resetForm();
 
 			for ( key in dataToRender ) {
-				if ( catalog.filter.render.hasOwnProperty(key) && catalog.filter.applyTemplate.hasOwnProperty(key) ) {
+				if ( catalog.filter.render.hasOwnProperty(key) ) {
 					template = catalog.filter.render[key]( dataToRender[key] );
+				}
+
+				if ( catalog.filter.applyTemplate.hasOwnProperty(key) ) {
 					catalog.filter.applyTemplate[key](template);
 				}
 			}
