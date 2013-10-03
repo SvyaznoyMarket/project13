@@ -393,13 +393,17 @@ window.ANALYTICS = {
 
             category: function (data) {
                 window.rcAsyncInit = function () {
-                    rcApi.categoryView(data);
+                    var user = window.ENTER.config.authUser || '';
+
+                    rcApi.categoryView(data, user);
                 }
             },
 
             transaction: function (data) {
                 window.rcAsyncInit = function () {
-                    rrApi.order(data);
+                    var user = window.ENTER.config.authUser || '';
+
+                    rrApi.order(data, user);
                 }
             },
 
