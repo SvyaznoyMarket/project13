@@ -383,39 +383,42 @@ window.ANALYTICS = {
 
         window.RetailRocket = {
 
-            product: function (data) {
+            product: function ( data, userData ) {
                 window.rcAsyncInit = function () {
-                    var user = window.ENTER.config.authUser || '';
-
-                    rcApi.view(data, user);
+                    rcApi.view(data, userData);
                 }
             },
 
-            category: function (data) {
+            category: function ( data, userData ) {
                 window.rcAsyncInit = function () {
-                    var user = window.ENTER.config.authUser || '';
-
-                    rcApi.categoryView(data, user);
+                    rcApi.categoryView(data, userData);
                 }
             },
 
-            transaction: function (data) {
+            transaction: function ( data, userData ) {
                 window.rcAsyncInit = function () {
-                    var user = window.ENTER.config.authUser || '';
-
-                    rrApi.order(data, user);
+                    rrApi.order(data, userData);
                 }
             },
 
             action: function (data) {
-                var rr_data = $('#RetailRocketJS').data('value');
-                if (rr_data && rr_data.routeName && rr_data.sendData) {
-                    if (rr_data.routeName == 'product') {
-                        RetailRocket.product(rr_data.sendData);
-                    } else if (rr_data.routeName == 'product.category') {
-                        RetailRocket.category(rr_data.sendData);
-                    } else if (rr_data.routeName == 'order.complete') {
-                        RetailRocket.transaction(rr_data.sendData);
+                var rr_data = $('#RetailRocketJS').data('value'),
+                    userInfo = window.ENTER.config.userInfo || {},
+                    sendUserData = {
+                        userId: userInfo.ID || false,
+                        hasUserEmail: userInfo.email || ''
+                    };
+                // end of vars
+
+                if ( rr_data && rr_data.routeName && rr_data.sendData ) {
+                    if ( rr_data.routeName == 'product' ) {
+                        RetailRocket.product(rr_data.sendData, sendUserData);
+                    }
+                    else if ( rr_data.routeName == 'product.category' ) {
+                        RetailRocket.category(rr_data.sendData, sendUserData);
+                    }
+                    else if ( rr_data.routeName == 'order.complete' ) {
+                        RetailRocket.transaction(rr_data.sendData, sendUserData);
                     }
                 }
             },
