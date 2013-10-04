@@ -29,7 +29,7 @@ if ($product instanceof \Model\Product\Entity) {
     if (!$scr_product['amount']) $scr_product['amount'] = $scr_product['price'];
     $scr_product['currency'] = 'RUB';
     /*$scr_product['url'] = 'http://' . $domain . $product->getLink(); */
-    $scr_product['url'] = 'http://' . $domain . $_SERVER['REQUEST_URI'];
+    $scr_product['url'] = 'http://' . $domain . strtok($_SERVER["REQUEST_URI"], '?');
     $scr_product['photo'] = $photo;
 }
 
