@@ -105,7 +105,7 @@
 			catalog.liveScroll = false;
 			url = url.addParameterToUrl('ajax', 'true');
 
-			window.docCookies.setItem('infScroll', 0, 0, '/' );
+			window.docCookies.setItem('infScroll', 0);
 			$(window).off('scroll', catalog.infScroll.checkScroll);
 			catalog.history.getDataFromServer(url, catalog.filter.renderCatalogPage);
 
