@@ -38,12 +38,12 @@
 
         <div class="bPriceLine clearfix">
             <span class="bPrice"><strong>{{price}}</strong> <span class="rubl">p</span></span>
-            {{^^#variations}}
-                <span class="bOptions"><span class="bDecor">Варианты</span></span>
-            {{/variations}}
+            {{#hasVariations}}
+            <span class="bOptions"><span class="bDecor">Варианты</span></span>
+            {{/hasVariations}}
         </div>
 
-        {{#variations}}
+        {{#hasVariations}}
         <div class="bOptionsSection">
             <i class="bCorner"></i>
             <i class="bCornerDark"></i>
@@ -54,7 +54,7 @@
             {{/variations}}
             </ul>
         </div>
-        {{/variations}}
+        {{/hasVariations}}
 
         <div class="bBtnLine clearfix">
             {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
