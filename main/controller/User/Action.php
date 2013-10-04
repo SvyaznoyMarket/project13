@@ -104,6 +104,8 @@ class Action {
                                 ],
                                 'link' => $this->redirect,
                             ],
+                            'error' => null,
+                            'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])
                         : new \Http\RedirectResponse($this->redirect);
 
@@ -123,6 +125,11 @@ class Action {
                 }
             }
 
+            $formErrors = [];
+            foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
+            }
+
             // xhr
             if ($request->isXmlHttpRequest()) {
                 return new \Http\JsonResponse([
@@ -134,8 +141,8 @@ class Action {
                             'request' => \App::request(),
                         ]),
                     ],
-                    //'error' => !$form->isValid() ? ['code' => 0, 'message' => 'Форма заполнена неверно'] : null,
-                    'form' => ['errors' => $form->getErrors()],
+                    'form' => ['error' => $formErrors],
+                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
                 ]);
             }
         }
@@ -242,6 +249,8 @@ class Action {
                                 ]),
                                 'link' => $this->redirect,
                             ],
+                            'error' => null,
+                            'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])
                         : new \Http\RedirectResponse($this->redirect);
 
@@ -266,6 +275,11 @@ class Action {
                 }
             }
 
+            $formErrors = [];
+            foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
+            }
+
             // xhr
             if ($request->isXmlHttpRequest()) {
                 return new \Http\JsonResponse([
@@ -277,6 +291,8 @@ class Action {
                             'request' => \App::request(),
                         ]),
                     ],
+                    'form' => ['error' => $formErrors],
+                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
                 ]);
             }
         }

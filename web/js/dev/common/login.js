@@ -15,11 +15,11 @@
     constructors.Login = (function() {
         'use strict';
 
-        var loginNameField = $('#signin_username'),
-            loginPasswordField = $('#signin_password'),
-            firstNameField = $('#register_first_name'), // поле "Ваше имя" на форме регистрации
-            mailPhoneField = $('#register_username'),
-            regBtn = $('#register-form .bigbutton'),
+        var signinUserNameField = $('#signin_username'),
+            signinPasswordField = $('#signin_password'),
+            registerFirstNameField = $('#register_first_name'),
+            registerMailPhoneField = $('#register_username'),
+            //regBtn = $('#register-form .bigbutton'),
 
             /**
              * Конфигурация валидатора для формы логина
@@ -28,13 +28,13 @@
             loginValidationConfig = {
                 fields: [
                     {
-                        fieldNode: loginNameField,
+                        fieldNode: signinUserNameField,
                         require: true,
                         customErr: 'Не указан логин',
                         validateOnChange: true
                     },
                     {
-                        fieldNode: loginPasswordField,
+                        fieldNode: signinPasswordField,
                         require: true,
                         customErr: 'Не указан пароль',
                         validateOnChange: true
@@ -50,13 +50,13 @@
                 registerValidationConfig = {
                 fields: [
                     {
-                        fieldNode: firstNameField,
+                        fieldNode: registerFirstNameField,
                         require: true,
                         customErr: 'Не указано имя',
                         validateOnChange: true
                     },
                     {
-                        fieldNode: mailPhoneField,
+                        fieldNode: registerMailPhoneField,
                         validBy: 'isEmail',
                         require: true,
                         customErr: 'Некорректно введен e-mail',
@@ -75,20 +75,16 @@
             }
             // constructor body
 
-            if ( !mailPhoneField.length ) {
+            this.formId = '';// id текущей формы
+
+            if ( !registerMailPhoneField.length ) {
                 return false;
             }
 
-
-//            $(document).on('click', '#login-form .bigbutton', this._submitBtnClick);
-
-
             $(document).on('click', '.registerAnotherWayBtn', $.proxy(this._registerAnotherWay, this));
-            regBtn.on('click', this._registerBtnClickLog);
-            firstNameField.on('keyup', $.proxy(this._checkInputs, this));
-            mailPhoneField.on('keyup', $.proxy(this._checkInputs, this));
+            $(document).on('click', '#register_first_name, #register_username', $.proxy(this._checkInputs, this));
             $(document).on('click', '.bAuthLink', this._openAuth);
-            $('#login-form, #register-form').data('redirect', true).on('submit', this._formSubmit);
+            $('#login-form, #register-form').data('redirect', true).on('submit', $.proxy(this._formSubmit, this));
             $(document).on('click', '#forgot-pwd-trigger', this._forgotFormToggle);
             $(document).on('click', '#remember-pwd-trigger', this._forgotFormToggle);
             $(document).on('submit', '#reset-pwd-form', this._forgotFormSubmit);
@@ -97,33 +93,83 @@
 
 
         /**
-         * Дисейблим кнопку регистрации
+         * Показ сообщений об ошибках при оформлении заказа
+         *
+         * @param   {String}    msg     Сообщение которое необходимо показать пользователю
          */
-        /*this.registerBtnDisable = function registerBtnDisable() {
-            register = false;
-            regBtn.addClass('mDisabled');
-        };*/
-
+        Login.prototype._showError = function ( msg/*, callback*/ ) {
+            console.log(msg);
+        };
 
         /**
-         * Енейблим кнопку регистрации
+         * Обработка ошибок формы
+         *
+         * @param   {Object}    formError   Объект с полем содержащим ошибки
          */
-        /*this.registerBtnEnable = function registerBtnEnable() {
-            register = true;
-            regBtn.removeClass('mDisabled');
-        };*/
+        Login.prototype._formErrorHandler = function ( formError ) {
+            console.warn('Ошибка в поле');
 
+            console.log('***************************');
+            console.log( formError );
+            console.log('***************************');
+
+
+//            var field = $('[name="order['+formError.field+']"]');
+//
+//            var clearError = function clearError() {
+//                validator._unmarkFieldError($(this));
+//            };
+//
+//            validator._markFieldError(field, formError.message);
+//            field.bind('focus', clearError);
+        };
+
+        /**
+         * Обработка ошибок из ответа сервера
+         */
+        Login.serverErrorHandler = {
+            'default': function( res ) {
+                console.log('Обработчик ошибки');
+
+                if ( res.error && res.error.message ) {
+                    this._showError(res.error.message, function() {
+                        document.location.href = res.redirect;
+                    });
+
+                    return;
+                }
+
+                document.location.href = res.redirect;
+            },
+
+            0: function( res ) {
+                console.warn('Обработка ошибок формы');
+
+                var formError = null;
+
+                if ( res.redirect ) {
+                    Login._showError(res.error.message, function(){
+                        document.location.href = res.redirect;
+                    });
+
+                    return;
+                }
+
+                this._showError(res.error.message);
+
+                for ( var i = res.form.error.length - 1; i >= 0; i-- ) {
+                    formError = res.form.error[i];
+                    console.warn(formError);
+                    //Login._formErrorHandler(formError);
+                }
+            }
+        };
 
         /**
          * Проверяем как e-mail
          */
         Login.prototype._checkEmail = function() {
-            if ( mailPhoneField.hasClass('registerPhone') ) {
-                return false;
-            }
-            else {
-                return true;
-            }
+            return registerMailPhoneField.hasClass('registerPhone') ? false : true;
         };
 
         /**
@@ -134,25 +180,25 @@
                 btn = $('.registerAnotherWayBtn'),
                 registerPhonePH = $('.registerPhonePH');
 
-            mailPhoneField.val('');
+            registerMailPhoneField.val('');
 
             if ( this._checkEmail() ) {
                 label.html('Ваш мобильный телефон:');
                 btn.html('Ввести e-mail');
-                mailPhoneField.attr('maxlength', 10);
-                mailPhoneField.addClass('registerPhone');
+                registerMailPhoneField.attr('maxlength', 10);
+                registerMailPhoneField.addClass('registerPhone');
                 registerPhonePH.show();
-                registerValidator.setValidate( mailPhoneField, {validBy: 'isPhone', customErr: 'Некорректно введен телефон'} );
+                registerValidator.setValidate( registerMailPhoneField, {validBy: 'isPhone', customErr: 'Некорректно введен телефон'} );
             }
             else {
                 label.html('Ваш e-mail:');
                 btn.html('У меня нет e-mail');
-                mailPhoneField.removeAttr('maxlength');
-                mailPhoneField.removeClass('registerPhone');
+                registerMailPhoneField.removeAttr('maxlength');
+                registerMailPhoneField.removeClass('registerPhone');
                 registerPhonePH.hide();
-                registerValidator.setValidate( mailPhoneField, {validBy: 'isEmail', customErr: 'Некорректно введен e-mail'} );
+                registerValidator.setValidate( registerMailPhoneField, {validBy: 'isEmail', customErr: 'Некорректно введен e-mail'} );
             }
-            //this._registerBtnDisable();
+//            this._registerBtnDisable();
         };
 
         /**
@@ -162,7 +208,7 @@
 
             if ( this._checkEmail() ) {
                 // проверяем как e-mail
-//                if ( (mailPhoneField.val().search('@') !== -1) && (firstNameField.val().length > 0) ) {
+//                if ( (registerMailPhoneField.val().search('@') !== -1) && (registerFirstNameField.val().length > 0) ) {
 //                    //this.registerBtnEnable();
 //                }
 //                else {
@@ -176,50 +222,17 @@
                 }
                 else {
                     // если это не цифра
-                    var clearVal = mailPhoneField.val().replace(/\D/g, '');
-                    mailPhoneField.val(clearVal);
+                    var clearVal = registerMailPhoneField.val().replace(/\D/g, '');
+                    registerMailPhoneField.val(clearVal);
                 }
 
-//                if ( (mailPhoneField.val().length === 10) && (firstNameField.val().length > 0) ) {
+//                if ( (registerMailPhoneField.val().length === 10) && (registerFirstNameField.val().length > 0) ) {
 //                    //this.registerBtnEnable();
 //                }
 //                else {
 //                    //this.registerBtnDisable();
 //                }
             }
-
-            /*loginValidator.setValidate( loginNameField, {
-                require: true,
-                customErr: 'Не введено название улицы',
-                validateOnChange: true
-            });
-            loginValidator.setValidate( loginPasswordField, {
-                require: true,
-                customErr: 'Не введено название улицы',
-                validateOnChange: true
-            });*/
-
-            /*loginValidator.removeFieldToValidate( loginNameField );
-            loginValidator.setValidate( loginPasswordField, {
-                require: true,
-                customErr: 'Не введено название улицы',
-                validateOnChange: true
-            });*/
-
-//            console.info('**************************************');
-            /*registerValidator.validate({
-                onInvalid: function( err ) {
-                    console.warn('invalid');
-                    console.log(err);
-                },
-                onValid: function () {
-                    console.info('valid');
-                    //$('#login-form').submit();this._formSubmit();
-                }
-            });*/
-//            console.info('**************************************');
-            //return false;
-
         };
 
         /**
@@ -237,62 +250,45 @@
             return false;
         };
 
-
-        /**
-         * Логирование при сабмите формы регистрации или авторизации
-         *
-         * @param formId
-         * @private
-         */
-        Login.prototype._formSubmitLog = function ( form, formId ) {
-            if ( 'login-form' == formId ) {
-                if ( typeof(_gaq) !== 'undefined' ) {
-                    var type = ( (form.find('#signin_username').val().search('@')) !== -1 ) ? 'email' : 'mobile';
-
-                    _gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
-                }
-
-                if ( typeof(_kmq) !== 'undefined' ) {
-                    _kmq.push(['identify', form.find('#signin_username').val() ]);
-                }
-            }
-            else if ( 'register-form' == formId ) {
-                if ( typeof(_kmq) !== 'undefined' ) {
-                    _kmq.push(['identify', form.find('#register_username').val() ]);
-                }
-            }
-        };
-
         /**
          * Сабмит формы регистрации или авторизации
          */
         Login.prototype._formSubmit = function ( e, param ) {
-            e.preventDefault();
+            var form = $(e.target),
+                wholemessage = form.serializeArray();
+            // end of vars
 
-            var form = $(this),
-                wholemessage = form.serializeArray(),
-                formId = form.attr('id');
+            Login.formId = form.attr('id');
+
+            e.preventDefault();
 
             var authFromServer = function ( response ) {
                 if ( !response.success ) {
                     //form.html($(response.data.content).html());
                     //regEmailValid();
+                    //loginValidator._unmarkFieldError(signinPasswordField);
+console.log(response);
+                    console.log(Login.formId+'++++++++++');
+//                    Login.prototype._showError( response.error.message );
 
-                    /*loginValidator.validate({
-                        onInvalid: function( err ) {
-                            console.warn('invalid');
-                            console.log(err);
-                        },
-                        onValid: function () {
-                            console.info('valid');
-                            //$('#login-form').submit();this._formSubmit();
-                        }
-                    });*/
-                    loginValidator._markFieldError(loginNameField, 'test');
+                    if ( Login.serverErrorHandler.hasOwnProperty(response.error.code) ) {
+                        console.log('Есть обработчик');
+                        Login.serverErrorHandler[response.error.code](response);
+//                        $.proxy(Login.serverErrorHandler[response.error.code](response), this);
+
+                    }
+                    else {
+                        console.log('Стандартный обработчик');
+
+                        Login.serverErrorHandler['default'](response);
+                    }
+
+                    form.find('[type="submit"]:first').attr('disabled', false).val('login-form' == Login.formId ? 'Войти' : 'Регистрация');
+
                     return false;
                 }
 
-                Login.prototype._formSubmitLog( form, formId );
+                Login.prototype._formSubmitLog( form );
 
                 if ( form.data('redirect') ) {
                     if ( response.data.link ) {
@@ -318,10 +314,10 @@
                 }
             };
 
-            form.find('[type="submit"]:first').attr('disabled', true).val('login-form' == formId ? 'Вхожу...' : 'Регистрируюсь...');
+            form.find('[type="submit"]:first').attr('disabled', true).val('login-form' == Login.formId ? 'Вхожу...' : 'Регистрируюсь...');
             wholemessage['redirect_to'] = form.find('[name="redirect_to"]:first').val();
 
-            $.post(form.attr('action'), wholemessage, authFromServer, 'json');
+            $.post(form.attr('action'), wholemessage, $.proxy(authFromServer, this), 'json');
         };
 
         /**
@@ -338,6 +334,8 @@
          */
         Login.prototype._forgotFormSubmit = function () {
             var form = $(this);
+
+            Login.formId = form.attr('id');
 
             var ajaxSuccess = function ajaxSuccess( resp ) {
                 if ( resp.success ) {
@@ -373,17 +371,32 @@
         };
 
         /**
-         * Логирование при клике на кнопку регистрации
+         * Логирование при сабмите формы регистрации или авторизации
+         *
+         * @param formId
+         * @private
          */
-        Login.prototype._registerBtnClickLog = function () {
-            //if ( !this.register ) {
-            //    return false;
-            //}
+        Login.prototype._formSubmitLog = function ( form ) {
+            if ( 'login-form' == Login.formId ) {
+                if ( typeof(_gaq) !== 'undefined' ) {
+                    var type = ( (form.find('#signin_username').val().search('@')) !== -1 ) ? 'email' : 'mobile';
 
-            if ( typeof(_gaq) !== 'undefined' ) {
-                var type = ( this._checkEmail() ) ? 'email' : 'mobile';
+                    _gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
+                }
 
-                _gaq.push(['_trackEvent', 'Account', 'Create account', type]);
+                if ( typeof(_kmq) !== 'undefined' ) {
+                    _kmq.push(['identify', form.find('#signin_username').val() ]);
+                }
+            }
+            else if ( 'register-form' == Login.formId ) {
+                if ( typeof(_gaq) !== 'undefined' ) {
+                    var type = ( this._checkEmail() ) ? 'email' : 'mobile';
+                    _gaq.push(['_trackEvent', 'Account', 'Create account', type]);
+                }
+
+                if ( typeof(_kmq) !== 'undefined' ) {
+                    _kmq.push(['identify', form.find('#register_username').val() ]);
+                }
             }
         };
 
@@ -395,23 +408,6 @@
                 _kmq.push(['clearIdentity']);
             }
         };
-
-        /**
-         * Клик кнопки логина
-         */
-//        Login.prototype._submitBtnClick = function () {
-//            console.info('**************************************');
-//            loginValidator.validate({
-//                onInvalid: function( err ) {
-//                    console.warn('invalid');
-//                    console.log(err);
-//                    return false;
-//                },
-//                onValid: function () {console.info('valid');$('#login-form').submit();/*this._formSubmit();*/}
-//            });
-//            console.info('**************************************');
-//            return false;
-//        };
 
 
         return Login;
