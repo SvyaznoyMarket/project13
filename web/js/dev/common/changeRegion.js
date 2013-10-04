@@ -6,7 +6,7 @@
  */
 ;(function( global ) {
 
-		$('#jscity').autocomplete( {
+	$('#jscity').autocomplete( {
 		autoFocus: true,
 		appendTo: '#jscities',
 		source: function( request, response ) {
@@ -112,7 +112,16 @@
 			$('.popupRegion').trigger('close');
 		}
 	});
-	
+
+	$('body').on('keyup click', '#jscity', function(e) {
+		if( $(this).val() ) {
+			$('.inputClear').show();
+		}
+		else{
+			$('.inputClear').hide();
+		}
+	});
+
 	$('.inputClear').bind('click', function(e) {
 		e.preventDefault();
 		$('#jscity').val('');
