@@ -50,7 +50,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
     <? if ($error = $form->getError('global')) echo $page->render('_formError', array('error' => $error)) ?>
 
     <label class="bFormLogin__eLabel">E-mail или мобильный телефон:</label>
-    <? if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
+    <? //if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
     <input id="signin_username" class="text bFormLogin__eInput" type="text" value="<?= $form->getUsername() ?>" name="signin[username]" />
 
     <label class="bFormLogin__eLabel">Пароль:</label>
@@ -58,5 +58,5 @@ if (!isset($form)) $form = new \View\User\LoginForm();
     <? if ($error = $form->getError('password')) echo $page->render('_formError', array('error' => $error)) ?>
     <input class="text bFormLogin__eInput" type="password" id="signin_password" name="signin[password]" />
 
-    <input type="submit" class="bigbutton bFormLogin__eBtnSubmit" value="Войти" />
+    <input type="submit" class="bigbutton bFormLogin__eBtnSubmit" data-loading-value="Вхожу..." value="Войти" />
 </form>

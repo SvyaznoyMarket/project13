@@ -54,13 +54,13 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
     <legend class="bFormLogin__ePlaceTitle">Я новый пользователь</legend>
 
     <label class="bFormLogin__eLabel">Ваше имя:</label>
-    <? if ($error = $form->getError('first_name')) echo $page->render('_formError', array('error' => $error)) ?>
+    <? //if ($error = $form->getError('first_name')) echo $page->render('_formError', array('error' => $error)) ?>
     <input type="text" id="register_first_name" class="text bFormLogin__eInput" name="register[first_name]" value="<?= $form->getFirstName() ?>"/>
 
     <label class="bFormLogin__eLabel registerAnotherWay">Ваш e-mail:</label>
     <a class="bFormLogin__eLinkHint eMail registerAnotherWayBtn" href="#">У меня нет e-mail</a>
 
-    <? if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
+    <? //if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
     <div class="pb5">
         <span class="registerPhonePH">+7</span>
         <input type="text" id="register_username" class="text bFormLogin__eInput" name="register[username]" value="<?= $form->getUsername() ?>" />
@@ -71,7 +71,7 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
         <label class="bCustomLabel mCustomLabelBig" style="/*display: block;*/" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
     </div>
 
-    <input type="submit" class="bigbutton bFormLogin__eBtnSubmit" value="Регистрация" />
+    <input type="submit" class="bigbutton bFormLogin__eBtnSubmit" data-loading-value="Регистрируюсь..." value="Регистрация" />
 
     <p class="bRulesText">Нажимая кнопку «Регистрация», я подтверждаю свое согласие с <a href="/terms">Условиями продажи...</a></p>
 
