@@ -10392,7 +10392,7 @@
   }
   .bReviews .bReview .bReview__eText {
     float: left;
-    width: 445px;
+    width: 565px;
     font-size: 14px;
   }
   .bReviews .bReview .bReview__eText .mark {
@@ -10409,7 +10409,7 @@
   .bReviews .bReview .bReview__eText div,
   .bReviews .bReview .bReview__eText p {
     float: left;
-    width: 420px;
+    width: 540px;
     margin: 2px 0 5px;
   }
   .bReviews .bReview__eLogo {
