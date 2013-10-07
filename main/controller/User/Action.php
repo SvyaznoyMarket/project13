@@ -529,26 +529,37 @@ class Action {
 
         $username = trim((string)$request->get('login'));
 
-        $error = null;
+        $errorMsg = null;
+        $formErrors = [];
         try {
             if (!$username) {
-                $error = 'Не указан email или мобильный телефон';
-                throw new \Exception($error);
+                $errorMsg = 'Не указан email или мобильный телефон';
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'login'];
+                throw new \Exception($errorMsg);
             }
 
             $result = \App::coreClientV2()->query('user/reset-password', [
                 (strpos($username, '@') ? 'email' : 'mobile') => $username,
             ]);
             if (isset($result['confirmed']) && $result['confirmed']) {
-                return new \Http\JsonResponse(['success' => true]);
+                return new \Http\JsonResponse([
+                    'error' => null,
+                    'notice' => ['message' => 'Новый пароль был вам выслан по почте или смс!', 'type' => 'info']
+                ]);
             }
         } catch(\Exception $e) {
             \App::exception()->remove($e);
 
-            $error = $error ?: ('Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
+            if ( $errorMsg == null ) {
+                $errorMsg = 'Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : '');
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'global'];
+            }
         }
 
-        return new \Http\JsonResponse(['success' => false, 'error' => $error]);
+        return new \Http\JsonResponse([
+            'form' => ['error' => $formErrors],
+            'error' => ['code' => 0, 'message' => 'Вы ввели неправильные данные']
+        ]);
     }
 
     public function reset(\Http\Request $request) {

@@ -58,5 +58,5 @@ if (!isset($form)) $form = new \View\User\LoginForm();
     <? if ($error = $form->getError('password')) echo $page->render('_formError', array('error' => $error)) ?>
     <input class="text bFormLogin__eInput" type="password" id="signin_password" name="signin[password]" />
 
-    <input type="submit" class="bigbutton bFormLogin__eBtnSubmit" value="Войти" />
+    <input type="submit" class="bigbutton bFormLogin__eBtnSubmit" data-loading-value="Вхожу..." value="Войти" />
 </form>

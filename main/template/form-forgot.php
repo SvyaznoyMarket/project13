@@ -45,9 +45,9 @@ $title = isset($title) ? $title : 'Восстановление пароля:'
         <div class="pb5">Введите e-mail или мобильный телефон, который использовали при регистрации, и мы пришлем вам пароль.</div>
         <div class="error_list"></div>
         <div class="pb5">
-            <input name="login" type="text" class="text width315 mb10" value=""/>
+            <input id="forgot_pwd_login" name="login" type="text" class="text width315 mb10" value=""/>
         </div>
-        <input type="submit" class="fr button whitebutton" value="Отправить запрос"/>
+        <input type="submit" class="fr button whitebutton" data-loading-value="Запрос отправлен. Идет обработка..." value="Отправить запрос"/>
 
         <div class="clear pb10"></div>
 
