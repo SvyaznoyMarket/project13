@@ -178,7 +178,7 @@
 					show_user = '';
 				//end of vars
 
-				if ( userInfo.name !== null ) {
+				if ( userInfo && userInfo.name !== null ) {
 					dtmpl = {
 						user: userInfo.name
 					};
@@ -190,6 +190,8 @@
 					bottomAuth.html(userInfo.name).addClass('mAuth');
 
 					config.userInfo = userInfo;
+
+					$('body').trigger('userLogged', [userInfo]);
 				}
 				else {
 					topAuth.show();
@@ -212,26 +214,6 @@
 		 */
 		BlackBox.prototype.init = function() {
 			var self = this;
-
-            /**
-             * Авторизованность пользователя
-             * Вызывается событием «userLogged» у body
-             *
-             * @param event
-             * @param userInfo — данные пользователя (если существуют)
-             */
-            var userLogged = function userLogin(event, userInfo) {
-                if (userInfo && userInfo.name) {
-                    $('.uEntered').show();
-                    $('.uNotEntered').hide();
-                    $('body').addClass('isEntered');
-                } else {
-                    $('.uEntered').hide();
-                    $('.uNotEntered').show();
-                    $('body').removeClass('isEntered');
-                }
-            };
-            $('body').bind('userLogged', userLogged);
 
 				/**
 				 * Обработчик Action присланных с сервера
@@ -282,8 +264,6 @@
 					if ( actionInfo !== undefined ) {
 						startAction(actionInfo);
 					}
-
-                    $('body').trigger('userLogged', [userInfo]);
 				};
 			//end of functions
 

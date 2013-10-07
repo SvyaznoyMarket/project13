@@ -9669,6 +9669,7 @@
     font-size: 30px;
   }
   .priceSale {
+    display: none;
     margin: 5px 0 10px;
     cursor: pointer;
   }
