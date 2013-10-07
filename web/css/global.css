@@ -12467,6 +12467,13 @@
     border: 1px solid #e6e6e6;
     background: #f6f6f6;
   }
+  .bCatalogList__eItem:nth-child(3),
+  .bCatalogList__eItem:nth-child(6),
+  .bCatalogList__eItem:nth-child(9),
+  .bCatalogList__eItem:nth-child(12),
+  .bCatalogList__eItem:nth-child(15) {
+    margin-right: 0;
+  }
   .bCatalogList__eItem.mBannerItem {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
@@ -12679,7 +12686,7 @@
   .bFilterValues {
     float: left;
     padding: 20px 10px 0 20px;
-    width: 748px;
+    width: 745px;
     margin-left: -1px;
     max-height: 289px;
     overflow: auto;
