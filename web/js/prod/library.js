@@ -1900,7 +1900,7 @@ window.MapInterface = (function() {
 				else {
 					topAuth.show();
 				}
-			}; 
+			};
 			
 			return {
 				'update': update
@@ -1918,6 +1918,26 @@ window.MapInterface = (function() {
 		 */
 		BlackBox.prototype.init = function() {
 			var self = this;
+
+            /**
+             * Авторизованность пользователя
+             * Вызывается событием «userLogged» у body
+             *
+             * @param event
+             * @param userInfo — данные пользователя (если существуют)
+             */
+            var userLogged = function userLogin(event, userInfo) {
+                if (userInfo && userInfo.name) {
+                    $('.uEntered').show();
+                    $('.uNotEntered').hide();
+                    $('body').addClass('isEntered');
+                } else {
+                    $('.uEntered').hide();
+                    $('.uNotEntered').show();
+                    $('body').removeClass('isEntered');
+                }
+            };
+            $('body').bind('userLogged', userLogged);
 
 				/**
 				 * Обработчик Action присланных с сервера
@@ -1968,6 +1988,8 @@ window.MapInterface = (function() {
 					if ( actionInfo !== undefined ) {
 						startAction(actionInfo);
 					}
+
+                    $('body').trigger('userLogged', [userInfo]);
 				};
 			//end of functions
 
