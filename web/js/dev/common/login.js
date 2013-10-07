@@ -1,5 +1,71 @@
 ;(function( ENTER ) {
-    var constructors = ENTER.constructors;
+    var constructors = ENTER.constructors,
+        signinUserNameField = $('.jsSigninUsername'),
+        signinPasswordField = $('.jsSigninPassword'),
+        registerFirstNameField = $('.jsRegisterFirstName'),
+        registerMailPhoneField = $('.jsRegisterUsername'),
+        forgotPwdLoginField = $('.jsForgotPwdLogin'),
+
+        /**
+         * Конфигурация валидатора для формы логина
+         * @type {Object}
+         */
+            signinValidationConfig = {
+            fields: [
+                {
+                    fieldNode: signinUserNameField,
+                    require: true,
+                    customErr: 'Не указан логин',
+                    validateOnChange: true
+                },
+                {
+                    fieldNode: signinPasswordField,
+                    require: true,
+                    customErr: 'Не указан пароль'
+                    //validateOnChange: true
+                }
+            ]
+        },
+        signinValidator = new FormValidator(signinValidationConfig),
+
+        /**
+         * Конфигурация валидатора для формы регистрации
+         * @type {Object}
+         */
+            registerValidationConfig = {
+            fields: [
+                {
+                    fieldNode: registerFirstNameField,
+                    require: true,
+                    customErr: 'Не указано имя',
+                    validateOnChange: true
+                },
+                {
+                    fieldNode: registerMailPhoneField,
+                    validBy: 'isEmail',
+                    require: true,
+                    customErr: 'Некорректно введен e-mail',
+                    validateOnChange: true
+                }
+            ]
+        },
+        registerValidator = new FormValidator(registerValidationConfig),
+
+        /**
+         * Конфигурация валидатора для формы регистрации
+         * @type {Object}
+         */
+            forgotPwdValidationConfig = {
+            fields: [
+                {
+                    fieldNode: forgotPwdLoginField,
+                    require: true,
+                    customErr: 'Не указан email или мобильный телефон',
+                    validateOnChange: true
+                }
+            ]
+        },
+        forgotValidator = new FormValidator(forgotPwdValidationConfig);
     // end of vars
 
 
@@ -14,75 +80,6 @@
      */
     constructors.Login = (function() {
         'use strict';
-
-        var signinUserNameField = $('#signin_username'),
-            signinPasswordField = $('#signin_password'),
-            registerFirstNameField = $('#register_first_name'),
-            registerMailPhoneField = $('#register_username'),
-            forgotPwdLoginField = $('#forgot_pwd_login'),
-
-            /**
-             * Конфигурация валидатора для формы логина
-             * @type {Object}
-             */
-            signinValidationConfig = {
-                fields: [
-                    {
-                        fieldNode: signinUserNameField,
-                        require: true,
-                        customErr: 'Не указан логин',
-                        validateOnChange: true
-                    },
-                    {
-                        fieldNode: signinPasswordField,
-                        require: true,
-                        customErr: 'Не указан пароль'
-                        //validateOnChange: true
-                    }
-                ]
-            },
-            signinValidator = new FormValidator(signinValidationConfig),
-
-            /**
-             * Конфигурация валидатора для формы регистрации
-             * @type {Object}
-             */
-                registerValidationConfig = {
-                fields: [
-                    {
-                        fieldNode: registerFirstNameField,
-                        require: true,
-                        customErr: 'Не указано имя',
-                        validateOnChange: true
-                    },
-                    {
-                        fieldNode: registerMailPhoneField,
-                        validBy: 'isEmail',
-                        require: true,
-                        customErr: 'Некорректно введен e-mail',
-                        validateOnChange: true
-                    }
-                ]
-            },
-            registerValidator = new FormValidator(registerValidationConfig),
-
-            /**
-             * Конфигурация валидатора для формы регистрации
-             * @type {Object}
-             */
-                forgotPwdValidationConfig = {
-                fields: [
-                    {
-                        fieldNode: forgotPwdLoginField,
-                        require: true,
-                        customErr: 'Не указан email или мобильный телефон',
-                        validateOnChange: true
-                    }
-                ]
-            },
-            forgotValidator = new FormValidator(forgotPwdValidationConfig);
-        // end of vars
-
 
         function Login() {
             // enforces new
@@ -99,11 +96,10 @@
             }
 
             $(document).on('click', '.registerAnotherWayBtn', $.proxy(this.registerAnotherWay, this));
-            $(document).on('click', '#register_first_name, #register_username', $.proxy(this.checkInputs, this));
+            $(document).on('keyup', '.jsRegisterFirstName, .jsRegisterUsername', $.proxy(this.checkInputs, this));
             $(document).on('click', '.bAuthLink', this.openAuth);
             $('#login-form, #register-form, #reset-pwd-form').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
-            $(document).on('click', '#forgot-pwd-trigger', this.forgotFormToggle);
-            $(document).on('click', '#remember-pwd-trigger', this.forgotFormToggle);
+            $(document).on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
             $(document).on('click', '#bUserlogoutLink', this.logoutLinkClickLog);
         }
 
@@ -127,6 +123,8 @@
             else {
                 $('#' + this.formId + ' .bFormLogin__ePlaceTitle').after($('<ul class="error_list" />').append('<li>' + msg + '</li>'));
             }
+
+            return false;
         };
 
         /**
@@ -145,12 +143,11 @@
             // end of functions
 
             console.warn('Ошибка в поле');
-            console.warn(this.formName);
-            console.warn(formError.message);
-            console.warn(field);
 
             validator._markFieldError(field, formError.message);
             field.bind('focus', clearError);
+
+            return false;
         };
 
         /**
@@ -165,7 +162,7 @@
                         document.location.href = res.redirect;
                     });
 
-                    return;
+                    return false;
                 }
 
                 document.location.href = res.redirect;
@@ -198,6 +195,8 @@
                         this.showError(formError.message);
                     }
                 }
+
+                return false;
             }
         };
 
@@ -235,6 +234,8 @@
                 registerPhonePH.hide();
                 registerValidator.setValidate( registerMailPhoneField, {validBy: 'isEmail', customErr: 'Некорректно введен e-mail'} );
             }
+
+            return false;
         };
 
         /**
@@ -252,6 +253,8 @@
                     registerMailPhoneField.val(clearVal);
                 }
             }
+
+            return false;
         };
 
         /**
@@ -283,6 +286,8 @@
 
                 btn.attr('disabled', (disabled ? false : true)).val(value2).data('loading-value', value1);
             }
+
+            return false;
         }
 
         /**
@@ -345,6 +350,8 @@
             this.submitBtnLoadingDisplay( form.find('[type="submit"]:first') );
             wholemessage['redirect_to'] = form.find('[name="redirect_to"]:first').val();
             $.post(form.attr('action'), wholemessage, $.proxy(authFromServer, this), 'json');
+
+            return false;
         };
 
         /**
@@ -353,6 +360,7 @@
         Login.prototype.forgotFormToggle = function () {
             $('#reset-pwd-form').toggle();
             $('#login-form').toggle();
+
             return false;
         };
 
@@ -365,12 +373,12 @@
         Login.prototype.formSubmitLog = function ( form ) {
             if ( 'login-form' == this.formId ) {
                 if ( typeof(_gaq) !== 'undefined' ) {
-                    var type = ( (form.find('#signin_username').val().search('@')) !== -1 ) ? 'email' : 'mobile';
+                    var type = ( (form.find('.jsSigninUsername').val().search('@')) !== -1 ) ? 'email' : 'mobile';
                     _gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
                 }
 
                 if ( typeof(_kmq) !== 'undefined' ) {
-                    _kmq.push(['identify', form.find('#signin_username').val() ]);
+                    _kmq.push(['identify', form.find('.jsSigninUsername').val() ]);
                 }
             }
             else if ( 'register-form' == this.formId ) {
@@ -380,12 +388,12 @@
                 }
 
                 if ( typeof(_kmq) !== 'undefined' ) {
-                    _kmq.push(['identify', form.find('#register_username').val() ]);
+                    _kmq.push(['identify', form.find('.jsRegisterUsername').val() ]);
                 }
             }
             else if ( 'reset-pwd-form' == this.formId ) {
                 if ( typeof(_gaq) !== 'undefined' ) {
-                    var type = ( (form.find('input.text').val().search('@')) !== -1 ) ? 'email' : 'mobile';
+                    var type = ( (form.find('.jsForgotPwdLogin').val().search('@')) !== -1 ) ? 'email' : 'mobile';
                     _gaq.push(['_trackEvent', 'Account', 'Forgot password', type]);
                 }
             }
@@ -398,6 +406,8 @@
             if ( typeof(_kmq) !== 'undefined' ) {
                 _kmq.push(['clearIdentity']);
             }
+
+            return false;
         };
 
         return Login;
@@ -409,5 +419,3 @@
     });
 
 }(window.ENTER));
-
-

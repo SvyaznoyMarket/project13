@@ -54,16 +54,14 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
     <legend class="bFormLogin__ePlaceTitle">Я новый пользователь</legend>
 
     <label class="bFormLogin__eLabel">Ваше имя:</label>
-    <? //if ($error = $form->getError('first_name')) echo $page->render('_formError', array('error' => $error)) ?>
-    <input type="text" id="register_first_name" class="text bFormLogin__eInput" name="register[first_name]" value="<?= $form->getFirstName() ?>"/>
+    <input type="text" class="text bFormLogin__eInput jsRegisterFirstName" name="register[first_name]" value="<?= $form->getFirstName() ?>"/>
 
     <label class="bFormLogin__eLabel registerAnotherWay">Ваш e-mail:</label>
     <a class="bFormLogin__eLinkHint eMail registerAnotherWayBtn" href="#">У меня нет e-mail</a>
 
-    <? //if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
     <div class="pb5">
         <span class="registerPhonePH">+7</span>
-        <input type="text" id="register_username" class="text bFormLogin__eInput" name="register[username]" value="<?= $form->getUsername() ?>" />
+        <input type="text" class="text bFormLogin__eInput jsRegisterUsername" name="register[username]" value="<?= $form->getUsername() ?>" />
     </div>
 
     <div class="bInputList">

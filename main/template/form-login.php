@@ -47,16 +47,13 @@ if (!isset($form)) $form = new \View\User\LoginForm();
 
     <legend class="bFormLogin__ePlaceTitle">У меня есть логин и пароль</legend>
 
-    <? if ($error = $form->getError('global')) echo $page->render('_formError', array('error' => $error)) ?>
-
     <label class="bFormLogin__eLabel">E-mail или мобильный телефон:</label>
-    <? //if ($error = $form->getError('username')) echo $page->render('_formError', array('error' => $error)) ?>
-    <input id="signin_username" class="text bFormLogin__eInput" type="text" value="<?= $form->getUsername() ?>" name="signin[username]" />
+    <input class="text bFormLogin__eInput jsSigninUsername" type="text" value="<?= $form->getUsername() ?>" name="signin[username]" />
 
     <label class="bFormLogin__eLabel">Пароль:</label>
-    <a class="bFormLogin__eLinkHint mForgotPassword" id="forgot-pwd-trigger" href="javascript:void(0)">Забыли пароль?</a>
-    <? if ($error = $form->getError('password')) echo $page->render('_formError', array('error' => $error)) ?>
-    <input class="text bFormLogin__eInput" type="password" id="signin_password" name="signin[password]" />
+    <a class="bFormLogin__eLinkHint mForgotPassword jsForgotPwdTrigger" href="javascript:void(0)">Забыли пароль?</a>
+
+    <input class="text bFormLogin__eInput jsSigninPassword" type="password" name="signin[password]" />
 
     <input type="submit" class="bigbutton bFormLogin__eBtnSubmit" data-loading-value="Вхожу..." value="Войти" />
 </form>

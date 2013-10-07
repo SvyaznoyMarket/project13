@@ -40,11 +40,11 @@ $title = isset($title) ? $title : 'Восстановление пароля:'
 
     <label class="bFormLogin__eLabel">Введите e-mail или мобильный телефон, который использовали при регистрации, и мы пришлем вам пароль.</label>
 
-    <input id="forgot_pwd_login" class="text bFormLogin__eInput" type="text" value="" name="forgot[login]" />
+    <input class="text bFormLogin__eInput jsForgotPwdLogin" type="text" value="" name="forgot[login]" />
 
     <input type="submit" class="whitebutton bFormLogin__eBtnSubmit" data-loading-value="Идет обработка..." value="Отправить запрос" />
 
     <?php if ($hasLoginLink): ?>
-        Если вы вспомнили пароль, то вам надо лишь<br/><strong><a id="remember-pwd-trigger" href="javascript:void(0)" class="orange underline">войти в систему</a></strong>.
+        Если вы вспомнили пароль, то вам надо лишь<br/><strong><a href="javascript:void(0)" class="jsRememberPwdTrigger orange underline">войти в систему</a></strong>.
     <?php endif ?>
 </form>
