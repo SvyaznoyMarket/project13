@@ -4,6 +4,7 @@ namespace Controller\ProductCategory;
 
 class Action {
     private static $globalCookieName = 'global';
+    protected $pageTitle;
 
     /**
      * @param string        $categoryPath
@@ -380,6 +381,9 @@ class Action {
             }
         }
 
+        // Формируем заголовок страницы (пока используется только в ajax)
+        $this->setPageTitle($category, $brand);
+
         // если категория содержится во внешнем узле дерева
         if ($category->isLeaf() || $textSearched) {
             $page = new \View\ProductCategory\LeafPage();
@@ -479,6 +483,7 @@ class Action {
         /** @var $child \Model\Product\Category\Entity */
         $child = reset($childrenById);
         $productPagersByCategory = [];
+        $productVideosByProduct = [];
         $productCount = 0;
 
         foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
@@ -487,32 +492,18 @@ class Action {
             $productPagersByCategory[$child->getId()] = $productPager;
             $productCount += $productPager->count();
 
+            foreach ($productPager as $product) {
+                /** @var $product \Model\Product\Entity */
+                $productVideosByProduct[$product->getId()] = [];
+            }
+
             $child = next($childrenById);
             if (!$child) {
                 break;
             }
         }
 
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPagersByCategory as $productPager) {
-            foreach ($productPager as $product) {
-                /** @var $product \Model\Product\Entity */
-                $productVideosByProduct[$product->getId()] = [];
-            }
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        if (!$item) continue;
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
+        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideosByProduct( $productVideosByProduct );
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
@@ -659,6 +650,9 @@ class Action {
                     \App::closureTemplating()->getParam('helper'),
                     $productSorting
                 ),
+                'page'          => [
+                    'title'     => $this->getPageTitle()
+                ],
             ]);
         }
 
@@ -732,7 +726,11 @@ class Action {
         }
 
         // filter values
-        //$values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        if ($request->get('scrollTo')) {
+            // TODO: SITE-2218 сделать однотипные фильтры для ювелирки и неювелирки
+            $values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        }
+
         if ($isGlobal) {
             $values['global'] = 1;
         }
@@ -834,5 +832,38 @@ class Action {
      */
     public static function inStore() {
         return (bool)\App::request()->get('instore');
+    }
+
+
+    /**
+     * @return mixed
+     */
+    protected function getPageTitle() {
+        return $this->pageTitle;
+    }
+
+
+    /**
+     * @param $category         \Model\Product\Category\Entity|null
+     * @param $brand            \Model\Brand\Entity|null
+     * @param bool|string       $defaultTitle
+     * @return bool
+     */
+    protected function setPageTitle($category, $brand, $defaultTitle = false)
+    {
+        if ( $category ) {
+            /**@var $category \Model\Product\Category\Entity **/
+            $this->pageTitle = $category->getName();
+            if ( $brand ) {
+                /**@var $brand \Model\Brand\Entity **/
+                $this->pageTitle .= ' ' . $brand->getName();
+            }
+            return true;
+        }
+
+        if ( $defaultTitle ) {
+            return $this->pageTitle = $defaultTitle;
+        }
+        return false;
     }
 }

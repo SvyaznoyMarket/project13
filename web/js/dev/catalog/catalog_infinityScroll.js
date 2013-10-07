@@ -73,7 +73,8 @@
 				infBtn = viewParamPanel.find('.mInfinity'),
 				pagingBtn = viewParamPanel.find('.mPaging'),
 				pageBtn = viewParamPanel.find('.bSortingList__eItem.mPage'),
-				url = catalog.filter.getFilterUrl();
+				url = catalog.filter.getFilterUrl(),
+				hasPaging = document.location.search.match('page=');
 			// end of vars
 
 			pagingBtn.show();
@@ -86,7 +87,11 @@
 			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
 			$(window).on('scroll', catalog.infScroll.checkScroll);
 
-			catalog.history.gotoUrl(url);
+			console.info(hasPaging);
+
+			if ( catalog.enableHistoryAPI && hasPaging ) {
+				catalog.history.gotoUrl(url);
+			}
 
 			console.log('infinity scroll enable');
 		},
@@ -100,7 +105,7 @@
 			catalog.liveScroll = false;
 			url = url.addParameterToUrl('ajax', 'true');
 
-			window.docCookies.setItem('infScroll', 0, 0, '/' );
+			window.docCookies.setItem('infScroll', 0);
 			$(window).off('scroll', catalog.infScroll.checkScroll);
 			catalog.history.getDataFromServer(url, catalog.filter.renderCatalogPage);
 

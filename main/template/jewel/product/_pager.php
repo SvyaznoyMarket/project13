@@ -27,6 +27,16 @@ if (!isset($isAddInfo)) $isAddInfo = false;
     data-calclink="<?= $page->url('old.product.delivery') ?>" />
 <?php endif ?>
 
+<? if ($pager->hasPages()): ?>
+<div class="fr allpagerJewel mBtn" alt="все товары в категории" title="все товары в категории"
+     data-url="<?= $page->helper->replacedUrl(array('page' => null), null, $request->attributes->get('route') . ( strpos($request->attributes->get('route'), 'sliderInfinity') !== false ? '' : '.sliderInfinity') ) ?>"
+     data-page="<?= $pager->getPage() ?>"
+     data-lastpage="<?= $pager->getLastPage() ?>"
+     data-filter="<?= $filterData ?>"
+></div>
+<?= $page->render('_pagination', array('pager' => $pager)) ?>
+<? endif ?>
+
 <? if ($pager->count()): ?>
     <div class="line"></div>
 <? endif ?>

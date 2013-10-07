@@ -33,13 +33,15 @@
         'category'    => $selectedCategory,
     ]) ?>
 
-    <? if (!$selectedCategory): ?>
-        <?= $helper->render('search/__category', [
-            'searchQuery'      => $searchQuery,
-            'categories'       => $categories,
-            'selectedCategory' => $selectedCategory,
-        ]) // категории товаров ?>
-    <? endif ?>
+    <div class="bSearchCategoryRoot">
+        <? if (!$selectedCategory): ?>
+            <?= $helper->render('search/__category', [
+                'searchQuery'      => $searchQuery,
+                'categories'       => $categories,
+                'selectedCategory' => $selectedCategory,
+            ]) // категории товаров ?>
+        <? endif ?>
+    </div>
 
     <?= $helper->render('product/__listAction', [
         'pager'          => $productPager,
@@ -52,6 +54,8 @@
         'productVideosByProduct' => [], //$productVideosByProduct,
     ]) // листинг ?>
 
-    <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+    <div class="bSortingLine mPagerBottom clearfix">
+        <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+    </div>
 
 </div>

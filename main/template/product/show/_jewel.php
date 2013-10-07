@@ -212,6 +212,8 @@ $is_showed = [];
     <?= $helper->render('product/__trustfactorRight', ['trustfactorRight' => $trustfactorRight]) ?>
 </div><!--/right section -->
 
+<div class="clear"></div>
+
 <div class="bBottomBuy clearfix">
     <div class="bBottomBuy__eHead">
         <div class="bBottomBuy__eTitle"><?= $title ?></div>

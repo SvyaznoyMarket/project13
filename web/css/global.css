@@ -9319,7 +9319,7 @@
   }
   .bBottomBuy {
     position: relative;
-    z-index: 10;
+    z-index: 15;
     clear: both;
     margin: 0 0 20px;
   }
@@ -9328,6 +9328,7 @@
     width: 435px;
     font-weight: bold;
     font-size: 14px;
+    margin: 5px 0 0;
   }
   .bBottomBuy__eTitle {
     font: 800 16px/1.2 tahoma, verdana, arial, helvetica, sans-serif;
@@ -9732,18 +9733,15 @@
     z-index: 100;
   }
   .bSlider__eInner {
-    position: relative;
     overflow: hidden;
     width: 600px;
-    height: 246px;
     margin: 0 auto;
     padding: 3px 3px 0;
   }
   .bSlider__eList {
     position: relative;
-    overflow: hidden;
     width: 5000px;
-    height: 225px;
+    height: 232px;
   }
   .bSlider__eList .productImg {
     display: table-cell;
@@ -9792,6 +9790,7 @@
   .bSlider__eItem {
     display: none;
     float: left;
+    margin-top: 4px;
     width: 120px;
     height: 210px;
   }
@@ -9958,7 +9957,7 @@
   }
   .bWidgetBuy .bAwardSection {
     text-align: center;
-    margin: 20px 0 0;
+    margin: 20px 0 10px;
   }
   .bDeliveryFreeAddress {
     margin: 10px 0 10px;
@@ -10393,7 +10392,7 @@
   }
   .bReviews .bReview .bReview__eText {
     float: left;
-    width: 445px;
+    width: 565px;
     font-size: 14px;
   }
   .bReviews .bReview .bReview__eText .mark {
@@ -10410,7 +10409,7 @@
   .bReviews .bReview .bReview__eText div,
   .bReviews .bReview .bReview__eText p {
     float: left;
-    width: 420px;
+    width: 540px;
     margin: 2px 0 5px;
   }
   .bReviews .bReview__eLogo {
@@ -12116,8 +12115,9 @@
     font-family: Tahoma;
   }
   .bBannerBox {
-    margin: 0 0 20px;
+    margin: 0 auto 20px;
     text-align: center;
+    width: 683px;
   }
   .bCatalogRoot {
     margin: 0 -20px 15px 0;
@@ -12145,6 +12145,18 @@
     border: none;
     background: none;
     height: 280px;
+  }
+  .bCatalogRoot__eItem.mBannerItem {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    padding: 0;
+    width: 0;
+    border: none;
+    background: none;
+    height: 270px;
+    margin-right: 0;
+    padding-top: 10px;
   }
   .bCatalogRoot__eImgLink {
     display: inline-block;
@@ -12216,6 +12228,15 @@
   .bListing .bListingItem.mBanner2Item {
     width: 0;
     margin-right: 0;
+  }
+  .bListing .bListingItem.mBannerItem {
+    margin-right: 0;
+    padding-top: 30px;
+    height: 265px;
+    width: auto;
+  }
+  .bListing .bListingItem.mBannerItem .adfoxWrapper div {
+    margin-right: 25px;
   }
   .bListing .bListingItem__eInner {
     position: relative;
@@ -12446,6 +12467,13 @@
     border: 1px solid #e6e6e6;
     background: #f6f6f6;
   }
+  .bCatalogList__eItem:nth-child(3),
+  .bCatalogList__eItem:nth-child(6),
+  .bCatalogList__eItem:nth-child(9),
+  .bCatalogList__eItem:nth-child(12),
+  .bCatalogList__eItem:nth-child(15) {
+    margin-right: 0;
+  }
   .bCatalogList__eItem.mBannerItem {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
@@ -12494,6 +12522,26 @@
     zoom: 1;
     zoom: 1;
     *display: inline;
+  }
+  .bSearchCategoryRoot .bCatalogList__eItem {
+    width: 298px;
+    height: 48px;
+  }
+  .bSearchCategoryRoot .bCatalogList__eLink {
+    height: 48px;
+  }
+  .bSearchCategoryRoot .bCatalogList .bCategoriesImg {
+    width: 48px;
+    height: 46px;
+  }
+  .bSearchCategoryRoot .bCatalogList .bCategoriesImg__eImg {
+    max-height: 46px;
+    width: 48px;
+    margin-top: 0;
+  }
+  .bSearchCategoryRoot .bCatalogList .bCategoriesName {
+    width: 242px;
+    height: 48px;
   }
 }
 @media all {
@@ -12638,7 +12686,7 @@
   .bFilterValues {
     float: left;
     padding: 20px 10px 0 20px;
-    width: 748px;
+    width: 745px;
     margin-left: -1px;
     max-height: 289px;
     overflow: auto;
@@ -12710,7 +12758,10 @@
   .bFilterValues .bInputHidden + .bFilterCheckbox {
     background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat 5px 7px #ffffff;
   }
-  .bFilterValues .bInputHidden:checked + .bFilterCheckbox,
+  .bFilterValues .bInputHidden:checked + .bFilterCheckbox {
+    border: 1px solid #c7c7c7;
+    background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat 5px -20px #fbebd2;
+  }
   .bFilterValues .bFilterCheckbox.mChecked {
     border: 1px solid #c7c7c7;
     background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat 5px -20px #fbebd2;
@@ -12719,28 +12770,31 @@
     background-image: url("/css/leftNav/img/radioBtn.png");
     background-position: 5px -14px;
   }
-  .bFilterValues .bInputHidden:checked + .mCustomLabelRadio,
+  .bFilterValues .bInputHidden:checked + .mCustomLabelRadio {
+    background-image: url("/css/leftNav/img/radioBtn.png");
+    background-position: 5px 7px;
+  }
   .bFilterValues .mCustomLabelRadio.mChecked {
     background-image: url("/css/leftNav/img/radioBtn.png");
     background-position: 5px 7px;
   }
   .bFilterFoot__eInner {
-    padding: 5px 10px 0;
+    padding: 10px 10px 0;
   }
   .bFilterFoot__eInner:last-child {
-    padding-bottom: 10px;
+    padding-bottom: 5px;
   }
   .bFilterCheckedParams {
     margin: 0;
   }
   .bFilterCheckedParams__eItem {
     float: left;
-    margin: 0 10px 0 0;
-    margin-top: 5px;
+    margin: 0 10px 5px 0;
   }
   .bFilterCheckedParams__eItem.mTitle {
     color: #515151;
     line-height: 19px;
+    height: 23px;
   }
   .bFilterCheckedParams__eItem.mParams {
     -webkit-border-radius: 3px;
@@ -12771,7 +12825,7 @@
   }
   .bFilterCheckedParams .mClearAll {
     float: right;
-    margin: 6px 0 0;
+    margin: 1px 0 5px;
     border: none;
     background: none;
   }

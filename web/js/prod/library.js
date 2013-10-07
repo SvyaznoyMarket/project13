@@ -1714,7 +1714,8 @@ window.MapInterface = (function() {
  * @param	{Object}	ENTER	Enter namespace
  */
 ;(function( ENTER ) {
-	var userUrl = ENTER.config.pageConfig.userUrl,
+	var config = ENTER.config,
+		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils;
 	// end of vars
 	
@@ -1875,27 +1876,29 @@ window.MapInterface = (function() {
 			 *
 			 * @author	Zaytsev Alexandr
 			 * 
-			 * @param	{String}	userName	Имя пользователя
+			 * @param	{String}	userInfo	Данные пользователя
 			 * 
 			 * @public
 			 */
-			var update = function update ( userName ) {
+			var update = function update ( userInfo ) {
 				var topAuth = $('#auth-link'),
 					bottomAuth = self.mainNode.find('.bBlackBox__eUserLink'),
 					dtmpl = {},
 					show_user = '';
 				//end of vars
 
-				if ( userName !== null ) {
+				if ( userInfo.name !== null ) {
 					dtmpl = {
-						user: userName
+						user: userInfo.name
 					};
 
 					show_user = tmpl('auth_tmpl', dtmpl);
 					
 					topAuth.hide();
 					topAuth.after(show_user);
-					bottomAuth.html(userName).addClass('mAuth');
+					bottomAuth.html(userInfo.name).addClass('mAuth');
+
+					config.userInfo = userInfo;
 				}
 				else {
 					topAuth.show();
@@ -1974,7 +1977,7 @@ window.MapInterface = (function() {
 						return false;
 					}
 
-					self.user().update(userInfo.name);
+					self.user().update(userInfo);
 
 					if ( cartInfo.quantity !== 0 ) {
 						nowBasket = {

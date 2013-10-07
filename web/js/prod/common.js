@@ -401,7 +401,12 @@ $.ajaxSetup({
  * @param		{Object}	data	данные о том что кладется в корзину
  */
 (function( global ) {
-	var blackBox = global.ENTER.utils.blackBox;
+
+	var utils = global.ENTER.utils,
+		blackBox = utils.blackBox;
+	// end of vars
+	
+
 		/**
 		 * KISS Аналитика для добавления в корзину
 		 */
@@ -522,29 +527,53 @@ $.ajaxSetup({
 		},
 
 
-        /**
-         * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
-         */
-        addToLiveTex = function addToLiveTex(data) {
-            if (typeof(LiveTex.addToCart) == 'function') {
-                try {
-                    LiveTex.addToCart(data.product);
-                } catch (err) {
-                }
-            }
-        },
+		/**
+		 * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
+		 */
+		addToLiveTex = function addToLiveTex(data) {
+			if ( typeof LiveTex.addToCart  === 'function' ) {
+				try {
+					LiveTex.addToCart(data.product);
+				}
+				catch ( err ) {
+					dataToLog = {
+						event: 'LiveTex.addToCart',
+						type: 'ошибка отправки данных в LiveTex',
+						err: err
+					};
+
+					utils.logError(dataToLog);
+				}
+			}
+		},
 
 
-        /**
-         * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
-         */
-        addToRetailRocket = function addToRetailRocket( data ) {
-            var product = data.product;
+		/**
+		 * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
+		 */
+		addToRetailRocket = function addToRetailRocket( data ) {
+			var product = data.product,
+				dataToLog;
+			// end of vars
 
-            if ( typeof rcApi !== 'undefined' ) {
-                rcApi.addToBasket(product.id);
-            }
-        },
+
+			if ( typeof rcApi === 'object' ) {
+				try {
+					rcApi.addToBasket(product.id);
+				}
+				catch ( err ) {
+					dataToLog = {
+						event: 'rcApi.addToBasket',
+						type: 'ошибка отправки данных в RetailRocket',
+						err: err
+					};
+
+					utils.logError(dataToLog);
+				}
+			}
+
+
+		},
 
 
 		/**
@@ -564,20 +593,22 @@ $.ajaxSetup({
 				};
 			// end of vars
 
+
 			kissAnalytics(data);
 			googleAnalytics(data);
 			myThingsAnalytics(data);
 			adAdriver(data);
-            addToRetailRocket(data);
-            addToLiveTex(data);
+			addToRetailRocket(data);
+			addToLiveTex(data);
 
 			if ( data.redirect ) {
+				console.warn('redirect');
+
 				document.location.href = data.redirect;
 			}
 			else if ( blackBox ) {
 				blackBox.basket().add( tmpitem );
 			}
-
 		};
 	//end of vars
 
@@ -594,18 +625,38 @@ $.ajaxSetup({
  
 /**
  * Окно смены региона
- * WARNING: необходим рефакторинг!
  *
  * @param	{Object}	global	Объект window
  */
 ;(function( global ) {
 
-		$('#jscity').autocomplete( {
+	var body = $('body'),
+		regionWindow = $('.popupRegion'),
+		inputRegion = $('#jscity'),
+		formRegionSubmitBtn = $('#jschangecity'),
+		clearBtn = regionWindow.find('.inputClear'),
+
+		changeRegionBtn = $('.jsChangeRegion'),
+
+		slidesWrap = regionWindow.find('.regionSlidesWrap'),
+		moreCityBtn = regionWindow.find('.moreCity'),
+		leftArrow = regionWindow.find('.leftArr'),
+		rightArrow = regionWindow.find('.rightArr'),
+		rightArrow = regionWindow.find('.rightArr'),
+		citySlides = regionWindow.find('.regionSlides'),
+		slideWithCity = regionWindow.find('.regionSlides_slide');
+	// end of vars
+
+
+	/**
+	 * Настройка автодополнения поля для ввода региона
+	 */
+	inputRegion.autocomplete( {
 		autoFocus: true,
 		appendTo: '#jscities',
 		source: function( request, response ) {
 			$.ajax({
-				url: $('#jscity').data('url-autocomplete'),
+				url: inputRegion.data('url-autocomplete'),
 				dataType: 'json',
 				data: {
 					q: request.term
@@ -624,8 +675,8 @@ $.ajaxSetup({
 		},
 		minLength: 2,
 		select: function( event, ui ) {
-			$('#jschangecity').data('url', ui.item.url );
-			$('#jschangecity').removeClass('mDisabled');
+			formRegionSubmitBtn.data('url', ui.item.url );
+			formRegionSubmitBtn.removeClass('mDisabled');
 		},
 		open: function() {
 			$( this ).removeClass( 'ui-corner-all' ).addClass( 'ui-corner-top' );
@@ -634,112 +685,181 @@ $.ajaxSetup({
 			$( this ).removeClass( 'ui-corner-top' ).addClass( 'ui-corner-all' );
 		}
 	});
+
 	
-	function getRegions() {
-		$('.popupRegion').lightbox_me({
-			autofocus: true,
-			onLoad: function(){
-				if ($('#jscity').val().length){
-					$('#jscity').putCursorAtEnd();
-					$('#jschangecity').removeClass('mDisabled');
+		/**
+		 * Показ окна с выбором города
+		 */
+	var showRegionPopup = function showRegionPopup() {
+			regionWindow.lightbox_me({
+				autofocus: true,
+				onLoad: function(){
+					if (inputRegion.val().length){
+						inputRegion.putCursorAtEnd();
+						formRegionSubmitBtn.removeClass('mDisabled');
+					}
+				},
+				onClose: function() {
+					var id = changeRegionBtn.data('region-id');
+
+					if ( !global.docCookies.hasItem('geoshop') ) {
+						global.docCookies.setItem('geoshop', id, 31536e3, '/');
+						// document.location.reload()
+					}
 				}
-			},
-			onClose: function() {			
-				if( !window.docCookies.hasItem('geoshop') ) {
-					var id = $('#jsregion').data('region-id');
-					window.docCookies.setItem('geoshop', id, 31536e3, '/');
-					// document.location.reload()
+			});
+		},
+
+		/**
+		 * Обработка кнопок для смены региона
+		 */
+		changeRegionHandler = function changeRegionHandler() {
+			var self = $(this),
+				autoResolve = self.data('autoresolve-url');
+			// end of vars
+
+			var authFromServer = function authFromServer( res ) {
+				if ( !res.data.length ) {
+					$('.popupRegion .mAutoresolve').html('');
+					return false;
 				}
-			}
-		});
-	}
 
-	$('.cityItem .moreCity').bind('click',function(){
-		$(this).toggleClass('mExpand');
-		$('.regionSlidesWrap').slideToggle(300);
-	});
+				var url = res.data[0].url,
+					name = res.data[0].name,
+					id = res.data[0].id;
+				// end of vars
 
-	$('#jsregion, .jsChangeRegion').click( function() {
-		var authFromServer = function( res ) {
-			if ( !res.data.length ) {
-				$('.popupRegion .mAutoresolve').html('');
-				return false;
-			}
+				if ( id === 14974 || id === 108136 ) {
+					return false;
+				}
+				
+				if ( $('.popupRegion .mAutoresolve').length ) {
+					$('.popupRegion .mAutoresolve').html('<a href="'+url+'">'+name+'</a>');
+				}
+				else {
+					$('.popupRegion .cityInline').prepend('<div class="cityItem mAutoresolve"><a href="'+url+'">'+name+'</a></div>');
+				}
+				
+			};
 
-			var url = res.data[0].url;
-			var name = res.data[0].name;
-			var id = res.data[0].id;
-
-			if ( id === 14974 || id === 108136 ) {
-				return false;
+			if ( autoResolve !== 'undefined' ) {
+				$.ajax({
+					type: 'GET',
+					url: autoResolve,
+					success: authFromServer
+				});
 			}
 			
-			if ( $('.popupRegion .mAutoresolve').length ) {
-				$('.popupRegion .mAutoresolve').html('<a href="'+url+'">'+name+'</a>');
+			showRegionPopup();
+
+			return false;
+		},
+
+		/**
+		 * Следующий слайд с городами
+		 */
+		nextCitySlide = function nextCitySlide() {
+			var regionSlideW = slideWithCity.width() * 1,
+				sliderW = citySlides.width() * 1,
+				sliderLeft = parseInt(citySlides.css('left'), 10);
+			// end of vars
+
+			leftArrow.show();
+			citySlides.animate({'left':sliderLeft - regionSlideW});
+
+			if ( sliderLeft - (regionSlideW * 2) <= -sliderW ) {
+				rightArrow.hide();
+			}
+
+			return false;
+		},
+
+		/**
+		 * Предыдущий слайд с городами
+		 */
+		prevCitySlide = function prevCitySlide() {
+			var regionSlideW = slideWithCity.width() * 1,
+				sliderW = citySlides.width() * 1,
+				sliderLeft = parseInt(citySlides.css('left'), 10);
+			// end of vars
+
+			rightArrow.show();
+			citySlides.animate({'left':sliderLeft + regionSlideW});
+
+			if ( sliderLeft + (regionSlideW * 2) >= 0 ) {
+				leftArrow.hide();
+			}
+
+			return false;
+		},
+
+		/**
+		 * Раскрытие полного списка городов
+		 */
+		expandCityList = function expandCityList() {
+			$(this).toggleClass('mExpand');
+			slidesWrap.slideToggle(300);
+
+			return false;
+		},
+
+		/**
+		 * Очистка поля для ввода города
+		 */
+		clearInputHandler = function clearInputHandler() {
+			inputRegion.val('');
+			clearBtn.hide();
+			
+			return false;
+		},
+
+		/**
+		 * Обработчик изменения в поле ввода города
+		 */
+		inputRegionChangeHandler = function inputRegionChangeHandler() {
+			if ( $(this).val() ) {
+				clearBtn.show();
+			}
+			else{
+				clearBtn.hide();
+			}
+		},
+
+		/**
+		 * Обработчик сохранения введенного региона
+		 */
+		submitCityHandler = function submitCityHandler() {
+			var url = $(this).data('url');
+
+			if ( url ) {
+				global.location = url;
 			}
 			else {
-				$('.popupRegion .cityInline').prepend('<div class="cityItem mAutoresolve"><a href="'+url+'">'+name+'</a></div>');
+				regionWindow.trigger('close');
 			}
-			
+
+			return false;
 		};
+	// end of functions
 
-		var autoResolve = $(this).data('autoresolve-url');
 
-		if ( autoResolve !=='undefined' ) {
-			$.ajax({
-				type: 'GET',
-				url: autoResolve,
-				success: authFromServer
-			});
-		}
-		
-		getRegions();
-		return false;
-	});
-	
-	$('body').delegate('#jschangecity', 'click', function(e) {
-		e.preventDefault();
-		if( $(this).data('url') ){
-			window.location = $(this).data('url');
-		}
-		else{
-			$('.popupRegion').trigger('close');
-		}
-	});
-	
-	$('.inputClear').bind('click', function(e) {
-		e.preventDefault();
-		$('#jscity').val('');
-	});
+	/**
+	 * ==== Handlers ====
+	 */
+	formRegionSubmitBtn.on('click', submitCityHandler);
+	moreCityBtn.on('click', expandCityList);
+	clearBtn.on('click', clearInputHandler);
+	rightArrow.on('click', nextCitySlide);
+	leftArrow.on('click', prevCitySlide);
+	inputRegion.on('keyup', inputRegionChangeHandler);
+	body.on('click', '.jsChangeRegion', changeRegionHandler);
 
-	$('.popupRegion .rightArr').bind('click', function() {
-		var regionSlideW = $('.popupRegion .regionSlides_slide').width() *1;
-		var sliderW = $('.popupRegion .regionSlides').width() *1;
-		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'), 10);
 
-		$('.popupRegion .leftArr').show();
-		$('.popupRegion .regionSlides').animate({'left':sliderLeft-regionSlideW});
-
-		if ( (sliderLeft-(regionSlideW * 2)) <= -sliderW ) {
-			$('.popupRegion .rightArr').hide();
-		}
-	});
-	$('.popupRegion .leftArr').bind('click', function() {
-		var regionSlideW = $('.popupRegion .regionSlides_slide').width() *1;
-		var sliderW = $('.popupRegion .regionSlides').width() *1;
-		var sliderLeft = parseInt($('.popupRegion .regionSlides').css('left'), 10);
-
-		$('.popupRegion .rightArr').show();
-		$('.popupRegion .regionSlides').animate({'left':sliderLeft+regionSlideW});
-
-		if ( sliderLeft+(regionSlideW * 2) >= 0 ) {
-			$('.popupRegion .leftArr').hide();
-		}
-	});
-
-	/* GEOIP fix */
-	if ( !window.docCookies.hasItem('geoshop') ) {
-		getRegions();
+	/**
+	 * ==== GEOIP fix ====
+	 */
+	if ( !global.docCookies.hasItem('geoshop') ) {
+		showRegionPopup();
 	}
 }(this));
  
@@ -1652,7 +1772,7 @@ $(document).ready(function() {
 	// }
 
 
-	// /* Services Toggler */
+	/* Services Toggler */
 	// if ( $('.serviceblock').length ) {
 	// 	$('.info h3').css('cursor', 'pointer').click( function() {
 	// 		$(this).parent().find('> div').toggle();
@@ -1669,16 +1789,16 @@ $(document).ready(function() {
 
 
 	/* tags */
-	$('.fm').toggle( 
-		function(){
-			$(this).parent().find('.hf').slideDown();
-			$(this).html('скрыть');
-		},
-		function(){
-			$(this).parent().find('.hf').slideUp();
-			$(this).html('еще...');
-		}
-	);
+	// $('.fm').toggle( 
+	// 	function(){
+	// 		$(this).parent().find('.hf').slideDown();
+	// 		$(this).html('скрыть');
+	// 	},
+	// 	function(){
+	// 		$(this).parent().find('.hf').slideUp();
+	// 		$(this).html('еще...');
+	// 	}
+	// );
 
 
 // 	$('.bCtg__eMore').bind('click', function(e) {

@@ -24,7 +24,9 @@
 
 	<h1  class="bTitlePage"><?= $title ?></h1>
 
+    <? if (\App::config()->adFox['enabled']): ?>
     <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
+    <? endif ?>
 
     <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
 

@@ -56,7 +56,9 @@
 		filterMenuItem = filterBlock.find('.bFilterParams__eItem'),
 		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem'),
 
-		viewParamPanel = $('.bSortingLine');
+		viewParamPanel = $('.bSortingLine'),
+
+		tID;
 	// end of vars
 	
 	catalog.filter = {
@@ -104,6 +106,13 @@
 
 				paginationWrap.empty();
 				paginationWrap.html(html);
+			},
+
+			page: function( html ) {
+				var title = $('.bTitlePage');
+
+				title.empty();
+				title.html(html);
 			}
 		},
 
@@ -134,6 +143,12 @@
 
 			selectedFilter: function( data ) {
 				console.info('render selectedFilter');
+
+				if ( !data ) {
+					console.warn('nothing to render');
+					
+					return;
+				}
 
 				var template = $('#tplSelectedFilter'),
 					filterTemplate = template.html(),
@@ -184,6 +199,12 @@
 				console.log('end of render paginaton');
 
 				return html;
+			},
+
+			page: function( data ) {
+				var title = data.title;
+
+				return title;
 			}
 		},
 
@@ -203,8 +224,11 @@
 			catalog.filter.resetForm();
 
 			for ( key in dataToRender ) {
-				if ( catalog.filter.render.hasOwnProperty(key) && catalog.filter.applyTemplate.hasOwnProperty(key) ) {
+				if ( catalog.filter.render.hasOwnProperty(key) ) {
 					template = catalog.filter.render[key]( dataToRender[key] );
+				}
+
+				if ( catalog.filter.applyTemplate.hasOwnProperty(key) ) {
 					catalog.filter.applyTemplate[key](template);
 				}
 			}
@@ -268,9 +292,13 @@
 		 * @return	{String}	url
 		 */
 		getFilterUrl: function() {
+			console.info('getFilterUrl');
+
 			var formData = filterBlock.serializeArray(),
-				url = filterBlock.attr('action'),
+				url = filterBlock.attr('action') || '',
 				slidersInputState = catalog.filter.getSlidersInputState(),
+				activeSort = viewParamPanel.find('.mSortItem.mActive').find('.jsSorting'),
+				sortUrl = activeSort.data('sort'),
 				formSerizalizeData;
 			// end of vars
 
@@ -287,6 +315,10 @@
 			if ( formSerizalizeData.length !== 0 ) {
 				url += '?' + formSerizalizeData;
 			}
+			console.info('url == ');
+			console.log(url);
+
+			url = url.addParameterToUrl('sort', sortUrl);
 
 			return url;
 		},
@@ -299,16 +331,27 @@
 			console.log(e);
 			console.log(needUpdate);
 
+			var sendUpdate = function sendUpdate() {
+				filterBlock.trigger('submit');
+			}
+
 			if ( typeof e === 'object' && e.isTrigger && !needUpdate ) {
 				console.warn('it\'s trigger event!');
 
 				return;
 			}
 
+			if ( !catalog.enableHistoryAPI ) {
+				console.warn('history api off');
+
+				return;
+			}
+
 			console.info('need update from server...');
 
-			filterBlock.trigger('submit');
-			catalog.filter.sendFilter( true );
+			clearTimeout(tID);
+
+			tID = setTimeout(sendUpdate, 300);
 		},
 
 		/**
@@ -338,8 +381,8 @@
 					}, 300, 'swing');
 				});
 			}
-			else if ( typeof e === 'object' ) {
-				console.warn('it\'s true event');
+			else if ( typeof e === 'object' && catalog.enableHistoryAPI ) {
+				console.warn('it\'s true event and HistoryAPI enable');
 
 				$.scrollTo(filterBlock.find('.bFilterFoot'), 500);
 			}
@@ -759,8 +802,12 @@
 		 */
 		getDataFromServer: function getDataFromServer( url, callback ) {
 			console.info('getDataFromServer ' + url);
+			
+			if ( catalog.loader ) {
+				catalog.loader.loading();
+			}
 
-			catalog.loader.loading();
+			console.log('getDataFromServer::loading');
 
 			// utils.blockScreen.block('Загрузка товаров');
 
@@ -769,7 +816,9 @@
 				 */
 			var errorHandler = function errorHandler() {
 					// utils.blockScreen.unblock();
-					catalog.loader.complete();
+					if ( catalog.loader ) {
+						catalog.loader.complete();
+					}
 				},
 
 				/**
@@ -790,7 +839,9 @@
 					}
 
 					// utils.blockScreen.unblock();
-					catalog.loader.complete();
+					if ( catalog.loader ) {
+						catalog.loader.complete();
+					}
 				};
 			// end of functions
 
@@ -919,7 +970,8 @@
 				infBtn = viewParamPanel.find('.mInfinity'),
 				pagingBtn = viewParamPanel.find('.mPaging'),
 				pageBtn = viewParamPanel.find('.bSortingList__eItem.mPage'),
-				url = catalog.filter.getFilterUrl();
+				url = catalog.filter.getFilterUrl(),
+				hasPaging = document.location.search.match('page=');
 			// end of vars
 
 			pagingBtn.show();
@@ -932,7 +984,11 @@
 			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
 			$(window).on('scroll', catalog.infScroll.checkScroll);
 
-			catalog.history.gotoUrl(url);
+			console.info(hasPaging);
+
+			if ( catalog.enableHistoryAPI && hasPaging ) {
+				catalog.history.gotoUrl(url);
+			}
 
 			console.log('infinity scroll enable');
 		},
@@ -946,7 +1002,7 @@
 			catalog.liveScroll = false;
 			url = url.addParameterToUrl('ajax', 'true');
 
-			window.docCookies.setItem('infScroll', 0, 0, '/' );
+			window.docCookies.setItem('infScroll', 0);
 			$(window).off('scroll', catalog.infScroll.checkScroll);
 			catalog.history.getDataFromServer(url, catalog.filter.renderCatalogPage);
 

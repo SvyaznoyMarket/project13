@@ -167,7 +167,7 @@
 	float: left;
 	padding: 20px 10px 0 20px;
 
-	width: 748px;
+	width: 745px;
 
 	margin-left: -1px;
 
@@ -270,7 +270,11 @@
         background: url("@{base-url}/customInput/img/bCustomCheckbox.png") no-repeat 5px 7px @white;
     }
 
-    .bInputHidden:checked + .bFilterCheckbox,
+    .bInputHidden:checked + .bFilterCheckbox {
+        border: 1px solid #c7c7c7;
+        background: url("@{base-url}/customInput/img/bCustomCheckbox.png") no-repeat 5px -20px #fbebd2;
+    }
+
     .bFilterCheckbox.mChecked {
         border: 1px solid #c7c7c7;
         background: url("@{base-url}/customInput/img/bCustomCheckbox.png") no-repeat 5px -20px #fbebd2;
@@ -281,7 +285,11 @@
         background-position: 5px -14px;
     }
 
-    .bInputHidden:checked + .mCustomLabelRadio,
+    .bInputHidden:checked + .mCustomLabelRadio {
+    	background-image: url("/css/leftNav/img/radioBtn.png");
+        background-position: 5px 7px;
+	}
+
     .mCustomLabelRadio.mChecked {
     	background-image: url("/css/leftNav/img/radioBtn.png");
         background-position: 5px 7px;
@@ -291,10 +299,10 @@
 .bFilterFoot {
 
 	&__eInner {
-		padding: 5px 10px 0;
+		padding: 10px 10px 0;
 
 		&:last-child {
-			padding-bottom: 10px;
+			padding-bottom: 5px;
 		}
 	}
 }
@@ -305,14 +313,14 @@
 	&__eItem {
 		float: left;
 
-		margin: 0 10px 0 0;
-
-		margin-top: 5px;
+		margin: 0 10px 5px 0;
 
 		&.mTitle {
 			color: #515151;
 
 			line-height: 19px;
+
+			height: 23px;
 		}
 
 		&.mParams {
@@ -356,7 +364,7 @@
 	.mClearAll {
 		float: right;
 
-		margin: 6px 0 0;
+		margin: 1px 0 5px;
 
 		border: none;
 		background: none;

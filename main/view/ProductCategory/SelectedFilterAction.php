@@ -12,7 +12,8 @@ class SelectedFilterAction {
     public function execute(
         \Helper\TemplateHelper $helper,
         \Model\Product\Filter $productFilter,
-        $baseUrl
+        $baseUrl,
+        $useBaseUrl = false
     ) {
         $selected = [];
         foreach ($productFilter->dump() as $item) {
@@ -100,12 +101,17 @@ class SelectedFilterAction {
                     foreach ($filter->getOption() as $option) {
                         if (false === $valueIndex = array_search($option->getId(), $value)) continue;
                         $paramName = \View\Name::productCategoryFilter($filter, $option);
+                        $url = $helper->replacedUrl([
+                            $paramName => null,
+                            'ajax'     => null
+                        ]);
+                        if ( $useBaseUrl && !strpos($url,'?') ) {
+                            // Используем базовый урл, если нет гет-параметров
+                            $url = $baseUrl;
+                        };
                         $links[] = [
                             'name' => $option->getName(),
-                            'url'  => $helper->replacedUrl([
-                                $paramName => null,
-                                'ajax'     => null
-                            ]),
+                            'url'  => $url,
                         ];
                         $filterValueData[$paramName] = $value[$valueIndex];
                     }
