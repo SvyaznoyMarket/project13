@@ -302,8 +302,8 @@
 
             this.formId = form.attr('id');
             this.formName = (this.formId == 'login-form')
-                    ? 'signin'
-                    : (this.formId == 'register-form' ? 'register' : (this.formId == 'reset-pwd-form' ? 'forgot' : ''));
+                ? 'signin'
+                : (this.formId == 'register-form' ? 'register' : (this.formId == 'reset-pwd-form' ? 'forgot' : ''));
 
             var authFromServer = function ( response ) {
                 if ( !response.success ) {
