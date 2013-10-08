@@ -15,8 +15,9 @@ class Admitad
     public function __construct($routeName)
     {
         $this->routeName = $routeName;
-        $this->code = \App::config()->partners['Admitad']['code'];
+        //$this->code = \App::config()->partners['Admitad']['code'];
         $this->level = 0;
+        $this->code = '9ce8886713';
         //$this->returnData['routeName'] = $routeName;
     }
 
@@ -45,6 +46,7 @@ class Admitad
      */
     public function category($category) {
         $this->level = 1;
+        $this->code = '9ce8886712';
         $ad_data = [];
 
         if ($category instanceof \Model\Product\Category\Entity) {
@@ -62,6 +64,7 @@ class Admitad
     public function product($product)
     {
         $this->level = 2;
+        $this->code = '9ce8886711';
         $ad_data = [];
 
         if ($product instanceof \Model\Product\Entity) {
@@ -88,6 +91,7 @@ class Admitad
     public function cart($cartProductsById)
     {
         $this->level = 3;
+        $this->code = '9ce8886710';
         $ad_data = [];
         $ad_data['ad_products'] = [];
         foreach ($cartProductsById as $cartProd) {
@@ -110,6 +114,7 @@ class Admitad
     public function ordercomplete($orders)
     {
         $this->level = 4;
+        $this->code = '9ce888670f';
         $ad_data = [];
 
         $orderSum = 0;
