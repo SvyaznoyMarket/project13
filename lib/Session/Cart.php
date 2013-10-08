@@ -32,6 +32,11 @@ class Cart {
     public function __construct() {
         $this->storage = \App::session();
         $session = $this->storage->all();
+        $user = \App::user();
+
+        if ($user) {
+            $this->sessionName = $this->sessionName . '_' . ($user->getEntity() ? $user->getEntity()->getId() : '');
+        }
 
         $this->productLimit = \App::config()->cart['productLimit'];
 

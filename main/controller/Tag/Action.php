@@ -89,7 +89,18 @@ class Action {
         }
 
         if($category) {
-            $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
+            // seo из shopscript
+            $shopScriptSeo = [];
+            if(\App::config()->shopScript['enabled']) {
+                $shopScript = \App::shopScriptClient();
+                $shopScript->addQuery('category/get-seo', [
+                        'slug' => $category->getToken(),
+                        'geo_id' => \App::user()->getRegion()->getId(),
+                    ], [], function ($data) use (&$shopScriptSeo) {
+                    if($data && is_array($data)) $shopScriptSeo = reset($data);
+                });
+                $shopScript->execute();
+            }
 
             // сортировка
             $productSorting = new \Model\Product\Sorting();
@@ -160,7 +171,8 @@ class Action {
                 &$seoContent,
                 &$sidebarCategoriesTree,
                 &$categoriesByToken,
-                &$catalogJson
+                &$catalogJson,
+                &$shopScriptSeo
             ) {
                 $page->setParam('tag', $tag);
                 $page->setParam('productPager', $productPager);
@@ -177,6 +189,7 @@ class Action {
                 $page->setParam('sidebarCategoriesTree', $sidebarCategoriesTree);
                 $page->setParam('categoriesByToken', $categoriesByToken);
                 $page->setParam('catalogJson', $catalogJson);
+                $page->setParam('shopScriptSeo', $shopScriptSeo);
             };
         } else {
             $setPageParameters = function(\View\Layout $page) use (

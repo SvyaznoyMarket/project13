@@ -34,8 +34,6 @@ class BlackcardAction {
             $cart->setBlackcard($blackcard);
 
             $result = (new \Controller\Order\DeliveryAction())->getResponseData(false);
-            var_dump($result);
-            exit();
 
             foreach ($cart->getBlackcards() as $blackcard) {
                 if ($number === $blackcard->getNumber()) {

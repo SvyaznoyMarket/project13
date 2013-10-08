@@ -249,8 +249,9 @@
                 };
             })(); // object SertificateCard , singleton
 
-            code.mask("999 999 999 9999 9", { completed: SertificateCard.checkCard, placeholder: "*" } );
-            pin.mask("9999", { completed: SertificateCard.activateButton, placeholder: "*" } );
+            $.mask.definitions['n'] = '[0-9]';
+            code.mask("nnn nnn nnn nnnn n", { completed: SertificateCard.checkCard, placeholder: "*" } );
+            pin.mask("nnnn", { completed: SertificateCard.activateButton, placeholder: "*" } );
             code.bind('keyup', function() {
                 SertificateCard.checkForStars( $(this).val() );
             });

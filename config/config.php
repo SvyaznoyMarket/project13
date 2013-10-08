@@ -126,6 +126,35 @@ $c->partners['livetex']['password'] = 'enter1chat2'; // login и пароль и
 $c->partners['livetex']['timeout'] = 1.5; // timeout curl'a для статистики
 
 
+$c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
+$c->pickpoint['timeout'] = 20;
+$c->pickpoint['retryCount'] = 3;
+$c->pickpoint['retryTimeout'] = [
+    'default' => 0.04,
+    'tiny'    => 0.04,
+    'short'   => 0.08,
+    'medium'  => 0.1,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
+
+$c->shopScript['enabled'] = true;
+$c->shopScript['url'] = 'http://admin.enter.ru/v2/';
+$c->shopScript['user'] = 'admin';
+$c->shopScript['password'] = 'booToo9x';
+$c->shopScript['timeout'] = 3;
+$c->shopScript['retryCount'] = 4;
+$c->shopScript['retryTimeout'] = [
+    'default' => 0.3,
+    'tiny'    => 0.1,
+    'short'   => 0.2,
+    'medium'  => 0.3,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
+
 
 // TODO: Вынести сюда же настройки для sociomantic and get4click
 $c->partners['criteo']['enabled'] = true;
@@ -134,7 +163,6 @@ $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 $c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
 $c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
 $c->partners['Admitad']['enabled'] = true;
-$c->partners['Admitad']['code'] = '9ce8886713';
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
@@ -199,7 +227,7 @@ $c->mediaHost = [
 
 $c->search['itemLimit'] = 1000;
 
-$c->product['itemsPerPage']           = 18;
+$c->product['itemsPerPage']           = 20;
 $c->product['showAccessories']        = true;
 $c->product['showRelated']            = true;
 $c->product['itemsInSlider']          = 5;
@@ -212,6 +240,7 @@ $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
+$c->product['pushReview']             = false;
 $c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
 // jewel
@@ -243,7 +272,7 @@ $c->productCategory['url'] = [
     0 => '/6/1/163/',
 ];
 $c->productCategory['jewelController'] = true;
-$c->productCategory['newShow'] = false;
+$c->product['newList'] = true;
 
 $c->service['url'] = [
     0 => '/11/1/160/',

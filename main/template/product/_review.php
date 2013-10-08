@@ -31,20 +31,6 @@ if (!$isEnter) { ?>
       <p><?= str_replace(';', '<br>', $review['cons']) ?></p>
     <? } ?>
   </div>
-
-  <div class="bReview__eLogo">
-    <? if(!empty($review['source_logo_url'])) { ?>
-      <? if(!empty($review['url']) && $review['type'] == 'pro') { ?>
-        <a href="<?= $review['url'] ?>">
-      <? } ?>
-      <img class="bReview__eLogo-img" src="<?= $review['source_logo_url'] ?>">
-      <? if(!empty($review['url']) && $review['type'] == 'pro') { ?>
-        </a>
-      <? } ?>
-    <? } elseif ($isEnter) { ?>
-        <div class="logoEnter fr"></div>
-    <? } ?>
-  </div>
 </div>
 <? if (!$isEnter) { ?>
 </noindex>

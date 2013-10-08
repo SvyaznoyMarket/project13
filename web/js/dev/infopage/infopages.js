@@ -107,8 +107,8 @@ $(document).ready(function(){
 		});
 		
 		if ( typeof( $.mask ) !== 'undefined' ) {
-			$.mask.definitions['n'] = '[()0-9\ \-]';
-			$('#phonemask').mask('8nnnnnnnnnnnnnnnnn', { placeholder: ' ', maxlength: 10 } );
+			$.mask.definitions['n'] = '[0-9]';
+			$('#phonemask').mask('+7 (nnn) nnn-nn-nn');
 		}
 		
 		var emptyValidation = function emptyValidation( node ) {

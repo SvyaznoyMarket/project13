@@ -146,6 +146,23 @@ class AppConfig {
     public $kissmentrics = [
         'enabled'   =>  null,
     ];
+    /** @var array */
+    public $pickpoint = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+    /** @var array */
+    public $shopScript = [
+        'enabled'      => null,
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+        'user'         => null,
+        'password'     => null,
+    ];
     /** @var array  */
     public $jsonLog = [
         'enabled' => null,
@@ -250,8 +267,10 @@ class AppConfig {
         'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
+        'pushReview'             => null, // возможность добавлять отзывы
         'lowerPriceNotification' => null,
         'furnitureConstructor'   => null, // конструктор шкафов-купе
+        'newList'                => null, // новый дизайн листингов
         'recommendationPull'     => null, // подтягивать информацию о рекоммендованных товарах
         'recommendationPush'     => null, // отправлять данные для расчета рекоммендованных товаров
     ];
@@ -271,7 +290,6 @@ class AppConfig {
     public $productCategory = [
         'url'             => [],
         'jewelController' => null,
-        'newShow'         => null,
     ];
     /** @var array */
     public $service = [

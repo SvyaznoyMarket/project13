@@ -76,6 +76,24 @@
 			return this.deliveryStates.hasOwnProperty(state);
 		};
 
+
+        /**
+         * Флаг уникальности для типа доставки state.
+         * Например, для типа доставки pickpoint должен быть false (задаётся в РНР-коде на сервере)
+         *
+         * @this	{OrderDictionary}
+         *
+         * @param	    {String}	state	Метод доставки
+         * @returns     {Boolean}
+         */
+        OrderDictionary.prototype.isUniqueDeliveryState = function( state ) {
+            if ( this.deliveryStates.hasOwnProperty(state) ) {
+                var st = this.deliveryStates[state];
+                return st['unique'];
+            }
+            return false;
+        };
+
 		/**
 		 * Есть ли для метода доставки пункты доставки
 		 *
@@ -120,9 +138,11 @@
 		 * @return	{Object}				Данные о точке доставки
 		 */
 		OrderDictionary.prototype.getFirstPointByState = function( state ) {
-			var points = this.getAllPointsByState(state);
-
-			return window.ENTER.utils.cloneObject(points[0]);
+			var points = this.getAllPointsByState(state), ret = false;
+            if ( points[0] ) {
+                ret = window.ENTER.utils.cloneObject(points[0]);
+            }
+            return ret;
 		};
 
 		/**
@@ -131,9 +151,9 @@
 		 * @param	{String}	state	Метод доставки
 		 */
 		OrderDictionary.prototype.getAllPointsByState = function( state ) {
-			var pointName = this.pointsByDelivery[state];
-
-			return this.orderData[pointName];
+			var pointName = this.pointsByDelivery[state],
+                ret = this.orderData[pointName] || false;
+			return ret;
 		};
 
 
@@ -172,8 +192,8 @@
 
 			return this.products[productId];
 		};
-	
-	
+
+
 		return OrderDictionary;
 	
 	}());

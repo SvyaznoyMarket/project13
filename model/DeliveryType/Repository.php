@@ -59,6 +59,15 @@ class Repository {
                 'token'       => '',
             ],
             */
+            [
+                'id'                     => 6,
+                'token'                  => 'pickpoint',
+                'short_name'             => 'Pickpoint',
+                'name'                   => 'Cамостоятельно заберу из постамата Pickpoint',
+                'description'            => 'Вы можете забрать товар из постамата в удобное для вас время',
+                'method_tokens'          => ['pickpoint'],
+                'possible_method_tokens' => ['pickpoint', 'now', 'self', 'standart_furniture', 'standart_other'],
+            ],
         ];
 
         $collection = [];

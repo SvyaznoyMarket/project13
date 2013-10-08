@@ -11,7 +11,11 @@ if ((bool)\App::exception()->all()) {
 }
 
 $debug->add('id', \App::$id, 145);
-//$debug->add('env', \App::$name . '.' . \App::$env, 144);
+
+if ('main' != \App::$name) {
+    $debug->add('app', \App::$name, 143);
+}
+
 $debug->add('env', \App::$env, 144);
 $debug->add(
     'git',
@@ -45,12 +49,14 @@ $coreTimer = \Debug\Timer::get('core');
 $contentTimer = \Debug\Timer::get('content');
 $dataStoreTimer = \Debug\Timer::get('data-store');
 $closureRenderer = \Debug\Timer::get('renderer.get');
+$mustacheRenderer = \Debug\Timer::get('mustacheRenderer.get');
 
 $debug->add('time.app', sprintf('%s ms', round($appTimer['total'] - $coreTimer['total'] - $dataStoreTimer['total'] - $contentTimer['total'], 3) * 1000), 98);
 $debug->add('time.core', sprintf('%s ms [%s]', round($coreTimer['total'], 3) * 1000, $coreTimer['count']), 97);
 $debug->add('time.data-store', sprintf('%s ms [%s]', round($dataStoreTimer['total'], 3) * 1000, $dataStoreTimer['count']), 96);
 $debug->add('time.content', sprintf('%s ms [%s]', round($contentTimer['total'], 3) * 1000, $contentTimer['count']), 95);
 $debug->add('time.closureRenderer', sprintf('%s ms [%s]', round($closureRenderer['total'], 3) * 1000, $closureRenderer['count']), 95);
+$debug->add('time.mustacheRenderer', sprintf('%s ms [%s]', round($mustacheRenderer['total'], 3) * 1000, $mustacheRenderer['count']), 95);
 $debug->add('time.total', sprintf('%s ms', round($appTimer['total'], 3) * 1000), 94);
 
 

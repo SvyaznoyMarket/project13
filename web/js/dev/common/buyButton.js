@@ -93,7 +93,12 @@
  * @param		{Object}	data	данные о том что кладется в корзину
  */
 (function( global ) {
-	var blackBox = global.ENTER.utils.blackBox;
+
+	var utils = global.ENTER.utils,
+		blackBox = utils.blackBox;
+	// end of vars
+	
+
 		/**
 		 * KISS Аналитика для добавления в корзину
 		 */
@@ -214,29 +219,53 @@
 		},
 
 
-        /**
-         * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
-         */
-        addToLiveTex = function addToLiveTex(data) {
-            if (typeof(LiveTex.addToCart) == 'function') {
-                try {
-                    LiveTex.addToCart(data.product);
-                } catch (err) {
-                }
-            }
-        },
+		/**
+		 * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
+		 */
+		addToLiveTex = function addToLiveTex(data) {
+			if ( typeof LiveTex.addToCart  === 'function' ) {
+				try {
+					LiveTex.addToCart(data.product);
+				}
+				catch ( err ) {
+					dataToLog = {
+						event: 'LiveTex.addToCart',
+						type: 'ошибка отправки данных в LiveTex',
+						err: err
+					};
+
+					utils.logError(dataToLog);
+				}
+			}
+		},
 
 
-        /**
-         * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
-         */
-        addToRetailRocket = function addToRetailRocket( data ) {
-            var product = data.product;
+		/**
+		 * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
+		 */
+		addToRetailRocket = function addToRetailRocket( data ) {
+			var product = data.product,
+				dataToLog;
+			// end of vars
 
-            if ( typeof rcApi !== 'undefined' ) {
-                rcApi.addToBasket(product.id);
-            }
-        },
+
+			if ( typeof rcApi === 'object' ) {
+				try {
+					rcApi.addToBasket(product.id);
+				}
+				catch ( err ) {
+					dataToLog = {
+						event: 'rcApi.addToBasket',
+						type: 'ошибка отправки данных в RetailRocket',
+						err: err
+					};
+
+					utils.logError(dataToLog);
+				}
+			}
+
+
+		},
 
 
 		/**
@@ -256,20 +285,22 @@
 				};
 			// end of vars
 
+
 			kissAnalytics(data);
 			googleAnalytics(data);
 			myThingsAnalytics(data);
 			adAdriver(data);
-            addToRetailRocket(data);
-            addToLiveTex(data);
+			addToRetailRocket(data);
+			addToLiveTex(data);
 
 			if ( data.redirect ) {
+				console.warn('redirect');
+
 				document.location.href = data.redirect;
 			}
 			else if ( blackBox ) {
 				blackBox.basket().add( tmpitem );
 			}
-
 		};
 	//end of vars
 

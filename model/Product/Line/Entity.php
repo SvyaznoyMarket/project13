@@ -70,6 +70,19 @@ class Entity {
     }
 
     /**
+     * В этом методе каунтеры успользуют значения из product_count или kit_count
+     *
+     * @return int
+     */
+    public function getLineCount() {
+        $ret = $this->getProductCount();
+        if (!$ret) {
+            $ret = $this->getKitCount();
+        }
+        return $ret;
+    }
+
+    /**
      * @param int $productCount
      */
     public function setProductCount($productCount) {

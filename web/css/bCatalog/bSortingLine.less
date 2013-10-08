@@ -1,0 +1,136 @@
+.bSortingLine {
+	.rounded(3px 3px 0 0);
+	margin-bottom: 10px;
+	padding: 5px 10px;
+
+	border-bottom: 1px solid #c7c7c7;
+	background: #f6f6f6;
+
+	&.mPagerBottom  {
+		border-bottom: none;
+		border-top: 1px solid #c7c7c7;
+
+		.bSortingList {
+			float: right;
+			margin-right: -5px;
+
+			.bSortingList__eItem {
+
+				&.mSortItem {
+					width: 30px;
+				}
+
+				&.mTitle {
+					float: left;
+					margin: 4px 5px 0 0;
+					width: auto;
+				}
+			}
+		}	
+	}
+}
+
+.bSortingList {
+	float: left;
+
+	&__eItem {
+		float: left;
+
+		margin: 0 5px 0 0;
+
+		&.mTitle {
+			float: none;
+
+			color: #515151;
+
+			margin: 0 0 5px;
+		}
+	}
+
+	&__eLink {
+		.rounded(4px);
+		display: block;
+
+		padding: 0 5px;
+
+		height: 20px;
+
+		line-height: 20px;
+
+		text-align: center;
+
+		border: 1px solid #c7c7c7;
+		background: @white;
+
+		&:hover {
+			text-decoration: none;
+			background: @black;
+			color: @white;
+			border-color: @black;
+		}
+	}
+
+	.bIco {
+		display: block;
+		margin: 4px auto 0;
+		width: 11px;
+		height: 11px;
+		background: url('@{base-url}/bCatalog/img/bViewerIcons.png') no-repeat 0 0;
+	}
+
+
+	.mIcoLine {
+		background-position: -14px 0;
+	}
+
+	.mDotted {
+		padding-top: 4px;
+	}
+
+	.mActive {
+
+		.bSortingList__eLink {
+			background: @black;
+			color: @white;
+			border-color: @black;
+		}
+
+		.mIcoTable {
+			background-position: 0 -14px;
+		}
+
+		.bIcoLine {
+			background-position: -14px -14px;
+		}
+	}
+
+	&.mPager {
+		float: right;
+		margin-right: -5px;
+
+		.bSortingList__eLink {
+			width: 30px;
+			padding: 0;
+		}
+	}
+
+	&.mViewer {
+		margin: 0 0 0 145px;
+
+		.bSortingList__eLink {
+			width: 30px;
+			padding: 0 5px;
+
+			&:hover {
+
+				.mIcoTable {
+					background-position: 0 -14px;
+				}
+
+				.bIcoLine {
+					background-position: -14px -14px;
+				}
+			}
+		}
+	}
+}

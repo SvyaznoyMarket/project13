@@ -9,18 +9,19 @@ module.exports = function(grunt) {
 	 * @type {Array}
 	 */
 	var bigjqueryFiles = [
-		'custom-form-elements.js',
+		// 'custom-form-elements.js',
 		'jquery.email_validate.js',
 		'jquery.lightbox_me.js',
 		'jquery.scrollto.js',
 		'jquery.placeholder.js',
-		'prettyCheckboxes.js',
+		// 'prettyCheckboxes.js',
 		'jquery.infinityCarousel.js',
 		'typewriter.js',
 		'jquery.maskedinput.js',
 		'jquery.put_cursor_at_end.js',
 		'goodsCounter.js',
 		'jquery.elevatezoom.js',
+		'jquery.animate-shadow.js',
 		// 'customRadio.js',
 		'customDropDown.js',
 		'goodsSlider.js',
@@ -267,6 +268,10 @@ module.exports = function(grunt) {
 				files: [jsDevPath+'ports/*.js'],
 				tasks: ['concat:portsJS','uglify:portsJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
 			},
+			catalogJS:{
+				files: [jsDevPath+'catalog/*.js'],
+				tasks: ['concat:catalogJS','uglify:catalogJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+			},
 			productJS:{
 				files: [jsDevPath+'product/*.js'],
 				tasks: ['concat:productJS','uglify:productJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
@@ -332,6 +337,10 @@ module.exports = function(grunt) {
 			portsJS : {
 				src: [jsDevPath+'ports/*.js'],
 				dest: jsProdPath+'ports.js'
+			},
+			catalogJS:{
+				src: [jsDevPath+'catalog/*.js'],
+				dest: jsProdPath+'catalog.js'
 			},
 			productJS : {
 				src: [jsDevPath+'product/*.js'],
@@ -448,6 +457,12 @@ module.exports = function(grunt) {
 				}
 			},
 
+			catalogJS: {
+				files: {
+					'../web/js/prod/catalog.min.js': [jsDevPath+'catalog/*.js']
+				}
+			},
+
 			productJS: {
 				files: {
 					'../web/js/prod/product.min.js': [jsDevPath+'product/*.js']
@@ -521,7 +536,7 @@ module.exports = function(grunt) {
 	// Тестирование JS, валидация JS, компиляция bigjquery, минификация JS, версионность
 	grunt.registerTask('js', ['concat', 'connect', 'qunit', 'jshint', 'uglify', 'exec:compileBJ', 'exec:getVersion']);
 	// Компиляция LESS, тестирование JS, валидация, минификация JS, версионность
-	grunt.registerTask('default', ['less', 'concat', 'connect', 'qunit', 'jshint', 'uglify', 'exec:compileBJ', 'exec:getVersion']);
+	grunt.registerTask('default', ['less', 'concat', 'jshint', 'uglify', 'exec:compileBJ', 'connect', 'qunit', 'exec:getVersion']);
 	// Генерация рандомных полигонов яндекс карт
 	grunt.registerTask('ymaps', ['ymaps_generate']);
 	// Тестирование JS, валидация JS

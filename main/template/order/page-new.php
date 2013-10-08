@@ -51,7 +51,7 @@ foreach (array_reverse($productsById) as $product) {
 	<div class="bBuyingLine"><a class="bBackCart" href="<?= $backLink ?>">&lt; Вернуться к покупкам</a></div>
 
 	 <!-- Order Method -->
-	<div class="bBuyingLine clearfix mOrderMethod">
+	<div class="bBuyingLine clearfix mOrderMethod" data-bind="visible: deliveryTypes().length > 1">
 		<h2 class="bBuyingSteps__eTitle">Информация о заказе</h2>
 
 		<div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
@@ -122,11 +122,11 @@ foreach (array_reverse($productsById) as $product) {
 					</div>
 
 					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length">
-						<span class="bSelectWrap_eText" data-bind="text: 'c '+ box.choosenInterval().start + ' до ' + box.choosenInterval().end"></span>
+						<span class="bSelectWrap_eText" data-bind="text: (!box.hasPointDelivery ? 'c ' + box.choosenInterval().start + ' ' : '') + 'до ' + box.choosenInterval().end"></span>
 						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
 															value: box.choosenInterval,
 															optionsText: function(item) {
-																return 'c '+ item.start + ' до ' + item.end;
+																return (!box.hasPointDelivery ? 'c ' + box.choosenInterval().start + ' ' : '') + 'до ' + item.end;
 															}">
 						</select>
 					</div>

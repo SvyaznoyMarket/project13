@@ -98,7 +98,9 @@ class Entity {
      * @return bool
      */
     public function getIsMultiple() {
-        return $this->isMultiple;
+        // TODO: осторожно, костыль
+        return (self::TYPE_LIST == $this->typeId) && !in_array($this->id, ['shop']);
+        //return $this->isMultiple;
     }
 
     /**
@@ -224,7 +226,7 @@ class Entity {
     }
 
     /**
-     * @param string $step_type
+     * @param $stepType
      */
     public function setStepType($stepType)
     {
@@ -249,5 +251,19 @@ class Entity {
             }
             default: return false;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrice() {
+        return 'price' == $this->getId();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBrand() {
+        return 'brand' == $this->getId();
     }
 }
