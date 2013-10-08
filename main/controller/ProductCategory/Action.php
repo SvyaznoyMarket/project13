@@ -277,11 +277,6 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
         }
 
-        // поддержка GET-запросов со старыми фильтрами
-        if (is_array($request->get(\View\Product\FilterForm::$name)) && (bool)$request->get(\View\Product\FilterForm::$name)) {
-            return new \Http\RedirectResponse(\App::router()->generate('product.category', ['categoryPath' => $category->getPath()]));
-        }
-
         // подготовка 3-го пакета запросов
 
         // запрашиваем дерево категорий
@@ -326,6 +321,11 @@ class Action {
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+
+        // поддержка GET-запросов со старыми фильтрами
+        if (!$categoryClass && is_array($request->get(\View\Product\FilterForm::$name)) && (bool)$request->get(\View\Product\FilterForm::$name)) {
+            return new \Http\RedirectResponse(\App::router()->generate('product.category', ['categoryPath' => $category->getPath()]));
+        }
 
         if ($categoryClass) {
             $controller = null;
