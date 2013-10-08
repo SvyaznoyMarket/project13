@@ -175,21 +175,21 @@ window.ANALYTICS = {
         }
     },
 
-    enterleadsJS : function() { // SITE-1911
-        (function () {
-            try {
-                var script = document.createElement('script');
+    // enterleadsJS : function() { // SITE-1911
+    //     (function () {
+    //         try {
+    //             var script = document.createElement('script');
 
-                script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') +
-                    unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denterleads%26cost%3D') + escape(0) +
-                    unescape('%26order%3D') + escape(0) + unescape('%26r%3D') + Math.random();
+    //             script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') +
+    //                 unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denterleads%26cost%3D') + escape(0) +
+    //                 unescape('%26order%3D') + escape(0) + unescape('%26r%3D') + Math.random();
 
-                document.getElementsByTagName('head')[0].appendChild(script);
+    //             document.getElementsByTagName('head')[0].appendChild(script);
 
-            } catch (e) {
-            }
-        })();
-    },
+    //         } catch (e) {
+    //         }
+    //     })();
+    // },
 
     sociomantic : function() {
         (function(){

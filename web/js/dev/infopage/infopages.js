@@ -20,7 +20,7 @@ $(document).ready(function(){
 					form.html('<div class="subscribe-form__title">Спасибо! подтверждение подписки отправлено на указанный e-mail</div>');
 					window.docCookies.setItem('subscribed', 1, 157680000, '/');
 
-					form.after('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
+					// form.after('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
 
 					if( typeof(_gaq) !== 'undefined' ){
 						_gaq.push(['_trackEvent', 'subscribe', email, utm_source]);
