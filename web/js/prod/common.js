@@ -1242,14 +1242,9 @@ $(document).ready(function(){
             }
             // constructor body
 
-            this.form = ''; // текущая форма
-
-            if ( !registerMailPhoneField.length ) {
-                return false;
-            }
+            this.form = null; // текущая форма
 
             $(document).on('click', '.registerAnotherWayBtn', $.proxy(this.registerAnotherWay, this));
-            $(document).on('keyup', '.jsRegisterFirstName, .jsRegisterUsername', $.proxy(this.checkInputs, this));
             $(document).on('click', '.bAuthLink', this.openAuth);
             $('.jsLoginForm, .jsRegisterForm, .jsResetPwdForm').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
             $(document).on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
@@ -1361,7 +1356,7 @@ $(document).ready(function(){
          * Проверяем как e-mail
          */
         Login.prototype.checkEmail = function() {
-            return registerMailPhoneField.hasClass('registerPhone') ? false : true;
+            return registerMailPhoneField.hasClass('jsRegisterPhone') ? false : true;
         };
 
         /**
@@ -1369,8 +1364,7 @@ $(document).ready(function(){
          */
         Login.prototype.registerAnotherWay = function() {
             var label = $('.registerAnotherWay'),
-                btn = $('.registerAnotherWayBtn'),
-                registerPhonePH = $('.registerPhonePH');
+                btn = $('.registerAnotherWayBtn');
             // end of vars
 
             registerMailPhoneField.val('');
@@ -1378,37 +1372,21 @@ $(document).ready(function(){
             if ( this.checkEmail() ) {
                 label.html('Ваш мобильный телефон:');
                 btn.html('Ввести e-mail');
-                registerMailPhoneField.attr('maxlength', 10);
-                registerMailPhoneField.addClass('registerPhone');
-                registerPhonePH.show();
+                registerMailPhoneField.attr('maxlength', 10).addClass('jsRegisterPhone');
                 registerValidator.setValidate( registerMailPhoneField, {validBy: 'isPhone', customErr: 'Некорректно введен телефон'} );
+
+                // устанавливаем маску для поля "Ваш мобильный телефон"
+                $.mask.definitions['n'] = '[0-9]';
+                registerMailPhoneField.mask('+7 (nnn) nnn-nn-nn');
             }
             else {
                 label.html('Ваш e-mail:');
                 btn.html('У меня нет e-mail');
-                registerMailPhoneField.removeAttr('maxlength');
-                registerMailPhoneField.removeClass('registerPhone');
-                registerPhonePH.hide();
+                registerMailPhoneField.removeAttr('maxlength').removeClass('jsRegisterPhone');
                 registerValidator.setValidate( registerMailPhoneField, {validBy: 'isEmail', customErr: 'Некорректно введен e-mail'} );
-            }
 
-            return false;
-        };
-
-        /**
-         * Проверка заполненности инпутов
-         */
-        Login.prototype.checkInputs = function( e ) {
-            if ( !this.checkEmail() ) {
-                // проверяем как телефон
-                if ( ((e.which >= 96) && (e.which <= 105)) || ((e.which >= 48) && (e.which <= 57)) || (e.which === 8) ) {
-                    //если это цифра или бэкспэйс
-                }
-                else {
-                    // если это не цифра
-                    var clearVal = registerMailPhoneField.val().replace(/\D/g, '');
-                    registerMailPhoneField.val(clearVal);
-                }
+                // убераем маску с поля "Ваш мобильный телефон"
+                registerMailPhoneField.unmask();
             }
 
             return false;
@@ -1469,11 +1447,10 @@ $(document).ready(function(){
             e.preventDefault();
             this.form = $(e.target);
 
-            var wholemessage = this.form.serializeArray();
-            // end of vars
+            var formData = this.form.serializeArray();
 
             var authFromServer = function( response ) {
-                if ( !response.success ) {
+                if ( response.error !== null ) {
                     if ( Login.serverErrorHandler.hasOwnProperty(response.error.code) ) {
                         console.log('Есть обработчик');
                         $.proxy(Login.serverErrorHandler[response.error.code], this)(response);
@@ -1515,8 +1492,9 @@ $(document).ready(function(){
             };
 
             this.submitBtnLoadingDisplay( this.form.find('[type="submit"]:first') );
-            wholemessage['redirect_to'] = this.form.find('[name="redirect_to"]:first').val();
-            $.post(this.form.attr('action'), wholemessage, $.proxy(authFromServer, this), 'json');
+
+            formData.push({name: 'redirect_to', value: location.href});
+            $.post(this.form.attr('action'), formData, $.proxy(authFromServer, this), 'json');
 
             return false;
         };

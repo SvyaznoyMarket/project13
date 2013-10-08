@@ -14,20 +14,20 @@ class Action {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $this->redirect = \App::router()->generate('user'); // default redirect to the /private page (Личный кабинет)
-//        $redirectTo = $request->get('redirect_to');
-//        if ($redirectTo) {
-//            $this->redirect = $redirectTo;
-//            $this->requestRedirect = $redirectTo;
-//        }
+        $redirectTo = $request->get('redirect_to');
+        if ($redirectTo) {
+            $this->redirect = $redirectTo;
+            $this->requestRedirect = $redirectTo;
+        }
 
         if (\App::user()->getEntity()) { // if user is logged in
-//            if (empty($redirectTo)) {
+            if (empty($redirectTo)) {
                 return $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse(['success' => true])
                     : new \Http\RedirectResponse(\App::router()->generate('user'));
-//            } else { // if redirect isset:
-//                return new \Http\RedirectResponse($redirectTo);
-//            }
+            } else { // if redirect isset:
+                return new \Http\RedirectResponse($redirectTo);
+            }
         }
 
         return false;
@@ -90,13 +90,7 @@ class Action {
 
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
-                            'success' => true,
                             'data'    => [
-                                'content' => \App::templating()->render('form-login', [
-                                    'page'    => new \View\Layout(),
-                                    'form'    => $form,
-                                    'request' => \App::request(),
-                                ]),
                                 'user' => [
                                     'first_name'   => $userEntity->getFirstName(),
                                     'last_name'    => $userEntity->getLastName(),
@@ -133,14 +127,6 @@ class Action {
             // xhr
             if ($request->isXmlHttpRequest()) {
                 return new \Http\JsonResponse([
-                    'success' => $form->isValid(),
-                    'data'    => [
-                        'content' => \App::templating()->render('form-login', [
-                            'page'    => new \View\Layout(),
-                            'form'    => $form,
-                            'request' => \App::request(),
-                        ]),
-                    ],
                     'form' => ['error' => $formErrors],
                     'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
                 ]);
@@ -149,7 +135,6 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-//        $page->setParam('redirect', $this->redirect);
 
         return new \Http\Response($page->show());
     }
@@ -170,12 +155,12 @@ class Action {
             $redirect_to = $referer;
         }
 
-//        if ($request->get('redirect_to')) {
-//            $redirect_to = $request->get('redirect_to');
-//            if (!preg_match('/^(\/|http).*/i', $redirect_to)) {
-//                $redirect_to = 'http://' . $redirect_to;
-//            }
-//        }
+        if ($request->get('redirect_to')) {
+            $redirect_to = $request->get('redirect_to');
+            if (!preg_match('/^(\/|http).*/i', $redirect_to)) {
+                $redirect_to = 'http://' . $redirect_to;
+            }
+        }
 
         $response = new \Http\RedirectResponse($redirect_to); 
 
@@ -240,13 +225,7 @@ class Action {
 
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
-                            'success' => true,
                             'data'    => [
-                                'content' => \App::templating()->render('form-register', [
-                                    'page'    => new \View\Layout(),
-                                    'form'    => $form,
-                                    'request' => \App::request(),
-                                ]),
                                 'link' => $this->redirect,
                             ],
                             'error' => null,
@@ -283,14 +262,6 @@ class Action {
             // xhr
             if ($request->isXmlHttpRequest()) {
                 return new \Http\JsonResponse([
-                    'success' => $form->isValid(),
-                    'data'    => [
-                        'content' => \App::templating()->render('form-register', [
-                            'page'    => new \View\Layout(),
-                            'form'    => $form,
-                            'request' => \App::request(),
-                        ]),
-                    ],
                     'form' => ['error' => $formErrors],
                     'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
                 ]);
@@ -299,9 +270,6 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-//        if ( $this->requestRedirect ) {
-//            $page->setParam('redirect', $this->requestRedirect);
-//        }
 
         return new \Http\Response($page->show());
     }

@@ -18,10 +18,7 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
     <label class="bFormLogin__eLabel registerAnotherWay">Ваш e-mail:</label>
     <a class="bFormLogin__eLinkHint eMail registerAnotherWayBtn" href="#">У меня нет e-mail</a>
 
-    <div class="pb5">
-        <span class="registerPhonePH">+7</span>
-        <input type="text" class="text bFormLogin__eInput jsRegisterUsername" name="register[username]" value="<?= $form->getUsername() ?>" />
-    </div>
+    <input type="text" class="text bFormLogin__eInput jsRegisterUsername" name="register[username]" value="<?= $form->getUsername() ?>" />
 
     <div class="bInputList">
         <input class="jsCustomRadio bCustomInput mCustomCheckBig" name="subscribe" id="subscribe" type="checkbox" checked="checked" hidden />
