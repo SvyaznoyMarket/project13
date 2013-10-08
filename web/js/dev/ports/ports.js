@@ -383,43 +383,51 @@ window.ANALYTICS = {
 
         window.RetailRocket = {
 
-            product: function ( data, userData ) {
+            'product': function ( data, userData ) {
                 window.rcAsyncInit = function () {
-                    rcApi.view(data, userData);
+                    if ( userData.userId ) {
+                        rcApi.view(data, userData);
+                    }
+                    else {
+                        rcApi.view(data);   
+                    }
+
                 }
             },
 
-            category: function ( data, userData ) {
+            'product.category': function ( data, userData ) {
                 window.rcAsyncInit = function () {
-                    rcApi.categoryView(data, userData);
+                    if ( userData.userId ) {
+                        rcApi.categoryView(data, userData);
+                    }
+                    else {
+                        rcApi.categoryView(data);   
+                    }
                 }
             },
 
-            transaction: function ( data, userData ) {
+            'order.complete': function ( data, userData ) {
                 window.rcAsyncInit = function () {
-                    rrApi.order(data, userData);
+                    if ( userData.userId ) {
+                        rcApi.order(data, userData);
+                    }
+                    else {
+                        rcApi.order(data);   
+                    }
                 }
             },
 
-            action: function (data) {
+            action: function ( e, userInfo ) {
                 var rr_data = $('#RetailRocketJS').data('value'),
-                    userInfo = window.ENTER.config.userInfo || {},
                     sendUserData = {
-                        userId: userInfo.ID || false,
-                        hasUserEmail: userInfo.email || ''
+                        userId: userInfo.id || false,
+                        hasUserEmail: !!userInfo.email
                     };
                 // end of vars
 
-                if ( rr_data && rr_data.routeName && rr_data.sendData ) {
-                    if ( rr_data.routeName == 'product' ) {
-                        RetailRocket.product(rr_data.sendData, sendUserData);
-                    }
-                    else if ( rr_data.routeName == 'product.category' ) {
-                        RetailRocket.category(rr_data.sendData, sendUserData);
-                    }
-                    else if ( rr_data.routeName == 'order.complete' ) {
-                        RetailRocket.transaction(rr_data.sendData, sendUserData);
-                    }
+
+                if ( rr_data && rr_data.routeName && rr_data.sendData && window.RetailRocket.hasOwnProperty(rr_data.routeName) ) {
+                    window.RetailRocket[rr_data.routeName](rr_data.sendData, sendUserData);
                 }
             },
 
@@ -439,7 +447,8 @@ window.ANALYTICS = {
         }// end of window.RetailRocket object
 
         RetailRocket.init();
-        RetailRocket.action();
+
+        $('body').on('userlogged', RetailRocket.action);
     },
 
     AdmitadJS : function() {

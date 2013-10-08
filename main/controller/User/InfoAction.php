@@ -25,7 +25,7 @@ class InfoAction {
                     'name'         => null,
                     'isSubscribed' => null,
                     'link' => \App::router()->generate('user.login'),
-                    'ID' =>  null,
+                    'id' =>  null,
                     'email' =>  null
                 ],
                 'cart'    => [
@@ -43,7 +43,7 @@ class InfoAction {
                 $responseData['user']['name'] = $userEntity->getName();
                 $responseData['user']['link'] = \App::router()->generate('user');
                 $responseData['user']['isSubscribed'] = $user->getEntity()->getIsSubscribed();
-                $responseData['user']['ID'] = $userEntity->getId();
+                $responseData['user']['id'] = $userEntity->getId();
                 $responseData['user']['email'] = $userEntity->getEmail();
             }
 
