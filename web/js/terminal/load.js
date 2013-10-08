@@ -2,31 +2,31 @@
 requirejs.config({
 	baseUrl: "/js/terminal/",
     paths:{
-        'jquery': '/js/jquery-1.6.4.min',
-        'ejs': '/js/ejs_production',
-        'bigjquery':'/js/bigjquery.min'
+        'jquery': 'vendor/jquery-1.8.3.min',
+        'ejs': 'vendor/ejs_production',
+        'bigjquery': '/js/prod/jquery-plugins.min'
     },
     shim: {
         'jquery': {
             exports: '$',
         },
-        "ejs": {
+        'ejs': {
             exports: 'EJS',
             deps: ['jquery']
         },
-        "bigjquery": {
+        'bigjquery': {
             deps: ['jquery']
         }
     },
-    urlArgs : "bust="+new Date().getTime()
+    urlArgs : 'bust=' + new Date().getTime()
 });
 
-var develop = false
+var develop = false;
 
 // for all pages
 // require(["termAPI"])
 
-require(["jquery"], function($) {
+require(['jquery'], function( $ ) {
     $(document).ready(function() {
 
         var pagetype = $('article').data('pagetype')
