@@ -623,7 +623,7 @@
 
 			/**
 			 * Проверка последней даты
-			 * Если она не воскресение - достроить календарь в конце до воскресения
+			 * Если она не воскресенье - достроить календарь в конце до воскресенья
 			 */
 			if ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek !== 0 ) {
 				addCountDays = 7 - self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek;
