@@ -51,7 +51,7 @@
     <?= $helper->render('product/__list', [
         'pager'                  => $productPager,
         'view'                   => $productView,
-        'productVideosByProduct' => [], //$productVideosByProduct,
+        'productVideosByProduct' => $productVideosByProduct,
     ]) // листинг ?>
 
     <div class="bSortingLine mPagerBottom clearfix">
