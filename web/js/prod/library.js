@@ -1885,6 +1885,8 @@ window.MapInterface = (function() {
 					show_user = '';
 				//end of vars
 
+				config.userInfo = userInfo;
+
 				if ( userInfo.name !== null ) {
 					dtmpl = {
 						user: userInfo.name
@@ -1895,12 +1897,12 @@ window.MapInterface = (function() {
 					topAuth.hide();
 					topAuth.after(show_user);
 					bottomAuth.html(userInfo.name).addClass('mAuth');
-
-					config.userInfo = userInfo;
 				}
 				else {
 					topAuth.show();
 				}
+
+				$('body').trigger('userlogged', [userInfo]);
 			}; 
 			
 			return {
