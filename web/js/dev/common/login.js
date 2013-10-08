@@ -1,6 +1,7 @@
 ;(function( ENTER ) {
     var constructors = ENTER.constructors,
         registerMailPhoneField = $('.jsRegisterUsername'),
+        body = $('body'),
 
         /**
          * Конфигурация валидатора для формы логина
@@ -86,11 +87,11 @@
 
             this.form = null; // текущая форма
 
-            $(document).on('click', '.registerAnotherWayBtn', $.proxy(this.registerAnotherWay, this));
-            $(document).on('click', '.bAuthLink', this.openAuth);
+            body.on('click', '.registerAnotherWayBtn', $.proxy(this.registerAnotherWay, this));
+            body.on('click', '.bAuthLink', this.openAuth);
             $('.jsLoginForm, .jsRegisterForm, .jsResetPwdForm').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
-            $(document).on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
-            $(document).on('click', '#bUserlogoutLink', this.logoutLinkClickLog);
+            body.on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
+            body.on('click', '#bUserlogoutLink', this.logoutLinkClickLog);
         }
 
 
