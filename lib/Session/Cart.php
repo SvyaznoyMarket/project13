@@ -35,9 +35,7 @@ class Cart {
         $user = \App::user();
 
         if ($user) {
-            $uEntity = $user->getEntity();
-            $sessionNameSuffix = ($uEntity) ? $user->getEntity()->getId() : '0';
-            $this->sessionName = $this->sessionName . '_' . $sessionNameSuffix;
+            $this->sessionName = $this->sessionName . '_' . ($user->getEntity() ? $user->getEntity()->getId() : '');
         }
 
         $this->productLimit = \App::config()->cart['productLimit'];
