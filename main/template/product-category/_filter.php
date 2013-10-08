@@ -56,7 +56,7 @@ $formName = \View\Product\FilterForm::$name;
             <?
             $isPrice = ( 'price' == $filter->getId() );
             if ( $isPrice ) {
-                $filter->setStepType('price');
+                $filter->setStepType('integer');
             }
             ?>
 

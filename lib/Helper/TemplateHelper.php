@@ -142,7 +142,7 @@ class TemplateHelper {
      * @param string $thousandsDelimiter
      * @return string
      */
-    public function formatPrice($price, $numDecimals = 0, $decimalsDelimiter = ',', $thousandsDelimiter = ' ') {
+    public function formatPrice($price, $numDecimals = 0, $decimalsDelimiter = ',', $thousandsDelimiter = '&nbsp;') {
         return number_format($price, $numDecimals, $decimalsDelimiter, $thousandsDelimiter);
     }
 

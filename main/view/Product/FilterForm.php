@@ -17,6 +17,7 @@ class FilterForm {
     }
 
     public function getSelected() {
+        $helper = &$this->page->helper;
         $return = [];
 
         $selectedFilters = $this->productFilter->dump();
@@ -45,20 +46,20 @@ class FilterForm {
 
                     if (isset($value['from']) && !($this->isEqualNumeric($value['from'], $filter->getMin()))) {
                         if ($is_price){
-                            $name[] = sprintf('от %d', $value['from']);
+                            $name[] = 'до&nbsp;' . $helper->formatPrice( intval( $value['from'] ) );
                         }else{
-                            $name[] = 'от ' . round($value['from'], 1);
+                            $name[] = 'от&nbsp;' . $this->formatPriceView( $value['from'] );
                         }
                     }
                     if (isset($value['to']) && !($this->isEqualNumeric($value['to'], $filter->getMax()))) {
                         if ($is_price){
-                            $name[] = sprintf('до %d', $value['to']);
+                            $name[] = 'до&nbsp;' . $helper->formatPrice( intval( $value['to'] ) );
                         }else{
-                            $name[] = 'до ' . round($value['to'], 1);
+                            $name[] = 'до&nbsp;' . $this->formatPriceView( $value['to'] );
                         }
                     }
                     if (!$name) continue;
-                    if ($is_price) $name[] .= 'р.';
+                    if ($is_price) $name[] .= 'р.'; else $name[] .= $filter->getUnit();
                     $return[] = array(
                         'type' => $filter->getId() == 'brand' ? 'creator' : 'parameter',
                         'name'  => implode(' ', $name),
@@ -131,5 +132,26 @@ class FilterForm {
         $second = $this->page->helper->clearZeroValue((float)$second);
 
         return $first == $second;
+    }
+
+
+    private function  formatPriceView($value, $numDecimals = 1)
+    {
+        $helper = & $this->page->helper;
+        if (!$numDecimals) $numDecimals = 1;
+        $decimals = $numDecimals * 10;
+        //$old_val = $value;
+
+        if (
+            is_int($value) ||
+            abs(intval($value) - $value) < (1 / $decimals)
+        ) {
+
+            return $helper->formatPrice($value, 0);
+
+        }
+
+        return $helper->formatPrice($value, $numDecimals);
+
     }
 }

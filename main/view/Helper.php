@@ -50,4 +50,26 @@ class Helper extends \Templating\Helper {
         $interval = $today->diff($date);
         return ($interval->days - 1 < 0) ? 0 : ($interval->days - 1);
     }
+
+
+    /**
+     * Укругляет до 0.1 с избытком:
+     * либо отбрасыванием дробной части, либо отбрасыванием и прибавлением 0.1
+     * Используется, например, для задания верхней и нижней границы фильтров.
+     *
+     * @param $value
+     * @param bool $increase
+     * @return bool|float
+     */
+    public function roundToOneDecimal($value, $increase = false) {
+
+        $old_value = $value;
+        if ( !is_numeric($value) ) return false;
+        $value = (int) ( $value * 10 );
+        if ( $increase && (10*$old_value - $value)> 0.1 ) $value++;
+        $ret = ( ($value) ) / 10;
+
+        return $ret;
+    }
+
 }
