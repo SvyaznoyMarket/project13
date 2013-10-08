@@ -425,6 +425,10 @@ class Repository {
         $dataStore->execute();
 
         if(!empty($seoJson['content'])) {
+            if (!is_array($seoJson['content'])) {
+                $seoJson['content'] = [$seoJson['content']];
+            }
+
             $replacer = new \Util\InflectReplacer($patterns);
             foreach ($seoJson['content'] as $key => $content) {
                 if ($value = $replacer->get($seoJson['content'][$key])) {
