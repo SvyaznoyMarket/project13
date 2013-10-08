@@ -1,10 +1,6 @@
 ;(function( ENTER ) {
     var constructors = ENTER.constructors,
-        signinUserNameField = $('.jsSigninUsername'),
-        signinPasswordField = $('.jsSigninPassword'),
-        registerFirstNameField = $('.jsRegisterFirstName'),
         registerMailPhoneField = $('.jsRegisterUsername'),
-        forgotPwdLoginField = $('.jsForgotPwdLogin'),
 
         /**
          * Конфигурация валидатора для формы логина
@@ -13,13 +9,13 @@
             signinValidationConfig = {
             fields: [
                 {
-                    fieldNode: signinUserNameField,
+                    fieldNode: $('.jsSigninUsername'),
                     require: true,
                     customErr: 'Не указан логин',
                     validateOnChange: true
                 },
                 {
-                    fieldNode: signinPasswordField,
+                    fieldNode: $('.jsSigninPassword'),
                     require: true,
                     customErr: 'Не указан пароль'
                     //validateOnChange: true
@@ -35,7 +31,7 @@
             registerValidationConfig = {
             fields: [
                 {
-                    fieldNode: registerFirstNameField,
+                    fieldNode: $('.jsRegisterFirstName'),
                     require: true,
                     customErr: 'Не указано имя',
                     validateOnChange: true
@@ -58,7 +54,7 @@
             forgotPwdValidationConfig = {
             fields: [
                 {
-                    fieldNode: forgotPwdLoginField,
+                    fieldNode: $('.jsForgotPwdLogin'),
                     require: true,
                     customErr: 'Не указан email или мобильный телефон',
                     validateOnChange: true
@@ -88,8 +84,7 @@
             }
             // constructor body
 
-            this.formId = ''; // id текущей формы
-            this.formName = ''; // название текущей формы
+            this.form = ''; // текущая форма
 
             if ( !registerMailPhoneField.length ) {
                 return false;
@@ -98,7 +93,7 @@
             $(document).on('click', '.registerAnotherWayBtn', $.proxy(this.registerAnotherWay, this));
             $(document).on('keyup', '.jsRegisterFirstName, .jsRegisterUsername', $.proxy(this.checkInputs, this));
             $(document).on('click', '.bAuthLink', this.openAuth);
-            $('#login-form, #register-form, #reset-pwd-form').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
+            $('.jsLoginForm, .jsRegisterForm, .jsResetPwdForm').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
             $(document).on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
             $(document).on('click', '#bUserlogoutLink', this.logoutLinkClickLog);
         }
@@ -109,19 +104,19 @@
          *
          * @param   {String}    msg     Сообщение которое необходимо показать пользователю
          */
-        Login.prototype.showError = function ( msg, callback ) {
-            var error = $('#' + this.formId + ' ul.error_list');
+        Login.prototype.showError = function( msg, callback ) {
+            var error = $('ul.error_list', this.form);
             // end of vars
 
             if ( callback !== undefined ) {
                 callback();
             }
 
-            if (error.length) {
+            if ( error.length ) {
                 error.html('<li>' + msg + '</li>');
             }
             else {
-                $('#' + this.formId + ' .bFormLogin__ePlaceTitle').after($('<ul class="error_list" />').append('<li>' + msg + '</li>'));
+                $('.bFormLogin__ePlaceTitle', this.form).after($('<ul class="error_list" />').append('<li>' + msg + '</li>'));
             }
 
             return false;
@@ -132,9 +127,9 @@
          *
          * @param   {Object}    formError   Объект с полем содержащим ошибки
          */
-        Login.prototype.formErrorHandler = function ( formError ) {
-            var validator = eval(this.formName + 'Validator'),
-                field = $('[name="' + this.formName + '[' + formError.field + ']"]');
+        Login.prototype.formErrorHandler = function( formError ) {
+            var validator = this.getFormValidator(),
+                field = $('[name="' + this.getFormName() + '[' + formError.field + ']"]');
             // end of vars
 
             var clearError = function clearError() {
@@ -175,13 +170,17 @@
                 console.warn('Обработка ошибок формы');
 
                 if ( res.redirect ) {
-                    this.showError(res.error.message, function(){
+                    this.showError(res.error.message, function() {
                         document.location.href = res.redirect;
                     });
 
                     return;
                 }
 
+                // очищаем блок с глобальными ошибками
+                if ( $('ul.error_list', this.form).length ) {
+                    $('ul.error_list', this.form).html('');
+                }
                 //this.showError(res.error.message);
 
                 for ( var i = res.form.error.length - 1; i >= 0; i-- ) {
@@ -210,7 +209,7 @@
         /**
          * Переключение типов проверки
          */
-        Login.prototype.registerAnotherWay = function () {
+        Login.prototype.registerAnotherWay = function() {
             var label = $('.registerAnotherWay'),
                 btn = $('.registerAnotherWayBtn'),
                 registerPhonePH = $('.registerPhonePH');
@@ -241,7 +240,7 @@
         /**
          * Проверка заполненности инпутов
          */
-        Login.prototype.checkInputs = function ( e ) {
+        Login.prototype.checkInputs = function( e ) {
             if ( !this.checkEmail() ) {
                 // проверяем как телефон
                 if ( ((e.which >= 96) && (e.which <= 105)) || ((e.which >= 48) && (e.which <= 57)) || (e.which === 8) ) {
@@ -260,11 +259,11 @@
         /**
          * Authorization process
          */
-        Login.prototype.openAuth = function () {
+        Login.prototype.openAuth = function() {
             $('#auth-block').lightbox_me({
                 centered: true,
                 autofocus: true,
-                onLoad: function () {
+                onLoad: function() {
                     $('#auth-block').find('input:first').focus();
                 }
             });
@@ -277,35 +276,45 @@
          * Изменение значения кнопки сабмита при отправке ajax запроса
          * @param btn Кнопка сабмита
          */
-        Login.prototype.submitBtnLoadingDisplay = function ( btn ) {
+        Login.prototype.submitBtnLoadingDisplay = function( btn ) {
             if ( btn.length ) {
                 var value1 = btn.val(),
-                    value2 = btn.data('loading-value'),
-                    disabled = btn.attr('disabled') != undefined ? btn.attr('disabled') : true;
+                    value2 = btn.data('loading-value');
                 // end of vars
 
-                btn.attr('disabled', (disabled ? false : true)).val(value2).data('loading-value', value1);
+                btn.attr('disabled', (btn.attr('disabled') == 'disabled' ? false : true)).val(value2).data('loading-value', value1);
             }
 
             return false;
         }
 
         /**
+         * Возвращает валидатор для текущей формы
+         */
+        Login.prototype.getFormValidator = function() {
+            return eval(this.getFormName() + 'Validator');
+        }
+
+        /**
+         * Возвращает название текущей формы
+         */
+        Login.prototype.getFormName = function() {
+            return (this.form.hasClass('jsLoginForm'))
+                ? 'signin'
+                : (this.form.hasClass('jsRegisterForm') ? 'register' : (this.form.hasClass('jsResetPwdForm') ? 'forgot' : ''));
+        }
+
+        /**
          * Сабмит формы регистрации или авторизации
          */
-        Login.prototype.formSubmit = function ( e, param ) {
-            var form = $(e.target),
-                wholemessage = form.serializeArray();
+        Login.prototype.formSubmit = function( e, param ) {
+            e.preventDefault();
+            this.form = $(e.target);
+
+            var wholemessage = this.form.serializeArray();
             // end of vars
 
-            e.preventDefault();
-
-            this.formId = form.attr('id');
-            this.formName = (this.formId == 'login-form')
-                ? 'signin'
-                : (this.formId == 'register-form' ? 'register' : (this.formId == 'reset-pwd-form' ? 'forgot' : ''));
-
-            var authFromServer = function ( response ) {
+            var authFromServer = function( response ) {
                 if ( !response.success ) {
                     if ( Login.serverErrorHandler.hasOwnProperty(response.error.code) ) {
                         console.log('Есть обработчик');
@@ -316,20 +325,20 @@
                         Login.serverErrorHandler['default'](response);
                     }
 
-                    this.submitBtnLoadingDisplay( form.find('[type="submit"]:first') );
+                    this.submitBtnLoadingDisplay( this.form.find('[type="submit"]:first') );
 
                     return false;
                 }
 
-                $.proxy(this.formSubmitLog, this)( form );
+                $.proxy(this.formSubmitLog, this)( this.form );
 
-                if ( form.data('redirect') ) {
+                if ( this.form.data('redirect') ) {
                     if ( response.data.link ) {
                         window.location = response.data.link;
                     }
                     else {
-                        form.unbind('submit');
-                        form.submit();
+                        this.form.unbind('submit');
+                        this.form.submit();
                     }
                 }
                 else {
@@ -347,9 +356,9 @@
                 }
             };
 
-            this.submitBtnLoadingDisplay( form.find('[type="submit"]:first') );
-            wholemessage['redirect_to'] = form.find('[name="redirect_to"]:first').val();
-            $.post(form.attr('action'), wholemessage, $.proxy(authFromServer, this), 'json');
+            this.submitBtnLoadingDisplay( this.form.find('[type="submit"]:first') );
+            wholemessage['redirect_to'] = this.form.find('[name="redirect_to"]:first').val();
+            $.post(this.form.attr('action'), wholemessage, $.proxy(authFromServer, this), 'json');
 
             return false;
         };
@@ -357,43 +366,40 @@
         /**
          * Отображение формы "Забыли пароль"
          */
-        Login.prototype.forgotFormToggle = function () {
-            $('#reset-pwd-form').toggle();
-            $('#login-form').toggle();
+        Login.prototype.forgotFormToggle = function() {
+            $('.jsResetPwdForm').toggle();
+            $('.jsLoginForm').toggle();
 
             return false;
         };
 
         /**
          * Логирование при сабмите формы регистрации или авторизации
-         *
-         * @param formId
-         * @private
          */
-        Login.prototype.formSubmitLog = function ( form ) {
-            if ( 'login-form' == this.formId ) {
+        Login.prototype.formSubmitLog = function() {
+            if ( 'signin' == this.getFormName() ) {
                 if ( typeof(_gaq) !== 'undefined' ) {
-                    var type = ( (form.find('.jsSigninUsername').val().search('@')) !== -1 ) ? 'email' : 'mobile';
+                    var type = ( (this.form.find('.jsSigninUsername').val().search('@')) !== -1 ) ? 'email' : 'mobile';
                     _gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
                 }
 
                 if ( typeof(_kmq) !== 'undefined' ) {
-                    _kmq.push(['identify', form.find('.jsSigninUsername').val() ]);
+                    _kmq.push(['identify', this.form.find('.jsSigninUsername').val() ]);
                 }
             }
-            else if ( 'register-form' == this.formId ) {
+            else if ( 'register' == this.getFormName() ) {
                 if ( typeof(_gaq) !== 'undefined' ) {
                     var type = ( this.checkEmail() ) ? 'email' : 'mobile';
                     _gaq.push(['_trackEvent', 'Account', 'Create account', type]);
                 }
 
                 if ( typeof(_kmq) !== 'undefined' ) {
-                    _kmq.push(['identify', form.find('.jsRegisterUsername').val() ]);
+                    _kmq.push(['identify', this.form.find('.jsRegisterUsername').val() ]);
                 }
             }
-            else if ( 'reset-pwd-form' == this.formId ) {
+            else if ( 'forgot' == this.getFormName() ) {
                 if ( typeof(_gaq) !== 'undefined' ) {
-                    var type = ( (form.find('.jsForgotPwdLogin').val().search('@')) !== -1 ) ? 'email' : 'mobile';
+                    var type = ( (this.form.find('.jsForgotPwdLogin').val().search('@')) !== -1 ) ? 'email' : 'mobile';
                     _gaq.push(['_trackEvent', 'Account', 'Forgot password', type]);
                 }
             }
@@ -402,19 +408,17 @@
         /**
          * Логирование при клике на ссылку выхода
          */
-        Login.prototype.logoutLinkClickLog = function () {
+        Login.prototype.logoutLinkClickLog = function() {
             if ( typeof(_kmq) !== 'undefined' ) {
                 _kmq.push(['clearIdentity']);
             }
-
-            return false;
         };
 
         return Login;
     }());
 
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         login = new ENTER.constructors.Login();
     });
 

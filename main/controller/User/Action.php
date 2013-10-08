@@ -14,20 +14,20 @@ class Action {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $this->redirect = \App::router()->generate('user'); // default redirect to the /private page (Личный кабинет)
-        $redirectTo = $request->get('redirect_to');
-        if ($redirectTo) {
-            $this->redirect = $redirectTo;
-            $this->requestRedirect = $redirectTo;
-        }
+//        $redirectTo = $request->get('redirect_to');
+//        if ($redirectTo) {
+//            $this->redirect = $redirectTo;
+//            $this->requestRedirect = $redirectTo;
+//        }
 
         if (\App::user()->getEntity()) { // if user is logged in
-            if (empty($redirectTo)) {
+//            if (empty($redirectTo)) {
                 return $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse(['success' => true])
                     : new \Http\RedirectResponse(\App::router()->generate('user'));
-            } else { // if redirect isset:
-                return new \Http\RedirectResponse($redirectTo);
-            }
+//            } else { // if redirect isset:
+//                return new \Http\RedirectResponse($redirectTo);
+//            }
         }
 
         return false;
@@ -149,7 +149,7 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-        $page->setParam('redirect', $this->redirect);
+//        $page->setParam('redirect', $this->redirect);
 
         return new \Http\Response($page->show());
     }
@@ -170,12 +170,12 @@ class Action {
             $redirect_to = $referer;
         }
 
-        if ($request->get('redirect_to')) {
-            $redirect_to = $request->get('redirect_to');
-            if (!preg_match('/^(\/|http).*/i', $redirect_to)) {
-                $redirect_to = 'http://' . $redirect_to;
-            }
-        }
+//        if ($request->get('redirect_to')) {
+//            $redirect_to = $request->get('redirect_to');
+//            if (!preg_match('/^(\/|http).*/i', $redirect_to)) {
+//                $redirect_to = 'http://' . $redirect_to;
+//            }
+//        }
 
         $response = new \Http\RedirectResponse($redirect_to); 
 
@@ -299,9 +299,9 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-        if ( $this->requestRedirect ) {
-            $page->setParam('redirect', $this->requestRedirect);
-        }
+//        if ( $this->requestRedirect ) {
+//            $page->setParam('redirect', $this->requestRedirect);
+//        }
 
         return new \Http\Response($page->show());
     }
@@ -527,7 +527,7 @@ class Action {
     public function forgot(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $username = trim((string)$request->get('login'));
+        $username = trim((string)$request->get('forgot')['login']);
 
         $errorMsg = null;
         $formErrors = [];
@@ -549,7 +549,6 @@ class Action {
             }
         } catch(\Exception $e) {
             \App::exception()->remove($e);
-
             if ( $errorMsg == null ) {
                 $errorMsg = 'Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : '');
                 $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'global'];
