@@ -36,7 +36,4 @@ return function(
         Товары не найдены
     <? } ?>
 
-    <form class="bFilter clearfix hidden" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
-    <div id="_searchKiss" style="display: none" data-search='<?= $helper->json(['query' => $searchQuery, 'url' => \App::request()->headers->get('referer'), 'count' => $count])?>'></div>
-
 <? };
