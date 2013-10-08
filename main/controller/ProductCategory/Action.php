@@ -212,15 +212,51 @@ class Action {
 
         // TODO: запрашиваем меню
 
-        // запрашиваем категорию по токену
         /** @var $category \Model\Product\Category\Entity */
         $category = null;
-        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-            $data = reset($data);
-            if ((bool)$data) {
-                $category = new \Model\Product\Category\Entity($data);
+
+        $shopScriptSeo = [];
+        if (\App::config()->shopScript['enabled']) {
+            $shopScript = \App::shopScriptClient();
+            $shopScript->addQuery('category/get-seo', [
+                'slug' => $categoryToken,
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ], [], function ($data) use (&$shopScriptSeo) {
+                if($data && is_array($data)) $shopScriptSeo = reset($data);
+            });
+            $shopScript->execute();
+
+            // если shopscript вернул редирект
+            if(!empty($shopScriptSeo['redirect']['link'])) {
+                $redirect = $shopScriptSeo['redirect']['link'];
+                if(!preg_match('/^http/', $redirect)) {
+                    $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
+                        \App::config()->mainHost .
+                        (preg_match('/^\//', $redirect) ? '' : '/') .
+                        $redirect;
+                }
+                return new \Http\RedirectResponse($redirect);
             }
-        });
+
+            if (empty($shopScriptSeo['ui'])) {
+                throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
+            }
+
+            // запрашиваем категорию по ui
+            \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $category = new \Model\Product\Category\Entity($data);
+                }
+            });
+        } else {
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $category = new \Model\Product\Category\Entity($data);
+                }
+            });
+        }
 
         // запрашиваем бренд по токену
         /** @var $brand \Model\Brand\Entity */
@@ -291,7 +327,7 @@ class Action {
             if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
                 $controller = new \Controller\Jewel\ProductCategory\Action();
 
-                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
             }
 
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
@@ -323,7 +359,7 @@ class Action {
 
         // получаем из json данные о горячих ссылках и content
         try {
-            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
+            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category, null, $shopScriptSeo);
             // получаем горячие ссылки
             $hotlinks = \RepositoryManager::productCategory()->getHotlinksBySeoCatalogJson($seoCatalogJson);
 
@@ -358,6 +394,7 @@ class Action {
             &$seoContent,
             &$catalogJson,
             &$promoContent,
+            &$shopScriptSeo,
             &$shop
         ) {
             $page->setParam('category', $category);
@@ -368,6 +405,7 @@ class Action {
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
+            $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setGlobalParam('shop', $shop);
             if ( \App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) $page->setGlobalParam('shops', \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()));
         };

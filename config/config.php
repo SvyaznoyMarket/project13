@@ -105,6 +105,22 @@ $c->dataStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->shopScript['enabled'] = true;
+$c->shopScript['url'] = 'http://admin.enter.ru/v2/';
+$c->shopScript['user'] = 'admin';
+$c->shopScript['password'] = 'booToo9x';
+$c->shopScript['timeout'] = 3;
+$c->shopScript['retryCount'] = 4;
+$c->shopScript['retryTimeout'] = [
+    'default' => 0.3,
+    'tiny'    => 0.1,
+    'short'   => 0.2,
+    'medium'  => 0.3,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
+
 $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['moscowPhone'] = '8 (495) 775-00-06';
 $c->company['icq'] = '648198963';
