@@ -283,8 +283,6 @@ class Repository {
         $client->addQuery('listing/list',
             [
                 'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-            ],
-            [
                 'filter' => [
                     'filters' => $filter,
                     'sort'    => [],
@@ -292,6 +290,7 @@ class Repository {
                     'limit'   => null,
                 ],
             ],
+            [],
             function($data) use(&$count){
                 $count = !empty($data['count']) ? (int)$data['count'] : 0;
             }
@@ -318,8 +317,6 @@ class Repository {
         $client->addQuery('listing/list',
             [
                 'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-            ],
-            [
                 'filter' => [
                     'filters' => $filter,
                     'sort'    => $sort,
@@ -327,6 +324,7 @@ class Repository {
                     'limit'   => $limit,
                 ],
             ],
+            [],
             function($data) use(&$response) {
                 $response = $data;
             }
@@ -366,8 +364,6 @@ class Repository {
         $client->addQuery('listing/list',
             [
                 'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-            ],
-            [
                 'filter' => [
                     'filters' => $filter,
                     'sort'    => $sort,
@@ -375,6 +371,7 @@ class Repository {
                     'limit'   => $limit,
                 ],
             ],
+            [],
             function($data) use(&$response) {
                 $response = $data;
             }
@@ -425,8 +422,6 @@ class Repository {
         $client->addQuery('listing/list',
             [
                 'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-            ],
-            [
                 'filter' => [
                     'filters' => $filter,
                     'sort'    => $sort,
@@ -434,6 +429,7 @@ class Repository {
                     'limit'   => $limit,
                 ],
             ],
+            [],
             function($data) use(&$response) {
             $response = $data;
         });
