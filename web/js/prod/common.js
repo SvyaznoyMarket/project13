@@ -1160,6 +1160,7 @@ $(document).ready(function(){
     var constructors = ENTER.constructors,
         registerMailPhoneField = $('.jsRegisterUsername'),
         body = $('body'),
+        authBlock = $('#auth-block'),
 
         /**
          * Конфигурация валидатора для формы логина
@@ -1170,14 +1171,12 @@ $(document).ready(function(){
                 {
                     fieldNode: $('.jsSigninUsername'),
                     require: true,
-                    customErr: 'Не указан логин',
-                    validateOnChange: true
+                    customErr: 'Не указан логин'
                 },
                 {
                     fieldNode: $('.jsSigninPassword'),
                     require: true,
                     customErr: 'Не указан пароль'
-                    //validateOnChange: true
                 }
             ]
         },
@@ -1192,15 +1191,13 @@ $(document).ready(function(){
                 {
                     fieldNode: $('.jsRegisterFirstName'),
                     require: true,
-                    customErr: 'Не указано имя',
-                    validateOnChange: true
+                    customErr: 'Не указано имя'
                 },
                 {
                     fieldNode: registerMailPhoneField,
                     validBy: 'isEmail',
                     require: true,
-                    customErr: 'Некорректно введен e-mail',
-                    validateOnChange: true
+                    customErr: 'Некорректно введен e-mail'
                 }
             ]
         },
@@ -1257,6 +1254,9 @@ $(document).ready(function(){
          * Показ сообщений об ошибках при оформлении заказа
          *
          * @param   {String}    msg     Сообщение которое необходимо показать пользователю
+         *
+         * @this   {Login}
+         * @public
          */
         Login.prototype.showError = function( msg, callback ) {
             var error = $('ul.error_list', this.form);
@@ -1280,6 +1280,9 @@ $(document).ready(function(){
          * Обработка ошибок формы
          *
          * @param   {Object}    formError   Объект с полем содержащим ошибки
+         *
+         * @this   {Login}
+         * @public
          */
         Login.prototype.formErrorHandler = function( formError ) {
             var validator = this.getFormValidator(),
@@ -1301,6 +1304,9 @@ $(document).ready(function(){
 
         /**
          * Обработка ошибок из ответа сервера
+         *
+         * @this   {Login}
+         * @public
          */
         Login.serverErrorHandler = {
             'default': function( res ) {
@@ -1344,7 +1350,7 @@ $(document).ready(function(){
                     if ( formError.field !== 'global' && formError.message !== null ) {
                         $.proxy(this.formErrorHandler, this)(formError);
                     }
-                    else if ( formError.field == 'global' && formError.message !== null ) {
+                    else if ( formError.field === 'global' && formError.message !== null ) {
                         this.showError(formError.message);
                     }
                 }
@@ -1355,6 +1361,11 @@ $(document).ready(function(){
 
         /**
          * Проверяем как e-mail
+         *
+         * @return  {Boolean}   Выбрано ли поле e-mail в качестве регистрационных данных
+         *
+         * @this   {Login}
+         * @public
          */
         Login.prototype.checkEmail = function() {
             return registerMailPhoneField.hasClass('jsRegisterPhone') ? false : true;
@@ -1362,6 +1373,9 @@ $(document).ready(function(){
 
         /**
          * Переключение типов проверки
+         *
+         * @this   {Login}
+         * @public
          */
         Login.prototype.registerAnotherWay = function() {
             var label = $('.registerAnotherWay'),
@@ -1395,13 +1409,15 @@ $(document).ready(function(){
 
         /**
          * Authorization process
+         *
+         * @public
          */
         Login.prototype.openAuth = function() {
-            $('#auth-block').lightbox_me({
+            authBlock.lightbox_me({
                 centered: true,
                 autofocus: true,
                 onLoad: function() {
-                    $('#auth-block').find('input:first').focus();
+                    authBlock.find('input:first').focus();
                 }
             });
 
@@ -1411,7 +1427,11 @@ $(document).ready(function(){
 
         /**
          * Изменение значения кнопки сабмита при отправке ajax запроса
+         *
          * @param btn Кнопка сабмита
+         *
+         * @this   {Login}
+         * @public
          */
         Login.prototype.submitBtnLoadingDisplay = function( btn ) {
             if ( btn.length ) {
@@ -1419,21 +1439,31 @@ $(document).ready(function(){
                     value2 = btn.data('loading-value');
                 // end of vars
 
-                btn.attr('disabled', (btn.attr('disabled') == 'disabled' ? false : true)).val(value2).data('loading-value', value1);
+                btn.attr('disabled', (btn.attr('disabled') === 'disabled' ? false : true)).val(value2).data('loading-value', value1);
             }
 
             return false;
         }
 
         /**
-         * Возвращает валидатор для текущей формы
+         * Валидатор формы
+         *
+         * @return  {Object}   Валидатор для текущей формы
+         *
+         * @this   {Login}
+         * @public
          */
         Login.prototype.getFormValidator = function() {
             return eval(this.getFormName() + 'Validator');
         }
 
         /**
-         * Возвращает название текущей формы
+         * Получить название формы
+         *
+         * @return {string} Название текущей формы
+         *
+         * @this   {Login}
+         * @public
          */
         Login.prototype.getFormName = function() {
             return (this.form.hasClass('jsLoginForm'))
@@ -1443,6 +1473,9 @@ $(document).ready(function(){
 
         /**
          * Сабмит формы регистрации или авторизации
+         *
+         * @this   {Login}
+         * @public
          */
         Login.prototype.formSubmit = function( e, param ) {
             e.preventDefault();
@@ -1478,8 +1511,7 @@ $(document).ready(function(){
                     }
                 }
                 else {
-                    $('#auth-block').trigger('close');
-                    PubSub.publish('authorize', response.user);
+                    authBlock.trigger('close');
                 }
 
                 //for order page
@@ -1502,21 +1534,35 @@ $(document).ready(function(){
 
         /**
          * Отображение формы "Забыли пароль"
+         *
+         * @public
          */
         Login.prototype.forgotFormToggle = function() {
-            $('.jsResetPwdForm').toggle();
-            $('.jsLoginForm').toggle();
+            if ( $('.jsResetPwdForm').is(':visible') ) {
+                $('.jsResetPwdForm').hide();
+                $('.jsLoginForm').show();
+            }
+            else {
+                $('.jsResetPwdForm').show();
+                $('.jsLoginForm').hide();
+            }
 
             return false;
         };
 
         /**
          * Логирование при сабмите формы регистрации или авторизации
+         *
+         * @this   {Login}
+         * @public
          */
         Login.prototype.formSubmitLog = function() {
-            if ( 'signin' == this.getFormName() ) {
+            var type = '';
+            // end of vars
+
+            if ( 'signin' === this.getFormName() ) {
                 if ( typeof(_gaq) !== 'undefined' ) {
-                    var type = ( (this.form.find('.jsSigninUsername').val().search('@')) !== -1 ) ? 'email' : 'mobile';
+                    type = ( (this.form.find('.jsSigninUsername').val().search('@')) !== -1 ) ? 'email' : 'mobile';
                     _gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
                 }
 
@@ -1524,9 +1570,9 @@ $(document).ready(function(){
                     _kmq.push(['identify', this.form.find('.jsSigninUsername').val() ]);
                 }
             }
-            else if ( 'register' == this.getFormName() ) {
+            else if ( 'register' === this.getFormName() ) {
                 if ( typeof(_gaq) !== 'undefined' ) {
-                    var type = ( this.checkEmail() ) ? 'email' : 'mobile';
+                    type = ( this.checkEmail() ) ? 'email' : 'mobile';
                     _gaq.push(['_trackEvent', 'Account', 'Create account', type]);
                 }
 
@@ -1534,9 +1580,9 @@ $(document).ready(function(){
                     _kmq.push(['identify', this.form.find('.jsRegisterUsername').val() ]);
                 }
             }
-            else if ( 'forgot' == this.getFormName() ) {
+            else if ( 'forgot' === this.getFormName() ) {
                 if ( typeof(_gaq) !== 'undefined' ) {
-                    var type = ( (this.form.find('.jsForgotPwdLogin').val().search('@')) !== -1 ) ? 'email' : 'mobile';
+                    type = ( (this.form.find('.jsForgotPwdLogin').val().search('@')) !== -1 ) ? 'email' : 'mobile';
                     _gaq.push(['_trackEvent', 'Account', 'Forgot password', type]);
                 }
             }
@@ -1544,6 +1590,8 @@ $(document).ready(function(){
 
         /**
          * Логирование при клике на ссылку выхода
+         *
+         * @public
          */
         Login.prototype.logoutLinkClickLog = function() {
             if ( typeof(_kmq) !== 'undefined' ) {
