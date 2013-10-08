@@ -31,13 +31,13 @@ class IndexAction {
 
         $response = [];
         $client->addQuery('listing/list', [
-            'filter' => [
+            'region_id' => $user->getRegion()->getId(),
+            'filter'    => [
                 'filters' => $productFilter->dump(),
                 'sort'    => $sorting,
                 'offset'  => 0,
                 'limit'   => 32,
             ],
-            'region_id' => $user->getRegion()->getId(),
         ], [], function($data) use(&$response) {
             $response = $data;
         });

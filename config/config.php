@@ -105,19 +105,6 @@ $c->dataStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
-$c->pickpoint['timeout'] = 20;
-$c->pickpoint['retryCount'] = 3;
-$c->pickpoint['retryTimeout'] = [
-    'default' => 0.04,
-    'tiny'    => 0.04,
-    'short'   => 0.08,
-    'medium'  => 0.1,
-    'long'    => 0.5,
-    'huge'    => 1,
-    'forever' => 0,
-];
-
 $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['moscowPhone'] = '8 (495) 775-00-06';
 $c->company['icq'] = '648198963';
@@ -136,6 +123,35 @@ $c->partners['livetex']['login'] = 'anastasiya.vs@enter.ru';
 $c->partners['livetex']['password'] = 'enter1chat2'; // login и пароль используются только для страницы статистики
 $c->partners['livetex']['timeout'] = 1.5; // timeout curl'a для статистики
 
+
+$c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
+$c->pickpoint['timeout'] = 20;
+$c->pickpoint['retryCount'] = 3;
+$c->pickpoint['retryTimeout'] = [
+    'default' => 0.04,
+    'tiny'    => 0.04,
+    'short'   => 0.08,
+    'medium'  => 0.1,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
+
+$c->shopScript['enabled'] = true;
+$c->shopScript['url'] = 'http://admin.enter.ru/v2/';
+$c->shopScript['user'] = 'admin';
+$c->shopScript['password'] = 'booToo9x';
+$c->shopScript['timeout'] = 3;
+$c->shopScript['retryCount'] = 4;
+$c->shopScript['retryTimeout'] = [
+    'default' => 0.3,
+    'tiny'    => 0.1,
+    'short'   => 0.2,
+    'medium'  => 0.3,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
 
 
 // TODO: Вынести сюда же настройки для sociomantic and get4click
@@ -351,9 +367,6 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
-
-// Короткие названия дней недели. Используется, например, для времени работы пикпойнтов
-$c->daysShortNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';

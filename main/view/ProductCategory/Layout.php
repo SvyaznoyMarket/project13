@@ -166,13 +166,21 @@ class Layout extends \View\DefaultLayout {
                 ], $data);
             });
         } else {
-            $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+            if(\App::config()->shopScript['enabled']) {
                 $seoTemplate = array_merge([
                     'title'       => null,
                     'description' => null,
                     'keywords'    => null,
-                ], $data);
-            });
+                ], $this->getParam('shopScriptSeo'));
+            } else {
+                $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+                    $seoTemplate = array_merge([
+                        'title'       => null,
+                        'description' => null,
+                        'keywords'    => null,
+                    ], $data);
+                });
+            }
         }
 
         // данные для шаблона
