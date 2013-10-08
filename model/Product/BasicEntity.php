@@ -362,6 +362,27 @@ class BasicEntity {
         return $return;
     }
 
+    /**
+     * @param int $shopId
+     * @return bool
+     */
+    public function isInShop($shopId) {
+        $shopId = (int)$shopId;
+        if (!$shopId) return false;
+
+
+        $return = false;
+        foreach ($this->getStock() as $stock) {
+            if (($stock->getShopId() == $shopId) && $stock->getQuantity()) {
+                $return = true;
+                break;
+            }
+        }
+
+        return $return;
+    }
+
+
 
     /**
      * @return bool

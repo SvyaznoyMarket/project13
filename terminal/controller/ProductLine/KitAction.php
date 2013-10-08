@@ -85,7 +85,7 @@ class KitAction {
                 'description'   => $product->getTagline(),
                 'isBuyable'     => $product->getIsBuyable($shopId),
                 'isInShop'      => $product->getIsInShop($shopId),
-                'isInShowroom'  => $product->getIsInShowroom($shopId),
+                'isInShowroom'  => $product->isInShopShowroom($shopId),
                 'isInStore'     => $product->getState()->getIsStore(),
                 'hasSupplier'   => $product->getState()->getIsSupplier(),
                 'isInOtherShop' => $product->getState()->getIsShop(),
