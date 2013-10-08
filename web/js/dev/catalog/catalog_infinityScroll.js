@@ -24,8 +24,9 @@
 		nowPage: 1,
 
 		checkInfinity: function() {
-			console.info('checkInfinity');
+			console.info('checkInfinity '+ window.docCookies.getItem( 'infScroll' ));
 			if ( window.docCookies.getItem( 'infScroll' ) === '1' ) {
+				console.warn('inf cookie == 1');
 				catalog.infScroll.enable();
 			}
 		},
@@ -97,7 +98,7 @@
 		},
 
 		disable: function() {
-			console.info('disable...');
+			console.info('disable infinity...');
 
 			var url = catalog.filter.getFilterUrl();
 			// end of vars
@@ -105,11 +106,11 @@
 			catalog.liveScroll = false;
 			url = url.addParameterToUrl('ajax', 'true');
 
-			window.docCookies.setItem('infScroll', 0);
+			window.docCookies.setItem('infScroll', 0, 4*7*24*60*60, '/' );
 			$(window).off('scroll', catalog.infScroll.checkScroll);
 			catalog.history.getDataFromServer(url, catalog.filter.renderCatalogPage);
 
-			console.log('infinity scroll disable');
+			console.log('infinity scroll disable '+window.docCookies.getItem( 'infScroll' ));
 		}
 	};
 
@@ -129,6 +130,7 @@
 		},
 
 		paginationBtnHandler = function paginationBtnHandler() {
+			console.info('paginationBtnHandler');
 			var activeClass = 'mActive',
 				infBtn = viewParamPanel.find('.mInfinity'),
 				isActiveTab = infBtn.hasClass(activeClass);

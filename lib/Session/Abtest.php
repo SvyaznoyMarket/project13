@@ -102,16 +102,16 @@ class Abtest {
         // Грязный хак, пока не пришел Егор
         // https://jira.enter.ru/browse/SITE-2248
         // 
-        $cookieInfScroll = new \Http\Cookie(
-            'infScroll',
-            1,
-            time() + 10,
-            '/',
-            null,
-            false,
-            false // важно httpOnly=false, чтобы js мог получить куку
-        );
-        $response->headers->setCookie($cookieInfScroll);
+        // $cookieInfScroll = new \Http\Cookie(
+        //     'infScroll',
+        //     1,
+        //     time() + (4 * 7 * 24 * 60 * 60),
+        //     '/',
+        //     null,
+        //     false,
+        //     false // важно httpOnly=false, чтобы js мог получить куку
+        // );
+        // $response->headers->setCookie($cookieInfScroll);
 
         if (!\App::request()->cookies->has($this->config['cookieName'])) {
             $response->headers->setCookie($cookie);

@@ -151,7 +151,7 @@ console.log(1111)
   $('div.pageslist ul').append( next )
              .find('a')
              .bind('click', function(event){
-                window.docCookies.removeItem( 'infScroll', '/' )
+                window.docCookies.setItem('infScroll', 0, 4*7*24*60*60, '/' );
                 // ableToLoadJewel = true
                 // $(window).unbind('scroll')
                 // return false
