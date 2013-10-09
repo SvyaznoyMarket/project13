@@ -25,7 +25,7 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
         <label class="bCustomLabel mCustomLabelBig" style="/*display: block;*/" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
     </div>
 
-    <input type="submit" class="bigbutton bFormLogin__eBtnSubmit" data-loading-value="Регистрируюсь..." value="Регистрация" />
+    <input type="submit" class="bigbutton bFormLogin__eBtnSubmit jsSubmit" data-loading-value="Регистрируюсь..." value="Регистрация" />
 
     <p class="bRulesText">Нажимая кнопку «Регистрация», я подтверждаю свое согласие с <a href="/terms">Условиями продажи...</a></p>
 

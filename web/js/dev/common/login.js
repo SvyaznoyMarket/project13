@@ -3,6 +3,9 @@
 		registerMailPhoneField = $('.jsRegisterUsername'),
 		body = $('body'),
 		authBlock = $('#auth-block'),
+		forgotPwdLogin = $('.jsForgotPwdLogin'),
+		resetPwdForm = $('.jsResetPwdForm'),
+		loginForm = $('.jsLoginForm'),
 
 		/**
 		 * Конфигурация валидатора для формы логина
@@ -52,7 +55,7 @@
 			forgotPwdValidationConfig = {
 			fields: [
 				{
-					fieldNode: $('.jsForgotPwdLogin'),
+					fieldNode: forgotPwdLogin,
 					require: true,
 					customErr: 'Не указан email или мобильный телефон',
 					validateOnChange: true
@@ -323,53 +326,74 @@
 			e.preventDefault();
 			this.form = $(e.target);
 
-			var formData = this.form.serializeArray();
+			var formData = this.form.serializeArray(),
+				validator = this.getFormValidator(),
+				formSubmit = $('.jsSubmit', this.form);
+			// end of vars
 
-			var authFromServer = function( response ) {
-				if ( response.error !== null ) {
-					if ( Login.serverErrorHandler.hasOwnProperty(response.error.code) ) {
-						console.log('Есть обработчик');
-						$.proxy(Login.serverErrorHandler[response.error.code], this)(response);
+			var responseFromServer = function( response ) {
+					if ( response.error !== null ) {
+						if ( Login.serverErrorHandler.hasOwnProperty(response.error.code) ) {
+							console.log('Есть обработчик');
+							$.proxy(Login.serverErrorHandler[response.error.code], this)(response);
+						}
+						else {
+							console.log('Стандартный обработчик');
+							Login.serverErrorHandler['default'](response);
+						}
+
+						this.submitBtnLoadingDisplay( formSubmit );
+
+						return false;
+					}
+
+					$.proxy(this.formSubmitLog, this);
+
+					// если форма "Восстановление пароля" то скрываем елементы и выводим сообщение
+					if ( forgotPwdLogin.length && forgotPwdLogin.is(':visible') ) {
+						this.submitBtnLoadingDisplay( formSubmit );
+						forgotPwdLogin.hide();
+						$('.jsForgotPwdLoginLabel', this.form).hide();
+						formSubmit.hide();
+						this.showError(response.notice.message);
+					}
+
+					if ( this.form.data('redirect') ) {
+						if ( response.data.link ) {
+							window.location = response.data.link;
+						}
+						else {
+							this.form.unbind('submit');
+							this.form.submit();
+						}
 					}
 					else {
-						console.log('Стандартный обработчик');
-						Login.serverErrorHandler['default'](response);
+						authBlock.trigger('close');
 					}
 
-					this.submitBtnLoadingDisplay( this.form.find('[type="submit"]:first') );
-
-					return false;
-				}
-
-				$.proxy(this.formSubmitLog, this)( this.form );
-
-				if ( this.form.data('redirect') ) {
-					if ( response.data.link ) {
-						window.location = response.data.link;
+					//for order page
+					if ( $('#order-form').length ) {
+						$('#user-block').html('Привет, <strong><a href="' + response.data.link + '">' + response.data.user.first_name + '</a></strong>');
+						$('#order_recipient_first_name').val(response.data.user.first_name);
+						$('#order_recipient_last_name').val(response.data.user.last_name);
+						$('#order_recipient_phonenumbers').val(response.data.user.mobile_phone.slice(1));
+						$('#qiwi_phone').val(response.data.user.mobile_phone.slice(1));
 					}
-					else {
-						this.form.unbind('submit');
-						this.form.submit();
-					}
-				}
-				else {
-					authBlock.trigger('close');
-				}
+				},
+				requestToServer = function() {
+					this.submitBtnLoadingDisplay( formSubmit );
+					formData.push({name: 'redirect_to', value: location.href});
+					$.post(this.form.attr('action'), formData, $.proxy(responseFromServer, this), 'json');
+				};
+			// end of functions
 
-				//for order page
-				if ( $('#order-form').length ) {
-					$('#user-block').html('Привет, <strong><a href="' + response.data.link + '">' + response.data.user.first_name + '</a></strong>');
-					$('#order_recipient_first_name').val(response.data.user.first_name);
-					$('#order_recipient_last_name').val(response.data.user.last_name);
-					$('#order_recipient_phonenumbers').val(response.data.user.mobile_phone.slice(1));
-					$('#qiwi_phone').val(response.data.user.mobile_phone.slice(1));
-				}
-			};
-
-			this.submitBtnLoadingDisplay( this.form.find('[type="submit"]:first') );
-
-			formData.push({name: 'redirect_to', value: location.href});
-			$.post(this.form.attr('action'), formData, $.proxy(authFromServer, this), 'json');
+			validator.validate({
+				onInvalid: function( err ) {
+					console.warn('invalid');
+					console.log(err);
+				},
+				onValid: $.proxy(requestToServer, this)
+			});
 
 			return false;
 		};
@@ -380,13 +404,13 @@
 		 * @public
 		 */
 		Login.prototype.forgotFormToggle = function() {
-			if ( $('.jsResetPwdForm').is(':visible') ) {
-				$('.jsResetPwdForm').hide();
-				$('.jsLoginForm').show();
+			if ( resetPwdForm.is(':visible') ) {
+				resetPwdForm.hide();
+				loginForm.show();
 			}
 			else {
-				$('.jsResetPwdForm').show();
-				$('.jsLoginForm').hide();
+				resetPwdForm.show();
+				loginForm.hide();
 			}
 
 			return false;

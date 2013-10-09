@@ -21,5 +21,5 @@ if (!isset($form)) $form = new \View\User\LoginForm();
 
     <input class="text bFormLogin__eInput jsSigninPassword" type="password" name="signin[password]" />
 
-    <input type="submit" class="bigbutton bFormLogin__eBtnSubmit" data-loading-value="Вхожу..." value="Войти" />
+    <input type="submit" class="bigbutton bFormLogin__eBtnSubmit jsSubmit" data-loading-value="Вхожу..." value="Войти" />
 </form>
