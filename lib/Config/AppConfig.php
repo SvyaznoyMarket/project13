@@ -82,7 +82,6 @@ class AppConfig {
 
     /**
      * @var array
-     * @hidden
      */
     public $coreV2 = [
         'url'          => null,
