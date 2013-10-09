@@ -10,7 +10,7 @@
 if (!isset($form)) $form = new \View\User\LoginForm();
 ?>
 
-<form id="login-form" action="<?= $page->url('user.login') ?>" class="form bFormLogin__ePlace jsLoginForm" method="post">
+<form action="<?= $page->url('user.login') ?>" class="form bFormLogin__ePlace jsLoginForm" method="post">
     <legend class="bFormLogin__ePlaceTitle">У меня есть логин и пароль</legend>
 
     <label class="bFormLogin__eLabel">E-mail или мобильный телефон:</label>

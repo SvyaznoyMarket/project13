@@ -9,7 +9,7 @@
 if (!isset($form)) $form = new \View\User\RegistrationForm();
 ?>
 
-<form id="register-form" action="<?= $page->url('user.register') ?>" class="form bFormLogin__ePlace jsRegisterForm" method="post">
+<form action="<?= $page->url('user.register') ?>" class="form bFormLogin__ePlace jsRegisterForm" method="post">
     <legend class="bFormLogin__ePlaceTitle">Я новый пользователь</legend>
 
     <label class="bFormLogin__eLabel">Ваше имя:</label>
