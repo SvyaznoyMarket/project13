@@ -122,6 +122,8 @@ class AppConfig {
         'retryTimeout' => [],
         'retryCount'   => null,
     ];
+    /** @var bool */
+    public $connectTerminal = null;
     /** @var array */
     public $reviewsStore = [
         'url'          => null,
