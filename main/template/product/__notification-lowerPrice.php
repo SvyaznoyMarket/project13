@@ -22,9 +22,6 @@ return function(
         <span class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
         <div class="bLowPriceNotiferPopup popup">
             <i class="close"></i>
-            <div class="bLowPriceNotiferPopup__eTitle uNotEntered">
-                <?= $this->render('user/_uShouldEnter'); ?>
-            </div>
             <div class="uEntered">
                 <? if (empty($uEmail)): ?>
                     <div class="bLowPriceNotiferPopup__eTitle">
