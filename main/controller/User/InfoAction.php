@@ -15,9 +15,24 @@ class InfoAction {
             throw new \Exception\NotFoundException('Request is not xml http');
         }
 
+        $user = \App::user();
+        $cart = $user->getCart();
+
+        /** @var $cookies \Http\Cookie[] */
+        $cookies = [];
+
         try {
-            $user = \App::user();
-            $cart = $user->getCart();
+            if (!$request->cookies->has('infScroll')) {
+                $cookies[] = new \Http\Cookie(
+                    'infScroll',
+                    1,
+                    time() + (4 * 7 * 24 * 60 * 60),
+                    '/',
+                    null,
+                    false,
+                    false // важно httpOnly=false, чтобы js мог получить куку
+                );
+            }
 
             $responseData = [
                 'success' => true,
@@ -93,6 +108,12 @@ class InfoAction {
             $responseData['success'] = false;
         }
 
-        return new \Http\JsonResponse($responseData);
+        $response = new \Http\JsonResponse($responseData);
+
+        foreach ($cookies as $cookie) {
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
     }
 }

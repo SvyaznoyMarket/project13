@@ -5,15 +5,21 @@
 .bGoodImgBlock{
 	background: @white;
 	position: relative;
-	&_eMainLink{
+
+	&_eMainImgLink{
+		padding-right: 90px; 
 	}
+	
 	&_eMainImg{
 		display: block;
 		height: 480px;
-		margin: 15px auto;
+		margin: 15px 0 15px 90px;
 		position: relative;
-		width: 480px;
+		width: 850px;
+
+		text-align: center;
 	}
+
 	&_eEnlarge{
 		background: url('@{base-url}/product/img/enlarge.png') no-repeat center center;
 		bottom:15px;
@@ -61,6 +67,7 @@
 
 		font-size: 22px;
 		line-height: 1.5em;
+
 		&.active{
 			// color:@firmOrange;
 			background: @gray;
@@ -91,7 +98,12 @@
 	}
 	&_eTitle{
 		font-size: 16px;
-		line-height: 1.2em;		
+		line-height: 1.2em;
+		word-wrap: break-word;
+		height: 5em;
+		display: block;
+		overflow: hidden;
+		width: 165px;
 	}
 	&_eLink{
 		color: @white;
@@ -192,6 +204,10 @@
 	border-bottom: 1px solid @gray;
 	&_eItem{
 		width: 45%;
+
+		&.mLineParts{
+			width: 23%;
+		}
 	}
 }
 

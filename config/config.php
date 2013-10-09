@@ -105,6 +105,8 @@ $c->dataStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->connectTerminal = true;
+
 $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['moscowPhone'] = '8 (495) 775-00-06';
 $c->company['icq'] = '648198963';
@@ -137,7 +139,7 @@ $c->pickpoint['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->shopScript['enabled'] = true;
+$c->shopScript['enabled'] = false;
 $c->shopScript['url'] = 'http://admin.enter.ru/v2/';
 $c->shopScript['user'] = 'admin';
 $c->shopScript['password'] = 'booToo9x';

@@ -82,7 +82,6 @@ class AppConfig {
 
     /**
      * @var array
-     * @hidden
      */
     public $coreV2 = [
         'url'          => null,
@@ -122,6 +121,8 @@ class AppConfig {
         'retryTimeout' => [],
         'retryCount'   => null,
     ];
+    /** @var bool */
+    public $connectTerminal = null;
     /** @var array */
     public $reviewsStore = [
         'url'          => null,
