@@ -30,6 +30,10 @@
 
     <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
 
+    <? if (!empty($promoContent)): ?>
+        <?= $promoContent ?>
+    <? endif ?>
+
     <?= $helper->render('product-category/__filter', [
         'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
         'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
