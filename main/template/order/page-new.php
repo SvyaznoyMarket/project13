@@ -293,9 +293,13 @@ foreach (array_reverse($productsById) as $product) {
 		<h2 class="bBuyingSteps__eTitle">Информация о счастливом получателе</h2>
 
 		<div class="bHeadnote">
-			Уже покупали у нас?
-			<strong><a id="auth-link" class="underline bAuthLink" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
-			и вы сможете использовать ранее введенные данные
+            <? if ($user->getEntity()): ?>
+                Привет, <a href="<?= $page->url('user') ?>"><strong><?= $user->getEntity()->getName() ?></strong></a>
+            <? else: ?>
+                Уже покупали у нас?
+                <strong><a id="auth-link" class="underline bAuthLink" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
+                и вы сможете использовать ранее введенные данные
+            <? endif ?>
 		</div>
 		
 		<form id="order-form" action="<?= $paypalECS ? $page->url('order.paypal.create', ['token' => $request->get('token'), 'PayerID' => $request->get('PayerID')]) : $page->url('order.create') ?>" method="post">
