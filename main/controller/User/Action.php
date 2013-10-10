@@ -173,6 +173,9 @@ class Action {
         $user->removeToken($response);
         $user->setCacheCookie($response);
 
+        // SITE-1763
+        $user->getCart()->clear();
+
         return $response;
     }
 
