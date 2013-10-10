@@ -267,7 +267,7 @@ class Repository {
             }
         });
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['long']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
 
         return $collection;
     }
