@@ -227,7 +227,7 @@ $c->mediaHost = [
 
 $c->search['itemLimit'] = 1000;
 
-$c->product['itemsPerPage']           = 19;
+$c->product['itemsPerPage']           = 20;
 $c->product['showAccessories']        = true;
 $c->product['showRelated']            = true;
 $c->product['itemsInSlider']          = 5;
