@@ -13,50 +13,39 @@ trait FormTrait {
         $user = \App::user();
         $form = new Form();
 
-        // если пользователь авторизован
-        if ($userEntity = \App::user()->getEntity()) {
-            $form->setFirstName($userEntity->getFirstName());
-            $form->setLastName($userEntity->getLastName());
-            $form->setMobilePhone((strlen($userEntity->getMobilePhone()) > 10)
-                ? substr($userEntity->getMobilePhone(), -10)
-                : $userEntity->getMobilePhone()
-            );
-            $form->setEmail($userEntity->getEmail());
-            // иначе, если пользователь неавторизован, то вытащить из куки значения для формы
-        } else {
-            $cookieValue = $request->cookies->get(\App::config()->order['cookieName'], 'last_order');
-            if (!empty($cookieValue)) {
-                try {
-                    $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
-                } catch (\Exception $e) {
-                    \App::logger()->error($e, ['order']);
-                    $cookieValue = [];
-                }
-                $data = [];
-                foreach ([
-                    'recipient_first_name',
-                    'recipient_last_name',
-                    'recipient_phonenumbers',
-                    'recipient_email',
-                    'address_street',
-                    'address_number',
-                    'address_building',
-                    'address_apartment',
-                    'address_floor',
-                    'subway_id',
-                ] as $k) {
-                    if (array_key_exists($k, $cookieValue)) {
-                        if (('subway_id' == $k) && !$user->getRegion()->getHasSubway()) {
-                            continue;
-                        }
-                        if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
-                            $cookieValue[$k] = substr($cookieValue[$k], -10);
-                        }
-                        $data[$k] = $cookieValue[$k];
-                    }
-                }
-                $form->fromArray($data);
+        // берем значения для формы из куки
+        $cookieValue = $request->cookies->get(\App::config()->order['cookieName'], 'last_order');
+        if (!empty($cookieValue)) {
+            try {
+                $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
+            } catch (\Exception $e) {
+                \App::logger()->error($e, ['order']);
+                $cookieValue = [];
             }
+            $data = [];
+            foreach ([
+                'recipient_first_name',
+                'recipient_last_name',
+                'recipient_phonenumbers',
+                'recipient_email',
+                'address_street',
+                'address_number',
+                'address_building',
+                'address_apartment',
+                'address_floor',
+                'subway_id',
+            ] as $k) {
+                if (array_key_exists($k, $cookieValue)) {
+                    if (('subway_id' == $k) && !$user->getRegion()->getHasSubway()) {
+                        continue;
+                    }
+                    if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
+                        $cookieValue[$k] = substr($cookieValue[$k], -10);
+                    }
+                    $data[$k] = $cookieValue[$k];
+                }
+            }
+            $form->fromArray($data);
         }
 
         return $form;
