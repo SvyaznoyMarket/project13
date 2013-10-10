@@ -235,18 +235,19 @@ class Action {
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
                             'success' => true,
+                            'message' => sprintf('Пароль выслан на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
                             'data'    => [
                                 'content' => \App::templating()->render('form-register', [
                                     'page'    => new \View\Layout(),
                                     'form'    => $form,
                                     'request' => \App::request(),
                                 ]),
-                                'link' => $this->redirect,
+                                //'link' => $this->redirect,
                             ],
                         ])
                         : new \Http\RedirectResponse($this->redirect);
 
-                    \App::user()->signIn($user, $response);
+                    //\App::user()->signIn($user, $response); // SITE-2279
 
                     return $response;
                 } catch(\Exception $e) {
@@ -420,6 +421,7 @@ class Action {
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
                             'success' => true,
+                            'message' => sprintf('Пароль выслан на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
                             'data'    => [
                                 'content' => \App::templating()->render('form-registerCorporate', [
                                     'page'    => new \View\Layout(),
@@ -431,7 +433,7 @@ class Action {
                         ])
                         : new \Http\RedirectResponse(\App::router()->generate('user'));
 
-                    \App::user()->signIn($user, $response);
+                    //\App::user()->signIn($user, $response); // SITE-2279
 
                     return $response;
                 } catch(\Exception $e) {
