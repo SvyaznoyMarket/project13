@@ -13,6 +13,17 @@ trait FormTrait {
         $user = \App::user();
         $form = new Form();
 
+        // если пользователь авторизован
+        if ($userEntity = \App::user()->getEntity()) {
+            $form->setFirstName($userEntity->getFirstName());
+            $form->setLastName($userEntity->getLastName());
+            $form->setMobilePhone((strlen($userEntity->getMobilePhone()) > 10)
+                    ? substr($userEntity->getMobilePhone(), -10)
+                    : $userEntity->getMobilePhone()
+            );
+            $form->setEmail($userEntity->getEmail());
+        }
+
         // берем значения для формы из куки
         $cookieValue = $request->cookies->get(\App::config()->order['cookieName'], 'last_order');
         if (!empty($cookieValue)) {
