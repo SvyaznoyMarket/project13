@@ -12,11 +12,15 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
 <form action="<?= $page->url('user.register') ?>" class="form bFormLogin__ePlace jsRegisterForm" method="post">
     <legend class="bFormLogin__ePlaceTitle">Я новый пользователь</legend>
 
-    <label class="bFormLogin__eLabel">Ваше имя:</label>
-    <input type="text" class="text bFormLogin__eInput jsRegisterFirstName" name="register[first_name]" value="<?= $form->getFirstName() ?>"/>
+    <div class="pb5">
+        <label class="bFormLogin__eLabel">Ваше имя:</label>
+        <input type="text" class="text bFormLogin__eInput jsRegisterFirstName" name="register[first_name]" value="<?= $form->getFirstName() ?>"/>
+    </div>
 
-    <label class="bFormLogin__eLabel registerAnotherWay">Ваш e-mail:</label>
-    <a class="bFormLogin__eLinkHint eMail registerAnotherWayBtn" href="#">У меня нет e-mail</a>
+    <div class="pb5">
+        <label class="bFormLogin__eLabel registerAnotherWay">Ваш e-mail:</label>
+        <a class="bFormLogin__eLinkHint eMail registerAnotherWayBtn" href="#">У меня нет e-mail</a>
+    </div>
 
     <input type="text" class="text bFormLogin__eInput jsRegisterUsername" name="register[username]" value="<?= $form->getUsername() ?>" />
 
