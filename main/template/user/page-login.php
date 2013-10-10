@@ -49,9 +49,9 @@ if (!isset($redirect)) $redirect = '';
 			<img class="fl mr20" src="http://content.enter.ru/wp-content/uploads/2013/02/loginFormImg.jpg"/>
 		</form>
 		<div class="clear"></div>
-		<a id="hideLoginform" class="font18 dashed" href="#">У меня уже есть логин и пароль</a>
+		<!-- <a id="hideLoginform" class="font18 dashed" href="#">У меня уже есть логин и пароль</a> -->
 		<div class="clearfix"><?= $page->render('form-forgot') ?></div>
-		<form id="login-form" method="post" class="form hf" action="<?= $page->url('user.login') ?>">
+		<form id="login-form" method="post" class="form" action="<?= $page->url('user.login') ?>">
 			<input type="hidden" value="<?= $redirect ?: $page->url('user.login') ?>" name="redirect_to">
 			<div class="width327 bLoginForm clearfix">
 				<h2 class="bLoginForm_eTitle">У меня есть логин и пароль</h2>
