@@ -9788,9 +9788,6 @@
     font-size: 14px;
     line-height: 25px;
   }
-  .bSlider__eList .btnBuy .btnBuy__eLink.mShopsOnly {
-    font-size: 10px;
-  }
   .bSlider__eItem {
     display: none;
     float: left;
@@ -10130,9 +10127,6 @@
     color: #cbcbcb;
     border: 1px solid #f1f0f0;
     background: #f1f0f0;
-  }
-  .btnBuy .btnBuy__eLink.mShopsOnly {
-    font-size: 17px;
   }
   .btnBuy .btnBuy__eLink:hover {
     background: #ffa200;
