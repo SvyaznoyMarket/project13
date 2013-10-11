@@ -2451,46 +2451,6 @@
   #register-form .bSubscibe {
     display: none;
   }
-  .bSubscibe {
-    vertical-align: top;
-    font-size: 12px;
-    font-family: Tahoma, sans-serif;
-  }
-  .bSubscibe b {
-    display: block;
-    float: left;
-    margin: 3px 10px 0 0;
-    width: 24px;
-    height: 24px;
-    background: url("/css/common/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
-    cursor: pointer;
-  }
-  .bSubscibe .subscibe {
-    position: absolute;
-    z-index: -1;
-    opacity: 0;
-  }
-  .bSubscibe.checked b {
-    background-position: 0 -54px;
-  }
-  .registerAnotherWayBtn {
-    margin-right: 20px;
-    border-bottom: 1px dotted;
-    color: #a6a6a6;
-  }
-  .registerAnotherWayBtn:hover {
-    text-decoration: none;
-  }
-  .registerPhonePH {
-    position: absolute;
-    display: none;
-    margin: 0 10px;
-    line-height: 31px;
-  }
-  .registerPhone {
-    padding-left: 9% !important;
-    width: 89% !important;
-  }
   .bPopupTitle {
     margin: 0 0 15px;
     text-transform: uppercase;
@@ -2509,12 +2469,15 @@
     margin-right: 0;
   }
   .bFormLogin__ePlaceTitle {
-    margin: 0 0 10px;
+    margin: 0 0 12px;
     font-size: 16px;
+    padding: 0;
   }
   .bFormLogin__eLabel {
     display: inline-block;
-    margin: 0 0 5px;
+    margin: 0 0 7px;
+    position: relative;
+    z-index: 10;
   }
   .bFormLogin__eInput {
     display: block;
@@ -2523,6 +2486,9 @@
     width: 315px;
     height: 28px;
     line-height: 28px;
+  }
+  .bFormLogin__eInput:focus {
+    border-color: #ffd073;
   }
   .bFormLogin__eLinkHint {
     float: right;
@@ -2535,6 +2501,14 @@
     color: #a6a6a6;
     border-bottom: 1px dotted;
     font-size: 10px;
+    margin: 3px 10px 0 0;
+  }
+  .bFormLogin__eLinkHint.eMail:hover {
+    text-decoration: none;
+  }
+  .bFormLogin__eRevert {
+    float: left;
+    width: 280px;
   }
   .bFormLogin__eBtnSubmit {
     -webkit-border-radius: 5px;
@@ -2552,6 +2526,9 @@
   }
   .bFormLogin__eBtnSubmit.mDisabled {
     border-color: #e4e4e4;
+  }
+  .bFormLogin__eBtnSubmit.mBtnGrey {
+    box-shadow: none;
   }
   .bFormLogin .bInputList {
     color: #ffa901;
