@@ -136,14 +136,14 @@ class TemplateHelper {
     }
 
     /**
-     * @param $price
+     * @param float $price
      * @param int $numDecimals
      * @param string $decimalsDelimiter
      * @param string $thousandsDelimiter
      * @return string
      */
     public function formatPrice($price, $numDecimals = 0, $decimalsDelimiter = ',', $thousandsDelimiter = ' ') {
-        return number_format($price, $numDecimals, $decimalsDelimiter, $thousandsDelimiter);
+        return number_format((float)$price, $numDecimals, $decimalsDelimiter, $thousandsDelimiter);
     }
 
     /**
