@@ -19,6 +19,7 @@ $c->coreV2['retryTimeout'] = [
     'huge'    => 3,
     'forever' => 0,
 ];
+$c->coreV2['debug']        = true;
 
 $c->corePrivate['timeout']      *= 3;
 $c->corePrivate['retryTimeout'] = [

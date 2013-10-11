@@ -90,6 +90,7 @@ class AppConfig {
         'hugeTimeout'  => null,
         'retryTimeout' => [],
         'retryCount'   => null,
+        'debug'        => null,
         'chunk_size'   => null,
     ];
 
