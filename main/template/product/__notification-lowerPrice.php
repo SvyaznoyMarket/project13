@@ -34,6 +34,12 @@ return function(
                             <strong class="price"><?= $helper->formatPrice($price) ?></strong> <span class="rubl">p</span>
                         <? endif ?>
                     </div>
+
+                    <label class="clearfix checked">
+                        <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="bCustomInput subscribe jsSubscribe" checked="checked" />
+                        <b></b>Акции и <br>суперпредложения
+                    </label>
+
                     <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
                     <p class="bLowPriceNotiferPopup__eError red"></p>
                     <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink mDisabled" data-url="<?= $helper->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>
