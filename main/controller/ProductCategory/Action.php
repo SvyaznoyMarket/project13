@@ -434,7 +434,7 @@ class Action {
             $page->setParam('promoContent', $promoContent);
             $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setGlobalParam('shop', $shop);
-            if ( \App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) $page->setGlobalParam('shops', \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()));
+            $page->setGlobalParam('shops', (\App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) ? \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()) : []);
         };
 
         // полнотекстовый поиск через сфинкс
@@ -763,7 +763,7 @@ class Action {
      * @param \Model\Shop\Entity|null $shop
      * @return \Model\Product\Filter
      */
-    protected function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity &$brand = null, \Http\Request $request, $shop = null) {
+    public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity &$brand = null, \Http\Request $request, $shop = null) {
         // флаг глобального списка в параметрах запроса
         $isGlobal = self::isGlobal();
         //
@@ -849,7 +849,7 @@ class Action {
             $exists = array_map(function($filter) { /** @var $filter \Model\Product\Filter\Entity */ return $filter->getId(); }, $filters);
             /** @var $diff Ид фильтров родительских категорий */
             $diff = array_diff(array_keys($values), $exists);
-            if ((bool)$diff) {
+            if ((bool)$diff && $category) {
                 foreach ($category->getAncestor() as $ancestor) {
                     try {
                         /** @var $ancestorFilters \Model\Product\Filter\Entity[] */

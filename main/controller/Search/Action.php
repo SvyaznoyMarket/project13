@@ -63,7 +63,8 @@ class Action {
         \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
             $result = $data;
         });
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
 
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
@@ -116,6 +117,37 @@ class Action {
             }
         });
 
+        // запрашиваем фильтры
+        /** @var $filters \Model\Product\Filter\Entity[] */
+        $filters = [];
+        \RepositoryManager::productFilter()->prepareCollectionBySearchText($searchQuery, \App::user()->getRegion(), function($data) use (&$filters) {
+            foreach ($data as $item) {
+                $filters[] = new \Model\Product\Filter\Entity($item);
+            }
+        }, function (\Exception $e) { \App::exception()->remove($e); });
+
+        \App::coreClientV2()->execute();
+
+        $shop = null;
+        try {
+            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
+                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
+                    if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
+                        /*$route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
+                        $response = new \Http\RedirectResponse($route);
+                        $response->headers->set('referer', \App::request()->getUri());*/
+                        $controller = new \Controller\Region\Action();
+                        \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
+                        $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
+                        return $response;
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
+        }
+
         $categoriesById = array_filter($categoriesById);
 
         // если ид категории из http-запроса нет в коллекции категорий ...
@@ -124,6 +156,10 @@ class Action {
         }
         /** @var $selectedCategory \Model\Product\Category\Entity */
         $selectedCategory = $categoryId ? $categoriesById[$categoryId] : null;
+
+        // фильтры
+        $brand = null;
+        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
 
         // общее количество найденных товаров
         $productCount = $selectedCategory ? $selectedCategory->getProductCount() : $result['count'];
@@ -178,7 +214,11 @@ class Action {
                     $productPager,
                     $productVideosByProduct
                 ),
-                'selectedFilter' => null,
+                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productFilter,
+                    \App::router()->generate('search', ['q' => $searchQuery])
+                ),
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager
@@ -204,6 +244,7 @@ class Action {
         $page->setParam('meanQuery', $meanQuery);
         $page->setParam('forceMean', $forceMean);
         $page->setParam('productPager', $productPager);
+        $page->setParam('productFilter', $productFilter);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('categories', $categoriesById);
         $page->setParam('categoriesFound', $categoriesFound);
@@ -211,6 +252,7 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('productCount', $selectedCategory ? $selectedCategory->getProductCount() : $result['count']);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
+        $page->setGlobalParam('shops', (\App::config()->shop['enabled'] && !\Controller\ProductCategory\Action::isGlobal()) ? \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()) : []);
 
         return new \Http\Response($page->show());
     }

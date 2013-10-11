@@ -120,42 +120,4 @@ return function(
         <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
     </form>
 
-
-
-    <? if (false): ?>
-        <!-- Фильтр товаров -->
-        <div class="bFilter clearfix">
-            <div class="bFilterHead">
-                <a class="bFilterToggle mClose" href=""><span class="bToggleText">Бренды и параметры</span></a>
-
-                <!-- Фильтр по цене -->
-                <div class="bRangeSlider">
-                    <span class="bRangeSlider__eTitle">Цена</span>
-                    <input class="bRangeSlider__eInput mFromRange" name="" value="1 000" type="text"  />
-
-                    <div class="bFilterSlider" data-config="{&quot;min&quot;:2990,&quot;max&quot;:113990,&quot;step&quot;:0.1}">
-                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
-                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
-                    </div>
-
-                    <input class="bRangeSlider__eInput mLast mToRange" name="" value="10 000" type="text"  />
-
-                    <span class="bRangeSlider__eRub rubl">p</span>
-                </div>
-                <!-- /Фильтр по цене -->
-            </div>
-            <!-- Фильтр по популярным позициям -->
-            <ul class="bPopularSection">
-                <li class="bPopularSection__eItem mTitle">Популярные бренды</li>
-                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Samsung</strong></li>
-                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Nokia</strong></li>
-                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Roga und Koppentenganger</strong></li>
-                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Dr. Buchman</strong></li>
-                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText"></strong></li>
-            </ul>
-            <!-- /Фильтр по популярным позициям -->
-        </div>
-        <!-- Фильтр товаров -->
-    <? endif ?>
-
 <? };
