@@ -45,7 +45,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $entity;
     }
@@ -109,7 +109,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $entity;
     }
@@ -138,7 +138,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $collection;
     }
@@ -187,7 +187,7 @@ class Repository {
             }
         });
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+        $client->execute();
 
         return $collection;
     }
@@ -216,7 +216,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $collection;
     }
@@ -267,7 +267,7 @@ class Repository {
             }
         });
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
 
         return $collection;
     }

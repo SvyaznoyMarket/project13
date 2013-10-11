@@ -18,7 +18,7 @@ return function (
     if (!$product->getIsBuyable()) {
         $url = '#';
         $class .= ' mDisabled';
-        $value = $product->isInShopShowroomOnly() ? 'Витринный товар' : 'Нет в наличии';
+        $value = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет в наличии';
     } else if (!isset($url)) {
         $urlParams = [
             'productId' => $product->getId(),

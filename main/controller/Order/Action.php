@@ -89,7 +89,8 @@ class Action {
                     $shops = array_map(function($data) { return new \Model\Shop\Entity($data); }, $deliveryCalcResult['shops']);
                 }, function (\Exception $e) use (&$calcException) {
                     $calcException = $e;
-                }
+                },
+                \App::config()->coreV2['timeout'] * 4
             );
 
             // товары и услуги индексированные по ид
