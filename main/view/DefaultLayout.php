@@ -24,6 +24,8 @@ class DefaultLayout extends Layout {
 
         $this->addStylesheet('/css/global.min.css');
 
+        $this->addStylesheet('/styles/global.min.css');
+
         $this->addJavascript(\App::config()->debug ? '/js/loadjs.js' : '/js/loadjs.min.js');
     }
 

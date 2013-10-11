@@ -32,6 +32,7 @@
     <?= $page->slotKissMetrics() ?>
     <?= $page->slotMetaOg() ?>
 </head>
+
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
     <?= $page->slotConfig() ?>
     <div class="allpage" id="page">
@@ -52,7 +53,7 @@
     </div>
 
 
-    <?= $page->slotFooter() ?>
+
     <?= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
 
@@ -72,6 +73,12 @@
     <? endif ?>
 	
 	<a id="upper" href="#">Наверх</a>
+
+    <footer class="footer">
+        <ul>
+<li><a href=""></a></li>
+        </ul>
+    </footer>
 
 </body>
 </html>

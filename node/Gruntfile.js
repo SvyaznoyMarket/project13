@@ -184,20 +184,22 @@ module.exports = function(grunt) {
 			// компиляция LESS
 			compile: {
 				options: {
-					paths: ['../web/css/']
+					paths: ['../web/css/', '../web/styles/']
 				},
 				files: {
-					'../web/css/global.css': ['../web/css/global.less']
+					'../web/css/global.css': ['../web/css/global.less'],
+					'../web/styles/global.css': ['../web/styles/global.less']
 				}
 			},
 			// компиляция и минификация LESS
 			compress: {
 				options: {
-					paths: ['../web/css/'],
+					paths: ['../web/css/', '../web/styles/'],
 					compress: true
 				},
 				files: {
-					'../web/css/global.min.css': ['../web/css/global.less']
+					'../web/css/global.min.css': ['../web/css/global.less'],
+					'../web/styles/global.min.css': ['../web/styles/global.less']
 				}
 			}
 		},
