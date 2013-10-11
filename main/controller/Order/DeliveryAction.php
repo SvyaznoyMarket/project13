@@ -118,7 +118,7 @@ class DeliveryAction {
                 function (\Exception $e) use (&$exception) {
                     $exception = $e;
                 },
-                \App::config()->coreV2['timeout'] * 2
+                \App::config()->coreV2['timeout'] * 4
             );
             $client->execute();
             if ($exception instanceof \Exception) {
