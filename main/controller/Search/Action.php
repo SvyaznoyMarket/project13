@@ -36,6 +36,43 @@ class Action {
         $categoryId = (int)$request->get('category');
         if (!$categoryId) $categoryId = null;
 
+        $selectedCategory = $categoryId ? \RepositoryManager::productCategory()->getEntityById($categoryId) : null;
+
+        // запрашиваем фильтры
+        /** @var $filters \Model\Product\Filter\Entity[] */
+        $filters = [];
+        \RepositoryManager::productFilter()->prepareCollectionBySearchText($searchQuery, \App::user()->getRegion(), function($data) use (&$filters) {
+            foreach ($data as $item) {
+                $filters[] = new \Model\Product\Filter\Entity($item);
+            }
+        }, function (\Exception $e) { \App::exception()->remove($e); });
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
+
+        $shop = null;
+        try {
+            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
+                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
+                    if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
+                        /*$route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
+                        $response = new \Http\RedirectResponse($route);
+                        $response->headers->set('referer', \App::request()->getUri());*/
+                        $controller = new \Controller\Region\Action();
+                        \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
+                        $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
+                        return $response;
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
+        }
+
+        // фильтры
+        $brand = null;
+        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+
+
         // параметры ядерного запроса
         $params = [
             'request'  => $searchQuery,
@@ -43,11 +80,17 @@ class Action {
             'start'    => $offset,
             'limit'    => $limit,
             'use_mean' => true,
+
         ];
         if ($categoryId) {
             $params['product_category_id'] = $categoryId;
         } else {
             //$params['is_product_category_first_only'] = false;
+        }
+        if ((bool)$productFilter->getFilterCollection()) {
+            $params['filter'] = [
+                'filters' => $productFilter->dump(),
+            ];
         }
 
         // сортировка
@@ -55,7 +98,7 @@ class Action {
         list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
         $productSorting->setActive($sortingName, $sortingDirection);
         if(!empty($sortingName) && !empty($sortingDirection)) {
-            $params['product'] = ['sort' =>[$sortingName => $sortingDirection]];
+            $params['product'] = ['sort' => [$sortingName => $sortingDirection]];
         }
 
         // ядерный запрос
@@ -117,36 +160,7 @@ class Action {
             }
         });
 
-        // запрашиваем фильтры
-        /** @var $filters \Model\Product\Filter\Entity[] */
-        $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionBySearchText($searchQuery, \App::user()->getRegion(), function($data) use (&$filters) {
-            foreach ($data as $item) {
-                $filters[] = new \Model\Product\Filter\Entity($item);
-            }
-        }, function (\Exception $e) { \App::exception()->remove($e); });
-
         \App::coreClientV2()->execute();
-
-        $shop = null;
-        try {
-            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
-                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
-                    if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
-                        /*$route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
-                        $response = new \Http\RedirectResponse($route);
-                        $response->headers->set('referer', \App::request()->getUri());*/
-                        $controller = new \Controller\Region\Action();
-                        \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
-                        $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
-                        return $response;
-                    }
-                }
-            }
-        } catch (\Exception $e) {
-            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
-        }
 
         $categoriesById = array_filter($categoriesById);
 
@@ -156,10 +170,6 @@ class Action {
         }
         /** @var $selectedCategory \Model\Product\Category\Entity */
         $selectedCategory = $categoryId ? $categoriesById[$categoryId] : null;
-
-        // фильтры
-        $brand = null;
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
 
         // общее количество найденных товаров
         $productCount = $selectedCategory ? $selectedCategory->getProductCount() : $result['count'];
