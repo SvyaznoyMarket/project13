@@ -38,7 +38,7 @@
         <?= $helper->render('product-category/_twoColumnList', [
             'categories'  => $categoriesFound,
             'searchQuery' => $searchQuery,
-        ]) //  ?>
+        ]) // категории товаров в названиях которых есть вхождение искомого слова  ?>
     <? endif ?>
 
     <form class="bFilter clearfix hidden" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
