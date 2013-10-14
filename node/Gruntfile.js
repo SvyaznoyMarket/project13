@@ -199,6 +199,26 @@ module.exports = function(grunt) {
 				files: {
 					'../web/css/global.min.css': ['../web/css/global.less']
 				}
+			},
+
+			// компиляция LESS
+			compileNew: {
+				options: {
+					paths: ['../web/styles/']
+				},
+				files: {
+					'../web/styles/global.css': ['../web/styles/global.less']
+				}
+			},
+			// компиляция и минификация LESS
+			compressNew: {
+				options: {
+					paths: ['../web/styles/'],
+					compress: true
+				},
+				files: {
+					'../web/styles/global.min.css': ['../web/styles/global.less']
+				}
 			}
 		},
 
@@ -210,7 +230,7 @@ module.exports = function(grunt) {
 		 */
 		watch: {
 			less: {
-				files: ['../web/css/*.less', '../web/css/**/*.less'],
+				files: ['../web/css/*.less', '../web/css/**/*.less', '../web/styles/*.less', '../web/styles/**/*.less'],
 				tasks: ['less'],
 				options: {
 					livereload: true,
