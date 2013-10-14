@@ -21,6 +21,7 @@ class Filter {
      * @param FilterEntity[] $filterCollection
      * @param bool           $isGlobal
      * @param bool           $inStore
+     * @param null           $shop
      */
     public function __construct(array $filterCollection, $isGlobal = false, $inStore = false, $shop = null) {
         $this->filters = $filterCollection;
@@ -38,10 +39,6 @@ class Filter {
      * @throws \InvalidArgumentException
      */
     public function setCategory($category = null) {
-        if (!($category instanceof \Model\Product\Category\BasicEntity || $category instanceof \Model\Tag\Category\Entity)) {
-            throw new \InvalidArgumentException('Category must be instance of \Model\Product\Category\Entity or \Model\Tag\Category\Entity');
-        }
-
         $this->category = $category;
     }
 

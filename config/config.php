@@ -36,7 +36,6 @@ $c->redirect301['enabled'] = true;
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
-$c->coreV2['chunk_size']   = 50;
 $c->coreV2['timeout']      = 5;
 $c->coreV2['hugeTimeout']  = 90;
 $c->coreV2['retryCount']   = 3;
@@ -49,6 +48,8 @@ $c->coreV2['retryTimeout'] = [
     'huge'    => 1.5,
     'forever' => 0,
 ];
+$c->coreV2['chunk_size']   = 50;
+$c->coreV2['debug']        = false;
 
 $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
