@@ -218,23 +218,29 @@ class Action {
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+            $templating = \App::closureTemplating();
+            /** @var $helper \Helper\TemplateHelper */
+            $helper = \App::closureTemplating()->getParam('helper');
+            $templating->setParam('selectedCategory', $selectedCategory);
+            $templating->setParam('shop', $shop);
+
             return new \Http\JsonResponse([
                 'list'           => (new \View\Product\ListAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
+                    $helper,
                     $productPager,
                     $productVideosByProduct
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
+                    $helper,
                     $productFilter,
                     \App::router()->generate('search', ['q' => $searchQuery])
                 ),
                 'pagination'     => (new \View\PaginationAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
+                    $helper,
                     $productPager
                 ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
+                    $helper,
                     $productSorting
                 ),
             ]);
@@ -258,7 +264,7 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('categories', $categoriesById);
         $page->setParam('categoriesFound', $categoriesFound);
-        $page->setParam('selectedCategory', $selectedCategory);
+        $page->setGlobalParam('selectedCategory', $selectedCategory);
         $page->setParam('productView', $productView);
         $page->setParam('productCount', $selectedCategory ? $selectedCategory->getProductCount() : $result['count']);
         $page->setParam('productVideosByProduct', $productVideosByProduct);

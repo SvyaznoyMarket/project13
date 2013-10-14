@@ -34,9 +34,8 @@ return function(
                 $categoryFilter = new \Model\Product\Filter\Entity();
                 $categoryFilter->setId('category');
                 $categoryFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-                $categoryFilter->setName('Категории');
+                $categoryFilter->setName('Товары по категориям');
                 $categoryFilter->getIsInList(true);
-                $categoryFilter->setIsMultiple(false);
 
                 foreach ($categories as $category) {
                     $option = new \Model\Product\Filter\Option\Entity();
@@ -58,7 +57,6 @@ return function(
                 $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
                 $shopFilter->setName('Наличие в магазинах');
                 $shopFilter->getIsInList(true);
-                $shopFilter->setIsMultiple(false);
 
                 foreach ($shops as $shop) {
                     $option = new \Model\Product\Filter\Option\Entity();
