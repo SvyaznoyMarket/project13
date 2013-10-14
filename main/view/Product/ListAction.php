@@ -57,12 +57,17 @@ class ListAction {
                 }, $product->getModel()->getProperty())
                     : null
                 ,
+                'hasVariations' =>
+                ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty())
+                    ? true
+                    : null
+                ,
                 'hasVideo' => $productVideo && $productVideo->getContent(),
                 'has360'   => $model3dExternalUrl || $model3dImg,
                 'review'   => $reviewCompactAction->execute($helper, $product),
                 'line'     =>
                 ($line = $product->getLine())
-                    ? ['name' => $line->getName(), 'productCount' => $line->getProductCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
+                    ? ['name' => $line->getName(), 'productCount' => $line->getLineCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
                     : null
             ];
 

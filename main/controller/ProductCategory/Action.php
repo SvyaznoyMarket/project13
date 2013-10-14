@@ -4,6 +4,7 @@ namespace Controller\ProductCategory;
 
 class Action {
     private static $globalCookieName = 'global';
+    protected $pageTitle;
 
     /**
      * @param string        $categoryPath
@@ -211,15 +212,73 @@ class Action {
 
         // TODO: запрашиваем меню
 
-        // запрашиваем категорию по токену
         /** @var $category \Model\Product\Category\Entity */
         $category = null;
-        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-            $data = reset($data);
-            if ((bool)$data) {
-                $category = new \Model\Product\Category\Entity($data);
+
+        $shopScriptException = null;
+        $shopScriptSeo = [];
+        if (\App::config()->shopScript['enabled']) {
+            try {
+                $shopScript = \App::shopScriptClient();
+                $shopScript->addQuery(
+                    'category/get-seo',
+                    [
+                        'slug' => $categoryToken,
+                        'geo_id' => \App::user()->getRegion()->getId(),
+                    ],
+                    [],
+                    function ($data) use (&$shopScriptSeo) {
+                        if ($data && is_array($data)) $shopScriptSeo = reset($data);
+                    },
+                    function (\Exception $e) use (&$shopScriptException) {
+                        $shopScriptException = $e;
+                    }
+                );
+                $shopScript->execute();
+                if ($shopScriptException instanceof \Exception) {
+                    throw $shopScriptException;
+                }
+
+                // если shopscript вернул редирект
+                if (!empty($shopScriptSeo['redirect']['link'])) {
+                    $redirect = $shopScriptSeo['redirect']['link'];
+                    if(!preg_match('/^http/', $redirect)) {
+                        $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
+                            \App::config()->mainHost .
+                            (preg_match('/^\//', $redirect) ? '' : '/') .
+                            $redirect;
+                    }
+                    return new \Http\RedirectResponse($redirect);
+                }
+
+                if (empty($shopScriptSeo['ui'])) {
+                    throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
+                }
+
+                // запрашиваем категорию по ui
+                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        $category = new \Model\Product\Category\Entity($data);
+                    }
+                });
+            } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
+                \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        $category = new \Model\Product\Category\Entity($data);
+                    }
+                });
             }
-        });
+
+        } else {
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $category = new \Model\Product\Category\Entity($data);
+                }
+            });
+        }
 
         // запрашиваем бренд по токену
         /** @var $brand \Model\Brand\Entity */
@@ -285,12 +344,17 @@ class Action {
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 
+        // поддержка GET-запросов со старыми фильтрами
+        if (!$categoryClass && is_array($request->get(\View\Product\FilterForm::$name)) && (bool)$request->get(\View\Product\FilterForm::$name)) {
+            return new \Http\RedirectResponse(\App::router()->generate('product.category', ['categoryPath' => $category->getPath()]));
+        }
+
         if ($categoryClass) {
             $controller = null;
             if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
                 $controller = new \Controller\Jewel\ProductCategory\Action();
 
-                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
             }
 
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
@@ -322,7 +386,7 @@ class Action {
 
         // получаем из json данные о горячих ссылках и content
         try {
-            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
+            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category, null, $shopScriptSeo);
             // получаем горячие ссылки
             $hotlinks = \RepositoryManager::productCategory()->getHotlinksBySeoCatalogJson($seoCatalogJson);
 
@@ -357,6 +421,7 @@ class Action {
             &$seoContent,
             &$catalogJson,
             &$promoContent,
+            &$shopScriptSeo,
             &$shop
         ) {
             $page->setParam('category', $category);
@@ -367,6 +432,7 @@ class Action {
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
+            $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setGlobalParam('shop', $shop);
             if ( \App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) $page->setGlobalParam('shops', \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()));
         };
@@ -379,6 +445,9 @@ class Action {
                 $textSearched = true;
             }
         }
+
+        // Формируем заголовок страницы (пока используется только в ajax)
+        $this->setPageTitle($category, $brand);
 
         // если категория содержится во внешнем узле дерева
         if ($category->isLeaf() || $textSearched) {
@@ -479,6 +548,7 @@ class Action {
         /** @var $child \Model\Product\Category\Entity */
         $child = reset($childrenById);
         $productPagersByCategory = [];
+        $productVideosByProduct = [];
         $productCount = 0;
 
         foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
@@ -487,32 +557,18 @@ class Action {
             $productPagersByCategory[$child->getId()] = $productPager;
             $productCount += $productPager->count();
 
+            foreach ($productPager as $product) {
+                /** @var $product \Model\Product\Entity */
+                $productVideosByProduct[$product->getId()] = [];
+            }
+
             $child = next($childrenById);
             if (!$child) {
                 break;
             }
         }
 
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPagersByCategory as $productPager) {
-            foreach ($productPager as $product) {
-                /** @var $product \Model\Product\Entity */
-                $productVideosByProduct[$product->getId()] = [];
-            }
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        if (!$item) continue;
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
+        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideosByProduct( $productVideosByProduct );
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
@@ -659,6 +715,9 @@ class Action {
                     \App::closureTemplating()->getParam('helper'),
                     $productSorting
                 ),
+                'page'          => [
+                    'title'     => $this->getPageTitle()
+                ],
             ]);
         }
 
@@ -704,7 +763,7 @@ class Action {
      * @param \Model\Shop\Entity|null $shop
      * @return \Model\Product\Filter
      */
-    protected function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
+    protected function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity &$brand = null, \Http\Request $request, $shop = null) {
         // флаг глобального списка в параметрах запроса
         $isGlobal = self::isGlobal();
         //
@@ -732,7 +791,11 @@ class Action {
         }
 
         // filter values
-        //$values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        if ($request->get('scrollTo')) {
+            // TODO: SITE-2218 сделать однотипные фильтры для ювелирки и неювелирки
+            $values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        }
+
         if ($isGlobal) {
             $values['global'] = 1;
         }
@@ -834,5 +897,38 @@ class Action {
      */
     public static function inStore() {
         return (bool)\App::request()->get('instore');
+    }
+
+
+    /**
+     * @return mixed
+     */
+    protected function getPageTitle() {
+        return $this->pageTitle;
+    }
+
+
+    /**
+     * @param $category         \Model\Product\Category\Entity|null
+     * @param $brand            \Model\Brand\Entity|null
+     * @param bool|string       $defaultTitle
+     * @return bool
+     */
+    protected function setPageTitle($category, $brand, $defaultTitle = false)
+    {
+        if ( $category ) {
+            /**@var $category \Model\Product\Category\Entity **/
+            $this->pageTitle = $category->getName();
+            if ( $brand ) {
+                /**@var $brand \Model\Brand\Entity **/
+                $this->pageTitle .= ' ' . $brand->getName();
+            }
+            return true;
+        }
+
+        if ( $defaultTitle ) {
+            return $this->pageTitle = $defaultTitle;
+        }
+        return false;
     }
 }

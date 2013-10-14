@@ -23,7 +23,14 @@ class SortingAction {
         }
 
         foreach ($productSorting->getAll() as $item) {
+            // SITE-2244
+            // Убрал сортировку по брендам
+            if ($item['name'] == 'creator') {
+                continue;
+            }
+
             $item['url'] = $helper->replacedUrl(['page' => '1', 'sort' => implode('-', [$item['name'], $item['direction']]), 'ajax' => null]);
+            $item['datasort'] = implode('-', [$item['name'], $item['direction']]);
 
             if ($item['name'] == 'default' && !empty($inSearch)) {
                 $item['url'] = $helper->replacedUrl(['sort' => null, 'ajax' => null]);

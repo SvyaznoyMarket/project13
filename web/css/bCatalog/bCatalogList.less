@@ -12,6 +12,14 @@
 		border: 1px solid @typLightGray;
 		background: #f6f6f6;
 
+		&:nth-child(3),
+		&:nth-child(6),
+		&:nth-child(9),
+		&:nth-child(12),
+		&:nth-child(15) {
+			margin-right: 0;
+		}
+
 		&.mBannerItem {
 			.rounded(0);
 			width: 300px;
@@ -76,5 +84,37 @@
 
 		*display: inline;
 
+	}
+}
+
+
+.bSearchCategoryRoot {
+
+	.bCatalogList {
+
+		&__eItem {
+			width: 298px;
+			height: 48px;
+		}
+
+		&__eLink {
+			height: 48px;
+		}
+
+		.bCategoriesImg {
+			width: 48px;
+			height: 46px;
+
+			&__eImg {
+				max-height: 46px;
+				width: 48px;
+				margin-top: 0;
+			}
+		}
+
+		.bCategoriesName {
+			width: 242px;
+			height: 48px;
+		}
 	}
 }

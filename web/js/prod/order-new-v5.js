@@ -623,7 +623,7 @@
 
 			/**
 			 * Проверка последней даты
-			 * Если она не воскресение - достроить календарь в конце до воскресения
+			 * Если она не воскресенье - достроить календарь в конце до воскресенья
 			 */
 			if ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek !== 0 ) {
 				addCountDays = 7 - self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek;
@@ -871,9 +871,11 @@
 		 * @return	{Object}				Данные о точке доставки
 		 */
 		OrderDictionary.prototype.getFirstPointByState = function( state ) {
-			var points = this.getAllPointsByState(state);
-
-			return window.ENTER.utils.cloneObject(points[0]);
+			var points = this.getAllPointsByState(state), ret = false;
+            if ( points[0] ) {
+                ret = window.ENTER.utils.cloneObject(points[0]);
+            }
+            return ret;
 		};
 
 		/**
@@ -882,9 +884,9 @@
 		 * @param	{String}	state	Метод доставки
 		 */
 		OrderDictionary.prototype.getAllPointsByState = function( state ) {
-			var pointName = this.pointsByDelivery[state];
-
-			return this.orderData[pointName];
+			var pointName = this.pointsByDelivery[state],
+                ret = this.orderData[pointName] || false;
+			return ret;
 		};
 
 
@@ -1493,7 +1495,7 @@
 	// end of functions
 	
 	$.mask.definitions['n'] = '[0-9]';
-	sclub.mask('2 98nnnn nnnnn', {
+	sclub.mask('2 98nnnn nnnnnn', {
 		placeholder: '*'
 	});
 	qiwiPhone.mask('(nnn) nnn-nn-nn');
@@ -2492,8 +2494,9 @@
 		 * @param	{Object}	res		Данные о заказе
 		 */
 		renderOrderData = function renderOrderData( res ) {
+            var data, firstPoint;
 			utils.blockScreen.unblock();
-			
+
 			if ( !res.success ) {
 				console.warn('Данные содержат ошибки');
 				console.log(res.error);
@@ -2534,6 +2537,20 @@
 
 				separateOrder( global.OrderModel.statesPriority );
 			}
+
+
+            if ( 1 === res.deliveryTypes.length ) {
+                data = res.deliveryTypes[0];
+                firstPoint =  global.OrderModel.orderDictionary.getFirstPointByState( data.states[0] ) || data.id;
+                console.log('Обнаружен только 1 способ доставки: ' + data.name +' — выбираем его.');
+                console.log('Выбран первый пункт* доставки:');
+                console.log( firstPoint );
+                global.OrderModel.statesPriority = data.states;
+                global.OrderModel.deliveryTypesButton = 'method_' + data.id;
+                global.OrderModel.choosenDeliveryTypeId = data.id;
+                global.OrderModel.choosenPoint( firstPoint );
+                separateOrder( global.OrderModel.statesPriority );
+            }
 		},
 
 		selectPointOnBaloon = function selectPointOnBaloon( event ) {

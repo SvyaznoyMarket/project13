@@ -8,7 +8,8 @@ $c->debug = true;
 // $c->coreV2['url']          = 'http://tester.core.ent3.ru/v2/';
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 
-$c->payment['paypalECS'] = true;
+$c->payment['paypalECS']   = true;
+$c->coreV2['timeout']      *= 3;
 $c->coreV2['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.6,
@@ -19,6 +20,7 @@ $c->coreV2['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->corePrivate['timeout']      *= 3;
 $c->corePrivate['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.2,
@@ -30,7 +32,7 @@ $c->corePrivate['retryTimeout'] = [
 ];
 
 $c->reviewsStore['url']          = 'http://reviews.ent3.ru/reviews/';
-$c->reviewsStore['timeout']      = 2;
+$c->reviewsStore['timeout']      *= 5;
 $c->reviewsStore['retryCount']   = 3;
 $c->reviewsStore['retryTimeout'] = [
     'default' => 1,
@@ -42,9 +44,12 @@ $c->reviewsStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->wordpress['timeout']        *= 3;
 $c->wordpress['throwException'] = false;
 
-$c->dataStore['timeout'] = 2.5;
+$c->dataStore['timeout'] *= 3;
+
+$c->shopScript['timeout'] *= 3;
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
 

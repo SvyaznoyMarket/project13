@@ -105,18 +105,7 @@ $c->dataStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
-$c->pickpoint['timeout'] = 20;
-$c->pickpoint['retryCount'] = 3;
-$c->pickpoint['retryTimeout'] = [
-    'default' => 0.04,
-    'tiny'    => 0.04,
-    'short'   => 0.08,
-    'medium'  => 0.1,
-    'long'    => 0.5,
-    'huge'    => 1,
-    'forever' => 0,
-];
+$c->connectTerminal = true;
 
 $c->company['phone'] = '8 (800) 700-00-09';
 $c->company['moscowPhone'] = '8 (495) 775-00-06';
@@ -137,6 +126,35 @@ $c->partners['livetex']['password'] = 'enter1chat2'; // login и пароль и
 $c->partners['livetex']['timeout'] = 1.5; // timeout curl'a для статистики
 
 
+$c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
+$c->pickpoint['timeout'] = 20;
+$c->pickpoint['retryCount'] = 3;
+$c->pickpoint['retryTimeout'] = [
+    'default' => 0.04,
+    'tiny'    => 0.04,
+    'short'   => 0.08,
+    'medium'  => 0.1,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
+
+$c->shopScript['enabled'] = false;
+$c->shopScript['url'] = 'http://admin.enter.ru/v2/';
+$c->shopScript['user'] = 'admin';
+$c->shopScript['password'] = 'booToo9x';
+$c->shopScript['timeout'] = 3;
+$c->shopScript['retryCount'] = 4;
+$c->shopScript['retryTimeout'] = [
+    'default' => 0.3,
+    'tiny'    => 0.1,
+    'short'   => 0.2,
+    'medium'  => 0.3,
+    'long'    => 0.5,
+    'huge'    => 1,
+    'forever' => 0,
+];
+
 
 // TODO: Вынести сюда же настройки для sociomantic and get4click
 $c->partners['criteo']['enabled'] = true;
@@ -145,7 +163,6 @@ $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 $c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
 $c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
 $c->partners['Admitad']['enabled'] = true;
-$c->partners['Admitad']['code'] = '9ce8886713';
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
@@ -351,9 +368,6 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
-
-// Короткие названия дней недели. Используется, например, для времени работы пикпойнтов
-$c->daysShortNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';

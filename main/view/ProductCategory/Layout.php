@@ -99,6 +99,20 @@ class Layout extends \View\DefaultLayout {
         $this->addMeta('keywords', $page->getKeywords());
     }
 
+    public function slotContentHead() {
+        // заголовок контента страницы
+        if (!$this->hasParam('title')) {
+            $this->setParam('title', null);
+        }
+        // навигация
+        // if (!$this->hasParam('breadcrumbs')) {
+        //     $this->setParam('breadcrumbs', []);
+        // }
+        $this->setParam('breadcrumbs', []);
+
+        return $this->render('_contentHead', array_merge($this->params, ['title' => null])); // TODO: осторожно, костыль
+    }
+
     public function slotBodyDataAttribute() {
         return 'product_catalog';
     }
@@ -152,13 +166,21 @@ class Layout extends \View\DefaultLayout {
                 ], $data);
             });
         } else {
-            $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+            if(\App::config()->shopScript['enabled']) {
                 $seoTemplate = array_merge([
                     'title'       => null,
                     'description' => null,
                     'keywords'    => null,
-                ], $data);
-            });
+                ], $this->getParam('shopScriptSeo'));
+            } else {
+                $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+                    $seoTemplate = array_merge([
+                        'title'       => null,
+                        'description' => null,
+                        'keywords'    => null,
+                    ], $data);
+                });
+            }
         }
 
         // данные для шаблона

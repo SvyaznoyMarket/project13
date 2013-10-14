@@ -15,9 +15,24 @@ class InfoAction {
             throw new \Exception\NotFoundException('Request is not xml http');
         }
 
+        $user = \App::user();
+        $cart = $user->getCart();
+
+        /** @var $cookies \Http\Cookie[] */
+        $cookies = [];
+
         try {
-            $user = \App::user();
-            $cart = $user->getCart();
+            if (!$request->cookies->has('infScroll')) {
+                $cookies[] = new \Http\Cookie(
+                    'infScroll',
+                    1,
+                    time() + (4 * 7 * 24 * 60 * 60),
+                    '/',
+                    null,
+                    false,
+                    false // важно httpOnly=false, чтобы js мог получить куку
+                );
+            }
 
             $responseData = [
                 'success' => true,
@@ -25,6 +40,8 @@ class InfoAction {
                     'name'         => null,
                     'isSubscribed' => null,
                     'link' => \App::router()->generate('user.login'),
+                    'id' =>  null,
+                    'email' =>  null
                 ],
                 'cart'    => [
                     'sum'      => 0,
@@ -41,6 +58,8 @@ class InfoAction {
                 $responseData['user']['name'] = $userEntity->getName();
                 $responseData['user']['link'] = \App::router()->generate('user');
                 $responseData['user']['isSubscribed'] = $user->getEntity()->getIsSubscribed();
+                $responseData['user']['id'] = $userEntity->getId();
+                $responseData['user']['email'] = $userEntity->getEmail();
             }
 
             if (!$cart->isEmpty()) {
@@ -89,6 +108,12 @@ class InfoAction {
             $responseData['success'] = false;
         }
 
-        return new \Http\JsonResponse($responseData);
+        $response = new \Http\JsonResponse($responseData);
+
+        foreach ($cookies as $cookie) {
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
     }
 }

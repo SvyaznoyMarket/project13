@@ -19,6 +19,10 @@ class ProductButtonAction {
             'url'        => null,
             'value'      => null,
             'inShopOnly' => null,
+            'data'       => [
+                'group' => $product->getId(),
+            ],
+            'class'      => \View\Id::cartButtonForProduct($product->getId()),
         ];
 
 
@@ -30,7 +34,7 @@ class ProductButtonAction {
         if (!$product->getIsBuyable()) {
             $data['disabled'] = true;
             $data['url'] = '#';
-            $data['value'] = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет в наличии';
+            $data['value'] = $product->isInShopShowroomOnly() ? 'На витрине' : 'Недоступен';
         } else {
             $urlParams = [
                 'productId' => $product->getId(),

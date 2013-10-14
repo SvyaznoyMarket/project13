@@ -8,7 +8,7 @@ return function(
     $data = [
         'min'  => $helper->clearZeroValue($filter->getMin()),
         'max'  => $helper->clearZeroValue($filter->getMax()),
-        'step' => $filter->getStepByFilter()
+        'step' => $filter->isPrice() ? 10 : $filter->getStepByFilter()
     ];
 ?>
 

@@ -82,7 +82,6 @@ class AppConfig {
 
     /**
      * @var array
-     * @hidden
      */
     public $coreV2 = [
         'url'          => null,
@@ -122,15 +121,10 @@ class AppConfig {
         'retryTimeout' => [],
         'retryCount'   => null,
     ];
+    /** @var bool */
+    public $connectTerminal = null;
     /** @var array */
     public $reviewsStore = [
-        'url'          => null,
-        'timeout'      => null,
-        'retryTimeout' => [],
-        'retryCount'   => null,
-    ];
-    /** @var array */
-    public $pickpoint = [
         'url'          => null,
         'timeout'      => null,
         'retryTimeout' => [],
@@ -150,6 +144,23 @@ class AppConfig {
     /** @var array */
     public $kissmentrics = [
         'enabled'   =>  null,
+    ];
+    /** @var array */
+    public $pickpoint = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+    /** @var array */
+    public $shopScript = [
+        'enabled'      => null,
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+        'user'         => null,
+        'password'     => null,
     ];
     /** @var array  */
     public $jsonLog = [
@@ -455,9 +466,6 @@ class AppConfig {
         'showFacets' => null,
         'showListingSearchBar' => null,
     ];
-
-    /** @var array */
-    public $daysShortNames = [];
 
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();

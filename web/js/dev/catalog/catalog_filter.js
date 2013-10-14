@@ -16,13 +16,16 @@
 
 		filterBlock = $('.bFilter'),
 
+		filterSubminBtn = filterBlock.find('.bBtnPick__eLink'),
 		filterToggleBtn = filterBlock.find('.bFilterToggle'),
 		filterContent = filterBlock.find('.bFilterCont'),
 		filterSliders = filterBlock.find('.bRangeSlider'),
 		filterMenuItem = filterBlock.find('.bFilterParams__eItem'),
 		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem'),
 
-		viewParamPanel = $('.bSortingLine');
+		viewParamPanel = $('.bSortingLine'),
+
+		tID;
 	// end of vars
 	
 	catalog.filter = {
@@ -70,6 +73,13 @@
 
 				paginationWrap.empty();
 				paginationWrap.html(html);
+			},
+
+			page: function( html ) {
+				var title = $('.bTitlePage');
+
+				title.empty();
+				title.html(html);
 			}
 		},
 
@@ -100,6 +110,12 @@
 
 			selectedFilter: function( data ) {
 				console.info('render selectedFilter');
+
+				if ( !data ) {
+					console.warn('nothing to render');
+					
+					return;
+				}
 
 				var template = $('#tplSelectedFilter'),
 					filterTemplate = template.html(),
@@ -150,6 +166,12 @@
 				console.log('end of render paginaton');
 
 				return html;
+			},
+
+			page: function( data ) {
+				var title = data.title;
+
+				return title;
 			}
 		},
 
@@ -169,8 +191,11 @@
 			catalog.filter.resetForm();
 
 			for ( key in dataToRender ) {
-				if ( catalog.filter.render.hasOwnProperty(key) && catalog.filter.applyTemplate.hasOwnProperty(key) ) {
+				if ( catalog.filter.render.hasOwnProperty(key) ) {
 					template = catalog.filter.render[key]( dataToRender[key] );
+				}
+
+				if ( catalog.filter.applyTemplate.hasOwnProperty(key) ) {
 					catalog.filter.applyTemplate[key](template);
 				}
 			}
@@ -234,9 +259,13 @@
 		 * @return	{String}	url
 		 */
 		getFilterUrl: function() {
+			console.info('getFilterUrl');
+
 			var formData = filterBlock.serializeArray(),
-				url = filterBlock.attr('action'),
+				url = filterBlock.attr('action') || '',
 				slidersInputState = catalog.filter.getSlidersInputState(),
+				activeSort = viewParamPanel.find('.mSortItem.mActive').find('.jsSorting'),
+				sortUrl = activeSort.data('sort'),
 				formSerizalizeData;
 			// end of vars
 
@@ -253,6 +282,10 @@
 			if ( formSerizalizeData.length !== 0 ) {
 				url += '?' + formSerizalizeData;
 			}
+			console.info('url == ');
+			console.log(url);
+
+			url = url.addParameterToUrl('sort', sortUrl);
 
 			return url;
 		},
@@ -260,15 +293,42 @@
 		/**
 		 * Изменение параметров фильтра
 		 */
-		changeFilterHandler: function() {
+		changeFilterHandler: function( e, needUpdate ) {
 			console.info('change filter');
+			console.log(e);
+			console.log(needUpdate);
+
+			var sendUpdate = function sendUpdate() {
+				filterBlock.trigger('submit');
+			}
+
+			if ( typeof e === 'object' && e.isTrigger && !needUpdate ) {
+				console.warn('it\'s trigger event!');
+
+				return;
+			}
+
+			if ( !catalog.enableHistoryAPI ) {
+				console.warn('history api off');
+
+				return;
+			}
+
+			console.info('need update from server...');
+
+			clearTimeout(tID);
+
+			tID = setTimeout(sendUpdate, 300);
 		},
 
 		/**
 		 * Отправка результатов фильтров
 		 * Получение ответа от сервера
 		 */
-		sendFilter: function() {
+		sendFilter: function( e ) {
+			console.info('sendFilter');
+			console.log(e);
+
 			var url = catalog.filter.getFilterUrl();
 
 			if ( url !== (document.location.pathname + document.location.search) ) {
@@ -277,7 +337,22 @@
 				catalog.history.gotoUrl(url);
 			}
 
-			$.scrollTo(filterBlock.find('.bFilterFoot'), 500);
+			if ( e.isTrigger ) {
+				console.warn('it\'s trigger');
+
+				filterSubminBtn.animate({
+					boxShadow: '1px 1px 20px #ffa901'
+				}, 300, 'swing', function() {
+					filterSubminBtn.animate({
+						boxShadow: '1px 1px 3px #C7C7C7'
+					}, 300, 'swing');
+				});
+			}
+			else if ( typeof e === 'object' && catalog.enableHistoryAPI ) {
+				console.warn('it\'s true event and HistoryAPI enable');
+
+				$.scrollTo(filterBlock.find('.bFilterFoot'), 500);
+			}
 
 			return false;
 		},
@@ -416,7 +491,9 @@
 				change: function( e, ui ) {
 					console.log('change slider');
 
-					filterBlock.trigger('change');
+					if ( e.originalEvent ) {
+						filterBlock.trigger('change', [true]);
+					}
 				}
 			});
 

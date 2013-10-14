@@ -45,7 +45,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $entity;
     }
@@ -60,6 +60,24 @@ class Repository {
 
         $params = [
             'slug' => [$token],
+        ];
+        if ($region instanceof \Model\Region\Entity) {
+            $params['geo_id'] = $region->getId();
+        }
+
+        $this->client->addQuery('category/get', $params, [], $callback);
+    }
+
+    /**
+     * @param string               $ui
+     * @param \Model\Region\Entity $region
+     * @param                      $callback
+     */
+    public function prepareEntityByUi($ui, \Model\Region\Entity $region = null, $callback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $params = [
+            'ui' => [$ui],
         ];
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
@@ -91,7 +109,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $entity;
     }
@@ -120,7 +138,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $collection;
     }
@@ -169,7 +187,7 @@ class Repository {
             }
         });
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+        $client->execute();
 
         return $collection;
     }
@@ -198,7 +216,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $collection;
     }
@@ -249,7 +267,7 @@ class Repository {
             }
         });
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
 
         return $collection;
     }
@@ -365,7 +383,10 @@ class Repository {
      * @param $brand
      * @return array
      */
-    public static function getSeoJson($category, $brand = null) {
+    public static function getSeoJson($category, $brand = null, $shopScriptSeo = []) {
+        $dataStore = \App::dataStoreClient();
+        $shopScript = \App::shopScriptClient();
+
         // формируем ветку категорий для последующего формирования запроса к json-апи
         $branch = [$category->getToken()];
         if (!$category->isRoot()) {
@@ -379,12 +400,15 @@ class Repository {
         // формируем запрос к апи и получаем json с SEO-данными
         $seoJson = [];
 
-        $dataStore = \App::dataStoreClient();
-        $query = sprintf('seo/'.($brand ? 'brand' : 'catalog').'/%s.json', implode('/', $branch).(empty($brand) ? '' : '-'.$brand->getToken()));
-        $dataStore->addQuery($query, [], function ($data) use (&$seoJson) {
-            if($data) $seoJson = $data;
-        });
-        
+        if($brand || !\App::config()->shopScript['enabled']) {
+            $query = sprintf('seo/'.($brand ? 'brand' : 'catalog').'/%s.json', implode('/', $branch).(empty($brand) ? '' : '-'.$brand->getToken()));
+            $dataStore->addQuery($query, [], function ($data) use (&$seoJson) {
+                if($data) $seoJson = $data;
+            });
+        } else {
+            $seoJson = $shopScriptSeo;
+        }
+
         // данные для шаблона
         $patterns = [
             'категория' => [$category->getName()],
@@ -401,6 +425,10 @@ class Repository {
         $dataStore->execute();
 
         if(!empty($seoJson['content'])) {
+            if (!is_array($seoJson['content'])) {
+                $seoJson['content'] = [$seoJson['content']];
+            }
+
             $replacer = new \Util\InflectReplacer($patterns);
             foreach ($seoJson['content'] as $key => $content) {
                 if ($value = $replacer->get($seoJson['content'][$key])) {
@@ -487,7 +515,7 @@ class Repository {
 
         // AB-test по сортировкам SITE-1991
         $abTestJson = \App::abTestJson($catalogJson);
-        if($abTestJson->getCase()->getKey() != 'default') {
+        if ($abTestJson && $abTestJson->getCase()->getKey() != 'default') {
             return $abTestJson->getTestCatalogJson();
         }
 
@@ -533,46 +561,6 @@ class Repository {
         $dataStore->execute();
 
         return isset($catalogHtml['html']) ? $catalogHtml['html'] : '';
-    }
-
-    /**
-     * Получает seo catalog json для всех категорий
-     * Возвращает массив с токенами категорий в качестве ключей и их catalogJson'ом (raw)
-     * в качестве значений
-     *
-     * @param $category
-     * @return array
-     */
-    public function getSeoCatalogJsonBulk() {
-        // формируем запрос к апи и получаем json
-        $seoCatalogJsonBulk = [];
-        $dataStore = \App::dataStoreClient();
-        $dataStore->addQuery('seo/catalog/*.json', [], function ($data) use (&$seoCatalogJsonBulk) {
-            if($data) $seoCatalogJsonBulk = $data;
-        });
-        $dataStore->execute();
-
-        return $seoCatalogJsonBulk;
-    }
-
-    /**
-     * Получает seo tag json для всех тэгов
-     * Возвращает массив с токенами тэгов в качестве ключей и их seo json'ом (raw)
-     * в качестве значений
-     *
-     * @param $category
-     * @return array
-     */
-    public function getSeoTagJsonBulk() {
-        // формируем запрос к апи и получаем json
-        $seoTagJsonBulk = [];
-        $dataStore = \App::dataStoreClient();
-        $dataStore->addQuery('seo/tag/*.json', [], function ($data) use (&$seoTagJsonBulk) {
-            if($data) $seoTagJsonBulk = $data;
-        });
-        $dataStore->execute();
-
-        return $seoTagJsonBulk;
     }
 
     /**

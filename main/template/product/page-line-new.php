@@ -63,7 +63,7 @@ $helper = new \Helper\TemplateHelper();
 
             <?= $helper->render('product/__delivery', ['product' => $mainProduct]) // Доставка ?>
 
-            <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
+            <div class="bAwardSection"><img src="/css/bProductSection/img/award.jpg" alt="" /></div>
         </div><!--/widget delivery -->
 	</div>
 

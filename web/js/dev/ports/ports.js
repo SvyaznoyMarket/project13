@@ -175,21 +175,21 @@ window.ANALYTICS = {
         }
     },
 
-    enterleadsJS : function() { // SITE-1911
-        (function () {
-            try {
-                var script = document.createElement('script');
+    // enterleadsJS : function() { // SITE-1911
+    //     (function () {
+    //         try {
+    //             var script = document.createElement('script');
 
-                script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') +
-                    unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denterleads%26cost%3D') + escape(0) +
-                    unescape('%26order%3D') + escape(0) + unescape('%26r%3D') + Math.random();
+    //             script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') +
+    //                 unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denterleads%26cost%3D') + escape(0) +
+    //                 unescape('%26order%3D') + escape(0) + unescape('%26r%3D') + Math.random();
 
-                document.getElementsByTagName('head')[0].appendChild(script);
+    //             document.getElementsByTagName('head')[0].appendChild(script);
 
-            } catch (e) {
-            }
-        })();
-    },
+    //         } catch (e) {
+    //         }
+    //     })();
+    // },
 
     sociomantic : function() {
         (function(){
@@ -383,34 +383,51 @@ window.ANALYTICS = {
 
         window.RetailRocket = {
 
-            product: function (data) {
+            'product': function ( data, userData ) {
                 window.rcAsyncInit = function () {
-                    rcApi.view(data);
-                }
-            },
-
-            category: function (data) {
-                window.rcAsyncInit = function () {
-                    rcApi.categoryView(data);
-                }
-            },
-
-            transaction: function (data) {
-                window.rcAsyncInit = function () {
-                    rrApi.order(data);
-                }
-            },
-
-            action: function (data) {
-                var rr_data = $('#RetailRocketJS').data('value');
-                if (rr_data && rr_data.routeName && rr_data.sendData) {
-                    if (rr_data.routeName == 'product') {
-                        RetailRocket.product(rr_data.sendData);
-                    } else if (rr_data.routeName == 'product.category') {
-                        RetailRocket.category(rr_data.sendData);
-                    } else if (rr_data.routeName == 'order.complete') {
-                        RetailRocket.transaction(rr_data.sendData);
+                    if ( userData.userId ) {
+                        rcApi.view(data, userData);
                     }
+                    else {
+                        rcApi.view(data);   
+                    }
+
+                }
+            },
+
+            'product.category': function ( data, userData ) {
+                window.rcAsyncInit = function () {
+                    if ( userData.userId ) {
+                        rcApi.categoryView(data, userData);
+                    }
+                    else {
+                        rcApi.categoryView(data);   
+                    }
+                }
+            },
+
+            'order.complete': function ( data, userData ) {
+                window.rcAsyncInit = function () {
+                    if ( userData.userId ) {
+                        rcApi.order(data, userData);
+                    }
+                    else {
+                        rcApi.order(data);   
+                    }
+                }
+            },
+
+            action: function ( e, userInfo ) {
+                var rr_data = $('#RetailRocketJS').data('value'),
+                    sendUserData = {
+                        userId: userInfo.id || false,
+                        hasUserEmail: !!userInfo.email
+                    };
+                // end of vars
+
+
+                if ( rr_data && rr_data.routeName && rr_data.sendData && window.RetailRocket.hasOwnProperty(rr_data.routeName) ) {
+                    window.RetailRocket[rr_data.routeName](rr_data.sendData, sendUserData);
                 }
             },
 
@@ -430,11 +447,12 @@ window.ANALYTICS = {
         }// end of window.RetailRocket object
 
         RetailRocket.init();
-        RetailRocket.action();
+
+        $('body').on('userlogged', RetailRocket.action);
     },
 
     AdmitadJS : function() {
-        window._ad = window._ad || [];
+        window._retag = window._retag || [];
         var ad_data = $('#AdmitadJS').data('value');
 
         if (ad_data) {
@@ -466,7 +484,7 @@ window.ANALYTICS = {
             }
 
             if (ad_data.pushData) {
-                window._ad.push(ad_data.pushData);
+                window._retag.push(ad_data.pushData);
             }
         }
 

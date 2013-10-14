@@ -4,36 +4,49 @@
  * @var $product \Model\Product\Entity
  * @var $related \Model\Product\Entity[]
  * @var $accessories \Model\Product\Entity[]
+ * @var $class       string|null
+ * @var $breadcrumbs array('url' => null, 'name' => null)[]
  */
 
 $services = $product->getService();
 $warranties = $product->getWarranty();
 ?>
 
-<article class="bGoodItem" data-productid='<?= $product->getId() ?>'>    
-    
+<article class="bGoodItem bContent" data-productid='<?= $product->getId() ?>' data-pagetype='product'>    
+    <div class="bBreadcrumps mMB20">
+
+        <?php if ((bool)$breadcrumbs): ?>
+        <div <?php if (isset($class) && !empty($class)): ?>class="<?php echo $class ?>"<?php endif ?>>
+            <? foreach ($breadcrumbs as $breadcrumb): ?>
+                <a class="bBreadcrumps__eItem" href="#" data-screentype='<?= $breadcrumb['screenType'] ?>' data-categoryid='<?= $breadcrumb['categoryId'] ?>' data-hasline='<?= $breadcrumb['hasLine'] ?>'><?= $breadcrumb['name'] ?></a> &rsaquo;
+            <? endforeach ?>
+        </div>
+        <? endif ?>
+
+    </div>
     <div class="bGoodItemHead mMB20 mRounded mBlackBlock clearfix">
         <div class="clearfix">
             <div class="bGoodImgBlock mRounded mFl mW940">
                 <div class="bPreviewImg">
                     <? $i = 0; foreach ($product->getPhoto() as $photo): if ($i > 4) continue; ?>
-                        <a class="bPreviewImg_eLink mRounded" href="#" onclick="terminal.screen.push('media', {productId: <?= $product->getId() ?>, currentIndex : <?= $i ?>});">
+                        <a class="bPreviewImg_eLink mRounded jsRedirect" data-screentype='media' data-productid='<?= $product->getId() ?>' data-imageindex='<?= $i ?>' href="#">
                             <img class="bPreviewImg_eImage" src="<?= $photo->getUrl(2) ?>" alt="<?= $page->escape($product->getName()) ?>"/>
                         </a>
                     <?  $i++; endforeach ?>
                 </div>
-                <div class="bGoodImgBlock_eMainImg">
+                <div class="bGoodImgBlock_eMainImg jsRedirect" data-screentype='media' data-productid='<?= $product->getId() ?>' data-imageindex='0'>
                     <? if ($product->getLabel()): ?>
                         <img class="bLabels" src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $product->getLabel()->getName() ?>" />
                     <? endif ?>
-                    <a href="#" onclick="terminal.screen.push('media', {productId: <?= $product->getId() ?>, currentIndex : 0});"><img width="480" src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>"/></a>
+                    <a class="bGoodImgBlock_eMainImgLink"  href="#"><img width="480" src="<?= $product->getImageUrl(3) ?>" alt="<?= $page->escape($product->getName()) ?>"/></a>
                 </div>
-                <a class="bGoodImgBlock_eEnlarge" href="#" onclick="terminal.screen.push('media', {productId: <?= $product->getId() ?>, currentIndex : 0});"></a>
+                <a class="bGoodImgBlock_eEnlarge" href="#"></a>
             </div>
             
             <div class="bGoodDescBlock mFr mW570 mPad15_30">
                 <div class="clearfix">
                     <p class="bGoodDescBlock_eArticle mFl">Код товара:<?= $product->getArticle() ?></p>
+                    <div class="mFr"><div id="testFreak"><a id="tfw-badge" href="http://www.testfreaks.ru"></a></div></div>
                     <p class="bGoodDescBlock_eRating mFr"><span class="bRating"><span class="mRate_<?= round($product->getRating()) ?>"></span></span></p>
                 </div>
                 <h1 class="bTitle mBold"><?= $product->getName() ?></h1>
@@ -44,8 +57,8 @@ $warranties = $product->getWarranty();
                     <? endif ?>
                     <div class="bGoodDescBlock_ePrice mFl mBold"><?= $page->helper->formatPrice($product->getPrice()) ?> <span class="bRuble">p</span></div>
                     <ul class="bGoodDescBlock_eDelivery mFl">
-                        <? if ($product->getIsInShop(\App::config()->region['shop_id'])): ?>
-                        <li class="mListDisk"><strong class="mBold" style="color: #F99B1C;">Есть в этом магазине</strong></li>
+                        <? if ($product->isInShop(\App::config()->region['shop_id'])): ?>
+                        <li class="mListDisk"><strong class="mBold mOrange">Есть в этом магазине</strong></li>
                         <li class="mListDisk">Можно забрать сейчас</li>
                         <? elseif ($product->isInShopShowroom(\App::config()->region['shop_id'])): ?>
                         <li class="mListDisk"><strong class="mBold">Есть на витрине магазина</strong></li>
@@ -64,11 +77,11 @@ $warranties = $product->getWarranty();
                 <div class="clearfix mMB80">
                     <!--  print_r($product->getState());   -->
                     <?php if ($product->getIsBuyable(\App::config()->region['shop_id'])):?>
-                    <a class="bGoodDescBlock_eBayBtn bButton mOrangeBtn mFl" href="#" onclick="terminal.cart.addProduct(<?= $product->getId() ?>)">Купить</a>
+                    <a class="bGoodDescBlock_eBayBtn bButton mOrangeBtn mFl jsBuyButton" data-productid='<?= $product->getId() ?>' href="#">В корзину</a>
                     <?php elseif ($product->getState()->getIsShop() ):?>
-                    <a class="bGoodDescBlock_eBayBtn bButton mGrayBtn mFl" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $product->getId() ?> })">Где купить?</a>
+                    <a class="bGoodDescBlock_eBayBtn bButton mGrayBtn mFl jsWhereBuy" data-productid='<?= $product->getId() ?>' href="#">Где купить?</a>
                     <? endif; ?>
-                    <a id="compare_<?= $product->getId() ?>" class="bGoodDescBlock_eCompBtn jsCompare bButton mGrayBtn mFl" href="#">К сравнению</a>
+                    <a id="compare_<?= $product->getId() ?>" class="bGoodDescBlock_eCompBtn jsCompare bButton mGrayBtn mFl" data-productid='<?= $product->getId() ?>' href="#">Сравнить</a>
                 </div>
 
                 <p class="bGoodDescBlock_eShortDesc clearfix"><?= $product->getTagline() ?>
@@ -93,20 +106,20 @@ $warranties = $product->getWarranty();
             <!-- accessorise -->
             <div class="bGoodSubItem clearfix">
                 <div class="bSlider">
-                   <!--  <a class="bSlider_eArrow mLeft" href="#"></a>
-                    <a class="bSlider_eArrow mRight" href="#"></a> -->
+                    <a class="bSlider_eArrow mLeft" href="#"></a>
+                    <a class="bSlider_eArrow mRight" href="#"></a>
                     <div id="accessoriseSlider" class="bSlider_eWrap clearfix">
                         <? foreach ($accessories as $iProduct): ?>
                         <div class="bGoodSubItem_eGoods mFl">
-                            <a class="bGoodSubItem_eGoodsImg mFl mRounded" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><img width="130" height="130" src="<?= $iProduct->getImageUrl(1) ?>"/></a>
+                            <a class="bGoodSubItem_eGoodsImg mFl mRounded jsRedirect" href="#" data-screentype='product' data-productid='<?= $iProduct->getId() ?>'><img width="130" height="130" src="<?= $iProduct->getImageUrl(1) ?>"/></a>
                             <div class="bGoodSubItem_eGoodsInfo">
                                 <!-- <p class="bGoodSubItem_eRating"><? //= $iProduct->getRating() ?></p> -->
-                                <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><?= $iProduct->getName() ?></a></h2>
+                                <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink jsRedirect" href="#" data-screentype='product' data-productid='<?= $iProduct->getId() ?>'><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
                                 <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">Купить</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn jsBuyButton" data-productid='<?= $iProduct->getId() ?>' href="#">В корзину</a>
                                 <?php elseif ($iProduct->getState()->getIsShop() ):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn jsWhereBuy" data-productid='<?= $iProduct->getId() ?>' href="#">Где купить?</a>
                                 <? endif; ?>
                             </div>
                         </div>
@@ -116,23 +129,22 @@ $warranties = $product->getWarranty();
             </div>
             
             <!-- similar goods -->
-            <div class="bGoodSubItem">
+            <div class="bGoodSubItem clearfix">
                 <div class="bSlider">
-                    <!-- <a class="bSlider_eArrow mLeft" href="#"></a>
-                    <a class="bSlider_eArrow mRight" href="#"></a> -->
+                    <a class="bSlider_eArrow mLeft" href="#"></a>
+                    <a class="bSlider_eArrow mRight" href="#"></a>
                     <div id="similarSlider" class="bSlider_eWrap mHidden clearfix">
                         <? foreach ($related as $iProduct): ?>
-                        <!-- terminal.screen.push('product', {productId: <?= $iProduct->getId() ?>}) -->
                         <div class="bGoodSubItem_eGoods mFl">
-                            <a class="bGoodSubItem_eGoodsImg mFl mRounded" href="#" onclick='terminal.screen.push("product", {productId: <?= $iProduct->getId() ?>})'><img width="130" height="130" src="<?= $iProduct->getImageUrl(1) ?>"/></a>
+                            <a class="bGoodSubItem_eGoodsImg mFl mRounded jsRedirect" href="#" data-screentype='product' data-productid='<?= $iProduct->getId() ?>'><img width="130" height="130" src="<?= $iProduct->getImageUrl(1) ?>"/></a>
                             <div class="bGoodSubItem_eGoodsInfo">
                                 <!-- <p class="bGoodSubItem_eRating"><? //= $iProduct->getRating() ?></p> -->
                                 <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#"><?= $iProduct->getName() ?></a></h2>
                                 <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($iProduct->getPrice()) ?> <span class="bRuble">p</span></p>
                                 <?php if ($iProduct->getIsBuyable(\App::config()->region['shop_id'])):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn" href="#" onclick="terminal.cart.addProduct(<?= $iProduct->getId() ?>)">Купить</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallOrangeBtn jsBuyButton" data-productid='<?= $iProduct->getId() ?>' href="#">В корзину</a>
                                 <?php elseif ($iProduct->getState()->getIsShop() ):?>
-                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick="terminal.screen.push('other_shops', { productId: <?= $iProduct->getId() ?> })">Где купить?</a>
+                                <a class="bGoodSubItem_eMore bButton mSmallGrayBtn jsWhereBuy" data-productid='<?= $iProduct->getId() ?>' href="#">Где купить?</a>
                                 <? endif; ?>
                             </div>
                         </div>
@@ -153,7 +165,7 @@ $warranties = $product->getWarranty();
                 <div class="clearfix">
                     <? foreach ($product->getKit() as $part): ?>
                     <div class="bGoodSubItem_eGoods bGoodItemKit_eItem mMB20 mFl">
-                        <a class="bGoodSubItem_eGoodsImg mFl mRounded" href="#" onclick='terminal.screen.push("product", {productId: <?= $part->getId() ?>})'>
+                        <a class="bGoodSubItem_eGoodsImg mFl mRounded jsRedirect" href="#" data-screentype='product' data-productid='<?= $part->getId() ?>'>
                             <? if ($kit[$part->getId()]->getLabel()): ?>
                                 <img class="bLabels" src="<?= $kit[$part->getId()]->getLabel()->getImageUrl(1) ?>" alt="<?= $kit[$part->getId()]->getLabel()->getName() ?>" height="20" />
                             <? endif ?>
@@ -161,9 +173,9 @@ $warranties = $product->getWarranty();
                         </a>
                         <div class="bGoodSubItem_eGoodsInfo">
                             <!-- <p class="bGoodSubItem_eRating"><?= $kit[$part->getId()]->getRating() ?></p> -->
-                            <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink" href="#" onclick='terminal.screen.push("product", {productId: <?= $part->getId() ?>})'><?= $kit[$part->getId()]->getName() ?></a></h2>
+                            <h2 class="bGoodSubItem_eTitle"><a class="bGoodSubItem_eLink jsRedirect" href="#" data-screentype='product' data-productid='<?= $part->getId() ?>'><?= $kit[$part->getId()]->getName() ?></a></h2>
                             <p class="bGoodSubItem_ePrice"><?= $page->helper->formatPrice($kit[$part->getId()]->getPrice()) ?> <span class="bRuble">p</span></p>
-                            <a class="bGoodSubItem_eMore bButton mSmallGrayBtn" href="#" onclick='terminal.screen.push("product", {productId: <?= $part->getId() ?>})'>Подробнее</a>
+                            <a class="bGoodSubItem_eMore bButton mSmallGrayBtn jsRedirect" href="#" data-screentype='product' data-productid='<?= $part->getId() ?>'>Подробнее</a>
                         </div>
                     </div>
                     <? endforeach ?>
@@ -209,7 +221,7 @@ $warranties = $product->getWarranty();
                     <div class="bCustomSelect_eElements">
                         <? foreach ($property->getOption() as $option): ?>
                         <? if ($option->getValue() == $productAttribute->getValue())continue; ?>
-                        <a onclick="terminal.screen.push('product', {productId: <?= $option->getProduct()->getId() ?>})" class="bCustomSelect_eOption"><?= $option->getHumanizedName() ?></a>
+                        <a class="bCustomSelect_eOption jsRedirect" data-screentype='product' data-productid='<?= $option->getProduct()->getId() ?>'><?= $option->getHumanizedName() ?></a>
                         <? endforeach ?>
                     </div>
                     <div class="bCustomSelect_eSelected bButton mGrayBtn"><?= $productAttribute->getStringValue() ?></div>
@@ -231,7 +243,7 @@ $warranties = $product->getWarranty();
                         <p class="bGoodServiceItem_eTitle"><?= $warranty->getName() ?></p>
                         <p class="bGoodServiceItem_ePrice"><?= $page->helper->formatPrice($warranty->getPrice()) ?> <span class="bRuble">p</span></p>
                         <?php if ($product->getIsBuyable(\App::config()->region['shop_id'])):?>
-                        <a class="bButton mSmallOrangeBtn mFl" href="#" onclick="terminal.cart.setWarranty(<?= $product->getId() ?>, <?= $warranty->getId() ?>)">в корзину</a>
+                        <a class="bButton mSmallOrangeBtn mFl jsBuyButton" data-productid='<?= $product->getId() ?>' data-warrantyid='<?= $warranty->getId() ?>' href="#">в корзину</a>
                         <? endif ?>
                     </div>
                 </div>
@@ -240,16 +252,14 @@ $warranties = $product->getWarranty();
             <!-- services -->
             <? foreach ($services as $service): ?>
                 <div class="bGoodServiceItem clearfix">
-                    <!-- <p><?= $service->getToken() ?></p> -->
-                    <!-- <p><?= $service->getId() ?></p> -->
-                    <a onclick="terminal.screen.push('service', {serviceId: <?= $service->getId() ?>, productId: <?= $product->getId() ?>, isBuyable: true})" class="bGoodServiceItem_eLogo mRounded mFl"></a>
+                    <a class="bGoodServiceItem_eLogo mRounded mFl jsRedirect" data-screentype='service' data-productid='<?= $product->getId() ?>' data-serviceid='<?= $service->getId() ?>' data-isbuy='<?= $product->getIsBuyable(\App::config()->region['shop_id']) ? 'true' : 'false' ?>' href="#"></a>
                     <div class="bFl">
                         <p class="bGoodServiceItem_eTitle"><?= $service->getName() ?></p>
                         <p class="bGoodServiceItem_ePrice"><?= $page->helper->formatPrice($service->getPrice()) ?> <span class="bRuble">p</span></p>
                         <?php if ($product->getIsBuyable(\App::config()->region['shop_id'])):?>
-                        <a class="bButton mSmallOrangeBtn mFl" href="#" onclick="terminal.cart.addService(<?= $product->getId() ?>, <?= $service->getId() ?>)">в корзину</a>
+                        <a class="bButton mSmallOrangeBtn mFl jsBuyButton" data-productid='<?= $product->getId() ?>' data-serviceid='<?= $service->getId() ?>' href="#">в корзину</a>
                         <? endif ?>
-                        <a class="bButton mSmallGrayBtn mFl" href="#" onclick="terminal.screen.push('service', {serviceId: <?= $service->getId() ?>, productId: <?= $product->getId() ?>, isBuyable: <?= $product->getIsBuyable(\App::config()->region['shop_id']) ? 'true' : 'false' ?>})">подробнее</a> <!-- isBuyable ??? -->
+                        <a class="bButton mSmallGrayBtn mFl jsRedirect" data-screentype='service' data-productid='<?= $product->getId() ?>' data-serviceid='<?= $service->getId() ?>' data-isbuy='<?= $product->getIsBuyable(\App::config()->region['shop_id']) ? 'true' : 'false' ?>' href="#">подробнее</a> <!-- isBuyable ??? -->
                     </div>
                 </div>
             <? endforeach ?>

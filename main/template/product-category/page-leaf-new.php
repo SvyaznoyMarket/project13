@@ -2,6 +2,7 @@
 /**
  * @var $page                   \View\ProductCategory\LeafPage
  * @var $category               \Model\Product\Category\Entity
+ * @var $brand                  \Model\Brand\Entity|null
  * @var $productFilter          \Model\Product\Filter
  * @var $productPager           \Iterator\EntityPager
  * @var $productSorting         \Model\Product\Sorting
@@ -21,11 +22,17 @@
 
     <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
-	<h1  class="bTitlePage"><?= $category->getName() ?></h1>
+	<h1  class="bTitlePage"><?= $title ?></h1>
 
-    <!-- Баннер --><div class="bBannerBox"></div><!--/ Баннер -->
+    <? if (\App::config()->adFox['enabled']): ?>
+    <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
+    <? endif ?>
 
     <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
+
+    <? if (!empty($promoContent)): ?>
+        <?= $promoContent ?>
+    <? endif ?>
 
     <?= $helper->render('product-category/__filter', [
         'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),

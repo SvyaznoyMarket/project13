@@ -169,7 +169,7 @@ class Entity {
      * @return string
      */
     public function getDescription() {
-        return $this->description;
+        return html_entity_decode($this->description);
     }
 
     /**

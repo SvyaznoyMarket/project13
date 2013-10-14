@@ -494,7 +494,7 @@ $(document).ready(function() {
 	// }
 
 
-	// /* Services Toggler */
+	/* Services Toggler */
 	// if ( $('.serviceblock').length ) {
 	// 	$('.info h3').css('cursor', 'pointer').click( function() {
 	// 		$(this).parent().find('> div').toggle();
@@ -511,16 +511,16 @@ $(document).ready(function() {
 
 
 	/* tags */
-	$('.fm').toggle( 
-		function(){
-			$(this).parent().find('.hf').slideDown();
-			$(this).html('скрыть');
-		},
-		function(){
-			$(this).parent().find('.hf').slideUp();
-			$(this).html('еще...');
-		}
-	);
+	// $('.fm').toggle( 
+	// 	function(){
+	// 		$(this).parent().find('.hf').slideDown();
+	// 		$(this).html('скрыть');
+	// 	},
+	// 	function(){
+	// 		$(this).parent().find('.hf').slideUp();
+	// 		$(this).html('еще...');
+	// 	}
+	// );
 
 
 // 	$('.bCtg__eMore').bind('click', function(e) {

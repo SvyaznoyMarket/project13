@@ -1,21 +1,23 @@
 <?php
 /**
- * @var $page    \Terminal\View\Product\IndexPage
- * @var $data[]
- * @var $products \Model\Product\TerminalEntity[]
+ * @var $page           \Terminal\View\ProductCategory\IndexPage
+ * @var $category       \Model\Product\Category\Entity
+ * @var $productSorting \Model\Product\TerminalSorting
  */
-$productData = [];
 ?>
 
-<div id="categoryData" data-data="<?= $page->json($data) ?>"></div>
-<? foreach ($products as $product): ?>
-    <? $productData[] = [
-        'id' => $product->getId(),
-        'name' => $product->getName(),
-        'image' => $product->getImageUrl(3),
-        'article' => $product->getArticle(),
-        'price' => $product->getPrice(),
-        'isBuyable' => $product->getIsBuyable(\App::config()->region['shop_id']),
-    ] ?>
-<? endforeach ?>
-<div id="productList" data-product="<?= $page->json($productData) ?>"></div>
+<?
+$url = $page->url('category.product', ['categoryId' => $category->getId()]);
+if ($filterData = \App::request()->get('f')) {
+    $url .= (false !== strpos($url, '?') ? '&' : '?') . http_build_query(['f' => $filterData]);
+}
+if ($sortData = \App::request()->get('sort')) {
+    $url .= (false !== strpos($url, '?') ? '&' : '?') . http_build_query(['sort' => $sortData]);
+}
+
+?>
+
+<article id="categoryData" data-url="<?= $url ?>" data-sort="<?= $page->json($productSorting->all()) ?>" class="bListing bContent mLoading" data-pagetype='product_list'>
+	<div id="productList"></div>
+	<div class="bProductListWrap mSizeLittle clearfix"></div>
+</article>

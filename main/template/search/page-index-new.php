@@ -2,6 +2,7 @@
 /**
  * @var $page             \View\Search\IndexPage
  * @var $request          \Http\Request
+ * @var $searchQuery      string
  * @var $meanQuery        string
  * @var $forceMean        string
  * @var $productCount     int
@@ -18,18 +19,32 @@
 
 <div class="bCatalog">
 
+    <? if ($selectedCategory): ?>
+        <?= $helper->render('search/__breadcrumbs', [
+            'searchQuery' => $searchQuery,
+        ]) // хлебные крошки ?>
+    <? endif ?>
+
     <?= $helper->render('search/__title', [
         'searchQuery' => $searchQuery,
         'meanQuery'   => $meanQuery,
         'forceMean'   => $forceMean,
         'count'       => $productCount,
+        'category'    => $selectedCategory,
     ]) ?>
 
-    <?= $helper->render('search/__category', [
-        'searchQuery'      => $searchQuery,
-        'categories'       => $categories,
-        'selectedCategory' => $selectedCategory,
-    ]) // категории товаров ?>
+    <form class="bFilter clearfix hidden" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
+    <div id="_searchKiss" style="display: none" data-search="<?= $helper->json(['query' => $searchQuery, 'url' => \App::request()->headers->get('referer'), 'count' => $productCount]) ?>"></div>
+
+    <div class="bSearchCategoryRoot">
+        <? if (!$selectedCategory): ?>
+            <?= $helper->render('search/__category', [
+                'searchQuery'      => $searchQuery,
+                'categories'       => $categories,
+                'selectedCategory' => $selectedCategory,
+            ]) // категории товаров ?>
+        <? endif ?>
+    </div>
 
     <?= $helper->render('product/__listAction', [
         'pager'          => $productPager,
@@ -42,6 +57,8 @@
         'productVideosByProduct' => [], //$productVideosByProduct,
     ]) // листинг ?>
 
-    <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+    <div class="bSortingLine mPagerBottom clearfix">
+        <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+    </div>
 
 </div>

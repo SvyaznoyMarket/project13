@@ -11,7 +11,11 @@ if ((bool)\App::exception()->all()) {
 }
 
 $debug->add('id', \App::$id, 145);
-//$debug->add('env', \App::$name . '.' . \App::$env, 144);
+
+if ('main' != \App::$name) {
+    $debug->add('app', \App::$name, 143);
+}
+
 $debug->add('env', \App::$env, 144);
 $debug->add(
     'git',

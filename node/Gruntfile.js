@@ -21,6 +21,7 @@ module.exports = function(grunt) {
 		'jquery.put_cursor_at_end.js',
 		'goodsCounter.js',
 		'jquery.elevatezoom.js',
+		'jquery.animate-shadow.js',
 		// 'customRadio.js',
 		'customDropDown.js',
 		'goodsSlider.js',
@@ -535,7 +536,7 @@ module.exports = function(grunt) {
 	// Тестирование JS, валидация JS, компиляция bigjquery, минификация JS, версионность
 	grunt.registerTask('js', ['concat', 'connect', 'qunit', 'jshint', 'uglify', 'exec:compileBJ', 'exec:getVersion']);
 	// Компиляция LESS, тестирование JS, валидация, минификация JS, версионность
-	grunt.registerTask('default', ['less', 'concat', 'connect', 'qunit', 'jshint', 'uglify', 'exec:compileBJ', 'exec:getVersion']);
+	grunt.registerTask('default', ['less', 'concat', 'jshint', 'uglify', 'exec:compileBJ', 'connect', 'qunit', 'exec:getVersion']);
 	// Генерация рандомных полигонов яндекс карт
 	grunt.registerTask('ymaps', ['ymaps_generate']);
 	// Тестирование JS, валидация JS

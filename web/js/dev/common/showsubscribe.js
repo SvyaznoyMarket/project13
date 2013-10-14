@@ -47,7 +47,7 @@
 						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
 					}
 
-					subPopup.append('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'/" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
+					// subPopup.append('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'/" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
 				});
 
 				return false;

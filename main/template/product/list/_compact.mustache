@@ -1,6 +1,6 @@
 <!-- Листинг товаров -->
-<li class="bListingItem mBanner2Item" style="width: 0px;"></li>
-<!-- место для баннеры 450х295, при этом родительский элемент имеет ширину 480 -->
+<li class="bListingItem mBannerItem"><div class="adfoxWrapper" id="adfox215"></div></li>
+<!-- место для баннеры 215x258, при этом родительский элемент имеет ширину width: 240px; -->
 {{#products}}
 <!-- Элемент листинга/продукт -->
 <li class="bListingItem">
@@ -38,12 +38,12 @@
 
         <div class="bPriceLine clearfix">
             <span class="bPrice"><strong>{{price}}</strong> <span class="rubl">p</span></span>
-            {{#variations}}
+            {{#hasVariations}}
             <span class="bOptions"><span class="bDecor">Варианты</span></span>
-            {{/variations}}
+            {{/hasVariations}}
         </div>
 
-        {{#variations}}
+        {{#hasVariations}}
         <div class="bOptionsSection">
             <i class="bCorner"></i>
             <i class="bCornerDark"></i>
@@ -54,7 +54,7 @@
             {{/variations}}
             </ul>
         </div>
-        {{/variations}}
+        {{/hasVariations}}
 
         <div class="bBtnLine clearfix">
             {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}

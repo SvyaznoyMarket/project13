@@ -10,19 +10,19 @@ return function(
 ?>
 
 
-    <? foreach ([1 => 'да', 0 => 'нет'] as $id => $name): ?>
+    <? foreach ([1 => 'да', 0 => 'нет'] as $value => $name): ?>
     <?
-        $viewId = \View\Id::productCategoryFilter($filter->getId()) . '-option-' . $id;
+        $viewId = \View\Id::productCategoryFilter($filter->getId()) . '-option-' . $value;
     ?>
         <div class="bFilterValuesCol">
             <input
                 class="bInputHidden bCustomInput jsCustomRadio"
                 type="checkbox"
                 id="<?= $viewId ?>"
-                name="<?= \View\Name::productCategoryFilter($filter) ?>"
-                value="<?= $id ?>"
+                name="<?= \View\Name::productCategoryFilter($filter, $value) ?>"
+                value="<?= $value ?>"
                 hidden
-                <? if (in_array($id, $values)) { ?> checked="checked"<? } ?>
+                <? if (in_array($value, $values)) { ?> checked="checked"<? } ?>
                 />
             <label class="bFilterCheckbox" for="<?= $viewId ?>">
                 <?= $name ?>
