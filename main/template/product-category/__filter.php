@@ -14,7 +14,7 @@ return function(
      * @var $categories \Model\Product\Category\Entity[]
      */
 
-    $openFilter = false;
+    $openFilter = true;
     $filters = [];
     $priceFilter = null;
 
