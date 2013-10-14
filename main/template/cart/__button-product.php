@@ -7,10 +7,14 @@ return function (
     $class = null,
     $value = 'Купить'
 ) {
-    $class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;
+    $class = \View\Id::cartButtonForProduct($product->getId())
+        . ($product->isInShopStockOnly() ? ' jsOrder1clickProxy' : ' jsBuyButton')
+        . ' ' . $class;
 
     if ($product->isInShopStockOnly()) {
         $class .= ' mShopsOnly';
+        $value = 'Резерв';
+        $url = $product->getLink() . '#oneclick';
     } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
     }

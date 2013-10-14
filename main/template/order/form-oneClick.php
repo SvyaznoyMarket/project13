@@ -1,7 +1,8 @@
 <?php
 /**
- * @var $page \View\Layout
- * @var $user \Session\User
+ * @var $page    \View\Layout
+ * @var $user    \Session\User
+ * @var $product \Model\Product\Entity
  */
 ?>
 
@@ -48,7 +49,7 @@ $formData = array(
                     </td>
                     <td class='bFast__eForm'>
                         <table cellpadding=0 cellspacing=0 class='bFastInner'>
-                            <tr><th colspan="2"><div class="h2">Заполните форму быстрого заказа:</div></th></tr>
+                            <tr><th colspan="2"><div class="h2"><?= (isset($product) && $product->isInShopStockOnly()) ? 'Резерв в магазине' : 'Быстрый заказ' ?></div></th></tr>
                             <tr data-bind="visible: noDelivery()"><td colspan="2"><div class="red">Товар в количестве <span data-bind="text: quantity()"></span> шт. отсутствует на складе.</div></td></tr>
                             <tr data-bind="visible: !noDelivery()"><td width="200">Способ получения заказа:</td>
                                 <td>
