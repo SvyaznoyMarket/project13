@@ -14,7 +14,11 @@
 if (!isset($class)) {
     $class = '';
 }
-$class .= ' ' . \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton';
+$class .= ' ' . \View\Id::cartButtonForProduct($product->getId());
+
+if (!$product->isInShopStockOnly()) {
+    $class .= ' jsBuyButton';
+}
 
 if (empty($quantity)) {
     $quantity = 1;
@@ -25,7 +29,8 @@ if (empty($value)) $value = 'Купить';
 $disabled = !$product->getIsBuyable();
 
 if ($product->isInShopStockOnly()) {
-    $value = 'Только в магазинах';
+    $value = 'Резерв';
+    $url = $product->getLink() . '#oneclick';
 }
 
 if ($disabled) {

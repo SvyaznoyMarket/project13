@@ -11,7 +11,7 @@ return function(
     $user = \App::user();
 ?>
 
-    <div class="bWidgetBuy__eClick">
+    <div class="bWidgetBuy__eClick<? if ($product->isInShopStockOnly()): // SITE-2307 ?> hf<? endif ?>">
         <a
             href="#"
             class="jsOrder1click"
