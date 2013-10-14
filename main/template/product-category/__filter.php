@@ -6,6 +6,7 @@ return function(
     $baseUrl,
     $countUrl,
     $hotlinks,
+    $openFilter,
     array $categories = [],
     \Model\Product\Category\Entity $selectedCategory = null
 ) {
@@ -14,7 +15,6 @@ return function(
      * @var $categories \Model\Product\Category\Entity[]
      */
 
-    $openFilter = false;
     $filters = [];
     $priceFilter = null;
 
