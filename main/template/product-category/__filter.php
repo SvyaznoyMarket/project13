@@ -5,9 +5,15 @@ return function(
     \Model\Product\Filter $productFilter,
     $baseUrl,
     $countUrl,
-    $hotlinks
+    $hotlinks,
+    array $categories = [],
+    \Model\Product\Category\Entity $selectedCategory = null
 ) {
-    /** @var $filters \Model\Product\Filter\Entity[] */
+    /**
+     * @var $filters    \Model\Product\Filter\Entity[]
+     * @var $categories \Model\Product\Category\Entity[]
+     */
+
     $openFilter = false;
     $filters = [];
     $priceFilter = null;
@@ -22,26 +28,47 @@ return function(
             $i++;
         }
 
-        // фильтр "Наличие в магазинах"
         if (3 == $i) {
+            // фильтр "Товары по категориям"
+            if ((bool)$categories) {
+                $categoryFilter = new \Model\Product\Filter\Entity();
+                $categoryFilter->setId('category');
+                $categoryFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+                $categoryFilter->setName('Категории');
+                $categoryFilter->getIsInList(true);
+                $categoryFilter->setIsMultiple(false);
+
+                foreach ($categories as $category) {
+                    $option = new \Model\Product\Filter\Option\Entity();
+                    $option->setId($category->getId());
+                    $option->setName($category->getName());
+                    $categoryFilter->addOption($option);
+                }
+
+                $filters[] = $categoryFilter;
+                $i++;
+            }
+
+            // фильтр "Наличие в магазинах"
             /** @var $shops \Model\Shop\Entity[] */
             $shops = $helper->getParam('shops');
+            if ((bool)$shops) {
+                $shopFilter = new \Model\Product\Filter\Entity();
+                $shopFilter->setId('shop');
+                $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+                $shopFilter->setName('Наличие в магазинах');
+                $shopFilter->getIsInList(true);
+                $shopFilter->setIsMultiple(false);
 
-            $shopFilter = new \Model\Product\Filter\Entity();
-            $shopFilter->setId('shop');
-            $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-            $shopFilter->setName('Наличие в магазинах');
-            $shopFilter->getIsInList(true);
-            $shopFilter->setIsMultiple(false);
-
-            foreach ($shops as $shop) {
-                $option = new \Model\Product\Filter\Option\Entity();
-                $option->setId($shop->getId());
-                $option->setName($shop->getName());
-                $shopFilter->addOption($option);
+                foreach ($shops as $shop) {
+                    $option = new \Model\Product\Filter\Option\Entity();
+                    $option->setId($shop->getId());
+                    $option->setName($shop->getName());
+                    $shopFilter->addOption($option);
+                }
+                $filters[] = $shopFilter;
+                $i++;
             }
-            $filters[] = $shopFilter;
-            $i++;
         }
     }
 
@@ -51,7 +78,7 @@ return function(
         <div class="bFilterHead">
             <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
-            <? if ( $priceFilter && $productFilter ) {
+            <? if ($priceFilter && $productFilter) {
                 /**@var     $productFilter      \Model\Product\Filter
                  **@var     $priceFilter        \Model\Product\Filter\Entity **/
                 echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]);

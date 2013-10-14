@@ -4,7 +4,9 @@ return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
     $baseUrl,
-    $countUrl
+    $countUrl,
+    array $categories,
+    \Model\Product\Category\Entity $selectedCategory = null
 ) {
     if (!(bool)$productFilter->getFilterCollection()) {
         return '';
@@ -12,10 +14,12 @@ return function(
 ?>
 
     <?= $helper->render('product-category/__filter', [
-        'baseUrl'       => $baseUrl,
-        'countUrl'      => $countUrl,
-        'productFilter' => $productFilter,
-        'hotlinks'      => [],
+        'baseUrl'          => $baseUrl,
+        'countUrl'         => $countUrl,
+        'productFilter'    => $productFilter,
+        'hotlinks'         => [],
+        'categories'       => $categories,
+        'selectedCategory' => $selectedCategory,
     ]) // фильтры ?>
 
 <? };

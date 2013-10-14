@@ -37,7 +37,7 @@
     <form class="bFilter clearfix hidden" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
     <div id="_searchKiss" style="display: none" data-search="<?= $helper->json(['query' => $searchQuery, 'url' => \App::request()->headers->get('referer'), 'count' => $productCount]) ?>"></div>
 
-    <? if (false): ?>
+    <? if (!(bool)$productFilter->getFilterCollection()): ?>
     <div class="bSearchCategoryRoot">
         <?= $helper->render('search/__category', [
             'searchQuery'      => $searchQuery,
@@ -48,9 +48,11 @@
     <? endif ?>
 
     <?= $helper->render('search/__filter', [
-        'baseUrl'       => $helper->url('search', ['q' => $searchQuery]),
-        'countUrl'      => null,
-        'productFilter' => $productFilter,
+        'baseUrl'          => $helper->url('search', ['q' => $searchQuery]),
+        'countUrl'         => null,
+        'productFilter'    => $productFilter,
+        'categories'       => $categories,
+        'selectedCategory' => $selectedCategory,
     ]) // фильтры ?>
 
     <?= $helper->render('product/__listAction', [
