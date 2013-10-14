@@ -54,7 +54,7 @@
 
 
 
-    <?= $page->slotUserbar() ?>
+    <?//= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
 
     <?= $page->slotRegionSelection() ?>
@@ -75,10 +75,78 @@
 	<a id="upper" href="#">Наверх</a>
 
     <footer class="footer">
-        <ul>
-<li><a href=""></a></li>
-        </ul>
+        <div class="footer__inner clearfix">
+            <ul class="aboutList">
+                <li class="aboutList__item"><a class="aboutList__link" href="">О компании</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="">Магазины Enter</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="">Напишите нам</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="">Условия доставки</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="">Способы оплаты</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="">Покупка в кредит</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="">Работа у нас</a></li>
+            </ul>
+
+            <div class="publicInfo">
+                <ul class="publicInfo__list">
+                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="">Правовая информация</a></li>
+                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="">Условия продажи</a></li>
+                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="">Информация о СМИ</a></li>
+                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="">Уцененные товары оптом</a></li>
+                </ul>
+
+                <p class="publicInfo__text">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</p>
+            </div>
+
+            <ul class="socLink">
+                <li class="socLink__item mFb"><a class="socLink__link" href=""></a></li>
+                <li class="socLink__item mTw"><a class="socLink__link" href=""></a></li>
+                <li class="socLink__item mVk"><a class="socLink__link" href=""></a></li>
+                <li class="socLink__item mYt"><a class="socLink__link" href=""></a></li>
+            </ul>
+
+            <ul class="bannersList">
+                <li class="bannersList__item"><img src="/styles/footer/img/prava-potreb.gif" /></li>
+                <li class="bannersList__item"><a href="/akit"><img src="/styles/footer/img/akita.png" /></a></li>
+                <li class="bannersList__item"><div id="teleportator"></div></li>
+            </ul>
+
+            <ul class="applist">
+                <li class="applist__item">
+                    <a href="https://play.google.com/store/apps/details?id=ru.enter">
+                      <img alt="Get it on Google Play" src="https://developer.android.com/images/brand/ru_generic_rgb_wo_45.png" />
+                    </a>
+                </li>
+                <li class="applist__item"><a href=""><img src="/styles/footer/img/appstore.png" /></a></li>
+                <li class="applist__item mTitle">Мобильные приложения</li>
+            </ul>
+        </div>
+
+        <div class="footer__insert">
+            <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–2013. ENTER® ЕНТЕР® Enter®. Все права защищены. <a class="footer__copy__link" href="">Сообщить об ошибке</a></p>
+        </div>
     </footer>
 
+    <!-- krible.ru Teleportator -->
+    <script type="text/javascript">
+    var kribleCode = '5e14662e854af6384a9a84af28874dd8';
+    var kribleTeleportParam = {'text': '#ffffff', 'button': '#ffa901', 'link':'#000000'};
+    (function (d, w) {
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function() {
+                n.parentNode.insertBefore(s, n);
+            };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = 'http://chat.krible.ru/arena/'+
+          kribleCode.substr(0,2)+'/'+kribleCode+'/teleport.js';
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f);
+        } else {
+            f();
+        }
+    })(document, window);
+    </script>
+    <!-- /krible.ru Teleportator end -->
 </body>
 </html>

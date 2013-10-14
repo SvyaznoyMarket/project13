@@ -1,6 +1,6 @@
 /** less **/
-@base-url:"/styles";
-
 /*------СТИЛИ ПОДВАЛА------*/
-@import "footer/footer.less" all;
+@media all {
+  
+}
 /*---END---СТИЛИ ПОДВАЛА---*/
