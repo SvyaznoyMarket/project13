@@ -20,6 +20,7 @@ return function(
         'hotlinks'         => [],
         'categories'       => $categories,
         'selectedCategory' => $selectedCategory,
+        'openFilter'    => true,
     ]) // фильтры ?>
 
 <? };
