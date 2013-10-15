@@ -297,7 +297,13 @@ class DefaultLayout extends Layout {
 
 
             if ('subscribe_friends' == $routeToken) {
-                $return .= $this->tryRender('partner-counter/_am15_net');
+                $email = null;
+                $uEntity = \App::user()->getEntity();
+                if ($uEntity) {
+                    $email = $uEntity->getEmail();
+                }
+
+                $return .= $this->tryRender('partner-counter/_am15_net', ['email' => $email]);
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
             }
 
