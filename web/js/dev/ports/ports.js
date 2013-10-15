@@ -448,7 +448,7 @@ window.ANALYTICS = {
 
         RetailRocket.init();
 
-        $('body').on('userlogged', RetailRocket.action);
+        $('body').on('userLogged', RetailRocket.action);
     },
 
     AdmitadJS : function() {
