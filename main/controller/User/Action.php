@@ -26,7 +26,14 @@ class Action {
                     ? new \Http\JsonResponse(['success' => true])
                     : new \Http\RedirectResponse(\App::router()->generate('user'));
             } else { // if redirect isset:
-                return new \Http\RedirectResponse($redirectTo);
+                return $request->isXmlHttpRequest()
+                    ? new \Http\JsonResponse([
+                        'success' => true,
+                        'data'    => [
+                            'link' => $redirectTo,
+                        ],
+                    ])
+                    : new \Http\RedirectResponse($redirectTo);
             }
         }
 
