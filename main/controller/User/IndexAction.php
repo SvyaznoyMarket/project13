@@ -19,14 +19,18 @@ class IndexAction {
 
         // запрашиваем пользователя, если он авторизован
         if ($user->getToken()) {
-            \RepositoryManager::user()->prepareEntityByToken($user->getToken(), function($data) {
-                if ((bool)$data) {
-                    \App::user()->setEntity(new \Model\User\Entity($data));
+            \RepositoryManager::user()->prepareEntityByToken(
+                $user->getToken(),
+                function($data) {
+                    if ((bool)$data) {
+                        \App::user()->setEntity(new \Model\User\Entity($data));
+                    }
+                },
+                function (\Exception $e) {
+                    \App::exception()->remove($e);
+                    throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $user->getToken()));
                 }
-            }, function (\Exception $e) {
-                \App::exception()->remove($e);
-                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $user->getToken()));
-            });
+            );
         }
 
         // запрашиваем текущий регион, если есть кука региона
