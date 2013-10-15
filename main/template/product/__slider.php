@@ -57,7 +57,12 @@ return function (
                         <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
                         <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
-                        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить ?>
+                        <?= $helper->render('cart/__button-product', [
+                            'product'    => $product,
+                            'class'      => 'btnBuy__eLink',
+                            'value'      => 'Купить',
+                            'directLink' => true,
+                        ]) // Кнопка купить ?>
                     </div>
                 </li>
             <? endforeach ?>
