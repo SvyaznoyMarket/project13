@@ -242,7 +242,7 @@ class Action {
                                     'form'    => $form,
                                     'request' => \App::request(),
                                 ]),
-                                //'link' => $this->redirect,
+                                'link' => $this->redirect,
                             ],
                         ])
                         : new \Http\RedirectResponse($this->redirect);
