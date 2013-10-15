@@ -75,7 +75,8 @@ class Action {
                         },
                         function(\Exception $e) {
                             \App::exception()->remove($e);
-                        }
+                        },
+                        \App::config()->coreV2['timeout'] * 9
                     );
                     \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
                     if (empty($result['token'])) {
@@ -221,7 +222,7 @@ class Action {
                 }
 
                 try {
-                    $result = \App::coreClientV2()->query('user/create', [], $data);
+                    $result = \App::coreClientV2()->query('user/create', [], $data, \App::config()->coreV2['timeout'] * 9);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
@@ -404,9 +405,14 @@ class Action {
                 ];
 
                 try {
-                    $result = \App::coreClientV2()->query('user/create-legal', [
-                        'geo_id' => \App::user()->getRegion()->getId(),
-                    ], $data);
+                    $result = \App::coreClientV2()->query(
+                        'user/create-legal',
+                        [
+                            'geo_id' => \App::user()->getRegion()->getId(),
+                        ],
+                        $data,
+                        \App::config()->coreV2['timeout'] * 9
+                    );
                     \App::logger()->info(['core.response' => $result], ['user']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
