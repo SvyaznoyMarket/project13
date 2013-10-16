@@ -184,7 +184,7 @@ $is_showed = [];
                 'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
             ]) ?>
         <? endif ?>
-    </div>
+   
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
@@ -225,3 +225,5 @@ $is_showed = [];
 </div>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
+
+</div>

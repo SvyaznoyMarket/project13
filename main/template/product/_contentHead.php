@@ -13,7 +13,7 @@ $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
 if (!isset($titlePrefix)) $titlePrefix = null;
 ?>
 
-<div class="bProductSection clearfix">
+<div class="bProductSection clearfix"> <!-- mProductSectionSet доюавлять этот класс, если линейка товаров -->
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
     <? if ($hasSearch): ?>
@@ -37,4 +37,3 @@ if (!isset($titlePrefix)) $titlePrefix = null;
         </div>
         <span class="bPageHead__eArticle">Артикул: <?= $product->getArticle() ?></span>
     </div><!--/head section -->
-
