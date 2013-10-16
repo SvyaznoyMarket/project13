@@ -13,7 +13,7 @@ $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
 if (!isset($titlePrefix)) $titlePrefix = null;
 ?>
 
-<div class="bProductSection clearfix"> <!-- mProductSectionSet доюавлять этот класс, если линейка товаров -->
+<div class="bProductSection clearfix<? if ('product.line' == \App::request()->attributes->get('route')): ?> mProductSectionSet<? endif ?>">
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
     <? if ($hasSearch): ?>
