@@ -8,7 +8,7 @@ class Layout extends \View\DefaultLayout {
     public function __construct() {
         parent::__construct();
 
-        $this->addStylesheet('/css/global.css');
+        //$this->addStylesheet('/css/global.css');
     }
 
 

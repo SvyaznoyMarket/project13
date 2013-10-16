@@ -49,7 +49,6 @@
 
             <div class="clear"></div>
         </div>
-        <div class="clear"></div>
     </div>
 
 
@@ -77,31 +76,31 @@
     <footer class="footer">
         <div class="footer__inner clearfix">
             <ul class="aboutList">
-                <li class="aboutList__item"><a class="aboutList__link" href="">О компании</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="">Магазины Enter</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="">Напишите нам</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="">Условия доставки</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="">Способы оплаты</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="">Покупка в кредит</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="">Работа у нас</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="/about_company">О компании</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="/shops">Магазины Enter</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="http://feedback.enter.ru/">Напишите нам</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="/how_get_order">Условия доставки</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="/how_pay">Способы оплаты</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="/credit">Покупка в кредит</a></li>
+                <li class="aboutList__item"><a class="aboutList__link" href="http://my.enter.ru/community/job">Работа у нас</a></li>
             </ul>
 
             <div class="publicInfo">
                 <ul class="publicInfo__list">
-                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="">Правовая информация</a></li>
-                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="">Условия продажи</a></li>
-                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="">Информация о СМИ</a></li>
-                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="">Уцененные товары оптом</a></li>
+                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="/legal">Правовая информация</a></li>
+                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="/terms">Условия продажи</a></li>
+                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="/media_info">Информация о СМИ</a></li>
+                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="/refurbished-sale">Уцененные товары оптом</a></li>
                 </ul>
 
                 <p class="publicInfo__text">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</p>
             </div>
 
             <ul class="socLink">
-                <li class="socLink__item mFb"><a class="socLink__link" href=""></a></li>
-                <li class="socLink__item mTw"><a class="socLink__link" href=""></a></li>
-                <li class="socLink__item mVk"><a class="socLink__link" href=""></a></li>
-                <li class="socLink__item mYt"><a class="socLink__link" href=""></a></li>
+                <li class="socLink__item mFb"><a class="socLink__link" target="_blank" href="https://www.facebook.com/enter.ru"></a></li>
+                <li class="socLink__item mTw"><a class="socLink__link" target="_blank" href="https://twitter.com/enter_ru"></a></li>
+                <li class="socLink__item mVk"><a class="socLink__link" target="_blank" href="http://vk.com/public31456119"></a></li>
+                <li class="socLink__item mYt"><a class="socLink__link" target="_blank" href="https://www.youtube.com/user/EnterLLC"></a></li>
             </ul>
 
             <ul class="bannersList">
