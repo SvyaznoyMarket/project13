@@ -10569,8 +10569,9 @@
 @media all {
   /** Навигация по разделу **/
   .bBrandNavList {
-    width: 100%;
-    border-top: 2px solid #EDEDED;
+    border-top: 1px solid #EDEDED;
+    margin-left: -10px;
+    width: 960px;
   }
   .bBrandNavList__eCell {
     height: 50px;
