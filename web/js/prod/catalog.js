@@ -313,7 +313,7 @@
 			formSerizalizeData = $.param( formData );
 
 			if ( formSerizalizeData.length !== 0 ) {
-				url += '?' + formSerizalizeData;
+				url += ( url.indexOf('?') === -1 ) ? '?' + formSerizalizeData : '&' + formSerizalizeData;
 			}
 
 			console.log(url);
