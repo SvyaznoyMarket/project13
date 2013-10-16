@@ -315,4 +315,16 @@ class RepositoryManager {
         return $instance;
     }
 
+    /**
+     * @return Model\Slice\Repository
+     */
+    static function slice() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Slice\Repository(\App::dataStoreClient());
+        }
+
+        return $instance;
+    }
 }

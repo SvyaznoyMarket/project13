@@ -499,6 +499,13 @@ return [
         'action'  => ['Promo\IndexAction', 'execute'],
     ],
 
+    // срезы
+    'slice.show' => [
+        'pattern' => '/slices/{sliceToken}',
+        'require' => ['sliceToken' => '[\w\d-_]+'],
+        'action'  => ['Slice\ShowAction', 'execute'],
+    ],
+
     // smartengine
     'product.recommended' => [
         'pattern' => '/product-also-viewed/{productId}',

@@ -1,0 +1,128 @@
+<?php
+
+namespace Model\Slice;
+
+class Entity {
+    /** @var string */
+    private $token;
+    /** @var string */
+    private $name;
+    /** @var string */
+    private $filterQuery;
+    /** @var string */
+    private $title;
+    /** @var string */
+    private $metaKeywords;
+    /** @var string */
+    private $metaDescription;
+    /** @var array */
+    private $description;
+
+    public function __construct(array $data = []) {
+        if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('name', $data)) $this->setName($data['name']);
+        if (array_key_exists('filter', $data)) $this->setFilterQuery($data['filter']);
+        if (array_key_exists('title', $data)) $this->setTitle($data['title']);
+        if (array_key_exists('meta_keywords', $data)) $this->setMetaKeywords($data['meta_keywords']);
+        if (array_key_exists('meta_description', $data)) $this->setMetaDescription($data['meta_description']);
+        if (array_key_exists('description', $data)) $this->setDescription($data['description']);
+    }
+
+    /**
+     * @param array $description
+     */
+    public function setDescription($description) {
+        $this->description = (string)$description;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDescription() {
+        return $this->description;
+    }
+
+    /**
+     * @param string $filterQuery
+     */
+    public function setFilterQuery($filterQuery) {
+        $this->filterQuery = (string)$filterQuery;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilterQuery() {
+        return $this->filterQuery;
+    }
+
+    /**
+     * @param string $metaDescription
+     */
+    public function setMetaDescription($metaDescription) {
+        $this->metaDescription = (string)$metaDescription;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetaDescription() {
+        return $this->metaDescription;
+    }
+
+    /**
+     * @param string $metaKeywords
+     */
+    public function setMetaKeywords($metaKeywords) {
+        $this->metaKeywords = (string)$metaKeywords;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetaKeywords() {
+        return $this->metaKeywords;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name) {
+        $this->name = (string)$name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title) {
+        $this->title = (string)$title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle() {
+        return $this->title;
+    }
+
+    /**
+     * @param string $token
+     */
+    public function setToken($token) {
+        $this->token = (string)$token;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken() {
+        return $this->token;
+    }
+}
