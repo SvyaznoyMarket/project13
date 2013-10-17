@@ -4,7 +4,7 @@
   <? } ?>
 </select>
 
-<table class="bServicesTable">
+<table id="bServicesTable" class="bServicesTable">
   <thead>
     <tr>
       <th></th>
