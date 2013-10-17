@@ -7,6 +7,7 @@ class SelectedFilterAction {
      * @param \Helper\TemplateHelper $helper
      * @param \Model\Product\Filter $productFilter
      * @param $baseUrl
+     * @param bool $useBaseUrl
      * @return array
      */
     public function execute(
@@ -41,6 +42,17 @@ class SelectedFilterAction {
                 ],
             ];
             $filterValueData['shop'] = $shop->getId();
+        }
+
+        $category = $helper->getParam('selectedCategory') ? $helper->getParam('selectedCategory') : null;
+        if ($category instanceof \Model\Product\Category\Entity) {
+            $filterLinkData['category'] = [
+                'name'  => 'Товары по категориям',
+                'links' => [
+                    ['name' => $category->getName(), 'url' => $helper->replacedUrl(['category' => null, 'page' => null, 'ajax' => null])],
+                ],
+            ];
+            $filterValueData['category'] = $category->getId();
         }
 
         foreach ($productFilter->getFilterCollection() as $filter) {
@@ -105,7 +117,7 @@ class SelectedFilterAction {
                             $paramName => null,
                             'ajax'     => null
                         ]);
-                        if ( $useBaseUrl && !strpos($url,'?') ) {
+                        if ($useBaseUrl && !strpos($url, '?')) {
                             // Используем базовый урл, если нет гет-параметров
                             $url = $baseUrl;
                         };

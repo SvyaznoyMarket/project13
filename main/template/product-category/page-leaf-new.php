@@ -28,10 +28,10 @@
     <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
     <? endif ?>
 
-    <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
-
     <? if (!empty($promoContent)): ?>
         <?= $promoContent ?>
+    <? else: ?>
+        <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
     <? endif ?>
 
     <?= $helper->render('product-category/__filter', [
@@ -39,6 +39,7 @@
         'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
         'productFilter' => $productFilter,
         'hotlinks'      => $hotlinks,
+        'openFilter'    => false,
     ]) // фильтры ?>
 
     <?= $helper->render('product/__listAction', [

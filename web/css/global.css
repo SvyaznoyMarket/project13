@@ -10114,6 +10114,14 @@
   .btnBuy .btnBuy__eLink.mBought:hover {
     background: #ffffff;
   }
+  .btnBuy .btnBuy__eLink.mShopsOnly {
+    background: #b5b5b5;
+    border: 1px solid #cccccc;
+  }
+  .btnBuy .btnBuy__eLink.mShopsOnly:hover {
+    background: #9b9b9b;
+    border: 1px solid #cccccc;
+  }
   .btnBuy .btnBuy__eLink.mDisabled {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -12203,7 +12211,6 @@
     border: 1px solid #c7c7c7;
   }
   .mBtnGrey:hover {
-    text-decoration: none;
     background: #c5c5c5;
     background: -moz-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #c5c5c5));
@@ -12212,27 +12219,28 @@
     background: -ms-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #c5c5c5 100%);
     filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#c5c5c5', GradientType=0);
+    text-decoration: none;
   }
   .bListing {
     margin-right: -20px;
   }
   .bListing .bListingItem {
     position: relative;
+    z-index: 0;
     float: left;
+    margin: 0 30px 30px 0;
     width: 210px;
     height: 295px;
-    margin: 0 30px 30px 0;
-    z-index: 0;
   }
   .bListing .bListingItem.mBanner2Item {
-    width: 0;
     margin-right: 0;
+    width: 0;
   }
   .bListing .bListingItem.mBannerItem {
     margin-right: 0;
     padding-top: 30px;
-    height: 265px;
     width: auto;
+    height: 265px;
   }
   .bListing .bListingItem.mBannerItem .adfoxWrapper div {
     margin-right: 25px;
@@ -12240,8 +12248,8 @@
   .bListing .bListingItem__eInner {
     position: relative;
     z-index: 5;
-    width: 198px;
     padding: 10px;
+    width: 198px;
     border: 1px solid #fff;
   }
   .bListing .bListingItem:hover {
@@ -12265,22 +12273,22 @@
     opacity: 0.2;
   }
   .bListing .bListingItem:hover .bSimplyDesc__eText {
-    height: auto;
     min-height: 30px;
+    height: auto;
   }
   .bListing .bSimplyDesc {
     position: absolute;
-    z-index: 2;
     top: 10px;
     left: 10px;
-    width: 200px;
+    z-index: 2;
     padding: 0;
+    width: 200px;
     background: url('/css/bCatalog/img/bSimplyDesc.png') repeat 0 0;
   }
   .bListing .bSimplyDesc__eText {
+    overflow: hidden;
     margin: 0;
     height: 30px;
-    overflow: hidden;
     line-height: 1.3;
   }
   .bListing .bSimplyDescStikers {
@@ -12295,34 +12303,39 @@
   }
   .bListing .bProductImg {
     display: block;
+    margin: 45px 0 15px;
     width: 200px;
     height: 200px;
-    margin: 45px 0 15px;
   }
   .bListing .bProductImg__eImg {
     width: 200px;
     height: 200px;
   }
   .bListing .bPriceLine .bPriceOld {
-    color: #919291;
-    font-size: 14px;
     float: left;
     width: 80px;
+    color: #919291;
+    font-size: 14px;
   }
   .bListing .bPriceLine .bPriceOld .bDecor {
     text-decoration: line-through;
     font-weight: normal;
   }
   .bListing .bPriceLine .bAvailible {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     float: right;
+    padding: 2px 0 3px;
     width: 116px;
+    border: 1px solid;
     text-align: right;
-    color: #919291;
+    text-align: center;
   }
   .bListing .bPriceLine .bPrice {
-    font-size: 20px;
     float: left;
     width: 112px;
+    font-size: 20px;
   }
   .bListing .bPriceLine .bOptions {
     float: right;
@@ -12347,9 +12360,9 @@
   }
   .bListing .bOptionsSection .bCorner {
     position: absolute;
-    z-index: 2;
     top: -10px;
     right: 29px;
+    z-index: 2;
     display: block;
     width: 0;
     height: 0;
@@ -12391,15 +12404,15 @@
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    cursor: default;
-    color: #a6a6a6;
     border: 1px solid #e6e6e6;
     background: #e6e6e6;
+    color: #a6a6a6;
+    cursor: default;
   }
   .bListing .bBtnLine .btnBuy__eLink.mBought:hover {
-    color: #a6a6a6;
     border: 1px solid #e6e6e6;
     background: #e6e6e6;
+    color: #a6a6a6;
   }
   .bListing .bBtnLine .btnView {
     display: block;
@@ -12418,8 +12431,8 @@
   }
   .bListing .bSimplyDescReviews__eStarsImg {
     display: inline-block;
-    height: 10px;
     width: 10px;
+    height: 10px;
   }
   .bListing .bSimplyDescReviews__eLink {
     display: inline-block;

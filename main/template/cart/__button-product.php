@@ -5,12 +5,19 @@ return function (
     \Model\Product\BasicEntity $product,
     $url = null,
     $class = null,
-    $value = 'Купить'
+    $value = 'Купить',
+    $directLink = false
 ) {
-    $class = \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton ' . $class;
+    $class = \View\Id::cartButtonForProduct($product->getId()) . ' ' . $class;
+
+    if (!$directLink) {
+        $class .= $product->isInShopStockOnly() ? ' jsOrder1clickProxy' : ' jsBuyButton';
+    }
 
     if ($product->isInShopStockOnly()) {
         $class .= ' mShopsOnly';
+        $value = 'Резерв';
+        $url = $product->getLink() . '#oneclick';
     } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
     }

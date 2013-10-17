@@ -5,10 +5,16 @@ return function(
     \Model\Product\Filter $productFilter,
     $baseUrl,
     $countUrl,
-    $hotlinks
+    $hotlinks,
+    $openFilter,
+    array $categories = [],
+    \Model\Product\Category\Entity $selectedCategory = null
 ) {
-    /** @var $filters \Model\Product\Filter\Entity[] */
-    $openFilter = false;
+    /**
+     * @var $filters    \Model\Product\Filter\Entity[]
+     * @var $categories \Model\Product\Category\Entity[]
+     */
+
     $filters = [];
     $priceFilter = null;
 
@@ -22,26 +28,45 @@ return function(
             $i++;
         }
 
-        // фильтр "Наличие в магазинах"
         if (3 == $i) {
+            // фильтр "Товары по категориям"
+            if ((bool)$categories) {
+                $categoryFilter = new \Model\Product\Filter\Entity();
+                $categoryFilter->setId('category');
+                $categoryFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+                $categoryFilter->setName('Товары по категориям');
+                $categoryFilter->getIsInList(true);
+
+                foreach ($categories as $category) {
+                    $option = new \Model\Product\Filter\Option\Entity();
+                    $option->setId($category->getId());
+                    $option->setName($category->getName());
+                    $categoryFilter->addOption($option);
+                }
+
+                $filters[] = $categoryFilter;
+                $i++;
+            }
+
+            // фильтр "Наличие в магазинах"
             /** @var $shops \Model\Shop\Entity[] */
             $shops = $helper->getParam('shops');
+            if ((bool)$shops) {
+                $shopFilter = new \Model\Product\Filter\Entity();
+                $shopFilter->setId('shop');
+                $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+                $shopFilter->setName('Наличие в магазинах');
+                $shopFilter->getIsInList(true);
 
-            $shopFilter = new \Model\Product\Filter\Entity();
-            $shopFilter->setId('shop');
-            $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-            $shopFilter->setName('Наличие в магазинах');
-            $shopFilter->getIsInList(true);
-            $shopFilter->setIsMultiple(false);
-
-            foreach ($shops as $shop) {
-                $option = new \Model\Product\Filter\Option\Entity();
-                $option->setId($shop->getId());
-                $option->setName($shop->getName());
-                $shopFilter->addOption($option);
+                foreach ($shops as $shop) {
+                    $option = new \Model\Product\Filter\Option\Entity();
+                    $option->setId($shop->getId());
+                    $option->setName($shop->getName());
+                    $shopFilter->addOption($option);
+                }
+                $filters[] = $shopFilter;
+                $i++;
             }
-            $filters[] = $shopFilter;
-            $i++;
         }
     }
 
@@ -51,7 +76,7 @@ return function(
         <div class="bFilterHead">
             <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
-            <? if ( $priceFilter && $productFilter ) {
+            <? if ($priceFilter && $productFilter) {
                 /**@var     $productFilter      \Model\Product\Filter
                  **@var     $priceFilter        \Model\Product\Filter\Entity **/
                 echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]);
@@ -119,43 +144,5 @@ return function(
 
         <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
     </form>
-
-
-
-    <? if (false): ?>
-        <!-- Фильтр товаров -->
-        <div class="bFilter clearfix">
-            <div class="bFilterHead">
-                <a class="bFilterToggle mClose" href=""><span class="bToggleText">Бренды и параметры</span></a>
-
-                <!-- Фильтр по цене -->
-                <div class="bRangeSlider">
-                    <span class="bRangeSlider__eTitle">Цена</span>
-                    <input class="bRangeSlider__eInput mFromRange" name="" value="1 000" type="text"  />
-
-                    <div class="bFilterSlider" data-config="{&quot;min&quot;:2990,&quot;max&quot;:113990,&quot;step&quot;:0.1}">
-                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
-                        <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
-                    </div>
-
-                    <input class="bRangeSlider__eInput mLast mToRange" name="" value="10 000" type="text"  />
-
-                    <span class="bRangeSlider__eRub rubl">p</span>
-                </div>
-                <!-- /Фильтр по цене -->
-            </div>
-            <!-- Фильтр по популярным позициям -->
-            <ul class="bPopularSection">
-                <li class="bPopularSection__eItem mTitle">Популярные бренды</li>
-                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Samsung</strong></li>
-                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Nokia</strong></li>
-                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Roga und Koppentenganger</strong></li>
-                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText">Dr. Buchman</strong></li>
-                <li class="bPopularSection__eItem"><strong class="bPopularSection__eText"></strong></li>
-            </ul>
-            <!-- /Фильтр по популярным позициям -->
-        </div>
-        <!-- Фильтр товаров -->
-    <? endif ?>
 
 <? };

@@ -40,18 +40,23 @@ class EditAction {
                     throw new \Exception("E-mail и телефон не могут быть одновременно пустыми. Укажите ваш мобильный телефон либо e-mail.");
                 }
 
-                $response = \App::coreClientV2()->query('user/update', array('token' => \App::user()->getToken()), [
-                    'first_name'  => $form->getFirstName(),
-                    'middle_name' => $form->getMiddleName(),
-                    'last_name'   => $form->getLastName(),
-                    'sex'         => $form->getSex(),
-                    'email'       => $form->getEmail(),
-                    'mobile'      => $form->getMobilePhone(),
-                    'phone'       => $form->getHomePhone(),
-                    'skype'       => $form->getSkype(),
-                    'birthday'    => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
-                    'occupation'  => $form->getOccupation(),
-                ]);
+                $response = \App::coreClientV2()->query(
+                    'user/update',
+                    ['token' => \App::user()->getToken()],
+                    [
+                        'first_name'  => $form->getFirstName(),
+                        'middle_name' => $form->getMiddleName(),
+                        'last_name'   => $form->getLastName(),
+                        'sex'         => $form->getSex(),
+                        'email'       => $form->getEmail(),
+                        'mobile'      => $form->getMobilePhone(),
+                        'phone'       => $form->getHomePhone(),
+                        'skype'       => $form->getSkype(),
+                        'birthday'    => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
+                        'occupation'  => $form->getOccupation(),
+                    ],
+                    \App::config()->coreV2['hugeTimeout']
+                );
 
                 if (!isset($response['confirmed']) || !$response['confirmed']) {
                     throw new \Exception('Не получен ответ от сервера.');

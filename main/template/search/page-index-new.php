@@ -2,6 +2,7 @@
 /**
  * @var $page             \View\Search\IndexPage
  * @var $request          \Http\Request
+ * @var $productFilter    \Model\Product\Filter
  * @var $searchQuery      string
  * @var $meanQuery        string
  * @var $forceMean        string
@@ -33,18 +34,32 @@
         'category'    => $selectedCategory,
     ]) ?>
 
-    <form class="bFilter clearfix hidden" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
+    <? if (!$selectedCategory): ?>
+        <?= $helper->render('product-category/_twoColumnList', [
+            'categories'  => $categoriesFound,
+            'searchQuery' => $searchQuery,
+        ]) // категории товаров в названиях которых есть вхождение искомого слова  ?>
+    <? endif ?>
+
     <div id="_searchKiss" style="display: none" data-search="<?= $helper->json(['query' => $searchQuery, 'url' => \App::request()->headers->get('referer'), 'count' => $productCount]) ?>"></div>
 
+    <? if (!(bool)$productFilter->getFilterCollection()): ?>
     <div class="bSearchCategoryRoot">
-        <? if (!$selectedCategory): ?>
-            <?= $helper->render('search/__category', [
-                'searchQuery'      => $searchQuery,
-                'categories'       => $categories,
-                'selectedCategory' => $selectedCategory,
-            ]) // категории товаров ?>
-        <? endif ?>
+        <?= $helper->render('search/__category', [
+            'searchQuery'      => $searchQuery,
+            'categories'       => $categories,
+            'selectedCategory' => $selectedCategory,
+        ]) // категории товаров ?>
     </div>
+    <? endif ?>
+
+    <?= $helper->render('search/__filter', [
+        'baseUrl'          => $helper->url('search', ['q' => $searchQuery]),
+        'countUrl'         => null,
+        'productFilter'    => $productFilter,
+        'categories'       => $categories,
+        'selectedCategory' => $selectedCategory,
+    ]) // фильтры ?>
 
     <?= $helper->render('product/__listAction', [
         'pager'          => $productPager,

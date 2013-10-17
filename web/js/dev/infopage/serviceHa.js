@@ -1,67 +1,106 @@
 /**
  * Обработчик страницы со стоимостью услуг
  *
- * @author    Trushkevich Anton
  * @requires  jQuery
  */
-(function(){
-
-  var appendGroupHeader = function( table, group ) {
-    var groupData = {
-      group: group
-    };
-
-    table.find('tbody').append( tmpl('groupHeaderTemplate', groupData) );
-  };
-
-  var appendRows = function( table, rows ) {
-    for (var i = 0; i < rows.length; i++) {
-      var rowData = {
-        counter: i + 1,
-        service: rows[i]['Услуга'],
-        price: rows[i]['Стоимость']
-      };
-
-      table.find('tbody').append( tmpl('rowTemplate', rowData) );
-    }
-  };
-
-  var buildGroup = function( table, group, rows ) {
-    if ( group ) {
-      appendGroupHeader( table, group );
-    }
-
-    if ( rows ) {
-      appendRows( table, rows );
-    }
-  }
-
-  var buildTable = function( table, data ) {
-    table.find('tbody').html('');
-    var groups = data[ $('#region_list').val() ];
-
-    for(group in groups) {
-      buildGroup( table, group, groups[group] )
-    }
-  }
-
-  $(document).ready(function() {
-    if ( $('#region_list').length ) {
-      var data = $('#contentPageData').data('data');
-
-      $('#regionListPlaceholder').replaceWith( $('#region_list') );
-      $('#bServicesTablePlaceholder').replaceWith( $('.bServicesTable') );
-
-      var table = $('.bServicesTable');
-
-      if ( data ) {
-        buildTable( table, data );
-        $('#region_list').on('change', function(){
-          buildTable( table, data );
-        });
-      }
-    }
-  });
-}());
+;(function(global) {	
+	var serviceData = $('#contentPageData').data('data'),
+		selectRegion = $('#region_list'),
+		serviceTableContent = $('#bServicesTable tbody');
+	// end of vars
 
 
+	var createTable = function createTable( chosenRegion ) {
+			var tableData = serviceData[chosenRegion],
+				i,
+				key,
+				tmpTr;
+			// end of vars
+
+			serviceTableContent.empty();
+
+			if ( tableData instanceof Array ) {
+				// просто выводим элементы
+
+				for ( i = 0; i < tableData.length; i++ ) {
+					tmpTr = '<tr>'+
+								'<td>'+ (i + 1) +'</td>'+
+								'<td>'+ tableData[i]['Услуга'] +'</td>'+
+								'<td>'+ tableData[i]['Стоимость'] +'</td>'+
+							'</tr>';
+
+					serviceTableContent.append(tmpTr);
+				}
+			}
+			else if ( tableData instanceof Object ) {
+				// элементы разбиты на категории
+
+				for ( key in tableData ) {
+					if ( tableData.hasOwnProperty(key) ) {
+						tmpTr = '<tr>'+
+									'<th></th>'+
+									'<th><strong>'+ key +'</strong></th>'+
+									'<th></th>'+
+								'</tr>';
+
+						serviceTableContent.append(tmpTr);
+
+						for ( i = 0; i < tableData[key].length; i++ ) {
+							tmpTr = '<tr>'+
+										'<td>'+ (i + 1) +'</td>'+
+										'<td>'+ tableData[key][i]['Услуга'] +'</td>'+
+										'<td>'+ tableData[key][i]['Стоимость'] +'</td>'+
+									'</tr>';
+
+							serviceTableContent.append(tmpTr);
+						}
+					}
+				}
+			}
+		},
+
+		/**
+		 * Обработка полченных данных
+		 */
+		prepareData = function prepareData( data ) {
+			var i,
+				key,
+				tmpOpt,
+				initVal;
+			// end of vars
+			
+			console.info('prepareData');
+
+			selectRegion.empty();
+
+			for ( key in data ) {
+				if ( data.hasOwnProperty(key) ) {
+					tmpOpt = $('<option>').val(key).html(key);
+					selectRegion.prepend(tmpOpt);
+				}
+			}
+
+			initVal = selectRegion.find('option:first').val();
+
+			selectRegion.val(initVal);
+			createTable(initVal);
+		},
+
+		/**
+		 * Хандлер смены региона
+		 */
+		changeRegion = function changeRegion() {
+			var self = $(this),
+				selectedRegion = self.val();
+			// end of vars
+
+			createTable(selectedRegion);
+		};
+	// end of function
+
+	if ( serviceData ) {
+		prepareData(serviceData);
+		selectRegion.on('change', changeRegion);
+	}
+
+}(this));
