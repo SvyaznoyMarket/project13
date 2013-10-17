@@ -60,6 +60,7 @@ class Action {
                         $controller = new \Controller\Region\Action();
                         \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
                         $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
+
                         return $response;
                     }
                 }
@@ -112,21 +113,20 @@ class Action {
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
 
-            return new \Http\Response($page->show());
+            //return new \Http\Response($page->show());
         }
         $forceMean = isset($result['forced_mean']) ? $result['forced_mean'] : false;
         $meanQuery = isset($result['did_you_mean']) ? $result['did_you_mean'] : '';
 
-        $resultCategories = $result[3];
-        $result = $result[1];
-
-        // проверка на пустоту
-        if (empty($result['count'])) {
-            $page = new \View\Search\EmptyPage();
-            $page->setParam('searchQuery', $searchQuery);
-
-            return new \Http\Response($page->show());
-        }
+        $resultCategories = isset($result[3]) ? $result[3] : [];
+        $result = isset($result[1]) ? $result[1] : [
+            'count'         => 0,
+            'data'          => [],
+            'category_list' => [],
+            'forced_mean'   => null,
+            'did_you_mean'  => null,
+            'method'        => null,
+        ];
 
         // категории (фильтруем дубли, оставляем из дублей ту категорию, которая вернулась первой)
         $categoriesFoundTmp = empty($resultCategories['data']) ? [] : \RepositoryManager::productCategory()->getCollectionById($resultCategories['data']);
@@ -144,14 +144,14 @@ class Action {
         /** @var $categoriesById \Model\Product\Category\Entity[] */
         $categoriesById = [];
         foreach ($result['category_list'] as $item) {
-            $categoriesById[$item['category_id']] = new \Model\Product\Category\Entity(array(
+            $categoriesById[$item['category_id']] = new \Model\Product\Category\Entity([
                 'id'            => $item['category_id'],
                 'name'          => $item['category_name'],
                 'product_count' => \App::config()->search['itemLimit'] < $item['count']
                     ? \App::config()->search['itemLimit']
                     : (int)$item['count']
                 ,
-            ));
+            ]);
         }
         \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), \App::user()->getRegion(), function($data) use (&$categoriesById) {
             foreach ($data as $item) {
@@ -163,13 +163,9 @@ class Action {
         \App::coreClientV2()->execute();
 
         $categoriesById = array_filter($categoriesById);
-
-        // если ид категории из http-запроса нет в коллекции категорий ...
-        if ($categoryId && !isset($categoriesById[$categoryId])) {
-            throw new \Exception\NotFoundException(sprintf('Не найдена категория #%s', $categoryId));
+        if (!(bool)$categoriesById && $selectedCategory) {
+            $categoriesById[$selectedCategory->getId()] = $selectedCategory;
         }
-        /** @var $selectedCategory \Model\Product\Category\Entity */
-        $selectedCategory = $categoryId ? $categoriesById[$categoryId] : null;
 
         // общее количество найденных товаров
         $productCount = $selectedCategory ? $selectedCategory->getProductCount() : $result['count'];
@@ -247,8 +243,8 @@ class Action {
         }
 
         // если по поиску нашелся только один товар и это первая стр. поиска, то редиректим сразу в карточку товара
-        if (!$request->isXmlHttpRequest() && (count($products) == 1) && !$offset) {
-            //return new \Http\RedirectResponse(reset($products)->getLink()); // убрал пока, мне не нравится
+        if (!$request->isXmlHttpRequest() && (1 == count($products)) && !$offset) {
+            return new \Http\RedirectResponse(reset($products)->getLink());
         }
 
 
@@ -269,6 +265,7 @@ class Action {
         $page->setParam('productCount', $selectedCategory ? $selectedCategory->getProductCount() : $result['count']);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setGlobalParam('shops', (\App::config()->shop['enabled'] && !\Controller\ProductCategory\Action::isGlobal()) ? \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()) : []);
+        $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());
     }
