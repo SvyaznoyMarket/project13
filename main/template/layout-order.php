@@ -56,14 +56,14 @@
 <!-- js templete -->
 
 <div class="allpage" data="privet">
-    <div class="allpageinner buyingpage">
+    <div class="allpageinner mOrderPage">
         <?= $page->slotContent() ?>
     </div>
 </div>
 
 <?= $page->slotRegionSelection() ?>
 <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
-<?= $page->slotFooter() ?>
+<?//= $page->slotFooter() ?>
 <?= $page->slotSurveybar() ?>
 
 <?= $page->slotBodyJavascript() ?>
