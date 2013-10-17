@@ -33,45 +33,20 @@
     <?= $page->slotMetaOg() ?>
 </head>
 
-<body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
-    <?= $page->slotConfig() ?>
-    <div class="allpage" id="page">
-    <? if (\App::config()->adFox['enabled']): ?>
-    <div class="adfoxWrapper" id="adfoxbground"></div>
-    <? endif ?>
+<body>
+    <div id="wrapper">
 
-        <div class="clearfix allpageinner<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+        <header class="header">
             <?= $page->slotHeader() ?>
+        </header><!-- #header-->
 
+        <div id="content">
             <?= $page->slotContentHead() ?>
 
             <?= $page->slotContent() ?>
+        </div><!-- #content-->
 
-            <div class="clear"></div>
-        </div>
-    </div>
-
-
-
-    <?//= $page->slotUserbar() ?>
-    <?= $page->slotSurveybar() ?>
-
-    <?= $page->slotRegionSelection() ?>
-    <?= $page->slotBodyJavascript() ?>
-    <?= $page->slotInnerJavascript() ?>
-    <?= $page->slotAuth() ?>
-    <?= $page->slotYandexMetrika() ?>
-    <?= $page->slotAdvanceSeoCounter() ?>
-    <?= $page->slotMyThings() ?>
-    <?= $page->slotAdriver() ?>
-    <?= $page->slotPartnerCounter() ?>
-    <?//= $page->slotEnterleads() ?>
-
-    <? if (\App::config()->analytics['enabled']): ?>
-        <div id="adblenderCommon" class="jsanalytics"></div>
-    <? endif ?>
-	
-	<a id="upper" href="#">Наверх</a>
+    </div><!-- #wrapper -->
 
     <footer class="footer">
         <div class="footer__inner clearfix">
@@ -124,28 +99,5 @@
             <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–2013. ENTER® ЕНТЕР® Enter®. Все права защищены. <a id="jira" class="footer__copy__link" href="javascript:void(0)">Сообщить об ошибке</a></p>
         </div>
     </footer>
-
-    <!-- krible.ru Teleportator -->
-    <script type="text/javascript">
-    var kribleCode = '5e14662e854af6384a9a84af28874dd8';
-    var kribleTeleportParam = {'text': '#ffffff', 'button': '#ffa901', 'link':'#000000'};
-    (function (d, w) {
-        var n = d.getElementsByTagName("script")[0],
-            s = d.createElement("script"),
-            f = function() {
-                n.parentNode.insertBefore(s, n);
-            };
-        s.type = "text/javascript";
-        s.async = true;
-        s.src = 'http://chat.krible.ru/arena/'+
-          kribleCode.substr(0,2)+'/'+kribleCode+'/teleport.js';
-        if (w.opera == "[object Opera]") {
-            d.addEventListener("DOMContentLoaded", f);
-        } else {
-            f();
-        }
-    })(document, window);
-    </script>
-    <!-- /krible.ru Teleportator end -->
 </body>
 </html>
