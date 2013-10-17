@@ -1801,13 +1801,13 @@ $(document).ready(function() {
 	// );
 
 
-// 	$('.bCtg__eMore').bind('click', function(e) {
-// 		e.preventDefault();
-// 		var el = $(this);
-// 		el.parent().find('li.hf').slideToggle();
-// 		var link = el.find('a');
-// 		link.text('еще...' == link.text() ? 'скрыть' : 'еще...');
-// 	});
+	$('.bCtg__eMore').bind('click', function(e) {
+		e.preventDefault();
+		var el = $(this);
+		el.parent().find('li.hf').slideToggle();
+		var link = el.find('a');
+		link.text('еще...' == link.text() ? 'скрыть' : 'еще...');
+	});
 
 // 	$('.product_filter-block input:submit').addClass('mDisabled');
 // 	$('.product_filter-block').on('submit', function(e) {
