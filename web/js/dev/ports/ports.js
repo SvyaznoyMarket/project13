@@ -127,8 +127,8 @@ window.ANALYTICS = {
 
     LiveTexJS: function () {
         var LTData = $('#LiveTexJS').data('value');
-        var liveTexID = LTData.livetexID,
-            liveTex_object = true;
+        window.liveTexID = LTData.livetexID;
+        window.liveTex_object = true;
 
         window.LiveTex = {
             onLiveTexReady: function () {
