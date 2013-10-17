@@ -420,8 +420,8 @@ window.ANALYTICS = {
             action: function ( e, userInfo ) {
                 var rr_data = $('#RetailRocketJS').data('value'),
                     sendUserData = {
-                        userId: userInfo.id || false,
-                        hasUserEmail: !!userInfo.email
+                        userId: userInfo && userInfo.id ? userInfo.id : false,
+                        hasUserEmail: userInfo && userInfo.email ? true : false
                     };
                 // end of vars
 
@@ -447,8 +447,8 @@ window.ANALYTICS = {
         }// end of window.RetailRocket object
 
         RetailRocket.init();
-
-        $('body').on('userLogged', RetailRocket.action);
+        RetailRocket.action();
+        //$('body').on('userLogged', RetailRocket.action);
     },
 
     AdmitadJS : function() {
