@@ -111,17 +111,17 @@
 
             <ul class="applist">
                 <li class="applist__item">
-                    <a href="https://play.google.com/store/apps/details?id=ru.enter">
+                    <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
                       <img alt="Get it on Google Play" src="https://developer.android.com/images/brand/ru_generic_rgb_wo_45.png" />
                     </a>
                 </li>
-                <li class="applist__item"><a href=""><img src="/styles/footer/img/appstore.png" /></a></li>
+                <li class="applist__item"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img src="/styles/footer/img/appstore.png" /></a></li>
                 <li class="applist__item mTitle">Мобильные приложения</li>
             </ul>
         </div>
 
         <div class="footer__insert">
-            <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–2013. ENTER® ЕНТЕР® Enter®. Все права защищены. <a class="footer__copy__link" href="">Сообщить об ошибке</a></p>
+            <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–2013. ENTER® ЕНТЕР® Enter®. Все права защищены. <a id="jira" class="footer__copy__link" href="javascript:void(0)">Сообщить об ошибке</a></p>
         </div>
     </footer>
 
