@@ -13,7 +13,7 @@
     <? } ?>
   </select>
 
-  <table id="bServicesTable">
+  <table id="bServicesTable" class="bServicesTable">
     <thead>
       <tr>
         <th></th>
