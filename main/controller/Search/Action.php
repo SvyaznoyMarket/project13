@@ -118,8 +118,15 @@ class Action {
         $forceMean = isset($result['forced_mean']) ? $result['forced_mean'] : false;
         $meanQuery = isset($result['did_you_mean']) ? $result['did_you_mean'] : '';
 
-        $resultCategories = $result[3];
-        $result = $result[1];
+        $resultCategories = isset($result[3]) ? $result[3] : [];
+        $result = isset($result[1]) ? $result[1] : [
+            'count'         => 0,
+            'data'          => [],
+            'category_list' => [],
+            'forced_mean'   => null,
+            'did_you_mean'  => null,
+            'method'        => null,
+        ];
 
         // категории (фильтруем дубли, оставляем из дублей ту категорию, которая вернулась первой)
         $categoriesFoundTmp = empty($resultCategories['data']) ? [] : \RepositoryManager::productCategory()->getCollectionById($resultCategories['data']);
