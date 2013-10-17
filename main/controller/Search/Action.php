@@ -156,6 +156,9 @@ class Action {
         \App::coreClientV2()->execute();
 
         $categoriesById = array_filter($categoriesById);
+        if (!(bool)$categoriesById && $selectedCategory) {
+            $categoriesById[$selectedCategory->getId()] = $selectedCategory;
+        }
 
         // общее количество найденных товаров
         $productCount = $selectedCategory ? $selectedCategory->getProductCount() : $result['count'];
