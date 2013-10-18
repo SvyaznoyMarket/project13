@@ -67,15 +67,15 @@
 
 <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 
-<?= $page->slotRegionSelection() ?>
-<?= $page->slotSurveybar() ?>
+<?//= $page->slotRegionSelection() ?>
+<?//= $page->slotSurveybar() ?>
 <?= $page->slotBodyJavascript() ?>
-<?= $page->slotInnerJavascript() ?>
-<?= $page->slotAuth() ?>
-<?= $page->slotYandexMetrika() ?>
-<?= $page->slotAdvanceSeoCounter() ?>
-<?= $page->slotAdriver() ?>
-<?= $page->slotPartnerCounter() ?>
+<?//= $page->slotInnerJavascript() ?>
+<?//= $page->slotAuth() ?>
+<?//= $page->slotYandexMetrika() ?>
+<?//= $page->slotAdvanceSeoCounter() ?>
+<?//= $page->slotAdriver() ?>
+<?//= $page->slotPartnerCounter() ?>
 
 </body>
 </html>

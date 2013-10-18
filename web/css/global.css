@@ -6410,13 +6410,6 @@
 }
 /*страница с вариантами доставки*/
 @media all {
-  h2.bNewDelivery {
-    font-size: 16px;
-    font-family: Tahoma, sans-serif;
-    font-weight: bold;
-    margin: 0px;
-    padding: 0px 0px 20px;
-  }
   .bNewDelivery h3 {
     font-size: 16px;
     font-family: Tahoma, sans-serif;
@@ -8203,7 +8196,7 @@
     width: 700px;
   }
   .bTags {
-    margin: 0 0 0 10px;
+    margin: 0 0 35px 10px;
     font-size: 11px;
   }
   .bHint {
@@ -9493,6 +9486,7 @@
     position: relative;
     z-index: 1;
     top: -4px;
+    clear: both;
     margin: 0 0 30px;
   }
   .bBrandGoodsList {
@@ -11491,7 +11485,8 @@
     border: 1px solid #a1a1a1;
     color: #ffffff;
     vertical-align: top;
-    font: bold 12px/30px Tahoma;
+    font-weight: bold;
+    line-height: 30px;
     zoom: 1;
     *display: inline;
   }
@@ -11849,6 +11844,7 @@
   .bSortingLine.mPagerBottom {
     border-bottom: none;
     border-top: 1px solid #c7c7c7;
+    margin-bottom: 35px;
   }
   .bSortingLine.mPagerBottom .bSortingList {
     float: right;

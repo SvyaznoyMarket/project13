@@ -43,39 +43,41 @@
 
 <?= $page->slotBanner() ?>
 
-<div class="allpage">
-    <? if (\App::config()->adFox['enabled']): ?>
-    <div class="adfoxWrapper" id="adfox980"></div>
-    <? endif ?>
+<div class="wrapper mWrapperMain">
+    <div class="content mContentMain clearfix">
+        <? if (\App::config()->adFox['enabled']): ?>
+        <div class="adfoxWrapper" id="adfox980"></div>
+        <? endif ?>
 
-    <?= $page->slotHeader() ?>
+        <?= $page->slotHeader() ?>
 
-    <?= $page->slotContentHead() ?>
+        <?= $page->slotContentHead() ?>
 
-    <div class="bigbanner">
-        <div class='bCarouselWrap'>
-            <div class='bCarousel'>
-                <div class='bCarousel__eBtnL leftArrow'></div>
-                <div class='bCarousel__eBtnR rightArrow'></div>
-                <img class="centerImage" src="" alt=""/>
+        <div class="bigbanner">
+            <div class='bCarouselWrap'>
+                <div class='bCarousel'>
+                    <div class='bCarousel__eBtnL leftArrow'></div>
+                    <div class='bCarousel__eBtnR rightArrow'></div>
+                    <img class="centerImage" src="" alt=""/>
+                </div>
             </div>
         </div>
+        <?= $page->slotSurveybar() ?>
     </div>
-
-    <?= $page->slotFooter() ?>
-    <?= $page->slotSurveybar() ?>
-
-    <div class="clear"></div>
 </div>
 
-<?= $page->slotRegionSelection() ?>
-<?= $page->slotAuth() ?>
-<?= $page->slotYandexMetrika() ?>
+<div class="footer__main">
+    <?= $page->slotFooter() ?>
+</div>
+
+<?//= $page->slotRegionSelection() ?>
+<?//= $page->slotAuth() ?>
+<?//= $page->slotYandexMetrika() ?>
 <?= $page->slotBodyJavascript() ?>
-<?= $page->slotInnerJavascript() ?>
-<?= $page->slotMyThings() ?>
-<?= $page->slotAdriver() ?>
-<?= $page->slotPartnerCounter() ?>
+<?//= $page->slotInnerJavascript() ?>
+<?//= $page->slotMyThings() ?>
+<?//= $page->slotAdriver() ?>
+<?//= $page->slotPartnerCounter() ?>
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="yandexMetrika" class="jsanalytics"></div>

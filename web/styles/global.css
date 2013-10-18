@@ -221,7 +221,17 @@ a:hover {
  */
 h1 {
   font-size: 2em;
-  margin: 0.67em 0;
+  margin: 10px 0 20px;
+  font-weight: normal;
+}
+h2 {
+  font-size: 1.6em;
+  font-weight: normal;
+  margin: 10px 0 15px;
+  padding: 0;
+}
+p {
+  margin: 5px 0 10px;
 }
 /**
  * Address styling not present in IE 8/9, Safari 5, and Chrome.
@@ -542,6 +552,9 @@ table {
     background: #ffffff;
     width: 940px;
   }
+  .wrapper.mWrapperMain {
+    background: #000000;
+  }
   /* Header
   -----------------------------------------------------------------------------*/
   .header {
@@ -555,12 +568,47 @@ table {
   .content.mContentOrder {
     padding-bottom: 390px;
   }
+  .content.mContentMain {
+    padding-bottom: 470px;
+  }
+}
+@media all {
+  .notBuying {
+    position: relative;
+    margin-top: 10px;
+    padding: 7px;
+    border: 1px solid #e6e6e6;
+  }
+  .notBuying .corner {
+    position: absolute;
+    top: -9px;
+    width: 0;
+    height: 0;
+    border-right: 10px solid transparent;
+    border-bottom: 9px solid #e6e6e6;
+    border-left: 10px solid transparent;
+  }
+  .notBuying .corner div {
+    position: absolute;
+    bottom: -9px;
+    left: -8px;
+    border-right: 8px solid transparent;
+    border-bottom: 7px solid #ffffff;
+    border-left: 8px solid transparent;
+  }
 }
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
 /*------СТИЛИ ПОДВАЛА------*/
 @media all {
   /* Footer
   -----------------------------------------------------------------------------*/
+  .footer__main {
+    width: 940px;
+    padding: 0 10px;
+    margin: -470px auto 0;
+    height: 470px;
+    position: relative;
+  }
   .footer {
     width: 960px;
     margin: -195px auto 0;
