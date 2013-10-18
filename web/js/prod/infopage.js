@@ -626,7 +626,7 @@ $(document).ready(function(){
  *
  * @requires  jQuery
  */
-;(function(global) {	
+;(function(global) {
 	var serviceData = $('#contentPageData').data('data'),
 		selectRegion = $('#region_list'),
 		serviceTableContent = $('#bServicesTable tbody');
@@ -647,7 +647,7 @@ $(document).ready(function(){
 
 				for ( i = 0; i < tableData.length; i++ ) {
 					tmpTr = '<tr>'+
-								'<td>'+ (i + 1) +'</td>'+
+								//'<td>'+ (i + 1) +'</td>'+
 								'<td>'+ tableData[i]['Услуга'] +'</td>'+
 								'<td>'+ tableData[i]['Стоимость'] +'</td>'+
 							'</tr>';
@@ -661,7 +661,7 @@ $(document).ready(function(){
 				for ( key in tableData ) {
 					if ( tableData.hasOwnProperty(key) ) {
 						tmpTr = '<tr>'+
-									'<th></th>'+
+									//'<th></th>'+
 									'<th><strong>'+ key +'</strong></th>'+
 									'<th></th>'+
 								'</tr>';
@@ -670,7 +670,7 @@ $(document).ready(function(){
 
 						for ( i = 0; i < tableData[key].length; i++ ) {
 							tmpTr = '<tr>'+
-										'<td>'+ (i + 1) +'</td>'+
+										//'<td>'+ (i + 1) +'</td>'+
 										'<td>'+ tableData[key][i]['Услуга'] +'</td>'+
 										'<td>'+ tableData[key][i]['Стоимость'] +'</td>'+
 									'</tr>';
@@ -691,7 +691,7 @@ $(document).ready(function(){
 				tmpOpt,
 				initVal;
 			// end of vars
-			
+
 			console.info('prepareData');
 
 			selectRegion.empty();
@@ -720,6 +720,8 @@ $(document).ready(function(){
 			createTable(selectedRegion);
 		};
 	// end of function
+
+	$('#bServicesTable tr th:first').remove();
 
 	if ( serviceData ) {
 		prepareData(serviceData);
