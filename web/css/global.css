@@ -2165,6 +2165,7 @@
     border-radius: 5px;
     display: block;
     height: 110px;
+    margin: 10px 0px;
     width: 100%;
   }
   #topLogo {
@@ -11008,7 +11009,6 @@
   .bTitlePage {
     margin: 0 0 20px;
     font-size: 25px;
-    font-family: Tahoma;
   }
   .bBannerBox {
     margin: 0 auto 20px;

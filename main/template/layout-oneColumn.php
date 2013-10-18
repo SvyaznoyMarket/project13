@@ -24,6 +24,11 @@
     <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon.png">
+
+    <meta name="viewport" content="width=1000" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="HandheldFriendly" content="true" />
+
     <?= $page->slotMobileModify() ?>
     <?= $page->slotStylesheet() ?>
     <?= $page->slotHeadJavascript() ?>
@@ -33,8 +38,14 @@
     <?= $page->slotMetaOg() ?>
 </head>
 
-<body>
-    <div id="wrapper">
+<body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
+    <?= $page->slotConfig() ?>
+
+    <? if (\App::config()->adFox['enabled']): ?>
+        <div class="adfoxWrapper" id="adfoxbground"></div>
+    <? endif ?>
+
+    <div class="clearfix wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
 
         <header class="header">
             <?= $page->slotHeader() ?>
@@ -99,5 +110,24 @@
             <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–2013. ENTER® ЕНТЕР® Enter®. Все права защищены. <a id="jira" class="footer__copy__link" href="javascript:void(0)">Сообщить об ошибке</a></p>
         </div>
     </footer>
+
+    <?//= $page->slotUserbar() ?>
+    <?= $page->slotSurveybar() ?>
+
+    <?= $page->slotRegionSelection() ?>
+    <?= $page->slotBodyJavascript() ?>
+    <?= $page->slotInnerJavascript() ?>
+    <?= $page->slotAuth() ?>
+    <?= $page->slotYandexMetrika() ?>
+    <?= $page->slotAdvanceSeoCounter() ?>
+    <?= $page->slotMyThings() ?>
+    <?= $page->slotAdriver() ?>
+    <?= $page->slotPartnerCounter() ?>
+
+    <? if (\App::config()->analytics['enabled']): ?>
+        <div id="adblenderCommon" class="jsanalytics"></div>
+    <? endif ?>
+        
+    <a id="upper" href="#">Наверх</a>
 </body>
 </html>
