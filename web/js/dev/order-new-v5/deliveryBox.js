@@ -31,7 +31,7 @@
 			
 			console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
 
-			var self = this;
+			var i, self = this;
 
             // Уникальность продуктов в этом типе доставки
             //self.isUnique = isUnique || false;
@@ -72,6 +72,9 @@
 			// Массив всех точек доставок
 			self.pointList = [];
 
+            // Название пункта — магазина, постамата или тп
+            self.point_name = '';
+
 			if ( self.hasPointDelivery && !window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
 				// Доставка в выбранный пункт
 				console.info('есть точки доставки для выбранного метода доставки, но выбранная точка не доступна для этого метода доставки. Берем первую точку для выбранного метода доставки');
@@ -103,6 +106,15 @@
 
 				return;
 			}
+
+            if ( 'pickpoint' === state ) {
+                // Получим и сохраним в названии пункта название выбранного пикпойнта:
+                for ( i = self.pointList.length - 1; i >= 0; i-- ) {
+                    if ( choosenPointForBox == self.pointList[i].id ) {
+                        self.point_name = self.pointList[i].point_name;
+                    }
+                }
+            }
 
 			window.OrderModel.deliveryBoxes.push(self);
 		}

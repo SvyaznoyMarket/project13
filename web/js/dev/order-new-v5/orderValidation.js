@@ -273,6 +273,7 @@
 						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : '',
 					],
 					point_id: currentDeliveryBox.choosenPoint().id,
+                    point_name: currentDeliveryBox.point_name,
 					products : []
 				};
 
