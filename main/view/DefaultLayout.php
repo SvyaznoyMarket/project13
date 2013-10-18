@@ -327,7 +327,7 @@ class DefaultLayout extends Layout {
 
         /*
         if (!in_array($routeName, [
-            // на этих страницах Sociomantic подключается через JS
+            // !!! Hа этих страницах Sociomantic подключается через JS — /web/js/dev/order/order.js
             'order',
             'order.complete',
         ])) // orders-if-begin{
@@ -352,7 +352,9 @@ class DefaultLayout extends Layout {
             $cart_prods = $smantic->makeCartProducts($products, $cartProductsById);
             $return .= $this->render($smantic_path . '04-basket', ['cart_prods' => $cart_prods, 'smantic' => &$smantic]);
 
-        } else if ($routeName == 'order.complete') {
+        }/* else if ($routeName == 'order.complete') {
+
+            // !!! На этих страницах подключается через js — /web/js/dev/order/order.js
 
             //$products = $this->getParam('products');
             //$cartProductsById = $this->getParam('cartProductsById');
@@ -364,7 +366,7 @@ class DefaultLayout extends Layout {
 
             $smantic->restoreSession();
 
-        }
+        }*/
         /*else if ( $routeName == 'order' ) {
 
             //$products = $this->getParam('products');

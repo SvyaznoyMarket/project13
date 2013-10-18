@@ -9,6 +9,8 @@
             toKISS_orderInfo = {},
             toKISS_productInfo = {},
 
+            sBasket,
+
             i, j,
 
             sociomanticUrl = ( 'https:' === document.location.protocol ? 'https://' : 'http://' )+'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
@@ -22,7 +24,7 @@
          *
          * https://jira.enter.ru/browse/SITE-1475
          */
-        global.sonar_basket = {
+        sBasket = {
             products: [],
             transaction: orderData[0].number,
             amount: 0,
@@ -31,19 +33,20 @@
 
         for ( i = orderData.length - 1; i >= 0; i-- ) {
             for ( j = orderData[i].products.length - 1; j >= 0; j-- ) {
-                global.sonar_basket.products.push({
-                    identifier: orderData[i].products[j].article+'_'+window.docCookies.getItem('geoshop'),
+                sBasket.products.push({
+                    identifier: orderData[i].products[j].article + '_' + window.docCookies.getItem('geoshop'),
                     amount: parseInt(orderData[i].products[j].price, 10),
                     currency: 'RUB',
                     quantity: orderData[i].products[j].quantity
                 });
 
-                global.sonar_basket.amount += parseInt(orderData[i].products[j].price, 10);
+                sBasket.amount += parseInt(orderData[i].products[j].price, 10);
             }
         }
 
-        $LAB.script( sociomanticUrl );
-        
+        global.sonar_basket = sBasket;
+        $LAB.script(sociomanticUrl);
+
 
         /**
          * KISS
