@@ -380,13 +380,14 @@ class DeliveryAction {
             // пикпоинты
             foreach ($pickpoints as $pickpointItem) {
                 $responseData['pickpoints'][] = [
-                    'id'         => (string)$pickpointItem['Id'],
-                    'name'       => $pickpointItem['Name'] . '; ' . $pickpointItem['Address'],
-                    'address'    => $pickpointItem['Address'],
-                    'regtime'     => $ppClient->worksTimePrepare($pickpointItem['WorkTime']),
-                    'latitude'   => (float)$pickpointItem['Latitude'],
-                    'longitude'  => (float)$pickpointItem['Longitude'],
-                    'products'   => $pickpointProductIds,
+                    'id'            => (string)$pickpointItem['Id'],
+                    'name'          => $pickpointItem['Name'] . '; ' . $pickpointItem['Address'],
+                    'address'       => $pickpointItem['Address'],
+                    'regtime'       => $ppClient->worksTimePrepare($pickpointItem['WorkTime']),
+                    'latitude'      => (float)$pickpointItem['Latitude'],
+                    'longitude'     => (float)$pickpointItem['Longitude'],
+                    'products'      => $pickpointProductIds,
+                    'point_name'    => $pickpointItem['Name'],
                 ];
             }
 

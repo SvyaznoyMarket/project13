@@ -260,6 +260,7 @@ class CreateAction {
 
             if (in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_PICKPOINT])) {
                 $orderData['id_pickpoint'] = $orderPart->getPointId();
+                $orderData['name_pickpoint'] = $orderPart->getPointName();
             }
 
             // подарочный сертификат
