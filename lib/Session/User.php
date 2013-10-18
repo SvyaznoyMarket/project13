@@ -226,7 +226,7 @@ class User {
         if ($ip = \App::request()->getClientIp()) {
             \RepositoryManager::region()->prepareEntityByIp($ip,
                 function($data) use (&$region) {
-                    if ((bool)$data) {
+                    if ((bool)$data && !empty($data['id'])) {
                         $region = new \Model\Region\Entity($data);
                     }
                 },
