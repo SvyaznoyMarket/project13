@@ -887,16 +887,6 @@ class Cart {
         }
     }
 
-    public function getAnalyticsData() {
-        $return = [];
-
-        foreach ($this->getProductData() as $product) {
-            $return[] = $product['id'];
-        }
-
-        return implode(',', $return);
-    }
-
     /**
      * Удаляет товары, услуги и гарантии с нулевым количеством
      */
