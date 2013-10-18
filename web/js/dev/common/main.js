@@ -8,99 +8,116 @@ $(document).ready(function() {
 
 		var chEmail = true, // проверяем ли как e-mail
 			register = false,
-			firstNameInput = $('#register_first_name'),
 			mailPhoneInput = $('#register_username'),
 			subscibe = mailPhoneInput.parents('#register-form').find('.bSubscibe'),
-			regBtn = mailPhoneInput.parents('#register-form').find('.bigbutton');
+			regBtn = mailPhoneInput.parents('#register-form').find('.bigbutton'),
+			body = $('body');
 		// end of vars
-
-		subscibe.show();
 
 		/**
 		 * переключение типов проверки
 		 */
-		$('.registerAnotherWayBtn').bind('click', function() {
-			if ( chEmail ) {
-				chEmail = false;
-				$('.registerAnotherWay').html('Ваш мобильный телефон');
-				$('.registerAnotherWayBtn').html('Ввести e-mail');
-				mailPhoneInput.attr('maxlength', 10);
-				mailPhoneInput.addClass('registerPhone');
-				$('.registerPhonePH').show();
-				// subscibe.hide();
-			}
-			else {
-				chEmail = true;
-				$('.registerAnotherWay').html('Ваш e-mail');
-				$('.registerAnotherWayBtn').html('У меня нет e-mail');
-				mailPhoneInput.removeAttr('maxlength');
-				mailPhoneInput.removeClass('registerPhone');
-				$('.registerPhonePH').hide();
-				// subscibe.show();
-			}
+		var registerAnotherWayBtnClick = function() {
+				var registerAnotherWay = $('.registerAnotherWay'),
+					registerAnotherWayBtn = $('.registerAnotherWayBtn'),
+					registerPhonePH = $('.registerPhonePH');
+				// end of vars
 
-			mailPhoneInput.val('');
-			register = false;
-			regBtn.addClass('mDisabled');
-		});
-
-		regBtn.bind('click', function() {
-			if ( !register ) {
-				return false;
-			}
-
-			if ( typeof(_gaq) !== 'undefined' ) {
-				var type = ( chEmail ) ? 'email' : 'mobile';
-
-				_gaq.push(['_trackEvent', 'Account', 'Create account', type]);
-			}
-		});
-
-		/**
-		 * проверка заполненности инпутов
-		 * @param  {Event} e
-		 */
-		var checkInputs = function( e ) {
-			if ( chEmail ) { 
-				// проверяем как e-mail
-				if (	( mailPhoneInput.val().search('@') !== -1 ) && 
-						( firstNameInput.val().length > 0 ) ) {
-					register = true;
-					regBtn.removeClass('mDisabled');
+				if ( chEmail ) {
+					chEmail = false;
+					registerAnotherWay.html('Ваш мобильный телефон');
+					registerAnotherWayBtn.html('Ввести e-mail');
+					mailPhoneInput.attr('maxlength', 10);
+					mailPhoneInput.addClass('registerPhone');
+					registerPhonePH.show();
+					// subscibe.hide();
 				}
 				else {
-					register = false;
-					regBtn.addClass('mDisabled');
+					chEmail = true;
+					registerAnotherWay.html('Ваш e-mail');
+					registerAnotherWayBtn.html('У меня нет e-mail');
+					mailPhoneInput.removeAttr('maxlength');
+					mailPhoneInput.removeClass('registerPhone');
+					registerPhonePH.hide();
+					// subscibe.show();
 				}
-			}
-			else { 
-				// проверяем как телефон
-				if (	( (e.which >= 96) && (e.which <= 105) ) ||
+
+				mailPhoneInput.val('');
+				register = false;
+				regBtn.addClass('mDisabled');
+
+				return false;
+			},
+
+			/**
+			 * клик кнопки регистрации
+			 */
+			regBtnClick = function() {
+				var type = ( chEmail ) ? 'email' : 'mobile';
+				// end of vars
+
+				if ( !register ) {
+					return false;
+				}
+
+				if ( typeof(_gaq) !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Account', 'Create account', type]);
+				}
+			},
+
+			/**
+			 * проверка заполненности инпутов
+			 * @param  {Event} e
+			 */
+			checkInputs = function( e ) {
+				var firstNameInput = $('#register_first_name'),
+					mailPhoneInput = $('#register_username'),
+					regBtn = mailPhoneInput.parents('#register-form').find('.bigbutton'),
+					clearVal;
+				// end of vars
+
+				if ( chEmail ) {
+					// проверяем как e-mail
+					if (	( mailPhoneInput.val().search('@') !== -1 ) &&
+						( firstNameInput.val().length > 0 ) ) {
+						register = true;
+						regBtn.removeClass('mDisabled');
+					}
+					else {
+						register = false;
+						regBtn.addClass('mDisabled');
+					}
+				}
+				else {
+					// проверяем как телефон
+					if (	( (e.which >= 96) && (e.which <= 105) ) ||
 						( (e.which >= 48) && (e.which <= 57) ) ||
 						(e.which === 8) ) {
-					//если это цифра или бэкспэйс
-					
-				}
-				else {
-					//если это не цифра
-					var clearVal = mailPhoneInput.val().replace(/\D/g,'');
+						//если это цифра или бэкспэйс
 
-					mailPhoneInput.val(clearVal);
-				}
+					}
+					else {
+						//если это не цифра
+						clearVal = mailPhoneInput.val().replace(/\D/g,'');
+						mailPhoneInput.val(clearVal);
+					}
 
-				if ( (mailPhoneInput.val().length === 10) && (firstNameInput.val().length > 0) ) {
-					regBtn.removeClass('mDisabled');
-					register = true;
+					if ( (mailPhoneInput.val().length === 10) && (firstNameInput.val().length > 0) ) {
+						regBtn.removeClass('mDisabled');
+						register = true;
+					}
+					else {
+						register = false;
+						regBtn.addClass('mDisabled');
+					}
 				}
-				else {
-					register = false;
-					regBtn.addClass('mDisabled');
-				}
-			}
-		};
+			};
+		// end of functions
 
-		mailPhoneInput.bind('keyup', checkInputs);
-		firstNameInput.bind('keyup', checkInputs);
+		subscibe.show();
+		body.on('click', '.registerAnotherWayBtn', registerAnotherWayBtnClick);
+		body.on('click', '#register-form .bigbutton', regBtnClick);
+		body.on('keyup', '#register_username, #register_first_name', checkInputs);
 	}());
 	
 
