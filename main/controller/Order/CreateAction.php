@@ -258,7 +258,9 @@ class CreateAction {
                 }
             }
 
-            // TODO: pickpoint
+            if (in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_PICKPOINT])) {
+                $orderData['id_pickpoint'] = $orderPart->getPointId();
+            }
 
             // подарочный сертификат
             if (1 == count($form->getPart()) && $form->getPaymentMethodId() == \Model\PaymentMethod\Entity::CERTIFICATE_ID) {
