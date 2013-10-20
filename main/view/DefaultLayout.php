@@ -321,17 +321,18 @@ class DefaultLayout extends Layout {
         $region_id = \App::user()->getRegion()->getId();
         $smantic = new \View\Partners\Sociomantic($region_id);
 
-        // на всех страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
-        $return = $this->render($smantic_path . '01-homepage');
 
-
-        /*
         if (!in_array($routeName, [
-            // !!! Hа этих страницах Sociomantic подключается через JS — /web/js/dev/order/order.js
+            // !!! Не дублировать! Hа этих страницах Sociomantic
+            // вместе с inclusion tag
+            // подключается через JS — см файл /web/js/dev/order/order.js
             'order',
             'order.complete',
-        ])) // orders-if-begin{
-        */
+        ])) {
+            // на всех страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
+            $return = $this->render($smantic_path . '01-homepage');
+        }
+
 
         if ($routeName == 'product.category') {
 
