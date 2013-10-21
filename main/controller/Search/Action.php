@@ -69,6 +69,18 @@ class Action {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
+
+        if ( empty($filters) ) {
+            // # SITE-2360
+            // Если ядро не отдало фильтров, то они не выводятся. Это неправильно, должны выводится магазины и категории.
+            \RepositoryManager::productFilter()->prepareCollectionBySearchText('', \App::user()->getRegion(), function($data) use (&$filters) {
+                foreach ($data as $item) {
+                    $filters[] = new \Model\Product\Filter\Entity($item);
+                }
+            }, function (\Exception $e) { \App::exception()->remove($e); });
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
+        }
+
         // фильтры
         $brand = null;
         $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
