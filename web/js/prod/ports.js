@@ -593,6 +593,45 @@ window.ANALYTICS = {
 		document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
 	},
 
+	marinSoftwarePageAddJS: function() {
+		var mClientId ='7saq97byg0';
+		var mProto = ('https:' == document.location.protocol ? 'https://' : 'http://');
+		var mHost = 'tracker.marinsm.com';
+		var mt = document.createElement('script'); mt.type = 'text/javascript'; mt.async = true; mt.src = mProto + mHost + '/tracker/async/' + mClientId + '.js';
+		var fscr = document.getElementsByTagName('script')[0]; fscr.parentNode.insertBefore(mt, fscr);
+	},
+
+	marinLandingPageTagJS : function() {
+		var _mTrack = window._mTrack || [];
+		_mTrack.push(['trackPage']);
+		this.marinSoftwarePageAddJS();
+	},
+
+	marinConversionTagJS : function() {
+		var orders = $('#marinConversionTagJS').data('value'),
+			_mTrack = window._mTrack || [];
+		// end of vars
+
+		if ( orders.length ) {
+			for ( var i in orders ) {
+				if ( orders[i]['id'] ) {
+					_mTrack.push(['addTrans', {
+						items : [
+							{
+								convType : 'sales',
+								orderId : orders[i]['id']	// order‑id
+							}
+						]
+					}]);
+
+					_mTrack.push(['processOrders']);
+				}
+			}
+			this.marinSoftwarePageAddJS();
+		}
+	},
+
+
 	enable : true
 }
 

@@ -475,4 +475,17 @@ class DefaultLayout extends Layout {
         return '<div id="enterleadsJS" class="jsanalytics" ></div>';
     }
 
+
+    public function slotMarinLandingPageTagJS()
+    {
+        return '<div id="marinLandingPageTagJS" class="jsanalytics">
+            <noscript><img src="https://tracker.marinsm.com/tp?act=1&cid=7saq97byg0&script=no" ></noscript></div>';
+    }
+
+
+    public function slotMarinConversionTagJS()
+    {
+        return '';
+    }
+
 }
