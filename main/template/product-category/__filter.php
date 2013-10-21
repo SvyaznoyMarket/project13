@@ -18,6 +18,7 @@ return function(
     $filters = [];
     $priceFilter = null;
 
+    $pasteIndex = count($productFilter->getFilterCollection()) > 3 ? 3 : count($productFilter->getFilterCollection());
     $i = 1;
     foreach ($productFilter->getFilterCollection() as $filter) {
         if ($filter->isPrice()) {
@@ -28,7 +29,7 @@ return function(
             $i++;
         }
 
-        if (3 == $i) {
+        if ($pasteIndex == $i) {
             // фильтр "Товары по категориям"
             if ((bool)$categories) {
                 $categoryFilter = new \Model\Product\Filter\Entity();
