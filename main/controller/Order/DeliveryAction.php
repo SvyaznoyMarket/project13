@@ -386,7 +386,8 @@ class DeliveryAction {
             // пикпоинты
             foreach ($pickpoints as $pickpointItem) {
                 $responseData['pickpoints'][] = [
-                    'id'            => (string)$pickpointItem['Number'], //  Передавать корректный id постамата, использовать не id точки, а номер постамата
+                    'id'            => (string)$pickpointItem['Id'],
+                    'number'        => (string)$pickpointItem['Number'], //  Передавать корректный id постамата, использовать не id точки, а номер постамата
                     'name'          => $pickpointItem['Name'] . '; ' . $pickpointItem['Address'],
                     'address'       => $pickpointItem['Address'],
                     'regtime'       => $ppClient->worksTimePrepare($pickpointItem['WorkTime']),
