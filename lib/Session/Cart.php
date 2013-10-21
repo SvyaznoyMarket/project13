@@ -686,8 +686,9 @@ class Cart {
                     $data['actionData'][$i]['product_list'][$k] = $v;
                 }
             }
-            \App::logger()->info(['action' => __METHOD__, 'cart.actionData' => $data['actionData']], ['cart']);
             $this->actions = $data['actionData'] + $actionData;
+
+            \App::logger()->info(['action' => __METHOD__, 'cart.actionData' => $data['actionData']], ['cart']);
 
             $this->storage->set($this->sessionName, $data);
         } catch(\Exception $e) {
