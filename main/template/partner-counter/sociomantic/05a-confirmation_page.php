@@ -4,7 +4,7 @@
  * var $smantic Views\Sociomantic
  * var $cart_prods
  **/
-
+/*
 $region_id = \App::user()->getRegion()->getId();
 
 $sonarBasket = [];
@@ -31,10 +31,7 @@ $sonarBasket['transaction'] = $orderNumber;
 $sonarBasket['amount']      = $orderSum;
 $sonarBasket['currency']    = 'RUB';
 
-/* example:
-{ identifier: '461-1177', amount: 4990.00, currency: 'RUB', quantity: 1 },
-{ identifier: '452-9682', amount: 23990.00, currency: 'RUB', quantity: 1 }
-*/
 ?>
-
 <div id="sociomanticConfirmationPage" data-sonar-basket="<?= $page->json($sonarBasket) ?>" class="jsanalytics"></div>
+
+<? */
