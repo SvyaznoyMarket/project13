@@ -363,11 +363,17 @@ class DeliveryAction {
                 $ppClient = \App::pickpointClient();
                 $ppClient->addQuery('postamatlist', [], [],
                     function($data) use (&$pickpoints, &$deliveryRegions) {
-                        // Статус постамата: 1 – новый, 2 – рабочий, 3 - закрытый
-                        $pickpoints = array_filter($data, function($pickpointItem) use (&$deliveryRegions) {
-                            return in_array((int)$pickpointItem['Status'], [1,2]) &&
-                                   in_array($pickpointItem['CitiName'], $deliveryRegions);
-                        });
+                        $pickpoints = array_filter($data,
+                            function($pickpointItem) use (&$deliveryRegions) {
+                                return
+                                    // Статус постамата: 1 – новый, 2 – рабочий, 3 - закрытый
+                                    in_array( (int)$pickpointItem['Status'], [1,2] ) &&
+                                    in_array( $pickpointItem['CitiName'], $deliveryRegions ) &&
+                                    // В списке выбора показывать только точки pickpoint (АПТ), не показывать ПВЗ.
+                                    $pickpointItem['TypeTitle'] != 'ПВЗ'
+                                    ;
+                            }
+                        );
                     },
                     function (\Exception $e) use (&$exception) {
                         $exception = $e;
