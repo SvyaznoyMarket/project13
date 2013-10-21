@@ -10,12 +10,13 @@ return function(
     }
 
     $user = \App::user();
+    $userEntity = $user->getEntity();
 
     $price = ($product->getMainCategory() && $product->getMainCategory()->getPriceChangePercentTrigger())
         ? round($product->getPrice() * $product->getMainCategory()->getPriceChangePercentTrigger())
         : 0;
 
-    $uEmail = $user->getEntity() ? $user->getEntity()->getEmail() : null;
+    $uEmail = ( $userEntity instanceof \Model\User\Entity ) ? $userEntity->getEmail() : null;
 ?>
 
     <div class="priceSale">
@@ -34,7 +35,7 @@ return function(
                             <strong class="price"><?= $helper->formatPrice($price) ?></strong> <span class="rubl">p</span>
                         <? endif ?>
                     </div>
-                    <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
+                    <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $uEmail ?: '' ?>" />
                     <p class="bLowPriceNotiferPopup__eError red"></p>
                     <a href="#" class="bLowPriceNotiferPopup__eSubmitEmail button bigbuttonlink mDisabled" data-url="<?= $helper->url('product.notification.lowerPrice', ['productId' => $product->getId()]) ?>">Сохранить</a>
                 <? endif ?>
