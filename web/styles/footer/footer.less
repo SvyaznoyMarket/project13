@@ -102,11 +102,17 @@
 		&__item {
 			display: inline-block;
 			color: #515151;
-			background: url("@{base-url}/footer_new/img/socialicon.png") no-repeat 0 0;
+			background: url("@{base-url}/footer/img/socialicon.png") no-repeat 0 0;
 			width: 26px;
 			height: 26px;
 			vertical-align: top;
 			margin-right: 5px;
+			position: relative;
+			top: 0;
+			transition: all 0.3s ease;
+			-webkit-transition: all 0.3s ease;
+			-moz-transition: all 0.3s ease;
+			-o-transition: all 0.3s ease;
 
 			&.mTw {
 				background-position: -27px 0;
@@ -118,6 +124,11 @@
 
 			&.mYt {
 				background-position: -81px 0;
+			}
+
+			&:hover {
+				top: -5px;
+				height: 31px;
 			}
 		}
 

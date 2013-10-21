@@ -1,8 +1,5 @@
 /** less **/
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
+/* Сброс стилей от Eric Meyer */
 html,
 body,
 div,
@@ -114,7 +111,7 @@ q:after {
   content: '';
   content: none;
 }
-/*! normalize.css v2.1.3 | MIT License | git.io/normalize */
+/* Доработанные reset стили normalize.css v2.1.3 git.io/normalize */
 /* ==========================================================================
    HTML5 display definitions
    ========================================================================== */
@@ -249,6 +246,7 @@ h5 {
 }
 p {
   margin: 5px 0 10px;
+  line-height: 1.4em;
 }
 /**
  * Address styling not present in IE 8/9, Safari 5, and Chrome.
@@ -502,6 +500,9 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+/**
+ * Вспомогательные классы
+ */
 .clearfix:before,
 .clearfix:after {
   content: " ";
@@ -941,11 +942,11 @@ table {
     display: none;
   }
   .f1 {
-    background: url("/styles/common/img/icons.png") no-repeat 0px -111px;
+    background: url("/css/common/img/icons.png") no-repeat 0px -111px;
     padding: 3px 0px 3px 29px;
   }
   .entry {
-    background: url("/styles/common/img/icons.png") no-repeat 0px -139px;
+    background: url("/css/common/img/icons.png") no-repeat 0px -139px;
     padding: 3px 0px 3px 29px;
   }
   .mTah12 {
@@ -1188,7 +1189,7 @@ table {
     top: -11px;
     width: 54px;
     z-index: 1;
-    background: url("/styles/common/img/bg_btn_closer.png") no-repeat 0px 0;
+    background: url("/css/common/img/bg_btn_closer.png") no-repeat 0px 0;
   }
   .mBoldh3 {
     font-size: 14px;
@@ -1199,13 +1200,16 @@ table {
     margin-bottom: 35px;
   }
   .mLoader {
-    background: url('/styles/common/img/preloader.gif') no-repeat center center;
+    background: url('/css/common/img/preloader.gif') no-repeat center center;
     display: block;
     float: left;
     height: 100px;
     min-height: 50px;
     position: relative;
     width: 100%;
+  }
+  .mInlineBlock {
+    margin-bottom: 10px;
   }
 }
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
@@ -1298,11 +1302,17 @@ table {
   .footer .socLink__item {
     display: inline-block;
     color: #515151;
-    background: url("/styles/footer_new/img/socialicon.png") no-repeat 0 0;
+    background: url("/styles/footer/img/socialicon.png") no-repeat 0 0;
     width: 26px;
     height: 26px;
     vertical-align: top;
     margin-right: 5px;
+    position: relative;
+    top: 0;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
   }
   .footer .socLink__item.mTw {
     background-position: -27px 0;
@@ -1312,6 +1322,10 @@ table {
   }
   .footer .socLink__item.mYt {
     background-position: -81px 0;
+  }
+  .footer .socLink__item:hover {
+    top: -5px;
+    height: 31px;
   }
   .footer .socLink__link {
     display: block;
