@@ -12141,6 +12141,9 @@
     border: 1px solid #e6e6e6;
     background: #f6f6f6;
   }
+  .bCatalogRoot__eItem:nth-child(4n+1) {
+    margin-right: 0;
+  }
   .bCatalogRoot__eItem.mBanner2Item {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
@@ -12478,11 +12481,7 @@
     border: 1px solid #e6e6e6;
     background: #f6f6f6;
   }
-  .bCatalogList__eItem:nth-child(3),
-  .bCatalogList__eItem:nth-child(6),
-  .bCatalogList__eItem:nth-child(9),
-  .bCatalogList__eItem:nth-child(12),
-  .bCatalogList__eItem:nth-child(15) {
+  .bCatalogList__eItem:nth-child(3n+3) {
     margin-right: 0;
   }
   .bCatalogList__eItem.mBannerItem {

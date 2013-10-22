@@ -3,6 +3,8 @@
 namespace View\Search;
 
 class IndexPage extends \View\DefaultLayout {
+    protected $layout  = 'layout-oneColumn';
+
     public function prepare() {
         /** @var $productPager \Iterator\EntityPager */
         $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
@@ -37,10 +39,6 @@ class IndexPage extends \View\DefaultLayout {
             ))));
             */
         }
-
-        if (\App::config()->product['newList']) {
-            $this->layout = 'layout-oneColumn';
-        }
     }
 
     public function slotBodyDataAttribute() {
@@ -50,7 +48,7 @@ class IndexPage extends \View\DefaultLayout {
     public function slotContent() {
         $this->setParam('request', \App::request());
 
-        return $this->render(\App::config()->product['newList'] ? 'search/page-index-new' : 'search/page-index', $this->params);
+        return $this->render('search/page-index-new', $this->params);
     }
 
     public function slotContentHead() {
