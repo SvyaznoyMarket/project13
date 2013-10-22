@@ -2096,6 +2096,21 @@ FormValidator.prototype._requireAs = {
 		};
 	},
 
+	password: function( fieldNode ) {
+		var value = fieldNode.val();
+
+		if ( value.length === 0 ) {
+			return {
+				hasError: true,
+				errorMsg : 'Поле обязательно для заполнения'
+			};
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
 	textarea: function( fieldNode ) {
 		var value = fieldNode.text();
 
