@@ -112,7 +112,7 @@ class PartField {
      * @param int $shopId
      */
     public function setPointId($shopId) {
-        $this->pointId = (int)$shopId;
+        $this->pointId = (string)$shopId;
     }
 
     /**
