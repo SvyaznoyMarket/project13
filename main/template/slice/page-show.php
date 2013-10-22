@@ -24,12 +24,12 @@ $helper = new \Helper\TemplateHelper();
 
     <h1><?= $slice->getName() ?></h1>
 
-    <?= $helper->render('product-category/__filter', [
+    <?/*= $helper->render('product-category/__filter', [
         'baseUrl'          => $helper->url('slice.show', ['sliceToken' => $slice->getToken()]),
         'countUrl'         => null,
         'productFilter'    => $productFilter,
         'categories'       => $categories,
-    ]) // фильтры ?>
+    ])*/ // фильтры ?>
 
     <?= $helper->render('product/__listAction', [
         'pager'          => $productPager,

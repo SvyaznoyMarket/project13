@@ -500,6 +500,14 @@ return [
     ],
 
     // срезы
+    'slice.category' => [
+        'pattern' => '/slices/{sliceToken}/{categoryToken}',
+        'require' => [
+            'sliceToken' => '[\w\d-_]+',
+            'categoryToken' => '[\w\d-_]+'
+        ],
+        'action'  => ['Slice\ShowAction', 'category'],
+    ],
     'slice.show' => [
         'pattern' => '/slices/{sliceToken}',
         'require' => ['sliceToken' => '[\w\d-_]+'],
