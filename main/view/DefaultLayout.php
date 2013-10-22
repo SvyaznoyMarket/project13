@@ -254,6 +254,11 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    /**
+     * Слот с партнёрами-счётчиками, вызывается на всех страницах сайта
+     *
+     * @return string
+     */
     public function slotPartnerCounter() {
         $return = '';
 
@@ -304,6 +309,13 @@ class DefaultLayout extends Layout {
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
+
+
+        // ActionPay ретаргетинг
+        $return .= '<div id="ActionPayJS" data-vars="' .
+            $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) .
+            '" class="jsanalytics"></div>';
+
 
         return $return;
     }

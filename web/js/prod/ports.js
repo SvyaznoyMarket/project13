@@ -168,6 +168,23 @@ window.ANALYTICS = {
         //});
     },
 
+    ActionPayJS : function() {
+        var vars = $('#ActionPayJS').data('vars');
+        if ( vars ) {
+            window.APRT_DATA = vars;
+        }
+
+        (function(){
+            var s   = document.createElement('script');
+            var x   = document.getElementsByTagName('script')[0];
+            s.type  = 'text/javascript';
+            s.async = true;
+            s.src   = '//rt.adonweb.ru/3038.js'; // tmp
+            //s.src   = '//rt.actionpay.ru/code/enter/'; // real
+            x.parentNode.insertBefore( s, x );
+        })();
+    },
+
     yaParamsJS : function() {
         var yap = $('#yaParamsJS').data('vars');
         if (yap) {
