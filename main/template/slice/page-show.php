@@ -14,6 +14,8 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
+<form class="bFilter clearfix hidden" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
+
 <div class="bCatalog">
 
     <? if (false): ?>
