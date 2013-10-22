@@ -3,6 +3,7 @@
  * @var $page             \View\Search\IndexPage
  * @var $request          \Http\Request
  * @var $productFilter    \Model\Product\Filter
+ * @var $category         \Model\Product\Category\Entity
  * @var $slice            \Model\Slice\Entity
  * @var $productPager     \Iterator\EntityPager
  * @var $categories       \Model\Product\Category\Entity[]
@@ -25,6 +26,12 @@ $helper = new \Helper\TemplateHelper();
     <? endif ?>
 
     <h1><?= $slice->getName() ?></h1>
+
+    <? if (!empty($promoContent)): ?>
+        <?= $promoContent ?>
+    <? else: ?>
+        <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
+    <? endif ?>
 
     <?/*= $helper->render('product-category/__filter', [
         'baseUrl'          => $helper->url('slice.show', ['sliceToken' => $slice->getToken()]),

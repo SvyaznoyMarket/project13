@@ -60,7 +60,6 @@ class ShowAction {
     }
 
 
-
     /**
      * @param string        $categoryPath
      * @param \Http\Request $request
@@ -100,124 +99,6 @@ class ShowAction {
         return $response;
     }
 
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\Response
-     * @throws \Exception\NotFoundException
-     */
-//    public function slider($categoryPath, \Http\Request $request) {
-//        \App::logger()->debug('Exec ' . __METHOD__);
-//
-//        if (!$request->isXmlHttpRequest()) {
-//            throw new \Exception\NotFoundException('Request is not xml http request');
-//        }
-//
-//        $categoryToken = explode('/', $categoryPath);
-//        $categoryToken = end($categoryToken);
-//
-//        $region = self::isGlobal() ? null : \App::user()->getRegion();
-//
-//        $repository = \RepositoryManager::productCategory();
-//
-//        $category = null;
-//        $repository->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-//            $category = new \Model\Product\Category\Entity(reset($data));
-//        });
-//        \App::coreClientV2()->execute();
-//
-//        if (!$category) {
-//            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
-//        }
-//
-//        $pageNum = (int)$request->get('page', 1);
-//        if ($pageNum < 1) {
-//            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
-//        }
-//
-//        // сортировка
-//        $productSorting = new \Model\Product\Sorting();
-//
-//        // вид товаров
-//        $productView = $category->getHasLine() ? 'line' : 'compact';
-//        // фильтры
-//        try {
-//            $filters = \RepositoryManager::productFilter()->getCollectionByCategory($category, $region);
-//        } catch (\Exception $e) {
-//            \App::exception()->add($e);
-//            \App::logger()->error($e);
-//
-//            $filters = [];
-//        }
-//        $productFilter = $this->getFilter($filters, $category, null, $request);
-//        // листалка
-//        $limit = \App::config()->product['itemsInCategorySlider'];
-//        $repository = \RepositoryManager::product();
-//        $repository->setEntityClass('\\Model\\Product\\CompactEntity');
-//        $productPager = $repository->getIteratorByFilter(
-//            $productFilter->dump(),
-//            $productSorting->dump(),
-//            ($pageNum - 1) * $limit,
-//            $limit
-//        );
-//        $productPager->setPage($pageNum);
-//        $productPager->setMaxPerPage($limit);
-//
-//        return (new \Controller\Product\SliderAction())->execute($productPager, $productView, $request);
-//    }
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\JsonResponse
-     * @throws \Exception\NotFoundException
-     */
-//    public function count($categoryPath, \Http\Request $request) {
-//        \App::logger()->debug('Exec ' . __METHOD__);
-//
-//        if (!$request->isXmlHttpRequest()) {
-//            throw new \Exception\NotFoundException('Request is not xml http request');
-//        }
-//
-//        $categoryToken = explode('/', $categoryPath);
-//        $categoryToken = end($categoryToken);
-//
-//        $region = self::isGlobal() ? null : \App::user()->getRegion();
-//
-//        $repository = \RepositoryManager::productCategory();
-//        $category = $repository->getEntityByToken($categoryToken);
-//        if (!$category) {
-//            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
-//        }
-//
-//        // фильтры
-//        try {
-//            $filters = \RepositoryManager::productFilter()->getCollectionByCategory($category, $region);
-//        } catch (\Exception $e) {
-//            \App::exception()->add($e);
-//            \App::logger()->error($e);
-//
-//            $filters = [];
-//        }
-//
-//        $shop = null;
-//        try {
-//            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
-//                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-//            }
-//        } catch (\Exception $e) {
-//            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
-//        }
-//
-//        $productFilter = $this->getFilter($filters, $category, null, $request, $shop);
-//
-//        $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
-//
-//        return new \Http\JsonResponse([
-//            'success' => true,
-//            'count'   => $count,
-//        ]);
-//    }
 
     /**
      * @param \Http\Request $request
@@ -270,7 +151,6 @@ class ShowAction {
                 $filterData[] = [$k, 1, $v];
             }
         }
-
 
 
         $client = \App::coreClientV2();
@@ -388,8 +268,8 @@ class ShowAction {
         // запрашиваем дерево категорий
         //\RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
         $params = [
-            'root_id'         => 0,
-            'max_level'       => 5,
+            'root_id'         => $category->getHasChild() ? $category->getId() : $category->getParentId(),
+            'max_level'       => isset($category) ? $category->getLevel() + 1 : 1,
             'is_load_parents' => true,
             'filter' => $filterData,
         ];
@@ -463,17 +343,14 @@ class ShowAction {
             $iterateLevel($data);
         });
 
-
-
-
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
-        $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, function($data) use (&$filters) {
-            foreach ($data as $item) {
-                $filters[] = new \Model\Product\Filter\Entity($item);
-            }
-        });
+//        $filters = [];
+//        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, function($data) use (&$filters) {
+//            foreach ($data as $item) {
+//                $filters[] = new \Model\Product\Filter\Entity($item);
+//            }
+//        });
 
         // выполнение 3-го пакета запросов
         $client->execute();
@@ -642,124 +519,6 @@ class ShowAction {
      * @param \View\Layout                   $page
      * @param \Http\Request                  $request
      * @return \Http\Response
-     * @throws \Exception
-     */
-//    protected function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
-//        \App::logger()->debug('Exec ' . __METHOD__);
-//
-//        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.rootCategory', 138);
-//
-//        if (!$category->getHasChild()) {
-//            throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
-//        }
-//
-//        $page->setParam('sidebarHotlinks', true);
-//
-//        $catalogJson = $page->getParam('catalogJson');
-//        $catalogJsonBulk = [];
-//        if(empty($catalogJson['category_layout_type']) || (!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons')) {
-//            $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
-//        }
-//        $page->setParam('catalogJsonBulk', $catalogJsonBulk);
-//
-//        $page->setParam('myThingsData', [
-//            'EventType' => 'MyThings.Event.Visit',
-//            'Action'    => '1011',
-//            'Category'  => $category->getName(),
-//        ]);
-//
-//        return new \Http\Response($page->show());
-//    }
-
-    /**
-     * @param \Model\Product\Category\Entity $category
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
-     * @return \Http\Response
-     */
-//    protected function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
-//        \App::logger()->debug('Exec ' . __METHOD__);
-//
-//        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 138);
-//
-//        // сортировка
-//        $productSorting = new \Model\Product\Sorting();
-//        // дочерние категории сгруппированные по идентификаторам
-//        $childrenById = [];
-//        foreach ($category->getChild() as $child) {
-//            $childrenById[$child->getId()] = $child;
-//        }
-//        // листалки сгруппированные по идентификаторам категорий
-//        $limit = \App::config()->product['itemsInCategorySlider'] * 2;
-//        $repository = \RepositoryManager::product();
-//        $repository->setEntityClass('\\Model\\Product\\CompactEntity');
-//        // массив фильтров для каждой дочерней категории
-//
-//        $filterData = array_map(function(\Model\Product\Category\Entity $category) use ($productFilter) {
-//            $productFilter = clone $productFilter;
-//            $productFilter->setCategory($category);
-//
-//            return $productFilter->dump();
-//        }, $childrenById);
-//
-//        /** @var $child \Model\Product\Category\Entity */
-//        $child = reset($childrenById);
-//        $productPagersByCategory = [];
-//        $productVideosByProduct = [];
-//        $productCount = 0;
-//
-//        foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
-//            $productPager->setPage(1);
-//            $productPager->setMaxPerPage($limit);
-//            $productPagersByCategory[$child->getId()] = $productPager;
-//            $productCount += $productPager->count();
-//
-//            foreach ($productPager as $product) {
-//                /** @var $product \Model\Product\Entity */
-//                $productVideosByProduct[$product->getId()] = [];
-//            }
-//
-//            $child = next($childrenById);
-//            if (!$child) {
-//                break;
-//            }
-//        }
-//
-//        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideosByProduct( $productVideosByProduct );
-//
-//        $page->setParam('productPagersByCategory', $productPagersByCategory);
-//        $page->setParam('productVideosByProduct', $productVideosByProduct);
-//        $page->setParam('sidebarHotlinks', true);
-//
-//        $catalogJson = $page->getParam('catalogJson');
-//        $catalogJsonBulk = [];
-//        if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons') {
-//            $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
-//        }
-//        $page->setParam('catalogJsonBulk', $catalogJsonBulk);
-//
-//        $myThingsData = [
-//            'EventType' => 'MyThings.Event.Visit',
-//            'Action'    => '1011',
-//        ];
-//        if ($category->isRoot()) {
-//            $myThingsData['Category'] = $category->getName();
-//        } else {
-//            $myThingsData['Category'] = isset($category->getAncestor()[0]) ? $category->getAncestor()[0]->getName() : null;
-//            $myThingsData['SubCategory'] = $category->getName();
-//        }
-//        $page->setParam('myThingsData', $myThingsData);
-//
-//        return new \Http\Response($page->show());
-//    }
-
-    /**
-     * @param \Model\Product\Category\Entity $category
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
-     * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
     protected function leafCategory(\Model\Product\Category\Entity $category, /*\Model\Product\Filter $productFilter,*/ \View\Layout $page, \Http\Request $request, $filterData) {
@@ -821,8 +580,6 @@ class ShowAction {
 //            $limit
 //        );
 
-
-
         $response = [];
         $region = null;
 
@@ -850,8 +607,6 @@ class ShowAction {
         $collection = [];
         $entityClass = '\Model\Product\Entity';
         if (!empty($response['list'])) {
-
-
             $client->addQuery('product/get', [
                 'select_type' => 'id',
                 'id'          => $response['list'],
@@ -947,128 +702,6 @@ class ShowAction {
         return new \Http\Response($page->show());
     }
 
-    /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     * @param \Model\Product\Category\Entity $category
-     * @param \Http\Request $request
-     * @param \Model\Shop\Entity|null $shop
-     * @return \Model\Product\Filter
-     */
-//    public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Http\Request $request, $shop = null) {
-//        // флаг глобального списка в параметрах запроса
-//        $isGlobal = self::isGlobal();
-//        //
-//        $inStore = self::inStore();
-//
-//        // регион для фильтров
-//        $region = $isGlobal ? null : \App::user()->getRegion();
-//
-//        // добывание фильтров из http-запроса
-//        $requestData = ('POST'== $request->getMethod()) ? $request->request : $request->query;
-//
-//        $values = [];
-//        foreach ($requestData as $k => $v) {
-//            if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
-//            $parts = array_pad(explode('-', $k), 3, null);
-//
-//            if (!isset($values[$parts[1]])) {
-//                $values[$parts[1]] = [];
-//            }
-//            if (('from' == $parts[2]) || ('to' == $parts[2])) {
-//                $values[$parts[1]][$parts[2]] = $v;
-//            } else {
-//                $values[$parts[1]][] = $v;
-//            }
-//        }
-//
-//        // filter values
-//        if ($request->get('scrollTo')) {
-//            // TODO: SITE-2218 сделать однотипные фильтры для ювелирки и неювелирки
-//            $values = (array)$request->get(\View\Product\FilterForm::$name, []);
-//        }
-//
-//        if ($isGlobal) {
-//            $values['global'] = 1;
-//        }
-//        if ($inStore) {
-//            $values['instore'] = 1;
-//        }
-//
-//        //если есть фильтр по магазину
-//        if ($shop) {
-//            /** @var \Model\Shop\Entity $shop */
-//            $values['shop'] = $shop->getId();
-//        }
-//
-//        // проверяем есть ли в запросе фильтры
-//        if ((bool)$values) {
-//
-//            // полнотекстовый поиск через сфинкс
-//            if (\App::config()->sphinx['showListingSearchBar']) {
-//                $sphinxFilter = isset($values['text']) ? $values['text'] : null;
-//
-//                if ($sphinxFilter) {
-//                    $clientV2 = \App::coreClientV2();
-//                    $result = null;
-//                    $clientV2->addQuery('search/normalize', [], ['request' => $sphinxFilter], function ($data) use (&$result) {
-//                        $result = $data;
-//                    });
-//                    $clientV2->execute();
-//
-//                    if(is_array($result)) {
-//                        $values['text'] = implode(' ', $result);
-//                    } else {
-//                        unset($values['text']);
-//                    }
-//                }
-//
-//                $sphinxFilterData = [
-//                    'filter_id'     => 'text',
-//                    'type_id'       => \Model\Product\Filter\Entity::TYPE_STRING,
-//                ];
-//                $sphinxFilter = new \Model\Product\Filter\Entity($sphinxFilterData);
-//                array_push($filters, $sphinxFilter);
-//            }
-//
-//            // проверяем есть ли в запросе фильтры, которых нет в текущей категории (фильтры родительских категорий)
-//            /** @var $exists Ид фильтров текущей категории */
-//            $exists = array_map(function($filter) { /** @var $filter \Model\Product\Filter\Entity */ return $filter->getId(); }, $filters);
-//            /** @var $diff Ид фильтров родительских категорий */
-//            $diff = array_diff(array_keys($values), $exists);
-//            if ((bool)$diff && $category) {
-//                foreach ($category->getAncestor() as $ancestor) {
-//                    try {
-//                        /** @var $ancestorFilters \Model\Product\Filter\Entity[] */
-//                        $ancestorFilters = [];
-//                        \RepositoryManager::productFilter()->prepareCollectionByCategory($ancestor, $region, function($data) use (&$ancestorFilters) {
-//                            foreach ($data as $item) {
-//                                $ancestorFilters[] = new \Model\Product\Filter\Entity($item);
-//                            }
-//                        });
-//                        \App::coreClientV2()->execute();
-//                    } catch (\Exception $e) {
-//                        $ancestorFilters = [];
-//                    }
-//                    foreach ($ancestorFilters as $filter) {
-//                        if (false === $i = array_search($filter->getId(), $diff)) continue;
-//
-//                        // скрываем фильтр в списке
-//                        $filter->setIsInList(false);
-//                        $filters[] = $filter;
-//                        unset($diff[$i]);
-//                        if (!(bool)$diff) break;
-//                    }
-//                    if (!(bool)$diff) break;
-//                }
-//            }
-//        }
-//
-//        $productFilter = new \Model\Product\Filter($filters, $isGlobal, $inStore, $shop);
-//        $productFilter->setCategory($category);
-//        $productFilter->setValues($values);
-//
-//        return $productFilter;
-//    }
 
     /**
      * @return bool
