@@ -43,10 +43,6 @@ class ActionPay {
     {
         $this->routeAll();
 
-        print '<pre>debug ### ';
-        print_r($this->routeName);
-        print '</pre>';
-
         switch ($this->routeName) { // begin of case
             case "homepage":
                 $this->routeHomepage();
@@ -77,13 +73,60 @@ class ActionPay {
         }
         // end of case
 
-
+        $this->d($this->sendData, $this->routeName);
         return $this->sendData;
     }
 
 
 
+    /**
+     * Добавляет в массив информацию о содержимом корзине
+     *
+     * @return bool
+     */
+    private function basketInfo(){
+        if ( !empty( $this->sendData['basketProducts'] ) ) {
+            // если данные в массиве уже есть, то не добавляем
+            return true;
+        }
+
+        /*
+        $in_basket = $this->cart->getData()['productList'];
+        $products = $this->getParam('productEntities');
+
+        if (!$products) return false;
+
+        foreach($products as $product) {
+            // @var $product \Model\Product\Entity
+            $this->sendData['basketProducts'][] = array(
+                'id' => $product->getId(),
+                'price' => $product->getPrice(),
+                'quantity' => $in_basket[ $product->getId() ],
+            );
+        }*/
+
+        $cartProductsById = $this->getParam('cartProductsById');
+        if ( empty($cartProductsById) ) return false;
+
+        foreach($cartProductsById as $product) {
+            /** @var $product \Model\Cart\Product\Entity **/
+            $this->sendData['basketProducts'][] = array(
+                'id' => $product->getId(),
+                'price' => $product->getPrice(),
+                'quantity' => $product->getQuantity(),
+            );
+        }
+
+        return true;
+    }
+
+
+
+    /**
+     * Вызывается на неописанной странице
+     */
     private function routeDefault() {}
+
 
 
     /**
@@ -95,22 +138,9 @@ class ActionPay {
          * Рекомендуется передавать basketProducts на всех типах страниц,
          * а не только при просмотре корзины.
          */
-        $in_basket = $this->cart->getData()['productList'];
-        $products = $this->getParam('productEntities');
-
-        if (!$products) return false;
-        $basketProd = &$this->sendData['basketProducts'];
-
-        foreach($products as $product) {
-            /* @var $product \Model\Product\Entity */
-            $basketProd[] = array(
-                'id' => $product->getId(),
-                'price' => $product->getPrice(),
-                'quantity' => $in_basket[ $product->getId() ],
-            );
-        }
-
+        $this->basketInfo();
     }
+
 
 
     /**
@@ -120,6 +150,7 @@ class ActionPay {
         // главная страница сайта
         $this->sendData['pageType'] = 1;
     }
+
 
 
     /**
@@ -140,10 +171,15 @@ class ActionPay {
             $category = reset( $categories );
         }
 
-        $this->sendData['currentProduct'] = $product->getId();
-        $this->sendData['currentCategory'] = $category->getId();
+        $this->sendData['currentProduct'] = [
+            'id'    => $product->getId(),
+            'name'  => $product->getName(),
+            'price' => $product->getPrice()
+        ];
 
-        //$this->d( $this->sendData );
+        $this->categoryInfo($this->sendData['currentCategory'], $category);
+
+        $this->checkParentCategory($category);
     }
 
 
@@ -153,32 +189,34 @@ class ActionPay {
     private function routeCategory() {
         // страница каталога/категории/подкатегории
         $this->sendData['pageType'] = 3;
-
         $category = $this->getParam('category');
-
-        if ($category) {
-            /** @var $category \Model\Product\Category\Entity */
-            $this->sendData['currentCategory'] = $category->getId();
-        }
-
+        $this->categoryInfo($this->sendData['currentCategory'], $category);
+        $this->checkParentCategory($category);
     }
+
 
 
     /**
      * Вызывается на стр поиска
      */
     private function routeSearch() {
-        $this->routeCategory();
+        //$this->routeCategory(); // Страница поиска не относится к страницам каталога
     }
+
 
 
     /**
      * Вызывается на стр корзины
      */
     private function routeBasket() {
+        $this->routeOrder();
+
         // корзина
         $this->sendData['pageType'] = 4;
+
+        // $this->basketInfo(); // вызывается на всех страницах, не только на стр корзины
     }
+
 
 
     /**
@@ -187,7 +225,26 @@ class ActionPay {
     private function routeOrder() {
         // оформление заказа
         $this->sendData['pageType'] = 5;
+
+        $orders = $this->getParam('orders');
+        if (!$orders) return false;
+
+        $orderSum = 0;
+        foreach ($orders as $order) {
+            $orderNumbers = $order->getNumber();
+            $orderSum += $order->getPaySum();
+        }
+
+        $orderInfo = [
+          //'id'        =>  reset($orderNumbers),       // Берём номер первого заказа
+            'id'        => implode(", ", $orderNumbers), // Берём все номера заказов через запятую
+            'price'     => $orderSum,
+        ];
+
+        if ( empty($orderInfo) ) return false;
+        $this->sendData['orderInfo'] = $orderInfo;
     }
+
 
 
     /**
@@ -195,10 +252,75 @@ class ActionPay {
      */
     private function routeOrderComplete() {
         $this->routeOrder();
+
         // последняя страница оформление заказа
         $this->sendData['pageType'] = 6;
+
+        $orders = $this->getParam('orders');
+        if (!$orders) return false;
+        /** @var $orders \Model\Order\Entity **/
+
+        //купленные товары
+        $purchasedProducts = [];
+
+        foreach($orders as $ord) {
+            /** @var $ord \Model\Order\Entity **/
+            $products = $ord->getProduct();
+
+            foreach($products as $product) {
+                /** @var $product \Model\Product\Entity **/
+                $purchasedProducts[] = [
+                    'id' => $product->getId(),
+                    'name' => $product->getName(),
+                    'price' => $product->getPrice(),
+                    'quantity' => $product->getQuantity(),
+                ];
+            }
+
+        }
+
+        if (empty($purchasedProducts)) return false;
+
+        $this->sendData['purchasedProducts'] = $purchasedProducts;
     }
 
+
+    /**
+     * Добавляет в переменную &$var нужные поля из $category
+     *
+     * @param $var
+     * @param $category
+     * @return array|bool
+     */
+    private function categoryInfo(&$var, $category) {
+        if (!$category) return false;
+        /** @var $category \Model\Product\Category\Entity */
+
+        $catInfo = [
+            'id'    =>  $category->getId(),
+            'name'  =>  $category->getName(),
+        ];
+
+        if ($catInfo) return $var = $catInfo;
+
+        return false;
+    }
+
+
+    /**
+     * Проверяет родительскую категорию и добавляет в массив, если она есть
+     *
+     * @param   \Model\Product\Category\Entity  $category
+     */
+    private function checkParentCategory($category)
+    {
+        $parentCat = null;
+        $this->categoryInfo($parentCat, $category->getParentId());
+        if ( !empty($parentCat) ) {
+            if ( !isset($this->sendData['parentCategories']) ) $this->sendData['parentCategories'] = [];
+            $this->sendData['parentCategories'][] = $parentCat;
+        }
+    }
 
 
 
@@ -211,6 +333,12 @@ class ActionPay {
     }
 
 
+    /**
+     * For debug
+     *
+     * @param null $var
+     * @param string $info
+     */
     private function d($var = null, $info = '') {
         print '<pre>Debug:';
         if ($info) {
