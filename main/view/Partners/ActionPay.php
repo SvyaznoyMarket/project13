@@ -74,7 +74,6 @@ class ActionPay {
         }
         // end of case
 
-        $this->d($this->sendData, $this->routeName);
         return $this->sendData;
     }
 
