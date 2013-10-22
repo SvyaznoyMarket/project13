@@ -180,7 +180,7 @@
 
 				config.userInfo = userInfo;
 
-				if ( userInfo && userInfo.name !== null ) {
+				if ( userInfo && userInfo.name !== null && topAuth.length && bottomAuth.length ) {
 					dtmpl = {
 						user: userInfo.name
 					};
@@ -190,12 +190,13 @@
 					topAuth.hide();
 					topAuth.after(show_user);
 					bottomAuth.html(userInfo.name).addClass('mAuth');
-
-					$('body').trigger('userLogged', [userInfo]);
 				}
 				else {
 					topAuth.show();
+
 				}
+
+				$('body').trigger('userLogged', [userInfo]);
 			}; 
 			
 			return {
