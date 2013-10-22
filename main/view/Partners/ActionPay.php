@@ -64,6 +64,7 @@ class ActionPay {
                 $this->routeSearch();
                 break;
 
+            case "order":
             case "order.complete":
                 $this->routeOrderComplete();
                 break;
@@ -178,7 +179,6 @@ class ActionPay {
         ];
 
         $this->categoryInfo($this->sendData['currentCategory'], $category);
-
         $this->checkParentCategory($category);
     }
 
@@ -228,16 +228,17 @@ class ActionPay {
 
         $orders = $this->getParam('orders');
         if (!$orders) return false;
+        $orderNumbersArr = [];
 
         $orderSum = 0;
         foreach ($orders as $order) {
-            $orderNumbers = $order->getNumber();
+            $orderNumbersArr[] = $order->getNumber();
             $orderSum += $order->getPaySum();
         }
 
         $orderInfo = [
           //'id'        =>  reset($orderNumbers),       // Берём номер первого заказа
-            'id'        => implode(", ", $orderNumbers), // Берём все номера заказов через запятую
+            'id'        => implode(", ", $orderNumbersArr), // Берём все номера заказов через запятую
             'price'     => $orderSum,
         ];
 
@@ -268,12 +269,12 @@ class ActionPay {
             $products = $ord->getProduct();
 
             foreach($products as $product) {
-                /** @var $product \Model\Product\Entity **/
+                /** @var $product \Model\Order\Product\Entity **/
                 $purchasedProducts[] = [
-                    'id' => $product->getId(),
-                    'name' => $product->getName(),
-                    'price' => $product->getPrice(),
-                    'quantity' => $product->getQuantity(),
+                    'id'        => $product->getId(),
+                    //'name'      => $product->getName(), // нет такого метода
+                    'price'     => $product->getPrice(),
+                    'quantity'  => $product->getQuantity(),
                 ];
             }
 
@@ -288,20 +289,25 @@ class ActionPay {
     /**
      * Добавляет в переменную &$var нужные поля из $category
      *
-     * @param $var
-     * @param $category
-     * @return array|bool
+     * @param   $var
+     * @param   $category
+     * @return  bool
      */
     private function categoryInfo(&$var, $category) {
-        if (!$category) return false;
-        /** @var $category \Model\Product\Category\Entity */
+        if ( !($category) ) return false;
+        //if ( !($category instanceof \Model\Product\Category\Entity) ) return false;
+
+        /** @var @var $category \Model\Product\Category\Entity */
 
         $catInfo = [
             'id'    =>  $category->getId(),
             'name'  =>  $category->getName(),
         ];
 
-        if ($catInfo) return $var = $catInfo;
+        if ($catInfo) {
+            $var = $catInfo;
+            return true;
+        }
 
         return false;
     }
@@ -309,17 +315,20 @@ class ActionPay {
 
     /**
      * Проверяет родительскую категорию и добавляет в массив, если она есть
+     * Пока проверяем только 1 родительский уровень
      *
      * @param   \Model\Product\Category\Entity  $category
+     * @return bool
      */
     private function checkParentCategory($category)
     {
         $parentCat = null;
-        $this->categoryInfo($parentCat, $category->getParentId());
-        if ( !empty($parentCat) ) {
-            if ( !isset($this->sendData['parentCategories']) ) $this->sendData['parentCategories'] = [];
-            $this->sendData['parentCategories'][] = $parentCat;
-        }
+        $this->categoryInfo($parentCat, $category->getParent());
+        if ( empty($parentCat) ) return false;
+
+        if ( !isset($this->sendData['parentCategories']) ) $this->sendData['parentCategories'] = [];
+        $this->sendData['parentCategories'][] = $parentCat;
+        return true;
     }
 
 
