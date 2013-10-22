@@ -1889,16 +1889,21 @@ window.MapInterface = (function() {
 
 				config.userInfo = userInfo;
 
-				if ( userInfo && userInfo.name !== null && topAuth.length && bottomAuth.length ) {
+				if ( userInfo && userInfo.name !== null ) {
 					dtmpl = {
 						user: userInfo.name
 					};
 
 					show_user = tmpl('auth_tmpl', dtmpl);
 					
-					topAuth.hide();
-					topAuth.after(show_user);
-					bottomAuth.html(userInfo.name).addClass('mAuth');
+					if ( topAuth.length ) {
+						topAuth.hide();
+						topAuth.after(show_user);
+					}
+
+					if ( bottomAuth.length ) {
+						bottomAuth.html(userInfo.name).addClass('mAuth');
+					}
 				}
 				else {
 					topAuth.show();
