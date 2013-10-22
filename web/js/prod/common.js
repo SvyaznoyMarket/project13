@@ -3149,7 +3149,7 @@ $(document).ready(function() {
 			else if ( $(window).scrollTop() < 600 && trigger ) {
 				//исчезновение
 				trigger = false;
-				upper.animate({'marginTop':'-30px'}, 400);
+				upper.animate({'marginTop':'-55px'}, 400);
 			}
 		},
 

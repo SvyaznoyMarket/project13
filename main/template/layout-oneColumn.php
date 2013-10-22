@@ -134,7 +134,7 @@
         <!-- /krible.ru Teleportator end -->
     </footer><!--/подвал-->
 
-    <?//= $page->slotUserbar() ?>
+    <?= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
 
     <?//= $page->slotRegionSelection() ?>
@@ -151,6 +151,6 @@
         <div id="adblenderCommon" class="jsanalytics"></div>
     <? endif ?>
         
-    <a id="upper" href="#">Наверх</a>
+    <a id="upper" class="upper" href="#">Наверх</a>
 </body>
 </html>

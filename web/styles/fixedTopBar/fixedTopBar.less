@@ -10,6 +10,38 @@
 	height: 50px;
 	background: @white;
 
+	&.mProdCard {
+
+		.fixedTopBar__crumbs {
+			width: 400px;
+		}
+
+		.fixedTopBar__crumbsList {
+			width: 1200px;
+		}
+
+		.fixedTopBar__crumbsListItem {
+			background-image: none;
+		}
+
+		.transGrad {
+			background: url("@{base-url}/fixedTopBar/img/tranGradientWhite.png") no-repeat 0 0;
+			position: absolute;
+			right: 0;
+			top: 12px;
+			height: 30px;
+			width: 27px;
+			display: block;
+		}
+	}
+
+	.wrapperCrumbsList {
+		width: 340px;
+		position: relative;
+		overflow: hidden;
+		display: inline-block
+	}
+
 	&__up {
 		float: left;
 		padding: 8px 20px 0;
@@ -42,6 +74,13 @@
 
 			color: @white;
 			text-decoration: none;
+		}
+
+		.cornerTop {
+			font-size: 10px;
+			font-style: normal;
+			display: inline;
+			padding-right: 2px;
 		}
 	}	
 
@@ -104,8 +143,16 @@
 	&__cart {
 		float: right;
 		padding: 5px 0 0 10px;
-		width: 100px;
+		width: 90px;
 		height: 45px;
+
+		&.mEmpty {
+			background: #f4f4f4;
+
+			.fixedTopBar__cartQuan {
+				background: #bbbbbb;
+			}
+		}
 	}
 
 	&__cartLink {
@@ -140,10 +187,6 @@
 		vertical-align: top;
 		text-align: center;
 		line-height: 20px;
-
-		&.mEmpty {
-			background: #bbbbbb;
-		}
 	}
 
 	&__cartPrice {
@@ -161,6 +204,29 @@
 		line-height: 50px;
 		padding: 0 0 0 5px;
 		overflow: hidden;
+		position: relative;
+
+		.transGrad {
+			background: url("@{base-url}/fixedTopBar/img/tranGradientOrange.png") no-repeat 0 0;
+			position: absolute;
+			right: 0;
+			top: 17px;
+			height: 17px;
+			width: 18px;
+			display: block;
+		}
+
+		&.mLogin {
+			background: #f4f4f4;
+
+			.fixedTopBar__logInLink {
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAfklEQVQYGYWQwQ2AIBRD/WUmwhS6i0cdQI/uolMAMwFSIgkxGnr5tDwCVFJKA+W9H2OMc/aaXkQ8gENrfRVP0Fq75bkweCsf2I0xqzjnxhDC+QZar5SawOva8GtNBvVNX0DNyKCa3gR/14OeBnD0QNYE9sQK/mDuFYY9Ur3Cb25DQ2sv9bp2AAAAAElFTkSuQmCC);
+			}
+
+			.transGrad {
+				display: none;
+			}
+		} 
 	}
 
 	&__logInLink {

@@ -5,18 +5,17 @@
 ?>
 
 <!-- Lightbox -->
-<div class="bBlackBox">
+<!-- <div class="bBlackBox">
     <div class="bBlackBox__eInner">
         <div class="dropbox" style="left:733px; display:none;">
             <p>Перетащите сюда</p>
         </div>
-        <!-- Flybox -->
         <ul class="bBlackBox__eMenu">
             <li class="bBlackBox__eMenuItem bBlackBox__eUser">
-                <a href="<?= $page->url('user.login') ?>" class="bBlackBox__eUserLink bBlackBox__eMenuItemLink">Личный кабинет</a>
+                <a href="<?//= $page->url('user.login') ?>" class="bBlackBox__eUserLink bBlackBox__eMenuItemLink">Личный кабинет</a>
             </li>
             <li class="bBlackBox__eMenuItem bBlackBox__eCart">
-                <a href="<?=  $page->url('cart') ?>" class="bBlackBox__eCartLink bBlackBox__eMenuItemLink"><b class="bBlackBox__eCartQuan"></b>Моя корзина<span class="bBlackBox__eCartTotal">
+                <a href="<?//=  $page->url('cart') ?>" class="bBlackBox__eCartLink bBlackBox__eMenuItemLink"><b class="bBlackBox__eCartQuan"></b>Моя корзина<span class="bBlackBox__eCartTotal">
                     <span class="bBlackBox__eCartSum"></span> &nbsp;<span class="rubl">p</span></span>
                 </a>
             </li>
@@ -26,32 +25,72 @@
             <i class="close" title="Закрыть">Закрыть</i>
         </div>
     </div>
-</div>
+</div> -->
 
-<!-- новый юзер бар -->
+<!-- ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАТАЛОГА -->
+<? /*
+<div class="fixedTopBar">
+    <div class="fixedTopBar__up">
+        <a class="fixedTopBar__upLink" href="">
+            <span class="fixedTopBar__upText"><em class="cornerTop">&#9650;</em> Бренды и параметры</span>
+        </a>
+    </div>
 
-<!--div class="bFixedTopBar">
-    <div class="bFixedTopBar__eTop"><a class="bFixedTopBar__eTopLink" href=""><span class="bFixedTopBar__eTopText">Бренды и параметры</span></a></div>
+    <div class="fixedTopBar__crumbs">
+        <a class="fixedTopBar__crumbsImg" href=""><img class="crumbsImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></a>
 
-    <div class="bFixedTopBar__eCrumbs">
-        <a class="bFixedTopBar__eCrumbsCatImg" href=""><img class="bCatImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></a>
-
-        <ul class="bFixedTopBar__eCrumbsList">
-            <li class="bFixedTopBar__eCrumbsListItem"><a href="">Товары на каждый день</a></li>
-            <li class="bFixedTopBar__eCrumbsListItem"><a href="">Товары для дома</a></li>
-            <li class="bFixedTopBar__eCrumbsListItem mLast"><strong>Бытовая химия</strong></li>
+        <ul class="fixedTopBar__crumbsList">
+            <li class="fixedTopBar__crumbsListItem"><a class="fixedTopBar__crumbsListLink" href="">Товары на каждый день</a></li>
+            <li class="fixedTopBar__crumbsListItem"><a class="fixedTopBar__crumbsListLink" href="">Товары для дома</a></li>
+            <li class="fixedTopBar__crumbsListItem mLast">Бытовая химия</li>
         </ul>
     </div>
 
-    <div class="bFixedTopBar__eCart">
-        <a class="bFixedTopBar__eCartLink" href="">
-            <span class="bFixedTopBar__eCartTitle">Корзина</span> <strong class="bFixedTopBar__eCartQuan">5</strong>
-            <span class="bFixedTopBar__eCartPrice">74 987 <span class="rubl">p</span></span>
+    <div class="fixedTopBar__cart"><!-- Добавляем класс-модификатор mEmpty, если карзина пуста -->
+        <a class="fixedTopBar__cartLink" href="">
+            <span class="fixedTopBar__cartTitle">Корзина</span> 
+            <strong class="fixedTopBar__cartQuan">5</strong>
+            <span class="fixedTopBar__cartPrice">74 987 <span class="rubl">p</span></span>
         </a>
     </div>
-</div-->
 
-<!--/ новый юзер бар -->
+    <div class="fixedTopBar__logIn"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
+        <a href="" class="fixedTopBar__logInLink">Бурлакова Таня Владимировна</a>
+        <span class="transGrad"></span>
+    </div>
+</div>
+*/?>
+<!--/ ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАТАЛОГА -->
+
+<!-- ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАРТОЧКИ ТОВАРА -->
+<div class="fixedTopBar mProdCard">
+    <div class="fixedTopBar__crumbs">
+        <a class="fixedTopBar__crumbsImg" href=""><img class="crumbsImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></a>
+
+        <div class="wrapperCrumbsList">
+            <ul class="fixedTopBar__crumbsList">
+                <li class="fixedTopBar__crumbsListItem">Товары на каждый день</li>
+                <li class="fixedTopBar__crumbsListItem mLast">Смартфон Samsung Galaxy Mega 6.3 8 ГБ GT-I9200 белый</li>
+            </ul>
+
+            <div class="transGrad"></div>
+        </div>
+    </div>
+
+    <div class="fixedTopBar__cart"><!-- Добавляем класс-модификатор mEmpty, если карзина пуста -->
+        <a class="fixedTopBar__cartLink" href="">
+            <span class="fixedTopBar__cartTitle">Корзина</span> 
+            <strong class="fixedTopBar__cartQuan">5</strong>
+            <span class="fixedTopBar__cartPrice">74 987 <span class="rubl">p</span></span>
+        </a>
+    </div>
+
+    <div class="fixedTopBar__logIn"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
+        <a href="" class="fixedTopBar__logInLink">Бурлакова Таня Владимировна</a>
+        <span class="transGrad"></span>
+    </div>
+</div>
+<!--/ ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАРТОЧКИ ТОВАРА -->
 
 <script type="text/html" id="blackbox_basketshow_tmpl">
     <div class="bBlackBox__eFlyboxInner">
