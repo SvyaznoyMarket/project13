@@ -85,7 +85,7 @@ $helper = new \Helper\TemplateHelper();
 	<? endif ?>
 
     <? if ($mainProduct->getIsBuyable()): ?>
-        <?= $page->render('order/form-oneClick') ?>
+        <?= $page->render('order/form-oneClick', ['product' => $mainProduct]) ?>
     <? endif ?>
 </div>
 

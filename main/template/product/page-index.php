@@ -34,7 +34,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
 <? endif ?>
 
 <? if ($product->getIsBuyable()): ?>
-    <?= $page->render('order/form-oneClick') ?>
+    <?= $page->render('order/form-oneClick', ['product' => $product]) ?>
 <? endif ?>
 
 <? if (\App::config()->analytics['enabled']): ?>

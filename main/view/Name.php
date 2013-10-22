@@ -16,8 +16,8 @@ class Name {
             case \Model\Product\Filter\Entity::TYPE_BOOLEAN:
                 return 'f-' . $filter->getId() . (is_scalar($option) ? ('-' . $option) : '');
             case \Model\Product\Filter\Entity::TYPE_LIST:
-                return ('shop' == $filter->getId())
-                    ? 'shop'
+                return in_array($filter->getId(), ['shop', 'category'])
+                    ? $filter->getId()
                     : ('f-'
                         . $filter->getId()
                         . ($filter->getIsMultiple()

@@ -313,9 +313,9 @@
 			formSerizalizeData = $.param( formData );
 
 			if ( formSerizalizeData.length !== 0 ) {
-				url += '?' + formSerizalizeData;
+				url += ( url.indexOf('?') === -1 ) ? '?' + formSerizalizeData : '&' + formSerizalizeData;
 			}
-			console.info('url == ');
+
 			console.log(url);
 
 			url = url.addParameterToUrl('sort', sortUrl);

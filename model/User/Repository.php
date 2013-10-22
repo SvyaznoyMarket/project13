@@ -34,7 +34,8 @@ class Repository {
             },
             function (\Exception $e) {
                 \App::exception()->remove($e);
-            }
+            },
+            \App::config()->coreV2['hugeTimeout']
         );
 
         $client->execute(\App::config()->coreV2['retryTimeout']['default']);
@@ -50,8 +51,15 @@ class Repository {
     public function prepareEntityByToken($token, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('user/get', array(
-            'token' => $token,
-        ), [], $done, $fail);
+        $this->client->addQuery(
+            'user/get',
+            [
+                'token' => $token,
+            ],
+            [],
+            $done,
+            $fail,
+            \App::config()->coreV2['hugeTimeout']
+        );
     }
 }

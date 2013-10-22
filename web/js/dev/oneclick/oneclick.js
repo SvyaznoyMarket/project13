@@ -916,7 +916,6 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			OC_MVM.chooseShopById( shopnum );
 		};
 
-				
 		$('.jsOrder1click').bind('click', function(e) { // button 'Купить в один клик'
 			if( !oneClickIsReady ){
 				return false;
@@ -989,6 +988,12 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			});
 			return false;
 		});
+
+        $('.jsOrder1clickProxy').bind('click', function(e) { // button 'Резерв'
+            $('.jsOrder1click').click();
+
+            e.preventDefault();
+        });
 		
 	} // One Click Order
 

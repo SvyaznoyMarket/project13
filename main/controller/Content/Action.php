@@ -23,6 +23,7 @@ class Action {
             case 'service_ha':
             case 'services_ha':
                 $htmlContent = preg_replace('/<script.*script>/sm', '', $content['content']);
+                $htmlContent = str_replace('table class="bServicesTable"', 'table id="bServicesTable" class="bServicesTable"', $htmlContent); // TODO: осторожно, говнокод
                 $serviceJson = $this->getServiceJson();
                 $page->setParam('data', $serviceJson);
                 break;

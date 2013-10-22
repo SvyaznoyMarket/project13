@@ -72,7 +72,6 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     </div>
 <? else: ?>
     <? if(!empty($form)) { ?>
-        <?= $page->render('partner-counter/_get4click', ['order' => $order, 'form' => $form] ) ?>
         <? if($paymentMethod && $paymentMethod->isCash()) { ?>
             <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $form, 'productsById' => $productsById]) ?>
         <? } ?>

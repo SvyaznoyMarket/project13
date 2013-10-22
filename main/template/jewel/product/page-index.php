@@ -262,7 +262,7 @@ $productVideo = reset($productVideos);
   <div class="ar pb15">
 
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-      <? if ($product->getIsBuyable()): ?>
+      <? if ($product->getIsBuyable() && !$product->isInShopStockOnly()): ?>
         <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
       <?php endif ?>
       <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
@@ -689,7 +689,7 @@ $productVideo = reset($productVideos);
 <div class="fr product-desc goodBarBottom ar">
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-      <? if ($product->getIsBuyable()): ?>
+      <? if ($product->getIsBuyable() && !$product->isInShopStockOnly()): ?>
         <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
       <?php endif ?>
       <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
@@ -726,7 +726,7 @@ $productVideo = reset($productVideos);
     <div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
 <? endif ?>
 
-<? if ($product->getIsBuyable()): echo $page->render('order/form-oneClick'); endif; ?>
+<? if ($product->getIsBuyable()): echo $page->render('order/form-oneClick', ['product' => $product]); endif; ?>
 
 
 <? if (\App::config()->analytics['enabled']): ?>

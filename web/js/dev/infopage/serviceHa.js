@@ -6,7 +6,7 @@
 ;(function(global) {	
 	var serviceData = $('#contentPageData').data('data'),
 		selectRegion = $('#region_list'),
-		serviceTableContent = $('.bServicesTable tbody');
+		serviceTableContent = $('#bServicesTable tbody');
 	// end of vars
 
 

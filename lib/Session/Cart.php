@@ -666,16 +666,36 @@ class Cart {
     }
 
     /**
+     * Костылище для ядра
+     *
      * @param array $actionData
      */
     public function setActionData(array $actionData) {
-        $data = $this->storage->get($this->sessionName);
-        \App::logger()->info(['action' => __METHOD__,  'cart.actionData' => $data['actionData']], ['cart']);
-        $data['actionData'] = $data['actionData'] + $actionData;
-        \App::logger()->info(['action' => __METHOD__, 'cart.actionData' => $data['actionData']], ['cart']);
-        $this->actions = $data['actionData'] + $actionData;
+        try {
+            $data = $this->storage->get($this->sessionName);
+            \App::logger()->info(['action' => __METHOD__,  'cart.actionData' => $data['actionData']], ['cart']);
 
-        $this->storage->set($this->sessionName, $data);
+            $data['actionData'] += $actionData;
+
+            foreach ($actionData as $i => $actionItem) {
+                if (!(isset($actionItem['product_list']) && is_array($actionItem['product_list']))) continue;
+
+                if (!isset($data['actionData'][$i]['product_list'])) {
+                    $data['actionData'][$i]['product_list'] = [];
+                }
+
+                foreach ($actionItem['product_list'] as $k => $v) {
+                    $data['actionData'][$i]['product_list'][$k] = $v;
+                }
+            }
+            $this->actions = $data['actionData'];
+
+            \App::logger()->info(['action' => __METHOD__, 'cart.actionData' => $data['actionData']], ['cart']);
+
+            $this->storage->set($this->sessionName, $data);
+        } catch(\Exception $e) {
+            \App::logger()->error(['message' => $e->getMessage(), 'action' => __METHOD__], ['cart']);
+        }
     }
 
     /**
@@ -885,16 +905,6 @@ class Cart {
                 }
             }
         }
-    }
-
-    public function getAnalyticsData() {
-        $return = [];
-
-        foreach ($this->getProductData() as $product) {
-            $return[] = $product['id'];
-        }
-
-        return implode(',', $return);
     }
 
     /**

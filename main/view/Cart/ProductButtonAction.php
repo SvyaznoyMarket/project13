@@ -25,17 +25,20 @@ class ProductButtonAction {
             'class'      => \View\Id::cartButtonForProduct($product->getId()),
         ];
 
+        $data['value'] = 'Купить';
 
         if ($product->isInShopOnly()) {
             $data['inShopOnly'] = true;
-            $data['value'] = 'В магазинах';
+            $data['value'] = 'Резерв';
+            $data['url'] = $product->getLink() . '#oneclick';
         }
 
         if (!$product->getIsBuyable()) {
             $data['disabled'] = true;
             $data['url'] = '#';
+            $data['class'] .= ' jsBuyButton';
             $data['value'] = $product->isInShopShowroomOnly() ? 'На витрине' : 'Недоступен';
-        } else {
+        } else if (!isset($data['url'])) {
             $urlParams = [
                 'productId' => $product->getId(),
             ];
@@ -43,8 +46,7 @@ class ProductButtonAction {
                 $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
             }
             $data['url'] = $helper->url('cart.product.set', $urlParams);
-
-            $data['value'] = 'Купить';
+            $data['class'] .= ' jsBuyButton';
         }
 
         return $data;
