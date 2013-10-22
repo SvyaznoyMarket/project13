@@ -243,12 +243,6 @@ window.ANALYTICS = {
         })();
     },
 
-    sociomanticConfirmationPage : function() {
-        (function(){
-            window.sonar_basket = $('#sociomanticConfirmationPage').data('sonar-basket');
-        })();
-    },
-
     criteoJS : function() {
         window.criteo_q = window.criteo_q || [];
         var criteo_arr =  $('#criteoJS').data('value');
@@ -401,6 +395,7 @@ window.ANALYTICS = {
         window.RetailRocket = {
 
             'product': function ( data, userData ) {
+
                 window.rcAsyncInit = function () {
                     if ( userData.userId ) {
                         rcApi.view(data, userData);
@@ -413,6 +408,7 @@ window.ANALYTICS = {
             },
 
             'product.category': function ( data, userData ) {
+
                 window.rcAsyncInit = function () {
                     if ( userData.userId ) {
                         rcApi.categoryView(data, userData);
@@ -424,21 +420,22 @@ window.ANALYTICS = {
             },
 
             'order.complete': function ( data, userData ) {
+
+                if ( userData.userId ) {
+                    data.userId = userData.userId;
+                    data.hasUserEmail = userData.hasUserEmail;
+                }
+
                 window.rcAsyncInit = function () {
-                    if ( userData.userId ) {
-                        rcApi.order(data, userData);
-                    }
-                    else {
-                        rcApi.order(data);   
-                    }
+                    rcApi.order(data);
                 }
             },
 
             action: function ( e, userInfo ) {
                 var rr_data = $('#RetailRocketJS').data('value'),
                     sendUserData = {
-                        userId: userInfo && userInfo.id ? userInfo.id : false,
-                        hasUserEmail: userInfo && userInfo.email ? true : false
+                        userId: userInfo.emailHash || userInfo.id || false,
+                        hasUserEmail: ( userInfo && userInfo.email ) ? true : false
                     };
                 // end of vars
 
@@ -464,8 +461,8 @@ window.ANALYTICS = {
         }// end of window.RetailRocket object
 
         RetailRocket.init();
-        RetailRocket.action();
-        //$('body').on('userLogged', RetailRocket.action);
+        // RetailRocket.action();
+        $('body').on('userLogged', RetailRocket.action);
     },
 
     AdmitadJS : function() {

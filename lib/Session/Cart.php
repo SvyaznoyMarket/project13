@@ -675,6 +675,8 @@ class Cart {
             $data = $this->storage->get($this->sessionName);
             \App::logger()->info(['action' => __METHOD__,  'cart.actionData' => $data['actionData']], ['cart']);
 
+            $data['actionData'] += $actionData;
+
             foreach ($actionData as $i => $actionItem) {
                 if (!(isset($actionItem['product_list']) && is_array($actionItem['product_list']))) continue;
 
@@ -686,7 +688,7 @@ class Cart {
                     $data['actionData'][$i]['product_list'][$k] = $v;
                 }
             }
-            $this->actions = $data['actionData'] + $actionData;
+            $this->actions = $data['actionData'];
 
             \App::logger()->info(['action' => __METHOD__, 'cart.actionData' => $data['actionData']], ['cart']);
 

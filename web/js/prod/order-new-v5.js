@@ -2204,6 +2204,22 @@
 			return false;
 		},
 
+
+        /**
+         * Для некоторых типов доставки некоторые типы оплаты должны быть скрыты
+         *
+         * @param   {int} mId
+         * @returns {boolean}
+         */
+        payMethodIsVisible: function( mId ) {
+            if ( 3 == global.OrderModel.choosenDeliveryTypeId && 13 == mId ) {
+                // Прячем для PayPal (13) для самовывоза (3)
+                return false;
+            }
+            return true;
+        },
+
+
 		/**
 		 * Обновление данных
 		 */
