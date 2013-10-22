@@ -60,10 +60,10 @@
 <!-- js templete -->
 
 <div class="wrapper" data="privet">
-    <div class="content mContentOrder">
+    <div class="content mContentOrder clearfix">
         <?= $page->slotContent() ?>
-    </div>
-</div>
+    </div><!--/контент -->
+</div><!--/шаблон -->
 
 <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 

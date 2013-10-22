@@ -553,13 +553,9 @@ table {
 /*---END----ШРИФТЫ---------*/
 /*---ОСНОВНЫЕ ПРАВИЛА---*/
 @media all {
-  .allpageinner {
-    padding-bottom: 206px;
-    position: relative;
-  }
-  .allpageinner.mOrderPage {
-    padding-bottom: 390px;
-  }
+  /**
+    * Стили шаблона
+    */
   .wrapper {
     margin: 0 auto;
     min-height: 100%;
@@ -572,13 +568,15 @@ table {
   .wrapper.mWrapperMain {
     background: #000000;
   }
-  /* Header
-  -----------------------------------------------------------------------------*/
+  /**
+   * Шапка
+   */
   .header {
     position: relative;
   }
-  /* Middle
-  -----------------------------------------------------------------------------*/
+  /**
+   * Контентная часть
+   */
   .content {
     padding: 0 0 195px;
   }

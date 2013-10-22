@@ -45,19 +45,19 @@
         <div class="adfoxWrapper" id="adfoxbground"></div>
     <? endif ?>
 
-    <div class="clearfix wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
 
         <header class="header">
             <?= $page->slotHeader() ?>
-        </header><!-- #header-->
+        </header><!--/шапка-->
 
         <div class="content clearfix">
             <?= $page->slotContentHead() ?>
 
             <?= $page->slotContent() ?>
-        </div><!-- #content-->
+        </div><!--/контент-->
 
-    </div><!-- #wrapper -->
+    </div><!--/шаблон -->
 
     <footer class="footer">
         <div class="footer__inner clearfix">
@@ -132,7 +132,7 @@
         })(document, window);
         </script>
         <!-- /krible.ru Teleportator end -->
-    </footer>
+    </footer><!--/подвал-->
 
     <?//= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>

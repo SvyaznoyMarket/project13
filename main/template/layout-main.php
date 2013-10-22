@@ -49,7 +49,7 @@
         <div class="adfoxWrapper" id="adfox980"></div>
         <? endif ?>
 
-        <?= $page->slotHeader() ?>
+        <?= $page->slotHeader() ?><!--/ шапка -->
 
         <?= $page->slotContentHead() ?>
 
@@ -63,12 +63,12 @@
             </div>
         </div>
         <?= $page->slotSurveybar() ?>
-    </div>
-</div>
+    </div><!--/контент -->
+</div><!--/шаблон -->
 
 <div class="footer__main">
     <?= $page->slotFooter() ?>
-</div>
+</div><!--/подвал -->
 
 <?//= $page->slotRegionSelection() ?>
 <?//= $page->slotAuth() ?>
