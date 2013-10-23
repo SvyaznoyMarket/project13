@@ -19,6 +19,8 @@ class LifeGift {
             'product' => [],
             'sum'     => [],
         ], (array)$this->storage->get($this->sessionName)));
+
+        $this->calculate();
     }
 
     /**
@@ -38,6 +40,14 @@ class LifeGift {
         $this->storage->set($this->sessionName, $sessionData);
 
         $this->calculate();
+    }
+
+
+    /**
+     * @return array|\Model\Cart\Product\Entity[]
+     */
+    public function getProducts() {
+        return $this->productsById;
     }
 
     /**
@@ -72,7 +82,7 @@ class LifeGift {
             ];
         }
 
-        if (!(bool)$this->productsById) return;
+        if (!(bool)$productData) return;
 
         $response = null;
         \App::coreClientV2()->addQuery(
