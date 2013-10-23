@@ -19,11 +19,7 @@ $helper = new \Helper\TemplateHelper();
 
 <div class="bCatalog">
 
-    <? if (false): ?>
-        <?= $helper->render('slice/__breadcrumbs', [
-            'slice' => $slice,
-        ]) // хлебные крошки ?>
-    <? endif ?>
+    <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
     <h1><?= $slice->getName() ?></h1>
 

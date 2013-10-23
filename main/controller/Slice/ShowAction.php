@@ -67,6 +67,7 @@ class ShowAction {
     public function category(\Http\Request $request, $sliceToken, $categoryToken) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $helper = new \Helper\TemplateHelper();
 
         /** @var $slice \Model\Slice\Entity|null */
         $slice = null;
@@ -238,7 +239,7 @@ class ShowAction {
         if ($region) {
             $params['region_id'] = $region->getId();
         }
-        $client->addQuery('category/tree', $params, [], function($data) use (&$category, &$region, $sliceToken) {
+        $client->addQuery('category/tree', $params, [], function($data) use (&$category, &$region, $sliceToken, $helper) {
             /**
              * Загрузка дочерних и родительских узлов категории
              *
@@ -246,7 +247,7 @@ class ShowAction {
              * @param array $data
              * @use \Model\Region\Entity $region
              */
-            $loadBranch = function(\Model\Product\Category\Entity $category, array $data) use (&$region, $sliceToken) {
+            $loadBranch = function(\Model\Product\Category\Entity $category, array $data) use (&$region, $sliceToken, $helper) {
                 // только при загрузке дерева ядро может отдать нам количество товаров в ней
                 if ($region && isset($data['product_count'])) {
                     $category->setProductCount($data['product_count']);
@@ -259,13 +260,11 @@ class ShowAction {
                 if (isset($data['children']) && is_array($data['children'])) {
                     foreach ($data['children'] as $childData) {
                         $child = new \Model\Product\Category\Entity($childData);
-                        $url = $child->getLink();
-                        $url = explode('/', $url);
-                        $url = end($url);
-                        $url = "/slices/$sliceToken/$url";
+                        // переделываем url для дочерних категорий
+                        $url = explode('/', $child->getLink());
+                        $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
                         $child->setLink($url);
 
-//                        $category->addChild(new \Model\Product\Category\Entity($childData));
                         $category->addChild($child);
                     }
                 }
@@ -413,6 +412,18 @@ class ShowAction {
         // промо-контент не показываем на страницах пагинации, брэнда, фильтров
         if ($pageNum > 1 || (bool)((array)$request->get(\View\Product\FilterForm::$name, []))) {
             $promoContent = '';
+        }
+
+        // задаем title
+        if (!is_null($category->getName())) {
+            $slice->setName($slice->getName() . ' - ' . $category->getName());
+        }
+
+        // переделываем url для breadcrumbs
+        foreach ($category->getAncestor() as $ancestor) {
+            $url = explode('/', $ancestor->getLink());
+            $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
+            $ancestor->setLink($url);
         }
 
         $setPageParameters = function(\View\Layout $page) use (
