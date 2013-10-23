@@ -299,6 +299,7 @@ class DefaultLayout extends Layout {
             if ('subscribe_friends' == $routeToken) {
                 $return .= $this->tryRender('partner-counter/_am15_net');
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
+                $return .= $this->tryRender('partner-counter/_cityAds_subscribe');
             }
 
         }
