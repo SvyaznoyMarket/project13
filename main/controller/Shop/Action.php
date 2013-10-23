@@ -73,6 +73,8 @@ class Action {
         // выполнение 2-го пакета запросов
         $client->execute();
 
+        $this->prepareShopsBeforeSort($shops);
+
         // маркеры
         $markers = [];
         foreach ($shops as $shop) {
@@ -86,8 +88,11 @@ class Action {
                 'latitude'          => $shop->getLatitude(),
                 'longitude'         => $shop->getLongitude(),
                 'is_reconstruction' => $shop->getIsReconstructed(),
+                'subway_name'       => $shop->getSubwayName(),
             );
         }
+
+        //$this->sortMarkersBySubways($markers); // <!-- todo
 
         $page = new \View\Shop\RegionPage();
         $page->setParam('shopAvailableRegions', $shopAvailableRegions);
@@ -187,4 +192,71 @@ class Action {
 
         return new \Http\Response($page->show());
     }
+
+
+    /**
+     * @param array $shops
+     */
+    private function prepareShopsBeforeSort(&$shops) {
+        $makeForRegion = 14974; // Moskva
+
+        foreach($shops as $shop) {
+            /* @var $shop \Model\Shop\Entity */
+
+            if ( $makeForRegion === $shop->getRegion()->getId() ) {
+                $forReplaceArr = [
+                    'Пункт выдачи,',
+                    $shop->getAddress(),
+                ];
+                $subwayName = $shop->getName();
+                $subwayName = str_replace($forReplaceArr, '', $subwayName);
+                $subwayName = $this->checkSubwayName($subwayName);
+
+                if ($subwayName) {
+                    $shop->setSubwayName( $subwayName );
+                }
+            }
+        }
+    }
+
+    /**
+     * @param   string    $name
+     * @return  bool|string
+     */
+    private function checkSubwayName($name) {
+        $subwayPrefix = 'м. ';
+        //print_r( mb_strpos($name, $subwayPrefix, 0, 'UTF-8') );
+        if ( false === strpos($name, $subwayPrefix) ) return false;
+        $name = str_replace($subwayPrefix, '', $name);
+        $pos = strpos($name, ',');
+        if ($pos) {
+            $name = substr($name, 0, $pos);
+        }
+        $name = trim($name);
+        if (empty($name)) return false;
+        return $name;
+    }
+
+
+    /**
+     * @param array $markers
+     */
+    private function sortMarkersBySubways(&$markers)
+    {
+        usort($markers, function($a, $b) {
+            if (
+                empty($a['subway_name']) &&
+                empty($b['subway_name'])
+            ) return 0;
+
+            if ($a['subway_name'] == $b['subway_name']) return 0;
+            return $a['subway_name'] < $b['subway_name'] ? 1 : -1;
+
+            //file_put_contents('ts.txt', print_r($a,1), FILE_APPEND);
+
+            /*if ($a['id'] == $b['id']) return 0;
+            return $a['id'] < $b['id'] ? 1 : -1;*/
+        });
+    }
+
 }
