@@ -336,16 +336,6 @@ return [
         'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
     ],
-    // добавление товара в корзину
-    'cart.paypal.product.set' => [
-        'pattern' => '/cart/paypal/add-product/{productId}',
-        'action'  => ['Cart\Paypal\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    'cart.paypal.product.delete' => [
-        'pattern' => '/cart/paypal/delete-product/{productId}',
-        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
-    ],
     // удаление товара из корзины
     'cart.product.delete' => [
         'pattern' => '/cart/delete-product/{productId}',
@@ -356,6 +346,28 @@ return [
         'pattern' => '/cart/set-products',
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
+    // добавление товара в корзину
+    'cart.paypal.product.set' => [
+        'pattern' => '/cart/paypal/add-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'set'],
+    ],
+    // удаление товара из корзины
+    'cart.paypal.product.delete' => [
+        'pattern' => '/cart/paypal/delete-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
+    ],
+
+    // добавление товара в корзину
+    'cart.lifeGift.product.set' => [
+        'pattern' => '/cart/life-gift/add-product/{productId}',
+        'action'  => ['Cart\LifeGift\ProductAction', 'set'],
+    ],
+    // удаление товара из корзины
+    'cart.lifeGift.product.delete' => [
+        'pattern' => '/cart/life-gift/delete-product/{productId}',
+        'action'  => ['Cart\LifeGift\ProductAction', 'delete'],
+    ],
+
     // добавление услуги в корзину
     'cart.service.set' => [
         'pattern' => '/cart/add-service/{serviceId}/for-product/{productId}',
@@ -455,6 +467,15 @@ return [
     'order.paypal.create' => [
         'pattern' => '/orders/paypal/create',
         'action'  => ['Order\Paypal\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'order.lifeGift.new' => [
+        'pattern' => '/orders/life-gift/new',
+        'action'  => ['Order\LifeGift\NewAction', 'execute'],
+    ],
+    'order.lifeGift.create' => [
+        'pattern' => '/orders/life-gift/create',
+        'action'  => ['Order\LifeGift\CreateAction', 'execute'],
         'method'  => ['POST'],
     ],
     'order.bill' => [
