@@ -164,7 +164,7 @@ class ProductAction {
                 'cart/get-price',
                 ['geo_id' => \App::user()->getRegion()->getId()],
                 [
-                    'product_list'  => $productData,
+                    'product_list'  => $cart->getProductData(),
                     'service_list'  => [],
                     'warranty_list' => [],
                 ],

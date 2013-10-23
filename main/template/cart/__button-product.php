@@ -22,6 +22,10 @@ return function (
         $class .= ' mShopsOnly';
     }
 
+    if (!$product->isInShopStockOnly() && false === strpos($class, 'jsBuyButton')) {
+        $class .= ' jsBuyButton';
+    }
+
     if (!$product->getIsBuyable()) {
         $url = '#';
         $class .= ' mDisabled';

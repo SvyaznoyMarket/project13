@@ -643,12 +643,6 @@ return [
         'action'  => ['Cron\LinksAction', 'execute'],
     ],
 
-    // LiveTex Statistics:
-    'livetex.statistics' => [
-        'pattern' => '/livetex-statistics',
-        'action' => ['Livetex\StatisticsAction', 'execute'],
-    ],
-
     //survey
     'survey.submit-answer' => [
         'pattern' => '/survey/submit-answer',

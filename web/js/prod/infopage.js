@@ -408,16 +408,23 @@ $(document).ready(function(){
 	}
 
 	// login form toggle
-	if ( $('#hideLoginform').length ) {
-		$('#hideLoginform').bind('click', function () {
-			var loginform = $('#login-form');
+	if ( $('.jsHideLoginform').length ) {
+		var loginform = $('.jsLoginForm'),
+			hideLoginformLink = $('.jsHideLoginform');
+		// end of vars
 
-			$('#hideLoginform').hide();
-			loginform.slideDown(300);
-			$.scrollTo(loginform, 500);
+		var hideLoginform = function () {
+				hideLoginformLink.hide();
+				loginform.slideDown(300);
+				$.scrollTo(loginform, 500);
 
-			return false;
-		});
+				return false;
+			};
+		// end of functions
+
+		// скрываем форму логина при загрузке страницы /login
+		loginform.hide();
+		hideLoginformLink.on('click', hideLoginform);
 	}
 
 	/*paginator*/
@@ -626,7 +633,7 @@ $(document).ready(function(){
  *
  * @requires  jQuery
  */
-;(function(global) {	
+;(function(global) {
 	var serviceData = $('#contentPageData').data('data'),
 		selectRegion = $('#region_list'),
 		serviceTableContent = $('#bServicesTable tbody');
@@ -647,7 +654,7 @@ $(document).ready(function(){
 
 				for ( i = 0; i < tableData.length; i++ ) {
 					tmpTr = '<tr>'+
-								'<td>'+ (i + 1) +'</td>'+
+								//'<td>'+ (i + 1) +'</td>'+
 								'<td>'+ tableData[i]['Услуга'] +'</td>'+
 								'<td>'+ tableData[i]['Стоимость'] +'</td>'+
 							'</tr>';
@@ -661,7 +668,7 @@ $(document).ready(function(){
 				for ( key in tableData ) {
 					if ( tableData.hasOwnProperty(key) ) {
 						tmpTr = '<tr>'+
-									'<th></th>'+
+									//'<th></th>'+
 									'<th><strong>'+ key +'</strong></th>'+
 									'<th></th>'+
 								'</tr>';
@@ -670,7 +677,7 @@ $(document).ready(function(){
 
 						for ( i = 0; i < tableData[key].length; i++ ) {
 							tmpTr = '<tr>'+
-										'<td>'+ (i + 1) +'</td>'+
+										//'<td>'+ (i + 1) +'</td>'+
 										'<td>'+ tableData[key][i]['Услуга'] +'</td>'+
 										'<td>'+ tableData[key][i]['Стоимость'] +'</td>'+
 									'</tr>';
@@ -691,7 +698,7 @@ $(document).ready(function(){
 				tmpOpt,
 				initVal;
 			// end of vars
-			
+
 			console.info('prepareData');
 
 			selectRegion.empty();
@@ -720,6 +727,8 @@ $(document).ready(function(){
 			createTable(selectedRegion);
 		};
 	// end of function
+
+	$('#bServicesTable tr th:first').remove();
 
 	if ( serviceData ) {
 		prepareData(serviceData);

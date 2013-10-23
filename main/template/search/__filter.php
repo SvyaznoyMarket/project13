@@ -8,9 +8,6 @@ return function(
     array $categories,
     \Model\Product\Category\Entity $selectedCategory = null
 ) {
-    if (!(bool)$productFilter->getFilterCollection()) {
-        return '';
-    }
 ?>
 
     <?= $helper->render('product-category/__filter', [

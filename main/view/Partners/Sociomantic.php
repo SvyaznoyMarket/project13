@@ -17,14 +17,14 @@ class Sociomantic
 
     public function makeCategories($breadcrumbs, $category = null, $ctype = 'product')
     {
-        $prod_cats = '';
+        $prod_cats = [];
         $useLastItem = false; // $ctype == 'product'
         if ($ctype == 'category') $useLastItem = true;
 
         if ($breadcrumbs and is_array($breadcrumbs)) {
             $prod_cats = $this->breadcrumbsToArray($breadcrumbs, $useLastItem);
         } else {
-            if ($category) $prod_cats = $category->getName();
+            if ($category) $prod_cats[] = $category->getName();
         }
 
         return $prod_cats;
@@ -129,59 +129,6 @@ class Sociomantic
         return $id ?: 0;
     }
 
-
-    /**
-     * TODO: проверить. похоже этот кривоватый метод уже не нужен
-     * Возвращает категории продукта в виде строки (для js-скрипта например) исходя из масива
-     * @param $prod_cats_arr
-     * @return string|bool
-     *//*
-    public function prod_cats_in_string($prod_cats_arr = null, $prod_cats_names = null)
-    {
-        if (empty($prod_cats_arr) and empty($prod_cats_names)) return false;
-
-        if (is_array($prod_cats_arr))
-            foreach ($prod_cats_arr as $item) {
-                if ($item instanceof \Model\Product\Category\Entity) {
-                    $categories_names_arr = $item->getName();
-                }
-            }
-
-        if (!empty($prod_cats_names)) {
-
-            if (is_string($prod_cats_names)) {
-                $categories_names_arr[] = $prod_cats_names;
-            } else
-
-                if (is_array($prod_cats_names)) {
-                    foreach ($prod_cats_names as $item) {
-                        $categories_names_arr[] = $item;
-                    }
-                }
-        }
-
-
-        $count = count($categories_names_arr);
-        if ($count < 1) return false;
-
-        $i = 0;
-        $prod_cats_string = "[";
-
-        foreach ($categories_names_arr as $catName) {
-            if (is_string($catName)) {
-                $i++;
-                $catName = str_replace('"', "'", $catName);
-                $prod_cats_string .= " '" . $catName . "'";
-                if ($i < $count) $prod_cats_string .= ", ";
-            } else {
-                $count--;
-            }
-        }
-
-        $prod_cats_string .= " ]";
-        return $prod_cats_string;
-    }
-    */
 
     /**
      * Конвертирует хлебные крошки в массив

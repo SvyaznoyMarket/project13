@@ -11,7 +11,8 @@
 			submitBtn = $('.bLowPriceNotiferPopup__eSubmitEmail'),
 			input = $('.bLowPriceNotiferPopup__eInputEmail'),
 			notiferPopup = $('.bLowPriceNotiferPopup'),
-			error = $('.bLowPriceNotiferPopup__eError');
+			error = $('.bLowPriceNotiferPopup__eError'),
+			subscribe = $('.jsSubscribe');
 		// end of vars
 
 			/**
@@ -52,7 +53,7 @@
 			 * @param	{Object}	res	Ответ от сервера
 			 */
 			resFromServer = function resFromServer( res ) {
-				if ( !res.success) {
+				if ( !res.success ) {
 					input.addClass('red');
 
 					if ( res.error.message ) {
@@ -68,12 +69,23 @@
 			},
 
 			/**
+			 * Проверка чекбокса "Акции и суперпредложения"
+			 */
+			checkSubscribe = function checkSubscribe() {
+				if ( subscribe.length && subscribe.is(':checked') ) {
+					return true;
+				}
+
+				return false;
+			}
+
+			/**
 			 * Отправка данных на сервер
 			 */
 			lowPriceNotiferSubmit = function lowPriceNotiferSubmit() {
 				var submitUrl = submitBtn.data('url');
 				
-				submitUrl += encodeURI('?email='+input.val());
+				submitUrl += encodeURI('?email=' + input.val() + '&subscribe=' + (checkSubscribe() ? 1 : 0));
 				$.get( submitUrl, resFromServer);
 
 				return false;

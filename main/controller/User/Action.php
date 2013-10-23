@@ -98,13 +98,7 @@ class Action {
 
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
-                            'success' => true,
                             'data'    => [
-                                'content' => \App::templating()->render('form-login', [
-                                    'page'    => new \View\Layout(),
-                                    'form'    => $form,
-                                    'request' => \App::request(),
-                                ]),
                                 'user' => [
                                     'first_name'   => $userEntity->getFirstName(),
                                     'last_name'    => $userEntity->getLastName(),
@@ -112,6 +106,8 @@ class Action {
                                 ],
                                 'link' => $this->redirect,
                             ],
+                            'error' => null,
+                            'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])
                         : new \Http\RedirectResponse($this->redirect);
 
@@ -131,24 +127,22 @@ class Action {
                 }
             }
 
+            $formErrors = [];
+            foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
+            }
+
             // xhr
             if ($request->isXmlHttpRequest()) {
                 return new \Http\JsonResponse([
-                    'success' => $form->isValid(),
-                    'data'    => [
-                        'content' => \App::templating()->render('form-login', [
-                            'page'    => new \View\Layout(),
-                            'form'    => $form,
-                            'request' => \App::request(),
-                        ]),
-                    ],
+                    'form' => ['error' => $formErrors],
+                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
                 ]);
             }
         }
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-        $page->setParam('redirect', $this->redirect);
 
         return new \Http\Response($page->show());
     }
@@ -176,7 +170,7 @@ class Action {
             }
         }
 
-        $response = new \Http\RedirectResponse($redirect_to); 
+        $response = new \Http\RedirectResponse($redirect_to);
 
         $user->removeToken($response);
         $user->setCacheCookie($response);
@@ -244,14 +238,12 @@ class Action {
                         ? new \Http\JsonResponse([
                             'success' => true,
                             'message' => sprintf('Пароль выслан на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
+
                             'data'    => [
-                                'content' => \App::templating()->render('form-register', [
-                                    'page'    => new \View\Layout(),
-                                    'form'    => $form,
-                                    'request' => \App::request(),
-                                ]),
                                 'link' => $this->redirect,
                             ],
+                            'error' => null,
+                            'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])
                         : new \Http\RedirectResponse($this->redirect);
 
@@ -276,26 +268,22 @@ class Action {
                 }
             }
 
+            $formErrors = [];
+            foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
+            }
+
             // xhr
             if ($request->isXmlHttpRequest()) {
                 return new \Http\JsonResponse([
-                    'success' => $form->isValid(),
-                    'data'    => [
-                        'content' => \App::templating()->render('form-register', [
-                            'page'    => new \View\Layout(),
-                            'form'    => $form,
-                            'request' => \App::request(),
-                        ]),
-                    ],
+                    'form' => ['error' => $formErrors],
+                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
                 ]);
             }
         }
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-        if ( $this->requestRedirect ) {
-            $page->setParam('redirect', $this->requestRedirect);
-        }
 
         return new \Http\Response($page->show());
     }
@@ -527,28 +515,38 @@ class Action {
     public function forgot(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $username = trim((string)$request->get('login'));
+        $username = trim((string)$request->get('forgot')['login']);
 
-        $error = null;
+        $errorMsg = null;
+        $formErrors = [];
         try {
             if (!$username) {
-                $error = 'Не указан email или мобильный телефон';
-                throw new \Exception($error);
+                $errorMsg = 'Не указан email или мобильный телефон';
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'login'];
+                throw new \Exception($errorMsg);
             }
 
             $result = \App::coreClientV2()->query('user/reset-password', [
                 (strpos($username, '@') ? 'email' : 'mobile') => $username,
             ]);
             if (isset($result['confirmed']) && $result['confirmed']) {
-                return new \Http\JsonResponse(['success' => true]);
+                return new \Http\JsonResponse([
+                    'error' => null,
+                    'notice' => ['message' => 'Новый пароль был вам выслан по почте или смс!', 'type' => 'info']
+                ]);
             }
         } catch(\Exception $e) {
             \App::exception()->remove($e);
-
-            $error = $error ?: ('Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
+            if ( $errorMsg == null ) {
+                $errorMsg = 'Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : '');
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'global'];
+            }
         }
 
-        return new \Http\JsonResponse(['success' => false, 'error' => $error]);
+        return new \Http\JsonResponse([
+            'form' => ['error' => $formErrors],
+            'error' => ['code' => 0, 'message' => 'Вы ввели неправильные данные']
+        ]);
     }
 
     public function reset(\Http\Request $request) {

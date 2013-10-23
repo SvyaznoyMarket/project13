@@ -323,17 +323,18 @@ class DefaultLayout extends Layout {
         $region_id = \App::user()->getRegion()->getId();
         $smantic = new \View\Partners\Sociomantic($region_id);
 
-        // на всех страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
-        $return = $this->render($smantic_path . '01-homepage');
 
-
-        /*
         if (!in_array($routeName, [
-            // на этих страницах Sociomantic подключается через JS
+            // !!! Не дублировать! Hа этих страницах Sociomantic
+            // вместе с inclusion tag
+            // подключается через JS — см файл /web/js/dev/order/order.js
             'order',
             'order.complete',
-        ])) // orders-if-begin{
-        */
+        ])) {
+            // на всех страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
+            $return = $this->render($smantic_path . '01-homepage');
+        }
+
 
         if ($routeName == 'product.category') {
 
@@ -354,7 +355,9 @@ class DefaultLayout extends Layout {
             $cart_prods = $smantic->makeCartProducts($products, $cartProductsById);
             $return .= $this->render($smantic_path . '04-basket', ['cart_prods' => $cart_prods, 'smantic' => &$smantic]);
 
-        } else if ($routeName == 'order.complete') {
+        }/* else if ($routeName == 'order.complete') {
+
+            // !!! На этих страницах подключается через js — /web/js/dev/order/order.js
 
             //$products = $this->getParam('products');
             //$cartProductsById = $this->getParam('cartProductsById');
@@ -366,7 +369,7 @@ class DefaultLayout extends Layout {
 
             $smantic->restoreSession();
 
-        }
+        }*/
         /*else if ( $routeName == 'order' ) {
 
             //$products = $this->getParam('products');
@@ -475,6 +478,19 @@ class DefaultLayout extends Layout {
         if ( !in_array($routeToken, $onPages) ) return;
 
         return '<div id="enterleadsJS" class="jsanalytics" ></div>';
+    }
+
+
+    public function slotMarinLandingPageTagJS()
+    {
+        return '<div id="marinLandingPageTagJS" class="jsanalytics">
+            <noscript><img src="https://tracker.marinsm.com/tp?act=1&cid=7saq97byg0&script=no" ></noscript></div>';
+    }
+
+
+    public function slotMarinConversionTagJS()
+    {
+        return '';
     }
 
 }

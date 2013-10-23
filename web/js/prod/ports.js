@@ -226,12 +226,6 @@ window.ANALYTICS = {
         })();
     },
 
-    sociomanticConfirmationPage : function() {
-        (function(){
-            window.sonar_basket = $('#sociomanticConfirmationPage').data('sonar-basket');
-        })();
-    },
-
     criteoJS : function() {
         window.criteo_q = window.criteo_q || [];
         var criteo_arr =  $('#criteoJS').data('value');
@@ -384,6 +378,7 @@ window.ANALYTICS = {
         window.RetailRocket = {
 
             'product': function ( data, userData ) {
+
                 window.rcAsyncInit = function () {
                     if ( userData.userId ) {
                         rcApi.view(data, userData);
@@ -396,6 +391,7 @@ window.ANALYTICS = {
             },
 
             'product.category': function ( data, userData ) {
+
                 window.rcAsyncInit = function () {
                     if ( userData.userId ) {
                         rcApi.categoryView(data, userData);
@@ -407,21 +403,22 @@ window.ANALYTICS = {
             },
 
             'order.complete': function ( data, userData ) {
+
+                if ( userData.userId ) {
+                    data.userId = userData.userId;
+                    data.hasUserEmail = userData.hasUserEmail;
+                }
+
                 window.rcAsyncInit = function () {
-                    if ( userData.userId ) {
-                        rcApi.order(data, userData);
-                    }
-                    else {
-                        rcApi.order(data);   
-                    }
+                    rcApi.order(data);
                 }
             },
 
             action: function ( e, userInfo ) {
                 var rr_data = $('#RetailRocketJS').data('value'),
                     sendUserData = {
-                        userId: userInfo && userInfo.id ? userInfo.id : false,
-                        hasUserEmail: userInfo && userInfo.email ? true : false
+                        userId: userInfo.emailHash || userInfo.id || false,
+                        hasUserEmail: ( userInfo && userInfo.email ) ? true : false
                     };
                 // end of vars
 
@@ -447,8 +444,8 @@ window.ANALYTICS = {
         }// end of window.RetailRocket object
 
         RetailRocket.init();
-        RetailRocket.action();
-        //$('body').on('userLogged', RetailRocket.action);
+        // RetailRocket.action();
+        $('body').on('userLogged', RetailRocket.action);
     },
 
     AdmitadJS : function() {
@@ -592,6 +589,45 @@ window.ANALYTICS = {
 	testFreak : function() {
 		document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
 	},
+
+	marinSoftwarePageAddJS: function() {
+		var mClientId ='7saq97byg0';
+		var mProto = ('https:' == document.location.protocol ? 'https://' : 'http://');
+		var mHost = 'tracker.marinsm.com';
+		var mt = document.createElement('script'); mt.type = 'text/javascript'; mt.async = true; mt.src = mProto + mHost + '/tracker/async/' + mClientId + '.js';
+		var fscr = document.getElementsByTagName('script')[0]; fscr.parentNode.insertBefore(mt, fscr);
+	},
+
+	marinLandingPageTagJS : function() {
+		var _mTrack = window._mTrack || [];
+		_mTrack.push(['trackPage']);
+		this.marinSoftwarePageAddJS();
+	},
+
+	marinConversionTagJS : function() {
+		var orders = $('#marinConversionTagJS').data('value'),
+			_mTrack = window._mTrack || [];
+		// end of vars
+
+		if ( orders.length ) {
+			for ( var i in orders ) {
+				if ( orders[i]['id'] ) {
+					_mTrack.push(['addTrans', {
+						items : [
+							{
+								convType : 'sales',
+								orderId : orders[i]['id']	// order‑id
+							}
+						]
+					}]);
+
+					_mTrack.push(['processOrders']);
+				}
+			}
+			this.marinSoftwarePageAddJS();
+		}
+	},
+
 
 	enable : true
 }
