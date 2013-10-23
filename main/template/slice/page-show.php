@@ -3,6 +3,7 @@
  * @var $page             \View\Search\IndexPage
  * @var $request          \Http\Request
  * @var $productFilter    \Model\Product\Filter
+ * @var $category         \Model\Product\Category\Entity
  * @var $slice            \Model\Slice\Entity
  * @var $productPager     \Iterator\EntityPager
  * @var $categories       \Model\Product\Category\Entity[]
@@ -14,22 +15,26 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
+<form class="bFilter clearfix hidden" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
+
 <div class="bCatalog">
 
-    <? if (false): ?>
-        <?= $helper->render('slice/__breadcrumbs', [
-            'slice' => $slice,
-        ]) // хлебные крошки ?>
-    <? endif ?>
+    <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
     <h1><?= $slice->getName() ?></h1>
 
-    <?= $helper->render('product-category/__filter', [
+    <? if (!empty($promoContent)): ?>
+        <?= $promoContent ?>
+    <? else: ?>
+        <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
+    <? endif ?>
+
+    <?/*= $helper->render('product-category/__filter', [
         'baseUrl'          => $helper->url('slice.show', ['sliceToken' => $slice->getToken()]),
         'countUrl'         => null,
         'productFilter'    => $productFilter,
         'categories'       => $categories,
-    ]) // фильтры ?>
+    ])*/ // фильтры ?>
 
     <?= $helper->render('product/__listAction', [
         'pager'          => $productPager,
