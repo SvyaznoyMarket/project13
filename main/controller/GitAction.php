@@ -16,7 +16,7 @@ class GitAction {
         }
 
         try {
-            $result = shell_exec('cd "' . \App::config()->appDir . '" && git pull; git status');
+            $result = shell_exec('cd "' . \App::config()->appDir . '" && (git fetch; git pull; git status)');
         } catch (\Exception $e) {
             $result = (string)$e;
         }
