@@ -1510,7 +1510,7 @@ table {
   font-size: 14px;
   position: fixed;
   top: 0;
-  left: 30px;
+  left: 50%;
   margin-top: -55px;
   padding: 25px 0 10px;
   line-height: 1;
@@ -1519,6 +1519,7 @@ table {
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
+  margin-left: -560px;
 }
 .upper:hover {
   background-color: rgba(255, 255, 255, 0.9);
