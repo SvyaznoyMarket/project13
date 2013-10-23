@@ -6,57 +6,14 @@ class ShowAction {
     private static $globalCookieName = 'global';
     protected $pageTitle;
 
-    public function execute($sliceToken, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        /** @var $slice \Model\Slice\Entity|null */
-        $slice = null;
-        \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice) {
-            if (is_array($data) && (bool)$data) {
-                $slice = new \Model\Slice\Entity($data);
-            }
-        });
-        \App::dataStoreClient()->execute();
-
-        if (!$slice) {
-            throw new \Exception\NotFoundException(sprintf('Срез @%s не найден', $sliceToken));
-        }
-
-        // добывание фильтров из среза
-        $requestData = [];
-        parse_str($slice->getFilterQuery(), $requestData);
-
-        $values = [];
-        foreach ($requestData as $k => $v) {
-            if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
-            $parts = array_pad(explode('-', $k), 3, null);
-
-            if (!isset($values[$parts[1]])) {
-                $values[$parts[1]] = [];
-            }
-            if (('from' == $parts[2]) || ('to' == $parts[2])) {
-                $values[$parts[1]][$parts[2]] = $v;
-            } else {
-                $values[$parts[1]][] = $v;
-            }
-        }
-
-        $filterData = []; // https://wiki.enter.ru/pages/viewpage.action?pageId=20448554#id-%D0%92%D0%BD%D0%B5%D1%88%D0%BD%D0%B8%D0%B9%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D1%84%D0%B5%D0%B9%D1%81-%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%D1%82%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%BE%D0%B2:
-        foreach ($values as $k => $v) {
-            if (isset($v['from']) || isset($v['to'])) {
-                $filterData[] = [$k, 2, isset($v['from']) ? $v['from'] : null, isset($v['to']) ? $v['to'] : null];
-            } else {
-                $filterData[] = [$k, 1, $v];
-            }
-        }
-        die(var_dump($filterData));
-
-        die(var_dump($slice));
-
-        $page = new \View\Slice\ShowPage();
-        $page->setParam('slice', $slice);
-
-        return new \Http\Response($page->show());
+    /**
+     * @param \Http\Request $request
+     * @param string        $sliceToken
+     * @throws \Exception\NotFoundException
+     * @return \Http\Response
+     */
+    public function execute(\Http\Request $request, $sliceToken) {
+        return $this->category($request, $sliceToken, null);
     }
 
 
@@ -267,17 +224,21 @@ class ShowAction {
 
         // запрашиваем дерево категорий
         //\RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
+        if (!$category->getLevel()) {
+            $category->setLevel(1);
+        }
+
         $params = [
-            'root_id'         => $category->getHasChild() ? $category->getId() : $category->getParentId(),
+            'root_id'         => $category->getHasChild() ? $category->getId() : ($category->getParentId() ? $category->getParentId() : 0),
             'max_level'       => isset($category) ? $category->getLevel() + 1 : 1,
             'is_load_parents' => true,
-            'filter' => $filterData,
+            'filter' => ['filters' => $filterData],
         ];
 
         if ($region) {
             $params['region_id'] = $region->getId();
         }
-        $client->addQuery('category/tree', $params, [], function($data) use (&$category, &$region) {
+        $client->addQuery('category/tree', $params, [], function($data) use (&$category, &$region, $sliceToken) {
             /**
              * Загрузка дочерних и родительских узлов категории
              *
@@ -285,7 +246,7 @@ class ShowAction {
              * @param array $data
              * @use \Model\Region\Entity $region
              */
-            $loadBranch = function(\Model\Product\Category\Entity $category, array $data) use (&$region) {
+            $loadBranch = function(\Model\Product\Category\Entity $category, array $data) use (&$region, $sliceToken) {
                 // только при загрузке дерева ядро может отдать нам количество товаров в ней
                 if ($region && isset($data['product_count'])) {
                     $category->setProductCount($data['product_count']);
@@ -297,7 +258,15 @@ class ShowAction {
                 // добавляем дочерние узлы
                 if (isset($data['children']) && is_array($data['children'])) {
                     foreach ($data['children'] as $childData) {
-                        $category->addChild(new \Model\Product\Category\Entity($childData));
+                        $child = new \Model\Product\Category\Entity($childData);
+                        $url = $child->getLink();
+                        $url = explode('/', $url);
+                        $url = end($url);
+                        $url = "/slices/$sliceToken/$url";
+                        $child->setLink($url);
+
+//                        $category->addChild(new \Model\Product\Category\Entity($childData));
+                        $category->addChild($child);
                     }
                 }
             };
@@ -327,7 +296,7 @@ class ShowAction {
                     // если текущий уровень равен уровню категории, пробуем найти данные для категории
                     foreach ($data as $item) {
                         // ура, наконец-то наткнулись на текущую категорию
-                        if ($item['id'] == $category->getId()) {
+                        if ($item['id'] == $category->getId() || is_null($category->getId())) {
                             $loadBranch($category, $item);
                             return;
                         }
@@ -573,18 +542,14 @@ class ShowAction {
             $page->setGlobalParam('allCount', $pagerAll->count());
         }
 
-//        $productPager = $repository->getIteratorByFilter(
-//            $productFilter->dump(),
-//            $sort,
-//            ($pageNum - 1) * $limit,
-//            $limit
-//        );
 
         $response = [];
         $region = null;
 
         // добавляем фильтр по категории
-        $filterData[] = ["category",1,[$category->getId()]];
+        if ($category->getId()) {
+            $filterData[] = ["category",1,[$category->getId()]];
+        }
 
         $client = \App::coreClientV2();
         $client->addQuery('listing/list',
