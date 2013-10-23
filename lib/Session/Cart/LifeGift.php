@@ -25,6 +25,8 @@ class LifeGift {
      * @param \Model\Cart\Product\Entity $product
      */
     public function setProduct(\Model\Cart\Product\Entity $product) {
+        $this->clear(); // возможно добавление только одного товара
+
         $sessionData = $this->storage->get($this->sessionName);
 
         if ($product->getQuantity() < 1) {
