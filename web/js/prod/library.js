@@ -1896,15 +1896,21 @@ window.MapInterface = (function() {
 
 					show_user = tmpl('auth_tmpl', dtmpl);
 					
-					topAuth.hide();
-					topAuth.after(show_user);
-					bottomAuth.html(userInfo.name).addClass('mAuth');
+					if ( topAuth.length ) {
+						topAuth.hide();
+						topAuth.after(show_user);
+					}
 
-					$('body').trigger('userLogged', [userInfo]);
+					if ( bottomAuth.length ) {
+						bottomAuth.html(userInfo.name).addClass('mAuth');
+					}
 				}
 				else {
 					topAuth.show();
+
 				}
+
+				$('body').trigger('userLogged', [userInfo]);
 			}; 
 			
 			return {
@@ -2082,6 +2088,21 @@ FormValidator.prototype._requireAs = {
 	},
 
 	text: function( fieldNode ) {
+		var value = fieldNode.val();
+
+		if ( value.length === 0 ) {
+			return {
+				hasError: true,
+				errorMsg : 'Поле обязательно для заполнения'
+			};
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
+	password: function( fieldNode ) {
 		var value = fieldNode.val();
 
 		if ( value.length === 0 ) {

@@ -94,7 +94,7 @@ function handle_jewel_infinity_scroll() {
     })
   })
   setTimeout(function(){
-    if( window.docCookies.hasItem( 'infScroll' ) ) {
+    if ( window.docCookies.getItem( 'infScroll' ) === '1' ) {
       switch_to_scroll(checkScrollJewel);
     }
   },600);
@@ -150,7 +150,7 @@ console.log(1111)
   $('div.pageslist li').remove();
   $('div.pageslist ul').append( next )
              .find('a')
-             .bind('click', function(event){
+             .bind('click', function( event ) {
                 window.docCookies.setItem('infScroll', 0, 4*7*24*60*60, '/' );
                 // ableToLoadJewel = true
                 // $(window).unbind('scroll')

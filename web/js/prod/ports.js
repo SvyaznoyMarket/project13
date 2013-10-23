@@ -226,12 +226,6 @@ window.ANALYTICS = {
         })();
     },
 
-    sociomanticConfirmationPage : function() {
-        (function(){
-            window.sonar_basket = $('#sociomanticConfirmationPage').data('sonar-basket');
-        })();
-    },
-
     criteoJS : function() {
         window.criteo_q = window.criteo_q || [];
         var criteo_arr =  $('#criteoJS').data('value');
@@ -380,39 +374,106 @@ window.ANALYTICS = {
     RetailRocketJS : function() {
         window.rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // var rrPartnerId — по ТЗ должна быть глобальной
         /* и действительно, иначе не подгружается скрипт с api.retailrocket.ru */
+        
+        window.rrApi = {};
+        rrApi.addToBasket = rrApi.order = rrApi.categoryView = rrApi.view =
+        rrApi.recomMouseDown = rrApi.recomAddToCart = function() {};
 
         window.RetailRocket = {
 
             'product': function ( data, userData ) {
+
                 window.rcAsyncInit = function () {
                     if ( userData.userId ) {
-                        rcApi.view(data, userData);
+                        try {
+                            rcApi.view(data, userData);
+                        }
+                        catch ( err ) {
+                            var dataToLog = {
+                                    event: 'RR_error',
+                                    type:'ошибка в rcApi.view',
+                                    err: err
+                                };
+                            // end of vars
+
+                            ENTER.utils.logError(dataToLog);
+                        }
                     }
                     else {
-                        rcApi.view(data);   
+                        try {
+                            rcApi.view(data);
+                        }
+                        catch ( err ) {
+                            var dataToLog = {
+                                    event: 'RR_error',
+                                    type:'ошибка в rcApi.view',
+                                    err: err
+                                };
+                            // end of vars
+
+                            ENTER.utils.logError(dataToLog);
+                        }
                     }
 
                 }
             },
 
             'product.category': function ( data, userData ) {
+
                 window.rcAsyncInit = function () {
                     if ( userData.userId ) {
-                        rcApi.categoryView(data, userData);
+                        try {
+                            rcApi.categoryView(data, userData);
+                        }
+                        catch ( err ) {
+                            var dataToLog = {
+                                    event: 'RR_error',
+                                    type:'ошибка в rcApi.categoryView',
+                                    err: err
+                                };
+                            // end of vars
+
+                            ENTER.utils.logError(dataToLog);
+                        }
                     }
                     else {
-                        rcApi.categoryView(data);   
+                        try {
+                            rcApi.categoryView(data);   
+                        }
+                        catch ( err ) {
+                            var dataToLog = {
+                                    event: 'RR_error',
+                                    type:'ошибка в rcApi.categoryView',
+                                    err: err
+                                };
+                            // end of vars
+
+                            ENTER.utils.logError(dataToLog);
+                        }
                     }
                 }
             },
 
             'order.complete': function ( data, userData ) {
+
+                if ( userData.userId ) {
+                    data.userId = userData.userId;
+                    data.hasUserEmail = userData.hasUserEmail;
+                }
+
                 window.rcAsyncInit = function () {
-                    if ( userData.userId ) {
-                        rcApi.order(data, userData);
+                    try {
+                        rcApi.order(data);
                     }
-                    else {
-                        rcApi.order(data);   
+                    catch ( err ) {
+                        var dataToLog = {
+                                event: 'RR_error',
+                                type:'ошибка в rcApi.order',
+                                err: err
+                            };
+                        // end of vars
+
+                        ENTER.utils.logError(dataToLog);
                     }
                 }
             },
@@ -420,8 +481,8 @@ window.ANALYTICS = {
             action: function ( e, userInfo ) {
                 var rr_data = $('#RetailRocketJS').data('value'),
                     sendUserData = {
-                        userId: userInfo && userInfo.id ? userInfo.id : false,
-                        hasUserEmail: userInfo && userInfo.email ? true : false
+                        userId: userInfo.emailHash || userInfo.id || false,
+                        hasUserEmail: ( userInfo && userInfo.email ) ? true : false
                     };
                 // end of vars
 
@@ -433,13 +494,12 @@ window.ANALYTICS = {
 
             init: function () { // on load:
                 (function (d) {
-                    var ref = d.getElementsByTagName('script')[0];
-                    var apiJs, apiJsId = 'rrApi-jssdk';
+                    var ref = d.getElementsByTagName('script')[0]; var apiJs, apiJsId = 'rrApi-jssdk';
                     if (d.getElementById(apiJsId)) return;
                     apiJs = d.createElement('script');
                     apiJs.id = apiJsId;
                     apiJs.async = true;
-                    apiJs.src = "http://api.retailrocket.ru/Content/JavaScript/api.js";
+                    apiJs.src = "//cdn.retailrocket.ru/javascript/tracking.js";
                     ref.parentNode.insertBefore(apiJs, ref);
                 }(document));
             }
@@ -447,8 +507,8 @@ window.ANALYTICS = {
         }// end of window.RetailRocket object
 
         RetailRocket.init();
-        RetailRocket.action();
-        //$('body').on('userLogged', RetailRocket.action);
+        // RetailRocket.action();
+        $('body').on('userLogged', RetailRocket.action);
     },
 
     AdmitadJS : function() {
