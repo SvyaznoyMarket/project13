@@ -13,8 +13,9 @@
         <p class="bLoginPageForms_eDesc">Зарегистрируйтесь и получайте актуальную информацию<br/>
             о новых поступлениях, акциях и распродажах!</p>
 
-        <?= $page->render('form-register') ?>
-        <div class="clear"></div>
+        <div class="bFormLogin"><?= $page->render('form-register') ?></div>
+        <br/>
+        <br/>
         <a class="font18 dashed jsHideLoginform" href="#">У меня уже есть логин и пароль</a>
         <div class="clearfix"><?= $page->render('form-forgot') ?></div>
         <?= $page->render('form-login') ?>

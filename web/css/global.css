@@ -8402,9 +8402,65 @@
 /*---------END ВСПЛЫВАЮЩЕЙ ПОДПИСКИ-----*/
 /*-------СТИЛИ СТРАНИЦЫ ВХОДА-----*/
 @media all {
+  #auth-block {
+    width: 694px;
+  }
+  #auth-block .registerbox .loginForm {
+    margin-right: -2px;
+    padding-right: 20px;
+    border-right: 1px solid #e6e6e6;
+  }
+  #register-form .bSubscibe {
+    display: none;
+  }
+  .bSubscibe {
+    vertical-align: top;
+    font-size: 12px;
+    font-family: Tahoma, sans-serif;
+  }
+  .bSubscibe b {
+    display: block;
+    float: left;
+    margin: 3px 10px 0 0;
+    width: 24px;
+    height: 24px;
+    background: url("/css/common/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
+    cursor: pointer;
+  }
+  .bSubscibe .subscibe {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+  }
+  .bSubscibe.checked b {
+    background-position: 0 -54px;
+  }
+  .registerAnotherWayBtn {
+    margin-right: 20px;
+    border-bottom: 1px dotted;
+    color: #a6a6a6;
+  }
+  .registerAnotherWayBtn:hover {
+    text-decoration: none;
+  }
+  .registerPhonePH {
+    position: absolute;
+    display: none;
+    margin: 0 10px;
+    line-height: 24px;
+  }
+  .registerPhone {
+    padding-left: 9%;
+    width: 89%;
+  }
+  .bPopupTitle {
+    margin: 0 0 15px;
+    text-transform: uppercase;
+    font-size: 30px;
+    font-family: "Enter";
+  }
   .bPageLogin {
-    margin-bottom: 40px;
-    padding-top: 30px;
+    padding: 30px 0 55px;
   }
   .bPageLogin_eLogo {
     background: url("/css/order/img/orderSprite.png") no-repeat scroll -55px 0 transparent;
