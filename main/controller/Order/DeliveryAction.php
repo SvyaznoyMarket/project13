@@ -389,7 +389,8 @@ class DeliveryAction {
                     'id'            => (string)$pickpointItem['Id'],
                     'number'        => (string)$pickpointItem['Number'], //  Передавать корректный id постамата, использовать не id точки, а номер постамата
                     'name'          => $pickpointItem['Name'] . '; ' . $pickpointItem['Address'],
-                    'address'       => $pickpointItem['Address'],
+                    //'address'       => $pickpointItem['Address'],
+                    'street'       => $pickpointItem['Street'],
                     'house'         => $pickpointItem['House'],
                     'regtime'       => $ppClient->worksTimePrepare($pickpointItem['WorkTime']),
                     'latitude'      => (float)$pickpointItem['Latitude'],

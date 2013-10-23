@@ -1395,7 +1395,7 @@
 
                     // В качестве адреса доставки необходимо передавать адрес постамата,
                     // так как поля адреса при заказе через pickpoint скрыты
-                    orderForm.find('#order_address_street').val( choosPoint['address'] );
+                    orderForm.find('#order_address_street').val( choosPoint['street'] );
                     orderForm.find('#order_address_building').val( choosPoint['house'] );
                     orderForm.find('#order_address_number').val('');
                     orderForm.find('#order_address_apartment').val('');
