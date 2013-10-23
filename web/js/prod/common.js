@@ -1289,7 +1289,7 @@ $(document).ready(function(){
 		 * Конфигурация валидатора для формы логина
 		 * @type {Object}
 		 */
-			signinValidationConfig = {
+		signinValidationConfig = {
 			fields: [
 				{
 					fieldNode: $('.jsSigninUsername'),
@@ -1309,7 +1309,7 @@ $(document).ready(function(){
 		 * Конфигурация валидатора для формы регистрации
 		 * @type {Object}
 		 */
-			registerValidationConfig = {
+		registerValidationConfig = {
 			fields: [
 				{
 					fieldNode: $('.jsRegisterFirstName'),
@@ -1330,7 +1330,7 @@ $(document).ready(function(){
 		 * Конфигурация валидатора для формы регистрации
 		 * @type {Object}
 		 */
-			forgotPwdValidationConfig = {
+		forgotPwdValidationConfig = {
 			fields: [
 				{
 					fieldNode: forgotPwdLogin,

@@ -11,7 +11,7 @@
 		 * Конфигурация валидатора для формы логина
 		 * @type {Object}
 		 */
-			signinValidationConfig = {
+		signinValidationConfig = {
 			fields: [
 				{
 					fieldNode: $('.jsSigninUsername'),
@@ -31,7 +31,7 @@
 		 * Конфигурация валидатора для формы регистрации
 		 * @type {Object}
 		 */
-			registerValidationConfig = {
+		registerValidationConfig = {
 			fields: [
 				{
 					fieldNode: $('.jsRegisterFirstName'),
@@ -52,7 +52,7 @@
 		 * Конфигурация валидатора для формы регистрации
 		 * @type {Object}
 		 */
-			forgotPwdValidationConfig = {
+		forgotPwdValidationConfig = {
 			fields: [
 				{
 					fieldNode: forgotPwdLogin,
