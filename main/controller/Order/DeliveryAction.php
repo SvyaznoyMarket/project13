@@ -363,6 +363,7 @@ class DeliveryAction {
                 $ppClient = \App::pickpointClient();
                 $ppClient->addQuery('postamatlist', [], [],
                     function($data) use (&$pickpoints, &$deliveryRegions) {
+                        if (!is_array($data)) return false;
                         $pickpoints = array_filter($data,
                             function($pickpointItem) use (&$deliveryRegions) {
                                 return
@@ -384,31 +385,33 @@ class DeliveryAction {
             }
 
             // пикпоинты
-            foreach ($pickpoints as $pickpointItem) {
-                $responseData['pickpoints'][] = [
-                    'id'            => (string)$pickpointItem['Id'],
-                    'number'        => (string)$pickpointItem['Number'], //  Передавать корректный id постамата, использовать не id точки, а номер постамата
-                    'name'          => $pickpointItem['Name'] . '; ' . $pickpointItem['Address'],
-                    //'address'       => $pickpointItem['Address'],
-                    'street'       => $pickpointItem['Street'],
-                    'house'         => $pickpointItem['House'],
-                    'regtime'       => $ppClient->worksTimePrepare($pickpointItem['WorkTime']),
-                    'latitude'      => (float)$pickpointItem['Latitude'],
-                    'longitude'     => (float)$pickpointItem['Longitude'],
-                    'products'      => $pickpointProductIds,
-                    'point_name'    => $pickpointItem['Name'],
-                ];
-            }
+            if ( !empty($pickpoints) ) {
+                foreach ($pickpoints as $pickpointItem) {
+                    $responseData['pickpoints'][] = [
+                        'id'            => (string)$pickpointItem['Id'],
+                        'number'        => (string)$pickpointItem['Number'], //  Передавать корректный id постамата, использовать не id точки, а номер постамата
+                        'name'          => $pickpointItem['Name'] . '; ' . $pickpointItem['Address'],
+                        //'address'       => $pickpointItem['Address'],
+                        'street'       => $pickpointItem['Street'],
+                        'house'         => $pickpointItem['House'],
+                        'regtime'       => $ppClient->worksTimePrepare($pickpointItem['WorkTime']),
+                        'latitude'      => (float)$pickpointItem['Latitude'],
+                        'longitude'     => (float)$pickpointItem['Longitude'],
+                        'products'      => $pickpointProductIds,
+                        'point_name'    => $pickpointItem['Name'],
+                    ];
+                }
 
-            // сортировка пикпоинтов
-            if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
-                usort($responseData['pickpoints'], function($a, $b) use (&$region) {
-                    if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
-                        return 0;
-                    }
+                // сортировка пикпоинтов
+                if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
+                    usort($responseData['pickpoints'], function($a, $b) use (&$region) {
+                        if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
+                            return 0;
+                        }
 
-                    return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
-                });
+                        return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
+                    });
+                }
             }
 
             // купоны

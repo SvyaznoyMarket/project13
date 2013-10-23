@@ -753,12 +753,14 @@
                 nowProduct,
                 j, k;
 
+            if ( 1 === productsToNewBox.length ) return productsToNewBox;
+
             for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
                 //!!! важно клонировать объект, дабы не портить для др. типов доставки
                 nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
+                nowProduct.quantity = 1;
+                nowProduct.sum = nowProduct.price;
                 for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
-                    nowProduct.quantity = 1;
-                    nowProduct.sum = nowProduct.price;
                     productsUniq.push(nowProduct);
                 }
             }
