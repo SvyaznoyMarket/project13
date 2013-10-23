@@ -374,6 +374,10 @@ window.ANALYTICS = {
     RetailRocketJS : function() {
         window.rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // var rrPartnerId — по ТЗ должна быть глобальной
         /* и действительно, иначе не подгружается скрипт с api.retailrocket.ru */
+        
+        window.rrApi = {};
+        rrApi.addToBasket = rrApi.order = rrApi.categoryView = rrApi.view =
+        rrApi.recomMouseDown = rrApi.recomAddToCart = function() {};
 
         window.RetailRocket = {
 
@@ -381,10 +385,34 @@ window.ANALYTICS = {
 
                 window.rcAsyncInit = function () {
                     if ( userData.userId ) {
-                        rcApi.view(data, userData);
+                        try {
+                            rcApi.view(data, userData);
+                        }
+                        catch ( err ) {
+                            var dataToLog = {
+                                    event: 'RR_error',
+                                    type:'ошибка в rcApi.view',
+                                    err: err
+                                };
+                            // end of vars
+
+                            ENTER.utils.logError(dataToLog);
+                        }
                     }
                     else {
-                        rcApi.view(data);   
+                        try {
+                            rcApi.view(data);
+                        }
+                        catch ( err ) {
+                            var dataToLog = {
+                                    event: 'RR_error',
+                                    type:'ошибка в rcApi.view',
+                                    err: err
+                                };
+                            // end of vars
+
+                            ENTER.utils.logError(dataToLog);
+                        }
                     }
 
                 }
@@ -394,10 +422,34 @@ window.ANALYTICS = {
 
                 window.rcAsyncInit = function () {
                     if ( userData.userId ) {
-                        rcApi.categoryView(data, userData);
+                        try {
+                            rcApi.categoryView(data, userData);
+                        }
+                        catch ( err ) {
+                            var dataToLog = {
+                                    event: 'RR_error',
+                                    type:'ошибка в rcApi.categoryView',
+                                    err: err
+                                };
+                            // end of vars
+
+                            ENTER.utils.logError(dataToLog);
+                        }
                     }
                     else {
-                        rcApi.categoryView(data);   
+                        try {
+                            rcApi.categoryView(data);   
+                        }
+                        catch ( err ) {
+                            var dataToLog = {
+                                    event: 'RR_error',
+                                    type:'ошибка в rcApi.categoryView',
+                                    err: err
+                                };
+                            // end of vars
+
+                            ENTER.utils.logError(dataToLog);
+                        }
                     }
                 }
             },
@@ -410,7 +462,19 @@ window.ANALYTICS = {
                 }
 
                 window.rcAsyncInit = function () {
-                    rcApi.order(data);
+                    try {
+                        rcApi.order(data);
+                    }
+                    catch ( err ) {
+                        var dataToLog = {
+                                event: 'RR_error',
+                                type:'ошибка в rcApi.order',
+                                err: err
+                            };
+                        // end of vars
+
+                        ENTER.utils.logError(dataToLog);
+                    }
                 }
             },
 
@@ -430,13 +494,12 @@ window.ANALYTICS = {
 
             init: function () { // on load:
                 (function (d) {
-                    var ref = d.getElementsByTagName('script')[0];
-                    var apiJs, apiJsId = 'rrApi-jssdk';
+                    var ref = d.getElementsByTagName('script')[0]; var apiJs, apiJsId = 'rrApi-jssdk';
                     if (d.getElementById(apiJsId)) return;
                     apiJs = d.createElement('script');
                     apiJs.id = apiJsId;
                     apiJs.async = true;
-                    apiJs.src = "http://api.retailrocket.ru/Content/JavaScript/api.js";
+                    apiJs.src = "//cdn.retailrocket.ru/javascript/tracking.js";
                     ref.parentNode.insertBefore(apiJs, ref);
                 }(document));
             }
