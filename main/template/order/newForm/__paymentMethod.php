@@ -48,8 +48,9 @@ return function (
             <div class="bPayMethod<? if (\Model\PaymentMethod\Entity::TYPE_ALL == $typeId): ?> mMethodOption<? endif ?>"
                  data-value="<?= $helper->json([
                      'max-sum' => in_array($paymentMethod->getId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID]) ? App::config()->order['maxSumOnline'] : null,
+                     'method_id' => $paymentMethod->getId(),
                  ]) ?>"
-                data-bind="paymentMethodVisible: totalSum, visible: $root.payMethodIsVisible(<?= $paymentMethod->getId() ?>)">
+                data-bind="paymentMethodVisible: totalSum">
                 <input
                     <? if ($paymentMethod->getId() == $form->getPaymentMethodId()): ?> checked="checked"<?endif ?>
                     class="jsCustomRadio bCustomInput mCustomRadioBig" id="<?= $elementId ?>"
