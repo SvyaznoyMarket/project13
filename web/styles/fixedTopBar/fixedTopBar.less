@@ -1,14 +1,36 @@
 .fixedTopBar {
 	.drop-shadow(0, 0, 15px, 0.4);
 	.rounded (0 0 4px 4px);
+	border: 1px solid #ddd;
+	border-top: none;
 	position: fixed;
 	top: 0;
 	left: 50%;
 	z-index: 999;
 	margin-left: -480px;
-	width: 960px;
-	height: 50px;
+	width: 958px;
+	height: 49px;
 	background: @white;
+
+	&:hover {
+
+		.fixedTopBar__cartQuan {
+			animation-name: shake; 
+			animation-duration: 0.8s; 
+			animation-timing-function: ease; 
+			animation-iteration-count: 1;
+
+			-moz-animation-name: shake; 
+			-moz-animation-duration: 0.8s; 
+			-moz-animation-timing-function: ease; 
+			-moz-animation-iteration-count: 1;
+
+			-webkit-animation-name: shake; 
+			-webkit-animation-duration: 0.8s; 
+			-webkit-animation-timing-function: ease; 
+			-webkit-animation-iteration-count: 1;
+		}
+	}
 
 	&.mProdCard {
 
@@ -24,7 +46,7 @@
 			background-image: none;
 		}
 
-		.transGrad {
+		.transGradWhite {
 			background: url("@{base-url}/fixedTopBar/img/tranGradientWhite.png") no-repeat 0 0;
 			position: absolute;
 			right: 0;
@@ -39,14 +61,17 @@
 		width: 340px;
 		position: relative;
 		overflow: hidden;
-		display: inline-block
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
 	}
 
 	&__up {
 		float: left;
 		padding: 8px 20px 0;
-		height: 42px;
-		.rounded (0 0 0 4px);
+		height: 41px;
 		background: #f4f4f4;
 	}
 
@@ -68,6 +93,7 @@
 		vertical-align: top;
 
 		font: bold 12px/30px Tahoma;
+		line-height: 30px;
 
 		 &:hover {
 			background: @black;
@@ -79,8 +105,13 @@
 		.cornerTop {
 			font-size: 10px;
 			font-style: normal;
-			display: inline;
-			padding-right: 2px;
+			display: inline-block;
+			vertical-align: top;
+
+			*display: inline;
+			zoom: 1;
+			float: left;
+			padding-right: 5px;
 		}
 	}	
 
@@ -98,8 +129,8 @@
 
 		.crumbsImg {
 			margin-right: 5px;
-			width: 50px;
-			height: 50px;
+			width: 49px;
+			height: 49px;
 		}
 	}
 
@@ -196,12 +227,12 @@
 	}
 
 	&__logIn {
-		width: 115px;
+		width: 122px;
 		background: #fff5e0;
 		border-left: 1px dashed #bbbbbb;
 		border-right: 1px dashed #bbbbbb;
 		float: right;
-		line-height: 50px;
+		line-height: 49px;
 		padding: 0 0 0 5px;
 		overflow: hidden;
 		position: relative;
@@ -236,4 +267,91 @@
 		text-decoration: underline;
 		width: 400px;
 	}
+
+	&__buy {
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+		width: 305px;
+		margin: 12px 0 0 10px;
+		float: left;
+
+		.btnBuy {
+			display: inline-block;
+			vertical-align: top;
+
+			*display: inline;
+			zoom: 1;
+			width: 80px;
+			margin: 0 0 0 5px;
+
+			&__eLink {
+				width: 78px;
+				font-size: 12px;
+				height: 24px;
+				line-height: 24px;
+			}
+		}
+
+		.bPrice {
+			float: left;
+			font-size: 20px;
+			width: 100px;
+			margin: 1px 0 0;
+		}
+
+		.bCountSection {
+			display: inline-block;
+			vertical-align: top;
+
+			*display: inline;
+			zoom: 1;
+			width: 111px;
+			padding-left: 0;
+		}
+	}
 }
+
+@keyframes shake{ 
+0% { transform: translate(2px, 1px) rotate(0deg); } 
+10% { transform: translate(-1px, -2px) rotate(-1deg); } 
+20% { transform: translate(-2px, 0px) rotate(1deg); } 
+30% { transform: translate(0px, 2px) rotate(0deg); } 
+40% { transform: translate(1px, -1px) rotate(1deg); } 
+50% { transform: translate(-1px, 2px) rotate(-1deg); } 
+60% { transform: translate(-2px, 1px) rotate(0deg); } 
+70% { transform: translate(2px, 1px) rotate(-1deg); } 
+80% { transform: translate(-1px, -1px) rotate(1deg); } 
+90% { transform: translate(2px, 2px) rotate(0deg); } 
+100% { transform: translate(1px, -2px) rotate(-1deg); } 
+} 
+
+@-moz-keyframes shake{ 
+0% { -moz-transform: translate(2px, 1px) rotate(0deg); } 
+10% { -moz-transform: translate(-1px, -2px) rotate(-1deg); } 
+20% { -moz-transform: translate(-2px, 0px) rotate(1deg); } 
+30% { -moz-transform: translate(0px, 2px) rotate(0deg); } 
+40% { -moz-transform: translate(1px, -1px) rotate(1deg); } 
+50% { -moz-transform: translate(-1px, 2px) rotate(-1deg); } 
+60% { -moz-transform: translate(-2px, 1px) rotate(0deg); } 
+70% { -moz-transform: translate(2px, 1px) rotate(-1deg); } 
+80% { -moz-transform: translate(-1px, -1px) rotate(1deg); } 
+90% { -moz-transform: translate(2px, 2px) rotate(0deg); } 
+100% { -moz-transform: translate(1px, -2px) rotate(-1deg); } 
+} 
+
+@-webkit-keyframes shake { 
+0% { -webkit-transform: translate(2px, 1px) rotate(0deg); } 
+10% { -webkit-transform: translate(-1px, -2px) rotate(-1deg); } 
+20% { -webkit-transform: translate(-2px, 0px) rotate(1deg); } 
+30% { -webkit-transform: translate(0px, 2px) rotate(0deg); } 
+40% { -webkit-transform: translate(1px, -1px) rotate(1deg); } 
+50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); } 
+60% { -webkit-transform: translate(-2px, 1px) rotate(0deg); } 
+70% { -webkit-transform: translate(2px, 1px) rotate(-1deg); } 
+80% { -webkit-transform: translate(-1px, -1px) rotate(1deg); } 
+90% { -webkit-transform: translate(2px, 2px) rotate(0deg); } 
+100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); } 
+} 

@@ -28,11 +28,11 @@
 </div> -->
 
 <!-- ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАТАЛОГА -->
-<? /*
+
 <div class="fixedTopBar">
     <div class="fixedTopBar__up">
         <a class="fixedTopBar__upLink" href="">
-            <span class="fixedTopBar__upText"><em class="cornerTop">&#9650;</em> Бренды и параметры</span>
+            <em class="cornerTop">&#9650;</em> Бренды и параметры
         </a>
     </div>
 
@@ -59,21 +59,36 @@
         <span class="transGrad"></span>
     </div>
 </div>
-*/?>
+
 <!--/ ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАТАЛОГА -->
 
 <!-- ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАРТОЧКИ ТОВАРА -->
-<div class="fixedTopBar mProdCard">
+<? /*<div class="fixedTopBar mProdCard">
     <div class="fixedTopBar__crumbs">
-        <a class="fixedTopBar__crumbsImg" href=""><img class="crumbsImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></a>
+        <div class="fixedTopBar__crumbsImg"><img class="crumbsImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></div>
 
         <div class="wrapperCrumbsList">
             <ul class="fixedTopBar__crumbsList">
-                <li class="fixedTopBar__crumbsListItem">Товары на каждый день</li>
+                <li class="fixedTopBar__crumbsListItem"><a href="">Товары на каждый день</a></li>
                 <li class="fixedTopBar__crumbsListItem mLast">Смартфон Samsung Galaxy Mega 6.3 8 ГБ GT-I9200 белый</li>
             </ul>
 
-            <div class="transGrad"></div>
+            <div class="transGradWhite"></div>
+        </div>
+    </div>
+
+    <div class="fixedTopBar__buy">
+        <div class="bPrice"><strong class="jsPrice">9 490</strong> <span class="rubl">p</span></div>
+
+        <div class="bCountSection clearfix" data-spinner-for="">
+            <button class="bCountSection__eM">-</button>
+            <input class="bCountSection__eNum" type="text" value="1">
+            <button class="bCountSection__eP">+</button>
+            <span>шт.</span>
+        </div><!--/counter -->
+
+        <div class="bWidgetBuy__eBuy btnBuy">
+            <a href="" class="btnBuy__eLink jsBuyButton" data-group="">Купить</a>
         </div>
     </div>
 
@@ -90,6 +105,7 @@
         <span class="transGrad"></span>
     </div>
 </div>
+*/?>
 <!--/ ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАРТОЧКИ ТОВАРА -->
 
 <script type="text/html" id="blackbox_basketshow_tmpl">
