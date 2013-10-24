@@ -1,8 +1,8 @@
 $(document).ready(function() {
 
-	(function() {
+	//(function() {
 		/*register e-mail check*/
-		if ( !$('#register_username').length ) {
+		/*if ( !$('#register_username').length ) {
 			return false;
 		}
 
@@ -13,13 +13,13 @@ $(document).ready(function() {
 			subscibe = mailPhoneInput.parents('#register-form').find('.bSubscibe'),
 			regBtn = mailPhoneInput.parents('#register-form').find('.bigbutton');
 		// end of vars
-
-		subscibe.show();
+*/
+		//subscibe.show();
 
 		/**
 		 * переключение типов проверки
 		 */
-		$('.registerAnotherWayBtn').bind('click', function() {
+		/*$('.registerAnotherWayBtn').bind('click', function() {
 			if ( chEmail ) {
 				chEmail = false;
 				$('.registerAnotherWay').html('Ваш мобильный телефон');
@@ -42,9 +42,9 @@ $(document).ready(function() {
 			mailPhoneInput.val('');
 			register = false;
 			regBtn.addClass('mDisabled');
-		});
+		});*/
 
-		regBtn.bind('click', function() {
+		/*regBtn.bind('click', function() {
 			if ( !register ) {
 				return false;
 			}
@@ -54,13 +54,13 @@ $(document).ready(function() {
 
 				_gaq.push(['_trackEvent', 'Account', 'Create account', type]);
 			}
-		});
+		});*/
 
 		/**
 		 * проверка заполненности инпутов
 		 * @param  {Event} e
 		 */
-		var checkInputs = function( e ) {
+		/*var checkInputs = function( e ) {
 			if ( chEmail ) { 
 				// проверяем как e-mail
 				if (	( mailPhoneInput.val().search('@') !== -1 ) && 
@@ -100,8 +100,8 @@ $(document).ready(function() {
 		};
 
 		mailPhoneInput.bind('keyup', checkInputs);
-		firstNameInput.bind('keyup', checkInputs);
-	}());
+		firstNameInput.bind('keyup', checkInputs);*/
+	//}());
 	
 
 	/**
@@ -170,7 +170,7 @@ $(document).ready(function() {
 
 
 	/* Authorization process */
-	$('.open_auth-link').bind('click', function(e) {
+	/*$('.open_auth-link').bind('click', function(e) {
 		e.preventDefault();
 		
 		var el = $(this);
@@ -186,9 +186,9 @@ $(document).ready(function() {
 			}
 		});
 		return false;
-	});
+	});*/
 
-	;(function($) {
+	/*;(function($) {
 		$.fn.warnings = function() {
 			var rwn = $('<strong id="ruschars" class="pswwarning">RUS</strong>');
 
@@ -241,15 +241,15 @@ $(document).ready(function() {
 		};
 	})(jQuery);
 
-	$('#signin_password').warnings();
+	$('#signin_password').warnings();*/
 
-	$('#bUserlogoutLink').on('click', function() {
+	/*$('#bUserlogoutLink').on('click', function() {
 		if ( typeof(_kmq) !== 'undefined' ) {
 			_kmq.push(['clearIdentity']);
 		}
-	});
+	});*/
 
-	$('#login-form, #register-form').data('redirect', true).bind('submit', function(e, param) {
+	/*$('#login-form, #register-form').data('redirect', true).bind('submit', function(e, param) {
 		e.preventDefault();
 
 		var form = $(this); //$(e.target)
@@ -313,9 +313,9 @@ $(document).ready(function() {
 			data: wholemessage,
 			success: authFromServer
 		});
-	});
+	});*/
 
-	$('body').on('click', '#forgot-pwd-trigger', function() {
+	/*$('body').on('click', '#forgot-pwd-trigger', function() {
 		$('#reset-pwd-form').show();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').hide();
@@ -327,9 +327,9 @@ $(document).ready(function() {
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').show();
 		return false;
-	});
+	});*/
 
-	$('#reset-pwd-form').submit(function() {
+	/*$('#reset-pwd-form').submit(function() {
 		var form = $(this);
 
 		form.find('.error_list').html('Запрос отправлен. Идет обработка...');
@@ -361,7 +361,7 @@ $(document).ready(function() {
 		}, 'json');
 
 		return false;
-	});
+	});*/
 
 	
 	/* Infinity scroll */

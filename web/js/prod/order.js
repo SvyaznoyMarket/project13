@@ -32,7 +32,7 @@
         for ( i = orderData.length - 1; i >= 0; i-- ) {
             for ( j = orderData[i].products.length - 1; j >= 0; j-- ) {
                 global.sonar_basket.products.push({
-                    identifier: orderData[i].products[j].article+'_'+window.docCookies.getItem('geoshop'),
+                    identifier: orderData[i].products[j].article + '_' + window.docCookies.getItem('geoshop'),
                     amount: parseInt(orderData[i].products[j].price, 10),
                     currency: 'RUB',
                     quantity: orderData[i].products[j].quantity
@@ -43,7 +43,7 @@
         }
 
         $LAB.script( sociomanticUrl );
-        
+
 
         /**
          * KISS

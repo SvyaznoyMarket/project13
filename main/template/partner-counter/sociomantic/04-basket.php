@@ -14,4 +14,3 @@
 { identifier: '461-1177_msk', amount: 4990.00, currency: 'RUB', quantity: 1 },
 { identifier: '452-9682_msk', amount: 23990.00, currency: 'RUB', quantity: 1 }
 */
-?>
