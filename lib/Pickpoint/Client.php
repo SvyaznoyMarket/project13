@@ -97,7 +97,7 @@ class Client {
      * @return resource
      */
     private function getUrl($action, array $params = []) {
-        $ret = $this->config['url'] . $action . '?' . http_build_query($params);
+        $ret = $this->config['url'] . $action;
         if ( !empty($params) ) {
             $ret .= '?' . http_build_query($params);
         }
