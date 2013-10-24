@@ -205,13 +205,15 @@ class ShowAction {
                 });
             }
 
-        } else {
+        } elseif (!is_null($categoryToken)) {
             \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
                 $data = reset($data);
                 if ((bool)$data) {
                     $category = new \Model\Product\Category\Entity($data);
                 }
             });
+        } else {
+            $category = new \Model\Product\Category\Entity();
         }
 
         // выполнение 2-го пакета запросов
