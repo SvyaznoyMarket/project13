@@ -11,8 +11,16 @@ class LifeGift {
     private $productsById = [];
     /** @var int */
     private $sum = 0;
+    /** @var \Model\Region\Entity */
+    private $region = 0;
 
     public function __construct() {
+        $this->region = \RepositoryManager::region()->getEntityById(\App::config()->lifeGift['regionId']);
+        if (!$this->region) {
+            $this->region = \RepositoryManager::region()->getDefaultEntity();
+            \App::logger()->error(['message' => sprintf('Не удалось получить регион #%s', \App::config()->lifeGift['regionId'])]);
+        }
+
         $this->storage = \App::session();
 
         $this->storage->set($this->sessionName, array_merge([
@@ -74,51 +82,32 @@ class LifeGift {
     private function calculate() {
         $sessionData = $this->storage->get($this->sessionName);
 
-        $productData = [];
+        if (!(bool)$sessionData['product']) return;
+
+        /** @var $productsById \Model\Product\Entity[] */
+        $productsById = [];
+        foreach (\RepositoryManager::product()->getCollectionById(array_keys($sessionData['product']), $this->region) as $product) {
+            $productsById[$product->getId()] = $product;
+        }
+
         foreach ($sessionData['product'] as $productId => $productItem) {
-            $productData[] = [
-                'id'       => $productId,
-                'quantity' => $productItem['quantity'],
-            ];
-        }
-
-        if (!(bool)$productData) return;
-
-        $response = null;
-        \App::coreClientV2()->addQuery(
-            'cart/get-price',
-            ['geo_id' => \App::user()->getRegion()->getId()],
-            [
-                'product_list'  => $productData,
-                'service_list'  => [],
-                'warranty_list' => [],
-            ],
-            function ($data) use (&$response) {
-                $response = $data;
+            if (!isset($productsById[$productId])) {
+                \App::logger()->error(sprintf('Товар #%s не получен', $productId));
+                continue;
             }
-        );
-        \App::coreClientV2()->execute();
 
-        $response = array_merge([
-            'product_list' => [],
-            'price_total'  => 0,
-        ], (array)$response);
-
-        $this->sum = (int)$response['price_total'];
-
-        foreach ($response['product_list'] as $productItem) {
-            $this->productsById[$productItem['id']] = new \Model\Cart\Product\Entity($productItem);
-        }
-
-
-        foreach ($response['product_list'] as $productItem) {
-            $productId = $productItem['id'];
-
-            if (array_key_exists($productId, $this->productsById)) {
-                $this->productsById[$productId]->setQuantity($productItem['quantity']);
-            } else {
+            if (!isset($this->productsById[$productId])) {
                 $this->productsById[$productId] = new \Model\Cart\Product\Entity($productItem);
             }
+
+            $cartProduct = $this->productsById[$productId];
+
+            $cartProduct->setId($productId);
+            $cartProduct->setPrice($productsById[$productId]->getPrice());
+            $cartProduct->setQuantity($productItem['quantity']);
+            $cartProduct->setSum($cartProduct->getPrice() * $cartProduct->getQuantity());
+
+            $this->sum += $cartProduct->getSum();
         }
     }
 }

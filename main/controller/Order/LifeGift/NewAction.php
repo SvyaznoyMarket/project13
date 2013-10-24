@@ -21,6 +21,7 @@ class NewAction {
         try {
             // корзина
             $cartProducts = $cart->getProducts();
+            /** @var $cartProduct \Model\Cart\Product\Entity */
             $cartProduct = reset($cartProducts) ?: null;
 
             if (!$cartProduct) {
@@ -86,7 +87,8 @@ class NewAction {
 
             $page = new \View\Order\NewPage();
             $page->setParam('paypalECS', false);
-            $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(false)); // TODO: пахнет рефакторингом - нужно передавать корзину
+            $page->setParam('lifeGift', true);
+            $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(false, true)); // TODO: пахнет рефакторингом - нужно передавать корзину
             $page->setParam('productsById', $productsById);
             $page->setParam('paymentMethods', $paymentMethods);
             $page->setParam('subways', $subways);

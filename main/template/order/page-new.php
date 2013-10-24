@@ -17,6 +17,7 @@ $helper = new \Helper\TemplateHelper();
 $request = \App::request();
 
 $paypalECS = isset($paypalECS) && (true === $paypalECS);
+$lifeGift = isset($lifeGift) && (true === $lifeGift);
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
@@ -27,6 +28,17 @@ foreach (array_reverse($productsById) as $product) {
 		$backLink = $product->getParentCategory()->getLink();
 		break;
 	}
+}
+
+if ($paypalECS) {
+    $createUrl = $page->url('order.paypal.create', ['token' => $request->get('token'), 'PayerID' => $request->get('PayerID')]);
+    $deliveryUrl = $page->url('order.delivery', ['paypalECS' => 1]);
+} else if ($lifeGift) {
+    $createUrl = $page->url('order.lifeGift.create');
+    $deliveryUrl = $page->url('order.delivery', ['lifeGift' => 1]);
+} else {
+    $createUrl = $page->url('order.create');
+    $deliveryUrl = $page->url('order.delivery');
 }
 ?>
 
@@ -302,7 +314,7 @@ foreach (array_reverse($productsById) as $product) {
             <? endif ?>
 		</div>
 		
-		<form id="order-form" action="<?= $paypalECS ? $page->url('order.paypal.create', ['token' => $request->get('token'), 'PayerID' => $request->get('PayerID')]) : $page->url('order.create') ?>" method="post">
+		<form id="order-form" action="<?= $createUrl ?>" method="post">
 			<!-- Info about customer -->
 			<div class="bBuyingLine mBuyingFields clearfix">
 				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
@@ -468,7 +480,7 @@ foreach (array_reverse($productsById) as $product) {
 </div>
 <!-- /Общая обертка оформления заказа -->
 
-<div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery', $paypalECS ? ['paypalECS' => 1] : []) ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
+<div id="jsOrderDelivery" data-url="<?= $deliveryUrl ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
 <div id="jsOrderForm" data-value="<?= $page->json([
 	'order[recipient_first_name]'   => $form->getFirstName(),
 	'order[recipient_last_name]'    => $form->getLastName(),
