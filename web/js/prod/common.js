@@ -1510,7 +1510,7 @@ $(document).ready(function(){
 			if ( this.checkEmail() ) {
 				label.html('Ваш мобильный телефон:');
 				btn.html('Ввести e-mail');
-				registerMailPhoneField.attr('maxlength', 10).addClass('jsRegisterPhone');
+				registerMailPhoneField.addClass('jsRegisterPhone');
 				registerValidator.setValidate( registerMailPhoneField, {validBy: 'isPhone', customErr: 'Некорректно введен телефон'} );
 
 				// устанавливаем маску для поля "Ваш мобильный телефон"
@@ -1520,7 +1520,7 @@ $(document).ready(function(){
 			else {
 				label.html('Ваш e-mail:');
 				btn.html('У меня нет e-mail');
-				registerMailPhoneField.removeAttr('maxlength').removeClass('jsRegisterPhone');
+				registerMailPhoneField.removeClass('jsRegisterPhone');
 				registerValidator.setValidate( registerMailPhoneField, {validBy: 'isEmail', customErr: 'Некорректно введен e-mail'} );
 
 				// убераем маску с поля "Ваш мобильный телефон"
