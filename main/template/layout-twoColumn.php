@@ -35,13 +35,16 @@
 </head>
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
     <?= $page->slotConfig() ?>
-    <div class="allpage" id="page">
     <? if (\App::config()->adFox['enabled']): ?>
     <div class="adfoxWrapper" id="adfoxbground"></div>
     <? endif ?>
 
-        <div class="allpageinner clearfix">
+        <div class="wrapper" data="privet">
+            <header class="header">
             <?= $page->slotHeader() ?>
+        </header><!--/шапка-->
+    <div class="content mContentOrder clearfix">
+            
 
             <?= $page->slotContentHead() ?>
 
@@ -54,16 +57,13 @@
                 <?= $page->slotSidebar() ?>
             </div>
 
-            <div class="clear"></div>
-
             <?= $page->slotSeoContent() ?>
             
-        </div>
-        <div class="clear"></div>
     </div>
+</div>
 
 
-    <?= $page->slotFooter() ?>
+    <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
     <?= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
 
@@ -80,7 +80,7 @@
         <div id="adblenderCommon" class="jsanalytics"></div>
     <? endif ?>
 	
-	<a id="upper" href="#">Наверх</a>
+	<a class="upper" id="upper" href="#">Наверх</a>
 
 </body>
 </html>
