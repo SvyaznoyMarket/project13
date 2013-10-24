@@ -691,6 +691,7 @@
 ;(function(){
 	var lowPriceNotifer = function() {
 		var notiferWrapper = $('.priceSale'),
+            subscribeWrapper = $('.bSubscibeWrapper'),
 			notiferButton = $('.jsLowPriceNotifer'),
 			submitBtn = $('.bLowPriceNotiferPopup__eSubmitEmail'),
 			input = $('.bLowPriceNotiferPopup__eInputEmail'),
@@ -716,9 +717,14 @@
 			 * @param userInfo — данные пользователя (если существуют)
 			 */
 			userLogged = function userLogin( event, userInfo ) {
-				if ( userInfo && userInfo.name ) {
-					notiferWrapper.show();
-				}
+                if (userInfo) {
+                    if (userInfo.isSubscribed ) {
+                        subscribeWrapper.hide();
+                    }
+                    if ( userInfo.name ) {
+                        notiferWrapper.show();
+                    }
+                }
 			},
 
 			/**
