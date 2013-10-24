@@ -40,7 +40,7 @@
     <? endif ?>
 
     <div class="wrapper" data="privet">
-            <header class="header">
+        <header class="header">
             <?= $page->slotHeader() ?>
         </header><!--/шапка-->
 
@@ -58,8 +58,8 @@
             </div>
             
             <?= $page->slotSeoContent() ?>
-        </div>
-    </div>
+        </div><!--/контент -->
+    </div><!--/шаблон -->
 
 
     <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
@@ -80,6 +80,5 @@
     <? endif ?>
 	
 	<a class="upper" id="upper" href="#">Наверх</a>
-
 </body>
 </html>

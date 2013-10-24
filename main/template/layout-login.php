@@ -41,20 +41,20 @@
     <div class="wrapper" data="privet">
         <div class="content mContentOrder clearfix">
             <?= $page->slotContent() ?>
-        </div>
-    </div>
+        </div><!--/контент -->
+    </div><!--/шаблон -->
 
     <?= $page->render('order/_footer') ?>
     <?= $page->slotSurveybar() ?>
 
-    <?//= $page->slotRegionSelection() ?>
-    <?//= $page->slotBodyJavascript() ?>
-    <?//= $page->slotInnerJavascript() ?>
-    <?//= $page->slotAuth() ?>
-    <?//= $page->slotYandexMetrika() ?>
-    <?//= $page->slotAdvanceSeoCounter() ?>
-    <?//= $page->slotMyThings() ?>
-    <?//= $page->slotPartnerCounter() ?>
+    <?= $page->slotRegionSelection() ?>
+    <?= $page->slotBodyJavascript() ?>
+    <?= $page->slotInnerJavascript() ?>
+    <?= $page->slotAuth() ?>
+    <?= $page->slotYandexMetrika() ?>
+    <?= $page->slotAdvanceSeoCounter() ?>
+    <?= $page->slotMyThings() ?>
+    <?= $page->slotPartnerCounter() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>
         <div id="adblenderCommon" class="jsanalytics"></div>
