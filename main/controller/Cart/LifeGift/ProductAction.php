@@ -68,7 +68,7 @@ class ProductAction {
 
         return $request->isXmlHttpRequest()
             ? new \Http\JsonResponse($responseData)
-            : new \Http\RedirectResponse($request->headers->get('referer') ?: (($product && $product->getLink()) ? $product->getLink() : \App::router()->generate('homepage')));
+            : new \Http\RedirectResponse(\App::router()->generate('order.lifeGift.new'));
     }
 
     /**
