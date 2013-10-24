@@ -33,8 +33,8 @@
 			 * @param userInfo — данные пользователя (если существуют)
 			 */
 			userLogged = function userLogin( event, userInfo ) {
-                if (userInfo) {
-                    if (userInfo.isSubscribed ) {
+                if ( userInfo ) {
+                    if ( userInfo.isSubscribed ) {
                         subscribeWrapper.hide();
                     }
                     if ( userInfo.name ) {
