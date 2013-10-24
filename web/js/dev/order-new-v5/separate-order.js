@@ -37,8 +37,8 @@
 			nowState = null,
 			nowProduct = null,
 			choosenBlock = null,
-            isUnique = null,
-            nowProductsToNewBox = [];
+			isUnique = null,
+			nowProductsToNewBox = [];
 
 			discounts = global.OrderModel.orderDictionary.orderData.discounts;
 		// end of vars
@@ -76,9 +76,9 @@
 		 */
 		for ( var i = 0, len = statesPriority.length; i < len; i++ ) {
 			nowState = statesPriority[i];
-            isUnique = global.OrderModel.orderDictionary.isUniqueDeliveryState(nowState);
+			isUnique = global.OrderModel.orderDictionary.isUniqueDeliveryState(nowState);
 
-            console.info('перебирем ' + (isUnique ? 'уникальный* ' : '') + 'метод ' + nowState);
+			console.info('перебирем ' + (isUnique ? 'уникальный* ' : '') + 'метод ' + nowState);
 
 			productsToNewBox = [];
 
@@ -119,24 +119,24 @@
 					choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
-                else if ( isUnique ) {
-                    // Блока для этого типа доставки в этот пункт еще существует, создадим его:
-                    // Если есть флаг уникальности, каждый товар в отдельном блоке будет
+				else if ( isUnique ) {
+					// Блока для этого типа доставки в этот пункт еще существует, создадим его:
+					// Если есть флаг уникальности, каждый товар в отдельном блоке будет
 
-                    // Разделим товары, продуктом считаем уникальную единицу товара:
-                    // Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
-                    nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
-                    for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
-                        nowProduct = [ nowProductsToNewBox[j] ];
-                        global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox);
-                    }
+					// Разделим товары, продуктом считаем уникальную единицу товара:
+					// Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
+					nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
+					for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
+						nowProduct = [ nowProductsToNewBox[j] ];
+						global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox);
+					}
 
-                } else {
-                    // Блока для этого типа доставки в этот пункт еще существует, создадим его:
-                    // Без флага уникальности, все товары скопом:
-                    // Пример: 5 тетрадок ==> 1 товар количеством 5 шт
-                    global.ENTER.constructors.DeliveryBox(productsToNewBox, nowState, choosenPointForBox);
-                }
+				} else {
+					// Блока для этого типа доставки в этот пункт еще существует, создадим его:
+					// Без флага уникальности, все товары скопом:
+					// Пример: 5 тетрадок ==> 1 товар количеством 5 шт
+					global.ENTER.constructors.DeliveryBox(productsToNewBox, nowState, choosenPointForBox);
+				}
 			}
 		}
 
@@ -221,8 +221,16 @@
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val),
 				node = $(element),
-				maxSum = parseInt($(element).data('value')['max-sum'], 10);
+				maxSum = parseInt($(element).data('value')['max-sum'], 10),
+				methodId = $(element).data('value')['method_id'];
 			// end of vars
+
+
+			if ( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId ) {
+				node.hide();
+
+				return;
+			}
 
 			if ( isNaN(maxSum) ) {
 				return;
@@ -633,21 +641,6 @@
 		},
 
 
-        /**
-         * Для некоторых типов доставки некоторые типы оплаты должны быть скрыты
-         *
-         * @param   {int} mId
-         * @returns {boolean}
-         */
-        payMethodIsVisible: function( mId ) {
-            if ( 3 == global.OrderModel.choosenDeliveryTypeId && 13 == mId ) {
-                // Прячем для PayPal (13) для самовывоза (3)
-                return false;
-            }
-            return true;
-        },
-
-
 		/**
 		 * Обновление данных
 		 */
@@ -757,29 +750,29 @@
 		},
 
 
-        /**
-         *  Раразбивка массива товаров в массив по уникальным единицам (для PickPoint)
-         *  т.е. вместо продукта в количестве 2 шт, будут 2 проудкта по 1 шт.
-         *
-         * @param       {Array}   productsToNewBox
-         * @returns     {Array}   productsUniq
-         */
-        prepareProductsByUniq: function prepareProductsByUniq( productsToNewBox ) {
-            var productsUniq = [],
-                nowProduct,
-                j, k;
+		/**
+		 *  Раразбивка массива товаров в массив по уникальным единицам (для PickPoint)
+		 *  т.е. вместо продукта в количестве 2 шт, будут 2 проудкта по 1 шт.
+		 *
+		 * @param       {Array}   productsToNewBox
+		 * @returns     {Array}   productsUniq
+		 */
+		prepareProductsByUniq: function prepareProductsByUniq( productsToNewBox ) {
+			var productsUniq = [],
+				nowProduct,
+				j, k;
 
-            for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
-                //!!! важно клонировать объект, дабы не портить для др. типов доставки
-                nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
-                for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
-                    nowProduct.quantity = 1;
-                    nowProduct.sum = nowProduct.price;
-                    productsUniq.push(nowProduct);
-                }
-            }
+			for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
+				//!!! важно клонировать объект, дабы не портить для др. типов доставки
+				nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
+				for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
+					nowProduct.quantity = 1;
+					nowProduct.sum = nowProduct.price;
+					productsUniq.push(nowProduct);
+				}
+			}
 
-            return productsUniq;
+			return productsUniq;
 		}
 	};
 
@@ -938,7 +931,7 @@
 		 * @param	{Object}	res		Данные о заказе
 		 */
 		renderOrderData = function renderOrderData( res ) {
-            var data, firstPoint;
+			var data, firstPoint;
 			utils.blockScreen.unblock();
 
 			if ( !res.success ) {
@@ -983,18 +976,18 @@
 			}
 
 
-            if ( 1 === res.deliveryTypes.length ) {
-                data = res.deliveryTypes[0];
-                firstPoint =  global.OrderModel.orderDictionary.getFirstPointByState( data.states[0] ) || data.id;
-                console.log('Обнаружен только 1 способ доставки: ' + data.name +' — выбираем его.');
-                console.log('Выбран первый пункт* доставки:');
-                console.log( firstPoint );
-                global.OrderModel.statesPriority = data.states;
-                global.OrderModel.deliveryTypesButton = 'method_' + data.id;
-                global.OrderModel.choosenDeliveryTypeId = data.id;
-                global.OrderModel.choosenPoint( firstPoint );
-                separateOrder( global.OrderModel.statesPriority );
-            }
+			if ( 1 === res.deliveryTypes.length ) {
+				data = res.deliveryTypes[0];
+				firstPoint =  global.OrderModel.orderDictionary.getFirstPointByState( data.states[0] ) || data.id;
+				console.log('Обнаружен только 1 способ доставки: ' + data.name +' — выбираем его.');
+				console.log('Выбран первый пункт* доставки:');
+				console.log( firstPoint );
+				global.OrderModel.statesPriority = data.states;
+				global.OrderModel.deliveryTypesButton = 'method_' + data.id;
+				global.OrderModel.choosenDeliveryTypeId = data.id;
+				global.OrderModel.choosenPoint( firstPoint );
+				separateOrder( global.OrderModel.statesPriority );
+			}
 		},
 
 		selectPointOnBaloon = function selectPointOnBaloon( event ) {
