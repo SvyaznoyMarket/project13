@@ -33,18 +33,23 @@ class CityAds {
     public static function getSubscribeLink()
     {
         $link = null;
-        $user = \App::user();
+        //$user = \App::user();
 
         try {
             $target_name = "q1";
 
-            $order_id = "___ORDERID___"; // TODO
-            if ( $user ) {
+            $order_id = \App::request()->get('email');
+            if ( empty($order_id) ) {
+                //return false;
+                $order_id = 'none';
+            }
+
+            /*if ( $user ) {
                 $uEntity = $user->getEntity();
                 if ( $uEntity ) {
                     $order_id = $uEntity->getEmail();
                 }
-            }
+            }*/
 
             $link = "cityadspix.com/track/$order_id/ct/{$target_name}/c/" . self::PARTNER_ID;
         } catch (\Exception $e) {
