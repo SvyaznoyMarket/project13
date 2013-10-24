@@ -12242,7 +12242,7 @@
   .bTitlePage {
     margin: 0 0 20px;
     font-size: 25px;
-    font-family: Tahoma;
+    font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
   }
   .bBannerBox {
     margin: 0 auto 20px;
@@ -12724,7 +12724,9 @@
     border: 1px solid #a1a1a1;
     color: #ffffff;
     vertical-align: top;
-    font: bold 12px/30px Tahoma;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 30px;
     zoom: 1;
     *display: inline;
   }
