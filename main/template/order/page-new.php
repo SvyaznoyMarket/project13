@@ -126,7 +126,7 @@ foreach (array_reverse($productsById) as $product) {
 						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
 															value: box.choosenInterval,
 															optionsText: function(item) {
-																return (!box.hasPointDelivery ? 'c ' + box.choosenInterval().start + ' ' : '') + 'до ' + item.end;
+																return (!box.hasPointDelivery ? 'c ' + item.start + ' ' : '') + 'до ' + item.end;
 															}">
 						</select>
 					</div>

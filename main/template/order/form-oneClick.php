@@ -116,7 +116,7 @@ $formData = array(
                                         <!-- ko if: valerror -->
                                             <div class="bSubscibeWrapper hf pt10">
                                                 <label class="bSubscibe">
-                                                    <b></b> Хочу знать об интересных<br />предложениях
+                                                    <b></b> Хочу знать об интересных предложениях
                                                     <input type="checkbox" name="subscribe" value="0" autocomplete="off" class="subscibe" disabled="disabled" />
                                                 </label>
                                             </div>
@@ -126,13 +126,13 @@ $formData = array(
                                                 <div class="bSubscibeWrapper pt10">
                                                     <!-- ko if: active -->
                                                         <label class="bSubscibe checked">
-                                                            <b></b> Хочу знать об интересных<br />предложениях
+                                                            <b></b> Хочу знать об интересных предложениях
                                                             <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
                                                         </label>
                                                     <!-- /ko -->
                                                     <!-- ko ifnot: active -->
                                                         <label class="bSubscibe">
-                                                            <b></b> Хочу знать об интересных<br />предложениях
+                                                            <b></b> Хочу знать об интересных предложениях
                                                             <input type="checkbox" name="subscribe" value="0" autocomplete="off" class="subscibe" disabled="disabled" />
                                                         </label>
                                                     <!-- /ko -->
@@ -141,7 +141,7 @@ $formData = array(
                                             <!-- ko ifnot: value -->
                                                 <div class="bSubscibeWrapper hf pt10">
                                                     <label class="bSubscibe">
-                                                        <b></b> Хочу знать об интересных<br />предложениях
+                                                        <b></b> Хочу знать об интересных предложениях
                                                         <input type="checkbox" name="subscribe" value="0" autocomplete="off" class="subscibe" disabled="disabled" />
                                                     </label>
                                                 </div>

@@ -3074,6 +3074,7 @@
     font-size: 14px;
     font-family: Tahoma, sans-serif;
     padding: 10px 0 0;
+    position: relative;
   }
   .topbar .bRegion,
   .topbar .usermenu {
@@ -8328,6 +8329,7 @@
     width: 40px;
     height: 36px;
     background: url('/css/subscribeLightboxPopup/img/icon.png') no-repeat 0 0;
+    cursor: pointer;
   }
   .bSubscribeLightboxPopup {
     display: none;
@@ -8434,6 +8436,10 @@
   }
   .bSubscibe.checked b {
     background-position: 0 -54px;
+  }
+  .bSubscibeWrapper .bSubscibe {
+    font-size: 14px;
+    line-height: 30px;
   }
   .registerAnotherWayBtn {
     margin-right: 20px;

@@ -14,12 +14,12 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
         <legend class="bFormLogin__ePlaceTitle">Я новый пользователь</legend>
 
         <label class="bFormLogin__eLabel">Ваше имя:</label>
-        <input type="text" class="text bFormLogin__eInput jsRegisterFirstName" name="register[first_name]" value="<?= $form->getFirstName() ?>"/>
+        <div><input type="text" class="text bFormLogin__eInput jsRegisterFirstName" name="register[first_name]" value="<?= $form->getFirstName() ?>"/></div>
 
         <label class="bFormLogin__eLabel registerAnotherWay">Ваш e-mail:</label>
         <a class="bFormLogin__eLinkHint eMail registerAnotherWayBtn" href="#">У меня нет e-mail</a>
 
-        <input type="text" class="text bFormLogin__eInput jsRegisterUsername" name="register[username]" value="<?= $form->getUsername() ?>" />
+        <div><input type="text" class="text bFormLogin__eInput jsRegisterUsername" name="register[username]" value="<?= $form->getUsername() ?>" /></div>
 
         <div class="bInputList">
             <input class="jsCustomRadio bCustomInput mCustomCheckBig" name="subscribe" type="checkbox" checked="checked" hidden />
