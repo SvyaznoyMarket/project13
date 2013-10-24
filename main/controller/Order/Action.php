@@ -484,13 +484,6 @@ class Action {
 
         }
 
-        /* TEST:
-        print '<pre>### ';
-        $prds = $order->getProduct();
-        foreach ($prds as $pr) {
-            print_r($pr->getQuantity());
-        }
-        print '</pre>';*/
 
         // TODO: асинхронные запросы в ядро
 
