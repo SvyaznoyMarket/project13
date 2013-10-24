@@ -474,6 +474,7 @@ class AppConfig {
      * @var array
      */
     public $lifeGift = [
+        'enabled'  => null,
         'regionId' => null,
         'labelId'  => null,
     ];

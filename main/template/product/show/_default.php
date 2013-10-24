@@ -201,6 +201,8 @@ $is_showed = [];
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
 
         <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
+
+        <?= $helper->render('cart/__button-product-lifeGift', ['product' => $product]) // Кнопка "Подари жизнь" ?>
     </div><!--/widget delivery -->
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
