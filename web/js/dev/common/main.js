@@ -107,7 +107,7 @@ $(document).ready(function() {
 	/**
 	 * Подписка
 	 */
-	/*$('body').on('click', '.bSubscibe', function() {
+	$('body').on('click', '.bSubscibe', function() {
 		if ( $(this).hasClass('checked') ) {
 			$(this).removeClass('checked');
 			$(this).find('.subscibe').removeAttr('checked');
@@ -119,7 +119,7 @@ $(document).ready(function() {
 		}
 
 		return false;
-	});*/
+	});
 
 
 	/* GA categories referrer */

@@ -11,7 +11,7 @@
 		 * Конфигурация валидатора для формы логина
 		 * @type {Object}
 		 */
-			signinValidationConfig = {
+		signinValidationConfig = {
 			fields: [
 				{
 					fieldNode: $('.jsSigninUsername'),
@@ -31,7 +31,7 @@
 		 * Конфигурация валидатора для формы регистрации
 		 * @type {Object}
 		 */
-			registerValidationConfig = {
+		registerValidationConfig = {
 			fields: [
 				{
 					fieldNode: $('.jsRegisterFirstName'),
@@ -52,7 +52,7 @@
 		 * Конфигурация валидатора для формы регистрации
 		 * @type {Object}
 		 */
-			forgotPwdValidationConfig = {
+		forgotPwdValidationConfig = {
 			fields: [
 				{
 					fieldNode: forgotPwdLogin,
@@ -332,7 +332,9 @@
 			// end of vars
 
 			var responseFromServer = function( response ) {
-					if ( response.error !== null ) {
+					if ( response.error ) {
+						console.warn('Form has error');
+
 						if ( Login.serverErrorHandler.hasOwnProperty(response.error.code) ) {
 							console.log('Есть обработчик');
 							$.proxy(Login.serverErrorHandler[response.error.code], this)(response);
@@ -357,6 +359,9 @@
 						formSubmit.hide();
 						this.showError(response.notice.message);
 					}
+
+					console.log(this.form.data('redirect'));
+					console.log(response.data.link);
 
 					if ( this.form.data('redirect') ) {
 						if ( response.data.link ) {

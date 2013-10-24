@@ -13,7 +13,7 @@ $hasLoginLink = isset($hasLoginLink) ? $hasLoginLink : true;
 	    <legend class="bFormLogin__ePlaceTitle">Восстановление пароля</legend>
 
 	    <label class="bFormLogin__eLabel jsForgotPwdLoginLabel">Введите e-mail или мобильный телефон, который использовали при регистрации, и мы пришлем вам пароль.</label>
-	    <input class="text bFormLogin__eInput jsForgotPwdLogin" type="text" value="" name="forgot[login]" />
+	    <div><input class="text bFormLogin__eInput jsForgotPwdLogin" type="text" value="" name="forgot[login]" /></div>
 
 	    <input type="submit" class="bFormLogin__eBtnSubmit mBtnGrey jsSubmit" data-loading-value="Идет обработка..." value="Отправить запрос" />
 
