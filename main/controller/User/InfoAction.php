@@ -60,6 +60,7 @@ class InfoAction {
                 $responseData['user']['isSubscribed'] = $user->getEntity()->getIsSubscribed();
                 $responseData['user']['id'] = $userEntity->getId();
                 $responseData['user']['email'] = $userEntity->getEmail();
+                $responseData['user']['emailHash'] = md5($userEntity->getEmail());
             }
 
             if (!$cart->isEmpty()) {

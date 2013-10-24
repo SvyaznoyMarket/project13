@@ -43,7 +43,7 @@
 
     <div id="_searchKiss" style="display: none" data-search="<?= $helper->json(['query' => $searchQuery, 'url' => \App::request()->headers->get('referer'), 'count' => $productCount]) ?>"></div>
 
-    <? if (!(bool)$productFilter->getFilterCollection()): ?>
+    <? if (false): ?>
     <div class="bSearchCategoryRoot">
         <?= $helper->render('search/__category', [
             'searchQuery'      => $searchQuery,

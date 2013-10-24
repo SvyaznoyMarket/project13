@@ -187,15 +187,21 @@
 
 					show_user = tmpl('auth_tmpl', dtmpl);
 					
-					topAuth.hide();
-					topAuth.after(show_user);
-					bottomAuth.html(userInfo.name).addClass('mAuth');
+					if ( topAuth.length ) {
+						topAuth.hide();
+						topAuth.after(show_user);
+					}
 
-					$('body').trigger('userLogged', [userInfo]);
+					if ( bottomAuth.length ) {
+						bottomAuth.html(userInfo.name).addClass('mAuth');
+					}
 				}
 				else {
 					topAuth.show();
+
 				}
+
+				$('body').trigger('userLogged', [userInfo]);
 			}; 
 			
 			return {

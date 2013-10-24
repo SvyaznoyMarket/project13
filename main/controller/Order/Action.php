@@ -620,6 +620,7 @@ class Action {
         $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('creditData', $creditData);
         $page->setParam('paymentUrl', $paymentUrl);
+        $page->setParam('paymentPageType', 'complete');
 
         return new \Http\Response($page->show());
     }
