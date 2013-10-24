@@ -91,6 +91,21 @@ FormValidator.prototype._requireAs = {
 		};
 	},
 
+	password: function( fieldNode ) {
+		var value = fieldNode.val();
+
+		if ( value.length === 0 ) {
+			return {
+				hasError: true,
+				errorMsg : 'Поле обязательно для заполнения'
+			};
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
 	textarea: function( fieldNode ) {
 		var value = fieldNode.text();
 
@@ -279,11 +294,18 @@ FormValidator.prototype._unmarkFieldError = function( fieldNode ) {
 };
 
 FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
+	var self = this;
+
+	var clearError = function clearError() {
+		self._unmarkFieldError($(this));
+	};
+
 	console.info('маркируем');
 	console.log(errorMsg);
 	
 	fieldNode.addClass(this.config.errorClass);
 	fieldNode.before('<div class="bErrorText"><div class="bErrorText__eInner">'+errorMsg+'</div></div>');
+	fieldNode.bind('focus', clearError);
 };
 
 /**
@@ -329,11 +351,7 @@ FormValidator.prototype._enableHandlers = function() {
 			timeout_id = window.setTimeout(function(){
 				validateOnBlur(that);
 			}, 5);
-		},
-
-		clearError = function clearError() {
-			self._unmarkFieldError($(this));
-		};
+		}
 	// end of functions
 
 	for (var i = fields.length - 1; i >= 0; i--) {
@@ -346,7 +364,6 @@ FormValidator.prototype._enableHandlers = function() {
 			}
 
 			currentField.fieldNode.bind('blur', blurHandler);
-			currentField.fieldNode.bind('focus', clearError);
 			self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] = true;
 		}
 	}
@@ -412,6 +429,8 @@ FormValidator.prototype.validate = function( callbacks ) {
 	for ( i = fields.length - 1; i >= 0; i-- ) { // перебираем поля из конфига
 		result = self._validateField(fields[i]);
 
+		console.log(result);
+
 		if ( result.hasError ) {
 			self._markFieldError(fields[i].fieldNode, result.errorMsg);
 			errors.push({
@@ -420,6 +439,8 @@ FormValidator.prototype.validate = function( callbacks ) {
 			});
 		}
 		else {
+			console.log('нет ошибки в поле ');
+			console.log(fields[i].fieldNode);
 			self._unmarkFieldError(fields[i].fieldNode);
 		}
 	}

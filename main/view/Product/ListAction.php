@@ -31,6 +31,13 @@ class ListAction {
             /** @var string $model3dImg */
             $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getImg3d() : null;
 
+            $stateLabel = null;
+            if ($product->isInShopOnly()) {
+                $stateLabel = ['name' => 'Только в магазинах'];
+            } else if ($product->getMainCategory() && $product->getMainCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore()) {
+                $stateLabel = ['name' => 'Товар за три дня'];
+            }
+
             $productItem = [
                 'name'         => $product->getName(),
                 'link'         => $product->getLink(),
@@ -48,6 +55,7 @@ class ListAction {
                 ,
                 'isBuyable'    => $product->getIsBuyable(),
                 'onlyInShop'   => $product->isInShopOnly(),
+                'stateLabel'   => $stateLabel,
                 'variations'   =>
                 ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty()) // TODO: перенести в \View\*Action
                     ? array_map(function(\Model\Product\Model\Property\Entity $property) {
