@@ -716,16 +716,16 @@
 			 * @param event
 			 * @param userInfo — данные пользователя (если существуют)
 			 */
-			userLogged = function userLogin( event, userInfo ) {
-                if (userInfo) {
-                    if (userInfo.isSubscribed ) {
+             userLogged = function userLogin(event, userInfo) {
+                if ( userInfo ) {
+                    if ( userInfo.isSubscribed ) {
                         subscribeWrapper.hide();
                     }
                     if ( userInfo.name ) {
                         notiferWrapper.show();
                     }
                 }
-			},
+            },
 
 			/**
 			 * Показать окно подписки на снижение цены
