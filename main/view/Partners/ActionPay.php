@@ -41,40 +41,45 @@ class ActionPay {
      */
     public function execute()
     {
-        $this->routeAll();
+        try {
+            $this->routeAll();
 
-        switch ($this->routeName) { // begin of case
-            case "homepage":
-                $this->routeHomepage();
-                break;
+            switch ($this->routeName) { // begin of case
+                case "homepage":
+                    $this->routeHomepage();
+                    break;
 
-            case "product":
-                $this->routeProduct();
-                break;
+                case "product":
+                    $this->routeProduct();
+                    break;
 
-            case "product.category":
-                $this->routeCategory();
-                break;
+                case "product.category":
+                    $this->routeCategory();
+                    break;
 
-            case "cart":
-                $this->routeBasket();
-                break;
+                case "cart":
+                    $this->routeBasket();
+                    break;
 
-            case "search":
-                $this->routeSearch();
-                break;
+                case "search":
+                    $this->routeSearch();
+                    break;
 
-            case "order":
-            case "order.complete":
-                $this->routeOrderComplete();
-                break;
+                case "order":
+                case "order.complete":
+                    $this->routeOrderComplete();
+                    break;
 
-            default:
-                $this->routeDefault();
+                default:
+                    $this->routeDefault();
+            }
+            // end of case
+
+            return $this->sendData;
+
+        } catch (\Exception $e) {
+            \App::logger()->error($e, ['ActionPayJS']);
         }
-        // end of case
-
-        return $this->sendData;
     }
 
 
@@ -260,6 +265,8 @@ class ActionPay {
         if (!$orders) return false;
         /** @var $orders \Model\Order\Entity **/
 
+        $productsById = $this->getParam('productsById');
+
         //купленные товары
         $purchasedProducts = [];
 
@@ -267,13 +274,18 @@ class ActionPay {
             /** @var $ord \Model\Order\Entity **/
             $products = $ord->getProduct();
 
-            foreach($products as $product) {
-                /** @var $product \Model\Order\Product\Entity **/
+            foreach($products as $orderProduct) {
+                /** @var $orderProduct  \Model\Order\Product\Entity **/
+                /** @var $product       \Model\Product\Entity       **/
+
+                $product = $productsById[$orderProduct->getId()];
+
                 $purchasedProducts[] = [
-                    'id'        => $product->getId(),
-                    //'name'      => $product->getName(), // нет такого метода
-                    'price'     => $product->getPrice(),
-                    'quantity'  => $product->getQuantity(),
+                    'id'        => $orderProduct->getId(),
+                    //'name'      => $orderProduct->getName(), // нет такого метода
+                    'name'      => $product->getName(),
+                    'price'     => $orderProduct->getPrice(),
+                    'quantity'  => $orderProduct->getQuantity(),
                 ];
             }
 
@@ -346,7 +358,7 @@ class ActionPay {
      *
      * @param null $var
      * @param string $info
-     */
+     *
     private function d($var = null, $info = '') {
         print '<pre>Debug:';
         if ($info) {
@@ -356,6 +368,6 @@ class ActionPay {
         }
         if ($var) print_r($var);
         print '</pre>';
-    }
+    }*/
 
 }
