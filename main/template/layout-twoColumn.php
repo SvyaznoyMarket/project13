@@ -39,13 +39,12 @@
     <div class="adfoxWrapper" id="adfoxbground"></div>
     <? endif ?>
 
-        <div class="wrapper" data="privet">
+    <div class="wrapper" data="privet">
             <header class="header">
             <?= $page->slotHeader() ?>
         </header><!--/шапка-->
-    <div class="content mContentOrder clearfix">
-            
 
+        <div class="content mContentOrder clearfix">
             <?= $page->slotContentHead() ?>
 
             <div class="float100">
@@ -53,18 +52,18 @@
                     <?= $page->slotContent() ?>
                 </div>
             </div>
+
             <div class="column215">
                 <?= $page->slotSidebar() ?>
             </div>
-
-            <?= $page->slotSeoContent() ?>
             
+            <?= $page->slotSeoContent() ?>
+        </div>
     </div>
-</div>
 
 
     <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
-    <?= $page->slotUserbar() ?>
+    <?//= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
 
     <?= $page->slotRegionSelection() ?>
