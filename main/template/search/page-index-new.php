@@ -34,12 +34,14 @@
         'category'    => $selectedCategory,
     ]) ?>
 
-    <? if (!$selectedCategory): ?>
-        <?= $helper->render('product-category/_twoColumnList', [
+    <!--    --><?// if (!$selectedCategory): ?>
+    <div class="bSearchCategoryRoot bFilterValuesItem mLineItem">
+        <?= $helper->render('search/__category', [
             'categories'  => $categoriesFound,
             'searchQuery' => $searchQuery,
         ]) // категории товаров в названиях которых есть вхождение искомого слова  ?>
-    <? endif ?>
+    </div>
+    <!--    --><?// endif ?>
 
     <div id="_searchKiss" style="display: none" data-search="<?= $helper->json(['query' => $searchQuery, 'url' => \App::request()->headers->get('referer'), 'count' => $productCount]) ?>"></div>
 

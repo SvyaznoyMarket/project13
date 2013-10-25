@@ -266,7 +266,9 @@
 				slidersInputState = catalog.filter.getSlidersInputState(),
 				activeSort = viewParamPanel.find('.mSortItem.mActive').find('.jsSorting'),
 				sortUrl = activeSort.data('sort'),
-				formSerizalizeData;
+				formSerizalizeData,
+				urlParams = catalog.filter.getUrlParams(),
+				hasCategory = false;
 			// end of vars
 
 			for ( var i = formData.length - 1; i >= 0; i-- ) {
@@ -274,6 +276,20 @@
 					console.log('slider input '+formData[i].name+' unchanged');
 
 					formData.splice(i,1);
+				}
+			}
+
+			// передаем категрию, если она была задана
+			if ( urlParams && urlParams['category'] ) {
+				$.each(formData, function () {
+					if ( this.name == 'category' ) {
+						hasCategory = true;
+					}
+				});
+
+				// добавляем категорию в параметры, если она не добавлена
+				if ( !hasCategory ) {
+					formData.unshift({name: 'category', value: urlParams['category']});
 				}
 			}
 
@@ -288,6 +304,23 @@
 			url = url.addParameterToUrl('sort', sortUrl);
 
 			return url;
+		},
+
+		/**
+		 * Получение get параметров текущей страницы
+		 */
+		getUrlParams: function () {
+			var $_GET = {},
+				__GET = window.location.search.substring(1).split('&'),
+				getVar;
+			// end of vars
+
+			for( var i = 0; i < __GET.length; i++ ) {
+				getVar = __GET[i].split('=');
+				$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
+			}
+
+			return $_GET;
 		},
 
 		/**
