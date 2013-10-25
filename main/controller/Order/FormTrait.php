@@ -99,6 +99,10 @@ trait FormTrait {
             }
         }
 
+        $this->validatePaymentType($form);
+    }
+
+    protected function validatePaymentType(Form $form) {
         // метод оплаты
         if (!$form->getPaymentMethodId()) {
             $form->setError('payment_method_id', 'Не указан способ оплаты');
