@@ -13326,3 +13326,45 @@
   }
 }
 /*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
+/*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
+@media all {
+  .btnBuy.mBtnLifeGift {
+    width: 171px;
+    height: 50px;
+    margin: 10px auto;
+  }
+  .bLifeGiftLink {
+    background: url("/css/lifeGift/img/btnBuy.gif") no-repeat 0 0;
+    width: 171px;
+    height: 50px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 4px;
+  }
+  .mLiftGift .bTitle {
+    font-size: 16px;
+    color: #c52126;
+    margin: 0 0 15px;
+  }
+  .mLiftGift .bSubTitle {
+    font-size: 12px;
+    display: block;
+  }
+  .mLiftGift .bPrice {
+    font-size: 26px;
+    margin: 10px 0 0;
+    text-align: center;
+  }
+  .bLiftGiftLogo {
+    text-align: center;
+    margin: 10px 0 5px;
+  }
+  .bLiftGiftLogo img {
+    width: 132px;
+  }
+  .bLiftGiftFootnote {
+    font-size: 11px;
+    padding-bottom: 10px;
+  }
+}
+/*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
