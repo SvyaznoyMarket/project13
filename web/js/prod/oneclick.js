@@ -806,7 +806,7 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
             subscribeWrapper = $('.bSubscibeWrapper');
 		//end of vars
 
-        $('body').on('userLogged', function(event, userInfo) {
+        $('body').on('userLogged', function( event, userInfo ) {
             if ( userInfo && userInfo.isSubscribed ) {
                 // Если юзер уже подписан, не нужно отображать чекбокс с предложением подписаться
                 subscribeWrapper.hide();
