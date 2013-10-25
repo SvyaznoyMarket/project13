@@ -237,36 +237,30 @@ window.ANALYTICS = {
         }
     },
 
+    flocktoryAddScript : function() {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = "//api.flocktory.com/1/hello.2.js";
+        var l = document.getElementsByTagName('script')[0];
+        l.parentNode.insertBefore(s, l);
+    },
+
     jsOrderFlocktory : function() {
-    	console.info('foctory order complete');
-    	console.log($('#jsOrderFlocktory').data('value'));
+        console.info('foctory order complete');
+        console.log($('#jsOrderFlocktory').data('value'));
 
-    	var _flocktory = window._flocktory = _flocktory || [],
-    		flocktoryData = $('#jsOrderFlocktory').data('value');
-    	// end of vars
-    	
-    	_flocktory.push(flocktoryData);
+        var _flocktory = window._flocktory = _flocktory || [],
+            flocktoryData = $('#jsOrderFlocktory').data('value');
+        // end of vars
 
-        (function () {
-            var s = document.createElement('script');
-            s.type = 'text/javascript';
-            s.async = true;
-            s.src = "//api.flocktory.com/1/hello.2.js";
-            var l = document.getElementsByTagName('script')[0];
-            l.parentNode.insertBefore(s, l);
-        })();
+        _flocktory.push(flocktoryData);
+
+        this.flocktoryAddScript();
     },
 
     flocktoryJS : function() {
-        (function () {
-            var s = document.createElement('script');
-            s.type = 'text/javascript';
-            s.async = true;
-            s.src = "//api.flocktory.com/1/hello.2.js";
-            var l = document.getElementsByTagName('script')[0];
-            l.parentNode.insertBefore(s, l);
-        })();
-
+        this.flocktoryAddScript();
 
         window.Flocktory = {
             /**
