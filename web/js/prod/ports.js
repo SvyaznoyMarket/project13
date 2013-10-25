@@ -473,13 +473,18 @@ window.ANALYTICS = {
                     apiJs.src = "//cdn.retailrocket.ru/javascript/tracking.js";
                     ref.parentNode.insertBefore(apiJs, ref);
                 }(document));
-
-                $('body').on('userLogged', RetailRocket.action);
             }
 
         }// end of window.RetailRocket object
 
         RetailRocket.init();
+
+        if ( ENTER.config.userInfo ) {
+            RetailRocket.action(null, ENTER.config.userInfo)
+        }
+        else {
+            $('body').on('userLogged', RetailRocket.action);
+        }
         // RetailRocket.action();
     },
 
