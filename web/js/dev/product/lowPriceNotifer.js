@@ -11,7 +11,12 @@
 			submitBtn = $('.bLowPriceNotiferPopup__eSubmitEmail'),
 			input = $('.bLowPriceNotiferPopup__eInputEmail'),
 			notiferPopup = $('.bLowPriceNotiferPopup'),
-			error = $('.bLowPriceNotiferPopup__eError');
+			error = $('.bLowPriceNotiferPopup__eError'),
+            uEmail = $('input.uEmail'),
+            uEntered = $('.uEntered'),
+            uNotEntered = $('.uNotEntered'),
+            uNotHaveMail = $('.uNotHaveMail'),
+            uHaveMail = $('.uHaveMail');
 		// end of vars
 
 			/**
@@ -31,9 +36,18 @@
 			 * @param userInfo — данные пользователя (если существуют)
 			 */
 			userLogged = function userLogin( event, userInfo ) {
-				if ( userInfo && userInfo.name ) {
-					notiferWrapper.show();
-				}
+                if ( userInfo ) {
+                    if ( userInfo.email ) {
+                        uEmail.val(userInfo.email);
+                        uHaveMail.show();
+                        uNotHaveMail.hide();
+                    }
+                    if ( userInfo.name ) {
+                        notiferWrapper.show();
+                        uEntered.show();
+                        uNotEntered.hide();
+                    }
+                }
 			},
 
 			/**
