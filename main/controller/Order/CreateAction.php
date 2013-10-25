@@ -269,6 +269,10 @@ class CreateAction {
                 $orderData['certificate_pin'] = $form->getCertificatePin();
             }
 
+
+            $isPickpoint = ( $deliveryType->getToken() === \Model\DeliveryType\Entity::TYPE_PICKPOINT )
+                ? true :false;
+
             // товары
             foreach ($orderPart->getProductIds() as $productId) {
                 $cartProduct = $user->getCart()->getProductById($productId);
@@ -279,7 +283,7 @@ class CreateAction {
 
                 $productData = [
                     'id'       => $cartProduct->getId(),
-                    'quantity' => $cartProduct->getQuantity(),
+                    'quantity' => $isPickpoint ? 1 : $cartProduct->getQuantity(),
 
                 ];
 
