@@ -20,6 +20,13 @@ trait ResponseDataTrait {
 
         \App::exception()->remove($exception);
 
+        if (!isset($responseData['paypalECS'])) {
+            $responseData['paypalECS'] = false;
+        }
+        if (!isset($responseData['lifeGift'])) {
+            $responseData['lifeGift'] = false;
+        }
+
         $productDataById = [];
         if ($exception instanceof \Curl\Exception) {
             $errorData = (array)$exception->getContent();
