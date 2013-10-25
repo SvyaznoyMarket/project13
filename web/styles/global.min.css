@@ -86,5 +86,12 @@ table{border-collapse:collapse;border-spacing:0;}
 .basketLine__desc__available{font-size:12px;margin:5px 0 0;}
 .basketLine__desc__info{float:right;width:270px;}
 .basketLine__desc .descCount{float:right;margin:4px 20px 10px 0;}
-.basketLine__desc .descPrice{width:287px;font-size:24px;float:right;clear:both;}.basketLine__desc .descPrice .price{display:inline-block;width:120px;text-align:right;vertical-align:top;}
+.basketLine__desc .descPrice{width:287px;font-size:22px;float:right;clear:both;}.basketLine__desc .descPrice .price{display:inline-block;width:120px;text-align:right;vertical-align:top;}
 .basketLine__desc .descPrice .button{display:inline-block;margin:2px 0 0 10px;vertical-align:top;}
+.basketCredit{float:left;width:345px;}.basketCredit__text{padding-left:34px;font-size:11px;}
+.basketSum{font-size:14px;margin:5px 20px 0 0;}.basketSum__price{font-size:24px;line-height:42px;}
+.creditRate{font-size:14px;width:370px;padding:0 0 5px;line-height:24px;}.creditRate__title{float:left;}
+.creditRate__price{float:right;font-size:24px;}
+.creditRate__footer{font-size:11px;float:left;width:370px;margin:5px 0 0;}
+.backShop{line-height:41px;font-size:14px;}
+.basketBuy{float:right;margin:0 20px 35px 20px;}.basketBuy .bBigOrangeButton{font-weight:normal;width:208px;}

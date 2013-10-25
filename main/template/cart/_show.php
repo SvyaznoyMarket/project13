@@ -109,7 +109,7 @@ foreach ($products as $product) {
     $categoryId = isset($categoryIdByProductId[$product->getId()]) ? $categoryIdByProductId[$product->getId()] : null;
     if (!$cartProduct) continue;
 ?>
-    <div class="basketLine clearfix" ref="<?= $product->getId() ?>" data-product-id="<?= $product->getId() ?>" data-category-id="<?= $categoryId ?>">
+    <div class="basketLine basketline clearfix" ref="<?= $product->getId() ?>" data-product-id="<?= $product->getId() ?>" data-category-id="<?= $categoryId ?>">
         <div class="basketLine__img">
             <a class="basketLine__imgLink" href="<?= $product->getLink() ?>">
                 <img src="<?= $product->getImageUrl() ?>" alt="<?= $product->getName() ?>" />
@@ -130,7 +130,7 @@ foreach ($products as $product) {
                 <? endif ?>
             </div>
 
-            <div class="basketLine__desc__info">
+            <div class="basketLine__desc__info basketinfo">
                 <div class="descCount">
                     <?= $page->render('_spinner', array(
                         'quantity' => $cartProduct->getQuantity(),
@@ -140,7 +140,7 @@ foreach ($products as $product) {
                 </div>
 
                 <div class="descPrice">
-                    <span class="price"><?= $page->helper->formatPrice($cartProduct->getPrice() * $cartProduct->getQuantity()) ?></span> <span class="rubl">p</span>
+                    <span class="price sum"><?= $page->helper->formatPrice($cartProduct->getPrice() * $cartProduct->getQuantity()) ?></span> <span class="rubl">p</span>
                     <a href="<?= $page->url('cart.product.delete', array('productId' => $product->getId())) ?>" class="button whitelink">Удалить</a>
                 </div>
             </div>
@@ -162,6 +162,7 @@ foreach ($products as $product) {
                     );
                 }
             ?>
+            <div class="clear pb15"></div>
 
             <? if ((bool)$product->getService()): ?>
                 <?= $page->render('cart/_serviceByProduct', array('product' => $product, 'cartProduct' => $cartProduct)) ?>
@@ -172,7 +173,7 @@ foreach ($products as $product) {
             <?endif ?>
 
             <? if ((bool)$kitData): ?>
-                <a id="<?= sprintf('product-%s-kit', $product->getId()) ?>" href="#" class="product_kit-data fr button whitelink" data-value="<?= $page->json($kitData) ?>">Посмотреть состав набора</a>
+                <a id="<?= sprintf('product-%s-kit', $product->getId()) ?>" href="#" class="product_kit-data fr mt15 button whitelink" data-value="<?= $page->json($kitData) ?>">Посмотреть состав набора</a>
             <? endif ?>
 
         </div>

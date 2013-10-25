@@ -6927,13 +6927,6 @@
 /*---END---СТИЛИ AJAX ЛОАДЕРА---*/
 /*-------СТИЛИ КОРЗИНЫ-----*/
 @media all {
-  .basketline {
-    border-bottom: 1px solid #e6e6e6;
-    float: left;
-    margin-bottom: 20px;
-    padding-bottom: 25px;
-    width: 100%;
-  }
   .basketleft {
     float: left;
     width: 120px;
