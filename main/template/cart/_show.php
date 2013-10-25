@@ -109,39 +109,39 @@ foreach ($products as $product) {
     $categoryId = isset($categoryIdByProductId[$product->getId()]) ? $categoryIdByProductId[$product->getId()] : null;
     if (!$cartProduct) continue;
 ?>
-    <div class="basketline mWrap" ref="<?= $product->getId() ?>" data-product-id="<?= $product->getId() ?>" data-category-id="<?= $categoryId ?>">
-        <div class="basketleft">
-            <a href="<?= $product->getLink() ?>">
+    <div class="basketLine clearfix" ref="<?= $product->getId() ?>" data-product-id="<?= $product->getId() ?>" data-category-id="<?= $categoryId ?>">
+        <div class="basketLine__img">
+            <a class="basketLine__imgLink" href="<?= $product->getLink() ?>">
                 <img src="<?= $product->getImageUrl() ?>" alt="<?= $product->getName() ?>" />
             </a>
         </div>
-        <div class="basketright clearfix">
-            <div class="goodstitle">
-                <div class="font24 pb5"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
+
+        <div class="basketLine__desc">
+            <div class="basketLine__desc__name">
+                <a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a>
                 <? if ($cartProduct->getIsBuyable()): ?>
                     <noindex>
-                        <div class="font11">Есть в наличии</div>
+                        <div class="basketLine__desc__available">Есть в наличии</div>
                     </noindex>
                 <? else: ?>
                     <noindex>
-                        <div class="font11">Нет в наличии</div>
+                        <div class="basketLine__desc__available">Нет в наличии</div>
                     </noindex>
                 <? endif ?>
             </div>
-            <div class="basketinfo pb15">
-                <div class="left font11">&nbsp;</div>
-                <div class="right">
+
+            <div class="basketLine__desc__info">
+                <div class="descCount">
                     <?= $page->render('_spinner', array(
                         'quantity' => $cartProduct->getQuantity(),
                         'incUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => 1)),
                         'decUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => -1)),
                     ))?>
                 </div>
-            </div>
-            <div class="basketinfo">
-                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartProduct->getPrice() * $cartProduct->getQuantity()) ?></span> <span class="rubl">p</span></div>
-                <div class="right">
-                    <a href="<?= $page->url('cart.product.delete', array('productId' => $product->getId())) ?>" class="button whitelink mr5">Удалить</a>
+
+                <div class="descPrice">
+                    <span class="price"><?= $page->helper->formatPrice($cartProduct->getPrice() * $cartProduct->getQuantity()) ?></span> <span class="rubl">p</span>
+                    <a href="<?= $page->url('cart.product.delete', array('productId' => $product->getId())) ?>" class="button whitelink">Удалить</a>
                 </div>
             </div>
 
@@ -162,7 +162,6 @@ foreach ($products as $product) {
                     );
                 }
             ?>
-            <div class="clear pb15"></div>
 
             <? if ((bool)$product->getService()): ?>
                 <?= $page->render('cart/_serviceByProduct', array('product' => $product, 'cartProduct' => $cartProduct)) ?>
@@ -173,7 +172,7 @@ foreach ($products as $product) {
             <?endif ?>
 
             <? if ((bool)$kitData): ?>
-                <a id="<?= sprintf('product-%s-kit', $product->getId()) ?>" href="#" class="product_kit-data fr mt15 button whitelink" data-value="<?= $page->json($kitData) ?>">Посмотреть состав набора</a>
+                <a id="<?= sprintf('product-%s-kit', $product->getId()) ?>" href="#" class="product_kit-data fr button whitelink" data-value="<?= $page->json($kitData) ?>">Посмотреть состав набора</a>
             <? endif ?>
 
         </div>

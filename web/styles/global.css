@@ -1921,3 +1921,59 @@ table {
   }
 }
 /*---END----ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК---------*/
+/*---------КОРЗИНА----------*/
+.basketLine {
+  border-bottom: 1px solid #e6e6e6;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+}
+.basketLine__img {
+  display: inline-block;
+  vertical-align: top;
+  width: 120px;
+  *display: inline;
+  zoom: 1;
+}
+.basketLine__desc {
+  float: right;
+  width: 780px;
+  margin: 10px 0 0;
+}
+.basketLine__desc__name {
+  font-size: 20px;
+  display: inline-block;
+  vertical-align: top;
+  width: 480px;
+  *display: inline;
+  zoom: 1;
+}
+.basketLine__desc__available {
+  font-size: 12px;
+  margin: 5px 0 0;
+}
+.basketLine__desc__info {
+  float: right;
+  width: 270px;
+}
+.basketLine__desc .descCount {
+  float: right;
+  margin: 4px 20px 10px 0;
+}
+.basketLine__desc .descPrice {
+  width: 287px;
+  font-size: 24px;
+  float: right;
+  clear: both;
+}
+.basketLine__desc .descPrice .price {
+  display: inline-block;
+  width: 120px;
+  text-align: right;
+  vertical-align: top;
+}
+.basketLine__desc .descPrice .button {
+  display: inline-block;
+  margin: 2px 0 0 10px;
+  vertical-align: top;
+}
+/*---END----КОРЗИНА---------*/
