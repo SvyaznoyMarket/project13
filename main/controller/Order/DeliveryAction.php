@@ -72,6 +72,8 @@ class DeliveryAction {
                 $coupons = [];
                 $blackcards = [];
             } else if (true === $lifeGift) {
+                $region = new \Model\Region\Entity(['id' => \App::config()->lifeGift['regionId']]); // TODO: осторожно, говонокодистое место
+
                 $responseData['cart']['sum'] = \App::user()->getLifeGiftCart()->getSum();
 
                 $responseData['lifeGift'] = true;

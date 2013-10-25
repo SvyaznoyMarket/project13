@@ -65,10 +65,6 @@ class CreateAction {
                 throw new \Exception('Форма заполнена неверно');
             }
 
-            // проверка на изменение цены
-            /** @var $cartProduct \Model\Cart\Product\Entity */
-            $cartProduct = reset($cartProducts);
-
             $parts = $form->getPart();
             /** @var $part \View\Order\NewForm\PartField|null */
             $part = reset($parts);
