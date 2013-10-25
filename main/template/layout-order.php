@@ -59,7 +59,7 @@
 </script>
 <!-- js templete -->
 
-<div class="wrapper" data="privet">
+<div class="wrapper">
     <div class="content mContentOrder clearfix">
         <?= $page->slotContent() ?>
     </div><!--/контент -->
