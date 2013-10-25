@@ -43,6 +43,7 @@ class IndexAction {
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         $region = $user->getRegion();
+        $lifeGiftRegion = new \Model\Region\Entity(['id' => \App::config()->lifeGift['regionId']]);
 
         // подготовка 2-го пакета запросов
 
@@ -52,7 +53,6 @@ class IndexAction {
         /** @var $product \Model\Product\Entity */
         $product = null;
         $productExpanded = null;
-        $dataR = null;
         $repository->prepareEntityByToken($productToken, $region, function($data) use (&$product, &$productExpanded) {
             $data = reset($data);
 
@@ -62,8 +62,22 @@ class IndexAction {
             }
         });
 
+        /** @var $lifeGiftProduct \Model\Product\Entity|null */
+        $lifeGiftProduct = null;
+        $repository->prepareEntityByToken($productToken, $lifeGiftRegion, function($data) use (&$lifeGiftProduct) {
+            $data = reset($data);
+
+            if ((bool)$data) {
+                $lifeGiftProduct = new \Model\Product\Entity($data);
+            }
+        });
+
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+
+        if (!($lifeGiftProduct->getLabel() && (\App::config()->lifeGift['labelId'] === $lifeGiftProduct->getLabel()->getId()))) {
+            $lifeGiftProduct = null;
+        }
 
         if (!$product) {
             throw new \Exception\NotFoundException(sprintf('Товар @%s не найден.', $productToken));
@@ -318,6 +332,7 @@ class IndexAction {
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
+        $page->setParam('lifeGiftProduct', $lifeGiftProduct);
         $page->setParam('productExpanded', $productExpanded);
         $page->setParam('productVideos', $productVideos);
         $page->setParam('title', $product->getName());

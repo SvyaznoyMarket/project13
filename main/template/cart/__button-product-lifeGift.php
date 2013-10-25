@@ -22,8 +22,13 @@ return function (
     $url = $helper->url('cart.lifeGift.product.set', $urlParams);
 
 ?>
-<div class="bWidgetBuy__eBuy btnBuy mBtnLifeGift">
-    <a class="bLifeGiftLink jsLifeGiftButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Подари Жизнь</a>
+<div style="border: #ff0000 1px dashed; margin: 0 0 10px; border-radius: 4px;">
+
+    <div class="bWidgetBuy__eBuy btnBuy mBtnLifeGift">
+        <a class="bLifeGiftLink jsLifeGiftButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Подари Жизнь</a>
+        <strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span>
+    </div>
+
 </div>
 
 <? };
