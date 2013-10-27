@@ -306,16 +306,15 @@ class DefaultLayout extends Layout {
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
             }
 
+
+            // ActionPay ретаргетинг
+            $return .= '<div id="ActionPayJS" data-vars="' .
+                $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) .
+                '" class="jsanalytics"></div>';
+
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
-
-
-        // ActionPay ретаргетинг
-        $return .= '<div id="ActionPayJS" data-vars="' .
-            $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) .
-            '" class="jsanalytics"></div>';
-
 
         return $return;
     }
