@@ -123,9 +123,13 @@
 		 */
 		logError = function logError( data ) {
 			var s = document.createElement('script'),
-				l = document.getElementsByTagName('script')[0];
+				l = document.getElementsByTagName('script')[0],
+				pageConfig = $('#page-config').data('value');
 			// end of vars
 
+			if ( !pageConfig.jsonLog ) {
+				return;
+			}
 
 			data.templateType = templateType;
 			data.pageID = data.pageID || document.body.getAttribute('data-id');
