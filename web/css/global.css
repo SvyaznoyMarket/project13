@@ -916,7 +916,6 @@
   .mLoader {
     background: url('/css/common/img/preloader.gif') no-repeat center center;
     display: block;
-    float: left;
     height: 100px;
     min-height: 50px;
     position: relative;
