@@ -372,86 +372,55 @@ window.ANALYTICS = {
     },
 
     RetailRocketJS : function() {
-        window.rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // var rrPartnerId — по ТЗ должна быть глобальной
-        /* и действительно, иначе не подгружается скрипт с api.retailrocket.ru */
+        window.rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // rrPartnerId — по ТЗ должна быть глобальной
         
         window.rrApi = {};
-        rrApi.addToBasket = rrApi.order = rrApi.categoryView = rrApi.view =
-        rrApi.recomMouseDown = rrApi.recomAddToCart = function() {};
+        window.rrApiOnReady = [];
+
+        rrApi.addToBasket = rrApi.order = rrApi.categoryView = rrApi.view = rrApi.recomMouseDown = rrApi.recomAddToCart = function() {};
 
         window.RetailRocket = {
 
             'product': function ( data, userData ) {
 
-                window.rcAsyncInit = function () {
-                    if ( userData.userId ) {
-                        try {
-                            rcApi.view(data, userData);
-                        }
-                        catch ( err ) {
-                            var dataToLog = {
-                                    event: 'RR_error',
-                                    type:'ошибка в rcApi.view',
-                                    err: err
-                                };
-                            // end of vars
-
-                            ENTER.utils.logError(dataToLog);
-                        }
+                var rcAsyncInit = function () {
+                    try {
+                        rcApi.view(data, userData.userId ? userData : undefined); 
                     }
-                    else {
-                        try {
-                            rcApi.view(data);
-                        }
-                        catch ( err ) {
-                            var dataToLog = {
-                                    event: 'RR_error',
-                                    type:'ошибка в rcApi.view',
-                                    err: err
-                                };
-                            // end of vars
+                    catch ( err ) {
+                        var dataToLog = {
+                                event: 'RR_error',
+                                type: 'ошибка в rcApi.view',
+                                err: err
+                            };
+                        // end of vars
 
-                            ENTER.utils.logError(dataToLog);
-                        }
+                        ENTER.utils.logError(dataToLog);
                     }
+                };
 
-                }
+                window.rrApiOnReady.push(rcAsyncInit);
             },
 
             'product.category': function ( data, userData ) {
 
-                window.rcAsyncInit = function () {
-                    if ( userData.userId ) {
-                        try {
-                            rcApi.categoryView(data, userData);
-                        }
-                        catch ( err ) {
-                            var dataToLog = {
-                                    event: 'RR_error',
-                                    type:'ошибка в rcApi.categoryView',
-                                    err: err
-                                };
-                            // end of vars
-
-                            ENTER.utils.logError(dataToLog);
-                        }
+                var rcAsyncInit = function () {
+                    try {
+                        rcApi.categoryView(data, userData.userId ? userData : undefined);
                     }
-                    else {
-                        try {
-                            rcApi.categoryView(data);   
-                        }
-                        catch ( err ) {
-                            var dataToLog = {
-                                    event: 'RR_error',
-                                    type:'ошибка в rcApi.categoryView',
-                                    err: err
-                                };
-                            // end of vars
+                    catch ( err ) {
+                        var dataToLog = {
+                                event: 'RR_error',
+                                type:'ошибка в rcApi.categoryView',
+                                err: err
+                            };
+                        // end of vars
 
-                            ENTER.utils.logError(dataToLog);
-                        }
+                        ENTER.utils.logError(dataToLog);
                     }
-                }
+                };
+
+                window.rrApiOnReady.push(rcAsyncInit);
             },
 
             'order.complete': function ( data, userData ) {
@@ -461,7 +430,7 @@ window.ANALYTICS = {
                     data.hasUserEmail = userData.hasUserEmail;
                 }
 
-                window.rcAsyncInit = function () {
+                var rcAsyncInit = function () {
                     try {
                         rcApi.order(data);
                     }
@@ -475,7 +444,9 @@ window.ANALYTICS = {
 
                         ENTER.utils.logError(dataToLog);
                     }
-                }
+                };
+
+                window.rrApiOnReady.push(rcAsyncInit);
             },
 
             action: function ( e, userInfo ) {
@@ -507,8 +478,14 @@ window.ANALYTICS = {
         }// end of window.RetailRocket object
 
         RetailRocket.init();
+
+        if ( ENTER.config.userInfo ) {
+            RetailRocket.action(null, ENTER.config.userInfo)
+        }
+        else {
+            $('body').on('userLogged', RetailRocket.action);
+        }
         // RetailRocket.action();
-        $('body').on('userLogged', RetailRocket.action);
     },
 
     AdmitadJS : function() {
