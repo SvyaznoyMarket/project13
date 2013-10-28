@@ -27,7 +27,7 @@ if (!empty($userForm) && $userForm instanceof \View\Order\Form && !empty($order)
 
     $flocktoryData = [
         'order_id'     => $order->getId(),
-        'email'        => $userForm->getEmail() ? $userForm->getEmail() : $userForm->getMobilePhone().'@mail.ru',
+        'email'        => $userForm->getEmail() ? $userForm->getEmail() : $userForm->getMobilePhone().'@enter.ru',
         'name'         => implode(' ', [$userForm->getFirstName(), $userForm->getLastName()]),
         'sex'          => $userForm->getFirstName() && preg_match('/[аяa]$/', $userForm->getFirstName()) ? 'f' : 'm',
         'price'        => $order->getProductSum(),
