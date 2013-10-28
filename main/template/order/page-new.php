@@ -64,7 +64,7 @@ foreach (array_reverse($productsById) as $product) {
 									click: $root.chooseDeliveryTypes,
 									attr: { 'for': 'method_'+$data.id }">
 			</label>
-			<p class="bBuyingLine__eDesc" data-bind="text: $data.description"></p>
+			<p class="bBuyingLine__eDesc" data-bind="html: $data.description"></p>
 		</div>
 	</div>
 	<!-- Order Method -->
