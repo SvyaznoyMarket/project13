@@ -155,6 +155,10 @@ class DeliveryAction {
                     'states'      => $deliveryType->getPossibleMethodTokens(),
                     'ownStates'   => $deliveryType->getMethodTokens(),
                 ];
+
+                if ('pickpoint' === $deliveryType->getToken()) {
+                    $deliveryTypeData[$deliveryType->getToken()]['description'] = \App::closureTemplating()->render('order/newForm/__deliveryType-pickpoint-description');
+                }
             }
 
             $responseData = array_merge($responseData, [
