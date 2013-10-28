@@ -802,8 +802,16 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
 		var Model = $('.jsOrder1click').data('model'),
 			inputUrl = $('.jsOrder1click').attr('link-input'),
-			outputUrl = $('.jsOrder1click').attr('link-output');
+			outputUrl = $('.jsOrder1click').attr('link-output'),
+            subscribeWrapper = $('.bSubscibeWrapper');
 		//end of vars
+
+        $('body').on('userLogged', function( event, userInfo ) {
+            if ( userInfo && userInfo.isSubscribed ) {
+                // Если юзер уже подписан, не нужно отображать чекбокс с предложением подписаться
+                subscribeWrapper.hide();
+            }
+        });
 		
 		Deliveries = { // zaglushka
 			'self': {
