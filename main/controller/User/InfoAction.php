@@ -71,8 +71,11 @@ class InfoAction {
                 $buttons = [];
                 foreach ($cart->getProducts() as $cartProduct) {
                     $buttons['product'][] = [
-                        'id'       => \View\Id::cartButtonForProduct($cartProduct->getId()),
-                        'quantity' => $cartProduct->getQuantity(),
+                        'id'        => \View\Id::cartButtonForProduct($cartProduct->getId()),
+                        'quantity'  => $cartProduct->getQuantity(),
+                        'prodId'    => $cartProduct->getId(),
+                        'price'     => $cartProduct->getPrice(),
+                        //'price'     => $cartProduct->get,
                     ];
 
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {

@@ -17,6 +17,7 @@ class ActionPay {
     private $cart;
 
     private $sendData = [];
+    private $extraData = [];
 
 
     /**
@@ -75,6 +76,10 @@ class ActionPay {
             }
             // end of case
 
+            if ( !empty($extraData) ) {
+                $this->sendData['extraData'] = $extraData;
+            }
+
             return $this->sendData;
 
         } catch (\Exception $e) {
@@ -90,12 +95,26 @@ class ActionPay {
      * @return bool
      */
     private function basketInfo(){
+        /*
         if ( !empty( $this->sendData['basketProducts'] ) ) {
             // если данные в массиве уже есть, то не добавляем
             return true;
         }
 
-        /*
+        $cartProductsById = $this->getParam('cartProductsById');
+        if ( empty($cartProductsById) ) return false;
+
+        foreach($cartProductsById as $product) {
+            // @var $product \Model\Cart\Product\Entity
+            $this->sendData['basketProducts'][] = array(
+                'id' => $product->getId(),
+                'price' => $product->getPrice(),
+                'quantity' => $product->getQuantity(),
+            );
+        }
+        */
+
+        /* // old
         $in_basket = $this->cart->getData()['productList'];
         $products = $this->getParam('productEntities');
 
@@ -110,17 +129,8 @@ class ActionPay {
             );
         }*/
 
-        $cartProductsById = $this->getParam('cartProductsById');
-        if ( empty($cartProductsById) ) return false;
-
-        foreach($cartProductsById as $product) {
-            /** @var $product \Model\Cart\Product\Entity **/
-            $this->sendData['basketProducts'][] = array(
-                'id' => $product->getId(),
-                'price' => $product->getPrice(),
-                'quantity' => $product->getQuantity(),
-            );
-        }
+        //$this->extraData .= '_basketInfoJS';
+        $this->extraData[] = '_actionPayBasketJS';
 
         return true;
     }
