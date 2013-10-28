@@ -68,7 +68,7 @@
                 <li class="aboutList__item"><a class="aboutList__link" href="/how_get_order">Условия доставки</a></li>
                 <li class="aboutList__item"><a class="aboutList__link" href="/how_pay">Способы оплаты</a></li>
                 <li class="aboutList__item"><a class="aboutList__link" href="/credit">Покупка в кредит</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="http://my.enter.ru/community/job">Работа у нас</a></li>
+                <li class="aboutList__item mLast"><a class="aboutList__link" href="http://my.enter.ru/community/job">Работа у нас</a></li>
             </ul>
 
             <div class="publicInfo">
@@ -137,13 +137,13 @@
     <?= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
 
-    <?//= $page->slotRegionSelection() ?>
+    <?= $page->slotRegionSelection() ?>
     <?= $page->slotBodyJavascript() ?>
-    <?//= $page->slotInnerJavascript() ?>
-    <?//= $page->slotAuth() ?>
+    <?= $page->slotInnerJavascript() ?>
+    <?= $page->slotAuth() ?>
     <?//= $page->slotYandexMetrika() ?>
     <?//= $page->slotAdvanceSeoCounter() ?>
-    <?//= $page->slotMyThings() ?>
+    <?= $page->slotMyThings() ?>
     <?//= $page->slotAdriver() ?>
     <?//= $page->slotPartnerCounter() ?>
 

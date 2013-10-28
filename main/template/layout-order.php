@@ -70,7 +70,7 @@
 <?//= $page->slotRegionSelection() ?>
 <?//= $page->slotSurveybar() ?>
 <?= $page->slotBodyJavascript() ?>
-<?//= $page->slotInnerJavascript() ?>
+<?= $page->slotInnerJavascript() ?>
 <?//= $page->slotAuth() ?>
 <?//= $page->slotYandexMetrika() ?>
 <?//= $page->slotAdvanceSeoCounter() ?>
