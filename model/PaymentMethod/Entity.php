@@ -29,7 +29,7 @@ class Entity {
     /** @var int */
     private $payOnReceipt;
     /** @var bool */
-    private $isAvailableToPickpoint;
+    private $isAvailableToPickpoint = true;
 
     /**
      * @param array $data
