@@ -103,7 +103,7 @@
 				 * 
 				 * @public
 				 */
-				update = function update( basketInfo, cartProds, addCartProduct ) {
+				update = function update( basketInfo, cartProds ) {
 					headQ.html('(' + basketInfo.cartQ + ')');
 					bottomQ.html(basketInfo.cartQ);
 					bottomSum.html(basketInfo.cartSum);
@@ -112,9 +112,6 @@
 
                     if ( cartProds && cartProds.length > 0 ) {
                         config.cartProducts = cartProds;
-                    }
-                    if ( addCartProduct ) {
-                        config.cartProducts.push(addCartProduct);
                     }
 				},
 
@@ -151,7 +148,8 @@
 					flyboxBasket.append(flyboxTmpl);
 					flyboxBasket.show(300);
 
-					self.basket().update(nowBasket, {}, addCartProduct);
+					self.basket().update(nowBasket);
+                    config.cartProducts.push(addCartProduct);
 
 					$('body').bind('click', flyboxcloser);
 
