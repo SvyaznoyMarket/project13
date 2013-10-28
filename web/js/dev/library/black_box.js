@@ -9,7 +9,8 @@
 		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils;
 	// end of vars
-	
+
+    config.cartProducts = config.cartProducts || {};
 
 	/**
 	 * === BLACKBOX CONSTRUCTOR ===
@@ -102,12 +103,19 @@
 				 * 
 				 * @public
 				 */
-				update = function update( basketInfo ) {
+				update = function update( basketInfo, cartProds, addCartProduct ) {
 					headQ.html('(' + basketInfo.cartQ + ')');
 					bottomQ.html(basketInfo.cartQ);
 					bottomSum.html(basketInfo.cartSum);
 					bottomCart.addClass('mBought');
 					total.show();
+
+                    if ( cartProds && cartProds.length > 0 ) {
+                        config.cartProducts = cartProds;
+                    }
+                    if ( addCartProduct ) {
+                        config.cartProducts.push(addCartProduct);
+                    }
 				},
 
 				/**
@@ -127,24 +135,23 @@
 				 */
 				add = function add ( item ) {
 					var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item),
-							nowBasket = {
-							cartQ: item.totalQuan,
-							cartSum: item.totalSum
-						};
+                        nowBasket = {
+                            cartQ: item.totalQuan,
+                            cartSum: item.totalSum
+                        },
+                        addCartProduct = {
+                            id: item.id,
+                            name: item.title,
+                            price: item.priceInt,
+                            quantity: item.quantity
+                        };
 					// end of vars
 
 					flyboxDestroy();
 					flyboxBasket.append(flyboxTmpl);
 					flyboxBasket.show(300);
 
-					self.basket().update(nowBasket);
-
-                    ENTER.config.cartProducts.push({
-                        id         : item.id,
-                        name       : item.title,
-                        price      : item.priceInt,
-                        quantity   : item.quantity
-                    });
+					self.basket().update(nowBasket, {}, addCartProduct);
 
 					$('body').bind('click', flyboxcloser);
 
@@ -254,8 +261,6 @@
 						nowBasket = {};
 					//end of vars
 
-                    ENTER.config.cartProducts = data.cartProducts;
-
 					if ( data.success !== true ) {
 						return false;
 					}
@@ -268,7 +273,7 @@
 							cartSum: cartInfo.sum
 						};
 
-						self.basket().update(nowBasket);
+						self.basket().update( nowBasket, data.cartProducts );
 					}
 
 					if ( actionInfo !== undefined ) {
