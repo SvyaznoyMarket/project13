@@ -43,12 +43,14 @@ return function (
 
         <? foreach ($paymentMethods as $paymentMethod): ?>
         <?
+            /*  @var $paymentMethod  \Model\PaymentMethod\Entity */
             $elementId = sprintf('paymentMethod-%s', $paymentMethod->getId());
         ?>
             <div class="bPayMethod<? if (\Model\PaymentMethod\Entity::TYPE_ALL == $typeId): ?> mMethodOption<? endif ?>"
                  data-value="<?= $helper->json([
                      'max-sum' => in_array($paymentMethod->getId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID]) ? App::config()->order['maxSumOnline'] : null,
                      'method_id' => $paymentMethod->getId(),
+                     'isAvailableToPickpoint' => $paymentMethod->getIsAvailableToPickpoint(),
                  ]) ?>"
                 data-bind="paymentMethodVisible: totalSum">
                 <input
