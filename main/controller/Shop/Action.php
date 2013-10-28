@@ -92,7 +92,7 @@ class Action {
             );
         }
 
-        //$this->sortMarkersBySubways($markers); // <!-- todo
+        $this->sortMarkersBySubways($markers);
 
         $page = new \View\Shop\RegionPage();
         $page->setParam('shopAvailableRegions', $shopAvailableRegions);
@@ -250,12 +250,7 @@ class Action {
             ) return 0;
 
             if ($a['subway_name'] == $b['subway_name']) return 0;
-            return $a['subway_name'] < $b['subway_name'] ? 1 : -1;
-
-            //file_put_contents('ts.txt', print_r($a,1), FILE_APPEND);
-
-            /*if ($a['id'] == $b['id']) return 0;
-            return $a['id'] < $b['id'] ? 1 : -1;*/
+            return $a['subway_name'] < $b['subway_name'] ? -1 : 1;
         });
     }
 
