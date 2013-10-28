@@ -385,7 +385,7 @@ window.ANALYTICS = {
 
                 var rcAsyncInit = function () {
                     try {
-                        rcApi.view(data, userData || undefined);  
+                        rcApi.view(data, userData.userId ? userData : undefined); 
                     }
                     catch ( err ) {
                         var dataToLog = {
@@ -406,7 +406,7 @@ window.ANALYTICS = {
 
                 var rcAsyncInit = function () {
                     try {
-                        rcApi.categoryView(data, userData || undefined);
+                        rcApi.categoryView(data, userData.userId ? userData : undefined);
                     }
                     catch ( err ) {
                         var dataToLog = {
@@ -478,8 +478,14 @@ window.ANALYTICS = {
         }// end of window.RetailRocket object
 
         RetailRocket.init();
+
+        if ( ENTER.config.userInfo ) {
+            RetailRocket.action(null, ENTER.config.userInfo)
+        }
+        else {
+            $('body').on('userLogged', RetailRocket.action);
+        }
         // RetailRocket.action();
-        $('body').on('userLogged', RetailRocket.action);
     },
 
     AdmitadJS : function() {
