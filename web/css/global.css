@@ -11649,6 +11649,21 @@
   .bProcess .mOrange {
     background: url("/css/leftNav/img/leftNavSprite.png") no-repeat -38px 0;
   }
+  /*
+  Стили для метода доставки PickPoint
+   */
+  .bPickPointHint {
+    margin: 30px 0 0 0;
+    width: 500px;
+  }
+  .bPickPointHint__eItem {
+    background: url("/css/bBuyingSteps/img/pickPointDeliv.jpg") no-repeat 0 0;
+    padding: 0 0 10px 40px;
+    margin: 0 0 10px;
+  }
+  .bPickPointHint__eItem.mPay {
+    background: url("/css/bBuyingSteps/img/pickPointCard.jpg") no-repeat 0 0;
+  }
 }
 @media all {
   .bBuyingInfo {
