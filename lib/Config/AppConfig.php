@@ -262,8 +262,7 @@ class AppConfig {
         'itemsInCategorySlider'  => null,
         'minCreditPrice'         => null,
         'totalCount'             => null,
-        // глобальный (без учета региона) список товаров
-        'globalListEnabled'      => null,
+        'globalListEnabled'      => null, // глобальный (без учета региона) список товаров
         'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
@@ -404,7 +403,10 @@ class AppConfig {
         'test'        => [],
     ];
 
-    /** @var array */
+    /**
+     * @var array
+     * @hidden
+     */
     public $database = [
         'host'     => null,
         'name'     => null,
