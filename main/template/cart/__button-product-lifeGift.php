@@ -30,7 +30,7 @@ return function (
     <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 
     <div class="bWidgetBuy__eBuy btnBuy mBtnLifeGift">
-        <a class="bLifeGiftLink jsLifeGiftButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>"></a>
+        <a class="bLifeGiftLink jsLifeGiftButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Подарить</a>
     </div>
 
     <div class="bLiftGiftLogo"><img src="/css/lifeGift/img/podari-zhizn-logo-people.png" /></div>

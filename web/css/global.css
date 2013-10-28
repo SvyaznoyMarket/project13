@@ -13328,17 +13328,37 @@
 /*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
 @media all {
   .btnBuy.mBtnLifeGift {
-    width: 171px;
-    height: 50px;
+    width: 172px;
+    height: 37px;
     margin: 10px auto;
   }
   .bLifeGiftLink {
-    background: url("/css/lifeGift/img/btnBuy.gif") no-repeat 0 0;
-    width: 171px;
-    height: 50px;
+    background: #c52126;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #c52126), color-stop(1, #f2292f));
+    background: -ms-linear-gradient(bottom, #c52126, #f2292f);
+    background: -moz-linear-gradient(center bottom, #c52126 0%, #f2292f 100%);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     display: block;
-    margin: 0 auto;
-    border-radius: 4px;
+    width: 170px;
+    height: 35px;
+    text-align: center;
+    color: #ffffff;
+    border: 1px solid #c52126;
+    font-size: 18px;
+    line-height: 35px;
+  }
+  .bLifeGiftLink:hover {
+    background: #991a1e;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #991a1e), color-stop(1, #f2292f));
+    background: -ms-linear-gradient(bottom, #991a1e, #f2292f);
+    background: -moz-linear-gradient(center bottom, #991a1e 0%, #f2292f 100%);
+    text-decoration: none;
+    color: #ffffff;
   }
   .mLiftGift .bTitle {
     font-size: 16px;
