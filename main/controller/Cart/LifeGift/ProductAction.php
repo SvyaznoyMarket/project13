@@ -22,6 +22,10 @@ class ProductAction {
 
         $responseData = [];
         try {
+            if (!\App::config()->lifeGift['enabled']) {
+                throw new \Exception('Акция отключена');
+            }
+
             if ($quantity < 0) {
                 $quantity = 0;
                 \App::logger()->warn(['message' => 'Указано неверное количество товаров', 'request' => $request->request->all()]);

@@ -40,6 +40,10 @@ class CreateAction {
         $cartProduct = reset($cartProducts) ?: null;
 
         try {
+            if (!\App::config()->lifeGift['enabled']) {
+                throw new \Exception('Акция отключена');
+            }
+
             // проверка на пустую корзину
             if (!(bool)$cartProducts) {
                 throw new \Exception('Корзина пустая');

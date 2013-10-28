@@ -19,6 +19,10 @@ class NewAction {
         $cart = $user->getLifeGiftCart();
 
         try {
+            if (!\App::config()->lifeGift['enabled']) {
+                throw new \Exception('Акция отключена');
+            }
+
             // корзина
             $cartProducts = $cart->getProducts();
             /** @var $cartProduct \Model\Cart\Product\Entity */
