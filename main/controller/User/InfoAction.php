@@ -16,6 +16,7 @@ class InfoAction {
         }
 
         $user = \App::user();
+        /* @var $cart   \Session\Cart */
         $cart = $user->getCart();
 
         /** @var $cookies \Http\Cookie[] */
@@ -69,13 +70,28 @@ class InfoAction {
 
 
                 $buttons = [];
+                $cartProductsArr = [];
                 foreach ($cart->getProducts() as $cartProduct) {
-                    $buttons['product'][] = [
-                        'id'        => \View\Id::cartButtonForProduct($cartProduct->getId()),
+                    /* @var \Model\Cart\Product\Entity */
+
+                    $item = [
+                        'id'        => $cartProduct->getId(),
+                        'buttonId'  => \View\Id::cartButtonForProduct($cartProduct->getId()),
                         'quantity'  => $cartProduct->getQuantity(),
-                        'prodId'    => $cartProduct->getId(),
                         'price'     => $cartProduct->getPrice(),
-                        //'price'     => $cartProduct->get,
+                        //'name'     => $cartProduct->getTitl,
+                    ];
+
+                    $buttons['product'][] = [
+                        'id'        => $item['buttonId'],
+                        'quantity'  => $item['quantity'],
+                    ];
+
+                    $cartProductsArr[] = [
+                        'id'        => $item['id'],
+                        //'name'     => $item['name'],
+                        'price'     => $item['price'],
+                        'quantity'  => $item['quantity'],
                     ];
 
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {
@@ -100,6 +116,7 @@ class InfoAction {
                 }
 
                 $responseData['action']['cartButton'] = $buttons;
+                $responseData['cartProducts'] = $cartProductsArr;
             }
 
             if (\App::config()->subscribe['enabled']) {

@@ -76,8 +76,8 @@ class ActionPay {
             }
             // end of case
 
-            if ( !empty($extraData) ) {
-                $this->sendData['extraData'] = $extraData;
+            if ( !empty($this->extraData) ) {
+                $this->sendData['extraData'] = $this->extraData;
             }
 
             return $this->sendData;
@@ -129,8 +129,7 @@ class ActionPay {
             );
         }*/
 
-        //$this->extraData .= '_basketInfoJS';
-        $this->extraData[] = '_actionPayBasketJS';
+        $this->extraData['cartProducts'] = true;
 
         return true;
     }

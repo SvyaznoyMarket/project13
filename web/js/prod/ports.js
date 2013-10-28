@@ -171,6 +171,12 @@ window.ANALYTICS = {
     ActionPayJS : function() {
         var vars = $('#ActionPayJS').data('vars');
         if ( vars ) {
+            if ( vars.extraData ) {
+                if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
+                    vars.basketProducts = ENTER.config.cartProducts;
+                }
+                delete vars.extraData;
+            }
             window.APRT_DATA = vars;
         }
 

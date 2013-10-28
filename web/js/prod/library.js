@@ -1848,6 +1848,13 @@ window.MapInterface = (function() {
 
 					self.basket().update(nowBasket);
 
+                    ENTER.config.cartProducts.push({
+                        id         : item.id,
+                        name       : item.title,
+                        price      : item.priceInt,
+                        quantity   : item.quantity
+                    });
+
 					$('body').bind('click', flyboxcloser);
 
 				};
@@ -1955,7 +1962,9 @@ window.MapInterface = (function() {
 						actionInfo = data.action,
 						nowBasket = {};
 					//end of vars
-					
+
+                    ENTER.config.cartProducts = data.cartProducts;
+
 					if ( data.success !== true ) {
 						return false;
 					}
