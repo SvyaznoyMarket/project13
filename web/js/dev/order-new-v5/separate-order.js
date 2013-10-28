@@ -153,6 +153,10 @@
 		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
 		$('.bSaleList__eItem:visible .jsCustomRadio').eq(0).trigger('change');
 
+
+		// выбираем первый доступный метод оплаты
+		$('.bPayMethod:visible .jsCustomRadio').eq(0).attr('checked', 'checked').trigger('change');
+
 		/**
 		 * Проверка примененных купонов
 		 *
@@ -230,6 +234,9 @@
 				node.hide();
 
 				return;
+			}
+			else if ( 13 === methodId ) {
+				node.show();
 			}
 
 			if ( isNaN(maxSum) ) {
