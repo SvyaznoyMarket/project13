@@ -1830,25 +1830,24 @@
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val),
 				node = $(element),
-				maxSum = parseInt($(element).data('value')['max-sum'], 10),
-				methodId = $(element).data('value')['method_id'];
+                nodeData = node.data('value'),
+				maxSum = parseInt( nodeData['max-sum'], 10 ),
+				methodId = nodeData['method_id'],
+                isAvailableToPickpoint = nodeData['isAvailableToPickpoint'];
 			// end of vars
 
+			if (
+                /* 6 is DeliveryTypeId for PickPoint  */
+                ( 6 === global.OrderModel.choosenDeliveryTypeId && false == isAvailableToPickpoint ) ||
+                ( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId ) ||
+                ( !isNaN(maxSum) && maxSum < unwrapVal )
 
-			if ( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId ) {
+                ) {
+
+                console.log('Скрываем метод оплаты c id ' + methodId);
 				node.hide();
 
-				return;
-			}
-
-			if ( isNaN(maxSum) ) {
-				return;
-			}
-
-			if ( maxSum < unwrapVal ) {
-				node.hide();
-			}
-			else {
+			} else {
 				node.show();
 			}
 		}
