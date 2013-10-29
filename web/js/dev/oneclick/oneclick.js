@@ -964,11 +964,11 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			}
 
 			var handleSubscibeWrapper = function() {
-					var value = $('#recipientEmail').val(),
-					    checkbox = $('input[type="checkbox"][name="subscribe"]'),
-					    bSubscibeWrapper = $('#recipientEmail').siblings('.bSubscibeWrapper'),
-                        bSubscibe = $('.bSubscibe'),
-                        recipientEmail = $('#recipientEmail');
+				var value = $( '#recipientEmail' ).val(),
+					checkbox = $( 'input[type="checkbox"][name="subscribe"]' ),
+					bSubscibeWrapper = $( '#recipientEmail' ).siblings( '.bSubscibeWrapper' ),
+					bSubscibe = $( '.bSubscibe' ),
+					recipientEmail = $( '#recipientEmail' );
 					if ( !value && $('#recipientEmail').siblings('.mEmpty').length ) {
                         recipientEmail.siblings('.mEmpty').hide();
 					}
