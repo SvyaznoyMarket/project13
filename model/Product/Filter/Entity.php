@@ -177,6 +177,13 @@ class Entity {
     }
 
     /**
+     * @param Option\Entity $option
+     */
+    public function unshiftOption(Option\Entity $option) {
+        array_unshift($this->option, $option);
+    }
+
+    /**
      * @return Option\Entity[]
      */
     public function getOption() {
