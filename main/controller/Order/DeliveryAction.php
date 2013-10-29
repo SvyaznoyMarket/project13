@@ -362,12 +362,17 @@ class DeliveryAction {
                         },
                         reset($result['products'])['deliveries']['pickpoint']['regions']
                     );
+                } else {
+                    \App::logger()->error('От ядра получен пустой массив $deliveryRegions', ['pickpoints']);
                 }
 
                 $ppClient = \App::pickpointClient();
                 $ppClient->addQuery('postamatlist', [], [],
                     function($data) use (&$pickpoints, &$deliveryRegions) {
-                        if (!is_array($data)) return false;
+                        if ( !is_array($data) ) {
+                            \App::logger()->error('Неожиданный ответ сервера', ['pickpoints']);
+                            return false;
+                        }
                         $pickpoints = array_filter($data,
                             function($pickpointItem) use (&$deliveryRegions) {
                                 return
@@ -389,7 +394,10 @@ class DeliveryAction {
             }
 
             // пикпоинты
-            if ( !empty($pickpoints) ) {
+            if ( empty($pickpoints) ) {
+                \App::logger()->error('Список пикпойнтов пуст', ['pickpoints']);
+                unset($responseData['deliveryStates']['pickpoint']);
+            } else {
                 foreach ($pickpoints as $pickpointItem) {
                     $responseData['pickpoints'][] = [
                         'id'            => (string)$pickpointItem['Id'],
