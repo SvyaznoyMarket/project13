@@ -964,39 +964,39 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			}
 
 			var handleSubscibeWrapper = function () {
-				var value = $( '#recipientEmail' ).val(),
-					checkbox = $( 'input[type="checkbox"][name="subscribe"]' ),
-					bSubscibeWrapper = $( '#recipientEmail' ).siblings( '.bSubscibeWrapper' ),
-					bSubscibe = $( '.bSubscibe' ),
-					recipientEmail = $( '#recipientEmail' );
-				if ( !value && $( '#recipientEmail' ).siblings( '.mEmpty' ).length ) {
-					recipientEmail.siblings( '.mEmpty' ).hide();
+				var value = $('#recipientEmail').val(),
+					checkbox = $('input[type="checkbox"][name="subscribe"]'),
+					bSubscibeWrapper = $('#recipientEmail').siblings('.bSubscibeWrapper'),
+					bSubscibe = $('.bSubscibe'),
+					recipientEmail = $('#recipientEmail');
+				if ( !value && $('#recipientEmail').siblings('.mEmpty').length ) {
+					recipientEmail.siblings('.mEmpty').hide();
 				}
-				if ( value && value.isEmail() && bSubscibeWrapper.hasClass( 'hf' ) ) {
-					bSubscibeWrapper.removeClass( 'hf' );
+				if ( value && value.isEmail() && bSubscibeWrapper.hasClass('hf') ) {
+					bSubscibeWrapper.removeClass('hf');
 
 					// Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
 					if ( subscibeCheckboxEnabled ) {
-						checkbox.attr( 'disabled', '' );
-						checkbox.attr( 'checked', 'checked' )
-						checkbox.val( 1 )
-						bSubscibe.addClass( 'checked' );
+						checkbox.attr('disabled', '');
+						checkbox.attr('checked', 'checked')
+						checkbox.val(1)
+						bSubscibe.addClass('checked');
 					}
 
-					recipientEmail.siblings( '.mEmpty' ).hide();
-				} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass( 'hf' ) ) {
-					bSubscibeWrapper.addClass( 'hf' );
+					recipientEmail.siblings('.mEmpty').hide();
+				} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf') ) {
+					bSubscibeWrapper.addClass('hf');
 
 					// Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
 					if ( subscibeCheckboxEnabled ) {
-						checkbox.attr( 'disabled', 'disabled' );
-						checkbox.attr( 'checked', '' )
-						checkbox.val( 0 )
-						bSubscibe.removeClass( 'checked' );
+						checkbox.attr('disabled', 'disabled');
+						checkbox.attr('checked', '')
+						checkbox.val(0)
+						bSubscibe.removeClass('checked');
 					}
 
 					if ( recipientEmail.val() ) {
-						recipientEmail.siblings( '.mEmpty' ).show();
+						recipientEmail.siblings('.mEmpty').show();
 					}
 				}
 			};
