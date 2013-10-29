@@ -368,12 +368,10 @@
 							console.info('try to redirect to2 ' + response.data.link);
 							console.log(typeof response.data.link);
 
-							try {
-								document.location.href = response.data.link;
-							}
-							catch (err) {
-								console.warn(err);
-							}
+
+							document.location.href = response.data.link;
+							console.log('try reload....');
+							document.location.reload();
 						}
 						else {
 							this.form.unbind('submit');
