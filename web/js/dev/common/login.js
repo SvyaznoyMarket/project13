@@ -365,6 +365,7 @@
 
 					if ( this.form.data('redirect') ) {
 						if ( response.data.link ) {
+							console.info('try to redirect to ' + response.data.link);
 							window.location = response.data.link;
 						}
 						else {
