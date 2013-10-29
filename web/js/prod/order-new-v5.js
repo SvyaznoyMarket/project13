@@ -2086,14 +2086,14 @@
 			// end of vars
 
 			var couponResponceHandler = function couponResponceHandler( res ) {
-				utils.blockScreen.block('Применяем купон');
-
 				if ( !res.success ) {
 					global.OrderModel.couponError(res.error.message);
 					utils.blockScreen.unblock();
 
 					return;
 				}
+
+				global.OrderModel.couponNumber('');
 			};
 
 			global.OrderModel.couponError('');
@@ -2111,6 +2111,8 @@
 
 				return;
 			}
+
+			utils.blockScreen.block('Применяем купон');
 
 			reqArray = [
 				{
