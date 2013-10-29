@@ -25,7 +25,12 @@
         <div id="adblenderOrder" data-vars="<?= $page->json($orderData) ?>" class="jsanalytics"></div>
         <!-- Efficient Frontiers -->
         <img src="http://pixel.everesttech.net/3252/t?ev_Orders=0&amp;ev_Revenue=0&amp;ev_Quickorders=1&amp;ev_Quickrevenue=<?= $order->getSum() ?>&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
-        <img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/> 
+        <img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/>
+
+        <? /* adriverOrder: */ ?>
+        <noscript>
+            <img src="http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=order&bt=55&pz=0&rnd=1086697038&custom=150=<?= $order->getNumber() ?>" border="0" width="1" height="1" alt="" />
+        </noscript>
     <? endif ?>
 
 
