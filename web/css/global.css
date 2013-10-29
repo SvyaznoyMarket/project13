@@ -9819,7 +9819,7 @@
 @media all {
   .jewel .flybox,
   .jewel .bMobDown {
-    border: 2px solid #000;
+    border: 2px solid #000000;
   }
   .jewel .flybox .close,
   .jewel .bMobDown .close {
@@ -9827,8 +9827,8 @@
   }
   .jewel .flybox .bigbuttonlink,
   .jewel .bMobDown .bigbuttonlink {
-    background-color: #000;
-    border-color: #000;
+    background-color: #000000;
+    border-color: #000000;
     font-weight: normal;
   }
   .jewel .flybox .corner,
@@ -9840,18 +9840,15 @@
     background: url("/css/pandoraPopups/img/closeBtnBlack.png") no-repeat 0 0;
   }
   .jewel .bFast__eMapLink {
-    color: #000;
-  }
-  .jewel #upper {
-    background-color: #000;
+    color: #000000;
   }
   .jewel .bBigOrangeButton {
-    background: #000;
-    border: 1px solid #000;
+    background: #000000;
+    border: 1px solid #000000;
     font-weight: normal;
   }
   .jewel .mediablock.popup {
-    border: 1px solid #000;
+    border: 1px solid #000000;
   }
   .jewel .scale {
     background: url("/css/pandoraPopups/img/bg_scale_btn_black.png") no-repeat 0 0;
@@ -9867,7 +9864,7 @@
   .jewel .goodsbarbig.mSmallBtns a.link1 {
     float: left;
     display: block;
-    background: #000;
+    background: #000000;
     width: 125px;
     height: 29px;
     line-height: 29px;
@@ -9879,14 +9876,14 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    border: 1px solid #000;
+    border: 1px solid #000000;
   }
   .jewel.bought .goodsbarbig.mSmallBtns a.link1 {
-    background: #fff;
-    color: #000;
+    background: #ffffff;
+    color: #000000;
   }
   .jewel .previewlist a:hover {
-    border-color: #000;
+    border-color: #000000;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/

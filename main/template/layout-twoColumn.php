@@ -39,7 +39,7 @@
     <div class="adfoxWrapper" id="adfoxbground"></div>
     <? endif ?>
 
-    <div class="wrapper" data="privet">
+    <div class="wrapper">
         <header class="header">
             <?= $page->slotHeader() ?>
         </header><!--/шапка-->

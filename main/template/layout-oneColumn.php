@@ -141,11 +141,11 @@
     <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>
-    <?//= $page->slotYandexMetrika() ?>
-    <?//= $page->slotAdvanceSeoCounter() ?>
+    <?= $page->slotYandexMetrika() ?>
+    <?= $page->slotAdvanceSeoCounter() ?>
     <?= $page->slotMyThings() ?>
-    <?//= $page->slotAdriver() ?>
-    <?//= $page->slotPartnerCounter() ?>
+    <?= $page->slotAdriver() ?>
+    <?= $page->slotPartnerCounter() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>
         <div id="adblenderCommon" class="jsanalytics"></div>
