@@ -583,8 +583,10 @@ $.ajaxSetup({
 			var basket = data.cart,
 				product = data.product,
 				tmpitem = {
+					'id': product.id,
 					'title': product.name,
 					'price' : window.printPrice(product.price),
+					'priceInt' : product.price,
 					'imgSrc': product.img,
 					'productLink': product.link,
 					'totalQuan': basket.full_quantity,
