@@ -33,6 +33,7 @@
         function runAnalitics() {
             <? if (\App::config()->googleAnalytics['enabled']): ?>
             if (typeof(_gaq) !== 'undefined') {
+                //console.log('_oneClick order complete');
                 _gaq.push(['_addTrans',
                     '<?= $order->getNumber() . '_F' ?>', // Номер заказа
                     '<?= $shop ? $page->escape($shop->getName()) : '' ?>', // Название магазина (Необязательно)
@@ -53,6 +54,7 @@
                     $category = array_pop($categories);
                     $categoryName = $rootCategory ? ($rootCategory->getName() . ($category ? (' - ' . $category->getName()) : '')) : '';
                 ?>
+                //console.log('_oneClick order _addItem');
                 _gaq.push(['_addItem',
                     '<?= $order->getNumber() . '_F' ?>', // Номер заказа
                     '<?= $product->getArticle() ?>', // Артикул

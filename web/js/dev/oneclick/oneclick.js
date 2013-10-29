@@ -563,7 +563,9 @@ $(document).ready(function() {
 						}
 
                         if( typeof(_gaq) !== 'undefined' ) { ///GoogleAnalytics OQuickOrder Success
+                            console.log('% Oneclick-order is complete! Setting GA code: /thanks_form');
                             _gaq.push(['_trackEvent', 'QuickOrder', 'Success', '']);
+                            _gaq.push(['_trackPageview','/thanks_form' ]);
                         }
 
 						if( typeof(runAnalitics) !== 'undefined' ){
@@ -929,55 +931,60 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 				return false;
 			}
 
-			if (typeof(yaCounter10503055) !== 'undefined'){
-				yaCounter10503055.reachGoal('\orders\complete');
-			}
+            var handleSubscibeWrapper = function () {
+                    var value = $('#recipientEmail').val();
+                    var checkbox = $('input[type="checkbox"][name="subscribe"]');
+                    var bSubscibeWrapper = $('#recipientEmail').siblings('.bSubscibeWrapper');
+                    if (!value && $('#recipientEmail').siblings('.mEmpty').length) {
+                        $('#recipientEmail').siblings('.mEmpty').hide();
+                    }
+                    if (value && value.isEmail() && bSubscibeWrapper.hasClass('hf')) {
+                        bSubscibeWrapper.removeClass('hf');
+                        checkbox.attr('disabled', '');
+                        checkbox.attr('checked', 'checked')
+                        checkbox.val(1)
+                        $('.bSubscibe').addClass('checked');
+                        $('#recipientEmail').siblings('.mEmpty').hide();
+                    } else if (( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf')) {
+                        bSubscibeWrapper.addClass('hf');
+                        checkbox.attr('disabled', 'disabled');
+                        checkbox.attr('checked', '')
+                        checkbox.val(0)
+                        $('.bSubscibe').removeClass('checked');
+                        if ($('#recipientEmail').val()) {
+                            $('#recipientEmail').siblings('.mEmpty').show();
+                        }
+                    }
+                },
+                formOpenAnalytics = function formOpenAnalytics() {
+                    var toKISS_oc = { // KISS
+                        'Checkout Step 1 SKU Quantity': OC_MVM.quantity(),
+                        'Checkout Step 1 SKU Total': OC_MVM.price * OC_MVM.quantity(),
+                        'Checkout Step 1 Order Total': OC_MVM.price * OC_MVM.quantity() + OC_MVM.chosenDlvr().price * 1,
+                        'Checkout Step 1 Order Type': 'one click order'
+                    }
 
-			// TODO please go this stuff separate!
-			if( typeof(_gaq) !== 'undefined' ){
-				_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);
-			}
-			if( 'ANALYTICS' in window ) {
-				ANALYTICS.runMethod( 'marketgidOrder' );
-			}
+                    if (typeof(yaCounter10503055) !== 'undefined') {
+                        yaCounter10503055.reachGoal('\orders\complete');
+                    }
 
-			// KISS
-			var toKISS_oc = {
-				'Checkout Step 1 SKU Quantity':OC_MVM.quantity(),
-				'Checkout Step 1 SKU Total':OC_MVM.price * OC_MVM.quantity(),
-				'Checkout Step 1 Order Total':OC_MVM.price * OC_MVM.quantity() + OC_MVM.chosenDlvr().price * 1,
-				'Checkout Step 1 Order Type':'one click order'
-			};
+                    if (typeof(_gaq) !== 'undefined') {
+                        console.log('% Oneclick-form is open! Setting GA code: /order_form');
+                        _gaq.push(['_trackEvent', 'QuickOrder', 'Open']);
+                        _gaq.push(['_trackPageview', '/order_form']);
+                    }
 
-			if (typeof(_kmq) !== 'undefined'){
-				_kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
-			}
+                    if ('ANALYTICS' in window) {
+                        ANALYTICS.runMethod('marketgidOrder');
+                    }
 
-			var handleSubscibeWrapper = function() {
-					var value = $('#recipientEmail').val();
-					var checkbox = $('input[type="checkbox"][name="subscribe"]');
-					var bSubscibeWrapper = $('#recipientEmail').siblings('.bSubscibeWrapper');
-					if ( !value && $('#recipientEmail').siblings('.mEmpty').length ) {
-						$('#recipientEmail').siblings('.mEmpty').hide();
-					}
-					if ( value && value.isEmail() && bSubscibeWrapper.hasClass('hf') ) {
-							bSubscibeWrapper.removeClass('hf');
-							checkbox.attr('disabled','');
-							checkbox.attr('checked','checked')
-							checkbox.val(1)
-							$('.bSubscibe').addClass('checked');
-							$('#recipientEmail').siblings('.mEmpty').hide();
-					} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf') ) {
-							bSubscibeWrapper.addClass('hf');
-							checkbox.attr('disabled','disabled');
-							checkbox.attr('checked','')
-							checkbox.val(0)
-							$('.bSubscibe').removeClass('checked');
-							if ( $('#recipientEmail').val() ) {
-								$('#recipientEmail').siblings('.mEmpty').show();
-							}
-					}
-			}
+                    if (typeof(_kmq) !== 'undefined') {
+                        _kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
+                    }
+                }
+                ;
+
+            formOpenAnalytics();
 
 			/**
 			 * Подписка
