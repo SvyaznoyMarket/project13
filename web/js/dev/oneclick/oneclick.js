@@ -75,7 +75,7 @@ $(document).ready(function() {
 				regexp: /^[()0-9\-\+\s]+$/
 			}) );
 			self.textfields.push( ko.observable({
-				title: 'Email (не обязательно)',
+				title: 'Email (если есть)',
 				name: 'order[recipient_email]', //UNIQUE!
 				selectorid: 'recipientEmail',
 				value: emailVal,
