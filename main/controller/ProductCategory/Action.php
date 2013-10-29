@@ -382,13 +382,15 @@ class Action {
         }
 
         // TODO SITE-2403 Вернуть фильтр instore
-        foreach ($filters as $filter) {
-            if ('label' === $filter->getId()) {
-                $option = new \Model\Product\Filter\Option\Entity();
-                $option->setId(1);
-                $option->setToken('instore');
-                $option->setName('Товар за три дня');
-                $filter->unshiftOption($option);
+        if ($category->getIsFurniture() && 'Москва' === $user->getRegion()->getName()) {
+            foreach ($filters as $filter) {
+                if ('label' === $filter->getId()) {
+                    $option = new \Model\Product\Filter\Option\Entity();
+                    $option->setId(1);
+                    $option->setToken('instore');
+                    $option->setName('Товар за три дня');
+                    $filter->unshiftOption($option);
+                }
             }
         }
 
