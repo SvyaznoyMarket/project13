@@ -963,48 +963,48 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 				_kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
 			}
 
-			var handleSubscibeWrapper = function() {
+			var handleSubscibeWrapper = function () {
 				var value = $( '#recipientEmail' ).val(),
 					checkbox = $( 'input[type="checkbox"][name="subscribe"]' ),
 					bSubscibeWrapper = $( '#recipientEmail' ).siblings( '.bSubscibeWrapper' ),
 					bSubscibe = $( '.bSubscibe' ),
 					recipientEmail = $( '#recipientEmail' );
-					if ( !value && $('#recipientEmail').siblings('.mEmpty').length ) {
-                        recipientEmail.siblings('.mEmpty').hide();
+				if ( !value && $( '#recipientEmail' ).siblings( '.mEmpty' ).length ) {
+					recipientEmail.siblings( '.mEmpty' ).hide();
+				}
+				if ( value && value.isEmail() && bSubscibeWrapper.hasClass( 'hf' ) ) {
+					bSubscibeWrapper.removeClass( 'hf' );
+
+					// Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
+					if ( subscibeCheckboxEnabled ) {
+						checkbox.attr( 'disabled', '' );
+						checkbox.attr( 'checked', 'checked' )
+						checkbox.val( 1 )
+						bSubscibe.addClass( 'checked' );
 					}
-					if ( value && value.isEmail() && bSubscibeWrapper.hasClass('hf') ) {
-							bSubscibeWrapper.removeClass('hf');
 
-                        	// Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
-                            if ( subscibeCheckboxEnabled ) {
-							    checkbox.attr('disabled','');
-							    checkbox.attr('checked','checked')
-							    checkbox.val(1)
-                                bSubscibe.addClass('checked');
-                            }
+					recipientEmail.siblings( '.mEmpty' ).hide();
+				} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass( 'hf' ) ) {
+					bSubscibeWrapper.addClass( 'hf' );
 
-                            recipientEmail.siblings('.mEmpty').hide();
-					} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf') ) {
-							bSubscibeWrapper.addClass('hf');
-
-                            // Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
-                            if ( subscibeCheckboxEnabled ) {
-                                checkbox.attr('disabled','disabled');
-                                checkbox.attr('checked','')
-                                checkbox.val(0)
-                                bSubscibe.removeClass('checked');
-                            }
-
-							if ( recipientEmail.val() ) {
-                                recipientEmail.siblings('.mEmpty').show();
-							}
+					// Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
+					if ( subscibeCheckboxEnabled ) {
+						checkbox.attr( 'disabled', 'disabled' );
+						checkbox.attr( 'checked', '' )
+						checkbox.val( 0 )
+						bSubscibe.removeClass( 'checked' );
 					}
-			}
 
-            /**
-             * Email-Подписка
-             */
-			$('body').on('keyup ready', '#recipientEmail', function() {
+					if ( recipientEmail.val() ) {
+						recipientEmail.siblings( '.mEmpty' ).show();
+					}
+				}
+			};
+
+			/**
+			 * Email-Подписка
+			 */
+			$('body').on('keyup ready', '#recipientEmail', function () {
 				handleSubscibeWrapper();
 			});
 
