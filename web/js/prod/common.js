@@ -1646,7 +1646,14 @@ $(document).ready(function(){
 					if ( this.form.data('redirect') ) {
 						if ( response.data.link ) {
 							console.info('try to redirect to2 ' + response.data.link);
-							document.location.href = response.data.link;
+							console.log(typeof response.data.link);
+
+							try {
+								document.location.href = response.data.link;
+							}
+							catch (err) {
+								console.warn(err);
+							}
 						}
 						else {
 							this.form.unbind('submit');
