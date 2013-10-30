@@ -353,7 +353,9 @@ class DeliveryAction {
 
             $pickpoints = [];
 
-            if(!empty($pickpointProductIds)) {
+            if ( empty($pickpointProductIds) ) {
+                \App::logger()->error('Рассчитанное значение $pickpointProductIds пусто', ['pickpoints']);
+            } else {
                 $deliveryRegions = [];
                 if(!empty(reset($result['products'])['deliveries']['pickpoint']['regions'])) {
                     $deliveryRegions = array_map(
@@ -362,15 +364,16 @@ class DeliveryAction {
                         },
                         reset($result['products'])['deliveries']['pickpoint']['regions']
                     );
-                } else {
-                    \App::logger()->error('От ядра получен пустой массив $deliveryRegions', ['pickpoints']);
+                }
+                if ( empty($deliveryRegions) ) {
+                    \App::logger()->error('Рассчитанное значение $deliveryRegions пусто', ['pickpoints']);
                 }
 
                 $ppClient = \App::pickpointClient();
                 $ppClient->addQuery('postamatlist', [], [],
                     function($data) use (&$pickpoints, &$deliveryRegions) {
                         if ( !is_array($data) ) {
-                            \App::logger()->error('Неожиданный ответ сервера', ['pickpoints']);
+                            \App::logger()->error('Неожиданный ответ сервера на запрос postamatlist', ['pickpoints']);
                             return false;
                         }
                         $pickpoints = array_filter($data,
@@ -384,6 +387,9 @@ class DeliveryAction {
                                     ;
                             }
                         );
+                        if ( empty($pickpoints) ) {
+                            \App::logger()->error('Нет пикпойнтов в отфильтрованных данных', ['pickpoints']);
+                        }
                     },
                     function (\Exception $e) use (&$exception) {
                         $exception = $e;
