@@ -238,7 +238,9 @@ class ProductAction {
     public function delete(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $request->query->set('quantity', 0);
+        $quantity = (int)$request->get('currentQuantity', 0);
+        if ( $quantity ) $quantity--;
+        $request->query->set('quantity', $quantity);
 
         return $this->set($productId, $request);
     }
