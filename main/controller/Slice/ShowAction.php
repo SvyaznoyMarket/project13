@@ -299,7 +299,9 @@ class ShowAction {
                         // ура, наконец-то наткнулись на текущую категорию
                         if ($item['id'] == $category->getId() || is_null($category->getId())) {
                             $loadBranch($category, $item);
-                            return;
+                            if ($item['id'] == $category->getId()) {
+                                return;
+                            }
                         }
                     }
                 }
