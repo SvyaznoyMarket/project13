@@ -12261,9 +12261,8 @@
     position: relative;
     float: left;
     margin: 0 20px 20px 0;
-    padding: 10px;
-    width: 198px;
-    height: 258px;
+    width: 218px;
+    height: 278px;
     border: 1px solid #e6e6e6;
     background: #f6f6f6;
   }
@@ -12292,6 +12291,12 @@
     height: 270px;
     margin-right: 0;
     padding-top: 10px;
+  }
+  .bCatalogRoot__eItemLink {
+    display: block;
+    padding: 10px;
+    width: 200px;
+    height: 260px;
   }
   .bCatalogRoot__eImgLink {
     display: inline-block;

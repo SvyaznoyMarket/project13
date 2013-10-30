@@ -29,21 +29,24 @@
             ?>
 
             <li class="bCatalogRoot__eItem">
-                <a class="bCatalogRoot__eImgLink"
+                <a class="bCatalogRoot__eItemLink"
                    href="<?= $link ?>"
                    title="<?= $child->getName() ?> - <?= $category->getName() ?>">
-                    <img class="bCatalogRoot__eImg"
+
+                    <div class="bCatalogRoot__eImgLink">
+                        <img class="bCatalogRoot__eImg"
                          src="<?= $child->getImageUrl() ?>"
                          alt="<?= $child->getName() ?> - <?= $category->getName() ?>"/>
-                </a>
+                    </div>
 
-                <a class="bCatalogRoot__eNameLink"
-                   href="<?= $link ?>"
-                   title="<?= $child->getName() ?> - <?= $category->getName() ?>">
-                    <?= $child->getName() ?>
-                </a>
+                    <div class="bCatalogRoot__eNameLink"
+                       href="<?= $link ?>"
+                       title="<?= $child->getName() ?> - <?= $category->getName() ?>">
+                        <?= $child->getName() ?>
+                    </div>
 
-                <div class="bCatalogRoot__eCount"><?= $totalText ?></div>
+                    <div class="bCatalogRoot__eCount"><?= $totalText ?></div>
+                </a>
             </li>
 
         <? endforeach ?>
