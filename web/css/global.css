@@ -2460,9 +2460,11 @@
     display: inline-block;
     margin-right: 30px;
     padding: 0;
-    width: 327px;
+    width: 326px;
     border: none;
     vertical-align: top;
+    *display: inline;
+    zoom: 1;
   }
   .bFormLogin__ePlace:last-child {
     margin-right: 0;
@@ -10004,7 +10006,7 @@
     cursor: pointer;
   }
   .bGoodsSlider__eCatItem span {
-    display: inline-block;
+    display: block;
     padding: 5px;
   }
   .bGoodsSlider__eCatItem span:hover {
@@ -13322,6 +13324,12 @@
     list-style: disc;
     margin: 0 0 0px 20px;
     line-height: 1.3;
+  }
+  .bSeoText a {
+    text-decoration: underline;
+  }
+  .bSeoText a:hover {
+    text-decoration: none;
   }
 }
 /*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/

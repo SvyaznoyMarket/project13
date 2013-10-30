@@ -583,8 +583,10 @@ $.ajaxSetup({
 			var basket = data.cart,
 				product = data.product,
 				tmpitem = {
+					'id': product.id,
 					'title': product.name,
 					'price' : window.printPrice(product.price),
+					'priceInt' : product.price,
 					'imgSrc': product.img,
 					'productLink': product.link,
 					'totalQuan': basket.full_quantity,
@@ -1643,7 +1645,13 @@ $(document).ready(function(){
 
 					if ( this.form.data('redirect') ) {
 						if ( response.data.link ) {
-							window.location = response.data.link;
+							console.info('try to redirect to2 ' + response.data.link);
+							console.log(typeof response.data.link);
+
+
+							document.location.href = response.data.link;
+							console.log('try reload....');
+							document.location.reload();
 						}
 						else {
 							this.form.unbind('submit');

@@ -108,7 +108,7 @@ $formData = array(
 
                             <!-- ko foreach: textfields -->
                             <tr>
-                                <td><span data-bind="text: title"></span>:</td>
+                                <td style="line-height: 20px;"><span data-bind="text: title"></span>:</td>
                                 <td>
                                     <input data-bind="event: { change: $root.validateField }, value: value, attr: { name: name, id: selectorid }, css: { mEmpty: valerror }" class='bFastInner__eInput'>
 

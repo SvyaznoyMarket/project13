@@ -100,7 +100,7 @@ return function(
     <? endif ?>
 
     <div class="bProductDescImgBig">
-        <img class="bProductDescImgBig__eImg bZoomedImg"
+        <img itemprop="image" class="bProductDescImgBig__eImg bZoomedImg"
              src="<?= $product->getImageUrl(3) ?>"
              <? if ($useLens): ?>
                 data-zoom-image="<?= $product->getImageUrl(5) ?>"
