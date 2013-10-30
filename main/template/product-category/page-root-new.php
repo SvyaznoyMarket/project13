@@ -39,9 +39,7 @@
                          alt="<?= $child->getName() ?> - <?= $category->getName() ?>"/>
                     </div>
 
-                    <div class="bCatalogRoot__eNameLink"
-                       href="<?= $link ?>"
-                       title="<?= $child->getName() ?> - <?= $category->getName() ?>">
+                    <div class="bCatalogRoot__eNameLink">
                         <?= $child->getName() ?>
                     </div>
 
