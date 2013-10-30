@@ -10007,7 +10007,7 @@
     cursor: pointer;
   }
   .bGoodsSlider__eCatItem span {
-    display: inline-block;
+    display: block;
     padding: 5px;
   }
   .bGoodsSlider__eCatItem span:hover {
