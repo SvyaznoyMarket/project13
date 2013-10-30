@@ -956,33 +956,33 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
                         }
                     }
                 },
-                formOpenAnalytics = function formOpenAnalytics() {
-                    var toKISS_oc = { // KISS
-                        'Checkout Step 1 SKU Quantity': OC_MVM.quantity(),
-                        'Checkout Step 1 SKU Total': OC_MVM.price * OC_MVM.quantity(),
-                        'Checkout Step 1 Order Total': OC_MVM.price * OC_MVM.quantity() + OC_MVM.chosenDlvr().price * 1,
-                        'Checkout Step 1 Order Type': 'one click order'
-                    }
+				formOpenAnalytics = function formOpenAnalytics() {
+					console.log('** formOpenAnalytics');
+					var toKISS_oc = { // KISS
+						'Checkout Step 1 SKU Quantity': OC_MVM.quantity(),
+						'Checkout Step 1 SKU Total': OC_MVM.price * OC_MVM.quantity(),
+						'Checkout Step 1 Order Total': OC_MVM.price * OC_MVM.quantity() + OC_MVM.chosenDlvr().price * 1,
+						'Checkout Step 1 Order Type': 'one click order'
+					}
 
-                    if (typeof(yaCounter10503055) !== 'undefined') {
-                        yaCounter10503055.reachGoal('\orders\complete');
-                    }
+					if ( typeof(yaCounter10503055) !== 'undefined' ) {
+						yaCounter10503055.reachGoal('\orders\complete');
+					}
 
-                    if (typeof(_gaq) !== 'undefined') {
-                        console.log('% Oneclick-form is open! Setting GA code: /order_form');
-                        _gaq.push(['_trackEvent', 'QuickOrder', 'Open']);
-                        _gaq.push(['_trackPageview', '/order_form']);
-                    }
+					if ( typeof(_gaq) !== 'undefined' ) {
+						console.log('% Oneclick-form is open! Setting GA code: /order_form');
+						_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);
+						_gaq.push(['_trackPageview', '/order_form']);
+					}
 
-                    if ('ANALYTICS' in window) {
-                        ANALYTICS.runMethod('marketgidOrder');
-                    }
+					if ( 'ANALYTICS' in window ) {
+						ANALYTICS.runMethod('marketgidOrder');
+					}
 
-                    if (typeof(_kmq) !== 'undefined') {
-                        _kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
-                    }
-                }
-                ;
+					if ( typeof(_kmq) !== 'undefined' ) {
+						_kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
+					}
+				};
 
             formOpenAnalytics();
 
