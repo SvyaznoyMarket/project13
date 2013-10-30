@@ -227,13 +227,13 @@ class ShowAction {
 
         // запрашиваем дерево категорий
         //\RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
-        if (!$category->getLevel()) {
+        if (!$category->getId()) {
             $category->setLevel(1);
         }
 
         $params = [
             'root_id'         => $category->getHasChild() ? $category->getId() : ($category->getParentId() ? $category->getParentId() : 0),
-            'max_level'       => isset($category) ? $category->getLevel() + 1 : 1,
+            'max_level'       => $category->getId() ? $category->getLevel() + 1 : 1,
             'is_load_parents' => true,
             'filter' => ['filters' => $filterData],
         ];
@@ -270,6 +270,17 @@ class ShowAction {
                         $category->addChild($child);
                     }
                 }
+
+                // если категория не выбрана, выводим рутовые категории
+                if (!$category->getId()) {
+                    $child = new \Model\Product\Category\Entity($data);
+                    // переделываем url для категорий
+                    $url = explode('/', $child->getLink());
+                    $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
+                    $child->setLink($url);
+
+                    $category->addChild($child);
+                }
             };
 
             /**
@@ -297,7 +308,7 @@ class ShowAction {
                     // если текущий уровень равен уровню категории, пробуем найти данные для категории
                     foreach ($data as $item) {
                         // ура, наконец-то наткнулись на текущую категорию
-                        if ($item['id'] == $category->getId() || is_null($category->getId())) {
+                        if ($item['id'] == $category->getId() || !$category->getId()) {
                             $loadBranch($category, $item);
                             if ($item['id'] == $category->getId()) {
                                 return;
