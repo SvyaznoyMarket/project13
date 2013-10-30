@@ -339,7 +339,7 @@ class ShowAction {
         $client->execute();
 
         // получаем catalog json для категории (например, тип раскладки)
-        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
+        //$catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
         $promoContent = '';
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
