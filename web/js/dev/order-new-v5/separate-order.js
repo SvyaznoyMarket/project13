@@ -153,6 +153,10 @@
 		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
 		$('.bSaleList__eItem:visible .jsCustomRadio').eq(0).trigger('change');
 
+
+		// выбираем первый доступный метод оплаты
+		$('.bPayMethod:visible .jsCustomRadio').eq(0).attr('checked', 'checked').trigger('change');
+
 		/**
 		 * Проверка примененных купонов
 		 *
@@ -230,6 +234,9 @@
 				node.hide();
 
 				return;
+			}
+			else if ( 13 === methodId ) {
+				node.show();
 			}
 
 			if ( isNaN(maxSum) ) {
@@ -526,14 +533,14 @@
 			// end of vars
 
 			var couponResponceHandler = function couponResponceHandler( res ) {
-				utils.blockScreen.block('Применяем купон');
-
 				if ( !res.success ) {
 					global.OrderModel.couponError(res.error.message);
 					utils.blockScreen.unblock();
 
 					return;
 				}
+
+				global.OrderModel.couponNumber('');
 			};
 
 			global.OrderModel.couponError('');
@@ -551,6 +558,8 @@
 
 				return;
 			}
+
+			utils.blockScreen.block('Применяем купон');
 
 			reqArray = [
 				{
@@ -1037,6 +1046,7 @@
 
 			var totalPrice = 0,
 				totalQuan = 0,
+                basketProd = [],
 
 				toKISS = {};
 			// end of vars
@@ -1044,6 +1054,15 @@
 			for ( var product in orderData.products ) {
 				totalPrice += orderData.products[product].price;
 				totalQuan += orderData.products[product].quantity;
+
+                basketProd.push(
+                    {
+                    'id':       orderData.products[product].id,
+                    'name':     orderData.products[product]['name'],
+                    'price':    orderData.products[product].price,
+                    'quantity': orderData.products[product].quantity
+                    }
+                );
 			}
 
 			toKISS = {
@@ -1059,7 +1078,15 @@
 			if ( typeof _kmq !== 'undefined' ) {
 				_kmq.push(['record', 'Checkout Step 1', toKISS]);
 			}
-		};
+
+            // ActionPay Analytics:
+            window.APRT_DATA = window.APRT_DATA || {};
+            window.APRT_DATA.pageType = 5; // оформление заказа (после корзины и до последней страницы заказа)
+            window.APRT_DATA.orderInfo = window.APRT_DATA.orderInfo || {};
+            window.APRT_DATA.orderInfo.totalPrice = totalPrice;
+            window.APRT_DATA.basketProducts = basketProd;
+
+        };
 	// end of functions
 
 	renderOrderData( serverData );

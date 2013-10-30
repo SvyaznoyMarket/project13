@@ -1718,7 +1718,8 @@ window.MapInterface = (function() {
 		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils;
 	// end of vars
-	
+
+    config.cartProducts = config.cartProducts || {};
 
 	/**
 	 * === BLACKBOX CONSTRUCTOR ===
@@ -1811,12 +1812,16 @@ window.MapInterface = (function() {
 				 * 
 				 * @public
 				 */
-				update = function update( basketInfo ) {
+				update = function update( basketInfo, cartProds ) {
 					headQ.html('(' + basketInfo.cartQ + ')');
 					bottomQ.html(basketInfo.cartQ);
 					bottomSum.html(basketInfo.cartSum);
 					bottomCart.addClass('mBought');
 					total.show();
+
+                    if ( cartProds && cartProds.length > 0 ) {
+                        config.cartProducts = cartProds;
+                    }
 				},
 
 				/**
@@ -1836,10 +1841,16 @@ window.MapInterface = (function() {
 				 */
 				add = function add ( item ) {
 					var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item),
-							nowBasket = {
-							cartQ: item.totalQuan,
-							cartSum: item.totalSum
-						};
+                        nowBasket = {
+                            cartQ: item.totalQuan,
+                            cartSum: item.totalSum
+                        },
+                        addCartProduct = {
+                            id: item.id,
+                            name: item.title,
+                            price: item.priceInt,
+                            quantity: item.quantity
+                        };
 					// end of vars
 
 					flyboxDestroy();
@@ -1847,6 +1858,7 @@ window.MapInterface = (function() {
 					flyboxBasket.show(300);
 
 					self.basket().update(nowBasket);
+                    config.cartProducts.push(addCartProduct);
 
 					$('body').bind('click', flyboxcloser);
 
@@ -1960,7 +1972,7 @@ window.MapInterface = (function() {
 						actionInfo = data.action,
 						nowBasket = {};
 					//end of vars
-					
+
 					if ( data.success !== true ) {
 						return false;
 					}
@@ -1973,7 +1985,7 @@ window.MapInterface = (function() {
 							cartSum: cartInfo.sum
 						};
 
-						self.basket().update(nowBasket);
+						self.basket().update( nowBasket, data.cartProducts );
 					}
 
 					if ( actionInfo !== undefined ) {

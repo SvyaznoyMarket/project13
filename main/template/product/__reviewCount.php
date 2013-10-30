@@ -7,13 +7,13 @@ return function(
 ) {
 ?>
 
-<div class="bReviewSection clearfix">
+<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" class="bReviewSection clearfix">
     <div class="bReviewSection__eStar">
         <? $rating = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
         <?= empty($rating) ? '' : $helper->render('product/__rating', ['score' => $rating]) ?>
     </div>
     <? if (!empty($rating)) { ?>
-        <span class="jsGoToId border" data-goto="bHeadSectionReviews"><?= $reviewsData['num_reviews'] ?> <?= $helper->numberChoice($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
+        <span itemprop="ratingCount" class="jsGoToId border" data-goto="bHeadSectionReviews"><?= $reviewsData['num_reviews'] ?> <?= $helper->numberChoice($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
     <? } else { ?>
         <span>Отзывов нет</span>
     <? } ?>

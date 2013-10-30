@@ -168,6 +168,29 @@ window.ANALYTICS = {
         //});
     },
 
+    ActionPayJS : function() {
+        var vars = $('#ActionPayJS').data('vars');
+        if ( vars ) {
+            if ( vars.extraData ) {
+                if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
+                    vars.basketProducts = ENTER.config.cartProducts;
+                }
+                delete vars.extraData;
+            }
+            window.APRT_DATA = vars;
+        }
+
+        (function(){
+            var s   = document.createElement('script');
+            var x   = document.getElementsByTagName('script')[0];
+            s.type  = 'text/javascript';
+            s.async = true;
+            s.src   = '//rt.adonweb.ru/3038.js'; // tmp
+            //s.src   = '//rt.actionpay.ru/code/enter/'; // real
+            x.parentNode.insertBefore( s, x );
+        })();
+    },
+
     yaParamsJS : function() {
         var yap = $('#yaParamsJS').data('vars');
         if (yap) {
@@ -237,36 +260,30 @@ window.ANALYTICS = {
         }
     },
 
+    flocktoryAddScript : function() {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = "//api.flocktory.com/1/hello.2.js";
+        var l = document.getElementsByTagName('script')[0];
+        l.parentNode.insertBefore(s, l);
+    },
+
     jsOrderFlocktory : function() {
-    	console.info('foctory order complete');
-    	console.log($('#jsOrderFlocktory').data('value'));
+        console.info('foctory order complete');
+        console.log($('#jsOrderFlocktory').data('value'));
 
-    	var _flocktory = window._flocktory = _flocktory || [],
-    		flocktoryData = $('#jsOrderFlocktory').data('value');
-    	// end of vars
-    	
-    	_flocktory.push(flocktoryData);
+        var _flocktory = window._flocktory = _flocktory || [],
+            flocktoryData = $('#jsOrderFlocktory').data('value');
+        // end of vars
 
-        (function () {
-            var s = document.createElement('script');
-            s.type = 'text/javascript';
-            s.async = true;
-            s.src = "//api.flocktory.com/1/hello.2.js";
-            var l = document.getElementsByTagName('script')[0];
-            l.parentNode.insertBefore(s, l);
-        })();
+        _flocktory.push(flocktoryData);
+
+        this.flocktoryAddScript();
     },
 
     flocktoryJS : function() {
-        (function () {
-            var s = document.createElement('script');
-            s.type = 'text/javascript';
-            s.async = true;
-            s.src = "//api.flocktory.com/1/hello.2.js";
-            var l = document.getElementsByTagName('script')[0];
-            l.parentNode.insertBefore(s, l);
-        })();
-
+        this.flocktoryAddScript();
 
         window.Flocktory = {
             /**
@@ -385,7 +402,7 @@ window.ANALYTICS = {
 
                 var rcAsyncInit = function () {
                     try {
-                        rcApi.view(data, userData || undefined);  
+                        rcApi.view(data, userData.userId ? userData : undefined); 
                     }
                     catch ( err ) {
                         var dataToLog = {
@@ -406,7 +423,7 @@ window.ANALYTICS = {
 
                 var rcAsyncInit = function () {
                     try {
-                        rcApi.categoryView(data, userData || undefined);
+                        rcApi.categoryView(data, userData.userId ? userData : undefined);
                     }
                     catch ( err ) {
                         var dataToLog = {
@@ -478,8 +495,14 @@ window.ANALYTICS = {
         }// end of window.RetailRocket object
 
         RetailRocket.init();
+
+        if ( ENTER.config.userInfo ) {
+            RetailRocket.action(null, ENTER.config.userInfo)
+        }
+        else {
+            $('body').on('userLogged', RetailRocket.action);
+        }
         // RetailRocket.action();
-        $('body').on('userLogged', RetailRocket.action);
     },
 
     AdmitadJS : function() {

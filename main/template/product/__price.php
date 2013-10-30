@@ -12,6 +12,7 @@ return function(
 <? elseif (\App::config()->product['showAveragePrice'] && !$product->getPriceOld() && $product->getPriceAverage()): ?>
 
 <? endif ?>
-<div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
-
+<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+    <div itemprop="price" class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+</span>
 <? };

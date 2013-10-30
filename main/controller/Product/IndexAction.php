@@ -128,13 +128,14 @@ class IndexAction {
             }
             if(!empty($catalogJson['trustfactor_right'])) {
                 if(!is_array($catalogJson['trustfactor_right'])) $catalogJson['trustfactor_right'] = [$catalogJson['trustfactor_right']];
+                $i = 0;
                 foreach ($catalogJson['trustfactor_right'] as $trustfactorRightToken) {
                     \App::contentClient()->addQuery(
                         trim((string)$trustfactorRightToken),
                         [],
-                        function($data) use (&$trustfactorRight) {
+                        function($data) use (&$trustfactorRight, $i) {
                             if (!empty($data['content'])) {
-                                $trustfactorRight[] = $data['content'];
+                                $trustfactorRight[$i] = $data['content'];
                             }
                         },
                         function(\Exception $e) {
@@ -142,8 +143,10 @@ class IndexAction {
                             \App::exception()->add($e);
                         }
                     );
+                    $i++;
                 }
                 \App::contentClient()->execute();
+                ksort($trustfactorRight);
             }
         }
 

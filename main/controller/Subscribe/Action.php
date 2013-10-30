@@ -79,6 +79,11 @@ class Action {
                 throw new \Exception('Не получен токен подтверждения подписки');
             }
 
+            $email = $request->get('email');
+            if (!$email) {
+                throw new \Exception('Не получен email подтверждения подписки');
+            }
+
             $client->addQuery('subscribe/use-token', ['token' => $token], [],
                 function($data) use (&$action) {
                     if (isset($data['action'])) {
@@ -101,6 +106,6 @@ class Action {
         return new \Http\Response($page->show());
         */
 
-        return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => 'subscribe_friends'], true));
+        return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => 'subscribe_friends', 'email' => $email], true));
     }
 }
