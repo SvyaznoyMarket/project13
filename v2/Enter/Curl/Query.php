@@ -1,0 +1,230 @@
+<?php
+
+namespace Enter\Curl;
+
+class Query implements \JsonSerializable {
+    /** @var string|null */
+    protected $id;
+    /** @var string|null */
+    protected $url;
+    /**
+     * @name Массив параметров для POST-запроса
+     * @var array
+     */
+    protected $data = [];
+    /**
+     * @name Строка вида user:password
+     * @var string
+     */
+    protected $auth;
+    /** @var resource[] */
+    protected $connections = [];
+    /** @var \Exception|null */
+    protected $error;
+    /**
+     * @name Таймаут, мс
+     * @var int|null
+     */
+    protected $timeout;
+    /**
+     * @var int
+     */
+    protected $retry = 0;
+    /**
+     * @name Счетчик вызовов
+     * @var int
+     */
+    protected $call = 0;
+    /**
+     * @var mixed
+     */
+    protected $result;
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize() {
+        return [
+            'id'      => $this->id,
+            'url'     => $this->url,
+            'data'    => $this->data,
+            'auth'    => $this->auth,
+            'error'   => $this->error,
+            'timeout' => $this->timeout,
+            'call'    => $this->call,
+        ];
+    }
+
+    /**
+     * @param $response
+     * @return void
+     */
+    public function callback($response) {}
+
+    /**
+     * @return mixed
+     * @throws \Exception|null
+     */
+    final public function getResult() {
+        if ($this->error) {
+            throw $this->error;
+        }
+
+        return $this->result;
+    }
+
+    /**
+     * @return $this
+     */
+    public function incCall()
+    {
+        $this->call += 1;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCall()
+    {
+        return $this->call;
+    }
+
+    /**
+     * @param null|string $id
+     * @return $this
+     */
+    public function setId($id) {
+        $this->id = $id ? (string)$id : null;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * @param array $data
+     * @return $this
+     */
+    public function setData(array $data) {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData() {
+        return $this->data;
+    }
+
+    /**
+     * @param \Exception|null $error
+     * @return $this
+     */
+    public function setError(\Exception $error) {
+        $this->error = $error;
+
+        return $this;
+    }
+
+    /**
+     * @return \Exception|null
+     */
+    public function getError() {
+        return $this->error;
+    }
+
+    /**
+     * @param resource $connection
+     * @throws \InvalidArgumentException
+     * @return $this
+     */
+    public function addConnection($connection) {
+        if (!is_resource($connection)) {
+            throw new \InvalidArgumentException('Передан невалидный ресурс');
+        }
+        $this->connections[(string)$connection] = $connection;
+
+        return $this;
+    }
+
+    /**
+     * @return resource[]
+     */
+    public function getConnections() {
+        return $this->connections;
+    }
+
+    /**
+     * @param int $retry
+     * @return $this
+     */
+    public function setRetry($retry) {
+        $this->retry = (int)$retry;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRetry() {
+        return $this->retry;
+    }
+
+    /**
+     * @param int|null $timeout
+     * @return $this
+     */
+    public function setTimeout($timeout) {
+        $this->timeout = $timeout ? (int)$timeout : null;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimeout() {
+        return $this->timeout;
+    }
+
+    /**
+     * @param string|null $url
+     * @return $this
+     */
+    public function setUrl($url) {
+        $this->url = $url ? (string)$url : null;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl() {
+        return $this->url;
+    }
+
+    /**
+     * @param string $auth
+     */
+    public function setAuth($auth) {
+        $this->auth = $auth ? (string)$auth : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuth() {
+        return $this->auth;
+    }
+}

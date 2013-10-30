@@ -1,0 +1,300 @@
+<?php
+
+namespace Enter\Curl;
+
+/**
+ * Class Client
+ * @package Curl
+ * @author Georgiy Lazukin <georgiy.lazukin@gmail.com>
+ * @author Sergey Sapego <sapegosv@gmail.com>
+ */
+class Client {
+    /** @var \Enter\Logging\Logger */
+    private $logger;
+    /** @var resource */
+    private $multiConnection;
+    /** @var resource[] */
+    private $connections = [];
+    /** @var \Enter\Curl\Query[] */
+    private $queries = [];
+    /** @var bool */
+    private $stillExecuting = false;
+    /** @var \Enter\Curl\Config */
+    private $config;
+
+    public function __construct(Config $config) {
+        $this->config = $config;
+    }
+
+    /**
+     * @param \Enter\Logging\Logger $logger
+     */
+    public function setLogger(\Enter\Logging\Logger $logger = null) {
+        $this->logger = $logger;
+    }
+
+    public function __clone() {
+        $this->multiConnection = null;
+        $this->connections = [];
+        $this->queries = [];
+        $this->stillExecuting = false;
+    }
+
+    /**
+     * @param Query $query
+     * @return \Enter\Curl\Client
+     * @throws \Exception
+     */
+    public function query(\Enter\Curl\Query $query) {
+        $query->incCall();
+
+        $connection = $this->create($query);
+        $response = curl_exec($connection);
+        try {
+            $info = curl_getinfo($connection);
+            if ($this->logger) $this->logger->push(['action' => __METHOD__, 'info' => $info]);
+
+            if (curl_errno($connection) > 0) {
+                throw new \RuntimeException(curl_error($connection), curl_errno($connection));
+            }
+
+            if ($info['http_code'] >= 300) {
+                // TODO: обработка статуса
+                $query->setError(new \Exception('Неверный статус ответа', $info['http_code']));
+            }
+
+            $headers = [];
+            $this->parseResponce($connection, $response, $headers);
+
+            curl_close($connection);
+
+            if (null === $response) {
+                throw new \Exception(sprintf('Пустой ответ от %s', $query->getUrl()));
+            }
+
+            $query->callback($response);
+
+            return $this;
+        } catch (\Exception $e) {
+            $query->setError($e);
+
+            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'error' => $e]);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * @param int|null $retryTimeout
+     * @param int|null $retryCount
+     * @throws \Exception
+     * @return \Enter\Curl\Client
+     * @return $this
+     */
+    public function execute($retryTimeout = null, $retryCount = null) {
+        if (!$this->multiConnection) {
+            if ($this->logger) $this->logger->push(['type' => 'warn', 'action' => __METHOD__, 'message' => 'Нет запросов для выполнения']);
+
+            return $this;
+        }
+
+        try {
+            $absoluteTimeout = microtime(true);
+            do {
+                if ($absoluteTimeout <= microtime(true)) {
+                    $absoluteTimeout += $retryTimeout;
+                }
+                do {
+                    $code = curl_multi_exec($this->multiConnection, $stillExecuting);
+                    $this->stillExecuting = $stillExecuting;
+                } while ($code == CURLM_CALL_MULTI_PERFORM);
+
+                // if one or more descriptors is ready, read content and run callbacks
+                while ($done = curl_multi_info_read($this->multiConnection)) {
+                    $connection = $done['handle'];
+                    $queryId = (string)$connection;
+
+                    foreach ($this->queries[$queryId]->getConnections() as $resource) {
+                        if ($resource !== $connection) {
+                            curl_multi_remove_handle($this->multiConnection, $resource);
+                        }
+                    }
+
+                    try {
+                        $info = curl_getinfo($connection);
+                        if ($this->logger) $this->logger->push(['action' => __METHOD__, 'info' => $info]);
+
+                        if (curl_errno($connection) > 0) {
+                            throw new \RuntimeException(curl_error($connection), curl_errno($connection));
+                        }
+                        if ($info['http_code'] >= 300) {
+                            // TODO: обработка статуса
+                            $this->queries[$queryId]->setError(new \Exception('Неверный статус ответа', $info['http_code']));
+                        }
+
+                        $response = curl_multi_getcontent($connection);
+                        if (null === $response) {
+                            throw new \Exception(sprintf('Пустой ответ от %s', $this->queries[$queryId]->getUrl()));
+                        }
+
+                        $headers = [];
+                        $this->parseResponce($connection, $response, $headers);
+
+                        // TODO: отложенный запуск обработчиков
+                        $this->queries[$queryId]->callback($response);
+
+                        if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $this->queries[$queryId]]);
+
+                        unset($this->queries[$queryId]);
+                    } catch (\Exception $e) {
+                        $this->queries[$queryId]->setError($e);
+                    }
+                }
+
+                if ($stillExecuting) {
+                    $timeout = $absoluteTimeout - microtime(true);
+                    if (0 >= $timeout) {
+                        $timeout += $retryTimeout;
+                        $absoluteTimeout += $retryTimeout;
+                    }
+                    $isTryAvailable = false;
+                    foreach ($this->queries as $query) {
+                        if (count($query->getConnections()) < $retryCount) {
+                            $isTryAvailable = true;
+                            break;
+                        }
+                    }
+                    if ($isTryAvailable && null !== $retryTimeout) {
+                        $ready = curl_multi_select($this->multiConnection, $timeout);
+                    } else {
+                        $ready = curl_multi_select($this->multiConnection, 30);
+                    }
+
+                    if (0 === $ready) {
+                        foreach ($this->queries as $query) {
+                            if (count($query->getConnections()) >= $retryCount) continue;
+                            $this->prepare($query);
+                        }
+                    }
+                }
+            } while ($this->stillExecuting);
+        } catch (\Exception $e) {
+            $this->clear();
+
+            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'error' => $e]);
+
+            throw $e;
+        }
+
+        $this->clear();
+
+        return $this;
+    }
+
+    public function clear() {
+        foreach ($this->connections as $resource) {
+            curl_multi_remove_handle($this->multiConnection, $resource);
+        }
+        curl_multi_close($this->multiConnection);
+        $this->multiConnection = null;
+        $this->connections = [];
+        $this->queries = [];
+
+        return $this;
+    }
+
+    /**
+     * @param Query $query
+     * @param Query $query
+     * @return \Enter\Curl\Client
+     * @throws \Exception
+     */
+    public function prepare(\Enter\Curl\Query $query) {
+        $query->incCall();
+
+        if (!$this->multiConnection) {
+            $this->multiConnection = curl_multi_init();
+        }
+
+        $resource = $this->create($query);
+        if (0 !== curl_multi_add_handle($this->multiConnection, $resource)) {
+            $message = curl_error($resource);
+            if ($this->logger) $this->logger->push(['action' => __METHOD__, 'curl.error' => $message]);
+
+            throw new \Exception($message);
+        };
+        $this->connections[] = $resource;
+
+        $query->setId((string)$resource);
+        $query->addConnection($resource);
+
+        $this->stillExecuting = true;
+
+        $this->queries[$query->getId()] = $query;
+
+        return $this;
+    }
+
+    /**
+     * @param Query $query
+     * @return resource
+     */
+    private function create(\Enter\Curl\Query $query) {
+
+        $connection = curl_init();
+        curl_setopt($connection, CURLOPT_HEADER, true);
+        curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($connection, CURLOPT_URL, $query->getUrl());
+        if ((bool)$this->config->httpheader) {
+            curl_setopt($connection, CURLOPT_HTTPHEADER, $this->config->httpheader);
+        }
+        if ($this->config->encoding) {
+            curl_setopt($connection, CURLOPT_ENCODING, $this->config->encoding);
+        }
+
+        if ($query->getTimeout()) {
+            curl_setopt($connection, CURLOPT_NOSIGNAL, true);
+            curl_setopt($connection, CURLOPT_TIMEOUT_MS, $query->getTimeout() * 1000);
+        }
+
+        if ($query->getAuth()) {
+            curl_setopt($connection, CURLOPT_USERPWD, $query->getAuth());
+        }
+
+        if ((bool)$query->getData()) {
+            curl_setopt($connection, CURLOPT_POST, true);
+            curl_setopt($connection, CURLOPT_POSTFIELDS, $query->getData());
+        }
+
+        if ($this->config->referer) {
+            curl_setopt($connection, CURLOPT_REFERER, $this->config->referer);
+        }
+
+        return $connection;
+    }
+
+    /**
+     * @param resource $connection
+     * @param string $response
+     * @param array|null $headers
+     */
+    private function parseResponce($connection, &$response, &$headers = null) {
+        $size = curl_getinfo($connection, CURLINFO_HEADER_SIZE);
+
+        if (is_array($headers)) {
+            foreach (explode("\r\n", mb_substr($response, 0, $size)) as $line) {
+                if ($pos = strpos($line, ':')) {
+                    $key = substr($line, 0, $pos);
+                    $value = trim(substr($line, $pos + 1));
+                    $headers[$key] = $value;
+                } else {
+                    $headers[] = $line;
+                }
+            }
+        }
+
+        $response = mb_substr($response, $size);
+
+        if ($this->logger) $this->logger->push(['action' => __METHOD__, 'response.header' => $headers]);
+    }
+}
