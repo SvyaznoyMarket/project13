@@ -365,7 +365,13 @@
 
 					if ( this.form.data('redirect') ) {
 						if ( response.data.link ) {
-							window.location = response.data.link;
+							console.info('try to redirect to2 ' + response.data.link);
+							console.log(typeof response.data.link);
+
+
+							document.location.href = response.data.link;
+							console.log('try reload....');
+							document.location.reload();
 						}
 						else {
 							this.form.unbind('submit');

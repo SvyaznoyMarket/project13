@@ -75,7 +75,7 @@ $(document).ready(function() {
 				regexp: /^[()0-9\-\+\s]+$/
 			}) );
 			self.textfields.push( ko.observable({
-				title: 'Email (не обязательно)',
+				title: 'E-mail (если есть)',
 				name: 'order[recipient_email]', //UNIQUE!
 				selectorid: 'recipientEmail',
 				value: emailVal,
@@ -85,7 +85,7 @@ $(document).ready(function() {
 				regexp: /./
 			}) );
 			self.textfields.push( ko.observable({
-				title: 'номер вашей карты «Связной-Клуб»',
+				title: 'Номер вашей карты «Связной-Клуб»',
 				name: 'order[recipient_scCard]', //UNIQUE!
 				selectorid: 'scCard',
 				value: scNum,
