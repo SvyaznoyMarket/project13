@@ -62,7 +62,18 @@ if ($paypalECS) {
 
 	<div class="bBuyingLine"><a class="bBackCart" href="<?= $backLink ?>">&lt; Вернуться к покупкам</a></div>
 
-	 <!-- Order Method -->
+	<div class="bLifeGiftTitle">
+		<span class="bLifeGiftTitle__eText">Обратите внимание</span>
+
+		<div class="bLifeGiftTitle__eImg">
+			Вы оформляете заказ в подарок ребенку,<br/>
+			котого поддерживает фонд "Подари жизнь".
+
+			<span class="bViolet">Оплатите заказ онлайн, и Enter доставит подарок<br/> ребенку к новому году.</span>
+		</div>
+	</div>
+
+	<!-- Order Method -->
 	<div class="bBuyingLine clearfix mOrderMethod" data-bind="visible: deliveryTypes().length > 1">
 		<h2 class="bBuyingSteps__eTitle">Информация о заказе</h2>
 

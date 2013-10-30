@@ -13385,5 +13385,54 @@
     font-size: 11px;
     padding-bottom: 10px;
   }
+  .bLifeGiftTitle {
+    display: none;
+  }
+  .bBuyingSteps.mLifeGift .bLifeGiftTitle {
+    padding: 0 0 15px;
+    font-size: 18px;
+    display: block;
+  }
+  .bBuyingSteps.mLifeGift .bLifeGiftTitle__eImg {
+    background: url("/css/lifeGift/img/order.gif") no-repeat 0 0;
+    padding-left: 283px;
+    font-family: "Enter";
+    font-size: 19px;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin: 20px 0 20px;
+  }
+  .bBuyingSteps.mLifeGift .bLifeGiftTitle__eImg .bViolet {
+    display: block;
+    margin: 12px 0 0;
+    color: #d260a6;
+  }
+  .bBuyingSteps.mLifeGift .bLifeGiftTitle__eText {
+    padding-left: 15px;
+  }
+  .bBuyingSteps.mLifeGift .bBuyingLine .bOrderItems .bItemsRow__eImgProd {
+    width: 60px;
+  }
+  .bBuyingSteps.mLifeGift .bBuyingLine .bOrderItems .mItemInfo {
+    font-size: 14px;
+  }
+  .bBuyingSteps.mLifeGift .bSumOrderInfo,
+  .bBuyingSteps.mLifeGift .bFootnote,
+  .bBuyingSteps.mLifeGift .bBuyingLine.mSumm,
+  .bBuyingSteps.mLifeGift .bBuyingLine__eRight.bInputList .bTitle {
+    display: none;
+  }
+  .bBuyingSteps.mLifeGift .bBuyingLine .bOrderItems {
+    margin-top: 0;
+  }
+  .bBuyingSteps.mLifeGift .bBuyingLine.mProductsLine {
+    margin-top: 0;
+  }
+  .bBuyingSteps.mLifeGift .bBuyingLine__eLeft {
+    min-height: 1px;
+  }
+  .bBuyingSteps.mLifeGift .mPayMethods .bPayMethod {
+    margin-left: 0;
+  }
 }
 /*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/

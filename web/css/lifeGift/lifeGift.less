@@ -60,3 +60,67 @@
 	font-size: 11px;
 	padding-bottom: 10px;
 }
+
+.bLifeGiftTitle {
+	display: none;
+}
+
+.bBuyingSteps {
+
+	&.mLifeGift {
+
+		.bLifeGiftTitle {
+			padding: 0 0 15px;
+			font-size: 18px;
+			display: block;
+
+			&__eImg {
+				background: url("@{base-url}/lifeGift/img/order.gif") no-repeat 0 0;
+				padding-left: 283px;
+				font-family: "Enter";
+				font-size: 19px;
+				text-transform: uppercase;
+				line-height: 1.1;
+				margin: 20px 0 20px;
+
+				.bViolet {
+					display: block;
+					margin: 12px 0 0;
+					color: #d260a6;
+				}
+			}
+
+			&__eText {
+				padding-left: 15px;
+			}
+		}
+
+		.bBuyingLine .bOrderItems .bItemsRow__eImgProd {
+			width: 60px;
+		}
+
+		.bBuyingLine .bOrderItems .mItemInfo {
+			font-size: 14px;
+		}
+
+		.bSumOrderInfo, .bFootnote, .bBuyingLine.mSumm, .bBuyingLine__eRight.bInputList .bTitle {
+			display: none;
+		}
+
+		.bBuyingLine .bOrderItems {
+			margin-top: 0;
+		}
+
+		.bBuyingLine.mProductsLine {
+			margin-top: 0;
+		}
+
+		.bBuyingLine__eLeft {
+			min-height: 1px;
+		}
+
+		.mPayMethods .bPayMethod {
+			margin-left: 0;
+		}
+	}
+}	
