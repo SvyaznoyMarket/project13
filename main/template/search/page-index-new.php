@@ -35,7 +35,7 @@
     ]) ?>
 
     <!--    --><?// if (!$selectedCategory): ?>
-    <div class="bSearchCategoryRoot bFilterValuesItem mLineItem">
+    <div class="bSearchCategoryRoot">
         <?= $helper->render('search/__category', [
             'categories'  => $categoriesFound,
             'searchQuery' => $searchQuery,
