@@ -70,6 +70,7 @@
         'pager'                  => $productPager,
         'view'                   => $productView,
         'productVideosByProduct' => [], //$productVideosByProduct,
+        'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
     ]) // листинг ?>
 
     <div class="bSortingLine mPagerBottom clearfix">

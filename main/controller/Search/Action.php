@@ -224,7 +224,8 @@ class Action {
                 'list'           => (new \View\Product\ListAction())->execute(
                     $helper,
                     $productPager,
-                    $productVideosByProduct
+                    $productVideosByProduct,
+                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     $helper,

@@ -548,7 +548,7 @@ class ShowAction {
                 $filtersWithoutShop,
                 $sort,
                 ($pageNum - 1) * $limit,
-                $limit
+                1 === $pageNum ? $limit-1 : $limit
             );
             $page->setGlobalParam('allCount', $pagerAll->count());
         }
@@ -570,7 +570,7 @@ class ShowAction {
                     'filters' => $filterData,
                     'sort'    => $sort,
                     'offset'  => ($pageNum - 1) * $limit,
-                    'limit'   => $limit,
+                    'limit'   => 1 === $pageNum ? $limit-1 : $limit,
                 ],
             ],
             [],
@@ -641,7 +641,8 @@ class ShowAction {
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
-                    $productVideosByProduct
+                    $productVideosByProduct,
+                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
                 ),
 //                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
 //                    \App::closureTemplating()->getParam('helper'),
