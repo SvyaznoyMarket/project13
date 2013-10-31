@@ -116,7 +116,7 @@ if ($paypalECS) {
 
 				<div class="bBuyingLine__eRight">
 					<!-- Celendar -->
-					<div class="bBuyingDates clearfix" data-bind="visible: !$root.lifeGift">
+					<div class="bBuyingDates clearfix" data-bind="visible: !$root.lifeGift()">
 						<div class="bBuyingDatesItem mLeft" data-bind="click: box.calendarLeftBtn">
 							<span class="bArrow"></span>
 						</div>
@@ -141,11 +141,11 @@ if ($paypalECS) {
 					</div>
 					<!-- /Celendar -->
 
-					<div class="bDeliveryDate" data-bind="visible: !$root.lifeGift">
+					<div class="bDeliveryDate" data-bind="visible: !$root.lifeGift()">
 						<span data-bind="text: box.deliveryName"></span> <strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span> <span data-bind="visible: !hasPointDelivery">*</span>
 					</div>
 
-					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length && !$root.lifeGift">
+					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length && !$root.lifeGift()">
 						<span class="bSelectWrap_eText" data-bind="text: (!box.hasPointDelivery ? 'c ' + box.choosenInterval().start + ' ' : '') + 'до ' + box.choosenInterval().end"></span>
 						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
 															value: box.choosenInterval,
@@ -214,7 +214,7 @@ if ($paypalECS) {
 
     <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 	<!-- Sale section -->
-	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift, css: { hidden: paypalECS }">
+	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift(), css: { hidden: paypalECS }">
 		<div class="bBuyingLine">
 			<div class="bBuyingLine__eLeft">
 				<h2 class="bBuyingSteps__eTitle">
@@ -314,9 +314,9 @@ if ($paypalECS) {
 
 	<!-- Форма заказа -->
 	<div class="bBuyingInfo" data-bind="visible: deliveryBoxes().length">
-		<h2 class="bBuyingSteps__eTitle" data-bind="visible: !$root.lifeGift">Информация о счастливом получателе</h2>
+		<h2 class="bBuyingSteps__eTitle" data-bind="visible: !$root.lifeGift()">Информация о счастливом получателе</h2>
 
-		<div class="bHeadnote" data-bind="visible: !$root.lifeGift">
+		<div class="bHeadnote" data-bind="visible: !$root.lifeGift()">
             <? if ($user->getEntity()): ?>
                 Привет, <a href="<?= $page->url('user') ?>"><strong><?= $user->getEntity()->getName() ?></strong></a>
             <? else: ?>
@@ -328,7 +328,7 @@ if ($paypalECS) {
 		
 		<form id="order-form" action="<?= $createUrl ?>" method="post">
 			<!-- Info about customer -->
-			<div class="bBuyingLine mBuyingFields clearfix" data-bind="visible: !$root.lifeGift">
+			<div class="bBuyingLine mBuyingFields clearfix" data-bind="visible: !$root.lifeGift()">
 				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
 				<div class="bBuyingLine__eRight">
 					<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
