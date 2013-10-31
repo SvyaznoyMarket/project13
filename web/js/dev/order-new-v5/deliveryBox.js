@@ -161,20 +161,20 @@
 		};
 
 
-        /**
-         * Генерирует случайное окончание (суффикс) для строки
-         *
-         * @param       {string}      str
-         * @returns     {string}      str
-         */
-        DeliveryBox.prototype.addUniqueSuffix = function( str ) {
-            str = str || '';
-            var randSuff;
-            //randSuff = new Date().getTime();
-            randSuff = Math.floor( (Math.random() * 10000) + 1 );
-            str += '_' + randSuff;
-            return str;
-        };
+		/**
+		 * Генерирует случайное окончание (суффикс) для строки
+		 *
+		 * @param       {string}      str
+		 * @returns     {string}      str
+		 */
+		DeliveryBox.prototype.addUniqueSuffix = function ( str ) {
+			str = str || '';
+			var randSuff;
+			//randSuff = new Date().getTime();
+			randSuff = Math.floor((Math.random() * 10000) + 1);
+			str += '_' + randSuff;
+			return str;
+		};
 
 
 		/**
@@ -322,6 +322,14 @@
 				productImg: (product.image) ? product.image : product.productImg,
 				deliveries: {}
 			};
+
+			if ( self.isUnique && (product.oldQuantity - 1) > 0 ) {
+				console.log('Переделываем deleteUrl:');
+				console.log(tmpProduct.deleteUrl);
+				tmpProduct.deleteUrl = tmpProduct.deleteUrl.replace('delete-', 'add-'); // TODO cart.product.set изменмить Url
+				tmpProduct.deleteUrl += '?quantity=' + ( product.oldQuantity - 1 );
+				console.log(tmpProduct.deleteUrl);
+			}
 
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 

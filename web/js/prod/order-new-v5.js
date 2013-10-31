@@ -161,20 +161,20 @@
 		};
 
 
-        /**
-         * Генерирует случайное окончание (суффикс) для строки
-         *
-         * @param       {string}      str
-         * @returns     {string}      str
-         */
-        DeliveryBox.prototype.addUniqueSuffix = function( str ) {
-            str = str || '';
-            var randSuff;
-            //randSuff = new Date().getTime();
-            randSuff = Math.floor( (Math.random() * 10000) + 1 );
-            str += '_' + randSuff;
-            return str;
-        };
+		/**
+		 * Генерирует случайное окончание (суффикс) для строки
+		 *
+		 * @param       {string}      str
+		 * @returns     {string}      str
+		 */
+		DeliveryBox.prototype.addUniqueSuffix = function ( str ) {
+			str = str || '';
+			var randSuff;
+			//randSuff = new Date().getTime();
+			randSuff = Math.floor((Math.random() * 10000) + 1);
+			str += '_' + randSuff;
+			return str;
+		};
 
 
 		/**
@@ -322,6 +322,14 @@
 				productImg: (product.image) ? product.image : product.productImg,
 				deliveries: {}
 			};
+
+			if ( self.isUnique && (product.oldQuantity - 1) > 0 ) {
+				console.log('Переделываем deleteUrl:');
+				console.log(tmpProduct.deleteUrl);
+				tmpProduct.deleteUrl = tmpProduct.deleteUrl.replace('delete-', 'add-'); // TODO cart.product.set изменмить Url
+				tmpProduct.deleteUrl += '?quantity=' + ( product.oldQuantity - 1 );
+				console.log(tmpProduct.deleteUrl);
+			}
 
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
@@ -1734,7 +1742,7 @@
 
 					// Разделим товары, продуктом считаем уникальную единицу товара:
 					// Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
-					nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
+					nowProductsToNewBox = global.OrderModel.prepareProductsQuantityByUniq(productsToNewBox);
 					for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
 						nowProduct = [ nowProductsToNewBox[j] ];
 						global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox);
@@ -1761,6 +1769,10 @@
 		// выбираем URL для проверки купонов - первый видимый купон
 		global.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
 		$('.bSaleList__eItem:visible .jsCustomRadio').eq(0).trigger('change');
+
+
+		// выбираем первый доступный метод оплаты
+		$('.bPayMethod:visible .jsCustomRadio').eq(0).attr('checked', 'checked').trigger('change');
 
 		/**
 		 * Проверка примененных купонов
@@ -1830,24 +1842,34 @@
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val),
 				node = $(element),
-                nodeData = node.data('value'),
+				nodeData = node.data('value'),
 				maxSum = parseInt( nodeData['max-sum'], 10 ),
 				methodId = nodeData['method_id'],
-                isAvailableToPickpoint = nodeData['isAvailableToPickpoint'];
+				isAvailableToPickpoint = nodeData['isAvailableToPickpoint'];
 			// end of vars
 
 			if (
-                /* 6 is DeliveryTypeId for PickPoint  */
-                ( 6 === global.OrderModel.choosenDeliveryTypeId && false == isAvailableToPickpoint ) ||
-                ( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId ) ||
-                ( !isNaN(maxSum) && maxSum < unwrapVal )
-
-                ) {
-
-                console.log('Скрываем метод оплаты c id ' + methodId);
+			 /* 6 is DeliveryTypeId for PickPoint  */
+			( 6 === global.OrderModel.choosenDeliveryTypeId && false == isAvailableToPickpoint ) ||
+			( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId ) ||
+			( !isNaN(maxSum) && maxSum < unwrapVal ) ) {
 				node.hide();
 
-			} else {
+				return;
+			}
+			else if ( 13 === methodId ) {
+				node.show();
+			}
+
+			if ( isNaN(maxSum) ) {
+				return;
+			}
+
+			if ( maxSum < unwrapVal ) {
+				node.hide();
+
+			}
+			else {
 				node.show();
 			}
 		}
@@ -2266,7 +2288,7 @@
 		 * @param	{Object}	data	Данные удалямого товара
 		 */
 		deleteItem: function( data ) {
-			console.info('удаление');
+			console.info('удаление товара');
 
 			var reqArray = null;
 
@@ -2365,7 +2387,7 @@
 		 * @param       {Array}   productsToNewBox
 		 * @returns     {Array}   productsUniq
 		 */
-		prepareProductsByUniq: function prepareProductsByUniq( productsToNewBox ) {
+		prepareProductsQuantityByUniq: function prepareProductsQuantityByUniq( productsToNewBox ) {
 			var productsUniq = [],
 				nowProduct,
 				j, k;
@@ -2375,6 +2397,7 @@
 				nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
                 nowProduct.sum = nowProduct.price;
                 nowProduct.quantity = 1;
+				nowProduct.oldQuantity = productsToNewBox[j].quantity; // сохраняем старое кол-во товаров в блоке
 				for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
                     productsUniq.push(nowProduct);
 				}
@@ -2623,6 +2646,7 @@
 
 			var totalPrice = 0,
 				totalQuan = 0,
+                basketProd = [],
 
 				toKISS = {};
 			// end of vars
@@ -2630,6 +2654,15 @@
 			for ( var product in orderData.products ) {
 				totalPrice += orderData.products[product].price;
 				totalQuan += orderData.products[product].quantity;
+
+                basketProd.push(
+                    {
+                    'id':       orderData.products[product].id,
+                    'name':     orderData.products[product]['name'],
+                    'price':    orderData.products[product].price,
+                    'quantity': orderData.products[product].quantity
+                    }
+                );
 			}
 
 			toKISS = {
@@ -2645,7 +2678,15 @@
 			if ( typeof _kmq !== 'undefined' ) {
 				_kmq.push(['record', 'Checkout Step 1', toKISS]);
 			}
-		};
+
+            // ActionPay Analytics:
+            window.APRT_DATA = window.APRT_DATA || {};
+            window.APRT_DATA.pageType = 5; // оформление заказа (после корзины и до последней страницы заказа)
+            window.APRT_DATA.orderInfo = window.APRT_DATA.orderInfo || {};
+            window.APRT_DATA.orderInfo.totalPrice = totalPrice;
+            window.APRT_DATA.basketProducts = basketProd;
+
+        };
 	// end of functions
 
 	renderOrderData( serverData );

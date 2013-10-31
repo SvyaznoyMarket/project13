@@ -125,7 +125,7 @@
 
 					// Разделим товары, продуктом считаем уникальную единицу товара:
 					// Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
-					nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
+					nowProductsToNewBox = global.OrderModel.prepareProductsQuantityByUniq(productsToNewBox);
 					for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
 						nowProduct = [ nowProductsToNewBox[j] ];
 						global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox);
@@ -671,7 +671,7 @@
 		 * @param	{Object}	data	Данные удалямого товара
 		 */
 		deleteItem: function( data ) {
-			console.info('удаление');
+			console.info('удаление товара');
 
 			var reqArray = null;
 
@@ -770,7 +770,7 @@
 		 * @param       {Array}   productsToNewBox
 		 * @returns     {Array}   productsUniq
 		 */
-		prepareProductsByUniq: function prepareProductsByUniq( productsToNewBox ) {
+		prepareProductsQuantityByUniq: function prepareProductsQuantityByUniq( productsToNewBox ) {
 			var productsUniq = [],
 				nowProduct,
 				j, k;
@@ -780,6 +780,7 @@
 				nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
                 nowProduct.sum = nowProduct.price;
                 nowProduct.quantity = 1;
+				nowProduct.oldQuantity = productsToNewBox[j].quantity; // сохраняем старое кол-во товаров в блоке
 				for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
                     productsUniq.push(nowProduct);
 				}
