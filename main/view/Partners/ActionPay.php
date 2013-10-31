@@ -343,7 +343,7 @@ class ActionPay {
     private function checkParentCategory($category)
     {
         $parentCat = null;
-        $this->categoryInfo($parentCat, $category->getParent());
+        $this->categoryInfo($parentCat, $category ? $category->getParent() : null);
         if ( empty($parentCat) ) return false;
 
         if ( !isset($this->sendData['parentCategories']) ) $this->sendData['parentCategories'] = [];
