@@ -237,8 +237,19 @@ class ProductAction {
      */
     public function delete(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
+        $cart = \App::user()->getCart();
+        $quantity = (int)$request->get('quantity', 1); // какое кол-во товаров нужно удалить
 
-        $request->query->set('quantity', 0);
+        if ( $cart && $quantity ) {
+            $cartProduct = $cart->getProductById($productId);
+            if ( $cartProduct ) {
+                // Если такой товар уже есть в корзине, уменьшим его количество
+                $quantity = $cartProduct->getQuantity() - $quantity;
+                if ( $quantity < 0 ) $quantity = 0;
+            }
+        }
+
+        $request->query->set('quantity', $quantity);
 
         return $this->set($productId, $request);
     }
