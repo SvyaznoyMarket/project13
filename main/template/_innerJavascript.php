@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var $page \View\DefaultLayout
+ */
+?>
+
 <? if (\App::config()->analytics): ?>
 <script type="text/javascript">
     (function() {

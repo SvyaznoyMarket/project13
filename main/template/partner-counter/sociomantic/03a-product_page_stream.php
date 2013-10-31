@@ -37,9 +37,9 @@ if ($product instanceof \Model\Product\Entity) {
 
 <? if (!empty($scr_product)): ?>
     <div id="sociomanticProductPageStream" data-scr-product="<?= $page->json($scr_product) ?>" data-prod-cats="<?= $page->json($prod_cats) ?>" class="jsanalytics"></div>
-<? endif;
+<? endif ?>
 
-/* example: <!--
+<? /* example: <!--
 <script type="text/javascript">
     var sonar_product = {
         identifier: '<?= $product->getTypeId(); ?>',
