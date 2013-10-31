@@ -4,6 +4,7 @@
  */
 ?>
 
+<div style="position:fixed; height: 0; z-index:-1;">
 <? if (\App::config()->analytics): ?>
 <script type="text/javascript">
     (function() {
@@ -11,14 +12,13 @@
     })();
 </script>
 <? endif ?>
-
 <?= $page->slotSociomantic() ?>
 <?= $page->slotRetailRocket() ?>
 <?= $page->slotCriteo() ?>
 <?= $page->slotAdmitad() ?>
 <?= $page->slotMarinLandingPageTagJS() ?>
 <?= $page->slotMarinConversionTagJS() ?>
-
 <? if (\App::config()->debug): ?>
     <!-- // <script src="http://<?= \App::config()->mainHost ?>:35729/js/livereload.js" type="text/javascript"></script> -->
 <? endif ?>
+</div>
