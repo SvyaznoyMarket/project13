@@ -469,7 +469,7 @@ window.ANALYTICS = {
             action: function ( e, userInfo ) {
                 var rr_data = $('#RetailRocketJS').data('value'),
                     sendUserData = {
-                        userId: userInfo.emailHash || userInfo.id || false,
+                        userId: userInfo.id || false,
                         hasUserEmail: ( userInfo && userInfo.email ) ? true : false
                     };
                 // end of vars
