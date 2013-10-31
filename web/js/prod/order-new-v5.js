@@ -323,8 +323,12 @@
 				deliveries: {}
 			};
 
-			if ( self.isUnique && product.oldQuantity ) {
-				tmpProduct.deleteUrl += '?currentQuantity=' + product.oldQuantity;
+			if ( self.isUnique && (product.oldQuantity - 1) > 0 ) {
+				console.log('Переделываем deleteUrl:');
+				console.log(tmpProduct.deleteUrl);
+				tmpProduct.deleteUrl = tmpProduct.deleteUrl.replace('delete-', 'add-'); // TODO cart.product.set изменмить Url
+				tmpProduct.deleteUrl += '?quantity=' + ( product.oldQuantity - 1 );
+				console.log(tmpProduct.deleteUrl);
 			}
 
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
@@ -2286,9 +2290,7 @@
 		deleteItem: function( data ) {
 			console.info('удаление товара');
 
-			var reqArray = null,
-				itemCurrentQuantity = 0,
-				itemData = {};
+			var reqArray = null;
 
 			utils.blockScreen.block('Удаляем');
 
@@ -2358,19 +2360,12 @@
 			// end of functions
 
 			console.log(data.deleteUrl);
-			itemCurrentQuantity = parseInt( utils.getURLParam('currentQuantity', data.deleteUrl) );
-			if ( itemCurrentQuantity ) {
-				itemData.currentQuantity = itemCurrentQuantity;
-			}
-			console.log('itemData: ');
-			console.log(itemData);
 
 			reqArray = [
 				{
 					type: 'GET',
 					url: data.deleteUrl,
-					callback: deleteItemResponceHandler,
-					data: itemData
+					callback: deleteItemResponceHandler
 				},
 				{
 					type: 'GET',

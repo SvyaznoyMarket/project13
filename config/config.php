@@ -124,7 +124,7 @@ $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
-$c->pickpoint['timeout'] = 20;
+$c->pickpoint['timeout'] = 60;
 $c->pickpoint['retryCount'] = 3;
 $c->pickpoint['retryTimeout'] = [
     'default' => 0.04,

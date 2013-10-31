@@ -673,9 +673,7 @@
 		deleteItem: function( data ) {
 			console.info('удаление товара');
 
-			var reqArray = null,
-				itemCurrentQuantity = 0,
-				itemData = {};
+			var reqArray = null;
 
 			utils.blockScreen.block('Удаляем');
 
@@ -745,19 +743,12 @@
 			// end of functions
 
 			console.log(data.deleteUrl);
-			itemCurrentQuantity = parseInt( utils.getURLParam('currentQuantity', data.deleteUrl) );
-			if ( itemCurrentQuantity ) {
-				itemData.currentQuantity = itemCurrentQuantity;
-			}
-			console.log('itemData: ');
-			console.log(itemData);
 
 			reqArray = [
 				{
 					type: 'GET',
 					url: data.deleteUrl,
-					callback: deleteItemResponceHandler,
-					data: itemData
+					callback: deleteItemResponceHandler
 				},
 				{
 					type: 'GET',

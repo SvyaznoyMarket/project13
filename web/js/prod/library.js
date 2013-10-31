@@ -2952,12 +2952,11 @@ if ( !Array.prototype.indexOf ) {
 	 * @param 		{string}	paramName
 	 * @param 		{string}	url
 	 * @returns 	{string}	{*}
-	 */
+	 *
 	utils.getURLParam = function getURLParam ( paramName, url ) {
 		return decodeURI(
 			( RegExp(paramName + '=' + '(.+?)(&|$)').exec(url) || [, null] )[1]
 		);
-	}
-
+	}*/
 
 }(window.ENTER));
