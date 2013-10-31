@@ -237,8 +237,10 @@ class ProductAction {
      */
     public function delete(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
-        $cart = \App::user()->getCart();
+
+        /*
         $quantity = (int)$request->get('quantity', 1); // какое кол-во товаров нужно удалить
+        $cart = \App::user()->getCart();
 
         if ( $cart && $quantity ) {
             $cartProduct = $cart->getProductById($productId);
@@ -248,8 +250,10 @@ class ProductAction {
                 if ( $quantity < 0 ) $quantity = 0;
             }
         }
-
         $request->query->set('quantity', $quantity);
+        */
+
+        $request->query->set('quantity', 0);
 
         return $this->set($productId, $request);
     }
