@@ -256,6 +256,11 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    /**
+     * Слот с партнёрами-счётчиками, вызывается на всех страницах сайта
+     *
+     * @return string
+     */
     public function slotPartnerCounter() {
         $return = '';
 
@@ -301,7 +306,14 @@ class DefaultLayout extends Layout {
             if ('subscribe_friends' == $routeToken) {
                 $return .= $this->tryRender('partner-counter/_am15_net');
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
+                $return .= $this->tryRender('partner-counter/_cityAds_subscribe');
             }
+
+
+            // ActionPay ретаргетинг
+            $return .= '<div id="ActionPayJS" data-vars="' .
+                $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) .
+                '" class="jsanalytics"></div>';
 
         }
 

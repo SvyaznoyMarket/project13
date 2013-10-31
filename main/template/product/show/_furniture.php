@@ -126,12 +126,14 @@
 
 <div class="bBottomBuy clearfix">
     <div class="bBottomBuy__eHead">
-        <div class="bBottomBuy__eTitle"><?= $title ?></div>
+        <div itemprop="name" class="bBottomBuy__eTitle"><?= $title ?></div>
     </div>
 
     <?= $page->render('cart/_button', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
-    <div class="bPrice"><strong class="jsPrice"><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+    <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <div itemprop="price" class="bPrice"><strong class="jsPrice"><?= $page->helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+    </span>
 </div>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>

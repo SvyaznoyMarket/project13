@@ -7,8 +7,7 @@ return function(
     $countUrl,
     array $categories,
     \Model\Product\Category\Entity $selectedCategory = null
-) {
-?>
+) { ?>
 
     <?= $helper->render('product-category/__filter', [
         'baseUrl'          => $baseUrl,

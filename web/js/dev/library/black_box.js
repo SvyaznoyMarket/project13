@@ -9,7 +9,8 @@
 		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils;
 	// end of vars
-	
+
+    config.cartProducts = config.cartProducts || {};
 
 	/**
 	 * === BLACKBOX CONSTRUCTOR ===
@@ -102,12 +103,16 @@
 				 * 
 				 * @public
 				 */
-				update = function update( basketInfo ) {
+				update = function update( basketInfo, cartProds ) {
 					headQ.html('(' + basketInfo.cartQ + ')');
 					bottomQ.html(basketInfo.cartQ);
 					bottomSum.html(basketInfo.cartSum);
 					bottomCart.addClass('mBought');
 					total.show();
+
+                    if ( cartProds && cartProds.length > 0 ) {
+                        config.cartProducts = cartProds;
+                    }
 				},
 
 				/**
@@ -127,10 +132,16 @@
 				 */
 				add = function add ( item ) {
 					var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item),
-							nowBasket = {
-							cartQ: item.totalQuan,
-							cartSum: item.totalSum
-						};
+                        nowBasket = {
+                            cartQ: item.totalQuan,
+                            cartSum: item.totalSum
+                        },
+                        addCartProduct = {
+                            id: item.id,
+                            name: item.title,
+                            price: item.priceInt,
+                            quantity: item.quantity
+                        };
 					// end of vars
 
 					flyboxDestroy();
@@ -138,6 +149,7 @@
 					flyboxBasket.show(300);
 
 					self.basket().update(nowBasket);
+                    config.cartProducts.push(addCartProduct);
 
 					$('body').bind('click', flyboxcloser);
 
@@ -251,7 +263,7 @@
 						actionInfo = data.action,
 						nowBasket = {};
 					//end of vars
-					
+
 					if ( data.success !== true ) {
 						return false;
 					}
@@ -264,7 +276,7 @@
 							cartSum: cartInfo.sum
 						};
 
-						self.basket().update(nowBasket);
+						self.basket().update( nowBasket, data.cartProducts );
 					}
 
 					if ( actionInfo !== undefined ) {
