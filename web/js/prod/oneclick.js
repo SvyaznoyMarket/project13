@@ -569,7 +569,8 @@ $(document).ready(function() {
 						if( typeof(runAnalitics) !== 'undefined' ){
 							runAnalitics();
 						}
-						ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
+						ANALYTICS.parseAllAnalDivs( $('.jsanalytics') ); // NB! .jsanalytics, добавленные ajax-om не будут парситься
+                        ANALYTICS.adriverOrder( {order_id: data.data.orderNumber} );
 
 						// console.log(data)
 						//process
