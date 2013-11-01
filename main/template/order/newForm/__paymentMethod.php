@@ -35,8 +35,31 @@ return function (
     <?
         $type = isset($typeById[$typeId]) ? $typeById[$typeId] : null;
         if (!$type) continue;
+
+        $blockData = array(
+            'toHide' => [
+                // Для пикпойнтов нужно скрыть любой* payBlock (кроме дефолтного TYPE_ON_RECEIPT)
+
+                // Скрыть для всех* PaymentMethods при типе доставки PICKPOINT:
+                \Model\DeliveryType\Entity::TYPE_PICKPOINT_ID,
+
+                // Либо перичислим те PaymentMethods, для которых скрываем при типе доставки PICKPOINT
+                /*
+                \Model\DeliveryType\Entity::TYPE_PICKPOINT_ID=> [
+                    \Model\PaymentMethod\Entity::TYPE_NOW,
+                    \Model\PaymentMethod\Entity::TYPE_ALL,
+                ],
+                */
+
+            ],
+            'typeId' => $typeId,
+        );
     ?>
-    <div <? if (\Model\PaymentMethod\Entity::TYPE_ON_RECEIPT !== $typeId): ?>data-bind="style: { display: deliveryBoxes().length == 1 ? 'block' : 'none' }"<? endif ?>>
+    <div data-vars="<?= $helper->json($blockData) ?>"<? // div блока с возможными методами оплаты: "Прямо сейчас", "При получении", ...
+        if ( \Model\PaymentMethod\Entity::TYPE_ON_RECEIPT !== $typeId ):
+            // TYPE_ON_RECEIPT — при получении заказа, доступно в любом случае
+            ?>data-bind="payBlockVisible: <?= $typeId ?>"<?
+        endif ?>>
         <? if (isset($type['name'])): ?>
             <h2 class="bTitle"><?= $type['name'] ?></h2>
         <? endif ?>
