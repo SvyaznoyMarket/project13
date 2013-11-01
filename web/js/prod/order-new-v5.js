@@ -1847,6 +1847,9 @@
 		}
 	};
 
+	/**
+	 * Кастомный бинд для отображения блоков с методами оплаты: "прямо сейчас", "при получении", в кредит..
+	 */
 	ko.bindingHandlers.payBlockVisible = {
 		update: function( element ) {
 			var node = $(element),
