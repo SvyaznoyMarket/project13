@@ -18,12 +18,14 @@ class Name {
             case \Model\Product\Filter\Entity::TYPE_LIST:
                 return in_array($filter->getId(), ['shop', 'category'])
                     ? $filter->getId()
-                    : ('f-'
-                        . $filter->getId()
-                        . ($filter->getIsMultiple()
-                            ? ('-' . \Util\String::slugify($option instanceof \Model\Product\Filter\Option\Entity ? $option->getName() : $option))
-                            : '')
-                    );
+                    : ('label' === $filter->getId() && $option instanceof \Model\Product\Filter\Option\Entity && 'instore' === $option->getToken()
+                        ? $option->getToken() // TODO SITE-2403 Вернуть фильтр instore
+                        : ('f-'
+                            . $filter->getId()
+                            . ($filter->getIsMultiple()
+                                ? ('-' . \Util\String::slugify($option instanceof \Model\Product\Filter\Option\Entity ? $option->getName() : $option))
+                                : '')
+                        ));
             default:
                 return 'f-' . $filter->getId();
         }
