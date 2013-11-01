@@ -1,16 +1,17 @@
 <?php
 /**
- * @var $page             \View\Search\IndexPage
- * @var $request          \Http\Request
- * @var $productFilter    \Model\Product\Filter
- * @var $searchQuery      string
- * @var $meanQuery        string
- * @var $forceMean        string
- * @var $productCount     int
- * @var $productPager     \Iterator\EntityPager
- * @var $categories       \Model\Product\Category\Entity[]
- * @var $selectedCategory \Model\Product\Category\Entity
- * @var $productView      string
+ * @var $page               \View\Search\IndexPage
+ * @var $request            \Http\Request
+ * @var $productFilter      \Model\Product\Filter
+ * @var $searchQuery        string
+ * @var $meanQuery          string
+ * @var $forceMean          string
+ * @var $productCount       int
+ * @var $productPager       \Iterator\EntityPager
+ * @var $categories         \Model\Product\Category\Entity[]
+ * @var $selectedCategory   \Model\Product\Category\Entity
+ * @var $productView        string
+ * @var $bannerPlaceholder  array
  **/
 ?>
 
@@ -70,7 +71,7 @@
         'pager'                  => $productPager,
         'view'                   => $productView,
         'productVideosByProduct' => [], //$productVideosByProduct,
-        'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
+        'bannerPlaceholder'      => !empty($bannerPlaceholder) ? $bannerPlaceholder : [],
     ]) // листинг ?>
 
     <div class="bSortingLine mPagerBottom clearfix">
