@@ -478,8 +478,6 @@
 		 */
 		totalSum: ko.observable(0),
 
-		totalSum2: ko.observable(0),
-
 		/**
 		 * Есть ли примененные купоны
 		 */
