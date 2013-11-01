@@ -934,15 +934,7 @@ $(document).ready(function() {
 	 * Обработчик кнопки PayPal в карточке товара
 	 */
 	(function() {
-		if ( !$('.jsPayPalButton').length ) {
-			console.warn('Нет кнопки paypal');
-
-			return;
-		}
-
-		console.info('Кнопка paypal существует');
-
-		var payPalResHandler = function payPalResHandler( res ) {
+		var successHandler = function successHandler( res ) {
 				console.info('payPal ajax complete');
 
 				if ( !res.success || !res.redirect ) {
@@ -954,7 +946,7 @@ $(document).ready(function() {
 				document.location.href = res.redirect;
 			},
 
-			payPalEcsHandler = function payPalEcsHandler() {
+			buyOneClickAndRedirect = function buyOneClickAndRedirect() {
 				console.info('payPal click');
 
 				var button = $(this),
@@ -963,13 +955,14 @@ $(document).ready(function() {
 
 				window.ENTER.utils.blockScreen.block('Загрузка');
 
-				$.get(url, payPalResHandler);
+				$.get(url, successHandler);
 
 				return false;
 			};
 		// end of functions
 
-		$('.jsPayPalButton').bind('click', payPalEcsHandler);
+		$('.jsPayPalButton').bind('click', buyOneClickAndRedirect);
+		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
 	})();
 	
 

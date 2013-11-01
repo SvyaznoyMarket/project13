@@ -2,6 +2,7 @@
 /**
  * @var $page              \View\Product\IndexPage
  * @var $product           \Model\Product\Entity
+ * @var $lifeGiftProduct   \Model\Product\Entity|null
  * @var $productVideos     \Model\Product\Video\Entity[]
  * @var $user              \Session\User
  * @var $accessories       \Model\Product\Entity[]
@@ -15,6 +16,8 @@
  * @var $mainProduct       \Model\Product\Entity
  * @var $line              \Model\Line\Entity
  */
+
+if (!$lifeGiftProduct) $lifeGiftProduct = null;
 
 $showLinkToProperties = true;
 $countModels = count($product->getModel());
@@ -201,7 +204,12 @@ $is_showed = [];
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
 
         <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
+
     </div><!--/widget delivery -->
+
+    <? if ($lifeGiftProduct): ?>
+        <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>
+    <? endif ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 

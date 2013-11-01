@@ -320,6 +320,15 @@
 		orderCompleteBtnHandler = function orderCompleteBtnHandler() {
 			console.info('Завершить оформление заказа');
 
+			/**
+			 * Для акции «подари жизнь» валидация полей на клиенте не требуется
+			 */
+			if ( global.OrderModel.lifeGift() ) {
+				preparationData();
+
+				return false;
+			}
+
 			orderValidator.validate({
 				onInvalid: function( err ) {
 					console.warn('invalid');
