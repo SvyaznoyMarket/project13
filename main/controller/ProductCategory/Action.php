@@ -383,14 +383,36 @@ class Action {
 
         // TODO SITE-2403 Вернуть фильтр instore
         if ($category->getIsFurniture() && 14974 === $user->getRegion()->getId()) {
-            foreach ($filters as $filter) {
+            $labelFilter = null;
+            $labelFilterKey = null;
+            foreach ($filters as $key => $filter) {
                 if ('label' === $filter->getId()) {
-                    $option = new \Model\Product\Filter\Option\Entity();
-                    $option->setId(1);
-                    $option->setToken('instore');
-                    $option->setName('Товар за три дня');
-                    $filter->unshiftOption($option);
+                    $labelFilter = $filter;
+                    $labelFilterKey = $key;
                 }
+            }
+
+            // если нету блока фильтров "WOW-товары", то создаем
+            if (null === $labelFilter) {
+                $labelFilter = new \Model\Product\Filter\Entity();
+                $labelFilter->setId('label');
+                $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+                $labelFilter->setName('WOW-товары');
+                $labelFilter->getIsInList(true);
+            }
+
+            // создаем фильтр "Товар за три дня"
+            $option = new \Model\Product\Filter\Option\Entity();
+            $option->setId(1);
+            $option->setToken('instore');
+            $option->setName('Товар за три дня');
+            $labelFilter->unshiftOption($option);
+
+            // добавляем фильтр в массив фильтров
+            if (null !== $labelFilterKey) {
+                $filters[$labelFilterKey] = $labelFilter;
+            } else {
+                array_unshift($filters, $labelFilter);
             }
         }
 
