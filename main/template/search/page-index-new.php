@@ -45,16 +45,6 @@
 
     <div id="_searchKiss" style="display: none" data-search="<?= $helper->json(['query' => $searchQuery, 'url' => \App::request()->headers->get('referer'), 'count' => $productCount]) ?>"></div>
 
-    <? if (false): ?>
-    <div class="bSearchCategoryRoot">
-        <?= $helper->render('search/__category', [
-            'searchQuery'      => $searchQuery,
-            'categories'       => $categories,
-            'selectedCategory' => $selectedCategory,
-        ]) // категории товаров ?>
-    </div>
-    <? endif ?>
-
     <?= $helper->render('search/__filter', [
         'baseUrl'          => $helper->url('search', ['q' => $searchQuery]),
         'countUrl'         => null,
