@@ -33,14 +33,14 @@
 
 			var i, self = this;
 
-            // Уникальность продуктов в этом типе доставки
-            //self.isUnique = isUnique || false;
-            self.isUnique = window.OrderModel.orderDictionary.isUniqueDeliveryState(state);
+			// Уникальность продуктов в этом типе доставки
+			//self.isUnique = isUnique || false;
+			self.isUnique = window.OrderModel.orderDictionary.isUniqueDeliveryState(state);
 			// Токен блока
 			self.token = state+'_'+choosenPointForBox;
-            /*if (self.isUnique) {
-                self.token += self.addUniqueSuffix();
-            }*/
+			/*if (self.isUnique) {
+				self.token += self.addUniqueSuffix();
+			}*/
 
 			// Продукты в блоке
 			self.products = [];
@@ -50,6 +50,7 @@
 			self.state = state;
 			// Название метода доставки
 			self.deliveryName = window.OrderModel.orderDictionary.getNameOfState(state);
+			
 			// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
 			self.deliveryPrice = Number.POSITIVE_INFINITY;
 
@@ -72,8 +73,13 @@
 			// Массив всех точек доставок
 			self.pointList = [];
 
-            // Название пункта — магазина, постамата или тп
-            self.point_name = '';
+			// Название пункта — магазина, постамата или тп
+			self.point_name = '';
+
+
+			// Текст на кнопки смены точки доставки
+			self.changePointButtonText = window.OrderModel.orderDictionary.getChangeButtonText(state);
+
 
 			if ( self.hasPointDelivery && !window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
 				// Доставка в выбранный пункт
@@ -107,14 +113,14 @@
 				return;
 			}
 
-            if ( 'pickpoint' === state ) {
-                // Получим и сохраним в названии пункта название выбранного пикпойнта:
-                for ( i = self.pointList.length - 1; i >= 0; i-- ) {
-                    if ( choosenPointForBox == self.pointList[i].id ) {
-                        self.point_name = self.pointList[i].point_name;
-                    }
-                }
-            }
+			if ( 'pickpoint' === state ) {
+				// Получим и сохраним в названии пункта название выбранного пикпойнта:
+				for ( i = self.pointList.length - 1; i >= 0; i-- ) {
+					if ( choosenPointForBox == self.pointList[i].id ) {
+						self.point_name = self.pointList[i].point_name;
+					}
+				}
+			}
 
 			window.OrderModel.deliveryBoxes.push(self);
 		}
@@ -200,9 +206,9 @@
 			}
 			else {
 
-                if (self.isUnique) {
-                    newToken += self.addUniqueSuffix();
-                }
+				if (self.isUnique) {
+					newToken += self.addUniqueSuffix();
+				}
 				console.info('удаляем старый блок');
 				console.log('старый токен '+self.token);
 				console.log('новый токен '+newToken);
@@ -531,7 +537,7 @@
 
 				tempProduct = self.products.pop();
 				tempProductArray.push(tempProduct);
-                newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();;
+				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();;
 				console.log('новый токен '+newToken);
 				console.log(self);
 
@@ -904,9 +910,16 @@
 		 * @param	{String}	state	Метод доставки
 		 */
 		OrderDictionary.prototype.getAllPointsByState = function( state ) {
-			var pointName = this.pointsByDelivery[state],
+			var pointName = this.pointsByDelivery[state].token,
                 ret = this.orderData[pointName] || false;
 			return ret;
+		};
+
+
+		OrderDictionary.prototype.getChangeButtonText = function( state ) {
+			var text = ( this.pointsByDelivery[state] ) ? this.pointsByDelivery[state].changeName : 'Сменить';
+			
+			return text;
 		};
 
 

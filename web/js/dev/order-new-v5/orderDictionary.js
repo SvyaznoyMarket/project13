@@ -151,9 +151,16 @@
 		 * @param	{String}	state	Метод доставки
 		 */
 		OrderDictionary.prototype.getAllPointsByState = function( state ) {
-			var pointName = this.pointsByDelivery[state],
+			var pointName = this.pointsByDelivery[state].token,
                 ret = this.orderData[pointName] || false;
 			return ret;
+		};
+
+
+		OrderDictionary.prototype.getChangeButtonText = function( state ) {
+			var text = ( this.pointsByDelivery[state] ) ? this.pointsByDelivery[state].changeName : 'Сменить';
+			
+			return text;
 		};
 
 

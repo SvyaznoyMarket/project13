@@ -82,7 +82,7 @@ foreach (array_reverse($productsById) as $product) {
 
 					<!-- кнопка сменить магазин -->
 					<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery && box.pointList.length > 1,
-												text: 'Сменить магазин',
+												text: box.changePointButtonText,
 												click: box.changePoint">
 					</a>
 					<!-- /кнопка сменить магазин -->
