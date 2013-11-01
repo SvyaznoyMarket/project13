@@ -27,8 +27,7 @@
     </div>
 </div> -->
 
-<!-- ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАТАЛОГА -->
-
+<!-- фиксированный вспомогательный блок для каталога -->
 <div class="fixedTopBar">
     <div class="fixedTopBar__up">
         <a class="fixedTopBar__upLink" href="">
@@ -59,11 +58,11 @@
         <span class="transGrad"></span>
     </div>
 </div>
+<!--/ Фиксированный вспомогательный блок для каталога -->
 
-<!--/ ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАТАЛОГА -->
-
-<!-- ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАРТОЧКИ ТОВАРА -->
-<? /*<div class="fixedTopBar mProdCard">
+<? /*
+<!-- фиксированный вспомогательный блок для карточки товара -->
+<div class="fixedTopBar mProdCard">
     <div class="fixedTopBar__crumbs">
         <div class="fixedTopBar__crumbsImg"><img class="crumbsImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></div>
 
@@ -105,8 +104,8 @@
         <span class="transGrad"></span>
     </div>
 </div>
+<!--/ Фиксированный вспомогательный блок для карточки товара -->
 */?>
-<!--/ ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК ДЛЯ КАРТОЧКИ ТОВАРА -->
 
 <script type="text/html" id="blackbox_basketshow_tmpl">
     <div class="bBlackBox__eFlyboxInner">

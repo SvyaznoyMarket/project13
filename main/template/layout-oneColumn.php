@@ -49,15 +49,15 @@
 
         <header class="header">
             <?= $page->slotHeader() ?>
-        </header><!--/шапка-->
+        </header><!--/ Шапка-->
 
         <div class="content clearfix">
             <?= $page->slotContentHead() ?>
 
             <?= $page->slotContent() ?>
-        </div><!--/контент-->
+        </div><!--/ Контент-->
 
-    </div><!--/шаблон -->
+    </div><!--/ Шаблон -->
 
     <footer class="footer">
         <div class="footer__inner clearfix">
@@ -132,7 +132,7 @@
         })(document, window);
         </script>
         <!-- /krible.ru Teleportator end -->
-    </footer><!--/подвал-->
+    </footer><!--/ Подвал-->
 
     <?= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>

@@ -42,7 +42,7 @@
     <div class="wrapper">
         <header class="header">
             <?= $page->slotHeader() ?>
-        </header><!--/шапка-->
+        </header><!--/ Шапка-->
 
         <div class="content mContentOrder clearfix">
             <?= $page->slotContentHead() ?>
@@ -58,12 +58,12 @@
             </div>
             
             <?= $page->slotSeoContent() ?>
-        </div><!--/контент -->
-    </div><!--/шаблон -->
+        </div><!--/ Контент -->
+    </div><!--/ Шаблон -->
 
 
     <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
-    <?//= $page->slotUserbar() ?>
+    <?= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
 
     <?= $page->slotRegionSelection() ?>

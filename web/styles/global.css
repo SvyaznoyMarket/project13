@@ -545,7 +545,7 @@ table {
    * Контентная часть
    */
   .content {
-    padding: 0 0 195px;
+    padding: 0 0 197px;
   }
   .content.mContentOrder {
     padding-bottom: 390px;
@@ -612,8 +612,8 @@ table {
   */
   .footer {
     width: 960px;
-    margin: -195px auto 0;
-    height: 195px;
+    margin: -197px auto 0;
+    height: 197px;
     position: relative;
   }
   .footer__inner {

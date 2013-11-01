@@ -41,8 +41,8 @@
     <div class="wrapper">
         <div class="content mContentOrder clearfix">
             <?= $page->slotContent() ?>
-        </div><!--/контент -->
-    </div><!--/шаблон -->
+        </div><!--/ Контент -->
+    </div><!--/ Шаблон -->
 
     <?= $page->render('order/_footer') ?>
     <?= $page->slotSurveybar() ?>

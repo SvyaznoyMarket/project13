@@ -62,8 +62,8 @@
 <div class="wrapper">
     <div class="content mContentOrder clearfix">
         <?= $page->slotContent() ?>
-    </div><!--/контент -->
-</div><!--/шаблон -->
+    </div><!--/ Контент -->
+</div><!--/ Шаблон -->
 
 <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 

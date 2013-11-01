@@ -49,7 +49,7 @@
         <div class="adfoxWrapper" id="adfox980"></div>
         <? endif ?>
 
-        <?= $page->slotHeader() ?><!--/ шапка -->
+        <?= $page->slotHeader() ?><!--/ Шапка -->
 
         <?= $page->slotContentHead() ?>
 
@@ -63,21 +63,21 @@
             </div>
         </div>
         <?= $page->slotSurveybar() ?>
-    </div><!--/контент -->
-</div><!--/шаблон -->
+    </div><!--/ Контент -->
+</div><!--/ Шаблон -->
 
 <div class="footer__main">
     <?= $page->slotFooter() ?>
-</div><!--/подвал -->
+</div><!--/ Подвал -->
 
-<?//= $page->slotRegionSelection() ?>
-<?//= $page->slotAuth() ?>
-<?//= $page->slotYandexMetrika() ?>
+<?= $page->slotRegionSelection() ?>
+<?= $page->slotAuth() ?>
+<?= $page->slotYandexMetrika() ?>
 <?= $page->slotBodyJavascript() ?>
-<?//= $page->slotInnerJavascript() ?>
-<?//= $page->slotMyThings() ?>
-<?//= $page->slotAdriver() ?>
-<?//= $page->slotPartnerCounter() ?>
+<?= $page->slotInnerJavascript() ?>
+<?= $page->slotMyThings() ?>
+<?= $page->slotAdriver() ?>
+<?= $page->slotPartnerCounter() ?>
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="yandexMetrika" class="jsanalytics"></div>
