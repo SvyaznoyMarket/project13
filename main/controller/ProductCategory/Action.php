@@ -381,6 +381,41 @@ class Action {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
+        // TODO SITE-2403 Вернуть фильтр instore
+        if ($category->getIsFurniture() && 14974 === $user->getRegion()->getId()) {
+            $labelFilter = null;
+            $labelFilterKey = null;
+            foreach ($filters as $key => $filter) {
+                if ('label' === $filter->getId()) {
+                    $labelFilter = $filter;
+                    $labelFilterKey = $key;
+                }
+            }
+
+            // если нету блока фильтров "WOW-товары", то создаем
+            if (null === $labelFilter) {
+                $labelFilter = new \Model\Product\Filter\Entity();
+                $labelFilter->setId('label');
+                $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+                $labelFilter->setName('WOW-товары');
+                $labelFilter->getIsInList(true);
+            }
+
+            // создаем фильтр "Товар за три дня"
+            $option = new \Model\Product\Filter\Option\Entity();
+            $option->setId(1);
+            $option->setToken('instore');
+            $option->setName('Товар за три дня');
+            $labelFilter->unshiftOption($option);
+
+            // добавляем фильтр в массив фильтров
+            if (null !== $labelFilterKey) {
+                $filters[$labelFilterKey] = $labelFilter;
+            } else {
+                array_unshift($filters, $labelFilter);
+            }
+        }
+
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
@@ -656,8 +691,22 @@ class Action {
             $page->setGlobalParam('allCount', $pagerAll->count());
         }
 
+        $filters = $productFilter->dump();
+        // TODO Костыль для таска: SITE-2403 Вернуть фильтр instore
+        if (self::inStore()) {
+            foreach ($filters as $filterKey => $filter) {
+                if ('label' === $filter[0]) {
+                    foreach ($filter[2] as $labelFilterKey => $labelFilter) {
+                        if (1 === $labelFilter) {
+                            unset($filters[$filterKey][2][$labelFilterKey]);
+                        }
+                    }
+                }
+            }
+        }
+
         $productPager = $repository->getIteratorByFilter(
-            $productFilter->dump(),
+            $filters,
             $sort,
             ($pageNum - 1) * $limit,
             1 === $pageNum ? $limit-1 : $limit
@@ -802,6 +851,7 @@ class Action {
         }
         if ($inStore) {
             $values['instore'] = 1;
+            $values['label'][] = 1; // TODO SITE-2403 Вернуть фильтр instore
         }
         if ($brand) {
             $values['brand'] = [
