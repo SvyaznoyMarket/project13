@@ -804,13 +804,23 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 		var Model = $('.jsOrder1click').data('model'),
 			inputUrl = $('.jsOrder1click').attr('link-input'),
 			outputUrl = $('.jsOrder1click').attr('link-output'),
-            subscribeWrapper = $('.bSubscibeWrapper');
+            subscribeWrapper = $('.bSubscibeWrapper'),
+            subscibeCheckboxEnabled;
 		//end of vars
 
         $('body').on('userLogged', function( event, userInfo ) {
-            if ( userInfo && userInfo.isSubscribed ) {
-                // Если юзер уже подписан, не нужно отображать чекбокс с предложением подписаться
+            /**
+             * Email-Подписка
+             * Если юзер уже подписан, не нужно отображать чекбокс с предложением подписаться
+             */
+            if ( userInfo && (false === userInfo.isSubscribed) ) {
+                subscribeWrapper.show();
+                subscibeCheckboxEnabled = true;
+                console.log('НЕ скрываем, даже показываем блок подписки.');
+            } else {
                 subscribeWrapper.hide();
+                subscibeCheckboxEnabled = false;
+                console.log('Скрываем блок подписки, т.к. юзер уже подписан либо незарегистрирован.');
             }
         });
 		
@@ -954,36 +964,48 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 				_kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
 			}
 
-			var handleSubscibeWrapper = function() {
-					var value = $('#recipientEmail').val();
-					var checkbox = $('input[type="checkbox"][name="subscribe"]');
-					var bSubscibeWrapper = $('#recipientEmail').siblings('.bSubscibeWrapper');
-					if ( !value && $('#recipientEmail').siblings('.mEmpty').length ) {
-						$('#recipientEmail').siblings('.mEmpty').hide();
+			var handleSubscibeWrapper = function () {
+				var value = $('#recipientEmail').val(),
+					checkbox = $('input[type="checkbox"][name="subscribe"]'),
+					bSubscibeWrapper = $('#recipientEmail').siblings('.bSubscibeWrapper'),
+					bSubscibe = $('.bSubscibe'),
+					recipientEmail = $('#recipientEmail');
+				if ( !value && $('#recipientEmail').siblings('.mEmpty').length ) {
+					recipientEmail.siblings('.mEmpty').hide();
+				}
+				if ( value && value.isEmail() && bSubscibeWrapper.hasClass('hf') ) {
+					bSubscibeWrapper.removeClass('hf');
+
+					// Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
+					if ( subscibeCheckboxEnabled ) {
+						checkbox.attr('disabled', '');
+						checkbox.attr('checked', 'checked')
+						checkbox.val(1)
+						bSubscibe.addClass('checked');
 					}
-					if ( value && value.isEmail() && bSubscibeWrapper.hasClass('hf') ) {
-							bSubscibeWrapper.removeClass('hf');
-							checkbox.attr('disabled','');
-							checkbox.attr('checked','checked')
-							checkbox.val(1)
-							$('.bSubscibe').addClass('checked');
-							$('#recipientEmail').siblings('.mEmpty').hide();
-					} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf') ) {
-							bSubscibeWrapper.addClass('hf');
-							checkbox.attr('disabled','disabled');
-							checkbox.attr('checked','')
-							checkbox.val(0)
-							$('.bSubscibe').removeClass('checked');
-							if ( $('#recipientEmail').val() ) {
-								$('#recipientEmail').siblings('.mEmpty').show();
-							}
+
+					recipientEmail.siblings('.mEmpty').hide();
+				} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf') ) {
+					bSubscibeWrapper.addClass('hf');
+
+					// Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
+					if ( subscibeCheckboxEnabled ) {
+						checkbox.attr('disabled', 'disabled');
+						checkbox.attr('checked', '')
+						checkbox.val(0)
+						bSubscibe.removeClass('checked');
 					}
-			}
+
+					if ( recipientEmail.val() ) {
+						recipientEmail.siblings('.mEmpty').show();
+					}
+				}
+			};
 
 			/**
-			 * Подписка
+			 * Email-Подписка
 			 */
-			$('body').on('keyup ready', '#recipientEmail', function() {
+			$('body').on('keyup ready', '#recipientEmail', function () {
 				handleSubscibeWrapper();
 			});
 
