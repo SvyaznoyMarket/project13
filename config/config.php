@@ -80,9 +80,9 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 3;
+$c->wordpress['timeout'] = 1.8;
 $c->wordpress['throwException'] = true;
-$c->wordpress['retryCount'] = 4;
+$c->wordpress['retryCount'] = 2;
 $c->wordpress['retryTimeout'] = [
     'default' => 0.3,
     'tiny'    => 0.1,

@@ -45,7 +45,7 @@ $c->reviewsStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->wordpress['timeout']        *= 3;
+$c->wordpress['timeout']        *= 6;
 $c->wordpress['throwException'] = false;
 
 $c->dataStore['timeout'] *= 3;
