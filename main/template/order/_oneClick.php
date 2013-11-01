@@ -7,6 +7,18 @@
  * @var $orderProduct       \Model\Order\Product\Entity
  * @var $product            \Model\Product\Entity
  */
+
+$categoryName = false;
+
+if ($orderProduct && $product){
+    $categories = $product->getCategory();
+    /** @var $rootCategory \Model\Product\Category\Entity */
+    $rootCategory = array_shift($categories);
+    /** @var $category \Model\Product\Category\Entity */
+    $category = array_pop($categories);
+    $categoryName = $rootCategory ? ($rootCategory->getName() . ($category ? (' - ' . $category->getName()) : '')) : '';
+}
+
 ?>
 
 <div style="width: 900px;">
@@ -25,17 +37,17 @@
         <div id="adblenderOrder" data-vars="<?= $page->json($orderData) ?>" class="jsanalytics"></div>
         <!-- Efficient Frontiers -->
         <img src="http://pixel.everesttech.net/3252/t?ev_Orders=0&amp;ev_Revenue=0&amp;ev_Quickorders=1&amp;ev_Quickrevenue=<?= $order->getSum() ?>&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
-        <img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/> 
-    <? endif ?>
+        <img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/>
 
-
-    <script type="text/javascript">
-        function runAnalitics() {
-            console.log('** runAnalitics');
+        <script type="text/javascript">
+        <?/* Помещаем метод расширенной Аналитики в объект OC_MVM одноклика */?>
+        OC_MVM.AnaliticsCompleteExtra = function AnaliticsCompleteExtra()
+        {
+            console.log('% Oneclick. Complete. # Begin of AnaliticsCompleteExtra');
             <? if (\App::config()->googleAnalytics['enabled']): ?>
 
             if (typeof(_gaq) !== 'undefined') {
-                console.log('_oneClick order complete');
+                console.log('% Oneclick. Complete. GA _addTrans'):
                 _gaq.push(['_addTrans',
                     '<?= $order->getNumber() . '_F' ?>', // Номер заказа
                     '<?= $shop ? $page->escape($shop->getName()) : '' ?>', // Название магазина (Необязательно)
@@ -45,18 +57,9 @@
                     '', // Область (необязательно)
                     '' // Страна (нобязательно)
                 ]);
-                _gaq.push(['_trackEvent', 'QuickOrder', 'Success']);
 
-                <? if ($orderProduct && $product): ?>
-                <?
-                    $categories = $product->getCategory();
-                    /** @var $rootCategory \Model\Product\Category\Entity */
-                    $rootCategory = array_shift($categories);
-                    /** @var $category \Model\Product\Category\Entity */
-                    $category = array_pop($categories);
-                    $categoryName = $rootCategory ? ($rootCategory->getName() . ($category ? (' - ' . $category->getName()) : '')) : '';
-                ?>
-                console.log('_oneClick order _addItem');
+                <? if ($categoryName): ?>
+                console.log('% Oneclick. Complete. GA _addItem'):
                 _gaq.push(['_addItem',
                     '<?= $order->getNumber() . '_F' ?>', // Номер заказа
                     '<?= $product->getArticle() ?>', // Артикул
@@ -66,8 +69,6 @@
                     '<?= str_replace(',', '.', $orderProduct->getQuantity()) ?>'               // Количество товара
                 ]);
                 <? endif ?>
-
-                _gaq.push(['_trackTrans']);
             }
             <? endif ?>
 
@@ -93,12 +94,13 @@
 
             <? if (\App::config()->analytics['enabled']): ?>
             if (typeof(window.adBelnder) != 'undefined') window.adBelnder.addOrder(<?= str_replace(',', '.', $order->getSum()) ?>);
-
             <? endif ?>
-        }
-    </script>
 
-    <!-- <div class="line"></div> -->
+            console.log('% Oneclick. Complete. # End of AnaliticsCompleteExtra');
+        }
+        </script>
+    <? endif ?>
+    <? /* <!-- <div class="line"></div> --> */ ?>
 
     <div class="bFormB2">
         <div class="ac mb25">

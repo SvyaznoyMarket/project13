@@ -502,9 +502,9 @@ $(document).ready(function() {
 				}
 				postData['subscribe'] = $('#order1click-container-new .bSubscibe input[name="subscribe"]').val();
 
-	      if ( typeof(window.KM) !== 'undefined' ) {
+				if ( typeof(window.KM) !== 'undefined' ) {
 					postData['kiss_session'] = window.KM.i;
-	      }
+				}
 
 				$.ajax( {
 					type: 'POST',
@@ -518,60 +518,8 @@ $(document).ready(function() {
 							return;
 						}
 
-                        if ( typeof(Flocktory) !== 'undefined' )  {
-                            toFLK_order = {
-                                "order_id": data.data.orderNumber,
-                                "price": self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
-                                "items": [{
-                                    "id": self.shortcut,
-                                    "title": self.title,
-                                    "price":  self.price,
-                                    "image": self.icon,
-                                    "count":  self.quantity()
-                                }]
-                            };
-                            Flocktory.popup_opder(toFLK_order);
-                        }
-						
-						// ANALITICS
-						var phoneNumber = '8' + $('#phonemask').val().replace(/\D/g, "");
-						var toKISS_order = {
-							'Checkout Complete Order ID':data.data.orderNumber, 
-							'Checkout Complete SKU Quantity':self.quantity(),
-							'Checkout Complete SKU Total':self.price * self.quantity() * 1,
-							'Checkout Complete Delivery Total':self.chosenDlvr().price * 1,
-							'Checkout Complete Order Total':self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
-							'Checkout Complete Order Type':'one click order',
-							'Checkout Complete Delivery':self.chosenDlvr().type
-						};
-
-						if ((typeof(_kmq) !== 'undefined') && (KM !== 'undefined')) {
-							_kmq.push(['alias', phoneNumber, KM.i()]);
-							_kmq.push(['identify', phoneNumber]);
-							_kmq.push(['record', 'Checkout Complete', toKISS_order]);
-							var toKISS_pr = {
-								'Checkout Complete SKU':data.data.productArticle,  
-								'Checkout Complete SKU Quantity':self.quantity() * 1,
-								'Checkout Complete SKU Price':self.price * 1,
-								'Checkout Complete Parent category':data.data.productCategory[0].name,
-								'Checkout Complete Category name':data.data.productCategory[data.data.productCategory.length-1].name,
-								'_t':KM.ts() +  1  ,
-								'_d':1
-							};
-
-							_kmq.push(['set', toKISS_pr]);
-						}
-
-                        if( typeof(_gaq) !== 'undefined' ) { ///GoogleAnalytics OQuickOrder Success
-                            console.log('% Oneclick-order is complete! Setting GA code: /thanks_form');
-                            _gaq.push(['_trackEvent', 'QuickOrder', 'Success', '']);
-                            _gaq.push(['_trackPageview','/thanks_form' ]);
-                        }
-
-						if( typeof(runAnalitics) !== 'undefined' ){
-							runAnalitics();
-						}
-						ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
+						// Запускаем скрипты Аналитики для завершенного заказа в 1клик
+						OC_MVM.AnalyticsComplete(data.data);
 
 						// console.log(data)
 						//process
@@ -580,6 +528,14 @@ $(document).ready(function() {
 						$('.p0').removeClass('p0');
 						//$('.top0').removeClass('top0');
 						// $('.jsOrder1click').remove();
+
+						if( typeof(OC_MVM.AnaliticsCompleteExtra) !== 'undefined' ){
+							/**
+							 * Запускаем расшириную Аналитику () для завершенного заказа в 1клик
+							 * !!! Должно исполняться после выполнения $.append(), т.к. только тогда появиться AnaliticsCompleteExtra
+							 */
+							OC_MVM.AnaliticsCompleteExtra();
+						}
 					},
 					error: function( jqXHR, textStatus ) {
 						self.formStatus('typing');
@@ -587,6 +543,120 @@ $(document).ready(function() {
 					}
 				});
 			};
+
+
+		self.AnalyticsFormOpen = function() {
+			console.log('% Oneclick. Form is open! ### Begin of AnalyticsFormOpen.');
+
+			var toKISS_oc = { // KISS
+				'Checkout Step 1 SKU Quantity': self.quantity(),
+				'Checkout Step 1 SKU Total': self.price * self.quantity(),
+				'Checkout Step 1 Order Total': self.price * self.quantity() + self.chosenDlvr().price * 1,
+				'Checkout Step 1 Order Type': 'one click order'
+			}
+
+			if ( typeof(yaCounter10503055) !== 'undefined' ) {
+				console.log('% Oneclick. Run yaCounter10503055');
+				yaCounter10503055.reachGoal('\orders\complete');
+			}
+
+			if ( typeof(_gaq) !== 'undefined' ) {
+				console.log('% Oneclick. Setting GA code: /order_form');
+				_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);
+				_gaq.push(['_trackPageview', '/order_form']);
+			}
+
+			if ( 'ANALYTICS' in window ) {
+				console.log('% Oneclick. Run marketgidOrder from ANALYTICS');
+				ANALYTICS.runMethod('marketgidOrder');
+			}
+
+			if ( typeof(_kmq) !== 'undefined' ) {
+				console.log('% Oneclick. Setting toKISS_oc code');
+				//console.log(toKISS_oc);
+				_kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
+			}
+
+			console.log('% Oneclick. ### End of AnalyticsFormOpen');
+		};
+
+
+
+		self.AnalyticsComplete = function AnalyticsComplete( data ) {
+			console.log('% Oneclick. Order is complete! ### Begin of AnalyticsComplete.');
+			var phonemask = $('#phonemask'),
+				phoneNumber = ( phonemask && phonemask.val() ) ? ( '8' + phonemask.val().replace(/\D/g, "") ) : null,
+				toKISS_data,
+				toFLK_order
+				; // end of vars
+
+			/**
+			 * Flocktory (No Analytics=) )
+			 */
+			if ( typeof(Flocktory) !== 'undefined' )  {
+				toFLK_order = {
+					"order_id": data.orderNumber,
+					"price": self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
+					"items": [{
+						"id": self.shortcut,
+						"title": self.title,
+						"price":  self.price,
+						"image": self.icon,
+						"count":  self.quantity()
+					}]
+				};
+				Flocktory.popup_opder(toFLK_order); /// ????!
+			}
+
+
+			/**
+			 * KISS Analytics
+			 */
+			if ((typeof(_kmq) !== 'undefined') && (KM !== 'undefined')) {
+				console.log('phoneNumber');
+				console.log(phoneNumber);
+				_kmq.push(['alias', phoneNumber, KM.i()]);
+				_kmq.push(['identify', phoneNumber]);
+
+				toKISS_data = {
+					'Checkout Complete Order ID':data.orderNumber,
+					'Checkout Complete SKU Quantity':self.quantity(),
+					'Checkout Complete SKU Total':self.price * self.quantity() * 1,
+					'Checkout Complete Delivery Total':self.chosenDlvr().price * 1,
+					'Checkout Complete Order Total':self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
+					'Checkout Complete Order Type':'one click order',
+					'Checkout Complete Delivery':self.chosenDlvr().type
+				};
+				_kmq.push(['record', 'Checkout Complete', toKISS_data]);
+
+				toKISS_data = {
+					'Checkout Complete SKU':data.productArticle,
+					'Checkout Complete SKU Quantity':self.quantity() * 1,
+					'Checkout Complete SKU Price':self.price * 1,
+					'Checkout Complete Parent category':data.productCategory[0].name,
+					'Checkout Complete Category name':data.productCategory[data.productCategory.length-1].name,
+					'_t':KM.ts() +  1  ,
+					'_d':1
+				};
+				_kmq.push(['set', toKISS_data]);
+			}
+
+
+			/**
+			 * GoogleAnalytics OQuickOrder Success
+			 */
+			if( typeof(_gaq) !== 'undefined' ) {
+				console.log('% Oneclick. Setting GA code: /thanks_form');
+				//_gaq.push(['_trackEvent', 'QuickOrder', 'Success', '']);
+				_gaq.push(['_trackEvent', 'QuickOrder', 'Success']);
+				_gaq.push(['_trackPageview','/thanks_form' ]);
+				_gaq.push(['_trackTrans']);
+			}
+
+			ANALYTICS.parseAllAnalDivs( $('.jsanalytics') ); // Вероятнее всего, это не нужно, т.к. parseAllAnalDivs не обработает диви, добавленные аджаксом
+
+			console.log('% Oneclick. ### End of AnalyticsComplete.');
+		};
 			
 	} // OCMVM
 	
@@ -931,60 +1001,33 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 				return false;
 			}
 
-            var handleSubscibeWrapper = function () {
-                    var value = $('#recipientEmail').val();
-                    var checkbox = $('input[type="checkbox"][name="subscribe"]');
-                    var bSubscibeWrapper = $('#recipientEmail').siblings('.bSubscibeWrapper');
-                    if (!value && $('#recipientEmail').siblings('.mEmpty').length) {
-                        $('#recipientEmail').siblings('.mEmpty').hide();
-                    }
-                    if (value && value.isEmail() && bSubscibeWrapper.hasClass('hf')) {
-                        bSubscibeWrapper.removeClass('hf');
-                        checkbox.attr('disabled', '');
-                        checkbox.attr('checked', 'checked')
-                        checkbox.val(1)
-                        $('.bSubscibe').addClass('checked');
-                        $('#recipientEmail').siblings('.mEmpty').hide();
-                    } else if (( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf')) {
-                        bSubscibeWrapper.addClass('hf');
-                        checkbox.attr('disabled', 'disabled');
-                        checkbox.attr('checked', '')
-                        checkbox.val(0)
-                        $('.bSubscibe').removeClass('checked');
-                        if ($('#recipientEmail').val()) {
-                            $('#recipientEmail').siblings('.mEmpty').show();
-                        }
-                    }
-                },
-                formOpenAnalytics = function formOpenAnalytics() {
-                    var toKISS_oc = { // KISS
-                        'Checkout Step 1 SKU Quantity': OC_MVM.quantity(),
-                        'Checkout Step 1 SKU Total': OC_MVM.price * OC_MVM.quantity(),
-                        'Checkout Step 1 Order Total': OC_MVM.price * OC_MVM.quantity() + OC_MVM.chosenDlvr().price * 1,
-                        'Checkout Step 1 Order Type': 'one click order'
-                    }
+			OC_MVM.AnalyticsFormOpen();
 
-                    if (typeof(yaCounter10503055) !== 'undefined') {
-                        yaCounter10503055.reachGoal('\orders\complete');
-                    }
-
-                    if (typeof(_gaq) !== 'undefined') {
-                        console.log('% Oneclick-form is open! Setting GA code: /order_form');
-                        _gaq.push(['_trackEvent', 'QuickOrder', 'Open']);
-                        _gaq.push(['_trackPageview', '/order_form']);
-                    }
-
-                    if ('ANALYTICS' in window) {
-                        ANALYTICS.runMethod('marketgidOrder');
-                    }
-
-                    if (typeof(_kmq) !== 'undefined') {
-                        _kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
-                    }
-                }
-                ;
-
-            formOpenAnalytics();
+			var handleSubscibeWrapper = function() {
+					var value = $('#recipientEmail').val();
+					var checkbox = $('input[type="checkbox"][name="subscribe"]');
+					var bSubscibeWrapper = $('#recipientEmail').siblings('.bSubscibeWrapper');
+					if ( !value && $('#recipientEmail').siblings('.mEmpty').length ) {
+						$('#recipientEmail').siblings('.mEmpty').hide();
+					}
+					if ( value && value.isEmail() && bSubscibeWrapper.hasClass('hf') ) {
+							bSubscibeWrapper.removeClass('hf');
+							checkbox.attr('disabled','');
+							checkbox.attr('checked','checked')
+							checkbox.val(1)
+							$('.bSubscibe').addClass('checked');
+							$('#recipientEmail').siblings('.mEmpty').hide();
+					} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf') ) {
+							bSubscibeWrapper.addClass('hf');
+							checkbox.attr('disabled','disabled');
+							checkbox.attr('checked','')
+							checkbox.val(0)
+							$('.bSubscibe').removeClass('checked');
+							if ( $('#recipientEmail').val() ) {
+								$('#recipientEmail').siblings('.mEmpty').show();
+							}
+					}
+			}
 
 			/**
 			 * Подписка
