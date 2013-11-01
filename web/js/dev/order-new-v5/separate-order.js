@@ -217,6 +217,65 @@
 		}
 	};
 
+	ko.bindingHandlers.payBlockVisible = {
+		update: function( element ) {
+			var node = $(element),
+				vars = node.data('vars'),
+				toHide = (vars && vars.toHide) ? vars.toHide : false,
+				choosenDeliveryTypeId = global.OrderModel.choosenDeliveryTypeId,
+				deliveryBoxes = global.OrderModel.deliveryBoxes(),
+				dCount = deliveryBoxes.length,
+				testDeliveryId,
+				testPaymentId,
+				nodeHidded = 1
+				;
+
+			if ( !dCount ) {
+				return;
+			}
+
+			/*
+			 * Cтарый механизм показа/сокрытия блоков
+			 * показываем "кредиты" и "оплату сейчас", если кол-во блоков доставки == 1
+			 */
+			if ( 1 == dCount ) {
+				nodeHidded = 0;
+				console.log('Кол-во deliveryBoxes == 1: Показываем payBlock');
+			}
+			else {
+				nodeHidded = 1;
+				console.log('Кол-во deliveryBoxes > 1: Скрываем payBlock');
+			}
+
+			/**
+			 * Если указано toHide в дата-аттрибуте, то скрываем блоки с недоступными методами
+			 */
+			if ( toHide ) {
+
+				for ( testDeliveryId in toHide ) {
+					if ( undefined === toHide[testDeliveryId].length ) {		// !не массив, скрываем для всех
+						if ( $.inArray(choosenDeliveryTypeId, toHide) >= 0 ) {
+							nodeHidded = 1;
+							console.log('toHide NoArr: Скрываем payBlock');
+						}
+					}
+					else if ( choosenDeliveryTypeId == testDeliveryId ) { 		// !массив, обходим блоки оплаты
+						for ( testPaymentId in toHide[testDeliveryId] ) {
+							if ( testPaymentId == vars.typeId ) {
+								nodeHidded = 1;
+								console.log('toHide Arr: Скрываем payBlock');
+							}
+						}// end of second for
+					}
+				}// end of first for
+
+			}
+
+			nodeHidded ? node.hide() : node.show(); // показываем либо скрываем элемент
+		}
+	};
+
+
 	/**
 	 * Кастомный бинд отображения методов оплаты
 	 */
@@ -418,6 +477,8 @@
 		 * Общая сумма заказа
 		 */
 		totalSum: ko.observable(0),
+
+		totalSum2: ko.observable(0),
 
 		/**
 		 * Есть ли примененные купоны
