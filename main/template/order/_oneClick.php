@@ -43,6 +43,7 @@ if ($orderProduct && $product){
         <!-- Efficient Frontiers -->
         <img src="http://pixel.everesttech.net/3252/t?ev_Orders=0&amp;ev_Revenue=0&amp;ev_Quickorders=1&amp;ev_Quickrevenue=<?= $order->getSum() ?>&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
         <img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/>
+        <div id="adBelnderJS" data-vars="<?= $page->json( $orderSum ) ?>"></div>
         <? /* adriverOrder: */ ?>
         <noscript>
             <img src="http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=order&bt=55&pz=0&rnd=1086697038&custom=150=<?= $order->getNumber() ?>" border="0" width="1" height="1" alt="" />
@@ -65,7 +66,7 @@ if ($orderProduct && $product){
                 '' // Страна (нобязательно)
             ];
             ?>
-            <div id="GA_addTransJS" class="" data-vars="<?= $page->json( $analyticsData ) ?>"></div>
+            <div id="GA_addTransJS" data-vars="<?= $page->json( $analyticsData ) ?>"></div>
             <?
 
 
@@ -82,7 +83,7 @@ if ($orderProduct && $product){
                     str_replace( ',', '.', $orderProduct->getQuantity() ), // Количество товара
                 ];
                 ?>
-                <div id="GA_addItemJS" class="" data-vars="<?= $page->json( $analyticsData ) ?>"></div>
+                <div id="GA_addItemJS" data-vars="<?= $page->json( $analyticsData ) ?>"></div>
                 <?
             }
 
@@ -108,16 +109,9 @@ if ($orderProduct && $product){
                 ];
             }
             ?>
-            <div id="YA_paramsJS" class="" data-vars="<?= $page->json( $analyticsData ) ?>"></div>
+            <div id="YA_paramsJS" data-vars="<?= $page->json( $analyticsData ) ?>"></div>
             <?
         } // end of If yandexMetrika enabled
-
-
-
-
-        ?>
-        <div id="adBelnderJS" class="" data-vars="<?= $page->json( $orderSum ) ?>"></div>
-        <?
 
 
     }// end of If analytics enabled
