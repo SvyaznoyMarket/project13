@@ -331,11 +331,13 @@ window.ANALYTICS = {
             },
 
             popup_opder : function ( toFLK_order )  {
-                if ( Flocktory.popup_prepare() ) {
-                    toFLK_order.email = Flocktory.mail;
-                    toFLK_order.name = Flocktory.name;
-                    return Flocktory.popup(toFLK_order);
-                }
+				try{
+					if ( Flocktory.popup_prepare() ) {
+						toFLK_order.email = Flocktory.mail;
+						toFLK_order.name = Flocktory.name;
+						return Flocktory.popup(toFLK_order);
+					}
+				}catch(e){};
                 return false;
             },
 

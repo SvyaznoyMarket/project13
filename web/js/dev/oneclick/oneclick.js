@@ -482,7 +482,7 @@ $(document).ready(function() {
 				self.sendData();
 				
 			};
-						
+
 			self.sendData = function() {
 				self.formStatus('sending');
 				$('.bFastInner tbody tr:last').empty();
@@ -512,6 +512,8 @@ $(document).ready(function() {
 					url: outputUrl,
 					data: postData,
 					success: function( data, textStatus ) {
+						var bFast = $('.bFast');
+
 						if( !data.success || textStatus !== 'success' ) {
 							self.formStatus('typing');
 							$('.bFastInner tbody tr:last').append('<td colspan="2" class="red">'+data.message+'</td>');
@@ -523,19 +525,25 @@ $(document).ready(function() {
 
 						// console.log(data)
 						//process
-						$('.bFast').parent().append( data.data.content );
-						$('.bFast').remove();
+						//$('.bFast').parent().append( data.data.content );
+						try{
+							bFast.parent().append( data.data.content );
+						}catch(e){
+							console.log('### jQ append error:');
+							console.log(e);
+						}
+						bFast.remove();
 						$('.p0').removeClass('p0');
 						//$('.top0').removeClass('top0');
 						// $('.jsOrder1click').remove();
 
-						if( typeof(OC_MVM.AnaliticsCompleteExtra) !== 'undefined' ){
-							/**
-							 * Запускаем расшириную Аналитику () для завершенного заказа в 1клик
-							 * !!! Должно исполняться после выполнения $.append(), т.к. только тогда появиться AnaliticsCompleteExtra
-							 */
-							OC_MVM.AnaliticsCompleteExtra();
-						}
+
+						/**
+						 * Запускаем расшириную Аналитику () для завершенного заказа в 1клик
+						 * !!! Должно исполняться после выполнения $.append()
+						 */
+						OC_MVM.AnaliticsCompleteExtra();
+
 					},
 					error: function( jqXHR, textStatus ) {
 						self.formStatus('typing');
@@ -605,7 +613,7 @@ $(document).ready(function() {
 						"count":  self.quantity()
 					}]
 				};
-				Flocktory.popup_opder(toFLK_order); /// ????!
+				Flocktory.popup_opder(toFLK_order);
 			}
 
 
@@ -613,8 +621,8 @@ $(document).ready(function() {
 			 * KISS Analytics
 			 */
 			if ((typeof(_kmq) !== 'undefined') && (KM !== 'undefined')) {
-				console.log('phoneNumber');
-				console.log(phoneNumber);
+				//console.log('phoneNumber');
+				//console.log(phoneNumber);
 				_kmq.push(['alias', phoneNumber, KM.i()]);
 				_kmq.push(['identify', phoneNumber]);
 
@@ -657,15 +665,54 @@ $(document).ready(function() {
 
 			console.log('% Oneclick. ### End of AnalyticsComplete.');
 		};
-			
+
+		/**
+		 * Расширенная аналитика оформления заказа в 1клик
+		 * запускается только после успешного ajax ответа
+		 *
+		 * @constructor
+		 */
+		self.AnaliticsCompleteExtra = function AnaliticsCompleteExtra() {
+			console.log('% Oneclick. Complete. # Begin of AnaliticsCompleteExtra');
+			var analyticsData;
+
+			if ( typeof(_gaq) !== 'undefined' ) {
+				analyticsData = $('#GA_addTransJS').data('vars');
+				if ( analyticsData ) {
+					console.log('% Oneclick. Complete. GA_addTransJS');
+					console.log(analyticsData);
+					_gaq.push(analyticsData);
+				}
+
+				analyticsData = $('#GA_addItemJS').data('vars');
+				if ( analyticsData ) {
+					console.log('% Oneclick. Complete. GA_addItemJS');
+					_gaq.push(analyticsData);
+				}
+			}
+
+			analyticsData = $('#YA_paramsJS').data('vars');
+			if ( analyticsData && typeof(yaCounter10503055) !== 'undefined' ) {
+				console.log('% Oneclick. Complete. YA_paramsJS');
+				yaCounter10503055.reachGoal('QORDER', analyticsData);
+			}
+
+			analyticsData = $('#adBelnderJS').data('vars');
+			if ( analyticsData && typeof(window.adBelnder) != 'undefined' ) {
+				console.log('% Oneclick. Complete. adBelnderJS');
+				window.adBelnder.addOrder(analyticsData);
+			}
+
+			console.log('% Oneclick. Complete. # End of AnaliticsCompleteExtra');
+		};
 	} // OCMVM
-	
+
 	/* StockViewModel */
 	function StockViewModel() {
 
 		var self = this;
 		self.showMap = ko.observable(false);
-		
+
 		self.title     = Model.jstitle;
 		self.price     = Model.jsprice;
 		self.icon      = Model.jssimg;
@@ -674,19 +721,19 @@ $(document).ready(function() {
 		self.today = ko.observable(true);
 		self.todayLabel = ko.observable('Сегодня');
 		self.tomorrowLabel = ko.observable('Завтра');
-		
+
 		self.priceTxt = ko.computed(function() {
 			return printPrice( self.price );
 		}, this);
-		
-		
+
+
 		//dyn
 		self.shops = Deliveries['self'].shops.slice(0);
-		
+
 		self.todayShops = [];
 		self.tomorrowShops = [];
 		self.activeCourier = Deliveries.length > 1;
-		
+
 		parseDateShop = function( numbers, label ) {
 			var out = [];
 levup:			for(var i = 0, l = numbers.length; i < l; i++){
@@ -739,10 +786,10 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 		if( Deliveries['self'].dates.length > 1 ){
 			self.tomorrowH2 += ' <span class="mRt">'+ Deliveries['self'].dates[ 1 ].name +'</span> в '+ self.tomorrowShops.length + ' магазин'+ ending +':';
 		}
-		
-		self.toggleView = function( flag ) {		
+
+		self.toggleView = function( flag ) {
 			self.showMap( flag );
-			
+
 			if( flag ) {
 				if( !self.todayShops.length ) {
 					self.toggleTerm( false );
@@ -753,19 +800,19 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			}
 			return false;
 		};
-		
+
 		self.toggleTerm = function( flag ) {
 			self.today( flag );
 			window.regionMap.hideInfobox();
 			self.showMarkers();
 			return false;
 		};
-		
+
 		self.chooseShop = function( item, today ) {
 			self.selectedS( item );
 			self.today( today );
 		};
-		
+
 		self.chooseShopById = function( shopnum ) {
 			for(var i = 0, l = self.shops.length; i < l; i++) {
 				if( self.shops[i].id == shopnum ) {
@@ -789,7 +836,7 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			var markersPull = {},
 				tmp = self.today() ? self.todayShops : self.tomorrowShops;
 			//end of vars
-			
+
 			for(var i=0, l = tmp.length; i<l; i++) {
 				var key = tmp[i].id + '';
 				markersPull[ key ] = {
@@ -803,7 +850,7 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
 			window.regionMap.showMarkers( markersPull );
 		};
-		
+
 		self.reserveItem = function() {
 			// console.log(tind)
 			// console.log(Deliveries['self'].dates[ tind ])
@@ -867,8 +914,8 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
 	/* One Click Order */
 	if( $('.jsOrder1click').length ) {
-		MapInterface.ready( 'yandex', { 
-			yandex: $('#map-info_window-container-ya'), 
+		MapInterface.ready( 'yandex', {
+			yandex: $('#map-info_window-container-ya'),
 			google: $('#map-info_window-container')
 		});
 
@@ -884,7 +931,7 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
                 subscribeWrapper.hide();
             }
         });
-		
+
 		Deliveries = { // zaglushka
 			'self': {
 				modeId: 4,
@@ -894,9 +941,9 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
 			}
 		};
-		
+
 		var selfAvailable = false;  //'self' in Deliveries
-		
+
 		/* Load Data from Server */
 		oneClickIsReady = false;
 		var postData = {
@@ -918,7 +965,7 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
 		/**
 		 * Обработка данных о списке магазинов с сервера
-		 * 
+		 *
 		 * @param	{Object}	data	Ответ от сервера
 		 */
 		var shopListSuccessHandler = function shopListSuccessHandler( data ) {
@@ -946,7 +993,7 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
 			OC_MVM = new OneCViewModel();
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ); // this way, Lukas!
-			
+
 			if ( selfAvailable ) {
 				var mapCallback = function() {
 					window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL );
@@ -1052,14 +1099,14 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
             e.preventDefault();
         });
-		
+
 	} // One Click Order
 
 	/* Page 'Where to buy?' , Stock Map */
-	
+
 	if( $('#stockBlock').length ) {
-		MapInterface.ready( 'yandex', { 
-			yandex: $('#infowindowforstockYa'), 
+		MapInterface.ready( 'yandex', {
+			yandex: $('#infowindowforstockYa'),
 			google: $('#infowindowforstock')
 		});
 
@@ -1075,7 +1122,7 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 				region_id: Model.jsregionid*1
 			};
 		//end of vars
-		
+
 		$.post( inputUrl, postData, function(data) {
 			if( !data.success ) {
 				//SHOW WARNING, NO MVM
@@ -1112,13 +1159,13 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			if( !selfAvailable ) {
 				//SHOW WARNING, NO SELF DELIVERY
 				$('#noDlvr').show();
-				return false;		
+				return false;
 			}
 
 			if( !(Deliveries['self'].dates.length > 0) ) {
 				//SHOW WARNING, NO TODAY AND TOMORROW DELIVERY
 				$('#noDlvr').show();
-				return false;		
+				return false;
 			}
 
 			if( selfAvailable ) {
@@ -1127,13 +1174,13 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
 			MVM = new StockViewModel();
 			ko.applyBindings( MVM , $('#stockCntr')[0] ); // this way, Lukas!
-			
+
 			OC_MVM = new OneCViewModel();
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ); // this way, Lukas!
 			enableHandlers();
 
 			if( selfAvailable ) {
-				var pickStoreMVM = function ( node ) {	
+				var pickStoreMVM = function ( node ) {
 						var shopnum = $(node).parent().find('.shopnum').text();
 						MVM.chooseShopById( shopnum );
 					},
@@ -1155,4 +1202,4 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			$('#stockBlock').show();
 		});
 	} // Page 'Where to buy?'
-});	
+});
