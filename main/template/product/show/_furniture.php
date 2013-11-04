@@ -40,18 +40,6 @@
         <?= $product->getDescription() ?>
     </div>
 
-    <? if (\App::config()->product['pullRecommendation']): ?>
-        <?= $helper->render('product/__slider', [
-            'type'     => 'alsoViewed',
-            'title'    => 'С этим товаром также смотрят',
-            'products' => [],
-            'count'    => null,
-            'limit'    => \App::config()->product['itemsInSlider'],
-            'page'     => 1,
-            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
-        ]) ?>
-    <? endif ?>
-
     <? if ((bool)$related && \App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
@@ -62,6 +50,18 @@
             'page'           => 1,
             //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
             'additionalData' => $additionalData,
+        ]) ?>
+    <? endif ?>
+
+    <? if (\App::config()->product['pullRecommendation']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'alsoViewed',
+            'title'    => 'С этим товаром также смотрят',
+            'products' => [],
+            'count'    => null,
+            'limit'    => \App::config()->product['itemsInSlider'],
+            'page'     => 1,
+            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
         ]) ?>
     <? endif ?>
 
