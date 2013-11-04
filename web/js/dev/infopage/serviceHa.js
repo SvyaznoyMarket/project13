@@ -100,7 +100,7 @@
 
 	$('#bServicesTable tr th:first').remove();
 
-	if ( serviceData ) {
+	if ( serviceData && serviceData.length ) {
 		prepareData(serviceData);
 		selectRegion.on('change', changeRegion);
 	}

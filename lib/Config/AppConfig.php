@@ -469,6 +469,16 @@ class AppConfig {
         'showListingSearchBar' => null,
     ];
 
+    /**
+     * @name Акция "ПодариЖизнь"
+     * @var array
+     */
+    public $lifeGift = [
+        'enabled'  => null,
+        'regionId' => null,
+        'labelId'  => null,
+    ];
+
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();
         $this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();

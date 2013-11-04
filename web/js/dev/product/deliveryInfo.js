@@ -142,16 +142,17 @@
 		 * @param	{Object}	res	Ответ от сервера
 		 */
 		resFromServer = function resFromServer( res ) {
+			if ( !res.success ) {
+				errorHandler();
+
+				return false;
+			}
+
 			/**
 			 * Полученнный с сервера массив вариантов доставок для текущего товара
 			 * @type	{Array}
 			 */
 			var deliveryInfo = res.product[0].delivery;
-
-			if ( !res.success ) {
-				errorHandler();
-				return false;
-			}
 
 			for ( var i = deliveryInfo.length - 1; i >= 0; i-- ) {
 				switch (deliveryInfo[i].token){

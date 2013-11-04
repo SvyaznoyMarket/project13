@@ -79,10 +79,10 @@ class Action {
             'request'  => $searchQuery,
             'geo_id'   => \App::user()->getRegion()->getId(),
             'start'    => $offset,
-            'limit'    => $limit,
+            'limit'    => 1 === $pageNum ? $limit-1 : $limit,
             'use_mean' => true,
-
         ];
+
         if ($categoryId) {
             $params['product_category_id'] = $categoryId;
         } else {
@@ -212,6 +212,15 @@ class Action {
             \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
         }
 
+        // bannerPlaceholder
+        $bannerPlaceholder = [];
+        \App::dataStoreClient()->addQuery('catalog/global.json', [], function($data) use (&$bannerPlaceholder) {
+            if (isset($data['bannerPlaceholder'])) {
+                $bannerPlaceholder = $data['bannerPlaceholder'];
+            }
+        });
+        \App::dataStoreClient()->execute();
+
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $templating = \App::closureTemplating();
@@ -224,7 +233,8 @@ class Action {
                 'list'           => (new \View\Product\ListAction())->execute(
                     $helper,
                     $productPager,
-                    $productVideosByProduct
+                    $productVideosByProduct,
+                    !empty($bannerPlaceholder) ? $bannerPlaceholder : []
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     $helper,
@@ -266,6 +276,7 @@ class Action {
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setGlobalParam('shops', (\App::config()->shop['enabled'] && !\Controller\ProductCategory\Action::isGlobal()) ? \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()) : []);
         $page->setGlobalParam('shop', $shop);
+        $page->setParam('bannerPlaceholder', $bannerPlaceholder);
 
         return new \Http\Response($page->show());
     }

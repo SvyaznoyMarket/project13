@@ -1,16 +1,17 @@
 <?php
 /**
- * @var $page             \View\Search\IndexPage
- * @var $request          \Http\Request
- * @var $productFilter    \Model\Product\Filter
- * @var $searchQuery      string
- * @var $meanQuery        string
- * @var $forceMean        string
- * @var $productCount     int
- * @var $productPager     \Iterator\EntityPager
- * @var $categories       \Model\Product\Category\Entity[]
- * @var $selectedCategory \Model\Product\Category\Entity
- * @var $productView      string
+ * @var $page               \View\Search\IndexPage
+ * @var $request            \Http\Request
+ * @var $productFilter      \Model\Product\Filter
+ * @var $searchQuery        string
+ * @var $meanQuery          string
+ * @var $forceMean          string
+ * @var $productCount       int
+ * @var $productPager       \Iterator\EntityPager
+ * @var $categories         \Model\Product\Category\Entity[]
+ * @var $selectedCategory   \Model\Product\Category\Entity
+ * @var $productView        string
+ * @var $bannerPlaceholder  array
  **/
 ?>
 
@@ -35,7 +36,7 @@
     ]) ?>
 
     <!--    --><?// if (!$selectedCategory): ?>
-    <div class="bSearchCategoryRoot bFilterValuesItem mLineItem">
+    <div class="bSearchCategoryRoot">
         <?= $helper->render('search/__category', [
             'categories'  => $categoriesFound,
             'searchQuery' => $searchQuery,
@@ -44,16 +45,6 @@
     <!--    --><?// endif ?>
 
     <div id="_searchKiss" style="display: none" data-search="<?= $helper->json(['query' => $searchQuery, 'url' => \App::request()->headers->get('referer'), 'count' => $productCount]) ?>"></div>
-
-    <? if (false): ?>
-    <div class="bSearchCategoryRoot">
-        <?= $helper->render('search/__category', [
-            'searchQuery'      => $searchQuery,
-            'categories'       => $categories,
-            'selectedCategory' => $selectedCategory,
-        ]) // категории товаров ?>
-    </div>
-    <? endif ?>
 
     <?= $helper->render('search/__filter', [
         'baseUrl'          => $helper->url('search', ['q' => $searchQuery]),
@@ -72,6 +63,7 @@
         'pager'                  => $productPager,
         'view'                   => $productView,
         'productVideosByProduct' => [], //$productVideosByProduct,
+        'bannerPlaceholder'      => !empty($bannerPlaceholder) ? $bannerPlaceholder : [],
     ]) // листинг ?>
 
     <div class="bSortingLine mPagerBottom clearfix">

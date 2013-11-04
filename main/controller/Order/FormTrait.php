@@ -22,41 +22,41 @@ trait FormTrait {
                     : $userEntity->getMobilePhone()
             );
             $form->setEmail($userEntity->getEmail());
-        }
-
-        // берем значения для формы из куки
-        $cookieValue = $request->cookies->get(\App::config()->order['cookieName'], 'last_order');
-        if (!empty($cookieValue)) {
-            try {
-                $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
-            } catch (\Exception $e) {
-                \App::logger()->error($e, ['order']);
-                $cookieValue = [];
-            }
-            $data = [];
-            foreach ([
-                'recipient_first_name',
-                'recipient_last_name',
-                'recipient_phonenumbers',
-                'recipient_email',
-                'address_street',
-                'address_number',
-                'address_building',
-                'address_apartment',
-                'address_floor',
-                'subway_id',
-            ] as $k) {
-                if (array_key_exists($k, $cookieValue)) {
-                    if (('subway_id' == $k) && !$user->getRegion()->getHasSubway()) {
-                        continue;
-                    }
-                    if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
-                        $cookieValue[$k] = substr($cookieValue[$k], -10);
-                    }
-                    $data[$k] = $cookieValue[$k];
+        } else {
+            // берем значения для формы из куки
+            $cookieValue = $request->cookies->get(\App::config()->order['cookieName'], 'last_order');
+            if (!empty($cookieValue)) {
+                try {
+                    $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
+                } catch (\Exception $e) {
+                    \App::logger()->error($e, ['order']);
+                    $cookieValue = [];
                 }
+                $data = [];
+                foreach ([
+                             'recipient_first_name',
+                             'recipient_last_name',
+                             'recipient_phonenumbers',
+                             'recipient_email',
+                             'address_street',
+                             'address_number',
+                             'address_building',
+                             'address_apartment',
+                             'address_floor',
+                             'subway_id',
+                         ] as $k) {
+                    if (array_key_exists($k, $cookieValue)) {
+                        if (('subway_id' == $k) && !$user->getRegion()->getHasSubway()) {
+                            continue;
+                        }
+                        if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
+                            $cookieValue[$k] = substr($cookieValue[$k], -10);
+                        }
+                        $data[$k] = $cookieValue[$k];
+                    }
+                }
+                $form->fromArray($data);
             }
-            $form->fromArray($data);
         }
 
         return $form;
@@ -99,6 +99,10 @@ trait FormTrait {
             }
         }
 
+        $this->validatePaymentType($form);
+    }
+
+    protected function validatePaymentType(Form $form) {
         // метод оплаты
         if (!$form->getPaymentMethodId()) {
             $form->setError('payment_method_id', 'Не указан способ оплаты');

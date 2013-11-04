@@ -15,10 +15,54 @@ return function(
      * @var $categories \Model\Product\Category\Entity[]
      */
 
+    /** @var $shops \Model\Shop\Entity[] */
+    $shops = $helper->getParam('shops');
+
     $filters = [];
     $priceFilter = null;
 
-    $pasteIndex = count($productFilter->getFilterCollection()) > 3 ? 3 : count($productFilter->getFilterCollection());
+    $insertCustomFilters = function() use (&$categories, &$filters, &$shops) {
+        // фильтр "Товары по категориям"
+        if ((bool)$categories) {
+            $categoryFilter = new \Model\Product\Filter\Entity();
+            $categoryFilter->setId('category');
+            $categoryFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+            $categoryFilter->setName('Товары по категориям');
+            $categoryFilter->getIsInList(true);
+
+            foreach ($categories as $category) {
+                $option = new \Model\Product\Filter\Option\Entity();
+                $option->setId($category->getId());
+                $option->setName($category->getName());
+                $categoryFilter->addOption($option);
+            }
+
+            $filters[] = $categoryFilter;
+        }
+
+        // фильтр "Наличие в магазинах"
+        if ((bool)$shops) {
+            $shopFilter = new \Model\Product\Filter\Entity();
+            $shopFilter->setId('shop');
+            $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+            $shopFilter->setName('Наличие в магазинах');
+            $shopFilter->getIsInList(true);
+
+            foreach ($shops as $shop) {
+                $option = new \Model\Product\Filter\Option\Entity();
+                $option->setId($shop->getId());
+                $option->setName($shop->getName());
+                $shopFilter->addOption($option);
+            }
+            $filters[] = $shopFilter;
+        }
+    };
+
+    if (0 == count($productFilter->getFilterCollection())) {
+        $insertCustomFilters();
+    }
+
+    $insertIndex = count($productFilter->getFilterCollection()) > 3 ? 3 : count($productFilter->getFilterCollection());
     $i = 1;
     foreach ($productFilter->getFilterCollection() as $filter) {
         if ($filter->isPrice()) {
@@ -29,45 +73,10 @@ return function(
             $i++;
         }
 
-        if ($pasteIndex == $i) {
-            // фильтр "Товары по категориям"
-            if ((bool)$categories) {
-                $categoryFilter = new \Model\Product\Filter\Entity();
-                $categoryFilter->setId('category');
-                $categoryFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-                $categoryFilter->setName('Товары по категориям');
-                $categoryFilter->getIsInList(true);
+        if ($insertIndex == $i) {
+            $insertCustomFilters();
 
-                foreach ($categories as $category) {
-                    $option = new \Model\Product\Filter\Option\Entity();
-                    $option->setId($category->getId());
-                    $option->setName($category->getName());
-                    $categoryFilter->addOption($option);
-                }
-
-                $filters[] = $categoryFilter;
-                $i++;
-            }
-
-            // фильтр "Наличие в магазинах"
-            /** @var $shops \Model\Shop\Entity[] */
-            $shops = $helper->getParam('shops');
-            if ((bool)$shops) {
-                $shopFilter = new \Model\Product\Filter\Entity();
-                $shopFilter->setId('shop');
-                $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-                $shopFilter->setName('Наличие в магазинах');
-                $shopFilter->getIsInList(true);
-
-                foreach ($shops as $shop) {
-                    $option = new \Model\Product\Filter\Option\Entity();
-                    $option->setId($shop->getId());
-                    $option->setName($shop->getName());
-                    $shopFilter->addOption($option);
-                }
-                $filters[] = $shopFilter;
-                $i++;
-            }
+            $i++;
         }
     }
 
@@ -121,7 +130,7 @@ return function(
                     if (!$filter->getIsInList()) continue;
                     $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId());
                 ?>
-                    <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if ('shop' == $filter->getId()): ?> mLineItem<? endif ?>" id="<?= $viewId ?>">
+                    <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?>" id="<?= $viewId ?>">
 
                     <? switch ($filter->getTypeId()) {
                         case \Model\Product\Filter\Entity::TYPE_NUMBER:
