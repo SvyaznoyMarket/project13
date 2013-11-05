@@ -836,22 +836,22 @@
 		};
 
 
-        /**
-         * Флаг уникальности для типа доставки state.
-         * Например, для типа доставки pickpoint должен быть false (задаётся в РНР-коде на сервере)
-         *
-         * @this	{OrderDictionary}
-         *
-         * @param	    {String}	state	Метод доставки
-         * @returns     {Boolean}
-         */
-        OrderDictionary.prototype.isUniqueDeliveryState = function( state ) {
-            if ( this.deliveryStates.hasOwnProperty(state) ) {
-                var st = this.deliveryStates[state];
-                return st['unique'];
-            }
-            return false;
-        };
+		/**
+		 * Флаг уникальности для типа доставки state.
+		 * Например, для типа доставки pickpoint должен быть false (задаётся в РНР-коде на сервере)
+		 *
+		 * @this        {OrderDictionary}
+		 *
+		 * @param       {String}    state    Метод доставки
+		 * @returns     {Boolean}
+		 */
+		OrderDictionary.prototype.isUniqueDeliveryState = function ( state ) {
+			if ( this.hasDeliveryState(state) ) {
+				var st = this.deliveryStates[state];
+				return st['unique'];
+			}
+			return false;
+		};
 
 		/**
 		 * Есть ли для метода доставки пункты доставки
@@ -862,6 +862,9 @@
 		 * @return	{Boolean}
 		 */
 		OrderDictionary.prototype.hasPointDelivery = function( state ) {
+			if ( !this.hasDeliveryState() ) {
+				return false;
+			}
 			return this.pointsByDelivery.hasOwnProperty(state);
 		};
 
@@ -897,11 +900,8 @@
 		 * @return	{Object}				Данные о точке доставки
 		 */
 		OrderDictionary.prototype.getFirstPointByState = function( state ) {
-			var points = this.getAllPointsByState(state), ret = false;
-            if ( points[0] ) {
-                ret = window.ENTER.utils.cloneObject(points[0]);
-            }
-            return ret;
+			var points = this.getAllPointsByState(state);
+			return ( points[0] ) ? ENTER.utils.cloneObject(points[0]) : false;
 		};
 
 		/**
@@ -910,10 +910,13 @@
 		 * @param	{String}	state	Метод доставки
 		 */
 		OrderDictionary.prototype.getAllPointsByState = function( state ) {
+			if ( !this.hasDeliveryState(state) ) {
+				return false;
+			}
 			var point = this.pointsByDelivery[state],
 				pointName = point ? point.token : false,
-                ret = pointName ? this.orderData[pointName] : false;
-			return ret;
+				ret = pointName ? this.orderData[pointName] : false;
+			return ret || false;
 		};
 
 
