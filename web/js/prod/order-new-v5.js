@@ -910,8 +910,9 @@
 		 * @param	{String}	state	Метод доставки
 		 */
 		OrderDictionary.prototype.getAllPointsByState = function( state ) {
-			var pointName = this.pointsByDelivery[state].token,
-                ret = this.orderData[pointName] || false;
+			var point = this.pointsByDelivery[state],
+				pointName = point ? point.token : false,
+                ret = pointName ? this.orderData[pointName] : false;
 			return ret;
 		};
 
