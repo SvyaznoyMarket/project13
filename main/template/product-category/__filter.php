@@ -58,25 +58,26 @@ return function(
         }
     };
 
-    if (0 == count($productFilter->getFilterCollection())) {
+    $countFilters = count($productFilter->getFilterCollection());
+    if (0 == $countFilters) {
         $insertCustomFilters();
-    }
+    }else{
+        $insertIndex = $countFilters > 3 ? 3 : $countFilters;
+        $i = 1;
+        foreach ($productFilter->getFilterCollection() as $filter) {
+            if ($filter->isPrice()) {
+                $priceFilter = $filter;
+                $priceFilter->setStepType('price');
+            } else {
+                $filters[] = $filter;
+                $i++;
+            }
 
-    $insertIndex = count($productFilter->getFilterCollection()) > 3 ? 3 : count($productFilter->getFilterCollection());
-    $i = 1;
-    foreach ($productFilter->getFilterCollection() as $filter) {
-        if ($filter->isPrice()) {
-            $priceFilter = $filter;
-            $priceFilter->setStepType('price');
-        } else {
-            $filters[] = $filter;
-            $i++;
-        }
+            if ($insertIndex == $i) {
+                $insertCustomFilters();
 
-        if ($insertIndex == $i) {
-            $insertCustomFilters();
-
-            $i++;
+                $i++;
+            }
         }
     }
 
