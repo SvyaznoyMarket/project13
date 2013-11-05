@@ -20,6 +20,7 @@ $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
 
 $c->debug = false;
+$c->logger['pretty'] = false;
 $c->appName = 'Enter';
 $c->authToken['name']     = '_token';
 $c->sessionToken = 'enter';
