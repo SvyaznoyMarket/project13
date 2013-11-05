@@ -168,10 +168,10 @@ class Action {
         }
 
         // общее количество найденных товаров
-        $productCount = $selectedCategory ? $selectedCategory->getProductCount() : $result['count'];
+        $productCount = $result['count'];
         if (\App::config()->search['itemLimit'] && (\App::config()->search['itemLimit'] < $productCount)) {
             // ограничиваем количество найденных товаров
-            $productCount = \App::config()->search['itemLimit'];
+            //$productCount = \App::config()->search['itemLimit'];
         }
 
         // вид товаров
