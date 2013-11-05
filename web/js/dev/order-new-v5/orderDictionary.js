@@ -103,7 +103,7 @@
 		 * @return	{Boolean}
 		 */
 		OrderDictionary.prototype.hasPointDelivery = function( state ) {
-			if ( !this.hasDeliveryState() ) {
+			if ( !this.hasDeliveryState(state) ) {
 				return false;
 			}
 			return this.pointsByDelivery.hasOwnProperty(state);
