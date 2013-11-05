@@ -28,17 +28,24 @@ foreach ( $categories as $child ) {
     ];
 }
 
+$hotlinks = [];
+
 ?>
 <div class="bCatalog">
     <h1 class="bTitlePage"><?= $pageTitle ?></h1>
+    <? /*if (\App::config()->adFox['enabled']): ?>
+        <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
+    <? endif */?>
     <?= $helper->renderWithMustache('product-category/_listInFilter', ['links' => $categoriesLinks]) // дочерние категории для тегов ?>
 
     <?= $helper->render('product-category/__filter', [
-        'baseUrl'       => $helper->url('tag.category', $tagCategoryTokens),
-        'countUrl'      => $helper->url('tag.category', $tagCategoryTokens),
-        'productFilter' => $productFilter,
-        'hotlinks'      => $hotlinks,
-        'openFilter'    => false,
+        'baseUrl'           => $helper->url('tag.category', $tagCategoryTokens),
+        'countUrl'          => null, //$helper->url('tag.category.count', $tagCategoryTokens), // <- TODO
+        'productFilter'     => $productFilter,
+        'hotlinks'          => $hotlinks,
+        'categories'        => $categories,
+        'selectedCategory'  => $selectedCategory,
+        'openFilter'        => true,
     ]) // фильтры ?>
 
     <?=
