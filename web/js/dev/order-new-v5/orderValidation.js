@@ -304,7 +304,7 @@
 					 * */
 					// parts.push( {pointAddress: choosPoint['street'] + ' ' + choosPoint['house']} );
 					tmpPart.point_address = choosPoint['street'] + ' ' + choosPoint['house'];
-					tmpPart.point_name = choosPoint.point_name; // нужно?
+					tmpPart.point_name = choosPoint.point_name; // нужно передавать в ядро
 				}
 
 				for ( j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {
