@@ -31,12 +31,11 @@ $(document).ready(function() {
 	marketfolio.delegate('div.map-google-link', 'click',function(e) {
 		$( 'div.mChecked' , marketfolio ).removeClass('mChecked')
 		if( ! $('#map-container div').length ) { // only once, on first click !
-			var el = $(this)
-
-			var position = {
-				latitude: $('[name="shop[latitude]"]').val(),
-				longitude: $('[name="shop[longitude]"]').val()
-			}
+			var el = $(this),
+				position = {
+					latitude: $('[name="shop[latitude]"]').val(),
+					longitude: $('[name="shop[longitude]"]').val()
+				};
 			$.when(MapInterface.ready( 'yandex', {
 				yandex: $('#infowindowtmpl'), 
 				google: $('#map-info_window-container')
@@ -50,8 +49,8 @@ $(document).ready(function() {
 	$('div.map-google-link:first', marketfolio ).trigger('click')
 
 	if( $('#map-markers').length ) {
-		var allshops = $('#map-markers').data('content')
-		var showShopTrigger = false // показан ли конкретный город
+		var allshops = $('#map-markers').data('content'),
+			showShopTrigger = false; // показан ли конкретный город
 
 		//показываем бабл магазина при наведении на него в списке
 		var hoverTimer = { 'timer': null, 'id': 0 }
@@ -92,13 +91,14 @@ $(document).ready(function() {
 				})
 				if (showShopTrigger){
 					// город открыт, схлопываем список магазинов
-					$(this).removeClass('chosedCity')
-					$('.bMapShops__eMapCityList_city').show()
-					showShopTrigger = false
+					$(this).removeClass('chosedCity');
+					$('.bMapShops__eMapCityList_city').show();
+					showShopTrigger = false;
+					console.log('###');
 				}
 				else{
 					// город не открыт открываем спискок магазинов
-					var curCity = []
+					var curCity = [];
 					for (var i in allshops){ //получаем список магазинов в этом городе
 						if (allshops[i].region_id == $(this).attr('ref')){
 							var shopTpl = tmpl('shopInCity', allshops[i])
@@ -132,11 +132,11 @@ $(document).ready(function() {
 				tmpl('infowindowtmpl', marker )
 			)
 		}
-		var mapCenter =  calcMCenter( allshops )
-		var mapCallback = function() {
-			window.regionMap.showCluster(  allshops )
-			cityHandler()
-		}
+		var mapCenter =  calcMCenter( allshops),
+			mapCallback = function() {
+				window.regionMap.showCluster(  allshops )
+				cityHandler()
+			};
 		$.when(MapInterface.ready( 'yandex', {
 			yandex: $('#infowindowtmpl'), 
 			google: $('#map-info_window-container')
