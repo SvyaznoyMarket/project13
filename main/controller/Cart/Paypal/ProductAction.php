@@ -24,7 +24,7 @@ class ProductAction {
         try {
             if ($quantity < 0) {
                 $quantity = 0;
-                \App::logger()->warn(sprintf('Указано неверное количество товаров. Запрос %s', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
+                \App::logger()->warn(['message' => 'Указано неверное количество товаров', 'request' => $request->request->all()]);
             }
 
             if (!$productId) {

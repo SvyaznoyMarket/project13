@@ -14,6 +14,10 @@ class AppConfig {
     public $encoding;
     /** @var bool */
     public $debug;
+    /** @var array */
+    public $logger = [
+        'pretty' => null,
+    ];
     /**
      * @var string
      * @hidden
@@ -467,6 +471,16 @@ class AppConfig {
     public $sphinx = [
         'showFacets' => null,
         'showListingSearchBar' => null,
+    ];
+
+    /**
+     * @name Акция "ПодариЖизнь"
+     * @var array
+     */
+    public $lifeGift = [
+        'enabled'  => null,
+        'regionId' => null,
+        'labelId'  => null,
     ];
 
     public function __construct() {

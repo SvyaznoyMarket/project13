@@ -17,6 +17,7 @@ $helper = new \Helper\TemplateHelper();
 $request = \App::request();
 
 $paypalECS = isset($paypalECS) && (true === $paypalECS);
+$lifeGift = isset($lifeGift) && (true === $lifeGift);
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
@@ -27,6 +28,17 @@ foreach (array_reverse($productsById) as $product) {
 		$backLink = $product->getParentCategory()->getLink();
 		break;
 	}
+}
+
+if ($paypalECS) {
+    $createUrl = $page->url('order.paypal.create', ['token' => $request->get('token'), 'PayerID' => $request->get('PayerID')]);
+    $deliveryUrl = $page->url('order.delivery', ['paypalECS' => 1]);
+} else if ($lifeGift) {
+    $createUrl = $page->url('order.lifeGift.create');
+    $deliveryUrl = $page->url('order.delivery', ['lifeGift' => 1]);
+} else {
+    $createUrl = $page->url('order.create');
+    $deliveryUrl = $page->url('order.delivery');
 }
 ?>
 
@@ -46,11 +58,23 @@ foreach (array_reverse($productsById) as $product) {
 <!-- /loader -->
 
 <!-- Общая обертка оформления заказа -->
-<div class="bBuyingSteps clearfix" style="display:none" data-bind="style: { display: prepareData() ? 'block' : 'none'}">
+<div class="bBuyingSteps clearfix" style="display:none" data-bind="style: { display: prepareData() ? 'block' : 'none'}, css: { mLifeGift: $root.lifeGift }">
 
 	<div class="bBuyingLine"><a class="bBackCart" href="<?= $backLink ?>">&lt; Вернуться к покупкам</a></div>
 
-	 <!-- Order Method -->
+    <? if ($lifeGift): ?>
+        <div class="bLifeGiftTitle">
+            <span class="bLifeGiftTitle__eText">Обратите внимание</span>
+
+            <div class="bLifeGiftTitle__eImg">
+                Вы оформляете заказ на подарок тяжелобольным детям,<br/> которых опекает фонд "Подари жизнь".
+
+                <span class="bViolet">Оплатите заказ онлайн, и Enter доставит новогодний подарок<br/> прямо в больницу.</span>
+            </div>
+        </div>
+    <? endif ?>
+
+	<!-- Order Method -->
 	<div class="bBuyingLine clearfix mOrderMethod" data-bind="visible: deliveryTypes().length > 1">
 		<h2 class="bBuyingSteps__eTitle">Информация о заказе</h2>
 
@@ -92,7 +116,7 @@ foreach (array_reverse($productsById) as $product) {
 
 				<div class="bBuyingLine__eRight">
 					<!-- Celendar -->
-					<div class="bBuyingDates clearfix">
+					<div class="bBuyingDates clearfix" data-bind="visible: !$root.lifeGift()">
 						<div class="bBuyingDatesItem mLeft" data-bind="click: box.calendarLeftBtn">
 							<span class="bArrow"></span>
 						</div>
@@ -117,11 +141,11 @@ foreach (array_reverse($productsById) as $product) {
 					</div>
 					<!-- /Celendar -->
 
-					<div class="bDeliveryDate">
+					<div class="bDeliveryDate" data-bind="visible: !$root.lifeGift()">
 						<span data-bind="text: box.deliveryName"></span> <strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span> <span data-bind="visible: !hasPointDelivery">*</span>
 					</div>
 
-					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length">
+					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length && !$root.lifeGift()">
 						<span class="bSelectWrap_eText" data-bind="text: (!box.hasPointDelivery ? 'c ' + box.choosenInterval().start + ' ' : '') + 'до ' + box.choosenInterval().end"></span>
 						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
 															value: box.choosenInterval,
@@ -190,7 +214,7 @@ foreach (array_reverse($productsById) as $product) {
 
     <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 	<!-- Sale section -->
-	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length, css: { hidden: paypalECS }">
+	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift(), css: { hidden: paypalECS }">
 		<div class="bBuyingLine">
 			<div class="bBuyingLine__eLeft">
 				<h2 class="bBuyingSteps__eTitle">
@@ -290,9 +314,9 @@ foreach (array_reverse($productsById) as $product) {
 
 	<!-- Форма заказа -->
 	<div class="bBuyingInfo" data-bind="visible: deliveryBoxes().length">
-		<h2 class="bBuyingSteps__eTitle">Информация о счастливом получателе</h2>
+		<h2 class="bBuyingSteps__eTitle" data-bind="visible: !$root.lifeGift()">Информация о счастливом получателе</h2>
 
-		<div class="bHeadnote">
+		<div class="bHeadnote" data-bind="visible: !$root.lifeGift()">
             <? if ($user->getEntity()): ?>
                 Привет, <a href="<?= $page->url('user') ?>"><strong><?= $user->getEntity()->getName() ?></strong></a>
             <? else: ?>
@@ -302,9 +326,9 @@ foreach (array_reverse($productsById) as $product) {
             <? endif ?>
 		</div>
 		
-		<form id="order-form" action="<?= $paypalECS ? $page->url('order.paypal.create', ['token' => $request->get('token'), 'PayerID' => $request->get('PayerID')]) : $page->url('order.create') ?>" method="post">
+		<form id="order-form" action="<?= $createUrl ?>" method="post">
 			<!-- Info about customer -->
-			<div class="bBuyingLine mBuyingFields clearfix">
+			<div class="bBuyingLine mBuyingFields clearfix" data-bind="visible: !$root.lifeGift()">
 				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
 				<div class="bBuyingLine__eRight">
 					<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
@@ -468,7 +492,7 @@ foreach (array_reverse($productsById) as $product) {
 </div>
 <!-- /Общая обертка оформления заказа -->
 
-<div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery', $paypalECS ? ['paypalECS' => 1] : []) ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
+<div id="jsOrderDelivery" data-url="<?= $deliveryUrl ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
 <div id="jsOrderForm" data-value="<?= $page->json([
 	'order[recipient_first_name]'   => $form->getFirstName(),
 	'order[recipient_last_name]'    => $form->getLastName(),

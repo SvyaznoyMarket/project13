@@ -20,6 +20,13 @@ trait ResponseDataTrait {
 
         \App::exception()->remove($exception);
 
+        if (!isset($responseData['paypalECS'])) {
+            $responseData['paypalECS'] = false;
+        }
+        if (!isset($responseData['lifeGift'])) {
+            $responseData['lifeGift'] = false;
+        }
+
         $productDataById = [];
         if ($exception instanceof \Curl\Exception) {
             $errorData = (array)$exception->getContent();
@@ -96,7 +103,10 @@ trait ResponseDataTrait {
             if ((true === $responseData['paypalECS']) && !$cart->getPaypalProduct()) {
                 $responseData['redirect'] = $router->generate('cart');
                 $message = 'Пустая корзина';
-            } else if ((false === $responseData['paypalECS']) && $cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
+            } else if ((true === $responseData['lifeGift']) && !(bool)\App::user()->getLifeGiftCart()->getProducts()) {
+                $responseData['redirect'] = $router->generate('homepage');
+                $message = 'Пустая корзина';
+            } else if ((false === $responseData['paypalECS']) && (false === $responseData['lifeGift']) && $cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
                 $responseData['redirect'] = $router->generate('cart');
                 $message = 'Пустая корзина';
             } else {

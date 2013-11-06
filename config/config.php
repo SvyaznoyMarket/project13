@@ -20,6 +20,7 @@ $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
 
 $c->debug = false;
+$c->logger['pretty'] = false;
 $c->appName = 'Enter';
 $c->authToken['name']     = '_token';
 $c->sessionToken = 'enter';
@@ -80,9 +81,9 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 3;
+$c->wordpress['timeout'] = 1.8;
 $c->wordpress['throwException'] = true;
-$c->wordpress['retryCount'] = 4;
+$c->wordpress['retryCount'] = 2;
 $c->wordpress['retryTimeout'] = [
     'default' => 0.3,
     'tiny'    => 0.1,
@@ -364,6 +365,10 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
+
+$c->lifeGift['enabled'] = true;
+$c->lifeGift['regionId'] = 18074;
+$c->lifeGift['labelId'] = 3;
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';

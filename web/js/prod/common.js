@@ -1608,7 +1608,8 @@ $(document).ready(function(){
 
 			var formData = this.form.serializeArray(),
 				validator = this.getFormValidator(),
-				formSubmit = $('.jsSubmit', this.form);
+				formSubmit = $('.jsSubmit', this.form),
+				urlParams = this.getUrlParams();
 			// end of vars
 
 			var responseFromServer = function( response ) {
@@ -1651,7 +1652,7 @@ $(document).ready(function(){
 
 							document.location.href = response.data.link;
 							console.log('try reload....');
-							document.location.reload();
+							//document.location.reload();
 						}
 						else {
 							this.form.unbind('submit');
@@ -1673,7 +1674,7 @@ $(document).ready(function(){
 				},
 				requestToServer = function() {
 					this.submitBtnLoadingDisplay( formSubmit );
-					formData.push({name: 'redirect_to', value: location.href});
+					formData.push({name: 'redirect_to', value: urlParams['redirect_to']});
 					$.post(this.form.attr('action'), formData, $.proxy(responseFromServer, this), 'json');
 				};
 			// end of functions
@@ -1754,6 +1755,23 @@ $(document).ready(function(){
 			if ( typeof(_kmq) !== 'undefined' ) {
 				_kmq.push(['clearIdentity']);
 			}
+		};
+
+		/**
+		 * Получение get параметров текущей страницы
+		 */
+		Login.prototype.getUrlParams = function() {
+			var $_GET = {},
+				__GET = window.location.search.substring(1).split('&'),
+				getVar;
+			// end of vars
+
+			for( var i = 0; i < __GET.length; i++ ) {
+				getVar = __GET[i].split('=');
+				$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
+			}
+
+			return $_GET;
 		};
 
 		return Login;
