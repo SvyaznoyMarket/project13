@@ -46,7 +46,7 @@ $(document).ready(function() {
 				return status;
 			}, this);
 
-			var scNum = window.docCookies.getItem("scId"); //берем номер карты связного клуба из куки
+			var scNum = window.docCookies.getItem("scId"); //берем номер карты «связного клуба» из куки
 
 			self.showMap = ko.observable( false );
 			self.textfields = [];
@@ -62,6 +62,7 @@ $(document).ready(function() {
 				selectorid: '',
 				value: firstNameVal,
 				valerror: false,
+				showsubscribe: false,
 				regexp: /^[ёa-zа-я\s]+$/i
 			}) );
 			self.textfields.push( ko.observable({
@@ -70,22 +71,26 @@ $(document).ready(function() {
 				selectorid: 'phonemask',
 				value: phoneNumberVal,
 				valerror: false,
+				showsubscribe: false,
 				regexp: /^[()0-9\-\+\s]+$/
 			}) );
 			self.textfields.push( ko.observable({
-				title: 'Email (не обязательно)',
+				title: 'E-mail (если есть)',
 				name: 'order[recipient_email]', //UNIQUE!
 				selectorid: 'recipientEmail',
 				value: emailVal,
 				valerror: false,
-				regexp: /@/
+				showsubscribe: true,
+				active: true,
+				regexp: /./
 			}) );
 			self.textfields.push( ko.observable({
-				title: 'номер вашей карты «Связной-Клуб»',
+				title: 'Номер вашей карты «Связной-Клуб»',
 				name: 'order[recipient_scCard]', //UNIQUE!
 				selectorid: 'scCard',
 				value: scNum,
 				valerror: false,
+				showsubscribe: false,
 				regexp: /^[()0-9\-\s]+$/
 			}) );
 
@@ -102,7 +107,7 @@ $(document).ready(function() {
 			self.chosenShop = ko.observable( {} );
 			self.pickedShop = ko.observable( {} );
 
-			self.dynModel = function( Deliveries ) {	
+			self.dynModel = function( Deliveries ) {
 				var chosenType = self.chosenDlvr().type;
 
 				if ( !chosenType ){
@@ -112,7 +117,7 @@ $(document).ready(function() {
 				self.dlvrs.removeAll();
 				// self.chosenDlvr({});
 
-				for(var obj in Deliveries ) {
+				for ( var obj in Deliveries ) {
 					self.dlvrs.push( {
 						type: obj,
 						name: Deliveries[obj].name,
@@ -125,18 +130,33 @@ $(document).ready(function() {
 					}
 				}
 
-				if( ! ('type' in self.chosenDlvr() ) ){
+				if ( !('type' in self.chosenDlvr() ) ){
 					self.chosenDlvr( self.dlvrs()[ 0 ] );
 				}
 				
+				console.log(self.chosenDlvr());
+
 				self.dates( Deliveries[ self.chosenDlvr().type+'' ].dates.slice(0) );
 				self.chosenDate( self.dates()[0] );
+				
+				console.log(selfAvailable);
 
-				if( selfAvailable ) {
-					self.shops( Deliveries['self'].shops.slice(0) );
+				if ( selfAvailable ) {
+					if ( Deliveries.hasOwnProperty('self') ) {
+						console.log('self shops');
+						self.shops( Deliveries['self'].shops.slice(0) );
+					}
+					else {
+						console.log('now shops');
+						self.shops( Deliveries['now'].shops.slice(0) );
+					}
+
 					self.chosenShop( self.shops()[0] );
 					self.pickedShop( self.shops()[0] );
-				} else {
+
+					// self.showMap(true)
+				}
+				else {
 					var leer = { address: '', regtime: '', id : 1 };
 					self.chosenShop( leer );
 					self.pickedShop( leer );
@@ -150,9 +170,10 @@ $(document).ready(function() {
 			}, this);
 			
 			self.changeDlvr = function() {
+				console.info('changeDlvr');
 				var typeDlvr = self.chosenDlvr().type;
 				self.dates.removeAll();
-				while( self.dates().length ){
+				while( self.dates().length ) {
 					self.dates.pop();
 				}
 
@@ -161,10 +182,12 @@ $(document).ready(function() {
 				}
 
 				self.chosenDate( self.dates()[0] );
-				if( self.showMap() ){
+				
+				if ( self.showMap() ) {
 					self.showMap( false );
 				}
-				if (typeof(window.regionMap)=='undefined'){
+				if ( typeof(window.regionMap)=='undefined' ) {
+					console.warn('region map undefined');
 					$('.bFast__eMapLink').remove();
 				}
 			};
@@ -225,11 +248,11 @@ $(document).ready(function() {
 			};
 			
 			self.preparedData = function( data ) {
-				if( data.type === 'self' ) {
+				if ( data.type === 'self' || data.type === 'now' ) {
 					self.formStatus('reserve');
 
-					for(var i=0, l=self.dlvrs().length; i<l; i++ ){
-						if( self.dlvrs()[i].type == 'self' ) {
+					for ( var i = 0, l = self.dlvrs().length; i < l; i++ ) {
+						if ( self.dlvrs()[i].type === 'self' || self.dlvrs()[i].type === 'now') {
 							self.chosenDlvr( self.dlvrs()[i] );
 							break;
 						}
@@ -248,7 +271,7 @@ $(document).ready(function() {
 				else if( data.type === 'courier' ) {
 					self.formStatus('reserve');
 					for(var j = 0, len = self.dlvrs().length; j < len; j++ ){
-						if( self.dlvrs()[j].type != 'self' ) {
+						if ( self.dlvrs()[j].type !== 'self' &&  self.dlvrs()[j].type !== 'now' ) {
 							self.chosenDlvr( self.dlvrs()[j]  );
 							break;
 						}
@@ -261,7 +284,7 @@ $(document).ready(function() {
 			};
 			
 			self.loadData = function( momentq, direction ) {
-				// console.info('loadData')
+				console.info('loadData')
 				if( ( direction > 0 && self.quantity() > momentq ) || ( direction < 0 && self.quantity() < momentq ) ){
 					return;
 				}
@@ -292,12 +315,15 @@ $(document).ready(function() {
 					else {
 						self.noDelivery(false);
 					}
-					selfAvailable = 'self' in Deliveries;
+					selfAvailable = ('self' in Deliveries) || ('now' in Deliveries);
+
+					console.log(selfAvailable);
+
 					self.dynModel(Deliveries);
-					if( selfAvailable && typeof(mapCenter) == 'undefined') {
+					if ( selfAvailable && typeof(mapCenter) == 'undefined') {
 						mapCenter = calcMCenter( Deliveries['self'].shops );
 					}						
-					if( selfAvailable && ! ('regionMap' in window ) ) {
+					if ( selfAvailable && ! ('regionMap' in window ) ) {
 						var mapCallback = function() {
 							window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL );
 						};
@@ -391,7 +417,7 @@ $(document).ready(function() {
 					}
 				}
 			};
-			
+
 			self.validateField = function( textfield, e ) {
 				var valerror = false;
 
@@ -399,7 +425,12 @@ $(document).ready(function() {
 					return true;
 				}
 
-				if( e.currentTarget.value.replace(/\s/g, '') == '' || !textfield.regexp.test( e.currentTarget.value ) ) {
+				if ( e.currentTarget.name === 'order[recipient_email]' && !e.currentTarget.value.isEmail() ) {
+					valerror = true;
+					self.formStatus('typing');
+				}
+
+				if( e.currentTarget.name !== 'order[recipient_email]' && ( e.currentTarget.value.replace(/\s/g, '') == '' || !textfield.regexp.test( e.currentTarget.value ) ) ) {
 					valerror = true;
 					self.formStatus('typing');
 				}
@@ -409,13 +440,18 @@ $(document).ready(function() {
 					self.formStatus('typing');
 				}
 
-				for(var i=0, l=self.textfields.length; i<l; i++){ // like indexOf
-					if( self.textfields[i]().name === textfield.name ) {
+				for ( var i = 0, l = self.textfields.length; i < l; i++ ) { // like indexOf
+					if ( self.textfields[i]().name === textfield.name ) {
 						var tmp = self.textfields[i]();
 						tmp.valerror = valerror;
 						tmp.value = e.currentTarget.value;
+
+						if ( e.currentTarget.name === 'order[recipient_email]' ) {
+							tmp.active = !!parseInt( $('#order1click-container-new .bSubscibe input[name="subscribe"]').val() );
+						}
+
 						self.textfields[i]( tmp );
-						
+
 						break;
 					}
 				}
@@ -425,11 +461,11 @@ $(document).ready(function() {
 			};
 
 			self.validateForm = function() {
-				if( self.noDelivery() ){
+				if ( self.noDelivery() ){
 					return false;
 				}
 
-				if( self.formStatus() !== 'typing' && self.formStatus() !== 'reserve' ){ // double or repeated click
+				if ( self.formStatus() !== 'typing' && self.formStatus() !== 'reserve' ) { // double or repeated click
 					return;
 				}
 				//change title
@@ -441,7 +477,7 @@ $(document).ready(function() {
 				if( self.formStatus() === 'typing' ){ // validation error
 					return;
 				}
-				
+
 				//send ajax
 				self.sendData();
 				
@@ -454,10 +490,10 @@ $(document).ready(function() {
 				var postData = {
 					'order[product_quantity]' : self.quantity(),
 					'order[delivered_at]' : self.chosenDate().value,
-					'order[delivery_type_id]': (self.chosenDate().isNow) ? 4 : self.chosenDlvr().modeID
+					'order[delivery_type_id]': ( self.chosenDate().isNow ) ? 4 : self.chosenDlvr().modeID
 				};
 
-				if( self.chosenDlvr().type == 'self' ){
+				if ( self.chosenDlvr().type == 'self' || self.chosenDlvr().type == 'now' ) {
 					postData[ 'order[shop_id]' ] = self.chosenShop().id;
 				}
 
@@ -466,59 +502,48 @@ $(document).ready(function() {
 				}
 				postData['subscribe'] = $('#order1click-container-new .bSubscibe input[name="subscribe"]').val();
 
+				if ( typeof(window.KM) !== 'undefined' ) {
+					postData['kiss_session'] = window.KM.i;
+				}
+
 				$.ajax( {
 					type: 'POST',
                     timeout: 60000,
 					url: outputUrl,
 					data: postData,
 					success: function( data, textStatus ) {
+						var bFast = $('.bFast');
+
 						if( !data.success || textStatus !== 'success' ) {
 							self.formStatus('typing');
 							$('.bFastInner tbody tr:last').append('<td colspan="2" class="red">'+data.message+'</td>');
 							return;
 						}
-						
-						// ANALITICS
-						var phoneNumber = '8' + $('#phonemask').val().replace(/\D/g, "");
-						var toKISS_order = {
-							'Checkout Complete Order ID':data.data.orderNumber, 
-							'Checkout Complete SKU Quantity':self.quantity(),
-							'Checkout Complete SKU Total':self.price * self.quantity() * 1,
-							'Checkout Complete Delivery Total':self.chosenDlvr().price * 1,
-							'Checkout Complete Order Total':self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
-							'Checkout Complete Order Type':'one click order',
-							'Checkout Complete Delivery':self.chosenDlvr().type
-						};
 
-						if ((typeof(_kmq) !== 'undefined') && (KM !== 'undefined')) {
-							_kmq.push(['alias', phoneNumber, KM.i()]);
-							_kmq.push(['identify', phoneNumber]);
-							_kmq.push(['record', 'Checkout Complete', toKISS_order]);
-							var toKISS_pr = {
-								'Checkout Complete SKU':data.data.productArticle,  
-								'Checkout Complete SKU Quantity':self.quantity() * 1,
-								'Checkout Complete SKU Price':self.price * 1,
-								'Checkout Complete Parent category':data.data.productCategory[0],
-								'Checkout Complete Category name':data.data.productCategory[data.data.productCategory.length-1],
-								'_t':KM.ts() +  1  ,
-								'_d':1
-							};
-
-							_kmq.push(['set', toKISS_pr]);
-						}
-
-						if( typeof(runAnalitics) !== 'undefined' ){
-							runAnalitics();
-						}
-						ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
+						// Запускаем скрипты Аналитики для завершенного заказа в 1клик
+						OC_MVM.AnalyticsComplete(data.data);
 
 						// console.log(data)
 						//process
-						$('.bFast').parent().append( data.data.content );
-						$('.bFast').remove();
+						//$('.bFast').parent().append( data.data.content );
+						try{
+							bFast.parent().append( data.data.content );
+						}catch(e){
+							console.log('### jQ append error:');
+							console.log(e);
+						}
+						bFast.remove();
 						$('.p0').removeClass('p0');
 						//$('.top0').removeClass('top0');
 						// $('.jsOrder1click').remove();
+
+
+						/**
+						 * Запускаем расшириную Аналитику () для завершенного заказа в 1клик
+						 * !!! Должно исполняться после выполнения $.append()
+						 */
+						OC_MVM.AnaliticsCompleteExtra();
+
 					},
 					error: function( jqXHR, textStatus ) {
 						self.formStatus('typing');
@@ -526,7 +551,161 @@ $(document).ready(function() {
 					}
 				});
 			};
-			
+
+
+		self.AnalyticsFormOpen = function() {
+			console.log('% Oneclick. Form is open! ### Begin of AnalyticsFormOpen.');
+
+			var toKISS_oc = { // KISS
+				'Checkout Step 1 SKU Quantity': self.quantity(),
+				'Checkout Step 1 SKU Total': self.price * self.quantity(),
+				'Checkout Step 1 Order Total': self.price * self.quantity() + self.chosenDlvr().price * 1,
+				'Checkout Step 1 Order Type': 'one click order'
+			}
+
+			if ( typeof(yaCounter10503055) !== 'undefined' ) {
+				console.log('% Oneclick. Run yaCounter10503055');
+				yaCounter10503055.reachGoal('\orders\complete');
+			}
+
+			if ( typeof(_gaq) !== 'undefined' ) {
+				console.log('% Oneclick. Setting GA code: /order_form');
+				_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);
+				_gaq.push(['_trackPageview', '/order_form']);
+			}
+
+			if ( 'ANALYTICS' in window ) {
+				console.log('% Oneclick. Run marketgidOrder from ANALYTICS');
+				ANALYTICS.runMethod('marketgidOrder');
+			}
+
+			if ( typeof(_kmq) !== 'undefined' ) {
+				console.log('% Oneclick. Setting toKISS_oc code');
+				//console.log(toKISS_oc);
+				_kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
+			}
+
+			console.log('% Oneclick. ### End of AnalyticsFormOpen');
+		};
+
+
+
+		self.AnalyticsComplete = function AnalyticsComplete( data ) {
+			console.log('% Oneclick. Order is complete! ### Begin of AnalyticsComplete.');
+			var phonemask = $('#phonemask'),
+				phoneNumber = ( phonemask && phonemask.val() ) ? ( '8' + phonemask.val().replace(/\D/g, "") ) : null,
+				toKISS_data,
+				toFLK_order
+				; // end of vars
+
+			/**
+			 * Flocktory (No Analytics=) )
+			 */
+			if ( typeof(Flocktory) !== 'undefined' )  {
+				toFLK_order = {
+					"order_id": data.orderNumber,
+					"price": self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
+					"items": [{
+						"id": self.shortcut,
+						"title": self.title,
+						"price":  self.price,
+						"image": self.icon,
+						"count":  self.quantity()
+					}]
+				};
+				Flocktory.popup_opder(toFLK_order);
+			}
+
+
+			/**
+			 * KISS Analytics
+			 */
+			if ((typeof(_kmq) !== 'undefined') && (KM !== 'undefined')) {
+				//console.log('phoneNumber');
+				//console.log(phoneNumber);
+				_kmq.push(['alias', phoneNumber, KM.i()]);
+				_kmq.push(['identify', phoneNumber]);
+
+				toKISS_data = {
+					'Checkout Complete Order ID':data.orderNumber,
+					'Checkout Complete SKU Quantity':self.quantity(),
+					'Checkout Complete SKU Total':self.price * self.quantity() * 1,
+					'Checkout Complete Delivery Total':self.chosenDlvr().price * 1,
+					'Checkout Complete Order Total':self.price * self.quantity() * 1 + self.chosenDlvr().price * 1,
+					'Checkout Complete Order Type':'one click order',
+					'Checkout Complete Delivery':self.chosenDlvr().type
+				};
+				_kmq.push(['record', 'Checkout Complete', toKISS_data]);
+
+				toKISS_data = {
+					'Checkout Complete SKU':data.productArticle,
+					'Checkout Complete SKU Quantity':self.quantity() * 1,
+					'Checkout Complete SKU Price':self.price * 1,
+					'Checkout Complete Parent category':data.productCategory[0].name,
+					'Checkout Complete Category name':data.productCategory[data.productCategory.length-1].name,
+					'_t':KM.ts() +  1  ,
+					'_d':1
+				};
+				_kmq.push(['set', toKISS_data]);
+			}
+
+
+			/**
+			 * GoogleAnalytics OQuickOrder Success
+			 */
+			if( typeof(_gaq) !== 'undefined' ) {
+				console.log('% Oneclick. Setting GA code: /thanks_form');
+				//_gaq.push(['_trackEvent', 'QuickOrder', 'Success', '']);
+				_gaq.push(['_trackEvent', 'QuickOrder', 'Success']);
+				_gaq.push(['_trackPageview','/thanks_form' ]);
+				_gaq.push(['_trackTrans']);
+			}
+
+			ANALYTICS.parseAllAnalDivs( $('.jsanalytics') ); // NB! .jsanalytics, добавленные ajax-om не будут парситься // Вероятнее всего, это не нужно, т.к. parseAllAnalDivs не обработает диви, добавленные аджаксом
+			ANALYTICS.adriverOrder( {order_id: data.orderNumber} );
+
+			console.log('% Oneclick. ### End of AnalyticsComplete.');
+		};
+
+		/**
+		 * Расширенная аналитика оформления заказа в 1клик
+		 * запускается только после успешного ajax ответа
+		 *
+		 * @constructor
+		 */
+		self.AnaliticsCompleteExtra = function AnaliticsCompleteExtra() {
+			console.log('% Oneclick. Complete. # Begin of AnaliticsCompleteExtra');
+			var analyticsData;
+
+			if ( typeof(_gaq) !== 'undefined' ) {
+				analyticsData = $('#GA_addTransJS').data('vars');
+				if ( analyticsData ) {
+					console.log('% Oneclick. Complete. GA_addTransJS');
+					console.log(analyticsData);
+					_gaq.push(analyticsData);
+				}
+
+				analyticsData = $('#GA_addItemJS').data('vars');
+				if ( analyticsData ) {
+					console.log('% Oneclick. Complete. GA_addItemJS');
+					_gaq.push(analyticsData);
+				}
+			}
+
+			analyticsData = $('#YA_paramsJS').data('vars');
+			if ( analyticsData && typeof(yaCounter10503055) !== 'undefined' ) {
+				console.log('% Oneclick. Complete. YA_paramsJS');
+				yaCounter10503055.reachGoal('QORDER', analyticsData);
+			}
+
+			analyticsData = $('#adBelnderJS').data('vars');
+			if ( analyticsData && typeof(window.adBelnder) != 'undefined' ) {
+				console.log('% Oneclick. Complete. adBelnderJS');
+				window.adBelnder.addOrder(analyticsData);
+			}
+
+			console.log('% Oneclick. Complete. # End of AnaliticsCompleteExtra');
+		};
 	} // OCMVM
 	
 	/* StockViewModel */
@@ -707,7 +886,8 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 		$("#phonemask").parent().prepend('<span id="phonePH">+7</span>');
 
 		if( typeof( $.mask ) !== 'undefined' ) {
-			$("#phonemask").mask("(999) 999-99-99");
+			$.mask.definitions['n'] = '[0-9]';
+			$("#phonemask").mask("(nnn) nnn-nn-nn");
 
 			if( $("#phonemask")[0].getAttribute('value') ){
 				$("#phonemask").val( $("#phonemask")[0].getAttribute('value') );
@@ -724,7 +904,9 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 				if( $(this).val() === "* ****** ******" ) {
 					$(this).trigger('unmask').val('');
 					$(this).focus( function() {
-						$("#scCard").mask("* ****** ******", { placeholder: "*" } );
+						$("#scCard").mask('2 98nnnn nnnnn', {
+							placeholder: '*'
+						});
 					});
 				}
 			});
@@ -740,8 +922,26 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
 		var Model = $('.jsOrder1click').data('model'),
 			inputUrl = $('.jsOrder1click').attr('link-input'),
-			outputUrl = $('.jsOrder1click').attr('link-output');
+			outputUrl = $('.jsOrder1click').attr('link-output'),
+            subscribeWrapper = $('.bSubscibeWrapper'),
+            subscibeCheckboxEnabled;
 		//end of vars
+
+        $('body').on('userLogged', function( event, userInfo ) {
+            /**
+             * Email-Подписка
+             * Если юзер уже подписан, не нужно отображать чекбокс с предложением подписаться
+             */
+            if ( userInfo && (false === userInfo.isSubscribed) ) {
+                subscribeWrapper.show();
+                subscibeCheckboxEnabled = true;
+                console.log('НЕ скрываем, даже показываем блок подписки.');
+            } else {
+                subscribeWrapper.hide();
+                subscibeCheckboxEnabled = false;
+                console.log('Скрываем блок подписки, т.к. юзер уже подписан либо незарегистрирован.');
+            }
+        });
 		
 		Deliveries = { // zaglushka
 			'self': {
@@ -769,38 +969,82 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			}
 		};
 
-		$.post( inputUrl, postData, function(data) {
+
+		var shopListErrorHandler = function shopListErrorHandler() {
+			$('.jsOrder1click').remove();
+		};
+
+		/**
+		 * Обработка данных о списке магазинов с сервера
+		 * 
+		 * @param	{Object}	data	Ответ от сервера
+		 */
+		var shopListSuccessHandler = function shopListSuccessHandler( data ) {
 			if( !data.success || data.data.length === 0 ) {
-				OC_MVM = new OneCViewModel();
-				ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ); // this way, Lukas!
-				OC_MVM.noDelivery( true );
 				$('.jsOrder1click').remove();
 				return false;
 			}
 
 			Deliveries = data.data;
-			selfAvailable = 'self' in Deliveries;
-			if( selfAvailable ) {
-				mapCenter = calcMCenter( Deliveries['self'].shops );
-			}			
+
+			console.info('data recive');
+			selfAvailable = 'self' in Deliveries || 'now' in Deliveries;
+			console.log(selfAvailable);
+
+			if ( selfAvailable ) {
+				if ( Deliveries.hasOwnProperty('self') ) {
+					console.log('self shops');
+					mapCenter = calcMCenter( Deliveries['self'].shops );
+				}
+				else {
+					console.log('now shops');
+					mapCenter = calcMCenter( Deliveries['now'].shops );
+				}
+			}
+
 			OC_MVM = new OneCViewModel();
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ); // this way, Lukas!
 			
-			if( selfAvailable ) {
+			if ( selfAvailable ) {
 				var mapCallback = function() {
 					window.regionMap.addHandler( '.shopchoose', pickStoreMVMCL );
 				};
 
-				try{
+				try {
+					console.info('грузим карту');
 					MapInterface.init( mapCenter, 'mapPopup', mapCallback, updateIWCL );
 				}
-				catch(e){
+				catch( e ) {
+					console.warn('карта не загрузилась');
 					$('.bFast__eMapLink').remove();
 				}
 			}
 
 			oneClickIsReady = true;
 			enableHandlers();
+
+			/**
+			 * Открытие окна, если есть хэш oneclick
+			 *
+			 * https://jira.enter.ru/browse/SITE-1778
+			 */
+			if ( document.location.hash.match(/oneclick/) ) {
+				$('.jsOrder1click').trigger('click');
+			}
+		}
+
+		$.ajax({
+			type: 'POST',
+			url: inputUrl,
+			data: postData,
+			success: shopListSuccessHandler,
+			statusCode: {
+				500: shopListErrorHandler,
+				502: shopListErrorHandler,
+				503: shopListErrorHandler,
+				504: shopListErrorHandler
+			},
+			error: shopListErrorHandler
 		});
 
 		var pickStoreMVMCL = function ( node ) {
@@ -810,47 +1054,56 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			OC_MVM.chooseShopById( shopnum );
 		};
 
-				
 		$('.jsOrder1click').bind('click', function(e) { // button 'Купить в один клик'
 			if( !oneClickIsReady ){
 				return false;
 			}
 
-			if (typeof(yaCounter10503055) !== 'undefined'){
-				yaCounter10503055.reachGoal('\orders\complete');
-			}
+			OC_MVM.AnalyticsFormOpen();
 
-			// TODO please go this stuff separate!
-			if( typeof(_gaq) !== 'undefined' ){
-				_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);
-			}
-			if( 'ANALYTICS' in window ) {
-				ANALYTICS.runMethod( 'marketgidOrder' );
-			}
+			var handleSubscibeWrapper = function () {
+				var value = $('#recipientEmail').val(),
+					checkbox = $('input[type="checkbox"][name="subscribe"]'),
+					bSubscibeWrapper = $('#recipientEmail').siblings('.bSubscibeWrapper'),
+					bSubscibe = $('.bSubscibe'),
+					recipientEmail = $('#recipientEmail');
+				if ( !value && $('#recipientEmail').siblings('.mEmpty').length ) {
+					recipientEmail.siblings('.mEmpty').hide();
+				}
+				if ( value && value.isEmail() && bSubscibeWrapper.hasClass('hf') ) {
+					bSubscibeWrapper.removeClass('hf');
 
-			// KISS
-			var toKISS_oc = {
-				'Checkout Step 1 SKU Quantity':OC_MVM.quantity(),
-				'Checkout Step 1 SKU Total':OC_MVM.price * OC_MVM.quantity(),
-				'Checkout Step 1 Order Total':OC_MVM.price * OC_MVM.quantity() + OC_MVM.chosenDlvr().price * 1,
-				'Checkout Step 1 Order Type':'one click order'
+					// Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
+					if ( subscibeCheckboxEnabled ) {
+						checkbox.attr('disabled', '');
+						checkbox.attr('checked', 'checked')
+						checkbox.val(1)
+						bSubscibe.addClass('checked');
+					}
+
+					recipientEmail.siblings('.mEmpty').hide();
+				} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf') ) {
+					bSubscibeWrapper.addClass('hf');
+
+					// Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
+					if ( subscibeCheckboxEnabled ) {
+						checkbox.attr('disabled', 'disabled');
+						checkbox.attr('checked', '')
+						checkbox.val(0)
+						bSubscibe.removeClass('checked');
+					}
+
+					if ( recipientEmail.val() ) {
+						recipientEmail.siblings('.mEmpty').show();
+					}
+				}
 			};
 
-			if (typeof(_kmq) !== 'undefined'){
-				_kmq.push(['record', 'Checkout Step 1', toKISS_oc]);
-			}
-
 			/**
-			 * Подписка
+			 * Email-Подписка
 			 */
-			$('#recipientEmail').on('keyup', function() {
-					if ( $(this).val() && $(this).val().isEmail() && !$('#recipientEmail').siblings('.bSubscibe').length ) {
-							$('#recipientEmail').css('margin-bottom', '10px');
-							$('#recipientEmail').after('<label class="bSubscibe checked"><b></b> Хочу знать об интересных<br />предложениях<input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" /></label>');
-					} else if ( ( !$(this).val() || $(this).val() && !$(this).val().isEmail() ) && $('#recipientEmail').siblings('.bSubscibe').length ) {
-							$('#recipientEmail').css('margin-bottom', '0');
-							$('#recipientEmail').siblings('.bSubscibe').remove();
-					}
+			$('body').on('keyup ready', '#recipientEmail', function () {
+				handleSubscibeWrapper();
 			});
 
 			$('#order1click-container-new').lightbox_me({
@@ -863,6 +1116,12 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			});
 			return false;
 		});
+
+        $('.jsOrder1clickProxy').bind('click', function(e) { // button 'Резерв'
+            $('.jsOrder1click').click();
+
+            e.preventDefault();
+        });
 		
 	} // One Click Order
 

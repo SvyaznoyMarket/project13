@@ -2,7 +2,9 @@
  * Расчет доставки
  *
  * @author		Zaytsev Alexandr
+ * 
  * @requires	jQuery, simple_templating
+ * 
  * @param		{Object}	widgetBox		Контейнер с доступными вариантами доставки
  * @param		{Object}	deliveryData	Данные необходимые для отображения доставки
  * @param		{String}	url				Адрес по которому необходимо запросить данные с расчитанной доставкой для текущего продукта
@@ -11,21 +13,26 @@
  * @param		{Object}	dataToSend		Данные для отправки на сервер и получение расчитанной доставки
  */
 (function() {
-	if ( !$('#jsProductCard').length ) {
-		return false;
-	}
+	console.info('Расчет доставки');
 
-	var widgetBox = $('.bWidgetBuy__eDelivery'),
+	var widgetBox = $('.bDelivery'),
 		deliveryData = widgetBox.data('value'),
 		url = deliveryData.url,
-		deliveryShops = (deliveryData.delivery.length) ? deliveryData.delivery[0].shop : [],
-		productInfo = $('#jsProductCard').data('value'),
-		dataToSend = {
-			'product':[
-				{'id': productInfo.id}
-			]
-		};
+		deliveryShops = ( deliveryData.delivery.length ) ? deliveryData.delivery[0].shop : [],
+		productInfo = $('#jsProductCard'),
+		productInfoVal = ( productInfo ) ? productInfo.data('value') : null,
+		dataToSend = {};
 	// end of vars
+	
+	if ( !productInfo || !productInfoVal ) {
+		console.warn('Недостаточно данных для расчета доставки');
+		console.log(productInfo);
+		console.log(productInfoVal);
+
+		widgetBox.removeClass('mLoader');
+
+		return false;
+	}
 
 		/**
 		 * Показ попапа с магазином
@@ -81,14 +88,13 @@
 		 * @param	{Number}	shopLen			Количество магазинов
 		 */
 		fillAvalShopTmpl = function fillAvalShopTmpl( shops ) {
-			var nowBox = widgetBox.find('.bWidgetBuy__eDelivery-now'),
-				toggleBtn = nowBox.find('.bWidgetBuy__eDelivery-nowClick'),
+			var nowBox = widgetBox.find('.mDeliveryNow'),
+				toggleBtn = nowBox.find('.bDeliveryNowClick'),
 				shopList = nowBox.find('.bDeliveryFreeAddress'),
 				templateNow = '',
 				shopInfo = {},
 				shopLen = shops.length;
 			// end of var
-			
 
 			/**
 			 * Обработчик переключения состояния листа магазинов открыто или закрыто
@@ -97,8 +103,7 @@
 				nowBox.toggleClass('mOpen');
 				nowBox.toggleClass('mClose');
 			};
-			
-			
+
 			if ( !shopLen ) {
 				return;
 			}
@@ -122,27 +127,37 @@
 		},
 
 		/**
+		 * Обработка ошибки получения списка магазинов с сервера
+		 * 
+		 * @param	{Object}	res	Ответ от сервера
+		 */
+		errorHandler = function errorHandler() {
+			widgetBox.removeClass('mLoader');
+			widgetBox.remove();
+		},
+
+		/**
 		 * Обработка данных с сервера
 		 * 
 		 * @param	{Object}	res	Ответ от сервера
 		 */
-		resFromSerever = function resFromSerever( res ) {
+		resFromServer = function resFromServer( res ) {
+			if ( !res.success ) {
+				errorHandler();
+
+				return false;
+			}
+
 			/**
 			 * Полученнный с сервера массив вариантов доставок для текущего товара
 			 * @type	{Array}
 			 */
 			var deliveryInfo = res.product[0].delivery;
 
-			if ( !res.success ) {
-				widgetBox.remove();
-
-				return false;
-			}
-
 			for ( var i = deliveryInfo.length - 1; i >= 0; i-- ) {
 				switch (deliveryInfo[i].token){
 					case 'standart':
-						var standartBox = widgetBox.find('.bWidgetBuy__eDelivery-price'),
+						var standartBox = widgetBox.find('.mDeliveryPrice'),
 							standartData = {
 								price: deliveryInfo[i].price,
 								dateString: deliveryInfo[i].date.name
@@ -154,7 +169,7 @@
 						break;
 
 					case 'self':
-						var selfBox = widgetBox.find('.bWidgetBuy__eDelivery-free'),
+						var selfBox = widgetBox.find('.mDeliveryFree'),
 							selfData = {
 								price: deliveryInfo[i].price,
 								dateString: deliveryInfo[i].date.name
@@ -170,12 +185,22 @@
 						break;
 				}
 			}
-
 			widgetBox.removeClass('mLoader');
 		};
 	// end of functions
+	
+	dataToSend = {
+		'product':[{
+			'id': productInfoVal.id
+		}]
+	};
 
-	if ( url === '' ) {
+	if ( url === '' && deliveryShops.length === 0 ) {
+		console.warn('URL отсутствует. Список магазинов пуст.');
+		
+		widgetBox.removeClass('mLoader');
+	}
+	else if ( url === '' ) {
 		fillAvalShopTmpl( deliveryShops );
 	}
 	else {
@@ -183,7 +208,15 @@
 			type: 'POST',
 			url: url,
 			data: dataToSend,
-			success: resFromSerever
+			success: resFromServer,
+			statusCode: {
+				500: errorHandler,
+				502: errorHandler,
+				503: errorHandler,
+				504: errorHandler
+			},
+			error: errorHandler
 		});
 	}
+
 }());

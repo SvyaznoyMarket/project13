@@ -14,41 +14,31 @@ if ($product instanceof \Model\Product\Entity) {
     $region_id = \App::user()->getRegion()->getId();
 
     $photo = null;
-    $tmp = $product->getImageUrl(4);
+    $tmp = $product->getImageUrl(3);
     if ($tmp) $photo = $tmp;
 
     $brand = $product->getBrand() ? $product->getBrand()->getName() : null;
     $scr_product['identifier'] = $smantic->resetProductId($product);
-    $scr_product['fn'] = $product->getWebName();
+    //$scr_product['fn'] = $product->getWebName();
+    $scr_product['fn'] = $product->getName();
     $scr_product['category'] = $prod_cats;
     $scr_product['description'] = $product->getTagline();
     $scr_product['brand'] = $brand;
     $scr_product['price'] = $product->getPrice(); //стоимость со скидкой
     $scr_product['amount'] = $product->getPriceOld(); // стоимость без скидки
+    if (!$scr_product['amount']) $scr_product['amount'] = $scr_product['price'];
     $scr_product['currency'] = 'RUB';
     /*$scr_product['url'] = 'http://' . $domain . $product->getLink(); */
-    $scr_product['url'] = 'http://' . $domain . $_SERVER['REQUEST_URI'];
+    $scr_product['url'] = 'http://' . $domain . strtok($_SERVER["REQUEST_URI"], '?');
     $scr_product['photo'] = $photo;
 }
 
-if (!empty($scr_product)):
 ?>
-<script type="text/javascript">
-var sonar_product = { <?
-    foreach($scr_product as $key => $value):
-        if (!empty($value)):
-            $i++;
-            if ($i>1) echo ","; // считаем, что identifier полуюбому существует у продукта, иначе запятая будет не в тему
-            echo PHP_EOL;
-            echo $key.": " . $smantic->wrapEscapeQuotes($value);
-        endif;
-    endforeach;
-    echo PHP_EOL;
-    ?>
-};
-</script>
-<?
-endif;
+
+<? if (!empty($scr_product)): ?>
+    <div id="sociomanticProductPageStream" data-scr-product="<?= $page->json($scr_product) ?>" data-prod-cats="<?= $page->json($prod_cats) ?>" class="jsanalytics"></div>
+<? endif;
+
 /* example: <!--
 <script type="text/javascript">
     var sonar_product = {

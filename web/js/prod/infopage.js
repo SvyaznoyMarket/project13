@@ -6,47 +6,56 @@
  */
 (function(){
 	var handleLinksToggle = function() {
-		var toggle = $(this);
-		var linksContainer = toggle.siblings('.links_response');
-		var task = $(this).data('task');
-    if(toggle.hasClass('expanded')) {
+		var toggle = $(this),
+			linksContainer = toggle.siblings('.links_response'),
+			task = $(this).data('task');
+		// end of vars
+
+		if ( toggle.hasClass('expanded') ) {
 			linksContainer.html('');
 			toggle.html('Ссылки');
-      toggle.removeClass('expanded');
-    } else {
+			toggle.removeClass('expanded');
+		}
+		else {
 			$.get('/cron/'+task+'/links', {}, function(data){
 				if (data.success === true) {
 					toggle.html('Скрыть ссылки');
 					linksContainer.html(data.data);
 				}
 			});
-      toggle.addClass('expanded');
-    }
-    return false;
+
+			toggle.addClass('expanded');
+		}
+
+		return false;
 	};
 
 	var handleCronReportStart = function() {
 		var toggle = $(this);
-    if(toggle.hasClass('expanded')) {
+
+		if ( toggle.hasClass('expanded') ) {
 			$('#report_start_response').html('');
 			toggle.html('Сгенерировать');
-      toggle.removeClass('expanded');
-    } else {
+			toggle.removeClass('expanded');
+		}
+		else {
 			$.get('/cron/report', {}, function(data){
 				if (data.success === true) {
 					toggle.html('Скрыть информацию');
 					$('#report_start_response').html(data.data);
 				}
 			});
-      toggle.addClass('expanded');
-    }
-    return false;
+
+			toggle.addClass('expanded');
+		}
+
+		return false;
 	};
 
 
-	$(document).ready(function(){
-	  $('.cron_report_start').bind('click', handleCronReportStart);
-	  $('.cronLinks').bind('click', handleLinksToggle);
+	$(document).ready(function() {
+		$('.cron_report_start').bind('click', handleCronReportStart);
+		$('.cronLinks').bind('click', handleLinksToggle);
 	});
 }());
 
@@ -67,21 +76,23 @@
  * @author		Zaytsev Alexandr
  */
 ;(function(){
-	var discountSubscribing = function(e){
+	var discountSubscribing = function( e ){
 		e.preventDefault();
 
-		var form = $('#subscribe-form');
-		var wholemessage = form.serializeArray();
+		var form = $('#subscribe-form'),
+			wholemessage = form.serializeArray();
+		// end of vars
 
-		var authFromServer = function(response) {
+		var authFromServer = function( response ) {
 			if ( !response.success ) {
 				return false;
 			}
+
 			form.find('label').hide();
 			form.find('#subscribeSaleSubmit').empty().addClass('font18').html('Спасибо, уже скоро в вашей почте информация об уцененных товарах.');
 		};
 
-		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val();
+		wholemessage['redirect_to'] = form.find('[name="redirect_to"]:first').val();
 
 		$.ajax({
 			type: 'POST',
@@ -94,7 +105,7 @@
 	};
 
 	$(document).ready(function(){
-		if (!$('#subscribe-form').length){
+		if ( !$('#subscribe-form').length ) {
 			return false;
 		}
 		
@@ -126,11 +137,11 @@ $(document).ready(function(){
 					if( !res.success ) {
 						return false;
 					}
-					
+
 					form.html('<div class="subscribe-form__title">Спасибо! подтверждение подписки отправлено на указанный e-mail</div>');
 					window.docCookies.setItem('subscribed', 1, 157680000, '/');
 
-					form.after('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
+					// form.after('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
 
 					if( typeof(_gaq) !== 'undefined' ){
 						_gaq.push(['_trackEvent', 'subscribe', email, utm_source]);
@@ -144,49 +155,9 @@ $(document).ready(function(){
 		};
 
 		$('.subscribe-form__btn').bind('click', subscribing);
+
 	}
-	
 
-	if ( $('.subscribe-form__email').length && $('.show_flocktory_popup').length ) {
-		var input_friend = $('.subscribe-form__email');
-
-		var subscribing_friend = function subscribing_friend() {
-			var email_friend = input_friend.val();
-
-			if ( email_friend.search('@') !== -1 ) {
-				var flocktory_subscription_date = new Date();
-				var flocktory_subscription_date_string = flocktory_subscription_date.getFullYear() + '' + flocktory_subscription_date.getMonth() + '' + flocktory_subscription_date.getDay() + '' + flocktory_subscription_date.getHours() + '' + flocktory_subscription_date.getMinutes() + '' + flocktory_subscription_date.getSeconds() + '' + flocktory_subscription_date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000);
-				var _flocktory = window._flocktory = _flocktory || [];
-
-				_flocktory.push({
-						"order_id": flocktory_subscription_date_string,
-						//"email": 'hello@flocktory.com',
-						"email": email_friend,
-						"name": email_friend,
-						"price": 0,
-						"domain": "registration.enter.ru",
-						"items": [{
-							"id": "подписка на рассылку",
-							"title": "подписка на рассылку",
-							"price":  0,
-							"image": "",
-							"count":  1
-						}]
-				});
-
-				(function () {     
-					var s = document.createElement('script');
-					s.type = 'text/javascript';
-					s.async = true;     
-					s.src = "//api.flocktory.com/1/hello.2.js";     
-					var l = document.getElementsByTagName('script')[0];
-					l.parentNode.insertBefore(s, l);   
-				})();
-			}
-		};
-
-		$('.subscribe-form__btn').bind('click', subscribing_friend);
-	}
 
 
 	/**
@@ -220,7 +191,7 @@ $(document).ready(function(){
 	 * form register corporate
 	 */
 	if ( $('#corp_select').length ) {
-        $('form[action="/corporate-register"]').bind('submit', function(){
+        $('form[action="/b2b"]').bind('submit', function(){
             if ( $('#corp_select').find('option:selected').val() === 'Другая форма' ) {
                 return false;
             }
@@ -230,7 +201,7 @@ $(document).ready(function(){
 			if ( $(this).find('option:selected').val() === 'Другая форма' ) {
 				$('#corpNotice').lightbox_me({
 					centered: true,
-					closeSelector: ".close"
+					closeSelector: '.close'
 				});
 			}
 		});
@@ -257,8 +228,8 @@ $(document).ready(function(){
 		});
 		
 		if ( typeof( $.mask ) !== 'undefined' ) {
-			$.mask.definitions['n'] = "[()0-9\ \-]";
-			$("#phonemask").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } );
+			$.mask.definitions['n'] = '[0-9]';
+			$('#phonemask').mask('+7 (nnn) nnn-nn-nn');
 		}
 		
 		var emptyValidation = function emptyValidation( node ) {
@@ -339,7 +310,7 @@ $(document).ready(function(){
 
 	/* Credits inline */
 	if ( $('.bCreditLine').length ) {
-		document.getElementById("requirementsFullInfoHref").style.cursor="pointer";
+		document.getElementById('requirementsFullInfoHref').style.cursor = 'pointer';
 
 		$('#requirementsFullInfoHref').bind('click', function() {
 			$('.bCreditLine2').toggle();
@@ -351,7 +322,8 @@ $(document).ready(function(){
 
 		for ( var i = 0; i < creditOptions.length; i++){
 			var creditOption = creditOptions[i];
-			$('<option>').val(creditOption.id).text(creditOption.name).appendTo("#productSelector");
+
+			$('<option>').val(creditOption.id).text(creditOption.name).appendTo('#productSelector');
 		}
 
 		$('#productSelector').change(function() {
@@ -370,13 +342,13 @@ $(document).ready(function(){
 				
 
 				for ( var j in bankRelations[i] ) {
-					programNames += "<h4>" + bankInfo[i].programs[bankRelations[i][j]].name + "</h4>\r\n<ul>";
+					programNames += '<h4>' + bankInfo[i].programs[bankRelations[i][j]].name + '</h4>\r\n<ul>';
 
 					for ( var k in bankInfo[i].programs[bankRelations[i][j]].params ) {
-						programNames += "\t<li>" + bankInfo[i].programs[bankRelations[i][j]].params[k] + "</li>\r\n";
+						programNames += '\t<li>' + bankInfo[i].programs[bankRelations[i][j]].params[k] + '</li>\r\n';
 					}
 
-					programNames += "</ul>";
+					programNames += '</ul>';
 				}
 
 				dtmpl.programNames = programNames;
@@ -406,7 +378,7 @@ $(document).ready(function(){
 		};
 
 		$('body').bind('click.mob', hideQRpopup);
-		$("div.bMobDown").click(function( e ) {
+		$('div.bMobDown').click(function( e ) {
 			e.stopPropagation();
 		});
 
@@ -416,36 +388,43 @@ $(document).ready(function(){
 			return false;
 		});
 
-		$(".android-load").click(function () {
-			showQRpopup(".android-block");
+		$('.android-load').click(function () {
+			showQRpopup('.android-block');
 
 			return false;
 		});
 
-		$(".iphone-load").click(function () {
-			showQRpopup(".iphone-block");
+		$('.iphone-load').click(function () {
+			showQRpopup('.iphone-block');
 
 			return false;
 		});
 
-		$(".symbian-load").click(function () {
-			showQRpopup(".symbian-block");
+		$('.symbian-load').click(function () {
+			showQRpopup('.symbian-block');
 
 			return false;
 		});
 	}
 
 	// login form toggle
-	if ( $('#hideLoginform').length ) {
-		$('#hideLoginform').bind('click', function () {
-			var loginform = $('#login-form');
+	if ( $('.jsHideLoginform').length ) {
+		var loginform = $('.jsLoginForm'),
+			hideLoginformLink = $('.jsHideLoginform');
+		// end of vars
 
-			$('#hideLoginform').hide();
-			loginform.slideDown(300);
-			$.scrollTo(loginform, 500);
+		var hideLoginform = function () {
+				hideLoginformLink.hide();
+				loginform.slideDown(300);
+				$.scrollTo(loginform, 500);
 
-			return false;
-		});
+				return false;
+			};
+		// end of functions
+
+		// скрываем форму логина при загрузке страницы /login
+		loginform.hide();
+		hideLoginformLink.on('click', hideLoginform);
 	}
 
 	/*paginator*/
@@ -565,7 +544,7 @@ $(document).ready(function(){
 
 		var initSlider = function initSlider() {
 			for ( var slide in data ) {
-				var slideTmpl = tmpl("slide_tmpl",data[slide]);
+				var slideTmpl = tmpl('slide_tmpl', data[slide]);
 
 				$('.bPromoCatalogSliderWrap').append(slideTmpl);
 
@@ -579,7 +558,6 @@ $(document).ready(function(){
 
 		initSlider(); //запуск слайдера
 
-		//переменные
 		var slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width(),	// ширина одного слайда
 			slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2)),	// установка ширины обертки
 			nowSlide = 0;	//текущий слайд
@@ -627,7 +605,7 @@ $(document).ready(function(){
 				nowSlide = slide;
 			});
 
-			window.location.hash = "slide" + (slide + 1);
+			window.location.hash = 'slide' + (slide + 1);
 			catalogPaginator.setActive(slide);
 		};
 
@@ -642,3 +620,119 @@ $(document).ready(function(){
 
 	}
 });
+
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Обработчик страницы со стоимостью услуг
+ *
+ * @requires  jQuery
+ */
+;(function(global) {
+	var serviceData = $('#contentPageData').data('data'),
+		selectRegion = $('#region_list'),
+		serviceTableContent = $('#bServicesTable tbody');
+	// end of vars
+
+
+	var createTable = function createTable( chosenRegion ) {
+			var tableData = serviceData[chosenRegion],
+				i,
+				key,
+				tmpTr;
+			// end of vars
+
+			serviceTableContent.empty();
+
+			if ( tableData instanceof Array ) {
+				// просто выводим элементы
+
+				for ( i = 0; i < tableData.length; i++ ) {
+					tmpTr = '<tr>'+
+								//'<td>'+ (i + 1) +'</td>'+
+								'<td>'+ tableData[i]['Услуга'] +'</td>'+
+								'<td>'+ tableData[i]['Стоимость'] +'</td>'+
+							'</tr>';
+
+					serviceTableContent.append(tmpTr);
+				}
+			}
+			else if ( tableData instanceof Object ) {
+				// элементы разбиты на категории
+
+				for ( key in tableData ) {
+					if ( tableData.hasOwnProperty(key) ) {
+						tmpTr = '<tr>'+
+									//'<th></th>'+
+									'<th><strong>'+ key +'</strong></th>'+
+									'<th></th>'+
+								'</tr>';
+
+						serviceTableContent.append(tmpTr);
+
+						for ( i = 0; i < tableData[key].length; i++ ) {
+							tmpTr = '<tr>'+
+										//'<td>'+ (i + 1) +'</td>'+
+										'<td>'+ tableData[key][i]['Услуга'] +'</td>'+
+										'<td>'+ tableData[key][i]['Стоимость'] +'</td>'+
+									'</tr>';
+
+							serviceTableContent.append(tmpTr);
+						}
+					}
+				}
+			}
+		},
+
+		/**
+		 * Обработка полченных данных
+		 */
+		prepareData = function prepareData( data ) {
+			var i,
+				key,
+				tmpOpt,
+				initVal;
+			// end of vars
+
+			console.info('prepareData');
+
+			selectRegion.empty();
+
+			for ( key in data ) {
+				if ( data.hasOwnProperty(key) ) {
+					tmpOpt = $('<option>').val(key).html(key);
+					selectRegion.prepend(tmpOpt);
+				}
+			}
+
+			initVal = selectRegion.find('option:first').val();
+
+			selectRegion.val(initVal);
+			createTable(initVal);
+		},
+
+		/**
+		 * Хандлер смены региона
+		 */
+		changeRegion = function changeRegion() {
+			var self = $(this),
+				selectedRegion = self.val();
+			// end of vars
+
+			createTable(selectedRegion);
+		};
+	// end of function
+
+	$('#bServicesTable tr th:first').remove();
+
+	if ( global.ENTER.utils.objLen(serviceData) ) {
+		prepareData(serviceData);
+		selectRegion.on('change', changeRegion);
+	}
+
+}(this));

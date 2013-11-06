@@ -59,11 +59,11 @@ class Repository {
     public function prepareEntityById($id, \Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('product/get', array(
+        $this->client->addQuery('product/get', [
             'select_type' => 'id',
             'id'        => [$id],
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ), [], $callback);
+        ], [], $callback);
     }
 
     /**
@@ -74,11 +74,11 @@ class Repository {
     public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('product/get', array(
+        $this->client->addQuery('product/get', [
             'select_type' => 'slug',
             'slug'        => $token,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ), [], $callback);
+        ], [], $callback);
     }
 
     /**
@@ -182,11 +182,11 @@ class Repository {
     public function prepareCollectionByBarcode(array $barcodes, \Model\Region\Entity $region = null, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('product/get', array(
+        $this->client->addQuery('product/get', [
             'select_type' => 'bar_code',
             'bar_code'    => $barcodes,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ), [], $done, $fail);
+        ], [], $done, $fail);
     }
 
     /**
@@ -201,7 +201,7 @@ class Repository {
 
         $client = clone $this->client;
 
-        $chunckedIds = array_chunk($ids, 60);
+        $chunckedIds = array_chunk($ids, \App::config()->coreV2['chunk_size']);
 
         $collection = [];
         $entityClass = $this->entityClass;
@@ -244,11 +244,11 @@ class Repository {
 
         if (!(bool)$ids) return;
 
-        $this->client->addQuery('product/get', array(
+        $this->client->addQuery('product/get', [
             'select_type' => 'id',
             'id'          => $ids,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ), [], $done, $fail);
+        ], [], $done, $fail);
     }
 
     /**
@@ -262,11 +262,11 @@ class Repository {
 
         if (!(bool)$eans) return;
 
-        $this->client->addQuery('product/get', array(
+        $this->client->addQuery('product/get', [
             'select_type' => 'id',
             'ean'          => $eans,
             'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ), [], $done, $fail);
+        ], [], $done, $fail);
     }
 
     /**
@@ -280,17 +280,21 @@ class Repository {
         $client = clone $this->client;
 
         $count = 0;
-        $client->addQuery('listing/list', array(
-            'filter' => array(
-                'filters' => $filter,
-                'sort'    => [],
-                'offset'  => null,
-                'limit'   => null,
-            ),
-            'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-        ), [], function($data) use(&$count){
-            $count = !empty($data['count']) ? (int)$data['count'] : 0;
-        });
+        $client->addQuery('listing/list',
+            [
+                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                'filter' => [
+                    'filters' => $filter,
+                    'sort'    => [],
+                    'offset'  => null,
+                    'limit'   => null,
+                ],
+            ],
+            [],
+            function($data) use(&$count){
+                $count = !empty($data['count']) ? (int)$data['count'] : 0;
+            }
+        );
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         return $count;
@@ -307,20 +311,24 @@ class Repository {
     public function getIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $response = array();
+        $response = [];
 
         $client = clone $this->client;
-        $client->addQuery('listing/list', array(
-            'filter' => array(
-                'filters' => $filter,
-                'sort'    => $sort,
-                'offset'  => $offset,
-                'limit'   => $limit,
-            ),
-            'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-            ), array(), function($data) use(&$response) {
-            $response = $data;
-        });
+        $client->addQuery('listing/list',
+            [
+                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                'filter' => [
+                    'filters' => $filter,
+                    'sort'    => $sort,
+                    'offset'  => $offset,
+                    'limit'   => $limit,
+                ],
+            ],
+            [],
+            function($data) use(&$response) {
+                $response = $data;
+            }
+        );
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         $collection = [];
@@ -353,14 +361,15 @@ class Repository {
         $client = clone $this->client;
 
         $response = [];
-        $client->addQuery('listing/list', [
-            'filter' => [
+        $client->addQuery('listing/list',
+            [
+                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                'filter' => [
                     'filters' => $filter,
                     'sort'    => $sort,
                     'offset'  => $offset,
                     'limit'   => $limit,
                 ],
-                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
             ],
             [],
             function($data) use(&$response) {
@@ -372,7 +381,7 @@ class Repository {
         $collection = [];
         $entityClass = $this->entityClass;
         if (!empty($response['list'])) {
-            foreach (array_chunk($response['list'], 60) as $idsInChunk) {
+            foreach (array_chunk($response['list'], \App::config()->coreV2['chunk_size']) as $idsInChunk) {
                 $client->addQuery('product/get',
                     [
                         'select_type' => 'id',
@@ -410,15 +419,18 @@ class Repository {
         $client = clone $this->client;
 
         $response = [];
-        $client->addQuery('listing/list', array(
-            'filter' => array(
-                'filters' => $filter,
-                'sort'    => $sort,
-                'offset'  => $offset,
-                'limit'   => $limit,
-            ),
-            'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-            ), array(), function($data) use(&$response) {
+        $client->addQuery('listing/list',
+            [
+                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                'filter' => [
+                    'filters' => $filter,
+                    'sort'    => $sort,
+                    'offset'  => $offset,
+                    'limit'   => $limit,
+                ],
+            ],
+            [],
+            function($data) use(&$response) {
             $response = $data;
         });
         $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
@@ -472,7 +484,7 @@ class Repository {
 
         if ((bool)$ids) {
             $entityClass = $this->entityClass;
-            foreach (array_chunk($ids, 60) as $idsInChunk) {
+            foreach (array_chunk($ids, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
                 $client->addQuery('product/get',
                     [
                         'select_type' => 'id',
@@ -521,13 +533,21 @@ class Repository {
      * Возвращает массив с аксессуарами, сгруппированными по категориям
      *
      * @param $product
+     * @param $accessoryItems
      * @param int|null $category
      * @param int|null $limit
+     * @param array|null $catalogJson
      * @return array
      */
-    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null) {
+    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null, $catalogJson = null) {
         // массив токенов категорий, разрешенных в json
-        $jsonCategoryToken = self::getJsonCategoryToken($product);
+        if(is_null($catalogJson)) {
+            $jsonCategoryToken = self::getJsonCategoryToken($product);
+        } elseif(empty($catalogJson)) {
+            $jsonCategoryToken = null;
+        } else {
+            $jsonCategoryToken = isset($catalogJson['accessory_category_token']) ? $catalogJson['accessory_category_token'] : null;
+        }
 
         if(empty($jsonCategoryToken)) {
             return [];
@@ -595,7 +615,7 @@ class Repository {
         });
         $dataStore->execute();
 
-        return empty($productJson) ? $productJson : $productJson['accessory_category_token'];
+        return empty($productJson) ? $productJson : (isset($productJson['accessory_category_token']) ? $productJson['accessory_category_token'] : null);
     }
 
 

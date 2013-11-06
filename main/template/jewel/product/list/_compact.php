@@ -10,12 +10,15 @@
 ?>
 
 <? if (!$isAjax): // убрать декорацию div-ом, если ajax-запрос ?>
-  <div class="items-section">
-    <ul class="items-section__list clearfix">
+  <div class="bBrandGoods">
+    <ul class="bBrandGoodsList clearfix">
 <? endif ?>
 
     <? $i = 0; foreach ($pager as $product): $i++ ?>
-        <?= $page->render('jewel/product/show/_compact', array('product' => $product)) ?>
+        <?= $page->render('jewel/product/show/_compact', [
+            'product' => $product,
+            'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : []
+        ]) ?>
     <? endforeach ?>
 
 <? if (!$isAjax): // убрать декорацию div-ом, если ajax-запрос ?>

@@ -50,7 +50,7 @@ return [
     ],
     // регистрация корпоративного пользователя
     'user.registerCorporate' => [
-        'pattern' => '/corporate-register',
+        'pattern' => '/b2b',
         'action'  => ['User\Action', 'registerCorporate'],
     ],
     // выход пользователя
@@ -346,6 +346,28 @@ return [
         'pattern' => '/cart/set-products',
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
+    // добавление товара в корзину
+    'cart.paypal.product.set' => [
+        'pattern' => '/cart/paypal/add-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'set'],
+    ],
+    // удаление товара из корзины
+    'cart.paypal.product.delete' => [
+        'pattern' => '/cart/paypal/delete-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
+    ],
+
+    // добавление товара в корзину
+    'cart.lifeGift.product.set' => [
+        'pattern' => '/cart/life-gift/add-product/{productId}',
+        'action'  => ['Cart\LifeGift\ProductAction', 'set'],
+    ],
+    // удаление товара из корзины
+    'cart.lifeGift.product.delete' => [
+        'pattern' => '/cart/life-gift/delete-product/{productId}',
+        'action'  => ['Cart\LifeGift\ProductAction', 'delete'],
+    ],
+
     // добавление услуги в корзину
     'cart.service.set' => [
         'pattern' => '/cart/add-service/{serviceId}/for-product/{productId}',
@@ -386,6 +408,14 @@ return [
         'pattern' => '/cart/coupon/delete',
         'action'  => ['Cart\CouponAction', 'delete'],
     ],
+    'cart.blackcard.apply' => [
+        'pattern' => '/cart/blackcard',
+        'action'  => ['Cart\BlackcardAction', 'apply'],
+    ],
+    'cart.blackcard.delete' => [
+        'pattern' => '/cart/blackcard/delete',
+        'action'  => ['Cart\BlackcardAction', 'delete'],
+    ],
     'cart.sum' => [
         'pattern' => '/cart/sum',
         'action'  => ['Cart\SumAction', 'execute'],
@@ -397,9 +427,18 @@ return [
         'action'  => ['Order\OneClickAction', 'execute'],
         'method'  => ['POST'],
     ],
-    'order.create' => [
+    'order' => [
         'pattern' => '/orders/new',
         'action'  => ['Order\Action', 'create'],
+    ],
+    'order.create' => [
+        'pattern' => '/orders/create',
+        'action'  => ['Order\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'order.delivery' => [
+        'pattern' => '/ajax/order-delivery',
+        'action'  => ['Order\DeliveryAction', 'execute'],
     ],
     'order.externalCreate' => [
         'pattern' => '/orders/create-external',
@@ -421,6 +460,24 @@ return [
         'pattern' => '/orders/fail_payment',
         'action'  => ['Order\Action', 'paymentFail'],
     ],
+    'order.paypal.new' => [
+        'pattern' => '/orders/paypal/new',
+        'action'  => ['Order\Paypal\NewAction', 'execute'],
+    ],
+    'order.paypal.create' => [
+        'pattern' => '/orders/paypal/create',
+        'action'  => ['Order\Paypal\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'order.lifeGift.new' => [
+        'pattern' => '/orders/life-gift/new',
+        'action'  => ['Order\LifeGift\NewAction', 'execute'],
+    ],
+    'order.lifeGift.create' => [
+        'pattern' => '/orders/life-gift/create',
+        'action'  => ['Order\LifeGift\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
     'order.bill' => [
         'pattern' => '/private/orders/{orderNumber}/bill',
         'action'  => ['Order\BillAction', 'execute'],
@@ -428,6 +485,16 @@ return [
     'order.clearPaymentUrl' => [
         'pattern' => '/orders/clearPaymentUrl',
         'action'  => ['Order\Action', 'clearPaymentUrl'],
+    ],
+
+    // paypal
+    'order.paypal.complete' => [
+        'pattern' => '/orders/paypal-complete',
+        'action'  => ['Order\PaypalAction', 'complete'],
+    ],
+    'order.paypal.fail' => [
+        'pattern' => '/orders/paypal-fail',
+        'action'  => ['Order\PaypalAction', 'fail'],
     ],
 
     // услуги
@@ -453,6 +520,18 @@ return [
         'action'  => ['Promo\IndexAction', 'execute'],
     ],
 
+    // срезы
+    'slice.category' => [
+        'pattern' => '/slices/{sliceToken}/{categoryToken}',
+        'require' => ['sliceToken' => '[\w\d-_]+', 'categoryToken' => '[\w\d-_]+'],
+        'action'  => ['Slice\ShowAction', 'category'],
+    ],
+    'slice.show' => [
+        'pattern' => '/slices/{sliceToken}',
+        'require' => ['sliceToken' => '[\w\d-_]+'],
+        'action'  => ['Slice\ShowAction', 'execute'],
+    ],
+
     // smartengine
     'product.recommended' => [
         'pattern' => '/product-also-viewed/{productId}',
@@ -464,14 +543,16 @@ return [
         'action' => ['Jewel\Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
-    'product.similar' => [
+    'product.similar' => [ /// executed SmartEngine or RetailRocker
         'pattern' => '/ajax/product-similar/{productId}',
         'action' => ['Product\SimilarAction', 'execute'],
+        //'action' => ['Product\SimilarAction', 'debug'], // just for debug
         'require' => ['productId' => '\d+'],
     ],
-    'product.alsoViewed' => [
+    'product.alsoViewed' => [ /// executed SmartEngine or RetailRocker
         'pattern' => '/ajax/product-also-viewed/{productId}',
         'action' => ['Product\AlsoViewedAction', 'execute'],
+        //'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
         'require' => ['productId' => '\d+'],
     ],
     /*
@@ -511,6 +592,13 @@ return [
     'user.changePassword' => [
         'pattern' => '/private/password',
         'action'  => ['User\ChangePasswordAction', 'execute'],
+    ],
+
+    // маршрутизатор нескольких запросов
+    'route' => [
+        'pattern' => '/route',
+        'action'  => ['RouteAction', 'execute'],
+        'method'  => ['POST'],
     ],
 
     // подписка
@@ -568,12 +656,6 @@ return [
         'method'  => ['POST'],
     ],
 
-    'git.pull' => [
-        'pattern' => '/git/pull',
-        'action'  => ['GitAction', 'pull'],
-        'method'  => ['GET'],
-    ],
-
     //cron
     'cron-index' => [
         'pattern' => '/cron',
@@ -593,6 +675,13 @@ return [
         'pattern' => '/survey/submit-answer',
         'action'  => ['Survey\Action', 'submitAnswer'],
         'method'  => ['POST'],
+    ],
+
+    // git
+    'git.pull' => [
+        'pattern' => '/git/pull',
+        'action'  => ['GitAction', 'pull'],
+        'method'  => ['GET'],
     ],
 
     //content

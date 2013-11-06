@@ -8,7 +8,7 @@
     </label>
         <div class="bPayMethodDesc"><?= $paymentMethod->getDescription() // ?></div>
         <? if ($paymentMethod->getIsCredit() && ($bank = reset($banks))) {  ?>
-        <div class="innerType" id="creditInfo" <? if ($paymentMethod->getId() != $selectedPaymentMethodId) echo 'style="display:none"' ?> >
+        <div class="innerType bPayMethodAction" id="creditInfo" <? if ($paymentMethod->getId() != $selectedPaymentMethodId) echo 'style="display:none"' ?> >
             <div>Выберите банк:</div>
             <div class="bankWrap">
                 <div class="bSelectWrap mFastInpSmall fl">
@@ -23,8 +23,8 @@
             <input type='hidden' name='order[credit_bank_id]' value='<?= $bank->getId(); ?>' />
             <div id="tsCreditCart" data-value="<?= $page->json($creditData) ?>" ></div>
             <!--div>Сумма заказа: <span class="rubl">p</span></div-->
-            <div>
-                <strong style="font-size:160%; color: #000;">Ежемесячный платеж<sup>**</sup>:
+            <div style="margin: 10px 0 5px;">
+                <strong style="font-size: 14px;">Ежемесячный платеж<sup>**</sup>:
                     <span id="creditPrice"></span> <span class="rubl"> p</span>
                 </strong>
             </div>

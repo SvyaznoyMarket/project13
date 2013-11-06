@@ -44,7 +44,19 @@ class Action {
         if (empty($seoTagJson['acts_as_category'])) {
             /** @var $categoriesByToken \Model\Product\Category\Entity[] */
             $categoriesByToken = [];
-            $categories = \RepositoryManager::productCategory()->getCollectionById(array_keys($tagCategoriesById));
+            $categories = [];
+
+            // получаем категории по частям, так как в случае получения большого количества
+            // категорий за 1 раз происходит фейл (видимо 414 Request-URI Too Large)
+            $part = 1;
+            $step = 100;
+            while ($part <= (int)ceil(count(array_keys($tagCategoriesById)) / $step)) {
+                $tagCategoriesByIdPart = array_slice(array_keys($tagCategoriesById), ($part - 1) * $step, $step);
+                $categoriesPart = \RepositoryManager::productCategory()->getCollectionById($tagCategoriesByIdPart);
+                $categories = array_merge($categories, $categoriesPart);
+                $part++;
+            }
+
             foreach ($categories as $category) {
                 /** @var $category \Model\Product\Category\Entity */
                 $tagCategory = $tagCategoriesById[$category->getId()];
@@ -77,10 +89,31 @@ class Action {
         }
 
         if($category) {
+            // seo из shopscript
+            $shopScriptSeo = [];
+            if(\App::config()->shopScript['enabled']) {
+                $shopScript = \App::shopScriptClient();
+                $shopScript->addQuery('category/get-seo', [
+                        'slug' => $category->getToken(),
+                        'geo_id' => \App::user()->getRegion()->getId(),
+                    ], [], function ($data) use (&$shopScriptSeo) {
+                    if($data && is_array($data)) $shopScriptSeo = reset($data);
+                });
+                $shopScript->execute();
+            }
+
             // сортировка
             $productSorting = new \Model\Product\Sorting();
             list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
             $productSorting->setActive($sortingName, $sortingDirection);
+
+            // если сортировка по умолчанию и в json заданы настройки сортировок,
+            // то применяем их
+            if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
+                $sort = $catalogJson['sort'];
+            } else {
+                $sort = $productSorting->dump();
+            }
 
             // вид товаров
             $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
@@ -102,7 +135,7 @@ class Action {
                 );
                 $productPager = $repository->getIteratorByFilter(
                     $productFilter->dump(),
-                    $productSorting->dump(),
+                    $sort,
                     ($pageNum - 1) * $limit,
                     $limit
                 );
@@ -113,8 +146,6 @@ class Action {
                     throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
                 }
             }
-
-            $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
             // ajax
             if ($request->isXmlHttpRequest()) {
@@ -131,6 +162,7 @@ class Action {
                 &$productPager,
                 &$productFilter,
                 &$productSorting,
+                &$sort,
                 &$productView,
                 &$category,
                 &$categoryToken,
@@ -139,12 +171,14 @@ class Action {
                 &$seoContent,
                 &$sidebarCategoriesTree,
                 &$categoriesByToken,
-                &$catalogJson
+                &$catalogJson,
+                &$shopScriptSeo
             ) {
                 $page->setParam('tag', $tag);
                 $page->setParam('productPager', $productPager);
                 $page->setParam('productFilter', $productFilter);
                 $page->setParam('productSorting', $productSorting);
+                $page->setParam('sort', $sort);
                 $page->setParam('productView', $productView);
                 $page->setParam('category', $category);
                 $page->setParam('categoryToken', $categoryToken);
@@ -155,6 +189,7 @@ class Action {
                 $page->setParam('sidebarCategoriesTree', $sidebarCategoriesTree);
                 $page->setParam('categoriesByToken', $categoriesByToken);
                 $page->setParam('catalogJson', $catalogJson);
+                $page->setParam('shopScriptSeo', $shopScriptSeo);
             };
         } else {
             $setPageParameters = function(\View\Layout $page) use (
@@ -590,7 +625,7 @@ class Action {
             }
             $pagerAll = $repository->getIteratorByFilter(
                 $filtersWithoutShop,
-                $productSorting->dump(),
+                $page->getParam('sort'),
                 ($pageNum - 1) * $limit,
                 $limit
             );
@@ -599,7 +634,7 @@ class Action {
 
         $productPager = $repository->getIteratorByFilter(
             $productFilter->dump(),
-            $productSorting->dump(),
+            $page->getParam('sort'),
             ($pageNum - 1) * $limit,
             $limit
         );

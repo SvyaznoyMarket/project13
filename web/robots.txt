@@ -22,7 +22,24 @@ Disallow: /corporate-register
 Disallow: /request-password
 Disallow: /*?from=enter_
 Disallow: /index.php
-
+Disallow: /*/stock$  
+Disallow: /*?shop=
+Disallow: /*?sender=
+Disallow: /*avtomobilnaya-elektronika-2316
+Disallow: /*mobilnaya-elektronika-avtomobilnie-videoregistratori-871
+Disallow: /*mobilnaya-elektronika-avtomobilnie-radar-detektori-2053
+Disallow: /*mobilnaya-elektronika-gps-navigatori-869
+Disallow: /*avtomagnitoli-i-avtoakustika-avtomagnitoli-2852
+Disallow: /*avtomagnitoli-i-avtoakustika-avtomobilnie-kolonki-2853
+Disallow: /*avtomagnitoli-i-avtoakustika-avtousiliteli-2859
+Disallow: /*avtomagnitoli-i-avtoakustika-sabvuferi-3328
+Disallow: /*avtomobilnaya-elektronika-avtomobilnie-televizori-i-monitori-2757
+Disallow: /*aksessuari-dlya-avtomobilnoy-elektroniki-invertori-i-preobrazovateli-toka-3464
+Disallow: /*avtomobilnaya-elektronika-fm-transmitteri-2329
+Disallow: /*avtomobilnaya-elektronika-avtomobilnie-holodilniki-3461
+Disallow: /*avtomobilnaya-elektronika-avtomobilnie-pilesosi-3460
+Disallow: /*scrollTo=
+Disallow: /*pandora-844
 Host: www.enter.ru
 
 Sitemap: http://www.enter.ru/sitemap.xml

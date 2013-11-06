@@ -50,19 +50,23 @@
             <span><?= $tag->getName() ?></span>
           </a>
         </li>
+        <? if ( $categoriesByToken[$category->getToken()] instanceof \Model\Product\Category\TreeEntity ) : ?>
         <li class="bCtg__eL2 mBold">
           <a href="<?= $page->url('tag.category', ['tagToken' => $tag->getToken(), 'categoryToken' => $category->getToken()]); ?>">
             <span><?= $categoriesByToken[$category->getToken()]->getName() ?></span>
           </a>
         </li>
+        <? endif; ?>
         <ul>
-          <? foreach (array_keys($sidebarCategoriesTree[$category->getToken()]) as $parentToken) { ?>
-            <li class="bCtg__eL3">
-              <a href="<?= $page->url('tag.category', ['tagToken' => $tag->getToken(), 'categoryToken' => $parentToken]); ?>">
-                <span><?= $categoriesByToken[$parentToken]->getName() ?> <span class="gray"><? //= $categoryProductCountsByToken[$parentToken] ?></span></span>
-              </a>
-            </li>
-          <? } ?>
+          <? if ( is_array($sidebarCategoriesTree[$category->getToken()]) && !empty($sidebarCategoriesTree[$category->getToken()]) ): ?>
+              <? foreach (array_keys($sidebarCategoriesTree[$category->getToken()]) as $parentToken) { ?>
+                <li class="bCtg__eL3">
+                  <a href="<?= $page->url('tag.category', ['tagToken' => $tag->getToken(), 'categoryToken' => $parentToken]); ?>">
+                    <span><?= $categoriesByToken[$parentToken]->getName() ?> <span class="gray"><? //= $categoryProductCountsByToken[$parentToken] ?></span></span>
+                  </a>
+                </li>
+              <? } ?>
+          <? endif; ?>
         </ul>
       </ul>
     </dd>

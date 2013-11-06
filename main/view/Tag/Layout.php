@@ -22,7 +22,7 @@ class Layout extends \View\DefaultLayout {
 
         // content title
         if (!$this->getParam('title')) {
-            $this->setParam('title', $tag->getName() . (empty($categoryToken) ? '' : ': ' . $category->getName()));
+            $this->setParam('title', $tag->getName() . ($category ? (': ' . $category->getName()) : ''));
         }
 
         // breadcrumbs
@@ -110,6 +110,7 @@ class Layout extends \View\DefaultLayout {
      */
     private function applySeoPattern(\Model\Page\Entity $page) {
         $dataStore = \App::dataStoreClient();
+        $shopScript = \App::shopScriptClient();
 
         /** @var $category \Model\Product\Category\Entity */
         $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
@@ -128,13 +129,31 @@ class Layout extends \View\DefaultLayout {
         }
         $categoryTokens[] = $category->getToken();
 
-        $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+        if(\App::config()->shopScript['enabled']) {
+            $shopScriptSeo = $this->getParam('shopScriptSeo');
+            while(!empty($shopScriptSeo['redirect']['token'])) {
+                $shopScript->addQuery('category/get-seo', [
+                        'slug' => $shopScriptSeo['redirect']['token'],
+                        'geo_id' => \App::user()->getRegion()->getId(),
+                    ], [], function ($data) use (&$shopScriptSeo) {
+                    if($data && is_array($data)) $shopScriptSeo = reset($data);
+                });
+                $shopScript->execute();
+            }
             $seoTemplate = array_merge([
                 'title'       => null,
                 'description' => null,
                 'keywords'    => null,
-            ], $data);
-        });
+            ], $shopScriptSeo);
+        } else {
+            $dataStore->addQuery(sprintf('seo/catalog/%s.json', implode('/', $categoryTokens)), [], function ($data) use (&$seoTemplate) {
+                 $seoTemplate = array_merge([
+                    'title'       => null,
+                    'description' => null,
+                    'keywords'    => null,
+                ], $data);
+            });
+        }
 
         // данные для шаблона
         $patterns = [

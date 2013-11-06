@@ -18,6 +18,8 @@ class User {
     private $region;
     /** @var Cart */
     private $cart;
+    /** @var Cart\LifeGift */
+    private $lifeGiftCart;
     /** @var array */
     private $recommendedProduct;
 
@@ -112,10 +114,22 @@ class User {
 
     /**
      * Удаляет токен из сессии
+     *
+     * @param \Http\Response|\Http\RedirectResponse|null $response
      */
-    public function removeToken() {
+    public function removeToken($response = null) {
         $token = $this->getToken();
         \App::session()->remove($this->tokenName);
+
+        $domainParts = explode('.', \App::config()->mainHost);
+        $tld = array_pop($domainParts);
+        $domain = array_pop($domainParts);
+        $subdomain = array_pop($domainParts);
+
+        if($response) {
+            $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$domain.$tld");
+            $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$subdomain.$domain.$tld");
+        }
 
         return $token;
     }
@@ -181,7 +195,21 @@ class User {
         }
 
         if (!$this->region) {
-            $this->region = \RepositoryManager::region()->getDefaultEntity(\App::config()->region['defaultId']);
+            if ('terminal' == \App::$name) {
+                $shop = \RepositoryManager::shop()->getEntityById(\App::config()->region['shop_id']);
+                if (!$shop) {
+                    \App::logger()->warn(sprintf('Магазин #"%s" не найден.', \App::config()->region['shop_id']));
+                    $this->region = \RepositoryManager::region()->getDefaultEntity(\App::config()->region['defaultId']);
+                } else {
+                    $this->region = \RepositoryManager::region()->getEntityById($shop->getRegion()->getId());
+                    if (!$this->region) {
+                        \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId));
+                        $this->region = \RepositoryManager::region()->getDefaultEntity(\App::config()->region['defaultId']);
+                    }
+                }
+            } else {
+                $this->region = \RepositoryManager::region()->getDefaultEntity(\App::config()->region['defaultId']);
+            }
         }
 
         if (!$this->region) {
@@ -200,7 +228,7 @@ class User {
         if ($ip = \App::request()->getClientIp()) {
             \RepositoryManager::region()->prepareEntityByIp($ip,
                 function($data) use (&$region) {
-                    if ((bool)$data) {
+                    if ((bool)$data && !empty($data['id'])) {
                         $region = new \Model\Region\Entity($data);
                     }
                 },
@@ -238,6 +266,17 @@ class User {
         }
 
         return $this->cart;
+    }
+
+    /**
+     * @return Cart\LifeGift
+     */
+    public function getLifeGiftCart() {
+        if (!$this->lifeGiftCart) {
+            $this->lifeGiftCart = new Cart\LifeGift();
+        }
+
+        return $this->lifeGiftCart;
     }
 
     public function setCacheCookie(\Http\Response $response) {

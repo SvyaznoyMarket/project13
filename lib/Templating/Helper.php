@@ -32,13 +32,26 @@ class Helper {
         foreach ($request->query->all() as $k => $v) {
             $params[$k] = $v;
         }
-        foreach ($replaces as $k => $v) {
-            if (null === $v) {
-                if (isset($params[$k])) unset($params[$k]);
-                continue;
-            }
 
-            $params[$k] = $v;
+        foreach ($replaces as $k => $v) {
+            if(preg_match('/([^\[]+)\[([^\[]+)\]/', $k, $matches)) {
+                $mainKey = $matches[1];
+                $subKey = $matches[2];
+
+                if (null === $v) {
+                    if (isset($params[$mainKey][$subKey])) unset($params[$mainKey][$subKey]);
+                    continue;
+                }
+
+                $params[$mainKey][$subKey] = $v;
+            } else {
+                if (null === $v) {
+                    if (isset($params[$k])) unset($params[$k]);
+                    continue;
+                }
+
+                $params[$k] = $v;
+            }
         }
 
         $params = array_diff_assoc($params, $excluded);
@@ -174,18 +187,18 @@ class Helper {
      */
     public function dateToRu($date) {
         $monthsEnRu = [
-            'January' => 'января',
-            'February' => 'февраля',
-            'March' => 'марта',
-            'April' => 'апреля',
-            'May' => 'мая',
-            'June' => 'июня',
-            'July' => 'июля',
-            'August' => 'августа',
+            'January'   => 'января',
+            'February'  => 'февраля',
+            'March'     => 'марта',
+            'April'     => 'апреля',
+            'May'       => 'мая',
+            'June'      => 'июня',
+            'July'      => 'июля',
+            'August'    => 'августа',
             'September' => 'сентября',
-            'October' => 'октября',
-            'November' => 'ноября',
-            'December' => 'декабря',
+            'October'   => 'октября',
+            'November'  => 'ноября',
+            'December'  => 'декабря',
         ];
         $dateEn = (new \DateTime($date))->format('j F Y');
         $dateRu = $dateEn;
@@ -198,6 +211,18 @@ class Helper {
         return $dateRu;
     }
 
+    /**
+     * @param $value
+     * @return int|string
+     */
+    public function clearZeroValue($value) {
+        $frac = $value - floor($value);
+        if (0 == $frac) {
+            return intval($value);
+        } else {
+            return rtrim($value, '0');
+        }
+    }
 
 
     /**

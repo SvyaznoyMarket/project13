@@ -5,7 +5,11 @@ $c = require __DIR__ . '/config.php';
 
 $c->debug = true;
 
-$c->coreV2['url']          = 'http://tester.core.ent3.ru/v2/';
+// $c->coreV2['url']          = 'http://tester.core.ent3.ru/v2/';
+$c->coreV2['url']          = 'http://api.enter.ru/v2/';
+
+$c->payment['paypalECS']   = true;
+$c->coreV2['timeout']      *= 3;
 $c->coreV2['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.6,
@@ -15,7 +19,9 @@ $c->coreV2['retryTimeout'] = [
     'huge'    => 3,
     'forever' => 0,
 ];
+$c->coreV2['debug']        = false;
 
+$c->corePrivate['timeout']      *= 3;
 $c->corePrivate['retryTimeout'] = [
     'default' => 1,
     'tiny'    => 0.2,
@@ -27,7 +33,7 @@ $c->corePrivate['retryTimeout'] = [
 ];
 
 $c->reviewsStore['url']          = 'http://reviews.ent3.ru/reviews/';
-$c->reviewsStore['timeout']      = 2;
+$c->reviewsStore['timeout']      *= 5;
 $c->reviewsStore['retryCount']   = 3;
 $c->reviewsStore['retryTimeout'] = [
     'default' => 1,
@@ -39,20 +45,14 @@ $c->reviewsStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->wordpress['timeout']        *= 6;
 $c->wordpress['throwException'] = false;
-$c->wordpress['timeout'] = 4;
 
-$c->dataStore['timeout'] = 2;
+$c->dataStore['timeout'] *= 3;
 
-$c->dataStore['retryTimeout'] = [
-    'default' => 1,
-    'tiny'    => 0.2,
-    'short'   => 0.4,
-    'medium'  => 0.6,
-    'long'    => 1,
-    'huge'    => 1.5,
-    'forever' => 0,
-];
+$c->shopScript['timeout'] *= 3;
+
+$c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
 
 $c->database['host'] = 'localhost';
 
@@ -67,8 +67,9 @@ $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->adFox['enabled'] = false;
 
-$c->smartengine['pull']      = true;
-$c->smartengine['push']      = false;
+$c->product['pullRecommendation'] = true;
+$c->product['pushRecommendation'] = false;
+
 $c->smartengine['apiUrl']    = 'https://selightstage.smartengine.at/se-light/api/1.0/json/';
 $c->smartengine['cert']      = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 $c->smartengine['sslVerify'] = false;
@@ -86,10 +87,6 @@ $c->paymentPsb['payUrl']       = 'http://193.200.10.117:8080/cgi-bin/cgi_link';
 $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key']          = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
-
-$c->product['lowerPriceNotification'] = true;
-
-$c->product['allowBuyOnlyInshop'] = true;
 
 $c->requestMainMenu = false;
 

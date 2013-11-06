@@ -13,7 +13,7 @@ $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
 if (!isset($titlePrefix)) $titlePrefix = null;
 ?>
 
-<div class="bProductSection clearfix">
+<div itemscope itemtype="http://schema.org/Product" class="bProductSection clearfix">
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
     <? if ($hasSearch): ?>
@@ -29,7 +29,12 @@ if (!isset($titlePrefix)) $titlePrefix = null;
         <? if ($product->getPrefix()): ?>
         <div class="bPageHead__eSubtitle"><?= $product->getPrefix() ?></div>
         <? endif ?>
-        <h1 class="bPageHead__eTitle"><?= $product->getWebName() ?></h1>
+        <div class="bPageHead__eTitle clearfix">
+            <h1><?= $product->getWebName() ?></h1>
+            <? if(!empty($trustfactorTop)) { ?>
+                <img src="<?= $trustfactorTop ?>" style="vertical-align: bottom;">
+            <? } ?>
+        </div>
         <span class="bPageHead__eArticle">Артикул: <?= $product->getArticle() ?></span>
     </div><!--/head section -->
 

@@ -1,0 +1,54 @@
+<?php
+
+namespace View\Cart;
+
+class ProductButtonAction {
+    /**
+     * @param \Helper\TemplateHelper $helper
+     * @param \Model\Product\BasicEntity $product
+     * @param string|null $url
+     * @return array
+     */
+    public function execute(
+        \Helper\TemplateHelper $helper,
+        \Model\Product\BasicEntity $product,
+        $url = null
+    ) {
+        $data = [
+            'disabled'   => null,
+            'url'        => null,
+            'value'      => null,
+            'inShopOnly' => null,
+            'data'       => [
+                'group' => $product->getId(),
+            ],
+            'class'      => \View\Id::cartButtonForProduct($product->getId()),
+        ];
+
+        $data['value'] = 'Купить';
+
+        if ($product->isInShopOnly()) {
+            $data['inShopOnly'] = true;
+            $data['value'] = 'Резерв';
+            $data['url'] = $product->getLink() . '#oneclick';
+        }
+
+        if (!$product->getIsBuyable()) {
+            $data['disabled'] = true;
+            $data['url'] = '#';
+            $data['class'] .= ' jsBuyButton';
+            $data['value'] = $product->isInShopShowroomOnly() ? 'На витрине' : 'Недоступен';
+        } else if (!isset($data['url'])) {
+            $urlParams = [
+                'productId' => $product->getId(),
+            ];
+            if ($helper->hasParam('sender')) {
+                $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
+            }
+            $data['url'] = $helper->url('cart.product.set', $urlParams);
+            $data['class'] .= ' jsBuyButton';
+        }
+
+        return $data;
+    }
+}

@@ -51,22 +51,6 @@ $productVideo = reset($productVideos);
   }
   $jsonAvailableShops = json_encode($availableShops, JSON_HEX_QUOT | JSON_HEX_APOS);
 
-  // инфо о товаре
-  $productData = [
-      'id'          => $product->getId(),
-      'token'       => $product->getToken(),
-      'article'     => $product->getArticle(),
-      'name'        => $product->getName(),
-      'isSupplied'  => $product->getState() ? $product->getState()->getIsSupplier() : false,
-      'stockState'  =>
-          $product->getIsBuyable()
-          ? 'in stock'
-          : (
-              ($product->getState() && $product->getState()->getIsShop())
-              ? 'at shop'
-              : 'out of stock'
-          ),
-  ];
 ?>
 <?
     $photoList = $product->getPhoto();
@@ -181,10 +165,10 @@ $productVideo = reset($productVideos);
     <span>Артикул: <span  itemprop="productID"><?= $product->getArticle() ?></span></span>
   </div>
 
-<div id="jsProductCard" data-value="<?= $page->json($productData) ?>"></div>
+<div id="jsProductCard" data-value="<?= $page->json( $product->getProductDataArray() ) ?>"></div>
 
 <!-- похожие товары -->
-<? if (!$product->getIsBuyable() && $product->getState()->getIsShop()  && \App::config()->smartengine['pull']): ?>
+<? if (!$product->getIsBuyable() && $product->getState()->getIsShop() && \App::config()->product['pullRecommendation']): ?>
 <div class="clear"></div>
 
 <div class="lifted">
@@ -278,7 +262,7 @@ $productVideo = reset($productVideos);
   <div class="ar pb15">
 
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-      <? if ($product->getIsBuyable()): ?>
+      <? if ($product->getIsBuyable() && !$product->isInShopStockOnly()): ?>
         <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
       <?php endif ?>
       <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
@@ -307,7 +291,7 @@ $productVideo = reset($productVideos);
     <? if ($dataForCredit['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany()) : ?>
       <div class="creditbox">
         <div class="creditboxinner clearfix">
-          <div class="fl"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
+          <div class="fl"><label class="bigcheck " for="creditinput"><b></b>Купи в кредит
             <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label>
           </div>
           <div class="creditLeft">от <span><b class="price"></b> P в месяц</div>
@@ -441,7 +425,11 @@ $productVideo = reset($productVideos);
               <? } else { ?>
                   <span>Отзывов нет</span>
               <? } ?>
-              <span class="reviewSection__link__write jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
+
+              <? if (\App::config()->product['pushReview']): ?>
+                  <span class="reviewSection__link__write jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
+              <? endif ?>
+
               <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
           </div>
           <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
@@ -496,17 +484,17 @@ $productVideo = reset($productVideos);
     <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($related), 'totalProducts' => count($product->getRelatedId()), 'itemsInSlider' => \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'С этим товаром также покупают', 'url' => $page->url('product.related.jewel', ['productToken' => $product->getToken()]), 'additionalData' => $additionalData]) ?>
 <? endif ?>
 
-<? if (false && \App::config()->smartengine['pull']): ?>
+<? if (false && \App::config()->product['pullRecommendation']): ?>
 <!--div class="clear"></div>
 <div id="product_also_bought-container" data-url="<? //echo url_for('smartengine_alsoBought', ['product' => $product->getId()]) ?>" style="margin-top: 20px;"></div-->
 <? endif ?>
 
-<?php if (\App::config()->smartengine['pull']): ?>
+<?php if (\App::config()->product['pullRecommendation']): ?>
 <div class="clear"></div>
 <div id="product_user-also_viewed-container" data-url="<?= $page->url('product.recommended.jewel', ['productId' => $product->getId()]) ?>" style="margin-top: 20px;"></div>
 <? endif ?>
 
-<? if (false && \App::config()->smartengine['pull']): ?>
+<? if (false && \App::config()->product['pullRecommendation']): ?>
 <!--div class="clear"></div>
 <div id="product_user-recommendation-container" data-url="<? //echo url_for('smartengine_userRecommendation', ['product' => $product->getId()]) ?>" style="margin-top: 20px;"><h3>Recommendations for user...</h3></div-->
 <? endif ?>
@@ -658,7 +646,11 @@ $productVideo = reset($productVideos);
     <div class="line"></div>
     <div style="width: 940px; float: none; margin: 0;" class="goodslist">
         <? $i = 0; foreach ($product->getKit() as $part): $i++ ?>
-        <?= $page->render('jewel/product/show/_compact', array('product' => $kit[$part->getId()], 'kit' => $part)) ?>
+        <?= $page->render('jewel/product/show/_compact', [
+                    'product'   =>  $kit[$part->getId()],
+                    'kit'       =>  $part,
+                    'addInfo'   =>  $addInfo
+                ]) ?>
         <? if (0 == ($i % 4)): ?><br class="clear" /><? endif ?>
         <? endforeach ?>
 
@@ -697,7 +689,7 @@ $productVideo = reset($productVideos);
 <div class="fr product-desc goodBarBottom ar">
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-      <? if ($product->getIsBuyable()): ?>
+      <? if ($product->getIsBuyable() && !$product->isInShopStockOnly()): ?>
         <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
       <?php endif ?>
       <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
@@ -730,11 +722,11 @@ $productVideo = reset($productVideos);
 
 <?= $page->tryrender('jewel/product/_tag', ['product' => $product]) ?>
 
-<? if (\App::config()->smartengine['push']): ?>
-<div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
+<? if (false && \App::config()->product['pushRecommendation']): // TODO: почистить ?>
+    <div id="product_view-container" data-url="<?= $page->url('smartengine.push.product_view', array('productId' => $product->getId())) ?>"></div>
 <? endif ?>
 
-<? if ($product->getIsBuyable()): echo $page->render('order/form-oneClick'); endif; ?>
+<? if ($product->getIsBuyable()): echo $page->render('order/form-oneClick', ['product' => $product]); endif; ?>
 
 
 <? if (\App::config()->analytics['enabled']): ?>

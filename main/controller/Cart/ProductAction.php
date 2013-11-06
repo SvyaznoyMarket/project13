@@ -20,7 +20,7 @@ class ProductAction {
         try {
             if ($quantity < 0) {
                 $quantity = 0;
-                \App::logger()->warn(sprintf('Указано неверное количество товаров. Запрос %s', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
+                \App::logger()->warn(['message' => 'Указано неверное количество товаров', 'request' => $request->request->all()]);
             }
 
             if (!$productId) {
@@ -37,7 +37,7 @@ class ProductAction {
             $cartProduct = $cart->getProductById($product->getId());
             $this->updateCartWarranty($product, $cartProduct, $quantity);
 
-            $returnRedirect = $request->headers->get('referer') ?: \App::router()->generate('homepage');
+            $returnRedirect = $request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage'));
             switch (\App::abTest()->getCase()->getKey()) {
                 case 'upsell':
                     $returnRedirect = \App::router()->generate('product.upsell', ['productToken' => $product->getToken()]);
@@ -68,6 +68,8 @@ class ProductAction {
                 }
             }
 
+            $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
+
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,
@@ -77,9 +79,10 @@ class ProductAction {
                         'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
                         'full_price'    => $cart->getSum(),
                         'old_price'     => $cart->getOriginalSum(),
-                        'link'          => \App::router()->generate('order.create'),
+                        'link'          => \App::router()->generate('order'),
                     ],
                     'product'  => $productInfo,
+                    'category_id' => $parentCategoryId,
                 ])
                 : new \Http\RedirectResponse($returnRedirect);
         } catch (\Exception $e) {
@@ -130,7 +133,7 @@ class ProductAction {
                 throw new \Exception('Не собраны ид товаров');
             }
 
-            foreach (array_chunk(array_keys($productsById), 50, true) as $productsInChunk) {
+            foreach (array_chunk(array_keys($productsById), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
                 \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productsById) {
                     foreach ($data as $item) {
                         $productsById[$item['id']] = new \Model\Product\Entity($item);
@@ -161,7 +164,7 @@ class ProductAction {
                 'cart/get-price',
                 ['geo_id' => \App::user()->getRegion()->getId()],
                 [
-                    'product_list'  => $productData,
+                    'product_list'  => $cart->getProductData(),
                     'service_list'  => [],
                     'warranty_list' => [],
                 ],
@@ -211,7 +214,7 @@ class ProductAction {
                     'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
                     'full_price'    => $cart->getSum(),
                     'old_price'     => $cart->getOriginalSum(),
-                    'link'          => \App::router()->generate('order.create'),
+                    'link'          => \App::router()->generate('order'),
                 ],
                 'product'  => reset($productsInfo),
             ];

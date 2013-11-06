@@ -3,6 +3,44 @@
 namespace Controller\User;
 
 class Action {
+    private $redirect;
+    private $requestRedirect;
+
+    /**
+     * @param \Http\Request $request
+     * @return bool|\Http\JsonResponse|\Http\RedirectResponse
+     */
+    private function checkRedirect(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $this->redirect = \App::router()->generate('user'); // default redirect to the /private page (Личный кабинет)
+        $redirectTo = $request->get('redirect_to');
+        if ($redirectTo) {
+            $this->redirect = $redirectTo;
+            $this->requestRedirect = $redirectTo;
+        }
+
+        if (\App::user()->getEntity()) { // if user is logged in
+            if (empty($redirectTo)) {
+                return $request->isXmlHttpRequest()
+                    ? new \Http\JsonResponse(['success' => true])
+                    : new \Http\RedirectResponse(\App::router()->generate('user'));
+            } else { // if redirect isset:
+                return $request->isXmlHttpRequest()
+                    ? new \Http\JsonResponse([
+                        'success' => true,
+                        'data'    => [
+                            'link' => $redirectTo,
+                        ],
+                    ])
+                    : new \Http\RedirectResponse($redirectTo);
+            }
+        }
+
+        return false;
+    }
+
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -11,15 +49,8 @@ class Action {
     public function login(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::user()->getEntity()) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(['success' => true])
-                : new \Http\RedirectResponse(\App::router()->generate('user'));
-        }
-
-        $redirect = (false !== strpos($request->get('redirect_to'), \App::config()->mainHost))
-            ? $request->get('redirect_to')
-            : \App::router()->generate('user');
+        $checkRedirect = $this->checkRedirect($request);
+        if ($checkRedirect) return $checkRedirect;
 
         $form = new \View\User\LoginForm();
         if ($request->isMethod('post')) {
@@ -51,7 +82,8 @@ class Action {
                         },
                         function(\Exception $e) {
                             \App::exception()->remove($e);
-                        }
+                        },
+                        \App::config()->coreV2['hugeTimeout']
                     );
                     \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
                     if (empty($result['token'])) {
@@ -66,22 +98,18 @@ class Action {
 
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
-                            'success' => true,
                             'data'    => [
-                                'content' => \App::templating()->render('form-login', [
-                                    'page'    => new \View\Layout(),
-                                    'form'    => $form,
-                                    'request' => \App::request(),
-                                ]),
                                 'user' => [
                                     'first_name'   => $userEntity->getFirstName(),
                                     'last_name'    => $userEntity->getLastName(),
                                     'mobile_phone' => $userEntity->getMobilePhone(),
                                 ],
-                                'link' => $redirect,
+                                'link' => $this->redirect,
                             ],
+                            'error' => null,
+                            'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])
-                        : new \Http\RedirectResponse($redirect);
+                        : new \Http\RedirectResponse($this->redirect);
 
                     \App::user()->signIn($userEntity, $response);
 
@@ -99,24 +127,22 @@ class Action {
                 }
             }
 
+            $formErrors = [];
+            foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
+            }
+
             // xhr
             if ($request->isXmlHttpRequest()) {
                 return new \Http\JsonResponse([
-                    'success' => $form->isValid(),
-                    'data'    => [
-                        'content' => \App::templating()->render('form-login', [
-                            'page'    => new \View\Layout(),
-                            'form'    => $form,
-                            'request' => \App::request(),
-                        ]),
-                    ],
+                    'form' => ['error' => $formErrors],
+                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
                 ]);
             }
         }
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-        $page->setParam('redirect', $redirect);
 
         return new \Http\Response($page->show());
     }
@@ -130,16 +156,27 @@ class Action {
 
         $user = \App::user();
 
-        $user->removeToken();
-
         $referer = $request->headers->get('referer');
-        if(!$referer || $referer && preg_match('/(\/private\/)|(\/private$)/', $referer)) {
+        if (!$referer || $referer && preg_match('/(\/private\/)|(\/private$)/', $referer)) {
             $redirect_to = \App::router()->generate('homepage');
         } else {
             $redirect_to = $referer;
         }
-        $response = new \Http\RedirectResponse($redirect_to); 
+
+        if ($request->get('redirect_to')) {
+            $redirect_to = $request->get('redirect_to');
+            if (!preg_match('/^(\/|http).*/i', $redirect_to)) {
+                $redirect_to = 'http://' . $redirect_to;
+            }
+        }
+
+        $response = new \Http\RedirectResponse($redirect_to);
+
+        $user->removeToken($response);
         $user->setCacheCookie($response);
+
+        // SITE-1763
+        $user->getCart()->clear();
 
         return $response;
     }
@@ -152,15 +189,12 @@ class Action {
     public function register(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::user()->getEntity()) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(['success' => true])
-                : new \Http\RedirectResponse(\App::router()->generate('user'));
-        }
+        $checkRedirect = $this->checkRedirect($request);
+        if ($checkRedirect) return $checkRedirect;
 
         $form = new \View\User\RegistrationForm();
         if ($request->isMethod('post')) {
-            $form->fromArray($request->request->get('register'));
+            $form->fromArray((array)$request->request->get('register'));
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
             }
@@ -173,20 +207,23 @@ class Action {
                     'first_name' => $form->getFirstName(),
                     'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
                 ];
+
+                $isSubscribe = (bool)$request->get('subscribe', false);
+
                 if (strpos($form->getUsername(), '@')) {
                     $data['email'] = $form->getUsername();
+                    $data['is_subscribe'] = $isSubscribe;
                 }
                 else {
                     $phone = $form->getUsername();
                     $phone = preg_replace('/^\+7/', '8', $phone);
                     $phone = preg_replace('/[^\d]/', '', $phone);
                     $data['mobile'] = $phone;
+                    $data['is_sms_subscribe'] = $isSubscribe;
                 }
 
-                $data['is_subscribe'] = (bool)$request->get('subscribe', false);
-
                 try {
-                    $result = \App::coreClientV2()->query('user/create', [], $data);
+                    $result = \App::coreClientV2()->query('user/create', [], $data, \App::config()->coreV2['hugeTimeout']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
@@ -200,45 +237,47 @@ class Action {
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
                             'success' => true,
-                            'data'    => [
-                                'content' => \App::templating()->render('form-register', [
-                                    'page'    => new \View\Layout(),
-                                    'form'    => $form,
-                                    'request' => \App::request(),
-                                ]),
-                            ],
-                        ])
-                        : new \Http\RedirectResponse(\App::router()->generate('user'));
+                            'message' => sprintf('Пароль выслан на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
 
-                    \App::user()->signIn($user, $response);
+                            'data'    => [
+                                'link' => $this->redirect,
+                            ],
+                            'error' => null,
+                            'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
+                        ])
+                        : new \Http\RedirectResponse($this->redirect);
+
+                    //\App::user()->signIn($user, $response); // SITE-2279
 
                     return $response;
                 } catch(\Exception $e) {
                     \App::exception()->remove($e);
+                    $errorMess = $e->getMessage();
                     switch ($e->getCode()) {
-                        case 684:
                         case 686:
-                            $form->setError('username', 'Такой пользователь уже зарегистрирован.');
+                        case 684:
+                        case 689:
+                        case 690:
+                            $form->setError('username', $errorMess );
                             break;
                         case 609:
                         default:
-                            $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
+                            $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $errorMess) : '') );
                             break;
                     }
                 }
             }
 
+            $formErrors = [];
+            foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
+            }
+
             // xhr
             if ($request->isXmlHttpRequest()) {
                 return new \Http\JsonResponse([
-                    'success' => $form->isValid(),
-                    'data'    => [
-                        'content' => \App::templating()->render('form-register', [
-                            'page'    => new \View\Layout(),
-                            'form'    => $form,
-                            'request' => \App::request(),
-                        ]),
-                    ],
+                    'form' => ['error' => $formErrors],
+                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
                 ]);
             }
         }
@@ -257,15 +296,30 @@ class Action {
     public function registerCorporate(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::user()->getEntity()) {
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse(['success' => true])
-                : new \Http\RedirectResponse(\App::router()->generate('user'));
+        if (\App::user()->getEntity() && $request->isXmlHttpRequest() ) {
+            return new \Http\JsonResponse(['success' => true]);
         }
+
+
+        \App::logger()->info(['action' => __METHOD__, 'request.request' => $request->request->all()], ['user']);
+
+        $content = null;
+        \App::contentClient()->addQuery('reg_corp_user_cont', [],
+            function($data) use (&$content) {
+                if (!empty($data['content'])) {
+                    $content = $data['content'];
+                }
+            },
+            function(\Exception $e) {
+                \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                \App::exception()->add($e);
+            }
+        );
+        \App::contentClient()->execute();
 
         $form = new \View\User\CorporateRegistrationForm();
         if ($request->isMethod('post')) {
-            $form->fromArray($request->request->get('register'));
+            $form->fromArray((array)$request->get('register'));
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
             }
@@ -346,9 +400,15 @@ class Action {
                 ];
 
                 try {
-                    $result = \App::coreClientV2()->query('user/create-legal', [
-                        'geo_id' => \App::user()->getRegion()->getId(),
-                    ], $data);
+                    $result = \App::coreClientV2()->query(
+                        'user/create-legal',
+                        [
+                            'geo_id' => \App::user()->getRegion()->getId(),
+                        ],
+                        $data,
+                        \App::config()->coreV2['hugeTimeout']
+                    );
+                    \App::logger()->info(['core.response' => $result], ['user']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
@@ -362,17 +422,19 @@ class Action {
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
                             'success' => true,
+                            'message' => sprintf('Пароль выслан на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
                             'data'    => [
                                 'content' => \App::templating()->render('form-registerCorporate', [
                                     'page'    => new \View\Layout(),
                                     'form'    => $form,
+                                    'content' => $content,
                                     'request' => \App::request(),
                                 ]),
                             ],
                         ])
                         : new \Http\RedirectResponse(\App::router()->generate('user'));
 
-                    \App::user()->signIn($user, $response);
+                    //\App::user()->signIn($user, $response); // SITE-2279
 
                     return $response;
                 } catch(\Exception $e) {
@@ -426,6 +488,7 @@ class Action {
                         'content' => \App::templating()->render('form-registerCorporate', [
                             'page'    => new \View\Layout(),
                             'form'    => $form,
+                            'content' => $content,
                             'request' => \App::request(),
                         ]),
                     ],
@@ -433,8 +496,13 @@ class Action {
             }
         }
 
+        // список рутовых категорий
+        $rootCategories = \RepositoryManager::productCategory()->getRootCollection();
+
         $page = new \View\User\CorporateRegistrationPage();
         $page->setParam('form', $form);
+        $page->setParam('rootCategories', $rootCategories);
+        $page->setParam('content', $content);
 
         return new \Http\Response($page->show());
     }
@@ -447,28 +515,38 @@ class Action {
     public function forgot(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $username = trim((string)$request->get('login'));
+        $username = trim((string)$request->get('forgot')['login']);
 
-        $error = null;
+        $errorMsg = null;
+        $formErrors = [];
         try {
             if (!$username) {
-                $error = 'Не указан email или мобильный телефон';
-                throw new \Exception($error);
+                $errorMsg = 'Не указан email или мобильный телефон';
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'login'];
+                throw new \Exception($errorMsg);
             }
 
             $result = \App::coreClientV2()->query('user/reset-password', [
                 (strpos($username, '@') ? 'email' : 'mobile') => $username,
             ]);
             if (isset($result['confirmed']) && $result['confirmed']) {
-                return new \Http\JsonResponse(['success' => true]);
+                return new \Http\JsonResponse([
+                    'error' => null,
+                    'notice' => ['message' => 'Новый пароль был вам выслан по почте или смс!', 'type' => 'info']
+                ]);
             }
         } catch(\Exception $e) {
             \App::exception()->remove($e);
-
-            $error = $error ?: ('Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
+            if ( $errorMsg == null ) {
+                $errorMsg = 'Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : '');
+                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'global'];
+            }
         }
 
-        return new \Http\JsonResponse(['success' => false, 'error' => $error]);
+        return new \Http\JsonResponse([
+            'form' => ['error' => $formErrors],
+            'error' => ['code' => 0, 'message' => 'Вы ввели неправильные данные']
+        ]);
     }
 
     public function reset(\Http\Request $request) {

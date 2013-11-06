@@ -37,16 +37,13 @@ if (!empty($catalogJson['show_branch_menu']) && ($parent && !$parent->isRoot() |
 ?>
 
 <? if($showMenu) { ?>
-    <div class="brand-nav">
-        <table class="brand-nav__list">
-            <tr>
-                <td><a href="<?= $parent->getLink() ?>"><span><?= $page->helper->getCategoryLogoOrName($catalogJson, $parent) ?></span></a></td>
-                <? foreach ($categories as $node): ?>
-                    <td><a href="<?= $node->getLink()  . (\App::request()->get('instore') ? '?instore=1' : '') ?>"><span><?= $node->getName() ?></span></a></td>
-                <? endforeach ?>
-            </tr>
-        </table>
-    </div>
+    <table class="bBrandNavList">
+        <tr class="bBrandNavList__eRow">
+            <td class="bBrandNavList__eCell"><a class="bBrandNavList__eLink" href="<?= $parent->getLink() ?>"><?= $page->helper->getCategoryLogoOrName($catalogJson, $parent) ?></a></td>
+            <? foreach ($categories as $node): ?>
+                <td class="bBrandNavList__eCell"><a class="bBrandNavList__eLink" href="<?= $node->getLink()  . (\App::request()->get('instore') ? '?instore=1' : '') ?>"><?= $node->getName() ?></a></td>
+            <? endforeach ?>
+        </tr>
+    </table>
 <? } else { ?>
-    <div class="pt20 pb20"></div>
 <? } ?>

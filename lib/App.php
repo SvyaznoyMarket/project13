@@ -341,6 +341,34 @@ class App {
     }
 
     /**
+     * @static
+     * @return \RetailRocket\Client
+     */
+    public static function retailrocketClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \RetailRocket\Client(self::$config->partners['RetailRocket'], \App::logger());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
+     * @return \Pickpoint\Client
+     */
+    public static function pickpointClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Pickpoint\Client(self::config()->pickpoint, self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
      * @param $name
      * @return \Oauth\ProviderInterface
      * @throws InvalidArgumentException
@@ -382,13 +410,16 @@ class App {
         if (!isset(self::$loggers[$name])) {
             switch ($name) {
                 case 'timer':
-                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/timer.log'), $name, $config[$name]['level']);
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/timer.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     break;
                 case 'request_compatible':
-                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/site_page_time.log'), 'RequestLogger', $config[$name]['level']);
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/site_page_time.log', self::$config->logger['pretty']), 'RequestLogger', $config[$name]['level']);
+                    break;
+                case 'order':
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/order.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     break;
                 default:
-                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log'), $name, $config[$name]['level']);
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     //$instances[$name] = new \Logger\NullLogger();
                     break;
             }
@@ -424,6 +455,22 @@ class App {
     }
 
     /**
+     * @return array|null $catalogJson
+     * @return \Session\AbtestJson|null
+     */
+    public static function abTestJson($catalogJson = null) {
+        static $instance;
+
+        if (!$instance && $catalogJson) {
+            $instance = new \Session\AbtestJson($catalogJson);
+        } elseif(!$instance && !$catalogJson) {
+            return null;
+        }
+
+        return $instance;
+    }
+
+    /**
      * @return \Partner\Manager
      */
     public static function partner() {
@@ -431,6 +478,44 @@ class App {
 
         if (!$instance) {
             $instance = new \Partner\Manager();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return Mustache_Engine
+     */
+    public static function mustache() {
+        static $instance;
+
+        if (!$instance) {
+            require \App::config()->appDir . '/vendor/mustache/src/Mustache/Autoloader.php';
+            Mustache_Autoloader::register(\App::config()->appDir . '/vendor/mustache/src');
+            $instance = new Mustache_Engine([
+                'template_class_prefix' => preg_replace('/[^\w]/', '_', \App::$config->mainHost . '-'),
+                'cache'                 => (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache',
+                'loader'                => new Mustache_Loader_FilesystemLoader(App::config()->templateDir),
+                'partials_loader'       => new Mustache_Loader_FilesystemLoader(App::config()->templateDir),
+                'escape'                => [new \Helper\TemplateHelper(), 'escape'],
+                'charset'               => 'UTF-8',
+                //'logger'                => null,
+                'logger'                => new Mustache_Logger_StreamLogger('php://stderr'),
+            ]);
+        }
+
+        return $instance;
+    }    
+
+    /**
+     * @static
+     * @return \ShopScript\Client
+     */
+    public static function shopScriptClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \ShopScript\Client(self::config()->shopScript, self::curl());
         }
 
         return $instance;

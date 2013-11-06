@@ -46,10 +46,9 @@ class OldInfoAction {
                 if ((bool)$data) {
                     \App::user()->setEntity(new \Model\User\Entity($data));
                 }
-            }, function (\Exception $e) {
+            }, function (\Exception $e) use ($user) {
                 \App::exception()->remove($e);
-                $token = \App::user()->removeToken();
-                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $token));
+                throw new \Exception\AccessDeniedException(sprintf('Время действия токена %s истекло', $user->getToken()));
             });
         }
 

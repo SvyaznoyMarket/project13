@@ -17,9 +17,24 @@ class Action {
 
         $page = new \View\Content\IndexPage();
         $page->setTitle($content['title']);
-        $page->setParam('content', $content['content']);
         $page->setParam('token', $token);
-        
+
+        switch ($token) {
+            case 'service_ha':
+            case 'services_ha':
+                $htmlContent = preg_replace('/<script.*script>/sm', '', $content['content']);
+                $htmlContent = str_replace('table class="bServicesTable"', 'table id="bServicesTable" class="bServicesTable"', $htmlContent); // TODO: осторожно, говнокод
+                $serviceJson = $this->getServiceJson();
+                $page->setParam('data', $serviceJson);
+                break;
+            default:
+                $htmlContent = $content['content'];
+                $page->setParam('data', []);
+                break;
+        }
+
+        $page->setParam('htmlContent', $htmlContent);
+
         //нужно для увеличения отступа от заголовкой и строки поика
         $page->setParam('extendedMargin', true);
         if (!(bool)$content['layout'])
@@ -34,4 +49,20 @@ class Action {
 
         return new \Http\Response($page->show());
     }
+
+
+    private function getServiceJson() {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $dataStore = \App::dataStoreClient();
+
+        $serviceJson = [];
+        $dataStore->addQuery('service_ha/*.json', [], function ($data) use (&$serviceJson) {
+            if($data) $serviceJson = $data;
+        });
+        $dataStore->execute();
+
+        return $serviceJson;
+    }
+
 }

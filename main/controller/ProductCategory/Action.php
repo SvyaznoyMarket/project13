@@ -4,6 +4,7 @@ namespace Controller\ProductCategory;
 
 class Action {
     private static $globalCookieName = 'global';
+    protected $pageTitle;
 
     /**
      * @param string        $categoryPath
@@ -157,10 +158,10 @@ class Action {
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 
-        return new \Http\JsonResponse(array(
+        return new \Http\JsonResponse([
             'success' => true,
-            'data'    => $count,
-        ));
+            'count'   => $count,
+        ]);
     }
 
     /**
@@ -211,15 +212,73 @@ class Action {
 
         // TODO: запрашиваем меню
 
-        // запрашиваем категорию по токену
         /** @var $category \Model\Product\Category\Entity */
         $category = null;
-        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-            $data = reset($data);
-            if ((bool)$data) {
-                $category = new \Model\Product\Category\Entity($data);
+
+        $shopScriptException = null;
+        $shopScriptSeo = [];
+        if (\App::config()->shopScript['enabled']) {
+            try {
+                $shopScript = \App::shopScriptClient();
+                $shopScript->addQuery(
+                    'category/get-seo',
+                    [
+                        'slug' => $categoryToken,
+                        'geo_id' => \App::user()->getRegion()->getId(),
+                    ],
+                    [],
+                    function ($data) use (&$shopScriptSeo) {
+                        if ($data && is_array($data)) $shopScriptSeo = reset($data);
+                    },
+                    function (\Exception $e) use (&$shopScriptException) {
+                        $shopScriptException = $e;
+                    }
+                );
+                $shopScript->execute();
+                if ($shopScriptException instanceof \Exception) {
+                    throw $shopScriptException;
+                }
+
+                // если shopscript вернул редирект
+                if (!empty($shopScriptSeo['redirect']['link'])) {
+                    $redirect = $shopScriptSeo['redirect']['link'];
+                    if(!preg_match('/^http/', $redirect)) {
+                        $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
+                            \App::config()->mainHost .
+                            (preg_match('/^\//', $redirect) ? '' : '/') .
+                            $redirect;
+                    }
+                    return new \Http\RedirectResponse($redirect);
+                }
+
+                if (empty($shopScriptSeo['ui'])) {
+                    throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
+                }
+
+                // запрашиваем категорию по ui
+                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        $category = new \Model\Product\Category\Entity($data);
+                    }
+                });
+            } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
+                \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        $category = new \Model\Product\Category\Entity($data);
+                    }
+                });
             }
-        });
+
+        } else {
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $category = new \Model\Product\Category\Entity($data);
+                }
+            });
+        }
 
         // запрашиваем бренд по токену
         /** @var $brand \Model\Brand\Entity */
@@ -255,7 +314,7 @@ class Action {
         });
 
         // выполнение 3-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+        $client->execute();
 
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
@@ -264,22 +323,38 @@ class Action {
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
         if (!empty($catalogJson['category_layout_type']) &&
             $catalogJson['category_layout_type'] == 'promo' &&
-            !empty($catalogJson['promo_token'])) {
-            $client = \App::contentClient();
-            $content = $client->query($catalogJson['promo_token'], [], false);
-            $promoContent = empty($content['content']) ? '' : $content['content'];
+            !empty($catalogJson['promo_token'])
+        ) {
+            \App::contentClient()->addQuery(
+                trim((string)$catalogJson['promo_token']),
+                [],
+                function($data) use (&$promoContent) {
+                    if (!empty($data['content'])) {
+                        $promoContent = $data['content'];
+                    }
+                },
+                function(\Exception $e) {
+                    \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                    \App::exception()->add($e);
+                }
+            );
+            \App::contentClient()->execute();
         }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 
-        //$categoryClass = 'jewel';
+        // поддержка GET-запросов со старыми фильтрами
+        if (!$categoryClass && is_array($request->get(\View\Product\FilterForm::$name)) && (bool)$request->get(\View\Product\FilterForm::$name)) {
+            return new \Http\RedirectResponse(\App::router()->generate('product.category', ['categoryPath' => $category->getPath()]));
+        }
+
         if ($categoryClass) {
             $controller = null;
             if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
                 $controller = new \Controller\Jewel\ProductCategory\Action();
 
-                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
             }
 
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
@@ -306,12 +381,47 @@ class Action {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
+        // TODO SITE-2403 Вернуть фильтр instore
+        if ($category->getIsFurniture() && 14974 === $user->getRegion()->getId()) {
+            $labelFilter = null;
+            $labelFilterKey = null;
+            foreach ($filters as $key => $filter) {
+                if ('label' === $filter->getId()) {
+                    $labelFilter = $filter;
+                    $labelFilterKey = $key;
+                }
+            }
+
+            // если нету блока фильтров "WOW-товары", то создаем
+            if (null === $labelFilter) {
+                $labelFilter = new \Model\Product\Filter\Entity();
+                $labelFilter->setId('label');
+                $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+                $labelFilter->setName('WOW-товары');
+                $labelFilter->getIsInList(true);
+            }
+
+            // создаем фильтр "Товар за три дня"
+            $option = new \Model\Product\Filter\Option\Entity();
+            $option->setId(1);
+            $option->setToken('instore');
+            $option->setName('Товар за три дня');
+            $labelFilter->unshiftOption($option);
+
+            // добавляем фильтр в массив фильтров
+            if (null !== $labelFilterKey) {
+                $filters[$labelFilterKey] = $labelFilter;
+            } else {
+                array_unshift($filters, $labelFilter);
+            }
+        }
+
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
         // получаем из json данные о горячих ссылках и content
         try {
-            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
+            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category, null, $shopScriptSeo);
             // получаем горячие ссылки
             $hotlinks = \RepositoryManager::productCategory()->getHotlinksBySeoCatalogJson($seoCatalogJson);
 
@@ -345,7 +455,9 @@ class Action {
             &$hotlinks,
             &$seoContent,
             &$catalogJson,
-            &$promoContent
+            &$promoContent,
+            &$shopScriptSeo,
+            &$shop
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -355,11 +467,25 @@ class Action {
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
-            if ( \App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) $page->setGlobalParam('shops', \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()));
+            $page->setParam('shopScriptSeo', $shopScriptSeo);
+            $page->setGlobalParam('shop', $shop);
+            $page->setGlobalParam('shops', (\App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) ? \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()) : []);
         };
 
+        // полнотекстовый поиск через сфинкс
+        $textSearched = false;
+        if (\App::config()->sphinx['showListingSearchBar']) {
+            $filterValues = $productFilter->getValues();
+            if(!empty($filterValues['text'])) {
+                $textSearched = true;
+            }
+        }
+
+        // Формируем заголовок страницы (пока используется только в ajax)
+        $this->setPageTitle($category, $brand);
+
         // если категория содержится во внешнем узле дерева
-        if ($category->isLeaf()) {
+        if ($category->isLeaf() || $textSearched) {
             $page = new \View\ProductCategory\LeafPage();
             $setPageParameters($page);
 
@@ -367,10 +493,11 @@ class Action {
         }
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
-            $page = new \View\ProductCategory\BranchPage();
+            $page = new \View\ProductCategory\LeafPage();
+            $page->setParam('forceSliders', true);
             $setPageParameters($page);
 
-            return $this->branchCategory($category, $productFilter, $page, $request);
+            return $this->leafCategory($category, $productFilter, $page, $request);
         }
         // иначе, если категория самого верхнего уровня
         else if ($category->isRoot()) {
@@ -380,10 +507,10 @@ class Action {
             return $this->rootCategory($category, $productFilter, $page, $request);
         }
 
-        $page = new \View\ProductCategory\BranchPage();
+        $page = new \View\ProductCategory\LeafPage();
         $setPageParameters($page);
 
-        return $this->branchCategory($category, $productFilter, $page, $request);
+        return $this->leafCategory($category, $productFilter, $page, $request);
     }
 
     /**
@@ -456,6 +583,7 @@ class Action {
         /** @var $child \Model\Product\Category\Entity */
         $child = reset($childrenById);
         $productPagersByCategory = [];
+        $productVideosByProduct = [];
         $productCount = 0;
 
         foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
@@ -464,32 +592,18 @@ class Action {
             $productPagersByCategory[$child->getId()] = $productPager;
             $productCount += $productPager->count();
 
+            foreach ($productPager as $product) {
+                /** @var $product \Model\Product\Entity */
+                $productVideosByProduct[$product->getId()] = [];
+            }
+
             $child = next($childrenById);
             if (!$child) {
                 break;
             }
         }
 
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPagersByCategory as $productPager) {
-            foreach ($productPager as $product) {
-                /** @var $product \Model\Product\Entity */
-                $productVideosByProduct[$product->getId()] = [];
-            }
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        if (!$item) continue;
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
+        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideosByProduct( $productVideosByProduct );
 
         $page->setParam('productPagersByCategory', $productPagersByCategory);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
@@ -535,10 +649,20 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
         }
 
+        $catalogJson = $page->getParam('catalogJson');
+
         // сортировка
         $productSorting = new \Model\Product\Sorting();
         list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
         $productSorting->setActive($sortingName, $sortingDirection);
+
+        // если сортировка по умолчанию и в json заданы настройки сортировок,
+        // то применяем их
+        if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
+            $sort = $catalogJson['sort'];
+        } else {
+            $sort = $productSorting->dump();
+        }
 
         // вид товаров
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
@@ -560,18 +684,32 @@ class Action {
             }
             $pagerAll = $repository->getIteratorByFilter(
                 $filtersWithoutShop,
-                $productSorting->dump(),
+                $sort,
                 ($pageNum - 1) * $limit,
-                $limit
+                1 === $pageNum ? $limit-1 : $limit
             );
             $page->setGlobalParam('allCount', $pagerAll->count());
         }
 
+        $filters = $productFilter->dump();
+        // TODO Костыль для таска: SITE-2403 Вернуть фильтр instore
+        if (self::inStore()) {
+            foreach ($filters as $filterKey => $filter) {
+                if ('label' === $filter[0]) {
+                    foreach ($filter[2] as $labelFilterKey => $labelFilter) {
+                        if (1 === $labelFilter) {
+                            unset($filters[$filterKey][2][$labelFilterKey]);
+                        }
+                    }
+                }
+            }
+        }
+
         $productPager = $repository->getIteratorByFilter(
-            $productFilter->dump(),
-            $productSorting->dump(),
+            $filters,
+            $sort,
             ($pageNum - 1) * $limit,
-            $limit
+            1 === $pageNum ? $limit-1 : $limit
         );
 
         $productPager->setPage($pageNum);
@@ -606,14 +744,31 @@ class Action {
         }
 
         // ajax
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('product/_list', array(
-                'page'                   => new \View\Layout(),
-                'pager'                  => $productPager,
-                'view'                   => $productView,
-                'productVideosByProduct' => $productVideosByProduct,
-                'isAjax'                 => true,
-            )));
+        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+            return new \Http\JsonResponse([
+                'list'           => (new \View\Product\ListAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productPager,
+                    $productVideosByProduct,
+                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
+                ),
+                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productFilter,
+                    \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
+                ),
+                'pagination'     => (new \View\PaginationAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productPager
+                ),
+                'sorting'        => (new \View\Product\SortingAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productSorting
+                ),
+                'page'          => [
+                    'title'     => $this->getPageTitle()
+                ],
+            ]);
         }
 
         $page->setParam('productPager', $productPager);
@@ -653,11 +808,12 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      * @param \Model\Product\Category\Entity $category
-     * @param \Model\Brand\Entity|null       $brand
+     * @param \Model\Brand\Entity|null $brand
      * @param \Http\Request $request
+     * @param \Model\Shop\Entity|null $shop
      * @return \Model\Product\Filter
      */
-    protected function getFilter(array $filters, \Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
+    public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity &$brand = null, \Http\Request $request, $shop = null) {
         // флаг глобального списка в параметрах запроса
         $isGlobal = self::isGlobal();
         //
@@ -666,13 +822,36 @@ class Action {
         // регион для фильтров
         $region = $isGlobal ? null : \App::user()->getRegion();
 
+        // добывание фильтров из http-запроса
+        $requestData = ('POST'== $request->getMethod()) ? $request->request : $request->query;
+
+        $values = [];
+        foreach ($requestData as $k => $v) {
+            if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
+            $parts = array_pad(explode('-', $k), 3, null);
+
+            if (!isset($values[$parts[1]])) {
+                $values[$parts[1]] = [];
+            }
+            if (('from' == $parts[2]) || ('to' == $parts[2])) {
+                $values[$parts[1]][$parts[2]] = $v;
+            } else {
+                $values[$parts[1]][] = $v;
+            }
+        }
+
         // filter values
-        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        if ($request->get('scrollTo')) {
+            // TODO: SITE-2218 сделать однотипные фильтры для ювелирки и неювелирки
+            $values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        }
+
         if ($isGlobal) {
             $values['global'] = 1;
         }
         if ($inStore) {
             $values['instore'] = 1;
+            $values['label'][] = 1; // TODO SITE-2403 Вернуть фильтр instore
         }
         if ($brand) {
             $values['brand'] = [
@@ -688,12 +867,40 @@ class Action {
 
         // проверяем есть ли в запросе фильтры
         if ((bool)$values) {
+
+            // полнотекстовый поиск через сфинкс
+            if (\App::config()->sphinx['showListingSearchBar']) {
+                $sphinxFilter = isset($values['text']) ? $values['text'] : null;
+
+                if ($sphinxFilter) {
+                    $clientV2 = \App::coreClientV2();
+                    $result = null;
+                    $clientV2->addQuery('search/normalize', [], ['request' => $sphinxFilter], function ($data) use (&$result) {
+                        $result = $data;
+                    });
+                    $clientV2->execute();
+
+                    if(is_array($result)) {
+                        $values['text'] = implode(' ', $result);
+                    } else {
+                        unset($values['text']);
+                    }
+                }
+
+                $sphinxFilterData = [
+                    'filter_id'     => 'text',
+                    'type_id'       => \Model\Product\Filter\Entity::TYPE_STRING,
+                ];
+                $sphinxFilter = new \Model\Product\Filter\Entity($sphinxFilterData);
+                array_push($filters, $sphinxFilter);
+            }
+
             // проверяем есть ли в запросе фильтры, которых нет в текущей категории (фильтры родительских категорий)
             /** @var $exists Ид фильтров текущей категории */
             $exists = array_map(function($filter) { /** @var $filter \Model\Product\Filter\Entity */ return $filter->getId(); }, $filters);
             /** @var $diff Ид фильтров родительских категорий */
             $diff = array_diff(array_keys($values), $exists);
-            if ((bool)$diff) {
+            if ((bool)$diff && $category) {
                 foreach ($category->getAncestor() as $ancestor) {
                     try {
                         /** @var $ancestorFilters \Model\Product\Filter\Entity[] */
@@ -741,5 +948,38 @@ class Action {
      */
     public static function inStore() {
         return (bool)\App::request()->get('instore');
+    }
+
+
+    /**
+     * @return mixed
+     */
+    protected function getPageTitle() {
+        return $this->pageTitle;
+    }
+
+
+    /**
+     * @param $category         \Model\Product\Category\Entity|null
+     * @param $brand            \Model\Brand\Entity|null
+     * @param bool|string       $defaultTitle
+     * @return bool
+     */
+    protected function setPageTitle($category, $brand, $defaultTitle = false)
+    {
+        if ( $category ) {
+            /**@var $category \Model\Product\Category\Entity **/
+            $this->pageTitle = $category->getName();
+            if ( $brand ) {
+                /**@var $brand \Model\Brand\Entity **/
+                $this->pageTitle .= ' ' . $brand->getName();
+            }
+            return true;
+        }
+
+        if ( $defaultTitle ) {
+            return $this->pageTitle = $defaultTitle;
+        }
+        return false;
     }
 }

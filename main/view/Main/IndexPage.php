@@ -28,14 +28,25 @@ class IndexPage extends \View\DefaultLayout {
     public function slotFooter() {
         $client = \App::contentClient();
 
-        try {
-            $response = (14974 == \App::user()->getRegion()->getId() || 83 == \App::user()->getRegion()->getParentId()) ? $client->query('footer_main_moscow') : $client->query('footer_main_v2');
-        } catch (\Exception $e) {
-            \App::exception()->add($e);
-            \App::logger()->error($e);
+        $response = null;
+        $client->addQuery(
+            (14974 == \App::user()->getRegion()->getId() || 83 == \App::user()->getRegion()->getParentId())
+                ? 'footer_main_moscow'
+                : 'footer_main_v2'
+            ,
+            [],
+            function($data) use (&$response) {
+                $response = $data;
+            },
+            function(\Exception $e) {
+                \App::exception()->add($e);
+            }
+        );
+        $client->execute();
 
-            $response = array('content' => '');
-        }
+        $response = array_merge(['content' => ''], (array)$response);
+
+        $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
 
         return $response['content'];
     }

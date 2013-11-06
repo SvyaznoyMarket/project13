@@ -2,6 +2,29 @@
 .btnBuy {
     width: 170px;
     height: 35px;
+
+    &.mBtnPayPal {
+        width: 195px;
+        height: 42px;
+
+        .bPayPalLink {
+            width: 195px;
+            height: 42px;
+            display: block;
+
+            &.mLoading {
+                cursor: default;
+                .opacity(0.5);
+            }
+
+            &.mBought {
+                text-indent: -9999px;
+                background: url("https://www.paypalobjects.com/ru_RU/i/btn/btn_xpressCheckout.gif");
+                .opacity(0.5);
+            }
+        }
+    }
+
     .btnBuy__eLink {
         .gradient(#ffc000, #ffaa01, #ffc000);
         .rounded(5px);
@@ -15,7 +38,6 @@
 
         color: #ffffff;
         border: 1px solid #fb9c00;
-        border: 1px solid #fb9c00;
 
         font-size: 18px;
         line-height: 35px;
@@ -25,8 +47,19 @@
             color: @black;
             border: 1px solid lighten(@black, 70);
             background: @white;
+
             &:hover {
                 background: @white;
+            }
+        }
+
+        &.mShopsOnly {
+            background: #b5b5b5;
+            border: 1px solid #cccccc;
+
+            &:hover {
+                background: #9b9b9b;
+                border: 1px solid #cccccc;
             }
         }
 
@@ -34,18 +67,15 @@
             .box-shadow(none);
             cursor: default;
 
-            color: @typGray;
-            border: 1px solid @typLightGray;
-            background: @typLightGray;
-            &:hover {
-                color: @typGray;
-                border: 1px solid @typLightGray;
-                background: @typLightGray;
-            }
-        }
+            color: #cbcbcb;
+            border: 1px solid #f1f0f0;
+            background: #f1f0f0;
 
-        &.mShopsOnly {
-            font-size: 17px;
+            &:hover {
+                color: #cbcbcb;
+                border: 1px solid #f1f0f0;
+                background: #f1f0f0;
+            }
         }
 
         &:hover {

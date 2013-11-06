@@ -24,6 +24,7 @@ class GetAction {
             $responseData = [
                 'success' => true,
                 'user'    => [
+                    'id'          => $user->getId(),
                     'birthday'    => $user->getBirthday() instanceof \DateTime ? $user->getBirthday()->format('Y-m-d') : null,
                     'email'       => $user->getEmail(),
                     'firstName'   => $user->getFirstName(),

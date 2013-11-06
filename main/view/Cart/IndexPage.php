@@ -7,7 +7,7 @@ class IndexPage extends \View\DefaultLayout {
 
     public function prepare() {
         $this->setTitle('Корзина - Enter.ru');
-        $this->setParam('title', 'Моя корзина');
+        $this->setParam('title', 'Корзина');
     }
 
     public function slotContent() {
@@ -22,14 +22,22 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotFooter() {
-        try {
-            $response = \App::contentClient()->query('footer_compact');
-        } catch (\Exception $e) {
-            \App::exception()->add($e);
-            \App::logger()->error($e);
+        $client = \App::contentClient();
 
-            $response = array('content' => '');
-        }
+        $response = null;
+        $client->addQuery(
+            'footer_compact',
+            [],
+            function($data) use (&$response) {
+                $response = $data;
+            },
+            function(\Exception $e) {
+                \App::exception()->add($e);
+            }
+        );
+        $client->execute();
+
+        $response = array_merge(['content' => ''], (array)$response);
 
         return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
     }

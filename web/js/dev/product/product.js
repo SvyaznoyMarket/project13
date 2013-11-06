@@ -6,15 +6,26 @@ $(document).ready(function() {
 	 *
 	 * @requires jQuery, jQuery.elevateZoom
 	 */
-	$('.bZoomedImg').elevateZoom({
-		gallery: 'productImgGallery',
-		galleryActiveClass: 'mActive',
-		zoomWindowOffety: 0,
-		zoomWindowOffetx: 19,
-		zoomWindowWidth: 519,
-		borderSize: 1,
-		borderColour: '#C7C7C7'
-	});
+	(function () {
+		if ( !$('.bZoomedImg').length ) {
+			console.warn('Нет изображения для elevateZoom');
+
+			return;
+		}
+
+		var zoomDisable = ( $('.bZoomedImg').data('zoom-disable') ) ? $('.bZoomedImg').data('zoom-disable') : false;
+
+		$('.bZoomedImg').elevateZoom({
+			gallery: 'productImgGallery',
+			galleryActiveClass: 'mActive',
+			zoomWindowOffety: 0,
+			zoomWindowOffetx: 19,
+			zoomWindowWidth: 519,
+			borderSize: 1,
+			borderColour: '#C7C7C7',
+			disableZoom: zoomDisable
+		});
+	})();
 
 
 	/**
@@ -59,93 +70,38 @@ $(document).ready(function() {
 
 
 	/**
-	 * Аналитика для карточки товара
-	 *
-	 * @requires jQuery
+	 * Обработчик кнопки PayPal в карточке товара
 	 */
 	(function() {
-		var productInfo = {},
-			toKISS = {};
-		// end of vars
-		
-		if ( !$('#jsProductCard').length ) {
-			return false;
-		}
+		var successHandler = function successHandler( res ) {
+				console.info('payPal ajax complete');
 
-		productInfo = $('#jsProductCard').data('value');
-				
-		toKISS = {
-			'Viewed Product SKU':productInfo.article,
-			'Viewed Product Product Name':productInfo.name,
-			'Viewed Product Product Status':productInfo.stockState
-		};
+				if ( !res.success || !res.redirect ) {
+					window.ENTER.utils.blockScreen.unblock();
 
-		if ( typeof(_kmq) !== 'undefined' ) {
-			_kmq.push(['record', 'Viewed Product', toKISS]);
-		}
+					return;
+				}
 
+				document.location.href = res.redirect;
+			},
 
-		// KISS for goods sliders
-		var kissForGoodsSliders = function kissForGoodsSliders(){
-			var data = $(this).data('product'),
-				toKISS = {};
-			// end of vars
-			
-			switch ( data.type ) {
-				case 'Accessorize':
-					toKISS = {
-						'Recommended Item Clicked Accessorize Recommendation Place':'product',
-						'Recommended Item Clicked Accessorize Clicked SKU':data.article,
-						'Recommended Item Clicked Accessorize Clicked Product Name':data.name,
-						'Recommended Item Clicked Accessorize Product Position':data.position
-					};
+			buyOneClickAndRedirect = function buyOneClickAndRedirect() {
+				console.info('payPal click');
 
-					if ( typeof(_kmq) !== 'undefined' ) {
-						_kmq.push(['record', 'Recommended Item Clicked Accessorize', toKISS]);
-					}
-					break;
-				case 'Also Bought':
-					toKISS = {
-						'Recommended Item Clicked Also Bought Recommendation Place':'product',
-						'Recommended Item Clicked Also Bought Clicked SKU':data.article,
-						'Recommended Item Clicked Also Bought Clicked Product Name':data.name,
-						'Recommended Item Clicked Also Bought Product Position':data.position
-					};
+				var button = $(this),
+					url = button.attr('href');
+				// end of vars
 
-					if ( typeof(_kmq) !== 'undefined' ) {
-						_kmq.push(['record', 'Recommended Item Clicked Also Bought', toKISS]);
-					}
-					break;
-				case 'Also Viewed':
-					toKISS = {
-						'Recommended Item Clicked Also Viewed Recommendation Place':'product',
-						'Recommended Item Clicked Also Viewed Clicked SKU':data.article,
-						'Recommended Item Clicked Also Viewed Clicked Product Name':data.name,
-						'Recommended Item Clicked Also Viewed Product Position':data.position
-					};
+				window.ENTER.utils.blockScreen.block('Загрузка');
 
-					if ( typeof(_kmq) !== 'undefined' ) {
-						_kmq.push(['record', 'Recommended Item Clicked Also Viewed', toKISS]);
-					}
-					break;
-			}
-		};
-		// $('body').on('click', '.bSliderAction__eItem', kissForGoodsSliders);
-	})();
-	
+				$.get(url, successHandler);
 
-	/**
-	 * Затемнение всех контролов после добавления в корзину
-	 *
-	 * @requires jQuery
-	 */
-	(function() {
-		var afterBuy = function afterBuy() {
-			$('.bCountSection').addClass('mDisabled').find('input').attr('disabled','disabled');
-			$('.jsOrder1click').addClass('mDisabled');
-		};
+				return false;
+			};
+		// end of functions
 
-		$("body").bind('addtocart', afterBuy);
+		$('.jsPayPalButton').bind('click', buyOneClickAndRedirect);
+		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
 	})();
 	
 
@@ -187,14 +143,14 @@ $(document).ready(function() {
 
 	
 	// карточка товара - характеристики товара краткие/полные
-	if ($('#productDescriptionToggle').length) {
+	if ( $('#productDescriptionToggle').length ) {
 		$('#productDescriptionToggle').toggle(
-			function(e){
+			function( e ) {
 				e.preventDefault();
 				$(this).parent().parent().find('.descriptionlist:not(.short)').show();
 				$(this).html('Скрыть все характеристики');
 			},
-			function(e){
+			function( e ) {
 				e.preventDefault();
 				$(this).parent().parent().find('.descriptionlist:not(.short)').hide();
 				$(this).html('Показать все характеристики');

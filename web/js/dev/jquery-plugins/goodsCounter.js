@@ -167,7 +167,18 @@
 						spinner,
 						input;
 					// end of vars
+					
+					// Маркировка одиночного продукта
+					if ( typeof products === 'number' ) {
+						spinner = $('[data-spinner-for="id-cartButton-product-'+products+'"]');
+						spinner.addClass('mDisabled');
+						input = spinner.find('input');
+						input.attr('disabled','disabled');
 
+						return;
+					}
+
+					// Массив продуктов
 					for ( i = products.product.length - 1; i >= 0; i-- ) {
 						spinner = $('[data-spinner-for="'+products.product[i].id+'"]');
 						spinner.addClass('mDisabled');

@@ -241,13 +241,13 @@
       text-align: center;
     }
   }
+  .h2,
   h2 {
     margin: 0px;
     padding-bottom: 10px;
-
     font-weight: bold;
   }
-  h3 {
+  .h3 {
     margin: 0px;
     padding-bottom: 5px;
 
@@ -269,8 +269,6 @@
   &.hover{
       .rounded(5px);
       .box-shadow(0 0 6px 2px @typLightGray);
-
-      behavior: url('@{pie}');
   }
   .notBuying{
     .corner{
@@ -302,7 +300,7 @@
 
     vertical-align: top;
   }
-  h3 a {
+  .h3 a {
     text-decoration: underline;
 
     font: 18px Tahoma, sans-serif;
@@ -364,6 +362,7 @@
     clear: both;
 
     margin-top: 0px;
+    margin-bottom: 15px;
     .corner {
       left: 175px;
     }
@@ -394,7 +393,7 @@
     margin-right: 10px;
     padding: 0px 0px 0px 12px;
   }
-  h3 {
+  .h3 {
     margin: 0px;
     padding-bottom: 5px;
 
@@ -624,7 +623,7 @@
   &__eAddress {
     float: left;
 
-    padding: 2px 0 2px 28px;
+    padding: 2px 0 2px 0;
 
     background: url("/css/newProductCard/img/ico.png") no-repeat 0 0;
   }
@@ -651,4 +650,24 @@
       margin: 0 0 10px 17px
     }
   }
+}
+
+
+
+.goodsbox .photo .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small,
+.goodsbox .photo .goodsphoto_eVideoShield.goodsphoto_eVideoShield_small:hover {
+  background: url('/css/item/img/videoStiker_small.png') no-repeat 0 0;
+  right: 0;
+  top: 130px;
+  width: 42px;
+  height: 35px;
+}
+.goodsbox .photo .goodsphoto_eGrad360.goodsphoto_eGrad360_small,
+.goodsbox .photo .goodsphoto_eGrad360.goodsphoto_eGrad360_small:hover {
+  background: url('/css/item/img/3dStiker_small.png') no-repeat 0 0;
+  position: absolute;
+  z-index: 3;
+  top: 130px;
+  width: 42px;
+  height: 35px;
 }

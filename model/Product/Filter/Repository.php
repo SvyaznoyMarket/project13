@@ -37,7 +37,7 @@ class Repository {
             }
         });
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $collection;
     }
@@ -45,9 +45,10 @@ class Repository {
     /**
      * @param \Model\Product\Category\Entity $category
      * @param \Model\Region\Entity           $region
-     * @param                                $callback
+     * @param                                $done
+     * @param                                $fail
      */
-    public function prepareCollectionByCategory(\Model\Product\Category\Entity $category, \Model\Region\Entity $region = null, $callback) {
+    public function prepareCollectionByCategory(\Model\Product\Category\Entity $category, \Model\Region\Entity $region = null, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
@@ -56,6 +57,28 @@ class Repository {
         if ($region) {
             $params['region_id'] = $region->getId();
         }
-        $this->client->addQuery('listing/filter', $params, [], $callback);
+        $this->client->addQuery('listing/filter', $params, [], $done, $fail);
+    }
+
+    /**
+     * @param string               $searchText
+     * @param \Model\Region\Entity $region
+     * @param                      $done
+     * @param                      $fail
+     */
+    public function prepareCollectionBySearchText($searchText, \Model\Region\Entity $region = null, $done, $fail = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $params = [
+            'filter' => [
+                'filters' => [
+                    ['text', 3, $searchText],
+                ],
+            ],
+        ];
+        if ($region) {
+            $params['region_id'] = $region->getId();
+        }
+        $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }
 }

@@ -6,7 +6,7 @@ class Manager {
     private $cookieName;
     private $cookieLifetime;
     private $cookieNames = [];
-    private $params4get = [ 'utm_source','utm_content','utm_term', 'prx', 'aip', 'webmaster_id', 'admitad_uid', 'affiliate_id' ];
+    private $params4get = [ 'utm_source','utm_content','utm_term', 'actionpay', 'prx', 'aip', 'webmaster_id', 'admitad_uid', 'affiliate_id' ];
 
     public function __construct() {
         $this->cookieName = \App::config()->partner['cookieName'];
@@ -42,7 +42,7 @@ class Manager {
 
             $sender = $request->get('sender');
 
-            //SmartEngine & SmartAssistant
+            //(SmartEngine & SmartAssistant) & RetailRocket
             if ((bool)$sender) {
                 $sender = explode('|', $sender); // ?sender=SmartEngine|product_id
                 if ((bool)$sender[0] && (bool)$sender[1]) {
@@ -50,6 +50,12 @@ class Manager {
                         case \Smartengine\Client::NAME: {
                             \App::user()->setRecommendedProductByParams(
                                 $sender[1], \Smartengine\Client::NAME, 'viewed_at', time()
+                            );
+                            break;
+                        }
+                        case \RetailRocket\Client::NAME: {
+                            \App::user()->setRecommendedProductByParams(
+                                $sender[1], \RetailRocket\Client::NAME, 'viewed_at', time()
                             );
                             break;
                         }

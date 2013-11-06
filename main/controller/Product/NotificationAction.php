@@ -3,6 +3,9 @@
 namespace Controller\Product;
 
 class NotificationAction {
+
+    const SUBSCRIPTION_EXISTS_CODE = 920;
+
     /**
      * @param $productId
      * @param \Http\Request $request
@@ -30,6 +33,11 @@ class NotificationAction {
                 throw new \Exception('Не передан email для подписки');
             }
 
+            $emailValidator = new \Validator\Email();
+            if (!$emailValidator->isValid($email)) {
+                throw new \Exception('Некорректный email');
+            }
+
             $params = [
                 'email'      => $email,
                 'geo_id'     => $region->getId(),
@@ -45,6 +53,20 @@ class NotificationAction {
                 $exception = $e;
                 \App::exception()->remove($e);
             });
+
+            // если отмечена галочка подписки на "Акции и суперпредложения"
+            $subscribe = trim((string)$request->get('subscribe'));
+            if ($subscribe === '1') {
+                $params = [
+                    'email'      => $email,
+                    'geo_id'     => $region->getId(),
+                    'channel_id' => 1,
+                ];
+                $client->addQuery('subscribe/create', $params, [], function($data) {}, function(\Exception $e) use (&$exception) {
+                    $exception = $e;
+                    \App::exception()->remove($e);
+                });
+            }
             $client->execute(\App::config()->coreV2['retryTimeout']['huge'], \App::config()->coreV2['retryCount']);
 
             if ($exception instanceof \Exception) {
@@ -53,14 +75,18 @@ class NotificationAction {
 
             $responseData = ['success' => true];
         } catch (\Exception $e) {
-            \App::logger()->error($e);
-            $responseData = [
-                'success' => false,
-                'error' => [
-                    'code'    => $e->getCode(),
-                    'message' => 'Не удалось создать подписку' . (\App::config()->debug ? sprintf(': %s', $e->getMessage()) : ''),
-                ],
-            ];
+            if($e->getCode() == self::SUBSCRIPTION_EXISTS_CODE) {
+                $responseData = ['success' => true];
+            } else {
+                \App::logger()->error($e);
+                $responseData = [
+                    'success' => false,
+                    'error' => [
+                        'code'    => $e->getCode(),
+                        'message' => 'Не удалось создать подписку' . (\App::config()->debug ? sprintf(': %s', $e->getMessage()) : ''),
+                    ],
+                ];
+            }
         }
 
         return new \Http\JsonResponse($responseData);

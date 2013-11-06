@@ -10,7 +10,7 @@
 ------------------------------------------------------------------------- */
 	
 jQuery.fn.prettyCheckboxes=function(a) {
-	a=jQuery.extend({checkboxWidth:13,checkboxHeight:13,className:"prettyCheckbox",display:"list"},a);
+	a=jQuery.extend({checkboxWidth:13,checkboxHeight:15,className:"prettyCheckbox",display:"list"},a);
 	$(this).each(function(){$label=$('label[for="'+$(this).attr("id")+'"]');
     $label.prepend("<span class='holderWrap'><span class='holder'></span></span>");
 	if($(this).is(":checked")){

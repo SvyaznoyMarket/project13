@@ -15,6 +15,8 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 <div class="mProductSectionSet">
+    <?= $helper->render('product/__data', ['product' => $mainProduct]) ?>
+
 	<div class="bProductSectionLeftCol" data-value="<?= $page->json([
         'jsref' =>   $mainProduct->getToken(),
         'jsimg' =>   $mainProduct->getImageUrl(3),
@@ -33,7 +35,7 @@ $helper = new \Helper\TemplateHelper();
         </div>
 	</div>
 
-	<div class="bProductSection__eRight">
+	<div class="bProductSectionRightCol">
 		<p class="bProductDescText"><?= $mainProduct->getTagline() ?></p>
 
         <div class="bProductDescMore">
@@ -52,7 +54,7 @@ $helper = new \Helper\TemplateHelper();
 
                 <?= $helper->render('product/__notification-lowerPrice', ['product' => $mainProduct]) // Узнать о снижении цены ?>
 
-                <?//= $helper->render('product/__credit', ['product' => $mainProduct, 'creditData' => $creditData]) // Беру в кредит ?>
+                <?//= $helper->render('product/__credit', ['product' => $mainProduct, 'creditData' => $creditData]) // Купи в кредит ?>
         	</div>
 
             <?= $helper->render('cart/__button-product', ['product' => $mainProduct, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить ?>
@@ -61,7 +63,7 @@ $helper = new \Helper\TemplateHelper();
 
             <?= $helper->render('product/__delivery', ['product' => $mainProduct]) // Доставка ?>
 
-            <div class="bAwardSection"><img src="/css/newProductCard/img/award.jpg" alt="" /></div>
+            <div class="bAwardSection"><img src="/css/bProductSection/img/award.jpg" alt="" /></div>
         </div><!--/widget delivery -->
 	</div>
 
@@ -83,7 +85,7 @@ $helper = new \Helper\TemplateHelper();
 	<? endif ?>
 
     <? if ($mainProduct->getIsBuyable()): ?>
-        <?= $page->render('order/form-oneClick') ?>
+        <?= $page->render('order/form-oneClick', ['product' => $mainProduct]) ?>
     <? endif ?>
 </div>
 

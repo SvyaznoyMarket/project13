@@ -8,7 +8,8 @@ return function (
     $class = null,
     $count = null,
     $limit = null,
-    $url = null
+    $url = null,
+    $type = null
 ) {
 /**
  * @var $products   \Model\Product\Entity[]
@@ -17,10 +18,11 @@ return function (
 
     $sliderId = 'slider-' . uniqid();
 ?>
-<div class="bGoodsSlider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?>"  data-slider="<?= $helper->json([
+<div class="bGoodsSlider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"  data-slider="<?= $helper->json([
         'count' => $count,
         'limit' => $limit,
         'url'   => $url,
+        'type'  => $type,
     ]) ?>">
     <? if ($title): ?>
         <h3 class="bHeadSection"><?= $title ?></h3>
@@ -38,15 +40,15 @@ return function (
         </div>
     <? endif ?>
 
-    <div class="bSliderAction<? if ($class): ?> <?= $class ?><? endif ?>">
+    <div class="bSlider<? if ($class): ?> <?= $class ?><? endif ?>">
 
-        <div class="bSliderAction__eInner mLoader">
-            <ul class="bSliderAction__eList clearfix">
+        <div class="bSlider__eInner mLoader">
+            <ul class="bSlider__eList clearfix">
             <? foreach ($products as $product): ?>
             <?
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
-                <li class="bSliderAction__eItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>" data-product="<?= $helper->json([
+                <li class="bSlider__eItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>" data-product="<?= $helper->json([
                         'article' => $product->getArticle(),
                         'name' => $product->getName(),
                     ]) ?>">
@@ -55,15 +57,20 @@ return function (
                         <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
                         <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
-                        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить ?>
+                        <?= $helper->render('cart/__button-product', [
+                            'product'    => $product,
+                            'class'      => 'btnBuy__eLink',
+                            'value'      => 'Купить',
+                            'directLink' => true,
+                        ]) // Кнопка купить ?>
                     </div>
                 </li>
             <? endforeach ?>
             </ul>
         </div>
 
-        <div class="bSliderAction__eBtn mPrev mDisabled"><span></span></div>
-        <div class="bSliderAction__eBtn mNext mDisabled"><span></span></div>
+        <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>
+        <div class="bSlider__eBtn mNext mDisabled"><span></span></div>
     </div>
 
 </div><!--/product accessory section -->

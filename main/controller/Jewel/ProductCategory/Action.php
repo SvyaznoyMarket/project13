@@ -82,6 +82,30 @@ class Action extends \Controller\ProductCategory\Action {
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
+        $shopScriptSeo = [];
+        if(\App::config()->shopScript['enabled']) {
+            $shopScript = \App::shopScriptClient();
+            $shopScript->addQuery('category/get-seo', [
+                    'slug' => $categoryToken,
+                    'geo_id' => \App::user()->getRegion()->getId(),
+                ], [], function ($data) use (&$shopScriptSeo) {
+                if($data && is_array($data)) $shopScriptSeo = reset($data);
+            });
+            $shopScript->execute();
+
+            // если shopscript вернул редирект
+            if(!empty($shopScriptSeo['redirect']['link'])) {
+                $redirect = $shopScriptSeo['redirect']['link'];
+                if(!preg_match('/^http/', $redirect)) {
+                    $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
+                                \App::config()->mainHost .
+                                (preg_match('/^\//', $redirect) ? '' : '/') .
+                                $redirect;
+                }
+                return new \Http\RedirectResponse($redirect);
+            }
+        }
+
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
         }
@@ -101,12 +125,12 @@ class Action extends \Controller\ProductCategory\Action {
         });
 
         // выполнение 3-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+        $client->execute();
 
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
-        return $this->category($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+        return $this->category($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
     }
 
 
@@ -116,10 +140,11 @@ class Action extends \Controller\ProductCategory\Action {
      * @param \Model\Brand\Entity|null        $brand
      * @param \Http\Request                   $request
      * @param \Model\Region\Entity[]          $regionsToSelect
+     * @param array                           $shopScriptSeo
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent) {
+    public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo) {
         // убираем/показываем уши
         if(isset($catalogJson['show_side_panels'])) {
             \App::config()->adFox['enabled'] = (bool)$catalogJson['show_side_panels'];
@@ -140,7 +165,7 @@ class Action extends \Controller\ProductCategory\Action {
 
         // получаем из json данные о горячих ссылках и content
         try {
-            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category);
+            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category, null, $shopScriptSeo);
             $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
             // в json-файле в свойстве content содержится массив
             if (empty($brand)) {
@@ -168,7 +193,8 @@ class Action extends \Controller\ProductCategory\Action {
             &$hotlinks,
             &$seoContent,
             &$catalogJson,
-            &$promoContent
+            &$promoContent,
+            &$shopScriptSeo
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -180,6 +206,7 @@ class Action extends \Controller\ProductCategory\Action {
             $page->setParam('promoContent', $promoContent);
             $page->setParam('itemsPerRow', \App::config()->product['itemsPerRowJewel']);
             $page->setParam('scrollTo', 'smalltabs');
+            $page->setParam('shopScriptSeo', $shopScriptSeo);
         };
 
         // если категория содержится во внешнем узле дерева
@@ -255,10 +282,20 @@ class Action extends \Controller\ProductCategory\Action {
             // был нажат фильтр или сортировка
             $scrollTo = $page->getParam('scrollTo');
 
+            $catalogJson = $page->getParam('catalogJson');
+
              // сортировка
             $productSorting = new \Model\Product\Sorting();
             list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
             $productSorting->setActive($sortingName, $sortingDirection);
+
+            // если сортировка по умолчанию и в json заданы настройки сортировок,
+            // то применяем их
+            if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
+                $sort = $catalogJson['sort'];
+            } else {
+                $sort = $productSorting->dump();
+            }
 
             // вид товаров
             $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
@@ -270,9 +307,10 @@ class Action extends \Controller\ProductCategory\Action {
                     ? '\\Model\\Product\\ExpandedEntity'
                     : '\\Model\\Product\\CompactEntity'
             );
+
             $productPager = $repository->getIteratorByFilter(
                 $productFilter->dump(),
-                $productSorting->dump(),
+                $sort,
                 ($pageNum - 1) * $limit,
                 $limit
             );
@@ -315,6 +353,7 @@ class Action extends \Controller\ProductCategory\Action {
                 'view'                   => $productView,
                 'productVideosByProduct' => $productVideosByProduct,
                 'isAjax'                 => true,
+                'isAddInfo'              => true,
                 'itemsPerRow'            => \App::config()->product['itemsPerRowJewel'],
             ]);
             // бесконечный скролл
@@ -325,21 +364,23 @@ class Action extends \Controller\ProductCategory\Action {
             else {
                 $responseData['tabs'] = \App::templating()->render('jewel/product-category/filter/_tabs', [
                     'filters'           => $productFilter->getFilterCollection(),
-                    'catalogJson'       => $page->getParam('catalogJson'),
+                    'catalogJson'       => $catalogJson,
                     'productFilter'     => $productFilter,
                     'category'          => $page->getParam('category'),
                     'scrollTo'          => $scrollTo,
+                    'isAddInfo'         => true,
                 ]);
                 $responseData['filters'] = \App::templating()->render('jewel/product-category/_filters', [
                     'page'              => new \View\Layout(),
                     'filters'           => $productFilter->getFilterCollection(),
-                    'catalogJson'       => $page->getParam('catalogJson'),
+                    'catalogJson'       => $catalogJson,
                     'productSorting'    => $productSorting,
                     'productPager'      => $productPager,
                     'productFilter'     => $productFilter,
                     'category'          => $page->getParam('category'),
                     'scrollTo'          => $scrollTo,
                     'isAjax'            => true,
+                    'isAddInfo'         => true,
                 ]);
                 $responseData['pager'] = \App::templating()->render('jewel/product/_pager', [
                     'page'                      => new \View\Layout(),
@@ -352,6 +393,7 @@ class Action extends \Controller\ProductCategory\Action {
                     'productVideosByProduct'    => $productVideosByProduct,
                     'view'                      => $productView,
                     'itemsPerRow'               => $page->getParam('itemsPerRow'),
+                    'isAddInfo'                 => true,
                 ]);
                 $responseData['query_string'] = $request->getQueryString();
 

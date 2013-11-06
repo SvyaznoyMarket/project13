@@ -95,13 +95,18 @@ window.ANALYTICS = {
 	},
 
 	adriverOrder : function() {
-		var a = arguments[0];
+		var a = (arguments && arguments[0]) ? arguments[0] : false,
+            ordNum = (a && a.order_id ) ? a.order_id : false;
+
+        if (!ordNum) {
+            return;
+        }
 
 		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
 		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
 		document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&sz=order&bt=55&pz=0'+
-			'&custom=150='+ a.order_id +
-			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
+			'&custom=150='+ ordNum +
+			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border="0" width="1" height="1" alt="" />');
 	},
 	
 	// yandexMetrika : function() {
@@ -125,6 +130,95 @@ window.ANALYTICS = {
 	//     })(document, window, "yandex_metrika_callbacks");
 	// },
 
+    LiveTexJS: function () {
+        var LTData = $('#LiveTexJS').data('value');
+        window.liveTexID = LTData.livetexID;
+        window.liveTex_object = true;
+
+        window.LiveTex = {
+            onLiveTexReady: function () {
+                window.LiveTex.setName(LTData.username);
+            },
+
+            invitationShowing: false,
+
+            addToCart: function (productData) {
+                var userid = ( LTData.userid ) ? LTData.userid : 0;
+                window.LiveTex.setManyPrechatFields({
+                    'Department': 'Marketing',
+                    'Product': productData.article,
+                    'Ref': window.location.href,
+                    'userid': userid
+                });
+
+                if ( (!window.LiveTex.invitationShowing) && (typeof(window.LiveTex.showInvitation) == 'function') ) {
+                    LiveTex.showInvitation('Здравствуйте! Вы добавили корзину ' + productData.name + '. Может, у вас возникли вопросы и я могу чем-то помочь?');
+                    LiveTex.invitationShowing = true;
+                }
+
+            } // end of addToCart function
+
+        }; // end of LiveTex Object
+
+        //$(document).load(function() {
+        (function() {
+            var lt = document.createElement('script');
+            lt.type ='text/javascript';
+            lt.async = true;
+            lt.src = 'http://cs15.livetex.ru/js/client.js';
+            var sc = document.getElementsByTagName('script')[0];
+            if ( sc ) sc.parentNode.insertBefore(lt, sc);
+            else  document.documentElement.firstChild.appendChild(lt);
+        })();
+        //});
+    },
+
+    ActionPayJS : function() {
+        var vars = $('#ActionPayJS').data('vars');
+        if ( vars ) {
+            if ( vars.extraData ) {
+                if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
+                    vars.basketProducts = ENTER.config.cartProducts;
+                }
+                delete vars.extraData;
+            }
+            window.APRT_DATA = vars;
+        }
+
+        (function(){
+            var s   = document.createElement('script');
+            var x   = document.getElementsByTagName('script')[0];
+            s.type  = 'text/javascript';
+            s.async = true;
+            s.src   = '//rt.adonweb.ru/3038.js'; // tmp
+            //s.src   = '//rt.actionpay.ru/code/enter/'; // real
+            x.parentNode.insertBefore( s, x );
+        })();
+    },
+
+    yaParamsJS : function() {
+        var yap = $('#yaParamsJS').data('vars');
+        if (yap) {
+            window.yaParams = yap;
+        }
+    },
+
+    // enterleadsJS : function() { // SITE-1911
+    //     (function () {
+    //         try {
+    //             var script = document.createElement('script');
+
+    //             script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') +
+    //                 unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denterleads%26cost%3D') + escape(0) +
+    //                 unescape('%26order%3D') + escape(0) + unescape('%26r%3D') + Math.random();
+
+    //             document.getElementsByTagName('head')[0].appendChild(script);
+
+    //         } catch (e) {
+    //         }
+    //     })();
+    // },
+
     sociomantic : function() {
         (function(){
             var s   = document.createElement('script');
@@ -135,6 +229,333 @@ window.ANALYTICS = {
                 + 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
             x.parentNode.insertBefore( s, x );
         })();
+    },
+
+    sociomanticCategoryPage : function() {
+        (function(){
+            window.sonar_product = {
+                category : $('#sociomanticCategoryPage').data('prod-cats')
+            };
+        })();
+    },
+
+    sociomanticProductPageStream : function() {
+        (function(){
+            window.sonar_product = $('#sociomanticProductPageStream').data('scr-product');
+            window.sonar_product.category = $('#sociomanticProductPageStream').data('prod-cats');
+        })();
+    },
+
+    sociomanticBasket : function() {
+        (function(){
+            window.sonar_basket = {
+                products: $('#sociomanticBasket').data('cart-prods')
+            };
+        })();
+    },
+
+    criteoJS : function() {
+        window.criteo_q = window.criteo_q || [];
+        var criteo_arr =  $('#criteoJS').data('value');
+        if ( typeof(criteo_q) != "undefined" && !jQuery.isEmptyObject(criteo_arr) ) {
+            try{
+                window.criteo_q.push(criteo_arr);
+            } catch(e) {
+            }
+        }
+    },
+
+    flocktoryAddScript : function() {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = "//api.flocktory.com/1/hello.2.js";
+        var l = document.getElementsByTagName('script')[0];
+        l.parentNode.insertBefore(s, l);
+    },
+
+    jsOrderFlocktory : function() {
+        console.info('foctory order complete');
+        console.log($('#jsOrderFlocktory').data('value'));
+
+        var _flocktory = window._flocktory = _flocktory || [],
+            flocktoryData = $('#jsOrderFlocktory').data('value');
+        // end of vars
+
+        _flocktory.push(flocktoryData);
+
+        this.flocktoryAddScript();
+    },
+
+    flocktoryJS : function() {
+        this.flocktoryAddScript();
+
+        window.Flocktory = {
+            /**
+             * Структура методов объекта:
+             * popup_bind(elem)  связывает событие  subscribing_friend()  с элементом (elem)
+             * subscribing_friend()  проверяет емейл/телефон и вызывает  popup_open()
+             *
+             * flk - сокращение от flocktory
+             */
+            name : '',
+            mail : '',
+
+            popup_prepare : function () {
+                var flk_mail = $('.flocktory_email'); // Проверим эти элементы
+                if ( !flk_mail.length ) flk_mail = $('.subscribe-form__email');
+                if ( !flk_mail.length ) flk_mail = $('#recipientEmail');
+                flk_mail = flk_mail.val();
+
+                var flk_name = $('input.bFastInner__eInput').val(); // используем имя пользователя, если существует
+                if (flk_name && !flk_name.length && flk_mail && flk_mail.length ) flk_name = flk_mail;
+
+                if ( !flk_mail || !flk_mail.length ) {
+                    // если нет емейла, глянем телефон и передадим его вместо мейла
+                    var flk_tlf = $('#phonemask').val().replace(' ','');
+                    //flk_mail = $('.flocktory_tlf').val() + '@email.tlf';
+                    if ( !flk_name.length ) flk_name = flk_tlf;
+                    flk_mail = flk_tlf + '@email.tlf'; // допишем суффикс к тлф, дабы получить фиктивный мейл и передать его
+                }
+
+                if ( flk_mail.search('@') !== -1 ) {
+                    //if (!flk_name || !flk_name.length) flk_name = 'Покупатель';
+                    if (!flk_name || !flk_name.length) flk_name = flk_mail;
+                    window.Flocktory.name = flk_name;
+                    window.Flocktory.mail = flk_mail;
+                    return true;
+                }
+                return false;
+            },
+
+            subscribing_friend: function () {
+                if ( Flocktory.popup_prepare() ) {
+                    return Flocktory.popup_subscribe(Flocktory.mail, Flocktory.name);
+                }
+                return false;
+            },
+
+            popup_opder : function ( toFLK_order )  {
+				try{
+					if ( Flocktory.popup_prepare() ) {
+						toFLK_order.email = Flocktory.mail;
+						toFLK_order.name = Flocktory.name;
+						return Flocktory.popup(toFLK_order);
+					}
+				}catch(e){};
+                return false;
+            },
+
+            popup_bind : function( jq_el ) { // передаётся элемент вида — $('.jquery_elem')
+                if ( jq_el && jq_el.length ) {
+                    // Если элемент существует, навесим событие вызовом flocktory по клику
+                    jq_el.bind('click', function () {
+                        Flocktory.subscribing_friend();
+                    });
+                }
+            },
+
+            popup_bind_default : function( ) {
+                // Свяжем действия со стандартными названиями кнопок
+                Flocktory.popup_bind( $('.run_flocktory_popup') );
+                Flocktory.popup_bind( $('.subscribe-form__btn') );
+            },
+
+            popup: function (toFLK) {
+                var _fl = window._flocktory = _flocktory || [];
+                return _fl.push(toFLK);
+            },
+
+            popup_subscribe : function ( flk_mail, flk_name ) {
+                //flk_mail = 'hello@flocktory.com'; // tmp, for debug
+                flk_name = flk_name || flk_mail;
+                var date = new Date();
+
+                var toFLK = {
+                    "order_id": date.getFullYear() + '' + date.getMonth() + '' + date.getDay() + '' + date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000),
+                    "email": flk_mail,
+                    "name": flk_name,
+                    "price": 0,
+                    "domain": "registration.enter.ru",
+                    "items": [{
+                        "id": "подписка на рассылку",
+                        "title": "подписка на рассылку",
+                        "price":  0,
+                        "image": "",
+                        "count":  1
+                    }]
+                };
+
+                return Flocktory.popup(toFLK);
+            }
+
+        } // end of window.Flocktory object
+
+        Flocktory.popup_bind_default();
+
+    },
+
+    RetailRocketJS : function() {
+        window.rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // rrPartnerId — по ТЗ должна быть глобальной
+        
+        window.rrApi = {};
+        window.rrApiOnReady = [];
+
+        rrApi.addToBasket = rrApi.order = rrApi.categoryView = rrApi.view = rrApi.recomMouseDown = rrApi.recomAddToCart = function() {};
+
+        window.RetailRocket = {
+
+            'product': function ( data, userData ) {
+
+                var rcAsyncInit = function () {
+                    try {
+                        rcApi.view(data, userData.userId ? userData : undefined); 
+                    }
+                    catch ( err ) {
+                        var dataToLog = {
+                                event: 'RR_error',
+                                type: 'ошибка в rcApi.view',
+                                err: err
+                            };
+                        // end of vars
+
+                        ENTER.utils.logError(dataToLog);
+                    }
+                };
+
+                window.rrApiOnReady.push(rcAsyncInit);
+            },
+
+            'product.category': function ( data, userData ) {
+
+                var rcAsyncInit = function () {
+                    try {
+                        rcApi.categoryView(data, userData.userId ? userData : undefined);
+                    }
+                    catch ( err ) {
+                        var dataToLog = {
+                                event: 'RR_error',
+                                type:'ошибка в rcApi.categoryView',
+                                err: err
+                            };
+                        // end of vars
+
+                        ENTER.utils.logError(dataToLog);
+                    }
+                };
+
+                window.rrApiOnReady.push(rcAsyncInit);
+            },
+
+            'order.complete': function ( data, userData ) {
+
+                if ( userData.userId ) {
+                    data.userId = userData.userId;
+                    data.hasUserEmail = userData.hasUserEmail;
+                }
+
+                var rcAsyncInit = function () {
+                    try {
+                        rcApi.order(data);
+                    }
+                    catch ( err ) {
+                        var dataToLog = {
+                                event: 'RR_error',
+                                type:'ошибка в rcApi.order',
+                                err: err
+                            };
+                        // end of vars
+
+                        ENTER.utils.logError(dataToLog);
+                    }
+                };
+
+                window.rrApiOnReady.push(rcAsyncInit);
+            },
+
+            action: function ( e, userInfo ) {
+                var rr_data = $('#RetailRocketJS').data('value'),
+                    sendUserData = {
+                        userId: userInfo.id || false,
+                        hasUserEmail: ( userInfo && userInfo.email ) ? true : false
+                    };
+                // end of vars
+
+
+                if ( rr_data && rr_data.routeName && rr_data.sendData && window.RetailRocket.hasOwnProperty(rr_data.routeName) ) {
+                    window.RetailRocket[rr_data.routeName](rr_data.sendData, sendUserData);
+                }
+            },
+
+            init: function () { // on load:
+                (function (d) {
+                    var ref = d.getElementsByTagName('script')[0]; var apiJs, apiJsId = 'rrApi-jssdk';
+                    if (d.getElementById(apiJsId)) return;
+                    apiJs = d.createElement('script');
+                    apiJs.id = apiJsId;
+                    apiJs.async = true;
+                    apiJs.src = "//cdn.retailrocket.ru/javascript/tracking.js";
+                    ref.parentNode.insertBefore(apiJs, ref);
+                }(document));
+            }
+
+        }// end of window.RetailRocket object
+
+        RetailRocket.init();
+
+        if ( ENTER.config.userInfo ) {
+            RetailRocket.action(null, ENTER.config.userInfo)
+        }
+        else {
+            $('body').on('userLogged', RetailRocket.action);
+        }
+        // RetailRocket.action();
+    },
+
+    AdmitadJS : function() {
+        window._retag = window._retag || [];
+        var ad_data = $('#AdmitadJS').data('value');
+
+        if (ad_data) {
+
+            if (ad_data.ad_data) {
+                /**
+                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
+                 */
+                if (ad_data.ad_data.ad_category) {
+                    window.ad_category = ad_data.ad_data.ad_category;
+                }
+
+                if (ad_data.ad_data.ad_product) {
+                    window.ad_product = ad_data.ad_data.ad_product;
+                }
+
+                if (ad_data.ad_data.ad_products) {
+                    window.ad_products = ad_data.ad_data.ad_products;
+                }
+
+                if (ad_data.ad_data.ad_order) {
+                    window.ad_order = ad_data.ad_data.ad_order;
+                }
+
+                if (ad_data.ad_data.ad_amount) {
+                    window.ad_amount = ad_data.ad_data.ad_amount;
+                }
+
+            }
+
+            if (ad_data.pushData) {
+                window._retag.push(ad_data.pushData);
+            }
+        }
+
+        (function(d){
+            var s=document.createElement("script");
+            s.async=true;
+            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
+            var a=d.getElementsByTagName("script")[0];
+            a.parentNode.insertBefore(s, a);
+        }(document));
     },
 
     marketgidProd : function() {
@@ -231,6 +652,44 @@ window.ANALYTICS = {
 	},
 	testFreak : function() {
 		document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
+	},
+
+	marinSoftwarePageAddJS: function() {
+		var mClientId ='7saq97byg0';
+		var mProto = ('https:' == document.location.protocol ? 'https://' : 'http://');
+		var mHost = 'tracker.marinsm.com';
+		var mt = document.createElement('script'); mt.type = 'text/javascript'; mt.async = true; mt.src = mProto + mHost + '/tracker/async/' + mClientId + '.js';
+		var fscr = document.getElementsByTagName('script')[0]; fscr.parentNode.insertBefore(mt, fscr);
+	},
+
+	marinLandingPageTagJS : function() {
+		var _mTrack = window._mTrack || [];
+		_mTrack.push(['trackPage']);
+		this.marinSoftwarePageAddJS();
+	},
+
+	marinConversionTagJS : function() {
+		var orders = $('#marinConversionTagJS').data('value'),
+			_mTrack = window._mTrack || [];
+		// end of vars
+
+		if ( orders.length ) {
+			for ( var i in orders ) {
+				if ( orders[i]['id'] ) {
+					_mTrack.push(['addTrans', {
+						items : [
+							{
+								convType : 'sales',
+								orderId : orders[i]['id']	// order‑id
+							}
+						]
+					}]);
+
+					_mTrack.push(['processOrders']);
+				}
+			}
+			this.marinSoftwarePageAddJS();
+		}
 	},
 
 

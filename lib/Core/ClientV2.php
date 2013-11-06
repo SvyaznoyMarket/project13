@@ -19,6 +19,7 @@ class ClientV2 implements ClientInterface {
             'timeout'      => null,
             'retryTimeout' => null,
             'retryCount'   => null,
+            'debug'        => null,
         ], $config);
 
         $this->curl = $curl;
@@ -37,6 +38,14 @@ class ClientV2 implements ClientInterface {
      */
     public function query($action, array $params = [], array $data = [], $timeout = null) {
         \Debug\Timer::start('core');
+
+        if (null === $timeout) {
+            $timeout = $this->config['timeout'];
+        }
+
+        if ($this->config['debug']) {
+            $params['log4php'] = 1;
+        }
 
         $response = $this->curl->query($this->getUrl($action, $params), $data, $timeout);
 
@@ -59,6 +68,10 @@ class ClientV2 implements ClientInterface {
 
         if (null === $timeout) {
             $timeout = $this->config['timeout'];
+        }
+
+        if ($this->config['debug']) {
+            $params['log4php'] = 1;
         }
 
         $result = $this->curl->addQuery($this->getUrl($action, $params), $data, $successCallback, $failCallback, $timeout);

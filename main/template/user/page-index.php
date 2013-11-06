@@ -4,6 +4,10 @@
  * @var $user       \Session\User
  * @var $orderCount int
  */
+
+
+$userEntity = $user->getEntity();
+$userMail = $userEntity->getEmail();
 ?>
 
 <div class="fl width315">
@@ -32,18 +36,35 @@
 
     <? if (\App::config()->subscribe['enabled']): ?>
     <div class="font16 orange pb10">Подписка</div>
-    <ul class="leftmenu pb20">
+    <ul class="leftmenu pb20 bInputList">
         <li>
             Акции, новости и специальные предложения
             <form action="<?= $page->url('user.subscribe') ?>" method="post">
-                <label class="bSubscibe clearfix <? if ($user->getEntity()->getIsSubscribed()): ?>checked<? endif ?>">
+                <label class="emailCheckbox bSubscibe clearfix <?=($userMail) ?
+                    (
+                        ($user->getEntity()->getIsSubscribed()) ? 'checked' : ''
+                    ) : 'hidden' ?>">
                     <b></b> Email
-                    <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribed()): ?> checked="checked" <? endif ?> />
+                    <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="bCustomInput subscibe"<? if ($user->getEntity()->getIsSubscribed()): ?> checked="checked" <? endif ?> />
                 </label>
-                <label class="bSubscibe clearfix <? if ($user->getEntity()->getIsSubscribedViaSms()): ?>checked<? endif ?>">
+
+                <div id="emailWrapper" class="pt10 width418 <?= !empty($emailTmpCheck) ? '' : 'hf' ?>">
+                    <span class="width205">Email:</span>
+                    <input type="text" id="user_email" value="<?= $user->getEntity()->getEmail() ?>" name="email" class="text width205" />
+                </div>
+
+
+                <label class="smsCheckbox bSubscibe clearfix <? if ($user->getEntity()->getIsSubscribedViaSms() || !empty($smsTmpCheck)): ?>checked<? endif ?>">
                     <b></b> SMS
-                    <input type="checkbox" name="subscribe_sms" value="1" autocomplete="off" class="subscibe"<? if ($user->getEntity()->getIsSubscribedViaSms()): ?> checked="checked" <? endif ?> />
+                    <input type="checkbox" name="subscribe_sms" value="1" autocomplete="off" class="bCustomInput smsCheckbox subscibe"<? if ($user->getEntity()->getIsSubscribedViaSms() || !empty($smsTmpCheck)): ?> checked="checked" <? endif ?> />
                 </label>
+
+                <div id="mobilePhoneWrapper" class="pt10 width418 <?= !empty($smsTmpCheck) ? '' : 'hf' ?>">
+                    <span class="width205">Мобильный телефон:</span>
+                    <input type="text" id="user_mobile_phone" value="<?= $user->getEntity()->getMobilePhone() ?>" name="mobile_phone" class="text width205" />
+                </div>
+
+                <div class="red pt10 pb10 width418"><?= empty($error) ? '' : $error ?></div>
 
                 <input type="submit" class="fr button bigbutton" value="Сохранить" tabindex="10"/>
                 <div class="clear"></div>

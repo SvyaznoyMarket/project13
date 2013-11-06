@@ -25,25 +25,25 @@ foreach ($options as $option) {
 ?>
 
 
-<li>
-  <div class="filter-section__title"><?= $filter->getName() ?></div>
-  <div class="filter-section__value">
+<li class="bBrandSortingList__eItem">
+  <div class="bBrandSortingOptiontTitle"><?= $filter->getName() ?></div>
+  <div class="bBrandSortingOption">
     <? if(empty($values)) { ?>
-        <a href="<?= $allLink ?>">Все</a>
+        <a class="bBrandSortingOption__eLink" href="<?= $allLink ?>">Все</a>
     <? } else { ?>
         <? foreach ($options as $optKey => $option) { $id = $option->getId() ?>
             <? if(in_array($id, $values)) { ?>
-                <a href=""><?= $option->getName() ?></a>
+                <span class="bBrandSortingSelectOption"><?= $option->getName() ?></span>
                 <? unset($options[$optKey]) ?>
             <? } ?>
         <? } ?>
     <? } ?>
-    <ul class="filter-section__value__dd">
+    <ul class="bBrandSortingOption__eDropDown">
         <? if(!empty($values)) { ?>
-            <li><a href="<?= $allLink ?>">Все</a></li>
+            <li class="bDropDownItem"><a class="bDropDownItem__eLink" href="<?= $allLink ?>">Все</a></li>
         <? } ?>
         <? foreach ($options as $option) { ?>
-            <li><a href="<?= $option->getLink() ?>"><?= $option->getName() ?></a></li>
+            <li class="bDropDownItem"><a class="bDropDownItem__eLink" href="<?= $option->getLink() ?>"><?= $option->getName() ?></a></li>
         <? } ?>
     </ul>
   </div>

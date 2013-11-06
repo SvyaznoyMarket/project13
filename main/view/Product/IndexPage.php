@@ -90,8 +90,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('product/page-index-new', $this->params);
-        //return $this->render('product/page-index', $this->params);
+        return $this->render('product/page-index', $this->params) . PHP_EOL . $this->render('partner-counter/_flocktory_popup', $this->params);
     }
 
     public function slotBodyDataAttribute() {
@@ -211,6 +210,8 @@ class IndexPage extends \View\DefaultLayout {
             'товар'     => $product->getName(),
             'анонс товара'     => $product->getAnnounce(),
             'цена'      => $product->getPrice() . ' руб',
+            'префикс'     => $product->getPrefix(),
+            'web_name'     => $product->getWebName(),
         ];
         $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['категория'] = $data;

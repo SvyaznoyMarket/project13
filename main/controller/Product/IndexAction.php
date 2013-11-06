@@ -43,6 +43,7 @@ class IndexAction {
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         $region = $user->getRegion();
+        $lifeGiftRegion = new \Model\Region\Entity(['id' => \App::config()->lifeGift['regionId']]);
 
         // подготовка 2-го пакета запросов
 
@@ -52,8 +53,7 @@ class IndexAction {
         /** @var $product \Model\Product\Entity */
         $product = null;
         $productExpanded = null;
-        $dataR = null;
-        \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product, &$productExpanded) {
+        $repository->prepareEntityByToken($productToken, $region, function($data) use (&$product, &$productExpanded) {
             $data = reset($data);
 
             if ((bool)$data) {
@@ -62,8 +62,22 @@ class IndexAction {
             }
         });
 
+        /** @var $lifeGiftProduct \Model\Product\Entity|null */
+        $lifeGiftProduct = null;
+        $repository->prepareEntityByToken($productToken, $lifeGiftRegion, function($data) use (&$lifeGiftProduct) {
+            $data = reset($data);
+
+            if ((bool)$data) {
+                $lifeGiftProduct = new \Model\Product\Entity($data);
+            }
+        });
+
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+
+        if (!($lifeGiftProduct->getLabel() && (\App::config()->lifeGift['labelId'] === $lifeGiftProduct->getLabel()->getId()))) {
+            $lifeGiftProduct = null;
+        }
 
         if (!$product) {
             throw new \Exception\NotFoundException(sprintf('Товар @%s не найден.', $productToken));
@@ -73,17 +87,119 @@ class IndexAction {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
         }
 
-        // получаем catalog json для родительской категории
-        $productCategories = $product->getCategory();
-        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson(array_pop($productCategories));
+        // категории продукта
+        $categories = $product->getCategory();
+        $productCategoryTokens = array_map(function($category){
+            return $category->getToken();
+        }, $product->getCategory());
+
+        // получаем catalog json
+        $catalogJson = [];
+        $dataStore = \App::dataStoreClient();
+        $query = sprintf('catalog/%s/%s.json', implode('/', $productCategoryTokens), $product->getToken());
+        $dataStore->addQuery($query, [], function ($data) use (&$catalogJson) {
+            if($data) $catalogJson = $data;
+        });
+        $dataStore->execute();
+
+        // трастфакторы
+        $trustfactorTop = null;
+        $trustfactorMain = null;
+        $trustfactorRight = [];
+        $trustfactorExcludeToken = empty($catalogJson['trustfactor_exclude_token']) ? [] : $catalogJson['trustfactor_exclude_token'];
+        $excludeTokens = array_intersect($productCategoryTokens, $trustfactorExcludeToken);
+        if(empty($excludeTokens)) {
+            if(!empty($catalogJson['trustfactor_top'])) $trustfactorTop = $catalogJson['trustfactor_top'];
+            if(!empty($catalogJson['trustfactor_main'])) {
+                \App::contentClient()->addQuery(
+                    trim((string)$catalogJson['trustfactor_main']),
+                    [],
+                    function($data) use (&$trustfactorMain) {
+                        if (!empty($data['content'])) {
+                            $trustfactorMain = $data['content'];
+                        }
+                    },
+                    function(\Exception $e) {
+                        \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                        \App::exception()->add($e);
+                    }
+                );
+                \App::contentClient()->execute();
+            }
+            if(!empty($catalogJson['trustfactor_right'])) {
+                if(!is_array($catalogJson['trustfactor_right'])) $catalogJson['trustfactor_right'] = [$catalogJson['trustfactor_right']];
+                $i = 0;
+                foreach ($catalogJson['trustfactor_right'] as $trustfactorRightToken) {
+                    \App::contentClient()->addQuery(
+                        trim((string)$trustfactorRightToken),
+                        [],
+                        function($data) use (&$trustfactorRight, $i) {
+                            if (!empty($data['content'])) {
+                                $trustfactorRight[$i] = $data['content'];
+                            }
+                        },
+                        function(\Exception $e) {
+                            \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                            \App::exception()->add($e);
+                        }
+                    );
+                    $i++;
+                }
+                \App::contentClient()->execute();
+                ksort($trustfactorRight);
+            }
+        }
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
         // карточку показываем в обычном лэйауте, если включена соответствующая настройка
         if(!empty($catalogJson['regular_product_page'])) $categoryClass = null;
 
-        $useLens = true;
-        if ( isset($catalogJson['use_lens']) ) $useLens = (bool) $catalogJson['use_lens'];
+        $useLens = false;
+        if ( isset($catalogJson['use_lens']) ) {
+            if ( $catalogJson['use_lens'] ) $useLens = true;
+        }
+        else {
+            $photos = $product->getPhoto();
+            if ( isset($photos[0]) ) {
+                if ( $photos[0]->getHeight() > 750 || $photos[0]->getWidth() > 750 ) {
+                    $useLens = true;
+                }
+            }
+        }
+
+        // Если набор, то получим $productLine
+        $productLine = $product->getLine();
+
+        $mainProduct = null;
+        $line = null;
+        $parts = [];
+
+        if ($productLine instanceof \Model\Product\Line\Entity ) {
+            $productRepository = \RepositoryManager::product();
+            $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
+            if(!$product->getKit()) {
+                // Если набор, то получаем главный продукт
+                $mainProduct = $productRepository->getEntityById($line->getMainProductId());
+            } else {
+                $mainProduct = $product;
+            }
+
+            // Запрашиваю составные части набора
+            if ($mainProduct && (bool)$mainProduct->getKit() ) {
+                $productRepository->setEntityClass('\Model\Product\CompactEntity');
+                $partId = [];
+                foreach ($mainProduct->getKit() as $part) {
+                    $partId[] = $part->getId();
+                }
+                try {
+                    $parts = $productRepository->getCollectionById($partId);
+                } catch (\Exception $e) {
+                    \App::exception()->add($e);
+                    \App::logger()->error($e);
+                }
+            }
+        }
 
         /*
         if ($categoryClass) {
@@ -104,7 +220,7 @@ class IndexAction {
         $accessoryItems = [];
         $accessoryCategory = array_map(function($accessoryGrouped){
             return $accessoryGrouped['category'];
-        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 36));
+        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 36, $catalogJson));
         if ((bool)$accessoryCategory) {
             $firstAccessoryCategory = new \Model\Product\Category\Entity();
             $firstAccessoryCategory->setId(0);
@@ -178,37 +294,34 @@ class IndexAction {
 
         /** @var $shopStates \Model\Product\ShopState\Entity[] */
         $shopStates = [];
-        //загружаем магазины, если товар доступен только на витрине
-        if (!$product->getIsBuyable() && $product->getState()->getIsShop()) {
-            $quantityByShop = [];
-            foreach ($product->getStock() as $stock) {
-                $quantityShowroom = (int)$stock->getQuantityShowroom();
-                $quantity = (int)$stock->getQuantity();
-                $shopId = $stock->getShopId();
-                if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
-                    $quantityByShop[$shopId] = [
-                        'quantity' => $quantity,
-                        'quantityShowroom' => $quantityShowroom,
-                    ];
-                }
+        $quantityByShop = [];
+        foreach ($product->getStock() as $stock) {
+            $quantityShowroom = (int)$stock->getQuantityShowroom();
+            $quantity = (int)$stock->getQuantity();
+            $shopId = $stock->getShopId();
+            if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
+                $quantityByShop[$shopId] = [
+                    'quantity' => $quantity,
+                    'quantityShowroom' => $quantityShowroom,
+                ];
             }
-            if ((bool)$quantityByShop) {
-                \RepositoryManager::shop()->prepareCollectionById(
-                    array_keys($quantityByShop),
-                    function($data) use (&$shopStates, &$quantityByShop) {
-                        foreach ($data as $item) {
-                            $shop = new \Model\Shop\Entity($item);
+        }
+        if ((bool)$quantityByShop) {
+            \RepositoryManager::shop()->prepareCollectionById(
+                array_keys($quantityByShop),
+                function($data) use (&$shopStates, &$quantityByShop) {
+                    foreach ($data as $item) {
+                        $shop = new \Model\Shop\Entity($item);
 
-                            $shopState = new \Model\Product\ShopState\Entity();
-                            $shopState->setShop($shop);
-                            $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
-                            $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
+                        $shopState = new \Model\Product\ShopState\Entity();
+                        $shopState->setShop($shop);
+                        $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
+                        $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
 
-                            $shopStates[] = $shopState;
-                        }
+                        $shopStates[] = $shopState;
                     }
-                );
-            }
+                }
+            );
         }
 
         try {
@@ -222,6 +335,7 @@ class IndexAction {
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
+        $page->setParam('lifeGiftProduct', $lifeGiftProduct);
         $page->setParam('productExpanded', $productExpanded);
         $page->setParam('productVideos', $productVideos);
         $page->setParam('title', $product->getName());
@@ -242,6 +356,13 @@ class IndexAction {
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
         $page->setParam('useLens', $useLens);
+        $page->setParam('catalogJson', $catalogJson);
+        $page->setParam('trustfactorTop', $trustfactorTop);
+        $page->setParam('trustfactorMain', $trustfactorMain);
+        $page->setParam('trustfactorRight', $trustfactorRight);
+        $page->setParam('mainProduct', $mainProduct);
+        $page->setParam('parts', $parts);
+        $page->setParam('line', $line);
 
         return new \Http\Response($page->show());
     }

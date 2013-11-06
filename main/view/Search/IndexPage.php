@@ -3,6 +3,8 @@
 namespace View\Search;
 
 class IndexPage extends \View\DefaultLayout {
+    protected $layout  = 'layout-oneColumn';
+
     public function prepare() {
         /** @var $productPager \Iterator\EntityPager */
         $productPager = $this->getParam('productPager') instanceof \Iterator\EntityPager ? $this->getParam('productPager') : null;
@@ -27,12 +29,15 @@ class IndexPage extends \View\DefaultLayout {
             $title .= ' – Enter.ru';
 
             $this->setTitle($title);
+            $this->setParam('title', $title);
+            /*
             $this->setParam('title', trim($this->render('search/_title', array(
                 'searchQuery' => $this->getParam('searchQuery'),
                 'meanQuery'   => $this->getParam('meanQuery'),
                 'forceMean'   => $this->getParam('forceMean'),
                 'count'       => $this->getParam('productCount'),
             ))));
+            */
         }
     }
 
@@ -43,10 +48,25 @@ class IndexPage extends \View\DefaultLayout {
     public function slotContent() {
         $this->setParam('request', \App::request());
 
-        return $this->render('search/page-index', $this->params);
+        return $this->render('search/page-index-new', $this->params);
+    }
+
+    public function slotContentHead() {
+        // заголовок контента страницы
+        if (!$this->hasParam('title')) {
+            $this->setParam('title', null);
+        }
+        // навигация
+        if (!$this->hasParam('breadcrumbs')) {
+            $this->setParam('breadcrumbs', []);
+        }
+
+        return $this->render('_contentHead', array_merge($this->params, ['title' => null])); // TODO: осторожно, костыль
     }
 
     public function slotSidebar() {
+        return '';
+
         if (!(bool)$this->getParam('categories')) {
             return  '';
         }

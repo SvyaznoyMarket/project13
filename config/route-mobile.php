@@ -40,7 +40,7 @@ return [
     ],
     // регистрация корпоративного пользователя
     'user.registerCorporate' => [
-        'pattern' => '/corporate-register',
+        'pattern' => '/b2b',
         'action'  => ['User\Action', 'registerCorporate'],
     ],
     // выход пользователя
@@ -272,7 +272,7 @@ return [
         'action'  => ['Order\OneClickAction', 'execute'],
         'method'  => ['POST'],
     ],
-    'order.create' => [
+    'order' => [
         'pattern' => '/orders/new',
         'action'  => ['Order\Action', 'create'],
     ],

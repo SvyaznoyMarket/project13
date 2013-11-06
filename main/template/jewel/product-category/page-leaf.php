@@ -18,7 +18,7 @@
 <div class="clear"></div>
 <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
 
-<div class="brandSection brandSectionPandora brandSectionPandora__catalog">
+<div class="bBrandCatalog">
 
   <? require __DIR__ . '/_branch.php'; ?>
 
@@ -26,17 +26,18 @@
       <?= $promoContent ?>
   <? endif ?>
 
-  <div id="smalltabs" data-scrollto-passed="<?= (bool)$scrollTo ?>" class="brand-subnav clearfix">
+  <div id="smalltabs" data-scrollto-passed="<?= (bool)$scrollTo ?>" class="bBrandSubNav clearfix">
     <?= $page->render('jewel/product-category/filter/_tabs', [
         'filters'           => $productFilter->getFilterCollection(),
         'catalogJson'       => $catalogJson,
         'productFilter'     => $productFilter,
         'category'          => $category,
         'scrollTo'          => $scrollTo,
+        'isAddInfo'         => true,
     ]) ?>
   </div>
 
-  <div class="filter-section">
+  <div class="bBrandSorting">
     <?= $page->render('jewel/product-category/_filters', [
         'page'              => $page,
         'filters'           => $productFilter->getFilterCollection(),
@@ -47,6 +48,7 @@
         'category'          => $category,
         'scrollTo'          => $scrollTo,
         'isAjax'            => true,
+        'isAddInfo'         => true,
     ]) ?>
   </div>
 
@@ -62,6 +64,7 @@
       'view'                   => $productView,
       'productVideosByProduct' => $productVideosByProduct,
       'itemsPerRow'            => $itemsPerRow,
+      'isAddInfo'              => true,
   )) ?>
 
 

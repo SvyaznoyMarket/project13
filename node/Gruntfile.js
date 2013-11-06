@@ -9,18 +9,19 @@ module.exports = function(grunt) {
 	 * @type {Array}
 	 */
 	var bigjqueryFiles = [
-		'custom-form-elements.js',
+		// 'custom-form-elements.js',
 		'jquery.email_validate.js',
 		'jquery.lightbox_me.js',
 		'jquery.scrollto.js',
 		'jquery.placeholder.js',
-		'prettyCheckboxes.js',
+		// 'prettyCheckboxes.js',
 		'jquery.infinityCarousel.js',
 		'typewriter.js',
 		'jquery.maskedinput.js',
 		'jquery.put_cursor_at_end.js',
 		'goodsCounter.js',
 		'jquery.elevatezoom.js',
+		'jquery.animate-shadow.js',
 		// 'customRadio.js',
 		'customDropDown.js',
 		'goodsSlider.js',
@@ -32,6 +33,8 @@ module.exports = function(grunt) {
 	 * @type {Array}
 	 */
 	var libraryFiles = [
+		jsDevPath+'library/cloneObject.js',
+		jsDevPath+'library/getKeysLength.js',
 		jsDevPath+'library/JSON.js',
 		jsDevPath+'library/pubSub.js',
 		jsDevPath+'library/isTrueEmail.js',
@@ -40,8 +43,11 @@ module.exports = function(grunt) {
 		jsDevPath+'library/simple_templating.js',
 		jsDevPath+'library/library.js',
 		jsDevPath+'library/mapDriver.js',
+		jsDevPath+'library/mapDriver-v2.js',
 		jsDevPath+'library/black_box.js',
+		jsDevPath+'library/formValidator.js',
 		jsDevPath+'library/addParameterToUrl.js',
+		jsDevPath+'library/blockScreen.js',
 		jsDevPath+'library/*.js'
 	];
 
@@ -76,29 +82,33 @@ module.exports = function(grunt) {
 				src: [jsDevPath+'**/*.js', 'Gruntfile.js'],
 			},
 			options: {
-				"-W034": true,
-				"curly": true,
-				"eqeqeq": true,
-				"immed": true,
-				"latedef": true,
-				"newcap": true,
-				"noarg": true,
-				"sub": true,
-				"undef": true,
-				"boss": true,
-				"eqnull": true,
-				"node": true,
-				"browser": true,
-				"globals": {
-					"jQuery": true,
-					"$": true,
-					"google": true,
-					"ymaps": true,
-					"_gaq": true,
-					"escape": true,
-					"unescape": true,
-					"tmpl": true,
-					"_kmq": true
+				'-W034': true,
+				'curly': true,
+				'eqeqeq': true,
+				'immed': true,
+				'latedef': true,
+				'newcap': true,
+				'noarg': true,
+				'sub': true,
+				'undef': true,
+				'boss': true,
+				'eqnull': true,
+				'node': true,
+				'browser': true,
+				'funcscope': true,
+				'quotmark': 'single',
+				// 'onevar': true,
+				'globals': {
+					'jQuery': true,
+					'$': true,
+					'google': true,
+					'ymaps': true,
+					'_gaq': true,
+					'escape': true,
+					'unescape': true,
+					'tmpl': true,
+					'_kmq': true,
+					'ko': true
 				},
 			},
 		},
@@ -201,7 +211,10 @@ module.exports = function(grunt) {
 		watch: {
 			less: {
 				files: ['../web/css/*.less', '../web/css/**/*.less'],
-				tasks: ['less']
+				tasks: ['less'],
+				options: {
+					livereload: true,
+				},
 			},
 			partnerScripts: {
 				files: ['../web/js/partner/*.js'],
@@ -209,7 +222,7 @@ module.exports = function(grunt) {
 			},
 			vendorScripts: {
 				files: ['../web/js/vendor/*.js'],
-				tasks: ['concat:vendorScripts','uglify:vendorScripts', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['uglify:vendorScripts', 'jshint', 'exec:getVersion']
 			},
 			cartJS:{
 				files: [jsDevPath+'cart/*.js'],
@@ -243,9 +256,9 @@ module.exports = function(grunt) {
 				files: [jsDevPath+'order/*.js'],
 				tasks: ['concat:orderJS','uglify:orderJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
 			},
-			orderNewJS:{
-				files: [jsDevPath+'order-new/*.js'],
-				tasks: ['concat:orderNewJS','uglify:orderNewJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+			orderNewV5JS:{
+				files: [jsDevPath+'order-new-v5/*.js'],
+				tasks: ['concat:orderNewV5JS','uglify:orderNewV5JS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
 			},
 			pandoraJS:{
 				files: [jsDevPath+'pandora/*.js'],
@@ -254,6 +267,10 @@ module.exports = function(grunt) {
 			portsJS:{
 				files: [jsDevPath+'ports/*.js'],
 				tasks: ['concat:portsJS','uglify:portsJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+			},
+			catalogJS:{
+				files: [jsDevPath+'catalog/*.js'],
+				tasks: ['concat:catalogJS','uglify:catalogJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
 			},
 			productJS:{
 				files: [jsDevPath+'product/*.js'],
@@ -309,9 +326,9 @@ module.exports = function(grunt) {
 				src: [jsDevPath+'order/*.js'],
 				dest: jsProdPath+'order.js'
 			},
-			orderNewJS : {
-				src: [jsDevPath+'order-new/*.js'],
-				dest: jsProdPath+'order-new.js'
+			orderNewV5JS : {
+				src: [jsDevPath+'order-new-v5/*.js'],
+				dest: jsProdPath+'order-new-v5.js'
 			},
 			pandoraJS : {
 				src: [jsDevPath+'pandora/*.js'],
@@ -320,6 +337,10 @@ module.exports = function(grunt) {
 			portsJS : {
 				src: [jsDevPath+'ports/*.js'],
 				dest: jsProdPath+'ports.js'
+			},
+			catalogJS:{
+				src: [jsDevPath+'catalog/*.js'],
+				dest: jsProdPath+'catalog.js'
 			},
 			productJS : {
 				src: [jsDevPath+'product/*.js'],
@@ -396,9 +417,8 @@ module.exports = function(grunt) {
 			},
 
 			libraryJS: {
-				files: {
-					'../web/js/prod/library.min.js': libraryFiles
-				}
+				src: '../web/js/prod/library.js',
+        		dest: '../web/js/prod/library.min.js'
 			},
 
 			mainJS: {
@@ -419,9 +439,9 @@ module.exports = function(grunt) {
 				}
 			},
 
-			orderNewJS: {
+			orderNewV5JS : {
 				files: {
-					'../web/js/prod/order-new.min.js': [jsDevPath+'order-new/*.js']
+					'../web/js/prod/order-new-v5.min.js': [jsDevPath+'order-new-v5/*.js']
 				}
 			},
 
@@ -434,6 +454,12 @@ module.exports = function(grunt) {
 			portsJS: {
 				files: {
 					'../web/js/prod/ports.min.js': [jsDevPath+'ports/*.js']
+				}
+			},
+
+			catalogJS: {
+				files: {
+					'../web/js/prod/catalog.min.js': [jsDevPath+'catalog/*.js']
 				}
 			},
 
@@ -510,7 +536,7 @@ module.exports = function(grunt) {
 	// Тестирование JS, валидация JS, компиляция bigjquery, минификация JS, версионность
 	grunt.registerTask('js', ['concat', 'connect', 'qunit', 'jshint', 'uglify', 'exec:compileBJ', 'exec:getVersion']);
 	// Компиляция LESS, тестирование JS, валидация, минификация JS, версионность
-	grunt.registerTask('default', ['less', 'concat', 'connect', 'qunit', 'jshint', 'uglify', 'exec:compileBJ', 'exec:getVersion']);
+	grunt.registerTask('default', ['less', 'concat', 'jshint', 'uglify', 'exec:compileBJ', 'connect', 'qunit', 'exec:getVersion']);
 	// Генерация рандомных полигонов яндекс карт
 	grunt.registerTask('ymaps', ['ymaps_generate']);
 	// Тестирование JS, валидация JS

@@ -6,15 +6,15 @@
 ?>
 
 <div class="bSubscribeLightboxPopup clearfix">
-    <h3 class="bSubscribeLightboxPopup__eTitle fl">Дружить с нами выгодно!</h3>
-    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Оставьте ваш email и узнайте почему"/>
-    <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>">Хочу все знать</button>
+    <h3 class="bSubscribeLightboxPopup__eTitle fl">Дарим подарки новым друзьям!</h3>
+    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Подпишитесь и получите подарок"/>
+    <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>">Хочу подарок</button>
     <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
 </div>
 <!-- Topbar -->
 <div class="topbar clearfix">    
     <div class="bRegion">
-        <a class="fl" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>" id="jsregion" data-url="<?= $page->url('region.init') ?>" data-region-id="<?= $user->getRegion()->getId() ?>" data-autoresolve-url="<?= $page->url('region.autoresolve') ?>"><?= ((mb_strlen($user->getRegion()->getName()) > 20) ? (mb_substr($user->getRegion()->getName(), 0, 20) . '...') : $user->getRegion()->getName()) ?></a>
+        <a class="fl jsChangeRegion bRegion__eLink" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>" data-url="<?= $page->url('region.init') ?>" data-region-id="<?= $user->getRegion()->getId() ?>" data-autoresolve-url="<?= $page->url('region.autoresolve') ?>"><?= ((mb_strlen($user->getRegion()->getName()) > 20) ? (mb_substr($user->getRegion()->getName(), 0, 20) . '...') : $user->getRegion()->getName()) ?></a>
         
         <? /*<div class="headerContactPhone fl" >
             <p class="fl headerContactPhone__eTitle">Контакт-cENTER</p>
@@ -25,12 +25,12 @@
             </p>
         </div> */ ?>
 
-        <div class="headerContactPhone fl" >
+        <div itemscope itemtype="http://schema.org/Organization" class="headerContactPhone fl" >
             <p class="fl headerContactPhone__ePhones">
-                8 (800) 700-00-09
+                <span itemprop="telephone"><?= \App::config()->company['phone'] ?></span><br/>
                 <div class="bPhonesRegion fl">
-                    8 (495) 775-00-06<br/>
-                    8 (812) 703-77-30
+                    <span itemprop="telephone"><?= \App::config()->company['moscowPhone'] ?></span><br/>
+                    <span itemprop="telephone">8 (812) 703-77-30</span>
                 </div>
             </p>
         </div>

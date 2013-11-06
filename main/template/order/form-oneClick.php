@@ -1,7 +1,8 @@
 <?php
 /**
- * @var $page \View\Layout
- * @var $user \Session\User
+ * @var $page    \View\Layout
+ * @var $user    \Session\User
+ * @var $product \Model\Product\Entity
  */
 ?>
 
@@ -18,7 +19,7 @@ $formData = array(
 <div class='bMobDown mBR5 mW2 mW1000 p0' style="display:none" id="order1click-container-new">
     <div class='bMobDown__eWrap'>
         <div class='bMobDown__eClose top0 close'></div>
-        <form id="oneClick" action="" data-values="<?//= $page->json($formData) ?>">
+        <form id="oneClick" action="" data-values="<?= $page->json($formData) ?>">
             <input type="hidden" name="order[one_click]" value="1">
             <table class='bFast' cellpadding=0 cellspacing=0>
                 <tr>
@@ -48,8 +49,8 @@ $formData = array(
                     </td>
                     <td class='bFast__eForm'>
                         <table cellpadding=0 cellspacing=0 class='bFastInner'>
-                            <tr><th colspan="2"><h2>Заполните форму быстрого заказа:</h2></th></tr>
-                            <tr data-bind="visible: noDelivery()"><td colspan="2"><h2 class="red">Товар в количестве <span data-bind="text: quantity()"></span> шт. отсутствует на складе.</h2></td></tr>
+                            <tr><th colspan="2"><div class="h2"><?= (isset($product) && $product->isInShopStockOnly()) ? 'Резерв в магазине' : 'Быстрый заказ' ?></div></th></tr>
+                            <tr data-bind="visible: noDelivery()"><td colspan="2"><div class="red">Товар в количестве <span data-bind="text: quantity()"></span> шт. отсутствует на складе.</div></td></tr>
                             <tr data-bind="visible: !noDelivery()"><td width="200">Способ получения заказа:</td>
                                 <td>
                                     <div class="bSelectWrap mFastInpSmall mr10" data-bind="css: { mDisabled : (disabledSelectors() || stableType() ) }">
@@ -63,7 +64,7 @@ $formData = array(
                                         </select>
                                     </div>
                                 </td></tr>
-                            <!-- ko if: chosenDlvr().type == 'self' -->
+                            <!-- ko if: ( chosenDlvr().type == "self" || chosenDlvr().type == "now" ) -->
                             <tr data-bind="visible: !noDelivery()"><td>Магазин для самовывоза:</td>
                                 <td>
                                     <div class="bSelectWrap mFastInpBig" data-bind="css: { mDisabled : disabledSelectors() }">
@@ -96,7 +97,7 @@ $formData = array(
                                 </div>
                                 <div id="map-info_window-container-ya" style="display:none">
                                   <div class='bMapShops__ePopupRel'>
-                                    <h3>$[properties.name]</h3>
+                                    <div class="bMapShops__ePopupRelTitle">$[properties.name]</div>
                                     <span>$[properties.regtime]</span><br>
                                     <span class="shopnum" style="display:none">$[properties.id]</span>
                                     <a href class='bGrayButton shopchoose' >Забрать из этого магазина</a>
@@ -107,9 +108,47 @@ $formData = array(
 
                             <!-- ko foreach: textfields -->
                             <tr>
-                                <td><span data-bind="text: title"></span>:</td>
+                                <td style="line-height: 20px;"><span data-bind="text: title"></span>:</td>
                                 <td>
                                     <input data-bind="event: { change: $root.validateField }, value: value, attr: { name: name, id: selectorid }, css: { mEmpty: valerror }" class='bFastInner__eInput'>
+
+                                    <!-- ko if: showsubscribe -->
+                                        <!-- ko if: valerror -->
+                                            <div class="bSubscibeWrapper hf pt10">
+                                                <label class="bSubscibe">
+                                                    <b></b> Хочу знать об интересных предложениях
+                                                    <input type="checkbox" name="subscribe" value="0" autocomplete="off" class="subscibe" disabled="disabled" />
+                                                </label>
+                                            </div>
+                                        <!-- /ko -->
+                                        <!-- ko ifnot: valerror -->
+                                            <!-- ko if: value -->
+                                                <div class="bSubscibeWrapper pt10">
+                                                    <!-- ko if: active -->
+                                                        <label class="bSubscibe checked">
+                                                            <b></b> Хочу знать об интересных предложениях
+                                                            <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
+                                                        </label>
+                                                    <!-- /ko -->
+                                                    <!-- ko ifnot: active -->
+                                                        <label class="bSubscibe">
+                                                            <b></b> Хочу знать об интересных предложениях
+                                                            <input type="checkbox" name="subscribe" value="0" autocomplete="off" class="subscibe" disabled="disabled" />
+                                                        </label>
+                                                    <!-- /ko -->
+                                                </div>
+                                            <!-- /ko -->
+                                            <!-- ko ifnot: value -->
+                                                <div class="bSubscibeWrapper hf pt10">
+                                                    <label class="bSubscibe">
+                                                        <b></b> Хочу знать об интересных предложениях
+                                                        <input type="checkbox" name="subscribe" value="0" autocomplete="off" class="subscibe" disabled="disabled" />
+                                                    </label>
+                                                </div>
+                                            <!-- /ko -->
+                                        <!-- /ko -->
+                                    <!-- /ko -->
+
                                     <!-- ko if: valerror -->
                                     <span class='mEmpty'>(!) Пожалуйста, верно заполните поле</span>
                                     <!-- /ko -->

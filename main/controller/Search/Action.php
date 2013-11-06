@@ -21,7 +21,10 @@ class Action {
         $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
 
         if (empty($searchQuery)) {
-            throw new \Exception\NotFoundException(sprintf('Пустая фраза поиска.', $searchQuery));
+            $page = new \View\Search\EmptyPage();
+            $page->setParam('searchQuery', $searchQuery);
+            return new \Http\Response($page->show());
+            //throw new \Exception\NotFoundException(sprintf('Пустая фраза поиска.', $searchQuery));
         }
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
@@ -33,44 +36,97 @@ class Action {
         $categoryId = (int)$request->get('category');
         if (!$categoryId) $categoryId = null;
 
+        $selectedCategory = $categoryId ? \RepositoryManager::productCategory()->getEntityById($categoryId) : null;
+
+        // запрашиваем фильтры
+        /** @var $filters \Model\Product\Filter\Entity[] */
+        $filters = [];
+        \RepositoryManager::productFilter()->prepareCollectionBySearchText($searchQuery, \App::user()->getRegion(), function($data) use (&$filters) {
+            foreach ($data as $item) {
+                $filters[] = new \Model\Product\Filter\Entity($item);
+            }
+        }, function (\Exception $e) { \App::exception()->remove($e); });
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
+
+        $shop = null;
+        try {
+            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
+                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
+                    if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
+                        /*$route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
+                        $response = new \Http\RedirectResponse($route);
+                        $response->headers->set('referer', \App::request()->getUri());*/
+                        $controller = new \Controller\Region\Action();
+                        \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
+                        $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
+
+                        return $response;
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
+        }
+
+        // фильтры
+        $brand = null;
+        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+
+
         // параметры ядерного запроса
-        $params = array(
+        $params = [
             'request'  => $searchQuery,
             'geo_id'   => \App::user()->getRegion()->getId(),
             'start'    => $offset,
-            'limit'    => $limit,
+            'limit'    => 1 === $pageNum ? $limit-1 : $limit,
             'use_mean' => true,
-        );
+        ];
+
         if ($categoryId) {
             $params['product_category_id'] = $categoryId;
         } else {
             //$params['is_product_category_first_only'] = false;
         }
+        if ((bool)$productFilter->getFilterCollection()) {
+            $params['filter'] = [
+                'filters' => $productFilter->dump(),
+            ];
+        }
+
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+        $productSorting->setActive($sortingName, $sortingDirection);
+        if(!empty($sortingName) && !empty($sortingDirection)) {
+            $params['product'] = ['sort' => [$sortingName => $sortingDirection]];
+        }
+
         // ядерный запрос
         $result = [];
         \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
             $result = $data;
         });
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['default'], \App::config()->coreV2['retryCount']);
+
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
 
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
 
-            return new \Http\Response($page->show());
+            //return new \Http\Response($page->show());
         }
         $forceMean = isset($result['forced_mean']) ? $result['forced_mean'] : false;
         $meanQuery = isset($result['did_you_mean']) ? $result['did_you_mean'] : '';
 
-        $resultCategories = $result[3];
-        $result = $result[1];
-
-        // проверка на пустоту
-        if (empty($result['count'])) {
-            $page = new \View\Search\EmptyPage();
-            $page->setParam('searchQuery', $searchQuery);
-
-            return new \Http\Response($page->show());
-        }
+        $resultCategories = isset($result[3]) ? $result[3] : [];
+        $result = isset($result[1]) ? $result[1] : [
+            'count'         => 0,
+            'data'          => [],
+            'category_list' => [],
+            'forced_mean'   => null,
+            'did_you_mean'  => null,
+            'method'        => null,
+        ];
 
         // категории (фильтруем дубли, оставляем из дублей ту категорию, которая вернулась первой)
         $categoriesFoundTmp = empty($resultCategories['data']) ? [] : \RepositoryManager::productCategory()->getCollectionById($resultCategories['data']);
@@ -85,30 +141,37 @@ class Action {
             }
         }
 
+        /** @var $categoriesById \Model\Product\Category\Entity[] */
         $categoriesById = [];
         foreach ($result['category_list'] as $item) {
-            $categoriesById[$item['category_id']] = new \Model\Product\Category\Entity(array(
+            $categoriesById[$item['category_id']] = new \Model\Product\Category\Entity([
                 'id'            => $item['category_id'],
                 'name'          => $item['category_name'],
                 'product_count' => \App::config()->search['itemLimit'] < $item['count']
                     ? \App::config()->search['itemLimit']
                     : (int)$item['count']
                 ,
-            ));
+            ]);
         }
+        \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), \App::user()->getRegion(), function($data) use (&$categoriesById) {
+            foreach ($data as $item) {
+                if (!isset($categoriesById[$item['id']])) continue;
+                $categoriesById[$item['id']]->setImage($item['media_image']);
+            }
+        });
 
-        // если ид категории из http-запроса нет в коллекции категорий ...
-        if ($categoryId && !isset($categoriesById[$categoryId])) {
-            throw new \Exception\NotFoundException(sprintf('Не найдена категория #%s', $categoryId));
+        \App::coreClientV2()->execute();
+
+        $categoriesById = array_filter($categoriesById);
+        if (!(bool)$categoriesById && $selectedCategory) {
+            $categoriesById[$selectedCategory->getId()] = $selectedCategory;
         }
-        /** @var $selectedCategory \Model\Product\Category\Entity */
-        $selectedCategory = $categoryId ? $categoriesById[$categoryId] : null;
 
         // общее количество найденных товаров
-        $productCount = $selectedCategory ? $selectedCategory->getProductCount() : $result['count'];
+        $productCount = $result['count'];
         if (\App::config()->search['itemLimit'] && (\App::config()->search['itemLimit'] < $productCount)) {
             // ограничиваем количество найденных товаров
-            $productCount = \App::config()->search['itemLimit'];
+            //$productCount = \App::config()->search['itemLimit'];
         }
 
         // вид товаров
@@ -131,20 +194,71 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
-        // ajax
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('product/_list', array(
-                'page'   => new \View\Layout(),
-                'pager'  => $productPager,
-                'view'   => $productView,
-                'isAjax' => true,
-            )));
+        // video
+        $productVideosByProduct = [];
+        foreach ($productPager as $product) {
+            /** @var $product \Model\Product\Entity */
+            $productVideosByProduct[$product->getId()] = [];
+        }
+        if ((bool)$productVideosByProduct) {
+            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
+                foreach ($data as $id => $items) {
+                    if (!is_array($items)) continue;
+                    foreach ($items as $item) {
+                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
+                    }
+                }
+            });
+            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
         }
 
-        // если по поиску нашелся только один товар, то редиректим сразу в карточку товара
-        if(count($products) == 1) {
+        // bannerPlaceholder
+        $bannerPlaceholder = [];
+        \App::dataStoreClient()->addQuery('catalog/global.json', [], function($data) use (&$bannerPlaceholder) {
+            if (isset($data['bannerPlaceholder'])) {
+                $bannerPlaceholder = $data['bannerPlaceholder'];
+            }
+        });
+        \App::dataStoreClient()->execute();
+
+        // ajax
+        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+            $templating = \App::closureTemplating();
+            /** @var $helper \Helper\TemplateHelper */
+            $helper = \App::closureTemplating()->getParam('helper');
+            $templating->setParam('selectedCategory', $selectedCategory);
+            $templating->setParam('shop', $shop);
+
+            return new \Http\JsonResponse([
+                'list'           => (new \View\Product\ListAction())->execute(
+                    $helper,
+                    $productPager,
+                    $productVideosByProduct,
+                    !empty($bannerPlaceholder) ? $bannerPlaceholder : []
+                ),
+                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
+                    $helper,
+                    $productFilter,
+                    \App::router()->generate('search', ['q' => $searchQuery])
+                ),
+                'pagination'     => (new \View\PaginationAction())->execute(
+                    $helper,
+                    $productPager
+                ),
+                'sorting'        => (new \View\Product\SortingAction())->execute(
+                    $helper,
+                    $productSorting
+                ),
+            ]);
+        }
+
+        // если по поиску нашелся только один товар и это первая стр. поиска, то редиректим сразу в карточку товара
+        if (!$request->isXmlHttpRequest() && (1 == count($products)) && !$offset) {
             return new \Http\RedirectResponse(reset($products)->getLink());
         }
+
+
+        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideoByProductPager( $productPager );
 
         // страница
         $page = new \View\Search\IndexPage();
@@ -152,11 +266,17 @@ class Action {
         $page->setParam('meanQuery', $meanQuery);
         $page->setParam('forceMean', $forceMean);
         $page->setParam('productPager', $productPager);
+        $page->setParam('productFilter', $productFilter);
+        $page->setParam('productSorting', $productSorting);
         $page->setParam('categories', $categoriesById);
         $page->setParam('categoriesFound', $categoriesFound);
-        $page->setParam('selectedCategory', $selectedCategory);
+        $page->setGlobalParam('selectedCategory', $selectedCategory);
         $page->setParam('productView', $productView);
-        $page->setParam('productCount', $selectedCategory ? $selectedCategory->getProductCount() : $result['count']);
+        $page->setParam('productCount', $selectedCategory && !is_null($selectedCategory->getProductCount()) ? $selectedCategory->getProductCount() : $result['count']);
+        $page->setParam('productVideosByProduct', $productVideosByProduct);
+        $page->setGlobalParam('shops', (\App::config()->shop['enabled'] && !\Controller\ProductCategory\Action::isGlobal()) ? \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()) : []);
+        $page->setGlobalParam('shop', $shop);
+        $page->setParam('bannerPlaceholder', $bannerPlaceholder);
 
         return new \Http\Response($page->show());
     }

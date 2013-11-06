@@ -4,40 +4,42 @@
  * @author		Zaytsev Alexandr
  * @requires	jQuery, jQuery.lightbox_me
  */
-;(function(){
-	var initVideo = function(){
-		if (!$('#productVideo').length){
+;(function() {
+	var initVideo = function() {
+		if ( !$('#productVideo').length ) {
 			return false;
 		}
 
-		var videoStartTime = 0;
-		var videoEndTime = 0;
-		var productUrl = document.location.href;
-		var shield = $('.bPhotoActionOtherAction__eVideo');
-		var iframe = $('#productVideo .productVideo_iframe').html();
+		var videoStartTime = 0,
+			videoEndTime = 0,
+			productUrl = document.location.href,
+			shield = $('.mVideo'),
+			iframe = $('#productVideo .productVideo_iframe').html();
+		// end of vars
 
-		var openVideo = function(){
+		var openVideo = function() {
 			$('#productVideo .productVideo_iframe').append(iframe);
-			$(".productVideo_iframe iframe").attr("src", $(".productVideo_iframe iframe").attr("src")+"?autoplay=1");
+			$('.productVideo_iframe iframe').attr('src', $('.productVideo_iframe iframe').attr('src')+'?autoplay=1');
 			$('#productVideo').lightbox_me({ 
 				centered: true,
-				onLoad: function(){
+				onLoad: function() {
 					videoStartTime = new Date().getTime();
 
 					if (typeof(_gaq) !== 'undefined') {
 						_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
 					}
 				},
-				onClose: function(){
+				onClose: function() {
 					$('#productVideo .productVideo_iframe').empty();
 					videoEndTime = new Date().getTime();
 					var videoSpent = videoEndTime - videoStartTime;
 
-					if (typeof(_gaq) !== 'undefined') {
+					if ( typeof _gaq !== 'undefined' ) {
 						_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
 					}
 				}
 			});
+
 			return false;
 		};
 
@@ -47,7 +49,7 @@
 	};
 
 	$(document).ready(function() {
-		if ($('.bPhotoActionOtherAction__eVideo').length){
+		if ( $('.mVideo').length ) {
 			initVideo();
 		}
 	});

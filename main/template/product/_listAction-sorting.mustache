@@ -1,0 +1,12 @@
+<!-- Сортировка товаров по параметрам -->
+<ul class="bSortingList mSorting">
+    <li class="bSortingList__eItem mTitle">Сортировать</li>
+
+    {{#links}}
+        <li class="bSortingList__eItem mSortItem{{#active}} mActive{{/active}}">
+            <a class="bSortingList__eLink jsSorting" data-sort="{{datasort}}" href="{{url}}">{{&title}}</a>
+        </li>
+    {{/links}}
+    <? endforeach ?>
+</ul>
+<!-- /Сортировка товаров по параметрам -->

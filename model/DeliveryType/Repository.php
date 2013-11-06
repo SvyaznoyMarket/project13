@@ -19,41 +19,60 @@ class Repository {
     public function getCollection() {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $data = array(
-            array(
-                'id'          => 1,
-                'token'       => 'standart',
-                'name'        => 'курьерская доставка',
-                'description' => '',
-            ),
-            array(
+        $data = [
+            [
+                'id'                     => 1,
+                'token'                  => 'standart',
+                'short_name'             => 'доставка',
+                'name'                   => 'Доставка заказа курьером',
+                'description'            => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
+                'method_tokens'          => ['standart_furniture', 'standart_other'],
+                'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now'],
+            ],
+            /*
+            [
                 'id'          => 2,
                 'token'       => 'express',
-                'name'        => 'экспресс доставка',
-                'description' => '',
-            ),
-            array(
-                'id'          => 3,
-                'token'       => 'self',
-                'name'        => 'самовывоз',
-                'description' => '',
-            ),
-            array(
-                'id'          => 4,
-                'token'       => 'now',
-                'name'        => 'покупка в магазине',
-                'description' => '',
-            ),
-            array(
+            ],
+            */
+            [
+                'id'                     => 3,
+                'token'                  => 'self',
+                'short_name'             => 'самовывоз',
+                'name'                   => 'Самостоятельно заберу в магазине',
+                'description'            => 'Вы можете самостоятельно забрать товар из ближайшего к вам магазина Enter. Услуга бесплатная! Резерв товара сохраняется 3 дня. Пожалуйста, выберите магазин.',
+                'method_tokens'          => ['self'],
+                'possible_method_tokens' => ['self', 'now', 'standart_furniture', 'standart_other'],
+            ],
+            [
+                'id'                     => 4,
+                'token'                  => 'now',
+                'short_name'             => 'покупка в магазине',
+                'name'                   => 'Заберу сейчас из магазина',
+                'description'            => 'Вы можете забрать товар из магазина прямо сейчас',
+                'method_tokens'          => ['now'],
+                'possible_method_tokens' => ['now', 'self', 'standart_furniture', 'standart_other'],
+            ],
+            /*
+            [
                 'id'          => 5,
                 'token'       => '',
-                'name'        => 'Акция!',
-                'description' => 'При оплате банковской картой связной банк - бесплатная доставка.',
-            ),
-        );
+            ],
+            */
+            [
+                'id'                     => 6,
+                'token'                  => 'pickpoint',
+                'short_name'             => 'Pickpoint',
+                'name'                   => 'Cамостоятельно заберу из постамата Pickpoint',
+                'description'            => 'Вы можете забрать товар из постамата в удобное для вас время',
+                'method_tokens'          => ['pickpoint'],
+                'possible_method_tokens' => ['pickpoint', 'now', 'self', 'standart_furniture', 'standart_other'],
+            ],
+        ];
 
         $collection = [];
         foreach ($data as $item) {
+            if (('now' === $item['token']) && !\App::config()->product['allowBuyOnlyInshop']) continue;
             $collection[] = new Entity($item);
         }
 
@@ -91,4 +110,22 @@ class Repository {
 
         return null;
     }
+
+    /**
+     * @param int $methodToken
+     * @return Entity|null
+     */
+    public function getEntityByMethodToken($methodToken) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        foreach ($this->getCollection() as $entity) {
+            if (in_array($methodToken, $entity->getMethodTokens())) {
+                return $entity;
+            }
+        }
+
+        return null;
+    }
+
+
 }

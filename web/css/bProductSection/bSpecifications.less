@@ -1,0 +1,75 @@
+//product specifications section
+.bSpecifications {
+	&__eHead {
+		margin: 0 0 5px;
+
+		font-weight: bold;
+	}
+
+	.bSpecificationsList {
+		margin: 0 0 10px;
+
+		&__eName {
+			float: left;
+			clear: both;
+
+			width: 270px;
+			margin: 5px 0;
+			padding: 0 0 2px 0;
+
+			border-bottom: 1px solid #ececec;
+
+			.bName {
+				position: relative;
+				top: 4px;
+
+				padding-right: 5px;
+
+				background: @white;
+			}
+		}
+
+		&__eValue {
+			float: right;
+
+			width: 425px;
+			margin: 5px 0;
+			padding: 4px 0 0;
+		}
+	}
+
+	&.mSimpleProperty {
+	    margin: 25px 0 25px;
+
+		color: #6E6E6E;
+
+	    font-size: 12px;
+
+	    .bSpecificationsList {
+	    	margin: 0;
+	    }
+
+	    .bSpecificationsList__eName {
+	      width: 145px;
+	      margin: 0 0 5px;
+	      padding-left: 7px;
+
+	      border: none;
+	      background: url("@{base-url}/pandoraProduct/img/h3_corner.gif") no-repeat 0 4px;
+
+	        .bName {
+		    	top: 0;
+		    }
+	    }
+
+	    .bSpecificationsList__eValue {
+	      width: 125px;
+	      margin: 0 0 5px;
+	      padding: 0;
+	    }
+	}
+}
+
+.pluso {
+	margin: 15px 0 0;
+}

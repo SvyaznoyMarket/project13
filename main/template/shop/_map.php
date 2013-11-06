@@ -48,7 +48,7 @@ $shopCount = count($markers);
 
 </div>
 
-<input id="map-markers" type="hidden" data-content='<?= json_encode($markers) ?>' />
+<input id="map-markers" type="hidden" data-content="<?= $page->json($markers) ?>" />
 <!-- /bMapShops -->
 
 <div id="map-info_window-container" style="display:none"></div>

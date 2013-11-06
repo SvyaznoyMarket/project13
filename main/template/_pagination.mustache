@@ -1,0 +1,17 @@
+<ul class="bSortingList">
+    <li class="bSortingList__eItem mTitle">Страницы</li>
+
+    {{#links}}
+        {{#name}}
+        <li class="bSortingList__eItem mPage{{#active}} mActive{{/active}}">
+            <a class="bSortingList__eLink jsPagination" href="{{url}}">{{name}}</a>
+        </li>
+        {{/name}}
+
+        {{^name}}
+            <li class="bSortingList__eItem mPage mDotted">&#8230;</li>
+        {{/name}}
+    {{/links}}
+    <li class="bSortingList__eItem mPaging hidden"><a class="bSortingList__eLink mMore jsPaginationEnable" href="#">123</a></li>
+    <li class="bSortingList__eItem mInfinity"><a class="bSortingList__eLink mMore jsInfinityEnable" href="#">&#8734;</a></li>
+</ul>

@@ -330,6 +330,21 @@ $(document).ready(function() {
 			$.when($.getJSON( drop , function( data ) {
 			})).then( function(data){
 				$(nodes.drop).data('run',false)
+
+				var productId = data.product.id;
+				var categoryId = data.category_id;
+
+				// Soloway
+				// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
+				(function(s){
+				    var d = document, i = d.createElement('IMG'), b = d.body;
+				    s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
+				    i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
+				    i.onload = i.onerror = function(){b.removeChild(i); i = b = null}
+				    i.src = s;
+				    b.insertBefore(i, b.firstChild);
+				})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=del_basket&bt=55&pz=0&custom=10='+productId+';11='+categoryId+'&![rnd]');
+
 				if( !data.success ) {
 					location.href = location.href
 				}
@@ -368,7 +383,8 @@ $(document).ready(function() {
 				
 			// }
 
-			// PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
+			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
+
 			// if( $('#selectCredit').length ) {
 			// 	var sufx = ''
 			// 	if( $('#selectCredit').val()*1 )
@@ -415,6 +431,22 @@ $(document).ready(function() {
 				$(nodes.drop).data('run', true);
 				dropflag = self.clear();
 			}
+
+			var basketLine = $(this).parent().parent().parent().parent();
+			var productId = basketLine.data('product-id');
+			var categoryId = basketLine.data('category-id');
+
+			// Soloway
+			// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
+			(function(s){
+			    var d = document, i = d.createElement('IMG'), b = d.body;
+			    s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
+			    i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
+			    i.onload = i.onerror = function(){b.removeChild(i); i = b = null}
+			    i.src = s;
+			    b.insertBefore(i, b.firstChild);
+			})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=del_basket&bt=55&pz=0&custom=10='+productId+';11='+categoryId+'&![rnd]');
+
 			// console.log('удаление')
 			return false;
 		});

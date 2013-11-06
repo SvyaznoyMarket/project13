@@ -9,6 +9,8 @@ return function(
     /** @var  $productVideo \Model\Product\Video\Entity|null */
     $productVideo = reset($productVideos);
 
+    // TODO: SITE-1822
+    //$useLens = true;
 
     /** @var string $model3dExternalUrl */
     $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
@@ -98,20 +100,21 @@ return function(
     <? endif ?>
 
     <div class="bProductDescImgBig">
-        <img class="bProductDescImgBig__eImg<?= $useLens ? ' bZoomedImg' : '' ?>"
+        <img itemprop="image" class="bProductDescImgBig__eImg bZoomedImg"
              src="<?= $product->getImageUrl(3) ?>"
              <? if ($useLens): ?>
                 data-zoom-image="<?= $product->getImageUrl(5) ?>"
              <? endif ?>
+             data-zoom-disable="<?= $useLens ? false : true ?>"
              alt="<?= $helper->escape($product->getName()) ?>"
         />
     </div><!--/product big image section -->
 
     <div class="bPhotoAction clearfix">
-        <ul class="bPhotoActionOtherAction">
+        <ul class="bPhotoViewer">
             <? if ($productVideo && $productVideo->getContent()): ?>
-                <li class="bPhotoActionOtherAction__eVideo">
-                    <a href="#"></a>
+                <li class="bPhotoViewer__eItem mVideo">
+                    <a class="bPhotoLink" href="#"></a>
                     <div id="productVideo" class="blackPopup blackPopupVideo">
                         <div class="close"></div>
                         <div class="productVideo_iframe"><?= $productVideo->getContent() ?></div>
@@ -128,26 +131,28 @@ return function(
                     $class3D = 'our3d';
                 }
                 ?>
-                <li class="bPhotoActionOtherAction__eGrad360 <?=$class3D?>"><a href=""></a></li>
+                <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 <?= $class3D ?>">
+                    <a class="bPhotoLink" href=""></a>
+                </li>
             <? endif ?>
         </ul><!--/view product section -->
 
         <? if (count($product->getPhoto()) > 1): ?>
-            <div class="bPhotoActionOtherPhoto">
-                <div class="bPhotoActionOtherPhoto__eWrappSlider">
-                    <ul id="productImgGallery" class="bPhotoActionOtherPhotoList clearfix">
+            <div class="bPhotoSlider">
+                <div class="bPhotoSliderWrap">
+                    <ul id="productImgGallery" class="bPhotoSliderGallery clearfix">
                         <? $i = 0; foreach ($product->getPhoto() as $photo): ?>
-                            <li class="bPhotoActionOtherPhotoItem">
-                                <a class="bPhotoActionOtherPhotoItem__eLink<? if (0 == $i): ?> mActive<? endif ?>" data-zoom-image="<?= $photo->getUrl(5) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#">
-                                    <img src="<?= $photo->getUrl(0) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
+                            <li class="bPhotoSliderGallery__eItem">
+                                <a class="bPhotoGalleryLink<? if (0 == $i): ?> mActive<? endif ?>" data-zoom-image="<?= $photo->getUrl(5) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#">
+                                    <img class="bPhotoGalleryImg" src="<?= $photo->getUrl(0) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                                 </a>
                             </li>
                             <? $i++; endforeach ?>
                     </ul>
                 </div>
 
-                <div class="bPhotoActionOtherPhoto__eBtn mPrev"><span></span></div>
-                <div class="bPhotoActionOtherPhoto__eBtn mNext"><span></span></div>
+                <div class="bPhotoSlider__eBtn mPrev"><span class="bArrow"></span></div>
+                <div class="bPhotoSlider__eBtn mNext"><span class="bArrow"></span></div>
             </div><!--/slider mini product images -->
         <? endif ?>
     </div>

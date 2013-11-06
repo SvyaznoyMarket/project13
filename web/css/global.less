@@ -4,7 +4,6 @@
     
 //основной путь всех файлов
 @base-url:"/css";
-@pie:"@{base-url}/common/PIE.htc";
 @displayTable:"@{base-url}/common/display-table.min.htc";
 
 //--------МИКСИНЫ----------
@@ -102,11 +101,6 @@
 @import "upsale/upsale.less" all;
 /*---END---СТИЛИ АПСЕЙЛА---*/
 
-/*-------СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА-----*/
-@import "order/order.less" all;
-// @import "order/orderFinal.less" all;
-/*---END---СТИЛИ ОФОРМЛЕНИЯ ЗАКАЗА---*/
-
 /*-------СТИЛИ СТРАНИЦЫ ГДЕ КУПИТЬ-----*/
 @import "whereBuy/whereBuy.less" all;
 /*---END---СТИЛИ СТРАНИЦЫ ГДЕ КУПИТЬ---*/
@@ -198,7 +192,13 @@
 /*---END---СТИЛИ СТРАНИЦЫ ПОДПИСКИ НА РАССЫЛКУ---*/
 
 /*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА------*/
-@import "newProductCard/newProductCard.less" all;
+@import "bProductSection/bProductSection.less" all;
+
+@import "bProductSection/bSpecifications.less" all;
+
+@import "bProductSection/bProductDescImg.less" all;
+
+@import "bProductSection/bProductDesc.less" all;
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА---*/
 
 /*------СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНЕЙКИ------*/
@@ -206,7 +206,7 @@
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНЕЙКИ---*/
 
 /*------СТИЛИ СЛАЙДЕРА------*/
-@import "slider/slider.less" all;
+@import "bGoodsSlider/bGoodsSlider.less" all;
 /*---END---СТИЛИ СЛАЙДЕРА---*/
 
 /*------СТИЛИ ПРАВОЙ КОЛОНКИ КАРТОЧКИ ТОВАРА------*/
@@ -225,8 +225,16 @@
 @import "reviews/reviews.less" all;
 /*---END---СТИЛИ ОТЗЫВОВ---*/
 
-/*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA------*/
-@import "pandoraCatalog/pandoraCatalog.less" all;
+/*------СТИЛИ БРЕНД РАЗДЕЛА------*/
+@import "bBrandCatalog/bBrandCatalog.less" all;
+
+@import "bBrandCatalog/bBrandNavList.less" all;
+
+@import "bBrandCatalog/bBrandGoods.less" all;
+
+@import "bBrandCatalog/bBrandSorting.less" all;
+
+@import "bBrandCatalog/bBrandSubNav.less" all;
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
 
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
@@ -249,6 +257,28 @@
 @import "bViewPageLine/bViewPageLine.less" all;
 /*---END---СТИЛИ ВЕРХНЕГО БЛОКА СОРТИРОВКИ В КАТАЛОГЕ---*/
 
+/*------СТИЛИ ОФОРМЛЕНИЕ ЗАКАЗА------*/
+@import "bBuyingSteps/bBuyingSteps.less" all;
+
+@import "bBuyingSteps/bBuyingInfo.less" all;
+
+@import "bBuyingSteps/bBuyingDates.less" all;
+
+@import "bBuyingSteps/bInputAddress.less" all;
+
+@import "bBuyingSteps/bBuyingSale.less" all;
+
+@import "bBuyingSteps/bPointPopup.less" all;
+/*---END---СТИЛИ ОФОРМЛЕНИЕ ЗАКАЗА---*/
+
+/*------СТИЛИ СТРАНИЦЫ РЕГИСТРАЦИИ ЮР. ЛИЦ------*/
+@import "bBusinessReg/bBusinessReg.less" all;
+/*---END---СТИЛИ СТРАНИЦЫ РЕГИСТРАЦИИ ЮР. ЛИЦ---*/
+
+/*------СТИЛИ ПУСТОЙ КОРЗИНЫ------*/
+@import "bEmptyCart/bEmptyCart.less" all;
+/*---END---СТИЛИ ПУСТОЙ КОРЗИНЫ---*/
+
 /*------НОВОГОДНЕЕ ОФОРМЛЕНИЕ------*/
 // @import "newYearTheme/newYearTheme.less" all;
 /*---END---НОВОГОДНЕЕ ОФОРМЛЕНИЕ---*/
@@ -256,3 +286,33 @@
 /*------СТИЛИ ОПРОСА------*/
 @import "survey/survey.less" all;
 /*---END---СТИЛИ ОПРОСА---*/
+
+/*------СТИЛИ РУТОВОГО КАТАЛОГА------*/
+@import "bCatalogRoot/bCatalogRoot.less" all;
+/*---END---СТИЛИ РУТОВОГО КАТАЛОГА---*/
+
+/*------СТИЛИ КАТАЛОГА------*/
+@import "bCatalog/bCatalog.less" all;
+
+@import "bCatalog/bBreadcrumbs.less" all;
+
+@import "bCatalog/bCatalogList.less" all;
+
+@import "bCatalog/bFilter.less" all;
+
+@import "bCatalog/bFilterPrice.less" all;
+
+@import "bCatalog/bSortingLine.less" all;
+/*---END---СТИЛИ КАТАЛОГА---*/
+
+/*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
+@import "bFixedTopBar/bFixedTopBar.less" all;
+/*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
+
+/*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
+@import "bSeoText/bSeoText.less" all;
+/*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
+
+/*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
+@import "lifeGift/lifeGift.less" all;
+/*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/

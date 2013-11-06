@@ -14,7 +14,11 @@
 if (!isset($class)) {
     $class = '';
 }
-$class .= ' ' . \View\Id::cartButtonForProduct($product->getId()) . ' jsBuyButton';
+$class .= ' ' . \View\Id::cartButtonForProduct($product->getId());
+
+if (!$product->isInShopStockOnly()) {
+    $class .= ' jsBuyButton';
+}
 
 if (empty($quantity)) {
     $quantity = 1;
@@ -23,9 +27,16 @@ if (empty($quantity)) {
 if (empty($value)) $value = 'Купить';
 
 $disabled = !$product->getIsBuyable();
+
+if ($product->isInShopStockOnly()) {
+    $value = 'Резерв';
+    $url = $product->getLink() . '#oneclick';
+}
+
 if ($disabled) {
     $url = '#';
     $class .= ' mDisabled';
+    $value = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет в наличии';
 } else if (!isset($url)) {
     $urlParams = [
         'productId' => $product->getId(),

@@ -56,7 +56,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 <input id="order-delivery_map-data" type="hidden" data-value='<?= $page->json($deliveryMap) ?>'/>
 <?= $page->render('order/_formTemplate') ?>
 
-<form id="order-form" style="display:none" data-validator="#order-validator" method="post" action="<?= $page->url('order.create') ?>">
+<form id="order-form" style="display:none" data-validator="#order-validator" method="post" action="<?= $page->url('order') ?>">
     <div class='bBuyingInfo'>
         <h2>Информация о счастливом получателе</h2>
 
@@ -65,7 +65,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                 Привет, <a href="<?= $page->url('user') ?>"><?= $user->getEntity()->getName() ?></a>
             <? else: ?>
                 Уже покупали у нас?
-                <strong><a class="auth-link underline" data-update-url="<?//php echo url_for('order_getUser') ?>" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
+                <strong><a class="underline" data-update-url="<?//php echo url_for('order_getUser') ?>" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>
                 и вы сможете использовать ранее введенные данные
             <? endif ?>
         </div>
@@ -122,7 +122,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
             <dd>
                 <div>
                     <p></p>
-                    <strong><?= $region->getName() ?></strong> ( <a id="jsregion" data-region-id="<?= $user->getRegion()->getId() ?>" data-url="<?= $page->url('region.init') ?>" href="<?= $page->url('region.change', array('regionId' => $region->getId())) ?>" style="font-weight: normal">изменить</a> )
+                    <strong><?= $region->getName() ?></strong> ( <a class="jsChangeRegion" data-region-id="<?= $user->getRegion()->getId() ?>" data-url="<?= $page->url('region.init') ?>" href="<?= $page->url('region.change', array('regionId' => $region->getId())) ?>" style="font-weight: normal">изменить</a> )
                 </div>
 
                 <? if ($form->hasSubway()): ?>
@@ -191,7 +191,6 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                         \Model\PaymentMethod\Entity::TYPE_ON_RECEIPT => [],
                         \Model\PaymentMethod\Entity::TYPE_NOW => [],
                     ];
-                    $byPayOnReceipt = [];
                     foreach($paymentMethods as $paymentMethod) { 
                         $payOnReceipt = $paymentMethod->getPayOnReceipt();
                         $byPayOnReceipt[$payOnReceipt][] = $paymentMethod;

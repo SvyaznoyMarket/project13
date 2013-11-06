@@ -16,7 +16,7 @@ if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->get
 <? endif ?>
 <div class="clear"></div>
 
-<? if(!empty($promoContent)): ?>
+<? if (!empty($promoContent)): ?>
     <?= $promoContent ?>
 <? endif ?>
 
@@ -32,4 +32,5 @@ if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->get
     'category'               => $category,
     'view'                   => $productView,
     'productVideosByProduct' => $productVideosByProduct,
+    'isAddInfo'       => true,
 )) ?>

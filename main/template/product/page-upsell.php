@@ -27,7 +27,7 @@
         <h2 class="bUpsaleRedirectBlock__eTitle">В корзине <strong id="upsaleCounter" class="bUpsaleRedirectBlock__eCounter"></strong> <?= $page->helper->numberChoice($user->getCart()->getProductsQuantity(), array('товар', 'товара', 'товаров')) ?> на сумму <strong class="bUpsaleRedirectBlock__ePrice"><span id="upsalePrice"></span> <span class="rubl">p</span></strong></h2>
         <div class="clearfix">
             <a class="bUpsaleRedirectBlock__eLink fl" href="<?= $page->url('cart') ?>">Перейти в корзину</a>
-            <a class="bUpsaleRedirectBlock__eLink fr mFullOrange" href="<?= $page->url('order.create') ?>">Оформить заказ ></a>
+            <a class="bUpsaleRedirectBlock__eLink fr mFullOrange" href="<?= $page->url('order') ?>">Оформить заказ ></a>
         </div>
     </div>
 </div>

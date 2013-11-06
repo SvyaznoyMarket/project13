@@ -4,16 +4,26 @@ namespace Logger\Appender;
 
 class FileAppender implements AppenderInterface {
     private $file;
+    private $pretty;
 
-    public function __construct($file) {
+    public function __construct($file, $pretty = false) {
         $this->file = $file;
+        $this->pretty = $pretty;
     }
 
     public function dump($messages) {
-        foreach ($messages as &$message) {
-            $message = implode(' ', $message);
-        } if (isset($message)) unset($message);
+        if ($this->pretty) {
+            foreach ($messages as &$message) {
+                $message = json_encode($message, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+            }
+        } else {
+            foreach ($messages as &$message) {
+                $message = json_encode($message, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            }
+        }
 
-        file_put_contents($this->file, implode("\n", $messages) . "\n", FILE_APPEND | LOCK_EX);
+        if (isset($message)) unset($message);
+
+        file_put_contents($this->file, PHP_EOL . implode(PHP_EOL, $messages) . PHP_EOL, FILE_APPEND | LOCK_EX);
     }
 }

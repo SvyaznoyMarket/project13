@@ -1,4 +1,6 @@
-<? if($review['origin'] != 'enter') { ?>
+<?
+$isEnter = ( 'enter' == $review['origin'] );
+if (!$isEnter) { ?>
   <noindex>
 <? } ?>
 <div class="bReview clearfix productReview">
@@ -29,19 +31,7 @@
       <p><?= str_replace(';', '<br>', $review['cons']) ?></p>
     <? } ?>
   </div>
-
-  <div class="bReview__eLogo">
-    <? if(!empty($review['source_logo_url'])) { ?>
-      <? if(!empty($review['url']) && $review['type'] == 'pro') { ?>
-        <a href="<?= $review['url'] ?>">
-      <? } ?>
-      <img class="bReview__eLogo-img" src="<?= $review['source_logo_url'] ?>">
-      <? if(!empty($review['url']) && $review['type'] == 'pro') { ?>
-        </a>
-      <? } ?>
-    <? } ?>
-  </div>
 </div>
-<? if($review['origin'] != 'enter') { ?>
+<? if (!$isEnter) { ?>
 </noindex>
 <? } ?>

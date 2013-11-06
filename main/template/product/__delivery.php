@@ -15,7 +15,6 @@ return function (
     foreach ($shopStates as $shopState) {
         $shop = $shopState->getShop();
         if (!$shop instanceof \Model\Shop\Entity) continue;
-
         $shopData[] = [
             'id'        => $shop->getId(),
             'name'      => $shop->getName(),
@@ -45,20 +44,20 @@ return function (
 
 <script id="widget_delivery_standart" type="text/html">
     <% if (price === 0) { %>
-        <span>Доставка <strong>бесплатно</strong></span>
+        <span><span class="bJustText">Доставка</span> <strong>бесплатно</strong></span>
     <% } else { %>
-        <span>Доставка <strong><%=price%></strong> <span class="rubl">p</span></span>
+        <span><span class="bJustText">Доставка</span> <strong><%=price%></strong> <span class="rubl">p</span></span>
     <% } %>
-        <div><%=dateString%></div>
+        <div class="bJustText"><%=dateString%></div>
 </script>
 
 <script id="widget_delivery_self" type="text/html">
     <% if (price === 0) { %>
-        <span>Самовывоз <strong>бесплатно</strong></span>
+        <span><span class="bJustText">Самовывоз</span> <strong>бесплатно</strong></span>
     <% } else { %>
-        <span>Самовывоз <strong><%=price%></strong> <span class="rubl">p</span></span>
+        <span><span class="bJustText">Самовывоз</span> <strong><%=price%></strong> <span class="rubl">p</span></span>
     <% } %>
-        <div><%=dateString%></div>
+        <div class="bJustText"><%=dateString%></div>
 </script>
 
 <script id="widget_delivery_shop" type="text/html">
@@ -73,19 +72,19 @@ return function (
     <a href="#" class="bOrangeButton fr mt5">Перейти к магазину</a>
 </div>
 
-
-<ul class="bWidgetBuy__eDelivery mLoader" data-value="<?= $helper->json([
+<ul class="bDelivery mLoader" data-value="<?= $helper->json([
     'url'      => $product->getIsBuyable() ? $helper->url('product.delivery') : '',
     'delivery' => $deliveryData,
 ]) ?>">
-    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-price">
+    <li class="bDelivery__eItem mDeliveryPrice">
     </li>
-    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-free">
+    <li class="bDelivery__eItem mDeliveryFree">
     </li>
 
-    <li class="bWidgetBuy__eDelivery-item bWidgetBuy__eDelivery-now <?= $product->getIsBuyable() ? 'mOpen' : 'mClose'?>">
-        <span class="bWidgetBuy__eDelivery-nowClick dotted">Есть в магазинах</span>
-        <div>Cегодня, без предзаказа</div>
+    <? $closed = !$product->isInShopOnly() ? true : false ?>
+    <li class="bDelivery__eItem mDeliveryNow <?= $closed ? 'mClose' : 'mOpen' ?>">
+        <span class="bDeliveryNowClick dotted">Есть в магазинах</span>
+        <div class="<?= $closed ? ' hf' : '' ?>">Cегодня, без предзаказа</div>
         <ul class="bDeliveryFreeAddress">
         </ul>
     </li>

@@ -37,6 +37,8 @@ class Entity {
     private $panorama;
     /* @var Region\Entity */
     private $region;
+    /* @var string */
+    private $subwayName;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -169,7 +171,7 @@ class Entity {
      * @return string
      */
     public function getDescription() {
-        return $this->description;
+        return html_entity_decode($this->description);
     }
 
     /**
@@ -309,4 +311,21 @@ class Entity {
     {
         return $this->region;
     }
+
+    /**
+     * @return string
+     */
+    public function getSubwayName()
+    {
+        return $this->subwayName;
+    }
+
+    /**
+     * @param $swName
+     */
+    public function setSubwayName($swName)
+    {
+        $this->subwayName = (string)$swName;
+    }
+
 }

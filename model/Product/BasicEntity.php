@@ -39,6 +39,11 @@ class BasicEntity {
     protected $avgStarScore;
     /** @var int */
     protected $numReviews;
+    /** @var bool */
+    protected $isInShowroomsOnly;
+    /** @var bool */
+    protected $isInShopsOnly;
+
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -65,6 +70,8 @@ class BasicEntity {
         if (array_key_exists('avg_score', $data)) $this->setAvgScore($data['avg_score']);
         if (array_key_exists('avg_star_score', $data)) $this->setAvgStarScore($data['avg_star_score']);
         if (array_key_exists('num_reviews', $data)) $this->setNumReviews($data['num_reviews']);
+
+        $this->calculateState();
     }
 
     /**
@@ -241,7 +248,7 @@ class BasicEntity {
     public function getIsBuyable() {
         return
             $this->getState() && $this->getState()->getIsBuyable()
-            && (\App::config()->product['allowBuyOnlyInshop'] ? true : $this->getState()->getIsStore());
+            && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly());
     }
 
     /**
@@ -334,4 +341,89 @@ class BasicEntity {
         return $this->numReviews;
     }
 
+
+    /**
+     * @param int $shopId
+     * @return bool
+     */
+    public function isInShopShowroom($shopId) {
+        $shopId = (int)$shopId;
+        if (!$shopId) return false;
+
+
+        $return = false;
+        foreach ($this->getStock() as $stock) {
+            if (($stock->getShopId() == $shopId) && $stock->getQuantityShowroom()) {
+                $return = true;
+                break;
+            }
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param int $shopId
+     * @return bool
+     */
+    public function isInShop($shopId) {
+        $shopId = (int)$shopId;
+        if (!$shopId) return false;
+
+
+        $return = false;
+        foreach ($this->getStock() as $stock) {
+            if (($stock->getShopId() == $shopId) && $stock->getQuantity()) {
+                $return = true;
+                break;
+            }
+        }
+
+        return $return;
+    }
+
+
+
+    /**
+     * @return bool
+     */
+    public function isInShopShowroomOnly() {
+        return $this->isInShowroomsOnly;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isInShopStockOnly() {
+        return $this->isInShopsOnly;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInShopOnly() {
+        return $this->isInShopStockOnly() || $this->isInShopShowroomOnly();
+    }
+
+    public function calculateState() {
+
+        $inStore = false;
+        $inShowroom = false;
+        $inShop = false;
+        foreach ($this->getStock() as $stock) {
+            if ($stock->getStoreId()) {
+                $inStore = true;
+            }
+            if ($stock->getShopId() && $stock->getQuantity()) { // есть на складе магазина
+                $inShop = true;
+            }
+            if ($stock->getShopId() && $stock->getQuantityShowroom()) { // есть на витрине магазина
+                $inShowroom = true;
+            }
+        }
+
+        $this->isInShopsOnly = !$inStore && $inShop;
+        $this->isInShowroomsOnly = !$inStore && !$inShop && $inShowroom;
+    }
 }

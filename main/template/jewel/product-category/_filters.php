@@ -1,4 +1,4 @@
-<ul class="clearfix">
+<ul class="bBrandSortingList clearfix">
   <? foreach($filters as $key => $filter) { ?>
     <? // не выводим фильтры, запрещенные в json и указанный в качестве табов
       if((!empty($catalogJson['sub_category_filters_exclude']) && is_array($catalogJson['sub_category_filters_exclude']) &&
@@ -20,7 +20,7 @@
   ?>
 
   <? if(!$filtersEmpty) { ?>
-    <li class="reset_filters"><a <?= empty($values) ? 'class="active"' : '' ?> href="<?= $category->getLink()?>?scrollTo=<?= $scrollTo ?>"><div>Показать<br>все</div></a></li>
+    <li class="bBrandSortingList__eItem mReset"><a <?= empty($values) ? 'class="active"' : '' ?> href="<?= $category->getLink()?>?scrollTo=<?= $scrollTo ?>">Показать<br/>все</a></li>
   <? } ?>
 
   <? if ($productSorting && $productPager->count()): ?>

@@ -7,7 +7,8 @@
 
 <script src="/js/tests/qunit.js"></script>
 <script src="http://yandex.st/jquery/1.6.4/jquery.min.js"></script>
-<script src="/js/prod/library.js"></script>
+<script src="/js/loadjs.js"></script>
+<script src="/js/prod/library.min.js"></script>
 <script>
 
 module('printPrice function')
@@ -25,7 +26,16 @@ test("brwsr object", function() {
 	var br = new brwsr()
     equal( br.isAndroid , false, 'isAndroid')
     equal( br.isTouch , false, 'isTouch')
-})
+});
+
+module('addParameterToUrl');
+test("addParameterToUrl", function() {
+	var urlWithoutParam = 'http://domen.ru/',
+		urlWithParam ='http://domen.ru/?user=true';
+
+	equal( urlWithoutParam.addParameterToUrl('user','true') , 'http://domen.ru/?user=true', 'http://domen.ru/?user=true');
+	equal( urlWithParam.addParameterToUrl('someparametr','value') , 'http://domen.ru/?user=true&someparametr=value', 'http://domen.ru/?user=true&someparametr=value');
+});
 
 module('JSON object')
 test("JSON", function(){
@@ -39,7 +49,7 @@ test("JSON", function(){
 });
 
 module('isEmail method')
-test("JSON", function(){
+test("isEmail", function(){
 	equal( '123'.isEmail() , false, 'EMAIL is not email');
 	equal( 'EMAIL@'.isEmail() , false, 'EMAIL@ is not email');
 	equal( 'EMAIL@domen'.isEmail() , false, 'EMAIL@domen is not email');
@@ -47,11 +57,7 @@ test("JSON", function(){
 	equal( 'EMAIL@domen.ru'.isEmail() , true, 'EMAIL@domen.ru is email');
 });
 
-module('addParameterToUrl');
-test("get-set", function() {
-	equal( 'http://domen.ru/'.addParameterToUrl('user','true') , 'http://domen.ru/?user=true', 'http://domen.ru/?user=true');
-	equal( 'http://domen.ru/?user=true'.addParameterToUrl('someparametr','value') , 'http://domen.ru/?user=true&someparametr=value', 'http://domen.ru/?user=true&someparametr=value');
-});
+
 
 module('Cookie manager');
 test("get-set", function() {

@@ -1,712 +1,544 @@
+;(function( ENTER ) {
+	var utils = ENTER.utils;
+
+	utils.cloneObject = function cloneObject( obj ) {
+		var copy,
+			attr,
+			i,
+			len;
+		
+		// Handle the 3 simple types, and null or undefined
+		if ( obj == null || typeof obj !== 'object' ) {
+			return obj;
+		}
+		
+		// Handle Date
+		if ( obj instanceof Date ) {
+			copy = new Date();
+			copy.setTime(obj.getTime());
+
+			return copy;
+		}
+		
+		// Handle Array
+		if ( obj instanceof Array ) {
+			copy = [];
+			
+			for ( i = 0, len = obj.length; i < len; i++ ) {
+				copy[i] = cloneObject(obj[i]);
+			}
+			
+			return copy;
+		}
+		
+		// Handle Object
+		if ( obj instanceof Object ) {
+			copy = {};
+			
+			for ( attr in obj ) {
+				if ( obj.hasOwnProperty(attr) ) {
+					copy[attr] = cloneObject(obj[attr]);
+				}
+			}
+			
+			return copy;
+		}
+	};
+}(window.ENTER));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
 /*
-	http://www.JSON.org/json2.js
-	2011-10-19
-	creates a global JSON object containing two methods: stringify and parse
-	IVN COMMENT:
-	!!! ATTENTION: method parse is replaced by json_parse !!!
-	
-		JSON.stringify(value, replacer, space)
-			value       any JavaScript value, usually an object or array.
+    json2.js
+    2013-05-26
 
-			replacer    an optional parameter that determines how object
-						values are stringified for objects. It can be a
-						function or an array of strings.
+    Public Domain.
 
-			space       an optional parameter that specifies the indentation
-						of nested structures. If it is omitted, the text will
-						be packed without extra whitespace. If it is a number,
-						it will specify the number of spaces to indent at each
-						level. If it is a string (such as '\t' or '&nbsp;'),
-						it contains the characters used to indent at each level.
+    NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
 
-			This method produces a JSON text from a JavaScript value.
-
-			When an object value is found, if the object contains a toJSON
-			method, its toJSON method will be called and the result will be
-			stringified. A toJSON method does not serialize: it returns the
-			value represented by the name/value pair that should be serialized,
-			or undefined if nothing should be serialized. The toJSON method
-			will be passed the key associated with the value, and this will be
-			bound to the value
-
-			For example, this would serialize Dates as ISO strings.
-
-				Date.prototype.toJSON = function (key) {
-					function f(n) {
-						// Format integers to have at least two digits.
-						return n < 10 ? '0' + n : n;
-					}
-
-					return this.getUTCFullYear()   + '-' +
-						f(this.getUTCMonth() + 1) + '-' +
-						f(this.getUTCDate())      + 'T' +
-						f(this.getUTCHours())     + ':' +
-						f(this.getUTCMinutes())   + ':' +
-						f(this.getUTCSeconds())   + 'Z';
-				};
-
-			You can provide an optional replacer method. It will be passed the
-			key and value of each member, with this bound to the containing
-			object. The value that is returned from your method will be
-			serialized. If your method returns undefined, then the member will
-			be excluded from the serialization.
-
-			If the replacer parameter is an array of strings, then it will be
-			used to select the members to be serialized. It filters the results
-			such that only members with keys listed in the replacer array are
-			stringified.
-
-			Values that do not have JSON representations, such as undefined or
-			functions, will not be serialized. Such values in objects will be
-			dropped; in arrays they will be replaced with null. You can use
-			a replacer function to replace those with JSON values.
-			JSON.stringify(undefined) returns undefined.
-
-			The optional space parameter produces a stringification of the
-			value that is filled with line breaks and indentation to make it
-			easier to read.
-
-			If the space parameter is a non-empty string, then that string will
-			be used for indentation. If the space parameter is a number, then
-			the indentation will be that many spaces.
-
-			Example:
-
-			text = JSON.stringify(['e', {pluribus: 'unum'}]);
-			// text is '["e",{"pluribus":"unum"}]'
+    See http://www.JSON.org/js.html
 
 
-			text = JSON.stringify(['e', {pluribus: 'unum'}], null, '\t');
-			// text is '[\n\t"e",\n\t{\n\t\t"pluribus": "unum"\n\t}\n]'
+    This code should be minified before deployment.
+    See http://javascript.crockford.com/jsmin.html
 
-			text = JSON.stringify([new Date()], function (key, value) {
-				return this[key] instanceof Date ?
-					'Date(' + this[key] + ')' : value;
-			});
-			// text is '["Date(---current time---)"]'
+    USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO
+    NOT CONTROL.
 
 
-		JSON.parse(text, reviver)
-			This method parses a JSON text to produce an object or array.
-			It can throw a SyntaxError exception.
+    This file creates a global JSON object containing two methods: stringify
+    and parse.
 
-			The optional reviver parameter is a function that can filter and
-			transform the results. It receives each of the keys and values,
-			and its return value is used instead of the original value.
-			If it returns what it received, then the structure is not modified.
-			If it returns undefined then the member is deleted.
+        JSON.stringify(value, replacer, space)
+            value       any JavaScript value, usually an object or array.
 
-			Example:
+            replacer    an optional parameter that determines how object
+                        values are stringified for objects. It can be a
+                        function or an array of strings.
 
-			// Parse the text. Values that look like ISO date strings will
-			// be converted to Date objects.
+            space       an optional parameter that specifies the indentation
+                        of nested structures. If it is omitted, the text will
+                        be packed without extra whitespace. If it is a number,
+                        it will specify the number of spaces to indent at each
+                        level. If it is a string (such as '\t' or '&nbsp;'),
+                        it contains the characters used to indent at each level.
 
-			myData = JSON.parse(text, function (key, value) {
-				var a;
-				if (typeof value === 'string') {
-					a =
+            This method produces a JSON text from a JavaScript value.
+
+            When an object value is found, if the object contains a toJSON
+            method, its toJSON method will be called and the result will be
+            stringified. A toJSON method does not serialize: it returns the
+            value represented by the name/value pair that should be serialized,
+            or undefined if nothing should be serialized. The toJSON method
+            will be passed the key associated with the value, and this will be
+            bound to the value
+
+            For example, this would serialize Dates as ISO strings.
+
+                Date.prototype.toJSON = function (key) {
+                    function f(n) {
+                        // Format integers to have at least two digits.
+                        return n < 10 ? '0' + n : n;
+                    }
+
+                    return this.getUTCFullYear()   + '-' +
+                         f(this.getUTCMonth() + 1) + '-' +
+                         f(this.getUTCDate())      + 'T' +
+                         f(this.getUTCHours())     + ':' +
+                         f(this.getUTCMinutes())   + ':' +
+                         f(this.getUTCSeconds())   + 'Z';
+                };
+
+            You can provide an optional replacer method. It will be passed the
+            key and value of each member, with this bound to the containing
+            object. The value that is returned from your method will be
+            serialized. If your method returns undefined, then the member will
+            be excluded from the serialization.
+
+            If the replacer parameter is an array of strings, then it will be
+            used to select the members to be serialized. It filters the results
+            such that only members with keys listed in the replacer array are
+            stringified.
+
+            Values that do not have JSON representations, such as undefined or
+            functions, will not be serialized. Such values in objects will be
+            dropped; in arrays they will be replaced with null. You can use
+            a replacer function to replace those with JSON values.
+            JSON.stringify(undefined) returns undefined.
+
+            The optional space parameter produces a stringification of the
+            value that is filled with line breaks and indentation to make it
+            easier to read.
+
+            If the space parameter is a non-empty string, then that string will
+            be used for indentation. If the space parameter is a number, then
+            the indentation will be that many spaces.
+
+            Example:
+
+            text = JSON.stringify(['e', {pluribus: 'unum'}]);
+            // text is '["e",{"pluribus":"unum"}]'
+
+
+            text = JSON.stringify(['e', {pluribus: 'unum'}], null, '\t');
+            // text is '[\n\t"e",\n\t{\n\t\t"pluribus": "unum"\n\t}\n]'
+
+            text = JSON.stringify([new Date()], function (key, value) {
+                return this[key] instanceof Date ?
+                    'Date(' + this[key] + ')' : value;
+            });
+            // text is '["Date(---current time---)"]'
+
+
+        JSON.parse(text, reviver)
+            This method parses a JSON text to produce an object or array.
+            It can throw a SyntaxError exception.
+
+            The optional reviver parameter is a function that can filter and
+            transform the results. It receives each of the keys and values,
+            and its return value is used instead of the original value.
+            If it returns what it received, then the structure is not modified.
+            If it returns undefined then the member is deleted.
+
+            Example:
+
+            // Parse the text. Values that look like ISO date strings will
+            // be converted to Date objects.
+
+            myData = JSON.parse(text, function (key, value) {
+                var a;
+                if (typeof value === 'string') {
+                    a =
 /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
-					if (a) {
-						return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],
-							+a[5], +a[6]));
-					}
-				}
-				return value;
-			});
+                    if (a) {
+                        return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],
+                            +a[5], +a[6]));
+                    }
+                }
+                return value;
+            });
 
-			myData = JSON.parse('["Date(09/09/2001)"]', function (key, value) {
-				var d;
-				if (typeof value === 'string' &&
-						value.slice(0, 5) === 'Date(' &&
-						value.slice(-1) === ')') {
-					d = new Date(value.slice(5, -1));
-					if (d) {
-						return d;
-					}
-				}
-				return value;
-			});
+            myData = JSON.parse('["Date(09/09/2001)"]', function (key, value) {
+                var d;
+                if (typeof value === 'string' &&
+                        value.slice(0, 5) === 'Date(' &&
+                        value.slice(-1) === ')') {
+                    d = new Date(value.slice(5, -1));
+                    if (d) {
+                        return d;
+                    }
+                }
+                return value;
+            });
+
+
+    This is a reference implementation. You are free to copy, modify, or
+    redistribute.
 */
 
-if (!window.JSON) {
-	window.JSON = {};
+/*jslint evil: true, regexp: true */
+
+/*members "", "\b", "\t", "\n", "\f", "\r", "\"", JSON, "\\", apply,
+    call, charCodeAt, getUTCDate, getUTCFullYear, getUTCHours,
+    getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join,
+    lastIndex, length, parse, prototype, push, replace, slice, stringify,
+    test, toJSON, toString, valueOf
+*/
+
+
+// Create a JSON object only if one does not already exist. We create the
+// methods in a closure to avoid creating global variables.
+
+if (typeof JSON !== 'object') {
+    JSON = {};
 }
 
 (function () {
-	'use strict';
+    'use strict';
 
-	function f(n) {
-		// Format integers to have at least two digits.
-		return n < 10 ? '0' + n : n;
-	}
+    function f(n) {
+        // Format integers to have at least two digits.
+        return n < 10 ? '0' + n : n;
+    }
 
-	if (typeof Date.prototype.toJSON !== 'function') {
+    if (typeof Date.prototype.toJSON !== 'function') {
 
-		Date.prototype.toJSON = function (key) {
+        Date.prototype.toJSON = function () {
 
-			return isFinite(this.valueOf()) ? this.getUTCFullYear()     + '-' +
-					f(this.getUTCMonth() + 1) + '-' +
-					f(this.getUTCDate())      + 'T' +
-					f(this.getUTCHours())     + ':' +
-					f(this.getUTCMinutes())   + ':' +
-					f(this.getUTCSeconds())   + 'Z'
-				: null;
-		};
+            return isFinite(this.valueOf())
+                ? this.getUTCFullYear()     + '-' +
+                    f(this.getUTCMonth() + 1) + '-' +
+                    f(this.getUTCDate())      + 'T' +
+                    f(this.getUTCHours())     + ':' +
+                    f(this.getUTCMinutes())   + ':' +
+                    f(this.getUTCSeconds())   + 'Z'
+                : null;
+        };
 
-		String.prototype.toJSON      =
-			Number.prototype.toJSON  =
-			Boolean.prototype.toJSON = function (key) {
-				return this.valueOf();
-			};
-	}
+        String.prototype.toJSON      =
+            Number.prototype.toJSON  =
+            Boolean.prototype.toJSON = function () {
+                return this.valueOf();
+            };
+    }
 
-	var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
-		escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
-		gap,
-		indent,
-		meta = {    // table of character substitutions
-			'\b': '\\b',
-			'\t': '\\t',
-			'\n': '\\n',
-			'\f': '\\f',
-			'\r': '\\r',
-			'"' : '\\"',
-			'\\': '\\\\'
-		},
-		rep;
+    var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+        escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+        gap,
+        indent,
+        meta = {    // table of character substitutions
+            '\b': '\\b',
+            '\t': '\\t',
+            '\n': '\\n',
+            '\f': '\\f',
+            '\r': '\\r',
+            '"' : '\\"',
+            '\\': '\\\\'
+        },
+        rep;
 
 
-	function quote(string) {
+    function quote(string) {
 
 // If the string contains no control characters, no quote characters, and no
 // backslash characters, then we can safely slap some quotes around it.
 // Otherwise we must also replace the offending characters with safe escape
 // sequences.
 
-		escapable.lastIndex = 0;
-		return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
-			var c = meta[a];
-			return typeof c === 'string' ? c
-				: '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
-		}) + '"' : '"' + string + '"';
-	}
+        escapable.lastIndex = 0;
+        return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
+            var c = meta[a];
+            return typeof c === 'string'
+                ? c
+                : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+        }) + '"' : '"' + string + '"';
+    }
 
 
-	function str(key, holder) {
+    function str(key, holder) {
 
 // Produce a string from holder[key].
 
-		var i,          // The loop counter.
-			k,          // The member key.
-			v,          // The member value.
-			length,
-			mind = gap,
-			partial,
-			value = holder[key];
+        var i,          // The loop counter.
+            k,          // The member key.
+            v,          // The member value.
+            length,
+            mind = gap,
+            partial,
+            value = holder[key];
 
 // If the value has a toJSON method, call it to obtain a replacement value.
 
-		if (value && typeof value === 'object' &&
-				typeof value.toJSON === 'function') {
-			value = value.toJSON(key);
-		}
+        if (value && typeof value === 'object' &&
+                typeof value.toJSON === 'function') {
+            value = value.toJSON(key);
+        }
 
 // If we were called with a replacer function, then call the replacer to
 // obtain a replacement value.
 
-		if (typeof rep === 'function') {
-			value = rep.call(holder, key, value);
-		}
+        if (typeof rep === 'function') {
+            value = rep.call(holder, key, value);
+        }
 
 // What happens next depends on the value's type.
 
-		switch (typeof value) {
-		case 'string':
-			return quote(value);
+        switch (typeof value) {
+        case 'string':
+            return quote(value);
 
-		case 'number':
+        case 'number':
 
 // JSON numbers must be finite. Encode non-finite numbers as null.
 
-			return isFinite(value) ? String(value) : 'null';
+            return isFinite(value) ? String(value) : 'null';
 
-		case 'boolean':
-		case 'null':
+        case 'boolean':
+        case 'null':
 
 // If the value is a boolean or null, convert it to a string. Note:
 // typeof null does not produce 'null'. The case is included here in
 // the remote chance that this gets fixed someday.
 
-			return String(value);
+            return String(value);
 
 // If the type is 'object', we might be dealing with an object or an array or
 // null.
 
-		case 'object':
+        case 'object':
 
 // Due to a specification blunder in ECMAScript, typeof null is 'object',
 // so watch out for that case.
 
-			if (!value) {
-				return 'null';
-			}
+            if (!value) {
+                return 'null';
+            }
 
 // Make an array to hold the partial results of stringifying this object value.
 
-			gap += indent;
-			partial = [];
+            gap += indent;
+            partial = [];
 
 // Is the value an array?
 
-			if (Object.prototype.toString.apply(value) === '[object Array]') {
+            if (Object.prototype.toString.apply(value) === '[object Array]') {
 
 // The value is an array. Stringify every element. Use null as a placeholder
 // for non-JSON values.
 
-				length = value.length;
-				for (i = 0; i < length; i += 1) {
-					partial[i] = str(i, value) || 'null';
-				}
+                length = value.length;
+                for (i = 0; i < length; i += 1) {
+                    partial[i] = str(i, value) || 'null';
+                }
 
 // Join all of the elements together, separated with commas, and wrap them in
 // brackets.
 
-				v = partial.length === 0 ? '[]'
-					: gap ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']'
-					: '[' + partial.join(',') + ']';
-				gap = mind;
-				return v;
-			}
+                v = partial.length === 0
+                    ? '[]'
+                    : gap
+                    ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']'
+                    : '[' + partial.join(',') + ']';
+                gap = mind;
+                return v;
+            }
 
 // If the replacer is an array, use it to select the members to be stringified.
 
-			if (rep && typeof rep === 'object') {
-				length = rep.length;
-				for (i = 0; i < length; i += 1) {
-					if (typeof rep[i] === 'string') {
-						k = rep[i];
-						v = str(k, value);
-						if (v) {
-							partial.push(quote(k) + (gap ? ': ' : ':') + v);
-						}
-					}
-				}
-			} else {
+            if (rep && typeof rep === 'object') {
+                length = rep.length;
+                for (i = 0; i < length; i += 1) {
+                    if (typeof rep[i] === 'string') {
+                        k = rep[i];
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                        }
+                    }
+                }
+            } else {
 
 // Otherwise, iterate through all of the keys in the object.
 
-				for (k in value) {
-					if (Object.prototype.hasOwnProperty.call(value, k)) {
-						v = str(k, value);
-						if (v) {
-							partial.push(quote(k) + (gap ? ': ' : ':') + v);
-						}
-					}
-				}
-			}
+                for (k in value) {
+                    if (Object.prototype.hasOwnProperty.call(value, k)) {
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                        }
+                    }
+                }
+            }
 
 // Join all of the member texts together, separated with commas,
 // and wrap them in braces.
 
-			v = partial.length === 0 ? '{}'
-				: gap ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}'
-				: '{' + partial.join(',') + '}';
-			gap = mind;
-			return v;
-		}
-	}
+            v = partial.length === 0
+                ? '{}'
+                : gap
+                ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}'
+                : '{' + partial.join(',') + '}';
+            gap = mind;
+            return v;
+        }
+    }
 
 // If the JSON object does not yet have a stringify method, give it one.
 
-	if (typeof JSON.stringify !== 'function') {
-		JSON.stringify = function (value, replacer, space) {
+    if (typeof JSON.stringify !== 'function') {
+        JSON.stringify = function (value, replacer, space) {
+
 // The stringify method takes a value and an optional replacer, and an optional
 // space parameter, and returns a JSON text. The replacer can be a function
 // that can replace values, or an array of strings that will select the keys.
 // A default replacer method can be provided. Use of the space parameter can
 // produce text that is more easily readable.
 
-			var i;
-			gap = '';
-			indent = '';
+            var i;
+            gap = '';
+            indent = '';
 
 // If the space parameter is a number, make an indent string containing that
 // many spaces.
 
-			if (typeof space === 'number') {
-				for (i = 0; i < space; i += 1) {
-					indent += ' ';
-				}
+            if (typeof space === 'number') {
+                for (i = 0; i < space; i += 1) {
+                    indent += ' ';
+                }
 
 // If the space parameter is a string, it will be used as the indent string.
 
-			} else if (typeof space === 'string') {
-				indent = space;
-			}
+            } else if (typeof space === 'string') {
+                indent = space;
+            }
 
 // If there is a replacer, it must be a function or an array.
 // Otherwise, throw an error.
 
-			rep = replacer;
-			if (replacer && typeof replacer !== 'function' &&
-					(typeof replacer !== 'object' ||
-					typeof replacer.length !== 'number')) {
-				throw new Error('JSON.stringify');
-			}
+            rep = replacer;
+            if (replacer && typeof replacer !== 'function' &&
+                    (typeof replacer !== 'object' ||
+                    typeof replacer.length !== 'number')) {
+                throw new Error('JSON.stringify');
+            }
 
 // Make a fake root object containing our value under the key of ''.
 // Return the result of stringifying the value.
 
-			return str('', {'': value});
-		};
-	}
+            return str('', {'': value});
+        };
+    }
 
 
 // If the JSON object does not yet have a parse method, give it one.
-	if (typeof JSON.parse !== 'function') {
-		JSON.parse = (function () {
-			"use strict";
-		
-		// This function creates a JSON parse function that uses a state machine rather
-		// than the dangerous eval function to parse a JSON text.
-		
-			var state,      // The state of the parser, one of
-							// 'go'         The starting state
-							// 'ok'         The final, accepting state
-							// 'firstokey'  Ready for the first key of the object or
-							//              the closing of an empty object
-							// 'okey'       Ready for the next key of the object
-							// 'colon'      Ready for the colon
-							// 'ovalue'     Ready for the value half of a key/value pair
-							// 'ocomma'     Ready for a comma or closing }
-							// 'firstavalue' Ready for the first value of an array or
-							//              an empty array
-							// 'avalue'     Ready for the next value of an array
-							// 'acomma'     Ready for a comma or closing ]
-				stack,      // The stack, for controlling nesting.
-				container,  // The current container object or array
-				key,        // The current key
-				value,      // The current value
-				escapes = { // Escapement translation table
-					'\\': '\\',
-					'"': '"',
-					'/': '/',
-					't': '\t',
-					'n': '\n',
-					'r': '\r',
-					'f': '\f',
-					'b': '\b'
-				},
-				string = {   // The actions for string tokens
-					go: function () {
-						state = 'ok';
-					},
-					firstokey: function () {
-						key = value;
-						state = 'colon';
-					},
-					okey: function () {
-						key = value;
-						state = 'colon';
-					},
-					ovalue: function () {
-						state = 'ocomma';
-					},
-					firstavalue: function () {
-						state = 'acomma';
-					},
-					avalue: function () {
-						state = 'acomma';
-					}
-				},
-				number = {   // The actions for number tokens
-					go: function () {
-						state = 'ok';
-					},
-					ovalue: function () {
-						state = 'ocomma';
-					},
-					firstavalue: function () {
-						state = 'acomma';
-					},
-					avalue: function () {
-						state = 'acomma';
-					}
-				},
-				action = {
-		
-		// The action table describes the behavior of the machine. It contains an
-		// object for each token. Each object contains a method that is called when
-		// a token is matched in a state. An object will lack a method for illegal
-		// states.
-		
-					'{': {
-						go: function () {
-							stack.push({state: 'ok'});
-							container = {};
-							state = 'firstokey';
-						},
-						ovalue: function () {
-							stack.push({container: container, state: 'ocomma', key: key});
-							container = {};
-							state = 'firstokey';
-						},
-						firstavalue: function () {
-							stack.push({container: container, state: 'acomma'});
-							container = {};
-							state = 'firstokey';
-						},
-						avalue: function () {
-							stack.push({container: container, state: 'acomma'});
-							container = {};
-							state = 'firstokey';
-						}
-					},
-					'}': {
-						firstokey: function () {
-							var pop = stack.pop();
-							value = container;
-							container = pop.container;
-							key = pop.key;
-							state = pop.state;
-						},
-						ocomma: function () {
-							var pop = stack.pop();
-							container[key] = value;
-							value = container;
-							container = pop.container;
-							key = pop.key;
-							state = pop.state;
-						}
-					},
-					'[': {
-						go: function () {
-							stack.push({state: 'ok'});
-							container = [];
-							state = 'firstavalue';
-						},
-						ovalue: function () {
-							stack.push({container: container, state: 'ocomma', key: key});
-							container = [];
-							state = 'firstavalue';
-						},
-						firstavalue: function () {
-							stack.push({container: container, state: 'acomma'});
-							container = [];
-							state = 'firstavalue';
-						},
-						avalue: function () {
-							stack.push({container: container, state: 'acomma'});
-							container = [];
-							state = 'firstavalue';
-						}
-					},
-					']': {
-						firstavalue: function () {
-							var pop = stack.pop();
-							value = container;
-							container = pop.container;
-							key = pop.key;
-							state = pop.state;
-						},
-						acomma: function () {
-							var pop = stack.pop();
-							container.push(value);
-							value = container;
-							container = pop.container;
-							key = pop.key;
-							state = pop.state;
-						}
-					},
-					':': {
-						colon: function () {
-							if (Object.hasOwnProperty.call(container, key)) {
-								throw new SyntaxError('Duplicate key "' + key + '"');
-							}
-							state = 'ovalue';
-						}
-					},
-					',': {
-						ocomma: function () {
-							container[key] = value;
-							state = 'okey';
-						},
-						acomma: function () {
-							container.push(value);
-							state = 'avalue';
-						}
-					},
-					'true': {
-						go: function () {
-							value = true;
-							state = 'ok';
-						},
-						ovalue: function () {
-							value = true;
-							state = 'ocomma';
-						},
-						firstavalue: function () {
-							value = true;
-							state = 'acomma';
-						},
-						avalue: function () {
-							value = true;
-							state = 'acomma';
-						}
-					},
-					'false': {
-						go: function () {
-							value = false;
-							state = 'ok';
-						},
-						ovalue: function () {
-							value = false;
-							state = 'ocomma';
-						},
-						firstavalue: function () {
-							value = false;
-							state = 'acomma';
-						},
-						avalue: function () {
-							value = false;
-							state = 'acomma';
-						}
-					},
-					'null': {
-						go: function () {
-							value = null;
-							state = 'ok';
-						},
-						ovalue: function () {
-							value = null;
-							state = 'ocomma';
-						},
-						firstavalue: function () {
-							value = null;
-							state = 'acomma';
-						},
-						avalue: function () {
-							value = null;
-							state = 'acomma';
-						}
-					}
-				};
-		
-			function debackslashify(text) {
-		
-		// Remove and replace any backslash escapement.
-		
-				return text.replace(/\\(?:u(.{4})|([^u]))/g, function (a, b, c) {
-					return b ? String.fromCharCode(parseInt(b, 16)) : escapes[c];
-				});
-			}
-		
-			return function (source, reviver) {
-		
-		// A regular expression is used to extract tokens from the JSON text.
-		// The extraction process is cautious.
-		
-				var r,          // The result of the exec method.
-					tx = /^[\x20\t\n\r]*(?:([,:\[\]{}]|true|false|null)|(-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)|"((?:[^\r\n\t\\\"]|\\(?:["\\\/trnfb]|u[0-9a-fA-F]{4}))*)")/;
-		
-		// Set the starting state.
-		
-				state = 'go';
-		
-		// The stack records the container, key, and state for each object or array
-		// that contains another object or array while processing nested structures.
-		
-				stack = [];
-		
-		// If any error occurs, we will catch it and ultimately throw a syntax error.
-		
-				try {
-		
-		// For each token...
-		
-					for (;;) {
-						r = tx.exec(source);
-						if (!r) {
-							break;
-						}
-		
-		// r is the result array from matching the tokenizing regular expression.
-		//  r[0] contains everything that matched, including any initial whitespace.
-		//  r[1] contains any punctuation that was matched, or true, false, or null.
-		//  r[2] contains a matched number, still in string form.
-		//  r[3] contains a matched string, without quotes but with ecapement.
-		
-						if (r[1]) {
-		
-		// Token: Execute the action for this state and token.
-		
-							action[r[1]][state]();
-		
-						} else if (r[2]) {
-		
-		// Number token: Convert the number string into a number value and execute
-		// the action for this state and number.
-		
-							value = +r[2];
-							number[state]();
-						} else {
-		
-		// String token: Replace the escapement sequences and execute the action for
-		// this state and string.
-		
-							value = debackslashify(r[3]);
-							string[state]();
-						}
-		
-		// Remove the token from the string. The loop will continue as long as there
-		// are tokens. This is a slow process, but it allows the use of ^ matching,
-		// which assures that no illegal tokens slip through.
-		
-						source = source.slice(r[0].length);
-					}
-		
-		// If we find a state/token combination that is illegal, then the action will
-		// cause an error. We handle the error by simply changing the state.
-		
-				} catch (e) {
-					state = e;
-				}
-		
-		// The parsing is finished. If we are not in the final 'ok' state, or if the
-		// remaining source contains anything except whitespace, then we did not have
-		//a well-formed JSON text.
-		
-				if (state !== 'ok' || /[^\x20\t\n\r]/.test(source)) {
-					throw state instanceof SyntaxError ? state : new SyntaxError('JSON');
-				}
-		
-		// If there is a reviver function, we recursively walk the new structure,
-		// passing each name/value pair to the reviver function for possible
-		// transformation, starting with a temporary root object that holds the current
-		// value in an empty key. If there is not a reviver function, we simply return
-		// that value.
-		
-				return typeof reviver === 'function' ? (function walk(holder, key) {
-					var k, v, value = holder[key];
-					if (value && typeof value === 'object') {
-						for (k in value) {
-							if (Object.prototype.hasOwnProperty.call(value, k)) {
-								v = walk(value, k);
-								if (v !== undefined) {
-									value[k] = v;
-								} else {
-									delete value[k];
-								}
-							}
-						}
-					}
-					return reviver.call(holder, key, value);
-				}({'': value}, '')) : value;
-			};
-		}());
-	}
-	
+
+    if (typeof JSON.parse !== 'function') {
+        JSON.parse = function (text, reviver) {
+
+// The parse method takes a text and an optional reviver function, and returns
+// a JavaScript value if the text is a valid JSON text.
+
+            var j;
+
+            function walk(holder, key) {
+
+// The walk method is used to recursively walk the resulting structure so
+// that modifications can be made.
+
+                var k, v, value = holder[key];
+                if (value && typeof value === 'object') {
+                    for (k in value) {
+                        if (Object.prototype.hasOwnProperty.call(value, k)) {
+                            v = walk(value, k);
+                            if (v !== undefined) {
+                                value[k] = v;
+                            } else {
+                                delete value[k];
+                            }
+                        }
+                    }
+                }
+                return reviver.call(holder, key, value);
+            }
+
+
+// Parsing happens in four stages. In the first stage, we replace certain
+// Unicode characters with escape sequences. JavaScript handles many characters
+// incorrectly, either silently deleting them, or treating them as line endings.
+
+            text = String(text);
+            cx.lastIndex = 0;
+            if (cx.test(text)) {
+                text = text.replace(cx, function (a) {
+                    return '\\u' +
+                        ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+                });
+            }
+
+// In the second stage, we run the text against regular expressions that look
+// for non-JSON patterns. We are especially concerned with '()' and 'new'
+// because they can cause invocation, and '=' because it can cause mutation.
+// But just to be safe, we want to reject all unexpected forms.
+
+// We split the second stage into 4 regexp operations in order to work around
+// crippling inefficiencies in IE's and Safari's regexp engines. First we
+// replace the JSON backslash pairs with '@' (a non-JSON character). Second, we
+// replace all simple value tokens with ']' characters. Third, we delete all
+// open brackets that follow a colon or comma or that begin the text. Finally,
+// we look to see that the remaining characters are only whitespace or ']' or
+// ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
+
+            if (/^[\],:{}\s]*$/
+                    .test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
+                        .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
+                        .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+
+// In the third stage we use the eval function to compile the text into a
+// JavaScript structure. The '{' operator is subject to a syntactic ambiguity
+// in JavaScript: it can begin a block or an object literal. We wrap the text
+// in parens to eliminate the ambiguity.
+
+                j = eval('(' + text + ')');
+
+// In the optional fourth stage, we recursively walk the new structure, passing
+// each name/value pair to a reviver function for possible transformation.
+
+                return typeof reviver === 'function'
+                    ? walk({'': j}, '')
+                    : j;
+            }
+
+// If the text is not JSON parseable, then a SyntaxError is thrown.
+
+            throw new SyntaxError('JSON.parse');
+        };
+    }
 }());
+
  
  
 /** 
@@ -792,7 +624,7 @@ var PubSub = {};
  */
 function isTrueEmail(){
 	var t = this.toString(),
-		re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		re = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i;
 	return re.test(t);
 }
 String.prototype.isEmail = isTrueEmail; // добавляем методом для всех строк
@@ -845,38 +677,38 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 |*|
 \*/
 
-;(function(global){	
+;(function( global ) {	
 	global.docCookies = {
 		getItem:function ( sKey ) {
-			return unescape(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+			return unescape(document.cookie.replace(new RegExp('(?:(?:^|.*;)\\s*' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*([^;]*).*$)|^.*$'), '$1')) || null;
 		},
 
 		setItem: function ( sKey, sValue, vEnd, sPath, sDomain, bSecure ) {
-			if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
+			if ( !sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey) ) {
 
 				return false;
 			}
 
-			var sExpires = "";
+			var sExpires = '';
 
 			if ( vEnd ) {
 				switch ( vEnd.constructor ) {
 					case Number:
-						sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+						sExpires = vEnd === Infinity ? '; expires=Fri, 31 Dec 9999 23:59:59 GMT' : '; max-age=' + vEnd;
 						break;
 					case String:
-						sExpires = "; expires=" + vEnd;
+						sExpires = '; expires=' + vEnd;
 						break;
 					case Date:
-						sExpires = "; expires=" + vEnd.toGMTString();
+						sExpires = '; expires=' + vEnd.toGMTString();
 						break;
 				}
 			}
 
-			document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain:
-						"") + (sPath ? "; path=" + sPath:
-						"") + (bSecure ? "; secure":
-						"");
+			document.cookie = escape(sKey) + '=' + escape(sValue) + sExpires + (sDomain ? '; domain=' + sDomain:
+						'') + (sPath ? '; path=' + sPath:
+						'') + (bSecure ? '; secure':
+						'');
 						
 			return true;
 		},
@@ -886,18 +718,18 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 				return false;
 			}
 			
-			document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sPath ? "; path=" + sPath: "");
+			document.cookie = escape(sKey) + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT' + (sPath ? '; path=' + sPath: '');
 
 			return true;
 		},
 
 		hasItem: function ( sKey ) {
-			return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+			return (new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie);
 		},
 
 		/* optional method: you can safely remove it! */ 
 		keys: function () {
-			var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+			var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, '').split(/\s*(?:\=[^;]*)?;\s*/);
 
 			for (var nIdx = 0; nIdx < aKeys.length; nIdx++) {
 				aKeys[nIdx] = unescape(aKeys[nIdx]);
@@ -1736,248 +1568,1006 @@ window.MapInterface = (function() {
  */
  
  
-/**
- * WARNING!
- *
- * @requires jQuery, simple_templating, docCookies
+;(function( ENTER ) {
+	var userUrl = ENTER.config.pageConfig.userUrl,
+		constructors = ENTER.constructors;
+	// end of vars
+
+	
+	/**
+	 * Новый класс по работе с картой
+	 *
+	 * @author	Zaytsev Alexandr
+	 * 
+	 * @this	{CreateMap}
+	 *
+	 * @param	{Object}	args			DOM объект в который необходимо вывести карту
+	 * @param	{Array}		points			Массив точек, которые необходимо вывести на карту
+	 * @param	{Object}	baloonTemplate	Шаблон для балунов на карте
+	 *
+	 * @constructor
+	 */
+	constructors.CreateMap = (function() {
+		'use strict';
+	
+		function CreateMap( nodeId, points, baloonTemplate ) {
+			// enforces new
+			if ( !(this instanceof CreateMap) ) {
+				return new CreateMap(nodeId, points, baloonTemplate);
+			}
+			// constructor body
+			
+			console.info('CreateMap');
+			console.log(points);
+
+			this.points = points;
+			this.template = baloonTemplate.html();
+			this.center = this._calcCenter();
+
+			console.log(this.center);
+
+			this.mapWS = new ymaps.Map(nodeId, {
+				center: [this.center.latitude, this.center.longitude],
+				zoom: 10
+			});
+
+			this.mapWS.controls.add('zoomControl');
+
+			this._showMarkers();
+		}
+
+		/**
+		 * Расчет центра карты для исходного массива точек
+		 */
+		CreateMap.prototype._calcCenter = function() {
+			console.info('calcCenter');
+
+			var latitude = 0,
+				longitude = 0,
+				l = 0,
+				i = 0,
+
+				mapCenter = {};
+			// end of vars
+
+			for ( i = this.points.length - 1; i >= 0; i-- ) {
+				latitude  += this.points[i].latitude * 1;
+				longitude += this.points[i].longitude * 1;
+
+				l++;
+			}
+
+			mapCenter = {
+				latitude  : latitude / l,
+				longitude : longitude / l
+			};
+
+			return mapCenter;
+		};
+
+		CreateMap.prototype._showMarkers = function() {
+			var tmpPointInfo = null,
+				tmpPlacemark = null,
+				pointsCollection = new ymaps.GeoObjectArray();
+			// end of vars
+
+			// layout for baloon
+			var pointContentLayout = ymaps.templateLayoutFactory.createClass(this.template);
+
+			for ( var i = this.points.length - 1; i >= 0; i--) {
+				tmpPointInfo = {
+					id: this.points[i].id,
+					name: this.points[i].name,
+					address: this.points[i].address,
+					link: this.points[i].link,
+					regtime: this.points[i].regtime,
+					parentBoxToken: this.points[i].parentBoxToken
+				};
+
+				tmpPlacemark = new ymaps.Placemark(
+					// координаты точки
+					[
+						this.points[i].latitude,
+						this.points[i].longitude
+					],
+
+					// данные для шаблона
+					tmpPointInfo,
+
+					// оформление метки на карте
+					{
+						iconImageHref: '/images/marker.png', // картинка иконки
+						iconImageSize: [39, 59],
+						iconImageOffset: [-19, -57]
+					}
+				);
+
+				pointsCollection.add(tmpPlacemark);
+			}
+
+			ymaps.layout.storage.add('my#superlayout', pointContentLayout);
+			pointsCollection.options.set({
+				balloonContentBodyLayout:'my#superlayout',
+				balloonMaxWidth: 350
+			});
+
+			this.mapWS.geoObjects.add(pointsCollection);
+		};
+	
+	
+		return CreateMap;
+	
+	}());
+}(window.ENTER));
+
+ 
+ 
+/** 
+ * NEW FILE!!! 
  */
-
-
+ 
+ 
 /**
- * Создает объект для обновления данных с сервера и отображения текущих покупок
- *
+ * @requires jQuery, simple_templating, docCookies, ENTER.utils, ENTER.config
  * @author	Zaytsev Alexandr
- * @this	{BlackBox}
- * @param	{String}		updateUrl URL по которому будут запрашиватся данные о пользователе и корзине.
- * @param	{jQuery}		mainNode  DOM элемент бокса
+ *
+ * @param	{Object}	ENTER	Enter namespace
+ */
+;(function( ENTER ) {
+	var config = ENTER.config,
+		userUrl = config.pageConfig.userUrl,
+		utils = ENTER.utils;
+	// end of vars
+
+    config.cartProducts = config.cartProducts || {};
+
+	/**
+	 * === BLACKBOX CONSTRUCTOR ===
+	 */
+	var BlackBox = (function() {
+	
+		/**
+		 * Создает объект для обновления данных с сервера и отображения текущих покупок
+		 *
+		 * @author	Zaytsev Alexandr
+		 * @this	{BlackBox}
+		 * 
+		 * @param	{String}		updateUrl	URL по которому будут запрашиватся данные о пользователе и корзине.
+		 * @param	{Object}		mainNode	DOM элемент бокса
+		 * 
+		 * @constructor
+		 */
+		function BlackBox( updateUrl, mainContatiner ) {
+			// enforces new
+			if ( !(this instanceof BlackBox) ) {
+				return new BlackBox(updateUrl, mainContatiner);
+			}
+			// constructor body
+			
+			this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
+			this.mainNode = mainContatiner;
+		}
+	
+		
+		/**
+		 * Объект по работе с корзиной
+		 *
+		 * @author	Zaytsev Alexandr
+		 * @this	{BlackBox}
+		 * 
+		 * @return	{Function} update	обновление данных о корзине
+		 * @return	{Function} add		добавление в корзину
+		 */
+		BlackBox.prototype.basket = function() {
+			var self = this,
+
+				headQ = $('#topBasket'),
+				bottomQ = self.mainNode.find('.bBlackBox__eCartQuan'),
+				bottomSum = self.mainNode.find('.bBlackBox__eCartSum'),
+				total = self.mainNode.find('.bBlackBox__eCartTotal'),
+				bottomCart = self.mainNode.find('.bBlackBox__eCart'),
+				flyboxBasket = self.mainNode.find('.bBlackBox__eFlybox.mBasket'),
+				flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner');
+			// end of vars
+
+				/**
+				 * Уничтожение содержимого flybox и его скрытие
+				 *
+				 * @author	Zaytsev Alexandr
+				 * 
+				 * @private
+				 */
+			var flyboxDestroy = function flyboxDestroy() {
+					flyboxBasket.hide(0, function() {
+						flyboxInner.remove();
+					});
+				},
+
+				/**
+				 * Закрытие flybox по клику
+				 * 
+				 * @author	Zaytsev Alexandr
+				 * 
+				 * @param	{Event}	e
+				 * 
+				 * @private
+				 */
+				flyboxcloser = function flyboxcloser( e ) {
+					var targ = e.target.className;
+
+					if ( !(targ.indexOf('bBlackBox__eFlybox') + 1) || !(targ.indexOf('fillup') + 1) ) {
+						flyboxDestroy();
+						$('body').unbind('click', flyboxcloser);
+					}
+				},
+
+				/**
+				 * Обновление данных о корзине
+				 *
+				 * @author	Zaytsev Alexandr
+				 * 
+				 * @param	{Object}	basketInfo			Информация о корзине
+				 * @param	{Number}	basketInfo.cartQ	Количество товаров в корзине
+				 * @param	{Number}	basketInfo.cartSum	Стоимость товаров в корзине
+				 * 
+				 * @public
+				 */
+				update = function update( basketInfo, cartProds ) {
+					headQ.html('(' + basketInfo.cartQ + ')');
+					bottomQ.html(basketInfo.cartQ);
+					bottomSum.html(basketInfo.cartSum);
+					bottomCart.addClass('mBought');
+					total.show();
+
+                    if ( cartProds && cartProds.length > 0 ) {
+                        config.cartProducts = cartProds;
+                    }
+				},
+
+				/**
+				 * Добавление товара в корзину
+				 *
+				 * @author	Zaytsev Alexandr
+				 * 
+				 * @param	{Object}	item
+				 * @param	{String}	item.title			Название товара
+				 * @param	{Number}	item.price			Стоимость товара
+				 * @param	{String}	item.imgSrc			Ссылка на изображение товара
+				 * @param	{Number}	item.TotalQuan		Общее количество товаров в корзине
+				 * @param	{Number}	item.totalSum		Общая стоимость корзины
+				 * @param	{String}	item.linkToOrder	Ссылка на оформление заказа
+				 * 
+				 * @public
+				 */
+				add = function add ( item ) {
+					var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item),
+                        nowBasket = {
+                            cartQ: item.totalQuan,
+                            cartSum: item.totalSum
+                        },
+                        addCartProduct = {
+                            id: item.id,
+                            name: item.title,
+                            price: item.priceInt,
+                            quantity: item.quantity
+                        };
+					// end of vars
+
+					flyboxDestroy();
+					flyboxBasket.append(flyboxTmpl);
+					flyboxBasket.show(300);
+
+					self.basket().update(nowBasket);
+                    config.cartProducts.push(addCartProduct);
+
+					$('body').bind('click', flyboxcloser);
+
+				};
+			//end of functions
+
+			return {
+				'update': update,
+				'add': add
+			};
+		};
+
+		/**
+		 * Объект по работе с данными пользователя
+		 *
+		 * @author	Zaytsev Alexandr
+		 * 
+		 * @this	{BlackBox}
+		 * 
+		 * @return	{Function}	update
+		 */
+		BlackBox.prototype.user = function() {
+			var self = this;
+
+			/**
+			 * Обновление пользователя
+			 *
+			 * @author	Zaytsev Alexandr
+			 * 
+			 * @param	{String}	userInfo	Данные пользователя
+			 * 
+			 * @public
+			 */
+			var update = function update ( userInfo ) {
+				var topAuth = $('#auth-link'),
+					bottomAuth = self.mainNode.find('.bBlackBox__eUserLink'),
+					dtmpl = {},
+					show_user = '';
+				//end of vars
+
+				config.userInfo = userInfo;
+
+				if ( userInfo && userInfo.name !== null ) {
+					dtmpl = {
+						user: userInfo.name
+					};
+
+					show_user = tmpl('auth_tmpl', dtmpl);
+					
+					if ( topAuth.length ) {
+						topAuth.hide();
+						topAuth.after(show_user);
+					}
+
+					if ( bottomAuth.length ) {
+						bottomAuth.html(userInfo.name).addClass('mAuth');
+					}
+				}
+				else {
+					topAuth.show();
+
+				}
+
+				$('body').trigger('userLogged', [userInfo]);
+			}; 
+			
+			return {
+				'update': update
+			};
+		};
+
+
+		/**
+		 * Инициализация BlackBox.
+		 * Получение данных о корзине и пользователе с сервера.
+		 *
+		 * @author	Zaytsev Alexandr
+		 * 
+		 * @this	{BlackBox}
+		 */
+		BlackBox.prototype.init = function() {
+			var self = this;
+
+				/**
+				 * Обработчик Action присланных с сервера
+				 * 
+				 * @param	{Object}	action	Список действий которые необходимо выполнить
+				 * 
+				 * @private
+				 */
+			var startAction = function startAction( action ) {
+					if ( action.subscribe !== undefined ) {
+						$('body').trigger('showsubscribe', [action.subscribe]);
+					}
+					if ( action.cartButton !== undefined ) {
+						$('body').trigger('markcartbutton', [action.cartButton]);
+						$('body').trigger('updatespinner', [action.cartButton]);
+					}
+				},
+
+				/**
+				 * Обработчик данных о корзине и пользователе
+				 * 
+				 * @param	{Object}	data
+				 * 
+				 * @private
+				 */ 
+				parseUserInfo = function parseUserInfo( data ) {
+					var userInfo = data.user,
+						cartInfo = data.cart,
+						actionInfo = data.action,
+						nowBasket = {};
+					//end of vars
+
+					if ( data.success !== true ) {
+						return false;
+					}
+
+					self.user().update(userInfo);
+
+					if ( cartInfo.quantity !== 0 ) {
+						nowBasket = {
+							cartQ: cartInfo.quantity,
+							cartSum: cartInfo.sum
+						};
+
+						self.basket().update( nowBasket, data.cartProducts );
+					}
+
+					if ( actionInfo !== undefined ) {
+						startAction(actionInfo);
+					}
+				};
+			//end of functions
+
+			$.get(self.updUrl, parseUserInfo);
+		};
+	
+		return BlackBox;
+	
+	}());
+	/**
+	 * === END BLACKBOX CONSTRUCTOR ===
+	 */
+
+
+	/**
+	 * Создание и иницилизация объекта для работы с корзиной и данными пользователя
+	 * 
+	 * @type	{BlackBox}
+	 */
+	utils.blackBox = new BlackBox(userUrl, $('.bBlackBox__eInner'));
+	utils.blackBox.init();
+	
+}(window.ENTER));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Валидатор форм
+ *
+ * @author		Zaytsev Alexandr
+ * @this		{FormValidator}
+ * @requires	jQuery
  * @constructor
  */
-function BlackBox( updateUrl, mainContatiner ) {
-	this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
-	this.mainNode = mainContatiner;
+function FormValidator( config ) {
+	if ( !config.fields.length ) {
+		return;
+	}
+
+	this.config = $.extend(
+						{},
+						this._defaultsConfig,
+						config );
+
+	this._enableHandlers();
 }
 
 /**
- * Объект по работе с корзиной
- *
- * @author	Zaytsev Alexandr
- * @this	{BlackBox}
- * @return	{function} update	обновление данных о корзине
- * @return	{function} add		добавление в корзину
+ * ============ PRIVATE METHODS ===================
  */
-BlackBox.prototype.basket = function() {
-	var self = this,
 
-		headQ = $('#topBasket'),
-		bottomQ = self.mainNode.find('.bBlackBox__eCartQuan'),
-		bottomSum = self.mainNode.find('.bBlackBox__eCartSum'),
-		total = self.mainNode.find('.bBlackBox__eCartTotal'),
-		bottomCart = self.mainNode.find('.bBlackBox__eCart'),
-		flyboxBasket = self.mainNode.find('.bBlackBox__eFlybox.mBasket'),
-		flyboxInner = self.mainNode.find('.bBlackBox__eFlyboxInner');
-	// end of vars
-
-		/**
-		 * Уничтожение содержимого flybox и его скрытие
-		 *
-		 * @author	Zaytsev Alexandr
-		 * @private
-		 */
-	var flyboxDestroy = function flyboxDestroy() {
-			flyboxBasket.hide(0, function() {
-				flyboxInner.remove();
-			});
-		},
-
-		/**
-		 * Закрытие flybox по клику
-		 * 
-		 * @author	Zaytsev Alexandr
-		 * @param	{Event} e
-		 * @private
-		 */
-		flyboxcloser = function flyboxcloser( e ) {
-			var targ = e.target.className;
-
-			if ( !(targ.indexOf('bBlackBox__eFlybox') + 1) || !(targ.indexOf('fillup') + 1) ) {
-				flyboxDestroy();
-				$('body').unbind('click', flyboxcloser);
-			}
-		},
-
-		/**
-		 * Обновление данных о корзине
-		 *
-		 * @author	Zaytsev Alexandr
-		 * @param	{Object} basketInfo			Информация о корзине
-		 * @param	{Number} basketInfo.cartQ	Количество товаров в корзине
-		 * @param	{Number} basketInfo.cartSum	Стоимость товаров в корзине
-		 * @public
-		 */
-		update = function update( basketInfo ) {
-			headQ.html('(' + basketInfo.cartQ + ')');
-			bottomQ.html(basketInfo.cartQ);
-			bottomSum.html(basketInfo.cartSum);
-			bottomCart.addClass('mBought');
-			total.show();
-		},
-
-		/**
-		 * Добавление товара в корзину
-		 *
-		 * @author	Zaytsev Alexandr
-		 * @param	{Object} item
-		 * @param	{String} item.title			Название товара
-		 * @param	{Number} item.price			Стоимость товара
-		 * @param	{String} item.imgSrc		Ссылка на изображение товара
-		 * @param	{Number} item.TotalQuan		Общее количество товаров в корзине
-		 * @param	{Number} item.totalSum		Общая стоимость корзины
-		 * @param	{String} item.linkToOrder	Ссылка на оформление заказа
-		 * @public
-		 */
-		add = function add ( item ) {
-			var flyboxTmpl = tmpl('blackbox_basketshow_tmpl', item),
-					nowBasket = {
-					cartQ: item.totalQuan,
-					cartSum: item.totalSum
-				};
-			// end of vars
-
-			flyboxDestroy();
-			flyboxBasket.append(flyboxTmpl);
-			flyboxBasket.show(300);
-
-			self.basket().update(nowBasket);
-
-			$('body').bind('click', flyboxcloser);
-
-		};
-	//end of functions
-
-	return {
-		'update': update,
-		'add': add
-	};
+/**
+ * Стандартные настройки валидатора
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._defaultsConfig = {
+	errorClass: 'mError'
 };
 
 /**
- * Объект по работе с данными пользователя
- *
- * @author	Zaytsev Alexandr
- * @this	{BlackBox}
- * @return	{function} update
+ * Поля, на которые уже навешен обработчик валидации на ходу
  */
-BlackBox.prototype.user = function() {
-	var self = this;
+FormValidator.prototype._validateOnChangeFields = {
+};
 
-	/**
-	 * Обновление пользователя
-	 *
-	 * @author	Zaytsev Alexandr
-	 * @param	{String} userName Имя пользователя
-	 * @public
-	 */
-	var update = function update ( userName ) {
-		var topAuth = $('#auth-link'),
-			bottomAuth = self.mainNode.find('.bBlackBox__eUserLink'),
-			dtmpl = {},
-			show_user = '';
-		//end of vars
+/**
+ * Проверка обязательных к заполнению полей
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._requireAs = {
+	checkbox : function( fieldNode ) {
+		var value = fieldNode.attr('checked');
 
-		if ( userName !== null ) {
-			dtmpl = {
-				user: userName
+		if ( value === undefined ) {
+			return {
+				hasError: true,
+				errorMsg : 'Поле обязательно для заполнения'
 			};
-			show_user = tmpl('auth_tmpl', dtmpl);
-			
-			topAuth.hide();
-			topAuth.after(show_user);
-			bottomAuth.html(userName).addClass('mAuth');
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
+	radio: function( fieldNode ) {
+		var checked = fieldNode.filter(':checked').val();
+
+		if ( checked === undefined ) {
+			return {
+				hasError: true,
+				errorMsg : 'Необходимо выбрать пункт из списка'
+			};
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
+	text: function( fieldNode ) {
+		var value = fieldNode.val();
+
+		if ( value.length === 0 ) {
+			return {
+				hasError: true,
+				errorMsg : 'Поле обязательно для заполнения'
+			};
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
+	password: function( fieldNode ) {
+		var value = fieldNode.val();
+
+		if ( value.length === 0 ) {
+			return {
+				hasError: true,
+				errorMsg : 'Поле обязательно для заполнения'
+			};
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
+	textarea: function( fieldNode ) {
+		var value = fieldNode.text();
+
+		if ( value.length === 0 ) {
+			return {
+				hasError: true,
+				errorMsg : 'Поле обязательно для заполнения'
+			};
+		}
+
+		return {
+			hasError: false
+		};
+	},
+
+	select: function( fieldNode ) {
+		if ( fieldNode.val() ) {
+			return {
+				hasError: false
+			};
+		}
+
+		return {
+			hasError: true,
+			errorMsg : 'Необходимо выбрать значение из списка'
+		};
+	}
+};
+
+/**
+ * Валидирование поля
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._validBy = {
+	isEmail: function( fieldNode ) {
+		var re = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i,
+			value = fieldNode.val();
+
+		if ( re.test(value) ) {
+			return {
+				hasError: false
+			};
 		}
 		else {
-			topAuth.show();
+			return {
+				hasError: true,
+				errorMsg : 'Некорректно введен e-mail'
+			};
 		}
-	}; 
+	},
+
+	isPhone: function( fieldNode ) {
+		var re = /(\+7|8)(-|\s)?(\(\d(-|\s)?\d(-|\s)?\d\s?\)|\d(-|\s)?\d(-|\s)?\d\s?)(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d$/i,
+			value = fieldNode.val();
+
+		if ( re.test(value) ) {
+			return {
+				hasError: false
+			};
+		}
+		else {
+			return {
+				hasError: true,
+				errorMsg : 'Некорректно введен телефон'
+			};
+		}
+	},
+
+	isNumber: function( fieldNode ) {
+		var re = /^[0-9]+$/,
+			value = fieldNode.val();
+
+		if ( re.test(value) ) {
+			return {
+				hasError: false
+			};
+		}
+		else {
+			return {
+				hasError: true,
+				errorMsg : 'Поле может содержать только числа'
+			};
+		}
+	}
+};
+
+/**
+ * Валидация поля
+ * 
+ * @param	{Object}	field			Объект поля для валидации
+ * @param	{Object}	field.fieldNode	Ссылка на jQuery объект поля
+ * @param	{String}	field.validBy	Тип валидации поля
+ * @param	{Boolean}	field.require	Является ли поле обязательным к заполению
+ * @param	{String}	field.customErr	Сообщение об ошибке, если поле не прошло валидацию
+ *
+ * @return	{Object}	error			Объект с ошибкой
+ * @return	{Boolean}	error.hasError	Есть ли ошибка
+ * @return	{Boolean}	error.errorMsg	Сообщение об ошибке
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._validateField = function( field ) {
+	var self = this,
+
+		elementType = null,
+
+		fieldNode = null,
+		validBy = null,
+		require = null,
+		customErr = '',
+
+		error = {
+			hasError: false
+		},
+		result = {};
+	// end of vars
+
+	fieldNode = field.fieldNode;
+	require = ( fieldNode.attr('required') === 'required' ) ? true : field.require; // если у элемента формы есть required то поле обязательное, иначе брать из конфига
+	validBy = field.validBy;
+	customErr = field.customErr;
+
+	elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
+
+	/**
+	 * Проверка обязательно ли поле для заполенения
+	 */
+	if ( require ) {
+		/**
+		 * Проверка существования метода проверки на обязательность для данного типа поля
+		 */
+		if ( self._requireAs.hasOwnProperty(elementType) ) {
+			result = self._requireAs[elementType](fieldNode);
+
+			if ( result.hasError ) {
+				error = {
+					hasError: true,
+					errorMsg : ( customErr !== undefined ) ? customErr : result.errorMsg
+				};
+
+				return error;
+			}
+		}
+		else {
+			error = {
+				hasError: true,
+				errorMsg : 'Обязательное поле. Неизвестный метод проверки для '+elementType
+			};
+
+			return error;
+		}
+	}
+
+	/**
+	 * Проверка существоаания метода валидации
+	 * Валидация поля, если не пустое
+	 */
+	if ( self._validBy.hasOwnProperty(validBy) && field.fieldNode.val().length !==0 ) {
+		result = self._validBy[validBy](fieldNode);
+
+		if ( result.hasError ) {
+			error = {
+				hasError: true,
+				errorMsg: ( customErr !== undefined ) ? customErr : result.errorMsg
+			};
+		}
+	}
+	else if ( validBy !== undefined && field.fieldNode.val().length !==0 ) {
+		error = {
+			hasError: true,
+			errorMsg : 'Неизвестный метод валидации '+validBy
+		};
+	}
+
+	return error;
+};
+
+FormValidator.prototype._unmarkFieldError = function( fieldNode ) {
+	console.info('Снимаем маркировку');
+
+	fieldNode.removeClass(this.config.errorClass);
+	fieldNode.parent().find('.bErrorText').remove();
+};
+
+FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
+	var self = this;
+
+	var clearError = function clearError() {
+		self._unmarkFieldError($(this));
+	};
+
+	console.info('маркируем');
+	console.log(errorMsg);
 	
+	fieldNode.addClass(this.config.errorClass);
+	fieldNode.before('<div class="bErrorText"><div class="bErrorText__eInner">'+errorMsg+'</div></div>');
+	fieldNode.bind('focus', clearError);
+};
+
+/**
+ * Активация хандлеров для полей
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._enableHandlers = function() {
+	console.info('_enableHandlers');
+	var self = this,
+		fields = this.config.fields,
+		currentField = null;
+		
+	// end of vars
+
+	var validateOnBlur = function validateOnBlur( that ) {
+			var result = {},
+				findedField = self._findFieldByNode( that );
+			// end of vars
+
+			if ( findedField.finded ) {
+				result = self._validateField(findedField.field);
+
+				if ( result.hasError ) {
+					self._markFieldError(that, result.errorMsg);
+				}
+			}
+			else {
+				console.log('поле не найдено или тип валидации не существует, хандлер нужно убрать');
+				that.unbind('blur', validateOnBlur);
+			}
+
+			return false;
+		},
+
+		blurHandler = function blurHandler( ) {
+			var that = $(this),
+				timeout_id = null;
+			// end of vars
+			
+			clearTimeout(timeout_id);
+			timeout_id = window.setTimeout(function(){
+				validateOnBlur(that);
+			}, 5);
+		}
+	// end of functions
+
+	for (var i = fields.length - 1; i >= 0; i--) {
+		currentField = fields[i];
+
+		if ( currentField.validateOnChange ) {
+			if ( self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] ) {
+				console.log('уже вешали');
+				continue;
+			}
+
+			currentField.fieldNode.bind('blur', blurHandler);
+			self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] = true;
+		}
+	}
+
+	console.log(self);
+};
+
+/**
+ * Поиск поля
+ * 
+ * @param	{Object}	nodeToFind		Ссылка на jQuery объект поля которое нужно найти
+ * @return	{Object}    Object			Объект с параметрами найденой ноды
+ * @return	{Boolean}	Object.finded	Было ли поле найдено
+ * @return	{Object}	Object.field	Объект поля из конфига
+ * @return	{Number}	Object.index	Порядковый номер поля
+ *
+ * @this	{FormValidator}
+ * @private
+ */
+FormValidator.prototype._findFieldByNode = function( nodeToFind ) {
+	var fields = this.config.fields;
+
+	for ( var i = fields.length - 1; i >= 0; i-- ) {
+		if ( fields[i].fieldNode.get(0) === nodeToFind.get(0) ) {
+			return {
+				finded: true,
+				field: fields[i],
+				index: i
+			};
+		}
+	}
+
 	return {
-		'update': update
+		finded: false
 	};
 };
 
 
+
 /**
- * Инициализация BlackBox.
- * Получение данных о корзине и пользователе с сервера.
- *
- * @author	Zaytsev Alexandr
- * @this	{BlackBox}
+ * ============ PUBLIC METHODS ===================
  */
-BlackBox.prototype.init = function() {
-	var self = this;
 
-		/**
-		 * Обработчик Action присланных с сервера
-		 * 
-		 * @param	{Object} action Список действий которые необходимо выполнить
-		 * @private
-		 */
-	var startAction = function startAction( action ) {
-			if ( action.subscribe !== undefined ) {
-				$("body").trigger("showsubscribe", [action.subscribe]);
-			}
-			if ( action.cartButton !== undefined ) {
-				$("body").trigger("markcartbutton", [action.cartButton]);
-				$("body").trigger("updatespinner", [action.cartButton]);
-			}
-		},
 
-		/**
-		 * Обработчик данных о корзине и пользователе
-		 * 
-		 * @param	{Object} data
-		 * @private
-		 */ 
-		parseUserInfo = function parseUserInfo( data ) {
-			var userInfo = data.user,
-				cartInfo = data.cart,
-				actionInfo = data.action,
-				nowBasket = {};
-			//end of vars
-			
-			if (data.success !== true) {
-				return false;
-			}
+/**
+ * Запуск валидации полей
+ *
+ * @param	{Object}	callbacks				Объект со ссылками на функции обратных вызовов
+ * @param	{Function}	callbacks.onInvalid		Функция обратного вызова, если поля не прошли валидацию. В функцию передается массив объектов ошибок.
+ * @param	{Function}	callbacks.onValid		Функция обратного вызова, если поля прошли валидацию
+ *
+ * @this	{FormValidator}
+ * @public
+ */
+FormValidator.prototype.validate = function( callbacks ) {
+	var self = this,
+		fields = this.config.fields,
+		i = 0,
+		errors = [],
+		result = {};
+	// end of vars	
+	
+	for ( i = fields.length - 1; i >= 0; i-- ) { // перебираем поля из конфига
+		result = self._validateField(fields[i]);
 
-			self.user().update(userInfo.name);
+		console.log(result);
 
-			if ( cartInfo.quantity !== 0 ) {
-				nowBasket = {
-					cartQ: cartInfo.quantity,
-					cartSum: cartInfo.sum
-				};
-				self.basket().update(nowBasket);
-			}
+		if ( result.hasError ) {
+			self._markFieldError(fields[i].fieldNode, result.errorMsg);
+			errors.push({
+				fieldNode: fields[i].fieldNode,
+				errorMsg: result.errorMsg
+			});
+		}
+		else {
+			console.log('нет ошибки в поле ');
+			console.log(fields[i].fieldNode);
+			self._unmarkFieldError(fields[i].fieldNode);
+		}
+	}
 
-			if ( actionInfo !== undefined ) {
-				startAction(actionInfo);
-			}
-		};
-	//end of functions
-
-	$.get(self.updUrl, parseUserInfo);
+	if ( errors.length ) {
+		callbacks.onInvalid(errors);
+	}
+	else {
+		callbacks.onValid();
+	}
 };
 
+/**
+ * Получить тип валидации для поля
+ *
+ * @param	{Object}			fieldToFind		Ссылка на jQuery объект поля для которого нужно получить параметры валидации
+ * 
+ * @return	{Object|Boolean}					Возвращает или конфигурацию валидации для поля, или false
+ * 
+ * @this	{FormValidator}
+ * @public
+ */
+FormValidator.prototype.getValidate = function( fieldToFind ) {
+	var findedField = this._findFieldByNode(fieldToFind);
 
-(function( global ) {
-	var pageConfig = $('#page-config').data('value');
-	
-	/**
-	 * Создание и иницилизация объекта для работы с корзиной и данными пользователя
-	 * @type	{BlackBox}
-	 */
-	global.blackBox = new BlackBox(pageConfig.userUrl, $('.bBlackBox__eInner'));
-	global.blackBox.init();
-}(this));
+	if ( findedField.finded ) {
+		return findedField.field;
+	}
+
+	return false;
+};
+
+/**
+ * Установить новый тип валидации для поля. Если поле не найдено, создает новое с указанными параметрами.
+ *
+ * @param	{Object}	fieldNodeToCange					Ссылка на jQuery объект поля для которого нужно изменить параметры валидации
+ * @param	{Object}	paramsToChange						Новые свойства валидации поля
+ * @param	{String}	paramsToChange.validBy				Тип валидации поля
+ * @param	{Boolean}	paramsToChange.require				Является ли поле обязательным к заполению
+ * @param	{String}	paramsToChange.customErr			Сообщение об ошибке, если поле не прошло валидацию
+ * @param	{Boolean}	paramsToChange.validateOnChange		Нужно ли валидировать поле при его изменении
+ *
+ * @this	{FormValidator}
+ * @public
+ */
+FormValidator.prototype.setValidate = function( fieldNodeToCange, paramsToChange ) {
+	var findedField = this._findFieldByNode(fieldNodeToCange),
+		addindField = null;
+
+	if ( findedField.finded ) {
+		addindField = $.extend(
+						{},
+						findedField.field,
+						paramsToChange );
+		this.config.fields.splice(findedField.index, 1);
+
+	}
+	else {
+		paramsToChange.fieldNode = fieldNodeToCange;
+		addindField = paramsToChange;
+	}
+
+	this.addFieldToValidate(addindField);
+};
+
+/**
+ * Удалить поле для валидации
+ * 
+ * @param	{Object}	fieldNodeToRemove	Ссылка на jQuery объект поля которое нужно удалить из списка валидации
+ *
+ * @return	{Boolean}						Был ли удален объект из массива полей для валидации
+ *
+ * @this	{FormValidator}
+ * @public
+ */
+FormValidator.prototype.removeFieldToValidate = function( fieldNodeToRemove ) {
+	var findedField = this._findFieldByNode(fieldNodeToRemove);
+
+	if ( findedField.finded ) {
+		this.config.fields.splice(findedField.index, 1);
+
+		return true;
+	}
+
+	return false;
+};
+
+/**
+ * Добавить поле для валидации
+ * 
+ * @param	{Object}	field					Объект поля для валидации
+ * @param	{Object}	field.fieldNode			Ссылка на jQuery объект поля
+ * @param	{String}	field.validBy			Тип валидации поля
+ * @param	{Boolean}	field.require			Является ли поле обязательным к заполению
+ * @param	{String}	field.customErr			Сообщение об ошибке, если поле не прошло валидацию
+ * @param	{Boolean}	field.validateOnChange	Нужно ли валидировать поле при его изменении
+ *
+ * @this	{FormValidator}
+ * @public
+ */
+FormValidator.prototype.addFieldToValidate = function( field ) {
+	this.config.fields.push(field);
+	this._enableHandlers();
+};
  
  
 /** 
@@ -1994,11 +2584,11 @@ BlackBox.prototype.init = function() {
  */
 var UpdateUrlString = function(key, value) {
 	var url = this.toString();
-	var re = new RegExp("([?|&])" + key + "=.*?(&|#|$)(.*)", "gi");
+	var re = new RegExp('([?|&])' + key + '=.*?(&|#|$)(.*)', 'gi');
 
 	if (re.test(url)) {
 		if (typeof value !== 'undefined' && value !== null){
-			return url.replace(re, '$1' + key + "=" + value + '$2$3');
+			return url.replace(re, '$1' + key + '=' + value + '$2$3');
 		}
 		else {
 			return url.replace(re, '$1$3').replace(/(&|\?)$/, '');
@@ -2020,6 +2610,154 @@ var UpdateUrlString = function(key, value) {
 	}
 };
 String.prototype.addParameterToUrl = UpdateUrlString;
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Блокер экрана
+ *
+ * @requires jQuery, jQuery.lightbox_me, ENTER.utils
+ *
+ * @author	Zaytsev Alexandr
+ *
+ * @param	{Object}		noti		Объект jQuery блокера экрана
+ * @param	{Function}		block		Функция блокировки экрана. На вход принимает текст который нужно отобразить в окошке блокера
+ * @param	{Function}		unblock		Функция разблокировки экрана. Объект окна блокера удаляется.
+ */
+;(function( ENTER ) {
+	var utils = ENTER.utils;
+	
+	utils.blockScreen = {
+		noti: null,
+		block: function( text ) {
+			var self = this;
+
+			console.warn('block screen');
+
+			if ( self.noti ) {
+				self.unblock();
+			}
+
+			self.noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>');
+			self.noti.appendTo('body');
+
+			self.noti.lightbox_me({
+				centered:true,
+				closeClick:false,
+				closeEsc:false,
+				onClose: function() {
+					self.noti.remove();
+				}
+			});
+		},
+
+		unblock: function() {
+			if ( this.noti ) {
+				console.warn('unblock screen');
+				
+				this.noti.trigger('close');
+			}
+		}
+	};
+}(window.ENTER));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * IE indexOf fix
+ */
+if ( !Array.prototype.indexOf ) {
+	Array.prototype.indexOf = function(elt /*, from*/) {
+		var len = this.length >>> 0,
+			from = Number(arguments[1]) || 0;
+		// end of vars
+		
+		from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+
+		if ( from < 0 ) {
+			from += len;
+		}
+
+		for ( ; from < len; from++ ) {
+			if ( from in this && this[from] === elt ) {
+					return from;
+			}
+		}
+
+		return -1;
+	};
+}
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * Пакетная отправка данных на сервер
+ *
+ * @author	Zaytsev Alexandr
+ */
+;(function( global ) {
+	var pageConfig = global.ENTER.config.pageConfig,
+		utils = global.ENTER.utils;
+	// end of vars
+
+	utils.packageReq = function packageReq( reqArray ) {
+		console.info('Пакетный запрос');
+
+		var dataToSend = {},
+			callbacks = [],
+
+			i, len;
+		// end of vars
+		
+		dataToSend.actions = [];
+		
+		var resHandler = function resHandler( res ) {
+			console.info('Обработка ответа пакетого запроса');
+
+			for ( i = 0, len = res.length - 1; i <= len; i++ ) {
+				callbacks[i](res[i]);
+			}
+		};
+
+		for ( i = 0, len = reqArray.length - 1; i <= len; i++ ) {
+			console.log(i);
+
+			// Обход странного бага с IE
+			if ( !reqArray[i] || !reqArray[i].url ) {
+				console.info('continue');
+
+				continue;
+			}
+
+			dataToSend.actions.push({
+				url: reqArray[i].url,
+				method: reqArray[i].type,
+				data: reqArray[i].data || null
+			});
+
+			callbacks[i] = reqArray[i].callback;
+		}
+
+		$.ajax({
+			url: pageConfig.routeUrl,
+			type: 'POST',
+			data: dataToSend,
+			success: resHandler
+		});
+	};
+}(this));
  
  
 /** 
@@ -2083,7 +2821,7 @@ String.prototype.addParameterToUrl = UpdateUrlString;
                 width: '+=' + sbWidthDiff,
                 height: '+=' + sbHeightDiff
             }, 250, function() {
-                window.docCookies.removeItem( cookieNameCollapsed );
+                window.docCookies.removeItem( cookieNameCollapsed, '/' );
                 $(toggle).html('Скрыть опрос');
                 $('.surveyBox__content').show();
                 $('.surveyBox').addClass('expanded');
@@ -2179,3 +2917,33 @@ String.prototype.addParameterToUrl = UpdateUrlString;
         }
     });
 }());
+
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+;(function (ENTER) {
+    var utils = ENTER.utils;
+
+
+    /**
+     * Возвращает колчество свойств в объекте.
+     *
+     * @param       {object}        obj
+     * @returns     {number}        count
+     */
+    utils.objLen = function objLen(obj) {
+        var len = 0, p;
+        for ( p in obj ) {
+            if ( obj.hasOwnProperty(p) ) {
+                len++;
+            }
+        }
+        return len;
+    }
+
+
+}(window.ENTER));

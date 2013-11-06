@@ -8,6 +8,8 @@
  * @var $itemsInSlider          int
  * @var $productVideosByProduct array
  */
+
+if (!isset($isAddInfo)) $isAddInfo = true;
 ?>
 
 <?
@@ -32,9 +34,9 @@ if (\App::request()->get('shop')) {
 <!-- Carousel -->
 <div class="carouseltitle">
     <div class="rubrictitle">
-        <h2>
+        <div class="h2">
             <a href="<?= $categoryLink ?>" class="underline"><?= $category->getName()?></a>
-        </h2>
+        </div>
     </div>
 
     <? if ($pager->count() > 3) { ?>
@@ -58,6 +60,7 @@ if (\App::request()->get('shop')) {
             'product'       => $product,
             'isHidden'      => $i > $itemsInSlider,
             'productVideos' => isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [],
+            'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : []
         )) ?>
     <? } ?>
 </div>
