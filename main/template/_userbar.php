@@ -45,16 +45,14 @@
         </ul>
     </div>
 
-    <div class="fixedTopBar__cart"><!-- Добавляем класс-модификатор mEmpty, если карзина пуста -->
-        <a class="fixedTopBar__cartLink" href="">
-            <span class="fixedTopBar__cartTitle">Корзина</span> 
-            <strong class="fixedTopBar__cartQuan">5</strong>
-            <span class="fixedTopBar__cartPrice">74 987 <span class="rubl">p</span></span>
+    <div class="fixedTopBar__cart mEmpty">
+        <a class="fixedTopBar__cartLink" href="/cart">
+            <span class="fixedTopBar__cartTitle">Корзина</span>
         </a>
     </div>
 
-    <div class="fixedTopBar__logIn"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
-        <a href="" class="fixedTopBar__logInLink">Бурлакова Таня Владимировна</a>
+    <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
+        <a href="/login" class="fixedTopBar__logInLink bAuthLink">Войти</a>
         <span class="transGrad"></span>
     </div>
 </div>
@@ -107,6 +105,23 @@
 <!--/ Фиксированный вспомогательный блок для карточки товара -->
 */?>
 
+<script type="text/html" id="userbar_cart_tmpl">
+    <a class="fixedTopBar__cartLink" href="/cart">
+        <span class="fixedTopBar__cartTitle">Корзина</span> 
+        <strong class="fixedTopBar__cartQuan"><%=quantity%></strong>
+        <span class="fixedTopBar__cartPrice"><%=sum%> <span class="rubl">p</span></span>
+    </a>
+</script>
+
+<script type="text/html" id="userbar_user_tmpl">
+    <a href="<%=link%>" class="fixedTopBar__logInLink"><%=name%></a>
+    <span class="transGrad"></span>
+</script>
+
+
+
+
+<!-- old notificaton -->
 <script type="text/html" id="blackbox_basketshow_tmpl">
     <div class="bBlackBox__eFlyboxInner">
         <div class="font16 pb20">Только что был добавлен в корзину:</div>

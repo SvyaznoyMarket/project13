@@ -177,8 +177,8 @@ window.ANALYTICS = {
         var vars = $('#ActionPayJS').data('vars');
         if ( vars ) {
             if ( vars.extraData ) {
-                if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
-                    vars.basketProducts = ENTER.config.cartProducts;
+                if ( true == vars.extraData.cartProducts && ENTER.config.clientCart.products ) {
+                    vars.basketProducts = ENTER.config.clientCart.products;
                 }
                 delete vars.extraData;
             }

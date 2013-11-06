@@ -314,6 +314,7 @@ $.ajaxSetup({
  * @requires	jQuery, ENTER.utils.BlackBox
  */
 ;(function() {
+	var body = $('body');
 
 	/**
 	 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
@@ -335,8 +336,8 @@ $.ajaxSetup({
 			button.removeClass('mLoading');
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
-			$('body').trigger('addtocart', [data]);
-			$('body').trigger('updatespinner',[groupBtn]);
+			body.trigger('addtocart', [data]);
+			body.trigger('updatespinner',[groupBtn]);
 		};
 
 		$.get(url, addToCart);
@@ -385,9 +386,9 @@ $.ajaxSetup({
 	};
 	
 	$(document).ready(function() {
-		$('body').bind('markcartbutton', markCartButton);
-		$('body').on('click', '.jsBuyButton', buyButtonHandler);
-		$('body').on('buy', '.jsBuyButton', buy);
+		body.bind('markcartbutton', markCartButton);
+		body.on('click', '.jsBuyButton', buyButtonHandler);
+		body.on('buy', '.jsBuyButton', buy);
 	});
 }());
 
@@ -403,14 +404,15 @@ $.ajaxSetup({
 (function( global ) {
 
 	var utils = global.ENTER.utils,
-		blackBox = utils.blackBox;
+		blackBox = utils.blackBox,
+		body = $('body');
 	// end of vars
 	
 
 		/**
 		 * KISS Аналитика для добавления в корзину
 		 */
-	var kissAnalytics = function kissAnalytics( data ) {
+	var kissAnalytics = function kissAnalytics( event, data ) {
 			var productData = data.product,
 				serviceData = data.service,
 				warrantyData = data.warranty,
@@ -473,7 +475,7 @@ $.ajaxSetup({
 		/**
 		 * Google Analytics аналитика добавления в корзину
 		 */
-		googleAnalytics = function googleAnalytics( data ) {
+		googleAnalytics = function googleAnalytics( event, data ) {
 			var productData = data.product;
 
 			if ( productData ) {
@@ -486,7 +488,7 @@ $.ajaxSetup({
 		/**
 		 * myThings аналитика добавления в корзину
 		 */
-		myThingsAnalytics = function myThingsAnalytics( data ) {
+		myThingsAnalytics = function myThingsAnalytics( event, data ) {
 			var productData = data.product;
 
 			if ( typeof MyThings !== 'undefined' ) {
@@ -501,7 +503,7 @@ $.ajaxSetup({
 		/**
 		 * Soloway аналитика добавления в корзину
 		 */
-		adAdriver = function adAdriver( data ) {
+		adAdriver = function adAdriver( event, data ) {
 			var productData = data.product,
 				offer_id = productData.id,
 				category_id =  ( productData.category ) ? productData.category[productData.category.length - 1].id : 0;
@@ -530,7 +532,7 @@ $.ajaxSetup({
 		/**
 		 * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
 		 */
-		addToLiveTex = function addToLiveTex(data) {
+		addToLiveTex = function addToLiveTex( event, data ) {
 			if ( typeof LiveTex.addToCart  === 'function' ) {
 				try {
 					LiveTex.addToCart(data.product);
@@ -551,7 +553,7 @@ $.ajaxSetup({
 		/**
 		 * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
 		 */
-		addToRetailRocket = function addToRetailRocket( data ) {
+		addToRetailRocket = function addToRetailRocket( event, data ) {
 			var product = data.product,
 				dataToLog;
 			// end of vars
@@ -580,28 +582,6 @@ $.ajaxSetup({
 		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
 		 */
 		buyProcessing = function buyProcessing( event, data ) {
-			var basket = data.cart,
-				product = data.product,
-				tmpitem = {
-					'id': product.id,
-					'title': product.name,
-					'price' : window.printPrice(product.price),
-					'priceInt' : product.price,
-					'imgSrc': product.img,
-					'productLink': product.link,
-					'totalQuan': basket.full_quantity,
-					'totalSum': window.printPrice(basket.full_price),
-					'linkToOrder': basket.link
-				};
-			// end of vars
-
-
-			kissAnalytics(data);
-			googleAnalytics(data);
-			myThingsAnalytics(data);
-			adAdriver(data);
-			addToRetailRocket(data);
-			addToLiveTex(data);
 
 			if ( data.redirect ) {
 				console.warn('redirect');
@@ -609,14 +589,20 @@ $.ajaxSetup({
 				document.location.href = data.redirect;
 			}
 			else if ( blackBox ) {
-				blackBox.basket().add( tmpitem );
+				blackBox.basket().add( data );
 			}
 		};
 	//end of vars
 
-	$(document).ready(function() {
-		$('body').bind('addtocart', buyProcessing);
-	});
+	body.on('addtocart', buyProcessing);
+
+	// analytics
+	body.on('addtocart', kissAnalytics);
+	body.on('addtocart', googleAnalytics);
+	body.on('addtocart', myThingsAnalytics);
+	body.on('addtocart', adAdriver);
+	body.on('addtocart', addToRetailRocket);
+	body.on('addtocart', addToLiveTex);
 }(this));
  
  
@@ -1099,23 +1085,29 @@ $(document).ready(function(){
 
         var t = $(this), box, datap, toKISS = false,
             datac = $('#_categoryData').data('category');
+        // end of vars
 
         box = t.parents('div.goodsbox__inner');
-        if ( !box.length ) box = t.parents('div.goodsboxlink');
+
+        if ( !box.length ) {
+        	box = t.parents('div.goodsboxlink');
+        }
+
         datap = box.length ? box.data('add') : false;
 
-        if (datap && datac)
-        toKISS = {
-            'Category Results Clicked Category Type': datac.type,
-            'Category Results Clicked Category Level': datac.level,
-            'Category Results Clicked Parent category': datac.parent_category,
-            'Category Results Clicked Category name': datac.category,
-            'Category Results Clicked Category ID': datac.id,
-            'Category Results Clicked SKU': datap.article,
-            'Category Results Clicked Product Name': datap.name,
-            'Category Results Clicked Page Number': datap.page,
-            'Category Results Clicked Product Position': datap.position
-        };
+        if ( datap && datac ) {
+            toKISS = {
+                'Category Results Clicked Category Type': datac.type,
+                'Category Results Clicked Category Level': datac.level,
+                'Category Results Clicked Parent category': datac.parent_category,
+                'Category Results Clicked Category name': datac.category,
+                'Category Results Clicked Category ID': datac.id,
+                'Category Results Clicked SKU': datap.article,
+                'Category Results Clicked Product Name': datap.name,
+                'Category Results Clicked Page Number': datap.page,
+                'Category Results Clicked Product Position': datap.position
+            };
+        }
 
         /** For Debug:  **/
         /*
@@ -1127,7 +1119,7 @@ $(document).ready(function(){
         */
         /** **/
 
-        if (toKISS && typeof(_kmq) !== 'undefined') {
+        if ( toKISS && typeof _kmq !== 'undefined' ) {
             _kmq.push(['record', 'Category Results Clicked', toKISS]);
         }
 
@@ -3677,3 +3669,88 @@ $(document).ready(function() {
 	$(window).scroll(pageScrolling);
 	upper.bind('click',goUp);
 }());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * White floating user bar
+ *
+ * 
+ * @requires jQuery, ENTER.utils, ENTER.config
+ * @author	Zaytsev Alexandr
+ *
+ * @param	{Object}	ENTER	Enter namespace
+ */
+;(function( ENTER ) {
+	var config = ENTER.config,
+		userUrl = config.pageConfig.userUrl,
+		utils = ENTER.utils,
+
+		userBar = $('.fixedTopBar'),
+		body = $('body');
+	// end of vars
+	
+
+	var checkScroll = function checkScroll() {
+
+		},
+
+		/**
+		 * Обновление данных пользователя
+		 *
+		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	data	Данные пользователя
+		 */
+		updateUserInfo = function updateUserInfo( event, data ) {
+			console.info('userbar::updateUserInfo');
+			console.log(data);
+
+			var userWrap = userBar.find('.fixedTopBar__logIn'),
+				userTmpl;
+			// end of vars
+
+			if ( !(data && data.name && data.link ) ) {
+				return;
+			}
+
+			userWrap.removeClass('mLogin');
+			userTmpl = tmpl('userbar_user_tmpl', data);
+			userWrap.html(userTmpl);
+		},
+
+		/**
+		 * Обновление данных о корзине
+		 * 
+		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	data	Данные корзины
+		 */
+		updateBasketInfo = function updateBasketInfo( event, data ) {
+			console.info('userbar::updateBasketInfo');
+			console.log(data);
+
+			var cartWrap = userBar.find('.fixedTopBar__cart'),
+				cartTmpl;
+			// end of vars
+
+			if ( !(data && data.quantity && data.sum ) ) {
+				return;
+			}
+
+			data.sum = printPrice(data.sum);
+
+			cartWrap.removeClass('mEmpty');
+			cartTmpl = tmpl('userbar_cart_tmpl', data);
+			cartWrap.html(cartTmpl);
+		};
+	// end of functions
+
+	
+	body.on('userLogged', updateUserInfo);
+	body.on('basketUpdate', updateBasketInfo);
+	$(window).on('scroll', checkScroll);
+
+}(window.ENTER));

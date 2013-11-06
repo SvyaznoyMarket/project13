@@ -163,23 +163,29 @@ $(document).ready(function(){
 
         var t = $(this), box, datap, toKISS = false,
             datac = $('#_categoryData').data('category');
+        // end of vars
 
         box = t.parents('div.goodsbox__inner');
-        if ( !box.length ) box = t.parents('div.goodsboxlink');
+
+        if ( !box.length ) {
+        	box = t.parents('div.goodsboxlink');
+        }
+
         datap = box.length ? box.data('add') : false;
 
-        if (datap && datac)
-        toKISS = {
-            'Category Results Clicked Category Type': datac.type,
-            'Category Results Clicked Category Level': datac.level,
-            'Category Results Clicked Parent category': datac.parent_category,
-            'Category Results Clicked Category name': datac.category,
-            'Category Results Clicked Category ID': datac.id,
-            'Category Results Clicked SKU': datap.article,
-            'Category Results Clicked Product Name': datap.name,
-            'Category Results Clicked Page Number': datap.page,
-            'Category Results Clicked Product Position': datap.position
-        };
+        if ( datap && datac ) {
+            toKISS = {
+                'Category Results Clicked Category Type': datac.type,
+                'Category Results Clicked Category Level': datac.level,
+                'Category Results Clicked Parent category': datac.parent_category,
+                'Category Results Clicked Category name': datac.category,
+                'Category Results Clicked Category ID': datac.id,
+                'Category Results Clicked SKU': datap.article,
+                'Category Results Clicked Product Name': datap.name,
+                'Category Results Clicked Page Number': datap.page,
+                'Category Results Clicked Product Position': datap.position
+            };
+        }
 
         /** For Debug:  **/
         /*
@@ -191,7 +197,7 @@ $(document).ready(function(){
         */
         /** **/
 
-        if (toKISS && typeof(_kmq) !== 'undefined') {
+        if ( toKISS && typeof _kmq !== 'undefined' ) {
             _kmq.push(['record', 'Category Results Clicked', toKISS]);
         }
 
