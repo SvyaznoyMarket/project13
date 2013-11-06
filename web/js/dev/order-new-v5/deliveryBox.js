@@ -74,7 +74,7 @@
 			self.pointList = [];
 
 			// Название пункта — магазина, постамата или тп
-			self.point_name = '';
+			self.point_name = ''; // нужно ли это поле?
 
 
 			// Текст на кнопки смены точки доставки
@@ -113,14 +113,15 @@
 				return;
 			}
 
-			if ( 'pickpoint' === state ) {
+			/*if ( 'pickpoint' === state ) {
 				// Получим и сохраним в названии пункта название выбранного пикпойнта:
-				for ( i = self.pointList.length - 1; i >= 0; i-- ) {
+				/*for ( i = self.pointList.length - 1; i >= 0; i-- ) {
 					if ( choosenPointForBox == self.pointList[i].id ) {
 						self.point_name = self.pointList[i].point_name;
 					}
-				}
-			}
+				}* ///old
+				// название и так храниться в choosPoint
+			}*/
 
 			window.OrderModel.deliveryBoxes.push(self);
 		}

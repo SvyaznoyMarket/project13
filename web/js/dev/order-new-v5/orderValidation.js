@@ -257,6 +257,7 @@
 			// end of vars
 			
 			global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
+			dataToSend = orderForm.serializeArray();
 
 			/**
 			 * Перебираем блоки доставки
@@ -277,7 +278,6 @@
 						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : ''
 					],
 					point_id: choosPoint.id,
-                    point_name: currentDeliveryBox.point_name,
 					products : []
 				};
 
@@ -287,17 +287,25 @@
                 if ( 'pickpoint' === currentDeliveryBox.state ) {
                     console.log('Is PickPoint!');
 
-                    // Передаём корректный id постамата, не id точки, а номер постамата
+                    // Передаём на сервер корректный id постамата, не id точки, а номер постамата
                     tmpPart.point_id = choosPoint['number'];
 
                     // В качестве адреса доставки необходимо передавать адрес постамата,
                     // так как поля адреса при заказе через pickpoint скрыты
-                    orderForm.find('#order_address_street').val( choosPoint['street'] );
+                    /*orderForm.find('#order_address_street').val( choosPoint['street'] );
                     orderForm.find('#order_address_building').val( choosPoint['house'] );
                     orderForm.find('#order_address_number').val('');
                     orderForm.find('#order_address_apartment').val('');
-                    orderForm.find('#order_address_floor').val('');
-                }
+                    orderForm.find('#order_address_floor').val('');*/ // old
+
+					/* Передаём сразу без лишней сериализации и действий с формами
+					 * и не в dataToSend, а в массив parts, отдельным полем,
+					 * т.к. может быть разный адрес у разных пикпойнтов
+					 * */
+					// parts.push( {pointAddress: choosPoint['street'] + ' ' + choosPoint['house']} );
+					tmpPart.point_address = choosPoint['street'] + ' ' + choosPoint['house'];
+					tmpPart.point_name = choosPoint.point_name; // нужно?
+				}
 
 				for ( j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {
 					tmpPart.products.push(currentDeliveryBox.products[j].id);
@@ -309,7 +317,6 @@
 				parts.push(tmpPart);
 			}
 
-			dataToSend = orderForm.serializeArray();
 			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
 			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
 

@@ -258,9 +258,12 @@ class CreateAction {
                 }
             }
 
-            if (in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_PICKPOINT])) {
+            $isPickpoint = ( $deliveryType->getToken() === \Model\DeliveryType\Entity::TYPE_PICKPOINT ) ? true :false;
+
+            if ( $isPickpoint ) {
                 $orderData['id_pickpoint'] = $orderPart->getPointId();
-                $orderData['name_pickpoint'] = $orderPart->getPointName();
+                $orderData['name_pickpoint'] = $orderPart->getPointName(); // Нужно ли это поле?
+                $orderData['point_address'] = $orderPart->getPointAddress();
             }
 
             // подарочный сертификат
@@ -269,9 +272,6 @@ class CreateAction {
                 $orderData['certificate_pin'] = $form->getCertificatePin();
             }
 
-
-            $isPickpoint = ( $deliveryType->getToken() === \Model\DeliveryType\Entity::TYPE_PICKPOINT )
-                ? true :false;
 
             // товары
             foreach ($orderPart->getProductIds() as $productId) {
@@ -362,6 +362,8 @@ class CreateAction {
         }
 
         try {
+            file_put_contents('t_param', print_r($params,1));
+            file_put_contents('t_data', print_r($data,1));
             $result = \App::coreClientV2()->query('order/create-packet', $params, $data, \App::config()->coreV2['hugeTimeout']);
         } catch(\Exception $e) {
             if (!in_array($e->getCode(), [705, 708, 735, 800])) {
