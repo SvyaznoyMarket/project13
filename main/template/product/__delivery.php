@@ -54,6 +54,8 @@ return function (
 <script id="widget_delivery_self" type="text/html">
     <% if (price === 0) { %>
         <span><span class="bJustText">Самовывоз</span> <strong>бесплатно</strong></span>
+    <% } else if ( isNaN(price) ) { %>
+        <span><span class="bJustText">Самовывоз</span> <strong><%=price%></strong> </span>
     <% } else { %>
         <span><span class="bJustText">Самовывоз</span> <strong><%=price%></strong> <span class="rubl">p</span></span>
     <% } %>
@@ -73,8 +75,9 @@ return function (
 </div>
 
 <ul class="bDelivery mLoader" data-value="<?= $helper->json([
-    'url'      => $product->getIsBuyable() ? $helper->url('product.delivery') : '',
-    'delivery' => $deliveryData,
+    'url'       => $helper->url('product.delivery'), // загружаем всегда (непокупабельный товар может иметь пикпойнты)
+    'delivery'  => $deliveryData,
+    'loadShops' => $product->getIsBuyable() ? false : true, // загружаем список магазинов, если товар непокупабельный
 ]) ?>">
     <li class="bDelivery__eItem mDeliveryPrice">
     </li>
