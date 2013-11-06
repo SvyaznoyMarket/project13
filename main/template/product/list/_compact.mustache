@@ -1,11 +1,8 @@
 <!-- Листинг товаров -->
-<!--<li class="bListingItem mBannerItem"><div class="adfoxWrapper" id="adfox215"></div></li>-->
-<!-- место для баннеры 215x258, при этом родительский элемент имеет ширину width: 240px; -->
 {{#products}}
 <!-- Элемент листинга/продукт -->
-
     {{#isBanner}}
-      <li class="bListingItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;"><div class="adfoxWrapper" id="adfox215"></div></li>
+      <li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;"><div class="adfoxWrapper" id="adfox215"></div></li>
     {{/isBanner}}
     {{^isBanner}}
     <li class="bListingItem">

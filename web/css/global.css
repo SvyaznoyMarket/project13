@@ -12364,18 +12364,14 @@
     width: 210px;
     height: 295px;
   }
+  .bListing .bListingItem.mBannerItem {
+    margin: 30px 15px 30px 10px;
+    height: 265px;
+    width: 215px;
+  }
   .bListing .bListingItem.mBanner2Item {
     margin-right: 0;
     width: 0;
-  }
-  .bListing .bListingItem.mBannerItem {
-    margin-right: 0;
-    padding-top: 30px;
-    width: auto;
-    height: 265px;
-  }
-  .bListing .bListingItem.mBannerItem .adfoxWrapper div {
-    margin-right: 25px;
   }
   .bListing .bListingItem__eInner {
     position: relative;
