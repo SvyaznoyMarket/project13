@@ -1016,6 +1016,8 @@
 			catalog.infScroll.loading = false;
 
 			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
+
+			catalog.infScroll.checkScroll();
 			$(window).on('scroll', catalog.infScroll.checkScroll);
 
 			console.info(hasPaging);
