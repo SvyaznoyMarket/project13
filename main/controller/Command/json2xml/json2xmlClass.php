@@ -14,16 +14,27 @@ class json2xml
 {
     private $log_file_name = 'json2xml_log.txt';
     private $log_file;
-    private $log_format //= 'console'
-    ;
-
+    private $log_format = 'console';
     private $coreUrl= 'http://tester.core.ent3.ru/v2/';
 
 
-    function __construct() {
-        //define("MAX_IERATIONS", -1); // for all
-        define("MAX_IERATIONS", 30); // for test
-        if ( file_exists( $this->log_file_name ) ) unlink( $this->log_file_name );
+    function __construct( $config ) {
+        if (!defined("MAX_IERATIONS")){ // Максимальное кол-во строчек фалйа, которое будет прочитано (проходов цикла)
+            define("MAX_IERATIONS", -1);  // При отрицательном значении обходит все строки файла
+        }
+
+
+        // Config Begin
+        $this->input_json_file = $config['input_json_file'];
+        $this->output_xml_file = $config['output_xml_file'];
+
+        $this->coreUrl = $config['coreUrl'] ?: $this->coreUrl;
+        $this->log_format = $config['log_format'] ?: $this->log_format;
+        $this->log_file_name = $config['log_file_name'] ?: $this->log_file_name;
+        // /Config End
+
+
+        if ( file_exists( $this->log_file_name ) ) unlink( $this->log_file_name ); // Delete log file
         $this->log_file = fopen($this->log_file_name, "w");
     }
 
@@ -81,22 +92,31 @@ class json2xml
         $time_start = time();
         $this->echlog( 'Время начала: ' . $time_start );
 
-        // config
-        $json_path = '../../../cms.enter.ru/';
-        $json_filename = "product-export.json";
-        $xml_filename = 'market.xml';
 
-        $json_filename = $json_path . $json_filename;
+
+        // config //old
+        //$json_path = '../../../cms.enter.ru/';
+        //$json_filename = "product-export.json";
+        //$xml_filename = 'market.xml';
+        //$json_filename = $json_path . $json_filename;
+
+
+        // config!
+        $json_filename  = $this->input_json_file;
+        $xml_filename   = $this->output_xml_file;
+
 
 
         if (file_exists($json_filename)) {
             $this->echlog('Файл ' . $json_filename .' открыт');
         } else {
             $this->echlog('Файл ' . $json_filename . ' не найден');
+            $this->echlog('Завершаем выполнение');
+            return false;
         }
+
         $json_file = fopen($json_filename, "r");
         $file_size = filesize($json_filename);
-
 
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8" ?><!DOCTYPE yml_catalog SYSTEM "shops.dtd"><yml_catalog></yml_catalog>');
         $shop = $xml->addChild('shop');
@@ -190,7 +210,7 @@ class json2xml
 
 
 
-                $progressbar = ' Readed ' . $readed . ' from '. $file_size. '; '. round( ($readed/$file_size)*100 , 2 ) . '%' ;
+                $progressbar = 'Is Readed ' . $readed . ' from '. $file_size. '; '. round( ($readed/$file_size)*100 , 2 ) . '%' ;
 
                 //$this->echlog($json_line); // log // all product-info FROM JSON file
                 //$this->echlog ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
@@ -214,25 +234,30 @@ class json2xml
         } // end while
 
 
-        foreach ( $categories_arr as $cat) {
-            $paretn_id = 0;
-            $arr = explode(',', $cat->path);
+        if ( !empty($categories_arr) && is_array($categories_arr) ) {
+            foreach ( $categories_arr as $cat) {
+                $paretn_id = 0;
+                $arr = explode(',', $cat->path);
 
-            if ( $cat->category_id == end($arr) ) {
-                $paretn_id = prev($arr);
+                if ( $cat->category_id == end($arr) ) {
+                    $paretn_id = prev($arr);
+                }
+
+                $category = $categories->addChild('category', $cat->name);
+                $category->addAttribute('id', $cat->category_id);
+                if ($paretn_id) $category->addAttribute('parent_id', $paretn_id);
+                //$category->addAttribute('url', $cat->category_id); // <-- TODO
             }
-
-            $category = $categories->addChild('category', $cat->name);
-            $category->addAttribute('id', $cat->category_id);
-            if ($paretn_id) $category->addAttribute('parent_id', $paretn_id);
-            //$category->addAttribute('url', $cat->category_id); // <-- TODO
         }
 
 
         // считаем, что дубликатов товаров в исходном файле нет
 
-        fclose($json_file);
-        $this->echlog('Файл ' . $json_filename .' закрыт');
+        if ($json_file) {
+            fclose($json_file);
+            $this->echlog('Файл ' . $json_filename .' закрыт');
+        }
+
 
 
         // Save
