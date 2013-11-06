@@ -74,7 +74,7 @@
 			self.pointList = [];
 
 			// Название пункта — магазина, постамата или тп
-			self.point_name = '';
+			self.point_name = ''; // нужно ли это поле?
 
 
 			// Текст на кнопки смены точки доставки
@@ -113,14 +113,15 @@
 				return;
 			}
 
-			if ( 'pickpoint' === state ) {
+			/*if ( 'pickpoint' === state ) {
 				// Получим и сохраним в названии пункта название выбранного пикпойнта:
-				for ( i = self.pointList.length - 1; i >= 0; i-- ) {
+				/*for ( i = self.pointList.length - 1; i >= 0; i-- ) {
 					if ( choosenPointForBox == self.pointList[i].id ) {
 						self.point_name = self.pointList[i].point_name;
 					}
-				}
-			}
+				}* ///old
+				// название и так храниться в choosPoint
+			}*/
 
 			window.OrderModel.deliveryBoxes.push(self);
 		}
@@ -836,22 +837,22 @@
 		};
 
 
-        /**
-         * Флаг уникальности для типа доставки state.
-         * Например, для типа доставки pickpoint должен быть false (задаётся в РНР-коде на сервере)
-         *
-         * @this	{OrderDictionary}
-         *
-         * @param	    {String}	state	Метод доставки
-         * @returns     {Boolean}
-         */
-        OrderDictionary.prototype.isUniqueDeliveryState = function( state ) {
-            if ( this.deliveryStates.hasOwnProperty(state) ) {
-                var st = this.deliveryStates[state];
-                return st['unique'];
-            }
-            return false;
-        };
+		/**
+		 * Флаг уникальности для типа доставки state.
+		 * Например, для типа доставки pickpoint должен быть false (задаётся в РНР-коде на сервере)
+		 *
+		 * @this        {OrderDictionary}
+		 *
+		 * @param       {String}    state    Метод доставки
+		 * @returns     {Boolean}
+		 */
+		OrderDictionary.prototype.isUniqueDeliveryState = function ( state ) {
+			if ( this.hasDeliveryState(state) ) {
+				var st = this.deliveryStates[state];
+				return st['unique'];
+			}
+			return false;
+		};
 
 		/**
 		 * Есть ли для метода доставки пункты доставки
@@ -862,6 +863,9 @@
 		 * @return	{Boolean}
 		 */
 		OrderDictionary.prototype.hasPointDelivery = function( state ) {
+			if ( !this.hasDeliveryState(state) ) {
+				return false;
+			}
 			return this.pointsByDelivery.hasOwnProperty(state);
 		};
 
@@ -897,11 +901,8 @@
 		 * @return	{Object}				Данные о точке доставки
 		 */
 		OrderDictionary.prototype.getFirstPointByState = function( state ) {
-			var points = this.getAllPointsByState(state), ret = false;
-            if ( points[0] ) {
-                ret = window.ENTER.utils.cloneObject(points[0]);
-            }
-            return ret;
+			var points = this.getAllPointsByState(state);
+			return ( points[0] ) ? ENTER.utils.cloneObject(points[0]) : false;
 		};
 
 		/**
@@ -910,9 +911,13 @@
 		 * @param	{String}	state	Метод доставки
 		 */
 		OrderDictionary.prototype.getAllPointsByState = function( state ) {
-			var pointName = this.pointsByDelivery[state].token,
-                ret = this.orderData[pointName] || false;
-			return ret;
+			if ( !this.hasDeliveryState(state) ) {
+				return false;
+			}
+			var point = this.pointsByDelivery[state],
+				pointName = point ? point.token : false,
+				ret = pointName ? this.orderData[pointName] : false;
+			return ret || false;
 		};
 
 
@@ -1381,6 +1386,7 @@
 			// end of vars
 			
 			global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
+			dataToSend = orderForm.serializeArray();
 
 			/**
 			 * Перебираем блоки доставки
@@ -1401,7 +1407,6 @@
 						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : ''
 					],
 					point_id: choosPoint.id,
-                    point_name: currentDeliveryBox.point_name,
 					products : []
 				};
 
@@ -1411,17 +1416,25 @@
                 if ( 'pickpoint' === currentDeliveryBox.state ) {
                     console.log('Is PickPoint!');
 
-                    // Передаём корректный id постамата, не id точки, а номер постамата
+                    // Передаём на сервер корректный id постамата, не id точки, а номер постамата
                     tmpPart.point_id = choosPoint['number'];
 
                     // В качестве адреса доставки необходимо передавать адрес постамата,
                     // так как поля адреса при заказе через pickpoint скрыты
-                    orderForm.find('#order_address_street').val( choosPoint['street'] );
+                    /*orderForm.find('#order_address_street').val( choosPoint['street'] );
                     orderForm.find('#order_address_building').val( choosPoint['house'] );
                     orderForm.find('#order_address_number').val('');
                     orderForm.find('#order_address_apartment').val('');
-                    orderForm.find('#order_address_floor').val('');
-                }
+                    orderForm.find('#order_address_floor').val('');*/ // old
+
+					/* Передаём сразу без лишней сериализации и действий с формами
+					 * и не в dataToSend, а в массив parts, отдельным полем,
+					 * т.к. может быть разный адрес у разных пикпойнтов
+					 * */
+					// parts.push( {pointAddress: choosPoint['street'] + ' ' + choosPoint['house']} );
+					tmpPart.point_address = choosPoint['street'] + ' ' + choosPoint['house'];
+					tmpPart.point_name = choosPoint.point_name; // нужно?
+				}
 
 				for ( j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {
 					tmpPart.products.push(currentDeliveryBox.products[j].id);
@@ -1433,7 +1446,6 @@
 				parts.push(tmpPart);
 			}
 
-			dataToSend = orderForm.serializeArray();
 			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
 			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
 
