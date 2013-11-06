@@ -74,7 +74,7 @@
 			self.pointList = [];
 
 			// Название пункта — магазина, постамата или тп
-			self.point_name = ''; // нужно ли это поле?
+			//self.point_name = ''; // здесь не нужно это поле здесь (но в ядро передавать нужно)
 
 
 			// Текст на кнопки смены точки доставки
@@ -1433,7 +1433,7 @@
 					 * */
 					// parts.push( {pointAddress: choosPoint['street'] + ' ' + choosPoint['house']} );
 					tmpPart.point_address = choosPoint['street'] + ' ' + choosPoint['house'];
-					tmpPart.point_name = choosPoint.point_name; // нужно?
+					tmpPart.point_name = choosPoint.point_name; // нужно передавать в ядро
 				}
 
 				for ( j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {

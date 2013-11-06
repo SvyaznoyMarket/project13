@@ -262,7 +262,7 @@ class CreateAction {
 
             if ( $isPickpoint ) {
                 $orderData['id_pickpoint'] = $orderPart->getPointId();
-                $orderData['name_pickpoint'] = $orderPart->getPointName(); // Нужно ли это поле?
+                $orderData['name_pickpoint'] = $orderPart->getPointName();
                 $orderData['point_address'] = $orderPart->getPointAddress();
             }
 
@@ -362,8 +362,6 @@ class CreateAction {
         }
 
         try {
-            file_put_contents('t_param', print_r($params,1));
-            file_put_contents('t_data', print_r($data,1));
             $result = \App::coreClientV2()->query('order/create-packet', $params, $data, \App::config()->coreV2['hugeTimeout']);
         } catch(\Exception $e) {
             if (!in_array($e->getCode(), [705, 708, 735, 800])) {
