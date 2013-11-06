@@ -745,6 +745,12 @@ class Action {
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+            $selectedFilter = (new \View\ProductCategory\SelectedFilterAction())->execute(
+                \App::closureTemplating()->getParam('helper'),
+                $productFilter,
+                \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
+            );
+
             return new \Http\JsonResponse([
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -752,11 +758,8 @@ class Action {
                     $productVideosByProduct,
                     !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
                 ),
-                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
-                    $productFilter,
-                    \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
-                ),
+                'selectedFilter' => $selectedFilter,
+                'disabledFilter' => ['values' => isset($selectedFilter['values']) ? $selectedFilter['values'] : []],
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager
