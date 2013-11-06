@@ -224,8 +224,8 @@ class DefaultLayout extends Layout {
             }, function(\Exception $e) use (&$isFailed) {
                 \App::exception()->remove($e);
                 $isFailed = true;
-            }, 5);
-            $client->execute();
+            }, 2);
+            $client->execute(1, 2);
 
             if ($isFailed) {
                 $content = $renderer->render('__mainMenu', [
