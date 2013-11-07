@@ -1432,7 +1432,10 @@
 					 * т.к. может быть разный адрес у разных пикпойнтов
 					 * */
 					// parts.push( {pointAddress: choosPoint['street'] + ' ' + choosPoint['house']} );
-					tmpPart.point_address = choosPoint['street'] + ' ' + choosPoint['house'];
+					tmpPart.point_address = {
+						street:	choosPoint['street'],
+						house:	choosPoint['house']
+					};
 					tmpPart.point_name = choosPoint.point_name; // нужно передавать в ядро
 				}
 
