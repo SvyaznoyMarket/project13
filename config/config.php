@@ -137,7 +137,7 @@ $c->pickpoint['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->shopScript['enabled'] = false;
+$c->shopScript['enabled'] = true;
 $c->shopScript['url'] = 'http://admin.enter.ru/v2/';
 $c->shopScript['user'] = 'admin';
 $c->shopScript['password'] = 'booToo9x';
