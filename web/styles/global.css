@@ -911,6 +911,7 @@ table {
   text-align: center;
   font-size: 14px;
   line-height: 1;
+  outline: none;
 }
 .upper:hover {
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
@@ -918,6 +919,11 @@ table {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   background-color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
+  outline: none;
+}
+.upper:active,
+.upper:focus {
+  outline: none;
 }
 /*---END----КНОПКА НАВЕРХ---------*/
 /*---------ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)----------*/
@@ -1097,6 +1103,7 @@ table {
 }
 .fixedTopBar__cart.mEmpty {
   background: #f4f4f4;
+  line-height: 34px;
 }
 .fixedTopBar__cart.mEmpty .fixedTopBar__cartQuan {
   background: #bbbbbb;
@@ -2150,5 +2157,19 @@ table {
   }
   .mInlineBlock {
     margin-bottom: 10px;
+  }
+  .noti {
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    display: none;
+    width: 300px;
+    height: 200px;
+    background-color: #ffffff;
+    text-align: center;
+    font-size: 18px;
+  }
+  .noti > div {
+    margin-top: 50px;
   }
 }
