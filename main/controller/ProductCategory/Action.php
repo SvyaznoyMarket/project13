@@ -349,6 +349,7 @@ class Action {
             return new \Http\RedirectResponse(\App::router()->generate('product.category', ['categoryPath' => $category->getPath()]));
         }
 
+        /*
         if ($categoryClass) {
             $controller = null;
             if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
@@ -359,6 +360,7 @@ class Action {
 
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
         }
+        */
 
 
         $shop = null;
