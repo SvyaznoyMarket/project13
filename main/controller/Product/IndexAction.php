@@ -75,7 +75,7 @@ class IndexAction {
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
-        if (!($lifeGiftProduct->getLabel() && (\App::config()->lifeGift['labelId'] === $lifeGiftProduct->getLabel()->getId()))) {
+        if ($lifeGiftProduct && !($lifeGiftProduct->getLabel() && (\App::config()->lifeGift['labelId'] === $lifeGiftProduct->getLabel()->getId()))) {
             $lifeGiftProduct = null;
         }
 
@@ -395,7 +395,7 @@ class IndexAction {
             'product_type' => $productType,
             'session_id'   => session_id()
         );
-        $result['creditIsAllowed'] = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0)? $cart->getQuantityByProduct($product->getId()) : 1)) > \App::config()->product['minCreditPrice']);
+        $result['creditIsAllowed'] = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
         $result['creditData'] = json_encode($dataForCredit);
 
         return $result;

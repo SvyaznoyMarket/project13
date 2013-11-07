@@ -367,8 +367,8 @@ $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
 $c->lifeGift['enabled'] = false;
-$c->lifeGift['regionId'] = 18074;
-$c->lifeGift['labelId'] = 3;
+$c->lifeGift['regionId'] = 144756;
+$c->lifeGift['labelId'] = 18;
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
