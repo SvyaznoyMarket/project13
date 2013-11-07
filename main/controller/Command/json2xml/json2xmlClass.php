@@ -88,18 +88,8 @@ class json2xml
     {
         //$categoryInf = $this->loadCategory(1);
 
-
         $time_start = time();
         $this->echlog( 'Время начала: ' . $time_start );
-
-
-
-        // config //old
-        //$json_path = '../../../cms.enter.ru/';
-        //$json_filename = "product-export.json";
-        //$xml_filename = 'market.xml';
-        //$json_filename = $json_path . $json_filename;
-
 
         // config!
         $json_filename  = $this->input_json_file;
@@ -107,22 +97,29 @@ class json2xml
 
 
 
-        if (file_exists($json_filename)) {
-            $this->echlog('Файл ' . $json_filename .' открыт');
-        } else {
+        if ( !file_exists($json_filename) ) {
             $this->echlog('Файл ' . $json_filename . ' не найден');
             $this->echlog('Завершаем выполнение');
             return false;
         }
 
         $json_file = fopen($json_filename, "r");
+
+        if ( $json_file ) {
+            $this->echlog('Файл ' . $json_filename .' открыт');
+        }else{
+            $this->echlog('Файл ' . $json_filename . ' не удалось открыть для чтения');
+            $this->echlog('Завершаем выполнение');
+            return false;
+        }
         $file_size = filesize($json_filename);
+
+
 
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8" ?><!DOCTYPE yml_catalog SYSTEM "shops.dtd"><yml_catalog></yml_catalog>');
         $shop = $xml->addChild('shop');
 
-
-        /** head **/
+        /** Head of XML **/
         $shop->addChild('name', 'Enter.ru');
         $shop->addChild('company', 'Enter.ru');
         $shop->addChild('url', 'http://www.enter.ru');
@@ -132,10 +129,10 @@ class json2xml
         $currency = $currencies->addChild('currency');
         $currency->addAttribute('id', 'RUR');
         $currency->addAttribute('rate', '1');
-        /** /head **/
+        /** /Head **/
 
 
-        $categories = $xml->shop->addChild('categories');
+        $categories = $xml->shop->addChild('categories'); // категории наполним позднее, после обхода цикла
         $offers = $xml->shop->addChild('offers');
 
 
@@ -149,91 +146,113 @@ class json2xml
             $json_line = json_decode($buffer);
 
 
-            IF ( ISSET( $json_line->id ) ) { // у каждого товара должен быть ID, если нету, видимо пустая строка в файле
+            IF ( !ISSET( $json_line->id ) ) {
+                continue;
+                // у каждого товара должен быть ID, если нету, видимо пустая строка в файле
+            }
 
-                $id = $json_line->id;
+            $id = $json_line->id;
 
 
+            /**
+             * Categories
+             */
+            $categoryId = 0;
+            if ( isset($json_line->categories) ) {
+                foreach ( $json_line->categories as $cat ) {
+                    $cid = $cat->category_id;
 
-
-                $categoryId = 0;
-                if ( isset($json_line->categories) )
-                    foreach ( $json_line->categories as $cat ) {
-                        $cid = $cat->category_id;
-
-                        // наполняем массив всех-всех-всех категорий
-                        if ( !isset($categories_arr[$cid]) ) {
-                            $categories_arr[$cid] = $cat;
-                        }
-
-                        // Находим главную категорию товара и выходим
-                        if ($cat->is_main) {
-                            $categoryId = $this->addIfIsset( $cid );
-                            break;
-                        }
+                    // наполняем массив всех-всех-всех категорий
+                    if ( !isset($categories_arr[$cid]) ) {
+                        $categories_arr[$cid] = $cat;
                     }
 
-                /////////////////////////////////
-
-                $vendor_arr = [];
-                if ( isset( $json_line->brand->name ) )
-                    $vendor_arr[] = $this->addIfIsset( $json_line->brand->name );
-
-                if ( isset( $json_line->name_web ) )
-                    $vendor_arr[] = $this->addIfIsset( $json_line->name_web );
-
-                /////////////////////////////////
+                    // Находим главную категорию товара и выходим
+                    if ($cat->is_main) {
+                        $categoryId = $this->addIfIsset( $cid );
+                        break;
+                    }
+                }
+            }
 
 
-                $params = [];
-
-                /** обязательные параметры **/
-                //$params['price'] = $json_line->geo->{1}->price; // old variant, price in Moscow
-                $params['price'] = $this->addOneOfElems( $this->addIfIsset( $json_line->geo), 'price' );
-                $params['url'] = $this->addIfIsset( $json_line->link );
-                $params['picture'] = $this->addIfIsset( $json_line->media_image );
-                $params['vendor'] = $this->addOneOfElems( $vendor_arr );
-                $params['category_id'] = $categoryId;
-                $params['currency_id'] = $id;
-                /** /обязательные параметры **/
-
-
-                /** желательные параметры **/
-                $params['oldprice'] = $this->addIfIsset( $json_line->old_price ); // !isset for all?
-                $params['description'] = $this->addIfIsset( $json_line->description );
-                $params['typePrefix'] = $this->addIfIsset( $json_line->type_id );
-                $params['model'] = $this->addIfIsset( $json_line->model_id );
-                $params['vendorCode'] = $this->addOneOfElems( [$json_line->bar_code, $json_line->name_web] );
-                /** /желательные параметры **/
+            /**
+             * Vendor
+             */
+            $vendor_arr = [];
+            if ( isset( $json_line->brand->name ) ) {
+                $vendor_arr[] = $this->addIfIsset( $json_line->brand->name );
+            } elseif ( isset( $json_line->name_web ) ) {
+                $vendor_arr[] = $this->addIfIsset( $json_line->name_web );
+            }
 
 
 
+            $params = [];
+
+            /**
+             * Oбязательные параметры
+             **/
+            //$params['price'] = $json_line->geo->{1}->price; // old variant, price in Moscow
+            $params['price'] = $this->addOneOfElems( $this->addIfIsset( $json_line->geo), 'price' );
+            $params['url'] = $this->addIfIsset( $json_line->link );
+            $params['picture'] = $this->addIfIsset( $json_line->media_image );
+            $params['vendor'] = $this->addOneOfElems( $vendor_arr );
+            $params['category_id'] = $categoryId;
+            $params['currency_id'] = $id;
+            /** /обязательные параметры **/
 
 
-                $progressbar = 'Is Readed ' . $readed . ' from '. $file_size. '; '. round( ($readed/$file_size)*100 , 2 ) . '%' ;
-
-                //$this->echlog($json_line); // log // all product-info FROM JSON file
-                //$this->echlog ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
-                //self::file_log ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
-                //$this->echlog( $params ); // log // all product-info FOR XML file
-
-
-                $offer = $offers->addChild('offer');
-                $offer->addAttribute('id', $id);
-                $offer->addAttribute('available', 'true');
-
-                foreach ($params as $name => $value) {
-                    //$offer->addChild($name, $value); // achtung! witch warnings!
-                    if ( !empty($value) ) $offer->{$name} = $value; // ok! without warnings
-                } // end foreach
+            /**
+             * Желательные параметры
+             **/
+            $params['oldprice'] = $this->addIfIsset( $json_line->old_price ); // !isset for all?
+            $params['description'] = $this->addIfIsset( $json_line->description );
+            $params['typePrefix'] = $this->addIfIsset( $json_line->type_id );
+            $params['model'] = $this->addIfIsset( $json_line->model_id );
+            $params['vendorCode'] = $this->addOneOfElems( [$json_line->bar_code, $json_line->name_web] );
+            /** /желательные параметры **/
 
 
-            } // END IF ISSET( $json_line->id)
+            /**
+             * Прогрессбар процесса (пока не используется)
+             */
+            //$progressbar = 'Is Readed ' . $readed . ' from '. $file_size. '; '. round( ($readed/$file_size)*100 , 2 ) . '%' ;
+            //$this->echlog($json_line); // log // all product-info FROM JSON file
+            //$this->echlog ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
+            //self::file_log ( 'ProductID ' . $params['id'] . '; ' . $progressbar  );
+            //$this->echlog( $params ); // log // all product-info FOR XML file
+
+
+
+            // формируем $offer по ТЗ
+            $offer = $offers->addChild('offer');
+            $offer->addAttribute('id', $id);
+            $offer->addAttribute('available', 'true');
+
+            // Добавляем параметры в $offer
+            foreach ($params as $name => $value) {
+                //$offer->addChild($name, $value); // с ворнингами
+                if ( !empty($value) ) $offer->{$name} = $value; // так лучше
+            } // end foreach
+
 
 
         } // end while
 
 
+        /**
+         * Обход исходного json-файла циклом завершён, можно закрыть файл, если он существовал =)
+         */
+        if ($json_file) {
+            fclose($json_file);
+            $this->echlog('Файл ' . $json_filename .' закрыт');
+        }
+
+
+        /**
+         * Обрабатываем собранные во время обхода json-файла категории
+         */
         if ( !empty($categories_arr) && is_array($categories_arr) ) {
             foreach ( $categories_arr as $cat) {
                 $paretn_id = 0;
@@ -249,18 +268,13 @@ class json2xml
                 //$category->addAttribute('url', $cat->category_id); // <-- TODO
             }
         }
-
-
         // считаем, что дубликатов товаров в исходном файле нет
 
-        if ($json_file) {
-            fclose($json_file);
-            $this->echlog('Файл ' . $json_filename .' закрыт');
-        }
 
 
 
-        // Save
+
+        // Сохраняем полученные данные в XML-файл
         if (file_exists($xml_filename)) unlink($xml_filename);
         $return = $xml->asXML($xml_filename);
         $xml = null;
@@ -271,12 +285,19 @@ class json2xml
         $this->echlog( 'Время выполнения: ' . self::timeFromSeconds($time_end - $time_start) );
         $this->echlog( 'Время окончания: ' . $time_end );
 
-
         return $return;
     }
 
 
 
+
+
+    /**
+     * Возвратит элемент, если таковой существует
+     *
+     * @param $var
+     * @return bool
+     */
     private function addIfIsset( &$var ) {
         if ( isset($var) ) return $var;
         return false;
@@ -284,7 +305,16 @@ class json2xml
 
 
 
+    /**
+     * Добавляет (возвращает) один из элементов массива $arr
+     *
+     * @param $arr
+     * @param null $attrib
+     * @return bool
+     */
     private function addOneOfElems ( $arr, $attrib = null ) {
+
+        if ( empty($arr) || !is_array($arr) ) return false;
 
         foreach ( $arr as $elem ) {
 
@@ -300,6 +330,12 @@ class json2xml
 
 
 
+    /**
+     * Преобразовывает время в человекопонятные данные
+     *
+     * @param $time
+     * @return string
+     */
     protected function timeFromSeconds($time) {
         $m = $h = null;
         $s = (int) $time;
@@ -326,7 +362,11 @@ class json2xml
     }
 
 
-
+    /**
+     * @param $url
+     * @param array $post_arr
+     * @return bool|mixed
+     */
     private function curl($url, $post_arr = []) {
         if( $curl = curl_init() ) {
             curl_setopt($curl, CURLOPT_URL, $url);
