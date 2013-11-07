@@ -44,7 +44,7 @@
 				catItem = $self.find(options.categoryItemSelector),
 
 				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
-				elementOnSlide = wrap.width()/itemW,
+				elementOnSlide = parseInt(wrap.width()/itemW),
 
 				nowLeft = 0;
 			// end of vars
@@ -67,6 +67,11 @@
 						nowLeft = nowLeft + elementOnSlide * itemW;
 						rightBtn.removeClass('mDisabled');
 					}
+
+					console.info(itemW);
+					console.log(elementOnSlide);
+					console.log(nowLeft);
+					console.log(wrap.width());
 
 					slider.animate({'left': -nowLeft });
 
