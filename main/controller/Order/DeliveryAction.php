@@ -30,15 +30,17 @@ class DeliveryAction {
         }
 
         $paypalECS = 1 === (int)$request->get('paypalECS');
+        $lifeGift = 1 === (int)$request->get('lifeGift');
 
-        return new \Http\JsonResponse($this->getResponseData($paypalECS));
+        return new \Http\JsonResponse($this->getResponseData($paypalECS, $lifeGift));
     }
 
     /**
      * @param bool $paypalECS
+     * @param bool $lifeGift
      * @return array
      */
-    public function getResponseData($paypalECS = false) {
+    public function getResponseData($paypalECS = false, $lifeGift = false) {
         $router = \App::router();
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -53,6 +55,7 @@ class DeliveryAction {
             'time'      => strtotime(date('Y-m-d'), 0) * 1000,
             'action'    => [],
             'paypalECS' => false,
+            'lifeGift'  => false,
             'cart'      => [],
         ];
 
@@ -66,6 +69,16 @@ class DeliveryAction {
                 $responseData['paypalECS'] = true;
 
                 $cartProducts = $cartProduct ? [$cartProduct] : [];
+                $coupons = [];
+                $blackcards = [];
+            } else if (true === $lifeGift) {
+                $region = new \Model\Region\Entity(['id' => \App::config()->lifeGift['regionId']]); // TODO: осторожно, говонокодистое место
+
+                $responseData['cart']['sum'] = \App::user()->getLifeGiftCart()->getSum();
+
+                $responseData['lifeGift'] = true;
+
+                $cartProducts = \App::user()->getLifeGiftCart()->getProducts();
                 $coupons = [];
                 $blackcards = [];
             } else {
@@ -125,7 +138,7 @@ class DeliveryAction {
                 throw $exception;
             }
 
-            if (!$paypalECS && \App::config()->blackcard['enabled'] && array_key_exists('blackcard_list', $result)) {
+            if (!($paypalECS || $lifeGift) && \App::config()->blackcard['enabled'] && array_key_exists('blackcard_list', $result)) {
                 foreach ($result['blackcard_list'] as $blackcardItem) {
                     $blackcardItem = array_merge([
                         'number'       => null,
@@ -206,6 +219,13 @@ class DeliveryAction {
                 unset($responseData['deliveryStates']['now']);
             }
 
+            if ($lifeGift) {
+                foreach (['self', 'now', 'pickpoint'] as $i) {
+                    if (isset($responseData['deliveryStates'][$i])) unset($responseData['deliveryStates'][$i]);
+                    if (isset($responseData['deliveryTypes'][$i])) unset($responseData['deliveryTypes'][$i]);
+                }
+            }
+
             // костыль
             $getDates = function(array $dateData) use (&$helper) {
                 $return = [];
@@ -244,7 +264,7 @@ class DeliveryAction {
                 $productId = (string)$productItem['id'];
 
                 /** @var $cartProduct \Model\Cart\Product\Entity|null */
-                $cartProduct = $paypalECS ? reset($cartProducts) : $cart->getProductById($productId);
+                $cartProduct = ($paypalECS || $lifeGift) ? reset($cartProducts) : $cart->getProductById($productId);
                 if (!$cartProduct) {
                     \App::logger()->error(sprintf('Товар %s не найден в корзине', $productId));
                     continue;
@@ -302,6 +322,17 @@ class DeliveryAction {
                     throw $e;
                 }
 
+                if ($paypalECS) {
+                    $setUrl = $router->generate('cart.paypal.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]);
+                    $deleteUrl = $router->generate('cart.paypal.product.delete', ['productId' => $productId]);
+                } else if ($lifeGift) {
+                    $setUrl = $router->generate('cart.lifeGift.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]);
+                    $deleteUrl = $router->generate('cart.lifeGift.product.delete', ['productId' => $productId]);
+                } else {
+                    $setUrl = $router->generate('cart.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]);
+                    $deleteUrl = $router->generate('cart.product.delete', ['productId' => $productId]);
+                }
+
                 $responseData['products'][$productId] = [
                     'id'         => $productId,
                     'name'       => $productItem['name'],
@@ -311,16 +342,8 @@ class DeliveryAction {
                     'stock'      => (int)$productItem['stock'],
                     'image'      => $productItem['media_image'],
                     'url'        => $productItem['link'],
-                    'setUrl'     =>
-                        $paypalECS
-                        ? $router->generate('cart.paypal.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']])
-                        : $router->generate('cart.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']])
-                    ,
-                    'deleteUrl'  =>
-                        $paypalECS
-                        ? $router->generate('cart.paypal.product.delete', ['productId' => $productId])
-                        : $router->generate('cart.product.delete', ['productId' => $productId])
-                    ,
+                    'setUrl'     => $setUrl,
+                    'deleteUrl'  => $deleteUrl,
                     'deliveries' => $deliveryData,
                 ];
             }
@@ -433,7 +456,7 @@ class DeliveryAction {
             }
 
             // купоны
-            if (!$paypalECS) {
+            if (!($paypalECS || $lifeGift)) {
                 foreach ($cart->getCoupons() as $coupon) {
                     $responseData['discounts'][] = [
                         'type'      => 'coupon',
@@ -446,7 +469,7 @@ class DeliveryAction {
             }
 
             // черные карты
-            if (!$paypalECS) {
+            if (!($paypalECS || $lifeGift)) {
                 foreach ($cart->getBlackcards() as $blackcard) {
                     $responseData['discounts'][] = [
                         'type'      => 'blackcard',

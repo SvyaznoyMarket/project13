@@ -143,6 +143,12 @@
 		 * @param	{Object}	res	Ответ от сервера
 		 */
 		resFromServer = function resFromServer( res ) {
+			if ( !res.success ) {
+				errorHandler();
+
+				return false;
+			}
+
 			/**
 			 * Полученнный с сервера массив вариантов доставок для текущего товара
 			 * @type	{Array}
@@ -159,7 +165,7 @@
 				return false;
 			}
 
-			for ( i = deliveryInfo.length - 1; i >= 0; i-- ) {
+			for ( var i = deliveryInfo.length - 1; i >= 0; i-- ) {
 				switch (deliveryInfo[i].token){
 					case 'standart':
 						var standartBox = widgetBox.find('.mDeliveryPrice'),

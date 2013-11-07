@@ -7,12 +7,14 @@ class ListAction {
      * @param \Helper\TemplateHelper $helper
      * @param \Iterator\EntityPager $pager
      * @param array $productVideosByProduct
+     * @param array $bannerPlaceholder
      * @return array
      */
     public function execute(
         \Helper\TemplateHelper $helper,
         \Iterator\EntityPager $pager,
-        array $productVideosByProduct
+        array $productVideosByProduct,
+        array $bannerPlaceholder
     ) {
         /** @var \Model\Product\Entity $product */
 
@@ -34,7 +36,8 @@ class ListAction {
             $stateLabel = null;
             if ($product->isInShopOnly()) {
                 $stateLabel = ['name' => 'Только в магазинах'];
-            } else if ($product->getMainCategory() && $product->getMainCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore()) {
+            } else if ($product->getMainCategory() && $product->getMainCategory()->getIsFurniture() &&
+                $product->getState() && $product->getState()->getIsStore() && 14974 === $user->getRegion()->getId()) {
                 $stateLabel = ['name' => 'Товар за три дня'];
             }
 
@@ -73,6 +76,7 @@ class ListAction {
                 'hasVideo' => $productVideo && $productVideo->getContent(),
                 'has360'   => $model3dExternalUrl || $model3dImg,
                 'review'   => $reviewCompactAction->execute($helper, $product),
+                'isBanner' => false,
                 'line'     =>
                 ($line = $product->getLine())
                     ? ['name' => $line->getName(), 'productCount' => $line->getLineCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
@@ -83,6 +87,12 @@ class ListAction {
             $productItem['cartButton'] = $productButtonAction->execute($helper, $product);
 
             $productData[] = $productItem;
+        }
+
+        // добавляем баннер в листинги, в нужную позицию
+        if ($bannerPlaceholder && 1 === $pager->getPage()) {
+            $bannerPlaceholder['isBanner'] = true;
+            $productData = array_merge(array_slice($productData, 0, $bannerPlaceholder['position']), [$bannerPlaceholder], array_slice($productData, $bannerPlaceholder['position']));
         }
 
         return [

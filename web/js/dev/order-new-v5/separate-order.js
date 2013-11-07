@@ -410,11 +410,15 @@
 
 		/**
 		 * Флаг завершения обработки данных
+		 *
+		 * @type {Boolean}
 		 */
 		prepareData: ko.observable(false),
 
 		/**
 		 * Флаг открытия окна с выбором точек доставки
+		 *
+		 * @type {Boolean}
 		 */
 		showPopupWithPoints: ko.observable(false),
 
@@ -436,8 +440,18 @@
 		statesPriority: null,
 
 		/**
+		 * Флаг того что это оформление заказа по акции «Подари жизнь»
+		 * https://jira.enter.ru/browse/SITE-2383
+		 * 
+		 * @type {Boolean}
+		 */
+		lifeGift: ko.observable(false),
+
+		/**
 		 * Флаг того что это страница PayPal: схема ECS
 		 * https://jira.enter.ru/browse/SITE-1795
+		 *
+		 * @type {Boolean}
 		 */
 		paypalECS: ko.observable(false),
 
@@ -483,6 +497,8 @@
 
 		/**
 		 * Есть ли примененные купоны
+		 *
+		 * @type {Boolean}
 		 */
 		hasCoupons: ko.observable(false),
 
@@ -514,6 +530,7 @@
 
 		/**
 		 * Существует ли блок доставки
+		 * 
 		 * @param	String}		token	Токен блока доставки
 		 * @return	{boolean}
 		 */
@@ -533,6 +550,7 @@
 
 		/**
 		 * Получить ссылку на блок по токену
+		 * 
 		 * @param	String}		token	Токен блока доставки
 		 * @return	{Object}			Объект блока
 		 */
@@ -550,6 +568,7 @@
 
 		/**
 		 * Удаление блока доставки по токену
+		 * 
 		 * @param	String}		token	Токен блока доставки
 		 */
 		removeDeliveryBox: function( token ) {
@@ -582,14 +601,14 @@
 			// end of vars
 
 			var couponResponceHandler = function couponResponceHandler( res ) {
-				utils.blockScreen.block('Применяем купон');
-
 				if ( !res.success ) {
 					global.OrderModel.couponError(res.error.message);
 					utils.blockScreen.unblock();
 
 					return;
 				}
+
+				global.OrderModel.couponNumber('');
 			};
 
 			global.OrderModel.couponError('');
@@ -607,6 +626,8 @@
 
 				return;
 			}
+
+			utils.blockScreen.block('Применяем купон');
 
 			reqArray = [
 				{
@@ -1033,6 +1054,7 @@
 			}
 
 			global.OrderModel.deliveryTypes(res.deliveryTypes);
+			global.OrderModel.lifeGift(res.lifeGift || false);
 			global.OrderModel.prepareData(true);
 
 			if ( global.OrderModel.paypalECS() &&
@@ -1055,9 +1077,11 @@
 			if ( 1 === res.deliveryTypes.length ) {
 				data = res.deliveryTypes[0];
 				firstPoint =  global.OrderModel.orderDictionary.getFirstPointByState( data.states[0] ) || data.id;
+
 				console.log('Обнаружен только 1 способ доставки: ' + data.name +' — выбираем его.');
 				console.log('Выбран первый пункт* доставки:');
 				console.log( firstPoint );
+
 				global.OrderModel.statesPriority = data.states;
 				global.OrderModel.deliveryTypesButton = 'method_' + data.id;
 				global.OrderModel.choosenDeliveryTypeId = data.id;

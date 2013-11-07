@@ -2,6 +2,7 @@
 /**
  * @var $page              \View\Product\IndexPage
  * @var $product           \Model\Product\Entity
+ * @var $lifeGiftProduct   \Model\Product\Entity|null
  * @var $productVideos     \Model\Product\Video\Entity[]
  * @var $user              \Session\User
  * @var $accessories       \Model\Product\Entity[]
@@ -15,6 +16,8 @@
  * @var $mainProduct       \Model\Product\Entity
  * @var $line              \Model\Line\Entity
  */
+
+if (!$lifeGiftProduct) $lifeGiftProduct = null;
 
 $showLinkToProperties = true;
 $countModels = count($product->getModel());
@@ -123,18 +126,6 @@ $is_showed = [];
         <?= $product->getDescription() ?>
     </div>
 
-    <? if (\App::config()->product['pullRecommendation']): ?>
-        <?= $helper->render('product/__slider', [
-            'type'     => 'alsoViewed',
-            'title'    => 'С этим товаром также смотрят',
-            'products' => [],
-            'count'    => null,
-            'limit'    => \App::config()->product['itemsInSlider'],
-            'page'     => 1,
-            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
-        ]) ?>
-    <? endif ?>
-
     <? if ((bool)$related && \App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
@@ -145,6 +136,18 @@ $is_showed = [];
             'page'           => 1,
             //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
             'additionalData' => $additionalData,
+        ]) ?>
+    <? endif ?>
+
+    <? if (\App::config()->product['pullRecommendation']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'alsoViewed',
+            'title'    => 'С этим товаром также смотрят',
+            'products' => [],
+            'count'    => null,
+            'limit'    => \App::config()->product['itemsInSlider'],
+            'page'     => 1,
+            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
         ]) ?>
     <? endif ?>
 
@@ -201,7 +204,12 @@ $is_showed = [];
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
 
         <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
+
     </div><!--/widget delivery -->
+
+    <? if ($lifeGiftProduct): ?>
+        <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>
+    <? endif ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 

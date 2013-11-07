@@ -21,7 +21,7 @@ $helper = new \Helper\TemplateHelper();
 
     <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
-    <h1><?= $slice->getName() ?></h1>
+    <h1 class="bTitlePage"><?= $slice->getName() ?></h1>
 
     <? if (!empty($promoContent)): ?>
         <?= $promoContent ?>
@@ -45,6 +45,7 @@ $helper = new \Helper\TemplateHelper();
         'pager'                  => $productPager,
         'view'                   => $productView,
         'productVideosByProduct' => [], //$productVideosByProduct,
+        'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
     ]) // листинг ?>
 
     <div class="bSortingLine mPagerBottom clearfix">

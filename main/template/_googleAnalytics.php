@@ -1,7 +1,12 @@
-<? if (\App::config()->googleAnalytics['enabled']): ?>
+<? if (\App::config()->googleAnalytics['enabled']):
+
+?>
 <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-25485956-1']);
+    <? if ( false == \App::config()->debug ) { ?>
+    _gaq.push(['_setDomainName', 'enter.ru']);
+    <? } ?>
     _gaq.push(['_addOrganic', 'nova.rambler.ru', 'query']);
     _gaq.push(['_addOrganic', 'go.mail.ru', 'q']);
     _gaq.push(['_addOrganic', 'nigma.ru', 's']);
@@ -90,8 +95,9 @@
             <? endforeach ?>
     <? endif ?>
     (function()
-    { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); }
-
-            )();
+    {   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 </script>
 <? endif ?>

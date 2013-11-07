@@ -559,7 +559,7 @@ $(document).ready(function(){
 		initSlider(); //запуск слайдера
 
 		var slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width(),	// ширина одного слайда
-			// slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2)),	// установка ширины обертки
+			slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2)),	// установка ширины обертки
 			nowSlide = 0;	//текущий слайд
 		// end of vars
 
@@ -730,7 +730,7 @@ $(document).ready(function(){
 
 	$('#bServicesTable tr th:first').remove();
 
-	if ( serviceData ) {
+	if ( global.ENTER.utils.objLen(serviceData) ) {
 		prepareData(serviceData);
 		selectRegion.on('change', changeRegion);
 	}
