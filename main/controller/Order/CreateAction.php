@@ -265,7 +265,7 @@ class CreateAction {
                 $orderData['name_pickpoint'] = $orderPart->getPointName();
                 //$orderData['point_address'] = $orderPart->getPointAddress();
                 $orderData['address_street'] = $orderPart->getPointAddress()['street'];
-                $orderData['address_number'] = $orderPart->getPointAddress()['house'];
+                $orderData['address_building'] = $orderPart->getPointAddress()['house'];
             }
 
             // подарочный сертификат
