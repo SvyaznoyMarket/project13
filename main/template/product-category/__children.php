@@ -2,7 +2,8 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Category\Entity $category
+    \Model\Product\Category\Entity $category,
+    array $promoStyle = []
 ) {
 
     $links = [];
@@ -16,6 +17,10 @@ return function(
     }
 ?>
 
-    <?= $helper->renderWithMustache('product-category/_listInFilter', ['links' => $links]) ?>
+    <?= $helper->renderWithMustache('product-category/_listInFilter', [
+        'links' => $links,
+        'bCatalogListStyle' => !empty($promoStyle['bCatalogList']) ? $promoStyle['bCatalogList'] : '',
+        'bCatalogList__eItemStyle' => !empty($promoStyle['bCatalogList__eItem']) ? $promoStyle['bCatalogList__eItem'] : '',
+    ]) ?>
 
 <? };

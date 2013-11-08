@@ -7,6 +7,7 @@ return function(
     $countUrl,
     $hotlinks,
     $openFilter,
+    array $promoStyle = [],
     array $categories = [],
     \Model\Product\Category\Entity $selectedCategory = null
 ) {
@@ -84,13 +85,13 @@ return function(
 ?>
 
     <form class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
-        <div class="bFilterHead">
+        <div class="bFilterHead" <?= !empty($promoStyle['bFilterHead']) ? "style=\"{$promoStyle['bFilterHead']}\"" : '' ?>>
             <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
             <? if ($priceFilter && $productFilter) {
                 /**@var     $productFilter      \Model\Product\Filter
                  **@var     $priceFilter        \Model\Product\Filter\Entity **/
-                echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]);
+                echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]);
             } ?>
 
             <div class="bBtnPick clearfix">
@@ -99,7 +100,7 @@ return function(
 
             <!-- SEO теги -->
             <? if(!empty($hotlinks)): ?>
-                <ul class="bPopularSection">
+                <ul class="bPopularSection" <?= !empty($promoStyle['bPopularSection']) ? "style=\"{$promoStyle['bPopularSection']}\"" : '' ?>>
                     <? foreach ($hotlinks as $hotlink): ?>
                         <li class="bPopularSection__eItem"><a class="bPopularSection__eText" href="<?= $hotlink['url'] ?>"><?= $hotlink['title'] ?></a></li>
                     <? endforeach ?>
@@ -136,7 +137,7 @@ return function(
                     <? switch ($filter->getTypeId()) {
                         case \Model\Product\Filter\Entity::TYPE_NUMBER:
                         case \Model\Product\Filter\Entity::TYPE_SLIDER:
-                            echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $filter]);
+                            echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]);
                             break;
                         case \Model\Product\Filter\Entity::TYPE_LIST:
                             echo $helper->render('product-category/filter/__list', ['productFilter' => $productFilter, 'filter' => $filter]);

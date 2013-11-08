@@ -16,24 +16,29 @@
 <?
     $helper = new \Helper\TemplateHelper();
     if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
+
+    // получаем стиль листинга
+    $listingStyle = !empty($catalogJson['listing_style']) ? $catalogJson['listing_style'] : '';
+
+    // получаем promo стили
+    $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? $catalogJson['promo_style'] : [];
 ?>
 
-<div class="bCatalog mCustomCss">
+<div class="bCatalog<?= 'jewel' === $listingStyle ? ' mCustomCss' : '' ?>">
 
     <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
-    <div class="bCustomFilter" style="background-image: url(http://content.enter.ru/wp-content/uploads/2013/07/main.jpg); background-color: #4c635b;">
-        
-    	<h1 class="bTitlePage"><?= $title ?></h1>
+    <?= 'jewel' === $listingStyle ? '<div class="bCustomFilter" '. (!empty($promoStyle['promo_image']) ? "style=\"{$promoStyle['promo_image']}\"" : '') .'>' : '' ?>
+        <h1 class="bTitlePage" <?= !empty($promoStyle['title']) ? "style=\"{$promoStyle['title']}\"" : '' ?>><?= $title ?></h1>
 
         <? if (\App::config()->adFox['enabled']): ?>
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
         <? endif ?>
 
-        <? if (!empty($promoContent)): ?>
+        <? if (empty($promoContent)): ?>
             <?= $promoContent ?>
         <? else: ?>
-            <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
+            <?= $helper->render('product-category/__children', ['category' => $category, 'promoStyle' => $promoStyle]) // дочерние категории ?>
         <? endif ?>
 
         <?= $helper->render('product-category/__filter', [
@@ -42,6 +47,7 @@
             'productFilter' => $productFilter,
             'hotlinks'      => $hotlinks,
             'openFilter'    => false,
+            'promoStyle'    => $promoStyle,
         ]) // фильтры ?>
     
 
@@ -49,7 +55,8 @@
             'pager'          => $productPager,
             'productSorting' => $productSorting,
         ]) // сортировка, режим просмотра, режим листания ?>
-    </div>
+
+    <?= 'jewel' === $listingStyle ? '</div>' : '' // конец блока class="bCustomFilter" ?>
 
     <?= $helper->render('product/__list', [
         'pager'                  => $productPager,
