@@ -140,6 +140,29 @@
 		border-top: 1px solid @typLightGray;
 		border-right: 1px solid @typLightGray;
 		cursor: pointer;
+
+		&.mActive {
+			border-right: none;
+			cursor: default;
+
+			.bParamName {
+				background: #f6f6f6;
+			}
+
+			&:hover {
+
+				.bParamName {
+					background: #f6f6f6;
+				}
+			}
+		}
+
+		&:hover {
+
+			.bParamName {
+				background: #fbebd2;
+			}
+		}
 	}
 
 	.bParamName {
@@ -152,16 +175,6 @@
 		background: @white;
 
 		vertical-align: middle;
-	}
-
-	.mActive {
-
-		border-right: none;
-		cursor: default;
-
-		.bParamName {
-			background: #f6f6f6;
-		}
 	}
 }
 
@@ -215,14 +228,25 @@
         		min-width: 183px;
         		width: auto;
 
-        		background: url("@{base-url}/customInput/img/bCustomCheckbox.png") no-repeat 5px -20px #fbebd2;
+        		background: url("@{base-url}/customInput/img/bCustomCheckbox.png") no-repeat 5px 7px #fbebd2;
 
-        		box-shadow: 0 0 8px rgba(0,0,0,0.2);
+        		box-shadow: 0 0 2px rgba(0,0,0,0.2);
+
+        		&.mChecked {
+					background: url("@{base-url}/customInput/img/bCustomCheckbox.png") no-repeat 5px -20px #fbebd2;
+				}
 
         		&.mCustomLabelRadio {
 			    	background-image: url("/css/leftNav/img/radioBtn.png");
-			        background-position: 5px 7px;
+			        background-position: 5px -14px;
+
+			        &.mChecked {
+						background-image: url("/css/leftNav/img/radioBtn.png");
+						background-position: 5px 7px;
+					}
 				}
+
+				
         	}
         }
 	}
