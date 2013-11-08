@@ -214,7 +214,7 @@ class CreateAction {
                 'address_floor'             => null,
                 'extra'                     => $form->getComment(),
                 'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
-                'delivery_type_id'          => $deliveryType->getId(),
+                'delivery_type_id'          => \App::config()->lifeGift['deliveryTypeId'],
                 'delivery_period'           => $orderPart->getInterval(),
                 'delivery_date'             => $orderPart->getDate() instanceof \DateTime ? $orderPart->getDate()->format('Y-m-d') : null,
                 'ip'                        => $request->getClientIp(),
