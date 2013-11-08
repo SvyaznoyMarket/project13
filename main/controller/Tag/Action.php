@@ -124,6 +124,25 @@ class Action {
             $productFilter->setCategory($category);
             $productFilter->setValues(array('tag' => array($tag->getId())));
 
+            ///////   NewFilters
+            $filters = [];
+            \RepositoryManager::productFilter()->prepareCollectionBySearchText('вино', \App::user()->getRegion(), function($data) use (&$filters) {
+                foreach ($data as $item) {
+                    $filters[] = new \Model\Product\Filter\Entity($item);
+                }
+            }, function (\Exception $e) { \App::exception()->remove($e); });
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
+
+            print '<pre>$$ ';
+            //print_r($filters);
+            print '</pre>';
+            $shop = [];
+
+            $categoryId = $category->getId();
+            $selectedCategory = $categoryId ? \RepositoryManager::productCategory()->getEntityById($categoryId) : null;
+            $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+			///////   /NewFilters
+
             if(empty($seoTagJson['acts_as_category']) || $request->isXmlHttpRequest()) {
                 // листалка
                 $limit = \App::config()->product['itemsPerPage'];
