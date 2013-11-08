@@ -1377,11 +1377,11 @@
 		 */
 		preparationData = function preparationData() {
 			var currentDeliveryBox = null,
-                choosePoint,
+				choosePoint,
 				parts = [],
 				dataToSend = [],
 				tmpPart = {},
-                i, j,
+				i, j,
 				orderForm = $('#order-form');
 			// end of vars
 			
@@ -1395,7 +1395,7 @@
 			for ( i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
 				tmpPart = {};
 				currentDeliveryBox = global.OrderModel.deliveryBoxes()[i];
-                choosePoint = currentDeliveryBox.choosenPoint();
+				choosePoint = currentDeliveryBox.choosenPoint();
 				console.log('currentDeliveryBox:');
 				console.log(currentDeliveryBox);
 
@@ -1410,22 +1410,22 @@
 					products : []
 				};
 
-                console.log('choosePoint:');
-                console.log(choosePoint);
+				console.log('choosePoint:');
+				console.log(choosePoint);
 
-                if ( 'pickpoint' === currentDeliveryBox.state ) {
-                    console.log('Is PickPoint!');
+				if ( 'pickpoint' === currentDeliveryBox.state ) {
+					console.log('Is PickPoint!');
 
-                    // Передаём на сервер корректный id постамата, не id точки, а номер постамата
-                    tmpPart.point_id = choosePoint['number'];
+					// Передаём на сервер корректный id постамата, не id точки, а номер постамата
+					tmpPart.point_id = choosePoint['number'];
 
-                    // В качестве адреса доставки необходимо передавать адрес постамата,
-                    // так как поля адреса при заказе через pickpoint скрыты
-                    /*orderForm.find('#order_address_street').val( choosePoint['street'] );
-                    orderForm.find('#order_address_building').val( choosePoint['house'] );
-                    orderForm.find('#order_address_number').val('');
-                    orderForm.find('#order_address_apartment').val('');
-                    orderForm.find('#order_address_floor').val('');*/ // old
+					// В качестве адреса доставки необходимо передавать адрес постамата,
+					// так как поля адреса при заказе через pickpoint скрыты
+					/*orderForm.find('#order_address_street').val( choosePoint['street'] );
+					orderForm.find('#order_address_building').val( choosePoint['house'] );
+					orderForm.find('#order_address_number').val('');
+					orderForm.find('#order_address_apartment').val('');
+					orderForm.find('#order_address_floor').val('');*/ // old
 
 					/* Передаём сразу без лишней сериализации и действий с формами
 					 * и не в dataToSend, а в массив parts, отдельным полем,
@@ -1443,8 +1443,8 @@
 					tmpPart.products.push(currentDeliveryBox.products[j].id);
 				}
 
-                console.log('tmpPart:');
-                console.log(tmpPart);
+				console.log('tmpPart:');
+				console.log(tmpPart);
 
 				parts.push(tmpPart);
 			}
@@ -1452,9 +1452,9 @@
 			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
 			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
 
-            if ( typeof(window.KM) !== 'undefined' ) {
+			if ( typeof(window.KM) !== 'undefined' ) {
 				dataToSend.push({ name: 'kiss_session', value: window.KM.i });
-            }
+			}
 
 			console.log('dataToSend:');
 			console.log(dataToSend);

@@ -326,88 +326,98 @@ if ($paypalECS) {
 		
 		<form id="order-form" action="<?= $createUrl ?>" method="post">
 			<!-- Info about customer -->
-			<div class="bBuyingLine mBuyingFields clearfix" data-bind="visible: !$root.lifeGift()">
-				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
-				<div class="bBuyingLine__eRight">
-					<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
-				</div>
 
-				<label for="" class="bBuyingLine__eLeft">Фамилия получателя</label>
-				<div class="bBuyingLine__eRight">
-					<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
-				</div>
-
-				<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
-				<div class="bBuyingLine__eRight">
-					<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
-
-					<div class="bSubscibeCheck bInputList">
-						<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
-						<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>                 
+			<div class="bBuyingLine mBuyingFields clearfix">
+				<? if ($lifeGift): ?>
+					<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
+					<div class="bBuyingLine__eRight mPhone">
+						<span class="bPlaceholder">+7</span> 
+						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
 					</div>
-				</div>
-
-				<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
-				<div class="bBuyingLine__eRight mPhone">
-					<span class="bPlaceholder">+7</span> 
-					<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
-				</div>
-
-				<!-- Address customer -->
-				<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки*</label>
-				<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
-					<div class="bSelectedCity">
-						<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
+				<? else: ?>
+					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
 					</div>
 
-					<? if ((bool)$subways): ?>
-					<div class="bInputAddress ui-css">
-						<label class="bPlaceholder">Метро*</label>
-						<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
-						<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
-						<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
-					</div>
-					<? endif ?>
-					
-					<div class="bInputAddress">
-						<label class="bPlaceholder">Улица*</label>
-						<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />						
+					<label for="" class="bBuyingLine__eLeft">Фамилия получателя</label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
 					</div>
 
-					<div class="bInputAddress">
-						<label class="bPlaceholder">Дом*</label>
-						<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild" name="order[address_building]" value="" />					
+					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
+
+						<div class="bSubscibeCheck bInputList">
+							<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
+							<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>                 
+						</div>
 					</div>
 
-					<div class="bInputAddress">
-						<label class="bPlaceholder">Корпус</label>
-						<input type="text" id="order_address_number" class="bBuyingLine__eText mInputShort mInputNumber" name="order[address_number]" value="" />
+					<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
+					<div class="bBuyingLine__eRight mPhone">
+						<span class="bPlaceholder">+7</span> 
+						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
 					</div>
 
-					<div class="bInputAddress">
-						<label class="bPlaceholder">Квартира</label>
-						<input type="text" id="order_address_apartment" class="bBuyingLine__eText mInputShort mInputApartament" name="order[address_apartment]" value="" />
+					<!-- Address customer -->
+					<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки*</label>
+					<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
+						<div class="bSelectedCity">
+							<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
+						</div>
+
+						<? if ((bool)$subways): ?>
+						<div class="bInputAddress ui-css">
+							<label class="bPlaceholder">Метро*</label>
+							<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
+							<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
+							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
+						</div>
+						<? endif ?>
+						
+						<div class="bInputAddress">
+							<label class="bPlaceholder">Улица*</label>
+							<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />						
+						</div>
+
+						<div class="bInputAddress">
+							<label class="bPlaceholder">Дом*</label>
+							<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild" name="order[address_building]" value="" />					
+						</div>
+
+						<div class="bInputAddress">
+							<label class="bPlaceholder">Корпус</label>
+							<input type="text" id="order_address_number" class="bBuyingLine__eText mInputShort mInputNumber" name="order[address_number]" value="" />
+						</div>
+
+						<div class="bInputAddress">
+							<label class="bPlaceholder">Квартира</label>
+							<input type="text" id="order_address_apartment" class="bBuyingLine__eText mInputShort mInputApartament" name="order[address_apartment]" value="" />
+						</div>
+
+						<div class="bInputAddress">
+							<label class="bPlaceholder">Этаж</label>
+							<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
+						</div>
 					</div>
 
-					<div class="bInputAddress">
-						<label class="bPlaceholder">Этаж</label>
-						<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
+					<label class="bBuyingLine__eLeft">Пожелания и дополнения</label>
+					<div class="bBuyingLine__eRight">
+						<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
 					</div>
-				</div>
 
-				<label class="bBuyingLine__eLeft">Пожелания и дополнения</label>
-				<div class="bBuyingLine__eRight">
-					<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
-				</div>
-
-				<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
-					<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
-					<div class="bBuyingLine__eRight mSClub">
-						<input id="sclub-number" type="text" class="bBuyingLine__eText" name="order[sclub_card_number]" />
-						<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+					<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
+						<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
+						<div class="bBuyingLine__eRight mSClub">
+							<input id="sclub-number" type="text" class="bBuyingLine__eText" name="order[sclub_card_number]" />
+							<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+						</div>
 					</div>
-				</div>
+				<? endif ?>
 			</div>
+		
 
 			<!-- Methods of payment -->
 			<h2 class="bBuyingSteps__eTitle" data-bind="css: { hidden: paypalECS }">Оплата</h2>

@@ -2380,6 +2380,11 @@ FormValidator.prototype._enableHandlers = function() {
 	for (var i = fields.length - 1; i >= 0; i--) {
 		currentField = fields[i];
 
+		if ( currentField.fieldNode.length === 0 ) {
+			continue;
+		}
+
+
 		if ( currentField.validateOnChange ) {
 			if ( self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] ) {
 				console.log('уже вешали');
