@@ -2453,10 +2453,17 @@
 
 			// Нет необходимого количества товара
 			708: function( product ) {
-				var msg = 'Вы заказали товар '+product.name+' в количестве '+product.quantity+' шт. <br/ >'+product.error.message,
+				var msg = '',
 
 					productErrorIsResolve = $.Deferred();
 				// end of vars
+				
+				if ( product.name && product.error.message && product.quantity ) {
+					msg = 'Вы заказали товар ' + product.name + ' в количестве ' + product.quantity + ' шт. <br/ >' + product.error.message;
+				}
+				else {
+					msg = 'Товар недоступен для продажи';
+				}
 
 				$.when(showError(msg)).then(function() {
 					$.ajax({
