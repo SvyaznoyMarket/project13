@@ -1377,7 +1377,7 @@
 		 */
 		preparationData = function preparationData() {
 			var currentDeliveryBox = null,
-                choosPoint,
+                choosePoint,
 				parts = [],
 				dataToSend = [],
 				tmpPart = {},
@@ -1395,7 +1395,7 @@
 			for ( i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
 				tmpPart = {};
 				currentDeliveryBox = global.OrderModel.deliveryBoxes()[i];
-                choosPoint = currentDeliveryBox.choosenPoint();
+                choosePoint = currentDeliveryBox.choosenPoint();
 				console.log('currentDeliveryBox:');
 				console.log(currentDeliveryBox);
 
@@ -1406,23 +1406,23 @@
 						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().start : '',
 						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : ''
 					],
-					point_id: choosPoint.id,
+					point_id: choosePoint.id,
 					products : []
 				};
 
-                console.log('choosPoint:');
-                console.log(choosPoint);
+                console.log('choosePoint:');
+                console.log(choosePoint);
 
                 if ( 'pickpoint' === currentDeliveryBox.state ) {
                     console.log('Is PickPoint!');
 
                     // Передаём на сервер корректный id постамата, не id точки, а номер постамата
-                    tmpPart.point_id = choosPoint['number'];
+                    tmpPart.point_id = choosePoint['number'];
 
                     // В качестве адреса доставки необходимо передавать адрес постамата,
                     // так как поля адреса при заказе через pickpoint скрыты
-                    /*orderForm.find('#order_address_street').val( choosPoint['street'] );
-                    orderForm.find('#order_address_building').val( choosPoint['house'] );
+                    /*orderForm.find('#order_address_street').val( choosePoint['street'] );
+                    orderForm.find('#order_address_building').val( choosePoint['house'] );
                     orderForm.find('#order_address_number').val('');
                     orderForm.find('#order_address_apartment').val('');
                     orderForm.find('#order_address_floor').val('');*/ // old
@@ -1431,12 +1431,12 @@
 					 * и не в dataToSend, а в массив parts, отдельным полем,
 					 * т.к. может быть разный адрес у разных пикпойнтов
 					 * */
-					// parts.push( {pointAddress: choosPoint['street'] + ' ' + choosPoint['house']} );
+					// parts.push( {pointAddress: choosePoint['street'] + ' ' + choosePoint['house']} );
 					tmpPart.point_address = {
-						street:	choosPoint['street'],
-						house:	choosPoint['house']
+						street:	choosePoint['street'],
+						house:	choosePoint['house']
 					};
-					tmpPart.point_name = choosPoint.point_name; // нужно передавать в ядро
+					tmpPart.point_name = choosePoint.point_name; // нужно передавать в ядро
 				}
 
 				for ( j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {
