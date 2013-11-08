@@ -46,13 +46,13 @@
     </div>
 
     <div class="fixedTopBar__cart mEmpty">
-        <a class="fixedTopBar__cartLink" href="/cart">
+        <a class="fixedTopBar__cartLink" href="<?=  $page->url('cart') ?>">
             <span class="fixedTopBar__cartTitle">Корзина</span>
         </a>
     </div>
 
     <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
-        <a href="/login" class="fixedTopBar__logInLink bAuthLink">Войти</a>
+        <a href="<?= $page->url('user.login') ?>" class="fixedTopBar__logInLink bAuthLink">Войти</a>
         <span class="transGrad"></span>
     </div>
 </div>
@@ -106,7 +106,7 @@
 */?>
 
 <script type="text/html" id="userbar_cart_tmpl">
-    <a class="fixedTopBar__cartLink" href="/cart">
+    <a class="fixedTopBar__cartLink" href="<?=  $page->url('cart') ?>">
         <span class="fixedTopBar__cartTitle">Корзина</span> 
         <strong class="fixedTopBar__cartQuan"><%=quantity%></strong>
         <span class="fixedTopBar__cartPrice"><%=sum%> <span class="rubl">p</span></span>
