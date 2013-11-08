@@ -56,7 +56,7 @@ $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
 $c->corePrivate['password']     = 'dEl23sTOas';
 $c->corePrivate['timeout']      = 5;
-$c->corePrivate['retryCount']   = 3;
+$c->corePrivate['retryCount']   = 2;
 $c->corePrivate['retryTimeout'] = [
     'default' => 1.5,
     'tiny'    => 0.05,
@@ -96,7 +96,7 @@ $c->wordpress['retryTimeout'] = [
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
 $c->dataStore['timeout'] = 0.8;
-$c->dataStore['retryCount'] = 3;
+$c->dataStore['retryCount'] = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 0.04,
     'tiny'    => 0.04,
