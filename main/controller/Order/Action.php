@@ -1436,9 +1436,15 @@ class Action {
         /** @var $orders \Model\Order\Entity[] */
         $orders = [];
         foreach ($orderData as $orderItem) {
-            if (!$orderItem['number'] || !$orderItem['phone']) {
-                \App::logger()->error(['message' => 'Невалидные данные о заказе в сессии', 'orderItem' => $orderItem], ['order']);
+            if (!$orderItem['number']) {
+                \App::logger()->error(['message' => 'Номер заказа не найден в сессии', 'orderItem' => $orderItem], ['order']);
                 continue;
+            }
+            if (!$orderItem['phone']) {
+                \App::logger()->error(['message' => 'Телефонный номер заказа не найден в сессии', 'orderItem' => $orderItem], ['order']);
+                // продолжаем работу
+                $orderItem['phone'] = '81111111111';
+                \App::logger()->error(['message' => 'Используется тестовый номер 81111111111'], ['order']);
             }
 
             // TODO: запрашивать несколько заказов асинхронно

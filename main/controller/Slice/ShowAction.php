@@ -88,17 +88,27 @@ class ShowAction {
 
         $values = [];
         foreach ($requestData as $k => $v) {
-            if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
-            $parts = array_pad(explode('-', $k), 3, null);
+            if (0 === strpos($k, \View\Product\FilterForm::$name)) {
+                $parts = array_pad(explode('-', $k), 3, null);
 
-            if (!isset($values[$parts[1]])) {
-                $values[$parts[1]] = [];
+                if (!isset($values[$parts[1]])) {
+                    $values[$parts[1]] = [];
+                }
+                if (('from' == $parts[2]) || ('to' == $parts[2])) {
+                    $values[$parts[1]][$parts[2]] = $v;
+                } else {
+                    $values[$parts[1]][] = $v;
+                }
+            } elseif (0 === strpos($k, 'tag-')) {
+                // добавляем теги в фильтр
+                if (isset($values['tag'])) {
+                    $values['tag'][] = $v;
+                } else {
+                    $values['tag'] = [$v];
+                }
             }
-            if (('from' == $parts[2]) || ('to' == $parts[2])) {
-                $values[$parts[1]][$parts[2]] = $v;
-            } else {
-                $values[$parts[1]][] = $v;
-            }
+
+            continue;
         }
 
         $filterData = []; // https://wiki.enter.ru/pages/viewpage.action?pageId=20448554#id-%D0%92%D0%BD%D0%B5%D1%88%D0%BD%D0%B8%D0%B9%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D1%84%D0%B5%D0%B9%D1%81-%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%D1%82%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%BE%D0%B2:
@@ -151,7 +161,7 @@ class ShowAction {
 
         $shopScriptException = null;
         $shopScriptSeo = [];
-        if (\App::config()->shopScript['enabled']) {
+        if ($categoryToken && \App::config()->shopScript['enabled']) {
             try {
                 $shopScript = \App::shopScriptClient();
                 $shopScript->addQuery(

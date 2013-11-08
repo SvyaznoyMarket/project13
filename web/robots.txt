@@ -38,7 +38,8 @@ Disallow: /*aksessuari-dlya-avtomobilnoy-elektroniki-invertori-i-preobrazovateli
 Disallow: /*avtomobilnaya-elektronika-fm-transmitteri-2329
 Disallow: /*avtomobilnaya-elektronika-avtomobilnie-holodilniki-3461
 Disallow: /*avtomobilnaya-elektronika-avtomobilnie-pilesosi-3460
-
+Disallow: /*scrollTo=
+Disallow: /*pandora-844
 Host: www.enter.ru
 
 Sitemap: http://www.enter.ru/sitemap.xml

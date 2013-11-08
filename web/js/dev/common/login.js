@@ -394,7 +394,7 @@
 				},
 				requestToServer = function() {
 					this.submitBtnLoadingDisplay( formSubmit );
-					formData.push({name: 'redirect_to', value: urlParams['redirect_to']});
+					formData.push({name: 'redirect_to', value: urlParams['redirect_to'] ? urlParams['redirect_to'] : window.location.href});
 					$.post(this.form.attr('action'), formData, $.proxy(responseFromServer, this), 'json');
 				};
 			// end of functions

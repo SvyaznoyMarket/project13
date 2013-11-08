@@ -78,14 +78,20 @@ class DefaultLayout extends Layout {
     public function slotFooter() {
         $client = \App::contentClient();
 
-        try {
-            $response = $client->query('footer_default');
-        } catch (\Exception $e) {
-            \App::exception()->add($e);
-            \App::logger()->error($e);
+        $response = null;
+        $client->addQuery(
+            'footer_default',
+            [],
+            function($data) use (&$response) {
+                $response = $data;
+            },
+            function(\Exception $e) {
+                \App::exception()->add($e);
+            }
+        );
+        $client->execute();
 
-            $response = array('content' => '');
-        }
+        $response = array_merge(['content' => ''], (array)$response);
 
         $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
 
@@ -224,8 +230,8 @@ class DefaultLayout extends Layout {
             }, function(\Exception $e) use (&$isFailed) {
                 \App::exception()->remove($e);
                 $isFailed = true;
-            }, 5);
-            $client->execute();
+            }, 2);
+            $client->execute(1, 2);
 
             if ($isFailed) {
                 $content = $renderer->render('__mainMenu', [
