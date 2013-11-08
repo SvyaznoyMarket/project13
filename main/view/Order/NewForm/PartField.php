@@ -34,7 +34,7 @@ class PartField {
 
     /**
      * Аддресс пункта — магазина, постамата или тп
-     * @var string
+     * @var array
      */
     private $pointAddress;
 
@@ -144,15 +144,15 @@ class PartField {
     }
 
     /**
-     * @param string $pAddress
+     * @param array $pAddress
      */
     public function setPointAddress( $pAddress )
     {
-        $this->pointAddress = (string)$pAddress;
+        $this->pointAddress = (array)$pAddress;
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getPointAddress()
     {

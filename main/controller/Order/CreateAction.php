@@ -263,7 +263,9 @@ class CreateAction {
             if ( $isPickpoint ) {
                 $orderData['id_pickpoint'] = $orderPart->getPointId();
                 $orderData['name_pickpoint'] = $orderPart->getPointName();
-                $orderData['point_address'] = $orderPart->getPointAddress();
+                //$orderData['point_address'] = $orderPart->getPointAddress();
+                $orderData['address_street'] = $orderPart->getPointAddress()['street'];
+                $orderData['address_number'] = $orderPart->getPointAddress()['house'];
             }
 
             // подарочный сертификат
