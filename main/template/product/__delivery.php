@@ -83,7 +83,7 @@ return function (
 
     <? $closed = !$product->isInShopOnly() ? true : false ?>
     <li class="bDelivery__eItem mDeliveryNow <?= $closed ? 'mClose' : 'mOpen' ?>">
-        <span class="bDeliveryNowClick dotted">Есть в магазинах</span>
+        <span class="bDeliveryNowClick dotted">Сегодня есть в магазинах</span>
         <div class="<?= $closed ? ' hf' : '' ?>">Cегодня, без предзаказа</div>
         <ul class="bDeliveryFreeAddress">
         </ul>
