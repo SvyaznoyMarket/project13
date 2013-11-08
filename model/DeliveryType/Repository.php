@@ -19,13 +19,16 @@ class Repository {
     public function getCollection() {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
+        $hasTransportCompany = \App::user()->getRegion()->getHasTransportCompany(); // Если регион ТК то показываем надпись "Доставка заказа транспортной компанией"
+
         $data = [
             [
                 'id'                     => 1,
                 'token'                  => 'standart',
                 'short_name'             => 'доставка',
-                'name'                   => 'Доставка заказа транспортной компанией',
-                'description'            => 'DHL, DPD, СПСР-Экспресс',
+                'name'                   => $hasTransportCompany ? 'Доставка заказа транспортной компанией' : 'Доставка заказа курьером',
+                'description'            => '',
+                //'description'            => 'DHL, DPD, СПСР-Экспресс',
                 'method_tokens'          => ['standart_furniture', 'standart_other'],
                 'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now'],
             ],
