@@ -181,12 +181,6 @@ class CreateAction {
             throw new \Exception('Невалидная форма заказа %s');
         }
 
-        /** @var $deliveryTypesById \Model\Shop\Entity[] */
-        $shopsById = [];
-        foreach (\RepositoryManager::shop()->getCollectionByRegion($user->getRegion()) as $shop) {
-            $shopsById[$shop->getId()] = $shop;
-        }
-
         if (!(bool)$form->getPart()) {
             throw new \Exception(sprintf('Не получены подзаказы для запроса %s', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
         }
@@ -204,7 +198,7 @@ class CreateAction {
             // общие данные заказа
             $orderData = [
                 'type_id'                   => \Model\Order\Entity::TYPE_ORDER,
-                'geo_id'                    => $user->getRegion()->getId(),
+                'geo_id'                    => \App::config()->lifeGift['regionId'],
                 'user_id'                   => $userEntity ? $userEntity->getId() : null,
                 'is_legal'                  => $userEntity ? $userEntity->getIsCorporative() : false,
                 'payment_id'                => $form->getPaymentMethodId(),
@@ -230,11 +224,6 @@ class CreateAction {
                     'qiwi_phone' => $form->getQiwiPhone(),
                 ],
             ];
-
-            // станция метро
-            if ($user->getRegion()->getHasSubway()) {
-                $orderData['subway_id'] = $form->getSubwayId();
-            }
 
             // адрес
             if (!in_array($deliveryType->getToken(), [\Model\DeliveryType\Entity::TYPE_SELF, \Model\DeliveryType\Entity::TYPE_NOW])) {
@@ -303,7 +292,7 @@ class CreateAction {
                     try {
                         /** @var $products \Model\Product\Entity[] */
                         $products = [];
-                        \RepositoryManager::product()->prepareCollectionById($orderPart->getProductIds(), $user->getRegion(), function($data) use(&$products) {
+                        \RepositoryManager::product()->prepareCollectionById($orderPart->getProductIds(), new \Model\Region\Entity(['id' => \App::config()->lifeGift['regionId']]), function($data) use(&$products) {
                             foreach ($data as $item) {
                                 $products[] = new \Model\Product\Entity($item);
                             }
@@ -418,7 +407,7 @@ class CreateAction {
         if(!empty($isSubscribe) && !empty($email)) {
             $params = [
                 'email'      => $email,
-                'geo_id'     => $user->getRegion()->getId(),
+                'geo_id'     => \App::config()->lifeGift['regionId'],
                 'channel_id' => 1,
             ];
             if ($userEntity = $user->getEntity()) {
