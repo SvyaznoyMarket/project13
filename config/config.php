@@ -139,10 +139,10 @@ $c->pickpoint['retryTimeout'] = [
 
 $c->shopScript['enabled'] = true;
 $c->shopScript['url'] = 'http://admin.enter.ru/v2/';
-$c->shopScript['user'] = 'admin';
-$c->shopScript['password'] = 'booToo9x';
+//$c->shopScript['user'] = 'admin';
+//$c->shopScript['password'] = 'booToo9x';
 $c->shopScript['timeout'] = 3;
-$c->shopScript['retryCount'] = 4;
+$c->shopScript['retryCount'] = 2;
 $c->shopScript['retryTimeout'] = [
     'default' => 0.3,
     'tiny'    => 0.1,
