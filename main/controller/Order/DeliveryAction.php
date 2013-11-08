@@ -473,10 +473,11 @@ class DeliveryAction {
             $this->failResponseData($e, $responseData);
         }
 
-        if(!empty($responseData['products'])) {
+        if (!empty($responseData['products'])) {
             foreach ($responseData['products'] as $keyPi => $productItem) {
+                if (empty($productItem['deliveries'])) continue;
                 foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
-                    if($keyDi == 'pickpoint') {
+                    if ($keyDi == 'pickpoint') {
                         $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
                         $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
                         foreach ($pickpoints as $keyPp => $pickpoint) {
