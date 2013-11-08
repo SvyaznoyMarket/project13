@@ -14,6 +14,10 @@ class AppConfig {
     public $encoding;
     /** @var bool */
     public $debug;
+    /** @var array */
+    public $logger = [
+        'pretty' => null,
+    ];
     /**
      * @var string
      * @hidden

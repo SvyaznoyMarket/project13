@@ -20,6 +20,7 @@ $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
 
 $c->debug = false;
+$c->logger['pretty'] = false;
 $c->appName = 'Enter';
 $c->authToken['name']     = '_token';
 $c->sessionToken = 'enter';
@@ -55,7 +56,7 @@ $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
 $c->corePrivate['password']     = 'dEl23sTOas';
 $c->corePrivate['timeout']      = 5;
-$c->corePrivate['retryCount']   = 3;
+$c->corePrivate['retryCount']   = 2;
 $c->corePrivate['retryTimeout'] = [
     'default' => 1.5,
     'tiny'    => 0.05,
@@ -95,7 +96,7 @@ $c->wordpress['retryTimeout'] = [
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
 $c->dataStore['timeout'] = 0.8;
-$c->dataStore['retryCount'] = 3;
+$c->dataStore['retryCount'] = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 0.04,
     'tiny'    => 0.04,
@@ -136,12 +137,12 @@ $c->pickpoint['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->shopScript['enabled'] = false;
+$c->shopScript['enabled'] = true;
 $c->shopScript['url'] = 'http://admin.enter.ru/v2/';
-$c->shopScript['user'] = 'admin';
-$c->shopScript['password'] = 'booToo9x';
+//$c->shopScript['user'] = 'admin';
+//$c->shopScript['password'] = 'booToo9x';
 $c->shopScript['timeout'] = 3;
-$c->shopScript['retryCount'] = 4;
+$c->shopScript['retryCount'] = 2;
 $c->shopScript['retryTimeout'] = [
     'default' => 0.3,
     'tiny'    => 0.1,
@@ -365,9 +366,9 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
-$c->lifeGift['enabled'] = true;
-$c->lifeGift['regionId'] = 18074;
-$c->lifeGift['labelId'] = 3;
+$c->lifeGift['enabled'] = false;
+$c->lifeGift['regionId'] = 144756;
+$c->lifeGift['labelId'] = 18;
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
