@@ -730,7 +730,7 @@ $(document).ready(function(){
 
 	$('#bServicesTable tr th:first').remove();
 
-	if ( serviceData && serviceData.length ) {
+	if ( global.ENTER.utils.objLen(serviceData) ) {
 		prepareData(serviceData);
 		selectRegion.on('change', changeRegion);
 	}
