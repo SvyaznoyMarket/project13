@@ -500,23 +500,23 @@ class DeliveryAction {
 
             $responseData['deliveryTypes'] = array_values($responseData['deliveryTypes']);
             $responseData['success'] = true;
-        } catch(\Exception $e) {
-            $this->failResponseData($e, $responseData);
-        }
 
-        if (!empty($responseData['products'])) {
-            foreach ($responseData['products'] as $keyPi => $productItem) {
-                if (empty($productItem['deliveries'])) continue;
-                foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
-                    if ($keyDi == 'pickpoint') {
-                        $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
-                        $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
-                        foreach ($pickpoints as $keyPp => $pickpoint) {
-                            $responseData['products'][$keyPi]['deliveries'][$keyDi][$pickpoint['Id']] = $dateData;
+            if (!empty($responseData['products'])) {
+                foreach ($responseData['products'] as $keyPi => $productItem) {
+                    if (empty($productItem['deliveries'])) continue;
+                    foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
+                        if ($keyDi == 'pickpoint') {
+                            $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
+                            $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
+                            foreach ($pickpoints as $keyPp => $pickpoint) {
+                                $responseData['products'][$keyPi]['deliveries'][$keyDi][$pickpoint['Id']] = $dateData;
+                            }
                         }
                     }
                 }
             }
+        } catch(\Exception $e) {
+            $this->failResponseData($e, $responseData);
         }
 
         return $responseData;
