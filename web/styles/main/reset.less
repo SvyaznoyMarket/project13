@@ -136,27 +136,16 @@ a {
     background: transparent;
     color: @black;
     text-decoration: none;
+    outline: none;
 
     &:hover {
       text-decoration: underline;
+      outline: none;
     }
-}
 
-/**
- * Address `outline` inconsistency between Chrome and other browsers.
- */
-
-a:focus {
-    outline: thin dotted;
-}
-
-/**
- * Improve readability when focused and also mouse hovered in all browsers.
- */
-
-a:active,
-a:hover {
-    outline: 0;
+    &:focus, &:active {
+      outline: none;
+    }
 }
 
 /* ==========================================================================

@@ -30,7 +30,7 @@
 <!-- фиксированный вспомогательный блок для каталога -->
 <div class="fixedTopBar">
     <div class="fixedTopBar__up">
-        <a class="fixedTopBar__upLink" href="">
+        <a class="btnGrey fixedTopBar__upLink" href="">
             <em class="cornerTop">&#9650;</em> Бренды и параметры
         </a>
     </div>

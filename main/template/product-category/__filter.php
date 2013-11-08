@@ -85,7 +85,7 @@ return function(
 
     <form class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <div class="bFilterHead">
-            <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+            <a class="btnGrey bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
             <? if ($priceFilter && $productFilter) {
                 /**@var     $productFilter      \Model\Product\Filter
