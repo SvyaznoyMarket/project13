@@ -130,8 +130,7 @@ $(document).ready(function() {
 			})
 
 			// Если клик внутри списка городов по списку магазинов, то ничего не делаем
-			shopsInCity.click( function( event ) {
-				event.preventDefault ? event.preventDefault() : ( event.returnValue = false );
+			shopsInCity.click( function() {
 				return false;
 			} );
 
