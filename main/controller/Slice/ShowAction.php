@@ -161,7 +161,7 @@ class ShowAction {
 
         $shopScriptException = null;
         $shopScriptSeo = [];
-        if (\App::config()->shopScript['enabled']) {
+        if ($categoryToken && \App::config()->shopScript['enabled']) {
             try {
                 $shopScript = \App::shopScriptClient();
                 $shopScript->addQuery(
