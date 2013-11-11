@@ -11,24 +11,46 @@
  * @var $tag                \Model\Tag\Entity
  */
 
-
 $helper = new \Helper\TemplateHelper();
+$tagCategoryTokens = null;
+$categoriesLinks = []; // дочерние категории для тегов:
+$hotlinks = [];
 
 
-$tagCategoryTokens = ['tagToken' => $tag->getToken(), 'categoryToken' => $category->getToken()];
+$filtersParams = [
+    'productFilter'     => $productFilter,
+    'hotlinks'          => $hotlinks,
+    'categories'        => $categories,
+    'selectedCategory'  => $selectedCategory,
+    'openFilter'        => true,
+    'countUrl'          => null,
+];
 
-// дочерние категории для тегов:
-$categoriesLinks = [];
-foreach ( $categories as $child ) {
-    $categoriesLinks[] = [
-        'name' => $child->getName(),
-        'url' => $page->url('tag.category', $tagCategoryTokens),
-        'image' => $child->getImageUrl(),
-        'active' => ( $child->getId() === $selectedCategory->getId() ) ? true : false,
-    ];
+
+if ($category) {
+    $tagCategoryTokens = ['tagToken' => $tag->getToken(), 'categoryToken' => $category->getToken()];
+
+    // дочерние категории для тегов:
+    foreach ( $categories as $child ) {
+        $categoriesLinks[] = [
+            'name' => $child->getName(),
+            'url' => $page->url('tag.category', $tagCategoryTokens),
+            'image' => $child->getImageUrl(),
+            'active' => ( $child->getId() === $selectedCategory->getId() ) ? true : false,
+        ];
+    }
+
+    $filtersParams['baseUrl'] = $helper->url('tag.category', $tagCategoryTokens);
+    //$filterParams['countUrl'] = $helper->url('tag.category.count', $tagCategoryTokens); // <- TODO
+} else {
+
+    $filtersParams['baseUrl'] = $helper->url('tag', [
+        'tagToken' => $tag->getToken()
+    ]);
+    //$filterParams['countUrl'] = $helper->url('tag.category.count', $tagCategoryTokens); // <- TODO
 }
 
-$hotlinks = [];
+
 
 ?>
 <div class="bCatalog">
@@ -36,17 +58,13 @@ $hotlinks = [];
     <? /*if (\App::config()->adFox['enabled']): ?>
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
     <? endif */?>
-    <?= $helper->renderWithMustache('product-category/_listInFilter', ['links' => $categoriesLinks]) // дочерние категории для тегов ?>
+    <?
+    if (!empty($categoriesLinks)) {
+        echo $helper->renderWithMustache('product-category/_listInFilter', ['links' => $categoriesLinks]); // дочерние категории для тегов
+    }
+    ?>
 
-    <?= $helper->render('product-category/__filter', [
-        'baseUrl'           => $helper->url('tag.category', $tagCategoryTokens),
-        'countUrl'          => null, //$helper->url('tag.category.count', $tagCategoryTokens), // <- TODO
-        'productFilter'     => $productFilter,
-        'hotlinks'          => $hotlinks,
-        'categories'        => $categories,
-        'selectedCategory'  => $selectedCategory,
-        'openFilter'        => true,
-    ]) // фильтры ?>
+    <?= $helper->render('product-category/__filter', $filtersParams); // фильтры ?>
 
     <?=
     $helper->render( 'product/__listAction', [
