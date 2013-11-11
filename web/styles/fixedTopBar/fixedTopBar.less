@@ -182,6 +182,8 @@
 		width: 90px;
 		height: 45px;
 		.rounded(0 0 4px 0);
+		position: relative;
+		z-index: 10;
 
 		&.mEmpty {
 			background: #f4f4f4;
@@ -242,7 +244,6 @@
 		float: right;
 		line-height: 49px;
 		padding: 0 0 0 5px;
-		overflow: hidden;
 		position: relative;
 
 		.transGrad {
@@ -266,6 +267,46 @@
 				display: none;
 			}
 		} 
+
+		&:hover {
+
+			.fixedTopBar__logOut {
+				display: block;
+			}
+		}
+	}
+
+	&__logOut {
+		position: absolute;
+		display: none;
+		z-index: 5;
+		top: 46px;
+		left: 0;
+		background: #ffffff;
+		border-width: 5px 2px 2px;
+		border-color: #ffa901;
+		border-style: solid;
+		.rounded(5px);
+		width: 123px;
+
+		.corner {
+			background: url('/css/header/img/corner.png') no-repeat 0 0;
+			top: -10px;
+			height: 10px;
+			left: 50%;
+			margin-left: -10px;
+			position: absolute;
+			width: 20px;
+		}
+	}
+
+	&__logOutLink {
+		display: block;
+		text-align: center;
+		height: 20px;
+		line-height: 20px;
+		font-size: 12px;
+		margin: 10px;
 	}
 
 	&__logInLink {

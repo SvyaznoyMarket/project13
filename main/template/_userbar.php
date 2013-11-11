@@ -116,6 +116,10 @@
 <script type="text/html" id="userbar_user_tmpl">
     <a href="<%=link%>" class="fixedTopBar__logInLink"><%=name%></a>
     <span class="transGrad"></span>
+    <div class="fixedTopBar__logOut">
+        <i class="corner"></i>
+        <a class="mBtnGrey fixedTopBar__logOutLink" href="/logout">Выйти</a>
+    </div>
 </script>
 
 

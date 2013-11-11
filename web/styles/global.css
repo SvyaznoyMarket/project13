@@ -1146,6 +1146,8 @@ table {
   -webkit-border-radius: 0 0 4px 0;
   -moz-border-radius: 0 0 4px 0;
   border-radius: 0 0 4px 0;
+  position: relative;
+  z-index: 10;
 }
 .fixedTopBar__cart.mEmpty {
   background: #f4f4f4;
@@ -1198,7 +1200,6 @@ table {
   float: right;
   line-height: 49px;
   padding: 0 0 0 5px;
-  overflow: hidden;
   position: relative;
 }
 .fixedTopBar__logIn .transGrad {
@@ -1218,6 +1219,41 @@ table {
 }
 .fixedTopBar__logIn.mLogin .transGrad {
   display: none;
+}
+.fixedTopBar__logIn:hover .fixedTopBar__logOut {
+  display: block;
+}
+.fixedTopBar__logOut {
+  position: absolute;
+  display: none;
+  z-index: 5;
+  top: 46px;
+  left: 0;
+  background: #ffffff;
+  border-width: 5px 2px 2px;
+  border-color: #ffa901;
+  border-style: solid;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  width: 123px;
+}
+.fixedTopBar__logOut .corner {
+  background: url('/css/header/img/corner.png') no-repeat 0 0;
+  top: -10px;
+  height: 10px;
+  left: 50%;
+  margin-left: -10px;
+  position: absolute;
+  width: 20px;
+}
+.fixedTopBar__logOutLink {
+  display: block;
+  text-align: center;
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+  margin: 10px;
 }
 .fixedTopBar__logInLink {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhElEQVQYGYWQUQ5AMBBEZ5crOQZnkDiBTw6gn04gnIFjuFJZ3RIkFd2PZjvzkk6HRAQ620Q5dtQQZF4grGD0SSmL3klBO1Dn9sYD4WHSSlqyI3LZMIf+o1CCgv1zj/a9uUh8Z/pGTtXl5j//7TH0d7FxDGsFMU4ZvnoyP7BRxveoUKzwA+X6MCjSOJRiAAAAAElFTkSuQmCC) no-repeat 0 21px;
