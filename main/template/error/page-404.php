@@ -36,8 +36,8 @@
 <script type="text/javascript">
     var _gaq = _gaq || [];
     var nowURL = document.URL;
-    _gaq.push(['_trackEvent', 'Errors', '404', nowURL]);
     _gaq.push(['_setAccount', 'UA-25485956-1']);
+    _gaq.push(['_setDomainName', 'enter.ru']);
     _gaq.push(['_addOrganic', 'nova.rambler.ru', 'query']);
     _gaq.push(['_addOrganic', 'go.mail.ru', 'q']);
     _gaq.push(['_addOrganic', 'nigma.ru', 's']);
@@ -58,6 +58,7 @@
     _gaq.push(['_addOrganic', 'ya.ru', 'q']);
     _gaq.push(['_addOrganic', 'm.yandex.ru', 'query']);
     _gaq.push(['_trackPageview', '/page404' + location.pathname]);
+    _gaq.push(['_trackEvent', 'Errors', '404', nowURL]);
     (function () {
         var ga = document.createElement('script');
         ga.type = 'text/javascript';
