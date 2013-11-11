@@ -88,7 +88,7 @@ if ($paypalECS) {
 									click: $root.chooseDeliveryTypes,
 									attr: { 'for': 'method_'+$data.id }">
 			</label>
-			<p class="bBuyingLine__eDesc" data-bind="text: $data.description"></p>
+			<p class="bBuyingLine__eDesc" data-bind="html: $data.description"></p>
 		</div>
 	</div>
 	<!-- Order Method -->
@@ -104,14 +104,12 @@ if ($paypalECS) {
 
 					<div class="bDeliverySelf"><span data-bind="visible: box.hasPointDelivery, html: box.choosenPoint().name"></span></div>
 
-					<? if (isset($deliveryData['shops']) && (count($deliveryData['shops']) > 1)): ?>
-						<!-- кнопка сменить магазин -->
-						<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery && box.pointList.length > 1,
-													text: 'Сменить магазин',
-													click: box.changePoint">
-						</a>
-						<!-- /кнопка сменить магазин -->
-					<? endif ?>
+					<!-- кнопка сменить магазин -->
+					<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery && box.pointList.length > 1,
+												text: box.changePointButtonText,
+												click: box.changePoint">
+					</a>
+					<!-- /кнопка сменить магазин -->
 				</div>
 
 				<div class="bBuyingLine__eRight">

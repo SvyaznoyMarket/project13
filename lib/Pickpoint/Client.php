@@ -24,7 +24,7 @@ class Client {
 
         $this->curl = $curl;
 
-        $this->daysNames = \App::config()->daysShortNames;
+        $this->daysNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
     }
 
     public function __clone() {
@@ -97,7 +97,11 @@ class Client {
      * @return resource
      */
     private function getUrl($action, array $params = []) {
-        return $this->config['url'] . $action . '?' . http_build_query($params);
+        $ret = $this->config['url'] . $action;
+        if ( !empty($params) ) {
+            $ret .= '?' . http_build_query($params);
+        }
+        return $ret;
     }
 
 

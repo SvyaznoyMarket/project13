@@ -31,16 +31,16 @@
 			
 			console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
 
-			var self = this;
+			var i, self = this;
 
-            // Уникальность продуктов в этом типе доставки
-            //self.isUnique = isUnique || false;
-            self.isUnique = window.OrderModel.orderDictionary.isUniqueDeliveryState(state);
+			// Уникальность продуктов в этом типе доставки
+			//self.isUnique = isUnique || false;
+			self.isUnique = window.OrderModel.orderDictionary.isUniqueDeliveryState(state);
 			// Токен блока
 			self.token = state+'_'+choosenPointForBox;
-            /*if (self.isUnique) {
-                self.token += self.addUniqueSuffix();
-            }*/
+			/*if (self.isUnique) {
+				self.token += self.addUniqueSuffix();
+			}*/
 
 			// Продукты в блоке
 			self.products = [];
@@ -50,6 +50,7 @@
 			self.state = state;
 			// Название метода доставки
 			self.deliveryName = window.OrderModel.orderDictionary.getNameOfState(state);
+			
 			// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
 			self.deliveryPrice = Number.POSITIVE_INFINITY;
 
@@ -71,6 +72,14 @@
 			self.allDatesForBlock = ko.observableArray([]);
 			// Массив всех точек доставок
 			self.pointList = [];
+
+			// Название пункта — магазина, постамата или тп
+			//self.point_name = ''; // здесь не нужно это поле здесь (но в ядро передавать нужно)
+
+
+			// Текст на кнопки смены точки доставки
+			self.changePointButtonText = window.OrderModel.orderDictionary.getChangeButtonText(state);
+
 
 			if ( self.hasPointDelivery && !window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
 				// Доставка в выбранный пункт
@@ -103,6 +112,16 @@
 
 				return;
 			}
+
+			/*if ( 'pickpoint' === state ) {
+				// Получим и сохраним в названии пункта название выбранного пикпойнта:
+				/*for ( i = self.pointList.length - 1; i >= 0; i-- ) {
+					if ( choosenPointForBox == self.pointList[i].id ) {
+						self.point_name = self.pointList[i].point_name;
+					}
+				}* ///old
+				// название и так храниться в choosPoint
+			}*/
 
 			window.OrderModel.deliveryBoxes.push(self);
 		}
@@ -149,20 +168,20 @@
 		};
 
 
-        /**
-         * Генерирует случайное окончание (суффикс) для строки
-         *
-         * @param       {string}      str
-         * @returns     {string}      str
-         */
-        DeliveryBox.prototype.addUniqueSuffix = function( str ) {
-            str = str || '';
-            var randSuff;
-            //randSuff = new Date().getTime();
-            randSuff = Math.floor( (Math.random() * 10000) + 1 );
-            str += '_' + randSuff;
-            return str;
-        };
+		/**
+		 * Генерирует случайное окончание (суффикс) для строки
+		 *
+		 * @param       {string}      str
+		 * @returns     {string}      str
+		 */
+		DeliveryBox.prototype.addUniqueSuffix = function ( str ) {
+			str = str || '';
+			var randSuff;
+			//randSuff = new Date().getTime();
+			randSuff = Math.floor((Math.random() * 10000) + 1);
+			str += '_' + randSuff;
+			return str;
+		};
 
 
 		/**
@@ -188,9 +207,9 @@
 			}
 			else {
 
-                if (self.isUnique) {
-                    newToken += self.addUniqueSuffix();
-                }
+				if (self.isUnique) {
+					newToken += self.addUniqueSuffix();
+				}
 				console.info('удаляем старый блок');
 				console.log('старый токен '+self.token);
 				console.log('новый токен '+newToken);
@@ -310,6 +329,14 @@
 				productImg: (product.image) ? product.image : product.productImg,
 				deliveries: {}
 			};
+
+			if ( self.isUnique && (product.oldQuantity - 1) > 0 ) {
+				console.log('Переделываем deleteUrl:');
+				console.log(tmpProduct.deleteUrl);
+				tmpProduct.deleteUrl = tmpProduct.deleteUrl.replace('delete-', 'add-'); // TODO cart.product.set изменмить Url
+				tmpProduct.deleteUrl += '?quantity=' + ( product.oldQuantity - 1 );
+				console.log(tmpProduct.deleteUrl);
+			}
 
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
@@ -511,7 +538,7 @@
 
 				tempProduct = self.products.pop();
 				tempProductArray.push(tempProduct);
-                newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();;
+				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();;
 				console.log('новый токен '+newToken);
 				console.log(self);
 
