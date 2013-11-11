@@ -50,8 +50,8 @@
 			self.state = state;
 			// Название метода доставки
 			self.deliveryName = window.OrderModel.orderDictionary.getNameOfState(state);
-			// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
-			self.deliveryPrice = Number.POSITIVE_INFINITY;
+			// Стоимость доставки. Берем минимально возможное значение, чтобы сравнивая с ним находить максимальное
+			self.deliveryPrice = Number.NEGATIVE_INFINITY;
 
 			// Выбранная дата доставки
 			self.choosenDate = ko.observable();
@@ -296,9 +296,9 @@
 				return;
 			}
 
-			// Определение стоимости доставки. Если стоимость доставки данного товара ниже стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
+			// Определение стоимости доставки. Если стоимость доставки данного товара выше стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
 			productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
-			self.deliveryPrice = ( self.deliveryPrice > productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
+			self.deliveryPrice = ( self.deliveryPrice < productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
 
 			tmpProduct = {
 				id: product.id,
