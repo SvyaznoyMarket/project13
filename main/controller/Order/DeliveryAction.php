@@ -215,13 +215,6 @@ class DeliveryAction {
                 unset($responseData['deliveryStates']['now']);
             }
 
-            if ($lifeGift) {
-                foreach (['self', 'now', 'pickpoint'] as $i) {
-                    if (isset($responseData['deliveryStates'][$i])) unset($responseData['deliveryStates'][$i]);
-                    if (isset($responseData['deliveryTypes'][$i])) unset($responseData['deliveryTypes'][$i]);
-                }
-            }
-
             // костыль
             $getDates = function(array $dateData) use (&$helper) {
                 $return = [];
