@@ -28,6 +28,8 @@ class Entity {
     private $isCorporative;
     /** @var int */
     private $payOnReceipt;
+    /** @var bool */
+    private $isAvailableToPickpoint = true;
 
     /**
      * @param array $data
@@ -40,6 +42,7 @@ class Entity {
         if (array_key_exists('is_online', $data)) $this->setIsOnline($data['is_online']);
         if (array_key_exists('is_corporative', $data)) $this->setIsCorporative($data['is_corporative']);
         if (array_key_exists('pay_on_receipt', $data)) $this->setPayOnReceipt($data['pay_on_receipt']);
+        if (array_key_exists('available_to_pickpoint', $data)) $this->setIsAvailableToPickpoint($data['available_to_pickpoint']);
 
     }
 
@@ -174,5 +177,25 @@ class Entity {
      */
     public function getPayOnReceipt() {
         return $this->payOnReceipt;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsAvailableToPickpoint() {
+        return $this->isAvailableToPickpoint;
+    }
+
+    /**
+     * @param boo $val
+     */
+    public function setIsAvailableToPickpoint($val) {
+        if ( null === $val) {
+            // Если в ядре не определена (is null) доступность метода оплаты, то по дефолту ставим тру
+            $ret = true;
+        } else {
+            $ret = $val;
+        }
+        $this->isAvailableToPickpoint = (bool)$ret;
     }
 }

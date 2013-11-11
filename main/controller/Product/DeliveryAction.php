@@ -157,7 +157,7 @@ class DeliveryAction {
                 'success' => false,
                 'error'   => [
                     'code' => $e->getCode(),
-                    'code' => 'Не удалось расчитать доставку' . (\App::config()->debug ? ('' . $e->getMessage()) : ''),
+                    'message' => 'Не удалось расчитать доставку: ' . (\App::config()->debug ? ('' . $e->getMessage()) : ''),
                 ],
             ];
         }

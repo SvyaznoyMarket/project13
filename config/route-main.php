@@ -332,7 +332,7 @@ return [
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление товара в корзину
-    'cart.product.set' => [
+    'cart.product.set' => [ // TODO cart.product.set изменмить Url
         'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
     ],

@@ -125,7 +125,7 @@
 
 					// Разделим товары, продуктом считаем уникальную единицу товара:
 					// Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
-					nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
+					nowProductsToNewBox = global.OrderModel.prepareProductsQuantityByUniq(productsToNewBox);
 					for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
 						nowProduct = [ nowProductsToNewBox[j] ];
 						global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox);
@@ -218,6 +218,68 @@
 	};
 
 	/**
+	 * Кастомный бинд для отображения блоков с методами оплаты: "прямо сейчас", "при получении", в кредит..
+	 */
+	ko.bindingHandlers.payBlockVisible = {
+		update: function( element ) {
+			var node = $(element),
+				vars = node.data('vars'),
+				toHide = (vars && vars.toHide) ? vars.toHide : false,
+				choosenDeliveryTypeId = global.OrderModel.choosenDeliveryTypeId,
+				deliveryBoxes = global.OrderModel.deliveryBoxes(),
+				dCount = deliveryBoxes.length,
+				testDeliveryId,
+				testPaymentId,
+				nodeHidded = 1
+				;
+
+			if ( !dCount ) {
+				return;
+			}
+
+			/*
+			 * Cтарый механизм показа/сокрытия блоков
+			 * показываем "кредиты" и "оплату сейчас", если кол-во блоков доставки == 1
+			 */
+			if ( 1 == dCount ) {
+				nodeHidded = 0;
+				console.log('Кол-во deliveryBoxes == 1: Показываем payBlock');
+			}
+			else {
+				nodeHidded = 1;
+				console.log('Кол-во deliveryBoxes > 1: Скрываем payBlock');
+			}
+
+			/**
+			 * Если указано toHide в дата-аттрибуте, то скрываем блоки с недоступными методами
+			 */
+			if ( toHide ) {
+
+				for ( testDeliveryId in toHide ) {
+					if ( undefined === toHide[testDeliveryId].length ) {		// !не массив, скрываем для всех
+						if ( $.inArray(choosenDeliveryTypeId, toHide) >= 0 ) {
+							nodeHidded = 1;
+							console.log('toHide NoArr: Скрываем payBlock');
+						}
+					}
+					else if ( choosenDeliveryTypeId == testDeliveryId ) { 		// !массив, обходим блоки оплаты
+						for ( testPaymentId in toHide[testDeliveryId] ) {
+							if ( testPaymentId == vars.typeId ) {
+								nodeHidded = 1;
+								console.log('toHide Arr: Скрываем payBlock');
+							}
+						}// end of second for
+					}
+				}// end of first for
+
+			}
+
+			nodeHidded ? node.hide() : node.show(); // показываем либо скрываем элемент
+		}
+	};
+
+
+	/**
 	 * Кастомный бинд отображения методов оплаты
 	 */
 	ko.bindingHandlers.paymentMethodVisible = {
@@ -225,12 +287,17 @@
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val),
 				node = $(element),
-				maxSum = parseInt($(element).data('value')['max-sum'], 10),
-				methodId = $(element).data('value')['method_id'];
+				nodeData = node.data('value'),
+				maxSum = parseInt( nodeData['max-sum'], 10 ),
+				methodId = nodeData['method_id'],
+				isAvailableToPickpoint = nodeData['isAvailableToPickpoint'];
 			// end of vars
 
-
-			if ( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId ) {
+			if (
+			 /* 6 is DeliveryTypeId for PickPoint  */
+			( 6 === global.OrderModel.choosenDeliveryTypeId && false == isAvailableToPickpoint ) ||
+			( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId ) ||
+			( !isNaN(maxSum) && maxSum < unwrapVal ) ) {
 				node.hide();
 
 				return;
@@ -245,6 +312,7 @@
 
 			if ( maxSum < unwrapVal ) {
 				node.hide();
+
 			}
 			else {
 				node.show();
@@ -647,7 +715,7 @@
 			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
 			if ( global.OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
 				global.OrderModel.popupWithPoints({
-					header: data.description,
+					header: data.name,
 					points: global.OrderModel.orderDictionary.getAllPointsByState(priorityState)
 				});
 
@@ -686,7 +754,7 @@
 		 * @param	{Object}	data	Данные удалямого товара
 		 */
 		deleteItem: function( data ) {
-			console.info('удаление');
+			console.info('удаление товара');
 
 			var reqArray = null;
 
@@ -785,7 +853,7 @@
 		 * @param       {Array}   productsToNewBox
 		 * @returns     {Array}   productsUniq
 		 */
-		prepareProductsByUniq: function prepareProductsByUniq( productsToNewBox ) {
+		prepareProductsQuantityByUniq: function prepareProductsQuantityByUniq( productsToNewBox ) {
 			var productsUniq = [],
 				nowProduct,
 				j, k;
@@ -793,10 +861,11 @@
 			for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
 				//!!! важно клонировать объект, дабы не портить для др. типов доставки
 				nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
+                nowProduct.sum = nowProduct.price;
+                nowProduct.quantity = 1;
+				nowProduct.oldQuantity = productsToNewBox[j].quantity; // сохраняем старое кол-во товаров в блоке
 				for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
-					nowProduct.quantity = 1;
-					nowProduct.sum = nowProduct.price;
-					productsUniq.push(nowProduct);
+                    productsUniq.push(nowProduct);
 				}
 			}
 
@@ -872,10 +941,17 @@
 
 			// Нет необходимого количества товара
 			708: function( product ) {
-				var msg = 'Вы заказали товар '+product.name+' в количестве '+product.quantity+' шт. <br/ >'+product.error.message,
+				var msg = '',
 
 					productErrorIsResolve = $.Deferred();
 				// end of vars
+				
+				if ( product.name && product.error.message && product.quantity ) {
+					msg = 'Вы заказали товар ' + product.name + ' в количестве ' + product.quantity + ' шт. <br/ >' + product.error.message;
+				}
+				else {
+					msg = 'Товар недоступен для продажи';
+				}
 
 				$.when(showError(msg)).then(function() {
 					$.ajax({
