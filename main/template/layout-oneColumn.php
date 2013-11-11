@@ -136,23 +136,26 @@
         <!-- /krible.ru Teleportator end -->
     </footer><!--/ Подвал-->
 
+    <a id="upper" class="upper" href="#">Наверх</a>
+
     <?= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
 
-    <?= $page->slotRegionSelection() ?>
-    <?= $page->slotBodyJavascript() ?>
-    <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>
-    <?= $page->slotYandexMetrika() ?>
-    <?= $page->slotAdvanceSeoCounter() ?>
-    <?= $page->slotMyThings() ?>
-    <?= $page->slotAdriver() ?>
-    <?= $page->slotPartnerCounter() ?>
+    <?= $page->slotRegionSelection() ?>
 
-    <? if (\App::config()->analytics['enabled']): ?>
-        <div id="adblenderCommon" class="jsanalytics"></div>
-    <? endif ?>
-        
-    <a id="upper" class="upper" href="#">Наверх</a>
+    <div style="position:absolute; height: 0; z-index:-1;">
+        <?= $page->slotBodyJavascript() ?>
+        <?= $page->slotInnerJavascript() ?>
+        <?= $page->slotYandexMetrika() ?>
+        <?= $page->slotAdvanceSeoCounter() ?>
+        <?= $page->slotMyThings() ?>
+        <?= $page->slotAdriver() ?>
+        <?= $page->slotPartnerCounter() ?>
+
+        <? if (\App::config()->analytics['enabled']): ?>
+            <div id="adblenderCommon" class="jsanalytics"></div>
+        <? endif ?>
+    </div>
 </body>
 </html>
