@@ -215,13 +215,6 @@ class DeliveryAction {
                 unset($responseData['deliveryStates']['now']);
             }
 
-            if ($lifeGift) {
-                foreach (['self', 'now', 'pickpoint'] as $i) {
-                    if (isset($responseData['deliveryStates'][$i])) unset($responseData['deliveryStates'][$i]);
-                    if (isset($responseData['deliveryTypes'][$i])) unset($responseData['deliveryTypes'][$i]);
-                }
-            }
-
             // костыль
             $getDates = function(array $dateData) use (&$helper) {
                 $return = [];
@@ -473,10 +466,11 @@ class DeliveryAction {
             $this->failResponseData($e, $responseData);
         }
 
-        if(!empty($responseData['products'])) {
+        if (!empty($responseData['products'])) {
             foreach ($responseData['products'] as $keyPi => $productItem) {
+                if (empty($productItem['deliveries'])) continue;
                 foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
-                    if($keyDi == 'pickpoint') {
+                    if ($keyDi == 'pickpoint') {
                         $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
                         $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
                         foreach ($pickpoints as $keyPp => $pickpoint) {
