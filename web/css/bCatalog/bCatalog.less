@@ -3,13 +3,18 @@
 }
 
 .mBtnGrey {
-	.grayGradDark();
+
+	.grayGradLight();
 	.rounded(5px);
-	.box-shadow(1px 1px 3px #c7c7c7);
 	border: 1px solid #c7c7c7;
 
 	&:hover {
-		.grayGradDark2();
+		.grayGradDark();
+		text-decoration: none;
+	} 
+
+	&:active {
+		background: #efefef;
 		text-decoration: none;
 	} 
 }

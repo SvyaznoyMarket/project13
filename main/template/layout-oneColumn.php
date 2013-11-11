@@ -92,17 +92,19 @@
             <ul class="bannersList">
                 <li class="bannersList__item"><img src="/styles/footer/img/prava-potreb.gif" /></li>
                 <li class="bannersList__item"><a href="/akit"><img src="/styles/footer/img/akita.png" /></a></li>
-                <li class="bannersList__item"><div id="teleportator"></div></li>
+                <li class="bannersList__item"><div class="teleportator" id="teleportator"></div></li>
             </ul>
 
             <ul class="applist">
+                <li class="applist__item"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img src="/styles/footer/img/apple_new.png" /></a></li>
+                <li class="applist__item mTitle">Мобильные приложения</li>
                 <li class="applist__item">
                     <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
-                      <img alt="Get it on Google Play" src="https://developer.android.com/images/brand/ru_generic_rgb_wo_45.png" />
+                      <img alt="Get it on Google Play" src="/styles/footer/img/google_new.png" />
                     </a>
                 </li>
-                <li class="applist__item"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img src="/styles/footer/img/appstore.png" /></a></li>
-                <li class="applist__item mTitle">Мобильные приложения</li>
+                <li class="applist__item"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img src="/styles/footer/img/windows_new.png" /></a></li>
+                
             </ul>
         </div>
 

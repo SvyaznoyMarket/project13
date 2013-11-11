@@ -9056,9 +9056,6 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     display: block;
     width: 170px;
     height: 35px;
@@ -9108,6 +9105,10 @@
     background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
     text-decoration: none;
   }
+  .btnBuy .btnBuy__eLink:active {
+    background: #f79200;
+    text-decoration: none;
+  }
   .jewel .btnBuy .btnBuy__eLink.mDisabled {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -9121,25 +9122,6 @@
     color: #a6a6a6;
     border: 1px solid #e6e6e6;
     background: #e6e6e6;
-  }
-  .goodsbox .btnBuy {
-    float: right;
-    width: 38px;
-    height: 25px;
-  }
-  .goodsbox .btnBuy a {
-    display: block;
-    width: 38px;
-    height: 25px;
-    text-indent: -9999px;
-    background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
-  }
-  .goodsbox .btnBuy a.mBought,
-  .goodsbox .btnBuy a:hover {
-    background-position: -102px 0;
-  }
-  .goodsbox .btnBuy a.mDisabled {
-    background-position: -64px -26px;
   }
 }
 /*---END---СТИЛИ КНОПКИ "КУПИТЬ"---*/
@@ -11165,6 +11147,20 @@
 /*------СТИЛИ КАТАЛОГА------*/
 @media all {
   .mBtnGrey {
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #ebebeb));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #ebebeb 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebebeb', GradientType=0);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #c7c7c7;
+  }
+  .mBtnGrey:hover {
     background: #e5e5e5;
     background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
@@ -11173,23 +11169,10 @@
     background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
     filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 1px 1px 3px #c7c7c7;
-    -moz-box-shadow: 1px 1px 3px #c7c7c7;
-    box-shadow: 1px 1px 3px #c7c7c7;
-    border: 1px solid #c7c7c7;
+    text-decoration: none;
   }
-  .mBtnGrey:hover {
-    background: #c5c5c5;
-    background: -moz-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #c5c5c5));
-    background: -webkit-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -o-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -ms-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #c5c5c5 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#c5c5c5', GradientType=0);
+  .mBtnGrey:active {
+    background: #efefef;
     text-decoration: none;
   }
   .bListing {
