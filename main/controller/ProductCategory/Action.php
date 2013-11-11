@@ -442,8 +442,15 @@ class Action {
         if ($pageNum > 1) {
             $seoContent = '';
         }
-        // промо-контент не показываем на страницах пагинации, брэнда, фильтров
-        if ($pageNum > 1 || !empty($brand) || (bool)((array)$request->get(\View\Product\FilterForm::$name, []))) {
+
+        $excludeTokens = empty($catalogJson['promo_exclude_token']) ? [] : $catalogJson['promo_exclude_token'];
+
+        if (
+            // промо-контент не показываем на страницах пагинации, брэнда, фильтров
+            $pageNum > 1 || !empty($brand) || (bool)((array)$request->get(\View\Product\FilterForm::$name, [])) ||
+            // ..или если категория в списке исключений
+            ($excludeTokens && in_array($category->getToken(), $excludeTokens) )
+        ) {
             $promoContent = '';
         }
 

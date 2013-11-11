@@ -24,9 +24,10 @@ if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->get
         <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category, 'catalogJsonBulk' => $catalogJsonBulk)) ?>
     <? endforeach ?>
     </div>
-<? elseif(!empty($promoContent)): ?>
-    <?= $promoContent ?>
+<? /*elseif(!empty($promoContent)): ?>
+    <?= $promoContent */?>
 <? else: ?>
+    <?= $promoContent ?>
     <? foreach ($category->getChild() as $child) {
         $pager = $productPagersByCategory[$child->getId()];
         if (!$pager || !$pager->count()) continue;
