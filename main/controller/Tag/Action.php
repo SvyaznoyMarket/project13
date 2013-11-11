@@ -88,6 +88,115 @@ class Action {
             $category = empty($seoTagJson['acts_as_category']) ? reset($categoriesByToken) : null;
         }
 
+        //$category = null;
+
+
+        // фильтры // new
+        $filters = [];
+        \RepositoryManager::productFilter()->prepareCollectionBySearchText($tag->getName(), \App::user()->getRegion(), function($data) use (&$filters) {
+            foreach ($data as $item) {
+                $filters[] = new \Model\Product\Filter\Entity($item);
+            }
+        }, function (\Exception $e) { \App::exception()->remove($e); });
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
+
+        // магазины
+        $shop = null;
+
+        print '<pre>$$ ';
+        //print_r($categoryToken);
+        //print_r($category);
+        //print_r($filters);
+        //print_r($tag->getName());
+        //print_r($category);
+        print '</pre>';
+
+        $categoryId = $category ? $category->getId() : null;
+        $selectedCategory = $categoryId ? \RepositoryManager::productCategory()->getEntityById($categoryId) : null;
+        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+        // /фильтры
+
+
+
+
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+        $productSorting->setActive($sortingName, $sortingDirection);
+
+        // если сортировка по умолчанию и в json заданы настройки сортировок,
+        // то применяем их
+        if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
+            $sort = $catalogJson['sort'];
+        } else {
+            $sort = $productSorting->dump();
+        }
+
+        // вид товаров
+        $productView = \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT;
+        if ($category) {
+            $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
+        }
+
+
+        // листалка
+        $limit = \App::config()->product['itemsPerPage'];
+        $repository = \RepositoryManager::product();
+        $repository->setEntityClass(
+            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
+                ? '\\Model\\Product\\ExpandedEntity'
+                : '\\Model\\Product\\CompactEntity'
+        );
+        $productPager = $repository->getIteratorByFilter(
+            $productFilter->dump(),
+            $sort,
+            ($pageNum - 1) * $limit,
+            $limit
+        );
+        $productPager->setPage($pageNum);
+        $productPager->setMaxPerPage($limit);
+        // проверка на максимально допустимый номер страницы
+        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
+            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+        }
+
+        // ajax
+        if ($request->isXmlHttpRequest() || 'true' == $request->get('ajax')) {
+            $productVideosByProduct = [];
+
+            return new \Http\JsonResponse([
+                'list'           => (new \View\Product\ListAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productPager,
+                    $productVideosByProduct,
+                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
+                ),
+                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productFilter,
+                    \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
+                ),
+                'pagination'     => (new \View\PaginationAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productPager
+                ),
+                'sorting'        => (new \View\Product\SortingAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productSorting
+                ),
+                /*'page'          => [
+                    'title'     => $this->getPageTitle()
+                ],*/
+            ]);
+            // Old:
+            /*return new \Http\Response(\App::templating()->render('product/_list', array(
+                'page'   => new \View\Layout(),
+                'pager'  => $productPager,
+                'view'   => $productView,
+                'isAjax' => true,
+            )));*/
+        }
+
         if($category) {
             // seo из shopscript
             $shopScriptSeo = [];
@@ -102,79 +211,21 @@ class Action {
                 $shopScript->execute();
             }
 
-            // сортировка
-            $productSorting = new \Model\Product\Sorting();
-            list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
-            $productSorting->setActive($sortingName, $sortingDirection);
-
-            // если сортировка по умолчанию и в json заданы настройки сортировок,
-            // то применяем их
-            if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
-                $sort = $catalogJson['sort'];
-            } else {
-                $sort = $productSorting->dump();
-            }
-
-            // вид товаров
-            $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
             // фильтры
+            /* //old
             $filter = new \Model\Product\Filter\Entity();
             $filter->setId('tag');
             $productFilter = new \Model\Product\Filter(array($filter));
             $productFilter->setCategory($category);
             $productFilter->setValues(array('tag' => array($tag->getId())));
-
-            ///////   NewFilters
-            $filters = [];
-            \RepositoryManager::productFilter()->prepareCollectionBySearchText('вино', \App::user()->getRegion(), function($data) use (&$filters) {
-                foreach ($data as $item) {
-                    $filters[] = new \Model\Product\Filter\Entity($item);
-                }
-            }, function (\Exception $e) { \App::exception()->remove($e); });
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
-
-            print '<pre>$$ ';
-            //print_r($filters);
-            print '</pre>';
-            $shop = [];
-
-            $categoryId = $category->getId();
-            $selectedCategory = $categoryId ? \RepositoryManager::productCategory()->getEntityById($categoryId) : null;
-            $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
-			///////   /NewFilters
+            */
 
             if(empty($seoTagJson['acts_as_category']) || $request->isXmlHttpRequest()) {
-                // листалка
-                $limit = \App::config()->product['itemsPerPage'];
-                $repository = \RepositoryManager::product();
-                $repository->setEntityClass(
-                    \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-                        ? '\\Model\\Product\\ExpandedEntity'
-                        : '\\Model\\Product\\CompactEntity'
-                );
-                $productPager = $repository->getIteratorByFilter(
-                    $productFilter->dump(),
-                    $sort,
-                    ($pageNum - 1) * $limit,
-                    $limit
-                );
-                $productPager->setPage($pageNum);
-                $productPager->setMaxPerPage($limit);
-                // проверка на максимально допустимый номер страницы
-                if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-                    throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
-                }
+                // листалка ...
             }
 
-            // ajax
-            if ($request->isXmlHttpRequest()) {
-                return new \Http\Response(\App::templating()->render('product/_list', array(
-                    'page'   => new \View\Layout(),
-                    'pager'  => $productPager,
-                    'view'   => $productView,
-                    'isAjax' => true,
-                )));
-            }
+            // ajax ...
+
 
             $setPageParameters = function(\View\Layout $page) use (
                 &$tag,
@@ -210,7 +261,7 @@ class Action {
                 $page->setParam('catalogJson', $catalogJson);
                 $page->setParam('shopScriptSeo', $shopScriptSeo);
             };
-        } else {
+        } else { // if (!$category)
             $setPageParameters = function(\View\Layout $page) use (
                 &$tag,
                 &$category,
@@ -219,9 +270,17 @@ class Action {
                 &$hotlinks,
                 &$seoContent,
                 &$sidebarCategoriesTree,
-                &$categoriesByToken
+                &$categoriesByToken,
+                &$productFilter,
+                &$productPager,
+                &$productSorting,
+                &$productView
             ) {
                 $page->setParam('tag', $tag);
+                $page->setParam('productPager', $productPager);
+                $page->setParam('productFilter', $productFilter);
+                $page->setParam('productSorting', $productSorting);
+                $page->setParam('productView', $productView);
                 $page->setParam('category', $category);
                 $page->setParam('categoryToken', $categoryToken);
                 $page->setParam('categories', array_values($categoriesByToken));
