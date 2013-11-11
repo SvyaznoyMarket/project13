@@ -35,7 +35,7 @@
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
         <? endif ?>
 
-        <? if (empty($promoContent)): ?>
+        <? if (!empty($promoContent)): ?>
             <?= $promoContent ?>
         <? else: ?>
             <?= $helper->render('product-category/__children', ['category' => $category, 'promoStyle' => $promoStyle]) // дочерние категории ?>
