@@ -14,7 +14,7 @@ return function(
 ?>
 
 
-    <div class="bRangeSlider" <?= !empty($promoStyle['bRangeSlider']) ? "style=\"{$promoStyle['bRangeSlider']}\"" : '' ?>>
+    <div class="bRangeSlider"<? if(!empty($promoStyle['bRangeSlider'])): ?> style="<?= $promoStyle['bRangeSlider'] ?>"<? endif ?>>
         <? if ($filter->isPrice()): ?>
             <span class="bRangeSlider__eTitle"><?= $filter->getName() ?></span>
         <? endif ?>

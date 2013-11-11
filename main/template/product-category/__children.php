@@ -19,8 +19,7 @@ return function(
 
     <?= $helper->renderWithMustache('product-category/_listInFilter', [
         'links' => $links,
-        'bCatalogListStyle' => !empty($promoStyle['bCatalogList']) ? $promoStyle['bCatalogList'] : '',
-        'bCatalogList__eItemStyle' => !empty($promoStyle['bCatalogList__eItem']) ? $promoStyle['bCatalogList__eItem'] : '',
+        'promoStyle' => !empty($promoStyle) ? $promoStyle : '',
     ]) ?>
 
 <? };

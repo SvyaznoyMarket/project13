@@ -28,8 +28,10 @@
 
     <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
-    <?= 'jewel' === $listingStyle ? '<div class="bCustomFilter" '. (!empty($promoStyle['promo_image']) ? "style=\"{$promoStyle['promo_image']}\"" : '') .'>' : '' ?>
-        <h1 class="bTitlePage" <?= !empty($promoStyle['title']) ? "style=\"{$promoStyle['title']}\"" : '' ?>><?= $title ?></h1>
+    <? if ('jewel' === $listingStyle): ?>
+        <div class="bCustomFilter"<? if(!empty($promoStyle['promo_image'])): ?> style="<?= $promoStyle['promo_image'] ?>"<? endif ?>>
+    <? endif ?>
+        <h1 class="bTitlePage"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?></h1>
 
         <? if (\App::config()->adFox['enabled']): ?>
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
@@ -56,7 +58,7 @@
             'productSorting' => $productSorting,
         ]) // сортировка, режим просмотра, режим листания ?>
 
-    <?= 'jewel' === $listingStyle ? '</div>' : '' // конец блока class="bCustomFilter" ?>
+    <? if ('jewel' === $listingStyle): ?></div><? endif // конец блока class="bCustomFilter" ?>
 
     <?= $helper->render('product/__list', [
         'pager'                  => $productPager,

@@ -85,7 +85,7 @@ return function(
 ?>
 
     <form class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
-        <div class="bFilterHead" <?= !empty($promoStyle['bFilterHead']) ? "style=\"{$promoStyle['bFilterHead']}\"" : '' ?>>
+        <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
             <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
             <? if ($priceFilter && $productFilter) {
@@ -100,7 +100,7 @@ return function(
 
             <!-- SEO теги -->
             <? if(!empty($hotlinks)): ?>
-                <ul class="bPopularSection" <?= !empty($promoStyle['bPopularSection']) ? "style=\"{$promoStyle['bPopularSection']}\"" : '' ?>>
+                <ul class="bPopularSection"<? if(!empty($promoStyle['bPopularSection'])): ?> style="<?= $promoStyle['bPopularSection'] ?>"<? endif ?>>
                     <? foreach ($hotlinks as $hotlink): ?>
                         <li class="bPopularSection__eItem"><a class="bPopularSection__eText" href="<?= $hotlink['url'] ?>"><?= $hotlink['title'] ?></a></li>
                     <? endforeach ?>
