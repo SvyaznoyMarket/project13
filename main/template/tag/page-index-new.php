@@ -17,6 +17,13 @@ $categoriesLinks = []; // дочерние категории для тегов:
 $hotlinks = [];
 
 
+if ($category) {
+    $tagCategoryTokens = ['tagToken' => $tag->getToken(), 'categoryToken' => $category->getToken()];
+} else {
+    $tagCategoryTokens = ['tagToken' => $tag->getToken()];
+}
+
+
 $filtersParams = [
     'productFilter'     => $productFilter,
     'hotlinks'          => $hotlinks,
@@ -24,33 +31,25 @@ $filtersParams = [
     'selectedCategory'  => $selectedCategory,
     'openFilter'        => true,
     'countUrl'          => null,
+    'baseUrl'           => $helper->url('tag', $tagCategoryTokens),
 ];
 
+//$filterParams['countUrl'] = $helper->url('tag.category.count', $tagCategoryTokens); // <- TODO
 
-if ($category) {
-    $tagCategoryTokens = ['tagToken' => $tag->getToken(), 'categoryToken' => $category->getToken()];
 
-    // дочерние категории для тегов:
-    foreach ( $categories as $child ) {
-        $categoriesLinks[] = [
-            'name' => $child->getName(),
-            'url' => $page->url('tag.category', $tagCategoryTokens),
-            'image' => $child->getImageUrl(),
-            'active' => ( $child->getId() === $selectedCategory->getId() ) ? true : false,
-        ];
-    }
+// подкатегории для тегов:
+foreach ( $categories as $subCategory ) {
+    /** @var $subCategory \Model\Product\Category\Entity */
 
-    $filtersParams['baseUrl'] = $helper->url('tag.category', $tagCategoryTokens);
-    //$filterParams['countUrl'] = $helper->url('tag.category.count', $tagCategoryTokens); // <- TODO
-} else {
+    $tagCategoryTokens['categoryToken'] = $subCategory->getToken();
 
-    $filtersParams['baseUrl'] = $helper->url('tag', [
-        'tagToken' => $tag->getToken()
-    ]);
-    //$filterParams['countUrl'] = $helper->url('tag.category.count', $tagCategoryTokens); // <- TODO
+    $categoriesLinks[] = [
+        'name'      => $subCategory->getName(),
+        'url'       => $page->url('tag.category', $tagCategoryTokens),
+        'image'     => $subCategory->getImageUrl(),
+        'active'    => ( $selectedCategory && $subCategory->getId() === $selectedCategory->getId() ) ? true : false,
+    ];
 }
-
-
 
 ?>
 <div class="bCatalog">

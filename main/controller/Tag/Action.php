@@ -85,10 +85,10 @@ class Action {
                 throw new \Exception\NotFoundException(sprintf('Категория @%s не найдена', $categoryToken));
             }
         } else {
-            $category = empty($seoTagJson['acts_as_category']) ? reset($categoriesByToken) : null;
+            //$category = empty($seoTagJson['acts_as_category']) ? reset($categoriesByToken) : null;
+            $category = null;
         }
 
-        //$category = null;
 
 
         // фильтры // new
