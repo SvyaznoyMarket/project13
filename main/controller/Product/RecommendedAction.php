@@ -11,10 +11,6 @@ class RecommendedAction {
     public function execute(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->crossss['enabled']) {
-            (new \Controller\Crossss\ProductAction())->recommended($request, $productId);
-        }
-
         return (new \Controller\Smartengine\Action())->pullProductAlsoViewed($request, $productId);
     }
 }
