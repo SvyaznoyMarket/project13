@@ -36,10 +36,13 @@ $(document).ready(function() {
 	 */
 	$('.bCountSection').goodsCounter({
 		onChange:function( count ){
-			var spinnerFor = $('.bCountSection').attr('data-spinner-for'),
+			var spinnerFor = this.attr('data-spinner-for'),
 				bindButton = $('.'+spinnerFor),
 				newHref = bindButton.attr('href');
 			// end of vars
+
+			console.log('counter change');
+			console.log(bindButton);
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
 

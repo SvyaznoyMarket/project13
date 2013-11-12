@@ -32,7 +32,7 @@ return function (
     <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId() . '-lifeGift')]) ?>
 
     <div class="bWidgetBuy__eBuy btnBuy mBtnLifeGift">
-        <a id="<?= \View\Id::cartButtonForProduct($product->getId() . '-lifeGift') ?>" class="bLifeGiftLink jsLifeGiftButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Подарить</a>
+        <a class="bLifeGiftLink jsLifeGiftButton <?= \View\Id::cartButtonForProduct($product->getId() . '-lifeGift') ?>" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Подарить</a>
     </div>
 
     <div class="bLiftGiftLogo"><img src="/css/lifeGift/img/podari-zhizn-logo-people.png" /></div>
