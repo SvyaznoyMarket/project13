@@ -29,8 +29,10 @@ return function (
 
     <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 
+    <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId() . '-lifeGift')]) ?>
+
     <div class="bWidgetBuy__eBuy btnBuy mBtnLifeGift">
-        <a class="bLifeGiftLink jsLifeGiftButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Подарить</a>
+        <a id="<?= \View\Id::cartButtonForProduct($product->getId() . '-lifeGift') ?>" class="bLifeGiftLink jsLifeGiftButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Подарить</a>
     </div>
 
     <div class="bLiftGiftLogo"><img src="/css/lifeGift/img/podari-zhizn-logo-people.png" /></div>
