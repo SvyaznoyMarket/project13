@@ -1,0 +1,139 @@
+.reviewSend {
+	text-decoration: underline;
+	color: #a6a6a6;
+
+	&:hover {
+		text-decoration: none;
+		color: #a6a6a6;
+	}
+}
+
+.reviewPopup {
+	width: 700px;
+
+	.productName {
+		overflow: hidden;
+		font-size: 18px;
+		margin: 0 0 20px;
+
+		&__inner {
+			width: 2000px;
+		}
+	}
+
+	.place2Col {
+		float: left;
+		width: 343px;
+
+		&.mRight {
+			float: right;
+		}
+
+		.reviewForm__textarea {
+			width: 330px;
+		}
+	}
+}
+
+.reviewForm {
+
+	&__place {
+		border: none;
+		padding: 0;
+		margin: 0;
+
+		&.mCol {
+			float: left;
+			width: 600px;
+
+			.place2Col {
+			 	width: 284px;
+			 	margin: 0 16px 0 0;
+			}
+		}
+
+		&.mLeft {
+			float: left;
+			width: 580px;
+		}
+
+		&.mRight {
+			float: right;
+		}
+	}
+
+	&__label {
+		display: block;
+		font-size: 14px;
+		margin: 0 0 5px;
+	}
+
+	&__textarea {
+		border: 1px solid #c9c9c9;
+		.rounded(5px);
+		resize: none;
+		width: 688px;
+		height: 70px;
+		padding: 5px;
+		margin: 0 0 15px;
+	}
+
+	&__text {
+		display: block;
+		padding: 0px 5px;
+		width: 272px;
+		height: 28px;
+		line-height: 28px;
+	}
+
+	&__button {
+		display: block;
+		padding: 0px 15px 3px;
+		height: 30px;
+		border: none;
+		font-size: 14px;
+		line-height: 30px;
+		cursor: pointer;
+		border: 1px solid #f28900;
+		.rounded(5px);
+		margin: 21px 0 0 0;
+	}
+
+	&__stars {
+		font-size: 14px;
+		margin: 10px 0 15px;
+
+		.reviewForm__label {
+			display: inline-block;
+			vertical-align: top;
+	 		*display: inline;
+	 		zoom: 1;
+			width: 60px;
+		}
+
+		.starsList {
+			display: inline-block;
+			vertical-align: top;
+	 		*display: inline;
+	 		zoom: 1;
+			width: 160px;
+		}
+	}
+
+	&__footnote {
+ 		font-size: 11px;
+ 		margin: 5px 0 0;
+ 		display: inline-block;
+ 		vertical-align: top;
+ 		*display: inline;
+ 		zoom: 1;
+ 	}
+}
+
+
+.popupTitle {
+	margin: 0 0 15px;
+	text-transform: uppercase;
+	font-size: 30px;
+	font-family: "Enter";
+}
