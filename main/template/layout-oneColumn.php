@@ -96,8 +96,9 @@
             </ul>
 
             <ul class="applist">
-                <li class="applist__item"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img src="/styles/footer/img/apple_new.png" /></a></li>
                 <li class="applist__item mTitle">Мобильные приложения</li>
+                <li class="applist__item"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img src="/styles/footer/img/apple_new.png" /></a></li>
+                
                 <li class="applist__item">
                     <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
                       <img alt="Get it on Google Play" src="/styles/footer/img/google_new.png" />

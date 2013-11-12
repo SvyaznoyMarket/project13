@@ -16,13 +16,13 @@
 
 .footer {
 	width: 960px;
-	margin: -212px auto 0;
-	height: 212px;
+	margin: -213px auto 0;
+	height: 213px;
 	position: relative;
 
 	&__inner {
 		width: 940px;
-		padding: 0 10px 15px;
+		padding: 0 10px 10px;
 		margin: 0 auto;
 		background: @white;
 	}
@@ -178,7 +178,7 @@
 
 		&__item {
 			float: right;
-			margin-left: 5px;
+			margin: 0 0 5px 5px;
 			.opacity(0.5);
 			.transition(all 0.2s ease);
 
@@ -186,12 +186,19 @@
 				.opacity(1);
 			}
 
+			img {
+				display: block;
+			}
+
 			&.mTitle {
-				width: 75px;
-				padding: 3px 0 0;
+				width: 130px;
+				padding: 3px 5px 0;
 				.opacity(1);
-				height: 37px;
 				color: #515151;
+				height: 32px;
+				color: #515151;
+				background: #e6e6e6;
+				.rounded(4px);
 			}
 		}
 	}
