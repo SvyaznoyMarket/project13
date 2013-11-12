@@ -231,4 +231,9 @@ class Layout extends \View\DefaultLayout {
 
     }
 
+    public function slotUserbar() {
+        return $this->render('_userbar', [
+            'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,
+        ]);
+    }
 }

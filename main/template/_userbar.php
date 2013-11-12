@@ -1,8 +1,11 @@
 <?php
 /**
  * @var $page \View\Layout
+ * @var $product \Model\Product\Entity|null
+ * @var $category \Model\Product\Category\Entity|null
  */
-?>
+$helper = new \Helper\TemplateHelper();
+$links = []; ?>
 
 <!-- Lightbox -->
 <!-- <div class="bBlackBox">
@@ -27,83 +30,91 @@
     </div>
 </div> -->
 
-<!-- фиксированный вспомогательный блок для каталога -->
-<div class="fixedTopBar">
-    <div class="fixedTopBar__up">
-        <a class="btnGrey fixedTopBar__upLink" href="">
-            <em class="cornerTop">&#9650;</em> Бренды и параметры
-        </a>
-    </div>
 
-    <div class="fixedTopBar__crumbs">
-        <a class="fixedTopBar__crumbsImg" href=""><img class="crumbsImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></a>
+<? if ('product.category' === \App::request()->attributes->get('route')): // блок для каталога ?>
 
-        <ul class="fixedTopBar__crumbsList">
-            <li class="fixedTopBar__crumbsListItem"><a class="fixedTopBar__crumbsListLink" href="">Товары на каждый день</a></li>
-            <li class="fixedTopBar__crumbsListItem"><a class="fixedTopBar__crumbsListLink" href="">Товары для дома</a></li>
-            <li class="fixedTopBar__crumbsListItem mLast">Бытовая химия</li>
-        </ul>
-    </div>
+    <? if ($category) {
+        if ($count = count($category->getAncestor())) {
+            $i = 1;
+            foreach ($category->getAncestor() as $ancestor) {
+                $links[] = ['name' => $ancestor->getName(), 'url'  => $ancestor->getLink(), 'last' => $i == $count];
+                $i++;
+            }
+        } else {
+            $links[] = ['name' => $category->getName(), 'url'  => null, 'last' => true];
+        }
+    } ?>
 
-    <div class="fixedTopBar__cart mEmpty">
-        <a class="fixedTopBar__cartLink" href="<?=  $page->url('cart') ?>">
-            <span class="fixedTopBar__cartTitle">Корзина</span>
-        </a>
-    </div>
+    <div class="fixedTopBar">
+        <div class="fixedTopBar__up">
+            <a class="btnGrey fixedTopBar__upLink" href="">
+                <em class="cornerTop">&#9650;</em> Бренды и параметры
+            </a>
+        </div>
 
-    <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
-        <a href="<?= $page->url('user.login') ?>" class="fixedTopBar__logInLink bAuthLink">Войти</a>
-        <span class="transGrad"></span>
-    </div>
-</div>
-<!--/ Фиксированный вспомогательный блок для каталога -->
+        <div class="fixedTopBar__crumbs">
+            <a class="fixedTopBar__crumbsImg" href=""><img class="crumbsImg" src="<?= $category ? $category->getImageUrl() : '' ?>" /></a>
+            <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
+        </div>
 
-<? /*
-<!-- фиксированный вспомогательный блок для карточки товара -->
-<div class="fixedTopBar mProdCard">
-    <div class="fixedTopBar__crumbs">
-        <div class="fixedTopBar__crumbsImg"><img class="crumbsImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></div>
+        <div class="fixedTopBar__cart mEmpty">
+            <a class="fixedTopBar__cartLink" href="<?=  $page->url('cart') ?>">
+                <span class="fixedTopBar__cartTitle">Корзина</span>
+            </a>
+        </div>
 
-        <div class="wrapperCrumbsList">
-            <ul class="fixedTopBar__crumbsList">
-                <li class="fixedTopBar__crumbsListItem"><a href="">Товары на каждый день</a></li>
-                <li class="fixedTopBar__crumbsListItem mLast">Смартфон Samsung Galaxy Mega 6.3 8 ГБ GT-I9200 белый</li>
-            </ul>
-
-            <div class="transGradWhite"></div>
+        <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
+            <a href="<?= $page->url('user.login') ?>" class="fixedTopBar__logInLink bAuthLink">Войти</a>
+            <span class="transGrad"></span>
         </div>
     </div>
 
-    <div class="fixedTopBar__buy">
-        <div class="bPrice"><strong class="jsPrice">9 490</strong> <span class="rubl">p</span></div>
 
-        <div class="bCountSection clearfix" data-spinner-for="">
-            <button class="bCountSection__eM">-</button>
-            <input class="bCountSection__eNum" type="text" value="1">
-            <button class="bCountSection__eP">+</button>
-            <span>шт.</span>
-        </div><!--/counter -->
+<? elseif ('product' === \App::request()->attributes->get('route')): // блок для карточки товара ?>
 
-        <div class="bWidgetBuy__eBuy btnBuy">
-            <a href="" class="btnBuy__eLink jsBuyButton" data-group="">Купить</a>
+    <? if ($product) {
+        $links[] = ['name' => $product->getPrefix(), 'url' => null, 'last' => false];
+        $links[] = ['name' => $product->getWebName(), 'url' => null, 'last' => true];
+    } ?>
+
+    <div class="fixedTopBar mProdCard">
+        <div class="fixedTopBar__crumbs">
+            <div class="fixedTopBar__crumbsImg"><img class="crumbsImg" src="<?= $product ? $product->getImageUrl() : '' ?>" /></div>
+
+            <div class="wrapperCrumbsList">
+                <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
+                <div class="transGradWhite"></div>
+            </div>
+        </div>
+
+        <div class="fixedTopBar__buy">
+            <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+
+            <div class="bCountSection clearfix" data-spinner-for="">
+                <button class="bCountSection__eM">-</button>
+                <input class="bCountSection__eNum" type="text" value="1">
+                <button class="bCountSection__eP">+</button>
+                <span>шт.</span>
+            </div><!--/counter -->
+
+            <div class="bWidgetBuy__eBuy btnBuy">
+                <a href="" class="btnBuy__eLink jsBuyButton" data-group="">Купить</a>
+            </div>
+        </div>
+
+        <div class="fixedTopBar__cart mEmpty">
+            <a class="fixedTopBar__cartLink" href="<?= $page->url('cart') ?>">
+                <span class="fixedTopBar__cartTitle">Корзина</span>
+            </a>
+        </div>
+
+        <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
+            <a href="<?= $page->url('user.login') ?>" class="fixedTopBar__logInLink bAuthLink">Войти</a>
+            <span class="transGrad"></span>
         </div>
     </div>
+<? endif ?>
 
-    <div class="fixedTopBar__cart"><!-- Добавляем класс-модификатор mEmpty, если карзина пуста -->
-        <a class="fixedTopBar__cartLink" href="">
-            <span class="fixedTopBar__cartTitle">Корзина</span> 
-            <strong class="fixedTopBar__cartQuan">5</strong>
-            <span class="fixedTopBar__cartPrice">74 987 <span class="rubl">p</span></span>
-        </a>
-    </div>
-
-    <div class="fixedTopBar__logIn"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
-        <a href="" class="fixedTopBar__logInLink">Бурлакова Таня Владимировна</a>
-        <span class="transGrad"></span>
-    </div>
-</div>
-<!--/ Фиксированный вспомогательный блок для карточки товара -->
-*/?>
 
 <script type="text/html" id="userbar_cart_tmpl">
     <a class="fixedTopBar__cartLink" href="<?=  $page->url('cart') ?>">
