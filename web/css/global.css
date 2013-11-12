@@ -13203,6 +13203,52 @@
     background-position: -14px -14px;
   }
 }
+@media all {
+  .bCatalog.mCustomCss .bCustomFilter {
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+  .bCatalog.mCustomCss .bTitlePage {
+    color: #fff;
+    font-size: 48px;
+    font-weight: normal;
+    margin: 50px 0 35px;
+  }
+  .bCatalog.mCustomCss .bCatalogList__eItem {
+    margin: 0 10px 10px 0;
+    background: #f6f6f6;
+    background: rgba(246, 246, 246, 0.9);
+  }
+  .bCatalog.mCustomCss .bFilter,
+  .bCatalog.mCustomCss .bSortingLine {
+    background: #f6f6f6;
+    background: rgba(246, 246, 246, 0.9);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
+  .bCatalog.mCustomCss .bSortingLine {
+    margin-bottom: 0;
+    padding: 7px 10px 10px;
+  }
+  .bCatalog.mCustomCss .bSortingLine.mPagerBottom {
+    margin-bottom: 10px;
+  }
+  .bCatalog.mCustomCss .bFilterSlider .ui-slider-handle {
+    background: url('/css/bCatalog/img/bBtnSliderCustom.png') no-repeat 0 0;
+  }
+  .bCatalog.mCustomCss .bFilterSlider .ui-slider-range {
+    background: #000000;
+  }
+  .bCatalog.mCustomCss .bFilterValues {
+    width: 720px;
+  }
+}
 /*---END---СТИЛИ КАТАЛОГА---*/
 /*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
 @media all {

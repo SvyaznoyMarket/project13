@@ -1,0 +1,55 @@
+.bCatalog {
+
+	&.mCustomCss {
+
+		.bCustomFilter {
+			position: relative;
+			overflow: hidden;
+			background-repeat: no-repeat;
+			background-position: 0 0;
+			padding: 10px;
+			margin-bottom: 10px;
+			border-radius: 4px;
+		}
+
+		.bTitlePage {
+			color: #fff;
+			font-size: 48px;
+			font-weight: normal;
+			margin: 50px 0 35px;
+		}
+
+		.bCatalogList__eItem {
+			margin: 0 10px 10px 0;
+			background: rgb(246,246,246);
+			background: rgba(246,246,246,0.9);
+		}
+
+		.bFilter, .bSortingLine {
+			background: rgb(246,246,246);
+			background: rgba(246,246,246,0.9);
+			.rounded(3px);
+		}
+
+		.bSortingLine {
+			margin-bottom: 0;
+			padding: 7px 10px 10px;
+
+			&.mPagerBottom {
+				margin-bottom: 10px;
+			}
+		}
+
+		.bFilterSlider .ui-slider-handle {
+			background: url('@{base-url}/bCatalog/img/bBtnSliderCustom.png') no-repeat 0 0;
+		}
+
+		.bFilterSlider .ui-slider-range {
+			background: @black;
+		}
+
+		.bFilterValues {
+			width: 720px;
+		}
+	}
+}

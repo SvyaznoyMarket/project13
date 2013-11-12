@@ -16,36 +16,49 @@
 <?
     $helper = new \Helper\TemplateHelper();
     if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
+
+    // получаем стиль листинга
+    $listingStyle = !empty($catalogJson['listing_style']) ? $catalogJson['listing_style'] : '';
+
+    // получаем promo стили
+    $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? $catalogJson['promo_style'] : [];
 ?>
 
-<div class="bCatalog">
+<div class="bCatalog<?= 'jewel' === $listingStyle ? ' mCustomCss' : '' ?>">
 
     <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
-	<h1  class="bTitlePage"><?= $title ?></h1>
-
-    <? if (\App::config()->adFox['enabled']): ?>
-    <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
+    <? if ('jewel' === $listingStyle): ?>
+        <div class="bCustomFilter"<? if(!empty($promoStyle['promo_image'])): ?> style="<?= $promoStyle['promo_image'] ?>"<? endif ?>>
     <? endif ?>
+        <h1 class="bTitlePage"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?></h1>
 
-    <? if (!empty($promoContent)): ?>
-        <?= $promoContent ?>
-    <? else: ?>
-        <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
-    <? endif ?>
+        <? if (\App::config()->adFox['enabled']): ?>
+        <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
+        <? endif ?>
 
-    <?= $helper->render('product-category/__filter', [
-        'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
-        'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
-        'productFilter' => $productFilter,
-        'hotlinks'      => $hotlinks,
-        'openFilter'    => false,
-    ]) // фильтры ?>
+        <? if (!empty($promoContent)): ?>
+            <?= $promoContent ?>
+        <? else: ?>
+            <?= $helper->render('product-category/__children', ['category' => $category, 'promoStyle' => $promoStyle]) // дочерние категории ?>
+        <? endif ?>
 
-    <?= $helper->render('product/__listAction', [
-        'pager'          => $productPager,
-        'productSorting' => $productSorting,
-    ]) // сортировка, режим просмотра, режим листания ?>
+        <?= $helper->render('product-category/__filter', [
+            'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
+            'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
+            'productFilter' => $productFilter,
+            'hotlinks'      => $hotlinks,
+            'openFilter'    => false,
+            'promoStyle'    => $promoStyle,
+        ]) // фильтры ?>
+    
+
+        <?= $helper->render('product/__listAction', [
+            'pager'          => $productPager,
+            'productSorting' => $productSorting,
+        ]) // сортировка, режим просмотра, режим листания ?>
+
+    <? if ('jewel' === $listingStyle): ?></div><? endif // конец блока class="bCustomFilter" ?>
 
     <?= $helper->render('product/__list', [
         'pager'                  => $productPager,
