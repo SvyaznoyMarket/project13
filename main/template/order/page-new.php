@@ -203,7 +203,7 @@ if ($paypalECS) {
 					Итого с доставкой:&nbsp;&nbsp;
 
 					<span class="bDelivery">
-						<span data-bind="text: window.printPrice( box.fullPrice + box.deliveryPrice )"></span>&nbsp;<span class="rubl">p</span>
+						<span data-bind="text: window.printPrice( box.totalBlockSum )"></span>&nbsp;<span class="rubl">p</span>
 					</span>
 				</li>
 			</ul>

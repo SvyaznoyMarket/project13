@@ -94,7 +94,7 @@ class Entity {
      * @param int $sum
      */
     public function setSum($sum) {
-        $this->sum = (int)$sum;
+        $this->sum = (string)$sum;
     }
 
     /**
