@@ -165,7 +165,7 @@
 		 */
 		if ( ( global.OrderModel.hasCoupons() && global.OrderModel.deliveryBoxes().length > 1 ) || 
 			( global.OrderModel.appliedCoupon() && global.OrderModel.appliedCoupon().sum && 
-			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) ) {
+			( parseFloat(global.OrderModel.totalSum()) <= parseFloat(global.OrderModel.appliedCoupon().sum) ) ) ) {
 			console.warn('Нужно удалить купон');
 
 			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
