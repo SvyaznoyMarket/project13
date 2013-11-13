@@ -284,42 +284,6 @@
 		}
 	}
 
-	&__dd {
-		position: absolute;
-		display: none;
-		z-index: 5;
-		top: 49px;
-		left: -1px;
-		background: #ffffff;
-		border: 1px solid #ccc;
-		.rounded(0 0 0 5px);
-		width: 228px;
-		.drop-shadow(0px, 4px, 11px, 0.3);
-	}
-
-	&__cartOn {
-
-		.transGradWhite {
-			background: url("@{base-url}/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
-			position: absolute;
-			left: 0;
-			top: 219px;
-			height: 26px;
-			width: 228px;
-			display: block;
-		}
-	}
-
-	&__logOutLink {
-		display: block;
-		text-align: center;
-		margin: 10px;
-		height: 26px;
-		line-height: 26px;
-		font-size: 14px;
-		width: 105px;
-	}
-
 	&__logInLink {
 		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhElEQVQYGYWQUQ5AMBBEZ5crOQZnkDiBTw6gn04gnIFjuFJZ3RIkFd2PZjvzkk6HRAQ620Q5dtQQZF4grGD0SSmL3klBO1Dn9sYD4WHSSlqyI3LZMIf+o1CCgv1zj/a9uUh8Z/pGTtXl5j//7TH0d7FxDGsFMU4ZvnoyP7BRxveoUKzwA+X6MCjSOJRiAAAAAElFTkSuQmCC) no-repeat 0 21px;
 		padding-left: 15px;
@@ -370,80 +334,6 @@
 			zoom: 1;
 			width: 111px;
 			padding-left: 0;
-		}
-	}
-}
-
-.cartList {
-	max-height: 245px;
-	min-height: 65px;
-	overflow: auto;
-
-	&__item {
-		height: 55px;
-		padding: 5px 0 5px 5px;
-		overflow: hidden;
-		font-size: 11px;
-
-		&:hover {
-			background: #fff7e6;
-		}
-	}
-
-	&__itemLink {
-		display: inline-block;
-		width: 30px;
-		margin: 0 5px 0 0;
-
-		vertical-align: top;
-		*display: inline;
-		zoom: 1;
-	}
-
-	&__itemImg {
-		max-height: 40px;
-		max-width: 30px;
-	}
-
-	&__itemName {
-		display: inline-block;
-		width: 110px;
-		line-height: 1.2;
-
-		vertical-align: top;
-		*display: inline;
-		zoom: 1;
-	}
-
-	&__itemInfo {
-		display: inline-block;
-		width: 50px;
-
-		vertical-align: middle;
-		*display: inline;
-		zoom: 1;
-
-		line-height: 1.2;
-	}
-
-	.del {
-		text-decoration: underline;
-	}
-
-	.price {
-		display: block;
-	}
-}
-
-.quickOrder {
-	border-top: 1px solid #ccc;
-	padding: 10px;
-	width: 208px;
-
-	&.btnBuy {
-
-		.btnBuy__eLink {
-			width: 100%;
 		}
 	}
 }

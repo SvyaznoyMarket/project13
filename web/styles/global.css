@@ -1243,40 +1243,6 @@ table {
 .fixedTopBar__logIn:hover .fixedTopBar__logOut {
   display: block;
 }
-.fixedTopBar__dd {
-  position: absolute;
-  display: none;
-  z-index: 5;
-  top: 49px;
-  left: -1px;
-  background: #ffffff;
-  border: 1px solid #ccc;
-  -webkit-border-radius: 0 0 0 5px;
-  -moz-border-radius: 0 0 0 5px;
-  border-radius: 0 0 0 5px;
-  width: 228px;
-  -webkit-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
-}
-.fixedTopBar__cartOn .transGradWhite {
-  background: url("/styles/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
-  position: absolute;
-  left: 0;
-  top: 219px;
-  height: 26px;
-  width: 228px;
-  display: block;
-}
-.fixedTopBar__logOutLink {
-  display: block;
-  text-align: center;
-  margin: 10px;
-  height: 26px;
-  line-height: 26px;
-  font-size: 14px;
-  width: 105px;
-}
 .fixedTopBar__logInLink {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhElEQVQYGYWQUQ5AMBBEZ5crOQZnkDiBTw6gn04gnIFjuFJZ3RIkFd2PZjvzkk6HRAQ620Q5dtQQZF4grGD0SSmL3klBO1Dn9sYD4WHSSlqyI3LZMIf+o1CCgv1zj/a9uUh8Z/pGTtXl5j//7TH0d7FxDGsFMU4ZvnoyP7BRxveoUKzwA+X6MCjSOJRiAAAAAElFTkSuQmCC) no-repeat 0 21px;
   padding-left: 15px;
@@ -1320,62 +1286,6 @@ table {
   zoom: 1;
   width: 111px;
   padding-left: 0;
-}
-.cartList {
-  max-height: 245px;
-  min-height: 65px;
-  overflow: auto;
-}
-.cartList__item {
-  height: 55px;
-  padding: 5px 0 5px 5px;
-  overflow: hidden;
-  font-size: 11px;
-}
-.cartList__item:hover {
-  background: #fff7e6;
-}
-.cartList__itemLink {
-  display: inline-block;
-  width: 30px;
-  margin: 0 5px 0 0;
-  vertical-align: top;
-  *display: inline;
-  zoom: 1;
-}
-.cartList__itemImg {
-  max-height: 40px;
-  max-width: 30px;
-}
-.cartList__itemName {
-  display: inline-block;
-  width: 110px;
-  line-height: 1.2;
-  vertical-align: top;
-  *display: inline;
-  zoom: 1;
-}
-.cartList__itemInfo {
-  display: inline-block;
-  width: 50px;
-  vertical-align: middle;
-  *display: inline;
-  zoom: 1;
-  line-height: 1.2;
-}
-.cartList .del {
-  text-decoration: underline;
-}
-.cartList .price {
-  display: block;
-}
-.quickOrder {
-  border-top: 1px solid #ccc;
-  padding: 10px;
-  width: 208px;
-}
-.quickOrder.btnBuy .btnBuy__eLink {
-  width: 100%;
 }
 /**
 * Анимация количества товаров в корзине
@@ -1504,6 +1414,12 @@ table {
   -moz-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
 }
+.fixedTopBar__logOut {
+  width: 127px;
+  -webkit-border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
+}
 .fixedTopBar__cartOn .transGradWhite {
   background: url("/styles/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
   position: absolute;
@@ -1517,10 +1433,8 @@ table {
   display: block;
   text-align: center;
   margin: 10px;
-  height: 26px;
-  line-height: 26px;
-  font-size: 14px;
-  width: 105px;
+  height: 25px;
+  line-height: 25px;
 }
 .fixedTopBar .cartList {
   max-height: 245px;
