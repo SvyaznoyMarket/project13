@@ -334,6 +334,16 @@ if ($paypalECS) {
 						<span class="bPlaceholder">+7</span> 
 						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
 					</div>
+
+                    <label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
+                    <div class="bBuyingLine__eRight">
+                        <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
+
+                        <div class="bSubscibeCheck bInputList">
+                            <input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
+                            <label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
+                        </div>
+                    </div>
 				<? else: ?>
 					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
 					<div class="bBuyingLine__eRight">
