@@ -67,7 +67,7 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->reviewsStore['url']          = 'http://reviews.enter.ru/reviews/';
+$c->reviewsStore['url']          = 'http://admin.enter.ru/reviews/';
 $c->reviewsStore['retryCount']   = 2;
 $c->reviewsStore['timeout']      = 0.36;
 $c->reviewsStore['retryTimeout'] = [
@@ -313,12 +313,6 @@ $c->smartengine['tenantid']       = 'ENojUTRcD8';
 $c->smartengine['logEnabled']     = true;
 $c->smartengine['logDataEnabled'] = true;
 $c->smartengine['sslVerify']      = true;
-
-$c->crossss['enabled'] = true;
-$c->crossss['timeout'] = 0.3;
-$c->crossss['apiUrl']  = 'http://crossss.com/api.ashx';
-$c->crossss['id']      = 45;
-$c->crossss['apiKey']  = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';
 
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;

@@ -599,18 +599,6 @@ class Action {
 
         $paymentUrl = $order->getPaymentUrl(); // раньше было: $paymentUrl = \App::session()->get('paymentUrl');
 
-        // crossss
-        if (\App::config()->crossss['enabled']) {
-            try {
-                foreach ($orders as $order) {
-                    (new \Controller\Crossss\OrderAction())->create($order, $productsById);
-                }
-            } catch (\Exception $e) {
-                \App::logger()->error($e, ['crossss']);
-            }
-        }
-
-
         $page = new \View\Order\CompletePage();
         $page->setParam('form', $form);
         $page->setParam('orders', $orders);

@@ -47,11 +47,6 @@ class ProductAction {
                     break;
             }
 
-            // crossss
-            if (\App::config()->crossss['enabled'] && ($quantity > 0)) {
-                (new \Controller\Crossss\CartAction())->product($product);
-            }
-
             $productInfo = [
                 'id'    =>  $product->getId(),
                 'name'  =>  $product->getName(),

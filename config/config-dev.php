@@ -33,7 +33,6 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->reviewsStore['url']          = 'http://reviews.ent3.ru/reviews/';
 $c->reviewsStore['timeout']      *= 5;
 $c->reviewsStore['retryCount']   = 3;
 $c->reviewsStore['retryTimeout'] = [
@@ -74,10 +73,6 @@ $c->product['pushRecommendation'] = false;
 $c->smartengine['apiUrl']    = 'https://selightstage.smartengine.at/se-light/api/1.0/json/';
 $c->smartengine['cert']      = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 $c->smartengine['sslVerify'] = false;
-
-$c->crossss['id']      = 68; // *.ent3.ru
-$c->crossss['apiKey']  = 'fe7fbe9540e14f1db1f9f047d1e54b25';
-$c->crossss['timeout'] = 0.8;
 
 $c->paymentPsb['terminal']     = '79036768';
 $c->paymentPsb['merchant']     = '790367686219999';
