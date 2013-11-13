@@ -44,8 +44,10 @@
 
 			// Продукты в блоке
 			self.products = [];
-			// Общая стоимость блока
+			// Общая стоимость товаров в блоке
 			self.fullPrice = 0;
+			// Полная стоимость блока с учетом доставки
+			self.totalBlockSum = 0;
 			// Метод доставки
 			self.state = state;
 			// Название метода доставки
@@ -340,7 +342,7 @@
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
 			// Добавляем стоимость продукта к общей стоимости блока доставки
-			self.fullPrice += tmpProduct.price;
+			self.fullPrice = ENTER.utils.numMethods.sumDecimal(tmpProduct.price, self.fullPrice);
 
 			self.products.push(tmpProduct);
 		};
@@ -355,7 +357,8 @@
 				nowTotalSum = window.OrderModel.totalSum();
 			// end of vars
 
-			nowTotalSum += self.fullPrice + self.deliveryPrice;
+			self.totalBlockSum = ENTER.utils.numMethods.sumDecimal(self.fullPrice, self.deliveryPrice);
+			nowTotalSum = ENTER.utils.numMethods.sumDecimal(self.totalBlockSum, nowTotalSum);
 			window.OrderModel.totalSum(nowTotalSum);
 
 			console.log(window.OrderModel.totalSum());
@@ -1818,7 +1821,7 @@
 		 */
 		if ( ( global.OrderModel.hasCoupons() && global.OrderModel.deliveryBoxes().length > 1 ) || 
 			( global.OrderModel.appliedCoupon() && global.OrderModel.appliedCoupon().sum && 
-			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) ) {
+			( parseFloat(global.OrderModel.totalSum()) <= parseFloat(global.OrderModel.appliedCoupon().sum) ) ) ) {
 			console.warn('Нужно удалить купон');
 
 			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
