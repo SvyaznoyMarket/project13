@@ -86,35 +86,33 @@ class Action {
             }
         } else {
             //$category = empty($seoTagJson['acts_as_category']) ? reset($categoriesByToken) : null;
-            $category = null;
+            $category = null; // Если нет категории, то нет, не нужно подставлять первую
         }
 
 
 
-        // фильтры // new
-        $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionBySearchText($tag->getName(), \App::user()->getRegion(), function($data) use (&$filters) {
-            foreach ($data as $item) {
-                $filters[] = new \Model\Product\Filter\Entity($item);
-            }
-        }, function (\Exception $e) { \App::exception()->remove($e); });
+        // фильтры
+        $filters = []; // фильтр для тегов
+        $filter = new \Model\Product\Filter\Entity();
+        $filter->setId('tag');
+        $filter->setIsInList(false);
+        $filters[] = $filter;
+
+        \RepositoryManager::productFilter()->prepareCollectionBySearchText($tag->getName(),
+        //\RepositoryManager::productFilter()->prepareCollectionByTag( $tag,
+            \App::user()->getRegion(),
+            function($data) use (&$filters) {
+                foreach ($data as $item) {
+                    $filters[] = new \Model\Product\Filter\Entity($item);
+                }
+            }, function (\Exception $e) { \App::exception()->remove($e); });
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
 
-        // магазины
-        $shop = null;
-
-        print '<pre>$$ ';
-        //print_r($categoryToken);
-        //print_r($category);
-        //print_r($filters);
-        //print_r($tag->getName());
-        //print_r($category);
-        print '</pre>';
-
-        $categoryId = $category ? $category->getId() : null;
-        $selectedCategory = $categoryId ? \RepositoryManager::productCategory()->getEntityById($categoryId) : null;
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
-        // /фильтры
+        $productFilter = new \Model\Product\Filter( $filters );
+        if ($category) {
+            $productFilter->setCategory($category);
+        }
+        $productFilter->setValues(array('tag' => array($tag->getId())));
 
 
 
@@ -174,7 +172,8 @@ class Action {
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productFilter,
-                    \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
+                    \App::router()->generate('product.category',
+                        ['categoryPath' => $category ? $category->getPath() : null])
                 ),
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
