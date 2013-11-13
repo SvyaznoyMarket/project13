@@ -35,3 +35,5 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
         <? endif ?>
     </fieldset>
 </form>
+
+<p class="bFormLogin__eComplete jsRegisterFormComplete"></p>

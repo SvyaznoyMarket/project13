@@ -2456,6 +2456,16 @@
     font-size: 30px;
     font-family: "Enter";
   }
+  .bFormLogin__eComplete {
+    display: none;
+    text-align: center;
+    padding: 10px;
+    background: #ffa901;
+    font-size: 16px;
+    color: white;
+    width: 305px;
+    border-radius: 4px;
+  }
   .bFormLogin__ePlace {
     display: inline-block;
     margin-right: 30px;
