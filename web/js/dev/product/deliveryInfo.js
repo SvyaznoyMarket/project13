@@ -35,48 +35,8 @@
 		return false;
 	}
 
-		/**
-		 * Показ попапа с магазином
-		 *
-		 * @param	{Object}	popup		Контейнер с попапом
-		 * @param	{Object}	button		Кнопка «перейти к магазину» в попапе
-		 * @param	{Object}	position	Координаты магазина, зашитые в ссылку
-		 * @param	{String}	url			Ссылка на магазин
-		 * @return	{Boolean}
-		 */
-	var showAvalShop = function showAvalShop() {
-			var popup = $('#avalibleShop'),
-				button = popup.find('.bOrangeButton'),
-				position = {
-					latitude: $(this).data('lat'),
-					longitude: $(this).data('lng')
-				},
-				url = $(this).attr('href');
-			// end of vars
-
-			button.attr('href', url);
-			$('#ymaps-avalshops').css({'width':600, 'height':400});
-
-			$.when(MapInterface.ready( 'yandex', {
-				yandex: $('#infowindowtmpl'), 
-				google: $('#infowindowtmpl')
-			})).done(function(){
-				MapInterface.onePoint( position, 'ymaps-avalshops' );
-			});
-
-			popup.css({'width':600, 'height':425});
-			popup.lightbox_me({
-				centered: true,
-				onLoad: function() {
-				},
-				onClose: function(){
-					$('#ymaps-avalshops').empty();
-				}
-			});
-
-			return false;
-		},
-
+	
+	var
 		/**
 		 * Заполнение шаблона с доступными для самовывоза магазинами
 		 * 
@@ -123,7 +83,6 @@
 			
 			widgetBox.removeClass('mLoader');
 			nowBox.show();
-			$('.bDeliveryFreeAddress__eLink').bind('click', showAvalShop);
 			toggleBtn.bind('click', shopToggle);
 		},
 
@@ -221,7 +180,7 @@
 	// end of functions
 	
 	dataToSend = {
-		'product':[{
+		'product': [{
 			'id': productInfoVal.id
 		}]
 	};

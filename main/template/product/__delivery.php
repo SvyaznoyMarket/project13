@@ -68,12 +68,6 @@ return function (
     </li>
 </script>
 
-<div id="avalibleShop" class="popup">
-    <i class="close" title="Закрыть">Закрыть</i>
-    <div id="ymaps-avalshops"></div>
-    <a href="#" class="bOrangeButton fr mt5">Перейти к магазину</a>
-</div>
-
 <ul class="bDelivery mLoader" data-value="<?= $helper->json([
     'url'       => $helper->url('product.delivery'), // загружаем всегда (непокупабельный товар может иметь пикпойнты)
     'delivery'  => $deliveryData,
