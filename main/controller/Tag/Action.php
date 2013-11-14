@@ -115,8 +115,32 @@ class Action {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
 
 
+        $shop = null;
+        try {
+            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
+                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
+                    if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
+                        /*$route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
+                        $response = new \Http\RedirectResponse($route);
+                        $response->headers->set('referer', \App::request()->getUri());*/
+                        $controller = new \Controller\Region\Action();
+                        \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
+                        $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
+
+                        return $response;
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
+        }
+
+
+
         $brand = null;
 
+        //$productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
         $productFilter = $this->getFilterByCategories($filters, $categories, $brand, $request);
         $productFilter->setValues(array('tag' => array($tag->getId())));
         if ($category) {
@@ -168,15 +192,21 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
+        $templating = \App::closureTemplating();
+        /** @var $helper \Helper\TemplateHelper */
+        if ($category) {
+            $templating->setParam('selectedCategory', $category);
+        }
+        //$templating->setParam('shop', $shop);
+        $helper = $templating->getParam('helper');
+        $selectedFilter = (new \View\ProductCategory\SelectedFilterAction())->execute(
+            $helper,
+            $productFilter,
+            \App::router()->generate('product.category', ['categoryPath' => $category ? $category->getPath() : null])
+        );
+
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
-            $templating = \App::closureTemplating();
-            /** @var $helper \Helper\TemplateHelper */
-            if ($category) {
-                $templating->setParam('selectedCategory', $category);
-            }
-            //$templating->setParam('shop', $shop);
-            $helper = $templating->getParam('helper');
 
             $productVideosByProduct = [];
 
@@ -187,31 +217,45 @@ class Action {
                     $productVideosByProduct,
                     !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
                 ),
-                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
-                    $helper,
-                    $productFilter,
-                    \App::router()->generate('product.category', ['categoryPath' => $category ? $category->getPath() : null])
-                ),
+                'selectedFilter' => $selectedFilter,
                 'pagination'     => (new \View\PaginationAction())->execute(
                     $helper,
                     $productPager
                 ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
+                    $templating->getParam('helper'),
                     $productSorting
                 ),
-                /*'page'          => [
-                    'title'     => $this->getPageTitle()
-                ],*/
+                'page'           => [
+                    'title'      => 'Тег «'.$tag->getName() . '»' .
+                        ( $category ? ( ' — ' . $category->getName() ) : '' )
+                ],
             ]);
-            // Old:
-            /*return new \Http\Response(\App::templating()->render('product/_list', array(
-                'page'   => new \View\Layout(),
-                'pager'  => $productPager,
-                'view'   => $productView,
-                'isAjax' => true,
-            )));*/
         }
+
+
+        /*
+        $page = new \View\Tag\IndexPage();
+        $page->setParam('productPager', $productPager);
+        $page->setParam('productFilter', $productFilter);
+        $page->setParam('selectedFilter', $selectedFilter);
+        $page->setParam('productSorting', $productSorting);
+        $page->setParam('tag', $tag);
+        $page->setParam('productPager', $productPager);
+        $page->setParam('productFilter', $productFilter);
+        $page->setParam('productSorting', $productSorting);
+        $page->setParam('sort', $sort);
+        $page->setParam('productView', $productView);
+        $page->setParam('category', $category);
+        $page->setParam('categoryToken', $categoryToken);
+        $page->setParam('categories', array_values($categoriesByToken));
+        $page->setParam('hotlinks', $hotlinks);
+        $page->setParam('seoContent', $seoContent);
+        $page->setParam('sidebarHotlinks', true);
+        $page->setParam('categoriesByToken', $categoriesByToken);
+        $page->setParam('productView', $productView);
+        return new \Http\Response($page->show());
+        */
 
         if($category) {
             // seo из shopscript
@@ -232,6 +276,7 @@ class Action {
                 &$tag,
                 &$productPager,
                 &$productFilter,
+                &$selectedFilter,
                 &$productSorting,
                 &$sort,
                 &$productView,
@@ -248,6 +293,7 @@ class Action {
                 $page->setParam('tag', $tag);
                 $page->setParam('productPager', $productPager);
                 $page->setParam('productFilter', $productFilter);
+                $page->setParam('selectedFilter', $selectedFilter);
                 $page->setParam('productSorting', $productSorting);
                 $page->setParam('sort', $sort);
                 $page->setParam('productView', $productView);
@@ -273,6 +319,7 @@ class Action {
                 &$sidebarCategoriesTree,
                 &$categoriesByToken,
                 &$productFilter,
+                &$selectedFilter,
                 &$productPager,
                 &$productSorting,
                 &$productView
@@ -280,6 +327,7 @@ class Action {
                 $page->setParam('tag', $tag);
                 $page->setParam('productPager', $productPager);
                 $page->setParam('productFilter', $productFilter);
+                $page->setParam('selectedFilter', $selectedFilter);
                 $page->setParam('productSorting', $productSorting);
                 $page->setParam('productView', $productView);
                 $page->setParam('category', $category);
