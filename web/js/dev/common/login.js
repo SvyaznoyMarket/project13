@@ -5,7 +5,10 @@
 		authBlock = $('#auth-block'),
 		forgotPwdLogin = $('.jsForgotPwdLogin'),
 		resetPwdForm = $('.jsResetPwdForm'),
+		registerForm = $('.jsRegisterForm'),
 		loginForm = $('.jsLoginForm'),
+		completeRegister = $('.jsRegisterFormComplete'),
+		showLoginFormLink = $('.jsShowLoginForm'),
 
 		/**
 		 * Конфигурация валидатора для формы логина
@@ -92,6 +95,11 @@
 			$('.jsLoginForm, .jsRegisterForm, .jsResetPwdForm').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
 			body.on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
 			body.on('click', '#bUserlogoutLink', this.logoutLinkClickLog);
+
+			if ( showLoginFormLink.length ) {
+				loginForm.hide();
+				body.on('click', '.jsShowLoginForm', this.showLoginForm);
+			}
 		}
 
 
@@ -365,18 +373,22 @@
 					console.log(response.data.link);
 
 					if ( this.form.data('redirect') ) {
-						if ( response.data.link ) {
+						if ( typeof response.data.link !== 'undefined' ) {
 							console.info('try to redirect to2 ' + response.data.link);
 							console.log(typeof response.data.link);
 
-
 							document.location.href = response.data.link;
 							console.log('try reload....');
-							//document.location.reload();
+							document.location.reload();
 						}
 						else {
-							this.form.unbind('submit');
-							this.form.submit();
+							// this.form.unbind('submit');
+							// this.form.submit();
+
+							completeRegister.html(response.message);
+							completeRegister.show();
+							registerForm.hide();
+							this.showLoginForm();
 						}
 					}
 					else {
@@ -392,6 +404,7 @@
 						$('#qiwi_phone').val(response.data.user.mobile_phone.slice(1));
 					}
 				},
+
 				requestToServer = function() {
 					this.submitBtnLoadingDisplay( formSubmit );
 					formData.push({name: 'redirect_to', value: urlParams['redirect_to'] ? urlParams['redirect_to'] : window.location.href});
@@ -409,6 +422,16 @@
 
 			return false;
 		};
+
+		/**
+		 * Показать форму логина на странице /login
+		 */
+		Login.prototype.showLoginForm = function() {
+			showLoginFormLink.hide();
+			loginForm.slideDown(300);
+			$.scrollTo(loginform, 500);
+		};
+
 
 		/**
 		 * Отображение формы "Забыли пароль"
