@@ -87,6 +87,11 @@ class Action {
         } else {
             //$category = empty($seoTagJson['acts_as_category']) ? reset($categoriesByToken) : null;
             $category = null; // Если нет категории, то нет, не нужно подставлять первую
+            $categoryId = $request->get('category');
+            if ($categoryId) {
+                $category = \RepositoryManager::productCategory()->getEntityById($categoryId);
+                //$categoryToken = $category->getToken();
+            }
         }
 
 
@@ -96,10 +101,11 @@ class Action {
         $filter = new \Model\Product\Filter\Entity();
         $filter->setId('tag');
         $filter->setIsInList(false);
+
         $filters[] = $filter;
 
-        \RepositoryManager::productFilter()->prepareCollectionBySearchText($tag->getName(),
-        //\RepositoryManager::productFilter()->prepareCollectionByTag( $tag,
+        //\RepositoryManager::productFilter()->prepareCollectionBySearchText($tag->getName(),
+        \RepositoryManager::productFilter()->prepareCollectionByTag( $tag,
             \App::user()->getRegion(),
             function($data) use (&$filters) {
                 foreach ($data as $item) {
@@ -108,11 +114,14 @@ class Action {
             }, function (\Exception $e) { \App::exception()->remove($e); });
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
 
-        $productFilter = new \Model\Product\Filter( $filters );
+
+        $brand = null;
+
+        $productFilter = $this->getFilterByCategories($filters, $categories, $brand, $request);
+        $productFilter->setValues(array('tag' => array($tag->getId())));
         if ($category) {
             $productFilter->setCategory($category);
         }
-        $productFilter->setValues(array('tag' => array($tag->getId())));
 
 
 
@@ -153,30 +162,38 @@ class Action {
         );
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
+
         // проверка на максимально допустимый номер страницы
         if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
         }
 
         // ajax
-        if ($request->isXmlHttpRequest() || 'true' == $request->get('ajax')) {
+        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+            $templating = \App::closureTemplating();
+            /** @var $helper \Helper\TemplateHelper */
+            if ($category) {
+                $templating->setParam('selectedCategory', $category);
+            }
+            //$templating->setParam('shop', $shop);
+            $helper = $templating->getParam('helper');
+
             $productVideosByProduct = [];
 
             return new \Http\JsonResponse([
                 'list'           => (new \View\Product\ListAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
+                    $helper,
                     $productPager,
                     $productVideosByProduct,
                     !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
+                    $helper,
                     $productFilter,
-                    \App::router()->generate('product.category',
-                        ['categoryPath' => $category ? $category->getPath() : null])
+                    \App::router()->generate('product.category', ['categoryPath' => $category ? $category->getPath() : null])
                 ),
                 'pagination'     => (new \View\PaginationAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
+                    $helper,
                     $productPager
                 ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
@@ -209,21 +226,6 @@ class Action {
                 });
                 $shopScript->execute();
             }
-
-            // фильтры
-            /* //old
-            $filter = new \Model\Product\Filter\Entity();
-            $filter->setId('tag');
-            $productFilter = new \Model\Product\Filter(array($filter));
-            $productFilter->setCategory($category);
-            $productFilter->setValues(array('tag' => array($tag->getId())));
-            */
-
-            if(empty($seoTagJson['acts_as_category']) || $request->isXmlHttpRequest()) {
-                // листалка ...
-            }
-
-            // ajax ...
 
 
             $setPageParameters = function(\View\Layout $page) use (
@@ -882,4 +884,52 @@ class Action {
     }
 
 
+    protected function getFilterByCategories(
+        array $filters,
+        array $categories,
+        \Model\Brand\Entity $brand = null,
+        \Http\Request $request,
+        $shop = null
+    ) {
+        // флаг глобального списка в параметрах запроса
+        $isGlobal = self::isGlobal();
+        //
+        $inStore = self::inStore();
+
+        // регион для фильтров
+        //$region = $isGlobal ? null : \App::user()->getRegion();
+
+        // filter values
+        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
+        if ($isGlobal) {
+            $values['global'] = 1;
+        }
+        if ($inStore) {
+            $values['instore'] = 1;
+        }
+        if ($brand) {
+            $values['brand'] = [
+                $brand->getId(),
+            ];
+        }
+
+        //если есть фильтр по магазину
+        if ($shop) {
+            /** @var \Model\Shop\Entity $shop */
+            $values['shop'] = $shop->getId();
+        }
+
+        // проверяем есть ли в запросе фильтры
+        /*if ((bool)$values) {
+            foreach ($categories as $currentCat ) {
+                // @var \Model\Product\Category\Entity $currentCat
+            }
+        }*/
+
+        $productFilter = new \Model\Product\Filter($filters, $isGlobal, $inStore, $shop);
+
+        $productFilter->setValues($values);
+
+        return $productFilter;
+    }
 }

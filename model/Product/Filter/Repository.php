@@ -81,4 +81,28 @@ class Repository {
         }
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }
+
+
+    /**
+     * @param \Model\Tag\Entity         $tag
+     * @param \Model\Region\Entity      $region
+     * @param function                  $done
+     * @param function|null             $fail
+     */
+    public function prepareCollectionByTag(\Model\Tag\Entity $tag, \Model\Region\Entity $region = null, $done, $fail = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $params = [
+            'filter' => [
+                'filters' => [
+                    ['text', 3, $tag->getName()], // тоже нужно!
+                    ['tag', 1, $tag->getId()],
+                ],
+            ],
+        ];
+        if ($region) {
+            $params['region_id'] = $region->getId();
+        }
+        $this->client->addQuery('listing/filter', $params, [], $done, $fail);
+    }
 }

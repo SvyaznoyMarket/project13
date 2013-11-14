@@ -16,13 +16,7 @@ $tagCategoryTokens = null;
 $categoriesLinks = []; // дочерние категории для тегов:
 $hotlinks = [];
 
-
-if ($category) {
-    $tagCategoryTokens = ['tagToken' => $tag->getToken(), 'categoryToken' => $category->getToken()];
-} else {
-    $tagCategoryTokens = ['tagToken' => $tag->getToken()];
-}
-
+$tagCategoryTokens = ['tagToken' => $tag->getToken()];
 
 $filtersParams = [
     'productFilter'     => $productFilter,
