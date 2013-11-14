@@ -2130,7 +2130,7 @@ FormValidator.prototype._requireAs = {
 	},
 
 	textarea: function( fieldNode ) {
-		var value = fieldNode.text();
+		var value = fieldNode.val();
 
 		if ( value.length === 0 ) {
 			return {
@@ -2254,7 +2254,7 @@ FormValidator.prototype._validateField = function( field ) {
 	validBy = field.validBy;
 	customErr = field.customErr;
 
-	elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
+	elementType = ( fieldNode.prop("tagName") === 'TEXTAREA') ? 'textarea' : ( fieldNode.prop("tagName") === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
 
 	/**
 	 * Проверка обязательно ли поле для заполенения
