@@ -45,6 +45,9 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     <? endif ?>
 
     <p class="font16">Сумма заказа: <span class="mBold"><?= $page->helper->formatPrice($order->getSum()) ?></span> <span class="rubl">p</span></p>
+    <? if ($order->getDiscountSum()): ?>
+        <p class="font16">Скидка: <span class="mBold"><?= $page->helper->formatPrice($order->getDiscountSum()) ?></span> <span class="rubl">p</span></p>
+    <? endif ?>
     <p class="font16">Сумма для оплаты: <span class="mBold" id="paymentWithCard"><?= $page->helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></p>
     <? if ($paymentMethod): ?>
         <p class="font16">Способ оплаты: <span class="mBold"><?= $paymentMethod->getName() ?></span></p>
