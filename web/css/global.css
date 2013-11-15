@@ -2456,6 +2456,16 @@
     font-size: 30px;
     font-family: "Enter";
   }
+  .bFormLogin__eComplete {
+    display: none;
+    text-align: center;
+    padding: 10px;
+    background: #ffa901;
+    font-size: 16px;
+    color: white;
+    width: 305px;
+    border-radius: 4px;
+  }
   .bFormLogin__ePlace {
     display: inline-block;
     margin-right: 30px;
@@ -13443,6 +13453,9 @@
     text-decoration: none;
     color: #ffffff;
   }
+  .mLiftGift {
+    padding-bottom: 10px;
+  }
   .mLiftGift .bTitle {
     font-size: 16px;
     color: #c52126;
@@ -13455,6 +13468,24 @@
   .mLiftGift .bPrice {
     font-size: 26px;
     margin: 10px 0 0;
+    text-align: center;
+  }
+  .mLiftGift .bDeliveryGift {
+    margin: 20px 0 10px;
+  }
+  .mLiftGift .bDeliveryGift__eItem {
+    padding-left: 25px;
+    margin: 0 0 12px 4px;
+    background-repeat: no-repeat;
+    background-image: url("/css/rightBarCard/img/ico.png");
+  }
+  .mLiftGift .bDeliveryGift__eItem span {
+    font-size: 14px;
+  }
+  .mLiftGift .bDeliveryGift__eItem.mDeliveryPrice {
+    background-position: 0 -34px;
+  }
+  .mLiftGift .bGiftText {
     text-align: center;
   }
   .bLiftGiftLogo {
