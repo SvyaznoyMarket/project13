@@ -179,6 +179,10 @@ class DefaultLayout extends Layout {
         return $this->render('_userbar');
     }
 
+    public function slotUserbarContent() {
+        return '';
+    }
+
     public function slotSurveybar() {
         $cookieInitTimeStamp = (int)(\App::request()->cookies->get('survey'));
         $survey = \RepositoryManager::survey()->getEntity();

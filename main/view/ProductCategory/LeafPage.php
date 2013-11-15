@@ -10,4 +10,10 @@ class LeafPage extends Layout {
 
         return $this->render('product-category/page-leaf-new', $this->params);
     }
+
+    public function slotUserbarContent() {
+        return $this->render('product-category/_userbarContent', [
+            'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,
+        ]);
+    }
 }
