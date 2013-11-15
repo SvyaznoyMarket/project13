@@ -33,18 +33,6 @@ class ReviewForm {
      * @var string
      */
     private $authorEmail;
-    /**
-     * Дата в формате "Y-m-d"
-     * @var \DateTime
-     */
-    private $date;
-    /**
-     * ID продукта
-     * @var int
-     */
-    private $productId;
-
-
     /** @var array */
     private $errors = array(
         'global'   => null,
@@ -54,7 +42,6 @@ class ReviewForm {
         'score' => null,
         'author' => null,
         'author_email' => null,
-        'product_id' => null,
     );
 
     public function __construct(array $data = []) {
@@ -68,16 +55,6 @@ class ReviewForm {
         if (array_key_exists('score', $data)) $this->setScore($data['score']);
         if (array_key_exists('author', $data)) $this->setAuthor($data['author']);
         if (array_key_exists('author_email', $data)) $this->setAuthorEmail($data['author_email']);
-        if (array_key_exists('product_id', $data)) $this->setProductId($data['product_id']);
-        if (array_key_exists('date', $data)) {
-            $date = date('Y-m-d', $data['date']);
-            try {
-                $this->setDate(new \DateTime($date));
-            } catch(\Exception $e) {
-                $this->setDate(new \DateTime());
-                \App::logger()->error(['action' => __METHOD__, 'date' => $data], ['product']);
-            }
-        }
     }
 
     /**
@@ -162,34 +139,6 @@ class ReviewForm {
      */
     public function getAuthorEmail() {
         return $this->authorEmail;
-    }
-
-    /**
-     * @param \DateTime $date
-     */
-    public function setDate(\DateTime $date) {
-        $this->date = $date;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDate() {
-        return $this->date;
-    }
-
-    /**
-     * @param int $productId
-     */
-    public function setProductId($productId) {
-        $this->productId = (string)$productId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getProductId() {
-        return $this->productId;
     }
 
     /**

@@ -1376,7 +1376,7 @@ $(document).ready(function(){
 
 
 		/**
-		 * Показ сообщений об ошибках при оформлении заказа
+		 * Показ сообщений об ошибках
 		 *
 		 * @param   {String}    msg     Сообщение которое необходимо показать пользователю
 		 *
@@ -3005,9 +3005,10 @@ $(document).ready(function() {
 
 		/**
 		 * Конфигурация валидатора для формы "Отзыв о товаре"
+		 *
 		 * @type {Object}
 		 */
-			validationConfig = {
+		validationConfig = {
 			fields: [
 				{
 					fieldNode: prosField,
@@ -3032,7 +3033,8 @@ $(document).ready(function() {
 				{
 					fieldNode: authorEmailField,
 					require: true,
-					customErr: 'Не указан e-mail'
+					customErr: 'Не указан e-mail',
+					validBy: 'isEmail'
 				}
 			]
 		},
@@ -3050,16 +3052,87 @@ $(document).ready(function() {
 		},
 
 		/**
-		 * Обработчик ответа от сервера
+		 * Обработка ошибок формы
+		 *
+		 * @param   {Object}    formError   Объект с полем содержащим ошибки
 		 */
-			responseFromServer = function( response ) {
+		formErrorHandler = function( formError ) {
+			var field = $('[name="review[' + formError.field + ']"]');
+			// end of vars
+
+			var clearError = function clearError() {
+					validator._unmarkFieldError($(this));
+				};
+			// end of functions
+
+			console.warn('Ошибка в поле');
+
+			validator._markFieldError(field, formError.message);
+			field.bind('focus', clearError);
+
+			return false;
+		},
+
+		/**
+		 * Показ глобальных сообщений об ошибках
+		 *
+		 * @param   {String}    msg     Сообщение которое необходимо показать пользователю
+		 */
+		showError = function( msg ) {
+			var error = $('ul.error_list', form);
+			// end of vars
+
+			if ( error.length ) {
+				error.html('<li>' + msg + '</li>');
+			}
+			else {
+				$('.bFormLogin__ePlaceTitle', form).after($('<ul class="error_list" />').append('<li>' + msg + '</li>'));
+				$( form ).prepend( $('<ul class="error_list" />').append('<li>' + msg + '</li>') );
+			}
+
+			return false;
+		},
+
+		/**
+		 * Обработка ошибок из ответа сервера
+		 *
+		 * @param {Object} res Ответ сервера
+		 */
+		serverErrorHandler = function( res ) {
+			var formError = null;
+			// end of vars
+
+			console.warn('Обработка ошибок формы');
+
+			for ( var i = res.form.error.length - 1; i >= 0; i-- ) {
+				formError = res.form.error[i];
+				console.warn(formError);
+
+				if ( formError.field !== 'global' && formError.message !== null ) {
+					formErrorHandler(formError);
+				}
+				else if ( formError.field === 'global' && formError.message !== null ) {
+					showError(formError.message);
+				}
+			}
+
+			return false;
+		},
+
+		/**
+		 * Обработчик ответа от сервера
+		 *
+		 * @param {Object} response Ответ сервера
+		 */
+		responseFromServer = function( response ) {
 			console.log('Ответ от сервера');
 
-//			if ( response.error ) {
-//				return false;
-//			}
+			if ( response.error ) {
+				console.warn('Form has error');
+				serverErrorHandler(response);
 
-			console.warn(response);
+				return false;
+			}
 
 			if ( response.success ) {
 				if (response.notice.message) {
@@ -3074,7 +3147,7 @@ $(document).ready(function() {
 		/**
 		 * Сабмит формы "Отзыв о товаре"
 		 */
-			formSubmit = function() {
+		formSubmit = function() {
 			var requestToServer = function () {
 				$.post(form.attr('action'), form.serializeArray(), responseFromServer, 'json');
 				console.log('Сабмит формы "Отзыв о товаре"');
@@ -3083,47 +3156,29 @@ $(document).ready(function() {
 			};
 			//end of functions
 
+			// очищаем блок с глобальными ошибками
+			if ( $('ul.error_list', form).length ) {
+				$('ul.error_list', form).html('');
+			}
+
 			validator.validate({
 				onInvalid: function( err ) {
 					console.warn('invalid');
 					console.log(err);
 				},
-				onValid: requestToServer//$.post(form.attr('action'), form.serializeArray(), responseFromServer, 'json')
+				onValid: requestToServer
 			});
 
 			return false;
 		},
 
-	/**
-	 * Проверка заполненности инпутов
-	 */
-//		checkInputs = function () {
-//			var fieldsEmpty = false,
-//				submitButton = $('.jsReviewForm .jsFormSubmit');
-//			//end of vars
-//
-//			$.each($('.jsReviewFormField'), function () {
-//				if ( '' === $(this).val() ) {
-//					fieldsEmpty = true;
-//				}
-//			});
-//
-//			// присутствуют незаполненные поля
-//			if ( fieldsEmpty ) {
-//				submitButton.addClass('mDisabled');
-//			}
-//			else {
-//				submitButton.removeClass('mDisabled');
-//			}
-//
-//			return false;
-//		},
-
 		/**
+		 * Заполнение данных пользователя в форме (поля "Ваше имя" и "Ваш e-mail") и скрытие полей.
+		 *
 		 * @param  {Event} e
-		 * @param  {userInfo} userInfo
+		 * @param  {Object} userInfo
 		 */
-			fillUserData = function ( e, userInfo ) {
+		fillUserData = function ( e, userInfo ) {
 			if ( userInfo ) {
 				// если присутствует имя пользователя
 				if ( userInfo.name ) {
@@ -3146,9 +3201,6 @@ $(document).ready(function() {
 
 	body.on('click', '.jsReviewSend', openPopup);
 	body.on('submit', '.jsReviewForm', formSubmit);
-
-//	checkInputs();
-//	body.on('keyup', '.jsReviewFormField', checkInputs);
 
 	body.on('userLogged', fillUserData);
 }());
