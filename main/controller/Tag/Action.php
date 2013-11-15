@@ -104,7 +104,6 @@ class Action {
 
         $filters[] = $filter;
 
-        //\RepositoryManager::productFilter()->prepareCollectionBySearchText($tag->getName(),
         \RepositoryManager::productFilter()->prepareCollectionByTag( $tag,
             \App::user()->getRegion(),
             function($data) use (&$filters) {
@@ -140,9 +139,8 @@ class Action {
 
         $brand = null;
 
-        //$productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
-        $productFilter = $this->getFilterByCategories($filters, $categories, $brand, $request);
-        $productFilter->setValues(array('tag' => array($tag->getId())));
+        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
+        $productFilter->setValue( 'tag', $tag->getId() );
         if ($category) {
             $productFilter->setCategory($category);
         }
@@ -931,53 +929,4 @@ class Action {
         }
     }
 
-
-    protected function getFilterByCategories(
-        array $filters,
-        array $categories,
-        \Model\Brand\Entity $brand = null,
-        \Http\Request $request,
-        $shop = null
-    ) {
-        // флаг глобального списка в параметрах запроса
-        $isGlobal = self::isGlobal();
-        //
-        $inStore = self::inStore();
-
-        // регион для фильтров
-        //$region = $isGlobal ? null : \App::user()->getRegion();
-
-        // filter values
-        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
-        if ($isGlobal) {
-            $values['global'] = 1;
-        }
-        if ($inStore) {
-            $values['instore'] = 1;
-        }
-        if ($brand) {
-            $values['brand'] = [
-                $brand->getId(),
-            ];
-        }
-
-        //если есть фильтр по магазину
-        if ($shop) {
-            /** @var \Model\Shop\Entity $shop */
-            $values['shop'] = $shop->getId();
-        }
-
-        // проверяем есть ли в запросе фильтры
-        /*if ((bool)$values) {
-            foreach ($categories as $currentCat ) {
-                // @var \Model\Product\Category\Entity $currentCat
-            }
-        }*/
-
-        $productFilter = new \Model\Product\Filter($filters, $isGlobal, $inStore, $shop);
-
-        $productFilter->setValues($values);
-
-        return $productFilter;
-    }
 }
