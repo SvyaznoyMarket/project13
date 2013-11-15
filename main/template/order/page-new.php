@@ -301,6 +301,8 @@ if ($paypalECS) {
 		</div>
 	</div>
 	<!-- /Sale section -->
+    <? else: ?>
+        Купоны на сайте временно не принимаются. Вы можете использовать их в любом из наших магазинов или обратиться в контакт-центр. Приносим свои извинения
     <? endif ?>
 
 	<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
