@@ -544,7 +544,7 @@ table {
     padding: 0 0 213px;
   }
   .content.mContentOrder {
-    padding-bottom: 20px;
+    padding-bottom: 390px;
   }
   .content.mContentMain {
     padding-bottom: 470px;
@@ -595,6 +595,12 @@ table {
     background: #000000;
     color: #ffffff;
     text-decoration: none;
+  }
+  /**
+   * Фикс однопиксельной картинки, которая выводится после футера.
+   */
+  img[height="1"] {
+    display: block;
   }
 }
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/

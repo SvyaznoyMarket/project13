@@ -34,7 +34,7 @@
 	// 	padding-bottom: 390px;
 	// }
 	&.mContentOrder {
-		padding-bottom: 20px;
+		padding-bottom: 390px;
 	}
 
 	//Контентная часть главной страницы
@@ -73,4 +73,11 @@
 		color: @white;
 		text-decoration: none;
 	}
+}
+
+/**
+ * Фикс однопиксельной картинки, которая выводится после футера.
+ */
+img[height="1"] {
+	display: block;
 }

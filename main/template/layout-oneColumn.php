@@ -100,12 +100,16 @@
                 <li class="applist__item"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img src="/styles/footer/img/apple.png" /></a></li>
                 
                 <li class="applist__item">
+                    <a target="_blank" href="http://www.windowsphone.com/ru-ru/store/app/enter/6f4c5810-682f-47dc-87b2-aced84582787=">
+                        <img src="/styles/footer/img/wind.png" />
+                    </a>
+                </li>
+
+                <li class="applist__item">
                     <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
                       <img alt="Get it on Google Play" src="/styles/footer/img/google.png" />
                     </a>
                 </li>
-                <li class="applist__item"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img src="/styles/footer/img/wind.png" /></a></li>
-                
             </ul>
         </div>
 
