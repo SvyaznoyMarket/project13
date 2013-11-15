@@ -1,11 +1,8 @@
 <?php
 /**
  * @var $page \View\Layout
- * @var $product \Model\Product\Entity|null
- * @var $category \Model\Product\Category\Entity|null
  */
-$helper = new \Helper\TemplateHelper();
-$links = []; ?>
+?>
 
 <!-- Lightbox -->
 <!-- <div class="bBlackBox">
@@ -31,89 +28,20 @@ $links = []; ?>
 </div> -->
 
 
-<? if ('product.category' === \App::request()->attributes->get('route')): // блок для каталога ?>
+<div class="fixedTopBar">
+    <?= $page->slotUserbarContent() ?>
 
-    <? if ($category) {
-        if ($count = count($category->getAncestor())) {
-            $i = 1;
-            foreach ($category->getAncestor() as $ancestor) {
-                $links[] = ['name' => $ancestor->getName(), 'url'  => $ancestor->getLink(), 'last' => $i == $count];
-                $i++;
-            }
-        } else {
-            $links[] = ['name' => $category->getName(), 'url'  => null, 'last' => true];
-        }
-    } ?>
-
-    <div class="fixedTopBar">
-        <div class="fixedTopBar__up">
-            <a class="btnGrey fixedTopBar__upLink" href="">
-                <em class="cornerTop">&#9650;</em> Бренды и параметры
-            </a>
-        </div>
-
-        <div class="fixedTopBar__crumbs">
-            <a class="fixedTopBar__crumbsImg" href=""><img class="crumbsImg" src="<?= $category ? $category->getImageUrl() : '' ?>" /></a>
-            <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
-        </div>
-
-        <div class="fixedTopBar__cart mEmpty">
-            <a class="fixedTopBar__cartLink" href="<?=  $page->url('cart') ?>">
-                <span class="fixedTopBar__cartTitle">Корзина</span>
-            </a>
-        </div>
-
-        <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
-            <a href="<?= $page->url('user.login') ?>" class="fixedTopBar__logInLink bAuthLink">Войти</a>
-            <span class="transGrad"></span>
-        </div>
+    <div class="fixedTopBar__cart mEmpty">
+        <a class="fixedTopBar__cartLink" href="<?=  $page->url('cart') ?>">
+            <span class="fixedTopBar__cartTitle">Корзина</span>
+        </a>
     </div>
 
-
-<? elseif ('product' === \App::request()->attributes->get('route')): // блок для карточки товара ?>
-
-    <? if ($product) {
-        $links[] = ['name' => $product->getPrefix(), 'url' => null, 'last' => false];
-        $links[] = ['name' => $product->getWebName(), 'url' => null, 'last' => true];
-    } ?>
-
-    <div class="fixedTopBar mProdCard">
-        <div class="fixedTopBar__crumbs">
-            <div class="fixedTopBar__crumbsImg"><img class="crumbsImg" src="<?= $product ? $product->getImageUrl() : '' ?>" /></div>
-
-            <div class="wrapperCrumbsList">
-                <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
-                <div class="transGradWhite"></div>
-            </div>
-        </div>
-
-        <div class="fixedTopBar__buy">
-            <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
-
-            <div class="bCountSection clearfix" data-spinner-for="">
-                <button class="bCountSection__eM">-</button>
-                <input class="bCountSection__eNum" type="text" value="1">
-                <button class="bCountSection__eP">+</button>
-                <span>шт.</span>
-            </div><!--/counter -->
-
-            <div class="bWidgetBuy__eBuy btnBuy">
-                <a href="" class="btnBuy__eLink jsBuyButton" data-group="">Купить</a>
-            </div>
-        </div>
-
-        <div class="fixedTopBar__cart mEmpty">
-            <a class="fixedTopBar__cartLink" href="<?= $page->url('cart') ?>">
-                <span class="fixedTopBar__cartTitle">Корзина</span>
-            </a>
-        </div>
-
-        <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
-            <a href="<?= $page->url('user.login') ?>" class="fixedTopBar__logInLink bAuthLink">Войти</a>
-            <span class="transGrad"></span>
-        </div>
+    <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
+        <a href="<?= $page->url('user.login') ?>" class="fixedTopBar__logInLink bAuthLink">Войти</a>
+        <span class="transGrad"></span>
     </div>
-<? endif ?>
+</div>
 
 
 <script type="text/html" id="userbar_cart_tmpl">
