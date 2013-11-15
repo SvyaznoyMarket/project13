@@ -230,10 +230,4 @@ class Layout extends \View\DefaultLayout {
             "<meta property=\"og:type\" content=\"website\"/>\r\n";
 
     }
-
-    public function slotUserbar() {
-        return $this->render('_userbar', [
-            'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,
-        ]);
-    }
 }

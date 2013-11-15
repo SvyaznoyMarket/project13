@@ -176,7 +176,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotUserbar() {
-        return $this->render('_userbar');
+        return '';
     }
 
     public function slotSurveybar() {
