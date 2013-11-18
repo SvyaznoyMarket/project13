@@ -16,6 +16,7 @@ trait TrustfactorsTrait
         $trustfactorTop = null;
         $trustfactorMain = null;
         $trustfactorRight = [];
+        $trustfactorContent = [];
 
         $trustfactorExcludeToken = empty($catalogJson['trustfactor_exclude_token']) ? [] : $catalogJson['trustfactor_exclude_token'];
         $excludeIntersectTokens = array_intersect($productCategoryTokens, $trustfactorExcludeToken);
@@ -41,23 +42,18 @@ trait TrustfactorsTrait
 
             if(!empty($catalogJson['trustfactor_right'])) {
                 $tfPrepared = $this->prepareTrustfactor($catalogJson['trustfactor_right'], $productCategoryTokens);
+                if ($this->trustfactorCreateQueries($contentClient, $tfPrepared, $trustfactorRight) ) $doQuery = true;
+            }
 
-                if ($tfPrepared) {
-                    if( !is_array($tfPrepared) ) {
-                        $tfPrepared = array($tfPrepared);
-                    }
-                    $i = 0;
-                    foreach ($tfPrepared as $trustfactorRightToken) {
-                        $this->trustfactorQuery($contentClient, $trustfactorRightToken, $trustfactorRight[$i++]);
-                    }
-                    if ($i > 0) $doQuery = true;
-                }
-
+            if(!empty($catalogJson['trustfactor_content'])) {
+                $tfPrepared = $this->prepareTrustfactor($catalogJson['trustfactor_content'], $productCategoryTokens);
+                if ($this->trustfactorCreateQueries($contentClient, $tfPrepared, $trustfactorContent) ) $doQuery = true;
             }
 
             if ($doQuery) {
                 $contentClient->execute();
                 if ($trustfactorRight) ksort($trustfactorRight);
+                if ($trustfactorContent) ksort($trustfactorContent);
             }
         }
 
@@ -65,6 +61,7 @@ trait TrustfactorsTrait
             'top'  => $trustfactorTop,
             'main'  => $trustfactorMain,
             'right'  =>  $trustfactorRight,
+            'content' => $trustfactorContent,
         ];
     }
 
@@ -130,6 +127,28 @@ trait TrustfactorsTrait
         }
 
         return $tfFields;
+    }
+
+
+    /**
+     * @param $contentClient
+     * @param $tfPrepared
+     * @param array     $trustfactorContent
+     * @return bool
+     */
+    private function trustfactorCreateQueries(&$contentClient, &$tfPrepared, &$trustfactorContent) {
+        $doQuery = false;
+        if ($tfPrepared) {
+            $i = 0;
+            if( !is_array($tfPrepared) ) {
+                $tfPrepared = array($tfPrepared);
+            }
+            foreach ($tfPrepared as $trustfactorElemToken) {
+                $this->trustfactorQuery($contentClient, $trustfactorElemToken, $trustfactorContent[$i++]);
+            }
+            if ($i > 0) $doQuery = true;
+        }
+        return $doQuery;
     }
 
 }
