@@ -139,6 +139,8 @@ $is_showed = [];
         ]) ?>
     <? endif ?>
 
+    <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
+
     <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'alsoViewed',

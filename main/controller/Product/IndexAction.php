@@ -316,6 +316,7 @@ class IndexAction {
         $page->setParam('trustfactorTop', $trustfactors['top']);
         $page->setParam('trustfactorMain', $trustfactors['main']);
         $page->setParam('trustfactorRight', $trustfactors['right']);
+        $page->setParam('trustfactorContent', $trustfactors['content']);
         $page->setParam('mainProduct', $mainProduct);
         $page->setParam('parts', $parts);
         $page->setParam('line', $line);
