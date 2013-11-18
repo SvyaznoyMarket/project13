@@ -24,7 +24,7 @@ class Client {
 
         $this->curl = $curl;
 
-        $this->daysNames = \App::config()->daysShortNames;
+        $this->daysNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
     }
 
     public function __clone() {
