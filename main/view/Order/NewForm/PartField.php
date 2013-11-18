@@ -27,6 +27,18 @@ class PartField {
     private $productIds = [];
 
     /**
+     * Название пункта — магазина, постамата или тп
+     * @var string
+     */
+    private $pointName;
+
+    /**
+     * Аддресс пункта — магазина, постамата или тп
+     * @var array
+     */
+    private $pointAddress;
+
+    /**
      * @param array $data
      */
     public function __construct(array $data = []) {
@@ -42,6 +54,8 @@ class PartField {
         }
         if (array_key_exists('interval', $data)) $this->setInterval(new IntervalField((array)$data['interval']));
         if (array_key_exists('point_id', $data)) $this->setPointId($data['point_id']);
+        if (array_key_exists('point_name', $data)) $this->setPointName( $data['point_name'] );
+        if (array_key_exists('point_address', $data)) $this->setPointAddress( $data['point_address'] );
         if (array_key_exists('products', $data)) $this->setProductIds((array)$data['products']);
     }
 
@@ -105,7 +119,7 @@ class PartField {
      * @param int $shopId
      */
     public function setPointId($shopId) {
-        $this->pointId = (int)$shopId;
+        $this->pointId = (string)$shopId;
     }
 
     /**
@@ -114,4 +128,35 @@ class PartField {
     public function getPointId() {
         return $this->pointId;
     }
+
+    /**
+     * @param string $pName
+     */
+    public function setPointName($pName) {
+        $this->pointName = (string)$pName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPointName() {
+        return $this->pointName;
+    }
+
+    /**
+     * @param array $pAddress
+     */
+    public function setPointAddress( $pAddress )
+    {
+        $this->pointAddress = (array)$pAddress;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPointAddress()
+    {
+        return $this->pointAddress;
+    }
+
 }

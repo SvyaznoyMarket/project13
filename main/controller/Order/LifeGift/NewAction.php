@@ -15,7 +15,7 @@ class NewAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user();
-        $region = $user->getRegion();
+        $region = new \Model\Region\Entity(['id' => \App::config()->lifeGift['regionId']]);
         $cart = $user->getLifeGiftCart();
 
         try {
@@ -61,15 +61,6 @@ class NewAction {
             // запрашиваем список станций метро
             /** @var $subways \Model\Subway\Entity[] */
             $subways = [];
-            if ($user->getRegion()->getHasSubway()) {
-                \RepositoryManager::subway()->prepareCollectionByRegion($user->getRegion(), function($data) use (&$subways) {
-                    foreach ($data as $item) {
-                        $subways[] = new \Model\Subway\Entity($item);
-                    }
-                }, function(\Exception $e) {
-                    \App::exception()->remove($e);
-                });
-            }
 
             // кредитные банки
             /** @var $banks \Model\CreditBank\Entity[] */

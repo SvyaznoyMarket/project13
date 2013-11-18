@@ -45,11 +45,6 @@ class ProductAction {
 
             $cart->setPaypalProduct($cartProduct);
 
-            // crossss
-            if (false && \App::config()->crossss['enabled'] && ($quantity > 0)) {
-                (new \Controller\Crossss\CartAction())->product($product);
-            }
-
             $productInfo = [
                 'id'    =>  $product->getId(),
                 'name'  =>  $product->getName(),

@@ -31,27 +31,29 @@
 			
 			console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
 
-			var self = this;
+			var i, self = this;
 
-            // Уникальность продуктов в этом типе доставки
-            //self.isUnique = isUnique || false;
-            self.isUnique = window.OrderModel.orderDictionary.isUniqueDeliveryState(state);
+			// Уникальность продуктов в этом типе доставки
+			//self.isUnique = isUnique || false;
+			self.isUnique = window.OrderModel.orderDictionary.isUniqueDeliveryState(state);
 			// Токен блока
 			self.token = state+'_'+choosenPointForBox;
-            /*if (self.isUnique) {
-                self.token += self.addUniqueSuffix();
-            }*/
+			/*if (self.isUnique) {
+				self.token += self.addUniqueSuffix();
+			}*/
 
 			// Продукты в блоке
 			self.products = [];
-			// Общая стоимость блока
+			// Общая стоимость товаров в блоке
 			self.fullPrice = 0;
+			// Полная стоимость блока с учетом доставки
+			self.totalBlockSum = 0;
 			// Метод доставки
 			self.state = state;
 			// Название метода доставки
 			self.deliveryName = window.OrderModel.orderDictionary.getNameOfState(state);
-			// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
-			self.deliveryPrice = Number.POSITIVE_INFINITY;
+			// Стоимость доставки. Берем минимально возможное значение, чтобы сравнивая с ним находить максимальное
+			self.deliveryPrice = Number.NEGATIVE_INFINITY;
 
 			// Выбранная дата доставки
 			self.choosenDate = ko.observable();
@@ -71,6 +73,14 @@
 			self.allDatesForBlock = ko.observableArray([]);
 			// Массив всех точек доставок
 			self.pointList = [];
+
+			// Название пункта — магазина, постамата или тп
+			//self.point_name = ''; // здесь не нужно это поле здесь (но в ядро передавать нужно)
+
+
+			// Текст на кнопки смены точки доставки
+			self.changePointButtonText = window.OrderModel.orderDictionary.getChangeButtonText(state);
+
 
 			if ( self.hasPointDelivery && !window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
 				// Доставка в выбранный пункт
@@ -103,6 +113,16 @@
 
 				return;
 			}
+
+			/*if ( 'pickpoint' === state ) {
+				// Получим и сохраним в названии пункта название выбранного пикпойнта:
+				/*for ( i = self.pointList.length - 1; i >= 0; i-- ) {
+					if ( choosenPointForBox == self.pointList[i].id ) {
+						self.point_name = self.pointList[i].point_name;
+					}
+				}* ///old
+				// название и так храниться в choosPoint
+			}*/
 
 			window.OrderModel.deliveryBoxes.push(self);
 		}
@@ -149,20 +169,20 @@
 		};
 
 
-        /**
-         * Генерирует случайное окончание (суффикс) для строки
-         *
-         * @param       {string}      str
-         * @returns     {string}      str
-         */
-        DeliveryBox.prototype.addUniqueSuffix = function( str ) {
-            str = str || '';
-            var randSuff;
-            //randSuff = new Date().getTime();
-            randSuff = Math.floor( (Math.random() * 10000) + 1 );
-            str += '_' + randSuff;
-            return str;
-        };
+		/**
+		 * Генерирует случайное окончание (суффикс) для строки
+		 *
+		 * @param       {string}      str
+		 * @returns     {string}      str
+		 */
+		DeliveryBox.prototype.addUniqueSuffix = function ( str ) {
+			str = str || '';
+			var randSuff;
+			//randSuff = new Date().getTime();
+			randSuff = Math.floor((Math.random() * 10000) + 1);
+			str += '_' + randSuff;
+			return str;
+		};
 
 
 		/**
@@ -188,9 +208,9 @@
 			}
 			else {
 
-                if (self.isUnique) {
-                    newToken += self.addUniqueSuffix();
-                }
+				if (self.isUnique) {
+					newToken += self.addUniqueSuffix();
+				}
 				console.info('удаляем старый блок');
 				console.log('старый токен '+self.token);
 				console.log('новый токен '+newToken);
@@ -296,9 +316,9 @@
 				return;
 			}
 
-			// Определение стоимости доставки. Если стоимость доставки данного товара ниже стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
+			// Определение стоимости доставки. Если стоимость доставки данного товара выше стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
 			productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
-			self.deliveryPrice = ( self.deliveryPrice > productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
+			self.deliveryPrice = ( self.deliveryPrice < productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
 
 			tmpProduct = {
 				id: product.id,
@@ -311,10 +331,18 @@
 				deliveries: {}
 			};
 
+			if ( self.isUnique && (product.oldQuantity - 1) > 0 ) {
+				console.log('Переделываем deleteUrl:');
+				console.log(tmpProduct.deleteUrl);
+				tmpProduct.deleteUrl = tmpProduct.deleteUrl.replace('delete-', 'add-'); // TODO cart.product.set изменмить Url
+				tmpProduct.deleteUrl += '?quantity=' + ( product.oldQuantity - 1 );
+				console.log(tmpProduct.deleteUrl);
+			}
+
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
 			// Добавляем стоимость продукта к общей стоимости блока доставки
-			self.fullPrice += tmpProduct.price;
+			self.fullPrice = ENTER.utils.numMethods.sumDecimal(tmpProduct.price, self.fullPrice);
 
 			self.products.push(tmpProduct);
 		};
@@ -329,7 +357,8 @@
 				nowTotalSum = window.OrderModel.totalSum();
 			// end of vars
 
-			nowTotalSum += self.fullPrice + self.deliveryPrice;
+			self.totalBlockSum = ENTER.utils.numMethods.sumDecimal(self.fullPrice, self.deliveryPrice);
+			nowTotalSum = ENTER.utils.numMethods.sumDecimal(self.totalBlockSum, nowTotalSum);
 			window.OrderModel.totalSum(nowTotalSum);
 
 			console.log(window.OrderModel.totalSum());
@@ -511,7 +540,7 @@
 
 				tempProduct = self.products.pop();
 				tempProductArray.push(tempProduct);
-                newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();
+				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();
 				console.log('новый токен '+newToken);
 				console.log(self);
 
@@ -810,22 +839,22 @@
 		};
 
 
-        /**
-         * Флаг уникальности для типа доставки state.
-         * Например, для типа доставки pickpoint должен быть false (задаётся в РНР-коде на сервере)
-         *
-         * @this	{OrderDictionary}
-         *
-         * @param	    {String}	state	Метод доставки
-         * @returns     {Boolean}
-         */
-        OrderDictionary.prototype.isUniqueDeliveryState = function( state ) {
-            if ( this.deliveryStates.hasOwnProperty(state) ) {
-                var st = this.deliveryStates[state];
-                return st['unique'];
-            }
-            return false;
-        };
+		/**
+		 * Флаг уникальности для типа доставки state.
+		 * Например, для типа доставки pickpoint должен быть false (задаётся в РНР-коде на сервере)
+		 *
+		 * @this        {OrderDictionary}
+		 *
+		 * @param       {String}    state    Метод доставки
+		 * @returns     {Boolean}
+		 */
+		OrderDictionary.prototype.isUniqueDeliveryState = function ( state ) {
+			if ( this.hasDeliveryState(state) ) {
+				var st = this.deliveryStates[state];
+				return st['unique'];
+			}
+			return false;
+		};
 
 		/**
 		 * Есть ли для метода доставки пункты доставки
@@ -836,6 +865,9 @@
 		 * @return	{Boolean}
 		 */
 		OrderDictionary.prototype.hasPointDelivery = function( state ) {
+			if ( !this.hasDeliveryState(state) ) {
+				return false;
+			}
 			return this.pointsByDelivery.hasOwnProperty(state);
 		};
 
@@ -871,11 +903,8 @@
 		 * @return	{Object}				Данные о точке доставки
 		 */
 		OrderDictionary.prototype.getFirstPointByState = function( state ) {
-			var points = this.getAllPointsByState(state), ret = false;
-            if ( points[0] ) {
-                ret = window.ENTER.utils.cloneObject(points[0]);
-            }
-            return ret;
+			var points = this.getAllPointsByState(state);
+			return ( points[0] ) ? ENTER.utils.cloneObject(points[0]) : false;
 		};
 
 		/**
@@ -884,9 +913,20 @@
 		 * @param	{String}	state	Метод доставки
 		 */
 		OrderDictionary.prototype.getAllPointsByState = function( state ) {
-			var pointName = this.pointsByDelivery[state],
-                ret = this.orderData[pointName] || false;
-			return ret;
+			if ( !this.hasDeliveryState(state) ) {
+				return false;
+			}
+			var point = this.pointsByDelivery[state],
+				pointName = point ? point.token : false,
+				ret = pointName ? this.orderData[pointName] : false;
+			return ret || false;
+		};
+
+
+		OrderDictionary.prototype.getChangeButtonText = function( state ) {
+			var text = ( this.pointsByDelivery[state] ) ? this.pointsByDelivery[state].changeName : 'Сменить';
+			
+			return text;
 		};
 
 
@@ -1339,21 +1379,26 @@
 		 */
 		preparationData = function preparationData() {
 			var currentDeliveryBox = null,
+				choosePoint,
 				parts = [],
 				dataToSend = [],
 				tmpPart = {},
+				i, j,
 				orderForm = $('#order-form');
 			// end of vars
 			
 			global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
+			dataToSend = orderForm.serializeArray();
 
 			/**
 			 * Перебираем блоки доставки
 			 */
 			console.info('Перебираем блоки доставки');
-			for ( var i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
+			for ( i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
 				tmpPart = {};
 				currentDeliveryBox = global.OrderModel.deliveryBoxes()[i];
+				choosePoint = currentDeliveryBox.choosenPoint();
+				console.log('currentDeliveryBox:');
 				console.log(currentDeliveryBox);
 
 				tmpPart = {
@@ -1361,29 +1406,59 @@
 					date: currentDeliveryBox.choosenDate().value,
 					interval: [
 						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().start : '',
-						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : '',
+						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : ''
 					],
-					point_id: currentDeliveryBox.choosenPoint().id,
+					point_id: choosePoint.id,
 					products : []
 				};
 
-				for ( var j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {
+				console.log('choosePoint:');
+				console.log(choosePoint);
+
+				if ( 'pickpoint' === currentDeliveryBox.state ) {
+					console.log('Is PickPoint!');
+
+					// Передаём на сервер корректный id постамата, не id точки, а номер постамата
+					tmpPart.point_id = choosePoint['number'];
+
+					// В качестве адреса доставки необходимо передавать адрес постамата,
+					// так как поля адреса при заказе через pickpoint скрыты
+					/*orderForm.find('#order_address_street').val( choosePoint['street'] );
+					orderForm.find('#order_address_building').val( choosePoint['house'] );
+					orderForm.find('#order_address_number').val('');
+					orderForm.find('#order_address_apartment').val('');
+					orderForm.find('#order_address_floor').val('');*/ // old
+
+					/* Передаём сразу без лишней сериализации и действий с формами
+					 * и не в dataToSend, а в массив parts, отдельным полем,
+					 * т.к. может быть разный адрес у разных пикпойнтов
+					 * */
+					// parts.push( {pointAddress: choosePoint['street'] + ' ' + choosePoint['house']} );
+					tmpPart.point_address = {
+						street:	choosePoint['street'],
+						house:	choosePoint['house']
+					};
+					tmpPart.point_name = choosePoint.point_name; // нужно передавать в ядро
+				}
+
+				for ( j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {
 					tmpPart.products.push(currentDeliveryBox.products[j].id);
 				}
 
+				console.log('tmpPart:');
 				console.log(tmpPart);
 
 				parts.push(tmpPart);
 			}
 
-			dataToSend = orderForm.serializeArray();
 			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
 			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
 
-      if ( typeof(window.KM) !== 'undefined' ) {
+			if ( typeof(window.KM) !== 'undefined' ) {
 				dataToSend.push({ name: 'kiss_session', value: window.KM.i });
-      }
+			}
 
+			console.log('dataToSend:');
 			console.log(dataToSend);
 
 			ajaxStart = new Date().getTime();
@@ -1706,7 +1781,7 @@
 
 					// Разделим товары, продуктом считаем уникальную единицу товара:
 					// Пример: 5 тетрадок ==> 5 товаров количеством 1 шт
-					nowProductsToNewBox = global.OrderModel.prepareProductsByUniq(productsToNewBox);
+					nowProductsToNewBox = global.OrderModel.prepareProductsQuantityByUniq(productsToNewBox);
 					for ( j = nowProductsToNewBox.length - 1; j >= 0; j-- ) {
 						nowProduct = [ nowProductsToNewBox[j] ];
 						global.ENTER.constructors.DeliveryBox(nowProduct, nowState, choosenPointForBox);
@@ -1746,7 +1821,7 @@
 		 */
 		if ( ( global.OrderModel.hasCoupons() && global.OrderModel.deliveryBoxes().length > 1 ) || 
 			( global.OrderModel.appliedCoupon() && global.OrderModel.appliedCoupon().sum && 
-			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) ) {
+			( parseFloat(global.OrderModel.totalSum()) <= parseFloat(global.OrderModel.appliedCoupon().sum) ) ) ) {
 			console.warn('Нужно удалить купон');
 
 			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
@@ -1799,6 +1874,68 @@
 	};
 
 	/**
+	 * Кастомный бинд для отображения блоков с методами оплаты: "прямо сейчас", "при получении", в кредит..
+	 */
+	ko.bindingHandlers.payBlockVisible = {
+		update: function( element ) {
+			var node = $(element),
+				vars = node.data('vars'),
+				toHide = (vars && vars.toHide) ? vars.toHide : false,
+				choosenDeliveryTypeId = global.OrderModel.choosenDeliveryTypeId,
+				deliveryBoxes = global.OrderModel.deliveryBoxes(),
+				dCount = deliveryBoxes.length,
+				testDeliveryId,
+				testPaymentId,
+				nodeHidded = 1
+				;
+
+			if ( !dCount ) {
+				return;
+			}
+
+			/*
+			 * Cтарый механизм показа/сокрытия блоков
+			 * показываем "кредиты" и "оплату сейчас", если кол-во блоков доставки == 1
+			 */
+			if ( 1 == dCount ) {
+				nodeHidded = 0;
+				console.log('Кол-во deliveryBoxes == 1: Показываем payBlock');
+			}
+			else {
+				nodeHidded = 1;
+				console.log('Кол-во deliveryBoxes > 1: Скрываем payBlock');
+			}
+
+			/**
+			 * Если указано toHide в дата-аттрибуте, то скрываем блоки с недоступными методами
+			 */
+			if ( toHide ) {
+
+				for ( testDeliveryId in toHide ) {
+					if ( undefined === toHide[testDeliveryId].length ) {		// !не массив, скрываем для всех
+						if ( $.inArray(choosenDeliveryTypeId, toHide) >= 0 ) {
+							nodeHidded = 1;
+							console.log('toHide NoArr: Скрываем payBlock');
+						}
+					}
+					else if ( choosenDeliveryTypeId == testDeliveryId ) { 		// !массив, обходим блоки оплаты
+						for ( testPaymentId in toHide[testDeliveryId] ) {
+							if ( testPaymentId == vars.typeId ) {
+								nodeHidded = 1;
+								console.log('toHide Arr: Скрываем payBlock');
+							}
+						}// end of second for
+					}
+				}// end of first for
+
+			}
+
+			nodeHidded ? node.hide() : node.show(); // показываем либо скрываем элемент
+		}
+	};
+
+
+	/**
 	 * Кастомный бинд отображения методов оплаты
 	 */
 	ko.bindingHandlers.paymentMethodVisible = {
@@ -1806,12 +1943,17 @@
 			var val = valueAccessor(),
 				unwrapVal = ko.utils.unwrapObservable(val),
 				node = $(element),
-				maxSum = parseInt($(element).data('value')['max-sum'], 10),
-				methodId = $(element).data('value')['method_id'];
+				nodeData = node.data('value'),
+				maxSum = parseInt( nodeData['max-sum'], 10 ),
+				methodId = nodeData['method_id'],
+				isAvailableToPickpoint = nodeData['isAvailableToPickpoint'];
 			// end of vars
 
-
-			if ( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId ) {
+			if (
+			 /* 6 is DeliveryTypeId for PickPoint  */
+			( 6 === global.OrderModel.choosenDeliveryTypeId && false == isAvailableToPickpoint ) ||
+			( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId ) ||
+			( !isNaN(maxSum) && maxSum < unwrapVal ) ) {
 				node.hide();
 
 				return;
@@ -1826,6 +1968,7 @@
 
 			if ( maxSum < unwrapVal ) {
 				node.hide();
+
 			}
 			else {
 				node.show();
@@ -2228,7 +2371,7 @@
 			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
 			if ( global.OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
 				global.OrderModel.popupWithPoints({
-					header: data.description,
+					header: data.name,
 					points: global.OrderModel.orderDictionary.getAllPointsByState(priorityState)
 				});
 
@@ -2267,7 +2410,7 @@
 		 * @param	{Object}	data	Данные удалямого товара
 		 */
 		deleteItem: function( data ) {
-			console.info('удаление');
+			console.info('удаление товара');
 
 			var reqArray = null;
 
@@ -2366,7 +2509,7 @@
 		 * @param       {Array}   productsToNewBox
 		 * @returns     {Array}   productsUniq
 		 */
-		prepareProductsByUniq: function prepareProductsByUniq( productsToNewBox ) {
+		prepareProductsQuantityByUniq: function prepareProductsQuantityByUniq( productsToNewBox ) {
 			var productsUniq = [],
 				nowProduct,
 				j, k;
@@ -2374,10 +2517,11 @@
 			for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
 				//!!! важно клонировать объект, дабы не портить для др. типов доставки
 				nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
+                nowProduct.sum = nowProduct.price;
+                nowProduct.quantity = 1;
+				nowProduct.oldQuantity = productsToNewBox[j].quantity; // сохраняем старое кол-во товаров в блоке
 				for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
-					nowProduct.quantity = 1;
-					nowProduct.sum = nowProduct.price;
-					productsUniq.push(nowProduct);
+                    productsUniq.push(nowProduct);
 				}
 			}
 
@@ -2453,10 +2597,17 @@
 
 			// Нет необходимого количества товара
 			708: function( product ) {
-				var msg = 'Вы заказали товар '+product.name+' в количестве '+product.quantity+' шт. <br/ >'+product.error.message,
+				var msg = '',
 
 					productErrorIsResolve = $.Deferred();
 				// end of vars
+				
+				if ( product.name && product.error.message && product.quantity ) {
+					msg = 'Вы заказали товар ' + product.name + ' в количестве ' + product.quantity + ' шт. <br/ >' + product.error.message;
+				}
+				else {
+					msg = 'Товар недоступен для продажи';
+				}
 
 				$.when(showError(msg)).then(function() {
 					$.ajax({

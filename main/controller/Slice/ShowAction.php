@@ -572,8 +572,8 @@ class ShowAction {
             $pagerAll = $repository->getIteratorByFilter(
                 $filtersWithoutShop,
                 $sort,
-                ($pageNum - 1) * $limit,
-                1 === $pageNum ? $limit-1 : $limit
+                ($pageNum - 1) * $limit - (1 === $pageNum ? 0 : 1),
+                1 === $pageNum ? $limit - 1 : $limit
             );
             $page->setGlobalParam('allCount', $pagerAll->count());
         }
@@ -594,8 +594,8 @@ class ShowAction {
                 'filter' => [
                     'filters' => $filterData,
                     'sort'    => $sort,
-                    'offset'  => ($pageNum - 1) * $limit,
-                    'limit'   => 1 === $pageNum ? $limit-1 : $limit,
+                    'offset'  => ($pageNum - 1) * $limit- (1 === $pageNum ? 0 : 1),
+                    'limit'   => 1 === $pageNum ? $limit - 1 : $limit,
                 ],
             ],
             [],

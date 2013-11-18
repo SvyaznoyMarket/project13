@@ -199,12 +199,6 @@ return [
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
     ],
-    // слайдер рекомендованных товаров
-    'product.category.recommended.slider' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/_slider-recommended',
-        'action'  => ['Crossss\ProductCategoryAction', 'recommended'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
 
     // карточка товара
     'product' => [
@@ -332,7 +326,7 @@ return [
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление товара в корзину
-    'cart.product.set' => [
+    'cart.product.set' => [ // TODO cart.product.set изменмить Url
         'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
     ],

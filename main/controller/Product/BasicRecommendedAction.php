@@ -32,10 +32,6 @@ class BasicRecommendedAction {
         $responseData = [];
 
         try {
-            if (\App::config()->crossss['enabled']) {
-                (new \Controller\Crossss\ProductAction())->recommended($request, $productId);
-            }
-
             $product = \RepositoryManager::product()->getEntityById($productId);
             if (!$product) {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));

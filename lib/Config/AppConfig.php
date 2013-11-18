@@ -359,17 +359,7 @@ class AppConfig {
         'logEnabled'     => null,
         'logDataEnabled' => null,
     ];
-    /**
-     * @var array
-     * @hidden
-     */
-    public $crossss = [
-        'enabled' => null,
-        'timeout' => null,
-        'apiUrl'  => null,
-        'apiKey'  => null,
-        'id'      => null,
-    ];
+
     /** @var array */
     public $warranty = [
         'enabled' => null,
