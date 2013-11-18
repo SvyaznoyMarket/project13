@@ -238,7 +238,7 @@ module.exports = function(grunt) {
 			},
 			partnerScripts: {
 				files: ['../web/js/partner/*.js'],
-				tasks: ['concat:partnerScripts','uglify:partnerScripts', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:partnerScripts', 'jshint', 'uglify:partnerScripts', 'connect', 'qunit', 'exec:getVersion']
 			},
 			vendorScripts: {
 				files: ['../web/js/vendor/*.js'],
@@ -246,63 +246,63 @@ module.exports = function(grunt) {
 			},
 			cartJS:{
 				files: [jsDevPath+'cart/*.js'],
-				tasks: ['concat:cartJS','uglify:cartJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:cartJS', 'jshint', 'uglify:cartJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			commonJS:{
 				files: [jsDevPath+'common/*.js'],
-				tasks: ['concat:commonJS','uglify:commonJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:commonJS', 'jshint', 'uglify:commonJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			infopageJS:{
 				files: [jsDevPath+'infopage/*.js'],
-				tasks: ['concat:infopageJS','uglify:infopageJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:infopageJS', 'jshint', 'uglify:infopageJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			jqueryPluginsJS:{
 				files: [jsDevPath+'jquery-plugins/*.js'],
-				tasks: ['exec:compileBJ', 'exec:getVersion', 'jshint']
+				tasks: ['exec:compileBJ', 'jshint', 'exec:getVersion']
 			},
 			libraryJS:{
 				files: [jsDevPath+'library/*.js'],
-				tasks: ['concat:libraryJS','uglify:libraryJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:libraryJS', 'jshint', 'uglify:libraryJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			mainJS:{
 				files: [jsDevPath+'main/*.js'],
-				tasks: ['concat:mainJS','uglify:mainJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:mainJS', 'jshint', 'uglify:mainJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			oneclickJS:{
 				files: [jsDevPath+'oneclick/*.js'],
-				tasks: ['concat:oneclickJS','uglify:oneclickJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:oneclickJS', 'jshint', 'uglify:oneclickJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			orderJS:{
 				files: [jsDevPath+'order/*.js'],
-				tasks: ['concat:orderJS','uglify:orderJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:orderJS', 'jshint', 'uglify:orderJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			orderNewV5JS:{
 				files: [jsDevPath+'order-new-v5/*.js'],
-				tasks: ['concat:orderNewV5JS','uglify:orderNewV5JS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:orderNewV5JS', 'jshint', 'uglify:orderNewV5JS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			pandoraJS:{
 				files: [jsDevPath+'pandora/*.js'],
-				tasks: ['concat:pandoraJS','uglify:pandoraJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:pandoraJS', 'jshint', 'uglify:pandoraJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			portsJS:{
 				files: [jsDevPath+'ports/*.js'],
-				tasks: ['concat:portsJS','uglify:portsJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:portsJS', 'jshint', 'uglify:portsJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			catalogJS:{
 				files: [jsDevPath+'catalog/*.js'],
-				tasks: ['concat:catalogJS','uglify:catalogJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:catalogJS', 'jshint', 'uglify:catalogJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			productJS:{
 				files: [jsDevPath+'product/*.js'],
-				tasks: ['concat:productJS','uglify:productJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:productJS', 'jshint', 'uglify:productJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			shopJS:{
 				files: [jsDevPath+'shop/*.js'],
-				tasks: ['concat:shopJS','uglify:shopJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:shopJS', 'jshint', 'uglify:shopJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			watch3dJS:{
 				files: [jsDevPath+'watch3d/*.js'],
-				tasks: ['concat:watch3dJS','uglify:watch3dJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:watch3dJS', 'jshint', 'uglify:watch3dJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			loadJS:{
 				files: [jsRootPath+'loadjs.js'],

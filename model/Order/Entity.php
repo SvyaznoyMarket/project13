@@ -106,6 +106,8 @@ class Entity {
     private $delivery = [];
     /** @var int */
     private $paySum;
+    /** @var int */
+    private $discountSum;
     /** @var Credit\Entity|null */
     private $credit;
     /** @var int */
@@ -192,6 +194,7 @@ class Entity {
             }
         }
         if (array_key_exists('pay_sum', $data)) $this->setPaySum($data['pay_sum']);
+        if (array_key_exists('discount_sum', $data)) $this->setDiscountSum($data['discount_sum']);
         if (array_key_exists('credit', $data) && (bool)$data['credit']) $this->setCredit(new Credit\Entity($data['credit']));
         if (array_key_exists('subway_id', $data)) $this->setSubwayId($data['subway_id']);
         if (array_key_exists('payment_url', $data)) $this->setPaymentUrl($data['payment_url']);
@@ -719,6 +722,20 @@ class Entity {
      */
     public function getSum() {
         return $this->sum;
+    }
+
+    /**
+     * @param int $discountSum
+     */
+    public function setDiscountSum($discountSum) {
+        $this->discountSum = $discountSum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDiscountSum() {
+        return $this->discountSum;
     }
 
     /**

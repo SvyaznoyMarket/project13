@@ -4,8 +4,38 @@
  * @author		Zaytsev Alexandr
  * @requires	jQuery
  */
-;(function($) {
-	$.fn.goodsSlider = function(params) {
+;(function( $ ) {
+	$.fn.goodsSlider = function( params ) {
+		var slidersWithUrl = 0,
+			body = $('body'),
+			reqArray = [];
+		// end of vars
+
+		this.each(function() {
+			var $self = $(this),
+				sliderParams = $self.data('slider');
+			// end of vars
+			
+			if ( sliderParams.url !== null ) {
+				slidersWithUrl++;
+			}
+		});
+
+		var getSlidersData = function getSlidersData( event, url, callback ) {
+			reqArray.push({
+				type: 'GET',
+				url: url,
+				callback: callback
+			});
+
+			if ( reqArray.length === slidersWithUrl ) {
+				window.ENTER.utils.packageReq(reqArray);
+			}
+		};
+
+
+		body.bind('goodsliderneeddata', getSlidersData);
+
 
 		/**
 		 * Обработка для каждого элемента попавшего в набор
@@ -27,12 +57,12 @@
 		 * 
 		 * @param	{Number}	nowLeft			Текущий отступ слева
 		 */
-		return this.each(function() {
+		var sliderControl = function( mainNode ) {
 			var options = $.extend(
 							{},
 							$.fn.goodsSlider.defaults,
 							params ),
-				$self = $(this),
+				$self = mainNode,
 				sliderParams = $self.data('slider'),
 				hasCategory = $self.hasClass('mWithCategory'),
 
@@ -49,10 +79,12 @@
 				nowLeft = 0;
 			// end of vars
 
+			
+			var
 				/**
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
 				 */
-			var nextSlide = function nextSlide() {
+				nextSlide = function nextSlide() {
 					if ( $(this).hasClass('mDisabled') ) {
 						return false;
 					}
@@ -159,11 +191,10 @@
 						return false;
 					}
 
-					newSlider = $(res.content);
+					newSlider = $(res.content)[0];
 					$self.before(newSlider);
 					$self.remove();
-					newSlider.goodsSlider();
-
+					$(newSlider).goodsSlider();
 				},
 
 				/**
@@ -177,16 +208,21 @@
 			// end of function
 
 			if ( sliderParams.url !== null ) {
-				$.ajax({
-					type: 'GET',
-					url: sliderParams.url,
-					success: authFromServer,
-					statusCode: {
-						500: errorStatusCode,
-						503: errorStatusCode,
-						504: errorStatusCode
-					}
-				});
+				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
+					body.trigger('goodsliderneeddata', [sliderParams.url, authFromServer]);
+				}
+				else {
+					$.ajax({
+						type: 'GET',
+						url: sliderParams.url,
+						success: authFromServer,
+						statusCode: {
+							500: errorStatusCode,
+							503: errorStatusCode,
+							504: errorStatusCode
+						}
+					});
+				}
 			}
 			else {
 				if ( hasCategory ) {
@@ -200,6 +236,13 @@
 			rightBtn.on('click', nextSlide);
 			leftBtn.on('click', prevSlide);
 			catItem.on('click', selectCategory);
+		}
+
+
+		return this.each(function() {
+			var $self = $(this);
+
+			new sliderControl($self);
 		});
 	};
 

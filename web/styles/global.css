@@ -467,6 +467,9 @@ input::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
+button:focus {
+  outline: none;
+}
 /**
  * 1. Remove default vertical scrollbar in IE 8/9.
  * 2. Improve readability and alignment in all browsers.
@@ -538,7 +541,7 @@ table {
    * Контентная часть
    */
   .content {
-    padding: 0 0 197px;
+    padding: 0 0 222px;
   }
   .content.mContentOrder {
     padding-bottom: 390px;
@@ -592,6 +595,13 @@ table {
     background: #000000;
     color: #ffffff;
     text-decoration: none;
+  }
+  /**
+   * Фикс однопиксельной картинки, которая выводится после футера.
+   */
+  img[height="1"],
+  img[height="0"] {
+    display: block;
   }
 }
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
@@ -652,13 +662,13 @@ table {
   */
   .footer {
     width: 960px;
-    margin: -197px auto 0;
-    height: 197px;
+    margin: -222px auto 0;
+    height: 222px;
     position: relative;
   }
   .footer__inner {
     width: 940px;
-    padding: 0 10px 15px;
+    padding: 0 10px 10px;
     margin: 0 auto;
     background: #ffffff;
   }
@@ -788,12 +798,16 @@ table {
   .footer .bannersList__item:last-child {
     margin-right: 0;
   }
+  .footer .bannersList__item .teleportator {
+    width: 130px;
+  }
   .footer .applist {
     float: right;
+    width: 360px;
   }
   .footer .applist__item {
     float: right;
-    margin-left: 5px;
+    margin: 0 0 5px 5px;
     -moz-opacity: 0.5;
     -khtml-opacity: 0.5;
     -webkit-opacity: 0.5;
@@ -812,9 +826,15 @@ table {
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     filter: alpha(opacity=100);
   }
+  .footer .applist__item img {
+    display: block;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+  }
   .footer .applist__item.mTitle {
-    width: 75px;
-    padding: 8px 0 0;
+    width: 160px;
+    padding: 3px 5px 0;
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -822,6 +842,13 @@ table {
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     filter: alpha(opacity=100);
     color: #515151;
+    height: 37px;
+    line-height: 34px;
+    color: #515151;
+    background: #e6e6e6;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
   }
 }
 @media all {
@@ -831,85 +858,111 @@ table {
   .footer__order {
     position: relative;
     margin: 0 auto;
-    margin-top: -390px;
-    padding: 0 10px;
-    width: 940px;
-    height: 390px;
+    margin-top: -20px;
+    width: 960px;
+    height: 20px;
     background: #fff;
   }
-  .footer__list {
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
-    position: relative;
+  /*
+  .footer__list{
+    .rounded(7px);
+    position:relative;
+  
     padding: 20px 0;
+  
     border: 1px solid #dddddd;
     background: #f6f6f6;
     font-size: 0;
+  
+    &__title {
+      margin: 20px 0 30px 0;
+  
+      text-align: center;
+      text-transform: uppercase;
+  
+      font: 36px 'Enter';
+      font-weight: 100;
+    }
+  
+    &__item {
+      display: inline-block;
+      padding: 60px 18px 0 10px;
+  
+      width: 205px;
+  
+      vertical-align: top;
+  
+      font-size: 12px;
+      zoom: 1;
+  
+      *display: inline;
+  
+      &.mEnter {
+        background: url('@{base-url}/footer/img/z_enter.png') 50% 0 no-repeat;
+      }
+  
+      &.mSafeOder {
+        background: url('@{base-url}/footer/img/z_zakaz.png') 50% 0 no-repeat;
+      }
+  
+      &.mOrder {
+      background: url('@{base-url}/footer/img/z_people.png') 50% 0 no-repeat;
+      }
+  
+      &.mDelivery{
+        background: url('@{base-url}/footer/img/z_car.png') 50% 0 no-repeat;
+      }
+    }
+  
+    .title {
+  
+      margin: 0 0 10px;
+      text-transform: uppercase;
+  
+      font: 18px 'Enter';
+      font-weight: 100;
+    }
+  
+    .strong {
+      font-weight: 100;
+      font-size: 18px;
+    }
   }
-  .footer__list__title {
-    margin: 20px 0 30px 0;
-    text-align: center;
-    text-transform: uppercase;
-    font: 36px 'Enter';
-    font-weight: 100;
-  }
-  .footer__list__item {
-    display: inline-block;
-    padding: 60px 18px 0 10px;
-    width: 205px;
-    vertical-align: top;
-    font-size: 12px;
-    zoom: 1;
-    *display: inline;
-  }
-  .footer__list__item.mEnter {
-    background: url('/styles/footer/img/z_enter.png') 50% 0 no-repeat;
-  }
-  .footer__list__item.mSafeOder {
-    background: url('/styles/footer/img/z_zakaz.png') 50% 0 no-repeat;
-  }
-  .footer__list__item.mOrder {
-    background: url('/styles/footer/img/z_people.png') 50% 0 no-repeat;
-  }
-  .footer__list__item.mDelivery {
-    background: url('/styles/footer/img/z_car.png') 50% 0 no-repeat;
-  }
-  .footer__list .title {
-    margin: 0 0 10px;
-    text-transform: uppercase;
-    font: 18px 'Enter';
-    font-weight: 100;
-  }
-  .footer__list .strong {
-    font-weight: 100;
-    font-size: 18px;
-  }
+  
   .footer__order__bottom {
     margin: 20px 0 0;
     vertical-align: top;
     font-size: 11px;
+  
+    .feedback__link {
+      margin: 0 0 10px;
+  
+      font-size: 10px;
+    }
+  
+    .copy {
+      display: inline-block;
+      zoom: 1;
+  
+      *display: inline;
+    }
+  
+    .creditcard__list {
+      display: inline-block;
+      float: right;
+      zoom: 1;
+  
+      *display: inline;
+  
+      &__item {
+        display: inline-block;
+        zoom: 1;
+  
+        *display: inline;
+      }
+    }
   }
-  .footer__order__bottom .feedback__link {
-    margin: 0 0 10px;
-    font-size: 10px;
-  }
-  .footer__order__bottom .copy {
-    display: inline-block;
-    zoom: 1;
-    *display: inline;
-  }
-  .footer__order__bottom .creditcard__list {
-    display: inline-block;
-    float: right;
-    zoom: 1;
-    *display: inline;
-  }
-  .footer__order__bottom .creditcard__list__item {
-    display: inline-block;
-    zoom: 1;
-    *display: inline;
-  }
+  */
 }
 /*---END---СТИЛИ ПОДВАЛА---*/
 /*---------КНОПКА НАВЕРХ----------*/
@@ -1157,6 +1210,10 @@ table {
 .fixedTopBar__cart.mEmpty .fixedTopBar__cartQuan {
   background: #bbbbbb;
 }
+.fixedTopBar__cart:hover .fixedTopBar__dd {
+  display: block;
+  left: -129px;
+}
 .fixedTopBar__cartLink {
   display: block;
 }
@@ -1222,38 +1279,6 @@ table {
 }
 .fixedTopBar__logIn:hover .fixedTopBar__logOut {
   display: block;
-}
-.fixedTopBar__logOut {
-  position: absolute;
-  display: none;
-  z-index: 5;
-  top: 46px;
-  left: 0;
-  background: #ffffff;
-  border-width: 5px 2px 2px;
-  border-color: #ffa901;
-  border-style: solid;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  width: 123px;
-}
-.fixedTopBar__logOut .corner {
-  background: url('/css/header/img/corner.png') no-repeat 0 0;
-  top: -10px;
-  height: 10px;
-  left: 50%;
-  margin-left: -10px;
-  position: absolute;
-  width: 20px;
-}
-.fixedTopBar__logOutLink {
-  display: block;
-  text-align: center;
-  height: 20px;
-  line-height: 20px;
-  font-size: 12px;
-  margin: 10px;
 }
 .fixedTopBar__logInLink {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhElEQVQYGYWQUQ5AMBBEZ5crOQZnkDiBTw6gn04gnIFjuFJZ3RIkFd2PZjvzkk6HRAQ620Q5dtQQZF4grGD0SSmL3klBO1Dn9sYD4WHSSlqyI3LZMIf+o1CCgv1zj/a9uUh8Z/pGTtXl5j//7TH0d7FxDGsFMU4ZvnoyP7BRxveoUKzwA+X6MCjSOJRiAAAAAElFTkSuQmCC) no-repeat 0 21px;
@@ -1406,6 +1431,103 @@ table {
   100% {
     -webkit-transform: translate(1px, -2px) rotate(-1deg);
   }
+}
+/**
+* Выпадающие блоки из блока корзины и логина
+*/
+.fixedTopBar__dd {
+  position: absolute;
+  display: none;
+  z-index: 5;
+  top: 49px;
+  left: -1px;
+  background: #ffffff;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 0 0 0 5px;
+  -moz-border-radius: 0 0 0 5px;
+  border-radius: 0 0 0 5px;
+  width: 228px;
+  -webkit-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
+}
+.fixedTopBar__logOut {
+  width: 127px;
+  -webkit-border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
+}
+.fixedTopBar__cartOn .transGradWhite {
+  background: url("/styles/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
+  position: absolute;
+  left: 0;
+  top: 219px;
+  height: 26px;
+  width: 228px;
+  display: block;
+}
+.fixedTopBar__logOutLink {
+  display: block;
+  text-align: center;
+  margin: 10px;
+  height: 25px;
+  line-height: 25px;
+}
+.fixedTopBar .cartList {
+  max-height: 245px;
+  min-height: 65px;
+  overflow: auto;
+}
+.fixedTopBar .cartList__item {
+  height: 55px;
+  padding: 5px 0 5px 5px;
+  overflow: hidden;
+  font-size: 11px;
+}
+.fixedTopBar .cartList__item:hover {
+  background: #fff7e6;
+}
+.fixedTopBar .cartList__itemLink {
+  display: inline-block;
+  width: 30px;
+  margin: 0 5px 0 0;
+  vertical-align: top;
+  *display: inline;
+  zoom: 1;
+}
+.fixedTopBar .cartList__itemImg {
+  max-height: 40px;
+  max-width: 30px;
+}
+.fixedTopBar .cartList__itemName {
+  display: inline-block;
+  width: 110px;
+  line-height: 1.2;
+  vertical-align: top;
+  *display: inline;
+  zoom: 1;
+}
+.fixedTopBar .cartList__itemInfo {
+  display: inline-block;
+  width: 50px;
+  vertical-align: middle;
+  *display: inline;
+  zoom: 1;
+  line-height: 1.2;
+}
+.fixedTopBar .cartList .del {
+  text-decoration: underline;
+}
+.fixedTopBar .cartList .price {
+  display: block;
+}
+.fixedTopBar .quickOrder {
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  width: 208px;
+}
+.fixedTopBar .quickOrder.btnBuy .btnBuy__eLink {
+  width: 100%;
 }
 /*---END----ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)---------*/
 /*---------КОРЗИНА (СТАРАЯ ВЕРСТКА)----------*/

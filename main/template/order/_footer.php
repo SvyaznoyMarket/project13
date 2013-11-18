@@ -1,3 +1,4 @@
+<? /*
 <div class="footer__order">
     <ul class="footer__list">
         <li class="footer__list__title">
@@ -37,4 +38,13 @@
             </ul>
         </div>
     </div>
-</div><!--/ Подвал -->
+</div>
+*/?>
+
+<footer class="footer__order">
+    <div class="footer__insert">
+        <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–2013. ENTER® ЕНТЕР® Enter®. Все права защищены. <a id="jira" class="footer__copy__link" href="javascript:void(0)">Сообщить об ошибке</a></p>
+    </div>
+</footer>
+
+<!--/ Подвал -->

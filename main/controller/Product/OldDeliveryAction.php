@@ -174,6 +174,8 @@ class OldDeliveryAction {
             foreach ($productData['delivery_mode_list'] as $deliveryData) {
                 $token = $deliveryData['token'];
                 //if ($token == 'now') $token = 'self';
+                $isPickpoint = ( $token === \Model\DeliveryType\Entity::TYPE_PICKPOINT ) ? true :false;
+                if ( $isPickpoint ) continue; // SITE-2548 временно уберём Пикпойнт из быстрого заказа
 
                 $dates = [];
                 $shops = [];

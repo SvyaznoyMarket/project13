@@ -56,7 +56,7 @@ $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
 $c->corePrivate['password']     = 'dEl23sTOas';
 $c->corePrivate['timeout']      = 5;
-$c->corePrivate['retryCount']   = 3;
+$c->corePrivate['retryCount']   = 2;
 $c->corePrivate['retryTimeout'] = [
     'default' => 1.5,
     'tiny'    => 0.05,
@@ -67,7 +67,7 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->reviewsStore['url']          = 'http://reviews.enter.ru/reviews/';
+$c->reviewsStore['url']          = 'http://admin.enter.ru/reviews/';
 $c->reviewsStore['retryCount']   = 2;
 $c->reviewsStore['timeout']      = 0.36;
 $c->reviewsStore['retryTimeout'] = [
@@ -96,7 +96,7 @@ $c->wordpress['retryTimeout'] = [
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
 $c->dataStore['timeout'] = 0.8;
-$c->dataStore['retryCount'] = 3;
+$c->dataStore['retryCount'] = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 0.04,
     'tiny'    => 0.04,
@@ -125,7 +125,7 @@ $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
-$c->pickpoint['timeout'] = 20;
+$c->pickpoint['timeout'] = 60;
 $c->pickpoint['retryCount'] = 3;
 $c->pickpoint['retryTimeout'] = [
     'default' => 0.04,
@@ -314,15 +314,9 @@ $c->smartengine['logEnabled']     = true;
 $c->smartengine['logDataEnabled'] = true;
 $c->smartengine['sslVerify']      = true;
 
-$c->crossss['enabled'] = true;
-$c->crossss['timeout'] = 0.3;
-$c->crossss['apiUrl']  = 'http://crossss.com/api.ashx';
-$c->crossss['id']      = 45;
-$c->crossss['apiKey']  = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';
-
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;
-$c->coupon['enabled'] = true;
+$c->coupon['enabled'] = false;
 $c->blackcard['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
@@ -369,6 +363,7 @@ $c->sphinx['showListingSearchBar'] = false;
 $c->lifeGift['enabled'] = false;
 $c->lifeGift['regionId'] = 144756;
 $c->lifeGift['labelId'] = 18;
+$c->lifeGift['deliveryTypeId'] = 1065;
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';

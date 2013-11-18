@@ -92,17 +92,24 @@
             <ul class="bannersList">
                 <li class="bannersList__item"><img src="/styles/footer/img/prava-potreb.gif" /></li>
                 <li class="bannersList__item"><a href="/akit"><img src="/styles/footer/img/akita.png" /></a></li>
-                <li class="bannersList__item"><div id="teleportator"></div></li>
+                <li class="bannersList__item"><div class="teleportator" id="teleportator"></div></li>
             </ul>
 
             <ul class="applist">
+                <li class="applist__item mTitle">Мобильные приложения</li>
+                <li class="applist__item"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img src="/styles/footer/img/apple.png" /></a></li>
+                
                 <li class="applist__item">
-                    <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
-                      <img alt="Get it on Google Play" src="https://developer.android.com/images/brand/ru_generic_rgb_wo_45.png" />
+                    <a target="_blank" href="http://www.windowsphone.com/ru-ru/store/app/enter/6f4c5810-682f-47dc-87b2-aced84582787=">
+                        <img src="/styles/footer/img/wind.png" />
                     </a>
                 </li>
-                <li class="applist__item"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img src="/styles/footer/img/appstore.png" /></a></li>
-                <li class="applist__item mTitle">Мобильные приложения</li>
+
+                <li class="applist__item">
+                    <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
+                      <img alt="Get it on Google Play" src="/styles/footer/img/google.png" />
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -134,23 +141,26 @@
         <!-- /krible.ru Teleportator end -->
     </footer><!--/ Подвал-->
 
+    <a id="upper" class="upper" href="#">Наверх</a>
+
     <?= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
 
-    <?= $page->slotRegionSelection() ?>
-    <?= $page->slotBodyJavascript() ?>
-    <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>
-    <?= $page->slotYandexMetrika() ?>
-    <?= $page->slotAdvanceSeoCounter() ?>
-    <?= $page->slotMyThings() ?>
-    <?= $page->slotAdriver() ?>
-    <?= $page->slotPartnerCounter() ?>
+    <?= $page->slotRegionSelection() ?>
 
-    <? if (\App::config()->analytics['enabled']): ?>
-        <div id="adblenderCommon" class="jsanalytics"></div>
-    <? endif ?>
-        
-    <a id="upper" class="upper" href="#">Наверх</a>
+    <div style="position:absolute; height: 0; z-index:-1;">
+        <?= $page->slotBodyJavascript() ?>
+        <?= $page->slotInnerJavascript() ?>
+        <?= $page->slotYandexMetrika() ?>
+        <?= $page->slotAdvanceSeoCounter() ?>
+        <?= $page->slotMyThings() ?>
+        <?= $page->slotAdriver() ?>
+        <?= $page->slotPartnerCounter() ?>
+
+        <? if (\App::config()->analytics['enabled']): ?>
+            <div id="adblenderCommon" class="jsanalytics"></div>
+        <? endif ?>
+    </div>
 </body>
 </html>

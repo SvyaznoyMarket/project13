@@ -644,8 +644,8 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
  */
 (function( global ) {
 	global.printPrice = function( num ) {
-		var str = num+'';
-		
+		var str = num.toString();
+
 		return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
 	};
 }(this));
@@ -2318,6 +2318,11 @@ FormValidator.prototype._enableHandlers = function() {
 	for (var i = fields.length - 1; i >= 0; i--) {
 		currentField = fields[i];
 
+		if ( currentField.fieldNode.length === 0 ) {
+			continue;
+		}
+
+
 		if ( currentField.validateOnChange ) {
 			if ( self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] ) {
 				console.log('уже вешали');
@@ -2641,6 +2646,67 @@ if ( !Array.prototype.indexOf ) {
  
  
 /**
+ * Работа с числами
+ * 
+ * @requires ENTER.utils
+ * @author	Zaytsev Alexandr
+ *
+ * @param	{Object}	ENTER	Enter namespace
+ */
+;(function( ENTER ) {
+
+	console.info('utils.numMethods module init');
+
+	var 
+		utils = ENTER.utils;
+	// end of vars
+	
+	utils.numMethods = (function() {
+
+		/**
+		 * Суммирование чисел с плавающей точкой
+		 * WARNING: только для чисел до 2 знака после запятой
+		 * 
+		 * @param	{String}	a	Первое число
+		 * @param	{String}	b	Второе число
+		 * 
+		 * @return	{String}		Результат сложения
+		 */
+		sumDecimal 	= function sumDecimal( a, b ) {
+			var 
+				overA = parseFloat(a) * 100,
+				overB = parseFloat(b) * 100,
+				overSum = (overA + overB).toString(),
+				firstNums = overSum.substr(0, overSum.length - 2),
+				lastNums = overSum.substr(-2),
+				res;
+			// end of vars
+
+			if ( lastNums == '00' ) {
+				res = firstNums
+			}
+			else {
+				res = firstNums + '.' + lastNums;
+			}
+
+			return res;
+		};
+
+
+		return {
+			sumDecimal: sumDecimal
+		};
+	}());
+
+}(window.ENTER));
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
  * Пакетная отправка данных на сервер
  *
  * @author	Zaytsev Alexandr
@@ -2911,5 +2977,18 @@ if ( !Array.prototype.indexOf ) {
 		console.log(typeof cart);
 	};
 
+
+	/**
+	 * Возвращает гет-параметр с именем paramName у ссылки url
+	 *
+	 * @param 		{string}	paramName
+	 * @param 		{string}	url
+	 * @returns 	{string}	{*}
+	 *
+	utils.getURLParam = function getURLParam ( paramName, url ) {
+		return decodeURI(
+			( RegExp(paramName + '=' + '(.+?)(&|$)').exec(url) || [, null] )[1]
+		);
+	}*/
 
 }(window.ENTER));

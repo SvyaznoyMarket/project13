@@ -94,7 +94,11 @@ class Entity {
      * @param int $sum
      */
     public function setSum($sum) {
-        $this->sum = (int)$sum;
+        if (false !== strpos($sum, '.00')) {
+            $sum = (string)intval($sum);
+        }
+
+        $this->sum = (string)$sum;
     }
 
     /**

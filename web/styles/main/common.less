@@ -27,9 +27,12 @@
  * Контентная часть
  */
 .content {
-	padding: 0 0 197px;
+	padding: 0 0 222px;
 
 	//Контентная часть страницы оформления заказа
+	// &.mContentOrder {
+	// 	padding-bottom: 390px;
+	// }
 	&.mContentOrder {
 		padding-bottom: 390px;
 	}
@@ -70,4 +73,12 @@
 		color: @white;
 		text-decoration: none;
 	}
+}
+
+/**
+ * Фикс однопиксельной картинки, которая выводится после футера.
+ */
+img[height="1"],
+img[height="0"] {
+	display: block;
 }

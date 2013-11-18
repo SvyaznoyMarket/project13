@@ -194,6 +194,14 @@
 				background: #bbbbbb;
 			}
 		}
+
+		&:hover {
+
+			.fixedTopBar__dd {
+				display: block;
+				left: -129px;
+			}
+		}
 	}
 
 	&__cartLink {
@@ -276,39 +284,6 @@
 		}
 	}
 
-	&__logOut {
-		position: absolute;
-		display: none;
-		z-index: 5;
-		top: 46px;
-		left: 0;
-		background: #ffffff;
-		border-width: 5px 2px 2px;
-		border-color: #ffa901;
-		border-style: solid;
-		.rounded(5px);
-		width: 123px;
-
-		.corner {
-			background: url('/css/header/img/corner.png') no-repeat 0 0;
-			top: -10px;
-			height: 10px;
-			left: 50%;
-			margin-left: -10px;
-			position: absolute;
-			width: 20px;
-		}
-	}
-
-	&__logOutLink {
-		display: block;
-		text-align: center;
-		height: 20px;
-		line-height: 20px;
-		font-size: 12px;
-		margin: 10px;
-	}
-
 	&__logInLink {
 		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhElEQVQYGYWQUQ5AMBBEZ5crOQZnkDiBTw6gn04gnIFjuFJZ3RIkFd2PZjvzkk6HRAQ620Q5dtQQZF4grGD0SSmL3klBO1Dn9sYD4WHSSlqyI3LZMIf+o1CCgv1zj/a9uUh8Z/pGTtXl5j//7TH0d7FxDGsFMU4ZvnoyP7BRxveoUKzwA+X6MCjSOJRiAAAAAElFTkSuQmCC) no-repeat 0 21px;
 		padding-left: 15px;
@@ -362,48 +337,3 @@
 		}
 	}
 }
-
-/**
-* Анимация количества товаров в корзине
-*/
-@keyframes shake{ 
-0% { transform: translate(2px, 1px) rotate(0deg); } 
-10% { transform: translate(-1px, -2px) rotate(-1deg); } 
-20% { transform: translate(-2px, 0px) rotate(1deg); } 
-30% { transform: translate(0px, 2px) rotate(0deg); } 
-40% { transform: translate(1px, -1px) rotate(1deg); } 
-50% { transform: translate(-1px, 2px) rotate(-1deg); } 
-60% { transform: translate(-2px, 1px) rotate(0deg); } 
-70% { transform: translate(2px, 1px) rotate(-1deg); } 
-80% { transform: translate(-1px, -1px) rotate(1deg); } 
-90% { transform: translate(2px, 2px) rotate(0deg); } 
-100% { transform: translate(1px, -2px) rotate(-1deg); } 
-} 
-
-@-moz-keyframes shake{ 
-0% { -moz-transform: translate(2px, 1px) rotate(0deg); } 
-10% { -moz-transform: translate(-1px, -2px) rotate(-1deg); } 
-20% { -moz-transform: translate(-2px, 0px) rotate(1deg); } 
-30% { -moz-transform: translate(0px, 2px) rotate(0deg); } 
-40% { -moz-transform: translate(1px, -1px) rotate(1deg); } 
-50% { -moz-transform: translate(-1px, 2px) rotate(-1deg); } 
-60% { -moz-transform: translate(-2px, 1px) rotate(0deg); } 
-70% { -moz-transform: translate(2px, 1px) rotate(-1deg); } 
-80% { -moz-transform: translate(-1px, -1px) rotate(1deg); } 
-90% { -moz-transform: translate(2px, 2px) rotate(0deg); } 
-100% { -moz-transform: translate(1px, -2px) rotate(-1deg); } 
-} 
-
-@-webkit-keyframes shake { 
-0% { -webkit-transform: translate(2px, 1px) rotate(0deg); } 
-10% { -webkit-transform: translate(-1px, -2px) rotate(-1deg); } 
-20% { -webkit-transform: translate(-2px, 0px) rotate(1deg); } 
-30% { -webkit-transform: translate(0px, 2px) rotate(0deg); } 
-40% { -webkit-transform: translate(1px, -1px) rotate(1deg); } 
-50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); } 
-60% { -webkit-transform: translate(-2px, 1px) rotate(0deg); } 
-70% { -webkit-transform: translate(2px, 1px) rotate(-1deg); } 
-80% { -webkit-transform: translate(-1px, -1px) rotate(1deg); } 
-90% { -webkit-transform: translate(2px, 2px) rotate(0deg); } 
-100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); } 
-} 

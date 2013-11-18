@@ -1532,6 +1532,16 @@
     font-size: 30px;
     font-family: "Enter";
   }
+  .bFormLogin__eComplete {
+    display: none;
+    text-align: center;
+    padding: 10px;
+    background: #ffa901;
+    font-size: 16px;
+    color: white;
+    width: 305px;
+    border-radius: 4px;
+  }
   .bFormLogin__ePlace {
     display: inline-block;
     margin-right: 30px;
@@ -9056,9 +9066,6 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     display: block;
     width: 170px;
     height: 35px;
@@ -9108,6 +9115,10 @@
     background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
     text-decoration: none;
   }
+  .btnBuy .btnBuy__eLink:active {
+    background: #f79200;
+    text-decoration: none;
+  }
   .jewel .btnBuy .btnBuy__eLink.mDisabled {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -9121,25 +9132,6 @@
     color: #a6a6a6;
     border: 1px solid #e6e6e6;
     background: #e6e6e6;
-  }
-  .goodsbox .btnBuy {
-    float: right;
-    width: 38px;
-    height: 25px;
-  }
-  .goodsbox .btnBuy a {
-    display: block;
-    width: 38px;
-    height: 25px;
-    text-indent: -9999px;
-    background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
-  }
-  .goodsbox .btnBuy a.mBought,
-  .goodsbox .btnBuy a:hover {
-    background-position: -102px 0;
-  }
-  .goodsbox .btnBuy a.mDisabled {
-    background-position: -64px -26px;
   }
 }
 /*---END---СТИЛИ КНОПКИ "КУПИТЬ"---*/
@@ -10489,6 +10481,21 @@
   .bProcess .mOrange {
     background: url("/css/leftNav/img/leftNavSprite.png") no-repeat -38px 0;
   }
+  /*
+  Стили для метода доставки PickPoint
+   */
+  .bPickPointHint {
+    margin: 30px 0 0 0;
+    width: 500px;
+  }
+  .bPickPointHint__eItem {
+    background: url("/css/bBuyingSteps/img/pickPointDeliv.jpg") no-repeat 0 0;
+    padding: 0 0 10px 40px;
+    margin: 0 0 10px;
+  }
+  .bPickPointHint__eItem.mPay {
+    background: url("/css/bBuyingSteps/img/pickPointCard.jpg") no-repeat 0 0;
+  }
 }
 @media all {
   .bBuyingInfo {
@@ -11176,20 +11183,21 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    -webkit-box-shadow: 1px 1px 3px #c7c7c7;
-    -moz-box-shadow: 1px 1px 3px #c7c7c7;
-    box-shadow: 1px 1px 3px #c7c7c7;
     border: 1px solid #c7c7c7;
   }
   .mBtnGrey:hover {
-    background: #c5c5c5;
-    background: -moz-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #c5c5c5));
-    background: -webkit-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -o-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: -ms-linear-gradient(top, #ffffff 0%, #c5c5c5 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #c5c5c5 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#c5c5c5', GradientType=0);
+    background: #d7d7d7;
+    background: -moz-linear-gradient(top, #f5f5f5 0%, #d7d7d7 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #d7d7d7));
+    background: -webkit-linear-gradient(top, #f5f5f5 0%, #d7d7d7 100%);
+    background: -o-linear-gradient(top, #f5f5f5 0%, #d7d7d7 100%);
+    background: -ms-linear-gradient(top, #f5f5f5 0%, #d7d7d7 100%);
+    background: linear-gradient(to bottom, #f5f5f5 0%, #d7d7d7 100%);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#d7d7d7', GradientType=0);
+    text-decoration: none;
+  }
+  .mBtnGrey:active {
+    background: #dddbdb;
     text-decoration: none;
   }
   .bListing {
@@ -11600,6 +11608,19 @@
     border-right: 1px solid #e6e6e6;
     cursor: pointer;
   }
+  .bFilterParams__eItem.mActive {
+    border-right: none;
+    cursor: default;
+  }
+  .bFilterParams__eItem.mActive .bParamName {
+    background: #f6f6f6;
+  }
+  .bFilterParams__eItem.mActive:hover .bParamName {
+    background: #f6f6f6;
+  }
+  .bFilterParams__eItem:hover .bParamName {
+    background: #fbebd2;
+  }
   .bFilterParams .bParamName {
     display: table-cell;
     padding: 0 10px 0 9px;
@@ -11607,13 +11628,6 @@
     height: 40px;
     background: #ffffff;
     vertical-align: middle;
-  }
-  .bFilterParams .mActive {
-    border-right: none;
-    cursor: default;
-  }
-  .bFilterParams .mActive .bParamName {
-    background: #f6f6f6;
   }
   .bFilterValues {
     float: left;
@@ -11644,10 +11658,17 @@
     z-index: 10;
     min-width: 183px;
     width: auto;
+    background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat 5px 7px #fbebd2;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  }
+  .bFilterValues .bFilterValuesCol:hover .bFilterCheckbox.mChecked {
     background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat 5px -20px #fbebd2;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
   }
   .bFilterValues .bFilterValuesCol:hover .bFilterCheckbox.mCustomLabelRadio {
+    background-image: url("/css/leftNav/img/radioBtn.png");
+    background-position: 5px -14px;
+  }
+  .bFilterValues .bFilterValuesCol:hover .bFilterCheckbox.mCustomLabelRadio.mChecked {
     background-image: url("/css/leftNav/img/radioBtn.png");
     background-position: 5px 7px;
   }
@@ -11970,6 +11991,52 @@
     background-position: -14px -14px;
   }
 }
+@media all {
+  .bCatalog.mCustomCss .bCustomFilter {
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+  .bCatalog.mCustomCss .bTitlePage {
+    color: #fff;
+    font-size: 48px;
+    font-weight: normal;
+    margin: 50px 0 35px;
+  }
+  .bCatalog.mCustomCss .bCatalogList__eItem {
+    margin: 0 10px 10px 0;
+    background: #f6f6f6;
+    background: rgba(246, 246, 246, 0.9);
+  }
+  .bCatalog.mCustomCss .bFilter,
+  .bCatalog.mCustomCss .bSortingLine {
+    background: #f6f6f6;
+    background: rgba(246, 246, 246, 0.9);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
+  .bCatalog.mCustomCss .bSortingLine {
+    margin-bottom: 0;
+    padding: 7px 10px 10px;
+  }
+  .bCatalog.mCustomCss .bSortingLine.mPagerBottom {
+    margin-bottom: 10px;
+  }
+  .bCatalog.mCustomCss .bFilterSlider .ui-slider-handle {
+    background: url('/css/bCatalog/img/bBtnSliderCustom.png') no-repeat 0 0;
+  }
+  .bCatalog.mCustomCss .bFilterSlider .ui-slider-range {
+    background: #000000;
+  }
+  .bCatalog.mCustomCss .bFilterValues {
+    width: 720px;
+  }
+}
 /*---END---СТИЛИ КАТАЛОГА---*/
 /*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
 /*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
@@ -12029,6 +12096,9 @@
     text-decoration: none;
     color: #ffffff;
   }
+  .mLiftGift {
+    padding-bottom: 10px;
+  }
   .mLiftGift .bTitle {
     font-size: 16px;
     color: #c52126;
@@ -12041,6 +12111,24 @@
   .mLiftGift .bPrice {
     font-size: 26px;
     margin: 10px 0 0;
+    text-align: center;
+  }
+  .mLiftGift .bDeliveryGift {
+    margin: 20px 0 10px;
+  }
+  .mLiftGift .bDeliveryGift__eItem {
+    padding-left: 25px;
+    margin: 0 0 12px 4px;
+    background-repeat: no-repeat;
+    background-image: url("/css/rightBarCard/img/ico.png");
+  }
+  .mLiftGift .bDeliveryGift__eItem span {
+    font-size: 14px;
+  }
+  .mLiftGift .bDeliveryGift__eItem.mDeliveryPrice {
+    background-position: 0 -34px;
+  }
+  .mLiftGift .bGiftText {
     text-align: center;
   }
   .bLiftGiftLogo {

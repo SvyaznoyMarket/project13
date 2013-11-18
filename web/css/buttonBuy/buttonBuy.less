@@ -28,7 +28,6 @@
     .btnBuy__eLink {
         .gradient(#ffc000, #ffaa01, #ffc000);
         .rounded(5px);
-        .box-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
         display: block;
 
         width: 170px;
@@ -82,6 +81,11 @@
             .gradient(#ffa200, #f79200, #ffa200);
             text-decoration: none;
         }
+
+        &:active {
+            background: #f79200;
+            text-decoration: none;
+        }
     }
 }
 
@@ -95,6 +99,7 @@
                 color: @typGray;
                 border: 1px solid @typLightGray;
                 background: @typLightGray;
+
                 &:hover {
                     color: @typGray;
                     border: 1px solid @typLightGray;
@@ -104,28 +109,4 @@
         }
     }
 }
-
-.goodsbox {
-    .btnBuy {
-        float: right;
-
-        width: 38px;
-        height: 25px;
-        a {
-            display: block;
-
-            width: 38px;
-            height: 25px;
-
-            text-indent: -9999px;
-
-            background: url("/css/catalog/img/catalogSprite.png") -64px 0 no-repeat;
-        &.mBought, &:hover {
-          background-position: -102px 0;
-        }
-        &.mDisabled {
-            background-position: -64px -26px;
-        }
-      }
-    }
 }

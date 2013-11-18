@@ -18,17 +18,7 @@ $(document).ready(function(){
 			left = 0;
 		// end of vars
 		
-		var sliderTracking = function sliderTracking() {
-				var nowUrl = document.location,
-					toUrl = $(this).attr('href');
-				// end of vars
-				
-				if( typeof(_gaq) !== 'undefined' ){
-					_gaq.push(['_trackEvent', 'AdvisedCrossss', nowUrl, toUrl]);
-				}
-			},
-
-			kissSimilar = function kissSimilar() {
+		var kissSimilar = function kissSimilar() {
 				var clicked = $(this),
 					toKISS = {
 						'Recommended Item Clicked Similar Recommendation Place':'product',
@@ -116,7 +106,6 @@ $(document).ready(function(){
 
 		// KISS
 		$('.bSimilarGoods.mProduct .bSimilarGoodsSlider_eGoods').on('click', kissSimilar);
-		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').on('click', sliderTracking);
 	}
 
 

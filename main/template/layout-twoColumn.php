@@ -61,24 +61,26 @@
         </div><!--/ Контент -->
     </div><!--/ Шаблон -->
 
-
     <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
+
+    <a class="upper" id="upper" href="#">Наверх</a>
+
     <?= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
-
     <?= $page->slotRegionSelection() ?>
-    <?= $page->slotBodyJavascript() ?>
-    <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>
-    <?= $page->slotYandexMetrika() ?>
-    <?= $page->slotMyThings() ?>
-    <?= $page->slotAdriver() ?>
-    <?= $page->slotPartnerCounter() ?>
+    
+    <div style="position:absolute; height: 0; z-index:-1;">
+        <?= $page->slotBodyJavascript() ?>
+        <?= $page->slotInnerJavascript() ?>
+        <?= $page->slotYandexMetrika() ?>
+        <?= $page->slotMyThings() ?>
+        <?= $page->slotAdriver() ?>
+        <?= $page->slotPartnerCounter() ?>
 
-    <? if (\App::config()->analytics['enabled']): ?>
-        <div id="adblenderCommon" class="jsanalytics"></div>
-    <? endif ?>
-	
-	<a class="upper" id="upper" href="#">Наверх</a>
+        <? if (\App::config()->analytics['enabled']): ?>
+            <div id="adblenderCommon" class="jsanalytics"></div>
+        <? endif ?>
+    </div>
 </body>
 </html>

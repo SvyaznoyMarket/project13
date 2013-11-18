@@ -29,6 +29,16 @@ class RouteAction {
                 $action['data'] = [];
             }
 
+            if ( $urlGetPos = strpos( $action['url'], '?' ) ) {
+                // Если строка содержит гет-параметры:
+                $urlData = parse_url( $action['url'] );
+                if ( !empty($urlData['query']) ) {
+                    parse_str( $urlData['query'], $urlGetData );
+                    $action['data'] = array_merge( $urlGetData, $action['data'] );
+                }
+                $action['url'] = substr( $action['url'], 0, $urlGetPos );
+            }
+
             try {
                 \App::logger()->info(['action' => $action], ['action']);
 

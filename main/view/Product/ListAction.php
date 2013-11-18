@@ -89,6 +89,9 @@ class ListAction {
             $productData[] = $productItem;
         }
 
+        // получаем кол-во продуктов
+        $productCount = count($productData);
+
         // добавляем баннер в листинги, в нужную позицию
         if ($bannerPlaceholder && 1 === $pager->getPage()) {
             $bannerPlaceholder['isBanner'] = true;
@@ -97,6 +100,7 @@ class ListAction {
 
         return [
             'products' => $productData,
+            'productСount' => $productCount
         ];
     }
 }

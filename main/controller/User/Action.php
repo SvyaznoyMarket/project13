@@ -237,10 +237,10 @@ class Action {
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
                             'success' => true,
-                            'message' => sprintf('Пароль выслан на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
+                            'message' => sprintf('Пароль отправлен на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
 
                             'data'    => [
-                                'link' => $this->redirect,
+                                //'link' => $this->redirect,
                             ],
                             'error' => null,
                             'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],

@@ -168,6 +168,10 @@ class DeliveryAction {
                     'states'      => $deliveryType->getPossibleMethodTokens(),
                     'ownStates'   => $deliveryType->getMethodTokens(),
                 ];
+
+                if ('pickpoint' === $deliveryType->getToken()) {
+                    $deliveryTypeData[$deliveryType->getToken()]['description'] = \App::closureTemplating()->render('order/newForm/__deliveryType-pickpoint-description');
+                }
             }
 
             $responseData = array_merge($responseData, [
@@ -194,15 +198,15 @@ class DeliveryAction {
                         'products' => [],
                     ],
                     'pickpoint' => [
-                        'name'     => 'Pickpoint',
+                        'name'     => 'PickPoint',
                         'unique'     => true,
                         'products' => [],
                     ],
                 ],
                 'pointsByDelivery'=> [
-                    'self' => 'shops',
-                    'now'  => 'shops',
-                    'pickpoint' => 'pickpoints',
+                    'self'      => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
+                    'now'       => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
+                    'pickpoint' => ['token' => 'pickpoints', 'changeName' => 'Сменить постамат'],
                 ],
                 'products'        => [],
                 'shops'           => [],
@@ -213,13 +217,6 @@ class DeliveryAction {
             // если недоступен заказ товара из магазина
             if (!\App::config()->product['allowBuyOnlyInshop'] && isset($responseData['deliveryStates']['now'])) {
                 unset($responseData['deliveryStates']['now']);
-            }
-
-            if ($lifeGift) {
-                foreach (['self', 'now', 'pickpoint'] as $i) {
-                    if (isset($responseData['deliveryStates'][$i])) unset($responseData['deliveryStates'][$i]);
-                    if (isset($responseData['deliveryTypes'][$i])) unset($responseData['deliveryTypes'][$i]);
-                }
             }
 
             // костыль
@@ -372,7 +369,9 @@ class DeliveryAction {
 
             $pickpoints = [];
 
-            if(!empty($pickpointProductIds)) {
+            if ( empty($pickpointProductIds) ) {
+                \App::logger()->error('Рассчитанное значение $pickpointProductIds пусто', ['pickpoints']);
+            } else {
                 $deliveryRegions = [];
                 if(!empty(reset($result['products'])['deliveries']['pickpoint']['regions'])) {
                     $deliveryRegions = array_map(
@@ -382,15 +381,31 @@ class DeliveryAction {
                         reset($result['products'])['deliveries']['pickpoint']['regions']
                     );
                 }
+                if ( empty($deliveryRegions) ) {
+                    \App::logger()->error('Рассчитанное значение $deliveryRegions пусто', ['pickpoints']);
+                }
 
                 $ppClient = \App::pickpointClient();
                 $ppClient->addQuery('postamatlist', [], [],
                     function($data) use (&$pickpoints, &$deliveryRegions) {
-                        // Статус постамата: 1 – новый, 2 – рабочий, 3 - закрытый
-                        $pickpoints = array_filter($data, function($pickpointItem) use (&$deliveryRegions) {
-                            return in_array((int)$pickpointItem['Status'], [1,2]) &&
-                                   in_array($pickpointItem['CitiName'], $deliveryRegions);
-                        });
+                        if ( !is_array($data) ) {
+                            \App::logger()->error('Неожиданный ответ сервера на запрос postamatlist', ['pickpoints']);
+                            return false;
+                        }
+                        $pickpoints = array_filter($data,
+                            function($pickpointItem) use (&$deliveryRegions) {
+                                return
+                                    // Статус постамата: 1 – новый, 2 – рабочий, 3 - закрытый
+                                    in_array( (int)$pickpointItem['Status'], [1,2] ) &&
+                                    in_array( $pickpointItem['CitiName'], $deliveryRegions ) &&
+                                    // В списке выбора показывать только точки pickpoint (АПТ), не показывать ПВЗ.
+                                    $pickpointItem['TypeTitle'] != 'ПВЗ'
+                                    ;
+                            }
+                        );
+                        if ( empty($pickpoints) ) {
+                            \App::logger()->error('Нет пикпойнтов в отфильтрованных данных', ['pickpoints']);
+                        }
                     },
                     function (\Exception $e) use (&$exception) {
                         $exception = $e;
@@ -401,27 +416,36 @@ class DeliveryAction {
             }
 
             // пикпоинты
-            foreach ($pickpoints as $pickpointItem) {
-                $responseData['pickpoints'][] = [
-                    'id'         => (string)$pickpointItem['Id'],
-                    'name'       => $pickpointItem['Name'] . '; ' . $pickpointItem['Address'],
-                    'address'    => $pickpointItem['Address'],
-                    'regtime'     => $ppClient->worksTimePrepare($pickpointItem['WorkTime']),
-                    'latitude'   => (float)$pickpointItem['Latitude'],
-                    'longitude'  => (float)$pickpointItem['Longitude'],
-                    'products'   => $pickpointProductIds,
-                ];
-            }
+            if ( empty($pickpoints) ) {
+                \App::logger()->error('Список пикпойнтов пуст', ['pickpoints']);
+                unset($responseData['deliveryStates']['pickpoint']);
+            } else {
+                foreach ($pickpoints as $pickpointItem) {
+                    $responseData['pickpoints'][] = [
+                        'id'            => (string)$pickpointItem['Id'],
+                        'number'        => (string)$pickpointItem['Number'], //  Передавать корректный id постамата, использовать не id точки, а номер постамата
+                        'name'          => $pickpointItem['Name'] . '; ' . $pickpointItem['Address'],
+                        //'address'       => $pickpointItem['Address'],
+                        'street'       => $pickpointItem['Street'],
+                        'house'         => $pickpointItem['House'],
+                        'regtime'       => $ppClient->worksTimePrepare($pickpointItem['WorkTime']),
+                        'latitude'      => (float)$pickpointItem['Latitude'],
+                        'longitude'     => (float)$pickpointItem['Longitude'],
+                        'products'      => $pickpointProductIds,
+                        'point_name'    => $pickpointItem['Name'],
+                    ];
+                }
 
-            // сортировка пикпоинтов
-            if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
-                usort($responseData['pickpoints'], function($a, $b) use (&$region) {
-                    if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
-                        return 0;
-                    }
+                // сортировка пикпоинтов
+                if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
+                    usort($responseData['pickpoints'], function($a, $b) use (&$region) {
+                        if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
+                            return 0;
+                        }
 
-                    return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
-                });
+                        return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
+                    });
+                }
             }
 
             // купоны
@@ -469,22 +493,23 @@ class DeliveryAction {
 
             $responseData['deliveryTypes'] = array_values($responseData['deliveryTypes']);
             $responseData['success'] = true;
-        } catch(\Exception $e) {
-            $this->failResponseData($e, $responseData);
-        }
 
-        if(!empty($responseData['products'])) {
-            foreach ($responseData['products'] as $keyPi => $productItem) {
-                foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
-                    if($keyDi == 'pickpoint') {
-                        $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
-                        $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
-                        foreach ($pickpoints as $keyPp => $pickpoint) {
-                            $responseData['products'][$keyPi]['deliveries'][$keyDi][$pickpoint['Id']] = $dateData;
+            if (!empty($responseData['products'])) {
+                foreach ($responseData['products'] as $keyPi => $productItem) {
+                    if (empty($productItem['deliveries'])) continue;
+                    foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
+                        if ($keyDi == 'pickpoint') {
+                            $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
+                            $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
+                            foreach ($pickpoints as $keyPp => $pickpoint) {
+                                $responseData['products'][$keyPi]['deliveries'][$keyDi][$pickpoint['Id']] = $dateData;
+                            }
                         }
                     }
                 }
             }
+        } catch(\Exception $e) {
+            $this->failResponseData($e, $responseData);
         }
 
         return $responseData;

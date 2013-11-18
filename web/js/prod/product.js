@@ -101,6 +101,7 @@
 	var widgetBox = $('.bDelivery'),
 		deliveryData = widgetBox.data('value'),
 		url = deliveryData.url,
+		loadShops = deliveryData.loadShops,
 		deliveryShops = ( deliveryData.delivery.length ) ? deliveryData.delivery[0].shop : [],
 		productInfo = $('#jsProductCard'),
 		productInfoVal = ( productInfo ) ? productInfo.data('value') : null,
@@ -235,7 +236,17 @@
 			 * Полученнный с сервера массив вариантов доставок для текущего товара
 			 * @type	{Array}
 			 */
-			var deliveryInfo = res.product[0].delivery;
+			var deliveryInfo = res.product[0].delivery,
+				i,
+				selfBox = widgetBox.find('.mDeliveryFree'),
+				templateSelf = false,
+				hasPickpoint = false,
+				hasSelf = false;
+
+			if ( !res.success ) {
+				errorHandler();
+				return false;
+			}
 
 			for ( var i = deliveryInfo.length - 1; i >= 0; i-- ) {
 				switch (deliveryInfo[i].token){
@@ -252,22 +263,42 @@
 						break;
 
 					case 'self':
-						var selfBox = widgetBox.find('.mDeliveryFree'),
-							selfData = {
+						var selfData = {
 								price: deliveryInfo[i].price,
 								dateString: deliveryInfo[i].date.name
-							},
-							templateSelf = tmpl('widget_delivery_self', selfData);
-						// end of var
+							};
 
-						selfBox.html(templateSelf);
+						hasSelf = true;
 						break;
 
 					case 'now':
 						fillAvalShopTmpl( deliveryInfo[i].shop );
 						break;
+
+					case 'pickpoint':
+						var pickpointData = {
+								price: 'PickPoint',
+								dateString: deliveryInfo[i].date.name
+							};
+
+						hasPickpoint = true;
+						break;
 				}
+			}//end for
+
+			if ( hasSelf ) {
+				console.log('Есть тип доставки -self-');
+				templateSelf = tmpl('widget_delivery_self', selfData);
 			}
+			else if ( hasPickpoint ) {
+				console.log('Есть тип доставки -pickpoint- и нету типа доставки -self-');
+				templateSelf = tmpl('widget_delivery_self', pickpointData);
+			}
+
+			if ( templateSelf ) {
+				selfBox.html(templateSelf);
+			}
+
 			widgetBox.removeClass('mLoader');
 		};
 	// end of functions
@@ -278,15 +309,18 @@
 		}]
 	};
 
-	if ( url === '' && deliveryShops.length === 0 ) {
-		console.warn('URL отсутствует. Список магазинов пуст.');
-		
-		widgetBox.removeClass('mLoader');
+	if ( loadShops ) {
+		if ( deliveryShops.length === 0 ) {
+			console.warn('URL отсутствует. Список магазинов пуст.');
+
+			widgetBox.removeClass('mLoader');
+		}
+		else {
+			fillAvalShopTmpl( deliveryShops );
+		}
 	}
-	else if ( url === '' ) {
-		fillAvalShopTmpl( deliveryShops );
-	}
-	else {
+
+	if ( url !== '' ) {
 		$.ajax({
 			type: 'POST',
 			url: url,
@@ -303,6 +337,7 @@
 	}
 
 }());
+
  
  
 /** 
@@ -897,10 +932,13 @@ $(document).ready(function() {
 	 */
 	$('.bCountSection').goodsCounter({
 		onChange:function( count ){
-			var spinnerFor = $('.bCountSection').attr('data-spinner-for'),
+			var spinnerFor = this.attr('data-spinner-for'),
 				bindButton = $('.'+spinnerFor),
 				newHref = bindButton.attr('href');
 			// end of vars
+
+			console.log('counter change');
+			console.log(bindButton);
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
 

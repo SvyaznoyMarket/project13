@@ -304,10 +304,30 @@ class Action {
         // запрашиваем дерево категорий
         \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
 
+        // получаем фильтры из http-запроса
+        $filterUrl = $this->getFilterFromUrl($request);
+
+        // заполняем параметр filters для запроса к ядру
+        $filterParams = [];
+        if (!empty($filterUrl)) {
+            foreach ($filterUrl as $name => $values) {
+                if (isset($values['from']) || isset($values['to'])) {
+                    $filterParams[] = [
+                        $name,
+                        2,
+                        isset($values['from']) ? $values['from'] : null,
+                        isset($values['to']) ? $values['to'] : null
+                    ];
+                } else {
+                    $filterParams[] = [$name, 1, $values];
+                }
+            }
+        }
+
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, function($data) use (&$filters) {
+        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $filterParams, function($data) use (&$filters) {
             foreach ($data as $item) {
                 $filters[] = new \Model\Product\Filter\Entity($item);
             }
@@ -442,8 +462,15 @@ class Action {
         if ($pageNum > 1) {
             $seoContent = '';
         }
-        // промо-контент не показываем на страницах пагинации, брэнда, фильтров
-        if ($pageNum > 1 || !empty($brand) || (bool)((array)$request->get(\View\Product\FilterForm::$name, []))) {
+
+        $excludeTokens = empty($catalogJson['promo_exclude_token']) ? [] : $catalogJson['promo_exclude_token'];
+
+        if (
+            // промо-контент не показываем на страницах пагинации, брэнда, фильтров
+            $pageNum > 1 || !empty($brand) || (bool)((array)$request->get(\View\Product\FilterForm::$name, [])) ||
+            // ..или если категория в списке исключений
+            ($excludeTokens && in_array($category->getToken(), $excludeTokens) )
+        ) {
             $promoContent = '';
         }
 
@@ -685,8 +712,8 @@ class Action {
             $pagerAll = $repository->getIteratorByFilter(
                 $filtersWithoutShop,
                 $sort,
-                ($pageNum - 1) * $limit,
-                1 === $pageNum ? $limit-1 : $limit
+                ($pageNum - 1) * $limit - (1 === $pageNum ? 0 : 1),
+                1 === $pageNum ? ($limit - 1) : $limit
             );
             $page->setGlobalParam('allCount', $pagerAll->count());
         }
@@ -708,8 +735,8 @@ class Action {
         $productPager = $repository->getIteratorByFilter(
             $filters,
             $sort,
-            ($pageNum - 1) * $limit,
-            1 === $pageNum ? $limit-1 : $limit
+            ($pageNum - 1) * $limit - (1 === $pageNum ? 0 : 1),
+            1 === $pageNum ? ($limit - 1) : $limit
         );
 
         $productPager->setPage($pageNum);
@@ -745,7 +772,7 @@ class Action {
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
-            return new \Http\JsonResponse([
+            $data = [
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
@@ -768,7 +795,17 @@ class Action {
                 'page'          => [
                     'title'     => $this->getPageTitle()
                 ],
-            ]);
+            ];
+
+            // если установлена настройка что бы показывать фасеты, то в ответ добавляем "disabledFilter"
+            if (true === \App::config()->sphinx['showFacets']) {
+                $data['disabledFilter'] = (new \View\ProductCategory\DisabledFilterAction())->execute(
+                    \App::closureTemplating()->getParam('helper'),
+                    $productFilter
+                );
+            }
+
+            return new \Http\JsonResponse($data);
         }
 
         $page->setParam('productPager', $productPager);
@@ -806,22 +843,10 @@ class Action {
     }
 
     /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     * @param \Model\Product\Category\Entity $category
-     * @param \Model\Brand\Entity|null $brand
      * @param \Http\Request $request
-     * @param \Model\Shop\Entity|null $shop
-     * @return \Model\Product\Filter
+     * @return array
      */
-    public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity &$brand = null, \Http\Request $request, $shop = null) {
-        // флаг глобального списка в параметрах запроса
-        $isGlobal = self::isGlobal();
-        //
-        $inStore = self::inStore();
-
-        // регион для фильтров
-        $region = $isGlobal ? null : \App::user()->getRegion();
-
+    public function getFilterFromUrl(\Http\Request $request) {
         // добывание фильтров из http-запроса
         $requestData = ('POST'== $request->getMethod()) ? $request->request : $request->query;
 
@@ -845,6 +870,29 @@ class Action {
             // TODO: SITE-2218 сделать однотипные фильтры для ювелирки и неювелирки
             $values = (array)$request->get(\View\Product\FilterForm::$name, []);
         }
+
+        return $values;
+    }
+
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     * @param \Model\Product\Category\Entity $category
+     * @param \Model\Brand\Entity|null $brand
+     * @param \Http\Request $request
+     * @param \Model\Shop\Entity|null $shop
+     * @return \Model\Product\Filter
+     */
+    public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity &$brand = null, \Http\Request $request, $shop = null) {
+        // флаг глобального списка в параметрах запроса
+        $isGlobal = self::isGlobal();
+        //
+        $inStore = self::inStore();
+
+        // регион для фильтров
+        $region = $isGlobal ? null : \App::user()->getRegion();
+
+        // добывание фильтров из http-запроса
+        $values = $this->getFilterFromUrl($request);
 
         if ($isGlobal) {
             $values['global'] = 1;

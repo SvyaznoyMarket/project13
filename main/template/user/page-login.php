@@ -16,7 +16,7 @@
         <div class="bFormLogin"><?= $page->render('form-register') ?></div>
         <br/>
         <br/>
-        <a class="font18 dashed jsHideLoginform" href="#">У меня уже есть логин и пароль</a>
+        <a class="font18 dashed jsShowLoginForm" href="#">У меня уже есть логин и пароль</a>
         <div class="clearfix"><?= $page->render('form-forgot') ?></div>
         <?= $page->render('form-login') ?>
     </div>
