@@ -50,6 +50,7 @@
         <strong class="fixedTopBar__cartQuan"><%=quantity%></strong>
         <span class="fixedTopBar__cartPrice"><%=sum%> <span class="rubl">p</span></span>
 
+        <? /* ?>
         <div class="fixedTopBar__dd fixedTopBar__cartOn">
             <ul class="cartList">
                 <li class="cartList__item">
@@ -127,6 +128,7 @@
 
             <div class="btnBuy quickOrder"><a href="" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
         </div>
+        <? */ ?>
     </a>
 </script>
 

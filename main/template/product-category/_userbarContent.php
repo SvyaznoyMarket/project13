@@ -14,7 +14,7 @@ if ($category) {
             $i++;
         }
     } else {
-        $links[] = ['name' => $category->getName(), 'url'  => null, 'last' => true];
+        $links[] = ['name' => $category->getName(), 'url'  => $category->getLink() ? $category->getLink() : null, 'last' => true];
     }
 } ?>
 
