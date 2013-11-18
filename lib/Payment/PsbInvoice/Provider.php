@@ -33,7 +33,7 @@ class Provider implements \Payment\ProviderInterface {
         $data = [
             'ContractorID'   => $this->config['contractorId'],
             'InvoiceID'      => $order->getNumber(),
-            'Sum'            => sprintf("%01.2f", $order->getSum()),
+            'Sum'            => sprintf("%01.2f", $order->getPaySum()),
             'PayDescription' => sprintf('Оплата заказа №%s', $order->getNumber()),
             'AdditionalInfo' => '',
             'redirect_url'   => $backUrl,

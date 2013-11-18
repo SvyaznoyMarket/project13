@@ -35,10 +35,10 @@ class Provider implements \Payment\ProviderInterface {
         $form = new Form();
 
         $data = [
-            'AMOUNT'     => $order->getSum(),
+            'AMOUNT'     => $order->getPaySum(),
             'CURRENCY'   => 'RUB',
             'ORDER'      => $order->getId(),
-            'DESC'       => sprintf('Заказ #%s на сумму %s руб.', $order->getNumber(), $order->getSum()),
+            'DESC'       => sprintf('Заказ #%s на сумму %s руб.', $order->getNumber(), $order->getPaySum()),
             'TERMINAL'   => $this->config['terminal'],
             'TRTYPE'     => 1,
             'MERCH_NAME' => $this->config['merchantName'],
