@@ -30,7 +30,8 @@ class ProductButtonAction {
         if ($product->isInShopOnly()) {
             $data['inShopOnly'] = true;
             $data['value'] = 'Резерв';
-            $data['url'] = $product->getLink() . '#oneclick';
+            $data['url'] = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
+            $data['class'] .= ' jsOneClickButton';
         }
 
         if (!$product->getIsBuyable()) {
