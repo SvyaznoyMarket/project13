@@ -42,7 +42,7 @@ foreach ( $categories as $subCategory ) {
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
     <? endif */?>
     <?
-    if (!empty($categoriesLinks)) {
+    if ( !$selectedCategory && !empty($categoriesLinks) ) {
         echo $helper->renderWithMustache('product-category/_listInFilter', ['links' => $categoriesLinks]); // дочерние категории для тегов
     }
     ?>

@@ -509,4 +509,17 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+
+    public function slotAdFox() {
+        $routeToken = \App::request()->attributes->get('token');
+        if (
+            !\App::config()->adFox['enabled'] ||
+            ($routeToken == 'subscribers')
+        ) {
+            return;
+        }
+
+        return '<div class="adfoxWrapper" id="adfoxbground"></div>';
+    }
+
 }
