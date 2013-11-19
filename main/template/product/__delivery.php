@@ -3,7 +3,8 @@
 return function (
     \Helper\TemplateHelper $helper,
     \Model\Product\BasicEntity $product,
-    array $shopStates = []
+    array $shopStates = [],
+    array $deliveryDataResponse = []
 ) {
     /**
      * @var $shopStates \Model\Product\ShopState\Entity[]
@@ -75,7 +76,8 @@ return function (
 </div>
 
 <ul class="bDelivery mLoader" data-value="<?= $helper->json([
-    'url'       => $helper->url('product.delivery'), // загружаем всегда (непокупабельный товар может иметь пикпойнты)
+//    'url'       => $helper->url('product.delivery'), // загружаем всегда (непокупабельный товар может иметь пикпойнты)
+    'response'  => $deliveryDataResponse,
     'delivery'  => $deliveryData,
     'loadShops' => $product->getIsBuyable() ? false : true, // загружаем список магазинов, если товар непокупабельный
 ]) ?>">
