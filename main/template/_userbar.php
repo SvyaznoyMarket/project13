@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page \View\Layout
+ * @var $page \View\DefaultLayout
  */
 ?>
 
@@ -28,7 +28,7 @@
 </div> -->
 
 
-<div class="fixedTopBar">
+<div class="fixedTopBar" data-value="<?= $page->json($page->slotUserbarContentData()) ?>">
     <?= $page->slotUserbarContent() ?>
 
     <div class="fixedTopBar__cart mEmpty">

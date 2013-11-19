@@ -287,4 +287,16 @@ class IndexPage extends \View\DefaultLayout {
             'product'   => $this->getParam('product') ? $this->getParam('product') : null,
         ]);
     }
+
+    public function slotUserbarContentData() {
+        /** @var $product \Model\Product\Entity */
+        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+        if (!$product) {
+            return;
+        }
+
+        return [
+            'target' => '.' . \View\Id::cartButtonForProduct($product->getId()),
+        ];
+    }
 }
