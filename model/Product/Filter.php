@@ -138,6 +138,15 @@ class Filter {
     }
 
     /**
+     * @param $key
+     * @param $value
+     * @return mixed
+     */
+    public function setValue($key, $value) {
+        return $this->values[$key] = $value;
+    }
+
+    /**
      * @param Filter\Entity $filter
      * @return mixed
      */
