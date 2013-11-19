@@ -1023,7 +1023,15 @@ table {
 /**
 * Стили вспомогательного фиксированного блока для карточки товара и листинга
 */
-.fixedTopBar {
+.fixedTopBar.mFixed {
+  position: fixed;
+  background: #ffffff;
+  width: 958px;
+  height: 49px;
+  top: 0;
+  left: 50%;
+  z-index: 999;
+  margin-left: -480px;
   -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
@@ -1032,14 +1040,24 @@ table {
   border-radius: 0 0 4px 4px;
   border: 1px solid #ddd;
   border-top: none;
-  position: fixed;
-  top: 0;
-  left: 50%;
-  z-index: 999;
-  margin-left: -480px;
-  width: 958px;
+}
+.fixedTopBar.mStatic {
+  border: 1px solid #ddd;
+  border-top: none;
+  border-right: none;
+  float: right;
+  margin: -10px -10px 0 0;
+  font-size: 12px;
+  width: 229px;
+  position: relative;
   height: 49px;
-  background: #ffffff;
+  z-index: 999;
+}
+.fixedTopBar.mStatic .fixedTopBar__cart {
+  width: 91px;
+}
+.fixedTopBar.mStatic .fixedTopBar__logIn {
+  border-left: none;
 }
 .fixedTopBar:hover .fixedTopBar__cartQuan {
   animation-name: shake;
@@ -1285,7 +1303,7 @@ table {
   padding-left: 15px;
   display: block;
   text-decoration: underline;
-  width: 400px;
+  width: 206px;
 }
 .fixedTopBar__buy {
   display: inline-block;
@@ -1443,9 +1461,6 @@ table {
   left: -1px;
   background: #ffffff;
   border: 1px solid #ccc;
-  -webkit-border-radius: 0 0 0 5px;
-  -moz-border-radius: 0 0 0 5px;
-  border-radius: 0 0 0 5px;
   width: 228px;
   -webkit-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
@@ -1461,7 +1476,7 @@ table {
   background: url("/styles/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
   position: absolute;
   left: 0;
-  top: 219px;
+  top: 187px;
   height: 26px;
   width: 228px;
   display: block;
@@ -1474,8 +1489,7 @@ table {
   line-height: 25px;
 }
 .fixedTopBar .cartList {
-  max-height: 245px;
-  min-height: 65px;
+  height: 213px;
   overflow: auto;
 }
 .fixedTopBar .cartList__item {
@@ -1528,6 +1542,40 @@ table {
 }
 .fixedTopBar .quickOrder.btnBuy .btnBuy__eLink {
   width: 100%;
+}
+.fixedTopBar .hintDd {
+  position: absolute;
+  top: 49px;
+  width: 729px;
+  left: -859px;
+  background: #fff;
+  height: 0;
+  /* Переход */
+
+  -webkit-transition: all 0.2s ease-out 0.1s;
+  -moz-transition: all 0.2s ease-out 0.1s;
+  -o-transition: all 0.2s ease-out 0.1s;
+  transition: all 0.2s ease-out 0.1s;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-bottom: none;
+}
+.fixedTopBar .hintDd__title {
+  padding: 10px 0 0 10px;
+  font-size: 16px;
+  border-top: 1px solid #ccc;
+}
+.fixedTopBar .hintDd.mhintDdOn {
+  height: 270px;
+  -webkit-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid #ccc;
+}
+.fixedTopBar .bSlider {
+  width: 700px;
+  margin: 0 auto;
 }
 /*---END----ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)---------*/
 /*---------КОРЗИНА (СТАРАЯ ВЕРСТКА)----------*/

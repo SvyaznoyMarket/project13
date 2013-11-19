@@ -43,10 +43,24 @@
         <div class="bSubscribeLightboxPopupNotNow mFl"></div>
     </div>
     <noindex>
+        <div class="fixedTopBar mStatic">
+            <div class="fixedTopBar__cart">     
+                <a href="/cart" class="fixedTopBar__cartTitle">Корзина</a>          
+                <strong class="fixedTopBar__cartQuan">1</strong>         
+                <span class="fixedTopBar__cartPrice">1 990 <span class="rubl">p</span></span>          
+            </div>
+
+            <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
+                <a href="/login" class="fixedTopBar__logInLink bAuthLink">Войти</a>
+                <span class="transGrad"></span>
+            </div>
+        </div>
+        <? /*
         <div class="usermenu">
             <?= $page->render('_user') ?>
             <a href="<?= $page->url('cart') ?>" class="hBasket ml10">Моя корзина <span id="topBasket"></span></a>
         </div>
+        */ ?>
     </noindex>
 </div>
 <!-- /Topbar -->
