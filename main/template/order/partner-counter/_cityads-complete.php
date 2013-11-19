@@ -22,7 +22,7 @@ foreach ($orders as $order) {
         $productIds[] = $orderProduct->getId();
         $productQuantities[] = $orderProduct->getQuantity();
     }
-    $ordersSum += $order->getSum();
+    $ordersSum += $order->getPaySum();
 }
 
 /** @var $order \Model\Order\Entity */

@@ -47,7 +47,7 @@
     _gaq.push(['_addTrans',
             '<?= $order->getNumber() ?>', // Номер заказа
             '<?= $shop ? $page->escape($shop->getName()) : '' ?>', // Название магазина (Необязательно)
-            '<?= str_replace(',', '.', $order->getSum()) ?>', // Полная сумма заказа (дроби через точку)
+            '<?= str_replace(',', '.', $order->getPaySum()) ?>', // Полная сумма заказа (дроби через точку)
             '', // налог
             '<?= $delivery ? $delivery->getPrice() : 0 ?>', // Стоимость доставки (дроби через точку)
             '<?= $order->getCity() ? $page->escape($order->getCity()->getName()) : '' ?>', // Город доставки (Необязательно)
