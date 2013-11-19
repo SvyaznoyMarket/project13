@@ -27,7 +27,7 @@ class MyThings {
                 'EventType' => 'MyThings.Event.Conversion',
                 'Action' => '9902',
                 'TransactionReference' => $order->getNumber(),
-                'TransactionAmount' => str_replace(',', '.', $order->getSum()), // Полная сумма заказа (дроби через точку)
+                'TransactionAmount' => str_replace(',', '.', $order->getPaySum()), // Полная сумма заказа (дроби через точку)
                 'Commission' => $orderSum,
                 'Products' => array_map(function($orderProduct){
                     /** @var $orderProduct \Model\Order\Product\Entity  */

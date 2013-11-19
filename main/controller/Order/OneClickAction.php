@@ -173,7 +173,7 @@ class OneClickAction {
             $orderData = [
                 'order_article'    => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getId(); }, $order->getProduct())),
                 'order_id'         => $order->getNumber(),
-                'order_total'      => $order->getSum(),
+                'order_total'      => $order->getPaySum(),
                 'product_quantity' => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getQuantity(); }, $order->getProduct())),
             ];
 

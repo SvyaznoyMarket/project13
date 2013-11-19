@@ -137,7 +137,7 @@
                 <? endif ?>
             </th>
             <td>
-                <?= ($order->getPaymentStatusId() == \Model\Order\Entity::PAYMENT_STATUS_PAID) ? 'Оплачено' : 'Итого к оплате' ?>:<br><strong class="font18"><?= $page->helper->formatPrice($order->getSum()) ?>&nbsp;<span class="rubl">p</span></strong>
+                <?= ($order->getPaymentStatusId() == \Model\Order\Entity::PAYMENT_STATUS_PAID) ? 'Оплачено' : 'Итого к оплате' ?>:<br><strong class="font18"><?= $page->helper->formatPrice($order->getPaySum()) ?>&nbsp;<span class="rubl">p</span></strong>
             </td>
         </tr>
     </table>
