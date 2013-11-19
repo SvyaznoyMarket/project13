@@ -42,12 +42,12 @@ trait TrustfactorsTrait
 
             if(!empty($catalogJson['trustfactor_right'])) {
                 $tfPrepared = $this->prepareTrustfactor($catalogJson['trustfactor_right'], $productCategoryTokens);
-                if ($this->trustfactorCreateQueries($contentClient, $tfPrepared, $trustfactorRight) ) $doQuery = true;
+                if ( $this->trustfactorCreateQueries($contentClient, $tfPrepared, $trustfactorRight, $productCategoryTokens) ) $doQuery = true;
             }
 
             if(!empty($catalogJson['trustfactor_content'])) {
                 $tfPrepared = $this->prepareTrustfactor($catalogJson['trustfactor_content'], $productCategoryTokens);
-                if ($this->trustfactorCreateQueries($contentClient, $tfPrepared, $trustfactorContent) ) $doQuery = true;
+                if ( $this->trustfactorCreateQueries($contentClient, $tfPrepared, $trustfactorContent, $productCategoryTokens) ) $doQuery = true;
             }
 
             if ($doQuery) {
@@ -101,7 +101,9 @@ trait TrustfactorsTrait
      * @return array|null
      */
     private function prepareTrustfactor($tfFields, &$productCategoryTokens) {
-        if ( !is_array($tfFields) ) {
+        if ( empty($tfFields) ) {
+            return null;
+        } elseif ( !is_array($tfFields) ) {
             return $tfFields;
         }
 
@@ -119,6 +121,9 @@ trait TrustfactorsTrait
             if ( empty($excludeIntersectTokens) ) { // Нет исключений из выбранных категорий локально
                 if ( $hasSrc ) {
                     $tfFields = $tfFields['src'];
+                }else{
+                    reset($tfFields);
+                    $tfFields = key($tfFields);
                 }
             }else{
                 return null; // Есть локально исключениe, не показываем трастфактор
@@ -136,15 +141,17 @@ trait TrustfactorsTrait
      * @param array     $trustfactorContent
      * @return bool
      */
-    private function trustfactorCreateQueries(&$contentClient, &$tfPrepared, &$trustfactorContent) {
+    private function trustfactorCreateQueries(&$contentClient, &$tfPrepared, &$trustfactorContent, &$productCategoryTokens) {
         $doQuery = false;
         if ($tfPrepared) {
             $i = 0;
             if( !is_array($tfPrepared) ) {
                 $tfPrepared = array($tfPrepared);
             }
-            foreach ($tfPrepared as $trustfactorElemToken) {
-                $this->trustfactorQuery($contentClient, $trustfactorElemToken, $trustfactorContent[$i++]);
+            foreach ($tfPrepared as $tfElemToken => $tfElemValue) {
+                $tfElemPrepared = $this->prepareTrustfactor($tfElemValue, $productCategoryTokens);
+                $forQuery = $tfElemPrepared ?: $tfElemToken;
+                $this->trustfactorQuery($contentClient, $forQuery, $trustfactorContent[$i++]);
             }
             if ($i > 0) $doQuery = true;
         }
