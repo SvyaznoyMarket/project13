@@ -12,7 +12,7 @@ class LifeGift {
     /** @var int */
     private $sum = 0;
     /** @var \Model\Region\Entity */
-    private $region = 0;
+    private $region;
 
     public function __construct() {
         $this->region = \RepositoryManager::region()->getEntityById(\App::config()->lifeGift['regionId']);

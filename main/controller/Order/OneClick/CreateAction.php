@@ -60,7 +60,7 @@ class CreateAction {
             // обновление формы из параметров запроса
             $form->fromArray($request->get('order'));
             // валидация формы
-            $this->validatePaymentType($form);
+            $this->validateOneClickForm($form);
             if (!$form->isValid()) {
                 throw new \Exception('Форма заполнена неверно');
             }
@@ -197,7 +197,7 @@ class CreateAction {
                 'geo_id'                    => $user->getRegion()->getId(),
                 'user_id'                   => $userEntity ? $userEntity->getId() : null,
                 'is_legal'                  => $userEntity ? $userEntity->getIsCorporative() : false,
-                'payment_id'                => $form->getPaymentMethodId(),
+                'payment_id'                => \Model\PaymentMethod\Entity::CASH_ID, // оплата наличными
                 'credit_bank_id'            => $form->getCreditBankId(),
                 'last_name'                 => $form->getLastName(),
                 'first_name'                => $form->getFirstName(),
@@ -208,7 +208,7 @@ class CreateAction {
                 'address_building'          => null,
                 'address_apartment'         => null,
                 'address_floor'             => null,
-                'extra'                     => $form->getComment(),
+                'extra'                     => 'Это быстрый заказ за 1 клик.' . ($form->getComment() ? (' ' . $form->getComment()) : ''),
                 'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
                 'delivery_type_id'          => $deliveryType->getId(),
                 'delivery_period'           => $orderPart->getInterval(),

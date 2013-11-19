@@ -63,7 +63,16 @@ class DeliveryAction {
         ];
 
         try {
-            if (true === $paypalECS) {
+
+            if (true === $oneClick) {
+                $responseData['cart']['sum'] = \App::user()->getOneClickCart()->getSum();
+
+                $responseData['oneClick'] = true;
+
+                $cartProducts = \App::user()->getOneClickCart()->getProducts();
+                $coupons = [];
+                $blackcards = [];
+            } else if (true === $paypalECS) {
                 $cartProduct = $cart->getPaypalProduct();
                 if ($cartProduct) {
                     $responseData['cart']['sum'] = $cartProduct->getSum() + $cartProduct->getDeliverySum();
@@ -82,14 +91,6 @@ class DeliveryAction {
                 $responseData['lifeGift'] = true;
 
                 $cartProducts = \App::user()->getLifeGiftCart()->getProducts();
-                $coupons = [];
-                $blackcards = [];
-            } else if (true === $oneClick) {
-                $responseData['cart']['sum'] = \App::user()->getOneClickCart()->getSum();
-
-                $responseData['oneClick'] = true;
-
-                $cartProducts = \App::user()->getOneClickCart()->getProducts();
                 $coupons = [];
                 $blackcards = [];
             } else {

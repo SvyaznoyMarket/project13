@@ -12,14 +12,10 @@ class OneClick {
     /** @var int */
     private $sum = 0;
     /** @var \Model\Region\Entity */
-    private $region = 0;
+    private $region;
 
     public function __construct() {
-        $this->region = \RepositoryManager::region()->getEntityById(\App::config()->lifeGift['regionId']);
-        if (!$this->region) {
-            $this->region = \RepositoryManager::region()->getDefaultEntity();
-            \App::logger()->error(['message' => sprintf('Не удалось получить регион #%s', \App::config()->lifeGift['regionId'])]);
-        }
+        $this->region = \App::user()->getRegion();
 
         $this->storage = \App::session();
 
