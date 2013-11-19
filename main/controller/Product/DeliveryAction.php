@@ -20,7 +20,7 @@ class DeliveryAction {
 
     /**
      * @param array $product
-     * @param int|null $region
+     * @param int $region
      * @return array
      */
     public function getResponseData($product, $region = null) {
