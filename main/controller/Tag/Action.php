@@ -85,8 +85,175 @@ class Action {
                 throw new \Exception\NotFoundException(sprintf('Категория @%s не найдена', $categoryToken));
             }
         } else {
-            $category = empty($seoTagJson['acts_as_category']) ? reset($categoriesByToken) : null;
+            //$category = empty($seoTagJson['acts_as_category']) ? reset($categoriesByToken) : null;
+            $category = null; // Если нет категории, то нет, не нужно подставлять первую
+            $categoryId = $request->get('category');
+            if ($categoryId) {
+                $category = \RepositoryManager::productCategory()->getEntityById($categoryId);
+                //$categoryToken = $category->getToken();
+            }
         }
+
+
+
+        // фильтры
+        $filters = []; // фильтр для тегов
+        $filter = new \Model\Product\Filter\Entity();
+        $filter->setId('tag');
+        $filter->setIsInList(false);
+
+        $filters[] = $filter;
+
+        \RepositoryManager::productFilter()->prepareCollectionByTag( $tag,
+            \App::user()->getRegion(),
+            function($data) use (&$filters) {
+                foreach ($data as $item) {
+                    $filters[] = new \Model\Product\Filter\Entity($item);
+                }
+            }, function (\Exception $e) { \App::exception()->remove($e); });
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
+
+
+        $shop = null;
+        try {
+            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
+                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
+                    if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
+                        /*$route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
+                        $response = new \Http\RedirectResponse($route);
+                        $response->headers->set('referer', \App::request()->getUri());*/
+                        $controller = new \Controller\Region\Action();
+                        \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
+                        $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
+
+                        return $response;
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
+        }
+
+
+
+        $brand = null;
+
+        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
+        $productFilter->setValue( 'tag', $tag->getId() );
+        if ($category) {
+            $productFilter->setCategory($category);
+        }
+
+
+
+
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+        $productSorting->setActive($sortingName, $sortingDirection);
+
+        // если сортировка по умолчанию и в json заданы настройки сортировок,
+        // то применяем их
+        if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
+            $sort = $catalogJson['sort'];
+        } else {
+            $sort = $productSorting->dump();
+        }
+
+        // вид товаров
+        $productView = \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT;
+        if ($category) {
+            $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
+        }
+
+
+        // листалка
+        $limit = \App::config()->product['itemsPerPage'];
+        $repository = \RepositoryManager::product();
+        $repository->setEntityClass(
+            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
+                ? '\\Model\\Product\\ExpandedEntity'
+                : '\\Model\\Product\\CompactEntity'
+        );
+        $productPager = $repository->getIteratorByFilter(
+            $productFilter->dump(),
+            $sort,
+            ($pageNum - 1) * $limit,
+            $limit
+        );
+        $productPager->setPage($pageNum);
+        $productPager->setMaxPerPage($limit);
+
+        // проверка на максимально допустимый номер страницы
+        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
+            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+        }
+
+        $templating = \App::closureTemplating();
+        /** @var $helper \Helper\TemplateHelper */
+        if ($category) {
+            $templating->setParam('selectedCategory', $category);
+        }
+        //$templating->setParam('shop', $shop);
+        $helper = $templating->getParam('helper');
+        $selectedFilter = (new \View\ProductCategory\SelectedFilterAction())->execute(
+            $helper,
+            $productFilter,
+            \App::router()->generate('product.category', ['categoryPath' => $category ? $category->getPath() : null])
+        );
+
+        // ajax
+        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+
+            $productVideosByProduct = [];
+
+            return new \Http\JsonResponse([
+                'list'           => (new \View\Product\ListAction())->execute(
+                    $helper,
+                    $productPager,
+                    $productVideosByProduct,
+                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
+                ),
+                'selectedFilter' => $selectedFilter,
+                'pagination'     => (new \View\PaginationAction())->execute(
+                    $helper,
+                    $productPager
+                ),
+                'sorting'        => (new \View\Product\SortingAction())->execute(
+                    $templating->getParam('helper'),
+                    $productSorting
+                ),
+                'page'           => [
+                    'title'      => 'Тег «'.$tag->getName() . '»' .
+                        ( $category ? ( ' — ' . $category->getName() ) : '' )
+                ],
+            ]);
+        }
+
+
+        /*
+        $page = new \View\Tag\IndexPage();
+        $page->setParam('productPager', $productPager);
+        $page->setParam('productFilter', $productFilter);
+        $page->setParam('selectedFilter', $selectedFilter);
+        $page->setParam('productSorting', $productSorting);
+        $page->setParam('tag', $tag);
+        $page->setParam('productPager', $productPager);
+        $page->setParam('productFilter', $productFilter);
+        $page->setParam('productSorting', $productSorting);
+        $page->setParam('sort', $sort);
+        $page->setParam('productView', $productView);
+        $page->setParam('category', $category);
+        $page->setParam('categoryToken', $categoryToken);
+        $page->setParam('categories', array_values($categoriesByToken));
+        $page->setParam('hotlinks', $hotlinks);
+        $page->setParam('seoContent', $seoContent);
+        $page->setParam('sidebarHotlinks', true);
+        $page->setParam('categoriesByToken', $categoriesByToken);
+        $page->setParam('productView', $productView);
+        return new \Http\Response($page->show());
+        */
 
         if($category) {
             // seo из shopscript
@@ -102,65 +269,12 @@ class Action {
                 $shopScript->execute();
             }
 
-            // сортировка
-            $productSorting = new \Model\Product\Sorting();
-            list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
-            $productSorting->setActive($sortingName, $sortingDirection);
-
-            // если сортировка по умолчанию и в json заданы настройки сортировок,
-            // то применяем их
-            if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
-                $sort = $catalogJson['sort'];
-            } else {
-                $sort = $productSorting->dump();
-            }
-
-            // вид товаров
-            $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
-            // фильтры
-            $filter = new \Model\Product\Filter\Entity();
-            $filter->setId('tag');
-            $productFilter = new \Model\Product\Filter(array($filter));
-            $productFilter->setCategory($category);
-            $productFilter->setValues(array('tag' => array($tag->getId())));
-
-            if(empty($seoTagJson['acts_as_category']) || $request->isXmlHttpRequest()) {
-                // листалка
-                $limit = \App::config()->product['itemsPerPage'];
-                $repository = \RepositoryManager::product();
-                $repository->setEntityClass(
-                    \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-                        ? '\\Model\\Product\\ExpandedEntity'
-                        : '\\Model\\Product\\CompactEntity'
-                );
-                $productPager = $repository->getIteratorByFilter(
-                    $productFilter->dump(),
-                    $sort,
-                    ($pageNum - 1) * $limit,
-                    $limit
-                );
-                $productPager->setPage($pageNum);
-                $productPager->setMaxPerPage($limit);
-                // проверка на максимально допустимый номер страницы
-                if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-                    throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
-                }
-            }
-
-            // ajax
-            if ($request->isXmlHttpRequest()) {
-                return new \Http\Response(\App::templating()->render('product/_list', array(
-                    'page'   => new \View\Layout(),
-                    'pager'  => $productPager,
-                    'view'   => $productView,
-                    'isAjax' => true,
-                )));
-            }
 
             $setPageParameters = function(\View\Layout $page) use (
                 &$tag,
                 &$productPager,
                 &$productFilter,
+                &$selectedFilter,
                 &$productSorting,
                 &$sort,
                 &$productView,
@@ -177,6 +291,7 @@ class Action {
                 $page->setParam('tag', $tag);
                 $page->setParam('productPager', $productPager);
                 $page->setParam('productFilter', $productFilter);
+                $page->setParam('selectedFilter', $selectedFilter);
                 $page->setParam('productSorting', $productSorting);
                 $page->setParam('sort', $sort);
                 $page->setParam('productView', $productView);
@@ -191,7 +306,7 @@ class Action {
                 $page->setParam('catalogJson', $catalogJson);
                 $page->setParam('shopScriptSeo', $shopScriptSeo);
             };
-        } else {
+        } else { // if (!$category)
             $setPageParameters = function(\View\Layout $page) use (
                 &$tag,
                 &$category,
@@ -200,9 +315,19 @@ class Action {
                 &$hotlinks,
                 &$seoContent,
                 &$sidebarCategoriesTree,
-                &$categoriesByToken
+                &$categoriesByToken,
+                &$productFilter,
+                &$selectedFilter,
+                &$productPager,
+                &$productSorting,
+                &$productView
             ) {
                 $page->setParam('tag', $tag);
+                $page->setParam('productPager', $productPager);
+                $page->setParam('productFilter', $productFilter);
+                $page->setParam('selectedFilter', $selectedFilter);
+                $page->setParam('productSorting', $productSorting);
+                $page->setParam('productView', $productView);
                 $page->setParam('category', $category);
                 $page->setParam('categoryToken', $categoryToken);
                 $page->setParam('categories', array_values($categoriesByToken));
@@ -803,6 +928,5 @@ class Action {
             }
         }
     }
-
 
 }
