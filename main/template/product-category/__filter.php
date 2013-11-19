@@ -62,7 +62,7 @@ return function(
     $countFilters = count($productFilter->getFilterCollection());
     if (0 == $countFilters) {
         $insertCustomFilters();
-    }else{
+    } else {
         $insertIndex = $countFilters > 3 ? 3 : $countFilters;
         $i = 1;
         foreach ($productFilter->getFilterCollection() as $filter) {
@@ -81,7 +81,6 @@ return function(
             }
         }
     }
-
 ?>
 
     <form class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
