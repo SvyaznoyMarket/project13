@@ -59,7 +59,7 @@ $helper = new \Helper\TemplateHelper();
 
             <?= $helper->render('cart/__button-product', ['product' => $mainProduct, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить ?>
 
-            <?= $helper->render('product/__oneClick', ['product' => $mainProduct]) // Покупка в один клик ?>
+            <?= $helper->render('cart/__button-product-oneClick', ['product' => $mainProduct]) // Покупка в один клик ?>
 
             <?= $helper->render('product/__delivery', ['product' => $mainProduct]) // Доставка ?>
 

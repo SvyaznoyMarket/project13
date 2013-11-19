@@ -18,6 +18,7 @@ $request = \App::request();
 
 $paypalECS = isset($paypalECS) && (true === $paypalECS);
 $lifeGift = isset($lifeGift) && (true === $lifeGift);
+$oneClick = isset($oneClick) && (true === $oneClick);
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
@@ -30,7 +31,10 @@ foreach (array_reverse($productsById) as $product) {
 	}
 }
 
-if ($paypalECS) {
+if ($oneClick) {
+    $createUrl = $page->url('order.oneClick.create');
+    $deliveryUrl = $page->url('order.delivery', ['oneClick' => 1]);
+} else if ($paypalECS) {
     $createUrl = $page->url('order.paypal.create', ['token' => $request->get('token'), 'PayerID' => $request->get('PayerID')]);
     $deliveryUrl = $page->url('order.delivery', ['paypalECS' => 1]);
 } else if ($lifeGift) {

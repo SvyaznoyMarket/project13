@@ -31,16 +31,18 @@ class DeliveryAction {
 
         $paypalECS = 1 === (int)$request->get('paypalECS');
         $lifeGift = 1 === (int)$request->get('lifeGift');
+        $oneClick = 1 === (int)$request->get('oneClick');
 
-        return new \Http\JsonResponse($this->getResponseData($paypalECS, $lifeGift));
+        return new \Http\JsonResponse($this->getResponseData($paypalECS, $lifeGift, $oneClick));
     }
 
     /**
      * @param bool $paypalECS
      * @param bool $lifeGift
+     * @param bool $oneClick
      * @return array
      */
-    public function getResponseData($paypalECS = false, $lifeGift = false) {
+    public function getResponseData($paypalECS = false, $lifeGift = false, $oneClick = false) {
         $router = \App::router();
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -56,6 +58,7 @@ class DeliveryAction {
             'action'    => [],
             'paypalECS' => false,
             'lifeGift'  => false,
+            'oneClick'  => false,
             'cart'      => [],
         ];
 
@@ -79,6 +82,14 @@ class DeliveryAction {
                 $responseData['lifeGift'] = true;
 
                 $cartProducts = \App::user()->getLifeGiftCart()->getProducts();
+                $coupons = [];
+                $blackcards = [];
+            } else if (true === $oneClick) {
+                $responseData['cart']['sum'] = \App::user()->getOneClickCart()->getSum();
+
+                $responseData['oneClick'] = true;
+
+                $cartProducts = \App::user()->getOneClickCart()->getProducts();
                 $coupons = [];
                 $blackcards = [];
             } else {
@@ -257,7 +268,7 @@ class DeliveryAction {
                 $productId = (string)$productItem['id'];
 
                 /** @var $cartProduct \Model\Cart\Product\Entity|null */
-                $cartProduct = ($paypalECS || $lifeGift) ? reset($cartProducts) : $cart->getProductById($productId);
+                $cartProduct = ($paypalECS || $lifeGift || $oneClick) ? reset($cartProducts) : $cart->getProductById($productId);
                 if (!$cartProduct) {
                     \App::logger()->error(sprintf('Товар %s не найден в корзине', $productId));
                     continue;
@@ -315,7 +326,10 @@ class DeliveryAction {
                     throw $e;
                 }
 
-                if ($paypalECS) {
+                if ($oneClick) {
+                    $setUrl = $router->generate('cart.oneClick.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]);
+                    $deleteUrl = $router->generate('cart.oneClick.product.delete', ['productId' => $productId]);
+                } else if ($paypalECS) {
                     $setUrl = $router->generate('cart.paypal.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]);
                     $deleteUrl = $router->generate('cart.paypal.product.delete', ['productId' => $productId]);
                 } else if ($lifeGift) {
@@ -449,7 +463,7 @@ class DeliveryAction {
             }
 
             // купоны
-            if (!($paypalECS || $lifeGift)) {
+            if (!($paypalECS || $lifeGift || $oneClick)) {
                 foreach ($cart->getCoupons() as $coupon) {
                     $responseData['discounts'][] = [
                         'type'      => 'coupon',
@@ -462,7 +476,7 @@ class DeliveryAction {
             }
 
             // черные карты
-            if (!($paypalECS || $lifeGift)) {
+            if (!($paypalECS || $lifeGift || $oneClick)) {
                 foreach ($cart->getBlackcards() as $blackcard) {
                     $responseData['discounts'][] = [
                         'type'      => 'blackcard',

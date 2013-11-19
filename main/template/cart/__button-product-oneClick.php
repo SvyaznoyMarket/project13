@@ -5,20 +5,15 @@ return function (
     \Model\Product\BasicEntity $product,
     $url = null,
     $class = null,
-    $value = 'Купить'
+    $value = 'Купить сейчас'
 ) {
+    $class = \View\Id::cartButtonForProduct($product->getId() . '-oneClick') . ' jsOneClickButton ' . $class;
+
     if ($product->isInShopStockOnly()) {
-        return '';
-    }
-
-    $class = \View\Id::cartButtonForProduct($product->getId()) . ' ' . $class;
-
-    if ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
-    }
-
-    if (!$product->isInShopStockOnly() && false === strpos($class, 'jsBuyButton')) {
-        $class .= ' jsBuyButton';
+        $value = 'Резерв';
+    } elseif ($product->isInShopShowroomOnly()) {
+        $class .= ' mShopsOnly';
     }
 
     if (!$product->getIsBuyable()) {
@@ -32,10 +27,10 @@ return function (
         if ($helper->hasParam('sender')) {
             $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
         }
-        $url = $helper->url('cart.product.set', $urlParams);
+        $url = $helper->url('cart.oneClick.product.set', $urlParams);
     }
 
-?>
+    ?>
     <div class="bWidgetBuy__eBuy btnBuy">
         <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
     </div>

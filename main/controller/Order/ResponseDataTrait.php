@@ -26,6 +26,9 @@ trait ResponseDataTrait {
         if (!isset($responseData['lifeGift'])) {
             $responseData['lifeGift'] = false;
         }
+        if (!isset($responseData['oneClick'])) {
+            $responseData['oneClick'] = false;
+        }
 
         $productDataById = [];
         if ($exception instanceof \Curl\Exception) {

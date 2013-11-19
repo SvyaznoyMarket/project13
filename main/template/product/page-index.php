@@ -33,10 +33,6 @@ $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro[
     <? require __DIR__ . '/show/_default.php' ?>
 <? endif ?>
 
-<? if ($product->getIsBuyable()): ?>
-    <?= $page->render('order/form-oneClick', ['product' => $product]) ?>
-<? endif ?>
-
 <? if (\App::config()->analytics['enabled']): ?>
     <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
     <?= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
