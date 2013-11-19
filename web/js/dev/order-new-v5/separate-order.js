@@ -448,6 +448,14 @@
 		lifeGift: ko.observable(false),
 
 		/**
+		 * Флаг того что это оформление заказа типа one-click
+		 * https://jira.enter.ru/browse/SITE-2592
+		 * 
+		 * @type {Boolean}
+		 */
+		oneClick: ko.observable(false),
+
+		/**
 		 * Флаг того что это страница PayPal: схема ECS
 		 * https://jira.enter.ru/browse/SITE-1795
 		 *
@@ -1062,6 +1070,7 @@
 
 			global.OrderModel.deliveryTypes(res.deliveryTypes);
 			global.OrderModel.lifeGift(res.lifeGift || false);
+			global.OrderModel.oneClick(res.oneClick || false);
 			global.OrderModel.prepareData(true);
 
 			if ( global.OrderModel.paypalECS() &&

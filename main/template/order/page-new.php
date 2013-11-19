@@ -213,99 +213,101 @@ if ($oneClick) {
 		</div>
 	</div>
 	<!-- /Delivery boxes -->
+	
+	<? if (!$oneClick): ?>
+	    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
+		<!-- Sale section -->
+		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift(), css: { hidden: paypalECS }">
+			<div class="bBuyingLine">
+				<div class="bBuyingLine__eLeft">
+					<h2 class="bBuyingSteps__eTitle">
+						Скидки
+					</h2>
 
-    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
-	<!-- Sale section -->
-	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift(), css: { hidden: paypalECS }">
-		<div class="bBuyingLine">
-			<div class="bBuyingLine__eLeft">
-				<h2 class="bBuyingSteps__eTitle">
-					Скидки
-				</h2>
-
-				Если у вас есть
-                <? if (\App::config()->blackcard['enabled']): ?> карта Enter SPA <? endif ?>
-                <? if (\App::config()->coupon['enabled'] && \App::config()->blackcard['enabled']): ?> или<? endif ?>
-                <? if (\App::config()->coupon['enabled']): ?> купон, <? endif ?>
-				укажите номер и получите скидку.
-			</div>
-
-			<div class="bBuyingLine__eRight">
-				<div class="bSaleData" data-bind="couponsVisible: couponsBox()">
-
-					<div class="bTitle">Вид скидки:</div>
-					
-					<div class="bSaleData__eEmptyBlock">Скидок больше нет</div>
-
-					<ul class="bSaleList bInputList clearfix">
-                        <? if (\App::config()->coupon['enabled']): ?>
-						<li class="bSaleList__eItem" data-type="coupon" data-bind="visible: (deliveryBoxes().length == 1)">
-							<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
-							<label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
-						</li>
-                        <? endif ?>
-
-                        <? if (\App::config()->blackcard['enabled']): ?>
-						<li class="bSaleList__eItem mEnterSpa" data-type="blackcard">
-							<input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden data-bind="checked: couponUrl" />
-							<label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
-						</li>
-                        <? endif ?>
-					</ul>
-
-					<input class="bBuyingLine__eText mSaleInput" type="text" id="" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
-
-					<button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon">Применить</button>
-
-					<p class="bSaleError" data-bind="text: couponError"></p>
+					Если у вас есть
+	                <? if (\App::config()->blackcard['enabled']): ?> карта Enter SPA <? endif ?>
+	                <? if (\App::config()->coupon['enabled'] && \App::config()->blackcard['enabled']): ?> или<? endif ?>
+	                <? if (\App::config()->coupon['enabled']): ?> купон, <? endif ?>
+					укажите номер и получите скидку.
 				</div>
 
-				<div class="bSaleCheck"></div>
+				<div class="bBuyingLine__eRight">
+					<div class="bSaleData" data-bind="couponsVisible: couponsBox()">
 
-				 <!-- Coupons -->
-				<div class="bBuyingLine mCouponsLine" data-bind="foreach: { data: couponsBox(), as: 'coupon' }">
-					<div class="bOrderItems">
-						<div class="bItemsRow mItemImg" data-bind="css: { mError: coupon.error }"></div>
+						<div class="bTitle">Вид скидки:</div>
+						
+						<div class="bSaleData__eEmptyBlock">Скидок больше нет</div>
 
-						<div class="bItemsRow mItemInfo" data-bind="text: (coupon.error && coupon.error.message) || coupon.name"></div>
+						<ul class="bSaleList bInputList clearfix">
+	                        <? if (\App::config()->coupon['enabled']): ?>
+							<li class="bSaleList__eItem" data-type="coupon" data-bind="visible: (deliveryBoxes().length == 1)">
+								<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
+							</li>
+	                        <? endif ?>
 
-						<div class="bItemsRow mCountItem"></div>
+	                        <? if (\App::config()->blackcard['enabled']): ?>
+							<li class="bSaleList__eItem mEnterSpa" data-type="blackcard">
+								<input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden data-bind="checked: couponUrl" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
+							</li>
+	                        <? endif ?>
+						</ul>
 
-						<div class="bItemsRow mDelItem">
-							<a class="bDelItem" data-bind="attr: { 'href': coupon.deleteUrl }, click: $root.deleteItem">удалить</a>
-						</div>
+						<input class="bBuyingLine__eText mSaleInput" type="text" id="" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
 
-						<div class="bItemsRow mItemRight" data-bind="visible: !coupon.error"><span data-bind="text: coupon.sum"></span> <span class="rubl">p</span></div>
+						<button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon">Применить</button>
+
+						<p class="bSaleError" data-bind="text: couponError"></p>
 					</div>
+
+					<div class="bSaleCheck"></div>
+
+					 <!-- Coupons -->
+					<div class="bBuyingLine mCouponsLine" data-bind="foreach: { data: couponsBox(), as: 'coupon' }">
+						<div class="bOrderItems">
+							<div class="bItemsRow mItemImg" data-bind="css: { mError: coupon.error }"></div>
+
+							<div class="bItemsRow mItemInfo" data-bind="text: (coupon.error && coupon.error.message) || coupon.name"></div>
+
+							<div class="bItemsRow mCountItem"></div>
+
+							<div class="bItemsRow mDelItem">
+								<a class="bDelItem" data-bind="attr: { 'href': coupon.deleteUrl }, click: $root.deleteItem">удалить</a>
+							</div>
+
+							<div class="bItemsRow mItemRight" data-bind="visible: !coupon.error"><span data-bind="text: coupon.sum"></span> <span class="rubl">p</span></div>
+						</div>
+					</div>
+					<!-- /Coupons -->
 				</div>
-				<!-- /Coupons -->
+
+				<!-- Sum -->
+				<!-- <ul class="bSumOrderInfo">
+					<li class="bSumOrderInfo__eLine">
+						<span class="bDelivery  mOldPrice">
+							<span data-bind="">2 345</span> 
+							<span class="rubl">p</span>
+						</span>
+					</li>
+
+					<li class="bSumOrderInfo__eLine">
+						Сумма заказа с учетом скидок:&nbsp;&nbsp;
+
+						<span class="bDelivery">
+							<span data-bind="">2 345</span> 
+							<span class="rubl">p</span>
+						</span>
+					</li>
+				</ul> -->
+				<!-- /Sum -->
 			</div>
-
-			<!-- Sum -->
-			<!-- <ul class="bSumOrderInfo">
-				<li class="bSumOrderInfo__eLine">
-					<span class="bDelivery  mOldPrice">
-						<span data-bind="">2 345</span> 
-						<span class="rubl">p</span>
-					</span>
-				</li>
-
-				<li class="bSumOrderInfo__eLine">
-					Сумма заказа с учетом скидок:&nbsp;&nbsp;
-
-					<span class="bDelivery">
-						<span data-bind="">2 345</span> 
-						<span class="rubl">p</span>
-					</span>
-				</li>
-			</ul> -->
-			<!-- /Sum -->
 		</div>
-	</div>
-	<!-- /Sale section -->
-    <? else: ?>
-        Купоны на сайте временно не принимаются. Вы можете использовать их в любом из наших магазинов или обратиться в контакт-центр. Приносим свои извинения
-    <? endif ?>
+		<!-- /Sale section -->
+	    <? else: ?>
+	        Купоны на сайте временно не принимаются. Вы можете использовать их в любом из наших магазинов или обратиться в контакт-центр. Приносим свои извинения
+	    <? endif ?>
+	<? endif ?>
 
 	<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
 		<a href="<?= $page->url('cart') ?>" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
@@ -350,6 +352,40 @@ if ($oneClick) {
                             <label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
                         </div>
                     </div>
+				<? elseif ($oneClick): ?>
+					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
+					</div>
+
+					<label for="" class="bBuyingLine__eLeft">Фамилия получателя</label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
+					</div>
+
+					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
+
+						<div class="bSubscibeCheck bInputList">
+							<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
+							<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>                 
+						</div>
+					</div>
+
+					<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
+					<div class="bBuyingLine__eRight mPhone">
+						<span class="bPlaceholder">+7</span> 
+						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
+					</div>
+
+					<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
+						<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
+						<div class="bBuyingLine__eRight mSClub">
+							<input id="sclub-number" type="text" class="bBuyingLine__eText" name="order[sclub_card_number]" />
+							<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+						</div>
+					</div>
 				<? else: ?>
 					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
 					<div class="bBuyingLine__eRight">
@@ -436,14 +472,19 @@ if ($oneClick) {
 		
 
 			<!-- Methods of payment -->
-			<h2 class="bBuyingSteps__eTitle" data-bind="css: { hidden: paypalECS }">Оплата</h2>
+			<? if (!$oneClick): ?>
+				<h2 class="bBuyingSteps__eTitle" data-bind="css: { hidden: paypalECS }">Оплата</h2>
 
-			<div class="bBuyingLine clearfix mPayMethods" data-bind="css: { hidden: paypalECS }">
-				<div class="bBuyingLine__eLeft"></div>
-				<div class="bBuyingLine__eRight bInputList">
-					<?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
+				<div class="bBuyingLine clearfix mPayMethods" data-bind="css: { hidden: paypalECS }">
+					<div class="bBuyingLine__eLeft"></div>
+					<div class="bBuyingLine__eRight bInputList">
+						<?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
+					</div>
 				</div>
-			</div>
+			<? else: ?>
+				Блок купить в кредит
+			<? endif ?>
+			<!-- /Methods of payment -->
 
 			<!-- PayPal сумма заказа -->
 			<div data-bind="visible: paypalECS" class="bBuyingLine mPaypalLine clearfix">
