@@ -1040,6 +1040,7 @@ table {
   width: 958px;
   height: 49px;
   background: #ffffff;
+  display: none;
 }
 .fixedTopBar:hover .fixedTopBar__cartQuan {
   animation-name: shake;

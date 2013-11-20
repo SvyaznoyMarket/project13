@@ -12,13 +12,54 @@
 		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils,
 
-		userBar = $('.fixedTopBar'),
-		body = $('body');
+		userbar = $('.fixedTopBar'),
+		topBtn = userbar.find('.fixedTopBar__upLink'),
+		userbarConfig = userbar.data('value'),
+		body = $('body'),
+		w = $(window),
+
+		scrollTarget,
+		scrollTargetOffset;
 	// end of vars
 	
 
-	var checkScroll = function checkScroll() {
+	var
+		/**
+		 * Показ юзербара
+		 */
+		showUserbar = function showUserbar() {
+			userbar.slideDown();
+		},
 
+		/**
+		 * Скрытие юзербара
+		 */
+		hideUserbar = function hideUserbar() {
+			userbar.slideUp();
+		},
+
+		/**
+		 * Проверка текущего скролла
+		 */
+		checkScroll = function checkScroll( e ) {
+			var nowScroll = w.scrollTop();
+
+			if ( nowScroll >= scrollTargetOffset ) {
+				showUserbar();
+			}
+			else {
+				hideUserbar();
+			}
+		},
+
+		/**
+		 * Прокрутка до фильтра и раскрытие фильтров
+		 */
+		upToFilter = function upToFilter() {
+			$.scrollTo(scrollTarget, 500);
+			ENTER.catalog.filter.openFilter();
+
+			return false;
 		},
 
 		/**
@@ -31,7 +72,7 @@
 			console.info('userbar::updateUserInfo');
 			console.log(data);
 
-			var userWrap = userBar.find('.fixedTopBar__logIn'),
+			var userWrap = userbar.find('.fixedTopBar__logIn'),
 				userTmpl;
 			// end of vars
 
@@ -54,7 +95,7 @@
 			console.info('userbar::updateBasketInfo');
 			console.log(data);
 
-			var cartWrap = userBar.find('.fixedTopBar__cart'),
+			var cartWrap = userbar.find('.fixedTopBar__cart'),
 				cartTmpl;
 			// end of vars
 
@@ -70,9 +111,27 @@
 		};
 	// end of functions
 
-	
-	body.on('userLogged', updateUserInfo);
-	body.on('basketUpdate', updateBasketInfo);
-	$(window).on('scroll', checkScroll);
+
+
+
+
+	if ( userbar.length ) {
+		console.info('Init userbar module');
+		console.log(userbarConfig);
+
+		scrollTarget = $(userbarConfig.target);
+
+		body.on('userLogged', updateUserInfo);
+		body.on('basketUpdate', updateBasketInfo);
+
+		if ( topBtn.length ) {
+			topBtn.on('click', upToFilter);
+		}
+
+		if ( scrollTarget.length ) {
+			scrollTargetOffset = scrollTarget.offset().top + userbar.height();
+			w.on('scroll', checkScroll);
+		}
+	}
 
 }(window.ENTER));
