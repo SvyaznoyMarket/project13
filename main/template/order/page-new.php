@@ -309,14 +309,16 @@ if ($oneClick) {
 	    <? endif ?>
 	<? endif ?>
 
-	<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
-		<a href="<?= $page->url('cart') ?>" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
+	<? if (!$oneClick): ?>
+		<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
+			<a href="<?= $page->url('cart') ?>" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
 
-		<div class="bTotalSumm">
-			Сумма всех заказов:
-			<span class="bTotalSumm__ePrice" data-bind="text: window.printPrice( totalSum() )"></span>&nbsp;<span class="rubl">p</span>
+			<div class="bTotalSumm">
+				Сумма всех заказов:
+				<span class="bTotalSumm__ePrice" data-bind="text: window.printPrice( totalSum() )"></span>&nbsp;<span class="rubl">p</span>
+			</div>
 		</div>
-	</div>
+	<? endif ?>
 
 	<!-- Форма заказа -->
 	<div class="bBuyingInfo" data-bind="visible: deliveryBoxes().length">
