@@ -47,6 +47,8 @@ class Form implements \JsonSerializable {
     private $agreed;
     /** @var bool */
     private $oneClick;
+    /** @var bool */
+    private $lifeGiftAgreed;
 
     /** @var array */
     private $errors = array(
@@ -71,6 +73,7 @@ class Form implements \JsonSerializable {
         'subway_id'              => null,
         'qiwi_phone'             => null,
         'one_click'              => null,
+        'lifeGift_agreed'        => null,
     );
 
     public function __construct(array $data = []) {
@@ -121,6 +124,7 @@ class Form implements \JsonSerializable {
         if (array_key_exists('sclub_card_number', $data))      $this->setSclubCardnumber($data['sclub_card_number']);
         if (array_key_exists('payment_method_id', $data))      $this->setPaymentMethodId($data['payment_method_id']);
         if (array_key_exists('agreed', $data))                 $this->setAgreed($data['agreed']);
+        if (array_key_exists('lifeGift_agreed', $data))        $this->setLifeGiftAgreed($data['lifeGift_agreed']);
         if (array_key_exists('cardnumber', $data))             $this->setCertificateCardnumber($data['cardnumber']);
         if (array_key_exists('cardpin', $data))                $this->setCertificatePin($data['cardpin']);
         if (array_key_exists('subway_id', $data))              $this->setSubwayId($data['subway_id']);
@@ -439,13 +443,29 @@ class Form implements \JsonSerializable {
     }
 
     /**
+     * @param boolean $lifeGiftAgreed
+     */
+    public function setLifeGiftAgreed($lifeGiftAgreed)
+    {
+        $this->lifeGiftAgreed = (bool)$lifeGiftAgreed;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getLifeGiftAgreed()
+    {
+        return $this->lifeGiftAgreed;
+    }
+
+    /**
      * @param $name
      * @param $value
      * @throws \InvalidArgumentException
      */
     public function setError($name, $value) {
         if (!array_key_exists($name, $this->errors)) {
-            throw new \InvalidArgumentException(sprintf('Неизвестная ошибка "%s".', $name));
+            throw new \InvalidArgumentException(sprintf('Неизвестная ошибка формы "%s".', $name));
         }
 
         $this->errors[$name] = $value;
@@ -458,7 +478,7 @@ class Form implements \JsonSerializable {
      */
     public function getError($name) {
         if (!array_key_exists($name, $this->errors)) {
-            throw new \InvalidArgumentException(sprintf('Неизвестная ошибка "%s".', $name));
+            throw new \InvalidArgumentException(sprintf('Неизвестная ошибка формы "%s".', $name));
         }
 
         return $this->errors[$name];
