@@ -93,9 +93,7 @@ class Repository {
             'сайт'      => null,
         ];
 
-        $dataStore->addQuery('inflect/сайт.json', [], function($data) use (&$patterns) {
-            if ($data) $patterns['сайт'] = $data;
-        });
+        $patterns['сайт'] = $dataStore->query('/inflect/сайт.json');
         $dataStore->addQuery(sprintf('inflect/tag/%s.json', $tag->getToken()), [], function($data) use (&$patterns) {
             if ($data) $patterns['тэг'] = $data;
         });

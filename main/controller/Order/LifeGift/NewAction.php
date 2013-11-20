@@ -80,10 +80,19 @@ class NewAction {
             // данные для кредита
             $creditData = [];
 
+            // данные о доставке
+            $deliveryData = (new \Controller\Order\DeliveryAction())->getResponseData(false, true); // TODO: пахнет рефакторингом - нужно передавать корзину
+            if (isset($deliveryData['deliveryStates']) && is_array($deliveryData['deliveryStates'])) {
+                foreach ($deliveryData['deliveryStates'] as &$deliveryState) {
+                    $deliveryState['name'] = 'Вы дарите';
+                }
+                if (isset($deliveryState)) unset($deliveryState);
+            }
+
             $page = new \View\Order\NewPage();
             $page->setParam('paypalECS', false);
             $page->setParam('lifeGift', true);
-            $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(false, true)); // TODO: пахнет рефакторингом - нужно передавать корзину
+            $page->setParam('deliveryData', $deliveryData);
             $page->setParam('productsById', $productsById);
             $page->setParam('paymentMethods', $paymentMethods);
             $page->setParam('subways', $subways);
