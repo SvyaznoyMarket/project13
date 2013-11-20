@@ -30,7 +30,7 @@ $disabled = !$product->getIsBuyable();
 
 if ($product->isInShopStockOnly()) {
     $value = 'Резерв';
-    $url = $product->getLink() . '#oneclick';
+    $url = $page->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
 }
 
 if ($disabled) {

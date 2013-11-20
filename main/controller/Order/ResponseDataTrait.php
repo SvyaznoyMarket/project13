@@ -115,15 +115,6 @@ trait ResponseDataTrait {
             } else if ((false === $responseData['paypalECS']) && (false === $responseData['lifeGift']) && (false === $responseData['oneCLick']) && $cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
                 $responseData['redirect'] = $router->generate('cart');
                 $message = 'Пустая корзина';
-            } else {
-                if (1 == $cart->getProductsQuantity()) { // если в корзине всего один товар, то предлагаем попробовать заказ в один клик
-                    $cartProducts = $cart->getProducts();
-                    $cartProduct = reset($cartProducts);
-                    $product = $cartProduct ? \RepositoryManager::product()->getEntityById($cartProduct->getId()) : null;
-                    if ($product) {
-                        $responseData['redirect'] = $product->getLink() . '#oneclick';
-                    }
-                }
             }
         }
 

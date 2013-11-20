@@ -25,7 +25,7 @@ class LifeGift {
 
         $this->storage->set($this->sessionName, array_merge([
             'product' => [],
-            'sum'     => [],
+            'sum'     => 0,
         ], (array)$this->storage->get($this->sessionName)));
 
         $this->calculate();

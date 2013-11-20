@@ -433,11 +433,11 @@ return [
         'method'  => ['POST'],
     ],
     'order.oneClick.new' => [
-        'pattern' => '/orders/oneclick/new',
+        'pattern' => '/orders/one-click/new',
         'action'  => ['Order\OneClick\NewAction', 'execute'],
     ],
     'order.oneClick.create' => [
-        'pattern' => '/orders/oneclick/create',
+        'pattern' => '/orders/one-click/create',
         'action'  => ['Order\OneClick\CreateAction', 'execute'],
         'method'  => ['POST'],
     ],
