@@ -1,20 +1,21 @@
 <?php
 /**
- * @var $page              \View\Product\IndexPage
- * @var $product           \Model\Product\Entity
- * @var $lifeGiftProduct   \Model\Product\Entity|null
- * @var $productVideos     \Model\Product\Video\Entity[]
- * @var $user              \Session\User
- * @var $accessories       \Model\Product\Entity[]
- * @var $accessoryCategory \Model\Product\Category\Entity[]
- * @var $related           \Model\Product\Entity[]
- * @var $kit               \Model\Product\Entity[]
- * @var $additionalData    array
- * @var $shopStates        \Model\Product\ShopState\Entity[]
- * @var $creditData        array
- * @var $parts             \Model\Product\CompactEntity[]
- * @var $mainProduct       \Model\Product\Entity
- * @var $line              \Model\Line\Entity
+ * @var $page                   \View\Product\IndexPage
+ * @var $product                \Model\Product\Entity
+ * @var $lifeGiftProduct        \Model\Product\Entity|null
+ * @var $productVideos          \Model\Product\Video\Entity[]
+ * @var $user                   \Session\User
+ * @var $accessories            \Model\Product\Entity[]
+ * @var $accessoryCategory      \Model\Product\Category\Entity[]
+ * @var $related                \Model\Product\Entity[]
+ * @var $kit                    \Model\Product\Entity[]
+ * @var $additionalData         array
+ * @var $shopStates             \Model\Product\ShopState\Entity[]
+ * @var $creditData             array
+ * @var $parts                  \Model\Product\CompactEntity[]
+ * @var $mainProduct            \Model\Product\Entity
+ * @var $line                   \Model\Line\Entity
+ * @var $deliveryDataResponse   array
  */
 
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
@@ -197,9 +198,11 @@ $is_showed = [];
 
         <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
-        <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <? if (!$hasFurnitureConstructor): ?>
+            <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <? endif ?>
 
-        <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
+        <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates, 'deliveryDataResponse' => $deliveryDataResponse]) // Доставка ?>
 
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
 

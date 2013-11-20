@@ -5,7 +5,7 @@ return function (
     \Model\Product\BasicEntity $product,
     $url = null,
     $class = null,
-    $value = 'Купить сейчас'
+    $value = 'Купить быстро в 1 клик'
 ) {
     $class = \View\Id::cartButtonForProduct($product->getId() . '-oneClick') . ' jsOneClickButton ' . $class;
 
@@ -30,8 +30,9 @@ return function (
         $url = $helper->url('cart.oneClick.product.set', $urlParams);
     }
 
-    ?>
-    <div class="bWidgetBuy__eBuy btnBuy">
+?>
+
+    <div class="bWidgetBuy__eBuy btnBuy" style="margin-top: 10px; text-align: center;">
         <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
     </div>
 

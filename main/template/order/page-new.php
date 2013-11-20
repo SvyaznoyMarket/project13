@@ -304,7 +304,7 @@ if ($oneClick) {
 			</div>
 		</div>
 		<!-- /Sale section -->
-	    <? else: ?>
+        <? elseif (!$lifeGift && !$oneClick): ?>
 	        Купоны на сайте временно не принимаются. Вы можете использовать их в любом из наших магазинов или обратиться в контакт-центр. Приносим свои извинения
 	    <? endif ?>
 	<? endif ?>
@@ -352,6 +352,12 @@ if ($oneClick) {
                             <label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
                         </div>
                     </div>
+
+                    <label class="bBuyingLine__eLeft">Добрые пожелания ребенку</label>
+                    <div class="bBuyingLine__eRight">
+                        <textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
+                    </div>
+
 				<? elseif ($oneClick): ?>
 					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
 					<div class="bBuyingLine__eRight">
@@ -386,6 +392,7 @@ if ($oneClick) {
 							<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
 						</div>
 					</div>
+
 				<? else: ?>
 					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
 					<div class="bBuyingLine__eRight">
