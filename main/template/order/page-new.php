@@ -299,7 +299,7 @@ if ($paypalECS) {
 		</div>
 	</div>
 	<!-- /Sale section -->
-    <? else: ?>
+    <? elseif (!$lifeGift): ?>
         Купоны на сайте временно не принимаются. Вы можете использовать их в любом из наших магазинов или обратиться в контакт-центр. Приносим свои извинения
     <? endif ?>
 
@@ -345,6 +345,11 @@ if ($paypalECS) {
                             <input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
                             <label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
                         </div>
+                    </div>
+
+                    <label class="bBuyingLine__eLeft">Добрые пожелания ребенку</label>
+                    <div class="bBuyingLine__eRight">
+                        <textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
                     </div>
 				<? else: ?>
 					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
