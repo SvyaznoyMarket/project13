@@ -3,8 +3,6 @@
 namespace View\Jewel\ProductCategory;
 
 class Layout extends \View\DefaultLayout {
-    use \View\ProductCategory\CategoryDataTrait;
-
     protected $layout  = 'layout-oneColumn';
 
     public function __construct() {
@@ -134,7 +132,7 @@ class Layout extends \View\DefaultLayout {
             $this->setParam('breadcrumbs', []);
         }
 
-        $categoryData = $this->renderCategoryData($this, $this->getParam('category'));
+        $categoryData = $this->tryRender('product-category/_categoryData', array('page' => $this, 'category' => $this->getParam('category')));
         $contentHead = $this->render('_contentHead', $this->params);
 
         if ($categoryData) $ret .= $categoryData;

@@ -3,8 +3,6 @@
 namespace View\Tag;
 
 class IndexPage extends \View\DefaultLayout {
-    use \View\ProductCategory\CategoryDataTrait;
-
     protected $layout  = 'layout-oneColumn';
 
     public function prepare() {
@@ -163,7 +161,7 @@ class IndexPage extends \View\DefaultLayout {
         $category = $this->getParam('category');
         if (!$category) $category = $this->getParam('selectedCategory');
 
-        if ($category) $categoryData = $this->renderCategoryData($this, $category);
+        if ($category) $categoryData = $this->tryRender('product-category/_categoryData', array('page' => $this, 'category' => $category));
         if ($categoryData) $ret .= $categoryData;
 
         return $ret;
