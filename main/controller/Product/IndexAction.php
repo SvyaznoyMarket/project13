@@ -62,22 +62,8 @@ class IndexAction {
             }
         });
 
-        /** @var $lifeGiftProduct \Model\Product\Entity|null */
-        $lifeGiftProduct = null;
-        $repository->prepareEntityByToken($productToken, $lifeGiftRegion, function($data) use (&$lifeGiftProduct) {
-            $data = reset($data);
-
-            if ((bool)$data) {
-                $lifeGiftProduct = new \Model\Product\Entity($data);
-            }
-        });
-
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
-
-        if ($lifeGiftProduct && !($lifeGiftProduct->getLabel() && (\App::config()->lifeGift['labelId'] === $lifeGiftProduct->getLabel()->getId()))) {
-            $lifeGiftProduct = null;
-        }
 
         if (!$product) {
             throw new \Exception\NotFoundException(sprintf('Товар @%s не найден.', $productToken));
@@ -85,6 +71,19 @@ class IndexAction {
 
         if ($request->getPathInfo() !== $product->getLink()) {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
+        }
+
+        // подготовка 3-го пакета запросов
+        $lifeGiftProduct = null;
+        if ($product->getLabel() && (\App::config()->lifeGift['labelId'] === $product->getLabel()->getId())) {
+            /** @var $lifeGiftProduct \Model\Product\Entity|null */
+            $repository->prepareEntityByToken($productToken, $lifeGiftRegion, function($data) use (&$lifeGiftProduct) {
+                $data = reset($data);
+
+                if ((bool)$data) {
+                    $lifeGiftProduct = new \Model\Product\Entity($data);
+                }
+            });
         }
 
         // категории продукта
@@ -100,7 +99,13 @@ class IndexAction {
         $dataStore->addQuery($query, [], function ($data) use (&$catalogJson) {
             if($data) $catalogJson = $data;
         });
-        $dataStore->execute();
+
+        // выполнение 3-го пакета запросов
+        $client->execute();
+
+        if ($lifeGiftProduct && !($lifeGiftProduct->getLabel() && (\App::config()->lifeGift['labelId'] === $lifeGiftProduct->getLabel()->getId()))) {
+            $lifeGiftProduct = null;
+        }
 
         // трастфакторы
         $trustfactorTop = null;
