@@ -924,7 +924,8 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 			inputUrl = $('.jsOrder1click').attr('link-input'),
 			outputUrl = $('.jsOrder1click').attr('link-output'),
             subscribeWrapper = $('.bSubscibeWrapper'),
-            subscibeCheckboxEnabled;
+            subscibeCheckboxEnabled,
+            subscibeEmail = false;
 		//end of vars
 
         $('body').on('userLogged', function( event, userInfo ) {
@@ -933,12 +934,13 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
              * Если юзер уже подписан, не нужно отображать чекбокс с предложением подписаться
              */
             if ( userInfo && (false === userInfo.isSubscribed) ) {
-                subscribeWrapper.show();
+                subscribeWrapper.removeClass('hf');
                 subscibeCheckboxEnabled = true;
                 console.log('НЕ скрываем, даже показываем блок подписки.');
             } else {
-                subscribeWrapper.hide();
+                subscribeWrapper.addClass('hf'); // hide field
                 subscibeCheckboxEnabled = false;
+                subscibeEmail = userInfo.email;
                 console.log('Скрываем блок подписки, т.к. юзер уже подписан либо незарегистрирован.');
             }
         });
@@ -1066,12 +1068,12 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 					checkbox = $('input[type="checkbox"][name="subscribe"]'),
 					bSubscibeWrapper = $('#recipientEmail').siblings('.bSubscibeWrapper'),
 					bSubscibe = $('.bSubscibe'),
-					recipientEmail = $('#recipientEmail');
+					recipientEmail = $('#recipientEmail'),
+                    addHide2SubscrWrap = false;
 				if ( !value && $('#recipientEmail').siblings('.mEmpty').length ) {
 					recipientEmail.siblings('.mEmpty').hide();
 				}
 				if ( value && value.isEmail() && bSubscibeWrapper.hasClass('hf') ) {
-					bSubscibeWrapper.removeClass('hf');
 
 					// Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
 					if ( subscibeCheckboxEnabled ) {
@@ -1083,7 +1085,7 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 
 					recipientEmail.siblings('.mEmpty').hide();
 				} else if ( ( !value || value && !value.isEmail() ) && !bSubscibeWrapper.hasClass('hf') ) {
-					bSubscibeWrapper.addClass('hf');
+                    addHide2SubscrWrap = true;
 
 					// Если юзер уже подписан, не нужно обрабатывать чекбокс с предложением подписаться,
 					if ( subscibeCheckboxEnabled ) {
@@ -1097,6 +1099,18 @@ levup:			for(var i = 0, l = numbers.length; i < l; i++){
 						recipientEmail.siblings('.mEmpty').show();
 					}
 				}
+
+                if (subscibeEmail && subscibeEmail == value) {
+                    // Если подписан и емейл введённый == емейлу подписки, то скрываем
+                    addHide2SubscrWrap = true;
+                }
+
+                if (addHide2SubscrWrap) {
+                    bSubscibeWrapper.addClass('hf');
+                }else{
+                    bSubscibeWrapper.removeClass('hf');
+                }
+
 			};
 
 			/**
