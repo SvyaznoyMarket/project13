@@ -60,11 +60,13 @@ return function(
     };
 
     $countFilters = count($productFilter->getFilterCollection());
+    $countInListFilters = null;
     if (0 == $countFilters) {
         $insertCustomFilters();
     } else {
         $insertIndex = $countFilters > 3 ? 3 : $countFilters;
         $i = 1;
+        $countInListFilters = 0;
         foreach ($productFilter->getFilterCollection() as $filter) {
             if ($filter->isPrice()) {
                 $priceFilter = $filter;
@@ -76,11 +78,16 @@ return function(
 
             if ($insertIndex == $i) {
                 $insertCustomFilters();
-
                 $i++;
+            }
+
+            if ($filter->getIsInList()){
+                $countInListFilters++;
             }
         }
     }
+
+    if (0 === $countInListFilters) return;
 ?>
 
     <form id="productCatalog-filter-form" class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
