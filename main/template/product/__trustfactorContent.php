@@ -1,13 +1,21 @@
 <?php
-return function(
+return function (
     $trustfactorContent
 ) {
-?>
 
-  <? foreach ((array)$trustfactorContent as $trustfactorItem) { ?>
-    <div class="trustfactorContent">
-      <?= empty($trustfactorItem) ? '' : $trustfactorItem ?>
-    </div>
-  <? } ?>
+    if (!count($trustfactorContent)) {
+        return;
+    }
 
-<? };
+    ?>
+    <div class="mt15"><?
+    foreach ((array)$trustfactorContent as $trustfactorItem) {
+        ?>
+        <div class="trustfactorContent">
+            <?= empty($trustfactorItem) ? '' : $trustfactorItem ?>
+        </div>
+    <?
+    }
+    ?></div><?
+
+};
