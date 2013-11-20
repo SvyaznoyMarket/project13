@@ -125,6 +125,8 @@ $is_showed = [];
         <?= $product->getDescription() ?>
     </div>
 
+    <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
+
     <? if ((bool)$related && \App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
@@ -137,8 +139,6 @@ $is_showed = [];
             'additionalData' => $additionalData,
         ]) ?>
     <? endif ?>
-
-    <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
 
     <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
