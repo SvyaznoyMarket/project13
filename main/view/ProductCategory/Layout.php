@@ -3,6 +3,8 @@
 namespace View\ProductCategory;
 
 class Layout extends \View\DefaultLayout {
+    use CategoryDataTrait;
+
     public function prepare() {
         /** @var $category \Model\Product\Category\Entity */
         $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
@@ -100,6 +102,8 @@ class Layout extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
+        $ret = '';
+
         // заголовок контента страницы
         if (!$this->hasParam('title')) {
             $this->setParam('title', null);
@@ -110,7 +114,14 @@ class Layout extends \View\DefaultLayout {
         // }
         $this->setParam('breadcrumbs', []);
 
-        return $this->render('_contentHead', array_merge($this->params, ['title' => null])); // TODO: осторожно, костыль
+        $categoryData = $this->renderCategoryData($this, $this->getParam('category'));
+        $contentHead = $this->render('_contentHead', array_merge($this->params, ['title' => null])); // TODO: осторожно, костыль
+
+        if ($categoryData) $ret .= $categoryData;
+        if ($contentHead) $ret .= $contentHead;
+
+        return $ret;
+
     }
 
     public function slotBodyDataAttribute() {
