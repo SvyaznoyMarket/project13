@@ -640,6 +640,8 @@ $.ajaxSetup({
 
 		changeRegionBtn = $('.jsChangeRegion'),
 
+		changeRegionAnalyticsBtn = $('.jsChangeRegionAnalytics'),
+
 		slidesWrap = regionWindow.find('.regionSlidesWrap'),
 		moreCityBtn = regionWindow.find('.moreCity'),
 		leftArrow = regionWindow.find('.leftArr'),
@@ -710,6 +712,15 @@ $.ajaxSetup({
 					}
 				}
 			});
+
+			// analytics only for main page
+			if ( document.location.pathname === '/' ) {
+				console.info( 'run analytics for main page' );
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'citySelector', 'viewed']);
+				}
+			}
 		},
 
 		/**
@@ -822,16 +833,37 @@ $.ajaxSetup({
 			if ( $(this).val() ) {
 				clearBtn.show();
 			}
-			else{
+			else {
 				clearBtn.hide();
 			}
+		},
+
+		changeRegionAnalytics = function changeRegionAnalytics( regionName ) {
+			// analytics only for main page
+			if ( document.location.pathname === '/' ) {
+				console.info( 'run analytics for main page ' + regionName);
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
+				}
+			}
+		},
+
+		changeRegionAnalyticsHandler = function changeRegionAnalyticsHandler() {
+			var regionName = $(this).text();
+
+			changeRegionAnalytics(regionName);
 		},
 
 		/**
 		 * Обработчик сохранения введенного региона
 		 */
 		submitCityHandler = function submitCityHandler() {
-			var url = $(this).data('url');
+			var url = $(this).data('url'),
+				regionName = inputRegion.val();
+			// end of vars
+
+			changeRegionAnalytics(regionName);
 
 			if ( url ) {
 				global.location = url;
@@ -855,6 +887,8 @@ $.ajaxSetup({
 	leftArrow.on('click', prevCitySlide);
 	inputRegion.on('keyup', inputRegionChangeHandler);
 	body.on('click', '.jsChangeRegion', changeRegionHandler);
+
+	changeRegionAnalyticsBtn.on('click', changeRegionAnalyticsHandler);
 
 
 	/**

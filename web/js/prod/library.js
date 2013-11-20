@@ -2741,14 +2741,23 @@ if ( !Array.prototype.indexOf ) {
 		 * @return	{String}		Результат сложения
 		 */
 		sumDecimal 	= function sumDecimal( a, b ) {
+
+			console.group('sumDecimal');
+
 			var 
-				overA = parseFloat(a) * 100,
-				overB = parseFloat(b) * 100,
-				overSum = (overA + overB).toString(),
+				overA = ( ( parseFloat(a).toFixed(2) ).toString() ).replace(/\./,''),
+				overB = ( ( parseFloat(b).toFixed(2) ).toString() ).replace(/\./,''),
+				overSum = (parseInt(overA) + parseInt(overB)).toString(),
 				firstNums = overSum.substr(0, overSum.length - 2),
 				lastNums = overSum.substr(-2),
 				res;
 			// end of vars
+
+			console.log(a);
+			console.log(overA);
+			console.log(b);
+			console.log(overB);
+			console.log(overSum);
 
 			if ( lastNums == '00' ) {
 				res = firstNums
@@ -2756,6 +2765,10 @@ if ( !Array.prototype.indexOf ) {
 			else {
 				res = firstNums + '.' + lastNums;
 			}
+
+			console.log(res);
+
+			console.groupEnd();
 
 			return res;
 		};
