@@ -15,19 +15,28 @@ class DeliveryAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
+        return new \Http\JsonResponse($this->getResponseData($request->get('product'), $request->get('region')));
+    }
+
+    /**
+     * @param array $product
+     * @param int $region
+     * @return array
+     */
+    public function getResponseData($product, $region = null) {
         $helper = new \View\Helper();
         $user = \App::user();
 
         try {
             $productData = [];
-            foreach ((array)$request->get('product') as $product) {
-                if (!isset($product['id'])) {
+            foreach ((array)$product as $item) {
+                if (!isset($item['id'])) {
                     continue;
                 }
 
                 $productData[] = [
-                    'id'       => (int)$product['id'],
-                    'quantity' => !empty($product['quantity']) ? (int)$product['quantity'] : 1,
+                    'id'       => (int)$item['id'],
+                    'quantity' => !empty($item['quantity']) ? (int)$item['quantity'] : 1,
                 ];
             }
 
@@ -36,8 +45,8 @@ class DeliveryAction {
             }
 
             $regionId =
-                $request->get('region')
-                    ? (int)$request->get('region')
+                $region
+                    ? (int)$region
                     : $user->getRegionId();
             if (!$regionId) {
                 $regionId = $user->getRegion()->getId();
@@ -162,6 +171,6 @@ class DeliveryAction {
             ];
         }
 
-        return new \Http\JsonResponse($responseData);
+        return $responseData;
     }
 }
