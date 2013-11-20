@@ -118,9 +118,7 @@ class IndexPage extends \View\DefaultLayout {
         $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['город'] = $data;
         });
-        $dataStore->addQuery('inflect/сайт.json', [], function($data) use (&$patterns) {
-            if ($data) $patterns['сайт'] = $data;
-        });
+        $patterns['сайт'] = $dataStore->query('/inflect/сайт.json');
 
         $dataStore->execute();
 
