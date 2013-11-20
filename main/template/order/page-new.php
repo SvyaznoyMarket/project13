@@ -173,7 +173,16 @@ if ($oneClick) {
 								</div>
 
 								<div class="bItemsRow mCountItem">
-									<span data-bind="text: product.quantity"></span> шт.
+                                    <? if ($oneClick): ?>
+                                        <div class="bCountSection clearfix" data-spinner-for="">
+                                            <button class="bCountSection__eM">-</button>
+                                            <input class="bCountSection__eNum" type="text" value="" data-bind="attr: { value: product.quantity }" />
+                                            <button class="bCountSection__eP">+</button>
+                                            <span>шт.</span>
+                                        </div><!--/counter -->
+                                    <? else: ?>
+									    <span data-bind="text: product.quantity"></span> шт.
+                                    <? endif ?>
 								</div>
 
 								<div class="bItemsRow mDelItem">
