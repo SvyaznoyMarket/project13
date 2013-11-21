@@ -64,13 +64,18 @@ class Action {
 
             $client->addQuery('category/tree', $queryParams, [],
                 function ($data) use (&$categories, &$tagCategoriesNumbers) {
-                    $categoriesPart = [];
                     foreach ($data as $catFields) {
                         $category = new \Model\Product\Category\Entity($catFields);
-                        if (!in_array($category->getId(), $tagCategoriesNumbers)) continue;
-                        $categoriesPart[] = $category;
+                        $categories[] = $category;
+                        // добавляем дочерние узлы
+                        if (isset($catFields['children']) && is_array($catFields['children'])) {
+                            foreach ($catFields['children'] as $childData) {
+                                $child = new \Model\Product\Category\Entity($childData);
+                                $categories[] = $child;
+                                $test[] = $child->getId();
+                            }
+                        }
                     }
-                    $categories = array_merge($categories, $categoriesPart);
                 }
             );
             $client->execute();
@@ -89,7 +94,11 @@ class Action {
             */
 
 
-            foreach ($categories as $category) {
+            foreach ($categories as $key => $category) {
+                if (!in_array($category->getId(), $tagCategoriesNumbers)) {
+                    unset($categories[$key]);
+                    continue;
+                }
                 /** @var $category \Model\Product\Category\Entity */
                 $tagCategory = $tagCategoriesById[$category->getId()];
                 $category->setProductCount($tagCategory->getProductCount());
