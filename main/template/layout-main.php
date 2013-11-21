@@ -44,7 +44,9 @@
 <?= $page->slotBanner() ?>
 
 <div class="allpage">
-    <?= $page->slotAdFox() ?>
+    <? if (\App::config()->adFox['enabled']): ?>
+        <div class="adfoxWrapper" id="adfox980"></div>
+    <? endif ?>
 
     <?= $page->slotHeader() ?>
 
