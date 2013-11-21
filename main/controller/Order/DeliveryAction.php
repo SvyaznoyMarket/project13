@@ -172,11 +172,6 @@ class DeliveryAction {
                 if ('pickpoint' === $deliveryType->getToken()) {
                     $deliveryTypeData[$deliveryType->getToken()]['description'] = \App::closureTemplating()->render('order/newForm/__deliveryType-pickpoint-description');
                 }
-
-                if ('standart' === $deliveryType->getToken() && empty($deliveryTypeData[$deliveryType->getToken()]['description'])) {
-                    // TODO SITE-2632 Нет подписи для метода - доставка заказа курьером
-                    $deliveryTypeData[$deliveryType->getToken()]['description'] = 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.';
-                }
             }
 
             $responseData = array_merge($responseData, [
