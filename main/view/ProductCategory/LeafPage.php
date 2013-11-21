@@ -20,4 +20,10 @@ class LeafPage extends Layout {
             'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,
         ]);
     }
+
+    public function slotUserbarContentData() {
+        return [
+            'target' => '#productCatalog-filter-form',
+        ];
+    }
 }

@@ -30,8 +30,8 @@ $count = count($regions);
         <? if (!in_array($currentRegion->getId(), [14974, 108136])): ?>
             <div class="cityItem mAutoresolve"><a href="<?= $page->url('region.change', ['regionId' => $currentRegion->getId()]) ?>"><?= $currentRegion->getName() ?></a></div>
         <? endif ?>
-        <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => 14974]) ?>">Москва</a></div>
-        <div class="cityItem"><a href="<?= $page->url('region.change', ['regionId' => 108136]) ?>">Санкт-Петербург</a></div>
+        <div class="cityItem"><a class="jsChangeRegionAnalytics" href="<?= $page->url('region.change', ['regionId' => 14974]) ?>">Москва</a></div>
+        <div class="cityItem"><a class="jsChangeRegionAnalytics" href="<?= $page->url('region.change', ['regionId' => 108136]) ?>">Санкт-Петербург</a></div>
         <div class="cityItem"><a class="moreCity" href="#">Еще города</a></div>
     </div>
     
@@ -45,7 +45,7 @@ $count = count($regions);
                             /** @var $region  \Model\Region\Entity */
                             $cols = 0; $rows = 0; $i = 0; foreach ($regions as $region): $i++;  $rows++;
                         ?>
-                            <a href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>"><?= $region->getName(); ?></a>
+                            <a class="jsChangeRegionAnalytics" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>"><?= $region->getName(); ?></a>
                             <?php if ($i == $count) break; ?>
                             <?php if ($rows == $rowCount): $rows = 0; $cols++;?>
                         </div>

@@ -183,6 +183,10 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotUserbarContentData() {
+        return '';
+    }
+
     public function slotSurveybar() {
         $cookieInitTimeStamp = (int)(\App::request()->cookies->get('survey'));
         $survey = \RepositoryManager::survey()->getEntity();
@@ -513,6 +517,19 @@ class DefaultLayout extends Layout {
     public function slotMarinConversionTagJS()
     {
         return '';
+    }
+
+
+    public function slotAdFox() {
+        $routeToken = \App::request()->attributes->get('token');
+        if (
+            !\App::config()->adFox['enabled'] ||
+            ($routeToken == 'subscribers')
+        ) {
+            return;
+        }
+
+        return '<div class="adfoxWrapper" id="adfoxbground"></div>';
     }
 
 }

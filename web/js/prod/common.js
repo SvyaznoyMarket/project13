@@ -626,6 +626,8 @@ $.ajaxSetup({
 
 		changeRegionBtn = $('.jsChangeRegion'),
 
+		changeRegionAnalyticsBtn = $('.jsChangeRegionAnalytics'),
+
 		slidesWrap = regionWindow.find('.regionSlidesWrap'),
 		moreCityBtn = regionWindow.find('.moreCity'),
 		leftArrow = regionWindow.find('.leftArr'),
@@ -696,6 +698,15 @@ $.ajaxSetup({
 					}
 				}
 			});
+
+			// analytics only for main page
+			if ( document.location.pathname === '/' ) {
+				console.info( 'run analytics for main page' );
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'citySelector', 'viewed']);
+				}
+			}
 		},
 
 		/**
@@ -808,16 +819,37 @@ $.ajaxSetup({
 			if ( $(this).val() ) {
 				clearBtn.show();
 			}
-			else{
+			else {
 				clearBtn.hide();
 			}
+		},
+
+		changeRegionAnalytics = function changeRegionAnalytics( regionName ) {
+			// analytics only for main page
+			if ( document.location.pathname === '/' ) {
+				console.info( 'run analytics for main page ' + regionName);
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
+				}
+			}
+		},
+
+		changeRegionAnalyticsHandler = function changeRegionAnalyticsHandler() {
+			var regionName = $(this).text();
+
+			changeRegionAnalytics(regionName);
 		},
 
 		/**
 		 * Обработчик сохранения введенного региона
 		 */
 		submitCityHandler = function submitCityHandler() {
-			var url = $(this).data('url');
+			var url = $(this).data('url'),
+				regionName = inputRegion.val();
+			// end of vars
+
+			changeRegionAnalytics(regionName);
 
 			if ( url ) {
 				global.location = url;
@@ -841,6 +873,8 @@ $.ajaxSetup({
 	leftArrow.on('click', prevCitySlide);
 	inputRegion.on('keyup', inputRegionChangeHandler);
 	body.on('click', '.jsChangeRegion', changeRegionHandler);
+
+	changeRegionAnalyticsBtn.on('click', changeRegionAnalyticsHandler);
 
 
 	/**
@@ -3702,13 +3736,54 @@ $(document).ready(function() {
 		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils,
 
-		userBar = $('.fixedTopBar'),
-		body = $('body');
+		userbar = $('.fixedTopBar'),
+		topBtn = userbar.find('.fixedTopBar__upLink'),
+		userbarConfig = userbar.data('value'),
+		body = $('body'),
+		w = $(window),
+
+		scrollTarget,
+		scrollTargetOffset;
 	// end of vars
 	
 
-	var checkScroll = function checkScroll() {
+	var
+		/**
+		 * Показ юзербара
+		 */
+		showUserbar = function showUserbar() {
+			userbar.slideDown();
+		},
 
+		/**
+		 * Скрытие юзербара
+		 */
+		hideUserbar = function hideUserbar() {
+			userbar.slideUp();
+		},
+
+		/**
+		 * Проверка текущего скролла
+		 */
+		checkScroll = function checkScroll( e ) {
+			var nowScroll = w.scrollTop();
+
+			if ( nowScroll >= scrollTargetOffset ) {
+				showUserbar();
+			}
+			else {
+				hideUserbar();
+			}
+		},
+
+		/**
+		 * Прокрутка до фильтра и раскрытие фильтров
+		 */
+		upToFilter = function upToFilter() {
+			$.scrollTo(scrollTarget, 500);
+			ENTER.catalog.filter.openFilter();
+
+			return false;
 		},
 
 		/**
@@ -3721,7 +3796,7 @@ $(document).ready(function() {
 			console.info('userbar::updateUserInfo');
 			console.log(data);
 
-			var userWrap = userBar.find('.fixedTopBar__logIn'),
+			var userWrap = userbar.find('.fixedTopBar__logIn'),
 				userTmpl;
 			// end of vars
 
@@ -3744,7 +3819,7 @@ $(document).ready(function() {
 			console.info('userbar::updateBasketInfo');
 			console.log(data);
 
-			var cartWrap = userBar.find('.fixedTopBar__cart'),
+			var cartWrap = userbar.find('.fixedTopBar__cart'),
 				cartTmpl;
 			// end of vars
 
@@ -3760,9 +3835,27 @@ $(document).ready(function() {
 		};
 	// end of functions
 
-	
-	body.on('userLogged', updateUserInfo);
-	body.on('basketUpdate', updateBasketInfo);
-	$(window).on('scroll', checkScroll);
+
+
+
+
+	if ( userbar.length ) {
+		console.info('Init userbar module');
+		console.log(userbarConfig);
+
+		scrollTarget = $(userbarConfig.target);
+
+		body.on('userLogged', updateUserInfo);
+		body.on('basketUpdate', updateBasketInfo);
+
+		if ( topBtn.length ) {
+			topBtn.on('click', upToFilter);
+		}
+
+		if ( scrollTarget.length ) {
+			scrollTargetOffset = scrollTarget.offset().top + userbar.height();
+			w.on('scroll', checkScroll);
+		}
+	}
 
 }(window.ENTER));
