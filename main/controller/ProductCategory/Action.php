@@ -299,6 +299,11 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
         }
 
+        // SITE-2634
+        if (!empty($shopScriptSeo['link'])) {
+            $category->setLink($shopScriptSeo['link']);
+        }
+
         // подготовка 3-го пакета запросов
 
         // запрашиваем дерево категорий
