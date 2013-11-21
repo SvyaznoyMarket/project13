@@ -7,7 +7,7 @@ $helper = new \Helper\TemplateHelper();
 $links = [];
 
 if ($product) {
-    $links[] = ['name' => $product->getPrefix(), 'url' => null, 'last' => false];
+    $links[] = ['name' => $product->getPrefix(), 'url' => $product->getParentCategory() ? $product->getParentCategory()->getLink() : null, 'last' => false];
     $links[] = ['name' => $product->getWebName(), 'url' => null, 'last' => true];
 } ?>
 
