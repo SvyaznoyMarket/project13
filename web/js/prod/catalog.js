@@ -616,13 +616,6 @@
 			// end of vars
 
 
-			// if ( typeof openAnyway === 'boolean' ) {
-			// 	filterToggleBtn.removeClass(closeClass).addClass(openClass);
-			// 	filterContent.slideDown(400);
-
-			// 	return false;
-			// }
-
 			if ( open && typeof openAnyway !== 'boolean' ) {
 				filterToggleBtn.removeClass(openClass).addClass(closeClass);
 				filterContent.slideUp(400);
