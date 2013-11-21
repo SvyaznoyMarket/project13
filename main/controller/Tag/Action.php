@@ -242,18 +242,21 @@ class Action {
             ]);
         }
 
+
         // seo из shopscript
         $shopScriptSeo = [];
-        if(\App::config()->shopScript['enabled']) {
+        if ($selectedCategory && \App::config()->shopScript['enabled']) {
             $shopScript = \App::shopScriptClient();
             $shopScript->addQuery('category/get-seo', [
-                'slug' => $category->getToken(),
+                'slug' => $selectedCategory->getToken(),
                 'geo_id' => \App::user()->getRegion()->getId(),
             ], [], function ($data) use (&$shopScriptSeo) {
                 if($data && is_array($data)) $shopScriptSeo = reset($data);
             });
             $shopScript->execute();
         }
+
+
 
         // new
         $page = new \View\Tag\IndexPage();
