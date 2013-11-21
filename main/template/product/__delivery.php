@@ -41,9 +41,29 @@ return function (
             'days'  => 0,
         ];
     }
-?>
 
-<script id="widget_delivery_standart" type="text/html">
+    // массив данных способов доставки
+    $delivery = [];
+    if (isset($deliveryDataResponse['product'][0]['delivery'])) {
+        foreach ($deliveryDataResponse['product'][0]['delivery'] as $item) {
+            if (in_array($item['token'], ['self', 'standart', /*'pickpoint',*/ 'now'])) {
+                $delivery[$item['token']] = $item;
+
+                if (isset($item['price'])) {
+                    $delivery[$item['token']] = array_merge($delivery[$item['token']], [
+                        'isPriceEqualZero' => 0 === $item['price'] ? true : false,
+                        'isPriceNaN' => is_nan($item['price']) ? true : false,
+                    ]);
+                }
+            }
+        }
+    }
+
+    // флажек, открываем блок "Сегодня есть в магазинах" или нет
+    $delivery['isInShopOnly'] = $product->isInShopOnly() ? true : false;
+    ?>
+
+<? /*<script id="widget_delivery_standart" type="text/html">
     <% if (price === 0) { %>
         <span><span class="bJustText">Доставка</span> <strong>бесплатно</strong></span>
     <% } else { %>
@@ -67,7 +87,7 @@ return function (
     <li class="bDeliveryFreeAddress__eShop">
         <a class="bDeliveryFreeAddress__eLink" data-lat="<%=lat%>" data-lng="<%=lng%>" href="<%=url%>"><%=name%></a>
     </li>
-</script>
+</script>*/?>
 
 <div id="avalibleShop" class="popup">
     <i class="close" title="Закрыть">Закрыть</i>
@@ -75,7 +95,7 @@ return function (
     <a href="#" class="bOrangeButton fr mt5">Перейти к магазину</a>
 </div>
 
-<ul class="bDelivery mLoader" data-value="<?= $helper->json([
+<? /*<ul class="bDelivery mLoader" data-value="<?= $helper->json([
 //    'url'       => $helper->url('product.delivery'), // загружаем всегда (непокупабельный товар может иметь пикпойнты)
     'response'  => $deliveryDataResponse,
     'delivery'  => $deliveryData,
@@ -93,6 +113,8 @@ return function (
         <ul class="bDeliveryFreeAddress">
         </ul>
     </li>
-</ul>
+</ul>*/?>
+
+<?= $helper->renderWithMustache('product/___delivery', ['delivery' => $delivery]); // список способов доставки ?>
 
 <? };
