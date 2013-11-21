@@ -12,7 +12,6 @@
 		left: -1px;
 		background: #ffffff;
 		border: 1px solid #ccc;
-		.rounded(0 0 0 5px);
 		width: 228px;
 		.drop-shadow(0px, 4px, 11px, 0.3);
 	}
@@ -28,7 +27,7 @@
 			background: url("@{base-url}/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
 			position: absolute;
 			left: 0;
-			top: 219px;
+			top: 187px;
 			height: 26px;
 			width: 228px;
 			display: block;
@@ -44,8 +43,7 @@
 	}
 
 	.cartList {
-		max-height: 245px;
-		min-height: 65px;
+		height: 213px;
 		overflow: auto;
 
 		&__item {
@@ -115,5 +113,40 @@
 				width: 100%;
 			}
 		}
+	}
+
+	.hintDd {
+		position: absolute;
+		top: 49px;
+		width: 729px;
+		left: -859px;
+		background: #fff;
+		height: 0;
+		/* Переход */
+	    -webkit-transition: all 0.2s ease-out 0.1s;
+	    -moz-transition: all 0.2s ease-out 0.1s;
+	    -o-transition: all 0.2s ease-out 0.1s;
+	    transition: all 0.2s ease-out 0.1s;
+	    overflow: hidden;
+	    border: 1px solid #ccc;
+		border-top: none;
+		border-bottom: none;
+
+		&__title {
+			padding: 10px 0 0 10px;
+			font-size: 16px;
+			border-top: 1px solid #ccc;
+		}
+
+		&.mhintDdOn {
+			height: 270px;
+			.drop-shadow(0px, 4px, 11px, 0.2);
+			border-bottom: 1px solid #ccc;
+		}
+	}
+	
+	.bSlider {
+		width: 700px;
+		margin: 0 auto;
 	}
 }

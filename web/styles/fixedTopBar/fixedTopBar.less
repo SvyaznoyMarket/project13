@@ -3,18 +3,42 @@
 */
 
 .fixedTopBar {
-	.drop-shadow(0, 0, 15px, 0.4);
-	.rounded (0 0 4px 4px);
-	border: 1px solid #ddd;
-	border-top: none;
-	position: fixed;
-	top: 0;
-	left: 50%;
-	z-index: 999;
-	margin-left: -480px;
-	width: 958px;
-	height: 49px;
-	background: @white;
+	
+	&.mFixed {
+		position: fixed;
+		background: @white;
+		width: 958px;
+		height: 49px;
+		top: 0;
+		left: 50%;
+		z-index: 999;
+		margin-left: -480px;
+		.drop-shadow(0, 0, 15px, 0.4);
+		.rounded (0 0 4px 4px);
+		border: 1px solid #ddd;
+		border-top: none;
+	}
+
+	&.mStatic {
+		border: 1px solid #ddd;
+		border-top: none;
+		border-right: none;
+		float: right;
+		margin: -10px -10px 0 0;
+		font-size: 12px;
+		width: 229px;
+		position: relative;
+		height: 49px;
+		z-index: 999;
+
+		.fixedTopBar__cart {
+			width: 91px;
+		}
+
+		.fixedTopBar__logIn {
+			border-left: none;
+		}
+	}
 
 	&:hover {
 
@@ -289,7 +313,7 @@
 		padding-left: 15px;
 		display: block;
 		text-decoration: underline;
-		width: 400px;
+		width: 206px;
 	}
 
 	&__buy {
