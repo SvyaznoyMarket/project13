@@ -35,9 +35,8 @@
 </head>
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
     <?= $page->slotConfig() ?>
-    <? if (\App::config()->adFox['enabled']): ?>
-    <div class="adfoxWrapper" id="adfoxbground"></div>
-    <? endif ?>
+
+    <?= $page->slotAdFox() ?>
 
     <div class="wrapper">
         <header class="header">

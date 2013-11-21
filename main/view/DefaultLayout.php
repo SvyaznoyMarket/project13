@@ -176,10 +176,14 @@ class DefaultLayout extends Layout {
     }
 
     public function slotUserbar() {
-        return $this->render('_userbar');
+        return '';
     }
 
     public function slotUserbarContent() {
+        return '';
+    }
+
+    public function slotUserbarContentData() {
         return '';
     }
 
@@ -513,6 +517,19 @@ class DefaultLayout extends Layout {
     public function slotMarinConversionTagJS()
     {
         return '';
+    }
+
+
+    public function slotAdFox() {
+        $routeToken = \App::request()->attributes->get('token');
+        if (
+            !\App::config()->adFox['enabled'] ||
+            ($routeToken == 'subscribers')
+        ) {
+            return;
+        }
+
+        return '<div class="adfoxWrapper" id="adfoxbground"></div>';
     }
 
 }

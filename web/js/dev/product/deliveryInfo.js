@@ -17,7 +17,8 @@
 
 	var widgetBox = $('.bDelivery'),
 		deliveryData = widgetBox.data('value'),
-		url = deliveryData.url,
+		url = deliveryData.url ? deliveryData.url : '',
+		response = deliveryData.response ? deliveryData.response : null,
 		loadShops = deliveryData.loadShops,
 		deliveryShops = ( deliveryData.delivery.length ) ? deliveryData.delivery[0].shop : [],
 		productInfo = $('#jsProductCard'),
@@ -251,6 +252,9 @@
 			},
 			error: errorHandler
 		});
+	}
+	else if ( response ) {
+		resFromServer( response );
 	}
 
 }());

@@ -60,11 +60,13 @@ return function(
     };
 
     $countFilters = count($productFilter->getFilterCollection());
+    $countInListFilters = null;
     if (0 == $countFilters) {
         $insertCustomFilters();
-    }else{
+    } else {
         $insertIndex = $countFilters > 3 ? 3 : $countFilters;
         $i = 1;
+        $countInListFilters = 0;
         foreach ($productFilter->getFilterCollection() as $filter) {
             if ($filter->isPrice()) {
                 $priceFilter = $filter;
@@ -76,15 +78,19 @@ return function(
 
             if ($insertIndex == $i) {
                 $insertCustomFilters();
-
                 $i++;
+            }
+
+            if ($filter->getIsInList()){
+                $countInListFilters++;
             }
         }
     }
 
+    if (0 === $countInListFilters) return;
 ?>
 
-    <form class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+    <form id="productCatalog-filter-form" class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
             <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 

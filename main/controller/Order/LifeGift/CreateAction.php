@@ -64,7 +64,7 @@ class CreateAction {
             // обновление формы из параметров запроса
             $form->fromArray($request->get('order'));
             // валидация формы
-            $this->validatePaymentType($form);
+            $this->validateLifeGiftForm($form);
             if (!$form->isValid()) {
                 throw new \Exception('Форма заполнена неверно');
             }

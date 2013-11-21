@@ -7,7 +7,7 @@ $helper = new \Helper\TemplateHelper();
 $links = [];
 
 if ($product) {
-    $links[] = ['name' => $product->getPrefix(), 'url' => null, 'last' => false];
+    $links[] = ['name' => $product->getPrefix(), 'url' => $product->getParentCategory() ? $product->getParentCategory()->getLink() : null, 'last' => false];
     $links[] = ['name' => $product->getWebName(), 'url' => null, 'last' => true];
 } ?>
 
@@ -23,14 +23,9 @@ if ($product) {
 <div class="fixedTopBar__buy">
     <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 
-    <div class="bCountSection clearfix" data-spinner-for="">
-        <button class="bCountSection__eM">-</button>
-        <input class="bCountSection__eNum" type="text" value="1">
-        <button class="bCountSection__eP">+</button>
-        <span>шт.</span>
-    </div><!--/counter -->
+    <? if (!$product->isInShopStockOnly()): ?>
+        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
+    <? endif ?>
 
-    <div class="bWidgetBuy__eBuy btnBuy">
-        <a href="" class="btnBuy__eLink jsBuyButton" data-group="">Купить</a>
-    </div>
+    <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить ?>
 </div>

@@ -671,11 +671,21 @@ return [
         'method'  => ['POST'],
     ],
 
-    // git
+    // git pull
     'git.pull' => [
         'pattern' => '/git/pull',
         'action'  => ['GitAction', 'pull'],
         'method'  => ['GET'],
+    ],
+
+    // git checkout
+    'git.checkout' => [
+        'pattern' => '/git/checkout/{version}',
+        'action'  => ['GitAction', 'checkout'],
+        'method'  => ['GET'],
+        'require' => [
+            'version' => '\d+',
+        ],
     ],
 
     //content

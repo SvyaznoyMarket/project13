@@ -3,6 +3,8 @@
 namespace View\Tag;
 
 class IndexPage extends \View\DefaultLayout {
+    protected $layout  = 'layout-oneColumn';
+
     public function prepare() {
         /** @var $tag \Model\Tag\Entity */
         $tag = $this->getParam('tag') instanceof \Model\Tag\Entity ? $this->getParam('tag') : null;
@@ -43,6 +45,19 @@ class IndexPage extends \View\DefaultLayout {
                 . ' - ENTER.ru'
             );
         }
+
+        // Выбранная категория
+        $selectedCategory = $this->getParam('category');
+        /** @var $selectedCategory \Model\Product\Category\Entity  */
+        $this->setParam('selectedCategory', $selectedCategory);
+
+        // Заголовок title страницы
+        $pageTitle = 'Тег &laquo;'.$tag->getName().'&raquo;';
+        if ($selectedCategory) {
+            $pageTitle .= ' &ndash; ' . $selectedCategory->getName();
+        }
+        $this->setParam('pageTitle', $pageTitle);
+
         // description
         if (!$page->getDescription()) {
             $page->setDescription(''
@@ -73,7 +88,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('tag/page-index', $this->params);
+        return $this->render('tag/page-index-new', $this->params);
     }
 
     public function slotSidebar() {
@@ -118,9 +133,7 @@ class IndexPage extends \View\DefaultLayout {
         $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['город'] = $data;
         });
-        $dataStore->addQuery('inflect/сайт.json', [], function($data) use (&$patterns) {
-            if ($data) $patterns['сайт'] = $data;
-        });
+        $patterns['сайт'] = $dataStore->query('/inflect/сайт.json');
 
         $dataStore->execute();
 

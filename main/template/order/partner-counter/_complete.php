@@ -40,6 +40,6 @@
     <?= $page->tryRender('order/partner-counter/_ad4u-complete', array('orders' => $orders)) ?>
     <?= $page->tryRender('order/partner-counter/_reactive-complete', array('orders' => $orders)) ?>
     <? foreach ($orders as $order) { ?>
-        <?= $page->tryRender('order/partner-counter/_reactive-oneClick', ['orderSum' => str_replace(',', '.', $order->getSum()), 'orderNum' => $order->getNumber()]) ?>
+        <?= $page->tryRender('order/partner-counter/_reactive-oneClick', ['orderSum' => str_replace(',', '.', $order->getPaySum()), 'orderNum' => $order->getNumber()]) ?>
     <? } ?>
 <? endif ?>
