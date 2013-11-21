@@ -50,51 +50,44 @@ class Action {
             $queryParams = [
                 'filter'   => ['filters' => [
                     ['tag', 1, $tag->getId()],
-                    ['category', 1, $tagCategoriesNumbers],
                 ]],
-                'slug'  => $tag->getName(),
+                //'slug'  => $tag->getName(), // имя Тега не нужно передавать
                 'client_id' => 'site',
-                //'is_load_parents' => true,
+                //'is_load_parents' => false,
+                'max_level' => 7,
+                'min_level' => 3, //4, // WTF?!
             ];
 
             if ($region) {
                 $queryParams['region_id'] = $region->getId();
             }
 
+            $client->addQuery('category/tree', $queryParams, [],
+                function ($data) use (&$categories, &$tagCategoriesNumbers) {
+                    $categoriesPart = [];
+                    foreach ($data as $catFields) {
+                        $category = new \Model\Product\Category\Entity($catFields);
+                        if (!in_array($category->getId(), $tagCategoriesNumbers)) continue;
+                        $categoriesPart[] = $category;
+                    }
+                    $categories = array_merge($categories, $categoriesPart);
+                }
+            );
+            $client->execute();
+
+            /*  //old
             // получаем категории по частям, так как в случае получения большого количества
             // категорий за 1 раз происходит фейл (видимо 414 Request-URI Too Large)
             $part = 1;
             $step = 100;
-            $queryParamsPart = [];
             while ($part <= (int)ceil(count(array_keys($tagCategoriesById)) / $step)) {
                 $tagCategoriesByIdPart = array_slice($tagCategoriesNumbers, ($part - 1) * $step, $step);
-                /*  //old
                 $categoriesPart = \RepositoryManager::productCategory()->getCollectionById($tagCategoriesByIdPart);
                 $categories = array_merge($categories, $categoriesPart);
-                */
-
-                $queryParamsPart['filter'] = [
-                    'filters'   => [
-                        ['category', 1, $tagCategoriesByIdPart ]
-                    ]
-                ];
-
-                $client->addQuery('category/tree', array_merge($queryParams, $queryParamsPart), [],
-                    function ($data) use (&$categories, &$tagCategoriesNumbers) {
-                        $categoriesPart = [];
-                        foreach ($data as $catFields) {
-                            $category = new \Model\Product\Category\Entity($catFields);
-                            if (!in_array($category->getId(), $tagCategoriesNumbers)) continue;
-                            $categoriesPart[] = $category;
-                        }
-                        $categories = array_merge($categories, $categoriesPart);
-                    }
-                );
-
                 $part++;
             }
+            */
 
-            $client->execute();
 
             foreach ($categories as $category) {
                 /** @var $category \Model\Product\Category\Entity */

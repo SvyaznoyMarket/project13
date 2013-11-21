@@ -100,7 +100,7 @@ class Repository {
         $params = [
             'filter' => [
                 'filters' => [
-                    ['text', 3, $tag->getName()], // тоже нужно!
+                    //['text', 3, $tag->getName()], // тоже нужно!
                     ['tag', 1, $tag->getId()],
                 ],
             ],
