@@ -6,6 +6,8 @@ return function(
     \Model\Product\Filter\Entity $filter
 ) {
     $values = $productFilter->getValue($filter);
+    $category = $helper->getParam('selectedCategory');
+    $categoryId = $category ? $category->getId() : null;
 
     $showFasets = \App::config()->sphinx['showFacets'];
 ?>
@@ -24,7 +26,7 @@ return function(
             name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"
             value="<?= $optionId ?>"
             hidden
-            <? if (in_array($optionId, $values)) { ?> checked="checked"<? } ?>
+            <? if (in_array($optionId, $values) || $optionId === $categoryId) { ?> checked="checked"<? } ?>
         />
         <label class="bFilterCheckbox<? if (!$filter->getIsMultiple()) { ?> mCustomLabelRadio<? } ?>" for="<?= $viewId ?>">
             <?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " ({$option->getQuantity()})" : '' ?>
