@@ -36,102 +36,72 @@ class Action {
         // категории
         /** @var $tagCategoriesById \Model\Tag\Category\Entity[] */
         $tagCategoriesById = [];
-        $tagCategories = $tag->getCategory();
-        foreach ($tagCategories as $tagCategory) {
-            $tagCategoriesById[$tagCategory->getId()] = $tagCategory;
-        }
-        $tagCategoriesNumbers = array_keys($tagCategoriesById);
+        //$tagCategories = $tag->getCategory();
+        /** @var $categoriesByToken \Model\Product\Category\Entity[] */
+        $categoriesByToken = [];
+        $categories = [];
 
-        if (empty($seoTagJson['acts_as_category'])) {
-            /** @var $categoriesByToken \Model\Product\Category\Entity[] */
-            $categoriesByToken = [];
-            $categories = [];
+        $selectedCategory = $this->getSelectedCategoryByRequest($request); // Попробуем получить категорию из request
 
-            $queryParams = [
-                'filter'   => ['filters' => [
-                    ['tag', 1, $tag->getId()],
-                ]],
-                //'slug'  => $tag->getName(), // имя Тега не нужно передавать
-                'client_id' => 'site',
-                //'is_load_parents' => false,
-                'max_level' => 7,
-                'min_level' => 3, //4, // WTF?!
-            ];
+        if (!$selectedCategory && $categoryToken) {
+            // Если категория текущая не определена, но указан токен категории
 
-            if ($region) {
-                $queryParams['region_id'] = $region->getId();
-            }
-
-            $client->addQuery('category/tree', $queryParams, [],
-                function ($data) use (&$categories, &$tagCategoriesNumbers) {
-                    foreach ($data as $catFields) {
-                        $category = new \Model\Product\Category\Entity($catFields);
-                        $categories[] = $category;
-                        // добавляем дочерние узлы
-                        if (isset($catFields['children']) && is_array($catFields['children'])) {
-                            foreach ($catFields['children'] as $childData) {
-                                $child = new \Model\Product\Category\Entity($childData);
-                                $categories[] = $child;
-                                $test[] = $child->getId();
-                            }
-                        }
-                    }
-                }
-            );
-            $client->execute();
-
-            /*  //old
-            // получаем категории по частям, так как в случае получения большого количества
-            // категорий за 1 раз происходит фейл (видимо 414 Request-URI Too Large)
-            $part = 1;
-            $step = 100;
-            while ($part <= (int)ceil(count(array_keys($tagCategoriesById)) / $step)) {
-                $tagCategoriesByIdPart = array_slice($tagCategoriesNumbers, ($part - 1) * $step, $step);
-                $categoriesPart = \RepositoryManager::productCategory()->getCollectionById($tagCategoriesByIdPart);
-                $categories = array_merge($categories, $categoriesPart);
-                $part++;
-            }
-            */
-
-
-            foreach ($categories as $key => $category) {
-                if (!in_array($category->getId(), $tagCategoriesNumbers)) {
-                    unset($categories[$key]);
-                    continue;
-                }
-                /** @var $category \Model\Product\Category\Entity */
-                $tagCategory = $tagCategoriesById[$category->getId()];
-                $category->setProductCount($tagCategory->getProductCount());
-                $categoriesByToken[$category->getToken()] = $category;
-            }
-        }
-
-        if ($categoryToken && empty($seoTagJson['acts_as_category'])) {
-            if (!isset($categoriesByToken[$categoryToken])) {
-                throw new \Exception\NotFoundException(sprintf('Категория @%s не найдена', $categoryToken));
-            }
-            $category = $categoriesByToken[$categoryToken];
-        } elseif ($categoryToken && !empty($seoTagJson['acts_as_category'])) {
-            // запрашиваем категорию по токену
-            /** @var $category \Model\Product\Category\Entity */
-            $category = null;
-            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+            // запрос сделаем, если токен указан, u не полученна категория выбранная
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function ($data) use (&$selectedCategory) {
                 $data = reset($data);
                 if ((bool)$data) {
-                    $category = new \Model\Product\Category\Entity($data);
+                    $selectedCategory = new \Model\Product\Category\Entity($data);
                 }
             });
             $client->execute(\App::config()->coreV2['retryTimeout']['short']);
-            if (!$category) {
-                throw new \Exception\NotFoundException(sprintf('Категория @%s не найдена', $categoryToken));
+
+        }
+
+        $queryParams = [
+            'filter' => ['filters' => [
+                ['tag', 1, $tag->getId()],
+            ]],
+            'client_id' => 'site',
+            //'is_load_parents' => false,
+            'min_level'       => 1,
+        ];
+
+        if ($selectedCategory) {
+            $queryParams['root_id'] = $selectedCategory->getId();
+            $queryParams['min_level'] += $selectedCategory->getLevel();
+        }
+
+        if ($region) {
+            $queryParams['region_id'] = $region->getId();
+        }
+
+        $client->addQuery('category/tree', $queryParams, [],
+            function ($data) use (&$categories, &$tagCategoriesNumbers) {
+                foreach ($data as $catFields) {
+                    $category = new \Model\Product\Category\Entity($catFields);
+                    $categories[] = $category;
+                }
             }
-        } else {
-            //$category = empty($seoTagJson['acts_as_category']) ? reset($categoriesByToken) : null;
-            $category = null; // Если нет категории, то нет, не нужно подставлять первую
-            $categoryId = $request->get('category');
-            if ($categoryId) {
-                $category = \RepositoryManager::productCategory()->getEntityById($categoryId);
-                //$categoryToken = $category->getToken();
+        );
+        $client->execute();
+
+
+        foreach ($categories as $category) {
+            /** @var $category \Model\Product\Category\Entity */
+            $categoriesByToken[$category->getToken()] = $category;
+            $tagCategoriesById[$category->getId()] = $category;
+        }
+
+
+        // Проверим ещё раз: Для указанного $categoryToken обязательно должна быть $selectedCategory
+        if (!$selectedCategory && $categoryToken) {
+            if (isset($categoriesByToken[$categoryToken])) { // возьмём его из массива загруженных
+                $selectedCategory = $categoriesByToken[$categoryToken];
+            }
+
+            // Без $selectedCategory дальше не пойдём в этом случае
+            if (!$categoryToken) {
+                throw new \Exception\NotFoundException(sprintf('Категория @%s не найдена', $categoryToken));
             }
         }
 
@@ -180,10 +150,10 @@ class Action {
 
         $brand = null;
 
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
+        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
         $productFilter->setValue( 'tag', $tag->getId() );
-        if ($category) {
-            $productFilter->setCategory($category);
+        if ($selectedCategory) {
+            $productFilter->setCategory($selectedCategory);
         }
 
 
@@ -204,8 +174,8 @@ class Action {
 
         // вид товаров
         $productView = \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT;
-        if ($category) {
-            $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
+        if ($selectedCategory) {
+            $productView = $request->get('view', $selectedCategory->getHasLine() ? 'line' : $selectedCategory->getProductView());
         }
 
 
@@ -233,15 +203,15 @@ class Action {
 
         $templating = \App::closureTemplating();
         /** @var $helper \Helper\TemplateHelper */
-        if ($category) {
-            $templating->setParam('selectedCategory', $category);
+        if ($selectedCategory) {
+            $templating->setParam('selectedCategory', $selectedCategory);
         }
-        //$templating->setParam('shop', $shop);
+        //if ($shop) $templating->setParam('shop', $shop);
         $helper = $templating->getParam('helper');
         $selectedFilter = (new \View\ProductCategory\SelectedFilterAction())->execute(
             $helper,
             $productFilter,
-            \App::router()->generate('product.category', ['categoryPath' => $category ? $category->getPath() : null])
+            \App::router()->generate('product.category', ['categoryPath' => $selectedCategory ? $selectedCategory->getPath() : null])
         );
 
         // ajax
@@ -267,13 +237,25 @@ class Action {
                 ),
                 'page'           => [
                     'title'      => 'Тег «'.$tag->getName() . '»' .
-                        ( $category ? ( ' — ' . $category->getName() ) : '' )
+                        ( $selectedCategory ? ( ' — ' . $selectedCategory->getName() ) : '' )
                 ],
             ]);
         }
 
+        // seo из shopscript
+        $shopScriptSeo = [];
+        if(\App::config()->shopScript['enabled']) {
+            $shopScript = \App::shopScriptClient();
+            $shopScript->addQuery('category/get-seo', [
+                'slug' => $category->getToken(),
+                'geo_id' => \App::user()->getRegion()->getId(),
+            ], [], function ($data) use (&$shopScriptSeo) {
+                if($data && is_array($data)) $shopScriptSeo = reset($data);
+            });
+            $shopScript->execute();
+        }
 
-        /*
+        // new
         $page = new \View\Tag\IndexPage();
         $page->setParam('productPager', $productPager);
         $page->setParam('productFilter', $productFilter);
@@ -285,17 +267,17 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('sort', $sort);
         $page->setParam('productView', $productView);
-        $page->setParam('category', $category);
-        $page->setParam('categoryToken', $categoryToken);
+        $page->setParam('selectedCategory', $selectedCategory);
         $page->setParam('categories', array_values($categoriesByToken));
         $page->setParam('hotlinks', $hotlinks);
         $page->setParam('seoContent', $seoContent);
         $page->setParam('sidebarHotlinks', true);
         $page->setParam('categoriesByToken', $categoriesByToken);
         $page->setParam('productView', $productView);
+        $page->setParam('shopScriptSeo', $shopScriptSeo);
         return new \Http\Response($page->show());
-        */
 
+/*//old
         if($category) {
             // seo из shopscript
             $shopScriptSeo = [];
@@ -457,6 +439,7 @@ class Action {
 
             return $this->leafCategory($category, $productFilter, $page, $request);
         }
+    */
     }
 
     /**
@@ -968,6 +951,19 @@ class Action {
                 $this->addToken($array[$key], $token, $value);
             }
         }
+    }
+
+
+
+    private function getSelectedCategoryByRequest(\Http\Request $request)
+    {
+        $selectedCategory = null;
+        $categoryId = $request->get('category');
+        if ($categoryId) {
+            $selectedCategory = \RepositoryManager::productCategory()->getEntityById($categoryId);
+            //$categoryToken = $category->getToken();
+        }
+        return $selectedCategory;
     }
 
 }
