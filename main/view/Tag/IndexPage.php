@@ -12,6 +12,9 @@ class IndexPage extends \View\DefaultLayout {
             return;
         }
 
+        // Выбранная категория
+        $selectedCategory = $this->getParam('selectedCategory');
+
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
@@ -20,11 +23,9 @@ class IndexPage extends \View\DefaultLayout {
                 'url'  => \App::router()->generate('tag', array('tagToken' => $tag->getToken())),
             );
 
-            /** @var $category \Model\Product\Category\Entity */
-            $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
-            if ($category) {
+            if ($selectedCategory) {
                 $breadcrumbs[] = array(
-                    'name' => $category->getName(),
+                    'name' => $selectedCategory->getName(),
                     'url'  => null, // потому что последний элемент ;)
                 );
             }
@@ -46,10 +47,6 @@ class IndexPage extends \View\DefaultLayout {
             );
         }
 
-        // Выбранная категория
-        $selectedCategory = $this->getParam('category');
-        /** @var $selectedCategory \Model\Product\Category\Entity  */
-        $this->setParam('selectedCategory', $selectedCategory);
 
         // Заголовок title страницы
         $pageTitle = 'Тег &laquo;'.$tag->getName().'&raquo;';
@@ -97,7 +94,7 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         return $this->render('tag/_sidebar', array_merge($this->params, array(
-            'selectedCategory' => $this->getParam('category'),
+            'selectedCategory' => $this->getParam('selectedCategory'),
             'limit'            => 8,
         )));
     }

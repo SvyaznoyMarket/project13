@@ -1811,7 +1811,9 @@
 
 
 		// выбираем первый доступный метод оплаты
-		$('.bPayMethod:visible .jsCustomRadio').eq(0).attr('checked', 'checked').trigger('change');
+		if ( 0 === $('.bPayMethod:visible .jsCustomRadio:checked').length ) {
+			$('.bPayMethod:visible .jsCustomRadio').eq(0).attr('checked', 'checked').trigger('change');
+		}
 
 		/**
 		 * Проверка примененных купонов

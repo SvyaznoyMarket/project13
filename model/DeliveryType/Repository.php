@@ -27,7 +27,7 @@ class Repository {
                 'token'                  => 'standart',
                 'short_name'             => 'доставка',
                 'name'                   => $hasTransportCompany ? 'Доставка заказа транспортной компанией' : 'Доставка заказа курьером',
-                'description'            => '',
+                'description'            => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
                 //'description'            => 'DHL, DPD, СПСР-Экспресс',
                 'method_tokens'          => ['standart_furniture', 'standart_other'],
                 'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now'],

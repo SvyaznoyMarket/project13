@@ -1023,6 +1023,9 @@ table {
 /**
 * Стили вспомогательного фиксированного блока для карточки товара и листинга
 */
+.fixedTopBar {
+  display: none;
+}
 .fixedTopBar.mFixed {
   position: fixed;
   background: #ffffff;
