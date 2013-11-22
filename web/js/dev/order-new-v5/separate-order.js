@@ -296,7 +296,7 @@
 			if (
 			 /* 6 is DeliveryTypeId for PickPoint  */
 			( 6 === global.OrderModel.choosenDeliveryTypeId && false == isAvailableToPickpoint ) ||
-			( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId && global.OrderModel.lifeGift === false ) ||
+			( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId && global.OrderModel.lifeGift() === false ) ||
 			( !isNaN(maxSum) && maxSum < unwrapVal ) ) {
 				node.hide();
 
