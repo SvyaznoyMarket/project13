@@ -1715,13 +1715,15 @@ window.MapInterface = (function() {
  * @param	{Object}	ENTER	Enter namespace
  */
 ;(function( ENTER ) {
-	var config = ENTER.config,
+	var
+		config = ENTER.config,
 		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils,
 		clientCart = utils.extendApp('ENTER.config.clientCart'),
 		clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
 		body = $('body');
 	// end of vars
+	
 	
 	clientCart.products = [];
 
@@ -1762,12 +1764,12 @@ window.MapInterface = (function() {
 		 * @return	{Function} add		добавление в корзину
 		 */
 		BlackBox.prototype.basket = function() {
-			var self = this,
-
-				headQ = $('#topBasket');
+			var
+				self = this;
 			// end of vars
 
 				
+			var
 				/**
 				 * Обновление данных о корзине
 				 * 
@@ -1777,9 +1779,7 @@ window.MapInterface = (function() {
 				 * 
 				 * @public
 				 */
-			var update = function update( basketInfo ) {
-					headQ.html('(' + basketInfo.quantity + ')');
-
+				update = function update( basketInfo ) {
 					clientCart.totalSum = basketInfo.quantity;
 					clientCart.totalQuan = basketInfo.sum;
 
@@ -1818,6 +1818,7 @@ window.MapInterface = (function() {
 				};
 			//end of functions
 
+
 			return {
 				'update': update,
 				'add': add
@@ -1833,42 +1834,27 @@ window.MapInterface = (function() {
 		 * @return	{Function}	update
 		 */
 		BlackBox.prototype.user = function() {
-			var self = this,
-				topAuth = $('#auth-link');
+			var 
+				self = this;
 			// end of vars
 
-			/**
-			 * Обновление пользователя
-			 * 
-			 * @param	{String}	userInfo	Данные пользователя
-			 * 
-			 * @public
-			 */
-			var update = function update ( userInfo ) {
-				var dtmpl = {},
-					show_user = '';
-				//end of vars
 
-				clientUserInfo = userInfo;
+			var
+				/**
+				 * Обновление пользователя
+				 * 
+				 * @param	{String}	userInfo	Данные пользователя
+				 * 
+				 * @public
+				 */
+				update = function update ( userInfo ) {
 
-				if ( userInfo && userInfo.name !== null && topAuth.length ) {
-					dtmpl = {
-						user: userInfo.name
-					};
+					clientUserInfo = userInfo;
 
-					show_user = tmpl('auth_tmpl', dtmpl);
-
-					topAuth.hide();
-					topAuth.after(show_user);
-				}
-				else {
-					topAuth.show();
-
-				}
-
-				body.trigger('userLogged', [userInfo]);
-			}; 
+					body.trigger('userLogged', [userInfo]);
+				};
 			
+
 			return {
 				'update': update
 			};
@@ -1882,8 +1868,12 @@ window.MapInterface = (function() {
 		 * @this	{BlackBox}
 		 */
 		BlackBox.prototype.init = function() {
-			var self = this;
+			var
+				self = this;
+			// end of vars
 
+
+			var
 				/**
 				 * Обработчик Action присланных с сервера
 				 * 
@@ -1891,7 +1881,7 @@ window.MapInterface = (function() {
 				 * 
 				 * @private
 				 */
-			var startAction = function startAction( action ) {
+				startAction = function startAction( action ) {
 					if ( action.subscribe !== undefined ) {
 						body.trigger('showsubscribe', [action.subscribe]);
 					}
@@ -1909,7 +1899,8 @@ window.MapInterface = (function() {
 				 * @private
 				 */ 
 				parseData = function parseData( data ) {
-					var userInfo = data.user,
+					var
+						userInfo = data.user,
 						cartInfo = data.cart,
 						productsInfo = data.cartProducts,
 						actionInfo = data.action;
@@ -1935,6 +1926,7 @@ window.MapInterface = (function() {
 
 			$.get(self.updUrl, parseData);
 		};
+
 	
 		return BlackBox;
 	

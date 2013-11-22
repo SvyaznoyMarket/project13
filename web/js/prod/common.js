@@ -3732,7 +3732,8 @@ $(document).ready(function() {
  * @param	{Object}	ENTER	Enter namespace
  */
 ;(function( ENTER ) {
-	var config = ENTER.config,
+	var
+		config = ENTER.config,
 		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils,
 
@@ -3741,6 +3742,7 @@ $(document).ready(function() {
 		userbarConfig = userbar.data('value'),
 		body = $('body'),
 		w = $(window),
+		infoShowing = false,
 
 		scrollTarget,
 		scrollTargetOffset;
@@ -3768,6 +3770,10 @@ $(document).ready(function() {
 		checkScroll = function checkScroll( e ) {
 			var nowScroll = w.scrollTop();
 
+			if ( infoShowing ) {
+				return;
+			}
+
 			if ( nowScroll >= scrollTargetOffset ) {
 				showUserbar();
 			}
@@ -3788,6 +3794,7 @@ $(document).ready(function() {
 
 		/**
 		 * Обновление данных пользователя
+		 * WARNING! перевести на Mustache
 		 *
 		 * @param	{Object}	event	Данные о событии
 		 * @param	{Object}	data	Данные пользователя
@@ -3800,7 +3807,7 @@ $(document).ready(function() {
 				userTmpl;
 			// end of vars
 
-			if ( !(data && data.name && data.link ) ) {
+			if ( !( data && data.name && data.link ) ) {
 				return;
 			}
 
@@ -3810,7 +3817,67 @@ $(document).ready(function() {
 		},
 
 		/**
+		 * Показ окна о совершенной покупке
+		 *
+		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	data	Данные о покупке
+		 */
+		showBuyInfo = function showBuyInfo( event, data ) {
+			console.info('userbar::showBuyInfo');
+			console.log(data);
+
+			var
+				wrap = userbar.find('.fixedTopBar__cart'),
+				overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: .4 }),
+				dataToRender = data.product,
+				template = $('#buyinfo_tmpl'),
+				partials = template.data('partial'),
+				// tId,
+				buyInfo,
+				html;
+			// end of vars
+
+
+			var
+				/**
+				 * Закрытие окна о совершенной покупке
+				 */
+				closeBuyInfo = function closeBuyInfo() {
+					console.log('overlay click');
+
+					buyInfo.slideUp(300, function() {
+						infoShowing = false;
+						checkScroll();
+						buyInfo.remove();
+					});
+
+					overlay.fadeOut(300, function() {
+						overlay.off('click');
+						overlay.remove();
+					});
+
+					return false;
+				};
+			// end of function
+
+			html = Mustache.render(template.html(), data.product, partials);
+			buyInfo = $(html).css({ left: -129 });
+			
+			wrap.append(buyInfo);
+			body.append(overlay);
+
+			buyInfo.slideDown(300);
+			overlay.fadeIn(300);
+			showUserbar();
+
+			infoShowing = true;
+
+			overlay.on('click', closeBuyInfo);
+		},
+
+		/**
 		 * Обновление данных о корзине
+		 * WARNING! перевести на Mustache
 		 * 
 		 * @param	{Object}	event	Данные о событии
 		 * @param	{Object}	data	Данные корзины
@@ -3847,6 +3914,7 @@ $(document).ready(function() {
 
 		body.on('userLogged', updateUserInfo);
 		body.on('basketUpdate', updateBasketInfo);
+		body.on('addtocart', showBuyInfo);
 
 		if ( topBtn.length ) {
 			topBtn.on('click', upToFilter);

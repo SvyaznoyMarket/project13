@@ -49,7 +49,7 @@
     <span class="fixedTopBar__cartPrice"><%=sum%> <span class="rubl">p</span></span>
 
     <div class="fixedTopBar__dd fixedTopBar__cartOn">
-        <ul class="cartList">
+        <!-- <ul class="cartList">
             <li class="cartList__item">
                 <a class="cartList__itemLink" href=""><img class="cartList__itemImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></a>
                 <div class="cartList__itemName"><a href="cartList__itemNameLink">Мобильный телефон Explay Power Bank черный</a></div>
@@ -89,7 +89,7 @@
                     <a href="" class="del">удалить</a>
                 </div>
             </li>
-        </ul>
+        </ul> -->
 
         <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 4 товаров, в противном случае display: none; -->
 
@@ -144,6 +144,25 @@ $(document).ready(function()
 })
 </script>
 
+
+<!-- окно с информацией о товаре только что положенном в корзину -->
+<script id="buyinfo_tmpl" type="text/html">
+     <div class="fixedTopBar__dd fixedTopBar__cartOn">
+        <ul class="cartList">
+            <li class="cartList__item">
+                <a class="cartList__itemLink" href="{{link}}"><img class="cartList__itemImg" src="{{img}}" /></a>
+                <div class="cartList__itemName"><a href="{{link}}">{{name}}</a></div>
+                <div class="cartList__itemInfo">
+                    <span class="price">{{price}} &nbsp;<span class="rubl">p</span></span>
+                    <span class="quan">{{quantity}} шт.</span>
+                </div>
+            </li>
+        </ul>
+        <div class="btnBuy quickOrder"><a href="#" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
+    </div>
+</script>
+
+
 <script type="text/html" id="userbar_user_tmpl">
     <a href="<%=link%>" class="fixedTopBar__logInLink"><%=name%></a>
     <span class="transGrad"></span>
@@ -152,34 +171,3 @@ $(document).ready(function()
         <a class="mBtnGrey fixedTopBar__logOutLink" href="/logout">Выйти</a>
     </div>
 </script>
-
-
-<!-- old notificaton -->
-<script type="text/html" id="blackbox_basketshow_tmpl">
-    <div class="bBlackBox__eFlyboxInner">
-        <div class="font16 pb20">Только что был добавлен в корзину:</div>
-        <div class="fl width70">
-            <a href="<%=productLink%>">
-                <img width="60" height="60" alt="" src="<%=imgSrc%>">
-            </a>
-        </div>
-        <div class="ml70">
-            <div class="pb5">
-                <a href=""><%=title%></a>
-            </div>
-            <strong>
-                <%=price%>
-                <span> &nbsp;</span><span class="rubl">p</span>
-            </strong>
-        </div>
-        <div class="clear pb10"></div>
-        <div class="line pb5"></div>
-        <div class="fr">Сумма:  <%=totalSum%> <span class="rubl">p</span></div>
-        Всего товаров: <%=totalQuan%>
-        <div class="clear pb10"></div>
-        <div class="ar"> 
-            <a class="button bigbuttonlink" value="" href="<%=linkToOrder%>">Оформить заказ</a>
-        </div>
-    </div>
-</script>
-<!-- /Lightbox -->
