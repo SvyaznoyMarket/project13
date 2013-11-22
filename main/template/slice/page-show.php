@@ -46,6 +46,8 @@ $helper = new \Helper\TemplateHelper();
         'view'                   => $productView,
         'productVideosByProduct' => [], //$productVideosByProduct,
         'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
+        'buyMethod'              => $slice->getProductBuyMethod(),
+        'showState'              => $slice->getShowProductState(),
     ]) // листинг ?>
 
     <div class="bSortingLine mPagerBottom clearfix">
