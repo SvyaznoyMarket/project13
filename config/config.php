@@ -360,10 +360,10 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
-$c->lifeGift['enabled'] = false;
-$c->lifeGift['regionId'] = 144756;
-$c->lifeGift['labelId'] = 18;
-$c->lifeGift['deliveryTypeId'] = 1065;
+$c->lifeGift['enabled'] = true;
+$c->lifeGift['regionId'] = 151021;
+$c->lifeGift['labelId'] = 17;
+$c->lifeGift['deliveryTypeId'] = 1077;
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
