@@ -316,7 +316,7 @@ $c->smartengine['sslVerify']      = true;
 
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;
-$c->coupon['enabled'] = false;
+$c->coupon['enabled'] = true;
 $c->blackcard['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
