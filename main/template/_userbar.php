@@ -43,10 +43,10 @@
 </div>
 
 
-<script type="text/html" id="userbar_cart_tmpl">
+<script id="userbar_cart_tmpl" type="text/html">
     <a href="<?=  $page->url('cart') ?>" class="fixedTopBar__cartTitle">Корзина</a> 
-    <strong class="fixedTopBar__cartQuan"><%=quantity%></strong>
-    <span class="fixedTopBar__cartPrice"><%=sum%> <span class="rubl">p</span></span>
+    <strong class="fixedTopBar__cartQuan">{{quantity}}</strong>
+    <span class="fixedTopBar__cartPrice">{{sum}} <span class="rubl">p</span></span>
 
     <div class="fixedTopBar__dd fixedTopBar__cartOn">
         <!-- <ul class="cartList">
@@ -145,7 +145,7 @@ $(document).ready(function()
 </script>
 
 
-<!-- окно с информацией о товаре только что положенном в корзину -->
+<!-- Окно с информацией о товаре только что положенном в корзину -->
 <script id="buyinfo_tmpl" type="text/html">
      <div class="fixedTopBar__dd fixedTopBar__cartOn">
         <ul class="cartList">
@@ -162,9 +162,9 @@ $(document).ready(function()
     </div>
 </script>
 
-
-<script type="text/html" id="userbar_user_tmpl">
-    <a href="<%=link%>" class="fixedTopBar__logInLink"><%=name%></a>
+<!-- Данные пользователя -->
+<script id="userbar_user_tmpl" type="text/html">
+    <a href="{{link}}" class="fixedTopBar__logInLink">{{name}}</a>
     <span class="transGrad"></span>
 
     <div class="fixedTopBar__dd fixedTopBar__logOut">

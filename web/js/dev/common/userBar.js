@@ -70,7 +70,6 @@
 
 		/**
 		 * Обновление данных пользователя
-		 * WARNING! перевести на Mustache
 		 *
 		 * @param	{Object}	event	Данные о событии
 		 * @param	{Object}	data	Данные пользователя
@@ -79,8 +78,11 @@
 			console.info('userbar::updateUserInfo');
 			console.log(data);
 
-			var userWrap = userbar.find('.fixedTopBar__logIn'),
-				userTmpl;
+			var
+				userWrap = userbar.find('.fixedTopBar__logIn'),
+				template = $('#userbar_user_tmpl'),
+				partials = template.data('partial'),
+				html;
 			// end of vars
 
 			if ( !( data && data.name && data.link ) ) {
@@ -88,8 +90,8 @@
 			}
 
 			userWrap.removeClass('mLogin');
-			userTmpl = tmpl('userbar_user_tmpl', data);
-			userWrap.html(userTmpl);
+			html = Mustache.render(template.html(), data, partials);
+			userWrap.html(html);
 		},
 
 		/**
@@ -135,6 +137,8 @@
 				};
 			// end of function
 
+			dataToRender.price = printPrice( dataToRender.price );
+
 			html = Mustache.render(template.html(), data.product, partials);
 			buyInfo = $(html).css({ left: -129 });
 			
@@ -161,19 +165,22 @@
 			console.info('userbar::updateBasketInfo');
 			console.log(data);
 
-			var cartWrap = userbar.find('.fixedTopBar__cart'),
-				cartTmpl;
+			var
+				cartWrap = userbar.find('.fixedTopBar__cart'),
+				template = $('#userbar_cart_tmpl'),
+				partials = template.data('partial'),
+				html;
 			// end of vars
 
 			if ( !(data && data.quantity && data.sum ) ) {
 				return;
 			}
 
-			data.sum = printPrice(data.sum);
+			data.sum = printPrice( data.sum );
+			html = Mustache.render(template.html(), data, partials);
 
 			cartWrap.removeClass('mEmpty');
-			cartTmpl = tmpl('userbar_cart_tmpl', data);
-			cartWrap.html(cartTmpl);
+			cartWrap.html(html);
 		};
 	// end of functions
 
