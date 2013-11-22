@@ -4,6 +4,7 @@
  */
 ?>
 
+<noindex>
 <!-- Registration -->
 <div class="popup" id="auth-block">
     <i title="Закрыть" class="close">Закрыть</i>
@@ -17,3 +18,4 @@
     </div>
 </div>
 <!-- /Registration -->
+</noindex>
