@@ -432,9 +432,13 @@ $(document).ready(function() {
 				dropflag = self.clear();
 			}
 
-			var basketLine = $(this).parent().parent().parent().parent();
-			var productId = basketLine.data('product-id');
-			var categoryId = basketLine.data('category-id');
+			var basketLine = $(this).parent().parent().parent().parent(),
+				productId = basketLine.data('product-id'),
+				categoryId = basketLine.data('category-id'),
+				price = parseInt(basketLine.find('div.basketinfo .sum').text().replace(/\s/g,'')), //Todo: цену передавать по-нормальному
+				name =  basketLine.find('div.goodstitle a').text();
+
+			$('body').trigger('remFromCart', {id: productId, name: name, price: price});
 
 			// Soloway
 			// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
@@ -751,4 +755,6 @@ $(document).ready(function() {
 		PubSub.subscribe( 'quantityChange', DirectCredit.change )
 	} // credit 
     
+
+	$('body').bind('remFromCart', function ( e,d ) {});
 });
