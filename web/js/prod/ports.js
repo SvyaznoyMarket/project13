@@ -173,35 +173,56 @@ window.ANALYTICS = {
         //});
     },
 
-    ActionPayJS : function() {
-        (function(){
-            var s   = document.createElement('script'),
-                x   = document.getElementsByTagName('script')[0],
-                vars = $('#ActionPayJS').data('vars');
+	ActionPayJS: function () {
+		var addToBasket = function (event, data) {
+			var aprData = {pageType: 8},
+				product = data.product;
 
-            if ( typeof(vars) != 'undefined'  ) {
-                if ( vars.extraData ) {
-                    if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
-                        vars.basketProducts = ENTER.config.cartProducts;
-                    }
-                    delete vars.extraData;
-                }
-                window.APRT_DATA = vars;
-            }
+			if ( typeof(window.APRT_SEND) == 'undefined' || typeof(product) == 'undefined' ) {
+				return false;
+			}
 
-            //s.type  = 'text/javascript';
-            s.src = '//rt.actionpay.ru/code/enter/';
-            s.defer = true;
-            x.parentNode.insertBefore( s, x );
-        })();
-    },
+			aprData.currentProduct = {
+				id: product.id,
+				name: product.name,
+				price: product.price
+			};
+			window.APRT_SEND(aprData);
 
-    yaParamsJS : function() {
-        var yap = $('#yaParamsJS').data('vars');
-        if (yap) {
-            window.yaParams = yap;
-        }
-    },
+			console.log('*** ActionPayJS addToBasket: ');
+			console.log(aprData);
+		};
+
+		$('body').on('addtocart', addToBasket);
+
+		(function () {
+			var s = document.createElement('script'),
+				x = document.getElementsByTagName('script')[0],
+				vars = $('#ActionPayJS').data('vars');
+
+			if ( typeof(vars) != 'undefined' ) {
+				if ( vars.extraData ) {
+					if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
+						vars.basketProducts = ENTER.config.cartProducts;
+					}
+					delete vars.extraData;
+				}
+				window.APRT_DATA = vars;
+			}
+
+			//s.type  = 'text/javascript';
+			s.src = '//rt.actionpay.ru/code/enter/';
+			s.defer = true;
+			x.parentNode.insertBefore(s, x);
+		})();
+	},
+
+	yaParamsJS: function () {
+		var yap = $('#yaParamsJS').data('vars');
+		if ( yap ) {
+			window.yaParams = yap;
+		}
+	},
 
     // enterleadsJS : function() { // SITE-1911
     //     (function () {
