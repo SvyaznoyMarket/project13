@@ -179,7 +179,6 @@ window.ANALYTICS = {
 	ActionPayJS: function () {
 		var basketEvents = function ( pageType, product ) {
 				var aprData = {pageType: pageType};
-
 				if ( typeof(window.APRT_SEND) == 'undefined' || typeof(product) == 'undefined' ) {
 					return false;
 				}
@@ -190,31 +189,21 @@ window.ANALYTICS = {
 					price: product.price
 				};
 				window.APRT_SEND(aprData);
-
-				console.log('*** basketEvents addToBasket: ');
-				console.log(aprData);
 			},
 			addToBasket = function (event, data) {
 				basketEvents(8, data.product);
-				console.log('*** ActionPayJS addToBasket: ');
 			},
-			remFromBasket = function (event, data) {
-				//basketEvents(9, data);
-				console.log('*** ActionPayJS remFromBasket: ');
-				console.log('data');
-				console.log(data);
-				console.log(event);
-			}
-		;
+			remFromBasket = function (event, product) {
+				basketEvents(9, product);
+			};
 
 		$('body').on('addtocart', addToBasket);
-		$('div.basketinfo a.whitelink:first').on('click', remFromBasket);
+		$('body').on('remFromCart', remFromBasket);
 
 		(function () {
 			var s = document.createElement('script'),
 				x = document.getElementsByTagName('script')[0],
 				vars = $('#ActionPayJS').data('vars');
-
 			if ( typeof(vars) != 'undefined' ) {
 				if ( vars.extraData ) {
 					if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
