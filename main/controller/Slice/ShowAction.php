@@ -67,6 +67,8 @@ class ShowAction {
     public function category(\Http\Request $request, $sliceToken, $categoryToken) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $region = \App::user()->getRegion();
+
         $helper = new \Helper\TemplateHelper();
 
         /** @var $slice \Model\Slice\Entity|null */
@@ -111,6 +113,11 @@ class ShowAction {
             continue;
         }
 
+        // region
+        if (!empty($requestData['region'])) {
+            $region = \RepositoryManager::region()->getEntityById((int)$requestData['region']);
+        }
+
         $filterData = []; // https://wiki.enter.ru/pages/viewpage.action?pageId=20448554#id-%D0%92%D0%BD%D0%B5%D1%88%D0%BD%D0%B8%D0%B9%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D1%84%D0%B5%D0%B9%D1%81-%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%D1%82%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%BE%D0%B2:
         foreach ($values as $k => $v) {
             if (isset($v['from']) || isset($v['to'])) {
@@ -122,21 +129,8 @@ class ShowAction {
 
 
         $client = \App::coreClientV2();
-        $user = \App::user();
 
         // подготовка 1-го пакета запросов
-
-        // запрашиваем текущий регион, если есть кука региона
-        if ($user->getRegionId()) {
-            if ($user->getRegionId()) {
-                \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
-                    $data = reset($data);
-                    if ((bool)$data) {
-                        \App::user()->setRegion(new \Model\Region\Entity($data));
-                    }
-                });
-            }
-        }
 
         // запрашиваем список регионов для выбора
         $regionsToSelect = [];
@@ -150,7 +144,9 @@ class ShowAction {
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         /** @var $region \Model\Region\Entity|null */
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        if (self::isGlobal()) {
+            $region = null;
+        }
 
         // подготовка 2-го пакета запросов
 
@@ -168,7 +164,7 @@ class ShowAction {
                     'category/get-seo',
                     [
                         'slug' => $categoryToken,
-                        'geo_id' => \App::user()->getRegion()->getId(),
+                        'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
                     ],
                     [],
                     function ($data) use (&$shopScriptSeo) {
@@ -515,7 +511,7 @@ class ShowAction {
         $page = new \View\Slice\ShowPage();
         $setPageParameters($page);
 
-        return $this->leafCategory($category, /*$productFilter,*/ $page, $request, $filterData);
+        return $this->leafCategory($category, /*$productFilter,*/ $page, $request, $filterData, $region);
     }
 
     /**
@@ -526,10 +522,14 @@ class ShowAction {
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    protected function leafCategory(\Model\Product\Category\Entity $category, /*\Model\Product\Filter $productFilter,*/ \View\Layout $page, \Http\Request $request, $filterData) {
+    protected function leafCategory(\Model\Product\Category\Entity $category, /*\Model\Product\Filter $productFilter,*/ \View\Layout $page, \Http\Request $request, $filterData, \Model\Region\Entity $region = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 138);
+
+        if (!$region) {
+            $region = \App::user()->getRegion();
+        }
 
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
@@ -580,7 +580,6 @@ class ShowAction {
 
 
         $response = [];
-        $region = null;
 
         // добавляем фильтр по категории
         if ($category->getId()) {
