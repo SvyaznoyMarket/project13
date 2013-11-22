@@ -1060,6 +1060,24 @@ $(document).ready(function() {
 			}
 		);
 	}
+
+
+	if ( $('.bDeliveryNowClick').length ) {
+		/**
+		 * Обработчик переключения состояния листа магазинов открыто или закрыто (блок способов доставки)
+		 */
+		(function() {
+			var shopToggle = function shopToggle() {
+				var nowBox = $(this).parent('.mDeliveryNow');
+				//end of vars
+
+				nowBox.toggleClass('mOpen');
+				nowBox.toggleClass('mClose');
+			};
+
+			$('.bDeliveryNowClick').on('click', shopToggle);
+		})();
+	}
 });
  
  
