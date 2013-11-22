@@ -8,13 +8,17 @@ class ListAction {
      * @param \Iterator\EntityPager $pager
      * @param array $productVideosByProduct
      * @param array $bannerPlaceholder
+     * @param null $buyMethod
+     * @param bool $showState
      * @return array
      */
     public function execute(
         \Helper\TemplateHelper $helper,
         \Iterator\EntityPager $pager,
         array $productVideosByProduct,
-        array $bannerPlaceholder
+        array $bannerPlaceholder,
+        $buyMethod = null,
+        $showState = true
     ) {
         /** @var \Model\Product\Entity $product */
 
@@ -58,7 +62,7 @@ class ListAction {
                 ,
                 'isBuyable'    => $product->getIsBuyable(),
                 'onlyInShop'   => $product->isInShopOnly(),
-                'stateLabel'   => $stateLabel,
+                'stateLabel'   => $showState ? $stateLabel : null,
                 'variations'   =>
                 ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty()) // TODO: перенести в \View\*Action
                     ? array_map(function(\Model\Product\Model\Property\Entity $property) {
@@ -84,7 +88,11 @@ class ListAction {
             ];
 
             // cart
-            $productItem['cartButton'] = $productButtonAction->execute($helper, $product);
+            if ($buyMethod && in_array(strtolower($buyMethod), ['none', 'false'])) {
+                $productItem['cartButton'] = null;
+            } else {
+                $productItem['cartButton'] = $productButtonAction->execute($helper, $product);
+            }
 
             $productData[] = $productItem;
         }

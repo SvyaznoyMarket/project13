@@ -5,10 +5,12 @@ return function(
     \Iterator\EntityPager $pager,
     array $productVideosByProduct,
     array $bannerPlaceholder = [],
-    $view
+    $view,
+    $buyMethod = null,
+    $showState = null
 ) { ?>
     <ul class="bListing clearfix">
-        <?= $helper->renderWithMustache('product/list/' . ($view == 'line' ? '_line' : '_compact'), (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder)) ?>
+        <?= $helper->renderWithMustache('product/list/' . ($view == 'line' ? '_line' : '_compact'), (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState)) ?>
     </ul>
 
     <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json(['cart/_button-product' => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache')]) ?>">
