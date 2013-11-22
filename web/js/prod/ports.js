@@ -130,70 +130,85 @@ window.ANALYTICS = {
 	//     })(document, window, "yandex_metrika_callbacks");
 	// },
 
-    LiveTexJS: function () {
-        var LTData = $('#LiveTexJS').data('value');
-        window.liveTexID = LTData.livetexID;
-        window.liveTex_object = true;
+	LiveTexJS: function () {
+		var LTData = $('#LiveTexJS').data('value');
+		window.liveTexID = LTData.livetexID;
+		window.liveTex_object = true;
 
-        window.LiveTex = {
-            onLiveTexReady: function () {
-                window.LiveTex.setName(LTData.username);
-            },
+		window.LiveTex = {
+			onLiveTexReady: function () {
+				window.LiveTex.setName(LTData.username);
+			},
 
-            invitationShowing: false,
+			invitationShowing: false,
 
-            addToCart: function (productData) {
-                var userid = ( LTData.userid ) ? LTData.userid : 0;
-                window.LiveTex.setManyPrechatFields({
-                    'Department': 'Marketing',
-                    'Product': productData.article,
-                    'Ref': window.location.href,
-                    'userid': userid
-                });
+			addToCart: function (productData) {
+				var userid = ( LTData.userid ) ? LTData.userid : 0;
+				if ( !productData.name || !productData.article ) {
+					return false;
+				}
+				window.LiveTex.setManyPrechatFields({
+					'Department': 'Marketing',
+					'Product': productData.article,
+					'Ref': window.location.href,
+					'userid': userid
+				});
 
-                if ( (!window.LiveTex.invitationShowing) && (typeof(window.LiveTex.showInvitation) == 'function') ) {
-                    LiveTex.showInvitation('Здравствуйте! Вы добавили корзину ' + productData.name + '. Может, у вас возникли вопросы и я могу чем-то помочь?');
-                    LiveTex.invitationShowing = true;
-                }
+				if ( (!window.LiveTex.invitationShowing) && (typeof(window.LiveTex.showInvitation) == 'function') ) {
+					LiveTex.showInvitation('Здравствуйте! Вы добавили корзину ' + productData.name + '. Может, у вас возникли вопросы и я могу чем-то помочь?');
+					LiveTex.invitationShowing = true;
+				}
 
-            } // end of addToCart function
+			} // end of addToCart function
 
-        }; // end of LiveTex Object
+		}; // end of LiveTex Object
 
-        //$(document).load(function() {
-        (function() {
-            var lt = document.createElement('script');
-            lt.type ='text/javascript';
-            lt.async = true;
-            lt.src = 'http://cs15.livetex.ru/js/client.js';
-            var sc = document.getElementsByTagName('script')[0];
-            if ( sc ) sc.parentNode.insertBefore(lt, sc);
-            else  document.documentElement.firstChild.appendChild(lt);
-        })();
-        //});
-    },
+		//$(document).load(function() {
+		(function () {
+			var lt = document.createElement('script');
+			lt.type = 'text/javascript';
+			lt.async = true;
+			lt.src = 'http://cs15.livetex.ru/js/client.js';
+			var sc = document.getElementsByTagName('script')[0];
+			if ( sc ) sc.parentNode.insertBefore(lt, sc);
+			else  document.documentElement.firstChild.appendChild(lt);
+		})();
+		//});
+	},
 
 	ActionPayJS: function () {
-		var addToBasket = function (event, data) {
-			var aprData = {pageType: 8},
-				product = data.product;
+		var basketEvents = function ( pageType, product ) {
+				var aprData = {pageType: pageType};
 
-			if ( typeof(window.APRT_SEND) == 'undefined' || typeof(product) == 'undefined' ) {
-				return false;
+				if ( typeof(window.APRT_SEND) == 'undefined' || typeof(product) == 'undefined' ) {
+					return false;
+				}
+
+				aprData.currentProduct = {
+					id: product.id,
+					name: product.name,
+					price: product.price
+				};
+				window.APRT_SEND(aprData);
+
+				console.log('*** basketEvents addToBasket: ');
+				console.log(aprData);
+			},
+			addToBasket = function (event, data) {
+				basketEvents(8, data.product);
+				console.log('*** ActionPayJS addToBasket: ');
+			},
+			remFromBasket = function (event, data) {
+				//basketEvents(9, data);
+				console.log('*** ActionPayJS remFromBasket: ');
+				console.log('data');
+				console.log(data);
+				console.log(event);
 			}
-
-			aprData.currentProduct = {
-				id: product.id,
-				name: product.name,
-				price: product.price
-			};
-			window.APRT_SEND(aprData);
-
-			console.log('*** ActionPayJS addToBasket: ');
-			console.log(aprData);
-		};
+		;
 
 		$('body').on('addtocart', addToBasket);
+		$('div.basketinfo a.whitelink:first').on('click', remFromBasket);
 
 		(function () {
 			var s = document.createElement('script'),
