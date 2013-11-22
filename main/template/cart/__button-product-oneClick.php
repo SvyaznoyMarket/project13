@@ -11,7 +11,6 @@ return function (
 
     if ($product->isInShopStockOnly()) {
         $class .= ' mShopsOnly';
-        $value = 'Резерв';
     } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
     }

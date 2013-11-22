@@ -5,15 +5,20 @@ return function (
     \Model\Product\BasicEntity $product,
     $url = null,
     $class = null,
-    $value = 'Купить'
+    $value = 'Купить',
+    $directLink = false
 ) {
-    if ($product->isInShopStockOnly()) {
-        return '';
-    }
-
     $class = \View\Id::cartButtonForProduct($product->getId()) . ' ' . $class;
 
-    if ($product->isInShopShowroomOnly()) {
+    if (!$directLink) {
+        $class .= $product->isInShopStockOnly() ? ' jsOrder1clickProxy' : ' jsBuyButton';
+    }
+
+    if ($product->isInShopStockOnly()) {
+        $class .= ' mShopsOnly';
+        $value = 'Резерв';
+        $url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
+    } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
     }
 
@@ -35,7 +40,7 @@ return function (
         $url = $helper->url('cart.product.set', $urlParams);
     }
 
-?>
+    ?>
     <div class="bWidgetBuy__eBuy btnBuy">
         <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
     </div>
