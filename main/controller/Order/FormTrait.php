@@ -102,6 +102,17 @@ trait FormTrait {
         $this->validatePaymentType($form);
     }
 
+    /**
+     * @param Form $form
+     */
+    protected function validateLifeGiftForm(Form $form) {
+        if (!$form->getLifeGiftAgreed()) {
+            $form->setError('lifeGift_agreed', 'Вы не согласились с условими');
+        }
+
+        $this->validatePaymentType($form);
+    }
+
     protected function validatePaymentType(Form $form) {
         // метод оплаты
         if (!$form->getPaymentMethodId()) {

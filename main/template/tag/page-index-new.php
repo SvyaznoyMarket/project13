@@ -25,11 +25,9 @@ $tagCategoryTokens = ['tagToken' => $tag->getToken()];
 foreach ( $categories as $subCategory ) {
     /** @var $subCategory \Model\Product\Category\Entity */
 
-    $tagCategoryTokens['categoryToken'] = $subCategory->getToken();
-
     $categoriesLinks[] = [
         'name'      => $subCategory->getName(),
-        'url'       => $page->url('tag.category', $tagCategoryTokens),
+        'url'       => $page->url('tag.category', array_merge( $tagCategoryTokens, ['categoryToken' => $subCategory->getToken()] )),
         'image'     => $subCategory->getImageUrl(),
         'active'    => ( $selectedCategory && $subCategory->getId() === $selectedCategory->getId() ) ? true : false,
     ];
@@ -42,7 +40,7 @@ foreach ( $categories as $subCategory ) {
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
     <? endif */?>
     <?
-    if ( !$selectedCategory && !empty($categoriesLinks) ) {
+    if ( !empty($categoriesLinks) ) {
         echo $helper->renderWithMustache('product-category/_listInFilter', ['links' => $categoriesLinks]); // дочерние категории для тегов
     }
     ?>

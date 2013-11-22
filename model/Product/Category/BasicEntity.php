@@ -60,14 +60,14 @@ class BasicEntity {
      * @param string $link
      */
     public function setLink($link) {
-        $this->link = (string)$link;
+        $this->link = rtrim((string)$link, '/');
     }
 
     /**
      * @return string
      */
     public function getLink() {
-        return rtrim($this->link, '/');
+        return $this->link;
     }
 
     /**
