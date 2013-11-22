@@ -3736,7 +3736,7 @@ $(document).ready(function() {
 		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils,
 
-		userbar = $('.fixedTopBar'),
+		userbar = $('.fixedTopBar.mFixed'),
 		topBtn = userbar.find('.fixedTopBar__upLink'),
 		userbarConfig = userbar.data('value'),
 		body = $('body'),
