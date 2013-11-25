@@ -368,7 +368,7 @@ class IndexAction {
         $page->setParam('mainProduct', $mainProduct);
         $page->setParam('parts', $parts);
         $page->setParam('line', $line);
-        $page->setParam('deliveryDataResponse', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId()));
+        $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId()));
 
         return new \Http\Response($page->show());
     }
