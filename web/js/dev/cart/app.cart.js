@@ -326,6 +326,8 @@ $(document).ready(function() {
 			if( clearfunction ){ 
 				clearfunction()
 			}
+
+			$('body').trigger('remFromCart', {id: self.id, /*name: name,*/ price: self.price});
 			
 			$.when($.getJSON( drop , function( data ) {
 			})).then( function(data){
@@ -434,11 +436,7 @@ $(document).ready(function() {
 
 			var basketLine = $(this).parent().parent().parent().parent(),
 				productId = basketLine.data('product-id'),
-				categoryId = basketLine.data('category-id'),
-				price = parseInt(basketLine.find('div.basketinfo .sum').text().replace(/\s/g,'')), //Todo: цену передавать по-нормальному
-				name =  basketLine.find('div.goodstitle a').text();
-
-			$('body').trigger('remFromCart', {id: productId, name: name, price: price});
+				categoryId = basketLine.data('category-id');
 
 			// Soloway
 			// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить

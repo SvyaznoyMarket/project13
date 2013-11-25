@@ -154,7 +154,7 @@ window.ANALYTICS = {
 					'userid': userid
 				});
 
-				if ( (!window.LiveTex.invitationShowing) && (typeof(window.LiveTex.showInvitation) == 'function') ) {
+				if ( (!window.LiveTex.invitationShowing) && (typeof(window.LiveTex.showInvitation) === 'function') ) {
 					LiveTex.showInvitation('Здравствуйте! Вы добавили корзину ' + productData.name + '. Может, у вас возникли вопросы и я могу чем-то помочь?');
 					LiveTex.invitationShowing = true;
 				}
@@ -179,7 +179,7 @@ window.ANALYTICS = {
 	ActionPayJS: function () {
 		var basketEvents = function ( pageType, product ) {
 				var aprData = {pageType: pageType};
-				if ( typeof(window.APRT_SEND) == 'undefined' || typeof(product) == 'undefined' ) {
+				if ( typeof(window.APRT_SEND) === 'undefined' || typeof(product) === 'undefined' ) {
 					return false;
 				}
 
