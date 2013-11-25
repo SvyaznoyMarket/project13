@@ -27,10 +27,10 @@ class Kupivkredit {
             }
 
             $this->items[] = array(
-                'title'    => $product->getName(),
+                'title'    => sprintf('%s (%s шт)', $product->getName(), $orderProduct->getQuantity()), // SITE-2662
                 'category' => '',
-                'qty'      => $orderProduct->getQuantity(),
-                'price'    => $orderProduct->getPrice(),
+                'qty'      => 1, //$orderProduct->getQuantity(), // SITE-2662
+                'price'    => $orderProduct->getSum(), // SITE-2662
             );
         }
 
