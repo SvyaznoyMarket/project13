@@ -585,7 +585,7 @@ class Action {
                         }
 
                         $creditData['vars']['items'][] = [
-                            'name'     => sprintf('%s (%s шт)', $product->getName(), $orderProduct->getQuantity()), // SITE-2662
+                            'name'     => sprintf('%s шт %s', $orderProduct->getQuantity(), $product->getName()), // SITE-2662
                             'quantity' => "1", // SITE-2662
                             'price'    => $orderProduct->getSum(), // SITE-2662
                             'articul'  => $product->getArticle(),
