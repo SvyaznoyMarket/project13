@@ -28,4 +28,35 @@ class Action {
 
         return new \Http\Response($page->show());
     }
+
+    public function create(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $client = \App::coreClientV2();
+
+
+        $responseData = [
+            'success' => false,
+        ];
+
+        try {
+            $form = array_merge([
+                'first_name'        => null,
+                'phonenumber'       => null,
+                'email'             => null,
+                'sclub_card_number' => null,
+                'agreed'            => null,
+                'coupon_type'       => null,
+            ], (array)$request->get('coupon_request'));
+
+            
+
+            // TODO: запрос в ядро на создание купона
+        } catch (\Exception $e) {
+            $responseData['success'] = false;
+            $responseData['error'] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
+        }
+
+        return new \Http\JsonResponse($responseData);
+    }
 }
