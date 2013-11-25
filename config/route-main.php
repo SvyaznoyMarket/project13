@@ -671,6 +671,12 @@ return [
         'method'  => ['POST'],
     ],
 
+    // enterprize
+    'enterprize' => [
+        'pattern' => '/enterprize',
+        'action'  => ['Enterprize\Action', 'index'],
+    ],
+
     // git pull
     'git.pull' => [
         'pattern' => '/git/pull',
