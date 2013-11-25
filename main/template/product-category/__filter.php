@@ -42,7 +42,7 @@ return function(
         }
 
         // фильтр "Наличие в магазинах"
-        if ((bool)$shops) {
+        if (false && (bool)$shops) {
             $shopFilter = new \Model\Product\Filter\Entity();
             $shopFilter->setId('shop');
             $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
