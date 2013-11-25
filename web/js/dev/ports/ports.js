@@ -219,40 +219,40 @@ window.ANALYTICS = {
     //     })();
     // },
 
-    sociomantic : function() {
-        (function(){
-            var s   = document.createElement('script');
-            var x   = document.getElementsByTagName('script')[0];
-            s.type  = 'text/javascript';
-            s.async = true;
-            s.src   = ('https:'==document.location.protocol?'https://':'http://')
-                + 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
-            x.parentNode.insertBefore( s, x );
-        })();
-    },
+	sociomanticJS: function () {
+		(function () {
+			var s = document.createElement('script'),
+				x = document.getElementsByTagName('script')[0];
+			s.type = 'text/javascript';
+			s.async = true;
+			s.src = ('https:' == document.location.protocol ? 'https://' : 'http://')
+				+ 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
+			x.parentNode.insertBefore(s, x);
+		})();
+	},
 
-    sociomanticCategoryPage : function() {
-        (function(){
-            window.sonar_product = {
-                category : $('#sociomanticCategoryPage').data('prod-cats')
-            };
-        })();
-    },
+	smanticPageJS: function() {
+		(function(){
+			var elem = $('#smanticPageJS'),
+				prod = elem.data('prod'),
+				prod_cats = elem.data('prod-cats'),
+				cart_prods = elem.data('cart-prods');
 
-    sociomanticProductPageStream : function() {
-        (function(){
-            window.sonar_product = $('#sociomanticProductPageStream').data('scr-product');
-            window.sonar_product.category = $('#sociomanticProductPageStream').data('prod-cats');
-        })();
-    },
+			window.sonar_product = window.sonar_product || {};
 
-    sociomanticBasket : function() {
-        (function(){
-            window.sonar_basket = {
-                products: $('#sociomanticBasket').data('cart-prods')
-            };
-        })();
-    },
+			if ( prod ) {
+				window.sonar_product = prod;
+			}
+
+			if ( prod_cats ) {
+				window.sonar_product.category = prod_cats;
+			}
+
+			if ( cart_prods ) {
+				window.sonar_basket = { products: cart_prods };
+			}
+		})();
+	},
 
     criteoJS : function() {
         window.criteo_q = window.criteo_q || [];

@@ -24,7 +24,10 @@ class Sociomantic
         if ($breadcrumbs and is_array($breadcrumbs)) {
             $prod_cats = $this->breadcrumbsToArray($breadcrumbs, $useLastItem);
         } else {
-            if ($category) $prod_cats[] = $category->getName();
+            //if (is_array($category)) $category = reset($category);
+            if ($category) {
+                $prod_cats[] = $category->getName();
+            }
         }
 
         return $prod_cats;
@@ -154,6 +157,30 @@ class Sociomantic
         }
 
         return false;
+    }
+
+
+    public function makeProdInfo(\Model\Product\Entity $product, $prod_cats) {
+        $prod = [];
+        $domain = $_SERVER['HTTP_HOST'] ? : $_SERVER['SERVER_NAME'];
+        //$region_id = \App::user()->getRegion()->getId();
+        $brand = $product->getBrand() ? $product->getBrand()->getName() : null;
+        $photo = $product->getImageUrl(3);
+
+        $prod['identifier'] = $this->resetProductId($product);
+        $prod['fn'] = $product->getName();
+        $prod['category'] = $prod_cats;
+        $prod['description'] = $product->getTagline();
+        $prod['currency'] = 'RUB';
+        $prod['url'] = 'http://' . $domain . strtok($_SERVER["REQUEST_URI"], '?');
+        $prod['price'] = $product->getPrice(); //стоимость со скидкой
+        $prod['amount'] = $product->getPriceOld(); // стоимость без скидки
+        if (!$prod['amount']) $prod['amount'] = $prod['price'];
+        if ($photo) $prod['photo'] = $photo;
+        if ($brand) $prod['brand'] = $brand;
+        $prod['valid'] = $product->getIsBuyable() ? 0 : time(); // Если товара нет в наличии, то необходимо передавать отметку времени
+
+        return $prod;
     }
 
 }
