@@ -505,9 +505,9 @@
                             creditWidget.vars.number,
                             'addProductToBuyOnCredit',
                             {
-                                name : item.articul,
+                                name : item.name,
                                 count: item.quantity,
-                                articul: item.articul,
+                                // articul: item.articul,
                                 price: item.price,
                                 type: item.type
                             },
