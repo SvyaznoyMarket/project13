@@ -4,6 +4,7 @@ namespace View;
 
 class DefaultLayout extends Layout {
     protected $layout  = 'layout-twoColumn';
+    protected $breadcrumbsPath = null;
 
     public function __construct() {
         parent::__construct();
@@ -335,41 +336,53 @@ class DefaultLayout extends Layout {
     {
         $smantic_path = 'partner-counter/sociomantic/';
         $routeName = \App::request()->attributes->get('route');
-        $breadcrumbs = $this->getParam('breadcrumbs');
+        $breadcrumbs = $this->getBreadcrumbsPath();
         $region_id = \App::user()->getRegion()->getId();
         $smantic = new \View\Partners\Sociomantic($region_id);
 
+        $prod = null;
+        $prod_cats = null;
+        $cart_prods = null;
+        $return = '';
 
-        if (!in_array($routeName, [
+        if ( in_array( $routeName, ['order', 'order.complete'] ) ) {
             // !!! Не дублировать! Hа этих страницах Sociomantic
             // вместе с inclusion tag
             // подключается через JS — см файл /web/js/dev/order/order.js
-            'order',
-            'order.complete',
-        ])) {
-            // на всех страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
-            $return = $this->render($smantic_path . '01-homepage');
+            return;
         }
 
+        // на всех остальных страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
+        $return .= $this->render($smantic_path . '01-homepage');
 
         if ($routeName == 'product.category') {
 
             $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
-            $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'category');
-            $return .= $this->render($smantic_path . '02-category_page', ['prod_cats' => $prod_cats]);
+            if ($category) {
+                $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'category');
+                $return .= $this->render($smantic_path . 'smanticPage', ['prod_cats' => $prod_cats]);
+            }
 
         } else if ($routeName == 'product') {
 
             $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-            $prod_cats = $smantic->makeCategories($breadcrumbs, $product->getCategory(), 'product');
-            $return .= $this->render($smantic_path . '03a-product_page_stream', ['product' => $product, 'smantic' => &$smantic, 'prod_cats' => $prod_cats]);
+            if ( $product ) {
+                /** @var @var $product \Model\Product\Entity */
+                $category = $product->getMainCategory();
+                if (!$category) $category = reset($product->getCategory());
+                $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'product');
+                $prod = $smantic->makeProdInfo($product, $prod_cats);
+                $return .= $this->render($smantic_path . 'smanticPage', ['prod' => $prod, 'prod_cats' => $prod_cats]);
+            }
 
         } else if ($routeName == 'cart') {
 
             $products = $this->getParam('products');
             $cartProductsById = $this->getParam('cartProductsById');
-            $cart_prods = $smantic->makeCartProducts($products, $cartProductsById);
-            $return .= $this->render($smantic_path . '04-basket', ['cart_prods' => $cart_prods, 'smantic' => &$smantic]);
+            if ($products && $cartProductsById) {
+                $cart_prods = $smantic->makeCartProducts($products, $cartProductsById);
+                $return .= $this->render($smantic_path . 'smanticPage', ['cart_prods' => $cart_prods]);
+            }
 
         }/* else if ($routeName == 'order.complete') {
 
@@ -393,7 +406,7 @@ class DefaultLayout extends Layout {
 
         }*/
 
-        return isset($return) ? $return : false;
+        return !empty($return) ? $return : false;
     }
 
     public function slotCriteo() {
@@ -520,6 +533,37 @@ class DefaultLayout extends Layout {
         }
 
         return '<div class="adfoxWrapper" id="adfoxbground"></div>';
+    }
+
+
+
+    public function getBreadcrumbsPath() {
+        if (null !== $this->breadcrumbsPath) {
+            return $this->breadcrumbsPath;
+        }
+
+        $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
+        if (!$category) {
+            return false;
+        }
+
+        $breadcrumbs = [];
+        foreach ($category->getAncestor() as $ancestor) {
+            $link = $ancestor->getLink();
+            if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
+            $breadcrumbs[] = array(
+                'name' => $ancestor->getName(),
+                'url'  => $link,
+            );
+        }
+        $link = $category->getLink();
+        if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
+        $breadcrumbs[] = array(
+            'name' => $category->getName(),
+            'url'  => $link,
+        );
+
+        return $this->breadcrumbsPath = $breadcrumbs;
     }
 
 }
