@@ -7,10 +7,13 @@ class Entity {
     private $token;
     /** @var string */
     private $name;
+    /** @var string */
+    private $image;
 
     public function __construct(array $data = []) {
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
+        if (array_key_exists('image', $data)) $this->setImage($data['image']);
     }
 
     /**
@@ -39,5 +42,19 @@ class Entity {
      */
     public function getToken() {
         return $this->token;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage($image) {
+        $this->image = (string)$image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage() {
+        return $this->image;
     }
 }
