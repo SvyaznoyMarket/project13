@@ -56,10 +56,7 @@ class ListAction {
                 'cartButton'   => [],
                 'image'        => $product->getImageUrl(2),
                 'price'        => $helper->formatPrice($product->getPrice()),
-                'oldPrice'     => ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany())
-                    ? $helper->formatPrice($product->getPriceOld())
-                    : null
-                ,
+                'oldPrice'     => null,
                 'isBuyable'    => $product->getIsBuyable(),
                 'onlyInShop'   => $product->isInShopOnly(),
                 'stateLabel'   => $showState ? $stateLabel : null,
@@ -86,6 +83,12 @@ class ListAction {
                     ? ['name' => $line->getName(), 'productCount' => $line->getLineCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
                     : null
             ];
+
+            // oldPrice and priceSale
+            if ( $product->getPriceOld() && !$user->getRegion()->getHasTransportCompany() ) {
+                $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
+                $productItem['priceSale'] = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
+            }
 
             // cart
             if ($buyMethod && in_array(strtolower($buyMethod), ['none', 'false'])) {
