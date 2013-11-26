@@ -326,6 +326,7 @@
 				price: (product.sum) ? product.sum : product.price,
 				quantity: product.quantity,
 				deleteUrl: product.deleteUrl,
+				setUrl: product.setUrl,
 				productUrl: product.url,
 				productImg: (product.image) ? product.image : product.productImg,
 				deliveries: {}

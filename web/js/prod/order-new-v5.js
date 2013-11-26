@@ -326,6 +326,7 @@
 				price: (product.sum) ? product.sum : product.price,
 				quantity: product.quantity,
 				deleteUrl: product.deleteUrl,
+				setUrl: product.setUrl,
 				productUrl: product.url,
 				productImg: (product.image) ? product.image : product.productImg,
 				deliveries: {}
@@ -1848,24 +1849,44 @@
 		$('.bCountSection').goodsCounter({
 			onChange:function( count ) {
 				console.info('counter change');
-				console.log(this);
 				console.log(count);
-
+				
 				var
 					seturl = $(this).data('seturl'),
 					newURl = seturl.addParameterToUrl('quantity', count);
 				// end of vars
 				
 				console.log(seturl);
-				// console.log(newURl);
-				// console.log(bindButton);
+				console.log(newURl);
 
-				// bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
+				var spinnerResponceHandler = function spinnerResponceHandler( res ) {
+					if ( !res.success ) {
+						global.OrderModel.couponError(res.error.message);
+						utils.blockScreen.unblock();
 
-				// добавление в корзину после обновления спиннера
-				// if (bindButton.hasClass('mBought')){
-				// 	bindButton.eq('0').trigger('buy');
-				// }
+						return;
+					}
+
+					global.OrderModel.couponNumber('');
+				};
+
+				utils.blockScreen.block('Обновляем');
+
+				reqArray = [
+					{
+						type: 'GET',
+						url: newURl,
+						// data: dataToSend,
+						callback: spinnerResponceHandler
+					},
+					{
+						type: 'GET',
+						url: global.OrderModel.updateUrl,
+						callback: global.OrderModel.modelUpdate
+					}
+				];
+
+				utils.packageReq(reqArray);
 			}
 		});
 	};
