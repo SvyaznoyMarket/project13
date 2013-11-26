@@ -1,16 +1,17 @@
 <?php
 /**
- * @var $page              \View\Product\IndexPage
- * @var $product           \Model\Product\Entity
- * @var $productVideos     \Model\Product\Video\Entity[]
- * @var $user              \Session\User
- * @var $accessories       \Model\Product\Entity[]
- * @var $accessoryCategory \Model\Product\Category\Entity[]
- * @var $related           \Model\Product\Entity[]
- * @var $kit               \Model\Product\Entity[]
- * @var $additionalData    array
- * @var $shopStates        \Model\Product\ShopState\Entity[]
- * @var $creditData        array
+ * @var $page                   \View\Product\IndexPage
+ * @var $product                \Model\Product\Entity
+ * @var $productVideos          \Model\Product\Video\Entity[]
+ * @var $user                   \Session\User
+ * @var $accessories            \Model\Product\Entity[]
+ * @var $accessoryCategory      \Model\Product\Category\Entity[]
+ * @var $related                \Model\Product\Entity[]
+ * @var $kit                    \Model\Product\Entity[]
+ * @var $additionalData         array
+ * @var $shopStates             \Model\Product\ShopState\Entity[]
+ * @var $creditData             array
+ * @var $deliveryDataResponse   array
  */
 
 $showLinkToProperties = true;
@@ -198,7 +199,7 @@ $is_showed = [];
 
         <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
 
-        <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
+        <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates, 'deliveryDataResponse' => $deliveryDataResponse]) // Доставка ?>
 
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
 
