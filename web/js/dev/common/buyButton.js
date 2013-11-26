@@ -176,21 +176,6 @@
 		},
 
 		/**
-		 * myThings аналитика добавления в корзину
-		 */
-		myThingsAnalytics = function myThingsAnalytics( data ) {
-			var productData = data.product;
-
-			if ( typeof MyThings !== 'undefined' ) {
-				MyThings.Track({
-					EventType: MyThings.Event.Visit,
-					Action: '1013',
-					ProductId: productData.id
-				});
-			}
-		},
-
-		/**
 		 * Soloway аналитика добавления в корзину
 		 */
 		adAdriver = function adAdriver( data ) {
@@ -217,28 +202,6 @@
 			i.src = s;
 			b.insertBefore(i, b.firstChild);
 		},
-
-
-		/**
-		 * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
-		 */
-		addToLiveTex = function addToLiveTex(data) {
-			if ( typeof LiveTex.addToCart  === 'function' ) {
-				try {
-					LiveTex.addToCart(data.product);
-				}
-				catch ( err ) {
-					dataToLog = {
-						event: 'LiveTex.addToCart',
-						type: 'ошибка отправки данных в LiveTex',
-						err: err
-					};
-
-					utils.logError(dataToLog);
-				}
-			}
-		},
-
 
 		/**
 		 * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
@@ -290,10 +253,8 @@
 
 			kissAnalytics(data);
 			googleAnalytics(data);
-			myThingsAnalytics(data);
 			adAdriver(data);
 			addToRetailRocket(data);
-			// addToLiveTex(data);
 
 			if ( data.redirect ) {
 				console.warn('redirect');
