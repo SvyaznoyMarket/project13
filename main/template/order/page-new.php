@@ -172,7 +172,7 @@ if ($oneClick) {
 									<a target="_blank" data-bind="text: product.name, attr: { href: product.productUrl }"></a>
 								</div>
 
-								<div class="bItemsRow mCountItem">
+								<div class="bItemsRow mItemCount">
                                     <? if ($oneClick): ?>
                                         <div class="bCountSection clearfix" data-spinner-for="">
                                             <button class="bCountSection__eM">-</button>
@@ -528,7 +528,7 @@ if ($oneClick) {
 			</div>
 			<!--/ PayPal сумма заказа -->
 
-			<div class="bBuyingLine clearfix">
+			<div class="bBuyingLine mConfirm clearfix">
 				<div class="bBuyingLine__eLeft"></div>
 
 				<div class="bBuyingLine__eRight bInputList mRules">
