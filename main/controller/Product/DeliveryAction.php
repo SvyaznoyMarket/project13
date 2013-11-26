@@ -24,6 +24,8 @@ class DeliveryAction {
      * @return array
      */
     public function getResponseData($product, $region = null) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $helper = new \View\Helper();
         $user = \App::user();
 
@@ -74,6 +76,10 @@ class DeliveryAction {
             \App::coreClientV2()->execute();
             if ($exception instanceof \Exception) {
                 throw $exception;
+            }
+
+            if (empty($result)) {
+                throw new \Exception('При расчете доставки получен пустой ответ');
             }
 
             if (!(bool)$result['product_list']) {
@@ -162,6 +168,8 @@ class DeliveryAction {
                 $responseData['product'][] = $product;
             }
         } catch(\Exception $e) {
+            \App::logger()->error($e->getMessage(), ['delivery']);
+
             $responseData = [
                 'success' => false,
                 'error'   => [
