@@ -549,6 +549,11 @@ return [
         //'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
         'require' => ['productId' => '\d+'],
     ],
+    'product.alsoBought' => [
+        'pattern' => '/ajax/product-also-bought/{productId}',
+        'action' => ['Product\AlsoBoughtAction', 'execute'],
+        'require' => ['productId' => '\d+'],
+    ],
     /*
     'smartengine.pull.product_similar' => [
         'pattern' => '/product-similar/{productId}',
