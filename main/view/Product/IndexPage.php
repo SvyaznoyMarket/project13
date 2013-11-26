@@ -287,6 +287,8 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotUserbarContentData() {
+        $helper = new \Helper\TemplateHelper();
+
         /** @var $product \Model\Product\Entity */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
         if (!$product) {
@@ -295,6 +297,7 @@ class IndexPage extends \View\DefaultLayout {
 
         return [
             'target' => '.' . \View\Id::cartButtonForProduct($product->getId()),
+            'ajaxAlsoBoughtUrl' => $helper->url('product.alsoBought', ['productId' => $product->getId()]),
         ];
     }
 }

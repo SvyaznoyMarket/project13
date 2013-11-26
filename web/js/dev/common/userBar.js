@@ -181,6 +181,23 @@
 
 			cartWrap.removeClass('mEmpty');
 			cartWrap.html(html);
+		},
+
+		/**
+		 * Обновление блока с рекомендациями "С этим товаром также покупают"
+		 */
+			updateAlsoBoughtInfo = function updateAlsoBoughtInfo() {
+			console.info('userbar::updateAlsoBoughtInfo');
+
+			var responseFromServer = function ( response ){
+				if ( response.success ) {
+					console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
+					//console.log(response.content);
+				}
+			};
+			//end functions
+
+			$.post(userbarConfig.ajaxAlsoBoughtUrl, responseFromServer);
 		};
 	// end of functions
 
@@ -197,6 +214,7 @@
 		body.on('userLogged', updateUserInfo);
 		body.on('basketUpdate', updateBasketInfo);
 		body.on('addtocart', showBuyInfo);
+		body.on('addtocart', updateAlsoBoughtInfo);
 
 		if ( topBtn.length ) {
 			topBtn.on('click', upToFilter);
