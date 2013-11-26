@@ -87,20 +87,27 @@ $(document).ready(function() {
 
 			// show current city
 			mapCity.click( function(){
-				var nowRef = $(this).attr('ref')
-				$('.bShopCard').hide()
+				var nowRef = $(this).attr('ref'),
+					isCityName = $(event.target).hasClass('cityName');
+
+				if (!isCityName) {
+					// Если клик внутри списка городов по списку магазинов, то ничего не делаем
+					return;
+				}
+
+				$('.bShopCard').hide();
 				shopsInCity.fadeOut(500, function(){
-					shopsInCity.empty()
-				})
+					shopsInCity.empty();
+				});
+				
 				if ( showShopTrigger ){
-					// город открыт, схлопываем список магазинов
-					$(this).removeClass('chosedCity'); ////
+					console.log('### город открыт, схлопываем список магазинов');
+					$(this).removeClass('chosedCity');
 					mapCity.show();
 					showShopTrigger = false;
-					console.log('###');
 				}
 				else{
-					// город не открыт открываем спискок магазинов
+					console.log('### город не открыт открываем спискок магазинов');
 					var curCity = [];
 					for ( var i in allshops ) { //получаем список магазинов в этом городе
 						if (allshops[i].region_id == $(this).attr('ref')){
@@ -127,12 +134,7 @@ $(document).ready(function() {
 					}
 					showShopTrigger = true
 				}
-			})
-
-			// Если клик внутри списка городов по списку магазинов, то ничего не делаем
-			shopsInCity.click( function() {
-				return false;
-			} );
+			});
 
 		}
 
