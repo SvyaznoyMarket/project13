@@ -3,6 +3,7 @@
 */
 
 .fixedTopBar {
+	display: none;
 	
 	&.mFixed {
 		position: fixed;
@@ -30,6 +31,7 @@
 		position: relative;
 		height: 49px;
 		z-index: 999;
+		display: block;
 
 		.fixedTopBar__cart {
 			width: 91px;
@@ -39,8 +41,6 @@
 			border-left: none;
 		}
 	}
-
-	display: none;
 
 	&:hover {
 
@@ -107,24 +107,11 @@
 	}
 
 	&__upLink {
-		.blackGrad();
-		.rounded(4px);
 		display: inline-block;
 		vertical-align: top;
 
 		*display: inline;
 		zoom: 1;
-		padding-left: 15px;
-
-		width: 190px;
-		border: 1px solid #a1a1a1;
-
-		color: @white;
-
-		vertical-align: top;
-
-		font: bold 12px/30px Tahoma;
-		line-height: 30px;
 
 		 &:hover {
 			background: @black;
