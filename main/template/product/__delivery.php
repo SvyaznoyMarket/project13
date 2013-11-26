@@ -5,6 +5,10 @@ return function (
     \Model\Product\BasicEntity $product,
     array $shopStates = []
 ) {
+    if (!$product->getIsBuyable()) {
+        return '';
+    }
+
     /**
      * @var $shopStates \Model\Product\ShopState\Entity[]
      */
