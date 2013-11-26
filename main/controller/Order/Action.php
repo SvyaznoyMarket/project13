@@ -587,7 +587,7 @@ class Action {
                         $creditData['vars']['items'][] = [
                             'name'     => sprintf('%s шт %s', $orderProduct->getQuantity(), $product->getName()), // SITE-2662
                             'quantity' => "1", // SITE-2662
-                            'price'    => $orderProduct->getSum(), // SITE-2662
+                            'price'    => (int)$orderProduct->getSum(), // SITE-2662
                             'articul'  => $product->getArticle(),
                             'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
                         ];
