@@ -64,11 +64,13 @@ class Action {
             'client_id' => 'site',
             //'is_load_parents' => false,
             'min_level'       => 1,
+            'max_level'       => 1,
         ];
 
         if ($selectedCategory) {
             $queryParams['root_id'] = $selectedCategory->getId();
             $queryParams['min_level'] += $selectedCategory->getLevel();
+            $queryParams['max_level'] += $selectedCategory->getLevel();
         }
 
         if ($region) {

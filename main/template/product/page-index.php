@@ -11,10 +11,8 @@
  * @var $additionalData     array
  * @var $shopStates         \Model\Product\ShopState\Entity[]
  * @var $creditData         array
+ * @var $deliveryDataResponse   array
  */
-?>
-
-<?
 
 $helper = new \Helper\TemplateHelper();
 

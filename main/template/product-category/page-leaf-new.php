@@ -37,7 +37,7 @@
 
         <? if (!empty($promoContent)): ?>
             <?= $promoContent ?>
-        <? else: ?>
+        <? elseif ($productPager->getLastPage() > 1): ?>
             <?= $helper->render('product-category/__children', ['category' => $category, 'promoStyle' => $promoStyle]) // дочерние категории ?>
         <? endif ?>
 

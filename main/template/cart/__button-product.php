@@ -11,7 +11,7 @@ return function (
     $class = \View\Id::cartButtonForProduct($product->getId()) . ' ' . $class;
 
     if (!$directLink) {
-        $class .= $product->isInShopStockOnly() ? ' jsOrder1clickProxy' : ' jsBuyButton';
+        $class .= $product->isInShopStockOnly() ? ' jsOneClickButton' : ' jsBuyButton';
     }
 
     if ($product->isInShopStockOnly()) {

@@ -122,6 +122,8 @@ class Layout extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
+        $ret = '';
+
         // заголовок контента страницы - убираем, его роль выполняет баннер из сервиса контента
         $this->setParam('title', null);
 
@@ -130,7 +132,13 @@ class Layout extends \View\DefaultLayout {
             $this->setParam('breadcrumbs', []);
         }
 
-        return $this->render('_contentHead', $this->params);
+        $categoryData = $this->tryRender('product-category/_categoryData', array('page' => $this, 'category' => $this->getParam('category')));
+        $contentHead = $this->render('_contentHead', $this->params);
+
+        if ($categoryData) $ret .= $categoryData;
+        if ($contentHead) $ret .= $contentHead;
+
+        return $ret;
     }
 
     /**

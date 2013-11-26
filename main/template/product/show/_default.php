@@ -15,7 +15,7 @@
  * @var $parts                  \Model\Product\CompactEntity[]
  * @var $mainProduct            \Model\Product\Entity
  * @var $line                   \Model\Line\Entity
- * @var $deliveryDataResponse   array
+ * @var $deliveryData           array
  */
 
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
@@ -202,7 +202,7 @@ $is_showed = [];
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
         <? endif ?>
 
-        <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates, 'deliveryDataResponse' => $deliveryDataResponse]) // Доставка ?>
+        <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData]) // Доставка ?>
 
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
 

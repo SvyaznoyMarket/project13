@@ -68,6 +68,8 @@
       'isAddInfo'              => true,
   )) ?>
 
+  <div class="clear"></div>
+
   <? if(!empty($seoContent)): ?>
       <div class="bSeoText">
           <?= $seoContent ?>
