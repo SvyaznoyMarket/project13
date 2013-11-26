@@ -8,6 +8,8 @@ class Entity {
     /** @var int */
     private $price = 0;
     /** @var int */
+    private $sum = 0;
+    /** @var int */
     private $quantity = 0;
     /** @var int */
     private $warrantyId;
@@ -22,6 +24,7 @@ class Entity {
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
+        if (array_key_exists('sum', $data)) $this->setSum($data['sum']);
         if (array_key_exists('quantity', $data)) $this->setQuantity($data['quantity']);
         if (array_key_exists('warranty_id', $data)) $this->setWarrantyId($data['warranty_id']);
         if (array_key_exists('warranty_price', $data)) $this->setWarrantyPrice($data['warranty_price']);
@@ -54,6 +57,20 @@ class Entity {
      */
     public function getPrice() {
         return $this->price;
+    }
+
+    /**
+     * @param int $sum
+     */
+    public function setSum($sum) {
+        $this->sum = (string)$sum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSum() {
+        return $this->sum;
     }
 
     /**
