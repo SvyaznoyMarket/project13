@@ -66,6 +66,8 @@ class Action {
         $shops = [];
         \RepositoryManager::shop()->prepareCollectionByRegion(null, function($data) use (&$shops) {
             foreach ($data as $item) {
+                if (empty($item['coord_long']) || empty($item['coord_lat'])) continue;
+
                 $shops[] = new \Model\Shop\Entity($item);
             }
         });
