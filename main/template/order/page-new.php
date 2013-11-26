@@ -174,7 +174,7 @@ if ($oneClick) {
 
 								<div class="bItemsRow mItemCount">
                                     <? if ($oneClick): ?>
-                                        <div class="bCountSection clearfix" data-spinner-for="">
+                                        <div class="bCountSection clearfix" data-spinner-for="000" data-bind="attr: { 'data-seturl': product.setUrl }">
                                             <button class="bCountSection__eM">-</button>
                                             <input class="bCountSection__eNum" type="text" value="" data-bind="attr: { value: product.quantity }" />
                                             <button class="bCountSection__eP">+</button>
