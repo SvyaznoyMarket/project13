@@ -8928,7 +8928,14 @@
   }
   #mainPage .topbar .headerContactPhone,
   #mainPage .topbar .headerShopLink {
+    display: block;
+    color: #fff;
+  }
+  #mainPage .topbar .headerShopLink {
     display: none;
+  }
+  #mainPage .topbar .bRegion {
+    width: 580px;
   }
   #mainPage .searchtext {
     -webkit-box-shadow: 0 0 10px 4px #444443;
