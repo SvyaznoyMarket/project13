@@ -10053,7 +10053,7 @@
 @media all {
   .bWidgetBuy {
     border: 1px solid #c7c7c7;
-    padding: 10px 5px 0;
+    padding: 10px 5px;
   }
   .bWidgetBuy__eClick {
     font-size: 14px;
