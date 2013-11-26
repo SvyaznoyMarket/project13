@@ -10990,6 +10990,11 @@
     border-color: #000000;
     font-weight: normal;
   }
+  .jewel .bSeoText {
+    clear: both;
+    padding: 0 15px;
+    margin: 10px 0 35px;
+  }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
