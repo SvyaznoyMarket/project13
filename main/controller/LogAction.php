@@ -29,6 +29,7 @@ class LogAction {
             */
             $result = strtr($result, [
                 $id      => '<span style="color: green;">' . $id . '</span>',
+                'uri'    => '<span style="color: greenyellow; font-weight: bold">uri</span>',
                 'error'  => '<span style="color: red;">error</span>',
                 'Fail'   => '<span style="color: red;">Fail</span>',
                 'warn'   => '<span style="color: orange;">warn</span>',

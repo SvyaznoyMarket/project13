@@ -155,7 +155,9 @@
 
 
 		// выбираем первый доступный метод оплаты
-		$('.bPayMethod:visible .jsCustomRadio').eq(0).attr('checked', 'checked').trigger('change');
+		if ( 0 === $('.bPayMethod:visible .jsCustomRadio:checked').length ) {
+			$('.bPayMethod:visible .jsCustomRadio').eq(0).attr('checked', 'checked').trigger('change');
+		}
 
 		/**
 		 * Проверка примененных купонов
@@ -165,7 +167,7 @@
 		 */
 		if ( ( global.OrderModel.hasCoupons() && global.OrderModel.deliveryBoxes().length > 1 ) || 
 			( global.OrderModel.appliedCoupon() && global.OrderModel.appliedCoupon().sum && 
-			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) ) {
+			( parseFloat(global.OrderModel.totalSum()) <= parseFloat(global.OrderModel.appliedCoupon().sum) ) ) ) {
 			console.warn('Нужно удалить купон');
 
 			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
@@ -296,7 +298,7 @@
 			if (
 			 /* 6 is DeliveryTypeId for PickPoint  */
 			( 6 === global.OrderModel.choosenDeliveryTypeId && false == isAvailableToPickpoint ) ||
-			( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId ) ||
+			( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId && global.OrderModel.lifeGift() === false ) ||
 			( !isNaN(maxSum) && maxSum < unwrapVal ) ) {
 				node.hide();
 

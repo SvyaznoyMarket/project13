@@ -199,12 +199,6 @@ return [
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
     ],
-    // слайдер рекомендованных товаров
-    'product.category.recommended.slider' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/_slider-recommended',
-        'action'  => ['Crossss\ProductCategoryAction', 'recommended'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
 
     // карточка товара
     'product' => [
@@ -677,11 +671,21 @@ return [
         'method'  => ['POST'],
     ],
 
-    // git
+    // git pull
     'git.pull' => [
         'pattern' => '/git/pull',
         'action'  => ['GitAction', 'pull'],
         'method'  => ['GET'],
+    ],
+
+    // git checkout
+    'git.checkout' => [
+        'pattern' => '/git/checkout/{version}',
+        'action'  => ['GitAction', 'checkout'],
+        'method'  => ['GET'],
+        'require' => [
+            'version' => '\d+',
+        ],
     ],
 
     //content

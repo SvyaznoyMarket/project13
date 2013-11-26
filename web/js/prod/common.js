@@ -640,6 +640,8 @@ $.ajaxSetup({
 
 		changeRegionBtn = $('.jsChangeRegion'),
 
+		changeRegionAnalyticsBtn = $('.jsChangeRegionAnalytics'),
+
 		slidesWrap = regionWindow.find('.regionSlidesWrap'),
 		moreCityBtn = regionWindow.find('.moreCity'),
 		leftArrow = regionWindow.find('.leftArr'),
@@ -710,6 +712,15 @@ $.ajaxSetup({
 					}
 				}
 			});
+
+			// analytics only for main page
+			if ( document.location.pathname === '/' ) {
+				console.info( 'run analytics for main page' );
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'citySelector', 'viewed']);
+				}
+			}
 		},
 
 		/**
@@ -822,16 +833,37 @@ $.ajaxSetup({
 			if ( $(this).val() ) {
 				clearBtn.show();
 			}
-			else{
+			else {
 				clearBtn.hide();
 			}
+		},
+
+		changeRegionAnalytics = function changeRegionAnalytics( regionName ) {
+			// analytics only for main page
+			if ( document.location.pathname === '/' ) {
+				console.info( 'run analytics for main page ' + regionName);
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
+				}
+			}
+		},
+
+		changeRegionAnalyticsHandler = function changeRegionAnalyticsHandler() {
+			var regionName = $(this).text();
+
+			changeRegionAnalytics(regionName);
 		},
 
 		/**
 		 * Обработчик сохранения введенного региона
 		 */
 		submitCityHandler = function submitCityHandler() {
-			var url = $(this).data('url');
+			var url = $(this).data('url'),
+				regionName = inputRegion.val();
+			// end of vars
+
+			changeRegionAnalytics(regionName);
 
 			if ( url ) {
 				global.location = url;
@@ -855,6 +887,8 @@ $.ajaxSetup({
 	leftArrow.on('click', prevCitySlide);
 	inputRegion.on('keyup', inputRegionChangeHandler);
 	body.on('click', '.jsChangeRegion', changeRegionHandler);
+
+	changeRegionAnalyticsBtn.on('click', changeRegionAnalyticsHandler);
 
 
 	/**
@@ -954,17 +988,7 @@ $(document).ready(function(){
 			left = 0;
 		// end of vars
 		
-		var sliderTracking = function sliderTracking() {
-				var nowUrl = document.location,
-					toUrl = $(this).attr('href');
-				// end of vars
-				
-				if( typeof(_gaq) !== 'undefined' ){
-					_gaq.push(['_trackEvent', 'AdvisedCrossss', nowUrl, toUrl]);
-				}
-			},
-
-			kissSimilar = function kissSimilar() {
+		var kissSimilar = function kissSimilar() {
 				var clicked = $(this),
 					toKISS = {
 						'Recommended Item Clicked Similar Recommendation Place':'product',
@@ -1052,7 +1076,6 @@ $(document).ready(function(){
 
 		// KISS
 		$('.bSimilarGoods.mProduct .bSimilarGoodsSlider_eGoods').on('click', kissSimilar);
-		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').on('click', sliderTracking);
 	}
 
 
@@ -1285,7 +1308,10 @@ $(document).ready(function(){
 		authBlock = $('#auth-block'),
 		forgotPwdLogin = $('.jsForgotPwdLogin'),
 		resetPwdForm = $('.jsResetPwdForm'),
+		registerForm = $('.jsRegisterForm'),
 		loginForm = $('.jsLoginForm'),
+		completeRegister = $('.jsRegisterFormComplete'),
+		showLoginFormLink = $('.jsShowLoginForm'),
 
 		/**
 		 * Конфигурация валидатора для формы логина
@@ -1372,6 +1398,11 @@ $(document).ready(function(){
 			$('.jsLoginForm, .jsRegisterForm, .jsResetPwdForm').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
 			body.on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
 			body.on('click', '#bUserlogoutLink', this.logoutLinkClickLog);
+
+			if ( showLoginFormLink.length ) {
+				loginForm.hide();
+				body.on('click', '.jsShowLoginForm', this.showLoginForm);
+			}
 		}
 
 
@@ -1645,18 +1676,22 @@ $(document).ready(function(){
 					console.log(response.data.link);
 
 					if ( this.form.data('redirect') ) {
-						if ( response.data.link ) {
+						if ( typeof response.data.link !== 'undefined' ) {
 							console.info('try to redirect to2 ' + response.data.link);
 							console.log(typeof response.data.link);
 
-
 							document.location.href = response.data.link;
 							console.log('try reload....');
-							//document.location.reload();
+							document.location.reload();
 						}
 						else {
-							this.form.unbind('submit');
-							this.form.submit();
+							// this.form.unbind('submit');
+							// this.form.submit();
+
+							completeRegister.html(response.message);
+							completeRegister.show();
+							registerForm.hide();
+							this.showLoginForm();
 						}
 					}
 					else {
@@ -1672,6 +1707,7 @@ $(document).ready(function(){
 						$('#qiwi_phone').val(response.data.user.mobile_phone.slice(1));
 					}
 				},
+
 				requestToServer = function() {
 					this.submitBtnLoadingDisplay( formSubmit );
 					formData.push({name: 'redirect_to', value: urlParams['redirect_to'] ? urlParams['redirect_to'] : window.location.href});
@@ -1689,6 +1725,16 @@ $(document).ready(function(){
 
 			return false;
 		};
+
+		/**
+		 * Показать форму логина на странице /login
+		 */
+		Login.prototype.showLoginForm = function() {
+			showLoginFormLink.hide();
+			loginForm.slideDown(300);
+			$.scrollTo(loginform, 500);
+		};
+
 
 		/**
 		 * Отображение формы "Забыли пароль"

@@ -286,25 +286,6 @@ $(document).ready(function(){
 		});
 	}
 
-	// login form toggle
-	if ( $('.jsHideLoginform').length ) {
-		var loginform = $('.jsLoginForm'),
-			hideLoginformLink = $('.jsHideLoginform');
-		// end of vars
-
-		var hideLoginform = function () {
-				hideLoginformLink.hide();
-				loginform.slideDown(300);
-				$.scrollTo(loginform, 500);
-
-				return false;
-			};
-		// end of functions
-
-		// скрываем форму логина при загрузке страницы /login
-		loginform.hide();
-		hideLoginformLink.on('click', hideLoginform);
-	}
 
 	/*paginator*/
 	var EnterPaginator = function( domID,totalPages, visPages, activePage ) {

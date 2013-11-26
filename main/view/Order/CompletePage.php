@@ -62,7 +62,7 @@ class CompletePage extends Layout {
                 $tag_params['prodid'][] = $product->getId();
                 $tag_params['pname'][] = $product->getName();
                 $tag_params['pcat'][] = $category ? $category->getToken() : '';
-                $tag_params['purchasevalue'] += $order->getSum();
+                $tag_params['purchasevalue'] += $order->getPaySum();
             }
         }
 

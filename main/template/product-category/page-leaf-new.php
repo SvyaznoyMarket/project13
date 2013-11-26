@@ -28,9 +28,7 @@
 
     <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
-    <? if ('jewel' === $listingStyle): ?>
-        <div class="bCustomFilter"<? if(!empty($promoStyle['promo_image'])): ?> style="<?= $promoStyle['promo_image'] ?>"<? endif ?>>
-    <? endif ?>
+    <div class="bCustomFilter"<? if(!empty($promoStyle['promo_image'])): ?> style="<?= $promoStyle['promo_image'] ?>"<? endif ?>>
         <h1 class="bTitlePage"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?></h1>
 
         <? if (\App::config()->adFox['enabled']): ?>
@@ -39,7 +37,7 @@
 
         <? if (!empty($promoContent)): ?>
             <?= $promoContent ?>
-        <? else: ?>
+        <? elseif ($productPager->getLastPage() > 1): ?>
             <?= $helper->render('product-category/__children', ['category' => $category, 'promoStyle' => $promoStyle]) // дочерние категории ?>
         <? endif ?>
 
@@ -57,8 +55,7 @@
             'pager'          => $productPager,
             'productSorting' => $productSorting,
         ]) // сортировка, режим просмотра, режим листания ?>
-
-    <? if ('jewel' === $listingStyle): ?></div><? endif // конец блока class="bCustomFilter" ?>
+    </div>
 
     <?= $helper->render('product/__list', [
         'pager'                  => $productPager,

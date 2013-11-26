@@ -23,22 +23,20 @@ return function (
 
 ?>
 <div class="bWidgetBuy mWidget mLiftGift">
-    <div class="bTitle">Подари жизнь!<span class="bSubTitle">Благотворительный фонд</div>
-
-    Специальная цена при благотворительной покупке в подарок ребенку:
-
-    <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
-
     <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId() . '-lifeGift')]) ?>
 
     <div class="bWidgetBuy__eBuy btnBuy mBtnLifeGift">
-        <a id="<?= \View\Id::cartButtonForProduct($product->getId() . '-lifeGift') ?>" class="bLifeGiftLink jsLifeGiftButton" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Подарить</a>
+        <a class="bLifeGiftLink jsLifeGiftButton <?= \View\Id::cartButtonForProduct($product->getId() . '-lifeGift') ?>" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Подарить</a>
     </div>
 
-    <div class="bLiftGiftLogo"><img src="/css/lifeGift/img/podari-zhizn-logo-people.png" /></div>
+    <ul class="bDeliveryGift">
+        <li class="bDeliveryGift__eItem mDeliveryPrice"><span><span class="bJustText">Доставка</span></span>  в Фонд &#171;Подари жизнь&#187;, 09.12.2013
+        </li>
+    </ul>
 
+    <div class="bGiftText">Специальная цена этого подарка</div>
 
-    <div class="bLiftGiftFootnote">Фонд "Подари жизнь" помогает детям с трудными заболеваниями.<br/>С 15 ноября по 15 декабря вы можете купить этот товар в подарок ребенку.<br/>Доставку мы возьмем на себя.</div>
+    <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 </div>
 
 <? };

@@ -67,7 +67,7 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->reviewsStore['url']          = 'http://reviews.enter.ru/reviews/';
+$c->reviewsStore['url']          = 'http://admin.enter.ru/reviews/';
 $c->reviewsStore['retryCount']   = 2;
 $c->reviewsStore['timeout']      = 0.36;
 $c->reviewsStore['retryTimeout'] = [
@@ -314,12 +314,6 @@ $c->smartengine['logEnabled']     = true;
 $c->smartengine['logDataEnabled'] = true;
 $c->smartengine['sslVerify']      = true;
 
-$c->crossss['enabled'] = true;
-$c->crossss['timeout'] = 0.3;
-$c->crossss['apiUrl']  = 'http://crossss.com/api.ashx';
-$c->crossss['id']      = 45;
-$c->crossss['apiKey']  = '5a0bb0cb92a94f7db8a9bf4bfacdbe39';
-
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;
 $c->coupon['enabled'] = true;
@@ -366,10 +360,10 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
-$c->lifeGift['enabled'] = false;
-$c->lifeGift['regionId'] = 144756;
-$c->lifeGift['labelId'] = 18;
-$c->lifeGift['deliveryTypeId'] = 1065;
+$c->lifeGift['enabled'] = true;
+$c->lifeGift['regionId'] = 151021;
+$c->lifeGift['labelId'] = 17;
+$c->lifeGift['deliveryTypeId'] = 1077;
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';

@@ -44,15 +44,16 @@
 
 			// Продукты в блоке
 			self.products = [];
-			// Общая стоимость блока
+			// Общая стоимость товаров в блоке
 			self.fullPrice = 0;
+			// Полная стоимость блока с учетом доставки
+			self.totalBlockSum = 0;
 			// Метод доставки
 			self.state = state;
 			// Название метода доставки
 			self.deliveryName = window.OrderModel.orderDictionary.getNameOfState(state);
-			
-			// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
-			self.deliveryPrice = Number.POSITIVE_INFINITY;
+			// Стоимость доставки. Берем минимально возможное значение, чтобы сравнивая с ним находить максимальное
+			self.deliveryPrice = Number.NEGATIVE_INFINITY;
 
 			// Выбранная дата доставки
 			self.choosenDate = ko.observable();
@@ -315,9 +316,9 @@
 				return;
 			}
 
-			// Определение стоимости доставки. Если стоимость доставки данного товара ниже стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
+			// Определение стоимости доставки. Если стоимость доставки данного товара выше стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
 			productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
-			self.deliveryPrice = ( self.deliveryPrice > productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
+			self.deliveryPrice = ( self.deliveryPrice < productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
 
 			tmpProduct = {
 				id: product.id,
@@ -341,7 +342,7 @@
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
 			// Добавляем стоимость продукта к общей стоимости блока доставки
-			self.fullPrice += tmpProduct.price;
+			self.fullPrice = ENTER.utils.numMethods.sumDecimal(tmpProduct.price, self.fullPrice);
 
 			self.products.push(tmpProduct);
 		};
@@ -356,7 +357,8 @@
 				nowTotalSum = window.OrderModel.totalSum();
 			// end of vars
 
-			nowTotalSum += self.fullPrice + self.deliveryPrice;
+			self.totalBlockSum = ENTER.utils.numMethods.sumDecimal(self.fullPrice, self.deliveryPrice);
+			nowTotalSum = ENTER.utils.numMethods.sumDecimal(self.totalBlockSum, nowTotalSum);
 			window.OrderModel.totalSum(nowTotalSum);
 
 			console.log(window.OrderModel.totalSum());
@@ -1809,7 +1811,9 @@
 
 
 		// выбираем первый доступный метод оплаты
-		$('.bPayMethod:visible .jsCustomRadio').eq(0).attr('checked', 'checked').trigger('change');
+		if ( 0 === $('.bPayMethod:visible .jsCustomRadio:checked').length ) {
+			$('.bPayMethod:visible .jsCustomRadio').eq(0).attr('checked', 'checked').trigger('change');
+		}
 
 		/**
 		 * Проверка примененных купонов
@@ -1819,7 +1823,7 @@
 		 */
 		if ( ( global.OrderModel.hasCoupons() && global.OrderModel.deliveryBoxes().length > 1 ) || 
 			( global.OrderModel.appliedCoupon() && global.OrderModel.appliedCoupon().sum && 
-			( global.OrderModel.totalSum() <= global.OrderModel.appliedCoupon().sum ) ) ) {
+			( parseFloat(global.OrderModel.totalSum()) <= parseFloat(global.OrderModel.appliedCoupon().sum) ) ) ) {
 			console.warn('Нужно удалить купон');
 
 			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
@@ -1950,7 +1954,7 @@
 			if (
 			 /* 6 is DeliveryTypeId for PickPoint  */
 			( 6 === global.OrderModel.choosenDeliveryTypeId && false == isAvailableToPickpoint ) ||
-			( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId ) ||
+			( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId && global.OrderModel.lifeGift() === false ) ||
 			( !isNaN(maxSum) && maxSum < unwrapVal ) ) {
 				node.hide();
 

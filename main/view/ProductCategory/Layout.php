@@ -100,6 +100,8 @@ class Layout extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
+        $ret = '';
+
         // заголовок контента страницы
         if (!$this->hasParam('title')) {
             $this->setParam('title', null);
@@ -110,7 +112,14 @@ class Layout extends \View\DefaultLayout {
         // }
         $this->setParam('breadcrumbs', []);
 
-        return $this->render('_contentHead', array_merge($this->params, ['title' => null])); // TODO: осторожно, костыль
+        $categoryData = $this->tryRender('product-category/_categoryData', array('page' => $this, 'category' => $this->getParam('category')));
+        $contentHead = $this->render('_contentHead', array_merge($this->params, ['title' => null])); // TODO: осторожно, костыль
+
+        if ($categoryData) $ret .= $categoryData;
+        if ($contentHead) $ret .= $contentHead;
+
+        return $ret;
+
     }
 
     public function slotBodyDataAttribute() {
@@ -199,9 +208,7 @@ class Layout extends \View\DefaultLayout {
         $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['город'] = $data;
         });
-        $dataStore->addQuery('inflect/сайт.json', [], function($data) use (&$patterns) {
-            if ($data) $patterns['сайт'] = $data;
-        });
+        $patterns['сайт'] = $dataStore->query('/inflect/сайт.json');
 
         $dataStore->execute();
 

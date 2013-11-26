@@ -585,9 +585,9 @@ class Action {
                         }
 
                         $creditData['vars']['items'][] = [
-                            'name'     => $product->getName(),
-                            'quantity' => (string)$orderProduct->getQuantity(),
-                            'price'    => $orderProduct->getPrice(),
+                            'name'     => sprintf('%s шт %s', $orderProduct->getQuantity(), $product->getName()), // SITE-2662
+                            'quantity' => "1", // SITE-2662
+                            'price'    => $orderProduct->getSum(), // SITE-2662
                             'articul'  => $product->getArticle(),
                             'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
                         ];
@@ -598,18 +598,6 @@ class Action {
         }
 
         $paymentUrl = $order->getPaymentUrl(); // раньше было: $paymentUrl = \App::session()->get('paymentUrl');
-
-        // crossss
-        if (\App::config()->crossss['enabled']) {
-            try {
-                foreach ($orders as $order) {
-                    (new \Controller\Crossss\OrderAction())->create($order, $productsById);
-                }
-            } catch (\Exception $e) {
-                \App::logger()->error($e, ['crossss']);
-            }
-        }
-
 
         $page = new \View\Order\CompletePage();
         $page->setParam('form', $form);

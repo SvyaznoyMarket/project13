@@ -25,7 +25,7 @@ $helper = new \Helper\TemplateHelper();
 
     <? if (!empty($promoContent)): ?>
         <?= $promoContent ?>
-    <? else: ?>
+    <? elseif ($productPager->getLastPage() > 1): ?>
         <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
     <? endif ?>
 
@@ -46,6 +46,8 @@ $helper = new \Helper\TemplateHelper();
         'view'                   => $productView,
         'productVideosByProduct' => [], //$productVideosByProduct,
         'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
+        'buyMethod'              => $slice->getProductBuyMethod(),
+        'showState'              => $slice->getShowProductState(),
     ]) // листинг ?>
 
     <div class="bSortingLine mPagerBottom clearfix">

@@ -201,7 +201,7 @@ if ($paypalECS) {
 					Итого с доставкой:&nbsp;&nbsp;
 
 					<span class="bDelivery">
-						<span data-bind="text: window.printPrice( box.fullPrice + box.deliveryPrice )"></span>&nbsp;<span class="rubl">p</span>
+						<span data-bind="text: window.printPrice( box.totalBlockSum )"></span>&nbsp;<span class="rubl">p</span>
 					</span>
 				</li>
 			</ul>
@@ -299,6 +299,8 @@ if ($paypalECS) {
 		</div>
 	</div>
 	<!-- /Sale section -->
+    <? elseif (!$lifeGift): ?>
+        Купоны на сайте временно не принимаются. Вы можете использовать их в любом из наших магазинов или обратиться в контакт-центр. Приносим свои извинения
     <? endif ?>
 
 	<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
@@ -334,6 +336,21 @@ if ($paypalECS) {
 						<span class="bPlaceholder">+7</span> 
 						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
 					</div>
+
+                    <label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
+                    <div class="bBuyingLine__eRight">
+                        <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
+
+                        <div class="bSubscibeCheck bInputList">
+                            <input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
+                            <label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
+                        </div>
+                    </div>
+
+                    <label class="bBuyingLine__eLeft">Добрые пожелания ребенку</label>
+                    <div class="bBuyingLine__eRight">
+                        <textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
+                    </div>
 				<? else: ?>
 					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
 					<div class="bBuyingLine__eRight">
@@ -448,10 +465,17 @@ if ($paypalECS) {
 
 					<!-- Privacy and policy -->
 					<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[agreed]" hidden id="order_agreed"/>
-
 					<label class="bCustomLabel mCustomLabelBig" for="order_agreed">
 						Я ознакомлен и согласен с «<a href="<?= $isCorporative ? '/corp-terms' : '/terms' ?>" target="_blank">Условиями продажи</a>» и «<a href="/legal" target="_blank">Правовой информацией</a>»*
 					</label>
+
+                    <? if ($lifeGift): ?>
+                        <br />
+                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[lifeGift_agreed]" hidden id="order_lifeGift_agreed"/>
+                        <label class="bCustomLabel mCustomLabelBig" for="order_lifeGift_agreed">
+                            Оформляя и оплачивая настоящий заказ я даю поручение компании ООО «Энтер» передать приобретенный мною товар в качестве дара в Благотворительный фонд помощи детям с онкогематологическими и иными тяжелыми заболеваниями «ПОДАРИ ЖИЗНЬ» в срок до 23.12.2013 по адресу Колодезный переулок, дом 3 стр. 17*
+                        </label>
+                    <? endif ?>
 
 					<p class="bFootenote">* Поля обязательные для заполнения</p>
 

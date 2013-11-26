@@ -2456,6 +2456,16 @@
     font-size: 30px;
     font-family: "Enter";
   }
+  .bFormLogin__eComplete {
+    display: none;
+    text-align: center;
+    padding: 10px;
+    background: #ffa901;
+    font-size: 16px;
+    color: white;
+    width: 305px;
+    border-radius: 4px;
+  }
   .bFormLogin__ePlace {
     display: inline-block;
     margin-right: 30px;
@@ -9039,7 +9049,14 @@
   }
   #mainPage .topbar .headerContactPhone,
   #mainPage .topbar .headerShopLink {
+    display: block;
+    color: #fff;
+  }
+  #mainPage .topbar .headerShopLink {
     display: none;
+  }
+  #mainPage .topbar .bRegion {
+    width: 580px;
   }
   #mainPage .searchtext {
     -webkit-box-shadow: 0 0 10px 4px #444443;
@@ -10495,10 +10512,10 @@
     line-height: 24px;
   }
   .bInputList .mCustomCheckBig + .bCustomLabel {
-    background: url("/css/common/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
+    background: url("data: image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAYdEVYdENyZWF0aW9uIFRpbWUAMjAuMTEuMjAxM1Han3MAAAFQSURBVEiJ7Za7bsIwGIU/X0IJlVBgY84T9FXapTOiI2OfomPHSoxs7av0CbwyAgtOYrDdgSZKq1aVuAyVOJKH38P5/B/LFwFgjLkGboEX4IrjVAEPwFue5xthjMmAJynlZDgc0uv10Fof5Lzb7bDWslwuCSHMgEcN3CulJqPRiE6nc9TStdb0+33SNGWxWIy99+/CGBOzLGMwGCCEOApQK8bIarVivV4jAbrd7snMAYQQpGkKsAec0rwNaQDn1AXwq2KM5wXUugAugP8CiDE2B+MUavtJAOcc3vuTAUIIOOcA0ADWWpIkAUApdfD1HWPEe09VVVhrG8C0LMvn+pFIkgQp91sjhGhGXdet1zG0ow0hsN1uKYqCsiwBphqYAzdFUYydcyilkFJ+Ma7r78Zt8xgjIQS893XcM2AuoPm23H1Oqp/abwP+kAfGwGue55sPn+udA99ikT0AAAAASUVORK5CYII=") no-repeat scroll 0px 0px transparent;
   }
   .bInputList .mCustomCheckBig:checked + .bCustomLabel {
-    background-position: 0 -54px;
+    background: url("data: image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAYdEVYdENyZWF0aW9uIFRpbWUAMjAuMTEuMjAxM1Han3MAAAG7SURBVEiJtZa9S8NAGIefXKOi9WvQIgjSSYouXZwULILO4p/g1s3OiqLY1erUTcTRQcS1WBB0cepSKC4GoSDWodaPYsyHwxniBzZpWl8Id8l7+T2/93IXTuEzShlmgSQwA4wSLMrABZCNpTgHUD7Ft9UQq5F+he5OUEPB1A0T6jrc12wMk3QsxZpSyjDXqXI2NqQQEgF9/wjTgtsHG91gQQDJob72iQOEBAz3KwBJAcyHu9on7kSP1JwXwIAI6j4chUQe4ju/UkIBoLe1iZk+hkgCxlf+HBIcMLkBg3HZL262GRCOSgBAtfAPgKl9t3+13HBo84BIQl4A17uygsCA0cXfH3BiXbbvVShuefpRG2anj2XbMSDn+Zv7PQnxiMYVOOU7K+ar++s9T3FvwOWS69JZ8+DbvTfgRXOdhqPuc5/uvQGO2Fe32oFv9/4A71W4OXDvy6e+xf0BALRDF1Y+aQqgAo+W5fFHrRbgqLk9adkAPAsg/6o39a6veH0DICeAbKVmY1rtEzctqNRsgKyIpcjpBmmtYvNUB6MFkGHBUx20io1ukI6lyClOspRhDvfYMhKQcYd7bMkDfABX0JEueuyW2AAAAABJRU5ErkJggg==") no-repeat scroll 0px 0px transparent;
   }
   .bInputList .mCustomLabelBig.mChecked {
     background-position: 0 -54px;
@@ -11093,6 +11110,11 @@
     background: #000000;
     border-color: #000000;
     font-weight: normal;
+  }
+  .jewel .bSeoText {
+    clear: both;
+    padding: 0 15px;
+    margin: 10px 0 35px;
   }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
@@ -12577,7 +12599,7 @@
   }
   .bListing .bPriceLine .bPriceOld {
     float: left;
-    width: 80px;
+    width: 99px;
     color: #919291;
     font-size: 14px;
   }
@@ -12600,6 +12622,9 @@
     float: left;
     width: 112px;
     font-size: 20px;
+  }
+  .bListing .bPriceLine .bPrice.bHasSale {
+    color: #e62b34;
   }
   .bListing .bPriceLine .bOptions {
     float: right;
@@ -13564,6 +13589,9 @@
     text-decoration: none;
     color: #ffffff;
   }
+  .mLiftGift {
+    padding-bottom: 10px;
+  }
   .mLiftGift .bTitle {
     font-size: 16px;
     color: #c52126;
@@ -13576,6 +13604,24 @@
   .mLiftGift .bPrice {
     font-size: 26px;
     margin: 10px 0 0;
+    text-align: center;
+  }
+  .mLiftGift .bDeliveryGift {
+    margin: 20px 0 10px;
+  }
+  .mLiftGift .bDeliveryGift__eItem {
+    padding-left: 25px;
+    margin: 0 0 12px 4px;
+    background-repeat: no-repeat;
+    background-image: url("/css/rightBarCard/img/ico.png");
+  }
+  .mLiftGift .bDeliveryGift__eItem span {
+    font-size: 14px;
+  }
+  .mLiftGift .bDeliveryGift__eItem.mDeliveryPrice {
+    background-position: 0 -34px;
+  }
+  .mLiftGift .bGiftText {
     text-align: center;
   }
   .bLiftGiftLogo {

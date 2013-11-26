@@ -32,7 +32,7 @@ class Action {
         }
 
         $limit = \App::config()->product['itemsPerPage'];
-        $offset = intval($pageNum - 1) * $limit;
+        $offset = intval($pageNum - 1) * $limit - (1 === $pageNum ? 0 : 1);
         $categoryId = (int)$request->get('category');
         if (!$categoryId) $categoryId = null;
 

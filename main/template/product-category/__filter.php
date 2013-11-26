@@ -42,7 +42,7 @@ return function(
         }
 
         // фильтр "Наличие в магазинах"
-        if ((bool)$shops) {
+        if (false && (bool)$shops) {
             $shopFilter = new \Model\Product\Filter\Entity();
             $shopFilter->setId('shop');
             $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
@@ -60,11 +60,13 @@ return function(
     };
 
     $countFilters = count($productFilter->getFilterCollection());
+    $countInListFilters = null;
     if (0 == $countFilters) {
         $insertCustomFilters();
-    }else{
+    } else {
         $insertIndex = $countFilters > 3 ? 3 : $countFilters;
         $i = 1;
+        $countInListFilters = 0;
         foreach ($productFilter->getFilterCollection() as $filter) {
             if ($filter->isPrice()) {
                 $priceFilter = $filter;
@@ -76,12 +78,16 @@ return function(
 
             if ($insertIndex == $i) {
                 $insertCustomFilters();
-
                 $i++;
+            }
+
+            if ($filter->getIsInList()){
+                $countInListFilters++;
             }
         }
     }
 
+    if (0 === $countInListFilters) return;
 ?>
 
     <form class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
