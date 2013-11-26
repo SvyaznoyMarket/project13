@@ -328,16 +328,16 @@ class DeliveryAction {
                 }
 
                 if ($oneClick) {
-                    $setUrl = $router->generate('cart.oneClick.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]);
+                    $setUrl = $router->generate('cart.oneClick.product.set', ['productId' => $productId]);
                     $deleteUrl = $router->generate('cart.oneClick.product.delete', ['productId' => $productId]);
                 } else if ($paypalECS) {
-                    $setUrl = $router->generate('cart.paypal.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]);
+                    $setUrl = $router->generate('cart.paypal.product.set', ['productId' => $productId]);
                     $deleteUrl = $router->generate('cart.paypal.product.delete', ['productId' => $productId]);
                 } else if ($lifeGift) {
-                    $setUrl = $router->generate('cart.lifeGift.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]);
+                    $setUrl = $router->generate('cart.lifeGift.product.set', ['productId' => $productId]);
                     $deleteUrl = $router->generate('cart.lifeGift.product.delete', ['productId' => $productId]);
                 } else {
-                    $setUrl = $router->generate('cart.product.set', ['productId' => $productId, 'quantity' => $productItem['quantity']]);
+                    $setUrl = $router->generate('cart.product.set', ['productId' => $productId]);
                     $deleteUrl = $router->generate('cart.product.delete', ['productId' => $productId]);
                 }
 
