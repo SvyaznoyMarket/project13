@@ -490,17 +490,29 @@ if ($oneClick) {
 		
 
 			<!-- Methods of payment -->
-			<? if (!$oneClick): ?>
-				<h2 class="bBuyingSteps__eTitle" data-bind="css: { hidden: paypalECS }">Оплата</h2>
+			<? if ($oneClick): ?>
+                <h2 class="bBuyingSteps__eTitle"></h2>
 
-				<div class="bBuyingLine clearfix mPayMethods" data-bind="css: { hidden: paypalECS }">
-					<div class="bBuyingLine__eLeft"></div>
-					<div class="bBuyingLine__eRight bInputList">
-						<?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
-					</div>
-				</div>
-			<? else: ?>
-				Блок купить в кредит
+                <div class="bBuyingLine clearfix mPayMethods">
+                    <div class="bBuyingLine__eLeft"></div>
+                    <div class="bBuyingLine__eRight bInputList">
+                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[payment_method_id]" value="<?= \Model\PaymentMethod\Entity::CREDIT_ID ?>" hidden id="order_payment_method_id_6"/>
+                        <label class="bCustomLabel mCustomLabelBig" for="order_payment_method_id_6">
+                            Купить в кредит
+                        </label>
+
+                        <?= $helper->render('order/newForm/__paymentMethod-credit', ['paymentMethod' => reset($paymentMethods), 'banks' => $banks, 'creditData' => $creditData]) ?>
+                    </div>
+                </div>
+            <? else: ?>
+                <h2 class="bBuyingSteps__eTitle" data-bind="css: { hidden: paypalECS }">Оплата</h2>
+
+                <div class="bBuyingLine clearfix mPayMethods" data-bind="css: { hidden: paypalECS }">
+                    <div class="bBuyingLine__eLeft"></div>
+                    <div class="bBuyingLine__eRight bInputList">
+                        <?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
+                    </div>
+                </div>
 			<? endif ?>
 			<!-- /Methods of payment -->
 

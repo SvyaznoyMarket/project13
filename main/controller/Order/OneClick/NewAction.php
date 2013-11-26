@@ -48,7 +48,7 @@ class NewAction {
             ) {
                 foreach ($data as $item) {
                     $paymentMethod = new \Model\PaymentMethod\Entity($item);
-                    if ($paymentMethod->getPayOnReceipt() != \Model\PaymentMethod\Entity::TYPE_NOW) continue;
+                    if (!$paymentMethod->getIsCredit()) continue;
 
                     $paymentMethods[] = $paymentMethod;
                 }
@@ -58,9 +58,14 @@ class NewAction {
             /** @var $subways \Model\Subway\Entity[] */
             $subways = [];
 
-            // кредитные банки
+            // запрашиваем список кредитных банков
             /** @var $banks \Model\CreditBank\Entity[] */
             $banks = [];
+            \RepositoryManager::creditBank()->prepareCollection(function($data) use (&$banks) {
+                foreach ($data as $item) {
+                    $banks[] = new \Model\CreditBank\Entity($item);
+                }
+            });
 
             \App::coreClientV2()->execute();
 
