@@ -24,11 +24,16 @@ class Entity {
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
-        if (array_key_exists('sum', $data)) $this->setSum($data['sum']);
         if (array_key_exists('quantity', $data)) $this->setQuantity($data['quantity']);
         if (array_key_exists('warranty_id', $data)) $this->setWarrantyId($data['warranty_id']);
         if (array_key_exists('warranty_price', $data)) $this->setWarrantyPrice($data['warranty_price']);
         if (array_key_exists('warranty_quantity', $data)) $this->setWarrantyQuantity($data['warranty_quantity']);
+
+        if (array_key_exists('sum', $data)) { // TODO: осторожно, костыль для ядра
+            $this->setSum($data['sum']);
+        } else {
+            $this->setSum($this->getPrice() * $this->getQuantity());
+        }
     }
 
     /**
