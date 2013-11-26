@@ -293,7 +293,7 @@
 			myThingsAnalytics(data);
 			adAdriver(data);
 			addToRetailRocket(data);
-			addToLiveTex(data);
+			// addToLiveTex(data);
 
 			if ( data.redirect ) {
 				console.warn('redirect');
