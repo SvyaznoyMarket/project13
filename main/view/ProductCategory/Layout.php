@@ -24,22 +24,7 @@ class Layout extends \View\DefaultLayout {
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
-            $breadcrumbs = [];
-            foreach ($category->getAncestor() as $ancestor) {
-                $link = $ancestor->getLink();
-                if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
-                $breadcrumbs[] = array(
-                    'name' => $ancestor->getName(),
-                    'url'  => $link,
-                );
-            }
-            $link = $category->getLink();
-            if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
-            $breadcrumbs[] = array(
-                'name' => $category->getName(),
-                'url'  => $link,
-            );
-
+            $breadcrumbs = $this->getBreadcrumbsPath();
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
 
