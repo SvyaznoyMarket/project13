@@ -1,0 +1,84 @@
+ /**
+  * Стили шаблона
+  */
+.wrapper {
+	margin: 0 auto;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	padding: 0 10px;
+	background: @white;
+	width: 940px;
+
+	//Стили шаблона главной страницы
+	&.mWrapperMain {
+		background: @black;
+	}
+}
+
+/**
+ * Шапка
+ */
+.header {
+	position: relative;
+}
+
+/**
+ * Контентная часть
+ */
+.content {
+	padding: 0 0 222px;
+
+	//Контентная часть страницы оформления заказа
+	// &.mContentOrder {
+	// 	padding-bottom: 390px;
+	// }
+	&.mContentOrder {
+		padding-bottom: 390px;
+	}
+
+	//Контентная часть главной страницы
+	&.mContentMain {
+		padding-bottom: 470px;
+	}
+}
+
+/**
+ * Стили кнопок
+ */
+
+//темно-серая кнопка в фильтрах и в фиксированной плашке
+.btnGrey {
+	.blackGrad();
+	.rounded(4px);
+	display: inline-block;
+	padding-left: 15px;
+
+	width: 190px;
+	border: 1px solid #a1a1a1;
+
+	color: @white;
+
+	vertical-align: top;
+
+	font-weight: bold;
+	line-height: 30px;
+	zoom: 1;
+
+	*display: inline;
+
+	&:hover {
+		background: @black;
+
+		color: @white;
+		text-decoration: none;
+	}
+}
+
+/**
+ * Фикс однопиксельной картинки, которая выводится после футера.
+ */
+img[height="1"],
+img[height="0"] {
+	display: block;
+}

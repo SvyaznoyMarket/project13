@@ -39,7 +39,7 @@
       <? foreach ($reviewsDataSummary['user'] as $numStars => $count) { ?>
         <div class="bcolStarRow clearfix">
           <? for ($i=0; $i < $numStars; $i++) { ?>
-            <img src="<?= $reviewsStarSrc ?>">
+            <img src="<?= $reviewsStarSrc ?>" />
           <? } ?>
         </div>
       <? } ?>

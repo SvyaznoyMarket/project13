@@ -43,30 +43,30 @@
 
 <?= $page->slotBanner() ?>
 
-<div class="allpage">
-    <? if (\App::config()->adFox['enabled']): ?>
-        <div class="adfoxWrapper" id="adfox980"></div>
-    <? endif ?>
+<div class="wrapper mWrapperMain">
+    <div class="content mContentMain clearfix">
+        <?= $page->slotAdFox() ?>
 
-    <?= $page->slotHeader() ?>
+        <?= $page->slotHeader() ?><!--/ Шапка -->
 
-    <?= $page->slotContentHead() ?>
+        <?= $page->slotContentHead() ?>
 
-    <div class="bigbanner">
-        <div class='bCarouselWrap'>
-            <div class='bCarousel'>
-                <div class='bCarousel__eBtnL leftArrow'></div>
-                <div class='bCarousel__eBtnR rightArrow'></div>
-                <img class="centerImage" src="" alt=""/>
+        <div class="bigbanner">
+            <div class='bCarouselWrap'>
+                <div class='bCarousel'>
+                    <div class='bCarousel__eBtnL leftArrow'></div>
+                    <div class='bCarousel__eBtnR rightArrow'></div>
+                    <img class="centerImage" src="" alt=""/>
+                </div>
             </div>
         </div>
-    </div>
+        <?= $page->slotSurveybar() ?>
+    </div><!--/ Контент -->
+</div><!--/ Шаблон -->
 
+<div class="footer__main">
     <?= $page->slotFooter() ?>
-    <?= $page->slotSurveybar() ?>
-
-    <div class="clear"></div>
-</div>
+</div><!--/ Подвал -->
 
 <?= $page->slotRegionSelection() ?>
 <?= $page->slotAuth() ?>

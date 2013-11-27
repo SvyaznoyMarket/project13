@@ -10,29 +10,29 @@ $userEntity = $user->getEntity();
 ?>
 
 <? if (false && $user->getPhoto()): ?>
-<div class="pb10">
-    <span class="avatar">
-        <b></b>
-        <img src="<?= $userEntity->getPhoto() ?>" alt="" width="54" height="54"/>
-    </span>
+<div class="userAvatar">
+    <img src="<?= $userEntity->getPhoto() ?>" alt="" width="54" height="54"/>
 </div>
 <? endif ?>
 
-<div class="font16 pb5">
-    Привет,<br/><strong><?= $userEntity->getName() ?></strong>
+<div class="userName">
+    Привет,<strong class="userName__name"><?= $userEntity->getName() ?></strong>
 </div>
 
-<div class="pb10">
-    <?= $userEntity->getEmail()?><br/><? echo $userEntity->getMobilePhone() ?>
-</div>
+<ul class="uderInfo">
+    <li class="uderInfo__item"><?= $userEntity->getEmail()?></li>
 
-<div class="pb20">
-    <? if ($userEntity->getBirthday()): ?>
-        Дата рождения:<br/><?= $userEntity->getBirthday()->format('d.m.Y') ?>
-        <br/>
-    <? endif ?>
+    <li class="uderInfo__item"><? echo $userEntity->getMobilePhone() ?></li>
 
-    <? if ($userEntity->getOccupation()): ?>
-        Деятельность:<br/><?= $userEntity->getOccupation() ?>
-    <? endif ?>
-</div>
+    <li class="uderInfo__item">
+        <? if ($userEntity->getBirthday()): ?>
+            Дата рождения:<br/><?= $userEntity->getBirthday()->format('d.m.Y') ?>
+        <? endif ?>
+    </li>
+
+    <li class="uderInfo__item">
+        <? if ($userEntity->getOccupation()): ?>
+            Деятельность:<br/><?= $userEntity->getOccupation() ?>
+        <? endif ?>
+    </li>
+</ul>

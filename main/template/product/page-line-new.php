@@ -14,7 +14,7 @@
 <?
 $helper = new \Helper\TemplateHelper();
 ?>
-<div class="mProductSectionSet">
+
     <?= $helper->render('product/__data', ['product' => $mainProduct]) ?>
 
 	<div class="bProductSectionLeftCol" data-value="<?= $page->json([

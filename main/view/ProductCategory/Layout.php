@@ -222,5 +222,4 @@ class Layout extends \View\DefaultLayout {
             "<meta property=\"og:type\" content=\"website\"/>\r\n";
 
     }
-
 }

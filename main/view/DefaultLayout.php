@@ -25,6 +25,8 @@ class DefaultLayout extends Layout {
 
         $this->addStylesheet('/css/global.min.css');
 
+        $this->addStylesheet('/styles/global.min.css');
+
         $this->addJavascript(\App::config()->debug ? '/js/loadjs.js' : '/js/loadjs.min.js');
     }
 
@@ -175,7 +177,15 @@ class DefaultLayout extends Layout {
     }
 
     public function slotUserbar() {
-        return $this->render('_userbar');
+        return '';
+    }
+
+    public function slotUserbarContent() {
+        return '';
+    }
+
+    public function slotUserbarContentData() {
+        return '';
     }
 
     public function slotSurveybar() {

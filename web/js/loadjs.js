@@ -337,6 +337,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
+					.script( mustacheUrl )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -354,6 +355,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
+					.script( mustacheUrl )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('infopage.js') )
@@ -508,8 +510,9 @@
 				.queueWait( function() {
 					$LAB.script('jquery-plugins.min.js')
 						.script( getWithVersion('library.js') )
-						.script('JsHttpRequest.min.js')			
+						.script('JsHttpRequest.min.js')
 						.script( directCreditUrl )
+						.script( mustacheUrl )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('product.js') )

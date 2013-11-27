@@ -35,12 +35,15 @@
 </head>
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
     <?= $page->slotConfig() ?>
-    <div class="allpage" id="page">
-        <?= $page->slotAdFox() ?>
 
-        <div class="allpageinner clearfix">
+    <?= $page->slotAdFox() ?>
+
+    <div class="wrapper">
+        <header class="header">
             <?= $page->slotHeader() ?>
+        </header><!--/ Шапка-->
 
+        <div class="content mContentOrder clearfix">
             <?= $page->slotContentHead() ?>
 
             <div class="float100">
@@ -48,37 +51,35 @@
                     <?= $page->slotContent() ?>
                 </div>
             </div>
+
             <div class="column215">
                 <?= $page->slotSidebar() ?>
             </div>
-
-            <div class="clear"></div>
-
-            <?= $page->slotSeoContent() ?>
             
-        </div>
-        <div class="clear"></div>
-    </div>
+            <?= $page->slotSeoContent() ?>
+        </div><!--/ Контент -->
+    </div><!--/ Шаблон -->
 
+    <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 
-    <?= $page->slotFooter() ?>
+    <a class="upper" id="upper" href="#">Наверх</a>
+
     <?= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
-
     <?= $page->slotRegionSelection() ?>
-    <?= $page->slotBodyJavascript() ?>
-    <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>
-    <?= $page->slotYandexMetrika() ?>
-    <?= $page->slotMyThings() ?>
-    <?= $page->slotAdriver() ?>
-    <?= $page->slotPartnerCounter() ?>
+    
+    <div style="position:absolute; height: 0; z-index:-1;">
+        <?= $page->slotBodyJavascript() ?>
+        <?= $page->slotInnerJavascript() ?>
+        <?= $page->slotYandexMetrika() ?>
+        <?= $page->slotMyThings() ?>
+        <?= $page->slotAdriver() ?>
+        <?= $page->slotPartnerCounter() ?>
 
-    <? if (\App::config()->analytics['enabled']): ?>
-        <div id="adblenderCommon" class="jsanalytics"></div>
-    <? endif ?>
-	
-	<a id="upper" href="#">Наверх</a>
-
+        <? if (\App::config()->analytics['enabled']): ?>
+            <div id="adblenderCommon" class="jsanalytics"></div>
+        <? endif ?>
+    </div>
 </body>
 </html>

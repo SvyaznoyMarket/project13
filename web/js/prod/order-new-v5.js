@@ -541,7 +541,7 @@
 
 				tempProduct = self.products.pop();
 				tempProductArray.push(tempProduct);
-				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();;
+				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();
 				console.log('новый токен '+newToken);
 				console.log(self);
 
