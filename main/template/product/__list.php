@@ -7,7 +7,7 @@ return function(
     array $bannerPlaceholder = [],
     $view,
     $buyMethod = null,
-    $showState = null
+    $showState = true
 ) { ?>
     <ul class="bListing clearfix">
         <?= $helper->renderWithMustache('product/list/' . ($view == 'line' ? '_line' : '_compact'), (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState)) ?>
