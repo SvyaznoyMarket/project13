@@ -73,47 +73,21 @@
     <span class="fixedTopBar__cartPrice">{{sum}} <span class="rubl">p</span></span>
 
     <div class="fixedTopBar__dd fixedTopBar__cartOn">
-        <!-- <ul class="cartList">
-            <li class="cartList__item">
-                <a class="cartList__itemLink" href=""><img class="cartList__itemImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></a>
-                <div class="cartList__itemName"><a href="cartList__itemNameLink">Мобильный телефон Explay Power Bank черный</a></div>
-                <div class="cartList__itemInfo">
-                    <span class="price">22 190 &nbsp;<span class="rubl">p</span></span>
-                    <span class="quan">2 шт.</span>
-                    <a href="" class="del">удалить</a>
-                </div>
-            </li>
-
-            <li class="cartList__item">
-                <a class="cartList__itemLink" href=""><img class="cartList__itemImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></a>
-                <div class="cartList__itemName"><a href="cartList__itemNameLink">Мобильный телефон Samsung Champ Neo Duos C3262 белый</a></div>
-                <div class="cartList__itemInfo">
-                    <span class="price">22 190 &nbsp;<span class="rubl">p</span></span>
-                    <span class="quan">2 шт.</span>
-                    <a href="" class="del">удалить</a>
-                </div>
-            </li>
-
-            <li class="cartList__item">
-                <a class="cartList__itemLink" href=""><img class="cartList__itemImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></a>
-                <div class="cartList__itemName"><a href="cartList__itemNameLink">Ноутбук Acer Aspire E1-571G 15,6 500 ГБ i5 3230М GF 710M 1 ГБ Win 8, черный</a></div>
-                <div class="cartList__itemInfo">
-                    <span class="price">22 190 &nbsp;<span class="rubl">p</span></span>
-                    <span class="quan">2 шт.</span>
-                    <a href="" class="del">удалить</a>
-                </div>
-            </li>
-
-            <li class="cartList__item">
-                <a class="cartList__itemLink" href=""><img class="cartList__itemImg" src="http://fs01.enter.ru/6/1/163/27/184686.jpg" /></a>
-                <div class="cartList__itemName"><a href="cartList__itemNameLink">Ноутбук Acer Aspire E1-571G 15,6 500 ГБ i5 3230М GF 710M 1 ГБ Win 8, черный</a></div>
-                <div class="cartList__itemInfo">
-                    <span class="price">22 190 &nbsp;<span class="rubl">p</span></span>
-                    <span class="quan">2 шт.</span>
-                    <a href="" class="del">удалить</a>
-                </div>
-            </li>
-        </ul> -->
+        {{#hasProducts}}
+            <ul class="cartList">
+                {{#products}}
+                    <li class="cartList__item">
+                        <a class="cartList__itemLink" href="{{url}}"><img class="cartList__itemImg" src="{{image}}" /></a>
+                        <div class="cartList__itemName"><a href="{{url}}">{{name}}</a></div>
+                        <div class="cartList__itemInfo">
+                            <span class="price">{{price}} &nbsp;<span class="rubl">p</span></span>
+                            <span class="quan">{{quantity}} шт.</span>
+                            <a href="{{deleteUrl}}" class="del">удалить</a>
+                        </div>
+                    </li>
+                {{/products}}
+            </ul>
+        {{/hasProducts}}
 
         <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 4 товаров, в противном случае display: none; -->
 

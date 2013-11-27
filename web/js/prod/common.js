@@ -3695,6 +3695,7 @@ $(document).ready(function() {
 		config = ENTER.config,
 		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils,
+		clientCart = config.clientCart,
 
 		userbar = $('.fixedTopBar.mFixed'),
 		userbarStatic = $('.fixedTopBar.mStatic'),
@@ -3853,6 +3854,7 @@ $(document).ready(function() {
 		updateBasketInfo = function updateBasketInfo( event, data ) {
 			console.info('userbar::updateBasketInfo');
 			console.log(data);
+			console.log(clientCart);
 
 			var
 				cartWrap = userbar.find('.fixedTopBar__cart'),
@@ -3864,9 +3866,16 @@ $(document).ready(function() {
 
 			console.log('vars inited');
 
+			data.hasProducts = false;
+
 			if ( !(data && data.quantity && data.sum ) ) {
 				console.warn('123');
 				return;
+			}
+
+			if ( clientCart.products.length !== 0 ) {
+				data.hasProducts = true;
+				data.products = clientCart.products;
 			}
 
 			data.sum = printPrice( data.sum );
