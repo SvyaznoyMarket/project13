@@ -296,7 +296,7 @@
 			}
 
 			return false;
-		}
+		};
 
 		/**
 		 * Валидатор формы
@@ -308,7 +308,7 @@
 		 */
 		Login.prototype.getFormValidator = function() {
 			return eval(this.getFormName() + 'Validator');
-		}
+		};
 
 		/**
 		 * Получить название формы
@@ -319,10 +319,8 @@
 		 * @public
 		 */
 		Login.prototype.getFormName = function() {
-			return (this.form.hasClass('jsLoginForm'))
-				? 'signin'
-				: (this.form.hasClass('jsRegisterForm') ? 'register' : (this.form.hasClass('jsResetPwdForm') ? 'forgot' : ''));
-		}
+			return ( this.form.hasClass('jsLoginForm') ) ? 'signin' : (this.form.hasClass('jsRegisterForm') ? 'register' : (this.form.hasClass('jsResetPwdForm') ? 'forgot' : ''));
+		};
 
 		/**
 		 * Сабмит формы регистрации или авторизации
@@ -429,7 +427,7 @@
 		Login.prototype.showLoginForm = function() {
 			showLoginFormLink.hide();
 			loginForm.slideDown(300);
-			$.scrollTo(loginform, 500);
+			$.scrollTo(loginForm, 500);
 		};
 
 
@@ -506,12 +504,13 @@
 		Login.prototype.getUrlParams = function() {
 			var $_GET = {},
 				__GET = window.location.search.substring(1).split('&'),
-				getVar;
+				getVar,
+				i;
 			// end of vars
 
-			for( var i = 0; i < __GET.length; i++ ) {
+			for ( i = 0; i < __GET.length; i++ ) {
 				getVar = __GET[i].split('=');
-				$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
+				$_GET[getVar[0]] = typeof( getVar[1] ) === 'undefined' ? '' : getVar[1];
 			}
 
 			return $_GET;
@@ -522,7 +521,7 @@
 
 
 	$(document).ready(function() {
-		login = new ENTER.constructors.Login();
+		var login = new ENTER.constructors.Login();
 	});
 
 }(window.ENTER));

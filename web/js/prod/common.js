@@ -562,10 +562,8 @@ $.ajaxSetup({
 	// analytics
 	body.on('addtocart', kissAnalytics);
 	body.on('addtocart', googleAnalytics);
-	body.on('addtocart', myThingsAnalytics);
 	body.on('addtocart', adAdriver);
 	body.on('addtocart', addToRetailRocket);
-	body.on('addtocart', addToLiveTex);
 }(this));
  
  
@@ -594,7 +592,6 @@ $.ajaxSetup({
 		slidesWrap = regionWindow.find('.regionSlidesWrap'),
 		moreCityBtn = regionWindow.find('.moreCity'),
 		leftArrow = regionWindow.find('.leftArr'),
-		rightArrow = regionWindow.find('.rightArr'),
 		rightArrow = regionWindow.find('.rightArr'),
 		citySlides = regionWindow.find('.regionSlides'),
 		slideWithCity = regionWindow.find('.regionSlides_slide');
@@ -1554,7 +1551,7 @@ $(document).ready(function(){
 			}
 
 			return false;
-		}
+		};
 
 		/**
 		 * Валидатор формы
@@ -1566,7 +1563,7 @@ $(document).ready(function(){
 		 */
 		Login.prototype.getFormValidator = function() {
 			return eval(this.getFormName() + 'Validator');
-		}
+		};
 
 		/**
 		 * Получить название формы
@@ -1577,10 +1574,8 @@ $(document).ready(function(){
 		 * @public
 		 */
 		Login.prototype.getFormName = function() {
-			return (this.form.hasClass('jsLoginForm'))
-				? 'signin'
-				: (this.form.hasClass('jsRegisterForm') ? 'register' : (this.form.hasClass('jsResetPwdForm') ? 'forgot' : ''));
-		}
+			return ( this.form.hasClass('jsLoginForm') ) ? 'signin' : (this.form.hasClass('jsRegisterForm') ? 'register' : (this.form.hasClass('jsResetPwdForm') ? 'forgot' : ''));
+		};
 
 		/**
 		 * Сабмит формы регистрации или авторизации
@@ -1687,7 +1682,7 @@ $(document).ready(function(){
 		Login.prototype.showLoginForm = function() {
 			showLoginFormLink.hide();
 			loginForm.slideDown(300);
-			$.scrollTo(loginform, 500);
+			$.scrollTo(loginForm, 500);
 		};
 
 
@@ -1764,12 +1759,13 @@ $(document).ready(function(){
 		Login.prototype.getUrlParams = function() {
 			var $_GET = {},
 				__GET = window.location.search.substring(1).split('&'),
-				getVar;
+				getVar,
+				i;
 			// end of vars
 
-			for( var i = 0; i < __GET.length; i++ ) {
+			for ( i = 0; i < __GET.length; i++ ) {
 				getVar = __GET[i].split('=');
-				$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
+				$_GET[getVar[0]] = typeof( getVar[1] ) === 'undefined' ? '' : getVar[1];
 			}
 
 			return $_GET;
@@ -1780,7 +1776,7 @@ $(document).ready(function(){
 
 
 	$(document).ready(function() {
-		login = new ENTER.constructors.Login();
+		var login = new ENTER.constructors.Login();
 	});
 
 }(window.ENTER));
@@ -3798,7 +3794,7 @@ $(document).ready(function() {
 
 			var
 				wrap = userbar.find('.fixedTopBar__cart'),
-				overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: .4 }),
+				overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
 				dataToRender = data.product,
 				template = $('#buyinfo_tmpl'),
 				partials = template.data('partial'),

@@ -57,7 +57,7 @@
 		 * 
 		 * @param	{Number}	nowLeft			Текущий отступ слева
 		 */
-		var sliderControl = function( mainNode ) {
+		var SliderControl = function( mainNode ) {
 			var options = $.extend(
 							{},
 							$.fn.goodsSlider.defaults,
@@ -74,7 +74,7 @@
 				catItem = $self.find(options.categoryItemSelector),
 
 				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
-				elementOnSlide = parseInt(wrap.width()/itemW),
+				elementOnSlide = parseInt(wrap.width()/itemW, 10),
 
 				nowLeft = 0;
 			// end of vars
@@ -236,13 +236,13 @@
 			rightBtn.on('click', nextSlide);
 			leftBtn.on('click', prevSlide);
 			catItem.on('click', selectCategory);
-		}
+		};
 
 
 		return this.each(function() {
 			var $self = $(this);
 
-			new sliderControl($self);
+			new SliderControl($self);
 		});
 	};
 

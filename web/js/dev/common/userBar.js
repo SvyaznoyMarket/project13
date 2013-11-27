@@ -111,7 +111,7 @@
 
 			var
 				wrap = userbar.find('.fixedTopBar__cart'),
-				overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: .4 }),
+				overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
 				dataToRender = data.product,
 				template = $('#buyinfo_tmpl'),
 				partials = template.data('partial'),

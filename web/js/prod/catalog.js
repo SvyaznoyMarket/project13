@@ -366,7 +366,7 @@
 
 			var sendUpdate = function sendUpdate() {
 				filterBlock.trigger('submit');
-			}
+			};
 
 			if ( typeof e === 'object' && e.isTrigger && !needUpdate ) {
 				console.warn('it\'s trigger event!');

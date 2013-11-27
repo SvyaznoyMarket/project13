@@ -19,7 +19,6 @@
 		moreCityBtn = regionWindow.find('.moreCity'),
 		leftArrow = regionWindow.find('.leftArr'),
 		rightArrow = regionWindow.find('.rightArr'),
-		rightArrow = regionWindow.find('.rightArr'),
 		citySlides = regionWindow.find('.regionSlides'),
 		slideWithCity = regionWindow.find('.regionSlides_slide');
 	// end of vars
