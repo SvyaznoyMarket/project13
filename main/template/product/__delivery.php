@@ -6,6 +6,10 @@ return function (
     array $shopStates = [],
     array $deliveryDataResponse = []
 ) {
+    if (!$product->getIsBuyable()) {
+        return '';
+    }
+
     /**
      * @var $shopStates \Model\Product\ShopState\Entity[]
      */
