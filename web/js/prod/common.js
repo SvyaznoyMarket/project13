@@ -3738,7 +3738,6 @@ $(document).ready(function() {
 		utils = ENTER.utils,
 
 		userbar = $('.fixedTopBar.mFixed'),
-		userbarStatic = $('.fixedTopBar.mStatic'),
 		topBtn = userbar.find('.fixedTopBar__upLink'),
 		userbarConfig = userbar.data('value'),
 		body = $('body'),
@@ -3805,7 +3804,6 @@ $(document).ready(function() {
 
 			var
 				userWrap = userbar.find('.fixedTopBar__logIn'),
-				userWrapStatic = userbarStatic.find('.fixedTopBar__logIn'),
 				template = $('#userbar_user_tmpl'),
 				partials = template.data('partial'),
 				html;
@@ -3815,11 +3813,8 @@ $(document).ready(function() {
 				return;
 			}
 
-			html = Mustache.render(template.html(), data, partials);
-
-			userWrapStatic.removeClass('mLogin');
 			userWrap.removeClass('mLogin');
-			userWrapStatic.html(html);
+			html = Mustache.render(template.html(), data, partials);
 			userWrap.html(html);
 		},
 
@@ -3896,7 +3891,6 @@ $(document).ready(function() {
 
 			var
 				cartWrap = userbar.find('.fixedTopBar__cart'),
-				cartWrapStatic = userbarStatic.find('.fixedTopBar__cart'),
 				template = $('#userbar_cart_tmpl'),
 				partials = template.data('partial'),
 				html;
@@ -3909,23 +3903,42 @@ $(document).ready(function() {
 			data.sum = printPrice( data.sum );
 			html = Mustache.render(template.html(), data, partials);
 
-			cartWrapStatic.removeClass('mEmpty');
 			cartWrap.removeClass('mEmpty');
-			cartWrapStatic.html(html);
 			cartWrap.html(html);
+		},
+
+		/**
+		 * Обновление блока с рекомендациями "С этим товаром также покупают"
+		 */
+			updateAlsoBoughtInfo = function updateAlsoBoughtInfo() {
+			console.info('userbar::updateAlsoBoughtInfo');
+
+			var responseFromServer = function ( response ){
+				if ( response.success ) {
+					console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
+					//console.log(response.content);
+				}
+			};
+			//end functions
+
+			$.post(userbarConfig.ajaxAlsoBoughtUrl, responseFromServer);
 		};
 	// end of functions
 
-	console.info('Init userbar module');
-	console.log(userbarConfig);
 
-	body.on('userLogged', updateUserInfo);
-	body.on('basketUpdate', updateBasketInfo);
-	body.on('addtocart', showBuyInfo);
+
 
 
 	if ( userbar.length ) {
+		console.info('Init userbar module');
+		console.log(userbarConfig);
+
 		scrollTarget = $(userbarConfig.target);
+
+		body.on('userLogged', updateUserInfo);
+		body.on('basketUpdate', updateBasketInfo);
+		body.on('addtocart', showBuyInfo);
+		body.on('addtocart', updateAlsoBoughtInfo);
 
 		if ( topBtn.length ) {
 			topBtn.on('click', upToFilter);
