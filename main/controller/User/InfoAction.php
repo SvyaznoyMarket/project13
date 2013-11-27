@@ -19,6 +19,8 @@ class InfoAction {
         /* @var $cart   \Session\Cart */
         $cart = $user->getCart();
 
+        $helper = new \Helper\TemplateHelper();
+
         /** @var $cookies \Http\Cookie[] */
         $cookies = [];
 
@@ -68,6 +70,10 @@ class InfoAction {
                 $responseData['cart']['sum'] = $cart->getSum();
                 $responseData['cart']['quantity'] = $cart->getProductsQuantity() + $cart->getServicesQuantity();
 
+                $productsById = [];
+                foreach (\RepositoryManager::product()->getCollectionById(array_keys($cart->getProducts())) as $product) {
+                    $productsById[$product->getId()] = $product;
+                }
 
                 $buttons = [];
                 $cartProductsArr = [];
@@ -80,6 +86,9 @@ class InfoAction {
                         'quantity'  => $cartProduct->getQuantity(),
                         'price'     => $cartProduct->getPrice(),
                         //'name'     => $cartProduct->getTitl,
+                        'deleteUrl' => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
+                        'url'       => $productsById[$cartProduct->getId()]->getLink(),
+                        'image'     => $productsById[$cartProduct->getId()]->getImageUrl(),
                     ];
 
                     $buttons['product'][] = [
@@ -92,6 +101,9 @@ class InfoAction {
                         //'name'     => $item['name'],
                         'price'     => $item['price'],
                         'quantity'  => $item['quantity'],
+                        'deleteUrl' => $item['deleteUrl'],
+                        'url'       => $item['url'],
+                        'image'     => $item['image'],
                     ];
 
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {
