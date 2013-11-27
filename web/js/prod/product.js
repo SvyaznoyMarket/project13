@@ -1020,6 +1020,7 @@ $(document).ready(function() {
 
 		$('.jsPayPalButton').bind('click', buyOneClickAndRedirect);
 		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
+		$('.jsOneClickButton').bind('click', buyOneClickAndRedirect);
 	})();
 	
 

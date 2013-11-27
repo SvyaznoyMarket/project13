@@ -231,6 +231,12 @@ FormValidator.prototype._validateField = function( field ) {
 	validBy = field.validBy;
 	customErr = field.customErr;
 
+	if ( !fieldNode.length ) {
+		console.warn('нет поля, не валидируем');
+
+		return error;
+	}
+
 	elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
 
 	/**
@@ -318,8 +324,8 @@ FormValidator.prototype._enableHandlers = function() {
 	console.info('_enableHandlers');
 	var self = this,
 		fields = this.config.fields,
-		currentField = null;
-		
+		currentField = null,
+		i;
 	// end of vars
 
 	var validateOnBlur = function validateOnBlur( that ) {
@@ -354,7 +360,7 @@ FormValidator.prototype._enableHandlers = function() {
 		}
 	// end of functions
 
-	for (var i = fields.length - 1; i >= 0; i--) {
+	for ( i = fields.length - 1; i >= 0; i-- ) {
 		currentField = fields[i];
 
 		if ( currentField.fieldNode.length === 0 ) {

@@ -16,13 +16,10 @@ return function(
      * @var $categories \Model\Product\Category\Entity[]
      */
 
-    /** @var $shops \Model\Shop\Entity[] */
-    $shops = $helper->getParam('shops');
-
     $filters = [];
     $priceFilter = null;
 
-    $insertCustomFilters = function() use (&$categories, &$filters, &$shops) {
+    $insertCustomFilters = function() use (&$categories, &$filters) {
         // фильтр "Товары по категориям"
         if ((bool)$categories) {
             $categoryFilter = new \Model\Product\Filter\Entity();
@@ -41,22 +38,6 @@ return function(
             $filters[] = $categoryFilter;
         }
 
-        // фильтр "Наличие в магазинах"
-        if ((bool)$shops) {
-            $shopFilter = new \Model\Product\Filter\Entity();
-            $shopFilter->setId('shop');
-            $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-            $shopFilter->setName('Наличие в магазинах');
-            $shopFilter->getIsInList(true);
-
-            foreach ($shops as $shop) {
-                $option = new \Model\Product\Filter\Option\Entity();
-                $option->setId($shop->getId());
-                $option->setName($shop->getName());
-                $shopFilter->addOption($option);
-            }
-            $filters[] = $shopFilter;
-        }
     };
 
     $countFilters = count($productFilter->getFilterCollection());
@@ -90,9 +71,9 @@ return function(
     if (0 === $countInListFilters) return;
 ?>
 
-    <form class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+    <form id="productCatalog-filter-form" class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
-            <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+            <a class="bFilterToggle btnGrey <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
 
             <? if ($priceFilter && $productFilter) {
                 /**@var     $productFilter      \Model\Product\Filter

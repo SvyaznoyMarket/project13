@@ -362,6 +362,17 @@ return [
         'action'  => ['Cart\LifeGift\ProductAction', 'delete'],
     ],
 
+    // добавление товара в корзину
+    'cart.oneClick.product.set' => [
+        'pattern' => '/cart/one-click/add-product/{productId}',
+        'action'  => ['Cart\OneClick\ProductAction', 'set'],
+    ],
+    // удаление товара из корзины
+    'cart.oneClick.product.delete' => [
+        'pattern' => '/cart/one-click/delete-product/{productId}',
+        'action'  => ['Cart\OneClick\ProductAction', 'delete'],
+    ],
+
     // добавление услуги в корзину
     'cart.service.set' => [
         'pattern' => '/cart/add-service/{serviceId}/for-product/{productId}',
@@ -419,6 +430,15 @@ return [
     'order.1click' => [
         'pattern' => '/orders/1click',
         'action'  => ['Order\OneClickAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'order.oneClick.new' => [
+        'pattern' => '/orders/one-click/new',
+        'action'  => ['Order\OneClick\NewAction', 'execute'],
+    ],
+    'order.oneClick.create' => [
+        'pattern' => '/orders/one-click/create',
+        'action'  => ['Order\OneClick\CreateAction', 'execute'],
         'method'  => ['POST'],
     ],
     'order' => [
@@ -547,6 +567,11 @@ return [
         'pattern' => '/ajax/product-also-viewed/{productId}',
         'action' => ['Product\AlsoViewedAction', 'execute'],
         //'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
+        'require' => ['productId' => '\d+'],
+    ],
+    'product.alsoBought' => [
+        'pattern' => '/ajax/product-also-bought/{productId}',
+        'action' => ['Product\AlsoBoughtAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
     /*

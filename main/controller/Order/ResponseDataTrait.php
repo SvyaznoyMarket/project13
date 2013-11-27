@@ -26,6 +26,9 @@ trait ResponseDataTrait {
         if (!isset($responseData['lifeGift'])) {
             $responseData['lifeGift'] = false;
         }
+        if (!isset($responseData['oneClick'])) {
+            $responseData['oneClick'] = false;
+        }
 
         $productDataById = [];
         if ($exception instanceof \Curl\Exception) {
@@ -106,18 +109,12 @@ trait ResponseDataTrait {
             } else if ((true === $responseData['lifeGift']) && !(bool)\App::user()->getLifeGiftCart()->getProducts()) {
                 $responseData['redirect'] = $router->generate('homepage');
                 $message = 'Пустая корзина';
-            } else if ((false === $responseData['paypalECS']) && (false === $responseData['lifeGift']) && $cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
+            } else if ((true === $responseData['oneClick']) && !(bool)\App::user()->getOneClickCart()->getProducts()) {
+                $responseData['redirect'] = $router->generate('homepage');
+                $message = 'Пустая корзина';
+            } else if ((false === $responseData['paypalECS']) && (false === $responseData['lifeGift']) && (false === $responseData['oneCLick']) && $cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
                 $responseData['redirect'] = $router->generate('cart');
                 $message = 'Пустая корзина';
-            } else {
-                if (1 == $cart->getProductsQuantity()) { // если в корзине всего один товар, то предлагаем попробовать заказ в один клик
-                    $cartProducts = $cart->getProducts();
-                    $cartProduct = reset($cartProducts);
-                    $product = $cartProduct ? \RepositoryManager::product()->getEntityById($cartProduct->getId()) : null;
-                    if ($product) {
-                        $responseData['redirect'] = $product->getLink() . '#oneclick';
-                    }
-                }
             }
         }
 

@@ -274,7 +274,6 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('productCount', $selectedCategory && !is_null($selectedCategory->getProductCount()) ? $selectedCategory->getProductCount() : $result['count']);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
-        $page->setGlobalParam('shops', (\App::config()->shop['enabled'] && !\Controller\ProductCategory\Action::isGlobal()) ? \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()) : []);
         $page->setGlobalParam('shop', $shop);
         $page->setParam('bannerPlaceholder', $bannerPlaceholder);
 

@@ -24,6 +24,10 @@
     <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon.png">
+
+    <meta name="viewport" content="width=1000" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="HandheldFriendly" content="true" />
     <?= $page->slotMobileModify() ?>
     <?= $page->slotStylesheet() ?>
     <?= $page->slotHeadJavascript() ?>
@@ -55,17 +59,16 @@
 </script>
 <!-- js templete -->
 
-<div class="allpage" data="privet">
-    <div class="allpageinner buyingpage">
+<div class="wrapper">
+    <div class="content mContentOrder clearfix">
         <?= $page->slotContent() ?>
-    </div>
-</div>
+    </div><!--/ Контент -->
+</div><!--/ Шаблон -->
+
+<? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 
 <?= $page->slotRegionSelection() ?>
-<? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
-<?= $page->slotFooter() ?>
 <?= $page->slotSurveybar() ?>
-
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotAuth() ?>

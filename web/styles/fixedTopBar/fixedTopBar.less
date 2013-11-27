@@ -1,0 +1,352 @@
+/**
+* Стили вспомогательного фиксированного блока для карточки товара и листинга
+*/
+
+.fixedTopBar {
+	display: none;
+	
+	&.mFixed {
+		position: fixed;
+		background: @white;
+		width: 958px;
+		height: 49px;
+		top: 0;
+		left: 50%;
+		z-index: 999;
+		margin-left: -480px;
+		.drop-shadow(0, 0, 15px, 0.4);
+		.rounded (0 0 4px 4px);
+		border: 1px solid #ddd;
+		border-top: none;
+	}
+
+	&.mStatic {
+		border: 1px solid #ddd;
+		border-top: none;
+		border-right: none;
+		float: right;
+		margin: -10px -10px 0 0;
+		font-size: 12px;
+		width: 229px;
+		position: relative;
+		height: 49px;
+		z-index: 999;
+		display: block;
+
+		.fixedTopBar__cart {
+			width: 91px;
+		}
+
+		.fixedTopBar__logIn {
+			border-left: none;
+		}
+	}
+
+	&:hover {
+
+		.fixedTopBar__cartQuan {
+			animation-name: shake; 
+			animation-duration: 0.6s; 
+			animation-timing-function: ease; 
+			animation-iteration-count: 1;
+
+			-moz-animation-name: shake; 
+			-moz-animation-duration: 0.6s; 
+			-moz-animation-timing-function: ease; 
+			-moz-animation-iteration-count: 1;
+
+			-webkit-animation-name: shake; 
+			-webkit-animation-duration: 0.6s; 
+			-webkit-animation-timing-function: ease; 
+			-webkit-animation-iteration-count: 1;
+		}
+	}
+
+	&.mProdCard {
+
+		.fixedTopBar__crumbs {
+			width: 400px;
+		}
+
+		.fixedTopBar__crumbsList {
+			width: 1200px;
+		}
+
+		.fixedTopBar__crumbsListItem {
+			background-image: none;
+		}
+
+		.transGradWhite {
+			background: url("@{base-url}/fixedTopBar/img/tranGradientWhite.png") no-repeat 0 0;
+			position: absolute;
+			right: 0;
+			top: 12px;
+			height: 30px;
+			width: 27px;
+			display: block;
+		}
+	}
+
+	.wrapperCrumbsList {
+		width: 340px;
+		position: relative;
+		overflow: hidden;
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+	}
+
+	&__up {
+		float: left;
+		padding: 8px 20px 0;
+		height: 41px;
+		background: #f4f4f4;
+		.rounded(0 0 0 4px);
+	}
+
+	&__upLink {
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+
+		 &:hover {
+			background: @black;
+
+			color: @white;
+			text-decoration: none;
+		}
+
+		.cornerTop {
+			font-size: 10px;
+			font-style: normal;
+			display: inline-block;
+			vertical-align: top;
+
+			*display: inline;
+			zoom: 1;
+			float: left;
+			padding-right: 5px;
+		}
+	}	
+
+	&__crumbs {
+		float: left;
+		padding: 0 5px;
+	}
+
+	&__crumbsImg {
+		display: inline-block;	
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+
+		.crumbsImg {
+			margin-right: 5px;
+			width: 49px;
+			height: 49px;
+		}
+	}
+
+	&__crumbsList {
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+		margin: 8px 0 0;
+	}
+
+	&__crumbsListItem {
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+		margin: 0 0 2px;
+		padding-right: 10px;
+		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCMjhGREUyOEZEQUMxMUUyOTI4QjkyMzRGMEUwRjlGQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozNjE4NUIwNjAwRDQxMUUzOTI4QjkyMzRGMEUwRjlGQyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkIyOEZERTI2RkRBQzExRTI5MjhCOTIzNEYwRTBGOUZDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkIyOEZERTI3RkRBQzExRTI5MjhCOTIzNEYwRTBGOUZDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+DzYFVQAAAGlJREFUeNpimDRp0u/fv//DAIONjY2bm9vHjx+h/JcvX1pYWGhraz948ADEB+Lv378HBweLi4sD5ZgYGEBKbt68qaSkxMXFxXDy5EmgTHh4OFAVSL2+vn5VVdW/f/+g5u3fv/8/EgAIMACh4VPB4p8Q3wAAAABJRU5ErkJggg==);
+		background-position: 100% 4px;
+		background-repeat: no-repeat;
+
+		&.mLast {
+			display: block;
+			background: none;
+			font-size: 14px;
+		}
+	}
+
+	&__crumbsListLink {
+		border-bottom: 1px dotted;
+
+		&:hover {
+			text-decoration: none;
+			border-bottom: none;
+		}
+	}
+
+	&__cart {
+		float: right;
+		padding: 5px 0 0 10px;
+		width: 90px;
+		height: 45px;
+		.rounded(0 0 4px 0);
+		position: relative;
+		z-index: 10;
+
+		&.mEmpty {
+			background: #f4f4f4;
+			padding-top: 15px;
+			height: 34px;
+
+			.fixedTopBar__cartQuan {
+				background: #bbbbbb;
+			}
+		}
+
+		&:hover {
+
+			.fixedTopBar__dd {
+				display: block;
+				left: -129px;
+			}
+		}
+	}
+
+	&__cartLink {
+		display: block;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
+	&__cartTitle {
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+		padding: 2px 5px 0 0;
+		text-decoration: underline;
+	}
+
+	&__cartQuan {
+		.rounded(4px);
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+		width: 25px;
+		height: 20px;
+		background: #f88a08;
+		color: @white;
+		vertical-align: top;
+		text-align: center;
+		line-height: 20px;
+	}
+
+	&__cartPrice {
+		display: block;
+		padding-top: 2px;
+		font-weight: bold;
+	}
+
+	&__logIn {
+		width: 122px;
+		background: #fff5e0;
+		border-left: 1px dashed #bbbbbb;
+		border-right: 1px dashed #bbbbbb;
+		float: right;
+		line-height: 49px;
+		padding: 0 0 0 5px;
+		position: relative;
+
+		.transGrad {
+			background: url("@{base-url}/fixedTopBar/img/tranGradientOrange.png") no-repeat 0 0;
+			position: absolute;
+			right: 0;
+			top: 17px;
+			height: 17px;
+			width: 18px;
+			display: block;
+		}
+
+		&.mLogin {
+			background: #f4f4f4;
+
+			.fixedTopBar__logInLink {
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAfklEQVQYGYWQwQ2AIBRD/WUmwhS6i0cdQI/uolMAMwFSIgkxGnr5tDwCVFJKA+W9H2OMc/aaXkQ8gENrfRVP0Fq75bkweCsf2I0xqzjnxhDC+QZar5SawOva8GtNBvVNX0DNyKCa3gR/14OeBnD0QNYE9sQK/mDuFYY9Ur3Cb25DQ2sv9bp2AAAAAElFTkSuQmCC);
+			}
+
+			.transGrad {
+				display: none;
+			}
+		} 
+
+		&:hover {
+
+			.fixedTopBar__logOut {
+				display: block;
+			}
+		}
+	}
+
+	&__logInLink {
+		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhElEQVQYGYWQUQ5AMBBEZ5crOQZnkDiBTw6gn04gnIFjuFJZ3RIkFd2PZjvzkk6HRAQ620Q5dtQQZF4grGD0SSmL3klBO1Dn9sYD4WHSSlqyI3LZMIf+o1CCgv1zj/a9uUh8Z/pGTtXl5j//7TH0d7FxDGsFMU4ZvnoyP7BRxveoUKzwA+X6MCjSOJRiAAAAAElFTkSuQmCC) no-repeat 0 21px;
+		padding-left: 15px;
+		display: block;
+		text-decoration: underline;
+		width: 206px;
+	}
+
+	&__buy {
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+		width: 305px;
+		margin: 12px 0 0 10px;
+		float: left;
+
+		.btnBuy {
+			display: inline-block;
+			vertical-align: top;
+
+			*display: inline;
+			zoom: 1;
+			width: 80px;
+			margin: 0 0 0 5px;
+
+			&__eLink {
+				width: 78px;
+				font-size: 12px;
+				height: 24px;
+				line-height: 24px;
+			}
+		}
+
+		.bPrice {
+			float: left;
+			font-size: 20px;
+			width: 100px;
+			margin: 1px 0 0;
+		}
+
+		.bCountSection {
+			display: inline-block;
+			vertical-align: top;
+
+			*display: inline;
+			zoom: 1;
+			width: 111px;
+			padding-left: 0;
+		}
+	}
+}

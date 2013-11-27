@@ -6,6 +6,7 @@
  * @requires	jQuery, ENTER.utils.BlackBox
  */
 ;(function() {
+	var body = $('body');
 
 	/**
 	 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
@@ -27,8 +28,8 @@
 			button.removeClass('mLoading');
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
-			$('body').trigger('addtocart', [data]);
-			$('body').trigger('updatespinner',[groupBtn]);
+			body.trigger('addtocart', [data]);
+			body.trigger('updatespinner',[groupBtn]);
 		};
 
 		$.get(url, addToCart);
@@ -77,9 +78,9 @@
 	};
 	
 	$(document).ready(function() {
-		$('body').bind('markcartbutton', markCartButton);
-		$('body').on('click', '.jsBuyButton', buyButtonHandler);
-		$('body').on('buy', '.jsBuyButton', buy);
+		body.bind('markcartbutton', markCartButton);
+		body.on('click', '.jsBuyButton', buyButtonHandler);
+		body.on('buy', '.jsBuyButton', buy);
 	});
 }());
 
@@ -95,14 +96,15 @@
 (function( global ) {
 
 	var utils = global.ENTER.utils,
-		blackBox = utils.blackBox;
+		blackBox = utils.blackBox,
+		body = $('body');
 	// end of vars
 	
 
 		/**
 		 * KISS Аналитика для добавления в корзину
 		 */
-	var kissAnalytics = function kissAnalytics( data ) {
+	var kissAnalytics = function kissAnalytics( event, data ) {
 			var productData = data.product,
 				serviceData = data.service,
 				warrantyData = data.warranty,
@@ -165,7 +167,7 @@
 		/**
 		 * Google Analytics аналитика добавления в корзину
 		 */
-		googleAnalytics = function googleAnalytics( data ) {
+		googleAnalytics = function googleAnalytics( event, data ) {
 			var productData = data.product;
 
 			if ( productData ) {
@@ -176,24 +178,9 @@
 		},
 
 		/**
-		 * myThings аналитика добавления в корзину
-		 */
-		myThingsAnalytics = function myThingsAnalytics( data ) {
-			var productData = data.product;
-
-			if ( typeof MyThings !== 'undefined' ) {
-				MyThings.Track({
-					EventType: MyThings.Event.Visit,
-					Action: '1013',
-					ProductId: productData.id
-				});
-			}
-		},
-
-		/**
 		 * Soloway аналитика добавления в корзину
 		 */
-		adAdriver = function adAdriver( data ) {
+		adAdriver = function adAdriver( event, data ) {
 			var productData = data.product,
 				offer_id = productData.id,
 				category_id =  ( productData.category ) ? productData.category[productData.category.length - 1].id : 0;
@@ -218,32 +205,10 @@
 			b.insertBefore(i, b.firstChild);
 		},
 
-
-		/**
-		 * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
-		 */
-		addToLiveTex = function addToLiveTex(data) {
-			if ( typeof LiveTex.addToCart  === 'function' ) {
-				try {
-					LiveTex.addToCart(data.product);
-				}
-				catch ( err ) {
-					dataToLog = {
-						event: 'LiveTex.addToCart',
-						type: 'ошибка отправки данных в LiveTex',
-						err: err
-					};
-
-					utils.logError(dataToLog);
-				}
-			}
-		},
-
-
 		/**
 		 * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
 		 */
-		addToRetailRocket = function addToRetailRocket( data ) {
+		addToRetailRocket = function addToRetailRocket( event, data ) {
 			var product = data.product,
 				dataToLog;
 			// end of vars
@@ -272,28 +237,6 @@
 		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
 		 */
 		buyProcessing = function buyProcessing( event, data ) {
-			var basket = data.cart,
-				product = data.product,
-				tmpitem = {
-					'id': product.id,
-					'title': product.name,
-					'price' : window.printPrice(product.price),
-					'priceInt' : product.price,
-					'imgSrc': product.img,
-					'productLink': product.link,
-					'totalQuan': basket.full_quantity,
-					'totalSum': window.printPrice(basket.full_price),
-					'linkToOrder': basket.link
-				};
-			// end of vars
-
-
-			kissAnalytics(data);
-			googleAnalytics(data);
-			myThingsAnalytics(data);
-			adAdriver(data);
-			addToRetailRocket(data);
-			addToLiveTex(data);
 
 			if ( data.redirect ) {
 				console.warn('redirect');
@@ -301,12 +244,16 @@
 				document.location.href = data.redirect;
 			}
 			else if ( blackBox ) {
-				blackBox.basket().add( tmpitem );
+				blackBox.basket().add( data );
 			}
 		};
 	//end of vars
 
-	$(document).ready(function() {
-		$('body').bind('addtocart', buyProcessing);
-	});
+	body.on('addtocart', buyProcessing);
+
+	// analytics
+	body.on('addtocart', kissAnalytics);
+	body.on('addtocart', googleAnalytics);
+	body.on('addtocart', adAdriver);
+	body.on('addtocart', addToRetailRocket);
 }(this));

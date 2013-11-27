@@ -333,7 +333,7 @@
 
 			var sendUpdate = function sendUpdate() {
 				filterBlock.trigger('submit');
-			}
+			};
 
 			if ( typeof e === 'object' && e.isTrigger && !needUpdate ) {
 				console.warn('it\'s trigger event!');
@@ -487,6 +487,10 @@
 					updateInput[type](input, val);
 				}
 			}
+		},
+
+		openFilter: function() {
+			toggleFilterViewHandler( true );
 		}
 	};
 
@@ -572,13 +576,14 @@
 		/**
 		 * Обработчик кнопки переключения между расширенным и компактным видом фильтра
 		 */
-		toggleFilterViewHandler = function toggleFilterViewHandler() {
+		toggleFilterViewHandler = function toggleFilterViewHandler( openAnyway ) {
 			var openClass = 'mOpen',
 				closeClass = 'mClose',
 				open = filterToggleBtn.hasClass(openClass);
 			// end of vars
 
-			if ( open ) {
+
+			if ( open && typeof openAnyway !== 'boolean' ) {
 				filterToggleBtn.removeClass(openClass).addClass(closeClass);
 				filterContent.slideUp(400);
 			}

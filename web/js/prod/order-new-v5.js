@@ -326,6 +326,7 @@
 				price: (product.sum) ? product.sum : product.price,
 				quantity: product.quantity,
 				deleteUrl: product.deleteUrl,
+				setUrl: product.setUrl,
 				productUrl: product.url,
 				productImg: (product.image) ? product.image : product.productImg,
 				deliveries: {}
@@ -540,7 +541,7 @@
 
 				tempProduct = self.products.pop();
 				tempProductArray.push(tempProduct);
-				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();;
+				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();
 				console.log('новый токен '+newToken);
 				console.log(self);
 
@@ -1187,11 +1188,6 @@
 					fieldNode: orderAgreed,
 					require: true,
 					customErr: 'Необходимо согласие',
-				},
-				{
-					fieldNode: paymentRadio,
-					require: true,
-					customErr: 'Необходимо выбрать метод оплаты'
 				}
 			]
 		},
@@ -1843,6 +1839,51 @@
 		}
 
 		console.warn('end');
+
+
+		$('.bCountSection').goodsCounter({
+			onChange:function( count ) {
+				console.info('counter change');
+				console.log(count);
+				
+				var
+					seturl = $(this).data('seturl'),
+					newURl = seturl.addParameterToUrl('quantity', count);
+				// end of vars
+				
+				console.log(seturl);
+				console.log(newURl);
+
+				var spinnerResponceHandler = function spinnerResponceHandler( res ) {
+					if ( !res.success ) {
+						global.OrderModel.couponError(res.error.message);
+						utils.blockScreen.unblock();
+
+						return;
+					}
+
+					global.OrderModel.couponNumber('');
+				};
+
+				utils.blockScreen.block('Обновляем');
+
+				reqArray = [
+					{
+						type: 'GET',
+						url: newURl,
+						// data: dataToSend,
+						callback: spinnerResponceHandler
+					},
+					{
+						type: 'GET',
+						url: global.OrderModel.updateUrl,
+						callback: global.OrderModel.modelUpdate
+					}
+				];
+
+				utils.packageReq(reqArray);
+			}
+		});
 	};
 
 
@@ -2104,6 +2145,14 @@
 		 * @type {Boolean}
 		 */
 		lifeGift: ko.observable(false),
+
+		/**
+		 * Флаг того что это оформление заказа типа one-click
+		 * https://jira.enter.ru/browse/SITE-2592
+		 * 
+		 * @type {Boolean}
+		 */
+		oneClick: ko.observable(false),
 
 		/**
 		 * Флаг того что это страница PayPal: схема ECS
@@ -2720,6 +2769,7 @@
 
 			global.OrderModel.deliveryTypes(res.deliveryTypes);
 			global.OrderModel.lifeGift(res.lifeGift || false);
+			global.OrderModel.oneClick(res.oneClick || false);
 			global.OrderModel.prepareData(true);
 
 			if ( global.OrderModel.paypalECS() &&

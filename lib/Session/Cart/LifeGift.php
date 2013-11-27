@@ -12,7 +12,7 @@ class LifeGift {
     /** @var int */
     private $sum = 0;
     /** @var \Model\Region\Entity */
-    private $region = 0;
+    private $region;
 
     public function __construct() {
         $this->region = \RepositoryManager::region()->getEntityById(\App::config()->lifeGift['regionId']);
@@ -25,7 +25,7 @@ class LifeGift {
 
         $this->storage->set($this->sessionName, array_merge([
             'product' => [],
-            'sum'     => [],
+            'sum'     => 0,
         ], (array)$this->storage->get($this->sessionName)));
 
         $this->calculate();

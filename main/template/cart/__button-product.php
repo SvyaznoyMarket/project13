@@ -11,13 +11,13 @@ return function (
     $class = \View\Id::cartButtonForProduct($product->getId()) . ' ' . $class;
 
     if (!$directLink) {
-        $class .= $product->isInShopStockOnly() ? ' jsOrder1clickProxy' : ' jsBuyButton';
+        $class .= $product->isInShopStockOnly() ? ' jsOneClickButton' : ' jsBuyButton';
     }
 
     if ($product->isInShopStockOnly()) {
         $class .= ' mShopsOnly';
         $value = 'Резерв';
-        $url = $product->getLink() . '#oneclick';
+        $url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
     } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
     }
@@ -40,7 +40,7 @@ return function (
         $url = $helper->url('cart.product.set', $urlParams);
     }
 
-?>
+    ?>
     <div class="bWidgetBuy__eBuy btnBuy">
         <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
     </div>

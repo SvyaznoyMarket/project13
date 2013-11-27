@@ -126,6 +126,8 @@ $is_showed = [];
         <?= $product->getDescription() ?>
     </div>
 
+    <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
+
     <? if ((bool)$related && \App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
@@ -197,7 +199,7 @@ $is_showed = [];
 
         <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
-        <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
 
         <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData]) // Доставка ?>
 
@@ -234,3 +236,5 @@ $is_showed = [];
 </div>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
+
+</div>

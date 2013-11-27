@@ -39,6 +39,7 @@
 				 */
 			var changeHandler = function changeHandler( count ) {
 					clearTimeout(timeout_id);
+					
 					timeout_id = setTimeout(function() {
 						counterGroup.find('input').val( count );
 						options.onChange.apply( $self, [count] );
@@ -82,11 +83,11 @@
 
 					e.stopPropagation();
 
-					if ( $self.hasClass('mDisabled') ){
+					if ( $self.hasClass('mDisabled') ) {
 						return false;
 					}
 
-					if ( (nowCount * 1) - 1 < 1 ){
+					if ( (nowCount * 1) - 1 < 1 ) {
 						return false;
 					}
 
@@ -108,7 +109,7 @@
 
 					e.stopPropagation();
 
-					if ( $self.hasClass('mDisabled') ){
+					if ( $self.hasClass('mDisabled') ) {
 						return false;
 					}
 
@@ -162,7 +163,7 @@
 				 * @param	{Object}	spinner		Ссылка на спиннеры принадлежащие купленному товару
 				 * @param	{Object}	input		Поля которые необходимо обновить
 				 */
-				updatespinner = function updatespinner( e, products ){
+				updatespinner = function updatespinner( e, products ) {
 					var i = 0,
 						spinner,
 						input;

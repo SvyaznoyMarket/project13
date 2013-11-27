@@ -20,6 +20,8 @@ class User {
     private $cart;
     /** @var Cart\LifeGift */
     private $lifeGiftCart;
+    /** @var Cart\OneClick */
+    private $oneClickCart;
     /** @var array */
     private $recommendedProduct;
 
@@ -277,6 +279,17 @@ class User {
         }
 
         return $this->lifeGiftCart;
+    }
+
+    /**
+     * @return Cart\OneClick
+     */
+    public function getOneClickCart() {
+        if (!$this->oneClickCart) {
+            $this->oneClickCart = new Cart\OneClick();
+        }
+
+        return $this->oneClickCart;
     }
 
     public function setCacheCookie(\Http\Response $response) {

@@ -8,6 +8,8 @@ class Entity {
     /** @var int */
     private $price = 0;
     /** @var int */
+    private $sum = 0;
+    /** @var int */
     private $quantity = 0;
     /** @var int */
     private $warrantyId;
@@ -26,6 +28,12 @@ class Entity {
         if (array_key_exists('warranty_id', $data)) $this->setWarrantyId($data['warranty_id']);
         if (array_key_exists('warranty_price', $data)) $this->setWarrantyPrice($data['warranty_price']);
         if (array_key_exists('warranty_quantity', $data)) $this->setWarrantyQuantity($data['warranty_quantity']);
+
+        if (array_key_exists('sum', $data)) { // TODO: осторожно, костыль для ядра
+            $this->setSum($data['sum']);
+        } else {
+            $this->setSum($this->getPrice() * $this->getQuantity());
+        }
     }
 
     /**
@@ -54,6 +62,20 @@ class Entity {
      */
     public function getPrice() {
         return $this->price;
+    }
+
+    /**
+     * @param int $sum
+     */
+    public function setSum($sum) {
+        $this->sum = (string)$sum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSum() {
+        return $this->sum;
     }
 
     /**

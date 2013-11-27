@@ -326,6 +326,7 @@
 				price: (product.sum) ? product.sum : product.price,
 				quantity: product.quantity,
 				deleteUrl: product.deleteUrl,
+				setUrl: product.setUrl,
 				productUrl: product.url,
 				productImg: (product.image) ? product.image : product.productImg,
 				deliveries: {}
@@ -540,7 +541,7 @@
 
 				tempProduct = self.products.pop();
 				tempProductArray.push(tempProduct);
-				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();;
+				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();
 				console.log('новый токен '+newToken);
 				console.log(self);
 

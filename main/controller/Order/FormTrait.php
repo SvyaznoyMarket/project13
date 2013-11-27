@@ -136,6 +136,44 @@ trait FormTrait {
 
     /**
      * @param Form $form
+     */
+    protected function validateOneClickForm(Form $form) {
+        // мобильный телефон
+        if (!$form->getMobilePhone()) {
+            $form->setError('recipient_phonenumbers', 'Не указан мобильный телефон');
+        } else if (11 != strlen($form->getMobilePhone())) {
+            $form->setError('recipient_phonenumbers', 'Номер мобильного телефона должен содержать 11 цифр');
+        }
+
+        // email
+        if (('emails' === \App::abTest()->getCase()->getKey()) && !$form->getOneClick()) {
+            $email = $form->getEmail();
+            $emailValidator = new \Validator\Email();
+            if (!$emailValidator->isValid($email)) {
+                $form->setError('recipient_email', 'Укажите ваш e-mail');
+            }
+        }
+
+        // способ доставки
+        if (!$form->getDeliveryTypeId()) {
+            $form->setError('delivery_type_id', 'Не указан способ получения заказа');
+        } else if ($form->getDeliveryTypeId()) {
+            $deliveryType = \RepositoryManager::deliveryType()->getEntityById($form->getDeliveryTypeId());
+            if (!$deliveryType) {
+                $form->setError('delivery_type_id', 'Способ получения заказа недоступен');
+            } else if (\Model\DeliveryType\Entity::TYPE_STANDART == $deliveryType->getToken()) {
+                if (!$form->getAddressStreet()) {
+                    $form->setError('address_street', 'Укажите улицу');
+                }
+                if (!$form->getAddressBuilding()) {
+                    $form->setError('address_building', 'Укажите дом');
+                }
+            }
+        }
+    }
+
+    /**
+     * @param Form $form
      * @param array $cookies
      */
     protected function saveForm(Form $form, array &$cookies) {

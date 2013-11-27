@@ -275,4 +275,29 @@ class IndexPage extends \View\DefaultLayout {
 
         return $this->tryRender('_config', ['config' => $config]);
     }
+
+    public function slotUserbar() {
+        return $this->render('_userbar');
+    }
+
+    public function slotUserbarContent() {
+        return $this->render('product/_userbarContent', [
+            'product'   => $this->getParam('product') ? $this->getParam('product') : null,
+        ]);
+    }
+
+    public function slotUserbarContentData() {
+        $helper = new \Helper\TemplateHelper();
+
+        /** @var $product \Model\Product\Entity */
+        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+        if (!$product) {
+            return;
+        }
+
+        return [
+            'target' => '.' . \View\Id::cartButtonForProduct($product->getId()),
+            'ajaxAlsoBoughtUrl' => $helper->url('product.alsoBought', ['productId' => $product->getId()]),
+        ];
+    }
 }
