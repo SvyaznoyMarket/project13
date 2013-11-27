@@ -7,7 +7,7 @@ return function(
 ) {
     $user = \App::user();
 
-    if (!($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany())) {
+    if ( !$creditData['creditIsAllowed'] || !$user->getRegion()->getHasTransportCompany() ) {
         return '';
     }
 ?>
