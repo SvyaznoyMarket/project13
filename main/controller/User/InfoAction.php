@@ -70,13 +70,15 @@ class InfoAction {
                 $responseData['cart']['sum'] = $cart->getSum();
                 $responseData['cart']['quantity'] = $cart->getProductsQuantity() + $cart->getServicesQuantity();
 
+                $productsById = [];
+                foreach (\RepositoryManager::product()->getCollectionById(array_keys($cart->getProducts())) as $product) {
+                    $productsById[$product->getId()] = $product;
+                }
 
                 $buttons = [];
                 $cartProductsArr = [];
                 foreach ($cart->getProducts() as $cartProduct) {
                     /* @var \Model\Cart\Product\Entity */
-
-                    $product = \RepositoryManager::product()->getEntityById($cartProduct->getId());
 
                     $item = [
                         'id'        => $cartProduct->getId(),
@@ -85,8 +87,8 @@ class InfoAction {
                         'price'     => $cartProduct->getPrice(),
                         //'name'     => $cartProduct->getTitl,
                         'deleteUrl' => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
-                        'url' => $product->getLink(),
-                        'image' => $product->getImageUrl(),
+                        'url'       => $productsById[$cartProduct->getId()]->getLink(),
+                        'image'     => $productsById[$cartProduct->getId()]->getImageUrl(),
                     ];
 
                     $buttons['product'][] = [
@@ -100,8 +102,8 @@ class InfoAction {
                         'price'     => $item['price'],
                         'quantity'  => $item['quantity'],
                         'deleteUrl' => $item['deleteUrl'],
-                        'url'=> $item['url'],
-                        'image'    => $item['image'],
+                        'url'       => $item['url'],
+                        'image'     => $item['image'],
                     ];
 
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {
