@@ -43,7 +43,7 @@
         <div class="bSubscribeLightboxPopupNotNow mFl"></div>
     </div>
     <noindex>
-        <div class="fixedTopBar mStatic">
+        <div class="fixedTopBar mStatic <? if ('homepage' == \App::request()->attributes->get('route')):?> mHomepage<? endif ?>">
             <div class="fixedTopBar__cart mEmpty">
                 <a href="/cart" class="fixedTopBar__cartTitle">Корзина</a>
             </div>
@@ -53,12 +53,6 @@
                 <span class="transGrad"></span>
             </div>
         </div>
-        <? /*
-        <div class="usermenu">
-            <?= $page->render('_user') ?>
-            <a href="<?= $page->url('cart') ?>" class="hBasket ml10">Моя корзина <span id="topBasket"></span></a>
-        </div>
-        */ ?>
     </noindex>
 </div>
 <!-- /Topbar -->
