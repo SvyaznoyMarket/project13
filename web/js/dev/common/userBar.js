@@ -14,6 +14,7 @@
 		utils = ENTER.utils,
 
 		userbar = $('.fixedTopBar.mFixed'),
+		userbarStatic = $('.fixedTopBar.mStatic'),
 		topBtn = userbar.find('.fixedTopBar__upLink'),
 		userbarConfig = userbar.data('value'),
 		body = $('body'),
@@ -80,6 +81,7 @@
 
 			var
 				userWrap = userbar.find('.fixedTopBar__logIn'),
+				userWrapStatic = userbarStatic.find('.fixedTopBar__logIn'),
 				template = $('#userbar_user_tmpl'),
 				partials = template.data('partial'),
 				html;
@@ -89,8 +91,11 @@
 				return;
 			}
 
-			userWrap.removeClass('mLogin');
 			html = Mustache.render(template.html(), data, partials);
+
+			userWrapStatic.removeClass('mLogin');
+			userWrap.removeClass('mLogin');
+			userWrapStatic.html(html);
 			userWrap.html(html);
 		},
 
@@ -167,6 +172,7 @@
 
 			var
 				cartWrap = userbar.find('.fixedTopBar__cart'),
+				cartWrapStatic = userbarStatic.find('.fixedTopBar__cart'),
 				template = $('#userbar_cart_tmpl'),
 				partials = template.data('partial'),
 				html;
@@ -179,24 +185,23 @@
 			data.sum = printPrice( data.sum );
 			html = Mustache.render(template.html(), data, partials);
 
+			cartWrapStatic.removeClass('mEmpty');
 			cartWrap.removeClass('mEmpty');
+			cartWrapStatic.html(html);
 			cartWrap.html(html);
 		};
 	// end of functions
 
+	console.info('Init userbar module');
+	console.log(userbarConfig);
 
-
+	body.on('userLogged', updateUserInfo);
+	body.on('basketUpdate', updateBasketInfo);
+	body.on('addtocart', showBuyInfo);
 
 
 	if ( userbar.length ) {
-		console.info('Init userbar module');
-		console.log(userbarConfig);
-
 		scrollTarget = $(userbarConfig.target);
-
-		body.on('userLogged', updateUserInfo);
-		body.on('basketUpdate', updateBasketInfo);
-		body.on('addtocart', showBuyInfo);
 
 		if ( topBtn.length ) {
 			topBtn.on('click', upToFilter);

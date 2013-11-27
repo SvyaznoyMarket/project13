@@ -44,10 +44,8 @@
     </div>
     <noindex>
         <div class="fixedTopBar mStatic">
-            <div class="fixedTopBar__cart">     
-                <a href="/cart" class="fixedTopBar__cartTitle">Корзина</a>          
-                <strong class="fixedTopBar__cartQuan">1</strong>         
-                <span class="fixedTopBar__cartPrice">1 990 <span class="rubl">p</span></span>          
+            <div class="fixedTopBar__cart mEmpty">
+                <a href="/cart" class="fixedTopBar__cartTitle">Корзина</a>
             </div>
 
             <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
