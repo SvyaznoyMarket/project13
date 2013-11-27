@@ -30,8 +30,7 @@ return function (
     </div>
 
     <ul class="bDeliveryGift">
-        <li class="bDeliveryGift__eItem mDeliveryPrice"><span><span class="bJustText">Доставка</span></span>  в Фонд &#171;Подари жизнь&#187;, 09.12.2013
-        </li>
+        <li class="bDeliveryGift__eItem mDeliveryPrice"><span><span class="bJustText">Доставка</span></span>  в Фонд &#171;Подари жизнь&#187;</li>
     </ul>
 
     <div class="bGiftText">Специальная цена этого подарка</div>
