@@ -4,29 +4,6 @@
  */
 ?>
 
-<!-- Lightbox -->
-<!-- <div class="bBlackBox">
-    <div class="bBlackBox__eInner">
-        <div class="dropbox" style="left:733px; display:none;">
-            <p>Перетащите сюда</p>
-        </div>
-        <ul class="bBlackBox__eMenu">
-            <li class="bBlackBox__eMenuItem bBlackBox__eUser">
-                <a href="<?//= $page->url('user.login') ?>" class="bBlackBox__eUserLink bBlackBox__eMenuItemLink">Личный кабинет</a>
-            </li>
-            <li class="bBlackBox__eMenuItem bBlackBox__eCart">
-                <a href="<?//=  $page->url('cart') ?>" class="bBlackBox__eCartLink bBlackBox__eMenuItemLink"><b class="bBlackBox__eCartQuan"></b>Моя корзина<span class="bBlackBox__eCartTotal">
-                    <span class="bBlackBox__eCartSum"></span> &nbsp;<span class="rubl">p</span></span>
-                </a>
-            </li>
-        </ul>
-        <div class="flybox bBlackBox__eFlybox mBasket">
-            <i class="corner"></i>
-            <i class="close" title="Закрыть">Закрыть</i>
-        </div>
-    </div>
-</div> -->
-
 <div class="fixedTopBar mFixed" data-value="<?= $page->json($page->slotUserbarContentData()) ?>">
     <?= $page->slotUserbarContent() ?>
 
@@ -93,7 +70,7 @@
 
         <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 4 товаров, в противном случае display: none; -->
 
-        <div class="btnBuy quickOrder"><a href="" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
+        <div class="btnBuy quickOrder"><a href="<?= $page->url('order.new') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
     </div>
 
     <div class="hintDd"><!-- если похожии товары есть то добавляем класс mhintDdOn -->
@@ -158,7 +135,7 @@ $(document).ready(function()
                 </div>
             </li>
         </ul>
-        <div class="btnBuy quickOrder"><a href="#" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
+        <div class="btnBuy quickOrder"><a href="<?= $page->url('order.new') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
     </div>
 </script>
 
