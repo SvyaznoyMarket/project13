@@ -308,6 +308,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
+					.script( mustacheUrl )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -319,6 +320,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
+					.script( mustacheUrl )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('main.js') )
@@ -376,6 +378,7 @@
 					.script('JsHttpRequest.min.js')
 					.script( getWithVersion('library.js') )
 					.script( directCreditUrl )
+					.script( mustacheUrl )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -399,6 +402,7 @@
 						.script('JsHttpRequest.min.js')
 						.script( getWithVersion('library.js') )
 						.script( directCreditUrl )
+						.script( mustacheUrl )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new.js') )
@@ -421,6 +425,7 @@
 						.script('JsHttpRequest.min.js')
 						.script( getWithVersion('library.js') )
 						.script( directCreditUrl )
+						.script( mustacheUrl )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new-v5.js') )
@@ -433,6 +438,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
+					.script( mustacheUrl )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('order.js') )
@@ -532,6 +538,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
+					.script( mustacheUrl )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -550,6 +557,7 @@
 				.queueWait( function() {
 					$LAB.script('jquery-plugins.min.js')
 						.script( getWithVersion('library.js') )
+						.script( mustacheUrl )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('shop.js') )
@@ -570,6 +578,7 @@
 				.queueWait( function() {
 					$LAB.script('jquery-plugins.min.js')
 						.script( getWithVersion('library.js') )
+						.script( mustacheUrl )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.wait()

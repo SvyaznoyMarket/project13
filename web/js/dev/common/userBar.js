@@ -88,6 +88,7 @@
 			// end of vars
 
 			if ( !( data && data.name && data.link ) ) {
+				console.warn('123123');
 				return;
 			}
 
@@ -178,7 +179,10 @@
 				html;
 			// end of vars
 
+			console.log('vars inited');
+
 			if ( !(data && data.quantity && data.sum ) ) {
+				console.warn('123');
 				return;
 			}
 
@@ -194,7 +198,7 @@
 		/**
 		 * Обновление блока с рекомендациями "С этим товаром также покупают"
 		 */
-			updateAlsoBoughtInfo = function updateAlsoBoughtInfo() {
+		updateAlsoBoughtInfo = function updateAlsoBoughtInfo() {
 			console.info('userbar::updateAlsoBoughtInfo');
 
 			var responseFromServer = function ( response ){
@@ -205,19 +209,21 @@
 			};
 			//end functions
 
-			$.post(userbarConfig.ajaxAlsoBoughtUrl, responseFromServer);
+			$.ajax({
+				type: 'GET',
+				url: userbarConfig.ajaxAlsoBoughtUrl,
+				success: responseFromServer
+			});
 		};
 	// end of functions
+
 
 	console.info('Init userbar module');
 	console.log(userbarConfig);
 
-		scrollTarget = $(userbarConfig.target);
-
-		body.on('userLogged', updateUserInfo);
-		body.on('basketUpdate', updateBasketInfo);
-		body.on('addtocart', showBuyInfo);
-
+	body.on('userLogged', updateUserInfo);
+	body.on('basketUpdate', updateBasketInfo);
+	body.on('addtocart', showBuyInfo);
 
 	if ( userbar.length ) {
 		scrollTarget = $(userbarConfig.target);
