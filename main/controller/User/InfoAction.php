@@ -19,6 +19,8 @@ class InfoAction {
         /* @var $cart   \Session\Cart */
         $cart = $user->getCart();
 
+        $helper = new \Helper\TemplateHelper();
+
         /** @var $cookies \Http\Cookie[] */
         $cookies = [];
 
@@ -74,12 +76,17 @@ class InfoAction {
                 foreach ($cart->getProducts() as $cartProduct) {
                     /* @var \Model\Cart\Product\Entity */
 
+                    $product = \RepositoryManager::product()->getEntityById($cartProduct->getId());
+
                     $item = [
                         'id'        => $cartProduct->getId(),
                         'buttonId'  => \View\Id::cartButtonForProduct($cartProduct->getId()),
                         'quantity'  => $cartProduct->getQuantity(),
                         'price'     => $cartProduct->getPrice(),
                         //'name'     => $cartProduct->getTitl,
+                        'deleteUrl' => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
+                        'url' => $product->getLink(),
+                        'image' => $product->getImageUrl(),
                     ];
 
                     $buttons['product'][] = [
@@ -92,6 +99,9 @@ class InfoAction {
                         //'name'     => $item['name'],
                         'price'     => $item['price'],
                         'quantity'  => $item['quantity'],
+                        'deleteUrl' => $item['deleteUrl'],
+                        'url'=> $item['url'],
+                        'image'    => $item['image'],
                     ];
 
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {
