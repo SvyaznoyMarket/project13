@@ -3043,10 +3043,10 @@ $(document).ready(function() {
 ;(function() {
 	var body = $('body'),
 		form = $('.jsReviewForm'),
-		prosField = $('.jsPros'),
-		consField = $('.jsCons'),
+		advantageField = $('.jsAdvantage'),
+		disadvantageField = $('.jsDisadvantage'),
 		extractField = $('.jsExtract'),
-		authorField = $('.jsAuthor'),
+		authorNameField = $('.jsAuthorName'),
 		authorEmailField = $('.jsAuthorEmail'),
 
 		/**
@@ -3054,15 +3054,15 @@ $(document).ready(function() {
 		 *
 		 * @type {Object}
 		 */
-		validationConfig = {
+			validationConfig = {
 			fields: [
 				{
-					fieldNode: prosField,
+					fieldNode: advantageField,
 					require: true,
 					customErr: 'Не указаны достоинства'
 				},
 				{
-					fieldNode: consField,
+					fieldNode: disadvantageField,
 					require: true,
 					customErr: 'Не указаны недостатки'
 				},
@@ -3072,7 +3072,7 @@ $(document).ready(function() {
 					customErr: 'Не указан Комментарий'
 				},
 				{
-					fieldNode: authorField,
+					fieldNode: authorNameField,
 					require: true,
 					customErr: 'Не указано имя'
 				},
@@ -3102,13 +3102,13 @@ $(document).ready(function() {
 		 *
 		 * @param   {Object}    formError   Объект с полем содержащим ошибки
 		 */
-		formErrorHandler = function( formError ) {
+			formErrorHandler = function( formError ) {
 			var field = $('[name="review[' + formError.field + ']"]');
 			// end of vars
 
 			var clearError = function clearError() {
-					validator._unmarkFieldError($(this));
-				};
+				validator._unmarkFieldError($(this));
+			};
 			// end of functions
 
 			console.warn('Ошибка в поле');
@@ -3124,7 +3124,7 @@ $(document).ready(function() {
 		 *
 		 * @param   {String}    msg     Сообщение которое необходимо показать пользователю
 		 */
-		showError = function( msg ) {
+			showError = function( msg ) {
 			var error = $('ul.error_list', form);
 			// end of vars
 
@@ -3144,7 +3144,7 @@ $(document).ready(function() {
 		 *
 		 * @param {Object} res Ответ сервера
 		 */
-		serverErrorHandler = function( res ) {
+			serverErrorHandler = function( res ) {
 			var formError = null;
 			// end of vars
 
@@ -3170,7 +3170,7 @@ $(document).ready(function() {
 		 *
 		 * @param {Object} response Ответ сервера
 		 */
-		responseFromServer = function( response ) {
+			responseFromServer = function( response ) {
 			console.log('Ответ от сервера');
 
 			if ( response.error ) {
@@ -3193,7 +3193,7 @@ $(document).ready(function() {
 		/**
 		 * Сабмит формы "Отзыв о товаре"
 		 */
-		formSubmit = function() {
+			formSubmit = function() {
 			var requestToServer = function () {
 				$.post(form.attr('action'), form.serializeArray(), responseFromServer, 'json');
 				console.log('Сабмит формы "Отзыв о товаре"');
@@ -3224,12 +3224,12 @@ $(document).ready(function() {
 		 * @param  {Event} e
 		 * @param  {Object} userInfo
 		 */
-		fillUserData = function ( e, userInfo ) {
+			fillUserData = function ( e, userInfo ) {
 			if ( userInfo ) {
 				// если присутствует имя пользователя
 				if ( userInfo.name ) {
-					authorField.val(userInfo.name);
-					authorField.parent('.jsPlace2Col').hide();
+					authorNameField.val(userInfo.name);
+					authorNameField.parent('.jsPlace2Col').hide();
 				}
 				// если присутствует email пользователя
 				if ( userInfo.email ) {
@@ -3238,7 +3238,7 @@ $(document).ready(function() {
 				}
 				// если присутствует и имя и email пользователя, то скрываем весь fieldset
 				if ( userInfo.name && userInfo.email ) {
-					authorField.parents('.jsFormFieldset').hide();
+					authorNameField.parents('.jsFormFieldset').hide();
 				}
 			}
 		};

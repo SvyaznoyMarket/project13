@@ -34,12 +34,12 @@ return function(
                 <fieldset class="reviewForm__place">
                     <div class="place2Col">
                         <label class="reviewForm__label">Достоинства</label>
-                        <textarea class="reviewForm__textarea jsReviewFormField jsPros" name="review[pros]"></textarea>
+                        <textarea class="reviewForm__textarea jsReviewFormField jsAdvantage" name="review[advantage]"></textarea>
                     </div>
 
                     <div class="place2Col mRight">
                         <label class="reviewForm__label">Недостатки</label>
-                        <textarea class="reviewForm__textarea jsReviewFormField jsCons" name="review[cons]"></textarea>
+                        <textarea class="reviewForm__textarea jsReviewFormField jsDisadvantage" name="review[disadvantage]"></textarea>
                     </div>
 
                     <div>
@@ -65,7 +65,7 @@ return function(
                 <fieldset class="reviewForm__place mCol jsFormFieldset">
                     <div class="place2Col jsPlace2Col">
                         <label class="reviewForm__label">Ваше имя</label>
-                        <input type="text" class="text reviewForm__text jsReviewFormField jsAuthor" name="review[author]" id="" />
+                        <input type="text" class="text reviewForm__text jsReviewFormField jsAuthorName" name="review[author_name]" id="" />
                     </div>
 
                     <div class="place2Col jsPlace2Col">
@@ -81,7 +81,7 @@ return function(
             </form>
         </div>
 
-<!--        <span class="bReviewSection__eWrite jsLeaveReview" data-pid="--><?//= $product->getId() ?><!--"><span class="dotted">Оставить отзыв</span></span>-->
+        <!--        <span class="bReviewSection__eWrite jsLeaveReview" data-pid="--><?//= $product->getId() ?><!--"><span class="dotted">Оставить отзыв</span></span>-->
     <? endif ?>
 
     <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">

@@ -7,12 +7,12 @@ class ReviewForm {
      * Достоинства
      * @var string
      */
-    private $pros;
+    private $advantage;
     /**
      * Недостатки
      * @var string
      */
-    private $cons;
+    private $disadvantage;
     /**
      * Текст отзыва
      * @var string
@@ -20,27 +20,32 @@ class ReviewForm {
     private $extract;
     /**
      * Оценка (1..10)
-     * @var int
+     * @var float
      */
     private $score;
     /**
      * Имя автора отзыва
      * @var string
      */
-    private $author;
+    private $authorName;
     /**
      * E-mail автора
      * @var string
      */
     private $authorEmail;
+    /**
+     * Дата в формате "Y-m-d"
+     * @var string
+     */
+    private $date;
     /** @var array */
     private $errors = array(
         'global'   => null,
-        'pros' => null,
-        'cons' => null,
+        'advantage' => null,
+        'disadvantage' => null,
         'extract' => null,
         'score' => null,
-        'author' => null,
+        'author_name' => null,
         'author_email' => null,
     );
 
@@ -49,40 +54,46 @@ class ReviewForm {
     }
 
     public function fromArray(array $data) {
-        if (array_key_exists('pros', $data)) $this->setPros($data['pros']);
-        if (array_key_exists('cons', $data)) $this->setCons($data['cons']);
+        if (array_key_exists('advantage', $data)) $this->setAdvantage($data['advantage']);
+        if (array_key_exists('disadvantage', $data)) $this->setDisadvantage($data['disadvantage']);
         if (array_key_exists('extract', $data)) $this->setExtract($data['extract']);
         if (array_key_exists('score', $data)) $this->setScore($data['score']);
-        if (array_key_exists('author', $data)) $this->setAuthor($data['author']);
+        if (array_key_exists('author_name', $data)) $this->setAuthorName($data['author_name']);
         if (array_key_exists('author_email', $data)) $this->setAuthorEmail($data['author_email']);
+        if (array_key_exists('date', $data)) {
+            $this->setDate($data['date']);
+        } else {
+            $this->setDate(date('Y-m-d'));
+        }
+
     }
 
     /**
-     * @param string $pros
+     * @param string $advantage
      */
-    public function setPros($pros) {
-        $this->pros = trim((string)$pros);
-    }
-
-    /**
-     * @return string
-     */
-    public function getPros() {
-        return $this->pros;
-    }
-
-    /**
-     * @param string $cons
-     */
-    public function setCons($cons) {
-        $this->cons = trim((string)$cons);
+    public function setAdvantage($advantage) {
+        $this->advantage = trim((string)$advantage);
     }
 
     /**
      * @return string
      */
-    public function getCons() {
-        return $this->cons;
+    public function getAdvantage() {
+        return $this->advantage;
+    }
+
+    /**
+     * @param string $disadvantage
+     */
+    public function setDisadvantage($disadvantage) {
+        $this->disadvantage = trim((string)$disadvantage);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisadvantage() {
+        return $this->disadvantage;
     }
 
     /**
@@ -100,10 +111,10 @@ class ReviewForm {
     }
 
     /**
-     * @param int $score
+     * @param float $score
      */
     public function setScore($score) {
-        $this->score = (string)$score;
+        $this->score = $score;
     }
 
     /**
@@ -114,17 +125,17 @@ class ReviewForm {
     }
 
     /**
-     * @param string $author
+     * @param string $authorName
      */
-    public function setAuthor($author) {
-        $this->author = trim((string)$author);
+    public function setAuthorName($authorName) {
+        $this->authorName = trim((string)$authorName);
     }
 
     /**
      * @return string
      */
-    public function getAuthor() {
-        return $this->author;
+    public function getAuthorName() {
+        return $this->authorName;
     }
 
     /**
@@ -139,6 +150,20 @@ class ReviewForm {
      */
     public function getAuthorEmail() {
         return $this->authorEmail;
+    }
+
+    /**
+     * @param string $date
+     */
+    public function setDate($date) {
+        $this->date = trim((string)$date);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDate() {
+        return $this->date;
     }
 
     /**

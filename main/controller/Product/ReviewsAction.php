@@ -54,11 +54,11 @@ class ReviewsAction {
             $form->fromArray((array)$request->get('review'));
             $form->setScore(10);
 
-            if (!$form->getPros()) {
-                $form->setError('pros', 'Не указаны достоинства');
+            if (!$form->getAdvantage()) {
+                $form->setError('advantage', 'Не указаны достоинства');
             }
-            if (!$form->getCons()) {
-                $form->setError('cons', 'Не указаны недостатки');
+            if (!$form->getDisadvantage()) {
+                $form->setError('disadvantage', 'Не указаны недостатки');
             }
             if (!$form->getExtract()) {
                 $form->setError('extract', 'Не указан комментарий');
@@ -66,8 +66,11 @@ class ReviewsAction {
             if (!$form->getScore()) {
                 $form->setError('score', 'Не указана оценка');
             }
-            if (!$form->getAuthor()) {
-                $form->setError('author', 'Не указано имя');
+            if (!$form->getAuthorName()) {
+                $form->setError('author_name', 'Не указано имя');
+            }
+            if (!$form->getDate()) {
+                $form->setError('date', 'Не указана дата');
             }
             if (!$form->getAuthorEmail()) {
                 $form->setError('author_email', 'Не указан e-mail');
@@ -86,13 +89,13 @@ class ReviewsAction {
                             'product_id' => $productId
                         ],
                         [
-                            'pros' => $form->getPros(),
-                            'cons' => $form->getCons(),
-                            'extract' => $form->getExtract(),
-                            'score' => $form->getScore(),
-                            'author' => $form->getAuthor(),
-                            'author_email' => $form->getAuthorEmail(),
-                            'date' => date('Y-m-d'),
+                            'advantage'     => $form->getAdvantage(),
+                            'disadvantage'  => $form->getDisadvantage(),
+                            'extract'       => $form->getExtract(),
+                            'score'         => $form->getScore(),
+                            'author_name'   => $form->getAuthorName(),
+                            'author_email'  => $form->getAuthorEmail(),
+                            'date'          => $form->getDate(),
                         ],
                         function($data) use(&$result) {
                             $result = $data;
