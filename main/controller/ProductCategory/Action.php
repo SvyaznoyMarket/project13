@@ -501,7 +501,6 @@ class Action {
             $page->setParam('promoContent', $promoContent);
             $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setGlobalParam('shop', $shop);
-            $page->setGlobalParam('shops', (\App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) ? \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()) : []);
         };
 
         // полнотекстовый поиск через сфинкс

@@ -469,7 +469,6 @@ class ShowAction {
             $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setParam('slice', $slice);
             $page->setGlobalParam('shop', $shop);
-            $page->setGlobalParam('shops', (\App::config()->shop['enabled'] && !self::isGlobal() && !$category->isRoot()) ? \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()) : []);
         };
 
         // полнотекстовый поиск через сфинкс
