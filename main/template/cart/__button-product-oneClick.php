@@ -31,8 +31,8 @@ return function (
 
 ?>
 
-    <div class="bWidgetBuy__eBuy btnBuy" style="margin-top: 10px; text-align: center;">
-        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
+    <div class="btnOneClickBuy">
+        <a class="btnOneClickBuy__eLink" href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
     </div>
 
 <? };

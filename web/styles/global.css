@@ -544,7 +544,7 @@ table {
     padding: 0 0 222px;
   }
   .content.mContentOrder {
-    padding-bottom: 390px;
+    padding-bottom: 20px;
   }
   .content.mContentMain {
     padding-bottom: 470px;
@@ -1053,6 +1053,9 @@ table {
   font-size: 12px;
   width: 229px;
   position: relative;
+  -webkit-border-radius: 0 0 0 4px;
+  -moz-border-radius: 0 0 0 4px;
+  border-radius: 0 0 0 4px;
   height: 49px;
   z-index: 999;
   display: block;
@@ -1094,6 +1097,26 @@ table {
   height: 30px;
   width: 27px;
   display: block;
+}
+.fixedTopBar.mHomepage {
+  border-right: 1px solid #fff;
+}
+.fixedTopBar.mHomepage .fixedTopBar__logInLink,
+.fixedTopBar.mHomepage .fixedTopBar__cart,
+.fixedTopBar.mHomepage .fixedTopBar__cartTitle {
+  color: #fff;
+}
+.fixedTopBar.mHomepage .fixedTopBar__logIn .transGrad {
+  background: url("/styles/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;
+}
+.fixedTopBar.mHomepage .fixedTopBar__logIn {
+  background: none;
+}
+.fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty {
+  background: none;
+}
+.fixedTopBar.mHomepage .fixedTopBar__dd {
+  width: 229px;
 }
 .fixedTopBar .wrapperCrumbsList {
   width: 340px;
@@ -1435,6 +1458,7 @@ table {
   -webkit-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
+  color: #000000;
 }
 .fixedTopBar__logOut {
   width: 127px;

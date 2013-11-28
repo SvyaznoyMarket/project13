@@ -9040,6 +9040,7 @@
   .btnBuy.mBtnPayPal {
     width: 195px;
     height: 42px;
+    margin-top: 20px;
   }
   .btnBuy.mBtnPayPal .bPayPalLink {
     width: 195px;
@@ -9139,6 +9140,17 @@
     color: #a6a6a6;
     border: 1px solid #e6e6e6;
     background: #e6e6e6;
+  }
+  .btnOneClickBuy {
+    font-size: 14px;
+    text-align: center;
+    margin: 15px 0 0;
+  }
+  .btnOneClickBuy__eLink {
+    text-decoration: underline;
+  }
+  .btnOneClickBuy__eLink:hover {
+    text-decoration: none;
   }
 }
 /*---END---СТИЛИ КНОПКИ "КУПИТЬ"---*/

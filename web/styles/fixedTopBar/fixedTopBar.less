@@ -29,6 +29,7 @@
 		font-size: 12px;
 		width: 229px;
 		position: relative;
+		.rounded(0 0 0 4px);
 		height: 49px;
 		z-index: 999;
 		display: block;
@@ -84,6 +85,33 @@
 			height: 30px;
 			width: 27px;
 			display: block;
+		}
+	}
+
+	&.mHomepage {
+
+		border-right: 1px solid #fff;
+
+		.fixedTopBar__logInLink,
+		.fixedTopBar__cart,
+		.fixedTopBar__cartTitle {
+			color: #fff;
+		}
+
+		.fixedTopBar__logIn .transGrad {
+			background: url("@{base-url}/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;
+		}
+
+		.fixedTopBar__logIn {
+			background: none;
+		}
+
+		.fixedTopBar__cart.mEmpty {
+			background: none;
+		}
+
+		.fixedTopBar__dd {
+			width: 229px;
 		}
 	}
 
