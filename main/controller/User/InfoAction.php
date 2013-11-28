@@ -78,17 +78,18 @@ class InfoAction {
                 $buttons = [];
                 $cartProductsArr = [];
                 foreach ($cart->getProducts() as $cartProduct) {
-                    /* @var \Model\Cart\Product\Entity */
+                    /* @var $product \Model\Product\Entity|null */
+                    $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
 
                     $item = [
                         'id'        => $cartProduct->getId(),
                         'buttonId'  => \View\Id::cartButtonForProduct($cartProduct->getId()),
                         'quantity'  => $cartProduct->getQuantity(),
                         'price'     => $cartProduct->getPrice(),
-                        //'name'     => $cartProduct->getTitl,
+                        'name'      => $product ? $product->getName() : null,
                         'deleteUrl' => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
-                        'url'       => $productsById[$cartProduct->getId()]->getLink(),
-                        'image'     => $productsById[$cartProduct->getId()]->getImageUrl(),
+                        'url'       => $product ? $product->getLink() : null,
+                        'image'     => $product ? $product->getImageUrl() : null,
                     ];
 
                     $buttons['product'][] = [
@@ -98,7 +99,7 @@ class InfoAction {
 
                     $cartProductsArr[] = [
                         'id'        => $item['id'],
-                        //'name'     => $item['name'],
+                        'name'      => $item['name'],
                         'price'     => $item['price'],
                         'quantity'  => $item['quantity'],
                         'deleteUrl' => $item['deleteUrl'],
