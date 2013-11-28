@@ -1231,6 +1231,12 @@ table {
   display: block;
   left: -129px;
 }
+.fixedTopBar__cart.mOpenedPopup .fixedTopBar__dd {
+  display: none;
+}
+.fixedTopBar__cart.mOpenedPopup:hover .fixedTopBar__dd {
+  display: none;
+}
 .fixedTopBar__cartTitle {
   display: block;
   padding: 5px 0 8px 10px;
