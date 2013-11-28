@@ -1045,17 +1045,12 @@ table {
   border-top: none;
 }
 .fixedTopBar.mStatic {
-  border: 1px solid #ddd;
-  border-top: none;
-  border-right: none;
+  border-left: 1px solid #ddd;
   float: right;
-  margin: -10px -10px 0 0;
+  margin: -10px 0 0 0;
   font-size: 12px;
   width: 229px;
   position: relative;
-  -webkit-border-radius: 0 0 0 4px;
-  -moz-border-radius: 0 0 0 4px;
-  border-radius: 0 0 0 4px;
   height: 49px;
   z-index: 999;
   display: block;
@@ -1099,7 +1094,11 @@ table {
   display: block;
 }
 .fixedTopBar.mHomepage {
-  border-right: 1px solid #fff;
+  border-right: 1px solid #ffffff;
+  border-bottom: 1px solid #ffffff;
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
 }
 .fixedTopBar.mHomepage .fixedTopBar__logInLink,
 .fixedTopBar.mHomepage .fixedTopBar__cart,
@@ -1109,10 +1108,12 @@ table {
 .fixedTopBar.mHomepage .fixedTopBar__logIn .transGrad {
   background: url("/styles/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;
 }
-.fixedTopBar.mHomepage .fixedTopBar__logIn,
+.fixedTopBar.mHomepage .fixedTopBar__logIn {
+  background: none;
+}
 .fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty,
 .fixedTopBar.mHomepage .fixedTopBar__cart {
-  background: none;
+  background: #000000;
 }
 .fixedTopBar.mHomepage .fixedTopBar__dd {
   width: 229px;

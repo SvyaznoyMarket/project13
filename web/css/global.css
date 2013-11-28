@@ -2162,6 +2162,10 @@
     font-family: Tahoma, sans-serif;
     padding: 10px 0 0;
     position: relative;
+    border-bottom: 1px solid #ddd;
+    width: 950px;
+    margin-left: -10px;
+    padding-left: 10px;
   }
   .topbar .bRegion,
   .topbar .usermenu {
@@ -7174,7 +7178,7 @@
   .bSubscribeLightboxPopupNotNow {
     position: absolute;
     top: 0;
-    right: -50px;
+    right: -40px;
     display: none;
     width: 40px;
     height: 36px;
@@ -7757,6 +7761,10 @@
   }
   #mainPage .topbar {
     margin-bottom: 20px;
+    margin-left: 0;
+    padding-left: 0;
+    width: auto;
+    border-bottom: none;
   }
   #mainPage .topbar #jsregion,
   #mainPage .topbar .usermenu a {

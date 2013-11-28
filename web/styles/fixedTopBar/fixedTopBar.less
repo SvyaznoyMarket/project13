@@ -21,15 +21,12 @@
 	}
 
 	&.mStatic {
-		border: 1px solid #ddd;
-		border-top: none;
-		border-right: none;
+		border-left: 1px solid #ddd;
 		float: right;
-		margin: -10px -10px 0 0;
+		margin: -10px 0 0 0;
 		font-size: 12px;
 		width: 229px;
 		position: relative;
-		.rounded(0 0 0 4px);
 		height: 49px;
 		z-index: 999;
 		display: block;
@@ -90,7 +87,9 @@
 
 	&.mHomepage {
 
-		border-right: 1px solid #fff;
+		border-right: 1px solid @white;
+		border-bottom: 1px solid @white;
+		.rounded (0 0 4px 4px);
 
 		.fixedTopBar__logInLink,
 		.fixedTopBar__cart,
@@ -102,10 +101,13 @@
 			background: url("@{base-url}/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;
 		}
 
-		.fixedTopBar__logIn,
+		.fixedTopBar__logIn {
+			background: none;
+		}
+
 		.fixedTopBar__cart.mEmpty,
 		.fixedTopBar__cart {
-			background: none;
+			background: @black;
 		}
 
 		.fixedTopBar__dd {
