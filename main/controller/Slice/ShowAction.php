@@ -511,18 +511,21 @@ class ShowAction {
         $page = new \View\Slice\ShowPage();
         $setPageParameters($page);
 
-        return $this->leafCategory($category, /*$productFilter,*/ $page, $request, $filterData, $region);
+        return $this->leafCategory($category, /*$productFilter,*/ $page, $request, $filterData, $region, $slice);
     }
 
     /**
      * @param \Model\Product\Category\Entity $category
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
-     * @return \Http\Response
+     * @param \View\Layout $page
+     * @param \Http\Request $request
+     * @param $filterData
+     * @param \Model\Region\Entity $region
+     * @param \Model\Slice\Entity $slice
      * @throws \Exception\NotFoundException
+     * @internal param \Model\Product\Filter $productFilter
+     * @return \Http\Response
      */
-    protected function leafCategory(\Model\Product\Category\Entity $category, /*\Model\Product\Filter $productFilter,*/ \View\Layout $page, \Http\Request $request, $filterData, \Model\Region\Entity $region = null) {
+    protected function leafCategory(\Model\Product\Category\Entity $category, /*\Model\Product\Filter $productFilter,*/ \View\Layout $page, \Http\Request $request, $filterData, \Model\Region\Entity $region = null, \Model\Slice\Entity $slice) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 138);
@@ -666,7 +669,9 @@ class ShowAction {
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
                     $productVideosByProduct,
-                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
+                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
+                    $slice->getProductBuyMethod(),
+                    $slice->getShowProductState()
                 ),
 //                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
 //                    \App::closureTemplating()->getParam('helper'),
