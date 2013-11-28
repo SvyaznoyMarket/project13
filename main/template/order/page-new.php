@@ -490,7 +490,7 @@ if ($oneClick) {
 		
 
 			<!-- Methods of payment -->
-			<? if ($oneClick): ?>
+			<? if ($oneClick && ($paymentMethod = reset($paymentMethods))): ?>
                 <h2 class="bBuyingSteps__eTitle"></h2>
 
                 <div class="bBuyingLine clearfix mPayMethods">
@@ -501,7 +501,7 @@ if ($oneClick) {
                             Купить в кредит
                         </label>
 
-                        <?= $helper->render('order/newForm/__paymentMethod-credit', ['paymentMethod' => reset($paymentMethods), 'banks' => $banks, 'creditData' => $creditData]) ?>
+                        <?= $helper->render('order/newForm/__paymentMethod-credit', ['paymentMethod' => $paymentMethod, 'banks' => $banks, 'creditData' => $creditData]) ?>
                     </div>
                 </div>
             <? else: ?>
