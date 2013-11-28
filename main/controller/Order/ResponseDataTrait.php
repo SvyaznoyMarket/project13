@@ -113,7 +113,16 @@ trait ResponseDataTrait {
             \App::coreClientV2()->execute();
 
             $responseData['products'] = $productDataById;
-            $responseData['redirect'] = $router->generate('order');
+
+            if ((true === $responseData['paypalECS']) && !$cart->getPaypalProduct()) {
+                $responseData['redirect'] = $router->generate('order.paypal.new');
+            } else if ((true === $responseData['lifeGift']) && !(bool)\App::user()->getLifeGiftCart()->getProducts()) {
+                $responseData['redirect'] = $router->generate('order.lifeGift.new');
+            } else if ((true === $responseData['oneClick']) && !(bool)\App::user()->getOneClickCart()->getProducts()) {
+                $responseData['redirect'] = $router->generate('order.oneClick.new');
+            } else if ((false === $responseData['paypalECS']) && (false === $responseData['lifeGift']) && (false === $responseData['oneClick']) && $cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
+                $responseData['redirect'] = $router->generate('order');
+            }
         }
 
         $message = null;
