@@ -336,34 +336,40 @@
 				node = $(element),
 				nodeData = node.data('value'),
 				maxSum = parseInt( nodeData['max-sum'], 10 ),
+				minSum = parseInt( nodeData['min-sum'], 10 ),
 				methodId = nodeData['method_id'],
 				isAvailableToPickpoint = nodeData['isAvailableToPickpoint'];
 			// end of vars
+
 
 			if (
 			 /* 6 is DeliveryTypeId for PickPoint  */
 			( 6 === global.OrderModel.choosenDeliveryTypeId && false == isAvailableToPickpoint ) ||
 			( 4 === global.OrderModel.choosenDeliveryTypeId && 13 === methodId && global.OrderModel.lifeGift() === false ) ||
-			( !isNaN(maxSum) && maxSum < unwrapVal ) ) {
+			( !isNaN(maxSum) && maxSum < unwrapVal ) || /* Если существует максимальная сумма и текущая сумма больше максимальнодопустимой для этого варианта оплаты */
+			( !isNaN(minSum) && minSum > unwrapVal ) /* Если существует минимальная сумма и текущая сумма больше минимальнодопустимой для этого варианта оплаты */ ) {
 				node.hide();
 
 				return;
 			}
-			else if ( 13 === methodId ) {
-				node.show();
-			}
 
-			if ( isNaN(maxSum) ) {
-				return;
-			}
+			node.show();
 
-			if ( maxSum < unwrapVal ) {
-				node.hide();
+			// else if ( 13 === methodId ) {
+			// 	node.show();
+			// }
 
-			}
-			else {
-				node.show();
-			}
+			// if ( isNaN(maxSum) && isNaN(minSum) ) {
+			// 	return;
+			// }
+
+			// if ( maxSum < unwrapVal || minSum > unwrapVal ) {
+			// 	node.hide();
+
+			// }
+			// else {
+			// 	node.show();
+			// }
 		}
 	};
 
