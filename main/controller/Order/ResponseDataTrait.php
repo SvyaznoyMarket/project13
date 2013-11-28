@@ -112,7 +112,7 @@ trait ResponseDataTrait {
             } else if ((true === $responseData['oneClick']) && !(bool)\App::user()->getOneClickCart()->getProducts()) {
                 $responseData['redirect'] = $router->generate('homepage');
                 $message = 'Пустая корзина';
-            } else if ((false === $responseData['paypalECS']) && (false === $responseData['lifeGift']) && (false === $responseData['oneCLick']) && $cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
+            } else if ((false === $responseData['paypalECS']) && (false === $responseData['lifeGift']) && (false === $responseData['oneClick']) && $cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
                 $responseData['redirect'] = $router->generate('cart');
                 $message = 'Пустая корзина';
             }
