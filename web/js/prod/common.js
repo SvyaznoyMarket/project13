@@ -3800,6 +3800,7 @@ $(document).ready(function() {
 				dataToRender = data.product,
 				template = $('#buyinfo_tmpl'),
 				partials = template.data('partial'),
+				openClass = 'mOpenedPopup',
 				// tId,
 				buyInfo,
 				html;
@@ -3823,6 +3824,8 @@ $(document).ready(function() {
 						overlay.remove();
 					});
 
+					wrap.removeClass(openClass);
+
 					return false;
 				};
 			// end of function
@@ -3832,6 +3835,7 @@ $(document).ready(function() {
 			html = Mustache.render(template.html(), data.product, partials);
 			buyInfo = $(html).css({ left: -129 });
 			
+			wrap.addClass(openClass);
 			wrap.append(buyInfo);
 			body.append(overlay);
 
