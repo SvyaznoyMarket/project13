@@ -1167,13 +1167,17 @@ table {
 .fixedTopBar__crumbsImg {
   display: inline-block;
   vertical-align: top;
+  margin-right: 5px;
+  text-align: center;
+  line-height: 47px;
+  height: 49px;
   *display: inline;
   zoom: 1;
 }
 .fixedTopBar__crumbsImg .crumbsImg {
-  margin-right: 5px;
-  width: 49px;
-  height: 49px;
+  max-height: 40px;
+  display: inline-block;
+  vertical-align: middle;
 }
 .fixedTopBar__crumbsList {
   display: inline-block;
