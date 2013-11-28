@@ -80,6 +80,21 @@ class NewAction {
 
             // данные для кредита
             $creditData = [];
+            foreach ($cart->getProducts() as $cartProduct) {
+                /** @var $product \Model\Product\CartEntity|null */
+                $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
+                if (!$product) {
+                    \App::logger()->error(sprintf('Товар #%s не найден', $cartProduct->getId()), ['order']);
+                    continue;
+                }
+
+                $creditData[] = [
+                    'id'       => $product->getId(),
+                    'quantity' => $cartProduct->getQuantity(),
+                    'price'    => $product->getPrice(),
+                    'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null),
+                ];
+            }
 
             $page = new \View\Order\NewPage();
             $page->setParam('paypalECS', false);
