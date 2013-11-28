@@ -3792,20 +3792,19 @@ $(document).ready(function() {
 		 */
 		showBuyInfo = function showBuyInfo( event, data ) {
 			console.info('userbar::showBuyInfo');
-			console.log(data);
 
 			var
 				wrap = userbar.find('.fixedTopBar__cart'),
 				overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
-				dataToRender = data.product,
 				template = $('#buyinfo_tmpl'),
 				partials = template.data('partial'),
 				openClass = 'mOpenedPopup',
-				// tId,
+				dataToRender = {},
 				buyInfo,
 				html;
 			// end of vars
 
+			dataToRender.products = clientCart.products.reverse();
 
 			var
 				/**
@@ -3830,11 +3829,14 @@ $(document).ready(function() {
 				};
 			// end of function
 
-			dataToRender.price = printPrice( dataToRender.price );
+			// data.product.price = printPrice( data.product.price );
+			
+			console.log(dataToRender);
 
-			html = Mustache.render(template.html(), data.product, partials);
+			html = Mustache.render(template.html(), dataToRender, partials);
 			buyInfo = $(html).css({ left: -129 });
 			
+			buyInfo.find('.cartList__item').eq(0).addClass('mHover');
 			wrap.addClass(openClass);
 			wrap.append(buyInfo);
 			body.append(overlay);
@@ -3879,7 +3881,7 @@ $(document).ready(function() {
 
 			if ( clientCart.products.length !== 0 ) {
 				data.hasProducts = true;
-				data.products = clientCart.products;
+				data.products = clientCart.products.reverse();
 			}
 
 			data.sum = printPrice( data.sum );

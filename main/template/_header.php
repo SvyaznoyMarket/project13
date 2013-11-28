@@ -136,15 +136,17 @@
 <script id="buyinfo_tmpl" type="text/html">
     <div class="fixedTopBar__dd fixedTopBar__cartOn">
         <ul class="cartList">
-            <li class="cartList__item">
-                <a class="cartList__itemLink" href="{{link}}"><img class="cartList__itemImg" src="{{img}}" /></a>
-                <div class="cartList__itemName"><a href="{{link}}">{{name}}</a></div>
-                <div class="cartList__itemInfo">
-                    <span class="price">{{price}} &nbsp;<span class="rubl">p</span></span>
-                    <span class="quan">{{quantity}} шт.</span>
-                </div>
-            </li>
-        </ul>
+            {{#products}}
+                <li class="cartList__item">
+                    <a class="cartList__itemLink" href="{{link}}"><img class="cartList__itemImg" src="{{image}}" /></a>
+                    <div class="cartList__itemName"><a href="{{link}}">{{name}}</a></div>
+                    <div class="cartList__itemInfo">
+                        <span class="price">{{formattedPrice}} &nbsp;<span class="rubl">p</span></span>
+                        <span class="quan">{{quantity}} шт.</span>
+                    </div>
+                </li>
+            {{/products}}
+         </ul>
         <div class="btnBuy quickOrder"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
     </div>
 </script>
