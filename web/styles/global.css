@@ -1490,7 +1490,7 @@ table {
   line-height: 25px;
 }
 .fixedTopBar .cartList {
-  height: 213px;
+  max-height: 213px;
   overflow: auto;
 }
 .fixedTopBar .cartList__item {
