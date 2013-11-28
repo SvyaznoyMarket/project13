@@ -1805,7 +1805,12 @@ window.MapInterface = (function() {
 						toClientCart = {
 							id: product.id,
 							price: product.price,
-							quantity: product.quantity
+							quantity: product.quantity,
+							formattedPrice: printPrice(product.price),
+							name: product.name,
+							image: product.img,
+							link: product.link,
+							deleteUrl: product.deleteUrl
 						},
 						toBasketUpdate = {
 							quantity: cart.full_quantity,

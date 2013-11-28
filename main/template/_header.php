@@ -68,9 +68,11 @@
 
 
 <script id="userbar_cart_tmpl" type="text/html">
-    <a href="<?=  $page->url('cart') ?>" class="fixedTopBar__cartTitle">Корзина</a>
-    <strong class="fixedTopBar__cartQuan">{{quantity}}</strong>
-    <span class="fixedTopBar__cartPrice">{{sum}} <span class="rubl">p</span></span>
+    <a href="<?=  $page->url('cart') ?>" class="fixedTopBar__cartTitle">
+        <span class="fixedTopBar__cartText">Корзина</span>
+        <strong class="fixedTopBar__cartQuan">{{quantity}}</strong>
+        <span class="fixedTopBar__cartPrice">{{sum}} <span class="rubl">p</span></span>
+    </a>
 
     <div class="fixedTopBar__dd fixedTopBar__cartOn">
         {{#hasProducts}}
@@ -80,7 +82,7 @@
                         <a class="cartList__itemLink" href="{{url}}"><img class="cartList__itemImg" src="{{image}}" /></a>
                         <div class="cartList__itemName"><a href="{{url}}">{{name}}</a></div>
                         <div class="cartList__itemInfo">
-                            <span class="price">{{price}} &nbsp;<span class="rubl">p</span></span>
+                            <span class="price">{{formattedPrice}} &nbsp;<span class="rubl">p</span></span>
                             <span class="quan">{{quantity}} шт.</span>
                             <a href="{{deleteUrl}}" class="del">удалить</a>
                         </div>

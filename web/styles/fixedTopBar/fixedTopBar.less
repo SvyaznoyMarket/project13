@@ -32,7 +32,7 @@
 		display: block;
 
 		.fixedTopBar__cart {
-			width: 91px;
+			width: 101px;
 		}
 
 		.fixedTopBar__logIn {
@@ -224,9 +224,8 @@
 
 	&__cart {
 		float: right;
-		padding: 5px 0 0 10px;
-		width: 90px;
-		height: 44px;
+		width: 100px;
+		height: 49px;
 		.rounded(0 0 4px 0);
 		position: relative;
 		z-index: 10;
@@ -234,11 +233,15 @@
 
 		&.mEmpty {
 			background: #f4f4f4;
-			padding-top: 15px;
-			height: 34px;
+			height: 49px;
 
 			.fixedTopBar__cartQuan {
 				background: #bbbbbb;
+			}
+
+			.fixedTopBar__cartTitle {
+				padding-top: 17px;
+				padding-bottom: 18px;
 			}
 		}
 
@@ -251,15 +254,20 @@
 		}
 	}
 
-	&__cartLink {
+	&__cartTitle {
 		display: block;
+		padding: 5px 0 0 10px;
 
 		&:hover {
 			text-decoration: none;
+
+			.fixedTopBar__cartText {
+				text-decoration: none;
+			}
 		}
 	}
 
-	&__cartTitle {
+	&__cartText {
 		display: inline-block;
 		vertical-align: top;
 

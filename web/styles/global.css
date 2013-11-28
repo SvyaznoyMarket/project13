@@ -1056,7 +1056,7 @@ table {
   display: block;
 }
 .fixedTopBar.mStatic .fixedTopBar__cart {
-  width: 91px;
+  width: 101px;
 }
 .fixedTopBar.mStatic .fixedTopBar__logIn {
   border-left: none;
@@ -1207,9 +1207,8 @@ table {
 }
 .fixedTopBar__cart {
   float: right;
-  padding: 5px 0 0 10px;
-  width: 90px;
-  height: 44px;
+  width: 100px;
+  height: 49px;
   -webkit-border-radius: 0 0 4px 0;
   -moz-border-radius: 0 0 4px 0;
   border-radius: 0 0 4px 0;
@@ -1219,23 +1218,30 @@ table {
 }
 .fixedTopBar__cart.mEmpty {
   background: #f4f4f4;
-  padding-top: 15px;
-  height: 34px;
+  height: 49px;
 }
 .fixedTopBar__cart.mEmpty .fixedTopBar__cartQuan {
   background: #bbbbbb;
+}
+.fixedTopBar__cart.mEmpty .fixedTopBar__cartTitle {
+  padding-top: 17px;
+  padding-bottom: 18px;
 }
 .fixedTopBar__cart:hover .fixedTopBar__dd {
   display: block;
   left: -129px;
 }
-.fixedTopBar__cartLink {
+.fixedTopBar__cartTitle {
   display: block;
+  padding: 5px 0 0 10px;
 }
-.fixedTopBar__cartLink:hover {
+.fixedTopBar__cartTitle:hover {
   text-decoration: none;
 }
-.fixedTopBar__cartTitle {
+.fixedTopBar__cartTitle:hover .fixedTopBar__cartText {
+  text-decoration: none;
+}
+.fixedTopBar__cartText {
   display: inline-block;
   vertical-align: top;
   *display: inline;
