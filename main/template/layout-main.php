@@ -45,7 +45,9 @@
 
 <div class="wrapper mWrapperMain">
     <div class="content mContentMain clearfix">
-        <?= $page->slotAdFox() ?>
+        <? if (\App::config()->adFox['enabled']): ?>
+            <div class="adfoxWrapper" id="adfox980"></div>
+        <? endif ?>
 
         <?= $page->slotHeader() ?><!--/ Шапка -->
 

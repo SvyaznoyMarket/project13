@@ -86,9 +86,8 @@
 	}
 
 	&.mHomepage {
+		border: none;
 
-		border-right: 1px solid @white;
-		border-bottom: 1px solid @white;
 		.rounded (0 0 4px 4px);
 
 		.fixedTopBar__logInLink,
@@ -103,6 +102,7 @@
 
 		.fixedTopBar__logIn {
 			background: none;
+			border-color: @typLinkColor;
 		}
 
 		.fixedTopBar__cart.mEmpty,
@@ -174,14 +174,18 @@
 	&__crumbsImg {
 		display: inline-block;	
 		vertical-align: top;
+		margin-right: 5px;
+		text-align: center;
+		line-height: 47px;
+		height: 49px;
 
 		*display: inline;
 		zoom: 1;
 
 		.crumbsImg {
-			margin-right: 5px;
-			width: 49px;
-			height: 49px;
+			max-height: 40px;
+			display: inline-block;
+			vertical-align: middle;
 		}
 	}
 

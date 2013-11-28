@@ -63,9 +63,9 @@ table{border-collapse:collapse;border-spacing:0;}
 .fixedTopBar.mProdCard .fixedTopBar__crumbsList{width:1200px;}
 .fixedTopBar.mProdCard .fixedTopBar__crumbsListItem{background-image:none;}
 .fixedTopBar.mProdCard .transGradWhite{background:url("/styles/fixedTopBar/img/tranGradientWhite.png") no-repeat 0 0;position:absolute;right:0;top:12px;height:30px;width:27px;display:block;}
-.fixedTopBar.mHomepage{border-right:1px solid #ffffff;border-bottom:1px solid #ffffff;-webkit-border-radius:0 0 4px 4px;-moz-border-radius:0 0 4px 4px;border-radius:0 0 4px 4px;}.fixedTopBar.mHomepage .fixedTopBar__logInLink,.fixedTopBar.mHomepage .fixedTopBar__cart,.fixedTopBar.mHomepage .fixedTopBar__cartTitle{color:#fff;}
+.fixedTopBar.mHomepage{border:none;-webkit-border-radius:0 0 4px 4px;-moz-border-radius:0 0 4px 4px;border-radius:0 0 4px 4px;}.fixedTopBar.mHomepage .fixedTopBar__logInLink,.fixedTopBar.mHomepage .fixedTopBar__cart,.fixedTopBar.mHomepage .fixedTopBar__cartTitle{color:#fff;}
 .fixedTopBar.mHomepage .fixedTopBar__logIn .transGrad{background:url("/styles/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;}
-.fixedTopBar.mHomepage .fixedTopBar__logIn{background:none;}
+.fixedTopBar.mHomepage .fixedTopBar__logIn{background:none;border-color:#404040;}
 .fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty,.fixedTopBar.mHomepage .fixedTopBar__cart{background:#000000;}
 .fixedTopBar.mHomepage .fixedTopBar__dd{width:229px;}
 .fixedTopBar.mHomepage .fixedTopBar__logOut{width:127px;}
@@ -74,7 +74,7 @@ table{border-collapse:collapse;border-spacing:0;}
 .fixedTopBar__upLink{display:inline-block;vertical-align:top;*display:inline;zoom:1;}.fixedTopBar__upLink:hover{background:#000000;color:#ffffff;text-decoration:none;}
 .fixedTopBar__upLink .cornerTop{font-size:10px;font-style:normal;display:inline-block;vertical-align:top;*display:inline;zoom:1;float:left;padding-right:5px;}
 .fixedTopBar__crumbs{float:left;padding:0 5px;}
-.fixedTopBar__crumbsImg{display:inline-block;vertical-align:top;*display:inline;zoom:1;}.fixedTopBar__crumbsImg .crumbsImg{margin-right:5px;width:49px;height:49px;}
+.fixedTopBar__crumbsImg{display:inline-block;vertical-align:top;margin-right:5px;text-align:center;line-height:47px;height:49px;*display:inline;zoom:1;}.fixedTopBar__crumbsImg .crumbsImg{max-height:40px;display:inline-block;vertical-align:middle;}
 .fixedTopBar__crumbsList{display:inline-block;vertical-align:top;*display:inline;zoom:1;margin:8px 0 0;}
 .fixedTopBar__crumbsListItem{display:inline-block;vertical-align:top;*display:inline;zoom:1;margin:0 0 2px;padding-right:10px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCMjhGREUyOEZEQUMxMUUyOTI4QjkyMzRGMEUwRjlGQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozNjE4NUIwNjAwRDQxMUUzOTI4QjkyMzRGMEUwRjlGQyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkIyOEZERTI2RkRBQzExRTI5MjhCOTIzNEYwRTBGOUZDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkIyOEZERTI3RkRBQzExRTI5MjhCOTIzNEYwRTBGOUZDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+DzYFVQAAAGlJREFUeNpimDRp0u/fv//DAIONjY2bm9vHjx+h/JcvX1pYWGhraz948ADEB+Lv378HBweLi4sD5ZgYGEBKbt68qaSkxMXFxXDy5EmgTHh4OFAVSL2+vn5VVdW/f/+g5u3fv/8/EgAIMACh4VPB4p8Q3wAAAABJRU5ErkJggg==);background-position:100% 4px;background-repeat:no-repeat;}.fixedTopBar__crumbsListItem.mLast{display:block;background:none;font-size:14px;}
 .fixedTopBar__crumbsListLink{border-bottom:1px dotted;}.fixedTopBar__crumbsListLink:hover{text-decoration:none;border-bottom:none;}
@@ -99,13 +99,14 @@ table{border-collapse:collapse;border-spacing:0;}
 .fixedTopBar__logOut{width:127px;}
 .fixedTopBar__cartOn .transGradWhite{background:url("/styles/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;position:absolute;left:0;top:234px;height:26px;width:228px;display:block;}
 .fixedTopBar__logOutLink{display:block;text-align:center;margin:10px;height:25px;line-height:25px;}
-.fixedTopBar .cartList{max-height:260px;overflow:auto;}.fixedTopBar .cartList__item{height:55px;padding:5px 0 5px 5px;overflow:hidden;font-size:11px;}.fixedTopBar .cartList__item:hover{background:#fff7e6;}
+.fixedTopBar .cartList{max-height:260px;overflow:auto;}.fixedTopBar .cartList__item{height:55px;padding:5px 0 5px 5px;overflow:hidden;font-size:11px;}.fixedTopBar .cartList__item.mHover{background:#fff7e6;}
 .fixedTopBar .cartList__itemLink{display:inline-block;width:30px;margin:0 5px 0 0;vertical-align:top;*display:inline;zoom:1;}
 .fixedTopBar .cartList__itemImg{max-height:40px;max-width:30px;}
-.fixedTopBar .cartList__itemName{display:inline-block;width:110px;line-height:1.2;vertical-align:top;*display:inline;zoom:1;}
+.fixedTopBar .cartList__itemName{display:inline-block;width:110px;line-height:1.2;height:53px;overflow:hidden;vertical-align:top;*display:inline;zoom:1;}
 .fixedTopBar .cartList__itemInfo{display:inline-block;width:50px;vertical-align:middle;*display:inline;zoom:1;line-height:1.2;}
 .fixedTopBar .cartList .del{text-decoration:underline;}
 .fixedTopBar .cartList .price{display:block;}
+.fixedTopBar .cartList .quan{margin:4px 0;display:block;}
 .fixedTopBar .quickOrder{border-top:1px solid #ccc;padding:10px;width:208px;}.fixedTopBar .quickOrder.btnBuy .btnBuy__eLink{width:100%;}
 .fixedTopBar .hintDd{position:absolute;top:49px;width:729px;left:-859px;background:#fff;height:0;-webkit-transition:all 0.2s ease-out 0.1s;-moz-transition:all 0.2s ease-out 0.1s;-o-transition:all 0.2s ease-out 0.1s;transition:all 0.2s ease-out 0.1s;overflow:hidden;border:1px solid #ccc;border-top:none;border-bottom:none;}.fixedTopBar .hintDd__title{padding:10px 0 0 10px;font-size:16px;border-top:1px solid #ccc;}
 .fixedTopBar .hintDd.mhintDdOn{height:270px;-webkit-box-shadow:0px 4px 11px rgba(0, 0, 0, 0.2);-moz-box-shadow:0px 4px 11px rgba(0, 0, 0, 0.2);box-shadow:0px 4px 11px rgba(0, 0, 0, 0.2);border-bottom:1px solid #ccc;}

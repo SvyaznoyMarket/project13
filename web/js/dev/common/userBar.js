@@ -242,7 +242,8 @@
 
 	body.on('userLogged', updateUserInfo);
 	body.on('basketUpdate', updateBasketInfo);
-	body.on('productAdded', showBuyInfo);
+	body.on('addtocart', showBuyInfo);
+	body.on('addtocart', updateAlsoBoughtInfo);
 
 	if ( userbar.length ) {
 		scrollTarget = $(userbarConfig.target);

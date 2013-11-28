@@ -1094,8 +1094,7 @@ table {
   display: block;
 }
 .fixedTopBar.mHomepage {
-  border-right: 1px solid #ffffff;
-  border-bottom: 1px solid #ffffff;
+  border: none;
   -webkit-border-radius: 0 0 4px 4px;
   -moz-border-radius: 0 0 4px 4px;
   border-radius: 0 0 4px 4px;
@@ -1110,6 +1109,7 @@ table {
 }
 .fixedTopBar.mHomepage .fixedTopBar__logIn {
   background: none;
+  border-color: #404040;
 }
 .fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty,
 .fixedTopBar.mHomepage .fixedTopBar__cart {
@@ -1167,13 +1167,17 @@ table {
 .fixedTopBar__crumbsImg {
   display: inline-block;
   vertical-align: top;
+  margin-right: 5px;
+  text-align: center;
+  line-height: 47px;
+  height: 49px;
   *display: inline;
   zoom: 1;
 }
 .fixedTopBar__crumbsImg .crumbsImg {
-  margin-right: 5px;
-  width: 49px;
-  height: 49px;
+  max-height: 40px;
+  display: inline-block;
+  vertical-align: middle;
 }
 .fixedTopBar__crumbsList {
   display: inline-block;
@@ -1505,7 +1509,7 @@ table {
   overflow: hidden;
   font-size: 11px;
 }
-.fixedTopBar .cartList__item:hover {
+.fixedTopBar .cartList__item.mHover {
   background: #fff7e6;
 }
 .fixedTopBar .cartList__itemLink {
@@ -1524,6 +1528,8 @@ table {
   display: inline-block;
   width: 110px;
   line-height: 1.2;
+  height: 53px;
+  overflow: hidden;
   vertical-align: top;
   *display: inline;
   zoom: 1;
@@ -1540,6 +1546,10 @@ table {
   text-decoration: underline;
 }
 .fixedTopBar .cartList .price {
+  display: block;
+}
+.fixedTopBar .cartList .quan {
+  margin: 4px 0;
   display: block;
 }
 .fixedTopBar .quickOrder {
