@@ -98,13 +98,14 @@ class InfoAction {
                     ];
 
                     $cartProductsArr[] = [
-                        'id'        => $item['id'],
-                        'name'      => $item['name'],
-                        'price'     => $item['price'],
-                        'quantity'  => $item['quantity'],
-                        'deleteUrl' => $item['deleteUrl'],
-                        'url'       => $item['url'],
-                        'image'     => $item['image'],
+                        'id'             => $item['id'],
+                        'name'           => $item['name'],
+                        'price'          => $item['price'],
+                        'formattedPrice' => $helper->formatPrice($item['price']),
+                        'quantity'       => $item['quantity'],
+                        'deleteUrl'      => $item['deleteUrl'],
+                        'url'            => $item['url'],
+                        'image'          => $item['image'],
                     ];
 
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {
