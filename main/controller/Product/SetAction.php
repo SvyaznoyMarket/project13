@@ -25,7 +25,7 @@ class SetAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s"', $pageNum));
         }
 
-        $productVideosByProduct = []; // todo
+        $productVideosByProduct = [];
         $productView = \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT; // вид товаров
         $client = \App::coreClientV2();
 
@@ -61,6 +61,14 @@ class SetAction {
         }
 
 
+        // сортировка
+        $productSorting = new \Model\Product\Sorting();
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+        $productSorting->setActive($sortingName, $sortingDirection);
+        $this->sort($products, $sortingName, (bool) ('asc' == $sortingDirection) );
+
+
+        // productPager Entity
         $productPager = new \Iterator\EntityPager($products, $countProducts);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
@@ -78,10 +86,6 @@ class SetAction {
         }
 
 
-        // сортировка
-        $productSorting = new \Model\Product\Sorting();
-        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
-        $productSorting->setActive($sortingName, $sortingDirection);
 
 
         // ajax
@@ -104,7 +108,7 @@ class SetAction {
                         $productPager
                     ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
-                        $templating->getParam('helper'),
+                        $helper,
                         $productSorting
                     ),
                 /*'page'           => [
@@ -113,6 +117,9 @@ class SetAction {
             ]);
         }
 
+        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideoByProductPager( $productPager );
+
+        // страница
         $page = new \View\Product\SetPage();
         $page->setParam('productPager', $productPager);
         $page->setParam('products', $productsForRetargeting);
@@ -163,4 +170,74 @@ class SetAction {
             'content' => (new HtmlLayout())->render('product/_pager', ['pager' => $pager]),
         ]);
     }
+
+
+    /**
+     * @param array             $products
+     * @param string            $sortName
+     * @param bool              $sortAscDirection
+     * @return bool
+     */
+    public function sort(&$products, $sortName = 'default', $sortAscDirection = true) {
+        if ( !is_array($products) || empty($products) ) return false;
+
+        switch ($sortName) {
+            case 'hits': //todo
+                //$compareFunctionName = 'compareHits';
+            case 'price':
+                $compareFunctionName = 'comparePrice';
+                break;
+            default:
+                $compareFunctionName = 'compareDefault';
+        }
+
+        //usort( $products, array(__CLASS__, $compareFunctionName) );
+        usort( $products, array($this, $compareFunctionName) );
+
+        if (!$sortAscDirection) $products = array_reverse($products);
+    }
+
+
+    /**
+     * Lambda function for compare by price
+     *
+     * @param \Model\Product\ExpandedEntity $productX
+     * @param \Model\Product\ExpandedEntity $productY
+     * @return int
+     */
+    private static function comparePrice(\Model\Product\ExpandedEntity $productX, \Model\Product\ExpandedEntity $productY) {
+        $a = $productX->getPrice();
+        $b = $productY->getPrice();
+
+        if ($a == $b) {
+            return 0;
+        }
+
+        return ($a < $b) ? -1 : 1;
+    }
+
+
+    /**
+     * Lambda function for default compare
+     *
+     * @param \Model\Product\ExpandedEntity $productX
+     * @param \Model\Product\ExpandedEntity $productY
+     * @return bool|int
+     */
+    private static function compareDefault(\Model\Product\ExpandedEntity $productX, \Model\Product\ExpandedEntity $productY) {
+        $a = $productX->getIsBuyable();
+        $b = $productY->getIsBuyable();
+        //$sortAscDirection = true;
+
+        if ($a == $b) {
+            return 0;
+        }
+
+        $ret = (bool) ( ($a < $b) ? +1 : -1 );
+        //if (!$sortAscDirection) $ret = !$ret;
+
+        return $ret;
+    }
+
+
 }
