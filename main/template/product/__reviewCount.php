@@ -80,14 +80,7 @@ return function(
                 </fieldset>
             </form>
         </div>
-
-        <!--        <span class="bReviewSection__eWrite jsLeaveReview" data-pid="--><?//= $product->getId() ?><!--"><span class="dotted">Оставить отзыв</span></span>-->
     <? endif ?>
-
-    <div style="position:fixed; top:40px; left:50%; margin-left:-442px; z-index:1002; display:none; width:700px; height:480px" class="reviewPopup popup clearfix">
-        <a class="close" href="#">Закрыть</a>
-        <iframe id="rframe" frameborder="0" scrolling="auto" height="480" width="700"></iframe>
-    </div>
 </div><!--/review section -->
 
 <? };
