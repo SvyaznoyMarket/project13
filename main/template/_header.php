@@ -82,7 +82,7 @@
                         <a class="cartList__itemLink" href="{{url}}"><img class="cartList__itemImg" src="{{image}}" /></a>
                         <div class="cartList__itemName"><a href="{{url}}">{{name}}</a></div>
                         <div class="cartList__itemInfo">
-                            <span class="price">{{price}} &nbsp;<span class="rubl">p</span></span>
+                            <span class="price">{{formattedPrice}} &nbsp;<span class="rubl">p</span></span>
                             <span class="quan">{{quantity}} шт.</span>
                             <a href="{{deleteUrl}}" class="del">удалить</a>
                         </div>
