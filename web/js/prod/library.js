@@ -1809,7 +1809,7 @@ window.MapInterface = (function() {
 							formattedPrice: printPrice(product.price),
 							name: product.name,
 							image: product.img,
-							link: product.link,
+							url: product.link,
 							deleteUrl: product.deleteUrl
 						},
 						toBasketUpdate = {
@@ -1820,6 +1820,8 @@ window.MapInterface = (function() {
 
 					clientCart.products.push(toClientCart);
 					self.basket().update(toBasketUpdate);
+					body.trigger('productAdded');
+
 				};
 			//end of functions
 

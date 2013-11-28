@@ -3772,7 +3772,6 @@ $(document).ready(function() {
 			// end of vars
 
 			if ( !( data && data.name && data.link ) ) {
-				console.warn('123123');
 				return;
 			}
 
@@ -3786,11 +3785,8 @@ $(document).ready(function() {
 
 		/**
 		 * Показ окна о совершенной покупке
-		 *
-		 * @param	{Object}	event	Данные о событии
-		 * @param	{Object}	data	Данные о покупке
 		 */
-		showBuyInfo = function showBuyInfo( event, data ) {
+		showBuyInfo = function showBuyInfo() {
 			console.info('userbar::showBuyInfo');
 
 			var
@@ -3804,7 +3800,10 @@ $(document).ready(function() {
 				html;
 			// end of vars
 
-			dataToRender.products = clientCart.products.reverse();
+			dataToRender.products = utils.cloneObject(clientCart.products);
+			dataToRender.showTransparent = !!( dataToRender.products.length > 4 );
+
+			console.log(dataToRender.showTransparent);
 
 			var
 				/**
@@ -3828,9 +3827,9 @@ $(document).ready(function() {
 					return false;
 				};
 			// end of function
-
-			// data.product.price = printPrice( data.product.price );
 			
+
+			dataToRender.products.reverse()
 			console.log(dataToRender);
 
 			html = Mustache.render(template.html(), dataToRender, partials);
@@ -3873,15 +3872,20 @@ $(document).ready(function() {
 			console.log('vars inited');
 
 			data.hasProducts = false;
+			data.showTransparent = false;
 
 			if ( !(data && data.quantity && data.sum ) ) {
-				console.warn('123');
 				return;
 			}
 
 			if ( clientCart.products.length !== 0 ) {
 				data.hasProducts = true;
-				data.products = clientCart.products.reverse();
+				data.products = utils.cloneObject(clientCart.products);
+				data.products.reverse();
+			}
+
+			if ( clientCart.products.length > 4 ) {
+				data.showTransparent = true;
 			}
 
 			data.sum = printPrice( data.sum );
@@ -3921,7 +3925,7 @@ $(document).ready(function() {
 
 	body.on('userLogged', updateUserInfo);
 	body.on('basketUpdate', updateBasketInfo);
-	body.on('addtocart', showBuyInfo);
+	body.on('productAdded', showBuyInfo);
 
 	if ( userbar.length ) {
 		scrollTarget = $(userbarConfig.target);

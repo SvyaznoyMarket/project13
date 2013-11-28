@@ -82,7 +82,7 @@
                         <a class="cartList__itemLink" href="{{url}}"><img class="cartList__itemImg" src="{{image}}" /></a>
                         <div class="cartList__itemName"><a href="{{url}}">{{name}}</a></div>
                         <div class="cartList__itemInfo">
-                            <span class="price">{{price}} &nbsp;<span class="rubl">p</span></span>
+                            <span class="price">{{formattedPrice}} &nbsp;<span class="rubl">p</span></span>
                             <span class="quan">{{quantity}} шт.</span>
                             <a href="{{deleteUrl}}" class="del">удалить</a>
                         </div>
@@ -91,7 +91,9 @@
             </ul>
         {{/hasProducts}}
 
-        <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 4 товаров, в противном случае display: none; -->
+        {{#showTransparent}}
+            <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 4 товаров, в противном случае display: none; -->
+        {{/showTransparent}}
 
         <div class="btnBuy quickOrder"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
     </div>
@@ -138,15 +140,20 @@
         <ul class="cartList">
             {{#products}}
                 <li class="cartList__item">
-                    <a class="cartList__itemLink" href="{{link}}"><img class="cartList__itemImg" src="{{image}}" /></a>
-                    <div class="cartList__itemName"><a href="{{link}}">{{name}}</a></div>
+                    <a class="cartList__itemLink" href="{{url}}"><img class="cartList__itemImg" src="{{image}}" /></a>
+                    <div class="cartList__itemName"><a href="{{url}}">{{name}}</a></div>
                     <div class="cartList__itemInfo">
                         <span class="price">{{formattedPrice}} &nbsp;<span class="rubl">p</span></span>
                         <span class="quan">{{quantity}} шт.</span>
+                        <a href="{{deleteUrl}}" class="del">удалить</a>
                     </div>
                 </li>
             {{/products}}
          </ul>
+
+        {{#showTransparent}}
+            <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 4 товаров, в противном случае display: none; -->
+        {{/showTransparent}}
         <div class="btnBuy quickOrder"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
     </div>
 </script>
