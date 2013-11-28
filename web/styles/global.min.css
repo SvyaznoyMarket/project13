@@ -97,7 +97,7 @@ table{border-collapse:collapse;border-spacing:0;}
 .fixedTopBar__logOut{width:127px;}
 .fixedTopBar__cartOn .transGradWhite{background:url("/styles/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;position:absolute;left:0;top:187px;height:26px;width:228px;display:block;}
 .fixedTopBar__logOutLink{display:block;text-align:center;margin:10px;height:25px;line-height:25px;}
-.fixedTopBar .cartList{height:213px;overflow:auto;}.fixedTopBar .cartList__item{height:55px;padding:5px 0 5px 5px;overflow:hidden;font-size:11px;}.fixedTopBar .cartList__item:hover{background:#fff7e6;}
+.fixedTopBar .cartList{max-height:213px;overflow:auto;}.fixedTopBar .cartList__item{height:55px;padding:5px 0 5px 5px;overflow:hidden;font-size:11px;}.fixedTopBar .cartList__item:hover{background:#fff7e6;}
 .fixedTopBar .cartList__itemLink{display:inline-block;width:30px;margin:0 5px 0 0;vertical-align:top;*display:inline;zoom:1;}
 .fixedTopBar .cartList__itemImg{max-height:40px;max-width:30px;}
 .fixedTopBar .cartList__itemName{display:inline-block;width:110px;line-height:1.2;vertical-align:top;*display:inline;zoom:1;}
