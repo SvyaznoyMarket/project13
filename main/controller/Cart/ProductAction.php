@@ -53,7 +53,7 @@ class ProductAction {
                 'img'       => $product->getImageUrl(2),
                 'link'      => $product->getLink(),
                 'price'     => $product->getPrice(),
-                'deleteUrl' => $cartProduct->getId() ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
+                'deleteUrl' => $cartProduct ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
             ];
             if (\App::config()->kissmentrics['enabled']) {
                 try {
