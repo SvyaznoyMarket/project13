@@ -495,7 +495,11 @@ if ($oneClick) {
 
                 <div class="bBuyingLine clearfix mPayMethods">
                     <div class="bBuyingLine__eLeft"></div>
-                    <div class="bBuyingLine__eRight bInputList">
+                    <div
+                        class="bBuyingLine__eRight bInputList"
+                        data-bind="paymentMethodVisible: totalSum"
+                        data-value="<?= $page->json(['min-sum' => \App::config()->product['minCreditPrice'], 'method_id' => \Model\PaymentMethod\Entity::CREDIT_ID, 'isAvailableToPickpoint' => true]) ?>" >
+
                         <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[payment_method_id]" value="<?= \Model\PaymentMethod\Entity::CREDIT_ID ?>" hidden id="order_payment_method_id_6"/>
                         <label class="bCustomLabel mCustomLabelBig" for="order_payment_method_id_6">
                             Купить в кредит
