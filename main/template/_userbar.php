@@ -4,7 +4,7 @@
  */
 ?>
 
-<div class="fixedTopBar mFixed" data-value="<?= $page->json($page->slotUserbarContentData()) ?>">
+<div class="fixedTopBar mFixed<? if ('product' == \App::request()->attributes->get('route')): ?> mProdCard<? endif ?>" data-value="<?= $page->json($page->slotUserbarContentData()) ?>">
     <?= $page->slotUserbarContent() ?>
 
     <div class="fixedTopBar__cart mEmpty">
