@@ -102,17 +102,20 @@
 			background: url("@{base-url}/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;
 		}
 
-		.fixedTopBar__logIn {
-			background: none;
-		}
-
-		.fixedTopBar__cart.mEmpty {
+		.fixedTopBar__logIn,
+		.fixedTopBar__cart.mEmpty,
+		.fixedTopBar__cart {
 			background: none;
 		}
 
 		.fixedTopBar__dd {
 			width: 229px;
 		}
+
+		.fixedTopBar__logOut {
+			width: 127px;
+		}
+
 	}
 
 	.wrapperCrumbsList {
@@ -221,10 +224,11 @@
 		float: right;
 		padding: 5px 0 0 10px;
 		width: 90px;
-		height: 45px;
+		height: 44px;
 		.rounded(0 0 4px 0);
 		position: relative;
 		z-index: 10;
+		background: @white;
 
 		&.mEmpty {
 			background: #f4f4f4;

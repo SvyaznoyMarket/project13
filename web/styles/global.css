@@ -1109,14 +1109,16 @@ table {
 .fixedTopBar.mHomepage .fixedTopBar__logIn .transGrad {
   background: url("/styles/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;
 }
-.fixedTopBar.mHomepage .fixedTopBar__logIn {
-  background: none;
-}
-.fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty {
+.fixedTopBar.mHomepage .fixedTopBar__logIn,
+.fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty,
+.fixedTopBar.mHomepage .fixedTopBar__cart {
   background: none;
 }
 .fixedTopBar.mHomepage .fixedTopBar__dd {
   width: 229px;
+}
+.fixedTopBar.mHomepage .fixedTopBar__logOut {
+  width: 127px;
 }
 .fixedTopBar .wrapperCrumbsList {
   width: 340px;
@@ -1206,12 +1208,13 @@ table {
   float: right;
   padding: 5px 0 0 10px;
   width: 90px;
-  height: 45px;
+  height: 44px;
   -webkit-border-radius: 0 0 4px 0;
   -moz-border-radius: 0 0 4px 0;
   border-radius: 0 0 4px 0;
   position: relative;
   z-index: 10;
+  background: #ffffff;
 }
 .fixedTopBar__cart.mEmpty {
   background: #f4f4f4;
