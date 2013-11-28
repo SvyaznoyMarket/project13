@@ -1509,7 +1509,6 @@ table {
   overflow: hidden;
   font-size: 11px;
 }
-.fixedTopBar .cartList__item:hover,
 .fixedTopBar .cartList__item.mHover {
   background: #fff7e6;
 }
@@ -1547,6 +1546,10 @@ table {
   text-decoration: underline;
 }
 .fixedTopBar .cartList .price {
+  display: block;
+}
+.fixedTopBar .cartList .quan {
+  margin: 4px 0;
   display: block;
 }
 .fixedTopBar .quickOrder {
