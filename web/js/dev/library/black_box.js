@@ -111,7 +111,7 @@
 
 					clientCart.products.push(toClientCart);
 					self.basket().update(toBasketUpdate);
-					body.trigger('productAdded');
+					// body.trigger('productAdded');
 
 				};
 			//end of functions

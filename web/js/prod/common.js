@@ -3693,7 +3693,6 @@ $(document).ready(function() {
 ;(function( ENTER ) {
 	var
 		config = ENTER.config,
-		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils,
 		clientCart = config.clientCart,
 
@@ -3803,8 +3802,6 @@ $(document).ready(function() {
 			dataToRender.products = utils.cloneObject(clientCart.products);
 			dataToRender.showTransparent = !!( dataToRender.products.length > 4 );
 
-			console.log(dataToRender.showTransparent);
-
 			var
 				/**
 				 * Закрытие окна о совершенной покупке
@@ -3829,7 +3826,7 @@ $(document).ready(function() {
 			// end of function
 			
 
-			dataToRender.products.reverse()
+			dataToRender.products.reverse();
 			console.log(dataToRender);
 
 			html = Mustache.render(template.html(), dataToRender, partials);
@@ -3903,13 +3900,19 @@ $(document).ready(function() {
 		updateAlsoBoughtInfo = function updateAlsoBoughtInfo() {
 			console.info('userbar::updateAlsoBoughtInfo');
 
-			var responseFromServer = function ( response ){
+			var responseFromServer = function ( response ) {
+				console.log(response);
+
 				if ( response.success ) {
 					console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
-					//console.log(response.content);
 				}
 			};
 			//end functions
+
+			if ( typeof userbarConfig.ajaxAlsoBoughtUrl === 'undefined' ) {
+				return;
+			}
+
 
 			$.ajax({
 				type: 'GET',
@@ -3925,7 +3928,8 @@ $(document).ready(function() {
 
 	body.on('userLogged', updateUserInfo);
 	body.on('basketUpdate', updateBasketInfo);
-	body.on('productAdded', showBuyInfo);
+	body.on('addtocart', showBuyInfo);
+	body.on('addtocart', updateAlsoBoughtInfo);
 
 	if ( userbar.length ) {
 		scrollTarget = $(userbarConfig.target);
