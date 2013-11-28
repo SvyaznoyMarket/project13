@@ -63,9 +63,9 @@ table{border-collapse:collapse;border-spacing:0;}
 .fixedTopBar.mProdCard .fixedTopBar__crumbsList{width:1200px;}
 .fixedTopBar.mProdCard .fixedTopBar__crumbsListItem{background-image:none;}
 .fixedTopBar.mProdCard .transGradWhite{background:url("/styles/fixedTopBar/img/tranGradientWhite.png") no-repeat 0 0;position:absolute;right:0;top:12px;height:30px;width:27px;display:block;}
-.fixedTopBar.mHomepage{border-right:1px solid #ffffff;border-bottom:1px solid #ffffff;-webkit-border-radius:0 0 4px 4px;-moz-border-radius:0 0 4px 4px;border-radius:0 0 4px 4px;}.fixedTopBar.mHomepage .fixedTopBar__logInLink,.fixedTopBar.mHomepage .fixedTopBar__cart,.fixedTopBar.mHomepage .fixedTopBar__cartTitle{color:#fff;}
+.fixedTopBar.mHomepage{border:none;-webkit-border-radius:0 0 4px 4px;-moz-border-radius:0 0 4px 4px;border-radius:0 0 4px 4px;}.fixedTopBar.mHomepage .fixedTopBar__logInLink,.fixedTopBar.mHomepage .fixedTopBar__cart,.fixedTopBar.mHomepage .fixedTopBar__cartTitle{color:#fff;}
 .fixedTopBar.mHomepage .fixedTopBar__logIn .transGrad{background:url("/styles/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;}
-.fixedTopBar.mHomepage .fixedTopBar__logIn{background:none;}
+.fixedTopBar.mHomepage .fixedTopBar__logIn{background:none;border-color:#404040;}
 .fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty,.fixedTopBar.mHomepage .fixedTopBar__cart{background:#000000;}
 .fixedTopBar.mHomepage .fixedTopBar__dd{width:229px;}
 .fixedTopBar.mHomepage .fixedTopBar__logOut{width:127px;}

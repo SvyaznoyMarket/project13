@@ -1094,8 +1094,7 @@ table {
   display: block;
 }
 .fixedTopBar.mHomepage {
-  border-right: 1px solid #ffffff;
-  border-bottom: 1px solid #ffffff;
+  border: none;
   -webkit-border-radius: 0 0 4px 4px;
   -moz-border-radius: 0 0 4px 4px;
   border-radius: 0 0 4px 4px;
@@ -1110,6 +1109,7 @@ table {
 }
 .fixedTopBar.mHomepage .fixedTopBar__logIn {
   background: none;
+  border-color: #404040;
 }
 .fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty,
 .fixedTopBar.mHomepage .fixedTopBar__cart {
