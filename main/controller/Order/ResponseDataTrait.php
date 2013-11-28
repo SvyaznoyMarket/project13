@@ -70,13 +70,30 @@ trait ResponseDataTrait {
             }
 
             foreach (array_chunk(array_keys($productDataById), \App::config()->coreV2['chunk_size']) as $idsInChunk) {
-                \RepositoryManager::product()->prepareCollectionById($idsInChunk, $region, function($data) use (&$productDataById, &$router, &$cart, &$quantitiesByProduct) {
+                \RepositoryManager::product()->prepareCollectionById($idsInChunk, $region, function($data) use (&$productDataById, &$router, &$cart, &$quantitiesByProduct, &$responseData) {
                     foreach ($data as $item) {
-                        $cartProduct = $cart->getProductById($item['id']);
+                        if ($responseData['paypalECS']) {
+                            $cartProduct = $cart->getPaypalProduct();
+                            $setUrl = $router->generate('cart.paypal.product.set', ['productId' => $item['id'], 'quantity' => isset($quantitiesByProduct[$cartProduct->getId()]) ? $quantitiesByProduct[$cartProduct->getId()] : $cartProduct->getQuantity()]);
+                            $deleteUrl = $router->generate('cart.paypal.product.delete', ['productId' => $item['id']]);
+                        } else if ($responseData['lifeGift']) {
+                            $cartProduct = \App::user()->getLifeGiftCart()->getProductById($item['id']);
+                            $setUrl = $router->generate('cart.lifeGift.product.set', ['productId' => $item['id'], 'quantity' => isset($quantitiesByProduct[$cartProduct->getId()]) ? $quantitiesByProduct[$cartProduct->getId()] : $cartProduct->getQuantity()]);
+                            $deleteUrl = $router->generate('cart.lifeGift.product.delete', ['productId' => $item['id']]);
+                        } else if ($responseData['oneClick']) {
+                            $cartProduct = \App::user()->getOneClickCart()->getProductById($item['id']);
+                            $setUrl = $router->generate('cart.oneClick.product.set', ['productId' => $item['id'], 'quantity' => isset($quantitiesByProduct[$cartProduct->getId()]) ? $quantitiesByProduct[$cartProduct->getId()] : $cartProduct->getQuantity()]);
+                            $deleteUrl = $router->generate('cart.oneClick.product.delete', ['productId' => $item['id']]);
+                        } else {
+                            $cartProduct = $cart->getProductById($item['id']);
+                            $setUrl = $router->generate('cart.product.set', ['productId' => $item['id'], 'quantity' => isset($quantitiesByProduct[$cartProduct->getId()]) ? $quantitiesByProduct[$cartProduct->getId()] : $cartProduct->getQuantity()]);
+                            $deleteUrl = $router->generate('cart.product.delete', ['productId' => $item['id']]);
+                        }
                         if (!$cartProduct) {
                             \App::logger()->error(sprintf('Товар #%s не найден в корзине', $item['id']), ['order']);
                             continue;
                         }
+
                         $productDataById[$item['id']] = array_merge([
                             'id'         => (string)$item['id'],
                             'name'       => $item['name'],
@@ -86,8 +103,8 @@ trait ResponseDataTrait {
                             'stock'      => (int)$item['stock'],
                             'image'      => $item['media_image'],
                             'url'        => $item['link'],
-                            'setUrl'     => $router->generate('cart.product.set', ['productId' => $item['id'], 'quantity' => isset($quantitiesByProduct[$cartProduct->getId()]) ? $quantitiesByProduct[$cartProduct->getId()] : $cartProduct->getQuantity()]),
-                            'deleteUrl'  => $router->generate('cart.product.delete', ['productId' => $item['id']]),
+                            'setUrl'     => $setUrl,
+                            'deleteUrl'  => $deleteUrl,
                             'deliveries' => [],
                         ], $productDataById[$item['id']]);
                     }

@@ -48,12 +48,12 @@ class ProductAction {
             }
 
             $productInfo = [
-                'id'        =>  $product->getId(),
-                'name'      =>  $product->getName(),
-                'img'       =>  $product->getImageUrl(2),
-                'link'      =>  $product->getLink(),
-                'price'     =>  $product->getPrice(),
-                'deleteUrl' => (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
+                'id'        => $product->getId(),
+                'name'      => $product->getName(),
+                'img'       => $product->getImageUrl(2),
+                'link'      => $product->getLink(),
+                'price'     => $product->getPrice(),
+                'deleteUrl' => $cartProduct->getId() ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
             ];
             if (\App::config()->kissmentrics['enabled']) {
                 try {
