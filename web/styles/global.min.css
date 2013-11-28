@@ -102,7 +102,7 @@ table{border-collapse:collapse;border-spacing:0;}
 .fixedTopBar .cartList{max-height:260px;overflow:auto;}.fixedTopBar .cartList__item{height:55px;padding:5px 0 5px 5px;overflow:hidden;font-size:11px;}.fixedTopBar .cartList__item:hover,.fixedTopBar .cartList__item.mHover{background:#fff7e6;}
 .fixedTopBar .cartList__itemLink{display:inline-block;width:30px;margin:0 5px 0 0;vertical-align:top;*display:inline;zoom:1;}
 .fixedTopBar .cartList__itemImg{max-height:40px;max-width:30px;}
-.fixedTopBar .cartList__itemName{display:inline-block;width:110px;line-height:1.2;vertical-align:top;*display:inline;zoom:1;}
+.fixedTopBar .cartList__itemName{display:inline-block;width:110px;line-height:1.2;height:53px;overflow:hidden;vertical-align:top;*display:inline;zoom:1;}
 .fixedTopBar .cartList__itemInfo{display:inline-block;width:50px;vertical-align:middle;*display:inline;zoom:1;line-height:1.2;}
 .fixedTopBar .cartList .del{text-decoration:underline;}
 .fixedTopBar .cartList .price{display:block;}
