@@ -1196,7 +1196,7 @@ $(document).ready(function() {
  */
  
  
-;(function(){
+;(function() {
 	// текущая страница для каждой вкладки
 	var reviewCurrentPage = {
 			user: -1,
@@ -1218,30 +1218,48 @@ $(document).ready(function() {
 		reviewContent = $('.bReviewsContent');
 	// end of vars
 
-	// получение отзывов
+	/**
+	 * Получение отзывов
+	 * @param	{String}	productId
+	 * @param	{String}	type
+	 * @param	{String}	containerClass
+	 */
 	var getReviews = function( productId, type, containerClass ) {
-		var page = reviewCurrentPage[type] + 1;
+		var page = reviewCurrentPage[type] + 1,
+			layout = false,
+			url = '/product-reviews/'+productId,
+			dataToSend = {};
+		// end of vars
 		
-		var layout = false;
-		if($('body').hasClass('jewel')) {
-			layout = 'jewel';
-		}
-
-		$.get('/product-reviews/'+productId, {
-			page: page,
-			type: type,
-			layout: layout
-		}, 
-		function(data){
+		var reviewsResponse = function reviewsResponse( data ) {
 			$('.'+containerClass).html($('.'+containerClass).html() + data.content);
 			reviewCurrentPage[type]++;
 			reviewPageCount[type] = data.pageCount;
-			if(reviewCurrentPage[type] + 1 >= reviewPageCount[type]) {
+
+			if ( reviewCurrentPage[type] + 1 >= reviewPageCount[type] ) {
 				moreReviewsButton.hide();
 			}
 			else {
 				moreReviewsButton.show();
 			}
+		};
+		// end of functions
+
+		if ( $('body').hasClass('jewel') ) {
+			layout = 'jewel';
+		}
+
+		dataToSend = {
+			page: page,
+			type: type,
+			layout: layout
+		};
+
+		$.ajax({
+			type: 'GET',
+			data: dataToSend,
+			url: url,
+			success: reviewsResponse
 		});
 	};
 
@@ -1253,9 +1271,10 @@ $(document).ready(function() {
 		reviewCurrentPage[initialType]++;
 		reviewPageCount[initialType] = reviewWrap.attr('data-page-count');
 
-		if(reviewPageCount[initialType] > 1) {
+		if ( reviewPageCount[initialType] > 1 ) {
 			moreReviewsButton.show();
 		}
+
 		reviewsProductId = reviewWrap.attr('data-product-id');
 		reviewsType = reviewWrap.attr('data-reviews-type');
 		reviewsContainerClass = reviewWrap.attr('data-container');
@@ -1327,7 +1346,6 @@ $(document).ready(function() {
 
 
 
-
 /**
  * Обработчик для формы "Отзыв о товаре"
  *
@@ -1335,7 +1353,16 @@ $(document).ready(function() {
  */
 ;(function() {
 	var body = $('body'),
-		form = $('.jsReviewForm'),
+		reviewPopup = $('.jsReviewPopup'),
+		form = reviewPopup.find('.jsReviewForm'),
+		
+		reviewStar = form.find('.starsList img'),
+		reviewStarCount = form.find('.jsReviewStarsCount'),
+		starStateClass = {
+			fill: 'mFill',
+			empty: 'mEmpty'
+		},
+
 		advantageField = $('.jsAdvantage'),
 		disadvantageField = $('.jsDisadvantage'),
 		extractField = $('.jsExtract'),
@@ -1347,7 +1374,7 @@ $(document).ready(function() {
 		 *
 		 * @type {Object}
 		 */
-			validationConfig = {
+		validationConfig = {
 			fields: [
 				{
 					fieldNode: advantageField,
@@ -1380,8 +1407,12 @@ $(document).ready(function() {
 		validator = new FormValidator(validationConfig);
 	//end of vars
 
-	var openPopup = function() {
-			$('.jsReviewPopup').lightbox_me({
+	var 
+		/**
+		 * Открытие окна с отзывами
+		 */
+		openPopup = function openPopup() {
+			reviewPopup.lightbox_me({
 				centered: true,
 				autofocus: true,
 				onLoad: function() {}
@@ -1395,7 +1426,7 @@ $(document).ready(function() {
 		 *
 		 * @param   {Object}    formError   Объект с полем содержащим ошибки
 		 */
-			formErrorHandler = function( formError ) {
+		formErrorHandler = function formErrorHandler( formError ) {
 			var field = $('[name="review[' + formError.field + ']"]');
 			// end of vars
 
@@ -1417,7 +1448,7 @@ $(document).ready(function() {
 		 *
 		 * @param   {String}    msg     Сообщение которое необходимо показать пользователю
 		 */
-			showError = function( msg ) {
+		showError = function showError( msg ) {
 			var error = $('ul.error_list', form);
 			// end of vars
 
@@ -1437,7 +1468,7 @@ $(document).ready(function() {
 		 *
 		 * @param {Object} res Ответ сервера
 		 */
-			serverErrorHandler = function( res ) {
+		serverErrorHandler = function serverErrorHandler( res ) {
 			var formError = null;
 			// end of vars
 
@@ -1461,9 +1492,9 @@ $(document).ready(function() {
 		/**
 		 * Обработчик ответа от сервера
 		 *
-		 * @param {Object} response Ответ сервера
+		 * @param	{Object}	response	Ответ сервера
 		 */
-			responseFromServer = function( response ) {
+		responseFromServer = function responseFromServer( response ) {
 			console.log('Ответ от сервера');
 
 			if ( response.error ) {
@@ -1486,8 +1517,8 @@ $(document).ready(function() {
 		/**
 		 * Сабмит формы "Отзыв о товаре"
 		 */
-			formSubmit = function() {
-			var requestToServer = function () {
+		formSubmit = function formSubmit() {
+			var requestToServer = function requestToServer() {
 				$.post(form.attr('action'), form.serializeArray(), responseFromServer, 'json');
 				console.log('Сабмит формы "Отзыв о товаре"');
 
@@ -1512,12 +1543,63 @@ $(document).ready(function() {
 		},
 
 		/**
+		 * Закрашивание необходимого количества звезд
+		 * 
+		 * @param	{Number}	count	Количество звезд которое необходимо закрасить
+		 */
+		fillStars = function fillStars( count ) {
+			reviewStar.removeClass(starStateClass['fill']).removeClass(starStateClass['empty']);
+
+			reviewStar.each(function( index ) {
+				if ( index + 1 <= count ) {
+					$(this).addClass(starStateClass['fill']);
+				}
+				else {
+					$(this).addClass(starStateClass['empty']);
+				}
+			});
+		},
+
+		/**
+		 * Наведение на звезду курсора
+		 */
+		hoverStar = function hoverStar() {
+			var nowStar = $(this),
+				starIndex = nowStar.index() + 1;
+			// end of vars
+
+			fillStars(starIndex);			
+		},
+
+		/**
+		 * Событие сведения курсора со звезды
+		 */
+		unhoverStar = function unhoverStar() {
+			var nowStarCount = reviewStarCount.val();
+			// end of vars
+			
+			fillStars(nowStarCount);
+		},
+
+		/**
+		 * Нажатие на звезду
+		 */
+		markStar = function markStar() {
+			var nowStar = $(this),
+				starIndex = nowStar.index() + 1;
+			// end of vars
+			
+			reviewStarCount.val(starIndex);
+			fillStars(starIndex);
+		},
+
+		/**
 		 * Заполнение данных пользователя в форме (поля "Ваше имя" и "Ваш e-mail") и скрытие полей.
 		 *
 		 * @param  {Event} e
 		 * @param  {Object} userInfo
 		 */
-			fillUserData = function ( e, userInfo ) {
+		fillUserData = function fillUserData( e, userInfo ) {
 			if ( userInfo ) {
 				// если присутствует имя пользователя
 				if ( userInfo.name ) {
@@ -1540,8 +1622,11 @@ $(document).ready(function() {
 
 	body.on('click', '.jsReviewSend', openPopup);
 	body.on('submit', '.jsReviewForm', formSubmit);
-
 	body.on('userLogged', fillUserData);
+
+	reviewStar.hover(hoverStar, unhoverStar);
+	reviewStar.on('unhover', unhoverStar);
+	reviewStar.on('click', markStar);
 }());
  
  
