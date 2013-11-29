@@ -19,7 +19,9 @@
 		// end of vars
 
 		var addToCart = function addToCart( data ) {
-			var groupBtn = button.data('group');
+			var groupBtn = button.data('group'),
+				alsoBought = button.data('alsoBought') ? button.data('alsoBought') : null;
+			//end of vars
 
 			if ( !data.success ) {
 				return false;
@@ -29,6 +31,7 @@
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
 			body.trigger('addtocart', [data]);
+			body.trigger('getalsobought', [alsoBought]);
 			body.trigger('updatespinner',[groupBtn]);
 		};
 
