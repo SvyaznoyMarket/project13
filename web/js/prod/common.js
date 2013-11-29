@@ -338,7 +338,8 @@ $.ajaxSetup({
 			button.removeClass('mLoading');
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
-			body.trigger('addtocart', [data, alsoBought]);
+			body.trigger('addtocart', [data]);
+			body.trigger('getalsobought', [alsoBought]);
 			body.trigger('updatespinner',[groupBtn]);
 		};
 
@@ -3900,10 +3901,9 @@ $(document).ready(function() {
 		 * Обновление блока с рекомендациями "С этим товаром также покупают"
 		 *
 		 * @param	{Object}	event	Данные о событии
-		 * @param	{Object}	data	Данные о покупке
 		 * @param	{Object}	alsoBought
 		 */
-		updateAlsoBoughtInfo = function updateAlsoBoughtInfo( event, data, alsoBought ) {
+		updateAlsoBoughtInfo = function updateAlsoBoughtInfo( event, alsoBought ) {
 			console.info('userbar::updateAlsoBoughtInfo');
 
 			var responseFromServer = function ( response ){
@@ -3932,7 +3932,7 @@ $(document).ready(function() {
 	body.on('userLogged', updateUserInfo);
 	body.on('basketUpdate', updateBasketInfo);
 	body.on('addtocart', showBuyInfo);
-	body.on('addtocart', updateAlsoBoughtInfo);
+	body.on('getalsobought', updateAlsoBoughtInfo);
 
 	if ( userbar.length ) {
 		scrollTarget = $(userbarConfig.target);
