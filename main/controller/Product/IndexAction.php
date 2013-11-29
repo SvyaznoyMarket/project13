@@ -139,7 +139,7 @@ class IndexAction {
         if ($productLine instanceof \Model\Product\Line\Entity ) {
             $productRepository = \RepositoryManager::product();
             $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
-            if(!$product->getKit()) {
+            if ($line && !$product->getKit()) {
                 // Если набор, то получаем главный продукт
                 $mainProduct = $productRepository->getEntityById($line->getMainProductId());
             } else {
