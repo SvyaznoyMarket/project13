@@ -71,6 +71,7 @@ return function (
         ?>
             <div class="bPayMethod<? if (\Model\PaymentMethod\Entity::TYPE_ALL == $typeId): ?> mMethodOption<? endif ?>"
                  data-value="<?= $helper->json([
+                     'min-sum' => $paymentMethod->getIsCredit() ? \App::config()->product['minCreditPrice'] : null,
                      'max-sum' => in_array($paymentMethod->getId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID]) ? App::config()->order['maxSumOnline'] : null,
                      'method_id' => $paymentMethod->getId(),
                      'isAvailableToPickpoint' => $paymentMethod->getIsAvailableToPickpoint(),
