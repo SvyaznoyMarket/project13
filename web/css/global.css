@@ -2283,7 +2283,7 @@
     font-family: Tahoma, sans-serif;
     padding: 10px 0 0;
     position: relative;
-    width: 950px;
+    width: 948px;
     margin-left: -10px;
     padding-left: 10px;
     background: #f4f4f4;
@@ -7318,11 +7318,11 @@
     background: url('/css/subscribeLightboxPopup/img/bgSubscribeTop.png') repeat-x 0 0;
   }
   .bSubscribeLightboxPopup__eTitle {
-    margin: 0 25px 0 20px;
+    margin: 0 22px 0 0px;
     text-transform: uppercase;
     color: #ffffff;
-    font-family: 'Enter';
-    font-size: 19px;
+    font-family: 'Enter Type';
+    font-size: 16px;
     font-weight: 100;
     line-height: 40px;
   }
@@ -7333,9 +7333,9 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    width: 260px;
+    width: 170px;
     height: 25px;
-    margin: 5px 0 0 20px;
+    margin: 5px 0 0 0;
     padding: 0 5px;
     border: 1px solid #000000;
   }
@@ -7354,7 +7354,7 @@
     background: #000000;
     font-size: 12px;
     line-height: 27px;
-    padding: 0 20px;
+    padding: 0 8px;
     display: inline-block;
     vertical-align: top;
   }
@@ -7364,8 +7364,8 @@
     text-decoration: underline;
     color: #ffffff;
     font-family: 'Enter Type';
-    font-size: 16px;
-    line-height: 35px;
+    font-size: 15px;
+    line-height: 40px;
   }
   .bSubscribeLightboxPopup__eNotNow:hover {
     color: #ffffff;
@@ -9366,7 +9366,7 @@
     background: url("data: image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAYdEVYdENyZWF0aW9uIFRpbWUAMjAuMTEuMjAxM1Han3MAAAG7SURBVEiJtZa9S8NAGIefXKOi9WvQIgjSSYouXZwULILO4p/g1s3OiqLY1erUTcTRQcS1WBB0cepSKC4GoSDWodaPYsyHwxniBzZpWl8Id8l7+T2/93IXTuEzShlmgSQwA4wSLMrABZCNpTgHUD7Ft9UQq5F+he5OUEPB1A0T6jrc12wMk3QsxZpSyjDXqXI2NqQQEgF9/wjTgtsHG91gQQDJob72iQOEBAz3KwBJAcyHu9on7kSP1JwXwIAI6j4chUQe4ju/UkIBoLe1iZk+hkgCxlf+HBIcMLkBg3HZL262GRCOSgBAtfAPgKl9t3+13HBo84BIQl4A17uygsCA0cXfH3BiXbbvVShuefpRG2anj2XbMSDn+Zv7PQnxiMYVOOU7K+ar++s9T3FvwOWS69JZ8+DbvTfgRXOdhqPuc5/uvQGO2Fe32oFv9/4A71W4OXDvy6e+xf0BALRDF1Y+aQqgAo+W5fFHrRbgqLk9adkAPAsg/6o39a6veH0DICeAbKVmY1rtEzctqNRsgKyIpcjpBmmtYvNUB6MFkGHBUx20io1ukI6lyClOspRhDvfYMhKQcYd7bMkDfABX0JEueuyW2AAAAABJRU5ErkJggg==") no-repeat scroll 0px 0px transparent;
   }
   .bInputList .mCustomLabelBig.mChecked {
-    background-position: 0 -54px;
+    background: url("data: image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAYdEVYdENyZWF0aW9uIFRpbWUAMjAuMTEuMjAxM1Han3MAAAG7SURBVEiJtZa9S8NAGIefXKOi9WvQIgjSSYouXZwULILO4p/g1s3OiqLY1erUTcTRQcS1WBB0cepSKC4GoSDWodaPYsyHwxniBzZpWl8Id8l7+T2/93IXTuEzShlmgSQwA4wSLMrABZCNpTgHUD7Ft9UQq5F+he5OUEPB1A0T6jrc12wMk3QsxZpSyjDXqXI2NqQQEgF9/wjTgtsHG91gQQDJob72iQOEBAz3KwBJAcyHu9on7kSP1JwXwIAI6j4chUQe4ju/UkIBoLe1iZk+hkgCxlf+HBIcMLkBg3HZL262GRCOSgBAtfAPgKl9t3+13HBo84BIQl4A17uygsCA0cXfH3BiXbbvVShuefpRG2anj2XbMSDn+Zv7PQnxiMYVOOU7K+ar++s9T3FvwOWS69JZ8+DbvTfgRXOdhqPuc5/uvQGO2Fe32oFv9/4A71W4OXDvy6e+xf0BALRDF1Y+aQqgAo+W5fFHrRbgqLk9adkAPAsg/6o39a6veH0DICeAbKVmY1rtEzctqNRsgKyIpcjpBmmtYvNUB6MFkGHBUx20io1ukI6lyClOspRhDvfYMhKQcYd7bMkDfABX0JEueuyW2AAAAABJRU5ErkJggg==") no-repeat scroll 0px 0px transparent;
   }
   .bInputList .mCustomLabelRadioBig {
     line-height: 1;
@@ -9389,12 +9389,6 @@
   }
   .bInputList .mLabelStrong {
     font-weight: bold;
-  }
-  .lt-ie9 .bInputList .mCustomCheckBig + .bCustomLabel {
-    background: url("/css/common/img/bigcheck.png") no-repeat scroll 0 0;
-  }
-  .lt-ie9 .bInputList .mCustomLabelBig.mChecked {
-    background-position: 0 -54px;
   }
 }
 /*---END---СТИЛИ ПОЛЬЗОВАТЕЛЬСКИЕ СТИЛИ ЭЛЕМЕНТОВ ФОРМ---*/

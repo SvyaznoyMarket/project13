@@ -85,7 +85,7 @@ if ($oneClick) {
 		<div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
 
 		<div class="bBuyingLine__eRight bInputList" data-bind="foreach: { data: deliveryTypes }">
-			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" hidden data-bind="attr: { 'id': 'method_'+$data.id }" />
+			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" data-bind="attr: { 'id': 'method_'+$data.id }" />
 			<label class="bCustomLabel mCustomLabelBig mLabelStrong" data-bind="
 									text: $data.name,
 									states: $data.states,
@@ -250,14 +250,14 @@ if ($oneClick) {
 						<ul class="bSaleList bInputList clearfix">
 	                        <? if (\App::config()->coupon['enabled']): ?>
 							<li class="bSaleList__eItem" data-type="coupon" data-bind="visible: (deliveryBoxes().length == 1)">
-								<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
+								<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" data-bind="checked: couponUrl" />
 								<label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
 							</li>
 	                        <? endif ?>
 
 	                        <? if (\App::config()->blackcard['enabled']): ?>
 							<li class="bSaleList__eItem mEnterSpa" data-type="blackcard">
-								<input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden data-bind="checked: couponUrl" />
+								<input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" data-bind="checked: couponUrl" />
 								<label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
 							</li>
 	                        <? endif ?>
@@ -359,7 +359,7 @@ if ($oneClick) {
                         <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
                         <div class="bSubscibeCheck bInputList">
-                            <input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
+                            <input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
                             <label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
                         </div>
                     </div>
@@ -385,7 +385,7 @@ if ($oneClick) {
 						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
 						<div class="bSubscibeCheck bInputList">
-							<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
+							<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
 							<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>                 
 						</div>
 					</div>
@@ -420,7 +420,7 @@ if ($oneClick) {
 						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
 						<div class="bSubscibeCheck bInputList">
-							<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
+							<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
 							<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>                 
 						</div>
 					</div>
@@ -500,7 +500,7 @@ if ($oneClick) {
                         data-bind="paymentMethodVisible: totalSum"
                         data-value="<?= $page->json(['min-sum' => \App::config()->product['minCreditPrice'], 'method_id' => \Model\PaymentMethod\Entity::CREDIT_ID, 'isAvailableToPickpoint' => true]) ?>" >
 
-                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[payment_method_id]" value="<?= \Model\PaymentMethod\Entity::CREDIT_ID ?>" hidden id="order_payment_method_id_6"/>
+                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[payment_method_id]" value="<?= \Model\PaymentMethod\Entity::CREDIT_ID ?>" id="order_payment_method_id_6"/>
                         <label class="bCustomLabel mCustomLabelBig" for="order_payment_method_id_6">
                             Купить в кредит
                         </label>
@@ -538,14 +538,14 @@ if ($oneClick) {
 				<div class="bBuyingLine__eRight bInputList mRules">
 
 					<!-- Privacy and policy -->
-					<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[agreed]" hidden id="order_agreed"/>
+					<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[agreed]" id="order_agreed"/>
 					<label class="bCustomLabel mCustomLabelBig" for="order_agreed">
 						Я ознакомлен и согласен с «<a href="<?= $isCorporative ? '/corp-terms' : '/terms' ?>" target="_blank">Условиями продажи</a>» и «<a href="/legal" target="_blank">Правовой информацией</a>»*
 					</label>
 
                     <? if ($lifeGift): ?>
                         <br />
-                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[lifeGift_agreed]" hidden id="order_lifeGift_agreed"/>
+                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[lifeGift_agreed]" id="order_lifeGift_agreed"/>
                         <label class="bCustomLabel mCustomLabelBig" for="order_lifeGift_agreed">
                             Оформляя и оплачивая настоящий заказ я даю поручение компании ООО «Энтер» передать приобретенный мною товар в качестве дара в Благотворительный фонд помощи детям с онкогематологическими и иными тяжелыми заболеваниями «ПОДАРИ ЖИЗНЬ» (ИНН 7714320009, КПП 771401001, огрн 1067799030639) в срок до 23.12.2013*
                         </label>

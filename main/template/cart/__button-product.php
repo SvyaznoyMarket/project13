@@ -42,7 +42,7 @@ return function (
 
     ?>
     <div class="bWidgetBuy__eBuy btnBuy">
-        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
+        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-also-bought='<?= json_encode(['url' => $helper->url('product.alsoBought', ['productId' => $product->getId()])])?>'><?= $value ?></a>
     </div>
 
 <? };

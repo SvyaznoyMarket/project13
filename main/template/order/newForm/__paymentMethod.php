@@ -82,7 +82,6 @@ return function (
                     type="radio"
                     name="order[payment_method_id]"
                     value="<?= $paymentMethod->getId() ?>"
-                    hidden
                 />
 
                 <label for="<?= $elementId ?>" class="bCustomLabel mCustomLabelRadioBig"><?= $paymentMethod->getName() ?></label>
