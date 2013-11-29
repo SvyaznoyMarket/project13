@@ -3291,6 +3291,17 @@ $(document).ready(function() {
 			suggestItem.removeClass('hover');
 			index = $(this).addClass('hover').index();
 			nowSelectSuggest = index - 1;
+		},
+
+
+		/**
+		 * Подставляет поисковую подсказку в строку поиска
+		 */
+		searchHintSelect = function searchHintSelect() {
+			var hintValue = $(this).text(),
+				searchValue = searchInput.val();
+			if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
+			return searchInput.val(hintValue + ' ');
 		};
 	// end of functions
 
@@ -3310,6 +3321,7 @@ $(document).ready(function() {
 		$('body').bind('click', suggestCloser);
 		$('body').on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
 		$('body').on('click', '.bSearchSuggest__eRes', suggestAnalytics);
+		$('body').on('click', '.sHint_value', searchHintSelect);
 	});
 }());
 
