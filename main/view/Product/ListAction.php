@@ -111,7 +111,7 @@ class ListAction {
 
         return [
             'products' => $productData,
-            'productСount' => $productCount
+            'productCount' => $productCount
         ];
     }
 }
