@@ -328,7 +328,7 @@ $.ajaxSetup({
 
 		var addToCart = function addToCart( data ) {
 			var groupBtn = button.data('group'),
-				upsale = button.data('alsoBought') ? button.data('alsoBought') : null;
+				upsale = button.data('upsale') ? button.data('upsale') : null;
 			//end of vars
 
 			if ( !data.success ) {
