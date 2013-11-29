@@ -267,7 +267,6 @@ class Action {
         $page->setParam('selectedFilter', $selectedFilter);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('tag', $tag);
-        $page->setParam('productPager', $productPager);
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('sort', $sort);
