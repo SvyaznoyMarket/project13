@@ -327,7 +327,9 @@ $.ajaxSetup({
 		// end of vars
 
 		var addToCart = function addToCart( data ) {
-			var groupBtn = button.data('group');
+			var groupBtn = button.data('group'),
+				alsoBought = button.data('alsoBought') ? button.data('alsoBought') : null;
+			//end of vars
 
 			if ( !data.success ) {
 				return false;
@@ -337,6 +339,7 @@ $.ajaxSetup({
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
 			body.trigger('addtocart', [data]);
+			body.trigger('getalsobought', [alsoBought]);
 			body.trigger('updatespinner',[groupBtn]);
 		};
 
@@ -3896,11 +3899,14 @@ $(document).ready(function() {
 
 		/**
 		 * Обновление блока с рекомендациями "С этим товаром также покупают"
+		 *
+		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	alsoBought
 		 */
-		updateAlsoBoughtInfo = function updateAlsoBoughtInfo() {
+		updateAlsoBoughtInfo = function updateAlsoBoughtInfo( event, alsoBought ) {
 			console.info('userbar::updateAlsoBoughtInfo');
 
-			var responseFromServer = function ( response ) {
+			var responseFromServer = function ( response ){
 				console.log(response);
 
 				if ( response.success ) {
@@ -3909,16 +3915,13 @@ $(document).ready(function() {
 			};
 			//end functions
 
-			if ( typeof userbarConfig.ajaxAlsoBoughtUrl === 'undefined' ) {
-				return; 
+			if ( alsoBought.url ) {
+				$.ajax({
+					type: 'GET',
+					url: alsoBought.url,
+					success: responseFromServer
+				});
 			}
-
-
-			$.ajax({
-				type: 'GET',
-				url: userbarConfig.ajaxAlsoBoughtUrl,
-				success: responseFromServer
-			});
 		};
 	// end of functions
 
@@ -3929,7 +3932,7 @@ $(document).ready(function() {
 	body.on('userLogged', updateUserInfo);
 	body.on('basketUpdate', updateBasketInfo);
 	body.on('addtocart', showBuyInfo);
-	// body.on('addtocart', updateAlsoBoughtInfo);
+	body.on('getalsobought', updateAlsoBoughtInfo);
 
 	if ( userbar.length ) {
 		scrollTarget = $(userbarConfig.target);
