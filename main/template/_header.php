@@ -160,7 +160,7 @@
 
 <!-- Данные пользователя -->
 <script id="userbar_user_tmpl" type="text/html">
-    <a href="{{link}}" class="fixedTopBar__logInLink">{{name}}</a>
+    <a href="{{link}}" class="fixedTopBar__logInLink"><span class="name__hidden">{{name}}</span></a>
     <span class="transGrad"></span>
 
     <div class="fixedTopBar__dd fixedTopBar__logOut">
