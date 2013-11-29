@@ -213,11 +213,15 @@
 
 		/**
 		 * Обновление блока с рекомендациями "С этим товаром также покупают"
+		 *
+		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	data	Данные о покупке
+		 * @param	{Object}	alsoBought
 		 */
-		updateAlsoBoughtInfo = function updateAlsoBoughtInfo() {
+		updateAlsoBoughtInfo = function updateAlsoBoughtInfo( event, data, alsoBought ) {
 			console.info('userbar::updateAlsoBoughtInfo');
 
-			var responseFromServer = function ( response ) {
+			var responseFromServer = function ( response ){
 				console.log(response);
 
 				if ( response.success ) {
@@ -226,16 +230,13 @@
 			};
 			//end functions
 
-			if ( typeof userbarConfig.ajaxAlsoBoughtUrl === 'undefined' ) {
-				return; 
+			if ( alsoBought.url ) {
+				$.ajax({
+					type: 'GET',
+					url: alsoBought.url,
+					success: responseFromServer
+				});
 			}
-
-
-			$.ajax({
-				type: 'GET',
-				url: userbarConfig.ajaxAlsoBoughtUrl,
-				success: responseFromServer
-			});
 		};
 	// end of functions
 
@@ -246,7 +247,7 @@
 	body.on('userLogged', updateUserInfo);
 	body.on('basketUpdate', updateBasketInfo);
 	body.on('addtocart', showBuyInfo);
-	// body.on('addtocart', updateAlsoBoughtInfo);
+	body.on('addtocart', updateAlsoBoughtInfo);
 
 	if ( userbar.length ) {
 		scrollTarget = $(userbarConfig.target);
