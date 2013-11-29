@@ -100,37 +100,6 @@
 
     <div class="hintDd"><!-- если похожии товары есть то добавляем класс mhintDdOn -->
         <div class="hintDd__title">Дополните ваш заказ</div>
-
-        <div class="bSlider">
-            <div class="bSlider__eInner">
-                <ul class="bSlider__eList clearfix" style="width: 1800px; left: 0px;">
-                    <li class="bSlider__eItem" data-category="slider-528a059b18342-category-3441" data-product="{&quot;article&quot;:&quot;463-8555&quot;,&quot;name&quot;:&quot;\u041c\u0435\u0434\u0438\u0430\u043f\u043b\u0435\u0435\u0440 Philips HMP2500T&quot;}" style="display: list-item;">
-                        <div class="product__inner">
-                            <a class="productImg" href="/product/electronics/mediapleer-philips-hmp2500t-2060202001708?sender=retailrocket|95922"><img src="http://fs03.enter.ru/1/1/120/0e/176565.jpg" alt="Медиаплеер Philips HMP2500T"></a>
-                            <div class="productName"><a href="/product/electronics/mediapleer-philips-hmp2500t-2060202001708?sender=retailrocket|95922">Медиаплеер Philips HMP2500T</a></div>
-                            <div class="productPrice"><span class="price">2 730 <span class="rubl">p</span></span></div>
-                            <div class="bWidgetBuy__eBuy btnBuy">
-                                <a href="/cart/add-product/95922" class="id-cartButton-product-95922 btnBuy__eLink jsBuyButton" data-group="95922">Купить</a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="bSlider__eItem" data-category="slider-528a059b18342-category-3441" data-product="{&quot;article&quot;:&quot;462-9129&quot;,&quot;name&quot;:&quot;\u041c\u0435\u0434\u0438\u0430\u043f\u043b\u0435\u0435\u0440 3Q 3QMMP-AB494HW&quot;}" style="display: list-item;">
-                        <div class="product__inner">
-                            <a class="productImg" href="/product/electronics/mediapleer-3q-3qmmp-ab494hw-2060202001685?sender=retailrocket|84536"><img src="http://fs07.enter.ru/1/1/120/d7/159863.jpg" alt="Медиаплеер 3Q 3QMMP-AB494HW"></a>
-                            <div class="productName"><a href="/product/electronics/mediapleer-3q-3qmmp-ab494hw-2060202001685?sender=retailrocket|84536">Медиаплеер 3Q 3QMMP-AB494HW</a></div>
-                            <div class="productPrice"><span class="price">2 200 <span class="rubl">p</span></span></div>
-                            <div class="bWidgetBuy__eBuy btnBuy">
-                                <a href="/cart/add-product/84536" class="id-cartButton-product-84536 btnBuy__eLink jsBuyButton" data-group="84536">Купить</a>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>
-            <div class="bSlider__eBtn mNext"><span></span></div>
-        </div>
     </div>
 </script>
 

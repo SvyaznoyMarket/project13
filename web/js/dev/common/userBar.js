@@ -107,6 +107,7 @@
 
 			var
 				wrap = userbar.find('.fixedTopBar__cart'),
+				alsoBoughtWrap = wrap.find('.hintDd'),
 				overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
 				template = $('#buyinfo_tmpl'),
 				partials = template.data('partial'),
@@ -129,6 +130,7 @@
 						infoShowing = false;
 						checkScroll();
 						buyInfo.remove();
+						alsoBoughtWrap.removeClass('mhintDdOn');
 					});
 
 					overlay.fadeOut(300, function() {
@@ -220,22 +222,39 @@
 		updateAlsoBoughtInfo = function updateAlsoBoughtInfo( event, alsoBought ) {
 			console.info('userbar::updateAlsoBoughtInfo');
 
+			var cartWrap = userbar.find('.fixedTopBar__cart'),
+				alsoBoughtWrap = cartWrap.find('.hintDd'),
+				slider;
+			// end of vars
+
 			var responseFromServer = function ( response ){
 				console.log(response);
 
-				if ( response.success ) {
-					console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
+				if ( !response.success ) {
+					return;
 				}
+				
+				console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
+
+				alsoBoughtWrap.find('.bGoodsSlider').remove();
+
+				slider = $(response.content)[0];
+				alsoBoughtWrap.append(slider);
+				alsoBoughtWrap.addClass('mhintDdOn');
+				$(slider).goodsSlider();
 			};
 			//end functions
 
-			if ( alsoBought.url ) {
-				$.ajax({
-					type: 'GET',
-					url: alsoBought.url,
-					success: responseFromServer
-				});
+
+			if ( !alsoBought.url ) {
+				return;
 			}
+
+			$.ajax({
+				type: 'GET',
+				url: alsoBought.url,
+				success: responseFromServer
+			});
 		};
 	// end of functions
 
