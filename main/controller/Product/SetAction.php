@@ -36,12 +36,12 @@ class SetAction {
         $categoriesById = [];
         /** @var $products \Model\Product\ExpandedEntity */
         $products = [];
-        /** @var $products \Model\Product\Entity */
-        $productsForRetargeting = [];
-        \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById, &$productsForRetargeting) {
+
+        \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById) {
             foreach ($data as $item) {
-                $products[] = new \Model\Product\ExpandedEntity($item);
-                $productsForRetargeting[] = new \Model\Product\Entity($item);
+                //$products[] = new \Model\Product\ExpandedEntity($item);
+                $products[] = new \Model\Product\Entity($item);
+                //$productsForRetargeting[] = new \Model\Product\Entity($item);
 
                 if (isset($item['category']) && is_array($item['category'])) {
                     $categoryItem = array_pop($item['category']);
@@ -122,7 +122,7 @@ class SetAction {
         // страница
         $page = new \View\Product\SetPage();
         $page->setParam('productPager', $productPager);
-        $page->setParam('products', $productsForRetargeting);
+        $page->setParam('products', $products);
         $page->setParam('categoriesById', $categoriesById);
         $page->setParam('productView', $productView);
         $page->setParam('productSorting', $productSorting);
@@ -182,8 +182,9 @@ class SetAction {
         if ( !is_array($products) || empty($products) ) return false;
 
         switch ($sortName) {
-            case 'hits': //todo
-                //$compareFunctionName = 'compareHits';
+            case 'hits':
+                $compareFunctionName = 'compareHits';
+                break;
             case 'price':
                 $compareFunctionName = 'comparePrice';
                 break;
@@ -201,11 +202,11 @@ class SetAction {
     /**
      * Lambda function for compare by price
      *
-     * @param \Model\Product\ExpandedEntity $productX
-     * @param \Model\Product\ExpandedEntity $productY
+     * @param \Model\Product\Entity $productX
+     * @param \Model\Product\Entity $productY
      * @return int
      */
-    private static function comparePrice(\Model\Product\ExpandedEntity $productX, \Model\Product\ExpandedEntity $productY) {
+    private static function comparePrice(\Model\Product\Entity $productX, \Model\Product\Entity $productY/*, $depth = 0*/) {
         $a = $productX->getPrice();
         $b = $productY->getPrice();
 
@@ -213,30 +214,57 @@ class SetAction {
             return 0;
         }
 
-        return ($a < $b) ? -1 : 1;
+        return ($a < $b) ? -1 : +1;
     }
 
 
     /**
      * Lambda function for default compare
      *
-     * @param \Model\Product\ExpandedEntity $productX
-     * @param \Model\Product\ExpandedEntity $productY
-     * @return bool|int
+     * @param \Model\Product\Entity $productX
+     * @param \Model\Product\Entity $productY
+     * @return int
      */
-    private static function compareDefault(\Model\Product\ExpandedEntity $productX, \Model\Product\ExpandedEntity $productY) {
+    private static function compareDefault(\Model\Product\Entity $productX, \Model\Product\Entity $productY, $depth = 0) {
         $a = $productX->getIsBuyable();
         $b = $productY->getIsBuyable();
         //$sortAscDirection = true;
 
         if ($a == $b) {
-            return 0;
+            if (0 == $depth) {
+                return self::compareHits($productX, $productY, ++$depth);
+            } else {
+                return 0;
+            }
         }
 
-        $ret = (bool) ( ($a < $b) ? +1 : -1 );
+        $ret = ( (int)$a < (int)$b ) ? -1 : +1;
         //if (!$sortAscDirection) $ret = !$ret;
 
         return $ret;
+    }
+
+
+    /**
+     * Lambda function for hits (rating) compare
+     *
+     * @param \Model\Product\Entity $productX
+     * @param \Model\Product\Entity $productY
+     * @return int
+     */
+    private static function compareHits(\Model\Product\Entity $productX, \Model\Product\Entity $productY, $depth = 0) {
+        $a = $productX->getRating();
+        $b = $productY->getRating();
+
+        if ($a == $b) {
+            if (0 == $depth) {
+                return self::compareDefault($productX, $productY, ++$depth);
+            } else {
+                return 0;
+            }
+        }
+
+        return ( (int)$a < (int)$b ) ? -1 : +1;
     }
 
 
