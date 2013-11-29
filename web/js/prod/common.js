@@ -328,7 +328,7 @@ $.ajaxSetup({
 
 		var addToCart = function addToCart( data ) {
 			var groupBtn = button.data('group'),
-				alsoBought = button.data('alsoBought') ? button.data('alsoBought') : null;
+				upsale = button.data('alsoBought') ? button.data('alsoBought') : null;
 			//end of vars
 
 			if ( !data.success ) {
@@ -339,7 +339,7 @@ $.ajaxSetup({
 
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
 			body.trigger('addtocart', [data]);
-			body.trigger('getalsobought', [alsoBought]);
+			body.trigger('getupsale', [upsale]);
 			body.trigger('updatespinner',[groupBtn]);
 		};
 
@@ -3793,7 +3793,7 @@ $(document).ready(function() {
 
 			var
 				wrap = userbar.find('.fixedTopBar__cart'),
-				alsoBoughtWrap = wrap.find('.hintDd'),
+				upsaleWrap = wrap.find('.hintDd'),
 				overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
 				template = $('#buyinfo_tmpl'),
 				partials = template.data('partial'),
@@ -3816,7 +3816,7 @@ $(document).ready(function() {
 						infoShowing = false;
 						checkScroll();
 						buyInfo.remove();
-						alsoBoughtWrap.removeClass('mhintDdOn');
+						upsaleWrap.removeClass('mhintDdOn');
 					});
 
 					overlay.fadeOut(300, function() {
@@ -3903,13 +3903,13 @@ $(document).ready(function() {
 		 * Обновление блока с рекомендациями "С этим товаром также покупают"
 		 *
 		 * @param	{Object}	event	Данные о событии
-		 * @param	{Object}	alsoBought
+		 * @param	{Object}	upsale
 		 */
-		updateAlsoBoughtInfo = function updateAlsoBoughtInfo( event, alsoBought ) {
-			console.info('userbar::updateAlsoBoughtInfo');
+		showUpsell = function showUpsell( event, upsale ) {
+			console.info('userbar::showUpsell');
 
 			var cartWrap = userbar.find('.fixedTopBar__cart'),
-				alsoBoughtWrap = cartWrap.find('.hintDd'),
+				upsaleWrap = cartWrap.find('.hintDd'),
 				slider;
 			// end of vars
 
@@ -3922,23 +3922,24 @@ $(document).ready(function() {
 				
 				console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
 
-				alsoBoughtWrap.find('.bGoodsSlider').remove();
+				upsaleWrap.find('.bGoodsSlider').remove();
 
 				slider = $(response.content)[0];
-				alsoBoughtWrap.append(slider);
-				alsoBoughtWrap.addClass('mhintDdOn');
+				upsaleWrap.append(slider);
+				upsaleWrap.addClass('mhintDdOn');
 				$(slider).goodsSlider();
 			};
 			//end functions
 
+			console.log(upsale);
 
-			if ( !alsoBought.url ) {
+			if ( !upsale.url ) {
 				return;
 			}
 
 			$.ajax({
 				type: 'GET',
-				url: alsoBought.url,
+				url: upsale.url,
 				success: responseFromServer
 			});
 		};
@@ -3951,7 +3952,7 @@ $(document).ready(function() {
 	body.on('userLogged', updateUserInfo);
 	body.on('basketUpdate', updateBasketInfo);
 	body.on('addtocart', showBuyInfo);
-	body.on('getalsobought', updateAlsoBoughtInfo);
+	body.on('getupsale', showUpsell);
 
 	if ( userbar.length ) {
 		scrollTarget = $(userbarConfig.target);
