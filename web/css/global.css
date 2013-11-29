@@ -2154,6 +2154,127 @@
     height: 500px;
   }
 }
+/*оставить отзыв*/
+@media all {
+  .reviewSend {
+    text-decoration: underline;
+    color: #a6a6a6;
+  }
+  .reviewSend:hover {
+    text-decoration: none;
+    color: #a6a6a6;
+  }
+  .reviewPopup {
+    width: 700px;
+  }
+  .reviewPopup .productName {
+    overflow: hidden;
+    font-size: 18px;
+    margin: 0 0 20px;
+  }
+  .reviewPopup .productName__inner {
+    width: 2000px;
+  }
+  .reviewPopup .place2Col {
+    float: left;
+    width: 343px;
+  }
+  .reviewPopup .place2Col.mRight {
+    float: right;
+  }
+  .reviewPopup .place2Col .reviewForm__textarea {
+    width: 330px;
+  }
+  .reviewForm__place {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  .reviewForm__place.mCol {
+    float: left;
+    width: 600px;
+  }
+  .reviewForm__place.mCol .place2Col {
+    width: 284px;
+    margin: 0 16px 0 0;
+  }
+  .reviewForm__place.mLeft {
+    float: left;
+    width: 580px;
+  }
+  .reviewForm__place.mRight {
+    float: right;
+  }
+  .reviewForm__label {
+    display: block;
+    font-size: 14px;
+    margin: 0 0 5px;
+  }
+  .reviewForm__textarea {
+    border: 1px solid #c9c9c9;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    resize: none;
+    width: 688px;
+    height: 70px;
+    padding: 5px;
+    margin: 0 0 15px;
+  }
+  .reviewForm__text {
+    display: block;
+    padding: 0px 5px;
+    width: 272px;
+    height: 28px;
+    line-height: 28px;
+  }
+  .reviewForm__button {
+    display: block;
+    padding: 0px 15px 3px;
+    height: 30px;
+    border: none;
+    font-size: 14px;
+    line-height: 30px;
+    cursor: pointer;
+    border: 1px solid #f28900;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin: 21px 0 0 0;
+  }
+  .reviewForm__stars {
+    font-size: 14px;
+    margin: 10px 0 15px;
+  }
+  .reviewForm__stars .reviewForm__label {
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+    width: 60px;
+  }
+  .reviewForm__stars .starsList {
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+    width: 160px;
+  }
+  .reviewForm__footnote {
+    font-size: 11px;
+    margin: 5px 0 0;
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+  }
+  .popupTitle {
+    margin: 0 0 15px;
+    text-transform: uppercase;
+    font-size: 30px;
+    font-family: "Enter";
+  }
+}
 /*---END---СТИЛИ ВСПЛЫВАЮЩИХ ОКОН---*/
 /*------СТИЛИ ХЕАДЕРА------*/
 @media all {
