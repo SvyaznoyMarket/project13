@@ -37,7 +37,7 @@ if (empty($rootCategories)) $rootCategories = [];
         <? if ($error = $form->getError('email')) echo $page->render('_formError', ['error' => $error]) ?>
 
         <div class="bInputList">
-            <input type="checkbox" id="subscribeCheck" name="subscribe" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox" checked="checked" hidden />
+            <input type="checkbox" id="subscribeCheck" name="subscribe" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox" checked="checked" />
             <label class="bCustomLabel" for="subscribeCheck">Хочу знать об интересных предложениях</label>
         </div>
 
