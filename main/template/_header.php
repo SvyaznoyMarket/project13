@@ -6,9 +6,9 @@
 ?>
 
 <div class="bSubscribeLightboxPopup clearfix">
-    <h3 class="bSubscribeLightboxPopup__eTitle fl">Дарим подарки новым друзьям!</h3>
-    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Подпишитесь и получите подарок"/>
-    <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>">Хочу подарок</button>
+    <h3 class="bSubscribeLightboxPopup__eTitle fl">Подпишитесь на рассылку и будьте в курсе акций, скидок и суперцен!</h3>
+    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Введите Ваш e-mail"/>
+    <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>">Подписаться</button>
     <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
 </div>
 <!-- Topbar -->
@@ -160,7 +160,7 @@
 
 <!-- Данные пользователя -->
 <script id="userbar_user_tmpl" type="text/html">
-    <a href="{{link}}" class="fixedTopBar__logInLink">{{name}}</a>
+    <a href="{{link}}" class="fixedTopBar__logInLink"><span class="name__hidden">{{name}}</span></a>
     <span class="transGrad"></span>
 
     <div class="fixedTopBar__dd fixedTopBar__logOut">
