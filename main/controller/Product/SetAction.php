@@ -195,7 +195,7 @@ class SetAction {
         //usort( $products, array(__CLASS__, $compareFunctionName) );
         usort( $products, array($this, $compareFunctionName) );
 
-        if (!$sortAscDirection) $products = array_reverse($products);
+        if (false === $sortAscDirection) $products = array_reverse($products);
     }
 
 
