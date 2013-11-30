@@ -70,6 +70,15 @@ class Client
     {
         $query = $this->config['apiUrl'] . $action . '/' . $this->config['account'] . '/' . $item_id;
 
+        $user = \App::user();
+        if ($user) {
+            $uEntity = $user->getEntity();
+            if ($uEntity) {
+                $uid = $uEntity->getId();
+                if ($uid) $query .= '/' . $uid;
+            }
+        }
+
         \App::logger()->info('Start RetailRocket ' . $action . ' query: ' . $query, ['RetailRocket']);
 
         $connection = curl_init();
