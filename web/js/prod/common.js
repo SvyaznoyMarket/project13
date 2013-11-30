@@ -3234,9 +3234,14 @@ $(document).ready(function() {
 
 				enterSelectedItem = function enterSelectedItem() {
 					var link = suggestItem.eq(nowSelectSuggest).attr('href');
-					
+
 					suggestAnalytics();
 					document.location.href = link;
+				}
+
+				escapeSearchQuery = function escapeSearchQuery() {
+					var s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
+					searchInput.val(s);
 				};
 			// end of functions
 
@@ -3255,10 +3260,13 @@ $(document).ready(function() {
 				
 				return false;
 			}
-			else if ( keyCode === 13 && nowSelectSuggest !== -1 ) { // Press Enter and suggest has selected item
-				enterSelectedItem();
+			else if ( keyCode === 13 ) {
+				escapeSearchQuery();
+				if ( nowSelectSuggest !== -1 ) { // Press Enter and suggest has selected item
+					enterSelectedItem();
 
-				return false;
+					return false;
+				}
 			}
 		},
 
@@ -3268,6 +3276,7 @@ $(document).ready(function() {
 			if ( text.length === 0 ) {
 				return false;
 			}
+			escapeSearchQuery();
 		},
 
 		searchInputFocusin = function searchInputFocusin() {
@@ -3301,7 +3310,7 @@ $(document).ready(function() {
 			var hintValue = $(this).text(),
 				searchValue = searchInput.val();
 			if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
-			return searchInput.val(hintValue + ' ');
+			return searchInput.val(hintValue + ' ').focus();
 		};
 	// end of functions
 
