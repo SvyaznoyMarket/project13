@@ -4,22 +4,23 @@ namespace View\Product;
 
 class SetPage extends \View\DefaultLayout {
     /** @var string */
-    protected $layout  = 'layout-twoColumn';
+    protected $layout  = 'layout-oneColumn';
 
     public function prepare() {
     }
 
     public function slotContent() {
-        return $this->render('product/page-set', $this->params);
+        //return $this->render('product/page-set', $this->params);
+        return $this->render('product/page-set-new', $this->params);
     }
 
     public function slotBodyDataAttribute() {
         return 'product_catalog';
     }
 
-    public function slotSidebar() {
+    /*public function slotSidebar() {
         return $this->render('product/page-set-sidebar', $this->params);
-    }
+    }*/
 
     public function slotInnerJavascript() {
         /** @var $product \Model\Product\Entity */

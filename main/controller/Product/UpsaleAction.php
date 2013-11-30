@@ -2,7 +2,7 @@
 
 namespace Controller\Product;
 
-class AlsoBoughtAction extends BasicRecommendedAction {
-    protected $retailrocketMethodName = 'ItemToItems';
+class UpsaleAction extends BasicRecommendedAction {
+    protected $retailrocketMethodName = 'CrossSellItemToItems';
     protected $actionTitle = 'С этим товаром также покупают';
 }

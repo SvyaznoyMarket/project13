@@ -1495,7 +1495,7 @@ table {
   top: 234px;
   height: 26px;
   width: 228px;
-  display: block;
+  display: none;
 }
 .fixedTopBar__logOutLink {
   display: block;

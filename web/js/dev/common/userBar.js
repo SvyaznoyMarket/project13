@@ -107,6 +107,7 @@
 
 			var
 				wrap = userbar.find('.fixedTopBar__cart'),
+				upsaleWrap = wrap.find('.hintDd'),
 				overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
 				template = $('#buyinfo_tmpl'),
 				partials = template.data('partial'),
@@ -129,6 +130,7 @@
 						infoShowing = false;
 						checkScroll();
 						buyInfo.remove();
+						upsaleWrap.removeClass('mhintDdOn');
 					});
 
 					overlay.fadeOut(300, function() {
@@ -213,27 +215,45 @@
 
 		/**
 		 * Обновление блока с рекомендациями "С этим товаром также покупают"
+		 *
+		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	upsale
 		 */
-		updateAlsoBoughtInfo = function updateAlsoBoughtInfo() {
-			console.info('userbar::updateAlsoBoughtInfo');
+		showUpsell = function showUpsell( event, upsale ) {
+			console.info('userbar::showUpsell');
 
-			var responseFromServer = function ( response ) {
+			var cartWrap = userbar.find('.fixedTopBar__cart'),
+				upsaleWrap = cartWrap.find('.hintDd'),
+				slider;
+			// end of vars
+
+			var responseFromServer = function ( response ){
 				console.log(response);
 
-				if ( response.success ) {
-					console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
+				if ( !response.success ) {
+					return;
 				}
+				
+				console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
+
+				upsaleWrap.find('.bGoodsSlider').remove();
+
+				slider = $(response.content)[0];
+				upsaleWrap.append(slider);
+				upsaleWrap.addClass('mhintDdOn');
+				$(slider).goodsSlider();
 			};
 			//end functions
 
-			if ( typeof userbarConfig.ajaxAlsoBoughtUrl === 'undefined' ) {
-				return; 
-			}
+			console.log(upsale);
 
+			if ( !upsale.url ) {
+				return;
+			}
 
 			$.ajax({
 				type: 'GET',
-				url: userbarConfig.ajaxAlsoBoughtUrl,
+				url: upsale.url,
 				success: responseFromServer
 			});
 		};
@@ -246,7 +266,7 @@
 	body.on('userLogged', updateUserInfo);
 	body.on('basketUpdate', updateBasketInfo);
 	body.on('addtocart', showBuyInfo);
-	// body.on('addtocart', updateAlsoBoughtInfo);
+	body.on('getupsale', showUpsell);
 
 	if ( userbar.length ) {
 		scrollTarget = $(userbarConfig.target);
