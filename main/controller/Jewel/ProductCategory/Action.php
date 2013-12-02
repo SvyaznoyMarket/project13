@@ -185,6 +185,11 @@ class Action extends \Controller\ProductCategory\Action {
             $seoContent = '';
         }
 
+        $subCatMenu = &$catalogJson['sub_category_filter_menu'];
+        if ( !empty($subCatMenu) && is_array($subCatMenu) ) {
+            $subCatMenu = reset($subCatMenu);
+        }
+
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,

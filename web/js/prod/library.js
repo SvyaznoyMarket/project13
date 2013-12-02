@@ -2775,6 +2775,10 @@ if ( !Array.prototype.indexOf ) {
 			callbacks[i] = reqArray[i].callback;
 		}
 
+		if ( !dataToSend.actions.length ) {
+			return;
+		}
+
 		$.ajax({
 			url: pageConfig.routeUrl,
 			type: 'POST',
