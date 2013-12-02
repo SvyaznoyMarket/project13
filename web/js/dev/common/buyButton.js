@@ -20,7 +20,8 @@
 
 		var addToCart = function addToCart( data ) {
 			var groupBtn = button.data('group'),
-				upsale = button.data('upsale') ? button.data('upsale') : null;
+				upsale = button.data('upsale') ? button.data('upsale') : null,
+				product = button.parents('li.jsSliderItem').data('product');
 			//end of vars
 
 			if ( !data.success ) {
@@ -32,8 +33,14 @@
 			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
 			body.trigger('addtocart', [data]);
 			body.trigger('getupsale', [upsale]);
-			body.trigger('trackupsale', [data]);
 			body.trigger('updatespinner',[groupBtn]);
+
+			if ( data.product ) {
+				data.product.isUpsale = product && product.isUpsale ? true : false;
+				data.product.fromUpsale = upsale && upsale.fromUpsale ? true : false;
+				data.product.addToCart = true;
+				body.trigger('trackupsale', [data]);
+			}
 		};
 
 		$.get(url, addToCart);
