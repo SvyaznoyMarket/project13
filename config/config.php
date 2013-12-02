@@ -365,6 +365,8 @@ $c->lifeGift['regionId'] = 151021;
 $c->lifeGift['labelId'] = 17;
 $c->lifeGift['deliveryTypeId'] = 1077;
 
+$c->enterprize['enabled'] = true;
+
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
