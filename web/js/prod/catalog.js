@@ -244,8 +244,6 @@
 
 			if ( lastPage ) {
 				catalog.lastPage = lastPage;
-				console.log('lastPage NEW DATA');
-				console.log(lastPage);
 			}
 
 			catalog.filter.lastRes = dataToRender;
