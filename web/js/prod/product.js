@@ -1356,7 +1356,7 @@ $(document).ready(function() {
 		reviewPopup = $('.jsReviewPopup'),
 		form = reviewPopup.find('.jsReviewForm'),
 		
-		reviewStar = form.find('.starsList img'),
+		reviewStar = form.find('.starsList__item'),
 		reviewStarCount = form.find('.jsReviewStarsCount'),
 		starStateClass = {
 			fill: 'mFill',
