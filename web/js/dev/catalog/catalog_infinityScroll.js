@@ -22,6 +22,8 @@
 		loading: false,
 
 		nowPage: 1,
+		pagesCount: null,
+		productsCount: null,
 
 		checkInfinity: function() {
 			console.info('checkInfinity '+ window.docCookies.getItem( 'infScroll' ));
@@ -38,7 +40,8 @@
 				d = $(document);
 			// end of vars
 
-			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height() ) {
+			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height() &&
+				null !== catalog.infScroll.pagesCount && catalog.infScroll.nowPage < catalog.infScroll.pagesCount ) {
 				console.warn('checkscroll true. load');
 				catalog.infScroll.nowPage += 1;
 				catalog.infScroll.load();
@@ -55,6 +58,11 @@
 
 				html = catalog.filter.render['list']( res['list'] );
 				catalog.infScroll.loading = false;
+
+				if ( res['allCount'] ) {
+					catalog.infScroll.pagesCount = res['allCount'].pages;
+					catalog.infScroll.productsCount = res['allCount'].products;
+				}
 
 				catalog.listingWrap.append(html);
 			};
