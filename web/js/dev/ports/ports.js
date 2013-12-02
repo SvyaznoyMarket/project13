@@ -693,26 +693,15 @@ window.ANALYTICS = {
 		var marinConversionTagJSHandler = function marinConversionTagJSHandler() {
 			console.info('marinConversionTagJS run');
 
-			var orders = $('#marinConversionTagJS').data('value'),
-				_mTrack = window._mTrack || [],
-				itemList = [],
-				i;
+			var ordersInfo = $('#marinConversionTagJS').data('value'),
+				_mTrack = window._mTrack || [];
 			// end of vars
 
-			if ( !orders.length ) {
-				return
+			if ( 'undefined' === typeof(ordersInfo) ) {
+				return;
 			}
 
-			for ( i in orders ) {
-				if ( orders[i]['id'] ) {
-					itemList.push({
-						convType : 'sales',
-						orderId : orders[i]['id']	// order‑id
-					});
-				}
-			}
-
-			_mTrack.push(['addTrans', { items : itemList }]);
+			_mTrack.push(['addTrans', ordersInfo]);
 			_mTrack.push(['processOrders']);
 
 			console.log('marinConversionTagJS complete');
