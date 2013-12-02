@@ -189,6 +189,11 @@ class Action {
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage(\App::config()->product['itemsPerPage']);
 
+        $allCount = [
+            'products'  => $productCount,
+            'pages'     => (0 == $productCount) ? 0 : $productPager->getLastPage(),
+        ];
+
         // проверка на максимально допустимый номер страницы
         if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
             //throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
@@ -249,10 +254,7 @@ class Action {
                     $helper,
                     $productSorting
                 ),
-                'allCount'   => [
-                    'products'  => $productCount,
-                    'pages'     => $productPager->getLastPage(),
-                ]
+                'allCount'   => $allCount,
             ]);
         }
 
@@ -280,6 +282,7 @@ class Action {
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setGlobalParam('shop', $shop);
         $page->setParam('bannerPlaceholder', $bannerPlaceholder);
+        $page->setParam('allCount', $allCount);
 
         return new \Http\Response($page->show());
     }
