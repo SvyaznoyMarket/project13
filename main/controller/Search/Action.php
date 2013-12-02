@@ -31,6 +31,7 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
         }
 
+        $isAjax = (bool) ( $request->isXmlHttpRequest() && 'true' == $request->get('ajax') );
         $limit = \App::config()->product['itemsPerPage'];
         $offset = intval($pageNum - 1) * $limit - (1 === $pageNum ? 0 : 1);
         $categoryId = (int)$request->get('category');
@@ -196,7 +197,16 @@ class Action {
 
         // проверка на максимально допустимый номер страницы
         if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-            //throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            if ( $isAjax ) {
+                return new \Http\JsonResponse([
+                    'list' => [
+                        'productCount' => 0
+                    ],
+                    'allCount' => $allCount,
+                ]);
+            }else{
+                throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            }
         }
 
         // video
@@ -227,7 +237,7 @@ class Action {
         \App::dataStoreClient()->execute();
 
         // ajax
-        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+        if ( $isAjax ) {
             $templating = \App::closureTemplating();
             /** @var $helper \Helper\TemplateHelper */
             $helper = \App::closureTemplating()->getParam('helper');
