@@ -378,7 +378,7 @@ class Client {
             curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data));
         }
 
-        if ('http://' . $referer = \App::config()->mainHost) {
+        if ($referer = \App::config()->mainHost) {
             curl_setopt($connection, CURLOPT_REFERER, $referer);
         }
 
