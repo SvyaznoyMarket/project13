@@ -161,13 +161,6 @@ trait FormTrait {
             $deliveryType = \RepositoryManager::deliveryType()->getEntityById($form->getDeliveryTypeId());
             if (!$deliveryType) {
                 $form->setError('delivery_type_id', 'Способ получения заказа недоступен');
-            } else if (\Model\DeliveryType\Entity::TYPE_STANDART == $deliveryType->getToken()) {
-                if (!$form->getAddressStreet()) {
-                    $form->setError('address_street', 'Укажите улицу');
-                }
-                if (!$form->getAddressBuilding()) {
-                    $form->setError('address_building', 'Укажите дом');
-                }
             }
         }
     }

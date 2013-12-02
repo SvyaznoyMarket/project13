@@ -39,7 +39,7 @@ $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
 $c->coreV2['timeout']      = 5;
 $c->coreV2['hugeTimeout']  = 90;
-$c->coreV2['retryCount']   = 3;
+$c->coreV2['retryCount']   = 2;
 $c->coreV2['retryTimeout'] = [
     'default' => 0.5,
     'tiny'    => 0.05,
@@ -238,7 +238,7 @@ $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
-$c->product['pushReview']             = false;
+$c->product['pushReview']             = true;
 $c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
 // jewel

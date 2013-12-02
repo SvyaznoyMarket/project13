@@ -14,6 +14,7 @@
 		border: 1px solid #ccc;
 		width: 228px;
 		.drop-shadow(0px, 4px, 11px, 0.3);
+		color: @black;
 	}
 
 	&__logOut {
@@ -27,10 +28,10 @@
 			background: url("@{base-url}/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
 			position: absolute;
 			left: 0;
-			top: 187px;
+			top: 234px;
 			height: 26px;
 			width: 228px;
-			display: block;
+			display: none;
 		}
 	}
 
@@ -43,7 +44,7 @@
 	}
 
 	.cartList {
-		height: 213px;
+		max-height: 260px;
 		overflow: auto;
 
 		&__item {
@@ -52,7 +53,7 @@
 			overflow: hidden;
 			font-size: 11px;
 
-			&:hover {
+			&.mHover {
 				background: #fff7e6;
 			}
 		}
@@ -76,6 +77,8 @@
 			display: inline-block;
 			width: 110px;
 			line-height: 1.2;
+			height: 53px;
+			overflow: hidden;
 
 			vertical-align: top;
 			*display: inline;
@@ -98,6 +101,11 @@
 		}
 
 		.price {
+			display: block;
+		}
+
+		.quan {
+			margin: 4px 0;
 			display: block;
 		}
 	}

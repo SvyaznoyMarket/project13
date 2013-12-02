@@ -544,7 +544,7 @@ table {
     padding: 0 0 222px;
   }
   .content.mContentOrder {
-    padding-bottom: 390px;
+    padding-bottom: 20px;
   }
   .content.mContentMain {
     padding-bottom: 470px;
@@ -1045,11 +1045,9 @@ table {
   border-top: none;
 }
 .fixedTopBar.mStatic {
-  border: 1px solid #ddd;
-  border-top: none;
-  border-right: none;
+  border-left: 1px solid #ddd;
   float: right;
-  margin: -10px -10px 0 0;
+  margin: -10px 0 0 0;
   font-size: 12px;
   width: 229px;
   position: relative;
@@ -1058,7 +1056,7 @@ table {
   display: block;
 }
 .fixedTopBar.mStatic .fixedTopBar__cart {
-  width: 91px;
+  width: 101px;
 }
 .fixedTopBar.mStatic .fixedTopBar__logIn {
   border-left: none;
@@ -1094,6 +1092,34 @@ table {
   height: 30px;
   width: 27px;
   display: block;
+}
+.fixedTopBar.mHomepage {
+  border: none;
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+}
+.fixedTopBar.mHomepage .fixedTopBar__logInLink,
+.fixedTopBar.mHomepage .fixedTopBar__cart,
+.fixedTopBar.mHomepage .fixedTopBar__cartTitle {
+  color: #fff;
+}
+.fixedTopBar.mHomepage .fixedTopBar__logIn .transGrad {
+  background: url("/styles/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;
+}
+.fixedTopBar.mHomepage .fixedTopBar__logIn {
+  background: none;
+  border-color: #404040;
+}
+.fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty,
+.fixedTopBar.mHomepage .fixedTopBar__cart {
+  background: #000000;
+}
+.fixedTopBar.mHomepage .fixedTopBar__dd {
+  width: 229px;
+}
+.fixedTopBar.mHomepage .fixedTopBar__logOut {
+  width: 127px;
 }
 .fixedTopBar .wrapperCrumbsList {
   width: 340px;
@@ -1141,13 +1167,17 @@ table {
 .fixedTopBar__crumbsImg {
   display: inline-block;
   vertical-align: top;
+  margin-right: 5px;
+  text-align: center;
+  line-height: 47px;
+  height: 49px;
   *display: inline;
   zoom: 1;
 }
 .fixedTopBar__crumbsImg .crumbsImg {
-  margin-right: 5px;
-  width: 49px;
-  height: 49px;
+  max-height: 40px;
+  display: inline-block;
+  vertical-align: middle;
 }
 .fixedTopBar__crumbsList {
   display: inline-block;
@@ -1181,34 +1211,47 @@ table {
 }
 .fixedTopBar__cart {
   float: right;
-  padding: 5px 0 0 10px;
-  width: 90px;
-  height: 45px;
+  width: 100px;
+  height: 49px;
   -webkit-border-radius: 0 0 4px 0;
   -moz-border-radius: 0 0 4px 0;
   border-radius: 0 0 4px 0;
   position: relative;
   z-index: 10;
+  background: #ffffff;
 }
 .fixedTopBar__cart.mEmpty {
   background: #f4f4f4;
-  padding-top: 15px;
-  height: 34px;
+  height: 49px;
 }
 .fixedTopBar__cart.mEmpty .fixedTopBar__cartQuan {
   background: #bbbbbb;
+}
+.fixedTopBar__cart.mEmpty .fixedTopBar__cartTitle {
+  padding-top: 17px;
+  padding-bottom: 18px;
 }
 .fixedTopBar__cart:hover .fixedTopBar__dd {
   display: block;
   left: -129px;
 }
-.fixedTopBar__cartLink {
-  display: block;
+.fixedTopBar__cart.mOpenedPopup .fixedTopBar__dd {
+  display: none;
 }
-.fixedTopBar__cartLink:hover {
-  text-decoration: none;
+.fixedTopBar__cart.mOpenedPopup:hover .fixedTopBar__dd {
+  display: none;
 }
 .fixedTopBar__cartTitle {
+  display: block;
+  padding: 5px 0 8px 10px;
+}
+.fixedTopBar__cartTitle:hover {
+  text-decoration: none;
+}
+.fixedTopBar__cartTitle:hover .fixedTopBar__cartText {
+  text-decoration: none;
+}
+.fixedTopBar__cartText {
   display: inline-block;
   vertical-align: top;
   *display: inline;
@@ -1273,7 +1316,12 @@ table {
   padding-left: 15px;
   display: block;
   text-decoration: underline;
-  width: 206px;
+  width: 106px;
+  overflow: hidden;
+}
+.fixedTopBar__logInLink .name__hidden {
+  display: block;
+  width: 1000px;
 }
 .fixedTopBar__buy {
   display: inline-block;
@@ -1435,6 +1483,7 @@ table {
   -webkit-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
+  color: #000000;
 }
 .fixedTopBar__logOut {
   width: 127px;
@@ -1443,10 +1492,10 @@ table {
   background: url("/styles/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
   position: absolute;
   left: 0;
-  top: 187px;
+  top: 234px;
   height: 26px;
   width: 228px;
-  display: block;
+  display: none;
 }
 .fixedTopBar__logOutLink {
   display: block;
@@ -1456,7 +1505,7 @@ table {
   line-height: 25px;
 }
 .fixedTopBar .cartList {
-  height: 213px;
+  max-height: 260px;
   overflow: auto;
 }
 .fixedTopBar .cartList__item {
@@ -1465,7 +1514,7 @@ table {
   overflow: hidden;
   font-size: 11px;
 }
-.fixedTopBar .cartList__item:hover {
+.fixedTopBar .cartList__item.mHover {
   background: #fff7e6;
 }
 .fixedTopBar .cartList__itemLink {
@@ -1484,6 +1533,8 @@ table {
   display: inline-block;
   width: 110px;
   line-height: 1.2;
+  height: 53px;
+  overflow: hidden;
   vertical-align: top;
   *display: inline;
   zoom: 1;
@@ -1500,6 +1551,10 @@ table {
   text-decoration: underline;
 }
 .fixedTopBar .cartList .price {
+  display: block;
+}
+.fixedTopBar .cartList .quan {
+  margin: 4px 0;
   display: block;
 }
 .fixedTopBar .quickOrder {

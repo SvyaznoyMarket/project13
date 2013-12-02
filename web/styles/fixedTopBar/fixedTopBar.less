@@ -21,11 +21,9 @@
 	}
 
 	&.mStatic {
-		border: 1px solid #ddd;
-		border-top: none;
-		border-right: none;
+		border-left: 1px solid #ddd;
 		float: right;
-		margin: -10px -10px 0 0;
+		margin: -10px 0 0 0;
 		font-size: 12px;
 		width: 229px;
 		position: relative;
@@ -34,7 +32,7 @@
 		display: block;
 
 		.fixedTopBar__cart {
-			width: 91px;
+			width: 101px;
 		}
 
 		.fixedTopBar__logIn {
@@ -85,6 +83,41 @@
 			width: 27px;
 			display: block;
 		}
+	}
+
+	&.mHomepage {
+		border: none;
+
+		.rounded (0 0 4px 4px);
+
+		.fixedTopBar__logInLink,
+		.fixedTopBar__cart,
+		.fixedTopBar__cartTitle {
+			color: #fff;
+		}
+
+		.fixedTopBar__logIn .transGrad {
+			background: url("@{base-url}/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;
+		}
+
+		.fixedTopBar__logIn {
+			background: none;
+			border-color: @typLinkColor;
+		}
+
+		.fixedTopBar__cart.mEmpty,
+		.fixedTopBar__cart {
+			background: @black;
+		}
+
+		.fixedTopBar__dd {
+			width: 229px;
+		}
+
+		.fixedTopBar__logOut {
+			width: 127px;
+		}
+
 	}
 
 	.wrapperCrumbsList {
@@ -141,14 +174,18 @@
 	&__crumbsImg {
 		display: inline-block;	
 		vertical-align: top;
+		margin-right: 5px;
+		text-align: center;
+		line-height: 47px;
+		height: 49px;
 
 		*display: inline;
 		zoom: 1;
 
 		.crumbsImg {
-			margin-right: 5px;
-			width: 49px;
-			height: 49px;
+			max-height: 40px;
+			display: inline-block;
+			vertical-align: middle;
 		}
 	}
 
@@ -191,20 +228,24 @@
 
 	&__cart {
 		float: right;
-		padding: 5px 0 0 10px;
-		width: 90px;
-		height: 45px;
+		width: 100px;
+		height: 49px;
 		.rounded(0 0 4px 0);
 		position: relative;
 		z-index: 10;
+		background: @white;
 
 		&.mEmpty {
 			background: #f4f4f4;
-			padding-top: 15px;
-			height: 34px;
+			height: 49px;
 
 			.fixedTopBar__cartQuan {
 				background: #bbbbbb;
+			}
+
+			.fixedTopBar__cartTitle {
+				padding-top: 17px;
+				padding-bottom: 18px;
 			}
 		}
 
@@ -215,17 +256,36 @@
 				left: -129px;
 			}
 		}
-	}
 
-	&__cartLink {
-		display: block;
+		&.mOpenedPopup {
 
-		&:hover {
-			text-decoration: none;
-		}
+			.fixedTopBar__dd {
+				display: none;
+			}
+
+			&:hover {
+
+				.fixedTopBar__dd {
+					display: none;
+				}
+			}
+		} 
 	}
 
 	&__cartTitle {
+		display: block;
+		padding: 5px 0 8px 10px;
+
+		&:hover {
+			text-decoration: none;
+
+			.fixedTopBar__cartText {
+				text-decoration: none;
+			}
+		}
+	}
+
+	&__cartText {
 		display: inline-block;
 		vertical-align: top;
 
@@ -302,7 +362,13 @@
 		padding-left: 15px;
 		display: block;
 		text-decoration: underline;
-		width: 206px;
+		width: 106px;
+		overflow: hidden;
+
+		.name__hidden {
+			display: block;
+			width: 1000px;
+		}
 	}
 
 	&__buy {

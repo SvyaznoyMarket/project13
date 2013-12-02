@@ -793,100 +793,100 @@ function brwsr () {
 	this.isTouch    = this.isOSX || this.isAndroid;
 }
 
-function mediaLib( jn ) {
-	if ( ! jn.length ) {
-		return;
-	}
-	var self = this;
-	var popup = jn;
-	var gii = null;
-	var running360 = false;
-	var vis = false;
+// function mediaLib( jn ) {
+// 	if ( ! jn.length ) {
+// 		return;
+// 	}
+// 	var self = this;
+// 	var popup = jn;
+// 	var gii = null;
+// 	var running360 = false;
+// 	var vis = false;
 	
-	this.show = function( ntype, url ) {
-		if (! vis ) {
-			var currentfunction = function(){};
-			switch ( ntype ) {
-				case 'image':
-					currentfunction = self.openEnormous;
-					break;
-				case '360':
-					currentfunction = self.open360;
-					break;
-			}
+// 	this.show = function( ntype, url ) {
+// 		if (! vis ) {
+// 			var currentfunction = function(){};
+// 			switch ( ntype ) {
+// 				case 'image':
+// 					currentfunction = self.openEnormous;
+// 					break;
+// 				case '360':
+// 					currentfunction = self.open360;
+// 					break;
+// 			}
 			
-			$(popup).lightbox_me({
-				centered: true, 
-				onLoad: function() {
-						currentfunction( url );
-					},
-				onClose: function() {
-						self.close();
-						vis = false;
-					},
-				reallyBig: true	
-			});
-			vis = true;
-		}
-		else { // toggle
-			self.close();
-			switch ( ntype ) {
-				case 'image':
-					$('<img>').attr('src', url ).attr('id','gii').appendTo($('.photobox', popup));
-					gii = new gigaimage( $('#gii'), 2,  $('.scale', popup));
-					gii.addZoom();
-					break;
-				case '360':
-					if( ! running360 ){					
-						if( typeof(lkmv.start)!=='undefined' ) {
-							lkmv.start();
-						}
-						running360 = true;
-					}
-					else{
-						if( typeof(lkmv.show)!=='undefined' ) {
-							lkmv.show();
-						}
-					}
-					break;
-			}
-		}
+// 			$(popup).lightbox_me({
+// 				centered: true, 
+// 				onLoad: function() {
+// 						currentfunction( url );
+// 					},
+// 				onClose: function() {
+// 						self.close();
+// 						vis = false;
+// 					},
+// 				reallyBig: true	
+// 			});
+// 			vis = true;
+// 		}
+// 		else { // toggle
+// 			self.close();
+// 			switch ( ntype ) {
+// 				case 'image':
+// 					$('<img>').attr('src', url ).attr('id','gii').appendTo($('.photobox', popup));
+// 					gii = new gigaimage( $('#gii'), 2,  $('.scale', popup));
+// 					gii.addZoom();
+// 					break;
+// 				case '360':
+// 					if( ! running360 ){					
+// 						if( typeof(lkmv.start)!=='undefined' ) {
+// 							lkmv.start();
+// 						}
+// 						running360 = true;
+// 					}
+// 					else{
+// 						if( typeof(lkmv.show)!=='undefined' ) {
+// 							lkmv.show();
+// 						}
+// 					}
+// 					break;
+// 			}
+// 		}
 		
-		return false;
-	};
+// 		return false;
+// 	};
 	
-	this.close = function() {
-		if ( gii ) {
-			gii.destroy();
-			gii = null;		
-			$('#gii').remove();
-		}
-		if ( running360 && lkmv ) {	
-			if( typeof(lkmv.hide)!=='undefined' ) {
-				lkmv.hide();
-			}
-		}
-	};
+// 	this.close = function() {
+// 		if ( gii ) {
+// 			gii.destroy();
+// 			gii = null;		
+// 			$('#gii').remove();
+// 		}
+// 		if ( running360 && lkmv ) {	
+// 			if( typeof(lkmv.hide)!=='undefined' ) {
+// 				lkmv.hide();
+// 			}
+// 		}
+// 	};
 	
-	this.openEnormous = function( url ) {				
-		$('<img>').attr('src', url ).attr('id','gii').appendTo($('.photobox', popup));
-		gii = new gigaimage( $('#gii'), 2,  $('.scale', popup));
-		gii.addZoom();
-	};
+// 	this.openEnormous = function( url ) {				
+// 		$('<img>').attr('src', url ).attr('id','gii').appendTo($('.photobox', popup));
+// 		gii = new gigaimage( $('#gii'), 2,  $('.scale', popup));
+// 		gii.addZoom();
+// 	};
 	
-	this.open360 = function() {	
-		if( ! running360 ){					
-			if( typeof(lkmv.start)!=='undefined' ) {
-				lkmv.start();
-			}
-			running360 = true;
-		} else
-			if( typeof(lkmv.show)!=='undefined' ) {
-				lkmv.show();
-			}
-	};
+// 	this.open360 = function() {	
+// 		if( ! running360 ){					
+// 			if( typeof(lkmv.start)!=='undefined' ) {
+// 				lkmv.start();
+// 			}
+// 			running360 = true;
+// 		} else
+// 			if( typeof(lkmv.show)!=='undefined' ) {
+// 				lkmv.show();
+// 			}
+// 	};
 	
-} // mediaLib object
+// } // mediaLib object
 
 /* Credit Brokers */
 var DirectCredit = {
@@ -1005,20 +1005,20 @@ if ( !Date.prototype.toISOString ) {
 	}() );
 }
 
-function parseISO8601(dateStringInRange) {
-	var isoExp = /^\s*(\d{4})-(\d\d)-(\d\d)\s*$/,
-		date = new Date(NaN), month,
-		parts = isoExp.exec(dateStringInRange);
+// function parseISO8601(dateStringInRange) {
+// 	var isoExp = /^\s*(\d{4})-(\d\d)-(\d\d)\s*$/,
+// 		date = new Date(NaN), month,
+// 		parts = isoExp.exec(dateStringInRange);
 
-	if (parts) {
-		month = +parts[2];
-		date.setFullYear(parts[1], month - 1, parts[3]);
-		if (month != date.getMonth() + 1) {
-			date.setTime(NaN);
-		}
-	}
-	return date.getTime();
-};
+// 	if (parts) {
+// 		month = +parts[2];
+// 		date.setFullYear(parts[1], month - 1, parts[3]);
+// 		if (month != date.getMonth() + 1) {
+// 			date.setTime(NaN);
+// 		}
+// 	}
+// 	return date.getTime();
+// };
 
  
  
@@ -1805,7 +1805,12 @@ window.MapInterface = (function() {
 						toClientCart = {
 							id: product.id,
 							price: product.price,
-							quantity: product.quantity
+							quantity: product.quantity,
+							formattedPrice: printPrice(product.price),
+							name: product.name,
+							image: product.img,
+							url: product.link,
+							deleteUrl: product.deleteUrl
 						},
 						toBasketUpdate = {
 							quantity: cart.full_quantity,
@@ -1815,6 +1820,8 @@ window.MapInterface = (function() {
 
 					clientCart.products.push(toClientCart);
 					self.basket().update(toBasketUpdate);
+					// body.trigger('productAdded');
+
 				};
 			//end of functions
 
@@ -2060,7 +2067,7 @@ FormValidator.prototype._requireAs = {
 	},
 
 	textarea: function( fieldNode ) {
-		var value = fieldNode.text();
+		var value = fieldNode.val();
 
 		if ( value.length === 0 ) {
 			return {
@@ -2190,7 +2197,8 @@ FormValidator.prototype._validateField = function( field ) {
 		return error;
 	}
 
-	elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
+	//elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
+	elementType = ( fieldNode.prop('tagName') === 'TEXTAREA') ? 'textarea' : ( fieldNode.prop("tagName") === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
 
 	/**
 	 * Проверка обязательно ли поле для заполенения
@@ -2679,7 +2687,7 @@ if ( !Array.prototype.indexOf ) {
 					overB = ( ( parseFloat(b).toFixed(2) ).toString() ).replace(/\./,''),
 					overSum = (parseInt(overA, 10) + parseInt(overB, 10)).toString(),
 					firstNums = overSum.substr(0, overSum.length - 2),
-					lastNums = overSum.substr(-2),
+					lastNums = overSum.substr(overSum.length - 2),
 					res;
 				// end of vars
 
@@ -2688,6 +2696,7 @@ if ( !Array.prototype.indexOf ) {
 				console.log(b);
 				console.log(overB);
 				console.log(overSum);
+				console.log(lastNums);
 
 				if ( lastNums === '00' ) {
 					res = firstNums;
@@ -2764,6 +2773,10 @@ if ( !Array.prototype.indexOf ) {
 			});
 
 			callbacks[i] = reqArray[i].callback;
+		}
+
+		if ( !dataToSend.actions.length ) {
+			return;
 		}
 
 		$.ajax({

@@ -312,10 +312,11 @@
 		getUrlParams: function () {
 			var $_GET = {},
 				__GET = window.location.search.substring(1).split('&'),
-				getVar;
+				getVar,
+				i;
 			// end of vars
 
-			for( var i = 0; i < __GET.length; i++ ) {
+			for ( i = 0; i < __GET.length; i++ ) {
 				getVar = __GET[i].split('=');
 				$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
 			}
@@ -611,6 +612,7 @@
 			}
 
 			catalog.history.gotoUrl(url);
+			$.scrollTo(filterBlock, 500);
 
 			return false;
 		},

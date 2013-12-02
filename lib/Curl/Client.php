@@ -357,6 +357,7 @@ class Client {
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_HEADER, 1);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($connection, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($connection, CURLOPT_URL, $url);
         curl_setopt($connection, CURLOPT_HTTPHEADER, ['X-Request-Id: '.\Util\RequestLogger::getInstance()->getId(), 'Expect:']);
         curl_setopt($connection, CURLOPT_ENCODING, 'gzip,deflate');
@@ -377,7 +378,7 @@ class Client {
             curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data));
         }
 
-        if ('http://' . $referer = \App::config()->mainHost) {
+        if ($referer = \App::config()->mainHost) {
             curl_setopt($connection, CURLOPT_REFERER, $referer);
         }
 

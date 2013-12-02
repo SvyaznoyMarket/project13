@@ -34,7 +34,7 @@
 					overB = ( ( parseFloat(b).toFixed(2) ).toString() ).replace(/\./,''),
 					overSum = (parseInt(overA, 10) + parseInt(overB, 10)).toString(),
 					firstNums = overSum.substr(0, overSum.length - 2),
-					lastNums = overSum.substr(-2),
+					lastNums = overSum.substr(overSum.length - 2),
 					res;
 				// end of vars
 
@@ -43,6 +43,7 @@
 				console.log(b);
 				console.log(overB);
 				console.log(overSum);
+				console.log(lastNums);
 
 				if ( lastNums === '00' ) {
 					res = firstNums;

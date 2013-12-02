@@ -70,12 +70,22 @@ class Client
     {
         $query = $this->config['apiUrl'] . $action . '/' . $this->config['account'] . '/' . $item_id;
 
+        $user = \App::user();
+        if ($user) {
+            $uEntity = $user->getEntity();
+            if ($uEntity) {
+                $uid = $uEntity->getId();
+                if ($uid) $query .= '/' . $uid;
+            }
+        }
+
         \App::logger()->info('Start RetailRocket ' . $action . ' query: ' . $query, ['RetailRocket']);
 
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_HEADER, 0);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_NOSIGNAL, 1);
+        curl_setopt($connection, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($connection, CURLOPT_TIMEOUT_MS, $this->config['timeout'] * 1000);
         curl_setopt($connection, CURLOPT_URL, $query);
 

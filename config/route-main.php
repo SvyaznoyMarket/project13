@@ -569,9 +569,9 @@ return [
         //'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
         'require' => ['productId' => '\d+'],
     ],
-    'product.alsoBought' => [
-        'pattern' => '/ajax/product-also-bought/{productId}',
-        'action' => ['Product\AlsoBoughtAction', 'execute'],
+    'product.upsale' => [
+        'pattern' => '/ajax/upsale/{productId}',
+        'action' => ['Product\UpsaleAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
     /*

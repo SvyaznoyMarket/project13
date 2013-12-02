@@ -7,6 +7,8 @@ return function (
     $class = null,
     $value = 'Купить быстро в 1 клик'
 ) {
+    if (!$product->getIsBuyable()) return '';
+
     $class = \View\Id::cartButtonForProduct($product->getId() . '-oneClick') . ' jsOneClickButton ' . $class;
 
     if ($product->isInShopStockOnly()) {
@@ -31,8 +33,8 @@ return function (
 
 ?>
 
-    <div class="bWidgetBuy__eBuy btnBuy" style="margin-top: 10px; text-align: center;">
-        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
+    <div class="btnOneClickBuy">
+        <a class="btnOneClickBuy__eLink <?= $class ?>" href="<?= $url ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
     </div>
 
 <? };

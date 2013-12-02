@@ -19,6 +19,8 @@ class InfoAction {
         /* @var $cart   \Session\Cart */
         $cart = $user->getCart();
 
+        $helper = new \Helper\TemplateHelper();
+
         /** @var $cookies \Http\Cookie[] */
         $cookies = [];
 
@@ -68,18 +70,26 @@ class InfoAction {
                 $responseData['cart']['sum'] = $cart->getSum();
                 $responseData['cart']['quantity'] = $cart->getProductsQuantity() + $cart->getServicesQuantity();
 
+                $productsById = [];
+                foreach (\RepositoryManager::product()->getCollectionById(array_keys($cart->getProducts())) as $product) {
+                    $productsById[$product->getId()] = $product;
+                }
 
                 $buttons = [];
                 $cartProductsArr = [];
                 foreach ($cart->getProducts() as $cartProduct) {
-                    /* @var \Model\Cart\Product\Entity */
+                    /* @var $product \Model\Product\Entity|null */
+                    $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
 
                     $item = [
                         'id'        => $cartProduct->getId(),
                         'buttonId'  => \View\Id::cartButtonForProduct($cartProduct->getId()),
                         'quantity'  => $cartProduct->getQuantity(),
                         'price'     => $cartProduct->getPrice(),
-                        //'name'     => $cartProduct->getTitl,
+                        'name'      => $product ? $product->getName() : null,
+                        'deleteUrl' => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
+                        'url'       => $product ? $product->getLink() : null,
+                        'image'     => $product ? $product->getImageUrl() : null,
                     ];
 
                     $buttons['product'][] = [
@@ -88,10 +98,14 @@ class InfoAction {
                     ];
 
                     $cartProductsArr[] = [
-                        'id'        => $item['id'],
-                        //'name'     => $item['name'],
-                        'price'     => $item['price'],
-                        'quantity'  => $item['quantity'],
+                        'id'             => $item['id'],
+                        'name'           => $item['name'],
+                        'price'          => $item['price'],
+                        'formattedPrice' => $helper->formatPrice($item['price']),
+                        'quantity'       => $item['quantity'],
+                        'deleteUrl'      => $item['deleteUrl'],
+                        'url'            => $item['url'],
+                        'image'          => $item['image'],
                     ];
 
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {

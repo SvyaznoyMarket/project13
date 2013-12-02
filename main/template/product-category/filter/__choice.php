@@ -21,7 +21,6 @@ return function(
                 id="<?= $viewId ?>"
                 name="<?= \View\Name::productCategoryFilter($filter, $value) ?>"
                 value="<?= $value ?>"
-                hidden
                 <? if (in_array($value, $values)) { ?> checked="checked"<? } ?>
                 />
             <label class="bFilterCheckbox" for="<?= $viewId ?>">
