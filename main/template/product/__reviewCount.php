@@ -53,11 +53,17 @@ return function(
                         <strong class="reviewForm__label">Оценка</strong>
                         <input class="jsReviewStarsCount" name="review[stars]" value="0"/>
                         <div class="starsList">
+                            <span class="starsList__item mEmpty"></span>
+                            <span class="starsList__item mEmpty"></span>
+                            <span class="starsList__item mEmpty"></span>
+                            <span class="starsList__item mEmpty"></span>
+                            <span class="starsList__item mEmpty"></span>
+
+<!--                             <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
                             <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
                             <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
                             <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
-                            <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
-                            <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
+                            <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*"> -->
                         </div>
                     </div>
                 </fieldset>

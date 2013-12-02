@@ -2157,20 +2157,20 @@
 /*оставить отзыв*/
 @media all {
   .reviewSend {
-    text-decoration: underline;
     color: #a6a6a6;
+    text-decoration: underline;
   }
   .reviewSend:hover {
-    text-decoration: none;
     color: #a6a6a6;
+    text-decoration: none;
   }
   .reviewPopup {
     width: 700px;
   }
   .reviewPopup .productName {
     overflow: hidden;
-    font-size: 18px;
     margin: 0 0 20px;
+    font-size: 18px;
   }
   .reviewPopup .productName__inner {
     width: 2000px;
@@ -2186,17 +2186,17 @@
     width: 330px;
   }
   .reviewForm__place {
-    border: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
+    border: none;
   }
   .reviewForm__place.mCol {
     float: left;
     width: 600px;
   }
   .reviewForm__place.mCol .place2Col {
-    width: 284px;
     margin: 0 16px 0 0;
+    width: 284px;
   }
   .reviewForm__place.mLeft {
     float: left;
@@ -2207,19 +2207,19 @@
   }
   .reviewForm__label {
     display: block;
-    font-size: 14px;
     margin: 0 0 5px;
+    font-size: 14px;
   }
   .reviewForm__textarea {
-    border: 1px solid #c9c9c9;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    resize: none;
+    margin: 0 0 15px;
+    padding: 5px;
     width: 688px;
     height: 70px;
-    padding: 5px;
-    margin: 0 0 15px;
+    border: 1px solid #c9c9c9;
+    resize: none;
   }
   .reviewForm__text {
     display: block;
@@ -2229,44 +2229,65 @@
     line-height: 28px;
   }
   .reviewForm__button {
-    display: block;
-    padding: 0px 15px 3px;
-    height: 30px;
-    border: none;
-    font-size: 14px;
-    line-height: 30px;
-    cursor: pointer;
-    border: 1px solid #f28900;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    display: block;
     margin: 21px 0 0 0;
+    padding: 0px 15px 3px;
+    height: 30px;
+    border: none;
+    border: 1px solid #f28900;
+    font-size: 14px;
+    line-height: 30px;
+    cursor: pointer;
   }
   .reviewForm__stars {
-    font-size: 14px;
     margin: 10px 0 15px;
+    font-size: 14px;
   }
   .reviewForm__stars .reviewForm__label {
     display: inline-block;
-    vertical-align: top;
-    *display: inline;
-    zoom: 1;
     width: 60px;
+    vertical-align: top;
+    zoom: 1;
+    *display: inline;
+  }
+  .reviewForm__stars .jsReviewStarsCount {
+    display: none;
   }
   .reviewForm__stars .starsList {
     display: inline-block;
-    vertical-align: top;
-    *display: inline;
-    zoom: 1;
     width: 160px;
+    vertical-align: top;
+    font-size: 0;
+    zoom: 1;
+    *display: inline;
+    cursor: pointer;
+  }
+  .reviewForm__stars .starsList__item {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    vertical-align: top;
+    zoom: 1;
+    *display: inline;
+    background: url("/css/bProductSection/img/reviews_star.png") no-repeat 0 -14px;
+    margin: 1px 5px 0 0;
+  }
+  .reviewForm__stars .starsList__item.mEmpty {
+    background-position: 0 -14px;
+  }
+  .reviewForm__stars .starsList__item.mFill {
+    background-position: 0 0;
   }
   .reviewForm__footnote {
-    font-size: 11px;
-    margin: 5px 0 0;
     display: inline-block;
+    margin: 5px 0 0;
     vertical-align: top;
-    *display: inline;
+    font-size: 11px;
     zoom: 1;
+    *display: inline;
   }
   .popupTitle {
     margin: 0 0 15px;

@@ -1,10 +1,10 @@
 .reviewSend {
-	text-decoration: underline;
 	color: #a6a6a6;
+	text-decoration: underline;
 
 	&:hover {
-		text-decoration: none;
 		color: #a6a6a6;
+		text-decoration: none;
 	}
 }
 
@@ -13,8 +13,8 @@
 
 	.productName {
 		overflow: hidden;
-		font-size: 18px;
 		margin: 0 0 20px;
+		font-size: 18px;
 
 		&__inner {
 			width: 2000px;
@@ -38,17 +38,17 @@
 .reviewForm {
 
 	&__place {
-		border: none;
-		padding: 0;
 		margin: 0;
+		padding: 0;
+		border: none;
 
 		&.mCol {
 			float: left;
 			width: 600px;
 
 			.place2Col {
-			 	width: 284px;
 			 	margin: 0 16px 0 0;
+			 	width: 284px;
 			}
 		}
 
@@ -64,18 +64,18 @@
 
 	&__label {
 		display: block;
-		font-size: 14px;
 		margin: 0 0 5px;
+		font-size: 14px;
 	}
 
 	&__textarea {
-		border: 1px solid #c9c9c9;
 		.rounded(5px);
-		resize: none;
+		margin: 0 0 15px;
+		padding: 5px;
 		width: 688px;
 		height: 70px;
-		padding: 5px;
-		margin: 0 0 15px;
+		border: 1px solid #c9c9c9;
+		resize: none;
 	}
 
 	&__text {
@@ -87,46 +87,71 @@
 	}
 
 	&__button {
+		.rounded(5px);
 		display: block;
+		margin: 21px 0 0 0;
 		padding: 0px 15px 3px;
 		height: 30px;
 		border: none;
+		border: 1px solid #f28900;
 		font-size: 14px;
 		line-height: 30px;
 		cursor: pointer;
-		border: 1px solid #f28900;
-		.rounded(5px);
-		margin: 21px 0 0 0;
 	}
 
 	&__stars {
-		font-size: 14px;
 		margin: 10px 0 15px;
+		font-size: 14px;
 
 		.reviewForm__label {
 			display: inline-block;
-			vertical-align: top;
-	 		*display: inline;
-	 		zoom: 1;
 			width: 60px;
+			vertical-align: top;
+	 		zoom: 1;
+	 		*display: inline;
+		}
+
+		.jsReviewStarsCount {
+			display: none;
 		}
 
 		.starsList {
 			display: inline-block;
-			vertical-align: top;
-	 		*display: inline;
-	 		zoom: 1;
 			width: 160px;
+			vertical-align: top;
+			font-size: 0;
+	 		zoom: 1;
+	 		*display: inline;
+	 		cursor: pointer;
+
+	 		&__item {
+	 			display: inline-block;
+				width: 14px;
+				height: 14px;
+				vertical-align: top;
+				zoom: 1;
+				*display: inline;
+				background: url("@{base-url}/bProductSection/img/reviews_star.png") no-repeat 0 -14px;
+				margin: 1px 5px 0 0;
+
+				&.mEmpty {
+					background-position: 0 -14px;
+				}
+
+				&.mFill {
+					background-position: 0 0;
+				}
+	 		}
 		}
 	}
 
 	&__footnote {
- 		font-size: 11px;
- 		margin: 5px 0 0;
  		display: inline-block;
+ 		margin: 5px 0 0;
  		vertical-align: top;
- 		*display: inline;
+ 		font-size: 11px;
  		zoom: 1;
+ 		*display: inline;
  	}
 }
 
