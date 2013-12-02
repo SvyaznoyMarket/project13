@@ -84,7 +84,12 @@ class CompletePage extends Layout {
             $orders = $this->getParam('orders');
             $dataOrders = [];
             foreach ($orders as $order) {
-                $dataOrders[] = ['id' => $order->getID()];
+                /* @var $order \Model\Order\Entity */
+                $dataOrders[] = [
+                    'id'            => $order->getID(),
+                    'price'         => $order->getPaySum(),
+                    //'currency'      => 'RUB',
+                ];
             }
 
             return '<div id="marinConversionTagJS" class="jsanalytics" data-value="' . $this->json($dataOrders) . '" >
