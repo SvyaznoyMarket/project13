@@ -13,24 +13,17 @@
 	var //pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
-		bCatalogCount = $('#bCatalog').data('count');
+		lastPage = $('#bCatalog').data('lastpage');
 	// end of vars
 	
 
 	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
 	catalog.listingWrap = $('.bListing');
 	catalog.liveScroll = false;
-	catalog.pagesCount = null;
-	catalog.productsCount = null;
+	catalog.lastPage = null;
 
-	if ( 'undefined' !== typeof(bCatalogCount) ) {
-		if ( 'undefined' !== typeof(bCatalogCount.pages) ) {
-			catalog.pagesCount = bCatalogCount.pages;
-		}
-
-		if ( 'undefined' !== typeof(bCatalogCount.products) ) {
-			catalog.productsCount = bCatalogCount.products;
-		}
+	if ( lastPage ) {
+		catalog.lastPage = lastPage;
 	}
 
 	console.info('Mustache is '+ typeof Mustache + ' (Catalog main config)');

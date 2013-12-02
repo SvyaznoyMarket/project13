@@ -20,7 +20,7 @@
     $helper = new \Helper\TemplateHelper();
 ?>
 
-<div id="bCatalog" class="bCatalog"<? echo ( !empty($allCount) ) ? ' data-count="' . $page->json($allCount) . '"' : '' ?>>
+<div id="bCatalog" class="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
     <? if ($selectedCategory): ?>
         <?= $helper->render('search/__breadcrumbs', [

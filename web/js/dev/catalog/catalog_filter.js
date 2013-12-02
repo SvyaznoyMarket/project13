@@ -186,7 +186,7 @@
 			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
 				key,
 				template,
-				allCount = res['allCount'];
+				lastPage = res['pagination'] ? res['pagination']['lasPage'] : false;
 			// end of vars
 
 			catalog.filter.resetForm();
@@ -203,9 +203,8 @@
 
 			catalog.infScroll.checkInfinity();
 
-			if ( allCount ) {
-				catalog.pagesCount = allCount.pages;
-				catalog.productsCount = allCount.products;
+			if ( lastPage ) {
+				catalog.lastPage = lastPage;
 			}
 
 			catalog.filter.lastRes = dataToRender;

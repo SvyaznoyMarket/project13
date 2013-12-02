@@ -39,7 +39,8 @@
 			// end of vars
 
 			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height()
-				&& null !== catalog.pagesCount && catalog.pagesCount > catalog.infScroll.nowPage
+				//&& ( catalog.infScroll.nowPage + 1 - catalog.lastPage !== 0 )
+				&& ( catalog.lastPage - catalog.infScroll.nowPage > 0 || null === catalog.lastPage )
 				) {
 				console.warn('checkscroll true. load');
 				catalog.infScroll.nowPage += 1;
