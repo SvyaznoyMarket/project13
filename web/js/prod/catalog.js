@@ -225,7 +225,7 @@
 			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
 				key,
 				template,
-				lastPage = res['pagination'] ? res['pagination']['lasPage'] : false;
+				lastPage = res['pagination'] ? res['pagination']['lastPage'] : false;
 			// end of vars
 
 			catalog.filter.resetForm();
@@ -244,6 +244,8 @@
 
 			if ( lastPage ) {
 				catalog.lastPage = lastPage;
+				console.log('lastPage NEW DATA');
+				console.log(lastPage);
 			}
 
 			catalog.filter.lastRes = dataToRender;
