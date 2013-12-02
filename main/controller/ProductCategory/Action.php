@@ -501,6 +501,7 @@ class Action {
             $page->setParam('promoContent', $promoContent);
             $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setGlobalParam('shop', $shop);
+            $page->setParam('searchHints', $this->getSearchHints($catalogJson));
         };
 
         // полнотекстовый поиск через сфинкс
@@ -1033,5 +1034,23 @@ class Action {
             return $this->pageTitle = $defaultTitle;
         }
         return false;
+    }
+
+
+    /**
+     * @param $catalogJson
+     * @return array|null
+     */
+    protected function getSearchHints($catalogJson) {
+        if (empty($catalogJson['search_hints'])) return null;
+        $hints = $catalogJson['search_hints'];
+
+        if (is_string($hints)) {
+            $hints = [$hints];
+        } else {
+            if (!is_array($hints)) return null;
+        }
+
+        return $hints;
     }
 }
