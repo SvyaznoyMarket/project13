@@ -48,12 +48,13 @@ return function (
             <?
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
-                <li class="bSlider__eItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>" data-product="<?= $helper->json([
+                <li class="bSlider__eItem jsSliderItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>" data-product="<?= $helper->json([
                         'article' => $product->getArticle(),
                         'name' => $product->getName(),
+                        'isUpsale' => $product->getIsUpsale(),
                     ]) ?>">
                     <div class="product__inner">
-                        <a class="productImg" href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
+                        <a class="productImg<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
                         <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
                         <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 

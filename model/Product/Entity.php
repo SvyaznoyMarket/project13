@@ -83,6 +83,8 @@ class Entity extends BasicEntity {
     protected $warranty = [];
     /** @var \Model\Region\Entity */
     protected $nearestCity = [];
+    /** @var bool */
+    protected $isUpsale = false;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -165,6 +167,7 @@ class Entity extends BasicEntity {
             $this->addNearestCity(new \Model\Region\Entity($city));
         }
         if (array_key_exists('ean', $data)) $this->setEan($data['ean']);
+        if (array_key_exists('is_upsale', $data)) $this->setIsUpsale($data['is_upsale']);
 
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
@@ -886,5 +889,20 @@ class Entity extends BasicEntity {
 
     public function addNearestCity(\Model\Region\Entity $city) {
         $this->nearestCity[] = $city;
+    }
+
+
+    /**
+     * @param boolean $isUpsale
+     */
+    public function setIsUpsale($isUpsale) {
+        $this->isUpsale = (bool)$isUpsale;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsUpsale() {
+        return $this->isUpsale;
     }
 }

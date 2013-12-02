@@ -256,6 +256,36 @@
 				url: upsale.url,
 				success: responseFromServer
 			});
+		},
+
+		/**
+		 * Трекинг при клике по товару из списка рекомендаций
+		 */
+		upsaleProductClick = function upsaleProductClick() {
+			var product = $(this).parents('li.jsSliderItem').data('product');
+
+			if ( product.article ) {
+				// google analytics
+				_gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_clicked', product.article]);
+				// Kissmetrics
+				_kmq.push(['record', 'cart recommendation clicked', {'SKU cart rec clicked': product.article}]);
+			}
+		},
+
+		/**
+		 * Отслеживания рекомендаций в корзине (блок "С этим товаром также покупают")
+		 *
+		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	data  Данные о покупке
+		 */
+		trackUpsell = function trackUpsell( event, data ) {
+			// трекинг товара только что добавленного в корзину
+			if ( data.product.article ) {
+				// google analytics
+				_gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
+				// Kissmetrics
+				_kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
+			}
 		};
 	// end of functions
 
@@ -267,6 +297,9 @@
 	body.on('basketUpdate', updateBasketInfo);
 	body.on('addtocart', showBuyInfo);
 	body.on('getupsale', showUpsell);
+	body.on('trackupsale', trackUpsell);
+
+	body.on('click', '.jsUpsaleProduct', upsaleProductClick);
 
 	if ( userbar.length ) {
 		scrollTarget = $(userbarConfig.target);
