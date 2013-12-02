@@ -185,7 +185,8 @@
 			
 			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
 				key,
-				template;
+				template,
+				allCount = res['allCount'];
 			// end of vars
 
 			catalog.filter.resetForm();
@@ -201,6 +202,11 @@
 			}
 
 			catalog.infScroll.checkInfinity();
+
+			if ( allCount ) {
+				catalog.pagesCount = allCount.pages;
+				catalog.productsCount = allCount.products;
+			}
 
 			catalog.filter.lastRes = dataToRender;
 		},

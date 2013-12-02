@@ -10,17 +10,30 @@
 ;(function( ENTER ) {
 	console.info('Catalog init: catalog.js');
 
-	var pageConfig = ENTER.config.pageConfig,
+	var //pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog');
+		catalog = utils.extendApp('ENTER.catalog'),
+		bCatalogCount = $('#bCatalog').data('count');
 	// end of vars
 	
 
 	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
 	catalog.listingWrap = $('.bListing');
 	catalog.liveScroll = false;
+	catalog.pagesCount = null;
+	catalog.productsCount = null;
 
-	console.info('Mustache is '+ typeof Mustache);
+	if ( 'undefined' !== typeof(bCatalogCount) ) {
+		if ( 'undefined' !== typeof(bCatalogCount.pages) ) {
+			catalog.pagesCount = bCatalogCount.pages;
+		}
+
+		if ( 'undefined' !== typeof(bCatalogCount.products) ) {
+			catalog.productsCount = bCatalogCount.products;
+		}
+	}
+
+	console.info('Mustache is '+ typeof Mustache + ' (Catalog main config)');
 	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
 
 }(window.ENTER));

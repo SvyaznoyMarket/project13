@@ -38,7 +38,9 @@
 				d = $(document);
 			// end of vars
 
-			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height() ) {
+			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height()
+				&& null !== catalog.pagesCount && catalog.pagesCount > catalog.infScroll.nowPage
+				) {
 				console.warn('checkscroll true. load');
 				catalog.infScroll.nowPage += 1;
 				catalog.infScroll.load();
