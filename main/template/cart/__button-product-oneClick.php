@@ -7,6 +7,8 @@ return function (
     $class = null,
     $value = 'Купить быстро в 1 клик'
 ) {
+    if (!$product->getIsBuyable()) return '';
+
     $class = \View\Id::cartButtonForProduct($product->getId() . '-oneClick') . ' jsOneClickButton ' . $class;
 
     if ($product->isInShopStockOnly()) {
