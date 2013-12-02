@@ -10,7 +10,7 @@
 ;(function( ENTER ) {
 	console.info('Catalog init: catalog.js');
 
-	var pageConfig = ENTER.config.pageConfig,
+	var //pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
 		bCatalogCount = $('#bCatalog').data('count');
@@ -25,11 +25,11 @@
 
 	if ( 'undefined' !== typeof(bCatalogCount) ) {
 		if ( 'undefined' !== typeof(bCatalogCount.pages) ) {
-			catalog.pagesCount = bCatalog.pages;
+			catalog.pagesCount = bCatalogCount.pages;
 		}
 
 		if ( 'undefined' !== typeof(bCatalogCount.products) ) {
-			catalog.productsCount = bCatalog.products;
+			catalog.productsCount = bCatalogCount.products;
 		}
 	}
 
