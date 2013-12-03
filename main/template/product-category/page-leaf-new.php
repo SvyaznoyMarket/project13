@@ -24,7 +24,7 @@
     $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? $catalogJson['promo_style'] : [];
 ?>
 
-<div class="bCatalog<?= 'jewel' === $listingStyle ? ' mCustomCss' : '' ?>">
+<div class="bCatalog<?= 'jewel' === $listingStyle ? ' mCustomCss' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
     <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 

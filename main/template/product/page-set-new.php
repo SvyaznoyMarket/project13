@@ -20,7 +20,7 @@ foreach ( $categoriesById as $subCategory ) {
 }
 
 ?>
-<div class="bCatalog">
+<div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
     <? /*if (\App::config()->adFox['enabled']): ?>
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->

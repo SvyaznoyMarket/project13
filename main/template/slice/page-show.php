@@ -17,7 +17,7 @@ $helper = new \Helper\TemplateHelper();
 
 <form class="bFilter clearfix hidden" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
 
-<div class="bCatalog">
+<div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
     <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 

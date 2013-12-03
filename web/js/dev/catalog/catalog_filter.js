@@ -185,7 +185,8 @@
 			
 			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
 				key,
-				template;
+				template,
+				lastPage = res['pagination'] ? res['pagination']['lastPage'] : false;
 			// end of vars
 
 			catalog.filter.resetForm();
@@ -201,6 +202,10 @@
 			}
 
 			catalog.infScroll.checkInfinity();
+
+			if ( lastPage ) {
+				catalog.lastPage = lastPage;
+			}
 
 			catalog.filter.lastRes = dataToRender;
 		},
