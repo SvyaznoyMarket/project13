@@ -21,7 +21,7 @@
 		var addToCart = function addToCart( data ) {
 			var groupBtn = button.data('group'),
 				upsale = button.data('upsale') ? button.data('upsale') : null,
-				product = button.parents('li.jsSliderItem').data('product');
+				product = button.parents('.jsSliderItem').data('product');
 			//end of vars
 
 			if ( !data.success ) {
@@ -30,17 +30,15 @@
 
 			button.removeClass('mLoading');
 
-			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
-			body.trigger('addtocart', [data]);
-			body.trigger('getupsale', [upsale]);
-			body.trigger('updatespinner',[groupBtn]);
-
 			if ( data.product ) {
 				data.product.isUpsale = product && product.isUpsale ? true : false;
 				data.product.fromUpsale = upsale && upsale.fromUpsale ? true : false;
-				data.product.addToCart = true;
-				body.trigger('trackupsale', [data]);
 			}
+
+			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
+			body.trigger('addtocart', [data]);
+			body.trigger('getupsale', [data, upsale]);
+			body.trigger('updatespinner',[groupBtn]);
 		};
 
 		$.get(url, addToCart);
@@ -173,6 +171,18 @@
 
 				_kmq.push(['record', 'Add Warranty', toKISS]);
 			}
+
+			if ( productData.article ) {
+				if ( productData.isUpsale ) {
+					console.log('Kissmetrics трекинг при добавлении товара по кнопке "купить" из списка рекомендаций');
+					_kmq.push(['record', 'cart rec added from rec', {'SKU cart added from rec': productData.article}]);
+				}
+
+				if ( productData.fromUpsale ) {
+					console.log('Kissmetrics трекинг при добавлении товара, на который был переход из списка рекомендаций');
+					_kmq.push(['record', 'cart recommendation added', {'SKU cart rec added': productData.article}]);
+				}
+			}
 		},
 
 		/**
@@ -184,6 +194,18 @@
 			if ( productData ) {
 				if ( typeof _gaq !== 'undefined' ){
 					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
+				}
+
+				if ( productData.article ) {
+					if ( productData.isUpsale ) {
+						console.log('Google analytics трекинг при добавлении товара по кнопке "купить" из списка рекомендаций');
+						_gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
+					}
+
+					if ( productData.fromUpsale ) {
+						console.log('Google analytics трекинг при добавлении товара, на который был переход из списка рекомендаций');
+						_gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
+					}
 				}
 			}
 		},
