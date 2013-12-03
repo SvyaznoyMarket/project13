@@ -6,6 +6,8 @@ class Action {
     const ORDER_COOKIE_NAME = 'last_order';
     const ORDER_SESSION_NAME = 'lastOrder';
 
+    private $sessionIsReaded = false;
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -610,6 +612,10 @@ class Action {
         $page->setParam('creditData', $creditData);
         $page->setParam('paymentUrl', $paymentUrl);
         $page->setParam('paymentPageType', 'complete');
+        $page->setParam('sessionIsReaded', $this->sessionIsReaded);
+        if ($this->sessionIsReaded) {
+            $page->setParam('isOrderAnalytics', false);
+        }
 
         return new \Http\Response($page->show());
     }
@@ -1418,9 +1424,16 @@ class Action {
      * @return \Model\Order\Entity[]
      */
     private function getLastOrders() {
+        $orderSession = (array)\App::session()->getWithChecking(self::ORDER_SESSION_NAME);
+        if ( isset($orderSession['_is_readed']) ) {
+            $this->sessionIsReaded = $orderSession['_is_readed'];
+            unset( $orderSession['_is_readed'] );
+        }
+
         $orderData = array_map(function ($orderItem) {
+            //if ( !is_array($orderItem) ) return;
             return array_merge(['number' => null, 'phone' => null], $orderItem);
-        }, (array)\App::session()->get(self::ORDER_SESSION_NAME));
+        }, $orderSession);
 
         /** @var $orders \Model\Order\Entity[] */
         $orders = [];
