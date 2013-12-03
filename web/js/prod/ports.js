@@ -1,3 +1,6 @@
+console.group('ports.js log');
+console.log('ports.js inited');
+
 window.ANALYTICS = {
 	
 	// todo SITE-1049
@@ -658,42 +661,65 @@ window.ANALYTICS = {
 		document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
 	},
 
-	marinSoftwarePageAddJS: function() {
+	marinSoftwarePageAddJS: function( callback ) {
+		console.info('marinSoftwarePageAddJS');
+
 		var mClientId ='7saq97byg0';
 		var mProto = ('https:' == document.location.protocol ? 'https://' : 'http://');
 		var mHost = 'tracker.marinsm.com';
 		var mt = document.createElement('script'); mt.type = 'text/javascript'; mt.async = true; mt.src = mProto + mHost + '/tracker/async/' + mClientId + '.js';
-		var fscr = document.getElementsByTagName('script')[0]; fscr.parentNode.insertBefore(mt, fscr);
+		// var fscr = document.getElementsByTagName('script')[0]; fscr.parentNode.insertBefore(mt, fscr);
+
+
+		$LAB.script( mt.src ).script( 'three.min.js' ).wait(callback);
 	},
 
 	marinLandingPageTagJS : function() {
-		var _mTrack = window._mTrack || [];
-		_mTrack.push(['trackPage']);
-		this.marinSoftwarePageAddJS();
+		var marinLandingPageTagJSHandler = function marinLandingPageTagJSHandler() {
+			console.info('marinLandingPageTagJS run');
+
+			var _mTrack = window._mTrack || [];
+
+			_mTrack.push(['trackPage']);
+
+			console.log('marinLandingPageTagJS complete');
+		};
+		// end of functions
+
+		this.marinSoftwarePageAddJS(marinLandingPageTagJSHandler);
 	},
 
 	marinConversionTagJS : function() {
-		var orders = $('#marinConversionTagJS').data('value'),
-			_mTrack = window._mTrack || [];
-		// end of vars
+		var marinConversionTagJSHandler = function marinConversionTagJSHandler() {
+			console.info('marinConversionTagJS run');
 
-		if ( orders.length ) {
-			for ( var i in orders ) {
+			var orders = $('#marinConversionTagJS').data('value'),
+				_mTrack = window._mTrack || [],
+				itemList = [],
+				i;
+			// end of vars
+
+			if ( !orders.length ) {
+				return
+			}
+
+			for ( i in orders ) {
 				if ( orders[i]['id'] ) {
-					_mTrack.push(['addTrans', {
-						items : [
-							{
-								convType : 'sales',
-								orderId : orders[i]['id']	// order‑id
-							}
-						]
-					}]);
-
-					_mTrack.push(['processOrders']);
+					itemList.push({
+						convType : 'sales',
+						orderId : orders[i]['id']	// order‑id
+					});
 				}
 			}
-			this.marinSoftwarePageAddJS();
-		}
+
+			_mTrack.push(['addTrans', { items : itemList }]);
+			_mTrack.push(['processOrders']);
+
+			console.log('marinConversionTagJS complete');
+		};
+		// end of functions
+
+		this.marinSoftwarePageAddJS(marinConversionTagJSHandler);
 	},
 
 
@@ -953,3 +979,5 @@ var ADFOX = {
 }
 
 ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
+
+console.groupEnd();

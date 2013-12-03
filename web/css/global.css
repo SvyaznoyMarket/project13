@@ -11397,7 +11397,7 @@
     float: left;
     margin: 0 30px 30px 0;
     width: 210px;
-    height: 295px;
+    height: 315px;
   }
   .bListing .bListingItem.mBannerItem {
     margin: 30px 15px 30px 10px;
@@ -12093,6 +12093,7 @@
     border-bottom: none;
     border-top: 1px solid #c7c7c7;
     margin-bottom: 35px;
+    margin-top: 5px;
   }
   .bSortingLine.mPagerBottom .bSortingList {
     float: right;
