@@ -10,6 +10,7 @@
  * @var $productVideosByProduct array
  * @var $hotlinks               array
  * @var $seoContent             string
+ * @var $relatedCategories      array
  */
 ?>
 
@@ -38,7 +39,9 @@
         <? if (!empty($promoContent)): ?>
             <?= $promoContent ?>
         <? elseif ($productPager->getLastPage() > 1): ?>
-            <?= $helper->render('product-category/__children', ['category' => $category, 'promoStyle' => $promoStyle]) // дочерние категории ?>
+            <?= $helper->render('product-category/__children',
+                ['category' => $category, 'promoStyle' => $promoStyle, 'relatedCategories' => $relatedCategories]
+            ) // дочерние категории and relatedCategories ?>
         <? endif ?>
 
         <?= $helper->render('product-category/__filter', [
