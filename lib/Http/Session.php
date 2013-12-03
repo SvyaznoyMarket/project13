@@ -85,11 +85,15 @@ class Session implements \Http\SessionInterface {
         if (!array_key_exists($name, $_SESSION)) {
             return $default;
         }
-        if ( isset($_SESSION[$name]['_is_readed']) ) {
-            $_SESSION[$name]['_is_readed'] = true;
-        }else{
-            $_SESSION[$name]['_is_readed'] = false;
+        if ( isset($_SESSION['_readed_'][$name]) ) {
+            $isReaded = true;
+        } else {
+            $isReaded = false;
         }
+
+        $_SESSION['_readed_'][$name] = $isReaded;
+        $_SESSION[$name]['_is_readed'] = $isReaded;
+
         return $_SESSION[$name];
     }
 
@@ -99,6 +103,7 @@ class Session implements \Http\SessionInterface {
 
     public function remove($name) {
         if (isset($_SESSION[$name])) unset($_SESSION[$name]);
+        if (isset($_SESSION['_readed_'][$name])) unset($_SESSION['_readed_'][$name]);
     }
 
     public function clear() {
