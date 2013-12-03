@@ -119,7 +119,7 @@ trait ResponseDataTrait {
             } else if ((true === $responseData['lifeGift'])) {
                 $responseData['redirect'] = $router->generate('order.lifeGift.new');
             } else if ((true === $responseData['oneClick'])) {
-                $responseData['redirect'] = $router->generate('order.oneClick.new');
+                //$responseData['redirect'] = $router->generate('order.oneClick.new'); // SITE-2777
             } else {
                 $responseData['redirect'] = $router->generate('order');
             }
