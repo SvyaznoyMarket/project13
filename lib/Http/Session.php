@@ -85,7 +85,11 @@ class Session implements \Http\SessionInterface {
         if (!array_key_exists($name, $_SESSION)) {
             return $default;
         }
-        $_SESSION[$name]['_is_readed'] = true;
+        if ( isset($_SESSION[$name]['_is_readed']) ) {
+            $_SESSION[$name]['_is_readed'] = true;
+        }else{
+            $_SESSION[$name]['_is_readed'] = false;
+        }
         return $_SESSION[$name];
     }
 
