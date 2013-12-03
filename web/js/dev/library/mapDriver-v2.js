@@ -76,37 +76,37 @@
 		};
 
 		CreateMap.prototype._showMarkers = function() {
-			var tmpPointInfo = null,
+			var currPoint = null,
 				tmpPlacemark = null,
-				pointsCollection = new ymaps.GeoObjectArray();
+				pointsCollection = new ymaps.GeoObjectArray(),
+				pointContentLayout = ymaps.templateLayoutFactory.createClass(this.template), // layout for baloon
+				i;
 			// end of vars
 
-			// layout for baloon
-			var pointContentLayout = ymaps.templateLayoutFactory.createClass(this.template);
-
-			for ( var i = this.points.length - 1; i >= 0; i--) {
-				tmpPointInfo = {
-					id: this.points[i].id,
-					name: this.points[i].name,
-					address: this.points[i].address,
-					link: this.points[i].link,
-					regtime: this.points[i].regtime,
-					parentBoxToken: this.points[i].parentBoxToken
-				};
+			for ( i = this.points.length - 1; i >= 0; i--) {
+				currPoint = this.points[i];
 
 				tmpPlacemark = new ymaps.Placemark(
 					// координаты точки
 					[
-						this.points[i].latitude,
-						this.points[i].longitude
+						currPoint.latitude,
+						currPoint.longitude
 					],
 
 					// данные для шаблона
-					tmpPointInfo,
+					{
+						id: currPoint.id,
+						name: currPoint.name,
+						address: currPoint.address,
+						link: currPoint.link,
+						regtime: currPoint.regtime,
+						parentBoxToken: currPoint.parentBoxToken
+					},
 
 					// оформление метки на карте
 					{
-						iconImageHref: '/images/marker.png', // картинка иконки
+						iconImageHref: currPoint.pointImage, // картинка иконки
+						//iconImageHref: '/images/marker.png', // картинка иконки
 						iconImageSize: [39, 59],
 						iconImageOffset: [-19, -57]
 					}

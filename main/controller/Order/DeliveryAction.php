@@ -369,7 +369,7 @@ class DeliveryAction {
                     'latitude'   => (float)$shopItem['coord_lat'],
                     'longitude'  => (float)$shopItem['coord_long'],
                     'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
-                    'pointImage' => '/images/marker-pickpoint.png',
+                    'pointImage' => '/images/marker.png',
                 ];
             }
             // сортировка магазинов
