@@ -7784,6 +7784,18 @@
     z-index: 2;
     width: 75px;
   }
+  .searchHints {
+    color: #a6a6a6;
+  }
+  .sHint_value {
+    cursor: pointer;
+    color: #a6a6a6;
+    border-bottom: 1px dotted #a6a6a6;
+  }
+  .sHint_value:hover {
+    color: #e8303c;
+    border-color: #e8303c;
+  }
 }
 /*--END---СТИЛИ ХЛЕБНЫХ КРОШЕК И ХЭДА--*/
 /*-------СТИЛИ СТРАНИЦ ОШИБОК-----*/
