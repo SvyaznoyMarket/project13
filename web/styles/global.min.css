@@ -66,8 +66,12 @@ table{border-collapse:collapse;border-spacing:0;}
 .fixedTopBar.mHomepage{border:none;-webkit-border-radius:0 0 4px 4px;-moz-border-radius:0 0 4px 4px;border-radius:0 0 4px 4px;}.fixedTopBar.mHomepage .fixedTopBar__logInLink,.fixedTopBar.mHomepage .fixedTopBar__cart,.fixedTopBar.mHomepage .fixedTopBar__cartTitle{color:#fff;}
 .fixedTopBar.mHomepage .fixedTopBar__logIn .transGrad{background:url("/styles/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;}
 .fixedTopBar.mHomepage .fixedTopBar__logIn{background:none;border-color:#404040;}
+.fixedTopBar.mHomepage .fixedTopBar__logOutLink{background:none;border:0px;-webkit-box-shadow:0 0 10px 2px #444443;-moz-box-shadow:0 0 10px 2px #444443;box-shadow:0 0 10px 2px #444443;}
+.fixedTopBar.mHomepage .fixedTopBar__logOutLink{color:#ffffff;}
 .fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty,.fixedTopBar.mHomepage .fixedTopBar__cart{background:#000000;}
-.fixedTopBar.mHomepage .fixedTopBar__dd{width:229px;}
+.fixedTopBar.mHomepage .quickOrder{border-color:#404040;}
+.fixedTopBar.mHomepage .cartList__itemName a{color:#ffffff;}
+.fixedTopBar.mHomepage .fixedTopBar__dd{width:229px;background:#000000;border-color:#404040;color:#ffffff;}
 .fixedTopBar.mHomepage .fixedTopBar__logOut{width:127px;}
 .fixedTopBar .wrapperCrumbsList{width:340px;position:relative;overflow:hidden;display:inline-block;vertical-align:top;*display:inline;zoom:1;}
 .fixedTopBar__up{float:left;padding:8px 20px 0;height:41px;background:#f4f4f4;-webkit-border-radius:0 0 0 4px;-moz-border-radius:0 0 0 4px;border-radius:0 0 0 4px;}
