@@ -448,6 +448,9 @@ $.ajaxSetup({
 				};
 
 				_kmq.push(['record', 'Add to Cart', toKISS]);
+
+				productData.isUpsale && _kmq.push(['record', 'cart rec added from rec', {'SKU cart added from rec': productData.article}]);
+				productData.fromUpsale && _kmq.push(['record', 'cart recommendation added', {'SKU cart rec added': productData.article}]);
 			}
 
 			if ( serviceData ) {
@@ -479,18 +482,6 @@ $.ajaxSetup({
 
 				_kmq.push(['record', 'Add Warranty', toKISS]);
 			}
-
-			if ( productData.article ) {
-				if ( productData.isUpsale ) {
-					console.log('Kissmetrics трекинг при добавлении товара по кнопке "купить" из списка рекомендаций');
-					_kmq.push(['record', 'cart rec added from rec', {'SKU cart added from rec': productData.article}]);
-				}
-
-				if ( productData.fromUpsale ) {
-					console.log('Kissmetrics трекинг при добавлении товара, на который был переход из списка рекомендаций');
-					_kmq.push(['record', 'cart recommendation added', {'SKU cart rec added': productData.article}]);
-				}
-			}
 		},
 
 		/**
@@ -499,23 +490,14 @@ $.ajaxSetup({
 		googleAnalytics = function googleAnalytics( event, data ) {
 			var productData = data.product;
 
-			if ( productData ) {
-				if ( typeof _gaq !== 'undefined' ){
-					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
-				}
-
-				if ( productData.article ) {
-					if ( productData.isUpsale ) {
-						console.log('Google analytics трекинг при добавлении товара по кнопке "купить" из списка рекомендаций');
-						_gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
-					}
-
-					if ( productData.fromUpsale ) {
-						console.log('Google analytics трекинг при добавлении товара, на который был переход из списка рекомендаций');
-						_gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
-					}
-				}
+			if ( !productData || typeof _gaq === 'undefined' ) {
+				return;
 			}
+
+			_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
+
+			productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
+			productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
 		},
 
 		/**
