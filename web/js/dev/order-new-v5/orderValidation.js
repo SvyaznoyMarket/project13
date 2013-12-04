@@ -439,15 +439,20 @@
 
 			console.info('Изменен тип доставки');
 			console.log(orderValidator);
+		},
+
+		makeOrderFieldsMask = function makeOrderFieldsMask() {
+			console.log('makeOrderFieldsMask');
+			if ( typeof( $.mask ) !== 'undefined' ) {
+				$.mask.definitions['n'] = '[0-9]';
+			}
+			sclub.mask('2 98nnnn nnnnnn', {
+				placeholder: '*'
+			});
+			qiwiPhone.mask('(nnn) nnn-nn-nn');
+			phoneField.mask('(nnn) nnn-nn-nn');
 		};
 	// end of functions
-	
-	$.mask.definitions['n'] = '[0-9]';
-	sclub.mask('2 98nnnn nnnnnn', {
-		placeholder: '*'
-	});
-	qiwiPhone.mask('(nnn) nnn-nn-nn');
-	phoneField.mask('(nnn) nnn-nn-nn');
 
 	/**
 	 * AB-test
@@ -509,5 +514,6 @@
 
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
+	makeOrderFieldsMask();
 
 }(this));
