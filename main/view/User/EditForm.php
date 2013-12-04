@@ -23,6 +23,8 @@ class EditForm {
     private $homePhone;
     /** @var string */
     private $skype;
+    /** @var string */
+    private $svyaznoyCard;
     /** @var array */
     private $errors = array(
         'global'       => null,
@@ -68,6 +70,7 @@ class EditForm {
         if (array_key_exists('mobile_phone', $data)) $this->setMobilePhone($data['mobile_phone']);
         if (array_key_exists('home_phone', $data)) $this->setHomePhone($data['home_phone']);
         if (array_key_exists('skype', $data)) $this->setSkype($data['skype']);
+        if (array_key_exists('svyaznoy_card', $data)) $this->setSvyaznoyCard($data['svyaznoy_card']);
     }
 
     public function fromEntity(\Model\User\Entity $entity) {
@@ -81,6 +84,7 @@ class EditForm {
         $this->setMobilePhone($entity->getMobilePhone());
         $this->setHomePhone($entity->getHomePhone());
         $this->setSkype($entity->getSkype());
+        $this->setSvyaznoyCard($entity->getSvyaznoyCard());
     }
 
     /**
@@ -279,5 +283,19 @@ class EditForm {
         }
 
         return $isValid;
+    }
+
+    /**
+     * @param string $svCard
+     */
+    public function setSvyaznoyCard($svCard) {
+        $this->svyaznoyCard = trim((string)$svCard);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSvyaznoyCard() {
+        return $this->svyaznoyCard;
     }
 }

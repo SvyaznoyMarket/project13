@@ -4,6 +4,9 @@
  * @var $form    \View\User\EditForm
  * @var $message string
  */
+
+$user = \App::user();
+$isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 ?>
 
 <? if ($error = $form->getError('global')): ?>
@@ -92,6 +95,16 @@
         <label class="userInfoEdit__label" for="user_occupation">Род деятельности:</label>
 
         <input type="text" id="user_occupation" value="<?= $form->getOccupation() ?>" name="user[occupation]" class="text width418 mb10" />
+
+        <div class="clear pb15"></div>
+
+        <div class="<? if ($isCorporative): ?> hidden<? endif ?>">
+            <label for="user_svyaznoy_card">Номер карты &laquo;Связной-Клуб&raquo;</label>:
+            <div class="bBuyingLine__eRight mSClub">
+                <input id="user_svyaznoy_card" type="text" value="<?= $form->getSvyaznoyCard() ?>" class="text width418 mb10" name="user[svyaznoy_card]" />
+                <div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+            </div>
+        </div>
 
         <input type="submit" value="Сохранить изменения" id="bigbutton" class="btnSave button bigbutton">
 

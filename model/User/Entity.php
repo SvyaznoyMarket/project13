@@ -62,6 +62,8 @@ class Entity {
     private $updatedAt;
     /** @var \Model\Region\Entity|null */
     private $city;
+    /** @var string */
+    private $svyaznoyCard;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -91,6 +93,7 @@ class Entity {
         if (array_key_exists('added', $data)) $this->setCreatedAt($data['added'] ? new \DateTime($data['added']) : null);
         if (array_key_exists('updated', $data)) $this->setUpdatedAt($data['updated'] ? new \DateTime($data['updated']) : null);
         if (array_key_exists('geo', $data) && is_array($data['geo'])) $this->setCity(new \Model\Region\Entity($data['geo']));
+        if (array_key_exists('svyaznoy_club_card_number', $data)) $this->setSvyaznoyCard($data['svyaznoy_club_card_number']);
     }
 
     /**
@@ -504,5 +507,19 @@ class Entity {
      */
     public function getName() {
         return implode(' ', array($this->getFirstName(), $this->getLastName()));
+    }
+
+    /**
+     * @param string $svCard
+     */
+    public function setSvyaznoyCard($svCard) {
+        $this->svyaznoyCard = (string)$svCard;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSvyaznoyCard() {
+        return $this->svyaznoyCard;
     }
 }
