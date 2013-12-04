@@ -40,23 +40,7 @@ class EditAction {
                     throw new \Exception("E-mail и телефон не могут быть одновременно пустыми. Укажите ваш мобильный телефон либо e-mail.");
                 }
 
-                $response = \App::coreClientV2()->query(
-                    'user/update',
-                    ['token' => \App::user()->getToken()],
-                    [
-                        'first_name'  => $form->getFirstName(),
-                        'middle_name' => $form->getMiddleName(),
-                        'last_name'   => $form->getLastName(),
-                        'sex'         => $form->getSex(),
-                        'email'       => $form->getEmail(),
-                        'mobile'      => $form->getMobilePhone(),
-                        'phone'       => $form->getHomePhone(),
-                        'skype'       => $form->getSkype(),
-                        'birthday'    => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
-                        'occupation'  => $form->getOccupation(),
-                    ],
-                    \App::config()->coreV2['hugeTimeout']
-                );
+                $response = $this->updateUserInfo($form);
 
                 if (!isset($response['confirmed']) || !$response['confirmed']) {
                     throw new \Exception('Не получен ответ от сервера.');
@@ -80,5 +64,32 @@ class EditAction {
         $page->setParam('redirect', $redirect);
 
         return new \Http\Response($page->show());
+    }
+
+
+    /**
+     * @param \View\User\EditForm   $form
+     * @return mixed   (core response)
+     */
+    private function updateUserInfo(&$form) {
+        $response = \App::coreClientV2()->query(
+            'user/update',
+            ['token' => \App::user()->getToken()],
+            [
+                'first_name'  => $form->getFirstName(),
+                'middle_name' => $form->getMiddleName(),
+                'last_name'   => $form->getLastName(),
+                'sex'         => $form->getSex(),
+                'email'       => $form->getEmail(),
+                'mobile'      => $form->getMobilePhone(),
+                'phone'       => $form->getHomePhone(),
+                'skype'       => $form->getSkype(),
+                'birthday'    => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
+                'occupation'  => $form->getOccupation(),
+                'svyaznoy_club_card_number' => $form->getSvyaznoyCard(),
+            ],
+            \App::config()->coreV2['hugeTimeout']
+        );
+        return $response;
     }
 }
