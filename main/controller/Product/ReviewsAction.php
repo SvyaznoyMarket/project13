@@ -52,7 +52,6 @@ class ReviewsAction {
         $form = new \View\Product\ReviewForm();
         if ($request->isMethod('post')) {
             $form->fromArray((array)$request->get('review'));
-            $form->setScore(10);
 
             if (!$form->getAdvantage()) {
                 $form->setError('advantage', 'Не указаны достоинства');
@@ -77,6 +76,9 @@ class ReviewsAction {
             } elseif (!strpos($form->getAuthorEmail(), '@')) {
                 $form->setError('author_email', 'Указан не корректный e-mail');
             }
+
+            // TODO SITE-2756 Полученную из формы оценку умножаем на 2
+            $form->setScore($form->getScore() * 2);
 
             if ($form->isValid()) {
                 try {

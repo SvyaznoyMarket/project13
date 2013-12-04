@@ -12,6 +12,7 @@
  * @var $selectedCategory   \Model\Product\Category\Entity
  * @var $productView        string
  * @var $bannerPlaceholder  array
+ * @var $allCount           array
  **/
 ?>
 
@@ -19,7 +20,7 @@
     $helper = new \Helper\TemplateHelper();
 ?>
 
-<div class="bCatalog">
+<div id="bCatalog" class="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
     <? if ($selectedCategory): ?>
         <?= $helper->render('search/__breadcrumbs', [

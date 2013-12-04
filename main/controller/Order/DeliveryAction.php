@@ -365,10 +365,11 @@ class DeliveryAction {
                     'id'         => $shopId,
                     'name'       => $shopItem['name'],
                     'address'    => $shopItem['address'],
-                    'regtime'     => $shopItem['working_time'],
+                    'regtime'    => $shopItem['working_time'],
                     'latitude'   => (float)$shopItem['coord_lat'],
                     'longitude'  => (float)$shopItem['coord_long'],
                     'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
+                    'pointImage' => '/images/marker.png',
                 ];
             }
             // сортировка магазинов
@@ -411,10 +412,9 @@ class DeliveryAction {
                             function($pickpointItem) use (&$deliveryRegions) {
                                 return
                                     // Статус постамата: 1 – новый, 2 – рабочий, 3 - закрытый
-                                    in_array( (int)$pickpointItem['Status'], [1,2] ) &&
-                                    in_array( $pickpointItem['CitiName'], $deliveryRegions ) &&
-                                    // В списке выбора показывать только точки pickpoint (АПТ), не показывать ПВЗ.
-                                    $pickpointItem['TypeTitle'] != 'ПВЗ'
+                                    (int)$pickpointItem['Status'] < 3 &&
+                                    in_array( $pickpointItem['CitiName'], $deliveryRegions )
+                                    //&& $pickpointItem['TypeTitle'] != 'ПВЗ' // В списке выбора показывать только точки pickpoint (АПТ), не показывать ПВЗ.
                                     ;
                             }
                         );
@@ -448,6 +448,7 @@ class DeliveryAction {
                         'longitude'     => (float)$pickpointItem['Longitude'],
                         'products'      => $pickpointProductIds,
                         'point_name'    => $pickpointItem['Name'],
+                        'pointImage'    => '/images/marker-pickpoint.png',
                     ];
                 }
 

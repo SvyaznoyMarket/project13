@@ -114,13 +114,13 @@ trait ResponseDataTrait {
 
             $responseData['products'] = $productDataById;
 
-            if ((true === $responseData['paypalECS']) && !$cart->getPaypalProduct()) {
+            if ((true === $responseData['paypalECS'])) {
                 $responseData['redirect'] = $router->generate('order.paypal.new');
-            } else if ((true === $responseData['lifeGift']) && !(bool)\App::user()->getLifeGiftCart()->getProducts()) {
+            } else if ((true === $responseData['lifeGift'])) {
                 $responseData['redirect'] = $router->generate('order.lifeGift.new');
-            } else if ((true === $responseData['oneClick']) && !(bool)\App::user()->getOneClickCart()->getProducts()) {
-                $responseData['redirect'] = $router->generate('order.oneClick.new');
-            } else if ((false === $responseData['paypalECS']) && (false === $responseData['lifeGift']) && (false === $responseData['oneClick']) && $cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
+            } else if ((true === $responseData['oneClick'])) {
+                //$responseData['redirect'] = $router->generate('order.oneClick.new'); // SITE-2777
+            } else {
                 $responseData['redirect'] = $router->generate('order');
             }
         }
@@ -138,7 +138,7 @@ trait ResponseDataTrait {
             } else if ((true === $responseData['oneClick']) && !(bool)\App::user()->getOneClickCart()->getProducts()) {
                 $responseData['redirect'] = $router->generate('homepage');
                 $message = 'Пустая корзина';
-            } else if ((false === $responseData['paypalECS']) && (false === $responseData['lifeGift']) && (false === $responseData['oneClick']) && $cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
+            } else if ($cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
                 $responseData['redirect'] = $router->generate('cart');
                 $message = 'Пустая корзина';
             }

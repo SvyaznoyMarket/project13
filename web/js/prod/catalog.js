@@ -10,17 +10,23 @@
 ;(function( ENTER ) {
 	console.info('Catalog init: catalog.js');
 
-	var pageConfig = ENTER.config.pageConfig,
+	var //pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog');
+		catalog = utils.extendApp('ENTER.catalog'),
+		lastPage = $('#bCatalog').data('lastpage');
 	// end of vars
 	
 
 	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
 	catalog.listingWrap = $('.bListing');
 	catalog.liveScroll = false;
+	catalog.lastPage = null;
 
-	console.info('Mustache is '+ typeof Mustache);
+	if ( lastPage ) {
+		catalog.lastPage = lastPage;
+	}
+
+	console.info('Mustache is '+ typeof Mustache + ' (Catalog main config)');
 	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
 
 }(window.ENTER));
@@ -218,7 +224,8 @@
 			
 			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
 				key,
-				template;
+				template,
+				lastPage = res['pagination'] ? res['pagination']['lastPage'] : false;
 			// end of vars
 
 			catalog.filter.resetForm();
@@ -234,6 +241,10 @@
 			}
 
 			catalog.infScroll.checkInfinity();
+
+			if ( lastPage ) {
+				catalog.lastPage = lastPage;
+			}
 
 			catalog.filter.lastRes = dataToRender;
 		},
@@ -975,7 +986,10 @@
 				d = $(document);
 			// end of vars
 
-			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height() ) {
+			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height()
+				//&& ( catalog.infScroll.nowPage + 1 - catalog.lastPage !== 0 )
+				&& ( catalog.lastPage - catalog.infScroll.nowPage > 0 || null === catalog.lastPage )
+				) {
 				console.warn('checkscroll true. load');
 				catalog.infScroll.nowPage += 1;
 				catalog.infScroll.load();

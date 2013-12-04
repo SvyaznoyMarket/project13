@@ -132,9 +132,14 @@
 
 				enterSelectedItem = function enterSelectedItem() {
 					var link = suggestItem.eq(nowSelectSuggest).attr('href');
-					
+
 					suggestAnalytics();
 					document.location.href = link;
+				}
+
+				escapeSearchQuery = function escapeSearchQuery() {
+					var s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
+					searchInput.val(s);
 				};
 			// end of functions
 
@@ -153,10 +158,13 @@
 				
 				return false;
 			}
-			else if ( keyCode === 13 && nowSelectSuggest !== -1 ) { // Press Enter and suggest has selected item
-				enterSelectedItem();
+			else if ( keyCode === 13 ) {
+				escapeSearchQuery();
+				if ( nowSelectSuggest !== -1 ) { // Press Enter and suggest has selected item
+					enterSelectedItem();
 
-				return false;
+					return false;
+				}
 			}
 		},
 
@@ -166,6 +174,7 @@
 			if ( text.length === 0 ) {
 				return false;
 			}
+			escapeSearchQuery();
 		},
 
 		searchInputFocusin = function searchInputFocusin() {
@@ -189,6 +198,17 @@
 			suggestItem.removeClass('hover');
 			index = $(this).addClass('hover').index();
 			nowSelectSuggest = index - 1;
+		},
+
+
+		/**
+		 * Подставляет поисковую подсказку в строку поиска
+		 */
+		searchHintSelect = function searchHintSelect() {
+			var hintValue = $(this).text(),
+				searchValue = searchInput.val();
+			if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
+			return searchInput.val(hintValue + ' ').focus();
 		};
 	// end of functions
 
@@ -208,5 +228,6 @@
 		$('body').bind('click', suggestCloser);
 		$('body').on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
 		$('body').on('click', '.bSearchSuggest__eRes', suggestAnalytics);
+		$('body').on('click', '.sHint_value', searchHintSelect);
 	});
 }());

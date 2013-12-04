@@ -51,7 +51,7 @@ return function(
                 <fieldset class="reviewForm__place mLeft">
                     <div class="reviewForm__stars">
                         <strong class="reviewForm__label">Оценка</strong>
-                        <input class="jsReviewStarsCount" name="review[stars]" value="0"/>
+                        <input class="jsReviewStarsCount" name="review[score]" value="0"/>
                         <div class="starsList">
                             <span class="starsList__item mEmpty"></span>
                             <span class="starsList__item mEmpty"></span>

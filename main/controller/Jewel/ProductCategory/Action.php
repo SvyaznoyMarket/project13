@@ -212,6 +212,7 @@ class Action extends \Controller\ProductCategory\Action {
             $page->setParam('itemsPerRow', \App::config()->product['itemsPerRowJewel']);
             $page->setParam('scrollTo', 'smalltabs');
             $page->setParam('shopScriptSeo', $shopScriptSeo);
+            $page->setParam('searchHints', $this->getSearchHints($catalogJson));
         };
 
         // если категория содержится во внешнем узле дерева

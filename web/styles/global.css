@@ -1111,12 +1111,31 @@ table {
   background: none;
   border-color: #404040;
 }
+.fixedTopBar.mHomepage .fixedTopBar__logOutLink {
+  background: none;
+  border: 0px;
+  -webkit-box-shadow: 0 0 10px 2px #444443;
+  -moz-box-shadow: 0 0 10px 2px #444443;
+  box-shadow: 0 0 10px 2px #444443;
+}
+.fixedTopBar.mHomepage .fixedTopBar__logOutLink {
+  color: #ffffff;
+}
 .fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty,
 .fixedTopBar.mHomepage .fixedTopBar__cart {
   background: #000000;
 }
+.fixedTopBar.mHomepage .quickOrder {
+  border-color: #404040;
+}
+.fixedTopBar.mHomepage .cartList__itemName a {
+  color: #ffffff;
+}
 .fixedTopBar.mHomepage .fixedTopBar__dd {
   width: 229px;
+  background: #000000;
+  border-color: #404040;
+  color: #ffffff;
 }
 .fixedTopBar.mHomepage .fixedTopBar__logOut {
   width: 127px;
@@ -1484,6 +1503,9 @@ table {
   -moz-box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.3);
   color: #000000;
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
 }
 .fixedTopBar__logOut {
   width: 127px;
