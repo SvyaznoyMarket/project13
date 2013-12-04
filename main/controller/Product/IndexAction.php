@@ -298,7 +298,7 @@ class IndexAction {
                 $storage = \App::session();
                 $limit = \App::config()->cart['productLimit'];
 
-                $data = $storage->get($sessionName, []);
+                $data = (array)$storage->get($sessionName, []);
                 if (!in_array($product->getId(), $data)) {
                     $data[] = $product->getId();
                 }
