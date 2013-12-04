@@ -225,14 +225,15 @@ $c->mediaHost = [
 
 $c->search['itemLimit'] = 1000;
 
-$c->product['itemsPerPage']           = 20;
-$c->product['showAccessories']        = true;
-$c->product['showRelated']            = true;
-$c->product['itemsInSlider']          = 5;
-$c->product['itemsInCategorySlider']  = 3;
-$c->product['itemsInAccessorySlider'] = 4;
-$c->product['minCreditPrice']         = 3000;
-$c->product['totalCount']             = 30000;
+$c->product['itemsPerPage']             = 20;
+$c->product['showAccessories']          = true;
+$c->product['showRelated']              = true;
+$c->product['itemsInSlider']            = 5;
+$c->product['itemsInCategorySlider']    = 3;
+$c->product['itemsInAccessorySlider']   = 4;
+$c->product['minCreditPrice']           = 3000;
+$c->product['totalCount']               = 30000;
+$c->product['recommendationSessionKey'] = 'recommendationProductIds';
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;

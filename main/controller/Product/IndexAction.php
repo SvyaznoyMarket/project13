@@ -292,6 +292,27 @@ class IndexAction {
             $productVideos = [];
         }
 
+        // пишем в сессию id товара на который был переход с блока рекомендаций, в юзербаре
+        if ('cart_rec' === $request->get('from')) {
+            if ($sessionName = \App::config()->product['recommendationSessionKey']) {
+                $storage = \App::session();
+                $limit = \App::config()->cart['productLimit'];
+
+                $data = $storage->get($sessionName, []);
+                if (!in_array($product->getId(), $data)) {
+                    $data[] = $product->getId();
+                }
+
+                $productCount = count($data);
+                if ($productCount > $limit) {
+                    $data = array_slice($data, $productCount - $limit, $limit, true);
+                }
+
+                $storage->set($sessionName, $data);
+            }
+        }
+
+
         $page = new \View\Product\IndexPage();
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('regionsToSelect', $regionsToSelect);

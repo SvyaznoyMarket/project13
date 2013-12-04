@@ -100,15 +100,7 @@
 		 * Отслеживание рекомендаций
 		 */
 		console.info('Отслеживание рекомендаций');
-
-		if( window.docCookies.hasItem( 'used_cart_rec' ) &&  1 == window.docCookies.getItem( 'used_cart_rec' )) {
-			console.log('Был клик по товару из списка рекомендаций');
-			_gaq.push(['_setCustomVar', 5, 'Used_cart_rec', 'YES', 2]);
-		}
-		else {
-			console.log('Не было клика по товару из списка рекомендаций');
-			_gaq.push(['_setCustomVar', 5, 'Used_cart_rec', 'NO', 2]);
-		}
+		_gaq.push(['_setCustomVar', 5, 'Used_cart_rec', (orderData.isUsedCartRecommendation ? 'YES' : 'NO'), 2]);
     };
 
     $(document).ready(function () {
