@@ -72,6 +72,11 @@ class EditAction {
      * @return mixed   (core response)
      */
     private function updateUserInfo(&$form) {
+        $svCart = $form->getSvyaznoyCard();
+        if ($svCart) {
+            $svCart =  preg_replace("/\s/",'',$svCart);
+        }
+
         $response = \App::coreClientV2()->query(
             'user/update',
             ['token' => \App::user()->getToken()],
@@ -86,7 +91,7 @@ class EditAction {
                 'skype'       => $form->getSkype(),
                 'birthday'    => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
                 'occupation'  => $form->getOccupation(),
-                'svyaznoy_club_card_number' => $form->getSvyaznoyCard(),
+                'svyaznoy_club_card_number' => $svCart,
             ],
             \App::config()->coreV2['hugeTimeout']
         );
