@@ -446,7 +446,7 @@ if ($oneClick) {
 							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
 						</div>
 						<? endif ?>
-						
+
 						<div class="bInputAddress">
 							<label class="bPlaceholder">Улица*</label>
 							<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />						
@@ -611,6 +611,7 @@ if ($oneClick) {
 	'order[address_floor]'          => $form->getAddressFloor(),
 	'order[address_apartment]'      => $form->getAddressApartment(),
 	'order[payment_method_id]'      => $form->getPaymentMethodId(),
+	'order[sclub_card_number]'      => $form->getSclubCardnumber(),
 ]) ?>"></div>
 
 <?php if (\App::config()->analytics['enabled']): ?>
