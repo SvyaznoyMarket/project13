@@ -40,9 +40,13 @@ return function (
         $url = $helper->url('cart.product.set', $urlParams);
     }
 
+    $upsaleData = [
+        'url' => $helper->url('product.upsale', ['productId' => $product->getId()]),
+        'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false,
+    ];
     ?>
     <div class="bWidgetBuy__eBuy btnBuy">
-        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-upsale='<?= json_encode(['url' => $helper->url('product.upsale', ['productId' => $product->getId()])])?>'><?= $value ?></a>
+        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-upsale='<?= json_encode($upsaleData) ?>'><?= $value ?></a>
     </div>
 
 <? };

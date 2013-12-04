@@ -295,6 +295,7 @@ class IndexPage extends \View\DefaultLayout {
 
         return [
             'target' => '.' . \View\Id::cartButtonForProduct($product->getId()),
+            'productId' => $product->getId(),
         ];
     }
 }

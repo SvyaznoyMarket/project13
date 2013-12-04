@@ -20,7 +20,11 @@ class ProductButtonAction {
             'value'      => null,
             'inShopOnly' => null,
             'data'       => [
-                'group' => $product->getId(),
+                'group'  => $product->getId(),
+                'upsale' => json_encode([
+                    'url' => $helper->url('product.upsale', ['productId' => $product->getId()]),
+                    'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false,
+                ]),
             ],
             'class'      => \View\Id::cartButtonForProduct($product->getId()),
         ];
