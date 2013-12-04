@@ -70,7 +70,7 @@ class EditForm {
         if (array_key_exists('mobile_phone', $data)) $this->setMobilePhone($data['mobile_phone']);
         if (array_key_exists('home_phone', $data)) $this->setHomePhone($data['home_phone']);
         if (array_key_exists('skype', $data)) $this->setSkype($data['skype']);
-        if (array_key_exists('svyaznoy_card', $data)) $this->setSvyaznoyCard($data['svyaznoy_card']);
+        if (array_key_exists('sclub_card_number', $data)) $this->setSvyaznoyCard($data['sclub_card_number']);
     }
 
     public function fromEntity(\Model\User\Entity $entity) {

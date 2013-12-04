@@ -101,7 +101,7 @@ $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
         <div class="<? if ($isCorporative): ?> hidden<? endif ?>">
             <label for="user_svyaznoy_card">Номер карты &laquo;Связной-Клуб&raquo;</label>:
             <div class="bBuyingLine__eRight mSClub">
-                <input id="user_svyaznoy_card" type="text" value="<?= $form->getSvyaznoyCard() ?>" class="text width418 mb10" name="user[svyaznoy_card]" />
+                <input id="user_svyaznoy_card" type="text" value="<?= $form->getSvyaznoyCard() ?>" class="text width418 mb10" name="user[sclub_card_number]" />
                 <div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
             </div>
         </div>
