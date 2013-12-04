@@ -119,7 +119,7 @@
 
         <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
 
-        <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData]) // Доставка ?>
+        <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
     </div><!--/widget delivery -->
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
