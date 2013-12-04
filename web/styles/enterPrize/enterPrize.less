@@ -1,0 +1,104 @@
+.enterPrize {
+	background: url("@{base-url}/enterPrize/img/bgFishki.gif") no-repeat 100% 0;
+	margin: 0 10px;
+
+	&__logo {
+		background: url("@{base-url}/enterPrize/img/bgLogo.gif") no-repeat 0 0;
+		display: inline-block;
+		width: 373px;
+		height: 101px;
+		text-indent: -9999px;
+
+		vertical-align: top;
+		*display: inline;
+		zoom: 1;
+	}
+
+	&__rules {
+		width: 435px;
+
+		&__item {
+			list-style: decimal;
+			font-size: 18px;
+			font-family: "Enter Type";
+			margin: 0 0 2px 25px;
+		} 
+	}
+
+	&__list {
+		margin: 25px 0 0 2px;
+
+		&__item {
+			float: left;
+			width: 210px;
+			height: 236px;
+			position: relative;
+			margin-right: 26px;
+
+			&:hover {
+
+				.cuponImgHover {
+					display: block;
+				}
+			}
+
+			&.mLast {
+				margin-right: 0;
+			}
+		}
+
+		&__link {
+			display: block;
+		}
+	}
+
+	.cuponImg {
+		text-align: center;
+		display: block;
+		position: relative;
+		z-index: 10;
+	}
+
+	.cuponImgHover {
+		display: none;
+		z-index: 8;
+		background: url("@{base-url}/enterPrize/img/bgHover.png") no-repeat 50% 0;
+		position: absolute;
+		top: -4px;
+		left: -4px;
+		width: 210px;
+		height: 236px;
+
+		&.mPink {
+			left: -3px;
+		}
+
+		&.mGreen {
+			left: -2px;
+		}
+	}
+
+	.cuponBtn {
+		position: absolute;
+		.gradient(#ffc000, #ffaa01, #ffc000);
+        .rounded(5px);
+        display: block;
+
+        width: 94px;
+        height: 20px;
+
+        text-align: center;
+
+        color: #ffffff;
+        border: 1px solid #fb9c00;
+
+        font-size: 14px;
+        line-height: 20px;
+        bottom: 11px;
+		left: 59px;
+
+		&:hover {
+			.gradient(#ffa200, #f79200, #ffa200);
+		}
+	}
+}

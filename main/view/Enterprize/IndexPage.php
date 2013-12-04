@@ -6,7 +6,7 @@ class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-oneColumn';
 
     public function prepare() {
-        $this->setParam('title', 'Enter PRIZE');
+        $this->setParam('title', '');
     }
 
     public function slotBodyDataAttribute() {
