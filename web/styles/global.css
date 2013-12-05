@@ -1125,6 +1125,9 @@ table {
 .fixedTopBar.mHomepage .fixedTopBar__cart {
   background: #000000;
 }
+.fixedTopBar.mHomepage .del {
+  color: #ffffff;
+}
 .fixedTopBar.mHomepage .fixedTopBar__cartOn .transGradWhite {
   background: url("/styles/fixedTopBar/img/tranGradientBlackLong.png") no-repeat 0 0;
 }

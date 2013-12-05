@@ -69,6 +69,7 @@ table{border-collapse:collapse;border-spacing:0;}
 .fixedTopBar.mHomepage .fixedTopBar__logOutLink{background:none;border:0px;-webkit-box-shadow:0 0 10px 2px #444443;-moz-box-shadow:0 0 10px 2px #444443;box-shadow:0 0 10px 2px #444443;}
 .fixedTopBar.mHomepage .fixedTopBar__logOutLink{color:#ffffff;}
 .fixedTopBar.mHomepage .fixedTopBar__cart.mEmpty,.fixedTopBar.mHomepage .fixedTopBar__cart{background:#000000;}
+.fixedTopBar.mHomepage .del{color:#ffffff;}
 .fixedTopBar.mHomepage .fixedTopBar__cartOn .transGradWhite{background:url("/styles/fixedTopBar/img/tranGradientBlackLong.png") no-repeat 0 0;}
 .fixedTopBar.mHomepage .quickOrder{border-color:#404040;}
 .fixedTopBar.mHomepage .cartList__itemName a{color:#ffffff;}
