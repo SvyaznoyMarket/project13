@@ -180,48 +180,48 @@ window.ANALYTICS = {
 	},
 
 	ActionPayJS: function () {
-		var basketEvents = function ( pageType, product ) {
-				var aprData = {pageType: pageType};
-				if ( typeof(window.APRT_SEND) === 'undefined' || typeof(product) === 'undefined' ) {
-					return false;
-				}
+		// var basketEvents = function ( pageType, product ) {
+		// 		var aprData = {pageType: pageType};
+		// 		if ( typeof(window.APRT_SEND) === 'undefined' || typeof(product) === 'undefined' ) {
+		// 			return false;
+		// 		}
 
-				aprData.currentProduct = {
-					id: product.id,
-					name: product.name,
-					price: product.price
-				};
-				window.APRT_SEND(aprData);
-			},
-			addToBasket = function (event, data) {
-				basketEvents(8, data.product);
-			},
-			remFromBasket = function (event, product) {
-				basketEvents(9, product);
-			};
+		// 		aprData.currentProduct = {
+		// 			id: product.id,
+		// 			name: product.name,
+		// 			price: product.price
+		// 		};
+		// 		window.APRT_SEND(aprData);
+		// 	},
+		// 	addToBasket = function (event, data) {
+		// 		basketEvents(8, data.product);
+		// 	},
+		// 	remFromBasket = function (event, product) {
+		// 		basketEvents(9, product);
+		// 	};
 
-		$('body').on('addtocart', addToBasket);
-		$('body').on('remFromCart', remFromBasket);
+		// $('body').on('addtocart', addToBasket);
+		// $('body').on('remFromCart', remFromBasket);
 
-		(function () {
-			var s = document.createElement('script'),
-				x = document.getElementsByTagName('script')[0],
-				vars = $('#ActionPayJS').data('vars');
-			if ( typeof(vars) != 'undefined' ) {
-				if ( vars.extraData ) {
-					if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
-						vars.basketProducts = ENTER.config.cartProducts;
-					}
-					delete vars.extraData;
-				}
-				window.APRT_DATA = vars;
-			}
+		// (function () {
+		// 	var s = document.createElement('script'),
+		// 		x = document.getElementsByTagName('script')[0],
+		// 		vars = $('#ActionPayJS').data('vars');
+		// 	if ( typeof(vars) != 'undefined' ) {
+		// 		if ( vars.extraData ) {
+		// 			if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
+		// 				vars.basketProducts = ENTER.config.cartProducts;
+		// 			}
+		// 			delete vars.extraData;
+		// 		}
+		// 		window.APRT_DATA = vars;
+		// 	}
 
-			s.type  = 'text/javascript';
-			s.src = '//rt.actionpay.ru/code/enter/';
-			s.defer = true;
-			x.parentNode.insertBefore(s, x);
-		})();
+		// 	s.type  = 'text/javascript';
+		// 	s.src = '//rt.actionpay.ru/code/enter/';
+		// 	s.defer = true;
+		// 	x.parentNode.insertBefore(s, x);
+		// })();
 	},
 
 	yaParamsJS: function () {
