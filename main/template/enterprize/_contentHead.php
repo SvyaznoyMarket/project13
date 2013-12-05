@@ -1,0 +1,44 @@
+<?php
+/**
+ * @var $page            \View\Layout
+ * @var $title           string|null
+ * @var $breadcrumbs     array('url' => null, 'name' => null)[]
+ * @var $hasSearch       bool
+ * @var $hasSeparateLine bool
+ * @var $extendedMargin  bool
+ * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null
+ */
+?>
+
+<?
+$hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
+$hasSeparateLine = isset($hasSeparateLine) ? (bool)$hasSeparateLine : false;
+$extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
+?>
+
+<div class="pagehead">
+
+    <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
+
+    <? if ($hasSearch): ?>
+    <noindex>
+        <div class="searchbox">
+            <?= $page->render('search/form-default', ['searchQuery' => $page->getParam('searchQuery')]) ?>
+            <div id="searchAutocomplete"></div>
+        </div>
+    </noindex>
+    <? endif ?>
+
+    <div class="clear"></div>
+
+    <?
+        var_dump($enterpizeCoupon);
+    ?>
+
+    <? if ($title): ?><h1><?= $title ?></h1><? endif ?>
+
+    <div class="clear<? if ($extendedMargin): ?> pb20<? endif ?>"></div>
+    <? if ($hasSeparateLine): ?>
+    <div class="line"></div>
+    <? endif ?>
+</div>
