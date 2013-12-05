@@ -70,6 +70,7 @@ class Client
     {
         $query = $this->config['apiUrl'] . $action . '/' . $this->config['account'] . '/' . $item_id;
 
+        /*
         $user = \App::user();
         if ($user) {
             $uEntity = $user->getEntity();
@@ -78,6 +79,7 @@ class Client
                 if ($uid) $query .= '/' . $uid;
             }
         }
+        */
 
         \App::logger()->info('Start RetailRocket ' . $action . ' query: ' . $query, ['RetailRocket']);
 
