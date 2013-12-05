@@ -1516,7 +1516,7 @@ table {
 .fixedTopBar__logOut {
   width: 127px;
 }
-.fixedTopBar__cartOn .transGradWhite {
+.fixedTopBar .fixedTopBar__cartOn .transGradWhite {
   background: url("/styles/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
   position: absolute;
   left: 0;
