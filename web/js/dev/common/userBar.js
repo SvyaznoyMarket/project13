@@ -118,7 +118,7 @@
 			// end of vars
 
 			dataToRender.products = utils.cloneObject(clientCart.products);
-			dataToRender.showTransparent = !!( dataToRender.products.length > 4 );
+			dataToRender.showTransparent = !!( dataToRender.products.length > 3 );
 
 			var
 				/**
@@ -200,7 +200,7 @@
 				data.products.reverse();
 			}
 
-			if ( clientCart.products.length > 4 ) {
+			if ( clientCart.products.length > 3 ) {
 				data.showTransparent = true;
 			}
 

@@ -2282,7 +2282,7 @@
     padding: 1px 5px 0 0;
   }
   .reviewForm__stars .starsList__item.mEmpty {
-    background-position: 0 -14px;
+    background-position: 0 -18px;
   }
   .reviewForm__stars .starsList__item.mFill {
     background-position: 0 0;

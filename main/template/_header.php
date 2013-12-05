@@ -99,7 +99,6 @@
     </div>
 
     <div class="hintDd"><!-- если похожии товары есть то добавляем класс mhintDdOn -->
-        <div class="hintDd__title">Дополните ваш заказ</div>
     </div>
 </script>
 
