@@ -62,86 +62,84 @@ class EditAction {
                     throw new \Exception('Не получен ответ от сервера.');
                 }
 
-                try {
-                    $couponType = $request->get('enterprize_coupon');
-                    if (!$couponType) {
-                        throw new \Exception('Не передан enterprize-купон в HTTP-запросе.');
-                    }
-
-                    // проверяем заполнил ли пользователь все поля формы (кроме "Род деятельности")
-                    if (!$form->getFirstName()) {
-                        throw new \Exception('Не передано имя.');
-                    }
-                    if (!$form->getMiddleName()) {
-                        throw new \Exception('Не передано отчество.');
-                    }
-                    if (!$form->getLastName()) {
-                        throw new \Exception('Не передана фамилия.');
-                    }
-                    if (!$form->getSex()) {
-                        throw new \Exception('Не передан пол.');
-                    }
-                    if (!$form->getEmail()) {
-                        throw new \Exception('Не передан email.');
-                    }
-                    if (!$form->getMobilePhone()) {
-                        throw new \Exception('Не передан мобильный телефон.');
-                    }
-                    if (!$form->getHomePhone()) {
-                        throw new \Exception('Не передан домашний телефон.');
-                    }
-                    if (!$form->getSkype()) {
-                        throw new \Exception('Не передан skype.');
-                    }
-                    if (!$form->getBirthday()) {
-                        throw new \Exception('Не передана дата рождения.');
-                    }
-
-                    // создание enterprize-купона
-                    $result = [];
-                    $client->addQuery(
-                        'coupon/enter-prize',
-                        [
-                            'client_id' => \App::config()->coreV2['client_id'],
-                            'token'     => \App::user()->getToken(),
-                        ],
-                        [
-                            'name'                      => $form->getFirstName(),
-                            'phone'                     => $form->getMobilePhone(),
-                            'email'                     => $form->getEmail(),
-                            'svyaznoy_club_card_number' => null,
-                            'guid'                      => $couponType,
-                            'agree'                     => true,
-                        ],
-                        function ($data) use (&$result) {
-                            $result = $data;
-                        },
-                        function(\Exception $e) use (&$result) {
-                            \App::exception()->remove($e);
-                            $result = $e;
+                if ($couponType = $request->get('enterprize_coupon')) {
+                    try {
+                        // проверяем заполнил ли пользователь все поля формы (кроме "Род деятельности")
+                        if (!$form->getFirstName()) {
+                            throw new \Exception('Не передано имя.');
                         }
-                    );
-                    $client->execute();
+                        if (!$form->getMiddleName()) {
+                            throw new \Exception('Не передано отчество.');
+                        }
+                        if (!$form->getLastName()) {
+                            throw new \Exception('Не передана фамилия.');
+                        }
+                        if (!$form->getSex()) {
+                            throw new \Exception('Не передан пол.');
+                        }
+                        if (!$form->getEmail()) {
+                            throw new \Exception('Не передан email.');
+                        }
+                        if (!$form->getMobilePhone()) {
+                            throw new \Exception('Не передан мобильный телефон.');
+                        }
+                        if (!$form->getHomePhone()) {
+                            throw new \Exception('Не передан домашний телефон.');
+                        }
+                        if (!$form->getSkype()) {
+                            throw new \Exception('Не передан skype.');
+                        }
+                        if (!$form->getBirthday()) {
+                            throw new \Exception('Не передана дата рождения.');
+                        }
 
-                    if ($result instanceof \Exception) {
-                        throw $result;
+                        // создание enterprize-купона
+                        $result = [];
+                        $client->addQuery(
+                            'coupon/enter-prize',
+                            [
+                                'client_id' => \App::config()->coreV2['client_id'],
+                                'token'     => \App::user()->getToken(),
+                            ],
+                            [
+                                'name'                      => $form->getFirstName(),
+                                'phone'                     => $form->getMobilePhone(),
+                                'email'                     => $form->getEmail(),
+                                'svyaznoy_club_card_number' => null,
+                                'guid'                      => $couponType,
+                                'agree'                     => true,
+                            ],
+                            function ($data) use (&$result) {
+                                $result = $data;
+                            },
+                            function(\Exception $e) use (&$result) {
+                                \App::exception()->remove($e);
+                                $result = $e;
+                            }
+                        );
+                        $client->execute();
+
+                        if ($result instanceof \Exception) {
+                            throw $result;
+                        }
+
+                        // помечаем пользователя как получившего enterprize-купон
+                        $response = $client->query(
+                            'user/update',
+                            ['token' => \App::user()->getToken()],
+                            [
+                                'coupon_enter_prize' => 1
+                            ],
+                            \App::config()->coreV2['hugeTimeout']
+                        );
+
+                        if (!isset($response['confirmed']) || !$response['confirmed']) {
+                            throw new \Exception('Не получен ответ от сервера.');
+                        }
+                    } catch (\Exception $e) {
+                        \App::exception()->remove($e);
+                        throw $e;
                     }
-
-                    // помечаем пользователя как получившего enterprize-купон
-                    $response = $client->query(
-                        'user/update',
-                        ['token' => \App::user()->getToken()],
-                        [
-                            'coupon_enter_prize' => 1
-                        ],
-                        \App::config()->coreV2['hugeTimeout']
-                    );
-
-                    if (!isset($response['confirmed']) || !$response['confirmed']) {
-                        throw new \Exception('Не получен ответ от сервера.');
-                    }
-                } catch (\Exception $e) {
-                    \App::exception()->remove($e);
                 }
 
                 $session->set('flash', 'Данные сохранены');
