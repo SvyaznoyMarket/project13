@@ -120,18 +120,12 @@ $response = null;
         }
 
         // debug panel
-        if (\App::config()->debug && !$response instanceof \Http\JsonResponse && $response->getIsShowDebug()) {
-            $response->setContent(
-                $response->getContent()
-                . "\n\n"
-                . (new \Templating\PhpEngine(\App::config()->appDir . '/data'))->render('debug/panel')
-            );
+        if (\App::config()->debug) {
+            (new \Debug\ShowAction())->execute($request, $response);
         }
 
         $response->send();
     }
-
-    \App::logger('request_compatible')->info(\Util\RequestLogger::getInstance()->getStatistics());
 
     // dumps logs
     \App::shutdown();
@@ -139,8 +133,6 @@ $response = null;
 });
 
 \App::logger()->info(['message' => 'Start app', 'env' => \App::$env]);
-$requestLogger = \Util\RequestLogger::getInstance();
-$requestLogger->setId(\App::$id);
 
 // request
 $request = \App::request();

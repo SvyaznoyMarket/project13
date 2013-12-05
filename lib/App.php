@@ -412,9 +412,6 @@ class App {
                 case 'timer':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/timer.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     break;
-                case 'request_compatible':
-                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/site_page_time.log', self::$config->logger['pretty']), 'RequestLogger', $config[$name]['level']);
-                    break;
                 case 'order':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/order.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     break;
