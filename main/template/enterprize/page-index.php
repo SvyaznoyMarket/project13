@@ -10,17 +10,27 @@
 
 	<h1 class="enterPrize__logo">Enter Prize</h1>
 
-	<ul class="enterPrize__rules">
-		<li class="enterPrize__rules__item">Выбери свою фишку со скидкой и жми получить!</li>
-		<li class="enterPrize__rules__item">Получи номер фишки на E-mail и мобильный телефон, которые укажешь для участия в Enter Prize!</li>
-		<li class="enterPrize__rules__item">Покупай со скидкой, используя номер фишки при оплате!</li>
+	<div class="bgPage"></div>
+
+	<ul class="enterPrize__rules clearfix">
+		<li class="enterPrize__rules__item"><span class="sep">Выбери</span> свою фишку со скидкой и жми получить!</li>
+		<li class="enterPrize__rules__sep"></li>
+		<li class="enterPrize__rules__item" style="width: 168px;"><span class="sep">Получи</span> номер фишки на E-mail и мобильный телефон, которые укажешь для участия в Enter Prize!</li>
+		<li class="enterPrize__rules__sep"></li>
+		<li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li>
 	</ul>
 
 	<ul class="enterPrize__list clearfix">
-		<li class="enterPrize__list__item">
+		<li class="enterPrize__list__item mOrange">
 			<a class="enterPrize__list__link" href="">
 				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/home101.png" />
+					<span class="cuponImg__inner">
+						<span class="cuponIco"><img src="/styles/enterPrize/img/icoSec.png" /></span>
+
+						<span class="cuponDesc">товары для дома</span>
+
+						<span class="cuponPrice">101 <span class="rubl">p</span></span>
+					</span>
 				</span>
 
 				<span class="cuponImgHover">
@@ -29,10 +39,16 @@
 			</a>
 		</li>
 
-		<li class="enterPrize__list__item">
+		<li class="enterPrize__list__item mBlue">
 			<a class="enterPrize__list__link" href="">
 				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/home3.png" />
+					<span class="cuponImg__inner">
+						<span class="cuponIco"><img src="/styles/enterPrize/img/icoSec.png" /></span>
+
+						<span class="cuponDesc">товары для детей</span>
+
+						<span class="cuponPrice">3%</span>
+					</span>
 				</span>
 
 				<span class="cuponImgHover">
@@ -41,46 +57,14 @@
 			</a>
 		</li>
 
-		<li class="enterPrize__list__item">
+		<li class="enterPrize__list__item mPink mNoIco">
 			<a class="enterPrize__list__link" href="">
 				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/kid103.png" />
-				</span>
+					<span class="cuponImg__inner">
+						<span class="cuponDesc">парфюмерия и косметика</span>
 
-				<span class="cuponImgHover mPink">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item mLast">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/kid3.png" />
-				</span>
-
-				<span class="cuponImgHover mGreen">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/purf105.png" />
-				</span>
-
-				<span class="cuponImgHover mGreen">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/purf3.png" />
+						<span class="cuponPrice">3%</span>
+					</span>
 				</span>
 
 				<span class="cuponImgHover">
@@ -89,120 +73,14 @@
 			</a>
 		</li>
 
-		<li class="enterPrize__list__item">
+		<li class="enterPrize__list__item mGreen mNoIco mLast">
 			<a class="enterPrize__list__link" href="">
 				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/jewel107.png" />
-				</span>
+					<span class="cuponImg__inner">
+						<span class="cuponDesc">парфюмерия и косметика и много-много другого текста</span>
 
-				<span class="cuponImgHover">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item mLast">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/jewel3.png" />
-				</span>
-
-				<span class="cuponImgHover mPink">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-
-		<li class="enterPrize__list__item">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/zoo101.png" />
-				</span>
-
-				<span class="cuponImgHover mPink">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/zoo3.png" />
-				</span>
-
-				<span class="cuponImgHover mGreen">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/winter103.png" />
-				</span>
-
-				<span class="cuponImgHover">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item mLast">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/winter3.png" />
-				</span>
-
-				<span class="cuponImgHover">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-
-		<li class="enterPrize__list__item">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/hobby102.png" />
-				</span>
-
-				<span class="cuponImgHover">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/hobby3.png" />
-				</span>
-
-				<span class="cuponImgHover mPink">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/bit109.png" />
-				</span>
-
-				<span class="cuponImgHover mGreen">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item mLast">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<img src="/styles/enterPrize/img/tech103.png" />
+						<span class="cuponPrice">3%</span>
+					</span>
 				</span>
 
 				<span class="cuponImgHover">
