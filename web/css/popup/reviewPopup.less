@@ -1,6 +1,13 @@
 .reviewSend {
 	color: #a6a6a6;
 	text-decoration: underline;
+	display: inline-block;
+	vertical-align: top;
+	margin: 0 37px 0 0;
+	float: right;
+
+	*display: inline;
+	zoom: 1;
 
 	&:hover {
 		color: #a6a6a6;
@@ -64,7 +71,7 @@
 
 	&__label {
 		display: block;
-		margin: 0 0 5px;
+		margin: 0 0 10px;
 		font-size: 14px;
 	}
 
@@ -161,4 +168,12 @@
 	text-transform: uppercase;
 	font-size: 30px;
 	font-family: "Enter";
+}
+
+.jewel {
+	.reviewForm__button {
+		background: @black;
+		color: @white;
+		border-color: @black;
+	}
 }
