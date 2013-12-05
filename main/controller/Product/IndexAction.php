@@ -170,9 +170,9 @@ class IndexAction {
         */
 
         // получаем отзывы для товара
-        $reviewsData = \RepositoryManager::review()->getReviews($product->getId(), 'user');
-        $reviewsDataPro = \RepositoryManager::review()->getReviews($product->getId(), 'pro');
-        $reviewsDataSummary = \RepositoryManager::review()->prepareReviewsDataSummary($reviewsData, $reviewsDataPro);
+        $reviewsData = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->getReviews($product->getId(), 'user') : [];
+        $reviewsDataPro = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->getReviews($product->getId(), 'pro') : [];
+        $reviewsDataSummary = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->prepareReviewsDataSummary($reviewsData, $reviewsDataPro) : [];
 
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем уникальные категории-родители аксессуаров
