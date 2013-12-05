@@ -157,7 +157,58 @@ class ShowAction {
 
         $shopScriptException = null;
         $shopScriptSeo = [];
-        if ($categoryToken) {
+        if ($categoryToken && \App::config()->shopScript['enabled']) {
+            try {
+                $shopScript = \App::shopScriptClient();
+                $shopScript->addQuery(
+                    'category/get-seo',
+                    [
+                        'slug' => $categoryToken,
+                        'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                    ],
+                    [],
+                    function ($data) use (&$shopScriptSeo) {
+                        if ($data && is_array($data)) $shopScriptSeo = reset($data);
+                    },
+                    function (\Exception $e) use (&$shopScriptException) {
+                        $shopScriptException = $e;
+                    }
+                );
+                $shopScript->execute();
+                if ($shopScriptException instanceof \Exception) {
+                    throw $shopScriptException;
+                }
+
+                // если shopscript вернул редирект
+                if (!empty($shopScriptSeo['redirect']['link']) && !empty($shopScriptSeo['redirect']['token']) && ($shopScriptSeo['redirect']['token'] !== $categoryToken)) {
+                    $redirect = $shopScriptSeo['redirect']['link'];
+                    if (!preg_match('/^http/', $redirect)) {
+                        $redirect = \App::router()->generate('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => $shopScriptSeo['redirect']['token']], true);
+                    }
+                    return new \Http\RedirectResponse($redirect, 301);
+                }
+
+                if (empty($shopScriptSeo['ui'])) {
+                    throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
+                }
+
+                // запрашиваем категорию по ui
+                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        $category = new \Model\Product\Category\Entity($data);
+                    }
+                });
+            } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
+                \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        $category = new \Model\Product\Category\Entity($data);
+                    }
+                });
+            }
+
+        } elseif (!is_null($categoryToken)) {
             \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
                 $data = reset($data);
                 if ((bool)$data) {
