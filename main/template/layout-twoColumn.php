@@ -36,7 +36,7 @@
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
     <?= $page->slotConfig() ?>
 
-    <?= $page->slotAdFox() ?>
+    <?= $page->slotAdFoxBground() ?>
 
     <div class="wrapper">
         <header class="header">
