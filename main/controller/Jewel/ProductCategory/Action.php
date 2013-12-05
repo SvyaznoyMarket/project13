@@ -129,6 +129,7 @@ class Action extends \Controller\ProductCategory\Action {
 
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
+        \Controller\ProductCategory\Action::checkAdFox($catalogJson);
 
         return $this->category($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
     }
@@ -145,11 +146,6 @@ class Action extends \Controller\ProductCategory\Action {
      * @return \Http\Response
      */
     public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo) {
-        // убираем/показываем уши
-        if(isset($catalogJson['show_side_panels'])) {
-            \App::config()->adFox['enabled'] = (bool)$catalogJson['show_side_panels'];
-        }
-
         \App::logger()->debug('Exec ' . __METHOD__);
 
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент

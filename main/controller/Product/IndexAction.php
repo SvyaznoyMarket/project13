@@ -101,6 +101,7 @@ class IndexAction {
         $dataStore->addQuery($query, [], function ($data) use (&$catalogJson) {
             if($data) $catalogJson = $data;
         });
+        \Controller\ProductCategory\Action::checkAdFox($catalogJson);
 
         // выполнение 3-го пакета запросов
         $client->execute();

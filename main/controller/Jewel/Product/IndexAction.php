@@ -78,6 +78,7 @@ class IndexAction extends \Controller\Product\IndexAction {
         array_shift($productCategories);
         $productCategory = reset($productCategories);
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($productCategory);
+        \Controller\ProductCategory\Action::checkAdFox($catalogJson);
 
         return $this->executeDirect($product, $regionsToSelect, $catalogJson);
     }
@@ -89,11 +90,6 @@ class IndexAction extends \Controller\Product\IndexAction {
      * @return \Http\Response
      */
     public function executeDirect($product, $regionsToSelect, $catalogJson) {
-        // убираем/показываем уши
-        if(isset($catalogJson['show_side_panels'])) {
-            \App::config()->adFox['enabled'] = (bool)$catalogJson['show_side_panels'];
-        }
-
         $repository = \RepositoryManager::product();
 
         if ($product->getConnectedProductsViewMode() == $product::DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE) {

@@ -343,6 +343,7 @@ class Action {
 
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
+        \Controller\ProductCategory\Action::checkAdFox($catalogJson);
 
         $promoContent = '';
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
@@ -1052,5 +1053,17 @@ class Action {
         }
 
         return $hints;
+    }
+
+
+    /**
+     * убираем/показываем уши
+     *
+     * @param array $catalogJson
+     */
+    static public function checkAdFox(&$catalogJson) {
+        if(isset($catalogJson['show_side_panels'])) {
+            \App::config()->adFox['enabled'] = (bool)$catalogJson['show_side_panels'];
+        }
     }
 }
