@@ -535,6 +535,10 @@ class DefaultLayout extends Layout {
 
 
     public function slotAdFox() {
+        $viewParams = $this->getParam('viewParams');
+        $show = (bool) ( $viewParams && isset($viewParams['show_side_panels']) ) ? $viewParams['show_side_panels'] : true;
+        if (false == $show) return;
+
         $routeToken = \App::request()->attributes->get('token');
         if (
             !\App::config()->adFox['enabled'] ||

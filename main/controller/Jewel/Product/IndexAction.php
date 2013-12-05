@@ -78,7 +78,6 @@ class IndexAction extends \Controller\Product\IndexAction {
         array_shift($productCategories);
         $productCategory = reset($productCategories);
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($productCategory);
-        \Controller\ProductCategory\Action::checkAdFox($catalogJson);
 
         return $this->executeDirect($product, $regionsToSelect, $catalogJson);
     }
@@ -240,6 +239,9 @@ class IndexAction extends \Controller\Product\IndexAction {
         $page->setParam('reviewsData', $reviewsData);
         $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
+        $page->setParam('viewParams', [
+            'show_side_panels' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+        ]);
 
         return new \Http\Response($page->show());
     }

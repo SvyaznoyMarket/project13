@@ -129,7 +129,6 @@ class Action extends \Controller\ProductCategory\Action {
 
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
-        \Controller\ProductCategory\Action::checkAdFox($catalogJson);
 
         return $this->category($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
     }
@@ -209,6 +208,9 @@ class Action extends \Controller\ProductCategory\Action {
             $page->setParam('scrollTo', 'smalltabs');
             $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
+            $page->setParam('viewParams', [
+                'show_side_panels' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+            ]);
         };
 
         // если категория содержится во внешнем узле дерева

@@ -343,7 +343,6 @@ class Action {
 
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
-        \Controller\ProductCategory\Action::checkAdFox($catalogJson);
 
         $promoContent = '';
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
@@ -503,6 +502,9 @@ class Action {
             $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setGlobalParam('shop', $shop);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
+            $page->setParam('viewParams', [
+                'show_side_panels' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+            ]);
         };
 
         // полнотекстовый поиск через сфинкс
@@ -1061,9 +1063,10 @@ class Action {
      *
      * @param array $catalogJson
      */
-    static public function checkAdFox(&$catalogJson) {
-        if(isset($catalogJson['show_side_panels'])) {
-            \App::config()->adFox['enabled'] = (bool)$catalogJson['show_side_panels'];
+    static public function checkAdFoxBground(&$catalogJson) {
+        if (isset($catalogJson['show_side_panels'])) {
+            return (bool)$catalogJson['show_side_panels'];
         }
+        return true;
     }
 }
