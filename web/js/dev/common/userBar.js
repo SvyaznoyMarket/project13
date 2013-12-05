@@ -13,32 +13,37 @@
 		utils = ENTER.utils,
 		clientCart = config.clientCart,
 
-		userbar = $('.fixedTopBar.mFixed'),
-		userbarStatic = $('.fixedTopBar.mStatic'),
-		topBtn = userbar.find('.fixedTopBar__upLink'),
-		userbarConfig = userbar.data('value'),
+		userBar = utils.extendApp('ENTER.userBar'),
+
+		userBarFixed = userBar.userBarFixed = $('.fixedTopBar.mFixed'),
+		userbarStatic = userBar.userBarStatic = $('.fixedTopBar.mStatic'),
+
+		topBtn = userBarFixed.find('.fixedTopBar__upLink'),
+		userbarConfig = userBarFixed.data('value'),
 		body = $('body'),
 		w = $(window),
 		infoShowing = false,
+		overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
 
 		scrollTarget,
 		scrollTargetOffset;
 	// end of vars
 	
+	userBar.showOverlay = false;
 
 	var
 		/**
 		 * Показ юзербара
 		 */
 		showUserbar = function showUserbar() {
-			userbar.slideDown();
+			userBarFixed.slideDown();
 		},
 
 		/**
 		 * Скрытие юзербара
 		 */
 		hideUserbar = function hideUserbar() {
-			userbar.slideUp();
+			userBarFixed.slideUp();
 		},
 
 		/**
@@ -80,7 +85,7 @@
 			console.log(data);
 
 			var
-				userWrap = userbar.find('.fixedTopBar__logIn'),
+				userWrap = userBarFixed.find('.fixedTopBar__logIn'),
 				userWrapStatic = userbarStatic.find('.fixedTopBar__logIn'),
 				template = $('#userbar_user_tmpl'),
 				partials = template.data('partial'),
@@ -106,9 +111,7 @@
 			console.info('userbar::showBuyInfo');
 
 			var
-				wrap = userbar.find('.fixedTopBar__cart'),
-				upsaleWrap = wrap.find('.hintDd'),
-				overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
+				wrap = userBarFixed.find('.fixedTopBar__cart'),
 				template = $('#buyinfo_tmpl'),
 				partials = template.data('partial'),
 				openClass = 'mOpenedPopup',
@@ -125,20 +128,30 @@
 				 * Закрытие окна о совершенной покупке
 				 */
 				closeBuyInfo = function closeBuyInfo() {
+					var
+						upsaleWrap = wrap.find('.hintDd');
+					// end of vars
+
+					upsaleWrap.removeClass('mhintDdOn');
+					wrap.removeClass(openClass);
 
 					buyInfo.slideUp(300, function() {
-						infoShowing = false;
 						checkScroll();
 						buyInfo.remove();
-						upsaleWrap.removeClass('mhintDdOn');
+
+						infoShowing = false;
 					});
 
+					if ( !userBar.showOverlay ) {
+						return;
+					}
+					
 					overlay.fadeOut(300, function() {
 						overlay.off('click');
 						overlay.remove();
-					});
 
-					wrap.removeClass(openClass);
+						userBar.showOverlay = false;
+					});
 
 					return false;
 				};
@@ -154,10 +167,15 @@
 			buyInfo.find('.cartList__item').eq(0).addClass('mHover');
 			wrap.addClass(openClass);
 			wrap.append(buyInfo);
-			body.append(overlay);
+
+			if ( !userBar.showOverlay ) {
+				body.append(overlay);
+				overlay.fadeIn(300);
+
+				userBar.showOverlay = true;
+			}
 
 			buyInfo.slideDown(300);
-			overlay.fadeIn(300);
 			showUserbar();
 
 			infoShowing = true;
@@ -178,7 +196,7 @@
 			console.log(clientCart);
 
 			var
-				cartWrap = userbar.find('.fixedTopBar__cart'),
+				cartWrap = userBarFixed.find('.fixedTopBar__cart'),
 				cartWrapStatic = userbarStatic.find('.fixedTopBar__cart'),
 				template = $('#userbar_cart_tmpl'),
 				partials = template.data('partial'),
@@ -223,7 +241,7 @@
 		showUpsell = function showUpsell( event, data, upsale ) {
 			console.info('userbar::showUpsell');
 
-			var cartWrap = userbar.find('.fixedTopBar__cart'),
+			var cartWrap = userBarFixed.find('.fixedTopBar__cart'),
 				upsaleWrap = cartWrap.find('.hintDd'),
 				slider;
 			// end of vars
@@ -303,7 +321,7 @@
 	body.on('getupsale', showUpsell);
 
 
-	if ( userbar.length ) {
+	if ( userBarFixed.length ) {
 		scrollTarget = $(userbarConfig.target);
 
 		if ( topBtn.length ) {
@@ -311,7 +329,7 @@
 		}
 
 		if ( scrollTarget.length ) {
-			scrollTargetOffset = scrollTarget.offset().top + userbar.height();
+			scrollTargetOffset = scrollTarget.offset().top + userBarFixed.height();
 			w.on('scroll', checkScroll);
 		}
 	}
