@@ -8,85 +8,62 @@
 
 <div class="enterPrize">
 
-	<h1 class="enterPrize__logo">Enter Prize</h1>
+    <h1 class="enterPrize__logo">Enter Prize</h1>
 
-	<div class="bgPage"></div>
+    <div class="bgPage"></div>
 
-	<ul class="enterPrize__rules clearfix">
-		<li class="enterPrize__rules__item"><span class="sep">Выбери</span> свою фишку со скидкой и жми получить!</li>
-		<li class="enterPrize__rules__sep"></li>
-		<li class="enterPrize__rules__item" style="width: 168px;"><span class="sep">Получи</span> номер фишки на E-mail и мобильный телефон, которые укажешь для участия в Enter Prize!</li>
-		<li class="enterPrize__rules__sep"></li>
-		<li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li>
-	</ul>
+    <ul class="enterPrize__rules clearfix">
+        <li class="enterPrize__rules__item"><span class="sep">Выбери</span> свою фишку со скидкой и жми получить!</li>
+        <li class="enterPrize__rules__sep"></li>
+        <li class="enterPrize__rules__item" style="width: 168px;"><span class="sep">Получи</span> номер фишки на E-mail и мобильный телефон, которые укажешь для участия в Enter Prize!</li>
+        <li class="enterPrize__rules__sep"></li>
+        <li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li>
+    </ul>
 
-	<ul class="enterPrize__list clearfix">
-		<li class="enterPrize__list__item mOrange">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<span class="cuponImg__inner">
-						<span class="cuponIco"><img src="/styles/enterPrize/img/icoSec.png" /></span>
+    <ul class="enterPrize__list clearfix">
 
-						<span class="cuponDesc">товары для дома</span>
+        <? $i = 0; foreach ($enterpizeCoupons as $coupon): $i++ ?>
 
-						<span class="cuponPrice">101 <span class="rubl">p</span></span>
-					</span>
-				</span>
+            <?
+                $itemClass = 'enterPrize__list__item';
+                if (!($i % 4)) {
+                    $itemClass .= ' mLast';
+                }
+                if (!$coupon->getImage()) {
+                    $itemClass .= ' mNoIco';
+                }
 
-				<span class="cuponImgHover">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
+                // формируем ссылку на получение купона
+                $link = $page->url('user.edit', ['enterprize_coupon' => $coupon->getToken()]);
+                // если пользователь неавторизован, то редиректим его на страницу авторизации
+                if (!\App::user()->getEntity()) {
+                    $link = $page->url('user.login', ['redirect_to' => $link]);
+                }
+            ?>
 
-		<li class="enterPrize__list__item mBlue">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<span class="cuponImg__inner">
-						<span class="cuponIco"><img src="/styles/enterPrize/img/icoSec.png" /></span>
+            <li class="<?= $itemClass ?>">
+                <a class="enterPrize__list__link" href="<?= $link ?>">
+                <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
+                    <span class="cuponImg__inner">
+                        <? if ($coupon->getImage()): ?>
+                            <span class="cuponIco"><img src="<?= $coupon->getImage() ?>" /></span>
+                        <? endif ?>
 
-						<span class="cuponDesc">товары для детей</span>
+                        <? if ($coupon->getName()): ?>
+                            <span class="cuponDesc"><?= $coupon->getName() ?></span>
+                        <? endif ?>
 
-						<span class="cuponPrice">3%</span>
-					</span>
-				</span>
+                        <? if ($coupon->getPrice()): ?>
+                            <span class="cuponPrice"><?= $coupon->getPrice() . (!$coupon->getIsCurrency() ? '%' : '') ?> <? if ($coupon->getIsCurrency()): ?><span class="rubl">p</span><? endif ?></span>
+                        <? endif ?>
+                    </span>
+                </span>
 
-				<span class="cuponImgHover">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item mPink mNoIco">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<span class="cuponImg__inner">
-						<span class="cuponDesc">парфюмерия и косметика</span>
-
-						<span class="cuponPrice">3%</span>
-					</span>
-				</span>
-
-				<span class="cuponImgHover">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-
-		<li class="enterPrize__list__item mGreen mNoIco mLast">
-			<a class="enterPrize__list__link" href="">
-				<span class="cuponImg">
-					<span class="cuponImg__inner">
-						<span class="cuponDesc">парфюмерия и косметика и много-много другого текста</span>
-
-						<span class="cuponPrice">3%</span>
-					</span>
-				</span>
-
-				<span class="cuponImgHover">
-					<span class="cuponBtn">Получить</span>
-				</span>
-			</a>
-		</li>
-	</ul>
+                <span class="cuponImgHover">
+                    <span class="cuponBtn">Получить</span>
+                </span>
+                </a>
+            </li>
+        <? endforeach ?>
+    </ul>
 </div>

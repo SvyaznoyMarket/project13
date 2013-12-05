@@ -13,6 +13,14 @@ class Action {
 
         $client = \App::dataStoreClient();
 
+        // пользователь авторизован
+        if ($user = \App::user()->getEntity()) {
+            if (true == $user->getEnterprizeCoupon()) {
+                // показываем заглушку, так как у пользователя установлена галка "Участник Enter.Prize"
+
+            }
+        }
+
         /** @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[] */
         $enterpizeCoupons = [];
         $client->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupons) {
