@@ -43,7 +43,8 @@ class BasicEntity {
     protected $isInShowroomsOnly;
     /** @var bool */
     protected $isInShopsOnly;
-
+    /** @var bool */
+    protected $isUpsale = false;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -70,6 +71,7 @@ class BasicEntity {
         if (array_key_exists('avg_score', $data)) $this->setAvgScore($data['avg_score']);
         if (array_key_exists('avg_star_score', $data)) $this->setAvgStarScore($data['avg_star_score']);
         if (array_key_exists('num_reviews', $data)) $this->setNumReviews($data['num_reviews']);
+        if (array_key_exists('is_upsale', $data)) $this->setIsUpsale($data['is_upsale']);
 
         $this->calculateState();
     }
@@ -425,5 +427,19 @@ class BasicEntity {
 
         $this->isInShopsOnly = !$inStore && $inShop;
         $this->isInShowroomsOnly = !$inStore && !$inShop && $inShowroom;
+    }
+
+    /**
+     * @param boolean $isUpsale
+     */
+    public function setIsUpsale($isUpsale) {
+        $this->isUpsale = (bool)$isUpsale;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsUpsale() {
+        return $this->isUpsale;
     }
 }
