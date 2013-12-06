@@ -29,7 +29,9 @@
 		scrollTargetOffset;
 	// end of vars
 	
+	
 	userBar.showOverlay = false;
+
 
 	var
 		/**
@@ -50,7 +52,9 @@
 		 * Проверка текущего скролла
 		 */
 		checkScroll = function checkScroll( e ) {
-			var nowScroll = w.scrollTop();
+			var
+				nowScroll = w.scrollTop();
+			// end of vars
 
 			if ( infoShowing ) {
 				return;
@@ -241,12 +245,14 @@
 		showUpsell = function showUpsell( event, data, upsale ) {
 			console.info('userbar::showUpsell');
 
-			var cartWrap = userBarFixed.find('.fixedTopBar__cart'),
+			var
+				cartWrap = userBarFixed.find('.fixedTopBar__cart'),
 				upsaleWrap = cartWrap.find('.hintDd'),
 				slider;
 			// end of vars
 
-			var responseFromServer = function ( response ){
+			var
+				responseFromServer = function responseFromServer( response ) {
 				console.log(response);
 
 				if ( !response.success ) {
@@ -262,8 +268,11 @@
 				upsaleWrap.addClass('mhintDdOn');
 				$(slider).goodsSlider();
 
+				body.trigger('markcartbutton');
+
 				if ( !data.product.article ) {
 					console.warn('Не получен article продукта');
+
 					return;
 				}
 
@@ -271,7 +280,7 @@
 				// google analytics
 				_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
 				// Kissmetrics
-				_kmp && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
+				_kmq && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
 			};
 			//end functions
 
@@ -292,11 +301,13 @@
 		 * Обработчик клика по товару из списка рекомендаций
 		 */
 		upsaleProductClick = function upsaleProductClick() {
-			var product = $(this).parents('.jsSliderItem').data('product');
+			var
+				product = $(this).parents('.jsSliderItem').data('product');
 			//end of vars
 
 			if ( !product.article ) {
 				console.warn('Не получен article продукта');
+
 				return;
 			}
 
@@ -304,7 +315,7 @@
 			// google analytics
 			_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_clicked', product.article]);
 			// Kissmetrics
-			_kmp && _kmq.push(['record', 'cart recommendation clicked', {'SKU cart rec clicked': product.article}]);
+			_kmq && _kmq.push(['record', 'cart recommendation clicked', {'SKU cart rec clicked': product.article}]);
 
 			//window.docCookies.setItem('used_cart_rec', 1, 1, 4*7*24*60*60, '/');
 		};
