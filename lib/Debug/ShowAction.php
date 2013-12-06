@@ -14,7 +14,13 @@ class ShowAction {
         }
 
         if ((bool)\App::exception()->all()) {
-            $debug->add('error', \App::exception()->all(), 149, \Debug\Collector::TYPE_ERROR);
+            $debug->add('error', array_map(function(\Exception $e) { return [
+                'code'    => $e->getCode(),
+                'message' => $e->getMessage(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine(),
+                'trace'   => $e->getTrace(),
+            ]; }, \App::exception()->all()), 149, \Debug\Collector::TYPE_ERROR);
         }
 
         $debug->add('id', \App::$id, 145);
@@ -182,7 +188,7 @@ class ShowAction {
             $response->setContent(
                 $response->getContent()
                 . "\n\n"
-                . ('<div id="debug-panel" data-value="' . $helper->json($debugData) . '" style="position: fixed; bottom: 30px; left: 2px; z-index: 999;"><a href="#" style="padding-bottom: 10px;">debug</a><div class="content"></div></div>')
+                . ('<div class="jsDebugPanel debug-panel" data-value="' . $helper->json($debugData) . '" style="position: fixed; bottom: 30px; left: 2px; z-index: 999;"><a href="#" style="padding-bottom: 10px;">debug</a><div class="content"></div></div>')
                 . \App::templating()->render('_debug')
             );
         }

@@ -1,5 +1,5 @@
 <style type="text/css">
-    #debug-panel {
+    .debug-panel {
         position: fixed;
         bottom: 30px;
         left: 2px;
@@ -12,66 +12,67 @@
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
-    #debug-panel a, #debug-panel a:hover {
+    .debug-panel a, .debug-panel a:hover {
         color: #ffffff;
         font-size: 12px;
         font-weight: normal;
         font-family: Courier New;
     }
 
-    #debug-panel .content {
+    .debug-panel .content {
         display: block;
         max-height: 480px;
         max-width: 800px;
         overflow: auto;
     }
 
-    #debug-panel .property {
+    .debug-panel .property {
         border-collapse: collapse;
     }
 
-    #debug-panel .property td {
+    .debug-panel .property td {
         vertical-align: top;
     }
 
-    #debug-panel .property-name {
+    .debug-panel .property-name {
         padding: 5px 0 5px 22px;
         background-repeat: no-repeat;
         background-position: 0 3px;
     }
 
-    #debug-panel .property-value {
+    .debug-panel .property-value {
+        color: #43C6ED;
         padding: 5px 10px 5px;
     }
 
-    #debug-panel .property-value .query {
+    .debug-panel .property-value .query {
         padding: 5px 0 5px 0;
         background-repeat: no-repeat;
         background-position: 0 2px;
         text-decoration: none;
     }
 
-    #debug-panel .property-value .query:hover {
+    .debug-panel .property-value .query:hover {
         color: greenyellow;
     }
 
-    #debug-panel .property-value .query-ok {
+    .debug-panel .property-value .query-ok {
         color: limegreen;
     }
-    #debug-panel .property-value .query-fail {
+    .debug-panel .property-value .query-fail {
         color: red;
     }
-    #debug-panel .property-value .query-default {
+    .debug-panel .property-value .query-default {
         color: #ffffff;
     }
-    #debug-panel .property-value .query-cell {
+    .debug-panel .property-value .query-cell {
         padding: 2px 10px 2px 0;
         white-space: nowrap;
     }
 </style>
 
 <script type="text/javascript">
-    $('#debug-panel a').click(function(e) {
+    $('.debug-panel a').click(function(e) {
         e.preventDefault();
         console.info('debug cliclked');
 
@@ -89,6 +90,9 @@
                 value = '<span style="color: #ffff00">' + value.version + '</span> ' + value.tag;
             } else if (('time.core' == i) || ('time.data-store' == i) || ('time.content' == i) || ('time.total' == i)) {
                 value = value['time, ms'] + ' (' + value.count + ')';
+            } else if (('error' == i) && (value[0])) {
+                value = value[0];
+                value = '<span style="color: #ff0000">#' + value.code + ' ' + value.message + '</span>';
             } else if ('query' == i) {
                 value = '<table>';
                 $.each(item[0], function(i, item) {
