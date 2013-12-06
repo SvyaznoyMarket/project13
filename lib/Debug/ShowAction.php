@@ -29,14 +29,14 @@ class ShowAction {
             $debug->add('app', \App::$name, 143);
         }
 
-        $debug->add('env', \App::$env, 144);
         $debug->add(
             'git',
             [
                 'version' => trim(shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir)))),
                 'tag'     => trim(shell_exec(sprintf('cd %s && git describe --always --tag', realpath(\App::config()->appDir)))),
             ]
-            , 143);
+            , 144);
+        $debug->add('env', \App::$env, 143);
 
         // query
         $queryData = [];
