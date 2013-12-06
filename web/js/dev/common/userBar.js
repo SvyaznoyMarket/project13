@@ -13,39 +13,48 @@
 		utils = ENTER.utils,
 		clientCart = config.clientCart,
 
-		userbar = $('.fixedTopBar.mFixed'),
-		userbarStatic = $('.fixedTopBar.mStatic'),
-		topBtn = userbar.find('.fixedTopBar__upLink'),
-		userbarConfig = userbar.data('value'),
+		userBar = utils.extendApp('ENTER.userBar'),
+
+		userBarFixed = userBar.userBarFixed = $('.fixedTopBar.mFixed'),
+		userbarStatic = userBar.userBarStatic = $('.fixedTopBar.mStatic'),
+
+		topBtn = userBarFixed.find('.fixedTopBar__upLink'),
+		userbarConfig = userBarFixed.data('value'),
 		body = $('body'),
 		w = $(window),
 		infoShowing = false,
+		overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
 
 		scrollTarget,
 		scrollTargetOffset;
 	// end of vars
 	
+	
+	userBar.showOverlay = false;
+
 
 	var
 		/**
 		 * Показ юзербара
 		 */
 		showUserbar = function showUserbar() {
-			userbar.slideDown();
+			userBarFixed.slideDown();
 		},
 
 		/**
 		 * Скрытие юзербара
 		 */
 		hideUserbar = function hideUserbar() {
-			userbar.slideUp();
+			userBarFixed.slideUp();
 		},
 
 		/**
 		 * Проверка текущего скролла
 		 */
 		checkScroll = function checkScroll( e ) {
-			var nowScroll = w.scrollTop();
+			var
+				nowScroll = w.scrollTop();
+			// end of vars
 
 			if ( infoShowing ) {
 				return;
@@ -80,7 +89,7 @@
 			console.log(data);
 
 			var
-				userWrap = userbar.find('.fixedTopBar__logIn'),
+				userWrap = userBarFixed.find('.fixedTopBar__logIn'),
 				userWrapStatic = userbarStatic.find('.fixedTopBar__logIn'),
 				template = $('#userbar_user_tmpl'),
 				partials = template.data('partial'),
@@ -106,9 +115,7 @@
 			console.info('userbar::showBuyInfo');
 
 			var
-				wrap = userbar.find('.fixedTopBar__cart'),
-				upsaleWrap = wrap.find('.hintDd'),
-				overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
+				wrap = userBarFixed.find('.fixedTopBar__cart'),
 				template = $('#buyinfo_tmpl'),
 				partials = template.data('partial'),
 				openClass = 'mOpenedPopup',
@@ -118,27 +125,37 @@
 			// end of vars
 
 			dataToRender.products = utils.cloneObject(clientCart.products);
-			dataToRender.showTransparent = !!( dataToRender.products.length > 4 );
+			dataToRender.showTransparent = !!( dataToRender.products.length > 3 );
 
 			var
 				/**
 				 * Закрытие окна о совершенной покупке
 				 */
 				closeBuyInfo = function closeBuyInfo() {
+					var
+						upsaleWrap = wrap.find('.hintDd');
+					// end of vars
+
+					upsaleWrap.removeClass('mhintDdOn');
+					wrap.removeClass(openClass);
 
 					buyInfo.slideUp(300, function() {
-						infoShowing = false;
 						checkScroll();
 						buyInfo.remove();
-						upsaleWrap.removeClass('mhintDdOn');
+
+						infoShowing = false;
 					});
 
+					if ( !userBar.showOverlay ) {
+						return;
+					}
+					
 					overlay.fadeOut(300, function() {
 						overlay.off('click');
 						overlay.remove();
-					});
 
-					wrap.removeClass(openClass);
+						userBar.showOverlay = false;
+					});
 
 					return false;
 				};
@@ -154,10 +171,15 @@
 			buyInfo.find('.cartList__item').eq(0).addClass('mHover');
 			wrap.addClass(openClass);
 			wrap.append(buyInfo);
-			body.append(overlay);
+
+			if ( !userBar.showOverlay ) {
+				body.append(overlay);
+				overlay.fadeIn(300);
+
+				userBar.showOverlay = true;
+			}
 
 			buyInfo.slideDown(300);
-			overlay.fadeIn(300);
 			showUserbar();
 
 			infoShowing = true;
@@ -178,7 +200,7 @@
 			console.log(clientCart);
 
 			var
-				cartWrap = userbar.find('.fixedTopBar__cart'),
+				cartWrap = userBarFixed.find('.fixedTopBar__cart'),
 				cartWrapStatic = userbarStatic.find('.fixedTopBar__cart'),
 				template = $('#userbar_cart_tmpl'),
 				partials = template.data('partial'),
@@ -200,7 +222,7 @@
 				data.products.reverse();
 			}
 
-			if ( clientCart.products.length > 4 ) {
+			if ( clientCart.products.length > 3 ) {
 				data.showTransparent = true;
 			}
 
@@ -217,17 +239,20 @@
 		 * Обновление блока с рекомендациями "С этим товаром также покупают"
 		 *
 		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	data	Данные о покупке
 		 * @param	{Object}	upsale
 		 */
-		showUpsell = function showUpsell( event, upsale ) {
+		showUpsell = function showUpsell( event, data, upsale ) {
 			console.info('userbar::showUpsell');
 
-			var cartWrap = userbar.find('.fixedTopBar__cart'),
+			var
+				cartWrap = userBarFixed.find('.fixedTopBar__cart'),
 				upsaleWrap = cartWrap.find('.hintDd'),
 				slider;
 			// end of vars
 
-			var responseFromServer = function ( response ){
+			var
+				responseFromServer = function responseFromServer( response ) {
 				console.log(response);
 
 				if ( !response.success ) {
@@ -242,6 +267,18 @@
 				upsaleWrap.append(slider);
 				upsaleWrap.addClass('mhintDdOn');
 				$(slider).goodsSlider();
+
+				if ( !data.product.article ) {
+					console.warn('Не получен article продукта');
+
+					return;
+				}
+
+				console.log('Трекинг товара при показе блока рекомендаций');
+				// google analytics
+				_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
+				// Kissmetrics
+				_kmq && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
 			};
 			//end functions
 
@@ -256,6 +293,29 @@
 				url: upsale.url,
 				success: responseFromServer
 			});
+		},
+
+		/**
+		 * Обработчик клика по товару из списка рекомендаций
+		 */
+		upsaleProductClick = function upsaleProductClick() {
+			var
+				product = $(this).parents('.jsSliderItem').data('product');
+			//end of vars
+
+			if ( !product.article ) {
+				console.warn('Не получен article продукта');
+
+				return;
+			}
+
+			console.log('Трекинг при клике по товару из списка рекомендаций');
+			// google analytics
+			_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_clicked', product.article]);
+			// Kissmetrics
+			_kmq && _kmq.push(['record', 'cart recommendation clicked', {'SKU cart rec clicked': product.article}]);
+
+			//window.docCookies.setItem('used_cart_rec', 1, 1, 4*7*24*60*60, '/');
 		};
 	// end of functions
 
@@ -263,12 +323,14 @@
 	console.info('Init userbar module');
 	console.log(userbarConfig);
 
+	body.on('click', '.jsUpsaleProduct', upsaleProductClick);
 	body.on('userLogged', updateUserInfo);
 	body.on('basketUpdate', updateBasketInfo);
 	body.on('addtocart', showBuyInfo);
 	body.on('getupsale', showUpsell);
 
-	if ( userbar.length ) {
+
+	if ( userBarFixed.length ) {
 		scrollTarget = $(userbarConfig.target);
 
 		if ( topBtn.length ) {
@@ -276,7 +338,7 @@
 		}
 
 		if ( scrollTarget.length ) {
-			scrollTargetOffset = scrollTarget.offset().top + userbar.height();
+			scrollTargetOffset = scrollTarget.offset().top + userBarFixed.height();
 			w.on('scroll', checkScroll);
 		}
 	}

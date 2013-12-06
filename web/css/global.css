@@ -2159,6 +2159,12 @@
   .reviewSend {
     color: #a6a6a6;
     text-decoration: underline;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 37px 0 0;
+    float: right;
+    *display: inline;
+    zoom: 1;
   }
   .reviewSend:hover {
     color: #a6a6a6;
@@ -2207,7 +2213,7 @@
   }
   .reviewForm__label {
     display: block;
-    margin: 0 0 5px;
+    margin: 0 0 10px;
     font-size: 14px;
   }
   .reviewForm__textarea {
@@ -2276,7 +2282,7 @@
     padding: 1px 5px 0 0;
   }
   .reviewForm__stars .starsList__item.mEmpty {
-    background-position: 0 -14px;
+    background-position: 0 -18px;
   }
   .reviewForm__stars .starsList__item.mFill {
     background-position: 0 0;
@@ -2294,6 +2300,11 @@
     text-transform: uppercase;
     font-size: 30px;
     font-family: "Enter";
+  }
+  .jewel .reviewForm__button {
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
   }
 }
 /*---END---СТИЛИ ВСПЛЫВАЮЩИХ ОКОН---*/
@@ -8504,6 +8515,9 @@
   .bBreadCrumbsBottom {
     margin: 0 10px 0;
   }
+  .addthis_toolbox {
+    margin-top: 15px;
+  }
 }
 @media all {
   .bSpecifications__eHead {
@@ -9588,7 +9602,7 @@
   }
   .bReviewSection span.border {
     cursor: pointer;
-    border-bottom: 1px solid;
+    text-decoration: underline;
     float: left;
   }
   .mReviewSectionCat {

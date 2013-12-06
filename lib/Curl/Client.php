@@ -47,9 +47,7 @@ class Client {
      * @return mixed
      */
     public function query($url, array $data = [], $timeout = null) {
-        \Debug\Timer::start('curl');
-
-        $startedAt = microtime(true);
+        $startedAt = \Debug\Timer::start('curl');
 
         $connection = $this->create($url, $data, $timeout);
         $response = curl_exec($connection);
@@ -58,15 +56,6 @@ class Client {
                 throw new \RuntimeException(curl_error($connection), curl_errno($connection));
             }
             $info = curl_getinfo($connection);
-
-            \Util\RequestLogger::getInstance()->addLog(
-                $info['url'],
-                $data,
-                $info['total_time'],
-                (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?'),
-                $startedAt,
-                microtime(true)
-            );
 
             if ($info['http_code'] >= 300) {
                 throw new \RuntimeException('Invalid http code: ' . $info['http_code']);
@@ -88,8 +77,9 @@ class Client {
                 'info'    => isset($info) ? $info : null,
                 'header'  => isset($header) ? $header : null,
                 'timeout' => $timeout,
-                'spend'   => $spend,
+                'startAt' => $startedAt,
                 'endAt'   => microtime(true),
+                'spend'   => $spend,
             ], ['curl']);
 
             return $decodedResponse;
@@ -106,8 +96,9 @@ class Client {
                 'header'  => isset($header) ? $header : null,
                 'resonse' => $response,
                 'timeout' => $timeout,
-                'spend'   => $spend,
+                'startAt' => $startedAt,
                 'endAt'   => microtime(true),
+                'spend'   => $spend,
             ], ['curl']);
 
             \App::exception()->add($e);
@@ -167,13 +158,12 @@ class Client {
      * @throws \Exception
      */
     public function execute($retryTimeout = null, $retryCount = 0) {
-        \Debug\Timer::start('curl');
+        $startedAt = \Debug\Timer::start('curl');
         if (!$this->isMultiple) {
             $this->logger->error(['message' => 'No query to execute'], ['curl']);
             return;
         }
 
-        $startedAt = microtime(true);
         $this->logger->info(['message' => 'Curl execute', 'query.count' => count($this->queries)]);
 
         $error = null;
@@ -216,19 +206,9 @@ class Client {
                         $content = curl_multi_getcontent($handler);
                         $header = $this->header($content, true);
 
-                        \Util\RequestLogger::getInstance()->addLog(
-                            $info['url'],
-                            $this->queries[$this->queryIndex[(string)$handler]]['query']['data'], $info['total_time'],
-                            '∞ ' . count($this->queries[$this->queryIndex[(string)$handler]]['resources']) . ' ' . (isset($header['X-Server-Name']) ? $header['X-Server-Name'] : '?') . ' ' . (isset($header['X-API-Mode']) ? $header['X-API-Mode'] : '?'),
-                            $startedAt,
-                            microtime(true)
-                        );
-
                         if (null === $content) {
                             throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($this->queries[$this->queryIndex[(string)$handler]]['query']['data'])));
                         }
-
-                        unset($this->queries[$this->queryIndex[(string)$handler]]);
 
                         if ($info['http_code'] >= 300) {
                             throw new \RuntimeException('Invalid http code ' . $info['http_code']);
@@ -242,9 +222,26 @@ class Client {
                         } else {
                             $this->logger->error(sprintf('Неверная функция %s для %s', gettype($callback), $info['url']), ['curl']);
                         }
+
+                        $this->logger->info([
+                            'message'      => 'End curl',
+                            'url'          => isset($info['url']) ? $info['url'] : null,
+                            'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
+                            'info'         => isset($info) ? $info : null,
+                            'header'       => isset($header) ? $header : null,
+                            'resonse'      => isset($content) ? $content : null,
+                            'retryTimeout' => $retryTimeout,
+                            'retryCount'   => $retryCount,
+                            'timeout'      => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['timeout']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['timeout'] : null,
+                            'startAt'      => $startedAt,
+                            'endAt'        => microtime(true),
+                        ], ['curl']);
+
+                        if (isset($this->queries[$this->queryIndex[(string)$handler]])) {
+                            unset($this->queries[$this->queryIndex[(string)$handler]]);
+                        }
                     } catch (\Exception $e) {
                         \App::exception()->add($e);
-                        $spend = \Debug\Timer::stop('curl');
 
                         $this->logger->error([
                             'message'      => 'Fail curl',
@@ -256,14 +253,18 @@ class Client {
                             'resonse'      => isset($content) ? $content : null,
                             'retryTimeout' => $retryTimeout,
                             'retryCount'   => $retryCount,
-                            //'timeout' => null,
-                            'spend'        => $spend,
+                            'timeout'      => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['timeout']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['timeout'] : null,
+                            'startAt'      => $startedAt,
                             'endAt'        => microtime(true),
                         ], ['curl']);
 
                         $callback = $this->failCallbacks[(string)$handler];
                         if ($callback) {
                             $callback($e, (int)$handler);
+                        }
+
+                        if (isset($this->queries[$this->queryIndex[(string)$handler]])) {
+                            unset($this->queries[$this->queryIndex[(string)$handler]]);
                         }
                     }
                 }
@@ -334,8 +335,9 @@ class Client {
             'message'      => 'End curl executing',
             'retryTimeout' => $retryTimeout,
             'retryCount'   => $retryCount,
-            'spend'        => $spend,
+            'startAt'      => $startedAt,
             'endAt'        => microtime(true),
+            'spend'        => $spend,
         ], ['curl']);
     }
 
@@ -347,7 +349,7 @@ class Client {
      */
     private function create($url, array $data = [], $timeout = null) {
         $this->logger->info([
-            'message' => 'Start curl',
+            'message' => 'Create curl',
             'url'     => $url,
             'data'    => $data,
             'timeout' => $timeout,
@@ -359,7 +361,7 @@ class Client {
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($connection, CURLOPT_URL, $url);
-        curl_setopt($connection, CURLOPT_HTTPHEADER, ['X-Request-Id: '.\Util\RequestLogger::getInstance()->getId(), 'Expect:']);
+        curl_setopt($connection, CURLOPT_HTTPHEADER, ['X-Request-Id: ' . \App::$id, 'Expect:']);
         curl_setopt($connection, CURLOPT_ENCODING, 'gzip,deflate');
 
         if(isset($data['http_user']) && isset($data['http_password'])) {

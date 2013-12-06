@@ -96,7 +96,11 @@
             }
         }
 
-
+		/**
+		 * Отслеживание рекомендаций
+		 */
+		console.info('Отслеживание рекомендаций');
+		_gaq.push(['_setCustomVar', 5, 'Used_cart_rec', (orderData.isUsedCartRecommendation ? 'YES' : 'NO'), 2]);
     };
 
     $(document).ready(function () {

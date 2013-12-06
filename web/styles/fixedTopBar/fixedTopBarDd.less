@@ -23,16 +23,15 @@
 		//.rounded(0 0 5px 5px);
 	}
 
-	&__cartOn {
+	.fixedTopBar__cartOn {
 
 		.transGradWhite {
 			background: url("@{base-url}/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
 			position: absolute;
 			left: 0;
-			top: 234px;
-			height: 26px;
+			top: 193px;
+			height: 20px;
 			width: 228px;
-			display: none;
 		}
 	}
 
@@ -45,7 +44,7 @@
 	}
 
 	.cartList {
-		max-height: 260px;
+		max-height: 213px;
 		overflow: auto;
 
 		&__item {
@@ -140,10 +139,12 @@
 	    border: 1px solid #ccc;
 		border-top: none;
 		border-bottom: none;
+		.rounded(0 0 4px 4px);
 
-		&__title {
+		.bHeadSection {
 			padding: 10px 0 0 10px;
 			font-size: 16px;
+			margin: 0;
 			border-top: 1px solid #ccc;
 		}
 

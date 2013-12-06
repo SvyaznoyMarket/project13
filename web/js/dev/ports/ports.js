@@ -217,7 +217,7 @@ window.ANALYTICS = {
 				window.APRT_DATA = vars;
 			}
 
-			//s.type  = 'text/javascript';
+			s.type  = 'text/javascript';
 			s.src = '//rt.actionpay.ru/code/enter/';
 			s.defer = true;
 			x.parentNode.insertBefore(s, x);

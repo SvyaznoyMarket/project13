@@ -164,7 +164,9 @@
 				 * @param	{Object}	input		Поля которые необходимо обновить
 				 */
 				updatespinner = function updatespinner( e, products ) {
-					var i = 0,
+					var
+						products = ( products ) ? products : ENTER.config.clientCart.products,
+						i = 0,
 						spinner,
 						input;
 					// end of vars
@@ -180,11 +182,11 @@
 					}
 
 					// Массив продуктов
-					for ( i = products.product.length - 1; i >= 0; i-- ) {
-						spinner = $('[data-spinner-for="'+products.product[i].id+'"]');
+					for ( i = products.length - 1; i >= 0; i-- ) {
+						spinner = $('[data-spinner-for="'+products[i].cartButton.id+'"]');
 						spinner.addClass('mDisabled');
 						input = spinner.find('input');
-						input.val(products.product[i].quantity).attr('disabled','disabled');
+						input.val(products[i].quantity).attr('disabled','disabled');
 					}
 				};
 			//end of functions

@@ -3,8 +3,11 @@
 return function (
     \Helper\TemplateHelper $helper,
     \Model\Product\BasicEntity $product,
-    array $deliveryData = []
+    array $deliveryData = [],
+    array $shopStates = []
 ) {
+    /** @var $shopStates \Model\Product\ShopState\Entity[] */
+
     // массив данных способов доставки
     $delivery = [];
     if (isset($deliveryData['product'][0]['delivery'])) {
@@ -23,7 +26,36 @@ return function (
 
         // флажек, открываем блок "Сегодня есть в магазинах" или нет
         $delivery['isInShopOnly'] = $product->isInShopOnly() ? true : false;
-    } ?>
+    }
+
+    // магазины, в которых товар находится на витрине
+    if (!(bool)$delivery) {
+        $delivery['now'] = [
+            'id'    => \Model\DeliveryType\Entity::TYPE_NOW,
+            'token' => 'now',
+            'price' => null,
+            'shop'  => [],
+        ];
+        foreach ($shopStates as $shopState) {
+            $shop = $shopState->getShop();
+            if (!$shop) continue;
+
+            $delivery['now']['shop'][] = [
+                'id'        => $shop->getId(),
+                'name'      => $shop->getName(),
+                'regime'    => $shop->getRegime(),
+                'latitude'  => $shop->getLatitude(),
+                'longitude' => $shop->getLongitude(),
+                'url'       => $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]),
+            ];
+        }
+
+        if (!(bool)$delivery['now']['shop']) {
+            unset($delivery['now']);
+        }
+    }
+
+?>
 
     <div id="avalibleShop" class="popup">
         <i class="close" title="Закрыть">Закрыть</i>

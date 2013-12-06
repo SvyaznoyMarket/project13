@@ -8,7 +8,7 @@
  * @param		{Object}	global	Enter namespace
  */
 ;(function( ENTER ) {
-	var pageConfig = ENTER.config.pageConfig,
+	var
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog');
 	// end of vars

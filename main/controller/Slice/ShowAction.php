@@ -180,15 +180,12 @@ class ShowAction {
                 }
 
                 // если shopscript вернул редирект
-                if (!empty($shopScriptSeo['redirect']['link'])) {
+                if (!empty($shopScriptSeo['redirect']['link']) && !empty($shopScriptSeo['redirect']['token']) && ($shopScriptSeo['redirect']['token'] !== $categoryToken)) {
                     $redirect = $shopScriptSeo['redirect']['link'];
-                    if(!preg_match('/^http/', $redirect)) {
-                        $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
-                            \App::config()->mainHost .
-                            (preg_match('/^\//', $redirect) ? '' : '/') .
-                            $redirect;
+                    if (!preg_match('/^http/', $redirect)) {
+                        $redirect = \App::router()->generate('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => $shopScriptSeo['redirect']['token']], true);
                     }
-                    return new \Http\RedirectResponse($redirect);
+                    return new \Http\RedirectResponse($redirect, 301);
                 }
 
                 if (empty($shopScriptSeo['ui'])) {

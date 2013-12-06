@@ -325,8 +325,6 @@ class Action {
             $response = new \Http\Response((bool)$data['product'] || (bool)$data['category'] ? \App::templating()->render('search/_autocomplete', ['products' => $data['product'], 'categories' => $data['category'], 'searchQuery' => $keyword]) : '');
         }
         
-        $response->setIsShowDebug(false);
-
         return $response;
     }
 }
