@@ -1854,6 +1854,14 @@ table {
   padding: 45px 0 10px 15px;
   margin-top: -64px;
 }
+.enterPrize__rules.mFailed .enterPrize__rules__item {
+  width: 592px;
+  height: 100px;
+  float: none;
+}
+.enterPrize__rules.mFailed .enterPrize__rules__item .sep {
+  margin-bottom: 10px;
+}
 .enterPrize__rules__item {
   font-size: 18px;
   font-family: "Enter Type";
@@ -1884,6 +1892,12 @@ table {
   right: 28px;
   height: 191px;
   width: 207px;
+}
+.enterPrize .bgPage.mFailed {
+  background: url("/styles/enterPrize/img/feiled.png") no-repeat 0 0;
+  top: 5px;
+  height: 208px;
+  width: 211px;
 }
 .enterPrize__list {
   margin: 25px 0 0 2px;
@@ -2008,6 +2022,22 @@ table {
   left: 0;
   width: 100%;
   top: 108px;
+}
+.enterPrize.mPrivate {
+  margin: 0 0 40px;
+}
+.enterPrize.mPrivate .enterPrize__list {
+  position: absolute;
+  top: -10px;
+  height: 208px;
+  width: 211px;
+  right: 0;
+}
+.enterPrize.mPrivate .enterPrize__rules .enterPrize__rules__item {
+  width: 340px;
+  height: auto;
+  float: none;
+  padding: 40px;
 }
 /*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
 @media all {

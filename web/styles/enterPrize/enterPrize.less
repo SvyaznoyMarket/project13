@@ -20,6 +20,19 @@
 		padding: 45px 0 10px 15px;
 		margin-top: -64px;
 
+		&.mFailed {
+
+			.enterPrize__rules__item {
+				width: 592px;
+				height: 100px;
+				float: none;
+
+				.sep {
+					margin-bottom: 10px
+				}
+			}
+		}
+
 		&__item {
 			font-size: 18px;
 			font-family: "Enter Type";
@@ -54,6 +67,13 @@
 		right: 28px;
 		height: 191px;
 		width: 207px;
+
+		&.mFailed {
+			background: url("@{base-url}/enterPrize/img/feiled.png") no-repeat 0 0;
+			top: 5px;
+			height: 208px;
+			width: 211px;
+		}
 	}
 
 	&__list {
@@ -209,5 +229,27 @@
 		left: 0;
 		width: 100%;
 		top: 108px;
+	}
+
+	&.mPrivate {
+		margin: 0 0 40px;
+
+		.enterPrize__list {
+			position: absolute;
+			top: -10px;
+			height: 208px;
+			width: 211px;
+			right: 0;
+		}
+
+		.enterPrize__rules {
+
+			.enterPrize__rules__item {
+				width: 340px;
+				height: auto;
+				float: none;
+				padding: 40px;
+			}
+		}
 	}
 }

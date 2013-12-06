@@ -31,9 +31,37 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
     <div class="clear"></div>
 
-    <?
-        var_dump($enterpizeCoupon);
-    ?>
+    <? if ($enterpizeCoupon): ?>
+        <div class="enterPrize mPrivate">
+            <h1 class="enterPrize__logo">Enter Prize</h1>
+
+            <div class="enterPrize__list clearfix">
+                <div class="enterPrize__list__item mOrange">
+                    <div class="enterPrize__list__link">
+                        <span class="cuponImg"<? if ($enterpizeCoupon->getBackgroundImage()): ?> style="background-image: url(<?= $enterpizeCoupon->getBackgroundImage() ?>);"<? endif ?>>
+                            <span class="cuponImg__inner">
+                                <? if ($enterpizeCoupon->getImage()): ?>
+                                    <span class="cuponIco"><img src="<?= $enterpizeCoupon->getImage() ?>" /></span>
+                                <? endif ?>
+
+                                <? if ($enterpizeCoupon->getName()): ?>
+                                    <span class="cuponDesc"><?= $enterpizeCoupon->getName() ?></span>
+                                <? endif ?>
+
+                                <? if ($enterpizeCoupon->getPrice()): ?>
+                                    <span class="cuponPrice"><?= $enterpizeCoupon->getPrice() . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?> <? if ($enterpizeCoupon->getIsCurrency()): ?><span class="rubl">p</span><? endif ?></span>
+                                <? endif ?>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="enterPrize__rules clearfix"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
+                <li class="enterPrize__rules__item">Для того, чтобы получить вашу скидку,<br/>заполните недостающие поля в вашем профиле</li>
+            </ul>
+        </div>
+    <? endif ?>
 
     <? if ($title): ?><h1><?= $title ?></h1><? endif ?>
 

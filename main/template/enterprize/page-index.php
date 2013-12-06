@@ -25,13 +25,13 @@
         <? $i = 0; foreach ($enterpizeCoupons as $coupon): $i++ ?>
 
             <?
-                $itemClass = 'enterPrize__list__item';
-                if (!($i % 4)) {
-                    $itemClass .= ' mLast';
-                }
-                if (!$coupon->getImage()) {
-                    $itemClass .= ' mNoIco';
-                }
+            $itemClass = 'enterPrize__list__item';
+            if (!($i % 4)) {
+                $itemClass .= ' mLast';
+            }
+            if (!$coupon->getImage()) {
+                $itemClass .= ' mNoIco';
+            }
             ?>
 
             <li class="<?= $itemClass ?>">
