@@ -1708,7 +1708,10 @@ window.MapInterface = (function() {
  
  
 /**
- * @requires jQuery, simple_templating, docCookies, ENTER.utils, ENTER.config
+ * Механика работы с корзиной и данными пользователя
+ * Генерирует события и распределяет данные между функциями
+ * 
+ * @requires jQuery, docCookies, ENTER.utils, ENTER.config
  * 
  * @author	Zaytsev Alexandr
  *
@@ -1784,6 +1787,11 @@ window.MapInterface = (function() {
 					clientCart.totalQuan = basketInfo.sum;
 
 					body.trigger('basketUpdate', [basketInfo]);
+
+					// запуск маркировки кнопок «купить»
+					body.trigger('markcartbutton');
+					// запуск маркировки спиннеров
+					body.trigger('updatespinner');
 				},
 
 				/**
@@ -1802,21 +1810,22 @@ window.MapInterface = (function() {
 				add = function add ( data ) {
 					var product = data.product,
 						cart = data.cart,
-						toClientCart = {
-							id: product.id,
-							price: product.price,
-							quantity: product.quantity,
+						tmpCart = {
 							formattedPrice: printPrice(product.price),
-							name: product.name,
 							image: product.img,
-							url: product.link,
-							deleteUrl: product.deleteUrl
+							url: product.link
 						},
+						toClientCart = {},
 						toBasketUpdate = {
 							quantity: cart.full_quantity,
 							sum: cart.full_price
 						};
 					// end of vars
+
+					toClientCart = $.extend(
+							{},
+							product,
+							tmpCart);
 
 					clientCart.products.push(toClientCart);
 					self.basket().update(toBasketUpdate);
@@ -1891,10 +1900,6 @@ window.MapInterface = (function() {
 				startAction = function startAction( action ) {
 					if ( action.subscribe !== undefined ) {
 						body.trigger('showsubscribe', [action.subscribe]);
-					}
-					if ( action.cartButton !== undefined ) {
-						body.trigger('markcartbutton', [action.cartButton]);
-						body.trigger('updatespinner', [action.cartButton]);
 					}
 				},
 

@@ -29,7 +29,8 @@
 	 */
 	var separateOrder = function separateOrder( statesPriority ) {
 
-		var preparedProducts = {},
+		var
+			preparedProducts = {},
 			productInState = [],
 			productsToNewBox = [],
 			choosenPointForBox = null,
@@ -202,16 +203,23 @@
 				console.log(seturl);
 				console.log(newURl);
 
-				var spinnerResponceHandler = function spinnerResponceHandler( res ) {
-					if ( !res.success ) {
-						global.OrderModel.couponError(res.error.message);
-						utils.blockScreen.unblock();
+				var
+					/**
+					 * Обработка ответа измеения количества товаров
+					 * 
+					 * @param	{Object}	res		Ответ от сервера
+					 */
+					spinnerResponceHandler = function spinnerResponceHandler( res ) {
+						if ( !res.success ) {
+							global.OrderModel.couponError(res.error.message);
+							utils.blockScreen.unblock();
 
-						return;
-					}
+							return;
+						}
 
-					global.OrderModel.couponNumber('');
-				};
+						global.OrderModel.couponNumber('');
+					};
+				// end of functions
 
 				utils.blockScreen.block('Обновляем');
 
@@ -761,20 +769,35 @@
 		 * @param	{Object}	checkedInputId	Ссылка на элемент input по которому кликнули
 		 */
 		chooseDeliveryTypes: function( data, event ) {
-			var priorityState = data.states[0],
+			console.info('chooseDeliveryTypes');
+
+			var
+				priorityState = data.states[0],
 				checkedInputId = event.target.htmlFor;
 			// end of vars
 
+			console.log(priorityState);
+			console.log(checkedInputId);
+
 			if ( $('#'+checkedInputId).attr('checked') ) {
+				console.warn('Этот пункт '+checkedInputId+' уже был выбран');
+
 				return false;
 			}
 
 			global.OrderModel.deliveryTypesButton = checkedInputId;
+			console.log(global.OrderModel.deliveryTypesButton);
+
 			global.OrderModel.tmpStatesPriority = data.states;
+			console.log(global.OrderModel.tmpStatesPriority);
+
 			global.OrderModel.choosenDeliveryTypeId = data.id;
+			console.log(global.OrderModel.choosenDeliveryTypeId);
 
 			// если для приоритетного метода доставки существуют пункты доставки, то пользователю необходимо выбрать пункт доставки, если нет - то приравниваем идентификатор пункта доставки к 0
 			if ( global.OrderModel.orderDictionary.hasPointDelivery(priorityState) ) {
+				console.log('Необходимо показать окно с выбором точки доставки');
+
 				global.OrderModel.popupWithPoints({
 					header: data.name,
 					points: global.OrderModel.orderDictionary.getAllPointsByState(priorityState)
@@ -785,6 +808,8 @@
 				return false;
 			}
 
+			console.log('Выбор точки доставки не требуется');
+
 			// Сохраняем приоритет методов доставок
 			global.OrderModel.statesPriority = global.OrderModel.tmpStatesPriority;
 
@@ -792,6 +817,7 @@
 			global.OrderModel.choosenPoint(0);
 
 			// Разбиваем на подзаказы
+			console.info('Отправляем данные на разбивку');
 			separateOrder( global.OrderModel.statesPriority );
 
 			return false;

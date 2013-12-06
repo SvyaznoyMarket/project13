@@ -10,7 +10,9 @@
 ;(function( ENTER ) {
 	console.info('New catalog init: filter.js');
 
-	var pageConfig = ENTER.config.pageConfig,
+	var
+		body = $('body'),
+		pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
 
@@ -208,6 +210,8 @@
 			}
 
 			catalog.filter.lastRes = dataToRender;
+
+			body.trigger('markcartbutton');
 		},
 
 		/**
@@ -721,7 +725,7 @@
 	viewParamPanel.on('click', '.jsPagination', jsPaginationLinkHandler);
 	
 	// Other HistoryAPI link
-	$('body').on('click', '.jsHistoryLink', jsHistoryLinkHandler);
+	body.on('click', '.jsHistoryLink', jsHistoryLinkHandler);
 
 	// Init sliders
 	filterSliders.each(initSliderRange);
