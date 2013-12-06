@@ -20,6 +20,8 @@ class Timer {
 
         self::$instances[$name]['active'] = true;
         self::$instances[$name]['start'] = microtime(true);
+
+        return self::$instances[$name]['start'];
     }
 
     public static function stop($name) {

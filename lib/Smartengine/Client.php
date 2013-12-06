@@ -38,7 +38,7 @@ class Client {
      */
     public function query($action, array $params = [])
     {
-        \Debug\Timer::start('smartengine');
+        $startedAt = \Debug\Timer::start('smartengine');
 
         $connection = $this->createResource($action, $params);
         $response = curl_exec($connection);
@@ -49,8 +49,6 @@ class Client {
             $info = curl_getinfo($connection);
             $this->logger->debug('Smartengine response resource: ' . $connection, ['smartengine']);
             $this->logger->debug('Smartengine response info: ' . $this->encodeInfo($info), ['smartengine']);
-
-            \Util\RequestLogger::getInstance()->addLog($info['url'], '', $info['total_time'], 'smartengine');
 
             if ($this->config['logEnabled']) {
                 $this->logger->info('Response '.$connection.' : '.(is_array($info) ? json_encode($info, JSON_UNESCAPED_UNICODE) : $info), ['smartengine']);
@@ -68,13 +66,45 @@ class Client {
             $spend = \Debug\Timer::stop('smartengine');
             \App::logger()->info('End smartengine ' . $action . ' in ' . $spend, ['smartengine']);
 
+            \App::logger()->info([
+                'message' => 'End curl',
+                'url'     => $info['url'],
+                'data'    => [],
+                'info'    => isset($info) ? $info : null,
+                'header'  => isset($header) ? $header : null,
+                'timeout' => $this->config['timeout'],
+                'spend'   => $spend,
+                'startAt' => $startedAt,
+                'endAt'   => microtime(true),
+            ], ['curl', ['RetailRocket']]);
+
             return $responseDecoded;
         }
         catch (\Smartengine\Exception $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('smartengine');
-            \App::logger()->error('End smartengine ' . $action . ' in ' . $spend . ' get: ' . json_encode($params, JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e, ['smartengine']);
-            $this->logger->error($e, ['smartengine']);
+
+            \App::logger()->error([
+                'message' => 'Fail curl',
+                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+                'url'     => $this->config['apiUrl']
+                    . str_replace('.', '/', $action)
+                    . '?' . http_build_query(array_merge([
+                        'apikey'   => $this->config['apiKey'],
+                        'tenantid' => $this->config['tenantid'],
+                        'method' => $action,
+                    ], $params))
+                ,
+                'data'    => [],
+                'info'    => isset($info) ? $info : null,
+                'header'  => isset($header) ? $header : null,
+                'resonse' => isset($response) ? $response : null,
+                'timeout' => $this->config['timeout'],
+                'startAt' => $startedAt,
+                'endAt'   => microtime(true),
+                'spend'   => $spend,
+            ], ['curl']);
+
             throw $e;
         }
     }
@@ -93,11 +123,10 @@ class Client {
         $query = $this->config['apiUrl']
             . str_replace('.', '/', $action)
             . '?' . http_build_query(array_merge([
-            'apikey'   => $this->config['apiKey'],
-            'tenantid' => $this->config['tenantid'],
-            'method' => $action,
-            ], $params)
-        )
+                'apikey'   => $this->config['apiKey'],
+                'tenantid' => $this->config['tenantid'],
+                'method' => $action,
+            ], $params))
         ;
         \App::logger()->info('Start smartengine ' . $action . ' query: ' . $query, ['smartengine']);
 
