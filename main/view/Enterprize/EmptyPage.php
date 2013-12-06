@@ -2,7 +2,7 @@
 
 namespace View\Enterprize;
 
-class IndexPage extends \View\DefaultLayout {
+class EmptyPage extends \View\DefaultLayout {
     protected $layout  = 'layout-oneColumn';
 
     public function prepare() {
@@ -14,7 +14,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('enterprize/page-index', $this->params);
+        return $this->render('enterprize/page-empty', $this->params);
     }
 
     public function slotBodyClassAttribute() {

@@ -16,6 +16,8 @@ class EditAction {
         $client = \App::coreClientV2();
         $userEntity = \App::user()->getEntity();
 
+        $couponType = $request->get('enterprize_coupon');
+
         $form = new \View\User\EditForm();
         $form->fromEntity($userEntity);
 
@@ -62,7 +64,7 @@ class EditAction {
                     throw new \Exception('Не получен ответ от сервера.');
                 }
 
-                if ($couponType = $request->get('enterprize_coupon')) {
+                if ($couponType) {
                     try {
                         // проверяем заполнил ли пользователь все поля формы (кроме "Род деятельности")
                         if (!$form->getFirstName()) {
@@ -154,10 +156,24 @@ class EditAction {
             }
         }
 
+        /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
+        $enterpizeCoupon = null;
+        if ($couponType) {
+            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $couponType) {
+                foreach ((array)$data as $item) {
+                    if ($couponType == $item['token']) {
+                        $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
+                    }
+                }
+            });
+            \App::dataStoreClient()->execute();
+        }
+
         $page = new \View\User\EditPage();
         $page->setParam('form', $form);
         $page->setParam('message', $message);
         $page->setParam('redirect', $redirect);
+        $page->setParam('enterpizeCoupon', $enterpizeCoupon);
 
         return new \Http\Response($page->show());
     }

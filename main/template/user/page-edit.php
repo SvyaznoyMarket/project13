@@ -5,30 +5,6 @@
  * @var $message string
  */
 ?>
- 
-<div class="enterPrize mPrivate">
-    <h1 class="enterPrize__logo">Enter Prize</h1>
-
-    <div class="enterPrize__list clearfix">
-        <div class="enterPrize__list__item mOrange">
-            <div class="enterPrize__list__link" href="">
-                <span class="cuponImg">
-                    <span class="cuponImg__inner">
-                        <span class="cuponIco"><img src="/styles/enterPrize/img/icoSec.png" /></span>
-
-                        <span class="cuponDesc">товары для дома</span>
-
-                        <span class="cuponPrice">101 <span class="rubl">p</span></span>
-                    </span>
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <ul class="enterPrize__rules clearfix"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
-        <li class="enterPrize__rules__item">Для того, чтобы получить вашу скидку,<br/>заполните недостающие поля в вашем профиле</li>
-    </ul>
-</div>
 
 <? if ($error = $form->getError('global')): ?>
     <p class="red"><?= $error ?></p>

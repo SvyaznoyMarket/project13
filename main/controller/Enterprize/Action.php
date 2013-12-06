@@ -139,4 +139,38 @@ class Action {
 
         return new \Http\JsonResponse($responseData);
     }
+
+    /**
+     * @param \Http\Request $request
+     * @return \Http\RedirectResponse|\Http\Response
+     */
+    public function get(\Http\Request $request) {
+        $helper = new \Helper\TemplateHelper();
+        $user = \App::user()->getEntity();
+        $couponToken = $request->get('enterprize_coupon');
+
+        $response = null;
+
+        // получаем ссылку на страницу личного кабинета на форму заполнения личных данных и передаем token купона
+        $link = $helper->url('user.edit', ['enterprize_coupon' => $couponToken]);
+
+        // пользователь авторизован
+        if ($user) {
+            // показываем заглушку, если у пользователя установлена галка "Участник Enter.Prize"
+            if (true == $user->getEnterprizeCoupon()) {
+                $page = new \View\Enterprize\EmptyPage();
+                $response = new \Http\Response($page->show());
+
+            // редиректим пользователя на страницу в личный кабинет на форму заполнения личных данных, для получения купона
+            } else {
+                $response = new \Http\RedirectResponse($link);
+            }
+
+        // пользователь неавторизован, редиректим на страницу логина
+        } else {
+            $response = new \Http\RedirectResponse($helper->url('user.login', ['redirect_to' => $link]));
+        }
+
+        return $response;
+    }
 }
