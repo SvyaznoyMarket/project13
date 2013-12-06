@@ -78,8 +78,7 @@ class Repository {
      * @return array $products
      */
     public function addScores(&$products) {
-
-        $scoresData = $this->getScores(implode(',', array_map(function($product){ return $product->getId(); }, $products)));
+        $scoresData = \App::config()->product['reviewEnabled'] ? $this->getScores(implode(',', array_map(function($product){ return $product->getId(); }, $products))) : [];
 
         if(empty($scoresData['product_scores'])) return $products;
 

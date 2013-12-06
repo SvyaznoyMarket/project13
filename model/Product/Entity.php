@@ -83,8 +83,6 @@ class Entity extends BasicEntity {
     protected $warranty = [];
     /** @var \Model\Region\Entity */
     protected $nearestCity = [];
-    /** @var bool */
-    protected $isUpsale = false;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -891,18 +889,4 @@ class Entity extends BasicEntity {
         $this->nearestCity[] = $city;
     }
 
-
-    /**
-     * @param boolean $isUpsale
-     */
-    public function setIsUpsale($isUpsale) {
-        $this->isUpsale = (bool)$isUpsale;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsUpsale() {
-        return $this->isUpsale;
-    }
 }
