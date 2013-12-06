@@ -10,9 +10,13 @@
 
 	<h1 class="enterPrize__logo">Enter Prize</h1>
 
-	<div class="bgPage"></div>
+	<div class="bgPage mFailed"></div><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
 
-	<ul class="enterPrize__rules clearfix">
+	<ul class="enterPrize__rules mFailed clearfix"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
+		<li class="enterPrize__rules__item"><span class="sep">Вы уже получали фишку с этой страницы!</span> О новых фищках и предложениях ENTER PRIZE  мы обязательно<br/>сообщим Вам по  e-mail и мобильному телефону, который Вы указали </li>
+	</ul>
+
+	<ul class="enterPrize__rules clearfix" style="display: none;">
 		<li class="enterPrize__rules__item"><span class="sep">Выбери</span> свою фишку со скидкой и жми получить!</li>
 		<li class="enterPrize__rules__sep"></li>
 		<li class="enterPrize__rules__item" style="width: 168px;"><span class="sep">Получи</span> номер фишки на E-mail и мобильный телефон, которые укажешь для участия в Enter Prize!</li>
