@@ -32,17 +32,10 @@
                 if (!$coupon->getImage()) {
                     $itemClass .= ' mNoIco';
                 }
-
-                // формируем ссылку на получение купона
-                $link = $page->url('user.edit', ['enterprize_coupon' => $coupon->getToken()]);
-                // если пользователь неавторизован, то редиректим его на страницу авторизации
-                if (!\App::user()->getEntity()) {
-                    $link = $page->url('user.login', ['redirect_to' => $link]);
-                }
             ?>
 
             <li class="<?= $itemClass ?>">
-                <a class="enterPrize__list__link" href="<?= $link ?>">
+                <a class="enterPrize__list__link" href="<?= $page->url('enterprize.get', ['enterprize_coupon' => $coupon->getToken()]) ?>">
                 <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
                     <span class="cuponImg__inner">
                         <? if ($coupon->getImage()): ?>

@@ -707,6 +707,11 @@ return [
         'action'  => ['Enterprize\Action', 'create'],
         'method'  => ['POST'],
     ],
+    // enterprize
+    'enterprize.get' => [
+        'pattern' => '/enterprize/get',
+        'action'  => ['Enterprize\Action', 'get'],
+    ],
 
     // git pull
     'git.pull' => [
