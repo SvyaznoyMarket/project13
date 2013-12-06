@@ -268,8 +268,6 @@
 				upsaleWrap.addClass('mhintDdOn');
 				$(slider).goodsSlider();
 
-				body.trigger('markcartbutton');
-
 				if ( !data.product.article ) {
 					console.warn('Не получен article продукта');
 
