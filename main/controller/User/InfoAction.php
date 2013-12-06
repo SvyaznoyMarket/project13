@@ -75,39 +75,26 @@ class InfoAction {
                     $productsById[$product->getId()] = $product;
                 }
 
-                $buttons = [];
-                $cartProductsArr = [];
+                $cartProductData = [];
                 foreach ($cart->getProducts() as $cartProduct) {
                     /* @var $product \Model\Product\Entity|null */
                     $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
 
-                    $item = [
-                        'id'        => $cartProduct->getId(),
-                        'buttonId'  => \View\Id::cartButtonForProduct($cartProduct->getId()),
-                        'quantity'  => $cartProduct->getQuantity(),
-                        'price'     => $cartProduct->getPrice(),
-                        'name'      => $product ? $product->getName() : null,
-                        'deleteUrl' => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
-                        'url'       => $product ? $product->getLink() : null,
-                        'image'     => $product ? $product->getImageUrl() : null,
+                    $cartProductData[] = [
+                        'id'             => $cartProduct->getId(),
+                        'name'           => $product ? $product->getName() : null,
+                        'price'          => $cartProduct->getPrice(),
+                        'formattedPrice' => $helper->formatPrice($cartProduct->getPrice()),
+                        'quantity'       => $cartProduct->getQuantity(),
+                        'deleteUrl'      => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
+                        'url'            => $product ? $product->getLink() : null,
+                        'image'          => $product ? $product->getImageUrl() : null,
+                        'cartButton'     => [
+                            'id' => \View\Id::cartButtonForProduct($cartProduct->getId()),
+                        ],
                     ];
 
-                    $buttons['product'][] = [
-                        'id'        => $item['buttonId'],
-                        'quantity'  => $item['quantity'],
-                    ];
-
-                    $cartProductsArr[] = [
-                        'id'             => $item['id'],
-                        'name'           => $item['name'],
-                        'price'          => $item['price'],
-                        'formattedPrice' => $helper->formatPrice($item['price']),
-                        'quantity'       => $item['quantity'],
-                        'deleteUrl'      => $item['deleteUrl'],
-                        'url'            => $item['url'],
-                        'image'          => $item['image'],
-                    ];
-
+                    /*
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {
                         $buttons['warranty'][] = [
                             'id'       => \View\Id::cartButtonForProductWarranty($cartProduct->getId(), $cartWarranty->getId()),
@@ -120,17 +107,19 @@ class InfoAction {
                             'quantity' => $cartService->getQuantity(),
                         ];
                     }
+                    */
                 }
 
+                /*
                 foreach ($cart->getServices() as $cartService) {
                     $buttons['service'][] = [
                         'id'       => \View\Id::cartButtonForService($cartService->getId()),
                         'quantity' => $cartService->getQuantity(),
                     ];
                 }
+                */
 
-                $responseData['action']['cartButton'] = $buttons;
-                $responseData['cartProducts'] = $cartProductsArr;
+                $responseData['cartProducts'] = $cartProductData;
             }
 
             if (\App::config()->subscribe['enabled']) {
