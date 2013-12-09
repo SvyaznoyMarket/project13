@@ -229,7 +229,7 @@ class Client {
                             'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
                             'info'         => isset($info) ? $info : null,
                             'header'       => isset($header) ? $header : null,
-                            'resonse'      => isset($content) ? $content : null,
+                            //'resonse'      => isset($content) ? $content : null,
                             'retryTimeout' => $retryTimeout,
                             'retryCount'   => $retryCount,
                             'timeout'      => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['timeout']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['timeout'] : null,

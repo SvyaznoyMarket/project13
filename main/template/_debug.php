@@ -14,9 +14,7 @@
 
     .debug-panel a, .debug-panel a:hover {
         color: #ffffff;
-        font-size: 12px;
-        font-weight: normal;
-        font-family: Courier New;
+        font: normal 12px Courier New;
     }
 
     .debug-panel .content {
@@ -32,6 +30,7 @@
 
     .debug-panel .property td {
         vertical-align: top;
+        font: normal 12px Courier New;
     }
 
     .debug-panel .property-name {
@@ -40,7 +39,7 @@
         background-position: 0 3px;
     }
 
-    .debug-panel .property-value {
+    .debug-panel .property-value, .debug-panel .property-value td {
         color: #43C6ED;
         padding: 5px 10px 5px;
     }
@@ -61,6 +60,9 @@
     }
     .debug-panel .property-value .query-fail {
         color: red;
+    }
+    .debug-panel .property-value .query-fail:hover {
+        color: palevioletred;
     }
     .debug-panel .property-value .query-default {
         color: #ffffff;
@@ -139,10 +141,11 @@
             } else if (0 === i.indexOf('time')) {
                 icon = '/debug/icons/time.png';
             }
+            console.info(type)
 
             content += (
                 '<tr>'
-                + '<td class="property-name" style="background-image: url(' + icon + ');' + (('info' != type) ? ('color: #ff0000;') : '') + '"><a href="#">' + i  + '</a></td>'
+                + '<td class="property-name" style="background-image: url(' + icon + ');"><a href="#" style="' + (('info' != type) ? ('color: #ff0000;') : '') + '">' + i  + '</a></td>'
                 + '<td class="property-value">' + value + '</td>'
                 + '</tr>'
             );

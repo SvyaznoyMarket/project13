@@ -696,6 +696,23 @@ return [
         'method'  => ['POST'],
     ],
 
+    // enterprize
+    'enterprize' => [
+        'pattern' => '/enterprize',
+        'action'  => ['Enterprize\Action', 'index'],
+    ],
+    // enterprize
+    'enterprize.create' => [
+        'pattern' => '/enterprize/create',
+        'action'  => ['Enterprize\Action', 'create'],
+        'method'  => ['POST'],
+    ],
+    // enterprize
+    'enterprize.get' => [
+        'pattern' => '/enterprize/get',
+        'action'  => ['Enterprize\Action', 'get'],
+    ],
+
     // git pull
     'git.pull' => [
         'pattern' => '/git/pull',
