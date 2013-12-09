@@ -87,11 +87,14 @@
             var value = item[0];
             var icon = '/debug/icons/default.png';
 
-            if (('id' == i) || ('env' == i) || ('route' == i) || ('act' == i) || ('sub.act' == i) || ('memory, Mb' == i) || ('time.main-menu' == i) || ('user' == i) || ('status' == i)) {
-            } else if ('git' == i) {
+            if ('git' == i) {
                 value = '<span style="color: #ffff00">' + value.version + '</span> ' + value.tag;
-            } else if (('time.core' == i) || ('time.data-store' == i) || ('time.content' == i) || ('time.total' == i)) {
-                value = value['time, ms'] + ' (' + value.count + ')';
+            } else if ('timer' == i) {
+                value = '<table>';
+                $.each(item[0], function(i, item) {
+                    value += '<tr><td class="query-cell" style="color: #ededed;">' + i + ': </td><td class="query-cell">' + item.value + ' ' + item.unit + ' (' + item.count + ')' + '</td></tr>';
+                })
+                value += '</table>';
             } else if (('error' == i) && (value[0])) {
                 value = value[0];
                 value = '<span style="color: #ff0000">#' + value.code + ' ' + value.message + '</span>';
@@ -128,20 +131,9 @@
                 value = '<pre class="hidden">' + JSON.stringify(value, null, 4) + '</pre>';
             }
 
-            if ('id' == i) {
-                icon = '/debug/icons/id.png';
-            } else if ('query' == i) {
-                icon = '/debug/icons/query.png';
-            } else if ('user' == i) {
-                icon = '/debug/icons/user.png';
-            } else if ('config' == i) {
-                icon = '/debug/icons/config.png';
-            } else if ('memory, Mb' == i) {
-                icon = '/debug/icons/memory.png';
-            } else if (0 === i.indexOf('time')) {
-                icon = '/debug/icons/time.png';
+            if ($.inArray(i, ['id', 'query', 'user', 'config', 'memory', 'memory', 'time'])) {
+                icon = '/debug/icons/' + i + '.png';
             }
-            console.info(type)
 
             content += (
                 '<tr>'

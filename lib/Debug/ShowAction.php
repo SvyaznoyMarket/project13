@@ -103,7 +103,7 @@ class ShowAction {
         $debug->add('session', \App::session()->all(), 133);
 
         // memory
-        $debug->add('memory, Mb', round(memory_get_peak_usage() / 1048576, 2), 132);
+        $debug->add('memory', ['value' => round(memory_get_peak_usage() / 1048576, 2), 'unit' => 'Mb'], 132);
 
         // timers
         $appTimer = \Debug\Timer::get('app');
@@ -111,11 +111,13 @@ class ShowAction {
         $contentTimer = \Debug\Timer::get('content');
         $dataStoreTimer = \Debug\Timer::get('data-store');
 
-        $debug->add('time.core', ['time, ms' => round($coreTimer['total'], 3) * 1000, 'count' => $coreTimer['count']], 97);
-        $debug->add('time.data-store', ['time, ms' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count']], 96);
-        $debug->add('time.content', ['time, ms' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count']], 95);
-        $debug->add('time.total', ['time, ms' => round($appTimer['total'], 3) * 1000, 'count' => $appTimer['count']], 94);
-
+        $timerData = [
+            'core'       => ['value' => round($coreTimer['total'], 3) * 1000, 'count' => $coreTimer['count'], 'unit' => 'ms'],
+            'data-store' => ['value' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count'], 'unit' => 'ms'],
+            'content'    => ['value' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count'], 'unit' => 'ms'],
+            'total'      => ['value' => round($appTimer['total'], 3) * 1000, 'count' => $appTimer['count'], 'unit' => 'ms'],
+        ];
+        $debug->add('timer', $timerData, 130);
 
         // add in debug panel properties from class \Config\AppConfig
         $reflection = new \ReflectionClass(\App::config());

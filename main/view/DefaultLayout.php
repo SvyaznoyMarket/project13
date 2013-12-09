@@ -261,7 +261,7 @@ class DefaultLayout extends Layout {
             ]);
             \Debug\Timer::stop('main-menu');
 
-            \App::debug()->add('time.main-menu', round(\Debug\Timer::get('main-menu')['total'], 3) * 1000, 95);
+            //\App::debug()->add('time.main-menu', round(\Debug\Timer::get('main-menu')['total'], 3) * 1000, 95);
         }
 
         return $content;
