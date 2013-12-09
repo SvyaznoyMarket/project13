@@ -88,16 +88,14 @@ class Client {
     public function createResource($action, $item_id) {
         $query = $this->config['apiUrl'] . $action . '/' . $this->config['account'] . '/' . $item_id;
 
-        /*
         $user = \App::user();
         if ($user) {
             $uEntity = $user->getEntity();
             if ($uEntity) {
                 $uid = $uEntity->getId();
-                if ($uid) $query .= '/' . $uid;
+                if ($uid) $query .= '?userId=' . $uid;
             }
         }
-        */
 
         \App::logger()->info('Start RetailRocket ' . $action . ' query: ' . $query, ['RetailRocket']);
 
