@@ -29,13 +29,13 @@ class ShowAction {
             $debug->add('app', \App::$name, 143);
         }
 
-        $debug->add(
-            'git',
-            [
-                'version' => trim(shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir)))),
-                'tag'     => trim(shell_exec(sprintf('cd %s && git describe --always --tag', realpath(\App::config()->appDir)))),
-            ]
-            , 144);
+        // git
+        $gitData = [
+            'version' => trim(shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir)))),
+            'tag'     => trim(shell_exec(sprintf('cd %s && git describe --always --tag', realpath(\App::config()->appDir)))),
+        ];
+        $gitData['url'] = 'https://github.com/SvyaznoyMarket/project13/tree/' . $gitData['version'];
+        $debug->add('git', $gitData, 144);
         $debug->add('env', \App::$env, 143);
 
         // query
