@@ -1,4 +1,4 @@
-console.group('ports.js log');
+
 console.log('ports.js inited');
 
 window.ANALYTICS = {
@@ -134,6 +134,8 @@ window.ANALYTICS = {
 	// },
 
 	LiveTexJS: function () {
+		console.group('ports.js::LiveTexJS log');
+
 		var LTData = $('#LiveTexJS').data('value');
 		window.liveTexID = LTData.livetexID;
 		window.liveTex_object = true;
@@ -168,6 +170,8 @@ window.ANALYTICS = {
 
 		//$(document).load(function() {
 		(function () {
+			console.info('LiveTexJS init');
+
 			var lt = document.createElement('script');
 			lt.type = 'text/javascript';
 			lt.async = true;
@@ -175,7 +179,11 @@ window.ANALYTICS = {
 			var sc = document.getElementsByTagName('script')[0];
 			if ( sc ) sc.parentNode.insertBefore(lt, sc);
 			else  document.documentElement.firstChild.appendChild(lt);
+
+			console.log('LiveTexJS end');
 		})();
+
+		console.groupEnd();
 		//});
 	},
 
@@ -424,6 +432,8 @@ window.ANALYTICS = {
     },
 
     RetailRocketJS : function() {
+    	console.group('ports.js::RetailRocketJS');
+
         window.rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // rrPartnerId — по ТЗ должна быть глобальной
         
         window.rrApi = {};
@@ -434,6 +444,7 @@ window.ANALYTICS = {
         window.RetailRocket = {
 
             'product': function ( data, userData ) {
+            	console.info('RetailRocketJS product');
 
                 var rcAsyncInit = function () {
                     try {
@@ -455,6 +466,7 @@ window.ANALYTICS = {
             },
 
             'product.category': function ( data, userData ) {
+            	console.info('RetailRocketJS product.category');
 
                 var rcAsyncInit = function () {
                     try {
@@ -476,6 +488,7 @@ window.ANALYTICS = {
             },
 
             'order.complete': function ( data, userData ) {
+            	console.info('RetailRocketJS order.complete');
 
                 if ( userData.userId ) {
                     data.userId = userData.userId;
@@ -502,9 +515,11 @@ window.ANALYTICS = {
             },
 
             action: function ( e, userInfo ) {
-            	console.warn('userInfo.id '+userInfo.id);
+            	console.info('RetailRocketJS action');
+            	console.log('userInfo: id = '+ userInfo.id + ' email = ' + userInfo.email);
 
-                var rr_data = $('#RetailRocketJS').data('value'),
+                var
+                	rr_data = $('#RetailRocketJS').data('value'),
                     sendUserData = {
                         userId: userInfo.id || false,
                         hasUserEmail: ( userInfo && userInfo.email ) ? true : false
@@ -518,6 +533,8 @@ window.ANALYTICS = {
             },
 
             init: function () { // on load:
+            	console.info('RetailRocketJS init');
+
                 (function (d) {
                     var ref = d.getElementsByTagName('script')[0]; var apiJs, apiJsId = 'rrApi-jssdk';
                     if (d.getElementById(apiJsId)) return;
@@ -534,12 +551,13 @@ window.ANALYTICS = {
         RetailRocket.init();
 
         if ( ENTER.config.userInfo && ENTER.config.userInfo.id ) {
-            RetailRocket.action(null, ENTER.config.userInfo)
+            RetailRocket.action(null, ENTER.config.userInfo);
         }
         else {
-            $('body').on('userLogged', RetailRocket.action);
+        	$('body').on('userLogged', RetailRocket.action);
         }
-        RetailRocket.action();
+
+        console.groupEnd();
     },
 
     AdmitadJS : function() {
@@ -635,28 +653,50 @@ window.ANALYTICS = {
 	},
 
 	parseAllAnalDivs : function( nodes ) {
-		if( !this. enable )
-			return
+		console.group('parseAllAnalDivs');
+		console.info('parseAllAnalDivs');
 
-		var self = this
+		if ( !this.enable ) {
+			console.warn('Not enabled. Return');
+
+			return;
+		}
+
+		var
+			self = this;
+
 		$.each(  nodes , function() {
 //console.info( this.id, this.id+'' in self  )
 			
 			// document.write is overwritten in loadjs.js to document.writeln
-			var anNode = $(this)
-			if( anNode.is('.parsed') )
-				return
-			document.writeln = function(){
-				anNode.html( arguments[0] )
+			var
+				anNode = $(this);
+			// end of vars
+			
+			console.log(anNode);
+
+			if ( anNode.is('.parsed') ) {
+				console.warn('Parsed. Return');
+
+				return;
 			}
 
-			if( this.id+'' in self )
-				self[this.id]( $(this).data('vars') )
+			document.writeln = function() {
+				anNode.html( arguments[0] );
+			}
+
+			if ( this.id+'' in self ) {
+				self[this.id]( $(this).data('vars') );
+			}
+
 			anNode.addClass('parsed')
-		})
-		document.writeln = function(){
-			$('body').append( $(arguments[0] + '') )
+		});
+
+		document.writeln = function() {
+			$('body').append( $(arguments[0] + '') );
 		}
+		console.log('end parseAllAnalDivs');
+		console.groupEnd();
 	},
 
 	testFreak : function() {
@@ -970,5 +1010,3 @@ var ADFOX = {
 }
 
 ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
-
-console.groupEnd();
