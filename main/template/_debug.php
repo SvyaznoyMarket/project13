@@ -1,3 +1,15 @@
+<?php
+/**
+ * @var $helper    \Helper\TemplateHelper
+ * @var $debugData array
+ */
+?>
+
+<div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>" style="position: fixed; bottom: 30px; left: 2px; z-index: 999;">
+    <a href="#" style="padding-bottom: 10px;">debug</a>
+    <div class="content"></div>
+</div>
+
 <style type="text/css">
     .debug-panel {
         position: fixed;
@@ -91,8 +103,8 @@
 
         var content = '<br /><table class="property">';
         $.each(parent.data('value'), function(i, item) {
-            var type = item[1];
-            var value = item[0];
+            var type = item['type'];
+            var value = item['value'];
             var icon = '/debug/icons/default.png';
 
             if (('id' == i) || ('env' == i) || ('route' == i) || ('act' == i) || ('sub.act' == i) || ('user' == i)) {
@@ -103,7 +115,7 @@
                 value = '<span style="color: #ffff00">' + value.version + '</span> ' + value.tag;
             } else if ('timer' == i) {
                 value = '<table>';
-                $.each(item[0], function(i, item) {
+                $.each(item['value'], function(i, item) {
                     value += '<tr><td class="query-cell">' + i + ': </td><td class="query-cell query-ok">' + item.value + ' ' + item.unit + ' (' + item.count + ')' + '</td></tr>';
                 })
                 value += '</table>';
@@ -114,7 +126,7 @@
                 value = '<span style="color: #ff0000">#' + value.code + ' ' + value.message + '</span>';
             } else if ('query' == i) {
                 value = '<table>';
-                $.each(item[0], function(i, item) {
+                $.each(item['value'], function(i, item) {
                     valueClass = 'query-default';
                     if (item.error) {
                         valueClass = 'query-fail';

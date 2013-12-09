@@ -182,7 +182,7 @@ class ShowAction {
 
         $debugData = [];
         foreach ($debug->getAll() as $item) {
-            $debugData[$item['name']] = [$item['value'], $item['type']];
+            $debugData[$item['name']] = ['value' => $item['value'], 'type' => $item['type']];
         }
 
         if ($response instanceof \Http\JsonResponse) {
@@ -194,8 +194,7 @@ class ShowAction {
             $response->setContent(
                 $response->getContent()
                 . "\n\n"
-                . ('<div class="jsDebugPanel debug-panel" data-value="' . $helper->json($debugData) . '" style="position: fixed; bottom: 30px; left: 2px; z-index: 999;"><a href="#" style="padding-bottom: 10px;">debug</a><div class="content"></div></div>')
-                . \App::templating()->render('_debug')
+                . \App::templating()->render('_debug', ['debugData' => $debugData, 'helper' => new \Helper\TemplateHelper()])
             );
         }
     }
