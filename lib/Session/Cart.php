@@ -603,11 +603,9 @@ class Cart {
     public function clearCoupons() {
         $data = $this->storage->get($this->sessionName);
         $data['couponList'] = [];
-        $this->coupons = [];
-
-        $this->fill();
-
+        $this->coupons = null;
         $this->storage->set($this->sessionName, $data);
+        $this->fill();
     }
 
     /**
