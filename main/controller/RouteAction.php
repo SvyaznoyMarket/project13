@@ -18,7 +18,7 @@ class RouteAction {
             throw new \Exception('Не перадан обязательный параметр actions');
         }
 
-        $responseData = [];
+        $actionData = [];
         foreach ($actions as $action) {
             $action = array_merge([
                 'url'    => null,
@@ -55,7 +55,7 @@ class RouteAction {
                 /* @var $response \Http\Response|null */
                 $response = call_user_func_array($actionCall, $actionParams);
                 if ($response instanceof \Http\JsonResponse) {
-                    $responseItem = json_decode($response->getContent());
+                    $responseItem = $response->getData();
                 } else {
                     $responseItem = $response->getContent();
                 }
@@ -63,12 +63,16 @@ class RouteAction {
                 $responseItem = [
                     'success' => false,
                     'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+                    'actions' => $actionData,
                 ];
             }
 
-            $responseData[] = $responseItem;
+            $actionData[] = $responseItem;
         }
 
-        return new \Http\JsonResponse($responseData);
+        return new \Http\JsonResponse([
+            'success' => true,
+            'actions' => $actionData,
+        ]);
     }
 }
