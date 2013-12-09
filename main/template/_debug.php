@@ -5,7 +5,7 @@
         left: 2px;
         z-index: 999;
         background: #000000;
-        color: #43C6ED;
+        color: #cdcdcd;
         opacity: 0.95;
         padding: 4px 6px;
         border-radius: 5px;
@@ -38,9 +38,12 @@
         background-repeat: no-repeat;
         background-position: 0 3px;
     }
+    .debug-panel .property-name a {
+        color: #68c5e1;
+    }
 
     .debug-panel .property-value, .debug-panel .property-value td {
-        color: #43C6ED;
+        color: #bebebe;
         padding: 5px 10px 5px;
     }
 
@@ -88,13 +91,13 @@
             var icon = '/debug/icons/default.png';
 
             if (('id' == i) || ('env' == i) || ('route' == i) || ('act' == i) || ('sub.act' == i) || ('user' == i) || ('status' == i)) {
-                //
+                value = '<span style="color: #ffffff">' + value + '</span>';
             } else if ('git' == i) {
                 value = '<span style="color: #ffff00">' + value.version + '</span> ' + value.tag;
             } else if ('timer' == i) {
                 value = '<table>';
                 $.each(item[0], function(i, item) {
-                    value += '<tr><td class="query-cell" style="color: #ededed;">' + i + ': </td><td class="query-cell">' + item.value + ' ' + item.unit + ' (' + item.count + ')' + '</td></tr>';
+                    value += '<tr><td class="query-cell">' + i + ': </td><td class="query-cell query-ok">' + item.value + ' ' + item.unit + ' (' + item.count + ')' + '</td></tr>';
                 })
                 value += '</table>';
             } else if ('memory' == i) {
