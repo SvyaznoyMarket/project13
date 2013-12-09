@@ -4,14 +4,18 @@
  * 
  * @requires	jQuery
  */
-;(function( global ) {
+;(function( window ) {
+	console.info('orderSertificate init...');
+
+
 	if ( !$('#paymentMethod-10').length ) {
 		console.warn('нет метода оплаты сертификатом');
 
 		return false;
 	}
 
-	var sertificateWrap = $('#paymentMethod-10').parent(),
+	var
+		sertificateWrap = $('#paymentMethod-10').parent(),
 		code = sertificateWrap.find('.mCardNumber'),
 		pin = sertificateWrap.find('.mCardPin'),
 		fieldsWrap = sertificateWrap.find('.bPayMethodAction'),
@@ -21,11 +25,13 @@
 
 	var SertificateCard = (function() {
 
-		var checked = false,
+		var
+			checked = false,
 			processTmpl = 'processBlock';
 		// end of vars
 
-		var getCode = function getCode() {
+		var
+			getCode = function getCode() {
 				return code.val().replace(/[^0-9]/g,'');
 			},
 
@@ -82,8 +88,10 @@
 			setProcessingStatus = function setProcessingStatus( status, data ) {
 				console.info('setProcessingStatus');
 
-				var blockProcess = $('.process').first(),
+				var
+					blockProcess = $('.process').first(),
 					options = { typeNum: status };
+				// end of vars
 
 				if( !blockProcess.hasClass('picked') ) {
 					blockProcess.remove();
@@ -140,4 +148,5 @@
 
 	$.mask.definitions['n'] = '[0-9]';
 	pin.mask('nnnn', { completed: SertificateCard.checkCard, placeholder: '*' } );
+
 }(this));

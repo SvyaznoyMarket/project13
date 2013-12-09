@@ -13,7 +13,9 @@
  * @param	{Number}	suggestLen			Количество результатов поиска
  */
 ;(function() {
-	var searchForm = $('div.searchbox form'),
+	var
+		body = $('body'),
+		searchForm = $('div.searchbox form'),
         searchInput = searchForm.find('input.searchtext'),
 		suggestWrapper = $('#searchAutocomplete'),
 		suggestItem = $('.bSearchSuggest__eRes'),
@@ -27,12 +29,14 @@
 	// end of vars	
 
 
-	var suggestAnalytics = function suggestAnalytics() {
-			var link = suggestItem.eq(nowSelectSuggest).attr('href'),
+	var
+		suggestAnalytics = function suggestAnalytics() {
+			var
+				link = suggestItem.eq(nowSelectSuggest).attr('href'),
 				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
 			// end of vars
 			
-			if ( typeof(_gaq) !== 'undefined' ) {	
+			if ( typeof _gaq !== 'undefined' ) {	
 				_gaq.push(['_trackEvent', 'Search', type, link]);
 			}
 		},
@@ -45,15 +49,19 @@
 		 * @param	{String}	text	Текст в поле ввода
 		 */
 		suggestKeyUp = function suggestKeyUp( event ) {
-			var keyCode = event.which,
+			var
+				keyCode = event.which,
 				text = searchInput.attr('value');
+			// end of vars
 
+			
+			var
 				/**
 				 * Отрисовка данных с сервера
 				 * 
 				 * @param	{String}	response	Ответ от сервера
 				 */
-			var renderResponse = function renderResponse( response ) {
+				renderResponse = function renderResponse( response ) {
 					suggestCache[text] = response; // memoization
 
 					suggestWrapper.html(response);
@@ -98,6 +106,14 @@
 			tID = setTimeout(getResFromServer, 300);
 		},
 
+		escapeSearchQuery = function escapeSearchQuery() {
+			var
+				s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
+			// end of vars
+			
+			searchInput.val(s);
+		},
+
 		/**
 		 * Обработчик нажатия клавиши
 		 * 
@@ -105,9 +121,12 @@
 		 * @param	{Number}	keyCode	Код нажатой клавиши
 		 */
 		suggestKeyDown = function suggestKeyDown( event ) {
-			var keyCode = event.which;
+			var
+				keyCode = event.which;
+			// end of vars
 
-			var markSuggestItem = function markSuggestItem() {
+			var
+				markSuggestItem = function markSuggestItem() {
 					suggestItem.removeClass('hover').eq(nowSelectSuggest).addClass('hover');
 				},
 
@@ -131,15 +150,12 @@
 				},
 
 				enterSelectedItem = function enterSelectedItem() {
-					var link = suggestItem.eq(nowSelectSuggest).attr('href');
+					var
+						link = suggestItem.eq(nowSelectSuggest).attr('href');
+					// end of vars
 
 					suggestAnalytics();
 					document.location.href = link;
-				}
-
-				escapeSearchQuery = function escapeSearchQuery() {
-					var s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
-					searchInput.val(s);
 				};
 			// end of functions
 
@@ -169,7 +185,9 @@
 		},
 
 		searchSubmit = function searchSubmit() {
-			var text = searchInput.attr('value');
+			var
+				text = searchInput.attr('value');
+			// end of vars
 
 			if ( text.length === 0 ) {
 				return false;
@@ -182,7 +200,9 @@
 		},
 		
 		suggestCloser = function suggestCloser( e ) {
-			var targ = e.target.className;
+			var
+				targ = e.target.className;
+			// end of vars
 
 			if ( !(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1) ) {
 				suggestWrapper.hide();
@@ -193,7 +213,9 @@
 		 * Срабатывание выделения и запоминание индекса выделенного элемента по наведению мыши
 		 */
 		hoverForItem = function hoverForItem() {
-			var index = 0;
+			var
+				index = 0;
+			// end of vars
 
 			suggestItem.removeClass('hover');
 			index = $(this).addClass('hover').index();
@@ -205,9 +227,15 @@
 		 * Подставляет поисковую подсказку в строку поиска
 		 */
 		searchHintSelect = function searchHintSelect() {
-			var hintValue = $(this).text(),
+			var
+				hintValue = $(this).text(),
 				searchValue = searchInput.val();
-			if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
+			// end of vars
+			
+			if ( searchValue ) {
+				hintValue = searchValue + ' ' + hintValue;
+			}
+
 			return searchInput.val(hintValue + ' ').focus();
 		};
 	// end of functions
@@ -225,9 +253,9 @@
 
 		searchInput.placeholder();
 
-		$('body').bind('click', suggestCloser);
-		$('body').on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
-		$('body').on('click', '.bSearchSuggest__eRes', suggestAnalytics);
-		$('body').on('click', '.sHint_value', searchHintSelect);
+		body.bind('click', suggestCloser);
+		body.on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
+		body.on('click', '.bSearchSuggest__eRes', suggestAnalytics);
+		body.on('click', '.sHint_value', searchHintSelect);
 	});
 }());

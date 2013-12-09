@@ -1,109 +1,125 @@
-/**
- * Общие настройки AJAX
- *
- * @requires	jQuery, ENTER.utils.logError
- */
-$.ajaxSetup({
-	timeout: 10000,
-	statusCode: {
-		404: function() { 
-			var ajaxUrl = this.url,
-				data = {
-					event: 'ajax_error',
-					type: '404 ошибка',
-					ajaxUrl: ajaxUrl
-				};
-			// end of vars
+;(function (window, document, $, ENTER) {
+	
+	/**
+	 * Общие настройки AJAX
+	 *
+	 * @requires	jQuery, ENTER.utils.logError
+	 */
+	$.ajaxSetup({
+		timeout: 10000,
+		statusCode: {
+			404: function() { 
+				var ajaxUrl = this.url,
+					data = {
+						event: 'ajax_error',
+						type: '404 ошибка',
+						ajaxUrl: ajaxUrl
+					};
+				// end of vars
 
-			window.ENTER.utils.logError(data);
+				ENTER.utils.logError(data);
 
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
-			}
-		},
-		401: function() {
-			if ( $('#auth-block').length ) {
-				$('#auth-block').lightbox_me({
-					centered: true,
-					onLoad: function() {
-						$('#auth-block').find('input:first').focus();
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
+				}
+			},
+			401: function() {
+				if ( $('#auth-block').length ) {
+					$('#auth-block').lightbox_me({
+						centered: true,
+						onLoad: function() {
+							$('#auth-block').find('input:first').focus();
+						}
+					});
+				}
+				else {
+					if ( typeof _gaq !== 'undefined' ) {
+						_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '401 ошибка, авторизуйтесь заново']);
 					}
-				});
-			}
-			else {
-				if ( typeof(_gaq) !== 'undefined' ) {
-					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '401 ошибка, авторизуйтесь заново']);
+				}
+					
+			},
+			500: function() {
+				var ajaxUrl = this.url,
+					data = {
+						event: 'ajax_error',
+						type: '500 ошибка',
+						ajaxUrl: ajaxUrl
+					};
+				// end of vars
+
+				ENTER.utils.logError(data);
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен']);
+				}
+			},
+			503: function() {
+				var ajaxUrl = this.url,
+					data = {
+						event: 'ajax_error',
+						type: '503 ошибка',
+						ajaxUrl: ajaxUrl
+					};
+				// end of vars
+
+				ENTER.utils.logError(data);
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен']);
+				}
+			},
+			504: function() {
+				var ajaxUrl = this.url,
+					data = {
+						event: 'ajax_error',
+						type: '504 ошибка',
+						ajaxUrl: ajaxUrl
+					};
+				// end of vars
+
+				ENTER.utils.logError(data);
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом']);
 				}
 			}
-				
 		},
-		500: function() {
+		error: function ( jqXHR, textStatus, errorThrown ) {
 			var ajaxUrl = this.url,
 				data = {
 					event: 'ajax_error',
-					type: '500 ошибка',
+					type: 'неизвестная ajax ошибка',
 					ajaxUrl: ajaxUrl
 				};
 			// end of vars
+			
+			if ( jqXHR.statusText === 'error' ) {
+				ENTER.utils.logError(data);
 
-			window.ENTER.utils.logError(data);
-
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен']);
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
+				}
 			}
-		},
-		503: function() {
-			var ajaxUrl = this.url,
-				data = {
-					event: 'ajax_error',
-					type: '503 ошибка',
-					ajaxUrl: ajaxUrl
-				};
-			// end of vars
-
-			window.ENTER.utils.logError(data);
-
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен']);
-			}
-		},
-		504: function() {
-			var ajaxUrl = this.url,
-				data = {
-					event: 'ajax_error',
-					type: '504 ошибка',
-					ajaxUrl: ajaxUrl
-				};
-			// end of vars
-
-			window.ENTER.utils.logError(data);
-
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом']);
+			else if ( textStatus === 'timeout' ) {
+				return;
 			}
 		}
-	},
-	error: function ( jqXHR, textStatus, errorThrown ) {
-		var ajaxUrl = this.url,
-			data = {
-				event: 'ajax_error',
-				type: 'неизвестная ajax ошибка',
-				ajaxUrl: ajaxUrl
-			};
+	});
+
+	/**
+	 * Общий обработчик AJAX
+	 */
+	$(document).ajaxSuccess(function( event, xhr, settings ) {
+		console.warn('=== ajaxSuccess ===');
+
+		var
+			res = JSON.parse(xhr.responseText);
 		// end of vars
 		
-		if ( jqXHR.statusText === 'error' ) {
-			window.ENTER.utils.logError(data);
-
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
-			}
-		}
-		else if ( textStatus === 'timeout' ) {
-			return;
-		}
-	}
-});
+		console.log(res);
+	});
+}(this, this.document, this.jQuery, this.ENTER));
  
  
 /** 
@@ -3142,7 +3158,9 @@ $(document).ready(function() {
  * @param	{Number}	suggestLen			Количество результатов поиска
  */
 ;(function() {
-	var searchForm = $('div.searchbox form'),
+	var
+		body = $('body'),
+		searchForm = $('div.searchbox form'),
         searchInput = searchForm.find('input.searchtext'),
 		suggestWrapper = $('#searchAutocomplete'),
 		suggestItem = $('.bSearchSuggest__eRes'),
@@ -3156,12 +3174,14 @@ $(document).ready(function() {
 	// end of vars	
 
 
-	var suggestAnalytics = function suggestAnalytics() {
-			var link = suggestItem.eq(nowSelectSuggest).attr('href'),
+	var
+		suggestAnalytics = function suggestAnalytics() {
+			var
+				link = suggestItem.eq(nowSelectSuggest).attr('href'),
 				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
 			// end of vars
 			
-			if ( typeof(_gaq) !== 'undefined' ) {	
+			if ( typeof _gaq !== 'undefined' ) {	
 				_gaq.push(['_trackEvent', 'Search', type, link]);
 			}
 		},
@@ -3174,15 +3194,19 @@ $(document).ready(function() {
 		 * @param	{String}	text	Текст в поле ввода
 		 */
 		suggestKeyUp = function suggestKeyUp( event ) {
-			var keyCode = event.which,
+			var
+				keyCode = event.which,
 				text = searchInput.attr('value');
+			// end of vars
 
+			
+			var
 				/**
 				 * Отрисовка данных с сервера
 				 * 
 				 * @param	{String}	response	Ответ от сервера
 				 */
-			var renderResponse = function renderResponse( response ) {
+				renderResponse = function renderResponse( response ) {
 					suggestCache[text] = response; // memoization
 
 					suggestWrapper.html(response);
@@ -3227,6 +3251,14 @@ $(document).ready(function() {
 			tID = setTimeout(getResFromServer, 300);
 		},
 
+		escapeSearchQuery = function escapeSearchQuery() {
+			var
+				s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
+			// end of vars
+			
+			searchInput.val(s);
+		},
+
 		/**
 		 * Обработчик нажатия клавиши
 		 * 
@@ -3234,9 +3266,12 @@ $(document).ready(function() {
 		 * @param	{Number}	keyCode	Код нажатой клавиши
 		 */
 		suggestKeyDown = function suggestKeyDown( event ) {
-			var keyCode = event.which;
+			var
+				keyCode = event.which;
+			// end of vars
 
-			var markSuggestItem = function markSuggestItem() {
+			var
+				markSuggestItem = function markSuggestItem() {
 					suggestItem.removeClass('hover').eq(nowSelectSuggest).addClass('hover');
 				},
 
@@ -3260,15 +3295,12 @@ $(document).ready(function() {
 				},
 
 				enterSelectedItem = function enterSelectedItem() {
-					var link = suggestItem.eq(nowSelectSuggest).attr('href');
+					var
+						link = suggestItem.eq(nowSelectSuggest).attr('href');
+					// end of vars
 
 					suggestAnalytics();
 					document.location.href = link;
-				}
-
-				escapeSearchQuery = function escapeSearchQuery() {
-					var s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
-					searchInput.val(s);
 				};
 			// end of functions
 
@@ -3298,7 +3330,9 @@ $(document).ready(function() {
 		},
 
 		searchSubmit = function searchSubmit() {
-			var text = searchInput.attr('value');
+			var
+				text = searchInput.attr('value');
+			// end of vars
 
 			if ( text.length === 0 ) {
 				return false;
@@ -3311,7 +3345,9 @@ $(document).ready(function() {
 		},
 		
 		suggestCloser = function suggestCloser( e ) {
-			var targ = e.target.className;
+			var
+				targ = e.target.className;
+			// end of vars
 
 			if ( !(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1) ) {
 				suggestWrapper.hide();
@@ -3322,7 +3358,9 @@ $(document).ready(function() {
 		 * Срабатывание выделения и запоминание индекса выделенного элемента по наведению мыши
 		 */
 		hoverForItem = function hoverForItem() {
-			var index = 0;
+			var
+				index = 0;
+			// end of vars
 
 			suggestItem.removeClass('hover');
 			index = $(this).addClass('hover').index();
@@ -3334,9 +3372,15 @@ $(document).ready(function() {
 		 * Подставляет поисковую подсказку в строку поиска
 		 */
 		searchHintSelect = function searchHintSelect() {
-			var hintValue = $(this).text(),
+			var
+				hintValue = $(this).text(),
 				searchValue = searchInput.val();
-			if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
+			// end of vars
+			
+			if ( searchValue ) {
+				hintValue = searchValue + ' ' + hintValue;
+			}
+
 			return searchInput.val(hintValue + ' ').focus();
 		};
 	// end of functions
@@ -3354,10 +3398,10 @@ $(document).ready(function() {
 
 		searchInput.placeholder();
 
-		$('body').bind('click', suggestCloser);
-		$('body').on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
-		$('body').on('click', '.bSearchSuggest__eRes', suggestAnalytics);
-		$('body').on('click', '.sHint_value', searchHintSelect);
+		body.bind('click', suggestCloser);
+		body.on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
+		body.on('click', '.bSearchSuggest__eRes', suggestAnalytics);
+		body.on('click', '.sHint_value', searchHintSelect);
 	});
 }());
 

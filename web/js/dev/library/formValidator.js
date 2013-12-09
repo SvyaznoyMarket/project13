@@ -47,7 +47,9 @@ FormValidator.prototype._validateOnChangeFields = {
  */
 FormValidator.prototype._requireAs = {
 	checkbox : function( fieldNode ) {
-		var value = fieldNode.attr('checked');
+		var
+			value = fieldNode.attr('checked');
+		// end of vars
 
 		if ( value === undefined ) {
 			return {
@@ -62,7 +64,9 @@ FormValidator.prototype._requireAs = {
 	},
 
 	radio: function( fieldNode ) {
-		var checked = fieldNode.filter(':checked').val();
+		var
+			checked = fieldNode.filter(':checked').val();
+		// end of vars
 
 		if ( checked === undefined ) {
 			return {
@@ -77,7 +81,9 @@ FormValidator.prototype._requireAs = {
 	},
 
 	text: function( fieldNode ) {
-		var value = fieldNode.val();
+		var
+			value = fieldNode.val();
+		// end of vars
 
 		if ( value.length === 0 ) {
 			return {
@@ -92,7 +98,9 @@ FormValidator.prototype._requireAs = {
 	},
 
 	password: function( fieldNode ) {
-		var value = fieldNode.val();
+		var
+			value = fieldNode.val();
+		// end of vars
 
 		if ( value.length === 0 ) {
 			return {
@@ -107,7 +115,9 @@ FormValidator.prototype._requireAs = {
 	},
 
 	textarea: function( fieldNode ) {
-		var value = fieldNode.val();
+		var
+			value = fieldNode.val();
+		// end of vars
 
 		if ( value.length === 0 ) {
 			return {
@@ -143,8 +153,10 @@ FormValidator.prototype._requireAs = {
  */
 FormValidator.prototype._validBy = {
 	isEmail: function( fieldNode ) {
-		var re = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i,
+		var
+			re = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i,
 			value = fieldNode.val();
+		// end of vars
 
 		if ( re.test(value) ) {
 			return {
@@ -160,8 +172,10 @@ FormValidator.prototype._validBy = {
 	},
 
 	isPhone: function( fieldNode ) {
-		var re = /(\+7|8)(-|\s)?(\(\d(-|\s)?\d(-|\s)?\d\s?\)|\d(-|\s)?\d(-|\s)?\d\s?)(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d$/i,
+		var
+			re = /(\+7|8)(-|\s)?(\(\d(-|\s)?\d(-|\s)?\d\s?\)|\d(-|\s)?\d(-|\s)?\d\s?)(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d(-|\s)?\d$/i,
 			value = fieldNode.val();
+		// end of vars
 
 		if ( re.test(value) ) {
 			return {
@@ -177,8 +191,10 @@ FormValidator.prototype._validBy = {
 	},
 
 	isNumber: function( fieldNode ) {
-		var re = /^[0-9]+$/,
+		var
+			re = /^[0-9]+$/,
 			value = fieldNode.val();
+		// end of vars
 
 		if ( re.test(value) ) {
 			return {
@@ -211,7 +227,8 @@ FormValidator.prototype._validBy = {
  * @private
  */
 FormValidator.prototype._validateField = function( field ) {
-	var self = this,
+	var
+		self = this,
 
 		elementType = null,
 
@@ -238,7 +255,7 @@ FormValidator.prototype._validateField = function( field ) {
 	}
 
 	//elementType = ( fieldNode.tagName === 'TEXTAREA') ? 'textarea' : ( fieldNode.tagName === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
-	elementType = ( fieldNode.prop('tagName') === 'TEXTAREA') ? 'textarea' : ( fieldNode.prop("tagName") === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
+	elementType = ( fieldNode.prop('tagName') === 'TEXTAREA') ? 'textarea' : ( fieldNode.prop('tagName') === 'SELECT') ? 'select' : fieldNode.attr('type') ; // если тэг элемента TEXTAREA то тип проверки TEXTAREA, если SELECT - то SELECT, иначе берем из атрибута type
 
 	/**
 	 * Проверка обязательно ли поле для заполенения
@@ -301,11 +318,15 @@ FormValidator.prototype._unmarkFieldError = function( fieldNode ) {
 };
 
 FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
-	var self = this;
+	var
+		self = this;
+	// end of vars
 
-	var clearError = function clearError() {
-		self._unmarkFieldError($(this));
-	};
+	var
+		clearError = function clearError() {
+			self._unmarkFieldError($(this));
+		};
+	// end of functions
 
 	console.info('маркируем');
 	console.log(errorMsg);
@@ -323,14 +344,18 @@ FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
  */
 FormValidator.prototype._enableHandlers = function() {
 	console.info('_enableHandlers');
-	var self = this,
+
+	var
+		self = this,
 		fields = this.config.fields,
 		currentField = null,
 		i;
 	// end of vars
 
-	var validateOnBlur = function validateOnBlur( that ) {
-			var result = {},
+	var
+		validateOnBlur = function validateOnBlur( that ) {
+			var
+				result = {},
 				findedField = self._findFieldByNode( that );
 			// end of vars
 
@@ -350,7 +375,8 @@ FormValidator.prototype._enableHandlers = function() {
 		},
 
 		blurHandler = function blurHandler( ) {
-			var that = $(this),
+			var
+				that = $(this),
 				timeout_id = null;
 			// end of vars
 			
@@ -358,7 +384,7 @@ FormValidator.prototype._enableHandlers = function() {
 			timeout_id = window.setTimeout(function(){
 				validateOnBlur(that);
 			}, 5);
-		}
+		};
 	// end of functions
 
 	for ( i = fields.length - 1; i >= 0; i-- ) {
@@ -396,9 +422,12 @@ FormValidator.prototype._enableHandlers = function() {
  * @private
  */
 FormValidator.prototype._findFieldByNode = function( nodeToFind ) {
-	var fields = this.config.fields;
+	var
+		fields = this.config.fields,
+		i;
+	// end of vars
 
-	for ( var i = fields.length - 1; i >= 0; i-- ) {
+	for ( i = fields.length - 1; i >= 0; i-- ) {
 		if ( fields[i].fieldNode.get(0) === nodeToFind.get(0) ) {
 			return {
 				finded: true,
@@ -431,7 +460,8 @@ FormValidator.prototype._findFieldByNode = function( nodeToFind ) {
  * @public
  */
 FormValidator.prototype.validate = function( callbacks ) {
-	var self = this,
+	var
+		self = this,
 		fields = this.config.fields,
 		i = 0,
 		errors = [],
@@ -476,7 +506,9 @@ FormValidator.prototype.validate = function( callbacks ) {
  * @public
  */
 FormValidator.prototype.getValidate = function( fieldToFind ) {
-	var findedField = this._findFieldByNode(fieldToFind);
+	var
+		findedField = this._findFieldByNode(fieldToFind);
+	// end of vars
 
 	if ( findedField.finded ) {
 		return findedField.field;
@@ -499,8 +531,10 @@ FormValidator.prototype.getValidate = function( fieldToFind ) {
  * @public
  */
 FormValidator.prototype.setValidate = function( fieldNodeToCange, paramsToChange ) {
-	var findedField = this._findFieldByNode(fieldNodeToCange),
+	var
+		findedField = this._findFieldByNode(fieldNodeToCange),
 		addindField = null;
+	// end of vars
 
 	if ( findedField.finded ) {
 		addindField = $.extend(
@@ -529,7 +563,9 @@ FormValidator.prototype.setValidate = function( fieldNodeToCange, paramsToChange
  * @public
  */
 FormValidator.prototype.removeFieldToValidate = function( fieldNodeToRemove ) {
-	var findedField = this._findFieldByNode(fieldNodeToRemove);
+	var
+		findedField = this._findFieldByNode(fieldNodeToRemove);
+	// end of vars
 
 	if ( findedField.finded ) {
 		this.config.fields.splice(findedField.index, 1);

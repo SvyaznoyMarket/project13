@@ -1,5 +1,7 @@
-;(function( ENTER ) {
-	var userUrl = ENTER.config.pageConfig.userUrl,
+;(function (window, document, $, ENTER) {
+	console.info('orderDictionary.js init...');
+
+	var
 		constructors = ENTER.constructors;
 	// end of vars
 
@@ -87,10 +89,16 @@
 		 * @returns     {Boolean}
 		 */
 		OrderDictionary.prototype.isUniqueDeliveryState = function ( state ) {
+			var
+				st;
+			// end of vars
+			
 			if ( this.hasDeliveryState(state) ) {
-				var st = this.deliveryStates[state];
+				st = this.deliveryStates[state];
+
 				return st['unique'];
 			}
+
 			return false;
 		};
 
@@ -106,6 +114,7 @@
 			if ( !this.hasDeliveryState(state) ) {
 				return false;
 			}
+
 			return this.pointsByDelivery.hasOwnProperty(state);
 		};
 
@@ -119,11 +128,14 @@
 		 * @return	{Object}				Данные о точке доставки
 		 */
 		OrderDictionary.prototype.getPointByStateAndId = function( state, pointId ) {
-			var points = this.getAllPointsByState(state);
+			var
+				points = this.getAllPointsByState(state),
+				i;
+			// end of vars
 			
 			pointId = pointId+'';
 			
-			for ( var i = points.length - 1; i >= 0; i-- ) {
+			for ( i = points.length - 1; i >= 0; i-- ) {
 				if ( points[i].id === pointId ) {
 					return window.ENTER.utils.cloneObject(points[i]);
 				}
@@ -141,7 +153,10 @@
 		 * @return	{Object}				Данные о точке доставки
 		 */
 		OrderDictionary.prototype.getFirstPointByState = function( state ) {
-			var points = this.getAllPointsByState(state);
+			var
+				points = this.getAllPointsByState(state);
+			// end of vars
+			
 			return ( points[0] ) ? ENTER.utils.cloneObject(points[0]) : false;
 		};
 
@@ -154,15 +169,20 @@
 			if ( !this.hasDeliveryState(state) ) {
 				return false;
 			}
+
 			var point = this.pointsByDelivery[state],
 				pointName = point ? point.token : false,
 				ret = pointName ? this.orderData[pointName] : false;
+			// end of vars
+
 			return ret || false;
 		};
 
 
 		OrderDictionary.prototype.getChangeButtonText = function( state ) {
-			var text = ( this.pointsByDelivery[state] ) ? this.pointsByDelivery[state].changeName : 'Сменить';
+			var
+				text = ( this.pointsByDelivery[state] ) ? this.pointsByDelivery[state].changeName : 'Сменить';
+			// end of vars
 			
 			return text;
 		};
@@ -209,4 +229,4 @@
 	
 	}());
 	
-}(window.ENTER));
+}(this, this.document, this.jQuery, this.ENTER));
