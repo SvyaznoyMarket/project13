@@ -43,9 +43,11 @@
 				return new BlackBox(updateUrl);
 			}
 			// constructor body
-			
-			this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
-			this.init();
+
+			if (  window.docCookies.hasItem("_authorized") ) {
+				this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
+				this.init();
+			}
 		}
 	
 		
