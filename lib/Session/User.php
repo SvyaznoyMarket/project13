@@ -50,6 +50,7 @@ class User {
         if (!$this->entity) {
             try {
                 if (!$user = \RepositoryManager::user()->getEntityByToken($this->token)) {
+                    $this->removeToken();
                     return null;
                 }
                 $user->setToken($this->token);

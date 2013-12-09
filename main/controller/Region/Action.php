@@ -12,8 +12,9 @@ class Action {
     /**
      * @param $regionId
      * @param \Http\Request $request
-     * @return \Http\RedirectResponse
+     * @param string|null $uri
      * @throws \Exception\NotFoundException
+     * @return \Http\RedirectResponse
      */
     public function change($regionId, \Http\Request $request, $uri = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
@@ -61,6 +62,7 @@ class Action {
                     'geo_id' => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
                 ]);
             } catch (\Exception $e) {
+                \App::exception()->remove($e);
                 \App::logger()->error(sprintf('Не удалось обновить регион у пользователя token=%s', \App::user()->getToken()), ['user']);
             }
         }
