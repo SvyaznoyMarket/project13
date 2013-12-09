@@ -205,13 +205,22 @@ class BasicRecommendedAction {
     protected function getProductsFromRetailrocket( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        //print '** This is Smartengine Method. Should be ENABLED **'; // tmp, form debug
-
         $client = \App::retailrocketClient();
+        $user = \App::user();
+        $itemId = false;
 
-        $productId = $product->getId();
+        if ('UpSellItemToItems' == $method && $user) {
+            $uEntity = $user->getEntity();
+            if ($uEntity) {
+                $uid = $uEntity->getId();
+                if ($uid) {
+                    $method = 'PersonalRecommendation';
+                    $itemId = $uid;
+                }
+            }
+        }
 
-        $ids = $client->query('Recomendation/' . $method, $productId);
+        $ids = $client->query('Recomendation/' . $method, $itemId ?: $product->getId());
 
         $products = $this->prepareProducts($ids, $client::NAME);
 
