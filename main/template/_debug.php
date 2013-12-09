@@ -18,7 +18,6 @@
     }
 
     .debug-panel .content {
-        display: block;
         max-height: 480px;
         max-width: 800px;
         overflow: auto;
@@ -83,6 +82,11 @@
 
         var parent = $(this).parent();
         var contentEl = parent.find('.content');
+
+        if (parent.data('initialized')) {
+            contentEl.toggle();
+            return false;
+        }
 
         var content = '<br /><table class="property">';
         $.each(parent.data('value'), function(i, item) {
@@ -154,5 +158,6 @@
         content += '</table>';
 
         contentEl.html(content);
+        parent.data('initialized', true);
     });
 </script>
