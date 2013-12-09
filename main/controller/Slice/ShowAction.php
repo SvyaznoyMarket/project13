@@ -524,7 +524,7 @@ class ShowAction {
     protected function leafCategory(\Model\Product\Category\Entity $category, /*\Model\Product\Filter $productFilter,*/ \View\Layout $page, \Http\Request $request, $filterData, \Model\Region\Entity $region = null, \Model\Slice\Entity $slice) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 138);
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
 
         if (!$region) {
             $region = \App::user()->getRegion();

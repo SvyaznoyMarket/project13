@@ -18,9 +18,10 @@
     }
 
     .debug-panel .content {
-        max-height: 480px;
+        max-height: 600px;
         max-width: 800px;
         overflow: auto;
+        padding: 0;
     }
 
     .debug-panel .property {
@@ -135,7 +136,7 @@
                             + ' '
                             + ((item.header && item.header['X-API-Mode']) ? item.header['X-API-Mode'] : '')
                         + '</td>'
-                        + '<td class="query-cell"><a href="' + item.url + '" class="query ' + valueClass + '">' + item.escapedUrl + (item.data ? ('<span style="color: #ededed"> --data ' + JSON.stringify(item.data) + '</span>') : '') + '</a></td>'
+                        + '<td class="query-cell"><a target="_blank" href="' + item.url + '" class="query ' + valueClass + '">' + item.escapedUrl + (item.data ? ('<span style="color: #ededed"> --data ' + JSON.stringify(item.data) + '</span>') : '') + '</a></td>'
                         + '</tr>';
 
                 })
@@ -144,7 +145,7 @@
                 value = '<pre class="hidden">' + JSON.stringify(value, null, 4) + '</pre>';
             }
 
-            if (-1 !== $.inArray(i, ['id', 'query', 'user', 'config', 'memory', 'memory', 'time'])) {
+            if (-1 !== $.inArray(i, ['id', 'env', 'git', 'query', 'user', 'config', 'memory', 'memory', 'timer', 'session', 'server', 'abTest', 'abTestJson'])) {
                 icon = '/debug/icons/' + i + '.png';
             }
 

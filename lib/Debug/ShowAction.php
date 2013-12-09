@@ -94,13 +94,28 @@ class ShowAction {
         }
         $debug->add('query', array_values($queryData), 140);
 
+        // timers
+        $appTimer = \Debug\Timer::get('app');
+        $coreTimer = \Debug\Timer::get('core');
+        $contentTimer = \Debug\Timer::get('content');
+        $dataStoreTimer = \Debug\Timer::get('data-store');
+        $timerData = [
+            'core'       => ['value' => round($coreTimer['total'], 3) * 1000, 'count' => $coreTimer['count'], 'unit' => 'ms'],
+            'data-store' => ['value' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count'], 'unit' => 'ms'],
+            'content'    => ['value' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count'], 'unit' => 'ms'],
+            'total'      => ['value' => round($appTimer['total'], 3) * 1000, 'count' => $appTimer['count'], 'unit' => 'ms'],
+        ];
+        $debug->add('timer', $timerData, 138);
+
         if (\App::user()->getToken()) {
-            $debug->add('user', \App::user()->getToken(), 139);
+            $debug->add('user', \App::user()->getToken(), 137);
         }
 
-        $debug->add('route', \App::request()->attributes->get('route'), 138);
+        // route
+        $debug->add('route', \App::request()->attributes->get('route'), 136);
         $action =implode('.', (array)\App::request()->attributes->get('action', []));
-        $debug->add('act', $action ?: 'undefined', 137, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
+        // action
+        $debug->add('act', $action ?: 'undefined', 135, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
 
         // session
         $debug->add('session', \App::session()->all(), 133);
@@ -108,21 +123,7 @@ class ShowAction {
         // memory
         $debug->add('memory', ['value' => round(memory_get_peak_usage() / 1048576, 2), 'unit' => 'Mb'], 132);
 
-        // timers
-        $appTimer = \Debug\Timer::get('app');
-        $coreTimer = \Debug\Timer::get('core');
-        $contentTimer = \Debug\Timer::get('content');
-        $dataStoreTimer = \Debug\Timer::get('data-store');
-
-        $timerData = [
-            'core'       => ['value' => round($coreTimer['total'], 3) * 1000, 'count' => $coreTimer['count'], 'unit' => 'ms'],
-            'data-store' => ['value' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count'], 'unit' => 'ms'],
-            'content'    => ['value' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count'], 'unit' => 'ms'],
-            'total'      => ['value' => round($appTimer['total'], 3) * 1000, 'count' => $appTimer['count'], 'unit' => 'ms'],
-        ];
-        $debug->add('timer', $timerData, 130);
-
-        // add in debug panel properties from class \Config\AppConfig
+        // config
         $reflection = new \ReflectionClass(\App::config());
         $configData = [];
         foreach ($reflection->getProperties() as $property) {

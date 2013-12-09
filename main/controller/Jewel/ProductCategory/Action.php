@@ -253,7 +253,7 @@ class Action extends \Controller\ProductCategory\Action {
     protected function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 138);
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 134);
 
         return new \Http\Response($page->show());
     }
@@ -269,7 +269,7 @@ class Action extends \Controller\ProductCategory\Action {
     protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 138);
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
 
         // если не-ajax то практически никаких действий не производим, чтобы ускорить загрузку,
         // так как при загрузке сразу же будет отправлен аякс-запрос для получения табов, фильтров, товаров

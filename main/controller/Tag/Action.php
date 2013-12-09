@@ -613,7 +613,7 @@ class Action {
     protected function tagRoot(\View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'Tag\\Action.tagRoot', 138);
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'Tag\\Action.tagRoot', 134);
 
         $page->setParam('sidebarHotlinks', true);
 
@@ -634,7 +634,7 @@ class Action {
     protected function rootCategory(\Model\Product\Category\TreeEntity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'Tag\\Action.rootCategory', 138);
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'Tag\\Action.rootCategory', 134);
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
@@ -746,7 +746,7 @@ class Action {
     protected function leafCategory(\Model\Product\Category\TreeEntity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'Tag\\Action.leafCategory', 138);
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'Tag\\Action.leafCategory', 134);
 
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
