@@ -2782,7 +2782,8 @@ if ( !Array.prototype.indexOf ) {
 	utils.packageReq = function packageReq( reqArray ) {
 		console.info('Пакетный запрос');
 
-		var dataToSend = {},
+		var
+			dataToSend = {},
 			callbacks = [],
 
 			i, len;
@@ -2790,19 +2791,31 @@ if ( !Array.prototype.indexOf ) {
 		
 		dataToSend.actions = [];
 		
-		var resHandler = function resHandler( res ) {
-			console.info('Обработка ответа пакетого запроса');
+		var 
+			resHandler = function resHandler( res ) {
+				var
+					i, len;
+				// end of vars
 
-			for ( i = 0, len = res.length - 1; i <= len; i++ ) {
-				callbacks[i](res[i]);
-			}
-		};
+				console.info('Обработка ответа пакетого запроса');
+
+				if ( res.success === false || (res.actions && res.actions.length === 0) ) {
+					console.warn('Route false');
+					console.log(res.success);
+					console.log(res.actions);
+				}
+
+				for ( i = 0, len = res.actions.length - 1; i <= len; i++ ) {
+					callbacks[i](res.actions[i]);
+				}
+			};
+		// end of functions
 
 		for ( i = 0, len = reqArray.length - 1; i <= len; i++ ) {
 			console.log(i);
 
 			// Обход странного бага с IE
-			if ( !reqArray[i] || !reqArray[i].url ) {
+			if ( !(reqArray[i] && reqArray[i].url) ) {
 				console.info('continue');
 
 				continue;
