@@ -43,7 +43,7 @@ class ShowAction {
         foreach (\App::logger()->getMessages() as $message) {
             if (!in_array('curl', $message['_tag'])) continue;
 
-            $url = !empty($message['url']) ? $helper->escape(rawurldecode($message['url'])) : null;
+            $url = !empty($message['url']) ? $message['url'] : null;
             $data = !empty($message['data']) ? $message['data'] : null;
             $startAt = isset($message['startAt']) ? $message['startAt'] : null;
 
@@ -52,11 +52,12 @@ class ShowAction {
             if ($url) {
                 if ('Create curl' == $message['message']) {
                     $queryData[$index] = [
-                        'url'     => $url,
-                        'data'    => $data,
-                        'timeout' => isset($message['timeout']) ? $message['timeout'] : null,
-                        'startAt' => $startAt,
-                        'count'   => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
+                        'url'        => $url,
+                        'escapedUrl' => $helper->escape(rawurldecode($url)),
+                        'data'       => $data,
+                        'timeout'    => isset($message['timeout']) ? $message['timeout'] : null,
+                        'startAt'    => $startAt,
+                        'count'      => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
                     ];
                 } else if ((('Fail curl' == $message['message']) || ('End curl' == $message['message'])) && isset($queryData[$index])) {
                     if (isset($message['error'])) {
@@ -79,6 +80,7 @@ class ShowAction {
                     $queryData[$index]['header'] = isset($message['header']) ? $message['header'] : null;
                 }
             } else if ($startAt && ('End curl executing' == $message['message'])) {
+                /*
                 $queryData[] = [
                     'url'          => null,
                     'startAt'      => $startAt,
@@ -87,6 +89,7 @@ class ShowAction {
                     'retryCount'   => isset($message['retryCount']) ? $message['retryCount'] : null,
                     'retryTimeout' => isset($message['retryTimeout']) ? $message['retryTimeout'] : null,
                 ];
+                */
             }
         }
         $debug->add('query', array_values($queryData), 140);
