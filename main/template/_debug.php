@@ -90,8 +90,10 @@
             var value = item[0];
             var icon = '/debug/icons/default.png';
 
-            if (('id' == i) || ('env' == i) || ('route' == i) || ('act' == i) || ('sub.act' == i) || ('user' == i) || ('status' == i)) {
+            if (('id' == i) || ('env' == i) || ('route' == i) || ('act' == i) || ('sub.act' == i) || ('user' == i)) {
                 value = '<span style="color: #ffffff">' + value + '</span>';
+            } else if ('status' == i) {
+                value = '<span style="color: ' + ((value > 300) ? '#ff0000' : '#00ff00') + '">' + value + '</span>' ;
             } else if ('git' == i) {
                 value = '<span style="color: #ffff00">' + value.version + '</span> ' + value.tag;
             } else if ('timer' == i) {
@@ -129,7 +131,7 @@
                             + ' '
                             + ((item.header && item.header['X-API-Mode']) ? item.header['X-API-Mode'] : '')
                         + '</td>'
-                        + '<td class="query-cell"><a href="#" class="query ' + valueClass + '">' + item.url + (item.data ? ('<span style="color: #ededed"> --data ' + JSON.stringify(item.data) + '</span>') : '') + '</a></td>'
+                        + '<td class="query-cell"><a href="' + item.url + (item.data ? (' --data ' + JSON.stringify(item.data)) : '') + '" class="query ' + valueClass + '">' + item.url + (item.data ? ('<span style="color: #ededed"> --data ' + JSON.stringify(item.data) + '</span>') : '') + '</a></td>'
                         + '</tr>';
 
                 })
