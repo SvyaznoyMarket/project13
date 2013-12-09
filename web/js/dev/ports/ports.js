@@ -502,6 +502,8 @@ window.ANALYTICS = {
             },
 
             action: function ( e, userInfo ) {
+            	console.warn('userInfo.id '+userInfo.id);
+
                 var rr_data = $('#RetailRocketJS').data('value'),
                     sendUserData = {
                         userId: userInfo.id || false,
@@ -531,13 +533,13 @@ window.ANALYTICS = {
 
         RetailRocket.init();
 
-        if ( ENTER.config.userInfo ) {
+        if ( ENTER.config.userInfo && ENTER.config.userInfo.id ) {
             RetailRocket.action(null, ENTER.config.userInfo)
         }
         else {
             $('body').on('userLogged', RetailRocket.action);
         }
-        // RetailRocket.action();
+        RetailRocket.action();
     },
 
     AdmitadJS : function() {
