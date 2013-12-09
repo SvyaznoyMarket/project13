@@ -55,19 +55,19 @@ class RouteAction {
                 /* @var $response \Http\Response|null */
                 $response = call_user_func_array($actionCall, $actionParams);
                 if ($response instanceof \Http\JsonResponse) {
-                    $responseItem = $response->getData();
+                    $actionItem = $response->getData();
                 } else {
-                    $responseItem = $response->getContent();
+                    $actionItem = $response->getContent();
                 }
             } catch (\Exception $e) {
-                $responseItem = [
+                $actionItem = [
                     'success' => false,
                     'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
                     'actions' => $actionData,
                 ];
             }
 
-            $actionData[] = $responseItem;
+            $actionData[] = $actionItem;
         }
 
         return new \Http\JsonResponse([
