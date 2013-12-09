@@ -14,7 +14,7 @@
 
     .debug-panel a, .debug-panel a:hover {
         color: #ffffff;
-        font: normal 12px Courier New;
+        font: normal 13px Courier New;
     }
 
     .debug-panel .content {
@@ -30,7 +30,7 @@
 
     .debug-panel .property td {
         vertical-align: top;
-        font: normal 12px Courier New;
+        font: normal 13px Courier New;
     }
 
     .debug-panel .property-name {
@@ -74,7 +74,7 @@
 </style>
 
 <script type="text/javascript">
-    $('.debug-panel a').click(function(e) {
+    $('.debug-panel a').on('click', function(e) {
         e.preventDefault();
         console.info('debug cliclked');
 
@@ -87,7 +87,9 @@
             var value = item[0];
             var icon = '/debug/icons/default.png';
 
-            if ('git' == i) {
+            if (('id' == i) || ('env' == i) || ('route' == i) || ('act' == i) || ('sub.act' == i) || ('user' == i) || ('status' == i)) {
+                //
+            } else if ('git' == i) {
                 value = '<span style="color: #ffff00">' + value.version + '</span> ' + value.tag;
             } else if ('timer' == i) {
                 value = '<table>';
@@ -95,6 +97,8 @@
                     value += '<tr><td class="query-cell" style="color: #ededed;">' + i + ': </td><td class="query-cell">' + item.value + ' ' + item.unit + ' (' + item.count + ')' + '</td></tr>';
                 })
                 value += '</table>';
+            } else if ('memory' == i) {
+                value = value.value + ' ' + value.unit;
             } else if (('error' == i) && (value[0])) {
                 value = value[0];
                 value = '<span style="color: #ff0000">#' + value.code + ' ' + value.message + '</span>';
@@ -131,13 +135,13 @@
                 value = '<pre class="hidden">' + JSON.stringify(value, null, 4) + '</pre>';
             }
 
-            if ($.inArray(i, ['id', 'query', 'user', 'config', 'memory', 'memory', 'time'])) {
+            if (-1 !== $.inArray(i, ['id', 'query', 'user', 'config', 'memory', 'memory', 'time'])) {
                 icon = '/debug/icons/' + i + '.png';
             }
 
             content += (
                 '<tr>'
-                + '<td class="property-name" style="background-image: url(' + icon + ');"><a href="#" style="' + (('info' != type) ? ('color: #ff0000;') : '') + '">' + i  + '</a></td>'
+                + '<td class="property-name" style="background-image: url(' + icon + ');"><a class="property-name-link" href="#" style="' + (('info' != type) ? ('color: #ff0000;') : '') + '">' + i  + '</a></td>'
                 + '<td class="property-value">' + value + '</td>'
                 + '</tr>'
             );
