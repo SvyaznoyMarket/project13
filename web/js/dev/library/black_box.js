@@ -155,8 +155,9 @@
 				 * @public
 				 */
 				update = function update ( userInfo ) {
+					console.info('blackBox update userinfo');
 
-					clientUserInfo = userInfo;
+					config.userInfo = userInfo;
 
 					body.trigger('userLogged', [userInfo]);
 				};
