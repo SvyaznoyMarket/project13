@@ -41,10 +41,12 @@
         <label class="userInfoEdit__label" for="user_email">E-mail:</label>
 
         <input type="text" id="user_email" value="<?= $form->getEmail() ?>" name="user[email]" class="text width418 mb10" />
-            
-        <div class="pr fr">
-            <div class="doublehelp help">Одно из полей обязательно для заполнения!</div>
-        </div>
+
+        <? if (!$page->getParam('enterpizeCoupon')): ?>
+            <div class="pr fr">
+                <div class="doublehelp help">Одно из полей обязательно для заполнения!</div>
+            </div>
+        <? endif ?>
 
         <label class="userInfoEdit__label" for="user_mobile_phone">Мобильный телефон:</label>
 

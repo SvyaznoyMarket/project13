@@ -26,7 +26,7 @@ class EditAction {
 
         $redirect = $request->get('redirect_to')
             ? $request->get('redirect_to')
-            : \App::router()->generate('user.edit');
+            : \App::router()->generate('user.edit', ['enterprize_coupon' => $couponType]);
 
         if(!preg_match('/^(\/|http).*/i', $redirect)) {
             $redirect = 'http://' . $redirect;
