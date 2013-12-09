@@ -1,55 +1,58 @@
-module.exports = function(grunt) {
+module.exports = function( grunt ) {
 
-	var jsRootPath = '../web/js/';
-	var jsDevPath = jsRootPath+'dev/';
-	var jsProdPath = jsRootPath+'prod/';
+	var
+		jsRootPath = '../web/js/',
+		jsDevPath = jsRootPath+'dev/',
+		jsProdPath = jsRootPath+'prod/',
 
-	/**
-	 * Файлы и их порядок для jquery-plugins.js
-	 * @type {Array}
-	 */
-	var bigjqueryFiles = [
-		// 'custom-form-elements.js',
-		'jquery.email_validate.js',
-		'jquery.lightbox_me.js',
-		'jquery.scrollto.js',
-		'jquery.placeholder.js',
-		// 'prettyCheckboxes.js',
-		'jquery.infinityCarousel.js',
-		'typewriter.js',
-		'jquery.maskedinput.js',
-		'jquery.put_cursor_at_end.js',
-		'goodsCounter.js',
-		'jquery.elevatezoom.js',
-		'jquery.animate-shadow.js',
-		// 'customRadio.js',
-		'customDropDown.js',
-		'goodsSlider.js',
-		'jquery-ui-1.10.3.custom.js'
-	];
+		/**
+		 * Файлы и их порядок для jquery-plugins.js
+		 * @type {Array}
+		 */
+		bigjqueryFiles = [
+			// 'custom-form-elements.js',
+			'jquery.email_validate.js',
+			'jquery.lightbox_me.js',
+			'jquery.scrollto.js',
+			'jquery.placeholder.js',
+			// 'prettyCheckboxes.js',
+			'jquery.infinityCarousel.js',
+			'typewriter.js',
+			'jquery.maskedinput.js',
+			'jquery.put_cursor_at_end.js',
+			'goodsCounter.js',
+			'jquery.elevatezoom.js',
+			'jquery.animate-shadow.js',
+			// 'customRadio.js',
+			'customDropDown.js',
+			'goodsSlider.js',
+			'jquery-ui-1.10.3.custom.js'
+		],
 
-	/**
-	 * Файлы и их порядок для library.js
-	 * @type {Array}
-	 */
-	var libraryFiles = [
-		jsDevPath+'library/cloneObject.js',
-		jsDevPath+'library/getKeysLength.js',
-		jsDevPath+'library/JSON.js',
-		jsDevPath+'library/pubSub.js',
-		jsDevPath+'library/isTrueEmail.js',
-		jsDevPath+'library/printPrice.js',
-		jsDevPath+'library/doc_cookies.js',
-		jsDevPath+'library/simple_templating.js',
-		jsDevPath+'library/library.js',
-		jsDevPath+'library/mapDriver.js',
-		jsDevPath+'library/mapDriver-v2.js',
-		jsDevPath+'library/black_box.js',
-		jsDevPath+'library/formValidator.js',
-		jsDevPath+'library/addParameterToUrl.js',
-		jsDevPath+'library/blockScreen.js',
-		jsDevPath+'library/*.js'
-	];
+		/**
+		 * Файлы и их порядок для library.js
+		 * @type {Array}
+		 */
+		libraryFiles = [
+			jsDevPath+'library/cloneObject.js',
+			jsDevPath+'library/getKeysLength.js',
+			jsDevPath+'library/JSON.js',
+			jsDevPath+'library/pubSub.js',
+			jsDevPath+'library/isTrueEmail.js',
+			jsDevPath+'library/printPrice.js',
+			jsDevPath+'library/doc_cookies.js',
+			jsDevPath+'library/simple_templating.js',
+			jsDevPath+'library/library.js',
+			jsDevPath+'library/mapDriver.js',
+			jsDevPath+'library/mapDriver-v2.js',
+			jsDevPath+'library/black_box.js',
+			jsDevPath+'library/formValidator.js',
+			jsDevPath+'library/addParameterToUrl.js',
+			jsDevPath+'library/blockScreen.js',
+			jsDevPath+'library/*.js'
+		];
+	// end of vars
+	
 
 	grunt.initConfig({
 
@@ -107,8 +110,7 @@ module.exports = function(grunt) {
 					'escape': true,
 					'unescape': true,
 					'tmpl': true,
-					'_kmq': true,
-					'ko': true
+					'_kmq': true
 				},
 			},
 		},

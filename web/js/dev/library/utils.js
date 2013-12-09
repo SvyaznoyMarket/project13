@@ -1,5 +1,7 @@
 ;(function ( ENTER ) {
-	var utils = ENTER.utils;
+	var
+		utils = ENTER.utils;
+	// end of vars
 
 
 	/**
@@ -10,7 +12,8 @@
 	 * @return	{Number}	count
 	 */
 	utils.objLen = function objLen( obj ) {
-		var len = 0,
+		var
+			len = 0,
 			p;
 		// end of vars
 

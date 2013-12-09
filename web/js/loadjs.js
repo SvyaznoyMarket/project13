@@ -4,7 +4,8 @@
  * https://github.com/theshock/console-cap
  */
 ;(function ( console ) {
-	var i,
+	var
+		i,
 		global  = this,
 		fnProto = Function.prototype,
 		fnApply = fnProto.apply,
@@ -75,7 +76,8 @@
 
 
 ;(function( global ) {
-	var _gaq = global._gaq || [],
+	var
+		_gaq = global._gaq || [],
 
 		jsStartTime = new Date().getTime(),
 
@@ -92,6 +94,7 @@
 	// end of vars
 
 
+	var
 		/**
 		 * Версионность файлов и загрузка неминифицированных скриптов в debug режиме
 		 * 
@@ -99,7 +102,7 @@
 		 * 
 		 * @return	{String}				Новое имя файла
 		 */
-	var getWithVersion = function getWithVersion( filename ) {
+		getWithVersion = function getWithVersion( filename ) {
 			if ( typeof( global.release['version']) !== 'undefined' ) {
 				if ( !debug ) {
 					filename = filename.replace('js', 'min.js');
