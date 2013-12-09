@@ -131,7 +131,7 @@
                             + ' '
                             + ((item.header && item.header['X-API-Mode']) ? item.header['X-API-Mode'] : '')
                         + '</td>'
-                        + '<td class="query-cell"><a href="' + item.url + (item.data ? (' --data ' + JSON.stringify(item.data)) : '') + '" class="query ' + valueClass + '">' + item.url + (item.data ? ('<span style="color: #ededed"> --data ' + JSON.stringify(item.data) + '</span>') : '') + '</a></td>'
+                        + '<td class="query-cell"><a href="' + item.url + '" class="query ' + valueClass + '">' + item.escapedUrl + (item.data ? ('<span style="color: #ededed"> --data ' + JSON.stringify(item.data) + '</span>') : '') + '</a></td>'
                         + '</tr>';
 
                 })
