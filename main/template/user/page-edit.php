@@ -6,8 +6,10 @@
  */
 ?>
 
-<? if ($error = $form->getError('global')): ?>
-    <p class="red"><?= $error ?></p>
+<? if (!$form->isValid()): ?>
+    <? foreach ($form->getErrors() as $error): ?>
+        <p class="red"><?= $error ?></p>
+    <? endforeach ?>
 <? elseif ($message): ?>
     <p class="green"><?= $message ?></p>
 <? endif ?>

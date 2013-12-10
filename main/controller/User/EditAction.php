@@ -68,35 +68,6 @@ class EditAction {
 
                 if ($form->getEnterprizeCoupon()) {
                     try {
-                        // проверяем заполнил ли пользователь все поля формы (кроме "Род деятельности")
-                        if (!$form->getFirstName()) {
-                            throw new \Exception('Не передано имя.');
-                        }
-                        if (!$form->getMiddleName()) {
-                            throw new \Exception('Не передано отчество.');
-                        }
-                        if (!$form->getLastName()) {
-                            throw new \Exception('Не передана фамилия.');
-                        }
-                        if (!$form->getSex()) {
-                            throw new \Exception('Не передан пол.');
-                        }
-                        if (!$form->getEmail()) {
-                            throw new \Exception('Не передан email.');
-                        }
-                        if (!$form->getMobilePhone()) {
-                            throw new \Exception('Не передан мобильный телефон.');
-                        }
-                        if (!$form->getHomePhone()) {
-                            throw new \Exception('Не передан домашний телефон.');
-                        }
-                        if (!$form->getSkype()) {
-                            throw new \Exception('Не передан skype.');
-                        }
-                        if (!$form->getBirthday()) {
-                            throw new \Exception('Не передана дата рождения.');
-                        }
-
                         // создание enterprize-купона
                         $result = [];
                         $client->addQuery(
@@ -123,7 +94,7 @@ class EditAction {
                         );
                         $client->execute();
 
-                        if ($result instanceof \Exception) {
+                        if ($result instanceof \Curl\Exception) {
                             throw $result;
                         }
 
@@ -140,8 +111,20 @@ class EditAction {
                         if (!isset($response['confirmed']) || !$response['confirmed']) {
                             throw new \Exception('Не получен ответ от сервера.');
                         }
-                    } catch (\Exception $e) {
+                    } catch (\Curl\Exception $e) {
                         \App::exception()->remove($e);
+                        $errorContent = $e->getContent();
+                        $detail = $errorContent['detail'] ? $errorContent['detail'] : [];
+
+                        foreach ($detail as $fieldName => $errors) {
+                            foreach ($errors as $errorType => $errorMess) {
+                                if ('name' == $fieldName) $fieldName = 'first_name';
+                                if ('phone' == $fieldName) $fieldName = 'mobile_phone';
+
+                                $form->setError($fieldName, $errorMess);
+                            }
+                        }
+
                         throw $e;
                     }
                 }

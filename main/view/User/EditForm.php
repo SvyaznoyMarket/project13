@@ -27,18 +27,21 @@ class EditForm {
     private $enterprizeCoupon;
     /** @var array */
     private $errors = array(
-        'global'            => null,
-        'first_name'        => null,
-        'middle_name'       => null,
-        'last_name'         => null,
-        'sex'               => null,
-        'birthday'          => null,
-        'occupation'        => null,
-        'email'             => null,
-        'mobile_phone'      => null,
-        'home_phone'        => null,
-        'skype'             => null,
-        'enterprize_coupon' => null
+        'global'                    => null,
+        'first_name'                => null,
+        'middle_name'               => null,
+        'last_name'                 => null,
+        'sex'                       => null,
+        'birthday'                  => null,
+        'occupation'                => null,
+        'email'                     => null,
+        'mobile_phone'              => null,
+        'home_phone'                => null,
+        'skype'                     => null,
+        'enterprize_coupon'         => null,
+        'svyaznoy_club_card_number' => null,
+        'guid'                      => null,
+        'agree'                     => null,
     );
 
     public function __construct(array $data = []) {
