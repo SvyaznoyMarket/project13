@@ -141,6 +141,13 @@
     }
     .jsDebugPanelContent {
         background: #0f1113;
+        -webkit-border-radius: 4px;
+        -webkit-border-top-left-radius: 0;
+        -moz-border-radius: 4px;
+        -moz-border-radius-topleft: 0;
+        border-radius: 4px;
+        border-top-left-radius: 0;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
     .debug-panel {
