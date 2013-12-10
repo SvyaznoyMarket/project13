@@ -56,7 +56,7 @@ class SetAction {
         $client->execute();
 
         $countProducts = count($products);
-        if ($countProducts < $limit) {
+        if (0 < $countProducts && $countProducts < $limit) {
             $limit = $countProducts;
         }
 
