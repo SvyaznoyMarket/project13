@@ -111,6 +111,10 @@ class EditAction {
                         if (!isset($response['confirmed']) || !$response['confirmed']) {
                             throw new \Exception('Не получен ответ от сервера.');
                         }
+
+                        $session->set('flash', 'Данные сохранены. Купон вам отправлен по СМС и е-майл.');
+
+                        return new \Http\RedirectResponse($redirect);
                     } catch (\Curl\Exception $e) {
                         \App::exception()->remove($e);
                         $errorContent = $e->getContent();
