@@ -11648,7 +11648,8 @@
     background-position: 100% 8px;
     font-size: 16px;
   }
-  .bBreadcrumbs__eItem.mLast {
+  .bBreadcrumbs__eItem.mLast,
+  .bBreadcrumbs__eItem:last-child {
     background: none;
   }
   .bBreadcrumbs__eLink {
