@@ -100,10 +100,10 @@ class ShowAction {
         $contentTimer = \Debug\Timer::get('content');
         $dataStoreTimer = \Debug\Timer::get('data-store');
         $timerData = [
-            'core'       => ['value' => round($coreTimer['total'], 3) * 1000, 'count' => $coreTimer['count'], 'unit' => 'ms'],
-            'data-store' => ['value' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count'], 'unit' => 'ms'],
-            'content'    => ['value' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count'], 'unit' => 'ms'],
-            'total'      => ['value' => round($appTimer['total'], 3) * 1000, 'count' => $appTimer['count'], 'unit' => 'ms'],
+            ['name' => 'core', 'value' => round($coreTimer['total'], 3) * 1000, 'count' => $coreTimer['count'], 'unit' => 'ms'],
+            ['name' => 'data-store', 'value' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count'], 'unit' => 'ms'],
+            ['name' => 'content', 'value' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count'], 'unit' => 'ms'],
+            ['name' => 'total', 'value' => round($appTimer['total'], 3) * 1000, 'count' => $appTimer['count'], 'unit' => 'ms'],
         ];
         $debug->add('timer', $timerData, 138);
 
