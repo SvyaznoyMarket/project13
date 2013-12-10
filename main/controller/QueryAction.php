@@ -36,7 +36,11 @@ class QueryAction {
                     'result' => $result,
                 ]);
             } catch (\Exception $e) {
-                $result = (string)$e;
+                if ($e instanceof \Curl\Exception) {
+                    $result = ['error' => $e->getContent()];
+                } else {
+                    $result = ['error' => ['code' => $e->getCode(), 'message' => $e->getMessage()]];
+                }
 
                 \App::logger('query')->error([
                     'url'    => $url,
