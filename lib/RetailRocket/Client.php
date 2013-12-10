@@ -94,8 +94,7 @@ class Client {
             if ($uEntity) {
                 $uid = $uEntity->getId();
                 if ($uid) {
-                    $seporator = (false === strpos($query, '?')) ? '?' : '&';
-                    $query .= $seporator . 'userId=' . $uid;
+                    $query .= ((false === strpos($query, '?')) ? '?' : '&') . 'userId=' . $uid;
                 }
             }
         }
