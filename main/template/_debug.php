@@ -110,6 +110,7 @@
 <script id="tplDebugAjax" type="text/html">
     <div>
         <a class="jsOpenDebugPanel" href="#">{{name}}</a>
+        <a class="jsDebugPanelClose">×</a>
         <div class="jsDebugPanelContent" style="display: none"></div>
     </div>
 </script>
@@ -117,6 +118,7 @@
 <div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>">
     <div>
         <a class="jsOpenDebugPanel" href="#">debug</a>
+        <a class="jsDebugPanelClose">×</a>
         <table class="jsDebugPanelContent" style="display: none"></table>
     </div>
 </div>
@@ -124,7 +126,7 @@
 <style type="text/css">
     .jsOpenDebugPanel {
         padding: 5px;
-        display: block;
+        display: inline-block;
         margin: 4px 0 0;
         background: #0f1113;
         -webkit-border-top-left-radius: 4px;
@@ -135,11 +137,12 @@
         border-top-right-radius: 4px;
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
+    .jsOpenDebugPanel.jsOpened {
+    }
     .jsDebugPanelContent {
         background: #0f1113;
     }
-    .jsOpenDebugPanel.jsOpened {
-    }
+
     .debug-panel {
         position: fixed;
         bottom: 30px;
@@ -152,6 +155,15 @@
     .debug-panel a, .debug-panel a:hover {
         color: #ffffff;
         font: normal 13px Courier New;
+        text-decoration: none;
+    }
+
+    a.jsDebugPanelClose, a.jsDebugPanelClose:hover {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 16px;
+        color: #000000;
+        text-decoration: none;
     }
 
     .debug-panel .content {

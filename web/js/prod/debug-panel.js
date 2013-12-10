@@ -288,6 +288,15 @@
 
 			return false;
 		};
+
+        /**
+         * Уничтожение дебаг панели
+         */
+        removeDebugPanel = function openDebugPanel() {
+            $(this).parent().remove();
+
+            return false;
+        };
 	// end of functions
 
 
@@ -295,6 +304,7 @@
 
 	debugPanel.on('click', '.jsExpandValue', expandValue);
 	debugPanel.on('click', '.jsOpenDebugPanel', openDebugPanel);
+	debugPanel.on('click', '.jsDebugPanelClose', removeDebugPanel);
 
 	d.ajaxSuccess(ajaxResponse);
 
