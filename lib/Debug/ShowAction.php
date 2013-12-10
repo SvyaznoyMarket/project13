@@ -53,7 +53,6 @@ class ShowAction {
                 if ('Create curl' == $message['message']) {
                     $queryData[$index] = [
                         'url'        => $url,
-                        'debug'      => $helper->url('debug.query', ['url' => $url, 'data' => (array)json_encode($data)]),
                         'escapedUrl' => $helper->escape(rawurldecode($url)),
                         'data'       => $data,
                         'timeout'    => isset($message['timeout']) ? $message['timeout'] : null,
