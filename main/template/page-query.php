@@ -13,7 +13,7 @@ return function(
     <div class="row">
         <form action="<?= $helper->url('debug.query') ?>" method="post" role="form">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="http://api.enter.ru" name="url" value="<?= $url ?>" width="100" />
+                <input autofocus="autofocus" type="text" class="form-control" placeholder="http://api.enter.ru" name="url" value="<?= $url ?>" width="100" />
             </div>
 
             <div class="form-group">
