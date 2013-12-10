@@ -91,7 +91,7 @@
             {{name}}
         </td>
         <td class="property-value">
-            <span style="color: #ffff00;">{{value.value}}</span> {{value.unit}}
+            {{value.value}} {{value.unit}}
         </td>
     </tr>
 </script>
@@ -127,7 +127,7 @@
         text-decoration: underline;
         display: block;
         margin: 2px 0 0;
-        background: #2c2c2c;
+        background: #0f1113;
         -webkit-border-top-left-radius: 4px;
         -webkit-border-top-right-radius: 4px;
         -moz-border-radius-topleft: 4px;
@@ -136,7 +136,7 @@
         border-top-right-radius: 4px;
     }
     .jsDebugPanelContent {
-        background: #2c2c2c;
+        background: #0f1113;
     }
     .jsOpenDebugPanel.jsOpened {
     }
@@ -145,7 +145,7 @@
         bottom: 30px;
         left: 2px;
         z-index: 999;
-        background: #0f1113;
+        background: #2c2c2c;
         color: #cdcdcd;
         opacity: 0.95;
         padding: 2px 3px;
@@ -205,11 +205,11 @@
         color: limegreen;
     }
     .debug-panel .property-value-expanded {
-        background: #222;
         color: limegreen;
         display: none;
         max-height: 300px;
-        overflow: scroll;
+        max-width: 1000px;
+        overflow: auto;
     }
     .debug-panel .property-value .query-fail {
         color: red;
