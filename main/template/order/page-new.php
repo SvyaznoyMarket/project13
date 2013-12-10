@@ -352,6 +352,7 @@ if ($oneClick) {
 					<div class="bBuyingLine__eRight mPhone">
 						<span class="bPlaceholder">+7</span> 
 						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
+						<span class="phoneHintLg">Если у вас нет номера мобильного телефона, укажите телефон фонда "Подари Жизнь": <strong>+7(926)011-98-53</strong>.</span>
 					</div>
 
                     <label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
