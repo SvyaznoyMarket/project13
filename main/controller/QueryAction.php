@@ -36,6 +36,8 @@ class QueryAction {
                     'result' => $result,
                 ]);
             } catch (\Exception $e) {
+                \App::exception()->remove($e);
+
                 if ($e instanceof \Curl\Exception) {
                     $result = ['error' => $e->getContent()];
                 } else {
@@ -46,7 +48,6 @@ class QueryAction {
                     'url'    => $url,
                     'data'   => $data,
                     'result' => $result,
-                    'error'  => ['code' => $e->getCode(), 'message' => $e->getMessage()],
                 ]);
             }
 
@@ -72,15 +73,19 @@ class QueryAction {
 
         $queryToken = trim((string)$queryToken);
 
+        $data = [];
         try {
             $log = shell_exec(sprintf('cd %s && tail -n 50000 query.log | grep %s',
                 \App::config()->logDir,
                 $queryToken
             ));
 
-            $data = json_decode($log, true);
+            $data = (array)json_decode($log, true);
         } catch(\Exception $e) {
+            $data = [];
         }
+
+        $data = array_merge(['url' => null, 'data' => null, 'result' => null], $data);
 
         return new \Http\Response(\App::closureTemplating()->render('page-query', $data));
     }

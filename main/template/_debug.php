@@ -174,7 +174,7 @@
     }
 
     .debug-panel .content {
-        max-height: 600px;
+        max-height: 200px;
         max-width: 800px;
         overflow: auto;
         padding: 0;
