@@ -16,17 +16,19 @@ class EditAction {
         $client = \App::coreClientV2();
         $userEntity = \App::user()->getEntity();
 
-        $couponType = $request->get('enterprize_coupon');
-
         $form = new \View\User\EditForm();
         $form->fromEntity($userEntity);
+
+        if ($request->get('enterprize_coupon')) {
+            $form->setEnterprizeCoupon($request->get('enterprize_coupon'));
+        }
 
         $message = $session->get('flash');
         $session->remove('flash');
 
         $redirect = $request->get('redirect_to')
             ? $request->get('redirect_to')
-            : \App::router()->generate('user.edit', ['enterprize_coupon' => $couponType]);
+            : \App::router()->generate('user.edit', ['enterprize_coupon' => $form->getEnterprizeCoupon()]);
 
         if(!preg_match('/^(\/|http).*/i', $redirect)) {
             $redirect = 'http://' . $redirect;
@@ -64,7 +66,7 @@ class EditAction {
                     throw new \Exception('Не получен ответ от сервера.');
                 }
 
-                if ($couponType) {
+                if ($form->getEnterprizeCoupon()) {
                     try {
                         // проверяем заполнил ли пользователь все поля формы (кроме "Род деятельности")
                         if (!$form->getFirstName()) {
@@ -108,7 +110,7 @@ class EditAction {
                                 'phone'                     => $form->getMobilePhone(),
                                 'email'                     => $form->getEmail(),
                                 'svyaznoy_club_card_number' => null,
-                                'guid'                      => $couponType,
+                                'guid'                      => $form->getEnterprizeCoupon(),
                                 'agree'                     => true,
                             ],
                             function ($data) use (&$result) {
@@ -158,10 +160,10 @@ class EditAction {
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
-        if ($couponType) {
-            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $couponType) {
+        if ($form->getEnterprizeCoupon()) {
+            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $form) {
                 foreach ((array)$data as $item) {
-                    if ($couponType == $item['token']) {
+                    if ($form->getEnterprizeCoupon() == $item['token']) {
                         $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
                     }
                 }
