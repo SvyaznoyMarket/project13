@@ -1,6 +1,4 @@
 ;(function ( window, document, $, ENTER, Mustache ) {
-	console.info('debug panel loaded');
-
 	var
 		d = $(document),
 		debugPanel = $('.jsDebugPanel'),
@@ -15,8 +13,6 @@
 		 */
 		render = {
 			'_default': function( name, data, icon ) {
-				console.info('render like default');
-
 				var
 					templateWrap = $('#tplDebugFirstLevelDefault'),
 					template = templateWrap.html(),
@@ -50,8 +46,6 @@
 			},
 
 			'id': function( name, data ) {
-				console.info('render like id');
-
 				var
 					iconUrl = '/debug/icons/id.png',
 					html;
@@ -63,8 +57,6 @@
 			},
 
 			'git': function( name, data ) {
-				console.info('render like git');
-
 				var
 					templateWrap = $('#tplDebugFirstLevelGit'),
 					template = templateWrap.html(),
@@ -81,8 +73,6 @@
 			},
 			
 			'query': function( name, data ) {
-				console.info('render like query');
-
 				var
 					templateWrap = $('#tplDebugFirstLevelQuery'),
 					template = templateWrap.html(),
@@ -99,8 +89,6 @@
 			},
 
 			'timer': function( name, data ) {
-				console.info('render like timer');
-
 				var
 					templateWrap = $('#tplDebugFirstLevelTimer'),
 					template = templateWrap.html(),
@@ -117,8 +105,6 @@
 			},
 
 			'session': function( name, data ) {
-				console.info('render like session');
-
 				var
 					iconUrl = '/debug/icons/session.png',
 					html;
@@ -130,8 +116,6 @@
 			},
 			
 			'memory': function( name, data ) {
-				console.info('render like memory');
-
 				var
 					templateWrap = $('#tplDebugFirstLevelMemory'),
 					template = templateWrap.html(),
@@ -148,8 +132,6 @@
 			},
 
 			'config': function( name, data ) {
-				console.info('render like config');
-
 				var
 					iconUrl = '/debug/icons/config.png',
 					html;
@@ -161,8 +143,6 @@
 			},
 
 			'abTest': function( name, data ) {
-				console.info('render like config');
-
 				var
 					iconUrl = '/debug/icons/abTest.png',
 					html;
@@ -174,8 +154,6 @@
 			},
 
 			'abTestJson': function( name, data ) {
-				console.info('render like config');
-
 				var
 					iconUrl = '/debug/icons/abTestJson.png',
 					html;
@@ -187,8 +165,6 @@
 			},
 
 			'server': function( name, data ) {
-				console.info('render like config');
-
 				var
 					iconUrl = '/debug/icons/server.png',
 					html;
@@ -200,8 +176,6 @@
 			},
 
 			'ajax': function( name ) {
-				console.info('render like ajax');
-
 				var
 					templateWrap = $('#tplDebugAjax'),
 					template = templateWrap.html(),
@@ -222,8 +196,6 @@
 		 * Инициализация панели отладки
 		 */
 		initPanel = function initPanel( node, data ) {
-			console.info('Render debug panel');
-
 			var
 				html,
 				key;
@@ -233,9 +205,6 @@
 				if ( !data.hasOwnProperty(key) ) {
 					continue;
 				}
-
-				console.log(key);
-				console.log(data[key]);
 
 				if ( render.hasOwnProperty(key) ) {
 					html = render[key](key, data[key]);
@@ -252,8 +221,6 @@
 		 * Общий обработчик AJAX
 		 */
 		ajaxResponse = function ajaxResponse( event, xhr, settings ) {
-			console.warn('=== ajaxSuccess ===');
-
 			var
 				res = JSON.parse(xhr.responseText),
 				debugInfo = res.debug || false,
@@ -272,8 +239,6 @@
 
 			outNode = debugPanel.find('.jsDebugPanelContent').eq(debugPanel.find('.jsDebugPanelContent').length - 1);
 
-			console.log(outNode);
-			// debugPanel.append(html);
 
 			initPanel( outNode, debugInfo );
 		},
@@ -282,8 +247,6 @@
 		 * Сворачивание\Разворачивание значений
 		 */
 		expandValue = function expandValue() {
-			console.info('expandValue');
-
 			var
 				self = $(this),
 				openClass = 'jsOpened',
@@ -307,8 +270,6 @@
 		 * Открытие дебаг панели
 		 */
 		openDebugPanel = function openDebugPanel() {
-			console.info('Show debug panel');
-
 			var
 				self = $(this),
 				openClass = 'jsOpened',

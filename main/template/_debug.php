@@ -114,7 +114,7 @@
     </div>
 </script>
 
-<div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>" style="position: fixed; bottom: 30px; left: 2px; z-index: 999;">
+<div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>">
     <div>
         <a class="jsOpenDebugPanel" href="#">debug</a>
         <table class="jsDebugPanelContent" style="display: none"></table>
