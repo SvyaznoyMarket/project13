@@ -126,7 +126,7 @@
         padding: 5px;
         text-decoration: underline;
         display: block;
-        margin: 2px 0 0;
+        margin: 4px 0 0;
         background: #0f1113;
         -webkit-border-top-left-radius: 4px;
         -webkit-border-top-right-radius: 4px;
@@ -134,6 +134,7 @@
         -moz-border-radius-topright: 4px;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
     .jsDebugPanelContent {
         background: #0f1113;
@@ -144,13 +145,9 @@
         position: fixed;
         bottom: 30px;
         left: 2px;
-        z-index: 999;
-        background: #2c2c2c;
+        z-index: 1100;
         color: #cdcdcd;
         opacity: 0.95;
-        padding: 2px 3px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
     .debug-panel a, .debug-panel a:hover {
@@ -207,7 +204,7 @@
     .debug-panel .property-value-expanded {
         color: limegreen;
         display: none;
-        max-height: 300px;
+        max-height: 400px;
         max-width: 1000px;
         overflow: auto;
     }
