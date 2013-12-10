@@ -54,7 +54,7 @@ class ShowAction {
                     $queryData[$index] = [
                         'url'        => urlencode($url),
                         'escapedUrl' => $helper->escape(rawurldecode($url)),
-                        'data'       => $data,
+                        'data'       => (bool)$data ? json_encode($data) : null,
                         'timeout'    => isset($message['timeout']) ? $message['timeout'] : null,
                         'startAt'    => $startAt,
                         'count'      => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
