@@ -12394,6 +12394,11 @@
   .bLifeGiftTitle {
     display: none;
   }
+  .bBuyingSteps.mLifeGift .phoneHintLg {
+    display: block;
+    padding: 5px 0 0;
+    font-size: 11px;
+  }
   .bBuyingSteps.mLifeGift .bLifeGiftTitle {
     padding: 0 0 15px;
     font-size: 18px;
@@ -12439,6 +12444,9 @@
   }
   .bBuyingSteps.mLifeGift .mPayMethods .bPayMethod {
     margin-left: 0;
+  }
+  .phoneHintLg {
+    display: none;
   }
 }
 /*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
