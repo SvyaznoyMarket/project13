@@ -663,13 +663,24 @@ return [
         'action'  => ['Qrcode\Action', 'execute'],
     ],
 
-    'debug-curl' => [
-        'pattern' => '/debug/curl',
-        'action'  => ['CurlAction', 'execute'],
+    'debug.query' => [
+        'pattern' => '/debug/query',
+        'action'  => ['QueryAction', 'show'],
         'method'  => ['POST'],
     ],
 
-    'debug-log' => [
+    'debug.query.save' => [
+        'pattern' => '/debug/query/save',
+        'action'  => ['QueryAction', 'save'],
+        'method'  => ['POST'],
+    ],
+
+    'debug.query.show' => [
+        'pattern' => '/debug/query/show/{queryToken}',
+        'action'  => ['QueryAction', 'show'],
+    ],
+
+    'debug.log' => [
         'pattern' => '/debug/log/{id}',
         'action'  => ['LogAction', 'execute'],
         'method'  => ['POST'],

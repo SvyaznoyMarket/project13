@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-class CurlAction {
+class QueryAction {
     /**
      * @param \Http\Request $request
      * @throws \Exception\NotFoundException
