@@ -22,12 +22,22 @@ class ListAction {
     ) {
         /** @var \Model\Product\Entity $product */
 
+        $productData = [];
+        $productCount = $pager->count();
+
+        if (0 === $productCount) {
+            // Не нужно ничего отображать, если кол-во товаров в листинге == 0
+            return [
+                'products' => $productData,
+                'productCount' => $productCount,
+            ];
+        }
+
         $user = \App::user();
 
         $productButtonAction = new \View\Cart\ProductButtonAction();
         $reviewCompactAction = new \View\Product\ReviewCompactAction();
 
-        $productData = [];
         foreach ($pager as $product) {
             $productVideos = isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [];
             /** @var $productVideo \Model\Product\Video\Entity|null */
@@ -104,7 +114,7 @@ class ListAction {
         $productCount = count($productData);
 
         // добавляем баннер в листинги, в нужную позицию
-        if ($bannerPlaceholder && 1 === $pager->getPage()) {
+        if ($productCount && $bannerPlaceholder && 1 === $pager->getPage()) {
             $bannerPlaceholder['isBanner'] = true;
             $productData = array_merge(array_slice($productData, 0, $bannerPlaceholder['position']), [$bannerPlaceholder], array_slice($productData, $bannerPlaceholder['position']));
         }
