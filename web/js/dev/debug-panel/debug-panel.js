@@ -2,20 +2,23 @@
 	console.info('debug panel loaded');
 
 	var
+		d = $(document),
 		debugPanel = $('.jsDebugPanel'),
 		debugPanelConfig = debugPanel.data('value'),
-		debugContent = debugPanel.find('.jsDebugPanelContent'),
-		openDebugPanelBtn = debugPanel.find('.jsOpenDebugPanel');
+		debugContent = debugPanel.find('.jsDebugPanelContent');
 	// end of vars
 
 
 	var
+		/**
+		 * Рендер шаблонов панели отладки
+		 */
 		render = {
 			'_default': function( name, data, icon ) {
 				console.info('render like default');
 
 				var
-					templateWrap = $('#firstLevel'),
+					templateWrap = $('#tplDebugFirstLevelDefault'),
 					template = templateWrap.html(),
 					partials = templateWrap.data('partial'),
 					html;
@@ -31,7 +34,7 @@
 
 			'_expanded': function( name, data, icon ) {
 				var
-					templateWrap = $('#firstLevel-hidden'),
+					templateWrap = $('#tplDebugFirstLevelHidden'),
 					template = templateWrap.html(),
 					partials = templateWrap.data('partial'),
 					html;
@@ -63,7 +66,7 @@
 				console.info('render like git');
 
 				var
-					templateWrap = $('#firstLevel-git'),
+					templateWrap = $('#tplDebugFirstLevelGit'),
 					template = templateWrap.html(),
 					partials = templateWrap.data('partial'),
 					html;
@@ -76,16 +79,12 @@
 
 				return html;
 			},
-
-			// 'env': function( name, data ) {
-
-			// },
 			
 			'query': function( name, data ) {
 				console.info('render like query');
 
 				var
-					templateWrap = $('#firstLevel-query'),
+					templateWrap = $('#tplDebugFirstLevelQuery'),
 					template = templateWrap.html(),
 					partials = templateWrap.data('partial'),
 					html;
@@ -103,7 +102,7 @@
 				console.info('render like timer');
 
 				var
-					templateWrap = $('#firstLevel-timer'),
+					templateWrap = $('#tplDebugFirstLevelTimer'),
 					template = templateWrap.html(),
 					partials = templateWrap.data('partial'),
 					html;
@@ -117,18 +116,6 @@
 				return html;
 			},
 
-			// 'user': function( name, data ) {
-
-			// },
-			// 'route': function( name, data ) {
-
-			// },
-			// 'act': function( name, data ) {
-
-			// },
-			// 'sub.act': function( name, data ) {
-
-			// },
 			'session': function( name, data ) {
 				console.info('render like session');
 
@@ -146,7 +133,7 @@
 				console.info('render like memory');
 
 				var
-					templateWrap = $('#firstLevel-memory'),
+					templateWrap = $('#tplDebugFirstLevelMemory'),
 					template = templateWrap.html(),
 					partials = templateWrap.data('partial'),
 					html;
@@ -210,11 +197,31 @@
 				html = render['_expanded'](name, data, iconUrl);
 
 				return html;
-			}
+			},
 
+			'ajax': function( name ) {
+				console.info('render like ajax');
+
+				var
+					templateWrap = $('#tplDebugAjax'),
+					template = templateWrap.html(),
+					partials = templateWrap.data('partial'),
+					data = {},
+					html;
+				// end of vars
+				
+				data.name = name;
+
+				html = Mustache.render(template, data, partials);
+
+				return html;
+			}
 		},
 
-		initPanel = function initPanel() {
+		/**
+		 * Инициализация панели отладки
+		 */
+		initPanel = function initPanel( node, data ) {
 			console.info('Render debug panel');
 
 			var
@@ -222,25 +229,58 @@
 				key;
 			// end of vars
 			
-			for ( key in debugPanelConfig ) {
-				if ( !debugPanelConfig.hasOwnProperty(key) ) {
+			for ( key in data ) {
+				if ( !data.hasOwnProperty(key) ) {
 					continue;
 				}
 
 				console.log(key);
-				console.log(debugPanelConfig[key]);
+				console.log(data[key]);
 
 				if ( render.hasOwnProperty(key) ) {
-					html = render[key](key, debugPanelConfig[key]);
+					html = render[key](key, data[key]);
 				}
 				else {
-					html = render['_default'](key, debugPanelConfig[key]);
+					html = render['_default'](key, data[key]);
 				}
 
-				debugContent.append(html);
+				node.append(html);
 			}
 		},
 
+		/**
+		 * Общий обработчик AJAX
+		 */
+		ajaxResponse = function ajaxResponse( event, xhr, settings ) {
+			console.warn('=== ajaxSuccess ===');
+
+			var
+				res = JSON.parse(xhr.responseText),
+				debugInfo = res.debug || false,
+				siteUrl = settings.url,
+				outNode,
+				html;
+			// end of vars
+
+			if ( !debugInfo ) {
+				return;
+			}
+
+			html = render['ajax'](siteUrl);
+			
+			debugPanel.append(html);
+
+			outNode = debugPanel.find('.jsDebugPanelContent').eq(debugPanel.find('.jsDebugPanelContent').length - 1);
+
+			console.log(outNode);
+			// debugPanel.append(html);
+
+			initPanel( outNode, debugInfo );
+		},
+
+		/**
+		 * Сворачивание\Разворачивание значений
+		 */
 		expandValue = function expandValue() {
 			console.info('expandValue');
 
@@ -248,36 +288,40 @@
 				self = $(this),
 				openClass = 'jsOpened',
 				opened = self.hasClass(openClass),
-				expandValue = self.siblings('.jsExpandedValue');
+				expandValueNode = self.parents('tr').find('.jsExpandedValue');
 			// end of vars
 			
 			if ( opened ) {
-				expandValue.hide(300);
-				self.removeClass(openClass).html('...');
+				expandValueNode.hide(300);
+				self.removeClass(openClass);
 			}
 			else {
-				expandValue.show(300);
-				self.addClass(openClass).html('Свернуть');
+				expandValueNode.show(300);
+				self.addClass(openClass);
 			}
 
 			return false;
 		},
 
+		/**
+		 * Открытие дебаг панели
+		 */
 		openDebugPanel = function openDebugPanel() {
 			console.info('Show debug panel');
 
 			var
 				self = $(this),
 				openClass = 'jsOpened',
-				opened = self.hasClass(openClass);
+				opened = self.hasClass(openClass),
+				expand = self.siblings('.jsDebugPanelContent');
 			// end of vars
 
 			if ( opened ) {
-				debugContent.fadeOut(300);
+				expand.fadeOut(300);
 				self.removeClass(openClass);
 			}
 			else {
-				debugContent.fadeIn(300);
+				expand.fadeIn(300);
 				self.addClass(openClass);
 			}
 
@@ -285,100 +329,12 @@
 		};
 	// end of functions
 
-	initPanel();
 
-	debugPanel.on('click', '.jsExpandValue', expandValue)
-	openDebugPanelBtn.on('click', openDebugPanel);
+	initPanel( debugContent, debugPanelConfig );
 
+	debugPanel.on('click', '.jsExpandValue', expandValue);
+	debugPanel.on('click', '.jsOpenDebugPanel', openDebugPanel);
 
-	// $('.debug-panel a').on('click', function(e) {
-	// 	e.preventDefault();
-	// 	console.info('debug cliclked');
-
-	// 	var
-	// 		parent = $(this).parent(),
-	// 		contentEl = parent.find('.content'),
-	// 		content = '<br /><table class="property">';
-	// 	// end of vars
-
-	// 	$.each(parent.data('value'), function(i, item) {
-	// 		var
-	// 			type = item[1],
-	// 			value = item[0],
-	// 			icon = '/debug/icons/default.png';
-	// 		// end of vars
-
-	// 		if ( ('id' == i) || ('env' == i) || ('route' == i) || ('act' == i) || ('sub.act' == i) || ('user' == i) ) {
-	// 			value = '<span style="color: #ffffff">' + value + '</span>';
-	// 		}
-	// 		else if ('status' == i) {
-	// 			value = '<span style="color: ' + ((value > 300) ? '#ff0000' : '#00ff00') + '">' + value + '</span>' ;
-	// 		}
-	// 		else if ('git' == i) {
-	// 			value = '<span style="color: #ffff00">' + value.version + '</span> ' + value.tag;
-	// 		}
-	// 		else if ('timer' == i) {
-	// 			value = '<table>';
-	// 			$.each(item[0], function(i, item) {
-	// 				value += '<tr><td class="query-cell">' + i + ': </td><td class="query-cell query-ok">' + item.value + ' ' + item.unit + ' (' + item.count + ')' + '</td></tr>';
-	// 			})
-	// 			value += '</table>';
-	// 		}
-	// 		else if ('memory' == i) {
-	// 			value = value.value + ' ' + value.unit;
-	// 		}
-	// 		else if (('error' == i) && (value[0])) {
-	// 			value = value[0];
-	// 			value = '<span style="color: #ff0000">#' + value.code + ' ' + value.message + '</span>';
-	// 		}
-	// 		else if ('query' == i) {
-	// 			value = '<table>';
-	// 			$.each(item[0], function(i, item) {
-	// 				valueClass = 'query-default';
-	// 				if (item.error) {
-	// 					valueClass = 'query-fail';
-	// 				} else if (item.url) {
-	// 					valueClass = 'query-ok';
-	// 				} else {
-	// 					item.url = '';
-	// 				}
-
-	// 				value += '<tr>'
-	// 					+ '<td class="query-cell">'
-	// 						+ ((item.info && item.info.total_time) ? item.info.total_time : '')
-	// 					+ '</td>'
-	// 					+ '<td class="query-cell">'
-	// 						+ ((item.url && item.retryCount) ? item.retryCount : '')
-	// 					+ '</td>'
-	// 					+ '<td class="query-cell">'
-	// 						+ ((item.header && item.header['X-Server-Name']) ? item.header['X-Server-Name'] : '')
-	// 						+ ' '
-	// 						+ ((item.header && item.header['X-API-Mode']) ? item.header['X-API-Mode'] : '')
-	// 					+ '</td>'
-	// 					+ '<td class="query-cell"><a href="' + item.url + '" class="query ' + valueClass + '">' + item.escapedUrl + (item.data ? ('<span style="color: #ededed"> --data ' + JSON.stringify(item.data) + '</span>') : '') + '</a></td>'
-	// 					+ '</tr>';
-
-	// 			})
-	// 			value += '</table>';
-	// 		}
-	// 		else {
-	// 			value = '<pre class="hidden">' + JSON.stringify(value, null, 4) + '</pre>';
-	// 		}
-
-	// 		if ( -1 !== $.inArray(i, ['id', 'query', 'user', 'config', 'memory', 'memory', 'time']) ) {
-	// 			icon = '/debug/icons/' + i + '.png';
-	// 		}
-
-	// 		content += (
-	// 			'<tr>'
-	// 			+ '<td class="property-name" style="background-image: url(' + icon + ');"><a class="property-name-link" href="#" style="' + (('info' != type) ? ('color: #ff0000;') : '') + '">' + i  + '</a></td>'
-	// 			+ '<td class="property-value">' + value + '</td>'
-	// 			+ '</tr>'
-	// 		);
-	// 	});
-	// 	content += '</table>';
-
-	// 	contentEl.html(content);
-	// });
+	d.ajaxSuccess(ajaxResponse);
 
 }(this, this.document, this.jQuery, this.ENTER, this.Mustache));

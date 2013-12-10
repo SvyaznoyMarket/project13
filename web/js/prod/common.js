@@ -106,19 +106,6 @@
 			}
 		}
 	});
-
-	/**
-	 * Общий обработчик AJAX
-	 */
-	$(document).ajaxSuccess(function( event, xhr, settings ) {
-		console.warn('=== ajaxSuccess ===');
-
-		var
-			res = JSON.parse(xhr.responseText);
-		// end of vars
-		
-		console.log(res);
-	});
 }(this, this.document, this.jQuery, this.ENTER));
  
  

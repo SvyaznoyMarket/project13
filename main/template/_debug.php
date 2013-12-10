@@ -5,7 +5,7 @@
  */
 ?>
 
-<script id="firstLevel" type="text/html">
+<script id="tplDebugFirstLevelDefault" type="text/html">
     <tr>
         <td style="background-image: url({{iconUrl}});" class="property-name">
             {{name}}
@@ -16,7 +16,7 @@
     </tr>
 </script>
 
-<script id="firstLevel-git" type="text/html">
+<script id="tplDebugFirstLevelGit" type="text/html">
     <tr>
         <td style="background-image: url({{iconUrl}});" class="property-name">
             {{name}}
@@ -27,58 +27,62 @@
     </tr>
 </script>
 
-<script id="firstLevel-query" type="text/html">
+<script id="tplDebugFirstLevelQuery" type="text/html">
     <tr>
         <td style="background-image: url({{iconUrl}});" class="property-name">
-            {{name}}
+            <a class="jsExpandValue jsOpened" href="#">{{name}}</a>
         </td>
         <td class="property-value">
-            <table>
-                <tbody>
-                    {{#value}}
-                        <tr>
-                            <td class="query-cell">{{info.total_time}}</td>
-                            <td class="query-cell">{{retryCount}}</td>
-                            <td class="query-cell">{{header.X-Server-Name}} {{header.X-API-Mode}}</td>
-                            <td class="query-cell">
-                                <a class="query 
-                                        {{#error}}
-                                            query-fail
-                                        {{/error}}
-                                        {{#url}}
-                                            query-ok
-                                        {{/url}}"
-                                    href="/debug/query?data={{data}}&url={{url}}" target="_blank">{{escapedUrl}}</a>
-                            </td>
-                        </tr>
-                    {{/value}}
-                </tbody>
-            </table>
+            <div class="jsExpandedValue property-value-expanded" style="display:block;">
+                <table>
+                    <tbody>
+                        {{#value}}
+                            <tr>
+                                <td class="query-cell">{{info.total_time}}</td>
+                                <td class="query-cell">{{retryCount}}</td>
+                                <td class="query-cell">{{header.X-Server-Name}} {{header.X-API-Mode}}</td>
+                                <td class="query-cell">
+                                    <a class="query 
+                                            {{#error}}
+                                                query-fail
+                                            {{/error}}
+                                            {{#url}}
+                                                query-ok
+                                            {{/url}}"
+                                        href="/debug/query?data={{data}}&url={{url}}" target="_blank">{{escapedUrl}}</a>
+                                </td>
+                            </tr>
+                        {{/value}}
+                    </tbody>
+                </table>
+            </div>
         </td>
     </tr>
 </script>
 
-<script id="firstLevel-timer" type="text/html">
+<script id="tplDebugFirstLevelTimer" type="text/html">
     <tr>
         <td style="background-image: url({{iconUrl}});" class="property-name">
-            {{name}}
+            <a class="jsExpandValue jsOpened" href="#">{{name}}</a>
         </td>
         <td class="property-value">
-            <table>
-                <tbody>
-                    {{#value}}
-                        <tr>
-                            <td class="query-cell">{{name}}: </td>
-                            <td class="query-cell query-ok">{{value}} {{unit}} ({{count}})</td>
-                        </tr>
-                    {{/value}}
-                </tbody>
-            </table>
+            <div class="jsExpandedValue property-value-expanded" style="display:block;">
+                <table>
+                    <tbody>
+                        {{#value}}
+                            <tr>
+                                <td class="query-cell">{{name}}: </td>
+                                <td class="query-cell query-ok">{{value}} {{unit}} ({{count}})</td>
+                            </tr>
+                        {{/value}}
+                    </tbody>
+                </table>
+            </div>
         </td>
     </tr>
 </script>
 
-<script id="firstLevel-memory" type="text/html">
+<script id="tplDebugFirstLevelMemory" type="text/html">
     <tr>
         <td style="background-image: url({{iconUrl}});" class="property-name">
             {{name}}
@@ -89,24 +93,40 @@
     </tr>
 </script>
 
-<script id="firstLevel-hidden" type="text/html">
+<script id="tplDebugFirstLevelHidden" type="text/html">
     <tr>
         <td style="background-image: url({{iconUrl}});" class="property-name">
-            {{name}}
+            <a class="jsExpandValue" href="#">{{name}}</a>
         </td>
         <td class="property-value">
-            <a class="jsExpandValue" href="#">...</a>
             <div class="jsExpandedValue property-value-expanded"><pre>{{_data}}</pre></div>
         </td>
     </tr>
 </script>
 
+<script id="tplDebugAjax" type="text/html">
+    <div>
+        <a class="jsOpenDebugPanel" href="#">{{name}}</a>
+        <div class="jsDebugPanelContent" style="display: none"></div>
+    </div>
+</script>
+
 <div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>" style="position: fixed; bottom: 30px; left: 2px; z-index: 999;">
-    <a class="jsOpenDebugPanel" href="#" style="padding-bottom: 10px;">debug</a>
-    <table class="jsDebugPanelContent" style="display: none"></table>
+    <div>
+        <a class="jsOpenDebugPanel" href="#">debug</a>
+        <table class="jsDebugPanelContent" style="display: none"></table>
+    </div>
 </div>
 
 <style type="text/css">
+    .jsOpenDebugPanel {
+        padding: 5px;
+        text-decoration: underline;
+        display: block;
+    }
+    .jsOpenDebugPanel.jsOpened {
+        color: greenyellow;
+    }
     .debug-panel {
         position: fixed;
         bottom: 30px;
