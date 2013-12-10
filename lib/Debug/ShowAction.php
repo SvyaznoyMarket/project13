@@ -192,9 +192,7 @@ class ShowAction {
             $response->setData($contentData);
         } else if ($response instanceof \Http\Response) {
             $response->setContent(
-                $response->getContent()
-                . "\n\n"
-                . \App::templating()->render('_debug', ['debugData' => $debugData, 'helper' => new \Helper\TemplateHelper()])
+                str_replace('</body>', PHP_EOL . \App::templating()->render('_debug', ['debugData' => $debugData, 'helper' => new \Helper\TemplateHelper()]) . PHP_EOL .'</body>', $response->getContent())
             );
         }
     }

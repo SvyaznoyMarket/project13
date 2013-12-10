@@ -124,7 +124,6 @@
 <style type="text/css">
     .jsOpenDebugPanel {
         padding: 5px;
-        text-decoration: underline;
         display: block;
         margin: 4px 0 0;
         background: #0f1113;
