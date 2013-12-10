@@ -13,7 +13,7 @@ class QueryAction {
 
         \App::config()->debug = false;
 
-        $url = trim((string)$request->get('url'));
+        $url = urldecode(trim((string)$request->get('url')));
         $data = $request->get('data');
         if (is_string($data)) {
             $data = json_decode($data, true);
