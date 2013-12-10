@@ -246,6 +246,10 @@ module.exports = function( grunt ) {
 				files: ['../web/js/vendor/*.js'],
 				tasks: ['uglify:vendorScripts', 'jshint', 'exec:getVersion']
 			},
+			debugPanel: {
+				files: [jsDevPath+'debug-panel/*.js'],
+				tasks: ['concat:debugPanel', 'jshint']
+			},
 			cartJS:{
 				files: [jsDevPath+'cart/*.js'],
 				tasks: ['concat:cartJS', 'jshint', 'uglify:cartJS',  'connect', 'qunit', 'exec:getVersion']
@@ -319,6 +323,10 @@ module.exports = function( grunt ) {
 		concat: {
 			options: {
 				separator: '\n \n \n/** \n * NEW FILE!!! \n' + ' */\n \n \n',
+			},
+			debugPanel: {
+				src: [jsDevPath+'debug-panel/*.js'],
+				dest: jsProdPath+'debug-panel.js'
 			},
 			cartJS : {
 				src: [jsDevPath+'cart/*.js'],
@@ -419,6 +427,12 @@ module.exports = function( grunt ) {
 					'../web/js/loadjs.min.js': [jsRootPath+'loadjs.js']
 				}
 			},
+
+			// debugPanel: {
+			// 	files: {
+			// 		'../web/js/prod/debug-panel.min.js': [jsDevPath+'debug-panel/*.js']
+			// 	}
+			// },
 
 			cartJS: {
 				files: {

@@ -5,9 +5,105 @@
  */
 ?>
 
+<script id="firstLevel" type="text/html">
+    <tr>
+        <td style="background-image: url({{iconUrl}});" class="property-name">
+            {{name}}
+        </td>
+        <td class="property-value">
+            <span style="color: #ffffff">{{value}}</span>
+        </td>
+    </tr>
+</script>
+
+<script id="firstLevel-git" type="text/html">
+    <tr>
+        <td style="background-image: url({{iconUrl}});" class="property-name">
+            {{name}}
+        </td>
+        <td class="property-value">
+            <a target="_blank" href="https://github.com/SvyaznoyMarket/project13/tree/{{value.version}}" style="color: #ffff00; text-decoration: underline;">{{value.version}}</a> {{value.tag}}
+        </td>
+    </tr>
+</script>
+
+<script id="firstLevel-query" type="text/html">
+    <tr>
+        <td style="background-image: url({{iconUrl}});" class="property-name">
+            {{name}}
+        </td>
+        <td class="property-value">
+            <table>
+                <tbody>
+                    {{#value}}
+                        <tr>
+                            <td class="query-cell">{{info.total_time}}</td>
+                            <td class="query-cell">{{retryCount}}</td>
+                            <td class="query-cell">{{header.X-Server-Name}} {{header.X-API-Mode}}</td>
+                            <td class="query-cell">
+                                <a class="query 
+                                        {{#error}}
+                                            query-fail
+                                        {{/error}}
+                                        {{#url}}
+                                            query-ok
+                                        {{/url}}"
+                                    href="/debug/query?data={{data}}&url={{url}}" target="_blank">{{escapedUrl}}</a>
+                            </td>
+                        </tr>
+                    {{/value}}
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</script>
+
+<script id="firstLevel-timer" type="text/html">
+    <tr>
+        <td style="background-image: url({{iconUrl}});" class="property-name">
+            {{name}}
+        </td>
+        <td class="property-value">
+            <table>
+                <tbody>
+                    {{#value}}
+                        <tr>
+                            <td class="query-cell">{{name}}: </td>
+                            <td class="query-cell query-ok">{{value}} {{unit}} ({{count}})</td>
+                        </tr>
+                    {{/value}}
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</script>
+
+<script id="firstLevel-memory" type="text/html">
+    <tr>
+        <td style="background-image: url({{iconUrl}});" class="property-name">
+            {{name}}
+        </td>
+        <td class="property-value">
+            <span style="color: #ffff00;">{{value.value}}</span> {{value.unit}}
+        </td>
+    </tr>
+</script>
+
+<script id="firstLevel-hidden" type="text/html">
+    <tr>
+        <td style="background-image: url({{iconUrl}});" class="property-name">
+            {{name}}
+        </td>
+        <td class="property-value">
+            <a class="jsExpandValue" href="#">...</a>
+            <div class="jsExpandedValue property-value-expanded"><pre>{{_data}}</pre></div>
+        </td>
+    </tr>
+</script>
+
 <div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>" style="position: fixed; bottom: 30px; left: 2px; z-index: 999;">
-    <a href="#" style="padding-bottom: 10px;">debug</a>
-    <div class="content"></div>
+    <a class="jsOpenDebugPanel" href="#" style="padding-bottom: 10px;">debug</a>
+    <table class="jsDebugPanelContent" style="display: none"></table>
 </div>
 
 <style type="text/css">
@@ -49,6 +145,7 @@
         padding: 5px 0 5px 22px;
         background-repeat: no-repeat;
         background-position: 0 3px;
+        vertical-align: top;
     }
     .debug-panel .property-name a {
         color: #68c5e1;
@@ -73,6 +170,13 @@
     .debug-panel .property-value .query-ok {
         color: limegreen;
     }
+    .debug-panel .property-value-expanded {
+        background: #222;
+        color: limegreen;
+        display: none;
+        max-height: 300px;
+        overflow: scroll;
+    }
     .debug-panel .property-value .query-fail {
         color: red;
     }
@@ -87,90 +191,3 @@
         white-space: nowrap;
     }
 </style>
-
-<script type="text/javascript">
-    $('.debug-panel a').on('click', function(e) {
-        e.preventDefault();
-        console.info('debug cliclked');
-
-        var parent = $(this).parent();
-        var contentEl = parent.find('.content');
-
-        if (parent.data('initialized')) {
-            contentEl.toggle();
-            return false;
-        }
-
-        var content = '<br /><table class="property">';
-        $.each(parent.data('value'), function(i, item) {
-            var type = item['type'];
-            var value = item['value'];
-            var icon = '/debug/icons/default.png';
-
-            if (('id' == i) || ('env' == i) || ('route' == i) || ('act' == i) || ('sub.act' == i) || ('user' == i)) {
-                value = '<span style="color: #ffffff">' + value + '</span>';
-            } else if ('status' == i) {
-                value = '<span style="color: ' + ((value > 300) ? '#ff0000' : '#00ff00') + '">' + value + '</span>' ;
-            } else if ('git' == i) {
-                value = '<span style="color: #ffff00">' + value.version + '</span> ' + value.tag;
-            } else if ('timer' == i) {
-                value = '<table>';
-                $.each(item['value'], function(i, item) {
-                    value += '<tr><td class="query-cell">' + i + ': </td><td class="query-cell query-ok">' + item.value + ' ' + item.unit + ' (' + item.count + ')' + '</td></tr>';
-                })
-                value += '</table>';
-            } else if ('memory' == i) {
-                value = value.value + ' ' + value.unit;
-            } else if (('error' == i) && (value[0])) {
-                value = value[0];
-                value = '<span style="color: #ff0000">#' + value.code + ' ' + value.message + '</span>';
-            } else if ('query' == i) {
-                value = '<table>';
-                $.each(item['value'], function(i, item) {
-                    valueClass = 'query-default';
-                    if (item.error) {
-                        valueClass = 'query-fail';
-                    } else if (item.url) {
-                        valueClass = 'query-ok';
-                    } else {
-                        item.url = '';
-                    }
-
-                    value += '<tr>'
-                        + '<td class="query-cell">'
-                            + ((item.info && item.info.total_time) ? item.info.total_time : '')
-                        + '</td>'
-                        + '<td class="query-cell">'
-                            + ((item.url && item.retryCount) ? item.retryCount : '')
-                        + '</td>'
-                        + '<td class="query-cell">'
-                            + ((item.header && item.header['X-Server-Name']) ? item.header['X-Server-Name'] : '')
-                            + ' '
-                            + ((item.header && item.header['X-API-Mode']) ? item.header['X-API-Mode'] : '')
-                        + '</td>'
-                        + '<td class="query-cell"><a target="_blank" href="' + item.url + '" class="query ' + valueClass + '">' + item.escapedUrl + (item.data ? ('<span style="color: #ededed"> --data ' + JSON.stringify(item.data) + '</span>') : '') + '</a></td>'
-                        + '</tr>';
-
-                })
-                value += '</table>';
-            } else {
-                value = '<pre class="hidden">' + JSON.stringify(value, null, 4) + '</pre>';
-            }
-
-            if (-1 !== $.inArray(i, ['id', 'env', 'git', 'query', 'user', 'config', 'memory', 'memory', 'timer', 'session', 'server', 'abTest', 'abTestJson'])) {
-                icon = '/debug/icons/' + i + '.png';
-            }
-
-            content += (
-                '<tr>'
-                + '<td class="property-name" style="background-image: url(' + icon + ');"><a class="property-name-link" href="#" style="' + (('info' != type) ? ('color: #ff0000;') : '') + '">' + i  + '</a></td>'
-                + '<td class="property-value">' + value + '</td>'
-                + '</tr>'
-            );
-        });
-        content += '</table>';
-
-        contentEl.html(content);
-        parent.data('initialized', true);
-    });
-</script>
