@@ -48,7 +48,7 @@
                                         {{#url}}
                                             query-ok
                                         {{/url}}"
-                                    href="/debug/query?data={{data}}&url={{url}}" target="_blank">{{escapedUrl}}</a>
+                                    href="/debug/query?data={{data}}&url={{url}}" target="_blank">{{&escapedUrl}}</a>
                             </td>
                         </tr>
                     {{/value}}
