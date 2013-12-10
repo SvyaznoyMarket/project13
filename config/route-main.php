@@ -665,18 +665,11 @@ return [
 
     'debug.query' => [
         'pattern' => '/debug/query',
-        'action'  => ['QueryAction', 'show'],
-        'method'  => ['POST'],
-    ],
-
-    'debug.query.save' => [
-        'pattern' => '/debug/query/save',
-        'action'  => ['QueryAction', 'save'],
-        'method'  => ['POST'],
+        'action'  => ['QueryAction', 'index'],
     ],
 
     'debug.query.show' => [
-        'pattern' => '/debug/query/show/{queryToken}',
+        'pattern' => '/debug/query/{queryToken}',
         'action'  => ['QueryAction', 'show'],
     ],
 
