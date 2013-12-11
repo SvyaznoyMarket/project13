@@ -36,6 +36,14 @@ class EditAction {
 
         if ($request->isMethod('post')) {
             $userData = (array)$request->request->get('user');
+
+            if (!array_key_exists('is_subscribe', $userData)) {
+                $userData['is_subscribe'] = false;
+            }
+            if (!array_key_exists('coupon_agree', $userData)) {
+                $userData['coupon_agree'] = false;
+            }
+
             $form->fromArray($userData);
 
             try {
@@ -44,20 +52,24 @@ class EditAction {
                     throw new \Exception("E-mail и телефон не могут быть одновременно пустыми. Укажите ваш мобильный телефон либо e-mail.");
                 }
 
+                if (!$form->getIsSubscribed()) {
+                    throw new \Exception('Не отмечено поле "Хочу узнавать об интересных предложениях"');
+                }
+
                 $response = $client->query(
                     'user/update',
                     ['token' => \App::user()->getToken()],
                     [
-                        'first_name'  => $form->getFirstName(),
-                        'middle_name' => $form->getMiddleName(),
-                        'last_name'   => $form->getLastName(),
-                        'sex'         => $form->getSex(),
-                        'email'       => $form->getEmail(),
-                        'mobile'      => $form->getMobilePhone(),
-                        'phone'       => $form->getHomePhone(),
-                        'skype'       => $form->getSkype(),
-                        'birthday'    => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
-                        'occupation'  => $form->getOccupation(),
+                        'first_name'   => $form->getFirstName(),
+                        'middle_name'  => $form->getMiddleName(),
+                        'last_name'    => $form->getLastName(),
+                        'sex'          => $form->getSex(),
+                        'email'        => $form->getEmail(),
+                        'mobile'       => $form->getMobilePhone(),
+                        'phone'        => $form->getHomePhone(),
+                        'birthday'     => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
+                        'occupation'   => $form->getOccupation(),
+                        'is_subscribe' => $form->getIsSubscribed(),
                     ],
                     \App::config()->coreV2['hugeTimeout']
                 );
@@ -82,7 +94,7 @@ class EditAction {
                                 'email'                     => $form->getEmail(),
                                 'svyaznoy_club_card_number' => null,
                                 'guid'                      => $form->getEnterprizeCoupon(),
-                                'agree'                     => true,
+                                'agree'                     => $form->getCouponAgree(),
                             ],
                             function ($data) use (&$result) {
                                 $result = $data;
@@ -118,7 +130,7 @@ class EditAction {
                     } catch (\Curl\Exception $e) {
                         \App::exception()->remove($e);
                         $errorContent = $e->getContent();
-                        $detail = $errorContent['detail'] ? $errorContent['detail'] : [];
+                        $detail = isset($errorContent['detail']) ? $errorContent['detail'] : [];
 
                         foreach ($detail as $fieldName => $errors) {
                             foreach ($errors as $errorType => $errorMess) {
