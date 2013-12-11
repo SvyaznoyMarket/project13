@@ -309,7 +309,7 @@ class CreateAction {
                 }
 
                 // Проверим наличие товаров либо услуг, чтобы не было создания заказа с пустой корзиной, SITE-2859
-                if ( empty($orderData['service']) && empty($orderData['service']) ) {
+                if ( empty($orderData['product']) && empty($orderData['service']) ) {
                     unset($orderData);
                     continue;
                 }
