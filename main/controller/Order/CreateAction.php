@@ -107,51 +107,13 @@ class CreateAction {
                 \App::logger()->error($e, ['order']);
             }
         } catch(\Exception $e) {
-            switch ($e->getCode()) {
-                case 735:
-                    \App::exception()->remove($e);
-                    $form->setError('sclub_card_number', 'Неверный код карты &laquo;Связной-Клуб&raquo;');
-                    break;
-                case 742:
-                    \App::exception()->remove($e);
-                    $form->setError('cardpin', 'Неверный пин-код подарочного сертификата');
-                    break;
-                case 743:
-                    \App::exception()->remove($e);
-                    $form->setError('cardnumber', 'Подарочный сертификат не найден');
-                    break;
-            }
-
-            $formErrors = [];
-            foreach ($form->getErrors() as $fieldName => $errorMessage) {
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
-            }
-
             $responseData['form'] = [
-                'error' => $formErrors,
+                'error' => $this->updateErrors($e, $form),
             ];
 
             $this->failResponseData($e, $responseData);
 
-            \App::logger()->error([
-                'action'         => __METHOD__,
-                'error'          => $e,
-                'form'           => $form,
-                'request.server' => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
-                    'HTTP_USER_AGENT',
-                    'HTTP_ACCEPT',
-                    'HTTP_ACCEPT_LANGUAGE',
-                    'HTTP_ACCEPT_ENCODING',
-                    'HTTP_X_REQUESTED_WITH',
-                    'HTTP_REFERER',
-                    'HTTP_COOKIE',
-                    'REQUEST_METHOD',
-                    'QUERY_STRING',
-                    'REQUEST_TIME_FLOAT',
-                ]),
-                'request.data'   => $request->request->all(),
-                'session'        => \App::session()->all()
-            ], ['order']);
+            $this->logErrors($request, $e, $form, __METHOD__);
         }
 
         // JsonResponse
@@ -366,7 +328,7 @@ class CreateAction {
         try {
             $result = \App::coreClientV2()->query('order/create-packet', $params, $data, \App::config()->coreV2['hugeTimeout']);
         } catch(\Exception $e) {
-            if (!in_array($e->getCode(), [705, 708, 735, 800])) {
+            if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([
                     'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
                     'url'     => 'order/create-packet' . ((bool)$params ? ('?' . http_build_query($params)) : ''),
