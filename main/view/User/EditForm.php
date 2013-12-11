@@ -25,6 +25,10 @@ class EditForm {
     private $skype;
     /** @var string */
     private $enterprizeCoupon;
+    /** @var bool */
+    private $couponAgree;
+    /** @var bool */
+    private $isSubscribed;
     /** @var array */
     private $errors = array(
         'global'                    => null,
@@ -42,6 +46,7 @@ class EditForm {
         'svyaznoy_club_card_number' => null,
         'guid'                      => null,
         'agree'                     => null,
+        'is_subscribe'              => null,
     );
 
     public function __construct(array $data = []) {
@@ -75,6 +80,8 @@ class EditForm {
         if (array_key_exists('home_phone', $data)) $this->setHomePhone($data['home_phone']);
         if (array_key_exists('skype', $data)) $this->setSkype($data['skype']);
         if (array_key_exists('enterprize_coupon', $data)) $this->setEnterprizeCoupon($data['enterprize_coupon']);
+        if (array_key_exists('coupon_agree', $data)) $this->setCouponAgree($data['coupon_agree']);
+        if (array_key_exists('is_subscribe', $data)) $this->setIsSubscribed($data['is_subscribe']);
     }
 
     public function fromEntity(\Model\User\Entity $entity) {
@@ -88,6 +95,7 @@ class EditForm {
         $this->setMobilePhone($entity->getMobilePhone());
         $this->setHomePhone($entity->getHomePhone());
         $this->setSkype($entity->getSkype());
+        $this->setIsSubscribed($entity->getIsSubscribed());
     }
 
     /**
@@ -300,5 +308,34 @@ class EditForm {
         }
 
         return $isValid;
+    }
+
+    /**
+     * @param boolean $couponAgree
+     */
+    public function setCouponAgree($couponAgree) {
+        $this->couponAgree = (bool)$couponAgree;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCouponAgree() {
+        return $this->couponAgree;
+    }
+
+    /**
+     * @param boolean $isSubscribed
+     */
+    public function setIsSubscribed($isSubscribed) {
+        $this->isSubscribed = (bool)$isSubscribed;
+        //file_put_contents('/tmp/logger.txt', print_r($this->isSubscribed, true).PHP_EOL, FILE_APPEND);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsSubscribed() {
+        return $this->isSubscribed;
     }
 }
