@@ -278,11 +278,11 @@
 			// end of vars
 
 			if ( opened ) {
-				expand.fadeOut(300);
+				expand.slideUp(200);
 				self.removeClass(openClass);
 			}
 			else {
-				expand.fadeIn(300);
+				expand.slideDown(200);
 				self.addClass(openClass);
 			}
 
