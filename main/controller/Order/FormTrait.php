@@ -207,7 +207,7 @@ trait FormTrait {
                 break;
             case 759:
                 \App::exception()->remove($e);
-                $form->setError('recipient_email', 'Некорректный ! email');
+                $form->setError('recipient_email', 'Некорректный email');
                 break;
         }
 
