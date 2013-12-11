@@ -369,7 +369,18 @@ class Action {
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 
-        $relatedCategories = $this->getRelatedCategories($catalogJson);
+        $relatedCategories = [];
+        if (!empty($catalogJson['related_categories'])) {
+            \RepositoryManager::productCategory()->prepareCollectionById(
+                (array) $catalogJson['related_categories'],
+                $region,
+                function($data) use (&$relatedCategories) {
+                    foreach ($data as $item) {
+                        $relatedCategories[] = new \Model\Product\Category\Entity($item);
+                    }
+                }
+            );
+        }
 
         // поддержка GET-запросов со старыми фильтрами
         if (!$categoryClass && is_array($request->get(\View\Product\FilterForm::$name)) && (bool)$request->get(\View\Product\FilterForm::$name)) {
@@ -1056,20 +1067,6 @@ class Action {
         }
 
         return $hints;
-    }
-
-
-    /**
-     * @param   array     $catalogJson
-     * @return  array|\Model\Product\Category\Entity[]
-     */
-    protected function getRelatedCategories(&$catalogJson) {
-        if ( !isset($catalogJson['related_categories']) ) {
-            return [];
-        }
-        $related_categories_ids = (array) $catalogJson['related_categories'];
-        $related_categories = \RepositoryManager::productCategory()->getCollectionById($related_categories_ids);
-        return $related_categories;
     }
 
 }
