@@ -104,11 +104,13 @@ class Action {
 
         // ядерный запрос
         $result = [];
-        \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
-            $result = $data;
-        });
+        if (mb_strlen($searchQuery) >= \App::config()->search['queryStringLimit']) {
+            \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
+                $result = $data;
+            });
 
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
+        }
 
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
