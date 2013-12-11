@@ -60,7 +60,7 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
             </div>
 
             <ul class="enterPrize__rules clearfix"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
-                <li class="enterPrize__rules__item">Для того, чтобы получить вашу скидку,<br/>заполните недостающие поля в вашем профиле</li>
+                <li class="enterPrize__rules__item">Отличный выбор!<br/>С фишками ENTER PRIZE покупать в ENTER выгодно и радостно!</li>
             </ul>
         </div>
     <? endif ?>
