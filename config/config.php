@@ -347,6 +347,7 @@ $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
 $c->order['maxSumOnline'] = 15000;
 $c->order['newCreate'] = true;
+$c->order['excludedError'] = [705, 708, 735, 759, 800];
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';

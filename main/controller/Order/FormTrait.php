@@ -184,4 +184,67 @@ trait FormTrait {
         ];
         $cookies[] = new \Http\Cookie(\App::config()->order['cookieName'] ?: 'last_order', strtr(base64_encode(serialize($cookieValue)), '+/', '-_'), strtotime('+1 year' ));
     }
+
+
+    /**
+     * @param \Exception $e
+     * @param Form $form
+     * @return array
+     */
+    protected function updateErrors(\Exception $e, \View\Order\NewForm\Form &$form) {
+        switch ($e->getCode()) {
+            case 735:
+                \App::exception()->remove($e);
+                $form->setError('sclub_card_number', 'Неверный код карты &laquo;Связной-Клуб&raquo;');
+                break;
+            case 742:
+                \App::exception()->remove($e);
+                $form->setError('cardpin', 'Неверный пин-код подарочного сертификата');
+                break;
+            case 743:
+                \App::exception()->remove($e);
+                $form->setError('cardnumber', 'Подарочный сертификат не найден');
+                break;
+            case 759:
+                \App::exception()->remove($e);
+                $form->setError('recipient_email', 'Некорректный email');
+                break;
+        }
+
+        $formErrors = [];
+        foreach ($form->getErrors() as $fieldName => $errorMessage) {
+            $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
+        }
+
+        return $formErrors;
+    }
+
+
+    /**
+     * @param \Http\Request $request
+     * @param \Exception $e
+     * @param Form $form
+     * @param string $methodName
+     */
+    protected function logErrors(\Http\Request $request, \Exception $e, \View\Order\NewForm\Form $form, $methodName = __METHOD__) {
+        \App::logger()->error([
+            'action'         => $methodName,
+            'error'          => $e,
+            'form'           => $form,
+            'request.server' => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
+                'HTTP_USER_AGENT',
+                'HTTP_ACCEPT',
+                'HTTP_ACCEPT_LANGUAGE',
+                'HTTP_ACCEPT_ENCODING',
+                'HTTP_X_REQUESTED_WITH',
+                'HTTP_REFERER',
+                'HTTP_COOKIE',
+                'REQUEST_METHOD',
+                'QUERY_STRING',
+                'REQUEST_TIME_FLOAT',
+            ]),
+            'request.data'   => $request->request->all(),
+            'session'        => \App::session()->all()
+        ], ['order']);
+    }
 }
