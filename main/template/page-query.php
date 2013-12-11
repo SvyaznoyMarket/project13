@@ -20,7 +20,7 @@ return function(
 
                 <div class="form-group">
                     <a class="jsJson" data-target=".jsDebugData" href="#"><span class="glyphicon glyphicon-align-left"></span></a>
-                    <textarea name="data" data-json-view="plain" class="form-control jsDebugData" rows="6" placeholder="{}"><?= (bool)$data ? json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : '' ?></textarea>
+                    <textarea name="data" data-json-view="inline" class="form-control jsDebugData" rows="6" placeholder="{}"><?= (bool)$data ? json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : '' ?></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-default">Выполнить</button>
@@ -45,7 +45,7 @@ return function(
         var target =  $($(this).data('target'));
         if (!target) return false;
 
-        if ('plain' == target.data('jsonView')) {
+        if ('inline' == target.data('jsonView')) {
             target.text(
                 JSON.stringify(
                     JSON.parse(target.text()),
@@ -61,7 +61,7 @@ return function(
                     null
                 )
             );
-            target.data('jsonView', 'plain');
+            target.data('jsonView', 'inline');
         }
 
         $(this).blur();
