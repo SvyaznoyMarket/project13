@@ -127,6 +127,12 @@ class InfoAction {
                     'show'   => !$request->cookies->has(\App::config()->subscribe['cookieName']),
                     'agreed' => 1 == (int)$request->cookies->get(\App::config()->subscribe['cookieName']),
                 ];
+                /* //TODO: $this->setSubscribeStatus(
+                    $request,
+                    ($request->cookies->has(\App::config()->subscribe['cookieName'])) ?
+                        $request->cookies->get(\App::config()->subscribe['cookieName']) :
+                        false
+                );*/
             }
         } catch (\Exception $e) {
             $responseData['success'] = false;
@@ -140,4 +146,73 @@ class InfoAction {
 
         return $response;
     }
+
+
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     */
+    public function getSubscribeStatus(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new \Exception\NotFoundException('Request is not xml http');
+        }
+
+        $responseData = [];
+
+        if (\App::config()->subscribe['enabled']) {
+            $responseData['show']   = !$request->cookies->has(\App::config()->subscribe['cookieName']);
+            $responseData['agreed'] = 1 == (int)$request->cookies->get(\App::config()->subscribe['cookieName']);
+        }
+
+        return new \Http\JsonResponse($responseData);
+    }
+
+
+    /**
+     * @param \Http\Request $request
+     * @param null $status
+     * @return \Http\JsonResponse
+     */
+    public function setSubscribeStatus(\Http\Request $request, $status = null) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new \Exception\NotFoundException('Request is not xml http');
+        }
+
+        $cookie = null;
+
+        try {
+            if (\App::config()->subscribe['enabled']) {
+                if (null !== $status && false != $status) {
+                        $cookie = new \Http\Cookie(
+                            \App::config()->subscribe['cookieName'],
+                            (int)$status,
+                            time() + (4 * 7 * 24 * 60 * 60),
+                            '/',
+                            null,
+                            false,
+                            false // важно httpOnly=false, чтобы js мог получить куку
+                        );
+                        $responseData['status'] = $status;
+                }
+                $responseData['success'] = true;
+            }
+        } catch (\Exception $e) {
+            $responseData['success'] = false;
+        }
+
+        $response = new \Http\JsonResponse($responseData);
+
+        if (false == $status){
+            $response->headers->clearCookie(\App::config()->subscribe['cookieName']); // todo domainName
+        } elseif ($cookie) {
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
+    }
+
 }

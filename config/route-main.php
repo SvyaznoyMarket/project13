@@ -33,6 +33,16 @@ return [
         'pattern' => '/ajax/user/info',
         'action'  => ['User\InfoAction', 'execute'],
     ],
+    // Статус подписки пользователя, получить
+    'user.subscribe.getStatus' => [
+        'pattern' => '/ajax/subscribe/status/get',
+        'action'  => ['User\InfoAction', 'getSubscribeStatus'],
+    ],
+    // Статус подписки пользователя, установить
+    'user.subscribe.setStatus' => [
+        'pattern' => '/ajax/subscribe/status/set/{status}',
+        'action'  => ['User\InfoAction', 'setSubscribeStatus'],
+    ],
     // инфо пользователя
     'old.user.info' => [
         'pattern' => '/user/shortinfo',

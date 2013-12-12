@@ -100,7 +100,7 @@ class User {
         // }
 
         // SITE-2709 {
-        $cookie = new \Http\Cookie(
+        /*$cookie = new \Http\Cookie(
             '_authorized',
             true,
             $time,
@@ -109,7 +109,8 @@ class User {
             false,
             false
         );
-        $response->headers->setCookie($cookie);
+        $response->headers->setCookie($cookie);*/
+        $this->enableInfoCookie($response);
         // }
 
         //\RepositoryManager::getUser()->saveEntity($user);
@@ -417,6 +418,46 @@ class User {
     public function getParams()
     {
         return $this->params;
+    }
+
+
+    /**
+     * @param $response
+     */
+    public static function enableInfoCookie(&$response) {
+        $manHost = preg_replace('/^www./', '.', \App::config()->mainHost);
+        $time = time() + \App::config()->session['cookie_lifetime'];
+
+        $cookie = new \Http\Cookie(
+            '_authorized',
+            true, //cookieValue
+            $time,
+            '/',
+            $manHost,
+            false,
+            false
+        );
+        $response->headers->setCookie($cookie);
+    }
+
+
+    /**
+     * @param $response
+     */
+    public static function disableInfoCookie(&$response) {
+        $manHost = preg_replace('/^www./', '.', \App::config()->mainHost);
+        $time = time() + \App::config()->session['cookie_lifetime'];
+
+        $cookie = new \Http\Cookie(
+            '_authorized',
+            false, //cookieValue
+            $time,
+            '/',
+            $manHost,
+            false,
+            false
+        );
+        $response->headers->setCookie($cookie);
     }
 
 }
