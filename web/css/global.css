@@ -11355,7 +11355,7 @@
     border: 1px solid #e6e6e6;
     background: #f6f6f6;
   }
-  .bCatalogRoot__eItem:nth-child(4n+1) {
+  .bCatalogRoot__eItem:nth-child(4n) {
     margin-right: 0;
   }
   .bCatalogRoot__eItem.mBanner2Item {
