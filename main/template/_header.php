@@ -57,10 +57,10 @@
                         <div class="enterPrize__text">
                             <strong class="title">Enter Prize</strong>
 
-                            Зарегестрируйся и выбери свой купон на скидку!
+                            Выбери фишку со скидкой на любой товар в ENTER!
                         </div>
 
-                        <a href="" class="mBtnOrange enterPrize__reglink">Выбрать фишку!</a>
+                        <a href="" class="mBtnOrange enterPrize__reglink">Выбрать</a>
                     </div>
                 </div>
             </div>
@@ -146,10 +146,10 @@
                 <div class="enterPrize__text">
                     <strong class="title">Enter Prize</strong>
 
-                    Зарегестрируйся и выбери свой купон на скидку!
+                    Выбери фишку со скидкой на любой товар в ENTER!
                 </div>
 
-                <a href="" class="mBtnOrange enterPrize__reglink">Выбрать фишку!</a>
+                <a href="" class="mBtnOrange enterPrize__reglink">Выбрать</a>
             </div>
         {{/hasEnterprizeCoupon}}
 
