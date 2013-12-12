@@ -141,15 +141,19 @@
     <span class="transGrad"></span>
 
     <div class="fixedTopBar__dd fixedTopBar__logOut">
-        <div class="enterPrize">
-            <div class="enterPrize__text">
-                <strong class="title">Enter Prize</strong>
+        {{^hasEnterprizeCoupon}}
+            <div class="enterPrize">
+                <div class="enterPrize__text">
+                    <strong class="title">Enter Prize</strong>
 
-                Зарегестрируйся и выбери свой купон на скидку!
+                    Зарегестрируйся и выбери свой купон на скидку!
+                </div>
+
+                <a href="" class="mBtnOrange enterPrize__reglink">Зарегистрироваться</a>
             </div>
+        {{/hasEnterprizeCoupon}}
 
-            <a href="" class="mBtnOrange enterPrize__reglink">Зарегистрироваться</a>
-        </div>
         <a class="mBtnGrey fixedTopBar__logOutLink" href="<?= $page->url('user.logout') ?>">Выйти</a>
     </div>
+
 </script>
