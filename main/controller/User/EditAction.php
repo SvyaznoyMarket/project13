@@ -80,20 +80,8 @@ class EditAction {
 
                 if ($form->getEnterprizeCoupon()) {
                     try {
-                        if (!$form->getFirstName()) {
-                            throw new \Exception('Не заполнено имя');
-                        }
                         if (!$form->getLastName()) {
                             throw new \Exception('Не заполнена фамилия');
-                        }
-                        if (!$form->getMobilePhone()) {
-                            throw new \Exception('Не заполнен номер телефона');
-                        }
-                        if (!$form->getEmail()) {
-                            throw new \Exception('Не заполнен email');
-                        }
-                        if (!$form->getCouponAgree()) {
-                            throw new \Exception('Не отмечено поле "Ознакомлен с правилами ENTER PRIZE"');
                         }
 
                         // создание enterprize-купона
