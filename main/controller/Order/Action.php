@@ -653,6 +653,7 @@ class Action {
         $page->setParam('creditData', []);
         $page->setParam('isOrderAnalytics', false);
         $page->setParam('productsById', []);
+        $page->setParam('sessionIsReaded', $this->sessionIsReaded);
 
         return new \Http\Response($page->show());
     }
