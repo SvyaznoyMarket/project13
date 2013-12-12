@@ -15,6 +15,12 @@ class Entity {
     private $isCurrency;
     /** @var string */
     private $backgroundImage;
+    /** @var int */
+    private $minOrderSum;
+    /** @var \DateTime|null */
+    private $startDate;
+    /** @var \DateTime|null */
+    private $endDate;
 
     public function __construct(array $data = []) {
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
@@ -23,6 +29,9 @@ class Entity {
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('isCurrency', $data)) $this->setIsCurrency($data['isCurrency']);
         if (array_key_exists('backgroundImage', $data)) $this->setBackgroundImage($data['backgroundImage']);
+        if (array_key_exists('minOrderSum', $data)) $this->setMinOrderSum($data['minOrderSum']);
+        if (array_key_exists('startDate', $data)) $this->setStartDate($data['startDate'] ? new \DateTime($data['startDate']) : null);
+        if (array_key_exists('endDate', $data)) $this->setEndDate($data['endDate'] ? new \DateTime($data['endDate']) : null);
     }
 
     /**
@@ -107,5 +116,47 @@ class Entity {
      */
     public function getBackgroundImage() {
         return $this->backgroundImage;
+    }
+
+    /**
+     * @param int $minOrderSum
+     */
+    public function setMinOrderSum($minOrderSum) {
+        $this->minOrderSum = (int)$minOrderSum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinOrderSum() {
+        return $this->minOrderSum;
+    }
+
+    /**
+     * @param \DateTime $startDate
+     */
+    public function setStartDate(\DateTime $startDate = null) {
+        $this->startDate = $startDate;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getStartDate() {
+        return $this->startDate;
+    }
+
+    /**
+     * @param \DateTime $endDate
+     */
+    public function setEndDate(\DateTime $endDate = null) {
+        $this->endDate = $endDate;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEndDate() {
+        return $this->endDate;
     }
 }

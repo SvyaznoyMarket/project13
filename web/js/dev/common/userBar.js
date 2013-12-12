@@ -116,6 +116,7 @@
 
 			var
 				wrap = userBarFixed.find('.fixedTopBar__cart'),
+				wrapLogIn = userBarFixed.find('.fixedTopBar__logIn'),
 				template = $('#buyinfo_tmpl'),
 				partials = template.data('partial'),
 				openClass = 'mOpenedPopup',
@@ -137,6 +138,7 @@
 					// end of vars
 
 					upsaleWrap.removeClass('mhintDdOn');
+					wrapLogIn.removeClass(openClass);
 					wrap.removeClass(openClass);
 
 					buyInfo.slideUp(300, function() {
@@ -169,6 +171,7 @@
 			buyInfo = $(html).css({ left: -129 });
 			
 			buyInfo.find('.cartList__item').eq(0).addClass('mHover');
+			wrapLogIn.addClass(openClass);
 			wrap.addClass(openClass);
 			wrap.append(buyInfo);
 
