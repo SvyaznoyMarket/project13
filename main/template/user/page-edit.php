@@ -6,8 +6,10 @@
  */
 ?>
 
-<? if ($error = $form->getError('global')): ?>
-    <p class="red"><?= $error ?></p>
+<? if (!$form->isValid()): ?>
+    <? foreach ($form->getErrors() as $error): ?>
+        <p class="red"><?= $error ?></p>
+    <? endforeach ?>
 <? elseif ($message): ?>
     <p class="green"><?= $message ?></p>
 <? endif ?>
@@ -15,6 +17,10 @@
 <form class="userInfoEdit clearfix" action="<?= $page->url('user.edit') ?>" class="form" method="post">
     <div class="fl width430">
         <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
+
+        <? if ($form->getEnterprizeCoupon()): ?>
+            <input type="hidden" name="user[enterprize_coupon]" value="<?= $form->getEnterprizeCoupon() ?>">
+        <? endif ?>
 
         <label class="userInfoEdit__label" for="user_first_name">Имя:</label>
 
@@ -32,9 +38,9 @@
 
         <div class="userInfoEdit__checkBox selectbox170">
             <select id="user_sex" name="user[sex]">
-            <? foreach (array('' => '', '1' => 'мужской', '2' => 'женский') as $sexValue => $sexName): ?>
-                <option value="<?= $sexValue ?>"<? if ((int)$sexValue == (int)$form->getSex()): ?> selected="selected"<? endif ?>><?= $sexName ?></option>
-            <? endforeach ?>
+                <? foreach (array('' => '', '1' => 'мужской', '2' => 'женский') as $sexValue => $sexName): ?>
+                    <option value="<?= $sexValue ?>"<? if ((int)$sexValue == (int)$form->getSex()): ?> selected="selected"<? endif ?>><?= $sexName ?></option>
+                <? endforeach ?>
             </select>
         </div>
 
@@ -42,7 +48,7 @@
 
         <input type="text" id="user_email" value="<?= $form->getEmail() ?>" name="user[email]" class="text width418 mb10" />
 
-        <? if (!$page->getParam('enterpizeCoupon')): ?>
+        <? if (!$form->getEnterprizeCoupon()): ?>
             <div class="pr fr">
                 <div class="doublehelp help">Одно из полей обязательно для заполнения!</div>
             </div>
@@ -66,27 +72,27 @@
             <div class="checkBox selectbox75 fl">
                 <? $selectedDay = $form->getBirthday() ? $form->getBirthday()->format('j') : '' ?>
                 <select id="user_birthday_day" name="user[birthday][day]">
-                <? foreach (array_merge(array(''), range(1, 31)) as $day):  ?>
-                    <option value="<?= $day ?>"<? if ((int)$day == (int)$selectedDay): ?> selected="selected"<? endif ?>><?= $day ?></option>
-                <? endforeach ?>
+                    <? foreach (array_merge(array(''), range(1, 31)) as $day):  ?>
+                        <option value="<?= $day ?>"<? if ((int)$day == (int)$selectedDay): ?> selected="selected"<? endif ?>><?= $day ?></option>
+                    <? endforeach ?>
                 </select>
             </div>
 
             <div class="checkBox selectbox98 fl">
                 <? $selectedMonth = $form->getBirthday() ? $form->getBirthday()->format('n') : '' ?>
                 <select id="user_birthday_month" name="user[birthday][month]">
-                <? foreach (array_merge(array(''), range(1, 12)) as $month): ?>
-                    <option value="<?= $month ?>"<? if ((int)$month == (int)$selectedMonth): ?> selected="selected"<? endif ?>><?= $month ?></option>
-                <? endforeach ?>
+                    <? foreach (array_merge(array(''), range(1, 12)) as $month): ?>
+                        <option value="<?= $month ?>"<? if ((int)$month == (int)$selectedMonth): ?> selected="selected"<? endif ?>><?= $month ?></option>
+                    <? endforeach ?>
                 </select>
             </div>
 
             <div class="checkBox selectbox75 fl">
                 <? $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '' ?>
                 <select id="user_birthday_year" name="user[birthday][year]">
-                <? foreach (array_merge(array(''), range(2005, 1930)) as $year): ?>
-                    <option value="<?= $year ?>"<? if ((int)$year == (int)$selectedYear): ?> selected="selected"<? endif ?>><?= $year ?></option>
-                <? endforeach ?>
+                    <? foreach (array_merge(array(''), range(2005, 1930)) as $year): ?>
+                        <option value="<?= $year ?>"<? if ((int)$year == (int)$selectedYear): ?> selected="selected"<? endif ?>><?= $year ?></option>
+                    <? endforeach ?>
                 </select>
             </div>
         </div>

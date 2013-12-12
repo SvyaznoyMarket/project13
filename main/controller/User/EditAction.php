@@ -16,17 +16,19 @@ class EditAction {
         $client = \App::coreClientV2();
         $userEntity = \App::user()->getEntity();
 
-        $couponType = $request->get('enterprize_coupon');
-
         $form = new \View\User\EditForm();
         $form->fromEntity($userEntity);
+
+        if ($request->get('enterprize_coupon')) {
+            $form->setEnterprizeCoupon($request->get('enterprize_coupon'));
+        }
 
         $message = $session->get('flash');
         $session->remove('flash');
 
         $redirect = $request->get('redirect_to')
             ? $request->get('redirect_to')
-            : \App::router()->generate('user.edit', ['enterprize_coupon' => $couponType]);
+            : \App::router()->generate('user.edit', ['enterprize_coupon' => $form->getEnterprizeCoupon()]);
 
         if(!preg_match('/^(\/|http).*/i', $redirect)) {
             $redirect = 'http://' . $redirect;
@@ -64,37 +66,8 @@ class EditAction {
                     throw new \Exception('Не получен ответ от сервера.');
                 }
 
-                if ($couponType) {
+                if ($form->getEnterprizeCoupon()) {
                     try {
-                        // проверяем заполнил ли пользователь все поля формы (кроме "Род деятельности")
-                        if (!$form->getFirstName()) {
-                            throw new \Exception('Не передано имя.');
-                        }
-                        if (!$form->getMiddleName()) {
-                            throw new \Exception('Не передано отчество.');
-                        }
-                        if (!$form->getLastName()) {
-                            throw new \Exception('Не передана фамилия.');
-                        }
-                        if (!$form->getSex()) {
-                            throw new \Exception('Не передан пол.');
-                        }
-                        if (!$form->getEmail()) {
-                            throw new \Exception('Не передан email.');
-                        }
-                        if (!$form->getMobilePhone()) {
-                            throw new \Exception('Не передан мобильный телефон.');
-                        }
-                        if (!$form->getHomePhone()) {
-                            throw new \Exception('Не передан домашний телефон.');
-                        }
-                        if (!$form->getSkype()) {
-                            throw new \Exception('Не передан skype.');
-                        }
-                        if (!$form->getBirthday()) {
-                            throw new \Exception('Не передана дата рождения.');
-                        }
-
                         // создание enterprize-купона
                         $result = [];
                         $client->addQuery(
@@ -108,7 +81,7 @@ class EditAction {
                                 'phone'                     => $form->getMobilePhone(),
                                 'email'                     => $form->getEmail(),
                                 'svyaznoy_club_card_number' => null,
-                                'guid'                      => $couponType,
+                                'guid'                      => $form->getEnterprizeCoupon(),
                                 'agree'                     => true,
                             ],
                             function ($data) use (&$result) {
@@ -121,7 +94,7 @@ class EditAction {
                         );
                         $client->execute();
 
-                        if ($result instanceof \Exception) {
+                        if ($result instanceof \Curl\Exception) {
                             throw $result;
                         }
 
@@ -138,8 +111,24 @@ class EditAction {
                         if (!isset($response['confirmed']) || !$response['confirmed']) {
                             throw new \Exception('Не получен ответ от сервера.');
                         }
-                    } catch (\Exception $e) {
+
+                        $session->set('flash', 'Данные сохранены. Купон вам отправлен по СМС и е-майл.');
+
+                        return new \Http\RedirectResponse($redirect);
+                    } catch (\Curl\Exception $e) {
                         \App::exception()->remove($e);
+                        $errorContent = $e->getContent();
+                        $detail = $errorContent['detail'] ? $errorContent['detail'] : [];
+
+                        foreach ($detail as $fieldName => $errors) {
+                            foreach ($errors as $errorType => $errorMess) {
+                                if ('name' == $fieldName) $fieldName = 'first_name';
+                                if ('phone' == $fieldName) $fieldName = 'mobile_phone';
+
+                                $form->setError($fieldName, $errorMess);
+                            }
+                        }
+
                         throw $e;
                     }
                 }
@@ -158,10 +147,10 @@ class EditAction {
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
-        if ($couponType) {
-            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $couponType) {
+        if ($form->getEnterprizeCoupon()) {
+            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $form) {
                 foreach ((array)$data as $item) {
-                    if ($couponType == $item['token']) {
+                    if ($form->getEnterprizeCoupon() == $item['token']) {
                         $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
                     }
                 }

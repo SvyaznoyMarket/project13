@@ -9280,12 +9280,39 @@
     background: #ffffff;
   }
   .btnBuy .btnBuy__eLink.mShopsOnly {
-    background: #b5b5b5;
-    border: 1px solid #cccccc;
+    background: #040404;
+    /* Old browsers */
+  
+    background: -moz-linear-gradient(top, #505050 0%, #040404 100%);
+    /* FF3.6+ */
+  
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #505050), color-stop(100%, #040404));
+    /* Chrome,Safari4+ */
+  
+    background: -webkit-linear-gradient(top, #505050 0%, #040404 100%);
+    /* Chrome10+,Safari5.1+ */
+  
+    background: -o-linear-gradient(top, #505050 0%, #040404 100%);
+    /* Opera 11.10+ */
+  
+    background: -ms-linear-gradient(top, #505050 0%, #040404 100%);
+    /* IE10+ */
+  
+    background: linear-gradient(to bottom, #505050 0%, #040404 100%);
+    /* W3C */
+  
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#505050', endColorstr='#040404', GradientType=0);
+    /* IE6-9 */
+  
+    display: inline-block;
+    border: 1px solid #a1a1a1;
+    vertical-align: top;
+    zoom: 1;
+    *display: inline;
   }
-  .btnBuy .btnBuy__eLink.mShopsOnly:hover {
-    background: #9b9b9b;
-    border: 1px solid #cccccc;
+  .btnBuy .btnBuy__eLink.mShopsOnly:hover,
+  .btnBuy .btnBuy__eLink.mShopsOnly:active {
+    background: #000000;
   }
   .btnBuy .btnBuy__eLink.mDisabled {
     -webkit-box-shadow: none;
@@ -11648,7 +11675,8 @@
     background-position: 100% 8px;
     font-size: 16px;
   }
-  .bBreadcrumbs__eItem.mLast {
+  .bBreadcrumbs__eItem.mLast,
+  .bBreadcrumbs__eItem:last-child {
     background: none;
   }
   .bBreadcrumbs__eLink {
@@ -12366,6 +12394,11 @@
   .bLifeGiftTitle {
     display: none;
   }
+  .bBuyingSteps.mLifeGift .phoneHintLg {
+    display: block;
+    padding: 5px 0 0;
+    font-size: 11px;
+  }
   .bBuyingSteps.mLifeGift .bLifeGiftTitle {
     padding: 0 0 15px;
     font-size: 18px;
@@ -12411,6 +12444,9 @@
   }
   .bBuyingSteps.mLifeGift .mPayMethods .bPayMethod {
     margin-left: 0;
+  }
+  .phoneHintLg {
+    display: none;
   }
 }
 /*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/

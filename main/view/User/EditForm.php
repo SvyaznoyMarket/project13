@@ -23,19 +23,25 @@ class EditForm {
     private $homePhone;
     /** @var string */
     private $skype;
+    /** @var string */
+    private $enterprizeCoupon;
     /** @var array */
     private $errors = array(
-        'global'       => null,
-        'first_name'   => null,
-        'middle_name'  => null,
-        'last_name'    => null,
-        'sex'          => null,
-        'birthday'     => null,
-        'occupation'   => null,
-        'email'        => null,
-        'mobile_phone' => null,
-        'home_phone'   => null,
-        'skype'        => null,
+        'global'                    => null,
+        'first_name'                => null,
+        'middle_name'               => null,
+        'last_name'                 => null,
+        'sex'                       => null,
+        'birthday'                  => null,
+        'occupation'                => null,
+        'email'                     => null,
+        'mobile_phone'              => null,
+        'home_phone'                => null,
+        'skype'                     => null,
+        'enterprize_coupon'         => null,
+        'svyaznoy_club_card_number' => null,
+        'guid'                      => null,
+        'agree'                     => null,
     );
 
     public function __construct(array $data = []) {
@@ -68,6 +74,7 @@ class EditForm {
         if (array_key_exists('mobile_phone', $data)) $this->setMobilePhone($data['mobile_phone']);
         if (array_key_exists('home_phone', $data)) $this->setHomePhone($data['home_phone']);
         if (array_key_exists('skype', $data)) $this->setSkype($data['skype']);
+        if (array_key_exists('enterprize_coupon', $data)) $this->setEnterprizeCoupon($data['enterprize_coupon']);
     }
 
     public function fromEntity(\Model\User\Entity $entity) {
@@ -231,6 +238,20 @@ class EditForm {
      */
     public function getSkype() {
         return $this->skype;
+    }
+
+    /**
+     * @param string $enterprizeCoupon
+     */
+    public function setEnterprizeCoupon($enterprizeCoupon) {
+        $this->enterprizeCoupon = trim((string)$enterprizeCoupon);
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnterprizeCoupon() {
+        return $this->enterprizeCoupon;
     }
 
     /**

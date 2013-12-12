@@ -10,6 +10,7 @@
  * @var $paymentProvider    \Payment\ProviderInterface
  * @var $creditData         array
  * @var $isOrderAnalytics   bool
+ * @var $sessionIsReaded    bool
  */
 ?>
 
@@ -122,10 +123,12 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     <? endforeach ?>
 <? endif ?>
 
-<?= $page->tryRender('order/partner-counter/_complete', [
-    'orders'       => $orders,
-    'productsById' => $productsById,
-]) ?>
-
-
-<?= $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]) ?>
+<?
+if ($sessionIsReaded) {
+    // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
+    echo $page->tryRender('order/partner-counter/_complete', [
+        'orders'       => $orders,
+        'productsById' => $productsById,
+    ]);
+    echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]);
+}

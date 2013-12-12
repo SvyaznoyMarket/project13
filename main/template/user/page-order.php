@@ -28,7 +28,7 @@
 
     <? if (\Model\Order\Entity::STATUS_READY == $order->getStatusId()): ?>
         <div class="fr font16 orange">Заказ выполнен</div>
-    <? elseif (\Model\Order\Entity::PAYMENT_STATUS_PAID == $order->getPaymentStatusId() && \Model\Order\Entity::STATUS_CANCELED !== $order->getStatusId()): ?>
+    <? elseif (\Model\Order\Entity::PAYMENT_STATUS_PAID == $order->getPaymentStatusId()): ?>
         <div class="fr font16 green">заказ оплачен</div>
     <? elseif (\Model\Order\Entity::STATUS_CANCELED == $order->getStatusId()): ?>
         <div class="fr font16 red">заказ отменен</div>

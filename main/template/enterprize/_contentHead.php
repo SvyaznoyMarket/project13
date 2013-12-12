@@ -33,7 +33,9 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
     <? if ($enterpizeCoupon): ?>
         <div class="enterPrize mPrivate">
-            <h1 class="enterPrize__logo">Enter Prize</h1>
+            <a href="<?= $page->url('enterprize') ?>">
+                <h1 class="enterPrize__logo">Enter Prize</h1>
+            </a>
 
             <div class="enterPrize__list clearfix">
                 <div class="enterPrize__list__item mOrange">

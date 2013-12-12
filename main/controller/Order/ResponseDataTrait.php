@@ -152,6 +152,9 @@ trait ResponseDataTrait {
                 case 705:
                     $message = 'Одного или нескольких товаров нет в наличии';
                     break;
+                case 759:
+                    $message = 'Некорректный email';
+                    break;
                 case 770:
                     $message = 'Невозможно расчитать доставку';
                     break;

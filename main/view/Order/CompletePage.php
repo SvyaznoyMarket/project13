@@ -79,6 +79,9 @@ class CompletePage extends Layout {
 
     public function slotMarinConversionTagJS()
     {
+        $sessionIsReaded = $this->getParam('sessionIsReaded');
+        if ($sessionIsReaded) return '';
+
         $paymentPageType = $this->getParam('paymentPageType');
         if ( !isset($paymentPageType) || !$paymentPageType === 'complete' ) {
             return '';

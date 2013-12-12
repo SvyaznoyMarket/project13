@@ -415,6 +415,9 @@ class App {
                 case 'order':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/order.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     break;
+                case 'query':
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/query.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
+                    break;
                 default:
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     //$instances[$name] = new \Logger\NullLogger();

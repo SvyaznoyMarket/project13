@@ -54,12 +54,20 @@
         }
 
         &.mShopsOnly {
-            background: #b5b5b5;
-            border: 1px solid #cccccc;
+            .blackGrad();
+            display: inline-block;
 
-            &:hover {
-                background: #9b9b9b;
-                border: 1px solid #cccccc;
+            border: 1px solid #a1a1a1;
+
+            vertical-align: top;
+
+            zoom: 1;
+
+            *display: inline;
+
+            &:hover,
+            &:active {
+                background: @black;
             }
         }
 

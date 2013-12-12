@@ -106,9 +106,11 @@ class Action {
                 ],
                 function ($data) use (&$result) {
                     $result = $data;
+                    \App::logger()->info(['core.response' => $result], ['enterprize']);
                 },
                 function(\Exception $e) use (&$result) {
                     \App::exception()->remove($e);
+                    \App::logger()->error($e instanceof \Curl\Exception ? $e->getContent() : ['code' => $e->getCode(), 'message' => $e->getMessage()] , ['enterprize']);
                     $result = $e;
                 }
             );

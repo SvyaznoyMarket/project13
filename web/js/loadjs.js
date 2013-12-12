@@ -203,6 +203,15 @@
 		},
 
 		/**
+		 * Загрузка скриптов для панели отладки
+		 */
+		loadDebugPanel = function loadDebugPanel() {
+			if ( debug ) {
+				$LAB.script('debug-panel.js')
+			}
+		},
+
+		/**
 		 * LAB.js переопределяет document.write
 		 * Для того чтобы метод document.write корректно работал, мы делаем для него замену
 		 */
@@ -294,6 +303,7 @@
 	 */
 	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder: true, UseLocalXHR: false, BasePath: '/js/prod/'})
 		.queueScript('/js/combine.js')
+		// .queueWait(loadDebugPanel)
 		.queueWait(newDocumentWrite);
 
 
@@ -312,6 +322,7 @@
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -324,6 +335,7 @@
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('main.js') )
@@ -343,6 +355,7 @@
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -361,6 +374,7 @@
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('infopage.js') )
@@ -382,6 +396,7 @@
 					.script( getWithVersion('library.js') )
 					.script( directCreditUrl )
 					.script( mustacheUrl )
+					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -406,6 +421,7 @@
 						.script( getWithVersion('library.js') )
 						.script( directCreditUrl )
 						.script( mustacheUrl )
+						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new.js') )
@@ -429,6 +445,7 @@
 						.script( getWithVersion('library.js') )
 						.script( directCreditUrl )
 						.script( mustacheUrl )
+						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new-v5.js') )
@@ -442,6 +459,7 @@
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('order.js') )
@@ -497,6 +515,7 @@
 					.script( getWithVersion('library.js') )
 					.script( historyUrl )
 					.script( mustacheUrl )
+					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('catalog.js') )
@@ -522,6 +541,7 @@
 						.script('JsHttpRequest.min.js')
 						.script( directCreditUrl )
 						.script( mustacheUrl )
+						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('product.js') )
@@ -542,6 +562,7 @@
 				$LAB.script('jquery-plugins.min.js')
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -561,6 +582,7 @@
 					$LAB.script('jquery-plugins.min.js')
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
+						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('shop.js') )
@@ -582,6 +604,7 @@
 					$LAB.script('jquery-plugins.min.js')
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
+						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.wait()

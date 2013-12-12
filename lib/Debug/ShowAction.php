@@ -29,13 +29,13 @@ class ShowAction {
             $debug->add('app', \App::$name, 143);
         }
 
-        $debug->add(
-            'git',
-            [
-                'version' => trim(shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir)))),
-                'tag'     => trim(shell_exec(sprintf('cd %s && git describe --always --tag', realpath(\App::config()->appDir)))),
-            ]
-            , 144);
+        // git
+        $gitData = [
+            'version' => trim(shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath(\App::config()->appDir)))),
+            'tag'     => trim(shell_exec(sprintf('cd %s && git describe --always --tag', realpath(\App::config()->appDir)))),
+        ];
+        $gitData['url'] = 'https://github.com/SvyaznoyMarket/project13/tree/' . $gitData['version'];
+        $debug->add('git', $gitData, 144);
         $debug->add('env', \App::$env, 143);
 
         // query
@@ -52,9 +52,9 @@ class ShowAction {
             if ($url) {
                 if ('Create curl' == $message['message']) {
                     $queryData[$index] = [
-                        'url'        => $url,
+                        'url'        => urlencode($url),
                         'escapedUrl' => $helper->escape(rawurldecode($url)),
-                        'data'       => $data,
+                        'data'       => (bool)$data ? json_encode($data) : null,
                         'timeout'    => isset($message['timeout']) ? $message['timeout'] : null,
                         'startAt'    => $startAt,
                         'count'      => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
@@ -100,10 +100,10 @@ class ShowAction {
         $contentTimer = \Debug\Timer::get('content');
         $dataStoreTimer = \Debug\Timer::get('data-store');
         $timerData = [
-            'core'       => ['value' => round($coreTimer['total'], 3) * 1000, 'count' => $coreTimer['count'], 'unit' => 'ms'],
-            'data-store' => ['value' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count'], 'unit' => 'ms'],
-            'content'    => ['value' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count'], 'unit' => 'ms'],
-            'total'      => ['value' => round($appTimer['total'], 3) * 1000, 'count' => $appTimer['count'], 'unit' => 'ms'],
+            ['name' => 'core', 'value' => round($coreTimer['total'], 3) * 1000, 'count' => $coreTimer['count'], 'unit' => 'ms'],
+            ['name' => 'data-store', 'value' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count'], 'unit' => 'ms'],
+            ['name' => 'content', 'value' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count'], 'unit' => 'ms'],
+            ['name' => 'total', 'value' => round($appTimer['total'], 3) * 1000, 'count' => $appTimer['count'], 'unit' => 'ms'],
         ];
         $debug->add('timer', $timerData, 138);
 
@@ -192,9 +192,7 @@ class ShowAction {
             $response->setData($contentData);
         } else if ($response instanceof \Http\Response) {
             $response->setContent(
-                $response->getContent()
-                . "\n\n"
-                . \App::templating()->render('_debug', ['debugData' => $debugData, 'helper' => new \Helper\TemplateHelper()])
+                str_replace('</body>', PHP_EOL . \App::templating()->render('_debug', ['debugData' => $debugData, 'helper' => new \Helper\TemplateHelper()]) . PHP_EOL .'</body>', $response->getContent())
             );
         }
     }
