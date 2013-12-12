@@ -53,7 +53,7 @@ class EditAction {
                 }
 
                 if (!$form->getIsSubscribed()) {
-                    throw new \Exception('Не отмечено поле "Хочу узнавать об интересных предложениях"');
+                    throw new \Exception('Не отмечено поле "Согласен получать рекламную рассылку"');
                 }
 
                 $response = $client->query(
@@ -80,6 +80,10 @@ class EditAction {
 
                 if ($form->getEnterprizeCoupon()) {
                     try {
+                        if (!$form->getLastName()) {
+                            throw new \Exception('Не заполнена фамилия');
+                        }
+
                         // создание enterprize-купона
                         $result = [];
                         $client->addQuery(
@@ -170,7 +174,7 @@ class EditAction {
             \App::dataStoreClient()->execute();
         }
 
-        $page = new \View\User\EditPage();
+        $page = $form->getEnterprizeCoupon() ? new \View\User\EditEnterprizePage() : new \View\User\EditPage();
         $page->setParam('form', $form);
         $page->setParam('message', $message);
         $page->setParam('redirect', $redirect);
