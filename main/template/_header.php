@@ -60,7 +60,7 @@
                             Зарегестрируйся и выбери свой купон на скидку!
                         </div>
 
-                        <a href="" class="mBtnOrange enterPrize__reglink">Зарегистрироваться</a>
+                        <a href="" class="mBtnOrange enterPrize__reglink">Выбрать фишку!</a>
                     </div>
                 </div>
             </div>
@@ -149,7 +149,7 @@
                     Зарегестрируйся и выбери свой купон на скидку!
                 </div>
 
-                <a href="" class="mBtnOrange enterPrize__reglink">Зарегистрироваться</a>
+                <a href="" class="mBtnOrange enterPrize__reglink">Выбрать фишку!</a>
             </div>
         {{/hasEnterprizeCoupon}}
 
