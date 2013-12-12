@@ -51,6 +51,18 @@
             <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
                 <a href="/login" class="fixedTopBar__logInLink bAuthLink">Войти</a>
                 <span class="transGrad"></span>
+
+                <div class="fixedTopBar__dd fixedTopBar__logOut">
+                    <div class="enterPrize">
+                        <div class="enterPrize__text">
+                            <strong class="title">Enter Prize</strong>
+
+                            Зарегестрируйся и выбери свой купон на скидку!
+                        </div>
+
+                        <a href="" class="mBtnOrange enterPrize__reglink">Зарегистрироваться</a>
+                    </div>
+                </div>
             </div>
         </div>
     </noindex>
