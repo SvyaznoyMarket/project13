@@ -124,7 +124,7 @@ class EditAction {
                             throw new \Exception('Не получен ответ от сервера.');
                         }
 
-                        $session->set('flash', 'Данные сохранены. Купон вам отправлен по СМС и е-майл.');
+                        $session->set('flash', 'Поздравляем с регистрацией в Enter Prize! Фишка отправлена на мобильный телефон и e-mail.');
 
                         return new \Http\RedirectResponse($redirect);
                     } catch (\Curl\Exception $e) {
