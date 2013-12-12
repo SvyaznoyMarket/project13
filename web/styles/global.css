@@ -1513,8 +1513,16 @@ table {
   -moz-border-radius: 0 0 4px 4px;
   border-radius: 0 0 4px 4px;
 }
-.fixedTopBar__logOut {
-  width: 127px;
+.fixedTopBar .enterPrize {
+  line-height: 1.3;
+}
+.fixedTopBar .enterPrize__text {
+  background: url("/styles/enterPrize/img/fishkiPlash.gif") no-repeat 0 20px;
+  padding: 12px 0 12px 65px;
+}
+.fixedTopBar .enterPrize__text .title {
+  display: block;
+  margin: 0 0 3px;
 }
 .fixedTopBar .fixedTopBar__cartOn .transGradWhite {
   background: url("/styles/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
@@ -2008,13 +2016,6 @@ table {
   width: 100%;
   left: 0;
   height: 43px;
-}
-.enterPrize .cuponIco img {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  display: block;
-  margin-left: -25px;
 }
 .enterPrize .cuponDesc {
   position: absolute;
