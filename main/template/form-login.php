@@ -12,7 +12,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
 
 <form action="<?= $page->url('user.login') ?>" class="form bFormLogin__ePlace jsLoginForm" method="post">
     <fieldset class="bFormLogin__ePlace">
-        <legend class="bFormLogin__ePlaceTitle">У меня есть логин и пароль</legend>
+        <legend class="bFormLogin__ePlaceTitle">Мои логин и пароль</legend>
 
         <label class="bFormLogin__eLabel">E-mail или мобильный телефон:</label>
         <div><input class="text bFormLogin__eInput jsSigninUsername" type="text" value="<?= $form->getUsername() ?>" name="signin[username]" /></div>
