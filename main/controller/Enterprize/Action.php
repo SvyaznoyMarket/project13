@@ -111,7 +111,8 @@ class Action {
                 function(\Exception $e) use (&$result) {
                     \App::exception()->remove($e);
                     \App::logger()->error($e instanceof \Curl\Exception ? $e->getContent() : ['code' => $e->getCode(), 'message' => $e->getMessage()] , ['enterprize']);
-                    $result = $e;
+
+                    $result = new \Exception('Не удалось активировать купон' . (\App::config()->debug ? sprintf('#%s %s', $e->getCode(), $e->getMessage()) : ''));
                 }
             );
             $client->execute();
