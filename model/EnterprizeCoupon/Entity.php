@@ -21,6 +21,8 @@ class Entity {
     private $startDate;
     /** @var \DateTime|null */
     private $endDate;
+    /** @var string */
+    private $link;
 
     public function __construct(array $data = []) {
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
@@ -32,6 +34,7 @@ class Entity {
         if (array_key_exists('minOrderSum', $data)) $this->setMinOrderSum($data['minOrderSum']);
         if (array_key_exists('startDate', $data)) $this->setStartDate($data['startDate'] ? new \DateTime($data['startDate']) : null);
         if (array_key_exists('endDate', $data)) $this->setEndDate($data['endDate'] ? new \DateTime($data['endDate']) : null);
+        if (array_key_exists('link', $data)) $this->setLink($data['link']);
     }
 
     /**
@@ -158,5 +161,19 @@ class Entity {
      */
     public function getEndDate() {
         return $this->endDate;
+    }
+
+    /**
+     * @param string $link
+     */
+    public function setLink($link) {
+        $this->link = (string)$link;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLink() {
+        return $this->link;
     }
 }
