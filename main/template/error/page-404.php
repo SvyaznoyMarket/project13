@@ -11,8 +11,11 @@
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <link href="/css/global.min.css" rel="stylesheet" type="text/css"/>
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script src="/js/prod/LAB.min.js" type="text/javascript"></script>
+    <script src="/js/vendor/html5.js" type="text/javascript"></script>
 </head>
-<body class='b404'>
+<body class='b404' data-template="infopage">
 <table class='b404InnerWrap'>
     <td>
         <a class='b404__eLogo' href='/'></a>
@@ -68,5 +71,7 @@
         s.parentNode.insertBefore(ga, s);
     })();
 </script>
+
+<script src="/js/loadjs.js?t=1386928489" type="text/javascript"></script>
 </body>
 </html>
