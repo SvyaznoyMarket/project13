@@ -133,15 +133,50 @@ class EditAction {
                         return new \Http\RedirectResponse($redirect);
                     } catch (\Curl\Exception $e) {
                         \App::exception()->remove($e);
-                        $errorContent = $e->getContent();
-                        $detail = isset($errorContent['detail']) ? $errorContent['detail'] : [];
 
-                        foreach ($detail as $fieldName => $errors) {
-                            foreach ($errors as $errorType => $errorMess) {
-                                if ('name' == $fieldName) $fieldName = 'first_name';
-                                if ('phone' == $fieldName) $fieldName = 'mobile_phone';
+                        if (422 == $e->getCode()) {
+                            $errorContent = $e->getContent();
+                            $detail = isset($errorContent['detail']) && is_array($errorContent['detail']) ? $errorContent['detail'] : [];
 
-                                $form->setError($fieldName, $errorMess);
+                            foreach ($detail as $fieldName => $errors) {
+                                foreach ($errors as $errorType => $errorMess) {
+                                    if ('name' == $fieldName) $fieldName = 'first_name';
+                                    if ('phone' == $fieldName) $fieldName = 'mobile_phone';
+
+                                    $message = 'Неизвестная ошибка';
+
+                                    switch ($fieldName) {
+                                        case 'first_name':
+                                            if ('isEmpty' === $errorType) $message = 'Не заполнено имя';
+                                            if ('regexNotMatch' === $errorType) $message = 'Некорректно введено имя';
+                                            break;
+                                        case 'mobile_phone':
+                                            if ('isEmpty' === $errorType) $message = 'Не заполнен номер телефона';
+                                            if ('regexNotMatch' === $errorType) $message = 'Некорректно введен номер телефона';
+                                            break;
+                                        case 'email':
+                                            if ('isEmpty' === $errorType) $message = 'Не заполнен E-mail';
+                                            if ('regexNotMatch' === $errorType) $message = 'Некорректно введен номер телефона';
+                                            break;
+                                        case 'svyaznoy_club_card_number':
+                                            if ('isEmpty' === $errorType) $message = 'Не заполнен номер карты Связной-Клуб';
+                                            if ('regexNotMatch' === $errorType) $message = 'Некорректно введен номер карты Связной-Клуб';
+                                            break;
+                                        case 'guid':
+                                            if ('isEmpty' === $errorType) $message = 'Не передан купон';
+                                            if ('regexNotMatch' === $errorType) $message = 'Невалидный идентификатор серии купона';
+                                            break;
+                                        case 'agree':
+                                            if ('isEmpty' === $errorType) $message = 'Не отмечено поле "Ознакомлен с правилами ENTER PRIZE"';
+                                            break;
+                                    }
+
+                                    if (\App::config()->debug) {
+                                        $message .= ': ' . print_r($errorMess, true);
+                                    }
+
+                                    $form->setError($fieldName, $message);
+                                }
                             }
                         }
 
