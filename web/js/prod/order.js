@@ -4,7 +4,10 @@
      * Новая аналитика для оформления заказа
      */
     var newOrderAnalytics = function newOrderAnalytics() {
-        var orderData = $('#jsOrder').data('value'),
+        var
+			data = $('#jsOrder').data('value'),
+			orderData = data.orders,
+			isUsedCartRecommendation = data.isUsedCartRecommendation,
 
             toKISS_orderInfo = {},
             toKISS_productInfo = {},
@@ -100,7 +103,7 @@
 		 * Отслеживание рекомендаций
 		 */
 		console.info('Отслеживание рекомендаций');
-		_gaq.push(['_setCustomVar', 5, 'Used_cart_rec', (orderData.isUsedCartRecommendation ? 'YES' : 'NO'), 2]);
+		_gaq.push(['_setCustomVar', 5, 'Used_cart_rec', (isUsedCartRecommendation ? 'YES' : 'NO'), 2]);
     };
 
     $(document).ready(function () {
