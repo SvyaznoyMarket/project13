@@ -122,18 +122,13 @@ class InfoAction {
                 $responseData['cartProducts'] = $cartProductData;
             }
 
+            /* // Статус подписки отделён от userInfo
             if (\App::config()->subscribe['enabled']) {
                 $responseData['action']['subscribe'] = [
                     'show'   => !$request->cookies->has(\App::config()->subscribe['cookieName']),
                     'agreed' => 1 == (int)$request->cookies->get(\App::config()->subscribe['cookieName']),
                 ];
-                /* //TODO: $this->setSubscribeStatus(
-                    $request,
-                    ($request->cookies->has(\App::config()->subscribe['cookieName'])) ?
-                        $request->cookies->get(\App::config()->subscribe['cookieName']) :
-                        false
-                );*/
-            }
+            }*/
         } catch (\Exception $e) {
             $responseData['success'] = false;
         }

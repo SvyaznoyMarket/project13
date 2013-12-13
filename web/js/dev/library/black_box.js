@@ -15,6 +15,7 @@
 		utils = ENTER.utils,
 		clientCart = utils.extendApp('ENTER.config.clientCart'),
 		clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
+		subscribeCookieName = 'subscribed',
 		body = $('body');
 	// end of vars
 	
@@ -191,10 +192,16 @@
 				 * 
 				 * @private
 				 */
-				startAction = function startAction( action ) {
-					if ( action.subscribe !== undefined ) {
-						body.trigger('showsubscribe', [action.subscribe]);
-					}
+				startAction = function startAction() {
+					var
+						subscribeStatus = {
+							'show': window.docCookies.hasItem(subscribeCookieName),
+							'agreed': window.docCookies.getItem(subscribeCookieName)
+						};
+
+					body.trigger('showsubscribe', [subscribeStatus]);
+					console.log('subscribeStatus');
+					console.log(subscribeStatus);
 				},
 
 				/**
