@@ -645,6 +645,90 @@ table {
   font-size: 36px;
 }
 /*---END----ШРИФТЫ---------*/
+/*------СТИЛИ ШАПКИ------*/
+@media all {
+  .header .topbar .menuItem {
+    background: url("/styles/header/img/bgTrans.gif") repeat-y 100% 0;
+    float: right;
+    margin: -10px 0 0;
+    height: 49px;
+  }
+  .header .topbar .menuItem__link {
+    color: #ffffff;
+    background: url("/styles/header/img/bgTopMenuItem.gif") #000000 no-repeat 0 0;
+    display: block;
+    height: 27px;
+    font: normal 11px/27px 'Enter Type';
+    padding: 0 15px 0 12px;
+    text-transform: uppercase;
+    margin: 10px 0 0;
+  }
+  .header .topbar .menuItem__link:hover {
+    text-decoration: none;
+  }
+  .header .topbar .menuItem__text {
+    background-position: 0 50%;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+    display: block;
+  }
+}
+/*---END---СТИЛИ ШАПКИ---*/
+/*------СТИЛИ ШАПКИ------*/
+@media all {
+  .brandMenuWrap {
+    margin: 0 0 -9px -10px;
+    width: 960px;
+    height: 51px;
+    overflow: hidden;
+    top: -9px;
+    color: #ffffff;
+    position: relative;
+  }
+  .brandMenuWrap:before {
+    background: url("/styles/brandMenu/img/menu_corner.gif") no-repeat 0 0;
+    position: absolute;
+    content: "";
+    top: 1px;
+    right: 40px;
+    width: 16px;
+    height: 9px;
+  }
+  .brandMenu {
+    display: table;
+    border-top: 1px solid #929292;
+    background: #002958;
+    padding: 0 5px;
+    height: 42px;
+    margin-top: 9px;
+  }
+  .brandMenu .brandLogo {
+    display: table-cell;
+    font-weight: bold;
+    line-height: 42px;
+    background: url("/styles/brandMenu/img/logo.png") no-repeat 0 4px;
+    padding: 0 20px 0 35px;
+  }
+  .brandMenu .slideCategory {
+    display: table-cell;
+    overflow: hidden;
+  }
+  .brandMenu .slideCategory__inner {
+    overflow: hidden;
+  }
+  .brandMenu .categoryList {
+    width: 4000px;
+  }
+  .brandMenu .categoryList__item {
+    display: inline-block;
+    color: #ffffff;
+    margin-right: 15px;
+  }
+  .brandMenu .categoryList__link {
+    color: #ffffff;
+  }
+}
+/*---END---СТИЛИ ШАПКИ---*/
 /*------СТИЛИ ПОДВАЛА------*/
 @media all {
   /**

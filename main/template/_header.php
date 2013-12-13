@@ -42,6 +42,7 @@
         <a class="headerShopLink" href="<?= $page->url('shop') ?>">Магазины Enter</a>
         <div class="bSubscribeLightboxPopupNotNow mFl"></div>
     </div>
+
     <noindex>
         <div class="fixedTopBar mStatic <? if ('homepage' == \App::request()->attributes->get('route')):?> mHomepage<? endif ?>">
             <div class="fixedTopBar__cart mEmpty">
@@ -54,6 +55,10 @@
             </div>
         </div>
     </noindex>
+
+    <div class="menuItem">
+        <a href="" class="menuItem__link"><span style="background-image: url(/styles/header/img/bgLicvidaciya.gif)" class="menuItem__text">Ликвидация</span></a>
+    </div>
 </div>
 <!-- /Topbar -->
 
@@ -63,6 +68,27 @@
     <?= $page->slotMainMenu() ?>
 </div>
 <!-- /Header -->
+
+<div class="brandMenuWrap">
+    <div class="brandMenu">
+        <div class="brandLogo">Дом</div>
+
+        <div class="slideCategory">
+            <div class="slideCategory__inner">
+                <ul class="categoryList">
+                    <li class="categoryList__item"><a class="categoryList__link" href="">Чистота сама по себе</a></li>
+                    <li class="categoryList__item"><a class="categoryList__link" href="">Уход за одеждой и шитье</a></li>
+                    <li class="categoryList__item"><a class="categoryList__link" href="">Дизайн для ванной и душа</a></li>
+                    <li class="categoryList__item"><a class="categoryList__link" href="">Кухни</a></li>
+                    <li class="categoryList__item"><a class="categoryList__link" href="">Уход за одеждой и шитье</a></li>
+                    <li class="categoryList__item"><a class="categoryList__link" href="">Идеальный завтрак</a></li>
+                    <li class="categoryList__item"><a class="categoryList__link" href="">Чистота сама по себе</a></li>
+                    <li class="categoryList__item"><a class="categoryList__link" href="">Уход за одеждой и шитье</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
