@@ -572,7 +572,7 @@ class Action {
 
                     $creditData['vars'] = [
                         'number' => $order->getNumber(),
-                        'region' => $shop ? $shop->getId() : null,
+                        'region' => $shop ? $shop->getId() : 'r_' . $user->getRegion()->getId(),
                         'items'  => [],
 
                     ];
