@@ -55,8 +55,10 @@ class CreateAction {
                 throw new \Exception('Форма заполнена неверно');
             }
 
+            $cartCoupons = $cart->getCoupons();
+
             // если заказ разбился более чем на один подзаказ, то ...
-            if (\App::config()->coupon['enabled'] && (bool)$cart->getCoupons() && (count($form->getPart()) > 1)) {
+            if (\App::config()->coupon['enabled'] && (bool)$cartCoupons && (count($form->getPart()) > 1)) {
                 $cart->clearCoupons();
                 $cart->fill();
 
@@ -76,10 +78,31 @@ class CreateAction {
             // создание заказов в ядре
             $createdOrders = $this->saveOrders($form);
 
+
+            $orderSessionData = [
+                'phone'         => $form->getMobilePhone(),
+            ];
+
+            if ($cartCoupons) {
+                $couponEntity = reset($cartCoupons);
+                if ($couponEntity && !$couponEntity->getError()) {
+                    /** @var $couponEntity \Model\Cart\Coupon\Entity **/
+                    $orderSessionData['coupon_number'] = $couponEntity->getNumber();
+                }
+            }
+
+            \App::session()->clearInReaded(\App::config()->order['sessionName'] ?: 'lastOrder');
+
             // сохранение заказов в сессии
-            \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
-                return ['number' => $createdOrder->getNumber(), 'phone' => $form->getMobilePhone()];
-            }, $createdOrders));
+            \App::session()->set(
+                \App::config()->order['sessionName'] ?: 'lastOrder',
+                array_map(
+                    function(\Model\Order\CreatedEntity $createdOrder) use ($orderSessionData) {
+                        $orderSessionData['number'] = $createdOrder->getNumber();
+                        return $orderSessionData;
+                    }, $createdOrders
+                )
+            );
 
             /** @var $firstCreatedOrder \Model\Order\CreatedEntity */
             $firstCreatedOrder = reset($createdOrders);

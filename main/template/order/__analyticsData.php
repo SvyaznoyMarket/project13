@@ -52,6 +52,7 @@ return function(
                 'id' => $order->getPaymentId(),
             ],
             'products'      => [],
+            'coupon_number' => $order->getCouponNumber(),
         ];
 
         foreach ($order->getProduct() as $orderProduct) {

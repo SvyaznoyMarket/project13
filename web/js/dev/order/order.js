@@ -16,6 +16,8 @@
 
         console.info('newOrderAnalytics');
         console.log(orderData);
+        console.log('Coupon Number от первого заказа: ');
+        console.log(orderData[0].coupon_number);
 
         /**
          * Sociomantic
@@ -61,8 +63,12 @@
                 'Checkout Complete Order Total': orderData[i].sum,
                 'Checkout Complete Order Type': 'cart order',
                 'Checkout Complete Delivery': orderData[i].delivery[0].typeId,
-                'Checkout Complete Payment': orderData[i].paymentMethod.id
+                'Checkout Complete Payment': orderData[i].paymentMethod.id,
+				'Checkout Complete Coupon': orderData[i].coupon_number
             };
+
+			console.log('toKISS Analytics orderInfo: ');
+			console.log(toKISS_orderInfo);
 
             for ( j = orderData[i].products.length - 1; j >= 0; j-- ) {
                 if ( (typeof _kmq === 'undefined') || (typeof KM === 'undefined') ) {
@@ -96,11 +102,21 @@
             }
         }
 
-		/**
-		 * Отслеживание рекомендаций
-		 */
-		console.info('Отслеживание рекомендаций');
-		_gaq.push(['_setCustomVar', 5, 'Used_cart_rec', (orderData.isUsedCartRecommendation ? 'YES' : 'NO'), 2]);
+		if ( typeof _gaq !== 'undefined' ) {
+			/**
+			 * Отслеживание рекомендаций
+			 */
+			console.info('Отслеживание рекомендаций');
+			_gaq.push(['_setCustomVar', 5, 'Used_cart_rec', (orderData.isUsedCartRecommendation ? 'YES' : 'NO'), 2]);
+
+			/**
+			 * Отслеживание кода купона
+			 */
+			if ( orderData[0].coupon_number ) {
+				console.info('Отслеживание кода купона: ' + orderData[0].coupon_number);
+				_gaq.push(['_trackEvent', 'coupon', orderData[0].coupon_number]);
+			}
+		}
     };
 
     $(document).ready(function () {
