@@ -96,7 +96,7 @@ class EditAction {
                                 'name'                      => $form->getFirstName(),
                                 'phone'                     => $form->getMobilePhone(),
                                 'email'                     => $form->getEmail(),
-                                'svyaznoy_club_card_number' => null,
+                                'svyaznoy_club_card_number' => $form->getCardNumber(),
                                 'guid'                      => $form->getEnterprizeCoupon(),
                                 'agree'                     => $form->getCouponAgree(),
                             ],
