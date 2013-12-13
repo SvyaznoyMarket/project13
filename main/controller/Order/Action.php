@@ -1433,7 +1433,11 @@ class Action {
 
         $orderData = array_map(function ($orderItem) {
             //if ( !is_array($orderItem) ) return;
-            return array_merge(['number' => null, 'phone' => null], $orderItem);
+            return array_merge([
+                'number' => null,
+                'phone' => null,
+                'coupon_number' => null,
+            ], $orderItem);
         }, $orderSession);
 
         /** @var $orders \Model\Order\Entity[] */
@@ -1458,6 +1462,8 @@ class Action {
             }
             // TODO: осторожно, хак
             $order->setMobilePhone($orderItem['phone']);
+
+            $order->setCouponNumber($orderItem['coupon_number']);
 
             $orders[] = $order;
         }

@@ -92,9 +92,13 @@ class Session implements \Http\SessionInterface {
         }
 
         $_SESSION['_readed_'][$name] = $isReaded;
-        $_SESSION[$name]['_is_readed'] = $isReaded;
 
-        return $_SESSION[$name];
+        return array_merge(
+            $_SESSION[$name],
+            [
+                '_is_readed' => $isReaded
+            ]
+        );
     }
 
     public function has($name) {
@@ -104,6 +108,14 @@ class Session implements \Http\SessionInterface {
     public function remove($name) {
         if (isset($_SESSION[$name])) unset($_SESSION[$name]);
         if (isset($_SESSION['_readed_'][$name])) unset($_SESSION['_readed_'][$name]);
+    }
+
+    public function clearInReaded($value = null) {
+        if ($value) {
+            unset($_SESSION['_readed_'][$value]);
+        }else{
+            unset($_SESSION['_readed_']);
+        }
     }
 
     public function clear() {
