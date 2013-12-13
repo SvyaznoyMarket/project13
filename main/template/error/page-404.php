@@ -72,6 +72,6 @@
     })();
 </script>
 
-<script src="/js/loadjs.js?t=1386928489" type="text/javascript"></script>
+<script src="/js/loadjs.js" type="text/javascript"></script>
 </body>
 </html>
