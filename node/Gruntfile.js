@@ -11,7 +11,6 @@ module.exports = function( grunt ) {
 		 */
 		bigjqueryFiles = [
 			// 'custom-form-elements.js',
-			'jquery.email_validate.js',
 			'jquery.lightbox_me.js',
 			'jquery.scrollto.js',
 			'jquery.placeholder.js',

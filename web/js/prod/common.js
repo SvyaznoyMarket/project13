@@ -3022,7 +3022,7 @@ $(document).ready(function() {
  * см.BlackBox startAction
  *
  * @author		Zaytsev Alexandr
- * @requires	jQuery, jQuery.emailValidate, docCookies
+ * @requires	jQuery, docCookies
  * 
  * @param		{event}		event
  * @param		{Object}	subscribe			Информация о подписке
@@ -3037,7 +3037,7 @@ $(document).ready(function() {
 			input = $('.bSubscribeLightboxPopup__eInput'),
 			submitBtn = $('.bSubscribeLightboxPopup__eBtn');
 		// end of vars
-		
+
 
 		var subscribing = function subscribing() {
 				var email = input.val(),
@@ -3093,12 +3093,25 @@ $(document).ready(function() {
 					$(this).slideUp(300);
 					subscribeNow();
 				});
-			};
+			},
+
+			validator = new FormValidator(
+				{
+					fields: [
+						{
+							fieldNode: input,
+							require: true,
+							customErr: 'Не указан e-mail',
+							validBy: 'isEmail'
+						}
+					]
+				}
+			);
 		//end of functions
 
 		input.placeholder();
 
-		input.emailValidate({
+		validator.validate({
 			onValid: function() {
 				input.removeClass('mError');
 				submitBtn.removeClass('mDisabled');
