@@ -369,6 +369,19 @@ class Action {
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 
+        $relatedCategories = [];
+        if (!empty($catalogJson['related_categories'])) {
+            \RepositoryManager::productCategory()->prepareCollectionById(
+                (array) $catalogJson['related_categories'],
+                $region,
+                function($data) use (&$relatedCategories) {
+                    foreach ($data as $item) {
+                        $relatedCategories[] = new \Model\Product\Category\Entity($item);
+                    }
+                }
+            );
+        }
+
         // поддержка GET-запросов со старыми фильтрами
         if (!$categoryClass && is_array($request->get(\View\Product\FilterForm::$name)) && (bool)$request->get(\View\Product\FilterForm::$name)) {
             return new \Http\RedirectResponse(\App::router()->generate('product.category', ['categoryPath' => $category->getPath()]));
@@ -489,7 +502,8 @@ class Action {
             &$catalogJson,
             &$promoContent,
             &$shopScriptSeo,
-            &$shop
+            &$shop,
+            &$relatedCategories
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -502,6 +516,7 @@ class Action {
             $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setGlobalParam('shop', $shop);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
+            $page->setParam('relatedCategories', $relatedCategories);
         };
 
         // полнотекстовый поиск через сфинкс
@@ -1053,4 +1068,5 @@ class Action {
 
         return $hints;
     }
+
 }

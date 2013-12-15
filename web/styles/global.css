@@ -1260,12 +1260,6 @@ table {
   display: block;
   left: -129px;
 }
-.fixedTopBar__cart.mOpenedPopup .fixedTopBar__dd {
-  display: none;
-}
-.fixedTopBar__cart.mOpenedPopup:hover .fixedTopBar__dd {
-  display: none;
-}
 .fixedTopBar__cartTitle {
   display: block;
   padding: 5px 0 8px 10px;
@@ -1275,6 +1269,12 @@ table {
 }
 .fixedTopBar__cartTitle:hover .fixedTopBar__cartText {
   text-decoration: none;
+}
+.fixedTopBar .mOpenedPopup .fixedTopBar__dd {
+  display: none;
+}
+.fixedTopBar .mOpenedPopup:hover .fixedTopBar__dd {
+  display: none;
 }
 .fixedTopBar__cartText {
   display: inline-block;
@@ -1513,8 +1513,22 @@ table {
   -moz-border-radius: 0 0 4px 4px;
   border-radius: 0 0 4px 4px;
 }
-.fixedTopBar__logOut {
-  width: 127px;
+.fixedTopBar .enterPrize {
+  line-height: 1.3;
+  padding-bottom: 10px;
+}
+.fixedTopBar .enterPrize__text {
+  background: url("/styles/enterPrize/img/fishkiPlash.gif") no-repeat 0 20px;
+  padding: 12px 0 12px 65px;
+}
+.fixedTopBar .enterPrize__text .title {
+  display: block;
+  margin: 0 0 3px;
+}
+.fixedTopBar .enterPrize__reglink {
+  font-size: 14px;
+  height: 30px;
+  line-height: 30px;
 }
 .fixedTopBar .fixedTopBar__cartOn .transGradWhite {
   background: url("/styles/fixedTopBar/img/tranGradientWhiteLong.png") no-repeat 0 0;
@@ -1527,7 +1541,7 @@ table {
 .fixedTopBar__logOutLink {
   display: block;
   text-align: center;
-  margin: 10px;
+  margin: 0 10px 10px;
   height: 25px;
   line-height: 25px;
 }
@@ -2008,13 +2022,6 @@ table {
   width: 100%;
   left: 0;
   height: 43px;
-}
-.enterPrize .cuponIco img {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  display: block;
-  margin-left: -25px;
 }
 .enterPrize .cuponDesc {
   position: absolute;

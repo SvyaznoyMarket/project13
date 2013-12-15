@@ -51,6 +51,18 @@
             <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
                 <a href="/login" class="fixedTopBar__logInLink bAuthLink">Войти</a>
                 <span class="transGrad"></span>
+
+                <div class="fixedTopBar__dd fixedTopBar__logOut">
+                    <div class="enterPrize">
+                        <div class="enterPrize__text">
+                            <strong class="title">Enter Prize</strong>
+
+                            Выбери фишку со скидкой на любой товар в ENTER!
+                        </div>
+
+                        <a href="" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+                    </div>
+                </div>
             </div>
         </div>
     </noindex>
@@ -63,9 +75,6 @@
     <?= $page->slotMainMenu() ?>
 </div>
 <!-- /Header -->
-
-
-
 
 <script id="userbar_cart_tmpl" type="text/html">
     <a href="<?=  $page->url('cart') ?>" class="fixedTopBar__cartTitle">
@@ -132,6 +141,19 @@
     <span class="transGrad"></span>
 
     <div class="fixedTopBar__dd fixedTopBar__logOut">
+        {{^hasEnterprizeCoupon}}
+            <div class="enterPrize">
+                <div class="enterPrize__text">
+                    <strong class="title">Enter Prize</strong>
+
+                    Выбери фишку со скидкой на любой товар в ENTER!
+                </div>
+
+                <a href="" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+            </div>
+        {{/hasEnterprizeCoupon}}
+
         <a class="mBtnGrey fixedTopBar__logOutLink" href="<?= $page->url('user.logout') ?>">Выйти</a>
     </div>
+
 </script>

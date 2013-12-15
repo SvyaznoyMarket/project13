@@ -18,10 +18,6 @@
     <div class="fl width430">
         <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
 
-        <? if ($form->getEnterprizeCoupon()): ?>
-            <input type="hidden" name="user[enterprize_coupon]" value="<?= $form->getEnterprizeCoupon() ?>">
-        <? endif ?>
-
         <label class="userInfoEdit__label" for="user_first_name">Имя:</label>
 
         <input type="text" id="user_first_name" value="<?= $form->getFirstName() ?>" name="user[first_name]" class="text width418 mb10" />
@@ -48,11 +44,9 @@
 
         <input type="text" id="user_email" value="<?= $form->getEmail() ?>" name="user[email]" class="text width418 mb10" />
 
-        <? if (!$form->getEnterprizeCoupon()): ?>
-            <div class="pr fr">
-                <div class="doublehelp help">Одно из полей обязательно для заполнения!</div>
-            </div>
-        <? endif ?>
+        <div class="pr fr">
+            <div class="doublehelp help">Одно из полей обязательно для заполнения!</div>
+        </div>
 
         <label class="userInfoEdit__label" for="user_mobile_phone">Мобильный телефон:</label>
 
@@ -61,10 +55,6 @@
         <label class="userInfoEdit__label" for="user_home_phone">Домашний телефон:</label>
 
         <input type="text" id="user_home_phone" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" class="text" />
-
-        <label class="userInfoEdit__label" for="user_skype">Skype:</label>
-
-        <input type="text" id="user_skype" value="<?= $form->getSkype() ?>" name="user[skype]" class="text" />
 
         <label class="userInfoEdit__label">Дата рождения:</label>
 
@@ -100,6 +90,11 @@
         <label class="userInfoEdit__label" for="user_occupation">Род деятельности:</label>
 
         <input type="text" id="user_occupation" value="<?= $form->getOccupation() ?>" name="user[occupation]" class="text width418 mb10" />
+
+        <div class="bInputList">
+            <input type="checkbox" id="user_is_subscribe" name="user[is_subscribe]" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox" <?= $form->getIsSubscribed() ? 'checked="checked"' : '' ?> />
+            <label class="bCustomLabel" for="user_is_subscribe">Хочу знать об интересных предложениях</label>
+        </div>
 
         <input type="submit" value="Сохранить изменения" id="bigbutton" class="btnSave button bigbutton">
 
