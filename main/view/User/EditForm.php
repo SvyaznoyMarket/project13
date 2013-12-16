@@ -29,6 +29,8 @@ class EditForm {
     private $couponAgree;
     /** @var bool */
     private $isSubscribed;
+    /** @var string */
+    private $cardNumber;
     /** @var array */
     private $errors = array(
         'global'                    => null,
@@ -82,6 +84,7 @@ class EditForm {
         if (array_key_exists('enterprize_coupon', $data)) $this->setEnterprizeCoupon($data['enterprize_coupon']);
         if (array_key_exists('coupon_agree', $data)) $this->setCouponAgree($data['coupon_agree']);
         if (array_key_exists('is_subscribe', $data)) $this->setIsSubscribed($data['is_subscribe']);
+        if (array_key_exists('card_number', $data)) $this->setCardNumber($data['card_number']);
     }
 
     public function fromEntity(\Model\User\Entity $entity) {
@@ -338,4 +341,19 @@ class EditForm {
     public function getIsSubscribed() {
         return $this->isSubscribed;
     }
+
+    /**
+     * @param string $cardNumber
+     */
+    public function setCardNumber($cardNumber) {
+        $this->cardNumber = trim((string)$cardNumber);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCardNumber() {
+        return $this->cardNumber;
+    }
+
 }

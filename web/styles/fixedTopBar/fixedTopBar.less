@@ -142,11 +142,6 @@
 			border-color: @typLinkColor;
 			color: @white;
 		}
-
-		.fixedTopBar__logOut {
-			width: 127px;
-		}
-
 	}
 
 	.wrapperCrumbsList {
@@ -285,6 +280,20 @@
 				left: -129px;
 			}
 		}
+
+		&.mOpenedPopup {
+
+			.fixedTopBar__dd {
+				display: none;
+			}
+
+			&:hover {
+
+				.fixedTopBar__dd {
+					display: none;
+				}
+			}
+		} 
 	}
 
 	&__cartTitle {
@@ -299,20 +308,6 @@
 			}
 		}
 	}
-
-	.mOpenedPopup {
-
-		.fixedTopBar__dd {
-			display: none;
-		}
-
-		&:hover {
-
-			.fixedTopBar__dd {
-				display: none;
-			}
-		}
-	} 
 
 	&__cartText {
 		display: inline-block;
