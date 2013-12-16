@@ -61,6 +61,10 @@ if ($oneClick) {
 <div class="mLoader" data-bind="visible: !prepareData()"></div>
 <!-- /loader -->
 
+<? if (\App::config()->adFox['enabled']): ?>
+	<div id="adfox920" class="adfoxWrapper"></div>
+<? endif ?>
+
 <!-- Общая обертка оформления заказа -->
 <div class="bBuyingSteps clearfix" style="display:none" data-bind="style: { display: prepareData() ? 'block' : 'none'}, css: { mLifeGift: $root.lifeGift }">
 

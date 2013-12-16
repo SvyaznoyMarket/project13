@@ -451,7 +451,11 @@
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new-v5.js') )
 						.wait()
-						.script( logTimeAfterOurScript );
+						.script( logTimeAfterOurScript )
+						.wait()
+						.script('adfox.asyn.code.ver3.min.js')
+						.wait()
+						.script( getWithVersion('ports.js') );
 				}).runQueue();
 		},
 
