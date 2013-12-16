@@ -214,16 +214,24 @@ window.ANALYTICS = {
 		(function () {
 			var s = document.createElement('script'),
 				x = document.getElementsByTagName('script')[0],
-				vars = $('#ActionPayJS').data('vars');
-			if ( typeof(vars) != 'undefined' ) {
-				if ( vars.extraData ) {
-					if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
-						vars.basketProducts = ENTER.config.cartProducts;
-					}
-					delete vars.extraData;
-				}
-				window.APRT_DATA = vars;
+				elem = $('#ActionPayJS'),
+				vars = elem.data('vars');
+
+			if ( 0 === elem.length ) {
+				return;
 			}
+
+			if ( typeof(vars) === 'undefined' ) {
+				vars = {};
+				vars.pageType = 0;
+			}
+			else if ( vars.extraData ) {
+				if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
+					vars.basketProducts = ENTER.config.cartProducts;
+				}
+				delete vars.extraData;
+			}
+			window.APRT_DATA = vars;
 
 			s.type  = 'text/javascript';
 			s.src = '//rt.actionpay.ru/code/enter/';
