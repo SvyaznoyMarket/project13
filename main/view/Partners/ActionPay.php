@@ -80,11 +80,11 @@ class ActionPay {
                 $this->sendData['extraData'] = $this->extraData;
             }
 
-            return $this->sendData;
-
         } catch (\Exception $e) {
             \App::logger()->error($e, ['ActionPayJS']);
         }
+
+        return $this->sendData;
     }
 
 

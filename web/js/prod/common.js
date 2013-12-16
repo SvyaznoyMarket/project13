@@ -519,6 +519,22 @@
 			productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
 		},
 
+
+		/**
+		 * myThings аналитика добавления в корзину
+		 */
+		myThingsAnalytics = function myThingsAnalytics( data ) {
+			var productData = data.product;
+
+			if ( typeof MyThings !== 'undefined' ) {
+				MyThings.Track({
+					EventType: MyThings.Event.Visit,
+					Action: '1013',
+					ProductId: productData.id
+				});
+			}
+		},
+
 		/**
 		 * Soloway аналитика добавления в корзину
 		 */
@@ -592,6 +608,7 @@
 	// analytics
 	body.on('addtocart', kissAnalytics);
 	body.on('addtocart', googleAnalytics);
+	body.on('addtocart', myThingsAnalytics);
 	body.on('addtocart', adAdriver);
 	body.on('addtocart', addToRetailRocket);
 }(window.ENTER));
@@ -1195,6 +1212,39 @@ $(document).ready(function(){
  
  
 /**
+ * Enterprize
+ *
+ * @author  Shaposhnik Vitaly
+ */
+;(function() {
+	var
+		enterprizeAuthLink = $('.jsEnterprizeAuthLink');
+	// end of vars
+
+	var
+		removeEnterprizeAuthClass = function ( e, userInfo ) {
+			if ( !userInfo || !userInfo.name ) {
+				return;
+			}
+
+			if ( !enterprizeAuthLink.length ) {
+				return;
+			}
+
+			$.each(enterprizeAuthLink, function () { $(this).removeClass('jsEnterprizeAuthLink') });
+		};
+	// end of functions
+
+	$('body').on('userLogged', removeEnterprizeAuthClass);
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
  * Перемотка к Id
  *
  * @author		Zaytsev Alexandr
@@ -1374,9 +1424,11 @@ $(document).ready(function(){
 			// constructor body
 
 			this.form = null; // текущая форма
+			this.redirect_to = null;
 
 			body.on('click', '.registerAnotherWayBtn', $.proxy(this.registerAnotherWay, this));
 			body.on('click', '.bAuthLink', this.openAuth);
+			body.on('click', '.jsEnterprizeAuthLink', $.proxy(this.enterprizeAuthLinkClick, this));
 			$('.jsLoginForm, .jsRegisterForm, .jsResetPwdForm').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
 			body.on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
 			body.on('click', '#bUserlogoutLink', this.logoutLinkClickLog);
@@ -1562,6 +1614,31 @@ $(document).ready(function(){
 			return false;
 		};
 
+		/**
+		 * Обработчик клика на ссылку получения купона для неавторизированного пользователя
+		 *
+		 * @param e
+		 * @public
+		 */
+		Login.prototype.enterprizeAuthLinkClick = function( e ) {
+			e.preventDefault();
+
+			var
+				elementClicked = $(e.target),
+				authLink = elementClicked.hasClass('jsEnterprizeAuthLink') ? elementClicked : elementClicked.parents('.jsEnterprizeAuthLink')/*(elementClicked.parents('.jsEnterprizeAuthLink').length ? elementClicked.parents('.jsEnterprizeAuthLink').get(0) : null)*/,
+				link = authLink.attr('href');
+			// end of vars
+
+			// устанавливаем редирект
+			if ( link ) {
+				this.redirect_to = link;
+			}
+
+			// показываем попап
+			this.openAuth();
+
+			return false;
+		};
 
 		/**
 		 * Изменение значения кнопки сабмита при отправке ajax запроса
@@ -1623,6 +1700,11 @@ $(document).ready(function(){
 				urlParams = this.getUrlParams();
 			// end of vars
 
+			// устанавливаем редирект
+			if ( urlParams['redirect_to'] ) {
+				this.redirect_to = urlParams['redirect_to'];
+			}
+
 			var responseFromServer = function( response ) {
 					if ( response.error ) {
 						console.warn('Form has error');
@@ -1661,8 +1743,8 @@ $(document).ready(function(){
 							console.log(typeof response.data.link);
 
 							document.location.href = response.data.link;
-							console.log('try reload....');
-							document.location.reload();
+
+							return false;
 						}
 						else {
 							// this.form.unbind('submit');
@@ -1690,7 +1772,7 @@ $(document).ready(function(){
 
 				requestToServer = function() {
 					this.submitBtnLoadingDisplay( formSubmit );
-					formData.push({name: 'redirect_to', value: urlParams['redirect_to'] ? urlParams['redirect_to'] : window.location.href});
+					formData.push({name: 'redirect_to', value: this.redirect_to ? this.redirect_to : window.location.href});
 					$.post(this.form.attr('action'), formData, $.proxy(responseFromServer, this), 'json');
 				};
 			// end of functions

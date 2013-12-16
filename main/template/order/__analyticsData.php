@@ -90,7 +90,7 @@ return function(
             }
         }
 
-        $data[] = $orderData;
+        $data['orders'][] = $orderData;
     }
 
     $data['isUsedCartRecommendation'] = $isUsedCartRecommendation;

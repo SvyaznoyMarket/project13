@@ -208,6 +208,22 @@
 			productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
 		},
 
+
+		/**
+		 * myThings аналитика добавления в корзину
+		 */
+		myThingsAnalytics = function myThingsAnalytics( data ) {
+			var productData = data.product;
+
+			if ( typeof MyThings !== 'undefined' ) {
+				MyThings.Track({
+					EventType: MyThings.Event.Visit,
+					Action: '1013',
+					ProductId: productData.id
+				});
+			}
+		},
+
 		/**
 		 * Soloway аналитика добавления в корзину
 		 */
@@ -281,6 +297,7 @@
 	// analytics
 	body.on('addtocart', kissAnalytics);
 	body.on('addtocart', googleAnalytics);
+	body.on('addtocart', myThingsAnalytics);
 	body.on('addtocart', adAdriver);
 	body.on('addtocart', addToRetailRocket);
 }(window.ENTER));

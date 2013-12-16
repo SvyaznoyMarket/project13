@@ -214,16 +214,24 @@ window.ANALYTICS = {
 		(function () {
 			var s = document.createElement('script'),
 				x = document.getElementsByTagName('script')[0],
-				vars = $('#ActionPayJS').data('vars');
-			if ( typeof(vars) != 'undefined' ) {
-				if ( vars.extraData ) {
-					if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
-						vars.basketProducts = ENTER.config.cartProducts;
-					}
-					delete vars.extraData;
-				}
-				window.APRT_DATA = vars;
+				elem = $('#ActionPayJS'),
+				vars = elem.data('vars');
+
+			if ( 0 === elem.length ) {
+				return;
 			}
+
+			if ( typeof(vars) === 'undefined' ) {
+				vars = {};
+				vars.pageType = 0;
+			}
+			else if ( vars.extraData ) {
+				if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
+					vars.basketProducts = ENTER.config.cartProducts;
+				}
+				delete vars.extraData;
+			}
+			window.APRT_DATA = vars;
 
 			s.type  = 'text/javascript';
 			s.src = '//rt.actionpay.ru/code/enter/';
@@ -697,6 +705,31 @@ window.ANALYTICS = {
 		}
 		console.log('end parseAllAnalDivs');
 		console.groupEnd();
+	},
+
+	myThingsTracker: function() {
+		//трекинг от MyThings. Вызывается при загрузке внешнего скрипта
+		window._mt_ready = function () {
+			if ( typeof(MyThings) != "undefined" ) {
+				var sendData = $('#myThingsTracker').data('value');
+
+				if ( !$.isArray(sendData) ) {
+					sendData = [sendData];
+				}
+
+				$.each(sendData, function(i, e) {
+
+					if (e.EventType !== "undefined") {
+						e.EventType = eval(e.EventType);
+					}
+					MyThings.Track(e)
+				});
+			}
+		}
+
+		mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com";
+		mtAdvertiserToken = "1989-100-ru";
+		document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok="+mtAdvertiserToken+"' type='text/javascript'%3E%3C/script%3E"));
 	},
 
 	testFreak : function() {
