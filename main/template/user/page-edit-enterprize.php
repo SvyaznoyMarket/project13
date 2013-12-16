@@ -40,6 +40,10 @@
 
         <input type="text" id="user_email" value="<?= $form->getEmail() ?>" name="user[email]" class="text width418 mb10" />
 
+        <label class="userInfoEdit__label" for="user_card_number">Номер карты Связной-Клуб:</label>
+
+        <input type="text" id="user_card_number" value="<?= $form->getCardNumber() ?>" name="user[card_number]" class="text" />
+
         <div class="bInputList">
             <input type="checkbox" id="user_agree" name="user[coupon_agree]" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox" <?= $form->getCouponAgree() ? 'checked="checked"' : '' ?> />
             <label class="bCustomLabel" for="user_agree">Ознакомлен с <a href="http://www.enter.ru/reklamnaya-akcia-enterprize" target="blank">правилами ENTER PRIZE</a></label>
