@@ -241,7 +241,7 @@
 			s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
 			i.style.position = 'absolute';
 			i.style.width = i.style.height = '0px';
-			
+
 			i.onload = i.onerror = function(){
 				b.removeChild(i);
 				i = b = null;
@@ -289,6 +289,27 @@
 			else if ( blackBox ) {
 				blackBox.basket().add( data );
 			}
+		},
+
+		/**
+		 *
+		 */
+		addToVisualDNA = function addToVisualDNA( event, data ) {
+			var
+				productData 	= data.product,
+				product_id 		= productData.id,
+				product_price 	= productData.price,
+				category_id 	= ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
+				d = document,
+				b = d.body,
+				i = d.createElement('IMG' );
+			// end of vars
+
+			i.src = '//e.visualdna.com/conversion?api_key=enter.ru&id=added_to_basket&product_id=' + product_id + '&product_category=' + category_id + '&value=' + product_price + '&currency=RUB';
+			i.width = i.height = '1';
+			i.alt = '';
+
+			b.appendChild(i);
 		};
 	//end of functions
 
@@ -299,4 +320,5 @@
 	body.on('addtocart', googleAnalytics);
 	body.on('addtocart', adAdriver);
 	body.on('addtocart', addToRetailRocket);
+	body.on('addtocart', addToVisualDNA);
 }(window.ENTER));

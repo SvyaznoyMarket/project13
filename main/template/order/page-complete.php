@@ -11,6 +11,7 @@
  * @var $creditData         array
  * @var $isOrderAnalytics   bool
  * @var $sessionIsReaded    bool
+ * @var $paymentMethod      \Model\PaymentMethod\Entity
  */
 ?>
 
@@ -108,6 +109,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     'productsById' => $productsById,
     'servicesById' => $servicesById,
     'shopsById'    => $shopsById,
+    'paymentMethod' => $paymentMethod
 )) ?>
 
 

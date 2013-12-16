@@ -1,15 +1,27 @@
 <?php
 /**
- * @var $page         \View\Layout
- * @var $orders       \Model\Order\Entity[]
- * @var $productsById \Model\Product\Entity[]
- * @var $servicesById \Model\Product\Service\Entity[]
- * @var $shopsById    \Model\Shop\Entity[]
+ * @var $page           \View\Layout
+ * @var $orders         \Model\Order\Entity[]
+ * @var $productsById   \Model\Product\Entity[]
+ * @var $servicesById   \Model\Product\Service\Entity[]
+ * @var $shopsById      \Model\Shop\Entity[]
+ * @var $paymentMethod  \Model\PaymentMethod\Entity
  */
 
 if (\App::config()->analytics['enabled']):
 
     $yaParams = [];
+    $productInfo = [];
+    $productCategory = null;
+
+    $user = \App::user();
+    $uid = $uEntity = null;
+    if ($user) {
+        $uEntity = $user->getEntity();
+        if ($uEntity) {
+            $uid = $uEntity->getId();
+        }
+    }
 
     foreach ($orders as $i => $order) {
         $item = [];
@@ -19,6 +31,8 @@ if (\App::config()->analytics['enabled']):
         $item['exchange_rate'] = 1;
         $item['goods'] = [];
 
+        $productInfo[$i] = [];
+
         foreach ($order->getProduct() as $j => $orderProduct) {
             $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
             if (!$product) continue;
@@ -26,6 +40,20 @@ if (\App::config()->analytics['enabled']):
             $item['goods']['name'] = $page->escape($product->getName());
             $item['goods']['price'] = $orderProduct->getPrice();
             $item['goods']['quantity'] = $orderProduct->getQuantity();
+
+            if ( $product->getMainCategory() ) {
+                $productCategory = $product->getMainCategory();
+            }else{
+                $productCategory = $product->getCategory();
+                $productCategory = reset($productCategory);
+            }            
+            /** @var $productCategory   \Model\Product\Category\Entity */
+
+            $productInfo[$i][$j] = [
+                'id'        => $product->getId(),
+                'price'     => $product->getPrice(),
+                'category'  => $productCategory->getId(),
+            ];
         }
 
         foreach ($order->getService() as $j => $orderService) {
@@ -138,6 +166,12 @@ if (\App::config()->analytics['enabled']):
         <div id="adblenderOrder" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
         <!-- Efficient Frontiers -->
         <img src="http://pixel.everesttech.net/3252/t?ev_Orders=1&amp;ev_Revenue=<?= $order->getSum() ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
+
+        <? // SITE-2773 { add VisualDNA pixel ?>
+        <img src="//e.visualdna.com/conversion?api_key=enter.ru&id=transaction&value=<?= $order->getSum() ?>&currency=RUB&partner_user_id=<?= $uid; ?>&payment_type=<?= $paymentMethod->getName(); ?>" width="1" height="1" alt="" />
+        <? foreach($productInfo[$i] as $j => $img) { ?>
+            <img src="//e.visualdna.com/conversion?api_key=enter.ru&id=purchased&product_id=<?= $img['id'] ?>&product_category=<?= $img['category'] ?>&value=<?= $img['price'] ?>&currency=RUB" width="1" height="1" alt="" />
+        <? } // } SITE-2773 ?>
 
     <?php endforeach ?>
 <? endif;
