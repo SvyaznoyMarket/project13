@@ -9,7 +9,7 @@ return function(
     $buyMethod = null,
     $showState = true
 ) { ?>
-    <ul class="bListing clearfix">
+    <ul class="bListing clearfix"><!-- mPandora если необходимо застилить листинги под пандору -->
         <?= $helper->renderWithMustache('product/list/' . ($view == 'line' ? '_line' : '_compact'), (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState)) ?>
     </ul>
 
