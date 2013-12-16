@@ -204,7 +204,7 @@ class InfoAction {
         $response = new \Http\JsonResponse($responseData);
 
         if (false == $status){
-            $response->headers->clearCookie(\App::config()->subscribe['cookieName']); // todo domainName
+            $response->headers->clearCookieForDomains(\App::config()->subscribe['cookieName']);
         } elseif ($cookie) {
             $response->headers->setCookie($cookie);
         }

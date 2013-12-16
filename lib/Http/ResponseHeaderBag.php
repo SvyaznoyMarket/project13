@@ -174,6 +174,22 @@ class ResponseHeaderBag extends HeaderBag {
     }
 
     /**
+     * Clears a cookie for main host domain and subdomain
+     *
+     * @param $name
+     */
+    public function clearCookieForDomains($name) {
+        $domainParts = explode('.', \App::config()->mainHost);
+
+        $tld = array_pop($domainParts);
+        $domain = array_pop($domainParts);
+        $subdomain = array_pop($domainParts);
+
+        $this->clearCookie($name, '/', "$domain.$tld");
+        $this->clearCookie($name, '/', "$subdomain.$domain.$tld");
+    }
+
+    /**
      * Generates a HTTP Content-Disposition field-value.
      *
      * @param string $disposition      One of "inline" or "attachment"
