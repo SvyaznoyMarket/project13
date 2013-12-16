@@ -12,7 +12,7 @@ return function (
     $delivery = [];
     if (isset($deliveryData['product'][0]['delivery'])) {
         foreach ($deliveryData['product'][0]['delivery'] as $item) {
-            if (in_array($item['token'], ['self', 'standart', /*'pickpoint',*/ 'now'])) {
+            if (in_array($item['token'], ['self', 'standart', 'pickpoint', 'now'])) {
                 $delivery[$item['token']] = $item;
 
                 if (isset($item['price'])) {
@@ -26,6 +26,10 @@ return function (
 
         // флажек, открываем блок "Сегодня есть в магазинах" или нет
         $delivery['isInShopOnly'] = $product->isInShopOnly() ? true : false;
+
+        if (in_array('pickpoint', array_keys($delivery)) && in_array('self', array_keys($delivery))) {
+            unset($delivery['pickpoint']);
+        }
     }
 
     // магазины, в которых товар находится на витрине
