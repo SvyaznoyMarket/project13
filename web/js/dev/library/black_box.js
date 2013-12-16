@@ -16,7 +16,8 @@
 		clientCart = utils.extendApp('ENTER.config.clientCart'),
 		clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
 		subscribeCookieName = 'subscribed',
-		body = $('body');
+		body = $('body' ),
+		authorized_cookie = '_authorized';
 	// end of vars
 	
 	
@@ -45,7 +46,7 @@
 			}
 			// constructor body
 
-			if (  window.docCookies.hasItem("_authorized") ) {
+			if (  window.docCookies.hasItem(authorized_cookie) ) {
 				this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
 				this.init();
 			}

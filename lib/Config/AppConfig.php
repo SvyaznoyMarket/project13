@@ -69,6 +69,7 @@ class AppConfig {
     /** @var string */
     public $authToken = [
         'name'     => null,
+        'authorized_cookie' => null,
     ];
     /** @var string */
     public $sessionToken;

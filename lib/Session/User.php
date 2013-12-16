@@ -83,16 +83,13 @@ class User {
         $user->setIpAddress(\App::request()->getClientIp());
         $this->setToken($token);
 
-        $manHost = preg_replace('/^www./', '.', \App::config()->mainHost);
-        $time = time() + \App::config()->session['cookie_lifetime'];
-
         // SITE-1260 {
         $cookie = new \Http\Cookie(
             $this->tokenName,
             $token,
-            $time,
+            time() + \App::config()->session['cookie_lifetime'],
             '/',
-            $manHost,
+            preg_replace('/^www./', '.', \App::config()->mainHost),
             false,
             true // важно httpOnly=true, чтобы js не мог получить куку
         );
@@ -100,16 +97,6 @@ class User {
         // }
 
         // SITE-2709 {
-        /*$cookie = new \Http\Cookie(
-            '_authorized',
-            true,
-            $time,
-            '/',
-            $manHost,
-            false,
-            false
-        );
-        $response->headers->setCookie($cookie);*/
         $this->enableInfoCookie($response);
         // }
 
@@ -150,8 +137,8 @@ class User {
             $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$domain.$tld");
             $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$subdomain.$domain.$tld");
 
-            $response->headers->clearCookie('_authorized', '/', "$domain.$tld");
-            $response->headers->clearCookie('_authorized', '/', "$subdomain.$domain.$tld");
+            $response->headers->clearCookie(\App::config()->authToken['authorized_cookie'], '/', "$domain.$tld");
+            $response->headers->clearCookie(\App::config()->authToken['authorized_cookie'], '/', "$subdomain.$domain.$tld");
         }
 
         return $token;
@@ -429,7 +416,7 @@ class User {
         $time = time() + \App::config()->session['cookie_lifetime'];
 
         $cookie = new \Http\Cookie(
-            '_authorized',
+            \App::config()->authToken['authorized_cookie'],
             true, //cookieValue
             $time,
             '/',
@@ -449,7 +436,7 @@ class User {
         $time = time() + \App::config()->session['cookie_lifetime'];
 
         $cookie = new \Http\Cookie(
-            '_authorized',
+            \App::config()->authToken['authorized_cookie'],
             false, //cookieValue
             $time,
             '/',
