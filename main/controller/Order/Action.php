@@ -574,9 +574,8 @@ class Action {
 
                     $creditData['vars'] = [
                         'number' => $order->getNumber(),
-                        'region' => $shop ? $shop->getId() : 'r_' . $user->getRegion()->getId(),
+                        'region' => $shop ? $shop->getId() : ( 'r_' . $user->getRegion()->getParentId() ?: $user->getRegion()->getId() ),
                         'items'  => [],
-
                     ];
 
                     foreach ($order->getProduct() as $orderProduct) {

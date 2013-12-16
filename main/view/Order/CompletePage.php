@@ -95,7 +95,7 @@ class CompletePage extends Layout {
             foreach ($orders as $order) {
                 /* @var $order \Model\Order\Entity */
                 $dataOrders['items'][] = [
-                    'orderId'   => $order->getID(),
+                    'orderId'   => $order->getNumber(),
                     'price'     => $order->getPaySum(),
                     'convType'  => 'sales',
                 ];

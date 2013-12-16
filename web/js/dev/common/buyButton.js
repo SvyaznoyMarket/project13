@@ -318,6 +318,7 @@
 	// analytics
 	body.on('addtocart', kissAnalytics);
 	body.on('addtocart', googleAnalytics);
+	body.on('addtocart', myThingsAnalytics);
 	body.on('addtocart', adAdriver);
 	body.on('addtocart', addToRetailRocket);
 	body.on('addtocart', addToVisualDNA);
