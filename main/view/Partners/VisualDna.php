@@ -46,10 +46,11 @@ class VisualDna {
             }
 
             $src = $this->partnerLink . sprintf(
-                '&id=transaction&value=%d&currency=RUB&partner_user_id=%d&payment_type=%s',
+                '&id=transaction&value=%d&currency=RUB&partner_user_id=%d&payment_type=%d',
                 (int) $order->getSum(),
                 (int) $uid,
-                (string) $paymentMethod->getName()
+                (int) $paymentMethod->getId()
+                //(string) $paymentMethod->getName()
             );
             $return .= $this->makeImg($src);
             //$return .= '<img src="//e.visualdna.com/conversion?api_key=enter.ru&id=transaction&value='. $order->getSum() .'&currency=RUB&partner_user_id=' . $uid .'&payment_type=' . $paymentMethod->getName() .'" width="1" height="1" alt="" />';
