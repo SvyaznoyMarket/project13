@@ -287,12 +287,12 @@ class ActionPay {
                 /** @var $orderProduct  \Model\Order\Product\Entity **/
                 /** @var $product       \Model\Product\Entity       **/
 
-                $product = $productsById[$orderProduct->getId()];
+                $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : false;
 
                 $purchasedProducts[] = [
                     'id'        => $orderProduct->getId(),
                     //'name'      => $orderProduct->getName(), // нет такого метода
-                    'name'      => $product->getName(),
+                    'name'      => $product ? $product->getName() : '',
                     'price'     => $orderProduct->getPrice(),
                     'quantity'  => $orderProduct->getQuantity(),
                 ];
