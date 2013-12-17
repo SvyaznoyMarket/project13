@@ -581,7 +581,7 @@ if ($oneClick) {
 			<span>Работает </span>
 			<span>$[properties.regtime]</span>
 			<br/>
-			<a class="bGrayButton shopchoose" href="#" data-pointid="$[properties.id]" data-parentbox="$[properties.parentBoxToken]">Забрать из этого магазина</a>
+			<a class="bGrayButton shopchoose" href="#" data-pointid="$[properties.id]" data-parentbox="$[properties.parentBoxToken]">$[properties.buttonName]</a>
 		</div>
 	</div>
 
