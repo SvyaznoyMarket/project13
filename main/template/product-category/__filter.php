@@ -69,11 +69,15 @@ return function(
     }
 
     if (0 === $countInListFilters) return;
-?>
 
+    $showParamsButton = (bool) ($countInListFilters > 1 || !$priceFilter);
+
+?>
     <form id="productCatalog-filter-form" class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
-            <a class="bFilterToggle btnGrey <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+            <? if ($showParamsButton): ?>
+                <a class="bFilterToggle btnGrey <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+            <? endif ?>
 
             <? if ($priceFilter && $productFilter) {
                 /**@var     $productFilter      \Model\Product\Filter
