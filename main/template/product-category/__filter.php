@@ -70,14 +70,14 @@ return function(
 
     if (0 === $countInListFilters) return;
 
-    $showParamsButton = (bool) ($countInListFilters > 1 || !$priceFilter)
+    $showParamsButton = (bool) ($countInListFilters > 1 || !$priceFilter);
 
 ?>
     <form id="productCatalog-filter-form" class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
             <? if ($showParamsButton): ?>
                 <a class="bFilterToggle btnGrey <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
-            <? endif; ?>
+            <? endif ?>
 
             <? if ($priceFilter && $productFilter) {
                 /**@var     $productFilter      \Model\Product\Filter
