@@ -2,6 +2,23 @@
 console.log('ports.js inited');
 
 window.ANALYTICS = {
+
+	nanosemanticsInf: function() {
+		console.info('nanosemantics inf loading...');
+
+		var
+			debug = window.ENTER.config.debug || false,
+			url = (debug) ? '' : 'http://d1wpyzungb7jn1.cloudfront.net/wdgt/jquery.vishnu.enter.min.js';
+		// end of vars
+
+		var
+			afterLoad = function afterLoad() {
+				console.info('nanosemantics inf loading complete');
+			};
+		// end of functions
+
+		$LAB.script(url).wait(afterLoad);
+	},
 	
 	// todo SITE-1049
 	heiasMain : function() {
