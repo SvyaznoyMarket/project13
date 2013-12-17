@@ -8,7 +8,7 @@
                 {{/isPriceEqualZero}}
 
                 {{^isPriceEqualZero}}
-                    <span><span class="bJustText">Доставка</span> <strong>{{price}}</strong> <span class="rubl">p</span></span>
+                    <span><span class="bJustText">Доставка</span> <strong>{{price}}</strong>&nbsp;<span class="rubl">p</span></span>
                 {{/isPriceEqualZero}}
 
                 {{#date.name}}
@@ -30,7 +30,7 @@
 
                 {{^isPriceEqualZero}}
                     {{^isPriceNaN}}
-                        <span><span class="bJustText">Самовывоз</span> <strong>{{price}}</strong> <span class="rubl">p</span></span>
+                        <span><span class="bJustText">Самовывоз</span> <strong>{{price}}</strong>&nbsp;<span class="rubl">p</span></span>
                     {{/isPriceNaN}}
                 {{/isPriceEqualZero}}
 
@@ -59,11 +59,11 @@
         {{#pickpoint}}
             <li class="bDelivery__eItem mDeliveryPrice">
                 {{#isPriceEqualZero}}
-                    <span><span class="bJustText">Забрать из постамата</span> <strong>бесплатно</strong></span>
+                    <span><span class="bJustText">Самостоятельно забрать в постамате PickPoint</span> <strong>бесплатно</strong></span>
                 {{/isPriceEqualZero}}
 
                 {{^isPriceEqualZero}}
-                    <span><span class="bJustText">Забрать из постамата</span> <strong>{{price}}</strong> <span class="rubl">p</span></span>
+                    <span><span class="bJustText">Самостоятельно забрать в постамате PickPoint</span> <strong>{{price}}</strong>&nbsp;<span class="rubl">p</span></span>
                 {{/isPriceEqualZero}}
 
                 {{#date.name}}
