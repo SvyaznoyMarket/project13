@@ -30,6 +30,8 @@ class Entity {
     private $statusId;
     /** @var string */
     private $number;
+    /** @var string */
+    private $numberErp;
     /** @var int */
     private $userId;
     /** @var bool */
@@ -123,6 +125,7 @@ class Entity {
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
         if (array_key_exists('number', $data)) $this->setNumber($data['number']);
+        if (array_key_exists('number_erp', $data)) $this->setNumberErp($data['number_erp']);
         if (array_key_exists('user_id', $data)) $this->setUserId($data['user_id']);
         if (array_key_exists('is_legal', $data)) $this->setIsLegal($data['is_legal']);
         if (array_key_exists('last_name', $data)) $this->setLastName($data['last_name']);
@@ -548,6 +551,20 @@ class Entity {
      */
     public function getNumber() {
         return $this->number;
+    }
+
+    /**
+     * @param string $numberErp
+     */
+    public function setNumberErp($numberErp) {
+        $this->numberErp = (string)$numberErp;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumberErp() {
+        return $this->numberErp;
     }
 
     /**

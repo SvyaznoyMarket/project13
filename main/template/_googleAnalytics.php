@@ -45,7 +45,7 @@
             ?>
 
     _gaq.push(['_addTrans',
-            '<?= $order->getNumber() ?>', // Номер заказа
+            '<?= $order->getNumberErp() ?>', // Номер заказа
             '<?= $shop ? $page->escape($shop->getName()) : '' ?>', // Название магазина (Необязательно)
             '<?= str_replace(',', '.', $order->getPaySum()) ?>', // Полная сумма заказа (дроби через точку)
             '', // налог
@@ -71,7 +71,7 @@
                     : $category->getName();
                 ?>
 
-    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumber(), $product->getArticle(), $page->escape($product->getName()), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
+    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $product->getArticle(), $page->escape($product->getName()), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
             <?php endforeach ?>
 
             <? foreach ($order->getService() as $orderService): ?>
@@ -88,7 +88,7 @@
                     : $category->getName();
                 ?>
 
-    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumber(), $service->getToken(), $page->escape($service->getName()), $page->escape($categoryName), $orderService->getPrice(), $orderService->getQuantity())) ?>']);
+    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $service->getToken(), $page->escape($service->getName()), $page->escape($categoryName), $orderService->getPrice(), $orderService->getQuantity())) ?>']);
                 <?php endforeach ?>
 
     _gaq.push(['_trackTrans']);
