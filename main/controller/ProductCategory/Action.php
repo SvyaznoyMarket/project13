@@ -503,7 +503,7 @@ class Action {
             $page->setGlobalParam('shop', $shop);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
             $page->setParam('viewParams', [
-                'show_side_panels' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+                'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
             ]);
         };
 

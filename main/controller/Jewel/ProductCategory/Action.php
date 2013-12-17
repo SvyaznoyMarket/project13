@@ -209,7 +209,7 @@ class Action extends \Controller\ProductCategory\Action {
             $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
             $page->setParam('viewParams', [
-                'show_side_panels' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+                'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
             ]);
         };
 

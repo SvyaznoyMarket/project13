@@ -536,7 +536,7 @@ class DefaultLayout extends Layout {
 
     public function slotAdFoxBground() {
         $viewParams = $this->getParam('viewParams');
-        $show = (bool) ( $viewParams && isset($viewParams['show_side_panels']) ) ? $viewParams['show_side_panels'] : true;
+        $show = (bool) ( $viewParams && isset($viewParams['showSideBanner']) ) ? $viewParams['showSideBanner'] : true;
         if (false == $show) return;
 
         $routeToken = \App::request()->attributes->get('token');

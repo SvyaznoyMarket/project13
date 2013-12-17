@@ -240,7 +240,7 @@ class IndexAction extends \Controller\Product\IndexAction {
         $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('viewParams', [
-            'show_side_panels' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+            'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
         ]);
 
         return new \Http\Response($page->show());
