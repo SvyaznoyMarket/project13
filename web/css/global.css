@@ -8158,6 +8158,19 @@
   #mainPageFooter .social_network span {
     padding-right: 6px;
   }
+  #mainPageFooter .social_network a[title="vkontakte"],
+  #mainPageFooter .social_network a[title="twitter"],
+  #mainPageFooter .social_network a[title="facebook"],
+  #mainPageFooter .social_network a[title="youtube"] {
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    margin: 0 2px;
+    vertical-align: middle;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+  }
   #mainPageFooter .social_network a[title="twitter"] {
     background: url("/css/common/img/socIcons.png") no-repeat 0px 0px;
   }
