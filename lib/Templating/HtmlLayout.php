@@ -215,7 +215,7 @@ class HtmlLayout {
      */
     public function setTitle($title) {
         $this->title = (string)$title;
-        $this->addMeta('title', (string)$title);
+        //$this->addMeta('title', (string)$title);
     }
 
     /**

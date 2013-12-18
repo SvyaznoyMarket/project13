@@ -22,12 +22,21 @@ class ListAction {
     ) {
         /** @var \Model\Product\Entity $product */
 
+        $productData = [];
+
+        if (0 === $pager->count()) { // кол-во всех продуктов в пейджере (результатов выборки)
+            // Не нужно ничего отображать, если кол-во товаров в листинге == 0
+            return [
+                'products' => $productData,
+                'productCount' => 0,
+            ];
+        }
+
         $user = \App::user();
 
         $productButtonAction = new \View\Cart\ProductButtonAction();
         $reviewCompactAction = new \View\Product\ReviewCompactAction();
 
-        $productData = [];
         foreach ($pager as $product) {
             $productVideos = isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [];
             /** @var $productVideo \Model\Product\Video\Entity|null */
@@ -100,18 +109,15 @@ class ListAction {
             $productData[] = $productItem;
         }
 
-        // получаем кол-во продуктов
-        $productCount = count($productData);
-
         // добавляем баннер в листинги, в нужную позицию
-        if ($bannerPlaceholder && 1 === $pager->getPage()) {
+        if (!empty($productData) && $bannerPlaceholder && 1 === $pager->getPage()) {
             $bannerPlaceholder['isBanner'] = true;
             $productData = array_merge(array_slice($productData, 0, $bannerPlaceholder['position']), [$bannerPlaceholder], array_slice($productData, $bannerPlaceholder['position']));
         }
 
         return [
             'products' => $productData,
-            'productCount' => $productCount
+            'productCount' => count($productData), // кол-во продуктов на странице с учётом смещений
         ];
     }
 }

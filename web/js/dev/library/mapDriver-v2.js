@@ -100,7 +100,8 @@
 						address: currPoint.address,
 						link: currPoint.link,
 						regtime: currPoint.regtime,
-						parentBoxToken: currPoint.parentBoxToken
+						parentBoxToken: currPoint.parentBoxToken,
+						buttonName: currPoint.buttonName
 					},
 
 					// оформление метки на карте
