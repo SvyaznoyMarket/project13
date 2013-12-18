@@ -8,7 +8,7 @@ window.ANALYTICS = {
 
 		var
 			debug = window.ENTER.config.debug || false,
-			url = (debug) ? '' : 'http://d1wpyzungb7jn1.cloudfront.net/wdgt/jquery.vishnu.enter.min.js';
+			url = (debug) ? 'http://d1wpyzungb7jn1.cloudfront.net/wdgt/jquery.vishnu.enter.js' : 'http://d1wpyzungb7jn1.cloudfront.net/wdgt/jquery.vishnu.enter.min.js';
 		// end of vars
 
 		var
