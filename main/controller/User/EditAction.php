@@ -52,10 +52,6 @@ class EditAction {
                     throw new \Exception("E-mail и телефон не могут быть одновременно пустыми. Укажите ваш мобильный телефон либо e-mail.");
                 }
 
-                if (!$form->getIsSubscribed()) {
-                    throw new \Exception('Не отмечено поле "Согласен получать рекламную рассылку"');
-                }
-
                 $response = $client->query(
                     'user/update',
                     ['token' => \App::user()->getToken()],

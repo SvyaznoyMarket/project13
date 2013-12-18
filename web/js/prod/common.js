@@ -1248,12 +1248,12 @@ $(document).ready(function(){
 					fieldNode: $('.jsAgree'),
 					require: true,
 					customErr: 'Необходимо согласие'
-				},
-				{
-					fieldNode: $('.jsSubscribe'),
-					require: true,
-					customErr: 'Необходимо согласие'
 				}
+//				{
+//					fieldNode: $('.jsSubscribe'),
+//					require: true,
+//					customErr: 'Необходимо согласие'
+//				}
 			]
 		},
 		validator = new FormValidator(validationConfig);
