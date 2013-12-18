@@ -147,6 +147,8 @@
     <?= $page->slotAuth() ?>
     <?= $page->slotRegionSelection() ?>
 
+    <?= $page->slotInf() ?>
+
     <div style="position:absolute; height: 0; top:0; z-index:-1;">
         <?= $page->slotBodyJavascript() ?>
         <?= $page->slotInnerJavascript() ?>
@@ -155,7 +157,6 @@
         <?= $page->slotMyThings() ?>
         <?= $page->slotAdriver() ?>
         <?= $page->slotPartnerCounter() ?>
-        <?= $page->slotInf() ?>
 
         <? if (\App::config()->analytics['enabled']): ?>
             <div id="adblenderCommon" class="jsanalytics"></div>
