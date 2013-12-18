@@ -45,7 +45,7 @@
 
         <div class="bInputList">
             <input type="checkbox" id="user_is_subscribe" name="user[is_subscribe]" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox jsSubscribe" <?= $form->getIsSubscribed() ? 'checked="checked"' : '' ?> />
-            <label class="bCustomLabel" for="user_is_subscribe">Согласен получать рекламную рассылку*</label>
+            <label class="bCustomLabel" for="user_is_subscribe">Согласен получать рекламную рассылку</label>
         </div>
 
         <input type="submit" value="Сохранить изменения" id="bigbutton" class="btnSave button bigbutton jsEnterprizeFormSubmit">

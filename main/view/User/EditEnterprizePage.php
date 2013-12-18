@@ -32,7 +32,7 @@ class EditEnterprizePage extends \View\DefaultLayout {
     }
 
     public function slotBodyDataAttribute() {
-        return 'infopage';
+        return 'lk';
     }
 
     public function slotContentHead() {
