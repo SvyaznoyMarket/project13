@@ -413,6 +413,26 @@
 			}).runQueue();
 		},
 
+		'lk': function() {
+			$LAB.queueWait( function() {
+				$LAB.script('jquery-plugins.min.js')
+					.script( getWithVersion('library.js') )
+					.script( mustacheUrl )
+					.script( loadDebugPanel )
+					.wait()
+					.script( getWithVersion('common.js') )
+					.script( getWithVersion('lk.js') )
+					.wait()
+					.script( logTimeAfterOurScript )
+					.script( optimizelyUrl )
+					.script('adfox.asyn.code.ver3.min.js')
+					.wait()
+					.script( getWithVersion('ports.js') )
+					.wait()
+					.script( logTimeAfterPartnerScript );
+			}).runQueue();
+		},
+
 		'order': function() {
 			$LAB.queueScript( yandexMapUrl )
 				.queueScript( knockoutUrl )
