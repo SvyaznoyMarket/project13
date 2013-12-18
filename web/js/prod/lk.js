@@ -9,6 +9,7 @@
 		authLink = $('.jsEnterprizeAuthLink'),
 		body = $('body'),
 		mobilePhoneField = $('.jsMobilePhone'),
+		cardField = $('.jsCardNumber'),
 
 		/**
 		 * Конфигурация валидатора для формы ЛК Enterprize
@@ -44,7 +45,7 @@
 					customErr: 'Не указан email'
 				},
 //				{
-//					fieldNode: $('.jsCardNumber'),
+//					fieldNode: cardField,
 //					require: true,
 //					customErr: 'Не указан номер карты Связной-Клуб'
 //				},
@@ -220,11 +221,13 @@
 		 * Добавление маски
 		 */
 		addMask = function addMask() {
+			$.mask.definitions['n'] = '[0-9]';
+
 			// устанавливаем маску для поля "Ваш мобильный телефон"
-			if ( mobilePhoneField.length ) {
-				$.mask.definitions['n'] = '[0-9]';
-				mobilePhoneField.mask('8nnnnnnnnnn');
-			}
+			mobilePhoneField.length && mobilePhoneField.mask('8nnnnnnnnnn');
+
+			// устанавливаем маску для поля "Номер карты Связной-Клуб"
+			cardField.length && cardField.mask('2 98nnnn nnnnnn', { placeholder: '*' });
 		};
 	// end of functions
 
