@@ -517,6 +517,9 @@ class Action {
             $page->setGlobalParam('shop', $shop);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
             $page->setParam('relatedCategories', $relatedCategories);
+            $page->setParam('viewParams', [
+                'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+            ]);
         };
 
         // полнотекстовый поиск через сфинкс
@@ -1069,4 +1072,16 @@ class Action {
         return $hints;
     }
 
+
+    /**
+     * убираем/показываем уши
+     *
+     * @param array $catalogJson
+     */
+    static public function checkAdFoxBground(&$catalogJson) {
+        if (isset($catalogJson['show_side_panels'])) {
+            return (bool)$catalogJson['show_side_panels'];
+        }
+        return true;
+    }
 }
