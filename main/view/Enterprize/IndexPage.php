@@ -10,7 +10,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotBodyDataAttribute() {
-        return 'infopage';
+        return 'enterprize';
     }
 
     public function slotContent() {
