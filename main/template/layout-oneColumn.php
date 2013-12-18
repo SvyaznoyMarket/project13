@@ -155,6 +155,7 @@
         <?= $page->slotMyThings() ?>
         <?= $page->slotAdriver() ?>
         <?= $page->slotPartnerCounter() ?>
+        <?= $page->slotInf() ?>
 
         <? if (\App::config()->analytics['enabled']): ?>
             <div id="adblenderCommon" class="jsanalytics"></div>

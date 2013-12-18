@@ -546,6 +546,10 @@ class DefaultLayout extends Layout {
         return '<div class="adfoxWrapper" id="adfoxbground"></div>';
     }
 
+    public function slotInf() {
+        return '<div id="nanosemanticsInf" class="jsanalytics vishnu-widget"><div class="vishnu-container"></div><div id="vishnu-button"></div></div>';
+    }
+
 
 
     public function getBreadcrumbsPath() {
