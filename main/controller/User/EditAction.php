@@ -52,10 +52,6 @@ class EditAction {
                     throw new \Exception("E-mail и телефон не могут быть одновременно пустыми. Укажите ваш мобильный телефон либо e-mail.");
                 }
 
-                if (!$form->getIsSubscribed()) {
-                    throw new \Exception('Не отмечено поле "Согласен получать рекламную рассылку"');
-                }
-
                 $response = $client->query(
                     'user/update',
                     ['token' => \App::user()->getToken()],
@@ -81,7 +77,7 @@ class EditAction {
                 if ($form->getEnterprizeCoupon()) {
                     try {
                         if (!$form->getLastName()) {
-                            throw new \Exception('Не заполнена фамилия');
+                            $form->setError('last_name', 'Не указана фамилия');
                         }
 
                         // создание enterprize-купона
@@ -114,6 +110,10 @@ class EditAction {
                             throw $result;
                         }
 
+                        if ($form->getError('last_name')) {
+                            throw new \Curl\Exception($form->getError('last_name'));
+                        }
+
                         // помечаем пользователя как получившего enterprize-купон
                         $response = $client->query(
                             'user/update',
@@ -127,10 +127,6 @@ class EditAction {
                         if (!isset($response['confirmed']) || !$response['confirmed']) {
                             throw new \Exception('Не получен ответ от сервера.');
                         }
-
-                        $session->set('flash', 'Поздравляем с регистрацией в Enter Prize! Фишка отправлена на мобильный телефон и e-mail.');
-
-                        return new \Http\RedirectResponse($redirect);
                     } catch (\Curl\Exception $e) {
                         \App::exception()->remove($e);
 
@@ -180,8 +176,32 @@ class EditAction {
                             }
                         }
 
-                        throw $e;
+                        // Если есть ошибка в поле guid ('Идентификатор серии купона'), то подставляем данную ошибку в global-error
+                        $errorMess = $form->getError('guid') ? $form->getError('guid') : $e->getMessage();
+                        $form->setError('global', 'Не удалось сохранить форму. ' . $errorMess);
+
+                        if (!$request->isXmlHttpRequest()) {
+                            throw $e;
+                        }
                     }
+
+                    // xhr
+                    if ($request->isXmlHttpRequest()) {
+                        $formErrors = [];
+                        foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                            $formErrors[] = ['code' => 0, 'message' => $errorMessage, 'field' => $fieldName];
+                        }
+
+                        $responseData = $form->isValid()
+                            ? ['error' => null, 'notice' => ['message' => 'Поздравляем с регистрацией в Enter Prize! Фишка отправлена на мобильный телефон и e-mail.', 'type' => 'info']]
+                            : ['error' => ['code' => 0, 'message' => 'Не удалось сохранить форму'], 'form' => ['error' => $formErrors]];
+
+                        return new \Http\JsonResponse($responseData);
+                    }
+
+                    $session->set('flash', 'Поздравляем с регистрацией в Enter Prize! Фишка отправлена на мобильный телефон и e-mail.');
+
+                    return new \Http\RedirectResponse($redirect);
                 }
 
                 $session->set('flash', 'Данные сохранены');
