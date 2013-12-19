@@ -26,7 +26,9 @@ return function (
         $class .= ' jsBuyButton';
     }
 
-    if (!$product->getIsBuyable()) {
+    if (5 === $product->getStatusId()) { // SITE-2924
+        return '';
+    } else if (!$product->getIsBuyable()) {
         $url = '#';
         $class .= ' mDisabled';
         $value = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет в наличии';
