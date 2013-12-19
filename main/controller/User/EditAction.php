@@ -81,6 +81,10 @@ class EditAction {
                             $form->setError('last_name', 'Не указана фамилия');
                         }
 
+                        if (!$form->getIsSubscribed()) {
+                            $form->setError('is_subscribe', 'Не отмечено поле "Согласен получать рекламную рассылку"');
+                        }
+
                         // создание enterprize-купона
                         $result = [];
                         $client->addQuery(
@@ -113,6 +117,10 @@ class EditAction {
 
                         if ($form->getError('last_name')) {
                             throw new \Curl\Exception($form->getError('last_name'));
+                        }
+
+                        if ($form->getError('is_subscribe')) {
+                            throw new \Curl\Exception($form->getError('is_subscribe'));
                         }
 
                         // помечаем пользователя как получившего enterprize-купон
