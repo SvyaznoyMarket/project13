@@ -191,7 +191,7 @@
 				{
 					fieldNode: extractField,
 					require: true,
-					customErr: 'Не указан Комментарий'
+					customErr: 'Не указан комментарий'
 				},
 				{
 					fieldNode: authorNameField,
