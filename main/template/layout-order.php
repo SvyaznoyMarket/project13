@@ -65,6 +65,8 @@
     </div><!--/ Контент -->
 </div><!--/ Шаблон -->
 
+<?= $page->slotInf() ?>
+
 <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 
 <?= $page->slotRegionSelection() ?>

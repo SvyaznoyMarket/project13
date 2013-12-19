@@ -103,4 +103,14 @@ class CompletePage extends Layout {
                 <noscript><img src="https://tracker.marinsm.com/tp?act=2&cid=7saq97byg0&script=no" ></noscript></div>';
 
     }
+
+    public function slotInf() {
+        $orders = (array)$this->getParam('orders');
+        $order = reset($orders);
+        if (!$order instanceof \Model\Order\Entity) {
+            return '';
+        }
+
+        return parent::slotInf() . PHP_EOL . '<div hidden id="costForVishnu">' . $order->getPaySum() . '</div>';
+    }
 }
