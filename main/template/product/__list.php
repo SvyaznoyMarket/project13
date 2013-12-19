@@ -5,11 +5,12 @@ return function(
     \Iterator\EntityPager $pager,
     array $productVideosByProduct,
     array $bannerPlaceholder = [],
+    $listingStyle = null,
     $view,
     $buyMethod = null,
     $showState = true
 ) { ?>
-    <ul class="bListing clearfix"><!-- mPandora если необходимо застилить листинги под пандору -->
+    <ul class="bListing clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?>"><!-- mPandora если необходимо застилить листинги под пандору -->
         <?= $helper->renderWithMustache('product/list/' . ($view == 'line' ? '_line' : '_compact'), (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState)) ?>
     </ul>
 
