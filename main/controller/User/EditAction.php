@@ -74,7 +74,7 @@ class EditAction {
                     throw new \Exception('Не получен ответ от сервера.');
                 }
 
-                if ($form->getEnterprizeCoupon()) {
+                if ($form->getEnterprizeCoupon() && !$userEntity->getEnterprizeCoupon()) {
                     try {
                         if (!$form->getLastName()) {
                             $form->setError('last_name', 'Не указана фамилия');
