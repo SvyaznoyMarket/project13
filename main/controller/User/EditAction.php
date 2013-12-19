@@ -166,6 +166,7 @@ class EditAction {
                                         case 'svyaznoy_club_card_number':
                                             if ('isEmpty' === $errorType) $message = 'Не заполнен номер карты Связной-Клуб';
                                             if ('regexNotMatch' === $errorType) $message = 'Некорректно введен номер карты Связной-Клуб';
+                                            if ('checksumInvalid' === $errorType) $message = 'Некорректно введен номер карты Связной-Клуб';
                                             break;
                                         case 'guid':
                                             if ('isEmpty' === $errorType) $message = 'Не передан купон';
