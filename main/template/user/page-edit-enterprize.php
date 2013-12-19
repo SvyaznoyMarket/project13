@@ -38,14 +38,14 @@
         <label class="userInfoEdit__label" for="user_card_number">Номер карты Связной-Клуб:</label>
         <div><input type="text" id="user_card_number" value="<?= $form->getCardNumber() ?>" name="user[card_number]" class="text jsCardNumber" /></div>
 
-        <div class="bInputList">
-            <input type="checkbox" id="user_agree" name="user[coupon_agree]" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox jsAgree" <?= $form->getCouponAgree() ? 'checked="checked"' : '' ?> />
-            <label class="bCustomLabel" for="user_agree">Ознакомлен с <a href="http://www.enter.ru/reklamnaya-akcia-enterprize" target="blank">правилами ENTER PRIZE</a>*</label>
+        <div style="margin: 0 0 10px 3px;" class="bInputList">
+            <input type="checkbox" id="user_agree" name="user[coupon_agree]" value="1" autocomplete="off" class="bCustomInput jsCustomRadio mCustomCheckBig jsAgree" <?= $form->getCouponAgree() ? 'checked="checked"' : '' ?> />
+            <label class="bCustomLabel mCustomLabelBig" for="user_agree">Ознакомлен с <a style="text-decoration: underline;" href="http://www.enter.ru/reklamnaya-akcia-enterprize" target="blank">правилами ENTER PRIZE</a>*</label>
         </div>
 
-        <div class="bInputList">
-            <input type="checkbox" id="user_is_subscribe" name="user[is_subscribe]" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox jsSubscribe" <?= $form->getIsSubscribed() ? 'checked="checked"' : '' ?> />
-            <label class="bCustomLabel" for="user_is_subscribe">Согласен получать рекламную рассылку</label>
+        <div style="margin: 0 0 10px 3px;" class="bInputList">
+            <input type="checkbox" id="user_is_subscribe" name="user[is_subscribe]" value="1" autocomplete="off" class="bCustomInput jsCustomRadio mCustomCheckBig jsSubscribe" <?= $form->getIsSubscribed() ? 'checked="checked"' : '' ?> />
+            <label class="bCustomLabel mCustomLabelBig" for="user_is_subscribe">Согласен получать рекламную рассылку</label>
         </div>
 
         <input type="submit" value="Сохранить изменения" id="bigbutton" class="btnSave button bigbutton jsEnterprizeFormSubmit">

@@ -1341,10 +1341,10 @@ table {
   display: block;
   left: -129px;
 }
-.fixedTopBar__cart.mOpenedPopup .fixedTopBar__dd {
+.fixedTopBar .mOpenedPopup .fixedTopBar__dd {
   display: none;
 }
-.fixedTopBar__cart.mOpenedPopup:hover .fixedTopBar__dd {
+.fixedTopBar .mOpenedPopup:hover .fixedTopBar__dd {
   display: none;
 }
 .fixedTopBar__cartTitle {
