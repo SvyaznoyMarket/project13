@@ -43,7 +43,7 @@
             <label class="bCustomLabel mCustomLabelBig" for="user_agree">Ознакомлен с <a style="text-decoration: underline;" href="http://www.enter.ru/reklamnaya-akcia-enterprize" target="blank">правилами ENTER PRIZE</a>*</label>
         </div>
 
-        <div style="margin: 0 0 10px 3px;" class="bInputList">
+        <div style="margin: 0 0 10px 3px;" class="bInputList mRules">
             <input type="checkbox" id="user_is_subscribe" name="user[is_subscribe]" value="1" autocomplete="off" class="bCustomInput jsCustomRadio mCustomCheckBig jsSubscribe" <?= $form->getIsSubscribed() ? 'checked="checked"' : '' ?> />
             <label class="bCustomLabel mCustomLabelBig" for="user_is_subscribe">Согласен получать рекламную рассылку</label>
         </div>
