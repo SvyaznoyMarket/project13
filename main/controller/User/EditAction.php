@@ -56,16 +56,17 @@ class EditAction {
                     'user/update',
                     ['token' => \App::user()->getToken()],
                     [
-                        'first_name'   => $form->getFirstName(),
-                        'middle_name'  => $form->getMiddleName(),
-                        'last_name'    => $form->getLastName(),
-                        'sex'          => $form->getSex(),
-                        'email'        => $form->getEmail(),
-                        'mobile'       => $form->getMobilePhone(),
-                        'phone'        => $form->getHomePhone(),
-                        'birthday'     => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
-                        'occupation'   => $form->getOccupation(),
-                        'is_subscribe' => $form->getIsSubscribed(),
+                        'first_name'                => $form->getFirstName(),
+                        'middle_name'               => $form->getMiddleName(),
+                        'last_name'                 => $form->getLastName(),
+                        'sex'                       => $form->getSex(),
+                        'email'                     => $form->getEmail(),
+                        'mobile'                    => $form->getMobilePhone(),
+                        'phone'                     => $form->getHomePhone(),
+                        'birthday'                  => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
+                        'occupation'                => $form->getOccupation(),
+                        'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
+                        'is_subscribe'              => $form->getIsSubscribed(),
                     ],
                     \App::config()->coreV2['hugeTimeout']
                 );
@@ -74,7 +75,7 @@ class EditAction {
                     throw new \Exception('Не получен ответ от сервера.');
                 }
 
-                if ($form->getEnterprizeCoupon()) {
+                if ($form->getEnterprizeCoupon() && !$userEntity->getEnterprizeCoupon()) {
                     try {
                         if (!$form->getLastName()) {
                             $form->setError('last_name', 'Не указана фамилия');
@@ -92,7 +93,7 @@ class EditAction {
                                 'name'                      => $form->getFirstName(),
                                 'phone'                     => $form->getMobilePhone(),
                                 'email'                     => $form->getEmail(),
-                                'svyaznoy_club_card_number' => $form->getCardNumber(),
+                                'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
                                 'guid'                      => $form->getEnterprizeCoupon(),
                                 'agree'                     => $form->getCouponAgree(),
                             ],
