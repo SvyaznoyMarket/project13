@@ -64,6 +64,8 @@ class Entity {
     private $city;
     /** @var int */
     private $enterprizeCoupon;
+    /** @var string */
+    private $sclubCardnumber;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -94,6 +96,7 @@ class Entity {
         if (array_key_exists('updated', $data)) $this->setUpdatedAt($data['updated'] ? new \DateTime($data['updated']) : null);
         if (array_key_exists('geo', $data) && is_array($data['geo'])) $this->setCity(new \Model\Region\Entity($data['geo']));
         if (array_key_exists('coupon_enter_prize', $data)) $this->setEnterprizeCoupon($data['coupon_enter_prize']);
+        if (array_key_exists('svyaznoy_club_card_number', $data)) $this->setSclubCardnumber($data['svyaznoy_club_card_number']);
     }
 
     /**
@@ -521,5 +524,19 @@ class Entity {
      */
     public function setEnterprizeCoupon($enterprizeCoupon) {
         $this->enterprizeCoupon = (int)$enterprizeCoupon;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSclubCardnumber() {
+        return $this->sclubCardnumber;
+    }
+
+    /**
+     * @param string $sclubCardnumber
+     */
+    public function setSclubCardnumber($sclubCardnumber) {
+        $this->sclubCardnumber = str_replace(' ','', (string)$sclubCardnumber);
     }
 }

@@ -87,6 +87,9 @@
             </div>
         </div>
 
+        <label class="userInfoEdit__label" for="user_sclub_card_number">Номер карты Связной-Клуб:</label>
+        <div><input type="text" id="user_sclub_card_number" value="<?= $form->getSclubCardnumber() ?>" name="user[svyaznoy_club_card_number]" class="text jsCardNumber" /></div>
+
         <label class="userInfoEdit__label" for="user_occupation">Род деятельности:</label>
 
         <input type="text" id="user_occupation" value="<?= $form->getOccupation() ?>" name="user[occupation]" class="text width418 mb10" />
