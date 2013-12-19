@@ -86,8 +86,7 @@ class EditAction {
                         }
 
                         // создание enterprize-купона
-                        $result = [];
-                        $client->addQuery(
+                        $result = $client->query(
                             'coupon/enter-prize',
                             [
                                 'client_id' => \App::config()->coreV2['client_id'],
@@ -101,19 +100,8 @@ class EditAction {
                                 'guid'                      => $form->getEnterprizeCoupon(),
                                 'agree'                     => $form->getCouponAgree(),
                             ],
-                            function ($data) use (&$result) {
-                                $result = $data;
-                            },
-                            function(\Exception $e) use (&$result) {
-                                \App::exception()->remove($e);
-                                $result = $e;
-                            }
+                            \App::config()->coreV2['hugeTimeout']
                         );
-                        $client->execute();
-
-                        if ($result instanceof \Curl\Exception) {
-                            throw $result;
-                        }
 
                         if ($form->getError('last_name')) {
                             throw new \Curl\Exception($form->getError('last_name'));
@@ -134,7 +122,7 @@ class EditAction {
                         );
 
                         if (!isset($response['confirmed']) || !$response['confirmed']) {
-                            throw new \Exception('Не получен ответ от сервера.');
+                            throw new \Exception('Не получен ответ от сервера');
                         }
                     } catch (\Curl\Exception $e) {
                         \App::exception()->remove($e);
