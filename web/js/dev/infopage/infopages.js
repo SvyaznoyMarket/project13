@@ -1,5 +1,29 @@
 $(document).ready(function(){
 
+	var makeFieldsMask = function makeFieldsMask() {
+		console.log('makeFieldsMask');
+
+		var sclub = $('#user_svyaznoy_card'),
+			phone = $('#phonemask');
+
+		if ( typeof( $.mask ) !== 'undefined' ) {
+			$.mask.definitions['n'] = '[0-9]';
+		}
+
+		if ( sclub.length ) {
+			sclub.mask('2 98nnnn nnnnnn', {
+				placeholder: '*'
+			});
+		}
+
+		if ( phone.length ) {
+			phone.mask('+7 (nnn) nnn-nn-nn');
+		}
+	};
+	// end functions
+
+	makeFieldsMask();
+
 	if ( $('.subscribe-form__btn').length ) {
 		var input = $('.subscribe-form__email'),
 			form = $('.subscribe-form');
@@ -105,11 +129,8 @@ $(document).ready(function(){
 
 			return false;
 		});
-		
-		if ( typeof( $.mask ) !== 'undefined' ) {
-			$.mask.definitions['n'] = '[0-9]';
-			$('#phonemask').mask('+7 (nnn) nnn-nn-nn');
-		}
+
+		makeFieldsMask();
 		
 		var emptyValidation = function emptyValidation( node ) {
 			if ( node.val().replace(/\s/g,'') === '' ) {
