@@ -66,6 +66,7 @@ class EditAction {
                         'birthday'     => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
                         'occupation'   => $form->getOccupation(),
                         'is_subscribe' => $form->getIsSubscribed(),
+                        'svyaznoy_club_card_number' => preg_replace('/\s/','', (string)$form->getSvyaznoyCardNumber()),
                     ],
                     \App::config()->coreV2['hugeTimeout']
                 );
@@ -92,7 +93,7 @@ class EditAction {
                                 'name'                      => $form->getFirstName(),
                                 'phone'                     => $form->getMobilePhone(),
                                 'email'                     => $form->getEmail(),
-                                'svyaznoy_club_card_number' => $form->getCardNumber(),
+                                'svyaznoy_club_card_number' => $form->getSvyaznoyCardNumber(),
                                 'guid'                      => $form->getEnterprizeCoupon(),
                                 'agree'                     => $form->getCouponAgree(),
                             ],

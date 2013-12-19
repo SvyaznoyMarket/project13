@@ -22,6 +22,7 @@ trait FormTrait {
                     : $userEntity->getMobilePhone()
             );
             $form->setEmail($userEntity->getEmail());
+            $form->setSclubCardnumber($userEntity->getSvyaznoyCardNumber());
         } else {
             // берем значения для формы из куки
             $cookieValue = $request->cookies->get(\App::config()->order['cookieName'], 'last_order');
