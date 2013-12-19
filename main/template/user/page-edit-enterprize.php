@@ -38,7 +38,7 @@
         <label class="userInfoEdit__label" for="user_card_number">Номер карты Связной-Клуб:</label>
         <div><input type="text" id="user_card_number" value="<?= $form->getSvyaznoyCardNumber() ?>" name="user[card_number]" class="text jsCardNumber" /></div>
 
-        <div style="margin: 0 0 10px 3px;" class="bInputList">
+        <div style="margin: 0 0 10px 3px;" class="bInputList mRules">
             <input type="checkbox" id="user_agree" name="user[coupon_agree]" value="1" autocomplete="off" class="bCustomInput jsCustomRadio mCustomCheckBig jsAgree" <?= $form->getCouponAgree() ? 'checked="checked"' : '' ?> />
             <label class="bCustomLabel mCustomLabelBig" for="user_agree">Ознакомлен с <a style="text-decoration: underline;" href="http://www.enter.ru/reklamnaya-akcia-enterprize" target="blank">правилами ENTER PRIZE</a>*</label>
         </div>
