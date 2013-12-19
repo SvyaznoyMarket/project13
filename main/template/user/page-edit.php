@@ -4,6 +4,9 @@
  * @var $form    \View\User\EditForm
  * @var $message string
  */
+
+$user = \App::user();
+$isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 ?>
 
 <? if (!$form->isValid()): ?>
@@ -94,6 +97,16 @@
         <div class="bInputList">
             <input type="checkbox" id="user_is_subscribe" name="user[is_subscribe]" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox" <?= $form->getIsSubscribed() ? 'checked="checked"' : '' ?> />
             <label class="bCustomLabel" for="user_is_subscribe">Согласен получать рекламную рассылку</label>
+        </div>
+
+        <p class="clearfix"></p>
+        <div class="<? if ($isCorporative): ?> hidden <? endif ?>clearfix">
+            <div class="bInputList bBuyingLine__eRight mSClub">
+                <label for="user_svyaznoy_card">Номер карты &laquo;Связной-Клуб&raquo;</label>:
+                <input id="user_svyaznoy_card" type="text" value="<?= $form->getSvyaznoyCardNumber() ?>" class="text width418 mb10" name="user[sclub_card_number]" />
+                <div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+            </div>
+            <p class="clearfix"></p>
         </div>
 
         <input type="submit" value="Сохранить изменения" id="bigbutton" class="btnSave button bigbutton">

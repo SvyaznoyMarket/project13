@@ -36,7 +36,7 @@
         <div><input type="text" id="user_email" value="<?= $form->getEmail() ?>" name="user[email]" class="text width418 mb10 jsEmail" /></div>
 
         <label class="userInfoEdit__label" for="user_card_number">Номер карты Связной-Клуб:</label>
-        <div><input type="text" id="user_card_number" value="<?= $form->getCardNumber() ?>" name="user[card_number]" class="text jsCardNumber" /></div>
+        <div><input type="text" id="user_card_number" value="<?= $form->getSvyaznoyCardNumber() ?>" name="user[card_number]" class="text jsCardNumber" /></div>
 
         <div style="margin: 0 0 10px 3px;" class="bInputList">
             <input type="checkbox" id="user_agree" name="user[coupon_agree]" value="1" autocomplete="off" class="bCustomInput jsCustomRadio mCustomCheckBig jsAgree" <?= $form->getCouponAgree() ? 'checked="checked"' : '' ?> />
