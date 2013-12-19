@@ -39,7 +39,9 @@ class EntityPager implements \Iterator {
      */
     public function setMaxPerPage($maxPerPage) {
         $maxPerPage = (int)$maxPerPage;
-        if (0 === $maxPerPage) $maxPerPage = 1;
+        if ($maxPerPage < 1) {
+            $maxPerPage = 1;
+        }
         $this->maxPerPage = $maxPerPage;
         $this->calculateLastPage();
     }
@@ -59,6 +61,10 @@ class EntityPager implements \Iterator {
     }
 
     private function calculateLastPage() {
+        if (0 === (int) $this->maxPerPage) {
+            $this->lastPage = 1;
+            return false;
+        }
         $this->lastPage = ceil($this->count / $this->maxPerPage);
         if ($this->lastPage < 1) $this->lastPage = 1;
     }
