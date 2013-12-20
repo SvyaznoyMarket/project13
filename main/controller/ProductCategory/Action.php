@@ -465,10 +465,10 @@ class Action {
 
             // в json-файле в свойстве content содержится массив
             if (empty($brand)) {
-                $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br />', $seoCatalogJson['content']);
+                $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br />', (array) $seoCatalogJson['content']);
             } else {
                 $seoBrandJson = \Model\Product\Category\Repository::getSeoJson($category, $brand);
-                $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br />', $seoBrandJson['content']);
+                $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br />', (array) $seoBrandJson['content']);
             }
         } catch (\Exception $e) {
             $hotlinks = [];
@@ -517,6 +517,9 @@ class Action {
             $page->setGlobalParam('shop', $shop);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
             $page->setParam('relatedCategories', $relatedCategories);
+            $page->setParam('viewParams', [
+                'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+            ]);
         };
 
         // полнотекстовый поиск через сфинкс
@@ -715,6 +718,16 @@ class Action {
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
+        $offset = ($pageNum - 1) * $limit;
+
+        // стиль листинга
+        $listingStyle = isset($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
+        if ('jewel' !== $listingStyle) {
+            // уменшаем кол-во товаров на первой странице для вывода баннера
+            $offset = $offset - (1 === $pageNum ? 0 : 1);
+            $limit = $limit - (1 === $pageNum ? 1 : 0);
+        }
+
         $repository = \RepositoryManager::product();
         $repository->setEntityClass(
             \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
@@ -732,8 +745,8 @@ class Action {
             $pagerAll = $repository->getIteratorByFilter(
                 $filtersWithoutShop,
                 $sort,
-                ($pageNum - 1) * $limit - (1 === $pageNum ? 0 : 1),
-                1 === $pageNum ? ($limit - 1) : $limit
+                $offset,
+                $limit
             );
             $page->setGlobalParam('allCount', $pagerAll->count());
         }
@@ -755,8 +768,8 @@ class Action {
         $productPager = $repository->getIteratorByFilter(
             $filters,
             $sort,
-            ($pageNum - 1) * $limit - (1 === $pageNum ? 0 : 1),
-            1 === $pageNum ? ($limit - 1) : $limit
+            $offset,
+            $limit
         );
 
         $productPager->setPage($pageNum);
@@ -797,7 +810,7 @@ class Action {
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
                     $productVideosByProduct,
-                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
+                    !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle ? $catalogJson['bannerPlaceholder'] : []
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -1069,4 +1082,16 @@ class Action {
         return $hints;
     }
 
+
+    /**
+     * убираем/показываем уши
+     *
+     * @param array $catalogJson
+     */
+    static public function checkAdFoxBground(&$catalogJson) {
+        if (isset($catalogJson['show_side_panels'])) {
+            return (bool)$catalogJson['show_side_panels'];
+        }
+        return true;
+    }
 }

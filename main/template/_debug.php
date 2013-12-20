@@ -190,9 +190,9 @@
     }
 
     .debug-panel .property-name {
-        padding: 5px 0 5px 22px;
+        padding: 5px 5px 5px 25px;
         background-repeat: no-repeat;
-        background-position: 0 3px;
+        background-position: 5px 5px;
         vertical-align: top;
     }
     .debug-panel .property-name a {

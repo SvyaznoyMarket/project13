@@ -12,7 +12,7 @@ class DefaultLayout extends Layout {
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');
         $this->addMeta('viewport', 'width=900');
-        $this->addMeta('title', 'Enter - это выход!');
+        //$this->addMeta('title', 'Enter - это выход!');
         $this->addMeta('description', 'Enter - новый способ покупать. Любой из ' . \App::config()->product['totalCount'] . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.');
 
         // TODO: осторожно, говнокод
@@ -534,7 +534,11 @@ class DefaultLayout extends Layout {
     }
 
 
-    public function slotAdFox() {
+    public function slotAdFoxBground() {
+        $viewParams = $this->getParam('viewParams');
+        $show = (bool) ( $viewParams && isset($viewParams['showSideBanner']) ) ? $viewParams['showSideBanner'] : true;
+        if (false == $show) return;
+
         $routeToken = \App::request()->attributes->get('token');
         if (
             !\App::config()->adFox['enabled'] ||

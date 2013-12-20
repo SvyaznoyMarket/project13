@@ -86,6 +86,7 @@ class Entity extends BasicEntity {
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
         if (array_key_exists('view_id', $data)) $this->setViewId($data['view_id']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('set_id', $data)) $this->setSetId($data['set_id']);

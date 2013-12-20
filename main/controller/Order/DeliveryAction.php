@@ -176,6 +176,7 @@ class DeliveryAction {
                     'token'       => $deliveryType->getToken(),
                     'name'        => $deliveryType->getName(),
                     'shortName'   => $deliveryType->getShortName(),
+                    'buttonName'  => $deliveryType->getButtonName(),
                     'description' => $deliveryType->getDescription(),
                     'states'      => $deliveryType->getPossibleMethodTokens(),
                     'ownStates'   => $deliveryType->getMethodTokens(),
@@ -370,6 +371,7 @@ class DeliveryAction {
                     'longitude'  => (float)$shopItem['coord_long'],
                     'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
                     'pointImage' => '/images/marker.png',
+                    'buttonName' => $deliveryTypeData['now']['buttonName'],
                 ];
             }
             // сортировка магазинов
@@ -449,6 +451,7 @@ class DeliveryAction {
                         'products'      => $pickpointProductIds,
                         'point_name'    => $pickpointItem['Name'],
                         'pointImage'    => '/images/marker-pickpoint.png',
+                        'buttonName'    => $deliveryTypeData['pickpoint']['buttonName'],
                     ];
                 }
 

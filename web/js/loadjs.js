@@ -390,6 +390,27 @@
 			}).runQueue();
 		},
 
+		'enterprize': function() {
+			$LAB.queueWait( function() {
+				$LAB.script('jquery-plugins.min.js')
+					.script( getWithVersion('library.js') )
+					.script( mustacheUrl )
+					.script( loadDebugPanel )
+					.wait()
+					.script( getWithVersion('common.js') )
+					.script( getWithVersion('infopage.js') )
+					.script( getWithVersion('lk.js') )
+					.wait()
+					.script( logTimeAfterOurScript )
+					.script( optimizelyUrl )
+					.script('adfox.asyn.code.ver3.min.js')
+					.wait()
+					.script( getWithVersion('ports.js') )
+					.wait()
+					.script( logTimeAfterPartnerScript );
+			}).runQueue();
+		},
+
 		'cart': function() {
 			$LAB.queueWait( function() {
 				$LAB.script('jquery-plugins.min.js')
@@ -402,6 +423,26 @@
 					.script( getWithVersion('common.js') )
 					.wait()
 					.script( getWithVersion('cart.js') )
+					.wait()
+					.script( logTimeAfterOurScript )
+					.script( optimizelyUrl )
+					.script('adfox.asyn.code.ver3.min.js')
+					.wait()
+					.script( getWithVersion('ports.js') )
+					.wait()
+					.script( logTimeAfterPartnerScript );
+			}).runQueue();
+		},
+
+		'lk': function() {
+			$LAB.queueWait( function() {
+				$LAB.script('jquery-plugins.min.js')
+					.script( getWithVersion('library.js') )
+					.script( mustacheUrl )
+					.script( loadDebugPanel )
+					.wait()
+					.script( getWithVersion('common.js') )
+					.script( getWithVersion('lk.js') )
 					.wait()
 					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
@@ -451,7 +492,11 @@
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new-v5.js') )
 						.wait()
-						.script( logTimeAfterOurScript );
+						.script( logTimeAfterOurScript )
+						.wait()
+						.script('adfox.asyn.code.ver3.min.js')
+						.wait()
+						.script( getWithVersion('ports.js') );
 				}).runQueue();
 		},
 

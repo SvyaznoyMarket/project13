@@ -269,6 +269,10 @@ module.exports = function( grunt ) {
 				files: [jsDevPath+'library/*.js'],
 				tasks: ['concat:libraryJS', 'jshint', 'uglify:libraryJS',  'connect', 'qunit', 'exec:getVersion']
 			},
+			lkJS:{
+				files: [jsDevPath+'lk/*.js'],
+				tasks: ['concat:lkJS', 'jshint', 'uglify:lkJS',  'connect', 'qunit', 'exec:getVersion']
+			},
 			mainJS:{
 				files: [jsDevPath+'main/*.js'],
 				tasks: ['concat:mainJS', 'jshint', 'uglify:mainJS',  'connect', 'qunit', 'exec:getVersion']
@@ -342,6 +346,10 @@ module.exports = function( grunt ) {
 			libraryJS : {
 				src: libraryFiles,
 				dest: jsProdPath+'library.js'
+			},
+			lkJS : {
+				src: [jsDevPath+'lk/*.js'],
+				dest: jsProdPath+'lk.js'
 			},
 			mainJS : {
 				src: [jsDevPath+'main/*.js'],
@@ -454,6 +462,12 @@ module.exports = function( grunt ) {
 			libraryJS: {
 				src: '../web/js/prod/library.js',
         		dest: '../web/js/prod/library.min.js'
+			},
+
+			lkJS: {
+				files: {
+					'../web/js/prod/lk.min.js': [jsDevPath+'lk/*.js']
+				}
 			},
 
 			mainJS: {

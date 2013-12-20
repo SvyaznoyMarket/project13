@@ -225,6 +225,7 @@ $c->mediaHost = [
 ];
 
 $c->search['itemLimit'] = 1000;
+$c->search['queryStringLimit'] = 3;
 
 $c->product['itemsPerPage']             = 20;
 $c->product['showAccessories']          = true;
@@ -363,7 +364,7 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
-$c->lifeGift['enabled'] = true;
+$c->lifeGift['enabled'] = false;
 $c->lifeGift['regionId'] = 151021;
 $c->lifeGift['labelId'] = 17;
 $c->lifeGift['deliveryTypeId'] = 1077;

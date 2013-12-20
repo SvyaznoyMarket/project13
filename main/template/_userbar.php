@@ -16,5 +16,16 @@
     <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
         <a href="<?= $page->url('user.login') ?>" class="fixedTopBar__logInLink bAuthLink">Войти</a>
         <span class="transGrad"></span>
+
+        <div class="fixedTopBar__dd fixedTopBar__logOut">
+            <div class="enterPrize">
+                <div class="enterPrize__text">
+                    <strong class="title">Enter Prize</strong>
+                    Выбери фишку со скидкой на любой товар в ENTER!
+                </div>
+
+                <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+            </div>
+        </div>
     </div>
 </div>

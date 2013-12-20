@@ -87,13 +87,16 @@
             </div>
         </div>
 
+        <label class="userInfoEdit__label" for="user_sclub_card_number">Номер карты Связной-Клуб:</label>
+        <div><input type="text" id="user_sclub_card_number" value="<?= $form->getSclubCardnumber() ?>" name="user[svyaznoy_club_card_number]" class="text jsCardNumber" /></div>
+
         <label class="userInfoEdit__label" for="user_occupation">Род деятельности:</label>
 
         <input type="text" id="user_occupation" value="<?= $form->getOccupation() ?>" name="user[occupation]" class="text width418 mb10" />
 
         <div class="bInputList">
             <input type="checkbox" id="user_is_subscribe" name="user[is_subscribe]" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox" <?= $form->getIsSubscribed() ? 'checked="checked"' : '' ?> />
-            <label class="bCustomLabel" for="user_is_subscribe">Хочу знать об интересных предложениях</label>
+            <label class="bCustomLabel" for="user_is_subscribe">Согласен получать рекламную рассылку</label>
         </div>
 
         <input type="submit" value="Сохранить изменения" id="bigbutton" class="btnSave button bigbutton">

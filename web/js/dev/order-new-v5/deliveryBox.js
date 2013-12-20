@@ -573,7 +573,7 @@
 					nowProductDates[i].avalible = true;
 					nowProductDates[i].humanDayOfWeek = self._getNameDayOfWeek(nowProductDates[i].dayOfWeek);
 
-					self.allDatesForBlock.push(nowProductDates[i]);
+					self.allDatesForBlock().push(nowProductDates[i]);
 				}
 			}
 
