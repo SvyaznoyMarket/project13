@@ -19,7 +19,7 @@
     if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
 
     // получаем стиль листинга
-    $listingStyle = !empty($catalogJson['listing_style']) ? $catalogJson['listing_style'] : '';
+    $listingStyle = !empty($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
 
     // получаем promo стили
     $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? $catalogJson['promo_style'] : [];
@@ -64,7 +64,8 @@
         'pager'                  => $productPager,
         'view'                   => $productView,
         'productVideosByProduct' => $productVideosByProduct,
-        'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
+        'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle ? $catalogJson['bannerPlaceholder'] : [],
+        'listingStyle'           => $listingStyle,
     ]) // листинг ?>
 
     <div class="bSortingLine mPagerBottom clearfix">

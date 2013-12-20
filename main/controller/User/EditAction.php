@@ -56,16 +56,17 @@ class EditAction {
                     'user/update',
                     ['token' => \App::user()->getToken()],
                     [
-                        'first_name'   => $form->getFirstName(),
-                        'middle_name'  => $form->getMiddleName(),
-                        'last_name'    => $form->getLastName(),
-                        'sex'          => $form->getSex(),
-                        'email'        => $form->getEmail(),
-                        'mobile'       => $form->getMobilePhone(),
-                        'phone'        => $form->getHomePhone(),
-                        'birthday'     => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
-                        'occupation'   => $form->getOccupation(),
-                        'is_subscribe' => $form->getIsSubscribed(),
+                        'first_name'                => $form->getFirstName(),
+                        'middle_name'               => $form->getMiddleName(),
+                        'last_name'                 => $form->getLastName(),
+                        'sex'                       => $form->getSex(),
+                        'email'                     => $form->getEmail(),
+                        'mobile'                    => $form->getMobilePhone(),
+                        'phone'                     => $form->getHomePhone(),
+                        'birthday'                  => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
+                        'occupation'                => $form->getOccupation(),
+                        'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
+                        'is_subscribe'              => $form->getIsSubscribed(),
                     ],
                     \App::config()->coreV2['hugeTimeout']
                 );
@@ -74,15 +75,18 @@ class EditAction {
                     throw new \Exception('Не получен ответ от сервера.');
                 }
 
-                if ($form->getEnterprizeCoupon()) {
+                if ($form->getEnterprizeCoupon() && !$userEntity->getEnterprizeCoupon()) {
                     try {
                         if (!$form->getLastName()) {
                             $form->setError('last_name', 'Не указана фамилия');
                         }
 
+                        if (!$form->getIsSubscribed()) {
+                            $form->setError('is_subscribe', 'Не отмечено поле "Согласен получать рекламную рассылку"');
+                        }
+
                         // создание enterprize-купона
-                        $result = [];
-                        $client->addQuery(
+                        $result = $client->query(
                             'coupon/enter-prize',
                             [
                                 'client_id' => \App::config()->coreV2['client_id'],
@@ -92,26 +96,19 @@ class EditAction {
                                 'name'                      => $form->getFirstName(),
                                 'phone'                     => $form->getMobilePhone(),
                                 'email'                     => $form->getEmail(),
-                                'svyaznoy_club_card_number' => $form->getCardNumber(),
+                                'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
                                 'guid'                      => $form->getEnterprizeCoupon(),
                                 'agree'                     => $form->getCouponAgree(),
                             ],
-                            function ($data) use (&$result) {
-                                $result = $data;
-                            },
-                            function(\Exception $e) use (&$result) {
-                                \App::exception()->remove($e);
-                                $result = $e;
-                            }
+                            \App::config()->coreV2['hugeTimeout']
                         );
-                        $client->execute();
-
-                        if ($result instanceof \Curl\Exception) {
-                            throw $result;
-                        }
 
                         if ($form->getError('last_name')) {
                             throw new \Curl\Exception($form->getError('last_name'));
+                        }
+
+                        if ($form->getError('is_subscribe')) {
+                            throw new \Curl\Exception($form->getError('is_subscribe'));
                         }
 
                         // помечаем пользователя как получившего enterprize-купон
@@ -125,7 +122,7 @@ class EditAction {
                         );
 
                         if (!isset($response['confirmed']) || !$response['confirmed']) {
-                            throw new \Exception('Не получен ответ от сервера.');
+                            throw new \Exception('Не получен ответ от сервера');
                         }
                     } catch (\Curl\Exception $e) {
                         \App::exception()->remove($e);
@@ -157,6 +154,7 @@ class EditAction {
                                         case 'svyaznoy_club_card_number':
                                             if ('isEmpty' === $errorType) $message = 'Не заполнен номер карты Связной-Клуб';
                                             if ('regexNotMatch' === $errorType) $message = 'Некорректно введен номер карты Связной-Клуб';
+                                            if ('checksumInvalid' === $errorType) $message = 'Некорректно введен номер карты Связной-Клуб';
                                             break;
                                         case 'guid':
                                             if ('isEmpty' === $errorType) $message = 'Не передан купон';

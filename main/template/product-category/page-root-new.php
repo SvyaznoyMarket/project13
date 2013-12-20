@@ -49,4 +49,9 @@
 
         <? endforeach ?>
     </ul>
+    <? if(!empty($seoContent)): ?>
+        <div class="bSeoText">
+            <?= $seoContent ?>
+        </div>
+    <? endif ?>
 <? endif; ?>

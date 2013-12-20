@@ -23,6 +23,8 @@ class BasicEntity {
     protected $price;
     /** @var State\Entity */
     protected $state;
+    /** @var int */
+    protected $statusId;
     /** @var Line\Entity */
     protected $line;
     /** @var Category\Entity */
@@ -48,6 +50,7 @@ class BasicEntity {
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
@@ -190,6 +193,20 @@ class BasicEntity {
     }
 
     /**
+     * @param int $statusId
+     */
+    public function setStatusId($statusId) {
+        $this->statusId = $statusId ? (int)$statusId : null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatusId() {
+        return $this->statusId;
+    }
+
+    /**
      * @param string $token
      */
     public function setToken($token) {
@@ -250,7 +267,8 @@ class BasicEntity {
     public function getIsBuyable() {
         return
             $this->getState() && $this->getState()->getIsBuyable()
-            && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly());
+            && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly())
+        ;
     }
 
     /**

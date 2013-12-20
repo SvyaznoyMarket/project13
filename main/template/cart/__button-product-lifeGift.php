@@ -8,6 +8,7 @@ return function (
     if (
         !\App::config()->lifeGift['enabled']
         || !$product->getIsBuyable()
+        || (5 === $product->getStatusId()) // SITE-2924
         || !(\App::config()->lifeGift['labelId'] === $product->getLabelId())
     ) {
         return '';
@@ -23,7 +24,9 @@ return function (
 
 ?>
 <div class="bWidgetBuy mWidget mLiftGift">
-    <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId() . '-lifeGift')]) ?>
+    <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId() . '-lifeGift')]) ?>
+    <? endif ?>
 
     <div class="bWidgetBuy__eBuy btnBuy mBtnLifeGift">
         <a class="bLifeGiftLink jsLifeGiftButton <?= \View\Id::cartButtonForProduct($product->getId() . '-lifeGift') ?>" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Подарить</a>
