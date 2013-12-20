@@ -18,11 +18,13 @@
 		 * Обработчик переключения состояния листа магазинов открыто или закрыто (блок способов доставки)
 		 */
 		var shopToggle = function shopToggle() {
-			var nowBox = $(this).parent('.mDeliveryNow');
+			var nowBox = $(this).parent('.mDeliveryNow' ),
+				ulBox = nowBox.find('ul.bDeliveryFreeAddress');
 			//end of vars
 
 			nowBox.toggleClass('mOpen');
 			nowBox.toggleClass('mClose');
+			ulBox.toggle();
 		};
 
 		$('.bDeliveryNowClick').on('click', shopToggle);
