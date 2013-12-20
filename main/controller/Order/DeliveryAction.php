@@ -200,7 +200,7 @@ class DeliveryAction {
                         'products' => [],
                     ],
                     'standart_other'     => [
-                        'name'     => 'Доставим',
+                        'name'     => 'Плановая дата доставки',
                         'unique'     => false,
                         'products' => [],
                     ],

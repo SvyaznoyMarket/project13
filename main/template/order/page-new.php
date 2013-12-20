@@ -148,7 +148,11 @@ if ($oneClick) {
 					<!-- /Celendar -->
 
 					<div class="bDeliveryDate" data-bind="visible: !$root.lifeGift()">
-						<span data-bind="text: box.deliveryName"></span> <strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span> <span data-bind="visible: !hasPointDelivery">*</span>
+						<span data-bind="visible: hasPointDelivery, 
+										text: box.deliveryName">
+						</span> 
+						
+						<strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span> <span data-bind="visible: !hasPointDelivery">*</span>
 					</div>
 
 					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length && !$root.lifeGift()">
@@ -160,6 +164,8 @@ if ($oneClick) {
 															}">
 						</select>
 					</div>
+
+					<div data-bind="visible: !hasPointDelivery" class="bFootenoteDelivery">Дата доставки может быть смещена на 1-2 дня.<br/>Ожидайте смс или звонок от Enter с уточнением.</div>
 
 					<!-- Products -->
 					<!-- ko foreach: { data: products, as: 'product' } -->
@@ -202,7 +208,7 @@ if ($oneClick) {
 				</div>
 			</div>
 
-			<div class="bFootnote" data-bind="visible: !hasPointDelivery">* Дату доставки уточнит специалист Контакт-сENTER</div>
+			<? /*<div class="bFootnote" data-bind="visible: !hasPointDelivery">* Дату доставки уточнит специалист Контакт-сENTER</div> */?>
 
 			<!-- Sum -->
 			<ul class="bSumOrderInfo">
