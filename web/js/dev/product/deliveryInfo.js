@@ -24,7 +24,12 @@
 
 			nowBox.toggleClass('mOpen');
 			nowBox.toggleClass('mClose');
-			ulBox.toggle();
+			if ( nowBox.hasClass('mOpen') ) {
+				ulBox.slideDown();
+			}
+			else {
+				ulBox.slideUp();
+			}
 		};
 
 		$('.bDeliveryNowClick').on('click', shopToggle);
