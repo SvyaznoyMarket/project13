@@ -151,8 +151,8 @@ if ($oneClick) {
 						<span data-bind="visible: hasPointDelivery, 
 										text: box.deliveryName">
 						</span> 
-						
-						<strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span> <span data-bind="visible: !hasPointDelivery">*</span>
+
+						<strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span>
 					</div>
 
 					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length && !$root.lifeGift()">
