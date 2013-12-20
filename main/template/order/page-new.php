@@ -438,7 +438,7 @@ if ($oneClick) {
 
 					<!-- Address customer -->
 					<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки*</label>
-					<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
+					<div class="bBuyingLine__eRight jsDeliveryAddress" data-value='<?= json_encode(['regionName' => $region->getName()])?>' style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
 						<div class="bSelectedCity">
 							<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
 						</div>
@@ -451,7 +451,10 @@ if ($oneClick) {
 							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
 						</div>
 						<? endif ?>
-						
+
+<style type="text/css">
+    #kladr_autocomplete ul{position:absolute;display:block;margin:0;padding:0;border:1px solid #8A8A8A;border-radius:3px;background-color:white;z-index:9999;}#kladr_autocomplete li{display:list-item;list-style-type:none;margin:0;padding:3px 5px;overflow:hidden;border:1px solid white;border-bottom:1px solid #BDBDBD;}#kladr_autocomplete li.active{background-color:#E0E0E0;border-radius:3px;border:1px solid #979797;}#kladr_autocomplete a{display:block;cursor:default;width:10000px;}#kladr_autocomplete .spinner{position:absolute;display:block;margin:0;padding:0;width:20px;height:20px;background-color:transparent;background-image:url("jquery.kladr.images/spinner.png");background-position:center center;background-repeat:no-repeat;z-index:9999;}
+</style>
 						<div class="bInputAddress">
 							<label class="bPlaceholder">Улица*</label>
 							<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />						
@@ -476,6 +479,12 @@ if ($oneClick) {
 							<label class="bPlaceholder">Этаж</label>
 							<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
 						</div>
+
+
+                        <div class="bInputAddress">
+                            <label class="ffield__lbl ltooltip"></label>
+                            <div id="map" class="add-panel__map" style="width: 400px;height: 400px;">222</div>
+                        </div>
 					</div>
 
 					<label class="bBuyingLine__eLeft">Пожелания и дополнения</label>
