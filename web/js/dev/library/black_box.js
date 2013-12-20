@@ -15,7 +15,9 @@
 		utils = ENTER.utils,
 		clientCart = utils.extendApp('ENTER.config.clientCart'),
 		clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
-		body = $('body');
+		subscribeCookieName = 'subscribed',
+		body = $('body' ),
+		authorized_cookie = '_authorized';
 	// end of vars
 	
 	
@@ -43,9 +45,11 @@
 				return new BlackBox(updateUrl);
 			}
 			// constructor body
-			
-			this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
-			this.init();
+
+			if (  window.docCookies.hasItem(authorized_cookie) ) {
+				this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
+				this.init();
+			}
 		}
 	
 		
@@ -189,10 +193,16 @@
 				 * 
 				 * @private
 				 */
-				startAction = function startAction( action ) {
-					if ( action.subscribe !== undefined ) {
-						body.trigger('showsubscribe', [action.subscribe]);
-					}
+				startAction = function startAction() {
+					var
+						subscribeStatus = {
+							'show': window.docCookies.hasItem(subscribeCookieName),
+							'agreed': window.docCookies.getItem(subscribeCookieName)
+						};
+
+					body.trigger('showsubscribe', [subscribeStatus]);
+					console.log('subscribeStatus');
+					console.log(subscribeStatus);
 				},
 
 				/**

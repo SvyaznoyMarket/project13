@@ -1725,6 +1725,7 @@ window.MapInterface = (function() {
 		utils = ENTER.utils,
 		clientCart = utils.extendApp('ENTER.config.clientCart'),
 		clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
+		subscribeCookieName = 'subscribed',
 		body = $('body');
 	// end of vars
 	
@@ -1753,9 +1754,11 @@ window.MapInterface = (function() {
 				return new BlackBox(updateUrl);
 			}
 			// constructor body
-			
-			this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
-			this.init();
+
+			if (  window.docCookies.hasItem("_authorized") ) {
+				this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
+				this.init();
+			}
 		}
 	
 		
@@ -1899,10 +1902,16 @@ window.MapInterface = (function() {
 				 * 
 				 * @private
 				 */
-				startAction = function startAction( action ) {
-					if ( action.subscribe !== undefined ) {
-						body.trigger('showsubscribe', [action.subscribe]);
-					}
+				startAction = function startAction() {
+					var
+						subscribeStatus = {
+							'show': window.docCookies.hasItem(subscribeCookieName),
+							'agreed': window.docCookies.getItem(subscribeCookieName)
+						};
+
+					body.trigger('showsubscribe', [subscribeStatus]);
+					console.log('subscribeStatus');
+					console.log(subscribeStatus);
 				},
 
 				/**

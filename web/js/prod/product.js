@@ -743,7 +743,7 @@
  * Подписка на снижение цены
  *
  * @author	Zaytsev Alexandr
- * @requires jQuery, jQuery.placeholder plugin, jQuery.emailValidate plugin
+ * @requires jQuery, jQuery.placeholder plugin
  */
 ;(function() {
 	var lowPriceNotifer = function lowPriceNotifer() {
