@@ -49,7 +49,7 @@
             </div>
 
             <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
-                <a href="/login" class="fixedTopBar__logInLink bAuthLink">Войти</a>
+                <a href="/login" class="fixedTopBar__logInLink bAuthLink">Личный кабинет</a>
                 <span class="transGrad"></span>
             </div>
         </div>
