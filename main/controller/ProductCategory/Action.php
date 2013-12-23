@@ -407,7 +407,7 @@ class Action {
         }
 
         // TODO SITE-2403 Вернуть фильтр instore
-        if ($category->getIsFurniture() && 14974 === $user->getRegion()->getId()) {
+        if ($category->getIsFurniture()/* && 14974 === $user->getRegion()->getId()*/) {
             $labelFilter = null;
             $labelFilterKey = null;
             foreach ($filters as $key => $filter) {
@@ -430,7 +430,8 @@ class Action {
             $option = new \Model\Product\Filter\Option\Entity();
             $option->setId(1);
             $option->setToken('instore');
-            $option->setName('Товар за три дня');
+            //$option->setName('Товар за три дня');
+            $option->setName('Товар со склада');
             $labelFilter->unshiftOption($option);
 
             // добавляем фильтр в массив фильтров
