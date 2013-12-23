@@ -1,0 +1,830 @@
+[
+    {
+        "col": 1,
+        "row": 1,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 35965,
+            "name": "Беговая дорожка Raizer TM8460С",
+            "image": "http://fs03.enter.ru/1/1/163/c0/89823.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 1,
+        "size_x": 6,
+        "size_y": 4,
+        "meta": {
+            "id": 35967,
+            "name": "Беговая дорожка Larsen XZ600",
+            "image": "http://fs03.enter.ru/1/1/163/a9/76880.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 5,
+        "size_x": 6,
+        "size_y": 4,
+        "meta": {
+            "id": 35970,
+            "name": "Беговая дорожка Raizer TM1370D",
+            "image": "http://fs03.enter.ru/1/1/163/19/76877.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 1,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 35973,
+            "name": "Беговая дорожка Larsen Miracle V470",
+            "image": "http://fs03.enter.ru/1/1/163/3b/76874.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 5,
+        "size_x": 6,
+        "size_y": 4,
+        "meta": {
+            "id": 35989,
+            "name": "Беговая дорожка Larsen TF-2002",
+            "image": "http://fs03.enter.ru/1/1/163/d3/76897.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 9,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 36006,
+            "name": "Беговая дорожка Raizer TM8420A",
+            "image": "http://fs03.enter.ru/1/1/163/a4/89865.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 9,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 36012,
+            "name": "Беговая дорожка Ferrum TF-801",
+            "image": "http://fs03.enter.ru/1/1/163/a1/76920.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 9,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 36016,
+            "name": "Беговая дорожка Larsen GLP-3205",
+            "image": "http://fs03.enter.ru/1/1/163/82/76924.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 9,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 36451,
+            "name": "Беговая дорожка Eras TM1556-01",
+            "image": "http://fs03.enter.ru/1/1/163/93/90549.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 13,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 36452,
+            "name": "Беговая дорожка Body Sculpture BT-2860 С",
+            "image": "http://fs03.enter.ru/1/1/163/0a/89870.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 13,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 45377,
+            "name": "Беговая дорожка Raizer TF2001B",
+            "image": "http://fs03.enter.ru/1/1/163/2a/100560.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 13,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 45378,
+            "name": "Беговая дорожка JETstream JT205",
+            "image": "http://fs03.enter.ru/1/1/163/66/100573.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 13,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 52016,
+            "name": "Беговая дорожка Body Sculpture ВТ-2740 Н-Н",
+            "image": "http://fs03.enter.ru/1/1/163/b0/108286.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 17,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 52181,
+            "name": "Беговая дорожка Body Sculpture ВТ-3132S2MB-K2",
+            "image": "http://fs03.enter.ru/1/1/163/8f/119784.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 17,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 52182,
+            "name": "Беговая дорожка Body Sculpture ВТ-3152",
+            "image": "http://fs03.enter.ru/1/1/163/de/119786.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 17,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 56205,
+            "name": "Беговая дорожка Brumer TM1370D",
+            "image": "http://fs03.enter.ru/1/1/163/6a/119812.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 17,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 56206,
+            "name": "Беговая дорожка Larsen TM8420A",
+            "image": "http://fs03.enter.ru/1/1/163/30/119770.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 21,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 56209,
+            "name": "Беговая дорожка Larsen TM8460С",
+            "image": "http://fs03.enter.ru/1/1/163/14/119797.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 21,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 56210,
+            "name": "Беговая дорожка Brumer TF-2002",
+            "image": "http://fs03.enter.ru/1/1/163/c0/119789.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 21,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 56212,
+            "name": "Беговая дорожка Brumer TF-801",
+            "image": "http://fs03.enter.ru/1/1/163/cb/119810.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 21,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 56305,
+            "name": "Беговая дорожка Brumer TF2001B",
+            "image": "http://fs03.enter.ru/1/1/163/0f/119802.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 25,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 78742,
+            "name": "Беговая дорожка Tunturi T-70 (10TUT70300)",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 25,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88307,
+            "name": "Беговая дорожка Horizon Adventure 4 Plus",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 25,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88308,
+            "name": "Беговая дорожка Vision T40 Classic",
+            "image": "http://fs03.enter.ru/1/1/163/50/199485.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 25,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88309,
+            "name": "Беговая дорожка Vision T60",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 29,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88312,
+            "name": "Беговая дорожка Horizon Paragon 4",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 29,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88321,
+            "name": "Беговая дорожка Horizon Adventure 1 Plus",
+            "image": "http://fs03.enter.ru/1/1/163/7e/163693.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 29,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88323,
+            "name": "Беговая дорожка Horizon Evolve Plus",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 29,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88324,
+            "name": "Беговая дорожка Oxygen Fitness Escalada",
+            "image": "http://fs03.enter.ru/1/1/163/9e/163714.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 33,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88326,
+            "name": "Беговая дорожка Horizon Evolve",
+            "image": "http://fs03.enter.ru/1/1/163/23/163708.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 33,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88331,
+            "name": "Беговая дорожка Vision TF20 Classic",
+            "image": "http://fs03.enter.ru/1/1/163/90/201900.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 33,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88335,
+            "name": "Беговая дорожка Horizon Paragon 6",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 33,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88336,
+            "name": "Беговая дорожка Oxygen Fitness Tesla BL",
+            "image": "http://fs03.enter.ru/1/1/163/10/163750.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 37,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88338,
+            "name": "Беговая дорожка Horizon Paragon 5",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 37,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88341,
+            "name": "Беговая дорожка Horizon Adventure 3 Plus",
+            "image": "http://fs03.enter.ru/1/1/163/43/163786.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 37,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88342,
+            "name": "Беговая дорожка Vision TF20 Elegant",
+            "image": "http://fs03.enter.ru/1/1/163/d8/201919.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 37,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88354,
+            "name": "Беговая дорожка Vision T9550 Premier",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 41,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88362,
+            "name": "Беговая дорожка Oxygen Fitness Quanta SDG",
+            "image": "http://fs03.enter.ru/1/1/163/46/163846.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 41,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88372,
+            "name": "Беговая дорожка Oxygen Fitness Plasma",
+            "image": "http://fs03.enter.ru/1/1/163/59/163896.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 41,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88374,
+            "name": "Беговая дорожка Horizon Ti 32 HRC",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 41,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88378,
+            "name": "Беговая дорожка Oxygen Fitness Laguna",
+            "image": "http://fs03.enter.ru/1/1/163/21/163921.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 45,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88382,
+            "name": "Беговая дорожка Oxygen Fitness Riviera",
+            "image": "http://fs03.enter.ru/1/1/163/e9/163925.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 45,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88386,
+            "name": "Беговая дорожка Horizon Adventure 2 Plus",
+            "image": "http://fs03.enter.ru/1/1/163/73/163966.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 45,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88387,
+            "name": "Беговая дорожка Horizon Elite T4000",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 45,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88398,
+            "name": "Беговая дорожка Horizon Elite T3000",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 49,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88399,
+            "name": "Беговая дорожка Vision T9550 Deluxe",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 49,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88408,
+            "name": "Беговая дорожка Horizon Ti 22",
+            "image": "http://fs03.enter.ru/1/1/163/07/164000.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 49,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88412,
+            "name": "Беговая дорожка Oxygen Fitness Villa Deluxe",
+            "image": "http://fs03.enter.ru/1/1/163/dc/164012.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 49,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88428,
+            "name": "Беговая дорожка Horizon Adventure 5 Plus",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 53,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88442,
+            "name": "Беговая дорожка Horizon Treo T105",
+            "image": "http://fs03.enter.ru/1/1/163/9e/164036.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 53,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88455,
+            "name": "Беговая дорожка Horizon Ti 52 HRC",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 53,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88471,
+            "name": "Беговая дорожка Oxygen Fitness Quanta",
+            "image": "http://fs03.enter.ru/1/1/163/84/164069.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 53,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 88479,
+            "name": "Беговая дорожка Oxygen Fitness Magma",
+            "image": "http://fs03.enter.ru/1/1/163/e5/164087.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 57,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 113178,
+            "name": "Беговая дорожка Care Fitness 50717 Rafale",
+            "image": "http://fs03.enter.ru/1/1/163/da/202637.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 57,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 113201,
+            "name": "Беговая дорожка NordicTrack T13",
+            "image": "http://fs03.enter.ru/1/1/163/5d/202679.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 57,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 113215,
+            "name": "Беговая дорожка NordicTrack T7.0",
+            "image": "http://fs03.enter.ru/1/1/163/9b/202703.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 57,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 113228,
+            "name": "Беговая дорожка NordicTrack T15",
+            "image": "http://fs03.enter.ru/1/1/163/37/202724.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 61,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 113234,
+            "name": "Беговая дорожка Care Fitness 50714 Rafale",
+            "image": "http://fs03.enter.ru/1/1/163/1d/202733.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 61,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 114278,
+            "name": "Беговая дорожка электрическая Neomotion TM-100",
+            "image": "http://fs03.enter.ru/1/1/163/72/205928.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 61,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 118127,
+            "name": "Беговая дорожка  Nordic Track T20",
+            "image": "http://fs03.enter.ru/1/1/163/94/215664.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 61,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 118133,
+            "name": "Беговая дорожка Nordic Track T22",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 65,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 118140,
+            "name": "Беговая дорожка  Nordic Track T25",
+            "image": "http://fs03.enter.ru/1/1/163/98/215683.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 69,
+        "size_x": 12,
+        "size_y": 3,
+        "meta": {
+            "id": 120916,
+            "name": "Беговая дорожка  Body Sculpture BT-2740 Н-H",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 65,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 120927,
+            "name": "Беговая дорожка Sport Elite TM1596-01",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 65,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 120935,
+            "name": "Беговая дорожка Body Sculpture ВТ-2650 Н-Н",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 65,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 125075,
+            "name": "Беговая дорожка NordicTrack T14.2",
+            "image": "http://fs03.enter.ru/1/1/163/49/232061.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 72,
+        "size_x": 9,
+        "size_y": 6,
+        "meta": {
+            "id": 125097,
+            "name": "Беговая дорожка ProForm 520",
+            "image": "http://fs03.enter.ru/1/1/163/cb/232092.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 72,
+        "size_x": 3,
+        "size_y": 3,
+        "meta": {
+            "id": 125102,
+            "name": "Беговая дорожка ProForm 650",
+            "image": "http://fs03.enter.ru/1/1/163/5d/232111.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 75,
+        "size_x": 3,
+        "size_y": 3,
+        "meta": {
+            "id": 125107,
+            "name": "Беговая дорожка ProForm 910",
+            "image": "http://fs03.enter.ru/1/1/163/a9/232120.jpg",
+            "type": "product"
+        }
+    }
+]

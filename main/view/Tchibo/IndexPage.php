@@ -6,7 +6,7 @@ class IndexPage extends \View\DefaultLayout {
     protected $layout = 'layout-oneColumn';
 
     public function slotBodyDataAttribute() {
-        return 'gridster';
+        return 'product_catalog';
     }
 
     public function slotContent() {
