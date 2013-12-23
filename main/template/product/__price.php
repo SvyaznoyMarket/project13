@@ -13,6 +13,13 @@ return function(
 
 <? endif ?>
 <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-    <div itemprop="price" class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+    <div itemprop="price" class="bPrice bInputList">
+    	<input class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="price" name="price_or_credit" />
+
+    	<label for="price" class="bCustomLabel mCustomLabelRadioBig mChecked">
+	    	<strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> 
+	    	<span class="rubl">p</span>
+	    </label>
+    </div>
 </span>
 <? };

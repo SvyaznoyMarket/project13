@@ -201,7 +201,7 @@ class DeliveryAction {
                         'products' => [],
                     ],
                     'standart_other'     => [
-                        'name'     => 'Доставим',
+                        'name'     => 'Плановая дата доставки',
                         'unique'     => false,
                         'products' => [],
                     ],
@@ -361,6 +361,10 @@ class DeliveryAction {
             foreach ($result['shops'] as $shopItem) {
                 $shopId = (string)$shopItem['id'];
                 if (!isset($productIdsByShop[$shopId])) continue;
+                if (empty($shopItem['coord_lat']) || empty($shopItem['coord_long'])) {
+                    \App::logger()->error(['Пустые координаты магазина', 'shop' => $shopItem], ['order']);
+                    continue;
+                }
 
                 $responseData['shops'][] = [
                     'id'         => $shopId,
