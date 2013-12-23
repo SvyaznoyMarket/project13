@@ -46,7 +46,7 @@
                 <span class="bDeliveryNowClick dotted">Сегодня есть в магазинах</span>
 
                 <div class="{{^isInShopOnly}} hf{{/isInShopOnly}}">Cегодня, без предзаказа</div>
-                <ul class="bDeliveryFreeAddress">
+                <ul class="bDeliveryFreeAddress{{^isInShopOnly}} hf{{/isInShopOnly}}">
                     {{#shop}}
                         <li class="bDeliveryFreeAddress__eShop">
                             <a class="bDeliveryFreeAddress__eLink" data-lat="{{latitude}}" data-lng="{{longitude}}" href="{{url}}">{{&name}}</a>
