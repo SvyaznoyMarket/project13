@@ -50,8 +50,9 @@ class ListAction {
             if ($product->isInShopOnly()) {
                 $stateLabel = ['name' => 'Только в магазинах'];
             } else if ($product->getMainCategory() && $product->getMainCategory()->getIsFurniture() &&
-                $product->getState() && $product->getState()->getIsStore() && 14974 === $user->getRegion()->getId()) {
-                $stateLabel = ['name' => 'Товар за три дня'];
+                $product->getState() && $product->getState()->getIsStore()/* && 14974 === $user->getRegion()->getId()*/) {
+                //$stateLabel = ['name' => 'Товар за три дня'];
+                $stateLabel = ['name' => 'Товар со склада'];
             }
 
             $productItem = [
