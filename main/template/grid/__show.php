@@ -13,7 +13,7 @@ $f = function(
 ?>
 
 <? foreach ($gridCells as $cell): ?>
-<div>
+<div class="<?= 'mCol' . $cell->getColumn() ?> <?= 'mRow' . $cell->getRow() ?> <?= 'mSizeX' . $cell->getSizeX() ?> <?= 'mSizeY' . $cell->getSizeY() ?>">
     <? if (\Model\GridCell\Entity::TYPE_PRODUCT === $cell->getType()): ?>
     <?
         $product = (isset($productsById[$cell->getId()]) ? $productsById[$cell->getId()] : null);
@@ -21,7 +21,11 @@ $f = function(
     ?>
         <?= $helper->render('product/show/__grid', ['product' => $product]) ?>
     <? elseif (\Model\GridCell\Entity::TYPE_IMAGE === $cell->getType()): ?>
-
+    <?
+        $content = $cell->getContent();
+        $url = !empty($content['url']) ? $content['url'] : null;
+    ?>
+        <img src="<?= $url ?>" />
     <? endif ?>
 </div>
 <? endforeach ?>

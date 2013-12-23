@@ -1,0 +1,250 @@
+[
+    {
+        "col": 1,
+        "row": 1,
+        "size_x": 7,
+        "size_y": 4,
+        "meta": {
+            "id": 36439,
+            "name": "Вибромассажер Larsen Shape",
+            "image": "http://fs03.enter.ru/1/1/163/b4/77279.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 13,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 36440,
+            "name": "Вибромассажер Brumer TF-CM001",
+            "image": "http://fs03.enter.ru/1/1/163/38/77282.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 6,
+        "row": 5,
+        "size_x": 4,
+        "size_y": 4,
+        "meta": {
+            "id": 36453,
+            "name": "Мини-степпер Body Sculpture BS-1122HA-B",
+            "image": "http://fs03.enter.ru/1/1/163/65/90623.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 5,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 36454,
+            "name": "Министеппер Eras GB-5106",
+            "image": "http://fs03.enter.ru/1/1/163/85/89846.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 9,
+        "size_x": 2,
+        "size_y": 4,
+        "meta": {
+            "id": 36552,
+            "name": "Вибромассажер Body Sculpture ВМ-1200 GX-C",
+            "image": "http://fs03.enter.ru/1/1/163/52/90624.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 4,
+        "row": 17,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 36553,
+            "name": "Вибромассажер Brumer TF-CM001",
+            "image": "http://fs03.enter.ru/1/1/163/02/90570.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 3,
+        "row": 9,
+        "size_x": 2,
+        "size_y": 4,
+        "meta": {
+            "id": 37172,
+            "name": "Вибромассажер Iron Body 9738MS",
+            "image": "http://fs03.enter.ru/1/1/163/f8/79195.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 5,
+        "row": 9,
+        "size_x": 2,
+        "size_y": 4,
+        "meta": {
+            "id": 37176,
+            "name": "Виброплатформа Ferrum Vibro",
+            "image": "http://fs03.enter.ru/1/1/163/28/79154.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 13,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 43443,
+            "name": "Мини-степпер Iron Body 7770ST",
+            "image": "http://fs03.enter.ru/1/1/163/01/100579.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 21,
+        "size_x": 6,
+        "size_y": 4,
+        "meta": {
+            "id": 43981,
+            "name": "Мини-степпер Raizer TF-306",
+            "image": "http://fs03.enter.ru/1/1/163/0b/95990.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 9,
+        "size_x": 2,
+        "size_y": 4,
+        "meta": {
+            "id": 43990,
+            "name": "Министеппер Eras ST0706-01",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 9,
+        "row": 9,
+        "size_x": 2,
+        "size_y": 4,
+        "meta": {
+            "id": 56143,
+            "name": "Комплект ремней для вибромассажера Iron Body 9739MS-IB",
+            "image": "http://fs03.enter.ru/1/1/163/4d/113331.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 17,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 56285,
+            "name": "Мини-степпер Brumer TF-306",
+            "image": "http://fs03.enter.ru/1/1/163/c3/115371.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 17,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 64700,
+            "name": "Степпер Cardio Twister SE-5110",
+            "image": "http://fs03.enter.ru/1/1/163/ee/125987.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 13,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 70579,
+            "name": "Мини-степпер AS 1420",
+            "image": "http://fs03.enter.ru/1/1/163/8f/136890.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 11,
+        "row": 9,
+        "size_x": 2,
+        "size_y": 4,
+        "meta": {
+            "id": 70580,
+            "name": "Мини-степпер AS 1320",
+            "image": "http://fs03.enter.ru/1/1/163/2a/136885.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 21,
+        "size_x": 6,
+        "size_y": 4,
+        "meta": {
+            "id": 90248,
+            "name": "Вибротренажер Oxygen Fitness Talia Luxe",
+            "image": "http://fs03.enter.ru/1/1/163/8f/166510.jpg",
+            "type": "product"
+        }
+    },
+    {
+        "col": 10,
+        "row": 13,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 120892,
+            "name": "Министеппер Body Sculpture BS-1370 HAR-B",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 7,
+        "row": 17,
+        "size_x": 3,
+        "size_y": 4,
+        "meta": {
+            "id": 120941,
+            "name": "Министеппер Sport Elite GB5105/ 0732-01/SE 5105",
+            "image": "http://fs03.enter.ru/1/1/163/",
+            "type": "product"
+        }
+    },
+    {
+        "col": 1,
+        "row": 5,
+        "size_x": 5,
+        "size_y": 4,
+        "meta": {
+            "url": "http://i.istockimg.com/file_thumbview_approve/15778857/2/stock-photo-15778857-coniferous-tree-forest-background.jpg",
+            "type": "image"
+        }
+    },
+    {
+        "col": 8,
+        "row": 1,
+        "size_x": 5,
+        "size_y": 4,
+        "meta": {
+            "url": "http://i.istockimg.com/file_thumbview_approve/18443607/2/stock-photo-18443607-one-light-in-the-dark-spooky-woods-at-night.jpg",
+            "type": "image"
+        }
+    }
+]

@@ -13,19 +13,22 @@ class Entity {
     /** @var int */
     private $row;
     /** @var int */
-    private $x;
+    private $sizeX;
     /** @var int */
-    private $y;
+    private $sizeY;
     /** @var string */
     private $type;
+    /** @var array */
+    private $content = [];
 
     public function __construct(array $data = []) {
         if (array_key_exists('col', $data)) $this->setColumn($data['col']);
         if (array_key_exists('row', $data)) $this->setRow($data['row']);
-        if (array_key_exists('x', $data)) $this->setX($data['x']);
-        if (array_key_exists('y', $data)) $this->setY($data['y']);
+        if (array_key_exists('size_x', $data)) $this->setSizeX($data['size_x']);
+        if (array_key_exists('size_y', $data)) $this->setSizeY($data['size_y']);
         if (isset($data['meta']['id'])) $this->setId($data['meta']['id']);
         if (isset($data['meta']['type'])) $this->setType($data['meta']['type']);
+        if (array_key_exists('meta', $data) && is_array($data['meta'])) $this->setContent($data['meta']);
     }
 
     /**
@@ -85,30 +88,44 @@ class Entity {
     }
 
     /**
-     * @param int $x
+     * @param int $sizeX
      */
-    public function setX($x) {
-        $this->x = (int)$x;
+    public function setSizeX($sizeX) {
+        $this->sizeX = (int)$sizeX;
     }
 
     /**
      * @return int
      */
-    public function getX() {
-        return $this->x;
+    public function getSizeX() {
+        return $this->sizeX;
     }
 
     /**
-     * @param int $y
+     * @param int $sizeY
      */
-    public function setY($y) {
-        $this->y = (int)$y;
+    public function setSizeY($sizeY) {
+        $this->sizeY = (int)$sizeY;
     }
 
     /**
      * @return int
      */
-    public function getY() {
-        return $this->y;
+    public function getSizeY() {
+        return $this->sizeY;
+    }
+
+    /**
+     * @param array $content
+     */
+    public function setContent(array $content) {
+        $this->content = $content;
+    }
+
+    /**
+     * @return array
+     */
+    public function getContent() {
+        return $this->content;
     }
 }
