@@ -87,7 +87,9 @@
 				value,
 
 				geocode,
-				position;
+				position,
+
+				latitude, longitude;
 			// end of vars
 
 			// Город
@@ -158,116 +160,189 @@
 
 			console.warn(address);
 
-			if(address && map_created){
+			if( address && map_created ){
 				geocode = ymaps.geocode(address);
 				geocode.then(function(res){
-					map.geoObjects.each(function (geoObject) {
-						map.geoObjects.remove(geoObject);
-					});
-
 					position = res.geoObjects.get(0).geometry.getCoordinates();
 
-					placemark = new ymaps.Placemark(position, {}, {});
+					if ( !position ) {
+						return;
+					}
 
-					map.geoObjects.add(placemark);
-					map.setCenter(position, zoom);
+					latitude = position[0];
+					longitude = position[1];
+
+					map.points = [];
+					map.mapWS.geoObjects.each(function (geoObject) {
+						map.mapWS.geoObjects.remove(geoObject);
+					});
+
+					map.points.push({latitude: latitude, longitude: longitude});
+					map._showMarkers();
+					map.mapWS.setCenter(position, zoom);
+
+					metroClosest(latitude, longitude);
 				});
 			}
+		},
+
+
+		/**
+		 * Поиск ближайших станций метро
+		 */
+		metroClosest = function( latitude, longitude ) {
+			var
+				myGeocoder,
+				nearest,
+				name;
+			// end of vars
+
+			myGeocoder = ymaps.geocode([latitude, longitude], {kind: 'metro'});
+			myGeocoder.then(
+				function ( res ) {
+					nearest = res.geoObjects.get(0);
+					name = nearest.properties.get('name');
+					name = name.replace('метро ', '');
+
+					// рисуем точку на карте
+//					nearest.properties.set('iconContent', name);
+//					nearest.options.set('preset', 'twirl#redStretchyIcon');
+//					map.mapWS.geoObjects.add(nearest);
+
+					$('#order_address_metro').val(name);
+					$('#order_address_metro').select();
+				},
+				function ( err ) {
+					console.warn("При выполнении запроса произошла ошибка: " + err);
+				}
+			);
+		},
+
+
+		/**
+		 * Обработчики полей
+		 *
+		 * @type {{city: Function, street: Function, building: Function, housing: Function}}
+		 */
+		fieldsHandler = {
+			/**
+			 * Получаем ID города в kladr
+			 */
+			city: function() {
+				if ( !cityName ) {
+					return null;
+				}
+
+				$.kladr.api(
+					{
+						token: token,
+						key: key,
+						type: $.kladr.type.city,
+						name: cityName,
+						limit: 1
+					},
+					function( objs ) {
+						if ( !objs.length ) {
+							return;
+						}
+
+						cityId = objs[0].id;
+
+						street.kladr( 'parentType', $.kladr.type.city );
+						street.kladr( 'parentId', objs[0].id );
+						building.kladr( 'parentType', $.kladr.type.city );
+						building.kladr( 'parentId', objs[0].id );
+					}
+				);
+			},
+
+			/**
+			 * Подключение плагина для поля ввода улицы
+			 */
+			street: function() {
+				street.kladr({
+					token: token,
+					key: key,
+					type: $.kladr.type.street,
+					labelFormat: labelFormat,
+					verify: true,
+					limit: limit,
+					select: function( obj ) {
+						console.warn(111);
+						console.warn(obj);
+
+
+
+						building.kladr( 'parentType', $.kladr.type.street );
+						building.kladr( 'parentId', obj.id );
+						mapUpdate();
+					},
+					check: function( obj ) {
+						if ( !obj ) {
+							street.val('');
+							return;
+						}
+
+						building.kladr( 'parentType', $.kladr.type.street );
+						building.kladr( 'parentId', obj.id );
+
+						mapUpdate();
+					}
+				});
+			},
+
+			/**
+			 * Подключение плагина для поля ввода номера дома
+			 */
+			building: function() {
+				building.kladr({
+					token: token,
+					key: key,
+					type: $.kladr.type.building,
+					labelFormat: labelFormat,
+					verify: true,
+					limit: limit,
+					select: function( obj ) {
+						mapUpdate();
+					},
+					check: function( obj ) {
+						mapUpdate();
+					}
+				});
+			},
+
+			/**
+			 * Проверка названия корпуса
+			 */
+			housing: function() {
+				buildingAdd.change(function(){
+					mapUpdate();
+				});
+			}
+		},
+
+
+		/**
+		 * Инициализация полей
+		 */
+		fieldsInit = function() {
+			fieldsHandler.city();
+			fieldsHandler.street();
+			fieldsHandler.building();
+			fieldsHandler.housing();
+		},
+
+		mapCreate = function() {
+			if(map_created) return;
+			map_created = true;
+
+			map = new ENTER.constructors.CreateMap('map', [{latitude: 55.76, longitude: 37.64}]);
 		};
 	// end of functions
 
 
-	/**
-	 * Получаем ID города в kladr
-	 */
-	if ( cityName ) {
-		$.kladr.api(
-			{
-				token: token,
-				key: key,
-				type: $.kladr.type.city,
-				name: cityName,
-				limit: 1
-			},
-			function(objs) {
-				if ( !objs.length ) {
-					return;
-				}
-
-				cityId = objs[0].id;
-
-				street.kladr( 'parentType', $.kladr.type.city );
-				street.kladr( 'parentId', objs[0].id );
-				building.kladr( 'parentType', $.kladr.type.city );
-				building.kladr( 'parentId', objs[0].id );
-			}
-		);
-	}
-
-	// Подключение плагина для поля ввода улицы
-	street.kladr({
-		token: token,
-		key: key,
-		type: $.kladr.type.street,
-		labelFormat: labelFormat,
-		verify: true,
-		limit: limit,
-		select: function( obj ) {
-			building.kladr( 'parentType', $.kladr.type.street );
-			building.kladr( 'parentId', obj.id );
-			mapUpdate();
-		},
-		check: function( obj ) {
-			if ( obj ) {
-				building.kladr( 'parentType', $.kladr.type.street );
-				building.kladr( 'parentId', obj.id );
-			}
-
-			mapUpdate();
-		}
-	});
-
-	// Подключение плагина для поля ввода номера дома
-	building.kladr({
-		token: token,
-		key: key,
-		type: $.kladr.type.building,
-		labelFormat: labelFormat,
-		verify: true,
-		limit: limit,
-		select: function( obj ) {
-			mapUpdate();
-		},
-		check: function( obj ) {
-			mapUpdate();
-		}
-	});
-
-	// Проверка названия корпуса
-	buildingAdd.change(function(){
-		mapUpdate();
-	});
-
-
-
-
-
-
-//	if ( ymaps ) {
-	//	ymaps.ready(function(){
-//			if(map_created) return;
-//			map_created = true;
-
-//		map = new ymaps.Map('map', {
-//			center: [55.76, 37.64],
-//			zoom: 12
-//		});
-
-//			map = new ENTER.constructors.CreateMap('map', [{latitude: 55.76, longitude: 37.64}], $('#mapInfoBlock'));
-
-//			map.controls.add('smallZoomControl', { top: 5, left: 5 });
-	//	});
-//	}
+	fieldsInit();
+	setTimeout(mapCreate, 5000);
 
 }(window.ENTER));
  

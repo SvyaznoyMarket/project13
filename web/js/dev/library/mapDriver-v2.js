@@ -31,7 +31,7 @@
 			console.log(points);
 
 			this.points = points;
-			this.template = baloonTemplate.html();
+			this.template = baloonTemplate ? baloonTemplate.html() : null;
 			this.center = this._calcCenter();
 
 			console.log(this.center);
