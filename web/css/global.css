@@ -9136,7 +9136,6 @@
   }
   .bDeliveryFreeAddress {
     margin: 10px 0 10px;
-    display: none;
   }
   .bDeliveryFreeAddress__eShop {
     font-size: 11px;
@@ -10860,6 +10859,14 @@
   .lt-ie9 .mPayMethods .bPayMethodAction,
   .lt-ie9 .mPayMethods .bProcess {
     display: block;
+  }
+  .bFootenoteDelivery {
+    width: 446px;
+    margin: 15px 0 -30px 0px;
+    padding: 5px 5px 5px 10px;
+    border-radius: 4px;
+    background: #FFDBF1;
+    font-size: 13px;
   }
 }
 @media all {
