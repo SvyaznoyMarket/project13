@@ -3071,7 +3071,7 @@ $(document).ready(function() {
  * см.BlackBox startAction
  *
  * @author		Zaytsev Alexandr
- * @requires	jQuery, jQuery.emailValidate, docCookies
+ * @requires	jQuery, FormValidator, docCookies
  * 
  * @param		{event}		event
  * @param		{Object}	subscribe			Информация о подписке
@@ -3079,17 +3079,43 @@ $(document).ready(function() {
  * @param		{Boolean}	subscribe.show		Показывали ли пользователю плашку с предложением о подписке
  */
 ;(function() {
-	var lboxCheckSubscribe = function lboxCheckSubscribe( event, subscribe ) {
+	var
+		lboxCheckSubscribe = function lboxCheckSubscribe( event, subscribe ) {
 
-		var notNowShield = $('.bSubscribeLightboxPopupNotNow'),
+		var
+			notNowShield = $('.bSubscribeLightboxPopupNotNow'),
 			subPopup = $('.bSubscribeLightboxPopup'),
 			input = $('.bSubscribeLightboxPopup__eInput'),
-			submitBtn = $('.bSubscribeLightboxPopup__eBtn');
+			submitBtn = $('.bSubscribeLightboxPopup__eBtn' ),
+			inputValidator = new FormValidator({
+				fields: [
+					{
+						fieldNode: input,
+						customErr: 'Неправильный емейл',
+						required: true,
+						email: true,
+						validBy: 'isEmail'
+					}
+				]
+			} ),
+			runValidation = function runValidation() {
+				inputValidator.validate({
+					onInvalid: function( err ) {
+						console.log('Email is invalid');
+						console.log(err);
+					},
+					onValid: function() {
+						console.log('Email is valid');
+					}
+				});
+			};
 		// end of vars
 		
 
-		var subscribing = function subscribing() {
-				var email = input.val(),
+		var
+			subscribing = function subscribing() {
+				var
+					email = input.val(),
 					url = $(this).data('url');
 				//end of vars
 				
@@ -3147,17 +3173,6 @@ $(document).ready(function() {
 
 		input.placeholder();
 
-		input.emailValidate({
-			onValid: function() {
-				input.removeClass('mError');
-				submitBtn.removeClass('mDisabled');
-			},
-			onInvalid: function() {
-				submitBtn.addClass('mDisabled');
-				input.addClass('mError');
-			}
-		});
-
 		if ( !subscribe.show ) {
 			if ( !subscribe.agreed ) {
 				subscribeLater();
@@ -3168,6 +3183,8 @@ $(document).ready(function() {
 		else {
 			subscribeNow();
 		}
+
+		input.bind('keyup', runValidation);
 	};
 
 	$('body').bind('showsubscribe', lboxCheckSubscribe);
