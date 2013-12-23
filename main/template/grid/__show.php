@@ -15,7 +15,10 @@ $f = function(
 <? foreach ($gridCells as $cell): ?>
 <div>
     <? if (\Model\GridCell\Entity::TYPE_PRODUCT === $cell->getType()): ?>
-        <? if ($product = (isset($productsById[$cell->getId()]) ? $productsById[$cell->getId()] : null)) continue ?>
+    <?
+        $product = (isset($productsById[$cell->getId()]) ? $productsById[$cell->getId()] : null);
+        if (!$product) continue;
+    ?>
         <?= $helper->render('product/show/__grid', ['product' => $product]) ?>
     <? elseif (\Model\GridCell\Entity::TYPE_IMAGE === $cell->getType()): ?>
 

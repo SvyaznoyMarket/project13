@@ -5,7 +5,7 @@ $f = function (
 ) {
 ?>
 
-    <?= $product->getName() ?>
+    <a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a>
 
 <?
 }; return $f;
