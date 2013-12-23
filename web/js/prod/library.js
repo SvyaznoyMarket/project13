@@ -1725,7 +1725,8 @@ window.MapInterface = (function() {
 		utils = ENTER.utils,
 		clientCart = utils.extendApp('ENTER.config.clientCart'),
 		clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
-		body = $('body');
+		body = $('body'),
+		authorized_cookie = '_authorized';
 	// end of vars
 	
 	
@@ -1753,11 +1754,10 @@ window.MapInterface = (function() {
 				return new BlackBox(updateUrl);
 			}
 			// constructor body
-			
+
 			this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
-			this.init();
 		}
-	
+
 		
 		/**
 		 * Объект по работе с корзиной
@@ -1899,11 +1899,8 @@ window.MapInterface = (function() {
 				 * 
 				 * @private
 				 */
-				startAction = function startAction( action ) {
-					if ( action.subscribe !== undefined ) {
-						body.trigger('showsubscribe', [action.subscribe]);
-					}
-				},
+				/*startAction = function startAction( action ) {
+				},*/
 
 				/**
 				 * Обработчик данных о корзине и пользователе
@@ -1932,9 +1929,9 @@ window.MapInterface = (function() {
 						self.basket().update( cartInfo );
 					}
 
-					if ( actionInfo !== undefined ) {
+					/*if ( actionInfo !== undefined ) {
 						startAction(actionInfo);
-					}
+					}*/
 				};
 			//end of functions
 
@@ -1956,6 +1953,9 @@ window.MapInterface = (function() {
 	 * @type	{BlackBox}
 	 */
 	utils.blackBox = new BlackBox(userUrl);
+	if ( window.docCookies.hasItem(authorized_cookie) ) {
+		utils.blackBox.init();
+	}
 
 }(window.ENTER));
  

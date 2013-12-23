@@ -69,21 +69,32 @@ class ProductAction {
 
             $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
 
-            return $request->isXmlHttpRequest()
-                ? new \Http\JsonResponse([
-                    'success' => true,
-                    'cart'    => [
-                        'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
-                        'quantity'      => $quantity,
-                        'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
-                        'full_price'    => $cart->getSum(),
-                        'old_price'     => $cart->getOriginalSum(),
-                        'link'          => \App::router()->generate('order'),
-                    ],
-                    'product'  => $productInfo,
-                    'category_id' => $parentCategoryId,
-                ])
-                : new \Http\RedirectResponse($returnRedirect);
+            if (!$request->isXmlHttpRequest()) {
+                return new \Http\RedirectResponse($returnRedirect);
+            }
+
+            $response = new \Http\JsonResponse([
+                'success' => true,
+                'cart'    => [
+                    'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
+                    'quantity'      => $quantity,
+                    'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
+                    'full_price'    => $cart->getSum(),
+                    'old_price'     => $cart->getOriginalSum(),
+                    'link'          => \App::router()->generate('order'),
+                ],
+                'product'  => $productInfo,
+                'category_id' => $parentCategoryId,
+            ]);
+
+            if (0 == $quantity) {
+                \Session\User::disableInfoCookie($response);
+            } else {
+                \Session\User::enableInfoCookie($response);
+            }
+
+            return $response;
+
         } catch (\Exception $e) {
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([

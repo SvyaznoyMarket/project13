@@ -3068,7 +3068,6 @@ $(document).ready(function() {
 /**
  * Всплывающая синяя плашка с предложением о подписке
  * Срабатывает при возникновении события showsubscribe.
- * см.BlackBox startAction
  *
  * @author		Zaytsev Alexandr
  * @requires	jQuery, FormValidator, docCookies
@@ -3080,13 +3079,19 @@ $(document).ready(function() {
  */
 ;(function() {
 	var
-		lboxCheckSubscribe = function lboxCheckSubscribe( event, subscribe ) {
+		body = $('body'),
+		subscribeCookieName = 'subscribed',
+		lboxCheckSubscribe = function lboxCheckSubscribe( event ) {
 
 		var
 			notNowShield = $('.bSubscribeLightboxPopupNotNow'),
 			subPopup = $('.bSubscribeLightboxPopup'),
 			input = $('.bSubscribeLightboxPopup__eInput'),
 			submitBtn = $('.bSubscribeLightboxPopup__eBtn' ),
+			subscribe = {
+				'show': !window.docCookies.hasItem(subscribeCookieName),
+				'agreed': 1 === window.docCookies.getItem(subscribeCookieName)
+			},
 			inputValidator = new FormValidator({
 				fields: [
 					{
@@ -3110,7 +3115,7 @@ $(document).ready(function() {
 				});
 			};
 		// end of vars
-		
+
 
 		var
 			subscribing = function subscribing() {
@@ -3187,7 +3192,8 @@ $(document).ready(function() {
 		input.bind('keyup', runValidation);
 	};
 
-	$('body').bind('showsubscribe', lboxCheckSubscribe);
+	body.bind('showsubscribe', lboxCheckSubscribe);
+	body.trigger('showsubscribe');
 }());
  
  
