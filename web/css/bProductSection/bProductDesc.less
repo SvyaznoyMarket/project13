@@ -85,36 +85,35 @@
     }
     
     .creditbox {
-		margin: 5px 0 10px;
+		margin: 8px 0 10px;
+        padding: 3px 0 3px 10px;
 
 		border: none;
 
 		font-size: 14px;
 
-		.bigcheck {
-			font-weight: normal;
-			line-height: 22px;
+        background: #fff7e6;
 
-			&.checked {
-				color: #ffa901 !important;
+        width: 150px;
 
-				.dotted {
-					border: none;
-				}
+        .rounded(4px);
 
-				b {
-					background-position: 0px -54px;
-				}
-			}
-
-			b {
-				margin: 0px 8px 0 0px;
-			}
+		&__sum {
+			display: block;
 		}
 
-		.creditbox__sum {
-			padding-left: 36px;
-		}
+        &.bInputList {
+
+            .bCustomLabel {
+                line-height: 1.4;
+                background-position: 0 50%;
+                color: @typGray;
+
+                &.mChecked {
+                    color: @black;
+                }
+            }
+        }
 	}
 }
 
@@ -128,9 +127,9 @@
 }
 
 .priceOld {
-    margin-bottom: 3px;
+    margin: 0 0 3px 10px;
 
-    color: #a6a6a6;
+    color: @typBoxShadowColor;
 
     font-size: 21px;
     
@@ -140,7 +139,21 @@
 }
 
 .bPrice {
-    font-size: 30px;
+    margin-left: 10px;
+
+    &.bInputList {
+        font-size: 30px;
+
+        .bCustomLabel {
+            background-position: 0 50%;
+            color: @typGray;
+        }
+
+        .mCustomRadioBig:checked+.bCustomLabel, 
+        .mCustomLabelRadioBig.mChecked {
+            color: @black;
+        }
+    }
 }
 
 .priceSale {
