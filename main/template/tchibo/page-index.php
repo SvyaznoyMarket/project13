@@ -1,7 +1,13 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
+ * @var $page         \View\DefaultLayout
+ * @var $gridCells    \Model\GridCell\Entity[]
+ * @var $productsById \Model\Product\CompactEntity[]
  */
+?>
+
+<?
+$helper = new \Helper\TemplateHelper();
 ?>
 
 <div class="navTchibo clearfix">
@@ -93,3 +99,8 @@
 		<a class="bPaginator_eLink" href="">4</a>
 	</div>
 </div>
+
+<?= $helper->render('grid/__show', [
+    'gridCells'    => $gridCells,
+    'productsById' => $productsById,
+]) ?>
