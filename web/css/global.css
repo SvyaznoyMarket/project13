@@ -8913,6 +8913,17 @@
   .bProductDesc .creditbox.bInputList .bCustomLabel.mChecked {
     color: #000000;
   }
+  .bProductDesc.mNoCredit .priceOld {
+    margin-left: 0;
+  }
+  .bProductDesc.mNoCredit .bPrice {
+    margin-left: 0;
+  }
+  .bProductDesc.mNoCredit .bPrice.bInputList .bCustomLabel {
+    background: none;
+    padding-left: 0;
+    cursor: text;
+  }
   .inStock {
     margin-bottom: 6px;
     color: #fb9c00;
