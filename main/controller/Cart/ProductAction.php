@@ -69,28 +69,28 @@ class ProductAction {
 
             $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
 
-            if (!$request->isXmlHttpRequest()) {
-                return new \Http\RedirectResponse($returnRedirect);
+            if ($request->isXmlHttpRequest()) {
+                $response = new \Http\JsonResponse([
+                    'success' => true,
+                    'cart'    => [
+                        'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
+                        'quantity'      => $quantity,
+                        'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
+                        'full_price'    => $cart->getSum(),
+                        'old_price'     => $cart->getOriginalSum(),
+                        'link'          => \App::router()->generate('order'),
+                    ],
+                    'product'  => $productInfo,
+                    'category_id' => $parentCategoryId,
+                ]);
+            } else {
+                $response = new \Http\RedirectResponse($returnRedirect);
             }
 
-            $response = new \Http\JsonResponse([
-                'success' => true,
-                'cart'    => [
-                    'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
-                    'quantity'      => $quantity,
-                    'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
-                    'full_price'    => $cart->getSum(),
-                    'old_price'     => $cart->getOriginalSum(),
-                    'link'          => \App::router()->generate('order'),
-                ],
-                'product'  => $productInfo,
-                'category_id' => $parentCategoryId,
-            ]);
-
-            if (0 == $quantity) {
-                \Session\User::disableInfoCookie($response);
-            } else {
+            if ($cart->getSum()) {
                 \Session\User::enableInfoCookie($response);
+            } else {
+                \Session\User::disableInfoCookie($response);
             }
 
             return $response;
@@ -263,6 +263,7 @@ class ProductAction {
         $request->query->set('quantity', $quantity);
         */
 
+        //p($request,'','f');
         $request->query->set('quantity', 0);
 
         return $this->set($productId, $request);
