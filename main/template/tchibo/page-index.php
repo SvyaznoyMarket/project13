@@ -100,7 +100,18 @@ $helper = new \Helper\TemplateHelper();
 	</div>
 </div>
 
-<div>
+<?
+$contentHeight = 0;
+foreach ($gridCells as $cell) {
+    $height =
+        (($cell->getRow() - 1) *  60 + ($cell->getRow() - 1) * 20)
+        + ($cell->getSizeY() * 60 + ($cell->getSizeY() - 1) * 20);
+    if ($height > $contentHeight) {
+        $contentHeight = $height;
+    }
+}
+?>
+<div style="position: relative; height: <?= $contentHeight ?>px; margin: 30px 0;">
 <?= $helper->render('grid/__show', [
     'gridCells'    => $gridCells,
     'productsById' => $productsById,
