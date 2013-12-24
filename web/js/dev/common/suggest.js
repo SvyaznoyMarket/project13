@@ -70,8 +70,15 @@
 				 * Запрос на получение данных с сервера
 				 */
 				getResFromServer = function getResFromServer() {
-					var
-						url = '/search/autocomplete?q='+encodeURI(text);
+					var query,
+						url = '/search/autocomplete?q=';
+
+					escapeSearchQuery();
+					query = searchInput.val();
+					if ( query.length < 3 ) {
+						return false;
+					}
+					url += encodeURI( query );
 
 					$.ajax({
 						type: 'GET',
@@ -186,6 +193,7 @@
 		},
 
 		searchInputFocusin = function searchInputFocusin() {
+			console.log('searchInputFocusin');
 			suggestWrapper.show();
 		},
 		
