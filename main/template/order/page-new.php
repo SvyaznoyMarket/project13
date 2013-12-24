@@ -444,7 +444,7 @@ if ($oneClick) {
 						</div>
 
 						<? if ((bool)$subways): ?>
-						<div class="bInputAddress ui-css">
+						<div class="bInputAddress ui-css jsInputMetro">
 							<label class="bPlaceholder">Метро*</label>
 							<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
 							<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>

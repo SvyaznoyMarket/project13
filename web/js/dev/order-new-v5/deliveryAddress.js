@@ -12,9 +12,12 @@
 		token = '52b04de731608f2773000000',
 		key = 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b',
 
-		street = container.find( '#order_address_street'),
-		building = container.find( '#order_address_building'),
-		buildingAdd = container.find( '#order_address_number'),
+		street = container.find('#order_address_street'),
+		building = container.find('#order_address_building'),
+		buildingAdd = container.find('#order_address_number'),
+		metro = container.find('#order_address_metro'),
+
+		error,
 
 		limit = 6,
 
@@ -158,9 +161,9 @@
 				zoom = 16;
 			}
 
-			console.warn(address);
-
 			if( address && map_created ){
+				console.log(address);
+
 				geocode = ymaps.geocode(address);
 				geocode.then(function(res){
 					position = res.geoObjects.get(0).geometry.getCoordinates();
@@ -204,25 +207,56 @@
 					name = nearest.properties.get('name');
 					name = name.replace('метро ', '');
 
-					// рисуем точку на карте
-//					nearest.properties.set('iconContent', name);
-//					nearest.options.set('preset', 'twirl#redStretchyIcon');
-//					map.mapWS.geoObjects.add(nearest);
-
-					$('#order_address_metro').val(name);
-					$('#order_address_metro').select();
+//					metro.parents('.jsInputMetro').hide();
+					metro.val(name);
 				},
 				function ( err ) {
 					console.warn("При выполнении запроса произошла ошибка: " + err);
+
+					metro.val('');
+					metro.parents('.jsInputMetro').show();
 				}
 			);
 		},
 
 
 		/**
+		 * Показ сообщений об ошибках
+		 *
+		 * @param   {String}    msg     Сообщение которое необходимо показать пользователю
+		 */
+		showError = function( msg ) {
+			error = container.find('ul.error_list');
+
+			if ( error.length ) {
+				error.html('<li>' + msg + '</li>');
+			}
+			else {
+				$('#map', container).before($('<ul class="error_list" />').append('<li>' + msg + '</li>'));
+			}
+
+			return false;
+		},
+
+
+		/**
+		 * Убрать сообщения об ошибках
+		 */
+		removeErrors = function() {
+			error = container.find('ul.error_list');
+
+			if ( error.length ) {
+				error.html('');
+			}
+
+			return false;
+		},
+
+
+		/**
 		 * Обработчики полей
 		 *
-		 * @type {{city: Function, street: Function, building: Function, housing: Function}}
+		 * @type {{city: Function, street: Function, building: Function, buildingAdd: Function}}
 		 */
 		fieldsHandler = {
 			/**
@@ -243,6 +277,9 @@
 					},
 					function( objs ) {
 						if ( !objs.length ) {
+//							showError('КЛАДР не нашел указаный город');
+							console.log('КЛАДР не нашел город ' + cityName);
+
 							return;
 						}
 
@@ -268,18 +305,15 @@
 					verify: true,
 					limit: limit,
 					select: function( obj ) {
-						console.warn(111);
-						console.warn(obj);
-
-
-
+						removeErrors();
 						building.kladr( 'parentType', $.kladr.type.street );
 						building.kladr( 'parentId', obj.id );
 						mapUpdate();
 					},
 					check: function( obj ) {
 						if ( !obj ) {
-							street.val('');
+							showError('Не нашли ваш адрес на карте.<br />Уточните');
+
 							return;
 						}
 
@@ -303,9 +337,16 @@
 					verify: true,
 					limit: limit,
 					select: function( obj ) {
+						removeErrors();
 						mapUpdate();
 					},
 					check: function( obj ) {
+						if ( !obj ) {
+							showError('Не нашли ваш адрес на карте.<br />Уточните');
+
+							return;
+						}
+
 						mapUpdate();
 					}
 				});
@@ -314,7 +355,7 @@
 			/**
 			 * Проверка названия корпуса
 			 */
-			housing: function() {
+			buildingAdd: function() {
 				buildingAdd.change(function(){
 					mapUpdate();
 				});
@@ -329,19 +370,43 @@
 			fieldsHandler.city();
 			fieldsHandler.street();
 			fieldsHandler.building();
-			fieldsHandler.housing();
+			fieldsHandler.buildingAdd();
 		},
 
+
+		/**
+		 * Создание карты
+		 */
 		mapCreate = function() {
-			if(map_created) return;
+			var
+				cityGeocoder;
+			// end of vars
+
+			if ( map_created ) {
+				return;
+			}
+
 			map_created = true;
 
-			map = new ENTER.constructors.CreateMap('map', [{latitude: 55.76, longitude: 37.64}]);
+			cityGeocoder = ymaps.geocode(cityName);
+			cityGeocoder.then(
+				function ( res ) {
+					position = res.geoObjects.get(0).geometry.getCoordinates();
+					map = new ENTER.constructors.CreateMap('map', [{latitude: position[0], longitude: position[1]}]);
+				},
+				function ( err ) {
+					// обработка ошибки
+					console.log(err);
+					showError('Не нашли ваш город на карте.');
+					map = new ENTER.constructors.CreateMap('map', [{latitude: 55.76, longitude: 37.64}]);
+				}
+			);
 		};
 	// end of functions
 
 
+//	metro.parents('.jsInputMetro').hide();
 	fieldsInit();
-	setTimeout(mapCreate, 5000);
+	setTimeout(mapCreate, 2000);
 
 }(window.ENTER));
