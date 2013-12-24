@@ -445,20 +445,23 @@ if ($oneClick) {
 
 					<!-- Address customer -->
 					<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки*</label>
-					<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
+					<div class="bBuyingLine__eRight jsDeliveryAddress" data-value='<?= json_encode(['regionName' => $region->getName()])?>' style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
 						<div class="bSelectedCity">
 							<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
 						</div>
 
 						<? if ((bool)$subways): ?>
-						<div class="bInputAddress ui-css">
+						<div class="bInputAddress ui-css jsInputMetro">
 							<label class="bPlaceholder">Метро*</label>
 							<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
 							<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
 							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
 						</div>
 						<? endif ?>
-						
+
+<style type="text/css">
+    #kladr_autocomplete ul{position:absolute;display:block;margin:0;padding:0;border:1px solid #8A8A8A;border-radius:3px;background-color:white;z-index:9999;}#kladr_autocomplete li{display:list-item;list-style-type:none;margin:0;padding:3px 5px;overflow:hidden;border:1px solid white;border-bottom:1px solid #BDBDBD;}#kladr_autocomplete li.active{background-color:#E0E0E0;border-radius:3px;border:1px solid #979797;}#kladr_autocomplete a{display:block;cursor:default;width:10000px;}#kladr_autocomplete .spinner{position:absolute;display:block;margin:0;padding:0;width:20px;height:20px;background-color:transparent;background-image:url("http://kladr-api.ru/examples/css/lib/jquery.kladr.images/spinner.png");background-position:center center;background-repeat:no-repeat;z-index:9999;}
+</style>
 						<div class="bInputAddress">
 							<label class="bPlaceholder">Улица*</label>
 							<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />						
@@ -483,6 +486,8 @@ if ($oneClick) {
 							<label class="bPlaceholder">Этаж</label>
 							<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
 						</div>
+
+                        <div class="bInputAddress" id="map" style="width: 460px; height: 350px;"></div>
 					</div>
 
 					<label class="bBuyingLine__eLeft">Пожелания и дополнения</label>
