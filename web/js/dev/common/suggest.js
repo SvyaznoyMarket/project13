@@ -42,43 +42,43 @@
 		},
 
 		/**
-		 * Обработчик поднятия клавиши
-		 * 
-		 * @param	{Event}		event
-		 * @param	{Number}	keyCode	Код нажатой клавиши
-		 * @param	{String}	text	Текст в поле ввода
+		 * Загрузить ответ от поиска: получить и показать его, с запоминанием (memoization)
+		 *
+		 * @returns {boolean}
 		 */
-		suggestKeyUp = function suggestKeyUp( event ) {
+		loadResponse = function loadResponse() {
 			var
-				keyCode = event.which,
-				text = searchInput.attr('value' ),
+				text = searchInput.val(),
 
 				/**
 				 * Отрисовка данных с сервера
 				 *
 				 * @param	{String}	response	Ответ от сервера
 				 */
-			    renderResponse = function renderResponse( response ) {
+				renderResponse = function renderResponse( response ) {
 					suggestCache[text] = response; // memoization
 
 					suggestWrapper.html(response);
 					suggestItem = $('.bSearchSuggest__eRes');
 					suggestLen = suggestItem.length;
+					if ( suggestLen ) {
+						//searchInputFocusin();
+						setTimeout(searchInputFocusin, 99);
+					}
 				},
 
 				/**
 				 * Запрос на получение данных с сервера
 				 */
 				getResFromServer = function getResFromServer() {
-					var query,
+					var
+						//text = searchInput.val(),
 						url = '/search/autocomplete?q=';
 
-					escapeSearchQuery();
-					query = searchInput.val();
-					if ( query.length < 3 ) {
+					if ( text.length < 3 ) {
 						return false;
 					}
-					url += encodeURI( query );
+					url += encodeURI( text );
 
 					$.ajax({
 						type: 'GET',
@@ -86,12 +86,7 @@
 						success: renderResponse
 					});
 				};
-			// end of function
-
-
-			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
-				return false;
-			}
+			// end of functions and vars
 
 			if ( text.length === 0 ) {
 				suggestWrapper.empty();
@@ -109,6 +104,33 @@
 			}
 
 			tID = setTimeout(getResFromServer, 300);
+		}, // end of loadResponse()
+
+		/**
+		 * Экранируем лишние пробелы перед отправкой на сервер
+		 * вызывается по нажатию Ентера либо кнопки "Отправить"
+		 */
+		escapeSearchQuery = function escapeSearchQuery() {
+			var s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
+			searchInput.val(s);
+		}
+
+		/**
+		 * Обработчик поднятия клавиши
+		 * 
+		 * @param	{Event}		event
+		 * @param	{Number}	keyCode	Код нажатой клавиши
+		 * @param	{String}	text	Текст в поле ввода
+		 */
+		suggestKeyUp = function suggestKeyUp( event ) {
+			var
+				keyCode = event.which;
+
+			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
+				return false;
+			}
+
+			loadResponse();
 		},
 
 		/**
@@ -150,11 +172,6 @@
 
 					suggestAnalytics();
 					document.location.href = link;
-				}
-
-				escapeSearchQuery = function escapeSearchQuery() {
-					var s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
-					searchInput.val(s);
 				};
 			// end of functions
 
@@ -193,7 +210,6 @@
 		},
 
 		searchInputFocusin = function searchInputFocusin() {
-			console.log('searchInputFocusin');
 			suggestWrapper.show();
 		},
 		
@@ -223,10 +239,11 @@
 		 */
 		searchHintSelect = function searchHintSelect() {
 			var
-				hintValue = $(this).text(),
-				searchValue = searchInput.val();
-			if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
-			return searchInput.val(hintValue + ' ').focus();
+				hintValue = $(this).text()/*,
+				searchValue = searchInput.val()*/;
+			//if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
+			searchInput.val(hintValue + ' ').focus();
+			loadResponse();
 		};
 	// end of functions
 
