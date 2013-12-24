@@ -5,21 +5,25 @@ return function(
     \Model\Product\Entity $product,
     array $reviewsData
 ) {
+    $rating = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'];
+    //$reviewCount = $reviewsData['num_reviews'];
+    $reviewCount = !empty($reviewsData['review_list']) ? count($reviewsData['review_list']) : 0;
 ?>
 
 <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" class="bReviewSection clearfix">
     <div class="bReviewSection__eStar">
-        <? $rating = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'] ?>
         <?= empty($rating) ? '' : $helper->render('product/__rating', ['score' => $rating]) ?>
     </div>
-    <? if (!empty($rating)) { ?>
-        <span itemprop="ratingCount" class="jsGoToId border" data-goto="bHeadSectionReviews"><?= $reviewsData['num_reviews'] ?> <?= $helper->numberChoice($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
-    <? } else { ?>
+    <? if (empty($rating) && 0 == $reviewCount) { ?>
         <span>Отзывов нет</span>
+    <? } else { ?>
+        <span itemprop="ratingCount" class="jsGoToId border" data-goto="bHeadSectionReviews">
+            <?= $reviewCount ?> <?= $helper->numberChoice($reviewCount, ['отзыв', 'отзыва', 'отзывов']) ?>
+        </span>
     <? } ?>
 
     <? if (\App::config()->product['pushReview']): ?>
-        <a id="send-review" class="reviewSend jsReviewSend" href="">Написать отзыв</a>
+        <a id="send-review" class="reviewSend jsReviewSend" href="">Добавить отзыв</a>
 
         <div class="popup reviewPopup jsReviewPopup" id="review-block">
             <i title="Закрыть" class="close">Закрыть</i>

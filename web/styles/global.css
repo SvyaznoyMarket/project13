@@ -1257,10 +1257,10 @@ table {
   display: block;
   left: -129px;
 }
-.fixedTopBar__cart.mOpenedPopup .fixedTopBar__dd {
+.fixedTopBar .mOpenedPopup .fixedTopBar__dd {
   display: none;
 }
-.fixedTopBar__cart.mOpenedPopup:hover .fixedTopBar__dd {
+.fixedTopBar .mOpenedPopup:hover .fixedTopBar__dd {
   display: none;
 }
 .fixedTopBar__cartTitle {
@@ -1785,7 +1785,7 @@ table {
 }
 .userInfoEdit__label {
   font-size: 12px;
-  margin: 0 0 5px;
+  margin: 0 0 8px;
   display: block;
   clear: both;
 }

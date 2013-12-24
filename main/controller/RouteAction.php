@@ -15,7 +15,7 @@ class RouteAction {
 
         $actions = (array)$request->get('actions');
         if (!(bool)$actions) {
-            throw new \Exception('Не перадан обязательный параметр actions');
+            throw new \Exception('Не передан обязательный параметр actions');
         }
 
         $actionData = [];

@@ -270,6 +270,12 @@ class CreateAction {
                     ];
                 }
 
+                // Проверим наличие товаров либо услуг, чтобы не было создания заказа с пустой корзиной, SITE-2859
+                if ( empty($orderData['product']) && empty($orderData['service']) ) {
+                    unset($orderData);
+                    continue;
+                }
+
                 // скидки
                 $orderData['action'] = (array)$user->getCart()->getActionData();
 
@@ -317,7 +323,13 @@ class CreateAction {
                 }
             }
 
-            $data[] = $orderData;
+            if ( !empty($orderData) ) {
+                $data[] = $orderData;
+            }
+        }
+
+        if (!(bool)$data) {
+            throw new \Exception('Корзина пустая');
         }
 
         $params = [];

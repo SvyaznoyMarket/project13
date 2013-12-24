@@ -21,12 +21,21 @@
 
         &__eItem {
             padding-left: 25px;
-            margin: 0 0 12px 4px;
+            margin: 0 0 15px 4px;
             background-repeat: no-repeat;
             background-image: url("@{base-url}/rightBarCard/img/ico.png");
 
             span {
                 font-size: 14px;
+
+                .bJustText {
+                    color: @black;
+                }
+            }
+
+            .bJustText {
+                color: @typBoxShadowColor;
+                margin: 5px 0 0;
             }
         }
 
@@ -65,7 +74,6 @@
 
 .bDeliveryFreeAddress {
     margin: 10px 0 10px;
-    display: none;
 
     &__eShop {
         font-size: 11px;
@@ -80,7 +88,7 @@
         }
     }
     
-    .mOpen &{
+    .mOpen {
         display: block;
     }
 
@@ -93,6 +101,7 @@
     padding-left: 59px;
     line-height: 24px;
     width: 115px;
+
     button {
         background: url("@{base-url}/rightBarCard/img/bg_count_btn.png") no-repeat 0 0;
         display: block;

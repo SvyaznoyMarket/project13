@@ -348,6 +348,9 @@ class IndexAction {
         $page->setParam('line', $line);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId()));
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
+        $page->setParam('viewParams', [
+            'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+        ]);
 
         return new \Http\Response($page->show());
     }

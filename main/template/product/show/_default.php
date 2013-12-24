@@ -44,7 +44,7 @@ $is_showed = [];
 <div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
 
-    <div class="bProductDesc">
+    <div class="bProductDesc"><!--//если нет блока с кредитом mNoCredit -->
         <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
         <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
@@ -194,8 +194,8 @@ $is_showed = [];
 
 <div class="bProductSectionRightCol">
     <div class="bWidgetBuy mWidget">
-        <? if (!$product->isInShopStockOnly()): ?>
-            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
+        <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
         <? endif ?>
 
         <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
@@ -233,8 +233,8 @@ $is_showed = [];
 
     <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
-    <? if (!$product->isInShopStockOnly()): ?>
-        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
+    <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
     <? endif ?>
 
     <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">

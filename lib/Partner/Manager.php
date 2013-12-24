@@ -63,7 +63,18 @@ class Manager {
                 }
             }
 
-
+            // myThings
+            if (0 === strpos($utmSource, 'mythinqs')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieNames[\Partner\Counter\MyThings::NAME],
+                    \Partner\Counter\MyThings::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            }
             // CityAds
             if (0 === strpos($utmSource, 'cityads')) {
                 $response->headers->setCookie(new \Http\Cookie(

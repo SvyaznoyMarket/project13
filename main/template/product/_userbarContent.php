@@ -23,11 +23,12 @@ if ($product) {
 <div class="fixedTopBar__buy">
     <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 
-    <? if ($product->getIsBuyable()): ?>
-        <? if (!$product->isInShopStockOnly()): ?>
-            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
-        <? endif ?>
 
+    <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
+    <? endif ?>
+
+    <? if ($product->getIsBuyable()): ?>
         <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить ?>
     <? endif ?>
 </div>

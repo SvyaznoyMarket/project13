@@ -121,6 +121,8 @@ class Action {
                 throw $result;
             }
 
+
+
             $responseData = [
                 'error'  => null,
                 'notice' => ['message' => $result['message'], 'type' => 'info']

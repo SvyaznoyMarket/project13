@@ -7,6 +7,7 @@ return function (
 
     if (
         !\App::config()->payment['paypalECS']
+        || (5 === $product->getStatusId()) // SITE-2924
         || !$product->getIsBuyable()
     ) {
         return '';
