@@ -13,7 +13,9 @@
  * @param	{Number}	suggestLen			Количество результатов поиска
  */
 ;(function() {
-	var searchForm = $('div.searchbox form'),
+	var
+		body = $('body'),
+		searchForm = $('div.searchbox form'),
         searchInput = searchForm.find('input.searchtext'),
 		suggestWrapper = $('#searchAutocomplete'),
 		suggestItem = $('.bSearchSuggest__eRes'),
@@ -27,8 +29,10 @@
 	// end of vars	
 
 
-	var suggestAnalytics = function suggestAnalytics() {
-			var link = suggestItem.eq(nowSelectSuggest).attr('href'),
+	var
+		suggestAnalytics = function suggestAnalytics() {
+			var
+				link = suggestItem.eq(nowSelectSuggest).attr('href'),
 				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
 			// end of vars
 			
@@ -45,15 +49,16 @@
 		 * @param	{String}	text	Текст в поле ввода
 		 */
 		suggestKeyUp = function suggestKeyUp( event ) {
-			var keyCode = event.which,
-				text = searchInput.attr('value');
+			var
+				keyCode = event.which,
+				text = searchInput.attr('value' ),
 
 				/**
 				 * Отрисовка данных с сервера
-				 * 
+				 *
 				 * @param	{String}	response	Ответ от сервера
 				 */
-			var renderResponse = function renderResponse( response ) {
+			    renderResponse = function renderResponse( response ) {
 					suggestCache[text] = response; // memoization
 
 					suggestWrapper.html(response);
@@ -65,7 +70,8 @@
 				 * Запрос на получение данных с сервера
 				 */
 				getResFromServer = function getResFromServer() {
-					var url = '/search/autocomplete?q='+encodeURI(text);
+					var
+						url = '/search/autocomplete?q='+encodeURI(text);
 
 					$.ajax({
 						type: 'GET',
@@ -75,7 +81,7 @@
 				};
 			// end of function
 
-			
+
 			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
 				return false;
 			}
@@ -94,7 +100,7 @@
 
 				return false;
 			}
-			
+
 			tID = setTimeout(getResFromServer, 300);
 		},
 
@@ -105,9 +111,11 @@
 		 * @param	{Number}	keyCode	Код нажатой клавиши
 		 */
 		suggestKeyDown = function suggestKeyDown( event ) {
-			var keyCode = event.which;
+			var
+				keyCode = event.which;
 
-			var markSuggestItem = function markSuggestItem() {
+			var
+				markSuggestItem = function markSuggestItem() {
 					suggestItem.removeClass('hover').eq(nowSelectSuggest).addClass('hover');
 				},
 
@@ -182,7 +190,8 @@
 		},
 		
 		suggestCloser = function suggestCloser( e ) {
-			var targ = e.target.className;
+			var
+				targ = e.target.className;
 
 			if ( !(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1) ) {
 				suggestWrapper.hide();
@@ -205,7 +214,8 @@
 		 * Подставляет поисковую подсказку в строку поиска
 		 */
 		searchHintSelect = function searchHintSelect() {
-			var hintValue = $(this).text(),
+			var
+				hintValue = $(this).text(),
 				searchValue = searchInput.val();
 			if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
 			return searchInput.val(hintValue + ' ').focus();
@@ -225,9 +235,9 @@
 
 		searchInput.placeholder();
 
-		$('body').bind('click', suggestCloser);
-		$('body').on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
-		$('body').on('click', '.bSearchSuggest__eRes', suggestAnalytics);
-		$('body').on('click', '.sHint_value', searchHintSelect);
+		body.bind('click', suggestCloser);
+		body.on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
+		body.on('click', '.bSearchSuggest__eRes', suggestAnalytics);
+		body.on('click', '.sHint_value', searchHintSelect);
 	});
 }());
