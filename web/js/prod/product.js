@@ -877,11 +877,15 @@
 		utils = global.ENTER.utils;
 	// end of vars
 	
-	var loadMaybe3D = function() {
-		var data = $('#maybe3dModelPopup').data('value');
+	var
+		loadMaybe3D = function() {
+		var
+			data = $('#maybe3dModelPopup').data('value');
 
-		var afterLoad = function() {
-			var maybe3dPopupShow = function( e ) {
+		var
+			afterLoad = function() {
+			var
+				maybe3dPopupShow = function( e ) {
 				e.stopPropagation();
 				try {
 					if ( !$('#maybe3dModel').length ) {
@@ -913,12 +917,48 @@
 			$('.mGrad360.maybe3d').bind('click', maybe3dPopupShow);
 		};
 
-		$LAB.script('swfobject.min.js').wait(afterLoad);
+		//$LAB.script('swfobject.min.js').wait(afterLoad);
+	},
+	loadFitting = function loadFitting() {
+		fittingPopupShow = function( e ) {
+			console.log('### BEGIN');
+			e.preventDefault();
+			ARPlugin.show('watch_1.obj','watch_1.png');
+			console.log('### end');
+			return false;
+		};
+
+		ARPlugin.init({
+			type:"simple",
+			js:"/static/js/",
+			css:"/static/css/",
+			img:"/static/img/",
+			swf:"/static/swf/",
+			resources:"/static/resources/",
+			meshes_path:"/static/resources/model/",
+			textures_path:"/static/resources/model/",
+			marker_path:"http://pandragames.ru/enter_marker.pdf"
+		});
+		$('.vFitting').bind('click', fittingPopupShow);
 	};
 
 	$(document).ready(function() {
+		var
+			hasFlash = false;
+
 		if ( pageConfig['product.maybe3d'] ) {
+			hasFlash = true;
 			loadMaybe3D();
+		}
+
+		if ( !false || true ) { // TODO
+			hasFlash = true;
+			loadFitting();
+		}
+
+
+		if ( true === hasFlash ) {
+			$LAB.script('swfobject.min.js').wait(afterLoad);
 		}
 	});
 }(this));
