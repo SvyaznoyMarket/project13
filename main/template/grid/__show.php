@@ -16,7 +16,7 @@ $f = function(
 ?>
 
 <? foreach ($gridCells as $cell): ?>
-<div style="position: absolute; background: #edc195; overflow: hidden; border: dashed 1px #ed560e;
+<div class="productInner" style="position: absolute; overflow: hidden;
     <?= 'left: ' . (($cell->getColumn() - 1) *  $step + ($cell->getColumn() - 1) * $offset) . 'px;' ?>
     <?= 'top: ' . (($cell->getRow() - 1) *  $step + ($cell->getRow() - 1) * $offset) . 'px;' ?>
     <?= 'width:' . ($cell->getSizeX() * $step + ($cell->getSizeX() - 1) * $offset) . 'px;' ?>

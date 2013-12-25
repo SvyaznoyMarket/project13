@@ -1,0 +1,103 @@
+.tchiboProducts {
+
+	.productInner {
+
+		&:hover {
+
+			.bBtnLine,
+			.bOptionsSection {
+				display: block;
+			}
+		}
+
+		&__imgBox {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			text-align: center;
+			vertical-align: middle;
+			display: table;
+		}
+
+		&__imgLink {
+			display: table-cell;
+			vertical-align: middle;
+		}
+
+		&__img {
+			width: 90%;
+			height: auto;
+			vertical-align: middle;
+		}
+
+		&__desc {
+			background: rgba(255,255,255,0.8);
+			width: 100%;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			padding: 5px 0;
+
+			.inner {
+				width: 185px;
+				margin: 0 auto;
+				padding: 0 5px 0 10px;
+			}
+
+			.name {
+				margin: 0 10px 2px 0;
+				font-size: 14px;
+				display: block;
+				height: 35px;
+				overflow: hidden;
+			}
+
+			.price {
+				font-size: 18px;
+				font-weight: bold;
+				float: left;
+			}
+
+			.bOptions {
+				background-image: url("@{base-url}/tchiboProducts/img/options.png")
+			}
+
+			.bBtnLine {
+				margin-top: 5px;
+
+				.btnBuy {
+					height: 22px;
+				}
+
+				.btnBuy__eLink {
+					width: 70px;
+					height: 22px;
+					font-size: 13px;
+					line-height: 22px;
+				}
+
+				.btnView {
+					height: 22px;
+					font-size: 13px;
+					line-height: 22px;
+				}
+			}
+
+			.bOptionsSection {
+				margin-top: 8px;
+
+				.bCorner {
+					border-width: 7px;
+					top: -7px;
+				}
+
+				.bCornerDark {
+					border-width: 8px;
+					top: -8px;
+				}
+			}
+		}
+	}
+}

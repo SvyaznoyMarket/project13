@@ -11610,92 +11610,6 @@
   .bListing .bPriceLine .bPrice.bHasSale {
     color: #e62b34;
   }
-  .bListing .bPriceLine .bOptions {
-    float: right;
-    margin: 4px 0 0;
-    padding: 0 0 0 27px;
-    width: 55px;
-    background: url('/css/bCatalog/img/bOptions.png') no-repeat 0 0;
-  }
-  .bListing .bPriceLine .bOptions .bDecor {
-    border-bottom: 1px dotted;
-  }
-  .bListing .bOptionsSection {
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    position: relative;
-    display: none;
-    margin: 12px 0 0;
-    padding: 5px;
-    border: 1px solid #e6e6e6;
-    background: #f6f6f6;
-  }
-  .bListing .bOptionsSection .bCorner {
-    position: absolute;
-    top: -10px;
-    right: 29px;
-    z-index: 2;
-    display: block;
-    width: 0;
-    height: 0;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid #f6f6f6;
-    border-left: 10px solid transparent;
-  }
-  .bListing .bOptionsSection .bCornerDark {
-    position: absolute;
-    top: -11px;
-    right: 28px;
-    display: block;
-    width: 0;
-    height: 0;
-    border-right: 11px solid transparent;
-    border-bottom: 11px solid #e6e6e6;
-    border-left: 11px solid transparent;
-  }
-  .bListing .bOptionsList__eItem {
-    margin: 0 0 0 18px;
-    list-style-type: disc;
-  }
-  .bListing .bBtnLine {
-    display: none;
-    margin: 10px 0 0;
-  }
-  .bListing .bBtnLine .btnBuy {
-    float: left;
-    width: 70px;
-    height: 25px;
-  }
-  .bListing .bBtnLine .btnBuy__eLink {
-    width: 79px;
-    height: 25px;
-    font-size: 13px;
-    line-height: 25px;
-  }
-  .bListing .bBtnLine .btnBuy__eLink.mBought {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    border: 1px solid #e6e6e6;
-    background: #e6e6e6;
-    color: #a6a6a6;
-    cursor: default;
-  }
-  .bListing .bBtnLine .btnBuy__eLink.mBought:hover {
-    border: 1px solid #e6e6e6;
-    background: #e6e6e6;
-    color: #a6a6a6;
-  }
-  .bListing .bBtnLine .btnView {
-    display: block;
-    float: right;
-    width: 90px;
-    height: 25px;
-    text-align: center;
-    font-size: 13px;
-    line-height: 25px;
-  }
   .bListing .bSimplyDescReviews {
     margin: 0 0 5px;
   }
@@ -11921,6 +11835,92 @@
   }
   .bListing.mPandora .bPriceLine .bPrice.bHasSale {
     color: #000000;
+  }
+  .bBtnLine {
+    display: none;
+    margin: 10px 0 0;
+  }
+  .bBtnLine .btnBuy {
+    float: left;
+    width: 70px;
+    height: 25px;
+  }
+  .bBtnLine .btnBuy__eLink {
+    width: 79px;
+    height: 25px;
+    font-size: 13px;
+    line-height: 25px;
+  }
+  .bBtnLine .btnBuy__eLink.mBought {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid #e6e6e6;
+    background: #e6e6e6;
+    color: #a6a6a6;
+    cursor: default;
+  }
+  .bBtnLine .btnBuy__eLink.mBought:hover {
+    border: 1px solid #e6e6e6;
+    background: #e6e6e6;
+    color: #a6a6a6;
+  }
+  .bBtnLine .btnView {
+    display: block;
+    float: right;
+    width: 90px;
+    height: 25px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 25px;
+  }
+  .bOptions {
+    float: right;
+    margin: 4px 0 0;
+    padding: 0 0 0 27px;
+    width: 55px;
+    background: url('/css/bCatalog/img/bOptions.png') no-repeat 0 0;
+  }
+  .bOptions .bDecor {
+    border-bottom: 1px dotted;
+  }
+  .bOptionsSection {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    position: relative;
+    display: none;
+    margin: 12px 0 0;
+    padding: 5px;
+    border: 1px solid #e6e6e6;
+    background: #f6f6f6;
+  }
+  .bOptionsSection .bCorner {
+    position: absolute;
+    top: -10px;
+    right: 29px;
+    z-index: 2;
+    display: block;
+    width: 0;
+    height: 0;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #f6f6f6;
+    border-left: 10px solid transparent;
+  }
+  .bOptionsSection .bCornerDark {
+    position: absolute;
+    top: -11px;
+    right: 28px;
+    display: block;
+    width: 0;
+    height: 0;
+    border-right: 11px solid transparent;
+    border-bottom: 11px solid #e6e6e6;
+    border-left: 11px solid transparent;
+  }
+  .bOptionsList__eItem {
+    margin: 0 0 0 18px;
+    list-style-type: disc;
   }
 }
 @media all {

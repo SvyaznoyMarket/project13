@@ -1,0 +1,60 @@
+.tchiboCatalog {
+
+	.tchiboCatalogInner {
+		position: relative;
+		width: 300px;
+		overflow: hidden;
+
+		&:hover {
+
+			.tchiboCatalog__list {
+				right: 0;
+			}
+		}
+	}
+
+	&__img {
+		display: block;
+	}
+
+	&__title {
+		background: rgba(255, 255, 255, 0.8);
+		padding: 0 10px 0 10px;
+		width:100%;
+		color: #040003;
+		font-size: 18px;
+		height: 44px;
+		line-height: 44px;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		display: block;
+	}
+
+	&__list {
+		position: absolute;
+		bottom: 44px;
+		right: -170px;
+		background: -moz-linear-gradient(270deg ,rgba(0, 41, 88, 0.44) 0% ,rgba(0, 41, 88, 0.75) 100%);
+		background: -ms-linear-gradient(270deg ,rgba(0, 41, 88, 0.44) 0% ,rgba(0, 41, 88, 0.75) 100%);
+		background: -o-linear-gradient(270deg ,rgba(0, 41, 88, 0.44) 0% ,rgba(0, 41, 88, 0.75) 100%);
+		background: -webkit-linear-gradient(270deg ,rgba(0, 41, 88, 0.44) 0% ,rgba(0, 41, 88, 0.75) 100%);
+		background: linear-gradient(270deg ,rgba(0, 41, 88, 0.44) 0% ,rgba(0, 41, 88, 0.75) 100%);
+		width: 170px;
+      	.transition(right 0.3s ease-in-out);
+
+		.item {
+			margin: 0 10px 0 10px;
+			padding: 5px;
+		}
+
+		.link {
+			color: @white;
+
+			&:hover {
+				color: #ffe055;
+				text-decoration: none;
+			}
+		}
+	}
+}

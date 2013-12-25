@@ -195,124 +195,6 @@
         .bPrice.bHasSale{
             color: #e62b34;
         }
-
-		.bOptions {
-			float: right;
-
-			margin: 4px 0 0;
-			padding: 0 0 0 27px;
-
-			width: 55px;
-
-			background: url('@{base-url}/bCatalog/img/bOptions.png') no-repeat 0 0;
-
-			.bDecor {
-				border-bottom: 1px dotted;
-			}
-		}
-	}
-
-	.bOptionsSection {
-		.rounded(3px);
-		position: relative;
-
-		display: none;
-
-		margin: 12px 0 0;
-		padding: 5px;
-
-		border: 1px solid #e6e6e6;
-		background: #f6f6f6;
-
-		.bCorner {
-			position: absolute;
-			top: -10px;
-			right: 29px;
-			z-index: 2;
-
-			display: block;
-
-			width: 0;
-			height: 0;
-
-			border-right: 10px solid transparent;
-			border-bottom: 10px solid #f6f6f6;
-			border-left: 10px solid transparent;
-		}
-
-		.bCornerDark {
-			position: absolute;
-			top: -11px;
-			right: 28px;
-
-			display: block;
-
-			width: 0;
-			height: 0;
-
-			border-right: 11px solid transparent;
-			border-bottom: 11px solid #e6e6e6;
-			border-left: 11px solid transparent;
-
-		}
-	}
-
-	.bOptionsList {
-
-		&__eItem {
-			margin: 0 0 0 18px;
-
-			list-style-type: disc;
-		}
-	}
-
-	.bBtnLine {
-		display: none;
-
-		margin: 10px 0 0;
-
-		.btnBuy {
-			float: left;
-
-			width: 70px;
-			height: 25px;
-
-			&__eLink {
-				width: 79px;
-				height: 25px;
-
-				font-size: 13px;
-				line-height: 25px;
-
-				&.mBought {
-		            .box-shadow(none);
-		            border: 1px solid @typLightGray;
-		            background: @typLightGray;
-
-		            color: @typGray;
-		            cursor: default;
-
-		            &:hover {
-		                border: 1px solid @typLightGray;
-		                background: @typLightGray;
-		                color: @typGray;
-		            }
-		        }
-			}
-		}
-
-		.btnView {
-			display: block;
-			float: right;
-
-			width: 90px;
-			height: 25px;
-
-			text-align: center;
-
-			font-size: 13px;
-			line-height: 25px;
-		}
 	}
 
 	.bSimplyDescReviews {
@@ -527,5 +409,124 @@
 			    }
 			}
 		}
+	}
+}
+
+.bBtnLine {
+	display: none;
+
+	margin: 10px 0 0;
+
+	.btnBuy {
+		float: left;
+
+		width: 70px;
+		height: 25px;
+
+		&__eLink {
+			width: 79px;
+			height: 25px;
+
+			font-size: 13px;
+			line-height: 25px;
+
+			&.mBought {
+	            .box-shadow(none);
+	            border: 1px solid @typLightGray;
+	            background: @typLightGray;
+
+	            color: @typGray;
+	            cursor: default;
+
+	            &:hover {
+	                border: 1px solid @typLightGray;
+	                background: @typLightGray;
+	                color: @typGray;
+	            }
+	        }
+		}
+	}
+
+	.btnView {
+		display: block;
+		float: right;
+
+		width: 90px;
+		height: 25px;
+
+		text-align: center;
+
+		font-size: 13px;
+		line-height: 25px;
+	}
+}
+
+.bOptions {
+	float: right;
+
+	margin: 4px 0 0;
+	padding: 0 0 0 27px;
+
+	width: 55px;
+
+	background: url('@{base-url}/bCatalog/img/bOptions.png') no-repeat 0 0;
+
+	.bDecor {
+		border-bottom: 1px dotted;
+	}
+}
+
+
+.bOptionsSection {
+	.rounded(3px);
+	position: relative;
+
+	display: none;
+
+	margin: 12px 0 0;
+	padding: 5px;
+
+	border: 1px solid #e6e6e6;
+	background: #f6f6f6;
+
+	.bCorner {
+		position: absolute;
+		top: -10px;
+		right: 29px;
+		z-index: 2;
+
+		display: block;
+
+		width: 0;
+		height: 0;
+
+		border-right: 10px solid transparent;
+		border-bottom: 10px solid #f6f6f6;
+		border-left: 10px solid transparent;
+	}
+
+	.bCornerDark {
+		position: absolute;
+		top: -11px;
+		right: 28px;
+
+		display: block;
+
+		width: 0;
+		height: 0;
+
+		border-right: 11px solid transparent;
+		border-bottom: 11px solid #e6e6e6;
+		border-left: 11px solid transparent;
+
+	}
+}
+
+.bOptionsList {
+
+	&__eItem {
+		margin: 0 0 0 18px;
+
+		list-style-type: disc;
 	}
 }
