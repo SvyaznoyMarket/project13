@@ -706,6 +706,12 @@ return [
         'action'  => ['Tchibo\IndexAction', 'execute'],
     ],
 
+    // tchobo
+    'tchobo.category' => [
+        'pattern' => '/tchibo/{categoryToken}',
+        'action'  => ['Tchibo\CategoryAction', 'execute'],
+    ],
+
     // enterprize
     'enterprize' => [
         'pattern' => '/enterprize',
