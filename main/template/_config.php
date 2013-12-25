@@ -15,7 +15,6 @@ $config = array_merge([
     'routeUrl'              => $router->generate('route'),
     'f1Certificate'         => $appConfig->f1Certificate['enabled'],
     'coupon'                => $appConfig->coupon['enabled'],
-    'newOrder'              => $appConfig->order['newCreate'],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
 ], isset($config) ? (array)$config : []);
 ?>

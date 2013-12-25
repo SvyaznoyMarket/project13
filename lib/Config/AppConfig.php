@@ -434,7 +434,6 @@ class AppConfig {
         'cookieName'     => null,
         'sessionName'    => null,
         'enableMetaTag'  => null,
-        'newCreate'      => null,
         'maxSumOnline'   => null,
     ];
     /**

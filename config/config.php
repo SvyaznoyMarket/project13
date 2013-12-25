@@ -347,7 +347,6 @@ $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
 $c->order['maxSumOnline'] = 15000;
-$c->order['newCreate'] = true;
 $c->order['excludedError'] = [705, 708, 735, 759, 800];
 
 $c->order['addressAutocomplete'] = true;

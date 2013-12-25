@@ -443,7 +443,7 @@ return [
     ],
     'order' => [
         'pattern' => '/orders/new',
-        'action'  => ['Order\Action', 'create'],
+        'action'  => ['Order\NewAction', 'execute'],
     ],
     'order.create' => [
         'pattern' => '/orders/create',
