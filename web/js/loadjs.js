@@ -86,6 +86,7 @@
 		yandexMapUrl = '',
 		mustacheUrl = '',
 		historyUrl = '',
+		kladr = '',
 		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
 
 		debug = false,
@@ -312,7 +313,7 @@
 	yandexMapUrl = ( debug ) ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU&mode=release';
 	mustacheUrl = ( debug ) ? '/js/vendor/mustache.js' : '/js/prod/mustache.min.js';
 	historyUrl = ( debug ) ? '/js/vendor/history.js' : '/js/prod/history.min.js';
-
+	kladr = ( debug ) ? '/js/vendor/jquery.kladr.js' : '/js/prod/jquery.kladr.min.js';
 
 	/**
 	 * Загрузка скриптов по шаблону
@@ -481,6 +482,7 @@
 		'order.new': function() {
 			$LAB.queueScript( yandexMapUrl )
 				.queueScript( knockoutUrl )
+				.queueScript( kladr )
 				.queueWait( function() {
 					$LAB.script('jquery-plugins.min.js')
 						.script('JsHttpRequest.min.js')
