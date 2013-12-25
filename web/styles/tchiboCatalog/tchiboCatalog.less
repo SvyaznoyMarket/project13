@@ -1,4 +1,5 @@
 .tchiboCatalog {
+	margin: 10px 0 ;
 
 	.tchiboCatalogInner {
 		position: relative;
@@ -11,6 +12,13 @@
 				right: 0;
 			}
 		}
+
+		&.mBanner {
+
+			.tchiboCatalog__title {
+				top: 0;
+			}
+		}
 	}
 
 	&__img {
@@ -18,6 +26,7 @@
 	}
 
 	&__title {
+		background: url("@{base-url}/tchiboNavSlider/img/bgWhiteIe.png");
 		background: rgba(255, 255, 255, 0.8);
 		padding: 0 10px 0 10px;
 		width:100%;
@@ -35,6 +44,7 @@
 		position: absolute;
 		bottom: 44px;
 		right: -170px;
+		background: url("@{base-url}/tchiboNavSlider/img/bgBlueIe.png");
 		background: -moz-linear-gradient(270deg ,rgba(0, 41, 88, 0.44) 0% ,rgba(0, 41, 88, 0.75) 100%);
 		background: -ms-linear-gradient(270deg ,rgba(0, 41, 88, 0.44) 0% ,rgba(0, 41, 88, 0.75) 100%);
 		background: -o-linear-gradient(270deg ,rgba(0, 41, 88, 0.44) 0% ,rgba(0, 41, 88, 0.75) 100%);

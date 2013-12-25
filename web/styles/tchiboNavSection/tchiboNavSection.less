@@ -11,7 +11,7 @@
 		top: 0;
 		left: 0;
 		font-size: 24px;
-		background: rgba(255, 255, 255, 0.8);
+		background: url("@{base-url}/tchiboNavSlider/img/bgWhiteIe.png");
 		line-height: 24px;
 		padding: 10px 20px 10px 20px;
 		text-align: center;
@@ -23,6 +23,7 @@
 		bottom: 0;
 		left: 0;
 		padding: 0 0 8px;
+		background: url("@{base-url}/tchiboNavSlider/img/bgBlueIe.png");
 		background: -moz-linear-gradient(270deg ,rgba(0, 41, 88, 0.44) 0% ,rgba(0, 41, 88, 0.75) 100%);
 		background: -ms-linear-gradient(270deg ,rgba(0, 41, 88, 0.44) 0% ,rgba(0, 41, 88, 0.75) 100%);
 		background: -o-linear-gradient(270deg ,rgba(0, 41, 88, 0.44) 0% ,rgba(0, 41, 88, 0.75) 100%);
@@ -59,7 +60,7 @@
 			}
 
 			&.mActive {
-				background: rgba(255, 255, 255, 0.8);
+				background: url("@{base-url}/tchiboNavSlider/img/bgWhiteIe.png");
 				color: @black;
 			}
 		}
@@ -78,6 +79,7 @@
 			}
 
 			&__border {
+				border: 4px solid @white;
 				border: 4px solid rgba(255,255,255,0.5);
 				position: absolute;
 				top: 0;
@@ -86,5 +88,12 @@
 				height: 96%;
 			}
 		}
+	}
+}
+
+.lt-ie9 {
+
+	.itemHover {
+		.opacity(1);
 	}
 }

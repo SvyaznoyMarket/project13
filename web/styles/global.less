@@ -6,7 +6,7 @@
 /*--END---БАЗОВЫЕ СТИЛИ---*/
 
 /*---ОСНОВНЫЕ ПРАВИЛА---*/
-@import "main/common.less" all;
+@import "main/common.less";
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
 
 /*---ПРИМЕСИ---*/
@@ -21,13 +21,13 @@
 @import "main/fonts.less";
 /*---END----ШРИФТЫ---------*/
 
+
+
 /*------СТИЛИ ШАПКИ------*/
 @import "header/header.less" all;
 /*---END---СТИЛИ ШАПКИ---*/
 
-/*------СТИЛИ ШАПКИ------*/
-@import "brandMenu/brandMenu.less" all;
-/*---END---СТИЛИ ШАПКИ---*/
+
 
 /*------СТИЛИ ПОДВАЛА------*/
 @import "footer/footer.less" all;
@@ -35,55 +35,72 @@
 @import "footer/footer__order.less" all;
 /*---END---СТИЛИ ПОДВАЛА---*/
 
+
+
 /*---------КНОПКА НАВЕРХ----------*/
-@import "upper/upper.less";
+@import "upper/upper.less" all;
 /*---END----КНОПКА НАВЕРХ---------*/
 
+
+
 /*---------ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)----------*/
-@import "fixedTopBar/fixedTopBar.less";
+@import "fixedTopBar/fixedTopBar.less" all;
 
 // анимация количества товаров в корзине
-@import "fixedTopBar/fixedTopBarAnim.less";
+@import "fixedTopBar/fixedTopBarAnim.less" all;
 
 // выпадающие блоки из блока корзины и логина
-@import "fixedTopBar/fixedTopBarDd.less";
+@import "fixedTopBar/fixedTopBarDd.less" all;
 /*---END----ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)---------*/
 
+
+
 /*---------КОРЗИНА (СТАРАЯ ВЕРСТКА)----------*/
-@import "basket/basket.less";
+@import "basket/basket.less" all;
 /*---END----КОРЗИНА (СТАРАЯ ВЕРСТКА)---------*/
 
-/*---------ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)----------*/
-@import "user/user.less";
-/*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
+
 
 /*---------ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)----------*/
-@import "enterPrize/enterPrize.less";
+@import "user/user.less" all;
 /*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
 
-/*---------ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)----------*/
-@import "tchiboTitle/tchiboTitle.less";
-/*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
 
-/*---------ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)----------*/
-@import "tchiboNavSlider/tchiboNavSlider.less";
-/*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
 
-/*---------ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)----------*/
-@import "tchiboNavSection/tchiboNavSection.less";
-/*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
+/*---------Enter Prize----------*/
+@import "enterPrize/enterPrize.less" all;
+/*---END----Enter Prize---------*/
 
-/*---------ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)----------*/
-@import "tchiboCatalog/tchiboCatalog.less";
-/*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
 
-/*---------ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)----------*/
-@import "tchibo/tchiboCatalog.less";
-/*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
 
-/*---------ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)----------*/
-@import "tchiboProducts/tchiboProducts.less";
-/*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
+/*------TCHIBO - верхнее меню Чибо, под продуктовым меню------*/
+@import "tchiboMenu/tchiboMenu.less" all;
+/*---END---TCHIBO - верхнее меню Чибо, под продуктовым меню---*/
+
+/*---------TCHIBO - заголовок раздела----------*/
+@import "tchiboTitle/tchiboTitle.less" all;
+/*---END----TCHIBO - заголовок раздела---------*/
+
+/*---------TCHIBO - слайдер-меню разделов Чибо----------*/
+@import "tchiboNavSlider/tchiboNavSlider.less" all;
+/*---END----TCHIBO - слайдер-меню разделов Чибо---------*/
+
+/*---------TCHIBO - навигация по разделу Чибо----------*/
+@import "tchiboNavSection/tchiboNavSection.less" all;
+/*---END----TCHIBO - навигация по разделу Чибо---------*/
+
+/*---------TCHIBO - каталог разделов, баннеров, товаров Чибо----------*/
+@import "tchiboCatalog/tchiboCatalog.less" all;
+/*---END----TCHIBO - каталог разделов, баннеров, товаров Чибо---------*/
+
+/*---------TCHIBO - крутилка разделов Чибо на рутовой странице----------*/
+@import "tchibo/tchiboCatalog.less" all;
+/*---END----TCHIBO - крутилка разделов Чибо на рутовой странице---------*/
+
+/*---------TCHIBO - листинг Чибо----------*/
+@import "tchiboProducts/tchiboProducts.less" all;
+/*---END----TCHIBO - листинг Чибо---------*/
+
 
 
 //стили для фикса старых правил и классов, в последствии, при полном переходе на новую верстку удалить

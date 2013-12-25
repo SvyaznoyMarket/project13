@@ -80,12 +80,13 @@
 </div>
 <!-- /Header -->
 
-<div class="brandMenuWrap">
-    <div class="brandMenu">
-        <div class="brandLogo">Дом</div>
+<!-- Меню-слайдер подкатегорий, категории Чибо -->
+<div class="tchiboMenuWrap">
+    <div class="tchiboMenu">
+        <div class="tchiboLogo">Дом</div>
 
         <div class="slideCategory">
-            <div class="slideCategory__inner">
+            <div class="tdRelative">
                 <ul class="categoryList">
                     <li class="categoryList__item"><a class="categoryList__link" href="">Чистота сама по себе</a></li>
                     <li class="categoryList__item"><a class="categoryList__link" href="">Уход за одеждой и шитье</a></li>
@@ -96,10 +97,13 @@
                     <li class="categoryList__item"><a class="categoryList__link" href="">Чистота сама по себе</a></li>
                     <li class="categoryList__item"><a class="categoryList__link" href="">Уход за одеждой и шитье</a></li>
                 </ul>
+                <div class="sliderBtn mLeftBtn"><a class="sliderBtn__link" href=""></a></div>
             </div>
         </div>
+        <div class="sliderBtn mRightBtn"><a class="sliderBtn__link" href=""></a></div>
     </div>
 </div>
+<!-- /Меню-слайдер подкатегорий, категории Чибо -->
 
 <script id="userbar_cart_tmpl" type="text/html">
     <a href="<?=  $page->url('cart') ?>" class="fixedTopBar__cartTitle">

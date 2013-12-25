@@ -4,7 +4,11 @@ $f = function (
     \Model\Product\BasicEntity $product
 ) {
 ?>
-	    <div class="productInner__imgBox"><a class="productInner__imgLink" href=""><img class="productInner__img" src="http://fs05.enter.ru/1/1/500/32/251956.jpg" /></a></div>
+	    <div class="productInner__imgBox">
+	    	<a class="productInner__imgLink" href="">
+	    		<img class="productInner__img" src="http://fs05.enter.ru/1/1/500/32/251956.jpg" alt="" />
+	    	</a>
+	    </div><!--/ картинка продукта -->
 
 	    <div class="productInner__desc">
 	    	<div class="inner">
@@ -35,6 +39,6 @@ $f = function (
 				    <a class="btnView mBtnGrey" href="/product/household/zavarochniy-chaynik-s-sitechkom-bodum-chambord-1-l-2040101033246">Посмотреть</a>
 				</div>
 			</div>
-		</div>
+		</div><!--/ описание продукта -->
 <?
 }; return $f;
