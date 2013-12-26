@@ -13,7 +13,7 @@ class Action {
 
         $client = \App::coreClientV2();
         $responseData = ['success' => false];
-        $channelId = 1;
+        $channelId = (int)$request->get('channel', 1);
 
         try {
             $email = trim((string)$request->get('email'));
