@@ -61,7 +61,7 @@
 			// end of vars
 
 			for ( i = this.points.length - 1; i >= 0; i-- ) {
-                if (!latitude || !longitude) continue;
+                if (!this.points[i].latitude || !this.points[i].longitude) continue;
 				latitude  += this.points[i].latitude * 1;
 				longitude += this.points[i].longitude * 1;
 
