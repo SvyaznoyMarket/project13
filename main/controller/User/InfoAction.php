@@ -196,8 +196,14 @@ class InfoAction {
 
         $response = new \Http\JsonResponse($responseData);
 
-        if (false == $status){
-            $response->headers->clearCookieForDomains(\App::config()->subscribe['cookieName']);
+        if (false == $status) {
+            $domainParts = explode('.', \App::config()->mainHost);
+            $tld = array_pop($domainParts);
+            $domain = array_pop($domainParts);
+            $subdomain = array_pop($domainParts);
+
+            $response->headers->clearCookie(\App::config()->subscribe['cookieName'], '/', "$domain.$tld");
+            $response->headers->clearCookie(\App::config()->subscribe['cookieName'], '/', "$subdomain.$domain.$tld");
         } elseif ($cookie) {
             $response->headers->setCookie($cookie);
         }

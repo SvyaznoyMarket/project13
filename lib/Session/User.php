@@ -126,9 +126,17 @@ class User {
         $token = $this->getToken();
         \App::session()->remove($this->tokenName);
 
+        $domainParts = explode('.', \App::config()->mainHost);
+        $tld = array_pop($domainParts);
+        $domain = array_pop($domainParts);
+        $subdomain = array_pop($domainParts);
+
         if ($response) {
-            $response->headers->clearCookieForDomains(\App::config()->authToken['name']);
-            $response->headers->clearCookieForDomains(\App::config()->authToken['authorized_cookie']);
+            $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$domain.$tld");
+            $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$subdomain.$domain.$tld");
+
+            $response->headers->clearCookie(\App::config()->authToken['authorized_cookie'], '/', "$domain.$tld");
+            $response->headers->clearCookie(\App::config()->authToken['authorized_cookie'], '/', "$subdomain.$domain.$tld");
         }
 
         return $token;
