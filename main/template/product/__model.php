@@ -24,7 +24,14 @@ return function(
 
             <select class="bDescSelectItem__eSelect">
                 <? foreach ($property->getOption() as $option): ?>
-                    <option class="bDescSelectItem__eOption" value="<?= $option->getHumanizedName() ?>" data-url="<?= $option->getProduct()->getLink() ?>"<? if ($option->getValue() == $productAttribute->getValue()): ?> selected="selected"<? endif ?>><?= $option->getHumanizedName() ?></option>
+                    <option class="bDescSelectItem__eOption"
+                            value="<?= $option->getHumanizedName() ?>"
+                            data-url="<?= $option->getProduct()->getLink() ?>"<?
+                            if ($option->getValue() == $productAttribute->getStringValue()):
+                                ?> selected="selected"<? endif
+                            ?>>
+                        <?= $option->getHumanizedName() ?>
+                    </option>
                 <? endforeach ?>
             </select>
         </div>
