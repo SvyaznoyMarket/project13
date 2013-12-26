@@ -12,7 +12,7 @@ class CategoryAction {
 
         /** @var $grid \Model\GridCell\Entity[] */
         $gridCells = [];
-        foreach ((array)\App::dataStoreClient()->query('/grid/3646.json') as $item) {
+        foreach ((array)\App::dataStoreClient()->query('/grid/3577.json') as $item) {
             $gridCell = new \Model\GridCell\Entity($item);
             $gridCells[] = $gridCell;
 

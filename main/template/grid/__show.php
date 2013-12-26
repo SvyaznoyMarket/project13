@@ -12,7 +12,9 @@ $f = function(
 ) {
     $step = 60;
     $offset = 20;
-    $contentHeight = 0;
+
+    $showAction = new \View\Product\ShowAction();
+    $cartButtonAction = new \View\Cart\ProductButtonAction();
 ?>
 
 <? foreach ($gridCells as $cell): ?>
@@ -27,7 +29,14 @@ $f = function(
         $product = (isset($productsById[$cell->getId()]) ? $productsById[$cell->getId()] : null);
         if (!$product) continue;
     ?>
-        <?= $helper->render('product/show/__grid', ['product' => $product]) ?>
+        <?= $helper->renderWithMustache('product/show/__grid', $showAction->execute(
+            $helper,
+            $product,
+            [],
+            null,
+            false,
+            $cartButtonAction
+        )) ?>
     <? elseif (\Model\GridCell\Entity::TYPE_IMAGE === $cell->getType()): ?>
     <?
         $content = $cell->getContent();
