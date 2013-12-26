@@ -1,0 +1,34 @@
+.header {
+
+	.topbar {
+
+		.menuItem {
+			background: url("@{base-url}/header/img/bgTrans.gif") repeat-y 100% 0;
+			float: right;
+			margin: -10px 0 0;
+			height: 49px;
+
+			&__link {
+				color: @white;
+				background: url("@{base-url}/header/img/bgTopMenuItem.gif") @black no-repeat 0 0;
+				display: block;
+				height: 27px;
+				font: normal 11px/27px 'Enter Type';
+				padding: 0 15px 0 12px;
+				text-transform: uppercase;
+				margin: 10px 0 0;
+
+				&:hover {
+					text-decoration: none;
+				}
+			}
+
+			&__text {
+				background-position: 0 50%;
+				background-repeat: no-repeat;
+				padding-left: 20px;
+				display: block;
+			}
+		}
+	}
+}

@@ -700,6 +700,18 @@ return [
         'method'  => ['POST'],
     ],
 
+    // tchobo
+    'tchobo' => [
+        'pattern' => '/tchibo',
+        'action'  => ['Tchibo\IndexAction', 'execute'],
+    ],
+
+    // tchobo
+    'tchobo.category' => [
+        'pattern' => '/tchibo/{categoryToken}',
+        'action'  => ['Tchibo\CategoryAction', 'execute'],
+    ],
+
     // enterprize
     'enterprize' => [
         'pattern' => '/enterprize',

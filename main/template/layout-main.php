@@ -49,7 +49,9 @@
             <div class="adfoxWrapper" id="adfox980"></div>
         <? endif ?>
 
-        <?= $page->slotHeader() ?><!--/ Шапка -->
+        <header class="header">
+            <?= $page->slotHeader() ?>
+        </header><!--/ Шапка-->
 
         <?= $page->slotContentHead() ?>
 
