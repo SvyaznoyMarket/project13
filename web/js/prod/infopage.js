@@ -120,10 +120,14 @@
  
  
 $(document).ready(function(){
+	var
+		subscribeBtn = $('.subscribe-form__btn');
 
-	if ( $('.subscribe-form__btn').length ) {
-		var input = $('.subscribe-form__email'),
-			form = $('.subscribe-form');
+	if ( subscribeBtn.length ) {
+		var
+			form = $('.subscribe-form'),
+			input = $('.subscribe-form__email') || form.find('input[name="email"]'),
+			channel = form.find('input[name="channel"]').val() || 1;
 		// end of vars
 		
 		var subscribing = function subscribing() {
@@ -132,14 +136,14 @@ $(document).ready(function(){
 				utm_source = document.location.search;
 			// end of vars
 
-			if ( email.search('@') !== -1 ) {
-				$.post(url, {email: email}, function(res){
+			if ( email && email.search('@') !== -1 ) {
+				$.post(url, {email: email, channel: channel}, function(res){
 					if( !res.success ) {
 						return false;
 					}
 
 					form.html('<div class="subscribe-form__title">Спасибо! подтверждение подписки отправлено на указанный e-mail</div>');
-					window.docCookies.setItem('subscribed', 1, 157680000, '/');
+					window.docCookies.setItem('subscribed', channel, 157680000, '/');
 
 					// form.after('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
 
@@ -154,7 +158,7 @@ $(document).ready(function(){
 			return false;
 		};
 
-		$('.subscribe-form__btn').bind('click', subscribing);
+		subscribeBtn.bind('click', subscribing);
 
 	}
 
