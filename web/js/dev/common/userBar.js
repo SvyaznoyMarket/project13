@@ -216,6 +216,21 @@
 			data.showTransparent = false;
 
 			if ( !(data && data.quantity && data.sum ) ) {
+				console.warn('data and data.quantuty and data.sum not true');
+
+				var
+					template = $('#userbar_cart_empty_tmpl');
+					partials = template.data('partial'),
+				// end of vars
+
+				html = Mustache.render(template.html(), data, partials);
+				html = Mustache.render(template.html(), data, partials);
+
+				cartWrap.addClass('mEmpty');
+				cartWrapStatic.addClass('mEmpty');
+				cartWrapStatic.html(html);
+				cartWrap.html(html);
+
 				return;
 			}
 
@@ -299,6 +314,38 @@
 		},
 
 		/**
+		 * Удаление товара из корзины
+		 */
+		deleteProductHandler = function deleteProductHandler() {
+			console.log('deleteProductHandler click!');
+
+			var
+				btn = $(this),
+				deleteUrl = btn.attr('href');
+			// end of vars
+			
+			var
+				authFromServer = function authFromServer( res ) {
+					if ( !res.success ) {
+						console.warn('удаление не получилось :(');
+
+						return;
+					}
+
+					utils.blackBox.basket().deleteItem(res);
+				};
+			// end of functions
+
+			$.ajax({
+				type: 'GET',
+				url: deleteUrl,
+				success: authFromServer
+			});
+
+			return false;
+		},
+
+		/**
 		 * Обработчик клика по товару из списка рекомендаций
 		 */
 		upsaleProductClick = function upsaleProductClick() {
@@ -331,6 +378,10 @@
 	body.on('basketUpdate', updateBasketInfo);
 	body.on('addtocart', showBuyInfo);
 	body.on('getupsale', showUpsell);
+
+
+	userBarFixed.on('click', '.jsCartDelete', deleteProductHandler);
+	userbarStatic.on('click', '.jsCartDelete', deleteProductHandler);
 
 
 	if ( userBarFixed.length ) {

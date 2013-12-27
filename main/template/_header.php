@@ -42,7 +42,6 @@
         <a class="headerShopLink" href="<?= $page->url('shop') ?>">Магазины Enter</a>
         <div class="bSubscribeLightboxPopupNotNow mFl"></div>
     </div>
-
     <noindex>
         <div class="fixedTopBar mStatic <? if ('homepage' == \App::request()->attributes->get('route')):?> mHomepage<? endif ?>">
             <div class="fixedTopBar__cart mEmpty">
@@ -66,10 +65,6 @@
             </div>
         </div>
     </noindex>
-
-    <div class="menuItem">
-        <a href="" class="menuItem__link"><span style="background-image: url(/styles/header/img/bgLicvidaciya.gif)" class="menuItem__text">Ликвидация</span></a>
-    </div>
 </div>
 <!-- /Topbar -->
 
@@ -80,30 +75,11 @@
 </div>
 <!-- /Header -->
 
-<!-- Меню-слайдер подкатегорий, категории Чибо -->
-<div class="tchiboMenuWrap">
-    <div class="tchiboMenu">
-        <div class="tchiboLogo">Дом</div>
-
-        <div class="slideCategory">
-            <div class="tdRelative">
-                <ul class="categoryList">
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Чистота сама по себе</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Уход за одеждой и шитье</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Дизайн для ванной и душа</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Кухни</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Уход за одеждой и шитье</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Идеальный завтрак</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Чистота сама по себе</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Уход за одеждой и шитье</a></li>
-                </ul>
-                <div class="sliderBtn mLeftBtn"><a class="sliderBtn__link" href=""></a></div>
-            </div>
-        </div>
-        <div class="sliderBtn mRightBtn"><a class="sliderBtn__link" href=""></a></div>
+<script id="userbar_cart_empty_tmpl" type="text/html">
+    <div class="fixedTopBar__cart mEmpty">
+        <a href="/cart" class="fixedTopBar__cartTitle">Корзина</a>
     </div>
-</div>
-<!-- /Меню-слайдер подкатегорий, категории Чибо -->
+</script>
 
 <script id="userbar_cart_tmpl" type="text/html">
     <a href="<?=  $page->url('cart') ?>" class="fixedTopBar__cartTitle">
@@ -122,7 +98,7 @@
                         <div class="cartList__itemInfo">
                             <span class="price">{{formattedPrice}} &nbsp;<span class="rubl">p</span></span>
                             <span class="quan">{{quantity}} шт.</span>
-                            <a href="{{deleteUrl}}" class="del">удалить</a>
+                            <a href="{{deleteUrl}}" class="del jsCartDelete">удалить</a>
                         </div>
                     </li>
                 {{/products}}
@@ -151,7 +127,7 @@
                     <div class="cartList__itemInfo">
                         <span class="price">{{formattedPrice}} &nbsp;<span class="rubl">p</span></span>
                         <span class="quan">{{quantity}} шт.</span>
-                        <a href="{{deleteUrl}}" class="del">удалить</a>
+                        <a href="{{deleteUrl}}" class="del jsCartDelete">удалить</a>
                     </div>
                 </li>
             {{/products}}
