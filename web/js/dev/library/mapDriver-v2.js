@@ -83,6 +83,7 @@
 			// end of vars
 
 			for ( i = this.points.length - 1; i >= 0; i-- ) {
+                if (!this.points[i].latitude || !this.points[i].longitude) continue;
 				latitude  += this.points[i].latitude * 1;
 				longitude += this.points[i].longitude * 1;
 
@@ -107,6 +108,7 @@
 
 			for ( i = this.points.length - 1; i >= 0; i--) {
 				currPoint = this.points[i];
+                if (!currPoint.latitude || !currPoint.longitude) continue;
 
 				tmpPlacemark = new ymaps.Placemark(
 					// координаты точки
