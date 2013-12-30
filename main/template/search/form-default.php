@@ -23,7 +23,7 @@ foreach ($sHints as $key => $item) {
         continue;
     }
     //$sHints[$key] = '<a href="/search?q=' . $item . '" title="Искать...">' . $item . '</a>';
-    $sHints[$key] = '<span class="sHint_value" ' . $item . '>' . $item . '</span>';
+    $sHints[$key] = '<span class="sHint_value">' . $item . '</span>';
 }
 
 ?>
