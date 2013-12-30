@@ -13,6 +13,15 @@
 <?
 $cart = $user->getCart();
 $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minCreditPrice']) && \App::config()->payment['creditEnabled'] && !$user->getRegion()->getHasTransportCompany();
+
+$backLink = $page->url('homepage');
+foreach (array_reverse($products) as $product) {
+    /** @var $product \Model\Product\Entity */
+    if ($product->getMainCategory() instanceof \Model\Product\Category\Entity) {
+        $backLink = $product->getMainCategory()->getLink();
+        break;
+    }
+}
 ?>
 
 <? if (\App::config()->adFox['enabled']): ?>
@@ -92,7 +101,7 @@ $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minC
     </div>
 </div>
 
-<div class="backShop fl mNoPrint">&lt; <a class="underline" href="/">Вернуться к покупкам</a></div>
+<div class="backShop fl mNoPrint">&lt; <a class="underline" href="<?= $backLink ?>">Вернуться к покупкам</a></div>
 
 <div class="basketBuy mNoPrint">
     <a href="<?= $page->url('order') ?>" class="bBigOrangeButton">Оформить заказ</a>
