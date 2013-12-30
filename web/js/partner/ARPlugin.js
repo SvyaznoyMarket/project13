@@ -105,7 +105,7 @@ function check_load_ar_pandra() {
 	} else {
 		setTimeout( check_load_ar_pandra, 11 );
 	}
-};
+}
 function on_complete_loading_ar_pandra() {
 	if ( type_ar_pandra == type_advanced_ar_pandra ) {
 		load_xml_ar_pandra();
