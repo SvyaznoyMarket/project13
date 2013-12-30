@@ -36,7 +36,7 @@
 				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
 			// end of vars
 			
-			if ( typeof(_gaq) !== 'undefined' ) {	
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Search', type, link]);
 			}
 		},
@@ -243,6 +243,9 @@
 				searchValue = searchInput.val()*/;
 			//if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
 			searchInput.val(hintValue + ' ').focus();
+			if ( typeof(_gaq) !== 'undefined' ) {
+				_gaq.push(['_trackEvent', 'tooltip', hintValue]);
+			}
 			loadResponse();
 		};
 	// end of functions
