@@ -4,15 +4,51 @@ namespace Controller\Tchibo;
 
 class CategoryAction {
 
-    public function execute(\Http\Request $request) {
+    public function execute(\Http\Request $request, $categoryPath) {
         \App::logger()->debug('Exec ' . __METHOD__);
+
+        $categoryToken = explode('/', $categoryPath);
+        $categoryToken = end($categoryToken);
+
+        /** @var $category \Model\Product\Category\Entity */
+        $category = null;
+        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, \App::user()->getRegion(), function($data) use (&$category) {
+            $data = reset($data);
+            if ((bool)$data) {
+                $category = new \Model\Product\Category\Entity($data);
+            }
+        });
+        \App::coreClientV2()->execute();
+
+        if (!$category) {
+            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
+        }
 
         /** @var $productsById \Model\Product\Entity[] */
         $productsById = [];
 
+        $result = [];
+        \App::shopScriptClient()->addQuery(
+            'category/get-meta',
+            [
+                'slug' => [$category->getToken()],
+            ],
+            [],
+            function($data) use (&$result) {
+                if (is_array($data)) {
+                    $data = reset($data);
+                }
+                if (isset($data['grid_data']) && is_array($data['grid_data'])) {
+                    $result = $data['grid_data'];
+                }
+            }
+        );
+        \App::shopScriptClient()->execute();
+
         /** @var $grid \Model\GridCell\Entity[] */
         $gridCells = [];
-        foreach ((array)\App::dataStoreClient()->query('/grid/3577.json') as $item) {
+        foreach ($result as $item) {
+            if (!is_array($item)) continue;
             $gridCell = new \Model\GridCell\Entity($item);
             $gridCells[] = $gridCell;
 

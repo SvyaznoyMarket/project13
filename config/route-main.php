@@ -708,7 +708,7 @@ return [
 
     // tchobo
     'tchobo.category' => [
-        'pattern' => '/tchibo/{categoryToken}',
+        'pattern' => '/tchibo/{categoryPath}',
         'action'  => ['Tchibo\CategoryAction', 'execute'],
     ],
 
