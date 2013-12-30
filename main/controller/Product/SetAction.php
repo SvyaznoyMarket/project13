@@ -43,12 +43,13 @@ class SetAction {
                 $products[] = new \Model\Product\Entity($item);
                 //$productsForRetargeting[] = new \Model\Product\Entity($item);
 
+                /* // SITE-2886 — В подборках не выводить список категорий товаров
                 if (isset($item['category']) && is_array($item['category'])) {
                     $categoryItem = array_pop($item['category']);
                     if (is_array($categoryItem)) {
                         $categoriesById[$categoryItem['id']] = new \Model\Product\Category\Entity($categoryItem);
                     }
-                }
+                }*/
             }
         });
 
