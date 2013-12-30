@@ -13,7 +13,10 @@ class CategoryAction {
         /** @var $category \Model\Product\Category\Entity */
         $category = null;
         \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, \App::user()->getRegion(), function($data) use (&$category) {
-            $category = new \Model\Product\Category\Entity(reset($data));
+            $data = reset($data);
+            if ((bool)$data) {
+                $category = new \Model\Product\Category\Entity($data);
+            }
         });
         \App::coreClientV2()->execute();
 
@@ -45,6 +48,7 @@ class CategoryAction {
         /** @var $grid \Model\GridCell\Entity[] */
         $gridCells = [];
         foreach ($result as $item) {
+            if (!is_array($item)) continue;
             $gridCell = new \Model\GridCell\Entity($item);
             $gridCells[] = $gridCell;
 
