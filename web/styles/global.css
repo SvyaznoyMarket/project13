@@ -1670,6 +1670,9 @@ img[height="0"] {
     width: 700px;
     margin: 0 auto;
   }
+  .ddBlock {
+    display: block;
+  }
 }
 /*---END----ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)---------*/
 /*---------КОРЗИНА (СТАРАЯ ВЕРСТКА)----------*/
@@ -2401,8 +2404,23 @@ img[height="0"] {
   }
   .tchiboCatalog .tchiboCatalogInner {
     position: relative;
-    width: 300px;
     overflow: hidden;
+    float: left;
+    margin-bottom: 10px;
+  }
+  .tchiboCatalog .tchiboCatalogInner.m300 {
+    width: 300px;
+    margin-right: 20px;
+  }
+  .tchiboCatalog .tchiboCatalogInner.m300:nth-child(3n) {
+    margin-right: 0;
+  }
+  .tchiboCatalog .tchiboCatalogInner.m460 {
+    width: 460px;
+    margin-right: 20px;
+  }
+  .tchiboCatalog .tchiboCatalogInner.mLast {
+    margin-right: 0;
   }
   .tchiboCatalog .tchiboCatalogInner:hover .tchiboCatalog__list {
     right: 0;

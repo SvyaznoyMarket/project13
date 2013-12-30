@@ -4009,6 +4009,38 @@ $(document).ready(function() {
 		},
 
 		/**
+		 * Удаление товара из корзины
+		 */
+		deleteProductHandler = function deleteProductHandler() {
+			console.log('deleteProductHandler click!');
+
+			var
+				btn = $(this),
+				deleteUrl = btn.attr('href');
+			// end of vars
+			
+			var
+				authFromServer = function authFromServer( res ) {
+					if ( !res.success ) {
+						console.warn('удаление не получилось :(');
+
+						return;
+					}
+
+					utils.blackBox.basket().deleteItem(res);
+				};
+			// end of functions
+
+			$.ajax({
+				type: 'GET',
+				url: deleteUrl,
+				success: authFromServer
+			});
+
+			return false;
+		},
+
+		/**
 		 * Обновление данных о корзине
 		 * WARNING! перевести на Mustache
 		 * 
@@ -4069,6 +4101,7 @@ $(document).ready(function() {
 			cartWrap.removeClass('mEmpty');
 			cartWrapStatic.html(html);
 			cartWrap.html(html);
+			
 		},
 
 		/**
@@ -4129,38 +4162,6 @@ $(document).ready(function() {
 				url: upsale.url,
 				success: responseFromServer
 			});
-		},
-
-		/**
-		 * Удаление товара из корзины
-		 */
-		deleteProductHandler = function deleteProductHandler() {
-			console.log('deleteProductHandler click!');
-
-			var
-				btn = $(this),
-				deleteUrl = btn.attr('href');
-			// end of vars
-			
-			var
-				authFromServer = function authFromServer( res ) {
-					if ( !res.success ) {
-						console.warn('удаление не получилось :(');
-
-						return;
-					}
-
-					utils.blackBox.basket().deleteItem(res);
-				};
-			// end of functions
-
-			$.ajax({
-				type: 'GET',
-				url: deleteUrl,
-				success: authFromServer
-			});
-
-			return false;
 		},
 
 		/**

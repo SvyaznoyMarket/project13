@@ -3,8 +3,27 @@
 
 	.tchiboCatalogInner {
 		position: relative;
-		width: 300px;
 		overflow: hidden;
+		float: left;
+		margin-bottom: 10px;
+
+		&.m300 {
+			width: 300px;
+			margin-right: 20px;
+
+			&:nth-child(3n)  {
+				margin-right: 0;
+			}
+		}
+
+		&.m460 {
+			width: 460px;
+			margin-right: 20px;
+		}
+
+		&.mLast {
+			margin-right: 0;
+		}
 
 		&:hover {
 

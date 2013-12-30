@@ -13,42 +13,42 @@
 				<ul class="tchiboNavSlider__list">
 					<li class="item">
 						<a class="link" href="">
-							<img class="img" src="/styles/tchibo/img/ImgCat.png" />
+							<img class="img" src="/styles/tchiboCatalog/img/manMini.jpg" />
 							<span class="title">Мужчины</span>
 						</a>
 					</li>
 
 					<li class="item">
 						<a class="link" href="">
-							<img class="img" src="/styles/tchibo/img/ImgCat.png" />
+							<img class="img" src="/styles/tchiboCatalog/img/womanMini.jpg" />
 							<span class="title">Женщины</span>
 						</a>
 					</li>
 
 					<li class="item">
 						<a class="link" href="">
-							<img class="img" src="/styles/tchibo/img/ImgCat.png" />
+							<img class="img" src="/styles/tchiboCatalog/img/kidsMini.jpg" />
 							<span class="title">Дети</span>
 						</a>
 					</li>
 
 					<li class="item">
 						<a class="link" href="">
-							<img class="img" src="/styles/tchibo/img/ImgCat.png" />
+							<img class="img" src="/styles/tchiboCatalog/img/homeMini.jpg" />
 							<span class="title">Дом</span>
 						</a>
 					</li>
 
 					<li class="item">
 						<a class="link" href="">
-							<img class="img" src="/styles/tchibo/img/ImgCat.png" />
+							<img class="img" src="/styles/tchiboCatalog/img/sportMini.jpg" />
 							<span class="title">Спорт</span>
 						</a>
 					</li>
 
 					<li class="item">
 						<a class="link" href="">
-							<img class="img" src="/styles/tchibo/img/ImgCat.png" />
+							<img class="img" src="/styles/tchiboCatalog/img/cofeeMini.jpg" />
 							<span class="title">Кофе</span>
 						</a>
 					</li>
@@ -74,10 +74,10 @@
 						</a>
 					</li>
 				</ul>
-				<div class="sliderBtn mLeftBtn"><a class="sliderBtn__link" href=""></a></div><!--/ кнопка прокрутки влево -->
+				<!--div class="sliderBtn mLeftBtn"><a class="sliderBtn__link" href=""></a></div--><!--/ кнопка прокрутки влево -->
 			</div>
 		</div>
-		<div class="sliderBtn mRightBtn"><a class="sliderBtn__link" href=""></a></div><!--/ кнопка прокрутки влево -->
+		<!--div class="sliderBtn mRightBtn"><a class="sliderBtn__link" href=""></a></div--><!--/ кнопка прокрутки влево -->
 	</div>
 </div>
 <!--/ TCHIBO - слайдер-меню разделов Чибо -->
@@ -126,9 +126,9 @@
 <!--/ TCHIBO - крутилка разделов Чибо на рутовой странице -->
 
 <!--TCHIBO - каталог разделов, баннеров, товаров Чибо -->
-<div class="tchiboCatalog">	
-	<div class="tchiboCatalogInner">
-		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/tchiboCatalog.jpg" /></a>
+<div class="tchiboCatalog clearfix">	
+	<div class="tchiboCatalogInner m300">
+		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/man.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Мужчины</a>
 
@@ -142,8 +142,68 @@
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
+	<div class="tchiboCatalogInner m300">
+		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/woman.jpg" /></a>
+
+		<a href="" class="tchiboCatalog__title">Женщины</a>
+
+		<ul class="tchiboCatalog__list">
+			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
+			<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
+			<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
+			<li class="item"><a class="link" href="">100% натуральное</a></li>
+			<li class="item"><a class="link" href="">Ещё коллекция</a></li>
+			<li class="item"><a class="link" href="">Мужской сезон</a></li>
+		</ul><!--/ список подкатегории -->
+	</div><!--/ категория -->
+
+	<div class="tchiboCatalogInner m300 mLast">
+		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/kids.jpg" /></a>
+
+		<a href="" class="tchiboCatalog__title">Дети</a>
+
+		<ul class="tchiboCatalog__list">
+			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
+			<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
+			<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
+			<li class="item"><a class="link" href="">100% натуральное</a></li>
+			<li class="item"><a class="link" href="">Ещё коллекция</a></li>
+			<li class="item"><a class="link" href="">Мужской сезон</a></li>
+		</ul><!--/ список подкатегории -->
+	</div><!--/ категория -->
+
+	<div class="tchiboCatalogInner m460">
+		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/home.jpg" /></a>
+
+		<a href="" class="tchiboCatalog__title">Дом</a>
+
+		<ul class="tchiboCatalog__list">
+			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
+			<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
+			<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
+			<li class="item"><a class="link" href="">100% натуральное</a></li>
+			<li class="item"><a class="link" href="">Ещё коллекция</a></li>
+			<li class="item"><a class="link" href="">Мужской сезон</a></li>
+		</ul><!--/ список подкатегории -->
+	</div><!--/ категория -->
+
+	<div class="tchiboCatalogInner m460 mLast">
+		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/sport.jpg" /></a>
+
+		<a href="" class="tchiboCatalog__title">Спорт</a>
+
+		<ul class="tchiboCatalog__list">
+			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
+			<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
+			<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
+			<li class="item"><a class="link" href="">100% натуральное</a></li>
+			<li class="item"><a class="link" href="">Ещё коллекция</a></li>
+			<li class="item"><a class="link" href="">Мужской сезон</a></li>
+		</ul><!--/ список подкатегории -->
+	</div><!--/ категория -->
+
 	<div class="tchiboCatalogInner mBanner">
-		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/tchiboCatalog.jpg" /></a>
+		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/cofee.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Баннер</a>
 	</div> <!--/ вывод баннера или категории без списка подкатегорий и верхней плашкой-заголовком -->
