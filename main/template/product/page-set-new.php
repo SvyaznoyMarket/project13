@@ -6,18 +6,19 @@
  */
 
 $helper = new \Helper\TemplateHelper();
+/* // SITE-2886 — В подборках не выводить список категорий товаров
 $categoriesLinks = [];
 
 // подкатегории:
 foreach ( $categoriesById as $subCategory ) {
-    /** @var $subCategory \Model\Product\Category\Entity */
+    // @var $subCategory \Model\Product\Category\Entity
     $categoriesLinks[] = [
         'name'      => $subCategory->getName(),
         'url'       => $page->url('product.category', ['categoryPath' => $subCategory->getPath()]),
         'image'     => $subCategory->getImageUrl(),
         //'active'    => false,
     ];
-}
+}*/
 
 ?>
 <div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
@@ -26,11 +27,10 @@ foreach ( $categoriesById as $subCategory ) {
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
     <? endif */?>
 
-    <p class="bTitlePage">Похожие товары можно найти в категориях:</p>
-
-    <? if ( !empty($categoriesLinks) ) {
-        echo $helper->renderWithMustache('product-category/_listInFilter', ['links' => $categoriesLinks]); // категории
-    } ?>
+    <? /*if ( !empty($categoriesLinks) ) { ?>
+        <p class="bTitlePage">Похожие товары можно найти в категориях:</p>
+        <? echo $helper->renderWithMustache('product-category/_listInFilter', ['links' => $categoriesLinks]); // категории ?>
+    <? }*/ ?>
 
 
     <? if (!empty($pageTitle)): ?>
