@@ -6,11 +6,16 @@
 
 ;(function( ENTER ){
 	var
+		config = $('#page-config').data('value'),
+
 		container = $('.jsDeliveryAddress'),
 		data = container.data('value'),
 
-		token = '52b04de731608f2773000000',
-		key = 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b',
+		active = config.addressAutocomplete,
+
+		token = data.kladr ? data.kladr.token : null,
+		key = data.kladr ? data.kladr.key : null,
+		limit = data.kladr ? data.kladr.itemLimit : 6,
 
 		street = container.find('#order_address_street'),
 		building = container.find('#order_address_building'),
@@ -19,63 +24,13 @@
 
 		error,
 
-		limit = 6,
-
 		map = null,
-		placemark = null,
 		map_created = false,
 
-		cityId,
 		cityName = data.regionName;
 	// end of vars
 
 	var
-		/**
-		 * Формируем подписи в autocomplete
-		 */
-		labelFormat = function( obj, query ) {
-			var
-				label = '',
-				name = obj.name.toLowerCase(),
-				start,
-
-				k,
-				parent;
-			// end of vars
-
-			query = query.toLowerCase();
-
-			start = name.indexOf(query);
-			start = start > 0 ? start : 0;
-
-			if ( obj.typeShort ) {
-				label += '<span class="ac-s2">' + obj.typeShort + '. ' + '</span>';
-			}
-
-			if ( query.length < obj.name.length ) {
-				label += '<span class="ac-s2">' + obj.name.substr(0, start) + '</span>';
-				label += '<span class="ac-s">' + obj.name.substr(start, query.length) + '</span>';
-				label += '<span class="ac-s2">' + obj.name.substr(start+query.length, obj.name.length-query.length-start) + '</span>';
-			} else {
-				label += '<span class="ac-s">' + obj.name + '</span>';
-			}
-
-			if ( obj.parents ) {
-				for( k = obj.parents.length-1; k>-1; k-- ) {
-					parent = obj.parents[k];
-					if ( parent.name ) {
-						if (label) {
-							label += '<span class="ac-st">, </span>';
-						}
-						label += '<span class="ac-st">' + parent.name + ' ' + parent.typeShort + '.</span>';
-					}
-				}
-			}
-
-			return label;
-		},
-
-
 		/**
 		 * Обновляем карту
  		 */
@@ -101,8 +56,8 @@
 
 			if ( name ) {
 				if ( address ) {
-                    address += ', ';
-                }
+					address += ', ';
+				}
 
 				address += type + ' ' + name;
 				zoom = 12;
@@ -118,15 +73,15 @@
 				name = obj.name;
 				type = obj.type + '.';
 			}
-            else if ( value ) {
+			else if ( value ) {
 				name = value;
 				type = 'улица';
 			}
 
 			if ( name ) {
 				if ( address ) {
-                    address += ', ';
-                }
+					address += ', ';
+				}
 
 				address += type + ' ' + name;
 				zoom = 14;
@@ -142,15 +97,15 @@
 				name = obj.name;
 				type = 'дом';
 			}
-            else if ( value ) {
+			else if ( value ) {
 				name = value;
 				type = 'дом';
 			}
 
 			if ( name ) {
 				if ( address ) {
-                    address += ', ';
-                }
+					address += ', ';
+				}
 
 				address += type + ' ' + name;
 				zoom = 16;
@@ -168,8 +123,8 @@
 
 			if ( name ) {
 				if ( address ) {
-                    address += ', ';
-                }
+					address += ', ';
+				}
 
 				address += type + ' ' + name;
 				zoom = 16;
@@ -198,7 +153,9 @@
 					map._showMarkers();
 					map.mapWS.setCenter(position, zoom);
 
-					metroClosest(latitude, longitude);
+					if ( metro.length ) {
+						metroClosest(latitude, longitude);
+					}
 				});
 			}
 		},
@@ -297,8 +254,6 @@
 							return;
 						}
 
-						cityId = objs[0].id;
-
 						street.kladr( 'parentType', $.kladr.type.city );
 						street.kladr( 'parentId', objs[0].id );
 						building.kladr( 'parentType', $.kladr.type.city );
@@ -315,26 +270,52 @@
 					token: token,
 					key: key,
 					type: $.kladr.type.street,
-					labelFormat: labelFormat,
 					verify: true,
 					limit: limit,
-					select: function( obj ) {
-						removeErrors();
-						building.kladr( 'parentType', $.kladr.type.street );
-						building.kladr( 'parentId', obj.id );
-						mapUpdate();
-					},
-					check: function( obj ) {
-						if ( !obj ) {
-							showError('Не нашли ваш адрес на карте.<br />Уточните');
+					source: function( query ) {
+						$.kladr.api(
+							{
+								token: street.kladr('token'),
+								key: street.kladr('key'),
+								type: street.kladr('type'),
+								name: query,
+								parentType: street.kladr('parentType'),
+								parentId: street.kladr('parentId'),
+								limit: street.kladr('limit')
+							},
+							function( objs ){
+								var
+									items = [],
+									i,
+									obj;
+								// end of vars
 
-							return;
-						}
+								if ( !objs.length ) {
+									showError('Не нашли ваш адрес на карте.<br />Уточните');
 
-						building.kladr( 'parentType', $.kladr.type.street );
-						building.kladr( 'parentId', obj.id );
+									return;
+								}
 
-						mapUpdate();
+								for ( i in objs ) {
+									obj = objs[i];
+									obj.label = obj.typeShort + '. ' + obj.name;
+									items.push(obj);
+								}
+
+								street.autocomplete({
+									source: items,
+									appendTo: '.jsInputStreet',
+									minLength: 2,
+									select : function( event, ui ) {
+										removeErrors();
+										street.val(ui.item.name);
+										building.kladr( 'parentType', $.kladr.type.street );
+										building.kladr( 'parentId', ui.item.id );
+										mapUpdate();
+									}
+								});
+							}
+						);
 					}
 				});
 			},
@@ -347,21 +328,50 @@
 					token: token,
 					key: key,
 					type: $.kladr.type.building,
-					labelFormat: labelFormat,
 					verify: true,
 					limit: limit,
-					select: function( obj ) {
-						removeErrors();
-						mapUpdate();
-					},
-					check: function( obj ) {
-						if ( !obj ) {
-							showError('Не нашли ваш адрес на карте.<br />Уточните');
+					source: function( query ) {
+						$.kladr.api(
+							{
+								token: building.kladr('token'),
+								key: building.kladr('key'),
+								type: building.kladr('type'),
+								name: query,
+								parentType: building.kladr('parentType'),
+								parentId: building.kladr('parentId'),
+								limit: building.kladr('limit')
+							},
+							function( objs ){
+								var
+									items = [],
+									i,
+									obj;
+								// end of vars
 
-							return;
-						}
+								if ( !objs.length ) {
+									showError('Не нашли ваш адрес на карте.<br />Уточните');
 
-						mapUpdate();
+									return;
+								}
+
+								for ( i in objs ) {
+									obj = objs[i];
+									obj.label = obj.name;
+									items.push(obj);
+								}
+
+								building.autocomplete({
+									source: items,
+									appendTo: '.jsInputBuilding',
+									minLength: 0,
+									select : function( event, ui ) {
+										removeErrors();
+										building.val(ui.item.name);
+										mapUpdate();
+									}
+								});
+							}
+						);
 					}
 				});
 			},
@@ -401,6 +411,7 @@
 				return;
 			}
 
+			$('#map').show();
 			map_created = true;
 
 			cityGeocoder = ymaps.geocode(cityName);
@@ -420,9 +431,12 @@
 	// end of functions
 
 
-//	metro.parents('.jsInputMetro').hide();
-	fieldsInit();
+	if ( !active ) {
+		return;
+	}
 
-    $('body').bind('orderdeliverychange', mapCreate);
+	//	metro.parents('.jsInputMetro').hide();
+	fieldsInit();
+	$('body').bind('orderdeliverychange', mapCreate);
 
 }(window.ENTER));

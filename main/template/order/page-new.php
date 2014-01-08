@@ -445,7 +445,7 @@ if ($oneClick) {
 
 					<!-- Address customer -->
 					<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки*</label>
-					<div class="bBuyingLine__eRight jsDeliveryAddress" data-value='<?= json_encode(['regionName' => $region->getName()])?>' style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
+					<div class="bBuyingLine__eRight jsDeliveryAddress" data-value='<?= json_encode(['regionName' => $region->getName(), 'kladr' => \App::config()->kladr])?>' style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
 						<div class="bSelectedCity">
 							<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
 						</div>
@@ -459,17 +459,14 @@ if ($oneClick) {
 						</div>
 						<? endif ?>
 
-<style type="text/css">
-    #kladr_autocomplete ul{position:absolute;display:block;margin:0;padding:0;border:1px solid #8A8A8A;border-radius:3px;background-color:white;z-index:9999;}#kladr_autocomplete li{display:list-item;list-style-type:none;margin:0;padding:3px 5px;overflow:hidden;border:1px solid white;border-bottom:1px solid #BDBDBD;}#kladr_autocomplete li.active{background-color:#E0E0E0;border-radius:3px;border:1px solid #979797;}#kladr_autocomplete a{display:block;cursor:default;width:10000px;}#kladr_autocomplete .spinner{position:absolute;display:block;margin:0;padding:0;width:20px;height:20px;background-color:transparent;background-image:url("http://kladr-api.ru/examples/css/lib/jquery.kladr.images/spinner.png");background-position:center center;background-repeat:no-repeat;z-index:9999;}
-</style>
-						<div class="bInputAddress">
+						<div class="bInputAddress jsInputStreet ui-css">
 							<label class="bPlaceholder">Улица*</label>
-							<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />						
+							<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet ui-autocomplete-input" name="order[address_street]" title="Улица" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="" />
 						</div>
 
-						<div class="bInputAddress">
+						<div class="bInputAddress jsInputBuilding ui-css">
 							<label class="bPlaceholder">Дом*</label>
-							<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild" name="order[address_building]" value="" />					
+							<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild ui-autocomplete-input" name="order[address_building]" title="Дом" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="" />
 						</div>
 
 						<div class="bInputAddress">
@@ -487,7 +484,7 @@ if ($oneClick) {
 							<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
 						</div>
 
-                        <div class="bInputAddress" id="map" style="width: 460px; height: 350px;"></div>
+                        <div class="bInputAddress" id="map" style="width: 460px; height: 350px; display: none;"></div>
 					</div>
 
 					<label class="bBuyingLine__eLeft">Пожелания и дополнения</label>

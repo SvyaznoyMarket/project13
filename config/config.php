@@ -348,8 +348,13 @@ $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
 $c->order['maxSumOnline'] = 15000;
 $c->order['excludedError'] = [705, 708, 735, 759, 800];
+$c->order['addressAutocomplete'] = false;
 
-$c->order['addressAutocomplete'] = true;
+$c->kladr = [
+    'token' => '52b04de731608f2773000000',
+    'key' => 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b',
+    'itemLimit' => 6,
+];
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
