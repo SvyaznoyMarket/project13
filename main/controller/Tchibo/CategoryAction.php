@@ -7,17 +7,79 @@ class CategoryAction {
     public function execute(\Http\Request $request, $categoryPath) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $region = \App::user()->getRegion();
+
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
         /** @var $category \Model\Product\Category\Entity */
         $category = null;
-        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, \App::user()->getRegion(), function($data) use (&$category) {
-            $data = reset($data);
-            if ((bool)$data) {
-                $category = new \Model\Product\Category\Entity($data);
+
+        $shopScriptException = null;
+        $shopScriptSeo = [];
+        /** @var $category \Model\Product\Category\Entity */
+        if (\App::config()->shopScript['enabled']) {
+            try {
+                $shopScript = \App::shopScriptClient();
+                $shopScript->addQuery(
+                    'category/get-seo',
+                    [
+                        'slug'   => $categoryToken,
+                        'geo_id' => \App::user()->getRegion()->getId(),
+                    ],
+                    [],
+                    function ($data) use (&$shopScriptSeo) {
+                        if ($data && is_array($data)) $shopScriptSeo = reset($data);
+                    },
+                    function (\Exception $e) use (&$shopScriptException) {
+                        $shopScriptException = $e;
+                    }
+                );
+                $shopScript->execute();
+                if ($shopScriptException instanceof \Exception) {
+                    throw $shopScriptException;
+                }
+
+                // если shopscript вернул редирект
+                if (!empty($shopScriptSeo['redirect']['link'])) {
+                    $redirect = $shopScriptSeo['redirect']['link'];
+                    if(!preg_match('/^http/', $redirect)) {
+                        $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
+                            \App::config()->mainHost .
+                            (preg_match('/^\//', $redirect) ? '' : '/') .
+                            $redirect;
+                    }
+                    return new \Http\RedirectResponse($redirect);
+                }
+
+                if (empty($shopScriptSeo['ui'])) {
+                    throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
+                }
+
+                // запрашиваем категорию по ui
+                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        $category = new \Model\Product\Category\Entity($data);
+                    }
+                });
+            } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
+                \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        $category = new \Model\Product\Category\Entity($data);
+                    }
+                });
             }
-        });
+
+        } else {
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $category = new \Model\Product\Category\Entity($data);
+                }
+            });
+        }
         \App::coreClientV2()->execute();
 
         if (!$category) {
