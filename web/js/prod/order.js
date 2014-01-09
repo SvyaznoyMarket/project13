@@ -58,6 +58,7 @@
 
 			toKISS_orderInfo = {
 				'Checkout Complete Order ID': orderData[i].number,
+				'Checkout Complete Order ERP ID': orderData[i].numberErp,
 				'Checkout Complete SKU Quantity': orderData[i].products.length,
 				'Checkout Complete SKU Total': orderData[i].sum,
 				'Checkout Complete Delivery Total': orderData[i].delivery[0].price,

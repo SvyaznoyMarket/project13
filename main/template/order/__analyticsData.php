@@ -21,6 +21,7 @@ return function(
     foreach ($orders as $order) {
         $orderData = [
             'number'       => $order->getNumber(),
+            'numberErp'    => $order->getNumberErp(),
             'address'      => $order->getAddress(),
             'subway'       => $order->getSubwayId() ? [
                 'id' => $order->getSubwayId(),
