@@ -546,15 +546,10 @@ return [
         'action'  => ['Slice\ShowAction', 'execute'],
     ],
 
-    // smartengine
+    // recommended products
     'product.recommended' => [
-        'pattern' => '/product-also-viewed/{productId}',
+        'pattern' => '/product-recommended/{productId}',
         'action' => ['Product\RecommendedAction', 'execute'],
-        'require' => ['productId' => '\d+'],
-    ],
-    'product.recommended.jewel' => [
-        'pattern' => '/jewel/product-also-viewed/{productId}',
-        'action' => ['Jewel\Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
     'product.similar' => [ /// executed SmartEngine or RetailRocker

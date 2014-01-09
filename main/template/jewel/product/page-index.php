@@ -489,7 +489,7 @@ $productVideo = reset($productVideos);
 <div id="product_also_bought-container" data-url="<? //echo url_for('smartengine_alsoBought', ['product' => $product->getId()]) ?>" style="margin-top: 20px;"></div-->
 <? endif ?>
 
-<?php if (\App::config()->product['pullRecommendation']): ?>
+<?php if (false && \App::config()->product['pullRecommendation']): ?>
 <div class="clear"></div>
 <div id="product_user-also_viewed-container" data-url="<?= $page->url('product.recommended.jewel', ['productId' => $product->getId()]) ?>" style="margin-top: 20px;"></div>
 <? endif ?>
