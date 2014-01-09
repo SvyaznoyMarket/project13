@@ -552,7 +552,7 @@
 			s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
 			i.style.position = 'absolute';
 			i.style.width = i.style.height = '0px';
-			
+
 			i.onload = i.onerror = function(){
 				b.removeChild(i);
 				i = b = null;
@@ -600,6 +600,27 @@
 			else if ( blackBox ) {
 				blackBox.basket().add( data );
 			}
+		},
+
+		/**
+		 *
+		 */
+		addToVisualDNA = function addToVisualDNA( event, data ) {
+			var
+				productData 	= data.product,
+				product_id 		= productData.id,
+				product_price 	= productData.price,
+				category_id 	= ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
+				d = document,
+				b = d.body,
+				i = d.createElement('IMG' );
+			// end of vars
+
+			i.src = '//e.visualdna.com/conversion?api_key=enter.ru&id=added_to_basket&product_id=' + product_id + '&product_category=' + category_id + '&value=' + product_price + '&currency=RUB';
+			i.width = i.height = '1';
+			i.alt = '';
+
+			b.appendChild(i);
 		};
 	//end of functions
 
@@ -611,6 +632,7 @@
 	body.on('addtocart', myThingsAnalytics);
 	body.on('addtocart', adAdriver);
 	body.on('addtocart', addToRetailRocket);
+	body.on('addtocart', addToVisualDNA);
 }(window.ENTER));
  
  
@@ -3217,7 +3239,7 @@ $(document).ready(function() {
 				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
 			// end of vars
 			
-			if ( typeof(_gaq) !== 'undefined' ) {	
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Search', type, link]);
 			}
 		},
@@ -3424,6 +3446,9 @@ $(document).ready(function() {
 				searchValue = searchInput.val()*/;
 			//if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
 			searchInput.val(hintValue + ' ').focus();
+			if ( typeof(_gaq) !== 'undefined' ) {
+				_gaq.push(['_trackEvent', 'tooltip', hintValue]);
+			}
 			loadResponse();
 		};
 	// end of functions

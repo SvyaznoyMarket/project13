@@ -165,9 +165,6 @@ if ($oneClick) {
 						</select>
 					</div>
 
-					<div data-bind="visible: !hasPointDelivery" class="bFootenoteDelivery">Дата доставки может быть смещена на 1-2 дня.<br/>Ожидайте смс или звонок от Enter с уточнением.</div>
-
-					<div data-bind="visible: hasPointDelivery" class="bFootenoteDelivery">Дата самовывоза может быть смещена на 1-2 дня.<br/>Ожидайте смс или звонок от Enter с уточнением.</div>
 					<!-- Products -->
 					<!-- ko foreach: { data: products, as: 'product' } -->
 					<div class="bBuyingLine mProductsLine">

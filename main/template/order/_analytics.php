@@ -1,10 +1,11 @@
 <?php
 /**
- * @var $page         \View\Layout
- * @var $orders       \Model\Order\Entity[]
- * @var $productsById \Model\Product\Entity[]
- * @var $servicesById \Model\Product\Service\Entity[]
- * @var $shopsById    \Model\Shop\Entity[]
+ * @var $page           \View\Layout
+ * @var $orders         \Model\Order\Entity[]
+ * @var $productsById   \Model\Product\Entity[]
+ * @var $servicesById   \Model\Product\Service\Entity[]
+ * @var $shopsById      \Model\Shop\Entity[]
+ * @var $paymentMethod  \Model\PaymentMethod\Entity
  */
 
 if (\App::config()->analytics['enabled']):
@@ -138,6 +139,8 @@ if (\App::config()->analytics['enabled']):
         <div id="adblenderOrder" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
         <!-- Efficient Frontiers -->
         <img src="http://pixel.everesttech.net/3252/t?ev_Orders=1&amp;ev_Revenue=<?= $order->getSum() ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
+
+        <?= (new \View\Partners\VisualDna)->routeOrderComplete($orders, $productsById, $paymentMethod); // add VisualDNA pixel, SITE-2773 ?>
 
     <?php endforeach ?>
 <? endif;
