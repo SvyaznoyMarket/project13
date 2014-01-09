@@ -4,6 +4,7 @@ namespace Enter\Site\Curl\Query\Product\Category;
 
 use Enter\Curl\Query;
 use Enter\Site\Curl\Query\AdminQueryTrait;
+use Enter\Site\Model\Region;
 
 class GetAdminItemByToken extends Query {
     use AdminQueryTrait;
@@ -13,10 +14,12 @@ class GetAdminItemByToken extends Query {
 
     /**
      * @param $token
+     * @param Region $region
      */
-    public function __construct($token) {
+    public function __construct($token, Region $region) {
         $this->url = 'category/get-seo?' . http_build_query([
-            'slug' => [$token],
+            'slug'   => [$token],
+            'geo_id' => $region->id,
         ]);
 
         $this->init();

@@ -1,6 +1,13 @@
 <?php
 
 namespace Enter\Site {
+    class Region {
+        /** @var string */
+        public $defaultId;
+        /** @var string */
+        public $cookieName;
+    }
+
     class CurlService {
         /** @var string */
         public $url;
@@ -29,12 +36,15 @@ namespace Enter\Site {
     }
 
     class Config {
+        /** @var Region */
+        public $region;
         /** @var CoreService */
         public $coreService;
         /** @var AdminService  */
         public $adminService;
 
         public function __construct() {
+            $this->region = new Region();
             $this->coreService = new CoreService();
             $this->adminService = new AdminService();
         }

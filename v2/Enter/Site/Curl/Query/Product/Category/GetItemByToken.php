@@ -4,6 +4,7 @@ namespace Enter\Site\Curl\Query\Product\Category;
 
 use Enter\Curl\Query;
 use Enter\Site\Curl\Query\CoreQueryTrait;
+use Enter\Site\Model\Region;
 
 class GetItemByToken extends Query {
     use CoreQueryTrait;
@@ -13,10 +14,12 @@ class GetItemByToken extends Query {
 
     /**
      * @param $token
+     * @param Region $region
      */
-    public function __construct($token) {
+    public function __construct($token, Region $region) {
         $this->url = 'category/get?' . http_build_query([
-            'slug' => [$token],
+            'slug'   => [$token],
+            'geo_id' => $region->id,
         ]);
 
         $this->init();

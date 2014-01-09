@@ -3,22 +3,28 @@
 namespace Enter\Site;
 
 trait ConfigTrait {
+    /**
+     * @return Config
+     */
     public function getConfig() {
-        static $config;
-
-        if (!$config) {
+        if (!isset($GLOBALS[__METHOD__])) {
             $config = new Config();
-            $this->importFromV1($config);
+
+            $config->region->defaultId = '14974';
+            $config->region->cookieName = 'geoshop';
+
+            $config->coreService->url = 'http://api.enter.ru/v2/';
+            $config->coreService->timeout = 5;
+            $config->coreService->retryCount = 2;
+
+            $config->adminService->enabled = true;
+            $config->adminService->url = 'http://admin.enter.ru/v2/';
+            $config->adminService->timeout = 2;
+            $config->adminService->retryCount = 2;
+
+            $GLOBALS[__METHOD__] = $config;
         }
 
-        return $config;
-    }
-
-    private function importFromV1(Config $config) {
-        $v1Config = \App::config();
-
-        $config->coreService->url = $v1Config->coreV2['url'];
-        $config->coreService->timeout = $v1Config->coreV2['timeout'];
-        $config->coreService->retryCount = $v1Config->coreV2['retryCount'];
+        return $GLOBALS[__METHOD__];
     }
 }

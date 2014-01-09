@@ -11,10 +11,10 @@ use Enter\Util\JsonDecoderTrait;
  */
 trait CoreQueryTrait {
     use JsonDecoderTrait;
-    use ConfigTrait
+    use ConfigTrait;
 
     protected function init() {
-        $config = $this->getConfig()->adminService;
+        $config = $this->getConfig()->coreService;
 
         $this->url = $config->url . $this->url;
     }
@@ -28,16 +28,16 @@ trait CoreQueryTrait {
             $response = $this->jsonToArray($response);
         } catch (\Exception $e) {
             $this->error = $e;
-            $response = [];
         }
+        $response = (array)$response;
 
         if (array_key_exists('error', $response)) {
-            $response = array_merge(['code' => 0, 'message' => null], $response);
+            $response = array_merge(['code' => 0, 'message' => null], $response['error']);
             $this->error = new \Exception($response['message'], $response['code']);
         } else if (array_key_exists('result', $response)) {
             $response = $response['result'];
         }
 
-        return (array)$response;
+        return $response;
     }
 }

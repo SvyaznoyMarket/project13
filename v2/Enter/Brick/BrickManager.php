@@ -2,7 +2,7 @@
 
 namespace Enter\Brick;
 
-class BrickManager implements BrickManagerInterface {
+class BrickManager {
     /** @var Config */
     protected $config;
     /** @var array */
