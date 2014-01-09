@@ -8,6 +8,7 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
+    <title><?= $page->getTitle() ?></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="noyaca"/>
     
@@ -17,7 +18,6 @@
     </script>
     
     <?= $page->slotMeta() ?>
-    <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon.png">
@@ -43,30 +43,34 @@
 
 <?= $page->slotBanner() ?>
 
-<div class="allpage">
-    <? if (\App::config()->adFox['enabled']): ?>
-    <div class="adfoxWrapper" id="adfox980"></div>
-    <? endif ?>
+<div class="wrapper mWrapperMain">
+    <div class="content mContentMain clearfix">
+        <? if (\App::config()->adFox['enabled']): ?>
+            <div class="adfoxWrapper" id="adfox980"></div>
+        <? endif ?>
 
-    <?= $page->slotHeader() ?>
+        <header class="header">
+            <?= $page->slotHeader() ?>
+        </header><!--/ Шапка-->
 
-    <?= $page->slotContentHead() ?>
+        <?= $page->slotContentHead() ?>
 
-    <div class="bigbanner">
-        <div class='bCarouselWrap'>
-            <div class='bCarousel'>
-                <div class='bCarousel__eBtnL leftArrow'></div>
-                <div class='bCarousel__eBtnR rightArrow'></div>
-                <img class="centerImage" src="" alt=""/>
+        <div class="bigbanner">
+            <div class='bCarouselWrap'>
+                <div class='bCarousel'>
+                    <div class='bCarousel__eBtnL leftArrow'></div>
+                    <div class='bCarousel__eBtnR rightArrow'></div>
+                    <img class="centerImage" src="" alt=""/>
+                </div>
             </div>
         </div>
-    </div>
+        <?= $page->slotSurveybar() ?>
+    </div><!--/ Контент -->
+</div><!--/ Шаблон -->
 
+<div class="footer__main">
     <?= $page->slotFooter() ?>
-    <?= $page->slotSurveybar() ?>
-
-    <div class="clear"></div>
-</div>
+</div><!--/ Подвал -->
 
 <?= $page->slotRegionSelection() ?>
 <?= $page->slotAuth() ?>

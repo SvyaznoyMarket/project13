@@ -22,7 +22,7 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
         <div><input type="text" class="text bFormLogin__eInput jsRegisterUsername" name="register[username]" value="<?= $form->getUsername() ?>" /></div>
 
         <div class="bInputList">
-            <input class="jsCustomRadio bCustomInput mCustomCheckBig" name="subscribe" id="subscribe" type="checkbox" checked="checked" hidden />
+            <input class="jsCustomRadio bCustomInput mCustomCheckBig" name="subscribe" id="subscribe" type="checkbox" checked="checked" />
             <label class="bCustomLabel mCustomLabelBig" style="/*display: block;*/" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
         </div>
 
@@ -35,3 +35,5 @@ if (!isset($form)) $form = new \View\User\RegistrationForm();
         <? endif ?>
     </fieldset>
 </form>
+
+<p class="bFormLogin__eComplete jsRegisterFormComplete"></p>

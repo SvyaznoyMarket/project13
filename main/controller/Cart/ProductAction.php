@@ -20,7 +20,7 @@ class ProductAction {
         try {
             if ($quantity < 0) {
                 $quantity = 0;
-                \App::logger()->warn(sprintf('Указано неверное количество товаров. Запрос %s', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
+                \App::logger()->warn(['message' => 'Указано неверное количество товаров', 'request' => $request->request->all()]);
             }
 
             if (!$productId) {
@@ -47,17 +47,17 @@ class ProductAction {
                     break;
             }
 
-            // crossss
-            if (\App::config()->crossss['enabled'] && ($quantity > 0)) {
-                (new \Controller\Crossss\CartAction())->product($product);
-            }
-
             $productInfo = [
-                'id'    =>  $product->getId(),
-                'name'  =>  $product->getName(),
-                'img'   =>  $product->getImageUrl(2),
-                'link'  =>  $product->getLink(),
-                'price' =>  $product->getPrice(),
+                'id'        => $product->getId(),
+                'name'      => $product->getName(),
+                'img'       => $product->getImageUrl(2),
+                'link'      => $product->getLink(),
+                'price'     => $product->getPrice(),
+                'deleteUrl' => $cartProduct  ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
+                'addUrl'    => !$cartProduct ? (new \Helper\TemplateHelper())->url('cart.product.set',    ['productId' => $product->getId()]) : null,
+                'cartButton'     => [
+                    'id' => \View\Id::cartButtonForProduct($product->getId()),
+                ],
             ];
             if (\App::config()->kissmentrics['enabled']) {
                 try {
@@ -237,6 +237,21 @@ class ProductAction {
      */
     public function delete(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
+
+        /*
+        $quantity = (int)$request->get('quantity', 1); // какое кол-во товаров нужно удалить
+        $cart = \App::user()->getCart();
+
+        if ( $cart && $quantity ) {
+            $cartProduct = $cart->getProductById($productId);
+            if ( $cartProduct ) {
+                // Если такой товар уже есть в корзине, уменьшим его количество
+                $quantity = $cartProduct->getQuantity() - $quantity;
+                if ( $quantity < 0 ) $quantity = 0;
+            }
+        }
+        $request->query->set('quantity', $quantity);
+        */
 
         $request->query->set('quantity', 0);
 

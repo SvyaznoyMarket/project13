@@ -66,13 +66,21 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotSidebar() {
         return '';
+    }
 
-        if (!(bool)$this->getParam('categories')) {
-            return  '';
-        }
+    public function slotUserbar() {
+        return $this->render('_userbar');
+    }
 
-        return $this->render('search/_sidebar', array_merge($this->params, array(
-            'limit' => 8,
-        )));
+    public function slotUserbarContent() {
+        return $this->render('product-category/_userbarContent', [
+            'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,
+        ]);
+    }
+
+    public function slotUserbarContentData() {
+        return [
+            'target' => '#productCatalog-filter-form',
+        ];
     }
 }

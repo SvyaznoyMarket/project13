@@ -2,11 +2,16 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Category\Entity $category
+    \Model\Product\Category\Entity $category,
+    array $promoStyle = [],
+    array $relatedCategories = []
 ) {
 
     $links = [];
-    foreach ($category->getChild() as $child) {
+    $categories = $category->getChild();
+    if (!empty($relatedCategories)) $categories = array_merge($categories, $relatedCategories);
+
+    foreach ($categories as $child) {
         $links[] = [
             'name'   => $child->getName(),
             'url'    => $child->getLink(),
@@ -16,6 +21,9 @@ return function(
     }
 ?>
 
-    <?= $helper->renderWithMustache('product-category/_listInFilter', ['links' => $links]) ?>
+    <?= $helper->renderWithMustache('product-category/_listInFilter', [
+        'links' => $links,
+        'promoStyle' => !empty($promoStyle) ? $promoStyle : '',
+    ]) ?>
 
 <? };

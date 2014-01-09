@@ -7,6 +7,7 @@
  * @var $productSorting         \Model\Product\Sorting
  * @var $productView            string
  * @var $productVideosByProduct array
+ * @var $seoContent            string
  */
 ?>
 
@@ -67,6 +68,13 @@
       'isAddInfo'              => true,
   )) ?>
 
+  <div class="clear"></div>
+
+  <? if(!empty($seoContent)): ?>
+      <div class="bSeoText">
+          <?= $seoContent ?>
+      </div>
+  <? endif ?>
 
 <? /*
 

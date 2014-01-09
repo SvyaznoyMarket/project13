@@ -8,6 +8,7 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
+    <title><?= $page->getTitle() ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="noyaca"/>
@@ -18,7 +19,6 @@
     </script>
     
     <?= $page->slotMeta() ?>
-    <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <link rel="apple-touch-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon.png">
@@ -35,14 +35,15 @@
 </head>
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
     <?= $page->slotConfig() ?>
-    <div class="allpage" id="page">
-    <? if (\App::config()->adFox['enabled']): ?>
-    <div class="adfoxWrapper" id="adfoxbground"></div>
-    <? endif ?>
 
-        <div class="allpageinner clearfix">
+    <?= $page->slotAdFoxBground() ?>
+
+    <div class="wrapper">
+        <header class="header">
             <?= $page->slotHeader() ?>
+        </header><!--/ Шапка-->
 
+        <div class="content mContentOrder clearfix">
             <?= $page->slotContentHead() ?>
 
             <div class="float100">
@@ -50,37 +51,35 @@
                     <?= $page->slotContent() ?>
                 </div>
             </div>
+
             <div class="column215">
                 <?= $page->slotSidebar() ?>
             </div>
-
-            <div class="clear"></div>
-
-            <?= $page->slotSeoContent() ?>
             
-        </div>
-        <div class="clear"></div>
-    </div>
+            <?= $page->slotSeoContent() ?>
+        </div><!--/ Контент -->
+    </div><!--/ Шаблон -->
 
+    <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 
-    <?= $page->slotFooter() ?>
+    <a class="upper" id="upper" href="#">Наверх</a>
+
     <?= $page->slotUserbar() ?>
     <?= $page->slotSurveybar() ?>
-
     <?= $page->slotRegionSelection() ?>
-    <?= $page->slotBodyJavascript() ?>
-    <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>
-    <?= $page->slotYandexMetrika() ?>
-    <?= $page->slotMyThings() ?>
-    <?= $page->slotAdriver() ?>
-    <?= $page->slotPartnerCounter() ?>
+    
+    <div style="position:absolute; height: 0; z-index:-1; top: 0;">
+        <?= $page->slotBodyJavascript() ?>
+        <?= $page->slotInnerJavascript() ?>
+        <?= $page->slotYandexMetrika() ?>
+        <?= $page->slotMyThings() ?>
+        <?= $page->slotAdriver() ?>
+        <?= $page->slotPartnerCounter() ?>
 
-    <? if (\App::config()->analytics['enabled']): ?>
-        <div id="adblenderCommon" class="jsanalytics"></div>
-    <? endif ?>
-	
-	<a id="upper" href="#">Наверх</a>
-
+        <? if (\App::config()->analytics['enabled']): ?>
+            <div id="adblenderCommon" class="jsanalytics"></div>
+        <? endif ?>
+    </div>
 </body>
 </html>

@@ -18,6 +18,10 @@ class User {
     private $region;
     /** @var Cart */
     private $cart;
+    /** @var Cart\LifeGift */
+    private $lifeGiftCart;
+    /** @var Cart\OneClick */
+    private $oneClickCart;
     /** @var array */
     private $recommendedProduct;
 
@@ -46,6 +50,7 @@ class User {
         if (!$this->entity) {
             try {
                 if (!$user = \RepositoryManager::user()->getEntityByToken($this->token)) {
+                    $this->removeToken();
                     return null;
                 }
                 $user->setToken($this->token);
@@ -264,6 +269,28 @@ class User {
         }
 
         return $this->cart;
+    }
+
+    /**
+     * @return Cart\LifeGift
+     */
+    public function getLifeGiftCart() {
+        if (!$this->lifeGiftCart) {
+            $this->lifeGiftCart = new Cart\LifeGift();
+        }
+
+        return $this->lifeGiftCart;
+    }
+
+    /**
+     * @return Cart\OneClick
+     */
+    public function getOneClickCart() {
+        if (!$this->oneClickCart) {
+            $this->oneClickCart = new Cart\OneClick();
+        }
+
+        return $this->oneClickCart;
     }
 
     public function setCacheCookie(\Http\Response $response) {

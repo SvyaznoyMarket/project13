@@ -81,12 +81,29 @@ class Session implements \Http\SessionInterface {
         return array_key_exists($name, $_SESSION) ? $_SESSION[$name] : $default;
     }
 
+    public function getWithChecking($name, $default = null) {
+        if (!array_key_exists($name, $_SESSION)) {
+            return $default;
+        }
+        if ( isset($_SESSION['_readed_'][$name]) ) {
+            $isReaded = true;
+        } else {
+            $isReaded = false;
+        }
+
+        $_SESSION['_readed_'][$name] = $isReaded;
+        $_SESSION[$name]['_is_readed'] = $isReaded;
+
+        return $_SESSION[$name];
+    }
+
     public function has($name) {
         return array_key_exists($name, $_SESSION);
     }
 
     public function remove($name) {
         if (isset($_SESSION[$name])) unset($_SESSION[$name]);
+        if (isset($_SESSION['_readed_'][$name])) unset($_SESSION['_readed_'][$name]);
     }
 
     public function clear() {

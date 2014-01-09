@@ -262,8 +262,8 @@ $productVideo = reset($productVideos);
   <div class="ar pb15">
 
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-      <? if ($product->getIsBuyable() && !$product->isInShopStockOnly()): ?>
-        <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
+      <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+        <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
       <?php endif ?>
       <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
       <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
@@ -489,7 +489,7 @@ $productVideo = reset($productVideos);
 <div id="product_also_bought-container" data-url="<? //echo url_for('smartengine_alsoBought', ['product' => $product->getId()]) ?>" style="margin-top: 20px;"></div-->
 <? endif ?>
 
-<?php if (\App::config()->product['pullRecommendation']): ?>
+<?php if (false && \App::config()->product['pullRecommendation']): ?>
 <div class="clear"></div>
 <div id="product_user-also_viewed-container" data-url="<?= $page->url('product.recommended.jewel', ['productId' => $product->getId()]) ?>" style="margin-top: 20px;"></div>
 <? endif ?>
@@ -689,17 +689,15 @@ $productVideo = reset($productVideos);
 <div class="fr product-desc goodBarBottom ar">
     <? //if ($product->getIsBuyable() || !$product->getState()->getIsShop()): ?>
     <div class="goodsbarbig product-desc__buy mSmallBtns" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-      <? if ($product->getIsBuyable() && !$product->isInShopStockOnly()): ?>
-        <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
-      <?php endif ?>
-      <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
-      <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
-        <div class="notBuying font12">
-            <div class="corner"><div></div></div>
-            Только в магазинах
-        </div>
-        <div class="clear"></div>
-      <? endif ?>
+        <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+            <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
+        <? endif ?>
+        <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
+        <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
+            <div class="notBuying font12">
+            <div class="corner"><div></div></div>Только в магазинах</div>
+            <div class="clear"></div>
+        <? endif ?>
     </div>
     <? //endif ?>
 </div>

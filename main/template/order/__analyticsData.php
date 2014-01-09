@@ -10,10 +10,18 @@ return function(
      * @var \Model\Product\Entity[] $productsById
      */
 
+    $recommendationProductIds = [];
+    $isUsedCartRecommendation = false;
+    if ($sessionName = \App::config()->product['recommendationSessionKey']) {
+        $recommendationProductIds = \App::session()->get($sessionName, []);
+        \App::session()->set($sessionName, []);
+    }
+
     $data = [];
     foreach ($orders as $order) {
         $orderData = [
             'number'       => $order->getNumber(),
+            'numberErp'    => $order->getNumberErp(),
             'address'      => $order->getAddress(),
             'subway'       => $order->getSubwayId() ? [
                 'id' => $order->getSubwayId(),
@@ -76,11 +84,17 @@ return function(
                     ];
                 }, $product->getCategory()),
             ];
+
+            // устанавливаем флаг который сигнализирует, что среди списка товаров заказа имеется товар рекомендованный RR
+            if (in_array($product->getId(), $recommendationProductIds)) {
+                $isUsedCartRecommendation = true;
+            }
         }
 
-        $data[] = $orderData;
+        $data['orders'][] = $orderData;
     }
 
+    $data['isUsedCartRecommendation'] = $isUsedCartRecommendation;
 ?>
 
 <div id="jsOrder" data-value="<?= $helper->json($data) ?>"></div>

@@ -10,17 +10,23 @@
 ;(function( ENTER ) {
 	console.info('Catalog init: catalog.js');
 
-	var pageConfig = ENTER.config.pageConfig,
+	var //pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog');
+		catalog = utils.extendApp('ENTER.catalog'),
+		lastPage = $('#bCatalog').data('lastpage');
 	// end of vars
 	
 
 	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
 	catalog.listingWrap = $('.bListing');
 	catalog.liveScroll = false;
+	catalog.lastPage = null;
 
-	console.info('Mustache is '+ typeof Mustache);
+	if ( lastPage ) {
+		catalog.lastPage = lastPage;
+	}
+
+	console.info('Mustache is '+ typeof Mustache + ' (Catalog main config)');
 	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
 
 }(window.ENTER));
@@ -43,7 +49,9 @@
 ;(function( ENTER ) {
 	console.info('New catalog init: filter.js');
 
-	var pageConfig = ENTER.config.pageConfig,
+	var
+		body = $('body'),
+		pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
 
@@ -218,7 +226,8 @@
 			
 			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
 				key,
-				template;
+				template,
+				lastPage = res['pagination'] ? res['pagination']['lastPage'] : false;
 			// end of vars
 
 			catalog.filter.resetForm();
@@ -235,7 +244,13 @@
 
 			catalog.infScroll.checkInfinity();
 
+			if ( lastPage ) {
+				catalog.lastPage = lastPage;
+			}
+
 			catalog.filter.lastRes = dataToRender;
+
+			body.trigger('markcartbutton');
 		},
 
 		/**
@@ -345,10 +360,11 @@
 		getUrlParams: function () {
 			var $_GET = {},
 				__GET = window.location.search.substring(1).split('&'),
-				getVar;
+				getVar,
+				i;
 			// end of vars
 
-			for( var i = 0; i < __GET.length; i++ ) {
+			for ( i = 0; i < __GET.length; i++ ) {
 				getVar = __GET[i].split('=');
 				$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
 			}
@@ -366,7 +382,7 @@
 
 			var sendUpdate = function sendUpdate() {
 				filterBlock.trigger('submit');
-			}
+			};
 
 			if ( typeof e === 'object' && e.isTrigger && !needUpdate ) {
 				console.warn('it\'s trigger event!');
@@ -520,6 +536,10 @@
 					updateInput[type](input, val);
 				}
 			}
+		},
+
+		openFilter: function() {
+			toggleFilterViewHandler( true );
 		}
 	};
 
@@ -605,13 +625,14 @@
 		/**
 		 * Обработчик кнопки переключения между расширенным и компактным видом фильтра
 		 */
-		toggleFilterViewHandler = function toggleFilterViewHandler() {
+		toggleFilterViewHandler = function toggleFilterViewHandler( openAnyway ) {
 			var openClass = 'mOpen',
 				closeClass = 'mClose',
 				open = filterToggleBtn.hasClass(openClass);
 			// end of vars
 
-			if ( open ) {
+
+			if ( open && typeof openAnyway !== 'boolean' ) {
 				filterToggleBtn.removeClass(openClass).addClass(closeClass);
 				filterContent.slideUp(400);
 			}
@@ -639,6 +660,7 @@
 			}
 
 			catalog.history.gotoUrl(url);
+			$.scrollTo(filterBlock, 500);
 
 			return false;
 		},
@@ -742,7 +764,7 @@
 	viewParamPanel.on('click', '.jsPagination', jsPaginationLinkHandler);
 	
 	// Other HistoryAPI link
-	$('body').on('click', '.jsHistoryLink', jsHistoryLinkHandler);
+	body.on('click', '.jsHistoryLink', jsHistoryLinkHandler);
 
 	// Init sliders
 	filterSliders.each(initSliderRange);
@@ -765,7 +787,7 @@
  * @param		{Object}	global	Enter namespace
  */
 ;(function( ENTER ) {
-	var pageConfig = ENTER.config.pageConfig,
+	var
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog');
 	// end of vars
@@ -940,7 +962,7 @@
 ;(function( ENTER ) {
 	console.info('Catalog init: catalog_infinityScroll.js');
 
-	var pageConfig = ENTER.config.pageConfig,
+	var
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
 
@@ -968,7 +990,9 @@
 				d = $(document);
 			// end of vars
 
-			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height() ) {
+			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height() &&
+				//&& ( catalog.infScroll.nowPage + 1 - catalog.lastPage !== 0 )
+				( catalog.lastPage - catalog.infScroll.nowPage > 0 || null === catalog.lastPage ) ) {
 				console.warn('checkscroll true. load');
 				catalog.infScroll.nowPage += 1;
 				catalog.infScroll.load();
@@ -1016,6 +1040,8 @@
 			catalog.infScroll.loading = false;
 
 			window.docCookies.setItem('infScroll', 1, 4*7*24*60*60, '/' );
+
+			catalog.infScroll.checkScroll();
 			$(window).on('scroll', catalog.infScroll.checkScroll);
 
 			console.info(hasPaging);

@@ -6,6 +6,7 @@ namespace Http;
  * Response represents an HTTP response in JSON format.
  */
 class JsonResponse extends Response {
+    /** @var array */
     protected $data;
     protected $callback;
 
@@ -63,12 +64,16 @@ class JsonResponse extends Response {
         }
 
         // Encode <, >, ', &, and " for RFC4627-compliant JSON, which may also be embedded into HTML.
-        // for php >= 5.4
-        //$this->data = json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE);
-        // for php < 5.4
-        $this->data = json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+        $this->data = $data;
 
         return $this->update();
+    }
+
+    /**
+     * @return array
+     */
+    public function getData() {
+        return $this->data;
     }
 
     /**
@@ -86,6 +91,6 @@ class JsonResponse extends Response {
 
         $this->headers->set('Content-Type', 'application/json', false);
 
-        return $this->setContent($this->data);
+        return $this->setContent(json_encode($this->data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT));
     }
 }

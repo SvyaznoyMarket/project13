@@ -11,13 +11,13 @@ return function (
     $class = \View\Id::cartButtonForProduct($product->getId()) . ' ' . $class;
 
     if (!$directLink) {
-        $class .= $product->isInShopStockOnly() ? ' jsOrder1clickProxy' : ' jsBuyButton';
+        $class .= $product->isInShopStockOnly() ? ' jsOneClickButton' : ' jsBuyButton';
     }
 
     if ($product->isInShopStockOnly()) {
         $class .= ' mShopsOnly';
         $value = 'Резерв';
-        $url = $product->getLink() . '#oneclick';
+        $url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
     } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
     }
@@ -26,7 +26,9 @@ return function (
         $class .= ' jsBuyButton';
     }
 
-    if (!$product->getIsBuyable()) {
+    if (5 === $product->getStatusId()) { // SITE-2924
+        return '';
+    } else if (!$product->getIsBuyable()) {
         $url = '#';
         $class .= ' mDisabled';
         $value = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет в наличии';
@@ -40,9 +42,13 @@ return function (
         $url = $helper->url('cart.product.set', $urlParams);
     }
 
-?>
+    $upsaleData = [
+        'url' => $helper->url('product.upsale', ['productId' => $product->getId()]),
+        'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false,
+    ];
+    ?>
     <div class="bWidgetBuy__eBuy btnBuy">
-        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
+        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-upsale='<?= json_encode($upsaleData) ?>'><?= $value ?></a>
     </div>
 
 <? };

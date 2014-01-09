@@ -4,9 +4,10 @@
  * @author	Zaytsev Alexandr
  * @requires jQuery, jQuery.placeholder plugin, jQuery.emailValidate plugin
  */
-;(function(){
-	var lowPriceNotifer = function() {
-		var notiferWrapper = $('.priceSale'),
+;(function() {
+	var lowPriceNotifer = function lowPriceNotifer() {
+		var
+			notiferWrapper = $('.priceSale'),
 			notiferButton = $('.jsLowPriceNotifer'),
 			submitBtn = $('.bLowPriceNotiferPopup__eSubmitEmail'),
 			input = $('.bLowPriceNotiferPopup__eInputEmail'),
@@ -15,10 +16,11 @@
 			subscribe = $('.jsSubscribe');
 		// end of vars
 
+		var
 			/**
 			 * Скрыть окно подписки на снижение цены
 			 */
-		var lowPriceNitiferHide = function lowPriceNitiferHide() {
+			lowPriceNitiferHide = function lowPriceNitiferHide() {
 				notiferPopup.fadeOut(300);
 
 				return false;
@@ -32,8 +34,13 @@
 			 * @param userInfo — данные пользователя (если существуют)
 			 */
 			userLogged = function userLogin( event, userInfo ) {
-				if ( userInfo && userInfo.name ) {
-					notiferWrapper.show();
+				if ( userInfo ) {
+					if( userInfo.name ) {
+						notiferWrapper.show();
+					}
+					if( userInfo.email ) {
+						input.val(userInfo.email);
+					}
 				}
 			},
 
@@ -77,13 +84,15 @@
 				}
 
 				return false;
-			}
+			},
 
 			/**
 			 * Отправка данных на сервер
 			 */
 			lowPriceNotiferSubmit = function lowPriceNotiferSubmit() {
-				var submitUrl = submitBtn.data('url');
+				var
+					submitUrl = submitBtn.data('url');
+				// end of vars
 				
 				submitUrl += encodeURI('?email=' + input.val() + '&subscribe=' + (checkSubscribe() ? 1 : 0));
 				$.get( submitUrl, resFromServer);
@@ -100,7 +109,7 @@
 
 
 	$(document).ready(function() {
-		if ($('.jsLowPriceNotifer').length){
+		if ( $('.jsLowPriceNotifer').length ){
 			lowPriceNotifer();
 		}
 	});

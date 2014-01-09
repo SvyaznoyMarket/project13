@@ -1,7 +1,12 @@
-<? if (\App::config()->googleAnalytics['enabled']): ?>
+<? if (\App::config()->googleAnalytics['enabled']):
+
+?>
 <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-25485956-1']);
+    <? if ( false == \App::config()->debug ) { ?>
+    _gaq.push(['_setDomainName', 'enter.ru']);
+    <? } ?>
     _gaq.push(['_addOrganic', 'nova.rambler.ru', 'query']);
     _gaq.push(['_addOrganic', 'go.mail.ru', 'q']);
     _gaq.push(['_addOrganic', 'nigma.ru', 's']);
@@ -40,9 +45,9 @@
             ?>
 
     _gaq.push(['_addTrans',
-            '<?= $order->getNumber() ?>', // Номер заказа
+            '<?= $order->getNumberErp() ?>', // Номер заказа
             '<?= $shop ? $page->escape($shop->getName()) : '' ?>', // Название магазина (Необязательно)
-            '<?= str_replace(',', '.', $order->getSum()) ?>', // Полная сумма заказа (дроби через точку)
+            '<?= str_replace(',', '.', $order->getPaySum()) ?>', // Полная сумма заказа (дроби через точку)
             '', // налог
             '<?= $delivery ? $delivery->getPrice() : 0 ?>', // Стоимость доставки (дроби через точку)
             '<?= $order->getCity() ? $page->escape($order->getCity()->getName()) : '' ?>', // Город доставки (Необязательно)
@@ -66,7 +71,7 @@
                     : $category->getName();
                 ?>
 
-    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumber(), $product->getArticle(), $page->escape($product->getName()), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
+    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $product->getArticle(), $page->escape($product->getName()), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
             <?php endforeach ?>
 
             <? foreach ($order->getService() as $orderService): ?>
@@ -83,15 +88,16 @@
                     : $category->getName();
                 ?>
 
-    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumber(), $service->getToken(), $page->escape($service->getName()), $page->escape($categoryName), $orderService->getPrice(), $orderService->getQuantity())) ?>']);
+    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $service->getToken(), $page->escape($service->getName()), $page->escape($categoryName), $orderService->getPrice(), $orderService->getQuantity())) ?>']);
                 <?php endforeach ?>
 
     _gaq.push(['_trackTrans']);
             <? endforeach ?>
     <? endif ?>
     (function()
-    { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); }
-
-            )();
+    {   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
 </script>
 <? endif ?>

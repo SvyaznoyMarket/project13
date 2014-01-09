@@ -6,18 +6,18 @@
 ?>
 
 <?php if ((bool)$breadcrumbs): ?>
-<div <?php if (isset($class) && !empty($class)): ?>class="<?php echo $class ?>"<?php endif ?>>
+<ul <?php if (isset($class) && !empty($class)): ?>class="bBreadcrumbs clearfix"<?php endif ?>>
     <!-- <a href="/">Enter.ru</a> &rsaquo; -->
     <? $i = 1; $count = count($breadcrumbs); foreach ($breadcrumbs as $breadcrumb): ?>
     <? if ($i < $count): ?>
         <? if(empty($breadcrumb['span'])) { ?>
-          <a href="<?= $breadcrumb['url'] ?>"><?= $breadcrumb['name'] ?></a> &rsaquo;
+          <li class="bBreadcrumbs__eItem"><a class="bBreadcrumbs__eLink" href="<?= $breadcrumb['url'] ?>"><?= $breadcrumb['name'] ?></a></li>
         <? } else { ?>
-          <span><?= $breadcrumb['name'] ?></span> &rsaquo;
+          <li class="bBreadcrumbs__eItem"><span><?= $breadcrumb['name'] ?></span></li>
         <? } ?>
       <? else: ?>
       <!-- <strong><?= $breadcrumb['name'] ?></strong> -->
       <? endif ?>
     <? $i++; endforeach ?>
-</div>
+</ul>
 <? endif ?>

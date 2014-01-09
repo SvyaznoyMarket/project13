@@ -6,13 +6,16 @@
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Enter.ru</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <link href="/css/global.min.css" rel="stylesheet" type="text/css"/>
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script src="/js/prod/LAB.min.js" type="text/javascript"></script>
+    <script src="/js/vendor/html5.js" type="text/javascript"></script>
 </head>
-<body class='b404'>
+<body class='b404' data-template="infopage">
 <table class='b404InnerWrap'>
     <td>
         <a class='b404__eLogo' href='/'></a>
@@ -36,8 +39,8 @@
 <script type="text/javascript">
     var _gaq = _gaq || [];
     var nowURL = document.URL;
-    _gaq.push(['_trackEvent', 'Errors', '404', nowURL]);
     _gaq.push(['_setAccount', 'UA-25485956-1']);
+    _gaq.push(['_setDomainName', 'enter.ru']);
     _gaq.push(['_addOrganic', 'nova.rambler.ru', 'query']);
     _gaq.push(['_addOrganic', 'go.mail.ru', 'q']);
     _gaq.push(['_addOrganic', 'nigma.ru', 's']);
@@ -58,6 +61,7 @@
     _gaq.push(['_addOrganic', 'ya.ru', 'q']);
     _gaq.push(['_addOrganic', 'm.yandex.ru', 'query']);
     _gaq.push(['_trackPageview', '/page404' + location.pathname]);
+    _gaq.push(['_trackEvent', 'Errors', '404', nowURL]);
     (function () {
         var ga = document.createElement('script');
         ga.type = 'text/javascript';
@@ -67,5 +71,7 @@
         s.parentNode.insertBefore(ga, s);
     })();
 </script>
+
+<script src="/js/loadjs.js" type="text/javascript"></script>
 </body>
 </html>

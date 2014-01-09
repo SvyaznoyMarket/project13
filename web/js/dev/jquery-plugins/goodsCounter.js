@@ -39,9 +39,10 @@
 				 */
 			var changeHandler = function changeHandler( count ) {
 					clearTimeout(timeout_id);
+					
 					timeout_id = setTimeout(function() {
 						counterGroup.find('input').val( count );
-						options.onChange( count );
+						options.onChange.apply( $self, [count] );
 					}, 400);
 				},
 
@@ -82,11 +83,11 @@
 
 					e.stopPropagation();
 
-					if ( $self.hasClass('mDisabled') ){
+					if ( $self.hasClass('mDisabled') ) {
 						return false;
 					}
 
-					if ( (nowCount * 1) - 1 < 1 ){
+					if ( (nowCount * 1) - 1 < 1 ) {
 						return false;
 					}
 
@@ -108,7 +109,7 @@
 
 					e.stopPropagation();
 
-					if ( $self.hasClass('mDisabled') ){
+					if ( $self.hasClass('mDisabled') ) {
 						return false;
 					}
 
@@ -162,8 +163,10 @@
 				 * @param	{Object}	spinner		Ссылка на спиннеры принадлежащие купленному товару
 				 * @param	{Object}	input		Поля которые необходимо обновить
 				 */
-				updatespinner = function updatespinner( e, products ){
-					var i = 0,
+				updatespinner = function updatespinner( e, products ) {
+					var
+						products = ( products ) ? products : ENTER.config.clientCart.products,
+						i = 0,
 						spinner,
 						input;
 					// end of vars
@@ -179,11 +182,11 @@
 					}
 
 					// Массив продуктов
-					for ( i = products.product.length - 1; i >= 0; i-- ) {
-						spinner = $('[data-spinner-for="'+products.product[i].id+'"]');
+					for ( i = products.length - 1; i >= 0; i-- ) {
+						spinner = $('[data-spinner-for="'+products[i].cartButton.id+'"]');
 						spinner.addClass('mDisabled');
 						input = spinner.find('input');
-						input.val(products.product[i].quantity).attr('disabled','disabled');
+						input.val(products[i].quantity).attr('disabled','disabled');
 					}
 				};
 			//end of functions

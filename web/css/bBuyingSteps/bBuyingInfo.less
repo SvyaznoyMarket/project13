@@ -54,10 +54,6 @@
 .mPayMethods {
   margin: 10px 0 20px;  
 
-  .bBuyingLine__eRight {
-    border-bottom: 1px solid #ddd;
-  }
-
   .bInputList {
     font-size: 12px;
   }
@@ -99,17 +95,17 @@
     }
   }
 
-  .mCustomRadioBig~.bPayMethodAction {
+  .bCustomInput~.bPayMethodAction {
     display: none;
   }
-  .mCustomRadioBig~.bProcess {
+  .bCustomInput~.bProcess {
     display: none;
   }
 
-  .mCustomRadioBig:checked~.bPayMethodAction {
+  .bCustomInput:checked~.bPayMethodAction{
     display: block;
   }
-  .mCustomRadioBig:checked~.bProcess {
+  .bCustomInput:checked~.bProcess{
     display: block;
   }
 
@@ -154,4 +150,13 @@
         display: block;
     }
   }
+}
+
+.bFootenoteDelivery {
+  width: 446px;
+  margin: 15px 0 -30px 0px;
+  padding: 5px 5px 5px 10px;
+  border-radius: 4px;
+  background: #FFDBF1;
+  font-size: 13px;
 }

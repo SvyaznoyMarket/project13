@@ -5,7 +5,10 @@
 		authBlock = $('#auth-block'),
 		forgotPwdLogin = $('.jsForgotPwdLogin'),
 		resetPwdForm = $('.jsResetPwdForm'),
+		registerForm = $('.jsRegisterForm'),
 		loginForm = $('.jsLoginForm'),
+		completeRegister = $('.jsRegisterFormComplete'),
+		showLoginFormLink = $('.jsShowLoginForm'),
 
 		/**
 		 * Конфигурация валидатора для формы логина
@@ -86,17 +89,24 @@
 			// constructor body
 
 			this.form = null; // текущая форма
+			this.redirect_to = null;
 
 			body.on('click', '.registerAnotherWayBtn', $.proxy(this.registerAnotherWay, this));
 			body.on('click', '.bAuthLink', this.openAuth);
+			body.on('click', '.jsEnterprizeAuthLink', $.proxy(this.enterprizeAuthLinkClick, this));
 			$('.jsLoginForm, .jsRegisterForm, .jsResetPwdForm').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
 			body.on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
 			body.on('click', '#bUserlogoutLink', this.logoutLinkClickLog);
+
+			if ( showLoginFormLink.length ) {
+				loginForm.hide();
+				body.on('click', '.jsShowLoginForm', this.showLoginForm);
+			}
 		}
 
 
 		/**
-		 * Показ сообщений об ошибках при оформлении заказа
+		 * Показ сообщений об ошибках
 		 *
 		 * @param   {String}    msg     Сообщение которое необходимо показать пользователю
 		 *
@@ -269,6 +279,31 @@
 			return false;
 		};
 
+		/**
+		 * Обработчик клика на ссылку получения купона для неавторизированного пользователя
+		 *
+		 * @param e
+		 * @public
+		 */
+		Login.prototype.enterprizeAuthLinkClick = function( e ) {
+			e.preventDefault();
+
+			var
+				elementClicked = $(e.target),
+				authLink = elementClicked.hasClass('jsEnterprizeAuthLink') ? elementClicked : elementClicked.parents('.jsEnterprizeAuthLink')/*(elementClicked.parents('.jsEnterprizeAuthLink').length ? elementClicked.parents('.jsEnterprizeAuthLink').get(0) : null)*/,
+				link = authLink.attr('href');
+			// end of vars
+
+			// устанавливаем редирект
+			if ( link ) {
+				this.redirect_to = link;
+			}
+
+			// показываем попап
+			this.openAuth();
+
+			return false;
+		};
 
 		/**
 		 * Изменение значения кнопки сабмита при отправке ajax запроса
@@ -288,7 +323,7 @@
 			}
 
 			return false;
-		}
+		};
 
 		/**
 		 * Валидатор формы
@@ -300,7 +335,7 @@
 		 */
 		Login.prototype.getFormValidator = function() {
 			return eval(this.getFormName() + 'Validator');
-		}
+		};
 
 		/**
 		 * Получить название формы
@@ -311,10 +346,8 @@
 		 * @public
 		 */
 		Login.prototype.getFormName = function() {
-			return (this.form.hasClass('jsLoginForm'))
-				? 'signin'
-				: (this.form.hasClass('jsRegisterForm') ? 'register' : (this.form.hasClass('jsResetPwdForm') ? 'forgot' : ''));
-		}
+			return ( this.form.hasClass('jsLoginForm') ) ? 'signin' : (this.form.hasClass('jsRegisterForm') ? 'register' : (this.form.hasClass('jsResetPwdForm') ? 'forgot' : ''));
+		};
 
 		/**
 		 * Сабмит формы регистрации или авторизации
@@ -328,8 +361,14 @@
 
 			var formData = this.form.serializeArray(),
 				validator = this.getFormValidator(),
-				formSubmit = $('.jsSubmit', this.form);
+				formSubmit = $('.jsSubmit', this.form),
+				urlParams = this.getUrlParams();
 			// end of vars
+
+			// устанавливаем редирект
+			if ( urlParams['redirect_to'] ) {
+				this.redirect_to = urlParams['redirect_to'];
+			}
 
 			var responseFromServer = function( response ) {
 					if ( response.error ) {
@@ -364,18 +403,22 @@
 					console.log(response.data.link);
 
 					if ( this.form.data('redirect') ) {
-						if ( response.data.link ) {
+						if ( typeof response.data.link !== 'undefined' ) {
 							console.info('try to redirect to2 ' + response.data.link);
 							console.log(typeof response.data.link);
 
-
 							document.location.href = response.data.link;
-							console.log('try reload....');
-							document.location.reload();
+
+							return false;
 						}
 						else {
-							this.form.unbind('submit');
-							this.form.submit();
+							// this.form.unbind('submit');
+							// this.form.submit();
+
+							completeRegister.html(response.message);
+							completeRegister.show();
+							registerForm.hide();
+							this.showLoginForm();
 						}
 					}
 					else {
@@ -391,9 +434,10 @@
 						$('#qiwi_phone').val(response.data.user.mobile_phone.slice(1));
 					}
 				},
+
 				requestToServer = function() {
 					this.submitBtnLoadingDisplay( formSubmit );
-					formData.push({name: 'redirect_to', value: location.href});
+					formData.push({name: 'redirect_to', value: this.redirect_to ? this.redirect_to : window.location.href});
 					$.post(this.form.attr('action'), formData, $.proxy(responseFromServer, this), 'json');
 				};
 			// end of functions
@@ -408,6 +452,16 @@
 
 			return false;
 		};
+
+		/**
+		 * Показать форму логина на странице /login
+		 */
+		Login.prototype.showLoginForm = function() {
+			showLoginFormLink.hide();
+			loginForm.slideDown(300);
+			$.scrollTo(loginForm, 500);
+		};
+
 
 		/**
 		 * Отображение формы "Забыли пароль"
@@ -476,12 +530,30 @@
 			}
 		};
 
+		/**
+		 * Получение get параметров текущей страницы
+		 */
+		Login.prototype.getUrlParams = function() {
+			var $_GET = {},
+				__GET = window.location.search.substring(1).split('&'),
+				getVar,
+				i;
+			// end of vars
+
+			for ( i = 0; i < __GET.length; i++ ) {
+				getVar = __GET[i].split('=');
+				$_GET[getVar[0]] = typeof( getVar[1] ) === 'undefined' ? '' : getVar[1];
+			}
+
+			return $_GET;
+		};
+
 		return Login;
 	}());
 
 
 	$(document).ready(function() {
-		login = new ENTER.constructors.Login();
+		var login = new ENTER.constructors.Login();
 	});
 
 }(window.ENTER));

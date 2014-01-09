@@ -83,7 +83,6 @@ $(document).ready(function () {
         goSlide()
     }, initis[1].t)
     /* Visuals */
-    $("html").css('overflow-x', 'hidden')
 	
 	var b = new brwsr()
     if ( b.isAndroid || b.isOSX) {

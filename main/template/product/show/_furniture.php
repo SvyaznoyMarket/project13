@@ -11,6 +11,7 @@
  * @var $additionalData    array
  * @var $shopStates        \Model\Product\ShopState\Entity[]
  * @var $creditData        array
+ * @var $deliveryData      array
  */
 ?>
 
@@ -40,17 +41,7 @@
         <?= $product->getDescription() ?>
     </div>
 
-    <? if (\App::config()->product['pullRecommendation']): ?>
-        <?= $helper->render('product/__slider', [
-            'type'     => 'alsoViewed',
-            'title'    => 'С этим товаром также смотрят',
-            'products' => [],
-            'count'    => null,
-            'limit'    => \App::config()->product['itemsInSlider'],
-            'page'     => 1,
-            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
-        ]) ?>
-    <? endif ?>
+    <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
 
     <? if ((bool)$related && \App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
@@ -62,6 +53,18 @@
             'page'           => 1,
             //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
             'additionalData' => $additionalData,
+        ]) ?>
+    <? endif ?>
+
+    <? if (\App::config()->product['pullRecommendation']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'alsoViewed',
+            'title'    => 'С этим товаром также смотрят',
+            'products' => [],
+            'count'    => null,
+            'limit'    => \App::config()->product['itemsInSlider'],
+            'page'     => 1,
+            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
         ]) ?>
     <? endif ?>
 
@@ -114,9 +117,9 @@
 
         <div id="coupeError" class="red" style="display:none"></div>
 
-        <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
 
-        <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
+        <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
     </div><!--/widget delivery -->
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
@@ -137,3 +140,5 @@
 </div>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
+
+</div>

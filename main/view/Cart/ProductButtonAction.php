@@ -20,7 +20,11 @@ class ProductButtonAction {
             'value'      => null,
             'inShopOnly' => null,
             'data'       => [
-                'group' => $product->getId(),
+                'group'  => $product->getId(),
+                'upsale' => json_encode([
+                    'url' => $helper->url('product.upsale', ['productId' => $product->getId()]),
+                    'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false,
+                ]),
             ],
             'class'      => \View\Id::cartButtonForProduct($product->getId()),
         ];
@@ -30,7 +34,8 @@ class ProductButtonAction {
         if ($product->isInShopOnly()) {
             $data['inShopOnly'] = true;
             $data['value'] = 'Резерв';
-            $data['url'] = $product->getLink() . '#oneclick';
+            $data['url'] = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
+            $data['class'] .= ' jsOneClickButton';
         }
 
         if (!$product->getIsBuyable()) {

@@ -22,7 +22,7 @@ Disallow: /corporate-register
 Disallow: /request-password
 Disallow: /*?from=enter_
 Disallow: /index.php
-Disallow: /*/stock$  
+Disallow: /*/stock$
 Disallow: /*?shop=
 Disallow: /*?sender=
 Disallow: /*avtomobilnaya-elektronika-2316
@@ -38,7 +38,16 @@ Disallow: /*aksessuari-dlya-avtomobilnoy-elektroniki-invertori-i-preobrazovateli
 Disallow: /*avtomobilnaya-elektronika-fm-transmitteri-2329
 Disallow: /*avtomobilnaya-elektronika-avtomobilnie-holodilniki-3461
 Disallow: /*avtomobilnaya-elektronika-avtomobilnie-pilesosi-3460
-
+Disallow: /*scrollTo=
+Disallow: /*pandora-844
+Disallow: /catalog/tovari-na-kagdiy-den/avtoaksessuari-nezamerzayushchaya-gidkost-3123
+Disallow: /catalog/doityourself/zimniy-assortiment-nasosi-i-manometri-d2b3
+Disallow: /catalog/doityourself/zimniy-assortiment-chehli-na-sidenya-adf4
+Disallow: /catalog/tovari-na-kagdiy-den/avtoaksessuari-avtokosmetika-3165
+Disallow: /catalog/do_it_yourself/stroitelstvo-i-remont-stremyanki-280
+Disallow: /catalog/do_it_yourself/stroitelstvo-i-remont-stremyanki-280
+Disallow: /catalog/gifthobby/podarki-i-suveniri-k-novomu-godu-2570
+Disallow: /slices/blackfriday
 Host: www.enter.ru
 
 Sitemap: http://www.enter.ru/sitemap.xml

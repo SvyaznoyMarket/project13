@@ -15,19 +15,30 @@ class DeliveryAction {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
+        return new \Http\JsonResponse($this->getResponseData($request->get('product'), $request->get('region')));
+    }
+
+    /**
+     * @param array $product
+     * @param int $region
+     * @return array
+     */
+    public function getResponseData($product, $region = null) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
         $helper = new \View\Helper();
         $user = \App::user();
 
         try {
             $productData = [];
-            foreach ((array)$request->get('product') as $product) {
-                if (!isset($product['id'])) {
+            foreach ((array)$product as $item) {
+                if (!isset($item['id'])) {
                     continue;
                 }
 
                 $productData[] = [
-                    'id'       => (int)$product['id'],
-                    'quantity' => !empty($product['quantity']) ? (int)$product['quantity'] : 1,
+                    'id'       => (int)$item['id'],
+                    'quantity' => !empty($item['quantity']) ? (int)$item['quantity'] : 1,
                 ];
             }
 
@@ -36,8 +47,8 @@ class DeliveryAction {
             }
 
             $regionId =
-                $request->get('region')
-                    ? (int)$request->get('region')
+                $region
+                    ? (int)$region
                     : $user->getRegionId();
             if (!$regionId) {
                 $regionId = $user->getRegion()->getId();
@@ -65,6 +76,10 @@ class DeliveryAction {
             \App::coreClientV2()->execute();
             if ($exception instanceof \Exception) {
                 throw $exception;
+            }
+
+            if (empty($result)) {
+                throw new \Exception('При расчете доставки получен пустой ответ');
             }
 
             if (!(bool)$result['product_list']) {
@@ -153,15 +168,17 @@ class DeliveryAction {
                 $responseData['product'][] = $product;
             }
         } catch(\Exception $e) {
+            \App::logger()->error($e->getMessage(), ['delivery']);
+
             $responseData = [
                 'success' => false,
                 'error'   => [
                     'code' => $e->getCode(),
-                    'code' => 'Не удалось расчитать доставку' . (\App::config()->debug ? ('' . $e->getMessage()) : ''),
+                    'message' => 'Не удалось расчитать доставку: ' . (\App::config()->debug ? ('' . $e->getMessage()) : ''),
                 ],
             ];
         }
 
-        return new \Http\JsonResponse($responseData);
+        return $responseData;
     }
 }

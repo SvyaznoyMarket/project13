@@ -17,6 +17,8 @@ $helper = new \Helper\TemplateHelper();
 $request = \App::request();
 
 $paypalECS = isset($paypalECS) && (true === $paypalECS);
+$lifeGift = isset($lifeGift) && (true === $lifeGift);
+$oneClick = isset($oneClick) && (true === $oneClick);
 $region = $user->getRegion();
 $isCorporative = $user->getEntity() && $user->getEntity()->getIsCorporative();
 
@@ -27,6 +29,20 @@ foreach (array_reverse($productsById) as $product) {
 		$backLink = $product->getParentCategory()->getLink();
 		break;
 	}
+}
+
+if ($oneClick) {
+    $createUrl = $page->url('order.oneClick.create');
+    $deliveryUrl = $page->url('order.delivery', ['oneClick' => 1]);
+} else if ($paypalECS) {
+    $createUrl = $page->url('order.paypal.create', ['token' => $request->get('token'), 'PayerID' => $request->get('PayerID')]);
+    $deliveryUrl = $page->url('order.delivery', ['paypalECS' => 1]);
+} else if ($lifeGift) {
+    $createUrl = $page->url('order.lifeGift.create');
+    $deliveryUrl = $page->url('order.delivery', ['lifeGift' => 1]);
+} else {
+    $createUrl = $page->url('order.create');
+    $deliveryUrl = $page->url('order.delivery');
 }
 ?>
 
@@ -45,26 +61,42 @@ foreach (array_reverse($productsById) as $product) {
 <div class="mLoader" data-bind="visible: !prepareData()"></div>
 <!-- /loader -->
 
+<? if (\App::config()->adFox['enabled']): ?>
+	<div id="adfox920" class="adfoxWrapper"></div>
+<? endif ?>
+
 <!-- Общая обертка оформления заказа -->
-<div class="bBuyingSteps clearfix" style="display:none" data-bind="style: { display: prepareData() ? 'block' : 'none'}">
+<div class="bBuyingSteps clearfix" style="display:none" data-bind="style: { display: prepareData() ? 'block' : 'none'}, css: { mLifeGift: $root.lifeGift }">
 
 	<div class="bBuyingLine"><a class="bBackCart" href="<?= $backLink ?>">&lt; Вернуться к покупкам</a></div>
 
-	 <!-- Order Method -->
+    <? if ($lifeGift): ?>
+        <div class="bLifeGiftTitle">
+            <span class="bLifeGiftTitle__eText">Обратите внимание</span>
+
+            <div class="bLifeGiftTitle__eImg">
+                Вы оформляете заказ на подарок тяжелобольным детям,<br/> которых опекает фонд "Подари жизнь".
+
+                <span class="bViolet">Оплатите заказ онлайн, и Enter доставит новогодний подарок<br/> прямо в больницу.</span>
+            </div>
+        </div>
+    <? endif ?>
+
+	<!-- Order Method -->
 	<div class="bBuyingLine clearfix mOrderMethod" data-bind="visible: deliveryTypes().length > 1">
 		<h2 class="bBuyingSteps__eTitle">Информация о заказе</h2>
 
 		<div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
 
 		<div class="bBuyingLine__eRight bInputList" data-bind="foreach: { data: deliveryTypes }">
-			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" hidden data-bind="attr: { 'id': 'method_'+$data.id }" />
+			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" data-bind="attr: { 'id': 'method_'+$data.id }" />
 			<label class="bCustomLabel mCustomLabelBig mLabelStrong" data-bind="
 									text: $data.name,
 									states: $data.states,
 									click: $root.chooseDeliveryTypes,
 									attr: { 'for': 'method_'+$data.id }">
 			</label>
-			<p class="bBuyingLine__eDesc" data-bind="text: $data.description"></p>
+			<p class="bBuyingLine__eDesc" data-bind="html: $data.description"></p>
 		</div>
 	</div>
 	<!-- Order Method -->
@@ -80,19 +112,17 @@ foreach (array_reverse($productsById) as $product) {
 
 					<div class="bDeliverySelf"><span data-bind="visible: box.hasPointDelivery, html: box.choosenPoint().name"></span></div>
 
-					<? if (isset($deliveryData['shops']) && (count($deliveryData['shops']) > 1)): ?>
-						<!-- кнопка сменить магазин -->
-						<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery && box.pointList.length > 1,
-													text: 'Сменить магазин',
-													click: box.changePoint">
-						</a>
-						<!-- /кнопка сменить магазин -->
-					<? endif ?>
+					<!-- кнопка сменить магазин -->
+					<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery && box.pointList.length > 1,
+												text: box.changePointButtonText,
+												click: box.changePoint">
+					</a>
+					<!-- /кнопка сменить магазин -->
 				</div>
 
 				<div class="bBuyingLine__eRight">
 					<!-- Celendar -->
-					<div class="bBuyingDates clearfix">
+					<div class="bBuyingDates clearfix" data-bind="visible: !$root.lifeGift()">
 						<div class="bBuyingDatesItem mLeft" data-bind="click: box.calendarLeftBtn">
 							<span class="bArrow"></span>
 						</div>
@@ -117,11 +147,15 @@ foreach (array_reverse($productsById) as $product) {
 					</div>
 					<!-- /Celendar -->
 
-					<div class="bDeliveryDate">
-						<span data-bind="text: box.deliveryName"></span> <strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span> <span data-bind="visible: !hasPointDelivery">*</span>
+					<div class="bDeliveryDate" data-bind="visible: !$root.lifeGift()">
+						<? /*<span data-bind="visible: hasPointDelivery, 
+										text: box.deliveryName">
+						</span> */?>
+
+						<strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span>
 					</div>
 
-					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length">
+					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length && !$root.lifeGift()">
 						<span class="bSelectWrap_eText" data-bind="text: (!box.hasPointDelivery ? 'c ' + box.choosenInterval().start + ' ' : '') + 'до ' + box.choosenInterval().end"></span>
 						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
 															value: box.choosenInterval,
@@ -146,8 +180,17 @@ foreach (array_reverse($productsById) as $product) {
 									<a target="_blank" data-bind="text: product.name, attr: { href: product.productUrl }"></a>
 								</div>
 
-								<div class="bItemsRow mCountItem">
-									<span data-bind="text: product.quantity"></span> шт.
+								<div class="bItemsRow mItemCount">
+                                    <? if ($oneClick): ?>
+                                        <div class="bCountSection clearfix" data-spinner-for="000" data-bind="attr: { 'data-seturl': product.setUrl }">
+                                            <button class="bCountSection__eM">-</button>
+                                            <input class="bCountSection__eNum" type="text" value="" data-bind="attr: { value: product.quantity }" />
+                                            <button class="bCountSection__eP">+</button>
+                                            <span>шт.</span>
+                                        </div><!--/counter -->
+                                    <? else: ?>
+									    <span data-bind="text: product.quantity"></span> шт.
+                                    <? endif ?>
 								</div>
 
 								<div class="bItemsRow mDelItem">
@@ -163,7 +206,7 @@ foreach (array_reverse($productsById) as $product) {
 				</div>
 			</div>
 
-			<div class="bFootnote" data-bind="visible: !hasPointDelivery">* Дату доставки уточнит специалист Контакт-сENTER</div>
+			<? /*<div class="bFootnote" data-bind="visible: !hasPointDelivery">* Дату доставки уточнит специалист Контакт-сENTER</div> */?>
 
 			<!-- Sum -->
 			<ul class="bSumOrderInfo">
@@ -179,7 +222,7 @@ foreach (array_reverse($productsById) as $product) {
 					Итого с доставкой:&nbsp;&nbsp;
 
 					<span class="bDelivery">
-						<span data-bind="text: window.printPrice( box.fullPrice + box.deliveryPrice )"></span>&nbsp;<span class="rubl">p</span>
+						<span data-bind="text: window.printPrice( box.totalBlockSum )"></span>&nbsp;<span class="rubl">p</span>
 					</span>
 				</li>
 			</ul>
@@ -187,112 +230,118 @@ foreach (array_reverse($productsById) as $product) {
 		</div>
 	</div>
 	<!-- /Delivery boxes -->
+	
+	<? if (!$oneClick): ?>
+	    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
+		<!-- Sale section -->
+		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift(), css: { hidden: paypalECS }">
+			<div class="bBuyingLine">
+				<div class="bBuyingLine__eLeft">
+					<h2 class="bBuyingSteps__eTitle">
+						Скидки
+					</h2>
 
-    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
-	<!-- Sale section -->
-	<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length, css: { hidden: paypalECS }">
-		<div class="bBuyingLine">
-			<div class="bBuyingLine__eLeft">
-				<h2 class="bBuyingSteps__eTitle">
-					Скидки
-				</h2>
-
-				Если у вас есть
-                <? if (\App::config()->blackcard['enabled']): ?> карта Enter SPA <? endif ?>
-                <? if (\App::config()->coupon['enabled'] && \App::config()->blackcard['enabled']): ?> или<? endif ?>
-                <? if (\App::config()->coupon['enabled']): ?> купон, <? endif ?>
-				укажите номер и получите скидку.
-			</div>
-
-			<div class="bBuyingLine__eRight">
-				<div class="bSaleData" data-bind="couponsVisible: couponsBox()">
-
-					<div class="bTitle">Вид скидки:</div>
-					
-					<div class="bSaleData__eEmptyBlock">Скидок больше нет</div>
-
-					<ul class="bSaleList bInputList clearfix">
-                        <? if (\App::config()->coupon['enabled']): ?>
-						<li class="bSaleList__eItem" data-type="coupon" data-bind="visible: (deliveryBoxes().length == 1)">
-							<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" hidden data-bind="checked: couponUrl" />
-							<label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
-						</li>
-                        <? endif ?>
-
-                        <? if (\App::config()->blackcard['enabled']): ?>
-						<li class="bSaleList__eItem mEnterSpa" data-type="blackcard">
-							<input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" hidden data-bind="checked: couponUrl" />
-							<label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
-						</li>
-                        <? endif ?>
-					</ul>
-
-					<input class="bBuyingLine__eText mSaleInput" type="text" id="" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
-
-					<button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon">Применить</button>
-
-					<p class="bSaleError" data-bind="text: couponError"></p>
+					Если у вас есть
+	                <? if (\App::config()->blackcard['enabled']): ?> карта Enter SPA <? endif ?>
+	                <? if (\App::config()->coupon['enabled'] && \App::config()->blackcard['enabled']): ?> или<? endif ?>
+	                <? if (\App::config()->coupon['enabled']): ?> купон, <? endif ?>
+					укажите номер и получите скидку.
 				</div>
 
-				<div class="bSaleCheck"></div>
+				<div class="bBuyingLine__eRight">
+					<div class="bSaleData" data-bind="couponsVisible: couponsBox()">
 
-				 <!-- Coupons -->
-				<div class="bBuyingLine mCouponsLine" data-bind="foreach: { data: couponsBox(), as: 'coupon' }">
-					<div class="bOrderItems">
-						<div class="bItemsRow mItemImg" data-bind="css: { mError: coupon.error }"></div>
+						<div class="bTitle">Вид скидки:</div>
+						
+						<div class="bSaleData__eEmptyBlock">Скидок больше нет</div>
 
-						<div class="bItemsRow mItemInfo" data-bind="text: (coupon.error && coupon.error.message) || coupon.name"></div>
+						<ul class="bSaleList bInputList clearfix">
+	                        <? if (\App::config()->coupon['enabled']): ?>
+							<li class="bSaleList__eItem" data-type="coupon" data-bind="visible: (deliveryBoxes().length == 1)">
+								<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" data-bind="checked: couponUrl" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="svz_club">Купон</label>
+							</li>
+	                        <? endif ?>
 
-						<div class="bItemsRow mCountItem"></div>
+	                        <? if (\App::config()->blackcard['enabled']): ?>
+							<li class="bSaleList__eItem mEnterSpa" data-type="blackcard">
+								<input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" data-bind="checked: couponUrl" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
+							</li>
+	                        <? endif ?>
+						</ul>
 
-						<div class="bItemsRow mDelItem">
-							<a class="bDelItem" data-bind="attr: { 'href': coupon.deleteUrl }, click: $root.deleteItem">удалить</a>
-						</div>
+						<input class="bBuyingLine__eText mSaleInput" type="text" id="" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
 
-						<div class="bItemsRow mItemRight" data-bind="visible: !coupon.error"><span data-bind="text: coupon.sum"></span> <span class="rubl">p</span></div>
+						<button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon">Применить</button>
+
+						<p class="bSaleError" data-bind="text: couponError"></p>
 					</div>
+
+					<div class="bSaleCheck"></div>
+
+					 <!-- Coupons -->
+					<div class="bBuyingLine mCouponsLine" data-bind="foreach: { data: couponsBox(), as: 'coupon' }">
+						<div class="bOrderItems">
+							<div class="bItemsRow mItemImg" data-bind="css: { mError: coupon.error }"></div>
+
+							<div class="bItemsRow mItemInfo" data-bind="text: (coupon.error && coupon.error.message) || coupon.name"></div>
+
+							<div class="bItemsRow mCountItem"></div>
+
+							<div class="bItemsRow mDelItem">
+								<a class="bDelItem" data-bind="attr: { 'href': coupon.deleteUrl }, click: $root.deleteItem">удалить</a>
+							</div>
+
+							<div class="bItemsRow mItemRight" data-bind="visible: !coupon.error"><span data-bind="text: coupon.sum"></span> <span class="rubl">p</span></div>
+						</div>
+					</div>
+					<!-- /Coupons -->
 				</div>
-				<!-- /Coupons -->
+
+				<!-- Sum -->
+				<!-- <ul class="bSumOrderInfo">
+					<li class="bSumOrderInfo__eLine">
+						<span class="bDelivery  mOldPrice">
+							<span data-bind="">2 345</span> 
+							<span class="rubl">p</span>
+						</span>
+					</li>
+
+					<li class="bSumOrderInfo__eLine">
+						Сумма заказа с учетом скидок:&nbsp;&nbsp;
+
+						<span class="bDelivery">
+							<span data-bind="">2 345</span> 
+							<span class="rubl">p</span>
+						</span>
+					</li>
+				</ul> -->
+				<!-- /Sum -->
 			</div>
-
-			<!-- Sum -->
-			<!-- <ul class="bSumOrderInfo">
-				<li class="bSumOrderInfo__eLine">
-					<span class="bDelivery  mOldPrice">
-						<span data-bind="">2 345</span> 
-						<span class="rubl">p</span>
-					</span>
-				</li>
-
-				<li class="bSumOrderInfo__eLine">
-					Сумма заказа с учетом скидок:&nbsp;&nbsp;
-
-					<span class="bDelivery">
-						<span data-bind="">2 345</span> 
-						<span class="rubl">p</span>
-					</span>
-				</li>
-			</ul> -->
-			<!-- /Sum -->
 		</div>
-	</div>
-	<!-- /Sale section -->
-    <? endif ?>
+		<!-- /Sale section -->
+        <? elseif (!$lifeGift && !$oneClick): ?>
+	        Купоны на сайте временно не принимаются. Вы можете использовать их в любом из наших магазинов или обратиться в контакт-центр. Приносим свои извинения
+	    <? endif ?>
+	<? endif ?>
 
-	<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
-		<a href="<?= $page->url('cart') ?>" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
+	<? if (!$oneClick): ?>
+		<div class="bBuyingLine mSumm clearfix" data-bind="visible: deliveryBoxes().length">
+			<a href="<?= $page->url('cart') ?>" class="bBackCart mOrdeRead">&lt; Редактировать товары</a>
 
-		<div class="bTotalSumm">
-			Сумма всех заказов:
-			<span class="bTotalSumm__ePrice" data-bind="text: window.printPrice( totalSum() )"></span>&nbsp;<span class="rubl">p</span>
+			<div class="bTotalSumm">
+				Сумма всех заказов:
+				<span class="bTotalSumm__ePrice" data-bind="text: window.printPrice( totalSum() )"></span>&nbsp;<span class="rubl">p</span>
+			</div>
 		</div>
-	</div>
+	<? endif ?>
 
 	<!-- Форма заказа -->
 	<div class="bBuyingInfo" data-bind="visible: deliveryBoxes().length">
-		<h2 class="bBuyingSteps__eTitle">Информация о счастливом получателе</h2>
+		<h2 class="bBuyingSteps__eTitle" data-bind="visible: !$root.lifeGift()">Информация о счастливом получателе</h2>
 
-		<div class="bHeadnote">
+		<div class="bHeadnote" data-bind="visible: !$root.lifeGift()">
             <? if ($user->getEntity()): ?>
                 Привет, <a href="<?= $page->url('user') ?>"><strong><?= $user->getEntity()->getName() ?></strong></a>
             <? else: ?>
@@ -302,100 +351,188 @@ foreach (array_reverse($productsById) as $product) {
             <? endif ?>
 		</div>
 		
-		<form id="order-form" action="<?= $paypalECS ? $page->url('order.paypal.create', ['token' => $request->get('token'), 'PayerID' => $request->get('PayerID')]) : $page->url('order.create') ?>" method="post">
+		<form id="order-form" action="<?= $createUrl ?>" method="post">
 			<!-- Info about customer -->
+
 			<div class="bBuyingLine mBuyingFields clearfix">
-				<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
-				<div class="bBuyingLine__eRight">
-					<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
-				</div>
-
-				<label for="" class="bBuyingLine__eLeft">Фамилия получателя</label>
-				<div class="bBuyingLine__eRight">
-					<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
-				</div>
-
-				<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
-				<div class="bBuyingLine__eRight">
-					<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
-
-					<div class="bSubscibeCheck bInputList">
-						<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked hidden />
-						<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>                 
-					</div>
-				</div>
-
-				<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
-				<div class="bBuyingLine__eRight mPhone">
-					<span class="bPlaceholder">+7</span> 
-					<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
-				</div>
-
-				<!-- Address customer -->
-				<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки*</label>
-				<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
-					<div class="bSelectedCity">
-						<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
+				<? if ($lifeGift): ?>
+					<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
+					<div class="bBuyingLine__eRight mPhone">
+						<span class="bPlaceholder">+7</span> 
+						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
+						<span class="phoneHintLg">Если у вас нет номера мобильного телефона, укажите телефон фонда "Подари Жизнь": <strong>+7(926)011-98-53</strong>.</span>
 					</div>
 
-					<? if ((bool)$subways): ?>
-					<div class="bInputAddress ui-css">
-						<label class="bPlaceholder">Метро*</label>
-						<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
-						<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
-						<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
-					</div>
-					<? endif ?>
-					
-					<div class="bInputAddress">
-						<label class="bPlaceholder">Улица*</label>
-						<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />						
+                    <label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
+                    <div class="bBuyingLine__eRight">
+                        <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
+
+                        <div class="bSubscibeCheck bInputList">
+                            <input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
+                            <label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
+                        </div>
+                    </div>
+
+                    <label class="bBuyingLine__eLeft">Добрые пожелания ребенку</label>
+                    <div class="bBuyingLine__eRight">
+                        <textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
+                    </div>
+
+				<? elseif ($oneClick): ?>
+					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
 					</div>
 
-					<div class="bInputAddress">
-						<label class="bPlaceholder">Дом*</label>
-						<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild" name="order[address_building]" value="" />					
+					<label for="" class="bBuyingLine__eLeft">Фамилия получателя</label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
 					</div>
 
-					<div class="bInputAddress">
-						<label class="bPlaceholder">Корпус</label>
-						<input type="text" id="order_address_number" class="bBuyingLine__eText mInputShort mInputNumber" name="order[address_number]" value="" />
+					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
+
+						<div class="bSubscibeCheck bInputList">
+							<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
+							<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>                 
+						</div>
 					</div>
 
-					<div class="bInputAddress">
-						<label class="bPlaceholder">Квартира</label>
-						<input type="text" id="order_address_apartment" class="bBuyingLine__eText mInputShort mInputApartament" name="order[address_apartment]" value="" />
+					<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
+					<div class="bBuyingLine__eRight mPhone">
+						<span class="bPlaceholder">+7</span> 
+						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
 					</div>
 
-					<div class="bInputAddress">
-						<label class="bPlaceholder">Этаж</label>
-						<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
+					<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
+						<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
+						<div class="bBuyingLine__eRight mSClub">
+							<input id="sclub-number" type="text" class="bBuyingLine__eText" name="order[sclub_card_number]" />
+							<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+						</div>
 					</div>
-				</div>
 
-				<label class="bBuyingLine__eLeft">Пожелания и дополнения</label>
-				<div class="bBuyingLine__eRight">
-					<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
-				</div>
-
-				<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
-					<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
-					<div class="bBuyingLine__eRight mSClub">
-						<input id="sclub-number" type="text" class="bBuyingLine__eText" name="order[sclub_card_number]" />
-						<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+				<? else: ?>
+					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
 					</div>
-				</div>
+
+					<label for="" class="bBuyingLine__eLeft">Фамилия получателя</label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
+					</div>
+
+					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
+					<div class="bBuyingLine__eRight">
+						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
+
+						<div class="bSubscibeCheck bInputList">
+							<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
+							<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>                 
+						</div>
+					</div>
+
+					<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
+					<div class="bBuyingLine__eRight mPhone">
+						<span class="bPlaceholder">+7</span> 
+						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
+					</div>
+
+					<!-- Address customer -->
+					<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки*</label>
+					<div class="bBuyingLine__eRight jsDeliveryAddress" data-value='<?= json_encode(['regionName' => $region->getName()])?>' style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
+						<div class="bSelectedCity">
+							<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
+						</div>
+
+						<? if ((bool)$subways): ?>
+						<div class="bInputAddress ui-css jsInputMetro">
+							<label class="bPlaceholder">Метро*</label>
+							<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
+							<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
+							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
+						</div>
+						<? endif ?>
+
+<style type="text/css">
+    #kladr_autocomplete ul{position:absolute;display:block;margin:0;padding:0;border:1px solid #8A8A8A;border-radius:3px;background-color:white;z-index:9999;}#kladr_autocomplete li{display:list-item;list-style-type:none;margin:0;padding:3px 5px;overflow:hidden;border:1px solid white;border-bottom:1px solid #BDBDBD;}#kladr_autocomplete li.active{background-color:#E0E0E0;border-radius:3px;border:1px solid #979797;}#kladr_autocomplete a{display:block;cursor:default;width:10000px;}#kladr_autocomplete .spinner{position:absolute;display:block;margin:0;padding:0;width:20px;height:20px;background-color:transparent;background-image:url("http://kladr-api.ru/examples/css/lib/jquery.kladr.images/spinner.png");background-position:center center;background-repeat:no-repeat;z-index:9999;}
+</style>
+						<div class="bInputAddress">
+							<label class="bPlaceholder">Улица*</label>
+							<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />						
+						</div>
+
+						<div class="bInputAddress">
+							<label class="bPlaceholder">Дом*</label>
+							<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild" name="order[address_building]" value="" />					
+						</div>
+
+						<div class="bInputAddress">
+							<label class="bPlaceholder">Корпус</label>
+							<input type="text" id="order_address_number" class="bBuyingLine__eText mInputShort mInputNumber" name="order[address_number]" value="" />
+						</div>
+
+						<div class="bInputAddress">
+							<label class="bPlaceholder">Квартира</label>
+							<input type="text" id="order_address_apartment" class="bBuyingLine__eText mInputShort mInputApartament" name="order[address_apartment]" value="" />
+						</div>
+
+						<div class="bInputAddress">
+							<label class="bPlaceholder">Этаж</label>
+							<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
+						</div>
+
+                        <div class="bInputAddress" id="map" style="width: 460px; height: 350px;"></div>
+					</div>
+
+					<label class="bBuyingLine__eLeft">Пожелания и дополнения</label>
+					<div class="bBuyingLine__eRight">
+						<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
+					</div>
+
+					<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
+						<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
+						<div class="bBuyingLine__eRight mSClub">
+							<input id="sclub-number" type="text" class="bBuyingLine__eText" name="order[sclub_card_number]" />
+							<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
+						</div>
+					</div>
+				<? endif ?>
 			</div>
+		
 
 			<!-- Methods of payment -->
-			<h2 class="bBuyingSteps__eTitle" data-bind="css: { hidden: paypalECS }">Оплата</h2>
+			<? if ($oneClick && ($paymentMethod = reset($paymentMethods))): ?>
+                <h2 class="bBuyingSteps__eTitle"></h2>
 
-			<div class="bBuyingLine clearfix mPayMethods" data-bind="css: { hidden: paypalECS }">
-				<div class="bBuyingLine__eLeft"></div>
-				<div class="bBuyingLine__eRight bInputList">
-					<?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
-				</div>
-			</div>
+                <div class="bBuyingLine clearfix mPayMethods">
+                    <div class="bBuyingLine__eLeft"></div>
+                    <div
+                        class="bBuyingLine__eRight bInputList"
+                        data-bind="paymentMethodVisible: totalSum"
+                        data-value="<?= $page->json(['min-sum' => \App::config()->product['minCreditPrice'], 'method_id' => \Model\PaymentMethod\Entity::CREDIT_ID, 'isAvailableToPickpoint' => true]) ?>" >
+
+                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[payment_method_id]" value="<?= \Model\PaymentMethod\Entity::CREDIT_ID ?>" id="order_payment_method_id_6"/>
+                        <label class="bCustomLabel mCustomLabelBig" for="order_payment_method_id_6">
+                            Купить в кредит
+                        </label>
+
+                        <?= $helper->render('order/newForm/__paymentMethod-credit', ['paymentMethod' => $paymentMethod, 'banks' => $banks, 'creditData' => $creditData]) ?>
+                    </div>
+                </div>
+            <? else: ?>
+                <h2 class="bBuyingSteps__eTitle" data-bind="css: { hidden: paypalECS }">Оплата</h2>
+
+                <div class="bBuyingLine clearfix mPayMethods" data-bind="css: { hidden: paypalECS }">
+                    <div class="bBuyingLine__eLeft"></div>
+                    <div class="bBuyingLine__eRight bInputList">
+                        <?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
+                    </div>
+                </div>
+			<? endif ?>
+			<!-- /Methods of payment -->
 
 			<!-- PayPal сумма заказа -->
 			<div data-bind="visible: paypalECS" class="bBuyingLine mPaypalLine clearfix">
@@ -409,17 +546,24 @@ foreach (array_reverse($productsById) as $product) {
 			</div>
 			<!--/ PayPal сумма заказа -->
 
-			<div class="bBuyingLine clearfix">
+			<div class="bBuyingLine mConfirm clearfix">
 				<div class="bBuyingLine__eLeft"></div>
 
 				<div class="bBuyingLine__eRight bInputList mRules">
 
 					<!-- Privacy and policy -->
-					<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[agreed]" hidden id="order_agreed"/>
-
+					<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[agreed]" id="order_agreed"/>
 					<label class="bCustomLabel mCustomLabelBig" for="order_agreed">
 						Я ознакомлен и согласен с «<a href="<?= $isCorporative ? '/corp-terms' : '/terms' ?>" target="_blank">Условиями продажи</a>» и «<a href="/legal" target="_blank">Правовой информацией</a>»*
 					</label>
+
+                    <? if ($lifeGift): ?>
+                        <br />
+                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[lifeGift_agreed]" id="order_lifeGift_agreed"/>
+                        <label class="bCustomLabel mCustomLabelBig" for="order_lifeGift_agreed">
+                            Оформляя и оплачивая настоящий заказ я даю поручение компании ООО «Энтер» передать приобретенный мною товар в качестве дара в Благотворительный фонд помощи детям с онкогематологическими и иными тяжелыми заболеваниями «ПОДАРИ ЖИЗНЬ» (ИНН 7714320009, КПП 771401001, огрн 1067799030639) в срок до 23.12.2013*
+                        </label>
+                    <? endif ?>
 
 					<p class="bFootenote">* Поля обязательные для заполнения</p>
 
@@ -446,7 +590,7 @@ foreach (array_reverse($productsById) as $product) {
 			<span>Работает </span>
 			<span>$[properties.regtime]</span>
 			<br/>
-			<a class="bGrayButton shopchoose" href="#" data-pointid="$[properties.id]" data-parentbox="$[properties.parentBoxToken]">Забрать из этого магазина</a>
+			<a class="bGrayButton shopchoose" href="#" data-pointid="$[properties.id]" data-parentbox="$[properties.parentBoxToken]">$[properties.buttonName]</a>
 		</div>
 	</div>
 
@@ -468,7 +612,7 @@ foreach (array_reverse($productsById) as $product) {
 </div>
 <!-- /Общая обертка оформления заказа -->
 
-<div id="jsOrderDelivery" data-url="<?= $page->url('order.delivery', $paypalECS ? ['paypalECS' => 1] : []) ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
+<div id="jsOrderDelivery" data-url="<?= $deliveryUrl ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
 <div id="jsOrderForm" data-value="<?= $page->json([
 	'order[recipient_first_name]'   => $form->getFirstName(),
 	'order[recipient_last_name]'    => $form->getLastName(),

@@ -23,19 +23,32 @@ class EditForm {
     private $homePhone;
     /** @var string */
     private $skype;
+    /** @var string */
+    private $enterprizeCoupon;
+    /** @var bool */
+    private $couponAgree;
+    /** @var bool */
+    private $isSubscribed;
+    /** @var string */
+    private $sclubCardnumber;
     /** @var array */
     private $errors = array(
-        'global'       => null,
-        'first_name'   => null,
-        'middle_name'  => null,
-        'last_name'    => null,
-        'sex'          => null,
-        'birthday'     => null,
-        'occupation'   => null,
-        'email'        => null,
-        'mobile_phone' => null,
-        'home_phone'   => null,
-        'skype'        => null,
+        'global'                    => null,
+        'first_name'                => null,
+        'middle_name'               => null,
+        'last_name'                 => null,
+        'sex'                       => null,
+        'birthday'                  => null,
+        'occupation'                => null,
+        'email'                     => null,
+        'mobile_phone'              => null,
+        'home_phone'                => null,
+        'skype'                     => null,
+        'enterprize_coupon'         => null,
+        'svyaznoy_club_card_number' => null,
+        'guid'                      => null,
+        'agree'                     => null,
+        'is_subscribe'              => null,
     );
 
     public function __construct(array $data = []) {
@@ -68,6 +81,10 @@ class EditForm {
         if (array_key_exists('mobile_phone', $data)) $this->setMobilePhone($data['mobile_phone']);
         if (array_key_exists('home_phone', $data)) $this->setHomePhone($data['home_phone']);
         if (array_key_exists('skype', $data)) $this->setSkype($data['skype']);
+        if (array_key_exists('enterprize_coupon', $data)) $this->setEnterprizeCoupon($data['enterprize_coupon']);
+        if (array_key_exists('coupon_agree', $data)) $this->setCouponAgree($data['coupon_agree']);
+        if (array_key_exists('is_subscribe', $data)) $this->setIsSubscribed($data['is_subscribe']);
+        if (array_key_exists('svyaznoy_club_card_number', $data)) $this->setSclubCardnumber($data['svyaznoy_club_card_number']);
     }
 
     public function fromEntity(\Model\User\Entity $entity) {
@@ -81,6 +98,8 @@ class EditForm {
         $this->setMobilePhone($entity->getMobilePhone());
         $this->setHomePhone($entity->getHomePhone());
         $this->setSkype($entity->getSkype());
+        $this->setIsSubscribed($entity->getIsSubscribed());
+        $this->setSclubCardnumber($entity->getSclubCardnumber());
     }
 
     /**
@@ -234,6 +253,20 @@ class EditForm {
     }
 
     /**
+     * @param string $enterprizeCoupon
+     */
+    public function setEnterprizeCoupon($enterprizeCoupon) {
+        $this->enterprizeCoupon = trim((string)$enterprizeCoupon);
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnterprizeCoupon() {
+        return $this->enterprizeCoupon;
+    }
+
+    /**
      * @param $name
      * @param $value
      * @throws \InvalidArgumentException
@@ -280,4 +313,48 @@ class EditForm {
 
         return $isValid;
     }
+
+    /**
+     * @param boolean $couponAgree
+     */
+    public function setCouponAgree($couponAgree) {
+        $this->couponAgree = (bool)$couponAgree;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCouponAgree() {
+        return $this->couponAgree;
+    }
+
+    /**
+     * @param boolean $isSubscribed
+     */
+    public function setIsSubscribed($isSubscribed) {
+        $this->isSubscribed = (bool)$isSubscribed;
+        //file_put_contents('/tmp/logger.txt', print_r($this->isSubscribed, true).PHP_EOL, FILE_APPEND);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsSubscribed() {
+        return $this->isSubscribed;
+    }
+
+    /**
+     * @param string $sclubCardnumber
+     */
+    public function setSclubCardnumber($sclubCardnumber) {
+        $this->sclubCardnumber = str_replace(' ','', (string)$sclubCardnumber);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSclubCardnumber() {
+        return $this->sclubCardnumber;
+    }
+
 }

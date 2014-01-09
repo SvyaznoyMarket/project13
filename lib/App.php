@@ -410,16 +410,16 @@ class App {
         if (!isset(self::$loggers[$name])) {
             switch ($name) {
                 case 'timer':
-                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/timer.log'), $name, $config[$name]['level']);
-                    break;
-                case 'request_compatible':
-                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/site_page_time.log'), 'RequestLogger', $config[$name]['level']);
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/timer.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     break;
                 case 'order':
-                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/order.log'), $name, $config[$name]['level']);
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/order.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
+                    break;
+                case 'query':
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/query.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     break;
                 default:
-                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log'), $name, $config[$name]['level']);
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     //$instances[$name] = new \Logger\NullLogger();
                     break;
             }

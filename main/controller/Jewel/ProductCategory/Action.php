@@ -145,11 +145,6 @@ class Action extends \Controller\ProductCategory\Action {
      * @return \Http\Response
      */
     public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo) {
-        // убираем/показываем уши
-        if(isset($catalogJson['show_side_panels'])) {
-            \App::config()->adFox['enabled'] = (bool)$catalogJson['show_side_panels'];
-        }
-
         \App::logger()->debug('Exec ' . __METHOD__);
 
         // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
@@ -185,6 +180,11 @@ class Action extends \Controller\ProductCategory\Action {
             $seoContent = '';
         }
 
+        $subCatMenu = &$catalogJson['sub_category_filter_menu'];
+        if ( !empty($subCatMenu) && is_array($subCatMenu) ) {
+            $subCatMenu = reset($subCatMenu);
+        }
+
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,
@@ -207,6 +207,10 @@ class Action extends \Controller\ProductCategory\Action {
             $page->setParam('itemsPerRow', \App::config()->product['itemsPerRowJewel']);
             $page->setParam('scrollTo', 'smalltabs');
             $page->setParam('shopScriptSeo', $shopScriptSeo);
+            $page->setParam('searchHints', $this->getSearchHints($catalogJson));
+            $page->setParam('viewParams', [
+                'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+            ]);
         };
 
         // если категория содержится во внешнем узле дерева
@@ -247,7 +251,7 @@ class Action extends \Controller\ProductCategory\Action {
     protected function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 138);
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 134);
 
         return new \Http\Response($page->show());
     }
@@ -263,7 +267,7 @@ class Action extends \Controller\ProductCategory\Action {
     protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 138);
+        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
 
         // если не-ajax то практически никаких действий не производим, чтобы ускорить загрузку,
         // так как при загрузке сразу же будет отправлен аякс-запрос для получения табов, фильтров, товаров

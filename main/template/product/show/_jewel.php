@@ -11,6 +11,7 @@
  * @var $additionalData    array
  * @var $shopStates        \Model\Product\ShopState\Entity[]
  * @var $creditData        array
+ * @var $deliveryData      array
  */
 
 $showLinkToProperties = true;
@@ -125,17 +126,7 @@ $is_showed = [];
         <?= $product->getDescription() ?>
     </div>
 
-    <? if (\App::config()->product['pullRecommendation']): ?>
-        <?= $helper->render('product/__slider', [
-            'type'     => 'alsoViewed',
-            'title'    => 'С этим товаром также смотрят',
-            'products' => [],
-            'count'    => null,
-            'limit'    => \App::config()->product['itemsInSlider'],
-            'page'     => 1,
-            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
-        ]) ?>
-    <? endif ?>
+    <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
 
     <? if ((bool)$related && \App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
@@ -147,6 +138,18 @@ $is_showed = [];
             'page'           => 1,
             //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
             'additionalData' => $additionalData,
+        ]) ?>
+    <? endif ?>
+
+    <? if (\App::config()->product['pullRecommendation']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'alsoViewed',
+            'title'    => 'С этим товаром также смотрят',
+            'products' => [],
+            'count'    => null,
+            'limit'    => \App::config()->product['itemsInSlider'],
+            'page'     => 1,
+            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
         ]) ?>
     <? endif ?>
 
@@ -190,15 +193,15 @@ $is_showed = [];
 
 <div class="bProductSectionRightCol">
     <div class="bWidgetBuy mWidget">
-        <? if (!$product->isInShopStockOnly()): ?>
-            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
+        <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
         <? endif ?>
 
         <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
-        <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
 
-        <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
+        <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
 
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
 
@@ -223,8 +226,8 @@ $is_showed = [];
 
     <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
-    <? if (!$product->isInShopStockOnly()): ?>
-        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
+    <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
     <? endif ?>
 
     <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
@@ -233,3 +236,5 @@ $is_showed = [];
 </div>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
+
+</div>

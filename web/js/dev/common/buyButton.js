@@ -5,83 +5,105 @@
  * 
  * @requires	jQuery, ENTER.utils.BlackBox
  */
-;(function() {
+;(function( ENTER ) {
+	var
+		body = $('body'),
+		clientCart = ENTER.config.clientCart;
+	// end of vars
 
-	/**
-	 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
-	 * 
-	 * @param  {Event}	e
-	 */
-	var buy = function buy() {
-		var button = $(this),
-			url = button.attr('href');
-		// end of vars
+	
+	var
+		/**
+		 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
+		 */
+		buy = function buy() {
+			var
+				button = $(this),
+				url = button.attr('href');
+			// end of vars
 
-		var addToCart = function addToCart( data ) {
-			var groupBtn = button.data('group');
+			var
+				addToCart = function addToCart( data ) {
+					var groupBtn = button.data('group'),
+						upsale = button.data('upsale') ? button.data('upsale') : null,
+						product = button.parents('.jsSliderItem').data('product');
+					//end of vars
 
-			if ( !data.success ) {
+					if ( !data.success ) {
+						return false;
+					}
+
+					button.removeClass('mLoading');
+
+					if ( data.product ) {
+						data.product.isUpsale = product && product.isUpsale ? true : false;
+						data.product.fromUpsale = upsale && upsale.fromUpsale ? true : false;
+					}
+
+					$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
+					body.trigger('addtocart', [data]);
+					body.trigger('getupsale', [data, upsale]);
+					body.trigger('updatespinner',[groupBtn]);
+				};
+			// end of functions
+
+			$.get(url, addToCart);
+
+			return false;
+		},
+
+		/**
+		 * Хандлер кнопки купить
+		 */
+		buyButtonHandler = function buyButtonHandler() {
+			var button = $(this),
+				url = button.attr('href');
+			// end of vars
+			
+
+			if ( button.hasClass('mDisabled') ) {
 				return false;
 			}
 
-			button.removeClass('mLoading');
+			if ( button.hasClass('mBought') ) {
+				document.location.href(url);
 
-			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
-			$('body').trigger('addtocart', [data]);
-			$('body').trigger('updatespinner',[groupBtn]);
+				return false;
+			}
+
+			button.addClass('mLoading');
+			button.trigger('buy');
+
+			return false;
+		},
+
+		/**
+		 * Маркировка кнопок «Купить»
+		 * см.BlackBox startAction
+		 */
+		markCartButton = function markCartButton() {
+			var
+				products = clientCart.products,
+				i,
+				len;
+			// end of vars
+			
+			console.info('markCartButton');
+
+			for ( i = 0, len = products.length; i < len; i++ ) {
+				$('.'+products[i].cartButton.id).html('В корзине').addClass('mBought').attr('href','/cart');
+			}
 		};
-
-		$.get(url, addToCart);
-
-		return false;
-	};
-
-	/**
-	 * Хандлер кнопки купить
-	 * 
-	 * @param  {Event}	e
-	 */
-	var buyButtonHandler = function buyButtonHandler() {
-		var button = $(this),
-			url = button.attr('href');
-		// end of vars
-		
-
-		if ( button.hasClass('mDisabled') ) {
-			return false;
-		}
-
-		if ( button.hasClass('mBought') ) {
-			document.location.href(url);
-
-			return false;
-		}
-
-		button.addClass('mLoading');
-		button.trigger('buy');
-
-		return false;
-	};
-
-	/**
-	 * Маркировка кнопок «Купить»
-	 * см.BlackBox startAction
-	 * 
-	 * @param	{event}		event          
-	 * @param	{Object}	markActionInfo Данные полученые из Action
-	 */
-	var markCartButton = function markCartButton( event, markActionInfo ) {
-		for ( var i = 0, len = markActionInfo.product.length; i < len; i++ ) {
-			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought').attr('href','/cart');
-		}
-	};
+	// end of functions
 	
+
 	$(document).ready(function() {
-		$('body').bind('markcartbutton', markCartButton);
-		$('body').on('click', '.jsBuyButton', buyButtonHandler);
-		$('body').on('buy', '.jsBuyButton', buy);
+		body.bind('markcartbutton', markCartButton);
+		body.on('click', '.jsBuyButton', buyButtonHandler);
+		body.on('buy', '.jsBuyButton', buy);
 	});
-}());
+}(window.ENTER));
+
 
 
 /**
@@ -92,17 +114,20 @@
  * @param		{event}		event 
  * @param		{Object}	data	данные о том что кладется в корзину
  */
-(function( global ) {
+(function( ENTER ) {
 
-	var utils = global.ENTER.utils,
-		blackBox = utils.blackBox;
+	var
+		utils = ENTER.utils,
+		blackBox = utils.blackBox,
+		body = $('body');
 	// end of vars
 	
 
+	var
 		/**
 		 * KISS Аналитика для добавления в корзину
 		 */
-	var kissAnalytics = function kissAnalytics( data ) {
+		kissAnalytics = function kissAnalytics( event, data ) {
 			var productData = data.product,
 				serviceData = data.service,
 				warrantyData = data.warranty,
@@ -110,7 +135,7 @@
 				toKISS = {};
 			//end of vars
 			
-			if ( typeof(_kmq) === 'undefined' ) {
+			if ( typeof _kmq === 'undefined' ) {
 				return;
 			}
 
@@ -129,6 +154,9 @@
 				};
 
 				_kmq.push(['record', 'Add to Cart', toKISS]);
+
+				productData.isUpsale && _kmq.push(['record', 'cart rec added from rec', {'SKU cart added from rec': productData.article}]);
+				productData.fromUpsale && _kmq.push(['record', 'cart recommendation added', {'SKU cart rec added': productData.article}]);
 			}
 
 			if ( serviceData ) {
@@ -165,15 +193,21 @@
 		/**
 		 * Google Analytics аналитика добавления в корзину
 		 */
-		googleAnalytics = function googleAnalytics( data ) {
-			var productData = data.product;
+		googleAnalytics = function googleAnalytics( event, data ) {
+			var
+				productData = data.product;
+			// end of vars
 
-			if ( productData ) {
-				if ( typeof _gaq !== 'undefined' ){
-					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
-				}
+			if ( !productData || typeof _gaq === 'undefined' ) {
+				return;
 			}
+
+			_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
+
+			productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
+			productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
 		},
+
 
 		/**
 		 * myThings аналитика добавления в корзину
@@ -193,22 +227,21 @@
 		/**
 		 * Soloway аналитика добавления в корзину
 		 */
-		adAdriver = function adAdriver( data ) {
+		adAdriver = function adAdriver( event, data ) {
 			var productData = data.product,
 				offer_id = productData.id,
-				category_id =  ( productData.category ) ? productData.category[productData.category.length - 1].id : 0;
-			// end of vars
-
-
-			var s = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+offer_id+';11='+category_id+'&bt=55&pz=0&rnd=![rnd]',
+				category_id =  ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
+			
+				s = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+offer_id+';11='+category_id+'&bt=55&pz=0&rnd=![rnd]',
 				d = document,
 				i = d.createElement('IMG'),
 				b = d.body;
+			// end of vars
 
 			s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
 			i.style.position = 'absolute';
 			i.style.width = i.style.height = '0px';
-			
+
 			i.onload = i.onerror = function(){
 				b.removeChild(i);
 				i = b = null;
@@ -218,32 +251,10 @@
 			b.insertBefore(i, b.firstChild);
 		},
 
-
-		/**
-		 * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
-		 */
-		addToLiveTex = function addToLiveTex(data) {
-			if ( typeof LiveTex.addToCart  === 'function' ) {
-				try {
-					LiveTex.addToCart(data.product);
-				}
-				catch ( err ) {
-					dataToLog = {
-						event: 'LiveTex.addToCart',
-						type: 'ошибка отправки данных в LiveTex',
-						err: err
-					};
-
-					utils.logError(dataToLog);
-				}
-			}
-		},
-
-
 		/**
 		 * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
 		 */
-		addToRetailRocket = function addToRetailRocket( data ) {
+		addToRetailRocket = function addToRetailRocket( event, data ) {
 			var product = data.product,
 				dataToLog;
 			// end of vars
@@ -263,37 +274,12 @@
 					utils.logError(dataToLog);
 				}
 			}
-
-
 		},
-
 
 		/**
 		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
 		 */
 		buyProcessing = function buyProcessing( event, data ) {
-			var basket = data.cart,
-				product = data.product,
-				tmpitem = {
-					'id': product.id,
-					'title': product.name,
-					'price' : window.printPrice(product.price),
-					'priceInt' : product.price,
-					'imgSrc': product.img,
-					'productLink': product.link,
-					'totalQuan': basket.full_quantity,
-					'totalSum': window.printPrice(basket.full_price),
-					'linkToOrder': basket.link
-				};
-			// end of vars
-
-
-			kissAnalytics(data);
-			googleAnalytics(data);
-			myThingsAnalytics(data);
-			adAdriver(data);
-			addToRetailRocket(data);
-			addToLiveTex(data);
 
 			if ( data.redirect ) {
 				console.warn('redirect');
@@ -301,12 +287,39 @@
 				document.location.href = data.redirect;
 			}
 			else if ( blackBox ) {
-				blackBox.basket().add( tmpitem );
+				blackBox.basket().add( data );
 			}
-		};
-	//end of vars
+		},
 
-	$(document).ready(function() {
-		$('body').bind('addtocart', buyProcessing);
-	});
-}(this));
+		/**
+		 *
+		 */
+		addToVisualDNA = function addToVisualDNA( event, data ) {
+			var
+				productData 	= data.product,
+				product_id 		= productData.id,
+				product_price 	= productData.price,
+				category_id 	= ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
+				d = document,
+				b = d.body,
+				i = d.createElement('IMG' );
+			// end of vars
+
+			i.src = '//e.visualdna.com/conversion?api_key=enter.ru&id=added_to_basket&product_id=' + product_id + '&product_category=' + category_id + '&value=' + product_price + '&currency=RUB';
+			i.width = i.height = '1';
+			i.alt = '';
+
+			b.appendChild(i);
+		};
+	//end of functions
+
+	body.on('addtocart', buyProcessing);
+
+	// analytics
+	body.on('addtocart', kissAnalytics);
+	body.on('addtocart', googleAnalytics);
+	body.on('addtocart', myThingsAnalytics);
+	body.on('addtocart', adAdriver);
+	body.on('addtocart', addToRetailRocket);
+	body.on('addtocart', addToVisualDNA);
+}(window.ENTER));

@@ -14,6 +14,10 @@ class AppConfig {
     public $encoding;
     /** @var bool */
     public $debug;
+    /** @var array */
+    public $logger = [
+        'pretty' => null,
+    ];
     /**
      * @var string
      * @hidden
@@ -355,17 +359,7 @@ class AppConfig {
         'logEnabled'     => null,
         'logDataEnabled' => null,
     ];
-    /**
-     * @var array
-     * @hidden
-     */
-    public $crossss = [
-        'enabled' => null,
-        'timeout' => null,
-        'apiUrl'  => null,
-        'apiKey'  => null,
-        'id'      => null,
-    ];
+
     /** @var array */
     public $warranty = [
         'enabled' => null,
@@ -440,7 +434,6 @@ class AppConfig {
         'cookieName'     => null,
         'sessionName'    => null,
         'enableMetaTag'  => null,
-        'newCreate'      => null,
         'maxSumOnline'   => null,
     ];
     /**
@@ -467,6 +460,24 @@ class AppConfig {
     public $sphinx = [
         'showFacets' => null,
         'showListingSearchBar' => null,
+    ];
+
+    /**
+     * @name Акция "ПодариЖизнь"
+     * @var array
+     */
+    public $lifeGift = [
+        'enabled'  => null,
+        'regionId' => null,
+        'labelId'  => null,
+    ];
+
+    /**
+     * @name Enterprize SITE-2622
+     * @var array
+     */
+    public $enterprize = [
+        'enabled' => null,
     ];
 
     public function __construct() {

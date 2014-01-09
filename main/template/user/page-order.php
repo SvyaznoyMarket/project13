@@ -11,8 +11,7 @@
  */
 ?>
 
-<div class="fl"><strong class="font16">Мои заказы (<?= count($orders) ?>)</strong></div>
-<div class="clear pb20"></div>
+<div class="userTitle">Мои заказы (<?= count($orders) ?>)</div>
 
 <? if (count($orders) < 1): ?>
     <div>У Вас пока нет ни одного заказа.</div>
@@ -28,17 +27,17 @@
     ?>
 
     <? if (\Model\Order\Entity::STATUS_READY == $order->getStatusId()): ?>
-        <div class="fr font16 orange pb10">Заказ выполнен</div>
-    <? elseif (\Model\Order\Entity::PAYMENT_STATUS_PAID == $order->getPaymentStatusId() && \Model\Order\Entity::STATUS_CANCELED !== $order->getStatusId()): ?>
-        <div class="fr font16 green pb10">заказ оплачен</div>
+        <div class="fr font16 orange">Заказ выполнен</div>
+    <? elseif (\Model\Order\Entity::PAYMENT_STATUS_PAID == $order->getPaymentStatusId()): ?>
+        <div class="fr font16 green">заказ оплачен</div>
     <? elseif (\Model\Order\Entity::STATUS_CANCELED == $order->getStatusId()): ?>
-        <div class="fr font16 red pb10">заказ отменен</div>
+        <div class="fr font16 red">заказ отменен</div>
     <? endif; ?>
 
-    <div class="font16 orange pb10">
-        <strong>
-            Заказ № <?= $order->getNumber() ?>
-        </strong>
+    <div class="userTitleOrder">
+        
+        Заказ <strong>№ <?= $order->getNumber() ?></strong>
+        
         <? if ($order->getCreatedAt()): ?>
             от <?= $order->getCreatedAt()->format('d.m.Y') ?>
         <? endif ?>
@@ -47,7 +46,7 @@
         <!--на сумму&nbsp;<?= $page->helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span>-->
     </div>
 
-    <table class="order mb15">
+    <table class="order">
         <? foreach ($order->getProduct() as $orderProduct): ?>
             <?
                 if (empty($productsById[$orderProduct->getId()])) continue;
@@ -115,7 +114,7 @@
         <tr>
             <th>
                 <? if ($delivery && $delivery->getDeliveredAt()): ?>
-                <div class="font12 pb5">
+                <div class="font12">
                     <?= $delivery->getDeliveredAt()->format('d.m.Y') ?>
                 </div>
                 <? endif ?>
@@ -137,7 +136,7 @@
                 <? endif ?>
             </th>
             <td>
-                <?= ($order->getPaymentStatusId() == \Model\Order\Entity::PAYMENT_STATUS_PAID) ? 'Оплачено' : 'Итого к оплате' ?>:<br><strong class="font18"><?= $page->helper->formatPrice($order->getSum()) ?>&nbsp;<span class="rubl">p</span></strong>
+                <?= ($order->getPaymentStatusId() == \Model\Order\Entity::PAYMENT_STATUS_PAID) ? 'Оплачено' : 'Итого к оплате' ?>:<br><strong class="font18"><?= $page->helper->formatPrice($order->getPaySum()) ?>&nbsp;<span class="rubl">p</span></strong>
             </td>
         </tr>
     </table>

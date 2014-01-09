@@ -108,7 +108,7 @@ class OneClickAction {
                 try {
                     $result = \App::coreClientV2()->query('order/create', $params, $data, \App::config()->coreV2['hugeTimeout']);
                 } catch (\Exception $e) {
-                    if (!in_array($e->getCode(), [705, 708, 735, 800])) {
+                    if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                         try {
                             // пробуем создать заказ без мета-данных
                             $data['meta_data'] = [];
@@ -130,7 +130,6 @@ class OneClickAction {
                                     'QUERY_STRING',
                                     'REQUEST_TIME_FLOAT',
                                 ]),
-                                'query'  => \Util\RequestLogger::getInstance()->getStatistics()['api_queries'],
                             ]);
 
                             throw $e;
@@ -173,7 +172,7 @@ class OneClickAction {
             $orderData = [
                 'order_article'    => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getId(); }, $order->getProduct())),
                 'order_id'         => $order->getNumber(),
-                'order_total'      => $order->getSum(),
+                'order_total'      => $order->getPaySum(),
                 'product_quantity' => implode(',', array_map(function($orderProduct) { /** @var $orderProduct \Model\Order\Product\Entity */ return $orderProduct->getQuantity(); }, $order->getProduct())),
             ];
 

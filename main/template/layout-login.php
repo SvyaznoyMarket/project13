@@ -8,6 +8,7 @@
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
+    <title><?= $page->getTitle() ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="noyaca"/>
@@ -18,7 +19,6 @@
     </script>
 
     <?= $page->slotMeta() ?>
-    <title><?= $page->getTitle() ?></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon.png">
@@ -33,23 +33,17 @@
     <?= $page->slotMetaOg() ?>
 </head>
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
-<?= $page->slotConfig() ?>
-    <div class="allpage" id="page">
-    <? if (\App::config()->adFox['enabled']): ?>
-    <div class="adfoxWrapper" id="adfoxbground"></div>
-    <? endif ?>
 
-        <div class="allpageinner clearfix">
+    <?= $page->slotConfig() ?>
+    <?= $page->slotAdFoxBground() ?>
 
+    <div class="wrapper">
+        <div class="content mContentOrder clearfix">
             <?= $page->slotContent() ?>
-
-            <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
-    </div>
+        </div><!--/ Контент -->
+    </div><!--/ Шаблон -->
 
     <?= $page->render('order/_footer') ?>
-    <?= $page->slotFooter() ?>
     <?= $page->slotSurveybar() ?>
 
     <?= $page->slotRegionSelection() ?>

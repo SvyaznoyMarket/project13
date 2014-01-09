@@ -24,7 +24,7 @@ class ProductAction {
         try {
             if ($quantity < 0) {
                 $quantity = 0;
-                \App::logger()->warn(sprintf('Указано неверное количество товаров. Запрос %s', json_encode($request->request->all(), JSON_UNESCAPED_UNICODE)));
+                \App::logger()->warn(['message' => 'Указано неверное количество товаров', 'request' => $request->request->all()]);
             }
 
             if (!$productId) {
@@ -44,11 +44,6 @@ class ProductAction {
             ]);
 
             $cart->setPaypalProduct($cartProduct);
-
-            // crossss
-            if (false && \App::config()->crossss['enabled'] && ($quantity > 0)) {
-                (new \Controller\Crossss\CartAction())->product($product);
-            }
 
             $productInfo = [
                 'id'    =>  $product->getId(),

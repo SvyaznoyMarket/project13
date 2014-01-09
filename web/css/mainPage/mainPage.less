@@ -15,6 +15,13 @@
   // }
   .topbar{
     margin-bottom: 20px;
+    margin-left: 0;
+    padding-left: 10px;
+    width: auto;
+    background: none;
+    border-color: @typLinkColor;
+    .rounded (0 0 4px 4px);
+
     #jsregion,
     .usermenu a{
       color:@white;
@@ -24,7 +31,16 @@
     }
     .headerContactPhone,
     .headerShopLink{
+      display: block;
+      color: #fff;
+    }
+
+    .headerShopLink {
       display: none;
+    }
+
+    .bRegion {
+      width: 580px;
     }
   }  
   /*--- ПОИСК ---*/
@@ -234,6 +250,21 @@
     }
     a{
       @socIcons-url:"@{base-url}/common/img/socIcons.png";
+
+      &[title="vkontakte"],
+      &[title="twitter"],
+      &[title="facebook"],
+      &[title="youtube"]{
+        width: 26px;
+        height: 26px;
+        cursor: pointer;
+        margin: 0 2px;
+        vertical-align: middle;
+        display: inline-block;
+        *display: inline;
+        zoom: 1;
+      }
+
       &[title="twitter"] {
         background: url("@{socIcons-url}") no-repeat 0px 0px;
         &:hover {

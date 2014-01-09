@@ -23,10 +23,10 @@ Autoloader::register($config->appDir);
 if (isset($_GET['APPLICATION_DEBUG'])) {
     if (!empty($_GET['APPLICATION_DEBUG'])) {
         $config->debug = true;
-        setcookie('debug', 1, strtotime('+7 days' ), '/');
+        setcookie('debug', 1, strtotime('+14 days' ), '/');
     } else {
         $config->debug = false;
-        setcookie('debug', 0, strtotime('+7 days' ), '/');
+        setcookie('debug', 0, strtotime('+14 days' ), '/');
     }
 } else if (isset($_COOKIE['debug'])) {
     $config->debug = !empty($_COOKIE['debug']);
@@ -124,18 +124,12 @@ $response = null;
         }
 
         // debug panel
-        if (\App::config()->debug && !$response instanceof \Http\JsonResponse && $response->getIsShowDebug()) {
-            $response->setContent(
-                $response->getContent()
-                . "\n\n"
-                . (new \Templating\PhpEngine(\App::config()->appDir . '/data'))->render('debug/panel')
-            );
+        if (\App::config()->debug) {
+            (new \Debug\ShowAction())->execute($request, $response);
         }
 
         $response->send();
     }
-
-    \App::logger('request_compatible')->info(\Util\RequestLogger::getInstance()->getStatistics());
 
     // dumps logs
     \App::shutdown();
@@ -143,8 +137,6 @@ $response = null;
 });
 
 \App::logger()->info(['message' => 'Start app', 'env' => \App::$env]);
-$requestLogger = \Util\RequestLogger::getInstance();
-$requestLogger->setId(\App::$id);
 
 // request
 $request = \App::request();

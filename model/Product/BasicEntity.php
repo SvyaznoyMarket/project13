@@ -23,6 +23,8 @@ class BasicEntity {
     protected $price;
     /** @var State\Entity */
     protected $state;
+    /** @var int */
+    protected $statusId;
     /** @var Line\Entity */
     protected $line;
     /** @var Category\Entity */
@@ -43,10 +45,12 @@ class BasicEntity {
     protected $isInShowroomsOnly;
     /** @var bool */
     protected $isInShopsOnly;
-
+    /** @var bool */
+    protected $isUpsale = false;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
@@ -70,6 +74,7 @@ class BasicEntity {
         if (array_key_exists('avg_score', $data)) $this->setAvgScore($data['avg_score']);
         if (array_key_exists('avg_star_score', $data)) $this->setAvgStarScore($data['avg_star_score']);
         if (array_key_exists('num_reviews', $data)) $this->setNumReviews($data['num_reviews']);
+        if (array_key_exists('is_upsale', $data)) $this->setIsUpsale($data['is_upsale']);
 
         $this->calculateState();
     }
@@ -188,6 +193,20 @@ class BasicEntity {
     }
 
     /**
+     * @param int $statusId
+     */
+    public function setStatusId($statusId) {
+        $this->statusId = $statusId ? (int)$statusId : null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatusId() {
+        return $this->statusId;
+    }
+
+    /**
      * @param string $token
      */
     public function setToken($token) {
@@ -248,7 +267,8 @@ class BasicEntity {
     public function getIsBuyable() {
         return
             $this->getState() && $this->getState()->getIsBuyable()
-            && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly());
+            && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly())
+        ;
     }
 
     /**
@@ -425,5 +445,19 @@ class BasicEntity {
 
         $this->isInShopsOnly = !$inStore && $inShop;
         $this->isInShowroomsOnly = !$inStore && !$inShop && $inShowroom;
+    }
+
+    /**
+     * @param boolean $isUpsale
+     */
+    public function setIsUpsale($isUpsale) {
+        $this->isUpsale = (bool)$isUpsale;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsUpsale() {
+        return $this->isUpsale;
     }
 }

@@ -3,91 +3,69 @@
 return function (
     \Helper\TemplateHelper $helper,
     \Model\Product\BasicEntity $product,
+    array $deliveryData = [],
     array $shopStates = []
 ) {
-    /**
-     * @var $shopStates \Model\Product\ShopState\Entity[]
-     */
+    /** @var $shopStates \Model\Product\ShopState\Entity[] */
 
-    $user = \App::user();
+    // массив данных способов доставки
+    $delivery = [];
+    if (isset($deliveryData['product'][0]['delivery'])) {
+        foreach ($deliveryData['product'][0]['delivery'] as $item) {
+            if (in_array($item['token'], ['self', 'standart', 'pickpoint', 'now'])) {
+                $delivery[$item['token']] = $item;
 
-    $shopData = [];
-    foreach ($shopStates as $shopState) {
-        $shop = $shopState->getShop();
-        if (!$shop instanceof \Model\Shop\Entity) continue;
-        $shopData[] = [
-            'id'        => $shop->getId(),
-            'name'      => $shop->getName(),
-            //'address'   => $shop->getAddress(),
-            'regime'    => $shop->getRegime(),
-            'longitude' => $shop->getLongitude(),
-            'latitude'  => $shop->getLatitude(),
-            'url'       => $helper->url('shop.show', ['shopToken' => $shop->getToken(), 'regionToken' => $user->getRegion()->getToken()]),
-        ];
+                if (isset($item['price'])) {
+                    $delivery[$item['token']] = array_merge($delivery[$item['token']], [
+                        'isPriceEqualZero' => 0 === $item['price'] ? true : false,
+                        'isPriceNaN' => is_nan($item['price']) ? true : false,
+                    ]);
+                }
+            }
+        }
+
+        // флажек, открываем блок "Сегодня есть в магазинах" или нет
+        $delivery['isInShopOnly'] = $product->isInShopOnly() ? true : false;
+
+        if (in_array('pickpoint', array_keys($delivery)) && in_array('self', array_keys($delivery))) {
+            unset($delivery['pickpoint']);
+        }
     }
 
-    $deliveryData = [];
-    if ((bool)$shopData) {
-        $deliveryData[] = [
-            'id'    => null,
+    // магазины, в которых товар находится на витрине
+    if (!(bool)$delivery) {
+        $delivery['now'] = [
+            'id'    => \Model\DeliveryType\Entity::TYPE_NOW,
             'token' => 'now',
-            'price' => 0,
-            'shop'  => $shopData,
-            'date'  => [
-                'value' => (new \DateTime())->format('d.m.Y'),
-                'name'  => 'сегодня',
-            ],
-            'days'  => 0,
+            'price' => null,
+            'shop'  => [],
         ];
+        foreach ($shopStates as $shopState) {
+            $shop = $shopState->getShop();
+            if (!$shop) continue;
+
+            $delivery['now']['shop'][] = [
+                'id'        => $shop->getId(),
+                'name'      => $shop->getName(),
+                'regime'    => $shop->getRegime(),
+                'latitude'  => $shop->getLatitude(),
+                'longitude' => $shop->getLongitude(),
+                'url'       => $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]),
+            ];
+        }
+
+        if (!(bool)$delivery['now']['shop']) {
+            unset($delivery['now']);
+        }
     }
+
 ?>
 
-<script id="widget_delivery_standart" type="text/html">
-    <% if (price === 0) { %>
-        <span><span class="bJustText">Доставка</span> <strong>бесплатно</strong></span>
-    <% } else { %>
-        <span><span class="bJustText">Доставка</span> <strong><%=price%></strong> <span class="rubl">p</span></span>
-    <% } %>
-        <div class="bJustText"><%=dateString%></div>
-</script>
+    <div id="avalibleShop" class="popup">
+        <i class="close" title="Закрыть">Закрыть</i>
+        <div id="ymaps-avalshops"></div>
+        <a href="#" class="bOrangeButton fr mt5">Перейти к магазину</a>
+    </div>
 
-<script id="widget_delivery_self" type="text/html">
-    <% if (price === 0) { %>
-        <span><span class="bJustText">Самовывоз</span> <strong>бесплатно</strong></span>
-    <% } else { %>
-        <span><span class="bJustText">Самовывоз</span> <strong><%=price%></strong> <span class="rubl">p</span></span>
-    <% } %>
-        <div class="bJustText"><%=dateString%></div>
-</script>
-
-<script id="widget_delivery_shop" type="text/html">
-    <li class="bDeliveryFreeAddress__eShop">
-        <a class="bDeliveryFreeAddress__eLink" data-lat="<%=lat%>" data-lng="<%=lng%>" href="<%=url%>"><%=name%></a>
-    </li>
-</script>
-
-<div id="avalibleShop" class="popup">
-    <i class="close" title="Закрыть">Закрыть</i>
-    <div id="ymaps-avalshops"></div>
-    <a href="#" class="bOrangeButton fr mt5">Перейти к магазину</a>
-</div>
-
-<ul class="bDelivery mLoader" data-value="<?= $helper->json([
-    'url'      => $product->getIsBuyable() ? $helper->url('product.delivery') : '',
-    'delivery' => $deliveryData,
-]) ?>">
-    <li class="bDelivery__eItem mDeliveryPrice">
-    </li>
-    <li class="bDelivery__eItem mDeliveryFree">
-    </li>
-
-    <? $closed = !$product->isInShopOnly() ? true : false ?>
-    <li class="bDelivery__eItem mDeliveryNow <?= $closed ? 'mClose' : 'mOpen' ?>">
-        <span class="bDeliveryNowClick dotted">Есть в магазинах</span>
-        <div class="<?= $closed ? ' hf' : '' ?>">Cегодня, без предзаказа</div>
-        <ul class="bDeliveryFreeAddress">
-        </ul>
-    </li>
-</ul>
-
+    <?= $helper->renderWithMustache('product/___delivery', ['delivery' => $delivery]); // список способов доставки ?>
 <? };

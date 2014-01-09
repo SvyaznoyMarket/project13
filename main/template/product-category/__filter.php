@@ -7,6 +7,7 @@ return function(
     $countUrl,
     $hotlinks,
     $openFilter,
+    array $promoStyle = [],
     array $categories = [],
     \Model\Product\Category\Entity $selectedCategory = null
 ) {
@@ -18,69 +19,70 @@ return function(
     $filters = [];
     $priceFilter = null;
 
-    $pasteIndex = count($productFilter->getFilterCollection()) > 3 ? 3 : count($productFilter->getFilterCollection());
-    $i = 1;
-    foreach ($productFilter->getFilterCollection() as $filter) {
-        if ($filter->isPrice()) {
-            $priceFilter = $filter;
-            $priceFilter->setStepType('price');
-        } else {
-            $filters[] = $filter;
-            $i++;
+    $insertCustomFilters = function() use (&$categories, &$filters) {
+        // фильтр "Товары по категориям"
+        if ((bool)$categories) {
+            $categoryFilter = new \Model\Product\Filter\Entity();
+            $categoryFilter->setId('category');
+            $categoryFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+            $categoryFilter->setName('Товары по категориям');
+            $categoryFilter->getIsInList(true);
+
+            foreach ($categories as $category) {
+                $option = new \Model\Product\Filter\Option\Entity();
+                $option->setId($category->getId());
+                $option->setName($category->getName());
+                $categoryFilter->addOption($option);
+            }
+
+            $filters[] = $categoryFilter;
         }
 
-        if ($pasteIndex == $i) {
-            // фильтр "Товары по категориям"
-            if ((bool)$categories) {
-                $categoryFilter = new \Model\Product\Filter\Entity();
-                $categoryFilter->setId('category');
-                $categoryFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-                $categoryFilter->setName('Товары по категориям');
-                $categoryFilter->getIsInList(true);
+    };
 
-                foreach ($categories as $category) {
-                    $option = new \Model\Product\Filter\Option\Entity();
-                    $option->setId($category->getId());
-                    $option->setName($category->getName());
-                    $categoryFilter->addOption($option);
-                }
-
-                $filters[] = $categoryFilter;
+    $countFilters = count($productFilter->getFilterCollection());
+    $countInListFilters = null;
+    if (0 == $countFilters) {
+        $insertCustomFilters();
+    } else {
+        $insertIndex = $countFilters > 3 ? 3 : $countFilters;
+        $i = 1;
+        $countInListFilters = 0;
+        foreach ($productFilter->getFilterCollection() as $filter) {
+            if ($filter->isPrice()) {
+                $priceFilter = $filter;
+                $priceFilter->setStepType('price');
+            } else {
+                $filters[] = $filter;
                 $i++;
             }
 
-            // фильтр "Наличие в магазинах"
-            /** @var $shops \Model\Shop\Entity[] */
-            $shops = $helper->getParam('shops');
-            if ((bool)$shops) {
-                $shopFilter = new \Model\Product\Filter\Entity();
-                $shopFilter->setId('shop');
-                $shopFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-                $shopFilter->setName('Наличие в магазинах');
-                $shopFilter->getIsInList(true);
-
-                foreach ($shops as $shop) {
-                    $option = new \Model\Product\Filter\Option\Entity();
-                    $option->setId($shop->getId());
-                    $option->setName($shop->getName());
-                    $shopFilter->addOption($option);
-                }
-                $filters[] = $shopFilter;
+            if ($insertIndex == $i) {
+                $insertCustomFilters();
                 $i++;
+            }
+
+            if ($filter->getIsInList()){
+                $countInListFilters++;
             }
         }
     }
 
-?>
+    if (0 === $countInListFilters) return;
 
-    <form class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
-        <div class="bFilterHead">
-            <a class="bFilterToggle <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+    $showParamsButton = (bool) ($countInListFilters > 1 || !$priceFilter);
+
+?>
+    <form id="productCatalog-filter-form" class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+        <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
+            <? if ($showParamsButton): ?>
+                <a class="bFilterToggle btnGrey <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+            <? endif ?>
 
             <? if ($priceFilter && $productFilter) {
                 /**@var     $productFilter      \Model\Product\Filter
                  **@var     $priceFilter        \Model\Product\Filter\Entity **/
-                echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]);
+                echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]);
             } ?>
 
             <div class="bBtnPick clearfix">
@@ -89,7 +91,7 @@ return function(
 
             <!-- SEO теги -->
             <? if(!empty($hotlinks)): ?>
-                <ul class="bPopularSection">
+                <ul class="bPopularSection"<? if(!empty($promoStyle['bPopularSection'])): ?> style="<?= $promoStyle['bPopularSection'] ?>"<? endif ?>>
                     <? foreach ($hotlinks as $hotlink): ?>
                         <li class="bPopularSection__eItem"><a class="bPopularSection__eText" href="<?= $hotlink['url'] ?>"><?= $hotlink['title'] ?></a></li>
                     <? endforeach ?>
@@ -121,12 +123,12 @@ return function(
                     if (!$filter->getIsInList()) continue;
                     $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId());
                 ?>
-                    <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if ('shop' == $filter->getId()): ?> mLineItem<? endif ?>" id="<?= $viewId ?>">
+                    <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?>" id="<?= $viewId ?>">
 
                     <? switch ($filter->getTypeId()) {
                         case \Model\Product\Filter\Entity::TYPE_NUMBER:
                         case \Model\Product\Filter\Entity::TYPE_SLIDER:
-                            echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $filter]);
+                            echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]);
                             break;
                         case \Model\Product\Filter\Entity::TYPE_LIST:
                             echo $helper->render('product-category/filter/__list', ['productFilter' => $productFilter, 'filter' => $filter]);

@@ -3,6 +3,8 @@
 namespace Controller\Product;
 
 class IndexAction {
+    use TrustfactorsTrait;
+
     /**
      * @param string        $productPath
      * @param \Http\Request $request
@@ -43,6 +45,7 @@ class IndexAction {
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         $region = $user->getRegion();
+        $lifeGiftRegion = new \Model\Region\Entity(['id' => \App::config()->lifeGift['regionId']]);
 
         // подготовка 2-го пакета запросов
 
@@ -52,7 +55,6 @@ class IndexAction {
         /** @var $product \Model\Product\Entity */
         $product = null;
         $productExpanded = null;
-        $dataR = null;
         $repository->prepareEntityByToken($productToken, $region, function($data) use (&$product, &$productExpanded) {
             $data = reset($data);
 
@@ -73,6 +75,19 @@ class IndexAction {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
         }
 
+        // подготовка 3-го пакета запросов
+        $lifeGiftProduct = null;
+        if ($product->getLabel() && (\App::config()->lifeGift['labelId'] === $product->getLabel()->getId())) {
+            /** @var $lifeGiftProduct \Model\Product\Entity|null */
+            $repository->prepareEntityByToken($productToken, $lifeGiftRegion, function($data) use (&$lifeGiftProduct) {
+                $data = reset($data);
+
+                if ((bool)$data) {
+                    $lifeGiftProduct = new \Model\Product\Entity($data);
+                }
+            });
+        }
+
         // категории продукта
         $categories = $product->getCategory();
         $productCategoryTokens = array_map(function($category){
@@ -86,55 +101,15 @@ class IndexAction {
         $dataStore->addQuery($query, [], function ($data) use (&$catalogJson) {
             if($data) $catalogJson = $data;
         });
-        $dataStore->execute();
 
-        // трастфакторы
-        $trustfactorTop = null;
-        $trustfactorMain = null;
-        $trustfactorRight = [];
-        $trustfactorExcludeToken = empty($catalogJson['trustfactor_exclude_token']) ? [] : $catalogJson['trustfactor_exclude_token'];
-        $excludeTokens = array_intersect($productCategoryTokens, $trustfactorExcludeToken);
-        if(empty($excludeTokens)) {
-            if(!empty($catalogJson['trustfactor_top'])) $trustfactorTop = $catalogJson['trustfactor_top'];
-            if(!empty($catalogJson['trustfactor_main'])) {
-                \App::contentClient()->addQuery(
-                    trim((string)$catalogJson['trustfactor_main']),
-                    [],
-                    function($data) use (&$trustfactorMain) {
-                        if (!empty($data['content'])) {
-                            $trustfactorMain = $data['content'];
-                        }
-                    },
-                    function(\Exception $e) {
-                        \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
-                        \App::exception()->add($e);
-                    }
-                );
-                \App::contentClient()->execute();
-            }
-            if(!empty($catalogJson['trustfactor_right'])) {
-                if(!is_array($catalogJson['trustfactor_right'])) $catalogJson['trustfactor_right'] = [$catalogJson['trustfactor_right']];
-                $i = 0;
-                foreach ($catalogJson['trustfactor_right'] as $trustfactorRightToken) {
-                    \App::contentClient()->addQuery(
-                        trim((string)$trustfactorRightToken),
-                        [],
-                        function($data) use (&$trustfactorRight, $i) {
-                            if (!empty($data['content'])) {
-                                $trustfactorRight[$i] = $data['content'];
-                            }
-                        },
-                        function(\Exception $e) {
-                            \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
-                            \App::exception()->add($e);
-                        }
-                    );
-                    $i++;
-                }
-                \App::contentClient()->execute();
-                ksort($trustfactorRight);
-            }
+        // выполнение 3-го пакета запросов
+        $client->execute();
+
+        if ($lifeGiftProduct && !($lifeGiftProduct->getLabel() && (\App::config()->lifeGift['labelId'] === $lifeGiftProduct->getLabel()->getId()))) {
+            $lifeGiftProduct = null;
         }
+
+        $trustfactors = $this->getTrustfactors($catalogJson, $productCategoryTokens);
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
@@ -164,7 +139,7 @@ class IndexAction {
         if ($productLine instanceof \Model\Product\Line\Entity ) {
             $productRepository = \RepositoryManager::product();
             $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
-            if(!$product->getKit()) {
+            if ($line && !$product->getKit()) {
                 // Если набор, то получаем главный продукт
                 $mainProduct = $productRepository->getEntityById($line->getMainProductId());
             } else {
@@ -195,9 +170,9 @@ class IndexAction {
         */
 
         // получаем отзывы для товара
-        $reviewsData = \RepositoryManager::review()->getReviews($product->getId(), 'user');
-        $reviewsDataPro = \RepositoryManager::review()->getReviews($product->getId(), 'pro');
-        $reviewsDataSummary = \RepositoryManager::review()->prepareReviewsDataSummary($reviewsData, $reviewsDataPro);
+        $reviewsData = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->getReviews($product->getId(), 'user') : [];
+        $reviewsDataPro = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->getReviews($product->getId(), 'pro') : [];
+        $reviewsDataSummary = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->prepareReviewsDataSummary($reviewsData, $reviewsDataPro) : [];
 
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем уникальные категории-родители аксессуаров
@@ -317,10 +292,32 @@ class IndexAction {
             $productVideos = [];
         }
 
+        // пишем в сессию id товара на который был переход с блока рекомендаций, в юзербаре
+        if ('cart_rec' === $request->get('from')) {
+            if ($sessionName = \App::config()->product['recommendationSessionKey']) {
+                $storage = \App::session();
+                $limit = \App::config()->cart['productLimit'];
+
+                $data = (array)$storage->get($sessionName, []);
+                if (!in_array($product->getId(), $data)) {
+                    $data[] = $product->getId();
+                }
+
+                $productCount = count($data);
+                if ($productCount > $limit) {
+                    $data = array_slice($data, $productCount - $limit, $limit, true);
+                }
+
+                $storage->set($sessionName, $data);
+            }
+        }
+
+
         $page = new \View\Product\IndexPage();
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
+        $page->setParam('lifeGiftProduct', $lifeGiftProduct);
         $page->setParam('productExpanded', $productExpanded);
         $page->setParam('productVideos', $productVideos);
         $page->setParam('title', $product->getName());
@@ -342,12 +339,18 @@ class IndexAction {
         $page->setParam('categoryClass', $categoryClass);
         $page->setParam('useLens', $useLens);
         $page->setParam('catalogJson', $catalogJson);
-        $page->setParam('trustfactorTop', $trustfactorTop);
-        $page->setParam('trustfactorMain', $trustfactorMain);
-        $page->setParam('trustfactorRight', $trustfactorRight);
+        $page->setParam('trustfactorTop', $trustfactors['top']);
+        $page->setParam('trustfactorMain', $trustfactors['main']);
+        $page->setParam('trustfactorRight', $trustfactors['right']);
+        $page->setParam('trustfactorContent', $trustfactors['content']);
         $page->setParam('mainProduct', $mainProduct);
         $page->setParam('parts', $parts);
         $page->setParam('line', $line);
+        $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId()));
+        $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
+        $page->setParam('viewParams', [
+            'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+        ]);
 
         return new \Http\Response($page->show());
     }
@@ -380,7 +383,7 @@ class IndexAction {
             'product_type' => $productType,
             'session_id'   => session_id()
         );
-        $result['creditIsAllowed'] = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0)? $cart->getQuantityByProduct($product->getId()) : 1)) > \App::config()->product['minCreditPrice']);
+        $result['creditIsAllowed'] = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
         $result['creditData'] = json_encode($dataForCredit);
 
         return $result;

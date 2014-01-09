@@ -35,7 +35,8 @@ class NotificationAction {
 
             $emailValidator = new \Validator\Email();
             if (!$emailValidator->isValid($email)) {
-                throw new \Exception('Некорректный email');
+                \App::logger()->error(['message' => 'Некорректный email', 'email' => $email], ['product.notification']);
+                //throw new \Exception('Некорректный email');
             }
 
             $params = [

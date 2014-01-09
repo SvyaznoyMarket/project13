@@ -80,11 +80,11 @@ class ActionPay {
                 $this->sendData['extraData'] = $this->extraData;
             }
 
-            return $this->sendData;
-
         } catch (\Exception $e) {
             \App::logger()->error($e, ['ActionPayJS']);
         }
+
+        return $this->sendData;
     }
 
 
@@ -287,12 +287,12 @@ class ActionPay {
                 /** @var $orderProduct  \Model\Order\Product\Entity **/
                 /** @var $product       \Model\Product\Entity       **/
 
-                $product = $productsById[$orderProduct->getId()];
+                $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : false;
 
                 $purchasedProducts[] = [
                     'id'        => $orderProduct->getId(),
                     //'name'      => $orderProduct->getName(), // нет такого метода
-                    'name'      => $product->getName(),
+                    'name'      => $product ? $product->getName() : '',
                     'price'     => $orderProduct->getPrice(),
                     'quantity'  => $orderProduct->getQuantity(),
                 ];
@@ -343,7 +343,7 @@ class ActionPay {
     private function checkParentCategory($category)
     {
         $parentCat = null;
-        $this->categoryInfo($parentCat, $category->getParent());
+        $this->categoryInfo($parentCat, $category ? $category->getParent() : null);
         if ( empty($parentCat) ) return false;
 
         if ( !isset($this->sendData['parentCategories']) ) $this->sendData['parentCategories'] = [];

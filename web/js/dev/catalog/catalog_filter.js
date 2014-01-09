@@ -10,7 +10,9 @@
 ;(function( ENTER ) {
 	console.info('New catalog init: filter.js');
 
-	var pageConfig = ENTER.config.pageConfig,
+	var
+		body = $('body'),
+		pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
 
@@ -185,7 +187,8 @@
 			
 			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
 				key,
-				template;
+				template,
+				lastPage = res['pagination'] ? res['pagination']['lastPage'] : false;
 			// end of vars
 
 			catalog.filter.resetForm();
@@ -202,7 +205,13 @@
 
 			catalog.infScroll.checkInfinity();
 
+			if ( lastPage ) {
+				catalog.lastPage = lastPage;
+			}
+
 			catalog.filter.lastRes = dataToRender;
+
+			body.trigger('markcartbutton');
 		},
 
 		/**
@@ -312,10 +321,11 @@
 		getUrlParams: function () {
 			var $_GET = {},
 				__GET = window.location.search.substring(1).split('&'),
-				getVar;
+				getVar,
+				i;
 			// end of vars
 
-			for( var i = 0; i < __GET.length; i++ ) {
+			for ( i = 0; i < __GET.length; i++ ) {
 				getVar = __GET[i].split('=');
 				$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
 			}
@@ -333,7 +343,7 @@
 
 			var sendUpdate = function sendUpdate() {
 				filterBlock.trigger('submit');
-			}
+			};
 
 			if ( typeof e === 'object' && e.isTrigger && !needUpdate ) {
 				console.warn('it\'s trigger event!');
@@ -487,6 +497,10 @@
 					updateInput[type](input, val);
 				}
 			}
+		},
+
+		openFilter: function() {
+			toggleFilterViewHandler( true );
 		}
 	};
 
@@ -572,13 +586,14 @@
 		/**
 		 * Обработчик кнопки переключения между расширенным и компактным видом фильтра
 		 */
-		toggleFilterViewHandler = function toggleFilterViewHandler() {
+		toggleFilterViewHandler = function toggleFilterViewHandler( openAnyway ) {
 			var openClass = 'mOpen',
 				closeClass = 'mClose',
 				open = filterToggleBtn.hasClass(openClass);
 			// end of vars
 
-			if ( open ) {
+
+			if ( open && typeof openAnyway !== 'boolean' ) {
 				filterToggleBtn.removeClass(openClass).addClass(closeClass);
 				filterContent.slideUp(400);
 			}
@@ -606,6 +621,7 @@
 			}
 
 			catalog.history.gotoUrl(url);
+			$.scrollTo(filterBlock, 500);
 
 			return false;
 		},
@@ -709,7 +725,7 @@
 	viewParamPanel.on('click', '.jsPagination', jsPaginationLinkHandler);
 	
 	// Other HistoryAPI link
-	$('body').on('click', '.jsHistoryLink', jsHistoryLinkHandler);
+	body.on('click', '.jsHistoryLink', jsHistoryLinkHandler);
 
 	// Init sliders
 	filterSliders.each(initSliderRange);

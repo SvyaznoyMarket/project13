@@ -19,13 +19,16 @@ class Repository {
     public function getCollection() {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
+        $hasTransportCompany = \App::user()->getRegion()->getHasTransportCompany(); // Если регион ТК то показываем надпись "Доставка заказа транспортной компанией"
+
         $data = [
             [
                 'id'                     => 1,
                 'token'                  => 'standart',
                 'short_name'             => 'доставка',
-                'name'                   => 'Доставка заказа курьером',
+                'name'                   => $hasTransportCompany ? 'Доставка заказа транспортной компанией' : 'Доставка заказа курьером',
                 'description'            => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
+                //'description'            => 'DHL, DPD, СПСР-Экспресс',
                 'method_tokens'          => ['standart_furniture', 'standart_other'],
                 'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now'],
             ],
@@ -49,6 +52,7 @@ class Repository {
                 'token'                  => 'now',
                 'short_name'             => 'покупка в магазине',
                 'name'                   => 'Заберу сейчас из магазина',
+                'button_name'            => 'Забрать из этого магазина',
                 'description'            => 'Вы можете забрать товар из магазина прямо сейчас',
                 'method_tokens'          => ['now'],
                 'possible_method_tokens' => ['now', 'self', 'standart_furniture', 'standart_other'],
@@ -62,9 +66,10 @@ class Repository {
             [
                 'id'                     => 6,
                 'token'                  => 'pickpoint',
-                'short_name'             => 'Pickpoint',
-                'name'                   => 'Cамостоятельно заберу из постамата Pickpoint',
-                'description'            => 'Вы можете забрать товар из постамата в удобное для вас время',
+                'short_name'             => 'PickPoint',
+                'name'                   => 'Самостоятельно забрать в постамате PickPoint',
+                'button_name'            => 'Забрать из этого постамата',
+                'description'            => 'Автоматический пункт выдачи заказов',
                 'method_tokens'          => ['pickpoint'],
                 'possible_method_tokens' => ['pickpoint', 'now', 'self', 'standart_furniture', 'standart_other'],
             ],

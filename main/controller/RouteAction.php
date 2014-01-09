@@ -15,10 +15,10 @@ class RouteAction {
 
         $actions = (array)$request->get('actions');
         if (!(bool)$actions) {
-            throw new \Exception('Не перадан обязательный параметр actions');
+            throw new \Exception('Не передан обязательный параметр actions');
         }
 
-        $responseData = [];
+        $actionData = [];
         foreach ($actions as $action) {
             $action = array_merge([
                 'url'    => null,
@@ -27,6 +27,16 @@ class RouteAction {
             ], (array)$action);
             if (!is_array($action['data'])) {
                 $action['data'] = [];
+            }
+
+            if ( $urlGetPos = strpos( $action['url'], '?' ) ) {
+                // Если строка содержит гет-параметры:
+                $urlData = parse_url( $action['url'] );
+                if ( !empty($urlData['query']) ) {
+                    parse_str( $urlData['query'], $urlGetData );
+                    $action['data'] = array_merge( $urlGetData, $action['data'] );
+                }
+                $action['url'] = substr( $action['url'], 0, $urlGetPos );
             }
 
             try {
@@ -45,20 +55,24 @@ class RouteAction {
                 /* @var $response \Http\Response|null */
                 $response = call_user_func_array($actionCall, $actionParams);
                 if ($response instanceof \Http\JsonResponse) {
-                    $responseItem = json_decode($response->getContent());
+                    $actionItem = $response->getData();
                 } else {
-                    $responseItem = $response->getContent();
+                    $actionItem = $response->getContent();
                 }
             } catch (\Exception $e) {
-                $responseItem = [
+                $actionItem = [
                     'success' => false,
                     'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+                    'actions' => $actionData,
                 ];
             }
 
-            $responseData[] = $responseItem;
+            $actionData[] = $actionItem;
         }
 
-        return new \Http\JsonResponse($responseData);
+        return new \Http\JsonResponse([
+            'success' => true,
+            'actions' => $actionData,
+        ]);
     }
 }

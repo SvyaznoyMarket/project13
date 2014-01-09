@@ -7,6 +7,7 @@ class Entity {
     const TYPE_SELF = 'self';
     const TYPE_NOW = 'now';
     const TYPE_PICKPOINT = 'pickpoint';
+    const TYPE_PICKPOINT_ID = 6;
 
     /** @var int */
     private $id;
@@ -20,6 +21,8 @@ class Entity {
     private $description;
     /** @var array */
     private $methodTokens = [];
+    /** @var string */
+    private $buttonName;
     /**
      * Возможные токены методов доставки для данного типа доставки
      * @var array
@@ -37,6 +40,7 @@ class Entity {
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('method_tokens', $data)) $this->setMethodTokens((array)$data['method_tokens']);
         if (array_key_exists('possible_method_tokens', $data)) $this->setPossibleMethodTokens((array)$data['possible_method_tokens']);
+        if (array_key_exists('button_name', $data)) $this->setButtonName($data['button_name']);
     }
 
     /**
@@ -135,5 +139,19 @@ class Entity {
      */
     public function getPossibleMethodTokens() {
         return $this->possibleMethodTokens;
+    }
+
+    /**
+    * @param string $buttonName
+    */
+    public function setButtonName($buttonName) {
+        $this->buttonName = (string)$buttonName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getButtonName() {
+        return $this->buttonName;
     }
 }

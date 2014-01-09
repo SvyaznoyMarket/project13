@@ -1,109 +1,112 @@
-/**
- * Общие настройки AJAX
- *
- * @requires	jQuery, ENTER.utils.logError
- */
-$.ajaxSetup({
-	timeout: 10000,
-	statusCode: {
-		404: function() { 
-			var ajaxUrl = this.url,
-				data = {
-					event: 'ajax_error',
-					type: '404 ошибка',
-					ajaxUrl: ajaxUrl
-				};
-			// end of vars
+;(function (window, document, $, ENTER) {
+	
+	/**
+	 * Общие настройки AJAX
+	 *
+	 * @requires	jQuery, ENTER.utils.logError
+	 */
+	$.ajaxSetup({
+		timeout: 10000,
+		statusCode: {
+			404: function() { 
+				var ajaxUrl = this.url,
+					data = {
+						event: 'ajax_error',
+						type: '404 ошибка',
+						ajaxUrl: ajaxUrl
+					};
+				// end of vars
 
-			window.ENTER.utils.logError(data);
+				ENTER.utils.logError(data);
 
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
-			}
-		},
-		401: function() {
-			if ( $('#auth-block').length ) {
-				$('#auth-block').lightbox_me({
-					centered: true,
-					onLoad: function() {
-						$('#auth-block').find('input:first').focus();
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
+				}
+			},
+			401: function() {
+				if ( $('#auth-block').length ) {
+					$('#auth-block').lightbox_me({
+						centered: true,
+						onLoad: function() {
+							$('#auth-block').find('input:first').focus();
+						}
+					});
+				}
+				else {
+					if ( typeof _gaq !== 'undefined' ) {
+						_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '401 ошибка, авторизуйтесь заново']);
 					}
-				});
-			}
-			else {
-				if ( typeof(_gaq) !== 'undefined' ) {
-					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '401 ошибка, авторизуйтесь заново']);
+				}
+					
+			},
+			500: function() {
+				var ajaxUrl = this.url,
+					data = {
+						event: 'ajax_error',
+						type: '500 ошибка',
+						ajaxUrl: ajaxUrl
+					};
+				// end of vars
+
+				ENTER.utils.logError(data);
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен']);
+				}
+			},
+			503: function() {
+				var ajaxUrl = this.url,
+					data = {
+						event: 'ajax_error',
+						type: '503 ошибка',
+						ajaxUrl: ajaxUrl
+					};
+				// end of vars
+
+				ENTER.utils.logError(data);
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен']);
+				}
+			},
+			504: function() {
+				var ajaxUrl = this.url,
+					data = {
+						event: 'ajax_error',
+						type: '504 ошибка',
+						ajaxUrl: ajaxUrl
+					};
+				// end of vars
+
+				ENTER.utils.logError(data);
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом']);
 				}
 			}
-				
 		},
-		500: function() {
+		error: function ( jqXHR, textStatus, errorThrown ) {
 			var ajaxUrl = this.url,
 				data = {
 					event: 'ajax_error',
-					type: '500 ошибка',
+					type: 'неизвестная ajax ошибка',
 					ajaxUrl: ajaxUrl
 				};
 			// end of vars
+			
+			if ( jqXHR.statusText === 'error' ) {
+				ENTER.utils.logError(data);
 
-			window.ENTER.utils.logError(data);
-
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен']);
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
+				}
 			}
-		},
-		503: function() {
-			var ajaxUrl = this.url,
-				data = {
-					event: 'ajax_error',
-					type: '503 ошибка',
-					ajaxUrl: ajaxUrl
-				};
-			// end of vars
-
-			window.ENTER.utils.logError(data);
-
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен']);
-			}
-		},
-		504: function() {
-			var ajaxUrl = this.url,
-				data = {
-					event: 'ajax_error',
-					type: '504 ошибка',
-					ajaxUrl: ajaxUrl
-				};
-			// end of vars
-
-			window.ENTER.utils.logError(data);
-
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом']);
+			else if ( textStatus === 'timeout' ) {
+				return;
 			}
 		}
-	},
-	error: function ( jqXHR, textStatus, errorThrown ) {
-		var ajaxUrl = this.url,
-			data = {
-				event: 'ajax_error',
-				type: 'неизвестная ajax ошибка',
-				ajaxUrl: ajaxUrl
-			};
-		// end of vars
-		
-		if ( jqXHR.statusText === 'error' ) {
-			window.ENTER.utils.logError(data);
-
-			if ( typeof(_gaq) !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
-			}
-		}
-		else if ( textStatus === 'timeout' ) {
-			return;
-		}
-	}
-});
+	});
+}(this, this.document, this.jQuery, this.ENTER));
  
  
 /** 
@@ -313,83 +316,105 @@ $.ajaxSetup({
  * 
  * @requires	jQuery, ENTER.utils.BlackBox
  */
-;(function() {
+;(function( ENTER ) {
+	var
+		body = $('body'),
+		clientCart = ENTER.config.clientCart;
+	// end of vars
 
-	/**
-	 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
-	 * 
-	 * @param  {Event}	e
-	 */
-	var buy = function buy() {
-		var button = $(this),
-			url = button.attr('href');
-		// end of vars
+	
+	var
+		/**
+		 * Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
+		 */
+		buy = function buy() {
+			var
+				button = $(this),
+				url = button.attr('href');
+			// end of vars
 
-		var addToCart = function addToCart( data ) {
-			var groupBtn = button.data('group');
+			var
+				addToCart = function addToCart( data ) {
+					var groupBtn = button.data('group'),
+						upsale = button.data('upsale') ? button.data('upsale') : null,
+						product = button.parents('.jsSliderItem').data('product');
+					//end of vars
 
-			if ( !data.success ) {
+					if ( !data.success ) {
+						return false;
+					}
+
+					button.removeClass('mLoading');
+
+					if ( data.product ) {
+						data.product.isUpsale = product && product.isUpsale ? true : false;
+						data.product.fromUpsale = upsale && upsale.fromUpsale ? true : false;
+					}
+
+					$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
+					body.trigger('addtocart', [data]);
+					body.trigger('getupsale', [data, upsale]);
+					body.trigger('updatespinner',[groupBtn]);
+				};
+			// end of functions
+
+			$.get(url, addToCart);
+
+			return false;
+		},
+
+		/**
+		 * Хандлер кнопки купить
+		 */
+		buyButtonHandler = function buyButtonHandler() {
+			var button = $(this),
+				url = button.attr('href');
+			// end of vars
+			
+
+			if ( button.hasClass('mDisabled') ) {
 				return false;
 			}
 
-			button.removeClass('mLoading');
+			if ( button.hasClass('mBought') ) {
+				document.location.href(url);
 
-			$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
-			$('body').trigger('addtocart', [data]);
-			$('body').trigger('updatespinner',[groupBtn]);
+				return false;
+			}
+
+			button.addClass('mLoading');
+			button.trigger('buy');
+
+			return false;
+		},
+
+		/**
+		 * Маркировка кнопок «Купить»
+		 * см.BlackBox startAction
+		 */
+		markCartButton = function markCartButton() {
+			var
+				products = clientCart.products,
+				i,
+				len;
+			// end of vars
+			
+			console.info('markCartButton');
+
+			for ( i = 0, len = products.length; i < len; i++ ) {
+				$('.'+products[i].cartButton.id).html('В корзине').addClass('mBought').attr('href','/cart');
+			}
 		};
-
-		$.get(url, addToCart);
-
-		return false;
-	};
-
-	/**
-	 * Хандлер кнопки купить
-	 * 
-	 * @param  {Event}	e
-	 */
-	var buyButtonHandler = function buyButtonHandler() {
-		var button = $(this),
-			url = button.attr('href');
-		// end of vars
-		
-
-		if ( button.hasClass('mDisabled') ) {
-			return false;
-		}
-
-		if ( button.hasClass('mBought') ) {
-			document.location.href(url);
-
-			return false;
-		}
-
-		button.addClass('mLoading');
-		button.trigger('buy');
-
-		return false;
-	};
-
-	/**
-	 * Маркировка кнопок «Купить»
-	 * см.BlackBox startAction
-	 * 
-	 * @param	{event}		event          
-	 * @param	{Object}	markActionInfo Данные полученые из Action
-	 */
-	var markCartButton = function markCartButton( event, markActionInfo ) {
-		for ( var i = 0, len = markActionInfo.product.length; i < len; i++ ) {
-			$('.'+markActionInfo.product[i].id).html('В корзине').addClass('mBought').attr('href','/cart');
-		}
-	};
+	// end of functions
 	
+
 	$(document).ready(function() {
-		$('body').bind('markcartbutton', markCartButton);
-		$('body').on('click', '.jsBuyButton', buyButtonHandler);
-		$('body').on('buy', '.jsBuyButton', buy);
+		body.bind('markcartbutton', markCartButton);
+		body.on('click', '.jsBuyButton', buyButtonHandler);
+		body.on('buy', '.jsBuyButton', buy);
 	});
-}());
+}(window.ENTER));
+
 
 
 /**
@@ -400,17 +425,20 @@ $.ajaxSetup({
  * @param		{event}		event 
  * @param		{Object}	data	данные о том что кладется в корзину
  */
-(function( global ) {
+(function( ENTER ) {
 
-	var utils = global.ENTER.utils,
-		blackBox = utils.blackBox;
+	var
+		utils = ENTER.utils,
+		blackBox = utils.blackBox,
+		body = $('body');
 	// end of vars
 	
 
+	var
 		/**
 		 * KISS Аналитика для добавления в корзину
 		 */
-	var kissAnalytics = function kissAnalytics( data ) {
+		kissAnalytics = function kissAnalytics( event, data ) {
 			var productData = data.product,
 				serviceData = data.service,
 				warrantyData = data.warranty,
@@ -418,7 +446,7 @@ $.ajaxSetup({
 				toKISS = {};
 			//end of vars
 			
-			if ( typeof(_kmq) === 'undefined' ) {
+			if ( typeof _kmq === 'undefined' ) {
 				return;
 			}
 
@@ -437,6 +465,9 @@ $.ajaxSetup({
 				};
 
 				_kmq.push(['record', 'Add to Cart', toKISS]);
+
+				productData.isUpsale && _kmq.push(['record', 'cart rec added from rec', {'SKU cart added from rec': productData.article}]);
+				productData.fromUpsale && _kmq.push(['record', 'cart recommendation added', {'SKU cart rec added': productData.article}]);
 			}
 
 			if ( serviceData ) {
@@ -473,15 +504,21 @@ $.ajaxSetup({
 		/**
 		 * Google Analytics аналитика добавления в корзину
 		 */
-		googleAnalytics = function googleAnalytics( data ) {
-			var productData = data.product;
+		googleAnalytics = function googleAnalytics( event, data ) {
+			var
+				productData = data.product;
+			// end of vars
 
-			if ( productData ) {
-				if ( typeof _gaq !== 'undefined' ){
-					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
-				}
+			if ( !productData || typeof _gaq === 'undefined' ) {
+				return;
 			}
+
+			_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
+
+			productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
+			productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
 		},
+
 
 		/**
 		 * myThings аналитика добавления в корзину
@@ -501,22 +538,21 @@ $.ajaxSetup({
 		/**
 		 * Soloway аналитика добавления в корзину
 		 */
-		adAdriver = function adAdriver( data ) {
+		adAdriver = function adAdriver( event, data ) {
 			var productData = data.product,
 				offer_id = productData.id,
-				category_id =  ( productData.category ) ? productData.category[productData.category.length - 1].id : 0;
-			// end of vars
-
-
-			var s = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+offer_id+';11='+category_id+'&bt=55&pz=0&rnd=![rnd]',
+				category_id =  ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
+			
+				s = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+offer_id+';11='+category_id+'&bt=55&pz=0&rnd=![rnd]',
 				d = document,
 				i = d.createElement('IMG'),
 				b = d.body;
+			// end of vars
 
 			s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
 			i.style.position = 'absolute';
 			i.style.width = i.style.height = '0px';
-			
+
 			i.onload = i.onerror = function(){
 				b.removeChild(i);
 				i = b = null;
@@ -526,32 +562,10 @@ $.ajaxSetup({
 			b.insertBefore(i, b.firstChild);
 		},
 
-
-		/**
-		 * Добавление товара в пречат-поля LiveTex и вследствие — открывание авто-приглашения чата
-		 */
-		addToLiveTex = function addToLiveTex(data) {
-			if ( typeof LiveTex.addToCart  === 'function' ) {
-				try {
-					LiveTex.addToCart(data.product);
-				}
-				catch ( err ) {
-					dataToLog = {
-						event: 'LiveTex.addToCart',
-						type: 'ошибка отправки данных в LiveTex',
-						err: err
-					};
-
-					utils.logError(dataToLog);
-				}
-			}
-		},
-
-
 		/**
 		 * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
 		 */
-		addToRetailRocket = function addToRetailRocket( data ) {
+		addToRetailRocket = function addToRetailRocket( event, data ) {
 			var product = data.product,
 				dataToLog;
 			// end of vars
@@ -571,37 +585,12 @@ $.ajaxSetup({
 					utils.logError(dataToLog);
 				}
 			}
-
-
 		},
-
 
 		/**
 		 * Обработка покупки, парсинг данных от сервера, запуск аналитики
 		 */
 		buyProcessing = function buyProcessing( event, data ) {
-			var basket = data.cart,
-				product = data.product,
-				tmpitem = {
-					'id': product.id,
-					'title': product.name,
-					'price' : window.printPrice(product.price),
-					'priceInt' : product.price,
-					'imgSrc': product.img,
-					'productLink': product.link,
-					'totalQuan': basket.full_quantity,
-					'totalSum': window.printPrice(basket.full_price),
-					'linkToOrder': basket.link
-				};
-			// end of vars
-
-
-			kissAnalytics(data);
-			googleAnalytics(data);
-			myThingsAnalytics(data);
-			adAdriver(data);
-			addToRetailRocket(data);
-			addToLiveTex(data);
 
 			if ( data.redirect ) {
 				console.warn('redirect');
@@ -609,15 +598,42 @@ $.ajaxSetup({
 				document.location.href = data.redirect;
 			}
 			else if ( blackBox ) {
-				blackBox.basket().add( tmpitem );
+				blackBox.basket().add( data );
 			}
-		};
-	//end of vars
+		},
 
-	$(document).ready(function() {
-		$('body').bind('addtocart', buyProcessing);
-	});
-}(this));
+		/**
+		 *
+		 */
+		addToVisualDNA = function addToVisualDNA( event, data ) {
+			var
+				productData 	= data.product,
+				product_id 		= productData.id,
+				product_price 	= productData.price,
+				category_id 	= ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
+				d = document,
+				b = d.body,
+				i = d.createElement('IMG' );
+			// end of vars
+
+			i.src = '//e.visualdna.com/conversion?api_key=enter.ru&id=added_to_basket&product_id=' + product_id + '&product_category=' + category_id + '&value=' + product_price + '&currency=RUB';
+			i.width = i.height = '1';
+			i.alt = '';
+
+			b.appendChild(i);
+		};
+	//end of functions
+
+	body.on('addtocart', buyProcessing);
+
+	// analytics
+	body.on('addtocart', kissAnalytics);
+	body.on('addtocart', googleAnalytics);
+	body.on('addtocart', myThingsAnalytics);
+	body.on('addtocart', adAdriver);
+	body.on('addtocart', addToRetailRocket);
+	body.on('addtocart', addToVisualDNA);
+}(window.ENTER));
  
  
 /** 
@@ -640,10 +656,11 @@ $.ajaxSetup({
 
 		changeRegionBtn = $('.jsChangeRegion'),
 
+		changeRegionAnalyticsBtn = $('.jsChangeRegionAnalytics'),
+
 		slidesWrap = regionWindow.find('.regionSlidesWrap'),
 		moreCityBtn = regionWindow.find('.moreCity'),
 		leftArrow = regionWindow.find('.leftArr'),
-		rightArrow = regionWindow.find('.rightArr'),
 		rightArrow = regionWindow.find('.rightArr'),
 		citySlides = regionWindow.find('.regionSlides'),
 		slideWithCity = regionWindow.find('.regionSlides_slide');
@@ -710,6 +727,15 @@ $.ajaxSetup({
 					}
 				}
 			});
+
+			// analytics only for main page
+			if ( document.location.pathname === '/' ) {
+				console.info( 'run analytics for main page' );
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'citySelector', 'viewed']);
+				}
+			}
 		},
 
 		/**
@@ -822,16 +848,37 @@ $.ajaxSetup({
 			if ( $(this).val() ) {
 				clearBtn.show();
 			}
-			else{
+			else {
 				clearBtn.hide();
 			}
+		},
+
+		changeRegionAnalytics = function changeRegionAnalytics( regionName ) {
+			// analytics only for main page
+			if ( document.location.pathname === '/' ) {
+				console.info( 'run analytics for main page ' + regionName);
+
+				if ( typeof _gaq !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
+				}
+			}
+		},
+
+		changeRegionAnalyticsHandler = function changeRegionAnalyticsHandler() {
+			var regionName = $(this).text();
+
+			changeRegionAnalytics(regionName);
 		},
 
 		/**
 		 * Обработчик сохранения введенного региона
 		 */
 		submitCityHandler = function submitCityHandler() {
-			var url = $(this).data('url');
+			var url = $(this).data('url'),
+				regionName = inputRegion.val();
+			// end of vars
+
+			changeRegionAnalytics(regionName);
 
 			if ( url ) {
 				global.location = url;
@@ -855,6 +902,8 @@ $.ajaxSetup({
 	leftArrow.on('click', prevCitySlide);
 	inputRegion.on('keyup', inputRegionChangeHandler);
 	body.on('click', '.jsChangeRegion', changeRegionHandler);
+
+	changeRegionAnalyticsBtn.on('click', changeRegionAnalyticsHandler);
 
 
 	/**
@@ -954,17 +1003,7 @@ $(document).ready(function(){
 			left = 0;
 		// end of vars
 		
-		var sliderTracking = function sliderTracking() {
-				var nowUrl = document.location,
-					toUrl = $(this).attr('href');
-				// end of vars
-				
-				if( typeof(_gaq) !== 'undefined' ){
-					_gaq.push(['_trackEvent', 'AdvisedCrossss', nowUrl, toUrl]);
-				}
-			},
-
-			kissSimilar = function kissSimilar() {
+		var kissSimilar = function kissSimilar() {
 				var clicked = $(this),
 					toKISS = {
 						'Recommended Item Clicked Similar Recommendation Place':'product',
@@ -1052,7 +1091,6 @@ $(document).ready(function(){
 
 		// KISS
 		$('.bSimilarGoods.mProduct .bSimilarGoodsSlider_eGoods').on('click', kissSimilar);
-		$('.bSimilarGoods.mCatalog .bSimilarGoodsSlider_eGoods a').on('click', sliderTracking);
 	}
 
 
@@ -1099,23 +1137,29 @@ $(document).ready(function(){
 
         var t = $(this), box, datap, toKISS = false,
             datac = $('#_categoryData').data('category');
+        // end of vars
 
         box = t.parents('div.goodsbox__inner');
-        if ( !box.length ) box = t.parents('div.goodsboxlink');
+
+        if ( !box.length ) {
+        	box = t.parents('div.goodsboxlink');
+        }
+
         datap = box.length ? box.data('add') : false;
 
-        if (datap && datac)
-        toKISS = {
-            'Category Results Clicked Category Type': datac.type,
-            'Category Results Clicked Category Level': datac.level,
-            'Category Results Clicked Parent category': datac.parent_category,
-            'Category Results Clicked Category name': datac.category,
-            'Category Results Clicked Category ID': datac.id,
-            'Category Results Clicked SKU': datap.article,
-            'Category Results Clicked Product Name': datap.name,
-            'Category Results Clicked Page Number': datap.page,
-            'Category Results Clicked Product Position': datap.position
-        };
+        if ( datap && datac ) {
+            toKISS = {
+                'Category Results Clicked Category Type': datac.type,
+                'Category Results Clicked Category Level': datac.level,
+                'Category Results Clicked Parent category': datac.parent_category,
+                'Category Results Clicked Category name': datac.category,
+                'Category Results Clicked Category ID': datac.id,
+                'Category Results Clicked SKU': datap.article,
+                'Category Results Clicked Product Name': datap.name,
+                'Category Results Clicked Page Number': datap.page,
+                'Category Results Clicked Product Position': datap.position
+            };
+        }
 
         /** For Debug:  **/
         /*
@@ -1127,7 +1171,7 @@ $(document).ready(function(){
         */
         /** **/
 
-        if (toKISS && typeof(_kmq) !== 'undefined') {
+        if ( toKISS && typeof _kmq !== 'undefined' ) {
             _kmq.push(['record', 'Category Results Clicked', toKISS]);
         }
 
@@ -1285,7 +1329,10 @@ $(document).ready(function(){
 		authBlock = $('#auth-block'),
 		forgotPwdLogin = $('.jsForgotPwdLogin'),
 		resetPwdForm = $('.jsResetPwdForm'),
+		registerForm = $('.jsRegisterForm'),
 		loginForm = $('.jsLoginForm'),
+		completeRegister = $('.jsRegisterFormComplete'),
+		showLoginFormLink = $('.jsShowLoginForm'),
 
 		/**
 		 * Конфигурация валидатора для формы логина
@@ -1366,17 +1413,24 @@ $(document).ready(function(){
 			// constructor body
 
 			this.form = null; // текущая форма
+			this.redirect_to = null;
 
 			body.on('click', '.registerAnotherWayBtn', $.proxy(this.registerAnotherWay, this));
 			body.on('click', '.bAuthLink', this.openAuth);
+			body.on('click', '.jsEnterprizeAuthLink', $.proxy(this.enterprizeAuthLinkClick, this));
 			$('.jsLoginForm, .jsRegisterForm, .jsResetPwdForm').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
 			body.on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
 			body.on('click', '#bUserlogoutLink', this.logoutLinkClickLog);
+
+			if ( showLoginFormLink.length ) {
+				loginForm.hide();
+				body.on('click', '.jsShowLoginForm', this.showLoginForm);
+			}
 		}
 
 
 		/**
-		 * Показ сообщений об ошибках при оформлении заказа
+		 * Показ сообщений об ошибках
 		 *
 		 * @param   {String}    msg     Сообщение которое необходимо показать пользователю
 		 *
@@ -1549,6 +1603,31 @@ $(document).ready(function(){
 			return false;
 		};
 
+		/**
+		 * Обработчик клика на ссылку получения купона для неавторизированного пользователя
+		 *
+		 * @param e
+		 * @public
+		 */
+		Login.prototype.enterprizeAuthLinkClick = function( e ) {
+			e.preventDefault();
+
+			var
+				elementClicked = $(e.target),
+				authLink = elementClicked.hasClass('jsEnterprizeAuthLink') ? elementClicked : elementClicked.parents('.jsEnterprizeAuthLink')/*(elementClicked.parents('.jsEnterprizeAuthLink').length ? elementClicked.parents('.jsEnterprizeAuthLink').get(0) : null)*/,
+				link = authLink.attr('href');
+			// end of vars
+
+			// устанавливаем редирект
+			if ( link ) {
+				this.redirect_to = link;
+			}
+
+			// показываем попап
+			this.openAuth();
+
+			return false;
+		};
 
 		/**
 		 * Изменение значения кнопки сабмита при отправке ajax запроса
@@ -1568,7 +1647,7 @@ $(document).ready(function(){
 			}
 
 			return false;
-		}
+		};
 
 		/**
 		 * Валидатор формы
@@ -1580,7 +1659,7 @@ $(document).ready(function(){
 		 */
 		Login.prototype.getFormValidator = function() {
 			return eval(this.getFormName() + 'Validator');
-		}
+		};
 
 		/**
 		 * Получить название формы
@@ -1591,10 +1670,8 @@ $(document).ready(function(){
 		 * @public
 		 */
 		Login.prototype.getFormName = function() {
-			return (this.form.hasClass('jsLoginForm'))
-				? 'signin'
-				: (this.form.hasClass('jsRegisterForm') ? 'register' : (this.form.hasClass('jsResetPwdForm') ? 'forgot' : ''));
-		}
+			return ( this.form.hasClass('jsLoginForm') ) ? 'signin' : (this.form.hasClass('jsRegisterForm') ? 'register' : (this.form.hasClass('jsResetPwdForm') ? 'forgot' : ''));
+		};
 
 		/**
 		 * Сабмит формы регистрации или авторизации
@@ -1608,8 +1685,14 @@ $(document).ready(function(){
 
 			var formData = this.form.serializeArray(),
 				validator = this.getFormValidator(),
-				formSubmit = $('.jsSubmit', this.form);
+				formSubmit = $('.jsSubmit', this.form),
+				urlParams = this.getUrlParams();
 			// end of vars
+
+			// устанавливаем редирект
+			if ( urlParams['redirect_to'] ) {
+				this.redirect_to = urlParams['redirect_to'];
+			}
 
 			var responseFromServer = function( response ) {
 					if ( response.error ) {
@@ -1644,18 +1727,22 @@ $(document).ready(function(){
 					console.log(response.data.link);
 
 					if ( this.form.data('redirect') ) {
-						if ( response.data.link ) {
+						if ( typeof response.data.link !== 'undefined' ) {
 							console.info('try to redirect to2 ' + response.data.link);
 							console.log(typeof response.data.link);
 
-
 							document.location.href = response.data.link;
-							console.log('try reload....');
-							document.location.reload();
+
+							return false;
 						}
 						else {
-							this.form.unbind('submit');
-							this.form.submit();
+							// this.form.unbind('submit');
+							// this.form.submit();
+
+							completeRegister.html(response.message);
+							completeRegister.show();
+							registerForm.hide();
+							this.showLoginForm();
 						}
 					}
 					else {
@@ -1671,9 +1758,10 @@ $(document).ready(function(){
 						$('#qiwi_phone').val(response.data.user.mobile_phone.slice(1));
 					}
 				},
+
 				requestToServer = function() {
 					this.submitBtnLoadingDisplay( formSubmit );
-					formData.push({name: 'redirect_to', value: location.href});
+					formData.push({name: 'redirect_to', value: this.redirect_to ? this.redirect_to : window.location.href});
 					$.post(this.form.attr('action'), formData, $.proxy(responseFromServer, this), 'json');
 				};
 			// end of functions
@@ -1688,6 +1776,16 @@ $(document).ready(function(){
 
 			return false;
 		};
+
+		/**
+		 * Показать форму логина на странице /login
+		 */
+		Login.prototype.showLoginForm = function() {
+			showLoginFormLink.hide();
+			loginForm.slideDown(300);
+			$.scrollTo(loginForm, 500);
+		};
+
 
 		/**
 		 * Отображение формы "Забыли пароль"
@@ -1756,12 +1854,30 @@ $(document).ready(function(){
 			}
 		};
 
+		/**
+		 * Получение get параметров текущей страницы
+		 */
+		Login.prototype.getUrlParams = function() {
+			var $_GET = {},
+				__GET = window.location.search.substring(1).split('&'),
+				getVar,
+				i;
+			// end of vars
+
+			for ( i = 0; i < __GET.length; i++ ) {
+				getVar = __GET[i].split('=');
+				$_GET[getVar[0]] = typeof( getVar[1] ) === 'undefined' ? '' : getVar[1];
+			}
+
+			return $_GET;
+		};
+
 		return Login;
 	}());
 
 
 	$(document).ready(function() {
-		login = new ENTER.constructors.Login();
+		var login = new ENTER.constructors.Login();
 	});
 
 }(window.ENTER));
@@ -3100,7 +3216,9 @@ $(document).ready(function() {
  * @param	{Number}	suggestLen			Количество результатов поиска
  */
 ;(function() {
-	var searchForm = $('div.searchbox form'),
+	var
+		body = $('body'),
+		searchForm = $('div.searchbox form'),
         searchInput = searchForm.find('input.searchtext'),
 		suggestWrapper = $('#searchAutocomplete'),
 		suggestItem = $('.bSearchSuggest__eRes'),
@@ -3114,45 +3232,56 @@ $(document).ready(function() {
 	// end of vars	
 
 
-	var suggestAnalytics = function suggestAnalytics() {
-			var link = suggestItem.eq(nowSelectSuggest).attr('href'),
+	var
+		suggestAnalytics = function suggestAnalytics() {
+			var
+				link = suggestItem.eq(nowSelectSuggest).attr('href'),
 				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
 			// end of vars
 			
-			if ( typeof(_gaq) !== 'undefined' ) {	
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Search', type, link]);
 			}
 		},
 
 		/**
-		 * Обработчик поднятия клавиши
-		 * 
-		 * @param	{Event}		event
-		 * @param	{Number}	keyCode	Код нажатой клавиши
-		 * @param	{String}	text	Текст в поле ввода
+		 * Загрузить ответ от поиска: получить и показать его, с запоминанием (memoization)
+		 *
+		 * @returns {boolean}
 		 */
-		suggestKeyUp = function suggestKeyUp( event ) {
-			var keyCode = event.which,
-				text = searchInput.attr('value');
+		loadResponse = function loadResponse() {
+			var
+				text = searchInput.val(),
 
 				/**
 				 * Отрисовка данных с сервера
-				 * 
+				 *
 				 * @param	{String}	response	Ответ от сервера
 				 */
-			var renderResponse = function renderResponse( response ) {
+				renderResponse = function renderResponse( response ) {
 					suggestCache[text] = response; // memoization
 
 					suggestWrapper.html(response);
 					suggestItem = $('.bSearchSuggest__eRes');
 					suggestLen = suggestItem.length;
+					if ( suggestLen ) {
+						//searchInputFocusin();
+						setTimeout(searchInputFocusin, 99);
+					}
 				},
 
 				/**
 				 * Запрос на получение данных с сервера
 				 */
 				getResFromServer = function getResFromServer() {
-					var url = '/search/autocomplete?q='+encodeURI(text);
+					var
+						//text = searchInput.val(),
+						url = '/search/autocomplete?q=';
+
+					if ( text.length < 3 ) {
+						return false;
+					}
+					url += encodeURI( text );
 
 					$.ajax({
 						type: 'GET',
@@ -3160,12 +3289,7 @@ $(document).ready(function() {
 						success: renderResponse
 					});
 				};
-			// end of function
-
-			
-			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
-				return false;
-			}
+			// end of functions and vars
 
 			if ( text.length === 0 ) {
 				suggestWrapper.empty();
@@ -3181,8 +3305,35 @@ $(document).ready(function() {
 
 				return false;
 			}
-			
+
 			tID = setTimeout(getResFromServer, 300);
+		}, // end of loadResponse()
+
+		/**
+		 * Экранируем лишние пробелы перед отправкой на сервер
+		 * вызывается по нажатию Ентера либо кнопки "Отправить"
+		 */
+		escapeSearchQuery = function escapeSearchQuery() {
+			var s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
+			searchInput.val(s);
+		}
+
+		/**
+		 * Обработчик поднятия клавиши
+		 * 
+		 * @param	{Event}		event
+		 * @param	{Number}	keyCode	Код нажатой клавиши
+		 * @param	{String}	text	Текст в поле ввода
+		 */
+		suggestKeyUp = function suggestKeyUp( event ) {
+			var
+				keyCode = event.which;
+
+			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
+				return false;
+			}
+
+			loadResponse();
 		},
 
 		/**
@@ -3192,9 +3343,11 @@ $(document).ready(function() {
 		 * @param	{Number}	keyCode	Код нажатой клавиши
 		 */
 		suggestKeyDown = function suggestKeyDown( event ) {
-			var keyCode = event.which;
+			var
+				keyCode = event.which;
 
-			var markSuggestItem = function markSuggestItem() {
+			var
+				markSuggestItem = function markSuggestItem() {
 					suggestItem.removeClass('hover').eq(nowSelectSuggest).addClass('hover');
 				},
 
@@ -3219,7 +3372,7 @@ $(document).ready(function() {
 
 				enterSelectedItem = function enterSelectedItem() {
 					var link = suggestItem.eq(nowSelectSuggest).attr('href');
-					
+
 					suggestAnalytics();
 					document.location.href = link;
 				};
@@ -3240,10 +3393,13 @@ $(document).ready(function() {
 				
 				return false;
 			}
-			else if ( keyCode === 13 && nowSelectSuggest !== -1 ) { // Press Enter and suggest has selected item
-				enterSelectedItem();
+			else if ( keyCode === 13 ) {
+				escapeSearchQuery();
+				if ( nowSelectSuggest !== -1 ) { // Press Enter and suggest has selected item
+					enterSelectedItem();
 
-				return false;
+					return false;
+				}
 			}
 		},
 
@@ -3253,6 +3409,7 @@ $(document).ready(function() {
 			if ( text.length === 0 ) {
 				return false;
 			}
+			escapeSearchQuery();
 		},
 
 		searchInputFocusin = function searchInputFocusin() {
@@ -3260,7 +3417,8 @@ $(document).ready(function() {
 		},
 		
 		suggestCloser = function suggestCloser( e ) {
-			var targ = e.target.className;
+			var
+				targ = e.target.className;
 
 			if ( !(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1) ) {
 				suggestWrapper.hide();
@@ -3276,6 +3434,22 @@ $(document).ready(function() {
 			suggestItem.removeClass('hover');
 			index = $(this).addClass('hover').index();
 			nowSelectSuggest = index - 1;
+		},
+
+
+		/**
+		 * Подставляет поисковую подсказку в строку поиска
+		 */
+		searchHintSelect = function searchHintSelect() {
+			var
+				hintValue = $(this).text()/*,
+				searchValue = searchInput.val()*/;
+			//if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
+			searchInput.val(hintValue + ' ').focus();
+			if ( typeof(_gaq) !== 'undefined' ) {
+				_gaq.push(['_trackEvent', 'tooltip', hintValue]);
+			}
+			loadResponse();
 		};
 	// end of functions
 
@@ -3292,9 +3466,10 @@ $(document).ready(function() {
 
 		searchInput.placeholder();
 
-		$('body').bind('click', suggestCloser);
-		$('body').on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
-		$('body').on('click', '.bSearchSuggest__eRes', suggestAnalytics);
+		body.bind('click', suggestCloser);
+		body.on('mouseenter', '.bSearchSuggest__eRes', hoverForItem);
+		body.on('click', '.bSearchSuggest__eRes', suggestAnalytics);
+		body.on('click', '.sHint_value', searchHintSelect);
 	});
 }());
 
@@ -3645,7 +3820,7 @@ $(document).ready(function() {
 			else if ( $(window).scrollTop() < 600 && trigger ) {
 				//исчезновение
 				trigger = false;
-				upper.animate({'marginTop':'-30px'}, 400);
+				upper.animate({'marginTop':'-55px'}, 400);
 			}
 		},
 
@@ -3659,3 +3834,411 @@ $(document).ready(function() {
 	$(window).scroll(pageScrolling);
 	upper.bind('click',goUp);
 }());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
+/**
+ * White floating user bar
+ *
+ * 
+ * @requires jQuery, ENTER.utils, ENTER.config
+ * @author	Zaytsev Alexandr
+ *
+ * @param	{Object}	ENTER	Enter namespace
+ */
+;(function( ENTER ) {
+	var
+		config = ENTER.config,
+		utils = ENTER.utils,
+		clientCart = config.clientCart,
+
+		userBar = utils.extendApp('ENTER.userBar'),
+
+		userBarFixed = userBar.userBarFixed = $('.fixedTopBar.mFixed'),
+		userbarStatic = userBar.userBarStatic = $('.fixedTopBar.mStatic'),
+
+		topBtn = userBarFixed.find('.fixedTopBar__upLink'),
+		userbarConfig = userBarFixed.data('value'),
+		body = $('body'),
+		w = $(window),
+		infoShowing = false,
+		overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
+
+		scrollTarget,
+		scrollTargetOffset;
+	// end of vars
+	
+	
+	userBar.showOverlay = false;
+
+
+	var
+		/**
+		 * Показ юзербара
+		 */
+		showUserbar = function showUserbar() {
+			userBarFixed.slideDown();
+		},
+
+		/**
+		 * Скрытие юзербара
+		 */
+		hideUserbar = function hideUserbar() {
+			userBarFixed.slideUp();
+		},
+
+		/**
+		 * Проверка текущего скролла
+		 */
+		checkScroll = function checkScroll( e ) {
+			var
+				nowScroll = w.scrollTop();
+			// end of vars
+
+			if ( infoShowing ) {
+				return;
+			}
+
+			if ( nowScroll >= scrollTargetOffset ) {
+				showUserbar();
+			}
+			else {
+				hideUserbar();
+			}
+		},
+
+		/**
+		 * Прокрутка до фильтра и раскрытие фильтров
+		 */
+		upToFilter = function upToFilter() {
+			$.scrollTo(scrollTarget, 500);
+			ENTER.catalog.filter.openFilter();
+
+			return false;
+		},
+
+		/**
+		 * Обновление данных пользователя
+		 *
+		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	data	Данные пользователя
+		 */
+		updateUserInfo = function updateUserInfo( event, data ) {
+			console.info('userbar::updateUserInfo');
+			console.log(data);
+
+			var
+				userWrap = userBarFixed.find('.fixedTopBar__logIn'),
+				userWrapStatic = userbarStatic.find('.fixedTopBar__logIn'),
+				template = $('#userbar_user_tmpl'),
+				partials = template.data('partial'),
+				html;
+			// end of vars
+
+			if ( !( data && data.name && data.link ) ) {
+				return;
+			}
+
+			html = Mustache.render(template.html(), data, partials);
+
+			userWrapStatic.removeClass('mLogin');
+			userWrap.removeClass('mLogin');
+			userWrapStatic.html(html);
+			userWrap.html(html);
+		},
+
+		/**
+		 * Показ окна о совершенной покупке
+		 */
+		showBuyInfo = function showBuyInfo() {
+			console.info('userbar::showBuyInfo');
+
+			var
+				wrap = userBarFixed.find('.fixedTopBar__cart'),
+				wrapLogIn = userBarFixed.find('.fixedTopBar__logIn'),
+				template = $('#buyinfo_tmpl'),
+				partials = template.data('partial'),
+				openClass = 'mOpenedPopup',
+				dataToRender = {},
+				buyInfo,
+				html;
+			// end of vars
+
+			dataToRender.products = utils.cloneObject(clientCart.products);
+			dataToRender.showTransparent = !!( dataToRender.products.length > 3 );
+
+			var
+				/**
+				 * Закрытие окна о совершенной покупке
+				 */
+				closeBuyInfo = function closeBuyInfo() {
+					var
+						upsaleWrap = wrap.find('.hintDd');
+					// end of vars
+
+					upsaleWrap.removeClass('mhintDdOn');
+					wrapLogIn.removeClass(openClass);
+					wrap.removeClass(openClass);
+
+					buyInfo.slideUp(300, function() {
+						checkScroll();
+						buyInfo.remove();
+
+						infoShowing = false;
+					});
+
+					if ( !userBar.showOverlay ) {
+						return;
+					}
+					
+					overlay.fadeOut(300, function() {
+						overlay.off('click');
+						overlay.remove();
+
+						userBar.showOverlay = false;
+					});
+
+					return false;
+				};
+			// end of function
+			
+
+			dataToRender.products.reverse();
+			console.log(dataToRender);
+
+			html = Mustache.render(template.html(), dataToRender, partials);
+			buyInfo = $(html).css({ left: -129 });
+			
+			buyInfo.find('.cartList__item').eq(0).addClass('mHover');
+			wrapLogIn.addClass(openClass);
+			wrap.addClass(openClass);
+			wrap.append(buyInfo);
+
+			if ( !userBar.showOverlay ) {
+				body.append(overlay);
+				overlay.fadeIn(300);
+
+				userBar.showOverlay = true;
+			}
+
+			buyInfo.slideDown(300);
+			showUserbar();
+
+			infoShowing = true;
+
+			overlay.on('click', closeBuyInfo);
+		},
+
+		/**
+		 * Удаление товара из корзины
+		 */
+		deleteProductHandler = function deleteProductHandler() {
+			console.log('deleteProductHandler click!');
+
+			var
+				btn = $(this),
+				deleteUrl = btn.attr('href');
+			// end of vars
+			
+			var
+				authFromServer = function authFromServer( res ) {
+					if ( !res.success ) {
+						console.warn('удаление не получилось :(');
+
+						return;
+					}
+
+					utils.blackBox.basket().deleteItem(res);
+				};
+			// end of functions
+
+			$.ajax({
+				type: 'GET',
+				url: deleteUrl,
+				success: authFromServer
+			});
+
+			return false;
+		},
+
+		/**
+		 * Обновление данных о корзине
+		 * WARNING! перевести на Mustache
+		 * 
+		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	data	Данные корзины
+		 */
+		updateBasketInfo = function updateBasketInfo( event, data ) {
+			console.info('userbar::updateBasketInfo');
+			console.log(data);
+			console.log(clientCart);
+
+			var
+				cartWrap = userBarFixed.find('.fixedTopBar__cart'),
+				cartWrapStatic = userbarStatic.find('.fixedTopBar__cart'),
+				template = $('#userbar_cart_tmpl'),
+				partials = template.data('partial'),
+				html;
+			// end of vars
+
+			console.log('vars inited');
+
+			data.hasProducts = false;
+			data.showTransparent = false;
+
+			if ( !(data && data.quantity && data.sum ) ) {
+				console.warn('data and data.quantuty and data.sum not true');
+
+				var
+					template = $('#userbar_cart_empty_tmpl');
+					partials = template.data('partial'),
+				// end of vars
+
+				html = Mustache.render(template.html(), data, partials);
+				html = Mustache.render(template.html(), data, partials);
+
+				cartWrap.addClass('mEmpty');
+				cartWrapStatic.addClass('mEmpty');
+				cartWrapStatic.html(html);
+				cartWrap.html(html);
+
+				return;
+			}
+
+			if ( clientCart.products.length !== 0 ) {
+				data.hasProducts = true;
+				data.products = utils.cloneObject(clientCart.products);
+				data.products.reverse();
+			}
+
+			if ( clientCart.products.length > 3 ) {
+				data.showTransparent = true;
+			}
+
+			data.sum = printPrice( data.sum );
+			html = Mustache.render(template.html(), data, partials);
+
+			cartWrapStatic.removeClass('mEmpty');
+			cartWrap.removeClass('mEmpty');
+			cartWrapStatic.html(html);
+			cartWrap.html(html);
+			
+		},
+
+		/**
+		 * Обновление блока с рекомендациями "С этим товаром также покупают"
+		 *
+		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	data	Данные о покупке
+		 * @param	{Object}	upsale
+		 */
+		showUpsell = function showUpsell( event, data, upsale ) {
+			console.info('userbar::showUpsell');
+
+			var
+				cartWrap = userBarFixed.find('.fixedTopBar__cart'),
+				upsaleWrap = cartWrap.find('.hintDd'),
+				slider;
+			// end of vars
+
+			var
+				responseFromServer = function responseFromServer( response ) {
+				console.log(response);
+
+				if ( !response.success ) {
+					return;
+				}
+				
+				console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
+
+				upsaleWrap.find('.bGoodsSlider').remove();
+
+				slider = $(response.content)[0];
+				upsaleWrap.append(slider);
+				upsaleWrap.addClass('mhintDdOn');
+				$(slider).goodsSlider();
+
+				if ( !data.product.article ) {
+					console.warn('Не получен article продукта');
+
+					return;
+				}
+
+				console.log('Трекинг товара при показе блока рекомендаций');
+				// google analytics
+				_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
+				// Kissmetrics
+				_kmq && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
+			};
+			//end functions
+
+			console.log(upsale);
+
+			if ( !upsale.url ) {
+				return;
+			}
+
+			$.ajax({
+				type: 'GET',
+				url: upsale.url,
+				success: responseFromServer
+			});
+		},
+
+		/**
+		 * Обработчик клика по товару из списка рекомендаций
+		 */
+		upsaleProductClick = function upsaleProductClick() {
+			var
+				product = $(this).parents('.jsSliderItem').data('product');
+			//end of vars
+
+			if ( !product.article ) {
+				console.warn('Не получен article продукта');
+
+				return;
+			}
+
+			console.log('Трекинг при клике по товару из списка рекомендаций');
+			// google analytics
+			_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_clicked', product.article]);
+			// Kissmetrics
+			_kmq && _kmq.push(['record', 'cart recommendation clicked', {'SKU cart rec clicked': product.article}]);
+
+			//window.docCookies.setItem('used_cart_rec', 1, 1, 4*7*24*60*60, '/');
+		};
+	// end of functions
+
+
+	console.info('Init userbar module');
+	console.log(userbarConfig);
+
+	body.on('click', '.jsUpsaleProduct', upsaleProductClick);
+	body.on('userLogged', updateUserInfo);
+	body.on('basketUpdate', updateBasketInfo);
+	body.on('addtocart', showBuyInfo);
+	body.on('getupsale', showUpsell);
+
+
+	userBarFixed.on('click', '.jsCartDelete', deleteProductHandler);
+	userbarStatic.on('click', '.jsCartDelete', deleteProductHandler);
+
+
+	if ( userBarFixed.length ) {
+		scrollTarget = $(userbarConfig.target);
+
+		if ( topBtn.length ) {
+			topBtn.on('click', upToFilter);
+		}
+
+		if ( scrollTarget.length ) {
+			scrollTargetOffset = scrollTarget.offset().top + userBarFixed.height();
+			w.on('scroll', checkScroll);
+		}
+	}
+
+}(window.ENTER));

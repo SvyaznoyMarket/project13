@@ -32,7 +32,7 @@ class Action {
         }
 
         $limit = \App::config()->product['itemsPerPage'];
-        $offset = intval($pageNum - 1) * $limit;
+        $offset = intval($pageNum - 1) * $limit - (1 === $pageNum ? 0 : 1);
         $categoryId = (int)$request->get('category');
         if (!$categoryId) $categoryId = null;
 
@@ -79,10 +79,10 @@ class Action {
             'request'  => $searchQuery,
             'geo_id'   => \App::user()->getRegion()->getId(),
             'start'    => $offset,
-            'limit'    => $limit,
+            'limit'    => 1 === $pageNum ? $limit-1 : $limit,
             'use_mean' => true,
-
         ];
+
         if ($categoryId) {
             $params['product_category_id'] = $categoryId;
         } else {
@@ -104,11 +104,13 @@ class Action {
 
         // ядерный запрос
         $result = [];
-        \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
-            $result = $data;
-        });
+        if (mb_strlen($searchQuery) >= \App::config()->search['queryStringLimit']) {
+            \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
+                $result = $data;
+            });
 
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
+        }
 
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
@@ -168,10 +170,10 @@ class Action {
         }
 
         // общее количество найденных товаров
-        $productCount = $selectedCategory ? $selectedCategory->getProductCount() : $result['count'];
+        $productCount = $result['count'];
         if (\App::config()->search['itemLimit'] && (\App::config()->search['itemLimit'] < $productCount)) {
             // ограничиваем количество найденных товаров
-            $productCount = \App::config()->search['itemLimit'];
+            //$productCount = \App::config()->search['itemLimit'];
         }
 
         // вид товаров
@@ -212,6 +214,15 @@ class Action {
             \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
         }
 
+        // bannerPlaceholder
+        $bannerPlaceholder = [];
+        \App::dataStoreClient()->addQuery('catalog/global.json', [], function($data) use (&$bannerPlaceholder) {
+            if (isset($data['bannerPlaceholder'])) {
+                $bannerPlaceholder = $data['bannerPlaceholder'];
+            }
+        });
+        \App::dataStoreClient()->execute();
+
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $templating = \App::closureTemplating();
@@ -224,7 +235,8 @@ class Action {
                 'list'           => (new \View\Product\ListAction())->execute(
                     $helper,
                     $productPager,
-                    $productVideosByProduct
+                    $productVideosByProduct,
+                    !empty($bannerPlaceholder) ? $bannerPlaceholder : []
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     $helper,
@@ -264,8 +276,8 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('productCount', $selectedCategory && !is_null($selectedCategory->getProductCount()) ? $selectedCategory->getProductCount() : $result['count']);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
-        $page->setGlobalParam('shops', (\App::config()->shop['enabled'] && !\Controller\ProductCategory\Action::isGlobal()) ? \RepositoryManager::shop()->getCollectionByRegion(\App::user()->getRegion()) : []);
         $page->setGlobalParam('shop', $shop);
+        $page->setParam('bannerPlaceholder', $bannerPlaceholder);
 
         return new \Http\Response($page->show());
     }
@@ -315,8 +327,6 @@ class Action {
             $response = new \Http\Response((bool)$data['product'] || (bool)$data['category'] ? \App::templating()->render('search/_autocomplete', ['products' => $data['product'], 'categories' => $data['category'], 'searchQuery' => $keyword]) : '');
         }
         
-        $response->setIsShowDebug(false);
-
         return $response;
     }
 }

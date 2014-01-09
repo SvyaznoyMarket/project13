@@ -1,20 +1,24 @@
 <?php
 /**
- * @var $page              \View\Product\IndexPage
- * @var $product           \Model\Product\Entity
- * @var $productVideos     \Model\Product\Video\Entity[]
- * @var $user              \Session\User
- * @var $accessories       \Model\Product\Entity[]
- * @var $accessoryCategory \Model\Product\Category\Entity[]
- * @var $related           \Model\Product\Entity[]
- * @var $kit               \Model\Product\Entity[]
- * @var $additionalData    array
- * @var $shopStates        \Model\Product\ShopState\Entity[]
- * @var $creditData        array
- * @var $parts             \Model\Product\CompactEntity[]
- * @var $mainProduct       \Model\Product\Entity
- * @var $line              \Model\Line\Entity
+ * @var $page                   \View\Product\IndexPage
+ * @var $product                \Model\Product\Entity
+ * @var $lifeGiftProduct        \Model\Product\Entity|null
+ * @var $productVideos          \Model\Product\Video\Entity[]
+ * @var $user                   \Session\User
+ * @var $accessories            \Model\Product\Entity[]
+ * @var $accessoryCategory      \Model\Product\Category\Entity[]
+ * @var $related                \Model\Product\Entity[]
+ * @var $kit                    \Model\Product\Entity[]
+ * @var $additionalData         array
+ * @var $shopStates             \Model\Product\ShopState\Entity[]
+ * @var $creditData             array
+ * @var $parts                  \Model\Product\CompactEntity[]
+ * @var $mainProduct            \Model\Product\Entity
+ * @var $line                   \Model\Line\Entity
+ * @var $deliveryData           array
  */
+
+if (!$lifeGiftProduct) $lifeGiftProduct = null;
 
 $showLinkToProperties = true;
 $countModels = count($product->getModel());
@@ -40,7 +44,7 @@ $is_showed = [];
 <div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
 
-    <div class="bProductDesc">
+    <div class="bProductDesc<? if (!($creditData['creditIsAllowed'] && !$user->getRegion()->getHasTransportCompany())): ?> mNoCredit<? endif ?>">
         <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
         <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
@@ -123,17 +127,7 @@ $is_showed = [];
         <?= $product->getDescription() ?>
     </div>
 
-    <? if (\App::config()->product['pullRecommendation']): ?>
-        <?= $helper->render('product/__slider', [
-            'type'     => 'alsoViewed',
-            'title'    => 'С этим товаром также смотрят',
-            'products' => [],
-            'count'    => null,
-            'limit'    => \App::config()->product['itemsInSlider'],
-            'page'     => 1,
-            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
-        ]) ?>
-    <? endif ?>
+    <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
 
     <? if ((bool)$related && \App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
@@ -145,6 +139,18 @@ $is_showed = [];
             'page'           => 1,
             //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
             'additionalData' => $additionalData,
+        ]) ?>
+    <? endif ?>
+
+    <? if (\App::config()->product['pullRecommendation']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'alsoViewed',
+            'title'    => 'С этим товаром также смотрят',
+            'products' => [],
+            'count'    => null,
+            'limit'    => \App::config()->product['itemsInSlider'],
+            'page'     => 1,
+            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
         ]) ?>
     <? endif ?>
 
@@ -188,20 +194,27 @@ $is_showed = [];
 
 <div class="bProductSectionRightCol">
     <div class="bWidgetBuy mWidget">
-        <? if (!$product->isInShopStockOnly()): ?>
-            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
+        <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
         <? endif ?>
 
         <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
-        <?= $helper->render('product/__oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <? if (!$hasFurnitureConstructor): ?>
+            <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <? endif ?>
 
-        <?= $helper->render('product/__delivery', ['product' => $product, 'shopStates' => $shopStates]) // Доставка ?>
+        <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
 
         <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
 
         <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
+
     </div><!--/widget delivery -->
+
+    <? if ($lifeGiftProduct): ?>
+        <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>
+    <? endif ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 
@@ -220,8 +233,8 @@ $is_showed = [];
 
     <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
 
-    <? if (!$product->isInShopStockOnly()): ?>
-        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'disabled' => !$product->getIsBuyable()]) ?>
+    <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
     <? endif ?>
 
     <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
@@ -230,3 +243,5 @@ $is_showed = [];
 </div>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
+
+</div>

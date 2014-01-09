@@ -1,55 +1,58 @@
-module.exports = function(grunt) {
+module.exports = function( grunt ) {
 
-	var jsRootPath = '../web/js/';
-	var jsDevPath = jsRootPath+'dev/';
-	var jsProdPath = jsRootPath+'prod/';
+	var
+		jsRootPath = '../web/js/',
+		jsDevPath = jsRootPath+'dev/',
+		jsProdPath = jsRootPath+'prod/',
 
-	/**
-	 * Файлы и их порядок для jquery-plugins.js
-	 * @type {Array}
-	 */
-	var bigjqueryFiles = [
-		// 'custom-form-elements.js',
-		'jquery.email_validate.js',
-		'jquery.lightbox_me.js',
-		'jquery.scrollto.js',
-		'jquery.placeholder.js',
-		// 'prettyCheckboxes.js',
-		'jquery.infinityCarousel.js',
-		'typewriter.js',
-		'jquery.maskedinput.js',
-		'jquery.put_cursor_at_end.js',
-		'goodsCounter.js',
-		'jquery.elevatezoom.js',
-		'jquery.animate-shadow.js',
-		// 'customRadio.js',
-		'customDropDown.js',
-		'goodsSlider.js',
-		'jquery-ui-1.10.3.custom.js'
-	];
+		/**
+		 * Файлы и их порядок для jquery-plugins.js
+		 * @type {Array}
+		 */
+		bigjqueryFiles = [
+			// 'custom-form-elements.js',
+			'jquery.email_validate.js',
+			'jquery.lightbox_me.js',
+			'jquery.scrollto.js',
+			'jquery.placeholder.js',
+			// 'prettyCheckboxes.js',
+			'jquery.infinityCarousel.js',
+			'typewriter.js',
+			'jquery.maskedinput.js',
+			'jquery.put_cursor_at_end.js',
+			'goodsCounter.js',
+			'jquery.elevatezoom.js',
+			'jquery.animate-shadow.js',
+			// 'customRadio.js',
+			'customDropDown.js',
+			'goodsSlider.js',
+			'jquery-ui-1.10.3.custom.js'
+		],
 
-	/**
-	 * Файлы и их порядок для library.js
-	 * @type {Array}
-	 */
-	var libraryFiles = [
-		jsDevPath+'library/cloneObject.js',
-		jsDevPath+'library/getKeysLength.js',
-		jsDevPath+'library/JSON.js',
-		jsDevPath+'library/pubSub.js',
-		jsDevPath+'library/isTrueEmail.js',
-		jsDevPath+'library/printPrice.js',
-		jsDevPath+'library/doc_cookies.js',
-		jsDevPath+'library/simple_templating.js',
-		jsDevPath+'library/library.js',
-		jsDevPath+'library/mapDriver.js',
-		jsDevPath+'library/mapDriver-v2.js',
-		jsDevPath+'library/black_box.js',
-		jsDevPath+'library/formValidator.js',
-		jsDevPath+'library/addParameterToUrl.js',
-		jsDevPath+'library/blockScreen.js',
-		jsDevPath+'library/*.js'
-	];
+		/**
+		 * Файлы и их порядок для library.js
+		 * @type {Array}
+		 */
+		libraryFiles = [
+			jsDevPath+'library/cloneObject.js',
+			jsDevPath+'library/getKeysLength.js',
+			jsDevPath+'library/JSON.js',
+			jsDevPath+'library/pubSub.js',
+			jsDevPath+'library/isTrueEmail.js',
+			jsDevPath+'library/printPrice.js',
+			jsDevPath+'library/doc_cookies.js',
+			jsDevPath+'library/simple_templating.js',
+			jsDevPath+'library/library.js',
+			jsDevPath+'library/mapDriver.js',
+			jsDevPath+'library/mapDriver-v2.js',
+			jsDevPath+'library/black_box.js',
+			jsDevPath+'library/formValidator.js',
+			jsDevPath+'library/addParameterToUrl.js',
+			jsDevPath+'library/blockScreen.js',
+			jsDevPath+'library/*.js'
+		];
+	// end of vars
+	
 
 	grunt.initConfig({
 
@@ -107,8 +110,7 @@ module.exports = function(grunt) {
 					'escape': true,
 					'unescape': true,
 					'tmpl': true,
-					'_kmq': true,
-					'ko': true
+					'_kmq': true
 				},
 			},
 		},
@@ -199,6 +201,26 @@ module.exports = function(grunt) {
 				files: {
 					'../web/css/global.min.css': ['../web/css/global.less']
 				}
+			},
+
+			// компиляция LESS
+			compileNew: {
+				options: {
+					paths: ['../web/styles/']
+				},
+				files: {
+					'../web/styles/global.css': ['../web/styles/global.less']
+				}
+			},
+			// компиляция и минификация LESS
+			compressNew: {
+				options: {
+					paths: ['../web/styles/'],
+					compress: true
+				},
+				files: {
+					'../web/styles/global.min.css': ['../web/styles/global.less']
+				}
 			}
 		},
 
@@ -210,7 +232,7 @@ module.exports = function(grunt) {
 		 */
 		watch: {
 			less: {
-				files: ['../web/css/*.less', '../web/css/**/*.less'],
+				files: ['../web/css/*.less', '../web/css/**/*.less', '../web/styles/*.less', '../web/styles/**/*.less'],
 				tasks: ['less'],
 				options: {
 					livereload: true,
@@ -218,71 +240,79 @@ module.exports = function(grunt) {
 			},
 			partnerScripts: {
 				files: ['../web/js/partner/*.js'],
-				tasks: ['concat:partnerScripts','uglify:partnerScripts', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:partnerScripts', 'jshint', 'uglify:partnerScripts', 'connect', 'qunit', 'exec:getVersion']
 			},
 			vendorScripts: {
 				files: ['../web/js/vendor/*.js'],
 				tasks: ['uglify:vendorScripts', 'jshint', 'exec:getVersion']
 			},
+			debugPanel: {
+				files: [jsDevPath+'debug-panel/*.js'],
+				tasks: ['concat:debugPanel', 'jshint']
+			},
 			cartJS:{
 				files: [jsDevPath+'cart/*.js'],
-				tasks: ['concat:cartJS','uglify:cartJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:cartJS', 'jshint', 'uglify:cartJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			commonJS:{
 				files: [jsDevPath+'common/*.js'],
-				tasks: ['concat:commonJS','uglify:commonJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:commonJS', 'jshint', 'uglify:commonJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			infopageJS:{
 				files: [jsDevPath+'infopage/*.js'],
-				tasks: ['concat:infopageJS','uglify:infopageJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:infopageJS', 'jshint', 'uglify:infopageJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			jqueryPluginsJS:{
 				files: [jsDevPath+'jquery-plugins/*.js'],
-				tasks: ['exec:compileBJ', 'exec:getVersion', 'jshint']
+				tasks: ['exec:compileBJ', 'jshint', 'exec:getVersion']
 			},
 			libraryJS:{
 				files: [jsDevPath+'library/*.js'],
-				tasks: ['concat:libraryJS','uglify:libraryJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:libraryJS', 'jshint', 'uglify:libraryJS',  'connect', 'qunit', 'exec:getVersion']
+			},
+			lkJS:{
+				files: [jsDevPath+'lk/*.js'],
+				tasks: ['concat:lkJS', 'jshint', 'uglify:lkJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			mainJS:{
 				files: [jsDevPath+'main/*.js'],
-				tasks: ['concat:mainJS','uglify:mainJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:mainJS', 'jshint', 'uglify:mainJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			oneclickJS:{
 				files: [jsDevPath+'oneclick/*.js'],
-				tasks: ['concat:oneclickJS','uglify:oneclickJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:oneclickJS', 'jshint', 'uglify:oneclickJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			orderJS:{
 				files: [jsDevPath+'order/*.js'],
-				tasks: ['concat:orderJS','uglify:orderJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:orderJS', 'jshint', 'uglify:orderJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			orderNewV5JS:{
 				files: [jsDevPath+'order-new-v5/*.js'],
-				tasks: ['concat:orderNewV5JS','uglify:orderNewV5JS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:orderNewV5JS', 'jshint', 'uglify:orderNewV5JS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			pandoraJS:{
 				files: [jsDevPath+'pandora/*.js'],
-				tasks: ['concat:pandoraJS','uglify:pandoraJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:pandoraJS', 'jshint', 'uglify:pandoraJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			portsJS:{
 				files: [jsDevPath+'ports/*.js'],
-				tasks: ['concat:portsJS','uglify:portsJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:portsJS', 'jshint', 'uglify:portsJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			catalogJS:{
 				files: [jsDevPath+'catalog/*.js'],
-				tasks: ['concat:catalogJS','uglify:catalogJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:catalogJS', 'jshint', 'uglify:catalogJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			productJS:{
 				files: [jsDevPath+'product/*.js'],
-				tasks: ['concat:productJS','uglify:productJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:productJS', 'jshint', 'uglify:productJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			shopJS:{
 				files: [jsDevPath+'shop/*.js'],
-				tasks: ['concat:shopJS','uglify:shopJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:shopJS', 'jshint', 'uglify:shopJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			watch3dJS:{
 				files: [jsDevPath+'watch3d/*.js'],
-				tasks: ['concat:watch3dJS','uglify:watch3dJS', 'jshint', 'connect', 'qunit', 'exec:getVersion']
+				tasks: ['concat:watch3dJS', 'jshint', 'uglify:watch3dJS',  'connect', 'qunit', 'exec:getVersion']
 			},
 			loadJS:{
 				files: [jsRootPath+'loadjs.js'],
@@ -297,6 +327,10 @@ module.exports = function(grunt) {
 		concat: {
 			options: {
 				separator: '\n \n \n/** \n * NEW FILE!!! \n' + ' */\n \n \n',
+			},
+			debugPanel: {
+				src: [jsDevPath+'debug-panel/*.js'],
+				dest: jsProdPath+'debug-panel.js'
 			},
 			cartJS : {
 				src: [jsDevPath+'cart/*.js'],
@@ -313,6 +347,10 @@ module.exports = function(grunt) {
 			libraryJS : {
 				src: libraryFiles,
 				dest: jsProdPath+'library.js'
+			},
+			lkJS : {
+				src: [jsDevPath+'lk/*.js'],
+				dest: jsProdPath+'lk.js'
 			},
 			mainJS : {
 				src: [jsDevPath+'main/*.js'],
@@ -398,6 +436,12 @@ module.exports = function(grunt) {
 				}
 			},
 
+			// debugPanel: {
+			// 	files: {
+			// 		'../web/js/prod/debug-panel.min.js': [jsDevPath+'debug-panel/*.js']
+			// 	}
+			// },
+
 			cartJS: {
 				files: {
 					'../web/js/prod/cart.min.js': [jsDevPath+'cart/*.js']
@@ -419,6 +463,12 @@ module.exports = function(grunt) {
 			libraryJS: {
 				src: '../web/js/prod/library.js',
         		dest: '../web/js/prod/library.min.js'
+			},
+
+			lkJS: {
+				files: {
+					'../web/js/prod/lk.min.js': [jsDevPath+'lk/*.js']
+				}
 			},
 
 			mainJS: {

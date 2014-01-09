@@ -7,8 +7,8 @@
  */
 (function( global ) {
 	global.printPrice = function( num ) {
-		var str = num+'';
-		
+		var str = num.toString();
+
 		return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
 	};
 }(this));

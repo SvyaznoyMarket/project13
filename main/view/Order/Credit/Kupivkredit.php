@@ -26,21 +26,21 @@ class Kupivkredit {
                 throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
             }
 
-            $this->items[] = array(
-                'title'    => $product->getName(),
+            $this->items[] = [
+                'title'    => sprintf('%s шт %s', $orderProduct->getQuantity(), $product->getName()), // SITE-2662
                 'category' => '',
-                'qty'      => $orderProduct->getQuantity(),
-                'price'    => $orderProduct->getPrice(),
-            );
+                'qty'      => 1, //$orderProduct->getQuantity(), // SITE-2662
+                'price'    => (int)$orderProduct->getSum(), // SITE-2662
+            ];
         }
 
-        $this->details = array(
+        $this->details = [
             'firstname'  => $order->getFirstName(),
             'lastname'   => $order->getLastName(),
             'middlename' => $order->getMiddleName(),
             'email'      => '',
             'cellphone'  => $order->getMobilePhone(),
-        );
+        ];
 
         $this->partnerId = $this->config['partnerId'];
         $this->partnerName = $this->config['partnerName'];

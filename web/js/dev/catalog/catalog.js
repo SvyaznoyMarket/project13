@@ -10,17 +10,23 @@
 ;(function( ENTER ) {
 	console.info('Catalog init: catalog.js');
 
-	var pageConfig = ENTER.config.pageConfig,
+	var //pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog');
+		catalog = utils.extendApp('ENTER.catalog'),
+		lastPage = $('#bCatalog').data('lastpage');
 	// end of vars
 	
 
 	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
 	catalog.listingWrap = $('.bListing');
 	catalog.liveScroll = false;
+	catalog.lastPage = null;
 
-	console.info('Mustache is '+ typeof Mustache);
+	if ( lastPage ) {
+		catalog.lastPage = lastPage;
+	}
+
+	console.info('Mustache is '+ typeof Mustache + ' (Catalog main config)');
 	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
 
 }(window.ENTER));

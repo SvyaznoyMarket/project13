@@ -199,12 +199,6 @@ return [
         'action'  => ['ProductCategory\Action', 'category'],
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brand' => '[\w\d-_]+'],
     ],
-    // слайдер рекомендованных товаров
-    'product.category.recommended.slider' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/_slider-recommended',
-        'action'  => ['Crossss\ProductCategoryAction', 'recommended'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
 
     // карточка товара
     'product' => [
@@ -332,19 +326,9 @@ return [
         'action'  => ['Cart\ClearAction', 'execute'],
     ],
     // добавление товара в корзину
-    'cart.product.set' => [
+    'cart.product.set' => [ // TODO cart.product.set изменмить Url
         'pattern' => '/cart/add-product/{productId}',
         'action'  => ['Cart\ProductAction', 'set'],
-    ],
-    // добавление товара в корзину
-    'cart.paypal.product.set' => [
-        'pattern' => '/cart/paypal/add-product/{productId}',
-        'action'  => ['Cart\Paypal\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    'cart.paypal.product.delete' => [
-        'pattern' => '/cart/paypal/delete-product/{productId}',
-        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
     ],
     // удаление товара из корзины
     'cart.product.delete' => [
@@ -356,6 +340,39 @@ return [
         'pattern' => '/cart/set-products',
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
+    // добавление товара в корзину
+    'cart.paypal.product.set' => [
+        'pattern' => '/cart/paypal/add-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'set'],
+    ],
+    // удаление товара из корзины
+    'cart.paypal.product.delete' => [
+        'pattern' => '/cart/paypal/delete-product/{productId}',
+        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
+    ],
+
+    // добавление товара в корзину
+    'cart.lifeGift.product.set' => [
+        'pattern' => '/cart/life-gift/add-product/{productId}',
+        'action'  => ['Cart\LifeGift\ProductAction', 'set'],
+    ],
+    // удаление товара из корзины
+    'cart.lifeGift.product.delete' => [
+        'pattern' => '/cart/life-gift/delete-product/{productId}',
+        'action'  => ['Cart\LifeGift\ProductAction', 'delete'],
+    ],
+
+    // добавление товара в корзину
+    'cart.oneClick.product.set' => [
+        'pattern' => '/cart/one-click/add-product/{productId}',
+        'action'  => ['Cart\OneClick\ProductAction', 'set'],
+    ],
+    // удаление товара из корзины
+    'cart.oneClick.product.delete' => [
+        'pattern' => '/cart/one-click/delete-product/{productId}',
+        'action'  => ['Cart\OneClick\ProductAction', 'delete'],
+    ],
+
     // добавление услуги в корзину
     'cart.service.set' => [
         'pattern' => '/cart/add-service/{serviceId}/for-product/{productId}',
@@ -415,9 +432,18 @@ return [
         'action'  => ['Order\OneClickAction', 'execute'],
         'method'  => ['POST'],
     ],
+    'order.oneClick.new' => [
+        'pattern' => '/orders/one-click/new',
+        'action'  => ['Order\OneClick\NewAction', 'execute'],
+    ],
+    'order.oneClick.create' => [
+        'pattern' => '/orders/one-click/create',
+        'action'  => ['Order\OneClick\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
     'order' => [
         'pattern' => '/orders/new',
-        'action'  => ['Order\Action', 'create'],
+        'action'  => ['Order\NewAction', 'execute'],
     ],
     'order.create' => [
         'pattern' => '/orders/create',
@@ -455,6 +481,15 @@ return [
     'order.paypal.create' => [
         'pattern' => '/orders/paypal/create',
         'action'  => ['Order\Paypal\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    'order.lifeGift.new' => [
+        'pattern' => '/orders/life-gift/new',
+        'action'  => ['Order\LifeGift\NewAction', 'execute'],
+    ],
+    'order.lifeGift.create' => [
+        'pattern' => '/orders/life-gift/create',
+        'action'  => ['Order\LifeGift\CreateAction', 'execute'],
         'method'  => ['POST'],
     ],
     'order.bill' => [
@@ -511,15 +546,10 @@ return [
         'action'  => ['Slice\ShowAction', 'execute'],
     ],
 
-    // smartengine
+    // recommended products
     'product.recommended' => [
-        'pattern' => '/product-also-viewed/{productId}',
+        'pattern' => '/product-recommended/{productId}',
         'action' => ['Product\RecommendedAction', 'execute'],
-        'require' => ['productId' => '\d+'],
-    ],
-    'product.recommended.jewel' => [
-        'pattern' => '/jewel/product-also-viewed/{productId}',
-        'action' => ['Jewel\Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
     'product.similar' => [ /// executed SmartEngine or RetailRocker
@@ -532,6 +562,11 @@ return [
         'pattern' => '/ajax/product-also-viewed/{productId}',
         'action' => ['Product\AlsoViewedAction', 'execute'],
         //'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
+        'require' => ['productId' => '\d+'],
+    ],
+    'product.upsale' => [
+        'pattern' => '/ajax/upsale/{productId}',
+        'action' => ['Product\UpsaleAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
     /*
@@ -623,13 +658,17 @@ return [
         'action'  => ['Qrcode\Action', 'execute'],
     ],
 
-    'debug-curl' => [
-        'pattern' => '/debug/curl',
-        'action'  => ['CurlAction', 'execute'],
-        'method'  => ['POST'],
+    'debug.query' => [
+        'pattern' => '/debug/query',
+        'action'  => ['QueryAction', 'index'],
     ],
 
-    'debug-log' => [
+    'debug.query.show' => [
+        'pattern' => '/debug/query/{queryToken}',
+        'action'  => ['QueryAction', 'show'],
+    ],
+
+    'debug.log' => [
         'pattern' => '/debug/log/{id}',
         'action'  => ['LogAction', 'execute'],
         'method'  => ['POST'],
@@ -656,11 +695,50 @@ return [
         'method'  => ['POST'],
     ],
 
-    // git
+    // tchobo
+    'tchobo' => [
+        'pattern' => '/tchibo',
+        'action'  => ['Tchibo\IndexAction', 'execute'],
+    ],
+
+    // tchobo
+    'tchobo.category' => [
+        'pattern' => '/tchibo/{categoryPath}',
+        'action'  => ['Tchibo\CategoryAction', 'execute'],
+    ],
+
+    // enterprize
+    'enterprize' => [
+        'pattern' => '/enterprize',
+        'action'  => ['Enterprize\Action', 'index'],
+    ],
+    // enterprize
+    'enterprize.create' => [
+        'pattern' => '/enterprize/create',
+        'action'  => ['Enterprize\Action', 'create'],
+        'method'  => ['POST'],
+    ],
+    // enterprize
+    'enterprize.get' => [
+        'pattern' => '/enterprize/get',
+        'action'  => ['Enterprize\Action', 'get'],
+    ],
+
+    // git pull
     'git.pull' => [
         'pattern' => '/git/pull',
         'action'  => ['GitAction', 'pull'],
         'method'  => ['GET'],
+    ],
+
+    // git checkout
+    'git.checkout' => [
+        'pattern' => '/git/checkout/{version}',
+        'action'  => ['GitAction', 'checkout'],
+        'method'  => ['GET'],
+        'require' => [
+            'version' => '\d+',
+        ],
     ],
 
     //content

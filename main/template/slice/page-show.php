@@ -17,15 +17,15 @@ $helper = new \Helper\TemplateHelper();
 
 <form class="bFilter clearfix hidden" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
 
-<div class="bCatalog">
+<div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
     <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
-    <h1><?= $slice->getName() ?></h1>
+    <h1 class="bTitlePage"><?= $slice->getName() ?></h1>
 
     <? if (!empty($promoContent)): ?>
         <?= $promoContent ?>
-    <? else: ?>
+    <? elseif ($productPager->getLastPage() > 1): ?>
         <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
     <? endif ?>
 
@@ -45,6 +45,9 @@ $helper = new \Helper\TemplateHelper();
         'pager'                  => $productPager,
         'view'                   => $productView,
         'productVideosByProduct' => [], //$productVideosByProduct,
+        'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
+        'buyMethod'              => $slice->getProductBuyMethod(),
+        'showState'              => $slice->getShowProductState(),
     ]) // листинг ?>
 
     <div class="bSortingLine mPagerBottom clearfix">

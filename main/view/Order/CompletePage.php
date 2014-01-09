@@ -62,7 +62,7 @@ class CompletePage extends Layout {
                 $tag_params['prodid'][] = $product->getId();
                 $tag_params['pname'][] = $product->getName();
                 $tag_params['pcat'][] = $category ? $category->getToken() : '';
-                $tag_params['purchasevalue'] += $order->getSum();
+                $tag_params['purchasevalue'] += $order->getPaySum();
             }
         }
 
@@ -79,18 +79,31 @@ class CompletePage extends Layout {
 
     public function slotMarinConversionTagJS()
     {
-        $paymentPageType = $this->getParam('paymentPageType');
-        if (isset($paymentPageType) && $paymentPageType === 'complete') {
-            $orders = $this->getParam('orders');
-            $dataOrders = [];
-            foreach ($orders as $order) {
-                $dataOrders[] = ['id' => $order->getID()];
-            }
+        $sessionIsReaded = $this->getParam('sessionIsReaded');
+        if ($sessionIsReaded) return '';
 
-            return '<div id="marinConversionTagJS" class="jsanalytics" data-value="' . $this->json($dataOrders) . '" >
-                <noscript><img src="https://tracker.marinsm.com/tp?act=2&cid=7saq97byg0&script=no" ></noscript></div>';
+        $paymentPageType = $this->getParam('paymentPageType');
+        if ( !isset($paymentPageType) || !$paymentPageType === 'complete' ) {
+            return '';
         }
 
-        return '';
+        $orders = $this->getParam('orders');
+        $dataOrders = [];
+        if ( !empty($orders) ) {
+            $dataOrders['currency'] = 'RUB';
+            $dataOrders['items'] = [];
+            foreach ($orders as $order) {
+                /* @var $order \Model\Order\Entity */
+                $dataOrders['items'][] = [
+                    'orderId'   => $order->getNumber(),
+                    'price'     => $order->getPaySum(),
+                    'convType'  => 'sales',
+                ];
+            }
+        }
+
+        return '<div id="marinConversionTagJS" class="jsanalytics" data-value="' . $this->json($dataOrders) . '" >
+                <noscript><img src="https://tracker.marinsm.com/tp?act=2&cid=7saq97byg0&script=no" ></noscript></div>';
+
     }
 }

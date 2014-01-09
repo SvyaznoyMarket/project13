@@ -3,48 +3,55 @@
  * @var $page     \View\ProductCategory\RootPage
  * @var $category \Model\Product\Category\Entity
  */
+
 ?>
 
-<? if (\App::config()->adFox['enabled']): ?>
-    <div class="adfoxWrapper" id="adfox683"></div>
-<? endif ?>
+<h1 class="bTitlePage"><?= $category->getName() ?></h1>
 
-<div class="clear"></div>
+<!-- Баннер --><div id="adfox683" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
 
-<? if(!empty($promoContent)): ?>
-    <?= $promoContent ?>
-<? else: ?>
-	<div class="goodslist clearfix">
-	<? foreach ($category->getChild() as $child): ?>
-	    <?= $page->render('product-category/_preview', array('category' => $child, 'rootCategory' => $category, 'catalogJsonBulk' => $catalogJsonBulk)) ?>
-	<? endforeach ?>
-	</div>
-<? endif ?>
+<? if (count($category->getChild())): ?>
+    <ul class="bCatalogRoot clearfix">
+        <!--li class="bCatalogRoot__eItem mBannerItem" style="width: 0px;"><-div class="adfoxWrapper" id="adfox215"></div></li-->
+        <!-- место для баннеры 460х260, при этом родительский элемент имеет ширину 240 -->
+        <? $j = 0; ?>
+        <? foreach ($category->getChild() as $child): ?>
+            <?php
+            $productCount = $child->getProductCount() ? : $child->getGlobalProductCount();
 
-<?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
+            $totalText = $productCount . ' ' . ($child->getHasLine()
+                ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
+                : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
+            );
 
-<? if (\App::config()->crossss['enabled']): ?>
-	<div class="lifted mCatalog">
-	  <script type="text/html" id="similarGoodTmpl">
-	    <div class="bSimilarGoodsSlider_eGoods fl">
-	      <a class="bSimilarGoodsSlider_eGoodsImg" href="<%=link%>"><img src="<%=image%>"/></a>
-	      <div class="bSimilarGoodsSlider_eGoodsInfo">
-	        <div class="goodsbox__rating rate<%=rating%>"><div class="fill"></div></div>
-	        <h3><a href="<%=link%>"><%=name%></a></h3>
-	        <div class="font18 pb10 mSmallBtns"><span class="price"><%=price%></span> <span class="rubl">p</span></div>
-	      </div>
-	    </div>
-	  </script>
-	  <div class="bSimilarGoods clearfix mCatalog">
-	  	<h2 class="mt32">
-			Популярные товары
-		</h2>
-	    <div id="similarGoodsSlider" class="bSimilarGoodsSlider" data-url="<?= $page->url('product.category.recommended.slider', ['categoryPath' => $category->getPath()]) ?>">
-	      <a class="bSimilarGoodsSlider_eArrow mLeft" href="#"></a>
-	      <a class="bSimilarGoodsSlider_eArrow mRight" href="#"></a>
-	      <div class="bSimilarGoodsSlider_eWrap clearfix">
-	      </div>
-	    </div>
-	  </div>
-	</div>
-<? endif ?>
+            $link = $child->getLink() . (\App::request()->get('instore') ? '?instore=1' : '');
+
+            ?>
+
+            <li class="bCatalogRoot__eItem">
+                <a class="bCatalogRoot__eItemLink"
+                   href="<?= $link ?>"
+                   title="<?= $child->getName() ?> - <?= $category->getName() ?>">
+
+                    <div class="bCatalogRoot__eImgLink">
+                        <img class="bCatalogRoot__eImg"
+                         src="<?= $child->getImageUrl() ?>"
+                         alt="<?= $child->getName() ?> - <?= $category->getName() ?>"/>
+                    </div>
+
+                    <div class="bCatalogRoot__eNameLink">
+                        <?= $child->getName() ?>
+                    </div>
+
+                    <div class="bCatalogRoot__eCount"><?= $totalText ?></div>
+                </a>
+            </li>
+
+        <? endforeach ?>
+    </ul>
+    <? if(!empty($seoContent)): ?>
+        <div class="bSeoText">
+            <?= $seoContent ?>
+        </div>
+    <? endif ?>
+<? endif; ?>

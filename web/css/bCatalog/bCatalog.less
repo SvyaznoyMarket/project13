@@ -3,15 +3,44 @@
 }
 
 .mBtnGrey {
+
 	.grayGradDark();
 	.rounded(5px);
-	.box-shadow(1px 1px 3px #c7c7c7);
 	border: 1px solid #c7c7c7;
 
 	&:hover {
-		.grayGradDark2();
+		.grayGradDarkBtn();
 		text-decoration: none;
 	} 
+
+	&:active {
+		background: #dddbdb;
+		text-decoration: none;
+	} 
+}
+
+.mBtnOrange {
+	.gradient(#ffc000, #ffaa01, #ffc000);
+    .rounded(5px);
+    display: block;
+
+    height: 25px;
+	line-height: 25px;
+
+    text-align: center;
+
+    color: #ffffff;
+    border: 1px solid #fb9c00;
+
+    &:hover {
+        .gradient(#ffa200, #f79200, #ffa200);
+        text-decoration: none;
+    }
+
+    &:active {
+        background: #f79200;
+        text-decoration: none;
+    }
 }
 
 .bListing {
@@ -25,22 +54,17 @@
 		margin: 0 30px 30px 0;
 
 		width: 210px;
-		height: 295px;
+		height: 315px;
+
+		&.mBannerItem {
+			margin: 30px 15px 30px 10px;
+			height: 265px;
+			width: 215px;
+		}
 
 		&.mBanner2Item {
 			margin-right: 0;
 			width: 0;
-		}
-
-		&.mBannerItem {
-			margin-right: 0;
-			padding-top: 30px;
-			width: auto;
-			height: 265px;
-
-			.adfoxWrapper div{
-				margin-right: 25px;
-			}
 		}
 
 		&__eInner {
@@ -136,7 +160,7 @@
 
 			float: left;
 
-			width: 80px;
+			width: 99px;
 			color: #919291;
 
 			font-size: 14px;
@@ -163,130 +187,15 @@
 		}
 
 		.bPrice {
-
 			float: left;
-
 			width: 112px;
 			font-size: 20px;
+			margin-left: 0;
 		}
 
-		.bOptions {
-			float: right;
-
-			margin: 4px 0 0;
-			padding: 0 0 0 27px;
-
-			width: 55px;
-
-			background: url('@{base-url}/bCatalog/img/bOptions.png') no-repeat 0 0;
-
-			.bDecor {
-				border-bottom: 1px dotted;
-			}
-		}
-	}
-
-	.bOptionsSection {
-		.rounded(3px);
-		position: relative;
-
-		display: none;
-
-		margin: 12px 0 0;
-		padding: 5px;
-
-		border: 1px solid #e6e6e6;
-		background: #f6f6f6;
-
-		.bCorner {
-			position: absolute;
-			top: -10px;
-			right: 29px;
-			z-index: 2;
-
-			display: block;
-
-			width: 0;
-			height: 0;
-
-			border-right: 10px solid transparent;
-			border-bottom: 10px solid #f6f6f6;
-			border-left: 10px solid transparent;
-		}
-
-		.bCornerDark {
-			position: absolute;
-			top: -11px;
-			right: 28px;
-
-			display: block;
-
-			width: 0;
-			height: 0;
-
-			border-right: 11px solid transparent;
-			border-bottom: 11px solid #e6e6e6;
-			border-left: 11px solid transparent;
-
-		}
-	}
-
-	.bOptionsList {
-
-		&__eItem {
-			margin: 0 0 0 18px;
-
-			list-style-type: disc;
-		}
-	}
-
-	.bBtnLine {
-		display: none;
-
-		margin: 10px 0 0;
-
-		.btnBuy {
-			float: left;
-
-			width: 70px;
-			height: 25px;
-
-			&__eLink {
-				width: 79px;
-				height: 25px;
-
-				font-size: 13px;
-				line-height: 25px;
-
-				&.mBought {
-		            .box-shadow(none);
-		            border: 1px solid @typLightGray;
-		            background: @typLightGray;
-
-		            color: @typGray;
-		            cursor: default;
-
-		            &:hover {
-		                border: 1px solid @typLightGray;
-		                background: @typLightGray;
-		                color: @typGray;
-		            }
-		        }
-			}
-		}
-
-		.btnView {
-			display: block;
-			float: right;
-
-			width: 90px;
-			height: 25px;
-
-			text-align: center;
-
-			font-size: 13px;
-			line-height: 25px;
-		}
+        .bPrice.bHasSale{
+            color: #e62b34;
+        }
 	}
 
 	.bSimplyDescReviews {
@@ -307,5 +216,318 @@
 			color: #a6a6a6;
 			font-size: 11px;
 		}
+	}
+
+	&.mPandora {
+		margin-left: -10px;
+		width: 960px;
+
+		.bListingItem {
+			width: 240px;
+			margin: 0;
+			height: 240px;
+			.rounded(0);
+
+			&__eInner {
+				width: 218px;
+				height: 220px;
+				min-height: 220px;
+				margin: 0;
+				padding: 0;
+				padding: 7px 10px 10px;
+				border: 1px solid #f9f9f9;
+				border-top: 1px solid #ffffff;
+				border-left: 1px solid #ffffff;
+				.rounded(0);
+
+				&:hover {
+					border-color: #AAAAAA;
+					box-shadow: none;
+					.rounded(0);
+
+					.bPriceLine .bPrice {
+						.transition(left 0.1s ease-in-out);
+						left: 10px;
+						-webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
+					}
+
+					.bSimplyDesc {
+						.opacity(1);
+					}
+
+					.btnBuy__eLink {
+			          .opacity(1);
+			        }
+
+			        .bAvailible {
+			        	.opacity(1);
+			        }
+				}
+			}
+
+			.bSimplyDesc__eText {
+				height: auto;
+				min-height: 30px;
+				max-height: 47px;
+			}
+		}
+
+		.btnBuy__eLink {
+	      .opacity(0);
+	      .transition(opacity 0.1s ease-in-out);
+	      position: absolute;
+	      right: 10px;
+	      bottom: 10px;
+
+	      display: block;
+
+	      width: auto;
+	      height: 23px;
+	      padding: 0 10px;
+
+	      text-align: center;
+	      text-indent: 0;
+
+	      color: #ffffff;
+	      border: 1px solid #000;
+	      background: #000;
+	      text-shadow: none;
+
+	      font: normal 12px tahoma,verdana,arial,helvetica,sans-serif;
+	      line-height: 21px;
+	      line-height:21px;
+
+	      &.mBought {
+	        width: auto;
+	        height: 21px;
+
+	        color: #000;
+	        border: 1px solid #000;
+	        background: #fff;
+
+	        &:hover {
+	        	width: auto;
+		        height: 21px;
+
+		        color: #000;
+		        border: 1px solid #000;
+		        background: #fff;
+	        }
+	      }
+	    }
+
+	    .bPriceOld {
+	    	display: none;
+	    }
+
+	    .bAvailible {
+	    	position: absolute;
+			margin-top: 10px;
+			padding: 7px;
+			border: 1px solid #ddd;
+			.rounded(0);
+			bottom: -32px;
+			width: 160px;
+			text-align: left;
+			.transition(opacity 0.1s ease-in-out);
+			.opacity(0);
+			left: -1px;
+			background: #f6f6f6;
+
+			&:after {
+				position: absolute;
+				top: -9px;
+				left: 12px;
+				width: 0;
+				height: 0;
+				border-right: 10px solid transparent;
+				border-bottom: 9px solid #ddd;
+				border-left: 10px solid transparent;
+				content: "";
+				z-index: 2;
+			}
+
+			&:before {
+				position: absolute;
+				top: -7px;
+				left: 14px;
+				border-right: 8px solid transparent;
+				border-bottom: 7px solid #f6f6f6;
+				border-left: 8px solid transparent;
+				content: "";
+				z-index: 3;
+				width: 0;
+				height: 0;
+			}
+	    }
+
+		.bSimplyDesc {
+			background: none;
+			position: relative;
+			left: 0;
+			top: 0;
+			width: auto;
+			.opacity(0);
+        	.transition(opacity 0.1s ease-in-out);
+		}
+
+		.bProductImg {
+			margin: 0;
+			width: 219px;
+			height: 163px;
+			text-align: center;
+		}
+
+		.bProductImg__eImg {
+			width: 163px;
+			height: 163px;
+		}
+
+		.bSimplyDescStikers {
+			display: none;
+		}
+
+		.bBtnLine .btnView {
+			display: none;
+		}
+
+		.bPriceLine {
+
+			.bPrice {
+				.transition(left 0 ease-in-out);
+		        position: absolute;
+		        bottom: 10px;
+		        left: 80px;
+		        font-size: 12px;
+		        -webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
+
+		        strong {
+		        	font-weight: normal;
+		        }
+
+		        &.bHasSale {
+			    	color: @black;
+			    }
+			}
+		}
+	}
+}
+
+.bBtnLine {
+	display: none;
+
+	margin: 10px 0 0;
+
+	.btnBuy {
+		float: left;
+
+		width: 70px;
+		height: 25px;
+
+		&__eLink {
+			width: 79px;
+			height: 25px;
+
+			font-size: 13px;
+			line-height: 25px;
+
+			&.mBought {
+	            .box-shadow(none);
+	            border: 1px solid @typLightGray;
+	            background: @typLightGray;
+
+	            color: @typGray;
+	            cursor: default;
+
+	            &:hover {
+	                border: 1px solid @typLightGray;
+	                background: @typLightGray;
+	                color: @typGray;
+	            }
+	        }
+		}
+	}
+
+	.btnView {
+		display: block;
+		float: right;
+
+		width: 90px;
+		height: 25px;
+
+		text-align: center;
+
+		font-size: 13px;
+		line-height: 25px;
+	}
+}
+
+.bOptions {
+	float: right;
+
+	margin: 4px 0 0;
+	padding: 0 0 0 27px;
+
+	width: 55px;
+
+	background: url('@{base-url}/bCatalog/img/bOptions.png') no-repeat 0 0;
+
+	.bDecor {
+		border-bottom: 1px dotted;
+	}
+}
+
+
+.bOptionsSection {
+	.rounded(3px);
+	position: relative;
+
+	display: none;
+
+	margin: 12px 0 0;
+	padding: 5px;
+
+	border: 1px solid #e6e6e6;
+	background: #f6f6f6;
+
+	.bCorner {
+		position: absolute;
+		top: -10px;
+		right: 29px;
+		z-index: 2;
+
+		display: block;
+
+		width: 0;
+		height: 0;
+
+		border-right: 10px solid transparent;
+		border-bottom: 10px solid #f6f6f6;
+		border-left: 10px solid transparent;
+	}
+
+	.bCornerDark {
+		position: absolute;
+		top: -11px;
+		right: 28px;
+
+		display: block;
+
+		width: 0;
+		height: 0;
+
+		border-right: 11px solid transparent;
+		border-bottom: 11px solid #e6e6e6;
+		border-left: 11px solid transparent;
+
+	}
+}
+
+.bOptionsList {
+
+	&__eItem {
+		margin: 0 0 0 18px;
+
+		list-style-type: disc;
 	}
 }

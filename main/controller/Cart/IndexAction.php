@@ -52,7 +52,7 @@ class IndexAction {
         // подготовка 2-го пакета запросов
 
         // TODO: запрашиваем меню
-        $cartProductsById = $cart->getProducts();
+        $cartProductsById = array_reverse($cart->getProducts(), true);
         $cartServicesById = $cart->getServices();
 
         $productIds = array_keys($cartProductsById);

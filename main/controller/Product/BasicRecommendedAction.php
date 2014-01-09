@@ -10,6 +10,7 @@ class BasicRecommendedAction {
     protected $smartengineMethodName;
     protected $actionType;
     protected $actionTitle;
+    protected $name;
 
     static public $recomendedPartners = [
         \Smartengine\Client::NAME,
@@ -32,10 +33,6 @@ class BasicRecommendedAction {
         $responseData = [];
 
         try {
-            if (\App::config()->crossss['enabled']) {
-                (new \Controller\Crossss\ProductAction())->recommended($request, $productId);
-            }
-
             $product = \RepositoryManager::product()->getEntityById($productId);
             if (!$product) {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
@@ -109,6 +106,12 @@ class BasicRecommendedAction {
 
             $link = $product->getLink();
             $link = $link . (false === strpos($link, '?') ? '?' : '&') . 'sender=' . $senderName . '|' . $product->getId();
+
+            if ('upsale' == $this->name) {
+                $link = $link . (false === strpos($link, '?') ? '?' : '&') . 'from=cart_rec';
+                $product->setIsUpsale(true);
+            }
+
             $product->setLink($link);
 
             //$additionalData[$product->getId()] = \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Also Viewed');

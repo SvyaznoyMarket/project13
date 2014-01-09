@@ -237,10 +237,10 @@ class Action {
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
                             'success' => true,
-                            'message' => sprintf('Пароль выслан на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
+                            'message' => sprintf('Пароль отправлен на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
 
                             'data'    => [
-                                'link' => $this->redirect,
+                                //'link' => $this->redirect,
                             ],
                             'error' => null,
                             'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
@@ -472,6 +472,12 @@ class Action {
                             break;
                         case 698:
                             $form->setError('corp_inn', 'Пользователь с таким ИНН уже зарегистрирован. Пожалуйста обратитесь в контакт-cENTER.');
+                            break;
+                        case 109001:
+                            $form->setError('corp_inn', 'Пользователь с таким ИНН уже зарегистрирован. Пожалуйста обратитесь в контакт-cENTER.');
+                            break;
+                        case 200001:
+                            $form->setError('global', 'Ошибка сохранения контрагента в базе. Пожалуйста обратитесь в контакт-cENTER.');
                             break;
                         default:
                             $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));

@@ -19,6 +19,8 @@ class InfoAction {
         /* @var $cart   \Session\Cart */
         $cart = $user->getCart();
 
+        $helper = new \Helper\TemplateHelper();
+
         /** @var $cookies \Http\Cookie[] */
         $cookies = [];
 
@@ -42,7 +44,8 @@ class InfoAction {
                     'isSubscribed' => null,
                     'link' => \App::router()->generate('user.login'),
                     'id' =>  null,
-                    'email' =>  null
+                    'email' =>  null,
+                    'hasEnterprizeCoupon' => null,
                 ],
                 'cart'    => [
                     'sum'      => 0,
@@ -62,38 +65,38 @@ class InfoAction {
                 $responseData['user']['id'] = $userEntity->getId();
                 $responseData['user']['email'] = $userEntity->getEmail();
                 $responseData['user']['emailHash'] = md5($userEntity->getEmail());
+                $responseData['user']['hasEnterprizeCoupon'] = $user->getEntity()->getEnterprizeCoupon();
             }
 
             if (!$cart->isEmpty()) {
                 $responseData['cart']['sum'] = $cart->getSum();
                 $responseData['cart']['quantity'] = $cart->getProductsQuantity() + $cart->getServicesQuantity();
 
+                $productsById = [];
+                foreach (\RepositoryManager::product()->getCollectionById(array_keys($cart->getProducts())) as $product) {
+                    $productsById[$product->getId()] = $product;
+                }
 
-                $buttons = [];
-                $cartProductsArr = [];
+                $cartProductData = [];
                 foreach ($cart->getProducts() as $cartProduct) {
-                    /* @var \Model\Cart\Product\Entity */
+                    /* @var $product \Model\Product\Entity|null */
+                    $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
 
-                    $item = [
-                        'id'        => $cartProduct->getId(),
-                        'buttonId'  => \View\Id::cartButtonForProduct($cartProduct->getId()),
-                        'quantity'  => $cartProduct->getQuantity(),
-                        'price'     => $cartProduct->getPrice(),
-                        //'name'     => $cartProduct->getTitl,
+                    $cartProductData[] = [
+                        'id'             => $cartProduct->getId(),
+                        'name'           => $product ? $product->getName() : null,
+                        'price'          => $cartProduct->getPrice(),
+                        'formattedPrice' => $helper->formatPrice($cartProduct->getPrice()),
+                        'quantity'       => $cartProduct->getQuantity(),
+                        'deleteUrl'      => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
+                        'url'            => $product ? $product->getLink() : null,
+                        'image'          => $product ? $product->getImageUrl() : null,
+                        'cartButton'     => [
+                            'id' => \View\Id::cartButtonForProduct($cartProduct->getId()),
+                        ],
                     ];
 
-                    $buttons['product'][] = [
-                        'id'        => $item['buttonId'],
-                        'quantity'  => $item['quantity'],
-                    ];
-
-                    $cartProductsArr[] = [
-                        'id'        => $item['id'],
-                        //'name'     => $item['name'],
-                        'price'     => $item['price'],
-                        'quantity'  => $item['quantity'],
-                    ];
-
+                    /*
                     foreach ($cartProduct->getWarranty() as $cartWarranty) {
                         $buttons['warranty'][] = [
                             'id'       => \View\Id::cartButtonForProductWarranty($cartProduct->getId(), $cartWarranty->getId()),
@@ -106,17 +109,19 @@ class InfoAction {
                             'quantity' => $cartService->getQuantity(),
                         ];
                     }
+                    */
                 }
 
+                /*
                 foreach ($cart->getServices() as $cartService) {
                     $buttons['service'][] = [
                         'id'       => \View\Id::cartButtonForService($cartService->getId()),
                         'quantity' => $cartService->getQuantity(),
                     ];
                 }
+                */
 
-                $responseData['action']['cartButton'] = $buttons;
-                $responseData['cartProducts'] = $cartProductsArr;
+                $responseData['cartProducts'] = $cartProductData;
             }
 
             if (\App::config()->subscribe['enabled']) {

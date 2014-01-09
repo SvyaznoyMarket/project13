@@ -1,3 +1,6 @@
+
+console.log('ports.js inited');
+
 window.ANALYTICS = {
 	
 	// todo SITE-1049
@@ -95,13 +98,18 @@ window.ANALYTICS = {
 	},
 
 	adriverOrder : function() {
-		var a = arguments[0];
+		var a = (arguments && arguments[0]) ? arguments[0] : false,
+            ordNum = (a && a.order_id ) ? a.order_id : false;
+
+        if (!ordNum) {
+            return;
+        }
 
 		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
 		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
 		document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&sz=order&bt=55&pz=0'+
-			'&custom=150='+ a.order_id +
-			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
+			'&custom=150='+ ordNum +
+			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border="0" width="1" height="1" alt="" />');
 	},
 	
 	// yandexMetrika : function() {
@@ -125,78 +133,119 @@ window.ANALYTICS = {
 	//     })(document, window, "yandex_metrika_callbacks");
 	// },
 
-    LiveTexJS: function () {
-        var LTData = $('#LiveTexJS').data('value');
-        window.liveTexID = LTData.livetexID;
-        window.liveTex_object = true;
+	LiveTexJS: function () {
+		console.group('ports.js::LiveTexJS log');
 
-        window.LiveTex = {
-            onLiveTexReady: function () {
-                window.LiveTex.setName(LTData.username);
-            },
+		var LTData = $('#LiveTexJS').data('value');
+		window.liveTexID = LTData.livetexID;
+		window.liveTex_object = true;
 
-            invitationShowing: false,
+		window.LiveTex = {
+			onLiveTexReady: function () {
+				window.LiveTex.setName(LTData.username);
+			},
 
-            addToCart: function (productData) {
-                var userid = ( LTData.userid ) ? LTData.userid : 0;
-                window.LiveTex.setManyPrechatFields({
-                    'Department': 'Marketing',
-                    'Product': productData.article,
-                    'Ref': window.location.href,
-                    'userid': userid
-                });
+			invitationShowing: false,
 
-                if ( (!window.LiveTex.invitationShowing) && (typeof(window.LiveTex.showInvitation) == 'function') ) {
-                    LiveTex.showInvitation('Здравствуйте! Вы добавили корзину ' + productData.name + '. Может, у вас возникли вопросы и я могу чем-то помочь?');
-                    LiveTex.invitationShowing = true;
-                }
+			addToCart: function (productData) {
+				var userid = ( LTData.userid ) ? LTData.userid : 0;
+				if ( !productData.name || !productData.article ) {
+					return false;
+				}
+				window.LiveTex.setManyPrechatFields({
+					'Department': 'Marketing',
+					'Product': productData.article,
+					'Ref': window.location.href,
+					'userid': userid
+				});
 
-            } // end of addToCart function
+				if ( (!window.LiveTex.invitationShowing) && (typeof(window.LiveTex.showInvitation) === 'function') ) {
+					LiveTex.showInvitation('Здравствуйте! Вы добавили корзину ' + productData.name + '. Может, у вас возникли вопросы и я могу чем-то помочь?');
+					LiveTex.invitationShowing = true;
+				}
 
-        }; // end of LiveTex Object
+			} // end of addToCart function
 
-        //$(document).load(function() {
-        (function() {
-            var lt = document.createElement('script');
-            lt.type ='text/javascript';
-            lt.async = true;
-            lt.src = 'http://cs15.livetex.ru/js/client.js';
-            var sc = document.getElementsByTagName('script')[0];
-            if ( sc ) sc.parentNode.insertBefore(lt, sc);
-            else  document.documentElement.firstChild.appendChild(lt);
-        })();
-        //});
-    },
+		}; // end of LiveTex Object
 
-    ActionPayJS : function() {
-        var vars = $('#ActionPayJS').data('vars');
-        if ( vars ) {
-            if ( vars.extraData ) {
-                if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
-                    vars.basketProducts = ENTER.config.cartProducts;
-                }
-                delete vars.extraData;
-            }
-            window.APRT_DATA = vars;
-        }
+		//$(document).load(function() {
+		(function () {
+			console.info('LiveTexJS init');
 
-        (function(){
-            var s   = document.createElement('script');
-            var x   = document.getElementsByTagName('script')[0];
-            s.type  = 'text/javascript';
-            s.async = true;
-            s.src   = '//rt.adonweb.ru/3038.js'; // tmp
-            //s.src   = '//rt.actionpay.ru/code/enter/'; // real
-            x.parentNode.insertBefore( s, x );
-        })();
-    },
+			var lt = document.createElement('script');
+			lt.type = 'text/javascript';
+			lt.async = true;
+			lt.src = 'http://cs15.livetex.ru/js/client.js';
+			var sc = document.getElementsByTagName('script')[0];
+			if ( sc ) sc.parentNode.insertBefore(lt, sc);
+			else  document.documentElement.firstChild.appendChild(lt);
 
-    yaParamsJS : function() {
-        var yap = $('#yaParamsJS').data('vars');
-        if (yap) {
-            window.yaParams = yap;
-        }
-    },
+			console.log('LiveTexJS end');
+		})();
+
+		console.groupEnd();
+		//});
+	},
+
+	ActionPayJS: function () {
+		var basketEvents = function ( pageType, product ) {
+				var aprData = {pageType: pageType};
+				if ( typeof(window.APRT_SEND) === 'undefined' || typeof(product) === 'undefined' ) {
+					return false;
+				}
+
+				aprData.currentProduct = {
+					id: product.id,
+					name: product.name,
+					price: product.price
+				};
+				window.APRT_SEND(aprData);
+			},
+			addToBasket = function (event, data) {
+				basketEvents(8, data.product);
+			},
+			remFromBasket = function (event, product) {
+				basketEvents(9, product);
+			};
+
+		$('body').on('addtocart', addToBasket);
+		$('body').on('remFromCart', remFromBasket);
+
+		(function () {
+			var s = document.createElement('script'),
+				x = document.getElementsByTagName('script')[0],
+				elem = $('#ActionPayJS'),
+				vars = elem.data('vars');
+
+			if ( 0 === elem.length ) {
+				return;
+			}
+
+			if ( typeof(vars) === 'undefined' ) {
+				vars = {};
+				vars.pageType = 0;
+			}
+			else if ( vars.extraData ) {
+				if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
+					vars.basketProducts = ENTER.config.cartProducts;
+				}
+				delete vars.extraData;
+			}
+			window.APRT_DATA = vars;
+
+			s.type  = 'text/javascript';
+			s.src = '//rt.actionpay.ru/code/enter/';
+			s.defer = true;
+			x.parentNode.insertBefore(s, x);
+		})();
+	},
+
+	yaParamsJS: function () {
+		var yap = $('#yaParamsJS').data('vars');
+		if ( yap ) {
+			window.yaParams = yap;
+		}
+	},
 
     // enterleadsJS : function() { // SITE-1911
     //     (function () {
@@ -214,40 +263,40 @@ window.ANALYTICS = {
     //     })();
     // },
 
-    sociomantic : function() {
-        (function(){
-            var s   = document.createElement('script');
-            var x   = document.getElementsByTagName('script')[0];
-            s.type  = 'text/javascript';
-            s.async = true;
-            s.src   = ('https:'==document.location.protocol?'https://':'http://')
-                + 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
-            x.parentNode.insertBefore( s, x );
-        })();
-    },
+	sociomanticJS: function () {
+		(function () {
+			var s = document.createElement('script'),
+				x = document.getElementsByTagName('script')[0];
+			s.type = 'text/javascript';
+			s.async = true;
+			s.src = ('https:' == document.location.protocol ? 'https://' : 'http://')
+				+ 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
+			x.parentNode.insertBefore(s, x);
+		})();
+	},
 
-    sociomanticCategoryPage : function() {
-        (function(){
-            window.sonar_product = {
-                category : $('#sociomanticCategoryPage').data('prod-cats')
-            };
-        })();
-    },
+	smanticPageJS: function() {
+		(function(){
+			var elem = $('#smanticPageJS'),
+				prod = elem.data('prod'),
+				prod_cats = elem.data('prod-cats'),
+				cart_prods = elem.data('cart-prods');
 
-    sociomanticProductPageStream : function() {
-        (function(){
-            window.sonar_product = $('#sociomanticProductPageStream').data('scr-product');
-            window.sonar_product.category = $('#sociomanticProductPageStream').data('prod-cats');
-        })();
-    },
+			window.sonar_product = window.sonar_product || {};
 
-    sociomanticBasket : function() {
-        (function(){
-            window.sonar_basket = {
-                products: $('#sociomanticBasket').data('cart-prods')
-            };
-        })();
-    },
+			if ( prod ) {
+				window.sonar_product = prod;
+			}
+
+			if ( prod_cats ) {
+				window.sonar_product.category = prod_cats;
+			}
+
+			if ( cart_prods ) {
+				window.sonar_basket = { products: cart_prods };
+			}
+		})();
+	},
 
     criteoJS : function() {
         window.criteo_q = window.criteo_q || [];
@@ -331,11 +380,13 @@ window.ANALYTICS = {
             },
 
             popup_opder : function ( toFLK_order )  {
-                if ( Flocktory.popup_prepare() ) {
-                    toFLK_order.email = Flocktory.mail;
-                    toFLK_order.name = Flocktory.name;
-                    return Flocktory.popup(toFLK_order);
-                }
+				try{
+					if ( Flocktory.popup_prepare() ) {
+						toFLK_order.email = Flocktory.mail;
+						toFLK_order.name = Flocktory.name;
+						return Flocktory.popup(toFLK_order);
+					}
+				}catch(e){};
                 return false;
             },
 
@@ -389,6 +440,8 @@ window.ANALYTICS = {
     },
 
     RetailRocketJS : function() {
+    	console.group('ports.js::RetailRocketJS');
+
         window.rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // rrPartnerId — по ТЗ должна быть глобальной
         
         window.rrApi = {};
@@ -399,6 +452,7 @@ window.ANALYTICS = {
         window.RetailRocket = {
 
             'product': function ( data, userData ) {
+            	console.info('RetailRocketJS product');
 
                 var rcAsyncInit = function () {
                     try {
@@ -420,6 +474,7 @@ window.ANALYTICS = {
             },
 
             'product.category': function ( data, userData ) {
+            	console.info('RetailRocketJS product.category');
 
                 var rcAsyncInit = function () {
                     try {
@@ -441,6 +496,7 @@ window.ANALYTICS = {
             },
 
             'order.complete': function ( data, userData ) {
+            	console.info('RetailRocketJS order.complete');
 
                 if ( userData.userId ) {
                     data.userId = userData.userId;
@@ -467,9 +523,13 @@ window.ANALYTICS = {
             },
 
             action: function ( e, userInfo ) {
-                var rr_data = $('#RetailRocketJS').data('value'),
+            	console.info('RetailRocketJS action');
+            	console.log('userInfo: id = '+ userInfo.id + ' email = ' + userInfo.email);
+
+                var
+                	rr_data = $('#RetailRocketJS').data('value'),
                     sendUserData = {
-                        userId: userInfo.emailHash || userInfo.id || false,
+                        userId: userInfo.id || false,
                         hasUserEmail: ( userInfo && userInfo.email ) ? true : false
                     };
                 // end of vars
@@ -481,6 +541,8 @@ window.ANALYTICS = {
             },
 
             init: function () { // on load:
+            	console.info('RetailRocketJS init');
+
                 (function (d) {
                     var ref = d.getElementsByTagName('script')[0]; var apiJs, apiJsId = 'rrApi-jssdk';
                     if (d.getElementById(apiJsId)) return;
@@ -496,13 +558,14 @@ window.ANALYTICS = {
 
         RetailRocket.init();
 
-        if ( ENTER.config.userInfo ) {
-            RetailRocket.action(null, ENTER.config.userInfo)
+        if ( ENTER.config.userInfo && ENTER.config.userInfo.id ) {
+            RetailRocket.action(null, ENTER.config.userInfo);
         }
         else {
-            $('body').on('userLogged', RetailRocket.action);
+        	$('body').on('userLogged', RetailRocket.action);
         }
-        // RetailRocket.action();
+
+        console.groupEnd();
     },
 
     AdmitadJS : function() {
@@ -598,91 +661,129 @@ window.ANALYTICS = {
 	},
 
 	parseAllAnalDivs : function( nodes ) {
-		if( !this. enable )
-			return
+		console.group('parseAllAnalDivs');
+		console.info('parseAllAnalDivs');
 
-		var self = this
+		if ( !this.enable ) {
+			console.warn('Not enabled. Return');
+
+			return;
+		}
+
+		var
+			self = this;
+
 		$.each(  nodes , function() {
 //console.info( this.id, this.id+'' in self  )
 			
 			// document.write is overwritten in loadjs.js to document.writeln
-			var anNode = $(this)
-			if( anNode.is('.parsed') )
-				return
-			document.writeln = function(){
-				anNode.html( arguments[0] )
+			var
+				anNode = $(this);
+			// end of vars
+			
+			console.log(anNode);
+
+			if ( anNode.is('.parsed') ) {
+				console.warn('Parsed. Return');
+
+				return;
 			}
 
-			if( this.id+'' in self )
-				self[this.id]( $(this).data('vars') )
+			document.writeln = function() {
+				anNode.html( arguments[0] );
+			}
+
+			if ( this.id+'' in self ) {
+				self[this.id]( $(this).data('vars') );
+			}
+
 			anNode.addClass('parsed')
-		})
-		document.writeln = function(){
-			$('body').append( $(arguments[0] + '') )
+		});
+
+		document.writeln = function() {
+			$('body').append( $(arguments[0] + '') );
 		}
+		console.log('end parseAllAnalDivs');
+		console.groupEnd();
 	},
 
 	myThingsTracker: function() {
 		//трекинг от MyThings. Вызывается при загрузке внешнего скрипта
-		window._mt_ready = function (){
-			if (typeof(MyThings) != "undefined") {
-				var sendData = $('#myThingsTracker').data('value')
-				if (!$.isArray(sendData)) {
+		window._mt_ready = function () {
+			if ( typeof(MyThings) != "undefined" ) {
+				var sendData = $('#myThingsTracker').data('value');
+
+				if ( !$.isArray(sendData) ) {
 					sendData = [sendData];
 				}
 
 				$.each(sendData, function(i, e) {
+
 					if (e.EventType !== "undefined") {
-						e.EventType = eval(e.EventType)
+						e.EventType = eval(e.EventType);
 					}
 					MyThings.Track(e)
-				})
+				});
 			}
 		}
+
 		mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com";
 		mtAdvertiserToken = "1989-100-ru";
 		document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok="+mtAdvertiserToken+"' type='text/javascript'%3E%3C/script%3E"));
 	},
+
 	testFreak : function() {
 		document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
 	},
 
-	marinSoftwarePageAddJS: function() {
+	marinSoftwarePageAddJS: function( callback ) {
+		console.info('marinSoftwarePageAddJS');
+
 		var mClientId ='7saq97byg0';
 		var mProto = ('https:' == document.location.protocol ? 'https://' : 'http://');
 		var mHost = 'tracker.marinsm.com';
 		var mt = document.createElement('script'); mt.type = 'text/javascript'; mt.async = true; mt.src = mProto + mHost + '/tracker/async/' + mClientId + '.js';
-		var fscr = document.getElementsByTagName('script')[0]; fscr.parentNode.insertBefore(mt, fscr);
+		// var fscr = document.getElementsByTagName('script')[0]; fscr.parentNode.insertBefore(mt, fscr);
+
+
+		$LAB.script( mt.src ).script( 'three.min.js' ).wait(callback);
 	},
 
 	marinLandingPageTagJS : function() {
-		var _mTrack = window._mTrack || [];
-		_mTrack.push(['trackPage']);
-		this.marinSoftwarePageAddJS();
+		var marinLandingPageTagJSHandler = function marinLandingPageTagJSHandler() {
+			console.info('marinLandingPageTagJS run');
+
+			var _mTrack = window._mTrack || [];
+
+			_mTrack.push(['trackPage']);
+
+			console.log('marinLandingPageTagJS complete');
+		};
+		// end of functions
+
+		this.marinSoftwarePageAddJS(marinLandingPageTagJSHandler);
 	},
 
 	marinConversionTagJS : function() {
-		var orders = $('#marinConversionTagJS').data('value'),
-			_mTrack = window._mTrack || [];
-		// end of vars
+		var marinConversionTagJSHandler = function marinConversionTagJSHandler() {
+			console.info('marinConversionTagJS run');
 
-		if ( orders.length ) {
-			for ( var i in orders ) {
-				if ( orders[i]['id'] ) {
-					_mTrack.push(['addTrans', {
-						items : [
-							{
-								convType : 'sales',
-								orderId : orders[i]['id']	// order‑id
-							}
-						]
-					}]);
+			var ordersInfo = $('#marinConversionTagJS').data('value'),
+				_mTrack = window._mTrack || [];
+			// end of vars
 
-					_mTrack.push(['processOrders']);
-				}
+			if ( 'undefined' === typeof(ordersInfo) ) {
+				return;
 			}
-			this.marinSoftwarePageAddJS();
-		}
+
+			_mTrack.push(['addTrans', ordersInfo]);
+			_mTrack.push(['processOrders']);
+
+			console.log('marinConversionTagJS complete');
+		};
+		// end of functions
+
+		this.marinSoftwarePageAddJS(marinConversionTagJSHandler);
 	},
 
 
@@ -900,24 +1001,24 @@ var ADFOX = {
 		 if( !this. enable )
 			return
 
-		if( window.addEventListener ) {
-			var nativeEL = window.addEventListener
-			window.addEventListener = function(){
-//console.info('addEventListener WINDOW', arguments[0])
-			  nativeEL.call(this, arguments[0], arguments[1])
-			  if( arguments[0] === 'load' )
-				arguments[1]()
-			}
-		} else if( window.attachEvent ) { //IE < 9
-			var nativeEL = window.attachEvent
-			window.attachEvent = function(){
-//console.info('addEventListener WINDOW', arguments[0])
-//console.info('addEventListener WINDOW', arguments[0])
-			  //nativeEL.call(window, arguments[0], arguments[1])
-			  if( arguments[0] === 'onload' )
-				arguments[1]()
-			}
-		}        
+// 		if( window.addEventListener ) {
+// 			var nativeEL = window.addEventListener
+// 			window.addEventListener = function(){
+// //console.info('addEventListener WINDOW', arguments[0])
+// 			  nativeEL.call(this, arguments[0], arguments[1])
+// 			  if( arguments[0] === 'load' )
+// 				arguments[1]()
+// 			}
+// 		} else if( window.attachEvent ) { //IE < 9
+// 			var nativeEL = window.attachEvent
+// 			window.attachEvent = function(){
+// //console.info('addEventListener WINDOW', arguments[0])
+// //console.info('addEventListener WINDOW', arguments[0])
+// 			  //nativeEL.call(window, arguments[0], arguments[1])
+// 			  if( arguments[0] === 'onload' )
+// 				arguments[1]()
+// 			}
+// 		}        
 			
 		var anNode = null
 		document.writeln = function() {

@@ -6,9 +6,9 @@
 ?>
 
 <div class="bSubscribeLightboxPopup clearfix">
-    <h3 class="bSubscribeLightboxPopup__eTitle fl">Дарим подарки новым друзьям!</h3>
-    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Подпишитесь и получите подарок"/>
-    <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>">Хочу подарок</button>
+    <h3 class="bSubscribeLightboxPopup__eTitle fl">Подпишитесь на рассылку и будьте в курсе акций, скидок и суперцен!</h3>
+    <input class="bSubscribeLightboxPopup__eInput fl" placeholder="Введите Ваш e-mail"/>
+    <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>">Подписаться</button>
     <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
 </div>
 <!-- Topbar -->
@@ -43,9 +43,26 @@
         <div class="bSubscribeLightboxPopupNotNow mFl"></div>
     </div>
     <noindex>
-        <div class="usermenu">
-            <?= $page->render('_user') ?>
-            <a href="<?= $page->url('cart') ?>" class="hBasket ml10">Моя корзина <span id="topBasket"></span></a>
+        <div class="fixedTopBar mStatic <? if ('homepage' == \App::request()->attributes->get('route')):?> mHomepage<? endif ?>">
+            <div class="fixedTopBar__cart mEmpty">
+                <a href="/cart" class="fixedTopBar__cartTitle">Корзина</a>
+            </div>
+
+            <div class="fixedTopBar__logIn mLogin"><!-- Добавляем класс-модификатор mLogin, если пользователь не залогинен -->
+                <a href="/login" class="fixedTopBar__logInLink bAuthLink">Личный кабинет</a>
+                <span class="transGrad"></span>
+
+                <div class="fixedTopBar__dd fixedTopBar__logOut">
+                    <div class="enterPrize">
+                        <div class="enterPrize__text">
+                            <strong class="title">Enter Prize</strong>
+                            Выбери фишку со скидкой на любой товар в ENTER!
+                        </div>
+
+                        <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </noindex>
 </div>
@@ -57,3 +74,90 @@
     <?= $page->slotMainMenu() ?>
 </div>
 <!-- /Header -->
+
+<script id="userbar_cart_empty_tmpl" type="text/html">
+    <div class="fixedTopBar__cart mEmpty">
+        <a href="/cart" class="fixedTopBar__cartTitle">Корзина</a>
+    </div>
+</script>
+
+<script id="userbar_cart_tmpl" type="text/html">
+    <a href="<?=  $page->url('cart') ?>" class="fixedTopBar__cartTitle">
+        <span class="fixedTopBar__cartText">Корзина</span>
+        <strong class="fixedTopBar__cartQuan">{{quantity}}</strong>
+        <span class="fixedTopBar__cartPrice">{{sum}} <span class="rubl">p</span></span>
+    </a>
+
+    <div class="fixedTopBar__dd fixedTopBar__cartOn">
+        {{#hasProducts}}
+            <ul class="cartList">
+                {{#products}}
+                    <li class="cartList__item">
+                        <a class="cartList__itemLink" href="{{url}}"><img class="cartList__itemImg" src="{{image}}" /></a>
+                        <div class="cartList__itemName"><a href="{{url}}">{{name}}</a></div>
+                        <div class="cartList__itemInfo">
+                            <span class="price">{{formattedPrice}} &nbsp;<span class="rubl">p</span></span>
+                            <span class="quan">{{quantity}} шт.</span>
+                            <a href="{{deleteUrl}}" class="del jsCartDelete">удалить</a>
+                        </div>
+                    </li>
+                {{/products}}
+            </ul>
+        {{/hasProducts}}
+
+        {{#showTransparent}}
+            <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 4 товаров, в противном случае display: none; -->
+        {{/showTransparent}}
+
+        <div class="btnBuy quickOrder"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
+    </div>
+
+    <div class="hintDd"><!-- если похожии товары есть то добавляем класс mhintDdOn -->
+    </div>
+</script>
+
+<!-- Окно с информацией о товаре только что положенном в корзину -->
+<script id="buyinfo_tmpl" type="text/html">
+    <div class="fixedTopBar__dd fixedTopBar__cartOn">
+        <ul class="cartList">
+            {{#products}}
+                <li class="cartList__item">
+                    <a class="cartList__itemLink" href="{{url}}"><img class="cartList__itemImg" src="{{image}}" /></a>
+                    <div class="cartList__itemName"><a href="{{url}}">{{name}}</a></div>
+                    <div class="cartList__itemInfo">
+                        <span class="price">{{formattedPrice}} &nbsp;<span class="rubl">p</span></span>
+                        <span class="quan">{{quantity}} шт.</span>
+                        <a href="{{deleteUrl}}" class="del jsCartDelete">удалить</a>
+                    </div>
+                </li>
+            {{/products}}
+         </ul>
+
+        {{#showTransparent}}
+            <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 4 товаров, в противном случае display: none; -->
+        {{/showTransparent}}
+        <div class="btnBuy quickOrder"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
+    </div>
+</script>
+
+<!-- Данные пользователя -->
+<script id="userbar_user_tmpl" type="text/html">
+    <a href="{{link}}" class="fixedTopBar__logInLink"><span class="name__hidden">{{name}}</span></a>
+    <span class="transGrad"></span>
+
+    <div class="fixedTopBar__dd fixedTopBar__logOut">
+        {{^hasEnterprizeCoupon}}
+            <div class="enterPrize">
+                <div class="enterPrize__text">
+                    <strong class="title">Enter Prize</strong>
+                    Выбери фишку со скидкой на любой товар в ENTER!
+                </div>
+
+                <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+            </div>
+        {{/hasEnterprizeCoupon}}
+
+        <a class="mBtnGrey fixedTopBar__logOutLink" href="<?= $page->url('user.logout') ?>">Выйти</a>
+    </div>
+
+</script>

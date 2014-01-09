@@ -10,6 +10,8 @@
  * @var $paymentProvider    \Payment\ProviderInterface
  * @var $creditData         array
  * @var $isOrderAnalytics   bool
+ * @var $sessionIsReaded    bool
+ * @var $paymentMethod      \Model\PaymentMethod\Entity
  */
 ?>
 
@@ -38,7 +40,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 <? foreach ($orders as $order): ?>
     <p class="title-font16 font16">Сейчас он отправлен на склад для сборки!<br/>
 Ожидайте смс или звонок от оператора контакт-сEnter по статусу заказа!</p>
-    <p class="font19">Номер заказа: <?= $order->getNumber() ?></p>
+    <p class="font19">Номер заказа: <?= $order->getNumberErp() ?></p>
 
     <? if ($order->getDeliveredAt() instanceof \DateTime): ?>
         <p class="font16">Дата доставки: <?= $order->getDeliveredAt()->format('d.m.Y') ?></p>
@@ -47,7 +49,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     <p class="font16">Сумма заказа: <span class="mBold"><?= $page->helper->formatPrice($order->getSum()) ?></span> <span class="rubl">p</span></p>
     <p class="font16">Сумма для оплаты: <span class="mBold" id="paymentWithCard"><?= $page->helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></p>
     <? if ($paymentMethod): ?>
-        <p class="font16">Способ оплаты: <span class="mBold"><?= $paymentMethod->getName() ?></span></p>
+        <p class="font16" style="border-bottom: 1px solid #e6e6e6; margin: 0 0 30px; padding-bottom: 10px;">Способ оплаты: <span class="mBold"><?= $paymentMethod->getName() ?></span></p>
     <? endif ?>
 
     <div class="line pb15"></div>
@@ -107,6 +109,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     'productsById' => $productsById,
     'servicesById' => $servicesById,
     'shopsById'    => $shopsById,
+    'paymentMethod' => $paymentMethod
 )) ?>
 
 
@@ -122,10 +125,12 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     <? endforeach ?>
 <? endif ?>
 
-<?= $page->tryRender('order/partner-counter/_complete', [
-    'orders'       => $orders,
-    'productsById' => $productsById,
-]) ?>
-
-
-<?= $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]) ?>
+<?
+if ($sessionIsReaded) {
+    // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
+    echo $page->tryRender('order/partner-counter/_complete', [
+        'orders'       => $orders,
+        'productsById' => $productsById,
+    ]);
+    echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]);
+}

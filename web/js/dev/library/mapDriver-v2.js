@@ -11,7 +11,7 @@
 	 * 
 	 * @this	{CreateMap}
 	 *
-	 * @param	{Object}	args			DOM объект в который необходимо вывести карту
+	 * @param	{Object}	nodeId			DOM объект в который необходимо вывести карту
 	 * @param	{Array}		points			Массив точек, которые необходимо вывести на карту
 	 * @param	{Object}	baloonTemplate	Шаблон для балунов на карте
 	 *
@@ -31,19 +31,41 @@
 			console.log(points);
 
 			this.points = points;
-			this.template = baloonTemplate.html();
+			this.template = baloonTemplate ? baloonTemplate.html() : null;
 			this.center = this._calcCenter();
+
+            this.$nodeId = $('#'+nodeId);
 
 			console.log(this.center);
 
-			this.mapWS = new ymaps.Map(nodeId, {
-				center: [this.center.latitude, this.center.longitude],
-				zoom: 10
-			});
+//            var
+//                init = function init() {
+//
+//                };
+//            // end of functions
+//
+//
+//            ymaps.ready(init);
 
-			this.mapWS.controls.add('zoomControl');
+            console.info('ymaps.ready. init map');
 
-			this._showMarkers();
+            if ( !this.$nodeId.length || this.$nodeId.width() === 0 || this.$nodeId.height() === 0 || this.$nodeId.is('visible') === false ) {
+                console.warn('Do you have a problem with init map?');
+
+                console.log(this.$nodeId.width());
+                console.log(this.$nodeId.height());
+                console.log(this.$nodeId.is('visible'));
+            }
+
+
+            this.mapWS = new ymaps.Map(nodeId, {
+                center: [this.center.latitude, this.center.longitude],
+                zoom: 10
+            });
+
+            this.mapWS.controls.add('zoomControl');
+
+            this._showMarkers();
 		}
 
 		/**
@@ -61,6 +83,7 @@
 			// end of vars
 
 			for ( i = this.points.length - 1; i >= 0; i-- ) {
+                if (!this.points[i].latitude || !this.points[i].longitude) continue;
 				latitude  += this.points[i].latitude * 1;
 				longitude += this.points[i].longitude * 1;
 
@@ -76,37 +99,39 @@
 		};
 
 		CreateMap.prototype._showMarkers = function() {
-			var tmpPointInfo = null,
+			var currPoint = null,
 				tmpPlacemark = null,
-				pointsCollection = new ymaps.GeoObjectArray();
+				pointsCollection = new ymaps.GeoObjectArray(),
+				pointContentLayout = ymaps.templateLayoutFactory.createClass(this.template), // layout for baloon
+				i;
 			// end of vars
 
-			// layout for baloon
-			var pointContentLayout = ymaps.templateLayoutFactory.createClass(this.template);
-
-			for ( var i = this.points.length - 1; i >= 0; i--) {
-				tmpPointInfo = {
-					id: this.points[i].id,
-					name: this.points[i].name,
-					address: this.points[i].address,
-					link: this.points[i].link,
-					regtime: this.points[i].regtime,
-					parentBoxToken: this.points[i].parentBoxToken
-				};
+			for ( i = this.points.length - 1; i >= 0; i--) {
+				currPoint = this.points[i];
+                if (!currPoint.latitude || !currPoint.longitude) continue;
 
 				tmpPlacemark = new ymaps.Placemark(
 					// координаты точки
 					[
-						this.points[i].latitude,
-						this.points[i].longitude
+						currPoint.latitude,
+						currPoint.longitude
 					],
 
 					// данные для шаблона
-					tmpPointInfo,
+					{
+						id: currPoint.id,
+						name: currPoint.name,
+						address: currPoint.address,
+						link: currPoint.link,
+						regtime: currPoint.regtime,
+						parentBoxToken: currPoint.parentBoxToken,
+						buttonName: currPoint.buttonName
+					},
 
 					// оформление метки на карте
 					{
-						iconImageHref: '/images/marker.png', // картинка иконки
+						iconImageHref: currPoint.pointImage, // картинка иконки
+						//iconImageHref: '/images/marker.png', // картинка иконки
 						iconImageSize: [39, 59],
 						iconImageOffset: [-19, -57]
 					}

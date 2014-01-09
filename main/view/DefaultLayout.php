@@ -4,6 +4,7 @@ namespace View;
 
 class DefaultLayout extends Layout {
     protected $layout  = 'layout-twoColumn';
+    protected $breadcrumbsPath = null;
 
     public function __construct() {
         parent::__construct();
@@ -11,7 +12,7 @@ class DefaultLayout extends Layout {
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');
         $this->addMeta('viewport', 'width=900');
-        $this->addMeta('title', 'Enter - это выход!');
+        //$this->addMeta('title', 'Enter - это выход!');
         $this->addMeta('description', 'Enter - новый способ покупать. Любой из ' . \App::config()->product['totalCount'] . ' товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.');
 
         // TODO: осторожно, говнокод
@@ -23,6 +24,8 @@ class DefaultLayout extends Layout {
         */
 
         $this->addStylesheet('/css/global.min.css');
+
+        $this->addStylesheet('/styles/global.min.css');
 
         $this->addJavascript(\App::config()->debug ? '/js/loadjs.js' : '/js/loadjs.min.js');
     }
@@ -78,14 +81,20 @@ class DefaultLayout extends Layout {
     public function slotFooter() {
         $client = \App::contentClient();
 
-        try {
-            $response = $client->query('footer_default');
-        } catch (\Exception $e) {
-            \App::exception()->add($e);
-            \App::logger()->error($e);
+        $response = null;
+        $client->addQuery(
+            'footer_default',
+            [],
+            function($data) use (&$response) {
+                $response = $data;
+            },
+            function(\Exception $e) {
+                \App::exception()->add($e);
+            }
+        );
+        $client->execute();
 
-            $response = array('content' => '');
-        }
+        $response = array_merge(['content' => ''], (array)$response);
 
         $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
 
@@ -168,7 +177,15 @@ class DefaultLayout extends Layout {
     }
 
     public function slotUserbar() {
-        return $this->render('_userbar');
+        return '';
+    }
+
+    public function slotUserbarContent() {
+        return '';
+    }
+
+    public function slotUserbarContentData() {
+        return '';
     }
 
     public function slotSurveybar() {
@@ -224,8 +241,8 @@ class DefaultLayout extends Layout {
             }, function(\Exception $e) use (&$isFailed) {
                 \App::exception()->remove($e);
                 $isFailed = true;
-            }, 5);
-            $client->execute();
+            }, 2);
+            $client->execute(1, 2);
 
             if ($isFailed) {
                 $content = $renderer->render('__mainMenu', [
@@ -244,7 +261,7 @@ class DefaultLayout extends Layout {
             ]);
             \Debug\Timer::stop('main-menu');
 
-            \App::debug()->add('time.main-menu', sprintf('%s ms', round(\Debug\Timer::get('main-menu')['total'], 3) * 1000), 95);
+            //\App::debug()->add('time.main-menu', round(\Debug\Timer::get('main-menu')['total'], 3) * 1000, 95);
         }
 
         return $content;
@@ -329,41 +346,54 @@ class DefaultLayout extends Layout {
     {
         $smantic_path = 'partner-counter/sociomantic/';
         $routeName = \App::request()->attributes->get('route');
-        $breadcrumbs = $this->getParam('breadcrumbs');
+        $breadcrumbs = $this->getBreadcrumbsPath();
         $region_id = \App::user()->getRegion()->getId();
         $smantic = new \View\Partners\Sociomantic($region_id);
 
+        $prod = null;
+        $prod_cats = null;
+        $cart_prods = null;
+        $return = '';
 
-        if (!in_array($routeName, [
+        if ( in_array( $routeName, ['order', 'order.complete'] ) ) {
             // !!! Не дублировать! Hа этих страницах Sociomantic
             // вместе с inclusion tag
             // подключается через JS — см файл /web/js/dev/order/order.js
-            'order',
-            'order.complete',
-        ])) {
-            // на всех страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
-            $return = $this->render($smantic_path . '01-homepage');
+            return;
         }
 
+        // на всех остальных страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
+        $return .= $this->render($smantic_path . '01-homepage');
 
         if ($routeName == 'product.category') {
 
             $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
-            $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'category');
-            $return .= $this->render($smantic_path . '02-category_page', ['prod_cats' => $prod_cats]);
+            if ($category) {
+                $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'category');
+                $return .= $this->render($smantic_path . 'smanticPage', ['prod_cats' => $prod_cats]);
+            }
 
         } else if ($routeName == 'product') {
 
             $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-            $prod_cats = $smantic->makeCategories($breadcrumbs, $product->getCategory(), 'product');
-            $return .= $this->render($smantic_path . '03a-product_page_stream', ['product' => $product, 'smantic' => &$smantic, 'prod_cats' => $prod_cats]);
+            if ( $product ) {
+                /** @var @var $product \Model\Product\Entity */
+                $category = $product->getMainCategory();
+                $categories = $product->getCategory();
+                if (!$category) $category = reset($categories);
+                $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'product');
+                $prod = $smantic->makeProdInfo($product, $prod_cats);
+                $return .= $this->render($smantic_path . 'smanticPage', ['prod' => $prod, 'prod_cats' => $prod_cats]);
+            }
 
         } else if ($routeName == 'cart') {
 
             $products = $this->getParam('products');
             $cartProductsById = $this->getParam('cartProductsById');
-            $cart_prods = $smantic->makeCartProducts($products, $cartProductsById);
-            $return .= $this->render($smantic_path . '04-basket', ['cart_prods' => $cart_prods, 'smantic' => &$smantic]);
+            if ($products && $cartProductsById) {
+                $cart_prods = $smantic->makeCartProducts($products, $cartProductsById);
+                $return .= $this->render($smantic_path . 'smanticPage', ['cart_prods' => $cart_prods]);
+            }
 
         }/* else if ($routeName == 'order.complete') {
 
@@ -387,7 +417,7 @@ class DefaultLayout extends Layout {
 
         }*/
 
-        return isset($return) ? $return : false;
+        return !empty($return) ? $return : false;
     }
 
     public function slotCriteo() {
@@ -501,6 +531,54 @@ class DefaultLayout extends Layout {
     public function slotMarinConversionTagJS()
     {
         return '';
+    }
+
+
+    public function slotAdFoxBground() {
+        $viewParams = $this->getParam('viewParams');
+        $show = (bool) ( $viewParams && isset($viewParams['showSideBanner']) ) ? $viewParams['showSideBanner'] : true;
+        if (false == $show) return;
+
+        $routeToken = \App::request()->attributes->get('token');
+        if (
+            !\App::config()->adFox['enabled'] ||
+            ($routeToken == 'subscribers')
+        ) {
+            return;
+        }
+
+        return '<div class="adfoxWrapper" id="adfoxbground"></div>';
+    }
+
+
+
+    public function getBreadcrumbsPath() {
+        if (null !== $this->breadcrumbsPath) {
+            return $this->breadcrumbsPath;
+        }
+
+        $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
+        if (!$category) {
+            return false;
+        }
+
+        $breadcrumbs = [];
+        foreach ($category->getAncestor() as $ancestor) {
+            $link = $ancestor->getLink();
+            if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
+            $breadcrumbs[] = array(
+                'name' => $ancestor->getName(),
+                'url'  => $link,
+            );
+        }
+        $link = $category->getLink();
+        if (\App::request()->get('shop')) $link .= (false === strpos($link, '?') ? '?' : '&') . 'shop='. \App::request()->get('shop');
+        $breadcrumbs[] = array(
+            'name' => $category->getName(),
+            'url'  => $link,
+        );
+
+        return $this->breadcrumbsPath = $breadcrumbs;
     }
 
 }

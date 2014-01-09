@@ -1,7 +1,12 @@
-;(function( ENTER ) {
-	var userUrl = ENTER.config.pageConfig.userUrl,
-		constructors = ENTER.constructors;
+;(function ( window, document, $, ENTER, ko ) {
+	var
+		constructors = ENTER.constructors,
+		utils = ENTER.utils,
+		OrderModel;
 	// end of vars
+
+	console.info('deliveryBox.js init');
+	console.log(ENTER.OrderModel);
 
 	constructors.DeliveryBox = (function() {
 		'use strict';
@@ -23,6 +28,7 @@
 		 * @constructor
 		 */
 		function DeliveryBox( products, state, choosenPointForBox ) {
+			
 			// enforces new
 			if ( !(this instanceof DeliveryBox) ) {
 				return new DeliveryBox(products, state, choosenPointForBox);
@@ -30,28 +36,36 @@
 			// constructor body
 			
 			console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
+			console.log(this);
 
-			var self = this;
 
-            // Уникальность продуктов в этом типе доставки
-            //self.isUnique = isUnique || false;
-            self.isUnique = window.OrderModel.orderDictionary.isUniqueDeliveryState(state);
+			OrderModel = ENTER.OrderModel;
+
+			var 
+				self = this;
+			// end of vars
+
+			// Уникальность продуктов в этом типе доставки
+			//self.isUnique = isUnique || false;
+			self.isUnique = OrderModel.orderDictionary.isUniqueDeliveryState(state);
 			// Токен блока
 			self.token = state+'_'+choosenPointForBox;
-            /*if (self.isUnique) {
-                self.token += self.addUniqueSuffix();
-            }*/
+			/*if (self.isUnique) {
+				self.token += self.addUniqueSuffix();
+			}*/
 
 			// Продукты в блоке
 			self.products = [];
-			// Общая стоимость блока
+			// Общая стоимость товаров в блоке
 			self.fullPrice = 0;
+			// Полная стоимость блока с учетом доставки
+			self.totalBlockSum = 0;
 			// Метод доставки
 			self.state = state;
 			// Название метода доставки
-			self.deliveryName = window.OrderModel.orderDictionary.getNameOfState(state);
-			// Стоимость доставки. Берем максимально возможное значение, чтобы сравнивая с ним находить минимальное
-			self.deliveryPrice = Number.POSITIVE_INFINITY;
+			self.deliveryName = OrderModel.orderDictionary.getNameOfState(state);
+			// Стоимость доставки. Берем минимально возможное значение, чтобы сравнивая с ним находить максимальное
+			self.deliveryPrice = Number.NEGATIVE_INFINITY;
 
 			// Выбранная дата доставки
 			self.choosenDate = ko.observable();
@@ -65,30 +79,38 @@
 			self.showPopupWithPoints = ko.observable(false);
 
 			// Есть ли доступные точки доставки
-			self.hasPointDelivery = window.OrderModel.orderDictionary.hasPointDelivery(state);
+			self.hasPointDelivery = OrderModel.orderDictionary.hasPointDelivery(state);
 
 			// Массив всех доступных дат для блока
 			self.allDatesForBlock = ko.observableArray([]);
 			// Массив всех точек доставок
 			self.pointList = [];
 
-			if ( self.hasPointDelivery && !window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
+			// Название пункта — магазина, постамата или тп
+			//self.point_name = ''; // здесь не нужно это поле здесь (но в ядро передавать нужно)
+
+
+			// Текст на кнопки смены точки доставки
+			self.changePointButtonText = OrderModel.orderDictionary.getChangeButtonText(state);
+
+
+			if ( self.hasPointDelivery && !OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) ) {
 				// Доставка в выбранный пункт
 				console.info('есть точки доставки для выбранного метода доставки, но выбранная точка не доступна для этого метода доставки. Берем первую точку для выбранного метода доставки');
 
-				self.choosenPoint( window.OrderModel.orderDictionary.getFirstPointByState(self.state) );
+				self.choosenPoint( OrderModel.orderDictionary.getFirstPointByState(self.state) );
 			}
 			else if ( self.hasPointDelivery ) {
 				// Доставка в первый пункт для данного метода доставки
 				console.info('есть точки доставки для выбранного метода доставки, и выбранная точка доступна для этого метода доставки');
 
-				self.choosenPoint( window.OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
+				self.choosenPoint( OrderModel.orderDictionary.getPointByStateAndId(self.state, choosenPointForBox) );
 			}
 			else {
 				console.info('для выбранного метода доставки не нужна точка доставки');
 
 				// Передаем в модель, что есть блок с доставкой домой и генерируем событие об этом
-				window.OrderModel.hasHomeDelivery(true);
+				OrderModel.hasHomeDelivery(true);
 				$('body').trigger('orderdeliverychange',[true]);
 			}
 
@@ -104,7 +126,17 @@
 				return;
 			}
 
-			window.OrderModel.deliveryBoxes.push(self);
+			/*if ( 'pickpoint' === state ) {
+				// Получим и сохраним в названии пункта название выбранного пикпойнта:
+				/*for ( i = self.pointList.length - 1; i >= 0; i-- ) {
+					if ( choosenPointForBox == self.pointList[i].id ) {
+						self.point_name = self.pointList[i].point_name;
+					}
+				}* ///old
+				// название и так храниться в choosPoint
+			}*/
+
+			OrderModel.deliveryBoxes.push(self);
 		}
 
 
@@ -116,20 +148,23 @@
 		DeliveryBox.prototype._makePointList = function() {
 			console.info('Создание списка точек доставки');
 
-			var self = this,
+			var
+				self = this,
 				res = true,
-				tmpPoint = null;
+				tmpPoint = null,
+				point,
+				i;
 			// end of vars
 
 			/**
 			 * Перебираем точки доставки для первого товара
 			 */
-			for ( var point in self.products[0].deliveries[self.state] ) {
+			for ( point in self.products[0].deliveries[self.state] ) {
 
 				/**
 				 * Перебираем все товары в блоке, проверяя доступна ли данная точка доставки для них
 				 */
-				for ( var i = self.products.length - 1; i >= 0; i-- ) {
+				for ( i = self.products.length - 1; i >= 0; i-- ) {
 					res = self.products[i].deliveries[self.state].hasOwnProperty(point);
 
 					if ( !res ) {
@@ -139,7 +174,7 @@
 
 				if ( res ) {
 					// Точка достаки доступна для всех товаров в блоке
-					tmpPoint = window.OrderModel.orderDictionary.getPointByStateAndId(self.state, point);
+					tmpPoint = OrderModel.orderDictionary.getPointByStateAndId(self.state, point);
 					self.pointList.push( tmpPoint );
 				}
 			}
@@ -149,20 +184,25 @@
 		};
 
 
-        /**
-         * Генерирует случайное окончание (суффикс) для строки
-         *
-         * @param       {string}      str
-         * @returns     {string}      str
-         */
-        DeliveryBox.prototype.addUniqueSuffix = function( str ) {
-            str = str || '';
-            var randSuff;
-            //randSuff = new Date().getTime();
-            randSuff = Math.floor( (Math.random() * 10000) + 1 );
-            str += '_' + randSuff;
-            return str;
-        };
+		/**
+		 * Генерирует случайное окончание (суффикс) для строки
+		 *
+		 * @param       {string}      str
+		 * @returns     {string}      str
+		 */
+		DeliveryBox.prototype.addUniqueSuffix = function ( str ) {
+			var
+				randSuff;
+			// end of vars
+
+			str = str || '';
+
+			//randSuff = new Date().getTime();
+			randSuff = Math.floor((Math.random() * 10000) + 1);
+			str += '_' + randSuff;
+
+			return str;
+		};
 
 
 		/**
@@ -180,33 +220,33 @@
 				choosenBlock = null;
 			// end of vars
 
-			if ( window.OrderModel.hasDeliveryBox(newToken) ) {
-				choosenBlock = global.OrderModel.getDeliveryBoxByToken(newToken);
+			if ( OrderModel.hasDeliveryBox(newToken) ) {
+				choosenBlock = OrderModel.getDeliveryBoxByToken(newToken);
 				choosenBlock.addProductGroup( self.products );
 
-				window.OrderModel.removeDeliveryBox(self.token);
+				OrderModel.removeDeliveryBox(self.token);
 			}
 			else {
 
-                if (self.isUnique) {
-                    newToken += self.addUniqueSuffix();
-                }
+				if (self.isUnique) {
+					newToken += self.addUniqueSuffix();
+				}
 				console.info('удаляем старый блок');
 				console.log('старый токен '+self.token);
 				console.log('новый токен '+newToken);
 
 				self.token = newToken;
-				self.choosenPoint(window.OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
-				console.log(window.OrderModel.deliveryBoxes());
+				self.choosenPoint(OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
+				console.log(OrderModel.deliveryBoxes());
 
-				if ( window.OrderModel.paypalECS() ) {
+				if ( OrderModel.paypalECS() ) {
 					console.info('PayPal ECS включен. Необходимо сохранить выбранную точку доставки в cookie');
 
 					window.docCookies.setItem('chPoint_paypalECS', data.id, 10 * 60);
 				}
 			}
 
-			window.OrderModel.showPopupWithPoints(false);
+			OrderModel.showPopupWithPoints(false);
 
 			return false;
 		};
@@ -217,19 +257,22 @@
 		 * @this	{DeliveryBox}
 		 */
 		DeliveryBox.prototype.changePoint = function( ) {
-			var self = this;
+			var
+				self = this,
+				i;
+			// end of vars
 
 			// запонимаем токен бокса которому она принадлежит
-			for ( var i = self.pointList.length - 1; i >= 0; i-- ) {
+			for ( i = self.pointList.length - 1; i >= 0; i-- ) {
 				self.pointList[i].parentBoxToken = self.token;
 			}
 
-			window.OrderModel.popupWithPoints({
+			OrderModel.popupWithPoints({
 				header: 'Выберите точку доставки',
 				points: self.pointList
 			});
 
-			window.OrderModel.showPopupWithPoints(true);
+			OrderModel.showPopupWithPoints(true);
 
 			return false;
 		};
@@ -280,12 +323,12 @@
 
 				tempProductArray.push(product);
 
-				if ( window.OrderModel.hasDeliveryBox(token) ) {
+				if ( OrderModel.hasDeliveryBox(token) ) {
 					console.log('Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок');
 
-					choosenBlock = global.OrderModel.getDeliveryBoxByToken(token);
+					choosenBlock = OrderModel.getDeliveryBoxByToken(token);
 					choosenBlock.addProductGroup( product );
-					window.OrderModel.removeDeliveryBox(self.token);
+					OrderModel.removeDeliveryBox(self.token);
 				}
 				else {
 					console.log('Блока для этого типа доставки в этот пункт еще существует');
@@ -296,9 +339,9 @@
 				return;
 			}
 
-			// Определение стоимости доставки. Если стоимость доставки данного товара ниже стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
+			// Определение стоимости доставки. Если стоимость доставки данного товара выше стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
 			productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
-			self.deliveryPrice = ( self.deliveryPrice > productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
+			self.deliveryPrice = ( self.deliveryPrice < productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
 
 			tmpProduct = {
 				id: product.id,
@@ -306,15 +349,24 @@
 				price: (product.sum) ? product.sum : product.price,
 				quantity: product.quantity,
 				deleteUrl: product.deleteUrl,
+				setUrl: product.setUrl,
 				productUrl: product.url,
 				productImg: (product.image) ? product.image : product.productImg,
 				deliveries: {}
 			};
 
+			if ( self.isUnique && (product.oldQuantity - 1) > 0 ) {
+				console.log('Переделываем deleteUrl:');
+				console.log(tmpProduct.deleteUrl);
+				tmpProduct.deleteUrl = tmpProduct.deleteUrl.replace('delete-', 'add-'); // TODO cart.product.set изменмить Url
+				tmpProduct.deleteUrl += '?quantity=' + ( product.oldQuantity - 1 );
+				console.log(tmpProduct.deleteUrl);
+			}
+
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
 			// Добавляем стоимость продукта к общей стоимости блока доставки
-			self.fullPrice += tmpProduct.price;
+			self.fullPrice = ENTER.utils.numMethods.sumDecimal(tmpProduct.price, self.fullPrice);
 
 			self.products.push(tmpProduct);
 		};
@@ -326,13 +378,14 @@
 			console.info('Перерасчет общей стоимости заказа');
 
 			var self = this,
-				nowTotalSum = window.OrderModel.totalSum();
+				nowTotalSum = OrderModel.totalSum();
 			// end of vars
 
-			nowTotalSum += self.fullPrice + self.deliveryPrice;
-			window.OrderModel.totalSum(nowTotalSum);
+			self.totalBlockSum = ENTER.utils.numMethods.sumDecimal(self.fullPrice, self.deliveryPrice);
+			nowTotalSum = ENTER.utils.numMethods.sumDecimal(self.totalBlockSum, nowTotalSum);
+			OrderModel.totalSum(nowTotalSum);
 
-			console.log(window.OrderModel.totalSum());
+			console.log(OrderModel.totalSum());
 		};
 
 		/**
@@ -344,10 +397,14 @@
 		 * @param	{Array}			products	Продукты которые нужно добавить
 		 */
 		DeliveryBox.prototype.addProductGroup = function( products ) {
-			var self = this;
+			var
+				self = this,
+				i;
+			// end of vars
+			
 			console.info('добавляем товары в блок');
 			// добавляем товары в блок
-			for ( var i = products.length - 1; i >= 0; i-- ) {
+			for ( i = products.length - 1; i >= 0; i-- ) {
 				console.log(i+'ый пошел...');
 				console.log(products[i]);
 				self._addProduct(products[i]);
@@ -377,7 +434,9 @@
 		 * @return	{String}					Человекочитаемый день недели
 		 */
 		DeliveryBox.prototype._getNameDayOfWeek = function( dayOfWeek ) {
-			var days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+			var
+				days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+			// end of vars
 
 			return days[dayOfWeek];
 		};
@@ -389,7 +448,9 @@
 		 * @return	{String}					Человекочитаемый день недели
 		 */
 		DeliveryBox.prototype._getFullNameDayOfWeek = function( dayOfWeek ) {
-			var days = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
+			var
+				days = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
+			// end of vars
 
 			return days[dayOfWeek];
 		};
@@ -404,23 +465,28 @@
 		 * @return	{Boolean}
 		 */
 		DeliveryBox.prototype._hasDateInAllProducts = function( checkTS ) {
-			var self = this,
+			var
+				self = this,
 				nowProductDates = null,
 				nowTS = null,
 
-				res = true;
+				res = true,
+
+				len,
+				i,
+				j;
 			// end of vars
 
 			/**
 			 * Перебор всех продуктов в блоке
 			 */
-			for (var i = self.products.length - 1; i >= 0; i--) {
+			for ( i = self.products.length - 1; i >= 0; i-- ) {
 				nowProductDates = self.products[i].deliveries[self.state][self.choosenPoint().id].dates;
 
 				/**
 				 * Перебор всех дат доставок в блоке
 				 */
-				for ( var j = 0, len = nowProductDates.length; j < len; j++ ) {
+				for ( j = 0, len = nowProductDates.length; j < len; j++ ) {
 					nowTS = nowProductDates[j].value;
 
 					if ( nowTS === checkTS ) {
@@ -450,14 +516,16 @@
 		 * @param	{Object}	data		Данные о новой дате
 		 */
 		DeliveryBox.prototype.clickCalendarDay = function( data ) {
-			var self = this;
+			var
+				self = this;
+			// end of vars
 			
 			if ( !data.avalible ) {
 				return false;
 			}
 
 			// Если включен PayPal ECS необходимо сохранить выбранную дату в cookie
-			if ( window.OrderModel.paypalECS() ) {
+			if ( OrderModel.paypalECS() ) {
 				console.info('PayPal ECS включен. Необходимо сохранить выбранную дату в cookie');
 
 				window.docCookies.setItem('chDate_paypalECS', JSON.stringify(data), 10 * 60);
@@ -476,8 +544,9 @@
 		DeliveryBox.prototype.calculateDate = function() {
 			console.info('Вычисление общей даты для продуктов в блоке');
 
-			var self = this,
-				todayTS = window.OrderModel.orderDictionary.getToday(),
+			var
+				self = this,
+				todayTS = OrderModel.orderDictionary.getToday(),
 				nowProductDates = null,
 				nowTS = null,
 
@@ -485,7 +554,9 @@
 				tempProduct = null,
 				tempProductArray = [],
 				dateFromCookie = null,
-				intervalFromCookie = null;
+
+				len,
+				i;
 			// end of vars
 
 			console.log('Сегодняшняя дата с сервера '+todayTS);
@@ -495,14 +566,14 @@
 			 */
 			nowProductDates = self.products[0].deliveries[self.state][self.choosenPoint().id].dates;
 
-			for ( var i = 0, len = nowProductDates.length; i < len; i++ ) {
+			for ( i = 0, len = nowProductDates.length; i < len; i++ ) {
 				nowTS = nowProductDates[i].value;
 
 				if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
 					nowProductDates[i].avalible = true;
 					nowProductDates[i].humanDayOfWeek = self._getNameDayOfWeek(nowProductDates[i].dayOfWeek);
 
-					self.allDatesForBlock.push(nowProductDates[i]);
+					self.allDatesForBlock().push(nowProductDates[i]);
 				}
 			}
 
@@ -511,7 +582,7 @@
 
 				tempProduct = self.products.pop();
 				tempProductArray.push(tempProduct);
-                newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();;
+				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();
 				console.log('новый токен '+newToken);
 				console.log(self);
 
@@ -524,7 +595,7 @@
 			 * Выбираем ближайшую доступную дату
 			 * Если включен PayPal ECS и уже есть сохраненная дата в куки - берем ее из куки
 			 */
-			if ( window.OrderModel.paypalECS() && window.docCookies.hasItem('chDate_paypalECS') ) {
+			if ( OrderModel.paypalECS() && window.docCookies.hasItem('chDate_paypalECS') ) {
 				console.info('PayPal ECS включен. Необходимо взять выбранную дату из cookie');
 
 				dateFromCookie = window.docCookies.getItem('chDate_paypalECS');
@@ -556,9 +627,9 @@
 		DeliveryBox.prototype.makeCalendar = function() {
 			console.info('Создание календаря, округление до целых недель');
 
-			var self = this,
+			var
+				self = this,
 				addCountDays = 0,
-				dayOfWeek = null,
 				tmpDay = {},
 				tmpVal = null,
 				tmpDate = null,
@@ -651,7 +722,8 @@
 		 * =========== CALENDAR SLIDER ===================
 		 */
 		DeliveryBox.prototype.calendarLeftBtn = function() {
-			var self = this,
+			var
+				self = this,
 				nowLeft = parseInt(self.calendarSliderLeft(), 10);
 			// end of vars
 			
@@ -660,7 +732,8 @@
 		};
 
 		DeliveryBox.prototype.calendarRightBtn = function() {
-			var self = this,
+			var
+				self = this,
 				nowLeft = parseInt(self.calendarSliderLeft(), 10);
 			// end of vars
 			
@@ -676,4 +749,4 @@
 	
 	}());
 
-}(window.ENTER));
+}(this, this.document, this.jQuery, this.ENTER, this.ko));

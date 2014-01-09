@@ -604,10 +604,8 @@ class Cart {
         $data = $this->storage->get($this->sessionName);
         $data['couponList'] = [];
         $this->coupons = null;
-
-        $this->fill();
-
         $this->storage->set($this->sessionName, $data);
+        $this->fill();
     }
 
     /**

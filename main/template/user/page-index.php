@@ -10,10 +10,11 @@ $userEntity = $user->getEntity();
 $userMail = $userEntity->getEmail();
 ?>
 
-<div class="fl width315">
+<div class="user fl width315">
 
-    <div class="font16 orange pb10">Моя персональная информация</div>
-    <ul class="leftmenu pb20">
+    <div class="title">Моя персональная информация</div>
+
+    <ul class="leftmenu userInfoAction">
         <li>
             <a href="<?= $page->url('user.edit') ?>">Изменить мои данные</a>
         </li>
@@ -27,19 +28,20 @@ $userMail = $userEntity->getEmail();
         <? endif ?>
     </ul>
 
-    <div class="font16 orange pb10">Мои товары</div>
-    <ul class="leftmenu pb20">
+    <div class="title">Мои товары</div>
+    <ul class="userInfoAction leftmenu">
         <li>
             <a href="<?= $page->url('user.order') ?>">Мои заказы</a> (<?= $orderCount ?>)
         </li>
     </ul>
 
     <? if (\App::config()->subscribe['enabled']): ?>
-    <div class="font16 orange pb10">Подписка</div>
-    <ul class="leftmenu pb20 bInputList">
+    <div class="title">Подписка</div>
+
+    <ul class="userInfoAction bInputList leftmenu">
         <li>
             Акции, новости и специальные предложения
-            <form action="<?= $page->url('user.subscribe') ?>" method="post">
+            <form class="clearfix" action="<?= $page->url('user.subscribe') ?>" method="post">
                 <label class="emailCheckbox bSubscibe clearfix <?=($userMail) ?
                     (
                         ($user->getEntity()->getIsSubscribed()) ? 'checked' : ''
@@ -48,7 +50,7 @@ $userMail = $userEntity->getEmail();
                     <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="bCustomInput subscibe"<? if ($user->getEntity()->getIsSubscribed()): ?> checked="checked" <? endif ?> />
                 </label>
 
-                <div id="emailWrapper" class="pt10 width418 <?= !empty($emailTmpCheck) ? '' : 'hf' ?>">
+                <div id="emailWrapper" class="width418 <?= !empty($emailTmpCheck) ? '' : 'hf' ?>">
                     <span class="width205">Email:</span>
                     <input type="text" id="user_email" value="<?= $user->getEntity()->getEmail() ?>" name="email" class="text width205" />
                 </div>
@@ -59,22 +61,21 @@ $userMail = $userEntity->getEmail();
                     <input type="checkbox" name="subscribe_sms" value="1" autocomplete="off" class="bCustomInput smsCheckbox subscibe"<? if ($user->getEntity()->getIsSubscribedViaSms() || !empty($smsTmpCheck)): ?> checked="checked" <? endif ?> />
                 </label>
 
-                <div id="mobilePhoneWrapper" class="pt10 width418 <?= !empty($smsTmpCheck) ? '' : 'hf' ?>">
-                    <span class="width205">Мобильный телефон:</span>
-                    <input type="text" id="user_mobile_phone" value="<?= $user->getEntity()->getMobilePhone() ?>" name="mobile_phone" class="text width205" />
+                <div style="margin-top: 5px;" id="mobilePhoneWrapper" class="width418 <?= !empty($smsTmpCheck) ? '' : 'hf' ?>">
+                    <span style="line-height: 28px;" class="width205">Мобильный телефон:</span>
+                    <input type="text" id="user_mobile_phone" value="<?= $user->getEntity()->getMobilePhone() ?>" name="mobile_phone" class="text" />
                 </div>
 
                 <div class="red pt10 pb10 width418"><?= empty($error) ? '' : $error ?></div>
 
-                <input type="submit" class="fr button bigbutton" value="Сохранить" tabindex="10"/>
-                <div class="clear"></div>
+                <input type="submit" class="btnSave button bigbutton" value="Сохранить" tabindex="10"/>
             </form>
         </li>
     </ul>
     <? endif ?>
 
-    <div class="font16 orange pb10">cEnter защиты прав потребителей </div>
-    <ul class="leftmenu pb20">
+    <div class="title">cEnter защиты прав потребителей </div>
+    <ul class="userInfoAction leftmenu">
         <li>
             <a href="http://my.enter.ru/community/pravo">Адвокат клиента</a>
         </li>

@@ -17,6 +17,10 @@ class Entity {
     private $metaDescription;
     /** @var array */
     private $description;
+    /** @var string */
+    private $productBuyMethod;
+    /** @var bool */
+    private $showProductState;
 
     public function __construct(array $data = []) {
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
@@ -26,6 +30,7 @@ class Entity {
         if (array_key_exists('meta_keywords', $data)) $this->setMetaKeywords($data['meta_keywords']);
         if (array_key_exists('meta_description', $data)) $this->setMetaDescription($data['meta_description']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
+        if (array_key_exists('productBuyMethod', $data)) $this->setProductBuyMethod($data['productBuyMethod']);
     }
 
     /**
@@ -124,5 +129,33 @@ class Entity {
      */
     public function getToken() {
         return $this->token;
+    }
+
+    /**
+     * @param string $productBuyMethod
+     */
+    public function setProductBuyMethod($productBuyMethod) {
+        $this->productBuyMethod = is_scalar($productBuyMethod) ? (string)$productBuyMethod : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductBuyMethod() {
+        return $this->productBuyMethod;
+    }
+
+    /**
+     * @param boolean $showProductState
+     */
+    public function setShowProductState($showProductState) {
+        $this->showProductState = (bool)$showProductState;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getShowProductState() {
+        return $this->showProductState;
     }
 }

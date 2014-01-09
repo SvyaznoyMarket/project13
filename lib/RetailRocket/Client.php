@@ -2,14 +2,11 @@
 
 namespace RetailRocket;
 
-
-class Client
-{
+class Client {
 
     CONST NAME = 'retailrocket';
 
-    public function __construct(array $config, \Logger\LoggerInterface $logger = null)
-    {
+    public function __construct(array $config, \Logger\LoggerInterface $logger = null) {
         $this->config = array_merge([
             'apiUrl'         =>    \App::config()->partners['RetailRocket']['apiUrl'],
             'account'        =>    \App::config()->partners['RetailRocket']['account'],
@@ -22,9 +19,8 @@ class Client
     }
 
 
-    public function query($action, $item_id)
-    {
-        \Debug\Timer::start('RetailRocket');
+    public function query($action, $item_id) {
+        $startedAt = \Debug\Timer::start('RetailRocket');
 
         $connection = $this->createResource($action, $item_id);
         $response = curl_exec($connection);
@@ -36,8 +32,6 @@ class Client
 
             $this->logger->debug('RetailRocket response resource: ' . $connection, ['RetailRocket']);
             //$this->logger->debug('RetailRocket response info: ' . $this->encodeInfo($info), ['RetailRocket']);
-
-            \Util\RequestLogger::getInstance()->addLog($info['url'], '', $info['total_time'], 'RetailRocket');
 
             if ($this->config['logEnabled']) {
                 $this->logger->info('Response ' . $connection . ' : ' . (is_array($info) ? json_encode($info, JSON_UNESCAPED_UNICODE) : $info), ['RetailRocket']);
@@ -53,22 +47,57 @@ class Client
             $spend = \Debug\Timer::stop('RetailRocket');
             \App::logger()->info('End RetailRocket ' . $action . ' in ' . $spend, ['RetailRocket']);
 
+            \App::logger()->info([
+                'message' => 'End curl',
+                'url'     => $info['url'],
+                'data'    => [],
+                'info'    => isset($info) ? $info : null,
+                'header'  => isset($header) ? $header : null,
+                'timeout' => $this->config['timeout'],
+                'spend'   => $spend,
+                'startAt' => $startedAt,
+                'endAt'   => microtime(true),
+            ], ['curl', 'RetailRocket']);
+
             return $responseDecoded;
 
         } catch (\RetailRocket\Exception $e) {
             curl_close($connection);
             $spend = \Debug\Timer::stop('RetailRocket');
-            \App::logger()->error('End RetailRocket ' . $action . ' in ' . $spend . ' get: ' . json_encode(['action '=> $action, $item_id => $item_id], JSON_UNESCAPED_UNICODE) . ' response: ' . json_encode($response, JSON_UNESCAPED_UNICODE) . ' with ' . $e, ['RetailRocket']);
-            $this->logger->error($e, ['RetailRocket']);
+
+            \App::logger()->error([
+                'message' => 'Fail curl',
+                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+                'url'     => $this->config['apiUrl'] . $action . '/' . $this->config['account'] . '/' . $item_id,
+                'data'    => [],
+                'info'    => isset($info) ? $info : null,
+                'header'  => isset($header) ? $header : null,
+                'resonse' => isset($response) ? $response : null,
+                'timeout' => $this->config['timeout'],
+                'startAt' => $startedAt,
+                'endAt'   => microtime(true),
+                'spend'   => $spend,
+            ], ['curl', 'RetailRocket']);
+
             throw $e;
         }
     }
 
 
 
-    public function createResource($action, $item_id)
-    {
+    public function createResource($action, $item_id) {
         $query = $this->config['apiUrl'] . $action . '/' . $this->config['account'] . '/' . $item_id;
+
+        $user = \App::user();
+        if ($user) {
+            $uEntity = $user->getEntity();
+            if ($uEntity) {
+                $uid = $uEntity->getId();
+                if ($uid) {
+                    $query .= ((false === strpos($query, '?')) ? '?' : '&') . 'userId=' . $uid;
+                }
+            }
+        }
 
         \App::logger()->info('Start RetailRocket ' . $action . ' query: ' . $query, ['RetailRocket']);
 
@@ -76,6 +105,7 @@ class Client
         curl_setopt($connection, CURLOPT_HEADER, 0);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_NOSIGNAL, 1);
+        curl_setopt($connection, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($connection, CURLOPT_TIMEOUT_MS, $this->config['timeout'] * 1000);
         curl_setopt($connection, CURLOPT_URL, $query);
 

@@ -30,6 +30,8 @@ class Entity {
     private $statusId;
     /** @var string */
     private $number;
+    /** @var string */
+    private $numberErp;
     /** @var int */
     private $userId;
     /** @var bool */
@@ -106,6 +108,8 @@ class Entity {
     private $delivery = [];
     /** @var int */
     private $paySum;
+    /** @var int */
+    private $discountSum;
     /** @var Credit\Entity|null */
     private $credit;
     /** @var int */
@@ -121,6 +125,7 @@ class Entity {
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
         if (array_key_exists('number', $data)) $this->setNumber($data['number']);
+        if (array_key_exists('number_erp', $data)) $this->setNumberErp($data['number_erp']);
         if (array_key_exists('user_id', $data)) $this->setUserId($data['user_id']);
         if (array_key_exists('is_legal', $data)) $this->setIsLegal($data['is_legal']);
         if (array_key_exists('last_name', $data)) $this->setLastName($data['last_name']);
@@ -192,6 +197,7 @@ class Entity {
             }
         }
         if (array_key_exists('pay_sum', $data)) $this->setPaySum($data['pay_sum']);
+        if (array_key_exists('discount_sum', $data)) $this->setDiscountSum($data['discount_sum']);
         if (array_key_exists('credit', $data) && (bool)$data['credit']) $this->setCredit(new Credit\Entity($data['credit']));
         if (array_key_exists('subway_id', $data)) $this->setSubwayId($data['subway_id']);
         if (array_key_exists('payment_url', $data)) $this->setPaymentUrl($data['payment_url']);
@@ -548,6 +554,20 @@ class Entity {
     }
 
     /**
+     * @param string $numberErp
+     */
+    public function setNumberErp($numberErp) {
+        $this->numberErp = (string)$numberErp;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumberErp() {
+        return $this->numberErp;
+    }
+
+    /**
      * @param int $paySum
      */
     public function setPaySum($paySum) {
@@ -719,6 +739,20 @@ class Entity {
      */
     public function getSum() {
         return $this->sum;
+    }
+
+    /**
+     * @param int $discountSum
+     */
+    public function setDiscountSum($discountSum) {
+        $this->discountSum = $discountSum;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDiscountSum() {
+        return $this->discountSum;
     }
 
     /**

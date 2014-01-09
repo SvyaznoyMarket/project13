@@ -1,8 +1,13 @@
 /**
  * Валидация формы. Отправка на сервер. Аналитика
  */
-;(function( global ){
-	var orderValidator = {},
+;(function ( window, document, $, ENTER ) {
+	console.info('orderValidation.js init');
+
+	var
+		utils = ENTER.utils,
+		
+		orderValidator = {},
 		subwayArray = $('#metrostations').data('name'),
 
 		// form fields
@@ -56,11 +61,6 @@
 					fieldNode: orderAgreed,
 					require: true,
 					customErr: 'Необходимо согласие',
-				},
-				{
-					fieldNode: paymentRadio,
-					require: true,
-					customErr: 'Необходимо выбрать метод оплаты'
 				}
 			]
 		},
@@ -75,16 +75,21 @@
 		};
 	// end of vars
 	
+	console.log(ENTER.OrderModel);
+	console.log('orderValidation:: vars initd');
+
 	orderValidator = new FormValidator(validationConfig);
 
 
+	var
 		/**
 		 * Показ сообщений об ошибках при оформлении заказа
 		 * 
 		 * @param	{String}	msg		Сообщение которое необходимо показать пользователю
 		 */
-	var showError = function showError( msg, callback ) {
-			var content = '<div class="popupbox width290">' +
+		showError = function showError( msg, callback ) {
+			var
+				content = '<div class="popupbox width290">' +
 					'<div class="font18 pb18"> '+msg+'</div>'+
 					'</div>' +
 					'<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>',
@@ -93,16 +98,18 @@
 			
 			block.appendTo('body');
 
-			var errorPopupCloser = function() {
-				block.trigger('close');
-				block.remove();
+			var
+				errorPopupCloser = function() {
+					block.trigger('close');
+					block.remove();
 
-				if ( callback !== undefined ) {
-					callback();
-				}
+					if ( callback !== undefined ) {
+						callback();
+					}
 
-				return false;
-			};
+					return false;
+				};
+			// end of functions
 
 			block.lightbox_me({
 				centered:true,
@@ -182,16 +189,16 @@
 		 */
 		completeAnalytics = function completeAnalytics() {
 			if ( typeof _gaq !== 'undefined') {
-				for ( var i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
-					_gaq.push(['_trackEvent', 'Order card', 'Completed', 'выбрана '+global.OrderModel.choosenDeliveryTypeId+' доставят '+global.OrderModel.deliveryBoxes()[i].state]);
+				for ( var i = ENTER.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
+					_gaq.push(['_trackEvent', 'Order card', 'Completed', 'выбрана '+ENTER.OrderModel.choosenDeliveryTypeId+' доставят '+ENTER.OrderModel.deliveryBoxes()[i].state]);
 				}
 
-				_gaq.push(['_trackEvent', 'Order complete', global.OrderModel.deliveryBoxes().length, global.OrderModel.orderDictionary.products.length]);
+				_gaq.push(['_trackEvent', 'Order complete', ENTER.OrderModel.deliveryBoxes().length, ENTER.OrderModel.orderDictionary.products.length]);
 				_gaq.push(['_trackTiming', 'Order complete', 'DB response', ajaxDelta]);
 			}
 
-			if ( typeof yaCounter10503055 !== 'undefined' ) {
-				yaCounter10503055.reachGoal('\\orders\\complete');
+			if ( typeof window.yaCounter10503055 !== 'undefined' ) {
+				window.yaCounter10503055.reachGoal('\\orders\\complete');
 			}
 		},
 
@@ -211,7 +218,7 @@
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
 
-				global.ENTER.utils.blockScreen.unblock();
+				utils.blockScreen.unblock();
 
 				if ( serverErrorHandler.hasOwnProperty(res.error.code) ) {
 					console.log('Есть обработчик');
@@ -229,7 +236,7 @@
 
 			completeAnalytics();
 
-			if ( global.OrderModel.paypalECS() && !orderCompleteBtn.hasClass('mConfirm') ) {
+			if ( ENTER.OrderModel.paypalECS() && !orderCompleteBtn.hasClass('mConfirm') ) {
 				console.info('PayPal ECS включен. Заказ оформлен. Необходимо удалить выбранные параметры из cookie');
 
 				window.docCookies.removeItem('chDate_paypalECS', '/');
@@ -247,22 +254,28 @@
 		 * Отправка данных
 		 */
 		preparationData = function preparationData() {
-			var currentDeliveryBox = null,
+			var
+				currentDeliveryBox = null,
+				choosePoint,
 				parts = [],
 				dataToSend = [],
 				tmpPart = {},
+				i, j,
 				orderForm = $('#order-form');
 			// end of vars
 			
-			global.ENTER.utils.blockScreen.block('Ваш заказ оформляется');
+			utils.blockScreen.block('Ваш заказ оформляется');
+			dataToSend = orderForm.serializeArray();
 
 			/**
 			 * Перебираем блоки доставки
 			 */
 			console.info('Перебираем блоки доставки');
-			for ( var i = global.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
+			for ( i = ENTER.OrderModel.deliveryBoxes().length - 1; i >= 0; i-- ) {
 				tmpPart = {};
-				currentDeliveryBox = global.OrderModel.deliveryBoxes()[i];
+				currentDeliveryBox = ENTER.OrderModel.deliveryBoxes()[i];
+				choosePoint = currentDeliveryBox.choosenPoint();
+				console.log('currentDeliveryBox:');
 				console.log(currentDeliveryBox);
 
 				tmpPart = {
@@ -270,29 +283,59 @@
 					date: currentDeliveryBox.choosenDate().value,
 					interval: [
 						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().start : '',
-						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : '',
+						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : ''
 					],
-					point_id: currentDeliveryBox.choosenPoint().id,
+					point_id: choosePoint.id,
 					products : []
 				};
 
-				for ( var j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {
+				console.log('choosePoint:');
+				console.log(choosePoint);
+
+				if ( 'pickpoint' === currentDeliveryBox.state ) {
+					console.log('Is PickPoint!');
+
+					// Передаём на сервер корректный id постамата, не id точки, а номер постамата
+					tmpPart.point_id = choosePoint['number'];
+
+					// В качестве адреса доставки необходимо передавать адрес постамата,
+					// так как поля адреса при заказе через pickpoint скрыты
+					/*orderForm.find('#order_address_street').val( choosePoint['street'] );
+					orderForm.find('#order_address_building').val( choosePoint['house'] );
+					orderForm.find('#order_address_number').val('');
+					orderForm.find('#order_address_apartment').val('');
+					orderForm.find('#order_address_floor').val('');*/ // old
+
+					/* Передаём сразу без лишней сериализации и действий с формами
+					 * и не в dataToSend, а в массив parts, отдельным полем,
+					 * т.к. может быть разный адрес у разных пикпойнтов
+					 * */
+					// parts.push( {pointAddress: choosePoint['street'] + ' ' + choosePoint['house']} );
+					tmpPart.point_address = {
+						street:	choosePoint['street'],
+						house:	choosePoint['house']
+					};
+					tmpPart.point_name = choosePoint.point_name; // нужно передавать в ядро
+				}
+
+				for ( j = currentDeliveryBox.products.length - 1; j >= 0; j-- ) {
 					tmpPart.products.push(currentDeliveryBox.products[j].id);
 				}
 
+				console.log('tmpPart:');
 				console.log(tmpPart);
 
 				parts.push(tmpPart);
 			}
 
-			dataToSend = orderForm.serializeArray();
-			dataToSend.push({ name: 'order[delivery_type_id]', value: global.OrderModel.choosenDeliveryTypeId });
+			dataToSend.push({ name: 'order[delivery_type_id]', value: ENTER.OrderModel.choosenDeliveryTypeId });
 			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
 
-      if ( typeof(window.KM) !== 'undefined' ) {
+			if ( typeof(window.KM) !== 'undefined' ) {
 				dataToSend.push({ name: 'kiss_session', value: window.KM.i });
-      }
+			}
 
+			console.log('dataToSend:');
 			console.log(dataToSend);
 
 			ajaxStart = new Date().getTime();
@@ -319,6 +362,15 @@
 		 */
 		orderCompleteBtnHandler = function orderCompleteBtnHandler() {
 			console.info('Завершить оформление заказа');
+
+			/**
+			 * Для акции «подари жизнь» валидация полей на клиенте не требуется
+			 */
+			if ( ENTER.OrderModel.lifeGift() ) {
+				preparationData();
+
+				return false;
+			}
 
 			orderValidator.validate({
 				onInvalid: function( err ) {
@@ -414,7 +466,7 @@
 	 * AB-test
 	 * Обязательное поле e-mail
 	 */
-	if ( global.docCookies.getItem('emails') ) {
+	if ( window.docCookies.getItem('emails') ) {
 		console.log('AB TEST: e-mail require');
 
 		orderValidator.setValidate( emailField , {
@@ -427,11 +479,15 @@
 	 * Подстановка значений в поля
 	 */
 	var defaultValueToField = function defaultValueToField( fields ) {
-		var fieldNode = null;
+		var
+			fieldNode = null,
+			field;
+		// end of vars
 
 		console.info('defaultValueToField');
-		for ( var field in fields ) {
+		for ( field in fields ) {
 			console.log('поле '+field);
+			
 			if ( fields[field] ) {
 				console.log('для поля есть значение '+fields[field]);
 				fieldNode = $('input[name="'+field+'"]');
@@ -471,4 +527,6 @@
 	$('body').bind('orderdeliverychange', orderDeliveryChangeHandler);
 	orderCompleteBtn.bind('click', orderCompleteBtnHandler);
 
-}(this));
+	console.log('orderValidation.js inited');
+
+}(this, this.document, this.jQuery, this.ENTER));

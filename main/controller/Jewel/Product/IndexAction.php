@@ -89,11 +89,6 @@ class IndexAction extends \Controller\Product\IndexAction {
      * @return \Http\Response
      */
     public function executeDirect($product, $regionsToSelect, $catalogJson) {
-        // убираем/показываем уши
-        if(isset($catalogJson['show_side_panels'])) {
-            \App::config()->adFox['enabled'] = (bool)$catalogJson['show_side_panels'];
-        }
-
         $repository = \RepositoryManager::product();
 
         if ($product->getConnectedProductsViewMode() == $product::DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE) {
@@ -244,6 +239,9 @@ class IndexAction extends \Controller\Product\IndexAction {
         $page->setParam('reviewsData', $reviewsData);
         $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
+        $page->setParam('viewParams', [
+            'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
+        ]);
 
         return new \Http\Response($page->show());
     }

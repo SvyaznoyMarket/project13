@@ -3,12 +3,17 @@
 namespace View\Tag;
 
 class IndexPage extends \View\DefaultLayout {
+    protected $layout  = 'layout-oneColumn';
+
     public function prepare() {
         /** @var $tag \Model\Tag\Entity */
         $tag = $this->getParam('tag') instanceof \Model\Tag\Entity ? $this->getParam('tag') : null;
         if (!$tag) {
             return;
         }
+
+        // Выбранная категория
+        $selectedCategory = $this->getParam('selectedCategory');
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
@@ -18,11 +23,9 @@ class IndexPage extends \View\DefaultLayout {
                 'url'  => \App::router()->generate('tag', array('tagToken' => $tag->getToken())),
             );
 
-            /** @var $category \Model\Product\Category\Entity */
-            $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
-            if ($category) {
+            if ($selectedCategory) {
                 $breadcrumbs[] = array(
-                    'name' => $category->getName(),
+                    'name' => $selectedCategory->getName(),
                     'url'  => null, // потому что последний элемент ;)
                 );
             }
@@ -43,6 +46,15 @@ class IndexPage extends \View\DefaultLayout {
                 . ' - ENTER.ru'
             );
         }
+
+
+        // Заголовок title страницы
+        $pageTitle = 'Тег &laquo;'.$tag->getName().'&raquo;';
+        if ($selectedCategory) {
+            $pageTitle .= ' &ndash; ' . $selectedCategory->getName();
+        }
+        $this->setParam('pageTitle', $pageTitle);
+
         // description
         if (!$page->getDescription()) {
             $page->setDescription(''
@@ -73,7 +85,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('tag/page-index', $this->params);
+        return $this->render('tag/page-index-new', $this->params);
     }
 
     public function slotSidebar() {
@@ -82,7 +94,7 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         return $this->render('tag/_sidebar', array_merge($this->params, array(
-            'selectedCategory' => $this->getParam('category'),
+            'selectedCategory' => $this->getParam('selectedCategory'),
             'limit'            => 8,
         )));
     }
@@ -118,9 +130,7 @@ class IndexPage extends \View\DefaultLayout {
         $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), [], function($data) use (&$patterns) {
             if ($data) $patterns['город'] = $data;
         });
-        $dataStore->addQuery('inflect/сайт.json', [], function($data) use (&$patterns) {
-            if ($data) $patterns['сайт'] = $data;
-        });
+        $patterns['сайт'] = $dataStore->query('/inflect/сайт.json');
 
         $dataStore->execute();
 
@@ -138,4 +148,33 @@ class IndexPage extends \View\DefaultLayout {
         }
     }
 
+
+    public function slotContentHead() {
+        $ret = '';
+        $categoryData = null;
+
+        $category = $this->getParam('category');
+        if (!$category) $category = $this->getParam('selectedCategory');
+
+        if ($category) $categoryData = $this->tryRender('product-category/_categoryData', array('page' => $this, 'category' => $category));
+        if ($categoryData) $ret .= $categoryData;
+
+        return $ret;
+    }
+
+    public function slotUserbar() {
+        return $this->render('_userbar');
+    }
+
+    public function slotUserbarContent() {
+        return $this->render('product-category/_userbarContent', [
+            'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,
+        ]);
+    }
+
+    public function slotUserbarContentData() {
+        return [
+            'target' => '#productCatalog-filter-form',
+        ];
+    }
 }

@@ -70,10 +70,11 @@ class DefaultLogger implements LoggerInterface {
         }
 
         $item = [
-            '_id'      => $this->id,
-            '_time'    => date('M d H:i:s'),
-            '_type'    => $this->levelNames[$level],
-            '_tag'     => $tags,
+            '_id'           => $this->id,
+            '_time'         => date('M d H:i:s'),
+            '_type'         => $this->levelNames[$level],
+            '_tag'          => $tags,
+            '_timestamp'    => time(),
         ] + (is_array($message) ? $message : ['message' => $message]);
 
         /*
