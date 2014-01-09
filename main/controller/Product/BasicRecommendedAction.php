@@ -193,6 +193,22 @@ class BasicRecommendedAction {
     }
 
 
+    /**
+     * @param \Model\Product\Entity     $product
+     * @param \Http\Request             $request
+     * @param string                    $method
+     * @return \Model\Product\Entity[]  $products
+     * @throws \Exception\
+     */
+    public function getProductsIdsFromRetailrocket( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $client = \App::retailrocketClient();
+        $productId = $product->getId();
+        $ids = $client->query('Recomendation/' . $method, $productId);
+
+        return $ids;
+    }
 
 
     /**
@@ -206,17 +222,11 @@ class BasicRecommendedAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         //print '** This is Smartengine Method. Should be ENABLED **'; // tmp, form debug
-
         $client = \App::retailrocketClient();
-
-        $productId = $product->getId();
-
-        $ids = $client->query('Recomendation/' . $method, $productId);
-
+        $ids = $this->getProductsIdsFromRetailrocket( $product, $request, $method);
         $products = $this->prepareProducts($ids, $client::NAME);
 
         return $products;
-
     }
 
 
