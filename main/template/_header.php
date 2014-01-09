@@ -52,16 +52,18 @@
                 <a href="/login" class="fixedTopBar__logInLink bAuthLink">Личный кабинет</a>
                 <span class="transGrad"></span>
 
-                <div class="fixedTopBar__dd fixedTopBar__logOut">
-                    <div class="enterPrize">
-                        <div class="enterPrize__text">
-                            <strong class="title">Enter Prize</strong>
-                            Выбери фишку со скидкой на любой товар в ENTER!
-                        </div>
+                <? if (\App::config()->enterprize['enabled']): ?>
+                    <div class="fixedTopBar__dd fixedTopBar__logOut">
+                        <div class="enterPrize">
+                            <div class="enterPrize__text">
+                                <strong class="title">Enter Prize</strong>
+                                Выбери фишку со скидкой на любой товар в ENTER!
+                            </div>
 
-                        <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+                            <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+                        </div>
                     </div>
-                </div>
+                <? endif ?>
             </div>
         </div>
     </noindex>
@@ -146,16 +148,18 @@
     <span class="transGrad"></span>
 
     <div class="fixedTopBar__dd fixedTopBar__logOut">
-        {{^hasEnterprizeCoupon}}
-            <div class="enterPrize">
-                <div class="enterPrize__text">
-                    <strong class="title">Enter Prize</strong>
-                    Выбери фишку со скидкой на любой товар в ENTER!
-                </div>
+        <? if (\App::config()->enterprize['enabled']): ?>
+            {{^hasEnterprizeCoupon}}
+                <div class="enterPrize">
+                    <div class="enterPrize__text">
+                        <strong class="title">Enter Prize</strong>
+                        Выбери фишку со скидкой на любой товар в ENTER!
+                    </div>
 
-                <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
-            </div>
-        {{/hasEnterprizeCoupon}}
+                    <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+                </div>
+            {{/hasEnterprizeCoupon}}
+        <? endif ?>
 
         <a class="mBtnGrey fixedTopBar__logOutLink" href="<?= $page->url('user.logout') ?>">Выйти</a>
     </div>

@@ -11,6 +11,10 @@ class Action {
     public function index(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        if (!\App::config()->enterprize['enabled']) {
+            throw new \Exception\NotFoundException();
+        }
+
         $client = \App::dataStoreClient();
 
         /** @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[] */
