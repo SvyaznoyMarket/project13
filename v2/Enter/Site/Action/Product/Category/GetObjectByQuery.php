@@ -2,6 +2,7 @@
 
 namespace Enter\Site\Action\Product\Category;
 
+use Enter\Exception\NotFound;
 use Enter\Site\ConfigTrait;
 use Enter\Curl\Query;
 use Enter\Site\Model\Product\Category;
@@ -19,6 +20,9 @@ class GetObjectByQuery {
         $category = null;
 
         $item = $coreQuery->getResult();
+        if (!$item) {
+            throw new NotFound('Категория товара не найдена');
+        }
 
         if ($adminQuery) {
             try {
