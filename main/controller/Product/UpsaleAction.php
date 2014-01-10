@@ -29,17 +29,23 @@ class UpsaleAction extends BasicRecommendedAction {
 
             \App::logger()->info(sprintf('abTest.key=%s, response.cookie.switch=%s', $key, $request->cookies->get('switch')));
 
-            //получаем ids связанных товаров
-            $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
+            // получаем ids связанных товаров
+            // SITE-2818 Список связанных товаров дозаполняем товарами, полученными от RR по методу CrossSellItemToItems
+            $recommendationRR = $this->getProductsIdsFromRetailrocket($product, $request, $this->retailrocketMethodName);
+            $relatedId = array_unique(array_merge($product->getRelatedId(), $recommendationRR));
 
-            $products = [];
+            $products = null;
             if (!empty($relatedId)) {
                 $products = \RepositoryManager::product()->getCollectionById($relatedId);
             }
 
-            if (empty($products)) {
-                $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName); // UPD
+            // SITE-2818 Из блока "С этим товаром также покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
+            foreach ($products as $key => $item) {
+                if ($item->isInShopOnly() || $item->isInShopStockOnly()) {
+                    unset($products[$key]);
+                }
             }
+            $products = array_slice($products, 0, \App::config()->product['itemsInSlider'] * 2);
 
             if ( !is_array($products) ) {
                 throw new \Exception(sprintf('Not found products data in response. ActionType: %s', $this->actionType));

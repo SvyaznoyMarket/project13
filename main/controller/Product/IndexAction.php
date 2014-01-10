@@ -190,7 +190,7 @@ class IndexAction {
         }
 
         // SITE-2818 Список связанных товаров нужно дозаполнять товарами, полученными от RR по методу CrossSellItemToItems
-        $recommendationRR = (new \Controller\Product\BasicRecommendedAction())->getProductsIdsFromRetailrocket($product, $request);
+        $recommendationRR = (new \Controller\Product\BasicRecommendedAction())->getProductsIdsFromRetailrocket($product, $request, 'CrossSellItemToItems');
         $relatedId = array_unique(array_merge($product->getRelatedId(), $recommendationRR));
 
         $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 36 : \App::config()->product['itemsInSlider'] * 6);
