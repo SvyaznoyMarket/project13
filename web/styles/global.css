@@ -1533,7 +1533,7 @@ table {
 .fixedTopBar__logOutLink {
   display: block;
   text-align: center;
-  margin: 0 10px 10px;
+  margin: 10px 10px 10px;
   height: 25px;
   line-height: 25px;
 }
