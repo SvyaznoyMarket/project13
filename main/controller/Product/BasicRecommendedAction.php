@@ -26,7 +26,7 @@ class BasicRecommendedAction {
      * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
-    public function execute($productId, \Http\Request $request)
+    public function execute($productId, \Http\Request $request, $returnJson = true)
     {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -69,14 +69,16 @@ class BasicRecommendedAction {
 
         } catch (\Exception $e) {
             \App::logger()->error($e, [$this->actionType]);
-            return new \Http\JsonResponse([
+
+            $responseData = [
                 'success' => false,
                 'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
-            ]);
+            ];
         }
 
-        return new \Http\JsonResponse($responseData);
-
+        return $returnJson
+            ? new \Http\JsonResponse($responseData)
+            : $responseData;
     }
 
 
