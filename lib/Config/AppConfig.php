@@ -480,6 +480,13 @@ class AppConfig {
         'enabled' => null,
     ];
 
+    /** @var array */
+    public $kladr = [
+        'token' => null,
+        'key' => null,
+        'itemLimit' => 6,
+    ];
+
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();
         $this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
