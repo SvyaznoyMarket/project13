@@ -26,10 +26,21 @@ class BasicRecommendedAction {
      * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
-    public function execute($productId, \Http\Request $request, $returnJson = true)
+    public function execute($productId, \Http\Request $request)
     {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        return new \Http\JsonResponse($this->getResponseData($productId, $request));
+    }
+
+
+    /**
+     * @param string        $productId
+     * @param \Http\Request $request
+     * @return array
+     * @throws \Exception\NotFoundException
+     */
+    public function getResponseData($productId, \Http\Request $request) {
         $responseData = [];
 
         try {
@@ -76,13 +87,8 @@ class BasicRecommendedAction {
             ];
         }
 
-        return $returnJson
-            ? new \Http\JsonResponse($responseData)
-            : $responseData;
+        return $responseData;
     }
-
-
-
 
 
     /**

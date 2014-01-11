@@ -23,13 +23,13 @@ class RecommendedAction {
             foreach ($recommend as $type => $item) {
                 switch ($type) {
                     case 'alsoBought':
-                        $recommend[$type] = (new \Controller\Product\UpsaleAction())->execute($productId, $request, false);
+                        $recommend[$type] = (new \Controller\Product\UpsaleAction())->getResponseData($productId, $request);
                         break;
                     case 'similar':
-                        $recommend[$type] = (new \Controller\Product\SimilarAction())->execute($productId, $request, false);
+                        $recommend[$type] = (new \Controller\Product\SimilarAction())->getResponseData($productId, $request);
                         break;
                     case 'alsoViewed':
-                        $recommend[$type] = (new \Controller\Product\AlsoViewedAction())->execute($productId, $request, false);
+                        $recommend[$type] = (new \Controller\Product\AlsoViewedAction())->getResponseData($productId, $request);
                         break;
                 }
             }

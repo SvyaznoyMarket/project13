@@ -10,13 +10,10 @@ class UpsaleAction extends BasicRecommendedAction {
     /**
      * @param string        $productId
      * @param \Http\Request $request
-     * @return \Http\JsonResponse
+     * @return array
      * @throws \Exception\NotFoundException
      */
-    public function execute($productId, \Http\Request $request, $returnJson = true)
-    {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
+    public function getResponseData($productId, \Http\Request $request) {
         $responseData = [];
 
         try {
@@ -63,13 +60,11 @@ class UpsaleAction extends BasicRecommendedAction {
             \App::logger()->error($e, [$this->actionType]);
 
             $responseData = [
-                    'success' => false,
-                    'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+                'success' => false,
+                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
             ];
         }
 
-        return $returnJson
-            ? new \Http\JsonResponse($responseData)
-            : $responseData;
+        return $responseData;
     }
 }
