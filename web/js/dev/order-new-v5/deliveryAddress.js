@@ -7,6 +7,8 @@
 ;(function( ENTER ){
 	var
 		config = $('#page-config').data('value'),
+		orderData = $('#jsOrderForm').data('value'),
+		subwayArray = $('#metrostations').data('name'),
 
 		container = $('.jsDeliveryAddress'),
 		data = container.data('value'),
@@ -21,33 +23,29 @@
 		building = container.find('#order_address_building'),
 		buildingAdd = container.find('#order_address_number'),
 		metro = container.find('#order_address_metro'),
+		metroIdFiled = $('#order_subway_id'),
 
 		error,
 
 		map = null,
 		map_created = false,
 
-		cityName = data.regionName;
+		cityName = data.regionName,
+		cityId;
 	// end of vars
 
 	var
 		/**
-		 * Обновляем карту
- 		 */
-		mapUpdate = function(){
+		 * Получение адреса
+		 */
+		getAddress = function() {
 			var
 				zoom = 12,
 				address = '',
-
 				name,
 				type,
 				obj,
-				value,
-
-				geocode,
-				position,
-
-				latitude, longitude;
+				value;
 			// end of vars
 
 			// Город
@@ -130,10 +128,25 @@
 				zoom = 16;
 			}
 
-			if ( address && map_created ) {
-				console.log(address);
+			return {address: address, zoom: zoom};
+		},
 
-				geocode = ymaps.geocode(address);
+
+		/**
+		 * Обновление карты
+ 		 */
+		mapUpdate = function(){
+			var
+				geocode,
+				position,
+				latitude, longitude,
+				addrData = getAddress();
+			// end of vars
+
+			if ( addrData.address && map_created ) {
+				console.log(addrData.address);
+
+				geocode = ymaps.geocode(addrData.address);
 				geocode.then(function( res ) {
 					position = res.geoObjects.get(0).geometry.getCoordinates();
 
@@ -151,7 +164,7 @@
 
 					map.points.push({latitude: latitude, longitude: longitude});
 					map._showMarkers();
-					map.mapWS.setCenter(position, zoom);
+					map.mapWS.setCenter(position, addrData.zoom);
 
 					if ( metro.length ) {
 						metroClosest(latitude, longitude);
@@ -180,11 +193,24 @@
 
 //					metro.parents('.jsInputMetro').hide();
 					metro.val(name);
+					metroIdFiled.val('');
+
+					if ( subwayArray !== undefined ) {
+						for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
+							if ( name === subwayArray[i].label ) {
+								metroIdFiled.val(subwayArray[i].val);
+
+								break;
+							}
+						}
+					}
+
 				},
 				function ( err ) {
 					console.warn('При выполнении запроса произошла ошибка: ' + err);
 
 					metro.val('');
+					metroIdFiled.val('');
 					metro.parents('.jsInputMetro').show();
 				}
 			);
@@ -254,10 +280,33 @@
 							return;
 						}
 
+						cityId = objs[0].id;
+
 						street.kladr( 'parentType', $.kladr.type.city );
-						street.kladr( 'parentId', objs[0].id );
-						building.kladr( 'parentType', $.kladr.type.city );
-						building.kladr( 'parentId', objs[0].id );
+						street.kladr( 'parentId', cityId );
+
+						// Задаем parentId для поля building
+						$.kladr.api(
+							{
+								token: token,
+								key: key,
+								type: $.kladr.type.street,
+								name: orderData['order[address_street]'],
+								parentType: $.kladr.type.city,
+								parentId: cityId,
+								limit: 1
+							},
+							function( objs ){
+								if ( !objs.length ) {
+									showError('Не нашли ваш адрес на карте.<br />Уточните');
+
+									return;
+								}
+
+								building.kladr( 'parentType', $.kladr.type.street );
+								building.kladr( 'parentId', objs[0].id );
+							}
+						);
 					}
 				);
 			},
@@ -298,7 +347,7 @@
 
 								for ( i in objs ) {
 									obj = objs[i];
-									obj.label = obj.typeShort + '. ' + obj.name;
+									obj.label = /*obj.typeShort + '. ' + */obj.name;
 									items.push(obj);
 								}
 
@@ -404,7 +453,8 @@
 		mapCreate = function() {
 			var
 				cityGeocoder,
-                position;
+				position,
+				addrData = getAddress();
 			// end of vars
 
 			if ( map_created ) {
@@ -414,11 +464,12 @@
 			$('#map').show();
 			map_created = true;
 
-			cityGeocoder = ymaps.geocode(cityName);
+			cityGeocoder = ymaps.geocode(addrData.address);
 			cityGeocoder.then(
 				function ( res ) {
 					position = res.geoObjects.get(0).geometry.getCoordinates();
 					map = new ENTER.constructors.CreateMap('map', [{latitude: position[0], longitude: position[1]}]);
+					map.mapWS.setZoom(addrData.zoom);
 				},
 				function ( err ) {
 					// обработка ошибки
