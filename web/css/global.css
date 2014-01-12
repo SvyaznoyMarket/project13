@@ -9419,7 +9419,6 @@
   .bInputList .bCustomLabel {
     display: inline-block;
     margin: 0;
-    margin-left: -3px;
     padding-left: 21px;
     cursor: pointer;
     vertical-align: top;
@@ -10515,7 +10514,7 @@
   .bBuyingLine__eLeft {
     display: block;
     float: left;
-    width: 255px;
+    width: 258px;
     margin-right: 14px;
     font-size: 14px;
     min-height: 20px;
@@ -10531,7 +10530,7 @@
   .bBuyingLine__eRight {
     display: block;
     float: left;
-    width: 639px;
+    width: 636px;
   }
   .bBuyingLine.mOrderMethod {
     padding: 0 15px;
@@ -10547,7 +10546,7 @@
   }
   .bBuyingLine__eDesc {
     width: 450px;
-    padding-left: 33px;
+    padding-left: 36px;
     margin: 0 0 15px;
     color: #434343;
     font-size: 12px;
@@ -10813,7 +10812,7 @@
     margin-left: 0;
   }
   .mPayMethods .bPayMethodDesc {
-    margin: 5px 0 0 20px;
+    margin: 5px 0 0 23px;
     font-size: 12px;
   }
   .mPayMethods .bPayMethodAction {
