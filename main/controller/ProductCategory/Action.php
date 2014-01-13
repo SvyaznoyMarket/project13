@@ -725,12 +725,15 @@ class Action {
         // вид товаров
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
         // листалка
-        $limit = \App::config()->product['itemsPerPage'];
+        $itemsPerPage = \App::config()->product['itemsPerPage'];
+        $limit = $itemsPerPage;
         $offset = ($pageNum - 1) * $limit;
 
         // стиль листинга
         $listingStyle = isset($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
-        if ('jewel' !== $listingStyle) {
+
+        $hasBanner = 'jewel' !== $listingStyle ? true : false;
+        if ($hasBanner) {
             // уменшаем кол-во товаров на первой странице для вывода баннера
             $offset = $offset - (1 === $pageNum ? 0 : 1);
             $limit = $limit - (1 === $pageNum ? 1 : 0);
@@ -780,8 +783,11 @@ class Action {
             $limit
         );
 
+        if ($hasBanner) {
+            $productPager->setCount($productPager->count() + 1);
+        }
         $productPager->setPage($pageNum);
-        $productPager->setMaxPerPage($limit);
+        $productPager->setMaxPerPage($itemsPerPage);
         if (self::isGlobal()) {
             $category->setGlobalProductCount($productPager->count());
         } else {
@@ -818,7 +824,7 @@ class Action {
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
                     $productVideosByProduct,
-                    !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle ? $catalogJson['bannerPlaceholder'] : []
+                    !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : []
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -1029,7 +1035,7 @@ class Action {
      */
     public static function isGlobal() {
         return \App::user()->getRegion()->getHasTransportCompany()
-            && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
+        && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
     }
 
     /**
