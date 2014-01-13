@@ -114,12 +114,13 @@ class Action {
             return false;
         }*/
 
+        $redirectToken = 'subscribe_friends';
         if (1 == $hasbro) {
-            return new \Http\RedirectResponse(
-                \App::router()->generate('content', ['token' => 'hasbro_email_confirm'], true)
-            );
+            $redirectToken = 'hasbro_email_confirm';
         }
 
-        return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => 'subscribe_friends', 'email' => $email], true));
+        return new \Http\RedirectResponse(
+            \App::router()->generate('content', ['token' => $redirectToken, 'email' => $email], true)
+        );
     }
 }
