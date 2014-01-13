@@ -13,7 +13,7 @@ return function(
 
         <? if (!$forceMean) { // если принудительный поиск не был использован ?>
         <h1 class="bTitlePage">
-            Ура! Нашли <span class="orange">&quot;<?= $helper->escape($searchQuery) ?>&quot;</span>
+            Нашли <span class="orange">&quot;<?= $helper->escape($searchQuery) ?>&quot;</span>
             <? if ($category): ?>
                 в категории "<?= $category->getName() ?>"
             <? endif ?>
