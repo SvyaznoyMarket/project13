@@ -11,7 +11,7 @@
 <? if ($count) { // если товары найдены ?>
 
     <? if (!$forceMean) { // если принудительный поиск не был использован ?>
-        Ура! Нашли <span class="orange">&quot;<?= $page->escape($searchQuery) ?>&quot;</span>
+        Нашли <span class="orange">&quot;<?= $page->escape($searchQuery) ?>&quot;</span>
         <?= $count . ' ' . $page->helper->numberChoice($count, array('товар', 'товара', 'товаров')) ?>
 
         <? } else { // ...иначе, если принудительный поиск использован ?>
