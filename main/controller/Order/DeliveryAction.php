@@ -375,7 +375,8 @@ class DeliveryAction {
                     'longitude'  => (float)$shopItem['coord_long'],
                     'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
                     'pointImage' => '/images/marker.png',
-                    'buttonName' => $deliveryTypeData['now']['buttonName'],
+                    'buttonName' => isset($deliveryTypeData['now']['buttonName']) ? $deliveryTypeData['now']['buttonName'] :
+                            (isset($deliveryTypeData['standart']['buttonName']) ? $deliveryTypeData['standart']['buttonName'] : ''),
                 ];
             }
             // сортировка магазинов
