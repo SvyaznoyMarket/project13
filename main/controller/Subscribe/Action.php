@@ -73,6 +73,9 @@ class Action {
         $client = \App::coreClientV2();
 
         $action = null;
+        $email = null;
+        $hasbro = null;
+
         try {
             $token = $request->get('confirm_token');
             if (!$token) {
@@ -83,6 +86,8 @@ class Action {
             if (!$email) {
                 throw new \Exception('Не получен email подтверждения подписки');
             }
+
+            $hasbro = $request->get('hasbro');
 
             $client->addQuery('subscribe/use-token', ['token' => $token], [],
                 function($data) use (&$action) {
@@ -105,6 +110,15 @@ class Action {
 
         return new \Http\Response($page->show());
         */
+        /*if (!$email) {
+            return false;
+        }*/
+
+        if (1 == $hasbro) {
+            return new \Http\RedirectResponse(
+                \App::router()->generate('content', ['token' => 'hasbro_email_confirm'], true)
+            );
+        }
 
         return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => 'subscribe_friends', 'email' => $email], true));
     }
