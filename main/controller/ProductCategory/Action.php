@@ -2,6 +2,8 @@
 
 namespace Controller\ProductCategory;
 
+use View\Product\FilterForm;
+
 class Action {
     private static $globalCookieName = 'global';
     protected $pageTitle;
@@ -210,7 +212,17 @@ class Action {
 
         // подготовка 2-го пакета запросов
 
-        // TODO: запрашиваем меню
+        // запрашиваем бренд по токену
+        /** @var $brand \Model\Brand\Entity */
+        $brand = null;
+        if ($brandToken) {
+            \RepositoryManager::brand()->prepareEntityByToken($brandToken, $region, function($data) use (&$brand) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $brand = new \Model\Brand\Entity($data);
+                }
+            });
+        }
 
         /** @var $category \Model\Product\Category\Entity */
         $category = null;
@@ -248,7 +260,14 @@ class Action {
                             (preg_match('/^\//', $redirect) ? '' : '/') .
                             $redirect;
                     }
-                    return new \Http\RedirectResponse($redirect);
+
+                    if ($brand) {
+                        // TODO: исправить, когда FCMS-314 будет готова
+                        $redirect .= ((false === strpos($redirect, '?')) ? '?' : '&') . sprintf('%s-brand-%s=%s', FilterForm::$name, $brandToken, $brand->getId());
+                        //$redirect .= rtrim($redirect, '/') . '/' . $brandToken;
+                    }
+
+                    return new \Http\RedirectResponse($redirect, 301);
                 }
 
                 if (empty($shopScriptSeo['ui'])) {
@@ -276,18 +295,6 @@ class Action {
                 $data = reset($data);
                 if ((bool)$data) {
                     $category = new \Model\Product\Category\Entity($data);
-                }
-            });
-        }
-
-        // запрашиваем бренд по токену
-        /** @var $brand \Model\Brand\Entity */
-        $brand = null;
-        if ($brandToken) {
-            \RepositoryManager::brand()->prepareEntityByToken($brandToken, $region, function($data) use (&$brand) {
-                $data = reset($data);
-                if ((bool)$data) {
-                    $brand = new \Model\Brand\Entity($data);
                 }
             });
         }
