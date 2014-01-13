@@ -2,6 +2,7 @@
 /**
  * @var $page         \View\DefaultLayout
  * @var $gridCells    \Model\GridCell\Entity[]
+ * @var $category     \Model\Product\Category\Entity
  * @var $productsById \Model\Product\CompactEntity[]
  */
 ?>
@@ -10,7 +11,7 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<h1 class="tchiboTitle">Мужчины</h1>
+<h1 class="tchiboTitle"><?= $category->getName() ?></h1>
 
 <!-- TCHIBO - навигация по разделу Чибо -->
 <div class="tchiboNavSection">

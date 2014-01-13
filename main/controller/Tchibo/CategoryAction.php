@@ -131,6 +131,7 @@ class CategoryAction {
 
         $page = new \View\Tchibo\CategoryPage();
         $page->setParam('gridCells', $gridCells);
+        $page->setParam('category', $category);
         $page->setParam('productsById', $productsById);
 
         return new \Http\Response($page->show());
