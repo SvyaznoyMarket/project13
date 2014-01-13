@@ -179,6 +179,7 @@
         left: 2px;
         z-index: 1100;
         color: #cdcdcd;
+        font: normal 13px Courier New;
         opacity: 0.95;
     }
 
