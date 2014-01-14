@@ -37,7 +37,9 @@ $f = function(
             [],
             null,
             false,
-            $cartButtonAction
+            $cartButtonAction,
+            null,
+            3
         )) ?>
     <? elseif (\Model\GridCell\Entity::TYPE_IMAGE === $cell->getType()): ?>
     <?
