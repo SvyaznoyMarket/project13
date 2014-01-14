@@ -450,8 +450,14 @@ class Action {
             $option = new \Model\Product\Filter\Option\Entity();
             $option->setId(1);
             $option->setToken('instore');
-            //$option->setName('Товар за три дня');
-            $option->setName('Товар со склада');
+            if (\App::config()->region['defaultId'] === $user->getRegion()->getId()) {
+                // Для Москвы, SITE-2850
+                $option->setName('Товар за три дня');
+            } else {
+                // Для регионов (привозит быстрее, но не за три дня)
+                $option->setName('Товар со склада');
+            }
+
             $labelFilter->unshiftOption($option);
 
             // добавляем фильтр в массив фильтров
