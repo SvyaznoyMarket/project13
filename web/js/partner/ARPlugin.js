@@ -1,6 +1,5 @@
 
 var
-	ARPlugin = new plugin_wrapper_ar_pandra(),
 	active_ar_pandra = false,
 	yml_xml_ar_pandra = null,
 	vis_items_ar_pandra = 5,
@@ -26,7 +25,8 @@ var
 	def_model_ar_pandra = null,
 	def_texture_ar_pandra = null,
 
-	marker_pdf_path_ar_pandra = null;
+	marker_pdf_path_ar_pandra = null,
+	ARPlugin = new plugin_wrapper_ar_pandra();
 
 function init_plugin_ar_pandra(options) {
 	if ( options != undefined ) {
@@ -123,7 +123,6 @@ function load_xml_ar_pandra() {
 	} );
 }
 function show_plugin_ar_pandra(mesh, texture) {
-	console.log( 'show_plugin_ar_pandra' );
 	if ( type_ar_pandra == type_advanced_ar_pandra ) {
 		show_advaced_plugin_ar_pandra()
 	} else {
@@ -242,34 +241,21 @@ function add_swf_ar_pandra() {
 			id: "pandra_ar_swf",
 			name: "pandra_ar_swf"
 		};
-	console.log('### add_swf_ar_pandra');
-	console.log(swfobject);
-	console.log(swfobject.embedSWF);
-	console.log(flashvars);
-	console.log('### test 00');
-	console.log(params);
-	console.log(attributes);
-	console.log(swf_path_ar_pandra);
-	console.log('### test 10');
-	try{
-		swfobject.embedSWF( swf_path_ar_pandra + "arPrototype.swf", "ar_pandra_content", "640", "480", "11", "expressInstall.swf", flashvars, params, attributes,
-			function (e) {
-				console.log('!!!!!!!!!');
-				console.log(e);
-				swf_ar_panra = e.ref;
-				setTimeout( resize_ar_pandra, 200 );
-			}
-		);
-		console.log('$$$ try ok');
-	}catch(e){
-		console.log('$$$ try fail');
-	}
-	console.log('### test 20');
+
+	    swfobject.embedSWF(swf_path_ar_pandra+"arPrototype.swf", "ar_pandra_content", "640", "480", "11","expressInstall.swf", flashvars, params, attributes, function(e) { swf_ar_panra = e.ref;    setTimeout(resize_ar_pandra,200)});
+
 }
 function resize_ar_pandra() {
 	if ( active_ar_pandra == true ) {
-		$( "#ar_pandra" ).css( "top", $( window ).height() / 2 - $( "#ar_pandra" ).height() / 2 );
-		$( "#ar_pandra" ).css( "left", $( window ).width() / 2 - $( "#ar_pandra" ).width() / 2 );
+		var
+			wdiv = $( "#ar_pandra" ),
+			top = $( window ).height() / 2 - wdiv.height() / 2,
+			left = $( window ).width() / 2 - wdiv.width() / 2;
+
+		if (!wdiv.length) return false;
+
+		$( "#ar_pandra" ).css( "top", top );
+		$( "#ar_pandra" ).css( "left", left );
 	}
 }
 function close_ar_padnra() {

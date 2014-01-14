@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title></title>
     <script src="http://code.jquery.com/jquery-1.8.3.js" type="text/javascript"></script>
+    <script src="/js/prod/swfobject.min.js"></script>
 
     <script src="/js/partner/ARPlugin.js"></script>
     <script type="text/javascript">
