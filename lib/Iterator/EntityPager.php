@@ -73,6 +73,10 @@ class EntityPager implements \Iterator {
         return $this->count;
     }
 
+    public function setCount($count) {
+        return $this->count = (int)$count;
+    }
+
     public function rewind() {
         $this->position = 0;
     }
