@@ -376,20 +376,22 @@ $c->lifeGift['deliveryTypeId'] = 1077;
 
 $c->enterprize['enabled'] = false;
 
+$c->tchibo['rowWidth'] = 60;
+$c->tchibo['rowHeight'] = 60;
+$c->tchibo['rowPadding'] = 20;
+
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
 $c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
 $c->abtest['bestBefore'] = '2013-09-23';
 $c->abtest['test']       = [
-    // smartengine
     [
         'traffic'  => 50,
         'key'      => 'retailrocket',
         'name'     => "Похожие товары от RetailRocket",
         'ga_event' => 'RetailRocket',
     ],
-    // retailrocket
     [
         'traffic'  => 50,
         'key'      => 'retailrocket',

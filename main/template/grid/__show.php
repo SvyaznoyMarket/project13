@@ -10,8 +10,10 @@ $f = function(
     array $gridCells,
     array $productsById = []
 ) {
-    $step = 60;
-    $offset = 20;
+    $config = \App::config()->tchibo;
+
+    $step = $config['rowWidth'];
+    $offset = $config['rowPadding'];
 
     $showAction = new \View\Product\ShowAction();
     $cartButtonAction = new \View\Cart\ProductButtonAction();

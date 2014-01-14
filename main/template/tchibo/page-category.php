@@ -13,6 +13,7 @@ $helper = new \Helper\TemplateHelper();
 
 <h1 class="tchiboTitle"><?= $category->getName() ?></h1>
 
+<? if (false): ?>
 <!-- TCHIBO - навигация по разделу Чибо -->
 <div class="tchiboNavSection">
 	<img class="tchiboNavSection__img" src="/styles/tchiboNavSection/img/menuSecImg.jpg" />
@@ -96,13 +97,17 @@ $helper = new \Helper\TemplateHelper();
 	<!--/ список подкатегорий -->
 </div>
 <!-- TCHIBO - навигация по разделу Чибо -->
+<? endif ?>
+
 
 <?
+$config = \App::config()->tchibo;
+
 $contentHeight = 0;
 foreach ($gridCells as $cell) {
     $height =
-        (($cell->getRow() - 1) *  60 + ($cell->getRow() - 1) * 20)
-        + ($cell->getSizeY() * 60 + ($cell->getSizeY() - 1) * 20);
+        (($cell->getRow() - 1) *  $config['rowWidth'] + ($cell->getRow() - 1) * $config['rowPadding'])
+        + ($cell->getSizeY() * $config['rowHeight'] + ($cell->getSizeY() - 1) * $config['rowPadding']);
     if ($height > $contentHeight) {
         $contentHeight = $height;
     }
