@@ -5,7 +5,8 @@
  */
 ;(function( global ) {
 	var pageConfig = global.ENTER.config.pageConfig,
-		utils = global.ENTER.utils;
+		utils = global.ENTER.utils,
+		swfobjectLoaded = false;
 	// end of vars
 	
 	var
@@ -48,7 +49,10 @@
 			$('.mGrad360.maybe3d').bind('click', maybe3dPopupShow);
 		};
 
-		$LAB.script('swfobject.min.js').wait(afterLoad);
+		if (!swfobjectLoaded) {
+			$LAB.script('swfobject.min.js').wait(afterLoad);
+			swfobjectLoaded = true;
+		}
 	},
 	loadFitting = function loadFitting() {
 		var f_afterLoad = function f_afterLoad() {
@@ -74,7 +78,10 @@
 				$('.vFitting').bind('click', fittingPopupShow);
 			};
 
-		$LAB.script('swfobject.min.js').wait(f_afterLoad);
+		if (!swfobjectLoaded) {
+			$LAB.script('swfobject.min.js').wait(f_afterLoad);
+			swfobjectLoaded = true;
+		}
 	};
 
 	$(document).ready(function() {
