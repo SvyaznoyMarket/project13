@@ -122,13 +122,37 @@
 					self.basket().update(toBasketUpdate);
 					// body.trigger('productAdded');
 
+				},
+
+				deleteItem = function deleteItem( data ) {
+					console.log('deleteItem');
+					var
+						deleteItemId = data.product.id,
+						toBasketUpdate = {
+							quantity: data.cart.full_quantity,
+							sum: data.cart.full_price
+						},
+						i;
+					// end of vars
+					
+					for ( i = clientCart.products.length - 1; i >= 0; i-- ) {
+						if ( clientCart.products[i].id === deleteItemId ) {
+							clientCart.products.splice(i, 1);
+
+							self.basket().update(toBasketUpdate);
+
+							return;
+						}
+					}
+
 				};
 			//end of functions
 
 
 			return {
 				'update': update,
-				'add': add
+				'add': add,
+				'deleteItem': deleteItem
 			};
 		};
 

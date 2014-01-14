@@ -129,9 +129,9 @@ class ShowAction {
         foreach ($reflection->getProperties() as $property) {
             $docblock = $property->getDocComment();
             if (false === strpos($docblock, '@hidden')) {
-                $configData[$property->getName()] = [
-                    //'name'  => $docblock, // TODO: вычленить из докблока название
-                    'value' => $property->getValue(\App::config()),
+                $configData[] = [
+                    'name'  => $property->getName(), // TODO: вычленить из докблока название
+                    'value' => json_encode($property->getValue(\App::config()), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
                 ];
             }
         }

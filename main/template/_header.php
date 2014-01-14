@@ -52,16 +52,18 @@
                 <a href="/login" class="fixedTopBar__logInLink bAuthLink">Личный кабинет</a>
                 <span class="transGrad"></span>
 
-                <div class="fixedTopBar__dd fixedTopBar__logOut">
-                    <div class="enterPrize">
-                        <div class="enterPrize__text">
-                            <strong class="title">Enter Prize</strong>
-                            Выбери фишку со скидкой на любой товар в ENTER!
-                        </div>
+                <? if (\App::config()->enterprize['enabled']): ?>
+                    <div class="fixedTopBar__dd fixedTopBar__logOut">
+                        <div class="enterPrize">
+                            <div class="enterPrize__text">
+                                <strong class="title">Enter Prize</strong>
+                                Выбери фишку со скидкой на любой товар в ENTER!
+                            </div>
 
-                        <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+                            <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+                        </div>
                     </div>
-                </div>
+                <? endif ?>
             </div>
         </div>
     </noindex>
@@ -74,6 +76,12 @@
     <?= $page->slotMainMenu() ?>
 </div>
 <!-- /Header -->
+
+<script id="userbar_cart_empty_tmpl" type="text/html">
+    <div class="fixedTopBar__cart mEmpty">
+        <a href="/cart" class="fixedTopBar__cartTitle">Корзина</a>
+    </div>
+</script>
 
 <script id="userbar_cart_tmpl" type="text/html">
     <a href="<?=  $page->url('cart') ?>" class="fixedTopBar__cartTitle">
@@ -92,7 +100,7 @@
                         <div class="cartList__itemInfo">
                             <span class="price">{{formattedPrice}} &nbsp;<span class="rubl">p</span></span>
                             <span class="quan">{{quantity}} шт.</span>
-                            <a href="{{deleteUrl}}" class="del">удалить</a>
+                            <a href="{{deleteUrl}}" class="del jsCartDelete">удалить</a>
                         </div>
                     </li>
                 {{/products}}
@@ -121,7 +129,7 @@
                     <div class="cartList__itemInfo">
                         <span class="price">{{formattedPrice}} &nbsp;<span class="rubl">p</span></span>
                         <span class="quan">{{quantity}} шт.</span>
-                        <a href="{{deleteUrl}}" class="del">удалить</a>
+                        <a href="{{deleteUrl}}" class="del jsCartDelete">удалить</a>
                     </div>
                 </li>
             {{/products}}
@@ -140,16 +148,18 @@
     <span class="transGrad"></span>
 
     <div class="fixedTopBar__dd fixedTopBar__logOut">
-        {{^hasEnterprizeCoupon}}
-            <div class="enterPrize">
-                <div class="enterPrize__text">
-                    <strong class="title">Enter Prize</strong>
-                    Выбери фишку со скидкой на любой товар в ENTER!
-                </div>
+        <? if (\App::config()->enterprize['enabled']): ?>
+            {{^hasEnterprizeCoupon}}
+                <div class="enterPrize">
+                    <div class="enterPrize__text">
+                        <strong class="title">Enter Prize</strong>
+                        Выбери фишку со скидкой на любой товар в ENTER!
+                    </div>
 
-                <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
-            </div>
-        {{/hasEnterprizeCoupon}}
+                    <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+                </div>
+            {{/hasEnterprizeCoupon}}
+        <? endif ?>
 
         <a class="mBtnGrey fixedTopBar__logOutLink" href="<?= $page->url('user.logout') ?>">Выйти</a>
     </div>

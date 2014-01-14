@@ -53,7 +53,8 @@ class ProductAction {
                 'img'       => $product->getImageUrl(2),
                 'link'      => $product->getLink(),
                 'price'     => $product->getPrice(),
-                'deleteUrl' => $cartProduct ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
+                'deleteUrl' => $cartProduct  ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
+                'addUrl'    => !$cartProduct ? (new \Helper\TemplateHelper())->url('cart.product.set',    ['productId' => $product->getId()]) : null,
                 'cartButton'     => [
                     'id' => \View\Id::cartButtonForProduct($product->getId()),
                 ],

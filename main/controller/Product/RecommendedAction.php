@@ -10,7 +10,5 @@ class RecommendedAction {
      */
     public function execute(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
-
-        return (new \Controller\Smartengine\Action())->pullProductAlsoViewed($request, $productId);
     }
 }

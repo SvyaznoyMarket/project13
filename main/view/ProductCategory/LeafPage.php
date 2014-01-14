@@ -8,7 +8,7 @@ class LeafPage extends Layout {
     public function slotContent() {
         $this->params['request'] = \App::request();
 
-        return $this->render('product-category/page-leaf-new', $this->params);
+        return $this->render('product-category/page-leaf', $this->params);
     }
 
     public function slotUserbar() {

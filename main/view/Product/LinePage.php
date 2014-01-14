@@ -53,7 +53,7 @@ class LinePage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('product/page-line-new', $this->params);
+        return $this->render('product/page-line', $this->params);
     }
 
     public function slotBodyDataAttribute() {

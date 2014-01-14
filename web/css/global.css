@@ -2363,13 +2363,10 @@
   }
   #header {
     background: #000000;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
     display: block;
     height: 110px;
-    margin: 10px 0px;
-    width: 100%;
+    width: 960px;
+    margin: 0 0 0 -10px;
   }
   #topLogo {
     background: url('/css/header/img/headerLogo.gif') no-repeat center center;
@@ -2386,7 +2383,7 @@
     position: relative;
     display: table;
     float: left;
-    width: 810px;
+    width: 832px;
     z-index: 998;
     behavior: url("/css/common/display-table.min.htc");
     dt-display: table;
@@ -8460,13 +8457,15 @@
     filter: alpha(opacity=0);
     float: left;
     overflow: hidden;
-    margin-top: 0;
-    padding: 0;
     width: 0;
     height: 0;
     font-size: 0;
     line-height: 0;
     zoom: 1;
+    padding: 0;
+    position: relative;
+    z-index: -1;
+    margin-top: 0;
   }
   .bInputList .bCustomLabel {
     display: inline-block;
@@ -10527,7 +10526,7 @@
   .bBuyingLine__eLeft {
     display: block;
     float: left;
-    width: 255px;
+    width: 258px;
     margin-right: 14px;
     font-size: 14px;
     min-height: 20px;
@@ -10543,7 +10542,7 @@
   .bBuyingLine__eRight {
     display: block;
     float: left;
-    width: 639px;
+    width: 636px;
   }
   .bBuyingLine.mOrderMethod {
     padding: 0 15px;
@@ -10559,7 +10558,7 @@
   }
   .bBuyingLine__eDesc {
     width: 450px;
-    padding-left: 33px;
+    padding-left: 36px;
     margin: 0 0 15px;
     color: #434343;
     font-size: 12px;
@@ -10825,7 +10824,7 @@
     margin-left: 0;
   }
   .mPayMethods .bPayMethodDesc {
-    margin: 5px 0 0 20px;
+    margin: 5px 0 0 23px;
     font-size: 12px;
   }
   .mPayMethods .bPayMethodAction {
@@ -11615,92 +11614,6 @@
   .bListing .bPriceLine .bPrice.bHasSale {
     color: #e62b34;
   }
-  .bListing .bPriceLine .bOptions {
-    float: right;
-    margin: 4px 0 0;
-    padding: 0 0 0 27px;
-    width: 55px;
-    background: url('/css/bCatalog/img/bOptions.png') no-repeat 0 0;
-  }
-  .bListing .bPriceLine .bOptions .bDecor {
-    border-bottom: 1px dotted;
-  }
-  .bListing .bOptionsSection {
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    position: relative;
-    display: none;
-    margin: 12px 0 0;
-    padding: 5px;
-    border: 1px solid #e6e6e6;
-    background: #f6f6f6;
-  }
-  .bListing .bOptionsSection .bCorner {
-    position: absolute;
-    top: -10px;
-    right: 29px;
-    z-index: 2;
-    display: block;
-    width: 0;
-    height: 0;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid #f6f6f6;
-    border-left: 10px solid transparent;
-  }
-  .bListing .bOptionsSection .bCornerDark {
-    position: absolute;
-    top: -11px;
-    right: 28px;
-    display: block;
-    width: 0;
-    height: 0;
-    border-right: 11px solid transparent;
-    border-bottom: 11px solid #e6e6e6;
-    border-left: 11px solid transparent;
-  }
-  .bListing .bOptionsList__eItem {
-    margin: 0 0 0 18px;
-    list-style-type: disc;
-  }
-  .bListing .bBtnLine {
-    display: none;
-    margin: 10px 0 0;
-  }
-  .bListing .bBtnLine .btnBuy {
-    float: left;
-    width: 70px;
-    height: 25px;
-  }
-  .bListing .bBtnLine .btnBuy__eLink {
-    width: 79px;
-    height: 25px;
-    font-size: 13px;
-    line-height: 25px;
-  }
-  .bListing .bBtnLine .btnBuy__eLink.mBought {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    border: 1px solid #e6e6e6;
-    background: #e6e6e6;
-    color: #a6a6a6;
-    cursor: default;
-  }
-  .bListing .bBtnLine .btnBuy__eLink.mBought:hover {
-    border: 1px solid #e6e6e6;
-    background: #e6e6e6;
-    color: #a6a6a6;
-  }
-  .bListing .bBtnLine .btnView {
-    display: block;
-    float: right;
-    width: 90px;
-    height: 25px;
-    text-align: center;
-    font-size: 13px;
-    line-height: 25px;
-  }
   .bListing .bSimplyDescReviews {
     margin: 0 0 5px;
   }
@@ -11926,6 +11839,92 @@
   }
   .bListing.mPandora .bPriceLine .bPrice.bHasSale {
     color: #000000;
+  }
+  .bBtnLine {
+    display: none;
+    margin: 10px 0 0;
+  }
+  .bBtnLine .btnBuy {
+    float: left;
+    width: 70px;
+    height: 25px;
+  }
+  .bBtnLine .btnBuy__eLink {
+    width: 79px;
+    height: 25px;
+    font-size: 13px;
+    line-height: 25px;
+  }
+  .bBtnLine .btnBuy__eLink.mBought {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid #e6e6e6;
+    background: #e6e6e6;
+    color: #a6a6a6;
+    cursor: default;
+  }
+  .bBtnLine .btnBuy__eLink.mBought:hover {
+    border: 1px solid #e6e6e6;
+    background: #e6e6e6;
+    color: #a6a6a6;
+  }
+  .bBtnLine .btnView {
+    display: block;
+    float: right;
+    width: 90px;
+    height: 25px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 25px;
+  }
+  .bOptions {
+    float: right;
+    margin: 4px 0 0;
+    padding: 0 0 0 27px;
+    width: 55px;
+    background: url('/css/bCatalog/img/bOptions.png') no-repeat 0 0;
+  }
+  .bOptions .bDecor {
+    border-bottom: 1px dotted;
+  }
+  .bOptionsSection {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    position: relative;
+    display: none;
+    margin: 12px 0 0;
+    padding: 5px;
+    border: 1px solid #e6e6e6;
+    background: #f6f6f6;
+  }
+  .bOptionsSection .bCorner {
+    position: absolute;
+    top: -10px;
+    right: 29px;
+    z-index: 2;
+    display: block;
+    width: 0;
+    height: 0;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #f6f6f6;
+    border-left: 10px solid transparent;
+  }
+  .bOptionsSection .bCornerDark {
+    position: absolute;
+    top: -11px;
+    right: 28px;
+    display: block;
+    width: 0;
+    height: 0;
+    border-right: 11px solid transparent;
+    border-bottom: 11px solid #e6e6e6;
+    border-left: 11px solid transparent;
+  }
+  .bOptionsList__eItem {
+    margin: 0 0 0 18px;
+    list-style-type: disc;
   }
 }
 @media all {

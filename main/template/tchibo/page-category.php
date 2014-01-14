@@ -1,0 +1,123 @@
+<?php
+/**
+ * @var $page         \View\DefaultLayout
+ * @var $gridCells    \Model\GridCell\Entity[]
+ * @var $category     \Model\Product\Category\Entity
+ * @var $productsById \Model\Product\CompactEntity[]
+ */
+?>
+
+<?
+$helper = new \Helper\TemplateHelper();
+?>
+
+<h1 class="tchiboTitle"><?= $category->getName() ?></h1>
+
+<? if (false): ?>
+<!-- TCHIBO - навигация по разделу Чибо -->
+<div class="tchiboNavSection">
+	<img class="tchiboNavSection__img" src="/styles/tchiboNavSection/img/menuSecImg.jpg" />
+
+	<h2 class="tchiboNavSection__title">Мечта мужчин</h2><!--/ название категории -->
+
+	<!-- список подкатегорий -->
+	<ul class="tchiboNavSection__list">
+		<li class="item">
+			<a class="link mActive" href="">Мечта мужчин</a>
+
+			<div class="itemHover">
+				<img class="itemHover__img" src="/styles/tchiboNavSection/img/hoverImg.jpg" />
+				<div class="itemHover__border"></div>
+			</div><!--/ картинка при наведении -->
+		</li>
+
+		<li class="item">
+			<a class="link" href="">Классика</a>
+
+			<div class="itemHover">
+				<img class="itemHover__img" src="/styles/tchiboNavSection/img/hoverImg.jpg" />
+				<div class="itemHover__border"></div>
+			</div>
+		</li>
+
+		<li class="item">
+			<a class="link" href="">Мужской сезон</a>
+
+			<div class="itemHover">
+				<img class="itemHover__img" src="/styles/tchiboNavSection/img/hoverImg.jpg" />
+				<div class="itemHover__border"></div>
+			</div>
+		</li>
+
+		<li class="item">
+			<a class="link" href="">Коллекция с длинным-предлинным названием</a>
+
+			<div class="itemHover">
+				<img class="itemHover__img" src="/styles/tchiboNavSection/img/hoverImg.jpg" />
+				<div class="itemHover__border"></div>
+			</div>
+		</li>
+
+		<li class="item">
+			<a class="link" href="">100% натуральное</a>
+
+			<div class="itemHover">
+				<img class="itemHover__img" src="/styles/tchiboNavSection/img/hoverImg.jpg" />
+				<div class="itemHover__border"></div>
+			</div>
+		</li>
+
+		<li class="item">
+			<a class="link" href="">Ещё коллекция</a>
+
+			<div class="itemHover">
+				<img class="itemHover__img" src="/styles/tchiboNavSection/img/hoverImg.jpg" />
+				<div class="itemHover__border"></div>
+			</div>
+		</li>
+
+		<li class="item">
+			<a class="link" href="">Какая-то ещё коллекция</a>
+
+			<div class="itemHover">
+				<img class="itemHover__img" src="/styles/tchiboNavSection/img/hoverImg.jpg" />
+				<div class="itemHover__border"></div>
+			</div>
+		</li>
+
+		<li class="item">
+			<a class="link" href="">100% натуральное</a>
+
+			<div class="itemHover">
+				<img class="itemHover__img" src="/styles/tchiboNavSection/img/hoverImg.jpg" />
+				<div class="itemHover__border"></div>
+			</div>
+		</li>
+	</ul>
+	<!--/ список подкатегорий -->
+</div>
+<!-- TCHIBO - навигация по разделу Чибо -->
+<? endif ?>
+
+
+<?
+$config = \App::config()->tchibo;
+
+$contentHeight = 0;
+foreach ($gridCells as $cell) {
+    $height =
+        (($cell->getRow() - 1) *  $config['rowWidth'] + ($cell->getRow() - 1) * $config['rowPadding'])
+        + ($cell->getSizeY() * $config['rowHeight'] + ($cell->getSizeY() - 1) * $config['rowPadding']);
+    if ($height > $contentHeight) {
+        $contentHeight = $height;
+    }
+}
+?>
+<!-- TCHIBO - листинг Чибо -->
+<div class="tchiboProducts" style="position: relative; height: <?= $contentHeight ?>px; margin: 10px 0;">
+<?= $helper->render('grid/__show', [
+    'gridCells'    => $gridCells,
+    'productsById' => $productsById,
+]) ?>
+</div>
+<!--/ TCHIBO - листинг Чибо -->

@@ -443,7 +443,7 @@ return [
     ],
     'order' => [
         'pattern' => '/orders/new',
-        'action'  => ['Order\Action', 'create'],
+        'action'  => ['Order\NewAction', 'execute'],
     ],
     'order.create' => [
         'pattern' => '/orders/create',
@@ -546,15 +546,10 @@ return [
         'action'  => ['Slice\ShowAction', 'execute'],
     ],
 
-    // smartengine
+    // recommended products
     'product.recommended' => [
-        'pattern' => '/product-also-viewed/{productId}',
+        'pattern' => '/product-recommended/{productId}',
         'action' => ['Product\RecommendedAction', 'execute'],
-        'require' => ['productId' => '\d+'],
-    ],
-    'product.recommended.jewel' => [
-        'pattern' => '/jewel/product-also-viewed/{productId}',
-        'action' => ['Jewel\Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
     'product.similar' => [ /// executed SmartEngine or RetailRocker
@@ -698,6 +693,18 @@ return [
         'pattern' => '/survey/submit-answer',
         'action'  => ['Survey\Action', 'submitAnswer'],
         'method'  => ['POST'],
+    ],
+
+    // tchobo
+    'tchobo' => [
+        'pattern' => '/tchibo',
+        'action'  => ['Tchibo\IndexAction', 'execute'],
+    ],
+
+    // tchobo
+    'tchobo.category' => [
+        'pattern' => '/tchibo/{categoryPath}',
+        'action'  => ['Tchibo\CategoryAction', 'execute'],
     ],
 
     // enterprize

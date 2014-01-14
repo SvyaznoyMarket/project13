@@ -11,6 +11,7 @@
  * @var $creditData         array
  * @var $isOrderAnalytics   bool
  * @var $sessionIsReaded    bool
+ * @var $paymentMethod      \Model\PaymentMethod\Entity
  */
 ?>
 
@@ -39,7 +40,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 <? foreach ($orders as $order): ?>
     <p class="title-font16 font16">Сейчас он отправлен на склад для сборки!<br/>
 Ожидайте смс или звонок от оператора контакт-сEnter по статусу заказа!</p>
-    <p class="font19">Номер заказа: <?= $order->getNumber() ?></p>
+    <p class="font19">Номер заказа: <?= $order->getNumberErp() ?></p>
 
     <? if ($order->getDeliveredAt() instanceof \DateTime): ?>
         <p class="font16">Дата доставки: <?= $order->getDeliveredAt()->format('d.m.Y') ?></p>
@@ -108,6 +109,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     'productsById' => $productsById,
     'servicesById' => $servicesById,
     'shopsById'    => $shopsById,
+    'paymentMethod' => $paymentMethod
 )) ?>
 
 

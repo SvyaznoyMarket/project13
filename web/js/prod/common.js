@@ -552,7 +552,7 @@
 			s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
 			i.style.position = 'absolute';
 			i.style.width = i.style.height = '0px';
-			
+
 			i.onload = i.onerror = function(){
 				b.removeChild(i);
 				i = b = null;
@@ -600,6 +600,27 @@
 			else if ( blackBox ) {
 				blackBox.basket().add( data );
 			}
+		},
+
+		/**
+		 *
+		 */
+		addToVisualDNA = function addToVisualDNA( event, data ) {
+			var
+				productData 	= data.product,
+				product_id 		= productData.id,
+				product_price 	= productData.price,
+				category_id 	= ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
+				d = document,
+				b = d.body,
+				i = d.createElement('IMG' );
+			// end of vars
+
+			i.src = '//e.visualdna.com/conversion?api_key=enter.ru&id=added_to_basket&product_id=' + product_id + '&product_category=' + category_id + '&value=' + product_price + '&currency=RUB';
+			i.width = i.height = '1';
+			i.alt = '';
+
+			b.appendChild(i);
 		};
 	//end of functions
 
@@ -611,6 +632,7 @@
 	body.on('addtocart', myThingsAnalytics);
 	body.on('addtocart', adAdriver);
 	body.on('addtocart', addToRetailRocket);
+	body.on('addtocart', addToVisualDNA);
 }(window.ENTER));
  
  
@@ -3217,29 +3239,23 @@ $(document).ready(function() {
 				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
 			// end of vars
 			
-			if ( typeof _gaq !== 'undefined' ) {	
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Search', type, link]);
 			}
 		},
 
 		/**
-		 * Обработчик поднятия клавиши
-		 * 
-		 * @param	{Event}		event
-		 * @param	{Number}	keyCode	Код нажатой клавиши
-		 * @param	{String}	text	Текст в поле ввода
+		 * Загрузить ответ от поиска: получить и показать его, с запоминанием (memoization)
+		 *
+		 * @returns {boolean}
 		 */
-		suggestKeyUp = function suggestKeyUp( event ) {
+		loadResponse = function loadResponse() {
 			var
-				keyCode = event.which,
-				text = searchInput.attr('value');
-			// end of vars
+				text = searchInput.val(),
 
-			
-			var
 				/**
 				 * Отрисовка данных с сервера
-				 * 
+				 *
 				 * @param	{String}	response	Ответ от сервера
 				 */
 				renderResponse = function renderResponse( response ) {
@@ -3248,13 +3264,24 @@ $(document).ready(function() {
 					suggestWrapper.html(response);
 					suggestItem = $('.bSearchSuggest__eRes');
 					suggestLen = suggestItem.length;
+					if ( suggestLen ) {
+						//searchInputFocusin();
+						setTimeout(searchInputFocusin, 99);
+					}
 				},
 
 				/**
 				 * Запрос на получение данных с сервера
 				 */
 				getResFromServer = function getResFromServer() {
-					var url = '/search/autocomplete?q='+encodeURI(text);
+					var
+						//text = searchInput.val(),
+						url = '/search/autocomplete?q=';
+
+					if ( text.length < 3 ) {
+						return false;
+					}
+					url += encodeURI( text );
 
 					$.ajax({
 						type: 'GET',
@@ -3262,12 +3289,7 @@ $(document).ready(function() {
 						success: renderResponse
 					});
 				};
-			// end of function
-
-			
-			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
-				return false;
-			}
+			// end of functions and vars
 
 			if ( text.length === 0 ) {
 				suggestWrapper.empty();
@@ -3283,16 +3305,35 @@ $(document).ready(function() {
 
 				return false;
 			}
-			
-			tID = setTimeout(getResFromServer, 300);
-		},
 
+			tID = setTimeout(getResFromServer, 300);
+		}, // end of loadResponse()
+
+		/**
+		 * Экранируем лишние пробелы перед отправкой на сервер
+		 * вызывается по нажатию Ентера либо кнопки "Отправить"
+		 */
 		escapeSearchQuery = function escapeSearchQuery() {
-			var
-				s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
-			// end of vars
-			
+			var s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
 			searchInput.val(s);
+		}
+
+		/**
+		 * Обработчик поднятия клавиши
+		 * 
+		 * @param	{Event}		event
+		 * @param	{Number}	keyCode	Код нажатой клавиши
+		 * @param	{String}	text	Текст в поле ввода
+		 */
+		suggestKeyUp = function suggestKeyUp( event ) {
+			var
+				keyCode = event.which;
+
+			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
+				return false;
+			}
+
+			loadResponse();
 		},
 
 		/**
@@ -3304,7 +3345,6 @@ $(document).ready(function() {
 		suggestKeyDown = function suggestKeyDown( event ) {
 			var
 				keyCode = event.which;
-			// end of vars
 
 			var
 				markSuggestItem = function markSuggestItem() {
@@ -3331,9 +3371,7 @@ $(document).ready(function() {
 				},
 
 				enterSelectedItem = function enterSelectedItem() {
-					var
-						link = suggestItem.eq(nowSelectSuggest).attr('href');
-					// end of vars
+					var link = suggestItem.eq(nowSelectSuggest).attr('href');
 
 					suggestAnalytics();
 					document.location.href = link;
@@ -3366,9 +3404,7 @@ $(document).ready(function() {
 		},
 
 		searchSubmit = function searchSubmit() {
-			var
-				text = searchInput.attr('value');
-			// end of vars
+			var text = searchInput.attr('value');
 
 			if ( text.length === 0 ) {
 				return false;
@@ -3383,7 +3419,6 @@ $(document).ready(function() {
 		suggestCloser = function suggestCloser( e ) {
 			var
 				targ = e.target.className;
-			// end of vars
 
 			if ( !(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1) ) {
 				suggestWrapper.hide();
@@ -3394,9 +3429,7 @@ $(document).ready(function() {
 		 * Срабатывание выделения и запоминание индекса выделенного элемента по наведению мыши
 		 */
 		hoverForItem = function hoverForItem() {
-			var
-				index = 0;
-			// end of vars
+			var index = 0;
 
 			suggestItem.removeClass('hover');
 			index = $(this).addClass('hover').index();
@@ -3409,15 +3442,14 @@ $(document).ready(function() {
 		 */
 		searchHintSelect = function searchHintSelect() {
 			var
-				hintValue = $(this).text(),
-				searchValue = searchInput.val();
-			// end of vars
-			
-			if ( searchValue ) {
-				hintValue = searchValue + ' ' + hintValue;
+				hintValue = $(this).text()/*,
+				searchValue = searchInput.val()*/;
+			//if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
+			searchInput.val(hintValue + ' ').focus();
+			if ( typeof(_gaq) !== 'undefined' ) {
+				_gaq.push(['_trackEvent', 'tooltip', hintValue]);
 			}
-
-			return searchInput.val(hintValue + ' ').focus();
+			loadResponse();
 		};
 	// end of functions
 
@@ -4002,6 +4034,38 @@ $(document).ready(function() {
 		},
 
 		/**
+		 * Удаление товара из корзины
+		 */
+		deleteProductHandler = function deleteProductHandler() {
+			console.log('deleteProductHandler click!');
+
+			var
+				btn = $(this),
+				deleteUrl = btn.attr('href');
+			// end of vars
+			
+			var
+				authFromServer = function authFromServer( res ) {
+					if ( !res.success ) {
+						console.warn('удаление не получилось :(');
+
+						return;
+					}
+
+					utils.blackBox.basket().deleteItem(res);
+				};
+			// end of functions
+
+			$.ajax({
+				type: 'GET',
+				url: deleteUrl,
+				success: authFromServer
+			});
+
+			return false;
+		},
+
+		/**
 		 * Обновление данных о корзине
 		 * WARNING! перевести на Mustache
 		 * 
@@ -4027,6 +4091,21 @@ $(document).ready(function() {
 			data.showTransparent = false;
 
 			if ( !(data && data.quantity && data.sum ) ) {
+				console.warn('data and data.quantuty and data.sum not true');
+
+				var
+					template = $('#userbar_cart_empty_tmpl');
+					partials = template.data('partial'),
+				// end of vars
+
+				html = Mustache.render(template.html(), data, partials);
+				html = Mustache.render(template.html(), data, partials);
+
+				cartWrap.addClass('mEmpty');
+				cartWrapStatic.addClass('mEmpty');
+				cartWrapStatic.html(html);
+				cartWrap.html(html);
+
 				return;
 			}
 
@@ -4047,6 +4126,7 @@ $(document).ready(function() {
 			cartWrap.removeClass('mEmpty');
 			cartWrapStatic.html(html);
 			cartWrap.html(html);
+			
 		},
 
 		/**
@@ -4142,6 +4222,10 @@ $(document).ready(function() {
 	body.on('basketUpdate', updateBasketInfo);
 	body.on('addtocart', showBuyInfo);
 	body.on('getupsale', showUpsell);
+
+
+	userBarFixed.on('click', '.jsCartDelete', deleteProductHandler);
+	userbarStatic.on('click', '.jsCartDelete', deleteProductHandler);
 
 
 	if ( userBarFixed.length ) {

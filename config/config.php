@@ -347,8 +347,14 @@ $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
 $c->order['maxSumOnline'] = 15000;
-$c->order['newCreate'] = true;
 $c->order['excludedError'] = [705, 708, 735, 759, 800];
+$c->order['addressAutocomplete'] = true;
+
+$c->kladr = [
+    'token' => '52b04de731608f2773000000',
+    'key' => 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b',
+    'itemLimit' => 6,
+];
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
 $c->maybe3d['customerId'] = 'BE2016EF-32D8-41E6-976F-A8D32EB20ACF';
@@ -368,7 +374,11 @@ $c->lifeGift['regionId'] = 151021;
 $c->lifeGift['labelId'] = 17;
 $c->lifeGift['deliveryTypeId'] = 1077;
 
-$c->enterprize['enabled'] = true;
+$c->enterprize['enabled'] = false;
+
+$c->tchibo['rowWidth'] = 60;
+$c->tchibo['rowHeight'] = 60;
+$c->tchibo['rowPadding'] = 20;
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
@@ -376,14 +386,12 @@ $c->abtest['enabled']    = true;
 $c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
 $c->abtest['bestBefore'] = '2013-09-23';
 $c->abtest['test']       = [
-    // smartengine
     [
         'traffic'  => 50,
         'key'      => 'retailrocket',
         'name'     => "Похожие товары от RetailRocket",
         'ga_event' => 'RetailRocket',
     ],
-    // retailrocket
     [
         'traffic'  => 50,
         'key'      => 'retailrocket',

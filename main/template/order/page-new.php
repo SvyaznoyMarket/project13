@@ -165,9 +165,6 @@ if ($oneClick) {
 						</select>
 					</div>
 
-					<div data-bind="visible: !hasPointDelivery" class="bFootenoteDelivery">Дата доставки может быть смещена на 1-2 дня.<br/>Ожидайте смс или звонок от Enter с уточнением.</div>
-
-					<div data-bind="visible: hasPointDelivery" class="bFootenoteDelivery">Дата самовывоза может быть смещена на 1-2 дня.<br/>Ожидайте смс или звонок от Enter с уточнением.</div>
 					<!-- Products -->
 					<!-- ko foreach: { data: products, as: 'product' } -->
 					<div class="bBuyingLine mProductsLine">
@@ -445,28 +442,28 @@ if ($oneClick) {
 
 					<!-- Address customer -->
 					<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки*</label>
-					<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
+					<div class="bBuyingLine__eRight jsDeliveryAddress" data-value='<?= json_encode(['regionName' => $region->getName(), 'kladr' => \App::config()->kladr])?>' style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
 						<div class="bSelectedCity">
 							<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
 						</div>
 
 						<? if ((bool)$subways): ?>
-						<div class="bInputAddress ui-css">
+						<div class="bInputAddress ui-css jsInputMetro">
 							<label class="bPlaceholder">Метро*</label>
 							<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
 							<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
 							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
 						</div>
 						<? endif ?>
-						
-						<div class="bInputAddress">
+
+						<div class="bInputAddress jsInputStreet ui-css">
 							<label class="bPlaceholder">Улица*</label>
-							<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet" name="order[address_street]" value="" />						
+							<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet ui-autocomplete-input" name="order[address_street]" title="Улица" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="" />
 						</div>
 
-						<div class="bInputAddress">
+						<div class="bInputAddress jsInputBuilding ui-css">
 							<label class="bPlaceholder">Дом*</label>
-							<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild" name="order[address_building]" value="" />					
+							<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild ui-autocomplete-input" name="order[address_building]" title="Дом" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="" />
 						</div>
 
 						<div class="bInputAddress">
@@ -483,6 +480,8 @@ if ($oneClick) {
 							<label class="bPlaceholder">Этаж</label>
 							<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
 						</div>
+
+                        <div class="bInputAddress" id="map" style="width: 460px; height: 350px; display: none;"></div>
 					</div>
 
 					<label class="bBuyingLine__eLeft">Пожелания и дополнения</label>

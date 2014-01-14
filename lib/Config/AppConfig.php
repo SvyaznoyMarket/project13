@@ -434,7 +434,6 @@ class AppConfig {
         'cookieName'     => null,
         'sessionName'    => null,
         'enableMetaTag'  => null,
-        'newCreate'      => null,
         'maxSumOnline'   => null,
     ];
     /**
@@ -479,6 +478,20 @@ class AppConfig {
      */
     public $enterprize = [
         'enabled' => null,
+    ];
+
+    /** @var array */
+    public $kladr = [
+        'token' => null,
+        'key' => null,
+        'itemLimit' => 6,
+    ];
+
+    /** @var array */
+    public $tchibo = [
+        'rowWidth'   => null,
+        'rowHeight'  => null,
+        'rowPadding' => null,
     ];
 
     public function __construct() {

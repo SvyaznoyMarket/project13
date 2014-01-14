@@ -36,29 +36,23 @@
 				type = ( suggestItem.eq(nowSelectSuggest).hasClass('bSearchSuggest__eCategoryRes') ) ? 'suggest_category' : 'suggest_product';
 			// end of vars
 			
-			if ( typeof _gaq !== 'undefined' ) {	
+			if ( typeof(_gaq) !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'Search', type, link]);
 			}
 		},
 
 		/**
-		 * Обработчик поднятия клавиши
-		 * 
-		 * @param	{Event}		event
-		 * @param	{Number}	keyCode	Код нажатой клавиши
-		 * @param	{String}	text	Текст в поле ввода
+		 * Загрузить ответ от поиска: получить и показать его, с запоминанием (memoization)
+		 *
+		 * @returns {boolean}
 		 */
-		suggestKeyUp = function suggestKeyUp( event ) {
+		loadResponse = function loadResponse() {
 			var
-				keyCode = event.which,
-				text = searchInput.attr('value');
-			// end of vars
+				text = searchInput.val(),
 
-			
-			var
 				/**
 				 * Отрисовка данных с сервера
-				 * 
+				 *
 				 * @param	{String}	response	Ответ от сервера
 				 */
 				renderResponse = function renderResponse( response ) {
@@ -67,13 +61,24 @@
 					suggestWrapper.html(response);
 					suggestItem = $('.bSearchSuggest__eRes');
 					suggestLen = suggestItem.length;
+					if ( suggestLen ) {
+						//searchInputFocusin();
+						setTimeout(searchInputFocusin, 99);
+					}
 				},
 
 				/**
 				 * Запрос на получение данных с сервера
 				 */
 				getResFromServer = function getResFromServer() {
-					var url = '/search/autocomplete?q='+encodeURI(text);
+					var
+						//text = searchInput.val(),
+						url = '/search/autocomplete?q=';
+
+					if ( text.length < 3 ) {
+						return false;
+					}
+					url += encodeURI( text );
 
 					$.ajax({
 						type: 'GET',
@@ -81,12 +86,7 @@
 						success: renderResponse
 					});
 				};
-			// end of function
-
-			
-			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
-				return false;
-			}
+			// end of functions and vars
 
 			if ( text.length === 0 ) {
 				suggestWrapper.empty();
@@ -102,16 +102,35 @@
 
 				return false;
 			}
-			
-			tID = setTimeout(getResFromServer, 300);
-		},
 
+			tID = setTimeout(getResFromServer, 300);
+		}, // end of loadResponse()
+
+		/**
+		 * Экранируем лишние пробелы перед отправкой на сервер
+		 * вызывается по нажатию Ентера либо кнопки "Отправить"
+		 */
 		escapeSearchQuery = function escapeSearchQuery() {
-			var
-				s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
-			// end of vars
-			
+			var s = searchInput.val().replace(/(^\s*)|(\s*$)/g,'').replace(/(\s+)/g,' ');
 			searchInput.val(s);
+		}
+
+		/**
+		 * Обработчик поднятия клавиши
+		 * 
+		 * @param	{Event}		event
+		 * @param	{Number}	keyCode	Код нажатой клавиши
+		 * @param	{String}	text	Текст в поле ввода
+		 */
+		suggestKeyUp = function suggestKeyUp( event ) {
+			var
+				keyCode = event.which;
+
+			if ( (keyCode >= 37 && keyCode <= 40) ||  keyCode === 27 || keyCode === 13) { // Arrow Keys or ESC Key or ENTER Key
+				return false;
+			}
+
+			loadResponse();
 		},
 
 		/**
@@ -123,7 +142,6 @@
 		suggestKeyDown = function suggestKeyDown( event ) {
 			var
 				keyCode = event.which;
-			// end of vars
 
 			var
 				markSuggestItem = function markSuggestItem() {
@@ -150,9 +168,7 @@
 				},
 
 				enterSelectedItem = function enterSelectedItem() {
-					var
-						link = suggestItem.eq(nowSelectSuggest).attr('href');
-					// end of vars
+					var link = suggestItem.eq(nowSelectSuggest).attr('href');
 
 					suggestAnalytics();
 					document.location.href = link;
@@ -185,9 +201,7 @@
 		},
 
 		searchSubmit = function searchSubmit() {
-			var
-				text = searchInput.attr('value');
-			// end of vars
+			var text = searchInput.attr('value');
 
 			if ( text.length === 0 ) {
 				return false;
@@ -202,7 +216,6 @@
 		suggestCloser = function suggestCloser( e ) {
 			var
 				targ = e.target.className;
-			// end of vars
 
 			if ( !(targ.indexOf('bSearchSuggest')+1 || targ.indexOf('searchtext')+1) ) {
 				suggestWrapper.hide();
@@ -213,9 +226,7 @@
 		 * Срабатывание выделения и запоминание индекса выделенного элемента по наведению мыши
 		 */
 		hoverForItem = function hoverForItem() {
-			var
-				index = 0;
-			// end of vars
+			var index = 0;
 
 			suggestItem.removeClass('hover');
 			index = $(this).addClass('hover').index();
@@ -228,15 +239,14 @@
 		 */
 		searchHintSelect = function searchHintSelect() {
 			var
-				hintValue = $(this).text(),
-				searchValue = searchInput.val();
-			// end of vars
-			
-			if ( searchValue ) {
-				hintValue = searchValue + ' ' + hintValue;
+				hintValue = $(this).text()/*,
+				searchValue = searchInput.val()*/;
+			//if ( searchValue ) hintValue = searchValue + ' ' + hintValue;
+			searchInput.val(hintValue + ' ').focus();
+			if ( typeof(_gaq) !== 'undefined' ) {
+				_gaq.push(['_trackEvent', 'tooltip', hintValue]);
 			}
-
-			return searchInput.val(hintValue + ' ').focus();
+			loadResponse();
 		};
 	// end of functions
 
