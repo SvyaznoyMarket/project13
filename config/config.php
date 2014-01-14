@@ -23,6 +23,7 @@ $c->debug = false;
 $c->logger['pretty'] = false;
 $c->appName = 'Enter';
 $c->authToken['name']     = '_token';
+$c->authToken['authorized_cookie'] = '_authorized';
 $c->sessionToken = 'enter';
 
 $c->session['name']            = 'enter';

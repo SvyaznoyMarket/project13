@@ -15,7 +15,8 @@
 		utils = ENTER.utils,
 		clientCart = utils.extendApp('ENTER.config.clientCart'),
 		clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
-		body = $('body');
+		body = $('body'),
+		authorized_cookie = '_authorized';
 	// end of vars
 	
 	
@@ -43,11 +44,10 @@
 				return new BlackBox(updateUrl);
 			}
 			// constructor body
-			
+
 			this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
-			this.init();
 		}
-	
+
 		
 		/**
 		 * Объект по работе с корзиной
@@ -213,11 +213,8 @@
 				 * 
 				 * @private
 				 */
-				startAction = function startAction( action ) {
-					if ( action.subscribe !== undefined ) {
-						body.trigger('showsubscribe', [action.subscribe]);
-					}
-				},
+				/*startAction = function startAction( action ) {
+				},*/
 
 				/**
 				 * Обработчик данных о корзине и пользователе
@@ -246,9 +243,9 @@
 						self.basket().update( cartInfo );
 					}
 
-					if ( actionInfo !== undefined ) {
+					/*if ( actionInfo !== undefined ) {
 						startAction(actionInfo);
-					}
+					}*/
 				};
 			//end of functions
 
@@ -270,5 +267,8 @@
 	 * @type	{BlackBox}
 	 */
 	utils.blackBox = new BlackBox(userUrl);
+	if ( window.docCookies.hasItem(authorized_cookie) ) {
+		utils.blackBox.init();
+	}
 
 }(window.ENTER));
