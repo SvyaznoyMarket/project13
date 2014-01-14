@@ -32,8 +32,6 @@ class ListAction {
             ];
         }
 
-        $user = \App::user();
-
         $cartButtonAction = new \View\Cart\ProductButtonAction();
         $reviewAction = new \View\Product\ReviewCompactAction();
         $showAction = new \View\Product\ShowAction();

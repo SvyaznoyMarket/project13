@@ -480,6 +480,20 @@ class AppConfig {
         'enabled' => null,
     ];
 
+    /** @var array */
+    public $kladr = [
+        'token' => null,
+        'key' => null,
+        'itemLimit' => 6,
+    ];
+
+    /** @var array */
+    public $tchibo = [
+        'rowWidth'   => null,
+        'rowHeight'  => null,
+        'rowPadding' => null,
+    ];
+
     public function __construct() {
         $this->vkontakteOauth = new OAuth\VkontakteConfig();
         $this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();

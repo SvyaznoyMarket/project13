@@ -133,11 +133,16 @@
 
 			'config': function( name, data ) {
 				var
-					iconUrl = '/debug/icons/config.png',
-					html;
+                    templateWrap = $('#tplDebugFirstLevelConfig'),
+                    template = templateWrap.html(),
+                    partials = templateWrap.data('partial'),
+                    html;
 				// end of vars
 
-				html = render['_expanded'](name, data, iconUrl);
+                data.name = name;
+                data.iconUrl = '/debug/icons/config.png';
+
+                html = Mustache.render(template, data, partials);
 
 				return html;
 			},

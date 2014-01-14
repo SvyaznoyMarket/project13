@@ -63,6 +63,29 @@
     </tr>
 </script>
 
+
+<script id="tplDebugFirstLevelConfig" type="text/html">
+    <tr>
+        <td style="background-image: url({{iconUrl}});" class="property-name">
+            <a class="jsExpandValue" href="#">{{name}}</a>
+        </td>
+        <td class="property-value">
+            <div class="jsExpandedValue property-value-expanded" style="display:none;">
+                <table>
+                    <tbody>
+                    {{#value}}
+                    <tr>
+                        <td class="query-cell">{{name}}</td>
+                        <td class="query-cell"><pre>{{value}}</pre></td>
+                    </tr>
+                    {{/value}}
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+</script>
+
 <script id="tplDebugFirstLevelTimer" type="text/html">
     <tr>
         <td style="background-image: url({{iconUrl}});" class="property-name">
@@ -156,6 +179,7 @@
         left: 2px;
         z-index: 1100;
         color: #cdcdcd;
+        font: normal 13px Courier New;
         opacity: 0.95;
     }
 

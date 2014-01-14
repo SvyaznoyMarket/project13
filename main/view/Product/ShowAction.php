@@ -37,10 +37,17 @@ class ShowAction {
         $stateLabel = null;
         if ($product->isInShopOnly()) {
             $stateLabel = ['name' => 'Только в магазинах'];
-        } else if ($product->getMainCategory() && $product->getMainCategory()->getIsFurniture() &&
-            $product->getState() && $product->getState()->getIsStore()/* && 14974 === $user->getRegion()->getId()*/) {
-            //$stateLabel = ['name' => 'Товар за три дня'];
-            $stateLabel = ['name' => 'Товар со склада'];
+        } else if (
+            $product->getMainCategory() && $product->getMainCategory()->getIsFurniture()
+            && $product->getState() && $product->getState()->getIsStore()
+        ) {
+            if (\App::config()->region['defaultId'] === $user->getRegion()->getId()) {
+                // Для Москвы, SITE-2850
+                $stateLabel = ['name' => 'Товар за три дня'];
+            } else {
+                // Для регионов (привозит быстрее, но не за три дня)
+                $stateLabel = ['name' => 'Товар со склада'];
+            }
         }
 
         $productItem = [
