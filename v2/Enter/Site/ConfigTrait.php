@@ -19,6 +19,10 @@ trait ConfigTrait {
             $config->coreService->timeout = 5;
             $config->coreService->retryCount = 2;
 
+            $config->cmsService->url = 'http://cms.enter.ru/v1/';
+            $config->cmsService->timeout = 1;
+            $config->cmsService->retryCount = 2;
+
             $config->adminService->enabled = true;
             $config->adminService->url = 'http://admin.enter.ru/v2/';
             $config->adminService->timeout = 2;

@@ -9,7 +9,7 @@ use Enter\Site\Curl\Query\CoreQueryTrait;
 
 class GetItemByHttpRequest extends Query {
     use CoreQueryTrait;
-    //use ConfigTrait; // жду решения https://bugs.php.net/bug.php?id=63911
+    //use ConfigTrait; // https://bugs.php.net/bug.php?id=63911
     use ConfigTrait {
         ConfigTrait::getConfig insteadof CoreQueryTrait;
     }

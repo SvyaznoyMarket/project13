@@ -1,6 +1,6 @@
 <?php
 
-namespace Enter\Site\Action\ProductCatalog;
+namespace Enter\Site\Action\Page\ProductCatalog;
 
 use Enter\Http\Response;
 use Enter\Site\ConfigTrait;
@@ -12,17 +12,21 @@ use Enter\Site\Action\Product\Category\GetTokenByHttpRequest as GetProductCatego
 use Enter\Site\Action\Product\Category\GetObjectByQuery as GetCategory;
 use Enter\Site\Action\Product\Filter\GetRequestObjectListByHttpRequest as GetRequestFilterList;
 use Enter\Site\Action\Product\Sorting\GetObjectByHttpRequest as GetSorting;
-use Enter\Site\Action\Product\GetIdPagerByQuery as GetProductIdPagerByQuery;
+use Enter\Site\Action\Product\IdPager\GetObjectByQuery as GetProductIdPagerByQuery;
 use Enter\Site\Action\Product\Category\GetAncestryObjectByQuery as GetAncestryCategory;
+use Enter\Site\Action\Product\GetObjectListByQuery as GetProductList;
+use Enter\Site\Action\Product\Catalog\Config\GetObjectByQuery as GetCatalogConfig;
 use Enter\Site\Curl\Query\Product\Category\GetItemByToken as GetCoreCategoryQuery;
 use Enter\Site\Curl\Query\Product\Category\GetAdminItemByToken as GetAdminCategoryQuery;
 use Enter\Site\Curl\Query\Region\GetItemByHttpRequest as GetRegionQuery;
 use Enter\Site\Curl\Query\Product\Category\GetAncestryItemByCategoryObject as GetAncestryCategoryQuery;
 use Enter\Site\Curl\Query\Product\GetIdPagerByRequestFilter as GetProductIdPagerQuery;
+use Enter\Site\Curl\Query\Product\GetListByIdList as GetProductListQuery;
+use Enter\Site\Curl\Query\Product\Catalog\Config\GetItemByProductCategoryObject as GetCatalogConfigQuery;
 
-class ChildCategory {
+class GetChildCategoryByHttpRequest {
     use ConfigTrait;
-    //use CurlClientTrait; // жду решения https://bugs.php.net/bug.php?id=63911
+    //use CurlClientTrait; // https://bugs.php.net/bug.php?id=63911
     use CurlClientTrait {
         ConfigTrait::getConfig insteadof CurlClientTrait;
     }
@@ -79,6 +83,10 @@ class ChildCategory {
         // сортировка
         $sorting = (new GetSorting())->execute($request);
 
+        // запрос настроек каталога
+        $catalogConfigQuery = new GetCatalogConfigQuery($ancestryCategory);
+        $curl->prepare($catalogConfigQuery);
+
         // запрос листинга идентификаторов товаров
         $limit = $config->productList->itemPerPage;
         $productIdPagerQuery = new GetProductIdPagerQuery($requestFilters, $sorting, $region, ($pageNum - 1) * $limit, $limit);
@@ -88,5 +96,18 @@ class ChildCategory {
 
         // листинг идентификаторов товаров
         $productIdPager = (new GetProductIdPagerByQuery())->execute($productIdPagerQuery);
+
+        // настройки каталога
+        $catalogConfig = (new GetCatalogConfig())->execute($catalogConfigQuery);
+        var_dump($catalogConfig);
+
+        // запрос списка товаров
+        $productListQuery = new GetProductListQuery($productIdPager->id, $region);
+        $curl->prepare($productListQuery);
+
+        $curl->execute();
+
+        // список товаров
+        $products = (new GetProductList())->execute($productListQuery);
     }
 }

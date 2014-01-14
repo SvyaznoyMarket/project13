@@ -6,6 +6,8 @@ namespace Enter\Site\Config {
         public $region;
         /** @var CoreService */
         public $coreService;
+        /** @var CmsService  */
+        public $cmsService;
         /** @var AdminService  */
         public $adminService;
         /** @var ProductList */
@@ -15,6 +17,7 @@ namespace Enter\Site\Config {
             $this->region = new Region();
 
             $this->coreService = new CoreService();
+            $this->cmsService = new CmsService();
             $this->adminService = new AdminService();
 
             $this->productList = new ProductList();
@@ -48,6 +51,9 @@ namespace Enter\Site\Config {
     }
 
     class CoreService extends \Enter\Site\Config\CurlService {
+    }
+
+    class CmsService extends \Enter\Site\Config\CurlService {
     }
 
     class AdminService extends \Enter\Site\Config\CurlService {

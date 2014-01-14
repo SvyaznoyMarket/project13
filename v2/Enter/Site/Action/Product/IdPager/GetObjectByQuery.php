@@ -1,12 +1,12 @@
 <?php
 
-namespace Enter\Site\Action\Product;
+namespace Enter\Site\Action\Product\IdPager;
 
 use Enter\Site\ConfigTrait;
 use Enter\Curl\Query;
 use Enter\Site\Model\Product\IdPager;
 
-class GetIdPagerByQuery {
+class GetObjectByQuery {
     use ConfigTrait;
 
     public function execute(Query $query) {
