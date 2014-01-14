@@ -40,7 +40,7 @@ $request = new \Enter\Http\Request(
         'f-brand-hp'          => '540',
         'f-price-from'        => '30000',
         'f-price-to'          => '50000',
-        //'sort'                => 'default-desc',
+        'sort'                => 'default-desc',
     ],
     [],
     ['geo_id' => '14974']

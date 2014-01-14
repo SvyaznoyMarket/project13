@@ -4,6 +4,7 @@ namespace Enter\Site\Curl\Query\Product;
 
 use Enter\Curl\Query;
 use Enter\Site\Curl\Query\CoreQueryTrait;
+use Enter\Site\Model\Region;
 
 class GetListByIdList extends Query {
     use CoreQueryTrait;
@@ -13,14 +14,17 @@ class GetListByIdList extends Query {
 
     /**
      * @param array $ids
-     * @param $regionId
+     * @param Region $region
      */
-    public function __construct(array $ids, $regionId) {
-        $this->url = 'product/get?' . http_build_query([
+    public function __construct(array $ids, Region $region = null) {
+        $params = [
             'select_type' => 'id',
             'id'          => $ids,
-            'geo_id'      => $regionId,
-        ]);
+        ];
+        if ($region) {
+            $params['geo_id'] = $region->id;
+        }
+        $this->url = 'product/get?' . http_build_query($params);
 
         $this->init();
     }

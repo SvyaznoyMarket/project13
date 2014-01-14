@@ -2,13 +2,15 @@
 
 namespace Enter\Site;
 
+use Enter\Site\Config\Application as ApplicationConfig;
+
 trait ConfigTrait {
     /**
-     * @return Config
+     * @return ApplicationConfig
      */
     public function getConfig() {
         if (!isset($GLOBALS[__METHOD__])) {
-            $config = new Config();
+            $config = new ApplicationConfig();
 
             $config->region->defaultId = '14974';
             $config->region->cookieName = 'geoshop';
@@ -21,6 +23,8 @@ trait ConfigTrait {
             $config->adminService->url = 'http://admin.enter.ru/v2/';
             $config->adminService->timeout = 2;
             $config->adminService->retryCount = 2;
+
+            $config->productList->itemPerPage = 19;
 
             $GLOBALS[__METHOD__] = $config;
         }
