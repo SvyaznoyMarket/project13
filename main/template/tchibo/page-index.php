@@ -133,12 +133,12 @@
 		<a href="" class="tchiboCatalog__title">Мужчины</a>
 
 		<ul class="tchiboCatalog__list">
-			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
-			<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
-			<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
-			<li class="item"><a class="link" href="">100% натуральное</a></li>
-			<li class="item"><a class="link" href="">Ещё коллекция</a></li>
+			<li class="item"><a class="link" href="">Классика</a></li>
 			<li class="item"><a class="link" href="">Мужской сезон</a></li>
+			<li class="item"><a class="link" href="">Модные тренды</a></li>
+			<li class="item"><a class="link" href="">100% натуральное</a></li>
+			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
+			<li class="item"><a class="link" href="/tchibo/za-rulem-284f">За рулем</a></li>
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
@@ -148,12 +148,12 @@
 		<a href="" class="tchiboCatalog__title">Женщины</a>
 
 		<ul class="tchiboCatalog__list">
-			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
-			<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
-			<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
+			<li class="item"><a class="link" href="">Классика</a></li>
+			<li class="item"><a class="link" href="">Модные тренды</a></li>
 			<li class="item"><a class="link" href="">100% натуральное</a></li>
-			<li class="item"><a class="link" href="">Ещё коллекция</a></li>
-			<li class="item"><a class="link" href="">Мужской сезон</a></li>
+			<li class="item"><a class="link" href="/tchibo/za-rulem-284f">За рулем</a></li>
+			<li class="item"><a class="link" href="">Мисс Совершенство</a></li>
+			<li class="item"><a class="link" href="">Элегантное белье</a></li>
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
@@ -161,15 +161,6 @@
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/kids.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Дети</a>
-
-		<ul class="tchiboCatalog__list">
-			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
-			<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
-			<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
-			<li class="item"><a class="link" href="">100% натуральное</a></li>
-			<li class="item"><a class="link" href="">Ещё коллекция</a></li>
-			<li class="item"><a class="link" href="">Мужской сезон</a></li>
-		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
 	<div class="tchiboCatalogInner m460">
@@ -178,12 +169,14 @@
 		<a href="" class="tchiboCatalog__title">Дом</a>
 
 		<ul class="tchiboCatalog__list">
-			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
-			<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
-			<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
-			<li class="item"><a class="link" href="">100% натуральное</a></li>
-			<li class="item"><a class="link" href="">Ещё коллекция</a></li>
-			<li class="item"><a class="link" href="">Мужской сезон</a></li>
+			<li class="item"><a class="link" href="">Чистота дома</a></li>
+			<li class="item"><a class="link" href="">Идеальный завтрак</a></li>
+			<li class="item"><a class="link" href="">Уход за одеждой и шитье</a></li>
+			<li class="item"><a class="link" href="">Дизайн для душа и души</a></li>
+			<li class="item"><a class="link" href="">Сделай сам</a></li>
+			<li class="item"><a class="link" href="">Кухня</a></li>
+			<li class="item"><a class="link" href="">Компактное решение</a></li>
+			<li class="item"><a class="link" href="">Теплая зима</a></li>
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
@@ -193,19 +186,16 @@
 		<a href="" class="tchiboCatalog__title">Спорт</a>
 
 		<ul class="tchiboCatalog__list">
-			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
-			<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
-			<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
-			<li class="item"><a class="link" href="">100% натуральное</a></li>
-			<li class="item"><a class="link" href="">Ещё коллекция</a></li>
-			<li class="item"><a class="link" href="">Мужской сезон</a></li>
+			<li class="item"><a class="link" href="">Твои рекорды</a></li>
+			<li class="item"><a class="link" href="">Активный отдых</a></li>
+			<li class="item"><a class="link" href="">Фитнес</a></li>
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
 	<div class="tchiboCatalogInner mBanner">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/cofee.jpg" /></a>
 
-		<a href="" class="tchiboCatalog__title">Баннер</a>
+		<a href="" class="tchiboCatalog__title">Кофе</a>
 	</div> <!--/ вывод баннера или категории без списка подкатегорий и верхней плашкой-заголовком -->
 </div>
 <!--/ TCHIBO - каталог разделов, баннеров, товаров Чибо -->
