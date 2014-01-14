@@ -152,7 +152,7 @@
 			<li class="item"><a class="link" href="">Модные тренды</a></li>
 			<li class="item"><a class="link" href="">100% натуральное</a></li>
 			<li class="item"><a class="link" href="/tchibo/za-rulem-284f">За рулем</a></li>
-			<li class="item"><a class="link" href="">Мисс Совершенство</a></li>
+			<li class="item"><a class="link" href="/tchibo/miss-sovershenstvo-2146">Мисс Совершенство</a></li>
 			<li class="item"><a class="link" href="">Элегантное белье</a></li>
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
