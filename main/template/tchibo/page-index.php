@@ -3,6 +3,8 @@
  * @var $page         \View\DefaultLayout
  */
 ?>
+
+<? if (false): ?>
 <!-- TCHIBO - слайдер-меню разделов Чибо -->
 <div class="tchiboNavSliderWrap">
 	<div class="tchiboNavSlider">
@@ -81,6 +83,7 @@
 	</div>
 </div>
 <!--/ TCHIBO - слайдер-меню разделов Чибо -->
+<? endif ?>
 
 <!-- TCHIBO - крутилка разделов Чибо на рутовой странице -->
 <div class="bPromoCatalogSlider mTchiboSlider">
