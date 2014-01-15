@@ -3,8 +3,6 @@
  * @var $page         \View\DefaultLayout
  */
 ?>
-
-<? if (false): ?>
 <!-- TCHIBO - слайдер-меню разделов Чибо -->
 <div class="tchiboNavSliderWrap">
 	<div class="tchiboNavSlider">
@@ -83,48 +81,24 @@
 	</div>
 </div>
 <!--/ TCHIBO - слайдер-меню разделов Чибо -->
-<? endif ?>
 
 <!-- TCHIBO - крутилка разделов Чибо на рутовой странице -->
-<div class="bPromoCatalogSlider mTchiboSlider">
-    <a href="#" class="bPromoCatalogSlider_eArrow mArLeft"></a>
-    <a href="#" class="bPromoCatalogSlider_eArrow mArRight"></a>
-    <div class="bPromoCatalogSliderWrap clearfix" style="width: 7710px;">
-    	<div class="bPromoCatalogSliderWrap_eSlide">
-    		<a class="bPromoCatalogSliderWrap_eSlideLink topLifted" href="">
-    			<div class="bottomLifted">
-    				<img src="/styles/tchibo/img/Img.png" alt="">
-    				<div class="bCatLine">
-    					Какая-то заманивающая надпись
-    				</div>
-    			</div>
-    		</a>
-    	</div>
-    	<div class="bPromoCatalogSliderWrap_eSlide">
-    	 	<a class="bPromoCatalogSliderWrap_eSlideLink topLifted" href="">
-    	 		<div class="bottomLifted"><img src="/styles/tchibo/img/Img.png" alt=""></div>
-    	 	</a>
-    	</div>
-    	<div class="bPromoCatalogSliderWrap_eSlide">
-    	 	<a class="bPromoCatalogSliderWrap_eSlideLink topLifted" href="">
-    	 		<div class="bottomLifted"><img src="/styles/tchibo/img/Img.png" alt=""></div>
-    	 	</a>
-    	</div>
-    	<div class="bPromoCatalogSliderWrap_eSlide">
-    	 	<a class="bPromoCatalogSliderWrap_eSlideLink topLifted" href="">
-			    <div class="bottomLifted"><img src="/styles/tchibo/img/Img.png" alt=""></div>
-			</a>
-		</div>
-	</div>
-</div>
+<div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>">
+	<script type="text/html" id="slide_tmpl">
+	    <div class="bPromoCatalogSliderWrap_eSlide">
+	        <a class="bPromoCatalogSliderWrap_eSlideLink topLifted" href="<%=linkUrl%>">
+	            <div class="bottomLifted"><img src="<%=imgUrl%>" alt="<%=title%>"/></div>
+	        </a>
+	    </div>
+	</script>
 
-<div id="promoCatalogPaginator" class="bPaginator mTchiboPaginator clearfix">
-	<div class="bPaginator_eWrap clearfix">
-		<a class="bPaginator_eLink" href="">1</a>
-		<a class="bPaginator_eLink" href="">2</a>
-		<a class="bPaginator_eLink active" href="">3</a>
-		<a class="bPaginator_eLink" href="">4</a>
+	<div class="bPromoCatalogSlider mTchiboSlider ">
+	    <a href="#" class="bPromoCatalogSlider_eArrow mArLeft"></a>
+	    <a href="#" class="bPromoCatalogSlider_eArrow mArRight"></a>
+	    <div class="bPromoCatalogSliderWrap clearfix"></div>
 	</div>
+
+	<div id="promoCatalogPaginator" class="bPaginator mTchiboPaginator clearfix"></div>
 </div>
 <!--/ TCHIBO - крутилка разделов Чибо на рутовой странице -->
 
@@ -141,7 +115,7 @@
 			<li class="item"><a class="link" href="">Модные тренды</a></li>
 			<li class="item"><a class="link" href="">100% натуральное</a></li>
 			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
-			<li class="item"><a class="link" href="/tchibo/za-rulem-284f">За рулем</a></li>
+			<li class="item"><a class="link" href="tchibo/mugchini-za-rulem-33c7">За рулем</a></li>
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
@@ -154,8 +128,8 @@
 			<li class="item"><a class="link" href="">Классика</a></li>
 			<li class="item"><a class="link" href="">Модные тренды</a></li>
 			<li class="item"><a class="link" href="">100% натуральное</a></li>
-			<li class="item"><a class="link" href="/tchibo/za-rulem-284f">За рулем</a></li>
-			<li class="item"><a class="link" href="/tchibo/miss-sovershenstvo-2146">Мисс Совершенство</a></li>
+			<li class="item"><a class="link" href="">За рулем</a></li>
+			<li class="item"><a class="link" href="tchibo/genshchini-miss-sovershenstvo-38de">Мисс Совершенство</a></li>
 			<li class="item"><a class="link" href="">Элегантное белье</a></li>
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
@@ -176,7 +150,7 @@
 			<li class="item"><a class="link" href="">Идеальный завтрак</a></li>
 			<li class="item"><a class="link" href="">Уход за одеждой и шитье</a></li>
 			<li class="item"><a class="link" href="">Дизайн для душа и души</a></li>
-			<li class="item"><a class="link" href="">Сделай сам</a></li>
+			<li class="item"><a class="link" href="tchibo/dom-sdelay-sam-5d82">Сделай сам</a></li>
 			<li class="item"><a class="link" href="">Кухня</a></li>
 			<li class="item"><a class="link" href="">Компактное решение</a></li>
 			<li class="item"><a class="link" href="">Теплая зима</a></li>
