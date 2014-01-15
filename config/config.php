@@ -320,7 +320,7 @@ $c->f1Certificate['enabled'] = true;
 $c->coupon['enabled'] = true;
 $c->blackcard['enabled'] = false;
 
-$c->user['corporateRegister'] = true;
+$c->user['corporateRegister'] = false;
 
 $c->database['host']     = 'site-db';
 $c->database['name']     = 'enter';
