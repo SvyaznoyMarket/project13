@@ -238,8 +238,8 @@ $c->product['recommendationSessionKey'] = 'recommendationProductIds';
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
-$c->product['reviewEnabled']          = false;
-$c->product['pushReview']             = false;
+$c->product['reviewEnabled']          = true;
+$c->product['pushReview']             = true;
 $c->product['lowerPriceNotification'] = true;
 $c->product['furnitureConstructor']   = true;
 // jewel
