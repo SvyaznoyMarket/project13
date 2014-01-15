@@ -377,16 +377,34 @@ class Action {
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 
         $relatedCategories = [];
-        if (!empty($catalogJson['related_categories'])) {
-            \RepositoryManager::productCategory()->prepareCollectionById(
-                (array) $catalogJson['related_categories'],
-                $region,
-                function($data) use (&$relatedCategories) {
-                    foreach ($data as $item) {
-                        $relatedCategories[] = new \Model\Product\Category\Entity($item);
-                    }
+        $categoryConfigById = [];
+        if (!empty($catalogJson['related_categories']) && is_array($catalogJson['related_categories'])) {
+            foreach ((array)$catalogJson['related_categories'] as $relatedCategoryItem) {
+                if (is_scalar($relatedCategoryItem)) {
+                    $categoryConfigById[(int)$relatedCategoryItem] = [
+                        'id' => $relatedCategoryItem,
+                    ];
+                } else if (is_array($relatedCategoryItem) && !empty($relatedCategoryItem['id'])) {
+                    $categoryConfigById[(int)$relatedCategoryItem['id']] = array_merge([
+                        'id'    => null,
+                        'image' => null,
+                        'name'  => null,
+                        'css'   => [],
+                    ], $relatedCategoryItem);
                 }
-            );
+            }
+
+            if ((bool)$categoryConfigById) {
+                \RepositoryManager::productCategory()->prepareCollectionById(
+                    array_keys($categoryConfigById),
+                    $region,
+                    function($data) use (&$relatedCategories, &$categoryConfigById) {
+                        foreach ($data as $item) {
+                            $relatedCategories[] = new \Model\Product\Category\Entity($item);
+                        }
+                    }
+                );
+            }
         }
 
         // поддержка GET-запросов со старыми фильтрами
@@ -517,7 +535,8 @@ class Action {
             &$promoContent,
             &$shopScriptSeo,
             &$shop,
-            &$relatedCategories
+            &$relatedCategories,
+            &$categoryConfigById
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -531,6 +550,7 @@ class Action {
             $page->setGlobalParam('shop', $shop);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
             $page->setParam('relatedCategories', $relatedCategories);
+            $page->setParam('categoryConfigById', $categoryConfigById);
             $page->setParam('viewParams', [
                 'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
             ]);
