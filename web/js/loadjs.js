@@ -587,6 +587,7 @@
 					$LAB.script('jquery-plugins.min.js')
 						.script( getWithVersion('library.js') )
 						.script('JsHttpRequest.min.js')
+						.script('ARPlugin.min.js')
 						.script( directCreditUrl )
 						.script( mustacheUrl )
 						.script( loadDebugPanel )

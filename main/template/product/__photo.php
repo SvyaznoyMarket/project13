@@ -77,7 +77,6 @@ return function(
 <? endif ?>
 
     <? if ((bool)true): ?>
-        <script src="/js/partner/ARPlugin.js"> </script>
         <div id="vFittingModelPopup" class="popup" data-value="<?= $helper->json($maybe3dData); ?>">
             <i class="close" title="Закрыть">Закрыть</i>
             <div id="vFittingModelPopup_inner" style="position: relative;">

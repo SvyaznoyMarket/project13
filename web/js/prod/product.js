@@ -934,6 +934,8 @@
 	loadFitting = function loadFitting() {
 		var f_afterLoad = function f_afterLoad()
 		{
+			//$LAB.script('ARPlugin.min.js');
+
 			fittingPopupShow = function( e ) {
 				e.preventDefault();
 				ARPlugin.show('watch_1.obj','watch_1.png');
@@ -952,6 +954,7 @@
 				textures_path:"/static/resources/model/",
 				marker_path:"http://pandragames.ru/enter_marker.pdf"
 			});
+
 			$('.vFitting').bind('click', fittingPopupShow);
 		};
 
