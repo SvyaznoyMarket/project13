@@ -119,20 +119,20 @@ class Action {
         }
 
         // 910 - код дубликата, если email уже подписан на этот канал рассылок
-        if (!empty($error) && 910 != $error['code'] ) {
+        /*if (!empty($error) && 910 != $error['code'] ) {
             $page = new \View\Subscribe\ConfirmPage();
             $page->setParam('action', $action);
             $page->setParam('error', $error);
             $page->setParam('email', $email);
 
             return new \Http\Response($page->show());
-        }
+        }*/
 
         $redirectToken = 'subscribe_friends';
         if (1 == $hasbro) {
             $redirectToken = 'hasbro_email_confirm';
 
-            if (910 == $error['code']) {
+            if (!empty($error['code']) && 910 == $error['code']) {
                 $redirectToken = 'hasbro_email_confirm_repeat';
             }
         }
