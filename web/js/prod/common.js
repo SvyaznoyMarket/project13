@@ -3977,7 +3977,7 @@ $(document).ready(function() {
 		/**
 		 * Показ окна о совершенной покупке
 		 */
-		showBuyInfo = function showBuyInfo() {
+		showBuyInfo = function showBuyInfo( e ) {
 			console.info('userbar::showBuyInfo');
 
 			var
@@ -4048,7 +4048,13 @@ $(document).ready(function() {
 				userBar.showOverlay = true;
 			}
 
-			buyInfo.slideDown(300);
+			if ( e ) {
+				buyInfo.slideDown(300);
+			}
+			else {
+				buyInfo.show();
+			}
+
 			showUserbar();
 
 			infoShowing = true;
@@ -4068,7 +4074,7 @@ $(document).ready(function() {
 			// end of vars
 			
 			var
-				authFromServer = function authFromServer( res ) {
+				authFromServer = function authFromServer( res, data ) {
 					if ( !res.success ) {
 						console.warn('удаление не получилось :(');
 
@@ -4076,8 +4082,40 @@ $(document).ready(function() {
 					}
 
 					utils.blackBox.basket().deleteItem(res);
+
+					//показываем карзину пользовтеля при удалении товара
+					if ( clientCart.products.length !== 0 ) {
+						showBuyInfo();
+					}
+
+					//скрываем оверлоу, если товаров в корзине нет
+					if ( clientCart.products.length == 0 ) {
+						overlay.fadeOut(300, function() {
+							overlay.off('click');
+							overlay.remove();
+
+							userBar.showOverlay = false;
+						});
+					}
 				};
 			// end of functions
+
+			//добавление кнопки купить удаленному из корзины товару
+			var
+				products = clientCart.products,
+				i,
+				url = "/cart/add-product/",
+				len;
+			// end of vars
+
+				unmarkCartButton = function unmarkCartButton( i, data ) {
+					for ( i = 0, len = products.length; i < len; i++ ) {
+						$('.'+products[i].cartButton.id).html('Купить').removeClass('mBought').attr('href', url + products[i].id);
+					}
+				}
+			// end of functions
+
+			unmarkCartButton();
 
 			$.ajax({
 				type: 'GET',
@@ -4121,7 +4159,6 @@ $(document).ready(function() {
 					partials = template.data('partial'),
 				// end of vars
 
-				html = Mustache.render(template.html(), data, partials);
 				html = Mustache.render(template.html(), data, partials);
 
 				cartWrap.addClass('mEmpty');
