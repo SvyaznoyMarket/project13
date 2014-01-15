@@ -273,6 +273,8 @@ class IndexPage extends \View\DefaultLayout {
             }
         }
 
+        $config['product.vFitting'] = true; // Todo
+
         return $this->tryRender('_config', ['config' => $config]);
     }
 

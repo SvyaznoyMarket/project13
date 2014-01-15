@@ -1,3 +1,9 @@
+/**
+ * ARPlugin
+ *
+ * @requires jQuery, lightbox_me
+ */
+//;(function(ENTER) {
 
 var
 	active_ar_pandra = false,
@@ -137,6 +143,9 @@ function show_simple_plugin_ar_pandra(mesh, texture) {
 		show_warning_ar_pandra( "Please, set current texture" );
 	}
 	active_ar_pandra = true;
+
+	console.log('%%% $$$ ### show_simple_plugin_ar_pandra !!! ');
+
 	$( "body" ).append( "<div id='background_ar_pandra' class='background_ar_pandra'></div>" );
 	$( "body" ).append( "<div id='ar_pandra' class='ar_pandra'>" +
 		"<div class='close_button_ar_pandra'><a href='javascript:close_ar_padnra()'><img src='" + img_path_ar_pandra + "close.png'></a></div>" +
@@ -147,20 +156,33 @@ function show_simple_plugin_ar_pandra(mesh, texture) {
 		"<div class='powered_by_ar_pandra'><a href='http://www.pandra.ru' alt='pandra' target='_blank'>Разработка - <img src='" + img_path_ar_pandra + "logo.png'></a></div>" +
 		"</div>" +
 		"</div>" );
-	$( "#background_ar_pandra" ).fadeTo( "fast", 0.7, function () {
+
+
+	/*$( "#background_ar_pandra" ).fadeTo( "fast", 0.7, function () {
 		$( "#ar_pandra" ).show( {options: {easing: "easeOutBack"}, effect: "scale", direction: "horizontal", duration: 200} );
-	} );
+	} );*/
 
 	def_model_ar_pandra = meshes_path_ar_pandra + mesh;
 	def_texture_ar_pandra = textures_path_ar_pandra + texture;
 	add_swf_ar_pandra();
-	resize_ar_pandra();
+
+	$( "#ar_pandra" ).lightbox_me({
+		centered: true,
+		closeSelector: '.close',
+		onClose: function() {
+			//swfobject.removeSWF(data.attributes.id);
+		}
+	});
+
+	/*resize_ar_pandra();*/
 }
 function show_advaced_plugin_ar_pandra() {
 	active_ar_pandra = true;
 	var
 		temp_vis_items_ar_pandra = 0,
 		temp_vis_items_toset_ar_pandra = 0;
+
+	console.log('%%% $$$ ### show_advaced_plugin_ar_pandra');
 
 	$( "body" ).append( "<div id='background_ar_pandra' class='background_ar_pandra'></div>" );
 	$( "body" ).append( "<div id='ar_pandra' class='ar_pandra'>" +
@@ -242,7 +264,19 @@ function add_swf_ar_pandra() {
 			name: "pandra_ar_swf"
 		};
 
-	    swfobject.embedSWF(swf_path_ar_pandra+"arPrototype.swf", "ar_pandra_content", "640", "480", "11","expressInstall.swf", flashvars, params, attributes, function(e) { swf_ar_panra = e.ref;    setTimeout(resize_ar_pandra,200)});
+	    swfobject.embedSWF(
+			swf_path_ar_pandra+"arPrototype.swf",
+			"ar_pandra_content",
+			"640", "480",
+			"11","expressInstall.swf",
+			flashvars,
+			params,
+			attributes,
+			function(e) {
+				swf_ar_panra = e.ref;
+				setTimeout(resize_ar_pandra,200)
+			}
+		);
 
 }
 function resize_ar_pandra() {
@@ -254,8 +288,8 @@ function resize_ar_pandra() {
 
 		if (!wdiv.length) return false;
 
-		$( "#ar_pandra" ).css( "top", top );
-		$( "#ar_pandra" ).css( "left", left );
+		//$( "#ar_pandra" ).css( "top", top );
+		//$( "#ar_pandra" ).css( "left", left );
 	}
 }
 function close_ar_padnra() {
@@ -270,3 +304,4 @@ function window_hided_ar_padnra() {
 function parseXml_ar_pandra(xml) {
 	yml_xml_ar_pandra = xml;
 }
+//}(window.ENTER));

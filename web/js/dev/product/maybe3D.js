@@ -10,6 +10,17 @@
 	// end of vars
 	
 	var
+		loadWithSWF = function( functionName ) {
+			if ( 'function' !== typeof(functionName) ) return false;
+			if ( !swfobjectLoaded ) {
+				$LAB.script('swfobject.min.js').wait(functionName);
+				swfobjectLoaded = true;
+			}
+			else{
+				functionName();
+			}
+			return true;
+		},
 		loadMaybe3D = function() {
 		var
 			data = $('#maybe3dModelPopup').data('value');
@@ -49,39 +60,33 @@
 			$('.mGrad360.maybe3d').bind('click', maybe3dPopupShow);
 		};
 
-		if (!swfobjectLoaded) {
-			$LAB.script('swfobject.min.js').wait(afterLoad);
-			swfobjectLoaded = true;
-		}
+		loadWithSWF(afterLoad);
 	},
 	loadFitting = function loadFitting() {
-		var f_afterLoad = function f_afterLoad() {
-				fittingPopupShow = function( e ) {
-					console.log('### BEGIN');
-					e.preventDefault();
-					ARPlugin.show('watch_1.obj','watch_1.png');
-					console.log('### end');
-					return false;
-				};
-
-				ARPlugin.init({
-					type:"simple",
-					js:"/static/js/",
-					css:"/static/css/",
-					img:"/static/img/",
-					swf:"/static/swf/",
-					resources:"/static/resources/",
-					meshes_path:"/static/resources/model/",
-					textures_path:"/static/resources/model/",
-					marker_path:"http://pandragames.ru/enter_marker.pdf"
-				});
-				$('.vFitting').bind('click', fittingPopupShow);
+		var f_afterLoad = function f_afterLoad()
+		{
+			fittingPopupShow = function( e ) {
+				e.preventDefault();
+				ARPlugin.show('watch_1.obj','watch_1.png');
 			};
 
-		if (!swfobjectLoaded) {
-			$LAB.script('swfobject.min.js').wait(f_afterLoad);
-			swfobjectLoaded = true;
-		}
+			ARPlugin.init({
+				type:"advanced",
+				//type:"simple",
+
+				js:"/static/js/",
+				css:"/static/css/",
+				img:"/static/img/",
+				swf:"/static/swf/",
+				resources:"/static/resources/",
+				meshes_path:"/static/resources/model/",
+				textures_path:"/static/resources/model/",
+				marker_path:"http://pandragames.ru/enter_marker.pdf"
+			});
+			$('.vFitting').bind('click', fittingPopupShow);
+		};
+
+		loadWithSWF(f_afterLoad);
 	};
 
 	$(document).ready(function() {
@@ -89,7 +94,7 @@
 			loadMaybe3D();
 		}
 
-		if ( !false || true ) { // TODO
+		if ( pageConfig['product.vFitting'] ) {
 			loadFitting();
 		}
 	});
