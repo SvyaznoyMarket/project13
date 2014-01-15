@@ -875,9 +875,10 @@
 ;(function( global ) {
 	var pageConfig = global.ENTER.config.pageConfig,
 		utils = global.ENTER.utils,
+		ARPlugin = utils.ARPlugin,
 		swfobjectLoaded = false;
 	// end of vars
-	
+
 	var
 		loadWithSWF = function( functionName ) {
 			if ( 'function' !== typeof(functionName) ) return false;
@@ -934,28 +935,36 @@
 	loadFitting = function loadFitting() {
 		var f_afterLoad = function f_afterLoad()
 		{
-			//$LAB.script('ARPlugin.min.js');
+			var
+				ARPluginLoad = function ARPluginLoad(){
+					if ( 'undefined' === typeof(ARPlugin) ) {
+						console.warn('ARPlugin in not defined');
+						return false;
+					}
+					ARPlugin.init({
+						type:"advanced",
+						//type:"simple",
 
-			fittingPopupShow = function( e ) {
-				e.preventDefault();
-				ARPlugin.show('watch_1.obj','watch_1.png');
-			};
+						js:"/static/js/",
+						css:"/static/css/",
+						img:"/static/img/",
+						swf:"/static/swf/",
+						resources:"/static/resources/",
+						meshes_path:"/static/resources/model/",
+						textures_path:"/static/resources/model/",
+						marker_path:"http://pandragames.ru/enter_marker.pdf"
+					});
 
-			ARPlugin.init({
-				type:"advanced",
-				//type:"simple",
+					fittingPopupShow = function( e ) {
+						e.preventDefault();
+						ARPlugin.show('watch_1.obj','watch_1.png');
+					};
 
-				js:"/static/js/",
-				css:"/static/css/",
-				img:"/static/img/",
-				swf:"/static/swf/",
-				resources:"/static/resources/",
-				meshes_path:"/static/resources/model/",
-				textures_path:"/static/resources/model/",
-				marker_path:"http://pandragames.ru/enter_marker.pdf"
-			});
+					$('.vFitting').bind('click', fittingPopupShow);
+				};
 
-			$('.vFitting').bind('click', fittingPopupShow);
+			$LAB.script('ARPlugin.min.js').wait(ARPluginLoad);
+
 		};
 
 		loadWithSWF(f_afterLoad);

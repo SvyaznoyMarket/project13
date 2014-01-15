@@ -3,9 +3,10 @@
  *
  * @requires jQuery, lightbox_me
  */
-//;(function(ENTER) {
+;(function(ENTER) {
 
 var
+	utils = ENTER.utils;
 	active_ar_pandra = false,
 	yml_xml_ar_pandra = null,
 	vis_items_ar_pandra = 5,
@@ -32,7 +33,9 @@ var
 	def_texture_ar_pandra = null,
 
 	marker_pdf_path_ar_pandra = null,
-	ARPlugin = new plugin_wrapper_ar_pandra();
+	utils.ARPlugin = new plugin_wrapper_ar_pandra();
+
+
 
 function init_plugin_ar_pandra(options) {
 	if ( options != undefined ) {
@@ -304,4 +307,4 @@ function window_hided_ar_padnra() {
 function parseXml_ar_pandra(xml) {
 	yml_xml_ar_pandra = xml;
 }
-//}(window.ENTER));
+}(window.ENTER));
