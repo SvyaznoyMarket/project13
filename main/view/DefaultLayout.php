@@ -267,6 +267,16 @@ class DefaultLayout extends Layout {
         return $content;
     }
 
+
+    public function slotBrandMenu() {
+        $renderer = \App::closureTemplating();
+
+        $content = $renderer->render('__brandMenu');
+
+        return $content;
+    }
+
+
     public function slotBanner() {
         return '';
     }
