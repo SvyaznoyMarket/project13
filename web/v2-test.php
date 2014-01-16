@@ -30,7 +30,10 @@ register_shutdown_function(function () use (&$startAt) {
         var_dump($error);
     }
 
-    echo PHP_EOL . round(microtime(true) - $startAt, 3) . ' ms' . PHP_EOL;
+    echo PHP_EOL . json_encode([
+        'time'   => ['value' => round(microtime(true) - $startAt, 3), 'unit' => 'ms'],
+        'memory' => ['value' => round(memory_get_peak_usage() / 1048576, 2), 'unit' => 'Mb'],
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . PHP_EOL;
 });
 
 
@@ -49,4 +52,4 @@ $request = new \Enter\Http\Request(
 
 $action = new \EnterSite\Action\Page\ProductCatalog\ChildCategory\GetObjectByHttpRequest();
 $page = $action->execute($request);
-var_dump($page);
+echo PHP_EOL . json_encode($page, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
