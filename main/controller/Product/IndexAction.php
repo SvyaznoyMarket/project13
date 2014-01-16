@@ -102,8 +102,23 @@ class IndexAction {
             if($data) $catalogJson = $data;
         });
 
+        // получаем отзывы для товара
+        $reviewsData = [];
+        $reviewsDataPro = [];
+        $reviewsDataSummary = [];
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
+                $reviewsData = (array)$data;
+            });
+            \RepositoryManager::review()->prepareData($product->getId(), 'pro', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsDataPro) {
+                $reviewsDataPro = (array)$data;
+            });
+
+            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData, $reviewsDataPro);
+        }
+
         // выполнение 3-го пакета запросов
-        $client->execute();
+        \App::curl()->execute();
 
         if ($lifeGiftProduct && !($lifeGiftProduct->getLabel() && (\App::config()->lifeGift['labelId'] === $lifeGiftProduct->getLabel()->getId()))) {
             $lifeGiftProduct = null;
@@ -168,23 +183,6 @@ class IndexAction {
             return (new $controller())->executeDirect($product, $regionsToSelect, $catalogJson);
         }
         */
-
-        // получаем отзывы для товара
-        $reviewsData = [];
-        $reviewsDataPro = [];
-        $reviewsDataSummary = [];
-        if (\App::config()->product['reviewEnabled']) {
-            \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
-                $reviewsData = (array)$data;
-            });
-            \RepositoryManager::review()->prepareData($product->getId(), 'pro', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsDataPro) {
-                $reviewsDataPro = (array)$data;
-            });
-
-            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData, $reviewsDataPro);
-
-            \App::reviewsClient()->execute(\App::config()->reviewsStore['retryTimeout']['default']);
-        }
 
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем уникальные категории-родители аксессуаров
