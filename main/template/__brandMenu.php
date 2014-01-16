@@ -13,28 +13,30 @@ return function(
     }
 ?>
 <!-- Меню-слайдер подкатегорий, категории Чибо -->
-<div class="tchiboMenuWrap">
-    <div class="tchiboMenu"<?= $css ? "style='$css'": '' ?>>
+<div class="tchiboMenuOverflow">
+    <div class="tchiboMenuWrap">
+        <div class="tchiboMenu"<?= $css ? "style='$css'": '' ?>>
 
-        <div class="tchiboLogo"<?= $brandLogo ?>>
-            <?= $categoryName ?>
-        </div>
-
-        <div class="slideCategory">
-            <div class="tdRelative">
-                <? if (!empty($categoryList)): ?>
-                <ul class="categoryList">
-                    <? foreach ($categoryList as $categoryItem) { ?>
-                    <li class="categoryList__item">
-                        <a class="categoryList__link" href="<?= $categoryItem['link'] ?>"><?= $categoryItem['name'] ?></a>
-                    </li>
-                    <? } ?>
-                </ul>
-                <? endif; ?>
-                <div class="sliderBtn mLeftBtn"><a class="sliderBtn__link" href=""></a></div>
+            <div class="tchiboLogo"<?= $brandLogo ?>>
+                <?= $categoryName ?>
             </div>
+
+            <div class="slideCategory">
+                <div class="tdRelative">
+                    <? if (!empty($categoryList)): ?>
+                    <ul class="categoryList">
+                        <? foreach ($categoryList as $categoryItem) { ?>
+                        <li class="categoryList__item">
+                            <a class="categoryList__link" href="<?= $categoryItem['link'] ?>"><?= $categoryItem['name'] ?></a>
+                        </li>
+                        <? } ?>
+                    </ul>
+                    <? endif; ?>
+                    <div class="sliderBtn mLeftBtn"><a class="sliderBtn__link" href=""></a></div>
+                </div>
+            </div>
+            <div class="sliderBtn mRightBtn"><a class="sliderBtn__link" href=""></a></div>
         </div>
-        <div class="sliderBtn mRightBtn"><a class="sliderBtn__link" href=""></a></div>
     </div>
 </div>
 <!-- /Меню-слайдер подкатегорий, категории Чибо -->

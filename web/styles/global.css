@@ -672,132 +672,6 @@ img[height="0"] {
   }
 }
 /*---END---СТИЛИ ШАПКИ---*/
-/*------СТИЛИ ШАПКИ------*/
-@media all {
-  .tchiboMenuWrap {
-    margin: 0 0 -9px -10px;
-    width: 960px;
-    height: 51px;
-    overflow: hidden;
-    top: -9px;
-    color: #ffffff;
-    position: relative;
-  }
-  .tchiboMenuWrap:before {
-    background: url("/styles/brandMenu/img/menu_corner.gif") no-repeat 0 0;
-    position: absolute;
-    content: "";
-    top: 1px;
-    right: 40px;
-    width: 16px;
-    height: 9px;
-  }
-  .tchiboMenu {
-    display: table;
-    border-top: 1px solid #929292;
-    background: #002958;
-    padding: 0 5px;
-    height: 42px;
-    margin-top: 9px;
-  }
-  .tchiboMenu .tchiboLogo {
-    display: table-cell;
-    font-weight: bold;
-    line-height: 42px;
-    background: url("/styles/brandMenu/img/logo.png") no-repeat 0 4px;
-    padding: 0 20px 0 35px;
-  }
-  .tchiboMenu .slideCategory {
-    display: table-cell;
-    overflow: hidden;
-    position: relative;
-  }
-  .tchiboMenu .categoryList {
-    width: 4000px;
-  }
-  .tchiboMenu .categoryList__item {
-    display: inline-block;
-    color: #ffffff;
-    margin-right: 15px;
-  }
-  .tchiboMenu .categoryList__link {
-    color: #ffffff;
-  }
-  .tchiboMenu .categoryList__link:hover {
-    color: #ffe055;
-    text-decoration: none;
-  }
-  .tchiboMenu .sliderBtn {
-    position: absolute;
-    top: 0;
-    height: 42px;
-    width: 37px;
-  }
-  .tchiboMenu .sliderBtn.mLeftBtn {
-    left: 0;
-    top: -15px;
-    background: url("/styles/tchiboNavSlider/img/bgSliderBtnLeft.png") 100% 0 repeat;
-  }
-  .tchiboMenu .sliderBtn.mLeftBtn .sliderBtn__link {
-    left: 0;
-  }
-  .tchiboMenu .sliderBtn.mRightBtn {
-    right: 0;
-    top: 9px;
-  }
-  .brandMenuWrap {
-    margin: 0 0 -9px -10px;
-    width: 960px;
-    height: 51px;
-    overflow: hidden;
-    top: -9px;
-    color: #ffffff;
-    position: relative;
-  }
-  .brandMenuWrap:before {
-    background: url("/styles/brandMenu/img/menu_corner.gif") no-repeat 0 0;
-    position: absolute;
-    content: "";
-    top: 1px;
-    right: 40px;
-    width: 16px;
-    height: 9px;
-  }
-  .brandMenu {
-    display: table;
-    border-top: 1px solid #929292;
-    background: #002958;
-    padding: 0 5px;
-    height: 42px;
-    margin-top: 9px;
-  }
-  .brandMenu .brandLogo {
-    display: table-cell;
-    font-weight: bold;
-    line-height: 42px;
-    background: url("/styles/brandMenu/img/logo.png") no-repeat 0 4px;
-    padding: 0 20px 0 35px;
-  }
-  .brandMenu .slideCategory {
-    display: table-cell;
-    overflow: hidden;
-  }
-  .brandMenu .slideCategory__inner {
-    overflow: hidden;
-  }
-  .brandMenu .categoryList {
-    width: 4000px;
-  }
-  .brandMenu .categoryList__item {
-    display: inline-block;
-    color: #ffffff;
-    margin-right: 15px;
-  }
-  .brandMenu .categoryList__link {
-    color: #ffffff;
-  }
-}
-/*---END---СТИЛИ ШАПКИ---*/
 /*------СТИЛИ ПОДВАЛА------*/
 @media all {
   /**
@@ -2220,18 +2094,25 @@ img[height="0"] {
 /*---END----Enter Prize---------*/
 /*------TCHIBO - верхнее меню Чибо, под продуктовым меню------*/
 @media all {
+  .tchiboMenuOverflow {
+    margin: 0 0 -9px -10px;
+    width: 960px;
+    height: 51px;
+    position: relative;
+    top: -9px;
+    overflow: hidden;
+  }
   .tchiboMenuWrap {
-    margin: 0 0 0 -10px;
     width: 960px;
     height: 42px;
-    top: 0;
+    top: 9px;
     border-top: 1px solid #929292;
     background: #002958;
     color: #ffffff;
     position: relative;
   }
   .tchiboMenuWrap:before {
-    background: url("/styles/brandMenu/img/menu_corner.gif") no-repeat 0 0;
+    background: url("/styles/tchiboMenu/img/menu_corner.gif") no-repeat 0 0;
     position: absolute;
     content: "";
     top: -9px;
@@ -2248,7 +2129,7 @@ img[height="0"] {
     display: table-cell;
     font-weight: bold;
     line-height: 42px;
-    background: url("/styles/brandMenu/img/logo.png") no-repeat 0 4px;
+    background: url("/styles/tchiboMenu/img/logo.png") no-repeat 0 4px;
     padding: 0 20px 0 35px;
   }
   .tchiboMenu .slideCategory {
@@ -2288,7 +2169,7 @@ img[height="0"] {
   }
   .tchiboMenu .sliderBtn.mRightBtn {
     right: 0;
-    top: 9px;
+    top: 0;
   }
 }
 /*---END---TCHIBO - верхнее меню Чибо, под продуктовым меню---*/
