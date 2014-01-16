@@ -52,27 +52,6 @@
 							<span class="title">Кофе</span>
 						</a>
 					</li>
-
-					<li class="item">
-						<a class="link" href="">
-							<img class="img" src="/styles/tchibo/img/ImgCat.png" />
-							<span class="title">Мужчины</span>
-						</a>
-					</li>
-
-					<li class="item">
-						<a class="link" href="">
-							<img class="img" src="/styles/tchibo/img/ImgCat.png" />
-							<span class="title">Женщины</span>
-						</a>
-					</li>
-
-					<li class="item">
-						<a class="link" href="">
-							<img class="img" src="/styles/tchibo/img/ImgCat.png" />
-							<span class="title">Дети</span>
-						</a>
-					</li>
 				</ul>
 				<!--div class="sliderBtn mLeftBtn"><a class="sliderBtn__link" href=""></a></div--><!--/ кнопка прокрутки влево -->
 			</div>
