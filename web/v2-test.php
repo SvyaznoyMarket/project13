@@ -46,5 +46,5 @@ $request = new \Enter\Http\Request(
     ['geo_id' => '14974']
 );
 
-$action = new \Enter\Site\Action\Page\ProductCatalog\GetChildCategoryByHttpRequest();
+$action = new \EnterSite\Action\Page\ProductCatalog\ChildCategory\GetObjectByHttpRequest();
 $action->execute($request);
