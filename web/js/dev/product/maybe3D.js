@@ -6,7 +6,6 @@
 ;(function( global ) {
 	var pageConfig = global.ENTER.config.pageConfig,
 		utils = global.ENTER.utils,
-		ARPlugin = utils.ARPlugin,
 		swfobjectLoaded = false;
 	// end of vars
 
@@ -68,14 +67,13 @@
 		{
 			var
 				ARPluginLoad = function ARPluginLoad(){
-					if ( 'undefined' === typeof(ARPlugin) ) {
+					if ( 'undefined' === typeof(utils.ARPlugin) ) {
 						console.warn('ARPlugin in not defined');
 						return false;
 					}
-					ARPlugin.init({
-						type:"advanced",
-						//type:"simple",
-
+					utils.ARPlugin.init({
+						//type:"advanced",
+						type:"simple",
 						js:"/static/js/",
 						css:"/static/css/",
 						img:"/static/img/",
@@ -88,7 +86,7 @@
 
 					fittingPopupShow = function( e ) {
 						e.preventDefault();
-						ARPlugin.show('watch_1.obj','watch_1.png');
+						utils.ARPlugin.show('watch_1.obj','watch_1.png');
 					};
 
 					$('.vFitting').bind('click', fittingPopupShow);
