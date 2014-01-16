@@ -1,6 +1,12 @@
 <?php
 
 namespace EnterSite\Config {
+    use EnterSite\Config\Application\AdminService;
+    use EnterSite\Config\Application\CmsService;
+    use EnterSite\Config\Application\CoreService;
+    use EnterSite\Config\Application\ProductList;
+    use EnterSite\Config\Application\Region;
+
     class Application {
         /** @var Region */
         public $region;
@@ -23,7 +29,9 @@ namespace EnterSite\Config {
             $this->productList = new ProductList();
         }
     }
+}
 
+namespace EnterSite\Config\Application {
     class Region {
         /** @var string */
         public $defaultId;
@@ -46,17 +54,17 @@ namespace EnterSite\Config {
         public $retryCount;
 
         public function __construct() {
-            $this->retryTimeout = new \EnterSite\Config\CurlService\RetryTimeout();
+            $this->retryTimeout = new \EnterSite\Config\Application\CurlService\RetryTimeout();
         }
     }
 
-    class CoreService extends \EnterSite\Config\CurlService {
+    class CoreService extends CurlService {
     }
 
-    class CmsService extends \EnterSite\Config\CurlService {
+    class CmsService extends CurlService {
     }
 
-    class AdminService extends \EnterSite\Config\CurlService {
+    class AdminService extends CurlService {
         /** @var bool */
         public $enabled;
     }
@@ -70,7 +78,7 @@ namespace EnterSite\Config {
     }
 }
 
-namespace EnterSite\Config\CurlService {
+namespace EnterSite\Config\Application\CurlService {
     class RetryTimeout {
         /** @var int */
         public $default;
