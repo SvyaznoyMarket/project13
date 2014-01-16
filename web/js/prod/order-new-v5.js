@@ -1104,16 +1104,14 @@
 			 */
 			nowProductDates = self.products[0].deliveries[self.state][self.choosenPoint().id].dates;
 
-			if ( !self.allDatesForBlock().length ) {
-				for ( i = 0, len = nowProductDates.length; i < len; i++ ) {
-					nowTS = nowProductDates[i].value;
+			for ( i = 0, len = nowProductDates.length; i < len; i++ ) {
+				nowTS = nowProductDates[i].value;
 
-					if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
-						nowProductDates[i].avalible = true;
-						nowProductDates[i].humanDayOfWeek = self._getNameDayOfWeek(nowProductDates[i].dayOfWeek);
+				if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
+					nowProductDates[i].avalible = true;
+					nowProductDates[i].humanDayOfWeek = self._getNameDayOfWeek(nowProductDates[i].dayOfWeek);
 
-						self.allDatesForBlock().push(nowProductDates[i]);
-					}
+					self.allDatesForBlock().push(nowProductDates[i]);
 				}
 			}
 
