@@ -115,14 +115,40 @@ class CategoryAction {
             $gridCells[] = $gridCell;
 
             if ((\Model\GridCell\Entity::TYPE_PRODUCT === $gridCell->getType()) && $gridCell->getId()) {
-                $productsById[$gridCell->getId()] = null;
+                $productsById[$gridCell->getId()] = $gridCell->getId();
             }
         }
 
+        // SITE-2996 учет моделей
+        // внимание! получаем ключи массива
         foreach (array_chunk(array_keys($productsById), \App::config()->coreV2['chunk_size']) as $idsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById(array_keys($productsById), \App::user()->getRegion(), function($data) use (&$productsById) {
+            \App::coreClientV2()->addQuery(
+                'product/from-model',
+                [
+                    'ids'       => $idsInChunk,
+                    'region_id' => $region->getId(),
+                ],
+                [],
+                function($data) use (&$productsById) {
+                    foreach ($data as $productId => $replaceId) {
+                        if (array_key_exists($productId, $productsById) && $replaceId) {
+                            $productsById[$productId] = $replaceId;
+                        }
+                    }
+                },
+                function(\Exception $e) {
+                    \App::exception()->remove($e);
+                }
+            );
+        }
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        // внимание! получаем значения массива
+        foreach (array_chunk($productsById, \App::config()->coreV2['chunk_size'], true) as $idsInChunk) {
+            \RepositoryManager::product()->prepareCollectionById(array_values($idsInChunk), \App::user()->getRegion(), function($data) use (&$productsById, &$idsInChunk) {
                 foreach ($data as $item) {
-                    $productsById[$item['id']] = new \Model\Product\CompactEntity($item);
+                    if (false === $productId = array_search($item['id'], $idsInChunk)) continue;
+                    $productsById[$productId] = new \Model\Product\CompactEntity($item);
                 }
             });
         }
