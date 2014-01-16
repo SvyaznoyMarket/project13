@@ -4,7 +4,8 @@ return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Category\Entity $category,
     array $promoStyle = [],
-    array $relatedCategories = []
+    array $relatedCategories = [],
+    array $categoryConfigById = []
 ) {
 
     $links = [];
@@ -12,11 +13,14 @@ return function(
     if (!empty($relatedCategories)) $categories = array_merge($categories, $relatedCategories);
 
     foreach ($categories as $child) {
+        $config = isset($categoryConfigById[$child->getId()]) ? $categoryConfigById[$child->getId()] : null;
+
         $links[] = [
-            'name'   => $child->getName(),
+            'name'   => isset($config['name']) ? $config['name'] : $child->getName(),
             'url'    => $child->getLink(),
-            'image'  => $child->getImageUrl(),
+            'image'  => isset($config['image']) ? $config['image'] : $child->getImageUrl(),
             'active' => false,
+            'css'    => isset($config['css']) ? $config['css'] : null,
         ];
     }
 ?>

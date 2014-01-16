@@ -77,6 +77,8 @@
 </div>
 <!-- /Header -->
 
+<?= $page->slotBrandMenu() ?>
+
 <script id="userbar_cart_empty_tmpl" type="text/html">
     <div class="fixedTopBar__cart mEmpty">
         <a href="/cart" class="fixedTopBar__cartTitle">Корзина</a>
@@ -108,7 +110,7 @@
         {{/hasProducts}}
 
         {{#showTransparent}}
-            <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 4 товаров, в противном случае display: none; -->
+            <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 3 товаров, в противном случае display: none; -->
         {{/showTransparent}}
 
         <div class="btnBuy quickOrder"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
@@ -136,7 +138,7 @@
          </ul>
 
         {{#showTransparent}}
-            <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 4 товаров, в противном случае display: none; -->
+            <div class="transGradWhite"></div> <!-- этот див выводить только если в корзине более 3 товаров, в противном случае display: none; -->
         {{/showTransparent}}
         <div class="btnBuy quickOrder"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
     </div>
@@ -163,5 +165,4 @@
 
         <a class="mBtnGrey fixedTopBar__logOutLink" href="<?= $page->url('user.logout') ?>">Выйти</a>
     </div>
-
 </script>

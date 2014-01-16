@@ -267,6 +267,48 @@ class DefaultLayout extends Layout {
         return $content;
     }
 
+
+    public function slotBrandMenu() {
+        $renderer = \App::closureTemplating();
+        $content = '';
+
+        if ($this->getParam('category') instanceof \Model\Product\Category\Entity) {
+            $category = $this->getParam('category');
+            /** @var $category \Model\Product\Category\Entity */
+            $categoryToken = $category->getToken();
+            $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
+            $relatedCategoryJson = empty($catalogJsonBulk[$categoryToken]['related_category_main']) ?
+                    null :
+                    $catalogJsonBulk[$categoryToken]['related_category_main'];
+
+            if ($relatedCategoryJson && !empty($relatedCategoryJson['related_category_token'])) {
+                $relatedCategory = (new Menu())->findByToken(
+                    $relatedCategoryJson['related_category_token']
+                );
+
+                $categoryList = [];
+                foreach ($relatedCategory->child as $iMenu) {
+                    /** @var $iMenu \Model\Menu\Entity */
+                    $categoryList[] = [
+                        'name'  => $iMenu->name,
+                        'link'  => $iMenu->link,
+                    ];
+                }
+
+                $content .= $renderer->render('__brandMenu', [
+                    'css'           => $relatedCategoryJson['css'] ?: '',
+                    'brandLogo'      => $relatedCategoryJson['logo_path'] ?: '',
+                    'categoryName'  => $relatedCategory->name,
+                    'categoryList'  => $categoryList,
+                ]);
+            } // end of if (json has related_category_token)
+
+        } // end of if (is category page)
+
+        return $content;
+    }
+
+
     public function slotBanner() {
         return '';
     }

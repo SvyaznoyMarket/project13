@@ -3087,13 +3087,211 @@ $(document).ready(function() {
  */
  
  
+;(function($){	
+	/*paginator*/
+	var EnterPaginator = function( domID,totalPages, visPages, activePage ) {
+		
+		var self = this;
+
+		self.inputVars = {
+			domID: domID, // id элемента для пагинатора
+			totalPages:totalPages, //общее количество страниц
+			visPages:visPages?visPages:10, // количество видимых сраниц
+			activePage:activePage?activePage:1 // текущая активная страница
+		};
+
+		var pag = $('#'+self.inputVars.domID), // пагинатор
+			pagW = pag.width(), // ширина пагинатора
+			eSliderFillW = (pagW*self.inputVars.visPages)/self.inputVars.totalPages, // ширина закрашенной области слайдера
+			onePageOnSlider = eSliderFillW / self.inputVars.visPages, // ширина соответствующая одной странице на слайдере
+			onePage = pagW / self.inputVars.visPages, // ширина одной цифры на пагинаторе
+			center = Math.round(self.inputVars.visPages/2);
+		// end of vars
+
+		var scrollingByBar = function scrollingByBar ( left ) {
+			var pagLeft = Math.round(left/onePageOnSlider);
+
+			$('.bPaginator_eWrap', pag).css('left', -(onePage * pagLeft));
+		};
+
+		var enableHandlers = function enableHandlers() {
+			// биндим хандлеры
+			var clicked = false,
+				startX = 0,
+				nowLeft = 0;
+			// end of vars
+			
+			$('.bPaginatorSlider', pag).bind('mousedown', function(e){
+				startX = e.pageX;
+				nowLeft = parseInt($('.bPaginatorSlider_eFill', pag).css('left'), 10);
+				clicked = true;
+			});
+
+			$('.bPaginatorSlider', pag).bind('mouseup', function(){
+				clicked = false;
+			});
+
+			pag.bind('mouseout', function(){
+				clicked = false;
+			});
+
+			$('.bPaginatorSlider', pag).bind('mousemove', function(e){
+				if ( clicked ) {
+					var newLeft = nowLeft+(e.pageX-startX);
+
+					if ( (newLeft >= 0) && (newLeft <= pagW - eSliderFillW) ) {
+						$('.bPaginatorSlider_eFill', pag).css('left', nowLeft + (e.pageX - startX));
+						scrollingByBar(newLeft);
+					}
+				}
+			});
+		};
+
+		var init = function init() {
+			pag.append('<div class="bPaginator_eWrap"></div>');
+			pag.append('<div class="bPaginatorSlider"><div class="bPaginatorSlider_eWrap"><div class="bPaginatorSlider_eFill" style="width:'+eSliderFillW+'px"></div></div></div>');
+			for ( var i = 0; i < self.inputVars.totalPages; i++ ) {
+				$('.bPaginator_eWrap', pag).append('<a class="bPaginator_eLink" href="#' + i + '">' + (i + 1) + '</a>');
+
+				if ( (i + 1) === self.inputVars.activePage ) {
+					$('.bPaginator_eLink', pag).eq(i).addClass('active');
+				}
+			}
+			var realLinkW = $('.bPaginator_eLink', pag).width(); // реальная ширина цифр
+
+			$('.bPaginator_eLink', pag).css({'marginLeft':(onePage - realLinkW - 2)/2, 'marginRight':(onePage - realLinkW - 2)/2}); // размазываем цифры по ширине слайдера
+			$('.bPaginator_eWrap', pag).addClass('clearfix').width(onePage * self.inputVars.totalPages); // устанавливаем ширину wrap'а, добавляем ему очистку
+		};
+
+		self.setActive = function ( page ) {
+			var left = parseInt($('.bPaginator_eWrap', pag).css('left'), 10), // текущее положение пагинатора
+				barLeft = parseInt($('.bPaginatorSlider_eFill', pag).css('left'), 10), // текущее положение бара
+				nowLeftElH = Math.round(left/onePage) * (-1), // количество скрытых элементов
+				diff = -(center - (page - nowLeftElH)); // на сколько элементов необходимо подвинуть пагинатор для центрирования
+			// end of vars
+			
+			$('.bPaginator_eLink', pag).removeClass('active');
+			$('.bPaginator_eLink', pag).eq(page).addClass('active');
+
+			if ( left - (diff * onePage) > 0 ) {
+				left = 0;
+				barLeft = 0;
+			}
+			else if ( page > self.inputVars.totalPages - center ) {
+				left = Math.round(self.inputVars.totalPages - self.inputVars.visPages) * onePage*(-1);
+				barLeft = Math.round(self.inputVars.totalPages - self.inputVars.visPages) * onePageOnSlider;
+			}
+			else {
+				left = left - (diff * onePage);
+				barLeft = barLeft + (diff * onePageOnSlider);
+			}
+
+			$('.bPaginator_eWrap').animate({'left': left});
+			$('.bPaginatorSlider_eFill', pag).animate({'left': barLeft});
+		};
+
+		init();
+		enableHandlers();
+	};
+
+	/* promo catalog */
+	if ( $('#promoCatalog').length ) {
+		var data = $('#promoCatalog').data('slides'),
+		
+		//первоначальная настройка
+			slider_SlideCount = data.length, //количество слайдов
+			catalogPaginator = new EnterPaginator('promoCatalogPaginator',slider_SlideCount, 12, 1);
+		// end of vars
+
+		var initSlider = function initSlider() {
+			for ( var slide in data ) {
+				var slideTmpl = tmpl('slide_tmpl', data[slide]);
+
+				$('.bPromoCatalogSliderWrap').append(slideTmpl);
+
+				if ( $('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).attr('href') === '' ) {
+					$('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).removeAttr('href');
+				}
+
+				$('.bPromoCatalogNav').append('<a id="promoCatalogSlide' + slide + '" href="#' + slide + '" class="bPromoCatalogNav_eLink">' + ((slide * 1) + 1) + '</a>');
+			}
+		};
+
+		initSlider(); //запуск слайдера
+
+		var slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width(),	// ширина одного слайда
+			slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (920/2 - slider_SlideW/2)),	// установка ширины обертки
+			nowSlide = 0;	//текущий слайд
+		// end of vars
+
+		//листание стрелками
+		$('.bPromoCatalogSlider_eArrow').bind('click', function() {
+			var pos = ( $(this).hasClass('mArLeft') ) ? '-1' : '1';
+
+			moveSlide(nowSlide + pos * 1);
+
+			return false;
+		});
+
+		//пагинатор
+		$('.bPaginator_eLink').bind('click', function() {
+			if ( $(this).hasClass('active') ) {
+				return false;
+			}
+
+			var link = $(this).attr('href').slice(1) * 1;
+
+			moveSlide(link);
+
+			return false;
+		});
+
+		//перемещение слайдов на указанный слайд
+		var moveSlide = function moveSlide( slide ) {
+			if ( slide === 0 ) {
+				$('.bPromoCatalogSlider_eArrow.mArLeft').hide();
+			}
+			else{
+				$('.bPromoCatalogSlider_eArrow.mArLeft').show();
+			}
+
+			if ( slide === slider_SlideCount - 1 ) {
+				$('.bPromoCatalogSlider_eArrow.mArRight').hide();
+			}
+			else {
+				$('.bPromoCatalogSlider_eArrow.mArRight').show();
+			}
+
+			$('.bPromoCatalogSliderWrap').animate({'left': -(slider_SlideW * slide)},500, function() {
+				nowSlide = slide;
+			});
+
+			window.location.hash = 'slide' + (slide + 1);
+			catalogPaginator.setActive(slide);
+		};
+
+		var hash = window.location.hash;
+
+		if ( hash.indexOf('slide') + 1 ) {
+			var toSlide = parseInt(hash.slice(6), 10) - 1;
+
+			moveSlide(toSlide);
+		}
+	}
+})(jQuery);
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
 /**
  * Всплывающая синяя плашка с предложением о подписке
  * Срабатывает при возникновении события showsubscribe.
- * см.BlackBox startAction
  *
  * @author		Zaytsev Alexandr
- * @requires	jQuery, jQuery.emailValidate, docCookies
+ * @requires	jQuery, FormValidator, docCookies
  * 
  * @param		{event}		event
  * @param		{Object}	subscribe			Информация о подписке
@@ -3101,17 +3299,49 @@ $(document).ready(function() {
  * @param		{Boolean}	subscribe.show		Показывали ли пользователю плашку с предложением о подписке
  */
 ;(function() {
-	var lboxCheckSubscribe = function lboxCheckSubscribe( event, subscribe ) {
+	var
+		body = $('body'),
+		subscribeCookieName = 'subscribed',
+		lboxCheckSubscribe = function lboxCheckSubscribe( event ) {
 
-		var notNowShield = $('.bSubscribeLightboxPopupNotNow'),
+		var
+			notNowShield = $('.bSubscribeLightboxPopupNotNow'),
 			subPopup = $('.bSubscribeLightboxPopup'),
 			input = $('.bSubscribeLightboxPopup__eInput'),
-			submitBtn = $('.bSubscribeLightboxPopup__eBtn');
+			submitBtn = $('.bSubscribeLightboxPopup__eBtn' ),
+			subscribe = {
+				'show': !window.docCookies.hasItem(subscribeCookieName),
+				'agreed': 1 === window.docCookies.getItem(subscribeCookieName)
+			},
+			inputValidator = new FormValidator({
+				fields: [
+					{
+						fieldNode: input,
+						customErr: 'Неправильный емейл',
+						required: true,
+						email: true,
+						validBy: 'isEmail'
+					}
+				]
+			} ),
+			runValidation = function runValidation() {
+				inputValidator.validate({
+					onInvalid: function( err ) {
+						console.log('Email is invalid');
+						console.log(err);
+					},
+					onValid: function() {
+						console.log('Email is valid');
+					}
+				});
+			};
 		// end of vars
-		
 
-		var subscribing = function subscribing() {
-				var email = input.val(),
+
+		var
+			subscribing = function subscribing() {
+				var
+					email = input.val(),
 					url = $(this).data('url');
 				//end of vars
 				
@@ -3169,17 +3399,6 @@ $(document).ready(function() {
 
 		input.placeholder();
 
-		input.emailValidate({
-			onValid: function() {
-				input.removeClass('mError');
-				submitBtn.removeClass('mDisabled');
-			},
-			onInvalid: function() {
-				submitBtn.addClass('mDisabled');
-				input.addClass('mError');
-			}
-		});
-
 		if ( !subscribe.show ) {
 			if ( !subscribe.agreed ) {
 				subscribeLater();
@@ -3190,9 +3409,12 @@ $(document).ready(function() {
 		else {
 			subscribeNow();
 		}
+
+		input.bind('keyup', runValidation);
 	};
 
-	$('body').bind('showsubscribe', lboxCheckSubscribe);
+	body.bind('showsubscribe', lboxCheckSubscribe);
+	body.trigger('showsubscribe');
 }());
  
  
@@ -3954,7 +4176,7 @@ $(document).ready(function() {
 		/**
 		 * Показ окна о совершенной покупке
 		 */
-		showBuyInfo = function showBuyInfo() {
+		showBuyInfo = function showBuyInfo( e ) {
 			console.info('userbar::showBuyInfo');
 
 			var
@@ -4025,7 +4247,13 @@ $(document).ready(function() {
 				userBar.showOverlay = true;
 			}
 
-			buyInfo.slideDown(300);
+			if ( e ) {
+				buyInfo.slideDown(300);
+			}
+			else {
+				buyInfo.show();
+			}
+
 			showUserbar();
 
 			infoShowing = true;
@@ -4045,7 +4273,7 @@ $(document).ready(function() {
 			// end of vars
 			
 			var
-				authFromServer = function authFromServer( res ) {
+				authFromServer = function authFromServer( res, data ) {
 					if ( !res.success ) {
 						console.warn('удаление не получилось :(');
 
@@ -4053,8 +4281,40 @@ $(document).ready(function() {
 					}
 
 					utils.blackBox.basket().deleteItem(res);
+
+					//показываем карзину пользовтеля при удалении товара
+					if ( clientCart.products.length !== 0 ) {
+						showBuyInfo();
+					}
+
+					//скрываем оверлоу, если товаров в корзине нет
+					if ( clientCart.products.length == 0 ) {
+						overlay.fadeOut(300, function() {
+							overlay.off('click');
+							overlay.remove();
+
+							userBar.showOverlay = false;
+						});
+					}
 				};
 			// end of functions
+
+			//добавление кнопки купить удаленному из корзины товару
+			var
+				products = clientCart.products,
+				i,
+				url = "/cart/add-product/",
+				len;
+			// end of vars
+
+				unmarkCartButton = function unmarkCartButton( i, data ) {
+					for ( i = 0, len = products.length; i < len; i++ ) {
+						$('.'+products[i].cartButton.id).html('Купить').removeClass('mBought').attr('href', url + products[i].id);
+					}
+				}
+			// end of functions
+
+			unmarkCartButton();
 
 			$.ajax({
 				type: 'GET',
@@ -4098,7 +4358,6 @@ $(document).ready(function() {
 					partials = template.data('partial'),
 				// end of vars
 
-				html = Mustache.render(template.html(), data, partials);
 				html = Mustache.render(template.html(), data, partials);
 
 				cartWrap.addClass('mEmpty');

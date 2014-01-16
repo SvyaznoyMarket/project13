@@ -170,9 +170,21 @@ class IndexAction {
         */
 
         // получаем отзывы для товара
-        $reviewsData = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->getReviews($product->getId(), 'user') : [];
-        $reviewsDataPro = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->getReviews($product->getId(), 'pro') : [];
-        $reviewsDataSummary = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->prepareReviewsDataSummary($reviewsData, $reviewsDataPro) : [];
+        $reviewsData = [];
+        $reviewsDataPro = [];
+        $reviewsDataSummary = [];
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
+                $reviewsData = (array)$data;
+            });
+            \RepositoryManager::review()->prepareData($product->getId(), 'pro', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsDataPro) {
+                $reviewsDataPro = (array)$data;
+            });
+
+            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData, $reviewsDataPro);
+
+            \App::reviewsClient()->execute(\App::config()->reviewsStore['retryTimeout']['default']);
+        }
 
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем уникальные категории-родители аксессуаров

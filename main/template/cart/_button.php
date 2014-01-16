@@ -17,7 +17,7 @@ if (!isset($class)) {
 $class .= ' ' . \View\Id::cartButtonForProduct($product->getId());
 
 if (!$product->isInShopStockOnly()) {
-    $class .= ' jsBuyButton';
+    $class .= ' jsBuyButton btnBuy__eLink';
 }
 
 if (empty($quantity)) {

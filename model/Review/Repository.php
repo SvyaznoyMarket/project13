@@ -19,7 +19,11 @@ class Repository {
     /**
      * Получает информацию по отзывам для товара
      *
-     * @param $product
+     * @param $productId
+     * @param string $reviewsType
+     * @param int $currentPage
+     * @param int $perPage
+     * @internal param $product
      * @return array
      */
     public function getReviews($productId, $reviewsType = '', $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE) {
@@ -28,20 +32,43 @@ class Repository {
 
         $result = [];
 
-        $client->addQuery('list', [
-                'product_id' => $productId,
+        $client->addQuery(
+            'list',
+            [
+                'product_id'   => $productId,
                 'current_page' => $currentPage,
-                'page_size' => $perPage,
-                'type' => $reviewsType,
-            ], [], function($data) use(&$result) {
+                'page_size'    => $perPage,
+                'type'         => $reviewsType,
+            ],
+            [],
+            function($data) use(&$result) {
                 $result = $data;
             },  function(\Exception $e) use (&$exception) {
                 $exception = $e;
                 \App::exception()->remove($e);
-        });
+            }
+        );
         $client->execute(\App::config()->reviewsStore['retryTimeout']['medium']);
 
         return $result;
+    }
+
+    public function prepareData($productId, $reviewsType = '', $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE, $done) {
+        $this->client->addQuery(
+            'list',
+            [
+                'product_id'   => $productId,
+                'current_page' => $currentPage,
+                'page_size'    => $perPage,
+                'type'         => $reviewsType,
+            ],
+            [],
+            $done,
+            function(\Exception $e) use (&$exception) {
+                $exception = $e;
+                \App::exception()->remove($e);
+            }
+        );
     }
 
 
@@ -154,7 +181,7 @@ class Repository {
      * @param $proData
      * @return array
      */
-    public function prepareReviewsDataSummary($userData, $proData) {
+    public function getReviewsDataSummary($userData, $proData) {
         $summaryData = [
             'user' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0],
             'pro' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0],

@@ -47,13 +47,18 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
         <? endif ?>
 
 	    <div class="h3"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
-        <?= $page->render('cart/_button', ['product' => $product]) ?>
-	    <div class="font18 pb10 mSmallBtns">
+
+        <div class="font18 pb10 mSmallBtns">
             <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
             <p class="font16 crossText"><span class="old_price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>
             <? endif ?>
             <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
         </div>
+        <div class="bBtnLine clearfix">
+            <?= $page->render('cart/_button', ['product' => $product]) ?>
+            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a>
+        </div>
+
         <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
 	    <? if ($hasModel): ?>
         <a href="<?= $product->getLink() ?>">

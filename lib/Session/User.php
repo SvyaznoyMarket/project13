@@ -96,6 +96,8 @@ class User {
         $response->headers->setCookie($cookie);
         // }
 
+        $this->enableInfoCookie($response); // SITE-2709
+
         //\RepositoryManager::getUser()->saveEntity($user);
 
         $this->setCacheCookie($response);
@@ -129,9 +131,12 @@ class User {
         $domain = array_pop($domainParts);
         $subdomain = array_pop($domainParts);
 
-        if($response) {
+        if ($response) {
             $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$domain.$tld");
             $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$subdomain.$domain.$tld");
+
+            $response->headers->clearCookie(\App::config()->authToken['authorized_cookie'], '/', "$domain.$tld");
+            $response->headers->clearCookie(\App::config()->authToken['authorized_cookie'], '/', "$subdomain.$domain.$tld");
         }
 
         return $token;
@@ -400,4 +405,43 @@ class User {
         return $this->params;
     }
 
+
+    /**
+     * @param $response
+     */
+    public static function enableInfoCookie(&$response) {
+        $manHost = preg_replace('/^www./', '.', \App::config()->mainHost);
+        $time = time() + \App::config()->session['cookie_lifetime'];
+
+        $cookie = new \Http\Cookie(
+            \App::config()->authToken['authorized_cookie'],
+            true, //cookieValue
+            $time,
+            '/',
+            $manHost,
+            false,
+            false
+        );
+        $response->headers->setCookie($cookie);
+    }
+
+
+    /**
+     * @param $response
+     */
+    public static function disableInfoCookie(&$response) {
+        $manHost = preg_replace('/^www./', '.', \App::config()->mainHost);
+        $time = time() + \App::config()->session['cookie_lifetime'];
+
+        $cookie = new \Http\Cookie(
+            \App::config()->authToken['authorized_cookie'],
+            false, //cookieValue
+            $time,
+            '/',
+            $manHost,
+            false,
+            false
+        );
+        $response->headers->setCookie($cookie);
+    }
 }

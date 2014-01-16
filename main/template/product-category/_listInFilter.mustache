@@ -5,12 +5,12 @@
     <!-- Место для баннера, если баннер то addClass mBannerItem -->
 
     <li class="bCatalogList__eItem{{#active}} mActive{{/active}}"{{#bCatalogList__eItemStyle}} style="{{bCatalogList__eItemStyle}}"{{/bCatalogList__eItemStyle}}>
-        <a class="bCatalogList__eLink" href="{{url}}">
+        <a class="bCatalogList__eLink" {{#css.link}} style="{{css.link}}" {{/css.link}} href="{{url}}">
 				<span class="bCategoriesImg">
 					<img class="bCategoriesImg__eImg" src="{{image}}" alt="{{name}}" />
 				</span>
 
-            <span class="bCategoriesName">{{&name}}</span>
+            <span class="bCategoriesName"{{#css.name}} style="{{css.name}}" {{/css.name}}>{{&name}}</span>
         </a>
     </li>
     {{/links}}
