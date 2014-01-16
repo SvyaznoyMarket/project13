@@ -717,14 +717,22 @@
 		DeliveryBox.prototype.selectPoint = function( data ) {
 			var self = this,
 				newToken = self.state+'_'+data.id,
-				choosenBlock = null;
+				choosenBlock = null,
+				productIds = [],
+				i;
 			// end of vars
 
 			if ( OrderModel.hasDeliveryBox(newToken) ) {
-				choosenBlock = OrderModel.getDeliveryBoxByToken(newToken);
-				choosenBlock.addProductGroup( self.products );
+				// запонимаем массив ids продуктов
+				for ( i = self.products.length - 1; i >= 0; i-- ) {
+					self.products[i].id && productIds.push(self.products[i].id);
+				}
 
-				OrderModel.removeDeliveryBox(self.token);
+				if ( !self._hasProductsAlreadyAdded(productIds) ) {
+					choosenBlock = OrderModel.getDeliveryBoxByToken(newToken);
+					choosenBlock.addProductGroup( self.products );
+					OrderModel.removeDeliveryBox(self.token);
+				}
 			}
 			else {
 
@@ -811,6 +819,9 @@
 				tmpProduct = {};
 			// end of vars
 
+			if ( self._hasProductsAlreadyAdded([product.id]) ) {
+				return;
+			}
 
 			/**
 			 * Если для продукта нет доставки в выбранный пункт доставки, то нужно создать новый блок доставки
@@ -869,6 +880,33 @@
 			self.fullPrice = ENTER.utils.numMethods.sumDecimal(tmpProduct.price, self.fullPrice);
 
 			self.products.push(tmpProduct);
+		};
+
+		/**
+		 * Добавлены ли продукти в блок доставки
+		 *
+		 * @this	{DeliveryBox}
+		 *
+		 * @param	{Array}		ids		Ids продуктов
+		 */
+		DeliveryBox.prototype._hasProductsAlreadyAdded = function( ids ) {
+			var
+				self = this,
+				exist = false,
+				i;
+			// end of vars
+
+			if ( ids === undefined || !ids.length ) {
+				return exist;
+			}
+
+			for ( i = self.products.length - 1; i >= 0; i-- ) {
+				if ( -1 !== $.inArray( self.products[i].id, ids ) ) {
+					exist = true;
+				}
+			}
+
+			return exist;
 		};
 
 		/**
@@ -1115,7 +1153,7 @@
 			if ( self.choosenDate().intervals.length !== 0 ) {
 				self.choosenInterval( self.choosenDate().intervals[0] );
 			}
-			
+
 			self.makeCalendar();
 		};
 
