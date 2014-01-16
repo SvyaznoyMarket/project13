@@ -73,6 +73,10 @@ class Action {
         $client = \App::coreClientV2();
 
         $action = null;
+        $email = null;
+        $hasbro = null;
+        $error = null;
+
         try {
             $token = $request->get('confirm_token');
             if (!$token) {
@@ -84,28 +88,57 @@ class Action {
                 throw new \Exception('Не получен email подтверждения подписки');
             }
 
+            $hasbro = $request->get('hasbro');
+
             $client->addQuery('subscribe/use-token', ['token' => $token], [],
                 function($data) use (&$action) {
                     if (isset($data['action'])) {
                         $action = (string)$data['action'];
                     }
                 },
-                function (\Exception $e) {
+                function (\Exception $e) use (&$error) {
+                    $error = [
+                        'code'    => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
                     \App::exception()->remove($e);
                 }
             );
             $client->execute(\App::config()->coreV2['retryTimeout']['huge'], \App::config()->coreV2['retryCount']);
         } catch (\Exception $e) {
+            $error = [
+                'code' => $e->getCode(),
+                'message'  =>  $e->getMessage()
+             ];
             \App::logger()->error($e);
         }
 
-        /*
-        $page = new \View\Subscribe\ConfirmPage();
-        $page->setParam('action', $action);
+        if (empty($error)) {
+            if (empty($email)) $error = ['message' => 'Не получен емейл пользователя'];
+                elseif (empty($action)) $error = ['message' => 'Не получен ожидаемый ответа ядра'];
+        }
 
-        return new \Http\Response($page->show());
-        */
+        // 910 - код дубликата, если email уже подписан на этот канал рассылок
+        /*if (!empty($error) && 910 != $error['code'] ) {
+            $page = new \View\Subscribe\ConfirmPage();
+            $page->setParam('action', $action);
+            $page->setParam('error', $error);
+            $page->setParam('email', $email);
 
-        return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => 'subscribe_friends', 'email' => $email], true));
+            return new \Http\Response($page->show());
+        }*/
+
+        $redirectToken = 'subscribe_friends';
+        if (1 == $hasbro) {
+            $redirectToken = 'hasbro_email_confirm';
+
+            if (!empty($error['code']) && 910 == $error['code']) {
+                $redirectToken = 'hasbro_email_confirm_repeat';
+            }
+        }
+
+        return new \Http\RedirectResponse(
+            \App::router()->generate('content', ['token' => $redirectToken, 'email' => $email], true)
+        );
     }
 }

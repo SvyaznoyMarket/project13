@@ -11,6 +11,7 @@ class ShowAction {
      * @param bool $showState
      * @param \View\Cart\ProductButtonAction $cartButtonAction
      * @param \View\Product\ReviewCompactAction $reviewtAction
+     * @param int $imageSize
      * @return array
      */
     public function execute(
@@ -20,7 +21,8 @@ class ShowAction {
         $buyMethod = null,
         $showState = true,
         $cartButtonAction = null,
-        $reviewtAction = null
+        $reviewtAction = null,
+        $imageSize = 2
     ) {
         /** @var $product \Model\Product\CompactEntity */
 
@@ -59,7 +61,7 @@ class ShowAction {
                 : null
             ,
             'cartButton'   => [],
-            'image'        => $product->getImageUrl(2),
+            'image'        => $product->getImageUrl($imageSize),
             'price'        => $helper->formatPrice($product->getPrice()),
             'oldPrice'     => null,
             'isBuyable'    => $product->getIsBuyable(),

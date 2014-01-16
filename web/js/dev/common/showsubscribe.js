@@ -1,10 +1,9 @@
 /**
  * Всплывающая синяя плашка с предложением о подписке
  * Срабатывает при возникновении события showsubscribe.
- * см.BlackBox startAction
  *
  * @author		Zaytsev Alexandr
- * @requires	jQuery, jQuery.emailValidate, docCookies
+ * @requires	jQuery, FormValidator, docCookies
  * 
  * @param		{event}		event
  * @param		{Object}	subscribe			Информация о подписке
@@ -12,17 +11,49 @@
  * @param		{Boolean}	subscribe.show		Показывали ли пользователю плашку с предложением о подписке
  */
 ;(function() {
-	var lboxCheckSubscribe = function lboxCheckSubscribe( event, subscribe ) {
+	var
+		body = $('body'),
+		subscribeCookieName = 'subscribed',
+		lboxCheckSubscribe = function lboxCheckSubscribe( event ) {
 
-		var notNowShield = $('.bSubscribeLightboxPopupNotNow'),
+		var
+			notNowShield = $('.bSubscribeLightboxPopupNotNow'),
 			subPopup = $('.bSubscribeLightboxPopup'),
 			input = $('.bSubscribeLightboxPopup__eInput'),
-			submitBtn = $('.bSubscribeLightboxPopup__eBtn');
+			submitBtn = $('.bSubscribeLightboxPopup__eBtn' ),
+			subscribe = {
+				'show': !window.docCookies.hasItem(subscribeCookieName),
+				'agreed': 1 === window.docCookies.getItem(subscribeCookieName)
+			},
+			inputValidator = new FormValidator({
+				fields: [
+					{
+						fieldNode: input,
+						customErr: 'Неправильный емейл',
+						required: true,
+						email: true,
+						validBy: 'isEmail'
+					}
+				]
+			} ),
+			runValidation = function runValidation() {
+				inputValidator.validate({
+					onInvalid: function( err ) {
+						console.log('Email is invalid');
+						console.log(err);
+					},
+					onValid: function() {
+						console.log('Email is valid');
+					}
+				});
+			};
 		// end of vars
-		
 
-		var subscribing = function subscribing() {
-				var email = input.val(),
+
+		var
+			subscribing = function subscribing() {
+				var
+					email = input.val(),
 					url = $(this).data('url');
 				//end of vars
 				
@@ -80,17 +111,6 @@
 
 		input.placeholder();
 
-		input.emailValidate({
-			onValid: function() {
-				input.removeClass('mError');
-				submitBtn.removeClass('mDisabled');
-			},
-			onInvalid: function() {
-				submitBtn.addClass('mDisabled');
-				input.addClass('mError');
-			}
-		});
-
 		if ( !subscribe.show ) {
 			if ( !subscribe.agreed ) {
 				subscribeLater();
@@ -101,7 +121,10 @@
 		else {
 			subscribeNow();
 		}
+
+		input.bind('keyup', runValidation);
 	};
 
-	$('body').bind('showsubscribe', lboxCheckSubscribe);
+	body.bind('showsubscribe', lboxCheckSubscribe);
+	body.trigger('showsubscribe');
 }());

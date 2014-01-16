@@ -23,6 +23,7 @@ $c->debug = false;
 $c->logger['pretty'] = false;
 $c->appName = 'Enter';
 $c->authToken['name']     = '_token';
+$c->authToken['authorized_cookie'] = '_authorized';
 $c->sessionToken = 'enter';
 
 $c->session['name']            = 'enter';
@@ -321,7 +322,7 @@ $c->f1Certificate['enabled'] = true;
 $c->coupon['enabled'] = true;
 $c->blackcard['enabled'] = false;
 
-$c->user['corporateRegister'] = true;
+$c->user['corporateRegister'] = false;
 
 $c->database['host']     = 'site-db';
 $c->database['name']     = 'enter';

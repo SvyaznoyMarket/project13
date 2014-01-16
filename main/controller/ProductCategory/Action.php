@@ -377,16 +377,34 @@ class Action {
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 
         $relatedCategories = [];
-        if (!empty($catalogJson['related_categories'])) {
-            \RepositoryManager::productCategory()->prepareCollectionById(
-                (array) $catalogJson['related_categories'],
-                $region,
-                function($data) use (&$relatedCategories) {
-                    foreach ($data as $item) {
-                        $relatedCategories[] = new \Model\Product\Category\Entity($item);
-                    }
+        $categoryConfigById = [];
+        if (!empty($catalogJson['related_categories']) && is_array($catalogJson['related_categories'])) {
+            foreach ((array)$catalogJson['related_categories'] as $relatedCategoryItem) {
+                if (is_scalar($relatedCategoryItem)) {
+                    $categoryConfigById[(int)$relatedCategoryItem] = [
+                        'id' => $relatedCategoryItem,
+                    ];
+                } else if (is_array($relatedCategoryItem) && !empty($relatedCategoryItem['id'])) {
+                    $categoryConfigById[(int)$relatedCategoryItem['id']] = array_merge([
+                        'id'    => null,
+                        'image' => null,
+                        'name'  => null,
+                        'css'   => [],
+                    ], $relatedCategoryItem);
                 }
-            );
+            }
+
+            if ((bool)$categoryConfigById) {
+                \RepositoryManager::productCategory()->prepareCollectionById(
+                    array_keys($categoryConfigById),
+                    $region,
+                    function($data) use (&$relatedCategories, &$categoryConfigById) {
+                        foreach ($data as $item) {
+                            $relatedCategories[] = new \Model\Product\Category\Entity($item);
+                        }
+                    }
+                );
+            }
         }
 
         // поддержка GET-запросов со старыми фильтрами
@@ -517,7 +535,8 @@ class Action {
             &$promoContent,
             &$shopScriptSeo,
             &$shop,
-            &$relatedCategories
+            &$relatedCategories,
+            &$categoryConfigById
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -531,6 +550,7 @@ class Action {
             $page->setGlobalParam('shop', $shop);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
             $page->setParam('relatedCategories', $relatedCategories);
+            $page->setParam('categoryConfigById', $categoryConfigById);
             $page->setParam('viewParams', [
                 'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
             ]);
@@ -731,12 +751,15 @@ class Action {
         // вид товаров
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
         // листалка
-        $limit = \App::config()->product['itemsPerPage'];
+        $itemsPerPage = \App::config()->product['itemsPerPage'];
+        $limit = $itemsPerPage;
         $offset = ($pageNum - 1) * $limit;
 
         // стиль листинга
         $listingStyle = isset($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
-        if ('jewel' !== $listingStyle) {
+
+        $hasBanner = 'jewel' !== $listingStyle ? true : false;
+        if ($hasBanner) {
             // уменшаем кол-во товаров на первой странице для вывода баннера
             $offset = $offset - (1 === $pageNum ? 0 : 1);
             $limit = $limit - (1 === $pageNum ? 1 : 0);
@@ -786,8 +809,11 @@ class Action {
             $limit
         );
 
+        if ($hasBanner) {
+            $productPager->setCount($productPager->count() + 1);
+        }
         $productPager->setPage($pageNum);
-        $productPager->setMaxPerPage($limit);
+        $productPager->setMaxPerPage($itemsPerPage);
         if (self::isGlobal()) {
             $category->setGlobalProductCount($productPager->count());
         } else {
@@ -824,7 +850,7 @@ class Action {
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
                     $productVideosByProduct,
-                    !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle ? $catalogJson['bannerPlaceholder'] : []
+                    !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : []
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -1035,7 +1061,7 @@ class Action {
      */
     public static function isGlobal() {
         return \App::user()->getRegion()->getHasTransportCompany()
-            && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
+        && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
     }
 
     /**

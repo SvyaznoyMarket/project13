@@ -27,7 +27,7 @@ return function (
         <a class="bBankLink" target="_blank" href="#">Условия кредита (<span class="bBankLink__eName">Тинькофф</span>)</a>
     </div>
 
-    <strong>Ежемесячный платеж<sup>**</sup>:
+    <strong class="paymentWrap">Ежемесячный платеж<sup>**</sup>:
         <span id="creditPrice">406</span> <span class="rubl"> p</span>
     </strong>
 
