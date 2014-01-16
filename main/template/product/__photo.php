@@ -148,9 +148,11 @@ return function(
                     <a class="bPhotoLink" href=""></a>
                 </li>
             <? endif ?>
-            <? if (true): //TODO  ?>
-                <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem vFitting">
-                    <a class="bPhotoLink" href=""></a>
+            <? if ($product->checkVFittingResources()): ?>
+                <li class="bPhotoActionOtherAction bPhotoViewer__eItem vFitting">
+                    <!-- TODO: Убрать этот аттр. style и «VF», добавить иконку. /css/bProductSection/img/btn_slider.png -->
+                    <a style="background: #eee;font-size: 30px;text-align: center;line-height: 50px;"
+                        class="bPhotoLink" href="#">VF</a>
                 </li>
             <? endif  ?>
         </ul><!--/view product section -->

@@ -271,9 +271,21 @@ class IndexPage extends \View\DefaultLayout {
             if ((bool)$product->getPhoto3d()) {
                 $config['product.native3d'] = true;
             }
-        }
 
-        $config['product.vFitting'] = true; // Todo
+            $resourcesVF = $product->checkVFittingResources();
+
+            if ((bool)$resourcesVF) {
+                $config['product.vFitting']     = true;
+                $config['product.name']         = $product->getName();
+                $config['product.article']      = $product->getArticle();
+                $config['product.resources']    = $resourcesVF['resources'];
+                $config['product.meshes']       = $resourcesVF['meshes'];
+                $config['product.textures']     = $resourcesVF['textures'];
+                $config['product.marker']       = $resourcesVF['marker'];
+            } else {
+                $config['product.vFitting']     = false;
+            }
+        }
 
         return $this->tryRender('_config', ['config' => $config]);
     }

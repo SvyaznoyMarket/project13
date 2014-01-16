@@ -133,7 +133,8 @@
 	function load_xml_ar_pandra() {
 		$.ajax( {
 			type: "GET",
-			url: "/static/xml/YML.xml",
+			//url: "/static/xml/YML.xml",
+			url: "/static/ARPlugin/xml/YML.xml",
 			dataType: "xml",
 			success: parseXml_ar_pandra
 		} );
@@ -149,15 +150,21 @@
 
 	/**
 	 * Запускает/открывает попап lightbox_me
+	 * При использовании lightbox_me нужно отказаться от resize_ar_pandra(), close_ar_padnra(),  .close_button_ar_pandra
 	 */
 	function runLightBoxMe() {
-		$( "#ar_pandra" ).lightbox_me( {
-			centered: true,
-			closeSelector: '.close',
-			onClose: function () {
-				swfobject.removeSWF( 'pandra_ar_swf' );
-			}
-		} );
+		if ( add_swf_ar_pandra() ) {
+			$( "#ar_pandra" ).lightbox_me( {
+				centered: true,
+				closeSelector: '.close',
+				onClose: function () {
+					swfobject.removeSWF( 'pandra_ar_swf' );
+				}
+			} );
+		}
+		else {
+			alert('Сожалеем, произошла ошибка при открытии. Попробуйте перезагрузить страницу.');
+		}
 	}
 
 	function show_simple_plugin_ar_pandra(mesh, texture) {
@@ -169,25 +176,26 @@
 		}
 		active_ar_pandra = true;
 
-		//$( "body" ).append( "<div id='background_ar_pandra' class='background_ar_pandra'></div>" );
-		$( "body" ).append( "<div id='ar_pandra' class='ar_pandra'>" +
-			"<div class='close_button_ar_pandra'><a href='javascript:close_ar_padnra()'><img src='" + img_path_ar_pandra + "close.png'></a></div>" +
-			"<div class='ar_pandra_content' id='ar_pandra_content'></div>" +
-			"<div class='footer_ar_pandra footer_ar_pandra_simple'>" +
-			"<div><a href='" + marker_pdf_path_ar_pandra + "' target='_blank'>Скачать маркер (.pdf)</a></div>" +
-			"|" +
-			"<div class='powered_by_ar_pandra'><a href='http://www.pandra.ru' alt='pandra' target='_blank'>Разработка - <img src='" + img_path_ar_pandra + "logo.png'></a></div>" +
-			"</div>" +
-			"</div>" );
+		if ( !$('#ar_pandra').length ) {
+			//$( "body" ).append( "<div id='background_ar_pandra' class='background_ar_pandra'></div>" );
+			$( "body" ).append( "<div id='ar_pandra' class='ar_pandra popup'>" +
+				'<i class="close" title="Закрыть">Закрыть</i>' +
+				//"<div class='close_button_ar_pandra'><a href='javascript:close_ar_padnra()'><img src='" + img_path_ar_pandra + "close.png'></a></div>" +
+				"<div class='ar_pandra_content' id='ar_pandra_content'></div>" +
+				"<div class='footer_ar_pandra footer_ar_pandra_simple'>" +
+				"<div><a href='" + marker_pdf_path_ar_pandra + "' target='_blank'>Скачать маркер (.pdf)</a></div>" +
+				"|" +
+				"<div class='powered_by_ar_pandra'><a href='http://www.pandra.ru' alt='pandra' target='_blank'>Разработка - <img src='" + img_path_ar_pandra + "logo.png'></a></div>" +
+				"</div>" +
+				"</div>" );
 
-
-		/*$( "#background_ar_pandra" ).fadeTo( "fast", 0.7, function () {
-		 $( "#ar_pandra" ).show( {options: {easing: "easeOutBack"}, effect: "scale", direction: "horizontal", duration: 200} );
-		 } );*/
+			/*$( "#background_ar_pandra" ).fadeTo( "fast", 0.7, function () {
+			 $( "#ar_pandra" ).show( {options: {easing: "easeOutBack"}, effect: "scale", direction: "horizontal", duration: 200} );
+			 } );*/
+		}
 
 		def_model_ar_pandra = meshes_path_ar_pandra + mesh;
 		def_texture_ar_pandra = textures_path_ar_pandra + texture;
-		add_swf_ar_pandra();
 
 		runLightBoxMe();
 
@@ -201,8 +209,9 @@
 			temp_vis_items_toset_ar_pandra = 0;
 
 		//$( "body" ).append( "<div id='background_ar_pandra' class='background_ar_pandra'></div>" );
-		$( "body" ).append( "<div id='ar_pandra' class='ar_pandra'>" +
-			"<div class='close_button_ar_pandra'><a href='javascript:close_ar_padnra()'><img src='" + img_path_ar_pandra + "close.png'></a></div>" +
+		$( "body" ).append( "<div id='ar_pandra' class='ar_pandra popup'>" +
+			'<i class="close" title="Закрыть">Закрыть</i>' +
+			//"<div class='close_button_ar_pandra'><a href='javascript:close_ar_padnra()'><img src='" + img_path_ar_pandra + "close.png'></a></div>" +
 			"<div class='ar_pandra_content' id='ar_pandra_content'></div>" +
 			"<div class='als-container' id='demo1'>" +
 			"<span class='als-prev'><img src='http://als.musings.it/images/thin_left_arrow.png' alt='prev' title='previous' /></span>" +
@@ -251,7 +260,6 @@
 			circular: "no",
 			autoscroll: "no"
 		} );
-		add_swf_ar_pandra();
 
 		runLightBoxMe();
 
@@ -268,11 +276,12 @@
 	}
 
 	function show_warning_ar_pandra(message) {
-		console.log( "AR_PANDRA: Error! " + message );
+		console.warn( "AR_PANDRA: Error! " + message );
 	}
 
 	function add_swf_ar_pandra() {
 		var
+			succesStatus = false;
 			flashvars = {
 				resourcesLink: resources_path_ar_pandra,
 				defaultModel: def_model_ar_pandra,
@@ -287,23 +296,42 @@
 				name: "pandra_ar_swf"
 			};
 
-		swfobject.embedSWF(
-			swf_path_ar_pandra + "arPrototype.swf",
-			"ar_pandra_content",
-			"640", "480",
-			"11", "expressInstall.swf",
-			flashvars,
-			params,
-			attributes,
-			function (e) {
-				swf_ar_panra = e.ref;
-				//setTimeout( resize_ar_pandra, 200 )
-			}
-		);
+		try {
+			swfobject.embedSWF(
+				swf_path_ar_pandra + "arPrototype.swf",
+				"ar_pandra_content",
+				"640", "480",
+				"11", "expressInstall.swf",
+				flashvars,
+				params,
+				attributes,
+				function (e) {
+					swf_ar_panra = e.ref;
+					if (swf_ar_panra) {
+						succesStatus = true;
+					}
+					//console.log('swf_ar_panra');
+					//console.log(swf_ar_panra);
+					//setTimeout( resize_ar_pandra, 200 )
+				}
+			);
+		}
+		catch ( err ) {
+			var
+				dataToLog = {
+				event: 'swfobject_error',
+				type: 'ошибка загрузки swf pandra',
+				err: err
+			};
+			// end of vars
 
+			ENTER.utils.logError( dataToLog );
+		}
+
+		return succesStatus;
 	}
 
-	function resize_ar_pandra() {
+	/*function resize_ar_pandra() {
 		if ( active_ar_pandra == true ) {
 			var
 				wdiv = $( "#ar_pandra" ),
@@ -315,18 +343,18 @@
 			$( "#ar_pandra" ).css( "top", top );
 			$( "#ar_pandra" ).css( "left", left );
 		}
-	}
+	}*/
 
-	function close_ar_padnra() {
+	/*function close_ar_padnra() {
 		$( "#ar_pandra" ).hide( {options: {easing: "easeInBack"}, effect: "scale", direction: "horizontal", duration: 200, complete: window_hided_ar_padnra} );
-	}
+	}*/
 
-	function window_hided_ar_padnra() {
+	/*function window_hided_ar_padnra() {
 		$( "#background_ar_pandra" ).fadeTo( "fast", 0, function () {
 			$( "#background_ar_pandra" ).remove();
 			$( "#ar_pandra" ).remove();
 		} );
-	}
+	}*/
 
 	function parseXml_ar_pandra(xml) {
 		yml_xml_ar_pandra = xml;

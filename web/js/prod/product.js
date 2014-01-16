@@ -914,7 +914,8 @@
 					});
 				}
 				catch ( err ) {
-					var dataToLog = {
+					var
+						dataToLog = {
 							event: 'swfobject_error',
 							type:'ошибка загрузки swf maybe3d',
 							err: err
@@ -932,40 +933,46 @@
 		loadWithSWF(afterLoad);
 	},
 	loadFitting = function loadFitting() {
-		var f_afterLoad = function f_afterLoad()
-		{
-			var
-				ARPluginLoad = function ARPluginLoad(){
-					if ( 'undefined' === typeof(utils.ARPlugin) ) {
-						console.warn('ARPlugin in not defined');
-						return false;
-					}
-					utils.ARPlugin.init({
-						//type:"advanced",
+		console.log('### LoadFitting BEGIN');
+		var
+			f_afterLoad = function f_afterLoad()
+			{
+				var
+					ARPluginLoad = function ARPluginLoad() {
+						if ( 'undefined' === typeof(utils.ARPlugin) ) {
+							console.warn('ARPlugin is not defined');
+							return false;
+						}
+						utils.ARPlugin.init({
+							//type:"advanced",
+							type:"simple",
+							js:"/js/prod/",
+							css:"/styles/ARPlugin/",
+							img:"/styles/ARPlugin/img/",
+							swf:"/styles/ARPlugin/swf/",
+							resources:		pageConfig['product.resources'],
+							meshes_path:	pageConfig['product.meshes'],
+							textures_path:	pageConfig['product.textures'],
+							marker_path:	pageConfig['product.marker']
+						});
 
-						type:"simple",
+						fittingPopupShow = function( e ) {
+							e.preventDefault();
+							if ( typeof _gaq !== 'undefined' ) {
+								_gaq.push(['_trackEvent', '3D-primerochnaya', pageConfig['product.name'], 'click']);
+							}
+							utils.ARPlugin.show(
+								pageConfig['product.article'] + '.obj',
+								pageConfig['product.article'] + '.png'
+							);
+						};
 
-						js:"/static/js/",
-						css:"/static/css/",
-						img:"/static/img/",
-						swf:"/static/swf/",
-						resources:"/static/resources/",
-						meshes_path:"/static/resources/model/",
-						textures_path:"/static/resources/model/",
-						marker_path:"http://pandragames.ru/enter_marker.pdf"
-					});
-
-					fittingPopupShow = function( e ) {
-						e.preventDefault();
-						utils.ARPlugin.show('watch_1.obj','watch_1.png');
+						$('.vFitting').bind('click', fittingPopupShow);
 					};
 
-					$('.vFitting').bind('click', fittingPopupShow);
-				};
+				$LAB.script('ARPlugin.min.js').wait(ARPluginLoad);
 
-			$LAB.script('ARPlugin.min.js').wait(ARPluginLoad);
-
-		};
+			};
 
 		loadWithSWF(f_afterLoad);
 	};
