@@ -23,6 +23,11 @@ class Menu {
      * @return \Model\Menu\Entity[]
      */
     public function generate() {
+        static $instance;
+        if ($instance) {
+            return $instance;
+        }
+
         $isFailed = false;
         $this->repository->prepareCollection(function($data) {
             $this->prepareMenu($data['item']);
@@ -55,6 +60,7 @@ class Menu {
 
         $this->fillMenu($this->menu);
 
+        $instance = $this->menu;
         return $this->menu;
     }
 
@@ -153,4 +159,38 @@ class Menu {
             $iMenu->child[] = $child;
         }
     }
+
+
+    /**
+     * По названию токена находит в меню категорию с её подкатегориями
+     *
+     * @param   string $token
+     * @param   null |\Model\Menu\Entity[] $menuTree
+     * @return  false|\Model\Menu\Entity
+     */
+    public function findByToken($soughtToken, $menuTree = null) {
+        $found = false;
+        if (null === $menuTree) {
+            $menuTree = $this->generate();
+        }
+
+        foreach ($menuTree as $iMenu) {
+            if (!is_object($iMenu)) continue;
+
+            $menuToken = preg_replace('/.*\//', '', $iMenu->link);
+            if ($soughtToken == $menuToken) {
+                $found = $iMenu;
+                break;
+            }
+
+            if ((bool)$iMenu->child /*&& $recursionDepth < self::MAX_RECURSION_DEPTH*/) {
+                $found = $this->findByToken($soughtToken, $iMenu->child);
+                if ((bool)$found) {
+                    break;
+                }
+            }
+        }
+        return $found;
+    }
+
 }
