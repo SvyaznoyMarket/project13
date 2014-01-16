@@ -2221,11 +2221,12 @@ img[height="0"] {
 /*------TCHIBO - верхнее меню Чибо, под продуктовым меню------*/
 @media all {
   .tchiboMenuWrap {
-    margin: 0 0 -9px -10px;
+    margin: 0 0 0 -10px;
     width: 960px;
-    height: 51px;
-    overflow: hidden;
-    top: -9px;
+    height: 42px;
+    top: 0;
+    border-top: 1px solid #929292;
+    background: #002958;
     color: #ffffff;
     position: relative;
   }
@@ -2233,18 +2234,15 @@ img[height="0"] {
     background: url("/styles/brandMenu/img/menu_corner.gif") no-repeat 0 0;
     position: absolute;
     content: "";
-    top: 1px;
+    top: -9px;
     right: 40px;
     width: 16px;
     height: 9px;
   }
   .tchiboMenu {
     display: table;
-    border-top: 1px solid #929292;
-    background: #002958;
     padding: 0 5px;
     height: 42px;
-    margin-top: 9px;
   }
   .tchiboMenu .tchiboLogo {
     display: table-cell;
@@ -2259,7 +2257,7 @@ img[height="0"] {
     position: relative;
   }
   .tchiboMenu .categoryList {
-    width: 4000px;
+    width: 1200px;
   }
   .tchiboMenu .categoryList__item {
     display: inline-block;
@@ -2277,6 +2275,7 @@ img[height="0"] {
     position: absolute;
     top: 0;
     height: 42px;
+    display: none;
     width: 37px;
   }
   .tchiboMenu .sliderBtn.mLeftBtn {
