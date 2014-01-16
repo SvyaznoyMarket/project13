@@ -970,7 +970,12 @@ var DirectCredit = {
 				//  }
 					
 				// }               
-				self.output.text( window.printPrice( Math.ceil( result.payment ) ) );
+				if ( 0 > result.payment ) {
+					self.output.text( window.printPrice( Math.ceil( result.payment ) ) );
+				}
+				else {
+					self.output.parent('.paymentWrap').hide();
+				}
 				PubSub.publish( 'bankAnswered', null );
 			}
 		);
