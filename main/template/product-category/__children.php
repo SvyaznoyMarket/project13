@@ -20,6 +20,7 @@ return function(
             'url'    => $child->getLink(),
             'image'  => isset($config['image']) ? $config['image'] : $child->getImageUrl(),
             'active' => false,
+            'css'    => isset($config['css']) ? $config['css'] : null,
         ];
     }
 ?>
