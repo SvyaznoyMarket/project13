@@ -2,11 +2,10 @@
 
 namespace EnterSite\Model\Product;
 
-use EnterSite\Model\ImportConstructorTrait;
-use EnterSite\Model\ImportInterface;
+use EnterSite\Model\ImportArrayConstructorTrait;
 
-class IdPager implements ImportInterface {
-    use \EnterSite\Model\ImportConstructorTrait;
+class IdPager {
+    use \EnterSite\Model\ImportArrayConstructorTrait;
 
     /** @var array */
     public $id;

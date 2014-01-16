@@ -2,10 +2,7 @@
 
 namespace EnterSite\Model;
 
-/**
- * @method import
- */
-trait ImportConstructorTrait {
+trait ImportArrayConstructorTrait {
     /**
      * @param array $data
      */
@@ -14,4 +11,6 @@ trait ImportConstructorTrait {
             $this->import($data);
         }
     }
+
+    abstract public function import(array $data);
 }

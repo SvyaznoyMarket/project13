@@ -2,7 +2,7 @@
 
 namespace EnterSite\Model\Product;
 
-use EnterSite\Model\ImportConstructorTrait;
+use EnterSite\Model\ImportArrayConstructorTrait;
 use EnterSite\Model\Product\Category;
 
 class TreeCategory extends Category {

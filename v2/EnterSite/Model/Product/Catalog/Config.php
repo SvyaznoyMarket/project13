@@ -1,12 +1,11 @@
 <?php
 
 namespace EnterSite\Model\Product\Catalog {
-    use EnterSite\Model\ImportInterface;
-    use EnterSite\Model\ImportConstructorTrait;
+    use EnterSite\Model\ImportArrayConstructorTrait;
     use EnterSite\Model\Product\Catalog\Config\BannerPlaceholder;
 
-    class Config implements ImportInterface {
-        use ImportConstructorTrait;
+    class Config {
+        use ImportArrayConstructorTrait;
 
         /** @var BannerPlaceholder */
         public $bannerPlaceholder;
@@ -20,11 +19,10 @@ namespace EnterSite\Model\Product\Catalog {
 }
 
 namespace EnterSite\Model\Product\Catalog\Config {
-    use EnterSite\Model\ImportInterface;
-    use EnterSite\Model\ImportConstructorTrait;
+    use EnterSite\Model\ImportArrayConstructorTrait;
 
-    class BannerPlaceholder implements ImportInterface {
-        use ImportConstructorTrait;
+    class BannerPlaceholder {
+        use ImportArrayConstructorTrait;
 
         /** @var int */
         public $position;

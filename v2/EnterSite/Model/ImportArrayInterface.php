@@ -2,7 +2,7 @@
 
 namespace EnterSite\Model;
 
-interface ImportInterface {
+interface ImportArrayInterface {
     /**
      * @param array $data
      */

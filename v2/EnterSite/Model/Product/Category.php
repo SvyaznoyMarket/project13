@@ -2,11 +2,10 @@
 
 namespace EnterSite\Model\Product;
 
-use EnterSite\Model\ImportConstructorTrait;
-use EnterSite\Model\ImportInterface;
+use EnterSite\Model\ImportArrayConstructorTrait;
 
-class Category implements ImportInterface {
-    use \EnterSite\Model\ImportConstructorTrait;
+class Category {
+    use \EnterSite\Model\ImportArrayConstructorTrait;
 
     /** @var string */
     public $id;

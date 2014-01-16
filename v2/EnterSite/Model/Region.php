@@ -2,11 +2,10 @@
 
 namespace EnterSite\Model;
 
-use EnterSite\Model\ImportConstructorTrait;
-use EnterSite\Model\ImportInterface;
+use EnterSite\Model\ImportArrayConstructorTrait;
 
-class Region implements ImportInterface {
-    use ImportConstructorTrait;
+class Region {
+    use ImportArrayConstructorTrait;
 
     /** @var string */
     public $id;
