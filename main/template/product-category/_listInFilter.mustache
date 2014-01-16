@@ -7,7 +7,9 @@
     <li class="bCatalogList__eItem{{#active}} mActive{{/active}}"{{#bCatalogList__eItemStyle}} style="{{bCatalogList__eItemStyle}}"{{/bCatalogList__eItemStyle}}>
         <a class="bCatalogList__eLink" {{#css.link}} style="{{css.link}}" {{/css.link}} href="{{url}}">
 				<span class="bCategoriesImg">
+                {{#image}}
 					<img class="bCategoriesImg__eImg" src="{{image}}" alt="{{name}}" />
+                {{/image}}
 				</span>
 
             <span class="bCategoriesName"{{#css.name}} style="{{css.name}}" {{/css.name}}>{{&name}}</span>
