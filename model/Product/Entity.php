@@ -412,6 +412,49 @@ class Entity extends BasicEntity {
     }
 
     /**
+     * @param   string      $resourcesPath
+     * @return  array|bool
+     */
+    public function checkVFittingResources() {
+        static $instance;
+        if ($instance) {
+            return $instance;
+        }
+
+        $resourcesPath = \App::config()->appDir;
+        $resourcesLink = "http://" . \App::config()->mainHost;
+        $vfSuffix = '/styles/ARPlugin';
+
+        /*
+        // TODO: включить кросс-доменные запросы для флеша, вынести данные,
+        // модели и текстуры из /styles/ARPlugin/ и перенести на CMS.enter.ru либо CONTENT.enter.ru
+        $resourcesPath = \App::config()->cmsDir;
+        $vfSuffix = '/resources/virtual_fitting';
+        $resourcesLink = str_replace('/v1/','', \App::config()->dataStore['url']);
+        */
+
+        $resourcesPath .= '/web' . $vfSuffix; // TODO: перенести файлы данных и убрать отсюда '/web'
+        $resourcesLink .= $vfSuffix;
+
+        if (
+            !file_exists($resourcesPath . '/meshes/' .   $this->getArticle().'.obj') ||
+            !file_exists($resourcesPath . '/textures/' . $this->getArticle().'.png')
+        ) {
+            return false;
+        }
+
+        $res = [
+            'resources'     => $resourcesLink . '/resources/',
+            'meshes'        => $resourcesLink . '/meshes/',
+            'textures'      => $resourcesLink . '/textures/',
+            'marker'        => 'http://pandragames.ru/enter_marker.pdf',
+        ];
+
+        $instance = $res;
+        return $res;
+    }
+
+    /**
      * @param int $modelId
      */
     public function setModelId($modelId = null) {
