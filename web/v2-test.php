@@ -26,6 +26,7 @@ spl_autoload_register(function ($class) {
 register_shutdown_function(function () use (&$startAt) {
     $error = error_get_last();
     if ($error && (error_reporting() & $error['type'])) {
+        echo PHP_EOL . 'Ошибка:' . PHP_EOL;
         var_dump($error);
     }
 
@@ -47,4 +48,5 @@ $request = new \Enter\Http\Request(
 );
 
 $action = new \EnterSite\Action\Page\ProductCatalog\ChildCategory\GetObjectByHttpRequest();
-$action->execute($request);
+$page = $action->execute($request);
+var_dump($page);

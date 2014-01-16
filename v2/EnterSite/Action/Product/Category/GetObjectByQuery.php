@@ -28,8 +28,7 @@ class GetObjectByQuery {
             try {
                 $item = array_merge($item, $adminQuery->getResult());
             } catch (\Exception $e) {
-                var_dump($e);
-                // TODO $httpResponse->status = 500;
+                trigger_error(sprintf('Некорректный ответ от admin-сервиса: %s', $e->getMessage()), E_USER_ERROR);
             }
         }
 

@@ -2,10 +2,10 @@
 
 namespace EnterSite\Action\Page\ProductCatalog\ChildCategory;
 
-use Enter\Http\Response;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
-use Enter\Http\Request;
+use Enter\Http\Request as HttpRequest;
+use Enter\Exception\PermanentlyRedirect;
 use EnterSite\Action\PageNum\GetByHttpRequest as GetPageNum;
 use EnterSite\Action\Region\GetObjectByQuery as GetRegion;
 use EnterSite\Action\Product\Category\GetTokenByHttpRequest as GetProductCategoryToken;
@@ -23,6 +23,7 @@ use EnterSite\Curl\Query\Product\Category\GetAncestryItemByCategoryObject as Get
 use EnterSite\Curl\Query\Product\GetIdPagerByRequestFilter as GetProductIdPagerQuery;
 use EnterSite\Curl\Query\Product\GetListByIdList as GetProductListQuery;
 use EnterSite\Curl\Query\Product\Catalog\Config\GetItemByProductCategoryObject as GetCatalogConfigQuery;
+use EnterSite\Model\Page\ProductCatalog\ChildCategory as Page;
 
 class GetObjectByHttpRequest {
     use \EnterSite\ConfigTrait;
@@ -31,18 +32,23 @@ class GetObjectByHttpRequest {
         ConfigTrait::getConfig insteadof CurlClientTrait;
     }
 
-    public function execute(Request $request) {
+    /**
+     * @param HttpRequest $httpRequest
+     * @return \EnterSite\Model\Page\ProductCatalog\ChildCategory
+     * @throws \Enter\Exception\PermanentlyRedirect
+     */
+    public function execute(HttpRequest $httpRequest) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
 
         // токен категории
-        $productCategoryToken = (new GetProductCategoryToken())->execute($request);
+        $productCategoryToken = (new GetProductCategoryToken())->execute($httpRequest);
 
         // номер страницы
-        $pageNum = (new GetPageNum())->execute($request);
+        $pageNum = (new GetPageNum())->execute($httpRequest);
 
         // запрос региона
-        $regionQuery = new GetRegionQuery($request);
+        $regionQuery = new GetRegionQuery($httpRequest);
         $curl->prepare($regionQuery);
 
         $curl->execute();
@@ -65,7 +71,10 @@ class GetObjectByHttpRequest {
         // категория
         $category = (new GetCategory())->execute($productCategoryItemQuery, $productCategoryAdminItemQuery);
         if ($category->redirectLink) {
-            return new Response($category->redirectLink, Response::STATUS_MOVED_PERMANENTLY);
+            $redirect = new PermanentlyRedirect();
+            $redirect->setLink($category->redirectLink);
+
+            throw $redirect;
         }
 
         // запрос предка категории
@@ -78,10 +87,10 @@ class GetObjectByHttpRequest {
         $ancestryCategory = (new GetAncestryCategory())->execute($ancestryCategoryItemQuery);
 
         // фильтры в запросе
-        $requestFilters = (new GetRequestFilterList())->execute($request);
+        $requestFilters = (new GetRequestFilterList())->execute($httpRequest);
 
         // сортировка
-        $sorting = (new GetSorting())->execute($request);
+        $sorting = (new GetSorting())->execute($httpRequest);
 
         // запрос настроек каталога
         $catalogConfigQuery = new GetCatalogConfigQuery($ancestryCategory);
@@ -99,7 +108,6 @@ class GetObjectByHttpRequest {
 
         // настройки каталога
         $catalogConfig = (new GetCatalogConfig())->execute($catalogConfigQuery);
-        var_dump($catalogConfig);
 
         // запрос списка товаров
         $productListQuery = new GetProductListQuery($productIdPager->id, $region);
@@ -109,5 +117,13 @@ class GetObjectByHttpRequest {
 
         // список товаров
         $products = (new GetProductList())->execute($productListQuery);
+
+        $response = new Page(
+            $region,
+            $category,
+            $products
+        );
+
+        return $response;
     }
 }
