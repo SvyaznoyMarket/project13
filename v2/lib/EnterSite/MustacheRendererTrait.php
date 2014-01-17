@@ -21,7 +21,7 @@ trait MustacheRendererTrait {
                 'template_class_prefix' => $config->templateClassPrefix,
                 'cache'                 => $config->cacheDir,
                 'loader'                => new \Mustache_Loader_FilesystemLoader($config->templateDir),
-                'partials_loader'       => new FilesystemAliasLoader($config->templateDir),
+                //'partials_loader'       => new FilesystemAliasLoader($config->templateDir),
                 'escape'                => function($value) {
                     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
                 },

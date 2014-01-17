@@ -30,11 +30,11 @@ namespace EnterSite\Model\Page\ProductCatalog {
             $this->content = new ChildCategory\Content();
 
             foreach ($products as $product) {
-                $productCard = new ChildCategory\Content\ProductCard();
+                $productCard = new ChildCategory\Content\ProductBlock\ProductCard();
                 $productCard->name = $product->name;
                 $productCard->url = $product->link;
 
-                $this->content->productCards[] = $productCard;
+                $this->content->productBlock[] = $productCard;
             }
         }
     }
@@ -42,12 +42,19 @@ namespace EnterSite\Model\Page\ProductCatalog {
 
 namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
     class Content {
-        /** @var Content\ProductCard[] */
-        public $productCards = [];
+        /** @var Content\ProductBlock\ProductCard[] */
+        public $productBlock = [];
     }
 }
 
 namespace EnterSite\Model\Page\ProductCatalog\ChildCategory\Content {
+    class ProductBlock {
+        /** @var ProductBlock\ProductCard[] */
+        public $list = [];
+    }
+}
+
+namespace EnterSite\Model\Page\ProductCatalog\ChildCategory\Content\ProductBlock {
     class ProductCard {
         /** @var string */
         public $name;
