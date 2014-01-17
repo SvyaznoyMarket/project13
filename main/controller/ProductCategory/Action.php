@@ -413,11 +413,14 @@ class Action {
         }
 
         if ($categoryClass) {
-            $controller = null;
-            if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
-                $controller = new \Controller\Jewel\ProductCategory\Action();
+            if ('jewel' == $categoryClass) {
+                if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\categoryDirect', 134);
 
-                return $controller->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
+                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
+            } else if ('grid' == $categoryClass) {
+                if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Grid.child', 134);
+
+                return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($category, $request);
             }
 
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
@@ -433,9 +436,8 @@ class Action {
                         /*$route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
                         $response = new \Http\RedirectResponse($route);
                         $response->headers->set('referer', \App::request()->getUri());*/
-                        $controller = new \Controller\Region\Action();
                         \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
-                        $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
+                        $response = (new \Controller\Region\Action())->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
                         return $response;
                     }
                 }
