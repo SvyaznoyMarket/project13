@@ -714,7 +714,7 @@ return [
     // tchobo
     'tchobo.category' => [
         'pattern' => '/tchibo/{categoryPath}',
-        'action'  => ['Tchibo\CategoryAction', 'execute'],
+        'action'  => ['Tchibo\CategoryAction', 'executeByPath'],
     ],
 
     // enterprize

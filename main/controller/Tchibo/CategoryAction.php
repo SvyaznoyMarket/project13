@@ -3,8 +3,13 @@
 namespace Controller\Tchibo;
 
 class CategoryAction {
-
-    public function execute(\Http\Request $request, $categoryPath) {
+    /**
+     * @param \Http\Request $request
+     * @param $categoryPath
+     * @return \Http\RedirectResponse|\Http\Response
+     * @throws \Exception\NotFoundException
+     */
+    public function executeByPath(\Http\Request $request, $categoryPath) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $region = \App::user()->getRegion();
@@ -85,6 +90,19 @@ class CategoryAction {
         if (!$category) {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
         }
+
+        return $this->executeByEntity($category, $request);
+    }
+
+    /**
+     * @param \Model\Product\Category\Entity $category
+     * @param \Http\Request $request
+     * @return \Http\Response
+     */
+    public function executeByEntity(\Model\Product\Category\Entity $category, \Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $region = \App::user()->getRegion();
 
         /** @var $productsById \Model\Product\Entity[] */
         $productsById = [];
