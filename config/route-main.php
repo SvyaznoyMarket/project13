@@ -706,15 +706,17 @@ return [
     ],
 
     // tchobo
+    // TODO: удалить
     'tchobo' => [
         'pattern' => '/tchibo',
         'action'  => ['Tchibo\IndexAction', 'execute'],
     ],
 
     // tchobo
+    // TODO: удалить
     'tchobo.category' => [
         'pattern' => '/tchibo/{categoryPath}',
-        'action'  => ['Tchibo\CategoryAction', 'execute'],
+        'action'  => ['ProductCategory\Grid\ChildAction', 'executeByPath'],
     ],
 
     // enterprize
