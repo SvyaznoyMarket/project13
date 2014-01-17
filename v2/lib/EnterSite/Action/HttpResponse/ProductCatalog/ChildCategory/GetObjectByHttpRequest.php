@@ -1,7 +1,8 @@
 <?php
 
-namespace EnterSite\Action\ProductCatalog\ChildCategory;
+namespace EnterSite\Action\HttpResponse\ProductCatalog\ChildCategory;
 
+use EnterSite\Action\Page\ProductCatalog\ChildCategory\GetObjectByToken;
 use EnterSite\MustacheRendererTrait;
 
 use Enter\Http\Request;
@@ -12,7 +13,7 @@ use EnterSite\Action\PageNum\GetByHttpRequest as GetPageNum;
 use EnterSite\Action\Product\Filter\GetRequestObjectListByHttpRequest as GetRequestFilterList;
 use EnterSite\Action\Product\Sorting\GetObjectByHttpRequest as GetSorting;
 
-class GetHttpResponseByHttpRequest {
+class GetObjectByHttpRequest {
     use MustacheRendererTrait;
 
     public function execute(Request $request) {
@@ -31,7 +32,7 @@ class GetHttpResponseByHttpRequest {
         // сортировка
         $sorting = (new GetSorting())->execute($request);
 
-        $page = (new GetPageByCategoryToken())->execute(
+        $page = (new GetObjectByToken())->execute(
             $regionId,
             $categoryToken,
             $pageNum,

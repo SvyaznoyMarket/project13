@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterSite\Action\ProductCatalog\ChildCategory;
+namespace EnterSite\Action\Page\ProductCatalog\ChildCategory;
 
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
@@ -22,7 +22,7 @@ use EnterSite\Model\Page\ProductCatalog\ChildCategory as Page;
 use EnterSite\Model\Page\ProductCatalog\ChildCategory;
 use EnterSite\MustacheRendererTrait;
 
-class GetPageByCategoryToken {
+class GetObjectByToken {
     use \EnterSite\ConfigTrait;
     //use CurlClientTrait; // https://bugs.php.net/bug.php?id=63911
     use \EnterSite\CurlClientTrait, MustacheRendererTrait {
