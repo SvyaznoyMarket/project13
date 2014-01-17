@@ -14,8 +14,7 @@ ini_set('ignore_repeated_errors', true);
 
 // autoload
 set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, [
-    realpath(__DIR__ . '/../v2'),
-    realpath(__DIR__ . '/../lib'),
+    realpath(__DIR__ . '/../v2/lib'),
 ]));
 spl_autoload_register(function ($class) {
     //echo $class, PHP_EOL;

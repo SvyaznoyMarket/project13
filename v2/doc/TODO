@@ -1,0 +1,8 @@
+-- 2014-01-17
+Настройки приложения загружаются из json-файле, который получается путем:
+    json_encode(new \EnterSite\Config\Application, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+
+При выполнении кода ApplicationConfig это по факту не \EnterSite\Config\Application а \StdClass:
+    \EnterSite\ConfigTrait:
+        $instance = json_decode(file_get_contents('config.json')); // для быстродействия
+Если config.json не удалось распарсить, то настройки загружаются другим путем.

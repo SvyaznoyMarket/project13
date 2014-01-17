@@ -34,12 +34,12 @@
     {{!> metaOg }}
 </head>
 
-<body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
+<body class="{{bodyClassAttribute}}" data-template="{{bodyDataAttribute}}" data-id="{{id}}"{{#config.debug}} data-debug=true{{/config.debug}}>
     {{!> config }}
 
     {{!> adfoxBackground }}
 
-    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+    <div class="wrapper{{#wrapperClass}} {{wrapperClass}}{{/wrapperClass}}"{{#wrapperItemAttribute}} {{wrapperItemAttribute}}{{/wrapperItemAttribute}}>
 
     <header class="header">
         {{!> header }}
@@ -47,8 +47,7 @@
 
     <div class="content clearfix">
         {{!> contentHead }}
-
-        {{!> content }}
+        {{> content }}
     </div><!--/ Контент-->
 
     </div><!--/ Шаблон -->
@@ -151,9 +150,9 @@
         {{!> adriver }}
         {{!> partnerCounter }}
 
-        <? if (\App::config()->analytics['enabled']): ?>
-        <div id="adblenderCommon" class="jsanalytics"></div>
-        <? endif ?>
+        {{#config.analytics.enabled}}
+            <div id="adblenderCommon" class="jsanalytics"></div>
+        {{/config.analytics.enabled}}
     </div>
 </body>
 </html>

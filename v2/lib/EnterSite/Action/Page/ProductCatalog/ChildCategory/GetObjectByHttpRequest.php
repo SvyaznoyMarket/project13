@@ -24,12 +24,15 @@ use EnterSite\Curl\Query\Product\GetIdPagerByRequestFilter as GetProductIdPagerQ
 use EnterSite\Curl\Query\Product\GetListByIdList as GetProductListQuery;
 use EnterSite\Curl\Query\Product\Catalog\Config\GetItemByProductCategoryObject as GetCatalogConfigQuery;
 use EnterSite\Model\Page\ProductCatalog\ChildCategory as Page;
+use EnterSite\MustacheRendererTrait;
 
 class GetObjectByHttpRequest {
     use \EnterSite\ConfigTrait;
     //use CurlClientTrait; // https://bugs.php.net/bug.php?id=63911
-    use \EnterSite\CurlClientTrait {
+    //use MustacheRendererTrait; // https://bugs.php.net/bug.php?id=63911
+    use \EnterSite\CurlClientTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof CurlClientTrait;
+        ConfigTrait::getConfig insteadof MustacheRendererTrait;
     }
 
     /**
@@ -118,12 +121,19 @@ class GetObjectByHttpRequest {
         // список товаров
         $products = (new GetProductList())->execute($productListQuery);
 
-        $response = new Page(
+        $page = new Page(
             $region,
             $category,
             $products
         );
 
-        return $response;
+        $renderer = $this->getRenderer();
+        $renderer->setPartials([
+            'content' => 'page/product-catalog/child-category/content',
+        ]);
+        $content = $renderer->render('layout/default', $page);
+        die($content);
+
+        return $page;
     }
 }
