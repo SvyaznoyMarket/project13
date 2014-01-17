@@ -49,6 +49,6 @@ $request = new \Enter\Http\Request(
     ['geo_id' => '14974']
 );
 
-$action = new \EnterSite\Action\Page\ProductCatalog\ChildCategory\GetObjectByHttpRequest();
-$page = $action->execute($request);
-echo PHP_EOL . json_encode($page, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+$action = new \EnterSite\Action\ProductCatalog\ChildCategory\GetHttpResponseByHttpRequest();
+$response = $action->execute($request);
+echo PHP_EOL . $response->content;
