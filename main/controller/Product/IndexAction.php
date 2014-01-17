@@ -170,9 +170,21 @@ class IndexAction {
         */
 
         // получаем отзывы для товара
-        $reviewsData = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->getReviews($product->getId(), 'user') : [];
-        $reviewsDataPro = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->getReviews($product->getId(), 'pro') : [];
-        $reviewsDataSummary = \App::config()->product['reviewEnabled'] ? \RepositoryManager::review()->prepareReviewsDataSummary($reviewsData, $reviewsDataPro) : [];
+        $reviewsData = [];
+        $reviewsDataPro = [];
+        $reviewsDataSummary = [];
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
+                $reviewsData = (array)$data;
+            });
+            \RepositoryManager::review()->prepareData($product->getId(), 'pro', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsDataPro) {
+                $reviewsDataPro = (array)$data;
+            });
+
+            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData, $reviewsDataPro);
+
+            \App::reviewsClient()->execute(\App::config()->reviewsStore['retryTimeout']['default']);
+        }
 
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем уникальные категории-родители аксессуаров
@@ -189,8 +201,11 @@ class IndexAction {
             array_unshift($accessoryCategory, $firstAccessoryCategory);
         }
 
+        // SITE-2818 Список связанных товаров нужно дозаполнять товарами, полученными от RR по методу CrossSellItemToItems
+        $recommendationRR = (new \Controller\Product\BasicRecommendedAction())->getProductsIdsFromRetailrocket($product, $request, 'CrossSellItemToItems');
+        $relatedId = array_unique(array_merge($product->getRelatedId(), $recommendationRR));
+
         $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 36 : \App::config()->product['itemsInSlider'] * 6);
-        $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $partsId = [];
 
         foreach ($product->getKit() as $part) {
@@ -237,6 +252,14 @@ class IndexAction {
                 if (isset($kit[$item->getId()])) $kit[$item->getId()] = $item;
             }
         }
+
+        // SITE-2818 Из блока "С этим товаром также покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
+        foreach ($related as $key => $item) {
+            if ($item->isInShopOnly() || $item->isInShopStockOnly()) {
+                unset($related[$key]);
+            }
+        }
+        $related = array_slice($related, 0, \App::config()->product['itemsInSlider'] * 2);
 
         // фильтрация связанных товаров
         $notEmpty = function ($related) use ($product) {

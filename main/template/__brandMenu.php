@@ -12,38 +12,33 @@ return function(
         $brandLogo = sprintf(' style="background-image: url(%s);" ', $brandLogo);
     }
 ?>
-<div class="brandMenuWrap">
-    <div class="brandMenu"<?= $css ? "style='$css'": '' ?>>
+<!-- Меню-слайдер подкатегорий, категории Чибо -->
+<div class="tchiboMenuOverflow">
+    <div class="tchiboMenuWrap">
+        <div class="tchiboMenu"<?= $css ? "style='$css'": '' ?>>
 
-        <div class="brandLogo"<?= $brandLogo ?>>
-            <?= $categoryName ?>
-        </div>
-
-        <div class="slideCategory">
-            <div class="slideCategory__inner">
-                <? if (!empty($categoryList)): ?>
-                <ul class="categoryList">
-                    <? foreach ($categoryList as $categoryItem) { ?>
-                    <li class="categoryList__item">
-                        <a class="categoryList__link" href="<?= $categoryItem['link'] ?>"><?= $categoryItem['name'] ?></a>
-                    </li>
-                    <? } ?>
-                    <?/*
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Чистота сама по себе</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Уход за одеждой и шитье</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Дизайн для ванной и душа</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Кухни</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Уход за одеждой и шитье</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Идеальный завтрак</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Чистота сама по себе</a></li>
-                    <li class="categoryList__item"><a class="categoryList__link" href="">Уход за одеждой и шитье</a></li>
-                    */?>
-                </ul>
-                <? endif; ?>
+            <div class="tchiboLogo"<?= $brandLogo ?>>
+                <?= $categoryName ?>
             </div>
-        </div>
 
+            <div class="slideCategory">
+                <div class="tdRelative">
+                    <? if (!empty($categoryList)): ?>
+                    <ul class="categoryList">
+                        <? foreach ($categoryList as $categoryItem) { ?>
+                        <li class="categoryList__item">
+                            <a class="categoryList__link" href="<?= $categoryItem['link'] ?>"><?= $categoryItem['name'] ?></a>
+                        </li>
+                        <? } ?>
+                    </ul>
+                    <? endif; ?>
+                    <div class="sliderBtn mLeftBtn"><a class="sliderBtn__link" href=""></a></div>
+                </div>
+            </div>
+            <div class="sliderBtn mRightBtn"><a class="sliderBtn__link" href=""></a></div>
+        </div>
     </div>
 </div>
+<!-- /Меню-слайдер подкатегорий, категории Чибо -->
 
 <? } ?>

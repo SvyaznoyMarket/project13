@@ -31,7 +31,7 @@ $c->corePrivate['retryTimeout'] = [
     'huge'    => 1.5,
     'forever' => 0,
 ];
-
+/*
 $c->reviewsStore['timeout']      *= 5;
 $c->reviewsStore['retryCount']   = 3;
 $c->reviewsStore['retryTimeout'] = [
@@ -43,6 +43,7 @@ $c->reviewsStore['retryTimeout'] = [
     'huge'    => 3,
     'forever' => 0,
 ];
+*/
 
 $c->wordpress['timeout']        *= 6;
 $c->wordpress['throwException'] = false;

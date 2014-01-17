@@ -1,18 +1,27 @@
-.tchiboMenuWrap {
+.tchiboMenuOverflow {
 	margin: 0 0 -9px -10px;
 	width: 960px;
 	height: 51px;
-	overflow: hidden;
+	position: relative;
 	top: -9px;
+	overflow: hidden;
+}
+
+.tchiboMenuWrap {
+	width: 960px;
+	height: 42px;
+	top: 9px;
+	border-top: 1px solid #929292;
+	background: @tchiboBlue;
 	
 	color: @white;
 	position: relative;
 
 	&:before {
-		background: url("@{base-url}/brandMenu/img/menu_corner.gif") no-repeat 0 0;
+		background: url("@{base-url}/tchiboMenu/img/menu_corner.gif") no-repeat 0 0;
 		position: absolute;
 		content: "";
-		top: 1px;
+		top: -9px;
 		right: 40px;
 		width: 16px;
 		height: 9px;
@@ -21,17 +30,15 @@
 
 .tchiboMenu {
 	display: table;
-	border-top: 1px solid #929292;
-	background: @tchiboBlue;
+	
 	padding: 0 5px;
 	height: 42px;
-	margin-top: 9px;
 
 	.tchiboLogo {
 		display: table-cell;
 		font-weight: bold;
 		line-height: 42px;
-		background: url("@{base-url}/brandMenu/img/logo.png") no-repeat 0 4px;
+		background: url("@{base-url}/tchiboMenu/img/logo.png") no-repeat 0 4px;
 		padding: 0 20px 0 35px;
 	}
 
@@ -42,7 +49,7 @@
 	}
 
 	.categoryList {
-		width: 4000px;
+		width: 1200px;
 
 		&__item {
 			display: inline-block;
@@ -64,6 +71,7 @@
 		position: absolute;
 		top: 0;
 		height: 42px;
+		display: none;
 		width: 37px;
 
 		&.mLeftBtn {
@@ -78,7 +86,7 @@
 
 		&.mRightBtn {
 			right: 0;
-			top: 9px;
+			top: 0;
 		}
 	}
 }
