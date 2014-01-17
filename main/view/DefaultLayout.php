@@ -285,6 +285,7 @@ class DefaultLayout extends Layout {
                 $relatedCategory = (new Menu())->findByToken(
                     $relatedCategoryJson['related_category_token']
                 );
+                if (!$relatedCategory) return '';
 
                 $categoryList = [];
                 foreach ($relatedCategory->child as $iMenu) {
