@@ -64,17 +64,13 @@ class IndexAction extends \Controller\Product\IndexAction {
 
         // получаем отзывы для товара
         $reviewsData = [];
-        $reviewsDataPro = [];
         $reviewsDataSummary = [];
         if (\App::config()->product['reviewEnabled']) {
             \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
                 $reviewsData = (array)$data;
             });
-            \RepositoryManager::review()->prepareData($product->getId(), 'pro', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsDataPro) {
-                $reviewsDataPro = (array)$data;
-            });
 
-            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData, $reviewsDataPro);
+            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData);
         }
 
         // выполнение 2-го пакета запросов
@@ -96,7 +92,6 @@ class IndexAction extends \Controller\Product\IndexAction {
 
         $reviews = [
             'reviewsData' => $reviewsData,
-            'reviewsDataPro' => $reviewsDataPro,
             'reviewsDataSummary' => $reviewsDataSummary,
         ];
 
@@ -253,7 +248,6 @@ class IndexAction extends \Controller\Product\IndexAction {
             'ProductId' => $product->getId(),
         ));
         $page->setParam('reviewsData', $reviews['reviewsData']);
-        $page->setParam('reviewsDataPro', $reviews['reviewsDataPro']);
         $page->setParam('reviewsDataSummary', $reviews['reviewsDataSummary']);
         $page->setParam('viewParams', [
             'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)

@@ -104,17 +104,13 @@ class IndexAction {
 
         // получаем отзывы для товара
         $reviewsData = [];
-        $reviewsDataPro = [];
         $reviewsDataSummary = [];
         if (\App::config()->product['reviewEnabled']) {
             \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
                 $reviewsData = (array)$data;
             });
-            \RepositoryManager::review()->prepareData($product->getId(), 'pro', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsDataPro) {
-                $reviewsDataPro = (array)$data;
-            });
 
-            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData, $reviewsDataPro);
+            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData);
         }
 
         // выполнение 3-го пакета запросов
@@ -344,7 +340,6 @@ class IndexAction {
             'ProductId' => $product->getId(),
         ]);
         $page->setParam('reviewsData', $reviewsData);
-        $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
         $page->setParam('useLens', $useLens);
