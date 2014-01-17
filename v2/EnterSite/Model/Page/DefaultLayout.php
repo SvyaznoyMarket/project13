@@ -9,11 +9,11 @@ namespace EnterSite\Model\Page {
     class DefaultLayout extends Page {
         use RouterTrait;
 
-        /** @var RegionLink */
+        /** @var Page\DefaultLayout\RegionLink */
         public $regionLink;
 
         protected function setRegionLink(Region $region) {
-            $link = new RegionLink();
+            $link = new Page\DefaultLayout\RegionLink();
 
             $link->name = $region->name;
             $link->url = $this->getRouter()->getUrlByRoute(new SetRegionRoute($region));
@@ -23,7 +23,7 @@ namespace EnterSite\Model\Page {
     }
 }
 
-namespace EnterSite\Model\Page {
+namespace EnterSite\Model\Page\DefaultLayout {
     class RegionLink {
         /** string */
         public $name;
