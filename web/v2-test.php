@@ -25,10 +25,11 @@ spl_autoload_register(function ($class) {
 register_shutdown_function(function () use (&$startAt) {
     $error = error_get_last();
     if ($error && (error_reporting() & $error['type'])) {
-        echo PHP_EOL . chr(27) . "[41m". 'Ошибка' . chr(27) . "[0m" . PHP_EOL;
+        echo PHP_EOL . chr(27) . "[41m" . 'Ошибка' . chr(27) . "[0m" . PHP_EOL;
         var_dump($error);
     }
 
+    echo PHP_EOL . chr(27) . "[44m" . 'Отладка' . chr(27) . "[0m";
     echo PHP_EOL . json_encode([
         'time'   => ['value' => round(microtime(true) - $startAt, 3), 'unit' => 'ms'],
         'memory' => ['value' => round(memory_get_peak_usage() / 1048576, 2), 'unit' => 'Mb'],
