@@ -415,7 +415,7 @@ class Action {
         if ($categoryClass) {
             if ('jewel' == $categoryClass) {
                 return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
-            } else if ('tchibo' == $categoryClass) {
+            } else if ('grid' == $categoryClass) {
                 return (new \Controller\Tchibo\CategoryAction())->executeByEntity($category, $request);
             }
 
