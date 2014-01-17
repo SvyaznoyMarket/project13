@@ -10542,8 +10542,14 @@
     padding-top: 20px;
   }
   .bBuyingLine .bDeliverySelf {
-    margin: 32px 0 20px;
+    margin: 21px 0 20px;
     font-size: 14px;
+  }
+  .bBuyingLine .bTimeworkPoint {
+    margin: 5px 0 0;
+  }
+  .bBuyingLine .bSmsAtantion {
+    color: #f79b33;
   }
   .bBuyingLine__eRight {
     display: block;
