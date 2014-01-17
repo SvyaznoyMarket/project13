@@ -47,24 +47,26 @@
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром также покупают',
-            'products'       => array_values($related),
+            'products'       => [],//array_values($related),
             'count'          => count($product->getRelatedId()),
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
             //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
+            'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'additionalData' => $additionalData,
         ]) ?>
     <? endif ?>
 
     <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
-            'type'     => 'alsoViewed',
-            'title'    => 'С этим товаром также смотрят',
+            'type'     => 'similar',
+            'title'    => 'Похожие товары',
             'products' => [],
             'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
-            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
+//            'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
+            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
         ]) ?>
     <? endif ?>
 
@@ -90,13 +92,14 @@
 
     <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
-            'type'     => 'similar',
-            'title'    => 'Похожие товары',
+            'type'     => 'alsoViewed',
+            'title'    => 'С этим товаром также смотрят',
             'products' => [],
             'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
-            'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
+//            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
+            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
         ]) ?>
     <? endif ?>
 </div><!--/left section -->

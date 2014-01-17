@@ -7,9 +7,23 @@
 ;(function( $ ) {
 	$.fn.goodsSlider = function( params ) {
 		var slidersWithUrl = 0,
+			slidersRecommendation = 0,
 			body = $('body'),
-			reqArray = [];
+			reqArray = [],
+			recommendArray = [];
 		// end of vars
+
+		var
+			/**
+			 * Слайдер для рекомендаций
+			 *
+			 * @param type Тип слайдера
+			 * @return bool
+			 */
+			isRecommendation = function isRecommendation( type ) {
+				return -1 == $.inArray(type, ["alsoBought", "similar", "alsoViewed"]) ? false : true;
+			};
+		// end of functions
 
 		this.each(function() {
 			var $self = $(this),
@@ -19,17 +33,41 @@
 			if ( sliderParams.url !== null ) {
 				slidersWithUrl++;
 			}
+
+			if ( sliderParams.type !== null && isRecommendation(sliderParams.type) ) {
+				slidersRecommendation++;
+			}
 		});
 
-		var getSlidersData = function getSlidersData( event, url, callback ) {
-			reqArray.push({
-				type: 'GET',
-				url: url,
-				callback: callback
-			});
+		var getSlidersData = function getSlidersData( event, url, type, callback ) {
+			if ( isRecommendation(type) ) {
+				recommendArray.push({
+					type: type,
+					callback: callback
+				});
 
-			if ( reqArray.length === slidersWithUrl ) {
-				window.ENTER.utils.packageReq(reqArray);
+				if ( recommendArray.length === slidersRecommendation ) {
+					$.ajax({
+						type: 'GET',
+						url: url,
+						success: function( res ) {
+							for (var i in recommendArray) {
+								recommendArray[i].callback(res.recommend[recommendArray[i].type]);
+							}
+						}
+					});
+				}
+			}
+			else {
+				reqArray.push({
+					type: 'GET',
+					url: url,
+					callback: callback
+				});
+
+				if ( reqArray.length === (slidersWithUrl - slidersRecommendation) ) {
+					window.ENTER.utils.packageReq(reqArray);
+				}
 			}
 		};
 
@@ -210,7 +248,7 @@
 
 			if ( sliderParams.url !== null ) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
-					body.trigger('goodsliderneeddata', [sliderParams.url, authFromServer]);
+					body.trigger('goodsliderneeddata', [sliderParams.url, sliderParams.type, authFromServer]);
 				}
 				else {
 					$.ajax({

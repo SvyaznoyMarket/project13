@@ -30,6 +30,17 @@ class BasicRecommendedAction {
     {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        return new \Http\JsonResponse($this->getResponseData($productId, $request));
+    }
+
+
+    /**
+     * @param string        $productId
+     * @param \Http\Request $request
+     * @return array
+     * @throws \Exception\NotFoundException
+     */
+    public function getResponseData($productId, \Http\Request $request) {
         $responseData = [];
 
         try {
@@ -69,18 +80,15 @@ class BasicRecommendedAction {
 
         } catch (\Exception $e) {
             \App::logger()->error($e, [$this->actionType]);
-            return new \Http\JsonResponse([
+
+            $responseData = [
                 'success' => false,
                 'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
-            ]);
+            ];
         }
 
-        return new \Http\JsonResponse($responseData);
-
+        return $responseData;
     }
-
-
-
 
 
     /**
@@ -193,6 +201,22 @@ class BasicRecommendedAction {
     }
 
 
+    /**
+     * @param \Model\Product\Entity     $product
+     * @param \Http\Request             $request
+     * @param string                    $method
+     * @return \Model\Product\Entity[]  $products
+     * @throws \Exception\
+     */
+    public function getProductsIdsFromRetailrocket( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $client = \App::retailrocketClient();
+        $productId = $product->getId();
+        $ids = $client->query('Recomendation/' . $method, $productId);
+
+        return $ids;
+    }
 
 
     /**
@@ -206,17 +230,11 @@ class BasicRecommendedAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         //print '** This is Smartengine Method. Should be ENABLED **'; // tmp, form debug
-
         $client = \App::retailrocketClient();
-
-        $productId = $product->getId();
-
-        $ids = $client->query('Recomendation/' . $method, $productId);
-
+        $ids = $this->getProductsIdsFromRetailrocket( $product, $request, $method);
         $products = $this->prepareProducts($ids, $client::NAME);
 
         return $products;
-
     }
 
 
