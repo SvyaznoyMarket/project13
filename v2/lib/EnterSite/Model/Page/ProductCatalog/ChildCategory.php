@@ -34,7 +34,7 @@ namespace EnterSite\Model\Page\ProductCatalog {
                 $productCard->name = $product->name;
                 $productCard->url = $product->link;
 
-                $this->content->productBlock[] = $productCard;
+                $this->content->productBlock->list[] = $productCard;
             }
         }
     }
@@ -42,8 +42,12 @@ namespace EnterSite\Model\Page\ProductCatalog {
 
 namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
     class Content {
-        /** @var Content\ProductBlock\ProductCard[] */
-        public $productBlock = [];
+        /** @var Content\ProductBlock */
+        public $productBlock;
+
+        public function __construct() {
+            $this->productBlock = new Content\ProductBlock();
+        }
     }
 }
 
