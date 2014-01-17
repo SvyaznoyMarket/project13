@@ -414,9 +414,13 @@ class Action {
 
         if ($categoryClass) {
             if ('jewel' == $categoryClass) {
+                if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\categoryDirect', 134);
+
                 return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
             } else if ('grid' == $categoryClass) {
-                return (new \Controller\Tchibo\CategoryAction())->executeByEntity($category, $request);
+                if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Grid.child', 134);
+
+                return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($category, $request);
             }
 
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));

@@ -1,8 +1,8 @@
 <?php
 
-namespace Controller\Tchibo;
+namespace Controller\ProductCategory\Grid;
 
-class CategoryAction {
+class ChildAction {
     /**
      * @param \Http\Request $request
      * @param $categoryPath
