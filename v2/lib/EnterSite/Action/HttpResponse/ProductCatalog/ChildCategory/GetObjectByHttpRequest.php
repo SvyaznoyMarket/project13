@@ -3,6 +3,7 @@
 namespace EnterSite\Action\HttpResponse\ProductCatalog\ChildCategory;
 
 use EnterSite\Action\Page\ProductCatalog\ChildCategory\GetObjectByToken;
+use EnterSite\ConfigTrait;
 use EnterSite\MustacheRendererTrait;
 
 use Enter\Http\Request;
@@ -14,7 +15,11 @@ use EnterSite\Action\Product\Filter\GetRequestObjectListByHttpRequest as GetRequ
 use EnterSite\Action\Product\Sorting\GetObjectByHttpRequest as GetSorting;
 
 class GetObjectByHttpRequest {
-    use MustacheRendererTrait;
+    use ConfigTrait;
+    //use MustacheRendererTrait;
+    use MustacheRendererTrait {
+        ConfigTrait::getConfig insteadof MustacheRendererTrait;
+    }
 
     public function execute(Request $request) {
         // ид региона
@@ -43,8 +48,11 @@ class GetObjectByHttpRequest {
         $renderer = $this->getRenderer();
         $renderer->setPartials([
             'content' => 'page/product-catalog/child-category/content',
+            //'content' => file_get_contents($this->getConfig()->mustacheRenderer->templateDir . '/page/product-catalog/child-category/content.mustache'),
         ]);
-        $response = new Response($renderer->render('layout/default', $page));
+        $content = $renderer->render('layout/default', $page);
+
+        $response = new Response($content);
 
         return $response;
     }

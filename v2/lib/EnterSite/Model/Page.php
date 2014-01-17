@@ -1,30 +1,18 @@
 <?php
 
 namespace EnterSite\Model {
+    use EnterSite\Model\Page\Meta;
+
     class Page {
-        /**
-         * @name Название
-         * @var string
-         */
+        /** @var string */
         public $name;
-        /**
-         * @name Путь
-         * @var string
-         */
+        /** @var string */
         public $path;
-        /**
-         * @name Заголовок
-         * @var string
-         */
+        /** @var string */
         public $title;
-        /**
-         * @name Заголовок h1
-         * @var string
-         */
+        /** @var string */
         public $header;
-        /**
-         * @var array Meta[]
-         */
+        /** @var Meta[] */
         public $meta = [];
     }
 }

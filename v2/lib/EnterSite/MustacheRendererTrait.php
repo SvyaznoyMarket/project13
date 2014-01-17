@@ -15,8 +15,9 @@ trait MustacheRendererTrait {
             $config = $this->getConfig()->mustacheRenderer;
 
             require_once $config->dir . '/src/Mustache/Autoloader.php';
+            //\Mustache_Autoloader::register($config->dir . '/src');
+            \Mustache_Autoloader::register();
 
-            \Mustache_Autoloader::register($config->dir . '/src');
             $instance = new \Mustache_Engine([
                 'template_class_prefix' => $config->templateClassPrefix,
                 'cache'                 => $config->cacheDir,

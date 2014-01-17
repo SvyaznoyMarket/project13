@@ -25,7 +25,7 @@ spl_autoload_register(function ($class) {
 register_shutdown_function(function () use (&$startAt) {
     $error = error_get_last();
     if ($error && (error_reporting() & $error['type'])) {
-        echo PHP_EOL . 'Ошибка:' . PHP_EOL;
+        echo PHP_EOL . chr(27) . "[41m". 'Ошибка' . chr(27) . "[0m" . PHP_EOL;
         var_dump($error);
     }
 

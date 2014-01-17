@@ -9,6 +9,8 @@ namespace EnterSite\Model\Page {
     class DefaultLayout extends Page {
         use RouterTrait;
 
+        /** @var mixed */
+        public $content;
         /** @var Page\DefaultLayout\RegionLink */
         public $regionLink;
 
@@ -19,6 +21,8 @@ namespace EnterSite\Model\Page {
             $link->url = $this->getRouter()->getUrlByRoute(new SetRegionRoute($region));
 
             $this->regionLink = $link;
+
+            $this->content = 'Undefined';
         }
     }
 }
