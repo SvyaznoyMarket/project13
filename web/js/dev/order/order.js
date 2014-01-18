@@ -79,8 +79,8 @@
 					'Checkout Complete SKU': orderData[i].products[j].article,
 					'Checkout Complete SKU Quantity': orderData[i].products[j].quantity,
 					'Checkout Complete SKU Price': parseInt(orderData[i].products[j].price, 10),
-					'Checkout Complete Parent category': orderData[i].products[j].category[orderData[i].products[j].category.length - 1].id,
-					'Checkout Complete Category name': orderData[i].products[j].category[0].id,
+					'Checkout Complete Parent category': orderData[i].products[j].category[0].name,
+					'Checkout Complete Category name': orderData[i].products[j].category[orderData[i].products[j].category.length - 1].name,
 					'_t':KM.ts() + j + i,
 					'_d':1
 				};
