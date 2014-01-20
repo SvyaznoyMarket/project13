@@ -10566,6 +10566,11 @@
   }
   .bBuyingLine .bSmsAtantion {
     color: #f79b33;
+    float: right;
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
   }
   .bBuyingLine__eRight {
     display: block;
