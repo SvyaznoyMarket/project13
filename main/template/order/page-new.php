@@ -110,7 +110,10 @@ if ($oneClick) {
 						<span data-bind="text: box.deliveryName"></span>
 					</h2>
 
-					<div class="bDeliverySelf"><span data-bind="visible: box.hasPointDelivery, html: box.choosenPoint().name"></span></div>
+					<div class="bDeliverySelf">
+						<span data-bind="visible: box.hasPointDelivery, html: box.choosenPoint().name"></span>
+						<div class="bTimeworkPoint" data-bind="visible: box.hasPointDelivery, html: 'режим работы: <br/> <strong>ежедневно' + box.choosenPoint().regtime + '</strong>'"></div>
+					</div>
 
 					<!-- кнопка сменить магазин -->
 					<a class="bBigOrangeButton mSelectShop" href="#" data-bind="visible: box.hasPointDelivery && box.pointList.length > 1,
@@ -147,15 +150,17 @@ if ($oneClick) {
 					</div>
 					<!-- /Celendar -->
 
-					<div class="bDeliveryDate" data-bind="visible: !$root.lifeGift()">
-						<? /*<span data-bind="visible: hasPointDelivery, 
-										text: box.deliveryName">
-						</span> */?>
 
+					<div class="bDeliveryDate" data-bind="visible: !$root.lifeGift() && !box.hasPointDelivery">
 						<strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span>
 					</div>
 
-					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: box.choosenDate().intervals.length && !$root.lifeGift()">
+					<div class="bDeliveryDate" style="width: 450px;" data-bind="visible: !$root.lifeGift() && box.hasPointDelivery">
+						<strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span>
+						<span class="bSmsAtantion" data-bind="visible: box.hasPointDelivery, text: 'ожидайте смс о готовности заказа'"></span>
+					</div>
+
+					<div class="bSelectWrap mFastInpSmall" data-bind="if: box.choosenDate().intervals.length, visible: !box.hasPointDelivery && box.choosenDate().intervals.length && !$root.lifeGift()">
 						<span class="bSelectWrap_eText" data-bind="text: (!box.hasPointDelivery ? 'c ' + box.choosenInterval().start + ' ' : '') + 'до ' + box.choosenInterval().end"></span>
 						<select class="bSelect" data-bind="options: box.choosenDate().intervals,
 															value: box.choosenInterval,
@@ -234,7 +239,7 @@ if ($oneClick) {
 	<? if (!$oneClick): ?>
 	    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 		<!-- Sale section -->
-		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift(), css: { hidden: paypalECS }">
+		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift(), ">
 			<div class="bBuyingLine">
 				<div class="bBuyingLine__eLeft">
 					<h2 class="bBuyingSteps__eTitle">

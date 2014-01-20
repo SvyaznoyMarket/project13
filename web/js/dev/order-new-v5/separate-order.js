@@ -680,15 +680,15 @@
 			ENTER.OrderModel.couponError('');
 
 			if ( url === undefined ) {
-				console.warn('Не выбран тип сертификата');
-				ENTER.OrderModel.couponError('Не выбран тип сертификата');
+				console.warn('Не выбран тип скидки');
+				ENTER.OrderModel.couponError('Не выбран тип скидки');
 
 				return;
 			}
 
 			if ( dataToSend.number === undefined || !dataToSend.number.length ) {
-				console.warn('Не введен номер сертификата');
-				ENTER.OrderModel.couponError('Не введен номер сертификата');
+				console.warn('Не введен номер');
+				ENTER.OrderModel.couponError('Не введен номер');
 
 				return;
 			}
