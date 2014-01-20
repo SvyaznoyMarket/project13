@@ -11401,6 +11401,12 @@
     text-align: center;
     width: 940px;
   }
+  .bBannerBox div {
+    margin: 0 auto;
+  }
+  .adfoxWrapper div {
+    margin: 0 auto;
+  }
   .bCatalogRoot {
     margin: 0 -20px 15px 0;
   }
