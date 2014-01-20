@@ -178,17 +178,16 @@ class Repository {
      * Подготавливает данные для отображения рейтингов отзывов
      *
      * @param $userData
-     * @param $proData
      * @return array
      */
-    public function getReviewsDataSummary($userData, $proData) {
+    public function getReviewsDataSummary($userData) {
         $summaryData = [
             'user' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0],
-            'pro' => [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0],
         ];
-        foreach (['user' => $userData, 'pro' => $proData] as $type => $data) {
-            if(empty($data['num_users_by_score'])) continue;
-            foreach ($data['num_users_by_score'] as $grade) {
+
+        $type = 'user';
+        if(!empty($userData['num_users_by_score'])) {
+            foreach ($userData['num_users_by_score'] as $grade) {
                 $score = (float)($grade['score']);
                 if($score <= 2.0) {
                     $summaryData[$type][1] += $grade['count'];
@@ -203,6 +202,7 @@ class Repository {
                 }
             }
         }
+
         return $summaryData;
     }
 
