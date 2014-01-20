@@ -79,7 +79,7 @@ class Client {
                 'spend'   => $spend,
             ], ['curl', 'RetailRocket']);
 
-            throw $e;
+            //throw $e; // TODO: исправить на try-catch в местах использования
         }
     }
 
