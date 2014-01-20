@@ -11,6 +11,8 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
+<?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
+
 <h1 class="tchiboTitle"><?= $category->getName() ?></h1>
 
 <? if (false): ?>
