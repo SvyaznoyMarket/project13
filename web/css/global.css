@@ -10550,6 +10550,9 @@
     font-size: 14px;
     min-height: 20px;
   }
+  .bBuyingLine .error_list {
+    margin-top: 10px;
+  }
   .bBuyingLine.mConfirm .bBuyingLine__eRight {
     border-top: 1px solid #ddd;
     padding-top: 20px;
