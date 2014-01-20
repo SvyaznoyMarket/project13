@@ -31,7 +31,7 @@ trait ConfigTrait {
             $instance->adminService->timeout = 2;
             $instance->adminService->retryCount = 2;
 
-            $instance->mustacheRenderer->dir = $instance->dir . '/vendor/mustache';
+            $instance->mustacheRenderer->dir = $instance->dir . '/v2/vendor/mustache';
             $instance->mustacheRenderer->templateDir = $instance->dir . '/v2/template';
             $instance->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';
             $instance->mustacheRenderer->templateClassPrefix = preg_replace('/[^\w]/', '_', $instance->hostname . '_v2' . '-');
