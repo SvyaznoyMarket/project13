@@ -4274,6 +4274,7 @@ $(document).ready(function() {
 			
 			var
 				authFromServer = function authFromServer( res, data ) {
+					console.warn( res );
 					if ( !res.success ) {
 						console.warn('удаление не получилось :(');
 
