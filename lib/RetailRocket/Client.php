@@ -79,7 +79,7 @@ class Client {
                 'spend'   => $spend,
             ], ['curl', 'RetailRocket']);
 
-            throw $e;
+            //throw $e;
         }
     }
 
