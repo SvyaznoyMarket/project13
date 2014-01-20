@@ -737,6 +737,7 @@
 
 				self.token = newToken;
 				self.choosenPoint(OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
+				ENTER.OrderModel.choosenPoint(data.id);
 				console.log(OrderModel.deliveryBoxes());
 
 				if ( OrderModel.paypalECS() ) {
