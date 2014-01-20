@@ -282,23 +282,24 @@ class DefaultLayout extends Layout {
                     $catalogJsonBulk[$categoryToken]['related_category_main'];
 
             if ($relatedCategoryJson && !empty($relatedCategoryJson['related_category_token'])) {
-                $relatedCategory = (new Menu())->findByToken(
-                    $relatedCategoryJson['related_category_token']
-                );
+                $relatedCategory = \RepositoryManager::productCategory()->getEntityByToken(trim((string)$relatedCategoryJson['related_category_token']));
+                if (!$relatedCategory) return '';
+                \RepositoryManager::productCategory()->prepareEntityBranch($relatedCategory, \App::user()->getRegion());
+                \App::coreClientV2()->execute();
+                if (!$relatedCategory) return '';
 
                 $categoryList = [];
-                foreach ($relatedCategory->child as $iMenu) {
-                    /** @var $iMenu \Model\Menu\Entity */
+                foreach ($relatedCategory->getChild() as $child) {
                     $categoryList[] = [
-                        'name'  => $iMenu->name,
-                        'link'  => $iMenu->link,
+                        'name'  => $child->getName(),
+                        'link'  => $child->getLink(),
                     ];
                 }
 
                 $content .= $renderer->render('__brandMenu', [
-                    'css'           => $relatedCategoryJson['css'] ?: '',
-                    'brandLogo'      => $relatedCategoryJson['logo_path'] ?: '',
-                    'categoryName'  => $relatedCategory->name,
+                    'css'           => isset($relatedCategoryJson['css']) ? $relatedCategoryJson['css'] : '',
+                    'brandLogo'     => isset($relatedCategoryJson['logo_path']) ? $relatedCategoryJson['logo_path'] : '',
+                    'categoryName'  => $relatedCategory->getName(),
                     'categoryList'  => $categoryList,
                 ]);
             } // end of if (json has related_category_token)

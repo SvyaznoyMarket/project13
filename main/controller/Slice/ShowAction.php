@@ -374,18 +374,6 @@ class ShowAction {
             return new \Http\RedirectResponse(\App::router()->generate('product.category', ['categoryPath' => $category->getPath()]));
         }
 
-//        if ($categoryClass) {
-//            $controller = null;
-//            if (('jewel' == $categoryClass) && \App::config()->productCategory['jewelController']) {
-//                $controller = new \Controller\Jewel\ProductCategory\Action();
-//
-//                return $controller->categoryDirect($filters, $category,$request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
-//            }
-//
-//            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
-//        }
-
-
         $shop = null;
         try {
             if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {

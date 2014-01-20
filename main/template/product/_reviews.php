@@ -3,7 +3,7 @@
 
   <? if (\App::config()->product['pushReview']): ?>
       <li class="jsLeaveReview bReviewsTabs__eTab bReviewsTabs__eLast" data-pid="<?= $product->getId() ?>">
-        <span class="jsReviewSend">Оставить отзыв</span>
+        <span class="jsReviewSend">Добавить отзыв</span>
       </li>
   <? endif ?>
 </ul>

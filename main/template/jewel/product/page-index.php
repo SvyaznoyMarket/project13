@@ -427,7 +427,7 @@ $productVideo = reset($productVideos);
               <? } ?>
 
               <? if (\App::config()->product['pushReview']): ?>
-                  <span class="reviewSection__link__write jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
+                  <span class="reviewSection__link__write jsLeaveReview" data-pid="<?= $product->getId() ?>">Добавить отзыв</span>
               <? endif ?>
 
               <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
