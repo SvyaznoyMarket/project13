@@ -5585,6 +5585,12 @@
     vertical-align: top;
     width: 24px;
   }
+  .bigcheck.checked {
+    color: #49C7ED;
+  }
+  .bigcheck.checked b {
+    background-position: 0 -81px;
+  }
   .bigcheck input {
     filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     -moz-opacity: 0;
