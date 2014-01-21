@@ -163,33 +163,31 @@ $is_showed = [];
 
     <div class="bReviews">
         <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
-        <h3 class="bHeadSection" id="bHeadSectionReviews">Обзоры и отзывы</h3>
+            <h3 class="bHeadSection" id="bHeadSectionReviews">Отзывы</h3>
 
-        <div class="bReviewsSummary clearfix">
-            <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
-        </div>
-
-        <? if (!empty($reviewsData['review_list'])) { ?>
-            <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
-        <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
-            <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
-                <? } ?>
-                <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro]) ?>
+            <div class="bReviewsSummary clearfix">
+                <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
             </div>
-        <? endif ?>
-        </div>
 
-        <? if (\App::config()->product['pullRecommendation']): ?>
-            <?= $helper->render('product/__slider', [
-                'type'     => 'similar',
-                'title'    => 'Похожие товары',
-                'products' => [],
-                'count'    => null,
-                'limit'    => \App::config()->product['itemsInSlider'],
-                'page'     => 1,
-                'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
-            ]) ?>
+            <? if (!empty($reviewsData['review_list'])) { ?>
+                <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+                    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
+                </div>
+            <? } ?>
         <? endif ?>
+    </div>
+
+    <? if (\App::config()->product['pullRecommendation']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'similar',
+            'title'    => 'Похожие товары',
+            'products' => [],
+            'count'    => null,
+            'limit'    => \App::config()->product['itemsInSlider'],
+            'page'     => 1,
+            'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
+        ]) ?>
+    <? endif ?>
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
