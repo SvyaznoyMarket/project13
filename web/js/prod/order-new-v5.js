@@ -298,7 +298,7 @@
 							},
 							function( objs ){
 								if ( !objs.length ) {
-									showError('Не нашли ваш адрес на карте.<br />Уточните');
+									showError('Не нашли ваш адрес на карте. Уточните');
 
 									return;
 								}
@@ -340,7 +340,7 @@
 								// end of vars
 
 								if ( !objs.length ) {
-									showError('Не нашли ваш адрес на карте.<br />Уточните');
+									showError('Не нашли ваш адрес на карте. Уточните');
 
 									return;
 								}
@@ -398,7 +398,7 @@
 								// end of vars
 
 								if ( !objs.length ) {
-									showError('Не нашли ваш адрес на карте.<br />Уточните');
+									showError('Не нашли ваш адрес на карте. Уточните');
 
 									return;
 								}
@@ -737,6 +737,7 @@
 
 				self.token = newToken;
 				self.choosenPoint(OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
+				ENTER.OrderModel.choosenPoint(data.id);
 				console.log(OrderModel.deliveryBoxes());
 
 				if ( OrderModel.paypalECS() ) {
