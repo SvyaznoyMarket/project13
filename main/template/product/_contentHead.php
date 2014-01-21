@@ -34,7 +34,7 @@ if (!isset($titlePrefix)) $titlePrefix = null;
         <div class="bPageHead__eTitle clearfix">
             <h1><?= $product->getWebName() ?></h1>
             <? if(!empty($trustfactorTop)) { ?>
-                <img src="<?= $trustfactorTop ?>" style="vertical-align: bottom;">
+                <img src="<?= $trustfactorTop ?>" class="bPageHead__eImgTrast" />
             <? } ?>
         </div>
         <span class="bPageHead__eArticle">Артикул: <?= $product->getArticle() ?></span>

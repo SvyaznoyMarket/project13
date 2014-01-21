@@ -97,7 +97,7 @@
 			<li class="item"><a class="link" href="">Модные тренды</a></li>
 			<li class="item"><a class="link" href="">100% натуральное</a></li>
 			<li class="item"><a class="link" href="">Мечта мужчин</a></li>
-			<li class="item"><a class="link" href="tchibo/mugchini-za-rulem-33c7">За рулем</a></li>
+			<li class="item"><a class="link" href="/catalog/tchibo/mugchini-za-rulem-33c7">За рулем</a></li>
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
@@ -132,7 +132,7 @@
 			<li class="item"><a class="link" href="">Идеальный завтрак</a></li>
 			<li class="item"><a class="link" href="">Уход за одеждой и шитье</a></li>
 			<li class="item"><a class="link" href="">Дизайн для душа и души</a></li>
-			<li class="item"><a class="link" href="tchibo/dom-sdelay-sam-5d82">Сделай сам</a></li>
+			<li class="item"><a class="link" href="/catalog/tchibo/dom-sdelay-sam-5d82">Сделай сам</a></li>
 			<li class="item"><a class="link" href="">Кухня</a></li>
 			<li class="item"><a class="link" href="">Компактное решение</a></li>
 			<li class="item"><a class="link" href="">Теплая зима</a></li>

@@ -94,7 +94,7 @@ $productVideo = reset($productVideos);
         }
     }
 
-    $reviewsPresent = !(empty($reviewsData['review_list']) && empty($reviewsDataPro['review_list']));
+    $reviewsPresent = !(empty($reviewsData['review_list']));
 ?>
 
 <style type="text/css">
@@ -427,7 +427,7 @@ $productVideo = reset($productVideos);
               <? } ?>
 
               <? if (\App::config()->product['pushReview']): ?>
-                  <span class="reviewSection__link__write jsLeaveReview" data-pid="<?= $product->getId() ?>">Оставить отзыв</span>
+                  <span class="reviewSection__link__write jsLeaveReview" data-pid="<?= $product->getId() ?>">Добавить отзыв</span>
               <? endif ?>
 
               <div class="hf" id="reviewsProductName"><?= $product->getName() ?></div>
@@ -661,19 +661,17 @@ $productVideo = reset($productVideos);
 
 
 <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
-  <h2 id="reviewsSectionHeader" class="bold">Обзоры и отзывы</h2>
-  <div class="line pb5"></div>
-  <div id="reviewsSummary">
-      <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'reviewsDataSummary' => $reviewsDataSummary, 'layout' => 'jewel']) ?>
-  </div>
-
-  <? if (!empty($reviewsData['review_list'])) { ?>
-    <div id="reviewsWrapper" class="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
-  <? } elseif(!empty($reviewsDataPro['review_list'])) { ?>
-    <div id="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsDataPro['page_count'] ?>" data-container="reviewsPro" data-reviews-type="pro">
-  <? } ?>
-      <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'reviewsDataPro' => $reviewsDataPro, 'layout' => 'jewel']) ?>
+    <h2 id="reviewsSectionHeader" class="bold">Отзывы</h2>
+    <div class="line pb5"></div>
+    <div id="reviewsSummary">
+      <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'layout' => 'jewel']) ?>
     </div>
+
+    <? if (!empty($reviewsData['review_list'])) { ?>
+        <div id="reviewsWrapper" class="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+            <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'layout' => 'jewel']) ?>
+        </div>
+    <? } ?>
 <? endif ?>
 
 

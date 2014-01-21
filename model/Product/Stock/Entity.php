@@ -21,8 +21,6 @@ class Entity {
     private $supplierPeriod;
     /** @var null */
     private $supplierDate;
-    /** @var int|null */
-    private $storeReserveId;
 
     /**
      * @param array $data
@@ -37,7 +35,6 @@ class Entity {
         if (array_key_exists('quantity_showroom', $data))   $this->setQuantityShowroom($data['quantity_showroom']);
         if (array_key_exists('supplier_period', $data))     $this->setSupplierPeriod($data['supplier_period']);
         if (array_key_exists('supplier_date', $data))       $this->setSupplierDate($data['supplier_date']);
-        if (array_key_exists('store_reserve_id', $data))    $this->setStoreReserveId($data['store_reserve_id']);
     }
 
     /**
@@ -136,20 +133,6 @@ class Entity {
      */
     public function getStoreId() {
         return $this->storeId;
-    }
-
-    /**
-     * @param int|null $storeReserveId
-     */
-    public function setStoreReserveId($storeReserveId) {
-        $this->storeReserveId = $storeReserveId;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getStoreReserveId() {
-        return $this->storeReserveId;
     }
 
     /**
