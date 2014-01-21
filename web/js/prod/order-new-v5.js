@@ -10,7 +10,7 @@
 		orderData = $('#jsOrderForm').data('value'),
 		subwayArray = $('#metrostations').data('name'),
 
-		container = $('.jsDeliveryAddress'),
+		container = $('#jsDeliveryAddress'),
 		data = container.data('value'),
 
 		active = config ? config.addressAutocomplete : false,
