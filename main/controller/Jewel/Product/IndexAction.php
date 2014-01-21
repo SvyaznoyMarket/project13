@@ -62,8 +62,19 @@ class IndexAction extends \Controller\Product\IndexAction {
             }
         });
 
+        // получаем отзывы для товара
+        $reviewsData = [];
+        $reviewsDataSummary = [];
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
+                $reviewsData = (array)$data;
+            });
+
+            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData);
+        }
+
         // выполнение 2-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
+        \App::curl()->execute();
 
         if (!$product) {
             throw new \Exception\NotFoundException(sprintf('Товар @%s не найден.', $productToken));
@@ -79,7 +90,12 @@ class IndexAction extends \Controller\Product\IndexAction {
         $productCategory = reset($productCategories);
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($productCategory);
 
-        return $this->executeDirect($product, $regionsToSelect, $catalogJson);
+        $reviews = [
+            'reviewsData' => $reviewsData,
+            'reviewsDataSummary' => $reviewsDataSummary,
+        ];
+
+        return $this->executeDirect($product, $regionsToSelect, $catalogJson, $reviews);
     }
 
 
@@ -88,30 +104,13 @@ class IndexAction extends \Controller\Product\IndexAction {
      * @param \Model\Region\Entity[]   $regionsToSelect
      * @return \Http\Response
      */
-    public function executeDirect($product, $regionsToSelect, $catalogJson) {
+    public function executeDirect($product, $regionsToSelect, $catalogJson, $reviews) {
         $repository = \RepositoryManager::product();
 
         if ($product->getConnectedProductsViewMode() == $product::DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE) {
             $showRelatedUpper = false;
         } else {
             $showRelatedUpper = true;
-        }
-
-        // получаем отзывы для товара
-        $reviewsData = [];
-        $reviewsDataPro = [];
-        $reviewsDataSummary = [];
-        if (\App::config()->product['reviewEnabled']) {
-            \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
-                $reviewsData = (array)$data;
-            });
-            \RepositoryManager::review()->prepareData($product->getId(), 'pro', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsDataPro) {
-                $reviewsDataPro = (array)$data;
-            });
-
-            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData, $reviewsDataPro);
-
-            \App::reviewsClient()->execute(\App::config()->reviewsStore['retryTimeout']['default']);
         }
 
         // фильтруем аксессуары согласно разрешенным в json категориям
@@ -248,9 +247,8 @@ class IndexAction extends \Controller\Product\IndexAction {
             'Action' => '1010',
             'ProductId' => $product->getId(),
         ));
-        $page->setParam('reviewsData', $reviewsData);
-        $page->setParam('reviewsDataPro', $reviewsDataPro);
-        $page->setParam('reviewsDataSummary', $reviewsDataSummary);
+        $page->setParam('reviewsData', $reviews['reviewsData']);
+        $page->setParam('reviewsDataSummary', $reviews['reviewsDataSummary']);
         $page->setParam('viewParams', [
             'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
         ]);

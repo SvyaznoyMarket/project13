@@ -1313,9 +1313,6 @@ $(document).ready(function() {
 			if (reviewsType === 'user') {
 				moreReviewsButton.html('Показать ещё отзывы');
 			}
-			else if ( reviewsType === 'pro' ) {
-				moreReviewsButton.html('Показать ещё обзоры');
-			}
 
 			if ( !$('.'+reviewsContainerClass).html() ) {
 				getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
