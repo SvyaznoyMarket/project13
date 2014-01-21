@@ -7,40 +7,8 @@ namespace EnterSite\Model\Page\ProductCatalog {
         /** @var ChildCategory\Content */
         public $content;
 
-        public function __construct(
-            Model\Region $region,
-            Model\Product\Category $category,
-            Model\Product\Catalog\Config $catalogConfig,
-            array $products
-        ) {
-            $this->title = $category->name . ' - Enter';
-            $this->header = $category->name;
-
-            $this->setRegionLink($region);
-            $this->setContent(
-                $products,
-                $catalogConfig
-            );
-        }
-
-        /**
-         * @param Model\Product[] $products
-         * @param Model\Product\Catalog\Config $catalogConfig
-         */
-        protected function setContent(
-            array $products,
-            Model\Product\Catalog\Config $catalogConfig
-        ) {
+        public function __construct() {
             $this->content = new ChildCategory\Content();
-            $this->content->catalogConfig = $catalogConfig;
-
-            foreach ($products as $product) {
-                $productCard = new ChildCategory\Content\ProductBlock\ProductCard();
-                $productCard->name = $product->name;
-                $productCard->url = $product->link;
-
-                $this->content->productBlock->products[] = $productCard;
-            }
         }
     }
 }
@@ -53,8 +21,10 @@ namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
         public $title;
         /** @var Content\ProductBlock */
         public $productBlock;
-        /** @var Model\Product\Catalog\Config */
-        public $catalogConfig;
+        /** @var bool */
+        public $hasCustomStyle;
+        /** @var Model\Product\Catalog\Config\PromoStyle */
+        public $promoStyle;
 
         public function __construct() {
             $this->productBlock = new Content\ProductBlock();

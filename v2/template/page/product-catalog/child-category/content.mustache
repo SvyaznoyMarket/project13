@@ -1,11 +1,11 @@
-<div class="bCatalog{{#catalogConfig.isCustomStyle}} mCustomCss{{/catalogConfig.isCustomStyle}}" id="bCatalog" data-lastpage="{{pager.lastPage}}">
+<div class="bCatalog{{#hasCustomStyle}} mCustomCss{{/hasCustomStyle}}" id="bCatalog" data-lastpage="{{pager.lastPage}}">
 
-    {{#bradcrumbs}}
+    {{#bradcrumbBlock}}
         {{> bradcrumbs }}
-    {{/bradcrumbs}}
+    {{/bradcrumbBlock}}
 
-    <div class="bCustomFilter"{{#catalogConfig.promoStyle.bCustomFilter}} style="{{catalogConfig.promoStyle.bCustomFilter}}"{{/catalogConfig.promoStyle.bCustomFilter}}>
-        <h1 class="bTitlePage"{{#catalogConfig.promoStyle.bTitlePage}} style="{{catalogConfig.promoStyle.bTitlePage}}"{{/catalogConfig.promoStyle.bTitlePage}}>{{title}}</h1>
+    <div class="bCustomFilter"{{#promoStyle.bCustomFilter}} style="{{promoStyle.bCustomFilter}}"{{/promoStyle.bCustomFilter}}>
+        <h1 class="bTitlePage"{{#promoStyle.bTitlePage}} style="{{promoStyle.bTitlePage}}"{{/promoStyle.bTitlePage}}>{{title}}</h1>
 
         {{#hasAdFoxBanner}}
             <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
@@ -15,9 +15,13 @@
             {{promoContent}}
         {{/promoContent}}
 
-        {{> partial/product-catalog/category-list}}
+        {{#categoryBlock}}
+            {{> partial/product-catalog/category-list}}
+        {{/categoryBlock}}
 
-        {{> partial/product-catalog/filter-list}}
+        {{#filterBlock}}
+            {{> partial/product-catalog/filter-list}}
+        {{/filterBlock}}
 
         {{> partial/product-catalog/action-list}}
     </div>
@@ -27,9 +31,9 @@
     {{/productBlock}}
 
     <div class="bSortingLine mPagerBottom clearfix">
-    {{#pager}}
+    {{#pagerBlock}}
         {{> partial/product-catalog/pagination}}
-    {{/pager}}
+    {{/pagerBlock}}
     </div>
 
     {{#seoContent}}

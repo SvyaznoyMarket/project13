@@ -14,15 +14,11 @@ namespace EnterSite\Model\Product\Catalog {
         public $promoStyle;
         /** @var string */
         public $listingStyle;
-        /** @var bool */
-        public $isCustomStyle;
 
         public function import(array $data) {
             if (isset($data['bannerPlaceholder']) && is_array($data['bannerPlaceholder'])) $this->bannerPlaceholder = new BannerPlaceholder($data['bannerPlaceholder']);
             if (isset($data['promo_style']) && is_array($data['promo_style'])) $this->promoStyle = new PromoStyle($data['promo_style']);
             if (isset($data['listing_style'])) $this->listingStyle = (string)$data['listing_style'];
-
-            $this->isCustomStyle = !empty($this->listingStyle);
         }
     }
 }

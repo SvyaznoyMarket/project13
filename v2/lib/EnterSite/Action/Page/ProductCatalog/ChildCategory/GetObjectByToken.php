@@ -93,13 +93,9 @@ class GetObjectByToken {
         // список товаров
         $products = (new Action\Product\GetObjectListByQuery())->execute($productListQuery);
 
-        $page = new Model\Page\ProductCatalog\ChildCategory(
-            $region,
-            $category,
-            $catalogConfig,
-            $products
-        );
-        //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        // страница
+        $page = new Model\Page\ProductCatalog\ChildCategory();
+        die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         return $page;
     }
