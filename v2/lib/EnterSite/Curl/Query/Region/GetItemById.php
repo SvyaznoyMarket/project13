@@ -6,7 +6,7 @@ use Enter\Curl\Query;
 use EnterSite\Curl\Query\CoreQueryTrait;
 
 class GetItemById extends Query {
-    use \EnterSite\Curl\Query\CoreQueryTrait;
+    use CoreQueryTrait;
 
     /** @var array|null */
     protected $result;

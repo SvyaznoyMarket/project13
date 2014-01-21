@@ -9,19 +9,19 @@ use EnterSite\Model\Product\Sorting;
 use EnterSite\Model\Region;
 
 class GetIdPagerByRequestFilter extends Query {
-    use \EnterSite\Curl\Query\CoreQueryTrait;
+    use CoreQueryTrait;
 
     /** @var array|null */
     protected $result;
 
     /**
      * @param RequestFilter[] $filters
-     * @param \EnterSite\Model\Product\Sorting $sorting
+     * @param Sorting $sorting
      * @param Region $region
      * @param $offset
      * @param $limit
      */
-    public function __construct(array $filters, \EnterSite\Model\Product\Sorting $sorting = null, Region $region = null, $offset = null, $limit = null) {
+    public function __construct(array $filters, Sorting $sorting = null, Region $region = null, $offset = null, $limit = null) {
         $filterData = [];
         foreach ($filters as $key => $filter) {
             if (isset($filter->value['from']) || isset($filter->value['to'])) {

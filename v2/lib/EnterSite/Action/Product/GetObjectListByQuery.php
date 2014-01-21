@@ -2,22 +2,22 @@
 
 namespace EnterSite\Action\Product;
 
-use EnterSite\ConfigTrait;
 use Enter\Curl\Query;
-use EnterSite\Model\Product;
+use EnterSite\ConfigTrait;
+use EnterSite\Model;
 
 class GetObjectListByQuery {
     use \EnterSite\ConfigTrait;
 
     /**
      * @param Query $query
-     * @return Product[]
+     * @return Model\Product[]
      */
     public function execute(Query $query) {
         $products = [];
 
         foreach ($query->getResult() as $item) {
-            $products[] = new Product($item);
+            $products[] = new Model\Product($item);
         }
 
         return $products;

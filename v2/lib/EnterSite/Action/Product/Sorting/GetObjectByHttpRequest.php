@@ -2,20 +2,20 @@
 
 namespace EnterSite\Action\Product\Sorting;
 
-use Enter\Http\Request;
-use EnterSite\Model\Product\Sorting;
+use Enter\Http;
+use EnterSite\Model;
 
 class GetObjectByHttpRequest {
     /**
-     * @param Request $request
-     * @return Sorting|null
+     * @param Http\Request $request
+     * @return Model\Product\Sorting|null
      */
-    public function execute(Request $request) {
+    public function execute(Http\Request $request) {
         $sorting = null;
 
         $data = explode('-', $request->query['sort']);
         if (isset($data[0]) && isset($data[1])) {
-            $sorting = new Sorting();
+            $sorting = new Model\Product\Sorting();
             $sorting->token = $data[0];
             $sorting->direction = $data[1];
         }

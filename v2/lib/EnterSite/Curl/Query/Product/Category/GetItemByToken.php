@@ -7,7 +7,7 @@ use EnterSite\Curl\Query\CoreQueryTrait;
 use EnterSite\Model\Region;
 
 class GetItemByToken extends Query {
-    use \EnterSite\Curl\Query\CoreQueryTrait;
+    use CoreQueryTrait;
 
     /** @var array|null */
     protected $result;

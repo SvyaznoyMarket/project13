@@ -2,15 +2,15 @@
 
 namespace EnterSite;
 
-use EnterSite\Config\Application as ApplicationConfig;
+use EnterSite\Config;
 
 trait ConfigTrait {
     /**
-     * @return ApplicationConfig
+     * @return Config\Application
      */
     public function getConfig() {
         if (!isset($GLOBALS[__METHOD__])) {
-            $instance = new ApplicationConfig();
+            $instance = new Config\Application();
 
             $instance->dir = realpath(__DIR__ . '/../../..');
             $instance->hostname = 'enter.loc';

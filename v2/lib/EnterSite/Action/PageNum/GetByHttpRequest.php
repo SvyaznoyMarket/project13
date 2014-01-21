@@ -2,14 +2,14 @@
 
 namespace EnterSite\Action\PageNum;
 
-use Enter\Http\Request;
+use Enter\Http;
 
 class GetByHttpRequest {
     /**
-     * @param Request $request
+     * @param Http\Request $request
      * @return int
      */
-    public function execute(Request $request) {
+    public function execute(Http\Request $request) {
         $pageNum = (int)$request->query['page'] ?: 1;
 
         return $pageNum;

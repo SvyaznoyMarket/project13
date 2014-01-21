@@ -2,15 +2,15 @@
 
 namespace EnterSite\Action\Product\Filter;
 
-use Enter\Http\Request;
-use EnterSite\Model\Product\RequestFilter;
+use Enter\Http;
+use EnterSite\Model;
 
 class GetRequestObjectListByHttpRequest {
     /**
-     * @param Request $request
-     * @return RequestFilter[]
+     * @param Http\Request $request
+     * @return Model\Product\RequestFilter[]
      */
-    public function execute(Request $request) {
+    public function execute(Http\Request $request) {
         $filters = [];
 
         foreach ($request->query as $key => $value) {
@@ -18,7 +18,7 @@ class GetRequestObjectListByHttpRequest {
                 $parts = array_pad(explode('-', $key), 3, null);
 
                 if (!isset($filters[$parts[1]])) {
-                    $filters[$parts[1]] = new RequestFilter();
+                    $filters[$parts[1]] = new Model\Product\RequestFilter();
                 }
 
                 if (('from' == $parts[2]) || ('to' == $parts[2])) {
@@ -28,7 +28,7 @@ class GetRequestObjectListByHttpRequest {
                 }
             } else if (0 === strpos($key, 'tag-')) {
                 if (!isset($filters['tag'])) {
-                    $filters['tag'] = new RequestFilter();
+                    $filters['tag'] = new Model\Product\RequestFilter();
                 }
 
                 $filters['tag']->value[] = $value;

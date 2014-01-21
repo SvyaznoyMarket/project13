@@ -2,17 +2,16 @@
 
 namespace EnterSite;
 
-use Enter\Curl\Client;
-use Enter\Curl\Config;
+use Enter\Curl;
 
 trait CurlClientTrait {
     /**
-     * @return Client
+     * @return Curl\Client
      */
     public function getCurlClient() {
         if (!isset($GLOBALS[__METHOD__])) {
-            $config = new Config();
-            $GLOBALS[__METHOD__] = new Client($config);
+            $config = new Curl\Config();
+            $GLOBALS[__METHOD__] = new Curl\Client($config);
         }
 
         return $GLOBALS[__METHOD__];

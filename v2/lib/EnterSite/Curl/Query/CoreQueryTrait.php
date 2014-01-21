@@ -11,7 +11,7 @@ use Enter\Util\JsonDecoderTrait;
  */
 trait CoreQueryTrait {
     use JsonDecoderTrait;
-    use \EnterSite\ConfigTrait;
+    use ConfigTrait;
 
     protected function init() {
         $config = $this->getConfig()->coreService;

@@ -2,17 +2,11 @@
 
 namespace EnterSite\Action\HttpResponse\ProductCatalog\ChildCategory;
 
-use EnterSite\Action\Page\ProductCatalog\ChildCategory\GetObjectByToken;
 use EnterSite\ConfigTrait;
 use EnterSite\MustacheRendererTrait;
 
-use Enter\Http\Request;
-use Enter\Http\Response;
-use EnterSite\Action\Region\GetIdByHttpRequest as GetRegionId;
-use EnterSite\Action\Product\Category\GetTokenByHttpRequest as GetCategoryToken;
-use EnterSite\Action\PageNum\GetByHttpRequest as GetPageNum;
-use EnterSite\Action\Product\Filter\GetRequestObjectListByHttpRequest as GetRequestFilterList;
-use EnterSite\Action\Product\Sorting\GetObjectByHttpRequest as GetSorting;
+use Enter\Http;
+use EnterSite\Action;
 
 class GetObjectByHttpRequest {
     use ConfigTrait;
@@ -21,25 +15,25 @@ class GetObjectByHttpRequest {
         ConfigTrait::getConfig insteadof MustacheRendererTrait;
     }
 
-    public function execute(Request $request) {
+    public function execute(Http\Request $request) {
         // ид региона
-        $regionId = (new GetRegionId())->execute($request);
+        $regionId = (new Action\Region\GetIdByHttpRequest())->execute($request);
 
         // токен категории
-        $categoryToken = (new GetCategoryToken())->execute($request);
+        $categoryToken = (new Action\Product\Category\GetTokenByHttpRequest())->execute($request);
 
         // номер страницы
-        $pageNum = (new GetPageNum())->execute($request);
+        $pageNum = (new Action\PageNum\GetByHttpRequest())->execute($request);
 
         // фильтры в запросе
-        $filters = (new GetRequestFilterList())->execute($request);
+        $filters = (new Action\Product\Filter\GetRequestObjectListByHttpRequest())->execute($request);
 
         // сортировка
-        $sorting = (new GetSorting())->execute($request);
+        $sorting = (new Action\Product\Sorting\GetObjectByHttpRequest())->execute($request);
 
-        $page = (new GetObjectByToken())->execute(
-            $regionId,
+        $page = (new Action\Page\ProductCatalog\ChildCategory\GetObjectByToken())->execute(
             $categoryToken,
+            $regionId,
             $pageNum,
             $filters,
             $sorting
@@ -52,7 +46,7 @@ class GetObjectByHttpRequest {
         ]);
         $content = $renderer->render('layout/default', $page);
 
-        $response = new Response($content);
+        $response = new Http\Response($content);
 
         return $response;
     }

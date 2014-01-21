@@ -2,14 +2,14 @@
 
 namespace EnterSite\Action\Product\Category;
 
-use Enter\Http\Request;
+use Enter\Http;
 
 class GetTokenByHttpRequest {
     /**
-     * @param Request $request
-     * @return mixed
+     * @param Http\Request $request
+     * @return string
      */
-    public function execute(Request $request) {
+    public function execute(Http\Request $request) {
         $token = explode('/', $request->query['productCategoryPath']);
         $token = end($token);
 

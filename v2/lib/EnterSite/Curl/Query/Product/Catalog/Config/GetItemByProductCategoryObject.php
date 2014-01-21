@@ -7,7 +7,7 @@ use EnterSite\Curl\Query\CmsQueryTrait;
 use EnterSite\Model\Product\TreeCategory;
 
 class GetItemByProductCategoryObject extends Query {
-    use \EnterSite\Curl\Query\CmsQueryTrait;
+    use CmsQueryTrait;
 
     /** @var array|null */
     protected $result;

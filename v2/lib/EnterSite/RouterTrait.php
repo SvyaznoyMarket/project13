@@ -2,17 +2,16 @@
 
 namespace EnterSite;
 
-use Enter\Routing\Router;
-use Enter\Routing\Config;
+use Enter\Routing;
 
 trait RouterTrait {
     /**
-     * @return Router
+     * @return Routing\Router
      */
     public function getRouter() {
         if (!isset($GLOBALS[__METHOD__])) {
-            $config = new Config();
-            $GLOBALS[__METHOD__] = new Router($config);
+            $config = new Routing\Config();
+            $GLOBALS[__METHOD__] = new Routing\Router($config);
         }
 
         return $GLOBALS[__METHOD__];

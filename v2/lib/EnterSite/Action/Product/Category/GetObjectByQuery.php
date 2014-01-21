@@ -2,13 +2,13 @@
 
 namespace EnterSite\Action\Product\Category;
 
+use Enter\Curl\Query;
 use Enter\Exception\NotFound;
 use EnterSite\ConfigTrait;
-use Enter\Curl\Query;
-use EnterSite\Model\Product\Category;
+use EnterSite\Model;
 
 class GetObjectByQuery {
-    use \EnterSite\ConfigTrait;
+    use ConfigTrait;
 
     /**
      * @param Query $coreQuery
@@ -32,7 +32,7 @@ class GetObjectByQuery {
             }
         }
 
-        $category = new Category($item);
+        $category = new Model\Product\Category($item);
 
         return $category;
     }

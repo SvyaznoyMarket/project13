@@ -8,7 +8,7 @@ use EnterSite\Model\Region;
 use EnterSite\Model\Product\Category;
 
 class GetAncestryItemByCategoryObject extends Query {
-    use \EnterSite\Curl\Query\CoreQueryTrait;
+    use CoreQueryTrait;
 
     /** @var array|null */
     protected $result;

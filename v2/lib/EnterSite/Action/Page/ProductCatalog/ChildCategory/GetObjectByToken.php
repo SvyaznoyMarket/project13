@@ -2,25 +2,13 @@
 
 namespace EnterSite\Action\Page\ProductCatalog\ChildCategory;
 
+use Enter\Exception\PermanentlyRedirect;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
-use Enter\Exception\PermanentlyRedirect;
-use EnterSite\Action\Region\GetObjectByQuery as GetRegion;
-use EnterSite\Action\Product\Category\GetObjectByQuery as GetCategory;
-use EnterSite\Action\Product\IdPager\GetObjectByQuery as GetProductIdPagerByQuery;
-use EnterSite\Action\Product\Category\GetAncestryObjectByQuery as GetAncestryCategory;
-use EnterSite\Action\Product\GetObjectListByQuery as GetProductList;
-use EnterSite\Action\Product\Catalog\Config\GetObjectByQuery as GetCatalogConfig;
-use EnterSite\Curl\Query\Product\Category\GetItemByToken as GetCoreCategoryQuery;
-use EnterSite\Curl\Query\Product\Category\GetAdminItemByToken as GetAdminCategoryQuery;
-use EnterSite\Curl\Query\Region\GetItemById as GetRegionQuery;
-use EnterSite\Curl\Query\Product\Category\GetAncestryItemByCategoryObject as GetAncestryCategoryQuery;
-use EnterSite\Curl\Query\Product\GetIdPagerByRequestFilter as GetProductIdPagerQuery;
-use EnterSite\Curl\Query\Product\GetListByIdList as GetProductListQuery;
-use EnterSite\Curl\Query\Product\Catalog\Config\GetItemByProductCategoryObject as GetCatalogConfigQuery;
-use EnterSite\Model\Page\ProductCatalog\ChildCategory as Page;
-use EnterSite\Model\Page\ProductCatalog\ChildCategory;
 use EnterSite\MustacheRendererTrait;
+use EnterSite\Action;
+use EnterSite\Curl\Query;
+use EnterSite\Model;
 
 class GetObjectByToken {
     use \EnterSite\ConfigTrait;
@@ -31,8 +19,8 @@ class GetObjectByToken {
     }
 
     public function execute(
-        $regionId,
         $categoryToken,
+        $regionId,
         $pageNum,
         $requestFilters,
         $sorting
@@ -41,28 +29,28 @@ class GetObjectByToken {
         $curl = $this->getCurlClient();
 
         // запрос региона
-        $regionQuery = new GetRegionQuery($regionId);
+        $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
         $curl->execute();
 
         // регион
-        $region = (new GetRegion())->execute($regionQuery);
+        $region = (new Action\Region\GetObjectByQuery())->execute($regionQuery);
 
         // запрос категории
-        $productCategoryItemQuery = new GetCoreCategoryQuery($categoryToken, $region);
+        $productCategoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region);
         $curl->prepare($productCategoryItemQuery);
 
         $productCategoryAdminItemQuery = null;
         if ($config->adminService->enabled) {
-            $productCategoryAdminItemQuery = new GetAdminCategoryQuery($categoryToken, $region);
+            $productCategoryAdminItemQuery = new Query\Product\Category\GetAdminItemByToken($categoryToken, $region);
             $curl->prepare($productCategoryAdminItemQuery);
         }
 
         $curl->execute();
 
         // категория
-        $category = (new GetCategory())->execute($productCategoryItemQuery, $productCategoryAdminItemQuery);
+        $category = (new Action\Product\Category\GetObjectByQuery())->execute($productCategoryItemQuery, $productCategoryAdminItemQuery);
         if ($category->redirectLink) {
             $redirect = new PermanentlyRedirect();
             $redirect->setLink($category->redirectLink);
@@ -71,41 +59,41 @@ class GetObjectByToken {
         }
 
         // запрос предка категории
-        $ancestryCategoryItemQuery = new GetAncestryCategoryQuery($category, $region);
+        $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region);
         $curl->prepare($ancestryCategoryItemQuery);
 
         $curl->execute();
 
         // предок категории
-        $ancestryCategory = (new GetAncestryCategory())->execute($ancestryCategoryItemQuery);
+        $ancestryCategory = (new Action\Product\Category\GetAncestryObjectByQuery())->execute($ancestryCategoryItemQuery);
 
         // запрос настроек каталога
-        $catalogConfigQuery = new GetCatalogConfigQuery($ancestryCategory);
+        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject($ancestryCategory);
         $curl->prepare($catalogConfigQuery);
 
         // запрос листинга идентификаторов товаров
         $limit = $config->productList->itemPerPage;
-        $productIdPagerQuery = new GetProductIdPagerQuery($requestFilters, $sorting, $region, ($pageNum - 1) * $limit, $limit);
+        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
         $curl->execute();
 
         // листинг идентификаторов товаров
-        $productIdPager = (new GetProductIdPagerByQuery())->execute($productIdPagerQuery);
+        $productIdPager = (new Action\Product\IdPager\GetObjectByQuery())->execute($productIdPagerQuery);
 
         // настройки каталога
-        $catalogConfig = (new GetCatalogConfig())->execute($catalogConfigQuery);
+        $catalogConfig = (new Action\Product\Catalog\Config\GetObjectByQuery())->execute($catalogConfigQuery);
 
         // запрос списка товаров
-        $productListQuery = new GetProductListQuery($productIdPager->id, $region);
+        $productListQuery = new Query\Product\GetListByIdList($productIdPager->id, $region);
         $curl->prepare($productListQuery);
 
         $curl->execute();
 
         // список товаров
-        $products = (new GetProductList())->execute($productListQuery);
+        $products = (new Action\Product\GetObjectListByQuery())->execute($productListQuery);
 
-        $page = new Page(
+        $page = new Model\Page\ProductCatalog\ChildCategory(
             $region,
             $category,
             $catalogConfig,

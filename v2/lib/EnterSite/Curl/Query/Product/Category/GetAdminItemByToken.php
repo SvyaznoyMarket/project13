@@ -7,7 +7,7 @@ use EnterSite\Curl\Query\AdminQueryTrait;
 use EnterSite\Model\Region;
 
 class GetAdminItemByToken extends Query {
-    use \EnterSite\Curl\Query\AdminQueryTrait;
+    use AdminQueryTrait;
 
     /** @var array|null */
     protected $result;

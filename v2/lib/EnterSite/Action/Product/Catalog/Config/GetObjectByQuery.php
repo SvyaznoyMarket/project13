@@ -2,19 +2,19 @@
 
 namespace EnterSite\Action\Product\Catalog\Config;
 
-use EnterSite\ConfigTrait;
 use Enter\Curl\Query;
-use EnterSite\Model\Product\Catalog\Config;
+use EnterSite\ConfigTrait;
+use EnterSite\Model;
 
 class GetObjectByQuery {
-    use \EnterSite\ConfigTrait;
+    use ConfigTrait;
 
     public function execute(Query $query) {
         $config = null;
 
         $item = $query->getResult();
         if ($item) {
-            $config = new Config($item);
+            $config = new Model\Product\Catalog\Config($item);
         }
 
         return $config;

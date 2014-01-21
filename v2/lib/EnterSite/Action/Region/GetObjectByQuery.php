@@ -2,9 +2,9 @@
 
 namespace EnterSite\Action\Region;
 
-use EnterSite\ConfigTrait;
 use Enter\Curl\Query;
-use EnterSite\Model\Region;
+use EnterSite\ConfigTrait;
+use EnterSite\Model;
 
 class GetObjectByQuery {
     use \EnterSite\ConfigTrait;
@@ -15,11 +15,11 @@ class GetObjectByQuery {
         $item = $query->getResult();
         if (!$item) {
             // TODO: журналирование
-            $region = new Region();
+            $region = new Model\Region();
             $region->id = $this->getConfig()->region->defaultId;
             $region->name = 'Москва*';
         } else {
-            $region = new Region($item);
+            $region = new Model\Region($item);
         }
 
         return $region;

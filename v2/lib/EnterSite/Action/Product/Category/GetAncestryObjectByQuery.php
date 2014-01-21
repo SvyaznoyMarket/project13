@@ -2,18 +2,18 @@
 
 namespace EnterSite\Action\Product\Category;
 
-use EnterSite\ConfigTrait;
 use Enter\Curl\Query;
 use Enter\Exception\NotFound;
-use EnterSite\Model\Product\TreeCategory;
+use EnterSite\ConfigTrait;
+use EnterSite\Model;
 
 class GetAncestryObjectByQuery {
-    use \EnterSite\ConfigTrait;
+    use ConfigTrait;
 
     /**
      * @param Query $query
      * @throws NotFound
-     * @return \EnterSite\Model\Product\TreeCategory
+     * @return Model\Product\TreeCategory
      */
     public function execute(Query $query) {
         $category = null;
@@ -23,7 +23,7 @@ class GetAncestryObjectByQuery {
             throw new NotFound('Категория товара не найдена');
         }
 
-        $category = new TreeCategory($item);
+        $category = new Model\Product\TreeCategory($item);
 
         return $category;
     }

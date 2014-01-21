@@ -13,7 +13,7 @@ use Enter\Util\JsonDecoderTrait;
  */
 trait AdminQueryTrait {
     use JsonDecoderTrait;
-    use \EnterSite\ConfigTrait;
+    use ConfigTrait;
 
     protected function init() {
         $config = $this->getConfig()->adminService;
