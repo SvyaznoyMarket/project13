@@ -162,6 +162,13 @@ return [
         'action'  => ['ProductCategory\Action', 'setInstore'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
+
+    // tchobo
+    'tchobo' => [
+        'pattern' => '/catalog/tchibo',
+        'action'  => ['Tchibo\IndexAction', 'execute'],
+    ],
+
     // каталог товаров
     'product.category' => [
         'pattern' => '/catalog/{categoryPath}',
@@ -703,20 +710,6 @@ return [
         'pattern' => '/survey/submit-answer',
         'action'  => ['Survey\Action', 'submitAnswer'],
         'method'  => ['POST'],
-    ],
-
-    // tchobo
-    // TODO: удалить
-    'tchobo' => [
-        'pattern' => '/tchibo',
-        'action'  => ['Tchibo\IndexAction', 'execute'],
-    ],
-
-    // tchobo
-    // TODO: удалить
-    'tchobo.category' => [
-        'pattern' => '/tchibo/{categoryPath}',
-        'action'  => ['ProductCategory\Grid\ChildAction', 'executeByPath'],
     ],
 
     // enterprize

@@ -112,7 +112,7 @@ if ($oneClick) {
 
 					<div class="bDeliverySelf">
 						<span data-bind="visible: box.hasPointDelivery, html: box.choosenPoint().name"></span>
-						<div class="bTimeworkPoint" data-bind="visible: box.hasPointDelivery, html: 'режим работы: <br/> <strong>ежедневно' + box.choosenPoint().regtime + '</strong>'"></div>
+						<div class="bTimeworkPoint" data-bind="visible: box.hasPointDelivery, html: 'режим работы: <br/> <strong>ежедневно ' + box.choosenPoint().regtime + '</strong>'"></div>
 					</div>
 
 					<!-- кнопка сменить магазин -->
@@ -155,7 +155,7 @@ if ($oneClick) {
 						<strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span>
 					</div>
 
-					<div class="bDeliveryDate" style="width: 450px;" data-bind="visible: !$root.lifeGift() && box.hasPointDelivery">
+					<div class="bDeliveryDate" style="width: 462px;" data-bind="visible: !$root.lifeGift() && box.hasPointDelivery">
 						<strong data-bind="text:box.choosenDate().name"></strong>, <span data-bind="text: box.choosenNameOfWeek"></span>
 						<span class="bSmsAtantion" data-bind="visible: box.hasPointDelivery, text: 'ожидайте смс о готовности заказа'"></span>
 					</div>

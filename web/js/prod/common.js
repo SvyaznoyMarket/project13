@@ -4274,6 +4274,7 @@ $(document).ready(function() {
 			
 			var
 				authFromServer = function authFromServer( res, data ) {
+					console.warn( res );
 					if ( !res.success ) {
 						console.warn('удаление не получилось :(');
 
@@ -4296,25 +4297,15 @@ $(document).ready(function() {
 							userBar.showOverlay = false;
 						});
 					}
+
+					//возвращаем кнопку - Купить
+					var
+						addUrl = res.product.addUrl;
+						addBtnBuy = res.product.cartButton.id;
+					// end of vars
+					
+					$('.'+addBtnBuy).html('Купить').removeClass('mBought').attr('href', addUrl);
 				};
-			// end of functions
-
-			//добавление кнопки купить удаленному из корзины товару
-			var
-				products = clientCart.products,
-				i,
-				url = "/cart/add-product/",
-				len;
-			// end of vars
-
-				unmarkCartButton = function unmarkCartButton( i, data ) {
-					for ( i = 0, len = products.length; i < len; i++ ) {
-						$('.'+products[i].cartButton.id).html('Купить').removeClass('mBought').attr('href', url + products[i].id);
-					}
-				}
-			// end of functions
-
-			unmarkCartButton();
 
 			$.ajax({
 				type: 'GET',
