@@ -267,8 +267,10 @@
 	 * @type	{BlackBox}
 	 */
 	utils.blackBox = new BlackBox(userUrl);
-	if ( window.docCookies.hasItem(authorized_cookie) ) {
+	console.log('utils.blackBox created');
+	if ( !window.docCookies.hasItem(authorized_cookie) || 1 === window.docCookies.getItem(authorized_cookie) ) {
 		utils.blackBox.init();
+		console.log('utils.blackBox init');
 	}
 
 }(window.ENTER));
