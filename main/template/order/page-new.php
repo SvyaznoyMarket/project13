@@ -447,7 +447,7 @@ if ($oneClick) {
 
 					<!-- Address customer -->
 					<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки*</label>
-					<div class="bBuyingLine__eRight jsDeliveryAddress" data-value='<?= json_encode(['regionName' => $region->getName(), 'kladr' => \App::config()->kladr])?>' style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
+					<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
 						<div class="bSelectedCity">
 							<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
 						</div>
@@ -615,6 +615,10 @@ if ($oneClick) {
 <!-- /Общая обертка оформления заказа -->
 
 <div id="jsOrderDelivery" data-url="<?= $deliveryUrl ?>" data-value="<?= $page->json($deliveryData) ?>"></div>
+<div id="jsDeliveryAddress"
+     data-value='<?= json_encode(['regionName' => $region->getName(), 'kladr' => \App::config()->kladr])?>'
+     data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
+</div>
 <div id="jsOrderForm" data-value="<?= $page->json([
 	'order[recipient_first_name]'   => $form->getFirstName(),
 	'order[recipient_last_name]'    => $form->getLastName(),
