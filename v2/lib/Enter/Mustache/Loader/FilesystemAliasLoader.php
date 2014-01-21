@@ -11,11 +11,11 @@ class FilesystemAliasLoader extends \Mustache_Loader_FilesystemLoader implements
     }
 
     public function load($name) {
-        if (!isset($this->aliases[$name])) {
-            throw new \Mustache_Exception_UnknownTemplateException($name);
+        if (isset($this->aliases[$name])) {
+            $name = $this->aliases[$name];
         }
 
-        return parent::load($this->aliases[$name]);
+        return parent::load($name);
     }
 
     public function setTemplates(array $templates) {
