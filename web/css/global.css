@@ -9226,6 +9226,7 @@
     padding-left: 25px;
     margin: 0 0 15px 4px;
     background-repeat: no-repeat;
+    line-height: 1.2;
     background-image: url("/css/rightBarCard/img/ico.png");
   }
   .bWidgetBuy .bDelivery__eItem span {
@@ -9236,7 +9237,7 @@
   }
   .bWidgetBuy .bDelivery__eItem .bJustText {
     color: #616161;
-    margin: 5px 0 0;
+    margin: 4px 0 0;
   }
   .bWidgetBuy .bDelivery .mDeliveryPrice {
     background-position: 0 -34px;
@@ -10549,6 +10550,9 @@
     font-size: 14px;
     min-height: 20px;
   }
+  .bBuyingLine .error_list {
+    margin-top: 10px;
+  }
   .bBuyingLine.mConfirm .bBuyingLine__eRight {
     border-top: 1px solid #ddd;
     padding-top: 20px;
@@ -10559,9 +10563,15 @@
   }
   .bBuyingLine .bTimeworkPoint {
     margin: 5px 0 0;
+    width: 240px;
   }
   .bBuyingLine .bSmsAtantion {
     color: #f79b33;
+    float: right;
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
   }
   .bBuyingLine__eRight {
     display: block;
@@ -11391,6 +11401,12 @@
     margin: 0 auto 20px;
     text-align: center;
     width: 940px;
+  }
+  .bBannerBox div {
+    margin: 0 auto;
+  }
+  .adfoxWrapper div {
+    margin: 0 auto;
   }
   .bCatalogRoot {
     margin: 0 -20px 15px 0;
