@@ -1755,6 +1755,8 @@ window.MapInterface = (function() {
 		clientCart = utils.extendApp('ENTER.config.clientCart'),
 		clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
 		body = $('body'),
+		dCook = window.docCookies,
+		loadBlackBox = true,
 		authorized_cookie = '_authorized';
 	// end of vars
 	
@@ -2006,8 +2008,16 @@ window.MapInterface = (function() {
 	 * @type	{BlackBox}
 	 */
 	utils.blackBox = new BlackBox(userUrl);
-	if ( window.docCookies.hasItem(authorized_cookie) ) {
+	console.log('utils.blackBox created. CookieItem is:');
+	console.log(dCook.getItem(authorized_cookie));
+
+	if ( typeof(dCook.getItem(authorized_cookie)) ) {
+		loadBlackBox = Boolean ( dCook.getItem(authorized_cookie) );
+	}
+
+	if ( loadBlackBox ) {
 		utils.blackBox.init();
+		console.log('utils.blackBox init');
 	}
 
 }(window.ENTER));
