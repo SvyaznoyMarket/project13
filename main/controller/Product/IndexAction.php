@@ -102,8 +102,43 @@ class IndexAction {
             if($data) $catalogJson = $data;
         });
 
+        // получаем отзывы для товара
+        $reviewsData = [];
+        $reviewsDataSummary = [];
+        if (\App::config()->product['reviewEnabled']) {
+            \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
+                $reviewsData = (array)$data;
+            });
+
+            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData);
+        }
+
+
+        $accessoriesId =  $product->getAccessoryId();
+        $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
+        $partsId = [];
+
+        foreach ($product->getKit() as $part) {
+            $partsId[] = $part->getId();
+        }
+
+        $productsCollection = [];
+        if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
+            // если аксессуары уже получены в filterAccessoryId для них запрос не делаем
+            $ids = !empty($accessoryItems) ? array_merge($relatedId, $partsId) : array_merge($accessoriesId, $relatedId, $partsId);
+            $chunckedIds = array_chunk($ids, \App::config()->coreV2['chunk_size']);
+
+            foreach ($chunckedIds as $i => $chunk) {
+                $repository->prepareCollectionById($chunk, $region, function($data) use(&$productsCollection, $i) {
+                    foreach ($data as $item) {
+                        $productsCollection[$i][] = new \Model\Product\Entity($item);
+                    }
+                });
+            }
+        }
+
         // выполнение 3-го пакета запросов
-        $client->execute();
+        \App::curl()->execute();
 
         if ($lifeGiftProduct && !($lifeGiftProduct->getLabel() && (\App::config()->lifeGift['labelId'] === $lifeGiftProduct->getLabel()->getId()))) {
             $lifeGiftProduct = null;
@@ -169,23 +204,6 @@ class IndexAction {
         }
         */
 
-        // получаем отзывы для товара
-        $reviewsData = [];
-        $reviewsDataPro = [];
-        $reviewsDataSummary = [];
-        if (\App::config()->product['reviewEnabled']) {
-            \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
-                $reviewsData = (array)$data;
-            });
-            \RepositoryManager::review()->prepareData($product->getId(), 'pro', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsDataPro) {
-                $reviewsDataPro = (array)$data;
-            });
-
-            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData, $reviewsDataPro);
-
-            \App::reviewsClient()->execute(\App::config()->reviewsStore['retryTimeout']['default']);
-        }
-
         // фильтруем аксессуары согласно разрешенным в json категориям
         // и получаем уникальные категории-родители аксессуаров
         // для построения меню категорий в блоке аксессуаров
@@ -202,13 +220,6 @@ class IndexAction {
         }
 
         $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 36 : \App::config()->product['itemsInSlider'] * 6);
-        $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
-        $partsId = [];
-
-        foreach ($product->getKit() as $part) {
-            $partsId[] = $part->getId();
-        }
-
         $additionalData = [];
         $accessories = array_flip($accessoriesId);
         $related = array_flip($relatedId);
@@ -217,11 +228,15 @@ class IndexAction {
         if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
             try {
                 // если аксессуары уже получены в filterAccessoryId для них запрос не делаем
+                $result = [];
+                foreach ($productsCollection as $chunk) {
+                    $result = array_merge($result, $chunk);
+                }
+
+                $products = \RepositoryManager::review()->addScores($result);
+
                 if(!empty($accessoryItems)) {
-                    $products = $repository->getCollectionById(array_merge($relatedId, $partsId));
                     $products = array_merge($accessoryItems, $products);
-                } else {
-                    $products = $repository->getCollectionById(array_merge($accessoriesId, $relatedId, $partsId));
                 }
             } catch (\Exception $e) {
                 \App::exception()->add($e);
@@ -346,7 +361,6 @@ class IndexAction {
             'ProductId' => $product->getId(),
         ]);
         $page->setParam('reviewsData', $reviewsData);
-        $page->setParam('reviewsDataPro', $reviewsDataPro);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
         $page->setParam('useLens', $useLens);
