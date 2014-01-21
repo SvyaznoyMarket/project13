@@ -376,9 +376,9 @@ $c->lifeGift['deliveryTypeId'] = 1077;
 
 $c->enterprize['enabled'] = false;
 
-$c->tchibo['rowWidth'] = 60;
-$c->tchibo['rowHeight'] = 60;
-$c->tchibo['rowPadding'] = 20;
+$c->tchibo['rowWidth'] = 78;
+$c->tchibo['rowHeight'] = 78;
+$c->tchibo['rowPadding'] = 0;
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
