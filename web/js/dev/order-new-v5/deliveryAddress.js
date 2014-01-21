@@ -4,7 +4,7 @@
  * @author  Shaposhnik Vitaly
  */
 
-;(function( ENTER ){
+;(function ( window, document, $, ENTER ) {
 	var
 		config = $('#page-config').data('value'),
 		orderData = $('#jsOrderForm').data('value'),
@@ -13,11 +13,11 @@
 		container = $('.jsDeliveryAddress'),
 		data = container.data('value'),
 
-		active = config.addressAutocomplete,
+		active = config ? config.addressAutocomplete : false,
 
-		token = data.kladr ? data.kladr.token : null,
-		key = data.kladr ? data.kladr.key : null,
-		limit = data.kladr ? data.kladr.itemLimit : 6,
+		token = null,
+		key = null,
+		limit = 6,
 
 		street = container.find('#order_address_street'),
 		building = container.find('#order_address_building'),
@@ -30,7 +30,7 @@
 		map = null,
 		map_created = false,
 
-		cityName = data.regionName,
+		cityName = data ? data.regionName : '',
 		cityId;
 	// end of vars
 
@@ -486,8 +486,14 @@
 		return;
 	}
 
-	//	metro.parents('.jsInputMetro').hide();
+	if (data && data.kladr) {
+		token = data.kladr.token ? data.kladr.token : null;
+		key = data.kladr.key ? data.kladr.key : null;
+		limit = data.kladr.itemLimit ? data.kladr.itemLimit : 6;
+	}
+
+	metro.parents('.jsInputMetro').hide();
 	fieldsInit();
 	$('body').bind('orderdeliverychange', mapCreate);
 
-}(window.ENTER));
+}(this, this.document, this.jQuery, this.ENTER));
