@@ -108,6 +108,7 @@ class GetObjectByToken {
         $page = new Page(
             $region,
             $category,
+            $catalogConfig,
             $products
         );
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));

@@ -1,17 +1,16 @@
 <?php
 
 namespace EnterSite\Model\Page\ProductCatalog {
-    use EnterSite\Model\Page;
-    use EnterSite\Model\Region;
-    use EnterSite\Model\Product;
+    use EnterSite\Model;
 
-    class ChildCategory extends Page\DefaultLayout {
+    class ChildCategory extends Model\Page\DefaultLayout {
         /** @var ChildCategory\Content */
         public $content;
 
         public function __construct(
-            Region $region,
-            Product\Category $category,
+            Model\Region $region,
+            Model\Product\Category $category,
+            Model\Product\Catalog\Config $catalogConfig,
             array $products
         ) {
             $this->title = $category->name . ' - Enter';
@@ -19,15 +18,21 @@ namespace EnterSite\Model\Page\ProductCatalog {
 
             $this->setRegionLink($region);
             $this->setContent(
-                $products
+                $products,
+                $catalogConfig
             );
         }
 
         /**
-         * @param Product[] $products
+         * @param Model\Product[] $products
+         * @param Model\Product\Catalog\Config $catalogConfig
          */
-        protected function setContent(array $products) {
+        protected function setContent(
+            array $products,
+            Model\Product\Catalog\Config $catalogConfig
+        ) {
             $this->content = new ChildCategory\Content();
+            $this->content->catalogConfig = $catalogConfig;
 
             foreach ($products as $product) {
                 $productCard = new ChildCategory\Content\ProductBlock\ProductCard();
@@ -41,9 +46,15 @@ namespace EnterSite\Model\Page\ProductCatalog {
 }
 
 namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
+    use EnterSite\Model;
+
     class Content {
+        /** @var string */
+        public $title;
         /** @var Content\ProductBlock */
         public $productBlock;
+        /** @var Model\Product\Catalog\Config */
+        public $catalogConfig;
 
         public function __construct() {
             $this->productBlock = new Content\ProductBlock();
