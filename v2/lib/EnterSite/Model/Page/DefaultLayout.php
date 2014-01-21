@@ -2,27 +2,24 @@
 
 namespace EnterSite\Model\Page {
     use EnterSite\RouterTrait;
-    use EnterSite\Model\Page;
-    use EnterSite\Model\Region;
-    use EnterSite\Routing\SetRegion as SetRegionRoute;
+    use EnterSite\Model;
+    use EnterSite\Routing;
 
-    class DefaultLayout extends Page {
+    class DefaultLayout extends Model\Page {
         use RouterTrait;
 
         /** @var mixed */
         public $content;
-        /** @var Page\DefaultLayout\RegionLink */
+        /** @var Model\Page\DefaultLayout\RegionLink */
         public $regionLink;
 
-        protected function setRegionLink(Region $region) {
-            $link = new Page\DefaultLayout\RegionLink();
+        protected function setRegionLink(Model\Region $region) {
+            $link = new Model\Page\DefaultLayout\RegionLink();
 
             $link->name = $region->name;
-            $link->url = $this->getRouter()->getUrlByRoute(new SetRegionRoute($region));
+            $link->url = $this->getRouter()->getUrlByRoute(new Routing\SetRegion($region));
 
             $this->regionLink = $link;
-
-            $this->content = 'Undefined';
         }
     }
 }

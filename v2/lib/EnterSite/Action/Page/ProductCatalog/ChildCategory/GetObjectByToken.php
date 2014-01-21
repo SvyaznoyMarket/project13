@@ -13,7 +13,7 @@ use EnterSite\Model;
 class GetObjectByToken {
     use \EnterSite\ConfigTrait;
     //use CurlClientTrait; // https://bugs.php.net/bug.php?id=63911
-    use \EnterSite\CurlClientTrait, MustacheRendererTrait {
+    use CurlClientTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof CurlClientTrait;
         ConfigTrait::getConfig insteadof MustacheRendererTrait;
     }
