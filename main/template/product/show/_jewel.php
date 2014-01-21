@@ -143,13 +143,13 @@ $is_showed = [];
 
     <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
-            'type'     => 'alsoViewed',
-            'title'    => 'С этим товаром также смотрят',
+            'type'     => 'similar',
+            'title'    => 'Похожие товары',
             'products' => [],
             'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
-            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
+            'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
         ]) ?>
     <? endif ?>
 
@@ -178,13 +178,13 @@ $is_showed = [];
 
     <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
-            'type'     => 'similar',
-            'title'    => 'Похожие товары',
+            'type'     => 'alsoViewed',
+            'title'    => 'С этим товаром также смотрят',
             'products' => [],
             'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
-            'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
+            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
         ]) ?>
     <? endif ?>
 </div><!--/left section -->

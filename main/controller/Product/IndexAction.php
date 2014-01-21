@@ -118,6 +118,13 @@ class IndexAction {
         $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
         $partsId = [];
 
+        // SITE-2818 Список связанных товаров нужно дозаполнять товарами, полученными от RR по методу CrossSellItemToItems
+        $recommendationRR = (new \Controller\Product\BasicRecommendedAction())->getProductsIdsFromRetailrocket($product, $request, 'CrossSellItemToItems');
+        $relatedId = $product->getRelatedId();
+        if (is_array($recommendationRR)) {
+            $relatedId = array_unique(array_merge($relatedId, $recommendationRR));
+        }
+
         foreach ($product->getKit() as $part) {
             $partsId[] = $part->getId();
         }
@@ -264,6 +271,14 @@ class IndexAction {
                 if (isset($kit[$item->getId()])) $kit[$item->getId()] = $item;
             }
         }
+
+        // SITE-2818 Из блока "С этим товаром также покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
+        foreach ($related as $key => $item) {
+            if ($item->isInShopOnly() || $item->isInShopStockOnly()) {
+                unset($related[$key]);
+            }
+        }
+        $related = array_slice($related, 0, \App::config()->product['itemsInSlider'] * 2);
 
         // фильтрация связанных товаров
         $notEmpty = function ($related) use ($product) {

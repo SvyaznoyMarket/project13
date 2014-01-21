@@ -21,8 +21,6 @@ class Entity {
     private $isInCard;
     /** @var bool */
     private $isBuyable;
-    /** @var bool */
-    private $isQuickOnly;
 
     /**
      * @param array $data
@@ -37,7 +35,6 @@ class Entity {
         if (array_key_exists('is_view_list', $data)) $this->setIsInList($data['is_view_list']);
         if (array_key_exists('is_view_card', $data)) $this->setIsInCard($data['is_view_card']);
         if (array_key_exists('is_buyable', $data)) $this->setIsBuyable($data['is_buyable']);
-        if (array_key_exists('is_quick_only', $data)) $this->setIsQuickOnly($data['is_quick_only']);
     }
 
     /**
@@ -52,20 +49,6 @@ class Entity {
      */
     public function getIsBuyable() {
         return $this->isBuyable;
-    }
-
-    /**
-     * @param $isQuickOnly
-     */
-    public function setIsQuickOnly($isQuickOnly) {
-        $this->isQuickOnly = (bool)$isQuickOnly;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsQuickOnly() {
-        return $this->isQuickOnly;
     }
 
     /**

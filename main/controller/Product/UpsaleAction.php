@@ -10,13 +10,10 @@ class UpsaleAction extends BasicRecommendedAction {
     /**
      * @param string        $productId
      * @param \Http\Request $request
-     * @return \Http\JsonResponse
+     * @return array
      * @throws \Exception\NotFoundException
      */
-    public function execute($productId, \Http\Request $request)
-    {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
+    public function getResponseData($productId, \Http\Request $request) {
         $responseData = [];
 
         try {
@@ -29,17 +26,23 @@ class UpsaleAction extends BasicRecommendedAction {
 
             \App::logger()->info(sprintf('abTest.key=%s, response.cookie.switch=%s', $key, $request->cookies->get('switch')));
 
-            //получаем ids связанных товаров
-            $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
+            // получаем ids связанных товаров
+            // SITE-2818 Список связанных товаров дозаполняем товарами, полученными от RR по методу CrossSellItemToItems
+            $recommendationRR = $this->getProductsIdsFromRetailrocket($product, $request, $this->retailrocketMethodName);
+            $relatedId = array_unique(array_merge($product->getRelatedId(), $recommendationRR));
 
-            $products = [];
+            $products = null;
             if (!empty($relatedId)) {
                 $products = \RepositoryManager::product()->getCollectionById($relatedId);
             }
 
-            if (empty($products)) {
-                $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName); // UPD
+            // SITE-2818 Из блока "С этим товаром также покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
+            foreach ($products as $key => $item) {
+                if ($item->isInShopOnly() || $item->isInShopStockOnly()) {
+                    unset($products[$key]);
+                }
             }
+            $products = array_slice($products, 0, \App::config()->product['itemsInSlider'] * 2);
 
             if ( !is_array($products) ) {
                 throw new \Exception(sprintf('Not found products data in response. ActionType: %s', $this->actionType));
@@ -55,12 +58,13 @@ class UpsaleAction extends BasicRecommendedAction {
 
         } catch (\Exception $e) {
             \App::logger()->error($e, [$this->actionType]);
-            return new \Http\JsonResponse([
+
+            $responseData = [
                 'success' => false,
                 'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
-            ]);
+            ];
         }
 
-        return new \Http\JsonResponse($responseData);
+        return $responseData;
     }
 }
