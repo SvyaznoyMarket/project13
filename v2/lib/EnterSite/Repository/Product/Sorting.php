@@ -1,16 +1,16 @@
 <?php
 
-namespace EnterSite\Action\Product\Sorting;
+namespace EnterSite\Repository\Product;
 
 use Enter\Http;
 use EnterSite\Model;
 
-class GetObjectByHttpRequest {
+class Sorting {
     /**
      * @param Http\Request $request
      * @return Model\Product\Sorting|null
      */
-    public function execute(Http\Request $request) {
+    public function getObjectByHttpRequest(Http\Request $request) {
         $sorting = null;
 
         $data = explode('-', $request->query['sort']);

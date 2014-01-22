@@ -1,24 +1,33 @@
 <?php
 
-namespace EnterSite\Action\Page\ProductCatalog\ChildCategory;
+namespace EnterSite\Repository\Page\ProductCatalog;
 
 use Enter\Exception\PermanentlyRedirect;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\MustacheRendererTrait;
-use EnterSite\Action;
+use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
 
-class GetObjectByToken {
-    use \EnterSite\ConfigTrait;
+class ChildCategory {
+    use ConfigTrait;
     //use CurlClientTrait; // https://bugs.php.net/bug.php?id=63911
     use CurlClientTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof CurlClientTrait;
         ConfigTrait::getConfig insteadof MustacheRendererTrait;
     }
 
-    public function execute(
+    /**
+     * @param string $categoryToken
+     * @param string $regionId
+     * @param int $pageNum
+     * @param Model\Product\RequestFilter[] $requestFilters
+     * @param Model\Product\Sorting $sorting
+     * @return Model\Page\ProductCatalog\ChildCategory
+     * @throws PermanentlyRedirect
+     */
+    public function getObjectByToken(
         $categoryToken,
         $regionId,
         $pageNum,
@@ -35,7 +44,7 @@ class GetObjectByToken {
         $curl->execute();
 
         // регион
-        $region = (new Action\Region\GetObjectByQuery())->execute($regionQuery);
+        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
         // запрос категории
         $productCategoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region);
@@ -50,7 +59,7 @@ class GetObjectByToken {
         $curl->execute();
 
         // категория
-        $category = (new Action\Product\Category\GetObjectByQuery())->execute($productCategoryItemQuery, $productCategoryAdminItemQuery);
+        $category = (new Repository\Product\Category())->getObjectByQuery($productCategoryItemQuery, $productCategoryAdminItemQuery);
         if ($category->redirectLink) {
             $redirect = new PermanentlyRedirect();
             $redirect->setLink($category->redirectLink);
@@ -65,7 +74,7 @@ class GetObjectByToken {
         $curl->execute();
 
         // предок категории
-        $ancestryCategory = (new Action\Product\Category\GetAncestryObjectByQuery())->execute($ancestryCategoryItemQuery);
+        $ancestryCategory = (new Repository\Product\Category())->getAncestryObjectByQuery($ancestryCategoryItemQuery);
 
         // запрос настроек каталога
         $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject($ancestryCategory);
@@ -79,10 +88,10 @@ class GetObjectByToken {
         $curl->execute();
 
         // листинг идентификаторов товаров
-        $productIdPager = (new Action\Product\IdPager\GetObjectByQuery())->execute($productIdPagerQuery);
+        $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
 
         // настройки каталога
-        $catalogConfig = (new Action\Product\Catalog\Config\GetObjectByQuery())->execute($catalogConfigQuery);
+        $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
 
         // запрос списка товаров
         $productListQuery = new Query\Product\GetListByIdList($productIdPager->id, $region);
@@ -91,11 +100,11 @@ class GetObjectByToken {
         $curl->execute();
 
         // список товаров
-        $products = (new Action\Product\GetObjectListByQuery())->execute($productListQuery);
+        $products = (new Repository\Product())->getObjectListByQuery($productListQuery);
 
         // страница
         $page = new Model\Page\ProductCatalog\ChildCategory();
-        die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         return $page;
     }

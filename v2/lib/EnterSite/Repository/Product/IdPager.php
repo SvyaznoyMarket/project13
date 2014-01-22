@@ -1,15 +1,15 @@
 <?php
 
-namespace EnterSite\Action\Product\IdPager;
+namespace EnterSite\Repository\Product;
 
 use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
 use EnterSite\Model;
 
-class GetObjectByQuery {
+class IdPager {
     use ConfigTrait;
 
-    public function execute(Query $query) {
+    public function getObjectByQuery(Query $query) {
         $pager = null;
 
         $item = $query->getResult();

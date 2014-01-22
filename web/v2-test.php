@@ -62,6 +62,6 @@ $request = new \Enter\Http\Request(
     ['geo_id' => '14974']
 );
 
-$action = new \EnterSite\Action\HttpResponse\ProductCatalog\ChildCategory\GetObjectByHttpRequest();
+$action = new \EnterSite\Controller\ProductCatalog\ChildCategory();
 $response = $action->execute($request);
 echo PHP_EOL . $response->content;

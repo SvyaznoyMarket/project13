@@ -1,16 +1,16 @@
 <?php
 
-namespace EnterSite\Action\Product\Filter;
+namespace EnterSite\Repository\Product;
 
 use Enter\Http;
 use EnterSite\Model;
 
-class GetRequestObjectListByHttpRequest {
+class Filter {
     /**
      * @param Http\Request $request
      * @return Model\Product\RequestFilter[]
      */
-    public function execute(Http\Request $request) {
+    public function getRequestObjectListByHttpRequest(Http\Request $request) {
         $filters = [];
 
         foreach ($request->query as $key => $value) {

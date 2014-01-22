@@ -1,14 +1,44 @@
 <?php
 
-namespace EnterSite\Action\Product\Category;
+namespace EnterSite\Repository\Product;
 
+use Enter\Http;
 use Enter\Curl\Query;
 use Enter\Exception\NotFound;
 use EnterSite\ConfigTrait;
 use EnterSite\Model;
 
-class GetObjectByQuery {
+class Category {
     use ConfigTrait;
+
+    /**
+     * @param Http\Request $request
+     * @return string
+     */
+    public function getTokenByHttpRequest(Http\Request $request) {
+        $token = explode('/', $request->query['productCategoryPath']);
+        $token = end($token);
+
+        return $token;
+    }
+
+    /**
+     * @param Query $query
+     * @throws NotFound
+     * @return Model\Product\TreeCategory
+     */
+    public function getAncestryObjectByQuery(Query $query) {
+        $category = null;
+
+        $item = $query->getResult();
+        if (!$item) {
+            throw new NotFound('Категория товара не найдена');
+        }
+
+        $category = new Model\Product\TreeCategory($item);
+
+        return $category;
+    }
 
     /**
      * @param Query $coreQuery
@@ -16,7 +46,7 @@ class GetObjectByQuery {
      * @throws \Exception
      * @return \EnterSite\Model\Product\Category
      */
-    public function execute(Query $coreQuery, Query $adminQuery = null) {
+    public function getObjectByQuery(Query $coreQuery, Query $adminQuery = null) {
         $category = null;
 
         $item = $coreQuery->getResult();

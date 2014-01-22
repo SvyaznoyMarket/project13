@@ -1,37 +1,36 @@
 <?php
 
-namespace EnterSite\Action\HttpResponse\ProductCatalog\ChildCategory;
+namespace EnterSite\Controller\ProductCatalog;
 
 use EnterSite\ConfigTrait;
 use EnterSite\MustacheRendererTrait;
 
 use Enter\Http;
-use EnterSite\Action;
+use EnterSite\Repository;
 
-class GetObjectByHttpRequest {
+class ChildCategory {
     use ConfigTrait;
-    //use MustacheRendererTrait;
     use MustacheRendererTrait {
         ConfigTrait::getConfig insteadof MustacheRendererTrait;
     }
 
     public function execute(Http\Request $request) {
         // ид региона
-        $regionId = (new Action\Region\GetIdByHttpRequest())->execute($request);
+        $regionId = (new Repository\Region())->getIdByHttpRequest($request);
 
         // токен категории
-        $categoryToken = (new Action\Product\Category\GetTokenByHttpRequest())->execute($request);
+        $categoryToken = (new Repository\Product\Category())->getTokenByHttpRequest($request);
 
         // номер страницы
-        $pageNum = (new Action\PageNum\GetByHttpRequest())->execute($request);
+        $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
 
         // фильтры в запросе
-        $filters = (new Action\Product\Filter\GetRequestObjectListByHttpRequest())->execute($request);
+        $filters = (new Repository\Product\Filter())->getRequestObjectListByHttpRequest($request);
 
         // сортировка
-        $sorting = (new Action\Product\Sorting\GetObjectByHttpRequest())->execute($request);
+        $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
 
-        $page = (new Action\Page\ProductCatalog\ChildCategory\GetObjectByToken())->execute(
+        $page = (new Repository\Page\ProductCatalog\ChildCategory())->getObjectByToken(
             $categoryToken,
             $regionId,
             $pageNum,

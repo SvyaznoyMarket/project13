@@ -1,15 +1,15 @@
 <?php
 
-namespace EnterSite\Action\PageNum;
+namespace EnterSite\Repository;
 
 use Enter\Http;
 
-class GetByHttpRequest {
+class PageNum {
     /**
      * @param Http\Request $request
      * @return int
      */
-    public function execute(Http\Request $request) {
+    public function getByHttpRequest(Http\Request $request) {
         $pageNum = (int)$request->query['page'] ?: 1;
 
         return $pageNum;
