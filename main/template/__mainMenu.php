@@ -81,7 +81,7 @@ $count = count($menu);
             if ((1 == $level) && (($count - $i) < 4) && (($count - $i) > 1)) {
                 $class .= ' mMenuLeft';
             }
-            if ((1 == $level) && empty($iMenu->child)/* && (\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY == $iMenu->action)*/) {
+            if ((1 == $level) && empty($iMenu->child) && (\Model\Menu\Entity::ACTION_LINK == $iMenu->action)) {
                 $class .= ' jsEmptyChild';
             }
 
