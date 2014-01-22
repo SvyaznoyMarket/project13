@@ -51,7 +51,7 @@
 		/**
 		 * Проверка текущего скролла
 		 */
-		checkScroll = function checkScroll( e ) {
+		checkScroll = function checkScroll() {
 			var
 				nowScroll = w.scrollTop();
 			// end of vars
@@ -218,7 +218,7 @@
 
 					utils.blackBox.basket().deleteItem(res);
 
-					//показываем карзину пользовтеля при удалении товара
+					//показываем корзину пользователя при удалении товара
 					if ( clientCart.products.length !== 0 ) {
 						showBuyInfo();
 					}
