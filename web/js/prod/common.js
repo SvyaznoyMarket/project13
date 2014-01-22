@@ -4121,6 +4121,7 @@ $(document).ready(function() {
 		 */
 		showUserbar = function showUserbar() {
 			userBarFixed.slideDown();
+			userbarStatic.css('visibility','hidden');
 		},
 
 		/**
@@ -4128,6 +4129,7 @@ $(document).ready(function() {
 		 */
 		hideUserbar = function hideUserbar() {
 			userBarFixed.slideUp();
+			userbarStatic.css('visibility','visible');
 		},
 
 		/**

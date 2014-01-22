@@ -39,6 +39,7 @@
 		 */
 		showUserbar = function showUserbar() {
 			userBarFixed.slideDown();
+			userbarStatic.css('visibility','hidden');
 		},
 
 		/**
@@ -46,6 +47,7 @@
 		 */
 		hideUserbar = function hideUserbar() {
 			userBarFixed.slideUp();
+			userbarStatic.css('visibility','visible');
 		},
 
 		/**
