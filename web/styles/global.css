@@ -2412,18 +2412,15 @@ img[height="0"] {
     position: relative;
     overflow: hidden;
     float: left;
-    margin-bottom: 10px;
   }
-  .tchiboCatalog .tchiboCatalogInner.m300 {
-    width: 300px;
-    margin-right: 20px;
+  .tchiboCatalog .tchiboCatalogInner.m312 {
+    width: 312px;
   }
-  .tchiboCatalog .tchiboCatalogInner.m300:nth-child(3n) {
-    margin-right: 0;
+  .tchiboCatalog .tchiboCatalogInner.m316 {
+    width: 316px;
   }
-  .tchiboCatalog .tchiboCatalogInner.m460 {
-    width: 460px;
-    margin-right: 20px;
+  .tchiboCatalog .tchiboCatalogInner.m470 {
+    width: 470px;
   }
   .tchiboCatalog .tchiboCatalogInner.mLast {
     margin-right: 0;

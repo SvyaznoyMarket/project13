@@ -86,7 +86,7 @@
 
 <!--TCHIBO - каталог разделов, баннеров, товаров Чибо -->
 <div class="tchiboCatalog clearfix">	
-	<div class="tchiboCatalogInner m300">
+	<div class="tchiboCatalogInner m312">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/man.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Мужчины</a>
@@ -101,7 +101,7 @@
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
-	<div class="tchiboCatalogInner m300">
+	<div class="tchiboCatalogInner m316">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/woman.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Женщины</a>
@@ -116,13 +116,13 @@
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
-	<div class="tchiboCatalogInner m300 mLast">
+	<div class="tchiboCatalogInner m312 mLast">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/kids.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Дети</a>
 	</div><!--/ категория -->
 
-	<div class="tchiboCatalogInner m460">
+	<div class="tchiboCatalogInner m470">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/home.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Дом</a>
@@ -139,7 +139,7 @@
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
-	<div class="tchiboCatalogInner m460 mLast">
+	<div class="tchiboCatalogInner m470 mLast">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/sport.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Спорт</a>
@@ -151,7 +151,7 @@
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
-	<div class="tchiboCatalogInner mBanner">
+	<div class="tchiboCatalogInner">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/cofee.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Кофе</a>
