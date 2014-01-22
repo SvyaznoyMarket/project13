@@ -66,7 +66,7 @@ $count = count($menu);
             <li class="bMainMenuLevel-<?= $level ?>__eImageItem"><img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->image ?>" alt="<?= $helper->escape($parent->name) ?>" /></li>
         <? endif ?>
 
-        <? $i = 1; foreach ($menu as $iMenu): ?>
+        <? $i = 1; $j=1; foreach ($menu as $iMenu): ?>
             <?
             $class = '';
             if (\Model\Menu\Entity::ACTION_SEPARATOR === $iMenu->action) {
@@ -81,6 +81,10 @@ $count = count($menu);
             if ((1 == $level) && (($count - $i) < 4) && (($count - $i) > 1)) {
                 $class .= ' mMenuLeft';
             }
+            if ((1 == $level) && empty($iMenu->child)/* && (\Model\Menu\Entity::ACTION_PRODUCT_CATEGORY == $iMenu->action)*/) {
+                $class .= ' jsEmptyChild';
+            }
+
             $class = trim($class);
             ?>
 
