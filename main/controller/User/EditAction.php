@@ -110,20 +110,6 @@ class EditAction {
                         if ($form->getError('is_subscribe')) {
                             throw new \Curl\Exception($form->getError('is_subscribe'));
                         }
-
-                        // помечаем пользователя как получившего enterprize-купон
-                        $response = $client->query(
-                            'user/update',
-                            ['token' => \App::user()->getToken()],
-                            [
-                                'coupon_enter_prize' => 1
-                            ],
-                            \App::config()->coreV2['hugeTimeout']
-                        );
-
-                        if (!isset($response['confirmed']) || !$response['confirmed']) {
-                            throw new \Exception('Не получен ответ от сервера');
-                        }
                     } catch (\Curl\Exception $e) {
                         \App::exception()->remove($e);
 
