@@ -4,7 +4,7 @@ namespace EnterSite\Repository\Product;
 
 use Enter\Http;
 use Enter\Curl\Query;
-use Enter\Exception\NotFound;
+use Enter\Exception;
 use EnterSite\ConfigTrait;
 use EnterSite\Model;
 
@@ -24,7 +24,7 @@ class Category {
 
     /**
      * @param Query $query
-     * @throws NotFound
+     * @throws Exception\NotFound
      * @return Model\Product\TreeCategory
      */
     public function getAncestryObjectByQuery(Query $query) {
@@ -32,7 +32,7 @@ class Category {
 
         $item = $query->getResult();
         if (!$item) {
-            throw new NotFound('Категория товара не найдена');
+            throw new Exception\NotFound('Категория товара не найдена');
         }
 
         $category = new Model\Product\TreeCategory($item);
@@ -43,15 +43,15 @@ class Category {
     /**
      * @param Query $coreQuery
      * @param Query $adminQuery
-     * @throws \Exception
-     * @return \EnterSite\Model\Product\Category
+     * @return Model\Product\Category
+     * @throws Exception\NotFound
      */
     public function getObjectByQuery(Query $coreQuery, Query $adminQuery = null) {
         $category = null;
 
         $item = $coreQuery->getResult();
         if (!$item) {
-            throw new NotFound('Категория товара не найдена');
+            throw new Exception\NotFound('Категория товара не найдена');
         }
 
         if ($adminQuery) {

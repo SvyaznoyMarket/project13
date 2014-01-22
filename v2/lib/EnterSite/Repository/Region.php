@@ -31,7 +31,7 @@ class Region {
 
         $item = $query->getResult();
         if (!$item) {
-            // TODO: журналирование
+            // TODO: logger
             $region = new Model\Region();
             $region->id = $this->getConfig()->region->defaultId;
             $region->name = 'Москва*';
