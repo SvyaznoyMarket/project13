@@ -8533,7 +8533,7 @@
   }
   .bPageHead__eTitle {
     padding: 0 0 7px;
-    margin: 0 0 10px;
+    margin: 0;
   }
   .bPageHead__eTitle h1 {
     display: inline-block;
@@ -8543,7 +8543,7 @@
     font-family: tahoma, verdana, arial, helvetica, sans-serif;
     font-size: 30px;
     vertical-align: top;
-    margin-top: 0;
+    margin: 0;
     *display: inline;
     zoom: 1;
   }
@@ -8554,7 +8554,8 @@
     zoom: 1;
   }
   .bPageHead__eArticle {
-    font-size: 16px;
+    font-size: 14px;
+    color: #a6a6a6;
   }
   .bProductSection .bDescriptionProduct {
     margin: 15px 0 0;
