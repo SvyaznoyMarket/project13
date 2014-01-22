@@ -28,6 +28,7 @@
   font-weight:bold;
   line-height:24px;
   vertical-align: top;
+
   b {
     background: url("@{base-url}/common/img/bigcheck.png") no-repeat scroll 0px 0px transparent;
     cursor: pointer;
@@ -37,6 +38,15 @@
     vertical-align: top;
     width: 24px;
   }
+
+  &.checked {
+    color: #49C7ED;
+
+    b {
+      background-position: 0 -81px;
+    }
+  }
+
   input {
     filter: e("progid:DXImageTransform.Microsoft.Alpha(opacity=0)");
     .opacity(0);
