@@ -302,7 +302,7 @@ $c->banner['url'] = [
     2 => '/4/1/920x320/',
 ];
 
-$c->cart['productLimit'] = 50;
+$c->cart['productLimit'] = 30;
 
 $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
