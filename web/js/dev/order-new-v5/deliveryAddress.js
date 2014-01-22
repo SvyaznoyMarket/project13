@@ -213,7 +213,7 @@
 
 					metro.val('');
 					metroIdFiled.val('');
-					metroWrapper.show();
+//					metroWrapper.show();
 				}
 			);
 		},
@@ -494,7 +494,7 @@
 		limit = data.kladr.itemLimit ? data.kladr.itemLimit : 6;
 	}
 
-	metroWrapper.hide();
+//	metroWrapper.hide();
 	fieldsInit();
 	ymaps.ready(mapCreate);
 
