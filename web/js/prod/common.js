@@ -4244,7 +4244,7 @@ $(document).ready(function() {
 					return false;
 				};
 			// end of function
-			
+
 
 			dataToRender.products.reverse();
 			console.log(dataToRender);
@@ -4313,6 +4313,9 @@ $(document).ready(function() {
 
 							userBar.showOverlay = false;
 						});
+						infoShowing = false;
+						console.log('clientCart is empty');
+						checkScroll();
 					}
 
 					//возвращаем кнопку - Купить

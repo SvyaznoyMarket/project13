@@ -162,7 +162,7 @@
 					return false;
 				};
 			// end of function
-			
+
 
 			dataToRender.products.reverse();
 			console.log(dataToRender);
@@ -231,6 +231,9 @@
 
 							userBar.showOverlay = false;
 						});
+						infoShowing = false;
+						console.log('clientCart is empty');
+						checkScroll();
 					}
 
 					//возвращаем кнопку - Купить
