@@ -496,6 +496,6 @@
 
 	metro.parents('.jsInputMetro').hide();
 	fieldsInit();
-	$('body').bind('ordernewshow', mapCreate);
+	ymaps.ready(mapCreate);
 
 }(this, this.document, this.jQuery, this.ENTER));

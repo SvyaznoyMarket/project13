@@ -496,7 +496,7 @@
 
 	metro.parents('.jsInputMetro').hide();
 	fieldsInit();
-	$('body').bind('ordernewshow', mapCreate);
+	ymaps.ready(mapCreate);
 
 }(this, this.document, this.jQuery, this.ENTER));
  
@@ -645,9 +645,6 @@
 			}*/
 
 			OrderModel.deliveryBoxes.push(self);
-
-			// предполагаем что на данном этапе на странице orders/new отображен контент (в том числе информация о получателе)
-			$('body').trigger('ordernewshow');
 		}
 
 
