@@ -39,6 +39,7 @@
 		 */
 		showUserbar = function showUserbar() {
 			userBarFixed.slideDown();
+			userbarStatic.css('visibility','hidden');
 		},
 
 		/**
@@ -46,6 +47,7 @@
 		 */
 		hideUserbar = function hideUserbar() {
 			userBarFixed.slideUp();
+			userbarStatic.css('visibility','visible');
 		},
 
 		/**
@@ -142,7 +144,7 @@
 					wrap.removeClass(openClass);
 
 					buyInfo.slideUp(300, function() {
-						checkScroll();
+						//checkScroll();
 						buyInfo.remove();
 
 						infoShowing = false;
@@ -155,6 +157,7 @@
 					overlay.fadeOut(300, function() {
 						overlay.off('click');
 						overlay.remove();
+						checkScroll();
 
 						userBar.showOverlay = false;
 					});
