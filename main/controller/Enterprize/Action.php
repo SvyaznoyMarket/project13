@@ -119,13 +119,11 @@ class Action {
                     $result = new \Exception('Не удалось активировать купон' . (\App::config()->debug ? sprintf('#%s %s', $e->getCode(), $e->getMessage()) : ''));
                 }
             );
-            $client->execute();
+            $client->execute(\App::config()->coreV2['retryTimeout']['huge'], 1);
 
             if ($result instanceof \Exception) {
                 throw $result;
             }
-
-
 
             $responseData = [
                 'error'  => null,
