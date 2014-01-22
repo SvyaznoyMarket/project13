@@ -4,7 +4,7 @@
  */
 ?>
 <!-- TCHIBO - слайдер-меню разделов Чибо -->
-<div class="tchiboNavSliderWrap">
+<? /*<div class="tchiboNavSliderWrap">
 	<div class="tchiboNavSlider">
 		<div class="tchiboNavSlider__title"></div>
 
@@ -59,6 +59,70 @@
 		<!--div class="sliderBtn mRightBtn"><a class="sliderBtn__link" href=""></a></div--><!--/ кнопка прокрутки влево -->
 	</div>
 </div>
+*/ ?>
+<div class="tchiboNav">
+	<div class="tchiboNav__title"></div>
+
+	<ul class="tchiboNav__list">
+		<li class="item">
+			<a class="link" href="">
+				<span class="title">Мужчины</span>
+			</a>
+
+			<ul class="tchiboNav__sublist">
+				<li class="sublistItem"><a class="link" href="">Классика</a></li>
+				<li class="sublistItem"><a class="link" href="">Мужской сезон</a></li>
+				<li class="sublistItem"><a class="link" href="">Модные тренды</a></li>
+				<li class="sublistItem"><a class="link" href="">100% натуральное</a></li>
+			</ul>
+		</li>
+
+		<li class="item">
+			<a class="link" href="">
+				<span class="title">Женщины</span>
+			</a>
+
+			<ul class="tchiboNav__sublist">
+				<li class="sublistItem"><a class="link" href="">Классика</a></li>
+				<li class="sublistItem"><a class="link" href="">Мисс Совершенство</a></li>
+				<li class="sublistItem"><a class="link" href="">Модные тренды</a></li>
+				<li class="sublistItem"><a class="link" href="">100% натуральное</a></li>
+			</ul>
+		</li>
+
+		<li class="item">
+			<a class="link" href="">
+				<span class="title">Дети</span>
+			</a>
+		</li>
+
+		<li class="item">
+			<a class="link" href="">
+				<span class="title">Дом</span>
+			</a>
+		</li>
+
+		<li class="item">
+			<a class="link" href="">
+				<span class="title">Спорт</span>
+			</a>
+		</li>
+
+		<li class="item">
+			<a class="link" href="">
+				<span class="title">Кофе</span>
+			</a>
+		</li>
+	</ul>
+</div>
+
+<!--script>
+$(document).ready(function() { 
+		var itemHeight = $(".tchiboNav__list .item("+i+")").width();
+        $($(".tchiboNav__list .item("+i+")").css({'width' : itemHeight});
+      
+    }); 
+</script-->
 <!--/ TCHIBO - слайдер-меню разделов Чибо -->
 
 <!-- TCHIBO - крутилка разделов Чибо на рутовой странице -->
