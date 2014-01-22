@@ -31,7 +31,9 @@
 		map_created = false,
 
 		cityName = data ? data.regionName : '',
-		cityId;
+		cityId,
+
+		mapObj = $('#map');
 	// end of vars
 
 	var
@@ -457,11 +459,11 @@
 				addrData = getAddress();
 			// end of vars
 
-			if ( map_created ) {
+			if ( map_created || !mapObj.length ) {
 				return;
 			}
 
-			$('#map').show();
+			mapObj.show().width(460).height(350);
 			map_created = true;
 
 			cityGeocoder = ymaps.geocode(addrData.address);
@@ -494,7 +496,7 @@
 
 	metro.parents('.jsInputMetro').hide();
 	fieldsInit();
-	$('body').bind('orderdeliverychange', mapCreate);
+	$('body').bind('ordernewshow', mapCreate);
 
 }(this, this.document, this.jQuery, this.ENTER));
  
@@ -643,6 +645,9 @@
 			}*/
 
 			OrderModel.deliveryBoxes.push(self);
+
+			// предполагаем что на данном этапе на странице orders/new отображен контент (в том числе информация о получателе)
+			$('body').trigger('ordernewshow');
 		}
 
 

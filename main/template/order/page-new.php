@@ -486,7 +486,7 @@ if ($oneClick) {
 							<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
 						</div>
 
-                        <div class="bInputAddress" id="map" style="width: 460px; height: 350px; display: none;"></div>
+                        <div class="bInputAddress" id="map"></div>
 					</div>
 
 					<label class="bBuyingLine__eLeft">Пожелания и дополнения</label>
