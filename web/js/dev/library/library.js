@@ -112,6 +112,7 @@ var DirectCredit = {
 	input  : null,
 
 	init : function( input, output ) {
+		console.info('DirectCredit');
 		if( !input || !output ) {
 			return 'incorrect input data';
 		}
@@ -175,22 +176,16 @@ var DirectCredit = {
 			'none',
 			'getPayment', 
 			{ products : self.basketPull },
-			function(result){                       
-				//var creditPrice = 0
-				// for( var i=0, l=self.basketPull.length; i < l; i++ ) {
-				//  var item = self.findProduct( self.basketPull, result.products[i].id )
-				//  if( item ) {
-				//      var itemPrice = item.price
-				//      creditPrice += result.products[i].initial_instalment * itemPrice/100 * item.count
-				//  }
-					
-				// }               
-				if ( 0 > result.payment ) {
+			function(result){            
+			console.info('sendCredit');     
+
+				if ( result.payment > 0) {
 					self.output.text( window.printPrice( Math.ceil( result.payment ) ) );
 				}
 				else {
 					self.output.parent('.paymentWrap').hide();
 				}
+
 				PubSub.publish( 'bankAnswered', null );
 			}
 		);
