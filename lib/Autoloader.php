@@ -9,12 +9,6 @@ class Autoloader {
             if (0 === strpos($class, 'Mustache')) {
                 return;
             }
-            if (
-                (0 === strpos($class, 'Main'))
-                || (0 === strpos($class, 'Brick'))
-            ) {
-                require_once str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-            }
 
             if ('\\' == $class[0]) {
                 $class = substr($class, 1);
