@@ -2191,113 +2191,57 @@ img[height="0"] {
 /*---END----TCHIBO - заголовок раздела---------*/
 /*---------TCHIBO - слайдер-меню разделов Чибо----------*/
 @media all {
-  .tchiboNavSliderWrap {
+  .tchiboNav {
     width: 940px;
-    padding: 5px 10px;
-    height: 98px;
-    background: #002958;
-    color: #ffffff;
-    margin: 0 0 0 -10px;
+    position: relative;
     overflow: hidden;
-    position: relative;
+    height: 118px;
   }
-  .tdRelative {
-    position: relative;
-  }
-  .tchiboNavSlider {
-    display: table;
-    table-layout: fixed;
-  }
-  .tchiboNavSlider__title {
-    background: url("/styles/tchibo/img/tchiboLogo.png") no-repeat 0 50%;
+  .tchiboNav__title {
+    background: url("/styles/tchibo/img/tchiboLogo.png") no-repeat 50% 50% #002958;
     padding: 0 0 0 118px;
     font-size: 24px;
     line-height: 88px;
     min-height: 88px;
+    margin-right: 18px;
     vertical-align: top;
-    display: table-cell;
-  }
-  .tchiboNavSlider__inner {
-    vertical-align: top;
-    display: table-cell;
-    overflow: hidden;
-    position: relative;
-    padding: 5px 0;
-  }
-  .tchiboNavSlider__list {
-    font-size: 0;
-    width: 3000px;
-  }
-  .tchiboNavSlider__list .item {
     display: inline-block;
+  }
+  .tchiboNav__list {
     vertical-align: top;
-    width: 128px;
-    overflow: hidden;
-    height: 88px;
+    display: inline-block;
+    width: 800px;
+    border-bottom: 1px solid #e8e8e8;
+    margin: 52px 0 0;
+    padding: 0 0 19px;
+  }
+  .tchiboNav__list .item {
+    display: inline-block;
+    margin: 0 25px 0 0;
     position: relative;
-    *display: inline;
-    zoom: 1;
-    margin: 0 5px;
   }
-  .tchiboNavSlider__list .item:hover {
-    -webkit-box-shadow: 0 0 1px #ffe055;
-    -moz-box-shadow: 0 0 1px #ffe055;
-    box-shadow: 0 0 1px #ffe055;
-  }
-  .tchiboNavSlider__list .link {
+  .tchiboNav__list .item:hover .tchiboNav__sublist {
     display: block;
   }
-  .tchiboNavSlider__list .link:hover .title {
-    color: #ffe055;
+  .tchiboNav__list .link {
+    color: #002958;
+  }
+  .tchiboNav__list .link:hover {
+    font-weight: bold;
     text-decoration: none;
   }
-  .tchiboNavSlider__list .link .title {
-    background: url("/styles/tchiboNavSlider/img/bgBlueOpacity.png");
-    background: -moz-linear-gradient(270deg, rgba(0, 41, 88, 0.44) 0%, rgba(0, 41, 88, 0.75) 100%);
-    background: -ms-linear-gradient(270deg, rgba(0, 41, 88, 0.44) 0%, rgba(0, 41, 88, 0.75) 100%);
-    background: -o-linear-gradient(270deg, rgba(0, 41, 88, 0.44) 0%, rgba(0, 41, 88, 0.75) 100%);
-    background: -webkit-linear-gradient(270deg, rgba(0, 41, 88, 0.44) 0%, rgba(0, 41, 88, 0.75) 100%);
-    background: linear-gradient(270deg, rgba(0, 41, 88, 0.44) 0%, rgba(0, 41, 88, 0.75) 100%);
-    color: #ffffff;
-    text-align: center;
-    width: 100%;
+  .tchiboNav__sublist {
+    display: none;
+    left: 5px;
+    padding-top: 30px;
     position: absolute;
-    bottom: 0;
-    left: 0;
-    line-height: 18px;
-    display: block;
-    font-size: 12px;
+    top: 15px;
+    width: 500px;
   }
-  .sliderBtn {
-    position: absolute;
-    top: 0;
-    height: 108px;
-    width: 37px;
-  }
-  .sliderBtn__link {
-    position: relative;
-    top: 50%;
-    margin-top: -12px;
-    display: block;
-    width: 20px;
-    height: 24px;
-  }
-  .sliderBtn.mLeftBtn {
-    background: url("/styles/tchiboNavSlider/img/bgSliderBtnLeft.png") 100% 0 repeat;
-    left: 0;
-    top: -10px;
-  }
-  .sliderBtn.mLeftBtn .sliderBtn__link {
-    left: 11px;
-    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAYCAYAAAD6S912AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozRDQzODhDQTYzNTUxMUUzQkM4MUFGNUExMkY0NjY4OSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozRDQzODhDQjYzNTUxMUUzQkM4MUFGNUExMkY0NjY4OSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjNENDM4OEM4NjM1NTExRTNCQzgxQUY1QTEyRjQ2Njg5IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjNENDM4OEM5NjM1NTExRTNCQzgxQUY1QTEyRjQ2Njg5Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+rO/G1wAAAVNJREFUeNpiZACCZ8+eSQApVyBWAGJmBtLAXyB+AMS7paSkXjBCDUsGYlYGysBvIJ7LBHUZpYYxQM1wZYJ6k1pAgYmMMMMHmJlI1fHhwwe2GTNm6OKSZyHFsLNnzwpv3rxZ4/v376wUGQg0gHnt2rUqly9fliSklqCBN2/e5Fu3bp0m0KucxFiO08C/f/8ybtmyRf748ePy////ZyQ2WLAaCEzsnCtWrNB8+fIlH6mRhmHg/v37pfbs2aP8588fspITEwOVAYaBjo6Oz7Kzs8+Ii4t/opoLgaXG9/z8/PNWVlYPGBkZ/1PFy8zMzP/9/f0fJCYmnhcQEPhOtTBUV1f/VFBQcEZXV/c51SKFk5Pzb0xMzM2wsLDLQPZvinIKMjA2Nn6rrKx8GphG1XGpAZXYDdRONn+paN5fJmgFQy3wAGTgbmgFQykAmbGbkdrVKECAAQClyXRmoOhaqwAAAABJRU5ErkJggg==") no-repeat 0 0;
-  }
-  .sliderBtn.mRightBtn {
-    background: url("/styles/tchiboNavSlider/img/bgSliderBtn.png") 100% 0 repeat;
-    right: 0;
-  }
-  .sliderBtn.mRightBtn .sliderBtn__link {
-    left: 7px;
-    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAYCAYAAAD6S912AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozRDQzODhDNjYzNTUxMUUzQkM4MUFGNUExMkY0NjY4OSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozRDQzODhDNzYzNTUxMUUzQkM4MUFGNUExMkY0NjY4OSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjNENDM4OEM0NjM1NTExRTNCQzgxQUY1QTEyRjQ2Njg5IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjNENDM4OEM1NjM1NTExRTNCQzgxQUY1QTEyRjQ2Njg5Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+U4TC7wAAAUxJREFUeNqslTFrg0AYhj1tCy5RyGBx0iHdEgimS/ZMIYs4xLl/pP9AXcTF0cXR1cHJ0cUlLaGYLNIMAc0iNIj9hMuYQHL3wIsHhw93351+iAHKsnyFxwKiQDjmPlrIDhLLsvyLsOwD8syQcYb4LF4ZqYzBjgWLt0kLhX2gZrfg2GsznueN67q+uxRXhUVRDC3Les+ybEhF2NM0zUsYhuMgCN5gzBELL+R5Ltu2PdtutwMqwp6qqnjf96dRFClt2yJiYU/XdShNU8VxnCl8EDyx8MLhcBi4rjtLkkSmIrzF0yMvSZJ0Wq/XG/gZNERChFA3n8/3y+Vyz3FcR7RCURQbwzA2o9HoRLzlyWRS6rr+w/N8S1RDEPytVqtvTdOOxIeiqurRNM0vQRDOd9UZLugnzWvD4p5Ai5bFDYYWu14Y4wZDSu+IEe02+i/AALJmcYdDR62KAAAAAElFTkSuQmCC") no-repeat 0 0;
+  .tchiboNav__sublist .sublistItem {
+    vertical-align: top;
+    display: inline-block;
+    margin-right: 25px;
   }
 }
 /*---END----TCHIBO - слайдер-меню разделов Чибо---------*/
@@ -2412,18 +2356,15 @@ img[height="0"] {
     position: relative;
     overflow: hidden;
     float: left;
-    margin-bottom: 10px;
   }
-  .tchiboCatalog .tchiboCatalogInner.m300 {
-    width: 300px;
-    margin-right: 20px;
+  .tchiboCatalog .tchiboCatalogInner.m312 {
+    width: 312px;
   }
-  .tchiboCatalog .tchiboCatalogInner.m300:nth-child(3n) {
-    margin-right: 0;
+  .tchiboCatalog .tchiboCatalogInner.m316 {
+    width: 316px;
   }
-  .tchiboCatalog .tchiboCatalogInner.m460 {
-    width: 460px;
-    margin-right: 20px;
+  .tchiboCatalog .tchiboCatalogInner.m470 {
+    width: 470px;
   }
   .tchiboCatalog .tchiboCatalogInner.mLast {
     margin-right: 0;

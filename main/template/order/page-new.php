@@ -89,7 +89,7 @@ if ($oneClick) {
 		<div class="bBuyingLine__eLeft">Выберите предпочтительный способ</div>
 
 		<div class="bBuyingLine__eRight bInputList" data-bind="foreach: { data: deliveryTypes }">
-			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" data-bind="attr: { 'id': 'method_'+$data.id }" />
+			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" data-bind="attr: { 'id': 'method_'+$data.id }" hidden="hidden" />
 			<label class="bCustomLabel mCustomLabelBig mLabelStrong" data-bind="
 									text: $data.name,
 									states: $data.states,
@@ -373,8 +373,8 @@ if ($oneClick) {
                         <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
                         <div class="bSubscibeCheck bInputList">
-                            <input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
-                            <label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
+                            <input class="jsCustomRadio bCustomInput mCustomCheckBig" name="subscribe" id="subscribe" type="checkbox" checked="checked" />
+            				<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
                         </div>
                     </div>
 
@@ -463,12 +463,12 @@ if ($oneClick) {
 
 						<div class="bInputAddress jsInputStreet ui-css">
 							<label class="bPlaceholder">Улица*</label>
-							<input type="text" id="order_address_street" class="bBuyingLine__eText mInputLong mInputStreet ui-autocomplete-input" name="order[address_street]" title="Улица" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="" />
+							<input type="text" class="bBuyingLine__eText mInputLong mInputStreet ui-autocomplete-input" id="order_address_street" title="Улица" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_street]" />
 						</div>
 
 						<div class="bInputAddress jsInputBuilding ui-css">
 							<label class="bPlaceholder">Дом*</label>
-							<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild ui-autocomplete-input" name="order[address_building]" title="Дом" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="" />
+							<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild ui-autocomplete-input" name="order[address_building]" title="Дом" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" />
 						</div>
 
 						<div class="bInputAddress">
@@ -486,7 +486,7 @@ if ($oneClick) {
 							<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
 						</div>
 
-                        <div class="bInputAddress" id="map" style="width: 460px; height: 350px; display: none;"></div>
+                        <div class="bInputAddress" id="map"></div>
 					</div>
 
 					<label class="bBuyingLine__eLeft">Пожелания и дополнения</label>
