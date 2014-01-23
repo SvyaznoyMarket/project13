@@ -349,7 +349,8 @@
 
 								for ( i in objs ) {
 									obj = objs[i];
-									obj.label = /*obj.typeShort + '. ' + */obj.name;
+									obj.label = obj.type + ' ' + obj.name;
+									obj.value = obj.name;
 									items.push(obj);
 								}
 
