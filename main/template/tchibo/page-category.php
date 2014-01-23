@@ -101,6 +101,19 @@ $helper = new \Helper\TemplateHelper();
 <!-- TCHIBO - навигация по разделу Чибо -->
 <? endif ?>
 
+<div class="tchiboNavSec">
+	<ul class="tchiboNavSec__list">
+		<li class="item"><a class="link mActive" href="">Классика</a></li>
+		<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
+		<li class="item"><a class="link" href="">100% натуральное</a></li>
+		<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
+		<li class="item"><a class="link" href="">Классика</a></li>
+		<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
+		<li class="item"><a class="link" href="">100% натуральное</a></li>
+		<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
+	</ul>
+</div>
+
 
 <?
 $config = \App::config()->tchibo;
