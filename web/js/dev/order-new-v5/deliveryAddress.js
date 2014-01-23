@@ -359,6 +359,7 @@
 									appendTo: '.jsInputStreet',
 									minLength: 2,
 									select : function( event, ui ) {
+										street.kladr('current', obj);
 										removeErrors();
 										street.val(ui.item.name);
 										building.kladr( 'parentType', $.kladr.type.street );
@@ -417,6 +418,7 @@
 									appendTo: '.jsInputBuilding',
 									minLength: 0,
 									select : function( event, ui ) {
+										building.kladr('current', obj);
 										removeErrors();
 										building.val(ui.item.name);
 										mapUpdate();
