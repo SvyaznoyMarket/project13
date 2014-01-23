@@ -459,7 +459,7 @@
 			var
 				cityGeocoder,
 				position,
-				addrData = {address: "Москва", zoom: 12};//getAddress();
+				addrData = getAddress();
 			// end of vars
 
 			if ( map_created || !mapObj.length ) {
