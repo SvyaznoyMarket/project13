@@ -348,7 +348,7 @@ $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
 $c->order['maxSumOnline'] = 15000;
 $c->order['excludedError'] = [705, 708, 735, 759, 800];
-$c->order['addressAutocomplete'] = true;
+$c->order['addressAutocomplete'] = false;
 
 $c->kladr = [
     'token' => '52b04de731608f2773000000',
