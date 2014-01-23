@@ -39,7 +39,7 @@
 		/**
 		 * Получение адреса
 		 */
-			getAddress = function() {
+		getAddress = function() {
 			var
 				zoom = 12,
 				address = '',
@@ -289,6 +289,9 @@
 						fieldsHandler.building();
 						fieldsHandler.buildingAdd();
 
+						street.kladr( 'parentType', $.kladr.type.city );
+						street.kladr( 'parentId', cityId );
+
 						if ( '' !== $.trim(orderData['order[address_street]']) ) {
 							$.kladr.api(
 								{
@@ -308,9 +311,6 @@
 									}
 
 									street.kladr('current', streetObjs[0]);
-									street.kladr( 'parentType', $.kladr.type.city );
-									street.kladr( 'parentId', cityId );
-
 									building.kladr( 'parentType', $.kladr.type.street );
 									building.kladr( 'parentId', streetObjs[0].id );
 								}
@@ -503,6 +503,17 @@
 					position = res.geoObjects.get(0).geometry.getCoordinates();
 					map = new ENTER.constructors.CreateMap('map', [{latitude: position[0], longitude: position[1]}]);
 					map.mapWS.setZoom(addrData.zoom);
+
+					if ( '' !== $.trim(orderData['order[address_street]']) ) {
+						map.points = [];
+						map.mapWS.geoObjects.each(function (geoObject) {
+							map.mapWS.geoObjects.remove(geoObject);
+						});
+
+						map.points.push({latitude: position[0], longitude: position[1]});
+						map._showMarkers();
+						map.mapWS.setCenter(position, addrData.zoom);
+					}
 				},
 				function ( err ) {
 					// обработка ошибки
