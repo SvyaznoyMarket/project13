@@ -3757,6 +3757,12 @@ $(document).ready(function() {
 	 */
 	var menuHoverInLvl1 = function(){
 		var el = $(this);
+
+		// SITE-3041 Если в верхнем меню в категории нет child НЕ делать выпадалку
+		if ( el.hasClass('jsEmptyChild') ) {
+			return;
+		}
+
 		lastHoverLvl1 = new Date();
 		hoverNowLvl1 = true;
 
