@@ -22,7 +22,6 @@
 		building = $('#order_address_building'),
 		buildingAdd = $('#order_address_number'),
 		metro = $('#order_address_metro'),
-		metroWrapper = metro.parents('.jsInputMetro'),
 		metroIdFiled = $('#order_subway_id'),
 
 		error,
@@ -40,7 +39,7 @@
 		/**
 		 * Получение адреса
 		 */
-		getAddress = function() {
+			getAddress = function() {
 			var
 				zoom = 12,
 				address = '',
@@ -71,7 +70,7 @@
 
 			if ( obj ) {
 				name = obj.name;
-				type = obj.type + '.';
+				type = obj.type;
 			}
 			else if ( value ) {
 				name = value;
@@ -186,6 +185,10 @@
 				name;
 			// end of vars
 
+			if ( !metroIdFiled.length ) {
+				return;
+			}
+
 			myGeocoder = ymaps.geocode([latitude, longitude], {kind: 'metro'});
 			myGeocoder.then(
 				function ( res ) {
@@ -193,7 +196,6 @@
 					name = nearest.properties.get('name');
 					name = name.replace('метро ', '');
 
-//					metroWrapper.hide();
 					metro.val(name);
 					metroIdFiled.val('');
 
@@ -213,7 +215,6 @@
 
 					metro.val('');
 					metroIdFiled.val('');
-//					metroWrapper.show();
 				}
 			);
 		},
@@ -276,8 +277,8 @@
 					},
 					function( objs ) {
 						if ( !objs.length ) {
-//							showError('КЛАДР не нашел указаный город');
 							console.log('КЛАДР не нашел город ' + cityName);
+							showError('Не нашли ваш адрес на карте. Уточните');
 
 							return;
 						}
@@ -288,31 +289,33 @@
 						fieldsHandler.building();
 						fieldsHandler.buildingAdd();
 
-						street.kladr( 'parentType', $.kladr.type.city );
-						street.kladr( 'parentId', cityId );
+						if ( '' !== $.trim(orderData['order[address_street]']) ) {
+							$.kladr.api(
+								{
+									token: token,
+									key: key,
+									type: $.kladr.type.street,
+									name: orderData['order[address_street]'],
+									parentType: $.kladr.type.city,
+									parentId: cityId,
+									limit: 1
+								},
+								function( streetObjs ){
+									if ( !streetObjs.length ) {
+										showError('Не нашли ваш адрес на карте. Уточните');
 
-						// Задаем parentId для поля building
-						$.kladr.api(
-							{
-								token: token,
-								key: key,
-								type: $.kladr.type.street,
-								name: orderData['order[address_street]'],
-								parentType: $.kladr.type.city,
-								parentId: cityId,
-								limit: 1
-							},
-							function( objs ){
-								if ( !objs.length ) {
-									showError('Не нашли ваш адрес на карте. Уточните');
+										return;
+									}
 
-									return;
+									street.kladr('current', streetObjs[0]);
+									street.kladr( 'parentType', $.kladr.type.city );
+									street.kladr( 'parentId', cityId );
+
+									building.kladr( 'parentType', $.kladr.type.street );
+									building.kladr( 'parentId', streetObjs[0].id );
 								}
-
-								building.kladr( 'parentType', $.kladr.type.street );
-								building.kladr( 'parentId', objs[0].id );
-							}
-						);
+							);
+						}
 					}
 				);
 			},
@@ -363,11 +366,36 @@
 									appendTo: '.jsInputStreet',
 									minLength: 2,
 									select : function( event, ui ) {
-										street.kladr('current', obj);
 										removeErrors();
-										street.val(ui.item.name);
+
+										street.kladr('current', ui.item);
 										building.kladr( 'parentType', $.kladr.type.street );
 										building.kladr( 'parentId', ui.item.id );
+
+										if ( $.trim(building.val()) !== '' ) {
+											$.kladr.api(
+												{
+													token: building.kladr('token'),
+													key: building.kladr('key'),
+													type: building.kladr('type'),
+													name: building.val(),
+													parentType: building.kladr('parentType'),
+													parentId: building.kladr('parentId'),
+													limit: 1
+												},
+												function( objs ){
+													if ( !objs.length ) {
+														showError('Не нашли ваш адрес на карте. Уточните');
+
+														return;
+													}
+
+													removeErrors();
+													building.kladr('current', objs[0]);
+												}
+											);
+										}
+
 										mapUpdate();
 									}
 								});
@@ -422,14 +450,13 @@
 									appendTo: '.jsInputBuilding',
 									minLength: 0,
 									select : function( event, ui ) {
-										building.kladr('current', obj);
 										removeErrors();
-										building.val(ui.item.name);
+
+										building.kladr('current', ui.item);
 										mapUpdate();
 									}
 								});
-							}
-						);
+							});
 					}
 				});
 			},
@@ -498,7 +525,6 @@
 		limit = data.kladr.itemLimit ? data.kladr.itemLimit : 6;
 	}
 
-//	metroWrapper.hide();
 	fieldsInit();
 	ymaps.ready(mapCreate);
 
