@@ -8,6 +8,12 @@ namespace EnterSite\Model\Page {
         public $content;
         /** @var Model\Page\DefaultLayout\RegionLink */
         public $regionLink;
+
+        public function __construct() {
+            parent::__construct();
+
+            $this->regionLink = new DefaultLayout\RegionLink();
+        }
     }
 }
 

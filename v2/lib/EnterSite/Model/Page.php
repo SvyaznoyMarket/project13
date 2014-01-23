@@ -1,8 +1,6 @@
 <?php
 
 namespace EnterSite\Model {
-    use EnterSite\Model\Page\Meta;
-
     class Page {
         /** @var string */
         public $name;
@@ -12,8 +10,12 @@ namespace EnterSite\Model {
         public $title;
         /** @var string */
         public $header;
-        /** @var Meta[] */
+        /** @var Page\Meta[] */
         public $meta = [];
+
+        public function __construct() {
+
+        }
     }
 }
 

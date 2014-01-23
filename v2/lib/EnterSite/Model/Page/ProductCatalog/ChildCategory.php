@@ -8,6 +8,8 @@ namespace EnterSite\Model\Page\ProductCatalog {
         public $content;
 
         public function __construct() {
+            parent::__construct();
+
             $this->content = new ChildCategory\Content();
         }
     }
