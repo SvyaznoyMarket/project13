@@ -75,7 +75,7 @@
 			}
 			else if ( value ) {
 				name = value;
-				type = 'улица';
+				type = '';
 			}
 
 			if ( name ) {
