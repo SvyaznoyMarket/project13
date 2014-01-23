@@ -231,7 +231,7 @@
 				error.html('<li>' + msg + '</li>');
 			}
 			else {
-				$('#map', container).before($('<ul class="error_list" />').append('<li>' + msg + '</li>'));
+				$('#map').before($('<ul class="error_list" />').append('<li>' + msg + '</li>'));
 			}
 
 			return false;
@@ -257,7 +257,7 @@
 		 *
 		 * @type {{city: Function, street: Function, building: Function, buildingAdd: Function}}
 		 */
-			fieldsHandler = {
+		fieldsHandler = {
 			/**
 			 * Получаем ID города в kladr
 			 */
@@ -283,6 +283,10 @@
 						}
 
 						cityId = objs[0].id;
+
+						fieldsHandler.street();
+						fieldsHandler.building();
+						fieldsHandler.buildingAdd();
 
 						street.kladr( 'parentType', $.kladr.type.city );
 						street.kladr( 'parentId', cityId );
@@ -444,11 +448,8 @@
 		/**
 		 * Инициализация полей
 		 */
-			fieldsInit = function() {
+		fieldsInit = function() {
 			fieldsHandler.city();
-			fieldsHandler.street();
-			fieldsHandler.building();
-			fieldsHandler.buildingAdd();
 		},
 
 
