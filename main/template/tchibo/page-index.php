@@ -4,7 +4,7 @@
  */
 ?>
 <!-- TCHIBO - слайдер-меню разделов Чибо -->
-<div class="tchiboNavSliderWrap">
+<? /*<div class="tchiboNavSliderWrap">
 	<div class="tchiboNavSlider">
 		<div class="tchiboNavSlider__title"></div>
 
@@ -59,6 +59,62 @@
 		<!--div class="sliderBtn mRightBtn"><a class="sliderBtn__link" href=""></a></div--><!--/ кнопка прокрутки влево -->
 	</div>
 </div>
+*/ ?>
+<div class="tchiboNav">
+	<div class="tchiboNav__title"></div>
+
+	<ul class="tchiboNav__list">
+		<li class="item jsItemListTchibo">
+			<a class="link" href="">
+				<span class="title">Мужчины</span>
+			</a>
+
+			<ul class="tchiboNav__sublist">
+				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Классика</a></li>
+				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Мужской сезон</a></li>
+				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Модные тренды</a></li>
+				<li class="sublistItem jsItemListTchibo"><a class="link" href="">100% натуральное</a></li>
+			</ul>
+		</li>
+
+		<li class="item jsItemListTchibo">
+			<a class="link" href="">
+				<span class="title">Женщины</span>
+			</a>
+
+			<ul class="tchiboNav__sublist">
+				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Классика</a></li>
+				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Мисс Совершенство</a></li>
+				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Модные тренды</a></li>
+				<li class="sublistItem jsItemListTchibo"><a class="link" href="">100% натуральное</a></li>
+			</ul>
+		</li>
+
+		<li class="item jsItemListTchibo">
+			<a class="link" href="">
+				<span class="title">Дети</span>
+			</a>
+		</li>
+
+		<li class="item jsItemListTchibo">
+			<a class="link" href="">
+				<span class="title">Дом</span>
+			</a>
+		</li>
+
+		<li class="item jsItemListTchibo">
+			<a class="link" href="">
+				<span class="title">Спорт</span>
+			</a>
+		</li>
+
+		<li class="item jsItemListTchibo">
+			<a class="link" href="">
+				<span class="title">Кофе</span>
+			</a>
+		</li>
+	</ul>
+</div>
 <!--/ TCHIBO - слайдер-меню разделов Чибо -->
 
 <!-- TCHIBO - крутилка разделов Чибо на рутовой странице -->
@@ -86,7 +142,7 @@
 
 <!--TCHIBO - каталог разделов, баннеров, товаров Чибо -->
 <div class="tchiboCatalog clearfix">	
-	<div class="tchiboCatalogInner m300">
+	<div class="tchiboCatalogInner m312">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/man.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Мужчины</a>
@@ -101,7 +157,7 @@
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
-	<div class="tchiboCatalogInner m300">
+	<div class="tchiboCatalogInner m316">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/woman.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Женщины</a>
@@ -116,13 +172,13 @@
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
-	<div class="tchiboCatalogInner m300 mLast">
+	<div class="tchiboCatalogInner m312 mLast">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/kids.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Дети</a>
 	</div><!--/ категория -->
 
-	<div class="tchiboCatalogInner m460">
+	<div class="tchiboCatalogInner m470">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/home.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Дом</a>
@@ -139,7 +195,7 @@
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
-	<div class="tchiboCatalogInner m460 mLast">
+	<div class="tchiboCatalogInner m470 mLast">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/sport.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Спорт</a>
@@ -151,7 +207,7 @@
 		</ul><!--/ список подкатегории -->
 	</div><!--/ категория -->
 
-	<div class="tchiboCatalogInner mBanner">
+	<div class="tchiboCatalogInner">
 		<a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/cofee.jpg" /></a>
 
 		<a href="" class="tchiboCatalog__title">Кофе</a>

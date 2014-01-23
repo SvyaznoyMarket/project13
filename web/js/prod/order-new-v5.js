@@ -10,8 +10,7 @@
 		orderData = $('#jsOrderForm').data('value'),
 		subwayArray = $('#metrostations').data('name'),
 
-		container = $('#jsDeliveryAddress'),
-		data = container.data('value'),
+		data = $('#jsDeliveryAddress').data('value'),
 
 		active = config ? config.addressAutocomplete : false,
 
@@ -19,10 +18,11 @@
 		key = null,
 		limit = 6,
 
-		street = container.find('#order_address_street'),
-		building = container.find('#order_address_building'),
-		buildingAdd = container.find('#order_address_number'),
-		metro = container.find('#order_address_metro'),
+		street = $('#order_address_street'),
+		building = $('#order_address_building'),
+		buildingAdd = $('#order_address_number'),
+		metro = $('#order_address_metro'),
+		metroWrapper = metro.parents('.jsInputMetro'),
 		metroIdFiled = $('#order_subway_id'),
 
 		error,
@@ -31,7 +31,9 @@
 		map_created = false,
 
 		cityName = data ? data.regionName : '',
-		cityId;
+		cityId,
+
+		mapObj = $('#map');
 	// end of vars
 
 	var
@@ -73,7 +75,7 @@
 			}
 			else if ( value ) {
 				name = value;
-				type = 'улица';
+				type = '';
 			}
 
 			if ( name ) {
@@ -191,7 +193,7 @@
 					name = nearest.properties.get('name');
 					name = name.replace('метро ', '');
 
-//					metro.parents('.jsInputMetro').hide();
+//					metroWrapper.hide();
 					metro.val(name);
 					metroIdFiled.val('');
 
@@ -211,7 +213,7 @@
 
 					metro.val('');
 					metroIdFiled.val('');
-					metro.parents('.jsInputMetro').show();
+//					metroWrapper.show();
 				}
 			);
 		},
@@ -223,7 +225,7 @@
 		 * @param   {String}    msg     Сообщение которое необходимо показать пользователю
 		 */
 		showError = function( msg ) {
-			error = container.find('ul.error_list');
+			error = $('ul.error_list');
 
 			if ( error.length ) {
 				error.html('<li>' + msg + '</li>');
@@ -240,7 +242,7 @@
 		 * Убрать сообщения об ошибках
 		 */
 		removeErrors = function() {
-			error = container.find('ul.error_list');
+			error = $('ul.error_list');
 
 			if ( error.length ) {
 				error.html('');
@@ -255,7 +257,7 @@
 		 *
 		 * @type {{city: Function, street: Function, building: Function, buildingAdd: Function}}
 		 */
-		fieldsHandler = {
+			fieldsHandler = {
 			/**
 			 * Получаем ID города в kladr
 			 */
@@ -347,7 +349,8 @@
 
 								for ( i in objs ) {
 									obj = objs[i];
-									obj.label = /*obj.typeShort + '. ' + */obj.name;
+									obj.label = obj.type + ' ' + obj.name;
+									obj.value = obj.name;
 									items.push(obj);
 								}
 
@@ -356,6 +359,7 @@
 									appendTo: '.jsInputStreet',
 									minLength: 2,
 									select : function( event, ui ) {
+										street.kladr('current', obj);
 										removeErrors();
 										street.val(ui.item.name);
 										building.kladr( 'parentType', $.kladr.type.street );
@@ -414,6 +418,7 @@
 									appendTo: '.jsInputBuilding',
 									minLength: 0,
 									select : function( event, ui ) {
+										building.kladr('current', obj);
 										removeErrors();
 										building.val(ui.item.name);
 										mapUpdate();
@@ -439,7 +444,7 @@
 		/**
 		 * Инициализация полей
 		 */
-		fieldsInit = function() {
+			fieldsInit = function() {
 			fieldsHandler.city();
 			fieldsHandler.street();
 			fieldsHandler.building();
@@ -457,11 +462,11 @@
 				addrData = getAddress();
 			// end of vars
 
-			if ( map_created ) {
+			if ( map_created || !mapObj.length ) {
 				return;
 			}
 
-			$('#map').show();
+			mapObj.show().width(460).height(350);
 			map_created = true;
 
 			cityGeocoder = ymaps.geocode(addrData.address);
@@ -492,9 +497,9 @@
 		limit = data.kladr.itemLimit ? data.kladr.itemLimit : 6;
 	}
 
-	metro.parents('.jsInputMetro').hide();
+//	metroWrapper.hide();
 	fieldsInit();
-	$('body').bind('orderdeliverychange', mapCreate);
+	ymaps.ready(mapCreate);
 
 }(this, this.document, this.jQuery, this.ENTER));
  
