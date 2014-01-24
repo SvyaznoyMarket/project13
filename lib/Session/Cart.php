@@ -139,13 +139,23 @@ class Cart {
      * @param int $quantity
      */
     public function setProduct(\Model\Product\Entity $product, $quantity = 1) {
+        $return = true;
         if ($quantity < 0) $quantity = 0;
 
         $data = $this->storage->get($this->sessionName);
         $data['productList'][$product->getId()] = $quantity;
 
         $this->storage->set($this->sessionName, $data);
+
+        /* TODO:
+        if ( ( $quantity + count($data['productList']) ) < $this->productLimit) {
+            $data['productList'][$product->getId()] = $quantity;
+            $this->storage->set($this->sessionName, $data);
+            $return = false;
+        }*/
+
         $this->clearEmpty();
+        return $return;
     }
 
     /**
