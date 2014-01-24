@@ -15,6 +15,8 @@ class Product {
     public $token;
     /** @var string */
     public $link;
+    /** @var bool */
+    public $isBuyable;
 
     /**
      * @param array $data
@@ -24,5 +26,6 @@ class Product {
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
+        $this->isBuyable = isset($data['state']['is_buyable']) && (bool)$data['state']['is_buyable'];
     }
 }

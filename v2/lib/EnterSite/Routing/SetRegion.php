@@ -10,7 +10,7 @@ class SetRegion extends Route {
      * @param Region $region
      */
     public function __construct(Region $region) {
-        $this->action = 'Page\\Region\\SetObjectByHttpRequest';
+        $this->action = 'Region\\Set';
         $this->url = '/region/set/' . $region->id;
     }
 }

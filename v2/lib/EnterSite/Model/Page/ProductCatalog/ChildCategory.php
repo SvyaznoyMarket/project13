@@ -33,17 +33,10 @@ namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
 }
 
 namespace EnterSite\Model\Page\ProductCatalog\ChildCategory\Content {
-    class ProductBlock {
-        /** @var ProductBlock\ProductCard[] */
-        public $products = [];
-    }
-}
+    use EnterSite\Model\Partial;
 
-namespace EnterSite\Model\Page\ProductCatalog\ChildCategory\Content\ProductBlock {
-    class ProductCard {
-        /** @var string */
-        public $name;
-        /** @var string */
-        public $url;
+    class ProductBlock {
+        /** @var Partial\ProductCard[] */
+        public $products = [];
     }
 }

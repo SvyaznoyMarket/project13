@@ -46,7 +46,7 @@ class ChildCategory {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
-        $curl->execute();
+        $curl->execute(1, 3);
 
         // регион
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
@@ -65,7 +65,7 @@ class ChildCategory {
         $mainMenuListQuery = new Query\MainMenu\GetList();
         $curl->prepare($mainMenuListQuery);
 
-        $curl->execute();
+        $curl->execute(1, 3);
 
         // категория
         $category = (new Repository\Product\Category())->getObjectByQuery($productCategoryItemQuery, $productCategoryAdminItemQuery);
@@ -84,7 +84,7 @@ class ChildCategory {
         $categoryListQuery = new Query\Product\Category\GetTreeList($region, 3);
         $curl->prepare($categoryListQuery);
 
-        $curl->execute();
+        $curl->execute(1, 3);
 
         // предок категории
         $ancestryCategory = (new Repository\Product\Category())->getAncestryObjectByQuery($ancestryCategoryItemQuery);
@@ -101,7 +101,7 @@ class ChildCategory {
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
-        $curl->execute();
+        $curl->execute(1, 3);
 
         // листинг идентификаторов товаров
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
@@ -113,7 +113,7 @@ class ChildCategory {
         $productListQuery = new Query\Product\GetListByIdList($productIdPager->id, $region);
         $curl->prepare($productListQuery);
 
-        $curl->execute();
+        $curl->execute(1, 3);
 
         // список товаров
         $products = (new Repository\Product())->getObjectListByQuery($productListQuery);

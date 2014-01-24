@@ -4,7 +4,9 @@ namespace EnterSite\Repository\Page\ProductCatalog;
 
 use EnterSite\RouterTrait;
 use EnterSite\Routing;
+use EnterSite\Repository;
 use EnterSite\Model;
+use EnterSite\Model\Partial;
 use EnterSite\Model\Page\ProductCatalog\ChildCategory as Page;
 
 class ChildCategory {
@@ -26,11 +28,10 @@ class ChildCategory {
             $page->header->regionLink->url = $this->getRouter()->getUrlByRoute(new Routing\SetRegion($request->region));
         }
 
+        $productCardRepository = new Repository\Partial\ProductCard();
+        $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         foreach ($request->products as $product) {
-            $productCard = new Page\Content\ProductBlock\ProductCard();
-            $productCard->name = $product->name;
-            $productCard->url = $product->link;
-
+            $productCard = $productCardRepository->getObject($product, $cartProductButtonRepository->getObject($product));
             $page->content->productBlock->products[] = $productCard;
         }
 
