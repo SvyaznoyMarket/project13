@@ -11,7 +11,9 @@ namespace EnterSite\Model {
         /** @var string */
         public $header;
         /** @var Page\Meta[] */
-        public $meta = [];
+        public $metas = [];
+        /** @var string[] */
+        public $styles = [];
 
         public function __construct() {
 

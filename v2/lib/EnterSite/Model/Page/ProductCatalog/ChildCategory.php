@@ -1,9 +1,9 @@
 <?php
 
 namespace EnterSite\Model\Page\ProductCatalog {
-    use EnterSite\Model;
+    use EnterSite\Model\Page;
 
-    class ChildCategory extends Model\Page\DefaultLayout {
+    class ChildCategory extends Page\DefaultLayout {
         /** @var ChildCategory\Content */
         public $content;
 
@@ -16,19 +16,17 @@ namespace EnterSite\Model\Page\ProductCatalog {
 }
 
 namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
-    use EnterSite\Model;
+    use EnterSite\Model\Page;
 
-    class Content {
-        /** @var string */
-        public $title;
+    class Content extends Page\DefaultLayout\Content {
         /** @var Content\ProductBlock */
         public $productBlock;
         /** @var bool */
         public $hasCustomStyle;
-        /** @var Model\Product\Catalog\Config\PromoStyle */
-        public $promoStyle;
 
         public function __construct() {
+            parent::__construct();
+
             $this->productBlock = new Content\ProductBlock();
         }
     }

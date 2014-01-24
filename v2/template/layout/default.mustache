@@ -26,7 +26,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="HandheldFriendly" content="true" />
 
-    {{!> stylesheet }}
+    {{> partial/style }}
     {{!> headJavascript }}
     {{!> relLink }}
     {{!> googleAnalytics }}
@@ -41,9 +41,11 @@
 
     <div class="wrapper{{#wrapperClass}} {{wrapperClass}}{{/wrapperClass}}"{{#wrapperItemAttribute}} {{wrapperItemAttribute}}{{/wrapperItemAttribute}}>
 
+    {{#header}}
     <header class="header">
-        {{!> header }}
-    </header><!--/ Шапка-->
+        {{> partial/header }}
+    </header>
+    {{/header}}
 
     <div class="content clearfix">
         {{!> contentHead }}

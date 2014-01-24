@@ -17,10 +17,13 @@ class ChildCategory {
     public function getObjectByRequest(ChildCategory\Request $request) {
         $page = new Page();
 
+        $page->styles[] = '/css/global.min.css';
+        $page->styles[] = '/styles/global.min.css';
+
         // TODO: вынести в parent-класс
         if ($request->region) {
-            $page->regionLink->name = $request->region->name;
-            $page->regionLink->url = $this->getRouter()->getUrlByRoute(new Routing\SetRegion($request->region));
+            $page->header->regionLink->name = $request->region->name;
+            $page->header->regionLink->url = $this->getRouter()->getUrlByRoute(new Routing\SetRegion($request->region));
         }
 
         foreach ($request->products as $product) {
