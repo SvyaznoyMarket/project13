@@ -75,7 +75,7 @@
 			}
 			else if ( value ) {
 				name = value;
-				type = 'улица';
+				type = '';
 			}
 
 			if ( name ) {
@@ -349,7 +349,8 @@
 
 								for ( i in objs ) {
 									obj = objs[i];
-									obj.label = /*obj.typeShort + '. ' + */obj.name;
+									obj.label = obj.type + ' ' + obj.name;
+									obj.value = obj.name;
 									items.push(obj);
 								}
 
@@ -358,6 +359,7 @@
 									appendTo: '.jsInputStreet',
 									minLength: 2,
 									select : function( event, ui ) {
+										street.kladr('current', obj);
 										removeErrors();
 										street.val(ui.item.name);
 										building.kladr( 'parentType', $.kladr.type.street );
@@ -416,6 +418,7 @@
 									appendTo: '.jsInputBuilding',
 									minLength: 0,
 									select : function( event, ui ) {
+										building.kladr('current', obj);
 										removeErrors();
 										building.val(ui.item.name);
 										mapUpdate();
@@ -3240,7 +3243,7 @@
 			for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
 				//!!! важно клонировать объект, дабы не портить для др. типов доставки
 				nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
-                nowProduct.sum = nowProduct.price;
+                nowProduct.sum = nowProduct.sum ? nowProduct.sum : nowProduct.price;
                 nowProduct.quantity = 1;
 				nowProduct.oldQuantity = productsToNewBox[j].quantity; // сохраняем старое кол-во товаров в блоке
 				for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {

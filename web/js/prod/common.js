@@ -4116,8 +4116,8 @@ $(document).ready(function() {
 		scrollTarget,
 		scrollTargetOffset;
 	// end of vars
-	
-	
+
+
 	userBar.showOverlay = false;
 
 
@@ -4499,15 +4499,15 @@ $(document).ready(function() {
 	body.on('click', '.jsUpsaleProduct', upsaleProductClick);
 	body.on('userLogged', updateUserInfo);
 	body.on('basketUpdate', updateBasketInfo);
-	body.on('addtocart', showBuyInfo);
 	body.on('getupsale', showUpsell);
 
 
-	userBarFixed.on('click', '.jsCartDelete', deleteProductHandler);
 	userbarStatic.on('click', '.jsCartDelete', deleteProductHandler);
 
 
 	if ( userBarFixed.length ) {
+		body.on('addtocart', showBuyInfo);
+		userBarFixed.on('click', '.jsCartDelete', deleteProductHandler);
 		scrollTarget = $(userbarConfig.target);
 
 		if ( topBtn.length ) {
@@ -4518,6 +4518,10 @@ $(document).ready(function() {
 			scrollTargetOffset = scrollTarget.offset().top + userBarFixed.height();
 			w.on('scroll', checkScroll);
 		}
+	}
+	else {
+		overlay.remove();
+		overlay = false;
 	}
 
 }(window.ENTER));

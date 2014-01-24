@@ -309,6 +309,10 @@ module.exports = function( grunt ) {
 				files: [jsDevPath+'shop/*.js'],
 				tasks: ['concat:shopJS', 'jshint', 'uglify:shopJS',  'connect', 'qunit', 'exec:getVersion']
 			},
+			tchiboJS:{
+				files: [jsDevPath+'tchibo/*.js'],
+				tasks: ['concat:tchiboJS', 'jshint', 'uglify:tchiboJS',  'connect', 'qunit', 'exec:getVersion']
+			},
 			watch3dJS:{
 				files: [jsDevPath+'watch3d/*.js'],
 				tasks: ['concat:watch3dJS', 'jshint', 'uglify:watch3dJS',  'connect', 'qunit', 'exec:getVersion']
@@ -386,6 +390,10 @@ module.exports = function( grunt ) {
 			shopJS : {
 				src: [jsDevPath+'shop/*.js'],
 				dest: jsProdPath+'shop.js'
+			},
+			tchiboJS : {
+				src: [jsDevPath+'tchibo/*.js'],
+				dest: jsProdPath+'tchibo.js'
 			},
 			watch3dJS : {
 				src: [jsDevPath+'watch3d/*.js'],
@@ -521,6 +529,12 @@ module.exports = function( grunt ) {
 			shopJS: {
 				files: {
 					'../web/js/prod/shop.min.js': [jsDevPath+'shop/*.js']
+				}
+			},
+
+			tchiboJS: {
+				files: {
+					'../web/js/prod/tchibo.min.js': [jsDevPath+'tchibo/*.js']
 				}
 			},
 

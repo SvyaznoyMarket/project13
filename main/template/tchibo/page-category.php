@@ -9,11 +9,19 @@
 
 <?
 $helper = new \Helper\TemplateHelper();
+
+$siblingCategories = $category->getParent() ? $category->getParent()->getChild() : [];
 ?>
 
 <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
-<h1 class="tchiboTitle"><?= $category->getName() ?></h1>
+<? if ((bool)$siblingCategories): ?>
+    <?= $helper->render('tchibo/__siblingCategory-list', ['categories' => $siblingCategories]) // категории-соседи ?>
+<? endif ?>
+
+<? if (false): ?>
+    <h1 class="tchiboTitle"><?= $category->getName() ?></h1>
+<? endif ?>
 
 <? if (false): ?>
 <!-- TCHIBO - навигация по разделу Чибо -->
@@ -99,6 +107,20 @@ $helper = new \Helper\TemplateHelper();
 	<!--/ список подкатегорий -->
 </div>
 <!-- TCHIBO - навигация по разделу Чибо -->
+
+<div class="tchiboNavSec">
+	<ul class="tchiboNavSec__list">
+		<li class="item"><a class="link mActive" href="">Классика</a></li>
+		<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
+		<li class="item"><a class="link" href="">100% натуральное</a></li>
+		<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
+		<li class="item"><a class="link" href="">Классика</a></li>
+		<li class="item"><a class="link" href="">Коллекция с длинным-предлинным названием</a></li>
+		<li class="item"><a class="link" href="">100% натуральное</a></li>
+		<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
+	</ul>
+</div>
+
 <? endif ?>
 
 
