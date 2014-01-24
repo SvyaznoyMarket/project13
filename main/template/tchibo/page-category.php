@@ -9,9 +9,15 @@
 
 <?
 $helper = new \Helper\TemplateHelper();
+
+$siblingCategories = $category->getParent() ? $category->getParent()->getChild() : [];
 ?>
 
 <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
+
+<? if ((bool)$siblingCategories): ?>
+    <?= $helper->render('tchibo/__siblingCategory-list', ['categories' => $siblingCategories]) // категории-соседи ?>
+<? endif ?>
 
 <h1 class="tchiboTitle"><?= $category->getName() ?></h1>
 
@@ -99,7 +105,6 @@ $helper = new \Helper\TemplateHelper();
 	<!--/ список подкатегорий -->
 </div>
 <!-- TCHIBO - навигация по разделу Чибо -->
-<? endif ?>
 
 <div class="tchiboNavSec">
 	<ul class="tchiboNavSec__list">
@@ -113,6 +118,8 @@ $helper = new \Helper\TemplateHelper();
 		<li class="item"><a class="link" href="">Какая-то ещё коллекция</a></li>
 	</ul>
 </div>
+
+<? endif ?>
 
 
 <?
