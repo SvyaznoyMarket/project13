@@ -3,7 +3,6 @@
  * @var $page         \View\DefaultLayout
  */
 ?>
-<!-- TCHIBO - слайдер-меню разделов Чибо -->
 <? /*<div class="tchiboNavSliderWrap">
 	<div class="tchiboNavSlider">
 		<div class="tchiboNavSlider__title"></div>
@@ -60,62 +59,6 @@
 	</div>
 </div>
 */ ?>
-<div class="tchiboNav">
-	<div class="tchiboNav__title"></div>
-
-	<ul class="tchiboNav__list">
-		<li class="item jsItemListTchibo">
-			<a class="link" href="">
-				<span class="title">Мужчины</span>
-			</a>
-
-			<ul class="tchiboNav__sublist">
-				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Классика</a></li>
-				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Мужской сезон</a></li>
-				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Модные тренды</a></li>
-				<li class="sublistItem jsItemListTchibo"><a class="link" href="">100% натуральное</a></li>
-			</ul>
-		</li>
-
-		<li class="item jsItemListTchibo">
-			<a class="link" href="">
-				<span class="title">Женщины</span>
-			</a>
-
-			<ul class="tchiboNav__sublist">
-				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Классика</a></li>
-				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Мисс Совершенство</a></li>
-				<li class="sublistItem jsItemListTchibo"><a class="link" href="">Модные тренды</a></li>
-				<li class="sublistItem jsItemListTchibo"><a class="link" href="">100% натуральное</a></li>
-			</ul>
-		</li>
-
-		<li class="item jsItemListTchibo">
-			<a class="link" href="">
-				<span class="title">Дети</span>
-			</a>
-		</li>
-
-		<li class="item jsItemListTchibo">
-			<a class="link" href="">
-				<span class="title">Дом</span>
-			</a>
-		</li>
-
-		<li class="item jsItemListTchibo">
-			<a class="link" href="">
-				<span class="title">Спорт</span>
-			</a>
-		</li>
-
-		<li class="item jsItemListTchibo">
-			<a class="link" href="">
-				<span class="title">Кофе</span>
-			</a>
-		</li>
-	</ul>
-</div>
-<!--/ TCHIBO - слайдер-меню разделов Чибо -->
 
 <!-- TCHIBO - крутилка разделов Чибо на рутовой странице -->
 <? /*
