@@ -6,6 +6,7 @@
 
 ;(function ( window, document, $, ENTER ) {
 	var
+		utils = ENTER.utils,
 		config = $('#page-config').data('value'),
 		orderData = $('#jsOrderForm').data('value'),
 		subwayArray = $('#metrostations').data('name'),
@@ -199,6 +200,9 @@
 					metro.val(name);
 					metroIdFiled.val('');
 
+					// Снимаем маркировку с поля "Метро"
+					utils.orderValidator && utils.orderValidator._unmarkFieldError(metro);
+
 					if ( subwayArray !== undefined ) {
 						for ( var i = subwayArray.length - 1; i >= 0; i-- ) {
 							if ( name === subwayArray[i].label ) {
@@ -215,6 +219,9 @@
 
 					metro.val('');
 					metroIdFiled.val('');
+
+					// маркируем поле "Метро"
+					utils.orderValidator && utils.orderValidator._markFieldError(metro, "Не выбрана станция метро");
 				}
 			);
 		},
