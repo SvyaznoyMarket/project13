@@ -8,6 +8,7 @@ use Enter\Util\JsonDecoderTrait;
 /**
  * @property string $url
  * @property array $data
+ * @property int $timeout
  * @property \Exception|null $error
  */
 trait CmsQueryTrait {
@@ -18,6 +19,7 @@ trait CmsQueryTrait {
         $config = $this->getConfig()->cmsService;
 
         $this->url = $config->url . $this->url;
+        $this->timeout = $config->timeout;
     }
 
     protected function parse($response) {

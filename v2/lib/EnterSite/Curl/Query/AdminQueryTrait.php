@@ -8,6 +8,7 @@ use Enter\Util\JsonDecoderTrait;
 /**
  * @property string $url
  * @property array $data
+ * @property int $timeout
  * @property string $auth
  * @property \Exception|null $error
  */
@@ -19,6 +20,7 @@ trait AdminQueryTrait {
         $config = $this->getConfig()->adminService;
 
         $this->url = $config->url . $this->url;
+        $this->timeout = $config->timeout;
         if ($config->user && $config->password) {
             $this->auth = $config->user . ':' . $config->password;
         }

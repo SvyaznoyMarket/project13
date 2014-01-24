@@ -7,6 +7,7 @@ use Enter\Util\JsonDecoderTrait;
 
 /**
  * @property string $url
+ * @property int $timeout
  * @property \Exception|null $error
  */
 trait CoreQueryTrait {
@@ -17,6 +18,7 @@ trait CoreQueryTrait {
         $config = $this->getConfig()->coreService;
 
         $this->url = $config->url . $this->url;
+        $this->timeout = $config->timeout;
     }
 
     /**

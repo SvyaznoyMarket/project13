@@ -61,6 +61,10 @@ class ChildCategory {
             $curl->prepare($productCategoryAdminItemQuery);
         }
 
+        // запрос меню
+        $mainMenuListQuery = new Query\MainMenu\GetList();
+        $curl->prepare($mainMenuListQuery);
+
         $curl->execute();
 
         // категория
@@ -76,10 +80,17 @@ class ChildCategory {
         $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region);
         $curl->prepare($ancestryCategoryItemQuery);
 
+        // запрос дерева категорий для меню
+        $categoryListQuery = new Query\Product\Category\GetTreeList($region, 3);
+        $curl->prepare($categoryListQuery);
+
         $curl->execute();
 
         // предок категории
         $ancestryCategory = (new Repository\Product\Category())->getAncestryObjectByQuery($ancestryCategoryItemQuery);
+
+        // меню
+        $mainMenuList = (new Repository\MainMenu())->getObjectListByQuery($mainMenuListQuery, $categoryListQuery);
 
         // запрос настроек каталога
         $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject($ancestryCategory);
@@ -109,10 +120,11 @@ class ChildCategory {
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\ChildCategory\Request();
+        $pageRequest->mainMenuList = $mainMenuList;
+        $pageRequest->region = $region;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->requestFilters = $requestFilters;
         $pageRequest->sorting = $sorting;
-        $pageRequest->region = $region;
         $pageRequest->category = $category;
         $pageRequest->catalogConfig = $catalogConfig;
         $pageRequest->products = $products;

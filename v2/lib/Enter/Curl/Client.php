@@ -85,7 +85,7 @@ class Client {
     }
 
     /**
-     * @param int|null $retryTimeout
+     * @param float|null $retryTimeout
      * @param int|null $retryCount
      * @throws \Exception
      * @return \Enter\Curl\Client

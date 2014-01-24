@@ -8,7 +8,7 @@ use EnterSite\Curl\Query\CoreQueryTrait;
 class GetIdListByFilter extends Query {
     use CoreQueryTrait;
 
-    /** @var array|null */
+    /** @var array */
     protected $result;
 
     /**

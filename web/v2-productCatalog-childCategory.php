@@ -54,7 +54,7 @@ $request = new \Enter\Http\Request(
     [
         'productCategoryPath' => 'noutbuki-i-monobloki-noutbuki-4280',
         'f-brand-hp'          => '540',
-        'f-price-from'        => '30000',
+        'f-price-from'        => '10000',
         'f-price-to'          => '50000',
         'sort'                => 'default-desc',
     ],
