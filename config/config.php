@@ -349,6 +349,12 @@ $c->order['enableMetaTag'] = true;
 $c->order['maxSumOnline'] = 15000;
 $c->order['excludedError'] = [705, 708, 735, 759, 800];
 $c->order['addressAutocomplete'] = false;
+// предоплата (SITE-2959)
+$c->order['prepayment'] = [
+    'enabled'    => true,
+    'value'      => 10, // кол-во предоплаты в %
+    'priceLimit' => 100000,// если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
+];
 
 $c->kladr = [
     'token' => '52b04de731608f2773000000',
