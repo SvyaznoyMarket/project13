@@ -142,17 +142,15 @@ class Cart {
         $return = true;
         if ($quantity < 0) $quantity = 0;
 
-        $data = $this->storage->get($this->sessionName);
-        $data['productList'][$product->getId()] = $quantity;
+        $data = $this->storage->get($this->sessionName, []);
+        $count = isset($data['productList']) ? count($data['productList']) : 0;
 
-        $this->storage->set($this->sessionName, $data);
-
-        /* TODO:
-        if ( ( $quantity + count($data['productList']) ) < $this->productLimit) {
+        if ( 0 <= $this->productLimit - $quantity - $count) {
             $data['productList'][$product->getId()] = $quantity;
             $this->storage->set($this->sessionName, $data);
+        } else {
             $return = false;
-        }*/
+        }
 
         $this->clearEmpty();
         return $return;
