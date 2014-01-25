@@ -16,6 +16,7 @@ $config = array_merge([
     'f1Certificate'         => $appConfig->f1Certificate['enabled'],
     'coupon'                => $appConfig->coupon['enabled'],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
+    'prepayment'            => $appConfig->order['prepayment'],
 ], isset($config) ? (array)$config : []);
 ?>
 
