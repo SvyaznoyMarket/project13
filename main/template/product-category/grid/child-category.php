@@ -1,17 +1,18 @@
 <?php
 /**
- * @var $page          \View\DefaultLayout
- * @var $gridCells     \Model\GridCell\Entity[]
- * @var $category      \Model\Product\Category\Entity
- * @var $catalogConfig array
- * @var $productsById  \Model\Product\CompactEntity[]
+ * @var $page               \View\DefaultLayout
+ * @var $gridCells          \Model\GridCell\Entity[]
+ * @var $category           \Model\Product\Category\Entity
+ * @var $catalogConfig      array
+ * @var $rootCategoryInMenu \Model\Product\Category\TreeEntity|null
+ * @var $productsById       \Model\Product\CompactEntity[]
  */
 ?>
 
 <?
 $helper = new \Helper\TemplateHelper();
 
-$siblingCategories = $category->getParent() ? $category->getParent()->getChild() : [];
+$siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
 ?>
 
 <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
