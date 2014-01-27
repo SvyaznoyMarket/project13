@@ -589,18 +589,18 @@
 				function ( res ) {
 					position = res.geoObjects.get(0).geometry.getCoordinates();
 					map = new ENTER.constructors.CreateMap('map', [{latitude: position[0], longitude: position[1]}]);
-					map.mapWS.setZoom(addrData.zoom);
+
+					map.points = [];
+					map.mapWS.geoObjects.each(function (geoObject) {
+						map.mapWS.geoObjects.remove(geoObject);
+					});
 
 					if ( '' !== $.trim(orderData['order[address_street]']) ) {
-						map.points = [];
-						map.mapWS.geoObjects.each(function (geoObject) {
-							map.mapWS.geoObjects.remove(geoObject);
-						});
-
 						map.points.push({latitude: position[0], longitude: position[1]});
-						map._showMarkers();
-						map.mapWS.setCenter(position, addrData.zoom);
 					}
+
+					map._showMarkers();
+					map.mapWS.setCenter(position, addrData.zoom);
 				},
 				function ( err ) {
 					// обработка ошибки
@@ -624,7 +624,7 @@
 	}
 
 	fieldsInit();
-	ymaps.ready(mapCreate);
+	$('body').bind('orderdeliverychange', function() {ymaps.ready(mapCreate)});
 
 }(this, this.document, this.jQuery, this.ENTER));
  
