@@ -23,7 +23,7 @@ $userMail = $userEntity->getEmail();
         </li>
         <? if ($user->getEntity()->getCity()): ?>
         <li>
-            Регион: <strong><?= $user->getEntity()->getCity()->getName() ?></strong> (<a class="jsChangeRegion" data-url="<?= $page->url('region.init') ?>" data-autoresolve-url="<?= $page->url('region.autoresolve') ?>" style="cursor: pointer">изменить</a>)
+            Регион: <strong><?= $user->getEntity()->getCity()->getName() ?></strong> (<a class="jsChangeRegion" data-url="<?= $page->url('region.init') ?>" data-autoresolve-url="<?= $page->url('region.autoresolve', ['nocache' => 1]) ?>" style="cursor: pointer">изменить</a>)
         </li>
         <? endif ?>
     </ul>
