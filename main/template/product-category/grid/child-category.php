@@ -1,9 +1,10 @@
 <?php
 /**
- * @var $page         \View\DefaultLayout
- * @var $gridCells    \Model\GridCell\Entity[]
- * @var $category     \Model\Product\Category\Entity
- * @var $productsById \Model\Product\CompactEntity[]
+ * @var $page          \View\DefaultLayout
+ * @var $gridCells     \Model\GridCell\Entity[]
+ * @var $category      \Model\Product\Category\Entity
+ * @var $catalogConfig array
+ * @var $productsById  \Model\Product\CompactEntity[]
  */
 ?>
 
@@ -16,7 +17,7 @@ $siblingCategories = $category->getParent() ? $category->getParent()->getChild()
 <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
 <? if ((bool)$siblingCategories): ?>
-    <?= $helper->render('product-category/__sibling-list', ['categories' => $siblingCategories]) // категории-соседи ?>
+    <?= $helper->render('product-category/__sibling-list', ['categories' => $siblingCategories, 'catalogConfig' => $catalogConfig]) // категории-соседи ?>
 <? endif ?>
 
 <h1 class="bTitlePage"><?= $category->getName() ?></h1>

@@ -86,6 +86,7 @@ class ChildAction {
         $page = new \View\ProductCategory\Grid\ChildCategoryPage();
         $page->setParam('gridCells', $gridCells);
         $page->setParam('category', $category);
+        $page->setParam('catalogConfig', $catalogConfig);
         $page->setParam('productsById', $productsById);
 
         return new \Http\Response($page->show());
