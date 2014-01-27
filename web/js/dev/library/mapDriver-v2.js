@@ -132,8 +132,8 @@
 					{
 						iconImageHref: currPoint.pointImage, // картинка иконки
 						//iconImageHref: '/images/marker.png', // картинка иконки
-						iconImageSize: [39, 59],
-						iconImageOffset: [-19, -57]
+						//iconImageSize: [39, 59],
+						//iconImageOffset: [-19, -57]
 					}
 				);
 
