@@ -10,6 +10,7 @@ use EnterSite\MustacheRendererTrait;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
+use EnterSite\Model\Page\ProductCatalog\ChildCategory as Page;
 
 class ChildCategory {
     use ConfigTrait;
@@ -61,10 +62,6 @@ class ChildCategory {
             $curl->prepare($productCategoryAdminItemQuery);
         }
 
-        // запрос меню
-        $mainMenuListQuery = new Query\MainMenu\GetList();
-        $curl->prepare($mainMenuListQuery);
-
         $curl->execute(1, 3);
 
         // категория
@@ -80,43 +77,47 @@ class ChildCategory {
         $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region);
         $curl->prepare($ancestryCategoryItemQuery);
 
-        // запрос дерева категорий для меню
-        $categoryListQuery = new Query\Product\Category\GetTreeList($region, 3);
-        $curl->prepare($categoryListQuery);
-
         $curl->execute(1, 3);
 
         // предок категории
         $ancestryCategory = (new Repository\Product\Category())->getAncestryObjectByQuery($ancestryCategoryItemQuery);
-
-        // меню
-        $mainMenuList = (new Repository\MainMenu())->getObjectListByQuery($mainMenuListQuery, $categoryListQuery);
-
-        // запрос настроек каталога
-        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject($ancestryCategory);
-        $curl->prepare($catalogConfigQuery);
 
         // запрос листинга идентификаторов товаров
         $limit = $config->productList->itemPerPage;
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
+        // запрос дерева категорий для меню
+        $categoryListQuery = new Query\Product\Category\GetTreeList($region, 3);
+        $curl->prepare($categoryListQuery);
+
         $curl->execute(1, 3);
 
         // листинг идентификаторов товаров
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
 
-        // настройки каталога
-        $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
-
         // запрос списка товаров
         $productListQuery = new Query\Product\GetListByIdList($productIdPager->id, $region);
         $curl->prepare($productListQuery);
+
+        // запрос меню
+        $mainMenuListQuery = new Query\MainMenu\GetList();
+        $curl->prepare($mainMenuListQuery);
+
+        // запрос настроек каталога
+        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject($ancestryCategory);
+        $curl->prepare($catalogConfigQuery);
 
         $curl->execute(1, 3);
 
         // список товаров
         $products = (new Repository\Product())->getObjectListByQuery($productListQuery);
+
+        // меню
+        $mainMenuList = (new Repository\MainMenu())->getObjectListByQuery($mainMenuListQuery, $categoryListQuery);
+
+        // настройки каталога
+        $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\ChildCategory\Request();
@@ -130,7 +131,8 @@ class ChildCategory {
         $pageRequest->products = $products;
 
         // страница
-        $page = (new Repository\Page\ProductCatalog\ChildCategory())->getObjectByRequest($pageRequest);
+        $page = new Page();
+        (new Repository\Page\ProductCatalog\ChildCategory())->buildObjectByRequest($page, $pageRequest);
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         // рендер

@@ -3,12 +3,9 @@
 namespace EnterSite\Repository\Page\ProductCatalog\ChildCategory;
 
 use EnterSite\Model;
+use EnterSite\Repository;
 
-class Request {
-    /** @var Model\MainMenu[] */
-    public $mainMenuList = [];
-    /** @var Model\Region */
-    public $region;
+class Request extends Repository\Page\DefaultLayout\Request {
     /** @var Model\Product\Category */
     public $category;
     /** @var Model\Product\Catalog\Config */
