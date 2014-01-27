@@ -303,7 +303,12 @@ class Action {
         $mapData = [1 => 'product', 3 => 'category'];
 
         if (mb_strlen($keyword) >= 3) {
-            \App::coreClientV2()->addQuery('search/autocomplete', ['letters' => $keyword], [], function($result) use(&$data, $limit, $mapData){
+            // параметры ядерного запроса
+            $params = ['letters' => $keyword];
+            if (\App::user()->getRegion()) {
+                $params['region_id'] = \App::user()->getRegion()->getId();
+            }
+            \App::coreClientV2()->addQuery('search/autocomplete', $params, [], function($result) use(&$data, $limit, $mapData){
                 foreach ($mapData as $key => $value) {
                     $i = 0;
                     $entity = '\\Model\\Search\\'.ucfirst($value).'\\Entity';
