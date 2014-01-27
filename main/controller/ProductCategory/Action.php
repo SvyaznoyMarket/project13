@@ -420,7 +420,7 @@ class Action {
             } else if ('grid' == $categoryClass) {
                 if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Grid.child', 134);
 
-                return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($category, $request);
+                return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
             }
 
             \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));

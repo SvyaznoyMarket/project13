@@ -5,101 +5,11 @@ namespace Controller\ProductCategory\Grid;
 class ChildAction {
     /**
      * @param \Http\Request $request
-     * @param $categoryPath
-     * @return \Http\RedirectResponse|\Http\Response
-     * @throws \Exception\NotFoundException
-     */
-    public function executeByPath(\Http\Request $request, $categoryPath) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $region = \App::user()->getRegion();
-
-        $categoryToken = explode('/', $categoryPath);
-        $categoryToken = end($categoryToken);
-
-        /** @var $category \Model\Product\Category\Entity */
-        $category = null;
-
-        $shopScriptException = null;
-        $shopScriptSeo = [];
-        /** @var $category \Model\Product\Category\Entity */
-        if (\App::config()->shopScript['enabled']) {
-            try {
-                $shopScript = \App::shopScriptClient();
-                $shopScript->addQuery(
-                    'category/get-seo',
-                    [
-                        'slug'   => $categoryToken,
-                        'geo_id' => \App::user()->getRegion()->getId(),
-                    ],
-                    [],
-                    function ($data) use (&$shopScriptSeo) {
-                        if ($data && is_array($data)) $shopScriptSeo = reset($data);
-                    },
-                    function (\Exception $e) use (&$shopScriptException) {
-                        $shopScriptException = $e;
-                    }
-                );
-                $shopScript->execute();
-                if ($shopScriptException instanceof \Exception) {
-                    throw $shopScriptException;
-                }
-
-                // если shopscript вернул редирект
-                if (!empty($shopScriptSeo['redirect']['link'])) {
-                    $redirect = $shopScriptSeo['redirect']['link'];
-                    if(!preg_match('/^http/', $redirect)) {
-                        $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
-                            \App::config()->mainHost .
-                            (preg_match('/^\//', $redirect) ? '' : '/') .
-                            $redirect;
-                    }
-                    return new \Http\RedirectResponse($redirect);
-                }
-
-                if (empty($shopScriptSeo['ui'])) {
-                    throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
-                }
-
-                // запрашиваем категорию по ui
-                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
-                    $data = reset($data);
-                    if ((bool)$data) {
-                        $category = new \Model\Product\Category\Entity($data);
-                    }
-                });
-            } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
-                \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                    $data = reset($data);
-                    if ((bool)$data) {
-                        $category = new \Model\Product\Category\Entity($data);
-                    }
-                });
-            }
-
-        } else {
-            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                $data = reset($data);
-                if ((bool)$data) {
-                    $category = new \Model\Product\Category\Entity($data);
-                }
-            });
-        }
-        \App::coreClientV2()->execute();
-
-        if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
-        }
-
-        return $this->executeByEntity($category, $request);
-    }
-
-    /**
      * @param \Model\Product\Category\Entity $category
-     * @param \Http\Request $request
+     * @param array $catalogConfig
      * @return \Http\Response
      */
-    public function executeByEntity(\Model\Product\Category\Entity $category, \Http\Request $request) {
+    public function executeByEntity(\Http\Request $request, \Model\Product\Category\Entity $category, $catalogConfig = []) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $region = \App::user()->getRegion();
