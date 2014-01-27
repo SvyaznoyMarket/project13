@@ -20,7 +20,7 @@ class Action {
         }
         $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
 
-        if (empty($searchQuery)) {
+        if (empty($searchQuery) || (mb_strlen($searchQuery) < \App::config()->search['queryStringLimit'])) {
             $page = new \View\Search\EmptyPage();
             $page->setParam('searchQuery', $searchQuery);
             return new \Http\Response($page->show());
@@ -104,13 +104,10 @@ class Action {
 
         // ядерный запрос
         $result = [];
-        if (mb_strlen($searchQuery) >= \App::config()->search['queryStringLimit']) {
-            \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
-                $result = $data;
-            });
-
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
-        }
+        \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
+            $result = $data;
+        });
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
 
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
