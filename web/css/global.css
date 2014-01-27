@@ -2364,7 +2364,7 @@
   #header {
     background: #000000;
     display: block;
-    height: 110px;
+    height: 100px;
     width: 960px;
     margin: 0 0 0 -10px;
   }
@@ -2372,7 +2372,7 @@
     background: url('/css/header/img/headerLogo.gif') no-repeat center center;
     display: block;
     float: left;
-    height: 70px;
+    height: 60px;
     padding: 20px 10px;
     position: relative;
     width: 90px;
@@ -2398,7 +2398,7 @@
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator {
     background: url('/css/header/img/headerSeparator.gif') no-repeat center center;
     display: block;
-    height: 110px;
+    height: 100px;
     margin: 0 10px 0 0;
     width: 1px;
     z-index: 99;
@@ -2444,7 +2444,7 @@
   .bMainMenuLevel-1__eLink {
     float: left;
     height: 70px;
-    margin-top: 10px;
+    margin-top: 0;
     position: relative;
   }
   .bMainMenuLevel-1__eLink:hover {
@@ -2488,8 +2488,8 @@
     border-radius: 5px;
     display: none;
     margin-left: -75px;
-    top: 107px;
-    *top: 103px;
+    top: 97px;
+    *top: 93px;
     padding: 10px 0;
     position: absolute;
     width: 230px;
