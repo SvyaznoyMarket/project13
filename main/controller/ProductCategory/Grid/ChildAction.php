@@ -173,7 +173,7 @@ class ChildAction {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
         $productsById = array_filter($productsById);
 
-        $page = new \View\Tchibo\CategoryPage();
+        $page = new \View\ProductCategory\Grid\ChildCategoryPage();
         $page->setParam('gridCells', $gridCells);
         $page->setParam('category', $category);
         $page->setParam('productsById', $productsById);
