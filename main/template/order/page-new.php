@@ -90,7 +90,7 @@ if ($oneClick) {
 
 		<div class="bBuyingLine__eRight bInputList" data-bind="foreach: { data: deliveryTypes }">
 			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" data-bind="attr: { 'id': 'method_'+$data.id }" hidden="hidden" />
-			<label class="bCustomLabel mCustomLabelBig mLabelStrong" data-bind="
+			<label class="bCustomLabel mCustomLabelBig mLabelStrong jsInitMap" data-bind="
 									text: $data.name,
 									states: $data.states,
 									click: $root.chooseDeliveryTypes,
