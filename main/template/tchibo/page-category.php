@@ -19,9 +19,7 @@ $siblingCategories = $category->getParent() ? $category->getParent()->getChild()
     <?= $helper->render('tchibo/__siblingCategory-list', ['categories' => $siblingCategories]) // категории-соседи ?>
 <? endif ?>
 
-<? if (false): ?>
-    <h1 class="tchiboTitle"><?= $category->getName() ?></h1>
-<? endif ?>
+<h1 class="bTitlePage"><?= $category->getName() ?></h1>
 
 <? if (false): ?>
 <!-- TCHIBO - навигация по разделу Чибо -->

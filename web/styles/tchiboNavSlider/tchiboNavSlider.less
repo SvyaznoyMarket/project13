@@ -130,27 +130,29 @@
 	width: 940px;
 	position: relative;
 	overflow: hidden;
-	height: 118px;
+	height: 90px;
+	font-size: 0;
 
 	&__title {
-		background: url("@{base-url}/tchibo/img/tchiboLogo.png") no-repeat 50% 50% @tchiboBlue;
-		padding: 0 0 0 118px;
-		font-size: 24px;
-		line-height: 88px;
-		min-height: 88px;
-		margin-right: 18px;
+		background: url("@{base-url}/tchiboNavSlider/img/logo.gif") no-repeat 0 0;
+		line-height: 80px;
+		min-height: 80px;
+		margin-right: 20px;
+		width: 80px;
 
 		vertical-align: top;
 		display: inline-block;
+		*display: inline;
+		zoom: 1;
 	}
 
 	&__list {
 		vertical-align: top;
 		display: inline-block;
-		width: 800px;
+		width: 840px;
 		border-bottom: 1px solid #e8e8e8;
-		margin: 52px 0 0;
-		padding: 0 0 19px;
+		margin: 10px 0 0;
+		padding: 0 0 10px;
 
 		.item {
 			display: inline-block;
@@ -170,6 +172,7 @@
 		.link {
 			color: @tchiboBlue;
 			display: block;
+			font-size: 14px;
 
 			&:hover {
 				font-weight: bold;
@@ -183,7 +186,7 @@
 		.transition(opacity 0.2s ease-in-out);
 		visibility: hidden;
 	    left: 5px;
-	    padding: 30px 0 10px 0;
+	    padding: 25px 0 10px 0;
 	    position: absolute;
 	    top: 15px;
 	    width: 700px;

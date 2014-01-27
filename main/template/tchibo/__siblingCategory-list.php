@@ -17,7 +17,7 @@ return function(
         <? foreach ($categories as $category): ?>
             <li class="item jsItemListTchibo">
                 <a class="link" href="<?= $category->getLink() ?>">
-                    <span class="title"><?= $category->getName() ?></span>
+                    <?= $category->getName() ?>
                 </a>
 
                 <? if ((bool)$category->getChild()): ?>
