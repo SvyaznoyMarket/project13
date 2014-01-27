@@ -10,7 +10,7 @@ class CategoryPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('tchibo/page-category', $this->params);
+        return $this->render('product-category/grid/child-category', $this->params);
     }
 
     public function slotUserbar() {

@@ -16,7 +16,7 @@ $siblingCategories = $category->getParent() ? $category->getParent()->getChild()
 <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
 <? if ((bool)$siblingCategories): ?>
-    <?= $helper->render('tchibo/__siblingCategory-list', ['categories' => $siblingCategories]) // категории-соседи ?>
+    <?= $helper->render('product-category/__sibling-list', ['categories' => $siblingCategories]) // категории-соседи ?>
 <? endif ?>
 
 <h1 class="bTitlePage"><?= $category->getName() ?></h1>
