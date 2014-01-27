@@ -2383,7 +2383,7 @@
     position: relative;
     display: table;
     float: left;
-    width: 832px;
+    width: 840px;
     z-index: 998;
     behavior: url("/css/common/display-table.min.htc");
     dt-display: table;
@@ -2443,8 +2443,8 @@
   }
   .bMainMenuLevel-1__eLink {
     float: left;
-    height: 80px;
-    margin-top: 20px;
+    height: 70px;
+    margin-top: 10px;
     position: relative;
   }
   .bMainMenuLevel-1__eLink:hover {
@@ -2452,11 +2452,11 @@
   }
   .bMainMenuLevel-1__eLink .bCorner {
     background: url('/css/header/img/corner.png') no-repeat 0 0;
-    bottom: -5px;
+    bottom: -15px;
     display: none;
     height: 10px;
     left: 50%;
-    margin-left: -17px;
+    margin-left: -11px;
     position: absolute;
     width: 20px;
   }
