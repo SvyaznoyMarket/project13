@@ -90,7 +90,7 @@ if ($oneClick) {
 
 		<div class="bBuyingLine__eRight bInputList" data-bind="foreach: { data: deliveryTypes }">
 			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" data-bind="attr: { 'id': 'method_'+$data.id }" hidden="hidden" />
-			<label class="bCustomLabel mCustomLabelBig mLabelStrong" data-bind="
+			<label class="bCustomLabel mCustomLabelBig mLabelStrong jsInitMap" data-bind="
 									text: $data.name,
 									states: $data.states,
 									click: $root.chooseDeliveryTypes,
@@ -303,26 +303,6 @@ if ($oneClick) {
 					</div>
 					<!-- /Coupons -->
 				</div>
-
-				<!-- Sum -->
-				<!-- <ul class="bSumOrderInfo">
-					<li class="bSumOrderInfo__eLine">
-						<span class="bDelivery  mOldPrice">
-							<span data-bind="">2 345</span> 
-							<span class="rubl">p</span>
-						</span>
-					</li>
-
-					<li class="bSumOrderInfo__eLine">
-						Сумма заказа с учетом скидок:&nbsp;&nbsp;
-
-						<span class="bDelivery">
-							<span data-bind="">2 345</span> 
-							<span class="rubl">p</span>
-						</span>
-					</li>
-				</ul> -->
-				<!-- /Sum -->
 			</div>
 		</div>
 		<!-- /Sale section -->
@@ -452,15 +432,6 @@ if ($oneClick) {
 							<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
 						</div>
 
-						<? if ((bool)$subways): ?>
-						<div class="bInputAddress ui-css jsInputMetro">
-							<label class="bPlaceholder">Метро*</label>
-							<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
-							<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
-							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
-						</div>
-						<? endif ?>
-
 						<div class="bInputAddress jsInputStreet ui-css">
 							<label class="bPlaceholder">Улица*</label>
 							<input type="text" class="bBuyingLine__eText mInputLong mInputStreet ui-autocomplete-input" id="order_address_street" title="Улица" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_street]" />
@@ -485,6 +456,15 @@ if ($oneClick) {
 							<label class="bPlaceholder">Этаж</label>
 							<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
 						</div>
+
+						<? if ((bool)$subways): ?>
+						<div class="bInputAddress ui-css jsInputMetro">
+							<label class="bPlaceholder">Метро*</label>
+							<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
+							<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
+							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
+						</div>
+						<? endif ?>
 
                         <div class="bInputAddress" id="map"></div>
 					</div>
