@@ -33,7 +33,8 @@
 		cityName = data ? data.regionName : '',
 		cityId,
 
-		mapObj = $('#map');
+		mapObj = $('#map'),
+		currentAddr = null;
 	// end of vars
 
 	var
@@ -145,34 +146,41 @@
 				addrData = getAddress();
 			// end of vars
 
-			if ( addrData.address && map_created ) {
-				console.log(addrData.address);
-
-				geocode = ymaps.geocode(addrData.address);
-				geocode.then(function( res ) {
-					position = res.geoObjects.get(0).geometry.getCoordinates();
-
-					if ( !position ) {
-						return;
-					}
-
-					latitude = position[0];
-					longitude = position[1];
-
-					map.points = [];
-					map.mapWS.geoObjects.each(function (geoObject) {
-						map.mapWS.geoObjects.remove(geoObject);
-					});
-
-					map.points.push({latitude: latitude, longitude: longitude});
-					map._showMarkers();
-					map.mapWS.setCenter(position, addrData.zoom);
-
-					if ( metro.length ) {
-						metroClosest(latitude, longitude);
-					}
-				});
+			if ( !addrData.address || !map_created ) {
+				return;
 			}
+
+			if ( currentAddr === addrData.address ) {
+				return;
+			}
+
+			console.log(addrData.address);
+			currentAddr = addrData.address;
+
+			geocode = ymaps.geocode(addrData.address);
+			geocode.then(function( res ) {
+				position = res.geoObjects.get(0).geometry.getCoordinates();
+
+				if ( !position ) {
+					return;
+				}
+
+				latitude = position[0];
+				longitude = position[1];
+
+				map.points = [];
+				map.mapWS.geoObjects.each(function (geoObject) {
+					map.mapWS.geoObjects.remove(geoObject);
+				});
+
+				map.points.push({latitude: latitude, longitude: longitude});
+				map._showMarkers();
+				map.mapWS.setCenter(position, addrData.zoom);
+
+				if ( metro.length ) {
+					metroClosest(latitude, longitude);
+				}
+			});
 		},
 
 
@@ -261,6 +269,80 @@
 
 
 		/**
+		 * Задаем обект для поля дом
+		 *
+		 * @param	{String}	value	Значение поля которое будет запрашиваться у kladr-а
+		 */
+		setBuilding = function(value) {
+			if ( '' !== $.trim(value) ) {
+				return;
+			}
+
+			$.kladr.api(
+				{
+					token: building.kladr('token'),
+					key: building.kladr('key'),
+					type: building.kladr('type'),
+					name: value,
+					parentType: building.kladr('parentType'),
+					parentId: building.kladr('parentId'),
+					limit: 1
+				},
+				function( objs ){
+					if ( !objs.length ) {
+						showError('Не нашли ваш адрес на карте. Уточните');
+
+						return;
+					}
+
+					removeErrors();
+
+					// задаем обект для дома
+					building.kladr('current', objs[0]);
+				}
+			);
+		}
+
+		/**
+		 * Задаем обекты для значений по умолчанию
+		 */
+		defaultValues = function() {
+			if ( '' == $.trim(orderData['order[address_street]']) ) {
+				return;
+			}
+
+			$.kladr.api(
+				{
+					token: token,
+					key: key,
+					type: $.kladr.type.street,
+					name: orderData['order[address_street]'],
+					parentType: $.kladr.type.city,
+					parentId: cityId,
+					limit: 1
+				},
+				function( objs ){
+					if ( !objs.length ) {
+						showError('Не нашли ваш адрес на карте. Уточните');
+
+						return;
+					}
+
+					removeErrors();
+
+					// задаем обект для города
+					street.kladr('current', objs[0]);
+					building.kladr('parentType', $.kladr.type.street);
+					building.kladr('parentId', objs[0].id);
+
+					// задаем обект для дома
+					setBuilding(orderData['order[address_building]']);
+				}
+			);
+		},
+
+
+		/**
 		 * Обработчики полей
 		 *
 		 * @type {{city: Function, street: Function, building: Function, buildingAdd: Function}}
@@ -296,33 +378,10 @@
 						fieldsHandler.building();
 						fieldsHandler.buildingAdd();
 
-						street.kladr( 'parentType', $.kladr.type.city );
-						street.kladr( 'parentId', cityId );
+						street.kladr('parentType', $.kladr.type.city);
+						street.kladr('parentId', cityId);
 
-						if ( '' !== $.trim(orderData['order[address_street]']) ) {
-							$.kladr.api(
-								{
-									token: token,
-									key: key,
-									type: $.kladr.type.street,
-									name: orderData['order[address_street]'],
-									parentType: $.kladr.type.city,
-									parentId: cityId,
-									limit: 1
-								},
-								function( streetObjs ){
-									if ( !streetObjs.length ) {
-										showError('Не нашли ваш адрес на карте. Уточните');
-
-										return;
-									}
-
-									street.kladr('current', streetObjs[0]);
-									building.kladr( 'parentType', $.kladr.type.street );
-									building.kladr( 'parentId', streetObjs[0].id );
-								}
-							);
-						}
+						defaultValues();
 					}
 				);
 			},
@@ -361,6 +420,28 @@
 									return;
 								}
 
+								removeErrors();
+
+								if ( street.val() !== objs[0].name ) {
+									showError('Не нашли ваш адрес на карте. Уточните');
+								}
+
+								street.kladr('current', objs[0]);
+								building.kladr('parentType', $.kladr.type.street);
+
+								if ( objs[0].id !== building.kladr('parentId') ) {
+									building.kladr('parentId', objs[0].id);
+
+									// пытаемся задать обект для дома
+									setBuilding(building.val());
+								}
+								mapUpdate();
+
+								if ( 1 === objs.length ) {
+									return;
+								}
+
+								// подготовка данных для autocomplete
 								for ( i in objs ) {
 									obj = objs[i];
 									obj.label = obj.type + ' ' + obj.name;
@@ -376,31 +457,13 @@
 										removeErrors();
 
 										street.kladr('current', ui.item);
-										building.kladr( 'parentType', $.kladr.type.street );
-										building.kladr( 'parentId', ui.item.id );
+										building.kladr('parentType', $.kladr.type.street);
 
-										if ( $.trim(building.val()) !== '' ) {
-											$.kladr.api(
-												{
-													token: building.kladr('token'),
-													key: building.kladr('key'),
-													type: building.kladr('type'),
-													name: building.val(),
-													parentType: building.kladr('parentType'),
-													parentId: building.kladr('parentId'),
-													limit: 1
-												},
-												function( objs ){
-													if ( !objs.length ) {
-														showError('Не нашли ваш адрес на карте. Уточните');
+										if ( ui.item.id !== building.kladr('parentId') ) {
+											building.kladr('parentId', ui.item.id);
 
-														return;
-													}
-
-													removeErrors();
-													building.kladr('current', objs[0]);
-												}
-											);
+											// пытаемся задать обект для дома
+											setBuilding(building.val());
 										}
 
 										mapUpdate();
@@ -446,6 +509,21 @@
 									return;
 								}
 
+								removeErrors();
+
+								if ( building.val() !== objs[0].name ) {
+									showError('Не нашли ваш адрес на карте. Уточните');
+								}
+
+								// задаем обект для дома
+								building.kladr('current', objs[0]);
+								mapUpdate();
+
+								if ( 1 === objs.length ) {
+									return;
+								}
+
+								// подготовка данных для autocomplete
 								for ( i in objs ) {
 									obj = objs[i];
 									obj.label = obj.name;
@@ -500,6 +578,8 @@
 			if ( map_created || !mapObj.length ) {
 				return;
 			}
+
+			currentAddr = addrData.address;
 
 			mapObj.show().width(460).height(350);
 			map_created = true;
