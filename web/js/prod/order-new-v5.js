@@ -2656,6 +2656,8 @@
 						val(false);
 					}
 				});
+				
+				map._showMarkers();
 			}
 			else {
 				$('#pointPopupMap').empty();
