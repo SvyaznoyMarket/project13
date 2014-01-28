@@ -256,7 +256,7 @@ class Action {
 
         // если по поиску нашелся только один товар и это первая стр. поиска, то редиректим сразу в карточку товара
         if (!$request->isXmlHttpRequest() && (1 == count($products)) && !$offset) {
-            return new \Http\RedirectResponse(reset($products)->getLink());
+            return new \Http\RedirectResponse(reset($products)->getLink() . '?q=' . urlencode($searchQuery));
         }
 
 
