@@ -638,7 +638,9 @@
 	var
 		constructors = ENTER.constructors,
 		utils = ENTER.utils,
-		OrderModel;
+		OrderModel,
+		pageConfig = ENTER.config.pageConfig,
+		prepayment = pageConfig.prepayment;
 	// end of vars
 
 	console.info('deliveryBox.js init');
@@ -716,6 +718,12 @@
 
 			// Есть ли доступные точки доставки
 			self.hasPointDelivery = OrderModel.orderDictionary.hasPointDelivery(state);
+
+			// Стоимость заказа равна или больше напр. 100 тыс. руб.
+			self.isExpensiveOrder = false;
+
+			// Есть ли в заказе товар, требующий предоплату (шильдик предоплата)
+			self.hasProductWithPrepayment = false;
 
 			// Массив всех доступных дат для блока
 			self.allDatesForBlock = ko.observableArray([]);
@@ -1017,6 +1025,11 @@
 			self.fullPrice = ENTER.utils.numMethods.sumDecimal(tmpProduct.price, self.fullPrice);
 
 			self.products.push(tmpProduct);
+
+			if ( prepayment.enabled ) {
+				// отображение/скрытие блока предоплаты
+				self.isExpensiveOrder = (prepayment.priceLimit <= (parseInt(self.fullPrice, 10) + parseInt(self.deliveryPrice, 10))) ? true : false;
+			}
 		};
 
 		/**
