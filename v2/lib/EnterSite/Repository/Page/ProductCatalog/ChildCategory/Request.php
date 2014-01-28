@@ -10,12 +10,14 @@ class Request extends Repository\Page\DefaultLayout\Request {
     public $category;
     /** @var Model\Product\Catalog\Config */
     public $catalogConfig;
-    /** @var Model\Product[] */
-    public $products = [];
     /** @var Model\Product\RequestFilter[] */
     public $requestFilters = [];
     /** @var Model\Product\Sorting */
     public $sorting;
     /** @var int */
     public $pageNum;
+    /** @var Model\Product[] */
+    public $products = [];
+    /** @var Model\Product\Rating[] */
+    public $productRatings = [];
 }

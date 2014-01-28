@@ -31,12 +31,17 @@ trait ConfigTrait {
             $instance->adminService->timeout = 2;
             $instance->adminService->retryCount = 2;
 
+            $instance->reviewService->url = 'http://admin.enter.ru/reviews/';
+            $instance->reviewService->timeout = 2;
+            $instance->reviewService->retryCount = 2;
+
             $instance->mustacheRenderer->dir = $instance->dir . '/v2/vendor/mustache';
             $instance->mustacheRenderer->templateDir = $instance->dir . '/v2/template';
             $instance->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';
             $instance->mustacheRenderer->templateClassPrefix = preg_replace('/[^\w]/', '_', $instance->hostname . '_v2' . '-');
 
-            $instance->productList->itemPerPage = 19;
+            $instance->product->itemPerPage = 19;
+            $instance->productReview->enabled = true;
 
             $GLOBALS[__METHOD__] = $instance;
         }

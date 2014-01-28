@@ -47,7 +47,7 @@ class ChildCategory {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
-        $curl->execute(1, 3);
+        $curl->execute(1, 2);
 
         // регион
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
@@ -62,7 +62,7 @@ class ChildCategory {
             $curl->prepare($productCategoryAdminItemQuery);
         }
 
-        $curl->execute(1, 3);
+        $curl->execute(1, 2);
 
         // категория
         $category = (new Repository\Product\Category())->getObjectByQuery($productCategoryItemQuery, $productCategoryAdminItemQuery);
@@ -77,13 +77,13 @@ class ChildCategory {
         $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region);
         $curl->prepare($ancestryCategoryItemQuery);
 
-        $curl->execute(1, 3);
+        $curl->execute(1, 2);
 
         // предок категории
         $ancestryCategory = (new Repository\Product\Category())->getAncestryObjectByQuery($ancestryCategoryItemQuery);
 
         // запрос листинга идентификаторов товаров
-        $limit = $config->productList->itemPerPage;
+        $limit = $config->product->itemPerPage;
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
@@ -91,7 +91,7 @@ class ChildCategory {
         $categoryListQuery = new Query\Product\Category\GetTreeList($region, 3);
         $curl->prepare($categoryListQuery);
 
-        $curl->execute(1, 3);
+        $curl->execute(1, 2);
 
         // листинг идентификаторов товаров
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
@@ -108,7 +108,14 @@ class ChildCategory {
         $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject($ancestryCategory);
         $curl->prepare($catalogConfigQuery);
 
-        $curl->execute(1, 3);
+        // запрос списка рейтингов товаров
+        $ratingListQuery = null;
+        if ($config->productReview->enabled) {
+            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($productIdPager->id);
+            $curl->prepare($ratingListQuery);
+        }
+
+        $curl->execute(1, 2);
 
         // список товаров
         $products = (new Repository\Product())->getObjectListByQuery($productListQuery);
@@ -118,6 +125,9 @@ class ChildCategory {
 
         // настройки каталога
         $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
+
+        // список рейтингов товаров
+        $productRatings = $ratingListQuery ? (new Repository\Product\Rating())->getObjectListByQuery($ratingListQuery) : [];
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\ChildCategory\Request();
@@ -129,6 +139,7 @@ class ChildCategory {
         $pageRequest->category = $category;
         $pageRequest->catalogConfig = $catalogConfig;
         $pageRequest->products = $products;
+        $pageRequest->productRatings = $productRatings;
 
         // страница
         $page = new Page();

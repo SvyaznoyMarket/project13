@@ -1,12 +1,14 @@
 <?php
 
 namespace EnterSite\Config {
+    use EnterSite\Config\Application\ProductReview;
     use EnterSite\Config\Application\Region;
     use EnterSite\Config\Application\CoreService;
     use EnterSite\Config\Application\CmsService;
     use EnterSite\Config\Application\AdminService;
     use EnterSite\Config\Application\MustacheRenderer;
-    use EnterSite\Config\Application\ProductList;
+    use EnterSite\Config\Application\Product;
+    use EnterSite\Config\Application\ReviewService;
 
     class Application {
         /** @var string */
@@ -21,10 +23,14 @@ namespace EnterSite\Config {
         public $cmsService;
         /** @var AdminService  */
         public $adminService;
+        /** @var ReviewService  */
+        public $reviewService;
         /** @var MustacheRenderer  */
         public $mustacheRenderer;
-        /** @var ProductList */
-        public $productList;
+        /** @var Product */
+        public $product;
+        /** @var ProductReview */
+        public $productReview;
 
         public function __construct() {
             $this->region = new Region();
@@ -32,10 +38,12 @@ namespace EnterSite\Config {
             $this->coreService = new CoreService();
             $this->cmsService = new CmsService();
             $this->adminService = new AdminService();
+            $this->reviewService = new ReviewService();
 
             $this->mustacheRenderer = new MustacheRenderer();
 
-            $this->productList = new ProductList();
+            $this->product = new Product();
+            $this->productReview = new ProductReview();
         }
     }
 }
@@ -78,6 +86,9 @@ namespace EnterSite\Config\Application {
         public $enabled;
     }
 
+    class ReviewService extends CurlService {
+    }
+
     class MustacheRenderer {
         /** @var string */
         public $dir;
@@ -89,12 +100,17 @@ namespace EnterSite\Config\Application {
         public $templateClassPrefix;
     }
 
-    class ProductList {
+    class Product {
         /**
          * @var int
          * @name Количество элементов на страницу
          */
         public $itemPerPage;
+    }
+
+    class ProductReview {
+        /** @var bool */
+        public $enabled;
     }
 }
 

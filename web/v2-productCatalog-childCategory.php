@@ -53,9 +53,10 @@ register_shutdown_function(function () use (&$startAt) {
 $request = new \Enter\Http\Request(
     [
         'productCategoryPath' => 'noutbuki-i-monobloki-noutbuki-4280',
-        'f-brand-hp'          => '540',
-        'f-price-from'        => '10000',
-        'f-price-to'          => '50000',
+        'f-brand-apple'       => '9',
+        'f-brand-htc'         => '178',
+        'f-price-from'        => '800',
+        'f-price-to'          => '35000',
         'sort'                => 'default-desc',
     ],
     [],
