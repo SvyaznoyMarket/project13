@@ -425,10 +425,6 @@ class AppConfig {
 
     /** @var boolean */
     public $requestMainMenu = null;
-    /** @var array */
-    public $mobileModify = [ // SITE-1035
-        'enabled' => null,
-    ];
     /** @var array  */
     public $order = [
         'cookieName'     => null,
