@@ -16,6 +16,10 @@ class ChildAction {
 
         // SITE-3029
         $rootCategoryInMenu = $category->getRoot();
+        if ($rootCategoryInMenu) {
+            \RepositoryManager::productCategory()->prepareEntityBranch($rootCategoryInMenu, $region);
+        }
+
         $rootCategoryIdInMenu = (!empty($catalogConfig['root_category_menu']['root_id']) && is_scalar($catalogConfig['root_category_menu']['root_id'])) ? (int)$catalogConfig['root_category_menu']['root_id'] : null;
         if ($category->getRoot() && ($category->getRoot()->getId() != $rootCategoryIdInMenu)) {
             \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($rootCategoryIdInMenu, $region, 3, function($data) use (&$rootCategoryInMenu) {
