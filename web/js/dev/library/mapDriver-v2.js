@@ -65,7 +65,7 @@
 
             this.mapWS.controls.add('zoomControl');
 
-            this._showMarkers();
+            //this._showMarkers();
 		}
 
 		/**
