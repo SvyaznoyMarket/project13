@@ -10493,6 +10493,10 @@
     padding: 0 100px 11px 0;
     float: left;
   }
+  .bBuyingSteps .bFootnote {
+    float: left;
+    width: 325px;
+  }
   .mPaypalLine {
     margin: 20px 0;
   }
@@ -10523,11 +10527,6 @@
     margin: 15px 0px;
     padding: 0px 15px;
     border: 1px solid #ddd;
-  }
-  .bFootnote {
-    float: left;
-    width: 325px;
-    margin: 29px 0 0 -8px;
   }
   .bSumOrderInfo {
     float: right;
