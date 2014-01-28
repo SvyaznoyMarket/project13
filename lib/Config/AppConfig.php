@@ -432,6 +432,8 @@ class AppConfig {
         'enableMetaTag'  => null,
         'maxSumOnline'   => null,
     ];
+    /** @var bool */
+    public $newDeliveryCalc;
     /**
      * @var array
      * @hidden

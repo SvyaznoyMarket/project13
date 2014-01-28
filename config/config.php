@@ -354,6 +354,8 @@ $c->order['prepayment'] = [
     'priceLimit' => 100000,// если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
 ];
 
+$c->newDeliveryCalc = false;
+
 $c->kladr = [
     'token' => '52b04de731608f2773000000',
     'key' => 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b',
