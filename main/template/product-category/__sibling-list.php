@@ -2,7 +2,8 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    array $categories
+    array $categories,
+    $catalogConfig = []
 ) {
     /** @var $categories \Model\Product\Category\Entity[] */
 
@@ -11,13 +12,13 @@ return function(
 
     <!-- TCHIBO - слайдер-меню разделов Чибо -->
     <div class="tchiboNav">
-        <div class="tchiboNav__title"></div>
+        <div class="tchiboNav__title"<? if (!empty($catalogConfig['root_category_menu']['image'])): ?> style="background-image: url('<?= $catalogConfig['root_category_menu']['image'] ?>')"<? endif ?>></div>
 
         <ul class="tchiboNav__list">
         <? foreach ($categories as $category): ?>
             <li class="item jsItemListTchibo">
                 <a class="link" href="<?= $category->getLink() ?>">
-                    <span class="title"><?= $category->getName() ?></span>
+                    <?= $category->getName() ?>
                 </a>
 
                 <? if ((bool)$category->getChild()): ?>

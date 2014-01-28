@@ -90,7 +90,7 @@ if ($oneClick) {
 
 		<div class="bBuyingLine__eRight bInputList" data-bind="foreach: { data: deliveryTypes }">
 			<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="radio" name="radio" data-bind="attr: { 'id': 'method_'+$data.id }" hidden="hidden" />
-			<label class="bCustomLabel mCustomLabelBig mLabelStrong" data-bind="
+			<label class="bCustomLabel mCustomLabelBig mLabelStrong jsInitMap" data-bind="
 									text: $data.name,
 									states: $data.states,
 									click: $root.chooseDeliveryTypes,
@@ -232,6 +232,16 @@ if ($oneClick) {
 				</li>
 			</ul>
 			<!-- /Sum -->
+
+            <? if (\App::config()->order['prepayment']['enabled']): ?>
+                <!-- Prepayment -->
+                <div class="bFootnote" data-bind="visible: box.hasProductWithPrepayment || box.isExpensiveOrder">
+                    Внесите предоплату.
+                    <div data-bind="visible: box.hasProductWithPrepayment">В корзине товар, <a>требующий предоплаты</a></div>
+                    <div data-bind="visible: !box.hasProductWithPrepayment || box.isExpensiveOrder">Сумма заказа превышает <?= $helper->formatPrice(\App::config()->order['prepayment']['priceLimit']) ?> руб.<br/><a style="text-decoration: underline;" href="">Подробнее</a></div>
+                </div>
+                <!-- /Prepayment -->
+            <? endif ?>
 		</div>
 	</div>
 	<!-- /Delivery boxes -->
@@ -303,26 +313,6 @@ if ($oneClick) {
 					</div>
 					<!-- /Coupons -->
 				</div>
-
-				<!-- Sum -->
-				<!-- <ul class="bSumOrderInfo">
-					<li class="bSumOrderInfo__eLine">
-						<span class="bDelivery  mOldPrice">
-							<span data-bind="">2 345</span> 
-							<span class="rubl">p</span>
-						</span>
-					</li>
-
-					<li class="bSumOrderInfo__eLine">
-						Сумма заказа с учетом скидок:&nbsp;&nbsp;
-
-						<span class="bDelivery">
-							<span data-bind="">2 345</span> 
-							<span class="rubl">p</span>
-						</span>
-					</li>
-				</ul> -->
-				<!-- /Sum -->
 			</div>
 		</div>
 		<!-- /Sale section -->
@@ -373,8 +363,8 @@ if ($oneClick) {
                         <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
                         <div class="bSubscibeCheck bInputList">
-                            <input class="jsCustomRadio bCustomInput mCustomCheckBig" name="subscribe" id="subscribe" type="checkbox" checked="checked" />
-            				<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>
+                            <input class="jsCustomRadio bCustomInput mCustomCheckBig" name="subscribe" id="subscribe_gift" type="checkbox" checked="checked" />
+                            <label class="bCustomLabel mCustomLabelBig" for="subscribe_gift">Хочу знать об интересных<br/>предложениях</label>
                         </div>
                     </div>
 
@@ -399,8 +389,8 @@ if ($oneClick) {
 						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
 						<div class="bSubscibeCheck bInputList">
-							<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
-							<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>                 
+							<input type="checkbox" name="subscribe" id="subscribe_oneclick" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
+							<label class="bCustomLabel mCustomLabelBig" for="subscribe_oneclick">Хочу знать об интересных<br/>предложениях</label>
 						</div>
 					</div>
 
@@ -434,8 +424,8 @@ if ($oneClick) {
 						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
 						<div class="bSubscibeCheck bInputList">
-							<input type="checkbox" name="subscribe" id="subscribe" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
-							<label class="bCustomLabel mCustomLabelBig" for="subscribe">Хочу знать об интересных<br/>предложениях</label>                 
+							<input type="checkbox" name="subscribe" id="subscribe_def" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
+							<label class="bCustomLabel mCustomLabelBig" for="subscribe_def">Хочу знать об интересных<br/>предложениях</label>
 						</div>
 					</div>
 
@@ -451,15 +441,6 @@ if ($oneClick) {
 						<div class="bSelectedCity">
 							<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
 						</div>
-
-						<? if ((bool)$subways): ?>
-						<div class="bInputAddress ui-css jsInputMetro">
-							<label class="bPlaceholder">Метро*</label>
-							<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
-							<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
-							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
-						</div>
-						<? endif ?>
 
 						<div class="bInputAddress jsInputStreet ui-css">
 							<label class="bPlaceholder">Улица*</label>
@@ -485,6 +466,15 @@ if ($oneClick) {
 							<label class="bPlaceholder">Этаж</label>
 							<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
 						</div>
+
+						<? if ((bool)$subways): ?>
+						<div class="bInputAddress ui-css jsInputMetro">
+							<label class="bPlaceholder">Метро*</label>
+							<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
+							<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
+							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
+						</div>
+						<? endif ?>
 
                         <div class="bInputAddress" id="map"></div>
 					</div>

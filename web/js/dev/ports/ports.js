@@ -523,35 +523,47 @@ window.ANALYTICS = {
             },
 
             action: function ( e, userInfo ) {
-            	console.info('RetailRocketJS action');
-            	console.log('userInfo: id = '+ userInfo.id + ' email = ' + userInfo.email);
+				try {
+					console.info('RetailRocketJS action');
+					console.log('userInfo: id = '+ userInfo.id + ' email = ' + userInfo.email);
+					window.rrPartnerUserId = userInfo.id; // rrPartnerUserId — по ТЗ должна быть глобальной
 
-                var
-                	rr_data = $('#RetailRocketJS').data('value'),
-                    sendUserData = {
-                        userId: userInfo.id || false,
-                        hasUserEmail: ( userInfo && userInfo.email ) ? true : false
-                    };
-                // end of vars
+					var
+						rr_data = $('#RetailRocketJS').data('value'),
+						sendUserData = {
+							userId: userInfo.id || false,
+							hasUserEmail: ( userInfo && userInfo.email ) ? true : false
+						};
+					// end of vars
 
-
-                if ( rr_data && rr_data.routeName && rr_data.sendData && window.RetailRocket.hasOwnProperty(rr_data.routeName) ) {
-                    window.RetailRocket[rr_data.routeName](rr_data.sendData, sendUserData);
-                }
+					if ( rr_data && rr_data.routeName && rr_data.sendData && window.RetailRocket.hasOwnProperty(rr_data.routeName) ) {
+						window.RetailRocket[rr_data.routeName](rr_data.sendData, sendUserData);
+					}
+				} catch (err) {
+					ENTER.utils.logError({
+						event: 'RR_error',
+						type:'ошибка в action',
+						err: err
+					});
+				}
             },
 
             init: function () { // on load:
             	console.info('RetailRocketJS init');
 
-                (function (d) {
-                    var ref = d.getElementsByTagName('script')[0]; var apiJs, apiJsId = 'rrApi-jssdk';
-                    if (d.getElementById(apiJsId)) return;
-                    apiJs = d.createElement('script');
-                    apiJs.id = apiJsId;
-                    apiJs.async = true;
-                    apiJs.src = "//cdn.retailrocket.ru/javascript/tracking.js";
-                    ref.parentNode.insertBefore(apiJs, ref);
-                }(document));
+				(function (d) {
+					var
+						ref = d.getElementsByTagName( 'script' )[0],
+						apiJs,
+						apiJsId = 'rrApi-jssdk';
+
+					if ( d.getElementById( apiJsId ) ) return;
+					apiJs = d.createElement( 'script' );
+					apiJs.id = apiJsId;
+					apiJs.async = true;
+					apiJs.src = "//cdn.retailrocket.ru/javascript/tracking.js";
+					ref.parentNode.insertBefore( apiJs, ref );
+				}( document ));
             }
 
         }// end of window.RetailRocket object
@@ -613,6 +625,27 @@ window.ANALYTICS = {
             a.parentNode.insertBefore(s, a);
         }(document));
     },
+
+	AlexaJS: function () {
+		_atrk_opts = {
+			atrk_acct: "mPO9i1acVE000x",
+			domain: "enter.ru",
+			dynamic: true
+		};
+
+		(function () {
+			console.log('AlexaJS init');
+			var
+				as = document.createElement( 'script' ),
+				s  = document.getElementsByTagName( 'script' )[0];
+
+			as.type = 'text/javascript';
+			as.async = true;
+			as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js";
+
+			s.parentNode.insertBefore( as, s );
+		})();
+	},
 
     marketgidProd : function() {
         var MGDate = new Date();

@@ -14,6 +14,8 @@ class Entity {
     /** @var string */
     public $image;
     /** @var string */
+    public $smallImage;
+    /** @var string */
     public $action;
     /** @var array */
     public $item;
@@ -37,6 +39,7 @@ class Entity {
     public function __construct(array $data = []) {
         if (isset($data['name'])) $this->name = (string)$data['name'];
         if (isset($data['image'])) $this->image = (string)$data['image'];
+        if (isset($data['smallImage'])) $this->smallImage = (string)$data['smallImage'];
         if (isset($data['action'])) $this->action = (string)$data['action'];
         if (isset($data['color'])) $this->color = (string)$data['color'];
         if (isset($data['colorHover'])) $this->colorHover = (string)$data['colorHover'];

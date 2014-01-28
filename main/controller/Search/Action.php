@@ -20,7 +20,7 @@ class Action {
         }
         $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
 
-        if (empty($searchQuery)) {
+        if (empty($searchQuery) || (mb_strlen($searchQuery) < \App::config()->search['queryStringLimit'])) {
             $page = new \View\Search\EmptyPage();
             $page->setParam('searchQuery', $searchQuery);
             return new \Http\Response($page->show());
@@ -104,13 +104,10 @@ class Action {
 
         // ядерный запрос
         $result = [];
-        if (mb_strlen($searchQuery) >= \App::config()->search['queryStringLimit']) {
-            \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
-                $result = $data;
-            });
-
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
-        }
+        \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
+            $result = $data;
+        });
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
 
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
@@ -256,7 +253,7 @@ class Action {
 
         // если по поиску нашелся только один товар и это первая стр. поиска, то редиректим сразу в карточку товара
         if (!$request->isXmlHttpRequest() && (1 == count($products)) && !$offset) {
-            return new \Http\RedirectResponse(reset($products)->getLink());
+            return new \Http\RedirectResponse(reset($products)->getLink() . '?q=' . urlencode($searchQuery));
         }
 
 
@@ -303,7 +300,12 @@ class Action {
         $mapData = [1 => 'product', 3 => 'category'];
 
         if (mb_strlen($keyword) >= 3) {
-            \App::coreClientV2()->addQuery('search/autocomplete', ['letters' => $keyword], [], function($result) use(&$data, $limit, $mapData){
+            // параметры ядерного запроса
+            $params = ['letters' => $keyword];
+            if (\App::user()->getRegion()) {
+                $params['region_id'] = \App::user()->getRegion()->getId();
+            }
+            \App::coreClientV2()->addQuery('search/autocomplete', $params, [], function($result) use(&$data, $limit, $mapData){
                 foreach ($mapData as $key => $value) {
                     $i = 0;
                     $entity = '\\Model\\Search\\'.ucfirst($value).'\\Entity';

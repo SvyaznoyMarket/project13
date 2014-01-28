@@ -79,7 +79,7 @@
 	console.log('orderValidation:: vars initd');
 
 	orderValidator = new FormValidator(validationConfig);
-
+	utils.orderValidator = orderValidator;
 
 	var
 		/**
