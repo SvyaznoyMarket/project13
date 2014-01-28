@@ -14,17 +14,13 @@ class ChildAction {
 
         $region = \App::user()->getRegion();
 
-        // SITE-3029
-        $rootCategoryInMenu = $category->getRoot();
         $rootCategoryIdInMenu = (!empty($catalogConfig['root_category_menu']['root_id']) && is_scalar($catalogConfig['root_category_menu']['root_id'])) ? (int)$catalogConfig['root_category_menu']['root_id'] : null;
-        if ($category->getRoot() && ($category->getRoot()->getId() != $rootCategoryIdInMenu)) {
-            \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($rootCategoryIdInMenu, $region, 3, function($data) use (&$rootCategoryInMenu) {
-                $data = is_array($data) ? reset($data) : [];
-                if (isset($data['id'])) {
-                    $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
-                }
-            });
-        }
+        \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($rootCategoryIdInMenu, $region, 3, function($data) use (&$rootCategoryInMenu) {
+            $data = is_array($data) ? reset($data) : [];
+            if (isset($data['id'])) {
+                $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
+            }
+        });
 
         $result = [];
         \App::shopScriptClient()->addQuery(
