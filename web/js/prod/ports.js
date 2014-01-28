@@ -626,6 +626,27 @@ window.ANALYTICS = {
         }(document));
     },
 
+	AlexaJS: function () {
+		_atrk_opts = {
+			atrk_acct: "mPO9i1acVE000x",
+			domain: "enter.ru",
+			dynamic: true
+		};
+
+		(function () {
+			console.log('AlexaJS init');
+			var
+				as = document.createElement( 'script' ),
+				s  = document.getElementsByTagName( 'script' )[0];
+
+			as.type = 'text/javascript';
+			as.async = true;
+			as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js";
+
+			s.parentNode.insertBefore( as, s );
+		})();
+	},
+
     marketgidProd : function() {
         var MGDate = new Date();
         document.write('<iframe src ="http://'

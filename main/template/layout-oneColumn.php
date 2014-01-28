@@ -29,7 +29,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="HandheldFriendly" content="true" />
 
-    <?= $page->slotMobileModify() ?>
     <?= $page->slotStylesheet() ?>
     <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
