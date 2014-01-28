@@ -2,9 +2,9 @@
 
 namespace Config;
 
-require_once __DIR__ . '/Oauth/VkontakteConfig.php';
-require_once __DIR__ . '/Oauth/OdnoklassnikiConfig.php';
-require_once __DIR__ . '/Oauth/FacebookConfig.php';
+//require_once __DIR__ . '/Oauth/VkontakteConfig.php';
+//require_once __DIR__ . '/Oauth/OdnoklassnikiConfig.php';
+//require_once __DIR__ . '/Oauth/FacebookConfig.php';
 
 class AppConfig {
     /**
@@ -221,17 +221,17 @@ class AppConfig {
      * @var Oauth\VkontakteConfig
      * @hidden
      */
-    public $vkontakteOauth;
+    //public $vkontakteOauth;
     /**
      * @var Oauth\OdnoklassnikiConfig
      * @hidden
      */
-    public $odnoklassnikiOauth;
+    //public $odnoklassnikiOauth;
     /**
      * @var Oauth\FacebookConfig
      * @hidden
      */
-    public $facebookOauth;
+    //public $facebookOauth;
     /** @var array */
     public $onlineCall = [
         'enabled' => null,
@@ -491,9 +491,9 @@ class AppConfig {
     ];
 
     public function __construct() {
-        $this->vkontakteOauth = new OAuth\VkontakteConfig();
-        $this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
-        $this->facebookOauth = new OAuth\FacebookConfig();
+        //$this->vkontakteOauth = new OAuth\VkontakteConfig();
+        //$this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
+        //$this->facebookOauth = new OAuth\FacebookConfig();
     }
 
     public function __set($name, $value) {
