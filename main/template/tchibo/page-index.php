@@ -71,6 +71,16 @@
             <a class="link" href="/catalog/tchibo/dom-8e8a">
                 Дом                </a>
 
+            <ul class="tchiboNav__sublist">
+                <li class="sublistItem jsItemListTchibo"><a class="link" href="/catalog/tchibo/dom-chistota-doma-5c49">Чистота дома</a></li>
+                <li class="sublistItem jsItemListTchibo"><a class="link" href="/catalog/tchibo/dom-uhod-za-odegdoy-i-shite-cfd2">Уход за одеждой и шитье</a></li>
+                <li class="sublistItem jsItemListTchibo"><a class="link" href="/catalog/tchibo/dom-dizayn-dlya-dusha-i-dushi-aa65">Дизайн для душа и души</a></li>
+            </ul>
+        </li>
+        <li class="item jsItemListTchibo">
+            <a class="link" href="/catalog/tchibo/mugchini-a832">
+                Мужчины                </a>
+
         </li>
         <li class="item jsItemListTchibo">
             <a class="link" href="/catalog/tchibo/genshchini-69d5">
@@ -82,7 +92,8 @@
             </ul>
         </li>
     </ul>
-</div><!--/ TCHIBO - слайдер-меню разделов Чибо -->
+</div>
+<!--/ TCHIBO - слайдер-меню разделов Чибо -->
 
 <div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>">
 
