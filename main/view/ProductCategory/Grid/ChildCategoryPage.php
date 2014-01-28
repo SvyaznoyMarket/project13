@@ -1,8 +1,8 @@
 <?php
 
-namespace View\Tchibo;
+namespace View\ProductCategory\Grid;
 
-class CategoryPage extends \View\DefaultLayout {
+class ChildCategoryPage extends \View\DefaultLayout {
     protected $layout = 'layout-oneColumn';
 
     public function slotBodyDataAttribute() {
@@ -10,7 +10,7 @@ class CategoryPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('tchibo/page-category', $this->params);
+        return $this->render('product-category/grid/child-category', $this->params);
     }
 
     public function slotUserbar() {

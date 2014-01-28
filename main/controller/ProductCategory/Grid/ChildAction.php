@@ -5,107 +5,26 @@ namespace Controller\ProductCategory\Grid;
 class ChildAction {
     /**
      * @param \Http\Request $request
-     * @param $categoryPath
-     * @return \Http\RedirectResponse|\Http\Response
-     * @throws \Exception\NotFoundException
+     * @param \Model\Product\Category\Entity $category
+     * @param array $catalogConfig
+     * @return \Http\Response
      */
-    public function executeByPath(\Http\Request $request, $categoryPath) {
+    public function executeByEntity(\Http\Request $request, \Model\Product\Category\Entity $category, $catalogConfig = []) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $region = \App::user()->getRegion();
 
-        $categoryToken = explode('/', $categoryPath);
-        $categoryToken = end($categoryToken);
-
-        /** @var $category \Model\Product\Category\Entity */
-        $category = null;
-
-        $shopScriptException = null;
-        $shopScriptSeo = [];
-        /** @var $category \Model\Product\Category\Entity */
-        if (\App::config()->shopScript['enabled']) {
-            try {
-                $shopScript = \App::shopScriptClient();
-                $shopScript->addQuery(
-                    'category/get-seo',
-                    [
-                        'slug'   => $categoryToken,
-                        'geo_id' => \App::user()->getRegion()->getId(),
-                    ],
-                    [],
-                    function ($data) use (&$shopScriptSeo) {
-                        if ($data && is_array($data)) $shopScriptSeo = reset($data);
-                    },
-                    function (\Exception $e) use (&$shopScriptException) {
-                        $shopScriptException = $e;
-                    }
-                );
-                $shopScript->execute();
-                if ($shopScriptException instanceof \Exception) {
-                    throw $shopScriptException;
-                }
-
-                // если shopscript вернул редирект
-                if (!empty($shopScriptSeo['redirect']['link'])) {
-                    $redirect = $shopScriptSeo['redirect']['link'];
-                    if(!preg_match('/^http/', $redirect)) {
-                        $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
-                            \App::config()->mainHost .
-                            (preg_match('/^\//', $redirect) ? '' : '/') .
-                            $redirect;
-                    }
-                    return new \Http\RedirectResponse($redirect);
-                }
-
-                if (empty($shopScriptSeo['ui'])) {
-                    throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
-                }
-
-                // запрашиваем категорию по ui
-                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
-                    $data = reset($data);
-                    if ((bool)$data) {
-                        $category = new \Model\Product\Category\Entity($data);
-                    }
-                });
-            } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
-                \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                    $data = reset($data);
-                    if ((bool)$data) {
-                        $category = new \Model\Product\Category\Entity($data);
-                    }
-                });
-            }
-
-        } else {
-            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                $data = reset($data);
-                if ((bool)$data) {
-                    $category = new \Model\Product\Category\Entity($data);
+        // SITE-3029
+        $rootCategoryInMenu = $category->getRoot();
+        $rootCategoryIdInMenu = (!empty($catalogConfig['root_category_menu']['root_id']) && is_scalar($catalogConfig['root_category_menu']['root_id'])) ? (int)$catalogConfig['root_category_menu']['root_id'] : null;
+        if ($category->getRoot() && ($category->getRoot()->getId() != $rootCategoryIdInMenu)) {
+            \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($rootCategoryIdInMenu, $region, 3, function($data) use (&$rootCategoryInMenu) {
+                $data = is_array($data) ? reset($data) : [];
+                if (isset($data['id'])) {
+                    $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
                 }
             });
         }
-        \App::coreClientV2()->execute();
-
-        if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
-        }
-
-        return $this->executeByEntity($category, $request);
-    }
-
-    /**
-     * @param \Model\Product\Category\Entity $category
-     * @param \Http\Request $request
-     * @return \Http\Response
-     */
-    public function executeByEntity(\Model\Product\Category\Entity $category, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $region = \App::user()->getRegion();
-
-        /** @var $productsById \Model\Product\Entity[] */
-        $productsById = [];
 
         $result = [];
         \App::shopScriptClient()->addQuery(
@@ -125,6 +44,8 @@ class ChildAction {
         );
         \App::shopScriptClient()->execute();
 
+        /** @var $productsById \Model\Product\Entity[] */
+        $productsById = [];
         /** @var $grid \Model\GridCell\Entity[] */
         $gridCells = [];
         foreach ($result as $item) {
@@ -173,10 +94,12 @@ class ChildAction {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
         $productsById = array_filter($productsById);
 
-        $page = new \View\Tchibo\CategoryPage();
+        $page = new \View\ProductCategory\Grid\ChildCategoryPage();
         $page->setParam('gridCells', $gridCells);
         $page->setParam('category', $category);
+        $page->setParam('catalogConfig', $catalogConfig);
         $page->setParam('productsById', $productsById);
+        $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
 
         return new \Http\Response($page->show());
     }

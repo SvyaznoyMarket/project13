@@ -9,8 +9,8 @@
  */
 ;(function( ENTER ) {
 	var 
-		listItem = $(".tchiboNav__list .jsItemListTchibo"),
-		listItemLink = $(".tchiboNav__list .jsItemListTchibo .link");
+		listItem = $('.tchiboNav__list .jsItemListTchibo'),
+		listItemLink = $('.tchiboNav__list .jsItemListTchibo .link');
 	// end of vars
 
 	listItemLink.each ( 

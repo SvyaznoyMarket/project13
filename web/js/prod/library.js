@@ -1102,7 +1102,7 @@ if ( !Date.prototype.toISOString ) {
 
             this.mapWS.controls.add('zoomControl');
 
-            this._showMarkers();
+            //this._showMarkers();
 		}
 
 		/**
@@ -1169,8 +1169,8 @@ if ( !Date.prototype.toISOString ) {
 					{
 						iconImageHref: currPoint.pointImage, // картинка иконки
 						//iconImageHref: '/images/marker.png', // картинка иконки
-						iconImageSize: [39, 59],
-						iconImageOffset: [-19, -57]
+						//iconImageSize: [39, 59],
+						//iconImageOffset: [-19, -57]
 					}
 				);
 
