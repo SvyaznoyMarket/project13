@@ -45,7 +45,11 @@ class Menu {
         // сбор категорий для ACTION_PRODUCT_CATALOG
         \RepositoryManager::productCategory()->prepareTreeCollection(\App::user()->getRegion(), 3, function($data) {
             foreach ($data as $item) {
-                $this->rootCategoriesById[$item['id']] = new \Model\Product\Category\MenuEntity($item);
+                $category = new \Model\Product\Category\MenuEntity($item);
+                foreach ($category->getChild() as $childCat) {
+                    $this->categoriesById[$childCat->getId()] = $childCat;
+                }
+                $this->rootCategoriesById[$item['id']] = $category;
             }
         });
 
@@ -118,6 +122,10 @@ class Menu {
                 $categoryId = $iMenu->firstItem;
                 /** @var \Model\Product\Category\MenuEntity $category */
                 $category = ($categoryId && isset($this->rootCategoriesById[$categoryId])) ? $this->rootCategoriesById[$categoryId] : null;
+                if (!$category && $categoryId && isset($this->categoriesById[$categoryId])) {
+                    $category = $this->categoriesById[$categoryId];
+                }
+
                 if (!$category) {
                     \App::logger()->warn(sprintf('Не найдена категория #%s для элемента меню %s', $categoryId, $iMenu->name));
                     continue;
