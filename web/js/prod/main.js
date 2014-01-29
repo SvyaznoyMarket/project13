@@ -52,12 +52,25 @@ $(document).ready(function () {
 
     if (l == 1) {
         if ('is_exclusive' in promos[0] && promos[0].is_exclusive) {
-            var exclImg = $('<img>').attr('src', promos[0].imgb).css('cursor', 'pointer').data('url', promos[0].url)
-                .click(function () {
-                    if (typeof(_gaq) !== 'undefined' && typeof(promos[0].ga) !== 'undefined')
-                        _gaq.push(['_trackEvent', 'BannerClick', promos[0].ga ]);
-                    location.href = $(this).data('url');
-                });
+
+            var 
+                exclImg = $('<img>').attr('src', promos[0].imgb).css('cursor', 'pointer').data('url', promos[0].url);
+
+            exclImg.click(function () {
+                if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
+                    //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
+                    _gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.ga, currImg.pos, currImg.imgb ] );
+                }   
+                location.href = $(this).data('url');
+            });
+
+            exclImg.mouseover(function () {
+                if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
+                    //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
+                    _gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.ga, currImg.pos, currImg.imgb ] );
+                } 
+            });
+
             $('.bCarouselWrap').html(exclImg);
             return;
         }
@@ -133,14 +146,34 @@ $(document).ready(function () {
 
         clearTimeout(idto);
 
-		if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.id) !== 'undefined' ) {
+		if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
 			//_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-			_gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.pos, currImg.id ] );
-			console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ', id_' + currImg.id );
+			_gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.ga, currImg.pos, currImg.imgb ] );
+			console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
 		}
         addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
         location.href = $(this).data('url');
     });
+
+    $('.centerImage').mouseover(function () {
+        var
+            currImg = initis[1];
+        /**
+         * Текущие изобрежения слайдера хранятся в initis так:
+         * initis[0] - leftImage
+         * initis[1] - centerImage
+         * initis[2] - rightImage
+         * при листании карусельки изменяются и текущие данные в initis[]
+         */
+
+        if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
+            //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
+            _gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.ga, currImg.pos, currImg.imgb ] );
+            console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
+        }
+        addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));  
+    });
+
     $('.promos').click(function () {
         location.href = $(this).data('url');
     });
