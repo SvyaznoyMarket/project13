@@ -186,16 +186,13 @@ if ($oneClick) {
 								</div>
 
 								<div class="bItemsRow mItemCount">
-                                    <? if ($oneClick): ?>
-                                        <div class="bCountSection clearfix" data-spinner-for="000" data-bind="attr: { 'data-seturl': product.setUrl }">
-                                            <button class="bCountSection__eM">-</button>
-                                            <input class="bCountSection__eNum" type="text" value="" data-bind="attr: { value: product.quantity }" />
-                                            <button class="bCountSection__eP">+</button>
-                                            <span>шт.</span>
-                                        </div><!--/counter -->
-                                    <? else: ?>
-									    <span data-bind="text: product.quantity"></span> шт.
-                                    <? endif ?>
+                                    <div class="bCountSection clearfix" data-spinner-for="000" data-bind="attr: { 'data-seturl': product.setUrl }">
+                                        <button class="bCountSection__eM">-</button>
+                                        <input class="bCountSection__eNum" type="text" value="" data-bind="attr: { value: product.quantity }" />
+                                        <button class="bCountSection__eP">+</button>
+                                        <span>шт.</span>
+                                    </div><!--/counter -->
+								    <? /* <span data-bind="text: product.quantity"></span> шт. */?>
 								</div>
 
 								<div class="bItemsRow mDelItem">
