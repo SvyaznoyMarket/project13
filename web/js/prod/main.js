@@ -66,7 +66,7 @@ $(document).ready(function () {
                 if (typeof(_gaq) !== 'undefined' && typeof(promos[0].ga) !== 'undefined')
                     _gaq.push(['_trackEvent', 'BannerClick', promos[0].ga ]);
                 addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
-                location.href = $(this).data('url')
+                location.href = $(this).data('url');
             });
         return;
     }
@@ -121,9 +121,23 @@ $(document).ready(function () {
         goSlide(1);
     })
     $('.centerImage').click(function () {
-        clearTimeout(idto)
-        if (typeof(_gaq) !== 'undefined' && typeof(initis[1].ga) !== 'undefined')
-            _gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
+		var
+			currImg = initis[1];
+		/**
+		 * Текущие изобрежения слайдера хранятся в initis так:
+		 * initis[0] - leftImage
+		 * initis[1] - centerImage
+		 * initis[2] - rightImage
+		 * при листании карусельки изменяются и текущие данные в initis[]
+		 */
+
+        clearTimeout(idto);
+
+		if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.id) !== 'undefined' ) {
+			//_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
+			_gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.pos, currImg.id ] );
+			console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ', id_' + currImg.id );
+		}
         addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
         location.href = $(this).data('url');
     });
@@ -134,7 +148,7 @@ $(document).ready(function () {
         permission = false;
     }, function () {
         permission = true;
-    })
+    });
 
     function sideBanner(block, i) {
         $(block).animate({

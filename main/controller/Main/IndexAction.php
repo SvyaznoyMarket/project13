@@ -44,6 +44,7 @@ class IndexAction {
                     'url'   => $item['url'],
                     't'     => $i > 0 ? $timeout : $timeout + 4000,
                     'ga'    => $bannerId . ' - ' . $item['name'],
+                    'pos'   => $i,
                 ];
 
                 $itemsByBanner[$bannerId] = [];
