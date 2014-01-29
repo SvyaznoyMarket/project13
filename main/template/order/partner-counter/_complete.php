@@ -11,6 +11,7 @@
     <?
     switch (\App::partner()->getName()) {
         case \Partner\Counter\Admitad::NAME:
+        case \Partner\Counter\Admitad::NAME_SYNONYM:
             echo $page->tryRender('order/partner-counter/_admitad-complete', array('orders' => $orders, 'productsById' => $productsById));
             break;
         case \Partner\Counter\Actionpay::NAME:
