@@ -3,7 +3,8 @@
 return function(
     \Helper\TemplateHelper $helper,
     array $categories,
-    $catalogConfig = []
+    $catalogConfig = [],
+    \Model\Product\Category\Entity $currentCategory
 ) {
     /** @var $categories \Model\Product\Category\Entity[] */
 
@@ -16,13 +17,17 @@ return function(
 
         <ul class="tchiboNav__list">
         <? foreach ($categories as $category): ?>
-            <li class="item jsItemListTchibo">
+            <?
+            $active = ($category->getId() === $currentCategory->getParentId()) && !$currentCategory->getHasChild() ? true : false;
+            ?>
+
+            <li class="item jsItemListTchibo<? if ($active): ?> active<? endif ?>">
                 <a class="link" href="<?= $category->getLink() ?>">
                     <?= $category->getName() ?>
                 </a>
 
                 <? if ((bool)$category->getChild()): ?>
-                <ul class="tchiboNav__sublist">
+                <ul class="tchiboNav__sublist<? if ($active): ?> active<? endif ?>">
                 <? foreach ($category->getChild() as $child): ?>
                     <li class="sublistItem jsItemListTchibo"><a class="link" href="<?= $child->getLink() ?>"><?= $child->getName() ?></a></li>
                 <? endforeach ?>
