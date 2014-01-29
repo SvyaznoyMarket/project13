@@ -1,6 +1,8 @@
 var addKISSmetricsEvent = function(eventName, bannerId, banner) {
-    var centerImageUrl = banner.attr('src');
-    var bannerUrl = banner.data('url');
+	var
+		centerImageUrl = banner.attr('src'),
+		bannerUrl = banner.data('url');
+
     if (typeof(_kmq) !== 'undefined') {
         _kmq.push(['record', eventName, {
             'Banner id': bannerId,
@@ -13,116 +15,140 @@ var addKISSmetricsEvent = function(eventName, bannerId, banner) {
 $(document).ready(function () {
     // promo block after header GA
     $('.bPromoCategory a').bind('click', function(){
-        var link = $(this).attr('href')
+        var link = $(this).attr('href');
         if( typeof(_gaq) !== 'undefined' )
-            _gaq.push(['_trackEvent', 'CategoryClick', 'Верхнее меню', link ])
-    })
-    
+            _gaq.push(['_trackEvent', 'CategoryClick', 'Верхнее меню', link ]);
+    });
 
-    if (!$('#main_banner-data').length)
-        return
-    var promos = $('#main_banner-data').data('value')
+
+	if ( !$( '#main_banner-data' ).length ) {
+		return;
+	}
+
+    var
+		i,
+		promos = $('#main_banner-data').data('value' ),
+		l = promos.length;
 
     /* Shit happens */
-    for (var i = 0; i < promos.length; i++) {
+    for (i = 0; i < l; i++) {
         if (typeof(promos[i].imgb) === 'undefined' || typeof(promos[i].imgs) === 'undefined') {
-            promos.splice(i, 1)
+            promos.splice(i, 1);
         }
         if (typeof(promos[i].url) === 'undefined') {
-            promos[i].url = ''
+            promos[i].url = '';
         }
         if (typeof(promos[i].t) === 'undefined') {
-            promos[i].url = 4000
+            promos[i].url = 4000;
         }
         if (typeof(promos[i].alt) === 'undefined') {
-            promos[i].url = ''
+            promos[i].url = '';
         }
     }
-    var l = promos.length
-    if (l == 0)
-        return
+
+	if (l == 0) {
+		return;
+	}
+
     if (l == 1) {
         if ('is_exclusive' in promos[0] && promos[0].is_exclusive) {
             var exclImg = $('<img>').attr('src', promos[0].imgb).css('cursor', 'pointer').data('url', promos[0].url)
                 .click(function () {
                     if (typeof(_gaq) !== 'undefined' && typeof(promos[0].ga) !== 'undefined')
                         _gaq.push(['_trackEvent', 'BannerClick', promos[0].ga ]);
-                    location.href = $(this).data('url')
-                })
-            $('.bCarouselWrap').html(exclImg)
-            return
+                    location.href = $(this).data('url');
+                });
+            $('.bCarouselWrap').html(exclImg);
+            return;
         }
         $('.centerImage').attr('src', promos[0].imgb).data('url', promos[0].url)
             .click(function () {
                 if (typeof(_gaq) !== 'undefined' && typeof(promos[0].ga) !== 'undefined')
                     _gaq.push(['_trackEvent', 'BannerClick', promos[0].ga ]);
                 addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
-                location.href = $(this).data('url')
-            })
-        return
+                location.href = $(this).data('url');
+            });
+        return;
     }
     /* Preload */
-    var hb = $('<div>').css('display', 'none')
-    for (var i = 0; i < l; i++) {
+    var hb = $('<div>').css('display', 'none');
+    for (i = 0; i < l; i++) {
         $('<img>').attr('src', promos[i].imgb).appendTo(hb)
         $('<img>').attr('src', promos[i].imgs).appendTo(hb)
     }
-    $('body').append(hb)
+    $('body').append(hb);
 
     /* Init */
-    $('.leftImage').attr({ "src":promos[l - 1].imgs, "alt":promos[l - 1].alt, "title":promos[l - 1].alt})
-    $('.centerImage').attr('src', promos[0].imgb).data('url', promos[0].url)
-    $('.rightImage').attr({ "src":promos[1].imgs, "alt":promos[1].alt, "title":promos[1].alt})
-    var currentSl = promos.length - 1
-    var idto = null
-    var initis = []
-    var sliding = false
-    var permission = true
-    changeSrc(currentSl)
+    $('.leftImage').attr({ "src":promos[l - 1].imgs, "alt":promos[l - 1].alt, "title":promos[l - 1].alt});
+    $('.centerImage').attr('src', promos[0].imgb).data('url', promos[0].url);
+    $('.rightImage').attr({ "src":promos[1].imgs, "alt":promos[1].alt, "title":promos[1].alt});
+
+	var
+		currentSl = l - 1,
+		idto = null,
+		initis = [],
+		sliding = false,
+		permission = true;
+
+    changeSrc(currentSl);
     idto = setTimeout(function () {
         goSlide()
-    }, initis[1].t)
+    }, initis[1].t);
     /* Visuals */
 	
-	var b = new brwsr()
+	var b = new brwsr();
     if ( b.isAndroid || b.isOSX) {
-        $('.bCarousel div').show()
-        $('.allpage').css('overflow', 'hidden')
+        $('.bCarousel div').show();
+        $('.allpage').css('overflow', 'hidden');
     } else {
         $('.bCarousel').mouseenter(
             function () {
-                $('.bCarousel div').show()
+                $('.bCarousel div').show();
             }).mouseleave(function () {
-                $('.bCarousel div').hide()
+                $('.bCarousel div').hide();
             })
     }
     $('.leftArrow').click(function () {
-        goSlide(-1)
+        goSlide(-1);
     })
     $('.leftImage').click(function () {
-        goSlide(-1)
+        goSlide(-1);
     })
     $('.rightArrow').click(function () {
-        goSlide(1)
+        goSlide(1);
     })
     $('.rightImage').click(function () {
-        goSlide(1)
+        goSlide(1);
     })
     $('.centerImage').click(function () {
-        clearTimeout(idto)
-        if (typeof(_gaq) !== 'undefined' && typeof(initis[1].ga) !== 'undefined')
-            _gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
+		var
+			currImg = initis[1];
+		/**
+		 * Текущие изобрежения слайдера хранятся в initis так:
+		 * initis[0] - leftImage
+		 * initis[1] - centerImage
+		 * initis[2] - rightImage
+		 * при листании карусельки изменяются и текущие данные в initis[]
+		 */
+
+        clearTimeout(idto);
+
+		if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.id) !== 'undefined' ) {
+			//_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
+			_gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.pos, currImg.id ] );
+			console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ', id_' + currImg.id );
+		}
         addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
-        location.href = $(this).data('url')
-    })
+        location.href = $(this).data('url');
+    });
     $('.promos').click(function () {
-        location.href = $(this).data('url')
-    })
+        location.href = $(this).data('url');
+    });
     $('.centerImage').hover(function () {
-        permission = false
+        permission = false;
     }, function () {
-        permission = true
-    })
+        permission = true;
+    });
 
     function sideBanner(block, i) {
         $(block).animate({
@@ -135,43 +161,44 @@ $(document).ready(function () {
                     $(block).animate({
                         "opacity":"1"
                     })
-                }, 350)
-            })
+                }, 350);
+            });
     }
 
     function changeSrc(currentSl) {
-        var delta = promos.length - currentSl - 3
+        var delta = l - currentSl - 3;
         if (delta >= 0)
-            initis = promos.slice(currentSl, currentSl + 3)
+            initis = promos.slice(currentSl, currentSl + 3);
         else
-            initis = promos.slice(currentSl).concat(promos.slice(0, -delta))
+            initis = promos.slice(currentSl).concat(promos.slice(0, -delta));
     }
 
     function goSlide(dir) {
         if (!permission) {
             idto = setTimeout(function () {
-                goSlide()
-            }, initis[1].t)
-            return
+                goSlide();
+            }, initis[1].t);
+            return;
         }
         if (sliding)
-            return false
-        sliding = true
+            return false;
+        sliding = true;
         if (!dir)
-            var dir = 1
+            var dir = 1;
         else // custom call
-            clearTimeout(idto)
+            clearTimeout(idto);
         var shift = '-=1000px',
-            inileft = '1032px'
+            inileft = '1032px';
 
         if (dir < 0) {
             shift = '+=1000px',
                 inileft = '-968px'
         }
-        currentSl = (currentSl + dir) % promos.length
-        if (currentSl < 0)
-            currentSl = promos.length - 1
-        changeSrc(currentSl)
+        currentSl = (currentSl + dir) % l;
+		if (currentSl < 0) {
+			currentSl = l - 1;
+		}
+        changeSrc(currentSl);
 
         $('.centerImage').animate(
             {
@@ -185,13 +212,13 @@ $(document).ready(function () {
                     'opacity':'1',
                     'left':shift
                 })
-                sliding = false
+                sliding = false;
                 idto = setTimeout(function () {
-                    goSlide()
+                    goSlide();
                 }, initis[1].t) // AUTOPLAY
-            })
-        sideBanner($('.leftImage'), 0)
-        sideBanner($('.rightImage'), 2)
+            });
+        sideBanner($('.leftImage'), 0);
+        sideBanner($('.rightImage'), 2);
         addKISSmetricsEvent('Carousel banner click', 'bigbanner', $('.centerImage'));
     }
-})
+});
