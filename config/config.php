@@ -341,8 +341,6 @@ $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = true;
 
-$c->mobileModify['enabled'] = false;
-
 $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
@@ -355,6 +353,8 @@ $c->order['prepayment'] = [
     'value'      => 10, // кол-во предоплаты в %
     'priceLimit' => 100000,// если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
 ];
+
+$c->newDeliveryCalc = false;
 
 $c->kladr = [
     'token' => '52b04de731608f2773000000',
