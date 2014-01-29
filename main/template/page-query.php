@@ -9,13 +9,27 @@ return function(
 
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <style>
+        .navbar-fixed-top{
+            background: rgba(0,0,0,.2);
+        }
+        .navbar-inner{
+            text-align: center;
+            width: 80%;
+            padding: .5em;
+            left: 10%;
+            position: relative;
+        }
+    </style>
 
 <div class="container" style="padding-top: 20px;">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" style="padding-top: 40px;">
             <form action="<?= $helper->url('debug.query') ?>" method="post" role="form">
-                <div class="form-group">
-                    <input autofocus="autofocus" type="text" class="form-control" placeholder="http://api.enter.ru" name="url" value="<?= $url ?>" width="100" />
+                <div class="form-group navbar-fixed-top">
+                    <div class="navbar-inner">
+                        <input autofocus="autofocus" type="text" class="form-control" placeholder="http://api.enter.ru" name="url" value="<?= $url ?>" width="100" />
+                    </div>
                 </div>
 
                 <div class="form-group">
