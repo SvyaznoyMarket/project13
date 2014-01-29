@@ -238,7 +238,7 @@ if ($oneClick) {
                 <div class="bFootnote" data-bind="visible: box.hasProductWithPrepayment || box.isExpensiveOrder">
                     Внесите предоплату.
                     <div data-bind="visible: box.hasProductWithPrepayment">В корзине товар, <a>требующий предоплаты</a></div>
-                    <div data-bind="visible: !box.hasProductWithPrepayment || box.isExpensiveOrder">Сумма заказа превышает <?= $helper->formatPrice(\App::config()->order['prepayment']['priceLimit']) ?> руб.<br/><a style="text-decoration: underline;" href="">Подробнее</a></div>
+                    <div data-bind="visible: !box.hasProductWithPrepayment || box.isExpensiveOrder">Сумма заказа превышает <?= $helper->formatPrice(\App::config()->order['prepayment']['priceLimit']) ?> руб.<br/><a style="text-decoration: underline;" href="/prepayment">Подробнее</a></div>
                 </div>
                 <!-- /Prepayment -->
             <? endif ?>
