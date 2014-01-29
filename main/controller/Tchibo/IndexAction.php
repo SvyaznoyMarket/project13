@@ -13,6 +13,7 @@ class IndexAction {
         $repositoryPromo = \RepositoryManager::promo();
         $region = $user->getRegion();
         $promoToken = 'tchibo';
+        $category = null;
 
         $promo = $repositoryPromo->getEntityByToken($promoToken);
 
