@@ -5,17 +5,6 @@ namespace Controller\Order;
 class DeliveryAction {
     use ResponseDataTrait;
 
-    /*private function d($var){
-        file_put_contents('t.txt', print_r($var, 1) . "\n" . PHP_EOL, FILE_APPEND);
-    }
-
-    private function pr($var, $hint = null){
-        print '<pre>';
-        if ($hint) print '### '.$hint."\n".PHP_EOL;
-        print_r($var);
-        print '</pre>';
-    }*/
-
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -43,6 +32,10 @@ class DeliveryAction {
      * @return array
      */
     public function getResponseData($paypalECS = false, $lifeGift = false, $oneClick = false) {
+        if (\App::config()->newDeliveryCalc) {
+            return (new \Controller\Delivery\Action())->getResponseData($paypalECS, $lifeGift, $oneClick);
+        }
+
         $router = \App::router();
         $client = \App::coreClientV2();
         $user = \App::user();

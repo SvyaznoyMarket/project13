@@ -15,13 +15,15 @@ $helper = new \Helper\TemplateHelper();
 $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
 ?>
 
-<?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
+<?//= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
 
 <? if ((bool)$siblingCategories): ?>
     <?= $helper->render('product-category/__sibling-list', ['categories' => $siblingCategories, 'catalogConfig' => $catalogConfig]) // категории-соседи ?>
 <? endif ?>
 
-<h1 class="bTitlePage"><?= $category->getName() ?></h1>
+<? if ($category->getHasChild()): ?>
+    <h1 class="bTitlePage"><?= $category->getName() ?></h1>
+<? endif ?>
 
 <? if (false): ?>
 <!-- TCHIBO - навигация по разделу Чибо -->
