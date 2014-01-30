@@ -4,15 +4,7 @@
  * @var $user   \Session\User
  * @var $orders \Model\Order\Entity[]
  */
-?>
 
-<? foreach ($orders as $order): ?>
-    <? if ($link = \Partner\Counter\CityAds::getLink($order)): ?>
-        <img src="<?= $link ?>" />
-    <? endif ?>
-<? endforeach ?>
-
-<?
 $productIds = [];
 $productQuantities = [];
 $ordersSum = 0;
