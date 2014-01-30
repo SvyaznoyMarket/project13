@@ -29,8 +29,6 @@ class Repository {
                 'name'                   => $hasTransportCompany ? 'Доставка заказа транспортной компанией' : 'Доставка заказа курьером',
                 'description'            => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
                 //'description'            => 'DHL, DPD, СПСР-Экспресс',
-                'method_tokens'          => ['standart_furniture', 'standart_other'],
-                'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now'],
             ],
             /*
             [
@@ -44,8 +42,6 @@ class Repository {
                 'short_name'             => 'самовывоз',
                 'name'                   => 'Самостоятельно заберу в магазине',
                 'description'            => 'Вы можете самостоятельно забрать товар из ближайшего к вам магазина Enter. Услуга бесплатная! Резерв товара сохраняется 3 дня. Пожалуйста, выберите магазин.',
-                'method_tokens'          => ['self'],
-                'possible_method_tokens' => ['self', 'now', 'standart_furniture', 'standart_other'],
             ],
             [
                 'id'                     => 4,
@@ -54,8 +50,6 @@ class Repository {
                 'name'                   => 'Заберу сейчас из магазина',
                 'button_name'            => 'Забрать из этого магазина',
                 'description'            => 'Вы можете забрать товар из магазина прямо сейчас',
-                'method_tokens'          => ['now'],
-                'possible_method_tokens' => ['now', 'self', 'standart_furniture', 'standart_other'],
             ],
             /*
             [
@@ -70,8 +64,6 @@ class Repository {
                 'name'                   => 'Самостоятельно забрать в постамате PickPoint',
                 'button_name'            => 'Забрать из этого постамата',
                 'description'            => 'Автоматический пункт выдачи заказов',
-                'method_tokens'          => ['pickpoint'],
-                'possible_method_tokens' => ['pickpoint', 'now', 'self', 'standart_furniture', 'standart_other'],
             ],
         ];
 
