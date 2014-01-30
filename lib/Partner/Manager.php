@@ -118,7 +118,8 @@ class Manager {
                     true
                 );
             // Admitad
-            } else if (0 === strpos($utmSource, 'admitad')) {
+            } else if (0 === strpos($utmSource, 'cpamit') || 0 === strpos($utmSource, 'admitad')) {
+                // используем \Partner\Counter\Admitad::NAME || \Partner\Counter\Admitad::NAME_SYNONYM
                 $response->headers->setCookie(new \Http\Cookie(
                     'admitad_uid',
                     $request->get('admitad_uid'),
@@ -198,6 +199,7 @@ class Manager {
                 ];
                 break;
             case \Partner\Counter\Admitad::NAME:
+            case \Partner\Counter\Admitad::NAME_SYNONYM:
                 $return = [
                     $prefix => [\Partner\Counter\Admitad::NAME],
                     $prefix . '.' . \Partner\Counter\Admitad::NAME . '.admitad_uid' => $request->cookies->get('admitad_uid'),
