@@ -2222,7 +2222,8 @@ img[height="0"] {
     margin: 0 10px 0 0;
     position: relative;
   }
-  .tchiboNav__list .item:hover .tchiboNav__sublist {
+  .tchiboNav__list .item:hover .tchiboNav__sublist,
+  .tchiboNav__list .item.active .tchiboNav__sublist {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -2231,6 +2232,12 @@ img[height="0"] {
     filter: alpha(opacity=100);
     z-index: 5;
     visibility: visible;
+  }
+  .tchiboNav__list .item.active .link {
+    font-weight: bold;
+  }
+  .tchiboNav__list .item.active .tchiboNav__sublist.active .link {
+    font-weight: normal;
   }
   .tchiboNav__list .link {
     color: #002958;
