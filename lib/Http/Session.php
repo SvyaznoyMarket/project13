@@ -96,7 +96,6 @@ class Session implements \Http\SessionInterface {
 
     public function remove($name) {
         if (isset($_SESSION[$name])) unset($_SESSION[$name]);
-        if (isset($_SESSION['_readed_'][$name])) unset($_SESSION['_readed_'][$name]);
     }
 
     public function clear() {
