@@ -1105,6 +1105,15 @@ img[height="0"] {
     -webkit-animation-timing-function: ease;
     -webkit-animation-iteration-count: 1;
   }
+  .fixedTopBar .transGradWhite {
+    background: url("/styles/fixedTopBar/img/tranGradientWhite.png") no-repeat 0 0;
+    position: absolute;
+    right: 0;
+    top: 12px;
+    height: 30px;
+    width: 27px;
+    display: block;
+  }
   .fixedTopBar.mProdCard .fixedTopBar__crumbs {
     width: 400px;
   }
@@ -1113,15 +1122,6 @@ img[height="0"] {
   }
   .fixedTopBar.mProdCard .fixedTopBar__crumbsListItem {
     background-image: none;
-  }
-  .fixedTopBar.mProdCard .transGradWhite {
-    background: url("/styles/fixedTopBar/img/tranGradientWhite.png") no-repeat 0 0;
-    position: absolute;
-    right: 0;
-    top: 12px;
-    height: 30px;
-    width: 27px;
-    display: block;
   }
   .fixedTopBar.mHomepage {
     border: none;
@@ -1215,6 +1215,14 @@ img[height="0"] {
   .fixedTopBar__crumbs {
     float: left;
     padding: 0 5px;
+    position: relative;
+    overflow: hidden;
+  }
+  .fixedTopBar__wrapCrumbsList {
+    width: 420px;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
   }
   .fixedTopBar__crumbsImg {
     display: inline-block;
@@ -1234,6 +1242,7 @@ img[height="0"] {
   .fixedTopBar__crumbsList {
     display: inline-block;
     vertical-align: top;
+    width: 1000px;
     *display: inline;
     zoom: 1;
     margin: 8px 0 0;
