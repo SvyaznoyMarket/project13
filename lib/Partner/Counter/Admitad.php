@@ -3,7 +3,8 @@
 namespace Partner\Counter;
 
 class Admitad {
-    const NAME = 'admitad';
+    const NAME = 'cpamit';
+    const NAME_SYNONYM = 'admitad';
 
     /**
      * @param \Model\Order\Entity     $order
