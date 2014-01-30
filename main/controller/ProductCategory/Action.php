@@ -804,12 +804,16 @@ class Action {
             }
         }
 
-        $productPager = $repository->getIteratorByFilter(
-            $filters,
-            $sort,
-            $offset,
-            $limit
-        );
+        if (!empty($pagerAll)) {
+            $productPager = $pagerAll;
+        } else {
+            $productPager = $repository->getIteratorByFilter(
+                $filters,
+                $sort,
+                $offset,
+                $limit
+            );
+        }
 
         if ($hasBanner) {
             $productPager->setCount($productPager->count() + 1);
