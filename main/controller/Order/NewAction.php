@@ -56,7 +56,7 @@ class NewAction {
                 }
                 // подарочный сертификат
                 if ($user->getRegion()->getHasTransportCompany() && $paymentMethod->isCertificate()) {
-                    continue;
+                    //continue; // SITE-3074
                 }
 
                 $paymentMethods[] = $paymentMethod;

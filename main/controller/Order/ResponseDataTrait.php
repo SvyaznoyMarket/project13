@@ -115,13 +115,13 @@ trait ResponseDataTrait {
             $responseData['products'] = $productDataById;
 
             if ((true === $responseData['paypalECS'])) {
-                $responseData['redirect'] = $router->generate('order.paypal.new');
+                //$responseData['redirect'] = $router->generate('order.paypal.new'); // SITE-2729
             } else if ((true === $responseData['lifeGift'])) {
-                $responseData['redirect'] = $router->generate('order.lifeGift.new');
+                //$responseData['redirect'] = $router->generate('order.lifeGift.new'); // SITE-2729
             } else if ((true === $responseData['oneClick'])) {
                 //$responseData['redirect'] = $router->generate('order.oneClick.new'); // SITE-2777
             } else {
-                $responseData['redirect'] = $router->generate('order');
+                //$responseData['redirect'] = $router->generate('order'); // SITE-2729
             }
         }
 

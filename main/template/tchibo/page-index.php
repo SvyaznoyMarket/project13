@@ -2,99 +2,22 @@
 /**
  * @var $page         \View\DefaultLayout
  */
+
+
+$helper = new \Helper\TemplateHelper();
+$siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
+
+if ((bool)$siblingCategories) {
+    /* <!-- TCHIBO - слайдер-меню разделов Чибо --> */
+    echo $helper->render('product-category/__sibling-list',
+        [
+            'categories' => $siblingCategories, // категории-соседи
+            'catalogConfig' => $catalogConfig
+        ]);
+    /* <!--/ TCHIBO - слайдер-меню разделов Чибо -->*/
+}
+
 ?>
-<? /*<div class="tchiboNavSliderWrap">
-	<div class="tchiboNavSlider">
-		<div class="tchiboNavSlider__title"></div>
-
-		<div class="tchiboNavSlider__inner">
-			<div class="tdRelative">
-				<ul class="tchiboNavSlider__list">
-					<li class="item">
-						<a class="link" href="">
-							<img class="img" src="/styles/tchiboCatalog/img/manMini.jpg" />
-							<span class="title">Мужчины</span>
-						</a>
-					</li>
-
-					<li class="item">
-						<a class="link" href="">
-							<img class="img" src="/styles/tchiboCatalog/img/womanMini.jpg" />
-							<span class="title">Женщины</span>
-						</a>
-					</li>
-
-					<li class="item">
-						<a class="link" href="">
-							<img class="img" src="/styles/tchiboCatalog/img/kidsMini.jpg" />
-							<span class="title">Дети</span>
-						</a>
-					</li>
-
-					<li class="item">
-						<a class="link" href="">
-							<img class="img" src="/styles/tchiboCatalog/img/homeMini.jpg" />
-							<span class="title">Дом</span>
-						</a>
-					</li>
-
-					<li class="item">
-						<a class="link" href="">
-							<img class="img" src="/styles/tchiboCatalog/img/sportMini.jpg" />
-							<span class="title">Спорт</span>
-						</a>
-					</li>
-
-					<li class="item">
-						<a class="link" href="">
-							<img class="img" src="/styles/tchiboCatalog/img/cofeeMini.jpg" />
-							<span class="title">Кофе</span>
-						</a>
-					</li>
-				</ul>
-				<!--div class="sliderBtn mLeftBtn"><a class="sliderBtn__link" href=""></a></div--><!--/ кнопка прокрутки влево -->
-			</div>
-		</div>
-		<!--div class="sliderBtn mRightBtn"><a class="sliderBtn__link" href=""></a></div--><!--/ кнопка прокрутки влево -->
-	</div>
-</div>
-*/ ?>
-
-<!-- TCHIBO - крутилка разделов Чибо на рутовой странице -->
-
-<!-- TCHIBO - слайдер-меню разделов Чибо -->
-<div class="tchiboNav">
-    <div class="tchiboNav__title" style="background-image: url('/styles/tchiboNavSlider/img/logo.gif')"></div>
-
-    <ul class="tchiboNav__list">
-        <li class="item jsItemListTchibo">
-            <a class="link" href="/catalog/tchibo/dom-8e8a">
-                Дом                </a>
-
-            <ul class="tchiboNav__sublist">
-                <li class="sublistItem jsItemListTchibo"><a class="link" href="/catalog/tchibo/dom-chistota-doma-5c49">Чистота дома</a></li>
-                <li class="sublistItem jsItemListTchibo"><a class="link" href="/catalog/tchibo/dom-uhod-za-odegdoy-i-shite-cfd2">Уход за одеждой и шитье</a></li>
-                <li class="sublistItem jsItemListTchibo"><a class="link" href="/catalog/tchibo/dom-dizayn-dlya-dusha-i-dushi-aa65">Дизайн для душа и души</a></li>
-            </ul>
-        </li>
-        <li class="item jsItemListTchibo">
-            <a class="link" href="/catalog/tchibo/mugchini-a832">
-                Мужчины                </a>
-
-        </li>
-        <li class="item jsItemListTchibo">
-            <a class="link" href="/catalog/tchibo/genshchini-69d5">
-                Женщины                </a>
-
-            <ul class="tchiboNav__sublist">
-                <li class="sublistItem jsItemListTchibo"><a class="link" href="/catalog/tchibo/genshchini-miss-sovershenstvo-38de">Мисс Совершенство</a></li>
-                <li class="sublistItem jsItemListTchibo"><a class="link" href="/catalog/tchibo/genshchini-elegantnoe-bele-dc04">Элегантное белье</a></li>
-            </ul>
-        </li>
-    </ul>
-</div>
-<!--/ TCHIBO - слайдер-меню разделов Чибо -->
-
 <div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>">
 
 	<script type="text/html" id="slide_tmpl">

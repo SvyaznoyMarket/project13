@@ -11,13 +11,14 @@
     <?
     switch (\App::partner()->getName()) {
         case \Partner\Counter\Admitad::NAME:
+        case \Partner\Counter\Admitad::NAME_SYNONYM:
             echo $page->tryRender('order/partner-counter/_admitad-complete', array('orders' => $orders, 'productsById' => $productsById));
             break;
         case \Partner\Counter\Actionpay::NAME:
             echo $page->tryRender('order/partner-counter/_actionpay-complete', array('orders' => $orders, 'productsById' => $productsById));
             break;
         case \Partner\Counter\CityAds::NAME:
-            echo $page->tryRender('order/partner-counter/_cityads-complete', array('orders' => $orders));
+            echo $page->tryRender('order/partner-counter/_cityads-complete-pixel', array('orders' => $orders));
             break;
         /*
         case \Partner\Counter\Reactive::NAME:
@@ -39,6 +40,7 @@
     ?>
     <?= $page->tryRender('order/partner-counter/_ad4u-complete', array('orders' => $orders)) ?>
     <?= $page->tryRender('order/partner-counter/_reactive-complete', array('orders' => $orders)) ?>
+    <?= $page->tryRender('order/partner-counter/_cityads-complete-counter', array('orders' => $orders)) ?>
     <? foreach ($orders as $order) { ?>
         <?= $page->tryRender('order/partner-counter/_reactive-oneClick', ['orderSum' => str_replace(',', '.', $order->getPaySum()), 'orderNum' => $order->getNumber()]) ?>
     <? } ?>
