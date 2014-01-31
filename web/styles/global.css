@@ -2248,6 +2248,9 @@ img[height="0"] {
   .tchiboNav__list .item.active .tchiboNav__sublist.active .link {
     font-weight: normal;
   }
+  .tchiboNav__list .item.active .tchiboNav__sublist.active .link:hover {
+    font-weight: bold;
+  }
   .tchiboNav__list .link {
     color: #002958;
     display: block;
