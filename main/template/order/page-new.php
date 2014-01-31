@@ -231,15 +231,15 @@ if ($oneClick) {
             <? if (\App::config()->order['prepayment']['enabled']): ?>
                 <!-- Prepayment -->
                 <div class="bFootnote" data-bind="visible: box.hasProductWithPrepayment || box.isExpensiveOrder">
-                    Внесите предоплату.
-                    <div data-bind="visible: box.hasProductWithPrepayment">В корзине товар, <a>требующий предоплаты</a></div>
-                    <div data-bind="visible: !box.hasProductWithPrepayment || box.isExpensiveOrder">Сумма заказа превышает <?= $helper->formatPrice(\App::config()->order['prepayment']['priceLimit']) ?> руб.<br/><a style="text-decoration: underline;" href="/prepayment">Подробнее</a></div>
+                    <strong>Внесите предоплату.</strong>&nbsp;&nbsp;
+                    <span data-bind="visible: box.hasProductWithPrepayment">В корзине товар, <a style="text-decoration: underline;" href="/prepayment">требующий предоплаты</a>&nbsp;&nbsp;</span>
+                    <span data-bind="visible: !box.hasProductWithPrepayment || box.isExpensiveOrder">Сумма заказа превышает <?= $helper->formatPrice(\App::config()->order['prepayment']['priceLimit']) ?> <span class="rubl">p</span>&nbsp;&nbsp;<a style="text-decoration: underline;" href="/prepayment">Подробнее</a></span>
                 </div>
                 <!-- /Prepayment -->
             <? endif ?>
 		</div>
 	</div>
-	<!-- /Delivery boxes -->
+	<!-- /Delivery boxes --> 
 	
 	<? if (!$oneClick): ?>
 	    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>

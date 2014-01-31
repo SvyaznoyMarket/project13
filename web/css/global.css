@@ -10494,8 +10494,13 @@
     float: left;
   }
   .bBuyingSteps .bFootnote {
-    float: left;
-    width: 325px;
+    background: #f6e0ed;
+    margin: 20px 0 0 -15px;
+    padding: 10px;
+    width: 918px;
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
   }
   .mPaypalLine {
     margin: 20px 0;
@@ -10529,10 +10534,8 @@
     border: 1px solid #ddd;
   }
   .bSumOrderInfo {
-    float: right;
-    width: 520px;
     text-align: right;
-    margin: 0 10px 0 0;
+    margin: 0 5px 0 0;
   }
   .bSumOrderInfo__eLine {
     margin: 0 0 10px;
