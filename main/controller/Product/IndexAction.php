@@ -104,13 +104,10 @@ class IndexAction {
 
         // получаем отзывы для товара
         $reviewsData = [];
-        $reviewsDataSummary = [];
         if (\App::config()->product['reviewEnabled']) {
             \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
                 $reviewsData = (array)$data;
             });
-
-            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData);
         }
 
 
@@ -139,6 +136,12 @@ class IndexAction {
 
         // выполнение 3-го пакета запросов
         \App::curl()->execute();
+
+        // получаем рейтинги
+        $reviewsDataSummary = [];
+        if (\App::config()->product['reviewEnabled']) {
+            $reviewsDataSummary = \RepositoryManager::review()->getReviewsDataSummary($reviewsData);
+        }
 
         if ($lifeGiftProduct && !($lifeGiftProduct->getLabel() && (\App::config()->lifeGift['labelId'] === $lifeGiftProduct->getLabel()->getId()))) {
             $lifeGiftProduct = null;
