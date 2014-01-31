@@ -126,7 +126,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 <? endif ?>
 
 <?
-if ($sessionIsReaded) {
+if (!$sessionIsReaded) {
     // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
     echo $page->tryRender('order/partner-counter/_complete', [
         'orders'       => $orders,
