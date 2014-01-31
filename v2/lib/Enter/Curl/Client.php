@@ -2,6 +2,8 @@
 
 namespace Enter\Curl;
 
+use Enter\Logging\Logger;
+
 /**
  * Class Client
  * @package Curl
@@ -9,17 +11,17 @@ namespace Enter\Curl;
  * @author Sergey Sapego <sapegosv@gmail.com>
  */
 class Client {
-    /** @var \Enter\Logging\Logger */
+    /** @var Logger */
     private $logger;
     /** @var resource */
     private $multiConnection;
     /** @var resource[] */
     private $connections = [];
-    /** @var \Enter\Curl\Query[] */
+    /** @var Query[] */
     private $queries = [];
     /** @var bool */
     private $stillExecuting = false;
-    /** @var \Enter\Curl\Config */
+    /** @var Config */
     private $config;
 
     public function __construct(Config $config) {
@@ -27,9 +29,9 @@ class Client {
     }
 
     /**
-     * @param \Enter\Logging\Logger $logger
+     * @param Logger $logger
      */
-    public function setLogger(\Enter\Logging\Logger $logger = null) {
+    public function setLogger(Logger $logger = null) {
         $this->logger = $logger;
     }
 
@@ -49,6 +51,9 @@ class Client {
         $query->incCall();
 
         $connection = $this->create($query);
+
+        $query->setStartAt(microtime(true));
+
         $response = curl_exec($connection);
         try {
             $info = curl_getinfo($connection);
@@ -73,12 +78,14 @@ class Client {
             }
 
             $query->callback($response);
+            $query->setEndAt(microtime(true));
 
             if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $query]);
 
             return $this;
         } catch (\Exception $e) {
             $query->setError($e);
+            $query->setEndAt(microtime(true));
 
             if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $query]);
 
@@ -102,10 +109,16 @@ class Client {
 
         try {
             $absoluteTimeout = microtime(true);
+
+            foreach ($this->queries as $query) {
+                $query->setStartAt($absoluteTimeout);
+            }
+
             do {
                 if ($absoluteTimeout <= microtime(true)) {
                     $absoluteTimeout += $retryTimeout;
                 }
+
                 do {
                     $code = curl_multi_exec($this->multiConnection, $stillExecuting);
                     $this->stillExecuting = $stillExecuting;
@@ -146,9 +159,12 @@ class Client {
                         $this->queries[$queryId]->callback($response);
 
                         if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $this->queries[$queryId]]);
+                        $this->queries[$queryId]->setEndAt(microtime(true));
+
                         unset($this->queries[$queryId]);
                     } catch (\Exception $e) {
                         $this->queries[$queryId]->setError($e);
+                        $this->queries[$queryId]->setEndAt(microtime(true));
 
                         if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $this->queries[$queryId]]);
                     }
@@ -160,14 +176,14 @@ class Client {
                         $timeout += $retryTimeout;
                         $absoluteTimeout += $retryTimeout;
                     }
-                    $isTryAvailable = false;
+                    $tryAvailable = false;
                     foreach ($this->queries as $query) {
                         if (count($query->getConnections()) < $retryCount) {
-                            $isTryAvailable = true;
+                            $tryAvailable = true;
                             break;
                         }
                     }
-                    if ($isTryAvailable && null !== $retryTimeout) {
+                    if ($tryAvailable && null !== $retryTimeout) {
                         $ready = curl_multi_select($this->multiConnection, $timeout);
                     } else {
                         $ready = curl_multi_select($this->multiConnection, 30);
@@ -228,9 +244,6 @@ class Client {
         };
         $this->connections[] = $resource;
 
-        $query->setId((string)$resource);
-        $query->addConnection($resource);
-
         $this->stillExecuting = true;
 
         $this->queries[$query->getId()] = $query;
@@ -272,6 +285,9 @@ class Client {
         if ($this->config->referer) {
             curl_setopt($connection, CURLOPT_REFERER, $this->config->referer);
         }
+
+        $query->setId((string)$connection);
+        $query->addConnection($connection);
 
         return $connection;
     }

@@ -36,17 +36,22 @@ class Query implements \JsonSerializable {
      */
     protected $call = 0;
     /**
+     * @name
      * @var mixed
      */
     protected $result;
     /** @var array */
     protected $info = [];
+    /** @var float */
+    protected $startAt;
+    /** @var float */
+    protected $endAt;
 
     /**
      * @return array
      */
     public function jsonSerialize() {
-        return [
+        $return = [
             'id'      => $this->id,
             'url'     => $this->url,
             'data'    => $this->data,
@@ -54,7 +59,15 @@ class Query implements \JsonSerializable {
             'error'   => $this->error,
             'timeout' => $this->timeout,
             'call'    => $this->call,
+            'info'    => $this->info,
+            'startAt' => $this->startAt,
+            'endAt'   => $this->endAt,
         ];
+        if ($this->error) {
+            $return['result'] = $this->result;
+        }
+
+        return $return;
     }
 
     /**
@@ -242,5 +255,33 @@ class Query implements \JsonSerializable {
      */
     public function getInfo() {
         return $this->info;
+    }
+
+    /**
+     * @param float $endAt
+     */
+    public function setEndAt($endAt) {
+        $this->endAt = (float)$endAt;
+    }
+
+    /**
+     * @return float
+     */
+    public function getEndAt() {
+        return $this->endAt;
+    }
+
+    /**
+     * @param float $startAt
+     */
+    public function setStartAt($startAt) {
+        $this->startAt = (float)$startAt;
+    }
+
+    /**
+     * @return float
+     */
+    public function getStartAt() {
+        return $this->startAt;
     }
 }

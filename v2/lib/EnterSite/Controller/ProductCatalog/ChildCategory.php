@@ -53,19 +53,19 @@ class ChildCategory {
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
         // запрос категории
-        $productCategoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region);
-        $curl->prepare($productCategoryItemQuery);
+        $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region);
+        $curl->prepare($categoryItemQuery);
 
-        $productCategoryAdminItemQuery = null;
+        $categoryAdminItemQuery = null;
         if ($config->adminService->enabled) {
-            $productCategoryAdminItemQuery = new Query\Product\Category\GetAdminItemByToken($categoryToken, $region);
-            $curl->prepare($productCategoryAdminItemQuery);
+            $categoryAdminItemQuery = new Query\Product\Category\GetAdminItemByToken($categoryToken, $region);
+            $curl->prepare($categoryAdminItemQuery);
         }
 
         $curl->execute(1, 2);
 
         // категория
-        $category = (new Repository\Product\Category())->getObjectByQuery($productCategoryItemQuery, $productCategoryAdminItemQuery);
+        $category = (new Repository\Product\Category())->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
         if ($category->redirectLink) {
             $redirect = new Exception\PermanentlyRedirect();
             $redirect->setLink($category->redirectLink);
