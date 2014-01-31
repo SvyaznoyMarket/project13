@@ -109,22 +109,49 @@
     display: block;
   }
 
+  .bCreditAttantion {
+    color: #000000;
+    margin: 0 0 0 15px;
+  }
+
   .bBankWrap {
-    margin: 5px 0;
+    margin: 5px 0 0 15px;
 
-    .bSelectWrap {
-      display: inline-block;
-      vertical-align: top;
-      width: 178px;
+    .bSelectInput {
 
-      margin-right: 10px;
+      .bCustomLabel {
+        font-weight: normal;
+        font-size: 12px;
+        background-position: 0 50%;
+      }
+
+      .bCreditPay {
+        display: block;
+      }
+
+      &__eImg {
+        display: inline-block;
+        vertical-align: top;
+        width: 150px;
+
+        zoom: 1;
+        *display: inline;
+      }
+
+      &__eDesc {
+        display: inline-block;
+        vertical-align: top;
+        width: 350px;
+        margin: 10px 0 0 20px;
+
+        zoom: 1;
+        *display: inline;
+      }
     }
 
     .bBankLink {
-      display: inline-block;
-      vertical-align: top;
-
-      line-height: 30px;
+      text-decoration: underline;
+      line-height: 16px;
     }
   }
 

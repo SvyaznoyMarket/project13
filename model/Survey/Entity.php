@@ -17,7 +17,7 @@ class Entity {
     private $outputFile;
     /** @var bool */
     private $isAnswered;
-    /** @var datetime */
+    /** @var \DateTime */
     private $initTime;
     /** @var int */
     private $expandedWidthDiff;
