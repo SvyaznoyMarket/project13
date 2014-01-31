@@ -581,7 +581,7 @@
 
 			currentAddr = addrData.address;
 
-			mapObj.show().width(460).height(350);
+			mapObj.show().width(477).height(350);
 			map_created = true;
 
 			cityGeocoder = ymaps.geocode(addrData.address);

@@ -172,9 +172,7 @@ if ($oneClick) {
 
 					<!-- Products -->
 					<!-- ko foreach: { data: products, as: 'product' } -->
-					<div class="bBuyingLine mProductsLine">
-						<div class="bBuyingLine__eLeft"></div>
-
+					<div class="bBuyingLine mProductsLine clearfix">
 						<div class="bBuyingLine__eRight">
 							<div class="bOrderItems">
 								<div class="bItemsRow mItemImg">
@@ -223,7 +221,7 @@ if ($oneClick) {
 				<li class="bSumOrderInfo__eLine">
 					Итого с доставкой:&nbsp;&nbsp;
 
-					<span class="bDelivery">
+					<span class="bDelivery mSelect">
 						<span data-bind="text: window.printPrice( box.totalBlockSum )"></span>&nbsp;<span class="rubl">p</span>
 					</span>
 				</li>
@@ -333,6 +331,8 @@ if ($oneClick) {
 	<div class="bBuyingInfo" data-bind="visible: deliveryBoxes().length">
 		<h2 class="bBuyingSteps__eTitle" data-bind="visible: !$root.lifeGift()">Информация о счастливом получателе</h2>
 
+		<p class="bFeildStar"><span class="bFeildStarImg">*</span> Обязательные поля</p>
+
 		<div class="bHeadnote" data-bind="visible: !$root.lifeGift()">
             <? if ($user->getEntity()): ?>
                 Привет, <a href="<?= $page->url('user') ?>"><strong><?= $user->getEntity()->getName() ?></strong></a>
@@ -347,6 +347,7 @@ if ($oneClick) {
 			<!-- Info about customer -->
 
 			<div class="bBuyingLine mBuyingFields clearfix">
+
 				<? if ($lifeGift): ?>
 					<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
 					<div class="bBuyingLine__eRight mPhone">
@@ -406,8 +407,9 @@ if ($oneClick) {
 					</div>
 
 				<? else: ?>
-					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
+					<label for="" class="bBuyingLine__eLeft">Имя получателя</label>
 					<div class="bBuyingLine__eRight">
+						<span class="bFeildStarImg">*</span>
 						<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
 					</div>
 
@@ -416,7 +418,7 @@ if ($oneClick) {
 						<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
 					</div>
 
-					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
+					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?><? endif ?></label>
 					<div class="bBuyingLine__eRight">
 						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
@@ -426,26 +428,29 @@ if ($oneClick) {
 						</div>
 					</div>
 
-					<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
+					<label for="" class="bBuyingLine__eLeft">Телефон для связи</label>
 					<div class="bBuyingLine__eRight mPhone">
+						<span class="bFeildStarImg">*</span>
 						<span class="bPlaceholder">+7</span> 
 						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
 					</div>
 
 					<!-- Address customer -->
-					<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки*</label>
+					<label class="bBuyingLine__eLeft" style="min-height: 10px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">Адрес доставки</label>
 					<div class="bBuyingLine__eRight" style="width: 640px;" data-bind="style: { display: hasHomeDelivery() ? 'block' : 'none'}">
 						<div class="bSelectedCity">
 							<strong><?= $region->getName() ?></strong> (<a class="jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>">изменить</a>)
 						</div>
 
 						<div class="bInputAddress jsInputStreet ui-css">
-							<label class="bPlaceholder">Улица*</label>
+							<span class="bFeildStarImg">*</span>
+							<label class="bPlaceholder">Улица</label>
 							<input type="text" class="bBuyingLine__eText mInputLong mInputStreet ui-autocomplete-input" id="order_address_street" title="Улица" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_street]" />
 						</div>
 
 						<div class="bInputAddress jsInputBuilding ui-css">
-							<label class="bPlaceholder">Дом*</label>
+							<span class="bFeildStarImg">*</span>
+							<label class="bPlaceholder">Дом</label>
 							<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild ui-autocomplete-input" name="order[address_building]" title="Дом" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" />
 						</div>
 
@@ -466,7 +471,8 @@ if ($oneClick) {
 
 						<? if ((bool)$subways): ?>
 						<div class="bInputAddress ui-css jsInputMetro">
-							<label class="bPlaceholder">Метро*</label>
+							<span class="bFeildStarImg">*</span>
+							<label class="bPlaceholder">Метро</label>
 							<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
 							<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
 							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
@@ -541,9 +547,10 @@ if ($oneClick) {
 				<div class="bBuyingLine__eRight bInputList mRules">
 
 					<!-- Privacy and policy -->
+					<span class="bFeildStarImg">*</span>
 					<input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[agreed]" id="order_agreed"/>
 					<label class="bCustomLabel mCustomLabelBig" for="order_agreed">
-						Я ознакомлен и согласен с «<a href="<?= $isCorporative ? '/corp-terms' : '/terms' ?>" target="_blank">Условиями продажи</a>» и «<a href="/legal" target="_blank">Правовой информацией</a>»*
+						Я ознакомлен и согласен с «<a href="<?= $isCorporative ? '/corp-terms' : '/terms' ?>" target="_blank">Условиями продажи</a>» и «<a href="/legal" target="_blank">Правовой информацией</a>»
 					</label>
 
                     <? if ($lifeGift): ?>
@@ -553,8 +560,6 @@ if ($oneClick) {
                             Оформляя и оплачивая настоящий заказ я даю поручение компании ООО «Энтер» передать приобретенный мною товар в качестве дара в Благотворительный фонд помощи детям с онкогематологическими и иными тяжелыми заболеваниями «ПОДАРИ ЖИЗНЬ» (ИНН 7714320009, КПП 771401001, огрн 1067799030639) в срок до 23.12.2013*
                         </label>
                     <? endif ?>
-
-					<p class="bFootenote">* Поля обязательные для заполнения</p>
 
 					<div>
 						<a
