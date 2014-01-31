@@ -12,9 +12,13 @@ namespace EnterSite\Config {
 
     class Application {
         /** @var string */
+        public $requestId;
+        /** @var string */
         public $dir;
         /** @var string */
         public $hostname;
+        /** @var Logger */
+        public $logger;
         /** @var Region */
         public $region;
         /** @var CoreService */
@@ -49,6 +53,15 @@ namespace EnterSite\Config {
 }
 
 namespace EnterSite\Config\Application {
+    class Logger {
+        /** @var Logger\FileAppender */
+        public $fileAppender;
+
+        public function __construct() {
+            $this->fileAppender = new Logger\FileAppender();
+        }
+    }
+
     class Region {
         /** @var string */
         public $defaultId;
@@ -111,6 +124,13 @@ namespace EnterSite\Config\Application {
     class ProductReview {
         /** @var bool */
         public $enabled;
+    }
+}
+
+namespace EnterSite\Config\Application\Logger {
+    class FileAppender {
+        /** @var string */
+        public $file;
     }
 }
 

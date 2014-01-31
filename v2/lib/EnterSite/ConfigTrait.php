@@ -12,6 +12,7 @@ trait ConfigTrait {
         if (!isset($GLOBALS[__METHOD__])) {
             $instance = new Config\Application();
 
+            $instance->requestId = uniqid();
             $instance->dir = realpath(__DIR__ . '/../../..');
             $instance->hostname = 'enter.loc';
 
