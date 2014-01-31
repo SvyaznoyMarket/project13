@@ -10881,19 +10881,39 @@
   .mPayMethods .bCustomInput:checked ~ .bProcess {
     display: block;
   }
-  .mPayMethods .bBankWrap {
-    margin: 5px 0;
+  .mPayMethods .bCreditAttantion {
+    color: #000000;
+    margin: 0 0 0 15px;
   }
-  .mPayMethods .bBankWrap .bSelectWrap {
+  .mPayMethods .bBankWrap {
+    margin: 5px 0 0 15px;
+  }
+  .mPayMethods .bBankWrap .bSelectInput .bCustomLabel {
+    font-weight: normal;
+    font-size: 12px;
+    background-position: 0 50%;
+  }
+  .mPayMethods .bBankWrap .bSelectInput .bCreditPay {
+    display: block;
+  }
+  .mPayMethods .bBankWrap .bSelectInput__eImg {
     display: inline-block;
     vertical-align: top;
-    width: 178px;
-    margin-right: 10px;
+    width: 150px;
+    zoom: 1;
+    *display: inline;
+  }
+  .mPayMethods .bBankWrap .bSelectInput__eDesc {
+    display: inline-block;
+    vertical-align: top;
+    width: 350px;
+    margin: 10px 0 0 20px;
+    zoom: 1;
+    *display: inline;
   }
   .mPayMethods .bBankWrap .bBankLink {
-    display: inline-block;
-    vertical-align: top;
-    line-height: 30px;
+    text-decoration: underline;
+    line-height: 16px;
   }
   .mPayMethods .mCardNumber {
     width: 200px;

@@ -159,12 +159,24 @@
 			margin: 0 10px 0 0;
 			position: relative;
 
-			&:hover {
+			&:hover,
+			&.active {
 
 				.tchiboNav__sublist {
 					.opacity(1);
 					z-index: 5;
 					visibility: visible;
+				}
+			}
+
+			&.active {
+
+				.link {
+					font-weight: bold;
+				}
+
+				.tchiboNav__sublist.active .link {
+				    font-weight: normal;
 				}
 			}
 		}
