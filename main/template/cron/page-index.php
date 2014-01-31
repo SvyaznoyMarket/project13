@@ -9,11 +9,4 @@
 </div>
 <div class="clear"></div>
 
-<div id="survey_task_wrapper" class="mb5 fl">
-    <h3>Результаты опросов</h3>
-    <a href="#" class="cronLinks" data-task="survey">Ссылки</a>
-    <div class="ml10 mt5 mb5 links_response"></div>
-</div>
-<div class="clear"></div>
-
 <div class="mb25"></div>
