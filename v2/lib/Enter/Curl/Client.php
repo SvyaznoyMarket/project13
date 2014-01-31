@@ -52,7 +52,7 @@ class Client {
         $response = curl_exec($connection);
         try {
             $info = curl_getinfo($connection);
-            if ($this->logger) $this->logger->push(['action' => __METHOD__, 'info' => $info]);
+            $query->setInfo($info);
 
             if (curl_errno($connection) > 0) {
                 throw new \RuntimeException(curl_error($connection), curl_errno($connection));
@@ -74,11 +74,13 @@ class Client {
 
             $query->callback($response);
 
+            if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $query]);
+
             return $this;
         } catch (\Exception $e) {
             $query->setError($e);
 
-            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'error' => $e]);
+            if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $query]);
 
             throw $e;
         }
@@ -122,7 +124,7 @@ class Client {
 
                     try {
                         $info = curl_getinfo($connection);
-                        if ($this->logger) $this->logger->push(['action' => __METHOD__, 'info' => $info]);
+                        $this->queries[$queryId]->setInfo($info);
 
                         if (curl_errno($connection) > 0) {
                             throw new \RuntimeException(curl_error($connection), curl_errno($connection));
@@ -144,10 +146,11 @@ class Client {
                         $this->queries[$queryId]->callback($response);
 
                         if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $this->queries[$queryId]]);
-
                         unset($this->queries[$queryId]);
                     } catch (\Exception $e) {
                         $this->queries[$queryId]->setError($e);
+
+                        if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $this->queries[$queryId]]);
                     }
                 }
 

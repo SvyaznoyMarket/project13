@@ -39,6 +39,8 @@ class Query implements \JsonSerializable {
      * @var mixed
      */
     protected $result;
+    /** @var array */
+    protected $info = [];
 
     /**
      * @return array
@@ -226,5 +228,19 @@ class Query implements \JsonSerializable {
      */
     public function getAuth() {
         return $this->auth;
+    }
+
+    /**
+     * @param array $info
+     */
+    public function setInfo($info) {
+        $this->info = (array)$info;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInfo() {
+        return $this->info;
     }
 }
