@@ -44,10 +44,10 @@ class Client {
 
     /**
      * @param Query $query
-     * @return \Enter\Curl\Client
+     * @return $this
      * @throws \Exception
      */
-    public function query(\Enter\Curl\Query $query) {
+    public function query(Query $query) {
         $query->incCall();
 
         $connection = $this->create($query);
@@ -96,9 +96,8 @@ class Client {
     /**
      * @param float|null $retryTimeout
      * @param int|null $retryCount
-     * @throws \Exception
-     * @return \Enter\Curl\Client
      * @return $this
+     * @throws \Exception
      */
     public function execute($retryTimeout = null, $retryCount = null) {
         if (!$this->multiConnection) {
@@ -225,10 +224,10 @@ class Client {
     /**
      * @param Query $query
      * @param Query $query
-     * @return \Enter\Curl\Client
+     * @return $this
      * @throws \Exception
      */
-    public function prepare(\Enter\Curl\Query $query) {
+    public function prepare(Query $query) {
         $query->incCall();
 
         if (!$this->multiConnection) {
@@ -255,7 +254,7 @@ class Client {
      * @param Query $query
      * @return resource
      */
-    private function create(\Enter\Curl\Query $query) {
+    private function create(Query $query) {
 
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_HEADER, true);
