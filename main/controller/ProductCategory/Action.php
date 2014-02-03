@@ -472,7 +472,8 @@ class Action {
             $option->setToken('instore');
             if (\App::config()->region['defaultId'] === $user->getRegion()->getId()) {
                 // Для Москвы, SITE-2850
-                $option->setName('Товар за три дня');
+                //$option->setName('Товар за три дня');
+                $option->setName('Товар со склада'); // SITE-3131
             } else {
                 // Для регионов (привозит быстрее, но не за три дня)
                 $option->setName('Товар со склада');
