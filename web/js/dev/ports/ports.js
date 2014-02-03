@@ -1,3 +1,5 @@
+var
+	body = $('body');
 
 console.log('ports.js inited');
 
@@ -804,7 +806,7 @@ window.ANALYTICS = {
 	enable : true
 }
 
-ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
+ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
 
 var ADFOX = {
 	adfoxbground : function() {
@@ -1056,4 +1058,4 @@ var ADFOX = {
 	enable : true
 }
 
-ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
+ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );

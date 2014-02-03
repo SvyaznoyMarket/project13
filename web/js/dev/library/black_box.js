@@ -14,7 +14,7 @@
 		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils,
 		clientCart = utils.extendApp('ENTER.config.clientCart'),
-		clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
+		//clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
 		body = $('body'),
 		dCook = window.docCookies,
 		loadBlackBox = true,
@@ -183,7 +183,7 @@
 				update = function update ( userInfo ) {
 					console.info('blackBox update userinfo');
 
-					clientUserInfo = userInfo;
+					config.userInfo = userInfo;
 
 					body.trigger('userLogged', [userInfo]);
 				};
