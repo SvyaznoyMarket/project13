@@ -97,6 +97,23 @@ class Repository {
         return is_array($result) ? $result : [];
     }
 
+    public function prepareScoreCollection($productIds, $done) {
+        if(!(bool)$productIds) return [];
+
+        $this->client->addQuery(
+            'scores-list',
+            [
+                'product_list' => implode(',', $productIds),
+            ],
+            [],
+            $done,
+            function(\Exception $e) use (&$exception) {
+                $exception = $e;
+            \App::exception()->remove($e);
+            }
+        );
+    }
+
 
     /**
      * Устанавливает коллекции товаров рейтинги
@@ -104,20 +121,22 @@ class Repository {
      * @param array $products
      * @return array $products
      */
-    public function addScores(&$products) {
-        $scoresData = \App::config()->product['reviewEnabled'] ? $this->getScores(implode(',', array_map(function($product){ return $product->getId(); }, $products))) : [];
+    public function addScores(&$products, &$scoreData = null) {
+        if (null === $scoreData) {
+            $scoreData = \App::config()->product['reviewEnabled'] ? $this->getScores(implode(',', array_map(function($product){ return $product->getId(); }, $products))) : [];
+        }
 
-        if(empty($scoresData['product_scores'])) return $products;
+        if(empty($scoreData['product_scores'])) return $products;
 
-        $scoredIds = array_map(function($score){ return (int)$score['product_id']; }, $scoresData['product_scores']);
+        $scoredIds = array_map(function($score){ return (int)$score['product_id']; }, $scoreData['product_scores']);
 
         foreach ($products as $product) {
             if(in_array($product->getId(), $scoredIds)) {
                 $productScore = null;
-                foreach ($scoresData['product_scores'] as $key => $score) {
+                foreach ($scoreData['product_scores'] as $key => $score) {
                     if($score['product_id'] == $product->getId()) {
                         $productScore = $score;
-                        unset($scoresData['product_scores'][$key]);
+                        unset($scoreData['product_scores'][$key]);
                     }
                 }
                 if(!$productScore) continue;

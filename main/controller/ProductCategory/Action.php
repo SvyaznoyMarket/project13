@@ -730,6 +730,8 @@ class Action {
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
 
+        $region = \App::user()->getRegion();
+
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
@@ -807,12 +809,43 @@ class Action {
         if (!empty($pagerAll)) {
             $productPager = $pagerAll;
         } else {
-            $productPager = $repository->getIteratorByFilter(
+            $productPager = null;
+
+            $productIds = [];
+            $productCount = 0;
+            $repository->prepareIteratorByFilter(
                 $filters,
                 $sort,
                 $offset,
-                $limit
+                $limit,
+                $region,
+                function($data) use (&$productIds, &$productCount) {
+                    if (isset($data['list'][0])) $productIds = $data['list'];
+                    if (isset($data['count'])) $productCount = (int)$data['count'];
+                }
             );
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+            $products = [];
+            if ((bool)$productIds) {
+                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
+                    foreach ($data as $item) {
+                        $products[] = new \Model\Product\CompactEntity($item);
+                    }
+                });
+
+                $scoreData = [];
+                \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+                    if (isset($data['product_scores'][0])) {
+                        $scoreData = $data;
+                    }
+                });
+            }
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+            \RepositoryManager::review()->addScores($products, $scoreData);
+
+            $productPager = new \Iterator\EntityPager($products, $productCount);
         }
 
         if ($hasBanner) {
