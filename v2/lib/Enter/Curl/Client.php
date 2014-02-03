@@ -80,14 +80,14 @@ class Client {
             $query->callback($response);
             $query->setEndAt(microtime(true));
 
-            if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $query]);
+            if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $query, 'tag' => ['curl']]);
 
             return $this;
         } catch (\Exception $e) {
             $query->setError($e);
             $query->setEndAt(microtime(true));
 
-            if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $query]);
+            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'query' => $query, 'tag' => ['curl']]);
 
             throw $e;
         }
@@ -102,7 +102,7 @@ class Client {
      */
     public function execute($retryTimeout = null, $retryCount = null) {
         if (!$this->multiConnection) {
-            if ($this->logger) $this->logger->push(['type' => 'warn', 'action' => __METHOD__, 'message' => 'Нет запросов для выполнения']);
+            if ($this->logger) $this->logger->push(['type' => 'warn', 'action' => __METHOD__, 'message' => 'Нет запросов для выполнения', 'tag' => ['curl']]);
 
             return $this;
         }
@@ -158,7 +158,7 @@ class Client {
                         // TODO: отложенный запуск обработчиков
                         $this->queries[$queryId]->callback($response);
 
-                        if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $this->queries[$queryId]]);
+                        if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $this->queries[$queryId], 'tag' => ['curl']]);
                         $this->queries[$queryId]->setEndAt(microtime(true));
 
                         unset($this->queries[$queryId]);
@@ -166,7 +166,7 @@ class Client {
                         $this->queries[$queryId]->setError($e);
                         $this->queries[$queryId]->setEndAt(microtime(true));
 
-                        if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $this->queries[$queryId]]);
+                        if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'query' => $this->queries[$queryId], 'tag' => ['curl']]);
                     }
                 }
 
@@ -200,7 +200,7 @@ class Client {
         } catch (\Exception $e) {
             $this->clear();
 
-            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'error' => $e]);
+            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'error' => $e, 'tag' => ['curl']]);
 
             throw $e;
         }
@@ -238,7 +238,7 @@ class Client {
         $resource = $this->create($query);
         if (0 !== curl_multi_add_handle($this->multiConnection, $resource)) {
             $message = curl_error($resource);
-            if ($this->logger) $this->logger->push(['action' => __METHOD__, 'curl.error' => $message]);
+            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'message' => $message, 'tag' => ['curl']]);
 
             throw new \Exception($message);
         };
@@ -313,7 +313,5 @@ class Client {
         }
 
         $response = mb_substr($response, $size);
-
-        if ($this->logger) $this->logger->push(['action' => __METHOD__, 'response.header' => $headers]);
     }
 }

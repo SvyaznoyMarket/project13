@@ -1,14 +1,15 @@
 <?php
 
 namespace EnterSite\Config {
-    use EnterSite\Config\Application\ProductReview;
+    use EnterSite\Config\Application\Logger;
     use EnterSite\Config\Application\Region;
     use EnterSite\Config\Application\CoreService;
     use EnterSite\Config\Application\CmsService;
     use EnterSite\Config\Application\AdminService;
+    use EnterSite\Config\Application\ReviewService;
     use EnterSite\Config\Application\MustacheRenderer;
     use EnterSite\Config\Application\Product;
-    use EnterSite\Config\Application\ReviewService;
+    use EnterSite\Config\Application\ProductReview;
 
     class Application {
         /** @var string */
@@ -37,6 +38,8 @@ namespace EnterSite\Config {
         public $productReview;
 
         public function __construct() {
+            $this->logger = new Logger();
+
             $this->region = new Region();
 
             $this->coreService = new CoreService();

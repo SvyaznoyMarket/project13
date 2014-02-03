@@ -15,7 +15,7 @@ trait LoggerTrait {
             $config = $this->getConfig()->logger;
 
             $appenders = [
-                new Logging\FileAppender($config->fileAppender->file)
+                new Logging\FileAppender($config->fileAppender->file),
             ];
             $GLOBALS[__METHOD__] = new Logging\Logger($appenders);
         }

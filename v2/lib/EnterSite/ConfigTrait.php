@@ -16,6 +16,8 @@ trait ConfigTrait {
             $instance->dir = realpath(__DIR__ . '/../../..');
             $instance->hostname = 'enter.loc';
 
+            $instance->logger->fileAppender->file = $instance->dir . '/log/main.log';
+
             $instance->region->defaultId = '14974';
             $instance->region->cookieName = 'geoshop';
 

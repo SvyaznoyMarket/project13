@@ -41,6 +41,8 @@ register_shutdown_function(function () use (&$startAt) {
         var_dump($error);
     }
 
+    (new \EnterSite\Action\DumpLogger())->execute();
+
     echo PHP_EOL . chr(27) . "[44m" . 'Отладка' . chr(27) . "[0m";
     echo PHP_EOL . json_encode([
         'time'   => ['value' => round(microtime(true) - $startAt, 3), 'unit' => 'ms'],
