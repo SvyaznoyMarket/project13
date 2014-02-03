@@ -183,7 +183,7 @@
 				update = function update ( userInfo ) {
 					console.info('blackBox update userinfo');
 
-					config.userInfo = userInfo;
+					clientUserInfo = userInfo;
 
 					body.trigger('userLogged', [userInfo]);
 				};

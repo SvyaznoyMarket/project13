@@ -575,7 +575,8 @@ window.ANALYTICS = {
             RetailRocket.action(null, ENTER.config.userInfo);
         }
         else {
-        	$('body').on('userLogged', RetailRocket.action);
+			$('body').on('userLogged', RetailRocket.action);
+			RetailRocket.action(null);
         }
 
         console.groupEnd();
