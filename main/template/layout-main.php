@@ -63,7 +63,6 @@
                 </div>
             </div>
         </div>
-        <?= $page->slotSurveybar() ?>
     </div><!--/ Контент -->
 </div><!--/ Шаблон -->
 

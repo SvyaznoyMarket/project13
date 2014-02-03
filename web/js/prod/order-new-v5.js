@@ -3478,13 +3478,23 @@
 				}
 
 				$.when(showError(msg)).then(function() {
-					$.ajax({
-						type:'GET',
-						url: product.setUrl
-					}).then(productErrorIsResolve.resolve);
-				});
+				    var reqArray = [
+				        {
+				            type: 'GET',
+				            url: product.setUrl,
+				            callback: productErrorIsResolve.resolve
+				        },
+				        {
+				            type: 'GET',
+				            url: ENTER.OrderModel.updateUrl,
+				            callback: ENTER.OrderModel.modelUpdate
+				        }
+				    ];
 
-				return productErrorIsResolve.promise();
+				    utils.packageReq(reqArray);
+
+				    return productErrorIsResolve.promise();
+				});
 			}
 		},
 

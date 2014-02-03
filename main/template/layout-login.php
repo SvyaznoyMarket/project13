@@ -43,7 +43,6 @@
     </div><!--/ Шаблон -->
 
     <?= $page->render('order/_footer') ?>
-    <?= $page->slotSurveybar() ?>
 
     <?= $page->slotRegionSelection() ?>
     <?= $page->slotBodyJavascript() ?>
