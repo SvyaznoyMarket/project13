@@ -290,7 +290,7 @@
 				},
 				function( objs ){
 					if ( !objs.length ) {
-						showError('Не нашли ваш адрес на карте. Уточните');
+//						showError('Не нашли ваш адрес на карте. Уточните');
 
 						return;
 					}
@@ -323,7 +323,7 @@
 				},
 				function( objs ){
 					if ( !objs.length ) {
-						showError('Не нашли ваш адрес на карте. Уточните');
+//						showError('Не нашли ваш адрес на карте. Уточните');
 
 						return;
 					}
@@ -367,7 +367,7 @@
 					function( objs ) {
 						if ( !objs.length ) {
 							console.log('КЛАДР не нашел город ' + cityName);
-							showError('Не нашли ваш адрес на карте. Уточните');
+//							showError('Не нашли ваш адрес на карте. Уточните');
 
 							return;
 						}
@@ -415,16 +415,15 @@
 								// end of vars
 
 								if ( !objs.length ) {
-									showError('Не нашли ваш адрес на карте. Уточните');
-
+//									showError('Не нашли ваш адрес на карте. Уточните');
 									return;
 								}
 
 								removeErrors();
 
-								if ( street.val() !== objs[0].name ) {
-									showError('Не нашли ваш адрес на карте. Уточните');
-								}
+//								if ( street.val() !== objs[0].name ) {
+//									showError('Не нашли ваш адрес на карте. Уточните');
+//								}
 
 								street.kladr('current', objs[0]);
 								building.kladr('parentType', $.kladr.type.street);
@@ -504,16 +503,15 @@
 								// end of vars
 
 								if ( !objs.length ) {
-									showError('Не нашли ваш адрес на карте. Уточните');
-
+//									showError('Не нашли ваш адрес на карте. Уточните');
 									return;
 								}
 
 								removeErrors();
 
-								if ( building.val() !== objs[0].name ) {
-									showError('Не нашли ваш адрес на карте. Уточните');
-								}
+//								if ( building.val() !== objs[0].name ) {
+//									showError('Не нашли ваш адрес на карте. Уточните');
+//								}
 
 								// задаем обект для дома
 								building.kladr('current', objs[0]);
@@ -581,7 +579,7 @@
 
 			currentAddr = addrData.address;
 
-			mapObj.show().width(460).height(350);
+			mapObj.show().width(477).height(350);
 			map_created = true;
 
 			cityGeocoder = ymaps.geocode(addrData.address);
