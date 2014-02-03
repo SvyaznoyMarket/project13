@@ -180,26 +180,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotSurveybar() {
-        return ''; // SITE-3111
-
-        $cookieInitTimeStamp = (int)(\App::request()->cookies->get('survey'));
-        $survey = \RepositoryManager::survey()->getEntity();
-        if (!$survey) {
-            return '';
-        }
-        $region = \App::user()->getRegion();
-
-        if(!$survey) {
-            return '';
-        }
-
-        $regionsToShow = array_intersect([$region->getName(), 'все', 'Все', 'all'], $survey->getRegionNames());
-        $showSurvey = $survey->getIsActive() && !empty($regionsToShow) && !$survey->isAnswered($cookieInitTimeStamp);
-
-        return $showSurvey ? $this->render('_surveybar', ['survey' => $survey]) : '';
-    }
-
     public function slotYandexMetrika() {
         return (\App::config()->yandexMetrika['enabled']) ? $this->render('_yandexMetrika') : '';
     }
