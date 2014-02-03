@@ -1,7 +1,7 @@
 <?php
 
+$response = null;
 $applicationDir = realpath(__DIR__ . '/..');
-
 $startAt = microtime(true);
 
 // error reporting
@@ -34,20 +34,15 @@ spl_autoload_register(function ($class) {
 });
 
 // shutdown handler
-register_shutdown_function(function () use (&$startAt) {
+register_shutdown_function(function () use (&$response, &$startAt) {
     $error = error_get_last();
     if ($error && (error_reporting() & $error['type'])) {
-        echo PHP_EOL . chr(27) . "[41m" . 'Ошибка' . chr(27) . "[0m" . PHP_EOL;
+        // response.status = 500
         var_dump($error);
     }
 
     (new \EnterSite\Action\DumpLogger())->execute();
-
-    echo PHP_EOL . chr(27) . "[44m" . 'Отладка' . chr(27) . "[0m";
-    echo PHP_EOL . json_encode([
-        'time'   => ['value' => round(microtime(true) - $startAt, 3), 'unit' => 'ms'],
-        'memory' => ['value' => round(memory_get_peak_usage() / 1048576, 2), 'unit' => 'Mb'],
-    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . PHP_EOL;
+    (new \EnterSite\Action\Debug())->execute($response, $startAt);
 });
 
 
@@ -67,4 +62,4 @@ $request = new \Enter\Http\Request(
 
 $action = new \EnterSite\Controller\ProductCatalog\ChildCategory();
 $response = $action->execute($request);
-echo PHP_EOL . $response->content;
+echo $response->content;

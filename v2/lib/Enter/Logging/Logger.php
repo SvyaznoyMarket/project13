@@ -2,7 +2,7 @@
 
 namespace Enter\Logging;
 
-class Logger implements LoggerInterface {
+class Logger implements LoggerInterface, \IteratorAggregate {
     /** @var AppenderInterface[] */
     private $appenders = [];
     /** @var array */
@@ -21,6 +21,13 @@ class Logger implements LoggerInterface {
         $this->appenders = $appenders;
         $this->types = $types;
         $this->parameters = $parameters;
+    }
+
+    /**
+     * @return \ArrayIterator|\Traversable
+     */
+    public function getIterator() {
+        return new \ArrayIterator($this->messages);
     }
 
     /**
