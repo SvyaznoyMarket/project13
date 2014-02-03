@@ -120,6 +120,7 @@ class Action {
             if ($exception instanceof \Exception) {
                 throw $exception;
             }
+            die(var_dump($result));
 
             if (!($paypalECS || $lifeGift) && \App::config()->blackcard['enabled'] && array_key_exists('blackcard_list', $result)) {
                 foreach ($result['blackcard_list'] as $blackcardItem) {
@@ -162,40 +163,20 @@ class Action {
                 // TODO standart_other - Плановая дата доставки
                 if (false !== strpos($deliveryMethodItem['token'], 'standart')) {
                     $deliveryMethodItem['name'] = 'Доставим';
-                } else if ()
+                } else if (false !== strpos($deliveryMethodItem['token'], 'self')) {
+                    $deliveryMethodItem['name'] = 'Самовывоз';
+                } else if (false !== strpos($deliveryMethodItem['token'], 'now')) {
+                    $deliveryMethodItem['name'] = 'Самовывоз';
+                } else if (false !== strpos($deliveryMethodItem['token'], 'pickpoint')) {
+                    $deliveryMethodItem['name'] = 'PickPoint';
+                }
 
                 $deliveryMethodData[$deliveryMethodItem['token']] = $deliveryMethodItem;
             }
 
             $responseData = array_merge($responseData, [
                 'deliveryTypes'   => $deliveryTypeData,
-                'deliveryStates'  => [
-                    'self'               => [
-                        'name'     => 'Самовывоз',
-                        'unique'     => false,
-                        'products' => [],
-                    ],
-                    'now'                => [
-                        'name'     => 'Самовывоз',
-                        'unique'     => false,
-                        'products' => [],
-                    ],
-                    'standart_other'     => [
-                        'name'     => 'Плановая дата доставки',
-                        'unique'     => false,
-                        'products' => [],
-                    ],
-                    'standart_furniture' => [
-                        'name'     => 'Доставим',
-                        'unique'     => false,
-                        'products' => [],
-                    ],
-                    'pickpoint' => [
-                        'name'     => 'PickPoint',
-                        'unique'     => true,
-                        'products' => [],
-                    ],
-                ],
+                'deliveryStates'  => $deliveryMethodData,
                 'pointsByDelivery'=> [
                     'self'      => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
                     'now'       => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
@@ -257,7 +238,9 @@ class Action {
                 }
 
                 $deliveryData = [];
-                foreach ($productItem['deliveries'] as $deliveryItemToken => $deliveryItem) {
+                foreach ($productItem['delivery_methods'] as $deliveryItemToken => $deliveryItem) {
+                    //foreach ($deliveryItem[])
+
 
                     list($deliveryItemTokenPrefix, $pointId) = array_pad(explode('_', $deliveryItemToken), 2, null);
 
@@ -376,12 +359,12 @@ class Action {
                 \App::logger()->error('Рассчитанное значение $pickpointProductIds пусто', ['pickpoints']);
             } else {
                 $deliveryRegions = [];
-                if(!empty(reset($result['products'])['deliveries']['pickpoint']['regions'])) {
+                if(!empty(reset($result['products'])['delivery_methods']['pickpoint']['regions'])) {
                     $deliveryRegions = array_map(
                         function($regionItem) {
                             return $regionItem['region'];
                         },
-                        reset($result['products'])['deliveries']['pickpoint']['regions']
+                        reset($result['products'])['delivery_methods']['pickpoint']['regions']
                     );
                 }
                 if ( empty($deliveryRegions) ) {
@@ -500,13 +483,13 @@ class Action {
 
             if (!empty($responseData['products'])) {
                 foreach ($responseData['products'] as $keyPi => $productItem) {
-                    if (empty($productItem['deliveries'])) continue;
-                    foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
+                    if (empty($productItem['delivery_methods'])) continue;
+                    foreach ($productItem['delivery_methods'] as $keyDi => $deliveryItem) {
                         if ($keyDi == 'pickpoint') {
-                            $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
-                            $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
+                            $dateData = reset($responseData['products'][$keyPi]['delivery_methods'][$keyDi]);
+                            $responseData['products'][$keyPi]['delivery_methods'][$keyDi] = [];
                             foreach ($pickpoints as $keyPp => $pickpoint) {
-                                $responseData['products'][$keyPi]['deliveries'][$keyDi][$pickpoint['Id']] = $dateData;
+                                $responseData['products'][$keyPi]['delivery_methods'][$keyDi][$pickpoint['Id']] = $dateData;
                             }
                         }
                     }
