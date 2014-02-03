@@ -10940,6 +10940,9 @@
   .mPayMethods .bBankWrap {
     margin: 5px 0 0 15px;
   }
+  .mPayMethods .bBankWrap .bSelectInput {
+    height: 60px;
+  }
   .mPayMethods .bBankWrap .bSelectInput .bCustomLabel {
     background-position: 0 50%;
     font-weight: normal;
