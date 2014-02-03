@@ -1757,6 +1757,7 @@ window.MapInterface = (function() {
 	
 	
 	clientCart.products = [];
+	config.userInfo = null;
 
 
 	/**
@@ -1798,7 +1799,7 @@ window.MapInterface = (function() {
 				self = this;
 			// end of vars
 
-				
+
 			var
 				/**
 				 * Обновление данных о корзине
@@ -2012,7 +2013,12 @@ window.MapInterface = (function() {
 
 	if ( loadBlackBox ) {
 		utils.blackBox.init();
-		console.log('utils.blackBox init');
+		console.log('blackBox with init');
+	}
+	else {
+		config.userInfo = false;
+		// если === false, то данных юзера не узнаем , поэтому запустим RetailRocket.action() без параметров
+		console.log('blackBox without init');
 	}
 
 }(window.ENTER));

@@ -527,6 +527,7 @@ window.ANALYTICS = {
             action: function ( e, userInfo ) {
 				try {
 					console.info('RetailRocketJS action');
+					console.log(userInfo);
 					if ( userInfo && userInfo.id ) {
 						window.rrPartnerUserId = userInfo.id; // rrPartnerUserId — по ТЗ должна быть глобальной
 					}
@@ -574,11 +575,18 @@ window.ANALYTICS = {
         RetailRocket.init();
 
         if ( ENTER.config.userInfo && ENTER.config.userInfo.id ) {
+			// ок, берём userInfo-данные из памяти
             RetailRocket.action(null, ENTER.config.userInfo);
         }
         else {
-			$('body').on('userLogged', RetailRocket.action);
-			RetailRocket.action(null);
+			if (false === ENTER.config.userInfo) {
+				// если === false, то данных юзера не узнаем , поэтому запустим RetailRocket.action() без параметров
+				RetailRocket.action(null);
+			}
+			else {
+				// попробуем получить данные при срабатывании события
+				body.on('userLogged', RetailRocket.action);
+			}
         }
 
         console.groupEnd();
