@@ -525,13 +525,14 @@ window.ANALYTICS = {
             action: function ( e, userInfo ) {
 				try {
 					console.info('RetailRocketJS action');
-					console.log('userInfo: id = '+ userInfo.id + ' email = ' + userInfo.email);
-					window.rrPartnerUserId = userInfo.id; // rrPartnerUserId — по ТЗ должна быть глобальной
+					if ( userInfo && userInfo.id ) {
+						window.rrPartnerUserId = userInfo.id; // rrPartnerUserId — по ТЗ должна быть глобальной
+					}
 
 					var
 						rr_data = $('#RetailRocketJS').data('value'),
 						sendUserData = {
-							userId: userInfo.id || false,
+							userId: ( userInfo ) ? ( userInfo.id || false ) : null,
 							hasUserEmail: ( userInfo && userInfo.email ) ? true : false
 						};
 					// end of vars
