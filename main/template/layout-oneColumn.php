@@ -141,7 +141,6 @@
     <a id="upper" class="upper" href="#">Наверх</a>
 
     <?= $page->slotUserbar() ?>
-    <?= $page->slotSurveybar() ?>
 
     <?= $page->slotAuth() ?>
     <?= $page->slotRegionSelection() ?>
