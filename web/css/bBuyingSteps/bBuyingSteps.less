@@ -85,8 +85,11 @@
   }
 
   .bFootnote {
-    float: left;
-    width: 325px;
+    background: @magentoLight;
+    margin: 20px 0 0 -15px;
+    padding: 10px;
+    width: 918px;
+    .rounded(0 0 4px 4px);
   }
 }
 
@@ -128,13 +131,9 @@
 }
 
 .bSumOrderInfo {
-  float: right;
-
-  width: 520px;
-
   text-align: right;
 
-  margin: 0 10px 0 0;
+  margin: 0 5px 0 0;
 
   &__eLine {
     margin: 0 0 10px;
@@ -142,7 +141,26 @@
 
   .bDelivery {
     font-size: 14px;
+
+    &.mSelect {
+      background: @magentoLight;
+      .rounded(4px);
+      margin-right: -5px;
+      padding: 5px;
+    }
   }
+}
+
+.bFeildStar {
+  font-size: 14px;
+  margin: 0 0 25px -15px;
+}
+
+.bFeildStarImg {
+  color: @firmOrange;
+  font-weight: bold;
+  font-size: 17px;
+  line-height: 1.2;
 }
 
 .bBuyingLine {
@@ -162,6 +180,11 @@
 
   .error_list {
     margin-top: 10px;
+  }
+
+  &.mProductsLine {
+    background: @magentoLight;
+    .rounded(4px);
   }
 
   &.mConfirm {
@@ -215,6 +238,13 @@
       width: 655px;
       margin-bottom: 20px;
       position: relative;
+
+      .bFeildStarImg {
+        left: 3px;
+        position: absolute;
+        top: 0;
+        z-index: 30;
+      }
     }
   }
 
@@ -283,13 +313,13 @@
   }
 
   .bOrderItems {
-    margin: 15px 0 5px;
+    margin: 5px;
 
     .bItemsRow {
       display: inline-block;
 
       width: 73px;
-      margin-right: 20px;
+      margin-right: 15px;
       padding-top: 5px;
 
       vertical-align: top;
@@ -299,6 +329,7 @@
 
       &__eImgProd {
         width: 50px;
+        display: block;
       }
     }
 
@@ -362,7 +393,7 @@
     .rounded(5px);
     width: 350px;
     height: 30px;
-    padding-left: 10px;
+    padding-left: 15px;
 
     vertical-align: top;
 
@@ -385,7 +416,7 @@
     .rounded(5px);
     width: 467px;
     height: 70px;
-    margin: 0
+    margin: 0;
     padding: 5px;
 
     border: 1px solid #9e9e9e;
@@ -438,6 +469,17 @@
       left: 16px;
     }
   }
+
+  .bFeildStarImg {
+    position: absolute;
+    top: 24px;
+    left: -15px;
+  }
+
+  .bCustomLabel {
+    display: block;
+    margin: 0 0 15px;
+  }
 }
 
 .bProcess {
@@ -481,8 +523,6 @@
       background: url("@{base-url}/bBuyingSteps/img/pickPointCard.jpg") no-repeat 0 0;
     }
   }
-
-
 }
 
 

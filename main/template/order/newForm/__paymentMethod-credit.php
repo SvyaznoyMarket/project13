@@ -12,27 +12,23 @@ return function (
 ?>
 
 <div class="bPayMethodAction">
-    <div>Выберите банк:</div>
+    <p class="bCreditAttantion">Кредит не распространяется на услуги F1 и доставку.<br/> Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.</p>
 
     <div class="bBankWrap">
-        <div class="bSelectWrap mFastInpSmall">
-            <span class="bSelectWrap_eText">Тинькофф</span>
-            <select class="bSelect mFastInpSmall">
-            <? foreach ($banks as $bank): ?>
-                <option class="bSelect_eItem" value="<?= $bank->getId() ?>" data-link="<?= $helper->escape($bank->getLink()) ?>"><?= $bank->getName() ?></option>
-            <? endforeach ?>
-            </select>
-        </div>
-
-        <a class="bBankLink" target="_blank" href="#">Условия кредита (<span class="bBankLink__eName">Тинькофф</span>)</a>
-    </div>
-
-    <strong class="paymentWrap">Ежемесячный платеж<sup>**</sup>:
-        <span id="creditPrice">406</span> <span class="rubl"> p</span>
-    </strong>
-
-    <div class="bFootenote">
-        <sup>**</sup> Кредит не распространяется на услуги F1 и доставку. Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.
+        <div>Выберите банк:</div>
+        <? foreach ($banks as $bank): ?>
+            <div class="bSelectInput">
+                <input class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="bankId_<?= $bank->getId() ?>" value="<?= $bank->getId() ?>" name="credit_bank"/>
+                <label class="bCustomLabel mCustomLabelRadioBig" for="bankId_<?= $bank->getId() ?>">
+                    <img class="bSelectInput__eImg" alt="<?= $bank->getName() ?>" class="" src="<?= $bank->getImage() ?>" />
+                    
+                    <span class="bSelectInput__eDesc">
+                        <span class="bCreditPay">Ежемесячный платеж <span class="credit_pay"></span> <span class="rubl"> p</span></span>
+                        <a class="bBankLink" target="_blank" href="<?= $helper->escape($bank->getLink()) ?>">Условия кредита</a>
+                    </span>
+                </label>
+            </div>
+        <? endforeach ?>
     </div>
 
     <div id="jsCreditBank" data-value="<?= $helper->json($creditData) ?>"></div>

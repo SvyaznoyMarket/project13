@@ -49,6 +49,10 @@ class Entity {
      */
     private $description;
 
+    /**
+     * @var string
+     */
+    private $image;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -58,6 +62,21 @@ class Entity {
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('provider_id', $data)) $this->setProviderId($data['provider_id']);
         if (array_key_exists('position', $data)) $this->setPosition($data['position']);
+
+        if ($this->getId()) {
+            $imageDir = '/css/bBuyingSteps/img/creditBank/';
+            switch ($this->getId()) {
+                case 1:
+                    $this->setImage($imageDir . 'tinkoff_150x50.png');
+                    break;
+                case 2:
+                    $this->setImage($imageDir . 'renessans_150x50.png');
+                    break;
+                case 3:
+                    $this->setImage($imageDir . 'OTP_150x50.png');
+                    break;
+            }
+        }
     }
 
     /**
@@ -156,5 +175,19 @@ class Entity {
      */
     public function getLink() {
         return $this->link;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage($image) {
+        $this->image = (string)$image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage() {
+        return $this->image;
     }
 }

@@ -25,6 +25,16 @@ class SetAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s"', $pageNum));
         }
 
+        // пагинация
+        if (count($productBarcodes) > $limit) {
+            $productCount = count($productBarcodes);
+            $productBarcodes = array_slice(
+                $productBarcodes,
+                $limit * ($pageNum - 1),
+                $limit * ($pageNum)
+            );
+        };
+
         $productVideosByProduct = [];
         $productView = \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT; // вид товаров
         $client = \App::coreClientV2();
@@ -56,9 +66,9 @@ class SetAction {
         // выполнение 1-го запроса
         $client->execute();
 
-        $countProducts = count($products);
-        if (0 < $countProducts && $countProducts < $limit) {
-            $limit = $countProducts;
+        if (empty($productCount)) $productCount = count($products);
+        if (0 < $productCount && $productCount < $limit) {
+            $limit = $productCount;
         }
 
 
@@ -70,7 +80,7 @@ class SetAction {
 
 
         // productPager Entity
-        $productPager = new \Iterator\EntityPager($products, $countProducts);
+        $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
 

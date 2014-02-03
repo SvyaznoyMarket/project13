@@ -290,7 +290,7 @@
 				},
 				function( objs ){
 					if ( !objs.length ) {
-						showError('Не нашли ваш адрес на карте. Уточните');
+//						showError('Не нашли ваш адрес на карте. Уточните');
 
 						return;
 					}
@@ -323,7 +323,7 @@
 				},
 				function( objs ){
 					if ( !objs.length ) {
-						showError('Не нашли ваш адрес на карте. Уточните');
+//						showError('Не нашли ваш адрес на карте. Уточните');
 
 						return;
 					}
@@ -367,7 +367,7 @@
 					function( objs ) {
 						if ( !objs.length ) {
 							console.log('КЛАДР не нашел город ' + cityName);
-							showError('Не нашли ваш адрес на карте. Уточните');
+//							showError('Не нашли ваш адрес на карте. Уточните');
 
 							return;
 						}
@@ -415,16 +415,15 @@
 								// end of vars
 
 								if ( !objs.length ) {
-									showError('Не нашли ваш адрес на карте. Уточните');
-
+//									showError('Не нашли ваш адрес на карте. Уточните');
 									return;
 								}
 
 								removeErrors();
 
-								if ( street.val() !== objs[0].name ) {
-									showError('Не нашли ваш адрес на карте. Уточните');
-								}
+//								if ( street.val() !== objs[0].name ) {
+//									showError('Не нашли ваш адрес на карте. Уточните');
+//								}
 
 								street.kladr('current', objs[0]);
 								building.kladr('parentType', $.kladr.type.street);
@@ -504,16 +503,15 @@
 								// end of vars
 
 								if ( !objs.length ) {
-									showError('Не нашли ваш адрес на карте. Уточните');
-
+//									showError('Не нашли ваш адрес на карте. Уточните');
 									return;
 								}
 
 								removeErrors();
 
-								if ( building.val() !== objs[0].name ) {
-									showError('Не нашли ваш адрес на карте. Уточните');
-								}
+//								if ( building.val() !== objs[0].name ) {
+//									showError('Не нашли ваш адрес на карте. Уточните');
+//								}
 
 								// задаем обект для дома
 								building.kladr('current', objs[0]);
@@ -581,7 +579,7 @@
 
 			currentAddr = addrData.address;
 
-			mapObj.show().width(460).height(350);
+			mapObj.show().width(477).height(350);
 			map_created = true;
 
 			cityGeocoder = ymaps.geocode(addrData.address);
@@ -1452,39 +1450,43 @@
 	console.info('orderCredit.js init...');
 	
 	var
-		bankWrap = $('.bBankWrap');
+		bankWrap = $('.bBankWrap'),
+		bankWrapInput = bankWrap.find('.bSelectInput');
 	// end of vars
-
-
+		
 	var creditInit = function creditInit() {
 		var
-			bankLink  = bankWrap.find('.bBankLink'),
-			bankLinkName = bankWrap.find('.bBankLink__eName'),
-			select = bankWrap.find('.bSelect'),
 			bankField = $('#selectedBank'),
-			bankName = bankWrap.find('.bSelectWrap_eText');
+			bankFieldInput = bankWrap.find('.bCustomInput');
 		// end of vars
 
 		var selectBank = function selectBank() {
 			var
-				chosenBankLink = $('option:selected', select).attr('data-link'),
-				chosenBankId = $('option:selected', select).val(),
-				chosenBankName = $('option:selected', select).html();
+				chosenBankId = $('input:checked', bankWrap).val();
 			// end of vars
 
-			bankName.html(chosenBankName);
-			bankLinkName.html(chosenBankName);
 			bankField.val(chosenBankId);
-			bankLink.attr('href', chosenBankLink);
 		};
 
-		$('option', select).eq(0).attr('selected','selected');
-
-		select.change(selectBank);
+		//$(bankFieldInput, bankWrap).eq(0).attr('checked','checked');
+		
+		bankWrap.change(selectBank);
 		selectBank();
 
-		window.DirectCredit.init( $('#jsCreditBank').data('value'), $('#creditPrice') );
+		window.DirectCredit.init( $('#jsCreditBank').data('value'), $('.credit_pay') );
+		
 	};
+
+	var creditItemSelect = function creditItemSelect() {
+		var 
+			bankWrapLabel = bankWrapInput.find('.bCustomLabel');
+		// end of vars
+		
+		bankWrapLabel.css({'opacity' : '0.4'});
+		$(this).children(bankWrapLabel).css({'opacity' : '1'});
+	};
+
+	bankWrapInput.click(creditItemSelect);
 	
 	if ( bankWrap.length ) {
 		creditInit();
