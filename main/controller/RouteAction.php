@@ -3,6 +3,11 @@
 namespace Controller;
 
 class RouteAction {
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     * @throws \Exception\NotFoundException
+     */
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -15,7 +20,11 @@ class RouteAction {
 
         $actions = (array)$request->get('actions');
         if (!(bool)$actions) {
-            throw new \Exception('Не передан обязательный параметр actions');
+            \App::logger()->error(['action' => __METHOD__, 'message' => 'Не передан обязательный параметр actions']);
+            return new \Http\JsonResponse([
+                'success' => false,
+                'actions' => [],
+            ]);
         }
 
         $actionData = [];

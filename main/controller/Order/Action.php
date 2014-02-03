@@ -475,7 +475,6 @@ class Action {
                 \App::logger()->error(['message' => 'Не передан номер заказа', 'orderData' => $orderData], ['order']);
                 continue;
             }
-            \App::logger()->debug(sprintf('Заказ %s успешно создан %s', $orderData['number'], json_encode($orderData, JSON_UNESCAPED_UNICODE)));
 
             $orderNumbers[] = $orderData['number'];
 

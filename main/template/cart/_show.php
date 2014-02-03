@@ -131,12 +131,18 @@ foreach ($products as $product) {
             </div>
 
             <div class="basketLine__desc__info basketinfo">
-                <div class="descCount">
-                    <?= $page->render('_spinner', array(
-                        'quantity' => $cartProduct->getQuantity(),
-                        'incUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => 1)),
-                        'decUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => -1)),
-                    ))?>
+                <div class="descPriceLine">
+                    <div class="descPriceOne">
+                        <span class="price one"><?= $product->getPrice() ? $page->helper->formatPrice($product->getPrice()) : '' ?></span>
+                        <span class="rubl">p</span>
+                    </div>
+                    <div class="descCount">
+                        <?= $page->render('_spinner', array(
+                            'quantity' => $cartProduct->getQuantity(),
+                            'incUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => 1)),
+                            'decUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => -1)),
+                        ))?>
+                    </div>
                 </div>
 
                 <div class="descPrice">
