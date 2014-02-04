@@ -68,11 +68,11 @@ set_error_handler(function($code, $message, $file, $line) use (&$response) {
 
 $request = new \Enter\Http\Request(
     [
-        'productCategoryPath' => 'noutbuki-i-monobloki-noutbuki-4280',
+        'productCategoryPath' => 'electronics/telefoni-897',
         'f-brand-apple'       => '9',
         'f-brand-htc'         => '178',
-        'f-price-from'        => '800',
-        'f-price-to'          => '35000',
+        'f-price-from'        => '3000',
+        'f-price-to'          => '50000',
         'sort'                => 'default-desc',
     ],
     [],
