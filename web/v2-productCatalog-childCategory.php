@@ -45,7 +45,9 @@ register_shutdown_function(function () use (&$response, &$startAt) {
     }
 
     (new \EnterSite\Action\DumpLogger())->execute();
-    (new \EnterSite\Action\Debug())->execute($response, $startAt);
+    $endAt = microtime(true);
+    (new \EnterSite\Action\TimerDebug())->execute($response, $startAt, $endAt);
+    //(new \EnterSite\Action\Debug())->execute($response, $startAt, $endAt);
 
     $response->send();
 });

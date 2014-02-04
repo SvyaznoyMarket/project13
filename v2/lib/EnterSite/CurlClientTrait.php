@@ -5,7 +5,10 @@ namespace EnterSite;
 use Enter\Curl;
 
 trait CurlClientTrait {
-    use LoggerTrait;
+    use ConfigTrait;
+    use LoggerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait;
+    }
 
     /**
      * @return Curl\Client
@@ -13,6 +16,8 @@ trait CurlClientTrait {
     public function getCurlClient() {
         if (!isset($GLOBALS[__METHOD__])) {
             $config = new Curl\Config();
+            $config->encoding = 'gzip,deflate'; // важно!
+            $config->httpheader = ['X-Request-Id: ' . $this->getConfig()->requestId, 'Expect:'];
 
             $instance = new Curl\Client($config);
             $instance->setLogger($this->getLogger());

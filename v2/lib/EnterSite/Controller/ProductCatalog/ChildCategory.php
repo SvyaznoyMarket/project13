@@ -77,11 +77,6 @@ class ChildCategory {
         $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region);
         $curl->prepare($ancestryCategoryItemQuery);
 
-        $curl->execute(1, 2);
-
-        // предок категории
-        $ancestryCategory = (new Repository\Product\Category())->getAncestryObjectByQuery($ancestryCategoryItemQuery);
-
         // запрос листинга идентификаторов товаров
         $limit = $config->product->itemPerPage;
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region, ($pageNum - 1) * $limit, $limit);
@@ -92,6 +87,9 @@ class ChildCategory {
         $curl->prepare($categoryListQuery);
 
         $curl->execute(1, 2);
+
+        // предок категории
+        $ancestryCategory = (new Repository\Product\Category())->getAncestryObjectByQuery($ancestryCategoryItemQuery);
 
         // листинг идентификаторов товаров
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);

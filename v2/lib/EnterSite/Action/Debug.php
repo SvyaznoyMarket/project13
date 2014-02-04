@@ -15,7 +15,7 @@ class Debug {
         ConfigTrait::getConfig insteadof MustacheRendererTrait;
     }
 
-    public function execute(Http\Response $response, $startAt) {
+    public function execute(Http\Response $response, $startAt, $endAt) {
         $logger = $this->getLogger();
 
         $debugData = [];
@@ -24,7 +24,7 @@ class Debug {
             $debugData['error'] = $error;
         }
 
-        $debugData['time'] = ['value' => round(microtime(true) - $startAt, 3), 'unit' => 'ms'];
+        $debugData['time'] = ['value' => round($endAt - $startAt, 3), 'unit' => 'ms'];
         $debugData['memory'] = ['value' => round(memory_get_peak_usage() / 1048576, 2), 'unit' => 'Mb'];
         $debugData['curl'] = [
             'time'            => [

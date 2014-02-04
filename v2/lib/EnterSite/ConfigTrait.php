@@ -29,7 +29,7 @@ trait ConfigTrait {
             $instance->cmsService->timeout = 1;
             $instance->cmsService->retryCount = 2;
 
-            $instance->adminService->enabled = false;
+            $instance->adminService->enabled = true;
             $instance->adminService->url = 'http://admin.enter.ru/v2/';
             $instance->adminService->timeout = 2;
             $instance->adminService->retryCount = 2;
