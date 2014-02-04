@@ -5,7 +5,7 @@ namespace Enter\Http;
 trait BagTrait {
     private $container = [];
 
-    public function __construct(array $container) {
+    public function __construct(array $container = []) {
         $this->container = $container;
     }
 

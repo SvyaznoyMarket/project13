@@ -28,7 +28,6 @@ trait CmsQueryTrait {
         } catch (\Exception $e) {
             $this->error = $e;
         }
-        $response = (array)$response;
 
         return $response;
     }

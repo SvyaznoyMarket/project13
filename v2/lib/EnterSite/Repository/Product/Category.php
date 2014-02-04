@@ -58,7 +58,7 @@ class Category {
             try {
                 $item = array_merge($item, $adminQuery->getResult());
             } catch (\Exception $e) {
-                trigger_error(sprintf('Некорректный ответ от admin-сервиса: %s', $e->getMessage()), E_USER_ERROR);
+                trigger_error($e, E_USER_ERROR);
             }
         }
 

@@ -35,14 +35,33 @@ spl_autoload_register(function ($class) {
 
 // shutdown handler
 register_shutdown_function(function () use (&$response, &$startAt) {
+    if (!$response instanceof \Enter\Http\Response) {
+        $response = new \Enter\Http\Response();
+    }
+
     $error = error_get_last();
     if ($error && (error_reporting() & $error['type'])) {
-        // response.status = 500
-        var_dump($error);
+        $response->statusCode = \Enter\Http\Response::STATUS_INTERNAL_SERVER_ERROR;
     }
 
     (new \EnterSite\Action\DumpLogger())->execute();
     (new \EnterSite\Action\Debug())->execute($response, $startAt);
+
+    $response->send();
+});
+
+// error handler
+set_error_handler(function($code, $message, $file, $line) use (&$response) {
+    switch ($code) {
+        case E_USER_ERROR:
+            if ($response instanceof \Enter\Http\Response) {
+                $response->statusCode = \Enter\Http\Response::STATUS_INTERNAL_SERVER_ERROR;
+            }
+
+            return true;
+    }
+
+    return false;
 });
 
 
@@ -62,4 +81,3 @@ $request = new \Enter\Http\Request(
 
 $action = new \EnterSite\Controller\ProductCatalog\ChildCategory();
 $response = $action->execute($request);
-echo $response->content;

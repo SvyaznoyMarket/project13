@@ -58,9 +58,9 @@ class Query implements \JsonSerializable {
             'error'   => $this->error,
             'timeout' => $this->timeout,
             'call'    => $this->call,
-            'info'    => $this->info,
             'startAt' => $this->startAt,
             'endAt'   => $this->endAt,
+            'info'    => $this->info,
         ];
         if ($this->error) {
             $return['result'] = $this->result;

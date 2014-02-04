@@ -28,16 +28,15 @@ trait CoreQueryTrait {
     protected function parse($response) {
         try {
             $response = $this->jsonToArray($response);
+            if (array_key_exists('error', $response)) {
+                $response = array_merge(['code' => 0, 'message' => null], $response['error']);
+
+                throw new \Exception($response['message'], $response['code']);
+            } else if (array_key_exists('result', $response)) {
+                $response = $response['result'];
+            }
         } catch (\Exception $e) {
             $this->error = $e;
-        }
-        $response = (array)$response;
-
-        if (array_key_exists('error', $response)) {
-            $response = array_merge(['code' => 0, 'message' => null], $response['error']);
-            $this->error = new \Exception($response['message'], $response['code']);
-        } else if (array_key_exists('result', $response)) {
-            $response = $response['result'];
         }
 
         return $response;

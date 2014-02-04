@@ -8,11 +8,14 @@ use EnterSite\Model;
 
 class Rating {
     public function getObjectListByQuery(Query $query) {
-        $ratings = null;
+        $ratings = [];
 
-        $data = $query->getResult();
-        foreach ($data as $item) {
-            $ratings[] = new Model\Product\Rating($item);
+        try {
+            foreach ($query->getResult() as $item) {
+                $ratings[] = new Model\Product\Rating($item);
+            }
+        } catch (\Exception $e) {
+            //trigger_error($e, E_USER_ERROR);
         }
 
         return $ratings;
