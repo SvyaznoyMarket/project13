@@ -300,53 +300,6 @@ class Repository {
         return $count;
     }
 
-    /**
-     * @param array $filter
-     * @param array $sort
-     * @param null $offset
-     * @param null $limit
-     * @param \Model\Region\Entity $region
-     * @return \Iterator\EntityPager
-     */
-    public function getIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-        $response = [];
-
-        $client = clone $this->client;
-        $client->addQuery('listing/list',
-            [
-                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                'filter' => [
-                    'filters' => $filter,
-                    'sort'    => $sort,
-                    'offset'  => $offset,
-                    'limit'   => $limit,
-                ],
-            ],
-            [],
-            function($data) use(&$response) {
-                $response = $data;
-            }
-        );
-        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        $collection = [];
-        $entityClass = $this->entityClass;
-        if (!empty($response['list'])) {
-            $this->prepareCollectionById($response['list'], $region, function($data) use(&$collection, $entityClass) {
-                foreach ($data as $item) {
-                    $collection[] = new $entityClass($item);
-                }
-            });
-        }
-        $this->client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        $collection = \RepositoryManager::review()->addScores($collection);
-
-        return new \Iterator\EntityPager($collection, (int)$response['count']);
-    }
-
     public function prepareIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
