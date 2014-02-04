@@ -8,7 +8,7 @@ use EnterSite\Model\Product\Category;
 class TreeCategory extends Category {
 
     /** @var \EnterSite\Model\Product\TreeCategory[] */
-    public $child;
+    public $child = [];
     /** @var int */
     public $productCount;
     /** @var int */
