@@ -939,11 +939,13 @@
 			{
 				var
 					ARPluginLoad = function ARPluginLoad() {
-						if ( 'undefined' === typeof(utils.ARPlugin) ) {
+						if ( 'undefined' === typeof(/*utils.*/ARPlugin) ) {
 							console.warn('ARPlugin is not defined');
+							$('li.vFitting' ).hide();
 							return false;
 						}
-						utils.ARPlugin.init({
+						console.log('ARPlugin is defined');
+						/*utils.*/ARPlugin.init({
 							//type:"advanced",
 							type:"simple",
 							js:"/js/prod/",
@@ -961,7 +963,7 @@
 							if ( typeof _gaq !== 'undefined' ) {
 								_gaq.push(['_trackEvent', '3D-primerochnaya', pageConfig['product.name'], 'click']);
 							}
-							utils.ARPlugin.show(
+							/*utils.*/ARPlugin.show(
 								pageConfig['product.article'] + '.obj',
 								pageConfig['product.article'] + '.png'
 							);
@@ -970,7 +972,7 @@
 						$('.vFitting').bind('click', fittingPopupShow);
 					};
 
-				$LAB.script('ARPlugin.min.js').wait(ARPluginLoad);
+				$LAB.script('ARPluginOrigin.js').wait(ARPluginLoad);
 
 			};
 
