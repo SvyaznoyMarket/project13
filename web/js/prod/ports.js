@@ -1,3 +1,5 @@
+var
+	body = $('body');
 
 console.log('ports.js inited');
 
@@ -525,13 +527,15 @@ window.ANALYTICS = {
             action: function ( e, userInfo ) {
 				try {
 					console.info('RetailRocketJS action');
-					console.log('userInfo: id = '+ userInfo.id + ' email = ' + userInfo.email);
-					window.rrPartnerUserId = userInfo.id; // rrPartnerUserId — по ТЗ должна быть глобальной
+					console.log(userInfo);
+					if ( userInfo && userInfo.id ) {
+						window.rrPartnerUserId = userInfo.id; // rrPartnerUserId — по ТЗ должна быть глобальной
+					}
 
 					var
 						rr_data = $('#RetailRocketJS').data('value'),
 						sendUserData = {
-							userId: userInfo.id || false,
+							userId: ( userInfo ) ? ( userInfo.id || false ) : null,
 							hasUserEmail: ( userInfo && userInfo.email ) ? true : false
 						};
 					// end of vars
@@ -571,10 +575,18 @@ window.ANALYTICS = {
         RetailRocket.init();
 
         if ( ENTER.config.userInfo && ENTER.config.userInfo.id ) {
+			// ок, берём userInfo-данные из памяти
             RetailRocket.action(null, ENTER.config.userInfo);
         }
         else {
-        	$('body').on('userLogged', RetailRocket.action);
+			if (false === ENTER.config.userInfo) {
+				// если === false, то данных юзера не узнаем , поэтому запустим RetailRocket.action() без параметров
+				RetailRocket.action(null);
+			}
+			else {
+				// попробуем получить данные при срабатывании события
+				body.on('userLogged', RetailRocket.action);
+			}
         }
 
         console.groupEnd();
@@ -802,7 +814,7 @@ window.ANALYTICS = {
 	enable : true
 }
 
-ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
+ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
 
 var ADFOX = {
 	adfoxbground : function() {
@@ -1054,4 +1066,4 @@ var ADFOX = {
 	enable : true
 }
 
-ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
+ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
