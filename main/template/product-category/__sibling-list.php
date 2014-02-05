@@ -16,10 +16,8 @@ return function(
         <div class="tchiboNav__title"<? if (!empty($catalogConfig['root_category_menu']['image'])): ?> style="background-image: url('<?= $catalogConfig['root_category_menu']['image'] ?>')"<? endif ?>></div>
 
         <ul class="tchiboNav__list">
-        <? foreach ($categories as $category): ?>
-            <?
-            $active = $currentCategory && ($category->getId() === $currentCategory->getParentId()) && !$currentCategory->getHasChild() ? true : false;
-            ?>
+        <? foreach ($categories as $category):
+            $active = $currentCategory && ($category->getId() === $currentCategory->getParentId()) && !$currentCategory->getHasChild() ? true : false; ?>
 
             <li class="item jsItemListTchibo<? if ($active): ?> active<? endif ?>">
                 <a class="link" href="<?= $category->getLink() ?>">
@@ -28,8 +26,10 @@ return function(
 
                 <? if ((bool)$category->getChild()): ?>
                 <ul class="tchiboNav__sublist<? if ($active): ?> active<? endif ?>">
-                <? foreach ($category->getChild() as $child): ?>
-                    <li class="sublistItem jsItemListTchibo"><a class="link" href="<?= $child->getLink() ?>"><?= $child->getName() ?></a></li>
+                <? foreach ($category->getChild() as $child):
+                    $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId()) ? true : false; ?>
+
+                    <li class="sublistItem jsItemListTchibo<? if ($activeChild): ?> mActive<? endif ?>"><a class="link" href="<?= $child->getLink() ?>"><?= $child->getName() ?></a></li>
                 <? endforeach ?>
                 </ul>
                 <? endif ?>
