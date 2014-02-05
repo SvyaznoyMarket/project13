@@ -155,25 +155,6 @@ $(document).ready(function () {
         location.href = $(this).data('url');
     });
 
-    $('.centerImage').mouseover(function () {
-        var
-            currImg = initis[1];
-        /**
-         * Текущие изобрежения слайдера хранятся в initis так:
-         * initis[0] - leftImage
-         * initis[1] - centerImage
-         * initis[2] - rightImage
-         * при листании карусельки изменяются и текущие данные в initis[]
-         */
-
-        if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
-            //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-            _gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.ga, currImg.pos, currImg.imgb ] );
-            console.log( 'GA: _trackEvent, Carousel, View_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
-        }
-        addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));  
-    });
-
     $('.promos').click(function () {
         location.href = $(this).data('url');
     });
@@ -252,6 +233,23 @@ $(document).ready(function () {
             });
         sideBanner($('.leftImage'), 0);
         sideBanner($('.rightImage'), 2);
+        
+        var
+            currImg = initis[1];
+        /**
+         * Текущие изобрежения слайдера хранятся в initis так:
+         * initis[0] - leftImage
+         * initis[1] - centerImage
+         * initis[2] - rightImage
+         * при листании карусельки изменяются и текущие данные в initis[]
+         */
+
+        if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
+            //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
+            _gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.ga, currImg.pos, currImg.imgb ] );
+            console.log( 'GA: _trackEvent, Carousel, View_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
+        }
+
         addKISSmetricsEvent('Carousel banner click', 'bigbanner', $('.centerImage'));
     }
 });
