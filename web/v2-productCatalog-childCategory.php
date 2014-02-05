@@ -74,7 +74,7 @@ $request = new \Enter\Http\Request(
         'f-brand-apple'       => '9',
         'f-brand-htc'         => '178',
         'f-price-from'        => '3000',
-        'f-price-to'          => '50000',
+        'f-price-to'          => '28000',
         'sort'                => 'default-desc',
     ],
     [],
