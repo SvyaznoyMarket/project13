@@ -35,6 +35,8 @@ return function(
                 <? endif ?>
             </li>
         <? endforeach ?>
+
+            <li class="item jsItemListTchibo"><a class="link" href="/about_tchibo">Подробнее о Tchibo</a></li>
         </ul>
     </div>
     <!--/ TCHIBO - слайдер-меню разделов Чибо -->

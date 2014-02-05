@@ -101,12 +101,42 @@ class Action {
         $limit = \App::config()->product['itemsInCategorySlider'];
         $repository = \RepositoryManager::product();
         $repository->setEntityClass('\\Model\\Product\\CompactEntity');
-        $productPager = $repository->getIteratorByFilter(
+
+        $productIds = [];
+        $productCount = 0;
+        $repository->prepareIteratorByFilter(
             $productFilter->dump(),
             $productSorting->dump(),
             ($pageNum - 1) * $limit,
-            $limit
+            $limit,
+            $region,
+            function($data) use (&$productIds, &$productCount) {
+                if (isset($data['list'][0])) $productIds = $data['list'];
+                if (isset($data['count'])) $productCount = (int)$data['count'];
+            }
         );
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        $products = [];
+        if ((bool)$productIds) {
+            $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
+                foreach ($data as $item) {
+                    $products[] = new \Model\Product\CompactEntity($item);
+                }
+            });
+
+            $scoreData = [];
+            \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+                if (isset($data['product_scores'][0])) {
+                    $scoreData = $data;
+                }
+            });
+        }
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        \RepositoryManager::review()->addScores($products, $scoreData);
+
+        $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
 
@@ -472,7 +502,8 @@ class Action {
             $option->setToken('instore');
             if (\App::config()->region['defaultId'] === $user->getRegion()->getId()) {
                 // Для Москвы, SITE-2850
-                $option->setName('Товар за три дня');
+                //$option->setName('Товар за три дня');
+                $option->setName('Товар со склада'); // SITE-3131
             } else {
                 // Для регионов (привозит быстрее, но не за три дня)
                 $option->setName('Товар со склада');
@@ -783,12 +814,41 @@ class Action {
                     $filtersWithoutShop[] = $filter;
                 }
             }
-            $pagerAll = $repository->getIteratorByFilter(
+            $productIds = [];
+            $productCount = 0;
+            $repository->prepareIteratorByFilter(
                 $filtersWithoutShop,
                 $sort,
                 $offset,
-                $limit
+                $limit,
+                $region,
+                function($data) use (&$productIds, &$productCount) {
+                    if (isset($data['list'][0])) $productIds = $data['list'];
+                    if (isset($data['count'])) $productCount = (int)$data['count'];
+                }
             );
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+            $products = [];
+            if ((bool)$productIds) {
+                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
+                    foreach ($data as $item) {
+                        $products[] = new \Model\Product\CompactEntity($item);
+                    }
+                });
+
+                $scoreData = [];
+                \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+                    if (isset($data['product_scores'][0])) {
+                        $scoreData = $data;
+                    }
+                });
+            }
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+            \RepositoryManager::review()->addScores($products, $scoreData);
+
+            $pagerAll = new \Iterator\EntityPager($products, $productCount);
             $page->setGlobalParam('allCount', $pagerAll->count());
         }
 

@@ -49,6 +49,7 @@ class Client {
     public function query($url, array $data = [], $timeout = null) {
         $startedAt = \Debug\Timer::start('curl');
 
+        $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
         $connection = $this->create($url, $data, $timeout);
         $response = curl_exec($connection);
         try {
@@ -116,6 +117,8 @@ class Client {
      * @return bool
      */
     public function addQuery($url, array $data = [], $successCallback, $failCallback = null, $timeout = null) {
+        $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
+
         if (!$this->isMultiple) {
             $this->isMultiple = curl_multi_init();
         }
@@ -348,6 +351,8 @@ class Client {
      * @return resource
      */
     private function create($url, array $data = [], $timeout = null) {
+        $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
+
         $this->logger->info([
             'message' => 'Create curl',
             'url'     => $url,
@@ -471,5 +476,12 @@ class Client {
         }
 
         return $decoded;
+    }
+
+    /**
+     * @return int
+     */
+    private function getDefaultTimeout() {
+        return \App::config()->coreV2['hugeTimeout'];
     }
 }

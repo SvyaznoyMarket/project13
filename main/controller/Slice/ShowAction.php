@@ -556,64 +556,91 @@ class ShowAction {
                     $filtersWithoutShop[] = $filter;
                 }
             }
-            $pagerAll = $repository->getIteratorByFilter(
+
+            $productIds = [];
+            $productCount = 0;
+            $repository->prepareIteratorByFilter(
                 $filtersWithoutShop,
                 $sort,
                 ($pageNum - 1) * $limit,
-                $limit
+                $limit,
+                $region,
+                function($data) use (&$productIds, &$productCount) {
+                    if (isset($data['list'][0])) $productIds = $data['list'];
+                    if (isset($data['count'])) $productCount = (int)$data['count'];
+                }
             );
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+            $products = [];
+            if ((bool)$productIds) {
+                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
+                    foreach ($data as $item) {
+                        $products[] = new \Model\Product\CompactEntity($item);
+                    }
+                });
+
+                $scoreData = [];
+                \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+                    if (isset($data['product_scores'][0])) {
+                        $scoreData = $data;
+                    }
+                });
+            }
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+            \RepositoryManager::review()->addScores($products, $scoreData);
+
+            $pagerAll = new \Iterator\EntityPager($products, $productCount);
             $page->setGlobalParam('allCount', $pagerAll->count());
         }
 
-
-        $response = [];
-
-        // добавляем фильтр по категории
-        if ($category->getId()) {
-            $filterData[] = ["category",1,[$category->getId()]];
-        }
-
-        $client = \App::coreClientV2();
-        $client->addQuery('listing/list',
-            [
-                'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                'filter' => [
-                    'filters' => $filterData,
-                    'sort'    => $sort,
-                    'offset'  => ($pageNum - 1) * $limit,
-                    'limit'   => $limit,
-                ],
-            ],
-            [],
-            function($data) use(&$response) {
-                $response = $data;
+        if (!empty($pagerAll)) {
+            $productPager = $pagerAll;
+        } else {
+            // добавляем фильтр по категории
+            if ($category->getId()) {
+                $filterData[] = ["category",1,[$category->getId()]];
             }
-        );
-        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $collection = [];
-        $entityClass = '\Model\Product\Entity';
-        if (!empty($response['list'])) {
-            $client->addQuery('product/get', [
-                'select_type' => 'id',
-                'id'          => $response['list'],
-                'geo_id'      => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-            ], [], function($data) use(&$collection, $entityClass) {
-                foreach ($data as $item) {
-                    $collection[] = new $entityClass($item);
-                }
-            });
+            $productPager = null;
 
-            /*$this->prepareCollectionById($response['list'], $region, function($data) use(&$collection, $entityClass) {
-                foreach ($data as $item) {
-                    $collection[] = new $entityClass($item);
+            $productIds = [];
+            $productCount = 0;
+            $repository->prepareIteratorByFilter(
+                $filterData,
+                $sort,
+                ($pageNum - 1) * $limit,
+                $limit,
+                $region,
+                function($data) use (&$productIds, &$productCount) {
+                    if (isset($data['list'][0])) $productIds = $data['list'];
+                    if (isset($data['count'])) $productCount = (int)$data['count'];
                 }
-            });*/
+            );
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+            $products = [];
+            if ((bool)$productIds) {
+                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
+                    foreach ($data as $item) {
+                        $products[] = new \Model\Product\CompactEntity($item);
+                    }
+                });
+
+                $scoreData = [];
+                \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+                    if (isset($data['product_scores'][0])) {
+                        $scoreData = $data;
+                    }
+                });
+            }
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+            \RepositoryManager::review()->addScores($products, $scoreData);
+
+            $productPager = new \Iterator\EntityPager($products, $productCount);
         }
-        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-        $collection = \RepositoryManager::review()->addScores($collection);
-        $productPager = new \Iterator\EntityPager($collection, (int)$response['count']);
-
 
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);

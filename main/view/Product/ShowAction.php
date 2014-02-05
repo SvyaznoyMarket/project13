@@ -45,7 +45,8 @@ class ShowAction {
         ) {
             if (\App::config()->region['defaultId'] === $user->getRegion()->getId()) {
                 // Для Москвы, SITE-2850
-                $stateLabel = ['name' => 'Товар за три дня'];
+                //$stateLabel = ['name' => 'Товар за три дня'];
+                $stateLabel = ['name' => 'Товар со склада']; // SITE-3131
             } else {
                 // Для регионов (привозит быстрее, но не за три дня)
                 $stateLabel = ['name' => 'Товар со склада'];

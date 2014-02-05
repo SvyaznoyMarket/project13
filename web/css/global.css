@@ -8869,6 +8869,12 @@
     font-size: 14px;
     line-height: 40px;
   }
+  .bProductDesc .bDescSelectItem__eName {
+    font-size: 12px;
+  }
+  .bProductDesc .bDescSelectItem__eValue {
+    font-size: 12px;
+  }
   .bProductDesc .bDescSelectItem__eSelect {
     -moz-opacity: 0;
     -khtml-opacity: 0;
@@ -8888,14 +8894,16 @@
     border: none;
     background-color: transparent;
     box-shadow: none;
-    font-size: 16px;
+    font-size: 12px;
     filter: progid:dximagetransform.microsoft.alpha(opacity=0);
     -webkit-appearance: none;
   }
   .bProductDesc .bDescSelectItem__eOption {
     display: block;
     zoom: 1;
-    height: 37px;
+    height: 27px;
+    padding-right: 15px;
+    padding-top: 7px;
     text-align: right;
     color: black;
     background-color: #FFFFFF;
