@@ -1006,7 +1006,8 @@
 				setUrl: product.setUrl,
 				productUrl: product.url,
 				productImg: (product.image) ? product.image : product.productImg,
-				deliveries: {}
+				deliveries: {},
+				isPrepayment: product.isPrepayment
 			};
 
 			if ( self.isUnique && (product.oldQuantity - 1) > 0 ) {

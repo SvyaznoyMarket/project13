@@ -336,17 +336,18 @@ class DeliveryAction {
                 }
 
                 $responseData['products'][$productId] = [
-                    'id'         => $productId,
-                    'name'       => $productItem['name'],
-                    'price'      => (int)$productItem['price'],
-                    'sum'        => $cartProduct->getSum(),
-                    'quantity'   => (int)$productItem['quantity'],
-                    'stock'      => (int)$productItem['stock'],
-                    'image'      => $productItem['media_image'],
-                    'url'        => $productItem['link'],
-                    'setUrl'     => $setUrl,
-                    'deleteUrl'  => $deleteUrl,
-                    'deliveries' => $deliveryData,
+                    'id'            => $productId,
+                    'name'          => $productItem['name'],
+                    'price'         => (int)$productItem['price'],
+                    'sum'           => $cartProduct->getSum(),
+                    'quantity'      => (int)$productItem['quantity'],
+                    'stock'         => (int)$productItem['stock'],
+                    'image'         => $productItem['media_image'],
+                    'url'           => $productItem['link'],
+                    'setUrl'        => $setUrl,
+                    'deleteUrl'     => $deleteUrl,
+                    'deliveries'    => $deliveryData,
+                    'isPrepayment'  => false,
                 ];
             }
 

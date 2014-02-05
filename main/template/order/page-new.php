@@ -172,7 +172,7 @@ if ($oneClick) {
 
 					<!-- Products -->
 					<!-- ko foreach: { data: products, as: 'product' } -->
-					<div class="bBuyingLine mProductsLine clearfix">
+					<div class="bBuyingLine mProductsLine clearfix"<? if (\App::config()->order['prepayment']['enabled']): ?> data-bind="css: product.isPrepayment ? 'mSelected' : ''"<? endif ?>>
 						<div class="bBuyingLine__eRight">
 							<div class="bOrderItems">
 								<div class="bItemsRow mItemImg">
@@ -221,7 +221,7 @@ if ($oneClick) {
 				<li class="bSumOrderInfo__eLine">
 					Итого с доставкой:&nbsp;&nbsp;
 
-					<span class="bDelivery mSelect">
+					<span class="bDelivery"<? if (\App::config()->order['prepayment']['enabled']): ?> data-bind="css: box.isExpensiveOrder ? 'mSelect' : ''"<? endif ?>>
 						<span data-bind="text: window.printPrice( box.totalBlockSum )"></span>&nbsp;<span class="rubl">p</span>
 					</span>
 				</li>
