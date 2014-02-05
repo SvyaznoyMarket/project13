@@ -163,7 +163,7 @@ class Client {
     public function execute($retryTimeout = null, $retryCount = 0) {
         $startedAt = \Debug\Timer::start('curl');
         if (!$this->isMultiple) {
-            $this->logger->error(['message' => 'No query to execute'], ['curl']);
+            $this->logger->warn(['message' => 'No query to execute'], ['curl']);
             return;
         }
 
