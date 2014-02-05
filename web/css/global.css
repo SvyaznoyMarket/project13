@@ -11117,7 +11117,7 @@
   }
   .bInputAddress .bBuyingLine__eText {
     position: relative;
-    text-indent: 44px;
+    text-indent: 49px;
   }
   .bInputAddress .bBuyingLine__eText.mInputShort {
     width: 132px;
@@ -11131,7 +11131,7 @@
     text-indent: 49px;
   }
   .bInputAddress .bBuyingLine__eText.mInputBuild {
-    text-indent: 32px;
+    text-indent: 37px;
   }
   .bInputAddress .bBuyingLine__eText.mInputFloor {
     text-indent: 37px;
