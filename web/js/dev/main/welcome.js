@@ -1,7 +1,7 @@
 var addKISSmetricsEvent = function(eventName, bannerId, banner) {
-	var
-		centerImageUrl = banner.attr('src'),
-		bannerUrl = banner.data('url');
+    var
+        centerImageUrl = banner.attr('src'),
+        bannerUrl = banner.data('url');
 
     if (typeof(_kmq) !== 'undefined') {
         _kmq.push(['record', eventName, {
@@ -21,14 +21,14 @@ $(document).ready(function () {
     });
 
 
-	if ( !$( '#main_banner-data' ).length ) {
-		return;
-	}
+    if ( !$( '#main_banner-data' ).length ) {
+        return;
+    }
 
     var
-		i,
-		promos = $('#main_banner-data').data('value' ),
-		l = promos.length;
+        i,
+        promos = $('#main_banner-data').data('value' ),
+        l = promos.length;
 
     /* Shit happens */
     for (i = 0; i < l; i++) {
@@ -46,9 +46,9 @@ $(document).ready(function () {
         }
     }
 
-	if (l == 0) {
-		return;
-	}
+    if (l == 0) {
+        return;
+    }
 
     if (l == 1) {
         if ('is_exclusive' in promos[0] && promos[0].is_exclusive) {
@@ -96,20 +96,20 @@ $(document).ready(function () {
     $('.centerImage').attr('src', promos[0].imgb).data('url', promos[0].url);
     $('.rightImage').attr({ "src":promos[1].imgs, "alt":promos[1].alt, "title":promos[1].alt});
 
-	var
-		currentSl = l - 1,
-		idto = null,
-		initis = [],
-		sliding = false,
-		permission = true;
+    var
+        currentSl = l - 1,
+        idto = null,
+        initis = [],
+        sliding = false,
+        permission = true;
 
     changeSrc(currentSl);
     idto = setTimeout(function () {
         goSlide()
     }, initis[1].t);
     /* Visuals */
-	
-	var b = new brwsr();
+    
+    var b = new brwsr();
     if ( b.isAndroid || b.isOSX) {
         $('.bCarousel div').show();
         $('.allpage').css('overflow', 'hidden');
@@ -134,28 +134,6 @@ $(document).ready(function () {
         goSlide(1);
     })
     $('.centerImage').click(function () {
-		var
-			currImg = initis[1];
-		/**
-		 * Текущие изобрежения слайдера хранятся в initis так:
-		 * initis[0] - leftImage
-		 * initis[1] - centerImage
-		 * initis[2] - rightImage
-		 * при листании карусельки изменяются и текущие данные в initis[]
-		 */
-
-        clearTimeout(idto);
-
-		if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
-			//_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-			_gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.ga, currImg.pos, currImg.imgb ] );
-			console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
-		}
-        addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
-        location.href = $(this).data('url');
-    });
-
-    $('.centerImage').mouseover(function () {
         var
             currImg = initis[1];
         /**
@@ -166,12 +144,15 @@ $(document).ready(function () {
          * при листании карусельки изменяются и текущие данные в initis[]
          */
 
+        clearTimeout(idto);
+
         if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
             //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-            _gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.ga, currImg.pos, currImg.imgb ] );
-            console.log( 'GA: _trackEvent, Carousel, View_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
+            _gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.ga, currImg.pos, currImg.imgb ] );
+            console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
         }
-        addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));  
+        addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
+        location.href = $(this).data('url');
     });
 
     $('.promos').click(function () {
@@ -228,9 +209,9 @@ $(document).ready(function () {
                 inileft = '-968px'
         }
         currentSl = (currentSl + dir) % l;
-		if (currentSl < 0) {
-			currentSl = l - 1;
-		}
+        if (currentSl < 0) {
+            currentSl = l - 1;
+        }
         changeSrc(currentSl);
 
         $('.centerImage').animate(
@@ -252,6 +233,21 @@ $(document).ready(function () {
             });
         sideBanner($('.leftImage'), 0);
         sideBanner($('.rightImage'), 2);
-        addKISSmetricsEvent('Carousel banner click', 'bigbanner', $('.centerImage'));
+
+        var
+            currImg = initis[1];
+        /**
+         * Текущие изобрежения слайдера хранятся в initis так:
+         * initis[0] - leftImage
+         * initis[1] - centerImage
+         * initis[2] - rightImage
+         * при листании карусельки изменяются и текущие данные в initis[]
+         */
+
+        if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
+            //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
+            _gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.ga, currImg.pos, currImg.imgb ] );
+            console.log( 'GA: _trackEvent, Carousel, View_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
+        }
     }
 });
