@@ -32,15 +32,25 @@ class TimerDebug {
                 $query = $message['query'] instanceof Query ? $message['query'] : null;
                 if (!$query) continue;
 
-                $result['lines'][] = [
-                    'title' => $query->getUrl(),
-                    'name'  => parse_url($query->getUrl(), PHP_URL_PATH),
-                    'time'  => round(($query->getEndAt() - $query->getStartAt()), 3) * 1000,
-                    'top'   => $i * 24,
-                    'left'  => ($query->getStartAt() - $startAt) / $total * 100,
-                    'width' => (($query->getEndAt() - $startAt) / $total - ($query->getStartAt() - $startAt) / $total) * 100,
-                    'color' => $query->getError() ? '#ff0000' : '#00bce1',
+                $info = $query->getInfo();
+
+                $line = [
+                    'title'        => $query->getUrl(),
+                    'name'         => parse_url($query->getUrl(), PHP_URL_PATH),
+                    'time'         => round($info['total_time'], 3) * 1000,
+                    'call'         => $query->getCall(),
+                    'css'          => [
+                        'top'          => $i * 24,
+                        'left'         => ($query->getStartAt() - $startAt) / $total * 100,
+                        'width1'       => (($query->getEndAt() - $startAt) / $total - ($query->getStartAt() - $startAt) / $total) * 100,
+                        'color1'       => $query->getError() ? '#cc0000' : '#00bce1',
+                        'color2'       => $query->getError() ? '#ff0000' : '#43c6ed',
+                    ],
                 ];
+                $line['css']['width2'] = $info['total_time'] / $total * 100 / $line['css']['width1'] * 100;
+
+                $result['lines'][] = $line;
+
                 $i++;
             }
         }
