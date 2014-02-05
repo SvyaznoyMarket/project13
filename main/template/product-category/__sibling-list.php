@@ -15,13 +15,13 @@ return function(
     <div class="tchiboNav">
         <div class="tchiboNav__title"<? if (!empty($catalogConfig['root_category_menu']['image'])): ?> style="background-image: url('<?= $catalogConfig['root_category_menu']['image'] ?>')"<? endif ?>></div>
 
-        <ul class="tchiboNav__list">
+        <ul class="tchiboNav__list clearfix">
         <? foreach ($categories as $category):
             $active = $currentCategory && ($category->getId() === $currentCategory->getParentId()) && !$currentCategory->getHasChild() ? true : false; ?>
 
             <li class="item jsItemListTchibo<? if ($active): ?> active<? endif ?>">
                 <a class="link" href="<?= $category->getLink() ?>">
-                    <?= $category->getName() ?>
+                    <span class="itemText"><?= $category->getName() ?></span>
                 </a>
 
                 <? if ((bool)$category->getChild()): ?>
@@ -36,7 +36,7 @@ return function(
             </li>
         <? endforeach ?>
 
-            <li class="item jsItemListTchibo"><a class="link" href="/about_tchibo">Подробнее о Tchibo</a></li>
+            <li class="item" style="float:right; margin: 0;"><a class="link" href="/about_tchibo">Подробнее о Tchibo</a></li>
         </ul>
     </div>
     <!--/ TCHIBO - слайдер-меню разделов Чибо -->
