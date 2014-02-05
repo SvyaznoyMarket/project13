@@ -439,6 +439,67 @@ window.ANALYTICS = {
 
     },
 
+    GoogleAnalyticsJS : function() {
+		console.group('ports.js::GoogleAnalyticsJS');
+
+		var
+			route = body.data('template'),
+		// end of vars
+
+			ga_init = function ga_init() {
+				console.log( 'GoogleAnalyticsJS init' );
+
+				(function (i, s, o, g, r, a, m) {
+					i['GoogleAnalyticsObject'] = r;
+					i[r] = i[r] || function () {
+						(i[r].q = i[r].q || []).push( arguments )
+					}, i[r].l = 1 * new Date();
+					a = s.createElement( o ),
+						m = s.getElementsByTagName( o )[0];
+					a.async = 1;
+					a.src = g;
+					m.parentNode.insertBefore( a, m )
+				})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
+				ga( 'create', 'UA-25485956-5', 'enter.ru' );
+			},
+
+			ga_main = function ga_main() {
+				console.info( 'GoogleAnalyticsJS main page' );
+
+				try {
+					if ( !/utm/.exec( document.URL ) && !document.referrer ) {
+						ga( 'set', 'campaignSource', '(direct)' );
+						ga( 'set', 'campaignMedium', '(none)' );
+						ga( 'set', 'campaignName', '(direct)' );
+					}
+				} catch ( e ) {
+				}
+				ga( 'send', 'pageview', {
+					'dimension5': 'Home'
+				} );
+			},
+
+			ga_product = function(){},
+			ga_orderComplete = function(){},
+		/// .....
+
+			action = function ga_action() {
+				console.log( 'GoogleAnalyticsJS action' );
+				ga_init(); // блок инициализации аналитики для всех страниц
+				switch (route) {
+					case 'main':
+						ga_main(); // для главной страницы
+						break;
+					case 'product_cart':
+						ga_product(); // для карточки товара
+						break;
+				}
+			}
+			;// end of functions
+
+		action();
+	},
+
     RetailRocketJS : function() {
     	console.group('ports.js::RetailRocketJS');
 
