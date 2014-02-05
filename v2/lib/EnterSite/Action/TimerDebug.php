@@ -39,7 +39,7 @@ class TimerDebug {
                     'top'   => $i * 24,
                     'left'  => ($query->getStartAt() - $startAt) / $total * 100,
                     'width' => (($query->getEndAt() - $startAt) / $total - ($query->getStartAt() - $startAt) / $total) * 100,
-                    'color' => $query->getError() ? '#ff0000' : '#33ff33',
+                    'color' => $query->getError() ? '#ff0000' : '#00bce1',
                 ];
                 $i++;
             }
