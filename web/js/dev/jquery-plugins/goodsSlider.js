@@ -54,29 +54,30 @@
 							var
 								i, type, callbF;
 
-							console.log('## res');
-							console.log(res);
-
 							try{
 								for ( i in recommendArray ) {
 									type = recommendArray[i].type;
 									callbF = recommendArray[i].callback;
 
-									if ( typeof(type) && typeof(callbF) ) {
-										if ( typeof(res.recommend) && typeof(res.recommend[type]) ) {
+									if ( 'undefined' !== typeof(callbF) ) {
+										if ( 'undefined' !== typeof(type) && 'undefined' !== typeof(res.recommend) && 'undefined' !== typeof(res.recommend[type]) ) {
 											callbF(res.recommend[type]);
+											//recommendArray[i].callback(res.recommend[recommendArray[i].type]);
 										}
 										else {
-											callbF(type);
+											callbF(res);
 										}
 									}
-									//recommendArray[i].callback(res.recommend[recommendArray[i].type]);
 								}
 							}
 							catch(e) {
 								console.warn('Error in RR recomendations');
 								console.log(e);
 							}
+						},
+						error: function(e) {
+							console.warn('Error in RR ajax response');
+							console.log(e);
 						}
 					});
 				}
