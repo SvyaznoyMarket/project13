@@ -14,7 +14,7 @@
 		userUrl = config.pageConfig.userUrl,
 		utils = ENTER.utils,
 		clientCart = utils.extendApp('ENTER.config.clientCart'),
-		clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
+		//clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
 		body = $('body'),
 		dCook = window.docCookies,
 		loadBlackBox = true,
@@ -23,6 +23,7 @@
 	
 	
 	clientCart.products = [];
+	config.userInfo = null;
 
 
 	/**
@@ -64,7 +65,7 @@
 				self = this;
 			// end of vars
 
-				
+
 			var
 				/**
 				 * Обновление данных о корзине
@@ -278,7 +279,12 @@
 
 	if ( loadBlackBox ) {
 		utils.blackBox.init();
-		console.log('utils.blackBox init');
+		console.log('blackBox with init');
+	}
+	else {
+		config.userInfo = false;
+		// если === false, то данных юзера не узнаем , поэтому запустим RetailRocket.action() без параметров
+		console.log('blackBox without init');
 	}
 
 }(window.ENTER));
