@@ -4,6 +4,7 @@ namespace EnterSite\Curl\Query\Product\Rating;
 
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\ReviewQueryTrait;
+use EnterSite\Curl\Query\Url;
 
 class GetListByProductIdList extends Query {
     use ReviewQueryTrait;
@@ -12,11 +13,11 @@ class GetListByProductIdList extends Query {
     protected $result;
 
     public function __construct(array $productIds) {
-        $params = [
+        $this->url = new Url();
+        $this->url->path = 'scores-list';
+        $this->url->query = [
             'product_list' => implode(',', $productIds),
         ];
-
-        $this->url = 'scores-list?' . http_build_query($params);
 
         $this->init();
     }

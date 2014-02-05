@@ -4,6 +4,7 @@ namespace EnterSite\Curl\Query\Product\Catalog\Config;
 
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CmsQueryTrait;
+use EnterSite\Curl\Query\Url;
 use EnterSite\Model\Product\TreeCategory;
 
 class GetItemByProductCategoryObject extends Query {

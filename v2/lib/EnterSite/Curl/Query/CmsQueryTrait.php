@@ -18,7 +18,12 @@ trait CmsQueryTrait {
     protected function init() {
         $config = $this->getConfig()->cmsService;
 
-        $this->url = $config->url . $this->url;
+        if ($this->url instanceof Url) {
+            $this->url->prefix = $config->url;
+        } else {
+            $this->url = $config->url . $this->url;
+        }
+
         $this->timeout = $config->timeout;
     }
 

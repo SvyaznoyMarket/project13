@@ -19,7 +19,12 @@ trait AdminQueryTrait {
     protected function init() {
         $config = $this->getConfig()->adminService;
 
-        $this->url = $config->url . $this->url;
+        if ($this->url instanceof Url) {
+            $this->url->prefix = $config->url;
+        } else {
+            $this->url = $config->url . $this->url;
+        }
+
         $this->timeout = $config->timeout;
         if ($config->user && $config->password) {
             $this->auth = $config->user . ':' . $config->password;

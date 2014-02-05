@@ -17,7 +17,13 @@ trait CoreQueryTrait {
     protected function init() {
         $config = $this->getConfig()->coreService;
 
-        $this->url = $config->url . $this->url;
+        if ($this->url instanceof Url) {
+            $this->url->prefix = $config->url;
+            $this->url->query['client_id'] = 'site';
+        } else {
+            $this->url = $config->url . $this->url;
+        }
+
         $this->timeout = $config->timeout;
     }
 

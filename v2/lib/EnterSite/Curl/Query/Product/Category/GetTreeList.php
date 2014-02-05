@@ -4,6 +4,7 @@ namespace EnterSite\Curl\Query\Product\Category;
 
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CoreQueryTrait;
+use EnterSite\Curl\Query\Url;
 use EnterSite\Model;
 
 class GetTreeList extends Query {
@@ -13,17 +14,17 @@ class GetTreeList extends Query {
     protected $result;
 
     public function __construct(Model\Region $region = null, $maxLevel = null) {
-        $params = [
+        $this->url = new Url();
+        $this->url->path = 'category/tree';
+        $this->url->query = [
             'is_load_parents' => true,
         ];
         if (null !== $maxLevel) {
-            $params['max_level'] = $maxLevel;
+            $this->url->query['max_level'] = $maxLevel;
         }
         if ($region) {
-            $params['region_id'] = $region->id;
+            $this->url->query['region_id'] = $region->id;
         }
-
-        $this->url = 'category/tree?' . http_build_query($params);
 
         $this->init();
     }

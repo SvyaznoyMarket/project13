@@ -4,6 +4,7 @@ namespace EnterSite\Curl\Query\Region;
 
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CoreQueryTrait;
+use EnterSite\Curl\Query\Url;
 
 class GetItemById extends Query {
     use CoreQueryTrait;
@@ -15,9 +16,11 @@ class GetItemById extends Query {
      * @param $id
      */
     public function __construct($id) {
-        $this->url = 'geo/get?' . http_build_query([
+        $this->url = new Url();
+        $this->url->path = 'geo/get';
+        $this->url->query = [
             'id' => $id,
-        ]);
+        ];
 
         $this->init();
     }

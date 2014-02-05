@@ -4,6 +4,7 @@ namespace EnterSite\Curl\Query\Product;
 
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CoreQueryTrait;
+use EnterSite\Curl\Query\Url;
 use EnterSite\Model\Product\RequestFilter;
 use EnterSite\Model\Product\Sorting;
 use EnterSite\Model\Region;
@@ -36,7 +37,9 @@ class GetIdPagerByRequestFilter extends Query {
             $sortingData = [$sorting->token => $sorting->direction];
         }
 
-        $params = [
+        $this->url = new Url();
+        $this->url->path = 'listing/list';
+        $this->url->query = [
             'filter' => [
                 'filters' => $filterData,
                 'sort'    => $sortingData,
@@ -45,10 +48,8 @@ class GetIdPagerByRequestFilter extends Query {
             ],
         ];
         if ($region) {
-            $params['region_id'] = $region->id;
+            $this->url->query['region_id'] = $region->id;
         }
-
-        $this->url = 'listing/list?' . http_build_query($params);
 
         $this->init();
     }

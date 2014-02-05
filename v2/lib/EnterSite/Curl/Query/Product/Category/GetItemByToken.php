@@ -4,6 +4,7 @@ namespace EnterSite\Curl\Query\Product\Category;
 
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CoreQueryTrait;
+use EnterSite\Curl\Query\Url;
 use EnterSite\Model\Region;
 
 class GetItemByToken extends Query {
@@ -17,10 +18,12 @@ class GetItemByToken extends Query {
      * @param Region $region
      */
     public function __construct($token, Region $region) {
-        $this->url = 'category/get?' . http_build_query([
+        $this->url = new Url();
+        $this->url->path = 'category/get';
+        $this->url->query = [
             'slug'   => [$token],
             'geo_id' => $region->id,
-        ]);
+        ];
 
         $this->init();
     }

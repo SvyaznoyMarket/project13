@@ -4,6 +4,7 @@ namespace EnterSite\Curl\Query\Product;
 
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CoreQueryTrait;
+use EnterSite\Curl\Query\Url;
 use EnterSite\Model\Region;
 
 class GetListByIdList extends Query {
@@ -17,14 +18,15 @@ class GetListByIdList extends Query {
      * @param \EnterSite\Model\Region $region
      */
     public function __construct(array $ids, Region $region = null) {
-        $params = [
+        $this->url = new Url();
+        $this->url->path = 'product/get';
+        $this->url->query = [
             'select_type' => 'id',
             'id'          => $ids,
         ];
         if ($region) {
-            $params['geo_id'] = $region->id;
+            $this->url->query['geo_id'] = $region->id;
         }
-        $this->url = 'product/get?' . http_build_query($params);
 
         $this->init();
     }

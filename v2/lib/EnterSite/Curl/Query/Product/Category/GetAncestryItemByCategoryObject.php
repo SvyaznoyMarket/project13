@@ -4,6 +4,7 @@ namespace EnterSite\Curl\Query\Product\Category;
 
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CoreQueryTrait;
+use EnterSite\Curl\Query\Url;
 use EnterSite\Model\Region;
 use EnterSite\Model\Product\Category;
 
@@ -18,16 +19,16 @@ class GetAncestryItemByCategoryObject extends Query {
      * @param Region $region
      */
     public function __construct(Category $category, Region $region = null) {
-        $params = [
+        $this->url = new Url();
+        $this->url->path = 'category/tree';
+        $this->url->query = [
             'root_id'         => $category->id,
             'max_level'       => $category->level - 1,
             'is_load_parents' => true,
         ];
         if ($region) {
-            $params['region_id'] = $region->id;
+            $this->url->query['region_id'] = $region->id;
         }
-
-        $this->url = 'category/tree?' . http_build_query($params);
 
         $this->init();
     }
