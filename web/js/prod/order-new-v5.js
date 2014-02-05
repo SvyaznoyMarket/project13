@@ -1457,6 +1457,7 @@
 	var
 		bankWrap = $('.bBankWrap'),
 		bankWrapInput = bankWrap.find('.bSelectInput');
+		bankWrapLabel = bankWrapInput.find('.bCustomLabel');
 	// end of vars
 		
 	var creditInit = function creditInit() {
@@ -1473,7 +1474,8 @@
 			bankField.val(chosenBankId);
 		};
 
-		//$(bankFieldInput, bankWrap).eq(0).attr('checked','checked');
+		$(bankFieldInput, bankWrap).eq(0).attr('checked','checked');
+		$(bankWrapLabel, bankWrap).eq(0).addClass('mChecked');
 		
 		bankWrap.change(selectBank);
 		selectBank();
@@ -1481,17 +1483,6 @@
 		window.DirectCredit.init( $('#jsCreditBank').data('value'), $('.credit_pay') );
 		
 	};
-
-	var creditItemSelect = function creditItemSelect() {
-		var 
-			bankWrapLabel = bankWrapInput.find('.bCustomLabel');
-		// end of vars
-		
-		bankWrapLabel.css({'opacity' : '0.4'});
-		$(this).children(bankWrapLabel).css({'opacity' : '1'});
-	};
-
-	bankWrapInput.click(creditItemSelect);
 	
 	if ( bankWrap.length ) {
 		creditInit();
