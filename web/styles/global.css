@@ -2291,8 +2291,11 @@ img[height="0"] {
     padding: 25px 0 10px 0;
     position: absolute;
     top: 15px;
-    width: 700px;
+    width: 740px;
     z-index: 0;
+  }
+  .tchiboNav__sublist .mActive .link {
+    font-weight: bold;
   }
   .tchiboNav__sublist .sublistItem {
     vertical-align: top;
