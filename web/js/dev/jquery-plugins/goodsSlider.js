@@ -51,8 +51,31 @@
 						type: 'GET',
 						url: url,
 						success: function( res ) {
-							for (var i in recommendArray) {
-								recommendArray[i].callback(res.recommend[recommendArray[i].type]);
+							var
+								i, type, callbF;
+
+							console.log('## res');
+							console.log(res);
+
+							try{
+								for ( i in recommendArray ) {
+									type = recommendArray[i].type;
+									callbF = recommendArray[i].callback;
+
+									if ( typeof(type) && typeof(callbF) ) {
+										if ( typeof(res.recommend) && typeof(res.recommend[type]) ) {
+											callbF(res.recommend[type]);
+										}
+										else {
+											callbF(type);
+										}
+									}
+									//recommendArray[i].callback(res.recommend[recommendArray[i].type]);
+								}
+							}
+							catch(e) {
+								console.warn('Error in RR recomendations');
+								console.log(e);
 							}
 						}
 					});
@@ -96,7 +119,8 @@
 		 * @param	{Number}	nowLeft			Текущий отступ слева
 		 */
 		var SliderControl = function( mainNode ) {
-			var options = $.extend(
+			var
+				options = $.extend(
 							{},
 							$.fn.goodsSlider.defaults,
 							params ),
