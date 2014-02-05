@@ -20,5 +20,8 @@ if ($category) {
 
 <div class="fixedTopBar__crumbs">
     <a class="fixedTopBar__crumbsImg" href=""><img class="crumbsImg" src="<?= $category ? $category->getImageUrl() : '' ?>" /></a>
-    <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
+    <div class="fixedTopBar__wrapCrumbsList">
+        <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
+        <div class="transGradWhite"></div>
+    </div>
 </div>
