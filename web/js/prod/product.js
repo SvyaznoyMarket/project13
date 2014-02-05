@@ -1011,18 +1011,53 @@ $(document).ready(function() {
 			return;
 		}
 
-		var zoomDisable = ( $('.bZoomedImg').data('zoom-disable') ) ? $('.bZoomedImg').data('zoom-disable') : false;
+		var
+			image = $('.bZoomedImg'),
+			zoomDisable = ( image.data('zoom-disable') !== undefined ) ? image.data('zoom-disable') : true,
+			zoomConfig = {
+				gallery: 'productImgGallery',
+				galleryActiveClass: 'mActive',
+				zoomWindowOffety: 0,
+				zoomWindowOffetx: 19,
+				zoomWindowWidth: 519,
+				borderSize: 1,
+				borderColour: '#C7C7C7',
+				disableZoom: zoomDisable
+			};
+		// end of vars
 
-		$('.bZoomedImg').elevateZoom({
-			gallery: 'productImgGallery',
-			galleryActiveClass: 'mActive',
-			zoomWindowOffety: 0,
-			zoomWindowOffetx: 19,
-			zoomWindowWidth: 519,
-			borderSize: 1,
-			borderColour: '#C7C7C7',
-			disableZoom: zoomDisable
-		});
+		var
+			/**
+			 * Обработчик клика на изображение в галерее.
+			 * Нужен для инициализации/удаления зумера
+			 */
+			photoGalleryLinkClick = function() {
+				if ( $(this).data("zoom-disable") == undefined ) {
+					return;
+				}
+
+				if ( $(this).data("zoom-disable") == zoomDisable ) {
+					return;
+				}
+
+				zoomDisable = $(this).data("zoom-disable");
+
+				// инициализация зумера
+				if( !zoomDisable ) {
+					zoomConfig.disableZoom = zoomDisable;
+					image.elevateZoom(zoomConfig);
+				}
+				else { // удаления зумера
+					$.removeData(image, 'elevateZoom');//remove zoom instance from image
+					$('.zoomContainer').remove();//remove zoom container from DOM
+				}
+
+				return false;
+			};
+		// end of functions
+
+		image.elevateZoom(zoomConfig);
+		$('.jsPhotoGalleryLink').on('click', photoGalleryLinkClick);
 	})();
 
 

@@ -184,7 +184,42 @@ class SitemapAction {
                 $offset = 0;
                 while (($category->getGlobalProductCount() - ($offset + $limit)) > 0) {
                     try {
-                        $products = $productRepository->getIteratorByFilter($filter->dump(), [], $offset, $limit, $this->region);
+                        $productIds = [];
+                        $productCount = 0;
+                        $productRepository->prepareIteratorByFilter(
+                            $filter->dump(),
+                            [],
+                            $offset,
+                            $limit,
+                            $this->region,
+                            function($data) use (&$productIds, &$productCount) {
+                                if (isset($data['list'][0])) $productIds = $data['list'];
+                                if (isset($data['count'])) $productCount = (int)$data['count'];
+                            }
+                        );
+                        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+                        $products = [];
+                        if ((bool)$productIds) {
+                            $productRepository->prepareCollectionById($productIds, $this->region, function($data) use (&$products) {
+                                foreach ($data as $item) {
+                                    $products[] = new \Model\Product\CompactEntity($item);
+                                }
+                            });
+
+                            $scoreData = [];
+                            \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+                                if (isset($data['product_scores'][0])) {
+                                    $scoreData = $data;
+                                }
+                            });
+                        }
+                        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+                        \RepositoryManager::review()->addScores($products, $scoreData);
+
+                        $products = new \Iterator\EntityPager($products, $productCount);
+
                     } catch (\Exception $e) {
                         \App::logger()->error($e, ['sitemap']);
                         continue;

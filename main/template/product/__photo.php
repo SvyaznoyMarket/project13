@@ -161,9 +161,10 @@ return function(
             <div class="bPhotoSlider">
                 <div class="bPhotoSliderWrap">
                     <ul id="productImgGallery" class="bPhotoSliderGallery clearfix">
-                        <? $i = 0; foreach ($product->getPhoto() as $photo): ?>
+                        <? $i = 0; foreach ($product->getPhoto() as $photo):
+                            $zoomDisable = ($photo->getHeight() > 750 || $photo->getWidth() > 750) ? false : true; ?>
                             <li class="bPhotoSliderGallery__eItem">
-                                <a class="bPhotoGalleryLink<? if (0 == $i): ?> mActive<? endif ?>" data-zoom-image="<?= $photo->getUrl(5) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#">
+                                <a class="bPhotoGalleryLink jsPhotoGalleryLink<? if (0 == $i): ?> mActive<? endif ?>" data-zoom-image="<?= $photo->getUrl(5) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#" data-zoom-disable="<?= $zoomDisable ?>">
                                     <img class="bPhotoGalleryImg" src="<?= $photo->getUrl(0) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                                 </a>
                             </li>

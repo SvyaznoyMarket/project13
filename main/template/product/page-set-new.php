@@ -55,4 +55,7 @@ foreach ( $categoriesById as $subCategory ) {
         </div>
     <? endif ?>
 
+    <div class="bSortingLine mPagerBottom clearfix">
+        <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+    </div>
 </div>
