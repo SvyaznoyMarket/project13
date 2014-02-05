@@ -347,7 +347,7 @@ class DeliveryAction {
                     'setUrl'        => $setUrl,
                     'deleteUrl'     => $deleteUrl,
                     'deliveries'    => $deliveryData,
-                    'isPrepayment'  => false,
+                    'isPrepayment'  => false, // TODO: после доделок на ядре (добавятся данные product.label_id) нужно реализовать условие, есть ли у товара шильдик "предоплата" (SITE-3153)
                 ];
             }
 

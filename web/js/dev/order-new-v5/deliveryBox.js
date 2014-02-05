@@ -384,6 +384,10 @@
 				console.log(tmpProduct.deleteUrl);
 			}
 
+			if ( tmpProduct.isPrepayment ) {
+				self.hasProductWithPrepayment = true;
+			}
+
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
 			// Добавляем стоимость продукта к общей стоимости блока доставки
