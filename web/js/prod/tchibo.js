@@ -27,21 +27,21 @@
 		}
 	);
 
-	var listItemHover = function listItemHover() {
+	// var listItemHover = function listItemHover() {
 
-		if ( $(this).hasClass("active") || (!$(this).children(".tchiboNav__sublist").length ) ) {
-		    listItemActive.find(subList).css({'opacity' : '1', 'z-index' : '5'});
-		}
-		else {
-			listItemActive.find(subList).css({'opacity' : '0', 'z-index' : "1"});
-		}
-	};
+	// 	if ( $(this).hasClass("active") || (!$(this).children(".tchiboNav__sublist").length ) ) {
+	// 	    listItemActive.find(subList).css({'opacity' : '1', 'z-index' : '5'});
+	// 	}
+	// 	else {
+	// 		listItemActive.find(subList).css({'opacity' : '0', 'z-index' : "1"});
+	// 	}
+	// };
 
-	var listItemUnHover = function listItemUnHover() {
+	// var listItemUnHover = function listItemUnHover() {
 
-		listItemActive.find(subList).css({'opacity' : '1', 'z-index' : '5'});
-	};
+	// 	listItemActive.find(subList).css({'opacity' : '1', 'z-index' : '5'});
+	// };
 
-	listItemLi.hover(listItemHover, listItemUnHover);
+	// listItemLi.hover(listItemHover, listItemUnHover);
 
 }(window.ENTER));

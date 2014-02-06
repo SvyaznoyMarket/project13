@@ -9,18 +9,41 @@ class IndexAction {
 
         $client = \App::coreClientV2();
         $user = \App::user();
-        $slideData = [];
-        $repositoryPromo = \RepositoryManager::promo();
+        $promoRepository = \RepositoryManager::promo();
         $region = $user->getRegion();
-        $promoToken = 'tchibo';
+
+        $slideData = [];
+        $categoryToken = 'tchibo';
         $category = null;
-
-        $promo = $repositoryPromo->getEntityByToken($promoToken);
-
+        $promo = null;
+        $content = null;
 
         // подготовка для 1-го пакета запросов в ядро
+        // promo
+        $promoRepository->prepareEntityByToken($categoryToken, function($data) use (&$promo, &$categoryToken) {
+            if (is_array($data)) {
+                $data['token'] = $categoryToken;
+                $promo = new \Model\Promo\Entity($data);
+            }
+        });
+
+        // content
+        \App::contentClient()->addQuery(
+            'tchibo_root',
+            [],
+            function($data) use (&$content) {
+                if (!empty($data['content'])) {
+                    $content = $data['content'];
+                }
+            },
+            function(\Exception $e) {
+                \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
+                \App::exception()->add($e);
+            }
+        );
+
         // получим данные category
-        \RepositoryManager::productCategory()->prepareEntityByToken($promoToken, $region, function($data) use (&$category) {
+        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
             $data = reset($data);
             if ((bool)$data) {
                 $category = new \Model\Product\Category\Entity($data);
@@ -28,16 +51,15 @@ class IndexAction {
         });
 
         // выполнение 1-го пакета запросов в ядро
-        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
-
+        $client->execute();
 
         if (!$promo) {
-            throw new \Exception\NotFoundException(sprintf('Промо-каталог @%s не найден.', $promoToken));
+            throw new \Exception\NotFoundException(sprintf('Промо-каталог @%s не найден.', $categoryToken));
         }
         /** @var $promo     \Model\Promo\Entity */
 
         if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $promoToken));
+            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
         }
         /** @var $category  \Model\Product\Category\Entity */
 
@@ -50,8 +72,8 @@ class IndexAction {
 
         // подготовка для 2-го пакета запросов в ядро
         // получим данные для меню
-        $rootCategoryIdInMenu = $category->getId();
-        \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($rootCategoryIdInMenu, $region, 3, function($data) use (&$rootCategoryInMenu) {
+        $rootCategoryIdInMenu = null;
+        \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
             $data = is_array($data) ? reset($data) : [];
             if (isset($data['id'])) {
                 $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
@@ -79,6 +101,7 @@ class IndexAction {
         $page->setParam('slideData', $slideData);
         $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setParam('catalogConfig', $catalogJson);
+        $page->setParam('content', $content);
 
         return new \Http\Response($page->show());
     }

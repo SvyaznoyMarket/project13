@@ -172,7 +172,7 @@ if ($oneClick) {
 
 					<!-- Products -->
 					<!-- ko foreach: { data: products, as: 'product' } -->
-					<div class="bBuyingLine mProductsLine clearfix">
+					<div class="bBuyingLine mProductsLine clearfix"<? if (\App::config()->order['prepayment']['enabled']): ?> data-bind="css: product.isPrepayment ? 'mSelected' : ''"<? endif ?>>
 						<div class="bBuyingLine__eRight">
 							<div class="bOrderItems">
 								<div class="bItemsRow mItemImg">
@@ -221,7 +221,7 @@ if ($oneClick) {
 				<li class="bSumOrderInfo__eLine">
 					Итого с доставкой:&nbsp;&nbsp;
 
-					<span class="bDelivery mSelect">
+					<span class="bDelivery"<? if (\App::config()->order['prepayment']['enabled']): ?> data-bind="css: box.isExpensiveOrder ? 'mSelect' : ''"<? endif ?>>
 						<span data-bind="text: window.printPrice( box.totalBlockSum )"></span>&nbsp;<span class="rubl">p</span>
 					</span>
 				</li>
@@ -444,18 +444,18 @@ if ($oneClick) {
 
 						<div class="bInputAddress jsInputStreet ui-css">
 							<span class="bFeildStarImg">*</span>
-							<label class="bPlaceholder">Улица</label>
+							<label style="width: 40px;" class="bPlaceholder">Улица</label>
 							<input type="text" class="bBuyingLine__eText mInputLong mInputStreet ui-autocomplete-input" id="order_address_street" title="Улица" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_street]" />
 						</div>
 
 						<div class="bInputAddress jsInputBuilding ui-css">
 							<span class="bFeildStarImg">*</span>
-							<label class="bPlaceholder">Дом</label>
+							<label style="width: 27px;" class="bPlaceholder">Дом</label>
 							<input type="text" id="order_address_building" class="bBuyingLine__eText mInputShort mInputBuild ui-autocomplete-input" name="order[address_building]" title="Дом" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" />
 						</div>
 
 						<div class="bInputAddress">
-							<label class="bPlaceholder">Корпус</label>
+							<label style="width: 40px;" class="bPlaceholder">Корпус</label>
 							<input type="text" id="order_address_number" class="bBuyingLine__eText mInputShort mInputNumber" name="order[address_number]" value="" />
 						</div>
 
@@ -465,14 +465,14 @@ if ($oneClick) {
 						</div>
 
 						<div class="bInputAddress">
-							<label class="bPlaceholder">Этаж</label>
+							<label style="width: 27px;" class="bPlaceholder">Этаж</label>
 							<input type="text" id="order_address_floor" class="bBuyingLine__eText mInputShort mInputFloor" name="order[address_floor]" value="" />
 						</div>
 
 						<? if ((bool)$subways): ?>
 						<div class="bInputAddress ui-css jsInputMetro">
 							<span class="bFeildStarImg">*</span>
-							<label class="bPlaceholder">Метро</label>
+							<label style="width: 40px;" class="bPlaceholder">Метро</label>
 							<input type="text" class="bBuyingLine__eText mInputLong ui-autocomplete-input" id="order_address_metro" title="Метро" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" name="order[address_metro]" />
 							<div id="metrostations" data-name="<?= $page->json(array_map(function(\Model\Subway\Entity $subway) { return ['val' => $subway->getId(), 'label' => $subway->getName()]; }, $subways)) ?>"></div>
 							<input type="hidden" id="order_subway_id" name="order[subway_id]" value="" />
