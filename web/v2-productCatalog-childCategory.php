@@ -33,6 +33,10 @@ spl_autoload_register(function ($class) {
     include_once str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
 });
 
+// config
+(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . '/v2/config/main-local.php');
+//(new \EnterSite\Action\LoadCachedConfig())->execute($applicationDir . '/v2/config/main-local.json');
+
 // shutdown handler
 register_shutdown_function(function () use (&$response, &$startAt) {
     if (!$response instanceof \Enter\Http\Response) {

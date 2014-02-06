@@ -1,0 +1,86 @@
+{
+    "dir": "/home/green/www/enter",
+    "hostname": "enter.loc",
+    "logger": {
+        "fileAppender": {
+            "file": "/home/green/www/enter/log/main.log"
+        }
+    },
+    "region": {
+        "defaultId": "14974",
+        "cookieName": "geoshop"
+    },
+    "coreService": {
+        "url": "http://api.enter.ru/v2/",
+        "user": null,
+        "password": null,
+        "timeout": 5,
+        "retryTimeout": {
+            "default": null,
+            "tiny": null,
+            "short": null,
+            "medium": null,
+            "long": null,
+            "huge": null
+        },
+        "retryCount": 2
+    },
+    "cmsService": {
+        "url": "http://cms.enter.ru/v1/",
+        "user": null,
+        "password": null,
+        "timeout": 1,
+        "retryTimeout": {
+            "default": null,
+            "tiny": null,
+            "short": null,
+            "medium": null,
+            "long": null,
+            "huge": null
+        },
+        "retryCount": 2
+    },
+    "adminService": {
+        "enabled": true,
+        "url": "http://admin.enter.ru/v2/",
+        "user": null,
+        "password": null,
+        "timeout": 2,
+        "retryTimeout": {
+            "default": null,
+            "tiny": null,
+            "short": null,
+            "medium": null,
+            "long": null,
+            "huge": null
+        },
+        "retryCount": 2
+    },
+    "reviewService": {
+        "url": "http://admin.enter.ru/reviews/",
+        "user": null,
+        "password": null,
+        "timeout": 2,
+        "retryTimeout": {
+            "default": null,
+            "tiny": null,
+            "short": null,
+            "medium": null,
+            "long": null,
+            "huge": null
+        },
+        "retryCount": 2
+    },
+    "mustacheRenderer": {
+        "dir": "/home/green/www/enter/v2/vendor/mustache",
+        "templateDir": "/home/green/www/enter/v2/template",
+        "cacheDir": "/tmp/mustache-cache",
+        "templateClassPrefix": "enter_loc_v2_"
+    },
+    "product": {
+        "itemPerPage": 19
+    },
+    "productReview": {
+        "enabled": true
+    }
+}
