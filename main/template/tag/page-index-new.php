@@ -51,7 +51,7 @@ foreach ( $categories as $subCategory ) {
         'categories'        => $categories,
         'selectedCategory'  => $selectedCategory,
         'openFilter'        => true,
-        'countUrl'          => null,
+        'countUrl'          => $helper->url('tag.count', $tagCategoryTokens),
         'baseUrl'           => $helper->url('tag', $tagCategoryTokens),
     ]); // фильтры ?>
 

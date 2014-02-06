@@ -299,6 +299,7 @@ return [
         'action'  => ['Product\NotificationAction', 'lowerPrice'],
     ],
 
+    // теги
     'tag' => [
         'pattern' => '/tags/{tagToken}',
         'action'  => ['Tag\Action', 'index'],
@@ -314,6 +315,23 @@ return [
     'tag.category.infinity' => [
         'pattern' => '/tags/{tagToken}/{categoryToken}/_infinity',
         'action'  => ['Tag\Action', 'index'],
+    ],
+    // общее количество отфильтрованных товаров для тегов
+    'tag.count' => [
+        'pattern' => '/ajax/tags/{tagToken}/_count',
+        'action'  => ['Tag\Action', 'count'],
+        'require' => [
+            'tagToken' => '[\w\d-_]+\/?[\w\d-_]+',
+        ],
+    ],
+    // общее количество отфильтрованных товаров для категорий тегов
+    'tag.category.count' => [
+        'pattern' => '/ajax/tags/{tagToken}/{categoryToken}/_count',
+        'action'  => ['Tag\Action', 'count'],
+        'require' => [
+            'tagToken'      => '[\w\d-_]+\/?[\w\d-_]+',
+            'categoryToken' => '[\w\d-_]+\/?[\w\d-_]+',
+        ],
     ],
     'product.rating.create_total' => [
         'pattern' => '/product-rating/createtotal/{productId}/{rating}',
