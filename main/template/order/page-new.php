@@ -172,7 +172,7 @@ if ($oneClick) {
 
 					<!-- Products -->
 					<!-- ko foreach: { data: products, as: 'product' } -->
-					<div class="bBuyingLine mProductsLine clearfix"<? if (\App::config()->order['prepayment']['enabled']): ?> data-bind="css: product.isPrepayment ? 'mSelected' : ''"<? endif ?>>
+					<div class="bBuyingLine mProductsLine clearfix"<? if (\App::config()->order['prepayment']['enabled']): ?> data-bind="css: product.isPrepayment ? 'mSelectedPay' : ''"<? endif ?>>
 						<div class="bBuyingLine__eRight">
 							<div class="bOrderItems">
 								<div class="bItemsRow mItemImg">
