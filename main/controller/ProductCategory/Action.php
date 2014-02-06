@@ -186,7 +186,8 @@ class Action {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
-        $productFilter = $this->getFilter($filters, $category, null, $request, $shop);
+        $brand = new \Model\Brand\Entity(); // пустой бренд?
+        $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 
