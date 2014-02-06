@@ -37,7 +37,7 @@ class TimerDebug {
                 $line = [
                     'title'        => $query->getUrl(),
                     'name'         => parse_url($query->getUrl(), PHP_URL_PATH),
-                    'time'         => round($info['total_time'], 3) * 1000,
+                    'time'         => round(($query->getEndAt() - $query->getStartAt()), 3) * 1000,
                     'call'         => $query->getCall(),
                     'css'          => [
                         'top'          => $i * 24,

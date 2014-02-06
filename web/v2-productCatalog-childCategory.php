@@ -34,7 +34,8 @@ spl_autoload_register(function ($class) {
 });
 
 // config
-(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . '/v2/config/main-local.php');
+(new \EnterSite\Action\ImportConfig())->execute($applicationDir, $applicationDir . '/config/config-local.php');
+//(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . '/v2/config/main-local.php');
 //(new \EnterSite\Action\LoadCachedConfig())->execute($applicationDir . '/v2/config/main-local.json');
 
 // shutdown handler

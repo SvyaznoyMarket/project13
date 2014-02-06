@@ -82,6 +82,8 @@ namespace EnterSite\Config\Application {
         /** @var int */
         public $timeout;
         /** @var int */
+        public $hugeTimeout;
+        /** @var int */
         public $retryTimeout;
         /** @var int */
         public $retryCount;
