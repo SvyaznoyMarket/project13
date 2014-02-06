@@ -24,7 +24,8 @@ class GetItemByProductCategoryObject extends Query {
             $tokens[] = $child->token;
         }
 
-        $this->url = 'catalog/' . implode('/', $tokens) . '.json';
+        $this->url = new Url();
+        $this->url->path = 'catalog/' . implode('/', $tokens) . '.json';
 
         $this->init();
     }

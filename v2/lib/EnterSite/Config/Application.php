@@ -92,6 +92,8 @@ namespace EnterSite\Config\Application {
     }
 
     class CoreService extends CurlService {
+        /** @var string */
+        public $clientId;
     }
 
     class CmsService extends CurlService {

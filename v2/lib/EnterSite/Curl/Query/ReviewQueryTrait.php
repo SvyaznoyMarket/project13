@@ -6,7 +6,7 @@ use EnterSite\ConfigTrait;
 use Enter\Util\JsonDecoderTrait;
 
 /**
- * @property string $url
+ * @property Url $url
  * @property array $data
  * @property int $timeout
  * @property string $auth
@@ -19,12 +19,7 @@ trait ReviewQueryTrait {
     protected function init() {
         $config = $this->getConfig()->reviewService;
 
-        if ($this->url instanceof Url) {
-            $this->url->prefix = $config->url;
-        } else {
-            $this->url = $config->url . $this->url;
-        }
-
+        $this->url->prefix = $config->url;
         $this->timeout = $config->timeout;
         if ($config->user && $config->password) {
             $this->auth = $config->user . ':' . $config->password;

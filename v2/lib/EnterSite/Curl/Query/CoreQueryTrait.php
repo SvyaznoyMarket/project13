@@ -6,7 +6,7 @@ use EnterSite\ConfigTrait;
 use Enter\Util\JsonDecoderTrait;
 
 /**
- * @property string $url
+ * @property Url $url
  * @property int $timeout
  * @property \Exception|null $error
  */
@@ -17,13 +17,8 @@ trait CoreQueryTrait {
     protected function init() {
         $config = $this->getConfig()->coreService;
 
-        if ($this->url instanceof Url) {
-            $this->url->prefix = $config->url;
-            $this->url->query['client_id'] = 'site';
-        } else {
-            $this->url = $config->url . $this->url;
-        }
-
+        $this->url->prefix = $config->url;
+        $this->url->query['client_id'] = $config->clientId;
         $this->timeout = $config->timeout;
     }
 

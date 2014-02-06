@@ -4,6 +4,7 @@ namespace EnterSite\Curl\Query\MainMenu;
 
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CmsQueryTrait;
+use EnterSite\Curl\Query\Url;
 
 class GetList extends Query {
     use CmsQueryTrait;
@@ -12,7 +13,8 @@ class GetList extends Query {
     protected $result;
 
     public function __construct() {
-        $this->url = 'main-menu.json';
+        $this->url = new Url();
+        $this->url->path = 'main-menu.json';
 
         $this->init();
     }
