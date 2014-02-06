@@ -660,7 +660,10 @@
 			}
 
 			catalog.history.gotoUrl(url);
-			$.scrollTo(filterBlock, 500);
+
+			if ( filterBlock.length ) {
+				$.scrollTo(filterBlock, 500);
+			}
 
 			return false;
 		},
