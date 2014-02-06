@@ -8,7 +8,7 @@ trait ConfigTrait {
     /**
      * @return Config\Application
      */
-    public function getConfig() {
+    protected function getConfig() {
         if (!isset($GLOBALS[__METHOD__])) {
             $instance = new Config\Application();
 

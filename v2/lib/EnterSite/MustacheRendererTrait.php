@@ -10,7 +10,7 @@ trait MustacheRendererTrait {
     /**
      * @return \Mustache_Engine
      */
-    public function getRenderer() {
+    protected function getRenderer() {
         if (!isset($GLOBALS[__METHOD__])) {
             $config = $this->getConfig()->mustacheRenderer;
 

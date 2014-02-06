@@ -13,7 +13,7 @@ trait CurlClientTrait {
     /**
      * @return Curl\Client
      */
-    public function getCurlClient() {
+    protected function getCurlClient() {
         if (!isset($GLOBALS[__METHOD__])) {
             $config = new Curl\Config();
             $config->encoding = 'gzip,deflate'; // важно!

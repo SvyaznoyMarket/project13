@@ -10,7 +10,7 @@ trait LoggerTrait {
     /**
      * @return Logging\Logger
      */
-    public function getLogger() {
+    protected function getLogger() {
         if (!isset($GLOBALS[__METHOD__])) {
             $config = $this->getConfig()->logger;
 

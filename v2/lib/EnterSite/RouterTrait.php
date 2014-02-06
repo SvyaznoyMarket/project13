@@ -8,7 +8,7 @@ trait RouterTrait {
     /**
      * @return Routing\Router
      */
-    public function getRouter() {
+    protected function getRouter() {
         if (!isset($GLOBALS[__METHOD__])) {
             $config = new Routing\Config();
             $GLOBALS[__METHOD__] = new Routing\Router($config);
