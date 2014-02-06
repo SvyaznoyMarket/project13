@@ -74,6 +74,6 @@ return function (
         <div class="bSlider__eBtn mNext mDisabled"><span></span></div>
     </div>
 
-</div><!--/product accessory section -->
+</div><?/*<!--/product accessory section -->*/?>
 
 <? };
