@@ -17,6 +17,10 @@ return [
         'pattern' => '/search',
         'action'  => ['Search\Action', 'execute'],
     ],
+    'search.count' => [
+        'pattern' => '/ajax/search/_count',
+        'action'  => ['Search\Action', 'count'],
+    ],
     // поиск бесконечная прокрутка
     'search.infinity' => [
         'pattern' => '/search/_infinity',
