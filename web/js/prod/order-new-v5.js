@@ -1006,7 +1006,8 @@
 				setUrl: product.setUrl,
 				productUrl: product.url,
 				productImg: (product.image) ? product.image : product.productImg,
-				deliveries: {}
+				deliveries: {},
+				isPrepayment: product.isPrepayment
 			};
 
 			if ( self.isUnique && (product.oldQuantity - 1) > 0 ) {
@@ -1015,6 +1016,10 @@
 				tmpProduct.deleteUrl = tmpProduct.deleteUrl.replace('delete-', 'add-'); // TODO cart.product.set изменмить Url
 				tmpProduct.deleteUrl += '?quantity=' + ( product.oldQuantity - 1 );
 				console.log(tmpProduct.deleteUrl);
+			}
+
+			if ( tmpProduct.isPrepayment ) {
+				self.hasProductWithPrepayment = true;
 			}
 
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];

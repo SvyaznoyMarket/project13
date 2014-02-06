@@ -349,8 +349,8 @@ $c->order['addressAutocomplete'] = true;
 // предоплата (SITE-2959)
 $c->order['prepayment'] = [
     'enabled'    => true,
-    'value'      => 10, // кол-во предоплаты в %
     'priceLimit' => 100000,// если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
+    'labelId'    => 15, // id шильдика "предоплата"
 ];
 
 $c->newDeliveryCalc = false;
