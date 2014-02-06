@@ -465,7 +465,7 @@ window.ANALYTICS = {
 				ga( 'create', 'UA-25485956-5', 'enter.ru' );
 			},
 
-			ga_main = function ga_main() {
+			ga_main = function() {
 				console.info( 'GoogleAnalyticsJS main page' );
 
 				try {
@@ -481,9 +481,37 @@ window.ANALYTICS = {
 				} );
 			},
 
-			ga_product = function(){},
+			ga_productCatalog = function() {
+				try {
+				    if ( !/utm/.exec(document.URL) && !document.referrer ) {
+				      ga( 'set', 'campaignSource', '(direct)' );
+				      ga( 'set', 'campaignMedium', '(none)' );
+				      ga( 'set', 'campaignName', '(direct)' );
+				    }
+			  } catch ( e ) {
+			  }
+			  ga( 'send', 'pageview', {
+			    'dimension6': '<Имя верхней категории>',
+			    'dimension12': '<Имя подкатегории>', // только если есть
+			    'dimension5': 'Category'
+			    } );
+			},
+
+			// ga_productCatalog = function() {
+			// 	try {
+			// 	    if ( !/utm/.exec(document.URL) && !document.referrer ) {
+			// 	      ga( 'set', 'campaignSource', '(direct)' );
+			// 	      ga( 'set', 'campaignMedium', '(none)' );
+			// 	      ga( 'set', 'campaignName', '(direct)' );
+			// 	    }
+			// 	  } catch ( e ) {
+			// 	  }
+			// 	ga( 'send', 'pageview', {
+			// 		'dimension5': 'Search'
+			// 	} );
+			// },
+
 			ga_orderComplete = function(){},
-		/// .....
 
 			action = function ga_action() {
 				console.log( 'GoogleAnalyticsJS action' );
@@ -492,8 +520,8 @@ window.ANALYTICS = {
 					case 'main':
 						ga_main(); // для главной страницы
 						break;
-					case 'product_cart':
-						ga_product(); // для карточки товара
+					case 'product_catalog':
+						ga_productCatalog(); // для карточки товара
 						break;
 				}
 			}

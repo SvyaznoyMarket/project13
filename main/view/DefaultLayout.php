@@ -348,11 +348,13 @@ class DefaultLayout extends Layout {
                 $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) .
                 '" class="jsanalytics"></div>';
 
-            //$return .= '<div id="GoogleAnalyticsJS" class="jsanalytics"></div>';
+
 
             // вызов JS Alexa-кода
             $return .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
         }
+
+        $return .= '<div id="GoogleAnalyticsJS" class="jsanalytics"></div>';
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
 
