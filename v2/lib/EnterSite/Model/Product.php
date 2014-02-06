@@ -17,6 +17,12 @@ class Product {
     public $link;
     /** @var bool */
     public $isBuyable;
+    /** @var bool */
+    public $isInShopOnly;
+    /** @var bool */
+    public $isInShopStockOnly;
+    /** @var bool */
+    public $isInShopShowroomOnly;
 
     /**
      * @param array $data
@@ -26,6 +32,12 @@ class Product {
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
+
         $this->isBuyable = isset($data['state']['is_buyable']) && (bool)$data['state']['is_buyable'];
+
+
+        // TODO $this->isInShopStockOnly = ;
+        // TODO $this->isInShopShowroomOnly = ;
+        $this->isInShopOnly = $this->isInShopStockOnly || $this->isInShopShowroomOnly;
     }
 }
