@@ -38,7 +38,7 @@ class ProductButton {
 
         $button->data['group'] = $product->id;
         $button->data['upsale'] = $this->helper->json([
-            'url'        => $this->router->getUrlByRoute(new Routing\Product\Upsale($product)),
+            'url'        => $this->router->getUrlByRoute(new Routing\Product\GetUpsale($product->id)),
             //'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false, // TODO
         ]);
         $button->class = self::getId($product->id);
@@ -60,7 +60,7 @@ class ProductButton {
             if ($sender) {
                 $sender .= '|' . $product->id;
             }
-            $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product, 1, $sender));
+            $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id, 1, $sender));
             $button->class .= ' jsBuyButton';
         }
 

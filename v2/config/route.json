@@ -1,0 +1,48 @@
+{
+    "Index": {
+        "name": "Главная",
+        "pattern": "/"
+    },
+    "Region\\Set": {
+        "name": "Установить регион",
+        "pattern": "/region/change/{regionId}",
+        "require": {
+            "regionId": "[\\w\\d-_]+"
+        }
+    },
+    "ProductCatalog\\GetRootCategory": {
+        "name": "Каталог товаров - родительская категория",
+        "pattern": "/catalog/{categoryPath}",
+        "require": {
+            "categoryPath": "[\\w\\d-_]+"
+        }
+    },
+    "ProductCatalog\\GetChildCategory": {
+        "name": "Каталог товаров - дочерняя категория",
+        "pattern": "/catalog/{categoryPath}",
+        "require": {
+            "categoryPath": "[\\w\\d-_]+/[\\w\\d-_]+"
+        }
+    },
+    "Product\\GetCard": {
+        "name": "Карточка товара",
+        "pattern": "/product/{productPath}",
+        "require": {
+            "categoryPath": "[\\w\\d-_]+/{1}[\\w\\d-_]+"
+        }
+    },
+    "Product\\GetUpsale": {
+        "name": "Upsale-товары",
+        "pattern": "/ajax/upsale/{productId}",
+        "require": {
+            "productId": "[\\w\\d-_]+"
+        }
+    },
+    "Cart\\SetProduct": {
+        "name": "Установить товар в корзине",
+        "pattern": "/cart/set-product/{productId}",
+        "require": {
+            "productId": "[\\w\\d-_]+"
+        }
+    }
+}

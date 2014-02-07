@@ -22,7 +22,7 @@ class DefaultLayout {
         // TODO: вынести в parent-класс
         if ($request->region) {
             $page->header->regionLink->name = $request->region->name;
-            $page->header->regionLink->url = $this->getRouter()->getUrlByRoute(new Routing\SetRegion($request->region));
+            $page->header->regionLink->url = $this->getRouter()->getUrlByRoute(new Routing\Region\Set($request->region->id));
         }
     }
 }
