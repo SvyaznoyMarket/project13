@@ -560,13 +560,14 @@ window.ANALYTICS = {
 				data = $('#jsOrder').data('value'),
 				orderData = data.orders,
 				orderSum = orderData[0].sum;
+				orderNum = orderData[0].numberErp;
 
 			window.tmParam = {
 				page_type : 'confirmation', // REQ 
-				page_name : '[enter page_name value here]', // REQ 
+				page_name : template, // REQ 
 				page_url : pageLink, // REQ
 				levrev : orderSum, // REQ when available
-				levordref : '[enter levordref value]', // REQ when available
+				levordref : orderNum, // REQ when available
 				levresdes : 'confirmation' // REQ when available
 			};
 		}
@@ -575,7 +576,7 @@ window.ANALYTICS = {
 
 			window.tmParam = {
 				page_type : 'generic', // REQ 
-				page_name : '[enter page_name value here]', // REQ 
+				page_name : template, // REQ 
 				page_url : pageLink // REQ
 			};
 		};
