@@ -3,19 +3,25 @@
 namespace EnterSite\Repository\Partial\Cart;
 
 use Enter\Routing\Router;
+use Enter\Helper;
 use EnterSite\RouterTrait;
+use EnterSite\ViewHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
 class ProductButton {
     use RouterTrait;
+    use ViewHelperTrait;
 
     /** @var Router */
     protected $router;
+    /** @var Helper\View */
+    protected $helper;
 
     public function __construct() {
         $this->router = $this->getRouter();
+        $this->helper = $this->getHelper();
     }
 
     /**
@@ -31,10 +37,10 @@ class ProductButton {
         $button = new Partial\Cart\ProductButton();
 
         $button->data['group'] = $product->id;
-        $button->data['upsale'] = htmlspecialchars(json_encode([
+        $button->data['upsale'] = $this->helper->json([
             'url'        => $this->router->getUrlByRoute(new Routing\Product\Upsale($product)),
             //'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false, // TODO
-        ], JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS), ENT_QUOTES, 'UTF-8');
+        ]);
         $button->class = self::getId($product->id);
         $button->value = 'Купить';
 
