@@ -13,7 +13,7 @@ return function(
 
     <!-- TCHIBO - слайдер-меню разделов Чибо -->
     <div class="tchiboNav">
-        <div class="tchiboNav__title"<? if (!empty($catalogConfig['root_category_menu']['image'])): ?> <? /*style="background-image: url('<?= $catalogConfig['root_category_menu']['image'] ?>')"<? endif ?>> */?></div>
+        <div class="tchiboNav__title"<? if (!empty($catalogConfig['root_category_menu']['image'])): ?> <? /*style="background-image: url('<?= $catalogConfig['root_category_menu']['image'] ?>')"<? endif ?>> */?>> </div>
 
         <ul class="tchiboNav__list clearfix">
         <? foreach ($categories as $category):
