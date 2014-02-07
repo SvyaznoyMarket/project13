@@ -23,16 +23,21 @@ class UpsaleAction extends BasicRecommendedAction {
             }
 
             $key = \App::abTest()->getCase()->getKey();
+            $relatedId = null;
+            $products = null;
 
             \App::logger()->info(sprintf('abTest.key=%s, response.cookie.switch=%s', $key, $request->cookies->get('switch')));
 
             // получаем ids связанных товаров
             // SITE-2818 Список связанных товаров дозаполняем товарами, полученными от RR по методу CrossSellItemToItems
             $recommendationRR = $this->getProductsIdsFromRetailrocket($product, $request, $this->retailrocketMethodName);
-            $relatedId = array_unique(array_merge($product->getRelatedId(), $recommendationRR));
+            if (is_array($recommendationRR)) {
+                $relatedId = array_unique(array_merge($product->getRelatedId(), $recommendationRR));
+            }
 
-            $products = null;
-            if (!empty($relatedId)) {
+            if (empty($relatedId)) {
+                throw new \Exception('Not fount related IDs for this product.');
+            } else {
                 $products = \RepositoryManager::product()->getCollectionById($relatedId);
             }
 
