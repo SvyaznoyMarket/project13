@@ -11,10 +11,12 @@
         "cookieName": "geoshop"
     },
     "coreService": {
+        "clientId": "site",
         "url": "http://api.enter.ru/v2/",
         "user": null,
         "password": null,
         "timeout": 5,
+        "hugeTimeout": null,
         "retryTimeout": {
             "default": null,
             "tiny": null,
@@ -30,6 +32,7 @@
         "user": null,
         "password": null,
         "timeout": 1,
+        "hugeTimeout": null,
         "retryTimeout": {
             "default": null,
             "tiny": null,
@@ -46,6 +49,7 @@
         "user": null,
         "password": null,
         "timeout": 2,
+        "hugeTimeout": null,
         "retryTimeout": {
             "default": null,
             "tiny": null,
@@ -61,6 +65,7 @@
         "user": null,
         "password": null,
         "timeout": 2,
+        "hugeTimeout": null,
         "retryTimeout": {
             "default": null,
             "tiny": null,
