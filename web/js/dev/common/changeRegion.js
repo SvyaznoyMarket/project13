@@ -52,7 +52,7 @@
 		minLength: 2,
 		select: function( event, ui ) {
 			formRegionSubmitBtn.data('url', ui.item.url );
-			formRegionSubmitBtn.removeClass('mDisabled');
+			submitBtnEnable();
 		},
 		open: function() {
 			$( this ).removeClass( 'ui-corner-all' ).addClass( 'ui-corner-top' );
@@ -72,7 +72,7 @@
 				onLoad: function(){
 					if (inputRegion.val().length){
 						inputRegion.putCursorAtEnd();
-						formRegionSubmitBtn.removeClass('mDisabled');
+						submitBtnEnable();
 					}
 				},
 				onClose: function() {
@@ -193,6 +193,7 @@
 		 */
 		clearInputHandler = function clearInputHandler() {
 			inputRegion.val('');
+			submitBtnDisable();
 			clearBtn.hide();
 			
 			return false;
@@ -203,9 +204,11 @@
 		 */
 		inputRegionChangeHandler = function inputRegionChangeHandler() {
 			if ( $(this).val() ) {
+				submitBtnEnable();
 				clearBtn.show();
 			}
 			else {
+				submitBtnDisable();
 				clearBtn.hide();
 			}
 		},
@@ -245,6 +248,22 @@
 			}
 
 			return false;
+		},
+
+		/**
+		 * Блокировка кнопки "Сохранить"
+		 */
+		submitBtnDisable = function() {
+			formRegionSubmitBtn.addClass('mDisabled');
+			formRegionSubmitBtn.attr('disabled','disabled');
+		},
+
+		/**
+		 * Разблокировка кнопки "Сохранить"
+		 */
+		submitBtnEnable = function() {
+			formRegionSubmitBtn.removeClass('mDisabled');
+			formRegionSubmitBtn.removeAttr('disabled');
 		};
 	// end of functions
 
