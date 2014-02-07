@@ -172,7 +172,7 @@ if ($oneClick) {
 
 					<!-- Products -->
 					<!-- ko foreach: { data: products, as: 'product' } -->
-					<div class="bBuyingLine mProductsLine clearfix"<? if (\App::config()->order['prepayment']['enabled']): ?> data-bind="css: product.isPrepayment ? 'mSelected' : ''"<? endif ?>>
+					<div class="bBuyingLine mProductsLine clearfix"<? if (\App::config()->order['prepayment']['enabled']): ?> data-bind="css: product.isPrepayment ? 'mSelectedPay' : ''"<? endif ?>>
 						<div class="bBuyingLine__eRight">
 							<div class="bOrderItems">
 								<div class="bItemsRow mItemImg">
@@ -232,8 +232,8 @@ if ($oneClick) {
                 <!-- Prepayment -->
                 <div class="bFootnote" data-bind="visible: box.hasProductWithPrepayment || box.isExpensiveOrder">
                     <strong>Внесите предоплату.</strong>&nbsp;&nbsp;
-                    <span data-bind="visible: box.hasProductWithPrepayment">В корзине товар, <a style="text-decoration: underline;" href="/prepayment">требующий предоплаты</a>&nbsp;&nbsp;</span>
-                    <span data-bind="visible: !box.hasProductWithPrepayment || box.isExpensiveOrder">Сумма заказа превышает <?= $helper->formatPrice(\App::config()->order['prepayment']['priceLimit']) ?> <span class="rubl">p</span>&nbsp;&nbsp;<a style="text-decoration: underline;" href="/prepayment">Подробнее</a></span>
+                    <span data-bind="visible: box.hasProductWithPrepayment">В корзине товар, <a style="text-decoration: underline;" href="/how_pay#prePayLink">требующий предоплаты</a>&nbsp;&nbsp;</span>
+                    <span data-bind="visible: !box.hasProductWithPrepayment || box.isExpensiveOrder">Сумма заказа превышает <?= $helper->formatPrice(\App::config()->order['prepayment']['priceLimit']) ?> <span class="rubl">p</span>&nbsp;&nbsp;<a style="text-decoration: underline;" target="_blank" href="/how_pay#prePayLink">Подробнее</a></span>
                 </div>
                 <!-- /Prepayment -->
             <? endif ?>
