@@ -27,7 +27,7 @@ return function(
                     <option class="bDescSelectItem__eOption"
                             value="<?= $option->getHumanizedName() ?>"
                             data-url="<?= $option->getProduct()->getLink() ?>"<?
-                            if ($option->getValue() == $productAttribute->getStringValue()):
+                            if ($option->getValue() == $productAttribute->getValue()):
                                 ?> selected="selected"<? endif
                             ?>>
                         <?= $option->getHumanizedName() ?>
