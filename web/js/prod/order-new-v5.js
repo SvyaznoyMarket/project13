@@ -3381,8 +3381,8 @@
 			for ( j = productsToNewBox.length - 1; j >= 0; j-- ) {
 				//!!! важно клонировать объект, дабы не портить для др. типов доставки
 				nowProduct = ENTER.utils.cloneObject(productsToNewBox[j]);
-                nowProduct.sum = nowProduct.sum ? nowProduct.sum : nowProduct.price;
-                nowProduct.quantity = 1;
+				nowProduct.sum = nowProduct.price;
+				nowProduct.quantity = 1;
 				nowProduct.oldQuantity = productsToNewBox[j].quantity; // сохраняем старое кол-во товаров в блоке
 				for ( k = productsToNewBox[j].quantity - 1; k >= 0; k-- ) {
                     productsUniq.push(nowProduct);
