@@ -130,7 +130,7 @@
 	width: 940px;
 	position: relative;
 	overflow: hidden;
-	height: 140px;
+	height: 132px;
 	background: url("@{base-url}/tchiboNavSlider/img/shadow.gif") no-repeat 50% 100%;
 	font-size: 0;
 
@@ -169,9 +169,9 @@
 					visibility: visible;
 				}
 
-				.itemText {
-					background: url("@{base-url}/tchiboNavSlider/img/arrow.png") no-repeat 50% 100%;
-				}
+				// .itemText {
+				// 	background: url("@{base-url}/tchiboNavSlider/img/arrow.png") no-repeat 50% 100%;
+				// }
 			}
 
 			&.active {
@@ -182,22 +182,26 @@
 
 				.itemText {
 					background: url("@{base-url}/tchiboNavSlider/img/arrow.png") no-repeat 50% 100%;
+
+					&:hover {
+						text-decoration: none;
+					}
 				}
 
 				.tchiboNav__sublist.active {
 
 					.link {
 					    font-weight: normal;
-
-					    &:hover {
-					    	font-weight: bold;
-					    }
 					}
 
 					.mActive {
 
 						.link {
 				    		font-weight: bold;
+
+				    		&:hover {
+				    			text-decoration: none;
+				    		}
 				    	}
 					}
 				}
@@ -210,7 +214,7 @@
 			font-size: 14px;
 
 			&:hover {				
-				text-decoration: none;
+				text-decoration: underline;
 				color: @tchiboBlue;
 			}
 		}
@@ -218,6 +222,10 @@
 		.itemText {
 			display: inline-block;
 			padding-bottom: 14px;
+
+			&:hover {
+				text-decoration: underline;
+			}
 		}
 	}
 

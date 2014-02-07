@@ -41,7 +41,7 @@
 					clearTimeout(timeout_id);
 					
 					timeout_id = setTimeout(function() {
-						counterGroup.find('input').val( count );
+						$self.find('input').val( count );
 						options.onChange.apply( $self, [count] );
 					}, 400);
 				},
