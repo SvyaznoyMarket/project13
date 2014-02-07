@@ -20,7 +20,7 @@ class Action {
         }
         $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
 
-        if (empty($searchQuery) || (mb_strlen($searchQuery) < \App::config()->search['queryStringLimit'])) {
+        if (empty($searchQuery) || (mb_strlen($searchQuery) <= \App::config()->search['queryStringLimit'])) {
             $page = new \View\Search\EmptyPage();
             $page->setParam('searchQuery', $searchQuery);
             return new \Http\Response($page->show());
@@ -102,12 +102,18 @@ class Action {
             $params['product'] = ['sort' => [$sortingName => $sortingDirection]];
         }
 
-        // ядерный запрос
-        $result = [];
-        \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
-            $result = $data;
-        });
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
+        try {
+            // ядерный запрос
+            \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
+                $result = $data;
+            }, function(\Exception $e) { \App::exception()->remove($e); });
+
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+
+            $result = [];
+        }
 
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
