@@ -99,9 +99,9 @@ class IndexAction {
         // формируем вьюху, передаём ей данные
         $page = new \View\Tchibo\IndexPage();
         $page->setParam('slideData', $slideData);
-        $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setParam('catalogConfig', $catalogJson);
         $page->setParam('content', $content);
+        $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
 
         return new \Http\Response($page->show());
     }
