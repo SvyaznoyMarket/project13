@@ -6,7 +6,7 @@ class Manager {
     private $cookieName;
     private $cookieLifetime;
     private $cookieNames = [];
-    private $params4get = [ 'utm_source','utm_content','utm_term', 'actionpay', 'prx', 'aip', 'webmaster_id', 'admitad_uid', 'affiliate_id' ];
+    private $params4get = [ 'utm_source','utm_content','utm_term', 'actionpay', 'prx', 'aip', 'webmaster_id', 'admitad_uid', 'cpamit_uid', 'affiliate_id' ];
 
     public function __construct() {
         $this->cookieName = \App::config()->partner['cookieName'];
@@ -121,8 +121,8 @@ class Manager {
             } else if (0 === strpos($utmSource, 'cpamit') || 0 === strpos($utmSource, 'admitad')) {
                 // используем \Partner\Counter\Admitad::NAME || \Partner\Counter\Admitad::NAME_SYNONYM
                 $response->headers->setCookie(new \Http\Cookie(
-                    'admitad_uid',
-                    $request->get('admitad_uid'),
+                    'cpamit_uid',
+                    $request->get('cpamit_uid'),
                     time() + $this->cookieLifetime,
                     '/',
                     null,
@@ -202,7 +202,7 @@ class Manager {
             case \Partner\Counter\Admitad::NAME_SYNONYM:
                 $return = [
                     $prefix => [\Partner\Counter\Admitad::NAME],
-                    $prefix . '.' . \Partner\Counter\Admitad::NAME . '.admitad_uid' => $request->cookies->get('admitad_uid'),
+                    $prefix . '.' . \Partner\Counter\Admitad::NAME . '.cpamit_uid' => $request->cookies->get('cpamit_uid'),
                 ];
                 break;
             case \Partner\Counter\Recreative::NAME:
