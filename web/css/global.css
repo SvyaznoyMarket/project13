@@ -10583,7 +10583,7 @@
   .bBuyingLine .error_list {
     margin-top: 10px;
   }
-  .bBuyingLine.mProductsLine {
+  .bBuyingLine.mSelectedPay {
     background: #f6e0ed;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
