@@ -89,7 +89,7 @@ namespace EnterSite\Config\Application {
         public $retryCount;
 
         public function __construct() {
-            $this->retryTimeout = new \EnterSite\Config\Application\CurlService\RetryTimeout();
+            $this->retryTimeout = new CurlService\RetryTimeout();
         }
     }
 

@@ -5,7 +5,7 @@ namespace EnterSite\Model\Product;
 use EnterSite\Model\ImportArrayConstructorTrait;
 
 class IdPager {
-    use \EnterSite\Model\ImportArrayConstructorTrait;
+    use ImportArrayConstructorTrait;
 
     /** @var array */
     public $id;

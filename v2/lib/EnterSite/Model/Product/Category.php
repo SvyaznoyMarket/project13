@@ -5,7 +5,7 @@ namespace EnterSite\Model\Product;
 use EnterSite\Model\ImportArrayConstructorTrait;
 
 class Category {
-    use \EnterSite\Model\ImportArrayConstructorTrait;
+    use ImportArrayConstructorTrait;
 
     /** @var string */
     public $id;
