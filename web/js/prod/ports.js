@@ -265,6 +265,42 @@ window.ANALYTICS = {
     //     })();
     // },
 
+
+	/**
+	 * CityAds counter
+ 	 */
+	xcntmyAsync: function () {
+		var
+			elem = $('#xcntmyAsync'),
+			data = elem ? elem.data('value') : false,
+			page = data ? data.page : false,
+
+
+			init = function() {
+				(function(){
+					var xscr = document.createElement( 'script' );
+					var xcntr = escape(document.referrer); xscr.async = true;
+					xscr.src = ( document.location.protocol === 'https:' ? 'https:' : 'http:' )
+						+ '//x.cnt.my/async/track/?r=' + Math.random();
+					var x = document.getElementById( 'xcntmyAsync' );
+					x.parentNode.insertBefore( xscr, x );
+				}());
+			},
+
+			backet = function() {
+				window.xcnt_basket_products = data.productIds; 			// где XX,YY,ZZ – это ID товаров в корзине через запятую.
+				window.xcnt_basket_quantity = data.productQuantities;	// где X,Y,Z – это количество соответствующих товаров (опционально).
+			}
+		;
+
+
+		if ( 'basket' === page ) {
+			backet();
+		}
+		init();
+
+	},
+
 	sociomanticJS: function () {
 		(function () {
 			var s = document.createElement('script'),
