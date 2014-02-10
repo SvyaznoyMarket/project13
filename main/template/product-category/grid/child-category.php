@@ -145,7 +145,7 @@ foreach ($gridCells as $cell) {
 }
 ?>
 <!-- TCHIBO - листинг Чибо -->
-<div class="tchiboProducts" style="position: relative; height: <?= $contentHeight ?>px; margin: 10px 0;">
+<div class="tchiboProducts" style="position: relative; height: <?= $contentHeight ?>px; margin: 0 0 10px;">
 <?= $helper->render('grid/__show', [
     'gridCells'    => $gridCells,
     'productsById' => $productsById,
