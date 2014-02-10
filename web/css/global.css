@@ -2347,6 +2347,13 @@
   #mainPage .bRegion__eLink {
     color: #fff;
   }
+  #mainPage #header {
+    margin: 0 0 10px 0;
+    width: 940px;
+  }
+  #mainPage .bMainMenuLevel-1 {
+    width: 830px;
+  }
   .headerContactPhone {
     font-weight: bold;
     padding: 0 20px;
@@ -2373,7 +2380,7 @@
     display: block;
     float: left;
     height: 60px;
-    padding: 20px 10px;
+    padding: 20px 10px 20px 0;
     position: relative;
     width: 90px;
     text-indent: -10000px;
@@ -2383,7 +2390,7 @@
     position: relative;
     display: table;
     float: left;
-    width: 840px;
+    width: 850px;
     z-index: 998;
     behavior: url("/css/common/display-table.min.htc");
     dt-display: table;
@@ -10583,7 +10590,7 @@
   .bBuyingLine .error_list {
     margin-top: 10px;
   }
-  .bBuyingLine.mProductsLine {
+  .bBuyingLine.mSelectedPay {
     background: #f6e0ed;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;

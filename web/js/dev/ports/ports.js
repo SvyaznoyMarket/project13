@@ -442,7 +442,7 @@ window.ANALYTICS = {
     },
 
     GoogleAnalyticsJS : function() {
-		console.group('ports.js::GoogleAnalyticsJS');
+		console.info('ports.js::GoogleAnalyticsJS');
 
 		var
 			route = body.data('template'),
@@ -528,6 +528,60 @@ window.ANALYTICS = {
 			;// end of functions
 
 		action();
+	},
+
+	//SITE-3027 Установка кода TagMan на сайт
+	TagManJS : function() {
+
+		initTagMan = function initTagMan() {
+        	console.info( 'TagManJS init' );
+
+			(function( d,s ) {
+			    var client = 'enterru';
+    		    var siteId = 1;
+
+			  //  do not edit
+			  var a=d.createElement(s),b=d.getElementsByTagName(s)[0];
+			  a.async=true;a.type='text/javascript';
+			  a.src='//sec.levexis.com/clients/'+client+'/'+siteId+'.js';
+			  a.tagman='st='+(+new Date())+'&c='+client+'&sid='+siteId;
+			  b.parentNode.insertBefore( a,b );
+			} ) (document,'script');
+        };
+
+		var
+  			template = body.data('template'),
+  			pageLink = location.href;
+
+		if ( template == 'order_complete' ) {
+			console.info("TagManJS Order Complete");
+
+			var 
+				data = $('#jsOrder').data('value'),
+				orderData = data.orders,
+				orderSum = orderData[0].sum;
+				orderNum = orderData[0].numberErp;
+
+			window.tmParam = {
+				page_type : 'confirmation', // REQ 
+				page_name : template, // REQ 
+				page_url : pageLink, // REQ
+				levrev : orderSum, // REQ when available
+				levordref : orderNum, // REQ when available
+				levresdes : 'confirmation' // REQ when available
+			};
+		}
+		else {
+			console.info("TagManJS Default")
+
+			window.tmParam = {
+				page_type : 'generic', // REQ 
+				page_name : template, // REQ 
+				page_url : pageLink // REQ
+			};
+		};
+
+        initTagMan();
 	},
 
     RetailRocketJS : function() {

@@ -1054,7 +1054,7 @@ class Action {
      * @param \Model\Shop\Entity|null $shop
      * @return \Model\Product\Filter
      */
-    public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity &$brand = null, \Http\Request $request, $shop = null) {
+    public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
         // флаг глобального списка в параметрах запроса
         $isGlobal = self::isGlobal();
         //

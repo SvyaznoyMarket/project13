@@ -20,7 +20,7 @@ class Action {
         }
         $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
 
-        if (empty($searchQuery) || (mb_strlen($searchQuery) < \App::config()->search['queryStringLimit'])) {
+        if (empty($searchQuery) || (mb_strlen($searchQuery) <= \App::config()->search['queryStringLimit'])) {
             $page = new \View\Search\EmptyPage();
             $page->setParam('searchQuery', $searchQuery);
             return new \Http\Response($page->show());
@@ -102,12 +102,18 @@ class Action {
             $params['product'] = ['sort' => [$sortingName => $sortingDirection]];
         }
 
-        // ядерный запрос
-        $result = [];
-        \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
-            $result = $data;
-        });
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
+        try {
+            // ядерный запрос
+            \App::coreClientV2()->addQuery('search/get', $params, [], function ($data) use (&$result) {
+                $result = $data;
+            }, function(\Exception $e) { \App::exception()->remove($e); });
+
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['huge'], 2);
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+
+            $result = [];
+        }
 
         if (!isset($result[1]) || !isset($result[1]['data'])) {
             $page = new \View\Search\EmptyPage();
@@ -278,6 +284,71 @@ class Action {
 
         return new \Http\Response($page->show());
     }
+
+
+    public function count(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new \Exception\NotFoundException('Request is not xml http request');
+        }
+
+
+        $searchQuery = (string)$request->get('q');
+        $encode = mb_detect_encoding($searchQuery, array('UTF-8', 'Windows-1251'), TRUE);
+        switch ($encode) {
+            case 'Windows-1251': {
+                $searchQuery = iconv('Windows-1251', 'UTF-8', $searchQuery);
+            }
+        }
+        $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
+
+        if (empty($searchQuery) || (mb_strlen($searchQuery) < \App::config()->search['queryStringLimit'])) {
+            return new \Http\JsonResponse(array(
+                'success' => false,
+                'count'    => 0,
+            ));
+        }
+
+
+        $categoryId = (int)$request->get('category');
+        if (!$categoryId) $categoryId = null;
+
+        $selectedCategory = $categoryId ? \RepositoryManager::productCategory()->getEntityById($categoryId) : null;
+
+        // запрашиваем фильтры
+        /** @var $filters \Model\Product\Filter\Entity[] */
+        $filters = [];
+        \RepositoryManager::productFilter()->prepareCollectionBySearchText($searchQuery, \App::user()->getRegion(), function($data) use (&$filters) {
+            foreach ($data as $item) {
+                $filters[] = new \Model\Product\Filter\Entity($item);
+            }
+        }, function (\Exception $e) { \App::exception()->remove($e); });
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
+
+        $shop = null;
+        try {
+            if (
+                !\Controller\ProductCategory\Action::isGlobal() &&
+                \App::request()->get('shop') &&
+                \App::config()->shop['enabled']
+            ) {
+                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
+            }
+        } catch (\Exception $e) {}
+
+        // фильтры
+        $brand = null;
+        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+
+        $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
+
+        return new \Http\JsonResponse(array(
+            'success' => true,
+            'count'    => $count,
+        ));
+    }
+
 
     /**
      * @param \Http\Request $request
