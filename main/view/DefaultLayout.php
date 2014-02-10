@@ -352,6 +352,8 @@ class DefaultLayout extends Layout {
 
             // вызов JS Alexa-кода
             $return .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
+
+            $return .= '<div id="desertJS" class="jsanalytics"></div>';
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
