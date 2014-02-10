@@ -21,6 +21,10 @@ class Entity {
     private $productBuyMethod;
     /** @var bool */
     private $showProductState;
+    /** @var int */
+    private $categoryId;
+    /** @var string */
+    private $content;
 
     public function __construct(array $data = []) {
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
@@ -31,6 +35,8 @@ class Entity {
         if (array_key_exists('meta_description', $data)) $this->setMetaDescription($data['meta_description']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('productBuyMethod', $data)) $this->setProductBuyMethod($data['productBuyMethod']);
+        if (array_key_exists('category_id', $data)) $this->setCategoryId($data['category_id']);
+        if (array_key_exists('content', $data)) $this->setContent($data['content']);
     }
 
     /**
@@ -157,5 +163,33 @@ class Entity {
      */
     public function getShowProductState() {
         return $this->showProductState;
+    }
+
+    /**
+     * @param int $categoryId
+     */
+    public function setCategoryId($categoryId) {
+        $this->categoryId = (int)$categoryId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCategoryId() {
+        return $this->categoryId;
+    }
+
+    /**
+     * @param string $content
+     */
+    public function setContent($content) {
+        $this->content = (string)$content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent() {
+        return $this->content;
     }
 }
