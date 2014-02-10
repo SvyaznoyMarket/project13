@@ -15,6 +15,13 @@ class Admitad {
         $links = [];
 
         try {
+            $admitadUserId = \App::request()->cookies->get('cpamit_uid');
+
+            if (!$admitadUserId) {
+                \App::logger()->error(sprintf('В куках отсутсвует cpamit_uid'));
+                $admitadUserId = 0;
+            }
+
             foreach ($order->getProduct() as $orderProduct) {
                 /** @var $product \Model\Product\Entity */
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
@@ -28,14 +35,6 @@ class Admitad {
 
                 $admitadCategoryType = self::getCategoryType($categories);
                 if (!$admitadCategoryType) continue;
-
-                $admitadUserId = \App::request()->cookies->get('admitad_uid');
-                /*
-                if (!$admitadUserId) {
-                    \App::logger()->error(sprintf('В куках отсутсвует admitad_uid'));
-                    continue;
-                }
-                */
 
                 $link = strtr('http://ad.admitad.com/register/cdaf092422/script_type/img/payment_type/sale/product/{admitad.category.type}/cart/{order.sum}/order_id/{order.number}/uid/{admitad.user.id}/tracking/{category.token}/', [
                     '{admitad.category.type}' => $admitadCategoryType,
