@@ -21,6 +21,6 @@ class EmptyPage extends \View\DefaultLayout {
     }
 
     public function slotBodyDataAttribute() {
-        return 'product_catalog';
+        return 'search_catalog';
     }
 }

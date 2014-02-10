@@ -108,6 +108,13 @@ class Layout extends \View\DefaultLayout {
     }
 
     public function slotBodyDataAttribute() {
+        $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
+        if ($category) {
+            /** @var $category \Model\Product\Category\Entity */
+            if ($category->isRoot()) {
+                return 'product_catalog_root';
+            }
+        }
         return 'product_catalog';
     }
 
