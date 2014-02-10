@@ -3233,26 +3233,77 @@ $(document).ready(function() {
 	/* promo catalog */
 	if ( $('#promoCatalog').length ) {
 		console.log('promoCatalog promoSlider');
-		var data = $('#promoCatalog').data('slides'),
-		
-		//первоначальная настройка
+
+		var
+			promoCatalog = $('#promoCatalog'),
+			data = promoCatalog.data('slides'),
+
+			//первоначальная настройка
 			slider_SlideCount = data.length, //количество слайдов
-			catalogPaginator = new EnterPaginator('promoCatalogPaginator',slider_SlideCount, 12, 1);
+			catalogPaginator = new EnterPaginator('promoCatalogPaginator',slider_SlideCount, 12, 1),
+
+			activeInterval = promoCatalog.data('use-interval') !== undefined ? promoCatalog.data('use-interval') : false,
+			interval = null,
+			toSlide = null,
+			hash;
 		// end of vars
 
-		var initSlider = function initSlider() {
-			for ( var slide in data ) {
-				var slideTmpl = tmpl('slide_tmpl', data[slide]);
+		var
+			initSlider = function initSlider() {
+				var
+					slide,
+					slideTmpl;
+				// end of vars
 
-				$('.bPromoCatalogSliderWrap').append(slideTmpl);
+				for ( slide in data ) {
+					slideTmpl = tmpl('slide_tmpl', data[slide]);
 
-				if ( $('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).attr('href') === '' ) {
-					$('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).removeAttr('href');
+					$('.bPromoCatalogSliderWrap').append(slideTmpl);
+
+					if ( $('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).attr('href') === '' ) {
+						$('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).removeAttr('href');
+					}
+
+					$('.bPromoCatalogNav').append('<a id="promoCatalogSlide' + slide + '" href="#' + slide + '" class="bPromoCatalogNav_eLink">' + ((slide * 1) + 1) + '</a>');
+				}
+			},
+
+			/**
+			 * Задаем интервал для пролистывания слайдов
+			 */
+			setScrollInterval = function setScrollInterval( slide ) {
+				var time;
+				// end of vars
+
+				if ( !activeInterval ) {
+					return;
 				}
 
-				$('.bPromoCatalogNav').append('<a id="promoCatalogSlide' + slide + '" href="#' + slide + '" class="bPromoCatalogNav_eLink">' + ((slide * 1) + 1) + '</a>');
-			}
-		};
+				slide = slide ? slide : 0;
+				time = data[slide]['time'] ? data[slide]['time'] : 3000;
+
+				interval = setTimeout(function(){
+					slide++;
+
+					if ( slider_SlideCount <= slide ) {
+						slide = 0;
+					}
+
+					moveSlide(slide);
+					setScrollInterval(slide);
+				}, time);
+			},
+
+			/**
+			 * Убираем интервал для пролистывания слайдов
+			 */
+			removeScrollInterval = function removeScrollInterval() {
+				if ( !activeInterval ) {
+					return;
+				}
+
+				clearTimeout(interval);
+			};
 
 		initSlider(); //запуск слайдера
 
@@ -3263,22 +3314,32 @@ $(document).ready(function() {
 
 		//листание стрелками
 		$('.bPromoCatalogSlider_eArrow').bind('click', function() {
-			var pos = ( $(this).hasClass('mArLeft') ) ? '-1' : '1';
+			var
+				pos = ( $(this).hasClass('mArLeft') ) ? '-1' : '1',
+				slide = nowSlide + pos * 1;
+			// end of vars
 
-			moveSlide(nowSlide + pos * 1);
+			removeScrollInterval();
+			moveSlide(slide);
+			setScrollInterval(slide);
 
 			return false;
 		});
 
 		//пагинатор
 		$('.bPaginator_eLink').bind('click', function() {
+			var link;
+			// end of vars
+
 			if ( $(this).hasClass('active') ) {
 				return false;
 			}
 
-			var link = $(this).attr('href').slice(1) * 1;
+			link = $(this).attr('href').slice(1) * 1;
 
+			removeScrollInterval();
 			moveSlide(link);
+			setScrollInterval(link);
 
 			return false;
 		});
@@ -3307,13 +3368,15 @@ $(document).ready(function() {
 			catalogPaginator.setActive(slide);
 		};
 
-		var hash = window.location.hash;
+		hash = window.location.hash;
 
 		if ( hash.indexOf('slide') + 1 ) {
-			var toSlide = parseInt(hash.slice(6), 10) - 1;
+			toSlide = parseInt(hash.slice(6), 10) - 1;
 
 			moveSlide(toSlide);
 		}
+
+		setScrollInterval( toSlide ? (toSlide) : null);
 	}
 })(jQuery);
  

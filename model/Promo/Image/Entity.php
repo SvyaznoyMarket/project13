@@ -17,6 +17,8 @@ class Entity {
     private $item = [];
     /** @var string */
     private $link;
+    /** @var int */
+    private $time;
 
     /**
      * @param array $data
@@ -25,6 +27,7 @@ class Entity {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('url', $data)) $this->setUrl($data['url']);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
+        if (array_key_exists('time', $data)) $this->setTime($data['time']);
         if (array_key_exists('action', $data)) $this->setAction($data['action']);
         if (array_key_exists('item', $data)) {
             if (!is_array($data['item'])) {
@@ -102,5 +105,19 @@ class Entity {
      */
     public function getUrl() {
         return $this->url;
+    }
+
+    /**
+     * @param int $time
+     */
+    public function setTime($time) {
+        $this->time = $time;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTime() {
+        return $this->time;
     }
 }
