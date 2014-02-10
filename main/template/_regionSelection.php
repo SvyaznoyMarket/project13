@@ -22,7 +22,7 @@ $count = count($regions);
     <form class="ui-css popupRegion__eForm">
         <input id="jscity" data-url-autocomplete="<?= $page->url('region.autocomplete') ?>" placeholder="Название города" class="bBuyingLine__eText font18" value="<?= $currentRegion->getName() ?>" />
         <a class="inputClear" href="#">&times;</a>
-        <input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled"/>
+        <input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled" disabled />
 
         <div id="jscities" class="bSelectRegionDd" style="position:relative"></div>
     </form>
