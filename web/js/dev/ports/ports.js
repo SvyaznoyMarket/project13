@@ -287,7 +287,7 @@ window.ANALYTICS = {
 				}());
 			},
 
-			backet = function() {
+			cart = function() {
 				window.xcnt_basket_products = data.productIds; 			// где XX,YY,ZZ – это ID товаров в корзине через запятую.
 				window.xcnt_basket_quantity = data.productQuantities;	// где X,Y,Z – это количество соответствующих товаров (опционально).
 			},
@@ -305,8 +305,8 @@ window.ANALYTICS = {
 		;// end of functions
 
 
-		if ( 'basket' === page ) {
-			backet();
+		if ( 'cart' === page ) {
+			cart();
 		} else if ( 'order.complete' === page ) {
 			complete();
 		} else if ( 'product' === page ) {

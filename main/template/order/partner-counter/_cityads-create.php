@@ -14,7 +14,7 @@ foreach ($user->getCart()->getProducts() as $cartProduct) {
 }
 
 $data = [
-    'page'              => 'basket',
+    'page'              => 'cart',
     'productIds'        => implode(',', $productIds),       // где XX,YY,ZZ – это ID товаров в корзине через запятую.
     'productQuantities' => implode(',', $productQuantities),// где X,Y,Z – это количество соответствующих товаров (опционально).
 ];
