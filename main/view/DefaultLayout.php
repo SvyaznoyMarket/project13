@@ -308,7 +308,7 @@ class DefaultLayout extends Layout {
                 'order.complete',
                 'cart',
             ])) {
-                $return .= "\n\n" . $this->tryRender('partner-counter/_cityads');
+                $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
 
             // на всех страницах сайта, кроме shop.*

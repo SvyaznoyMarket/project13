@@ -120,7 +120,8 @@
 			activeInterval = promoCatalog.data('use-interval') !== undefined ? promoCatalog.data('use-interval') : false,
 			interval = null,
 			toSlide = null,
-			hash;
+			hash,
+			scrollingDuration = 500;
 		// end of vars
 
 		var
@@ -147,15 +148,24 @@
 			 * Задаем интервал для пролистывания слайдов
 			 */
 			setScrollInterval = function setScrollInterval( slide ) {
-				var time;
+				var
+					time,
+					additionalTime = 0;
 				// end of vars
 
 				if ( !activeInterval ) {
 					return;
 				}
 
-				slide = slide ? slide : 0;
+				if ( slide == undefined ) {
+					slide = 0;
+				}
+				else {
+					additionalTime = scrollingDuration;
+				}
+
 				time = data[slide]['time'] ? data[slide]['time'] : 3000;
+				time = time + additionalTime;
 
 				interval = setTimeout(function(){
 					slide++;
@@ -235,7 +245,7 @@
 				$('.bPromoCatalogSlider_eArrow.mArRight').show();
 			}
 
-			$('.bPromoCatalogSliderWrap').animate({'left': -(slider_SlideW * slide)},500, function() {
+			$('.bPromoCatalogSliderWrap').animate({'left': -(slider_SlideW * slide)}, scrollingDuration, function() {
 				nowSlide = slide;
 			});
 

@@ -237,16 +237,16 @@ class IndexAction {
 
         if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
             try {
-                // если аксессуары уже получены в filterAccessoryId для них запрос не делаем
                 $result = [];
                 foreach ($productsCollection as $chunk) {
                     $result = array_merge($result, $chunk);
                 }
 
-                $products = \RepositoryManager::review()->addScores($result);
-
+                // если аксессуары уже получены в filterAccessoryId для них запрос не делаем
                 if(!empty($accessoryItems)) {
-                    $products = array_merge($accessoryItems, $products);
+                    $products = array_merge($accessoryItems, $result);
+                } else {
+                    $products = \RepositoryManager::review()->addScores($result);
                 }
             } catch (\Exception $e) {
                 \App::exception()->add($e);
