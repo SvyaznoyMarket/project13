@@ -2221,8 +2221,10 @@ img[height="0"] {
     position: relative;
     overflow: hidden;
     height: 132px;
-    background: url("/styles/tchiboNavSlider/img/shadow.gif") no-repeat 50% 100%;
+    background: url("/styles/tchiboNavSlider/img/shadow.png") no-repeat 50% 100%;
     font-size: 0;
+    margin-bottom: -13px;
+    z-index: 10;
   }
   .tchiboNav__title {
     background: url("/styles/tchiboNavSlider/img/logo.jpg") no-repeat 0 0;
@@ -2308,7 +2310,7 @@ img[height="0"] {
     padding: 25px 0 10px 0;
     position: absolute;
     top: 15px;
-    width: 740px;
+    width: 800px;
     z-index: 0;
   }
   .tchiboNav__sublist .sublistItem {
