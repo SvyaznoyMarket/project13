@@ -3,6 +3,8 @@
 namespace View\Jewel\ProductCategory;
 
 class Layout extends \View\DefaultLayout {
+    use \View\ProductCategory\layoutTrait;
+
     protected $layout  = 'layout-oneColumn';
 
     public function __construct() {
@@ -106,19 +108,6 @@ class Layout extends \View\DefaultLayout {
 
     public function slotBodyClassAttribute() {
         return 'jewel';
-    }
-
-    public function slotBodyDataAttribute() {
-        return 'product_catalog';
-    }
-
-    public function slotInnerJavascript() {
-        $category = $this->getParam('category');
-
-        return ''
-            . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'category', 'pcat' => $category->getToken(), ]])
-            . "\n\n"
-            . $this->render('_innerJavascript');
     }
 
     public function slotContentHead() {
