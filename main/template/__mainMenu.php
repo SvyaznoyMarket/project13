@@ -26,14 +26,22 @@ $count = count($menu);
         .mId<?= $i ?>:hover .bMainMenuLevel-1__eIcon{
         <?= $iMenu->cssHover ?>
         }
-        <? if ($iMenu->color): ?>
+        <? if ($iMenu->color || $iMenu->titleCss): ?>
         .mId<?= $i ?> .bMainMenuLevel-1__eTitle{
-            color: <?=$iMenu->color ?>;
+            <? if ($iMenu->titleCss): ?>
+                <?= $iMenu->titleCss ?>
+            <? else: ?>
+                color: <?=$iMenu->color ?>;
+            <? endif ?>
         }
         <? endif ?>
-        <? if ($iMenu->colorHover): ?>
+        <? if ($iMenu->colorHover || $iMenu->titleHoverCss): ?>
         .mId<?= $i ?>:hover .bMainMenuLevel-1__eTitle{
-            color: <?=$iMenu->colorHover ?>;
+            <? if ($iMenu->titleHoverCss): ?>
+                <?= $iMenu->titleHoverCss ?>
+            <? else: ?>
+                color: <?=$iMenu->colorHover ?>;
+            <? endif ?>
         }
         <? endif ?>
 
