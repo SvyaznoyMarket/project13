@@ -539,9 +539,7 @@ window.ANALYTICS = {
 			    } );
 			},
 
-			ga_orderComplete = function(){
-
-			},
+			ga_orderComplete = function() {},
 
 			action = function ga_action() {
 				console.log( 'GoogleAnalyticsJS action' );
