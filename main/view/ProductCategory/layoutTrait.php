@@ -9,7 +9,7 @@ trait layoutTrait {
         if ($category) {
             /** @var $category \Model\Product\Category\Entity */
             if ($category->isRoot()) {
-                return 'product_catalog_root';
+                return 'product_catalog root';
             }
         }
         return 'product_catalog';

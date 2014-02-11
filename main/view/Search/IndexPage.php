@@ -42,7 +42,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotBodyDataAttribute() {
-        return 'search_catalog';
+        return 'product_catalog search';
     }
 
     public function slotContent() {
