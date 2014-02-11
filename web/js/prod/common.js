@@ -1508,6 +1508,10 @@ $(document).ready(function(){
 			'default': function( res ) {
 				console.log('Обработчик ошибки');
 
+				if ( !res.redirect ) {
+					res.redirect = window.location.href;
+				}
+
 				if ( res.error && res.error.message ) {
 					this.showError(res.error.message, function() {
 						document.location.href = res.redirect;
