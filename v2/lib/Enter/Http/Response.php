@@ -64,7 +64,7 @@ class Response {
     const STATUS_NOT_EXTENDED = 510;                                                // RFC2774
     const STATUS_NETWORK_AUTHENTICATION_REQUIRED = 511;
 
-    /** @var Bag */
+    /** @var ResponseHeaderBag */
     public $headers;
     /** @var string */
     public $content;
@@ -141,20 +141,166 @@ class Response {
     ];
 
     public function __construct($content = '', $statusCode = self::STATUS_OK) {
-        $this->headers = new Bag();
+        $this->headers = new ResponseHeaderBag();
 
         $this->content = $content;
         $this->statusCode = $statusCode;
+        $this->version = '1.0';
+
+        $date = new \DateTime(null, new \DateTimeZone('UTC'));
+        $date->setTimezone(new \DateTimeZone('UTC'));
+        $this->headers['Date'] = $date->format('D, d M Y H:i:s') . ' GMT';
     }
 
+    public function __clone() {
+        $this->headers = clone $this->headers;
+    }
+
+    /**
+     * @return $this
+     */
     public function send() {
-        // TODO send headers
-        echo $this->content;
+        $this->sendHeaders();
+        $this->sendContent();
 
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
         }
 
         return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function sendHeaders() {
+        // headers have already been sent by the developer
+        if (headers_sent()) {
+            return $this;
+        }
+
+        // status
+        header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText), true, $this->statusCode);
+
+        // headers
+        foreach ($this->headers as $name => $value) {
+            header($name . ': ' . $value, false, $this->statusCode);
+        }
+
+        // cookies
+        foreach ($this->headers->getCookies() as $cookie) {
+            setcookie($cookie->name, $cookie->value, $cookie->expiredAt, $cookie->path, $cookie->domain, $cookie->isSecure, $cookie->isHttpOnly);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function sendContent() {
+        echo $this->content;
+
+        return $this;
+    }
+
+    /**
+     * Is response invalid?
+     *
+     * @return bool
+     */
+    public function isInvalid() {
+        return $this->statusCode < 100 || $this->statusCode >= 600;
+    }
+
+    /**
+     * Is response informative?
+     *
+     * @return bool
+     */
+    public function isInformational() {
+        return $this->statusCode >= 100 && $this->statusCode < 200;
+    }
+
+    /**
+     * Is response successful?
+     *
+     * @return bool
+     */
+    public function isSuccessful() {
+        return $this->statusCode >= 200 && $this->statusCode < 300;
+    }
+
+    /**
+     * Is the response a redirect?
+     *
+     * @return bool
+     */
+    public function isRedirection() {
+        return $this->statusCode >= 300 && $this->statusCode < 400;
+    }
+
+    /**
+     * Is there a client error?
+     *
+     * @return bool
+     */
+    public function isClientError() {
+        return $this->statusCode >= 400 && $this->statusCode < 500;
+    }
+
+    /**
+     * Was there a server side error?
+     *
+     * @return bool
+     */
+    public function isServerError() {
+        return $this->statusCode >= 500 && $this->statusCode < 600;
+    }
+
+    /**
+     * Is the response OK?
+     *
+     * @return bool
+     */
+    public function isOk() {
+        return 200 === $this->statusCode;
+    }
+
+    /**
+     * Is the response forbidden?
+     *
+     * @return bool
+     */
+    public function isForbidden() {
+        return 403 === $this->statusCode;
+    }
+
+    /**
+     * Is the response a not found error?
+     *
+     * @return bool
+     */
+    public function isNotFound() {
+        return 404 === $this->statusCode;
+    }
+
+    /**
+     * Is the response a redirect of some form?
+     *
+     * @param $location
+     * @return bool
+     */
+    public function isRedirect($location = null) {
+        return in_array($this->statusCode, array(201, 301, 302, 303, 307, 308)) && (null === $location ?: $location == $this->headers['Location']);
+    }
+
+    /**
+     * Is the response empty?
+     *
+     * @return bool
+     */
+    public function isEmpty() {
+        return in_array($this->statusCode, array(201, 204, 304));
     }
 }

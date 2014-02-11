@@ -15,14 +15,14 @@ class Request {
     public $data;
     /**
      * @name The COOKIE parameters
-     * @var CookieBag
+     * @var Bag
      */
-    public $cookie;
+    public $cookies;
     /**
      * @name The FILES parameters
      * @var FileBag
      */
-    public $file;
+    public $files;
     /**
      * @name The SERVER parameters
      * @var Bag
@@ -40,16 +40,16 @@ class Request {
     public function __construct($query = [], $data = [], $cookie = [], $file = [], $server = []) {
         $this->query = new Bag($query);
         $this->data = new Bag($data);
-        $this->cookie = new CookieBag($cookie);
-        $this->file = new FileBag($file);
+        $this->cookies = new Bag($cookie);
+        $this->files = new FileBag($file);
         $this->server = new Bag($server);
     }
 
     public function __clone() {
         $this->query = clone $this->query;
         $this->data = clone $this->data;
-        $this->cookie = clone $this->cookie;
-        $this->file = clone $this->file;
+        $this->cookies = clone $this->cookies;
+        $this->files = clone $this->files;
         $this->server = clone $this->server;
     }
 

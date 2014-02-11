@@ -17,7 +17,7 @@ class Region {
     public function getIdByHttpRequest(Http\Request $request) {
         $config = $this->getConfig()->region;
 
-        $id = (int)$request->cookie[$config->cookieName] ?: $config->defaultId;
+        $id = (int)$request->cookies[$config->cookieName] ?: $config->defaultId;
 
         return $id;
     }
