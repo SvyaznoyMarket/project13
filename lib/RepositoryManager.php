@@ -264,6 +264,21 @@ class RepositoryManager {
     }
 
     /**
+     * dataStore - доступ к json-файлам
+     *
+     * @return Model\Menu\Repository
+     */
+    static function dataStore(/*$fileName*/) {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\DataStore\Repository(\App::dataStoreClient());
+        }
+
+        return $instance;
+    }
+
+    /**
      * @return Model\Subscribe\Channel\Repository
      */
     static function subscribeChannel() {

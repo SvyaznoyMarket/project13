@@ -63,7 +63,26 @@ class DefaultLayout extends Layout {
     }
 
     public function slotHeader() {
-        return $this->render('_header', $this->params);
+        $sFormRepo = \RepositoryManager::dataStore(/*'subscribe-form.json'*/);
+        /** @var @var $sFormRepo \Model\DataStore\Repository */
+
+        $subscribeForm = (array)$sFormRepo->getData('subscribe-form.json');
+
+        if (!isset($subscribeForm['mainText'])) {
+            $subscribeForm['mainText'] = '!Подпишитесь на рассылку и будьте в курсе акций, скидок и суперцен!';
+        }
+
+        if (!isset($subscribeForm['inputText'])) {
+            $subscribeForm['inputText'] = 'Введите Ваш e-mail';
+        }
+
+        if (!isset($subscribeForm['buttonText'])) {
+            $subscribeForm['buttonText'] = 'Подписаться';
+        }
+
+        return $this->render('_header',
+            $this->params + ['subscribeForm' => $subscribeForm]
+        );
     }
 
     public function slotSeoContent() {
