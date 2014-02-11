@@ -186,6 +186,17 @@
 
 					config.userInfo = userInfo;
 
+					if ( !dCook.hasItem(authorized_cookie) ) {
+						if ( userInfo && null !== userInfo.id ) {
+							console.log('update userInfo: enable authorized_cookie');
+							dCook.setItem(authorized_cookie, 1, 60*60, '/'); // on
+						}
+						else {
+							console.log('update userInfo: disable authorized_cookie');
+							dCook.setItem(authorized_cookie, 0, 60*60, '/'); // off
+						}
+					}
+
 					body.trigger('userLogged', [userInfo]);
 				};
 			
@@ -270,11 +281,14 @@
 	 * @type	{BlackBox}
 	 */
 	utils.blackBox = new BlackBox(userUrl);
-	console.log('utils.blackBox created. CookieItem is:');
-	console.log(dCook.getItem(authorized_cookie));
+	console.log('utils.blackBox created.');
 
-	if ( typeof(dCook.getItem(authorized_cookie)) ) {
-		loadBlackBox = Boolean ( dCook.getItem(authorized_cookie) );
+	if ( dCook.hasItem(authorized_cookie) ) {
+		loadBlackBox = (1 == dCook.getItem(authorized_cookie)) ? true : false;
+
+		console.log('Authorized CookieItem is:');
+		console.log(dCook.getItem(authorized_cookie));
+		console.log(loadBlackBox);
 	}
 
 	if ( loadBlackBox ) {

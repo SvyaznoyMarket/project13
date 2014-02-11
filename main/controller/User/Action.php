@@ -112,6 +112,7 @@ class Action {
                         : new \Http\RedirectResponse($this->redirect);
 
                     \App::user()->signIn($userEntity, $response);
+                    //\Session\User::enableInfoCookie($response); // — делаем внутри signIn()
 
                     try {
                         \App::coreClientV2()->query('user/update', ['token' => \App::user()->getToken()], [
@@ -174,6 +175,7 @@ class Action {
 
         $user->removeToken($response);
         $user->setCacheCookie($response);
+        \Session\User::disableInfoCookie($response);
 
         // SITE-1763
         $user->getCart()->clear();
