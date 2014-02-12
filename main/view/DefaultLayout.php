@@ -63,13 +63,10 @@ class DefaultLayout extends Layout {
     }
 
     public function slotHeader() {
-        $sFormRepo = \RepositoryManager::dataStore(/*'subscribe-form.json'*/);
-        /** @var @var $sFormRepo \Model\DataStore\Repository */
-
-        $subscribeForm = (array)$sFormRepo->getData('subscribe-form.json');
+        $subscribeForm = (array) \App::dataStoreClient()->query('subscribe-form.json');
 
         if (!isset($subscribeForm['mainText'])) {
-            $subscribeForm['mainText'] = '!Подпишитесь на рассылку и будьте в курсе акций, скидок и суперцен!';
+            $subscribeForm['mainText'] = 'Подпишитесь на рассылку и будьте в курсе акций, скидок и суперцен!';
         }
 
         if (!isset($subscribeForm['inputText'])) {
