@@ -2634,9 +2634,9 @@
 			onChange:function( count ) {
 				console.info('counter change');
 				console.log(count);
-				
+
 				var
-					seturl = $(this).data('seturl'),
+					seturl = $(this).data('seturl') || '',
 					newURl = seturl.addParameterToUrl('quantity', count),
 					reqArray;
 				// end of vars

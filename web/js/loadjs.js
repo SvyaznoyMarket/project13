@@ -91,7 +91,7 @@
 
 		debug = false,
 		pageConfig = $('#page-config').data('value'),
-		templateType = document.body.getAttribute('data-template' ),
+		templateType = document.body.getAttribute('data-template') || '',
 		templSep = templateType.indexOf(' ')
 	; // end of vars
 
