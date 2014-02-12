@@ -29,6 +29,10 @@ class RouteAction {
 
         $actionData = [];
         foreach ($actions as $action) {
+            $actionItem = [
+                'success' => false,
+            ];
+
             $action = array_merge([
                 'url'    => null,
                 'method' => 'GET',
@@ -65,7 +69,7 @@ class RouteAction {
                 $response = call_user_func_array($actionCall, $actionParams);
                 if ($response instanceof \Http\JsonResponse) {
                     $actionItem = $response->getData();
-                } else {
+                } else if ($response instanceof \Http\Response) {
                     $actionItem = $response->getContent();
                 }
             } catch (\Exception $e) {
