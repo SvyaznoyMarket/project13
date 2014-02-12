@@ -3,7 +3,7 @@
 namespace View\Jewel\ProductCategory;
 
 class Layout extends \View\DefaultLayout {
-    use \View\ProductCategory\layoutTrait;
+    use \View\ProductCategory\LayoutTrait;
 
     protected $layout  = 'layout-oneColumn';
 

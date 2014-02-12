@@ -2,7 +2,7 @@
 
 namespace View\ProductCategory;
 
-trait layoutTrait {
+trait LayoutTrait {
 
     public function slotBodyDataAttribute() {
         $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;

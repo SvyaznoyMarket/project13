@@ -3,7 +3,7 @@
 namespace View\ProductCategory;
 
 class Layout extends \View\DefaultLayout {
-    use layoutTrait;
+    use LayoutTrait;
 
     public function prepare() {
         /** @var $category \Model\Product\Category\Entity */
