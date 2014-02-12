@@ -111,7 +111,7 @@ class Entity {
      * @param int $time
      */
     public function setTime($time) {
-        $this->time = $time;
+        $this->time = (int)$time;
     }
 
     /**
