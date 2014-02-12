@@ -732,16 +732,23 @@ return [
         'pattern' => '/enterprize',
         'action'  => ['Enterprize\Action', 'index'],
     ],
-    // enterprize
     'enterprize.create' => [
         'pattern' => '/enterprize/create',
         'action'  => ['Enterprize\Action', 'create'],
         'method'  => ['POST'],
     ],
-    // enterprize
     'enterprize.get' => [
         'pattern' => '/enterprize/get',
         'action'  => ['Enterprize\Action', 'get'],
+    ],
+    'enterprize.form.show' => [
+        'pattern' => '/enterprize/{enterprizeToken}',
+        'action'  => ['Enterprize\FormAction', 'show'],
+    ],
+    'enterprize.form.update' => [
+        'pattern' => '/enterprize/form/update',
+        'action'  => ['Enterprize\FormAction', 'update'],
+        'method'  => ['POST'],
     ],
 
     // git pull
