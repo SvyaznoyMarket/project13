@@ -12,7 +12,7 @@ class NewPage extends Layout {
     }
 
     public function slotBodyDataAttribute() {
-        return 'order.new';
+        return 'order_new';
     }
 
     // public function slotYandexMetrika() {
