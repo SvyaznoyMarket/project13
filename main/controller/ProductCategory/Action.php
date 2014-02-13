@@ -442,7 +442,7 @@ class Action {
             return new \Http\RedirectResponse(\App::router()->generate('product.category', ['categoryPath' => $category->getPath()]));
         }
 
-        if ($categoryClass) {
+        if ($categoryClass && ('default' !== $categoryClass)) {
             if ('jewel' == $categoryClass) {
                 if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\categoryDirect', 134);
 
