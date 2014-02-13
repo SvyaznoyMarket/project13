@@ -1,78 +1,39 @@
 <?php
 
-$response = null;
-$applicationDir = realpath(__DIR__ . '/..');
+// start time
 $startAt = microtime(true);
 
+// application dir
+$applicationDir = realpath(__DIR__ . '/..');
+
+// environment
+$environment = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'dev';
+
+// response
+$response = null;
+
+// debug
+$debug = true === call_user_func(require $applicationDir . '/v2/config/debug.php');
+
 // error reporting
-error_reporting(-1);
-ini_set('display_errors', true); // ini_set('display_errors', false);
-ini_set('log_errors', true);
-ini_set('error_log', $applicationDir . '/log/php-error.log');
-ini_set('ignore_repeated_source', false);
-ini_set('ignore_repeated_errors', true);
+call_user_func(require $applicationDir . '/v2/config/error-report.php', $debug);
 
 // autoload
-set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, [
-    realpath(__DIR__ . '/../v2/lib'),
-]));
-spl_autoload_register(function ($class) {
-    if ($class[0] === '\\') {
-        $class = substr($class, 1);
-    }
+call_user_func(require $applicationDir . '/v2/config/autoload.php', $applicationDir);
 
-    if (
-        (0 !== strpos($class, 'Enter'))
-        && (0 !== strpos($class, 'EnterSite'))
-    ) {
-        return;
-    }
-
-    //echo str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php' . PHP_EOL;
-
-    include_once str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-});
+// request
+$request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
 
 // config
 (new \EnterSite\Action\ImportConfig())->execute($applicationDir, $applicationDir . '/config/config-local.php');
 //(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . '/v2/config/config-local.php');
 //(new \EnterSite\Action\LoadCachedConfig())->execute($applicationDir . '/v2/config/config-local.json');
 
-// shutdown handler
-register_shutdown_function(function () use (&$response, &$startAt) {
-    if (!$response instanceof \Enter\Http\Response) {
-        $response = new \Enter\Http\Response();
-    }
-
-    $error = error_get_last();
-    if ($error && (error_reporting() & $error['type'])) {
-        $response->statusCode = \Enter\Http\Response::STATUS_INTERNAL_SERVER_ERROR;
-    }
-
-    (new \EnterSite\Action\DumpLogger())->execute();
-    $endAt = microtime(true);
-    (new \EnterSite\Action\TimerDebug())->execute($response, $startAt, $endAt);
-    //(new \EnterSite\Action\Debug())->execute($response, $startAt, $endAt);
-
-    $response->send();
-});
+// shutdown handler, send response
+(new \EnterSite\Action\RegisterShutdown())->execute($response, $startAt);
 
 // error handler
-set_error_handler(function($code, $message, $file, $line) use (&$response) {
-    switch ($code) {
-        case E_USER_ERROR:
-            if ($response instanceof \Enter\Http\Response) {
-                $response->statusCode = \Enter\Http\Response::STATUS_INTERNAL_SERVER_ERROR;
-            }
+(new \EnterSite\Action\HandleError())->execute($response);
 
-            return true;
-    }
-
-    return false;
-});
-
-$request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
-
+// response
 $response = new \Enter\Http\Response();
-
-$response->send();
