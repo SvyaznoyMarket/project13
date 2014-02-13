@@ -66,6 +66,10 @@ class Entity {
     private $enterprizeCoupon;
     /** @var string */
     private $sclubCardnumber;
+    /** @var bool */
+    private $isEmailConfirmed;
+    /** @var bool */
+    private $isPhoneConfirmed;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -97,6 +101,8 @@ class Entity {
         if (array_key_exists('geo', $data) && is_array($data['geo'])) $this->setCity(new \Model\Region\Entity($data['geo']));
         if (array_key_exists('coupon_enter_prize', $data)) $this->setEnterprizeCoupon($data['coupon_enter_prize']);
         if (array_key_exists('svyaznoy_club_card_number', $data)) $this->setSclubCardnumber($data['svyaznoy_club_card_number']);
+        if (array_key_exists('is_email_confirmed', $data)) $this->setIsEmailConfirmed($data['is_email_confirmed']);
+        if (array_key_exists('is_phone_confirmed', $data)) $this->setIsPhoneConfirmed($data['is_phone_confirmed']);
     }
 
     /**
@@ -538,5 +544,37 @@ class Entity {
      */
     public function setSclubCardnumber($sclubCardnumber) {
         $this->sclubCardnumber = str_replace(' ','', (string)$sclubCardnumber);
+    }
+
+    /**
+     * @param boolean $isEmailConfirmed
+     */
+    public function setIsEmailConfirmed($isEmailConfirmed)
+    {
+        $this->isEmailConfirmed = (bool)$isEmailConfirmed;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsEmailConfirmed()
+    {
+        return $this->isEmailConfirmed;
+    }
+
+    /**
+     * @param boolean $isPhoneConfirmed
+     */
+    public function setIsPhoneConfirmed($isPhoneConfirmed)
+    {
+        $this->isPhoneConfirmed = (bool)$isPhoneConfirmed;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPhoneConfirmed()
+    {
+        return $this->isPhoneConfirmed;
     }
 }
