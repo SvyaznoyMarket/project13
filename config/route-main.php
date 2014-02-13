@@ -752,10 +752,6 @@ return [
         'method'  => ['POST'],
     ],
     // enterprize confirmPhone
-    'enterprize.confirmPhone.show' => [
-        'pattern' => '/enterprize/confirm-phone/{enterprizeToken}',
-        'action'  => ['Enterprize\ConfirmPhoneAction', 'show'],
-    ],
     'enterprize.confirmPhone.create' => [
         'pattern' => '/enterprize/confirm-phone/create',
         'action'  => ['Enterprize\ConfirmPhoneAction', 'create'],
@@ -765,6 +761,10 @@ return [
         'pattern' => '/enterprize/confirm-phone/check',
         'action'  => ['Enterprize\ConfirmPhoneAction', 'check'],
         'method'  => ['POST'],
+    ],
+    'enterprize.confirmPhone.show' => [
+        'pattern' => '/enterprize/confirm-phone/{enterprizeToken}',
+        'action'  => ['Enterprize\ConfirmPhoneAction', 'show'],
     ],
 
     // git pull
