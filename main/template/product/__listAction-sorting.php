@@ -9,7 +9,7 @@ return function(
         $helper,
         $productSorting
     )) ?>
-    <script id="tplSorting" type="text/html" data-partial="{}">
+    <script class="tplSorting" type="text/html" data-partial="{}">
         <?= file_get_contents(\App::config()->templateDir . '/product/_listAction-sorting.mustache') ?>
     </script>
 

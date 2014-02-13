@@ -35,6 +35,10 @@ class Entity {
     public $cssHover;
     /** @var int */
     public $priority;
+    /** @var string */
+    public $titleCss;
+    /** @var string */
+    public $titleHoverCss;
 
     public function __construct(array $data = []) {
         if (isset($data['name'])) $this->name = (string)$data['name'];
@@ -45,6 +49,8 @@ class Entity {
         if (isset($data['colorHover'])) $this->colorHover = (string)$data['colorHover'];
         if (isset($data['css'])) $this->css = (string)$data['css'];
         if (isset($data['cssHover'])) $this->cssHover = (string)$data['cssHover'];
+        if (isset($data['titleCss'])) $this->titleCss = (string)$data['titleCss'];
+        if (isset($data['titleHoverCss'])) $this->titleHoverCss = (string)$data['titleHoverCss'];
         if (array_key_exists('item', $data)) {
             if (!is_array($data['item'])) {
                 $data['item'] = [$data['item']];

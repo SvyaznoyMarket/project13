@@ -1,10 +1,14 @@
 <?php
 /**
- * @var $page \View\Layout
- * @var $category \Model\Product\Category\Entity|null
+ * @var $page       \View\Layout
+ * @var $category   \Model\Product\Category\Entity|null
+ * @var $slice      \Model\Slice\Entity|null
+ * @var $fixedBtn   array
  */
 $helper = new \Helper\TemplateHelper();
 $links = [];
+$categoryImg = false;
+$i = 0;
 
 if ($category) {
     if ($count = count($category->getAncestor())) {
@@ -16,9 +20,28 @@ if ($category) {
     } else {
         $links[] = ['name' => $category->getName(), 'url'  => $category->getLink() ? $category->getLink() : null, 'last' => true];
     }
-} ?>
+    $categoryImg = $category->getImageUrl();
+}
+
+if (0 == $i && $slice) {
+    $links[] = ['name' => $slice->getTitle(), 'url' => null, 'last' => true];
+}
+
+?>
+<? if (isset($fixedBtn['name'])) { ?>
+<div class="fixedTopBar__up">
+    <a class="btnGrey fixedTopBar__upLink <?= $fixedBtn['class'] ?>" href="<?= $fixedBtn['link'] ?>" title="<?= $fixedBtn['title'] ?>">
+        <? if ($fixedBtn['showCorner']): ?><em class="cornerTop">&#9650;</em><? endif; ?>
+        <?= $fixedBtn['name'] ?>
+    </a>
+</div>
+<? } ?>
 
 <div class="fixedTopBar__crumbs">
-    <a class="fixedTopBar__crumbsImg" href=""><img class="crumbsImg" src="<?= $category ? $category->getImageUrl() : '' ?>" /></a>
-    <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
+    <? if (!empty($categoryImg)): ?>
+        <a class="fixedTopBar__crumbsImg" href="#">
+            <img class="crumbsImg" src="<?= $categoryImg ?>" alt="" />
+        </a>
+    <? endif; ?>
+    <div class="wrapperCrumbsList"><?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?></div>
 </div>

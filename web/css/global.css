@@ -8937,7 +8937,6 @@
   .bProductDesc .creditbox.bInputList .bCustomLabel {
     line-height: 1.4;
     background-position: 0 50%;
-    color: #a6a6a6;
   }
   .bProductDesc .creditbox.bInputList .bCustomLabel.mChecked {
     color: #000000;
@@ -8975,10 +8974,6 @@
   }
   .bPrice.bInputList .bCustomLabel {
     background-position: 0 50%;
-    color: #a6a6a6;
-  }
-  .bPrice.bInputList .mCustomLabelRadioBig.mChecked {
-    color: #000000;
   }
   .priceSale {
     display: none;

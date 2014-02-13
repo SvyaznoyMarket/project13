@@ -617,34 +617,91 @@ class Action {
      * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
-    public function count($categoryPath, \Http\Request $request) {
+    public function count($tagToken, $categoryPath = null, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        $categoryToken = explode('/', $categoryPath);
-        $categoryToken = end($categoryToken);
-
+        // vars
         $region = self::isGlobal() ? null : \App::user()->getRegion();
+        $categoryToken = null;
+        $category = null;
+        $selectedCategory = null;
 
-        $repository = \RepositoryManager::productCategory();
-        $category = $repository->getEntityByToken($categoryToken);
-        if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
+
+        // tag
+        $tag = \RepositoryManager::tag()->getEntityByToken($tagToken);
+        if (!$tag) {
+            throw new \Exception\NotFoundException(sprintf('Тег @%s не найден', $tagToken));
         }
+        if (!(bool)$tag->getCategory()) {
+            throw new \Exception\NotFoundException(sprintf('Тег "%s" не связан ни с одной категорией', $tag->getToken()));
+        }
+
+
+        // category
+        if ($categoryPath) {
+            $categoryToken = explode('/', $categoryPath);
+            $categoryToken = end($categoryToken);
+        }
+        $selectedCategory = $this->getSelectedCategoryByRequest($request); // Попробуем получить категорию из request
+
+        if (!$selectedCategory && $categoryToken) { // Если категория текущая не определена, но указан токен категории
+
+            // запрос сделаем, если токен указан, u не полученна категория выбранная
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function ($data) use (&$selectedCategory) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $selectedCategory = new \Model\Product\Category\Entity($data);
+                }
+            });
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short']);
+
+        }
+
+        if (null === $category) {
+            // Попробуем получить категорию из request
+            $category = $this->getSelectedCategoryByRequest($request);
+            /*if (!$category) {
+                // категория в запросе не указана, берём из тега
+                $categories = $tag->getCategory();
+                $category = reset($categories);
+                $category = \RepositoryManager::productCategory()->getEntityById($category->getId());
+            }*/
+        } else {
+            // категория в урле указана, используем
+            $categoryToken = explode('/', $categoryPath);
+            $categoryToken = end($categoryToken);
+            $category = \RepositoryManager::productCategory()->getEntityByToken($categoryToken);
+        }
+        /*if (!$category) {
+            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
+        }*/ // нет категории - ну и ок. бывает.
+
 
         // фильтры
-        try {
-            $filters = \RepositoryManager::productFilter()->getCollectionByCategory($category, $region);
-        } catch (\Exception $e) {
-            \App::exception()->add($e);
-            \App::logger()->error($e);
+        $filters = [];
 
-            $filters = [];
+        if ($category) {
+            try {
+                $filters = \RepositoryManager::productFilter()->getCollectionByCategory($category, $region);
+            } catch (\Exception $e) {
+                \App::exception()->add($e);
+                \App::logger()->error($e);
+            }
         }
 
+        // добавим id tag-a в фильтр
+        $filter = new \Model\Product\Filter\Entity();
+        $filter->setId('tag');
+        $filter->setIsInList(false);
+
+        $filters[] = $filter;
+
+
+        // магазины
         $shop = null;
         try {
             if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
@@ -654,13 +711,26 @@ class Action {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
-        $productFilter = $this->getFilter($filters, $category, null, $request, $shop);
+
+        // Бренды
+        $brand = null;
+
+
+        // Product Filter
+        $productFilter = new \Model\Product\Filter($filters, self::isGlobal(), self::inStore(), $shop);
+        //$productFilter = $this->getFilter($filters, $category, $brand, $request, $shop); // old
+        //$productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
+
+        $productFilter->setValue( 'tag', $tag->getId() );
+        if (isset($selectedCategory)) {
+           $productFilter->setCategory($selectedCategory);
+        }
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 
         return new \Http\JsonResponse(array(
             'success' => true,
-            'data'    => $count,
+            'count'    => $count,
         ));
     }
 
@@ -1020,7 +1090,7 @@ class Action {
             $exists = array_map(function($filter) { /** @var $filter \Model\Product\Filter\Entity */ return $filter->getId(); }, $filters);
             /** @var $diff Ид фильтров родительских категорий */
             $diff = array_diff(array_keys($values), $exists);
-            if ((bool)$diff) {
+            if ((bool)$diff && (bool)$category) {
                 foreach ($category->getAncestor() as $ancestor) {
                     try {
                         /** @var $ancestorFilters \Model\Product\Filter\Entity[] */
@@ -1085,7 +1155,10 @@ class Action {
     }
 
 
-
+    /**
+     * @param \Http\Request $request
+     * @return \Model\Product\Category\Entity|null
+     */
     private function getSelectedCategoryByRequest(\Http\Request $request)
     {
         $selectedCategory = null;

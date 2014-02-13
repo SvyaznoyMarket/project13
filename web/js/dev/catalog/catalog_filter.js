@@ -141,7 +141,8 @@
 			sorting: function( data ) {
 				console.info('render sorting');
 
-				var template = $('#tplSorting'),
+				var
+					template = $('script.tplSorting:first'),
 					sortingTemplate = template.html(),
 					partials = template.data('partial'),
 					html;
@@ -157,7 +158,8 @@
 			pagination: function( data ) {
 				console.info('render pagination');
 
-				var template = $('#tplPagination'),
+				var
+					template = $('script.tplPagination:first'),
 					paginationTemplate = template.html(),
 					partials = template.data('partial'),
 					html;
