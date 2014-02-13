@@ -32,12 +32,21 @@ class ShowPage extends \View\DefaultLayout {
     public function slotUserbarContent() {
         return $this->render('slice/_userbarContent', [
             'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,
+            'slice'     => $this->getParam('slice')    instanceof \Model\Slice\Entity            ? $this->getParam('slice')    : null,
+            'fixedBtn'  => [
+                'link'       => '#',
+                'name'       => 'Категории',
+                'title'      => '',
+                'class'      => '',
+                'showCorner' => true,
+            ],
         ]);
     }
 
     public function slotUserbarContentData() {
         return [
-            'target' => '#productCatalog-filter-form',
+            //'target' => '#productCatalog-filter-form',
+            'target' => '.bCatalogList',
         ];
     }
 }
