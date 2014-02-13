@@ -263,5 +263,35 @@ class BasicRecommendedAction {
 
     }
 
+    /**
+     * @return string
+     */
+    public function getRetailrocketMethodName()
+    {
+        return $this->retailrocketMethodName;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getActionTitle()
+    {
+        return $this->actionTitle;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActionType()
+    {
+        return $this->actionType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }
