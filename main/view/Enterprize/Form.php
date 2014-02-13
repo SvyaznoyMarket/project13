@@ -20,6 +20,7 @@ class Form {
         'email'             => null,
         'phone'             => null,
         'enterprize_coupon' => null,
+        'agree'             => null,
     );
 
     public function __construct(array $data = []) {

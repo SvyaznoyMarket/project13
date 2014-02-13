@@ -12,6 +12,8 @@
 
     <div>
         <form action="<?= $page->url('enterprize.form.update') ?>" method="post">
+            <input type="hidden" name="user[enterprize_coupon]" value="<?= $form->getEnterprizeCoupon() ?>" />
+
             <fieldset>
                 <label>Имя:</label>
                 <div><input type="text" name="user[name]" value="<?= $form->getName() ?>" /></div>

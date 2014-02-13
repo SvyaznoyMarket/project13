@@ -39,9 +39,10 @@ class FormAction {
         // пользователь авторизован, заполняем данные формы
         if ($user) {
             $form->fromArray([
-                'name' => $user->getName(),
-                'email' => $user->getEmail(),
-                'phone' => $user->getMobilePhone(),
+                'name'              => $user->getName(),
+                'email'             => $user->getEmail(),
+                'phone'             => $user->getMobilePhone(),
+                'enterpize_coupon'  => $enterpizeCoupon ? $enterpizeCoupon->getToken() : null,
             ]);
         }
 
@@ -63,8 +64,50 @@ class FormAction {
         $user = \App::user()->getEntity();
         $form = new \View\Enterprize\Form();
 
-        if ($request->isMethod('post')) {
+        $userData = (array)$request->get('user');
+        $form->fromArray($userData);
 
+        if (!$form->getName()) {
+            $form->setError('name', 'Не указано имя');
+        }
+
+        if (!$form->getPhone()) {
+            $form->setError('phone', 'Не указан мобильный телефон');
+        }
+
+        if (!$form->getEmail()) {
+            $form->setError('email', 'Не указан email');
+        }
+
+        if (!$form->getEnterprizeCoupon()) {
+            $form->setError('enterprize_coupon', 'Не указан купон');
+        }
+
+        if ($form->isValid()) {
+            try {
+                // создание enterprize-купона
+//                $result = $client->query(
+//                    'coupon/enter-prize',
+//                    [
+//                        'client_id' => \App::config()->coreV2['client_id'],
+//                        'token'     => \App::user()->getToken(),
+//                    ],
+//                    [
+//                        'name'                      => $form->getName(),
+//                        'phone'                     => $form->getPhone(),
+//                        'email'                     => $form->getEmail(),
+//                        'svyaznoy_club_card_number' => $user ? $user->getSclubCardnumber() : null,
+//                        'guid'                      => $form->getEnterprizeCoupon(),
+//                        'agree'                     => $form->getAgree(),
+//                    ],
+//                    \App::config()->coreV2['hugeTimeout']
+//                );
+
+
+            } catch (\Curl\Exception $e) {
+                \App::exception()->remove($e);
+                \App::logger()->error($e);
+            }
         }
     }
 }
