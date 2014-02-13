@@ -11,7 +11,7 @@ class RecommendedAction {
     public function execute(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $client = \App::retailrocketClient();
+        $rrConfig = \App::config()->partners['RetailRocket'];
         $region = \App::user()->getRegion();
 
         $recommend = [
@@ -43,24 +43,35 @@ class RecommendedAction {
             // запрашиваем $ids продуктов для всех типов рекоммендаций
             $allIds = [];
             foreach ($ids as $type => $item) {
-                $ids[$type] = $client->query('Recomendation/' . $controller[$type]->getRetailrocketMethodName(), $productId);
+                $method = $controller[$type]->getRetailrocketMethodName();
+                $queryUrl = "{$rrConfig['apiUrl']}Recomendation/$method/{$rrConfig['account']}/$productId";
 
-                // для блока "С этим товаром также покупают" к $ids добавляем связные товары
-                if ('alsoBought' === $type) {
-                    $ids[$type] = array_unique(array_merge($product->getRelatedId(), $ids[$type]));
-                }
+                \App::curl()->addQuery($queryUrl, [], function ($data) use (&$ids, &$allIds, $type, $product) {
+                    $ids[$type] = $data;
 
-                $allIds = array_unique(array_merge($allIds, $ids[$type]));
+                    // для блока "С этим товаром также покупают" к $ids добавляем связные товары
+                    if ('alsoBought' === $type) {
+                        $ids[$type] = array_unique(array_merge($product->getRelatedId(), $ids[$type]));
+                    }
+
+                    $allIds = array_unique(array_merge($allIds, $ids[$type]));
+                }, function(\Exception $e) {
+                    \App::exception()->remove($e);
+                }, $rrConfig['timeout']);
             }
+            \App::curl()->execute(null, 1);
 
             // запрашиваем $collection товаров для всех типов рекоммендаций
             $collection = [];
-            \RepositoryManager::product()->prepareCollectionById($allIds, $region, function($data) use(&$collection) {
-                foreach ($data as $value) {
-                    $entity = new \Model\Product\Entity($value);
-                    $collection[$entity->getId()] = $entity;
-                }
-            });
+            $chunckedIds = array_chunk($allIds, \App::config()->coreV2['chunk_size']);
+            foreach ($chunckedIds as $chunk) {
+                \RepositoryManager::product()->prepareCollectionById($chunk, $region, function($data) use(&$collection) {
+                    foreach ($data as $value) {
+                        $entity = new \Model\Product\Entity($value);
+                        $collection[$entity->getId()] = $entity;
+                    }
+                });
+            }
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             // разбиваем товары по типам рекомендаций
@@ -82,7 +93,7 @@ class RecommendedAction {
 
                     $products = array_slice($productsCollection[$type], 0, \App::config()->product['itemsInSlider'] * 2);
                 } else {
-                    $products = $this->prepareProducts($productsCollection[$type], $client::NAME, $controller[$type]->getName());
+                    $products = $this->prepareProducts($productsCollection[$type], $controller[$type]->getName());
                 }
 
                 if ( !is_array($products) ) {
@@ -115,11 +126,10 @@ class RecommendedAction {
 
     /**
      * @param $products
-     * @param $senderName
      * @return mixed
      * @throws \Exception
      */
-    protected function prepareProducts($products, $senderName, $recommendName) {
+    protected function prepareProducts($products, $recommendName) {
         if (!(bool)$products) {
             throw new \Exception('Рекомендации не получены');
         }
@@ -133,7 +143,7 @@ class RecommendedAction {
             }
 
             $link = $product->getLink();
-            $link = $link . (false === strpos($link, '?') ? '?' : '&') . 'sender=' . $senderName . '|' . $product->getId();
+            $link = $link . (false === strpos($link, '?') ? '?' : '&') . 'sender=retailrocket|' . $product->getId();
 
             if ('upsale' == $recommendName) {
                 $link = $link . (false === strpos($link, '?') ? '?' : '&') . 'from=cart_rec';
