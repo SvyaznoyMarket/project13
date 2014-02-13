@@ -54,4 +54,9 @@ $helper = new \Helper\TemplateHelper();
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
 
+    <? if(!empty($seoContent)): ?>
+        <div class="bSeoText">
+            <?= $seoContent ?>
+        </div>
+    <? endif ?>
 </div>

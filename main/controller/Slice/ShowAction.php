@@ -127,6 +127,22 @@ class ShowAction {
             }
         }
 
+        // если в слайсе задан category_id, то отображаем листинг данной категории
+        if ($slice->getCategoryId()) {
+            $productCategoryRepository = \RepositoryManager::productCategory();
+            $productCategoryRepository->setEntityClass('\Model\Product\Category\Entity');
+
+            $categoryId = $slice->getCategoryId();
+            $category = $categoryId ? $productCategoryRepository->getEntityById($categoryId) : null;
+
+            $page = new \View\Slice\ShowPage();
+            $page->setParam('category', $category);
+            $page->setParam('slice', $slice);
+            $page->setParam('seoContent', $slice->getContent());
+
+            return $this->leafCategory($category, $page, $request, $filterData, $region, $slice);
+        }
+
 
         $client = \App::coreClientV2();
 
