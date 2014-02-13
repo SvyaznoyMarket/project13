@@ -12,7 +12,7 @@ return function(
 	    )) ?>
 	</div>
 
-    <script id="tplPagination" type="text/html" data-partial="">
+    <script class="tplPagination" type="text/html" data-partial="">
         <?= file_get_contents(\App::config()->templateDir . '/_pagination.mustache') ?>
     </script>
 
