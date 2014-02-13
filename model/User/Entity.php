@@ -549,32 +549,28 @@ class Entity {
     /**
      * @param boolean $isEmailConfirmed
      */
-    public function setIsEmailConfirmed($isEmailConfirmed)
-    {
+    public function setIsEmailConfirmed($isEmailConfirmed) {
         $this->isEmailConfirmed = (bool)$isEmailConfirmed;
     }
 
     /**
      * @return boolean
      */
-    public function getIsEmailConfirmed()
-    {
+    public function getIsEmailConfirmed() {
         return $this->isEmailConfirmed;
     }
 
     /**
      * @param boolean $isPhoneConfirmed
      */
-    public function setIsPhoneConfirmed($isPhoneConfirmed)
-    {
+    public function setIsPhoneConfirmed($isPhoneConfirmed) {
         $this->isPhoneConfirmed = (bool)$isPhoneConfirmed;
     }
 
     /**
      * @return boolean
      */
-    public function getIsPhoneConfirmed()
-    {
+    public function getIsPhoneConfirmed() {
         return $this->isPhoneConfirmed;
     }
 }
