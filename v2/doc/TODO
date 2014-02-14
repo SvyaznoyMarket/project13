@@ -1,6 +1,6 @@
 -  env, debug
 -+ маршрутизация
--  http
+-  http: JsonResponse
 -? мержить curl.query.info - суммировать total_time? добавить callbackStartAt, callbackEndAt
 -  сделать view-классы, которые работают с рендером
 -+ импорт конфигурации из v1
