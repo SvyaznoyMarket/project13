@@ -63,7 +63,19 @@ class DefaultLayout extends Layout {
     }
 
     public function slotHeader() {
-        $subscribeForm = (array) \App::dataStoreClient()->query('subscribe-form.json');
+        $subscribeForm = [];
+
+        \App::dataStoreClient()->addQuery(
+            'subscribe-form.json', [],
+            function($data) use (&$subscribeForm) {
+                if ($data) $subscribeForm = (array) $data;
+            },
+            function(\Exception $e) {
+                \App::exception()->remove($e);
+            }
+        );
+
+        \App::dataStoreClient()->execute();
 
         if (!isset($subscribeForm['mainText'])) {
             $subscribeForm['mainText'] = 'Подпишитесь на рассылку и будьте в курсе акций, скидок и суперцен!';
