@@ -344,11 +344,6 @@ figure {
 /**
  * Define consistent border, margin, and padding.
  */
-fieldset {
-  border: 1px solid #c0c0c0;
-  margin: 0 2px;
-  padding: 0.35em 0.625em 0.75em;
-}
 /**
  * 1. Correct `color` not being inherited in IE 8/9.
  * 2. Remove padding so people aren't caught out if they zero out fieldsets.
@@ -643,6 +638,36 @@ img[height="0"] {
   font-size: 36px;
 }
 /*---END----ШРИФТЫ---------*/
+/*---------СТИЛИ ШАБЛОННЫХ ФОРМ----------*/
+.formDefault__inputText {
+  border: 1px solid #c9c9c9;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding: 0 5px;
+  display: block;
+  height: 28px;
+  line-height: 28px;
+  margin: 0 0 15px;
+  width: 355px;
+}
+.formDefault__label {
+  display: inline-block;
+  margin: 0 0 7px;
+  position: relative;
+  z-index: 10;
+}
+.formDefault__btnSubmit {
+  font-size: 16px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 20px 3px;
+  margin: 15px 0;
+}
+.formDefault .bInputList__eListItem {
+  padding-left: 0;
+}
+/*---END----СТИЛИ ШАБЛОННЫХ ФОРМ---------*/
 /*------СТИЛИ ШАПКИ------*/
 @media all {
   .header .topbar .menuItem {

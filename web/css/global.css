@@ -8452,6 +8452,7 @@
   .bInputList__eListItem {
     margin: 11px 0 0;
     padding: 0 0 0 11px;
+    list-style-type: none;
   }
   .bInputList__eListItem .bDeSelect {
     padding: 0 0 0 18px;
