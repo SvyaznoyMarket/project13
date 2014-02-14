@@ -60,11 +60,16 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
             </div>
 
             <ul class="enterPrize__rules clearfix"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
-                <li class="enterPrize__rules__item">Это Фишка для покупки товаров из категории <?= $enterpizeCoupon->getName() ?><br/>
-                    со скидкой <?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб.' ?><br />
-                    действительна<?= $enterpizeCoupon->getStartDate() instanceof \DateTime  ? ' c ' . $enterpizeCoupon->getStartDate()->format('d.m.Y') : '' ?><?= $enterpizeCoupon->getEndDate() instanceof \DateTime ? ' по ' . $enterpizeCoupon->getEndDate()->format('d.m.Y') : '' ?><br />
-                    минимальная сумма заказа для активации Фишки – <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> рублей<br /><br />
-                    Заполни обязательные поля. И ты в игре!
+                <li class="enterPrize__rules__item">
+                    Фишка со скидкой <b><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></b> на <b><?= $enterpizeCoupon->getName() ?></b><br />
+                    Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
+                    Строк действия
+                    <? if ($enterpizeCoupon->getStartDate() instanceof \DateTime): ?>
+                        c <?= $enterpizeCoupon->getStartDate()->format('d.m.Y') ?>
+                    <? endif ?>
+                    <? if ($enterpizeCoupon->getEndDate() instanceof \DateTime): ?>
+                        по <?= $enterpizeCoupon->getEndDate()->format('d.m.Y') ?>
+                    <? endif ?>
                 </li>
             </ul>
         </div>
