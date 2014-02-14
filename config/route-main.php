@@ -732,16 +732,39 @@ return [
         'pattern' => '/enterprize',
         'action'  => ['Enterprize\Action', 'index'],
     ],
-    // enterprize
     'enterprize.create' => [
         'pattern' => '/enterprize/create',
         'action'  => ['Enterprize\Action', 'create'],
         'method'  => ['POST'],
     ],
-    // enterprize
     'enterprize.get' => [
         'pattern' => '/enterprize/get',
         'action'  => ['Enterprize\Action', 'get'],
+    ],
+    // enterprize form
+    'enterprize.form.show' => [
+        'pattern' => '/enterprize/{enterprizeToken}',
+        'action'  => ['Enterprize\FormAction', 'show'],
+    ],
+    'enterprize.form.update' => [
+        'pattern' => '/enterprize/form/update',
+        'action'  => ['Enterprize\FormAction', 'update'],
+        'method'  => ['POST'],
+    ],
+    // enterprize confirmPhone
+    'enterprize.confirmPhone.create' => [
+        'pattern' => '/enterprize/confirm-phone/create',
+        'action'  => ['Enterprize\ConfirmPhoneAction', 'create'],
+        'method'  => ['POST'],
+    ],
+    'enterprize.confirmPhone.check' => [
+        'pattern' => '/enterprize/confirm-phone/check',
+        'action'  => ['Enterprize\ConfirmPhoneAction', 'check'],
+        'method'  => ['POST'],
+    ],
+    'enterprize.confirmPhone.show' => [
+        'pattern' => '/enterprize/confirm-phone/{enterprizeToken}',
+        'action'  => ['Enterprize\ConfirmPhoneAction', 'show'],
     ],
 
     // git pull
