@@ -91,9 +91,13 @@
 
 		debug = false,
 		pageConfig = $('#page-config').data('value'),
-		templateType = document.body.getAttribute('data-template');
-	// end of vars
+		templateType = document.body.getAttribute('data-template') || '',
+		templSep = templateType.indexOf(' ')
+	; // end of vars
 
+	if ( templSep > 0 ) {
+		templateType = templateType.substring(0, templSep);
+	}
 
 	var
 		/**
@@ -479,7 +483,7 @@
 				}).runQueue();
 		},
 
-		'order.new': function() {
+		'order_new': function() {
 			$LAB.queueScript( yandexMapUrl )
 				.queueScript( knockoutUrl )
 				.queueScript( kladr )
