@@ -17,6 +17,10 @@ return [
         'pattern' => '/search',
         'action'  => ['Search\Action', 'execute'],
     ],
+    'search.count' => [
+        'pattern' => '/ajax/search/_count',
+        'action'  => ['Search\Action', 'count'],
+    ],
     // поиск бесконечная прокрутка
     'search.infinity' => [
         'pattern' => '/search/_infinity',
@@ -299,6 +303,7 @@ return [
         'action'  => ['Product\NotificationAction', 'lowerPrice'],
     ],
 
+    // теги
     'tag' => [
         'pattern' => '/tags/{tagToken}',
         'action'  => ['Tag\Action', 'index'],
@@ -314,6 +319,23 @@ return [
     'tag.category.infinity' => [
         'pattern' => '/tags/{tagToken}/{categoryToken}/_infinity',
         'action'  => ['Tag\Action', 'index'],
+    ],
+    // общее количество отфильтрованных товаров для тегов
+    'tag.count' => [
+        'pattern' => '/ajax/tags/{tagToken}/_count',
+        'action'  => ['Tag\Action', 'count'],
+        'require' => [
+            'tagToken' => '[\w\d-_]+\/?[\w\d-_]+',
+        ],
+    ],
+    // общее количество отфильтрованных товаров для категорий тегов
+    'tag.category.count' => [
+        'pattern' => '/ajax/tags/{tagToken}/{categoryToken}/_count',
+        'action'  => ['Tag\Action', 'count'],
+        'require' => [
+            'tagToken'      => '[\w\d-_]+\/?[\w\d-_]+',
+            'categoryToken' => '[\w\d-_]+\/?[\w\d-_]+',
+        ],
     ],
     'product.rating.create_total' => [
         'pattern' => '/product-rating/createtotal/{productId}/{rating}',
@@ -710,16 +732,39 @@ return [
         'pattern' => '/enterprize',
         'action'  => ['Enterprize\Action', 'index'],
     ],
-    // enterprize
     'enterprize.create' => [
         'pattern' => '/enterprize/create',
         'action'  => ['Enterprize\Action', 'create'],
         'method'  => ['POST'],
     ],
-    // enterprize
     'enterprize.get' => [
         'pattern' => '/enterprize/get',
         'action'  => ['Enterprize\Action', 'get'],
+    ],
+    // enterprize form
+    'enterprize.form.show' => [
+        'pattern' => '/enterprize/{enterprizeToken}',
+        'action'  => ['Enterprize\FormAction', 'show'],
+    ],
+    'enterprize.form.update' => [
+        'pattern' => '/enterprize/form/update',
+        'action'  => ['Enterprize\FormAction', 'update'],
+        'method'  => ['POST'],
+    ],
+    // enterprize confirmPhone
+    'enterprize.confirmPhone.create' => [
+        'pattern' => '/enterprize/confirm-phone/create',
+        'action'  => ['Enterprize\ConfirmPhoneAction', 'create'],
+        'method'  => ['POST'],
+    ],
+    'enterprize.confirmPhone.check' => [
+        'pattern' => '/enterprize/confirm-phone/check',
+        'action'  => ['Enterprize\ConfirmPhoneAction', 'check'],
+        'method'  => ['POST'],
+    ],
+    'enterprize.confirmPhone.show' => [
+        'pattern' => '/enterprize/confirm-phone/{enterprizeToken}',
+        'action'  => ['Enterprize\ConfirmPhoneAction', 'show'],
     ],
 
     // git pull

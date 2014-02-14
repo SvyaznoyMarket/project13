@@ -170,7 +170,21 @@ class Sociomantic
         $prod['identifier'] = $this->resetProductId($product);
         $prod['fn'] = $product->getName();
         $prod['category'] = $prod_cats;
+
         $prod['description'] = $product->getTagline();
+        if (empty($prod['description'])) {
+            $prod['description'] = $product->getDescription();
+            if (empty($prod['description'])) {
+                $prod['description'] = $product->getName();
+            } elseif (strlen($prod['description']) > 90) {
+                $prod['description'] = substr($prod['description'], 0, 90) . '...';
+            }
+
+            if ( empty($prod['description']) ) {
+                $prod['description'] = $product->getPrefix();
+            }
+        }
+
         $prod['currency'] = 'RUB';
         $prod['url'] = 'http://' . $domain . strtok($_SERVER["REQUEST_URI"], '?');
         $prod['price'] = $product->getPrice(); //стоимость со скидкой

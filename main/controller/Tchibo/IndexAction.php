@@ -91,6 +91,7 @@ class IndexAction {
                 'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
                 'title'   => $image->getName(),
                 'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
+                'time'    => $image->getTime() ? $image->getTime() : 3000,
                 // Пока не нужно, но в будущем, возможно понадобится делать $repositoryPromo->setEntityImageLink() как в /main/controller/Promo/IndexAction.php
             ];
         }
@@ -99,9 +100,9 @@ class IndexAction {
         // формируем вьюху, передаём ей данные
         $page = new \View\Tchibo\IndexPage();
         $page->setParam('slideData', $slideData);
-        $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setParam('catalogConfig', $catalogJson);
         $page->setParam('content', $content);
+        $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
 
         return new \Http\Response($page->show());
     }

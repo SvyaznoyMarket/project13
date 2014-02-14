@@ -74,18 +74,22 @@ trait ResponseDataTrait {
                     foreach ($data as $item) {
                         if ($responseData['paypalECS']) {
                             $cartProduct = $cart->getPaypalProduct();
+                            if (!$cartProduct) continue;
                             $setUrl = $router->generate('cart.paypal.product.set', ['productId' => $item['id'], 'quantity' => isset($quantitiesByProduct[$cartProduct->getId()]) ? $quantitiesByProduct[$cartProduct->getId()] : $cartProduct->getQuantity()]);
                             $deleteUrl = $router->generate('cart.paypal.product.delete', ['productId' => $item['id']]);
                         } else if ($responseData['lifeGift']) {
                             $cartProduct = \App::user()->getLifeGiftCart()->getProductById($item['id']);
+                            if (!$cartProduct) continue;
                             $setUrl = $router->generate('cart.lifeGift.product.set', ['productId' => $item['id'], 'quantity' => isset($quantitiesByProduct[$cartProduct->getId()]) ? $quantitiesByProduct[$cartProduct->getId()] : $cartProduct->getQuantity()]);
                             $deleteUrl = $router->generate('cart.lifeGift.product.delete', ['productId' => $item['id']]);
                         } else if ($responseData['oneClick']) {
                             $cartProduct = \App::user()->getOneClickCart()->getProductById($item['id']);
+                            if (!$cartProduct) continue;
                             $setUrl = $router->generate('cart.oneClick.product.set', ['productId' => $item['id'], 'quantity' => isset($quantitiesByProduct[$cartProduct->getId()]) ? $quantitiesByProduct[$cartProduct->getId()] : $cartProduct->getQuantity()]);
                             $deleteUrl = $router->generate('cart.oneClick.product.delete', ['productId' => $item['id']]);
                         } else {
                             $cartProduct = $cart->getProductById($item['id']);
+                            if (!$cartProduct) continue;
                             $setUrl = $router->generate('cart.product.set', ['productId' => $item['id'], 'quantity' => isset($quantitiesByProduct[$cartProduct->getId()]) ? $quantitiesByProduct[$cartProduct->getId()] : $cartProduct->getQuantity()]);
                             $deleteUrl = $router->generate('cart.product.delete', ['productId' => $item['id']]);
                         }

@@ -265,6 +265,57 @@ window.ANALYTICS = {
     //     })();
     // },
 
+
+	/**
+	 * CityAds counter
+ 	 */
+	xcntmyAsync: function () {
+		var
+			elem = $('#xcntmyAsync'),
+			data = elem ? elem.data('value') : false,
+			page = data ? data.page : false,
+		// end of vars
+
+			init = function() {
+				(function(){
+					var xscr = document.createElement( 'script' );
+					var xcntr = escape(document.referrer); xscr.async = true;
+					xscr.src = ( document.location.protocol === 'https:' ? 'https:' : 'http:' )
+						+ '//x.cnt.my/async/track/?r=' + Math.random();
+					var x = document.getElementById( 'xcntmyAsync' );
+					x.parentNode.insertBefore( xscr, x );
+				}());
+			},
+
+			cart = function() {
+				window.xcnt_basket_products = data.productIds; 			// где XX,YY,ZZ – это ID товаров в корзине через запятую.
+				window.xcnt_basket_quantity = data.productQuantities;	// где X,Y,Z – это количество соответствующих товаров (опционально).
+			},
+
+			complete = function() {
+				window.xcnt_order_products = data.productIds;			// где XX,YY,ZZ – это ID товаров в корзине через запятую.
+				window.xcnt_order_quantity = data.productQuantities;	// где X,Y,Z – это количество соответствующих товаров (опционально).
+				window.xcnt_order_id = data.orderId;					// где XXXYYY – это ID заказа (желательно, можно  шифровать значение в MD5)
+				window.xcnt_order_total = data.orderTotal;				// сумма заказа (опционально)
+			},
+
+			product = function() {
+				window.xcnt_product_id = data.productId;				// где ХХ – это ID товара в каталоге рекламодателя.
+			}
+		;// end of functions
+
+
+		if ( 'cart' === page ) {
+			cart();
+		} else if ( 'order.complete' === page ) {
+			complete();
+		} else if ( 'product' === page ) {
+			product();
+		}
+		init();
+
+	},
+
 	sociomanticJS: function () {
 		(function () {
 			var s = document.createElement('script'),
@@ -442,7 +493,7 @@ window.ANALYTICS = {
     },
 
     GoogleAnalyticsJS : function() {
-		console.group('ports.js::GoogleAnalyticsJS');
+		console.info('ports.js::GoogleAnalyticsJS');
 
 		var
 			route = body.data('template'),
@@ -528,6 +579,60 @@ window.ANALYTICS = {
 			;// end of functions
 
 		action();
+	},
+
+	//SITE-3027 Установка кода TagMan на сайт
+	TagManJS : function() {
+
+		initTagMan = function initTagMan() {
+        	console.info( 'TagManJS init' );
+
+			(function( d,s ) {
+			    var client = 'enterru';
+    		    var siteId = 1;
+
+			  //  do not edit
+			  var a=d.createElement(s),b=d.getElementsByTagName(s)[0];
+			  a.async=true;a.type='text/javascript';
+			  a.src='//sec.levexis.com/clients/'+client+'/'+siteId+'.js';
+			  a.tagman='st='+(+new Date())+'&c='+client+'&sid='+siteId;
+			  b.parentNode.insertBefore( a,b );
+			} ) (document,'script');
+        };
+
+		var
+  			template = body.data('template'),
+  			pageLink = location.href;
+
+		if ( template == 'order_complete' ) {
+			console.info("TagManJS Order Complete");
+
+			var 
+				data = $('#jsOrder').data('value'),
+				orderData = data.orders,
+				orderSum = orderData[0].sum;
+				orderNum = orderData[0].numberErp;
+
+			window.tmParam = {
+				page_type : 'confirmation', // REQ 
+				page_name : template, // REQ 
+				page_url : pageLink, // REQ
+				levrev : orderSum, // REQ when available
+				levordref : orderNum, // REQ when available
+				levresdes : 'confirmation' // REQ when available
+			};
+		}
+		else {
+			console.info("TagManJS Default")
+
+			window.tmParam = {
+				page_type : 'generic', // REQ 
+				page_name : template, // REQ 
+				page_url : pageLink // REQ
+			};
+		};
+
+        initTagMan();
 	},
 
     RetailRocketJS : function() {

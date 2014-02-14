@@ -96,7 +96,7 @@ class User {
         $response->headers->setCookie($cookie);
         // }
 
-        $this->enableInfoCookie($response); // SITE-2709
+        self::enableInfoCookie($response); // SITE-2709
 
         //\RepositoryManager::getUser()->saveEntity($user);
 
@@ -410,15 +410,14 @@ class User {
      * @param $response
      */
     public static function enableInfoCookie(&$response) {
-        $manHost = preg_replace('/^www./', '.', \App::config()->mainHost);
         $time = time() + \App::config()->session['cookie_lifetime'];
 
         $cookie = new \Http\Cookie(
             \App::config()->authToken['authorized_cookie'],
-            true, //cookieValue
+            1, //cookieValue
             $time,
             '/',
-            $manHost,
+            null,
             false,
             false
         );
@@ -430,15 +429,14 @@ class User {
      * @param $response
      */
     public static function disableInfoCookie(&$response) {
-        $manHost = preg_replace('/^www./', '.', \App::config()->mainHost);
         $time = time() + \App::config()->session['cookie_lifetime'];
 
         $cookie = new \Http\Cookie(
             \App::config()->authToken['authorized_cookie'],
-            false, //cookieValue
+            0, //cookieValue
             $time,
             '/',
-            $manHost,
+            null,
             false,
             false
         );

@@ -224,7 +224,7 @@ $c->mediaHost = [
 ];
 
 $c->search['itemLimit'] = 1000;
-$c->search['queryStringLimit'] = 3;
+$c->search['queryStringLimit'] = 1;
 
 $c->product['itemsPerPage']             = 20;
 $c->product['showAccessories']          = true;
