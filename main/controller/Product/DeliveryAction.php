@@ -146,7 +146,7 @@ class DeliveryAction {
                             }
 
                             // добавляем url к магазинам
-                            $shops = \RepositoryManager::shop()->getCollectionById(
+                            $shops = \RepositoryManager::shop()->prepareCollectionById(
                                 array_map(function($shopItem){
                                     return (int)$shopItem['id'];
                                 }, $dateItem['shop_list'])
