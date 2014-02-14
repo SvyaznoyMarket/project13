@@ -766,6 +766,21 @@ return [
         'pattern' => '/enterprize/confirm-phone/{enterprizeToken}',
         'action'  => ['Enterprize\ConfirmPhoneAction', 'show'],
     ],
+    // enterprize confirmEmail
+    'enterprize.confirmEmail.create' => [
+        'pattern' => '/enterprize/confirm-email/create',
+        'action'  => ['Enterprize\ConfirmEmailAction', 'create'],
+        'method'  => ['POST'],
+    ],
+    'enterprize.confirmEmail.check' => [
+        'pattern' => '/enterprize/confirm-email/check',
+        'action'  => ['Enterprize\ConfirmEmailAction', 'check'],
+        'method'  => ['POST'],
+    ],
+    'enterprize.confirmEmail.show' => [
+        'pattern' => '/enterprize/confirm-email/{enterprizeToken}',
+        'action'  => ['Enterprize\ConfirmEmailAction', 'show'],
+    ],
 
     // git pull
     'git.pull' => [
