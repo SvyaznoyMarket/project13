@@ -559,7 +559,7 @@ window.ANALYTICS = {
 
 			ga_productCatalog = function() {
 				console.info( 'GoogleAnalyticsJS product catalog' );
-				$('div.bFilterBand input:not(:checked)').click(function(){
+				$('div.bFilterBand input:not(:checked)').click(function ga_filterBrand(){
 					var
 						input = $(this ),
 						name = input.data('name');
@@ -583,6 +583,12 @@ window.ANALYTICS = {
 
 			ga_product = function() {
 				console.info( 'GoogleAnalyticsJS product page' );
+				$('span.bDeliveryNowClick').click(function ga_deliveryNow() {
+					if ( 'undefined' !== ga ) {
+						console.log('GA: deliveryNow');
+						ga('send', 'event', 'Available in Stores', 'Clicked');
+					}
+				});
 			},
 
 			ga_cart = function() {
@@ -598,6 +604,9 @@ window.ANALYTICS = {
 				switch (route) {
 					case 'main':
 						ga_main(); // для главной страницы
+						break;
+					case 'product_card':
+						ga_product(); // для карточки товара
 						break;
 					case 'product_catalog':
 						ga_productCatalog(); // для каталога продуктов (стр. категории)
