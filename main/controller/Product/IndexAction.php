@@ -116,8 +116,9 @@ class IndexAction {
         $partsId = [];
 
         // SITE-2818 Список связанных товаров нужно дозаполнять товарами, полученными от RR по методу CrossSellItemToItems
-        $rrConfig = \App::config()->partners['RetailRocket'];
-        $queryUrl = "{$rrConfig['apiUrl']}Recomendation/CrossSellItemToItems/{$rrConfig['account']}/{$product->getId()}";
+        /*
+        $retailRocketConfig = \App::config()->partners['RetailRocket'];
+        $queryUrl = "{$retailRocketConfig['apiUrl']}Recomendation/CrossSellItemToItems/{$retailRocketConfig['account']}/{$product->getId()}";
 
         // запрашиваем рекомендации у RetailRocket
         \App::curl()->addQuery($queryUrl, [], function ($data) use (&$relatedId) {
@@ -126,8 +127,9 @@ class IndexAction {
                 }
             }, function(\Exception $e) {
                 \App::exception()->remove($e);
-            }, $rrConfig['timeout']);
+            }, $retailRocketConfig['timeout']);
         \App::curl()->execute(null, 1);
+        */
 
         $relatedId = array_slice($relatedId, 0, \App::config()->product['itemsInSlider'] * 2);
 
