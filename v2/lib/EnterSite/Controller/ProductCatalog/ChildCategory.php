@@ -37,9 +37,6 @@ class ChildCategory {
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
 
-        // фильтры в запросе
-        $requestFilters = (new Repository\Product\Filter())->getRequestObjectListByHttpRequest($request);
-
         // сортировка
         $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
 
@@ -72,6 +69,11 @@ class ChildCategory {
 
             throw $redirect;
         }
+
+        // фильтры в запросе
+        $requestFilters = (new Repository\Product\Filter())->getRequestObjectListByHttpRequest($request);
+        $requestFilters['category'] = new Model\Product\RequestFilter();
+        $requestFilters['category']->value = $category->id;
 
         // запрос предка категории
         $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region);
