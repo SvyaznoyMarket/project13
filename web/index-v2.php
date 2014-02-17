@@ -35,5 +35,7 @@ $request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
 // error handler
 (new \EnterSite\Action\HandleError())->execute($response);
 
-// response
-$response = new \Enter\Http\Response();
+// controller call
+$controllerCall = (new \EnterSite\Action\MatchRoute())->execute($request);
+
+$response = call_user_func($controllerCall, $request);

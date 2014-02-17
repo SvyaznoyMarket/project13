@@ -8,7 +8,7 @@ class HandleError {
     /**
      * @param Http\Response|null $response
      */
-    public function execute(Http\Response $response = null) {
+    public function execute(Http\Response &$response = null) {
         set_error_handler(function($code, $message, $file, $line) use (&$response) {
             switch ($code) {
                 case E_USER_ERROR:

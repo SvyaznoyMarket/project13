@@ -2,7 +2,6 @@
 
 namespace EnterSite\Action;
 
-use Enter\Util\JsonDecoderTrait;
 use EnterSite\ConfigTrait;
 
 class LoadConfig {

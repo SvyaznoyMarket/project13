@@ -10,7 +10,7 @@ class RegisterShutdown {
      * @param Http\Response|null $response
      * @param float $startAt
      */
-    public function execute(Http\Response $response = null, $startAt = null) {
+    public function execute(Http\Response &$response = null, $startAt = null) {
         register_shutdown_function(function () use (&$response, $startAt) {
             if (!$response instanceof Http\Response) {
                 $response = new Http\Response();

@@ -16,7 +16,7 @@ class Category {
      * @return string
      */
     public function getTokenByHttpRequest(Http\Request $request) {
-        $token = explode('/', $request->query['productCategoryPath']);
+        $token = explode('/', $request->query['categoryPath']);
         $token = end($token);
 
         return $token;
