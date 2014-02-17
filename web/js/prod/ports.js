@@ -559,11 +559,17 @@ window.ANALYTICS = {
 
 			ga_productCatalog = function() {
 				console.info( 'GoogleAnalyticsJS product catalog' );
-				window.GArun.brand = function GAbrand(name) {
-					console.log('GAbrand');
-					console.log(name);
-					ga('send', 'event', 'brand_selected', name);
-				}
+				$('div.bFilterBand input:not(:checked)').click(function(){
+					var
+						input = $(this ),
+						name = input.data('name');
+
+					if ( input.is(':checked') && 'undefined' !== name && 'undefined' !== ga ) {
+						console.log('GA: Brand clicked');
+						console.log(name);
+						ga('send', 'event', 'brand_selected', name);
+					}
+				});
 			},
 
 			ga_productCatalogSearch = function() {
