@@ -26,7 +26,7 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
     ]) // категории-соседи ?>
 <? endif ?>
 
-<? if ($category->getHasChild()): ?>
+<? if (false): ?>
     <h1 class="bTitlePage"><?= $category->getName() ?></h1>
 <? endif ?>
 
