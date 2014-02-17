@@ -482,6 +482,6 @@ class Client {
      * @return int
      */
     private function getDefaultTimeout() {
-        return \App::config()->coreV2['hugeTimeout'];
+        return \App::config()->coreV2['timeout'];
     }
 }

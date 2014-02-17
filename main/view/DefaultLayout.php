@@ -352,11 +352,14 @@ class DefaultLayout extends Layout {
 
             // вызов JS Alexa-кода
             $return .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
+
+            // new Google Analytics Code
+            $return .= '<div id="gaJS" class="jsanalytics" data-vars="' .
+                $this->json( (new \View\Partners\GoogleAnalytics($routeName, $this->params))->execute() ) .
+                '"></div>';
+
+            $return .= '<div id="TagManJS" class="jsanalytics"></div>';
         }
-
-        //$return .= '<div id="GoogleAnalyticsJS" class="jsanalytics"></div>';
-
-        $return .= '<div id="TagManJS" class="jsanalytics"></div>';
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
 

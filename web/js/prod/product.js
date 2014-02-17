@@ -1010,6 +1010,9 @@ $(document).ready(function() {
 			console.log('counter change');
 			console.log(bindButton);
 
+			if ( !newHref ) {
+				newHref = '';
+			}
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
 
 			// добавление в корзину после обновления спиннера
