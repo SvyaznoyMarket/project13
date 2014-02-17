@@ -146,7 +146,7 @@ class DeliveryAction {
                             }
 
                             // добавляем url к магазинам
-                            /*$shops = \RepositoryManager::shop()->getCollectionById(
+                            $shops = \RepositoryManager::shop()->getCollectionById(
                                 array_map(function($shopItem){
                                     return (int)$shopItem['id'];
                                 }, $dateItem['shop_list'])
@@ -157,7 +157,7 @@ class DeliveryAction {
                                         $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', array('regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()));
                                     }
                                 }
-                            }*/
+                            }
 
                         }
                     }
