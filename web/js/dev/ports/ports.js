@@ -583,9 +583,12 @@ window.ANALYTICS = {
 
 			ga_product = function() {
 				console.info( 'GoogleAnalyticsJS product page' );
-				$('span.bDeliveryNowClick').click(function ga_deliveryNow() {
-					if ( 'undefined' !== ga ) {
-						console.log('GA: deliveryNow');
+				$('span.bDeliveryNowClick').on('click', function ga_deliveryNow() {
+					var
+						wraper = $(this).closest('li.mDeliveryNow');
+
+					if ( 'undefined' !== wraper && 'undefined' !== ga && wraper.hasClass('mOpen') ) {
+						console.log('GA: Available in Stores clicked!');
 						ga('send', 'event', 'Available in Stores', 'Clicked');
 					}
 				});
