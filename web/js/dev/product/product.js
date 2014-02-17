@@ -73,7 +73,7 @@ $(document).ready(function() {
 		onChange:function( count ){
 			var spinnerFor = this.attr('data-spinner-for'),
 				bindButton = $('.'+spinnerFor),
-				newHref = bindButton.attr('href');
+				newHref = bindButton.attr('href') || '';
 			// end of vars
 
 			console.log('counter change');

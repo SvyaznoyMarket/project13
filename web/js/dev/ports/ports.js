@@ -492,11 +492,16 @@ window.ANALYTICS = {
 
     },
 
-    GoogleAnalyticsJS : function() {
+	gaJS : function() {
 		console.info('ports.js::GoogleAnalyticsJS');
 
 		var
-			route = body.data('template'),
+			template	= body.data('template') || '',
+			templSep	= template.indexOf(' '),
+			templLen	= template.length,
+			route 		= template.substring(0, (templSep > 0) ? templSep : templLen),
+			rType 		= (templSep > 0) ? template.substring(templSep + 1, templLen) : '',
+			data		= $('#GoogleAnalyticsJS').data('vars'),
 		// end of vars
 
 			ga_init = function ga_init() {
@@ -519,66 +524,96 @@ window.ANALYTICS = {
 			ga_main = function() {
 				console.info( 'GoogleAnalyticsJS main page' );
 
-				try {
-					if ( !/utm/.exec( document.URL ) && !document.referrer ) {
-						ga( 'set', 'campaignSource', '(direct)' );
-						ga( 'set', 'campaignMedium', '(none)' );
-						ga( 'set', 'campaignName', '(direct)' );
+				var
+					mobAppLinks = $('a.bMobAppLink')
+				;
+
+				mobAppLinks.click(function(){
+					var
+						href = $(this).attr('href'),
+						type = false
+						;
+
+					if ( 'string' !== typeof(href) ) {
+						return;
 					}
-				} catch ( e ) {
-				}
+
+					if ( href.indexOf('apple.com') > 0 ) {
+						type='apple';
+					} else if ( href.indexOf('google.com') > 0 ) {
+						type='google';
+					} else if ( href.indexOf('windowsphone.com') > 0 ) {
+						type='windowsphone';
+					}
+
+					if ( type ) {
+						console.log('GA: Mobile App Click');
+						ga('send', 'event', 'Mobile App Click', type);
+					}
+				});
+
 				ga( 'send', 'pageview', {
 					'dimension5': 'Home'
 				} );
 			},
 
 			ga_productCatalog = function() {
-				try {
-				    if ( !/utm/.exec(document.URL) && !document.referrer ) {
-				      ga( 'set', 'campaignSource', '(direct)' );
-				      ga( 'set', 'campaignMedium', '(none)' );
-				      ga( 'set', 'campaignName', '(direct)' );
-				    }
-			  } catch ( e ) {
-			  }
-			  ga( 'send', 'pageview', {
-			    'dimension6': '<Имя верхней категории>',
-			    'dimension12': '<Имя подкатегории>', // только если есть
-			    'dimension5': 'Category'
-			    } );
+				console.info( 'GoogleAnalyticsJS product catalog' );
+				window.GArun.brand = function GAbrand(name) {
+					console.log('GAbrand');
+					console.log(name);
+					ga('send', 'event', 'brand_selected', name);
+				}
 			},
 
-			// ga_productCatalog = function() {
-			// 	try {
-			// 	    if ( !/utm/.exec(document.URL) && !document.referrer ) {
-			// 	      ga( 'set', 'campaignSource', '(direct)' );
-			// 	      ga( 'set', 'campaignMedium', '(none)' );
-			// 	      ga( 'set', 'campaignName', '(direct)' );
-			// 	    }
-			// 	  } catch ( e ) {
-			// 	  }
-			// 	ga( 'send', 'pageview', {
-			// 		'dimension5': 'Search'
-			// 	} );
-			// },
+			ga_productCatalogSearch = function() {
+				console.info( 'GoogleAnalyticsJS product catalog search' );
+			},
 
-			ga_orderComplete = function(){},
+			ga_productCatalogRoot = function() {
+				console.info( 'GoogleAnalyticsJS product catalog root' );
 
-			action = function ga_action() {
+			},
+
+			ga_product = function() {
+				console.info( 'GoogleAnalyticsJS product page' );
+			},
+
+			ga_cart = function() {
+				console.info( 'GoogleAnalyticsJS cart' );
+			},
+
+			ga_orderComplete = function() {},
+
+			ga_action = function ga_action() {
 				console.log( 'GoogleAnalyticsJS action' );
 				ga_init(); // блок инициализации аналитики для всех страниц
+
 				switch (route) {
 					case 'main':
 						ga_main(); // для главной страницы
 						break;
 					case 'product_catalog':
-						ga_productCatalog(); // для карточки товара
+						ga_productCatalog(); // для каталога продуктов (стр. категории)
 						break;
 				}
 			}
-			;// end of functions
+		;// end of functions
 
-		action();
+		try{
+			window.GArun = window.GArun || {}
+			ga_action();
+
+			if ( 'undefined' !== typeof(data) && 'undefined' !== typeof(data.vars)) {
+				console.log('GA:: send:: pageview:: ');
+				console.log(data.vars);
+				ga('send', 'pageview', data.vars); // трекаем весь массив с полями {dimensionN: <*М*>}
+			}
+		}
+		catch(e) {
+			console.warn('GA error');
+			console.log(e);
+		}
 	},
 
 	//SITE-3027 Установка кода TagMan на сайт

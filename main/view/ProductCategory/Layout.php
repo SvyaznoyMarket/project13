@@ -3,6 +3,8 @@
 namespace View\ProductCategory;
 
 class Layout extends \View\DefaultLayout {
+    use LayoutTrait;
+
     public function prepare() {
         /** @var $category \Model\Product\Category\Entity */
         $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
@@ -107,22 +109,8 @@ class Layout extends \View\DefaultLayout {
 
     }
 
-    public function slotBodyDataAttribute() {
-        return 'product_catalog';
-    }
-
     public function slotSidebar() {
         return $this->render('product-category/_sidebar', $this->params);
-    }
-
-    public function slotInnerJavascript() {
-        $category = $this->getParam('category');
-
-
-        return ''
-            . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'category', 'pcat' => $category->getToken(), ]])
-            . "\n\n"
-            . $this->render('_innerJavascript');
     }
 
     /**
