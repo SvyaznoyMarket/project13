@@ -73,7 +73,7 @@ class ChildCategory {
         // фильтры в запросе
         $requestFilters = (new Repository\Product\Filter())->getRequestObjectListByHttpRequest($request);
         $requestFilters['category'] = new Model\Product\RequestFilter();
-        $requestFilters['category']->value = $category->id;
+        $requestFilters['category']->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
 
         // запрос предка категории
         $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region);
