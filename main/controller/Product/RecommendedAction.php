@@ -86,6 +86,7 @@ class RecommendedAction {
                 if ('alsoBought' === $type) {
                     // SITE-2818 Из блока "С этим товаром также покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
                     foreach ($productsCollection[$type] as $key => $value) {
+                        if (!$value instanceof \Model\Product\BasicEntity) continue;
                         if ($value->isInShopOnly() || $value->isInShopStockOnly()) {
                             unset($productsCollection[$type][$key]);
                         }
