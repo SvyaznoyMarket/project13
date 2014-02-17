@@ -582,8 +582,19 @@ window.ANALYTICS = {
 			},
 
 			ga_product = function() {
-				console.info( 'GoogleAnalyticsJS product page' );
-				$('span.bDeliveryNowClick').on('click', function ga_deliveryNow() {
+				console.info( 'gaJS product page' );
+				var
+					product = $('#jsProductCard').data('value'),
+					gaInteractive = function gaInteractive(type) {
+						if ( 'undefined' !== ga ) {
+							console.log('GA: event Interactive: ' + type);
+							ga('send', 'event', 'Interactive', type);
+						}
+					};
+
+
+				/** Событие открытия списка магазинов */
+				$('span.bDeliveryNowClick').one('click', function ga_deliveryNow() {
 					var
 						wraper = $(this).closest('li.mDeliveryNow');
 
@@ -592,6 +603,46 @@ window.ANALYTICS = {
 						ga('send', 'event', 'Available in Stores', 'Clicked');
 					}
 				});
+
+
+				/** Событие нажатия кнопки «Купить» или «Резерв» */
+				$('a.btnBuy__eLink').click(function ga_btnBuy() {
+					var
+						butType = $(this).hasClass('mShopsOnly') ? 'reserve' : 'add2basket';
+
+					if ( 'undefined' !== ga && 'undefined' !== product) {
+						ga('send', 'event', butType, product.name, product.article, product.price);
+						console.log('GA: btn Buy');
+					}
+
+				});
+
+
+				/** Событие нажатия кнопки миниатюры слайдера фото галереи товара */
+				$('li.bPhotoSliderGallery__eItem').each(function(j){
+					var
+						slideItem = $(this),
+						type = 'Image' + (j+1),
+						link = slideItem.find('a');
+
+					if (link) {
+						console.log(link);
+						link.one('click', function(){
+							gaInteractive(type);
+						});
+					}
+				});
+
+				/** Событие нажатия кнопки 360 градусов */
+				$('li.bPhotoActionOtherAction__eGrad360 a').one('click', function(){
+					gaInteractive('grad360')
+				});
+
+				/** Событие нажатия кнопки «Видео» */
+				$('li.mVideo a.bPhotoLink').one('click', function() {
+					gaInteractive('video');
+				});
+
 			},
 
 			ga_cart = function() {
