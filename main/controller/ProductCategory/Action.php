@@ -808,16 +808,10 @@ class Action {
         );
 
         if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
-            /*$filtersWithoutShop = [];
-            foreach ($productFilter->dump() as $filter) {
-                if ($filter[0] != 'shop') {
-                    $filtersWithoutShop[] = $filter;
-                }
-            }*/
             $productIds = [];
             $productCount = 0;
             $repository->prepareIteratorByFilter(
-                $productFilter->dump(), //$filtersWithoutShop,
+                $productFilter->dump(),
                 $sort,
                 $offset,
                 $limit,
