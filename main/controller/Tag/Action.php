@@ -832,17 +832,17 @@ class Action {
         );
 
         if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
-            $filtersWithoutShop = [];
+            /*$filtersWithoutShop = [];
             foreach ($productFilter->dump() as $filter) {
                 if ($filter[0] != 'shop') {
                     $filtersWithoutShop[] = $filter;
                 }
-            }
+            }*/
 
             $productIds = [];
             $productCount = 0;
             $repository->prepareIteratorByFilter(
-                $filtersWithoutShop,
+                $productFilter->dump(), //$filtersWithoutShop,
                 $page->getParam('sort'),
                 ($pageNum - 1) * $limit,
                 $limit,
