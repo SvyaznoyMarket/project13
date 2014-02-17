@@ -53,7 +53,7 @@ class Query implements \JsonSerializable {
     public function jsonSerialize() {
         $return = [
             //'id'      => $this->id,
-            'url'     => $this->url,
+            'url'     => (string)$this->url,
             'data'    => $this->data,
             'error'   => $this->error,
             'timeout' => $this->timeout,
