@@ -48,6 +48,8 @@ class Product {
         $products = [];
 
         foreach ($query->getResult() as $item) {
+            if (isset($item['property'])) unset($item['property']); // оптимизация
+            if (isset($item['property_group'])) unset($item['property_group']); // оптимизация
             $products[] = new Model\Product($item);
         }
 
