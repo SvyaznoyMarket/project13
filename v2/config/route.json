@@ -24,11 +24,11 @@
             "categoryPath": "[\\w\\d-_]+/[\\w\\d-_]+"
         }
     },
-    "Product\\GetCard": {
+    "ProductCard\\Get": {
         "name": "Карточка товара",
         "pattern": "/product/{productPath}",
         "require": {
-            "categoryPath": "[\\w\\d-_]+/{1}[\\w\\d-_]+"
+            "productPath": "[\\w\\d-_]+/{1}[\\w\\d-_]+"
         }
     },
     "Product\\GetUpsale": {

@@ -20,7 +20,7 @@ class GetItemByProductCategoryObject extends Query {
         $tokens = [
             $category->token,
         ];
-        foreach ($category->child as $child) {
+        foreach ($category->children as $child) {
             $tokens[] = $child->token;
         }
 

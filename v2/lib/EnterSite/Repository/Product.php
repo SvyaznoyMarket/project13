@@ -2,12 +2,43 @@
 
 namespace EnterSite\Repository;
 
+use Enter\Exception;
+use Enter\Http;
 use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
 use EnterSite\Model;
 
 class Product {
     use ConfigTrait;
+
+    /**
+     * @param Http\Request $request
+     * @return string
+     */
+    public function getTokenByHttpRequest(Http\Request $request) {
+        $token = explode('/', $request->query['productPath']);
+        $token = end($token);
+
+        return $token;
+    }
+
+    /**
+     * @param Query $query
+     * @return Model\Product
+     * @throws Exception\NotFound
+     */
+    public function getObjectByQuery(Query $query) {
+        $product = null;
+
+        $item = $query->getResult();
+        if (!$item) {
+            throw new Exception\NotFound('Товар не найден');
+        }
+
+        $product = new Model\Product($item);
+
+        return $product;
+    }
 
     /**
      * @param Query $query

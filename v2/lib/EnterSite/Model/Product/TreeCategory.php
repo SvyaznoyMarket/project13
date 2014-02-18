@@ -7,12 +7,14 @@ use EnterSite\Model\Product\Category;
 
 class TreeCategory extends Category {
 
-    /** @var \EnterSite\Model\Product\TreeCategory[] */
-    public $child = [];
+    /** @var TreeCategory[] */
+    public $children = [];
     /** @var int */
     public $productCount;
     /** @var int */
     public $productGlobalCount;
+    /** @var array TreeCategory[] */
+    public $ascendants = [];
 
     /**
      * @param array $data
@@ -25,7 +27,7 @@ class TreeCategory extends Category {
         if (isset($data['children']) && is_array($data['children'])) {
             foreach ($data['children'] as $childItem) {
                 if (!isset($childItem['id'])) continue;
-                $this->child[] = new TreeCategory($childItem);
+                $this->children[] = new TreeCategory($childItem);
             }
         }
     }
