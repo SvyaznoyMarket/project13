@@ -112,15 +112,26 @@ class IndexAction {
 
 
         $accessoriesId =  $product->getAccessoryId();
-        $relatedId = array_slice($product->getRelatedId(), 0, \App::config()->product['itemsInSlider'] * 2);
+        $relatedId = $product->getRelatedId();
         $partsId = [];
 
         // SITE-2818 Список связанных товаров нужно дозаполнять товарами, полученными от RR по методу CrossSellItemToItems
-        $recommendationRR = (new \Controller\Product\BasicRecommendedAction())->getProductsIdsFromRetailrocket($product, $request, 'CrossSellItemToItems');
-        $relatedId = $product->getRelatedId();
-        if (is_array($recommendationRR)) {
-            $relatedId = array_unique(array_merge($relatedId, $recommendationRR));
-        }
+        /*
+        $retailRocketConfig = \App::config()->partners['RetailRocket'];
+        $queryUrl = "{$retailRocketConfig['apiUrl']}Recomendation/CrossSellItemToItems/{$retailRocketConfig['account']}/{$product->getId()}";
+
+        // запрашиваем рекомендации у RetailRocket
+        \App::curl()->addQuery($queryUrl, [], function ($data) use (&$relatedId) {
+                if (is_array($data)) {
+                    $relatedId = array_unique(array_merge($relatedId, $data));
+                }
+            }, function(\Exception $e) {
+                \App::exception()->remove($e);
+            }, $retailRocketConfig['timeout']);
+        \App::curl()->execute(null, 1);
+        */
+
+        $relatedId = array_slice($relatedId, 0, \App::config()->product['itemsInSlider'] * 2);
 
         foreach ($product->getKit() as $part) {
             $partsId[] = $part->getId();
