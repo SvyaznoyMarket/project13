@@ -85,6 +85,13 @@ class FormAction {
 
         if ($form->isValid()) {
             try {
+                // Запоминаем данные enterprizeForm
+                \App::session()->set(\App::config()->enterprize['formDataSessionKey'], [
+                    'name'  => $form->getName(),
+                    'email' => $form->getEmail(),
+                    'phone' => $form->getPhone(),
+                ]);
+
                 // создание enterprize-купона
 //                $result = $client->query(
 //                    'coupon/enter-prize',
@@ -109,5 +116,32 @@ class FormAction {
                 \App::logger()->error($e);
             }
         }
+    }
+
+    /**
+     * @return \View\Enterprize\Form
+     * @throws \Exception\NotFoundException
+     */
+    public function getForm(){
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!\App::config()->enterprize['enabled']) {
+            throw new \Exception\NotFoundException();
+        }
+
+        $user = \App::user()->getEntity();
+        $form = new \View\Enterprize\Form();
+
+        // пользователь авторизован, заполняем форму данными пользователя
+        if ($user) {
+            $form->fromEntity($user);
+
+            // иначе, заполняем форму данными с сессии
+        } else {
+            $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
+            $form->fromArray($data);
+        }
+
+        return $form;
     }
 }
