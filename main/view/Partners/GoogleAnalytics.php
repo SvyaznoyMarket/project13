@@ -132,6 +132,10 @@ class GoogleAnalytics {
         $product = $this->getParam('product');
         $category = $product->getMainCategory();
 
+        if (strpos($_SERVER['HTTP_REFERER'],'search?q=') > 0) {
+            $this->sendData['afterSearch'] = 1;
+        }
+
         if ( !$category ) {
             $categories = $product->getCategory();
             $category = reset( $categories );
@@ -306,7 +310,6 @@ class GoogleAnalytics {
 
 
 
-
     /**
      * @param $name
      * @return null
@@ -315,22 +318,5 @@ class GoogleAnalytics {
         return array_key_exists($name, $this->params) ? $this->params[$name] : null;
     }
 
-
-    /**
-     * For debug
-     *
-     * @param null $var
-     * @param string $info
-     *
-    private function d($var = null, $info = '') {
-        print '<pre>Debug:';
-        if ($info) {
-            print '###';
-            print_r($info);
-            print ' - - - - ';
-        }
-        if ($var) print_r($var);
-        print '</pre>';
-    }*/
 
 }

@@ -643,6 +643,11 @@ window.ANALYTICS = {
 					gaInteractive('video');
 				});
 
+
+				if ( data.afterSearch && product.article ) {
+					console.log('GA: Items after Search');
+					ga('send', 'event', 'Items after Search', '<верхняя категория>', product.article);
+				}
 			},
 
 			ga_cart = function() {
@@ -670,7 +675,6 @@ window.ANALYTICS = {
 		;// end of functions
 
 		try{
-			window.GArun = window.GArun || {}
 			ga_action();
 
 			if ( 'undefined' !== typeof(data) && 'undefined' !== typeof(data.vars)) {
