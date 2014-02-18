@@ -88,7 +88,9 @@ class ChildAction {
             });
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-        $productsById = array_filter($productsById);
+        $productsById = array_filter($productsById, function($product) {
+            return $product instanceof \Model\Product\BasicEntity;
+        });
 
         $page = new \View\ProductCategory\Grid\ChildCategoryPage();
         $page->setParam('gridCells', $gridCells);
