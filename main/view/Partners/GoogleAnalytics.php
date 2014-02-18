@@ -130,15 +130,16 @@ class GoogleAnalytics {
         // страница одного товара
         $this->sendData['vars']['dimension5'] = 'Item';
         $product = $this->getParam('product');
+        $categories = $product->getCategory();
         $category = $product->getMainCategory();
+        $categoryUpper = reset($categories);
+
+        if ( !$category ) {
+            $category = end( $categories );
+        }
 
         if (strpos($_SERVER['HTTP_REFERER'],'search?q=') > 0) {
             $this->sendData['afterSearch'] = 1;
-        }
-
-        if ( !$category ) {
-            $categories = $product->getCategory();
-            $category = reset( $categories );
         }
 
         if ($product instanceof \Model\Product\Entity) {
@@ -151,6 +152,8 @@ class GoogleAnalytics {
         }
 
         $this->addCategoryInfo($category);
+
+        //$this->sendData['upperCat'] = $categoryUpper->getName();
     }
 
 
@@ -263,27 +266,39 @@ class GoogleAnalytics {
      * Вызывается на страницЕ "Спасибо за заказ"
      */
     private function routeOrderComplete() {
-        $this->routeOrder();
+        if ($this->getParam('sessionIsReaded')) {
+            // Если этот параметр существует и тру, то юзер обновляет страницу, не нужно трекать заново
+            return false;
+        }
 
         $this->sendData['vars']['dimension5'] = 'ThankYou';
 
-        // последняя страница оформление заказа
-        //$this->sendData['pageType'] = 6;
-
-        $orders = $this->getParam('orders');
-        if (!$orders) return false;
+        $productsById = $this->getParam('productsById');
+        $ordersAll = $this->getParam('orders');
+        if (!$ordersAll) return false;
         /** @var $orders \Model\Order\Entity **/
 
-        $productsById = $this->getParam('productsById');
 
-        //$orders->getSum()
+        $this->sendData['ecommerce'] = [];
+        $purchasedProducts = []; //купленные товары
+        $addTransaction = [
+            'id'        => '', // Transaction ID. Required.
+            'revenue'   => 0, // Grand Total.
+            'shipping'  => 0, // Shipping.
+        ];
 
-        //купленные товары
-        $purchasedProducts = [];
 
-        foreach($orders as $ord) {
-            /** @var $ord \Model\Order\Entity **/
-            $products = $ord->getProduct();
+        foreach($ordersAll as $order) {
+            /** @var $order \Model\Order\Entity **/
+            $products = $order->getProduct();
+            $delivery = $order->getDelivery();
+            $delivery = reset($delivery);
+
+            $addTransaction['id'] .= $order->getId() . ',';
+            $addTransaction['revenue'] += $order->getSum();
+            if ( $delivery instanceof \Model\Order\Delivery\Entity ) {
+                $addTransaction['shipping'] += $delivery->getPrice();
+            }
 
             foreach($products as $orderProduct) {
                 /** @var $orderProduct  \Model\Order\Product\Entity **/
@@ -302,9 +317,12 @@ class GoogleAnalytics {
 
         }
 
-        if (empty($purchasedProducts)) return false;
+        if (isset($addTransaction['id'][1])) {
+            $addTransaction['id'] = substr($addTransaction['id'], 0, strlen($addTransaction['id'])-1);
+        }
 
-        $this->sendData['purchasedProducts'] = $purchasedProducts;
+        $this->sendData['ecommerce']['addTransaction'] = $addTransaction;
+        $this->sendData['ecommerce']['items'] = $purchasedProducts;
     }
 
 

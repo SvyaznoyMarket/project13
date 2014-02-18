@@ -493,19 +493,17 @@ window.ANALYTICS = {
     },
 
 	gaJS : function() {
-		console.info('ports.js::GoogleAnalyticsJS');
-
 		var
 			template	= body.data('template') || '',
 			templSep	= template.indexOf(' '),
 			templLen	= template.length,
 			route 		= template.substring(0, (templSep > 0) ? templSep : templLen),
 			rType 		= (templSep > 0) ? template.substring(templSep + 1, templLen) : '',
-			data		= $('#GoogleAnalyticsJS').data('vars'),
+			data		= $('#gaJS').data('vars'),
 		// end of vars
 
 			ga_init = function ga_init() {
-				console.log( 'GoogleAnalyticsJS init' );
+				console.log( 'gaJS init' );
 
 				(function (i, s, o, g, r, a, m) {
 					i['GoogleAnalyticsObject'] = r;
@@ -518,17 +516,13 @@ window.ANALYTICS = {
 					a.src = g;
 					m.parentNode.insertBefore( a, m )
 				})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
-				ga( 'create', 'UA-25485956-5', 'enter.ru' );
 			},
 
 			ga_main = function() {
 				console.info( 'GoogleAnalyticsJS main page' );
 
-				var
-					mobAppLinks = $('a.bMobAppLink')
-				;
-
-				mobAppLinks.click(function(){
+				/** Событие клка на кнопку мобильного приложения */
+				$('a.bMobAppLink').click(function(){
 					var
 						href = $(this).attr('href'),
 						type = false
@@ -558,7 +552,8 @@ window.ANALYTICS = {
 			},
 
 			ga_productCatalog = function() {
-				console.info( 'GoogleAnalyticsJS product catalog' );
+				console.info( 'gaJS product catalog' );
+				/** Событие выбора фильтра */
 				$('div.bFilterBand input:not(:checked)').click(function ga_filterBrand(){
 					var
 						input = $(this ),
@@ -570,15 +565,6 @@ window.ANALYTICS = {
 						ga('send', 'event', 'brand_selected', name);
 					}
 				});
-			},
-
-			ga_productCatalogSearch = function() {
-				console.info( 'GoogleAnalyticsJS product catalog search' );
-			},
-
-			ga_productCatalogRoot = function() {
-				console.info( 'GoogleAnalyticsJS product catalog root' );
-
 			},
 
 			ga_product = function() {
@@ -644,22 +630,39 @@ window.ANALYTICS = {
 				});
 
 
-				if ( data.afterSearch && product.article ) {
+				if ( data && data.afterSearch && product.article && data.upperCat ) {
 					console.log('GA: Items after Search');
-					ga('send', 'event', 'Items after Search', '<верхняя категория>', product.article);
+					console.log(data.upperCat);
+					console.log(product.article);
+					ga('send', 'event', 'Items after Search', data.upperCat, product.article);
 				}
 			},
 
-			ga_cart = function() {
-				console.info( 'GoogleAnalyticsJS cart' );
+			ga_orderComplete = function ga_orderComplete() {
+				var
+					ecommerce = data ? data.ecommerce : false,
+					addTransaction = ecommerce ? ecommerce.addTransaction : false,
+					items = ecommerce ? ecommerce.items : false,
+					product;
+
+				console.log( 'gaJS orderComplete (require ecommerce)' );
+				ga('require', 'ecommerce', 'ecommerce.js');
+
+				if ( addTransaction ) {
+					console.log('addTransaction', addTransaction);
+					ga('ecommerce:addTransaction', addTransaction);
+				}
+
+				if ( items ) {
+					for ( product in items ) {
+						console.log('addItem', product);
+						ga('ecommerce:addItem', product);
+					}
+				}
 			},
 
-			ga_orderComplete = function() {},
-
 			ga_action = function ga_action() {
-				console.log( 'GoogleAnalyticsJS action' );
-				ga_init(); // блок инициализации аналитики для всех страниц
-
+				console.log( 'gaJS action' );
 				switch (route) {
 					case 'main':
 						ga_main(); // для главной страницы
@@ -670,23 +673,47 @@ window.ANALYTICS = {
 					case 'product_catalog':
 						ga_productCatalog(); // для каталога продуктов (стр. категории)
 						break;
+					case 'order_complete':
+						ga_orderComplete(); // для стр «Спасибо за заказ»
+						break;
 				}
 			}
 		;// end of functions
 
+		console.group('ports.js::gaJS');
 		try{
+			ga_init(); // блок инициализации аналитики для всех страниц
+			if ( 'function' !== typeof(ga) ) {
+				console.warn('GA: init error');
+				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
+			}
+			ga( 'create', 'UA-25485956-5', 'enter.ru' );
+
 			ga_action();
 
-			if ( 'undefined' !== typeof(data) && 'undefined' !== typeof(data.vars)) {
+			if( data && 'object' === typeof(data.vars) && data.vars ) {
 				console.log('GA:: send:: pageview:: ');
 				console.log(data.vars);
 				ga('send', 'pageview', data.vars); // трекаем весь массив с полями {dimensionN: <*М*>}
 			}
+
+			$(document).bind('ajaxSend', function(){
+				console.log('$$$ ajaxSend');
+			});
+
+			/** Событие ошибок аджакса */
+			$(document).bind('ajaxError', function(event, request, settings, error){
+				//alert(request.responseText);
+				console.log('$$$ ajaxError');
+				console.warn('ajaxError: ', event, request, settings, error);
+				ga('send', 'event', 'Error', 'ajax', '<тип ошибки>');
+			});
 		}
 		catch(e) {
-			console.warn('GA error');
+			console.warn('GA exception');
 			console.log(e);
 		}
+		console.groupEnd();
 	},
 
 	//SITE-3027 Установка кода TagMan на сайт
