@@ -503,8 +503,7 @@ window.ANALYTICS = {
 	},
 
 	desertJS : function() {
-		var
-			_paq = _paq || [];
+		window._paq = window._paq || [];
 
 		_paq.push(["setCookieDomain", "*.enter.ru"]);
 		_paq.push(["trackPageView"]);
