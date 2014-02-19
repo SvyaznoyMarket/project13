@@ -1,5 +1,6 @@
 var
-	body = $('body');
+	body = $('body'),
+	docJQ = $(document);
 
 console.log('ports.js inited');
 
@@ -492,6 +493,13 @@ window.ANALYTICS = {
 
     },
 
+	/**
+	 * Google Universal Analytics Tracking
+	 *
+	 * @requires jQuery
+	 *
+	 * @author	Misiukevich Juljan
+	 */
 	gaJS : function() {
 		var
 			template	= body.data('template') || '',
@@ -525,8 +533,7 @@ window.ANALYTICS = {
 				$('a.bMobAppLink').click(function(){
 					var
 						href = $(this).attr('href'),
-						type = false
-						;
+						type = false;
 
 					if ( 'string' !== typeof(href) ) {
 						return;
@@ -556,10 +563,10 @@ window.ANALYTICS = {
 				/** Событие выбора фильтра */
 				$('div.bFilterBand input:not(:checked)').click(function ga_filterBrand(){
 					var
-						input = $(this ),
+						input = $(this),
 						name = input.data('name');
 
-					if ( input.is(':checked') && 'undefined' !== name && 'undefined' !== ga ) {
+					if ( input.is(':checked') && 'undefined' !== name ) {
 						console.log('GA: Brand clicked');
 						console.log(name);
 						ga('send', 'event', 'brand_selected', name);
@@ -567,15 +574,17 @@ window.ANALYTICS = {
 				});
 			},
 
+			ga_search = function ga_search() {
+				console.info( 'gaJS search' );
+			},
+
 			ga_product = function() {
 				console.info( 'gaJS product page' );
 				var
 					product = $('#jsProductCard').data('value'),
 					gaInteractive = function gaInteractive(type) {
-						if ( 'undefined' !== ga ) {
-							console.log('GA: event Interactive: ' + type);
-							ga('send', 'event', 'Interactive', type);
-						}
+						console.log('GA: event Interactive: ' + type);
+						ga('send', 'event', 'Interactive', type);
 					};
 
 
@@ -584,7 +593,7 @@ window.ANALYTICS = {
 					var
 						wraper = $(this).closest('li.mDeliveryNow');
 
-					if ( 'undefined' !== wraper && 'undefined' !== ga && wraper.hasClass('mOpen') ) {
+					if ( 'undefined' !== wraper && wraper.hasClass('mOpen') ) {
 						console.log('GA: Available in Stores clicked!');
 						ga('send', 'event', 'Available in Stores', 'Clicked');
 					}
@@ -596,9 +605,9 @@ window.ANALYTICS = {
 					var
 						butType = $(this).hasClass('mShopsOnly') ? 'reserve' : 'add2basket';
 
-					if ( 'undefined' !== ga && 'undefined' !== product) {
-						ga('send', 'event', butType, product.name, product.article, product.price);
+					if ( 'undefined' !== product ) {
 						console.log('GA: btn Buy');
+						ga('send', 'event', butType, product.name, product.article, product.price);
 					}
 
 				});
@@ -631,9 +640,7 @@ window.ANALYTICS = {
 
 
 				if ( data && data.afterSearch && product.article && data.upperCat ) {
-					console.log('GA: Items after Search');
-					console.log(data.upperCat);
-					console.log(product.article);
+					console.log('GA: Items after Search', data.upperCat, product.article);
 					ga('send', 'event', 'Items after Search', data.upperCat, product.article);
 				}
 			},
@@ -681,11 +688,16 @@ window.ANALYTICS = {
 					case 'product_card':
 						ga_product(); // для карточки товара
 						break;
-					case 'cart': // для корзины
-						ga_cart()
+					case 'cart':
+						ga_cart(); // для корзины
 						break;
 					case 'product_catalog':
-						ga_productCatalog(); // для каталога продуктов (стр. категории)
+						if ( 'search' === rType ) {
+							ga_search(); // для страницы поиска
+						}
+						else {
+							ga_productCatalog(); // для каталога продуктов (стр. категории)
+						}
 						break;
 					case 'order_complete':
 						ga_orderComplete(); // для стр «Спасибо за заказ»
@@ -706,22 +718,32 @@ window.ANALYTICS = {
 			ga_action();
 
 			if( data && 'object' === typeof(data.vars) && data.vars ) {
-				console.log('GA:: send:: pageview:: ');
+				console.log('GA: send pageview');
 				console.log(data.vars);
 				ga('send', 'pageview', data.vars); // трекаем весь массив с полями {dimensionN: <*М*>}
 			}
 
-			$(document).bind('ajaxSend', function(){
-				console.log('$$$ ajaxSend');
+			/** Событие ошибок аджакса */
+			docJQ.bind('ajaxError', function ga_ajaxError(event, request, settings, error){
+				//alert(request.responseText);
+				console.log('GA: ajaxError');
+				console.warn('ajaxError: ', event, request, settings, error);
+				ga('send', 'event', 'Error', 'ajax', error); // error - <тип ошибки>
 			});
 
-			/** Событие ошибок аджакса */
-			$(document).bind('ajaxError', function(event, request, settings, error){
-				//alert(request.responseText);
-				console.log('$$$ ajaxError');
-				console.warn('ajaxError: ', event, request, settings, error);
-				ga('send', 'event', 'Error', 'ajax', '<тип ошибки>');
+			/** Событие добавления в корзину */
+			body.on('addtocart', function ga_addtocart(event, data) {
+				var
+					productData = data.product;
+				console.log('GA: addtocart clicked', productData);
+				ga('send', 'event', '<button>', productData.name, productData.article, productData.price);
 			});
+
+			/** Событие авторизации на сайт */
+			/*body.on('userLogged', function ga_login() { // Другое событие нужно
+				console.log('GA: event Logged in');
+				ga('send', 'event', 'Logged in', 'True');
+			});*/
 		}
 		catch(e) {
 			console.warn('GA exception');

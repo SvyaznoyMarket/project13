@@ -78,7 +78,7 @@
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    if ( 'undefined' !== ga ) {
+    if ( 'function' === typeof(ga) ) {
         ga('create', 'UA-25485956-5', 'enter.ru');
         ga('send', 'pageview', '/404' + document.location.pathname, {
             'dimension5': '404'

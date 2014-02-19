@@ -110,6 +110,10 @@ class GoogleAnalytics {
      * Вызывается на всех страницах счётчика
      */
     private function routeAll() {
+        $userEntity = \App::user()->getEntity();
+        $this->sendData['vars']['dimension7'] = ($userEntity && $userEntity->getId()) ?
+            'Registered' :
+            'Anonymous';
     }
 
 
@@ -250,35 +254,14 @@ class GoogleAnalytics {
 
 
     /**
-     * Вызывается на страницАХ заказа
+     * Метод не нужен, напрямую трекаем код на стр.
+     * main/template/error/page-404.php
      */
-    private function routeOrder() {
-        // оформление заказа
-
-        $orders = $this->getParam('orders');
-        if (!$orders) return false;
-        $orderNumbersArr = [];
-
-        $orderSum = 0;
-        foreach ($orders as $order) {
-            $orderNumbersArr[] = $order->getNumber();
-            $orderSum += $order->getPaySum();
-        }
-
-        $orderInfo = [
-          //'id'        =>  reset($orderNumbers),       // Берём номер первого заказа
-            'id'        => implode(", ", $orderNumbersArr), // Берём все номера заказов через запятую
-            'price'     => $orderSum,
-        ];
-
-        if ( empty($orderInfo) ) return false;
-        $this->sendData['orderInfo'] = $orderInfo;
-    }
-
-
+    /*
     private function route404() {
         $this->sendData['vars']['dimension5'] = '404';
-    }
+    }*/
+
 
     /**
      * Вызывается на страницЕ "Спасибо за заказ"
@@ -342,6 +325,12 @@ class GoogleAnalytics {
     }
 
 
+    /**
+     * Удаляет последний символ в строке
+     *
+     * @param $str
+     * @return string
+     */
     private function rmLastSeporator(&$str) {
         $str = (string) $str;
         if (isset($str[1])) {
@@ -352,12 +341,15 @@ class GoogleAnalytics {
 
 
     /**
+     * Возвращает параметр лэйаута.
+     * Метод нужен для связи между параметрами из Layout
+     * Т.о. настоящий класс имеет доступ ко всем параметрам, что и Layout из которого этот класс вызван
+     *
      * @param $name
      * @return null
      */
     private function getParam($name) {
         return array_key_exists($name, $this->params) ? $this->params[$name] : null;
     }
-
 
 }
