@@ -26,8 +26,12 @@ class Product {
     public $isInShopShowroomOnly;
     /** @var Model\Product\TreeCategory|null */
     public $category;
+    /** @var Model\Brand|null */
+    public $brand;
     /** @var Model\Product\Property[] */
     public $properties = [];
+    /** @var Model\Product\Property\Group[] */
+    public $propertyGroups = [];
 
     /**
      * @param array $data
@@ -50,9 +54,17 @@ class Product {
             }
         }
 
+        if (isset($data['brand']['id'])) $this->brand = new Model\Brand($data['brand']);
+
         if (isset($data['property'][0])) {
             foreach ($data['property'] as $propertyItem) {
                 $this->properties[] = new Model\Product\Property($propertyItem);
+            }
+        }
+
+        if (isset($data['property_group'][0])) {
+            foreach ($data['property_group'] as $propertyGroupItem) {
+                $this->propertyGroups[] = new Model\Product\Property\Group($propertyGroupItem);
             }
         }
     }

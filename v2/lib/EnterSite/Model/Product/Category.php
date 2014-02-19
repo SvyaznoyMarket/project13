@@ -22,7 +22,7 @@ class Category {
     /** @var int */
     public $level;
     /** @var bool */
-    public $hasChild;
+    public $hasChildren;
     /** @var string */
     public $redirectLink;
 
@@ -38,7 +38,7 @@ class Category {
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
         if (array_key_exists('media_image', $data)) $this->image = (string)$data['media_image'];
         if (array_key_exists('level', $data)) $this->level = (int)$data['level'];
-        if (array_key_exists('has_children', $data)) $this->hasChild = (bool)$data['has_children'];
+        if (array_key_exists('has_children', $data)) $this->hasChildren = (bool)$data['has_children'];
         if (!empty($data['redirect']['link'])) $this->redirectLink = (string)$data['redirect']['link'];
     }
 }

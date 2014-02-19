@@ -22,7 +22,7 @@ class Property {
     public $isMultiple;
     /** @var string */
     public $value;
-    /** @var int */
+    /** @var string */
     public $groupId;
     /** @var int */
     public $groupPosition;
@@ -42,12 +42,12 @@ class Property {
         if (array_key_exists('unit', $data)) $this->unit = (string)$data['unit'];
         if (array_key_exists('hint', $data)) $this->hint = (string)$data['hint'];
         if (array_key_exists('value_hint', $data)) $this->valueHint = (string)$data['value_hint'];
-        if (array_key_exists('is_multiple', $data)) $this->isMultiple = (string)$data['is_multiple'];
+        if (array_key_exists('is_multiple', $data)) $this->isMultiple = (bool)$data['is_multiple'];
         if (array_key_exists('value', $data)) $this->value = (string)$data['value'];
         if (array_key_exists('group_id', $data)) $this->groupId = (string)$data['group_id'];
-        if (array_key_exists('group_position', $data)) $this->groupPosition = (string)$data['group_position'];
-        if (array_key_exists('position', $data)) $this->position = (string)$data['position'];
-        if (array_key_exists('is_view_list', $data)) $this->isInList = (string)$data['is_view_list'];
+        if (array_key_exists('group_position', $data)) $this->groupPosition = (int)$data['group_position'];
+        if (array_key_exists('position', $data)) $this->position = (int)$data['position'];
+        if (array_key_exists('is_view_list', $data)) $this->isInList = (bool)$data['is_view_list'];
 
         if ($this->isMultiple && isset($data['option'][0])) {
             foreach ($data['option'] as $optionItem) {
@@ -62,9 +62,6 @@ class Property {
             }
             if (in_array($this->value, ['true', true], true)) {
                 $this->shownValue = 'да';
-            }
-            if (!empty($this->unit)) {
-                $this->shownValue .= ' ' . $this->unit;
             }
         } else if (isset($data['option'][0])) {
             $value = [];
