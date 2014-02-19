@@ -131,12 +131,13 @@ class GoogleAnalytics {
         $this->sendData['vars']['dimension5'] = 'Item';
         $product = $this->getParam('product');
         $categories = $product->getCategory();
-        $category = $product->getMainCategory();
         $categoryUpper = reset($categories);
-
-        if ( !$category ) {
-            $category = end( $categories );
-        }
+        $categoryDown = end($categories);
+        /*
+        $categoryMain = $product->getMainCategory();
+        if ( !$categoryMain ) {
+            $categoryMain = end( $categories );
+        }*/
 
         if (strpos($_SERVER['HTTP_REFERER'],'search?q=') > 0) {
             $this->sendData['afterSearch'] = 1;
@@ -151,19 +152,18 @@ class GoogleAnalytics {
                     : 'YES';
         }
 
-        $this->addCategoryInfo($category);
-
-        //$this->sendData['upperCat'] = $categoryUpper->getName();
+        $this->sendData['vars']['dimension6'] = $categoryUpper->getName();  // Имя верхней категории
+        $this->sendData['vars']['dimension12'] = $categoryDown->getName();  // Имя текущей подкатегории
+        $this->sendData['upperCat'] = $categoryUpper->getName();            // Имя верхней категории
     }
 
 
     /**
      * Добавляет инфу о категории и её родительской категори, если оная существует.
-     * Вызывается на стр. товара и стр. категории.
      *
      * @param $category
      */
-    private function addCategoryInfo($category) {
+    /*private function addCategoryInfo($category) {
         if ( $category instanceof \Model\Product\Category\Entity ) {
             $this->sendData['vars']['dimension12'] = $category->getName(); // Имя текущей категории
 
@@ -174,7 +174,7 @@ class GoogleAnalytics {
                 $this->sendData['vars']['dimension12'] = $category->getName(); // Если нет родительской
             }
         }
-    }
+    }*/
 
 
     /**
@@ -183,7 +183,14 @@ class GoogleAnalytics {
     private function routeCategory() {
         // страница каталога/категории/подкатегории
         $this->sendData['vars']['dimension5'] = 'Category';
-        $this->addCategoryInfo($this->getParam('category'));
+        $category = $this->getParam('category');
+        if ($category instanceof \Model\Product\Category\Entity) {
+            $categories = $category->getAncestor();
+            $categoryUpper = reset($categories);
+            $categoryDown = end($categories);
+            $this->sendData['vars']['dimension6'] = $categoryUpper->getName();  // Имя верхней категории
+            $this->sendData['vars']['dimension12'] = $categoryDown->getName();  // Имя текущей подкатегории
+        }
     }
 
 
