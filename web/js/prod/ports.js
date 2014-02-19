@@ -1139,12 +1139,12 @@ var ADFOX = {
 		} else {
 		  afReferrer = '';
 		}
-		var addate = new Date();
-		var dl = escape(document.location);
-		var pr1 = Math.floor(Math.random() * 1000000);	
+		var addate = new Date(),
+			dl = escape(document.location),
+			pr1 = Math.floor(Math.random() * 1000000);
 		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
 		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=engb&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		//AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=engb&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
 	},
 	
 	adfox215 : function() {
@@ -1297,8 +1297,9 @@ var ADFOX = {
 	},
 
 	parseAllAdfoxDivs : function( nodes ) {
-		 if( !this. enable )
-			return
+		 if( !this.enable ) {
+			 return;
+		 }
 
 // 		if( window.addEventListener ) {
 // 			var nativeEL = window.addEventListener
@@ -1319,22 +1320,22 @@ var ADFOX = {
 // 			}
 // 		}        
 			
-		var anNode = null
+		var anNode = null;
 		document.writeln = function() {
-			if( anNode )
-				anNode.innerHTML += arguments[0]
+			if( anNode ) {
+				anNode.innerHTML += arguments[0];
+			}
 		}
 
 		$.each( nodes , function() {
-//console.info( this.id, this.id+'' in ADFOX  )
-			anNode = this
-			if( this.id+'' in ADFOX ) {
-				ADFOX[this.id]()
+			anNode = this;
+			if( this['id'] + '' in ADFOX ) {
+				ADFOX[this['id']]();
 			}
-		})
-		anNode = null
+		});
+		anNode = null;
 		document.writeln = function(){
-			$('body').append( $(arguments[0] + '') )
+			$('body').append( $(arguments[0] + '') );
 		}
 	},
 
