@@ -51,5 +51,8 @@ class ImportConfig {
 
         $config->product->itemPerPage = $importedConfig->product['itemsPerPage'];
         $config->productReview->enabled = $importedConfig->product['reviewEnabled'];
+
+        // собственные настройки
+        $config->productReview->itemsInCard = 7;
     }
 }

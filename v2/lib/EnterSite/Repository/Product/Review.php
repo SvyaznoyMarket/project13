@@ -5,18 +5,18 @@ namespace EnterSite\Repository\Product;
 use Enter\Curl\Query;
 use EnterSite\Model;
 
-class Rating {
+class Review {
     public function getObjectListByQuery(Query $query) {
-        $ratings = [];
+        $reviews = [];
 
         try {
             foreach ($query->getResult() as $item) {
-                $ratings[] = new Model\Product\Rating($item);
+                $reviews[] = new Model\Product\Review($item);
             }
         } catch (\Exception $e) {
             //trigger_error($e, E_USER_ERROR);
         }
 
-        return $ratings;
+        return $reviews;
     }
 }

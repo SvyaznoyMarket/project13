@@ -53,8 +53,17 @@ class ProductCard {
             throw $redirect;
         }
 
+        // запрос отзывов товара
+        $reviewListQuery = null;
+        if ($config->productReview->enabled) {
+            $reviewListQuery = new Query\Product\Review\GetListByProductId($product->id, 0, $config->productReview->itemsInCard);
+            $curl->prepare($reviewListQuery);
+        }
+
+        $curl->execute(1, 2);
+
+        $reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
+
         die(var_dump($product));
-
-
     }
 }

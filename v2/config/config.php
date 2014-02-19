@@ -36,4 +36,5 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->product->itemPerPage = 19;
     $config->productReview->enabled = true;
+    $config->productReview->itemsInCard = 7;
 };

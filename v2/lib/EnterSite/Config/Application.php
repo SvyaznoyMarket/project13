@@ -122,8 +122,8 @@ namespace EnterSite\Config\Application {
 
     class Product {
         /**
-         * @var int
          * @name Количество элементов на страницу
+         * @var int
          */
         public $itemPerPage;
     }
@@ -131,6 +131,11 @@ namespace EnterSite\Config\Application {
     class ProductReview {
         /** @var bool */
         public $enabled;
+        /**
+         * @name Количество элементов в карточке товара
+         * @var int
+         */
+        public $itemsInCard;
     }
 }
 
