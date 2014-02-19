@@ -209,26 +209,37 @@ class GoogleAnalytics {
      */
     private function routeCart() {
         // корзина
-        $this->sendData['vars']['dimension5'] = 'Search';
+        $this->sendData['vars']['dimension5'] = 'Cart';
 
         $total = 0;
+        $SKUs = '';
+        $userEntity = \App::user()->getEntity();
         $cartProductsById = $this->getParam('cartProductsById');
-        $cartServicesById = $this->getParam('cartServicesById');
+        $products = $this->getParam('products');
+        //$cartServicesById = $this->getParam('cartServicesById');
 
-        foreach($cartProductsById as $item) {
-            /** @var $item \Model\Order\Product\Entity */
-            $total += $item->getSum();
+        if (!$cartProductsById /*&& !$cartServicesById*/) return false;
+
+        foreach ($products as $product) {
+            if (!isset($cartProductsById[$product->getId()])) continue;
+            //$cartProduct = $cartProductsById[$product->getId()];
+            /** @var $cartProduct \Model\Cart\Product\Entity */
+            /** @var $product \Model\Product\CartEntity */
+            $SKUs .= $product->getArticle() . ',';
+            $total += $product->getPrice();
         }
 
-        foreach($cartServicesById as $item) {
-            /** @var $product \Model\Order\Service\Entity */
+        /*foreach($cartServicesById as $item) {
+            // @var $product \Model\Order\Service\Entity
             $total += $item->getSum();
-        }
+        }*/
+
+        self::rmLastSeporator($SKUs);
 
         $this->sendData['cart'] = [
-            'totalSum'  => $total,
-            'SKUs'      => '',
-            'KissUIDs'  => '',
+            'sum'   => $total,
+            'SKUs'  => $SKUs,
+            'uid'   => $userEntity ? $userEntity->getId() : 0,
         ];
     }
 
@@ -324,15 +335,20 @@ class GoogleAnalytics {
 
         }
 
-        if (isset($addTransaction['id'][1])) {
-            $addTransaction['id'] = substr($addTransaction['id'], 0, strlen($addTransaction['id'])-1);
-        }
+        self::rmLastSeporator($addTransaction['id']);
 
         $this->sendData['ecommerce']['addTransaction'] = $addTransaction;
         $this->sendData['ecommerce']['items'] = $purchasedProducts;
     }
 
 
+    private function rmLastSeporator(&$str) {
+        $str = (string) $str;
+        if (isset($str[1])) {
+            $str = substr($str, 0, strlen($str)-1);
+        }
+        return $str;
+    }
 
 
     /**

@@ -661,6 +661,17 @@ window.ANALYTICS = {
 				}
 			},
 
+			ga_cart = function ga_cart() {
+				console.info( 'gaJS cart page' );
+				var
+					cartData = data ? data.cart : false;
+
+				if ( cartData && cartData.sum ) {
+					console.log('event Cart items', cartData.SKUs, cartData.uid, cartData.sum);
+					ga('send', 'event', 'Cart items', cartData.SKUs, cartData.uid, cartData.sum);
+				}
+			},
+
 			ga_action = function ga_action() {
 				console.log( 'gaJS action' );
 				switch (route) {
@@ -669,6 +680,9 @@ window.ANALYTICS = {
 						break;
 					case 'product_card':
 						ga_product(); // для карточки товара
+						break;
+					case 'cart': // для корзины
+						ga_cart()
 						break;
 					case 'product_catalog':
 						ga_productCatalog(); // для каталога продуктов (стр. категории)
