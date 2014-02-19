@@ -148,7 +148,7 @@ return function(
                     <a class="bPhotoLink" href=""></a>
                 </li>
             <? endif ?>
-            <? if ($product->checkVFittingResources()): ?>
+            <? if ($productVideo && $productVideo->getPandra()): ?>
                 <li class="bPhotoActionOtherAction bPhotoViewer__eItem vFitting">
                     <!-- TODO: Убрать этот аттр. style и «VF», добавить иконку. /css/bProductSection/img/btn_slider.png -->
                     <a style="background: #eee;font-size: 30px;text-align: center;line-height: 50px;"
