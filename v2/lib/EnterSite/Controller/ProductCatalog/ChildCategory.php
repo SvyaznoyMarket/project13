@@ -127,7 +127,7 @@ class ChildCategory {
         $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
 
         // список рейтингов товаров
-        $productRatings = $ratingListQuery ? (new Repository\Product\Rating())->getObjectListByQuery($ratingListQuery) : [];
+        $productRatingsByProductId = $ratingListQuery ? (new Repository\Product\Rating())->getObjectListByQueryIndexedByProductId($ratingListQuery) : [];
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\ChildCategory\Request();
@@ -139,7 +139,7 @@ class ChildCategory {
         $pageRequest->category = $category;
         $pageRequest->catalogConfig = $catalogConfig;
         $pageRequest->products = $products;
-        $pageRequest->productRatings = $productRatings;
+        $pageRequest->productRatingsByProductId = $productRatingsByProductId;
 
         // страница
         $page = new Page();

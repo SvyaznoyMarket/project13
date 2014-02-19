@@ -19,5 +19,5 @@ class Request extends Repository\Page\DefaultLayout\Request {
     /** @var Model\Product[] */
     public $products = [];
     /** @var Model\Product\Rating[] */
-    public $productRatings = [];
+    public $productRatingsByProductId = [];
 }

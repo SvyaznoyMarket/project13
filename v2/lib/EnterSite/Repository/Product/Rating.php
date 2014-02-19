@@ -6,12 +6,16 @@ use Enter\Curl\Query;
 use EnterSite\Model;
 
 class Rating {
-    public function getObjectListByQuery(Query $query) {
+    /**
+     * @param Query $query
+     * @return Model\Product\Rating[]
+     */
+    public function getObjectListByQueryIndexedByProductId(Query $query) {
         $ratings = [];
 
         try {
             foreach ($query->getResult() as $item) {
-                $ratings[] = new Model\Product\Rating($item);
+                $ratings[$item['product_id']] = new Model\Product\Rating($item);
             }
         } catch (\Exception $e) {
             //trigger_error($e, E_USER_ERROR);
