@@ -92,7 +92,7 @@ class Action {
             $result = null;
             $exception = null;
             $client->addQuery(
-                'order/calc-tmp',
+                'order/calc-tmp1',
                 [
                     'geo_id'  => $region->getId(),
                 ],
@@ -120,7 +120,6 @@ class Action {
             if ($exception instanceof \Exception) {
                 throw $exception;
             }
-            die(var_dump($result));
 
             if (!($paypalECS || $lifeGift) && \App::config()->blackcard['enabled'] && array_key_exists('blackcard_list', $result)) {
                 foreach ($result['blackcard_list'] as $blackcardItem) {
@@ -140,93 +139,67 @@ class Action {
                 }
             }
 
-            // типы доставок
-            $deliveryTypeData = [];
-            foreach (\RepositoryManager::deliveryType()->getCollection() as $deliveryType) {
-                $deliveryTypeData[$deliveryType->getToken()] =  [
-                    'id'          => $deliveryType->getId(),
-                    'token'       => $deliveryType->getToken(),
-                    'name'        => $deliveryType->getName(),
-                    'shortName'   => $deliveryType->getShortName(),
-                    'buttonName'  => $deliveryType->getButtonName(),
-                    'description' => $deliveryType->getDescription(),
-                    'states'      => isset($result['delivery_types'][$deliveryType->getToken()]['methods']) ? (array)$result['delivery_types'][$deliveryType->getToken()]['methods'] : [],
-                ];
+            // Типы доставок
+            if (isset($result['delivery_types'])) {
+                foreach ($result['delivery_types'] as $token => $type) {
+                    $typeDataFromRepository = \RepositoryManager::deliveryType()->getEntityByToken($token);
 
-                if ('pickpoint' === $deliveryType->getToken()) {
-                    $deliveryTypeData[$deliveryType->getToken()]['description'] = \App::closureTemplating()->render('order/newForm/__deliveryType-pickpoint-description');
+                    $responseData['deliveryTypes'][] =  [
+                        'id'          => $type['id'],
+                        'token'       => $token,
+                        'name'        => $typeDataFromRepository->getName(),
+                        'shortName'   => $typeDataFromRepository->getShortName(),
+                        'buttonName'  => $typeDataFromRepository->getButtonName(),
+                        'description' => $typeDataFromRepository->getDescription(),
+                        'states'      => isset($result['delivery_types'][$token]['methods']) ? (array)$result['delivery_types'][$token]['methods'] : [],
+                    ];
+
+                    if ('pickpoint' === $typeDataFromRepository->getToken()) {
+                        $responseData['deliveryTypes'][$token]['description'] = \App::closureTemplating()->render('order/newForm/__deliveryType-pickpoint-description');
+                    }
                 }
             }
 
-            $deliveryMethodData = [];
-            foreach ($result['delivery_methods'] as $deliveryMethodItem) {
-                // TODO standart_other - Плановая дата доставки
-                if (false !== strpos($deliveryMethodItem['token'], 'standart')) {
-                    $deliveryMethodItem['name'] = 'Доставим';
-                } else if (false !== strpos($deliveryMethodItem['token'], 'self')) {
-                    $deliveryMethodItem['name'] = 'Самовывоз';
-                } else if (false !== strpos($deliveryMethodItem['token'], 'now')) {
-                    $deliveryMethodItem['name'] = 'Самовывоз';
-                } else if (false !== strpos($deliveryMethodItem['token'], 'pickpoint')) {
-                    $deliveryMethodItem['name'] = 'PickPoint';
-                }
+            // Delivery Methods
+            if (isset($result['delivery_methods'])) {
+                foreach ($result['delivery_methods'] as $item) {
+                    $token = $item['token'];
 
-                $deliveryMethodData[$deliveryMethodItem['token']] = $deliveryMethodItem;
+                    // TODO standart_other - Плановая дата доставки
+                    switch (true) {
+                        case (false !== strpos($token, 'standart')):
+                            $item['name'] = 'Доставим';
+                            break;
+                        case (false !== strpos($token, 'self')):
+                        case (false !== strpos($token, 'now')):
+                            $item['name'] = 'Самовывоз';
+                            break;
+                        case (false !== strpos($token, 'pickpoint')):
+                            $item['name'] = 'PickPoint';
+                    }
+
+                    $responseData['deliveryStates'][$token] = $item;
+                }
             }
 
-            $responseData = array_merge($responseData, [
-                'deliveryTypes'   => $deliveryTypeData,
-                'deliveryStates'  => $deliveryMethodData,
-                'pointsByDelivery'=> [
-                    'self'      => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
-                    'now'       => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
-                    'pickpoint' => ['token' => 'pickpoints', 'changeName' => 'Сменить постамат'],
-                ],
-                'products'        => [],
-                'shops'           => [],
-                'pickpoints'      => [],
-                'discounts'       => [],
-            ]);
+            // Points By Delivery
+            $responseData['pointsByDelivery'] = [
+                'self'      => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
+                'now'       => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
+                'pickpoint' => ['token' => 'pickpoints', 'changeName' => 'Сменить постамат'],
+            ];
 
             // если недоступен заказ товара из магазина
             if (!\App::config()->product['allowBuyOnlyInshop'] && isset($responseData['deliveryStates']['now'])) {
                 unset($responseData['deliveryStates']['now']);
             }
 
-            // костыль
-            $getDates = function(array $dateData) use (&$helper) {
-                $return = [];
-
-                foreach ($dateData as $dateItem) {
-                    $time = strtotime($dateItem['date']);
-
-                    $intervalData = [];
-                    if (isset($dateItem['interval'])) {
-                        foreach ((array)$dateItem['interval'] as $intervalItem) {
-                            $intervalData[] = [
-                                'start' => $intervalItem['time_begin'],
-                                'end'   => $intervalItem['time_end'],
-                            ];
-                        }
-                    }
-
-                    $return[] = [
-                        'name'      => str_replace(' ' . date('Y') . ' г.', '', $helper->dateToRu(date('Y-m-d', $time)) . ' г.'),
-                        'value'     => strtotime($dateItem['date'], 0) * 1000,
-                        'day'       => (int)date('j', $time),
-                        'dayOfWeek' => (int)date('w', $time),
-                        'intervals' => $intervalData,
-                    ];
-                }
-
-                return $return;
-            };
-
             // ид товаров для каждого магазина
             $productIdsByShop = [];
             // ид товаров для каждого пикпоинта
             $pickpointProductIds = [];
 
+            // Products
             foreach ($result['products'] as $productItem) {
                 $productId = (string)$productItem['id'];
 
@@ -237,49 +210,42 @@ class Action {
                     continue;
                 }
 
-                $deliveryData = [];
-                foreach ($productItem['delivery_methods'] as $deliveryItemToken => $deliveryItem) {
-                    //foreach ($deliveryItem[])
+                foreach ($productItem['delivery_methods'] as $deliveryMethod) {
+                    $points = [];
+                    foreach ($deliveryMethod['points'] as $point) {
+                        if ($point['id']) {
+                            $point['dates'] = array_map(function ($dateItem) use ($helper) {
+                                if (!$dateItem['date']) return [];
+                                $time = strtotime($dateItem['date']);
+                                $dateItem = array_merge($dateItem, [
+                                    'name'      => str_replace(' ' . date('Y', $time) . ' г.', '', $helper->dateToRu(date('Y-m-d', $time)) . ' г.'),
+                                    'value'     => strtotime($dateItem['date'], 0) * 1000,
+                                    'day'       => (int)date('j', $time),
+                                    'dayOfWeek' => (int)date('w', $time),
+                                ]);
 
+                                return $dateItem;
+                            }, $point['dates']);
 
-                    list($deliveryItemTokenPrefix, $pointId) = array_pad(explode('_', $deliveryItemToken), 2, null);
+                            $points[$point['id']] = $point;
 
-                    // если доставка, модифицируем префикс токена и точку получения товаров
-                    if ('standart' == $deliveryItemTokenPrefix) {
-                        $deliveryItemTokenPrefix = $deliveryItemToken;
-                        $pointId = 0;
-                    }
-
-                    // если самовывоз, то добавляем ид товара в соответствующий магазин
-                    if (in_array($deliveryItemTokenPrefix, ['self', 'now'])) {
-                        if (!isset($productIdsByShop[$pointId])) {
-                            $productIdsByShop[$pointId] = [];
+                            // если самовывоз, то добавляем ид товара в соответствующий магазин
+                            if (in_array($deliveryMethod['token'], ['self', 'now'])) {
+                                if (!isset($productIdsByShop[$point['id']])) {
+                                    $productIdsByShop[$point['id']] = [];
+                                }
+                                $productIdsByShop[$point['id']][] = $productId;
+                            }
+                        } else {
+                            $points[] = $point;
                         }
-                        $productIdsByShop[$pointId][] = $productId;
-                    }
 
-                    // если пикпоинт, то добавляем ид товара в соответствующий пикпоинт
-                    if (in_array($deliveryItemTokenPrefix, ['pickpoint'])) {
-                        $pickpointProductIds[] = $productId;
+                        // если пикпоинт, то добавляем ид товара в соответствующий пикпоинт
+                        if ('pickpoint' === $deliveryMethod['token'] && !in_array($productId, $pickpointProductIds)) {
+                            $pickpointProductIds[] = $productId;
+                        }
                     }
-
-                    // добавляем ид товара в соответствующий метод доставки
-                    if (!isset($responseData['deliveryStates'][$deliveryItemTokenPrefix])) {
-                        $responseData['deliveryStates'][$deliveryItemTokenPrefix] = [
-                            'products' => [],
-                        ];
-                    }
-                    if (!in_array($productId, $responseData['deliveryStates'][$deliveryItemTokenPrefix]['products'])) {
-                        $responseData['deliveryStates'][$deliveryItemTokenPrefix]['products'][] = $productId;
-                    }
-
-                    if (!isset($deliveryData[$deliveryItemTokenPrefix])) {
-                        $deliveryData[$deliveryItemTokenPrefix] = [];
-                    }
-                    $deliveryData[$deliveryItemTokenPrefix][$pointId] = [
-                        'price' => (int)$deliveryItem['price'],
-                        'dates' => $getDates($deliveryItem['dates']),
-                    ];
+                    $deliveryData[$deliveryMethod['token']] = $points;
                 }
 
                 if (!(bool)$deliveryData) {
@@ -291,18 +257,22 @@ class Action {
                     throw $e;
                 }
 
-                if ($oneClick) {
-                    $setUrl = $router->generate('cart.oneClick.product.set', ['productId' => $productId]);
-                    $deleteUrl = $router->generate('cart.oneClick.product.delete', ['productId' => $productId]);
-                } else if ($paypalECS) {
-                    $setUrl = $router->generate('cart.paypal.product.set', ['productId' => $productId]);
-                    $deleteUrl = $router->generate('cart.paypal.product.delete', ['productId' => $productId]);
-                } else if ($lifeGift) {
-                    $setUrl = $router->generate('cart.lifeGift.product.set', ['productId' => $productId]);
-                    $deleteUrl = $router->generate('cart.lifeGift.product.delete', ['productId' => $productId]);
-                } else {
-                    $setUrl = $router->generate('cart.product.set', ['productId' => $productId]);
-                    $deleteUrl = $router->generate('cart.product.delete', ['productId' => $productId]);
+                switch (true) {
+                    case $oneClick:
+                        $setUrl = $router->generate('cart.oneClick.product.set', ['productId' => $productId]);
+                        $deleteUrl = $router->generate('cart.oneClick.product.delete', ['productId' => $productId]);
+                        break;
+                    case $paypalECS:
+                        $setUrl = $router->generate('cart.paypal.product.set', ['productId' => $productId]);
+                        $deleteUrl = $router->generate('cart.paypal.product.delete', ['productId' => $productId]);
+                        break;
+                    case $lifeGift:
+                        $setUrl = $router->generate('cart.lifeGift.product.set', ['productId' => $productId]);
+                        $deleteUrl = $router->generate('cart.lifeGift.product.delete', ['productId' => $productId]);
+                        break;
+                    default:
+                        $setUrl = $router->generate('cart.product.set', ['productId' => $productId]);
+                        $deleteUrl = $router->generate('cart.product.delete', ['productId' => $productId]);
                 }
 
                 $responseData['products'][$productId] = [
@@ -320,53 +290,58 @@ class Action {
                 ];
             }
 
-            // магазины
-            foreach ($result['shops'] as $shopItem) {
-                $shopId = (string)$shopItem['id'];
-                if (!isset($productIdsByShop[$shopId])) continue;
-                if (empty($shopItem['coord_lat']) || empty($shopItem['coord_long'])) {
-                    \App::logger()->error(['Пустые координаты магазина', 'shop' => $shopItem], ['order']);
-                    continue;
-                }
-
-                $responseData['shops'][] = [
-                    'id'         => $shopId,
-                    'name'       => $shopItem['name'],
-                    'address'    => $shopItem['address'],
-                    'regtime'    => $shopItem['working_time'],
-                    'latitude'   => (float)$shopItem['coord_lat'],
-                    'longitude'  => (float)$shopItem['coord_long'],
-                    'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
-                    'pointImage' => '/images/marker.png',
-                    'buttonName' => isset($deliveryTypeData['now']['buttonName']) ? $deliveryTypeData['now']['buttonName'] :
-                        (isset($deliveryTypeData['standart']['buttonName']) ? $deliveryTypeData['standart']['buttonName'] : ''),
-                ];
-            }
-            // сортировка магазинов
-            if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
-                usort($responseData['shops'], function($a, $b) use (&$region) {
-                    if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
-                        return 0;
+            // Магазины
+            if (isset($result['shops'])) {
+                foreach ($result['shops'] as $shopItem) {
+                    $shopId = (string)$shopItem['id'];
+                    if (!isset($productIdsByShop[$shopId])) continue;
+                    if (empty($shopItem['coord_lat']) || empty($shopItem['coord_long'])) {
+                        \App::logger()->error(['Пустые координаты магазина', 'shop' => $shopItem], ['order']);
+                        continue;
                     }
 
-                    return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
-                });
+                    $responseData['shops'][] = [
+                        'id'         => $shopId,
+                        'name'       => $shopItem['name'],
+                        'address'    => $shopItem['address'],
+                        'regtime'    => $shopItem['working_time'],
+                        'latitude'   => (float)$shopItem['coord_lat'],
+                        'longitude'  => (float)$shopItem['coord_long'],
+                        'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
+                        'pointImage' => '/images/marker.png',
+                        'buttonName' => isset($responseData['deliveryTypes']['now']['buttonName']) ? $responseData['deliveryTypes']['now']['buttonName'] :
+                            (isset($responseData['deliveryTypes']['standart']['buttonName']) ? $responseData['deliveryTypes']['standart']['buttonName'] : ''),
+                    ];
+                }
+                // сортировка магазинов
+                if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude() && !empty($responseData['shops'])) {
+                    usort($responseData['shops'], function($a, $b) use (&$region) {
+                        if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
+                            return 0;
+                        }
+
+                        return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
+                    });
+                }
             }
 
+            // Пикпоинты
             $pickpoints = [];
-
             if ( empty($pickpointProductIds) ) {
                 \App::logger()->error('Рассчитанное значение $pickpointProductIds пусто', ['pickpoints']);
             } else {
                 $deliveryRegions = [];
-                if(!empty(reset($result['products'])['delivery_methods']['pickpoint']['regions'])) {
-                    $deliveryRegions = array_map(
-                        function($regionItem) {
-                            return $regionItem['region'];
-                        },
-                        reset($result['products'])['delivery_methods']['pickpoint']['regions']
-                    );
+                foreach (reset($result['products'])['delivery_methods'] as $deliveryMethod) {
+                    if ('pickpoint' !== $deliveryMethod['token']) continue;
+                    if (!$deliveryMethod['points']) continue;
+
+                    foreach ($deliveryMethod['points'] as $pointItem) {
+                        foreach ($pointItem['regions'] as $regionItem) {
+                            $deliveryRegions[] = $regionItem['region'];
+                        }
+                    }
                 }
+
                 if ( empty($deliveryRegions) ) {
                     \App::logger()->error('Рассчитанное значение $deliveryRegions пусто', ['pickpoints']);
                 }
@@ -400,8 +375,7 @@ class Action {
                 $ppClient->execute();
             }
 
-            // пикпоинты
-            if ( empty($pickpoints) ) {
+            if (empty($pickpoints)) {
                 \App::logger()->error('Список пикпойнтов пуст', ['pickpoints']);
                 unset($responseData['deliveryStates']['pickpoint']);
             } else {
@@ -419,12 +393,12 @@ class Action {
                         'products'      => $pickpointProductIds,
                         'point_name'    => $pickpointItem['Name'],
                         'pointImage'    => '/images/marker-pickpoint.png',
-                        'buttonName'    => $deliveryTypeData['pickpoint']['buttonName'],
+                        'buttonName'    => \RepositoryManager::deliveryType()->getEntityByToken('pickpoint')->getButtonName(),
                     ];
                 }
 
                 // сортировка пикпоинтов
-                if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude()) {
+                if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude() && !empty($responseData['pickpoints'])) {
                     usort($responseData['pickpoints'], function($a, $b) use (&$region) {
                         if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
                             return 0;
@@ -470,7 +444,7 @@ class Action {
 
             // удаляем типы доставок, у которых не осталось методов доставок
             foreach ($responseData['deliveryTypes'] as $i => $deliveryTypeItem) {
-                if (!(bool)array_intersect($deliveryTypeItem['ownStates'], array_keys($responseData['deliveryStates']))) {
+                if (!(bool)array_intersect($deliveryTypeItem['states'], array_keys($responseData['deliveryStates']))) {
                     unset($responseData['deliveryTypes'][$i]);
                 }
             }
@@ -483,14 +457,13 @@ class Action {
 
             if (!empty($responseData['products'])) {
                 foreach ($responseData['products'] as $keyPi => $productItem) {
-                    if (empty($productItem['delivery_methods'])) continue;
-                    foreach ($productItem['delivery_methods'] as $keyDi => $deliveryItem) {
-                        if ($keyDi == 'pickpoint') {
-                            $dateData = reset($responseData['products'][$keyPi]['delivery_methods'][$keyDi]);
-                            $responseData['products'][$keyPi]['delivery_methods'][$keyDi] = [];
-                            foreach ($pickpoints as $keyPp => $pickpoint) {
-                                $responseData['products'][$keyPi]['delivery_methods'][$keyDi][$pickpoint['Id']] = $dateData;
-                            }
+                    if (empty($productItem['deliveries'])) continue;
+                    foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
+                        if ($keyDi !== 'pickpoint') continue;
+                        $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
+                        $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
+                        foreach ($pickpoints as $keyPp => $pickpoint) {
+                            $responseData['products'][$keyPi]['deliveries'][$keyDi][$pickpoint['Id']] = $dateData;
                         }
                     }
                 }
