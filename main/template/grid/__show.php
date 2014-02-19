@@ -28,19 +28,20 @@ $f = function(
 ">
     <? if (\Model\GridCell\Entity::TYPE_PRODUCT === $cell->getType()): ?>
     <?
-        $product = (isset($productsById[$cell->getId()]) ? $productsById[$cell->getId()] : null);
-        if (!$product) continue;
+        $product = ((isset($productsById[$cell->getId()]) && $productsById[$cell->getId()] instanceof \Model\Product\BasicEntity) ? $productsById[$cell->getId()] : null);
     ?>
-        <?= $helper->renderWithMustache('product/show/__grid', $showAction->execute(
-            $helper,
-            $product,
-            [],
-            null,
-            false,
-            $cartButtonAction,
-            null,
-            3
-        )) ?>
+        <? if ($product): ?>
+            <?= $helper->renderWithMustache('product/show/__grid', $showAction->execute(
+                $helper,
+                $product,
+                [],
+                null,
+                false,
+                $cartButtonAction,
+                null,
+                3
+            )) ?>
+        <? endif ?>
     <? elseif (\Model\GridCell\Entity::TYPE_IMAGE === $cell->getType()): ?>
     <?
         $content = $cell->getContent();

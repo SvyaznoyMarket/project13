@@ -86,6 +86,7 @@ class RecommendedAction {
                 if ('alsoBought' === $type) {
                     // SITE-2818 Из блока "С этим товаром также покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
                     foreach ($productsCollection[$type] as $key => $value) {
+                        if (!$value instanceof \Model\Product\BasicEntity) continue;
                         if ($value->isInShopOnly() || $value->isInShopStockOnly()) {
                             unset($productsCollection[$type][$key]);
                         }
@@ -96,9 +97,13 @@ class RecommendedAction {
                     $products = $this->prepareProducts($productsCollection[$type], $controller[$type]->getName());
                 }
 
-                if ( !is_array($products) ) {
+                if (!is_array($products)) {
                     throw new \Exception(sprintf('Not found products data in response. ActionType: %s', $controller[$type]->getActionType()));
                 }
+
+                $products = array_filter($products, function($product) {
+                    return $product instanceof \Model\Product\BasicEntity;
+                });
 
                 $recommend[$type] = [
                     'success' => true,
@@ -137,7 +142,7 @@ class RecommendedAction {
         foreach ($products as $i => $product) {
             /* @var product Model\Product\Entity */
 
-            if (!$product->getIsBuyable())  {
+            if (!$product instanceof \Model\Product\BasicEntity || !$product->getIsBuyable())  {
                 unset($products[$i]);
                 continue;
             }

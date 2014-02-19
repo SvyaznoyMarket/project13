@@ -63,12 +63,15 @@ class Action {
             }
 
             if ($form->isValid()) {
+                $authSource = null;
                 $params = ['password' => $form->getPassword()];
                 if (strpos($form->getUsername(), '@')) {
                     $params['email'] = $form->getUsername();
+                    $authSource = 'email';
                 }
                 else {
                     $params['mobile'] = $form->getUsername();
+                    $authSource = 'phone';
                 }
 
                 try {
@@ -95,6 +98,9 @@ class Action {
                         throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
                     }
                     $userEntity->setToken($result['token']);
+
+                    // Запоминаем источник авторизации
+                    \App::session()->set('authSource', $authSource);
 
                     $response = $request->isXmlHttpRequest()
                         ? new \Http\JsonResponse([
@@ -176,6 +182,9 @@ class Action {
         $user->removeToken($response);
         $user->setCacheCookie($response);
         \Session\User::disableInfoCookie($response);
+
+        // Очищаем источник авторизации
+        \App::session()->remove('authSource');
 
         // SITE-1763
         $user->getCart()->clear();

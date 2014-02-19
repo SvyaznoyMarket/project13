@@ -335,6 +335,7 @@ module.exports = function( grunt ) {
 				src: [jsDevPath+'debug-panel/*.js'],
 				dest: jsProdPath+'debug-panel.js'
 			},
+			partnerScripts: {},
 			cartJS : {
 				src: [jsDevPath+'cart/*.js'],
 				dest: jsProdPath+'cart.js'

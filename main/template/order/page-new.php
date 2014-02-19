@@ -349,14 +349,15 @@ if ($oneClick) {
 			<div class="bBuyingLine mBuyingFields clearfix">
 
 				<? if ($lifeGift): ?>
-					<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
+					<label for="" class="bBuyingLine__eLeft">Телефон для связи</label>
 					<div class="bBuyingLine__eRight mPhone">
+						<span class="bFeildStarImg">*</span>
 						<span class="bPlaceholder">+7</span> 
 						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
 						<span class="phoneHintLg">Если у вас нет номера мобильного телефона, укажите телефон фонда "Подари Жизнь": <strong>+7(926)011-98-53</strong>.</span>
 					</div>
 
-                    <label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
+                    <label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?><? endif ?></label>
                     <div class="bBuyingLine__eRight">
                         <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
@@ -372,8 +373,9 @@ if ($oneClick) {
                     </div>
 
 				<? elseif ($oneClick): ?>
-					<label for="" class="bBuyingLine__eLeft">Имя получателя*</label>
+					<label for="" class="bBuyingLine__eLeft">Имя получателя</label>
 					<div class="bBuyingLine__eRight">
+						<span class="bFeildStarImg">*</span>
 						<input type="text" id="order_recipient_first_name" class="bBuyingLine__eText mInputLong" name="order[recipient_first_name]" value="" />
 					</div>
 
@@ -382,7 +384,7 @@ if ($oneClick) {
 						<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
 					</div>
 
-					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?>*<? endif ?></label>
+					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?><? endif ?></label>
 					<div class="bBuyingLine__eRight">
 						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
@@ -392,8 +394,9 @@ if ($oneClick) {
 						</div>
 					</div>
 
-					<label for="" class="bBuyingLine__eLeft">Телефон для связи*</label>
+					<label for="" class="bBuyingLine__eLeft">Телефон для связи</label>
 					<div class="bBuyingLine__eRight mPhone">
+						<span class="bFeildStarImg">*</span>
 						<span class="bPlaceholder">+7</span> 
 						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
 					</div>

@@ -82,13 +82,17 @@ class ChildAction {
         foreach (array_chunk($productsById, \App::config()->coreV2['chunk_size'], true) as $idsInChunk) {
             \RepositoryManager::product()->prepareCollectionById(array_values($idsInChunk), \App::user()->getRegion(), function($data) use (&$productsById, &$idsInChunk) {
                 foreach ($data as $item) {
-                    if (false === $productId = array_search($item['id'], $idsInChunk)) continue;
-                    $productsById[$productId] = new \Model\Product\CompactEntity($item);
+                    if (!isset($productsById[$item['id']])) {
+                        continue;
+                    }
+                    $productsById[$item['id']] = new \Model\Product\CompactEntity($item);
                 }
             });
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-        $productsById = array_filter($productsById);
+        $productsById = array_filter($productsById, function($product) {
+            return $product instanceof \Model\Product\BasicEntity;
+        });
 
         $page = new \View\ProductCategory\Grid\ChildCategoryPage();
         $page->setParam('gridCells', $gridCells);

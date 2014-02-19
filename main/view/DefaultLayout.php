@@ -63,7 +63,35 @@ class DefaultLayout extends Layout {
     }
 
     public function slotHeader() {
-        return $this->render('_header', $this->params);
+        $subscribeForm = [];
+
+        \App::dataStoreClient()->addQuery(
+            'subscribe-form.json', [],
+            function($data) use (&$subscribeForm) {
+                if ($data) $subscribeForm = (array) $data;
+            },
+            function(\Exception $e) {
+                \App::exception()->remove($e);
+            }
+        );
+
+        \App::dataStoreClient()->execute();
+
+        if (!isset($subscribeForm['mainText'])) {
+            $subscribeForm['mainText'] = 'Подпишитесь на рассылку и будьте в курсе акций, скидок и суперцен!';
+        }
+
+        if (!isset($subscribeForm['inputText'])) {
+            $subscribeForm['inputText'] = 'Введите Ваш e-mail';
+        }
+
+        if (!isset($subscribeForm['buttonText'])) {
+            $subscribeForm['buttonText'] = 'Подписаться';
+        }
+
+        return $this->render('_header',
+            $this->params + ['subscribeForm' => $subscribeForm]
+        );
     }
 
     public function slotSeoContent() {
@@ -352,11 +380,15 @@ class DefaultLayout extends Layout {
 
             // вызов JS Alexa-кода
             $return .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
+
+            // new Google Analytics Code
+            $return .= '<div id="gaJS" class="jsanalytics" data-vars="' .
+                $this->json( (new \View\Partners\GoogleAnalytics($routeName, $this->params))->execute() ) .
+                '"></div>';
+
+            $return .= '<div id="TagManJS" class="jsanalytics"></div>';
+            $return .= '<div id="desertJS" class="jsanalytics"></div>';
         }
-
-        //$return .= '<div id="GoogleAnalyticsJS" class="jsanalytics"></div>';
-
-        $return .= '<div id="TagManJS" class="jsanalytics"></div>';
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
 

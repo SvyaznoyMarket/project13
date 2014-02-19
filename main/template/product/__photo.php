@@ -76,6 +76,19 @@ return function(
     </div>
 <? endif ?>
 
+    <? if ((bool)true): ?>
+        <div id="vFittingModelPopup" class="popup" data-value="<?= $helper->json($maybe3dData); ?>">
+            <i class="close" title="Закрыть">Закрыть</i>
+            <div id="vFittingModelPopup_inner" style="position: relative;">
+                <div id="vFittingModel">
+                    <a href="http://www.adobe.com/go/getflashplayer">
+                        <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    <? endif ?>
+
 <? if ($model3dImg) : ?>
     <div id="3dModelImg" class="popup" data-value="<?= $helper->json($model3dImg); ?>" data-host="<?= $helper->json(['http://'.App::request()->getHost()]) ?>">
         <i class="close" title="Закрыть">Закрыть</i>
@@ -135,6 +148,13 @@ return function(
                     <a class="bPhotoLink" href=""></a>
                 </li>
             <? endif ?>
+            <? if ($productVideo && $productVideo->getPandra()): ?>
+                <li class="bPhotoActionOtherAction bPhotoViewer__eItem vFitting">
+                    <!-- TODO: Убрать этот аттр. style и «VF», добавить иконку. /css/bProductSection/img/btn_slider.png -->
+                    <a style="background: #eee;font-size: 30px;text-align: center;line-height: 50px;"
+                        class="bPhotoLink" href="#">VF</a>
+                </li>
+            <? endif  ?>
         </ul><!--/view product section -->
 
         <? if (count($product->getPhoto()) > 1): ?>
