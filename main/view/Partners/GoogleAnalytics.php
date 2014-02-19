@@ -82,6 +82,7 @@ class GoogleAnalytics {
 
         } catch (\Exception $e) {
             \App::logger()->error($e, [__CLASS__]);
+            \App::exception()->remove($e);
         }
 
         if (empty($this->sendData['vars'])) {
@@ -110,7 +111,7 @@ class GoogleAnalytics {
      * Вызывается на всех страницах счётчика
      */
     private function routeAll() {
-        $userEntity = \App::user()->getEntity();
+        $userEntity = $this->user->getEntity();
         $this->sendData['vars']['dimension7'] = ($userEntity && $userEntity->getId()) ?
             'Registered' :
             'Anonymous';
@@ -217,7 +218,7 @@ class GoogleAnalytics {
 
         $total = 0;
         $SKUs = '';
-        $userEntity = \App::user()->getEntity();
+        $userEntity = $this->user->getEntity();
         $cartProductsById = $this->getParam('cartProductsById');
         $products = $this->getParam('products');
         //$cartServicesById = $this->getParam('cartServicesById');
@@ -275,13 +276,17 @@ class GoogleAnalytics {
         $this->sendData['vars']['dimension5'] = 'ThankYou';
 
         $productsById = $this->getParam('productsById');
+        /** @var  $paymentMethod \Model\PaymentMethod\Entity  */
+        //$paymentMethod = $this->getParam('paymentMethod');
+        /** @var $ordersAll \Model\Order\Entity[] */
         $ordersAll = $this->getParam('orders');
         if (!$ordersAll) return false;
         /** @var $orders \Model\Order\Entity **/
 
 
         $this->sendData['ecommerce'] = [];
-        $purchasedProducts = []; //купленные товары
+        $purchasedProducts = []; // купленные товары
+        $completedOrders = []; // совершенные заказы
         $addTransaction = [
             'id'        => '', // Transaction ID. Required.
             'revenue'   => 0, // Grand Total.
@@ -316,12 +321,24 @@ class GoogleAnalytics {
                 ];
             }
 
+            // $paymentMethod->getName(),// '<Тип оплаты>'
+
+            $delivery = $order->getDelivery();
+            /** @var $delivery \Model\Order\Delivery\Entity */
+            $delivery = reset($delivery);
+
+            $completedOrders[] = [
+                'dimension2' => $delivery->getTypeId(),// '<Тип доставки>',
+                //'dimension3' => '',// '<Код купона>',
+                'dimension4' => $order->getPaymentId(),// '<Тип оплаты>'
+            ];
         }
 
         self::rmLastSeporator($addTransaction['id']);
 
         $this->sendData['ecommerce']['addTransaction'] = $addTransaction;
         $this->sendData['ecommerce']['items'] = $purchasedProducts;
+        $this->sendData['ecommerce']['send'] = $completedOrders;
     }
 
 
