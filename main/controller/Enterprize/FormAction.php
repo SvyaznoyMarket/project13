@@ -125,10 +125,6 @@ class FormAction {
     public function getForm(){
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (!\App::config()->enterprize['enabled']) {
-            throw new \Exception\NotFoundException();
-        }
-
         $user = \App::user()->getEntity();
         $form = new \View\Enterprize\Form();
 
