@@ -24,7 +24,7 @@ class Product {
     public $isInShopStockOnly;
     /** @var bool */
     public $isInShopShowroomOnly;
-    /** @var Model\Product\TreeCategory|null */
+    /** @var Model\Product\Category|null */
     public $category;
     /** @var Model\Brand|null */
     public $brand;
@@ -47,10 +47,10 @@ class Product {
 
         if (isset($data['category'][0])) {
             $categoryItem = (array)array_pop($data['category']);
-            $this->category = new Model\Product\TreeCategory($categoryItem);
+            $this->category = new Model\Product\Category($categoryItem);
 
             foreach ($data['category'] as $categoryItem) {
-                $this->category->ascendants[] = new Model\Product\TreeCategory($categoryItem);
+                $this->category->ascendants[] = new Model\Product\Category($categoryItem);
             }
         }
 

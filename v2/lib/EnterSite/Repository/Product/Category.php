@@ -25,7 +25,7 @@ class Category {
     /**
      * @param Query $query
      * @throws Exception\NotFound
-     * @return Model\Product\TreeCategory
+     * @return Model\Product\Category
      */
     public function getAncestryObjectByQuery(Query $query) {
         $category = null;
@@ -35,7 +35,7 @@ class Category {
             throw new Exception\NotFound('Категория товара не найдена');
         }
 
-        $category = new Model\Product\TreeCategory($item);
+        $category = new Model\Product\Category($item);
 
         return $category;
     }
