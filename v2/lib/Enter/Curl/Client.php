@@ -279,7 +279,7 @@ class Client {
 
         if ((bool)$query->getData()) {
             curl_setopt($connection, CURLOPT_POST, true);
-            curl_setopt($connection, CURLOPT_POSTFIELDS, $query->getData());
+            curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($query->getData()));
         }
 
         if ($this->config->referer) {

@@ -70,7 +70,7 @@ class ProductCard {
         $reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
 
         // видео товара
-        (new Repository\Product())->setObjectVideoByQuery($product, $videoListQuery);
+        (new Repository\Product())->setVideoForObjectByQuery($product, $videoListQuery);
 
         die(var_dump($product));
     }

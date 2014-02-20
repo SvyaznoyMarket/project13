@@ -18,6 +18,4 @@ class Request extends Repository\Page\DefaultLayout\Request {
     public $pageNum;
     /** @var Model\Product[] */
     public $products = [];
-    /** @var Model\Product\Rating[] */
-    public $productRatingsByProductId = [];
 }

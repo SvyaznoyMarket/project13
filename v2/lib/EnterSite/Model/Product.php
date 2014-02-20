@@ -32,6 +32,10 @@ class Product {
     public $properties = [];
     /** @var Model\Product\Property\Group[] */
     public $propertyGroups = [];
+    /** @var Model\Product\Media */
+    public $media;
+    /** @var Model\Product\Rating|null */
+    public $rating;
 
     /**
      * @param array $data

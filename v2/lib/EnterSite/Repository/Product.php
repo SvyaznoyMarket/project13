@@ -44,13 +44,14 @@ class Product {
      * @param Query $query
      * @return Model\Product[]
      */
-    public function getObjectListByQuery(Query $query) {
+    public function getObjectListByQueryIndexedById(Query $query) {
         $products = [];
 
         foreach ($query->getResult() as $item) {
             $item['property'] = []; // оптимизация
             $item['property_group'] = []; // оптимизация
-            $products[] = new Model\Product($item);
+            $item['media'] = [reset($item['media'])]; // оптимизация
+            $products[$item['id']] = new Model\Product($item);
         }
 
         return $products;
@@ -58,13 +59,43 @@ class Product {
 
     /**
      * @param Model\Product $product
-     * @param Query $videoQuery
+     * @param Query $videoListQuery
      */
-    public function setObjectVideoByQuery(Model\Product $product, Query $videoQuery) {
+    public function setVideoForObjectByQuery(Model\Product $product, Query $videoListQuery) {
         try {
-            foreach ($videoQuery->getResult() as $videoItem) {
+            foreach ($videoListQuery->getResult() as $videoItem) {
                 $product->media->videos[] = new Model\Product\Media\Video($videoItem);
             }
         } catch (\Exception $e) { }
+    }
+
+    /**
+     * @param Model\Product[] $productsById
+     * @param Query $videoGroupedListQuery
+     */
+    public function setVideoForObjectListByQuery(array $productsById, Query $videoGroupedListQuery) {
+        try {
+            foreach ($videoGroupedListQuery->getResult() as $videoItem) {
+                if (!isset($productsById[$videoItem['product_id']])) continue;
+
+                $productsById[$videoItem['product_id']]->media->videos[] = new Model\Product\Media\Video($videoItem);
+            }
+        } catch (\Exception $e) { }
+    }
+
+    /**
+     * @param Model\Product[] $productsById
+     * @param Query $ratingListQuery
+     */
+    public function setRatingForListByQuery(array $productsById, Query $ratingListQuery) {
+        try {
+            foreach ($ratingListQuery->getResult() as $ratingItem) {
+                if (!isset($productsById[$ratingItem['product_id']])) continue;
+
+                $productsById[$ratingItem['product_id']]->rating = new Model\Product\Rating($ratingItem);
+            }
+        } catch (\Exception $e) {
+            //trigger_error($e, E_USER_ERROR);
+        }
     }
 }

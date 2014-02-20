@@ -27,6 +27,7 @@ class ChildCategory {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
+        $productRepository = new Repository\Product();
 
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequest($request);
@@ -97,7 +98,7 @@ class ChildCategory {
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
 
         // запрос списка товаров
-        $productListQuery = new Query\Product\GetListByIdList($productIdPager->id, $region);
+        $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $region);
         $curl->prepare($productListQuery);
 
         // запрос меню
@@ -111,14 +112,18 @@ class ChildCategory {
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
         if ($config->productReview->enabled) {
-            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($productIdPager->id);
+            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($productIdPager->ids);
             $curl->prepare($ratingListQuery);
         }
+
+        // запрос списка видео для товаров
+        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($productIdPager->ids);
+        $curl->prepare($videoGroupedListQuery);
 
         $curl->execute(1, 2);
 
         // список товаров
-        $products = (new Repository\Product())->getObjectListByQuery($productListQuery);
+        $productsById = $productRepository->getObjectListByQueryIndexedById($productListQuery);
 
         // меню
         $mainMenuList = (new Repository\MainMenu())->getObjectListByQuery($mainMenuListQuery, $categoryListQuery);
@@ -127,7 +132,12 @@ class ChildCategory {
         $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
 
         // список рейтингов товаров
-        $productRatingsByProductId = $ratingListQuery ? (new Repository\Product\Rating())->getObjectListByQueryIndexedByProductId($ratingListQuery) : [];
+        if ($ratingListQuery) {
+            $productRepository->setRatingForListByQuery($productsById, $ratingListQuery);
+        }
+
+        // список видео для товаров
+        $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\ChildCategory\Request();
@@ -138,8 +148,7 @@ class ChildCategory {
         $pageRequest->sorting = $sorting;
         $pageRequest->category = $category;
         $pageRequest->catalogConfig = $catalogConfig;
-        $pageRequest->products = $products;
-        $pageRequest->productRatingsByProductId = $productRatingsByProductId;
+        $pageRequest->products = $productsById;
 
         // страница
         $page = new Page();
