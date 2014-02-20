@@ -651,7 +651,6 @@ window.ANALYTICS = {
 					addTransaction,
 					items,
 					send,
-					product,
 					count, i;
 
 				if ( ecommerce ) {

@@ -755,6 +755,12 @@ window.ANALYTICS = {
 				ga('send', 'event', '<button>', productData.name, productData.article, productData.price);
 			});
 
+
+			/** Событие выбора города */
+			$('.jsChangeRegionAnalytics' ).click(function(){
+				//ga('send', 'dimension8', '<City>');
+			});
+
 			/** Событие авторизации на сайт */
 			/*body.on('userLogged', function ga_login() { // Другое событие нужно
 				console.log('GA: event Logged in');
