@@ -63,7 +63,35 @@ class DefaultLayout extends Layout {
     }
 
     public function slotHeader() {
-        return $this->render('_header', $this->params);
+        $subscribeForm = [];
+
+        \App::dataStoreClient()->addQuery(
+            'subscribe-form.json', [],
+            function($data) use (&$subscribeForm) {
+                if ($data) $subscribeForm = (array) $data;
+            },
+            function(\Exception $e) {
+                \App::exception()->remove($e);
+            }
+        );
+
+        \App::dataStoreClient()->execute();
+
+        if (!isset($subscribeForm['mainText'])) {
+            $subscribeForm['mainText'] = 'Подпишитесь на рассылку и будьте в курсе акций, скидок и суперцен!';
+        }
+
+        if (!isset($subscribeForm['inputText'])) {
+            $subscribeForm['inputText'] = 'Введите Ваш e-mail';
+        }
+
+        if (!isset($subscribeForm['buttonText'])) {
+            $subscribeForm['buttonText'] = 'Подписаться';
+        }
+
+        return $this->render('_header',
+            $this->params + ['subscribeForm' => $subscribeForm]
+        );
     }
 
     public function slotSeoContent() {
@@ -359,6 +387,7 @@ class DefaultLayout extends Layout {
                 '"></div>';
 
             $return .= '<div id="TagManJS" class="jsanalytics"></div>';
+            $return .= '<div id="desertJS" class="jsanalytics"></div>';
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');

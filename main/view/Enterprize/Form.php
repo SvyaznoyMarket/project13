@@ -39,6 +39,15 @@ class Form {
     }
 
     /**
+     * @param \Model\User\Entity $entity
+     */
+    public function fromEntity(\Model\User\Entity $entity) {
+        $this->setName($entity->getName());
+        $this->setEmail($entity->getEmail());
+        $this->setPhone($entity->getMobilePhone());
+    }
+
+    /**
      * @param string $name
      */
     public function setName($name) {
