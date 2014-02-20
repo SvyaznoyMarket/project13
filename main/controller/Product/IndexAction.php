@@ -288,8 +288,10 @@ class IndexAction {
 
         // SITE-2818 Из блока "С этим товаром также покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
         foreach ($related as $key => $item) {
-            if ($item->isInShopOnly() || $item->isInShopStockOnly()) {
-                unset($related[$key]);
+            if ($item && $item instanceof \Model\Product\Entity) {
+                if ($item->isInShopOnly() || $item->isInShopStockOnly()) {
+                    unset($related[$key]);
+                }
             }
         }
         $related = array_slice($related, 0, \App::config()->product['itemsInSlider'] * 2);
