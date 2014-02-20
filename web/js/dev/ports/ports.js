@@ -758,7 +758,10 @@ window.ANALYTICS = {
 
 			/** Событие выбора города */
 			$('.jsChangeRegionAnalytics' ).click(function(){
-				//ga('send', 'dimension8', '<City>');
+				var
+					regionName = $(this).text();
+				console.log('GA: dimension8 (ChangeRegion)', regionName);
+				ga('send', 'dimension8', regionName);
 			});
 
 			/** Событие авторизации на сайт */
