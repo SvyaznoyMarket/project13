@@ -1,0 +1,149 @@
+/* ==========================================================================
+   Стили шапки сайта .header
+   ========================================================================== */
+
+.header {
+	background: @black;
+	color: @white;
+	padding: 10px 10px;
+}
+
+/* Иконка меню */
+.headerLeftAside {
+	float: left; 
+	margin-left: -100%; 
+	position: relative; 
+	width: 110px;
+} 
+
+.menuIco {
+	display: inline-block;
+	vertical-align: top;
+	height: 28px;
+    width: 33px;
+	margin: 6px 20px 0 0;
+
+	*display: block;
+	zoom: 1;
+
+	&__link {
+		background: url("modules/header/img/menuIco1024.png") no-repeat 0 0;
+		height: 28px;
+    	width: 33px;
+		display: block;
+	}
+}
+
+/* Логотип */
+.logo {
+	display: inline-block;
+	vertical-align: top;
+
+	width: 50px;
+
+	&__link {
+		width: 50px;
+	}
+}
+
+/* Хлебные крошки */
+.headerCenterWrap {
+	float: left; 
+	overflow: hidden; 
+	width: 100%;
+}
+
+.headerCenter {
+	padding: 0 280px 0 120px; 
+	overflow: hidden;
+}
+
+.breadCrumbs {
+	display: inline-block;
+	vertical-align: top;
+
+	padding: 0 0 0 20px;
+	border-left: 2px solid @white;
+	margin-left: 20px;
+	width: 1000px;
+
+	&__item {
+	    display: inline-block;
+	    font-size: 1.4em;
+	    margin: 10px 0 0;
+	    vertical-align: top;
+	}
+
+	&__itemImg {
+		display: inline-block;
+		vertical-align: top;
+		margin: 0 10px 0 0;
+	}
+
+	&__link {
+		text-transform: uppercase;
+		color: @white;
+		font-size: 17px;
+
+		&:hover {
+			color: @white;
+			text-decoration: none;
+		}
+	}
+}
+
+/* Панель юзера */
+.headerRightAside {
+	float: left;
+    margin-left: -270px;
+    position: relative;
+    width: 270px;
+    z-index: 5;
+}
+
+.transBg {
+	float: left;
+	background: url("modules/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
+	height: 30px;
+	width: 20px;
+}
+
+.userBox {
+	float: left;
+	width: 250px;
+	
+    
+    background: @black;
+    
+
+	&__item {
+		display: inline-block;
+		margin: 0 0 0 21px;
+	}
+
+	&__link {
+		color: @white;
+		background: url("modules/header/img/menuIco1024.png") no-repeat 50% -37px;
+		display: block;
+		text-align: center;
+		padding: 23px 0 0;
+		text-transform: uppercase;
+
+		&-auth {
+			background-position: 50% -80px;
+		}
+
+		&-cart {
+			background-position: 50% -122px;
+		}
+
+		&:hover {
+			color: @white;
+			text-decoration: none;
+		}
+	}
+
+	&__text {
+		 font-size: 11px;
+	}
+}
