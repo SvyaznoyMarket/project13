@@ -60,9 +60,17 @@ class ProductCard {
             $curl->prepare($reviewListQuery);
         }
 
+        // запрос ведео товара
+        $videoListQuery = new Query\Product\Media\Video\GetListByProductId($product->id);
+        $curl->prepare($videoListQuery);
+
         $curl->execute(1, 2);
 
+        // отзывы товара
         $reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
+
+        // видео товара
+        (new Repository\Product())->setObjectVideoByQuery($product, $videoListQuery);
 
         die(var_dump($product));
     }

@@ -44,15 +44,18 @@ class ImportConfig {
         $config->reviewService->timeout = $importedConfig->reviewsStore['timeout'];
         $config->reviewService->retryCount = $importedConfig->reviewsStore['retryCount'];
 
+        $config->mediaHosts = $importedConfig->mediaHost;
+
+        $config->product->itemPerPage = $importedConfig->product['itemsPerPage'];
+        $config->productPhoto->urlPaths = $importedConfig->productPhoto['url'];
+        $config->productReview->enabled = $importedConfig->product['reviewEnabled'];
+
+        // собственные настройки
         $config->mustacheRenderer->dir = $config->dir . '/v2/vendor/mustache';
         $config->mustacheRenderer->templateDir = $config->dir . '/v2/template';
         $config->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';
         $config->mustacheRenderer->templateClassPrefix = preg_replace('/[^\w]/', '_', $config->hostname . '_v2' . '-');
 
-        $config->product->itemPerPage = $importedConfig->product['itemsPerPage'];
-        $config->productReview->enabled = $importedConfig->product['reviewEnabled'];
-
-        // собственные настройки
         $config->productReview->itemsInCard = 7;
     }
 }

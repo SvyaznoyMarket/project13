@@ -36,6 +36,17 @@ class Product {
     /**
      * @param array $data
      */
+    public function __construct(array $data = []) {
+        $this->media = new Model\Product\Media();
+
+        if ((bool)$data) {
+            $this->import($data);
+        }
+    }
+
+    /**
+     * @param array $data
+     */
     public function import(array $data) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
@@ -65,6 +76,12 @@ class Product {
         if (isset($data['property_group'][0])) {
             foreach ($data['property_group'] as $propertyGroupItem) {
                 $this->propertyGroups[] = new Model\Product\Property\Group($propertyGroupItem);
+            }
+        }
+
+        if (isset($data['media'][0])) {
+            foreach ($data['media'] as $mediaItem) {
+                $this->media->photos[] = new Model\Product\Media\Photo($mediaItem);
             }
         }
     }

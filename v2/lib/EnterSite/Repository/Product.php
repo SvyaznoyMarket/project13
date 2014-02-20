@@ -55,4 +55,16 @@ class Product {
 
         return $products;
     }
+
+    /**
+     * @param Model\Product $product
+     * @param Query $videoQuery
+     */
+    public function setObjectVideoByQuery(Model\Product $product, Query $videoQuery) {
+        try {
+            foreach ($videoQuery->getResult() as $videoItem) {
+                $product->media->videos[] = new Model\Product\Media\Video($videoItem);
+            }
+        } catch (\Exception $e) { }
+    }
 }

@@ -1,16 +1,6 @@
 <?php
 
 namespace EnterSite\Config {
-    use EnterSite\Config\Application\Logger;
-    use EnterSite\Config\Application\Region;
-    use EnterSite\Config\Application\CoreService;
-    use EnterSite\Config\Application\CmsService;
-    use EnterSite\Config\Application\AdminService;
-    use EnterSite\Config\Application\ReviewService;
-    use EnterSite\Config\Application\MustacheRenderer;
-    use EnterSite\Config\Application\Product;
-    use EnterSite\Config\Application\ProductReview;
-
     class Application {
         /** @var string */
         public $requestId;
@@ -18,39 +8,44 @@ namespace EnterSite\Config {
         public $dir;
         /** @var string */
         public $hostname;
-        /** @var Logger */
+        /** @var Application\Logger */
         public $logger;
-        /** @var Region */
+        /** @var Application\Region */
         public $region;
-        /** @var CoreService */
+        /** @var Application\CoreService */
         public $coreService;
-        /** @var CmsService  */
+        /** @var Application\CmsService */
         public $cmsService;
-        /** @var AdminService  */
+        /** @var Application\AdminService */
         public $adminService;
-        /** @var ReviewService  */
+        /** @var Application\ReviewService */
         public $reviewService;
-        /** @var MustacheRenderer  */
+        /** @var Application\MustacheRenderer */
         public $mustacheRenderer;
-        /** @var Product */
+        /** @var array */
+        public $mediaHosts = [];
+        /** @var Application\Product */
         public $product;
-        /** @var ProductReview */
+        /** @var Application\ProductReview */
         public $productReview;
+        /** @var Application\ProductPhoto */
+        public $productPhoto;
 
         public function __construct() {
-            $this->logger = new Logger();
+            $this->logger = new Application\Logger();
 
-            $this->region = new Region();
+            $this->region = new Application\Region();
 
-            $this->coreService = new CoreService();
-            $this->cmsService = new CmsService();
-            $this->adminService = new AdminService();
-            $this->reviewService = new ReviewService();
+            $this->coreService = new Application\CoreService();
+            $this->cmsService = new Application\CmsService();
+            $this->adminService = new Application\AdminService();
+            $this->reviewService = new Application\ReviewService();
 
-            $this->mustacheRenderer = new MustacheRenderer();
+            $this->mustacheRenderer = new Application\MustacheRenderer();
 
-            $this->product = new Product();
-            $this->productReview = new ProductReview();
+            $this->product = new Application\Product();
+            $this->productPhoto = new Application\ProductPhoto();
+            $this->productReview = new Application\ProductReview();
         }
     }
 }
@@ -126,6 +121,13 @@ namespace EnterSite\Config\Application {
          * @var int
          */
         public $itemPerPage;
+    }
+
+    class ProductPhoto {
+        /**
+         * @var array
+         */
+        public $urlPaths = [];
     }
 
     class ProductReview {
