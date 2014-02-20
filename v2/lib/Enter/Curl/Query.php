@@ -80,6 +80,9 @@ class Query implements \JsonSerializable {
      * @throws \Exception|null
      */
     final public function getResult() {
+        if (0 === $this->call) {
+            throw new \Exception(sprintf('Запрос не подготовлен %s', $this->url));
+        }
         if ($this->error) {
             throw $this->error;
         }

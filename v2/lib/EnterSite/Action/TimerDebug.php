@@ -29,7 +29,7 @@ class TimerDebug {
         foreach ($logger as $message) {
             if (isset($message['tag'][0]) && in_array('curl', $message['tag'])) {
                 /** @var Query|null $query */
-                $query = $message['query'] instanceof Query ? $message['query'] : null;
+                $query = (isset($message['query']) && $message['query'] instanceof Query) ? $message['query'] : null;
                 if (!$query) continue;
 
                 $info = $query->getInfo();

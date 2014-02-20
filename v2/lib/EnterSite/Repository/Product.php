@@ -5,11 +5,23 @@ namespace EnterSite\Repository;
 use Enter\Exception;
 use Enter\Http;
 use Enter\Curl\Query;
+use Enter\Logging\Logger;
 use EnterSite\ConfigTrait;
+use EnterSite\LoggerTrait;
 use EnterSite\Model;
 
 class Product {
     use ConfigTrait;
+    use LoggerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait;
+    }
+
+    /** @var Logger */
+    protected $logger;
+
+    public function __construct() {
+        $this->logger = $this->getLogger();
+    }
 
     /**
      * @param Http\Request $request
@@ -66,7 +78,9 @@ class Product {
             foreach ($videoListQuery->getResult() as $videoItem) {
                 $product->media->videos[] = new Model\Product\Media\Video($videoItem);
             }
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+        }
     }
 
     /**
@@ -80,7 +94,9 @@ class Product {
 
                 $productsById[$videoItem['product_id']]->media->videos[] = new Model\Product\Media\Video($videoItem);
             }
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+        }
     }
 
     /**
@@ -95,6 +111,7 @@ class Product {
                 $productsById[$ratingItem['product_id']]->rating = new Model\Product\Rating($ratingItem);
             }
         } catch (\Exception $e) {
+            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
             //trigger_error($e, E_USER_ERROR);
         }
     }
