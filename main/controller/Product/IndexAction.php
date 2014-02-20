@@ -110,37 +110,17 @@ class IndexAction {
             });
         }
 
-
         $accessoriesId =  $product->getAccessoryId();
-        $relatedId = $product->getRelatedId();
         $partsId = [];
-
-        // SITE-2818 Список связанных товаров нужно дозаполнять товарами, полученными от RR по методу CrossSellItemToItems
-        /*
-        $retailRocketConfig = \App::config()->partners['RetailRocket'];
-        $queryUrl = "{$retailRocketConfig['apiUrl']}Recomendation/CrossSellItemToItems/{$retailRocketConfig['account']}/{$product->getId()}";
-
-        // запрашиваем рекомендации у RetailRocket
-        \App::curl()->addQuery($queryUrl, [], function ($data) use (&$relatedId) {
-                if (is_array($data)) {
-                    $relatedId = array_unique(array_merge($relatedId, $data));
-                }
-            }, function(\Exception $e) {
-                \App::exception()->remove($e);
-            }, $retailRocketConfig['timeout']);
-        \App::curl()->execute(null, 1);
-        */
-
-        $relatedId = array_slice($relatedId, 0, \App::config()->product['itemsInSlider'] * 2);
 
         foreach ($product->getKit() as $part) {
             $partsId[] = $part->getId();
         }
 
         $productsCollection = [];
-        if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
+        if ((bool)$accessoriesId || (bool)$partsId) {
             // если аксессуары уже получены в filterAccessoryId для них запрос не делаем
-            $ids = !empty($accessoryItems) ? array_merge($relatedId, $partsId) : array_merge($accessoriesId, $relatedId, $partsId);
+            $ids = !empty($accessoryItems) ? $partsId : array_merge($accessoriesId, $partsId);
             $chunckedIds = array_chunk($ids, \App::config()->coreV2['chunk_size']);
 
             foreach ($chunckedIds as $i => $chunk) {
@@ -243,10 +223,9 @@ class IndexAction {
         $accessoriesId =  array_slice($product->getAccessoryId(), 0, $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] * 36 : \App::config()->product['itemsInSlider'] * 6);
         $additionalData = [];
         $accessories = array_flip($accessoriesId);
-        $related = array_flip($relatedId);
         $kit = array_flip($partsId);
 
-        if ((bool)$accessoriesId || (bool)$relatedId || (bool)$partsId) {
+        if ((bool)$accessoriesId || (bool)$partsId) {
             try {
                 $result = [];
                 foreach ($productsCollection as $chunk) {
@@ -265,34 +244,19 @@ class IndexAction {
 
                 $products = [];
                 $accessories = [];
-                $related = [];
                 $kit = [];
             }
 
             $accessoriesCount = 1;
-            $relatedCount = 1;
             foreach ($products as $item) {
                 if (isset($accessories[$item->getId()])) {
                     $additionalData[$item->getId()] = \Kissmetrics\Manager::getProductEvent($item, $accessoriesCount, 'Accessorize');
                     $accessoriesCount++;
                     $accessories[$item->getId()] = $item;
                 }
-                if (isset($related[$item->getId()])) {
-                    $additionalData[$item->getId()] = \Kissmetrics\Manager::getProductEvent($item, $relatedCount, 'Also Bought');
-                    $relatedCount++;
-                    $related[$item->getId()] = $item;
-                }
                 if (isset($kit[$item->getId()])) $kit[$item->getId()] = $item;
             }
         }
-
-        // SITE-2818 Из блока "С этим товаром также покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
-        foreach ($related as $key => $item) {
-            if ($item->isInShopOnly() || $item->isInShopStockOnly()) {
-                unset($related[$key]);
-            }
-        }
-        $related = array_slice($related, 0, \App::config()->product['itemsInSlider'] * 2);
 
         // фильтрация связанных товаров
         $notEmpty = function ($related) use ($product) {
@@ -304,7 +268,6 @@ class IndexAction {
             return $return;
         };
         $accessories = array_filter($accessories, $notEmpty);
-        $related = array_filter($related, $notEmpty);
         $kit = array_filter($kit, $notEmpty);
 
         $creditData = $this->getDataForCredit($product);
@@ -379,7 +342,6 @@ class IndexAction {
         $page->setParam('title', $product->getName());
         $page->setParam('accessories', $accessories);
         $page->setParam('accessoryCategory', $accessoryCategory);
-        $page->setParam('related', $related);
         $page->setParam('kit', $kit);
         $page->setParam('additionalData', $additionalData);
         $page->setParam('creditData', $creditData);
