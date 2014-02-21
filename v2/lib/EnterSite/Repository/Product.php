@@ -56,7 +56,7 @@ class Product {
      * @param Query $query
      * @return Model\Product[]
      */
-    public function getObjectListByQueryIndexedById(Query $query) {
+    public function getIndexedObjectListByQuery(Query $query) {
         $products = [];
 
         foreach ($query->getResult() as $item) {
@@ -103,7 +103,7 @@ class Product {
      * @param Model\Product[] $productsById
      * @param Query $ratingListQuery
      */
-    public function setRatingForListByQuery(array $productsById, Query $ratingListQuery) {
+    public function setRatingForObjectListByQuery(array $productsById, Query $ratingListQuery) {
         try {
             foreach ($ratingListQuery->getResult() as $ratingItem) {
                 if (!isset($productsById[$ratingItem['product_id']])) continue;

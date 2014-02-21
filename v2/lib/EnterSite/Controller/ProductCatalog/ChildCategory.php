@@ -123,7 +123,7 @@ class ChildCategory {
         $curl->execute(1, 2);
 
         // список товаров
-        $productsById = $productRepository->getObjectListByQueryIndexedById($productListQuery);
+        $productsById = $productRepository->getIndexedObjectListByQuery($productListQuery);
 
         // меню
         $mainMenuList = (new Repository\MainMenu())->getObjectListByQuery($mainMenuListQuery, $categoryListQuery);
@@ -133,7 +133,7 @@ class ChildCategory {
 
         // список рейтингов товаров
         if ($ratingListQuery) {
-            $productRepository->setRatingForListByQuery($productsById, $ratingListQuery);
+            $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
 
         // список видео для товаров
