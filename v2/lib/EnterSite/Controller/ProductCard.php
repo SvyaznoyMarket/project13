@@ -53,6 +53,10 @@ class ProductCard {
             throw $redirect;
         }
 
+        // запрос доставки товара
+        $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $region);
+        $curl->prepare($deliveryListQuery);
+
         // запрос отзывов товара
         $reviewListQuery = null;
         if ($config->productReview->enabled) {
@@ -64,6 +68,7 @@ class ProductCard {
         $videoListQuery = new Query\Product\Media\Video\GetListByProductId($product->id);
         $curl->prepare($videoListQuery);
 
+
         $curl->execute(1, 2);
 
         // отзывы товара
@@ -71,6 +76,9 @@ class ProductCard {
 
         // видео товара
         (new Repository\Product())->setVideoForObjectByQuery($product, $videoListQuery);
+
+        // доставка товара
+        (new Repository\Product())->setDeliveryForObjectListByQuery([$product->id => $product], $deliveryListQuery);
 
         die(var_dump($product));
     }

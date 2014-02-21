@@ -36,6 +36,8 @@ class Product {
     public $media;
     /** @var Model\Product\Rating|null */
     public $rating;
+    /** @var Model\Product\NearestDelivery[] */
+    public $nearestDeliveries = [];
 
     /**
      * @param array $data
