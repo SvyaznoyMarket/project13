@@ -22,7 +22,7 @@ class ImportConfig {
 
         $config->logger->fileAppender->file = $config->dir . '/log/main.log';
 
-        $config->region->defaultId = $importedConfig->region['defaultId'];
+        $config->region->defaultId = (string)$importedConfig->region['defaultId'];
         $config->region->cookieName = $importedConfig->region['cookieName'];
 
         $config->coreService->url = $importedConfig->coreV2['url'];

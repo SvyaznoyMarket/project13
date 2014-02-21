@@ -1,9 +1,9 @@
 {
-    "dir": "/home/green/www/enter",
+    "dir": "/var/www/enter",
     "hostname": "enter.loc",
     "logger": {
         "fileAppender": {
-            "file": "/home/green/www/enter/log/main.log"
+            "file": "/var/www/enter/log/main.log"
         }
     },
     "region": {
@@ -15,8 +15,8 @@
         "url": "http://api.enter.ru/v2/",
         "user": null,
         "password": null,
-        "timeout": 5,
-        "hugeTimeout": null,
+        "timeout": 15,
+        "hugeTimeout": 90,
         "retryTimeout": {
             "default": null,
             "tiny": null,
@@ -31,7 +31,7 @@
         "url": "http://cms.enter.ru/v1/",
         "user": null,
         "password": null,
-        "timeout": 1,
+        "timeout": 2.4,
         "hugeTimeout": null,
         "retryTimeout": {
             "default": null,
@@ -48,7 +48,7 @@
         "url": "http://admin.enter.ru/v2/",
         "user": null,
         "password": null,
-        "timeout": 2,
+        "timeout": 9,
         "hugeTimeout": null,
         "retryTimeout": {
             "default": null,
@@ -64,7 +64,7 @@
         "url": "http://admin.enter.ru/reviews/",
         "user": null,
         "password": null,
-        "timeout": 2,
+        "timeout": 1.8,
         "hugeTimeout": null,
         "retryTimeout": {
             "default": null,
@@ -74,18 +74,41 @@
             "long": null,
             "huge": null
         },
-        "retryCount": 2
+        "retryCount": 3
     },
     "mustacheRenderer": {
-        "dir": "/home/green/www/enter/v2/vendor/mustache",
-        "templateDir": "/home/green/www/enter/v2/template",
+        "dir": "/var/www/enter/v2/vendor/mustache",
+        "templateDir": "/var/www/enter/v2/template",
         "cacheDir": "/tmp/mustache-cache",
         "templateClassPrefix": "enter_loc_v2_"
     },
+    "mediaHosts": [
+        "http://fs01.enter.ru",
+        "http://fs02.enter.ru",
+        "http://fs03.enter.ru",
+        "http://fs04.enter.ru",
+        "http://fs05.enter.ru",
+        "http://fs06.enter.ru",
+        "http://fs07.enter.ru",
+        "http://fs08.enter.ru",
+        "http://fs09.enter.ru",
+        "http://fs10.enter.ru"
+    ],
     "product": {
-        "itemPerPage": 19
+        "itemPerPage": 20
     },
     "productReview": {
-        "enabled": true
+        "enabled": true,
+        "itemsInCard": 7
+    },
+    "productPhoto": {
+        "urlPaths": [
+            "/1/1/60/",
+            "/1/1/120/",
+            "/1/1/163/",
+            "/1/1/500/",
+            "/1/1/2500/",
+            "/1/1/1500/"
+        ]
     }
 }
