@@ -55,14 +55,14 @@ class Query implements \JsonSerializable {
             //'id'      => $this->id,
             'url'     => (string)$this->url,
             'data'    => $this->data,
-            'error'   => $this->error,
             'timeout' => $this->timeout,
             'call'    => $this->call,
             'startAt' => $this->startAt,
             'endAt'   => $this->endAt,
             'info'    => $this->info,
         ];
-        if ($this->error) {
+        if ($this->error instanceof \Exception) {
+            $return['error'] = ['code' => $this->error->getCode(), 'message' => $this->error->getMessage()];
             $return['result'] = $this->result;
         }
 

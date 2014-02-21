@@ -199,7 +199,7 @@ class Client {
         } catch (\Exception $e) {
             $this->clear();
 
-            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'error' => $e, 'tag' => ['curl']]);
+            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'error' => ['code' => $e->getCode(), 'message' => $e->getMessage()], 'tag' => ['curl']]);
 
             throw $e;
         }

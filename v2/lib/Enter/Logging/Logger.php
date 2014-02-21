@@ -48,6 +48,18 @@ class Logger implements LoggerInterface, \IteratorAggregate {
             ]
             + $message;
 
+        // FIXME: костыль
+        if (isset($message['error']) && $message['error'] instanceof \Exception) {
+            /** @var \Exception $error */
+            $error = $message['error'];
+            $message['error'] = [
+                'code'    => $error->getCode(),
+                'message' => $error->getMessage(),
+                'file'    => $error->getFile(),
+                'line'    => $error->getLine(),
+            ];
+        }
+
         if (null === $this->types || in_array($message['type'], $this->types)) {
             $this->messages[] = $message;
         }
