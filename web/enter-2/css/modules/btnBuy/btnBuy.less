@@ -1,0 +1,43 @@
+/* ==========================================================================
+   Стили кнопок купить .btnBuy
+   ========================================================================== */
+
+.btnBuy {
+	.gradient(#ffc000, #ffaa01, #ffc000);
+    .rounded(5px);
+    display: block;
+
+    width: 110px;
+    height: 38px;
+
+    text-align: center;
+
+    color: @white;
+    border: 1px solid #fb9c00;
+
+    font-size: 21px;
+    line-height: 38px;
+
+    &:hover {
+        .gradient(#ffa200, #f79200, #ffa200);
+        text-decoration: none;
+        color: @white;
+    }
+
+    &:active {
+        background: #f79200;
+        text-decoration: none;
+    }
+}
+
+.btnBuyOneClick {
+    display: none;
+    border-bottom: 1px solid @tabLightGreyBorder;
+    padding: 0 0 15px;
+    margin: 0 0 15px;
+
+    &__link {
+        text-decoration: underline;
+        font-size: 14px;
+    }
+}

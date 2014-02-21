@@ -6,7 +6,6 @@
  * @var $user               \Session\User
  * @var $accessories        \Model\Product\Entity[]
  * @var $accessoryCategory  \Model\Product\Category\Entity[]
- * @var $related            \Model\Product\Entity[]
  * @var $kit                \Model\Product\Entity[]
  * @var $additionalData     array
  * @var $shopStates         \Model\Product\ShopState\Entity[]
