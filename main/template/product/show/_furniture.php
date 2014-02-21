@@ -6,7 +6,6 @@
  * @var $user              \Session\User
  * @var $accessories       \Model\Product\Entity[]
  * @var $accessoryCategory \Model\Product\Category\Entity[]
- * @var $related           \Model\Product\Entity[]
  * @var $kit               \Model\Product\Entity[]
  * @var $additionalData    array
  * @var $shopStates        \Model\Product\ShopState\Entity[]
@@ -43,15 +42,14 @@
 
     <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
 
-    <? if ((bool)$related && \App::config()->product['showRelated']): ?>
+    <? if (\App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром также покупают',
-            'products'       => [],//array_values($related),
-            'count'          => count($product->getRelatedId()),
+            'products'       => [],
+            'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            //'url'            => $page->url('product.related', ['productToken' => $product->getToken()]),
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'additionalData' => $additionalData,
         ]) ?>
@@ -65,7 +63,6 @@
             'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
-//            'url'      => $page->url('product.similar', ['productId' => $product->getId()]),
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
         ]) ?>
     <? endif ?>
@@ -96,7 +93,6 @@
             'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
-//            'url'      => $page->url('product.alsoViewed', ['productId' => $product->getId()]),
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
         ]) ?>
     <? endif ?>

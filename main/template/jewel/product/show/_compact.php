@@ -25,6 +25,15 @@ $btnText = $inCart ? 'В корзине' : 'Купить';
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
       <div class="bItemName"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
       <div class="bItemImg"><a href="<?= $product->getLink() ?>"><img class="mainImg" src="<?= $product->getImageUrl(2) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" /></a></div>
+
+        <? if ($product->getPriceOld()): ?>
+            <div class="bPriceLine clearfix">
+                <span class="bPriceOld">
+                    <strong class="bDecor"><?= $helper->formatPrice($product->getPriceOld()) ?></strong> <span class="rubl">p</span>
+                </span>
+            </div>
+        <? endif ?>
+
       <div class="bItemPrice"><span><?= $page->helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
       <? if ($product->getIsBuyable()): ?>

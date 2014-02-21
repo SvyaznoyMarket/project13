@@ -254,6 +254,7 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotConfig() {
         $config = [];
+        $config['product.vFitting'] = false;
 
         $productVideos =(array)$this->getParam('productVideos');
         $productVideo = reset($productVideos);
@@ -264,6 +265,9 @@ class IndexPage extends \View\DefaultLayout {
             if ($productVideo->getMaybe3d()) {
                 $config['product.maybe3d'] = true;
             }
+            if ($productVideo->getPandra()) {
+                $config['product.vFitting'] = true;
+            }
         }
 
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
@@ -271,6 +275,16 @@ class IndexPage extends \View\DefaultLayout {
             if ((bool)$product->getPhoto3d()) {
                 $config['product.native3d'] = true;
             }
+        }
+
+        if ($config['product.vFitting']) {
+            $resourcesVF = $product->getPandraResources();
+            $config['product.name']         = $product->getName();
+            $config['product.article']      = $product->getArticle();
+            $config['product.resources']    = $resourcesVF['resources'];
+            $config['product.meshes']       = $resourcesVF['meshes'];
+            $config['product.textures']     = $resourcesVF['textures'];
+            $config['product.marker']       = $resourcesVF['marker'];
         }
 
         return $this->tryRender('_config', ['config' => $config]);
