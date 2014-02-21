@@ -73,8 +73,9 @@ class ShowAction {
 
         /** @var $slice \Model\Slice\Entity|null */
         $slice = null;
-        \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice) {
+        \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
             if (is_array($data) && (bool)$data) {
+                $data['token'] = $sliceToken;
                 $slice = new \Model\Slice\Entity($data);
             }
         });
@@ -134,6 +135,9 @@ class ShowAction {
 
             $categoryId = $slice->getCategoryId();
             $category = $categoryId ? $productCategoryRepository->getEntityById($categoryId) : null;
+
+            // запрашиваем дерево категорий
+            $productCategoryRepository->prepareEntityBranch($category, $region);
 
             $page = new \View\Slice\ShowPage();
             $page->setParam('category', $category);
@@ -434,11 +438,6 @@ class ShowAction {
         // промо-контент не показываем на страницах пагинации, брэнда, фильтров
         if ($pageNum > 1 || (bool)((array)$request->get(\View\Product\FilterForm::$name, []))) {
             $promoContent = '';
-        }
-
-        // задаем title
-        if (!is_null($category->getName())) {
-            $slice->setName($slice->getName() . ' - ' . $category->getName());
         }
 
         // переделываем url для breadcrumbs
