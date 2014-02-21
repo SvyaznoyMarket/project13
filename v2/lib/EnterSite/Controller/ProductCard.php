@@ -80,6 +80,17 @@ class ProductCard {
         // доставка товара
         (new Repository\Product())->setDeliveryForObjectListByQuery([$product->id => $product], $deliveryListQuery);
 
+        // если у товара нет доставок, запрашиваем список магазинов, в которых товар может быть на витрине
+        if (!(bool)$product->nearestDeliveries) {
+            $shopsIds = [];
+            foreach ($product->stock as $stock) {
+                if ($stock->shopId && ($stock->showroomQuantity > 0)) {
+                    $shopsIds[] = $stock->shopId;
+                }
+            }
+            // TODO: запрос списка магазинов и формирование product.nearestDeliveries
+        }
+
         die(var_dump($product));
     }
 }

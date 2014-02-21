@@ -32,6 +32,8 @@ class Product {
     public $properties = [];
     /** @var Model\Product\Property\Group[] */
     public $propertyGroups = [];
+    /** @var Model\Product\Stock[] */
+    public $stock = [];
     /** @var Model\Product\Media */
     public $media;
     /** @var Model\Product\Rating|null */
@@ -88,6 +90,12 @@ class Product {
         if (isset($data['media'][0])) {
             foreach ($data['media'] as $mediaItem) {
                 $this->media->photos[] = new Model\Product\Media\Photo($mediaItem);
+            }
+        }
+
+        if (isset($data['stock'][0])) {
+            foreach ($data['stock'] as $stockItem) {
+                $this->stock[] = new Model\Product\Stock($stockItem);
             }
         }
     }

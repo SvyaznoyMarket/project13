@@ -60,9 +60,12 @@ class Product {
         $products = [];
 
         foreach ($query->getResult() as $item) {
-            $item['property'] = []; // оптимизация
-            $item['property_group'] = []; // оптимизация
-            $item['media'] = [reset($item['media'])]; // оптимизация
+            // оптимизация
+            $item['property'] = [];
+            $item['property_group'] = [];
+            $item['media'] = [reset($item['media'])];
+            $item['stock'] = [];
+
             $products[$item['id']] = new Model\Product($item);
         }
 
