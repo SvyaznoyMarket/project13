@@ -78,7 +78,10 @@ class CreateAction {
 
             // сохранение заказов в сессии
             \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
-                return ['number' => $createdOrder->getNumber(), 'phone' => $form->getMobilePhone()];
+                return [
+                    'number' => $createdOrder->getNumber(),
+                    'phone' => $form->getMobilePhone(),
+                ];
             }, $createdOrders));
 
             /** @var $firstCreatedOrder \Model\Order\CreatedEntity */

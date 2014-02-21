@@ -116,6 +116,8 @@ class Entity {
     private $subway_id;
     /** @var string */
     private $paymentUrl;
+    /** @var int */
+    private $couponNumber;
 
     /**
      * @param array $data
@@ -201,6 +203,7 @@ class Entity {
         if (array_key_exists('credit', $data) && (bool)$data['credit']) $this->setCredit(new Credit\Entity($data['credit']));
         if (array_key_exists('subway_id', $data)) $this->setSubwayId($data['subway_id']);
         if (array_key_exists('payment_url', $data)) $this->setPaymentUrl($data['payment_url']);
+        if (array_key_exists('coupon_number', $data)) $this->setCouponNumber($data['coupon_number']);
     }
 
     public function dump() {
@@ -905,5 +908,23 @@ class Entity {
      */
     public function getPaymentUrl() {
         return $this->paymentUrl;
+    }
+
+    /**
+     * @param int|string $number
+     * @return int
+     */
+    public function setCouponNumber($number)
+    {
+        if (!is_int($number)) $number = preg_replace('/[\s]*/', "", $number);
+        return $this->couponNumber = (int)$number;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCouponNumber()
+    {
+        return $this->couponNumber;
     }
 }
