@@ -43,7 +43,7 @@ class Property {
         if (array_key_exists('hint', $data)) $this->hint = (string)$data['hint'];
         if (array_key_exists('value_hint', $data)) $this->valueHint = (string)$data['value_hint'];
         if (array_key_exists('is_multiple', $data)) $this->isMultiple = (bool)$data['is_multiple'];
-        if (array_key_exists('value', $data)) $this->value = (string)$data['value'];
+        if (array_key_exists('value', $data)) $this->value = $data['value'];
         if (array_key_exists('group_id', $data)) $this->groupId = (string)$data['group_id'];
         if (array_key_exists('group_position', $data)) $this->groupPosition = (int)$data['group_position'];
         if (array_key_exists('position', $data)) $this->position = (int)$data['position'];
@@ -59,9 +59,10 @@ class Property {
         if (null !== $this->value) {
             if (in_array($this->value, ['false', false], true)) {
                 $this->shownValue = 'нет';
-            }
-            if (in_array($this->value, ['true', true], true)) {
+            } else if (in_array($this->value, ['true', true], true)) {
                 $this->shownValue = 'да';
+            } else {
+                $this->shownValue = $this->value;
             }
         } else if (isset($data['option'][0])) {
             $value = [];
