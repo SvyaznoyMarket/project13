@@ -22,6 +22,7 @@ class ProductCard {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
+        $productRepository = new Repository\Product();
 
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequest($request);
@@ -45,7 +46,7 @@ class ProductCard {
         $curl->execute(1, 2);
 
         // товар
-        $product = (new Repository\Product())->getObjectByQuery($productItemQuery);
+        $product = $productRepository->getObjectByQuery($productItemQuery);
         if ($product->link !== $request->getPathInfo()) {
             $redirect = new Exception\PermanentlyRedirect();
             $redirect->setLink($product->link. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''));
@@ -75,10 +76,10 @@ class ProductCard {
         $reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
 
         // видео товара
-        (new Repository\Product())->setVideoForObjectByQuery($product, $videoListQuery);
+        $productRepository->setVideoForObjectByQuery($product, $videoListQuery);
 
         // доставка товара
-        (new Repository\Product())->setDeliveryForObjectListByQuery([$product->id => $product], $deliveryListQuery);
+        $productRepository->setDeliveryForObjectListByQuery([$product->id => $product], $deliveryListQuery);
 
         // если у товара нет доставок, запрашиваем список магазинов, в которых товар может быть на витрине
         if (!(bool)$product->nearestDeliveries) {
