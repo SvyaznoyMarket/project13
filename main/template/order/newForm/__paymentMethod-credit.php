@@ -20,7 +20,7 @@ return function (
             <div class="bSelectInput">
                 <input class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="bankId_<?= $bank->getId() ?>" value="<?= $bank->getId() ?>" name="credit_bank"/>
                 <label class="bCustomLabel mCustomLabelRadioBig" for="bankId_<?= $bank->getId() ?>">
-                    <img class="bSelectInput__eImg" alt="<?= $bank->getName() ?>" class="" src="<?= $bank->getImage() ?>" />
+                    <span class="bSelectInput__eImg" style="background-image: url('<?= $bank->getImage() ?>');"></span>
                     
                     <span class="bSelectInput__eDesc">
                         <span class="bCreditPay">Ежемесячный платеж <span class="credit_pay"></span> <span class="rubl"> p</span></span>
