@@ -21,33 +21,33 @@
         <input type="hidden" name="user[enterprize_coupon]" value="<?= $form->getEnterprizeCoupon() ?>">
 
         <label class="userInfoEdit__label" for="user_first_name">Имя*:</label>
-        <div><input type="text" id="user_first_name" value="<?= $form->getFirstName() ?>" name="user[first_name]" class="text width418 mb10 jsFirstName" /></div>
+        <div><input type="text" id="user_first_name" value="<?= $form->getFirstName() ?>" name="user[first_name]" class="text width418 mb10 jsFirstName" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> /></div>
 
         <label class="userInfoEdit__label" for="user_middle_name">Отчество:</label>
-        <div><input type="text" id="user_middle_name" value="<?= $form->getMiddleName() ?>" name="user[middle_name]" class="text width418 mb10 jsMiddleName" /></div>
+        <div><input type="text" id="user_middle_name" value="<?= $form->getMiddleName() ?>" name="user[middle_name]" class="text width418 mb10 jsMiddleName" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> /></div>
 
         <label class="userInfoEdit__label" for="user_last_name">Фамилия*:</label>
-        <div><input type="text" id="user_last_name" value="<?= $form->getLastName() ?>" name="user[last_name]" class="text width418 mb10 jsLastName" /></div>
+        <div><input type="text" id="user_last_name" value="<?= $form->getLastName() ?>" name="user[last_name]" class="text width418 mb10 jsLastName" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> /></div>
 
         <label class="userInfoEdit__label" for="user_mobile_phone">Номер телефона*:</label>
-        <div><input type="text" id="user_mobile_phone" value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text jsMobilePhone" /></div>
+        <div><input type="text" id="user_mobile_phone" value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text jsMobilePhone" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> /></div>
 
         <label class="userInfoEdit__label" for="user_email">E-mail*:</label>
-        <div><input type="text" id="user_email" value="<?= $form->getEmail() ?>" name="user[email]" class="text width418 mb10 jsEmail" /></div>
+        <div><input type="text" id="user_email" value="<?= $form->getEmail() ?>" name="user[email]" class="text width418 mb10 jsEmail" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> /></div>
 
         <label class="userInfoEdit__label" for="user_sclub_card_number">Номер карты Связной-Клуб:</label>
-        <div><input type="text" id="user_sclub_card_number" value="<?= $form->getSclubCardnumber() ?>" name="user[svyaznoy_club_card_number]" class="text jsCardNumber" /></div>
+        <div><input type="text" id="user_sclub_card_number" value="<?= $form->getSclubCardnumber() ?>" name="user[svyaznoy_club_card_number]" class="text jsCardNumber" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> /></div>
 
         <div style="margin: 0 0 10px 3px;" class="bInputList mRules">
-            <input type="checkbox" id="user_agree" name="user[coupon_agree]" value="1" autocomplete="off" class="bCustomInput jsCustomRadio mCustomCheckBig jsAgree" <?= $form->getCouponAgree() ? 'checked="checked"' : '' ?> />
+            <input type="checkbox" id="user_agree" name="user[coupon_agree]" value="1" autocomplete="off" class="bCustomInput jsCustomRadio mCustomCheckBig jsAgree" <?= $form->getCouponAgree() ? 'checked="checked"' : '' ?> <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> />
             <label class="bCustomLabel mCustomLabelBig" for="user_agree">Ознакомлен с <a style="text-decoration: underline;" href="http://www.enter.ru/reklamnaya-akcia-enterprize" target="blank">правилами ENTER PRIZE</a>*</label>
         </div>
 
         <div style="margin: 0 0 10px 3px;" class="bInputList mRules">
-            <input type="checkbox" id="user_is_subscribe" name="user[is_subscribe]" value="1" autocomplete="off" class="bCustomInput jsCustomRadio mCustomCheckBig jsSubscribe" <?= $form->getIsSubscribed() ? 'checked="checked"' : '' ?> />
+            <input type="checkbox" id="user_is_subscribe" name="user[is_subscribe]" value="1" autocomplete="off" class="bCustomInput jsCustomRadio mCustomCheckBig jsSubscribe" <?= $form->getIsSubscribed() ? 'checked="checked"' : '' ?> <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> />
             <label class="bCustomLabel mCustomLabelBig" for="user_is_subscribe">Согласен получать рекламную рассылку</label>
         </div>
 
-        <input type="submit" value="Сохранить изменения" id="bigbutton" class="btnSave button bigbutton jsEnterprizeFormSubmit">
+        <input type="submit" value="Сохранить изменения" id="bigbutton" class="btnSave button bigbutton jsEnterprizeFormSubmit<? if ($form->getIsDisabled()): ?> mDisabled<? endif ?>" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?>>
     </div>
 </form>

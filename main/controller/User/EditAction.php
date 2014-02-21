@@ -34,7 +34,7 @@ class EditAction {
             $redirect = 'http://' . $redirect;
         }
 
-        if ($request->isMethod('post')) {
+        if ($request->isMethod('post') && !$form->getIsDisabled()) {
             $userData = (array)$request->request->get('user');
 
             if (!array_key_exists('is_subscribe', $userData)) {

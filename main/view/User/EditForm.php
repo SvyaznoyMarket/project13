@@ -50,6 +50,11 @@ class EditForm {
         'agree'                     => null,
         'is_subscribe'              => null,
     );
+    /**
+     * Флаг запрещения редактирования личных данных для user.enterprizeCoupon
+     * @var bool
+     */
+    private $isDisabled = false;
 
     public function __construct(array $data = []) {
         $this->fromArray($data);
@@ -85,6 +90,7 @@ class EditForm {
         if (array_key_exists('coupon_agree', $data)) $this->setCouponAgree($data['coupon_agree']);
         if (array_key_exists('is_subscribe', $data)) $this->setIsSubscribed($data['is_subscribe']);
         if (array_key_exists('svyaznoy_club_card_number', $data)) $this->setSclubCardnumber($data['svyaznoy_club_card_number']);
+        if (array_key_exists('is_disabled', $data)) $this->setIsDisabled($data['is_disabled']);
     }
 
     public function fromEntity(\Model\User\Entity $entity) {
@@ -100,6 +106,7 @@ class EditForm {
         $this->setSkype($entity->getSkype());
         $this->setIsSubscribed($entity->getIsSubscribed());
         $this->setSclubCardnumber($entity->getSclubCardnumber());
+        $this->setIsDisabled($entity->getEnterprizeCoupon());
     }
 
     /**
@@ -326,6 +333,20 @@ class EditForm {
      */
     public function getCouponAgree() {
         return $this->couponAgree;
+    }
+
+    /**
+     * @param boolean $isDisabled
+     */
+    public function setIsDisabled($isDisabled) {
+        $this->isDisabled = (bool)$isDisabled;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsDisabled() {
+        return $this->isDisabled;
     }
 
     /**
