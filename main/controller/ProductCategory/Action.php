@@ -437,11 +437,6 @@ class Action {
             }
         }
 
-        // поддержка GET-запросов со старыми фильтрами
-        if (!$categoryClass && is_array($request->get(\View\Product\FilterForm::$name)) && (bool)$request->get(\View\Product\FilterForm::$name)) {
-            return new \Http\RedirectResponse(\App::router()->generate('product.category', ['categoryPath' => $category->getPath()]));
-        }
-
         if ($categoryClass && ('default' !== $categoryClass)) {
             if ('jewel' == $categoryClass) {
                 if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\categoryDirect', 134);
