@@ -144,7 +144,6 @@ class Product {
                     if (!isset($deliveryItem['date_list']) || !is_array($deliveryItem['date_list'])) continue;
 
                     $delivery = new Model\Product\NearestDelivery();
-
                     $delivery->productId = $productId;
                     $delivery->id = (string)$deliveryItem['id'];
                     $delivery->token = (string)$deliveryItem['token'];
@@ -183,7 +182,40 @@ class Product {
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
-            trigger_error($e, E_USER_ERROR);
+            //trigger_error($e, E_USER_ERROR);
+        }
+    }
+
+    /**
+     * @param Model\Product[] $productsById
+     * @param Query $shopListQuery
+     */
+    public function setShowroomDeliveryForObjectListByQuery(array $productsById, Query $shopListQuery) {
+        try {
+            foreach ($productsById as $product) {
+                $delivery = new Model\Product\NearestDelivery();
+                $delivery->productId = $product->id;
+                $delivery->id = Model\Product\NearestDelivery::ID_NOW;
+                $delivery->token = Model\Product\NearestDelivery::TOKEN_NOW;
+                $delivery->price = 0;
+
+                foreach ($shopListQuery->getResult() as $shopItem) {
+                    // оптимизация
+                    $shopItem['description'] = '';
+                    $shopItem['way_walk'] = '';
+                    $shopItem['way_auto'] = '';
+                    $shopItem['images'] = [];
+
+                    $delivery->shopsById[$shopItem['id']] = new Model\Shop($shopItem);
+                }
+
+                if ((bool)$delivery->shopsById) {
+                    $product->nearestDeliveries[] = $delivery;
+                }
+            }
+        } catch (\Exception $e) {
+            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            //trigger_error($e, E_USER_ERROR);
         }
     }
 }

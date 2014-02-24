@@ -5,6 +5,10 @@ namespace EnterSite\Model\Product;
 use EnterSite\Model;
 
 class NearestDelivery {
+    const ID_NOW = '4';
+
+    const TOKEN_NOW = 'now';
+
     /** @var string */
     public $id;
     /** @var string */

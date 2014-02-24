@@ -16,14 +16,24 @@ class Shop {
     public $regionId;
     /** @var string */
     public $regime;
+    /** @var string */
+    public $phone;
     /** @var float */
     public $latitude;
     /** @var float */
     public $longitude;
     /** @var string */
     public $address;
+    /** @var string */
+    public $description;
     /** @var Model\Region|null */
     public $region;
+    /** @var Model\Shop\Photo[] */
+    public $photo = [];
+    /** @var string */
+    public $walkWay;
+    /** @var string */
+    public $carWay;
 
     /**
      * @param array $data
@@ -36,7 +46,17 @@ class Shop {
         if (array_key_exists('coord_long', $data)) $this->longitude = (float)$data['coord_long'];
         if (array_key_exists('coord_lat', $data)) $this->latitude = (float)$data['coord_lat'];
         if (array_key_exists('address', $data)) $this->address = (string)$data['address'];
+        if (array_key_exists('phone', $data)) $this->phone = (string)$data['phone'];
+        if (array_key_exists('description', $data)) $this->description = (string)$data['description'];
+        if (array_key_exists('way_walk', $data)) $this->walkWay = (string)$data['way_walk'];
+        if (array_key_exists('way_auto', $data)) $this->carWay = (string)$data['way_auto'];
 
         if (isset($data['geo']['id'])) $this->region = new Model\Region($data['geo']);
+
+        if (isset($data['images'][0])) {
+            foreach ($data['images'] as $photoItem) {
+                $this->photo[] = new Model\Shop\Photo($photoItem);
+            }
+        }
     }
 }

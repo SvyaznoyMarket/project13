@@ -55,8 +55,11 @@ class ProductCard {
         }
 
         // запрос доставки товара
-        $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $region);
-        $curl->prepare($deliveryListQuery);
+        $deliveryListQuery = null;
+        if ($product->isBuyable) {
+            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $region);
+            $curl->prepare($deliveryListQuery);
+        }
 
         // запрос отзывов товара
         $reviewListQuery = null;
@@ -79,18 +82,26 @@ class ProductCard {
         $productRepository->setVideoForObjectByQuery($product, $videoListQuery);
 
         // доставка товара
-        if ($product->isBuyable) {
+        if ($deliveryListQuery) {
             $productRepository->setDeliveryForObjectListByQuery([$product->id => $product], $deliveryListQuery);
+        }
 
-            // если у товара нет доставок, запрашиваем список магазинов, в которых товар может быть на витрине
-            if (!(bool)$product->nearestDeliveries) {
-                $shopsIds = [];
-                foreach ($product->stock as $stock) {
-                    if ($stock->shopId && ($stock->showroomQuantity > 0)) {
-                        $shopsIds[] = $stock->shopId;
-                    }
+        // если у товара нет доставок, запрашиваем список магазинов, в которых товар может быть на витрине
+        if (!(bool)$product->nearestDeliveries) {
+            $shopsIds = [];
+            foreach ($product->stock as $stock) {
+                if ($stock->shopId && ($stock->showroomQuantity > 0)) {
+                    $shopsIds[] = $stock->shopId;
                 }
-                // TODO: запрос списка магазинов и формирование product.nearestDeliveries
+            }
+
+            if ((bool)$shopsIds) {
+                $shopListQuery = new Query\Shop\GetListByIdList($shopsIds);
+                $curl->prepare($shopListQuery);
+
+                $curl->execute(1, 2);
+
+                $productRepository->setShowroomDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
             }
         }
 
