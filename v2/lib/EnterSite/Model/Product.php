@@ -42,12 +42,17 @@ class Product {
     public $model;
     /** @var ObjectModel\Product\NearestDelivery[] */
     public $nearestDeliveries = [];
+    /** @var array */
+    public $accessoryIds = [];
+    /** @var ObjectModel\Product\Relation */
+    public $relation;
 
     /**
      * @param array $data
      */
     public function __construct(array $data = []) {
         $this->media = new ObjectModel\Product\Media();
+        $this->relation = new ObjectModel\Product\Relation();
 
         if ((bool)$data) {
             $this->import($data);
@@ -102,6 +107,7 @@ class Product {
         }
 
         if (isset($data['model']['property'][0])) $this->model = new ObjectModel\Product\Model($data['model']);
+        if (isset($data['accessories'][0])) $this->accessoryIds = $data['accessories'];
     }
 
     /**

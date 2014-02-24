@@ -61,10 +61,10 @@ class Product {
 
         foreach ($query->getResult() as $item) {
             // оптимизация
+            $item['description'] = null;
             $item['property'] = [];
             $item['property_group'] = [];
             $item['media'] = [reset($item['media'])];
-            $item['stock'] = [];
 
             $products[$item['id']] = new Model\Product($item);
         }
@@ -211,6 +211,28 @@ class Product {
 
                 if ((bool)$delivery->shopsById) {
                     $product->nearestDeliveries[] = $delivery;
+                }
+            }
+        } catch (\Exception $e) {
+            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            //trigger_error($e, E_USER_ERROR);
+        }
+    }
+
+    /**
+     * @param Model\Product[] $productsById
+     * @param Query $accessoryListQuery
+     */
+    public function setAccessoryRelationForObjectListByQuery(array $productsById, Query $accessoryListQuery) {
+        try {
+            foreach ($productsById as $product) {
+                foreach ($accessoryListQuery->getResult() as $accessoryItem) {
+                    // оптимизация
+                    $accessoryItem['description'] = null;
+                    $accessoryItem['property'] = [];
+                    $accessoryItem['property_group'] = [];
+                    $accessoryItem['media'] = [reset($accessoryItem['media'])];
+                    $product->relation->accessories[] = new Model\Product($accessoryItem);
                 }
             }
         } catch (\Exception $e) {

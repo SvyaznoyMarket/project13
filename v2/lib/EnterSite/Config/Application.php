@@ -12,6 +12,8 @@ namespace EnterSite\Config {
         public $logger;
         /** @var Application\Region */
         public $region;
+        /** @var Application\CurlQuery */
+        public $curlQuery;
         /** @var Application\CoreService */
         public $coreService;
         /** @var Application\CmsService */
@@ -35,6 +37,8 @@ namespace EnterSite\Config {
             $this->logger = new Application\Logger();
 
             $this->region = new Application\Region();
+
+            $this->curlQuery = new Application\CurlQuery();
 
             $this->coreService = new Application\CoreService();
             $this->cmsService = new Application\CmsService();
@@ -65,6 +69,11 @@ namespace EnterSite\Config\Application {
         public $defaultId;
         /** @var string */
         public $cookieName;
+    }
+
+    class CurlQuery {
+        /** @var int */
+        public $chunkSize;
     }
 
     class CurlService {
@@ -121,6 +130,11 @@ namespace EnterSite\Config\Application {
          * @var int
          */
         public $itemPerPage;
+        /**
+         * @name Количество элементов в слайдере
+         * @var int
+         */
+        public $itemsInSlider;
     }
 
     class ProductPhoto {

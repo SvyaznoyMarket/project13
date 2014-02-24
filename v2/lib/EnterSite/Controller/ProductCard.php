@@ -72,6 +72,10 @@ class ProductCard {
         $videoListQuery = new Query\Product\Media\Video\GetListByProductId($product->id);
         $curl->prepare($videoListQuery);
 
+        // запрос аксессуаров товара
+        // TODO: группировка аксессуаров по категориям
+        $accessoryListQuery = new Query\Product\GetListByIdList(array_slice($product->accessoryIds, 0, $config->product->itemsInSlider), $region);
+        $curl->prepare($accessoryListQuery);
 
         $curl->execute(1, 2);
 
@@ -104,6 +108,9 @@ class ProductCard {
                 $productRepository->setShowroomDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
             }
         }
+
+        // аксессуары
+        $productRepository->setAccessoryRelationForObjectListByQuery([$product->id => $product], $accessoryListQuery);
 
         die(var_dump($product));
     }

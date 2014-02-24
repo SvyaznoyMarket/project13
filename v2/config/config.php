@@ -29,6 +29,8 @@ return function(\EnterSite\Config\Application $config) {
     $config->reviewService->timeout = 2;
     $config->reviewService->retryCount = 2;
 
+    $config->curlQuery->chunkSize = 50;
+
     $config->mustacheRenderer->dir = $config->dir . '/v2/vendor/mustache';
     $config->mustacheRenderer->templateDir = $config->dir . '/v2/template';
     $config->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';
@@ -48,6 +50,7 @@ return function(\EnterSite\Config\Application $config) {
     ];
 
     $config->product->itemPerPage = 19;
+    $config->product->itemsInSlider = 60;
     $config->productPhoto->urlPaths = [
         0 => '/1/1/60/',
         1 => '/1/1/120/',

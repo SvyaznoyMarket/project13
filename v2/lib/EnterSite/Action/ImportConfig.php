@@ -25,6 +25,8 @@ class ImportConfig {
         $config->region->defaultId = (string)$importedConfig->region['defaultId'];
         $config->region->cookieName = $importedConfig->region['cookieName'];
 
+        $config->curlQuery->chunkSize = $importedConfig->coreV2['chunk_size'];
+
         $config->coreService->url = $importedConfig->coreV2['url'];
         $config->coreService->timeout = $importedConfig->coreV2['timeout'];
         $config->coreService->hugeTimeout = $importedConfig->coreV2['hugeTimeout'];
@@ -58,6 +60,7 @@ class ImportConfig {
         $config->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';
         $config->mustacheRenderer->templateClassPrefix = preg_replace('/[^\w]/', '_', $config->hostname . '_v2' . '-');
 
+        $config->product->itemsInSlider = 60;
         $config->productReview->itemsInCard = 7;
     }
 }
