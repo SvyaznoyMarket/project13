@@ -6,7 +6,6 @@ class SliceAction {
     /**
      * @param \Http\Request $request
      * @param string        $sliceToken
-     * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
     public function execute(\Http\Request $request, $sliceToken) {

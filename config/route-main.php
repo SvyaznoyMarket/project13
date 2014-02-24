@@ -148,7 +148,7 @@ return [
         'action'  => ['Shop\Action', 'show'],
     ],
 
-    // срез. каталог товаров
+    // срезы. каталог товаров
     'product.category.slice' => [
         'pattern' => '/catalog/slice/{sliceToken}',
         'action'  => ['ProductCategory\SliceAction', 'execute'],
