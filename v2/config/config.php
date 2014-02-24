@@ -29,6 +29,10 @@ return function(\EnterSite\Config\Application $config) {
     $config->reviewService->timeout = 2;
     $config->reviewService->retryCount = 2;
 
+    $config->retailRocketService->account = '519c7f3c0d422d0fe0ee9775';
+    $config->retailRocketService->url = 'http://api.retailrocket.ru/api/';
+    $config->retailRocketService->timeout = 0.5;
+
     $config->curlQuery->chunkSize = 50;
 
     $config->mustacheRenderer->dir = $config->dir . '/v2/vendor/mustache';

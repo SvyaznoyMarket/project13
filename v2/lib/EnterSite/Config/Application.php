@@ -22,6 +22,8 @@ namespace EnterSite\Config {
         public $adminService;
         /** @var Application\ReviewService */
         public $reviewService;
+        /** @var Application\RetailRocketService */
+        public $retailRocketService;
         /** @var Application\MustacheRenderer */
         public $mustacheRenderer;
         /** @var array */
@@ -44,6 +46,7 @@ namespace EnterSite\Config {
             $this->cmsService = new Application\CmsService();
             $this->adminService = new Application\AdminService();
             $this->reviewService = new Application\ReviewService();
+            $this->retailRocketService = new Application\RetailRocketService();
 
             $this->mustacheRenderer = new Application\MustacheRenderer();
 
@@ -111,6 +114,11 @@ namespace EnterSite\Config\Application {
     }
 
     class ReviewService extends CurlService {
+    }
+
+    class RetailRocketService extends CurlService {
+        /** @var string */
+        public $account;
     }
 
     class MustacheRenderer {

@@ -46,6 +46,10 @@ class ImportConfig {
         $config->reviewService->timeout = $importedConfig->reviewsStore['timeout'];
         $config->reviewService->retryCount = $importedConfig->reviewsStore['retryCount'];
 
+        $config->retailRocketService->account = $importedConfig->partners['RetailRocket']['account'];
+        $config->retailRocketService->url = $importedConfig->partners['RetailRocket']['apiUrl'];
+        $config->retailRocketService->timeout = $importedConfig->partners['RetailRocket']['timeout'];
+
         $config->mediaHosts = $importedConfig->mediaHost;
 
         $config->product->itemPerPage = $importedConfig->product['itemsPerPage'];

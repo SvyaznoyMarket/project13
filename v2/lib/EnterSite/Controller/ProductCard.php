@@ -28,7 +28,7 @@ class ProductCard {
         $regionId = (new Repository\Region())->getIdByHttpRequest($request);
 
         // токен товара
-        $productToken = (new Repository\Product)->getTokenByHttpRequest($request);
+        $productToken = $productRepository->getTokenByHttpRequest($request);
 
         // запрос региона
         $regionQuery = new Query\Region\GetItemById($regionId);

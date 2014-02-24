@@ -27,6 +27,14 @@ class Product {
      * @param Http\Request $request
      * @return string
      */
+    public function getIdByHttpRequest(Http\Request $request) {
+        return is_scalar($request->query['productId']) ? (string)$request->query['productId'] : null;
+    }
+
+    /**
+     * @param Http\Request $request
+     * @return string
+     */
     public function getTokenByHttpRequest(Http\Request $request) {
         $token = explode('/', $request->query['productPath']);
         $token = end($token);
