@@ -54,8 +54,6 @@
 		 * https://wiki.enter.ru/display/PRODUCT/KISSmetrics+tracking
 		 */
 		for ( i = orderData.length - 1; i >= 0; i-- ) {
-			toKISS_orderInfo = {};
-
 			toKISS_orderInfo = {
 				'Checkout Complete Order ID': orderData[i].number,
 				'Checkout Complete Order ERP ID': orderData[i].numberErp,
@@ -67,6 +65,11 @@
 				'Checkout Complete Delivery': orderData[i].delivery[0].typeId,
 				'Checkout Complete Payment': orderData[i].paymentMethod.id
 			};
+
+			if ( orderData[i].coupon_number ) {
+				console.log('Checkout Complete Coupon', orderData[i].coupon_number);
+				toKISS_orderInfo['Checkout Complete Coupon'] = orderData[i].coupon_number;
+			}
 
 			for ( j = orderData[i].products.length - 1; j >= 0; j-- ) {
 				if ( (typeof _kmq === 'undefined') || (typeof KM === 'undefined') ) {
@@ -100,11 +103,21 @@
 			}
 		}
 
-		/**
-		 * Отслеживание рекомендаций
-		 */
-		console.info('Отслеживание рекомендаций');
-		_gaq.push(['_setCustomVar', 5, 'Used_cart_rec', (isUsedCartRecommendation ? 'YES' : 'NO'), 2]);
+		if ( 'undefined' !== typeof gaq ) {
+			/**
+			 * Отслеживание рекомендаций
+			 */
+			console.info('Отслеживание рекомендаций');
+			_gaq.push(['_setCustomVar', 5, 'Used_cart_rec', (isUsedCartRecommendation ? 'YES' : 'NO'), 2]);
+
+			/**
+			 * Отслеживание кода купона
+			 */
+			if ( orderData[0].coupon_number ) {
+				console.info( 'Отслеживание кода купона: ' + orderData[0].coupon_number );
+				_gaq.push( ['_trackEvent', 'coupon', orderData[0].coupon_number] );
+			}
+		}
 	};
 
 	$(document).ready(function () {

@@ -49,6 +49,8 @@ class Form implements \JsonSerializable {
     private $oneClick;
     /** @var bool */
     private $lifeGiftAgreed;
+    /** @var int */
+    private $couponNumber;
 
     /** @var array */
     private $errors = array(
@@ -130,6 +132,7 @@ class Form implements \JsonSerializable {
         if (array_key_exists('subway_id', $data))              $this->setSubwayId($data['subway_id']);
         if (array_key_exists('qiwi_phone', $data))             $this->setQiwiPhone($data['qiwi_phone']);
         if (array_key_exists('one_click', $data))              $this->setOneClick($data['one_click']);
+        if (array_key_exists('coupon_number', $data))          $this->setCouponNumber($data['coupon_number']);
     }
 
     /**
@@ -496,5 +499,23 @@ class Form implements \JsonSerializable {
      */
     public function isValid() {
         return !(bool)$this->getErrors();
+    }
+
+    /**
+     * @param int|string $number
+     * @return int
+     */
+    public function setCouponNumber($number)
+    {
+        if (!is_int($number)) $number = preg_replace('/[\s]*/', "", $number);
+        return $this->couponNumber = (int)$number;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCouponNumber()
+    {
+        return $this->couponNumber;
     }
 }
