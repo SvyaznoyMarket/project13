@@ -148,6 +148,13 @@ return [
         'action'  => ['Shop\Action', 'show'],
     ],
 
+    // срез. каталог товаров
+    'product.category.slice' => [
+        'pattern' => '/catalog/slice/{sliceToken}',
+        'action'  => ['ProductCategory\SliceAction', 'execute'],
+        'require' => ['sliceToken' => '[\w\d-_]+'],
+    ],
+
     // показывать глобальный список товаров
     'product.category.global.short' => [
         'pattern' => '/catalog/{categoryPath}/_global',
