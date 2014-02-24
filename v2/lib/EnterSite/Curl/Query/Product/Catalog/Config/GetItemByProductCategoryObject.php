@@ -5,7 +5,7 @@ namespace EnterSite\Curl\Query\Product\Catalog\Config;
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CmsQueryTrait;
 use EnterSite\Curl\Query\Url;
-use EnterSite\Model\Product\Category;
+use EnterSite\Model;
 
 class GetItemByProductCategoryObject extends Query {
     use CmsQueryTrait;
@@ -14,9 +14,9 @@ class GetItemByProductCategoryObject extends Query {
     protected $result;
 
     /**
-     * @param $category
+     * @param Model\Product\Category $category
      */
-    public function __construct(Category $category) {
+    public function __construct(Model\Product\Category $category) {
         $tokens = [
             $category->token,
         ];

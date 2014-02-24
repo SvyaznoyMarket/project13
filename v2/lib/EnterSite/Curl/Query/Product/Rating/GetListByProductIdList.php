@@ -9,7 +9,7 @@ use EnterSite\Curl\Query\Url;
 class GetListByProductIdList extends Query {
     use ReviewQueryTrait;
 
-    /** @var array|null */
+    /** @var array */
     protected $result;
 
     public function __construct(array $productIds) {

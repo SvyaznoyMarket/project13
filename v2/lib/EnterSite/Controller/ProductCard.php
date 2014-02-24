@@ -79,17 +79,19 @@ class ProductCard {
         $productRepository->setVideoForObjectByQuery($product, $videoListQuery);
 
         // доставка товара
-        $productRepository->setDeliveryForObjectListByQuery([$product->id => $product], $deliveryListQuery);
+        if ($product->isBuyable) {
+            $productRepository->setDeliveryForObjectListByQuery([$product->id => $product], $deliveryListQuery);
 
-        // если у товара нет доставок, запрашиваем список магазинов, в которых товар может быть на витрине
-        if (!(bool)$product->nearestDeliveries) {
-            $shopsIds = [];
-            foreach ($product->stock as $stock) {
-                if ($stock->shopId && ($stock->showroomQuantity > 0)) {
-                    $shopsIds[] = $stock->shopId;
+            // если у товара нет доставок, запрашиваем список магазинов, в которых товар может быть на витрине
+            if (!(bool)$product->nearestDeliveries) {
+                $shopsIds = [];
+                foreach ($product->stock as $stock) {
+                    if ($stock->shopId && ($stock->showroomQuantity > 0)) {
+                        $shopsIds[] = $stock->shopId;
+                    }
                 }
+                // TODO: запрос списка магазинов и формирование product.nearestDeliveries
             }
-            // TODO: запрос списка магазинов и формирование product.nearestDeliveries
         }
 
         die(var_dump($product));

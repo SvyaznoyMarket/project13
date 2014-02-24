@@ -10,7 +10,7 @@ use EnterSite\Model;
 class GetListByCartProductList extends Query {
     use CoreQueryTrait;
 
-    /** @var array|null */
+    /** @var array */
     protected $result;
 
     /**

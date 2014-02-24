@@ -5,19 +5,19 @@ namespace EnterSite\Curl\Query\Product;
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CoreQueryTrait;
 use EnterSite\Curl\Query\Url;
-use EnterSite\Model\Region;
+use EnterSite\Model;
 
 class GetListByIdList extends Query {
     use CoreQueryTrait;
 
-    /** @var array|null */
+    /** @var array */
     protected $result;
 
     /**
      * @param array $ids
-     * @param \EnterSite\Model\Region $region
+     * @param Model\Region $region
      */
-    public function __construct(array $ids, Region $region = null) {
+    public function __construct(array $ids, Model\Region $region = null) {
         $this->url = new Url();
         $this->url->path = 'product/get';
         $this->url->query = [

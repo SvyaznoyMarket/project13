@@ -5,7 +5,7 @@ namespace EnterSite\Curl\Query\Product\Category;
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\AdminQueryTrait;
 use EnterSite\Curl\Query\Url;
-use EnterSite\Model\Region;
+use EnterSite\Model;
 
 class GetAdminItemByToken extends Query {
     use AdminQueryTrait;
@@ -15,9 +15,9 @@ class GetAdminItemByToken extends Query {
 
     /**
      * @param $token
-     * @param \EnterSite\Model\Region $region
+     * @param Model\Region $region
      */
-    public function __construct($token, Region $region) {
+    public function __construct($token, Model\Region $region) {
         $this->url = new Url();
         $this->url->path = 'category/get-seo';
         $this->url->query = [

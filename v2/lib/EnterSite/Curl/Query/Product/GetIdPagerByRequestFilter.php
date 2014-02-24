@@ -5,24 +5,22 @@ namespace EnterSite\Curl\Query\Product;
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CoreQueryTrait;
 use EnterSite\Curl\Query\Url;
-use EnterSite\Model\Product\RequestFilter;
-use EnterSite\Model\Product\Sorting;
-use EnterSite\Model\Region;
+use EnterSite\Model;
 
 class GetIdPagerByRequestFilter extends Query {
     use CoreQueryTrait;
 
-    /** @var array|null */
+    /** @var array */
     protected $result;
 
     /**
-     * @param RequestFilter[] $filters
-     * @param Sorting $sorting
-     * @param Region $region
+     * @param Model\Product\RequestFilter[] $filters
+     * @param Model\Product\Sorting $sorting
+     * @param Model\Region $region
      * @param $offset
      * @param $limit
      */
-    public function __construct(array $filters, Sorting $sorting = null, Region $region = null, $offset = null, $limit = null) {
+    public function __construct(array $filters, Model\Product\Sorting $sorting = null, Model\Region $region = null, $offset = null, $limit = null) {
         $filterData = [];
         foreach ($filters as $key => $filter) {
             if (isset($filter->value['from']) || isset($filter->value['to'])) {

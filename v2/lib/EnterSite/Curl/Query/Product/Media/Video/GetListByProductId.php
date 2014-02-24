@@ -9,7 +9,7 @@ use EnterSite\Curl\Query\Url;
 class GetListByProductId extends Query {
     use CmsQueryTrait;
 
-    /** @var array|null */
+    /** @var array */
     protected $result;
 
     public function __construct($productId) {

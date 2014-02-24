@@ -5,8 +5,7 @@ namespace EnterSite\Curl\Query\Product\Category;
 use Enter\Curl\Query;
 use EnterSite\Curl\Query\CoreQueryTrait;
 use EnterSite\Curl\Query\Url;
-use EnterSite\Model\Region;
-use EnterSite\Model\Product\Category;
+use EnterSite\Model;
 
 class GetAncestryItemByCategoryObject extends Query {
     use CoreQueryTrait;
@@ -15,10 +14,10 @@ class GetAncestryItemByCategoryObject extends Query {
     protected $result;
 
     /**
-     * @param \EnterSite\Model\Product\Category $category
-     * @param Region $region
+     * @param Model\Product\Category $category
+     * @param Model\Region $region
      */
-    public function __construct(Category $category, Region $region = null) {
+    public function __construct(Model\Product\Category $category, Model\Region $region = null) {
         $this->url = new Url();
         $this->url->path = 'category/tree';
         $this->url->query = [
