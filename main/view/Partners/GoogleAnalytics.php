@@ -329,10 +329,15 @@ class GoogleAnalytics {
 
             $completedOrders[] = [
                 'dimension2' => $delivery->getTypeId(),// '<Тип доставки>',
-                //'dimension3' => '',// '<Код купона>',
+                'dimension3' => $order->getCouponNumber(),// '<Код купона>',
                 'dimension4' => $order->getPaymentId(),// '<Тип оплаты>'
             ];
         }
+
+        /**
+         * Нужно не забывать, что пока купон может быть только у одного заказа (первого и последнего)
+         * если разбивается на несколько, то все скидки и купоны удаляются
+         */
 
         self::rmLastSeporator($addTransaction['id']);
 

@@ -58,7 +58,7 @@ class CreateAction {
             $cartCoupons = $cart->getCoupons();
             if (\App::config()->coupon['enabled'] && (bool)$cartCoupons) {
                 // если заказ разбился более чем на один подзаказ, то ...
-                if ((count($form->getPart()) > 1)) {
+                if (count($form->getPart()) > 1) {
                     // очищаем данные купона
                     $cart->clearCoupons();
                     $cart->fill();
