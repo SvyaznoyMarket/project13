@@ -92,7 +92,7 @@ class Action {
             $result = null;
             $exception = null;
             $client->addQuery(
-                'order/calc-tmp1',
+                'order/calc-tmp2',
                 [
                     'geo_id'  => $region->getId(),
                 ],
