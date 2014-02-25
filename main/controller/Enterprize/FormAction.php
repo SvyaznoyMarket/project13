@@ -35,16 +35,8 @@ class FormAction {
             \App::dataStoreClient()->execute();
         }
 
-        $form = new \View\Enterprize\Form();
-        // пользователь авторизован, заполняем данные формы
-        if ($user) {
-            $form->fromArray([
-                'name'              => $user->getName(),
-                'email'             => $user->getEmail(),
-                'phone'             => $user->getMobilePhone(),
-                'enterpize_coupon'  => $enterpizeCoupon ? $enterpizeCoupon->getToken() : null,
-            ]);
-        }
+        $form = $this->getForm();
+        $form->setEnterprizeCoupon($enterprizeToken);
 
         $page = new \View\Enterprize\FormPage();
         $page->setParam('user', $user);
@@ -61,61 +53,156 @@ class FormAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
-        $user = \App::user()->getEntity();
+        $user = \App::user();
         $form = new \View\Enterprize\Form();
-
         $userData = (array)$request->get('user');
         $form->fromArray($userData);
 
-        if (!$form->getName()) {
-            $form->setError('name', 'Не указано имя');
+        if (!isset($userData['subscribe'])) {
+            $form->setError('subscribe', 'Необходимо согласие');
         }
 
-        if (!$form->getPhone()) {
-            $form->setError('phone', 'Не указан мобильный телефон');
-        }
+        $needAuth = false;
+        $result = null;
+        try {
+            $result = $client->query(
+                'coupon/register-in-enter-prize',
+                [
+                    'client_id' => \App::config()->coreV2['client_id'],
+                    'token'     => \App::user()->getToken(),
+                ],
+                [
+                    'name'   => $form->getName(),
+                    'mobile' => $form->getMobile(),
+                    'email'  => $form->getEmail(),
+                    'guid'   => $form->getEnterprizeCoupon(),
+                    'agree'  => $form->getAgree(),
+                ],
+                \App::config()->coreV2['hugeTimeout']
+            );
+            \App::logger()->info(['core.response' => $result], ['coupon', 'register-in-enter-prize']);
 
-        if (!$form->getEmail()) {
-            $form->setError('email', 'Не указан email');
-        }
+        } catch (\Curl\Exception $e) {
+            \App::exception()->remove($e);
 
-        if (!$form->getEnterprizeCoupon()) {
-            $form->setError('enterprize_coupon', 'Не указан купон');
+            $form->setError('global', $e->getMessage());
+
+            if (401 == $e->getCode()) {
+                $needAuth = true;
+
+            } elseif (600 == $e->getCode()) {
+                $errorContent = $e->getContent();
+                $detail = isset($errorContent['detail']) && is_array($errorContent['detail']) ? $errorContent['detail'] : [];
+
+                foreach ($detail as $fieldName => $errors) {
+                    foreach ($errors as $errorType => $errorMess) {
+                        switch ($fieldName) {
+                            case 'name':
+                                if ('isEmpty' === $errorType) {
+                                    $message = 'Не заполнено имя';
+                                } else {
+                                    $message = 'Некорректно введено имя';
+                                }
+                                break;
+                            case 'mobile':
+                                if ('isEmpty' === $errorType) {
+                                    $message = 'Не заполнен номер телефона';
+                                } elseif ('regexNotMatch' === $errorType) {
+                                    $message = 'Некорректно введен номер телефона';
+                                }
+                                break;
+                            case 'email':
+                                if ('isEmpty' === $errorType) {
+                                    $message = 'Не заполнен E-mail';
+                                } else {
+                                    $message = 'Некорректно введен E-mail';
+                                }
+                                break;
+                            case 'guid':
+                                if ('isEmpty' === $errorType) {
+                                    $message = 'Не передан идентификатор серии купона';
+                                } else {
+                                    $message = 'Невалидный идентификатор серии купона';
+                                }
+                                break;
+                            case 'agree':
+                                $message = 'Необходимо согласие';
+                                break;
+                            default:
+                                $message = 'Неизвестная ошибка';
+                        }
+
+//                        if (\App::config()->debug) {
+//                            $message .= ': ' . print_r($errorMess, true);
+//                        }
+
+                        $form->setError($fieldName, $message);
+                    }
+                }
+            }
         }
 
         if ($form->isValid()) {
-            try {
-                // Запоминаем данные enterprizeForm
-                \App::session()->set(\App::config()->enterprize['formDataSessionKey'], [
-                    'name'  => $form->getName(),
-                    'email' => $form->getEmail(),
-                    'phone' => $form->getPhone(),
+
+//            $result = [
+//                "token" => "97179AD9-1E63-463E-BAF4-A33215894370",
+//                "mobile_confirmed" => true,
+//                "email_confirmed" => true,
+//                "password" => "123456"
+//            ];
+
+            // Запоминаем данные enterprizeForm
+            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], [
+                'name'   => $form->getName(),
+                'email'  => $form->getEmail(),
+                'mobile' => $form->getMobile(),
+            ]);
+
+            // авторизовываем пользователя
+            if (!empty($result['token']) && !$user->getEntity()) {
+                $user = \RepositoryManager::user()->getEntityByToken($result['token']);
+                if ($user) {
+                    $user->setToken($result['token']);
+                } else {
+                    \App::logger()->error(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
+                }
+            }
+
+            if ($result['mobile_confirmed'] && $result['email_confirmed']) {
+                // пользователь все подтвердил, пробуем создать купон
+                $link = \App::router()->generate('enterprize.create');
+            } elseif ($result['mobile_confirmed']) {
+                // просим подтвердит email
+                $link = \App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]);
+            } else {
+                // просим подтвердить телефон
+                $link = \App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]);
+            }
+
+            return $request->isXmlHttpRequest()
+                ? new \Http\JsonResponse([
+                    'error'  => null,
+                    'notice' => ['message' => 'Поздравляем с регистрацией в Enter Prize!', 'type' => 'info'],
+                    'link'   => $link,
+                ])
+                : new \Http\RedirectResponse($link);
+
+        } else {
+            $formErrors = [];
+            foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                $formErrors[] = ['code' => 0, 'message' => $errorMessage, 'field' => $fieldName];
+            }
+
+            if ($request->isXmlHttpRequest()) {
+                return new \Http\JsonResponse([
+                    'error'    => ['code' => 0, 'message' => 'Не удалось сохранить форму'],
+                    'form'     => ['error' => $formErrors],
+                    'needAuth' => $needAuth && !$user->getEntity() ? true : false,
                 ]);
-
-                // создание enterprize-купона
-//                $result = $client->query(
-//                    'coupon/enter-prize',
-//                    [
-//                        'client_id' => \App::config()->coreV2['client_id'],
-//                        'token'     => \App::user()->getToken(),
-//                    ],
-//                    [
-//                        'name'                      => $form->getName(),
-//                        'phone'                     => $form->getPhone(),
-//                        'email'                     => $form->getEmail(),
-//                        'svyaznoy_club_card_number' => $user ? $user->getSclubCardnumber() : null,
-//                        'guid'                      => $form->getEnterprizeCoupon(),
-//                        'agree'                     => $form->getAgree(),
-//                    ],
-//                    \App::config()->coreV2['hugeTimeout']
-//                );
-
-
-            } catch (\Curl\Exception $e) {
-                \App::exception()->remove($e);
-                \App::logger()->error($e);
             }
         }
+
+        return new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]));
     }
 
     /**
