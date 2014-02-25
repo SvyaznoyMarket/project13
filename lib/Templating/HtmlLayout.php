@@ -161,7 +161,14 @@ class HtmlLayout {
      * @return string
      */
     public function json($value) {
-        return htmlspecialchars(json_encode($value, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS), ENT_QUOTES, \App::config()->encoding);
+        try {
+            $return = htmlspecialchars(json_encode($value, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS), ENT_QUOTES, \App::config()->encoding);
+        } catch (\Exception $e) {
+            $return = '';
+            \App::logger()->error(['action' => __METHOD__, 'value' =>  iconv('UTF-8', 'UTF-8//IGNORE', $value), 'error' => $e]);
+        }
+
+        return $return;
     }
 
     /**
