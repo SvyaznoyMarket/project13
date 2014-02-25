@@ -2,7 +2,7 @@
    Стили шапки сайта .header
    ========================================================================== */
 .productDesc {
-	margin: 0 0 20px;
+	margin: 0 0 40px;
 
 	.buyInfoWrap {
 		float: left; 
@@ -35,12 +35,19 @@
 		color: @typGray;
 		font-size: 14px;
 		margin-bottom: 20px;
+
+		*display: inline;
+		zoom: 1;
 	}
 
 	/* Отзывы в карточке товара */
 	&__reviews {
 		float: right;
 		margin-bottom: 20px;
+		display: inline-block;
+
+		*display: inline;
+		zoom: 1;
 
 		.reviewsCount {
 			display: inline-block;
@@ -49,12 +56,17 @@
 		    font-size: 15px;
 		    line-height: 15px;
 		    margin: 0 0 0 5px;
+		    *display: inline;
+			zoom: 1;
 		}
 
 		.reviewsStar {
 			display: inline-block;
 			vertical-align: top;
 			height: 15px;
+
+			*display: inline;
+			zoom: 1;
 		}
 	}
 }
