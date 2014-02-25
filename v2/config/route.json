@@ -31,6 +31,13 @@
             "productPath": "[\\w\\d-_]+/{1}[\\w\\d-_]+"
         }
     },
+    "Product\\GetRecommendedList": {
+        "name": "Рекомеендации товара",
+        "pattern": "/product-recommended/{productId}",
+        "require": {
+            "productId": "[\\w\\d-_]+"
+        }
+    },
     "Product\\GetUpsale": {
         "name": "Upsale-товары",
         "pattern": "/ajax/upsale/{productId}",

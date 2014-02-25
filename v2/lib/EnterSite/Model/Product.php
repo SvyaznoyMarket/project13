@@ -42,8 +42,10 @@ class Product {
     public $model;
     /** @var ObjectModel\Product\NearestDelivery[] */
     public $nearestDeliveries = [];
-    /** @var array */
+    /** @var string[] */
     public $accessoryIds = [];
+    /** @var string[] */
+    public $relatedIds = [];
     /** @var ObjectModel\Product\Relation */
     public $relation;
 
@@ -108,6 +110,7 @@ class Product {
 
         if (isset($data['model']['property'][0])) $this->model = new ObjectModel\Product\Model($data['model']);
         if (isset($data['accessories'][0])) $this->accessoryIds = $data['accessories'];
+        if (isset($data['related'][0])) $this->relatedIds = $data['related'];
     }
 
     /**
