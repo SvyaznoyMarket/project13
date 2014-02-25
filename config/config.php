@@ -380,6 +380,7 @@ $c->lifeGift['labelId'] = 17;
 $c->lifeGift['deliveryTypeId'] = 1077;
 
 $c->enterprize['enabled'] = false;
+$c->enterprize['formDataSessionKey'] = 'enterprizeForm';
 
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;

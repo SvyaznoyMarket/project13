@@ -1726,15 +1726,20 @@ $(document).ready(function(){
 			var formData = this.form.serializeArray(),
 				validator = this.getFormValidator(),
 				formSubmit = $('.jsSubmit', this.form),
-				urlParams = this.getUrlParams();
+				urlParams = this.getUrlParams(),
+				timeout;
 			// end of vars
 
 			// устанавливаем редирект
+			this.redirect_to = window.location.href;
 			if ( urlParams['redirect_to'] ) {
 				this.redirect_to = urlParams['redirect_to'];
 			}
 
 			var responseFromServer = function( response ) {
+					// когда пришел ответ с сервера, очищаем timeout
+					clearTimeout(timeout);
+
 					if ( response.error ) {
 						console.warn('Form has error');
 
@@ -1801,8 +1806,14 @@ $(document).ready(function(){
 
 				requestToServer = function() {
 					this.submitBtnLoadingDisplay( formSubmit );
-					formData.push({name: 'redirect_to', value: this.redirect_to ? this.redirect_to : window.location.href});
+					formData.push({name: 'redirect_to', value: this.redirect_to});
 					$.post(this.form.attr('action'), formData, $.proxy(responseFromServer, this), 'json');
+
+					/*
+					 SITE-3174 Ошибка авторизации.
+					 Принято решение перезагружать страничку через 5 сек, после отправки запроса на логин.
+					 */
+					timeout = setTimeout($.proxy(function() {document.location.href = this.redirect_to;}, this), 5000);
 				};
 			// end of functions
 
