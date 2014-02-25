@@ -8740,6 +8740,12 @@
   .bPhotoViewer__eItem.mGrad360 .bPhotoLink:hover {
     background-position: 5px -50px;
   }
+  .bPhotoViewer__eItem.vFitting .bPhotoLink {
+    background-position: 9px -106px;
+  }
+  .bPhotoViewer__eItem.vFitting .bPhotoLink:hover {
+    background-position: 8px -107px;
+  }
   .bPhotoViewer .bPhotoLink {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -10981,9 +10987,12 @@
     display: block;
   }
   .mPayMethods .bBankWrap .bSelectInput__eImg {
+    background-position: 0 0;
+    background-repeat: no-repeat;
     display: inline-block;
-    width: 150px;
+    height: 50px;
     vertical-align: top;
+    width: 150px;
     zoom: 1;
     *display: inline;
   }

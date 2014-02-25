@@ -170,10 +170,26 @@
 				return false;
 			}
 
-			var point = this.pointsByDelivery[state],
+			var
+				point = this.pointsByDelivery[state],
 				pointName = point ? point.token : false,
-				ret = pointName ? this.orderData[pointName] : false;
+				ret = pointName ? this.orderData[pointName] : false,
+				retNew = [], i, type;
 			// end of vars
+
+			/*
+			 SITE-2499 Некорректный первоначальный список магазинов при оформлении заказа
+			 Фильтруем точки для типов доставки "now" и "self"
+			 */
+			if ( state == "now" || state == "self" ) {
+				for ( i in ret ) {
+					for ( type in ret[i].products ) {
+						type == state && retNew.push(ret[i]);
+					}
+				}
+
+				ret = retNew;
+			}
 
 			return ret || false;
 		};

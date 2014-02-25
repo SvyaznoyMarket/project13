@@ -73,8 +73,9 @@ class ShowAction {
 
         /** @var $slice \Model\Slice\Entity|null */
         $slice = null;
-        \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice) {
+        \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
             if (is_array($data) && (bool)$data) {
+                $data['token'] = $sliceToken;
                 $slice = new \Model\Slice\Entity($data);
             }
         });
@@ -134,6 +135,9 @@ class ShowAction {
 
             $categoryId = $slice->getCategoryId();
             $category = $categoryId ? $productCategoryRepository->getEntityById($categoryId) : null;
+
+            // запрашиваем дерево категорий
+            $productCategoryRepository->prepareEntityBranch($category, $region);
 
             $page = new \View\Slice\ShowPage();
             $page->setParam('category', $category);
@@ -394,17 +398,6 @@ class ShowAction {
         try {
             if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
-                    if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
-                        /*$route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
-                        $response = new \Http\RedirectResponse($route);
-                        $response->headers->set('referer', \App::request()->getUri());*/
-                        $controller = new \Controller\Region\Action();
-                        \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
-                        $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
-                        return $response;
-                    }
-                }
             }
         } catch (\Exception $e) {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
@@ -434,11 +427,6 @@ class ShowAction {
         // промо-контент не показываем на страницах пагинации, брэнда, фильтров
         if ($pageNum > 1 || (bool)((array)$request->get(\View\Product\FilterForm::$name, []))) {
             $promoContent = '';
-        }
-
-        // задаем title
-        if (!is_null($category->getName())) {
-            $slice->setName($slice->getName() . ' - ' . $category->getName());
         }
 
         // переделываем url для breadcrumbs

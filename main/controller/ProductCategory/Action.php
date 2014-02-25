@@ -437,11 +437,6 @@ class Action {
             }
         }
 
-        // поддержка GET-запросов со старыми фильтрами
-        if (!$categoryClass && is_array($request->get(\View\Product\FilterForm::$name)) && (bool)$request->get(\View\Product\FilterForm::$name)) {
-            return new \Http\RedirectResponse(\App::router()->generate('product.category', ['categoryPath' => $category->getPath()]));
-        }
-
         if ($categoryClass && ('default' !== $categoryClass)) {
             if ('jewel' == $categoryClass) {
                 if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\categoryDirect', 134);
@@ -461,16 +456,6 @@ class Action {
         try {
             if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
-                    if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
-                        /*$route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
-                        $response = new \Http\RedirectResponse($route);
-                        $response->headers->set('referer', \App::request()->getUri());*/
-                        \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
-                        $response = (new \Controller\Region\Action())->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
-                        return $response;
-                    }
-                }
             }
         } catch (\Exception $e) {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
