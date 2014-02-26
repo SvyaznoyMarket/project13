@@ -62,6 +62,7 @@ class FormAction {
         }
 
         $needAuth = false;
+        $response = null;
         $result = null;
         try {
             $result = $client->query(
@@ -180,8 +181,6 @@ class FormAction {
                 }
             }
 
-            return $response;
-
         } else {
             $formErrors = [];
             foreach ($form->getErrors() as $fieldName => $errorMessage) {
@@ -189,7 +188,7 @@ class FormAction {
             }
 
             if ($request->isXmlHttpRequest()) {
-                return new \Http\JsonResponse([
+                $response = new \Http\JsonResponse([
                     'error'    => ['code' => 0, 'message' => 'Не удалось сохранить форму'],
                     'form'     => ['error' => $formErrors],
                     'needAuth' => $needAuth && !\App::user()->getEntity() ? true : false,
@@ -197,7 +196,8 @@ class FormAction {
             }
         }
 
-        return new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]));
+        return $response ? $response
+            : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]));
     }
 
     /**
