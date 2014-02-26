@@ -59,7 +59,7 @@ $(document).ready(function () {
             exclImg.click(function () {
                 if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
                     //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-                    _gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.ga, currImg.pos, currImg.imgb ] );
+                    _gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.pos, currImg.imgb ] );
                 }   
                 location.href = $(this).data('url');
             });
@@ -67,7 +67,7 @@ $(document).ready(function () {
             exclImg.mouseover(function () {
                 if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
                     //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-                    _gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.ga, currImg.pos, currImg.imgb ] );
+                    _gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.pos, currImg.imgb ] );
                 } 
             });
 
@@ -148,7 +148,7 @@ $(document).ready(function () {
 
         if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
             //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-            _gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.ga, currImg.pos, currImg.imgb ] );
+            _gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.pos, currImg.imgb ] );
             console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
         }
         addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
@@ -246,7 +246,7 @@ $(document).ready(function () {
 
         if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
             //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-            _gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.ga, currImg.pos, currImg.imgb ] );
+            _gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.pos, currImg.imgb ] );
             console.log( 'GA: _trackEvent, Carousel, View_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
         }
     }
