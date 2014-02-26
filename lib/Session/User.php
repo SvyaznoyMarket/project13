@@ -29,6 +29,16 @@ class User {
         $this->tokenName = \App::config()->authToken['name'];
         $this->token = \App::session()->get($this->tokenName);
         $this->recommendedProduct = \App::session()->get('recommendedProduct');
+
+        $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        if (!$session->has($sessionName)) {
+            $session->set($sessionName, [
+                'isPhoneConfirmed' => false,
+                'isEmailConfirmed' => false,
+            ]);
+            return;
+        }
     }
 
     /**

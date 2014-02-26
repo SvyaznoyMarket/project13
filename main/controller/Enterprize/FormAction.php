@@ -57,6 +57,9 @@ class FormAction {
         $userData = (array)$request->get('user');
         $form->fromArray($userData);
 
+        $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+
         if (!isset($userData['subscribe'])) {
             $form->setError('subscribe', 'Необходимо согласие');
         }
@@ -144,16 +147,19 @@ class FormAction {
 
         if ($form->isValid()) {
             // Запоминаем данные enterprizeForm
-            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], [
-                'name'   => $form->getName(),
-                'email'  => $form->getEmail(),
-                'mobile' => $form->getMobile(),
+            $session->set($sessionName, [
+                'name'             => $form->getName(),
+                'email'            => $form->getEmail(),
+                'mobile'           => $form->getMobile(),
+                'isPhoneConfirmed' => isset($result['mobile_confirmed']) ? $result['mobile_confirmed'] : false,
+                'isEmailConfirmed' => isset($result['email_confirmed']) ? $result['email_confirmed'] : false,
             ]);
 
-            if ($result['mobile_confirmed'] && $result['email_confirmed']) {
+            $data = $session->get($sessionName, []);
+            if ($data['mobile_confirmed'] && $data['email_confirmed']) {
                 // пользователь все подтвердил, пробуем создать купон
                 $link = \App::router()->generate('enterprize.create');
-            } elseif ($result['mobile_confirmed']) {
+            } elseif ($data['mobile_confirmed']) {
                 // просим подтвердит email
                 $link = \App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]);
             } else {
