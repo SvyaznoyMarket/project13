@@ -3,7 +3,9 @@
 // 2013, Russian Moscow, ENTER 
 
 //основной путь всех файлов
-@base-url:"/css/modules";
+@base-url:"modules";
+
+@displayTable:"display-table.min.htc";
 
 /** Reset styles **/
 @import "modules/mainStyles/normalize.less";
@@ -55,9 +57,15 @@
 
 /** стили описания товара **/
 @import "modules/productDesc/productDesc.less";
-
+ 
 /** адаптивные описания товара **/
 @import "modules/productDesc/m.productDesc.less";
+
+/** стили блоков выбора модели **/
+@import "modules/chooseModel/chooseModel.less";
+
+/** стили блоков выбора модели **/
+@import "modules/chooseModel/m.chooseModel.less";
 
 /** стили табов подробного описания товара **/
 @import "modules/productDescTab/productDescTab.less";
@@ -92,10 +100,11 @@
 
 
 /* ==========================================================================
-   Стили юлока вариантов доставки в карточке товара .btnBuy
+   Стили блока вариантов доставки в карточке товара .btnBuy
    ========================================================================== */
 
 @import "modules/deliveryInfo/deliveryInfo.less";
+
 
 /* ==========================================================================
    Стили характеристик товара в карточке товара .specifications
@@ -105,8 +114,35 @@
 
 @import "modules/specifications/m.specifications.less";
 
+
 /* ==========================================================================
-   Стили характеристик товара в карточке товара .specifications
+   Стили отзывов в карточке товара .tabContent-reviews
+   ========================================================================== */
+
+@import "modules/tabContentReviews/tabContentReviews.less";
+
+@import "modules/tabContentReviews/m.tabContentReviews.less";
+
+
+/* ==========================================================================
+   Стили слайдера товаров .sliderBox
+   ========================================================================== */
+
+@import "modules/sliderBox/sliderBox.less";
+
+@import "modules/sliderBox/m.sliderBox.less";
+
+
+/* ==========================================================================
+   Стили слайдера товаров .footer
+   ========================================================================== */
+
+@import "modules/footer/footer.less";
+
+@import "modules/footer/m.footer.less";
+
+/* ==========================================================================
+   Стили картинок для дисплеев ретина
    ========================================================================== */
 
 @import "modules/retina/retina.less";
