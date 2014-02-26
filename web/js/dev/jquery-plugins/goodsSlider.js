@@ -62,7 +62,6 @@
 									if ( 'undefined' !== typeof(callbF) ) {
 										if ( 'undefined' !== typeof(type) && 'undefined' !== typeof(res.recommend) && 'undefined' !== typeof(res.recommend[type]) ) {
 											callbF(res.recommend[type]);
-											//recommendArray[i].callback(res.recommend[recommendArray[i].type]);
 										}
 										else {
 											callbF(res);
@@ -73,11 +72,13 @@
 							catch(e) {
 								console.warn('Error in RR recomendations');
 								console.log(e);
+								callback({'success': false});
 							}
 						},
 						error: function(e) {
 							console.warn('Error in RR ajax response');
 							console.log(e);
+							callback({'success': false});
 						}
 					});
 				}
