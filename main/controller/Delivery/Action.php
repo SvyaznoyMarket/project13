@@ -143,6 +143,7 @@ class Action {
             if (isset($result['delivery_types'])) {
                 foreach ($result['delivery_types'] as $token => $type) {
                     $typeDataFromRepository = \RepositoryManager::deliveryType()->getEntityByToken($token);
+                    if (!$typeDataFromRepository) continue;
 
                     $responseData['deliveryTypes'][] =  [
                         'id'          => $type['id'],
