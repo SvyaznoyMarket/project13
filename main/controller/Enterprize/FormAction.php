@@ -53,7 +53,6 @@ class FormAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
-        $user = \App::user();
         $form = new \View\Enterprize\Form();
         $userData = (array)$request->get('user');
         $form->fromArray($userData);
@@ -143,30 +142,12 @@ class FormAction {
         }
 
         if ($form->isValid()) {
-
-//            $result = [
-//                "token" => "97179AD9-1E63-463E-BAF4-A33215894370",
-//                "mobile_confirmed" => true,
-//                "email_confirmed" => true,
-//                "password" => "123456"
-//            ];
-
             // Запоминаем данные enterprizeForm
             \App::session()->set(\App::config()->enterprize['formDataSessionKey'], [
                 'name'   => $form->getName(),
                 'email'  => $form->getEmail(),
                 'mobile' => $form->getMobile(),
             ]);
-
-            // авторизовываем пользователя
-            if (!empty($result['token']) && !$user->getEntity()) {
-                $user = \RepositoryManager::user()->getEntityByToken($result['token']);
-                if ($user) {
-                    $user->setToken($result['token']);
-                } else {
-                    \App::logger()->error(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
-                }
-            }
 
             if ($result['mobile_confirmed'] && $result['email_confirmed']) {
                 // пользователь все подтвердил, пробуем создать купон
@@ -179,13 +160,27 @@ class FormAction {
                 $link = \App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]);
             }
 
-            return $request->isXmlHttpRequest()
+            $response = $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
-                    'error'  => null,
-                    'notice' => ['message' => 'Поздравляем с регистрацией в Enter Prize!', 'type' => 'info'],
-                    'link'   => $link,
+                    'success' => true,
+                    'error'   => null,
+                    'notice'  => ['message' => 'Поздравляем с регистрацией в Enter Prize!', 'type' => 'info'],
+                    'data'    => ['link' => $link],
                 ])
                 : new \Http\RedirectResponse($link);
+
+            // авторизовываем пользователя
+            if (!empty($result['token']) && !\App::user()->getEntity()) {
+                $user = \RepositoryManager::user()->getEntityByToken($result['token']);
+                if ($user) {
+                    $user->setToken($result['token']);
+                    \App::user()->signIn($user, $response);
+                } else {
+                    \App::logger()->error(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
+                }
+            }
+
+            return $response;
 
         } else {
             $formErrors = [];
@@ -197,7 +192,7 @@ class FormAction {
                 return new \Http\JsonResponse([
                     'error'    => ['code' => 0, 'message' => 'Не удалось сохранить форму'],
                     'form'     => ['error' => $formErrors],
-                    'needAuth' => $needAuth && !$user->getEntity() ? true : false,
+                    'needAuth' => $needAuth && !\App::user()->getEntity() ? true : false,
                 ]);
             }
         }

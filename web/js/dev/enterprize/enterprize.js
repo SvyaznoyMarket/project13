@@ -6,7 +6,7 @@
 ;(function() {
 	var
 		form = $('.jsEnterprizeForm'),
-//		authLink = $('.jsEnterprizeAuthLink'),
+		authLink = $('.jsEnterprizeAuthLink'),
 		body = $('body'),
 		mobilePhoneField = $('.jsMobile'),
 
@@ -55,13 +55,13 @@
 		 * @param e
 		 * @param userInfo
 		 */
-//		removeEnterprizeAuthClass = function removeEnterprizeAuthClass( e, userInfo ) {
-//			if ( !userInfo || !userInfo.name ) {
-//				return;
-//			}
-//
-//			authLink.length && $.each(authLink, function () { $(this).removeClass('jsEnterprizeAuthLink') });
-//		},
+		removeEnterprizeAuthClass = function removeEnterprizeAuthClass( e, userInfo ) {
+			if ( !userInfo || !userInfo.name ) {
+				return;
+			}
+
+			authLink.length && $.each(authLink, function () { $(this).removeClass('jsEnterprizeAuthLink') });
+		},
 
 		/**
 		 * Очистка блока сообщений
@@ -191,12 +191,12 @@
 						serverErrorHandler(response);
 					}
 					else {
-						if ( response.link ) {
-							window.location.href = response.link;
-							return false;
+						if ( response.data.link !== undefined ) {
+							window.location.href = response.data.link;
 						}
-
-						response.notice.message && showMsg(response.notice.message, 'notice');
+						else if ( response.notice.message ) {
+							showMsg(response.notice.message, 'notice');
+						}
 					}
 
 					return false;
@@ -223,6 +223,6 @@
 	$.mask.definitions['n'] = '[0-9]';
 	mobilePhoneField.length && mobilePhoneField.mask('8nnnnnnnnnn');
 
-//	body.on('userLogged', removeEnterprizeAuthClass);
+	body.on('userLogged', removeEnterprizeAuthClass);
 	body.on('submit', '.jsEnterprizeForm', formSubmit);
 }());
