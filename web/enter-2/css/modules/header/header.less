@@ -5,7 +5,7 @@
 .header {
 	background: @black;
 	color: @white;
-	padding: 10px 10px;
+	padding: 10px 0;
 }
 
 /* Иконка меню */
@@ -23,11 +23,11 @@
     width: 33px;
 	margin: 6px 20px 0 0;
 
-	*display: block;
+	*display: inline;
 	zoom: 1;
 
 	&__link {
-		background: url("modules/header/img/menuIco1024.png") no-repeat 0 0;
+		background: url("@{base-url}/header/img/menuIco1024.png") no-repeat 0 0;
 		height: 28px;
     	width: 33px;
 		display: block;
@@ -38,8 +38,10 @@
 .logo {
 	display: inline-block;
 	vertical-align: top;
-
 	width: 50px;
+
+	*display: inline;
+	zoom: 1;
 
 	&__link {
 		width: 50px;
@@ -54,7 +56,7 @@
 }
 
 .headerCenter {
-	padding: 0 280px 0 120px; 
+	padding: 0 285px 0 120px; 
 	overflow: hidden;
 }
 
@@ -67,17 +69,26 @@
 	margin-left: 20px;
 	width: 1000px;
 
+	*display: inline;
+	zoom: 1;
+
 	&__item {
 	    display: inline-block;
 	    font-size: 1.4em;
 	    margin: 10px 0 0;
 	    vertical-align: top;
+
+	    *display: inline;
+		zoom: 1;
 	}
 
 	&__itemImg {
 		display: inline-block;
 		vertical-align: top;
 		margin: 0 10px 0 0;
+
+		*display: block;
+		zoom: 1;
 	}
 
 	&__link {
@@ -103,27 +114,31 @@
 
 .transBg {
 	float: left;
-	background: url("modules/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
+	background: url("@{base-url}/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
 	height: 30px;
 	width: 20px;
 }
 
 .userBox {
-	float: left;
-	width: 250px;
-	
-    
+	float: right;
     background: @black;
     
 
 	&__item {
 		display: inline-block;
 		margin: 0 0 0 21px;
+
+		*display: inline;
+		zoom: 1;
+
+		&-first {
+			margin: 0;
+		}
 	}
 
 	&__link {
 		color: @white;
-		background: url("modules/header/img/menuIco1024.png") no-repeat 50% -37px;
+		background: url("@{base-url}/header/img/menuIco1024.png") no-repeat 50% -37px;
 		display: block;
 		text-align: center;
 		padding: 23px 0 0;

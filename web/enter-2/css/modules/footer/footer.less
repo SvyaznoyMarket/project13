@@ -1,0 +1,123 @@
+.footer {
+	border-top: 1px solid @tabGreyBorder;
+	background: @tabGrey;
+	padding: 15px 0 0;
+}
+
+.aboutList {
+	display: inline-block;
+	vertical-align: top;
+
+	*display: inline;
+	zoom: 1;
+	margin: 6px 0 0;
+
+	&__item {
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+
+		margin-right: 20px;
+	}
+}
+
+.socLink {
+	float: right;
+	font-size: 0;
+	margin: 0 0 15px;
+	display: inline-block;
+	vertical-align: top;
+
+	*display: inline;
+	zoom: 1;
+
+	&__item {
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+
+		color: #515151;
+		background: url("@{base-url}/footer/img/socialicon.png") no-repeat 0 0;
+		width: 26px;
+		height: 26px;
+		vertical-align: top;
+		margin-right: 5px;
+
+		&.mTw {
+			background-position: -27px 0;
+		} 
+
+		&.mVk {
+			background-position: -54px 0;
+		}
+
+		&.mYt {
+			background-position: -81px 0;
+		}
+	}
+
+	&__link {
+		display: block;
+		width: 26px;
+		height: 26px;
+	}
+}
+
+.publicInfoList {
+	clear: both;
+	margin: 0 0 20px;
+
+	&__item {
+		display: inline-block;
+		vertical-align: top;
+		margin: 0 20px 0 0;
+
+		*display: inline;
+		zoom: 1;
+	}
+
+	&__link {
+		color: #5e5d5d;
+	}
+}
+
+.appList {
+	text-align: center;
+	margin: 0 auto;
+	width: 550px;
+
+	&__item {
+		float: left;
+		//width: 18.0851%;
+		margin-right: 15px;
+
+		&-last {
+			margin-right: 0;
+		}
+
+		img {
+			width: 100%;
+			height: auto;
+			.rounded(4px);
+		}
+	}
+}
+
+.publicInfoText {
+	color: #8c8b8b;
+	text-align: center;
+}
+
+.footerCopy {
+	background: @black;
+	padding: 2px 0;
+
+	&__link {
+		float: right;
+		color: @white;
+	}
+}
