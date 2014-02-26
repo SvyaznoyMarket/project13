@@ -83,7 +83,13 @@ class RecommendedAction {
 
             // подготавливаем контент для всех типов рекомендаций
             foreach ($recommend as $type => $item) {
-                if ('alsoBought' === $type) {
+                if (empty($productsCollection[$type])) {
+                    $recommend[$type] = [
+                        'success' => false,
+                    ];
+                    continue;
+                }
+                if ('alsoBought' === $type && is_array($productsCollection[$type])) {
                     // SITE-2818 Из блока "С этим товаром также покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
                     foreach ($productsCollection[$type] as $key => $value) {
                         if (!$value instanceof \Model\Product\BasicEntity) continue;
