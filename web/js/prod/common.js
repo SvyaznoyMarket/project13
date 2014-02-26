@@ -2148,6 +2148,9 @@ $(document).ready(function() {
 			activeInterval = promoCatalog.data('use-interval') !== undefined ? promoCatalog.data('use-interval') : false,
 			interval = null,
 			toSlide = null,
+
+			// Флаг под которым реализована дорисовка hash к url
+			activeHash = promoCatalog.data('use-hash') !== undefined ? promoCatalog.data('use-hash') : true,
 			hash,
 			scrollingDuration = 500;
 		// end of vars
@@ -2277,16 +2280,19 @@ $(document).ready(function() {
 				nowSlide = slide;
 			});
 
-			window.location.hash = 'slide' + (slide + 1);
 			catalogPaginator.setActive(slide);
+
+			if ( activeHash ) {
+				window.location.hash = 'slide' + (slide + 1);
+			}
 		};
 
-		hash = window.location.hash;
-
-		if ( hash.indexOf('slide') + 1 ) {
-			toSlide = parseInt(hash.slice(6), 10) - 1;
-
-			moveSlide(toSlide);
+		if ( activeHash ) {
+			hash = window.location.hash;
+			if ( hash.indexOf('slide') + 1 ) {
+				toSlide = parseInt(hash.slice(6), 10) - 1;
+				moveSlide(toSlide);
+			}
 		}
 
 		setScrollInterval( toSlide ? (toSlide) : null);
