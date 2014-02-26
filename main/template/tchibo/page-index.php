@@ -23,7 +23,7 @@ if ((bool)$siblingCategories) {
 }
 
 ?>
-<div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>" data-use-interval="true">
+<div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>" data-use-interval="true" data-use-hash="false">
 
 	<script type="text/html" id="slide_tmpl">
 	    <div class="bPromoCatalogSliderWrap_eSlide">
