@@ -102,7 +102,7 @@ class IndexAction {
         $page->setParam('slideData', $slideData);
         $page->setParam('catalogConfig', $catalogJson);
         $page->setParam('content', $content);
-        $page->setParam('catalogCategories', $rootCategoryInMenu->getChild());
+        $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
 
         return new \Http\Response($page->show());
