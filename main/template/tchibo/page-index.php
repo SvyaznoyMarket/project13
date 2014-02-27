@@ -23,7 +23,7 @@ if ((bool)$siblingCategories) {
 }
 
 ?>
-<div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>" data-use-interval="true">
+<div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>" data-use-interval="true" data-use-hash="false">
 
 	<script type="text/html" id="slide_tmpl">
 	    <div class="bPromoCatalogSliderWrap_eSlide">
@@ -63,8 +63,6 @@ if ((bool)$siblingCategories) {
         <div class="tchiboCatalogInner">
             <a href="<?= $catalogCategory->getLink() ?>">
                 <img class="tchiboCatalog__img"
-                     <? /* style="width:100%;" */ ?>
-                     style="width:479px;height:260px;" <? // TODO: переделатьубрать в css ?>
                      src="<?= $imgSrc ?>" alt="<?= $catalogCategory->getName() ?>" />
             </a>
 
