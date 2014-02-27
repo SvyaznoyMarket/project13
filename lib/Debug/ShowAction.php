@@ -36,7 +36,13 @@ class ShowAction {
         ];
         $gitData['url'] = 'https://github.com/SvyaznoyMarket/project13/tree/' . $gitData['version'];
         $debug->add('git', $gitData, 144);
-        $debug->add('env', \App::$env, 143);
+
+        $jiraVersion = round(preg_replace('/[^\d\.]/', '', $gitData['tag']), 1);
+        $debug->add('jira', [
+            'version' => $jiraVersion,
+            'url'     => 'https://jira.enter.ru/secure/IssueNavigator.jspa?reset=true&jqlQuery=project = SITE AND fixVersion = "' . $jiraVersion . '" ORDER BY updated DESC, priority DESC, created ASC&mode=hide',
+        ], 143);
+        $debug->add('env', \App::$env, 142);
 
         // query
         $queryData = [];

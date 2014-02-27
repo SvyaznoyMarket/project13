@@ -28,6 +28,7 @@
     <meta name="viewport" content="width=1000" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="HandheldFriendly" content="true" />
+    <meta name="format-detection" content="telephone=no" />
 
     <?= $page->slotStylesheet() ?>
     <?= $page->slotHeadJavascript() ?>

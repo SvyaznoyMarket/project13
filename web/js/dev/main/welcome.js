@@ -59,15 +59,15 @@ $(document).ready(function () {
             exclImg.click(function () {
                 if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
                     //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-                    _gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.ga, currImg.pos, currImg.imgb ] );
-                }   
+                    _gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.pos, currImg.imgb ] );
+                }
                 location.href = $(this).data('url');
             });
 
             exclImg.mouseover(function () {
                 if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
                     //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-                    _gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.ga, currImg.pos, currImg.imgb ] );
+                    _gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.pos, currImg.imgb ] );
                 } 
             });
 
@@ -76,8 +76,10 @@ $(document).ready(function () {
         }
         $('.centerImage').attr('src', promos[0].imgb).data('url', promos[0].url)
             .click(function () {
-                if (typeof(_gaq) !== 'undefined' && typeof(promos[0].ga) !== 'undefined')
-                    _gaq.push(['_trackEvent', 'BannerClick', promos[0].ga ]);
+				if ( typeof(_gaq) !== 'undefined' && typeof(promos[0].ga) !== 'undefined' ) {
+					_gaq.push(['_trackEvent', 'BannerClick', '' + promos[0].ga ]);
+					console.log('GA: _trackEvent, BannerClick promos ', promos[0].ga);
+				}
                 addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
                 location.href = $(this).data('url');
             });
@@ -105,7 +107,7 @@ $(document).ready(function () {
 
     changeSrc(currentSl);
     idto = setTimeout(function () {
-        goSlide()
+        goSlide();
     }, initis[1].t);
     /* Visuals */
     
@@ -122,17 +124,17 @@ $(document).ready(function () {
             })
     }
     $('.leftArrow').click(function () {
-        goSlide(-1);
-    })
+        goSlide(-1, true);
+    });
     $('.leftImage').click(function () {
-        goSlide(-1);
-    })
+        goSlide(-1, true);
+    });
     $('.rightArrow').click(function () {
-        goSlide(1);
-    })
+        goSlide(1, true);
+    });
     $('.rightImage').click(function () {
-        goSlide(1);
-    })
+        goSlide(1, true);
+    });
     $('.centerImage').click(function () {
         var
             currImg = initis[1];
@@ -146,11 +148,13 @@ $(document).ready(function () {
 
         clearTimeout(idto);
 
-        if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
-            //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-            _gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.ga, currImg.pos, currImg.imgb ] );
-            console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
-        }
+		if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined' ) {
+			console.log( '## click on bigbanner:' );
+			_gaq.push( ['_trackEvent', 'BannerClick', '' + currImg.pos ] );
+			_gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.pos, currImg.imgb ] );
+			console.log( 'GA: _trackEvent, BannerClick,', '' + currImg.pos );
+			console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ' | ' + currImg.imgb + currImg.ga );
+		}
         addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
         location.href = $(this).data('url');
     });
@@ -187,8 +191,10 @@ $(document).ready(function () {
             initis = promos.slice(currentSl).concat(promos.slice(0, -delta));
     }
 
-    function goSlide(dir) {
-        if (!permission) {
+    function goSlide( dir, isClick ) {
+		dir = dir || 0;
+		isClick = isClick || false;
+        if ( !permission ) {
             idto = setTimeout(function () {
                 goSlide();
             }, initis[1].t);
@@ -197,8 +203,8 @@ $(document).ready(function () {
         if (sliding)
             return false;
         sliding = true;
-        if (!dir)
-            var dir = 1;
+        if ( 0 === dir )
+            dir = 1;
         else // custom call
             clearTimeout(idto);
         var shift = '-=1000px',
@@ -234,20 +240,25 @@ $(document).ready(function () {
         sideBanner($('.leftImage'), 0);
         sideBanner($('.rightImage'), 2);
 
-        var
-            currImg = initis[1];
-        /**
-         * Текущие изобрежения слайдера хранятся в initis так:
-         * initis[0] - leftImage
-         * initis[1] - centerImage
-         * initis[2] - rightImage
-         * при листании карусельки изменяются и текущие данные в initis[]
-         */
+		var
+			currImg = initis[1];
+		/**
+		 * Текущие изобрежения слайдера хранятся в initis так:
+		 * initis[0] - leftImage
+		 * initis[1] - centerImage
+		 * initis[2] - rightImage
+		 * при листании карусельки изменяются и текущие данные в initis[]
+		 */
 
-        if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
-            //_gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
-            _gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.ga, currImg.pos, currImg.imgb ] );
-            console.log( 'GA: _trackEvent, Carousel, View_' + currImg.pos + ', id_' + currImg.imgb + currImg.ga );
-        }
+		if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
+			/** Отправляет аналитику в GA при любой (ручной или автоматической) смене элементов слайдера */
+			_gaq.push( ['_trackEvent', 'Carousel', 'View_' + currImg.pos, currImg.imgb ] );
+			console.log( '#GA: _trackEvent, Carousel, View_' + currImg.pos + ' | ' + currImg.imgb + currImg.ga );
+			if ( isClick ) {
+				/** Сработает только при ручной смене баннера (при клике) */
+				_gaq.push(['_trackEvent', 'BannerClick', '' + currImg.pos ]);
+				console.log('GA: _trackEvent BannerClick', currImg.pos);
+			}
+		}
     }
 });

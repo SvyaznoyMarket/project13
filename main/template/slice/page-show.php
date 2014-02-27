@@ -19,9 +19,9 @@ $helper = new \Helper\TemplateHelper();
 
 <div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
-    <?= $helper->render('product-category/__breadcrumbs', ['category' => $category]) // хлебные крошки ?>
+    <?= $helper->render('slice/__breadcrumbs', ['category' => $category, 'slice' => $slice]) // хлебные крошки ?>
 
-    <h1 class="bTitlePage"><?= $slice->getName() ?></h1>
+    <h1 class="bTitlePage"><?= $slice->getName() ?><? if ($category->getName()): ?> - <?= $category->getName() ?><? endif ?></h1>
 
     <? if (!empty($promoContent)): ?>
         <?= $promoContent ?>
