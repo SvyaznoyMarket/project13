@@ -25,6 +25,10 @@ class ConfirmPhoneAction {
             return (new \Controller\Enterprize\ConfirmEmailAction())->create($request);
         }
 
+        $session = \App::session();
+        $error = $session->get('flash');
+        $session->remove('flash');
+
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
         if ($enterprizeToken) {
@@ -40,6 +44,7 @@ class ConfirmPhoneAction {
 
         $page = new \View\Enterprize\ConfirmPhonePage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
+        $page->setParam('error', $error);
 
         return new \Http\Response($page->show());
     }
@@ -88,8 +93,11 @@ class ConfirmPhoneAction {
             $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.create'));
 
         } catch (\Curl\Exception $e) {
-            // TODO форвардим на Controller\Enterprize\ConfirmPhoneAction::show с массивом ошибок (надо обговорить)
-            $response = $this->show($request);
+            \App::exception()->remove($e);
+
+            \App::session()->set('flash', $e->getMessage());
+            $enterprizeToken = $request->get('enterprizeToken', null);
+            $response = $this->show($request, $enterprizeToken);
         }
 
         return $response;

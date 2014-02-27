@@ -2,6 +2,7 @@
 /**
  * @var $page   \View\DefaultLayout
  * @var $user   \Session\User
+ * @var $error string
  */
 
 $userEntity = $user->getEntity();
@@ -10,6 +11,10 @@ $userEntity = $user->getEntity();
 <div>
     <h1>Подтверди номер мобильного</h1>
     <div class="clear"></div>
+
+    <? if ($error): ?>
+        <p class="red"><?= $error ?></p>
+    <? endif ?>
 
     <div>
 
