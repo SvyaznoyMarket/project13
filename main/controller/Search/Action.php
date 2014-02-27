@@ -134,6 +134,11 @@ class Action {
             }
         }
 
+        if (count($result['category_list']) > \App::config()->search['categoriesLimit']) {
+            // ограничиваем, чтобы не было 414 Request-URI Too Large
+            $result['category_list'] = array_slice($result['category_list'], 0, \App::config()->search['categoriesLimit']);
+        }
+
         /** @var $categoriesById \Model\Product\Category\Entity[] */
         $categoriesById = [];
         foreach ($result['category_list'] as $item) {
