@@ -11,8 +11,7 @@ use EnterSite\MustacheRendererTrait;
 class Debug {
     use ConfigTrait;
     use LoggerTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-        ConfigTrait::getConfig insteadof MustacheRendererTrait;
+        ConfigTrait::getConfig insteadof LoggerTrait, MustacheRendererTrait;
     }
 
     public function execute(Http\Response $response, $startAt, $endAt) {

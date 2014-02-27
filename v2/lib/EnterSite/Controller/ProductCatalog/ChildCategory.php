@@ -15,8 +15,7 @@ use EnterSite\Model\Page\ProductCatalog\ChildCategory as Page;
 class ChildCategory {
     use ConfigTrait;
     use CurlClientTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait;
-        ConfigTrait::getConfig insteadof MustacheRendererTrait;
+        ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait;
     }
 
     /**

@@ -15,8 +15,7 @@ use EnterSite\Model;
 class ProductCard {
     use ConfigTrait;
     use CurlClientTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait;
-        ConfigTrait::getConfig insteadof MustacheRendererTrait;
+        ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait;
     }
 
     public function execute(Http\Request $request) {
