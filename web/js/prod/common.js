@@ -604,12 +604,9 @@
 							utils.logError(dataToLog);
 						}
 					}
-				},
-
-				/**
-				 * addToVisualDNA
-				 */
-					addToVisualDNA = function addToVisualDNA( event, data ) {
+				}
+				/*,
+				addToVisualDNA = function addToVisualDNA( event, data ) {
 					var
 						productData 	= data.product,
 						product_id 		= productData.id,
@@ -625,7 +622,7 @@
 					i.alt = '';
 
 					b.appendChild(i);
-				}
+				}*/
 				;
 			//end of functions
 
@@ -635,7 +632,7 @@
 				myThingsAnalytics(event, data);
 				adAdriver(event, data);
 				addToRetailRocket(event, data);
-				addToVisualDNA(event, data);
+				//addToVisualDNA(event, data);
 			}
 			catch( e ) {
 				console.warn('addtocartAnalytics error');
