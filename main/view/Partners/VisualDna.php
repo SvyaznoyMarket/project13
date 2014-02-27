@@ -10,7 +10,7 @@ namespace View\Partners;
 
 
 class VisualDna {
-
+// Данный класс и партнёр не используется
     private $partnerLink = '//e.visualdna.com/conversion?api_key=enter.ru';
 
 
