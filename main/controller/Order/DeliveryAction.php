@@ -171,8 +171,8 @@ class DeliveryAction {
                     'shortName'   => $deliveryType->getShortName(),
                     'buttonName'  => $deliveryType->getButtonName(),
                     'description' => $deliveryType->getDescription(),
-                    'states'      => $deliveryType->getMethodTokens(),
-                    'ownStates'   => [],
+                    'states'      => $deliveryType->getPossibleMethodTokens(),
+                    'ownStates'   => $deliveryType->getMethodTokens(),
                 ];
 
                 if ('pickpoint' === $deliveryType->getToken()) {
