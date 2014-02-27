@@ -10,6 +10,9 @@
         "defaultId": "14974",
         "cookieName": "geoshop"
     },
+    "curlQuery": {
+        "chunkSize": 50
+    },
     "coreService": {
         "clientId": "site",
         "url": "http://api.enter.ru/v2/",
@@ -76,6 +79,23 @@
         },
         "retryCount": 3
     },
+    "retailRocketService": {
+        "account": "519c7f3c0d422d0fe0ee9775",
+        "url": "http://api.retailrocket.ru/api/",
+        "user": null,
+        "password": null,
+        "timeout": 0.5,
+        "hugeTimeout": null,
+        "retryTimeout": {
+            "default": null,
+            "tiny": null,
+            "short": null,
+            "medium": null,
+            "long": null,
+            "huge": null
+        },
+        "retryCount": null
+    },
     "mustacheRenderer": {
         "dir": "/var/www/enter/v2/vendor/mustache",
         "templateDir": "/var/www/enter/v2/template",
@@ -95,7 +115,8 @@
         "http://fs10.enter.ru"
     ],
     "product": {
-        "itemPerPage": 20
+        "itemPerPage": 20,
+        "itemsInSlider": 60
     },
     "productReview": {
         "enabled": true,
