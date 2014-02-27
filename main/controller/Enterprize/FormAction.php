@@ -22,6 +22,16 @@ class FormAction {
 
         $user = \App::user()->getEntity();
 
+        $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        if (!$session->has($sessionName)) {
+            $session->set($sessionName, [
+                'isPhoneConfirmed' => false,
+                'isEmailConfirmed' => false,
+            ]);
+            return;
+        }
+
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
         if ($enterprizeToken) {

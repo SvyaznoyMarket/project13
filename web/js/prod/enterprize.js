@@ -6,7 +6,6 @@
 ;(function() {
 	var
 		form = $('.jsEnterprizeForm'),
-		authLink = $('.jsEnterprizeAuthLink'),
 		body = $('body'),
 		mobilePhoneField = $('.jsMobile'),
 
@@ -49,20 +48,6 @@
 	// end of vars
 
 	var
-		/**
-		 * Убераем login-попап при клике на купон
-		 *
-		 * @param e
-		 * @param userInfo
-		 */
-		removeEnterprizeAuthClass = function removeEnterprizeAuthClass( e, userInfo ) {
-			if ( !userInfo || !userInfo.name ) {
-				return;
-			}
-
-			authLink.length && $.each(authLink, function () { $(this).removeClass('jsEnterprizeAuthLink') });
-		},
-
 		/**
 		 * Очистка блока сообщений
 		 */
@@ -223,6 +208,5 @@
 	$.mask.definitions['n'] = '[0-9]';
 	mobilePhoneField.length && mobilePhoneField.mask('8nnnnnnnnnn');
 
-	body.on('userLogged', removeEnterprizeAuthClass);
 	body.on('submit', '.jsEnterprizeForm', formSubmit);
 }());
