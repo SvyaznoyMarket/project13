@@ -11659,10 +11659,6 @@
   .bListing .bListingItem:hover .bSimplyDescStikers {
     opacity: 0.2;
   }
-  .bListing .bListingItem:hover .bSimplyDesc__eText {
-    min-height: 30px;
-    height: auto;
-  }
   .bListing .bSimplyDesc {
     position: absolute;
     top: 10px;
@@ -11675,7 +11671,6 @@
   .bListing .bSimplyDesc__eText {
     overflow: hidden;
     margin: 0;
-    height: 30px;
     line-height: 1.3;
   }
   .bListing .bSimplyDescStikers {
