@@ -6,6 +6,7 @@
  * @var $catalogConfig      array
  * @var $slideData          array
  * @var $content            string
+ * @var $bannerBottom       string
  */
 
 
@@ -86,8 +87,10 @@ if ((bool)$siblingCategories) {
         </div><? /* <!--/ категория --> */ ?>
     <? endforeach; ?>
 
+    <? if (!empty($bannerBottom)): ?>
     <div class="tchiboCatalogInnerBanner">
-        <a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/cofee.jpg" /></a>
-    </div> <!--/ вывод баннера или категории без списка подкатегорий и верхней плашкой-заголовком -->
+        <?= $bannerBottom ?>
+    </div> <? /* <!--/ вывод баннера или категории без списка подкатегорий и верхней плашкой-заголовком --> */ ?>
+    <? endif; ?>
 </div>
 <!--/ TCHIBO - каталог разделов, баннеров, товаров Чибо -->
