@@ -68,7 +68,7 @@ class ConfirmEmailAction {
         $response = null;
         try {
             $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
-            $data['email'] = 'vitaly.shaposhnik@gmail.com';
+
             if (!isset($data['email']) || empty($data['email'])) {
                 throw new \Exception('Не получен email');
             }
