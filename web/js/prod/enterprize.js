@@ -5,11 +5,10 @@
  */
 ;(function() {
 	var
-		form = $('.jsUserEditEnterprizeForm'),
+		form = $('.jsEnterprizeForm'),
 		authLink = $('.jsEnterprizeAuthLink'),
 		body = $('body'),
-		mobilePhoneField = $('.jsMobilePhone'),
-		cardField = $('.jsCardNumber'),
+		mobilePhoneField = $('.jsMobile'),
 
 		/**
 		 * Конфигурация валидатора для формы ЛК Enterprize
@@ -18,25 +17,15 @@
 		validationConfig = {
 			fields: [
 				{
-					fieldNode: $('.jsFirstName'),
+					fieldNode: $('.jsName'),
 					require: true,
 					customErr: 'Не указано имя'
-				},
-//				{
-//					fieldNode: $('.jsMiddleName'),
-//					require: true,
-//					customErr: 'Не указано отчество'
-//				},
-				{
-					fieldNode: $('.jsLastName'),
-					require: true,
-					customErr: 'Не указана фамилия'
 				},
 				{
 					fieldNode: mobilePhoneField,
 					require: true,
 					validBy: 'isPhone',
-					customErr: 'Не указан номер телефона'
+					customErr: 'Не указан мобильный телефон'
 				},
 				{
 					fieldNode: $('.jsEmail'),
@@ -44,11 +33,6 @@
 					validBy: 'isEmail',
 					customErr: 'Не указан email'
 				},
-//				{
-//					fieldNode: cardField,
-//					require: true,
-//					customErr: 'Не указан номер карты Связной-Клуб'
-//				},
 				{
 					fieldNode: $('.jsAgree'),
 					require: true,
@@ -191,48 +175,54 @@
 				 */
 				responseFromServer = function responseFromServer( response ) {
 					if ( response.error ) {
+						if ( response.needAuth ) {
+							$('#auth-block').lightbox_me({
+								centered: true,
+								autofocus: true,
+								onLoad: function() {
+									$('#auth-block').find('input:first').focus();
+								}
+							});
+
+							return false;
+						}
+
 						console.warn('Form has error');
 						serverErrorHandler(response);
 					}
 					else {
-						//
-						response.notice.message && showMsg(response.notice.message, 'notice');
+						if ( response.data.link !== undefined ) {
+							window.location.href = response.data.link;
+						}
+						else if ( response.notice.message ) {
+							showMsg(response.notice.message, 'notice');
+						}
 					}
 
 					return false;
 				};
 			// end of functions
 
-			validator.validate({
-				onInvalid: function( err ) {
-					console.warn('invalid');
-					console.log(err);
-				},
-				onValid: function() { $.post(action, formData, responseFromServer, 'json') }
-			});
+//			validator.validate({
+//				onInvalid: function( err ) {
+//					console.warn('invalid');
+//					console.log(err);
+//				},
+//				onValid: function() { $.post(action, formData, responseFromServer, 'json') }
+//			});
+			$.post(action, formData, responseFromServer, 'json');
 
 			// очищаем блок сообщений
 			clearMsg();
 
 			return false;
-		},
-
-		/**
-		 * Добавление маски
-		 */
-		addMask = function addMask() {
-			$.mask.definitions['n'] = '[0-9]';
-
-			// устанавливаем маску для поля "Ваш мобильный телефон"
-			mobilePhoneField.length && mobilePhoneField.mask('8nnnnnnnnnn');
-
-			// устанавливаем маску для поля "Номер карты Связной-Клуб"
-			cardField.length && cardField.mask('2 98nnnn nnnnnn', { placeholder: '*' });
 		};
 	// end of functions
 
+	// устанавливаем маску для поля "Ваш мобильный телефон"
+	$.mask.definitions['n'] = '[0-9]';
+	mobilePhoneField.length && mobilePhoneField.mask('8nnnnnnnnnn');
 
-	addMask();
 	body.on('userLogged', removeEnterprizeAuthClass);
-	body.on('submit', '.jsUserEditEnterprizeForm', formSubmit);
+	body.on('submit', '.jsEnterprizeForm', formSubmit);
 }());

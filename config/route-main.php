@@ -741,8 +741,7 @@ return [
     ],
     'enterprize.create' => [
         'pattern' => '/enterprize/create',
-        'action'  => ['Enterprize\Action', 'create'],
-        'method'  => ['POST'],
+        'action'  => ['Enterprize\Coupon', 'create'],
     ],
     'enterprize.get' => [
         'pattern' => '/enterprize/get',

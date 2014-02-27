@@ -404,7 +404,7 @@
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('infopage.js') )
-					.script( getWithVersion('lk.js') )
+					.script( getWithVersion('enterprize.js') )
 					.wait()
 					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )

@@ -5,6 +5,7 @@
  */
 
 $userEntity = $user->getEntity();
+if (!$userEntity) return;
 ?>
 
 <div>
