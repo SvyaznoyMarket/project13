@@ -2161,7 +2161,6 @@
     text-decoration: underline;
     display: inline-block;
     vertical-align: top;
-    margin: 0 37px 0 0;
     float: right;
     *display: inline;
     zoom: 1;
@@ -8469,7 +8468,7 @@
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    float: left;
+    float: right;
     overflow: hidden;
     width: 0;
     height: 0;
@@ -8952,7 +8951,7 @@
     margin-left: 0;
   }
   .bProductDesc.mNoCredit .bPrice {
-    margin-left: 0;
+    margin: 0 0 15px;
   }
   .bProductDesc.mNoCredit .bPrice.bInputList .bCustomLabel {
     background: none;
@@ -10967,12 +10966,6 @@
     background-position: 0 50%;
     font-weight: normal;
     font-size: 12px;
-    -moz-opacity: 0.4;
-    -khtml-opacity: 0.4;
-    -webkit-opacity: 0.4;
-    opacity: 0.4;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=40);
-    filter: alpha(opacity=40);
   }
   .mPayMethods .bBankWrap .bSelectInput .bCustomLabel.mChecked,
   .mPayMethods .bBankWrap .bSelectInput .bCustomLabel:hover {
