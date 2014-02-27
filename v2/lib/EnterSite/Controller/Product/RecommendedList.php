@@ -50,9 +50,17 @@ class RecommendedList {
         // товар
         $product = $productRepository->getObjectByQuery($productItemQuery);
 
-        // запрос "с этим товаром также покупают" товаров
+        // запрос "с этим товаром также покупают"
         $crossSellItemToItemsListQuery = new Query\Product\Relation\CrossSellItemToItems\GetIdListByProductId($product->id);
         $curl->prepare($crossSellItemToItemsListQuery);
+
+        // запрос "похожие товары"
+        $upSellItemToItemsListQuery = new Query\Product\Relation\UpSellItemToItems\GetIdListByProductId($product->id);
+        $curl->prepare($upSellItemToItemsListQuery);
+
+        // запрос "с этим товаром также смотрят"
+        $itemToItemsListQuery = new Query\Product\Relation\ItemToItems\GetIdListByProductId($product->id);
+        $curl->prepare($itemToItemsListQuery);
 
         $curl->execute(1, 2);
 
@@ -62,5 +70,7 @@ class RecommendedList {
         } catch (\Exception $e) {
             $logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
         }
+
+        die(var_dump($itemToItemsListQuery->getResult()));
     }
 }
