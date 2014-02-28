@@ -145,7 +145,7 @@ class Action {
                     $typeDataFromRepository = \RepositoryManager::deliveryType()->getEntityByToken($token);
                     if (!$typeDataFromRepository) continue;
 
-                    $responseData['deliveryTypes'][] =  [
+                    $responseData['deliveryTypes'][$token] =  [
                         'id'          => $type['id'],
                         'token'       => $token,
                         'name'        => $typeDataFromRepository->getName(),
