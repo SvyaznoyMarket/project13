@@ -6,6 +6,7 @@
  * @var $catalogConfig      array
  * @var $slideData          array
  * @var $content            string
+ * @var $bannerBottom       string
  */
 
 
@@ -48,11 +49,11 @@ if ((bool)$siblingCategories) {
     <? foreach($catalogCategories as $catalogCategory): ?>
         <?
         /** @var \Model\Product\Category\TreeEntity $catalogCategory */
-        $imgSrc = $catalogCategory->getImageUrl(0);
+        $imgSrc = $catalogCategory->getImageUrl(3);
         if (empty($imgSrc)) {
             // TODO: изображение заглушки
             $imgSrc = '/styles/tchiboCatalog/img/woman.jpg';
-            $imgSrc = '/styles/tchiboCatalog/img/man.jpg';
+            //$imgSrc = '/styles/tchiboCatalog/img/man.jpg';
         }
 
         $categoryChildren = $catalogCategory->getChild();
@@ -63,8 +64,6 @@ if ((bool)$siblingCategories) {
         <div class="tchiboCatalogInner">
             <a href="<?= $catalogCategory->getLink() ?>">
                 <img class="tchiboCatalog__img"
-                     <? /* style="width:100%;" */ ?>
-                     style="width:479px;height:260px;" <? // TODO: переделатьубрать в css ?>
                      src="<?= $imgSrc ?>" alt="<?= $catalogCategory->getName() ?>" />
             </a>
 
@@ -88,8 +87,10 @@ if ((bool)$siblingCategories) {
         </div><? /* <!--/ категория --> */ ?>
     <? endforeach; ?>
 
+    <? if (!empty($bannerBottom)): ?>
     <div class="tchiboCatalogInnerBanner">
-        <a href=""><img class="tchiboCatalog__img" src="/styles/tchiboCatalog/img/cofee.jpg" /></a>
-    </div> <!--/ вывод баннера или категории без списка подкатегорий и верхней плашкой-заголовком -->
+        <?= $bannerBottom ?>
+    </div> <? /* <!--/ вывод баннера или категории без списка подкатегорий и верхней плашкой-заголовком --> */ ?>
+    <? endif; ?>
 </div>
 <!--/ TCHIBO - каталог разделов, баннеров, товаров Чибо -->

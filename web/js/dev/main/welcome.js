@@ -148,13 +148,13 @@ $(document).ready(function () {
 
         clearTimeout(idto);
 
-        if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined') {
-			console.log('## click on bigbanner:');
-            gaq.push(['_trackEvent', 'BannerClick', '' + currImg.pos ]);
-            gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.pos, currImg.imgb ] );
-			console.log('GA: _trackEvent, BannerClick,', '' + currImg.pos);
-            console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ' | ' + currImg.imgb + currImg.ga );
-        }
+		if ( typeof(_gaq) !== 'undefined' && typeof(currImg.pos) !== 'undefined' && typeof(currImg.imgb) !== 'undefined' && typeof(currImg.ga) !== 'undefined' ) {
+			console.log( '## click on bigbanner:' );
+			_gaq.push( ['_trackEvent', 'BannerClick', '' + currImg.pos ] );
+			_gaq.push( ['_trackEvent', 'Carousel', 'Click_' + currImg.pos, currImg.imgb ] );
+			console.log( 'GA: _trackEvent, BannerClick,', '' + currImg.pos );
+			console.log( 'GA: _trackEvent, Carousel, Click_' + currImg.pos + ' | ' + currImg.imgb + currImg.ga );
+		}
         addKISSmetricsEvent('Carousel banner view', 'bigbanner', $(this));
         location.href = $(this).data('url');
     });

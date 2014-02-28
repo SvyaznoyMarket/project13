@@ -17,6 +17,7 @@ class IndexAction {
         $category = null;
         $promo = null;
         $content = null;
+        $bannerBottom = null;
 
         // подготовка для 1-го пакета запросов в ядро
         // promo
@@ -96,6 +97,26 @@ class IndexAction {
             ];
         }
 
+        if (isset($catalogJson['promo_token'])) {
+            $catalogJson['promo_token'] = trim((string)$catalogJson['promo_token']);
+        }
+
+        if (!empty($catalogJson['promo_token'])) {
+            \App::contentClient()->addQuery(
+                $catalogJson['promo_token'],
+                [],
+                function($data) use (&$bannerBottom) {
+                    if (!empty($data['content'])) {
+                        $bannerBottom = $data['content'];
+                    }
+                },
+                function(\Exception $e) {
+                    \App::logger()->error(sprintf('Не получено содержимое для баннера %s', \App::request()->getRequestUri()));
+                    \App::exception()->remove($e);
+                }
+            );
+            \App::contentClient()->execute();
+        }
 
         // формируем вьюху, передаём ей данные
         $page = new \View\Tchibo\IndexPage();
@@ -104,6 +125,7 @@ class IndexAction {
         $page->setParam('content', $content);
         $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
+        $page->setGlobalParam('bannerBottom', $bannerBottom);
 
         return new \Http\Response($page->show());
     }

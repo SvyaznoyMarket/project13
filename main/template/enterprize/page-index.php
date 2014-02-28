@@ -63,7 +63,7 @@
             ?>
 
             <li class="<?= $itemClass ?>">
-                <a class="enterPrize__list__link jsEnterprizeAuthLink" href="<?= $page->url('enterprize.get', ['enterprize_coupon' => $coupon->getToken()]) ?>">
+                <a class="enterPrize__list__link" href="<?= $page->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]) ?>">
                 <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
                     <span class="cuponImg__inner">
                         <? if ($coupon->getImage()): ?>
