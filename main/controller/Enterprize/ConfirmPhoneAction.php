@@ -114,10 +114,50 @@ class ConfirmPhoneAction {
             throw new \Exception\NotFoundException();
         }
 
-        if (!$request->isXmlHttpRequest()) {
-            throw new \Exception\NotFoundException('Request is not xml http');
+        $client = \App::coreClientV2();
+
+        $response = null;
+        try {
+            $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
+
+            $code = $request->get('code', null);
+            if (!(bool)$code) {
+                throw new \Exception('Не получен код');
+            }
+
+            if (!isset($data['mobile']) || empty($data['mobile'])) {
+                throw new \Exception('Не получен мобильный телефон');
+            }
+
+            $result = $client->query(
+                'confirm/mobile',
+                [
+                    'client_id' => \App::config()->coreV2['client_id'],
+                    'token'     => \App::user()->getToken(),
+                ],
+                [
+                    'mobile' => $data['mobile'],
+                    'code'   => $code,
+                ],
+                \App::config()->coreV2['hugeTimeout']
+            );
+            \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/mobile']);
+
+            // обновление сессионной формы
+            $data['isPhoneConfirmed'] = true;
+            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], $data);
+
+            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.create'));
+
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+
+            \App::session()->set('flash', $e->getMessage());
+            $enterprizeToken = $request->get('enterprizeToken', null);
+            $response = $this->show($request, $enterprizeToken);
         }
 
+        return $response;
     }
 
     /**
