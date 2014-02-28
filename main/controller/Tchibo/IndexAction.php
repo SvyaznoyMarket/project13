@@ -157,7 +157,7 @@ class IndexAction {
         $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setGlobalParam('bannerBottom', $bannerBottom);
-        $page->setGlobalParam('products', $products);
+        //$page->setGlobalParam('products', $products);
 
         return new \Http\Response($page->show());
     }

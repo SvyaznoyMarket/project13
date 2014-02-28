@@ -7,7 +7,6 @@
  * @var $slideData          array
  * @var $content            string
  * @var $bannerBottom       string
- * @var $products           string
  */
 
 
