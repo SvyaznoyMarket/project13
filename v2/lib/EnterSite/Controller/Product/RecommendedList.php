@@ -101,9 +101,21 @@ class RecommendedList {
         }
 
         $curl->execute(1, 2);
+        die(var_dump($alsoBoughtIdList));
 
         // товары
         $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
+
+        foreach ($alsoBoughtIdList as $productId) {
+            // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
+            /** @var Model\Product|null $product */
+            $product = isset($productsById[$productId]) ? $productsById[$productId] : null;
+            if (!$product) continue;
+
+            if ($product->isInShopOnly || !$product->isBuyable) {
+                unset($alsoBoughtIdList[$productId]);
+            }
+        }
 
         die(var_dump(array_keys($productsById)));
     }
