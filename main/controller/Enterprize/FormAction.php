@@ -29,7 +29,6 @@ class FormAction {
                 'isPhoneConfirmed' => false,
                 'isEmailConfirmed' => false,
             ]);
-            return;
         }
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
