@@ -2317,6 +2317,9 @@ img[height="0"] {
   .jsEnterprizeForm .formDefault__btnSubmit {
     margin: 20px 0 15px 269px;
   }
+  .jsEnterprizeForm .red {
+    margin: 0 0 10px;
+  }
   .enterprize {
     background: #000000;
   }
@@ -2377,6 +2380,11 @@ img[height="0"] {
   }
   .enterprize .footer .publicInfo__list__link {
     color: #B5B5B5;
+  }
+  .bInputList.mEnterPrizeSubscr .bErrorText__eInner {
+    left: 25px;
+    padding: 0;
+    top: -8px;
   }
 }
 /*---END----Enter Prize---------*/
