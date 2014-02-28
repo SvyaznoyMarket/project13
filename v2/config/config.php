@@ -33,7 +33,7 @@ return function(\EnterSite\Config\Application $config) {
     $config->retailRocketService->url = 'http://api.retailrocket.ru/api/';
     $config->retailRocketService->timeout = 0.5;
 
-    $config->curlQuery->chunkSize = 50;
+    $config->curl->queryChunkSize = 50;
 
     $config->mustacheRenderer->dir = $config->dir . '/v2/vendor/mustache';
     $config->mustacheRenderer->templateDir = $config->dir . '/v2/template';

@@ -12,8 +12,8 @@ namespace EnterSite\Config {
         public $logger;
         /** @var Application\Region */
         public $region;
-        /** @var Application\CurlQuery */
-        public $curlQuery;
+        /** @var Application\Curl */
+        public $curl;
         /** @var Application\CoreService */
         public $coreService;
         /** @var Application\CmsService */
@@ -40,7 +40,7 @@ namespace EnterSite\Config {
 
             $this->region = new Application\Region();
 
-            $this->curlQuery = new Application\CurlQuery();
+            $this->curl = new Application\Curl();
 
             $this->coreService = new Application\CoreService();
             $this->cmsService = new Application\CmsService();
@@ -74,9 +74,9 @@ namespace EnterSite\Config\Application {
         public $cookieName;
     }
 
-    class CurlQuery {
+    class Curl {
         /** @var int */
-        public $chunkSize;
+        public $queryChunkSize;
     }
 
     class CurlService {
