@@ -46,7 +46,7 @@ class Form {
      * @param \Model\User\Entity $entity
      */
     public function fromEntity(\Model\User\Entity $entity) {
-        $this->setName($entity->getName());
+        $this->setName($entity->getFirstName());
         $this->setEmail($entity->getEmail());
         $this->setMobile($entity->getMobilePhone());
         $this->setIsSubscribe($entity->getIsSubscribed());
