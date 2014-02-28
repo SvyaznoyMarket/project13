@@ -2075,6 +2075,9 @@ img[height="0"] {
     background-image: url("/styles/enterPrize/img/bgGreen.png");
     background-position: -2px 0;
   }
+  .enterPrize__list__item:hover {
+    z-index: 20;
+  }
   .enterPrize__list__item:hover .cuponImgHover {
     -moz-opacity: 1;
     -khtml-opacity: 1;
@@ -2109,6 +2112,7 @@ img[height="0"] {
     background: url("/styles/enterPrize/img/bgOrange.png") no-repeat 0 0;
     width: 209px;
     height: 206px;
+    z-index: 17;
   }
   .enterPrize .cuponImg__inner {
     width: 188px;
@@ -2135,6 +2139,7 @@ img[height="0"] {
     -webkit-transition: opacity 0.4s ease-in-out;
     -moz-transition: opacity 0.4s ease-in-out;
     transition: opacity 0.4s ease-in-out;
+    z-index: 15;
   }
   .enterPrize .cuponImgHover.mPink {
     left: -3px;
