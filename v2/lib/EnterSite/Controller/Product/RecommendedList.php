@@ -50,21 +50,21 @@ class RecommendedList {
         // товар
         $product = $productRepository->getObjectByQuery($productItemQuery);
 
-        // запрос "с этим товаром также покупают"
+        // запрос идетификаторов товаров "с этим товаром также покупают"
         $crossSellItemToItemsListQuery = new Query\Product\Relation\CrossSellItemToItems\GetIdListByProductId($product->id);
         $curl->prepare($crossSellItemToItemsListQuery);
 
-        // запрос "похожие товары"
+        // запрос идетификаторов товаров "похожие товары"
         $upSellItemToItemsListQuery = new Query\Product\Relation\UpSellItemToItems\GetIdListByProductId($product->id);
         $curl->prepare($upSellItemToItemsListQuery);
 
-        // запрос "с этим товаром также смотрят"
+        // запрос идетификаторов товаров "с этим товаром также смотрят"
         $itemToItemsListQuery = new Query\Product\Relation\ItemToItems\GetIdListByProductId($product->id);
         $curl->prepare($itemToItemsListQuery);
 
         $curl->execute(1, 2);
 
-        // "с этим товаром также покупают"
+        // идетификаторы товаров "с этим товаром также покупают"
         $alsoBoughtIdList = $product->relatedIds;
         try {
             $alsoBoughtIdList = array_unique(array_merge($alsoBoughtIdList, $crossSellItemToItemsListQuery->getResult()));
@@ -72,7 +72,7 @@ class RecommendedList {
             $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
         }
 
-        // "похожие товары"
+        // идетификаторы товаров "похожие товары"
         $similarIdList = [];
         try {
             $similarIdList = array_unique($upSellItemToItemsListQuery->getResult());
@@ -80,7 +80,7 @@ class RecommendedList {
             $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
         }
 
-        // "с этим товаром также смотрят"
+        // идетификаторы товаров "с этим товаром также смотрят"
         $alsoViewedIdList = [];
         try {
             $alsoViewedIdList = array_unique($itemToItemsListQuery->getResult());
@@ -88,13 +88,23 @@ class RecommendedList {
             $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
         }
 
+        // список всех идентификаторов товаров
+        $productIds = array_unique(array_merge($alsoBoughtIdList, $similarIdList, $alsoViewedIdList));
+
         // запрос списка товаров
-        $productListQuery = new Query\Product\GetListByIdList(array_unique(array_merge($alsoBoughtIdList, $similarIdList, $alsoViewedIdList)), $region);
-        $curl->prepare($productListQuery);
+        $productListQueries = [];
+        foreach (array_chunk($productIds, $config->curl->queryChunkSize) as $idsInChunk) {
+            $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region);
+            $curl->prepare($productListQuery);
+
+            $productListQueries[] = $productListQuery;
+        }
 
         $curl->execute(1, 2);
 
         // товары
-        $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
+        $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
+
+        die(var_dump(array_keys($productsById)));
     }
 }
