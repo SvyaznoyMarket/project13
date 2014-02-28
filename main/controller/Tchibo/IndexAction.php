@@ -92,7 +92,8 @@ class IndexAction {
         if (count($productsIds) > 0) {
             \RepositoryManager::product()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
                 foreach ($data as $item) {
-                    $products[] = new \Model\Product\Entity($item);
+                    if (!isset($item['id'])) continue;
+                    $products[ $item['id'] ] = new \Model\Product\Entity($item);
                 }
             });
         }
@@ -104,11 +105,25 @@ class IndexAction {
 
         // перевариваем данные изображений для слайдера в $slideData
         foreach ($promo->getImage() as $image) {
+
+            $itemProducts = [];
+            foreach($image->getProducts() as $productId) {
+                if (!isset($products[$productId])) continue;
+                $product = $products[$productId];
+                /** @var $product \Model\Product\Entity */
+                $itemProducts[] = [
+                    'image' => $product->getImageUrl(2), // 163х163 seize
+                    'link' => $product->getLink(),
+                    'name' => $product->getName(),
+                ];
+            }
+
             $slideData[] = [
                 'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
                 'title'   => $image->getName(),
                 'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
                 'time'    => $image->getTime() ? $image->getTime() : 3000,
+                'products'=> $itemProducts,
                 // Пока не нужно, но в будущем, возможно понадобится делать $repositoryPromo->setEntityImageLink() как в /main/controller/Promo/IndexAction.php
             ];
         }
