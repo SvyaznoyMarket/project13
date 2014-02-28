@@ -1,0 +1,55 @@
+/** стили навигации **/
+
+.nav {
+	position: absolute;
+	background: @black;
+	top: 0;
+	left: -20px;
+	padding: 10px 20px 20px;
+	margin: 0;
+	z-index: 10;
+	-webkit-transition: all 0.5s ease;
+     -moz-transition: all 0.5s ease;
+     -o-transition: all 0.5s ease;
+     transition: all 0.5s ease;
+
+	&-drop {
+	}
+}
+
+.navList {
+	width: 320px;
+
+	&__item {
+		
+	}
+
+	&__text {
+		text-transform: uppercase;
+		font-size: 18px;
+		background-position: 0 50%;
+		background-repeat: no-repeat;
+		padding: 10px 0 10px 65px;
+		display: block;
+		margin: 0 0 10px;
+		cursor: pointer;
+	}
+}
+
+.navListLevel2Wrap {
+	display: none;
+}
+
+.navListLevel2 {
+	margin: 0 0 15px;
+
+	&__link {
+		color: #7e7e7e;
+		text-transform: uppercase;
+		padding: 2px 0;
+		margin: 5px 0;
+		display: block;
+		font-size: 14px;
+	}
+}
+
