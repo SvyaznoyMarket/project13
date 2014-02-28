@@ -69,7 +69,7 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
                 <? endif ?>
             </div>
 
-            <div class="enterPrize__logIn">У тебя есть логин и пароль? <a href="">Войти</a></div>
+            <div class="enterPrize__logIn">У тебя есть логин и пароль? <a href="/login" class="bAuthLink">Войти</a></div>
         </div>
     <? endif ?>
 
