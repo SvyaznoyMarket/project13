@@ -122,7 +122,7 @@ class ChildCategory {
         $curl->execute(1, 2);
 
         // список товаров
-        $productsById = $productRepository->getIndexedObjectListByQuery($productListQuery);
+        $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
 
         // меню
         $mainMenuList = (new Repository\MainMenu())->getObjectListByQuery($mainMenuListQuery, $categoryListQuery);

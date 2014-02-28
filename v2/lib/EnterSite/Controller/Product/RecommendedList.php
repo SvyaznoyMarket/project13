@@ -95,6 +95,6 @@ class RecommendedList {
         $curl->execute(1, 2);
 
         // товары
-        $productsById = $productRepository->getIndexedObjectListByQuery($productListQuery);
+        $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
     }
 }

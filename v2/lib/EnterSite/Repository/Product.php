@@ -61,20 +61,22 @@ class Product {
     }
 
     /**
-     * @param Query $query
+     * @param Query[] $queries
      * @return Model\Product[]
      */
-    public function getIndexedObjectListByQuery(Query $query) {
+    public function getIndexedObjectListByQueryList(array $queries) {
         $products = [];
 
-        foreach ($query->getResult() as $item) {
-            // оптимизация
-            $item['description'] = null;
-            $item['property'] = [];
-            $item['property_group'] = [];
-            $item['media'] = [reset($item['media'])];
+        foreach ($queries as $query) {
+            foreach ($query->getResult() as $item) {
+                // оптимизация
+                $item['description'] = null;
+                $item['property'] = [];
+                $item['property_group'] = [];
+                $item['media'] = [reset($item['media'])];
 
-            $products[$item['id']] = new Model\Product($item);
+                $products[$item['id']] = new Model\Product($item);
+            }
         }
 
         return $products;
