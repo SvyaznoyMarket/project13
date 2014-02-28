@@ -19,6 +19,8 @@ class Entity {
     private $link;
     /** @var int */
     private $time;
+    /** @var array */
+    private $products = [];
 
     /**
      * @param array $data
@@ -34,6 +36,9 @@ class Entity {
                 $data['item'] = [$data['item']];
             }
             $this->setItem($data['item']);
+        }
+        if (array_key_exists('products', $data) && is_array($data['products'])) {
+            $this->setProducts($data['products']);
         }
     }
 
@@ -119,5 +124,19 @@ class Entity {
      */
     public function getTime() {
         return $this->time;
+    }
+
+    /**
+     * @param array $products
+     */
+    public function setProducts(array $products) {
+        $this->products = $products;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProducts() {
+        return $this->products;
     }
 }

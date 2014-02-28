@@ -27,11 +27,7 @@ if ((bool)$siblingCategories) {
 <div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>" data-use-interval="true" data-use-hash="false">
 
 	<script type="text/html" id="slide_tmpl">
-	    <div class="bPromoCatalogSliderWrap_eSlide">
-	        <a class="bPromoCatalogSliderWrap_eSlideLink topLifted" href="<%=linkUrl%>">
-	            <div class="bottomLifted"><img src="<%=imgUrl%>" alt="<%=title%>"/></div>
-	        </a>
-	    </div>
+        <?= file_get_contents(__DIR__ . '/slide.tmpl'); ?>
 	</script>
 
 	<div class="bPromoCatalogSlider mTchiboSlider ">
