@@ -215,18 +215,30 @@ class Action {
                     $points = [];
                     foreach ($deliveryMethod['points'] as $point) {
                         if ($point['id']) {
-                            $point['dates'] = array_map(function ($dateItem) use ($helper) {
-                                if (!$dateItem['date']) return [];
+
+                            $dates = [];
+                            foreach ($point['dates'] as $dateItem) {
                                 $time = strtotime($dateItem['date']);
-                                $dateItem = array_merge($dateItem, [
+
+                                if (!isset($dateItem['intervals'][0])) {
+                                    $dateItem['intervals'] = [];
+                                }
+
+                                $interval = null;
+                                foreach ($dateItem['intervals'] as &$interval) {
+                                    unset($interval['id']); // TODO: убрать на ядре
+                                }
+                                unset($interval);
+
+                                $dates[] = [
                                     'name'      => str_replace(' ' . date('Y', $time) . ' г.', '', $helper->dateToRu(date('Y-m-d', $time)) . ' г.'),
                                     'value'     => strtotime($dateItem['date'], 0) * 1000,
                                     'day'       => (int)date('j', $time),
                                     'dayOfWeek' => (int)date('w', $time),
-                                ]);
-
-                                return $dateItem;
-                            }, $point['dates']);
+                                    'intervals' => $dateItem['intervals'],
+                                ];
+                            }
+                            $point['dates'] = $dates;
 
                             $points[$point['id']] = $point;
 
