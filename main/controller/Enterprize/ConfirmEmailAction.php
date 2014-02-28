@@ -5,11 +5,12 @@ namespace Controller\Enterprize;
 class ConfirmEmailAction {
 
     /**
+     * @param \Http\Request $request
      * @param null $enterprizeToken
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function show($enterprizeToken = null) {
+    public function show(\Http\Request $request, $enterprizeToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
