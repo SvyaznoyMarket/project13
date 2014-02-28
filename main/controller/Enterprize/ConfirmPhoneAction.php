@@ -87,20 +87,21 @@ class ConfirmPhoneAction {
             \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/mobile']);
 
             // обновление сессионной формы
-            $data['isPhoneConfirmed'] = true;
-            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], $data);
+//            $data['isPhoneConfirmed'] = true;
+//            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], $data);
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.create'));
+//            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.create'));
 
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
 
             \App::session()->set('flash', $e->getMessage());
-            $enterprizeToken = $request->get('enterprizeToken', null);
-            $response = $this->show($request, $enterprizeToken);
+//            $enterprizeToken = $request->get('enterprizeToken', null);
+//            $response = $this->show($request, $enterprizeToken);
         }
 
-        return $response;
+        return $this->show($request, $request->get('enterprizeToken', null));
+//        return $response;
     }
 
     /**
