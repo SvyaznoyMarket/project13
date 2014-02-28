@@ -1975,10 +1975,10 @@ img[height="0"] {
     float: left;
     background: #fff;
     border-radius: 5px;
-    width: 138px;
-    padding: 5px 10px;
     border-bottom: 2px solid #c7c7c7;
-    height: 120px;
+    height: 87px;
+    padding: 15px;
+    width: 500px;
   }
   .enterPrize__rules__item .sep {
     font-size: 30px;
@@ -2009,16 +2009,20 @@ img[height="0"] {
   .enterPrize .enterPrizeHello {
     color: #ffffff;
     font-family: "Enter";
-    font-size: 46px;
-    margin: 10px 0 0 26px;
+    font-size: 32px;
+    margin: 10px 0 0 32px;
     text-transform: uppercase;
   }
   .enterPrize .enterPrizeHello span {
-    color: #4fcbf4;
+    color: #ffa901;
+  }
+  .enterPrize .enterPrizeHello.mReg {
+    margin: 0 0 14px 32px;
+    font-size: 46px;
   }
   .enterPrize .enterPrizeDesc {
     color: #ffffff;
-    margin: 15px 0 0 26px;
+    margin: 15px 0 0 31px;
     font-size: 14px;
     cursor: pointer;
   }
@@ -2035,8 +2039,15 @@ img[height="0"] {
     font-weight: bold;
     margin: 0 0 15px 36px;
   }
+  .enterPrize .enterPrizeFinish {
+    font-family: "Enter";
+    font-size: 30px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0 0 50px 54px;
+  }
   .enterPrize .enterPrizeList {
-    margin: 0 0 30px 36px;
+    margin: 0 0 20px 36px;
   }
   .enterPrize .enterPrizeList__item {
     color: #ffffff;

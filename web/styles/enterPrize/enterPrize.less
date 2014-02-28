@@ -38,10 +38,10 @@
 			float: left;
 			background: #fff;
 			border-radius: 5px;
-			width: 138px;
-			padding: 5px 10px;
 			border-bottom: 2px solid #c7c7c7;
-			height: 120px;
+			height: 87px;
+		    padding: 15px;
+		    width: 500px;
 
 			.sep {
 				font-size: 30px;
@@ -78,18 +78,23 @@
 	.enterPrizeHello {
 		color: @white;
 	    font-family: "Enter";
-	    font-size: 46px;
-	    margin: 10px 0 0 26px;
+	    font-size: 32px;
+	    margin: 10px 0 0 32px;
 	    text-transform: uppercase;
 
 	    span {
-	    	color: @firmBlue;
+	    	color: @firmOrange;
+	    }
+
+	    &.mReg {
+	    	margin: 0 0 14px 32px;
+	    	font-size: 46px;
 	    }
 	}
 
 	.enterPrizeDesc {
 		color: @white;
-		margin: 15px 0 0 26px;
+		margin: 15px 0 0 31px;
 		font-size: 14px;
 		cursor: pointer;
 
@@ -110,8 +115,16 @@
 		margin: 0 0 15px 36px;
 	}
 
+	.enterPrizeFinish {
+		font-family: "Enter";
+	    font-size: 30px;
+	    text-transform: uppercase;
+	    color: @white;
+	    margin: 0 0 50px 54px;
+	}
+
 	.enterPrizeList {
-		margin: 0 0 30px 36px;
+		margin: 0 0 20px 36px;
 
 		&__item {
 			color: @white;
