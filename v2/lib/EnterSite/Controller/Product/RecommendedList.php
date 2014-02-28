@@ -64,13 +64,37 @@ class RecommendedList {
 
         $curl->execute(1, 2);
 
+        // "с этим товаром также покупают"
         $alsoBoughtIdList = $product->relatedIds;
         try {
             $alsoBoughtIdList = array_unique(array_merge($alsoBoughtIdList, $crossSellItemToItemsListQuery->getResult()));
         } catch (\Exception $e) {
-            $logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
+            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
         }
 
-        die(var_dump($itemToItemsListQuery->getResult()));
+        // "похожие товары"
+        $similarIdList = [];
+        try {
+            $similarIdList = array_unique($upSellItemToItemsListQuery->getResult());
+        } catch (\Exception $e) {
+            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
+        }
+
+        // "с этим товаром также смотрят"
+        $alsoViewedIdList = [];
+        try {
+            $alsoViewedIdList = array_unique($itemToItemsListQuery->getResult());
+        } catch (\Exception $e) {
+            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
+        }
+
+        // запрос списка товаров
+        $productListQuery = new Query\Product\GetListByIdList(array_unique(array_merge($alsoBoughtIdList, $similarIdList, $alsoViewedIdList)), $region);
+        $curl->prepare($productListQuery);
+
+        $curl->execute(1, 2);
+
+        // товары
+        $productsById = $productRepository->getIndexedObjectListByQuery($productListQuery);
     }
 }
