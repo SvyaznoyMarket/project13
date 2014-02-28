@@ -81,6 +81,22 @@ class IndexAction {
             }
         });
 
+        $products = [];
+        $productsIds = [];
+        // перевариваем данные изображений
+        // используя айдишники товаров из секции image.products, получим мини-карточки товаров для баннере
+        foreach ($promo->getImage() as $image) {
+            $productsIds = array_merge($productsIds, $image->getProducts());
+        }
+        $productsIds = array_unique($productsIds);
+        if (count($productsIds) > 0) {
+            \RepositoryManager::product()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
+                foreach ($data as $item) {
+                    $products[] = new \Model\Product\Entity($item);
+                }
+            });
+        }
+
         // выполнение 2-го пакета запросов в ядро
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
@@ -126,6 +142,7 @@ class IndexAction {
         $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setGlobalParam('bannerBottom', $bannerBottom);
+        $page->setGlobalParam('products', $products);
 
         return new \Http\Response($page->show());
     }
