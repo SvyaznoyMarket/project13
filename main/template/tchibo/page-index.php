@@ -49,11 +49,11 @@ if ((bool)$siblingCategories) {
     <? foreach($catalogCategories as $catalogCategory): ?>
         <?
         /** @var \Model\Product\Category\TreeEntity $catalogCategory */
-        $imgSrc = $catalogCategory->getImageUrl(0);
+        $imgSrc = $catalogCategory->getImageUrl(3);
         if (empty($imgSrc)) {
             // TODO: изображение заглушки
             $imgSrc = '/styles/tchiboCatalog/img/woman.jpg';
-            $imgSrc = '/styles/tchiboCatalog/img/man.jpg';
+            //$imgSrc = '/styles/tchiboCatalog/img/man.jpg';
         }
 
         $categoryChildren = $catalogCategory->getChild();

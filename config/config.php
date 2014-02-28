@@ -271,6 +271,7 @@ $c->productLabel['url'] = [
 
 $c->productCategory['url'] = [
     0 => '/6/1/163/',
+    3 => '/6/1/500/',
 ];
 
 $c->service['url'] = [
