@@ -289,25 +289,88 @@
 	}
 
 	&.mPrivate {
-		margin: 0 0 40px;
+		margin: 40px 0;
+		background: #eaeaea;
+		.rounded(4px);
+		padding: 10px;
 
 		.enterPrize__list {
-			position: absolute;
-			top: -10px;
-			height: 208px;
-			width: 211px;
-			right: 0;
+			height: 243px;
+		    position: absolute;
+		    right: 0;
+		    top: -80px;
+		    width: 247px;
+		}
+
+		.enterPrize__logo {
+			margin: -40px 0 0;
 		}
 
 		.enterPrize__rules {
-
-			.enterPrize__rules__item {
-				width: 340px;
-				height: auto;
-				float: none;
-				padding: 40px;
-			}
+			width: 450px;
+			height: auto;
+			padding: 15px;
+			border-bottom: 1px solid #bbbbbb;
+			float: none;
+			background: @white;
+			font-size: 16px;
+			margin: 13px 0;
 		}
+
+		.enterPrize__list__item {
+			height: 243px;
+		    width: 247px;
+		}
+
+		.cuponImg {
+			background: url("@{base-url}/enterPrize/img/fishka_orange_b.png") no-repeat 0 0;
+			height: 243px;
+		    width: 247px;
+		}
+
+		.enterPrize__logIn {
+			font-size: 14px;
+    		margin: 0 0 0 15px;
+
+    		a {
+    			text-decoration: underline;
+    		}
+		}
+
+		.cuponImg__inner {
+			height: 243px;
+    		width: 247px;
+		}
+
+		.cuponDesc {
+		    left: 23px;
+		    top: 108px;
+		    width: 184px;
+		}
+
+		.cuponPrice {
+		    left: 0;
+		    top: 133px;
+		    width: 234px;
+		}
+
+		.cuponIco {
+		    top: 40px;
+		    width: 227px;
+		}
+	}
+}
+
+.titleForm {
+	font-size: 2em;
+    font-weight: normal;
+    margin: 10px 0 20px;
+}
+
+.jsEnterprizeForm {
+
+	.formDefault__btnSubmit {
+		margin: 20px 0 15px 269px;
 	}
 }
 
