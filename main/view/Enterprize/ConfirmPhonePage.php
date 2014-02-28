@@ -18,7 +18,7 @@ class ConfirmPhonePage extends \View\DefaultLayout {
     }
 
     public function slotBodyClassAttribute() {
-        return 'enterprize';
+        return 'enterprize_user';
     }
 
     public function slotContentHead() {
