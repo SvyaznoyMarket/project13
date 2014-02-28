@@ -23,6 +23,11 @@ class Entity {
     private $methodTokens = [];
     /** @var string */
     private $buttonName;
+    /**
+     * Возможные токены методов доставки для данного типа доставки
+     * @var array
+     */
+    private $possibleMethodTokens = [];
 
     /**
      * @param array $data
@@ -34,6 +39,7 @@ class Entity {
         if (array_key_exists('short_name', $data)) $this->setShortName($data['short_name']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('methods', $data)) $this->setMethodTokens((array)$data['methods']);
+        if (array_key_exists('possible_method_tokens', $data)) $this->setPossibleMethodTokens((array)$data['possible_method_tokens']);
         if (array_key_exists('button_name', $data)) $this->setButtonName($data['button_name']);
     }
 
@@ -122,8 +128,22 @@ class Entity {
     }
 
     /**
-    * @param string $buttonName
-    */
+     * @param array $stateTokens
+     */
+    public function setPossibleMethodTokens(array $stateTokens) {
+        $this->possibleMethodTokens = $stateTokens;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPossibleMethodTokens() {
+        return $this->possibleMethodTokens;
+    }
+
+    /**
+     * @param string $buttonName
+     */
     public function setButtonName($buttonName) {
         $this->buttonName = (string)$buttonName;
     }
