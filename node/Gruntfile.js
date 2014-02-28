@@ -273,6 +273,10 @@ module.exports = function( grunt ) {
 				files: [jsDevPath+'lk/*.js'],
 				tasks: ['concat:lkJS', 'jshint', 'uglify:lkJS',  'connect', 'qunit', 'exec:getVersion']
 			},
+			enterprizeJS:{
+				files: [jsDevPath+'enterprize/*.js'],
+				tasks: ['concat:enterprizeJS', 'jshint', 'uglify:enterprizeJS',  'connect', 'qunit', 'exec:getVersion']
+			},
 			mainJS:{
 				files: [jsDevPath+'main/*.js'],
 				tasks: ['concat:mainJS', 'jshint', 'uglify:mainJS',  'connect', 'qunit', 'exec:getVersion']
@@ -355,6 +359,10 @@ module.exports = function( grunt ) {
 			lkJS : {
 				src: [jsDevPath+'lk/*.js'],
 				dest: jsProdPath+'lk.js'
+			},
+			enterprizeJS : {
+				src: [jsDevPath+'enterprize/*.js'],
+				dest: jsProdPath+'enterprize.js'
 			},
 			mainJS : {
 				src: [jsDevPath+'main/*.js'],
@@ -476,6 +484,12 @@ module.exports = function( grunt ) {
 			lkJS: {
 				files: {
 					'../web/js/prod/lk.min.js': [jsDevPath+'lk/*.js']
+				}
+			},
+
+			enterprizeJS: {
+				files: {
+					'../web/js/prod/enterprize.min.js': [jsDevPath+'enterprize/*.js']
 				}
 			},
 
