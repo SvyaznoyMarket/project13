@@ -31,6 +31,7 @@ class Action {
             'lifeGift'  => false,
             'oneClick'  => false,
             'cart'      => [],
+            'defPoints' => [],
         ];
 
         try {
@@ -213,8 +214,13 @@ class Action {
 
                 foreach ($productItem['delivery_methods'] as $deliveryMethod) {
                     $points = [];
+                    $responseData['defPoints'][$deliveryMethod['token']] = null;
                     foreach ($deliveryMethod['points'] as $point) {
                         if ($point['id']) {
+
+                            if ( null === $responseData['defPoints'][$deliveryMethod['token']]) {
+                                $responseData['defPoints'][$deliveryMethod['token']] = $point['id'];
+                            }
 
                             $dates = [];
                             foreach ($point['dates'] as $dateItem) {
@@ -259,6 +265,9 @@ class Action {
                         }
                     }
                     $deliveryData[$deliveryMethod['token']] = $points;
+                    if (null === $responseData['defPoints'][$deliveryMethod['token']]) {
+                        $responseData['defPoints'][$deliveryMethod['token']] = 0;
+                    }
                 }
 
                 if (!(bool)$deliveryData) {
