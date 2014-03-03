@@ -4,6 +4,7 @@
  * @var $user            \Session\User
  * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity
  * @var $error           string
+ * @var $message         string
  */
 ?>
 
@@ -13,6 +14,9 @@
 
 <? if ($error): ?>
     <p class="red"><?= $error ?></p>
+<? endif ?>
+<? if ($message): ?>
+    <p class="green"><?= $message ?></p>
 <? endif ?>
 
 <div class="enterprizeConfirm">
@@ -28,6 +32,9 @@
     </form>
 
     <form class="confirmForm" action="<?= $page->url('enterprize.confirmPhone.create') ?>" method="post">
+        <input type="hidden" name="enterprizeToken" value="<?= $enterpizeCoupon ? $enterpizeCoupon->getToken() : null ?>" />
+        <input type="hidden" name="isRepeatRending" value="true" />
+
         <input type="submit" class="newCode mBtnGrey" value="Новый код" />
     </form>
 </div>
