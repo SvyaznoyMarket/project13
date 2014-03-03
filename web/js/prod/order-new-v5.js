@@ -1555,6 +1555,7 @@
 			this.deliveryStates = this.orderData.deliveryStates;
 			this.pointsByDelivery = this.orderData.pointsByDelivery;
 			this.products = this.orderData.products;
+			this.defPoints = this.orderData.defPoints || {};
 		}
 
 		/**
@@ -1584,6 +1585,16 @@
 		 */
 		OrderDictionary.prototype.getToday = function() {
 			return this.serverTime;
+		};
+
+		/**
+		 * Стандартная точка для метода доставки
+		 * 
+		 * @param token
+		 * @returns {*}
+		 */
+		OrderDictionary.prototype.getDefaultPointId = function( token ) {
+			return this.defPoints.hasOwnProperty(token) ? this.defPoints[token] : 0;
 		};
 
 		/**
@@ -1676,7 +1687,6 @@
 			var
 				points = this.getAllPointsByState(state);
 			// end of vars
-			
 			return ( points[0] ) ? ENTER.utils.cloneObject(points[0]) : false;
 		};
 
@@ -2590,7 +2600,9 @@
 			}
 
 			if ( productsToNewBox.length ) {
-				choosenPointForBox = ( ENTER.OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? ENTER.OrderModel.choosenPoint() : 0;
+				choosenPointForBox = ( ENTER.OrderModel.orderDictionary.hasPointDelivery(nowState) ) ?
+					ENTER.OrderModel.choosenPoint() :
+					ENTER.OrderModel.orderDictionary.getDefaultPointId(nowState);
 
 				token = nowState+'_'+choosenPointForBox;
 
