@@ -7,7 +7,7 @@
 ?>
 
 <?
-$hasCoupon = $user->getEntity() && $user->getEntity()->getEnterprizeCoupon();
+$isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMember();
 ?>
 
 <div class="enterPrize">
@@ -16,7 +16,7 @@ $hasCoupon = $user->getEntity() && $user->getEntity()->getEnterprizeCoupon();
 
     <div class="bgPage"></div>
 
-    <? if ($hasCoupon): ?>
+    <? if ($isEnterprizeMember): ?>
         <div class="enterPrizeHello" style="display: none;">СКИДКИ от <span>3 до 70% </span>ДЛЯ ЗАЯДЛЫХ ИГРОКОВ!</div>
     <? endif ?>
 
@@ -36,7 +36,7 @@ $hasCoupon = $user->getEntity() && $user->getEntity()->getEnterprizeCoupon();
         <li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li-->
     </ul>
 
-    <? if ($hasCoupon): ?>
+    <? if ($isEnterprizeMember): ?>
         <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как ещё получать фишки?</span></p>
 
         <div class="enterPrizeListWrap">
