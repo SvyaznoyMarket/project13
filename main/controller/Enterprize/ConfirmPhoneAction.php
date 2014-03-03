@@ -26,7 +26,9 @@ class ConfirmPhoneAction {
         }
 
         $session = \App::session();
-        $error = $session->get('flash');
+        $flash = $session->get('flash');
+        $error = !empty($flash['error']) ? $flash['error'] : null;
+        $message = !empty($flash['message']) ? $flash['message'] : null;
         $session->remove('flash');
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
@@ -45,6 +47,7 @@ class ConfirmPhoneAction {
         $page = new \View\Enterprize\ConfirmPhonePage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('error', $error);
+        $page->setParam('message', $message);
 
         return new \Http\Response($page->show());
     }
@@ -86,22 +89,16 @@ class ConfirmPhoneAction {
             );
             \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/mobile']);
 
-            // обновление сессионной формы
-//            $data['isPhoneConfirmed'] = true;
-//            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], $data);
-
-//            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.create'));
+            if ($request->get('isRepeatRending', false)) {
+                \App::session()->set('flash', ['message' => 'Повторно отправлен новый код подтверждения']);
+            }
 
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
-
-            \App::session()->set('flash', $e->getMessage());
-//            $enterprizeToken = $request->get('enterprizeToken', null);
-//            $response = $this->show($request, $enterprizeToken);
+            \App::session()->set('flash', ['error' => $e->getMessage()]);
         }
 
-        return $this->show($request, $request->get('enterprizeToken', null));
-//        return $response;
+        return new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $request->get('enterprizeToken', null)]));
     }
 
     /**
@@ -151,10 +148,8 @@ class ConfirmPhoneAction {
 
         } catch (\Exception $e) {
             \App::exception()->remove($e);
-
-            \App::session()->set('flash', $e->getMessage());
-            $enterprizeToken = $request->get('enterprizeToken', null);
-            $response = $this->show($request, $enterprizeToken);
+            \App::session()->set('flash', ['error' => $e->getMessage()]);
+            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $request->get('enterprizeToken', null)]));
         }
 
         return $response;

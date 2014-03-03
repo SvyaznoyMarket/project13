@@ -191,9 +191,9 @@ class FormAction {
                     );
                     \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/email']);
 
-                } catch (\Curl\Exception $e) {
+                } catch (\Exception $e) {
                     \App::exception()->remove($e);
-                    \App::session()->set('flash', $e->getMessage());
+                    \App::session()->set('flash', ['error' => $e->getMessage()]);
                 }
             } else {
                 // просим подтвердить телефон
@@ -218,7 +218,7 @@ class FormAction {
 
                 } catch (\Curl\Exception $e) {
                     \App::exception()->remove($e);
-                    \App::session()->set('flash', $e->getMessage());
+                    \App::session()->set('flash', ['error' => $e->getMessage()]);
                 }
             }
 
