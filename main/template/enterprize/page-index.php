@@ -6,47 +6,89 @@
  */
 ?>
 
+<?
+$isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMember();
+?>
+
 <div class="enterPrize">
 
     <h1 class="enterPrize__logo">Enter Prize</h1>
 
     <div class="bgPage"></div>
 
-    <div class="enterPrizeHello" style="display: none;">Собери все фишки! <span>Играй с нами!</span></div>
+    <? if ($isEnterprizeMember): ?>
+        <div class="enterPrizeHello" style="display: none;">СКИДКИ от <span>3 до 70% </span>ДЛЯ ЗАЯДЛЫХ ИГРОКОВ!</div>
+    <? endif ?>
+
+    <div class="enterPrizeHello mReg">СКИДКИ от 3 до 70%!</div>
 
     <ul class="enterPrize__rules clearfix">
-        <li class="enterPrize__rules__item"><span class="sep">Выбери</span> свою фишку со скидкой и жми получить!</li>
-        <li class="enterPrize__rules__sep"></li>
+        <li class="enterPrize__rules__item">
+            1. Выбери фишку со скидкой.<br/>
+            2. Заполни три поля.<br/>
+            3. Лови фишку на e-mail и в СМС.<br/>
+            Разыграй фишку в заказе и получи скидку.
+        </li>
+
+        <!--li class="enterPrize__rules__sep"></li>
         <li class="enterPrize__rules__item" style="width: 168px;"><span class="sep">Получи</span> номер фишки на E-mail и мобильный телефон, которые укажешь для участия в Enter Prize!</li>
         <li class="enterPrize__rules__sep"></li>
-        <li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li>
+        <li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li-->
     </ul>
 
-    <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как играть фишкамии получать скидки?</span></p>
+    <? if ($isEnterprizeMember): ?>
+        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как ещё получать фишки?</span></p>
 
-    <div class="enterPrizeListWrap">
-        <div class="enterPrizeListTitle">Как получить скидку?</div>
+        <div class="enterPrizeListWrap">
+            <ul class="enterPrizeList">
+                <li class="enterPrizeList__item mBlue">
+                    <strong>Сайт www.enter.ru</strong><br/>
+                    Всегда входи в личный кабинет.<br/>
+                    Заказывай товары как обычно.
+                </li>
 
-        <ul class="enterPrizeList">
-            <li class="enterPrizeList__item mBlue">
-                <strong>Сайт www.enter.ru</strong><br/>
-                Входи в личный кабинет на www.enter.ru!<br/>
-                При оформлении Заказа в поле КУПОН или ФИШКА вводи номер фишки!
-            </li>
+                <li class="enterPrizeList__item mOrange">
+                    <strong>Розничные магазины ENTER</strong><br/>
+                    Входи в личный кабинет в терминале.<br/>
+                    Заказывай товары через терминал.
+                </li>
 
-            <li class="enterPrizeList__item mOrange">
-                <strong>Розничные магазины ENTER</strong><br/>
-                Скажи сотруднику магазина, что ты — участник ENTER PRIZE!<br/>
-                И сообщи номер Фишки при оплате заказа!
-            </li>
+                <li class="enterPrizeList__item mGreen">
+                    <strong>Контакт-сENTER 8 800 700 00 09</strong><br/>
+                    Скажи оператору Контакт-cENTER, что ты — участник ENTER PRIZE!<br/>
+                    Оператор поможет оформить заказ.
+                </li>
+            </ul>
 
-            <li class="enterPrizeList__item mGreen">
-                <strong>Контакт-сENTER 8 800 700 00 09</strong><br/>
-                Скажи оператору Контакт-cENTER, что ты — участник ENTER PRIZE!<br/>
-                И при оформлении заказа сообщи номер Фишки!
-            </li>
-        </ul>
-    </div>
+            <div class="enterPrizeFinish">ЛОВИ НОМЕР ФИШКИ В ЧЕКЕ ПОСЛЕ ОПЛАТЫ ЗАКАЗА!</div>
+        </div>
+
+        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как играть фишкамии получать скидки?</span></p>
+
+        <div class="enterPrizeListWrap">
+            <div class="enterPrizeListTitle">Как получить скидку?</div>
+
+            <ul class="enterPrizeList">
+                <li class="enterPrizeList__item mBlue">
+                    <strong>Сайт www.enter.ru</strong><br/>
+                    Входи в личный кабинет на www.enter.ru!<br/>
+                    При оформлении Заказа в поле КУПОН или ФИШКА вводи номер фишки!
+                </li>
+
+                <li class="enterPrizeList__item mOrange">
+                    <strong>Розничные магазины ENTER</strong><br/>
+                    Скажи сотруднику магазина, что ты — участник ENTER PRIZE!<br/>
+                    И сообщи номер Фишки при оплате заказа!
+                </li>
+
+                <li class="enterPrizeList__item mGreen">
+                    <strong>Контакт-сENTER 8 800 700 00 09</strong><br/>
+                    Скажи оператору Контакт-cENTER, что ты — участник ENTER PRIZE!<br/>
+                    И при оформлении заказа сообщи номер Фишки!
+                </li>
+            </ul>
+        </div>
+    <? endif ?>
 
     <ul class="enterPrize__list clearfix">
 

@@ -73,8 +73,10 @@ $(document).ready(function() {
 		});
 	}
 
+	
+
 	$('.enterPrizeDesc').click(
 		function() {
-			$('.enterPrizeListWrap').toggle('fast');
+			$(this).next('.enterPrizeListWrap').toggle('fast');
 	});
 });

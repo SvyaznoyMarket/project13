@@ -77,7 +77,7 @@ class ConfirmEmailAction {
                 'confirm/email',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
-                    'token'     => 'ADEE70AD-96D7-48DB-88E8-FAC2FDC27DAA',//\App::user()->getToken(),
+                    'token'     => \App::user()->getToken(),
                 ],
                 [
                     'email'    => $data['email'],
@@ -88,20 +88,21 @@ class ConfirmEmailAction {
             \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/email']);
 
             // обновление сессионной формы
-            $data['isEmailConfirmed'] = true;
-            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], $data);
+//            $data['isEmailConfirmed'] = true;
+//            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], $data);
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.create'));
+            //$response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.create'));
 
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
 
             \App::session()->set('flash', $e->getMessage());
-            $enterprizeToken = $request->get('enterprizeToken', null);
-            $response = $this->show($request, $enterprizeToken);
+//            $enterprizeToken = $request->get('enterprizeToken', null);
+//            $response = $this->show($request, $enterprizeToken);
         }
 
-        return $response;
+        return $this->show($request, $request->get('enterprizeToken', null));
+        //return $response;
     }
 
     /**

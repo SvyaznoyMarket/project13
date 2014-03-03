@@ -1,34 +1,33 @@
 <?php
 /**
- * @var $page   \View\DefaultLayout
- * @var $user   \Session\User
- * @var $error string
+ * @var $page            \View\DefaultLayout
+ * @var $user            \Session\User
+ * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity
+ * @var $error           string
  */
-
-$userEntity = $user->getEntity();
-if (!$userEntity) return;
 ?>
 
-<div>
-    <h1>Подтверди номер мобильного</h1>
-    <div class="clear"></div>
+<? $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []) ?>
 
-    <? if ($error): ?>
-        <p class="red"><?= $error ?></p>
-    <? endif ?>
+<div class="titleForm">Подтверди номер мобильного</div>
 
-    <div>
+<? if ($error): ?>
+    <p class="red"><?= $error ?></p>
+<? endif ?>
 
-        <div>Мы отправили номер мобильного на номер <b><?= $userEntity->getMobilePhone() ?><?//= preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', $userEntity->getEntity()) // должен быть формат +7 999 777-11-22 ?></b></div>
+<div class="enterprizeConfirm">
+    <p class="textConfirm"><strong><?= isset($data['mobile']) ? $data['mobile'] : '' ?><?//= preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', $userEntity->getEntity()) // должен быть формат +7 999 777-11-22 ?></strong></p>
 
-        <form action="<?= $page->url('enterprize.confirmPhone.check') ?>" method="post">
-            <fieldset>
-                <label>Введи код:</label>
-                <div><input type="text" name="code" /></div>
+    <form class="confirmForm" action="<?= $page->url('enterprize.confirmPhone.check') ?>" method="post">
+        <input type="hidden" name="enterprizeToken" value="<?= $enterpizeCoupon ? $enterpizeCoupon->getToken() : null ?>" />
 
-                <input type="button" value="Новый код" />
-                <input type="submit" value="Подтвердить" />
-            </fieldset>
-        </form>
-    </div>
+        <label class="labelCode">Введите код</label>
+        <input type="text" class="text" name="code" />
+
+        <input class="confirmCode bigbutton" type="submit" value="Подтвердить" />
+    </form>
+
+    <form class="confirmForm" action="<?= $page->url('enterprize.confirmPhone.create') ?>" method="post">
+        <input type="submit" class="newCode mBtnGrey" value="Новый код" />
+    </form>
 </div>

@@ -98,7 +98,7 @@ class EditForm {
         $this->setSkype($entity->getSkype());
         $this->setIsSubscribed($entity->getIsSubscribed());
         $this->setSclubCardnumber($entity->getSclubCardnumber());
-        $this->setIsDisabled($entity->getEnterprizeCoupon());
+        $this->setIsDisabled($entity->isEnterprizeMember());
     }
 
     /**

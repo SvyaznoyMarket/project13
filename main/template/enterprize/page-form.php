@@ -6,41 +6,36 @@
  */
 ?>
 
-<div>
-    <h1>Заполни три поля, и ты в игре!</h1>
 
-    <form class="formDefault jsEnterprizeForm" action="<?= $page->url('enterprize.form.update') ?>" method="post">
-        <input type="hidden" name="user[guid]" value="<?= $form->getEnterprizeCoupon() ?>" />
+<div class="titleForm">Заполни три поля, и ты в игре!</div>
 
-        <fieldset class="formDefault__fields">
-            <div>
-                <label class="formDefault__label">Имя:</label>
-                <input class="formDefault__inputText jsName" type="text" name="user[name]" value="<?= $form->getName() ?>" />
-            </div>
+<form class="formDefault jsEnterprizeForm" action="<?= $page->url('enterprize.form.update') ?>" method="post">
+    <input type="hidden" name="user[guid]" value="<?= $form->getEnterprizeCoupon() ?>" />
 
-            <div>
-                <label class="formDefault__label">Мобильный телефон:</label>
-                <input class="formDefault__inputText jsMobile" type="text" name="user[mobile]" value="<?= $form->getMobile() ?>" />
-            </div>
+    <fieldset class="formDefault__fields">
+ 
+            <label class="formDefault__label">Имя:</label>
+            <input class="formDefault__inputText jsName" type="text" name="user[name]" value="<?= $form->getName() ?>" />
 
-            <div>
-                <label class="formDefault__label">E-mail:</label>
-                <input class="formDefault__inputText jsEmail" type="text" name="user[email]" value="<?= $form->getEmail() ?>" />
-            </div>
+            <label class="formDefault__label">Мобильный телефон:</label>
+            <input class="formDefault__inputText jsMobile" type="text" name="user[mobile]" value="<?= $form->getMobile() ?>" />
 
-            <ul class="bInputList">
-                <li class="bInputList__eListItem ">
-                    <input class="jsCustomRadio bCustomInput mCustomCheckBig jsSubscribe" id="subscribe" name="user[subscribe]" type="checkbox" checked="checked" />
-                    <label class="bCustomLabel mCustomLabelBig mChecked" for="subscribe">Получить рекламную рассылку</label>
-                </li>
+            <label class="formDefault__label">E-mail:</label>
+            <input class="formDefault__inputText jsEmail" type="text" name="user[email]" value="<?= $form->getEmail() ?>" />
+   
 
-                <li class="bInputList__eListItem ">
-                    <input class="jsCustomRadio bCustomInput mCustomCheckBig jsAgree" name="user[agree]" id="agree" type="checkbox" />
-                    <label class="bCustomLabel mCustomLabelBig" for="agree">Согласен с <a style="text-decoration: underline;" href="#">условиями оферты</a></label>
-                </li>
-            </ul>
+        <ul class="bInputList mEnterPrizeSubscr">
+            <li class="bInputList__eListItem ">
+                <input class="jsCustomRadio bCustomInput mCustomCheckBig jsSubscribe" id="subscribe" name="user[subscribe]" type="checkbox" checked="checked" />
+                <label class="bCustomLabel mCustomLabelBig mChecked" for="subscribe">Получить рекламную рассылку</label>
+            </li>
 
-            <input class="formDefault__btnSubmit mBtnOrange" type="submit" value="Играть!" />
-        </fieldset>
-    </form>
-</div>
+            <li class="bInputList__eListItem ">
+                <input class="jsCustomRadio bCustomInput mCustomCheckBig jsAgree" name="user[agree]" id="agree" type="checkbox" />
+                <label class="bCustomLabel mCustomLabelBig" for="agree">Согласен с <a style="text-decoration: underline;" href="#">условиями оферты</a></label>
+            </li>
+        </ul>
+
+        <input class="formDefault__btnSubmit mBtnOrange" type="submit" value="Играть!" />
+    </fieldset>
+</form>

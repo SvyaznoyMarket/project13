@@ -164,7 +164,7 @@ class Action {
         // пользователь авторизован
         if ($user) {
             // показываем заглушку, если у пользователя установлена галка "Участник Enter.Prize"
-            if (true == $user->getEnterprizeCoupon()) {
+            if ($user->isEnterprizeMember()) {
                 $page = new \View\Enterprize\EmptyPage();
                 $response = new \Http\Response($page->show());
 

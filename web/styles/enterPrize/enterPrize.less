@@ -38,10 +38,10 @@
 			float: left;
 			background: #fff;
 			border-radius: 5px;
-			width: 138px;
-			padding: 5px 10px;
 			border-bottom: 2px solid #c7c7c7;
-			height: 120px;
+			height: 87px;
+		    padding: 15px;
+		    width: 500px;
 
 			.sep {
 				font-size: 30px;
@@ -78,18 +78,23 @@
 	.enterPrizeHello {
 		color: @white;
 	    font-family: "Enter";
-	    font-size: 46px;
-	    margin: 10px 0 0 26px;
+	    font-size: 32px;
+	    margin: 10px 0 0 32px;
 	    text-transform: uppercase;
 
 	    span {
-	    	color: @firmBlue;
+	    	color: @firmOrange;
+	    }
+
+	    &.mReg {
+	    	margin: 0 0 14px 32px;
+	    	font-size: 46px;
 	    }
 	}
 
 	.enterPrizeDesc {
 		color: @white;
-		margin: 15px 0 0 26px;
+		margin: 15px 0 0 31px;
 		font-size: 14px;
 		cursor: pointer;
 
@@ -110,8 +115,16 @@
 		margin: 0 0 15px 36px;
 	}
 
+	.enterPrizeFinish {
+		font-family: "Enter";
+	    font-size: 30px;
+	    text-transform: uppercase;
+	    color: @white;
+	    margin: 0 0 50px 54px;
+	}
+
 	.enterPrizeList {
-		margin: 0 0 30px 36px;
+		margin: 0 0 20px 36px;
 
 		&__item {
 			color: @white;
@@ -144,30 +157,8 @@
 			position: relative;
 			margin-right: 26px;
 
-			&.mBlue {
-
-				.cuponImg {
-					background-image: url("@{base-url}/enterPrize/img/bgBlue.png");
-				}
-			}
-
-			&.mPink {
-
-				.cuponImg {
-					background-image: url("@{base-url}/enterPrize/img/bgPink.png");
-					background-position: -1px 0;
-				}
-			}
-
-			&.mGreen {
-
-				.cuponImg {
-					background-image: url("@{base-url}/enterPrize/img/bgGreen.png");
-					background-position: -2px 0;
-				}
-			}
-
 			&:hover {
+				z-index: 20;
 
 				.cuponImgHover {
 					.opacity(1);
@@ -204,6 +195,7 @@
 		background: url("@{base-url}/enterPrize/img/bgOrange.png") no-repeat 0 0;
 		width: 209px;
 		height: 206px;
+		z-index: 17;
 
 			&__inner {
 				width: 188px;
@@ -225,6 +217,7 @@
 		width: 281px;
 		height: 280px;
 		.transition(opacity 0.4s ease-in-out);
+		z-index: 15;
 
 		&.mPink {
 			left: -3px;
@@ -289,25 +282,112 @@
 	}
 
 	&.mPrivate {
-		margin: 0 0 40px;
+		margin: 40px 0;
+		background: #eaeaea;
+		.rounded(4px);
+		padding: 10px;
 
 		.enterPrize__list {
-			position: absolute;
-			top: -10px;
-			height: 208px;
-			width: 211px;
-			right: 0;
+		    position: absolute;
+		    right: 0;
+		    top: -63px;
+		}
+
+		.enterPrize__logo {
+			margin: -40px 0 0;
 		}
 
 		.enterPrize__rules {
-
-			.enterPrize__rules__item {
-				width: 340px;
-				height: auto;
-				float: none;
-				padding: 40px;
-			}
+			width: 450px;
+			height: auto;
+			padding: 15px;
+			border-bottom: 1px solid #bbbbbb;
+			float: none;
+			background: @white;
+			font-size: 16px;
+			margin: 13px 0;
 		}
+
+		.enterPrize__logIn {
+			font-size: 14px;
+    		margin: 0 0 0 15px;
+
+    		a {
+    			text-decoration: underline;
+    		}
+		}
+	}
+}
+
+.enterprizeConfirm {
+	margin: 0 0 30px 25px;
+	font-size: 14px;
+
+	.confirmForm {
+		display: inline-block; 
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+	}
+
+	.labelCode {
+		margin: 0 5px 0 0;
+	}
+
+	.text {
+	    height: 31px;
+	    line-height: 31px;
+	}
+
+	.newCode {
+		display: inline-block;
+		vertical-align: top;
+		padding: 4px 17px;
+		height: 33px;
+		line-height: 33px;
+
+		*display: inline;
+		zoom: 1;
+		margin: 0 5px;
+	}
+
+	.confirmCode {
+		display: inline-block;
+		vertical-align: top;
+		padding: 4px 17px;
+		border: 1px solid #F28900;
+		.rounded(4px);
+		margin: 0 0 0 5px;
+
+		*display: inline;
+		zoom: 1;
+	}
+
+	.textConfirm {
+		margin: 0 0 20px;
+
+		strong {
+			font-size: 16px;
+		}
+	}
+}
+
+.titleForm {
+	font-size: 2em;
+    font-weight: normal;
+    margin: 10px 0 20px 25px;
+}
+
+.jsEnterprizeForm {
+	margin: 0 0 0 25px;
+
+	.formDefault__btnSubmit {
+		margin: 20px 0 15px 269px;
+	}
+
+	.red {
+		margin: 0 0 10px;
 	}
 }
 
@@ -386,5 +466,17 @@
 
 	.footer .publicInfo__list__link {
 	    color: #B5B5B5;
+	}
+}
+
+.bInputList {
+
+	&.mEnterPrizeSubscr {
+
+		.bErrorText__eInner {
+		    left: 25px;
+		    padding: 0;
+		    top: -8px;
+		}
 	}
 }

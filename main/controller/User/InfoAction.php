@@ -65,7 +65,7 @@ class InfoAction {
                 $responseData['user']['id'] = $userEntity->getId();
                 $responseData['user']['email'] = $userEntity->getEmail();
                 $responseData['user']['emailHash'] = md5($userEntity->getEmail());
-                $responseData['user']['hasEnterprizeCoupon'] = $user->getEntity()->getEnterprizeCoupon();
+                $responseData['user']['hasEnterprizeCoupon'] = $user->getEntity()->isEnterprizeMember();
             }
 
             if (!$cart->isEmpty()) {
