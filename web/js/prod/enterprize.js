@@ -3,11 +3,12 @@
  *
  * @author  Shaposhnik Vitaly
  */
-;(function() {
+;(function(ENTER) {
 	var
 		form = $('.jsEnterprizeForm'),
 		body = $('body'),
 		mobilePhoneField = $('.jsMobile'),
+		authBlock = $('#enterprize-auth-block'),
 
 		/**
 		 * Конфигурация валидатора для формы ЛК Enterprize
@@ -201,6 +202,51 @@
 			clearMsg();
 
 			return false;
+		},
+
+		/**
+		 * Открыть окно авторизации
+		 */
+		openAuth = function() {
+			var
+				/**
+				 * При закрытии попапа убераем ошибки с полей
+				 */
+				removeErrors = function() {
+					var
+						validators = ['signin', 'forgot'],
+						validator,
+						config,
+						self,
+						i, j;
+					// end of vars
+
+					for (j in validators) {
+						validator = eval('ENTER.utils.' + validators[j] + 'Validator');
+						config = eval('ENTER.utils.' + validators[j] + 'ValidationConfig');
+
+						if ( !config || !config.fields || !validator ) {
+							continue;
+						}
+
+						for (i in config.fields) {
+							self = config.fields[i].fieldNode;
+							self && validator._unmarkFieldError(self);
+						}
+					}
+				};
+			// end of functions
+
+			authBlock.lightbox_me({
+				centered: true,
+				autofocus: true,
+				onLoad: function() {
+					authBlock.find('input:first').focus();
+				},
+				onClose: removeErrors
+			});
+
+			return false;
 		};
 	// end of functions
 
@@ -209,4 +255,5 @@
 	mobilePhoneField.length && mobilePhoneField.mask('8nnnnnnnnnn');
 
 	body.on('submit', '.jsEnterprizeForm', formSubmit);
-}());
+	body.on('click', '.jsEnterprizeAuthLink', openAuth);
+}(window.ENTER));
