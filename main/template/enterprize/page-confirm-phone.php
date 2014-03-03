@@ -16,23 +16,20 @@
 <? endif ?>
 
 <div class="enterprizeConfirm">
-    <p class="textConfirm"><?= $data['mobile'] ? $data['mobile'] : '' ?><?//= preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', $userEntity->getEntity()) // должен быть формат +7 999 777-11-22 ?></strong></p>
+    <p class="textConfirm"><?//= $data['mobile'] ? $data['mobile'] : '' ?><?//= preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', $userEntity->getEntity()) // должен быть формат +7 999 777-11-22 ?></strong></p>
 
     <form action="<?= $page->url('enterprize.confirmPhone.check') ?>" method="post">
         <input type="hidden" name="enterprizeToken" value="<?= $enterpizeCoupon ? $enterpizeCoupon->getToken() : null ?>" />
 
         <label class="labelCode">Введите код</label>
-
         <input type="text" class="text" name="code" />
-
-        <input class="newCode mBtnGrey" type="button" value="Новый код" />
 
         <input class="confirmCode bigbutton" type="submit" value="Подтвердить" />
     </form>
 
     <form action="<?= $page->url('enterprize.confirmPhone.create') ?>" method="post">
         <fieldset>
-            <input type="submit" value="Новый код" />
+            <input type="submit" class="newCode mBtnGrey" value="Новый код" />
         </fieldset>
     </form>
 </div>
