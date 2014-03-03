@@ -1,0 +1,19 @@
+<div class="bPromoCatalogSliderWrap_eSlide">
+    <a class="bPromoCatalogSliderWrap_eSlideLink topLifted" href="<%=linkUrl%>">
+        <div class="bottomLifted">
+            <img src="<%=imgUrl%>" alt="<%=title%>"/>
+        </div>
+    </a>
+    <div class="bPromoCatalogProducts">
+    <% for( var i = 0; i < products.length; i++ ) { %>
+        <div class="prodItem">
+            <a href="<%= products[ i ].link %>" title="<%= products[ i ].name %>">
+                <div class="prodImg">
+                    <img src="<%= products[ i ].image %>" alt="<%= products[ i ].name %>" />
+                </div>
+                <div class="prodName"><%= products[ i ].name %></div>
+            </a>
+        </div>
+    <% } %>
+    </div>
+</div>

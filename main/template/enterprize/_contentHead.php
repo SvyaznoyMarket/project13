@@ -33,9 +33,7 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
     <? if ($enterpizeCoupon): ?>
         <div class="enterPrize mPrivate">
-            <a href="<?= $page->url('enterprize') ?>">
-                <h1 class="enterPrize__logo">Enter Prize</h1>
-            </a>
+            <a class="enterPrize__logo" href="<?= $page->url('enterprize') ?>"></a>
 
             <div class="enterPrize__list clearfix">
                 <div class="enterPrize__list__item mOrange">
@@ -59,23 +57,23 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
                 </div>
             </div>
 
-            <ul class="enterPrize__rules clearfix"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
-                <li class="enterPrize__rules__item">
-                    Фишка со скидкой <b><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></b> на <b><?= $enterpizeCoupon->getName() ?></b><br />
-                    Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
-                    Строк действия
-                    <? if ($enterpizeCoupon->getStartDate() instanceof \DateTime): ?>
-                        c <?= $enterpizeCoupon->getStartDate()->format('d.m.Y') ?>
-                    <? endif ?>
-                    <? if ($enterpizeCoupon->getEndDate() instanceof \DateTime): ?>
-                        по <?= $enterpizeCoupon->getEndDate()->format('d.m.Y') ?>
-                    <? endif ?>
-                </li>
-            </ul>
+            <div class="enterPrize__rules"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
+                Фишка со скидкой <b><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></b> на <b><?= $enterpizeCoupon->getName() ?></b><br />
+                Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
+                Строк действия
+                <? if ($enterpizeCoupon->getStartDate() instanceof \DateTime): ?>
+                    c <?= $enterpizeCoupon->getStartDate()->format('d.m.Y') ?>
+                <? endif ?>
+                <? if ($enterpizeCoupon->getEndDate() instanceof \DateTime): ?>
+                    по <?= $enterpizeCoupon->getEndDate()->format('d.m.Y') ?>
+                <? endif ?>
+            </div>
+
+            <div class="enterPrize__logIn">У тебя есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="bAuthLink">Войти</a></div>
         </div>
     <? endif ?>
 
-    <? if ($title): ?><h1><?= $title ?></h1><? endif ?>
+    <? if ($title): ?><div class="titleForm"><?= $title ?></div><? endif ?>
 
     <div class="clear<? if ($extendedMargin): ?> pb20<? endif ?>"></div>
     <? if ($hasSeparateLine): ?>

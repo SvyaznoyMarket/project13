@@ -9,26 +9,22 @@ $userEntity = $user->getEntity();
 if (!$userEntity) return;
 ?>
 
-<div>
-    <h1>Подтверди номер мобильного</h1>
-    <div class="clear"></div>
+<div class="titleForm">Подтверди номер мобильного</div>
 
-    <? if ($error): ?>
-        <p class="red"><?= $error ?></p>
-    <? endif ?>
+<? if ($error): ?>
+    <p class="red"><?= $error ?></p>
+<? endif ?>
 
-    <div>
+<div class="enterprizeConfirm">
+    <p class="textConfirm">Мы отправили смс с кодом подтверждения на номер <strong><?= $userEntity->getMobilePhone() ?><?//= preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', $userEntity->getEntity()) // должен быть формат +7 999 777-11-22 ?></strong></p>
 
-        <div>Мы отправили номер мобильного на номер <b><?= $userEntity->getMobilePhone() ?><?//= preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', $userEntity->getEntity()) // должен быть формат +7 999 777-11-22 ?></b></div>
+    <form action="<?= $page->url('enterprize.confirmPhone.check') ?>" method="post">
+        <label class="labelCode">Введите код</label>
 
-        <form action="<?= $page->url('enterprize.confirmPhone.check') ?>" method="post">
-            <fieldset>
-                <label>Введи код:</label>
-                <div><input type="text" name="code" /></div>
+        <input type="text" class="text" name="code" />
 
-                <input type="button" value="Новый код" />
-                <input type="submit" value="Подтвердить" />
-            </fieldset>
-        </form>
-    </div>
+        <input class="newCode mBtnGrey" type="button" value="Новый код" />
+
+        <input class="confirmCode bigbutton" type="submit" value="Подтвердить" />
+    </form>
 </div>
