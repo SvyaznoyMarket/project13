@@ -164,16 +164,62 @@ class FormAction {
                 'isEmailConfirmed' => isset($result['email_confirmed']) ? $result['email_confirmed'] : false,
             ]);
 
+            $userToken = !empty($result['token']) ? $result['token'] : null;
             $data = $session->get($sessionName, []);
-            if ($data['mobile_confirmed'] && $data['email_confirmed']) {
+            if ($data['isPhoneConfirmed'] && $data['isEmailConfirmed']) {
                 // пользователь все подтвердил, пробуем создать купон
                 $link = \App::router()->generate('enterprize.create');
-            } elseif ($data['mobile_confirmed']) {
+            } elseif ($data['isPhoneConfirmed']) {
                 // просим подтвердит email
                 $link = \App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]);
+                try {
+                    if (!isset($data['email']) || empty($data['email'])) {
+                        throw new \Exception('Не получен email');
+                    }
+
+                    $confirm = $client->query(
+                        'confirm/email',
+                        [
+                            'client_id' => \App::config()->coreV2['client_id'],
+                            'token'     =>  $userToken,
+                        ],
+                        [
+                            'email'    => $data['email'],
+                            'template' => 'enter_prize',
+                        ],
+                        \App::config()->coreV2['hugeTimeout']
+                    );
+                    \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/email']);
+
+                } catch (\Curl\Exception $e) {
+                    \App::exception()->remove($e);
+                    \App::session()->set('flash', $e->getMessage());
+                }
             } else {
                 // просим подтвердить телефон
                 $link = \App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]);
+                try {
+                    if (!isset($data['mobile']) || empty($data['mobile'])) {
+                        throw new \Exception('Не получен мобильный телефон');
+                    }
+
+                    $confirm = $client->query(
+                        'confirm/mobile',
+                        [
+                            'client_id' => \App::config()->coreV2['client_id'],
+                            'token'     => $userToken,
+                        ],
+                        [
+                            'mobile' => $data['mobile'],
+                        ],
+                        \App::config()->coreV2['hugeTimeout']
+                    );
+                    \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/mobile']);
+
+                } catch (\Curl\Exception $e) {
+                    \App::exception()->remove($e);
+                    \App::session()->set('flash', $e->getMessage());
+                }
             }
 
             $response = $request->isXmlHttpRequest()
@@ -186,7 +232,7 @@ class FormAction {
                 : new \Http\RedirectResponse($link);
 
             // авторизовываем пользователя
-            if (!empty($result['token']) && !\App::user()->getEntity()) {
+            if ($userToken && !\App::user()->getEntity()) {
                 $user = \RepositoryManager::user()->getEntityByToken($result['token']);
                 if ($user) {
                     $user->setToken($result['token']);
