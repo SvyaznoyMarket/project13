@@ -96,15 +96,18 @@ class ConfirmEmailAction {
 
             //$response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.create'));
 
+            if ($request->get('isRepeatRending', false)) {
+                \App::session()->set('flash', ['message' => 'Письмо повторно отправлено']);
+            }
+
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
-
             \App::session()->set('flash', ['error' => $e->getMessage()]);
 //            $enterprizeToken = $request->get('enterprizeToken', null);
 //            $response = $this->show($request, $enterprizeToken);
         }
 
-        return $this->show($request, $request->get('enterprizeToken', null));
+        return new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $request->get('enterprizeToken', null)]));
         //return $response;
     }
 
