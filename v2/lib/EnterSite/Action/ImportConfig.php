@@ -53,6 +53,7 @@ class ImportConfig {
         $config->mediaHosts = $importedConfig->mediaHost;
 
         $config->product->itemPerPage = $importedConfig->product['itemsPerPage'];
+        $config->product->itemsInSlider = $importedConfig->product['itemsInSlider'] * 2;
         $config->productPhoto->urlPaths = $importedConfig->productPhoto['url'];
         $config->productReview->enabled = $importedConfig->product['reviewEnabled'];
 

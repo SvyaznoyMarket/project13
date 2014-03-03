@@ -101,7 +101,6 @@ class RecommendedList {
         }
 
         $curl->execute(1, 2);
-        die(var_dump($alsoBoughtIdList));
 
         // товары
         $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
@@ -116,6 +115,12 @@ class RecommendedList {
                 unset($alsoBoughtIdList[$productId]);
             }
         }
+
+        $ids = null;
+        foreach ([$alsoBoughtIdList, $similarIdList, $alsoViewedIdList] as &$ids) {
+            $ids = array_slice($ids, 0, $config->product->itemsInSlider);
+        }
+        unset($ids);
 
         die(var_dump(array_keys($productsById)));
     }
