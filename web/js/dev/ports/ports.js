@@ -585,8 +585,19 @@ window.ANALYTICS = {
 					gaInteractive = function gaInteractive(type) {
 						console.log('GA: event Interactive: ' + type);
 						ga('send', 'event', 'Interactive', type);
-					};
+                    },
 
+                    gaBannerClick = function gaBannerClick(){
+                        var
+                            Banner_src = $(this).find('img').attr('src');
+                        console.log('send', 'event', 'Internal_Promo', Banner_src);
+                        ga('send', 'event', 'Internal_Promo', Banner_src);
+                    };
+
+                /** Событие клика на баннер */
+                $('.trustfactorRight' ).on('click', gaBannerClick);
+                $('.trustfactorMain' ).on('click', gaBannerClick);
+                $('.trustfactorContent' ).on('click', gaBannerClick);
 
 				/** Событие открытия списка магазинов */
 				$('span.bDeliveryNowClick').one('click', function ga_deliveryNow() {
@@ -731,6 +742,15 @@ window.ANALYTICS = {
 			}
 			ga( 'create', 'UA-25485956-5', 'enter.ru' );
 
+			var
+				gaSubscribeClick = function gaSubscribeClick() {
+					var
+						Email = $( this ).siblings( '.bSubscribeLightboxPopup__eInput' ).val();
+					console.log( 'send', 'event', 'Internal_Promo', Email );
+					ga( 'send', 'event', 'Subscriptions', Email );
+				}
+			; // end of vars
+
 			ga_action();
 
 			if( data && 'object' === typeof(data.vars) && data.vars ) {
@@ -764,11 +784,22 @@ window.ANALYTICS = {
 				ga('send', 'dimension8', regionName);
 			});
 
-			/** Событие авторизации на сайт */
-			/*body.on('userLogged', function ga_login() { // Другое событие нужно
-				console.log('GA: event Logged in');
-				ga('send', 'event', 'Logged in', 'True');
-			});*/
+			/** Событие клика на подписку | TODO: проверить другие подписки */
+			$('.bSubscribeLightboxPopup__eBtn').on('click', gaSubscribeClick);
+
+			window.gaRun = {
+				register: function register() {
+					/** Метод для регистрации на сайте */
+					console.log('GA: Registration');
+					ga( 'send', 'event', 'Registration', 'Registered' );
+				},
+				login: function login() {
+					/** Метод для авторизации на сайт */
+					console.log('GA: login');
+					// ga( 'send', 'event', 'Authorization', 'Authorizated' );
+					// нет в вики-описании такого, нужно уточнить
+				}
+			};
 		}
 		catch(e) {
 			console.warn('GA exception');

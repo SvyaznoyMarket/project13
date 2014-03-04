@@ -1765,6 +1765,9 @@ $(document).ready(function(){
 
 					console.log(this.form.data('redirect'));
 					console.log(response.data.link);
+					if ( typeof(gaRun) && typeof(gaRun.register) === 'function' ) {
+						gaRun.register();
+					}
 
 					if ( this.form.data('redirect') ) {
 						if ( typeof response.data.link !== 'undefined' ) {
@@ -1854,7 +1857,9 @@ $(document).ready(function(){
 		Login.prototype.formSubmitLog = function() {
 			var type = '';
 			// end of vars
-
+			if ( typeof(gaRun) && typeof(gaRun.login) === 'function' ) {
+				gaRun.login();
+			}
 			if ( 'signin' === this.getFormName() ) {
 				if ( typeof(_gaq) !== 'undefined' ) {
 					type = ( (this.form.find('.jsSigninUsername').val().search('@')) !== -1 ) ? 'email' : 'mobile';
