@@ -14,10 +14,10 @@ if (!$userEntity) return;
 <div class="titleForm">Подтверди e-mail</div>
 
     <? if ($error): ?>
-        <p class="red"><?= $error ?></p>
+        <p class="red enterprizeWar"><?= $error ?></p>
     <? endif ?>
     <? if ($message): ?>
-        <p class="green"><?= $message ?></p>
+        <p class="green enterprizeWar"><?= $message ?></p>
     <? endif ?>
 
     <div class="enterprizeConfirm">
