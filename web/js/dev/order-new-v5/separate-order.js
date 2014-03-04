@@ -152,11 +152,12 @@
 		console.info('Созданные блоки:');
 		console.log(ENTER.OrderModel.deliveryBoxes());
 
-		// Добавляем купоны
-		ENTER.OrderModel.couponsBox(discounts);
 
-		// Добавляем купоны
-		ENTER.OrderModel.couponsBox(discounts);
+		if ( 'undefined' !== typeof(discounts) ) { // если купоны существуют
+			// Добавляем купоны
+			ENTER.OrderModel.couponsBox(discounts);
+			// TODO проверить: возможно, строчки про купоны ниже можно внести в это же условие
+		}
 
 		// выбираем URL для проверки купонов - первый видимый купон
 		ENTER.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
