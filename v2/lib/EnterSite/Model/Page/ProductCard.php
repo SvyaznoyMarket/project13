@@ -19,22 +19,35 @@ namespace EnterSite\Model\Page\ProductCard {
     use EnterSite\Model\Page;
 
     class Content extends Page\DefaultLayout\Content {
-        /** @var Content\ProductBlock */
-        public $productBlock;
+        /** @var Content\Product */
+        public $product;
 
         public function __construct() {
             parent::__construct();
 
-            $this->productBlock = new Content\ProductBlock();
+            $this->product = new Content\Product();
         }
     }
 }
 
 namespace EnterSite\Model\Page\ProductCard\Content {
-    use EnterSite\Model\Partial;
-
-    class ProductBlock {
+    class Product {
         /** @var string */
         public $title;
+        /** @var string */
+        public $article;
+        /** @var string */
+        public $description;
+        /** @var Product\Photo[] */
+        public $photos = [];
+    }
+}
+
+namespace EnterSite\Model\Page\ProductCard\Content\Product {
+    class Photo {
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $url;
     }
 }

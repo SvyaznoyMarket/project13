@@ -1,0 +1,596 @@
+<div class="content">
+    <div class="contentBox940 contentBoxVar">
+        <!-- Название товара, артикул, отзывы -->
+        <div class="productDescHead">
+
+            <h1 class="productDescHead__name">{{product.title}}</h1>
+
+            {{#product.article}}
+                <div class="productDescHead__article">Артикул: {{product.article}}</div>
+            {{/product.article}}
+
+            <div class="productDescHead__reviews">
+                <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                <img class="reviewsStar" src="/v2/css/modules/productDesc/img/starEmpty.png" />
+                <span class="reviewsCount">3</span>
+            </div>
+        </div>
+        <!--/ Название товара, артикул, отзывы -->
+
+        <div class="productDesc clearfix">
+
+            <!-- Изображение товара -->
+            <div class="productDescImg">
+            {{#product.photos}}
+                <img class="productImg" src="{{url}}" alt="{{&name}}" />
+            {{/product.photos}}
+            </div>
+            <!--/ Изображение товара -->
+
+            <!-- Информация о покупке -->
+            <div class="productDescInfo clearfix">
+                <div class="chooseModel">
+                    <div class="chooseModel__title">
+                        Выбрать модель
+                    </div>
+
+                    <!-- Выбор цвета модели -->
+                    <ul class="chooseModelColor clearfix">
+                        <li class="chooseModelColor__item chooseModelColor__item">
+                            <a class="chooseModelColor__link chooseModelColor__link-active" href="">
+                                <img class="chooseModelColor__img" src="http://fs02.enter.ru/1/1/1500/d0/202993.jpg" />
+
+                                <div class="sticker"></div>
+                            </a>
+                        </li>
+
+                        <li class="chooseModelColor__item">
+                            <a class="chooseModelColor__link" href="">
+                                <img class="chooseModelColor__img" src="http://fs02.enter.ru/1/1/1500/d0/202993.jpg" />
+                            </a>
+                        </li>
+
+                        <li class="chooseModelColor__item">
+                            <a class="chooseModelColor__link" href="">
+                                <img class="chooseModelColor__img" src="http://fs02.enter.ru/1/1/1500/d0/202993.jpg" />
+                            </a>
+                        </li>
+
+                        <li class="chooseModelColor__item chooseModelColor__item-last">
+                            <a class="chooseModelColor__link" href="">
+                                <img class="chooseModelColor__img" src="http://fs02.enter.ru/1/1/1500/d0/202993.jpg" />
+                            </a>
+                        </li>
+                    </ul>
+                    <!--/ Выбор цвета модели -->
+
+                    <!-- Другие параметры выбора модели -->
+                    <div class="chooseModel__moreBox">
+
+                        <ul class="chooseModelColor clearfix">
+                            <li class="chooseModelColor__item chooseModelColor__item">
+                                <a class="chooseModelColor__link" href="">
+                                    <span class="price"><strong>12 990</strong> p</span>
+                                    <span class="desc">16ГБ, белый, wifi</span>
+
+                                    <div class="sticker"></div>
+                                </a>
+                            </li>
+
+                            <li class="chooseModelColor__item">
+                                <a class="chooseModelColor__link" href="">
+                                    <span class="price"><strong>12 990</strong> p</span>
+                                    <span class="desc">32ГБ, белый, wifi</span>
+
+                                    <div class="sticker"></div>
+                                </a>
+                            </li>
+
+                            <li class="chooseModelColor__item">
+                                <a class="chooseModelColor__link chooseModelColor__link-active" href="">
+                                    <span class="price"><strong>12 990</strong> p</span>
+                                    <span class="desc">64ГБ, белый, wifi</span>
+
+                                    <div class="sticker"></div>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="chooseModel__title">
+                            Выбрать размер
+                        </div>
+
+                        <ul class="chooseModelNum clearfix">
+                            <li class="chooseModelNum__item"><a class="chooseModelNum__link" href="">17</a></li>
+
+                            <li class="chooseModelNum__item chooseModelNum__item-active"><a class="chooseModelNum__link" href="">18</a></li>
+
+                            <li class="chooseModelNum__item"><a class="chooseModelNum__link" href="">19</a></li>
+
+                            <li class="chooseModelNum__item"><a class="chooseModelNum__link" href="">20</a></li>
+
+                            <li class="chooseModelNum__item"><a class="chooseModelNum__link" href="">21</a></li>
+
+                            <li class="chooseModelNum__item"><a class="chooseModelNum__link" href="">22</a></li>
+
+                            <li class="chooseModelNum__item"><a class="chooseModelNum__link" href="">23</a></li>
+                        </ul>
+                    </div>
+                    <!--/ Другие параметры выбора модели -->
+
+                    <div class="chooseModel__moreLink">Ещё модели</div>
+                </div>
+
+                <!-- Выбор варианта покупки, каунтер -->
+                <div class="buyInfoWrapGrey clearfix">
+                    <div class="buyInfoWrap">
+                        <div class="buyInfo">
+
+                            <div class="buyInfoPrice">
+                                <!-- Купить по полной цене -->
+                                <div class="buyInfoPrice__item">
+                                    <input class="customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" />
+
+                                    <label class="customLabel" for="buyprice">
+                                        <span class="oldPrice">1 223 p</span>
+                                        <span class="nowPrice">23 343 p</span>
+                                    </label>
+                                </div>
+                                <!--/ Купить по полной цене -->
+
+                                <!-- Купить в кредит -->
+                                <div class="buyInfoPrice__item">
+                                    <input class="customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" checked />
+
+                                    <label class="customLabel" for="creditinput">
+                                        <span class="creditPrice">В кредит от <strong>2 232</strong> р в месяц</span>
+                                    </label>
+                                </div>
+                                <!--/ Купить в кредит -->
+                            </div>
+
+                            <!-- Купить дешевле -->
+                            <div class="buyInfoLess"><a class="buyInfoLess__link" href="">Хочешь дешевле?</a></div>
+                            <!--/ Купить дешевле -->
+
+                            <div class="buyInfoBuy clearfix">
+                                <!-- Каунтер -->
+                                <div class="counter">
+                                    <button class="counter__btn counter__btn-plus">+</button>
+                                    <input class="counter__input" type="text" id="" name="" value="1" />
+                                    <button class="counter__btn counter__btn-minus">-</button>
+                                    <span class="counter__num">шт.</span>
+                                </div>
+                                <!--/ Каунтер -->
+
+                                <!-- Кнопка купить -->
+                                <a href="" class="btnBuy">Купить</a>
+                                <!--/ Кнопка купить -->
+                            </div>
+
+                            <div class="btnBuyOneClick"><a class="btnBuyOneClick__link" class="" href="">Купить в один клик</a></div>
+                        </div>
+                    </div>
+                    <!--/ Выбор варианта покупки, каунтер -->
+
+                    <!-- Информация о доставке -->
+                    <div class="deliveryInfo">
+
+                        <ul class="deliveryList">
+                            <li class="deliveryList__item deliveryList__item-standart">
+                                Доставка <strong>250 p</strong>
+                                <span class="descText">Завтра, 15.02.2014</span>
+                            </li>
+
+                            <li class="deliveryList__item deliveryList__item-self">
+                                Самовывоз <strong>бесплатно</strong>
+                                <span class="descText">Завтра, 15.02.2014</span>
+                            </li>
+
+                            <li class="deliveryList__item deliveryList__item-now">
+                                <span class="descTextDotted">Сегодня есть в магазинах</span>
+
+                                <ul class="addressShopsList">
+                                    <li class="addressShopsList__item"><a class="" href="">м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10</a></li>
+                                    <li class="addressShopsList__item"><a class="" href="">м. ВДНХ, пр-кт Мира, д. 211, ТРЦ "Золотой Вавилон"</a></li>
+                                    <li class="addressShopsList__item"><a class="" href="">м. Коньково, ул. Профсоюзная, вл. 118, ТЦ "Тропа"</a></li>
+                                    <li class="addressShopsList__item"><a class="" href="">м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10</a></li>
+                                    <li class="addressShopsList__item"><a class="" href="">м. ВДНХ, пр-кт Мира, д. 211, ТРЦ "Золотой Вавилон"</a></li>
+                                    <li class="addressShopsList__item"><a class="" href="">м. Коньково, ул. Профсоюзная, вл. 118, ТЦ "Тропа"</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="deliveryList__item deliveryList__item-oneClick">
+                                <a class="" href="">Купить в один клик</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/ Информация о доставке -->
+                </div>
+            </div>
+            <!--/ Информация о покупке -->
+        </div>
+    </div>
+
+    <!-- Информация о товаре - табы -->
+    <div class="contentBox960">
+        <ul class="productDescTab">
+            <li class="productDescTab__item">
+                <a class="productDescTab__link productDescTab__link-active" href="">
+                    <span class="tabText">Подробности</span>
+                    <img class="tabImg" src="/v2/css/modules/productDescTab/img/moreBtn.png" />
+                </a>
+            </li>
+
+            <li class="productDescTab__item"><a class="productDescTab__link" href="#reviewsTab">
+                <span class="tabText">Отзывы</span>
+                <span class="tabImg reviews">
+                    <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                    <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                    <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                    <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                    <img class="reviewsStar" src="/v2/css/modules/productDesc/img/starEmpty.png" />
+                </span></a>
+            </li>
+
+            <li class="productDescTab__item">
+                <a class="productDescTab__link" href="#accessoriesTab">Аксессуары</a>
+            </li>
+
+            <li class="productDescTab__item productDescTab__item-last">
+                <a href="#alsoTab" class="productDescTab__link" href="">С этим товаром покупают</a>
+            </li>
+        </ul>
+    </div>
+    <!-- Информация о товаре - табы -->
+
+    <div class="contentBox940">
+        <!-- Таб - Подробнее -->
+        <div class="tabContent specifications clearfix">
+            <div class="specificationspMedia">
+                Видео и остальной треш
+            </div>
+
+            <div class="specificationsListCol">
+                <ul class="specificationsList">
+                    <li class="specificationsList__item specificationsList__item-title">Общие</li>
+                    <li class="specificationsList__item">Тип : смартфон </li>
+                    <li class="specificationsList__item">Стандарт : GSM (850/900/1800/1900 МГц), UMTS/HSDPA/HSUPA (850/900/1900/2100 МГц), LTE</li>
+                </ul>
+
+                <ul class="specificationsList">
+                    <li class="specificationsList__item specificationsList__item-title">Дисплей</li>
+                    <li class="specificationsList__item">Диагональ экрана : 4 "</li>
+                    <li class="specificationsList__item">Сенсорный дисплей  : Multitouch</li>
+                    <li class="specificationsList__item">Тип дисплея : IPS, емкостный</li>
+                    <li class="specificationsList__item">Количество цветов   : 16,7 млн.</li>
+                </ul>
+
+                <ul class="specificationsList">
+                    <li class="specificationsList__item specificationsList__item-title">ОС, процессор</li>
+                    <li class="specificationsList__item">Диагональ экрана : 4 "</li>
+                    <li class="specificationsList__item">Сенсорный дисплей  : Multitouch</li>
+                    <li class="specificationsList__item">Тип дисплея : IPS, емкостный</li>
+                    <li class="specificationsList__item">Количество цветов   : 16,7 млн.</li>
+                    <li class="specificationsList__item">Тип : смартфон </li>
+                    <li class="specificationsList__item">Стандарт : GSM (850/900/1800/1900 МГц), UMTS/HSDPA/HSUPA (850/900/1900/2100 МГц), LTE</li>
+                </ul>
+
+                <p class="specificationsText">{{product.description}}</p>
+            </div>
+        </div>
+        <!--/ Таб - Подробнее -->
+    </div>
+
+    <div class="contentBox960" id="reviewsTab">
+        <div class="tabTitle clearfix">
+            <div class="tabTitle__text">Отзывы пользователей</div>
+            <a class="tabTitle__add" href="">Добавить отзыв</a>
+        </div>
+    </div>
+
+    <div class="contentBox940">
+        <!-- Таб - Отзывы -->
+        <div class="tabContent tabContent-reviews">
+
+            <div class="reviewsBox">
+                <div class="reviewsBox__left">
+                    <div class="reviews">
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/starEmpty.png" />
+                    </div>
+
+                    <div class="reviewsName">Кунаев Егор</div>
+
+                    <div class="reviewsDate">15 июня 2013</div>
+                </div>
+
+                <div class="reviewsBox__right">
+                    <div class="reviewsText">
+                        <span class="reviewsText__mark">«</span>
+                        <p class="reviewsText__par">
+                            В общем приобретением доволен, для меня в htc one s есть все, что нужно и работает он просто отлично. Тем более за такую цену.
+                        </p>
+                    </div>
+
+                    <div class="reviewsText">
+                        <span class="reviewsText__mark">+</span>
+                        <p class="reviewsText__par">
+                            Купил данный телефон примерно 3 недели назад. Начитался комментариев, что у телефона довольно много косяков (очень часто писали, что телефон просто перестает работать или сам выключается, также многие утверждали, что
+                            спустя несколько дней начинает хрипеть динамик).
+                        </p>
+                    </div>
+
+                    <div class="reviewsText">
+                        <span class="reviewsText__mark">−</span>
+                        <p class="reviewsText__par">
+                            Единственный существенный недостаток данного девайса - это слабая батарея. Телефон действительно садиться очень быстро. При активном использовании (интернет, тяжелые игры, звонки) батарея еле доживает до конца дня, но для меня это не такая уж большая проблема.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviewsBox">
+                <div class="reviewsBox__left">
+                    <div class="reviews">
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/starEmpty.png" />
+                    </div>
+
+                    <div class="reviewsName">Кунаев Егор</div>
+
+                    <div class="reviewsDate">15 июня 2013</div>
+                </div>
+
+                <div class="reviewsBox__right">
+                    <div class="reviewsText">
+                        <span class="reviewsText__mark">«</span>
+                        <p class="reviewsText__par">
+                            В общем приобретением доволен, для меня в htc one s есть все, что нужно и работает он просто отлично. Тем более за такую цену.
+                        </p>
+                    </div>
+
+                    <div class="reviewsText">
+                        <span class="reviewsText__mark">+</span>
+                        <p class="reviewsText__par">
+                            Купил данный телефон примерно 3 недели назад. Начитался комментариев, что у телефона довольно много косяков (очень часто писали, что телефон просто перестает работать или сам выключается, также многие утверждали, что
+                            спустя несколько дней начинает хрипеть динамик).
+                        </p>
+                    </div>
+
+                    <div class="reviewsText">
+                        <span class="reviewsText__mark">−</span>
+                        <p class="reviewsText__par">
+                            Единственный существенный недостаток данного девайса - это слабая батарея. Телефон действительно садиться очень быстро. При активном использовании (интернет, тяжелые игры, звонки) батарея еле доживает до конца дня, но для меня это не такая уж большая проблема.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviewsBox">
+                <div class="reviewsBox__left">
+                    <div class="reviews">
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
+                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/starEmpty.png" />
+                    </div>
+
+                    <div class="reviewsName">Кунаев Егор</div>
+
+                    <div class="reviewsDate">15 июня 2013</div>
+                </div>
+
+                <div class="reviewsBox__right">
+                    <div class="reviewsText">
+                        <span class="reviewsText__mark">«</span>
+                        <p class="reviewsText__par">
+                            В общем приобретением доволен, для меня в htc one s есть все, что нужно и работает он просто отлично. Тем более за такую цену.
+                        </p>
+                    </div>
+
+                    <div class="reviewsText">
+                        <span class="reviewsText__mark">+</span>
+                        <p class="reviewsText__par">
+                            Купил данный телефон примерно 3 недели назад. Начитался комментариев, что у телефона довольно много косяков (очень часто писали, что телефон просто перестает работать или сам выключается, также многие утверждали, что
+                            спустя несколько дней начинает хрипеть динамик).
+                        </p>
+                    </div>
+
+                    <div class="reviewsText">
+                        <span class="reviewsText__mark">−</span>
+                        <p class="reviewsText__par">
+                            Единственный существенный недостаток данного девайса - это слабая батарея. Телефон действительно садиться очень быстро. При активном использовании (интернет, тяжелые игры, звонки) батарея еле доживает до конца дня, но для меня это не такая уж большая проблема.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ Таб - Отзывы -->
+    </div>
+
+    <div class="contentBox960" id="accessoriesTab">
+        <div class="tabTitle clearfix">
+            <div class="tabTitle__text">Аксессуары</div>
+        </div>
+    </div>
+
+    <div class="contentBox940">
+        <!-- Таб - Аксессуары -->
+        <div class="sliderCat clearfix">
+            <div class="sliderCatWrap">
+                <ul class="sliderCatList">
+                    <li class="sliderCatList__item">Популярные аксессуары<li>
+                    <li class="sliderCatList__item">Чехлы для iPhone<li>
+                    <li class="sliderCatList__item">Зарядные устройства<li>
+                    <li class="sliderCatList__item">Автомобильные аксессуары для телефоновv
+                    <li class="sliderCatList__item">Чехлы, кейсы и декор для телефонов<li>
+                    <li class="sliderCatList__item">Защитные пленки для телефонов<li>
+                    <li class="sliderCatList__item">Наушники<li>
+                    <li class="sliderCatList__item">Аккумуляторы <li>
+                    <li class="sliderCatList__item">Популярные аксессуары<li>
+                    <li class="sliderCatList__item">Чехлы для iPhone<li>
+                    <li class="sliderCatList__item">Зарядные устройства<li>
+                    <li class="sliderCatList__item">Автомобильные аксессуары для телефоновv
+                    <li class="sliderCatList__item">Чехлы, кейсы и декор для телефонов<li>
+                    <li class="sliderCatList__item">Защитные пленки для телефонов<li>
+                    <li class="sliderCatList__item">Наушники<li>
+                    <li class="sliderCatList__item">Аккумуляторы <li>
+                </ul>
+            </div>
+
+            <div class="sliderBox">
+                <div class="sliderBox__btnLeft"></div>
+
+                <div class="sliderBox__inner">
+                    <ul class="sliderBoxItems">
+                        <li class="sliderBoxItems__item">
+                            <a class="productDesc" href="">
+                                <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                                <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                            </a>
+                            <div class="productPrice">1 999 р</div>
+                            <a href="" class="productBuy btnBuy">Купить</a>
+                        </li>
+
+                        <li class="sliderBoxItems__item">
+                            <a class="productDesc" href="">
+                                <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                                <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                            </a>
+                            <div class="productPrice">1 999 р</div>
+                            <a href="" class="productBuy btnBuy">Купить</a>
+                        </li>
+
+                        <li class="sliderBoxItems__item">
+                            <a class="productDesc" href="">
+                                <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                                <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                            </a>
+                            <div class="productPrice">1 999 р</div>
+                            <a href="" class="productBuy btnBuy">Купить</a>
+                        </li>
+
+                        <li class="sliderBoxItems__item">
+                            <a class="productDesc" href="">
+                                <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                                <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                            </a>
+                            <div class="productPrice">1 999 р</div>
+                            <a href="" class="productBuy btnBuy">Купить</a>
+                        </li>
+
+                        <li class="sliderBoxItems__item">
+                            <a class="productDesc" href="">
+                                <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                                <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                            </a>
+                            <div class="productPrice">1 999 р</div>
+                            <a href="" class="productBuy btnBuy">Купить</a>
+                        </li>
+
+                        <li class="sliderBoxItems__item">
+                            <a class="productDesc" href="">
+                                <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                                <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                            </a>
+                            <div class="productPrice">1 999 р</div>
+                            <a href="" class="productBuy btnBuy">Купить</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sliderBox__trans"></div>
+
+                <div class="sliderBox__btnRight"></div>
+            </div>
+        </div>
+        <!--/ Таб - Аксессуары -->
+    </div>
+
+    <div class="contentBox960" id="alsoTab">
+        <div class="tabTitle clearfix">
+            <div class="tabTitle__text">С этим товаром покупают</div>
+        </div>
+    </div>
+
+    <div class="contentBox940">
+        <!-- Таб - С этим товаром покупают -->
+        <div class="sliderBox">
+            <div class="sliderBox__btnLeft"></div>
+
+            <div class="sliderBox__inner">
+                <ul class="sliderBoxItems">
+                    <li class="sliderBoxItems__item">
+                        <a class="productDesc" href="">
+                            <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                            <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                        </a>
+                        <div class="productPrice">1 999 р</div>
+                        <a href="" class="productBuy btnBuy">Купить</a>
+                    </li>
+
+                    <li class="sliderBoxItems__item">
+                        <a class="productDesc" href="">
+                            <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                            <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                        </a>
+                        <div class="productPrice">1 999 р</div>
+                        <a href="" class="productBuy btnBuy">Купить</a>
+                    </li>
+
+                    <li class="sliderBoxItems__item">
+                        <a class="productDesc" href="">
+                            <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                            <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                        </a>
+                        <div class="productPrice">1 999 р</div>
+                        <a href="" class="productBuy btnBuy">Купить</a>
+                    </li>
+
+                    <li class="sliderBoxItems__item">
+                        <a class="productDesc" href="">
+                            <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                            <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                        </a>
+                        <div class="productPrice">1 999 р</div>
+                        <a href="" class="productBuy btnBuy">Купить</a>
+                    </li>
+
+                    <li class="sliderBoxItems__item">
+                        <a class="productDesc" href="">
+                            <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                            <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                        </a>
+                        <div class="productPrice">1 999 р</div>
+                        <a href="" class="productBuy btnBuy">Купить</a>
+                    </li>
+
+                    <li class="sliderBoxItems__item">
+                        <a class="productDesc" href="">
+                            <img class="productDesc__img" src="http://fs10.enter.ru/1/1/120/b5/158280.jpg" />
+                            <span class="productDesc__name">Планшетный компьютер Digma Plane TT702M 7.0" </span>
+                        </a>
+                        <div class="productPrice">1 999 р</div>
+                        <a href="" class="productBuy btnBuy">Купить</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sliderBox__trans"></div>
+
+            <div class="sliderBox__btnRight"></div>
+        </div>
+        <!--/ Таб - С этим товаром покупают -->
+    </div>
+</div><!--/ Контент -->

@@ -34,9 +34,13 @@
 </head>
 <body>
     <div class="wrapper">
+        {{>partial/header}}
 
+        {{#content}}
+            {{>content}}
+        {{/content}}
     </div><!--/ Оболочка -->
 
-    {{> partial/footer }}
+    {{>partial/footer}}
 </body>
 </html>

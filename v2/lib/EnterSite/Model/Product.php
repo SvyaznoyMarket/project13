@@ -11,11 +11,15 @@ class Product {
     /** @var string */
     public $id;
     /** @var string */
+    public $article;
+    /** @var string */
     public $name;
     /** @var string */
     public $token;
     /** @var string */
     public $link;
+    /** @var string */
+    public $description;
     /** @var bool */
     public $isBuyable;
     /** @var bool */
@@ -66,9 +70,11 @@ class Product {
      */
     public function import(array $data) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('article', $data)) $this->article = (string)$data['article'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
+        if (array_key_exists('description', $data)) $this->description = (string)$data['description'];
 
         $this->isBuyable = isset($data['state']['is_buyable']) && (bool)$data['state']['is_buyable'];
         $this->calculateState(isset($data['stock'][0]) ? $data['stock'] : []);
