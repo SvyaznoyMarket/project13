@@ -217,6 +217,10 @@
 		width: 281px;
 		height: 280px;
 		.transition(opacity 0.4s ease-in-out);
+		-webkit-perspective: 1000; 
+		-webkit-backface-visibility: hidden; 
+		-webkit-tap-highlight-color: rgba(255,255,255,0);
+		outline: none;
 		z-index: 15;
 
 		&.mPink {
@@ -235,7 +239,7 @@
         display: block;
 
         width: 94px;
-        height: 20px;
+        height: 25px;
 
         text-align: center;
 
@@ -243,11 +247,15 @@
         border: 1px solid #fb9c00;
 
         font-size: 14px;
-        line-height: 20px;
-        bottom: 17px;
-		left: 94px;
+        line-height: 25px;
+        bottom: 15px;
+		left: 92px;
 		.opacity(0);
 		.transition(opacity 0.2s ease-in-out);
+		-webkit-perspective: 1000; 
+		-webkit-backface-visibility: hidden; 
+		-webkit-tap-highlight-color: rgba(255,255,255,0);
+		outline: none;
 
 		&:hover {
 			.gradient(#ffa200, #f79200, #ffa200);
@@ -345,7 +353,6 @@
 		vertical-align: top;
 		padding: 4px 17px;
 		height: 33px;
-		line-height: 33px;
 
 		*display: inline;
 		zoom: 1;
@@ -479,4 +486,26 @@
 		    top: -8px;
 		}
 	}
+}
+
+.enterprizeAuthBox {
+
+	&__title {
+		background: url("@{base-url}/enterPrize/img/bgLogo.gif") no-repeat 0 0;
+		text-transform: uppercase;
+		font-size: 24px;
+		padding-left: 280px;
+		line-height: 88px;
+		font-weight: bold;
+	}
+
+	&__form {
+		width: 330px;
+		margin: 20px auto 0;
+	}
+}
+
+.enterprizeWar {
+	margin: 0 0 10px 25px;
+	font-weight: bold;
 }

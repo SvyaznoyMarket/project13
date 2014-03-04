@@ -68,6 +68,12 @@
 		forgotValidator = new FormValidator(forgotPwdValidationConfig);
 	// end of vars
 
+	ENTER.utils.signinValidationConfig = signinValidationConfig;
+	ENTER.utils.signinValidator = signinValidator;
+	ENTER.utils.registerValidationConfig = registerValidationConfig;
+	ENTER.utils.registerValidator = registerValidator;
+	ENTER.utils.forgotPwdValidationConfig = forgotPwdValidationConfig;
+	ENTER.utils.forgotValidator = forgotValidator;
 
 	/**
 	 * Класс по работе с окном входа на сайт
@@ -93,7 +99,6 @@
 
 			body.on('click', '.registerAnotherWayBtn', $.proxy(this.registerAnotherWay, this));
 			body.on('click', '.bAuthLink', this.openAuth);
-			body.on('click', '.jsEnterprizeAuthLink', $.proxy(this.enterprizeAuthLinkClick, this));
 			$('.jsLoginForm, .jsRegisterForm, .jsResetPwdForm').data('redirect', true).on('submit', $.proxy(this.formSubmit, this));
 			body.on('click', '.jsForgotPwdTrigger, .jsRememberPwdTrigger', this.forgotFormToggle);
 			body.on('click', '#bUserlogoutLink', this.logoutLinkClickLog);
@@ -272,39 +277,43 @@
 		 * @public
 		 */
 		Login.prototype.openAuth = function() {
+			var
+				/**
+				 * При закрытии попапа убераем ошибки с полей
+				 */
+				removeErrors = function() {
+					var
+						validators = ['signin', 'register', 'forgot'],
+						validator,
+						config,
+						self,
+						i, j;
+					// end of vars
+
+					for (j in validators) {
+						validator = eval(validators[j] + 'Validator');
+						config = eval(validators[j] + 'ValidationConfig');
+
+						if ( !config || !config.fields || !validator ) {
+							continue;
+						}
+
+						for (i in config.fields) {
+							self = config.fields[i].fieldNode;
+							self && validator._unmarkFieldError(self);
+						}
+					}
+				};
+			// end of functions
+
 			authBlock.lightbox_me({
 				centered: true,
 				autofocus: true,
 				onLoad: function() {
 					authBlock.find('input:first').focus();
-				}
+				},
+				onClose: removeErrors
 			});
-
-			return false;
-		};
-
-		/**
-		 * Обработчик клика на ссылку получения купона для неавторизированного пользователя
-		 *
-		 * @param e
-		 * @public
-		 */
-		Login.prototype.enterprizeAuthLinkClick = function( e ) {
-			e.preventDefault();
-
-			var
-				elementClicked = $(e.target),
-				authLink = elementClicked.hasClass('jsEnterprizeAuthLink') ? elementClicked : elementClicked.parents('.jsEnterprizeAuthLink')/*(elementClicked.parents('.jsEnterprizeAuthLink').length ? elementClicked.parents('.jsEnterprizeAuthLink').get(0) : null)*/,
-				link = authLink.attr('href');
-			// end of vars
-
-			// устанавливаем редирект
-			if ( link ) {
-				this.redirect_to = link;
-			}
-
-			// показываем попап
-			this.openAuth();
 
 			return false;
 		};

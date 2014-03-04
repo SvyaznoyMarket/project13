@@ -12,10 +12,10 @@
 <div class="titleForm">Подтверди номер мобильного</div>
 
 <? if ($error): ?>
-    <p class="red"><?= $error ?></p>
+    <p class="red enterprizeWar"><?= $error ?></p>
 <? endif ?>
 <? if ($message): ?>
-    <p class="green"><?= $message ?></p>
+    <p class="green enterprizeWar"><?= $message ?></p>
 <? endif ?>
 
 <div class="enterprizeConfirm">
