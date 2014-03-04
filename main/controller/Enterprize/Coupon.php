@@ -105,7 +105,8 @@ class Coupon {
                 }
 
                 \App::session()->set('flash', ['errors' => $errors]);
-                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]));
+//                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]));
+                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.fail'));
 
             } else {
                 \App::session()->set('flash', ['errors' => $e->getMessage()]);
