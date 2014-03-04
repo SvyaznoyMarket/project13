@@ -495,7 +495,6 @@ class Action {
             $this->failResponseData($e, $responseData);
         }
 
-        //p($responseData,'new','f');
         return $responseData;
     }
 }
