@@ -32,6 +32,9 @@ class FormAction {
         $data = array_merge($session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
         $session->set($sessionName, $data);
 
+        $flash = $session->get('flash');
+        $session->remove('flash');
+
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
         if ($enterprizeToken) {
@@ -48,6 +51,7 @@ class FormAction {
         $page = new \View\Enterprize\FormPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('form', $this->getForm());
+        $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
 
         return new \Http\Response($page->show());
     }
@@ -108,6 +112,7 @@ class FormAction {
                 $errorContent = $e->getContent();
                 $detail = isset($errorContent['detail']) && is_array($errorContent['detail']) ? $errorContent['detail'] : [];
 
+                $errors = [];
                 foreach ($detail as $fieldName => $errors) {
                     foreach ($errors as $errorType => $errorMess) {
                         switch ($fieldName) {
@@ -150,9 +155,12 @@ class FormAction {
 //                            $message .= ': ' . print_r($errorMess, true);
 //                        }
 
+                        $errors[$fieldName] = $message;
                         $form->setError($fieldName, $message);
                     }
                 }
+
+                \App::session()->set('flash', ['errors' => $errors]);
             }
         }
 

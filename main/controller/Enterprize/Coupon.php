@@ -14,6 +14,7 @@ class Coupon {
         }
 
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
+        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         $form = new \View\Enterprize\Form();
         $form->fromArray($data);
@@ -54,57 +55,57 @@ class Coupon {
                 }
 
             // Ошибка валидации
-//            } elseif (600 == $e->getCode()) {
-//                $errors = [];
-//                foreach ($detail as $fieldName => $errors) {
-//                    foreach ($errors as $errorType => $errorMess) {
-//                        switch ($fieldName) {
-//                            case 'name':
-//                                if ('isEmpty' === $errorType) {
-//                                    $message = 'Не заполнено имя';
-//                                } else {
-//                                    $message = 'Некорректно введено имя';
-//                                }
-//                                break;
-//                            case 'mobile':
-//                                if ('isEmpty' === $errorType) {
-//                                    $message = 'Не заполнен номер телефона';
-//                                } elseif ('regexNotMatch' === $errorType) {
-//                                    $message = 'Некорректно введен номер телефона';
-//                                }
-//                                break;
-//                            case 'email':
-//                                if ('isEmpty' === $errorType) {
-//                                    $message = 'Не заполнен E-mail';
-//                                } else {
-//                                    $message = 'Некорректно введен E-mail';
-//                                }
-//                                break;
-//                            case 'guid':
-//                                if ('isEmpty' === $errorType) {
-//                                    $message = 'Не передан идентификатор серии купона';
-//                                } else {
-//                                    $message = 'Невалидный идентификатор серии купона';
-//                                }
-//                                break;
-//                            case 'agree':
-//                                $message = 'Необходимо согласие';
-//                                break;
-//                            default:
-//                                $message = 'Неизвестная ошибка';
+            } elseif (600 == $e->getCode()) {
+                $errors = [];
+                foreach ($detail as $fieldName => $errors) {
+                    foreach ($errors as $errorType => $errorMess) {
+                        switch ($fieldName) {
+                            case 'name':
+                                if ('isEmpty' === $errorType) {
+                                    $message = 'Не заполнено имя';
+                                } else {
+                                    $message = 'Некорректно введено имя';
+                                }
+                                break;
+                            case 'mobile':
+                                if ('isEmpty' === $errorType) {
+                                    $message = 'Не заполнен номер телефона';
+                                } elseif ('regexNotMatch' === $errorType) {
+                                    $message = 'Некорректно введен номер телефона';
+                                }
+                                break;
+                            case 'email':
+                                if ('isEmpty' === $errorType) {
+                                    $message = 'Не заполнен E-mail';
+                                } else {
+                                    $message = 'Некорректно введен E-mail';
+                                }
+                                break;
+                            case 'guid':
+                                if ('isEmpty' === $errorType) {
+                                    $message = 'Не передан идентификатор серии купона';
+                                } else {
+                                    $message = 'Невалидный идентификатор серии купона';
+                                }
+                                break;
+                            case 'agree':
+                                $message = 'Необходимо согласие';
+                                break;
+                            default:
+                                $message = 'Неизвестная ошибка';
+                        }
+
+//                        if (\App::config()->debug) {
+//                            $message .= ': ' . print_r($errorMess, true);
 //                        }
-//
-////                        if (\App::config()->debug) {
-////                            $message .= ': ' . print_r($errorMess, true);
-////                        }
-//
-//                        $errors[$fieldName] = $message;
-//                        $form->setError($fieldName, $message);
-//                    }
-//                }
-//
-//                \App::session()->set('flash', ['errors' => $errors]);
-//                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.fail'));
+
+                        $errors[$fieldName] = $message;
+                        $form->setError($fieldName, $message);
+                    }
+                }
+
+                \App::session()->set('flash', ['errors' => $errors]);
+                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]));
 
             } else {
                 \App::session()->set('flash', ['errors' => $e->getMessage()]);
