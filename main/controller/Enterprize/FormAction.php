@@ -31,6 +31,9 @@ class FormAction {
             ]);
         }
 
+        $data = array_merge($session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
+        $session->set($sessionName, $data);
+
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
         if ($enterprizeToken) {
@@ -68,6 +71,9 @@ class FormAction {
 
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
+
+        $data = $session->get($sessionName, []);
+        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!isset($userData['subscribe'])) {
             $form->setError('subscribe', 'Необходимо согласие');
@@ -156,13 +162,14 @@ class FormAction {
 
         if ($form->isValid()) {
             // Запоминаем данные enterprizeForm
-            $session->set($sessionName, [
+            $data = array_merge($data, [
                 'name'             => $form->getName(),
                 'email'            => $form->getEmail(),
                 'mobile'           => $form->getMobile(),
                 'isPhoneConfirmed' => isset($result['mobile_confirmed']) ? $result['mobile_confirmed'] : false,
                 'isEmailConfirmed' => isset($result['email_confirmed']) ? $result['email_confirmed'] : false,
             ]);
+            $session->set($sessionName, $data);
 
             $userToken = !empty($result['token']) ? $result['token'] : null;
             $data = $session->get($sessionName, []);
@@ -171,7 +178,7 @@ class FormAction {
                 $link = \App::router()->generate('enterprize.create');
             } elseif ($data['isPhoneConfirmed']) {
                 // просим подтвердит email
-                $link = \App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]);
+                $link = \App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $enterprizeToken]);
                 try {
                     if (!isset($data['email']) || empty($data['email'])) {
                         throw new \Exception('Не получен email');
@@ -197,7 +204,7 @@ class FormAction {
                 }
             } else {
                 // просим подтвердить телефон
-                $link = \App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]);
+                $link = \App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $enterprizeToken]);
                 try {
                     if (!isset($data['mobile']) || empty($data['mobile'])) {
                         throw new \Exception('Не получен мобильный телефон');
@@ -232,15 +239,15 @@ class FormAction {
                 : new \Http\RedirectResponse($link);
 
             // авторизовываем пользователя
-            if ($userToken && !\App::user()->getEntity()) {
-                $user = \RepositoryManager::user()->getEntityByToken($result['token']);
-                if ($user) {
-                    $user->setToken($result['token']);
-                    \App::user()->signIn($user, $response);
-                } else {
-                    \App::logger()->error(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
-                }
-            }
+//            if ($userToken && !\App::user()->getEntity()) {
+//                $user = \RepositoryManager::user()->getEntityByToken($result['token']);
+//                if ($user) {
+//                    $user->setToken($result['token']);
+//                    \App::user()->signIn($user, $response);
+//                } else {
+//                    \App::logger()->error(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
+//                }
+//            }
 
         } else {
             $formErrors = [];
@@ -258,7 +265,7 @@ class FormAction {
         }
 
         return $response ? $response
-            : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $form->getEnterprizeCoupon()]));
+            : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]));
     }
 
     /**

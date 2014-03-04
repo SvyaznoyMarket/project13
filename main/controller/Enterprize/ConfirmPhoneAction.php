@@ -26,10 +26,14 @@ class ConfirmPhoneAction {
         }
 
         $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
         $flash = $session->get('flash');
         $error = !empty($flash['error']) ? $flash['error'] : null;
         $message = !empty($flash['message']) ? $flash['message'] : null;
         $session->remove('flash');
+
+        $data = array_merge($session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
+        $session->set($sessionName, $data);
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
@@ -67,11 +71,11 @@ class ConfirmPhoneAction {
         }
 
         $client = \App::coreClientV2();
+        $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
+        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         $response = null;
         try {
-            $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
-
             if (!isset($data['mobile']) || empty($data['mobile'])) {
                 throw new \Exception('Не получен мобильный телефон');
             }
@@ -98,7 +102,7 @@ class ConfirmPhoneAction {
             \App::session()->set('flash', ['error' => $e->getMessage()]);
         }
 
-        return new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $request->get('enterprizeToken', null)]));
+        return new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $enterprizeToken]));
     }
 
     /**
@@ -112,11 +116,13 @@ class ConfirmPhoneAction {
         }
 
         $client = \App::coreClientV2();
+        $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        $data = $session->get($sessionName, []);
+        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         $response = null;
         try {
-            $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
-
             $code = $request->get('code', null);
             if (!(bool)$code) {
                 throw new \Exception('Не получен код');
@@ -141,15 +147,16 @@ class ConfirmPhoneAction {
             \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/mobile']);
 
             // обновление сессионной формы
-            $data['isPhoneConfirmed'] = true;
-            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], $data);
+            $data = array_merge($data, ['isPhoneConfirmed' => true]);
+            $session->set($sessionName, $data);
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.create'));
+            $response = (new \Controller\Enterprize\Coupon())->create($request);
 
         } catch (\Exception $e) {
             \App::exception()->remove($e);
             \App::session()->set('flash', ['error' => $e->getMessage()]);
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $request->get('enterprizeToken', null)]));
+
+            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $enterprizeToken]));
         }
 
         return $response;
