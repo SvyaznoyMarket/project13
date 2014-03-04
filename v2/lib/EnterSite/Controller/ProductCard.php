@@ -10,7 +10,7 @@ use EnterSite\MustacheRendererTrait;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
-//use EnterSite\Model\Page\ProductCard as Page;
+use EnterSite\Model\Page\ProductCard as Page;
 
 class ProductCard {
     use ConfigTrait;
@@ -73,8 +73,11 @@ class ProductCard {
 
         // запрос аксессуаров товара
         // TODO: группировка аксессуаров по категориям
-        $accessoryListQuery = new Query\Product\GetListByIdList(array_slice($product->accessoryIds, 0, $config->product->itemsInSlider), $region);
-        $curl->prepare($accessoryListQuery);
+        $accessoryListQuery = null;
+        if ((bool)$product->accessoryIds) {
+            $accessoryListQuery = new Query\Product\GetListByIdList(array_slice($product->accessoryIds, 0, $config->product->itemsInSlider), $region);
+            $curl->prepare($accessoryListQuery);
+        }
 
         $curl->execute(1, 2);
 
@@ -109,8 +112,18 @@ class ProductCard {
         }
 
         // аксессуары
-        $productRepository->setAccessoryRelationForObjectListByQuery([$product->id => $product], $accessoryListQuery);
+        if ($accessoryListQuery) {
+            $productRepository->setAccessoryRelationForObjectListByQuery([$product->id => $product], $accessoryListQuery);
+        }
 
-        die(var_dump($product));
+        // запрос для получения страницы
+        $pageRequest = new Repository\Page\ProductCard\Request();
+        $pageRequest->region = $region;
+        $pageRequest->product = $product;
+
+        // страница
+        $page = new Page();
+        (new Repository\Page\ProductCard())->buildObjectByRequest($page, $pageRequest);
+        die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

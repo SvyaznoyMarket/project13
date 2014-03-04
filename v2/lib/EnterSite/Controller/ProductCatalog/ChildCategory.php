@@ -140,8 +140,8 @@ class ChildCategory {
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\ChildCategory\Request();
-        $pageRequest->mainMenuList = $mainMenuList;
         $pageRequest->region = $region;
+        $pageRequest->mainMenuList = $mainMenuList;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->requestFilters = $requestFilters;
         $pageRequest->sorting = $sorting;
