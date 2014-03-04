@@ -2,80 +2,41 @@
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 <head>
+    <meta charset="utf-8">
     <title>{{title}}</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="robots" content="noyaca"/>
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="cleartype" content="on">
 
-    <script type="text/javascript">
-        window.htmlStartTime = new Date().getTime();
-        document.documentElement.className = document.documentElement.className.replace("no-js","js");
-    </script>
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/v2/img/touch/apple-touch-icon-144x144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/v2/img/touch/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/v2/img/touch/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/v2/img/touch/apple-touch-icon-57x57-precomposed.png">
+    <link rel="shortcut icon" href="/v2/img/touch/apple-touch-icon.png">
 
-    {{!> meta}}
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/v2/img/touch/apple-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#222222">
 
-    <link rel="shortcut icon" href="/favicon.ico"/>
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="yes">
 
-    <meta name="viewport" content="width=1000" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="HandheldFriendly" content="true" />
-
-    {{> partial/style }}
-    {{!> headJavascript }}
-    {{!> relLink }}
-    {{!> googleAnalytics }}
-    {{!> kissMetrics }}
-    {{!> metaOg }}
+    <link rel="stylesheet" href="/v2/css/global.css">
+    <script src="/v2/js/vendor/jquery-1.8.3.min.js"></script>
+    <script src="/v2/js/vendor/html5.js"></script>
+    <script src="/v2/js/main.js"></script>
 </head>
+<body>
+    <div class="wrapper">
 
-<body class="{{bodyClassAttribute}}" data-template="{{bodyDataAttribute}}" data-id="{{id}}"{{#config.debug}} data-debug=true{{/config.debug}}>
-    {{!> config }}
-
-    {{!> adfoxBackground }}
-
-    <div class="wrapper{{#wrapperClass}} {{wrapperClass}}{{/wrapperClass}}"{{#wrapperItemAttribute}} {{wrapperItemAttribute}}{{/wrapperItemAttribute}}>
-        {{#header}}
-        <header class="header">
-            {{> partial/header }}
-        </header><!--/ Шапка-->
-        {{/header}}
-
-        <div class="content clearfix">
-            {{!> contentHead }}
-            {{#content }}
-                {{> content }}
-            {{/content }}
-        </div><!--/ Контент-->
-    </div><!--/ Шаблон -->
+    </div><!--/ Оболочка -->
 
     {{> partial/footer }}
-
-    <a id="upper" class="upper" href="#">Наверх</a>
-
-    {{!> userbar }}
-    {{!> surveybar }}
-    {{!> auth }}
-    {{!> regionSelection }}
-
-    <div style="position:absolute; height: 0; top:0; z-index:-1;">
-        {{!> bodyJavascript }}
-        {{!> innerJavascript }}
-        {{!> yandexMetrika }}
-        {{!> advanceSeoCounter }}
-        {{!> myThings }}
-        {{!> adriver }}
-        {{!> partnerCounter }}
-        {{> partial/bodyJavascript }}
-
-        {{#config.analytics.enabled}}
-            <div id="adblenderCommon" class="jsanalytics"></div>
-        {{/config.analytics.enabled}}
-    </div>
 </body>
 </html>

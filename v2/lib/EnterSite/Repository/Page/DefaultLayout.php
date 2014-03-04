@@ -16,8 +16,9 @@ class DefaultLayout {
      * @param DefaultLayout\Request $request
      */
     public function buildObjectByRequest(Page $page, DefaultLayout\Request $request) {
-        $page->styles[] = '/css/global.min.css';
-        $page->styles[] = '/styles/global.min.css';
+        $page->styles[] = '/v2/css/global.css';
+
+        $page->title = 'Enter - все товары для жизни по интернет ценам!';
 
         // TODO: вынести в parent-класс
         if ($request->region) {

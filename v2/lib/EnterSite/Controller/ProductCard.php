@@ -18,6 +18,11 @@ class ProductCard {
         ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait;
     }
 
+    /**
+     * @param Http\Request $request
+     * @return Http\Response
+     * @throws \Enter\Exception\PermanentlyRedirect
+     */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
@@ -124,6 +129,18 @@ class ProductCard {
         // страница
         $page = new Page();
         (new Repository\Page\ProductCard())->buildObjectByRequest($page, $pageRequest);
-        die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+        // рендер
+        $renderer = $this->getRenderer();
+        $renderer->setPartials([
+            'content' => 'page/product-card/content',
+        ]);
+        $content = $renderer->render('layout/default', $page);
+
+        // http-ответ
+        $response = new Http\Response($content);
+
+        return $response;
     }
 }
