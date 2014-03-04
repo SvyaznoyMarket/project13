@@ -26,7 +26,9 @@ class ConfirmEmailAction {
         }
 
         $session = \App::session();
-        $error = $session->get('flash');
+        $flash = $session->get('flash');
+        $error = !empty($flash['error']) ? $flash['error'] : null;
+        $message = !empty($flash['message']) ? $flash['message'] : null;
         $session->remove('flash');
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
@@ -45,6 +47,7 @@ class ConfirmEmailAction {
         $page = new \View\Enterprize\ConfirmEmailPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('error', $error);
+        $page->setParam('message', $message);
 
         return new \Http\Response($page->show());
     }
@@ -77,7 +80,7 @@ class ConfirmEmailAction {
                 'confirm/email',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
-                    'token'     => 'ADEE70AD-96D7-48DB-88E8-FAC2FDC27DAA',//\App::user()->getToken(),
+                    'token'     => \App::user()->getToken(),
                 ],
                 [
                     'email'    => $data['email'],
@@ -88,20 +91,24 @@ class ConfirmEmailAction {
             \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/email']);
 
             // обновление сессионной формы
-            $data['isEmailConfirmed'] = true;
-            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], $data);
+//            $data['isEmailConfirmed'] = true;
+//            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], $data);
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.create'));
+            //$response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.create'));
+
+            if ($request->get('isRepeatRending', false)) {
+                \App::session()->set('flash', ['message' => 'Письмо повторно отправлено']);
+            }
 
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
-
-            \App::session()->set('flash', $e->getMessage());
-            $enterprizeToken = $request->get('enterprizeToken', null);
-            $response = $this->show($request, $enterprizeToken);
+            \App::session()->set('flash', ['error' => $e->getMessage()]);
+//            $enterprizeToken = $request->get('enterprizeToken', null);
+//            $response = $this->show($request, $enterprizeToken);
         }
 
-        return $response;
+        return new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $request->get('enterprizeToken', null)]));
+        //return $response;
     }
 
     /**

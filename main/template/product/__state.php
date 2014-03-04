@@ -11,6 +11,9 @@ return function(
     <link itemprop="availability" href="http://schema.org/InStoreOnly" />
 <? else: ?>
     <link itemprop="availability" href="http://schema.org/OutOfStock" />
+    <?php if ( $product->getMainCategory() && 'Tchibo' == $product->getMainCategory()->getName() ) { ?>
+        <div class="OutStock">Нет в наличии</div>
+    <? } ?>
 <? endif ?>
 
 <? };

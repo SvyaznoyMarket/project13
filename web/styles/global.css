@@ -2075,17 +2075,6 @@ img[height="0"] {
     position: relative;
     margin-right: 26px;
   }
-  .enterPrize__list__item.mBlue .cuponImg {
-    background-image: url("/styles/enterPrize/img/bgBlue.png");
-  }
-  .enterPrize__list__item.mPink .cuponImg {
-    background-image: url("/styles/enterPrize/img/bgPink.png");
-    background-position: -1px 0;
-  }
-  .enterPrize__list__item.mGreen .cuponImg {
-    background-image: url("/styles/enterPrize/img/bgGreen.png");
-    background-position: -2px 0;
-  }
   .enterPrize__list__item:hover {
     z-index: 20;
   }
@@ -2226,11 +2215,9 @@ img[height="0"] {
     padding: 10px;
   }
   .enterPrize.mPrivate .enterPrize__list {
-    height: 243px;
     position: absolute;
     right: 0;
-    top: -80px;
-    width: 247px;
+    top: -63px;
   }
   .enterPrize.mPrivate .enterPrize__logo {
     margin: -40px 0 0;
@@ -2245,15 +2232,6 @@ img[height="0"] {
     font-size: 16px;
     margin: 13px 0;
   }
-  .enterPrize.mPrivate .enterPrize__list__item {
-    height: 243px;
-    width: 247px;
-  }
-  .enterPrize.mPrivate .cuponImg {
-    background: url("/styles/enterPrize/img/fishka_orange_b.png") no-repeat 0 0;
-    height: 243px;
-    width: 247px;
-  }
   .enterPrize.mPrivate .enterPrize__logIn {
     font-size: 14px;
     margin: 0 0 0 15px;
@@ -2261,27 +2239,15 @@ img[height="0"] {
   .enterPrize.mPrivate .enterPrize__logIn a {
     text-decoration: underline;
   }
-  .enterPrize.mPrivate .cuponImg__inner {
-    height: 243px;
-    width: 247px;
-  }
-  .enterPrize.mPrivate .cuponDesc {
-    left: 23px;
-    top: 108px;
-    width: 184px;
-  }
-  .enterPrize.mPrivate .cuponPrice {
-    left: 0;
-    top: 133px;
-    width: 234px;
-  }
-  .enterPrize.mPrivate .cuponIco {
-    top: 40px;
-    width: 227px;
-  }
   .enterprizeConfirm {
     margin: 0 0 30px 25px;
     font-size: 14px;
+  }
+  .enterprizeConfirm .confirmForm {
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
   }
   .enterprizeConfirm .labelCode {
     margin: 0 5px 0 0;
@@ -2295,7 +2261,6 @@ img[height="0"] {
     vertical-align: top;
     padding: 4px 17px;
     height: 33px;
-    line-height: 33px;
     *display: inline;
     zoom: 1;
     margin: 0 5px;
@@ -2308,6 +2273,7 @@ img[height="0"] {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    margin: 0 0 0 5px;
     *display: inline;
     zoom: 1;
   }
@@ -2396,6 +2362,22 @@ img[height="0"] {
     left: 25px;
     padding: 0;
     top: -8px;
+  }
+  .enterprizeAuthBox__title {
+    background: url("/styles/enterPrize/img/bgLogo.gif") no-repeat 0 0;
+    text-transform: uppercase;
+    font-size: 24px;
+    padding-left: 280px;
+    line-height: 88px;
+    font-weight: bold;
+  }
+  .enterprizeAuthBox__form {
+    width: 330px;
+    margin: 20px auto 0;
+  }
+  .enterprizeWar {
+    margin: 0 0 10px 25px;
+    font-weight: bold;
   }
 }
 /*---END----Enter Prize---------*/
@@ -2811,6 +2793,9 @@ img[height="0"] {
 /*---END----TCHIBO - каталог разделов, баннеров, товаров Чибо---------*/
 /*---------TCHIBO - крутилка разделов Чибо на рутовой странице----------*/
 @media all {
+  .bPromoCatalog {
+    position: relative;
+  }
   .bPromoCatalogSlider.mTchiboSlider {
     margin: 0 0 30px;
     overflow: hidden;
@@ -2825,7 +2810,7 @@ img[height="0"] {
   }
   .bPromoCatalogSlider.mTchiboSlider .bPromoCatalogSliderWrap_eSlideLink {
     width: 940px;
-    height: 290px;
+    height: 380px;
   }
   .bPromoCatalogSlider.mTchiboSlider .bottomLifted {
     box-shadow: none;
@@ -2888,11 +2873,12 @@ img[height="0"] {
     padding-right: 0;
   }
   .bPaginator.mTchiboPaginator {
-    margin: -52px auto 0;
+    margin: 0 auto;
     text-align: center;
-    position: relative;
+    position: absolute;
     z-index: 10;
-    width: auto;
+    top: 340px;
+    width: 940px;
   }
   .bPaginator.mTchiboPaginator .bPaginatorSlider {
     display: none;
@@ -2902,6 +2888,12 @@ img[height="0"] {
     font-size: 0;
     width: auto !important;
     left: 0 !important;
+    padding: 8px 8px 8px 3px;
+    background: #4c4c4c;
+    background: rgba(0, 0, 0, 0.5);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
   }
   .bPaginator.mTchiboPaginator .bPaginator_eLink {
     text-indent: -99999px;
@@ -2916,6 +2908,21 @@ img[height="0"] {
   }
   .bPaginator.mTchiboPaginator .bPaginator_eLink.active {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpBRDlDQ0MzNzdFRjAxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpBRDlDQ0MzODdFRjAxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkFEOUNDQzM1N0VGMDExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkFEOUNDQzM2N0VGMDExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+bWnljgAAAHpJREFUeNpi/P//PwMIlJaW+gLZhUCmKQMEnGZkZOzv7u7eDOIwghQCFbUB6UoGLACouB2ouIqxpKQEZNImBjwAqNiPCWodXgBSw4TkJnzAlImBSABSeJoIdaeZQEFASBVIDfPRo0dv7d69mx3It8UTPNMZiQ1wgAADAP+QOxJntcUCAAAAAElFTkSuQmCC");
+  }
+  .bPromoCatalogProducts {
+    margin: 15px 0 0 30px;
+  }
+  .bPromoCatalogProducts .prodItem {
+    display: inline-block;
+    vertical-align: top;
+    width: 220px;
+    margin: 0 0 0 50px;
+    zoom: 1;
+    *display: inline-block;
+  }
+  .bPromoCatalogProducts .prodName {
+    color: #002c5b;
+    font-weight: bold;
   }
 }
 /*---END----TCHIBO - крутилка разделов Чибо на рутовой странице---------*/

@@ -1,10 +1,9 @@
 <div class="bPromoCatalogSliderWrap_eSlide">
-    <a class="bPromoCatalogSliderWrap_eSlideLink topLifted" href="<%=linkUrl%>">
-        <div class="bottomLifted">
-            <img src="<%=imgUrl%>" alt="<%=title%>"/>
-        </div>
+    <a class="bPromoCatalogSliderWrap_eSlideLink" href="<%=linkUrl%>">
+        <img src="<%=imgUrl%>" alt="<%=title%>"/>
     </a>
-    <div class="bPromoCatalogProducts">
+
+    <div class="bPromoCatalogProducts clearfix">
     <% for( var i = 0; i < products.length; i++ ) { %>
         <div class="prodItem">
             <a href="<%= products[ i ].link %>" title="<%= products[ i ].name %>">

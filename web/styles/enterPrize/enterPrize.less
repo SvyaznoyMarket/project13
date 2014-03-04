@@ -157,29 +157,6 @@
 			position: relative;
 			margin-right: 26px;
 
-			&.mBlue {
-
-				.cuponImg {
-					background-image: url("@{base-url}/enterPrize/img/bgBlue.png");
-				}
-			}
-
-			&.mPink {
-
-				.cuponImg {
-					background-image: url("@{base-url}/enterPrize/img/bgPink.png");
-					background-position: -1px 0;
-				}
-			}
-
-			&.mGreen {
-
-				.cuponImg {
-					background-image: url("@{base-url}/enterPrize/img/bgGreen.png");
-					background-position: -2px 0;
-				}
-			}
-
 			&:hover {
 				z-index: 20;
 
@@ -311,11 +288,9 @@
 		padding: 10px;
 
 		.enterPrize__list {
-			height: 243px;
 		    position: absolute;
 		    right: 0;
-		    top: -80px;
-		    width: 247px;
+		    top: -63px;
 		}
 
 		.enterPrize__logo {
@@ -333,17 +308,6 @@
 			margin: 13px 0;
 		}
 
-		.enterPrize__list__item {
-			height: 243px;
-		    width: 247px;
-		}
-
-		.cuponImg {
-			background: url("@{base-url}/enterPrize/img/fishka_orange_b.png") no-repeat 0 0;
-			height: 243px;
-		    width: 247px;
-		}
-
 		.enterPrize__logIn {
 			font-size: 14px;
     		margin: 0 0 0 15px;
@@ -352,34 +316,20 @@
     			text-decoration: underline;
     		}
 		}
-
-		.cuponImg__inner {
-			height: 243px;
-    		width: 247px;
-		}
-
-		.cuponDesc {
-		    left: 23px;
-		    top: 108px;
-		    width: 184px;
-		}
-
-		.cuponPrice {
-		    left: 0;
-		    top: 133px;
-		    width: 234px;
-		}
-
-		.cuponIco {
-		    top: 40px;
-		    width: 227px;
-		}
 	}
 }
 
 .enterprizeConfirm {
 	margin: 0 0 30px 25px;
 	font-size: 14px;
+
+	.confirmForm {
+		display: inline-block; 
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+	}
 
 	.labelCode {
 		margin: 0 5px 0 0;
@@ -395,7 +345,6 @@
 		vertical-align: top;
 		padding: 4px 17px;
 		height: 33px;
-		line-height: 33px;
 
 		*display: inline;
 		zoom: 1;
@@ -408,6 +357,7 @@
 		padding: 4px 17px;
 		border: 1px solid #F28900;
 		.rounded(4px);
+		margin: 0 0 0 5px;
 
 		*display: inline;
 		zoom: 1;
@@ -528,4 +478,26 @@
 		    top: -8px;
 		}
 	}
+}
+
+.enterprizeAuthBox {
+
+	&__title {
+		background: url("@{base-url}/enterPrize/img/bgLogo.gif") no-repeat 0 0;
+		text-transform: uppercase;
+		font-size: 24px;
+		padding-left: 280px;
+		line-height: 88px;
+		font-weight: bold;
+	}
+
+	&__form {
+		width: 330px;
+		margin: 20px auto 0;
+	}
+}
+
+.enterprizeWar {
+	margin: 0 0 10px 25px;
+	font-weight: bold;
 }

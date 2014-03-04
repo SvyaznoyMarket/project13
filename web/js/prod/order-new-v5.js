@@ -1245,6 +1245,7 @@
 				tempProduct = null,
 				tempProductArray = [],
 				dateFromCookie = null,
+				chooseDate = null,
 
 				len,
 				i;
@@ -1290,14 +1291,28 @@
 				console.info('PayPal ECS включен. Необходимо взять выбранную дату из cookie');
 
 				dateFromCookie = window.docCookies.getItem('chDate_paypalECS');
-				self.choosenDate( JSON.parse(dateFromCookie) );
+				chooseDate = JSON.parse(dateFromCookie);
 			}
 			else {
-				self.choosenDate( self.allDatesForBlock()[0] );
+				chooseDate = self.allDatesForBlock()[0];
+			}
+
+			console.log('Выбранная дата (chooseDate) ', chooseDate);
+			if ( true === chooseDate.avalible ) {
+				self.choosenDate( chooseDate );
+			}
+			else {
+				console.warn('Блок недоступен. Вычисление общей даты для продуктов в блоке невозможно. Выходим.');
+				return false;
+			}
+
+			if ( undefined === typeof(self.choosenDate().intervals) ) {
+				console.warn('В блоке нет интервалов. Вычисление даты невозможно. Выходим.');
+				return false;
 			}
 
 			/**
-			 * Человекочитаемы день недели
+			 * Человекочитаемый день недели
 			 */
 			self.choosenNameOfWeek( self._getFullNameDayOfWeek(self.choosenDate().dayOfWeek) );
 			/**
@@ -1331,13 +1346,17 @@
 			// end of vars
 			
 			/**
-			 * Проверка дат на разрывы  вчислах
+			 * Проверка дат на разрывы  в числах
 			 * Если меются разрывы в числах - заполнить пробелы датами
 			 */
 			for ( k = 0; k <= self.allDatesForBlock().length - 1; k++ ) {
 				if ( self.allDatesForBlock()[k + 1] === undefined ) {
 					console.info('Следущая дата последняя. заканчиваем цикл');
 					
+					break;
+				}
+				if ( k > 99 ) {
+					// Ограничение, дабы 100% не нарваться на вечный цикл
 					break;
 				}
 
@@ -1354,7 +1373,11 @@
 						day: tmpDate.getDate()
 					};
 
-					console.log('предыдущая дата была ' + new Date(self.allDatesForBlock()[k].value).getDate() + ' новая дата вклинилась ' + tmpDate.getDate() + ' следущая дата ' + new Date(self.allDatesForBlock()[k + 1].value).getDate());
+					console.log(
+						'предыдущая дата была ' + new Date(self.allDatesForBlock()[k].value).getDate() +
+						' новая дата вклинилась ' + tmpDate.getDate() +
+						' следущая дата ' + new Date(self.allDatesForBlock()[k + 1].value).getDate()
+					);
 					self.allDatesForBlock.splice(k + 1, 0, tmpDay);
 				}
 			}

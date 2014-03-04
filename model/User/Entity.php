@@ -62,8 +62,8 @@ class Entity {
     private $updatedAt;
     /** @var \Model\Region\Entity|null */
     private $city;
-    /** @var int */
-    private $enterprizeCoupon;
+    /** @var bool */
+    private $isEnterprizeMember;
     /** @var string */
     private $sclubCardnumber;
     /** @var bool */
@@ -99,7 +99,7 @@ class Entity {
         if (array_key_exists('added', $data)) $this->setCreatedAt($data['added'] ? new \DateTime($data['added']) : null);
         if (array_key_exists('updated', $data)) $this->setUpdatedAt($data['updated'] ? new \DateTime($data['updated']) : null);
         if (array_key_exists('geo', $data) && is_array($data['geo'])) $this->setCity(new \Model\Region\Entity($data['geo']));
-        if (array_key_exists('coupon_enter_prize', $data)) $this->setEnterprizeCoupon($data['coupon_enter_prize']);
+        if (array_key_exists('is_enter_prize_member', $data)) $this->setIsEnterprizeMember($data['is_enter_prize_member']);
         if (array_key_exists('svyaznoy_club_card_number', $data)) $this->setSclubCardnumber($data['svyaznoy_club_card_number']);
         if (array_key_exists('is_email_confirmed', $data)) $this->setIsEmailConfirmed($data['is_email_confirmed']);
         if (array_key_exists('is_phone_confirmed', $data)) $this->setIsPhoneConfirmed($data['is_phone_confirmed']);
@@ -521,15 +521,15 @@ class Entity {
     /**
      * @return int
      */
-    public function getEnterprizeCoupon() {
-        return $this->enterprizeCoupon;
+    public function isEnterprizeMember() {
+        return $this->isEnterprizeMember;
     }
 
     /**
-     * @param int $enterprizeCoupon
+     * @param int $isEnterprizeMember
      */
-    public function setEnterprizeCoupon($enterprizeCoupon) {
-        $this->enterprizeCoupon = (int)$enterprizeCoupon;
+    public function setIsEnterprizeMember($isEnterprizeMember) {
+        $this->isEnterprizeMember = (bool)$isEnterprizeMember;
     }
 
     /**
