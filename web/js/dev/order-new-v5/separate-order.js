@@ -117,7 +117,9 @@
 			}
 
 			if ( productsToNewBox.length ) {
-				choosenPointForBox = ( ENTER.OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? ENTER.OrderModel.choosenPoint() : 0;
+				choosenPointForBox = ( ENTER.OrderModel.orderDictionary.hasPointDelivery(nowState) ) ?
+					ENTER.OrderModel.choosenPoint() :
+					ENTER.OrderModel.orderDictionary.getDefaultPointId(nowState);
 
 				token = nowState+'_'+choosenPointForBox;
 
