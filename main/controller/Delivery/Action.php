@@ -253,7 +253,8 @@ class Action {
                                 if (!isset($productIdsByShop[$point['id']])) {
                                     $productIdsByShop[$point['id']] = [];
                                 }
-                                $productIdsByShop[$point['id']][] = $productId;
+                                //$productIdsByShop[$point['id']][] = $productId;
+                                $productIdsByShop[$point['id']][$deliveryMethod['token']] = $productId;
                             }
                         } else {
                             $points[] = $point;
@@ -336,7 +337,7 @@ class Action {
                     ];
                 }
                 // сортировка магазинов
-                if (14974 != $region->getId() && $region->getLatitude() && $region->getLongitude() && !empty($responseData['shops'])) {
+                if (\App::config()->region['defaultId'] != $region->getId() && $region->getLatitude() && $region->getLongitude() && !empty($responseData['shops'])) {
                     usort($responseData['shops'], function($a, $b) use (&$region) {
                         if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
                             return 0;
@@ -494,6 +495,7 @@ class Action {
             $this->failResponseData($e, $responseData);
         }
 
+        //p($responseData,'new','f');
         return $responseData;
     }
 }
