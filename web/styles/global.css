@@ -2364,6 +2364,18 @@ img[height="0"] {
     padding: 0;
     top: -8px;
   }
+  .enterprizeAuthBox__title {
+    background: url("/styles/enterPrize/img/bgLogo.gif") no-repeat 0 0;
+    text-transform: uppercase;
+    font-size: 24px;
+    padding-left: 280px;
+    line-height: 88px;
+    font-weight: bold;
+  }
+  .enterprizeAuthBox__form {
+    width: 330px;
+    margin: 20px auto 0;
+  }
 }
 /*---END----Enter Prize---------*/
 /*------TCHIBO - верхнее меню Чибо, под продуктовым меню------*/
