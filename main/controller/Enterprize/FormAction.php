@@ -262,18 +262,16 @@ class FormAction {
         $user = \App::user()->getEntity();
         $form = new \View\Enterprize\Form();
 
+        $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
+        $enterprizeToken = !empty($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+
         // пользователь авторизован, заполняем форму данными пользователя
         if ($user) {
             $form->fromEntity($user);
+            $form->setEnterprizeCoupon($enterprizeToken);
 
             // иначе, заполняем форму данными с сессии
         } else {
-            $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
-
-            if (!empty($data['enterprizeToken'])) {
-                $data = array_merge($data, ['guid' => $data['enterprizeToken']]);
-            }
-
             $form->fromArray($data);
         }
 
