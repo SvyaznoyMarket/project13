@@ -1,13 +1,13 @@
 <?php
 /**
  * @var $page            \View\DefaultLayout
- * @var $user            \Session\User
  * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity
  * @var $error           string
  * @var $message         string
  */
-
 ?>
+
+<? $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []) ?>
 
 <div class="titleForm">Подтверди e-mail</div>
 
@@ -19,7 +19,7 @@
     <? endif ?>
 
     <div class="enterprizeConfirm">
-        <p class="textConfirm">Мы отправили специальное письмо на  <strong><?//= $userEntity->getEmail() ?></strong></p>
+        <p class="textConfirm">Мы отправили специальное письмо на  <strong><?= isset($data['email']) ? $data['email'] : '' ?></strong></p>
 
         <p class="textConfirm">Ещё какой-то текст про то, почему письмо может не дойти, попасть в спам и т.д. Сайт рыбатекст поможет дизайнеру, верстальщику, вебмастеру сгенерировать несколько абзацев более менее осмысленного текста рыбы на русском ...</p>
 

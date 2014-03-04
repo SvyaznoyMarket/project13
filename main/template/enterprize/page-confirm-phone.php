@@ -1,7 +1,6 @@
 <?php
 /**
  * @var $page            \View\DefaultLayout
- * @var $user            \Session\User
  * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity
  * @var $error           string
  * @var $message         string

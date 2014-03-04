@@ -7,7 +7,7 @@ class ConfirmPhoneAction {
     /**
      * @param \Http\Request $request
      * @param null $enterprizeToken
-     * @return \Http\Response
+     * @return \Http\RedirectResponse|\Http\Response
      * @throws \Exception\NotFoundException
      */
     public function show(\Http\Request $request, $enterprizeToken = null) {
@@ -28,8 +28,6 @@ class ConfirmPhoneAction {
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
         $flash = $session->get('flash');
-        $error = !empty($flash['error']) ? $flash['error'] : null;
-        $message = !empty($flash['message']) ? $flash['message'] : null;
         $session->remove('flash');
 
         $data = array_merge($session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
@@ -50,14 +48,17 @@ class ConfirmPhoneAction {
 
         $page = new \View\Enterprize\ConfirmPhonePage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
-        $page->setParam('error', $error);
-        $page->setParam('message', $message);
+        $page->setParam('error', !empty($flash['error']) ? $flash['error'] : null);
+        $page->setParam('message', !empty($flash['message']) ? $flash['message'] : null);
 
         return new \Http\Response($page->show());
     }
 
     /**
      * @param \Http\Request $request
+     * @return \Http\RedirectResponse
+     * @throws \Exception\NotFoundException
+     * @throws \Exception
      */
     public function create(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
@@ -70,7 +71,6 @@ class ConfirmPhoneAction {
             return (new \Controller\Enterprize\ConfirmEmailAction())->create($request);
         }
 
-        $client = \App::coreClientV2();
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
@@ -80,7 +80,7 @@ class ConfirmPhoneAction {
                 throw new \Exception('Не получен мобильный телефон');
             }
 
-            $result = $client->query(
+            $result = \App::coreClientV2()->query(
                 'confirm/mobile',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
@@ -97,7 +97,7 @@ class ConfirmPhoneAction {
                 \App::session()->set('flash', ['message' => 'Повторно отправлен новый код подтверждения']);
             }
 
-        } catch (\Curl\Exception $e) {
+        } catch (\Exception $e) {
             \App::exception()->remove($e);
             \App::session()->set('flash', ['error' => $e->getMessage()]);
         }
@@ -107,6 +107,8 @@ class ConfirmPhoneAction {
 
     /**
      * @param \Http\Request $request
+     * @return \Http\RedirectResponse|void
+     * @throws \Exception\NotFoundException
      */
     public function check(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
@@ -115,7 +117,6 @@ class ConfirmPhoneAction {
             throw new \Exception\NotFoundException();
         }
 
-        $client = \App::coreClientV2();
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
         $data = $session->get($sessionName, []);
@@ -132,7 +133,7 @@ class ConfirmPhoneAction {
                 throw new \Exception('Не получен мобильный телефон');
             }
 
-            $result = $client->query(
+            $result = \App::coreClientV2()->query(
                 'confirm/mobile',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
@@ -167,10 +168,7 @@ class ConfirmPhoneAction {
      */
     public function isPhoneConfirmed() {
         \App::logger()->debug('Exec ' . __METHOD__);
-
-        $session = \App::session();
-        $sessionName = \App::config()->enterprize['formDataSessionKey'];
-        $data = $session->get($sessionName, []);
+        $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
 
         return isset($data['isPhoneConfirmed']) && $data['isPhoneConfirmed'] ? $data['isPhoneConfirmed'] : false;
     }

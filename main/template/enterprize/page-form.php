@@ -1,11 +1,10 @@
 <?php
 /**
  * @var $page             \View\DefaultLayout
- * @var $user             \Session\User
  * @var $form             \View\Enterprize\Form
+ * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity
  */
 ?>
-
 
 <div class="titleForm">Заполни три поля, и ты в игре!</div>
 

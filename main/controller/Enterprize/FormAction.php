@@ -20,8 +20,6 @@ class FormAction {
             throw new \Exception\NotFoundException();
         }
 
-        $user = \App::user()->getEntity();
-
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
         if (!$session->has($sessionName)) {
@@ -47,19 +45,17 @@ class FormAction {
             \App::dataStoreClient()->execute();
         }
 
-        $form = $this->getForm();
-        $form->setEnterprizeCoupon($enterprizeToken);
-
         $page = new \View\Enterprize\FormPage();
-        $page->setParam('user', $user);
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
-        $page->setParam('form', $form);
+        $page->setParam('form', $this->getForm());
 
         return new \Http\Response($page->show());
     }
 
     /**
      * @param \Http\Request $request
+     * @return \Http\JsonResponse|\Http\RedirectResponse|null
+     * @throws \Exception
      */
     public function update(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
@@ -223,7 +219,7 @@ class FormAction {
                     );
                     \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/mobile']);
 
-                } catch (\Curl\Exception $e) {
+                } catch (\Exception $e) {
                     \App::exception()->remove($e);
                     \App::session()->set('flash', ['error' => $e->getMessage()]);
                 }
@@ -237,17 +233,6 @@ class FormAction {
                     'data'    => ['link' => $link],
                 ])
                 : new \Http\RedirectResponse($link);
-
-            // авторизовываем пользователя
-//            if ($userToken && !\App::user()->getEntity()) {
-//                $user = \RepositoryManager::user()->getEntityByToken($result['token']);
-//                if ($user) {
-//                    $user->setToken($result['token']);
-//                    \App::user()->signIn($user, $response);
-//                } else {
-//                    \App::logger()->error(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
-//                }
-//            }
 
         } else {
             $formErrors = [];
@@ -270,7 +255,6 @@ class FormAction {
 
     /**
      * @return \View\Enterprize\Form
-     * @throws \Exception\NotFoundException
      */
     public function getForm(){
         \App::logger()->debug('Exec ' . __METHOD__);
@@ -285,6 +269,11 @@ class FormAction {
             // иначе, заполняем форму данными с сессии
         } else {
             $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
+
+            if (!empty($data['enterprizeToken'])) {
+                $data = array_merge($data, ['guid' => $data['enterprizeToken']]);
+            }
+
             $form->fromArray($data);
         }
 
