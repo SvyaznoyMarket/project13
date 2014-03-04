@@ -27,6 +27,17 @@
     </tr>
 </script>
 
+<script id="tplDebugFirstLevelJira" type="text/html">
+    <tr>
+        <td style="background-image: url({{iconUrl}});" class="property-name">
+            {{name}}
+        </td>
+        <td class="property-value">
+            <a target="_blank" href="{{value.url}}" style="color: #ffff00; text-decoration: underline;">{{value.version}}</a>
+        </td>
+    </tr>
+</script>
+
 <script id="tplDebugFirstLevelQuery" type="text/html">
     <tr>
         <td style="background-image: url({{iconUrl}});" class="property-name">

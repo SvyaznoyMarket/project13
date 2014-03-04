@@ -153,6 +153,10 @@ class Repository {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$ids) return;
+        if (count($ids) > \App::config()->search['categoriesLimit']) {
+            // ограничиваем, чтобы не было 414 Request-URI Too Large // при кол-во 500 была ошибка, 475 - уже нет
+            $ids = array_slice($ids, 0, \App::config()->search['categoriesLimit']);
+        }
 
         $params = [
             'id' => $ids,

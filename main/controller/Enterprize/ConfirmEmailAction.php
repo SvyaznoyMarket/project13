@@ -5,11 +5,12 @@ namespace Controller\Enterprize;
 class ConfirmEmailAction {
 
     /**
+     * @param \Http\Request $request
      * @param null $enterprizeToken
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function show($enterprizeToken = null) {
+    public function show(\Http\Request $request, $enterprizeToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
@@ -19,6 +20,16 @@ class ConfirmEmailAction {
         if (!$enterprizeToken) {
             throw new \Exception\NotFoundException();
         }
+
+        if ($this->isEmailConfirmed()) {
+            return (new \Controller\Enterprize\ConfirmPhoneAction())->create($request);
+        }
+
+        $session = \App::session();
+        $flash = $session->get('flash');
+        $error = !empty($flash['error']) ? $flash['error'] : null;
+        $message = !empty($flash['message']) ? $flash['message'] : null;
+        $session->remove('flash');
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
@@ -35,6 +46,8 @@ class ConfirmEmailAction {
 
         $page = new \View\Enterprize\ConfirmEmailPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
+        $page->setParam('error', $error);
+        $page->setParam('message', $message);
 
         return new \Http\Response($page->show());
     }
@@ -49,6 +62,53 @@ class ConfirmEmailAction {
             throw new \Exception\NotFoundException();
         }
 
+        if ($this->isEmailConfirmed()) {
+            return (new \Controller\Enterprize\ConfirmPhoneAction())->create($request);
+        }
+
+        $client = \App::coreClientV2();
+
+        $response = null;
+        try {
+            $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
+
+            if (!isset($data['email']) || empty($data['email'])) {
+                throw new \Exception('Не получен email');
+            }
+
+            $result = $client->query(
+                'confirm/email',
+                [
+                    'client_id' => \App::config()->coreV2['client_id'],
+                    'token'     => \App::user()->getToken(),
+                ],
+                [
+                    'email'    => $data['email'],
+                    'template' => 'enter_prize',
+                ],
+                \App::config()->coreV2['hugeTimeout']
+            );
+            \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/email']);
+
+            // обновление сессионной формы
+//            $data['isEmailConfirmed'] = true;
+//            \App::session()->set(\App::config()->enterprize['formDataSessionKey'], $data);
+
+            //$response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmPhone.create'));
+
+            if ($request->get('isRepeatRending', false)) {
+                \App::session()->set('flash', ['message' => 'Письмо повторно отправлено']);
+            }
+
+        } catch (\Curl\Exception $e) {
+            \App::exception()->remove($e);
+            \App::session()->set('flash', ['error' => $e->getMessage()]);
+//            $enterprizeToken = $request->get('enterprizeToken', null);
+//            $response = $this->show($request, $enterprizeToken);
+        }
+
+        return new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $request->get('enterprizeToken', null)]));
+        //return $response;
     }
 
     /**
@@ -65,5 +125,18 @@ class ConfirmEmailAction {
             throw new \Exception\NotFoundException('Request is not xml http');
         }
 
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmailConfirmed() {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        $data = $session->get($sessionName, []);
+
+        return isset($data['isEmailConfirmed']) && $data['isEmailConfirmed'] ? $data['isEmailConfirmed'] : false;
     }
 }

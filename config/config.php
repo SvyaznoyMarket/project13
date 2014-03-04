@@ -225,6 +225,7 @@ $c->mediaHost = [
 
 $c->search['itemLimit'] = 1000;
 $c->search['queryStringLimit'] = 1;
+$c->search['categoriesLimit'] = 200;
 
 $c->product['itemsPerPage']             = 20;
 $c->product['showAccessories']          = true;
@@ -270,6 +271,7 @@ $c->productLabel['url'] = [
 
 $c->productCategory['url'] = [
     0 => '/6/1/163/',
+    3 => '/6/1/500/',
 ];
 
 $c->service['url'] = [

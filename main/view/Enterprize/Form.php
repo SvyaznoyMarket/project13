@@ -8,19 +8,22 @@ class Form {
     /** @var string */
     private $email;
     /** @var string */
-    private $phone;
+    private $mobile;
     /** @var string */
-    private $enterprizeCoupon;
+    private $guid;
     /** @var bool */
     private $agree;
+    /** @var bool */
+    private $isSubscribe;
     /** @var array */
     private $errors = array(
-        'global'            => null,
-        'name'              => null,
-        'email'             => null,
-        'phone'             => null,
-        'enterprize_coupon' => null,
-        'agree'             => null,
+        'global'    => null,
+        'name'      => null,
+        'email'     => null,
+        'mobile'    => null,
+        'guid'      => null,
+        'agree'     => null,
+        'subscribe' => null,
     );
 
     public function __construct(array $data = []) {
@@ -33,18 +36,20 @@ class Form {
     public function fromArray(array $data) {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('email', $data)) $this->setEmail($data['email']);
-        if (array_key_exists('phone', $data)) $this->setPhone($data['phone']);
-        if (array_key_exists('enterprize_coupon', $data)) $this->setEnterprizeCoupon($data['enterprize_coupon']);
+        if (array_key_exists('mobile', $data)) $this->setMobile($data['mobile']);
+        if (array_key_exists('guid', $data)) $this->setEnterprizeCoupon($data['guid']);
         if (array_key_exists('agree', $data)) $this->setAgree($data['agree']);
+        if (array_key_exists('subscribe', $data)) $this->setIsSubscribe($data['subscribe']);
     }
 
     /**
      * @param \Model\User\Entity $entity
      */
     public function fromEntity(\Model\User\Entity $entity) {
-        $this->setName($entity->getName());
+        $this->setName($entity->getFirstName());
         $this->setEmail($entity->getEmail());
-        $this->setPhone($entity->getMobilePhone());
+        $this->setMobile($entity->getMobilePhone());
+        $this->setIsSubscribe($entity->getIsSubscribed());
     }
 
     /**
@@ -76,31 +81,31 @@ class Form {
     }
 
     /**
-     * @param string $phone
+     * @param string $mobile
      */
-    public function setPhone($phone) {
-        $this->phone = (string)$phone;
+    public function setMobile($mobile) {
+        $this->mobile = (string)$mobile;
     }
 
     /**
      * @return string
      */
-    public function getPhone() {
-        return $this->phone;
+    public function getMobile() {
+        return $this->mobile;
     }
 
     /**
-     * @param string $enterprizeCoupon
+     * @param string $guid
      */
-    public function setEnterprizeCoupon($enterprizeCoupon) {
-        $this->enterprizeCoupon = trim((string)$enterprizeCoupon);
+    public function setEnterprizeCoupon($guid) {
+        $this->guid = trim((string)$guid);
     }
 
     /**
      * @return string
      */
     public function getEnterprizeCoupon() {
-        return $this->enterprizeCoupon;
+        return $this->guid;
     }
 
     /**
@@ -115,6 +120,20 @@ class Form {
      */
     public function getAgree() {
         return $this->agree;
+    }
+
+    /**
+     * @param boolean $isSubscribe
+     */
+    public function setIsSubscribe($isSubscribe) {
+        $this->isSubscribe = (bool)$isSubscribe;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsSubscribe() {
+        return $this->isSubscribe;
     }
 
     /**

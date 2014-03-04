@@ -52,18 +52,6 @@ class Action {
         try {
             if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-                if (\App::user()->getRegion() && $shop && $shop->getRegion()) {
-                    if ((int)\App::user()->getRegion()->getId() != (int)$shop->getRegion()->getId()) {
-                        /*$route = \App::router()->generate('region.change', ['regionId' => $shop->getRegion()->getId()]);
-                        $response = new \Http\RedirectResponse($route);
-                        $response->headers->set('referer', \App::request()->getUri());*/
-                        $controller = new \Controller\Region\Action();
-                        \App::logger()->info(sprintf('Смена региона #%s на #%s', \App::user()->getRegion()->getId(), $shop->getRegion()->getId()));
-                        $response = $controller->change($shop->getRegion()->getId(), \App::request(), \App::request()->getUri());
-
-                        return $response;
-                    }
-                }
             }
         } catch (\Exception $e) {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
@@ -144,6 +132,11 @@ class Action {
             if(!$doubleFound) {
                 $categoriesFound[] = $category;
             }
+        }
+
+        if (count($result['category_list']) > \App::config()->search['categoriesLimit']) {
+            // ограничиваем, чтобы не было 414 Request-URI Too Large
+            $result['category_list'] = array_slice($result['category_list'], 0, \App::config()->search['categoriesLimit']);
         }
 
         /** @var $categoriesById \Model\Product\Category\Entity[] */

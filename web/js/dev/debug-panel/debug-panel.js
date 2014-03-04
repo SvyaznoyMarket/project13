@@ -71,7 +71,24 @@
 
 				return html;
 			},
-			
+
+            'jira': function( name, data ) {
+                var
+                    templateWrap = $('#tplDebugFirstLevelJira'),
+                    template = templateWrap.html(),
+                    partials = templateWrap.data('partial'),
+                    html;
+                // end of vars
+
+                data.name = name;
+                data.iconUrl = '/debug/icons/git.png';
+                console.info(data)
+
+                html = Mustache.render(template, data, partials);
+
+                return html;
+            },
+
 			'query': function( name, data ) {
 				var
 					templateWrap = $('#tplDebugFirstLevelQuery'),

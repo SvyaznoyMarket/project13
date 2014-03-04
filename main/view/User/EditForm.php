@@ -23,10 +23,6 @@ class EditForm {
     private $homePhone;
     /** @var string */
     private $skype;
-    /** @var string */
-    private $enterprizeCoupon;
-    /** @var bool */
-    private $couponAgree;
     /** @var bool */
     private $isSubscribed;
     /** @var string */
@@ -44,12 +40,15 @@ class EditForm {
         'mobile_phone'              => null,
         'home_phone'                => null,
         'skype'                     => null,
-        'enterprize_coupon'         => null,
         'svyaznoy_club_card_number' => null,
         'guid'                      => null,
-        'agree'                     => null,
         'is_subscribe'              => null,
     );
+    /**
+     * Флаг запрещения редактирования личных данных для user.enterprizeCoupon
+     * @var bool
+     */
+    private $isDisabled = false;
 
     public function __construct(array $data = []) {
         $this->fromArray($data);
@@ -81,10 +80,9 @@ class EditForm {
         if (array_key_exists('mobile_phone', $data)) $this->setMobilePhone($data['mobile_phone']);
         if (array_key_exists('home_phone', $data)) $this->setHomePhone($data['home_phone']);
         if (array_key_exists('skype', $data)) $this->setSkype($data['skype']);
-        if (array_key_exists('enterprize_coupon', $data)) $this->setEnterprizeCoupon($data['enterprize_coupon']);
-        if (array_key_exists('coupon_agree', $data)) $this->setCouponAgree($data['coupon_agree']);
         if (array_key_exists('is_subscribe', $data)) $this->setIsSubscribed($data['is_subscribe']);
         if (array_key_exists('svyaznoy_club_card_number', $data)) $this->setSclubCardnumber($data['svyaznoy_club_card_number']);
+        if (array_key_exists('is_disabled', $data)) $this->setIsDisabled($data['is_disabled']);
     }
 
     public function fromEntity(\Model\User\Entity $entity) {
@@ -100,6 +98,7 @@ class EditForm {
         $this->setSkype($entity->getSkype());
         $this->setIsSubscribed($entity->getIsSubscribed());
         $this->setSclubCardnumber($entity->getSclubCardnumber());
+        $this->setIsDisabled($entity->isEnterprizeMember());
     }
 
     /**
@@ -253,20 +252,6 @@ class EditForm {
     }
 
     /**
-     * @param string $enterprizeCoupon
-     */
-    public function setEnterprizeCoupon($enterprizeCoupon) {
-        $this->enterprizeCoupon = trim((string)$enterprizeCoupon);
-    }
-
-    /**
-     * @return string
-     */
-    public function getEnterprizeCoupon() {
-        return $this->enterprizeCoupon;
-    }
-
-    /**
      * @param $name
      * @param $value
      * @throws \InvalidArgumentException
@@ -315,17 +300,17 @@ class EditForm {
     }
 
     /**
-     * @param boolean $couponAgree
+     * @param boolean $isDisabled
      */
-    public function setCouponAgree($couponAgree) {
-        $this->couponAgree = (bool)$couponAgree;
+    public function setIsDisabled($isDisabled) {
+        $this->isDisabled = (bool)$isDisabled;
     }
 
     /**
      * @return boolean
      */
-    public function getCouponAgree() {
-        return $this->couponAgree;
+    public function getIsDisabled() {
+        return $this->isDisabled;
     }
 
     /**

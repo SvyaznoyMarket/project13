@@ -1949,17 +1949,16 @@ img[height="0"] {
   .enterPrize__logo {
     background: url("/styles/enterPrize/img/bgLogo.gif") no-repeat 0 0;
     display: inline-block;
-    width: 255px;
-    height: 80px;
+    height: 88px;
     text-indent: -9999px;
+    width: 271px;
     vertical-align: top;
     *display: inline;
     zoom: 1;
   }
   .enterPrize__rules {
-    background: #eaeaea;
     border-radius: 4px;
-    padding: 45px 0 10px 15px;
+    padding: 65px 0 10px 15px;
     margin-top: -64px;
   }
   .enterPrize__rules.mFailed .enterPrize__rules__item {
@@ -1976,10 +1975,10 @@ img[height="0"] {
     float: left;
     background: #fff;
     border-radius: 5px;
-    width: 138px;
-    padding: 5px 10px;
     border-bottom: 2px solid #c7c7c7;
-    height: 120px;
+    height: 87px;
+    padding: 15px;
+    width: 500px;
   }
   .enterPrize__rules__item .sep {
     font-size: 30px;
@@ -2007,8 +2006,67 @@ img[height="0"] {
     height: 208px;
     width: 211px;
   }
+  .enterPrize .enterPrizeHello {
+    color: #ffffff;
+    font-family: "Enter";
+    font-size: 32px;
+    margin: 10px 0 0 32px;
+    text-transform: uppercase;
+  }
+  .enterPrize .enterPrizeHello span {
+    color: #ffa901;
+  }
+  .enterPrize .enterPrizeHello.mReg {
+    margin: 0 0 14px 32px;
+    font-size: 46px;
+  }
+  .enterPrize .enterPrizeDesc {
+    color: #ffffff;
+    margin: 15px 0 0 31px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .enterPrize .enterPrizeDesc__text {
+    text-decoration: underline;
+  }
+  .enterPrize .enterPrizeListWrap {
+    display: none;
+    margin: 20px 0 0;
+  }
+  .enterPrize .enterPrizeListTitle {
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: bold;
+    margin: 0 0 15px 36px;
+  }
+  .enterPrize .enterPrizeFinish {
+    font-family: "Enter";
+    font-size: 30px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0 0 50px 54px;
+  }
+  .enterPrize .enterPrizeList {
+    margin: 0 0 20px 36px;
+  }
+  .enterPrize .enterPrizeList__item {
+    color: #ffffff;
+    margin: 0 0 15px;
+    border-left: 3px solid;
+    padding-left: 10px;
+    font-size: 14px;
+  }
+  .enterPrize .enterPrizeList__item.mBlue {
+    border-color: #4fcbf4;
+  }
+  .enterPrize .enterPrizeList__item.mOrange {
+    border-color: #ffa901;
+  }
+  .enterPrize .enterPrizeList__item.mGreen {
+    border-color: #6ea428;
+  }
   .enterPrize__list {
-    margin: 25px 0 0 2px;
+    margin: 65px 0 0 2px;
   }
   .enterPrize__list__item {
     float: left;
@@ -2017,19 +2075,24 @@ img[height="0"] {
     position: relative;
     margin-right: 26px;
   }
-  .enterPrize__list__item.mBlue .cuponImg {
-    background-image: url("/styles/enterPrize/img/bgBlue.png");
-  }
-  .enterPrize__list__item.mPink .cuponImg {
-    background-image: url("/styles/enterPrize/img/bgPink.png");
-    background-position: -1px 0;
-  }
-  .enterPrize__list__item.mGreen .cuponImg {
-    background-image: url("/styles/enterPrize/img/bgGreen.png");
-    background-position: -2px 0;
+  .enterPrize__list__item:hover {
+    z-index: 20;
   }
   .enterPrize__list__item:hover .cuponImgHover {
-    display: block;
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
+  }
+  .enterPrize__list__item:hover .cuponBtn {
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
   }
   .enterPrize__list__item.mLast {
     margin-right: 0;
@@ -2049,6 +2112,7 @@ img[height="0"] {
     background: url("/styles/enterPrize/img/bgOrange.png") no-repeat 0 0;
     width: 209px;
     height: 206px;
+    z-index: 17;
   }
   .enterPrize .cuponImg__inner {
     width: 188px;
@@ -2059,14 +2123,23 @@ img[height="0"] {
     top: 6px;
   }
   .enterPrize .cuponImgHover {
-    display: none;
+    -moz-opacity: 0.3;
+    -khtml-opacity: 0.3;
+    -webkit-opacity: 0.3;
+    opacity: 0.3;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30);
+    filter: alpha(opacity=30);
     z-index: 8;
-    background: url("/styles/enterPrize/img/bgHover.png") no-repeat 50% 0;
+    background: url("/styles/enterPrize/img/luchi.png") no-repeat 50% 0;
     position: absolute;
-    top: -4px;
-    left: -4px;
-    width: 210px;
-    height: 236px;
+    top: -41px;
+    left: -38px;
+    width: 281px;
+    height: 280px;
+    -webkit-transition: opacity 0.4s ease-in-out;
+    -moz-transition: opacity 0.4s ease-in-out;
+    transition: opacity 0.4s ease-in-out;
+    z-index: 15;
   }
   .enterPrize .cuponImgHover.mPink {
     left: -3px;
@@ -2091,8 +2164,17 @@ img[height="0"] {
     border: 1px solid #fb9c00;
     font-size: 14px;
     line-height: 20px;
-    bottom: 11px;
-    left: 59px;
+    bottom: 17px;
+    left: 94px;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -moz-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
   }
   .enterPrize .cuponBtn:hover {
     background: #ffa200;
@@ -2125,20 +2207,177 @@ img[height="0"] {
     top: 108px;
   }
   .enterPrize.mPrivate {
-    margin: 0 0 40px;
+    margin: 40px 0;
+    background: #eaeaea;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 10px;
   }
   .enterPrize.mPrivate .enterPrize__list {
     position: absolute;
-    top: -10px;
-    height: 208px;
-    width: 211px;
     right: 0;
+    top: -63px;
   }
-  .enterPrize.mPrivate .enterPrize__rules .enterPrize__rules__item {
-    width: 340px;
+  .enterPrize.mPrivate .enterPrize__logo {
+    margin: -40px 0 0;
+  }
+  .enterPrize.mPrivate .enterPrize__rules {
+    width: 450px;
     height: auto;
+    padding: 15px;
+    border-bottom: 1px solid #bbbbbb;
     float: none;
-    padding: 40px;
+    background: #ffffff;
+    font-size: 16px;
+    margin: 13px 0;
+  }
+  .enterPrize.mPrivate .enterPrize__logIn {
+    font-size: 14px;
+    margin: 0 0 0 15px;
+  }
+  .enterPrize.mPrivate .enterPrize__logIn a {
+    text-decoration: underline;
+  }
+  .enterprizeConfirm {
+    margin: 0 0 30px 25px;
+    font-size: 14px;
+  }
+  .enterprizeConfirm .confirmForm {
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+  }
+  .enterprizeConfirm .labelCode {
+    margin: 0 5px 0 0;
+  }
+  .enterprizeConfirm .text {
+    height: 31px;
+    line-height: 31px;
+  }
+  .enterprizeConfirm .newCode {
+    display: inline-block;
+    vertical-align: top;
+    padding: 4px 17px;
+    height: 33px;
+    *display: inline;
+    zoom: 1;
+    margin: 0 5px;
+  }
+  .enterprizeConfirm .confirmCode {
+    display: inline-block;
+    vertical-align: top;
+    padding: 4px 17px;
+    border: 1px solid #F28900;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    margin: 0 0 0 5px;
+    *display: inline;
+    zoom: 1;
+  }
+  .enterprizeConfirm .textConfirm {
+    margin: 0 0 20px;
+  }
+  .enterprizeConfirm .textConfirm strong {
+    font-size: 16px;
+  }
+  .titleForm {
+    font-size: 2em;
+    font-weight: normal;
+    margin: 10px 0 20px 25px;
+  }
+  .jsEnterprizeForm {
+    margin: 0 0 0 25px;
+  }
+  .jsEnterprizeForm .formDefault__btnSubmit {
+    margin: 20px 0 15px 269px;
+  }
+  .jsEnterprizeForm .red {
+    margin: 0 0 10px;
+  }
+  .enterprize {
+    background: #000000;
+  }
+  .enterprize .wrapper {
+    background: #000000;
+  }
+  .enterprize .topbar {
+    background: #000000;
+    color: #ffffff;
+    border-color: #404040;
+  }
+  .enterprize .topbar a {
+    color: #ffffff;
+  }
+  .enterprize .topbar .fixedTopBar__logIn,
+  .enterprize .topbar .fixedTopBar__cart {
+    background: #000000;
+  }
+  .enterprize .topbar .fixedTopBar__logIn {
+    border-color: #404040;
+  }
+  .enterprize .fixedTopBar.mStatic {
+    border: none;
+  }
+  .enterprize .fixedTopBar__dd {
+    background: #000000;
+    color: #ffffff;
+    border-color: #404040;
+  }
+  .enterprize .bannersList,
+  .enterprize .applist {
+    display: none;
+  }
+  .enterprize .footer__inner {
+    background: #000000;
+    color: #ffffff;
+  }
+  .enterprize .footer .publicInfo__text {
+    margin: 10px 0 25px;
+  }
+  .enterprize .footer {
+    height: 150px;
+    margin: -150px auto 0;
+  }
+  .enterprize .content {
+    padding: 0 0 180px;
+  }
+  .enterprize .fixedTopBar__logIn .transGrad {
+    background: url("/styles/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;
+  }
+  .enterprize .fixedTopBar .fixedTopBar__logOutLink {
+    color: #FFFFFF;
+  }
+  .enterprize .fixedTopBar .fixedTopBar__logOutLink {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 0 none;
+    box-shadow: 0 0 10px 2px #444443;
+  }
+  .enterprize .footer .publicInfo__list__link {
+    color: #B5B5B5;
+  }
+  .bInputList.mEnterPrizeSubscr .bErrorText__eInner {
+    left: 25px;
+    padding: 0;
+    top: -8px;
+  }
+  .enterprizeAuthBox__title {
+    background: url("/styles/enterPrize/img/bgLogo.gif") no-repeat 0 0;
+    text-transform: uppercase;
+    font-size: 24px;
+    padding-left: 280px;
+    line-height: 88px;
+    font-weight: bold;
+  }
+  .enterprizeAuthBox__form {
+    width: 330px;
+    margin: 20px auto 0;
+  }
+  .enterprizeWar {
+    margin: 0 0 10px 25px;
+    font-weight: bold;
   }
 }
 /*---END----Enter Prize---------*/
@@ -2487,78 +2726,76 @@ img[height="0"] {
 /*---------TCHIBO - каталог разделов, баннеров, товаров Чибо----------*/
 @media all {
   .tchiboCatalog {
-    margin: 10px 0 ;
+    margin: 10px 0 10px -10px;
+    width: 966px;
   }
   .tchiboCatalog .tchiboCatalogInner {
     position: relative;
     overflow: hidden;
     float: left;
-  }
-  .tchiboCatalog .tchiboCatalogInner.m312 {
-    width: 312px;
-  }
-  .tchiboCatalog .tchiboCatalogInner.m316 {
-    width: 316px;
-  }
-  .tchiboCatalog .tchiboCatalogInner.m470 {
-    width: 470px;
+    width: 479px;
+    margin: 0 3px 40px 0;
   }
   .tchiboCatalog .tchiboCatalogInner.mLast {
     margin-right: 0;
   }
-  .tchiboCatalog .tchiboCatalogInner:hover .tchiboCatalog__list {
-    right: 0;
-  }
-  .tchiboCatalog .tchiboCatalogInner.mBanner .tchiboCatalog__title {
-    top: 0;
+  .tchiboCatalog .tchiboCatalogInner:nth-child(2n) {
+    margin-right: 0;
   }
   .tchiboCatalog__img {
     display: block;
   }
+  .tchiboCatalog .titleCat {
+    display: inline-block;
+    color: #002a5a;
+    font-size: 27px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAUCAYAAAC58NwRAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowRjk3Q0ExRTgyMjcxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowRjk3Q0ExRjgyMjcxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjRCMjM3RjE3ODIyNDExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjRCMjM3RjE4ODIyNDExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+kE3EUAAAALxJREFUeNpi+P//PwMIM2hF+QOxAIyPCzMxAAGjdnQ8kFoLxHuBbAEGPIARaCpI8VwksYtA7Pz/6tIP2DSAbLBDE9PHZxMT0KRkIL2QWE1gP5CiiQnGIFYTE7IsMZoYwXGAHnTa0aBQi0cTBoceVg34NDHhUAyy3gCL1AUmHIr3Qt2ODBaC/MhEimKUUCJGMVwDsYphiY9oxTAbiFYM0zCJWMWQ5ADJbfFA/AeI5xLKcQxIWVSfkGIQBggwAIL/q/n3ukxXAAAAAElFTkSuQmCC) no-repeat 0 7px;
+    padding: 0 0 0 20px;
+    vertical-align: top;
+  }
+  .tchiboCatalog .titleCat:hover {
+    text-decoration: none;
+  }
+  .tchiboCatalog .tchiboCatalogInnerBanner {
+    clear: both;
+    margin: 0 0 40px;
+  }
   .tchiboCatalog__title {
     background: url("/styles/tchiboNavSlider/img/bgWhiteIe.png");
     background: rgba(255, 255, 255, 0.8);
-    padding: 0 10px 0 10px;
+    padding: 10px 10px 0 10px;
     width: 100%;
     color: #040003;
     font-size: 18px;
-    height: 44px;
-    line-height: 44px;
     position: absolute;
     bottom: 0;
     left: 0;
     display: block;
+    min-height: 90px;
   }
   .tchiboCatalog__list {
-    position: absolute;
-    bottom: 44px;
-    right: -220px;
-    max-width: 220px;
-    background: url("/styles/tchiboNavSlider/img/bgBlueIe.png");
-    background: -moz-linear-gradient(270deg, rgba(0, 41, 88, 0.44) 0%, rgba(0, 41, 88, 0.75) 100%);
-    background: -ms-linear-gradient(270deg, rgba(0, 41, 88, 0.44) 0%, rgba(0, 41, 88, 0.75) 100%);
-    background: -o-linear-gradient(270deg, rgba(0, 41, 88, 0.44) 0%, rgba(0, 41, 88, 0.75) 100%);
-    background: -webkit-linear-gradient(270deg, rgba(0, 41, 88, 0.44) 0%, rgba(0, 41, 88, 0.75) 100%);
-    background: linear-gradient(270deg, rgba(0, 41, 88, 0.44) 0%, rgba(0, 41, 88, 0.75) 100%);
-    -webkit-transition: right 0.3s ease-in-out;
-    -moz-transition: right 0.3s ease-in-out;
-    transition: right 0.3s ease-in-out;
+    float: right;
+    width: 230px;
   }
   .tchiboCatalog__list .item {
     margin: 0 10px 0 10px;
-    padding: 5px;
+    padding: 0 0 5px 16px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAOCAYAAAD9lDaoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowRjk3Q0EyMjgyMjcxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowRjk3Q0EyMzgyMjcxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjBGOTdDQTIwODIyNzExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjBGOTdDQTIxODIyNzExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+gKY/NAAAAI9JREFUeNpi+v//PwODVpQ+EPuD2NgwE6N2tD4DA8NeIF4LZMczYAFMQBwHxAJQ/lxsCpn+X11aDKQXIolhKASZxABUmIxFoT+KIjwKQe5lYAT7DgkAJeYCKZh1H4DYmYkBPwB5yIAJjykgkAx0xkImQgrgDsenAKwIqKAXnwKYSYugvsCqABI+REQwQIABALTWX7VvD4QrAAAAAElFTkSuQmCC) no-repeat 0 6px;
   }
   .tchiboCatalog__list .link {
-    color: #ffffff;
+    color: #002a5a;
+    font-size: 14px;
   }
   .tchiboCatalog__list .link:hover {
-    color: #ffe055;
     text-decoration: none;
   }
 }
 /*---END----TCHIBO - каталог разделов, баннеров, товаров Чибо---------*/
 /*---------TCHIBO - крутилка разделов Чибо на рутовой странице----------*/
 @media all {
+  .bPromoCatalog {
+    position: relative;
+  }
   .bPromoCatalogSlider.mTchiboSlider {
     margin: 0 0 30px;
     overflow: hidden;
@@ -2573,7 +2810,7 @@ img[height="0"] {
   }
   .bPromoCatalogSlider.mTchiboSlider .bPromoCatalogSliderWrap_eSlideLink {
     width: 940px;
-    height: 290px;
+    height: 380px;
   }
   .bPromoCatalogSlider.mTchiboSlider .bottomLifted {
     box-shadow: none;
@@ -2636,11 +2873,12 @@ img[height="0"] {
     padding-right: 0;
   }
   .bPaginator.mTchiboPaginator {
-    margin: -52px auto 0;
+    margin: 0 auto;
     text-align: center;
-    position: relative;
+    position: absolute;
     z-index: 10;
-    width: auto;
+    top: 340px;
+    width: 940px;
   }
   .bPaginator.mTchiboPaginator .bPaginatorSlider {
     display: none;
@@ -2650,6 +2888,12 @@ img[height="0"] {
     font-size: 0;
     width: auto !important;
     left: 0 !important;
+    padding: 8px 8px 8px 3px;
+    background: #4c4c4c;
+    background: rgba(0, 0, 0, 0.5);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
   }
   .bPaginator.mTchiboPaginator .bPaginator_eLink {
     text-indent: -99999px;
@@ -2664,6 +2908,21 @@ img[height="0"] {
   }
   .bPaginator.mTchiboPaginator .bPaginator_eLink.active {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpBRDlDQ0MzNzdFRjAxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpBRDlDQ0MzODdFRjAxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkFEOUNDQzM1N0VGMDExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkFEOUNDQzM2N0VGMDExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+bWnljgAAAHpJREFUeNpi/P//PwMIlJaW+gLZhUCmKQMEnGZkZOzv7u7eDOIwghQCFbUB6UoGLACouB2ouIqxpKQEZNImBjwAqNiPCWodXgBSw4TkJnzAlImBSABSeJoIdaeZQEFASBVIDfPRo0dv7d69mx3It8UTPNMZiQ1wgAADAP+QOxJntcUCAAAAAElFTkSuQmCC");
+  }
+  .bPromoCatalogProducts {
+    margin: 15px 0 0 30px;
+  }
+  .bPromoCatalogProducts .prodItem {
+    display: inline-block;
+    vertical-align: top;
+    width: 220px;
+    margin: 0 0 0 50px;
+    zoom: 1;
+    *display: inline-block;
+  }
+  .bPromoCatalogProducts .prodName {
+    color: #002c5b;
+    font-weight: bold;
   }
 }
 /*---END----TCHIBO - крутилка разделов Чибо на рутовой странице---------*/

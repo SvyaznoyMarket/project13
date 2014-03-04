@@ -46,8 +46,12 @@ $f = function(
     <?
         $content = $cell->getContent();
         $url = !empty($content['url']) ? $content['url'] : null;
+        $link = !empty($content['link']) ? $content['link'] : null;
+        $name = !empty($content['name']) ? $content['name'] : '';
     ?>
-        <img src="<?= $url ?>" />
+        <? if ($link) { ?> <a href="<?= $link ?>" title="<?= $name ?>"> <? } ?>
+            <img src="<?= $url ?>" alt="<?= $name ?>" style="max-width:100%;" />
+        <? if ($link) { ?> </a> <? } ?>
     <? endif ?>
 </div>
 <? endforeach ?>

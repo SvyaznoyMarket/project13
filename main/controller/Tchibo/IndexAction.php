@@ -17,6 +17,7 @@ class IndexAction {
         $category = null;
         $promo = null;
         $content = null;
+        $bannerBottom = null;
 
         // подготовка для 1-го пакета запросов в ядро
         // promo
@@ -80,6 +81,23 @@ class IndexAction {
             }
         });
 
+        $products = [];
+        $productsIds = [];
+        // перевариваем данные изображений
+        // используя айдишники товаров из секции image.products, получим мини-карточки товаров для баннере
+        foreach ($promo->getImage() as $image) {
+            $productsIds = array_merge($productsIds, $image->getProducts());
+        }
+        $productsIds = array_unique($productsIds);
+        if (count($productsIds) > 0) {
+            \RepositoryManager::product()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
+                foreach ($data as $item) {
+                    if (!isset($item['id'])) continue;
+                    $products[ $item['id'] ] = new \Model\Product\Entity($item);
+                }
+            });
+        }
+
         // выполнение 2-го пакета запросов в ядро
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
@@ -87,22 +105,59 @@ class IndexAction {
 
         // перевариваем данные изображений для слайдера в $slideData
         foreach ($promo->getImage() as $image) {
+
+            $itemProducts = [];
+            foreach($image->getProducts() as $productId) {
+                if (!isset($products[$productId])) continue;
+                $product = $products[$productId];
+                /** @var $product \Model\Product\Entity */
+                $itemProducts[] = [
+                    'image' => $product->getImageUrl(2), // 163х163 seize
+                    'link' => $product->getLink(),
+                    'name' => $product->getName(),
+                ];
+            }
+
             $slideData[] = [
                 'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
                 'title'   => $image->getName(),
                 'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
                 'time'    => $image->getTime() ? $image->getTime() : 3000,
+                'products'=> $itemProducts,
                 // Пока не нужно, но в будущем, возможно понадобится делать $repositoryPromo->setEntityImageLink() как в /main/controller/Promo/IndexAction.php
             ];
         }
 
+        if (isset($catalogJson['promo_token'])) {
+            $catalogJson['promo_token'] = trim((string)$catalogJson['promo_token']);
+        }
+
+        if (!empty($catalogJson['promo_token'])) {
+            \App::contentClient()->addQuery(
+                $catalogJson['promo_token'],
+                [],
+                function($data) use (&$bannerBottom) {
+                    if (!empty($data['content'])) {
+                        $bannerBottom = $data['content'];
+                    }
+                },
+                function(\Exception $e) {
+                    \App::logger()->error(sprintf('Не получено содержимое для баннера %s', \App::request()->getRequestUri()));
+                    \App::exception()->remove($e);
+                }
+            );
+            \App::contentClient()->execute();
+        }
 
         // формируем вьюху, передаём ей данные
         $page = new \View\Tchibo\IndexPage();
         $page->setParam('slideData', $slideData);
         $page->setParam('catalogConfig', $catalogJson);
         $page->setParam('content', $content);
+        $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
+        $page->setGlobalParam('bannerBottom', $bannerBottom);
+        //$page->setGlobalParam('products', $products);
 
         return new \Http\Response($page->show());
     }
