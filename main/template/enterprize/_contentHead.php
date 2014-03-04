@@ -70,7 +70,8 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
             </div>
 
             <? if (!$user->getEntity()): ?>
-                <div class="enterPrize__logIn">У тебя есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="bAuthLink">Войти</a></div>
+                <?= $page->render('enterprize/_auth') ?>
+                <div class="enterPrize__logIn">У тебя есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войти</a></div>
             <? endif ?>
         </div>
     <? endif ?>
