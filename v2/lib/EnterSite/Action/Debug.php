@@ -55,6 +55,6 @@ class Debug {
             }
         }
 
-        $response->content .= '<pre>' . json_encode($debugData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . '<pre>';
+        $response->content = str_replace('</body>', PHP_EOL . '<pre>' . json_encode($debugData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . '</pre>' . PHP_EOL . '</body>', $response->content);
     }
 }

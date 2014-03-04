@@ -57,6 +57,6 @@ class TimerDebug {
 
         $content = $this->getRenderer()->render('partial/debug/~timer', $result);
 
-        $response->content .= $content;
+        $response->content = str_replace('</body>', PHP_EOL . $content . PHP_EOL . '</body>', $response->content);
     }
 }
