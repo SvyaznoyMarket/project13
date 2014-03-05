@@ -4,6 +4,7 @@
  * @var $form             \View\Enterprize\Form
  * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
  * @var $errors           array
+ * @var $authSource       string|null
  */
 ?>
 
@@ -24,10 +25,10 @@
             <input class="formDefault__inputText jsName" type="text" name="user[name]" value="<?= $form->getName() ?>" />
 
             <label class="formDefault__label">Мобильный телефон:</label>
-            <input class="formDefault__inputText jsMobile" type="text" name="user[mobile]" value="<?= $form->getMobile() ?>" />
+            <input class="formDefault__inputText jsMobile" type="text" name="user[mobile]" value="<?= $form->getMobile() ?>" <? if ('phone' === $authSource): ?>readonly="readonly"<? endif ?> />
 
             <label class="formDefault__label">E-mail:</label>
-            <input class="formDefault__inputText jsEmail" type="text" name="user[email]" value="<?= $form->getEmail() ?>" />
+            <input class="formDefault__inputText jsEmail" type="text" name="user[email]" value="<?= $form->getEmail() ?>" <? if ('email' === $authSource): ?>readonly="readonly"<? endif ?> />
    
 
         <ul class="bInputList mEnterPrizeSubscr">
