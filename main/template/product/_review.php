@@ -31,6 +31,12 @@ if (!$isEnter) { ?>
       <p><?= str_replace(';', '<br>', $review['cons']) ?></p>
     <? } ?>
   </div>
+
+    <div class="clearfix">
+        <? if (!empty($review['source_logo_url'])): ?>
+            <img src="<?= $review['source_logo_url'] ?>" >
+        <? endif ?>
+    </div>
 </div>
 <? if (!$isEnter) { ?>
 </noindex>
