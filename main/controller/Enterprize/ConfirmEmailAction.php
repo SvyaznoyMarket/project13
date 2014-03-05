@@ -143,11 +143,13 @@ class ConfirmEmailAction {
                 throw new \Exception('Не получен token');
             }
 
+            $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
+
             $result = \App::coreClientV2()->query(
                 'confirm/email',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
-                    'token'     => !empty($data['token']) ? $data['token'] : \App::user()->getToken(),
+                    'token'     => $userToken,
                 ],
                 [
                     'email'    => $email,
@@ -163,6 +165,17 @@ class ConfirmEmailAction {
             $session->set($sessionName, $data);
 
             $response = (new \Controller\Enterprize\Coupon())->create($request);
+
+            // авторизовываем пользователя
+            if ($userToken && !\App::user()->getEntity()) {
+                $user = \RepositoryManager::user()->getEntityByToken($userToken);
+                if ($user) {
+                    $user->setToken($userToken);
+                    \App::user()->signIn($user, $response);
+                } else {
+                    \App::logger()->error(sprintf('Не удалось получить пользователя по токену %s', $userToken));
+                }
+            }
 
         } catch (\Exception $e) {
             \App::exception()->remove($e);
