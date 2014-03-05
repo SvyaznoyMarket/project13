@@ -2088,6 +2088,10 @@
 			'default': function( res ) {
 				console.log('Обработчик ошибки');
 
+				if ( 'undefined' === typeof(res.redirect) ) {
+					res.redirect = '/cart';
+				}
+
 				if ( res.error && res.error.message ) {
 					showError(res.error.message, function() {
 						document.location.href = res.redirect;
@@ -2292,10 +2296,10 @@
 				success: processingResponse,
 				statusCode: {
 					500: function() {
-						showError('Неудалось создать заказ. Попробуйте позднее.');
+						showError('Не удалось создать заказ. Попробуйте позднее. 500');
 					},
 					504: function() {
-						showError('Неудалось создать заказ. Попробуйте позднее.');
+						showError('Не удалось создать заказ. Попробуйте позднее. 504');
 					}
 				}
 			});
