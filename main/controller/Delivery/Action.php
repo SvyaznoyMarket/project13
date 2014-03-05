@@ -253,8 +253,10 @@ class Action {
                                 if (!isset($productIdsByShop[$point['id']])) {
                                     $productIdsByShop[$point['id']] = [];
                                 }
-                                //$productIdsByShop[$point['id']][] = $productId;
-                                $productIdsByShop[$point['id']][$deliveryMethod['token']] = $productId;
+                                if (!isset($productIdsByShop[$point['id']][$deliveryMethod['token']])) {
+                                    $productIdsByShop[$point['id']][$deliveryMethod['token']] = [];
+                                }
+                                $productIdsByShop[$point['id']][$deliveryMethod['token']][] = $productId;
                             }
                         } else {
                             $points[] = $point;
