@@ -1,13 +1,19 @@
 <?php
 /**
  * @var $page             \View\DefaultLayout
- * @var $user             \Session\User
  * @var $form             \View\Enterprize\Form
+ * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
+ * @var $errors           array
  */
 ?>
 
-
 <div class="titleForm">Заполни три поля, и ты в игре!</div>
+
+<? if (is_array($errors)): ?>
+    <? foreach ($errors as $error): ?>
+        <p class="red enterprizeWar"><?= $error ?></p>
+    <? endforeach ?>
+<? endif ?>
 
 <form class="formDefault jsEnterprizeForm" action="<?= $page->url('enterprize.form.update') ?>" method="post">
     <input type="hidden" name="user[guid]" value="<?= $form->getEnterprizeCoupon() ?>" />
