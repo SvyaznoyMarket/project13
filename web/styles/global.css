@@ -2805,10 +2805,10 @@ img[height="0"] {
     position: relative;
   }
   .bPromoCatalogSlider.mTchiboSlider {
-    margin: 0 0 30px;
+    margin: 0;
     overflow: hidden;
     width: 940px;
-    height: 600px;
+    height: 630px;
   }
   .bPromoCatalogSlider.mTchiboSlider .bPromoCatalogSliderWrap_eSlide {
     width: 940px;
