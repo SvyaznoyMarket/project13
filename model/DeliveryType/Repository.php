@@ -29,8 +29,8 @@ class Repository {
                 'name'                   => $hasTransportCompany ? 'Доставка заказа транспортной компанией' : 'Доставка заказа курьером',
                 'description'            => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
                 //'description'            => 'DHL, DPD, СПСР-Экспресс',
-                'methods'                => ['standart_furniture', 'standart_other'],
-                'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now'],
+                'methods'                => ['standart_furniture', 'standart_other', 'standart'],
+                'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now', 'standart'],
             ],
             /*
             [
@@ -45,7 +45,7 @@ class Repository {
                 'name'                   => 'Самостоятельно заберу в магазине',
                 'description'            => 'Вы можете самостоятельно забрать товар из ближайшего к вам магазина Enter. Услуга бесплатная! Резерв товара сохраняется 3 дня. Пожалуйста, выберите магазин.',
                 'methods'                => ['self'],
-                'possible_method_tokens' => ['self', 'now', 'standart_furniture', 'standart_other'],
+                'possible_method_tokens' => ['self', 'now', 'standart_furniture', 'standart_other', 'standart'],
             ],
             [
                 'id'                     => 4,
@@ -55,7 +55,7 @@ class Repository {
                 'button_name'            => 'Забрать из этого магазина',
                 'description'            => 'Вы можете забрать товар из магазина прямо сейчас',
                 'methods'                => ['now'],
-                'possible_method_tokens' => ['now', 'self', 'standart_furniture', 'standart_other'],
+                'possible_method_tokens' => ['now', 'self', 'standart_furniture', 'standart_other', 'standart'],
             ],
             /*
             [
@@ -71,7 +71,7 @@ class Repository {
                 'button_name'            => 'Забрать из этого постамата',
                 'description'            => 'Автоматический пункт выдачи заказов',
                 'methods'                => ['pickpoint'],
-                'possible_method_tokens' => ['pickpoint', 'now', 'self', 'standart_furniture', 'standart_other'],
+                'possible_method_tokens' => ['pickpoint', 'now', 'self', 'standart_furniture', 'standart_other', 'standart'],
             ],
         ];
 
