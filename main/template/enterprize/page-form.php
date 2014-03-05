@@ -38,7 +38,7 @@
 
             <li class="bInputList__eListItem ">
                 <input class="jsCustomRadio bCustomInput mCustomCheckBig jsAgree" name="user[agree]" id="agree" type="checkbox" />
-                <label class="bCustomLabel mCustomLabelBig" for="agree">Согласен с <a style="text-decoration: underline;" href="#">условиями оферты</a></label>
+                <label class="bCustomLabel mCustomLabelBig" for="agree">Согласен с <a style="text-decoration: underline;" href="/reklamnaya-akcia-enterprize" target="_blank">условиями оферты</a></label>
             </li>
         </ul>
 
