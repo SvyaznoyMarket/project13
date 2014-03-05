@@ -2033,6 +2033,15 @@ img[height="0"] {
     display: none;
     margin: 20px 0 0;
   }
+  .enterPrize .enterPrizeListWrap.mComplete {
+    color: #000;
+    display: block;
+  }
+  .enterPrize .enterPrizeListWrap.mComplete .enterPrizeListTitle,
+  .enterPrize .enterPrizeListWrap.mComplete .enterPrizeList__item {
+    color: #000;
+    margin-left: 25px;
+  }
   .enterPrize .enterPrizeListTitle {
     font-size: 16px;
     color: #ffffff;
@@ -2047,11 +2056,11 @@ img[height="0"] {
     margin: 0 0 50px 54px;
   }
   .enterPrize .enterPrizeList {
-    margin: 0 0 20px 36px;
+    margin: 0 0 20px 0;
   }
   .enterPrize .enterPrizeList__item {
     color: #ffffff;
-    margin: 0 0 15px;
+    margin: 0 0 15px 36px;
     border-left: 3px solid;
     padding-left: 10px;
     font-size: 14px;
@@ -2386,6 +2395,13 @@ img[height="0"] {
   .enterprizeWar {
     margin: 0 0 10px 25px;
     font-weight: bold;
+  }
+  .enterprizeMore {
+    margin: 20px 0 30px 25px;
+    font-size: 16px;
+  }
+  .enterprizeMore a {
+    text-decoration: underline;
   }
 }
 /*---END----Enter Prize---------*/

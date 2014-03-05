@@ -4,28 +4,33 @@
  */
 ?>
 
-<div>Как получить скидку?</div>
+<div class="enterPrize">
+<div class="enterPrizeListWrap mComplete" style="display: block;">
+	<div class="enterPrizeListTitle">Как получить скидку?</div>
 
-<div>
-    <div>Сайт www.enter.ru</div>
-    Входи в личный кабинет на www.enter.ru!
-    При оформлении Заказа в поле КУПОН или ФИШКА вводи номер фишки!
+	<ul class="enterPrizeList">
+	    <li class="enterPrizeList__item mBlue">
+	        <strong>Сайт www.enter.ru</strong><br/>
+	        Входи в личный кабинет на www.enter.ru!<br/>
+	        При оформлении Заказа в поле КУПОН или ФИШКА вводи номер фишки!
+	    </li>
+
+	    <li class="enterPrizeList__item mOrange">
+	        <strong>Розничные магазины ENTER</strong><br/>
+	        Скажи сотруднику магазина, что ты — участник ENTER PRIZE!<br/>
+	        И сообщи номер Фишки при оплате заказа!
+	    </li>
+
+	    <li class="enterPrizeList__item mGreen">
+	        <strong>Контакт-сENTER 8 800 700 00 09</strong><br/>
+	        Скажи оператору Контакт-cENTER, что ты — участник ENTER PRIZE!<br/>
+	        И при оформлении заказа сообщи номер Фишки!
+	    </li>
+	</ul>
 </div>
 
-<div>
-    <div>Розничные магазины ENTER</div>
-    Скажи сотруднику магазина, что ты — участник ENTER PRIZE!
-    И сообщи номер Фишки при оплате заказа!
+<p class="enterprizeMore">Кстати, у нас есть ещё фишки! <a href="<?= \App::router()->generate('enterprize') ?>">Посмотреть</a></p>
 </div>
-
-<div>
-    <div>Контакт-cENTER 8 800 700 00 09</div>
-    Скажи оператору Контакт-cENTER, что ты — участник ENTER PRIZE!
-    И при оформлении заказа сообщи номер Фишки!
-</div>
-
-Кстати, у нас есть ещё фишки! <a href="<?= \App::router()->generate('enterprize') ?>">Посмотреть</a>
-
 
 ﻿
 

@@ -106,6 +106,18 @@
 	.enterPrizeListWrap {
 		display: none;
 		margin: 20px 0 0;
+
+		&.mComplete {
+			color: #000;
+			display: block;
+
+			.enterPrizeListTitle,
+			.enterPrizeList__item {
+				color: #000;
+				margin-left: 25px;
+			}
+			
+		}
 	}
 
 	.enterPrizeListTitle {
@@ -124,11 +136,11 @@
 	}
 
 	.enterPrizeList {
-		margin: 0 0 20px 36px;
+		margin: 0 0 20px 0;
 
 		&__item {
 			color: @white;
-			margin: 0 0 15px;
+			margin: 0 0 15px 36px;
 			border-left: 3px solid;
 			padding-left: 10px;
 			font-size: 14px;
@@ -508,4 +520,13 @@
 .enterprizeWar {
 	margin: 0 0 10px 25px;
 	font-weight: bold;
+}
+
+.enterprizeMore {
+	margin: 20px 0 30px 25px;
+	font-size: 16px;
+
+	a {
+		text-decoration: underline;
+	}
 }
