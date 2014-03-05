@@ -32,6 +32,37 @@ class ProductCard {
             break; // FIXME: убрать заглушку
         }
 
+        $groupedPropertyModels = [];
+        foreach ($productModel->properties as $propertyModel) {
+            if (!isset($groupedPropertyModels[$propertyModel->groupId])) {
+                $groupedPropertyModels[$propertyModel->groupId] = [];
+            }
+
+            $groupedPropertyModels[$propertyModel->groupId][] = $propertyModel;
+        }
+
+        foreach ($productModel->propertyGroups as $propertyGroupModel) {
+            if (!isset($groupedPropertyModels[$propertyGroupModel->id][0])) continue;
+
+            $propertyChunk = new Page\Content\Product\PropertyChunk();
+
+            $property = new Page\Content\Product\PropertyChunk\Property();
+            $property->isTitle = true;
+            $property->name = $propertyGroupModel->name;
+            $propertyChunk->properties[] = $property;
+
+            foreach ($groupedPropertyModels[$propertyGroupModel->id] as $propertyModel) {
+                /** @var Model\Product\Property $propertyModel */
+                $property = new Page\Content\Product\PropertyChunk\Property();
+                $property->isTitle = false;
+                $property->name = $propertyModel->name;
+                $property->value = $propertyModel->shownValue . ($propertyModel->unit ? (' ' . $propertyModel->unit) : '');
+                $propertyChunk->properties[] = $property;
+            }
+
+            $page->content->product->propertyChunks[] = $propertyChunk;
+        }
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

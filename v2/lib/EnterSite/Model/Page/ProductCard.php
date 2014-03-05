@@ -40,6 +40,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $description;
         /** @var Product\Photo[] */
         public $photos = [];
+        /** @var array of Product\PropertyChunk[] */
+        public $propertyChunks = [];
     }
 }
 
@@ -49,5 +51,21 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
         public $name;
         /** @var string */
         public $url;
+    }
+
+    class PropertyChunk {
+        /** @var PropertyChunk\Property[] */
+        public $properties = [];
+    }
+}
+
+namespace EnterSite\Model\Page\ProductCard\Content\Product\PropertyChunk {
+    class Property {
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $value;
+        /** @var bool */
+        public $isTitle;
     }
 }

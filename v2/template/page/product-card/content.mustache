@@ -255,29 +255,19 @@
             </div>
 
             <div class="specificationsListCol">
+            {{#product.propertyChunks}}
                 <ul class="specificationsList">
-                    <li class="specificationsList__item specificationsList__item-title">Общие</li>
-                    <li class="specificationsList__item">Тип : смартфон </li>
-                    <li class="specificationsList__item">Стандарт : GSM (850/900/1800/1900 МГц), UMTS/HSDPA/HSUPA (850/900/1900/2100 МГц), LTE</li>
-                </ul>
+                {{#properties}}
+                    {{#isTitle}}
+                        <li class="specificationsList__item specificationsList__item-title">{{name}}</li>
+                    {{/isTitle}}
 
-                <ul class="specificationsList">
-                    <li class="specificationsList__item specificationsList__item-title">Дисплей</li>
-                    <li class="specificationsList__item">Диагональ экрана : 4 "</li>
-                    <li class="specificationsList__item">Сенсорный дисплей  : Multitouch</li>
-                    <li class="specificationsList__item">Тип дисплея : IPS, емкостный</li>
-                    <li class="specificationsList__item">Количество цветов   : 16,7 млн.</li>
+                    {{^isTitle}}
+                        <li class="specificationsList__item">{{name}} : {{value}}</li>
+                    {{/isTitle}}
+                {{/properties}}
                 </ul>
-
-                <ul class="specificationsList">
-                    <li class="specificationsList__item specificationsList__item-title">ОС, процессор</li>
-                    <li class="specificationsList__item">Диагональ экрана : 4 "</li>
-                    <li class="specificationsList__item">Сенсорный дисплей  : Multitouch</li>
-                    <li class="specificationsList__item">Тип дисплея : IPS, емкостный</li>
-                    <li class="specificationsList__item">Количество цветов   : 16,7 млн.</li>
-                    <li class="specificationsList__item">Тип : смартфон </li>
-                    <li class="specificationsList__item">Стандарт : GSM (850/900/1800/1900 МГц), UMTS/HSDPA/HSUPA (850/900/1900/2100 МГц), LTE</li>
-                </ul>
+            {{/product.propertyChunks}}
 
                 <p class="specificationsText">{{product.description}}</p>
             </div>
