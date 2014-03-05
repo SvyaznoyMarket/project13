@@ -25,7 +25,7 @@ class Coupon {
                 'coupon/enter-prize',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
-                    'token'     => isset($data['token']) ? $data['token'] : \App::user()->getToken(),
+                    'token'     => !empty($data['token']) ? $data['token'] : \App::user()->getToken(),
                 ],
                 [
                     'name'   => $form->getName(),
