@@ -198,15 +198,7 @@
 				responseFromServer = function responseFromServer( response ) {
 					if ( response.error ) {
 						if ( response.needAuth ) {
-							$('#auth-block').lightbox_me({
-								centered: true,
-								autofocus: true,
-								onLoad: function() {
-									$('#auth-block').find('input:first').focus();
-								}
-							});
-
-							return false;
+							openAuth();
 						}
 
 						console.warn('Form has error');
