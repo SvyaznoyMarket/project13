@@ -167,6 +167,7 @@ class FormAction {
         if ($form->isValid()) {
             // Запоминаем данные enterprizeForm
             $data = array_merge($data, [
+                'token'            => isset($result['token']) ? $result['token'] : null,
                 'name'             => $form->getName(),
                 'email'            => $form->getEmail(),
                 'mobile'           => $form->getMobile(),
@@ -175,7 +176,7 @@ class FormAction {
             ]);
             $session->set($sessionName, $data);
 
-            $userToken = !empty($result['token']) ? $result['token'] : null;
+            $userToken = $data['token'];
             $data = $session->get($sessionName, []);
             if ($data['isPhoneConfirmed'] && $data['isEmailConfirmed']) {
                 // пользователь все подтвердил, пробуем создать купон
