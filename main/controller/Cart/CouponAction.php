@@ -46,7 +46,7 @@ class CouponAction {
         } catch (\Exception $e) {
             \App::exception()->remove($e);
 
-            $message = \Model\Cart\Coupon\Entity::getErrorMessage($e->getCode()) ?: 'Неудалось активировать купон';
+            $message = \Model\Cart\Coupon\Entity::getErrorMessage($e->getCode()) ?: 'Не удалось активировать купон';
 
             if (in_array($e->getCode(), [300,  303,  305, 306, 307, 308, 309, 310, 311, 312, 313])) {
                 $cart->clearCoupons();
@@ -79,7 +79,7 @@ class CouponAction {
 
             $responseData = [
                 'success' => false,
-                'error'   => ['code' => $e->getCode(), 'message' => 'Неудалось удалить купон'],
+                'error'   => ['code' => $e->getCode(), 'message' => 'Не удалось удалить купон'],
             ];
         }
 

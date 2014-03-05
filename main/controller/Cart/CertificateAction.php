@@ -40,7 +40,7 @@ class CertificateAction {
 
             $responseData = [
                 'success' => false,
-                'error'   => ['code' => $e->getCode(), 'message' => 'Неудалось активировать карту'],
+                'error'   => ['code' => $e->getCode(), 'message' => 'Не удалось активировать карту'],
             ];
         }
 
@@ -69,7 +69,7 @@ class CertificateAction {
 
             $responseData = [
                 'success' => false,
-                'error'   => ['code' => $e->getCode(), 'message' => 'Неудалось удалить карту'],
+                'error'   => ['code' => $e->getCode(), 'message' => 'Не удалось удалить карту'],
             ];
         }
 

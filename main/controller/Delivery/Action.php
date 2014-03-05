@@ -441,7 +441,7 @@ class Action {
                         'type'      => 'coupon',
                         'name'      => $coupon->getName(),
                         'sum'       => $coupon->getDiscountSum(),
-                        'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?: 'Неудалось активировать купон'] : null,
+                        'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?: 'Не удалось активировать купон'] : null,
                         'deleteUrl' => $router->generate('cart.coupon.delete'),
                     ];
                 }
@@ -454,7 +454,7 @@ class Action {
                         'type'      => 'blackcard',
                         'name'      => $blackcard->getName(),
                         'sum'       => $blackcard->getDiscountSum(),
-                        'error'     => $blackcard->getError() ? ['code' => $blackcard->getError()->getCode(), 'message' => \Model\Cart\Blackcard\Entity::getErrorMessage($blackcard->getError()->getCode()) ?: 'Неудалось активировать карту'] : null,
+                        'error'     => $blackcard->getError() ? ['code' => $blackcard->getError()->getCode(), 'message' => \Model\Cart\Blackcard\Entity::getErrorMessage($blackcard->getError()->getCode()) ?: 'Не удалось активировать карту'] : null,
                         'deleteUrl' => $router->generate('cart.blackcard.delete'),
                     ];
                 }

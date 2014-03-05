@@ -47,7 +47,7 @@ class BlackcardAction {
         } catch (\Exception $e) {
             \App::exception()->remove($e);
 
-            $message = \Model\Cart\Blackcard\Entity::getErrorMessage($e->getCode()) ?: 'Неудалось активировать карту';
+            $message = \Model\Cart\Blackcard\Entity::getErrorMessage($e->getCode()) ?: 'Не удалось активировать карту';
 
             if (in_array($e->getCode(), [1000, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013])) {
                 $cart->clearBlackcards();
@@ -80,7 +80,7 @@ class BlackcardAction {
 
             $responseData = [
                 'success' => false,
-                'error'   => ['code' => $e->getCode(), 'message' => 'Неудалось удалить карту'],
+                'error'   => ['code' => $e->getCode(), 'message' => 'Не удалось удалить карту'],
             ];
         }
 
