@@ -1621,7 +1621,7 @@ $(document).ready(function(){
 				label.html('Ваш мобильный телефон:');
 				btn.html('Ввести e-mail');
 				registerMailPhoneField.addClass('jsRegisterPhone');
-				ENTER.utils.registerValidator.setValidate( registerMailPhoneField, {validBy: 'isPhone', customErr: 'Некорректно введен телефон'} );
+				registerValidator.setValidate( registerMailPhoneField, {validBy: 'isPhone', customErr: 'Некорректно введен телефон'} );
 
 				// устанавливаем маску для поля "Ваш мобильный телефон"
 				$.mask.definitions['n'] = '[0-9]';
@@ -1631,7 +1631,7 @@ $(document).ready(function(){
 				label.html('Ваш e-mail:');
 				btn.html('У меня нет e-mail');
 				registerMailPhoneField.removeClass('jsRegisterPhone');
-				ENTER.utils.registerValidator.setValidate( registerMailPhoneField, {validBy: 'isEmail', customErr: 'Некорректно введен e-mail'} );
+				registerValidator.setValidate( registerMailPhoneField, {validBy: 'isEmail', customErr: 'Некорректно введен e-mail'} );
 
 				// убераем маску с поля "Ваш мобильный телефон"
 				registerMailPhoneField.unmask();
