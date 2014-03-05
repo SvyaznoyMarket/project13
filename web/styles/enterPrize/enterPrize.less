@@ -217,6 +217,10 @@
 		width: 281px;
 		height: 280px;
 		.transition(opacity 0.4s ease-in-out);
+		-webkit-perspective: 1000; 
+		-webkit-backface-visibility: hidden; 
+		-webkit-tap-highlight-color: rgba(255,255,255,0);
+		outline: none;
 		z-index: 15;
 
 		&.mPink {
@@ -235,7 +239,7 @@
         display: block;
 
         width: 94px;
-        height: 20px;
+        height: 25px;
 
         text-align: center;
 
@@ -243,11 +247,15 @@
         border: 1px solid #fb9c00;
 
         font-size: 14px;
-        line-height: 20px;
-        bottom: 17px;
-		left: 94px;
+        line-height: 25px;
+        bottom: 15px;
+		left: 92px;
 		.opacity(0);
 		.transition(opacity 0.2s ease-in-out);
+		-webkit-perspective: 1000; 
+		-webkit-backface-visibility: hidden; 
+		-webkit-tap-highlight-color: rgba(255,255,255,0);
+		outline: none;
 
 		&:hover {
 			.gradient(#ffa200, #f79200, #ffa200);

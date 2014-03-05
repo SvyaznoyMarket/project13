@@ -37,9 +37,12 @@ class Form {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('email', $data)) $this->setEmail($data['email']);
         if (array_key_exists('mobile', $data)) $this->setMobile($data['mobile']);
-        if (array_key_exists('guid', $data)) $this->setEnterprizeCoupon($data['guid']);
         if (array_key_exists('agree', $data)) $this->setAgree($data['agree']);
         if (array_key_exists('subscribe', $data)) $this->setIsSubscribe($data['subscribe']);
+        if (array_key_exists('guid', $data) || array_key_exists('enterprizeToken', $data)) {
+            $guid = !empty($data['enterprizeToken']) ? $data['enterprizeToken'] : $data['guid'];
+            $this->setEnterprizeCoupon($guid);
+        }
     }
 
     /**

@@ -747,6 +747,14 @@ return [
         'pattern' => '/enterprize/get',
         'action'  => ['Enterprize\Action', 'get'],
     ],
+    'enterprize.complete' => [
+        'pattern' => '/enterprize/complete',
+        'action'  => ['Enterprize\Coupon', 'complete'],
+    ],
+    'enterprize.fail' => [
+        'pattern' => '/enterprize/fail',
+        'action'  => ['Enterprize\Coupon', 'fail'],
+    ],
     // enterprize form
     'enterprize.form.show' => [
         'pattern' => '/enterprize/{enterprizeToken}',

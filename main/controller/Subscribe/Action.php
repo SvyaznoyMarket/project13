@@ -137,8 +137,15 @@ class Action {
             }
         }
 
-        return new \Http\RedirectResponse(
+        $response = new \Http\RedirectResponse(
             \App::router()->generate('content', ['token' => $redirectToken, 'email' => $email], true)
         );
+
+        $promo = $request->get('promo', null);
+        if ('enter_prize' == $promo) {
+            $response = (new \Controller\Enterprize\ConfirmEmailAction())->check($request);
+        }
+
+        return $response;
     }
 }

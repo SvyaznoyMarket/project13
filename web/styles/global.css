@@ -2139,6 +2139,10 @@ img[height="0"] {
     -webkit-transition: opacity 0.4s ease-in-out;
     -moz-transition: opacity 0.4s ease-in-out;
     transition: opacity 0.4s ease-in-out;
+    -webkit-perspective: 1000;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    outline: none;
     z-index: 15;
   }
   .enterPrize .cuponImgHover.mPink {
@@ -2158,14 +2162,14 @@ img[height="0"] {
     border-radius: 5px;
     display: block;
     width: 94px;
-    height: 20px;
+    height: 25px;
     text-align: center;
     color: #ffffff;
     border: 1px solid #fb9c00;
     font-size: 14px;
-    line-height: 20px;
-    bottom: 17px;
-    left: 94px;
+    line-height: 25px;
+    bottom: 15px;
+    left: 92px;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
@@ -2175,6 +2179,10 @@ img[height="0"] {
     -webkit-transition: opacity 0.2s ease-in-out;
     -moz-transition: opacity 0.2s ease-in-out;
     transition: opacity 0.2s ease-in-out;
+    -webkit-perspective: 1000;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    outline: none;
   }
   .enterPrize .cuponBtn:hover {
     background: #ffa200;
@@ -2797,10 +2805,10 @@ img[height="0"] {
     position: relative;
   }
   .bPromoCatalogSlider.mTchiboSlider {
-    margin: 0 0 30px;
+    margin: 0;
     overflow: hidden;
     width: 940px;
-    height: 600px;
+    height: 630px;
   }
   .bPromoCatalogSlider.mTchiboSlider .bPromoCatalogSliderWrap_eSlide {
     width: 940px;
