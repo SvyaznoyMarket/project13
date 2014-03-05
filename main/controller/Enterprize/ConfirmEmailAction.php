@@ -138,9 +138,9 @@ class ConfirmEmailAction {
                 throw new \Exception('Не получен promo');
             }
 
-            $confirmToken = $request->get('confirm_token');
-            if (!$confirmToken) {
-                throw new \Exception('Не получен token');
+            $confirmCode = $request->get('code');
+            if (!$confirmCode) {
+                throw new \Exception('Не получен code');
             }
 
             $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
@@ -154,7 +154,7 @@ class ConfirmEmailAction {
                 [
                     'email'    => $email,
                     'template' => $promo,
-                    'code'     => $confirmToken,
+                    'code'     => $confirmCode,
                 ],
                 \App::config()->coreV2['hugeTimeout']
             );
