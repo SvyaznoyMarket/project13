@@ -83,7 +83,7 @@ class ConfirmEmailAction {
                 'confirm/email',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
-                    'token'     => \App::user()->getToken(),
+                    'token'     => isset($data['token']) ? $data['token'] : \App::user()->getToken(),
                 ],
                 [
                     'email'    => $data['email'],
@@ -147,7 +147,7 @@ class ConfirmEmailAction {
                 'confirm/email',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
-                    'token'     => \App::user()->getToken(),
+                    'token'     => isset($data['token']) ? $data['token'] : \App::user()->getToken(),
                 ],
                 [
                     'email'    => $email,

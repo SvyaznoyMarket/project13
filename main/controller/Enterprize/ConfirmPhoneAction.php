@@ -84,7 +84,7 @@ class ConfirmPhoneAction {
                 'confirm/mobile',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
-                    'token'     => \App::user()->getToken(),
+                    'token'     => isset($data['token']) ? $data['token'] : \App::user()->getToken(),
                 ],
                 [
                     'mobile' => $data['mobile'],
@@ -137,7 +137,7 @@ class ConfirmPhoneAction {
                 'confirm/mobile',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
-                    'token'     => \App::user()->getToken(),
+                    'token'     => isset($data['token']) ? $data['token'] : \App::user()->getToken(),
                 ],
                 [
                     'mobile' => $data['mobile'],
