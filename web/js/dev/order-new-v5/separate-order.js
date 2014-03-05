@@ -47,7 +47,7 @@
 			isUnique = null,
 			nowProductsToNewBox = [],
 
-			discounts = ENTER.OrderModel.orderDictionary.orderData.discounts;
+			discounts = ENTER.OrderModel.orderDictionary.orderData.discounts || [];
 		// end of vars
 		
 		if ( ENTER.OrderModel.paypalECS() ) {
@@ -153,11 +153,8 @@
 		console.log(ENTER.OrderModel.deliveryBoxes());
 
 
-		if ( 'undefined' !== typeof(discounts) ) { // если купоны существуют
-			// Добавляем купоны
-			ENTER.OrderModel.couponsBox(discounts);
-			// TODO проверить: возможно, строчки про купоны ниже можно внести в это же условие
-		}
+		// Добавляем купоны
+		ENTER.OrderModel.couponsBox(discounts);
 
 		// выбираем URL для проверки купонов - первый видимый купон
 		ENTER.OrderModel.couponUrl( $('.bSaleList__eItem:visible .jsCustomRadio').eq(0).val() );
@@ -446,14 +443,14 @@
 			if ( $('.bSaleList__eItem.hidden').length === $('.bSaleList__eItem').length ||
 				$('.bSaleList__eItem:hidden').length === $('.bSaleList__eItem').length ) {
 				// если все скидки применены
-				
+
 				fieldNode.attr('disabled', 'disabled');
 				buttonNode.attr('disabled', 'disabled').addClass('mDisabled');
 				emptyBlock.show();
 			}
 			else {
 				// не все скидки применены
-				
+
 				fieldNode.removeAttr('disabled');
 				buttonNode.removeAttr('disabled').removeClass('mDisabled');
 				emptyBlock.hide();
