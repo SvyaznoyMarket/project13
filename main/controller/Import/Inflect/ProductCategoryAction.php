@@ -44,7 +44,7 @@ class ProductCategoryAction {
 
                 $file = $inflectDir . '/' . $category->getId() . '.json';
                 if (!file_put_contents($file, json_encode($inflect, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT))) {
-                    throw new \Exception(sprintf('Неудалось записать данные в %s', $file));
+                    throw new \Exception(sprintf('Не удалось записать данные в %s', $file));
                 }
 
                 echo "\n";
