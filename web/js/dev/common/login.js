@@ -1,9 +1,8 @@
 ;(function( ENTER ) {
 	var constructors = ENTER.constructors,
-		registerMailPhoneField = $('.jsRegisterUsername'),
 		body = $('body'),
 		authBlock = $('#auth-block'),
-		forgotPwdLogin = $('.jsForgotPwdLogin'),
+		registerMailPhoneField = $('.jsRegisterUsername'),
 		resetPwdForm = $('.jsResetPwdForm'),
 		registerForm = $('.jsRegisterForm'),
 		loginForm = $('.jsLoginForm'),
@@ -17,12 +16,12 @@
 		signinValidationConfig = {
 			fields: [
 				{
-					fieldNode: $('.jsSigninUsername'),
+					fieldNode: $('.jsSigninUsername', authBlock),
 					require: true,
 					customErr: 'Не указан логин'
 				},
 				{
-					fieldNode: $('.jsSigninPassword'),
+					fieldNode: $('.jsSigninPassword', authBlock),
 					require: true,
 					customErr: 'Не указан пароль'
 				}
@@ -37,7 +36,7 @@
 		registerValidationConfig = {
 			fields: [
 				{
-					fieldNode: $('.jsRegisterFirstName'),
+					fieldNode: $('.jsRegisterFirstName', authBlock),
 					require: true,
 					customErr: 'Не указано имя'
 				},
@@ -58,7 +57,7 @@
 		forgotPwdValidationConfig = {
 			fields: [
 				{
-					fieldNode: forgotPwdLogin,
+					fieldNode: $('.jsForgotPwdLogin', authBlock),
 					require: true,
 					customErr: 'Не указан email или мобильный телефон',
 					validateOnChange: true
@@ -68,12 +67,22 @@
 		forgotValidator = new FormValidator(forgotPwdValidationConfig);
 	// end of vars
 
-	ENTER.utils.signinValidationConfig = signinValidationConfig;
-	ENTER.utils.signinValidator = signinValidator;
-	ENTER.utils.registerValidationConfig = registerValidationConfig;
-	ENTER.utils.registerValidator = registerValidator;
-	ENTER.utils.forgotPwdValidationConfig = forgotPwdValidationConfig;
-	ENTER.utils.forgotValidator = forgotValidator;
+	var
+		/**
+		 * Задаем настройки валидаторов.
+		 * Глобальные настройки позволяют навешивать кастомные валидаторы на различные авторизационные формы.
+		 */
+		setValidatorSettings = function() {
+			ENTER.utils.signinValidationConfig = signinValidationConfig;
+			ENTER.utils.signinValidator = signinValidator;
+			ENTER.utils.registerValidationConfig = registerValidationConfig;
+			ENTER.utils.registerValidator = registerValidator;
+			ENTER.utils.forgotPwdValidationConfig = forgotPwdValidationConfig;
+			ENTER.utils.forgotValidator = forgotValidator;
+		};
+	// end of functions
+
+	setValidatorSettings();
 
 	/**
 	 * Класс по работе с окном входа на сайт
@@ -291,8 +300,8 @@
 					// end of vars
 
 					for (j in validators) {
-						validator = eval(validators[j] + 'Validator');
-						config = eval(validators[j] + 'ValidationConfig');
+						validator = eval('ENTER.utils.' + validators[j] + 'Validator');
+						config = eval('ENTER.utils.' + validators[j] + 'ValidationConfig');
 
 						if ( !config || !config.fields || !validator ) {
 							continue;
@@ -305,6 +314,8 @@
 					}
 				};
 			// end of functions
+
+			setValidatorSettings();
 
 			authBlock.lightbox_me({
 				centered: true,
@@ -347,7 +358,7 @@
 		 * @public
 		 */
 		Login.prototype.getFormValidator = function() {
-			return eval(this.getFormName() + 'Validator');
+			return eval('ENTER.utils.' + this.getFormName() + 'Validator');
 		};
 
 		/**
@@ -375,6 +386,7 @@
 			var formData = this.form.serializeArray(),
 				validator = this.getFormValidator(),
 				formSubmit = $('.jsSubmit', this.form),
+				forgotPwdLogin = $('.jsForgotPwdLogin', this.form),
 				urlParams = this.getUrlParams(),
 				timeout;
 			// end of vars
