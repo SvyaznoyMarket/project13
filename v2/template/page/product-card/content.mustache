@@ -23,10 +23,10 @@
         <div class="productDesc clearfix">
 
             <!-- Изображение товара -->
-            <div class="productDescImg">
-            {{#product.photos}}
-                <img class="productImg" src="{{url}}" alt="{{&name}}" />
-            {{/product.photos}}
+            <div class="productDescImg" id="imagegallery">
+                {{#product.photos}}
+                    <img class="productImg" src="{{url}}" alt="{{&name}}" />
+                {{/product.photos}}
             </div>
             <!--/ Изображение товара -->
 
