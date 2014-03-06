@@ -45,7 +45,43 @@
 				}
 			]
 		},
-		validator = new FormValidator(validationConfig);
+		validator = new FormValidator(validationConfig),
+
+		/**
+		 * Конфигурация валидатора для формы логина
+		 * @type {Object}
+		 */
+		signinValidationConfig = {
+			fields: [
+				{
+					fieldNode: $('.jsSigninUsername', authBlock),
+					require: true,
+					customErr: 'Не указан логин'
+				},
+				{
+					fieldNode: $('.jsSigninPassword', authBlock),
+					require: true,
+					customErr: 'Не указан пароль'
+				}
+			]
+		},
+		signinValidator = new FormValidator(signinValidationConfig),
+
+		/**
+		 * Конфигурация валидатора для формы регистрации
+		 * @type {Object}
+		 */
+		forgotPwdValidationConfig = {
+			fields: [
+				{
+					fieldNode: $('.jsForgotPwdLogin', authBlock),
+					require: true,
+					customErr: 'Не указан email или мобильный телефон',
+					validateOnChange: true
+				}
+			]
+		},
+		forgotValidator = new FormValidator(forgotPwdValidationConfig);
 	// end of vars
 
 	var
@@ -162,15 +198,7 @@
 				responseFromServer = function responseFromServer( response ) {
 					if ( response.error ) {
 						if ( response.needAuth ) {
-							$('#auth-block').lightbox_me({
-								centered: true,
-								autofocus: true,
-								onLoad: function() {
-									$('#auth-block').find('input:first').focus();
-								}
-							});
-
-							return false;
+							openAuth();
 						}
 
 						console.warn('Form has error');
@@ -208,6 +236,11 @@
 		 * Открыть окно авторизации
 		 */
 		openAuth = function() {
+			ENTER.utils.signinValidationConfig = signinValidationConfig;
+			ENTER.utils.signinValidator = signinValidator;
+			ENTER.utils.forgotPwdValidationConfig = forgotPwdValidationConfig;
+			ENTER.utils.forgotValidator = forgotValidator;
+
 			var
 				/**
 				 * При закрытии попапа убераем ошибки с полей

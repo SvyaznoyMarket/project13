@@ -1,27 +1,22 @@
-/** стили навигации **/
+/* ==========================================================================
+   Стили навигации сайта .nav
+   ========================================================================== */
 
 .nav {
 	position: absolute;
 	background: @black;
-	top: 0;
+	top: 50px;
 	left: -20px;
 	padding: 10px 20px 20px;
 	margin: 0;
-	z-index: 10;
-	-webkit-transition: all 0.5s ease;
-     -moz-transition: all 0.5s ease;
-     -o-transition: all 0.5s ease;
-     transition: all 0.5s ease;
-
-	&-drop {
-	}
+	z-index: 10
 }
 
 .navList {
 	width: 320px;
 
 	&__item {
-		
+		margin: 0 0 20px;
 	}
 
 	&__text {
@@ -29,19 +24,16 @@
 		font-size: 18px;
 		background-position: 0 50%;
 		background-repeat: no-repeat;
-		padding: 10px 0 10px 65px;
+		height: 40px;
+	    line-height: 40px;
+	    padding: 0 0 0 65px;
 		display: block;
-		margin: 0 0 10px;
 		cursor: pointer;
 	}
 }
 
-.navListLevel2Wrap {
-	display: none;
-}
-
 .navListLevel2 {
-	margin: 0 0 15px;
+	margin: 0 0 0 65px;
 
 	&__link {
 		color: #7e7e7e;
@@ -50,6 +42,10 @@
 		margin: 5px 0;
 		display: block;
 		font-size: 14px;
+
+		&:hover {
+			color: @firmOrange;
+		}
 	}
 }
 

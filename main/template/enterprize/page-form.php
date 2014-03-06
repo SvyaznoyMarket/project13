@@ -1,13 +1,20 @@
 <?php
 /**
  * @var $page             \View\DefaultLayout
- * @var $user             \Session\User
  * @var $form             \View\Enterprize\Form
+ * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
+ * @var $errors           array
+ * @var $authSource       string|null
  */
 ?>
 
-
 <div class="titleForm">Заполни три поля, и ты в игре!</div>
+
+<? if (is_array($errors)): ?>
+    <? foreach ($errors as $error): ?>
+        <p class="red enterprizeWar"><?= $error ?></p>
+    <? endforeach ?>
+<? endif ?>
 
 <form class="formDefault jsEnterprizeForm" action="<?= $page->url('enterprize.form.update') ?>" method="post">
     <input type="hidden" name="user[guid]" value="<?= $form->getEnterprizeCoupon() ?>" />
@@ -18,10 +25,10 @@
             <input class="formDefault__inputText jsName" type="text" name="user[name]" value="<?= $form->getName() ?>" />
 
             <label class="formDefault__label">Мобильный телефон:</label>
-            <input class="formDefault__inputText jsMobile" type="text" name="user[mobile]" value="<?= $form->getMobile() ?>" />
+            <input class="formDefault__inputText jsMobile" type="text" name="user[mobile]" value="<?= $form->getMobile() ?>" <? if ('phone' === $authSource): ?>readonly="readonly"<? endif ?> />
 
             <label class="formDefault__label">E-mail:</label>
-            <input class="formDefault__inputText jsEmail" type="text" name="user[email]" value="<?= $form->getEmail() ?>" />
+            <input class="formDefault__inputText jsEmail" type="text" name="user[email]" value="<?= $form->getEmail() ?>" <? if ('email' === $authSource): ?>readonly="readonly"<? endif ?> />
    
 
         <ul class="bInputList mEnterPrizeSubscr">
@@ -31,8 +38,8 @@
             </li>
 
             <li class="bInputList__eListItem ">
-                <input class="jsCustomRadio bCustomInput mCustomCheckBig jsAgree" name="user[agree]" id="agree" type="checkbox" />
-                <label class="bCustomLabel mCustomLabelBig" for="agree">Согласен с <a style="text-decoration: underline;" href="#">условиями оферты</a></label>
+                <input class="jsCustomRadio bCustomInput mCustomCheckBig jsAgree" name="user[agree]" id="agree" type="checkbox" <? if($form->getAgree()): ?>checked="checked"<? endif ?> />
+                <label class="bCustomLabel mCustomLabelBig<? if($form->getAgree()): ?> mChecked<? endif ?>" for="agree">Согласен с <a style="text-decoration: underline;" href="/reklamnaya-akcia-enterprize" target="_blank">условиями оферты</a></label>
             </li>
         </ul>
 

@@ -16,13 +16,20 @@ class Action {
         }
 
         $client = \App::dataStoreClient();
+        $user = \App::user()->getEntity();
 
         /** @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[] */
         $enterpizeCoupons = [];
-        $client->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupons) {
+        $client->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupons, $user) {
             foreach ((array)$data as $item) {
                 if (empty($item['token'])) continue;
-                $enterpizeCoupons[] = new \Model\EnterprizeCoupon\Entity($item);
+
+                $coupon = new \Model\EnterprizeCoupon\Entity($item);
+                if ($user && $user->isEnterprizeMember() && $coupon->isForNotMemberOnly()) {
+                    continue;
+                }
+
+                $enterpizeCoupons[] = $coupon;
             }
         });
         $client->execute();
