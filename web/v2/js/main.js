@@ -15,37 +15,38 @@ $(function(){
 
 	//верхнее меню
 	
-	var header = $('.header'),
-		headerHeight = $('.header').height(),
-		headerHeightInner = $('.header').innerHeight(),
-		navIco = $('.navIco'),
+	var navIco = $('.navIco'),
 		navSite = $('.nav'),
-		navSiteHeight = navSite.height(),
 		navSiteItemLevel1 = navSite.find('.navList__text'),
 		navSiteListLevel2 = navSite.find('.navListLevel2');
 	//var
-	
-		// header.css({'height' : headerHeight});
-		// navSite.css({'top' : -navSite.height()-headerHeight, 'z-index': '1'});
 
-	var allPanels = navSite.hide();
-	var allPanels2 = navSiteListLevel2.hide();
+	var allPanels = navSite.hide(),
+		allPanels2 = navSiteListLevel2.hide(),
 
-	var
 		slideNav = function slideNav() {
-			//navSite.css({'top' : headerHeight+10});
+
 			navSite.slideToggle();
+
+			navSiteListLevel2.slideUp();
 
 			return false;
 		},
 
 		slideNavLevel2 = function slideNavLevel2() {
+
 			navSiteListLevel2.slideUp();
-			$(this).next(navSiteListLevel2).slideDown();
+
+			if ( ($(this).next(navSiteListLevel2)).is(':visible') ) {
+				navSiteListLevel2.slideUp();
+			}
+
+			else $(this).next(navSiteListLevel2).slideDown();
 
 			return false;
 		};
 
 	navIco.click(slideNav);
+
 	navSiteItemLevel1.click(slideNavLevel2);
 });
