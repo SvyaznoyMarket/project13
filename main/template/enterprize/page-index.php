@@ -102,10 +102,19 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
             if (!$coupon->getImage()) {
                 $itemClass .= ' mNoIco';
             }
+
+            $couponLink = $page->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]);
+            if ($coupon->isInformationOnly()) {
+                if ($coupon->getDescriptionToken()) {
+                    $couponLink = $page->url('content', ['token' => $coupon->getDescriptionToken()]);
+                } else {
+                    $couponLink = null;
+                }
+            }
             ?>
 
             <li class="<?= $itemClass ?>">
-                <a class="enterPrize__list__link" href="<?= $page->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]) ?>">
+                <a class="enterPrize__list__link" href="<?= $couponLink ? $couponLink : '#' ?>">
                 <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
                     <span class="cuponImg__inner">
                         <? if ($coupon->getImage()): ?>

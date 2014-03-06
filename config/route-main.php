@@ -299,6 +299,11 @@ return [
         'require' => ['productToken' => '[\w\d-_]+'],
     ],
     //reviews
+    'product.review.create' => [
+        'pattern' => '/product-reviews/create/{productId}',
+        'require' => ['productId' => '\d+'],
+        'action'  => ['Product\ReviewsAction', 'create'],
+    ],
     'product.reviews' => [
         'pattern' => '/product-reviews/{productId}',
         'require' => ['productId' => '\d+'],

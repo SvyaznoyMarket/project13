@@ -52,6 +52,7 @@ class FormAction {
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('form', $this->getForm());
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
+        $page->setParam('authSource', $session->get('authSource', null));
 
         return new \Http\Response($page->show());
     }
@@ -65,6 +66,7 @@ class FormAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
+        $user = \App::user()->getEntity();
         $form = new \View\Enterprize\Form();
         $userData = (array)$request->get('user');
         $form->fromArray($userData);
@@ -83,6 +85,15 @@ class FormAction {
         $response = null;
         $result = null;
         try {
+            $authSource = $session->get('authSource', null);
+            if ($user) {
+                if ('phone' === $authSource && $user->getMobilePhone() !== $form->getMobile()) {
+                    throw new \Curl\Exception('Нельзя изменить мобильный телефон');
+                } elseif ('email' === $authSource && $user->getEmail() !== $form->getEmail()) {
+                    throw new \Curl\Exception('Нельзя изменить email');
+                }
+            }
+
             $result = $client->query(
                 'coupon/register-in-enter-prize',
                 [
