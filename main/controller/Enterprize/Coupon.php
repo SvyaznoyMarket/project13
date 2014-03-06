@@ -121,10 +121,30 @@ class Coupon {
     public function fail(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $flash = \App::session()->get('flash');
-        \App::session()->remove('flash');
+        $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+
+        $data = $session->get($sessionName, []);
+        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+
+        $flash = $session->get('flash');
+        $session->remove('flash');
+
+        /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
+        $enterpizeCoupon = null;
+        if ($enterprizeToken) {
+            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
+                foreach ((array)$data as $item) {
+                    if ($enterprizeToken == $item['token']) {
+                        $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
+                    }
+                }
+            });
+            \App::dataStoreClient()->execute();
+        }
 
         $page = new \View\Enterprize\CouponFailPage();
+        $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
 
         return new \Http\Response($page->show());
@@ -138,7 +158,27 @@ class Coupon {
     public function complete(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+
+        $data = $session->get($sessionName, []);
+        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+
+        /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
+        $enterpizeCoupon = null;
+        if ($enterprizeToken) {
+            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
+                foreach ((array)$data as $item) {
+                    if ($enterprizeToken == $item['token']) {
+                        $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
+                    }
+                }
+            });
+            \App::dataStoreClient()->execute();
+        }
+
         $page = new \View\Enterprize\CouponCompletePage();
+        $page->setParam('enterpizeCoupon', $enterpizeCoupon);
 
         return new \Http\Response($page->show());
     }
