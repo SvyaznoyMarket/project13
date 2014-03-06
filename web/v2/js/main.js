@@ -9,44 +9,66 @@ $(function(){
 			chooseModelMoreBox.slideToggle('800');
 			chooseModelMoreLink.toggleClass('more');
 		};
-	//var
+	// end of vars
 		
 	chooseModelMoreLink.click(chooseModelMoreModel);
 
-	//верхнее меню
+	/**
+	 * Навигация сайта, показывается при клике по иконке .navIco
+	 */
 	
 	var navIco = $('.navIco'),
 		navSite = $('.nav'),
 		navSiteItemLevel1 = navSite.find('.navList__text'),
 		navSiteListLevel2 = navSite.find('.navListLevel2');
-	//var
+	// end of vars
 
-	var allPanels = navSite.hide(),
-		allPanels2 = navSiteListLevel2.hide(),
+	navSite.hide();
+	navSiteListLevel2.hide();
 
+	var
+		/**
+		 * Показываем/скрываем навигацию
+		 */
 		slideNav = function slideNav() {
-
 			navSite.slideToggle();
-
 			navSiteListLevel2.slideUp();
 
 			return false;
 		},
 
+		/**
+		 * Показываем/скрываем навигацию второго уравня
+		 */
 		slideNavLevel2 = function slideNavLevel2() {
-
 			navSiteListLevel2.slideUp();
 
 			if ( ($(this).next(navSiteListLevel2)).is(':visible') ) {
 				navSiteListLevel2.slideUp();
 			}
 
-			else $(this).next(navSiteListLevel2).slideDown();
+			$(this).next(navSiteListLevel2).slideDown();
 
 			return false;
-		};
+		},
 
+		/**
+		 * Скрываем навигацию при клике в любом месте кроме .nav
+		 */
+	    closeNav = function closeNav( e ) {
+			if( $(e.target).closest(navSite).length ) 
+			return;
+
+			navSite.slideUp();
+			navSiteListLevel2.slideUp();
+
+			e.stopPropagation();
+		};
+	// end of vars
+	
 	navIco.click(slideNav);
 
 	navSiteItemLevel1.click(slideNavLevel2);
+
+	$(document).bind('click', closeNav);
 });
