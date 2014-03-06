@@ -9,7 +9,7 @@ class ReviewsAction {
      * @param int $productId
      * @return \Http\JsonResponse
      */
-    /*public function execute(\Http\Request $request, $productId) {
+    public function execute(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $page = $request->get('page', 0);
@@ -33,7 +33,7 @@ class ReviewsAction {
         }
 
         return new \Http\JsonResponse(['content' => $response, 'pageCount' => empty($reviewsData['page_count']) ? 0 : $reviewsData['page_count']]);
-    }*/
+    }
 
 
     /**
@@ -41,7 +41,7 @@ class ReviewsAction {
      * @param int $productId
      * @return \Http\JsonResponse
      */
-    public function execute(\Http\Request $request, $productId) {
+    public function create(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$productId) {

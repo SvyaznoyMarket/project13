@@ -20,4 +20,17 @@ class CouponCompletePage extends \View\DefaultLayout {
     public function slotBodyClassAttribute() {
         return 'enterprize_user';
     }
+
+    public function slotContentHead() {
+        // заголовок контента страницы
+        if (!$this->hasParam('title')) {
+            $this->setParam('title', null);
+        }
+        // навигация
+        if (!$this->hasParam('breadcrumbs')) {
+            $this->setParam('breadcrumbs', []);
+        }
+
+        return $this->render('enterprize/_contentHead', $this->params);
+    }
 }

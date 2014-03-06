@@ -140,7 +140,7 @@ if (\App::config()->analytics['enabled']):
         <!-- Efficient Frontiers -->
         <img src="http://pixel.everesttech.net/3252/t?ev_Orders=1&amp;ev_Revenue=<?= $order->getSum() ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
 
-        <?= (new \View\Partners\VisualDna)->routeOrderComplete($orders, $productsById, $paymentMethod); // add VisualDNA pixel, SITE-2773 ?>
+        <?//= (new \View\Partners\VisualDna)->routeOrderComplete($orders, $productsById, $paymentMethod); // add VisualDNA pixel, SITE-2773; rm, SITE-3200 ?>
 
     <?php endforeach ?>
 <? endif;
