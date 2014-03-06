@@ -18,7 +18,7 @@ class IndexAction {
         $user = \App::user();
         $repository = \RepositoryManager::product();
 
-        $isTest = 'gifthobby/planshetniy-kompyuter-test-apple-ipad-2-16-gb-cherniy-1060101001779' === $productPath;
+        $isTest = 'gifthobby/planshetniy-kompyuter-test-gtswffsd' === $productPath;
         if ($isTest) {
             $productPath = 'gifthobby/planshetniy-kompyuter-apple-ipad-2-16-gb-cherniy-2060101001779';
         }
