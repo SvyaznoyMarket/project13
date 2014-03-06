@@ -18,6 +18,11 @@ class IndexAction {
         $user = \App::user();
         $repository = \RepositoryManager::product();
 
+        $isTest = 'gifthobby/planshetniy-kompyuter-test-apple-ipad-2-16-gb-cherniy-1060101001779' === $productPath;
+        if ($isTest) {
+            $productPath = 'gifthobby/planshetniy-kompyuter-apple-ipad-2-16-gb-cherniy-2060101001779';
+        }
+
         $productToken = explode('/', $productPath);
         $productToken = end($productToken);
 
@@ -71,7 +76,7 @@ class IndexAction {
             throw new \Exception\NotFoundException(sprintf('Товар @%s не найден.', $productToken));
         }
 
-        if ($request->getPathInfo() !== $product->getLink()) {
+        if (!$isTest && ($request->getPathInfo() !== $product->getLink())) {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
         }
 
