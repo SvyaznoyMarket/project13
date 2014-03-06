@@ -28,8 +28,6 @@ class ProductCard {
             $photo->url = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 3));
 
             $page->content->product->photos[] = $photo;
-
-            break; // FIXME: убрать заглушку
         }
 
         $groupedPropertyModels = [];
