@@ -347,7 +347,7 @@
 					console.log('Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок');
 
 					choosenBlock = OrderModel.getDeliveryBoxByToken(token);
-					choosenBlock.addProductGroup( product );
+					choosenBlock.addProductGroup( tempProductArray ); //массив на вход нужен
 					OrderModel.removeDeliveryBox(self.token);
 				}
 				else {

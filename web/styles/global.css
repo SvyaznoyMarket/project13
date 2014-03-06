@@ -2033,6 +2033,15 @@ img[height="0"] {
     display: none;
     margin: 20px 0 0;
   }
+  .enterPrize .enterPrizeListWrap.mComplete {
+    color: #000;
+    display: block;
+  }
+  .enterPrize .enterPrizeListWrap.mComplete .enterPrizeListTitle,
+  .enterPrize .enterPrizeListWrap.mComplete .enterPrizeList__item {
+    color: #000;
+    margin-left: 25px;
+  }
   .enterPrize .enterPrizeListTitle {
     font-size: 16px;
     color: #ffffff;
@@ -2047,11 +2056,11 @@ img[height="0"] {
     margin: 0 0 50px 54px;
   }
   .enterPrize .enterPrizeList {
-    margin: 0 0 20px 36px;
+    margin: 0 0 20px 0;
   }
   .enterPrize .enterPrizeList__item {
     color: #ffffff;
-    margin: 0 0 15px;
+    margin: 0 0 15px 36px;
     border-left: 3px solid;
     padding-left: 10px;
     font-size: 14px;
@@ -2139,6 +2148,10 @@ img[height="0"] {
     -webkit-transition: opacity 0.4s ease-in-out;
     -moz-transition: opacity 0.4s ease-in-out;
     transition: opacity 0.4s ease-in-out;
+    -webkit-perspective: 1000;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    outline: none;
     z-index: 15;
   }
   .enterPrize .cuponImgHover.mPink {
@@ -2158,14 +2171,14 @@ img[height="0"] {
     border-radius: 5px;
     display: block;
     width: 94px;
-    height: 20px;
+    height: 25px;
     text-align: center;
     color: #ffffff;
     border: 1px solid #fb9c00;
     font-size: 14px;
-    line-height: 20px;
-    bottom: 17px;
-    left: 94px;
+    line-height: 25px;
+    bottom: 15px;
+    left: 92px;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
@@ -2175,6 +2188,10 @@ img[height="0"] {
     -webkit-transition: opacity 0.2s ease-in-out;
     -moz-transition: opacity 0.2s ease-in-out;
     transition: opacity 0.2s ease-in-out;
+    -webkit-perspective: 1000;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    outline: none;
   }
   .enterPrize .cuponBtn:hover {
     background: #ffa200;
@@ -2378,6 +2395,13 @@ img[height="0"] {
   .enterprizeWar {
     margin: 0 0 10px 25px;
     font-weight: bold;
+  }
+  .enterprizeMore {
+    margin: 20px 0 30px 25px;
+    font-size: 16px;
+  }
+  .enterprizeMore a {
+    text-decoration: underline;
   }
 }
 /*---END----Enter Prize---------*/
@@ -2797,10 +2821,10 @@ img[height="0"] {
     position: relative;
   }
   .bPromoCatalogSlider.mTchiboSlider {
-    margin: 0 0 30px;
+    margin: 0;
     overflow: hidden;
     width: 940px;
-    height: 600px;
+    height: 630px;
   }
   .bPromoCatalogSlider.mTchiboSlider .bPromoCatalogSliderWrap_eSlide {
     width: 940px;
@@ -2900,8 +2924,8 @@ img[height="0"] {
     border: none;
     display: inline-block;
     float: none;
-    width: 10px;
-    height: 10px;
+    width: 11px;
+    height: 11px;
     margin: 0 0 0 5px !important;
     line-height: 10px;
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpDQkU4Q0RFNjdFRjExMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpDQkU4Q0RFNzdFRjExMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkFEOUNDQzM5N0VGMDExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkFEOUNDQzNBN0VGMDExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+a4mB2AAAAHpJREFUeNqMkLENgDAMBG3X9FEGYYywCyUMQEp2gTEySJIa6gRbpEQmV72lk956rLWCkHN2nGeOI7wERNyNMaccKGKMceO8wDfeWrtiSsmVUg5QIKKJWp2KOMi1F4dBE/nXm6ATEUOHF0gm+LPEobaTVzwvDvYO/ggwADQqO0getVyyAAAAAElFTkSuQmCC") no-repeat 0 0;
@@ -2910,19 +2934,38 @@ img[height="0"] {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpBRDlDQ0MzNzdFRjAxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpBRDlDQ0MzODdFRjAxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkFEOUNDQzM1N0VGMDExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkFEOUNDQzM2N0VGMDExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+bWnljgAAAHpJREFUeNpi/P//PwMIlJaW+gLZhUCmKQMEnGZkZOzv7u7eDOIwghQCFbUB6UoGLACouB2ouIqxpKQEZNImBjwAqNiPCWodXgBSw4TkJnzAlImBSABSeJoIdaeZQEFASBVIDfPRo0dv7d69mx3It8UTPNMZiQ1wgAADAP+QOxJntcUCAAAAAElFTkSuQmCC");
   }
   .bPromoCatalogProducts {
-    margin: 15px 0 0 30px;
+    margin: 15px 0 0 0;
   }
   .bPromoCatalogProducts .prodItem {
-    display: inline-block;
-    vertical-align: top;
-    width: 220px;
-    margin: 0 0 0 50px;
-    zoom: 1;
-    *display: inline-block;
+    float: left;
+    position: relative;
+    height: 236px;
+    width: 312px;
+    margin: 0;
+  }
+  .bPromoCatalogProducts .prodImg {
+    text-align: center;
+  }
+  .bPromoCatalogProducts .prodPrice {
+    font-size: 18px;
+    font-weight: bold;
   }
   .bPromoCatalogProducts .prodName {
-    color: #002c5b;
-    font-weight: bold;
+    font-size: 14px;
+    margin: 0 0 2px;
+  }
+  .bPromoCatalogProducts .prodDesc {
+    background: url("/styles/tchiboNavSlider/img/bgWhiteIe.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    bottom: 0;
+    left: 0;
+    padding: 5px 0;
+    position: absolute;
+    width: 100%;
+  }
+  .bPromoCatalogProducts .prodDesc__inner {
+    margin: 0 auto;
+    padding: 0 5px 0 10px;
+    width: 185px;
   }
 }
 /*---END----TCHIBO - крутилка разделов Чибо на рутовой странице---------*/

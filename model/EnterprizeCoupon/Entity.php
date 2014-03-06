@@ -23,6 +23,21 @@ class Entity {
     private $endDate;
     /** @var string */
     private $link;
+    /**
+     * Только информационная ссылка без необходимости заполнения enterprize-формы
+     * @var bool
+     */
+    private $isInformationOnly;
+    /**
+     * Только для неучастников enterprize
+     * @var bool
+     */
+    private $isForNotMemberOnly;
+    /**
+     * Токен странички в wordpress-е
+     * @var string
+     */
+    private $descriptionToken;
 
     public function __construct(array $data = []) {
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
@@ -35,6 +50,9 @@ class Entity {
         if (array_key_exists('startDate', $data)) $this->setStartDate($data['startDate'] ? new \DateTime($data['startDate']) : null);
         if (array_key_exists('endDate', $data)) $this->setEndDate($data['endDate'] ? new \DateTime($data['endDate']) : null);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
+        if (array_key_exists('isInformationOnly', $data)) $this->setIsInformationOnly($data['isInformationOnly']);
+        if (array_key_exists('isForNotMemberOnly', $data)) $this->setIsForNotMemberOnly($data['isForNotMemberOnly']);
+        if (array_key_exists('descriptionToken', $data)) $this->setDescriptionToken($data['descriptionToken']);
     }
 
     /**
@@ -175,5 +193,48 @@ class Entity {
      */
     public function getLink() {
         return $this->link;
+    }
+
+    /**
+     * @param string $descriptionToken
+     */
+    public function setDescriptionToken($descriptionToken) {
+        $this->descriptionToken = (bool)$descriptionToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescriptionToken() {
+        return $this->descriptionToken;
+    }
+
+    /**
+     * @param boolean $isForNotMemberOnly
+     */
+    public function setIsForNotMemberOnly($isForNotMemberOnly)
+    {
+        $this->isForNotMemberOnly = (bool)$isForNotMemberOnly;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isForNotMemberOnly() {
+        return $this->isForNotMemberOnly;
+    }
+
+    /**
+     * @param boolean $isInformationOnly
+     */
+    public function setIsInformationOnly($isInformationOnly) {
+        $this->isInformationOnly = (bool)$isInformationOnly;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isInformationOnly() {
+        return $this->isInformationOnly;
     }
 }

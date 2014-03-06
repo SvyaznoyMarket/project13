@@ -299,6 +299,11 @@ return [
         'require' => ['productToken' => '[\w\d-_]+'],
     ],
     //reviews
+    'product.review.create' => [
+        'pattern' => '/product-reviews/create/{productId}',
+        'require' => ['productId' => '\d+'],
+        'action'  => ['Product\ReviewsAction', 'create'],
+    ],
     'product.reviews' => [
         'pattern' => '/product-reviews/{productId}',
         'require' => ['productId' => '\d+'],
@@ -746,6 +751,14 @@ return [
     'enterprize.get' => [
         'pattern' => '/enterprize/get',
         'action'  => ['Enterprize\Action', 'get'],
+    ],
+    'enterprize.complete' => [
+        'pattern' => '/enterprize/complete',
+        'action'  => ['Enterprize\Coupon', 'complete'],
+    ],
+    'enterprize.fail' => [
+        'pattern' => '/enterprize/fail',
+        'action'  => ['Enterprize\Coupon', 'fail'],
     ],
     // enterprize form
     'enterprize.form.show' => [

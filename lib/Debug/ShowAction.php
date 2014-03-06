@@ -38,10 +38,18 @@ class ShowAction {
         $debug->add('git', $gitData, 144);
 
         $jiraVersion = round(preg_replace('/[^\d\.]/', '', $gitData['tag']), 1);
-        $debug->add('jira', [
-            'version' => $jiraVersion,
-            'url'     => 'https://jira.enter.ru/secure/IssueNavigator.jspa?reset=true&jqlQuery=project = SITE AND fixVersion = "' . $jiraVersion . '" ORDER BY updated DESC, priority DESC, created ASC&mode=hide',
-        ], 143);
+        if (!(int)$gitData['version']) {
+            $jiraVersion = null;
+        } else if ((int)$gitData['version'] > $jiraVersion) {
+            $jiraVersion = $gitData['version'];
+        }
+        if ($jiraVersion) {
+            $debug->add('jira', [
+                'version' => $jiraVersion,
+                'url'     => 'https://jira.enter.ru/secure/IssueNavigator.jspa?reset=true&jqlQuery=project = SITE AND fixVersion = "' . $jiraVersion . '" ORDER BY updated DESC, priority DESC, created ASC&mode=hide',
+            ], 143);
+        }
+
         $debug->add('env', \App::$env, 142);
 
         // query
