@@ -20,7 +20,7 @@ class IndexAction {
 
         $isTest = 'gifthobby/planshetniy-kompyuter-test-gtswffsd' === $productPath;
         if ($isTest) {
-            $productPath = 'gifthobby/planshetniy-kompyuter-test-gtswffsd';
+            $productPath = 'gifthobby/planshetniy-kompyuter-apple-ipad-2-16-gb-cherniy-2060101001779';
         }
 
         $productToken = explode('/', $productPath);
