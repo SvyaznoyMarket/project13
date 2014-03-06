@@ -529,7 +529,7 @@ window.ANALYTICS = {
 			ga_main = function() {
 				console.info( 'GoogleAnalyticsJS main page' );
 
-				/** Событие клка на кнопку мобильного приложения */
+				/** Событие клика на кнопку мобильного приложения */
 				$('a.bMobAppLink').click(function(){
 					var
 						href = $(this).attr('href'),
@@ -584,20 +584,20 @@ window.ANALYTICS = {
 					product = $('#jsProductCard').data('value'),
 					gaInteractive = function gaInteractive(type) {
 						console.log('GA: event Interactive: ' + type);
-						ga('send', 'event', 'Interactive', type);
-                    },
+						ga( 'send', 'event', 'Interactive', type );
+					},
 
-                    gaBannerClick = function gaBannerClick(){
-                        var
-                            Banner_src = $(this).find('img').attr('src');
-                        console.log('send', 'event', 'Internal_Promo', Banner_src);
-                        ga('send', 'event', 'Internal_Promo', Banner_src);
-                    };
+					gaBannerClick = function gaBannerClick() {
+						var
+							Banner_src = $( this ).find( 'img' ).attr( 'src' );
+						console.log( 'send', 'event', 'Internal_Promo', Banner_src );
+						ga( 'send', 'event', 'Internal_Promo', Banner_src );
+					};
 
-                /** Событие клика на баннер */
-                $('.trustfactorRight' ).on('click', gaBannerClick);
-                $('.trustfactorMain' ).on('click', gaBannerClick);
-                $('.trustfactorContent' ).on('click', gaBannerClick);
+				/** Событие клика на баннер */
+				$( '.trustfactorRight' ).on( 'click', gaBannerClick );
+				$( '.trustfactorMain' ).on( 'click', gaBannerClick );
+				$( '.trustfactorContent' ).on( 'click', gaBannerClick );
 
 				/** Событие открытия списка магазинов */
 				$('span.bDeliveryNowClick').one('click', function ga_deliveryNow() {
