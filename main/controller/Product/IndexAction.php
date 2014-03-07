@@ -18,7 +18,7 @@ class IndexAction {
         $user = \App::user();
         $repository = \RepositoryManager::product();
 
-        $isTest = 'gifthobby/planshetniy-kompyuter-test-gtswffsd' === $productPath;
+        $isTest = 'gifthobby/planshetniy-kompyuter-test-4323vswffsd33' === $productPath;
         if ($isTest) {
             $productPath = 'gifthobby/planshetniy-kompyuter-apple-ipad-2-16-gb-cherniy-2060101001779';
         }
@@ -78,6 +78,11 @@ class IndexAction {
 
         if (!$isTest && ($request->getPathInfo() !== $product->getLink())) {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
+        }
+
+        if ($isTest) {
+            $product->setWebName('test-gtswffsd');
+            $product->setName('test-gtswffsd');
         }
 
         // подготовка 3-го пакета запросов
