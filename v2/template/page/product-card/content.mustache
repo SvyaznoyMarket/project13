@@ -24,9 +24,11 @@
 
             <!-- Изображение товара -->
             <div class="productDescImg" id="imagegallery">
-                {{#product.photos}}
-                    <img class="productImg" src="{{url}}" alt="{{&name}}" />
-                {{/product.photos}}
+                <ul class="productDescImgList">
+                    {{#product.photos}}
+                        <li class="productDescImgList__item"><img class="productDescImgList__img" src="{{url}}" alt="{{&name}}" /></li>
+                    {{/product.photos}}
+                </ul>
             </div>
             <!--/ Изображение товара -->
 
