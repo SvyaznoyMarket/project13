@@ -17,12 +17,12 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
     <div class="bgPage"></div>
 
     <? if ($isEnterprizeMember): ?>
-        <div class="enterPrizeHello" style="display: none;">СКИДКИ от <span>3 до 70% </span>ДЛЯ ЗАЯДЛЫХ ИГРОКОВ!</div>
+        <div class="enterPrizeHello" style="display: none;">Всё, что вы хотели, со скидкой до 70%</div>
     <? endif ?>
 
-    <div class="enterPrizeHello mReg">СКИДКИ от 3 до 70%!</div>
+    <div class="enterPrizeHello mReg">Всё, что вы хотели, со скидкой до 70%</div>
 
-    <ul class="enterPrize__rules clearfix">
+    <!-- <ul class="enterPrize__rules clearfix">
         <li class="enterPrize__rules__item">
             1. Выбери фишку со скидкой.<br/>
             2. Заполни три поля.<br/>
@@ -30,11 +30,13 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
             Разыграй фишку в заказе и получи скидку.
         </li>
 
-        <!--li class="enterPrize__rules__sep"></li>
+        <li class="enterPrize__rules__sep"></li>
         <li class="enterPrize__rules__item" style="width: 168px;"><span class="sep">Получи</span> номер фишки на E-mail и мобильный телефон, которые укажешь для участия в Enter Prize!</li>
         <li class="enterPrize__rules__sep"></li>
-        <li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li-->
-    </ul>
+        <li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li>
+    </ul> -->
+
+    <p class="enterPrizeDesc">Уже в ENTER PRIZE? <a href="">Войди и получи ещё скидки</a></p>
 
     <? if ($isEnterprizeMember): ?>
         <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как ещё получать фишки?</span></p>
@@ -60,7 +62,7 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
                 </li>
             </ul>
 
-            <div class="enterPrizeFinish">ЛОВИ НОМЕР ФИШКИ В ЧЕКЕ ПОСЛЕ ОПЛАТЫ ЗАКАЗА!</div>
+            <div class="enterPrizeFinish">Лови номер фишки в чеке после оплаты заказа!</div>
         </div>
 
         <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как играть фишкамии получать скидки?</span></p>
