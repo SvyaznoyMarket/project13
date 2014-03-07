@@ -81,8 +81,8 @@ class IndexAction {
         }
 
         if ($isTest) {
-            $product->setWebName('test-gtswffsd');
-            $product->setName('test-gtswffsd');
+            //$product->setWebName('test-gtswffsd');
+            //$product->setName('test-gtswffsd');
         }
 
         // подготовка 3-го пакета запросов
