@@ -2317,6 +2317,10 @@ img[height="0"] {
   .enterprize {
     background: #000000;
   }
+  .enterprize .bSubscribeLightboxPopupNotNow,
+  .enterprize .bSubscribeLightboxPopup {
+    display: none !important;
+  }
   .enterprize .wrapper {
     background: #000000;
   }
@@ -2402,6 +2406,10 @@ img[height="0"] {
   }
   .enterprizeMore a {
     text-decoration: underline;
+  }
+  .enterprize_user .bSubscribeLightboxPopupNotNow,
+  .enterprize_user .bSubscribeLightboxPopup {
+    display: none !important;
   }
 }
 /*---END----Enter Prize---------*/
