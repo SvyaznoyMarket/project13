@@ -2,7 +2,7 @@
 
 namespace Controller\Enterprize;
 
-class Coupon {
+class CouponAction {
     /**
      * @param \Http\Request $request
      */
