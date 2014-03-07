@@ -105,7 +105,7 @@ class ChildCategory {
         $curl->prepare($mainMenuListQuery);
 
         // запрос настроек каталога
-        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject($ancestryCategory);
+        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge([$ancestryCategory], [$ancestryCategory->children]));
         $curl->prepare($catalogConfigQuery);
 
         // запрос списка рейтингов товаров

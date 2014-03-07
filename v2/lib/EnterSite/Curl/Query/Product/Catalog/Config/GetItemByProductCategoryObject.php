@@ -14,14 +14,16 @@ class GetItemByProductCategoryObject extends Query {
     protected $result;
 
     /**
-     * @param Model\Product\Category $category
+     * @param Model\Product\Category[] $categories
+     * @param \EnterSite\Model\Product|null $product
      */
-    public function __construct(Model\Product\Category $category) {
-        $tokens = [
-            $category->token,
-        ];
-        foreach ($category->children as $child) {
-            $tokens[] = $child->token;
+    public function __construct(array $categories, Model\Product $product = null) {
+        $tokens = [];
+        foreach ($categories as $category) {
+            $tokens[] = $category->token;
+        }
+        if ($product) {
+            $tokens[] = $product->token;
         }
 
         $this->url = new Url();
