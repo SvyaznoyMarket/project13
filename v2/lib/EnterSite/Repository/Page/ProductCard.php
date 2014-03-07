@@ -67,23 +67,7 @@ class ProductCard {
         if ($productModel->rating) {
             $rating = new Page\Content\Product\Rating();
             $rating->reviewCount = $productModel->rating->reviewCount;
-
-            $score = $productModel->rating->starScore;
-            for ($i = 0; $i < (int)$score; $i++) {
-                $star = new Page\Content\Product\Rating\Star();
-                $star->image = 'star.png';
-                $rating->stars[] = $star;
-            }
-            if (ceil($score) > $score) {
-                $star = new Page\Content\Product\Rating\Star();
-                $star->image = 'starHalf.png';
-                $rating->stars[] = $star;
-            }
-            for ($i = 5; $i > ceil($score); $i--) {
-                $star = new Page\Content\Product\Rating\Star();
-                $star->image = 'starEmpty.png';
-                $rating->stars[] = $star;
-            }
+            $rating->stars = (new Repository\Partial\Rating())->getStarList($productModel->rating->starScore);
 
             $page->content->product->rating = $rating;
         }

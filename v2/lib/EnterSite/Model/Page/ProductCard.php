@@ -48,6 +48,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
 }
 
 namespace EnterSite\Model\Page\ProductCard\Content\Product {
+    use EnterSite\Model\Partial;
+
     class Photo {
         /** @var string */
         public $name;
@@ -63,7 +65,7 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
     class Rating {
         /** @var int */
         public $reviewCount;
-        /** @var Rating\Star[] */
+        /** @var Partial\Rating\Star[] */
         public $stars = [];
     }
 }
@@ -76,12 +78,5 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product\PropertyChunk {
         public $value;
         /** @var bool */
         public $isTitle;
-    }
-}
-
-namespace EnterSite\Model\Page\ProductCard\Content\Product\Rating {
-    class Star {
-        /** @var string */
-        public $image;
     }
 }
