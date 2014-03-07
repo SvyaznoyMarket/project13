@@ -1,4 +1,9 @@
 $(function() {
+  var imgHeight = $('.productDescImgList__img').height();
+
+  $('.productDescImgList__item').css({'height': imgHeight});
+  $(".productDescImgList").css({'height': imgHeight});
+
   $.fn.swipe = function( callback ) {
     var touchDown = false,
         originalPosition = null,
@@ -46,8 +51,16 @@ $(function() {
     return true;
   };
 
-  $("body").swipe(function( direction, offset ) {
-      console.log( "Moving", direction.x, "and", direction.y );
-      console.log( "Touch moved by", offset.x, "horizontally and", offset.y, "vertically" );    
+  $(".productDescImgList__img").swipe(function( direction, offset ) {
+      // console.log( "Moving", direction.x, "and", direction.y );
+      // console.log( "Touch moved by", offset.x, "horizontally and", offset.y, "vertically" );    
+
+      if ( offset.x > '0' ){
+        alert('right');
+      }
+
+      else if ( offset.x < '0' ){
+        alert('left');
+      }
     });
 });

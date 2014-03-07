@@ -88,17 +88,21 @@
 
 	    &.mReg {
 	    	margin: 0 0 14px 32px;
-	    	font-size: 46px;
 	    }
 	}
 
 	.enterPrizeDesc {
-		color: @white;
+		color: #ddd;
 		margin: 15px 0 0 31px;
 		font-size: 14px;
 		cursor: pointer;
 
 		&__text {
+			text-decoration: underline;
+		}
+
+		a {
+			color: @white;
 			text-decoration: underline;
 		}
 	}
@@ -122,24 +126,23 @@
 
 	.enterPrizeListTitle {
 		font-size: 16px;
-		color: @white;
+		color: #bbb;
 		font-weight: bold;
 		margin: 0 0 15px 36px;
 	}
 
 	.enterPrizeFinish {
-		font-family: "Enter";
-	    font-size: 30px;
-	    text-transform: uppercase;
-	    color: @white;
-	    margin: 0 0 50px 54px;
+		color: #BBBBBB;
+	    font-size: 12px;
+	    font-weight: bold;
+	    margin: 0 0 50px 39px;
 	}
 
 	.enterPrizeList {
 		margin: 0 0 20px 0;
 
 		&__item {
-			color: @white;
+			color: #bbb;
 			margin: 0 0 15px 36px;
 			border-left: 3px solid;
 			padding-left: 10px;
@@ -413,6 +416,11 @@
 .enterprize {
 	background: @black;
 
+	.bSubscribeLightboxPopupNotNow,
+	.bSubscribeLightboxPopup {
+		display: none !important;
+	}
+
 	.wrapper {
 		background: @black;
 	}
@@ -528,5 +536,13 @@
 
 	a {
 		text-decoration: underline;
+	}
+}
+
+.enterprize_user {
+	
+	.bSubscribeLightboxPopupNotNow,
+	.bSubscribeLightboxPopup {
+		display: none !important;
 	}
 }
