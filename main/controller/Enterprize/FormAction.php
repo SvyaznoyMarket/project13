@@ -114,14 +114,14 @@ class FormAction {
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
 
-            $form->setError('global', $e->getMessage());
+            $errorContent = $e->getContent();
+            $detail = isset($errorContent['detail']) && is_array($errorContent['detail']) ? $errorContent['detail'] : [];
 
             if (401 == $e->getCode()) {
                 $needAuth = true;
 
             } elseif (600 == $e->getCode()) {
-                $errorContent = $e->getContent();
-                $detail = isset($errorContent['detail']) && is_array($errorContent['detail']) ? $errorContent['detail'] : [];
+                $form->setError('global', $e->getMessage());
 
                 foreach ($detail as $fieldName => $errors) {
                     foreach ($errors as $errorType => $errorMess) {
@@ -168,6 +168,14 @@ class FormAction {
                         $form->setError($fieldName, $message);
                     }
                 }
+            } elseif (409 == $e->getCode()) {
+                if (isset($detail['mobile_in_enter_prize']) && $detail['mobile_in_enter_prize']) {
+                    $form->setError('mobile', $e->getMessage());
+                } else {
+                    $form->setError('email', $e->getMessage());
+                }
+            } else {
+                $form->setError('global', $e->getMessage());
             }
         }
 
