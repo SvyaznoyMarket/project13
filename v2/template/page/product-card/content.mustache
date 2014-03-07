@@ -9,14 +9,14 @@
                 <div class="productDescHead__article">Артикул: {{product.article}}</div>
             {{/product.article}}
 
-            <div class="productDescHead__reviews">
-                <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                <img class="reviewsStar" src="/v2/css/modules/productDesc/img/starEmpty.png" />
-                <span class="reviewsCount">3</span>
-            </div>
+            {{#product.rating}}
+                <div class="productDescHead__reviews">
+                    {{#product.rating}}
+                        {{>partial/rating/star-list}}
+                    {{/product.rating}}
+                    <span class="reviewsCount">{{product.rating.reviewCount}}</span>
+                </div>
+            {{/product.rating}}
         </div>
         <!--/ Название товара, артикул, отзывы -->
 
@@ -228,11 +228,9 @@
             <li class="productDescTab__item"><a class="productDescTab__link" href="#reviewsTab">
                 <span class="tabText">Отзывы</span>
                 <span class="tabImg reviews">
-                    <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                    <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                    <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                    <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                    <img class="reviewsStar" src="/v2/css/modules/productDesc/img/starEmpty.png" />
+                    {{#product.rating}}
+                        {{>partial/rating/star-list}}
+                    {{/product.rating}}
                 </span></a>
             </li>
 

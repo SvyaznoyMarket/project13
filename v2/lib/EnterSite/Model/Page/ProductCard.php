@@ -40,8 +40,10 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $description;
         /** @var Product\Photo[] */
         public $photos = [];
-        /** @var array of Product\PropertyChunk[] */
+        /** @var Product\PropertyChunk[] */
         public $propertyChunks = [];
+        /** @var Product\Rating|null */
+        public $rating;
     }
 }
 
@@ -57,6 +59,13 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
         /** @var PropertyChunk\Property[] */
         public $properties = [];
     }
+
+    class Rating {
+        /** @var int */
+        public $reviewCount;
+        /** @var Rating\Star[] */
+        public $stars = [];
+    }
 }
 
 namespace EnterSite\Model\Page\ProductCard\Content\Product\PropertyChunk {
@@ -67,5 +76,12 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product\PropertyChunk {
         public $value;
         /** @var bool */
         public $isTitle;
+    }
+}
+
+namespace EnterSite\Model\Page\ProductCard\Content\Product\Rating {
+    class Star {
+        /** @var string */
+        public $image;
     }
 }

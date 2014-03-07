@@ -84,6 +84,13 @@ class ProductCard {
             $curl->prepare($accessoryListQuery);
         }
 
+        // запрос списка рейтингов товаров
+        $ratingListQuery = null;
+        if ($config->productReview->enabled) {
+            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList(array_merge([$product->id], $product->accessoryIds));
+            $curl->prepare($ratingListQuery);
+        }
+
         $curl->execute(1, 2);
 
         // отзывы товара
@@ -119,6 +126,18 @@ class ProductCard {
         // аксессуары
         if ($accessoryListQuery) {
             $productRepository->setAccessoryRelationForObjectListByQuery([$product->id => $product], $accessoryListQuery);
+        }
+
+        // группированные товары
+        $productsById = [];
+        foreach (array_merge([$product], $product->relation->accessories) as $iProduct) {
+            /** @var Model\Product $iProduct */
+            $productsById[$iProduct->id] = $iProduct;
+        }
+
+        // список рейтингов товаров
+        if ($ratingListQuery) {
+            $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
 
         // запрос для получения страницы

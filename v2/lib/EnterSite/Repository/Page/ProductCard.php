@@ -22,6 +22,7 @@ class ProductCard {
         $page->content->product->article = $productModel->article;
         $page->content->product->description = $productModel->description;
 
+        // фотографии товара
         foreach ($productModel->media->photos as $photoModel) {
             $photo = new Page\Content\Product\Photo();
             $photo->name = $productModel->name;
@@ -30,6 +31,7 @@ class ProductCard {
             $page->content->product->photos[] = $photo;
         }
 
+        // характеристики товара
         $groupedPropertyModels = [];
         foreach ($productModel->properties as $propertyModel) {
             if (!isset($groupedPropertyModels[$propertyModel->groupId])) {
@@ -59,6 +61,31 @@ class ProductCard {
             }
 
             $page->content->product->propertyChunks[] = $propertyChunk;
+        }
+
+        // рейтинг товара
+        if ($productModel->rating) {
+            $rating = new Page\Content\Product\Rating();
+            $rating->reviewCount = $productModel->rating->reviewCount;
+
+            $score = $productModel->rating->starScore;
+            for ($i = 0; $i < (int)$score; $i++) {
+                $star = new Page\Content\Product\Rating\Star();
+                $star->image = 'star.png';
+                $rating->stars[] = $star;
+            }
+            if (ceil($score) > $score) {
+                $star = new Page\Content\Product\Rating\Star();
+                $star->image = 'starHalf.png';
+                $rating->stars[] = $star;
+            }
+            for ($i = 5; $i > ceil($score); $i--) {
+                $star = new Page\Content\Product\Rating\Star();
+                $star->image = 'starEmpty.png';
+                $rating->stars[] = $star;
+            }
+
+            $page->content->product->rating = $rating;
         }
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
