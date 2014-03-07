@@ -119,9 +119,10 @@ class Product {
     public function setRatingForObjectListByQuery(array $productsById, Query $ratingListQuery) {
         try {
             foreach ($ratingListQuery->getResult() as $ratingItem) {
-                if (!isset($productsById[$ratingItem['product_id']])) continue;
+                $productId = (string)$ratingItem['product_id'];
+                if (!isset($productsById[$productId])) continue;
 
-                $productsById[$ratingItem['product_id']]->rating = new Model\Product\Rating($ratingItem);
+                $productsById[$productId]->rating = new Model\Product\Rating($ratingItem);
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
