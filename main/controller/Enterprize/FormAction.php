@@ -123,7 +123,6 @@ class FormAction {
                 $errorContent = $e->getContent();
                 $detail = isset($errorContent['detail']) && is_array($errorContent['detail']) ? $errorContent['detail'] : [];
 
-                $errors = [];
                 foreach ($detail as $fieldName => $errors) {
                     foreach ($errors as $errorType => $errorMess) {
                         switch ($fieldName) {
@@ -166,12 +165,9 @@ class FormAction {
 //                            $message .= ': ' . print_r($errorMess, true);
 //                        }
 
-                        $errors[$fieldName] = $message;
                         $form->setError($fieldName, $message);
                     }
                 }
-
-                \App::session()->set('flash', ['errors' => $errors]);
             }
         }
 
@@ -266,6 +262,13 @@ class FormAction {
                     'form'     => ['error' => $formErrors],
                     'needAuth' => $needAuth && !\App::user()->getEntity() ? true : false,
                 ]);
+            } else {
+                $errors = [];
+                foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                    if (!$errorMessage) continue;
+                    $errors[$fieldName] = $errorMessage;
+                }
+                \App::session()->set('flash', ['errors' => $errors]);
             }
         }
 
