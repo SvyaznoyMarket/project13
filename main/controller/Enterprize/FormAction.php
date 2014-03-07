@@ -171,8 +171,10 @@ class FormAction {
             } elseif (409 == $e->getCode()) {
                 if (isset($detail['mobile_in_enter_prize']) && $detail['mobile_in_enter_prize']) {
                     $form->setError('mobile', $e->getMessage());
-                } else {
+                } elseif (isset($detail['email_in_enter_prize']) && $detail['email_in_enter_prize']) {
                     $form->setError('email', $e->getMessage());
+                } else {
+                    $form->setError('global', $e->getMessage());
                 }
             } else {
                 $form->setError('global', $e->getMessage());
