@@ -2,6 +2,7 @@
 -+ env, debug
 -  http: JsonResponse
 -  сделать view-классы, которые работают с рендером
+-  array_key_exists -> isset
 -+ импорт конфигурации из v1
 -? мержить curl.query.info - суммировать total_time? добавить callbackStartAt, callbackEndAt
 -? вынести requestId из конфига
