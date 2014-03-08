@@ -16,6 +16,8 @@ class ProductCard {
     public function buildObjectByRequest(Page $page, ProductCard\Request $request) {
         (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
 
+        $productCardRepository = new Repository\Partial\ProductCard();
+
         $productModel = $request->product;
 
         $page->content->product->title = $productModel->name;
@@ -70,6 +72,11 @@ class ProductCard {
             $rating->stars = (new Repository\Partial\Rating())->getStarList($productModel->rating->starScore);
 
             $page->content->product->rating = $rating;
+        }
+
+        // аксессуары
+        foreach ($productModel->relation->accessories as $accessoryModel) {
+            $page->content->product->accessoryCards[] = $productCardRepository->getObject($accessoryModel);
         }
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));

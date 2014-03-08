@@ -31,6 +31,8 @@ namespace EnterSite\Model\Page\ProductCard {
 }
 
 namespace EnterSite\Model\Page\ProductCard\Content {
+    use EnterSite\Model\Partial;
+
     class Product {
         /** @var string */
         public $title;
@@ -44,6 +46,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $propertyChunks = [];
         /** @var Product\Rating|null */
         public $rating;
+        /** @var Partial\ProductCard[] */
+        public $accessoryCards = [];
     }
 }
 

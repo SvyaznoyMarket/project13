@@ -38,6 +38,8 @@ class Product {
     public $propertyGroups = [];
     /** @var ObjectModel\Product\Stock[] */
     public $stock = [];
+    /** @var int */
+    public $price;
     /** @var ObjectModel\Product\Media */
     public $media;
     /** @var ObjectModel\Product\Rating|null */
@@ -75,6 +77,7 @@ class Product {
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
         if (array_key_exists('description', $data)) $this->description = (string)$data['description'];
+        if (array_key_exists('price', $data)) $this->price = (int)$data['price'];
 
         $this->isBuyable = isset($data['state']['is_buyable']) && (bool)$data['state']['is_buyable'];
         $this->calculateState(isset($data['stock'][0]) ? $data['stock'] : []);
