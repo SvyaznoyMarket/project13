@@ -24,7 +24,7 @@ class ProductCard {
         $card->shownPrice = number_format((float)$product->price, 0, ',', ' ');
         if ($photo = reset($product->media->photos)) {
             /** @var Model\Product\Media\Photo $photo */
-            $card->image = new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 1);
+            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 1));
         }
         $card->cartButton = $cartButton;
 
