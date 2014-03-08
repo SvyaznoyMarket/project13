@@ -1,3 +1,4 @@
+-  Exception\PermanentlyRedirect -> Controller\PermanentlyRedirect
 -+ env, debug
 -  http: JsonResponse
 -  сделать view-классы, которые работают с рендером
