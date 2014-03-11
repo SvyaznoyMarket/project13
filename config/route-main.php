@@ -762,14 +762,14 @@ return [
         'action'  => ['Enterprize\ShowAction', 'execute'],
     ],
     // enterprize form
-    'enterprize.form.show' => [
-        'pattern' => '/enterprize/form/{enterprizeToken}',
-        'action'  => ['Enterprize\FormAction', 'show'],
-    ],
     'enterprize.form.update' => [
         'pattern' => '/enterprize/form/update',
         'action'  => ['Enterprize\FormAction', 'update'],
         'method'  => ['POST'],
+    ],
+    'enterprize.form.show' => [
+        'pattern' => '/enterprize/form/{enterprizeToken}',
+        'action'  => ['Enterprize\FormAction', 'show'],
     ],
     // enterprize confirmPhone
     'enterprize.confirmPhone.create' => [
