@@ -105,7 +105,7 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
                 $itemClass .= ' mNoIco';
             }
 
-            $couponLink = $page->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]);
+            $couponLink = $page->url('enterprize.show', ['enterprizeToken' => $coupon->getToken()]);
             if ($coupon->isInformationOnly()) {
                 if ($coupon->getDescriptionToken()) {
                     $couponLink = $page->url('content', ['token' => $coupon->getDescriptionToken()]);

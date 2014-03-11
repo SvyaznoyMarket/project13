@@ -742,27 +742,28 @@ return [
     // enterprize
     'enterprize' => [
         'pattern' => '/enterprize',
-        'action'  => ['Enterprize\Action', 'index'],
+        'action'  => ['Enterprize\IndexAction', 'execute'],
     ],
     'enterprize.create' => [
         'pattern' => '/enterprize/create',
-        'action'  => ['Enterprize\Coupon', 'create'],
-    ],
-    'enterprize.get' => [
-        'pattern' => '/enterprize/get',
-        'action'  => ['Enterprize\Action', 'get'],
+        'action'  => ['Enterprize\CouponAction', 'create'],
     ],
     'enterprize.complete' => [
         'pattern' => '/enterprize/complete',
-        'action'  => ['Enterprize\Coupon', 'complete'],
+        'action'  => ['Enterprize\CouponAction', 'complete'],
     ],
     'enterprize.fail' => [
         'pattern' => '/enterprize/fail',
-        'action'  => ['Enterprize\Coupon', 'fail'],
+        'action'  => ['Enterprize\CouponAction', 'fail'],
+    ],
+
+    'enterprize.show' => [
+        'pattern' => '/enterprize/{enterprizeToken}',
+        'action'  => ['Enterprize\ShowAction', 'execute'],
     ],
     // enterprize form
     'enterprize.form.show' => [
-        'pattern' => '/enterprize/{enterprizeToken}',
+        'pattern' => '/enterprize/form/{enterprizeToken}',
         'action'  => ['Enterprize\FormAction', 'show'],
     ],
     'enterprize.form.update' => [

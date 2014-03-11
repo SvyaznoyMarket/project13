@@ -164,7 +164,7 @@ class ConfirmEmailAction {
             $data = array_merge($data, ['isEmailConfirmed' => true]);
             $session->set($sessionName, $data);
 
-            $response = (new \Controller\Enterprize\Coupon())->create($request);
+            $response = (new \Controller\Enterprize\CouponAction())->create($request);
 
             // авторизовываем пользователя
             if ($userToken && !\App::user()->getEntity()) {
