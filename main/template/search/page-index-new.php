@@ -39,7 +39,8 @@
     <!--    --><?// if (!$selectedCategory): ?>
     <div class="bSearchCategoryRoot">
         <?= $helper->render('search/__category', [
-            'categories'  => $categoriesFound,
+            'categories' => $categoriesFound,
+            'configs'    => $categoriesConfigById,
             'searchQuery' => $searchQuery,
         ]) // категории товаров в названиях которых есть вхождение искомого слова  ?>
     </div>
