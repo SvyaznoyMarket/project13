@@ -188,9 +188,9 @@ class FormAction {
                 }
             } elseif (409 == $e->getCode()) {
                 if (isset($detail['mobile_in_enter_prize']) && $detail['mobile_in_enter_prize']) {
-                    $form->setError('mobile', $e->getMessage());
+                    $form->setError('mobile', 'Мобильный телефон уже является участником Enter Prize');
                 } elseif (isset($detail['email_in_enter_prize']) && $detail['email_in_enter_prize']) {
-                    $form->setError('email', $e->getMessage());
+                    $form->setError('email', 'E-mail уже является участником Enter Prize');
                 } else {
                     $form->setError('global', $e->getMessage());
                 }
