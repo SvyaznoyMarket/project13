@@ -1,7 +1,7 @@
 $(function() {
   var imgHeight = $('.productDescImgList__img').height();
 
-  $('.productDescImgList__item').css({'height': imgHeight});
+  //$('.productDescImgList__item').css({'height': imgHeight});
   $(".productDescImgList").css({'height': imgHeight});
 
   $.fn.swipe = function( callback ) {
@@ -42,25 +42,42 @@ $(function() {
       originalPosition = null;
     } );
 
-    $el.on( "touchmove mousemove", function ( event ) {
+    $el.on( "touchmove mousemove", function ( event, offset ) {
       if ( !touchDown ) { return;}
       var info = swipeInfo( event );
       callback( info.direction, info.offset );
+
+
+
+      if ( info.offset.x > 0) {
+
+        // $('.productDescImgList__item.page-current').removeClass('page-current').addClass('page-left');
+        // $('.productDescImgList__item.page-right').removeClass('page-right').addClass('page-current page-animating');
+        // $('.productDescImgList__item.page-current').next('.productDescImgList__item').addClass('page-right');
+        // $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left');
+        event.preventDefault();
+        $('.productDescImgList__item.page-current').css({transform: 'translate(' + info.offset.x + 'px, 0)'});
+      };
     } );
 
     return true;
   };
 
+  $('.productDescImgList__item:first').addClass('page-current');
+  $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left');
+  $('.productDescImgList__item.page-current').next('.productDescImgList__item').addClass('page-right');
+  $('.productDescImgList__item.page-current').removeClass('page-animating');
+
   $(".productDescImgList__img").swipe(function( direction, offset ) {
-      // console.log( "Moving", direction.x, "and", direction.y );
-      // console.log( "Touch moved by", offset.x, "horizontally and", offset.y, "vertically" );    
+      console.log( "Moving", direction.x, "and", direction.y );
+      console.log( "Touch moved by", offset.x, "horizontally and", offset.y, "vertically" ); 
+      
 
-      if ( offset.x > '0' ){
-        alert('right');
-      }
 
-      else if ( offset.x < '0' ){
-        alert('left');
-      }
+      
+
+      // else if ( offset.x < '0' ){
+      //   //alert('left');
+      // }
     });
 });
