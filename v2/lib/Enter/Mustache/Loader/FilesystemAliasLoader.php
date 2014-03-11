@@ -3,7 +3,7 @@
 namespace Enter\Mustache\Loader;
 
 class FilesystemAliasLoader extends \Mustache_Loader_FilesystemLoader implements \Mustache_Loader_MutableLoader {
-    private $aliases = array();
+    private $aliases = [];
 
     public function __construct($baseDir, array $aliases = array()) {
         parent::__construct($baseDir);

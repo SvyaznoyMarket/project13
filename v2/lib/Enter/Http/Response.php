@@ -292,7 +292,7 @@ class Response {
      * @return bool
      */
     public function isRedirect($location = null) {
-        return in_array($this->statusCode, array(201, 301, 302, 303, 307, 308)) && (null === $location ?: $location == $this->headers['Location']);
+        return in_array($this->statusCode, [201, 301, 302, 303, 307, 308]) && (null === $location ?: $location == $this->headers['Location']);
     }
 
     /**
@@ -301,6 +301,6 @@ class Response {
      * @return bool
      */
     public function isEmpty() {
-        return in_array($this->statusCode, array(201, 204, 304));
+        return in_array($this->statusCode, [201, 204, 304]);
     }
 }
