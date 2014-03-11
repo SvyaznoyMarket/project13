@@ -129,7 +129,7 @@
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
 				else if ( isUnique ) {
-					// Блока для этого типа доставки в этот пункт еще существует, создадим его:
+					// Блока для этого типа доставки в этот пункт еще не существует, создадим его:
 					// Если есть флаг уникальности, каждый товар в отдельном блоке будет
 
 					// Разделим товары, продуктом считаем уникальную единицу товара:
@@ -141,7 +141,7 @@
 					}
 
 				} else {
-					// Блока для этого типа доставки в этот пункт еще существует, создадим его:
+					// Блока для этого типа доставки в этот пункт еще не существует, создадим его:
 					// Без флага уникальности, все товары скопом:
 					// Пример: 5 тетрадок ==> 1 товар количеством 5 шт
 					ENTER.constructors.DeliveryBox(productsToNewBox, nowState, choosenPointForBox);
@@ -638,19 +638,29 @@
 		 * Удаление блока доставки по токену
 		 * 
 		 * @param	String}		token	Токен блока доставки
+		 * @returns	{*}			DeliveryBox (удалённый блок доставки либо null)
 		 */
 		removeDeliveryBox: function( token ) {
-			console.info('Удаление блока по токену '+token);
+			console.info('Поиск для удаления блока по токену ' + token);
 
-			var i = null;
+			var
+				i,
+				ret = null,
+				dBoxes = ENTER.OrderModel.deliveryBoxes(),
+				dBCount = dBoxes.length;
 
-			for ( i = ENTER.OrderModel.deliveryBoxes().length - 1; i >= 0; i--) {
-				if ( ENTER.OrderModel.deliveryBoxes()[i].token === token ) {
-					ENTER.OrderModel.deliveryBoxes().splice(i, 1);
-
-					return;
+			for ( i = dBCount - 1; i >= 0; i-- ) {
+				if ( dBoxes[i].token === token ) {
+					console.info('Удаление блока по токену ' + token);
+					ret = ENTER.OrderModel.deliveryBoxes.splice(i, 1);
+					if ( 'object' === typeof(ret[0]) ) {
+						ret = ret[0];
+					}
+					break;
 				}
 			}
+
+			return ret;
 		},
 
 		/**
