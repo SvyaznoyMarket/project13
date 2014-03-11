@@ -151,7 +151,7 @@ class ConfirmPhoneAction {
             $data = array_merge($data, ['isPhoneConfirmed' => true]);
             $session->set($sessionName, $data);
 
-            $response = (new \Controller\Enterprize\Coupon())->create($request);
+            $response = (new \Controller\Enterprize\CouponAction())->create($request);
 
         } catch (\Exception $e) {
             \App::exception()->remove($e);

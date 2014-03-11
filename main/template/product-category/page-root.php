@@ -2,27 +2,36 @@
 /**
  * @var $page     \View\ProductCategory\RootPage
  * @var $category \Model\Product\Category\Entity
+ * @var $relatedCategories      array
  */
 
+$categories = $category->getChild();
+if (!empty($relatedCategories)) $categories = array_merge($categories, $relatedCategories);
 ?>
 
 <h1 class="bTitlePage"><?= $category->getName() ?></h1>
 
 <!-- Баннер --><div id="adfox683" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
 
-<? if (count($category->getChild())): ?>
+<? if (count($categories)): ?>
     <ul class="bCatalogRoot clearfix">
+        <? /*
         <!--li class="bCatalogRoot__eItem mBannerItem" style="width: 0px;"><-div class="adfoxWrapper" id="adfox215"></div></li-->
         <!-- место для баннеры 460х260, при этом родительский элемент имеет ширину 240 -->
+        */ ?>
         <? $j = 0; ?>
-        <? foreach ($category->getChild() as $child): ?>
+        <? foreach ($categories as $child): ?>
             <?php
             $productCount = $child->getProductCount() ? : $child->getGlobalProductCount();
 
-            $totalText = $productCount . ' ' . ($child->getHasLine()
-                ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
-                : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
-            );
+            $totalText = '';
+            if ( $productCount > 0 ) {
+                $totalText = $productCount . ' ' . ($child->getHasLine()
+                        ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
+                        : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
+                    );
+            }
+
 
             $link = $child->getLink() . (\App::request()->get('instore') ? '?instore=1' : '');
 
