@@ -57,11 +57,11 @@
                     <div class="fixedTopBar__dd fixedTopBar__logOut">
                         <div class="enterPrize">
                             <div class="enterPrize__text">
-                                <strong class="title">Enter Prize</strong>
-                                Выбери фишку со скидкой на любой товар в ENTER!
+                                <strong class="title">ENTER PRIZE</strong>
+                                Здесь скидки до 70%<br/> в ENTER!
                             </div>
 
-                            <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
+                            <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Получить</a>
                         </div>
                     </div>
                 <? endif ?>
