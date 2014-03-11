@@ -105,15 +105,15 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
                 $itemClass .= ' mNoIco';
             }
 
-            $couponLink = $page->url('enterprize.show', ['enterprizeToken' => $coupon->getToken()]);
-            if ($coupon->isInformationOnly()) {
-                if ($coupon->getDescriptionToken()) {
-                    $couponLink = $page->url('content', ['token' => $coupon->getDescriptionToken()]);
-                } else {
-                    $couponLink = null;
-                }
+            $couponLink = $page->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]);
+            if ($isEnterprizeMember) {
+                $couponLink = $page->url('enterprize.show', ['enterprizeToken' => $coupon->getToken()]);
             }
-            ?>
+            if ($coupon->isInformationOnly()) {
+                $couponLink = $coupon->getDescriptionToken()
+                    ? $page->url('content', ['token' => $coupon->getDescriptionToken()])
+                    : null;
+            } ?>
 
             <li class="<?= $itemClass ?>">
                 <a class="enterPrize__list__link" href="<?= $couponLink ? $couponLink : '#' ?>">
