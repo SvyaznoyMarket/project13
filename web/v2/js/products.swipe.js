@@ -42,21 +42,30 @@ $(function() {
       originalPosition = null;
     } );
 
+    var draw = function draw ( offset ) {
+
+      
+    };
+
     $el.on( "touchmove mousemove", function ( event, offset ) {
       if ( !touchDown ) { return;}
       var info = swipeInfo( event );
+
       callback( info.direction, info.offset );
 
+      if ( info.offset.x > 0 ) {
 
-
-      if ( info.offset.x > 0) {
-
-        // $('.productDescImgList__item.page-current').removeClass('page-current').addClass('page-left');
-        // $('.productDescImgList__item.page-right').removeClass('page-right').addClass('page-current page-animating');
-        // $('.productDescImgList__item.page-current').next('.productDescImgList__item').addClass('page-right');
-        // $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left');
         event.preventDefault();
+
         $('.productDescImgList__item.page-current').css({transform: 'translate(' + info.offset.x + 'px, 0)'});
+
+        if ( info.offset.x >= 50 ) {
+        $('.productDescImgList__item.page-current').removeClass('page-current').addClass('page-left');
+        $('.productDescImgList__item.page-right').removeClass('page-right').addClass('page-current page-animating');
+        $('.productDescImgList__item.page-current').next('.productDescImgList__item').addClass('page-right');
+        $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left');
+
+      }
       };
     } );
 
