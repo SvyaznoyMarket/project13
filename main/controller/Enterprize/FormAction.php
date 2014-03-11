@@ -43,6 +43,9 @@ class FormAction {
                 'isPhoneConfirmed' => true,
                 'isEmailConfirmed' => true,
             ]);
+            $session->set($sessionName, $data);
+
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize.create'));
         }
 
         $session->set($sessionName, $data);
