@@ -12,6 +12,8 @@ class FormAction {
     public function show($enterprizeToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $user = \App::user();
+
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
         }
@@ -29,7 +31,20 @@ class FormAction {
             ]);
         }
 
-        $data = array_merge($session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
+        $data = array_merge((array)$session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
+
+        // если пользователь авторизован и уже является участником enterprize
+        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember()) {
+            $data = array_merge($data, [
+                'token'            => $user->getToken(),
+                'name'             => $user->getEntity()->getFirstName(),
+                'email'            => $user->getEntity()->getEmail(),
+                'mobile'           => $user->getEntity()->getMobilePhone(),
+                'isPhoneConfirmed' => true,
+                'isEmailConfirmed' => true,
+            ]);
+        }
+
         $session->set($sessionName, $data);
 
         $flash = $session->get('flash');
