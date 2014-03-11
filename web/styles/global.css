@@ -2259,7 +2259,11 @@ img[height="0"] {
     float: none;
     background: #ffffff;
     font-size: 16px;
+    line-height: 1.6;
     margin: 13px 0;
+  }
+  .enterPrize.mPrivate .enterPrize__rules strong {
+    font-size: 18px;
   }
   .enterPrize.mPrivate .enterPrize__logIn {
     font-size: 14px;
