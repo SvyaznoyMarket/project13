@@ -36,7 +36,9 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
         <li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li>
     </ul> -->
 
-    <p class="enterPrizeDesc">Уже в ENTER PRIZE? <a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войди и получи ещё скидки</a></p>
+    <? if (!$user->getEntity()): ?>
+        <p class="enterPrizeDesc">Уже в ENTER PRIZE? <a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войди и получи ещё скидки</a></p>
+    <? endif ?>
 
     <? if ($isEnterprizeMember): ?>
         <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как ещё получать фишки?</span></p>
