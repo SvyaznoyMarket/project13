@@ -11,7 +11,7 @@ use EnterSite\MustacheRendererTrait;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
-//use EnterSite\Model\Page\Product\RecommendedList as Page;
+use EnterSite\Model\Page\Product\RecommendedList as Page;
 
 class RecommendedList {
     use ConfigTrait;
@@ -122,6 +122,14 @@ class RecommendedList {
         }
         unset($ids);
 
-        die(var_dump(array_keys($productsById)));
+        // страница
+        $page = new Page();
+
+        //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+        // http-ответ
+        $response = new Http\JsonResponse($page);
+
+        return $response;
     }
 }

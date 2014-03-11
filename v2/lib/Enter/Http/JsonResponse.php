@@ -6,7 +6,7 @@ class JsonResponse extends Response {
     /** @var array */
     public $data = [];
 
-    public function __construct(array $data = null, $statusCode = self::STATUS_OK) {
+    public function __construct($data = null, $statusCode = self::STATUS_OK) {
         parent::__construct(null, $statusCode);
 
         $this->headers['Content-Type'] = 'application/json';
