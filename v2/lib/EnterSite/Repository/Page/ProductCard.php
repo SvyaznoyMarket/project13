@@ -76,7 +76,7 @@ class ProductCard {
 
         // аксессуары
         foreach ($productModel->relation->accessories as $accessoryModel) {
-            $page->content->product->accessoryCards[] = $productCardRepository->getObject($accessoryModel);
+            $page->content->product->accessoryBlock->productCards[] = $productCardRepository->getObject($accessoryModel);
         }
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
