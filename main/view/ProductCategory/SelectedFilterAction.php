@@ -116,7 +116,9 @@ class SelectedFilterAction {
                         $url = $helper->replacedUrl([
                             $paramName => null,
                             'ajax'     => null
-                        ], null, 'product.category');
+                        ], null,
+                            ('product.category' === \App::request()->attributes->get('route')) ? 'product.category' : null
+                        );
                         if ($useBaseUrl && !strpos($url, '?')) {
                             // Используем базовый урл, если нет гет-параметров
                             $url = $baseUrl;
