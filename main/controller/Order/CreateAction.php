@@ -114,6 +114,14 @@ class CreateAction {
             $this->failResponseData($e, $responseData);
 
             $this->logErrors($request, $e, $form, __METHOD__);
+
+            // в этом месте важно передать редирект, его ждёт от нас JS
+            if (!isset($responseData['redirect'])) {
+                $responseData['redirect'] = \App::router()->generate('order');
+                //$responseData['redirect'] = \App::router()->generate('cart');
+            }
+            // можно добавить сохранение в куку введённого адреса и метро,
+            // дабы пользователю не вводить их заново при повторном заказе
         }
 
         // JsonResponse
@@ -321,7 +329,7 @@ class CreateAction {
                     }
                     $bMeta = true;
                 }
-            }
+            } // end of foreach ($productId)
 
             if ( !empty($orderData) ) {
                 $data[] = $orderData;
