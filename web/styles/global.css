@@ -2567,7 +2567,7 @@ img[height="0"] {
   }
   .tchiboNav__list .item {
     display: inline-block;
-    margin: 0 10px 0 0;
+    margin: 0 30px 0 0;
     position: relative;
   }
   .tchiboNav__list .item:hover .tchiboNav__sublist,
@@ -2626,17 +2626,24 @@ img[height="0"] {
     -moz-transition: opacity 0.2s ease-in-out;
     transition: opacity 0.2s ease-in-out;
     visibility: hidden;
-    left: 0;
     padding: 27px 0 10px 0;
     position: absolute;
     top: 15px;
     width: 850px;
     z-index: 0;
   }
+  .tchiboNav__sublist.mDefault {
+    left: 0;
+  }
+  .tchiboNav__sublist.mLast {
+    right: 10px;
+    text-align: right;
+    width: 700px;
+  }
   .tchiboNav__sublist .sublistItem {
     vertical-align: top;
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 20px;
   }
 }
 /*---END----TCHIBO - слайдер-меню разделов Чибо---------*/
