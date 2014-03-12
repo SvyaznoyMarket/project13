@@ -15,7 +15,7 @@ return function(
         <?= empty($rating) ? '' : $helper->render('product/__rating', ['score' => $rating]) ?>
     </div>
     <? if (empty($rating) && 0 == $reviewCount) { ?>
-        <span>Отзывов нет</span>
+        <span style="float: left;">Отзывов нет</span>
     <? } else { ?>
         <span itemprop="ratingCount" class="jsGoToId border" data-goto="bHeadSectionReviews">
             <?= $reviewCount ?> <?= $helper->numberChoice($reviewCount, ['отзыв', 'отзыва', 'отзывов']) ?>
