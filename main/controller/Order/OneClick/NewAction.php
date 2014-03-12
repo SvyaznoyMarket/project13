@@ -106,6 +106,7 @@ class NewAction {
             $page->setParam('banks', $banks);
             $page->setParam('creditData', $creditData);
             $page->setParam('form', $form);
+            $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
 
             return new \Http\Response($page->show());
 
