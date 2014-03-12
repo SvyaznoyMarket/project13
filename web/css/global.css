@@ -10972,6 +10972,9 @@
   .mPayMethods .bBankWrap {
     margin: 5px 0 0 15px;
   }
+  .mPayMethods .bBankWrap .bUnchecked {
+    opacity: .4;
+  }
   .mPayMethods .bBankWrap .bSelectInput {
     height: 60px;
   }
