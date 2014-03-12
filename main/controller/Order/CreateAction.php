@@ -8,6 +8,8 @@ class CreateAction {
     use ResponseDataTrait;
     use FormTrait;
 
+    const TYPE_PAYMENT_CREDIT = 6;
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -203,6 +205,12 @@ class CreateAction {
                     'qiwi_phone' => $form->getQiwiPhone(),
                 ],
             ];
+
+            // Валидация формы на сервере до запроса к ядру
+            if ( self::TYPE_PAYMENT_CREDIT === $orderData['payment_id'] && empty($orderData['credit_bank_id']) ) {
+                // ошибка. если не указан ли банк для кредита
+                throw new \Exception('Не выбран банк!', 729); // текст ошибки заменится, см main/controller/Order/ResponseDataTrait.php
+            }
 
             // станция метро
             if ($user->getRegion()->getHasSubway()) {
