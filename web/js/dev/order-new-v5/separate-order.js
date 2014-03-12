@@ -172,9 +172,10 @@
 		 * Если заказ разбился, то купон применять нельзя или
 		 * Если сумма заказа меньше либо равана размеру скидки купона
 		 */
-		if ( ( ENTER.OrderModel.hasCoupons() && ENTER.OrderModel.deliveryBoxes().length > 1 ) || 
-			( ENTER.OrderModel.appliedCoupon() && ENTER.OrderModel.appliedCoupon().sum && 
-			( parseFloat(ENTER.OrderModel.totalSum()) <= parseFloat(ENTER.OrderModel.appliedCoupon().sum) ) ) ) {
+		if ( ( ENTER.OrderModel.hasCoupons() && ENTER.OrderModel.deliveryBoxes().length > 1 ) ||
+			parseFloat(ENTER.OrderModel.totalSum()) < 1
+			/*( ENTER.OrderModel.appliedCoupon() && ENTER.OrderModel.appliedCoupon().sum &&
+			( parseFloat(ENTER.OrderModel.totalSum()) <= parseFloat(ENTER.OrderModel.appliedCoupon().sum) ) )*/ ) {
 			console.warn('Нужно удалить купон');
 
 			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
