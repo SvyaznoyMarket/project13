@@ -29,10 +29,10 @@ class Entity {
      */
     private $isInformationOnly;
     /**
-     * Для участников enterprize?
+     * Только для участников enterprize?
      * @var bool
      */
-    private $isForMember = false;
+    private $isForMemberOnly = false;
     /**
      * Токен странички в wordpress-е
      * @var string
@@ -51,7 +51,7 @@ class Entity {
         if (array_key_exists('endDate', $data)) $this->setEndDate($data['endDate'] ? new \DateTime($data['endDate']) : null);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('isInformationOnly', $data)) $this->setIsInformationOnly($data['isInformationOnly']);
-        if (array_key_exists('isForMember', $data)) $this->setIsForMember($data['isForMember']);
+        if (array_key_exists('isForMemberOnly', $data)) $this->setIsForMemberOnly($data['isForMemberOnly']);
         if (array_key_exists('descriptionToken', $data)) $this->setDescriptionToken($data['descriptionToken']);
     }
 
@@ -212,16 +212,16 @@ class Entity {
     /**
      * @param boolean $isForNotMemberOnly
      */
-    public function setIsForMember($isForNotMemberOnly)
+    public function setIsForMemberOnly($isForNotMemberOnly)
     {
-        $this->isForMember = (bool)$isForNotMemberOnly;
+        $this->isForMemberOnly = (bool)$isForNotMemberOnly;
     }
 
     /**
      * @return boolean
      */
-    public function isForMember() {
-        return $this->isForMember;
+    public function isForMemberOnly() {
+        return $this->isForMemberOnly;
     }
 
     /**
