@@ -7,41 +7,26 @@
  *
  * @param	{Object}	ENTER	Enter namespace
  */
-;(function( ENTER ) {
-	var 
-		listItem = $('.tchiboNav__list .jsItemListTchibo'),
-		listItemLi = $('.tchiboNav__list .item'),
-		listItemActive = $('.tchiboNav__list .item.active'),
-		listItemLink = listItem.find('.link'),
-		subList = listItem.find('.tchiboNav__sublist');
-	// end of vars
+// ;(function( ENTER ) {
+// 	var 
+// 		listItem = $('.tchiboNav__list .jsItemListTchibo'),
+// 		listItemLi = $('.tchiboNav__list .item'),
+// 		listItemActive = $('.tchiboNav__list .item.active'),
+// 		listItemLink = listItem.find('.link'),
+// 		subList = listItem.find('.tchiboNav__sublist');
+// 	// end of vars
 
-	listItemLink.each ( 
-		function listItemWidth( i ) {
+// 	listItemLink.each ( 
+// 		function listItemWidth( i ) {
 
-		var
-			listItemWidth = listItem.eq(i).width();
-		// end of vars
+// 		var
+// 			listItemWidth = listItem.eq(i).width();
+// 		// end of vars
 
-	  		listItemLink.eq(i).css({ 'width' : listItemWidth + 25});
-		}
-	);
+// 	  		listItemLink.eq(i).css({ 'width' : listItemWidth + 25});
+// 		}
+// 	);
 
-	// var listItemHover = function listItemHover() {
+// 	//subList.last().removeClass('mDefault').addClass('mLast');
 
-	// 	if ( $(this).hasClass("active") || (!$(this).children(".tchiboNav__sublist").length ) ) {
-	// 	    listItemActive.find(subList).css({'opacity' : '1', 'z-index' : '5'});
-	// 	}
-	// 	else {
-	// 		listItemActive.find(subList).css({'opacity' : '0', 'z-index' : "1"});
-	// 	}
-	// };
-
-	// var listItemUnHover = function listItemUnHover() {
-
-	// 	listItemActive.find(subList).css({'opacity' : '1', 'z-index' : '5'});
-	// };
-
-	// listItemLi.hover(listItemHover, listItemUnHover);
-
-}(window.ENTER));
+// }(window.ENTER));
