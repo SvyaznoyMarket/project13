@@ -13,7 +13,7 @@ if (!$isEnter): ?>
             </span>
         </div>
 
-        <div class="bReview__eText clearfix">
+        <div class="bReview__eText">
             <? if($review['origin'] != 'enter') { ?>
                 <span class="mark">&#171;</span>
                 <?= empty($review['extract']) ? '' : $page->helper->nofollowExternalLinks($review['extract']) ?>
@@ -33,7 +33,7 @@ if (!$isEnter): ?>
             <? } ?>
         </div>
 
-        <div class="clearfix">
+        <div class="bReview__eLogo">
             <? if (!empty($review['source_logo_url'])): ?>
                 <img src="<?= $review['source_logo_url'] ?>" >
             <? endif ?>
