@@ -2405,11 +2405,11 @@ img[height="0"] {
     top: -8px;
   }
   .enterprizeAuthBox__title {
-    background: url("/styles/enterPrize/img/bgLogo.gif") no-repeat 0 0;
+    background: url("/styles/enterPrize/img/bgLogo.gif") no-repeat 50% 0;
     text-transform: uppercase;
     font-size: 24px;
     padding-left: 280px;
-    line-height: 88px;
+    height: 88px;
     font-weight: bold;
   }
   .enterprizeAuthBox__form {
