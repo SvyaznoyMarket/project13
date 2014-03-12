@@ -5239,24 +5239,24 @@
   .bReviewsOld .bReviewsTabs .active span {
     border-bottom: none;
   }
-  .bReviewsOld .bReview .bReview__eAuthtor {
+  .bReviewsOld .bReview__eAuthtor {
     float: left;
     width: 120px;
     margin: 5px 15px 0 0;
   }
-  .bReviewsOld .bReview .bReview__eAuthtor-name {
+  .bReviewsOld .bReview__eAuthtor-name {
     margin: 6px 0;
     font-weight: normal;
   }
-  .bReviewsOld .bReview .bReview__eAuthtor-date {
+  .bReviewsOld .bReview__eAuthtor-date {
     color: #a6a6a6;
   }
-  .bReviewsOld .bReview .bReview__eText {
+  .bReviewsOld .bReview__eText {
     float: left;
-    width: 650px;
+    width: 435px;
     font-size: 14px;
   }
-  .bReviewsOld .bReview .bReview__eText .mark {
+  .bReviewsOld .bReview__eText .mark {
     display: block;
     float: left;
     font: bold 24px/24px Tahoma;
@@ -5267,10 +5267,10 @@
     margin-top: -2px;
     clear: both;
   }
-  .bReviewsOld .bReview .bReview__eText div,
-  .bReviewsOld .bReview .bReview__eText p {
+  .bReviewsOld .bReview__eText div,
+  .bReviewsOld .bReview__eText p {
     float: left;
-    width: 620px;
+    width: 435px;
     margin: 2px 0 5px;
   }
   .bReviewsOld .bReview__eLogo {
@@ -9639,25 +9639,25 @@
   .bReviews .bReviewsTabs .active span {
     border-bottom: none;
   }
-  .bReviews .bReview .bReview__eAuthtor {
+  .bReviews .bReview__eAuthtor {
     float: left;
     width: 120px;
     margin: 5px 15px 0 0;
   }
-  .bReviews .bReview .bReview__eAuthtor-name {
+  .bReviews .bReview__eAuthtor-name {
     margin: 6px 0;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 12px;
   }
-  .bReviews .bReview .bReview__eAuthtor-date {
+  .bReviews .bReview__eAuthtor-date {
     color: #a6a6a6;
   }
-  .bReviews .bReview .bReview__eText {
+  .bReviews .bReview__eText {
     float: left;
-    width: 565px;
+    width: 440px;
     font-size: 14px;
   }
-  .bReviews .bReview .bReview__eText .mark {
+  .bReviews .bReview__eText .mark {
     display: block;
     float: left;
     font: bold 24px/24px Tahoma;
@@ -9668,17 +9668,18 @@
     margin-top: -2px;
     clear: both;
   }
-  .bReviews .bReview .bReview__eText div,
-  .bReviews .bReview .bReview__eText p {
+  .bReviews .bReview__eText div,
+  .bReviews .bReview__eText p {
     float: left;
-    width: 540px;
+    font-size: 12px;
+    line-height: 1.5;
     margin: 2px 0 5px;
+    width: 410px;
   }
   .bReviews .bReview__eLogo {
     float: right;
-    width: 120px;
+    width: 115px;
     text-align: right;
-    margin: 8px 0 0;
   }
   .bReviewSection {
     margin: 0 0 25px;
