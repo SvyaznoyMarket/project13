@@ -431,13 +431,6 @@ class Action {
                     function($data) use (&$relatedCategories, &$categoryConfigById) {
                         foreach ($data as $item) {
                             if (!isset($item['id'])) continue;
-                            $id = $item['id'];
-                            if (!empty($categoryConfigById[$id]['image'])) {
-                                $item['media_image'] = $categoryConfigById[$id]['image'];
-                            }
-                            if (!empty($categoryConfigById[$id]['name'])) {
-                                $item['name'] = $categoryConfigById[$id]['name'];
-                            }
                             $relatedCategories[] = new \Model\Product\Category\Entity($item);
                         }
                     }
