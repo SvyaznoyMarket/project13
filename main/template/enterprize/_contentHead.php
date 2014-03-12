@@ -58,9 +58,9 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
             </div>
 
             <div class="enterPrize__rules"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
-                Фишка со скидкой <b><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></b> на <b><?= $enterpizeCoupon->getName() ?></b><br />
+                Фишка со скидкой <strong><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на <strong><?= $enterpizeCoupon->getName() ?></strong><br />
                 Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
-                Строк действия
+                Действует
                 <? if ($enterpizeCoupon->getStartDate() instanceof \DateTime): ?>
                     c <?= $enterpizeCoupon->getStartDate()->format('d.m.Y') ?>
                 <? endif ?>

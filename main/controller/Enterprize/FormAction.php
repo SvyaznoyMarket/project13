@@ -12,6 +12,8 @@ class FormAction {
     public function show($enterprizeToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $user = \App::user();
+
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
         }
@@ -29,7 +31,23 @@ class FormAction {
             ]);
         }
 
-        $data = array_merge($session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
+        $data = array_merge((array)$session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
+
+        // если пользователь авторизован и уже является участником enterprize
+        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember()) {
+            $data = array_merge($data, [
+                'token'            => $user->getToken(),
+                'name'             => $user->getEntity()->getFirstName(),
+                'email'            => $user->getEntity()->getEmail(),
+                'mobile'           => $user->getEntity()->getMobilePhone(),
+                'isPhoneConfirmed' => true,
+                'isEmailConfirmed' => true,
+            ]);
+            $session->set($sessionName, $data);
+
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize.create'));
+        }
+
         $session->set($sessionName, $data);
 
         $flash = $session->get('flash');
@@ -118,6 +136,7 @@ class FormAction {
             $detail = isset($errorContent['detail']) && is_array($errorContent['detail']) ? $errorContent['detail'] : [];
 
             if (401 == $e->getCode()) {
+                $form->setError('global', $e->getMessage());
                 $needAuth = true;
 
             } elseif (600 == $e->getCode()) {
@@ -170,9 +189,9 @@ class FormAction {
                 }
             } elseif (409 == $e->getCode()) {
                 if (isset($detail['mobile_in_enter_prize']) && $detail['mobile_in_enter_prize']) {
-                    $form->setError('mobile', $e->getMessage());
+                    $form->setError('mobile', 'Мобильный телефон уже является участником Enter Prize');
                 } elseif (isset($detail['email_in_enter_prize']) && $detail['email_in_enter_prize']) {
-                    $form->setError('email', $e->getMessage());
+                    $form->setError('email', 'E-mail уже является участником Enter Prize');
                 } else {
                     $form->setError('global', $e->getMessage());
                 }

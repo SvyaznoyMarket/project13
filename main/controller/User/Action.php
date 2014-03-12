@@ -186,6 +186,9 @@ class Action {
         // Очищаем источник авторизации
         \App::session()->remove('authSource');
 
+        // Очищаем enterprize
+        \App::session()->remove(\App::config()->enterprize['formDataSessionKey']);
+
         // SITE-1763
         $user->getCart()->clear();
 

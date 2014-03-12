@@ -25,7 +25,9 @@ class IndexAction {
                 if (empty($item['token'])) continue;
 
                 $coupon = new \Model\EnterprizeCoupon\Entity($item);
-                if ($user && $user->isEnterprizeMember() && $coupon->isForNotMemberOnly()) {
+
+                // если купон ТОЛЬКО для участников Enterprize
+                if ($coupon->isForMemberOnly() && $user && !$user->isEnterprizeMember()) {
                     continue;
                 }
 

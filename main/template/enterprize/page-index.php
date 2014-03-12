@@ -36,7 +36,9 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
         <li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li>
     </ul> -->
 
-    <p class="enterPrizeDesc">Уже в ENTER PRIZE? <a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войди и получи ещё скидки</a></p>
+    <? if (!$user->getEntity()): ?>
+        <p class="enterPrizeDesc">Уже в ENTER PRIZE? <a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войди и получи ещё скидки</a></p>
+    <? endif ?>
 
     <? if ($isEnterprizeMember): ?>
         <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как ещё получать фишки?</span></p>
@@ -65,11 +67,9 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
             <div class="enterPrizeFinish">Лови номер фишки в чеке после оплаты заказа!</div>
         </div>
 
-        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как играть фишкамии получать скидки?</span></p>
+        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как играть фишками и получать скидки?</span></p>
 
         <div class="enterPrizeListWrap">
-            <div class="enterPrizeListTitle">Как получить скидку?</div>
-
             <ul class="enterPrizeList">
                 <li class="enterPrizeList__item mBlue">
                     <strong>Сайт www.enter.ru</strong><br/>
@@ -105,15 +105,15 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
                 $itemClass .= ' mNoIco';
             }
 
-            $couponLink = $page->url('enterprize.show', ['enterprizeToken' => $coupon->getToken()]);
-            if ($coupon->isInformationOnly()) {
-                if ($coupon->getDescriptionToken()) {
-                    $couponLink = $page->url('content', ['token' => $coupon->getDescriptionToken()]);
-                } else {
-                    $couponLink = null;
-                }
+            $couponLink = $page->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]);
+            if ($isEnterprizeMember) {
+                $couponLink = $page->url('enterprize.show', ['enterprizeToken' => $coupon->getToken()]);
             }
-            ?>
+            if ($coupon->isInformationOnly()) {
+                $couponLink = $coupon->getDescriptionToken()
+                    ? $page->url('content', ['token' => $coupon->getDescriptionToken()])
+                    : null;
+            } ?>
 
             <li class="<?= $itemClass ?>">
                 <a class="enterPrize__list__link" href="<?= $couponLink ? $couponLink : '#' ?>">
