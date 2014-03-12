@@ -136,6 +136,7 @@ class FormAction {
             $detail = isset($errorContent['detail']) && is_array($errorContent['detail']) ? $errorContent['detail'] : [];
 
             if (401 == $e->getCode()) {
+                $form->setError('global', $e->getMessage());
                 $needAuth = true;
 
             } elseif (600 == $e->getCode()) {
