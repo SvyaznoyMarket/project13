@@ -67,11 +67,9 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
             <div class="enterPrizeFinish">Лови номер фишки в чеке после оплаты заказа!</div>
         </div>
 
-        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как играть фишкамии получать скидки?</span></p>
+        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как играть фишками и получать скидки?</span></p>
 
         <div class="enterPrizeListWrap">
-            <div class="enterPrizeListTitle">Как получить скидку?</div>
-
             <ul class="enterPrizeList">
                 <li class="enterPrizeList__item mBlue">
                     <strong>Сайт www.enter.ru</strong><br/>
