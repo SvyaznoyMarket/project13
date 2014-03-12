@@ -2236,7 +2236,7 @@ img[height="0"] {
     top: 108px;
   }
   .enterPrize.mPrivate {
-    margin: 40px 0;
+    margin: 40px 0 20px;
     background: #eaeaea;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -2443,6 +2443,10 @@ img[height="0"] {
   .enterprize_user .bSubscribeLightboxPopupNotNow,
   .enterprize_user .bSubscribeLightboxPopup {
     display: none !important;
+  }
+  .getCuponEP {
+    margin: 0 auto 200px;
+    width: 100px;
   }
 }
 /*---END----Enter Prize---------*/
