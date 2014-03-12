@@ -2276,18 +2276,27 @@ img[height="0"] {
     margin: 0 0 30px 25px;
     font-size: 14px;
   }
-  .enterprizeConfirm .confirmForm {
+  .enterprizeConfirm .backForm {
+    font-size: 12px;
     display: inline-block;
-    vertical-align: top;
+    text-decoration: underline;
+    margin: 15px 0 0;
     *display: inline;
     zoom: 1;
   }
+  .enterprizeConfirm .confirmForm {
+    margin: 0 0 15px;
+  }
   .enterprizeConfirm .labelCode {
-    margin: 0 5px 0 0;
+    display: inline-block;
+    margin: 5px 5px 0 0;
+    *display: inline;
+    zoom: 1;
   }
   .enterprizeConfirm .text {
     height: 31px;
     line-height: 31px;
+    width: 50px;
   }
   .enterprizeConfirm .newCode {
     display: inline-block;
