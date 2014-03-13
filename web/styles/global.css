@@ -2140,12 +2140,12 @@ img[height="0"] {
     z-index: 17;
   }
   .enterPrize .cuponImg__inner {
-    width: 188px;
-    position: relative;
     display: block;
-    height: 186px;
+    height: 188px;
     left: 7px;
+    position: relative;
     top: 6px;
+    width: 190px;
   }
   .enterPrize .cuponImgHover {
     -moz-opacity: 0.3;
@@ -2217,7 +2217,7 @@ img[height="0"] {
   }
   .enterPrize .cuponIco {
     position: absolute;
-    top: 29px;
+    top: 33px;
     text-align: center;
     width: 100%;
     left: 0;
@@ -2229,6 +2229,7 @@ img[height="0"] {
     text-align: center;
     width: 143px;
     left: 23px;
+    line-height: 1.1;
   }
   .enterPrize .cuponPrice {
     font-family: "Enter Type";
@@ -2237,7 +2238,7 @@ img[height="0"] {
     text-align: center;
     left: 0;
     width: 100%;
-    top: 108px;
+    top: 110px;
   }
   .enterPrize.mPrivate {
     margin: 40px 0 20px;
@@ -2256,7 +2257,7 @@ img[height="0"] {
     margin: -40px 0 0;
   }
   .enterPrize.mPrivate .enterPrize__rules {
-    width: 450px;
+    width: 550px;
     height: auto;
     padding: 15px;
     border-bottom: 1px solid #bbbbbb;
