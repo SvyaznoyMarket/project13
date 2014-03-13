@@ -1,5 +1,8 @@
 <? $isEnter = ( 'enter' == $review['origin'] );
 
+if (!isset($review['title'])) $review['title'] = '';
+if (!isset($review['origin'])) $review['origin'] = '';
+
 if (!$isEnter): ?>
     <noindex>
 <? endif ?>
@@ -35,7 +38,11 @@ if (!$isEnter): ?>
 
         <div class="bReview__eLogo">
             <? if (!empty($review['source_logo_url'])): ?>
-                <img src="<?= $review['source_logo_url'] ?>" >
+                <? if (!empty($review['url'])) { ?>
+                    <a class="reviewLink <?= $review['origin'] ?>" href="<?= $review['url'] ?>" title="<?= $review['title'] ?>" target="_blank">
+                <? } ?>
+                        <img src="<?= $review['source_logo_url'] ?>" alt="<?= $review['title'] ?>" />
+                <? if (!empty($review['url'])) { ?></a><? } ?>
             <? endif ?>
         </div>
     </div>
