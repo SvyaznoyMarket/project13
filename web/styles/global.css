@@ -770,7 +770,10 @@ img[height="0"] {
     display: inline-block;
     margin: 0 52px 0 0;
     font-size: 12px;
+    float: left;
     line-height: 30px;
+    *diaplay: inline;
+    zoom: 1;
   }
   .footer .aboutList__item:last-child {
     margin-right: 0;
