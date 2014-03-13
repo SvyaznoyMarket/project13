@@ -2401,15 +2401,6 @@
     z-index: 999;
     -dt-display: table-cell;
   }
-  .bMainMenuLevel-1__eItem:last-child {
-    border-radius: 0 5px 5px 0;
-  }
-  .bMainMenuLevel-1__eItem:last-child .bMainMenuLevel-1__eIcon {
-    border-radius: 0 4px 0 0;
-  }
-  .bMainMenuLevel-1__eItem:last-child .bMainMenuLevel-1__eTitle {
-    border-radius: 0 0 4px 0;
-  }
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator {
     background: url('/css/header/img/headerSeparator.gif') no-repeat center center;
     display: block;
