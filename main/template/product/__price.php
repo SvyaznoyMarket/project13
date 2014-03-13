@@ -18,7 +18,7 @@ return function(
 
 <? endif ?>
 <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-    <div itemprop="price" class="bPrice bInputList">
+    <div itemprop="price" class="bPrice5321a13ebb1e5 bInputList">
     	<input class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="price" name="price_or_credit" />
 
     	<label for="price" class="bCustomLabel mCustomLabelRadioBig mChecked">
