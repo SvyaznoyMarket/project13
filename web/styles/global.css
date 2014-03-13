@@ -2284,6 +2284,15 @@ img[height="0"] {
   .enterPrize.mPrivate .enterPrize__logIn a {
     text-decoration: underline;
   }
+  .enterPrize .rulesEP {
+    font-size: 14px;
+    color: #ffffff;
+    margin: 20px 0 12px 31px;
+  }
+  .enterPrize .rulesEP a {
+    color: #ffffff;
+    text-decoration: underline;
+  }
   .enterprizeConfirm {
     margin: 0 0 200px 25px;
     font-size: 14px;
