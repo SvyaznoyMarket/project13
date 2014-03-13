@@ -18,12 +18,19 @@
     height: 240px;
 
     .bItemPrice {
-      .transition(left 0 ease-in-out);
-      position: absolute;
-      bottom: 0;
-      left: 80px;
 
-      -webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
+    }
+
+    .bPriceLine {
+      color: #a6a6a6;
+
+      .bPriceOld {
+        text-decoration: line-through;
+      }
+
+      .bDecor {
+        font-weight: normal;
+      }
     }
 
     .bItemName {
@@ -31,8 +38,9 @@
       .transition(opacity 0.1s ease-in-out);
     }
 
-    .bItemimg {
+    .bItemImg {
       text-align: center;
+      margin: 0 0 -7px;
     }
   
     &:hover {
@@ -49,13 +57,6 @@
 
       .btnBuy__eLink {
         .opacity(1);
-      }
-
-      .bItemPrice {
-        .transition(left 0.1s ease-in-out);
-        left: 0;
-
-        -webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
       }
     }  
   }
