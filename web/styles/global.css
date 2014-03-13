@@ -2223,6 +2223,10 @@ img[height="0"] {
     left: 0;
     height: 43px;
   }
+  .enterPrize .cuponIco img {
+    max-width: 75px;
+    max-height: 55px;
+  }
   .enterPrize .cuponDesc {
     position: absolute;
     top: 86px;
