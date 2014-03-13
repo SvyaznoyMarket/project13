@@ -13,7 +13,9 @@ class CouponAction {
             throw new \Exception\NotFoundException();
         }
 
-        $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
+        $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         $form = new \View\Enterprize\Form();
@@ -48,10 +50,22 @@ class CouponAction {
 
             // Пользователь не подтвердил свои данные
             if (403 == $e->getCode()) {
-                if (!$detail['mobile_confirmed']) {
+                if (isset($detail['mobile_confirmed']) && !$detail['mobile_confirmed']) {
                     $response = (new \Controller\Enterprize\ConfirmPhoneAction())->create($request);
-                } else {
+                } elseif (isset($detail['email_confirmed']) && !$detail['email_confirmed']) {
                     $response = (new \Controller\Enterprize\ConfirmEmailAction())->create($request);
+                } else {
+                    \App::session()->set('flash', ['errors' => $e->getMessage()]);
+                    $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.fail'));
+                }
+
+                // обновляем сессионные данные
+                $newData = [];
+                if (isset($detail['mobile_confirmed'])) $newData['isPhoneConfirmed'] = $detail['mobile_confirmed'];
+                if (isset($detail['email_confirmed'])) $newData['isEmailConfirmed'] = $detail['email_confirmed'];
+                if (!empty($newData)) {
+                    $data = array_merge($data, $newData);
+                    $session->set($sessionName, $data);
                 }
 
             // Ошибка валидации

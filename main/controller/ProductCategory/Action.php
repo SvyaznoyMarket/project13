@@ -430,6 +430,7 @@ class Action {
                     $region,
                     function($data) use (&$relatedCategories, &$categoryConfigById) {
                         foreach ($data as $item) {
+                            if (!isset($item['id'])) continue;
                             $relatedCategories[] = new \Model\Product\Category\Entity($item);
                         }
                     }

@@ -5,4 +5,4 @@
  */
 ?>
 
-<a href="<?= $page->url('enterprize.form.show', ['enterprizeToken' => $enterpizeCoupon->getToken()]) ?>">Получить</a>
+<a class="formDefault__btnSubmit getCuponEP mBtnOrange" href="<?= $page->url('enterprize.form.show', ['enterprizeToken' => $enterpizeCoupon->getToken()]) ?>">Получить</a>

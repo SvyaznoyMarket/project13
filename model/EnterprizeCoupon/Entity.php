@@ -29,10 +29,15 @@ class Entity {
      */
     private $isInformationOnly;
     /**
-     * Только для неучастников enterprize
+     * Для участников enterprize?
      * @var bool
      */
-    private $isForNotMemberOnly;
+    private $isForMember = false;
+    /**
+     * Для неучастников enterprize?
+     * @var bool
+     */
+    private $isForNotMember = true;
     /**
      * Токен странички в wordpress-е
      * @var string
@@ -51,7 +56,8 @@ class Entity {
         if (array_key_exists('endDate', $data)) $this->setEndDate($data['endDate'] ? new \DateTime($data['endDate']) : null);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('isInformationOnly', $data)) $this->setIsInformationOnly($data['isInformationOnly']);
-        if (array_key_exists('isForNotMemberOnly', $data)) $this->setIsForNotMemberOnly($data['isForNotMemberOnly']);
+        if (array_key_exists('isForMember', $data)) $this->setIsForMember($data['isForMember']);
+        if (array_key_exists('isForNotMember', $data)) $this->setIsForNotMember($data['isForNotMember']);
         if (array_key_exists('descriptionToken', $data)) $this->setDescriptionToken($data['descriptionToken']);
     }
 
@@ -212,16 +218,30 @@ class Entity {
     /**
      * @param boolean $isForNotMemberOnly
      */
-    public function setIsForNotMemberOnly($isForNotMemberOnly)
+    public function setIsForMember($isForNotMemberOnly)
     {
-        $this->isForNotMemberOnly = (bool)$isForNotMemberOnly;
+        $this->isForMember = (bool)$isForNotMemberOnly;
     }
 
     /**
      * @return boolean
      */
-    public function isForNotMemberOnly() {
-        return $this->isForNotMemberOnly;
+    public function isForMember() {
+        return $this->isForMember;
+    }
+
+    /**
+     * @param boolean $isForNotMember
+     */
+    public function setIsForNotMember($isForNotMember) {
+        $this->isForNotMember = (bool)$isForNotMember;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isForNotMember() {
+        return $this->isForNotMember;
     }
 
     /**

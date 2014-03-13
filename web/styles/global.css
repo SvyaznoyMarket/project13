@@ -598,7 +598,8 @@ img[height="0"] {
   display: block;
 }
 /* fix заразы */
-#tndFrame {
+#tndFrame,
+#market_context_headcrab {
   height: 0 !important;
   width: 0 !important;
   font-size: 0 !important;
@@ -769,7 +770,10 @@ img[height="0"] {
     display: inline-block;
     margin: 0 52px 0 0;
     font-size: 12px;
+    float: left;
     line-height: 30px;
+    *diaplay: inline;
+    zoom: 1;
   }
   .footer .aboutList__item:last-child {
     margin-right: 0;
@@ -1414,6 +1418,10 @@ img[height="0"] {
     text-decoration: underline;
     width: 106px;
     overflow: hidden;
+  }
+  .fixedTopBar__logInLink.enterprizeMember {
+    background-position: 0 50%;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjNDQjU0NTAzQTEzODExRTNCNzU3OUY1RTY2NkRCMkI0IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjNDQjU0NTA0QTEzODExRTNCNzU3OUY1RTY2NkRCMkI0Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6M0NCNTQ1MDFBMTM4MTFFM0I3NTc5RjVFNjY2REIyQjQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6M0NCNTQ1MDJBMTM4MTFFM0I3NTc5RjVFNjY2REIyQjQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6iMmVgAAAAu0lEQVR42mL8//8/AzL4NUfWD0gxsqU83ogszgSU4GJABdZAbImmmY0JSG8GMniRxLWAWANJETuQ2ghSCLJ7H1BACCqnDcSaUEXcIDkgBpt4F4hNgHgXUMIVSCsAsTKQbQqk9wKxFRDfZgES96AmGQPxIpBHgJgZiNcDsTRU7i7IxJNI7pNAYksjsQ+CFB4F4ncMuMELID7LBAyv30DGfTwK7wLV/GWBcm4CsRiUzQrFIPAPiB+AGAABBgBY4S/vv5N78AAAAABJRU5ErkJggg==);
   }
   .fixedTopBar__logInLink .name__hidden {
     display: block;
@@ -2063,8 +2071,7 @@ img[height="0"] {
   }
   .enterPrize .enterPrizeFinish {
     color: #BBBBBB;
-    font-size: 12px;
-    font-weight: bold;
+    font-size: 14px;
     margin: 0 0 50px 39px;
   }
   .enterPrize .enterPrizeList {
@@ -2075,7 +2082,7 @@ img[height="0"] {
     margin: 0 0 15px 36px;
     border-left: 3px solid;
     padding-left: 10px;
-    font-size: 14px;
+    font-size: 12px;
   }
   .enterPrize .enterPrizeList__item.mBlue {
     border-color: #4fcbf4;
@@ -2136,12 +2143,12 @@ img[height="0"] {
     z-index: 17;
   }
   .enterPrize .cuponImg__inner {
-    width: 188px;
-    position: relative;
     display: block;
-    height: 186px;
+    height: 188px;
     left: 7px;
+    position: relative;
     top: 6px;
+    width: 190px;
   }
   .enterPrize .cuponImgHover {
     -moz-opacity: 0.3;
@@ -2213,11 +2220,15 @@ img[height="0"] {
   }
   .enterPrize .cuponIco {
     position: absolute;
-    top: 29px;
+    top: 33px;
     text-align: center;
     width: 100%;
     left: 0;
     height: 43px;
+  }
+  .enterPrize .cuponIco img {
+    max-width: 75px;
+    max-height: 55px;
   }
   .enterPrize .cuponDesc {
     position: absolute;
@@ -2225,6 +2236,7 @@ img[height="0"] {
     text-align: center;
     width: 143px;
     left: 23px;
+    line-height: 1.1;
   }
   .enterPrize .cuponPrice {
     font-family: "Enter Type";
@@ -2233,10 +2245,10 @@ img[height="0"] {
     text-align: center;
     left: 0;
     width: 100%;
-    top: 108px;
+    top: 110px;
   }
   .enterPrize.mPrivate {
-    margin: 40px 0;
+    margin: 40px 0 20px;
     background: #eaeaea;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -2246,20 +2258,24 @@ img[height="0"] {
   .enterPrize.mPrivate .enterPrize__list {
     position: absolute;
     right: 0;
-    top: -63px;
+    top: -80px;
   }
   .enterPrize.mPrivate .enterPrize__logo {
     margin: -40px 0 0;
   }
   .enterPrize.mPrivate .enterPrize__rules {
-    width: 450px;
+    width: 550px;
     height: auto;
     padding: 15px;
     border-bottom: 1px solid #bbbbbb;
     float: none;
     background: #ffffff;
     font-size: 16px;
+    line-height: 1.6;
     margin: 13px 0;
+  }
+  .enterPrize.mPrivate .enterPrize__rules strong {
+    font-size: 18px;
   }
   .enterPrize.mPrivate .enterPrize__logIn {
     font-size: 14px;
@@ -2269,21 +2285,30 @@ img[height="0"] {
     text-decoration: underline;
   }
   .enterprizeConfirm {
-    margin: 0 0 30px 25px;
+    margin: 0 0 200px 25px;
     font-size: 14px;
   }
-  .enterprizeConfirm .confirmForm {
+  .enterprizeConfirm .backForm {
+    font-size: 12px;
     display: inline-block;
-    vertical-align: top;
+    text-decoration: underline;
+    margin: 15px 0 0;
     *display: inline;
     zoom: 1;
   }
+  .enterprizeConfirm .confirmForm {
+    margin: 0 0 15px;
+  }
   .enterprizeConfirm .labelCode {
-    margin: 0 5px 0 0;
+    display: inline-block;
+    margin: 5px 5px 0 0;
+    *display: inline;
+    zoom: 1;
   }
   .enterprizeConfirm .text {
     height: 31px;
     line-height: 31px;
+    width: 50px;
   }
   .enterprizeConfirm .newCode {
     display: inline-block;
@@ -2328,6 +2353,10 @@ img[height="0"] {
   }
   .enterprize {
     background: #000000;
+  }
+  .enterprize .fixedTopBar__logInLink {
+    background-position: 0 50%;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjNDQjU0NTAzQTEzODExRTNCNzU3OUY1RTY2NkRCMkI0IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjNDQjU0NTA0QTEzODExRTNCNzU3OUY1RTY2NkRCMkI0Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6M0NCNTQ1MDFBMTM4MTFFM0I3NTc5RjVFNjY2REIyQjQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6M0NCNTQ1MDJBMTM4MTFFM0I3NTc5RjVFNjY2REIyQjQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6iMmVgAAAAu0lEQVR42mL8//8/AzL4NUfWD0gxsqU83ogszgSU4GJABdZAbImmmY0JSG8GMniRxLWAWANJETuQ2ghSCLJ7H1BACCqnDcSaUEXcIDkgBpt4F4hNgHgXUMIVSCsAsTKQbQqk9wKxFRDfZgES96AmGQPxIpBHgJgZiNcDsTRU7i7IxJNI7pNAYksjsQ+CFB4F4ncMuMELID7LBAyv30DGfTwK7wLV/GWBcm4CsRiUzQrFIPAPiB+AGAABBgBY4S/vv5N78AAAAABJRU5ErkJggg==);
   }
   .enterprize .bSubscribeLightboxPopupNotNow,
   .enterprize .bSubscribeLightboxPopup {
@@ -2397,11 +2426,11 @@ img[height="0"] {
     top: -8px;
   }
   .enterprizeAuthBox__title {
-    background: url("/styles/enterPrize/img/bgLogo.gif") no-repeat 0 0;
+    background: url("/styles/enterPrize/img/bgLogo.gif") no-repeat 50% 0;
     text-transform: uppercase;
     font-size: 24px;
     padding-left: 280px;
-    line-height: 88px;
+    height: 88px;
     font-weight: bold;
   }
   .enterprizeAuthBox__form {
@@ -2413,15 +2442,32 @@ img[height="0"] {
     font-weight: bold;
   }
   .enterprizeMore {
-    margin: 20px 0 30px 25px;
-    font-size: 16px;
+    font-family: "Enter";
+    font-size: 20px;
+    margin: 40px 0 50px 25px;
+    text-transform: uppercase;
   }
   .enterprizeMore a {
     text-decoration: underline;
   }
-  .enterprize_user .bSubscribeLightboxPopupNotNow,
-  .enterprize_user .bSubscribeLightboxPopup {
+  .enterprizeMember .bSubscribeLightboxPopupNotNow,
+  .enterprizeMember .bSubscribeLightboxPopup {
     display: none !important;
+  }
+  .getCuponEP {
+    margin: 0 auto 200px;
+    width: 100px;
+  }
+  .completeTitleEP {
+    margin: 0 0 0 15px;
+  }
+  .completeTitleEP__title {
+    font-family: "Enter";
+    text-transform: uppercase;
+    font-size: 22px;
+  }
+  .completeTitleEP__text {
+    margin: 0;
   }
 }
 /*---END----Enter Prize---------*/
@@ -2555,7 +2601,7 @@ img[height="0"] {
   }
   .tchiboNav__list .item {
     display: inline-block;
-    margin: 0 10px 0 0;
+    margin: 0 30px 0 0;
     position: relative;
   }
   .tchiboNav__list .item:hover .tchiboNav__sublist,
@@ -2614,17 +2660,24 @@ img[height="0"] {
     -moz-transition: opacity 0.2s ease-in-out;
     transition: opacity 0.2s ease-in-out;
     visibility: hidden;
-    left: 0;
     padding: 27px 0 10px 0;
     position: absolute;
     top: 15px;
     width: 850px;
     z-index: 0;
   }
+  .tchiboNav__sublist.mDefault {
+    left: 0;
+  }
+  .tchiboNav__sublist.mLast {
+    right: 10px;
+    text-align: right;
+    width: 700px;
+  }
   .tchiboNav__sublist .sublistItem {
     vertical-align: top;
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 20px;
   }
 }
 /*---END----TCHIBO - слайдер-меню разделов Чибо---------*/

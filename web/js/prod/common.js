@@ -1790,7 +1790,7 @@ $(document).ready(function(){
 					console.log(response.data.link);
 
 					if ( this.form.data('redirect') ) {
-						if ( typeof response.data.link !== 'undefined' ) {
+						if ( typeof (response.data.link) !== 'undefined' ) {
 							console.info('try to redirect to2 ' + response.data.link);
 							console.log(typeof response.data.link);
 
@@ -1806,6 +1806,8 @@ $(document).ready(function(){
 							completeRegister.show();
 							registerForm.hide();
 							this.showLoginForm();
+
+							document.location.href = window.location.href;
 						}
 					}
 					else {
