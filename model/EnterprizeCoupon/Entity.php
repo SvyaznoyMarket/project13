@@ -56,7 +56,8 @@ class Entity {
         if (array_key_exists('endDate', $data)) $this->setEndDate($data['endDate'] ? new \DateTime($data['endDate']) : null);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('isInformationOnly', $data)) $this->setIsInformationOnly($data['isInformationOnly']);
-        if (array_key_exists('isForMemberOnly', $data)) $this->setIsForMember($data['isForMemberOnly']);
+        if (array_key_exists('isForMember', $data)) $this->setIsForMember($data['isForMember']);
+        if (array_key_exists('isForNotMember', $data)) $this->setIsForNotMember($data['isForNotMember']);
         if (array_key_exists('descriptionToken', $data)) $this->setDescriptionToken($data['descriptionToken']);
     }
 
