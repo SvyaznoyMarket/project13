@@ -1,24 +1,14 @@
 <div class="sliderCat clearfix">
+
+    {{#hasCategories}}
     <div class="sliderCatWrap">
         <ul class="sliderCatList">
-            <li class="sliderCatList__item">Популярные аксессуары<li>
-            <li class="sliderCatList__item">Чехлы для iPhone<li>
-            <li class="sliderCatList__item">Зарядные устройства<li>
-            <li class="sliderCatList__item">Автомобильные аксессуары для телефоновv
-            <li class="sliderCatList__item">Чехлы, кейсы и декор для телефонов<li>
-            <li class="sliderCatList__item">Защитные пленки для телефонов<li>
-            <li class="sliderCatList__item">Наушники<li>
-            <li class="sliderCatList__item">Аккумуляторы <li>
-            <li class="sliderCatList__item">Популярные аксессуары<li>
-            <li class="sliderCatList__item">Чехлы для iPhone<li>
-            <li class="sliderCatList__item">Зарядные устройства<li>
-            <li class="sliderCatList__item">Автомобильные аксессуары для телефоновv
-            <li class="sliderCatList__item">Чехлы, кейсы и декор для телефонов<li>
-            <li class="sliderCatList__item">Защитные пленки для телефонов<li>
-            <li class="sliderCatList__item">Наушники<li>
-            <li class="sliderCatList__item">Аккумуляторы <li>
+        {{#categories}}
+            <li class="sliderCatList__item" data-id="{{id}}">{{name}}<li>
+        {{/categories}}
         </ul>
     </div>
+    {{/hasCategories}}
 
     <div class="sliderBox">
         <div class="sliderBox__btnLeft"></div>
@@ -26,7 +16,7 @@
         <div class="sliderBox__inner">
             <ul class="sliderBoxItems">
                 {{#productCards}}
-                    <li class="sliderBoxItems__item">
+                    <li class="sliderBoxItems__item" data-category="{{categoryId}}">
                         <a class="productDesc" href="{{url}}">
                             <img class="productDesc__img" src="{{image}}" />
                             <span class="productDesc__name">{{name}} </span>

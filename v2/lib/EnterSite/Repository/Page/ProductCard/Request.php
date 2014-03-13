@@ -8,4 +8,6 @@ use EnterSite\Repository;
 class Request extends Repository\Page\DefaultLayout\Request {
     /** @var Model\Product */
     public $product;
+    /** @var Model\Product\Category[] */
+    public $accessoryCategories = [];
 }

@@ -46,8 +46,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $propertyChunks = [];
         /** @var Product\Rating|null */
         public $rating;
-        /** @var Product\AccessoryBlock|null */
-        public $accessoryBlock;
+        /** @var Partial\ProductSlider|null */
+        public $accessorySlider;
     }
 }
 
@@ -71,11 +71,6 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
         public $reviewCount;
         /** @var Partial\Rating\Star[] */
         public $stars = [];
-    }
-
-    class AccessoryBlock {
-        /** @var Partial\ProductCard[] */
-        public $productCards = [];
     }
 }
 

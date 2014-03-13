@@ -66,4 +66,32 @@ class Category {
 
         return $category;
     }
+
+    /**
+     * @param Model\Product[] $products
+     * @param string[] $categoryTokens
+     * @return Model\Product\Category[]
+     */
+    public function getIndexedObjectListByProductListAndTokenList(array $products, array $categoryTokens) {
+        $categoriesById = [];
+
+        foreach ($products as $product) {
+            if (!$product->category) continue;
+
+            $isValid = false;
+            foreach (array_merge([$product->category], $product->category->ascendants) as $category) {
+                /** @var Model\Product\Category $category */
+                if (in_array($category->token, $categoryTokens)) {
+                    $isValid = true;
+                    break;
+                }
+            }
+
+            if ($isValid && !isset($categoriesById[$product->category->id])) {
+                $categoriesById[$product->category->id] = $product->category;
+            }
+        }
+
+        return $categoriesById;
+    }
 }

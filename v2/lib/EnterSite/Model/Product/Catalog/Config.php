@@ -22,7 +22,7 @@ namespace EnterSite\Model\Product\Catalog {
             if (isset($data['promo_style']) && is_array($data['promo_style'])) $this->promoStyle = new PromoStyle($data['promo_style']);
             if (isset($data['listing_style'])) $this->listingStyle = (string)$data['listing_style'];
             if (isset($data['accessory_category_token'][0])) {
-                foreach ($data['accessory_category_token'] as $accessoryCategoryToken) {
+                foreach (array_unique($data['accessory_category_token']) as $accessoryCategoryToken) {
                     if (!is_scalar($accessoryCategoryToken)) continue;
                     $this->accessoryCategoryTokens[] = trim((string)$accessoryCategoryToken);
                 }

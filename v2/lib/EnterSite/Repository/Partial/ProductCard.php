@@ -26,6 +26,8 @@ class ProductCard {
             /** @var Model\Product\Media\Photo $photo */
             $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 1));
         }
+        $card->id = $product->id;
+        $card->categoryId = $product->category ? $product->category->id : null;
         $card->cartButton = $cartButton;
 
         return $card;

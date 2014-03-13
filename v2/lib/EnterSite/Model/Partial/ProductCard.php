@@ -15,6 +15,10 @@ class ProductCard {
     public $shownPrice;
     /** @var string */
     public $image;
+    /** @var string */
+    public $id;
+    /** @var string */
+    public $categoryId;
     /** @var Partial\Cart\ProductButton|null */
     public $cartButton;
 }

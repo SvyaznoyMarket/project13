@@ -75,8 +75,28 @@ class ProductCard {
         }
 
         // аксессуары
-        foreach ($productModel->relation->accessories as $accessoryModel) {
-            $page->content->product->accessoryBlock->productCards[] = $productCardRepository->getObject($accessoryModel);
+        if ((bool)$productModel->relation->accessories) {
+            $page->content->product->accessorySlider = new Partial\ProductSlider();
+            foreach ($productModel->relation->accessories as $accessoryModel) {
+                $page->content->product->accessorySlider->productCards[] = $productCardRepository->getObject($accessoryModel);
+            }
+
+            foreach ($request->accessoryCategories as $categoryModel) {
+                $category = new Partial\ProductSlider\Category();
+                $category->id = $categoryModel->id;
+                $category->name = $categoryModel->name;
+
+                $page->content->product->accessorySlider->categories[] = $category;
+            }
+            if ((bool)$page->content->product->accessorySlider->categories) {
+                $page->content->product->accessorySlider->hasCategories = true;
+
+                $category = new Partial\ProductSlider\Category();
+                $category->id = '0';
+                $category->name = 'Популярные аксессуары';
+
+                array_unshift($page->content->product->accessorySlider->categories, $category);
+            }
         }
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));

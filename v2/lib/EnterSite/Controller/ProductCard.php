@@ -77,7 +77,6 @@ class ProductCard {
         $curl->prepare($videoListQuery);
 
         // запрос аксессуаров товара
-        // TODO: группировка аксессуаров по категориям
         $accessoryListQuery = null;
         if ((bool)$product->accessoryIds) {
             $accessoryListQuery = new Query\Product\GetListByIdList(array_slice($product->accessoryIds, 0, $config->product->itemsInSlider), $region);
@@ -150,10 +149,14 @@ class ProductCard {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
 
+        // категории аксессуаров
+        $accessoryCategories = (new Repository\Product\Category())->getIndexedObjectListByProductListAndTokenList($product->relation->accessories, $catalogConfig->accessoryCategoryTokens);
+
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCard\Request();
         $pageRequest->region = $region;
         $pageRequest->product = $product;
+        $pageRequest->accessoryCategories = $accessoryCategories;
 
         // страница
         $page = new Page();
