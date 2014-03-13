@@ -74,10 +74,12 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
                 <div class="enterPrize__logIn">У тебя есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="bAuthLink">Войти</a></div>
             <? endif ?>
 
-            <div class="completeTitleEP">
-                <div class="completeTitleEP__title">Ты &#8212; в игре!</div>
-                <p class="completeTitleEP__text">Мы отправили номер фишки на твой e-mail и мобильный</p>
-            </div>
+            <? if ('enterprize.complete' === \App::request()->attributes->get('route')): ?>
+                <div class="completeTitleEP">
+                    <div class="completeTitleEP__title">Ты &#8212; в игре!</div>
+                    <p class="completeTitleEP__text">Мы отправили номер фишки на твой e-mail и мобильный</p>
+                </div>
+            <? endif ?>
         </div>
     <? endif ?>
 
