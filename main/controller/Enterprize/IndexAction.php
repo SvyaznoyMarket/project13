@@ -26,14 +26,12 @@ class IndexAction {
 
                 $coupon = new \Model\EnterprizeCoupon\Entity($item);
 
-                if (!($coupon->isForMember() && $user && $user->isEnterprizeMember())) {
-                    continue;
+                if (
+                    ($coupon->isForMember() && $user && $user->isEnterprizeMember())
+                    || ($coupon->isForNotMember() && (!$user || !$user->isEnterprizeMember()))
+                ) {
+                    $enterpizeCoupons[] = $coupon;
                 }
-                if (!($coupon->isForNotMember() && (!$user || !$user->isEnterprizeMember()))) {
-                    continue;
-                }
-
-                $enterpizeCoupons[] = $coupon;
             }
         });
         $client->execute();
