@@ -6,7 +6,7 @@
 
 <div class="enterPrize">
 <div class="enterPrizeListWrap mComplete" style="display: block;">
-	<div class="enterPrizeListTitle">Как получить скидку?</div>
+	<div class="enterPrizeListTitle">Как играть фишками и получать скидки?</div>
 
 	<ul class="enterPrizeList">
 	    <li class="enterPrizeList__item mBlue">
@@ -29,7 +29,7 @@
 	</ul>
 </div>
 
-<p class="enterprizeMore">Кстати, у нас есть ещё фишки! <a href="<?= \App::router()->generate('enterprize') ?>">Посмотреть</a></p>
+<p class="enterprizeMore">Ещё фишки для тебя! <a href="<?= \App::router()->generate('enterprize') ?>">Посмотреть</a></p>
 </div>
 
 ﻿
