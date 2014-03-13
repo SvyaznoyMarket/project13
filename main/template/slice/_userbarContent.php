@@ -5,6 +5,7 @@
  * @var $slice      \Model\Slice\Entity|null
  * @var $fixedBtn   array
  */
+if (!isset($slice)) $slice = null;
 $helper = new \Helper\TemplateHelper();
 $links = [];
 $categoryImg = false;
