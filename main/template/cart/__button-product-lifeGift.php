@@ -38,7 +38,7 @@ return function (
 
     <div class="bGiftText">Специальная цена этого подарка</div>
 
-    <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+    <div class="bPrice5321a13ebb1e5"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 </div>
 
 <? };
