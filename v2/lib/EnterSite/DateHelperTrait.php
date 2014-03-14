@@ -4,13 +4,13 @@ namespace EnterSite;
 
 use Enter\Helper;
 
-trait ViewHelperTrait {
+trait DateHelperTrait {
     /**
-     * @return Helper\View
+     * @return Helper\date
      */
     protected function getHelper() {
         if (!isset($GLOBALS[__METHOD__])) {
-            $GLOBALS[__METHOD__] = new Helper\View();
+            $GLOBALS[__METHOD__] = new Helper\Date();
         }
 
         return $GLOBALS[__METHOD__];

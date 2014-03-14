@@ -157,6 +157,7 @@ class ProductCard {
         $pageRequest->region = $region;
         $pageRequest->product = $product;
         $pageRequest->accessoryCategories = $accessoryCategories;
+        $pageRequest->reviews = $reviews;
 
         // страница
         $page = new Page();

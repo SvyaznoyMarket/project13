@@ -48,6 +48,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $rating;
         /** @var Partial\ProductSlider|null */
         public $accessorySlider;
+        /** @var Product\ReviewBlock|null */
+        public $reviewBlock;
     }
 }
 
@@ -72,6 +74,11 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
         /** @var Partial\Rating\Star[] */
         public $stars = [];
     }
+
+    class ReviewBlock {
+        /** @var ReviewBlock\Review[] */
+        public $reviews = [];
+    }
 }
 
 namespace EnterSite\Model\Page\ProductCard\Content\Product\PropertyChunk {
@@ -82,5 +89,24 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product\PropertyChunk {
         public $value;
         /** @var bool */
         public $isTitle;
+    }
+}
+
+namespace EnterSite\Model\Page\ProductCard\Content\Product\ReviewBlock {
+    use EnterSite\Model\Partial;
+
+    class Review {
+        /** @var string */
+        public $createdAt;
+        /** @var string */
+        public $author;
+        /** @var Partial\Rating\Star[] */
+        public $stars = [];
+        /** @var string */
+        public $extract;
+        /** @var string */
+        public $pros;
+        /** @var string */
+        public $cons;
     }
 }

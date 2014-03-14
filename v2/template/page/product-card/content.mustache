@@ -282,132 +282,50 @@
         </div>
     </div>
 
+    {{#product.reviewBlock}}
     <div class="contentBox940">
         <!-- Таб - Отзывы -->
         <div class="tabContent tabContent-reviews">
-
+        {{#product.reviewBlock.reviews}}
             <div class="reviewsBox">
                 <div class="reviewsBox__left">
                     <div class="reviews">
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/starEmpty.png" />
+                        {{>partial/rating/star-list}}
                     </div>
 
-                    <div class="reviewsName">Кунаев Егор</div>
+                    <div class="reviewsName">{{author}}</div>
 
-                    <div class="reviewsDate">15 июня 2013</div>
+                    <div class="reviewsDate">{{createdAt}}</div>
                 </div>
 
                 <div class="reviewsBox__right">
                     <div class="reviewsText">
                         <span class="reviewsText__mark">«</span>
                         <p class="reviewsText__par">
-                            В общем приобретением доволен, для меня в htc one s есть все, что нужно и работает он просто отлично. Тем более за такую цену.
+                            {{extract}}
                         </p>
                     </div>
 
                     <div class="reviewsText">
                         <span class="reviewsText__mark">+</span>
                         <p class="reviewsText__par">
-                            Купил данный телефон примерно 3 недели назад. Начитался комментариев, что у телефона довольно много косяков (очень часто писали, что телефон просто перестает работать или сам выключается, также многие утверждали, что
-                            спустя несколько дней начинает хрипеть динамик).
+                            {{pros}}
                         </p>
                     </div>
 
                     <div class="reviewsText">
                         <span class="reviewsText__mark">−</span>
                         <p class="reviewsText__par">
-                            Единственный существенный недостаток данного девайса - это слабая батарея. Телефон действительно садиться очень быстро. При активном использовании (интернет, тяжелые игры, звонки) батарея еле доживает до конца дня, но для меня это не такая уж большая проблема.
+                            {{cons}}
                         </p>
                     </div>
                 </div>
             </div>
-
-            <div class="reviewsBox">
-                <div class="reviewsBox__left">
-                    <div class="reviews">
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/starEmpty.png" />
-                    </div>
-
-                    <div class="reviewsName">Кунаев Егор</div>
-
-                    <div class="reviewsDate">15 июня 2013</div>
-                </div>
-
-                <div class="reviewsBox__right">
-                    <div class="reviewsText">
-                        <span class="reviewsText__mark">«</span>
-                        <p class="reviewsText__par">
-                            В общем приобретением доволен, для меня в htc one s есть все, что нужно и работает он просто отлично. Тем более за такую цену.
-                        </p>
-                    </div>
-
-                    <div class="reviewsText">
-                        <span class="reviewsText__mark">+</span>
-                        <p class="reviewsText__par">
-                            Купил данный телефон примерно 3 недели назад. Начитался комментариев, что у телефона довольно много косяков (очень часто писали, что телефон просто перестает работать или сам выключается, также многие утверждали, что
-                            спустя несколько дней начинает хрипеть динамик).
-                        </p>
-                    </div>
-
-                    <div class="reviewsText">
-                        <span class="reviewsText__mark">−</span>
-                        <p class="reviewsText__par">
-                            Единственный существенный недостаток данного девайса - это слабая батарея. Телефон действительно садиться очень быстро. При активном использовании (интернет, тяжелые игры, звонки) батарея еле доживает до конца дня, но для меня это не такая уж большая проблема.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="reviewsBox">
-                <div class="reviewsBox__left">
-                    <div class="reviews">
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/star.png" />
-                        <img class="reviewsStar" src="/v2/css/modules/productDesc/img/starEmpty.png" />
-                    </div>
-
-                    <div class="reviewsName">Кунаев Егор</div>
-
-                    <div class="reviewsDate">15 июня 2013</div>
-                </div>
-
-                <div class="reviewsBox__right">
-                    <div class="reviewsText">
-                        <span class="reviewsText__mark">«</span>
-                        <p class="reviewsText__par">
-                            В общем приобретением доволен, для меня в htc one s есть все, что нужно и работает он просто отлично. Тем более за такую цену.
-                        </p>
-                    </div>
-
-                    <div class="reviewsText">
-                        <span class="reviewsText__mark">+</span>
-                        <p class="reviewsText__par">
-                            Купил данный телефон примерно 3 недели назад. Начитался комментариев, что у телефона довольно много косяков (очень часто писали, что телефон просто перестает работать или сам выключается, также многие утверждали, что
-                            спустя несколько дней начинает хрипеть динамик).
-                        </p>
-                    </div>
-
-                    <div class="reviewsText">
-                        <span class="reviewsText__mark">−</span>
-                        <p class="reviewsText__par">
-                            Единственный существенный недостаток данного девайса - это слабая батарея. Телефон действительно садиться очень быстро. При активном использовании (интернет, тяжелые игры, звонки) батарея еле доживает до конца дня, но для меня это не такая уж большая проблема.
-                        </p>
-                    </div>
-                </div>
-            </div>
+        {{/product.reviewBlock.reviews}}
         </div>
         <!--/ Таб - Отзывы -->
     </div>
+    {{/product.reviewBlock}}
 
     <div class="contentBox960" id="accessoriesTab">
         <div class="tabTitle clearfix">

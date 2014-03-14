@@ -2,6 +2,7 @@
 
 namespace EnterSite\Repository\Page;
 
+use EnterSite\DateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -9,6 +10,10 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\ProductCard as Page;
 
 class ProductCard {
+    use DateHelperTrait {
+        DateHelperTrait::getHelper as getDateHelper;
+    }
+
     /**
      * @param Page $page
      * @param ProductCard\Request $request
@@ -16,7 +21,9 @@ class ProductCard {
     public function buildObjectByRequest(Page $page, ProductCard\Request $request) {
         (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
 
-        $productCardRepository = new Repository\Partial\ProductCard();
+        $dateHelper = $this->getDateHelper();
+        $productCardPartialRepository = new Repository\Partial\ProductCard();
+        $ratingPartialRepository = new Repository\Partial\Rating();
 
         $productModel = $request->product;
 
@@ -69,7 +76,7 @@ class ProductCard {
         if ($productModel->rating) {
             $rating = new Page\Content\Product\Rating();
             $rating->reviewCount = $productModel->rating->reviewCount;
-            $rating->stars = (new Repository\Partial\Rating())->getStarList($productModel->rating->starScore);
+            $rating->stars = $ratingPartialRepository->getStarList($productModel->rating->starScore);
 
             $page->content->product->rating = $rating;
         }
@@ -78,7 +85,7 @@ class ProductCard {
         if ((bool)$productModel->relation->accessories) {
             $page->content->product->accessorySlider = new Partial\ProductSlider();
             foreach ($productModel->relation->accessories as $accessoryModel) {
-                $page->content->product->accessorySlider->productCards[] = $productCardRepository->getObject($accessoryModel);
+                $page->content->product->accessorySlider->productCards[] = $productCardPartialRepository->getObject($accessoryModel);
             }
 
             foreach ($request->accessoryCategories as $categoryModel) {
@@ -96,6 +103,22 @@ class ProductCard {
                 $category->name = 'Популярные аксессуары';
 
                 array_unshift($page->content->product->accessorySlider->categories, $category);
+            }
+        }
+
+        // отзывы
+        if ((bool)$request->reviews) {
+            $page->content->product->reviewBlock = new Page\Content\Product\ReviewBlock();
+            foreach ($request->reviews as $reviewModel) {
+                $review = new Page\Content\Product\ReviewBlock\Review();
+                $review->author = $reviewModel->author;
+                $review->createdAt = $reviewModel->createdAt ? $dateHelper->dateToRu($reviewModel->createdAt): null;
+                $review->extract = $reviewModel->extract;
+                $review->cons = $reviewModel->cons;
+                $review->pros = $reviewModel->pros;
+                $review->stars = $ratingPartialRepository->getStarList($reviewModel->starScore);
+
+                $page->content->product->reviewBlock->reviews[] = $review;
             }
         }
 
