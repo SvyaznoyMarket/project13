@@ -3024,9 +3024,9 @@ img[height="0"] {
     padding: 5px 0;
   }
   .tchiboProducts .productInner__desc .inner {
-    width: 185px;
+    width: 200px;
     margin: 0 auto;
-    padding: 0 5px 0 10px;
+    padding: 0;
   }
   .tchiboProducts .productInner__desc .name {
     margin: 0 10px 2px 0;
@@ -3053,6 +3053,9 @@ img[height="0"] {
     height: 22px;
     font-size: 13px;
     line-height: 22px;
+  }
+  .tchiboProducts .productInner__desc .bBtnLine .btnBuy__eLink.mDisabled {
+    width: 100px;
   }
   .tchiboProducts .productInner__desc .bBtnLine .btnView {
     height: 22px;
