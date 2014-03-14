@@ -9,8 +9,6 @@
 
 <? $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []) ?>
 
-<div class="titleForm">Подтверди номер мобильного</div>
-
 <? if ($error): ?>
     <p class="red enterprizeWar"><?= $error ?></p>
 <? endif ?>
@@ -19,18 +17,21 @@
 <? endif ?>
 
 <div class="enterprizeConfirm">
-    <p class="textConfirm"><strong><?= isset($data['mobile']) ? $data['mobile'] : '' ?><?//= preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', $userEntity->getEntity()) // должен быть формат +7 999 777-11-22 ?></strong></p>
+    <p class="textConfirm">Код для подтверждения выслан на мобильный <strong><?= isset($data['mobile']) ? $data['mobile'] : '' ?><?//= preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', $userEntity->getEntity()) // должен быть формат +7 999 777-11-22 ?></strong></p>
 
     <form class="confirmForm" action="<?= $page->url('enterprize.confirmPhone.check') ?>" method="post">
-        <label class="labelCode">Введите код</label>
+        <label class="labelCode">Код</label>
         <input type="text" class="text" name="code" />
 
         <input class="confirmCode bigbutton" type="submit" value="Подтвердить" />
     </form>
 
     <form class="confirmForm" action="<?= $page->url('enterprize.confirmPhone.create') ?>" method="post">
+        <label class="labelCode">Если в течение трех минут не получили код</label>
         <input type="hidden" name="isRepeatRending" value="true" />
 
-        <input type="submit" class="newCode mBtnGrey" value="Новый код" />
+        <input type="submit" class="newCode mBtnGrey" value="Отправить повторно" />
     </form>
+
+    <a class="backForm" href="<?= $page->url('enterprize.form.show', ['enterprizeToken' => $enterpizeCoupon ? $enterpizeCoupon->getToken() : null]) ?>">Исправить номер телефона и получить новый код</a>
 </div>

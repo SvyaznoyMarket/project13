@@ -140,4 +140,6 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
             </li>
         <? endforeach ?>
     </ul>
+
+    <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a>.</p>
 </div>

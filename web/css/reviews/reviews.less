@@ -96,23 +96,28 @@
   }
 
   .bReview {
-    .bReview__eAuthtor {
+
+    &__eAuthtor {
       float: left;
       width: 120px;
       margin: 5px 15px 0 0;
+
       &-name {
         margin: 6px 0;
         font-weight: normal;
-        font-size: 14px;
+        font-size: 12px;
       }
+
       &-date {
         color: @typGray;
       }
     }
-    .bReview__eText {
+
+    &__eText {
       float: left;
-      width: 565px;
+      width: 440px;
       font-size: 14px;
+
       .mark {
         display: block;
         float: left;
@@ -124,20 +129,23 @@
         margin-top: -2px;
         clear: both;
       }
+
       div, p {
         float: left;
-        width: 540px;
+        font-size: 12px;
+        line-height: 1.5;
         margin: 2px 0 5px;
+        width: 410px;
       }
     }
+
     &__eLogo {
       float: right;
-      width: 120px;
+      width: 115px;
       text-align: right;
-      margin: 8px 0 0;
     }
   }
-} 
+}
 
 .bReviewSection {
   margin: 0 0 25px;

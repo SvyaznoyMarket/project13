@@ -67,7 +67,7 @@ class ConfirmEmailAction {
         }
 
         if ($this->isEmailConfirmed()) {
-            return (new \Controller\Enterprize\ConfirmPhoneAction())->create($request);
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize.create'));
         }
 
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
@@ -194,6 +194,6 @@ class ConfirmEmailAction {
         \App::logger()->debug('Exec ' . __METHOD__);
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
 
-        return isset($data['isEmailConfirmed']) && $data['isEmailConfirmed'] ? $data['isEmailConfirmed'] : false;
+        return (isset($data['isEmailConfirmed']) && $data['isEmailConfirmed']) ? $data['isEmailConfirmed'] : false;
     }
 }

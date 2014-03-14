@@ -212,12 +212,12 @@
 		z-index: 17;
 
 			&__inner {
-				width: 188px;
-				position: relative;
 				display: block;
-				height: 186px;
-				left: 7px;
-				top: 6px;
+			    height: 188px;
+			    left: 7px;
+			    position: relative;
+			    top: 6px;
+			    width: 190px;
 			}
 		}
 
@@ -278,11 +278,16 @@
 
 	.cuponIco {
 		position: absolute;
-		top: 29px;
+		top: 33px;
 		text-align: center;
 		width: 100%;
 		left: 0;
 		height: 43px;
+
+		img {
+			max-width: 75px;
+			max-height: 55px;
+		}
 	}
 
 	.cuponDesc {
@@ -291,6 +296,7 @@
 		text-align: center;
 		width: 143px;
 		left: 23px;
+		line-height: 1.1;
 	}
 
 	.cuponPrice {
@@ -300,11 +306,11 @@
 		text-align: center;
 		left: 0;
 		width: 100%;
-		top: 108px;
+		top: 110px;
 	}
 
 	&.mPrivate {
-		margin: 40px 0;
+		margin: 40px 0 20px;
 		background: #eaeaea;
 		.rounded(4px);
 		padding: 10px;
@@ -320,7 +326,7 @@
 		}
 
 		.enterPrize__rules {
-			width: 450px;
+			width: 550px;
 			height: auto;
 			padding: 15px;
 			border-bottom: 1px solid #bbbbbb;
@@ -344,27 +350,50 @@
     		}
 		}
 	}
+
+	.rulesEP {
+		font-size: 14px;
+		color: @white;
+		margin: 20px 0 12px 31px;
+
+		a {
+			color: @white;
+			text-decoration: underline;
+		}
+	}
 }
 
 .enterprizeConfirm {
-	margin: 0 0 30px 25px;
+	margin: 0 0 200px 25px;
 	font-size: 14px;
 
-	.confirmForm {
-		display: inline-block; 
-		vertical-align: top;
+	.backForm {
+		font-size: 12px;
+		display: inline-block;
+		text-decoration: underline;
 
-		*display: inline;
-		zoom: 1;
+		margin: 15px 0 0;
+
+    	*display: inline;
+    	zoom: 1;
+	}
+
+	.confirmForm {
+		margin: 0 0 15px;		
 	}
 
 	.labelCode {
-		margin: 0 5px 0 0;
+		display: inline-block;
+    	margin: 5px 5px 0 0;
+
+    	*display: inline;
+    	zoom: 1;
 	}
 
 	.text {
 	    height: 31px;
 	    line-height: 31px;
+	    width: 50px;
 	}
 
 	.newCode {
@@ -400,16 +429,18 @@
 }
 
 .titleForm {
-	font-size: 2em;
+	font-family: "Enter";
+    font-size: 26px;
     font-weight: normal;
-    margin: 10px 0 20px 25px;
+    margin: 40px 0 20px 25px;
+    text-transform: uppercase;
 }
 
 .jsEnterprizeForm {
 	margin: 0 0 0 25px;
 
 	.formDefault__btnSubmit {
-		margin: 20px 0 15px 269px;
+		margin: 20px 0 100px 269px;
 	}
 
 	.red {
@@ -419,11 +450,6 @@
 
 .enterprize {
 	background: @black;
-
-	.fixedTopBar__logInLink {
-		background-position: 0 50%;
-		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjNDQjU0NTAzQTEzODExRTNCNzU3OUY1RTY2NkRCMkI0IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjNDQjU0NTA0QTEzODExRTNCNzU3OUY1RTY2NkRCMkI0Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6M0NCNTQ1MDFBMTM4MTFFM0I3NTc5RjVFNjY2REIyQjQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6M0NCNTQ1MDJBMTM4MTFFM0I3NTc5RjVFNjY2REIyQjQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6iMmVgAAAAu0lEQVR42mL8//8/AzL4NUfWD0gxsqU83ogszgSU4GJABdZAbImmmY0JSG8GMniRxLWAWANJETuQ2ghSCLJ7H1BACCqnDcSaUEXcIDkgBpt4F4hNgHgXUMIVSCsAsTKQbQqk9wKxFRDfZgES96AmGQPxIpBHgJgZiNcDsTRU7i7IxJNI7pNAYksjsQ+CFB4F4ncMuMELID7LBAyv30DGfTwK7wLV/GWBcm4CsRiUzQrFIPAPiB+AGAABBgBY4S/vv5N78AAAAABJRU5ErkJggg==);
-	}
 
 	.bSubscribeLightboxPopupNotNow,
 	.bSubscribeLightboxPopup {
@@ -540,22 +566,39 @@
 }
 
 .enterprizeMore {
-	margin: 20px 0 30px 25px;
-	font-size: 16px;
+	font-family: "Enter";
+    font-size: 20px;
+    margin: 40px 0 50px 25px;
+    text-transform: uppercase;
 
 	a {
 		text-decoration: underline;
 	}
 }
 
-.enterprize_user {
-	.fixedTopBar__logInLink {
-		background-position: 0 50%;
-		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjNDQjU0NTAzQTEzODExRTNCNzU3OUY1RTY2NkRCMkI0IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjNDQjU0NTA0QTEzODExRTNCNzU3OUY1RTY2NkRCMkI0Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6M0NCNTQ1MDFBMTM4MTFFM0I3NTc5RjVFNjY2REIyQjQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6M0NCNTQ1MDJBMTM4MTFFM0I3NTc5RjVFNjY2REIyQjQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6iMmVgAAAAu0lEQVR42mL8//8/AzL4NUfWD0gxsqU83ogszgSU4GJABdZAbImmmY0JSG8GMniRxLWAWANJETuQ2ghSCLJ7H1BACCqnDcSaUEXcIDkgBpt4F4hNgHgXUMIVSCsAsTKQbQqk9wKxFRDfZgES96AmGQPxIpBHgJgZiNcDsTRU7i7IxJNI7pNAYksjsQ+CFB4F4ncMuMELID7LBAyv30DGfTwK7wLV/GWBcm4CsRiUzQrFIPAPiB+AGAABBgBY4S/vv5N78AAAAABJRU5ErkJggg==);
-	}
-	
+.enterprizeMember {	
+
 	.bSubscribeLightboxPopupNotNow,
 	.bSubscribeLightboxPopup {
 		display: none !important;
 	}
+}
+
+.getCuponEP {
+	margin: 0 auto 200px;
+	width: 100px;
+}
+
+.completeTitleEP {
+    margin: 0 0 0 15px;
+
+    &__title {
+    	font-family: "Enter";
+    	text-transform: uppercase;
+    	font-size: 22px;
+    }
+
+    &__text {
+    	margin: 0;
+    }
 }
