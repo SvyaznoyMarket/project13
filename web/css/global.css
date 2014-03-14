@@ -12264,6 +12264,9 @@
   .bFilterValues .bFilterValuesItem.mLineItem .bFilterValuesCol .bFilterCheckbox {
     width: auto;
   }
+  .bFilterValues .bFilterValuesItem.mLineItem .bFilterValuesCol .bFilterCheckbox:hover {
+    width: auto;
+  }
   .bFilterValues .bFilterValuesItem .bRangeSlider {
     margin-left: 105px;
   }
