@@ -201,17 +201,18 @@ class FormAction {
             }
         }
 
+        // Запоминаем данные enterprizeForm
+        $data = array_merge($data, [
+            'token'            => isset($result['token']) ? $result['token'] : null,
+            'name'             => $form->getName(),
+            'email'            => $form->getEmail(),
+            'mobile'           => $form->getMobile(),
+            'isPhoneConfirmed' => isset($result['mobile_confirmed']) ? $result['mobile_confirmed'] : false,
+            'isEmailConfirmed' => isset($result['email_confirmed']) ? $result['email_confirmed'] : false,
+        ]);
+        $session->set($sessionName, $data);
         if ($form->isValid()) {
-            // Запоминаем данные enterprizeForm
-            $data = array_merge($data, [
-                'token'            => isset($result['token']) ? $result['token'] : null,
-                'name'             => $form->getName(),
-                'email'            => $form->getEmail(),
-                'mobile'           => $form->getMobile(),
-                'isPhoneConfirmed' => isset($result['mobile_confirmed']) ? $result['mobile_confirmed'] : false,
-                'isEmailConfirmed' => isset($result['email_confirmed']) ? $result['email_confirmed'] : false,
-            ]);
-            $session->set($sessionName, $data);
+
 
             $userToken = $data['token'];
             $data = $session->get($sessionName, []);

@@ -46,10 +46,23 @@ class ConfirmPhoneAction {
             \App::dataStoreClient()->execute();
         }
 
+        $enterprizeDataDefault = [
+            'name'            => null,
+            'mobile'          => null,
+            'email'           => null,
+            'couponName'      => $enterpizeCoupon->getName(),
+            'enterprizeToken' => $enterpizeCoupon->getToken(),
+            'date'            => date('d.m.Y'),
+            'time'            => date('H:i'),
+            'client_id'       => null,
+        ];
+        $enterprizeData = array_merge($enterprizeDataDefault, array_intersect_key($data, $enterprizeDataDefault));
+
         $page = new \View\Enterprize\ConfirmPhonePage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('error', !empty($flash['error']) ? $flash['error'] : null);
         $page->setParam('message', !empty($flash['message']) ? $flash['message'] : null);
+        $page->setParam('enterprizeData', $enterprizeData);
 
         return new \Http\Response($page->show());
     }

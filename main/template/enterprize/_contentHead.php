@@ -7,6 +7,7 @@
  * @var $hasSeparateLine bool
  * @var $extendedMargin  bool
  * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null
+ * @var $enterprizeData  array|null
  */
 ?>
 
@@ -82,6 +83,11 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
             <? endif ?>
         </div>
     <? endif ?>
+
+    <? if (isset($enterprizeData)): ?>
+        <div class="jsEnterprizeData" data-value='<?= json_encode($enterprizeData) ?>'></div>
+    <? endif ?>
+
 
     <? if ($title): ?><div class="titleForm"><?= $title ?></div><? endif ?>
 
