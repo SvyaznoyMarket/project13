@@ -1,5 +1,8 @@
 <? $isEnter = ( 'enter' == $review['origin'] );
 
+if (!isset($review['title'])) $review['title'] = '';
+if (!isset($review['origin'])) $review['origin'] = '';
+
 if (!$isEnter): ?>
     <noindex>
 <? endif ?>
@@ -13,7 +16,7 @@ if (!$isEnter): ?>
             </span>
         </div>
 
-        <div class="bReview__eText clearfix">
+        <div class="bReview__eText">
             <? if($review['origin'] != 'enter') { ?>
                 <span class="mark">&#171;</span>
                 <?= empty($review['extract']) ? '' : $page->helper->nofollowExternalLinks($review['extract']) ?>
@@ -33,9 +36,13 @@ if (!$isEnter): ?>
             <? } ?>
         </div>
 
-        <div class="clearfix">
+        <div class="bReview__eLogo">
             <? if (!empty($review['source_logo_url'])): ?>
-                <img src="<?= $review['source_logo_url'] ?>" >
+                <? if (!empty($review['url'])) { ?>
+                    <a class="reviewLink <?= $review['origin'] ?>" href="<?= $review['url'] ?>" title="<?= $review['title'] ?>" target="_blank">
+                <? } ?>
+                        <img src="<?= $review['source_logo_url'] ?>" alt="<?= $review['title'] ?>" />
+                <? if (!empty($review['url'])) { ?></a><? } ?>
             <? endif ?>
         </div>
     </div>

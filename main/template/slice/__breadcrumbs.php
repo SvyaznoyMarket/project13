@@ -14,21 +14,29 @@ return function(
         $links[] = [
             'name' => $slice->getName(),
             'url'  => $helper->url('slice.show', ['sliceToken' => $slice->getToken()]),
-            'last' => false,
         ];
     }
 
-    $count = count($category->getAncestor());
-    $i = 1;
     foreach ($category->getAncestor() as $ancestor) {
         $links[] = [
             'url'  => $ancestor->getLink(),
             'name' => $ancestor->getName(),
-            'last' => $i == $count,
         ];
-
-        $i++;
     }
+
+    if ($category->getName()) {
+        $links[] = [
+            'url'  => $category->getLink(),
+            'name' => $category->getName(),
+        ];
+    }
+
+    $links = array_values($links);
+    $links = array_map(function($link, $key) use ($links) {
+        $link['last'] = ((count($links) - 1) == $key) ? true : false;
+
+        return $link;
+    }, $links, array_keys($links));
 ?>
 
     <?= $helper->renderWithMustache('_breadcrumbs', ['links' => $links]) ?>

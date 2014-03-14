@@ -58,9 +58,9 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
             </div>
 
             <div class="enterPrize__rules"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
-                Фишка со скидкой <b><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></b> на <b><?= $enterpizeCoupon->getName() ?></b><br />
+                Фишка со скидкой <strong><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на <strong><?= $enterpizeCoupon->getName() ?></strong><br />
                 Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
-                Строк действия
+                Действует
                 <? if ($enterpizeCoupon->getStartDate() instanceof \DateTime): ?>
                     c <?= $enterpizeCoupon->getStartDate()->format('d.m.Y') ?>
                 <? endif ?>
@@ -73,13 +73,19 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
                 <?= $page->render('enterprize/_auth') ?>
                 <div class="enterPrize__logIn">У тебя есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="bAuthLink">Войти</a></div>
             <? endif ?>
+
+            <? if ('enterprize.complete' === \App::request()->attributes->get('route')): ?>
+                <div class="completeTitleEP">
+                    <div class="completeTitleEP__title">Ты &#8212; в игре!</div>
+                    <p class="completeTitleEP__text">Мы отправили номер фишки на твой e-mail и мобильный</p>
+                </div>
+            <? endif ?>
         </div>
     <? endif ?>
 
     <? if ($title): ?><div class="titleForm"><?= $title ?></div><? endif ?>
 
-    <div class="clear<? if ($extendedMargin): ?> pb20<? endif ?>"></div>
+    <div class="clear<? if ($extendedMargin): ?><? endif ?>"></div>
     <? if ($hasSeparateLine): ?>
-    <div class="line"></div>
     <? endif ?>
 </div>

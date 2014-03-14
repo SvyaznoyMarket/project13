@@ -8,7 +8,7 @@
  */
 ?>
 
-<div class="titleForm">Заполни три поля, и ты в игре!</div>
+<div class="titleForm">Заполни три поля, и ты &#8212; в игре!</div>
 
 <? if (is_array($errors)): ?>
     <? foreach ($errors as $error): ?>

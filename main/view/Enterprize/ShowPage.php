@@ -2,7 +2,7 @@
 
 namespace View\Enterprize;
 
-class IndexPage extends \View\DefaultLayout {
+class ShowPage extends \View\DefaultLayout {
     protected $layout  = 'layout-oneColumn';
 
     public function prepare() {
@@ -14,15 +14,24 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('enterprize/page-index', $this->params);
+        return $this->render('enterprize/page-show', $this->params);
     }
 
     public function slotBodyClassAttribute() {
-        return 'enterprize';
+        return 'enterprize_user';
     }
 
     public function slotContentHead() {
-        return parent::slotContentHead() . $this->render('enterprize/_auth');
+        // заголовок контента страницы
+        if (!$this->hasParam('title')) {
+            $this->setParam('title', null);
+        }
+        // навигация
+        if (!$this->hasParam('breadcrumbs')) {
+            $this->setParam('breadcrumbs', []);
+        }
+
+        return $this->render('enterprize/_contentHead', $this->params);
     }
 
     public function slotUserbarEnterprize() {
