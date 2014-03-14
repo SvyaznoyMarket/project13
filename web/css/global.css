@@ -9475,6 +9475,7 @@
     color: #cbcbcb;
     border: 1px solid #f1f0f0;
     background: #f1f0f0;
+    width: 100px;
   }
   .btnBuy .btnBuy__eLink.mDisabled:hover {
     color: #cbcbcb;
