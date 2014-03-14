@@ -13,6 +13,10 @@ class ProductCard {
     public $price;
     /** @var string */
     public $shownPrice;
+    /** @var int */
+    public $oldPrice;
+    /** @var string */
+    public $shownOldPrice;
     /** @var string */
     public $image;
     /** @var string */

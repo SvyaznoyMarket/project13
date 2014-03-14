@@ -134,18 +134,18 @@
                             <div class="buyInfoPrice">
                                 <!-- Купить по полной цене -->
                                 <div class="buyInfoPrice__item">
-                                    <input class="customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" />
+                                    <input class="customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
 
                                     <label class="customLabel" for="buyprice">
-                                        <span class="oldPrice">1 223 p</span>
-                                        <span class="nowPrice">23 343 p</span>
+                                        {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} p</span>{{/product.shownOldPrice}}
+                                        <span class="nowPrice">{{product.shownPrice}} p</span>
                                     </label>
                                 </div>
                                 <!--/ Купить по полной цене -->
 
                                 <!-- Купить в кредит -->
                                 <div class="buyInfoPrice__item">
-                                    <input class="customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" checked />
+                                    <input class="customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
 
                                     <label class="customLabel" for="creditinput">
                                         <span class="creditPrice">В кредит от <strong>2 232</strong> р в месяц</span>

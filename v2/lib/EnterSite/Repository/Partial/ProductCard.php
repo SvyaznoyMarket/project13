@@ -21,7 +21,9 @@ class ProductCard {
         $card->name = $product->name;
         $card->url = $product->link;
         $card->price = $product->price;
-        $card->shownPrice = number_format((float)$product->price, 0, ',', ' ');
+        $card->shownPrice = $product->price ? number_format((float)$product->price, 0, ',', ' ') : null;
+        $card->oldPrice = $product->oldPrice;
+        $card->shownOldPrice = $product->oldPrice ? number_format((float)$product->oldPrice, 0, ',', ' ') : null;
         if ($photo = reset($product->media->photos)) {
             /** @var Model\Product\Media\Photo $photo */
             $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 1));
