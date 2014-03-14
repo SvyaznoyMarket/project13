@@ -649,6 +649,22 @@ window.ANALYTICS = {
 					gaInteractive('video');
 				});
 
+				/** Событие клика по рекомендуемому товару из подборки. Не забывать, что .bSlider ajax-ом наполняется */
+				$('.bProductSectionLeftCol').delegate('div.bGoodsSlider a', 'click', function() {
+					var
+						link = this,
+						url = link.href,
+						sender = url ? ENTER.utils.getURLParam('sender', url) : null,
+						params = sender ? sender.split('|') : null,
+						engine = params ? params[0] : null
+					;
+
+					if ( engine ) {
+						//event.preventDefault(); // for debug
+						console.log('GA: Recommendet link clicked, engine =', engine);
+						ga('set', 'dimension1', engine);
+					}
+				});
 
 				if ( data && data.afterSearch && product.article && data.upperCat ) {
 					console.log('GA: Items after Search', data.upperCat, product.article);
