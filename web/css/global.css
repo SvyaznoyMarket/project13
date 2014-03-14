@@ -2371,11 +2371,8 @@
     background: #000000;
     display: block;
     height: 100px;
-    width: 940px;
-    margin: 10px 0 0;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+    width: 960px;
+    margin: 0 0 0 -10px;
   }
   #topLogo {
     background: url('/css/header/img/headerLogo.gif') no-repeat center center;
@@ -2392,7 +2389,7 @@
     position: relative;
     display: table;
     float: left;
-    width: 830px;
+    width: 850px;
     z-index: 998;
     behavior: url("/css/common/display-table.min.htc");
     dt-display: table;
@@ -2403,15 +2400,6 @@
     vertical-align: middle;
     z-index: 999;
     -dt-display: table-cell;
-  }
-  .bMainMenuLevel-1__eItem:last-child {
-    border-radius: 0 5px 5px 0;
-  }
-  .bMainMenuLevel-1__eItem:last-child .bMainMenuLevel-1__eIcon {
-    border-radius: 0 4px 0 0;
-  }
-  .bMainMenuLevel-1__eItem:last-child .bMainMenuLevel-1__eTitle {
-    border-radius: 0 0 4px 0;
   }
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator {
     background: url('/css/header/img/headerSeparator.gif') no-repeat center center;
@@ -9871,8 +9859,16 @@
     width: 240px;
     height: 240px;
   }
+  .bBrandGoodsList__eItem .bItemPrice {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
   .bBrandGoodsList__eItem .bPriceLine {
-    color: #a6a6a6;
+    bottom: 15px;
+    color: #A6A6A6;
+    left: 0;
+    position: absolute;
   }
   .bBrandGoodsList__eItem .bPriceLine .bPriceOld {
     text-decoration: line-through;
@@ -9893,7 +9889,6 @@
   }
   .bBrandGoodsList__eItem .bItemImg {
     text-align: center;
-    margin: 0 0 -7px;
   }
   .bBrandGoodsList__eItem:hover .goodsbox {
     z-index: 10;

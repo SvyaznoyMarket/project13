@@ -70,9 +70,8 @@
 	display: block;
 	height: 100px;
 	// position: relative;
-	width: 940px;
-	margin: 10px 0 0;
-	.rounded(4px);
+	width: 960px;
+	margin: 0 0 0 -10px;
 }
 
 #topLogo{
@@ -92,7 +91,7 @@
 	display: table;
 	
 	float: left;
-	width: 830px;
+	width: 850px;
 	z-index: 998;
 	behavior: url(@displayTable);
 	dt-display: table;
@@ -104,18 +103,6 @@
 		z-index: 999;
 		
 		-dt-display: table-cell;
-
-		&:last-child {
-			border-radius: 0 5px 5px 0;
-
-			.bMainMenuLevel-1__eIcon {
-				border-radius: 0 4px 0 0;
-			}
-
-			.bMainMenuLevel-1__eTitle {
-				border-radius: 0 0 4px 0;
-			}
-		}
 
 		&.bMainMenuLevel-1__eSeparator{
 			background: url('@{base-url}/header/img/headerSeparator.gif') no-repeat center center;
