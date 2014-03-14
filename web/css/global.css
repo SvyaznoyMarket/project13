@@ -9859,8 +9859,16 @@
     width: 240px;
     height: 240px;
   }
+  .bBrandGoodsList__eItem .bItemPrice {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
   .bBrandGoodsList__eItem .bPriceLine {
-    color: #a6a6a6;
+    bottom: 15px;
+    color: #A6A6A6;
+    left: 0;
+    position: absolute;
   }
   .bBrandGoodsList__eItem .bPriceLine .bPriceOld {
     text-decoration: line-through;
@@ -9881,7 +9889,6 @@
   }
   .bBrandGoodsList__eItem .bItemImg {
     text-align: center;
-    margin: 0 0 -7px;
   }
   .bBrandGoodsList__eItem:hover .goodsbox {
     z-index: 10;
