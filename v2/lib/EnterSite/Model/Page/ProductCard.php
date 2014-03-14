@@ -38,6 +38,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $title;
         /** @var string */
         public $article;
+        /** @var Partial\Cart\ProductButton|null */
+        public $cartButton;
         /** @var string */
         public $description;
         /** @var Product\Photo[] */

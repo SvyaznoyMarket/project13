@@ -22,14 +22,16 @@ class ProductCard {
         (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
 
         $dateHelper = $this->getDateHelper();
-        $productCardPartialRepository = new Repository\Partial\ProductCard();
-        $ratingPartialRepository = new Repository\Partial\Rating();
+        $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
+        $productCardRepository = new Repository\Partial\ProductCard();
+        $ratingRepository = new Repository\Partial\Rating();
 
         $productModel = $request->product;
 
         $page->content->product->title = $productModel->name;
         $page->content->product->article = $productModel->article;
         $page->content->product->description = $productModel->description;
+        $page->content->product->cartButton = $cartProductButtonRepository->getObject($productModel);
 
         // фотографии товара
         foreach ($productModel->media->photos as $photoModel) {
@@ -39,6 +41,9 @@ class ProductCard {
 
             $page->content->product->photos[] = $photo;
         }
+
+        // кнопка купить
+
 
         // характеристики товара
         $groupedPropertyModels = [];
@@ -76,7 +81,7 @@ class ProductCard {
         if ($productModel->rating) {
             $rating = new Page\Content\Product\Rating();
             $rating->reviewCount = $productModel->rating->reviewCount;
-            $rating->stars = $ratingPartialRepository->getStarList($productModel->rating->starScore);
+            $rating->stars = $ratingRepository->getStarList($productModel->rating->starScore);
 
             $page->content->product->rating = $rating;
         }
@@ -85,7 +90,7 @@ class ProductCard {
         if ((bool)$productModel->relation->accessories) {
             $page->content->product->accessorySlider = new Partial\ProductSlider();
             foreach ($productModel->relation->accessories as $accessoryModel) {
-                $page->content->product->accessorySlider->productCards[] = $productCardPartialRepository->getObject($accessoryModel);
+                $page->content->product->accessorySlider->productCards[] = $productCardRepository->getObject($accessoryModel, $cartProductButtonRepository->getObject($productModel));
             }
 
             foreach ($request->accessoryCategories as $categoryModel) {
@@ -116,7 +121,7 @@ class ProductCard {
                 $review->extract = $reviewModel->extract;
                 $review->cons = $reviewModel->cons;
                 $review->pros = $reviewModel->pros;
-                $review->stars = $ratingPartialRepository->getStarList($reviewModel->starScore);
+                $review->stars = $ratingRepository->getStarList($reviewModel->starScore);
 
                 $page->content->product->reviewBlock->reviews[] = $review;
             }

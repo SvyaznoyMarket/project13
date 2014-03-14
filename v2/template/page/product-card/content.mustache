@@ -169,7 +169,9 @@
                                 <!--/ Каунтер -->
 
                                 <!-- Кнопка купить -->
-                                <a href="" class="btnBuy">Купить</a>
+                                {{#product.cartButton}}
+                                    {{>partial/cart/product-button}}
+                                {{/product.cartButton}}
                                 <!--/ Кнопка купить -->
                             </div>
 

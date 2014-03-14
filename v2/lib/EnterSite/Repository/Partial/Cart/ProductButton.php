@@ -26,12 +26,10 @@ class ProductButton {
 
     /**
      * @param Model\Product $product
-     * @param string|null $sender
      * @return Partial\Cart\ProductButton
      */
     public function getObject(
-        Model\Product $product,
-        $sender = null
+        Model\Product $product
     ) {
 
         $button = new Partial\Cart\ProductButton();
@@ -45,22 +43,18 @@ class ProductButton {
         $button->value = 'Купить';
 
         if ($product->isInShopOnly) {
-            $button->inShopOnly = true;
+            $button->class .= ' mShopsOnly';
             $button->value = 'Резерв';
             //$button->url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]); // TODO
             $button->class .= ' jsOneClickButton';
         }
 
         if (!$product->isBuyable) {
-            $button->disabled = true;
             $button->url = '#';
-            $button->class .= ' jsBuyButton';
+            $button->class .= ' jsBuyButton mDisabled';
             $button->value = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
         } else if (!$button->url) {
-            if ($sender) {
-                $sender .= '|' . $product->id;
-            }
-            $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id, 1, $sender));
+            $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id, 1));
             $button->class .= ' jsBuyButton';
         }
 

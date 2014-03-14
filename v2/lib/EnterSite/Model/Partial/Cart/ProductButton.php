@@ -7,10 +7,6 @@ class ProductButton {
     public $value;
     /** @var string */
     public $url;
-    /** @var bool */
-    public $disabled;
-    /** @var bool */
-    public $inShopOnly;
     /** @var array */
     public $data = [];
     /** @var string */

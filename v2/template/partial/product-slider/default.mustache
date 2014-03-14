@@ -22,7 +22,10 @@
                             <span class="productDesc__name">{{name}} </span>
                         </a>
                         <div class="productPrice">{{shownPrice}} р</div>
-                        <a href="" class="productBuy btnBuy">Купить</a>
+
+                        {{#cartButton}}
+                            {{>partial/cart/product-button}}
+                        {{/cartButton}}
                     </li>
                 {{/productCards}}
             </ul>
