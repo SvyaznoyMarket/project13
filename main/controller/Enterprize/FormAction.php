@@ -201,18 +201,18 @@ class FormAction {
             }
         }
 
-        if ($form->isValid()) {
-            // Запоминаем данные enterprizeForm
-            $data = array_merge($data, [
-                'token'            => isset($result['token']) ? $result['token'] : null,
-                'name'             => $form->getName(),
-                'email'            => $form->getEmail(),
-                'mobile'           => $form->getMobile(),
-                'isPhoneConfirmed' => isset($result['mobile_confirmed']) ? $result['mobile_confirmed'] : false,
-                'isEmailConfirmed' => isset($result['email_confirmed']) ? $result['email_confirmed'] : false,
-            ]);
-            $session->set($sessionName, $data);
+        // Запоминаем данные enterprizeForm
+        $data = array_merge($data, [
+            'token'            => isset($result['token']) ? $result['token'] : null,
+            'name'             => $form->getName(),
+            'email'            => $form->getEmail(),
+            'mobile'           => $form->getMobile(),
+            'isPhoneConfirmed' => isset($result['mobile_confirmed']) ? $result['mobile_confirmed'] : false,
+            'isEmailConfirmed' => isset($result['email_confirmed']) ? $result['email_confirmed'] : false,
+        ]);
+        $session->set($sessionName, $data);
 
+        if ($form->isValid()) {
             $userToken = $data['token'];
             $data = $session->get($sessionName, []);
             if ($data['isPhoneConfirmed'] && $data['isEmailConfirmed']) {
@@ -313,19 +313,22 @@ class FormAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user()->getEntity();
+        $session = \App::session();
         $form = new \View\Enterprize\Form();
 
-        $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
-        $enterprizeToken = !empty($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+        $data = $session->get(\App::config()->enterprize['formDataSessionKey'], []);
 
-        // пользователь авторизован, заполняем форму данными пользователя
+        // заполняем форму данными с сессии
+        $form->fromArray($data);
+
+        // если пользователь авторизован, то заполняем поле по которому произошла авторизация
         if ($user) {
-            $form->fromEntity($user);
-            $form->setEnterprizeCoupon($enterprizeToken);
-
-            // иначе, заполняем форму данными с сессии
-        } else {
-            $form->fromArray($data);
+            $authSource = $session->get('authSource', null);
+            if ('phone' === $authSource) {
+                $form->setMobile($user->getMobilePhone());
+            } elseif ('email' === $authSource) {
+                $form->setEmail($user->getEmail());
+            }
         }
 
         return $form;
