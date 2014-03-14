@@ -11,12 +11,16 @@
 ?>
 
 <?
+/** @var $region \Model\Region\Entity|null */
+$region = \App::user()->getRegion();
+$forceDefaultBuy = $region ? $region->getForceDefaultBuy() : true;
+
 if (!isset($class)) {
     $class = '';
 }
 $class .= ' ' . \View\Id::cartButtonForProduct($product->getId());
 
-if (!$product->isInShopStockOnly()) {
+if (!$product->isInShopStockOnly() && $forceDefaultBuy) {
     $class .= ' jsBuyButton btnBuy__eLink';
 }
 
@@ -28,7 +32,7 @@ if (empty($value)) $value = 'Купить';
 
 $disabled = !$product->getIsBuyable();
 
-if ($product->isInShopStockOnly()) {
+if ($product->isInShopStockOnly() && $forceDefaultBuy) {
     $value = 'Резерв';
     $url = $page->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
 }

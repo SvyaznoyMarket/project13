@@ -8,13 +8,17 @@ return function (
     $value = 'Купить',
     $directLink = false
 ) {
+    /** @var $region \Model\Region\Entity|null */
+    $region = \App::user()->getRegion();
+    $forceDefaultBuy = $region ? $region->getForceDefaultBuy() : true;
+
     $class = \View\Id::cartButtonForProduct($product->getId()) . ' ' . $class;
 
     if (!$directLink) {
-        $class .= $product->isInShopStockOnly() ? ' jsOneClickButton' : ' jsBuyButton';
+        $class .= $product->isInShopStockOnly() && $forceDefaultBuy ? ' jsOneClickButton' : ' jsBuyButton';
     }
 
-    if ($product->isInShopStockOnly()) {
+    if ($product->isInShopStockOnly() && $forceDefaultBuy) {
         $class .= ' mShopsOnly';
         $value = 'Резерв';
         $url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);

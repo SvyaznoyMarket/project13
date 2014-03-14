@@ -29,6 +29,8 @@ class Entity {
     private $parent;
     /** @var bool */
     private $hasTransportCompany;
+    /** @var bool */
+    private $forceDefaultBuy = true;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -233,6 +235,22 @@ class Entity {
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * @param boolean $forceDefaultBuy
+     */
+    public function setForceDefaultBuy($forceDefaultBuy)
+    {
+        $this->forceDefaultBuy = $forceDefaultBuy;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getForceDefaultBuy()
+    {
+        return $this->forceDefaultBuy;
     }
 
     /**
