@@ -38,6 +38,13 @@ class Action {
 
         $response = new \Http\RedirectResponse($link);
 
+        $regionConfig = [];
+        \App::dataStoreClient()->addQuery("region/{$regionId}.json", [], function($data) use (&$regionConfig) {
+            if((bool)$data) {
+                $regionConfig = $data;
+            }
+        });
+
         $region = null;
         \RepositoryManager::region()->prepareEntityById($regionId, function($data) use (&$region) {
             $data = reset($data);
@@ -50,6 +57,12 @@ class Action {
             $region = \RepositoryManager::region()->getDefaultEntity();
             if (!$region) {
                 throw new \Exception\NotFoundException(sprintf('Регион #%s не найден', $regionId));
+            }
+        }
+
+        if ($region instanceof \Model\Region\Entity) {
+            if (array_key_exists('reserve_as_buy', $regionConfig)) {
+                $region->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
             }
         }
 
