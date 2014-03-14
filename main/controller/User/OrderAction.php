@@ -30,7 +30,14 @@ class OrderAction {
         }
 
         // запрашиваем текущий регион, если есть кука региона
+        $regionConfig = [];
         if ($user->getRegionId()) {
+            \App::dataStoreClient()->addQuery("region/{$user->getRegionId()}.json", [], function($data) use (&$regionConfig) {
+                if((bool)$data) {
+                    $regionConfig = $data;
+                }
+            });
+
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
                 if ((bool)$data) {
@@ -49,6 +56,14 @@ class OrderAction {
 
         // выполнение 1-го пакета запросов
         $client->execute();
+
+        $regionEntity = $user->getRegion();
+        if ($regionEntity instanceof \Model\Region\Entity) {
+            if (array_key_exists('reserve_as_buy', $regionConfig)) {
+                $regionEntity->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
+            }
+            $user->setRegion($regionEntity);
+        }
 
         $region = $user->getRegion();
 
