@@ -75,7 +75,7 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
             <? endif ?>
 
             <? if ('enterprize.complete' === \App::request()->attributes->get('route')): ?>
-                <div class="completeTitleEP">
+                <div class="completeTitleEP jsCompleteTitleEP">
                     <div class="completeTitleEP__title">Ты &#8212; в игре!</div>
                     <p class="completeTitleEP__text">Мы отправили номер фишки на твой e-mail и мобильный</p>
                 </div>

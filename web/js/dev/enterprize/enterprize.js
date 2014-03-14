@@ -280,6 +280,24 @@
 			});
 
 			return false;
+		},
+
+		/**
+		 * Обработчик получения данных пользователя
+		 *
+		 * @param	{Object}	event	Данные о событии
+		 * @param	{Object}	data	Данные пользователя
+		 */
+		userLoggedHandler = function( event, data ) {
+			if ( !data ) {
+				return;
+			}
+
+			// Страница complete
+			// скрываем текстовый блок если юзер авторизован и он является EnterPrize Member
+			if ( $('.jsCompleteTitleEP').length && data.hasEnterprizeCoupon !== undefined) {
+				data.hasEnterprizeCoupon && $('.jsCompleteTitleEP').hide();
+			}
 		};
 	// end of functions
 
@@ -289,4 +307,5 @@
 
 	body.on('submit', '.jsEnterprizeForm', formSubmit);
 	body.on('click', '.jsEnterprizeAuthLink', openAuth);
+	body.on('userLogged', userLoggedHandler);
 }(window.ENTER));
