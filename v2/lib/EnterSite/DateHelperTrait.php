@@ -6,7 +6,7 @@ use Enter\Helper;
 
 trait DateHelperTrait {
     /**
-     * @return Helper\date
+     * @return Helper\Date
      */
     protected function getHelper() {
         if (!isset($GLOBALS[__METHOD__])) {
