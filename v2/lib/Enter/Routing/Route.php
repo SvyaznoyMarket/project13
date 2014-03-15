@@ -3,7 +3,7 @@
 namespace Enter\Routing;
 
 class Route {
-    /** @var string */
+    /** @var callable|null */
     public $action;
     /** @var array */
     public $parameters = [];
