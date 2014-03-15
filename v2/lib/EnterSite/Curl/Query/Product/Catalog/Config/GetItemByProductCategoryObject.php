@@ -15,7 +15,7 @@ class GetItemByProductCategoryObject extends Query {
 
     /**
      * @param Model\Product\Category[] $categories
-     * @param \EnterSite\Model\Product|null $product
+     * @param Model\Product|null $product
      */
     public function __construct(array $categories, Model\Product $product = null) {
         $tokens = [];

@@ -86,14 +86,14 @@ class ProductCard {
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
         if ($config->productReview->enabled) {
-            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList(array_merge([$product->id], $product->accessoryIds));
+            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList(array_merge([$product->id], (bool)$product->accessoryIds ? $product->accessoryIds : []));
             $curl->prepare($ratingListQuery);
         }
 
         // запрос настроек каталога
         $catalogConfigQuery = null;
         if ($product->category) {
-            $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($product->category->ascendants, [$product->category]), $product);
+            $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge((bool)$product->category->ascendants ? $product->category->ascendants : [], [$product->category]), $product);
             $curl->prepare($catalogConfigQuery);
         }
 

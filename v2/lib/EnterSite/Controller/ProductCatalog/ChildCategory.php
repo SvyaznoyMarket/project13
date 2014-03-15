@@ -105,8 +105,11 @@ class ChildCategory {
         $curl->prepare($mainMenuListQuery);
 
         // запрос настроек каталога
-        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge([$ancestryCategory], [$ancestryCategory->children]));
-        $curl->prepare($catalogConfigQuery);
+        $catalogConfigQuery = null;
+        if ($ancestryCategory) {
+            $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge([$ancestryCategory], (bool)$ancestryCategory->children ? $ancestryCategory->children : []));
+            $curl->prepare($catalogConfigQuery);
+        }
 
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
@@ -128,7 +131,9 @@ class ChildCategory {
         $mainMenuList = (new Repository\MainMenu())->getObjectListByQuery($mainMenuListQuery, $categoryListQuery);
 
         // настройки каталога
-        $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
+        if ($catalogConfigQuery) {
+            $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
+        }
 
         // список рейтингов товаров
         if ($ratingListQuery) {
