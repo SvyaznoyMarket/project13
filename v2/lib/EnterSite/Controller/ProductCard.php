@@ -2,11 +2,11 @@
 
 namespace EnterSite\Controller;
 
-use Enter\Exception;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\MustacheRendererTrait;
+use EnterSite\Action;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
@@ -21,7 +21,6 @@ class ProductCard {
     /**
      * @param Http\Request $request
      * @return Http\Response
-     * @throws \Enter\Exception\PermanentlyRedirect
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
@@ -52,10 +51,7 @@ class ProductCard {
         // товар
         $product = $productRepository->getObjectByQuery($productItemQuery);
         if ($product->link !== $request->getPathInfo()) {
-            $redirect = new Exception\PermanentlyRedirect();
-            $redirect->setLink($product->link. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''));
-
-            throw $redirect;
+            return (new \EnterSite\Controller\Redirect())->execute($product->link. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 301);
         }
 
         // запрос доставки товара

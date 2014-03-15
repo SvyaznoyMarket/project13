@@ -2,11 +2,11 @@
 
 namespace EnterSite\Controller\ProductCatalog;
 
-use Enter\Exception;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\MustacheRendererTrait;
+use EnterSite\Action;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
@@ -21,7 +21,6 @@ class ChildCategory {
     /**
      * @param Http\Request $request
      * @return Http\Response
-     * @throws Exception\PermanentlyRedirect
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
@@ -64,10 +63,7 @@ class ChildCategory {
         // категория
         $category = (new Repository\Product\Category())->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
         if ($category->redirectLink) {
-            $redirect = new Exception\PermanentlyRedirect();
-            $redirect->setLink($category->redirectLink);
-
-            throw $redirect;
+            return (new \EnterSite\Controller\Redirect())->execute($category->redirectLink. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 301);
         }
 
         // фильтры в запросе
