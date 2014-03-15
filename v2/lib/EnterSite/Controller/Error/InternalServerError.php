@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterSite\Controller;
+namespace EnterSite\Controller\Error;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;

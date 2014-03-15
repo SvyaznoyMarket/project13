@@ -19,7 +19,7 @@ class RegisterShutdown {
 
             $error = error_get_last();
             if ($error && (error_reporting() & $error['type'])) {
-                $response = (new Controller\InternalServerError())->execute();
+                $response = (new Controller\Error\InternalServerError())->execute();
             }
 
             // logger
