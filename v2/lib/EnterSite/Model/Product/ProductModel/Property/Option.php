@@ -1,16 +1,16 @@
 <?php
 
-namespace EnterSite\Model\Product\Model\Property;
+namespace EnterSite\Model\Product\ProductModel\Property;
 
 use EnterSite\Model\ImportArrayConstructorTrait;
-use EnterSite\Model as ObjectModel;
+use EnterSite\Model;
 
 class Option {
     use ImportArrayConstructorTrait;
 
     /** @var mixed */
     public $value;
-    /** @var ObjectModel\Product\Model\Property\Option\Product|null */
+    /** @var \EnterSite\Model\Product\ProductModel\Property\Option\Product|null */
     public $product;
     /** @var string */
     public $shownValue;
@@ -20,7 +20,7 @@ class Option {
      */
     public function import(array $data = []) {
         if (array_key_exists('value', $data)) $this->value = $data['value'];
-        if (isset($data['product']['id'])) $this->product = new ObjectModel\Product\Model\Property\Option\Product($data['product']);
+        if (isset($data['product']['id'])) $this->product = new Option\Product($data['product']);
 
         if (in_array($this->value, ['false', false], true)) {
             $this->shownValue = 'нет';

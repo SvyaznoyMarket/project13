@@ -3,12 +3,12 @@
 namespace EnterSite\Model\Product;
 
 use EnterSite\Model\ImportArrayConstructorTrait;
-use EnterSite\Model as ObjectModel;
+use EnterSite\Model;
 
-class Model {
+class ProductModel {
     use ImportArrayConstructorTrait;
 
-    /** @var ObjectModel\Product\Model\Property[] */
+    /** @var Model\Product\ProductModel\Property[] */
     public $properties = [];
 
     /**
@@ -17,7 +17,7 @@ class Model {
     public function import(array $data) {
         if (isset($data['property'][0])) {
             foreach ($data['property'] as $propertyItem) {
-                $this->properties[] = new ObjectModel\Product\Model\Property($propertyItem);
+                $this->properties[] = new Model\Product\ProductModel\Property($propertyItem);
             }
         }
     }

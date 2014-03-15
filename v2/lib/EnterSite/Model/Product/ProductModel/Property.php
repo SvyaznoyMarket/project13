@@ -1,9 +1,9 @@
 <?php
 
-namespace EnterSite\Model\Product\Model;
+namespace EnterSite\Model\Product\ProductModel;
 
 use EnterSite\Model\ImportArrayConstructorTrait;
-use EnterSite\Model as ObjectModel;
+use EnterSite\Model;
 
 class Property {
     use ImportArrayConstructorTrait;
@@ -14,7 +14,7 @@ class Property {
     public $name;
     /** @var bool */
     public $isImage;
-    /** @var ObjectModel\Product\Model\Property\Option[] */
+    /** @var \EnterSite\Model\Product\ProductModel\Property\Option[] */
     public $options = [];
 
     /**
@@ -26,7 +26,7 @@ class Property {
         if (array_key_exists('is_image', $data)) $this->isImage = (bool)$data['is_image'];
         if (isset($data['option'][0])) {
             foreach ($data['option'] as $optionItem) {
-                $this->options[] = new ObjectModel\Product\Model\Property\Option($optionItem);
+                $this->options[] = new Property\Option($optionItem);
             }
         }
     }

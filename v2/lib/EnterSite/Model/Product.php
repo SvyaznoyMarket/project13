@@ -3,7 +3,7 @@
 namespace EnterSite\Model;
 
 use EnterSite\Model\ImportArrayConstructorTrait;
-use EnterSite\Model as ObjectModel;
+use EnterSite\Model;
 
 class Product {
     use ImportArrayConstructorTrait;
@@ -28,41 +28,41 @@ class Product {
     public $isInShopStockOnly;
     /** @var bool */
     public $isInShopShowroomOnly;
-    /** @var ObjectModel\Product\Category|null */
+    /** @var Model\Product\Category|null */
     public $category;
-    /** @var ObjectModel\Brand|null */
+    /** @var Model\Brand|null */
     public $brand;
-    /** @var ObjectModel\Product\Property[] */
+    /** @var Model\Product\Property[] */
     public $properties = [];
-    /** @var ObjectModel\Product\Property\Group[] */
+    /** @var Model\Product\Property\Group[] */
     public $propertyGroups = [];
-    /** @var ObjectModel\Product\Stock[] */
+    /** @var Model\Product\Stock[] */
     public $stock = [];
     /** @var int */
     public $price;
     /** @var int */
     public $oldPrice;
-    /** @var ObjectModel\Product\Media */
+    /** @var Model\Product\Media */
     public $media;
-    /** @var ObjectModel\Product\Rating|null */
+    /** @var Model\Product\Rating|null */
     public $rating;
-    /** @var ObjectModel\Product\Model|null */
+    /** @var Model\Product\ProductModel|null */
     public $model;
-    /** @var ObjectModel\Product\NearestDelivery[] */
+    /** @var Model\Product\NearestDelivery[] */
     public $nearestDeliveries = [];
     /** @var string[] */
     public $accessoryIds = [];
     /** @var string[] */
     public $relatedIds = [];
-    /** @var ObjectModel\Product\Relation */
+    /** @var Model\Product\Relation */
     public $relation;
 
     /**
      * @param array $data
      */
     public function __construct(array $data = []) {
-        $this->media = new ObjectModel\Product\Media();
-        $this->relation = new ObjectModel\Product\Relation();
+        $this->media = new Model\Product\Media();
+        $this->relation = new Model\Product\Relation();
 
         if ((bool)$data) {
             $this->import($data);
@@ -87,40 +87,40 @@ class Product {
 
         if (isset($data['category'][0])) {
             $categoryItem = (array)array_pop($data['category']);
-            $this->category = new ObjectModel\Product\Category($categoryItem);
+            $this->category = new Model\Product\Category($categoryItem);
 
             foreach ($data['category'] as $categoryItem) {
-                $this->category->ascendants[] = new ObjectModel\Product\Category($categoryItem);
+                $this->category->ascendants[] = new Model\Product\Category($categoryItem);
             }
         }
 
-        if (isset($data['brand']['id'])) $this->brand = new ObjectModel\Brand($data['brand']);
+        if (isset($data['brand']['id'])) $this->brand = new Model\Brand($data['brand']);
 
         if (isset($data['property'][0])) {
             foreach ($data['property'] as $propertyItem) {
-                $this->properties[] = new ObjectModel\Product\Property($propertyItem);
+                $this->properties[] = new Model\Product\Property($propertyItem);
             }
         }
 
         if (isset($data['property_group'][0])) {
             foreach ($data['property_group'] as $propertyGroupItem) {
-                $this->propertyGroups[] = new ObjectModel\Product\Property\Group($propertyGroupItem);
+                $this->propertyGroups[] = new Model\Product\Property\Group($propertyGroupItem);
             }
         }
 
         if (isset($data['media'][0])) {
             foreach ($data['media'] as $mediaItem) {
-                $this->media->photos[] = new ObjectModel\Product\Media\Photo($mediaItem);
+                $this->media->photos[] = new Model\Product\Media\Photo($mediaItem);
             }
         }
 
         if (isset($data['stock'][0])) {
             foreach ($data['stock'] as $stockItem) {
-                $this->stock[] = new ObjectModel\Product\Stock($stockItem);
+                $this->stock[] = new Model\Product\Stock($stockItem);
             }
         }
 
-        if (isset($data['model']['property'][0])) $this->model = new ObjectModel\Product\Model($data['model']);
+        if (isset($data['model']['property'][0])) $this->model = new Model\Product\ProductModel($data['model']);
         if (isset($data['accessories'][0])) $this->accessoryIds = $data['accessories'];
         if (isset($data['related'][0])) $this->relatedIds = $data['related'];
     }

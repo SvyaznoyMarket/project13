@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterSite\Model\Product\Model\Property\Option;
+namespace EnterSite\Model\Product\ProductModel\Property\Option;
 
 use EnterSite\Model\ImportArrayConstructorTrait;
 
