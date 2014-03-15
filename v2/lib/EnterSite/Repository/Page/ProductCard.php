@@ -87,7 +87,7 @@ class ProductCard {
             $page->content->product->rating = $rating;
         }
 
-        // аксессуары
+        // аксессуары товара
         if ((bool)$productModel->relation->accessories) {
             $page->content->product->accessorySlider = new Partial\ProductSlider();
             foreach ($productModel->relation->accessories as $accessoryModel) {
@@ -112,7 +112,7 @@ class ProductCard {
             }
         }
 
-        // отзывы
+        // отзывы товара
         if ((bool)$request->reviews) {
             $page->content->product->reviewBlock = new Page\Content\Product\ReviewBlock();
             foreach ($request->reviews as $reviewModel) {
@@ -125,6 +125,13 @@ class ProductCard {
                 $review->stars = $ratingRepository->getStarList($reviewModel->starScore);
 
                 $page->content->product->reviewBlock->reviews[] = $review;
+            }
+        }
+
+        // модели товара
+        if ((bool)$productModel->model && (bool)$productModel->model->properties) {
+            foreach ($productModel->model->properties as $modelPropertyEntity) {
+
             }
         }
 
