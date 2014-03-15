@@ -1,4 +1,3 @@
--  Exception\PermanentlyRedirect -> Controller\PermanentlyRedirect
 -+ env, debug
 -  http: JsonResponse
 -  сделать view-классы, которые работают с рендером
@@ -6,6 +5,8 @@
 -+ импорт конфигурации из v1
 -? мержить curl.query.info - суммировать total_time? добавить callbackStartAt, callbackEndAt
 -? вынести requestId из конфига
+-  удалить NotFoundException
+-  Exception\PermanentlyRedirect -> Controller\PermanentlyRedirect
 +  маршрутизация
 +  кеширование конфига
 +  исправить трейты для Query: передавать client_id
