@@ -127,9 +127,7 @@ class ChildCategory {
         $mainMenuList = (new Repository\MainMenu())->getObjectListByQuery($mainMenuListQuery, $categoryListQuery);
 
         // настройки каталога
-        if ($catalogConfigQuery) {
-            $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
-        }
+        $catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
 
         // список рейтингов товаров
         if ($ratingListQuery) {
