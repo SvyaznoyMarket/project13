@@ -4,6 +4,7 @@ namespace EnterSite\Action;
 
 use Enter\Http;
 use EnterSite\Action;
+use EnterSite\Controller;
 
 class RegisterShutdown {
     /**
@@ -18,7 +19,7 @@ class RegisterShutdown {
 
             $error = error_get_last();
             if ($error && (error_reporting() & $error['type'])) {
-                $response->statusCode = Http\Response::STATUS_INTERNAL_SERVER_ERROR;
+                $response = (new Controller\InternalServerError())->execute();
             }
 
             // logger
