@@ -6,7 +6,7 @@ use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\MustacheRendererTrait;
-use EnterSite\Action;
+use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
@@ -63,7 +63,7 @@ class ChildCategory {
         // категория
         $category = (new Repository\Product\Category())->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
         if ($category->redirectLink) {
-            return (new \EnterSite\Controller\Redirect())->execute($category->redirectLink. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 301);
+            return (new Controller\Redirect())->execute($category->redirectLink. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 301);
         }
 
         // фильтры в запросе

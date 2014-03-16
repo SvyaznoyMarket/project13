@@ -6,7 +6,7 @@ use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\MustacheRendererTrait;
-use EnterSite\Action;
+use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
@@ -51,7 +51,7 @@ class ProductCard {
         // товар
         $product = $productRepository->getObjectByQuery($productItemQuery);
         if ($product->link !== $request->getPathInfo()) {
-            return (new \EnterSite\Controller\Redirect())->execute($product->link. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 301);
+            return (new Controller\Redirect())->execute($product->link. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 301);
         }
 
         // запрос доставки товара
