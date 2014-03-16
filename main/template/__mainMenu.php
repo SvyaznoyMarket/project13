@@ -124,7 +124,11 @@ $count = count($menu);
                         <? if ($showImage): ?>
                                 <img src="<?= $catalogJsonBulk[$token]['logo_path'] ?>">
                             <? else: ?>
-                                <?= $iMenu->name ?>
+                                <? if ($iMenu->smallImage): ?>
+                                    <img src="<?= $iMenu->smallImage ?>" alt="<?= $iMenu->name ?>" />
+                                <? else: ?>
+                                    <?= $iMenu->name ?>
+                                <? endif; ?>
                             <? endif ?>
                         </span>
                         <div class="bCorner"></div>
