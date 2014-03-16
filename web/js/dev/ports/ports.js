@@ -526,6 +526,16 @@ window.ANALYTICS = {
 				})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
 			},
 
+			gaBannerClick = function gaBannerClick( BannerId ) {
+				console.log( 'GA: send', 'event', 'Internal_Promo', BannerId );
+				ga( 'send', 'event', 'Internal_Promo', BannerId );
+			},
+
+			gaSubscribeClick = function gaSubscribeClick( type, email ) {
+				console.log( 'GA: send', 'event', 'Subscriptions', type, email );
+				ga( 'send', 'event', 'Subscriptions', type );
+			}
+
 			ga_main = function() {
 				console.info( 'GoogleAnalyticsJS main page' );
 
@@ -552,13 +562,12 @@ window.ANALYTICS = {
 						ga('send', 'event', 'Mobile App Click', type);
 					}
 				});
-
-				ga( 'send', 'pageview', {
-					'dimension5': 'Home'
-				} );
+				/**
+				 * Отслеживание кликов по баннерам карусели вынесено в web/js/dev/main/welcome.js
+				 */
 			},
 
-			ga_productCatalog = function() {
+			ga_category = function ga_category() {
 				console.info( 'gaJS product catalog' );
 				/** Событие выбора фильтра */
 				$('div.bFilterBand input:not(:checked)').click(function ga_filterBrand(){
@@ -571,6 +580,17 @@ window.ANALYTICS = {
 						console.log(name);
 						ga('send', 'event', 'brand_selected', name);
 					}
+				});
+			},
+
+			ga_catalog = function ga_catalog() {
+				console.info( 'gaJS catalog' );
+				$('.mBannerItem').click(function() {
+					var
+						wrapper = $(this).find('.adfoxWrapper'),
+						banner = wrapper.find('div:first')
+						id = banner.attr('id') || 'adfox';
+					gaBannerClick( id );
 				});
 			},
 
@@ -587,17 +607,17 @@ window.ANALYTICS = {
 						ga( 'send', 'event', 'Interactive', type );
 					},
 
-					gaBannerClick = function gaBannerClick() {
+					gaBannerClickPrepare = function gaBannerClickPrepare() {
 						var
-							Banner_src = $( this ).find( 'img' ).attr( 'src' );
-						console.log( 'send', 'event', 'Internal_Promo', Banner_src );
-						ga( 'send', 'event', 'Internal_Promo', Banner_src );
+							img = $( this ).find( 'img' ),
+							BannerId = img.attr( 'alt' ) || img.attr( 'src' );
+						gaBannerClick(BannerId);
 					};
 
 				/** Событие клика на баннер */
-				$( '.trustfactorRight' ).on( 'click', gaBannerClick );
-				$( '.trustfactorMain' ).on( 'click', gaBannerClick );
-				$( '.trustfactorContent' ).on( 'click', gaBannerClick );
+				$( '.trustfactorRight' ).on( 'click', gaBannerClickPrepare );
+				$( '.trustfactorMain' ).on( 'click', gaBannerClickPrepare );
+				$( '.trustfactorContent' ).on( 'click', gaBannerClickPrepare );
 
 				/** Событие открытия списка магазинов */
 				$('span.bDeliveryNowClick').one('click', function ga_deliveryNow() {
@@ -739,8 +759,9 @@ window.ANALYTICS = {
 							ga_search(); // для страницы поиска
 						}
 						else {
-							ga_productCatalog(); // для каталога продуктов (стр. категории)
+							ga_category(); // для стр. категории
 						}
+						ga_catalog(); // для всех страниц каталога
 						break;
 					case 'order_complete':
 						ga_orderComplete(); // для стр «Спасибо за заказ»
@@ -757,15 +778,6 @@ window.ANALYTICS = {
 				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
 			}
 			ga( 'create', 'UA-25485956-5', 'enter.ru' );
-
-			var
-				gaSubscribeClick = function gaSubscribeClick() {
-					var
-						Email = $( this ).siblings( '.bSubscribeLightboxPopup__eInput' ).val();
-					console.log( 'send', 'event', 'Internal_Promo', Email );
-					ga( 'send', 'event', 'Subscriptions', Email );
-				}
-			; // end of vars
 
 			ga_action();
 
@@ -791,7 +803,6 @@ window.ANALYTICS = {
 				ga('send', 'event', '<button>', productData.name, productData.article, productData.price);
 			});
 
-
 			/** Событие выбора города */
 			$('.jsChangeRegionAnalytics' ).click(function(){
 				var
@@ -801,7 +812,12 @@ window.ANALYTICS = {
 			});
 
 			/** Событие клика на подписку | TODO: проверить другие подписки */
-			$('.bSubscribeLightboxPopup__eBtn').on('click', gaSubscribeClick);
+			$('.bSubscribeLightboxPopup__eBtn').on('click', function(){
+				/*var
+					email = $( this ).siblings( '.bSubscribeLightboxPopup__eInput' ).val(); // если нужно
+				*/
+				gaSubscribeClick( 1 );
+			});
 
 			window.gaRun = {
 				register: function register() {
@@ -812,8 +828,8 @@ window.ANALYTICS = {
 				login: function login() {
 					/** Метод для авторизации на сайт */
 					console.log('GA: login');
-					// ga( 'send', 'event', 'Authorization', 'Authorizated' );
-					// нет в вики-описании такого, нужно уточнить
+					ga('send', 'dimension7', 'Registered');
+					ga('send', 'event', 'Logged in', 'True');
 				}
 			};
 		}

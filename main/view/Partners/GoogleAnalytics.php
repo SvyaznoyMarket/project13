@@ -111,10 +111,13 @@ class GoogleAnalytics {
      * Вызывается на всех страницах счётчика
      */
     private function routeAll() {
-        $userEntity = $this->user->getEntity();
-        $this->sendData['vars']['dimension7'] = ($userEntity && $userEntity->getId()) ?
-            'Registered' :
-            'Anonymous';
+        $enterCookie = \App::request()->cookies->get('enter');
+        if (empty($enterCookie)) {
+            $userEntity = $this->user->getEntity();
+            $this->sendData['vars']['dimension7'] = ($userEntity && $userEntity->getId()) ?
+                'Registered' :
+                'Anonymous';
+        }
     }
 
 
