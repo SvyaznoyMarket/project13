@@ -55,15 +55,26 @@ class CreateAction {
                 throw new \Exception('Форма заполнена неверно');
             }
 
-            // если заказ разбился более чем на один подзаказ, то ...
-            if (\App::config()->coupon['enabled'] && (bool)$cart->getCoupons() && (count($form->getPart()) > 1)) {
-                $cart->clearCoupons();
-                $cart->fill();
+            $cartCoupons = $cart->getCoupons();
+            if (\App::config()->coupon['enabled'] && (bool)$cartCoupons) {
+                // если заказ разбился более чем на один подзаказ, то ...
+                if (count($form->getPart()) > 1) {
+                    // очищаем данные купона
+                    $cart->clearCoupons();
+                    $cart->fill();
 
-                $responseData['action']['alert'] = [
-                    'message' => 'Не удалось применить скидку. Свяжитесь с оператором Контакт-cENTER ' . \App::config()->company['phone'],
-                    'cancel'  => false,
-                ];
+                    $responseData['action']['alert'] = [
+                        'message' => 'Не удалось применить скидку. Свяжитесь с оператором Контакт-cENTER ' . \App::config()->company['phone'],
+                        'cancel'  => false,
+                    ];
+                } else {
+                    // если всё ок, то применяем купон и запоминаем его номер
+                    /** @var $couponEntity \Model\Cart\Coupon\Entity **/
+                    $couponEntity = reset($cartCoupons);
+                    if ($couponEntity && !$couponEntity->getError()) {
+                        $form->setCouponNumber($couponEntity->getNumber());
+                    }
+                }
             }
 
             // TODO: прибавить к cartSum стоимость доставки
@@ -77,8 +88,13 @@ class CreateAction {
             $createdOrders = $this->saveOrders($form);
 
             // сохранение заказов в сессии
+            // TODO: можно переделать вынести данные клиента: номер телефона и купона (одинаковые для всех заказов) за границы array_map
             \App::session()->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($form) {
-                return ['number' => $createdOrder->getNumber(), 'phone' => $form->getMobilePhone()];
+                return [
+                    'number' => $createdOrder->getNumber(),
+                    'phone' => $form->getMobilePhone(),
+                    'coupon_number' => $form->getCouponNumber(),
+                ];
             }, $createdOrders));
 
             /** @var $firstCreatedOrder \Model\Order\CreatedEntity */

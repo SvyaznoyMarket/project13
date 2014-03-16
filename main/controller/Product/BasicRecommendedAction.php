@@ -11,6 +11,7 @@ class BasicRecommendedAction {
     protected $actionType;
     protected $actionTitle;
     protected $name;
+    protected $engine;
 
     static public $recomendedPartners = [
         \Smartengine\Client::NAME,
@@ -97,7 +98,7 @@ class BasicRecommendedAction {
      * @return  \Model\Product\Entity[]         $products
      * @throws  \Exception
      */
-    protected function prepareProducts($ids, $senderName) {
+    protected function getProducts($ids, $senderName) {
         if (!(bool)$ids) {
             throw new \Exception('Рекомендации не получены');
         }
@@ -112,7 +113,9 @@ class BasicRecommendedAction {
                 continue;
             }
 
-            $link = $product->getLink();
+            // Сссылки переделываем перед формированием данных для модели товара
+            // через метод \Controller\Product\BasicRecommendedAction::prepareLink()
+            /*$link = $product->getLink();
             $link = $link . (false === strpos($link, '?') ? '?' : '&') . 'sender=' . $senderName . '|' . $product->getId();
 
             if ('upsale' == $this->name) {
@@ -120,7 +123,11 @@ class BasicRecommendedAction {
                 $product->setIsUpsale(true);
             }
 
-            $product->setLink($link);
+            $product->setLink($link);*/
+
+            if ('upsale' == $this->name) {
+                $product->setIsUpsale(true);
+            }
 
             //$additionalData[$product->getId()] = \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Also Viewed');
 
@@ -148,15 +155,18 @@ class BasicRecommendedAction {
 
 
     /**
+     * !!! Не используется теперь
+     *
      * @param \Model\Product\Entity     $product
      * @param \Http\Request             $request
      * @param string                    $method
      * @return \Model\Product\Entity[]  $products
      * @throws \Exception
-     */
+     *
     protected function getProductsFromSmartengine($product, \Http\Request $request, $method = 'relateditems')
     {
         \App::logger()->debug('Exec ' . __METHOD__);
+        $this->setEngine('smartengine');
 
         //print '** This is Smartengine Method. Should be disabled **'; // tmp, for debug
 
@@ -194,11 +204,11 @@ class BasicRecommendedAction {
                 return $item['id'];
             }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
 
-        $products = $this->prepareProducts($ids, $client::NAME);
+        $products = $this->getProducts($ids, $client::NAME);
 
         return $products;
 
-    }
+    }*/
 
 
     /**
@@ -210,6 +220,7 @@ class BasicRecommendedAction {
      */
     public function getProductsIdsFromRetailrocket( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
         \App::logger()->debug('Exec ' . __METHOD__);
+        $this->setEngine('retailrocket');
 
         $client = \App::retailrocketClient();
         $productId = $product->getId();
@@ -228,11 +239,11 @@ class BasicRecommendedAction {
      */
     protected function getProductsFromRetailrocket( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
         \App::logger()->debug('Exec ' . __METHOD__);
+        $this->setEngine('retailrocket');
 
-        //print '** This is Smartengine Method. Should be ENABLED **'; // tmp, form debug
         $client = \App::retailrocketClient();
         $ids = $this->getProductsIdsFromRetailrocket( $product, $request, $method);
-        $products = $this->prepareProducts($ids, $client::NAME);
+        $products = $this->getProducts($ids, $client::NAME);
 
         return $products;
     }
@@ -240,11 +251,13 @@ class BasicRecommendedAction {
 
 
     /**
+     * !!! Не используется теперь
+     *
      * @param \Model\Product\Entity     $product
      * @param \Http\Request             $request
      * @param string                    $method
      * @return \Model\Product\Entity[]  $products
-     */
+     *
     private function getProductsHybrid( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
 
         if ( $this->actionType == 'AlsoViewedAction' ) { // if AlsoViewedAction
@@ -261,13 +274,14 @@ class BasicRecommendedAction {
 
         return $products;
 
-    }
+    }*/
 
     /**
      * @return string
      */
     public function getRetailrocketMethodName()
     {
+        $this->setEngine('retailrocket');
         return $this->retailrocketMethodName;
     }
 
@@ -293,5 +307,42 @@ class BasicRecommendedAction {
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param $link
+     * @param $id
+     * @param $senderName
+     * @return string
+     */
+    static public function prepareLink(&$link, array $params) {
+        $id = $params['id'];
+        $senderName = $params['engine'];
+        $recommName = $params['name'];
+
+        $link = $link . (false === strpos($link, '?') ? '?' : '&') . 'sender=' . $senderName . '|' . $id;
+
+        if ('upsale' == $recommName) {
+            //$link = $link . (false === strpos($link, '?') ? '?' : '&') . 'from=cart_rec';
+            $link = $link . '&from=cart_rec';
+        }
+
+        return $link;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getEngine() {
+        return $this->engine;
+    }
+
+    /**
+     * @param $eng
+     * @return string
+     */
+    public function setEngine($eng) {
+        return $this->engine = (string) $eng;
     }
 }
