@@ -55,7 +55,7 @@ return function (
                     ]) ?>">
                     <div class="product__inner">
                         <? if ((bool)$product->getLabel()): ?>
-                            <img class="bProductDescSticker" src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $product->getLabel()->getName() ?>" />
+                            <img class="bProductDescSticker" src="<?= $product->getLabel()->getImageUrl(0) ?>" alt="<?= $product->getLabel()->getName() ?>" />
                         <? endif ?>
                         <a class="productImg<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
                         <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
