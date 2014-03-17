@@ -317,7 +317,7 @@ window.ANALYTICS = {
 	},
 
 	sociomanticJS: function () {
-		(function () {
+		/*(function () {
 			var s = document.createElement('script'),
 				x = document.getElementsByTagName('script')[0];
 			s.type = 'text/javascript';
@@ -325,7 +325,7 @@ window.ANALYTICS = {
 			s.src = ('https:' == document.location.protocol ? 'https://' : 'http://')
 				+ 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
 			x.parentNode.insertBefore(s, x);
-		})();
+		})();*/
 	},
 
 	smanticPageJS: function() {
