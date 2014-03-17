@@ -95,6 +95,14 @@ class DeliveryAction {
             ];
 
             $shopData = &$result['shop_list'];
+
+            // получаем список магазинов
+            $shops = \RepositoryManager::shop()->prepareCollectionById(
+                array_map(function($shopItem){
+                    return (int)$shopItem['id'];
+                }, $shopData)
+            );
+
             foreach ($result['product_list'] as $item) {
                 $product = [
                     'id'    => $item['id'],
@@ -146,11 +154,6 @@ class DeliveryAction {
                             }
 
                             // добавляем url к магазинам
-                            $shops = \RepositoryManager::shop()->getCollectionById(
-                                array_map(function($shopItem){
-                                    return (int)$shopItem['id'];
-                                }, $dateItem['shop_list'])
-                            );
                             foreach ($shops as $shop) {
                                 foreach ($delivery['shop'] as $key => $shopItem) {
                                     if($shopItem['id'] == $shop->getId()) {
