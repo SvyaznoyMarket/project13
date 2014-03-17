@@ -2476,6 +2476,13 @@ img[height="0"] {
   .completeTitleEP__text {
     margin: 0;
   }
+  .lastFishka {
+    font-size: 14px;
+    margin: 0 0 20px 25px;
+  }
+  .lastFishka__link {
+    text-decoration: underline;
+  }
 }
 /*---END----Enter Prize---------*/
 /*------TCHIBO - верхнее меню Чибо, под продуктовым меню------*/
