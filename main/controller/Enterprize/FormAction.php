@@ -323,6 +323,16 @@ class FormAction {
 
         // если пользователь авторизован, то заполняем поле по которому произошла авторизация
         if ($user) {
+            if (!$form->getName()) {
+                $form->setName($user->getFirstName());
+            }
+            if (!$form->getMobile()) {
+                $form->setMobile($user->getMobilePhone());
+            }
+            if (!$form->getEmail()) {
+                $form->setEmail($user->getEmail());
+            }
+
             $authSource = $session->get('authSource', null);
             if ('phone' === $authSource) {
                 $form->setMobile($user->getMobilePhone());
