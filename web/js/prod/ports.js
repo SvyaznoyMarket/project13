@@ -1085,6 +1085,94 @@ window.ANALYTICS = {
 		this.marinSoftwarePageAddJS(marinConversionTagJSHandler);
 	},
 
+	/**
+	 * Аналитика на странице подтверждения email/телефона
+	 */
+	enterprizeConfirmJs: function () {
+		var
+			enterprize = $('#enterprizeConfirmJs'),
+			data = {},
+			toKiss = {};
+		// end of vars
+
+		if ( !enterprize.length ) {
+			return;
+		}
+
+		data = enterprize.data('value');
+
+		// --- Kiss ---
+		if (typeof _kmq !== undefined) {
+			console.warn('Kiss');
+			toKiss = {
+				'[Ent_Req] Name': data.name,
+				'[Ent_Req] Phone': data.mobile,
+				'[Ent_Req] Email': data.email,
+				'[Ent_Req] Token name': data.couponName,
+				'[Ent_Req] Token number': data.enterprizeToken,
+				'[Ent_Req] Date': data.date,// Текущая дата
+				'[Ent_Req] Time': data.time,//Текущее время
+				'[Ent_Req] enter_id': data.client_id//идентификаgтор клиента в cookie сайта
+			};
+
+			_kmq.push(['record', 'Enterprize Token Request', toKiss]);
+		}
+
+		// --- GA ---
+		if (typeof ga !== undefined) {
+			ga('send', 'event', 'Enterprize Token Request', 'Номер фишки', data.client_id);
+		}
+	},
+
+	/**
+	 * Аналитика на странице подтверждения /enterprize/complete
+	 */
+	enterprizeCompleteJs: function () {
+		var
+			enterprize = $('#enterprizeCompleteJs'),
+			data = {},
+			toKiss = {},
+			old_identity;
+		// end of vars
+
+		if ( !enterprize.length ) {
+			return;
+		}
+
+		data = enterprize.data('value');
+
+		// --- Kiss ---
+		if (typeof _kmq !== undefined) {
+			toKiss = {
+				'[Ent_Gr] Name': data.name,
+				'[Ent_Gr] Phone': data.mobile,
+				'[Ent_Gr] Email': data.email,
+				'[Ent_Gr] Token name': data.couponName,
+				'[Ent_Gr] Token number': data.enterprizeToken,
+				'[Ent_Gr] Date': data.date,// Текущая дата
+				'[Ent_Gr] Time': data.time,//Текущее время
+				'[Ent_Gr] enter_id': data.client_id//идентификатор клиента в cookie сайта
+			};
+
+			_kmq.push(['record', 'Enterprize Token Granted', toKiss]);
+
+			// Если данные для нас новые - идентифицируем его новыми данными и мёрджим с предыдущим ID
+			if (data.mobile != KM.i()) {
+				old_identity = KM.i()
+				_kmq.push(['identify', data.mobile]);
+				_kmq.push(['set', {'enter_id': data.client_id}]);
+				_kmq.push(['set', {'user name': data.name}]);
+				_kmq.push(['set', {'user email': data.email}]);
+				_kmq.push(['alias', old_identity, KM.i()]);
+			}
+		}
+
+		// --- GA ---
+		if (typeof ga !== undefined) {
+			ga('send', 'event', 'Enterprize Token Granted', 'Номер фишки', data.client_id);
+			ga('set', '&uid', data.client_id);
+		}
+	},
 
 	enable : true
 }
