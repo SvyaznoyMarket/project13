@@ -8,7 +8,7 @@ trait ViewHelperTrait {
     /**
      * @return Helper\View
      */
-    protected function getHelper() {
+    protected function getViewHelper() {
         if (!isset($GLOBALS[__METHOD__])) {
             $GLOBALS[__METHOD__] = new Helper\View();
         }

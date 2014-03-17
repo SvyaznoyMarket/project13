@@ -21,7 +21,7 @@ class ProductButton {
 
     public function __construct() {
         $this->router = $this->getRouter();
-        $this->helper = $this->getHelper();
+        $this->helper = $this->getViewHelper();
     }
 
     /**

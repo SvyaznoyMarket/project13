@@ -8,7 +8,7 @@ trait DateHelperTrait {
     /**
      * @return Helper\Date
      */
-    protected function getHelper() {
+    protected function getDateHelper() {
         if (!isset($GLOBALS[__METHOD__])) {
             $GLOBALS[__METHOD__] = new Helper\Date();
         }
