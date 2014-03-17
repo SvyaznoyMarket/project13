@@ -7,6 +7,8 @@ use EnterSite\Model;
 class NearestDelivery {
     const ID_NOW = '4';
 
+    const TOKEN_STANDARD = 'standart';
+    const TOKEN_SELF = 'self';
     const TOKEN_NOW = 'now';
 
     /** @var string */

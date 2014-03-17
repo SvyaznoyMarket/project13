@@ -48,6 +48,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $shownOldPrice;
         /** @var Partial\Cart\ProductButton|null */
         public $cartButton;
+        /** @var Product\DeliveryBlock */
+        public $deliveryBlock;
         /** @var string */
         public $description;
         /** @var Product\Photo[] */
@@ -65,6 +67,11 @@ namespace EnterSite\Model\Page\ProductCard\Content {
 
 namespace EnterSite\Model\Page\ProductCard\Content\Product {
     use EnterSite\Model\Partial;
+
+    class DeliveryBlock {
+        /** @var DeliveryBlock\Delivery[] */
+        public $deliveries = [];
+    }
 
     class Photo {
         /** @var string */
@@ -88,6 +95,32 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
     class ReviewBlock {
         /** @var ReviewBlock\Review[] */
         public $reviews = [];
+    }
+}
+
+namespace EnterSite\Model\Page\ProductCard\Content\Product\DeliveryBlock {
+    class Delivery {
+        /** @var string */
+        public $token;
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $priceText;
+        /** @var string */
+        public $deliveredAtText;
+        /** @var bool */
+        public $hasShops;
+        /** @var Delivery\Shop[] */
+        public $shops = [];
+    }
+}
+
+namespace EnterSite\Model\Page\ProductCard\Content\Product\DeliveryBlock\Delivery {
+    class Shop {
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $url;
     }
 }
 

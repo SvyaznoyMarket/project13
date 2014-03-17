@@ -11,6 +11,8 @@ class Shop {
     /** @var string */
     public $id;
     /** @var string */
+    public $token;
+    /** @var string */
     public $name;
     /** @var string */
     public $regionId;
@@ -40,6 +42,7 @@ class Shop {
      */
     public function import(array $data) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('geo_id', $data)) $this->regionId = (string)$data['geo_id'];
         if (array_key_exists('working_time', $data)) $this->regime = (string)$data['working_time'];

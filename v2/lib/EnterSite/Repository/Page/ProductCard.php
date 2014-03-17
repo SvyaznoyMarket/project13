@@ -2,7 +2,9 @@
 
 namespace EnterSite\Repository\Page;
 
+use EnterSite\RouterTrait;
 use EnterSite\DateHelperTrait;
+use EnterSite\TranslateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -10,9 +12,7 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use DateHelperTrait {
-        DateHelperTrait::getHelper as getDateHelper;
-    }
+    use RouterTrait, DateHelperTrait, TranslateHelperTrait;
 
     /**
      * @param Page $page
@@ -21,7 +21,9 @@ class ProductCard {
     public function buildObjectByRequest(Page $page, ProductCard\Request $request) {
         (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
 
+        $router = $this->getRouter();
         $dateHelper = $this->getDateHelper();
+        $translateHelper = $this->getTranslateHelper();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $productCardRepository = new Repository\Partial\ProductCard();
         $ratingRepository = new Repository\Partial\Rating();
@@ -36,6 +38,51 @@ class ProductCard {
         $page->content->product->oldPrice = $productModel->oldPrice;
         $page->content->product->shownOldPrice = $productModel->oldPrice ? number_format((float)$productModel->oldPrice, 0, ',', ' ') : null;
         $page->content->product->cartButton = $cartProductButtonRepository->getObject($productModel);
+
+        // доставка товара
+        if ((bool)$productModel->nearestDeliveries) {
+            $page->content->product->deliveryBlock = new Page\Content\Product\DeliveryBlock();
+            foreach ($productModel->nearestDeliveries as $deliveryModel) {
+                $delivery = new Page\Content\Product\DeliveryBlock\Delivery();
+
+                if (Model\Product\NearestDelivery::TOKEN_STANDARD == $deliveryModel->token) {
+                    $delivery->name = 'Доставка';
+                } else if (Model\Product\NearestDelivery::TOKEN_SELF == $deliveryModel->token) {
+                    $delivery->name = 'Самовывоз';
+                } else if (Model\Product\NearestDelivery::TOKEN_NOW == $deliveryModel->token) {
+                    $delivery->deliveredAtText = 'Сегодня есть в магазинах';
+                } else {
+                    continue;
+                }
+
+                if (in_array($deliveryModel->token, [Model\Product\NearestDelivery::TOKEN_STANDARD, Model\Product\NearestDelivery::TOKEN_SELF])) {
+                    $delivery->priceText = !$deliveryModel->price
+                        ? 'бесплатно'
+                        : (number_format((float)$deliveryModel->price, 0, ',', ' ') . ' p')
+                    ;
+                    if ($deliveryModel->deliveredAt) {
+                        $delivery->deliveredAtText = $translateHelper->humanizeDate($deliveryModel->deliveredAt);
+                    }
+                }
+
+                $delivery->token = $deliveryModel->token;
+
+                if (Model\Product\NearestDelivery::TOKEN_NOW == $deliveryModel->token) {
+                    $delivery->hasShops = true;
+                    foreach ($deliveryModel->shopsById as $shopModel) {
+                        if (!$shopModel->region) continue;
+
+                        $shop = new Page\Content\Product\DeliveryBlock\Delivery\Shop();
+                        $shop->name = $shopModel->name;
+                        $shop->url = $router->getUrlByRoute(new Routing\ShopCard\Get($shopModel->token, $shopModel->region->token));
+
+                        $delivery->shops[] = $shop;
+                    }
+                }
+
+                $page->content->product->deliveryBlock->deliveries[] = $delivery;
+            }
+        }
 
         // фотографии товара
         foreach ($productModel->media->photos as $photoModel) {
