@@ -33,6 +33,6 @@ class Translate {
             return 'Послезавтра, ' . $date->format('d.m.Y');
         }
 
-        return 'через ' . ($interval->days - 1) . ' ' . $this->numberChoice(($interval->days - 1), array('день', 'дня', 'дней')) . ' (' . $date->format('d.m.Y') . ')';
+        return 'через ' . ($interval->days - 1) . ' ' . $this->numberChoice(($interval->days - 1), ['день', 'дня', 'дней']) . ' (' . $date->format('d.m.Y') . ')';
     }
 }

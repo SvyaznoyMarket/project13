@@ -54,6 +54,14 @@ class ProductCard {
             return (new Controller\Redirect())->execute($product->link. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 301);
         }
 
+        // запрос дерева категорий для меню
+        $categoryListQuery = new Query\Product\Category\GetTreeList($region, 3);
+        $curl->prepare($categoryListQuery);
+
+        // запрос меню
+        $mainMenuListQuery = new Query\MainMenu\GetList();
+        $curl->prepare($mainMenuListQuery);
+
         // запрос доставки товара
         $deliveryListQuery = null;
         if ($product->isBuyable) {
@@ -94,6 +102,9 @@ class ProductCard {
         }
 
         $curl->execute(1, 2);
+
+        // меню
+        $mainMenuList = (new Repository\MainMenu())->getObjectListByQuery($mainMenuListQuery, $categoryListQuery);
 
         // отзывы товара
         $reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
@@ -151,6 +162,7 @@ class ProductCard {
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCard\Request();
         $pageRequest->region = $region;
+        $pageRequest->mainMenuList = $mainMenuList;
         $pageRequest->product = $product;
         $pageRequest->accessoryCategories = $accessoryCategories;
         $pageRequest->reviews = $reviews;
