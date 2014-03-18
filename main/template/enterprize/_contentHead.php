@@ -24,12 +24,12 @@ $routeName = \App::request()->attributes->get('route');
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
     <? if ($hasSearch): ?>
-    <noindex>
-        <div class="searchbox">
-            <?= $page->render('search/form-default', ['searchQuery' => $page->getParam('searchQuery')]) ?>
-            <div id="searchAutocomplete"></div>
-        </div>
-    </noindex>
+        <noindex>
+            <div class="searchbox">
+                <?= $page->render('search/form-default', ['searchQuery' => $page->getParam('searchQuery')]) ?>
+                <div id="searchAutocomplete"></div>
+            </div>
+        </noindex>
     <? endif ?>
 
     <div class="clear"></div>
@@ -74,7 +74,7 @@ $routeName = \App::request()->attributes->get('route');
 
             <? if (!$user->getEntity() && in_array($routeName, ['enterprize', 'enterprize.show', 'enterprize.form.show'])): ?>
                 <?= $page->render('enterprize/_auth') ?>
-                <div class="enterPrize__logIn">У тебя есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="bAuthLink">Войти</a></div>
+                <div class="enterPrize__logIn">У Вас есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="bAuthLink">Войти</a></div>
             <? endif ?>
 
             <? if (in_array($routeName, ['enterprize.confirmPhone.show', 'enterprize.confirmEmail.show'])): ?>
@@ -84,10 +84,10 @@ $routeName = \App::request()->attributes->get('route');
             <? if ('enterprize.complete' === $routeName): ?>
                 <div class="completeTitleEP">
                     <? if (isset($member) && true === $member): ?>
-                        <p class="completeTitleEP__title">Мы отправили номер фишки на твой e-mail и мобильный</p>
+                        <p class="completeTitleEP__title">Мы отправили номер фишки на Ваш e-mail и мобильный</p>
                     <? else: ?>
-                        <div class="completeTitleEP__title">Ты &#8212; в игре!</div>
-                        <p class="completeTitleEP__text">Мы отправили номер фишки на твой e-mail и мобильный</p>
+                        <div class="completeTitleEP__title">Вы &#8212; в игре!</div>
+                        <p class="completeTitleEP__text">Мы отправили номер фишки на Ваш e-mail и мобильный</p>
                     <? endif ?>
                 </div>
             <? endif ?>
