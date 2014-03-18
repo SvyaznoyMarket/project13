@@ -88,7 +88,7 @@ $routeName = \App::request()->attributes->get('route');
                     <? else: ?>
                         <div class="completeTitleEP__title">Вы &#8212; в игре!</div>
                         <p class="completeTitleEP__text">Мы отправили номер фишки на Ваш e-mail и мобильный</p>
-          М          <? endif ?>
+                    <? endif ?>
                 </div>
             <? endif ?>
         </div>
