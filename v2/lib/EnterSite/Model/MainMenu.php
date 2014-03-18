@@ -1,36 +1,54 @@
 <?php
 
-namespace EnterSite\Model;
+namespace EnterSite\Model {
+    use EnterSite\Model\ImportArrayConstructorTrait;
+    use EnterSite\Model;
 
-class MainMenu {
-    const ACTION_SEPARATOR = 'separator';
-    const ACTION_LINK = 'link';
-    const ACTION_PRODUCT_CATEGORY = 'category';
-    const ACTION_PRODUCT_CATALOG = 'catalog';
-    const ACTION_PRODUCT = 'product';
+    class MainMenu {
+        use ImportArrayConstructorTrait;
 
-    /** @var string */
-    public $name;
-    /** @var string */
-    public $image;
-    /** @var string */
-    public $action;
-    /** @var array */
-    public $item;
-    /** @var int */
-    public $firstItem;
-    /** @var MainMenu[] */
-    public $child = [];
-    /** @var string */
-    public $link;
-    /** @var string */
-    public $color;
-    /** @var string */
-    public $colorHover;
-    /** @var string */
-    public $css;
-    /** @var string */
-    public $cssHover;
-    /** @var int */
-    public $priority;
+        /** @var Model\MainMenu\Element[] */
+        public $elements = [];
+
+        /**
+         * @param array $data
+         */
+        public function import(array $data) {
+            if (isset($data['items'][0])) {
+                foreach ($data['items'] as $elementItem) {
+                    $this->elements[] = new Model\MainMenu\Element($elementItem);
+                }
+            }
+        }
+    }
+}
+
+namespace EnterSite\Model\MainMenu {
+    use EnterSite\Model\ImportArrayConstructorTrait;
+    use EnterSite\Model;
+
+    class Element {
+        use ImportArrayConstructorTrait;
+
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $url;
+        /** @var string */
+        public $css;
+        /** @var string */
+        public $cssHover;
+        /** @var Model\MainMenu\Element[] */
+        public $children = [];
+
+        /**
+         * @param array $data
+         */
+        public function import(array $data) {
+            if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
+            if (array_key_exists('link', $data)) $this->url = (string)$data['link'];
+            if (array_key_exists('css', $data)) $this->css = (string)$data['css'];
+            if (array_key_exists('cssHover', $data)) $this->cssHover = (string)$data['cssHover'];
+        }
+    }
 }

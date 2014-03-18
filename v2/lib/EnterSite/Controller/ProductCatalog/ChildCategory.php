@@ -97,7 +97,7 @@ class ChildCategory {
         $curl->prepare($productListQuery);
 
         // запрос меню
-        $mainMenuListQuery = new Query\MainMenu\GetList();
+        $mainMenuListQuery = new Query\MainMenu\GetItem();
         $curl->prepare($mainMenuListQuery);
 
         // запрос настроек каталога
@@ -124,7 +124,7 @@ class ChildCategory {
         $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
 
         // меню
-        $mainMenuList = (new Repository\MainMenu())->getObjectListByQuery($mainMenuListQuery, $categoryListQuery);
+        $mainMenuList = (new Repository\MainMenu())->getObjectByQuery($mainMenuListQuery, $categoryListQuery);
 
         // настройки каталога
         $catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;

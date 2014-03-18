@@ -59,7 +59,7 @@ class ProductCard {
         $curl->prepare($categoryListQuery);
 
         // запрос меню
-        $mainMenuListQuery = new Query\MainMenu\GetList();
+        $mainMenuListQuery = new Query\MainMenu\GetItem();
         $curl->prepare($mainMenuListQuery);
 
         // запрос доставки товара
@@ -104,7 +104,7 @@ class ProductCard {
         $curl->execute(1, 2);
 
         // меню
-        $mainMenuList = (new Repository\MainMenu())->getObjectListByQuery($mainMenuListQuery, $categoryListQuery);
+        $mainMenuList = (new Repository\MainMenu())->getObjectByQuery($mainMenuListQuery, $categoryListQuery);
 
         // отзывы товара
         $reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];

@@ -13,18 +13,21 @@ class MainMenu {
     /**
      * @param Query $menuListQuery
      * @param Query $categoryListQuery
-     * @return Model\MainMenu[]
+     * @return \EnterSite\Model\MainMenu\Element[]
      */
-    public function getObjectListByQuery(Query $menuListQuery, Query $categoryListQuery = null) {
-        $menuList = [];
+    public function getObjectByQuery(Query $menuListQuery, Query $categoryListQuery = null) {
+        $menu = new Model\MainMenu();
 
-        $menuData = $menuListQuery->getResult();
+        //$menuData = $menuListQuery->getResult();
+        $menuData = json_decode(file_get_contents($this->getConfig()->dir . '/v2/data/cms/v2/main-menu.json'), true);
         $categoryData = $categoryListQuery->getResult();
 
-        foreach ($menuData as $menuItem) {
+        foreach ($menuData['items'] as $elementItem) {
+            $element = new Model\MainMenu\Element($elementItem);
 
+            $menu->elements[] = $element;
         }
 
-        return $menuList;
+        return $menu;
     }
 }

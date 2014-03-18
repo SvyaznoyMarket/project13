@@ -6,7 +6,7 @@ use Enter\Curl\Query;
 use EnterSite\Curl\Query\CmsQueryTrait;
 use EnterSite\Curl\Query\Url;
 
-class GetList extends Query {
+class GetItem extends Query {
     use CmsQueryTrait;
 
     /** @var array */
@@ -25,6 +25,6 @@ class GetList extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data['items'][0]) ? $data['items'] : [];
+        $this->result = isset($data['items'][0]) ? $data : ['items' => []];
     }
 }
