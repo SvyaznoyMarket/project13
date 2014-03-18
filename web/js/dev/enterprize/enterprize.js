@@ -296,7 +296,10 @@
 			// Страница complete
 			// скрываем текстовый блок если юзер авторизован и он является EnterPrize Member
 			if ( $('.jsCompleteTitleEP').length && data.hasEnterprizeCoupon !== undefined) {
-				data.hasEnterprizeCoupon && $('.jsCompleteTitleEP').hide();
+				if ( data.hasEnterprizeCoupon ) {
+					$('.jsCompleteTitleEP').hide();
+					$('.jsCompleteTitleEP').parents().find('.completeTitleEP__text').addClass('completeTitleEP__title');
+				}
 			}
 		};
 	// end of functions
