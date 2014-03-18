@@ -1103,7 +1103,6 @@ window.ANALYTICS = {
 
 		// --- Kiss ---
 		if (typeof _kmq !== undefined) {
-			console.warn('Kiss');
 			toKiss = {
 				'[Ent_Req] Name': data.name,
 				'[Ent_Req] Phone': data.mobile,

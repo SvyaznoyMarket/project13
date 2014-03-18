@@ -54,7 +54,7 @@ class ConfirmPhoneAction {
             'enterprizeToken' => $enterpizeCoupon->getToken(),
             'date'            => date('d.m.Y'),
             'time'            => date('H:i'),
-            'client_id'       => null,
+            'client_id'       => !empty($data['token']) ? $data['token'] : \App::user()->getToken(),
         ];
         $enterprizeData = array_merge($enterprizeDataDefault, array_intersect_key($data, $enterprizeDataDefault));
 
