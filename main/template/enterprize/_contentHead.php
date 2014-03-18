@@ -7,6 +7,7 @@
  * @var $hasSeparateLine bool
  * @var $extendedMargin  bool
  * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null
+ * @var $member          bool
  */
 ?>
 
@@ -23,12 +24,12 @@ $routeName = \App::request()->attributes->get('route');
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
     <? if ($hasSearch): ?>
-    <noindex>
-        <div class="searchbox">
-            <?= $page->render('search/form-default', ['searchQuery' => $page->getParam('searchQuery')]) ?>
-            <div id="searchAutocomplete"></div>
-        </div>
-    </noindex>
+        <noindex>
+            <div class="searchbox">
+                <?= $page->render('search/form-default', ['searchQuery' => $page->getParam('searchQuery')]) ?>
+                <div id="searchAutocomplete"></div>
+            </div>
+        </noindex>
     <? endif ?>
 
     <div class="clear"></div>
@@ -82,8 +83,12 @@ $routeName = \App::request()->attributes->get('route');
 
             <? if ('enterprize.complete' === $routeName): ?>
                 <div class="completeTitleEP">
-                    <div class="completeTitleEP__title jsCompleteTitleEP">Вы &#8212; в игре!</div>
-                    <p class="completeTitleEP__text">Мы отправили номер фишки на Ваш e-mail и мобильный</p>
+                    <? if (isset($member) && true === $member): ?>
+                        <p class="completeTitleEP__title">Мы отправили номер фишки на Ваш e-mail и мобильный</p>
+                    <? else: ?>
+                        <div class="completeTitleEP__title">Вы &#8212; в игре!</div>
+                        <p class="completeTitleEP__text">Мы отправили номер фишки на Ваш e-mail и мобильный</p>
+                    <? endif ?>
                 </div>
             <? endif ?>
         </div>
