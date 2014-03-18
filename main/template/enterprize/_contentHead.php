@@ -81,8 +81,8 @@ $routeName = \App::request()->attributes->get('route');
             <? endif ?>
 
             <? if ('enterprize.complete' === $routeName): ?>
-                <div class="completeTitleEP jsCompleteTitleEP">
-                    <div class="completeTitleEP__title">Ты &#8212; в игре!</div>
+                <div class="completeTitleEP">
+                    <div class="completeTitleEP__title jsCompleteTitleEP">Ты &#8212; в игре!</div>
                     <p class="completeTitleEP__text">Мы отправили номер фишки на твой e-mail и мобильный</p>
                 </div>
             <? endif ?>
