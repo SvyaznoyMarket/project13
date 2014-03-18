@@ -434,12 +434,18 @@
 
 					if ( this.form.data('redirect') ) {
 						if ( typeof (response.data.link) !== 'undefined' ) {
-							console.info('try to redirect to2 ' + response.data.link);
-							console.log(typeof response.data.link);
+							var
+								url = response.data.link,
+								sharpNum = url.indexOf('#'); // при false вернёт -1
 
-							document.location.href = response.data.link;
+							if ( sharpNum > 0 ) {
+								url = url.substr(0, sharpNum);
+							}
 
-							return false;
+							console.info('try to redirect to2 ' + url);
+							console.log(typeof(url));
+
+							document.location.href = url;
 						}
 						else {
 							// this.form.unbind('submit');
