@@ -14,7 +14,7 @@ class GetGroupedListByProductIdList extends Query {
 
     public function __construct($productIds) {
         $this->url = new Url();
-        $this->url->path = 'video/product/index.json';
+        $this->url->path = 'v1/video/product/index.json';
         $this->data = [
             'id' => $productIds,
         ];

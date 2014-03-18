@@ -33,7 +33,7 @@ class ImportConfig {
         $config->coreService->retryCount = $importedConfig->coreV2['retryCount'];
         $config->coreService->clientId = $importedConfig->coreV2['client_id'];
 
-        $config->cmsService->url = $importedConfig->dataStore['url'];
+        $config->cmsService->url = str_replace('/v1/', '/', $importedConfig->dataStore['url']);
         $config->cmsService->timeout = $importedConfig->dataStore['timeout'];
         $config->cmsService->retryCount = $importedConfig->dataStore['retryCount'];
 

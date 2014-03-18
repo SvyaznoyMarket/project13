@@ -16,7 +16,7 @@ return function(\EnterSite\Config\Application $config) {
     $config->coreService->retryCount = 2;
     $config->coreService->clientId = 'site';
 
-    $config->cmsService->url = 'http://cms.enter.ru/v1/';
+    $config->cmsService->url = 'http://cms.enter.ru/';
     $config->cmsService->timeout = 1;
     $config->cmsService->retryCount = 2;
 

@@ -14,7 +14,7 @@ class GetListByProductId extends Query {
 
     public function __construct($productId) {
         $this->url = new Url();
-        $this->url->path = sprintf('video/product/%s.json', $productId);
+        $this->url->path = sprintf('v1/video/product/%s.json', $productId);
 
         $this->init();
     }

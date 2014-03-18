@@ -21,6 +21,10 @@ class MainMenu {
         $menuData = $menuListQuery->getResult();
         $categoryData = $categoryListQuery->getResult();
 
+        foreach ($menuData as $menuItem) {
+            
+        }
+
         return $menuList;
     }
 }

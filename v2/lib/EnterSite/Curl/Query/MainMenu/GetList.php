@@ -14,7 +14,7 @@ class GetList extends Query {
 
     public function __construct() {
         $this->url = new Url();
-        $this->url->path = 'main-menu.json';
+        $this->url->path = 'v2/main-menu.json';
 
         $this->init();
     }
@@ -25,6 +25,6 @@ class GetList extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data['item'][0]) ? $data : [];
+        $this->result = isset($data['items'][0]) ? $data['items'] : [];
     }
 }
