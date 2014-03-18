@@ -19,7 +19,7 @@ class GetListByCartProductList extends Query {
      */
     public function __construct(array $cartProducts, Model\Region $region = null) {
         $this->url = new Url();
-        $this->url->path = 'delivery/calc';
+        $this->url->path = 'v2/delivery/calc';
         if ($region) {
             $this->url->query['geo_id'] = $region->id;
         }

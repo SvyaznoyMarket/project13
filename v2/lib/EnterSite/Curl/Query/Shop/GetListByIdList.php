@@ -18,7 +18,7 @@ class GetListByIdList extends Query {
      */
     public function __construct(array $ids) {
         $this->url = new Url();
-        $this->url->path = 'shop/get';
+        $this->url->path = 'v2/shop/get';
         $this->url->query = [
             'id' => $ids,
         ];

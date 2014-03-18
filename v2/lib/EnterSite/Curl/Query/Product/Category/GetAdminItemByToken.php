@@ -19,7 +19,7 @@ class GetAdminItemByToken extends Query {
      */
     public function __construct($token, Model\Region $region) {
         $this->url = new Url();
-        $this->url->path = 'category/get-seo';
+        $this->url->path = 'v2/category/get-seo';
         $this->url->query = [
             'slug'   => [$token],
             'geo_id' => $region->id,

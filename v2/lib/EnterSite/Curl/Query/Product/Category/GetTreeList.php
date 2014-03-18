@@ -15,7 +15,7 @@ class GetTreeList extends Query {
 
     public function __construct(Model\Region $region = null, $maxLevel = null) {
         $this->url = new Url();
-        $this->url->path = 'category/tree';
+        $this->url->path = 'v2/category/tree';
         $this->url->query = [
             'is_load_parents' => true,
         ];

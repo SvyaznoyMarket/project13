@@ -27,7 +27,7 @@ class ImportConfig {
 
         $config->curl->queryChunkSize = $importedConfig->coreV2['chunk_size'];
 
-        $config->coreService->url = $importedConfig->coreV2['url'];
+        $config->coreService->url = str_replace('/v2/', '/', $importedConfig->coreV2['url']);
         $config->coreService->timeout = $importedConfig->coreV2['timeout'];
         $config->coreService->hugeTimeout = $importedConfig->coreV2['hugeTimeout'];
         $config->coreService->retryCount = $importedConfig->coreV2['retryCount'];
@@ -38,7 +38,7 @@ class ImportConfig {
         $config->cmsService->retryCount = $importedConfig->dataStore['retryCount'];
 
         $config->adminService->enabled = $importedConfig->shopScript['enabled'];
-        $config->adminService->url = $importedConfig->shopScript['url'];
+        $config->adminService->url = str_replace('/v2/', '/', $importedConfig->shopScript['url']);
         $config->adminService->timeout = $importedConfig->shopScript['timeout'];
         $config->adminService->retryCount = $importedConfig->shopScript['retryCount'];
 

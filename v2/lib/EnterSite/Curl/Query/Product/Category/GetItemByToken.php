@@ -19,7 +19,7 @@ class GetItemByToken extends Query {
      */
     public function __construct($token, Model\Region $region) {
         $this->url = new Url();
-        $this->url->path = 'category/get';
+        $this->url->path = 'v2/category/get';
         $this->url->query = [
             'slug'   => [$token],
             'geo_id' => $region->id,

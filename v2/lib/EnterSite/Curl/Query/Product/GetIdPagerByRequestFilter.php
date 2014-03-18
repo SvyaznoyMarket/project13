@@ -36,7 +36,7 @@ class GetIdPagerByRequestFilter extends Query {
         }
 
         $this->url = new Url();
-        $this->url->path = 'listing/list';
+        $this->url->path = 'v2/listing/list';
         $this->url->query = [
             'filter' => [
                 'filters' => $filterData,

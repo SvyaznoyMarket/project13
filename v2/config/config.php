@@ -11,7 +11,7 @@ return function(\EnterSite\Config\Application $config) {
     $config->region->defaultId = '14974';
     $config->region->cookieName = 'geoshop';
 
-    $config->coreService->url = 'http://api.enter.ru/v2/';
+    $config->coreService->url = 'http://api.enter.ru/';
     $config->coreService->timeout = 5;
     $config->coreService->retryCount = 2;
     $config->coreService->clientId = 'site';
@@ -21,7 +21,7 @@ return function(\EnterSite\Config\Application $config) {
     $config->cmsService->retryCount = 2;
 
     $config->adminService->enabled = true;
-    $config->adminService->url = 'http://admin.enter.ru/v2/';
+    $config->adminService->url = 'http://admin.enter.ru/';
     $config->adminService->timeout = 2;
     $config->adminService->retryCount = 2;
 

@@ -17,7 +17,7 @@ class GetItemById extends Query {
      */
     public function __construct($id) {
         $this->url = new Url();
-        $this->url->path = 'geo/get';
+        $this->url->path = 'v2/geo/get';
         $this->url->query = [
             'id' => $id,
         ];

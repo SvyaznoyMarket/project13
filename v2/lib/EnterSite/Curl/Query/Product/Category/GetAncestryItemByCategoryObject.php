@@ -19,7 +19,7 @@ class GetAncestryItemByCategoryObject extends Query {
      */
     public function __construct(Model\Product\Category $category, Model\Region $region = null) {
         $this->url = new Url();
-        $this->url->path = 'category/tree';
+        $this->url->path = 'v2/category/tree';
         $this->url->query = [
             'root_id'         => $category->id,
             'max_level'       => $category->level - 1,

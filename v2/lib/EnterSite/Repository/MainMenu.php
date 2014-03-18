@@ -22,7 +22,7 @@ class MainMenu {
         $categoryData = $categoryListQuery->getResult();
 
         foreach ($menuData as $menuItem) {
-            
+
         }
 
         return $menuList;

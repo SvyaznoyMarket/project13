@@ -19,7 +19,7 @@ class GetItemByToken extends Query {
      */
     public function __construct($token, Model\Region $region = null) {
         $this->url = new Url();
-        $this->url->path = 'product/get';
+        $this->url->path = 'v2/product/get';
         $this->url->query = [
             'select_type' => 'slug',
             'slug'        => $token,
