@@ -94,11 +94,6 @@
 
         <input type="text" id="user_occupation" value="<?= $form->getOccupation() ?>" name="user[occupation]" class="text width418 mb10" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> />
 
-        <div class="bInputList">
-            <input type="checkbox" id="user_is_subscribe" name="user[is_subscribe]" value="1" autocomplete="off" class="bCustomInput mCustomCheckbox" <?= $form->getIsSubscribed() ? 'checked="checked"' : '' ?> <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> />
-            <label class="bCustomLabel" for="user_is_subscribe">Согласен получать рекламную рассылку</label>
-        </div>
-
         <input type="submit" value="Сохранить изменения" id="bigbutton" class="btnSave button bigbutton<? if ($form->getIsDisabled()): ?> mDisabled<? endif ?>" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> >
 
     </div>
