@@ -7,6 +7,6 @@ use EnterSite\Model;
 class Request {
     /** @var Model\Region */
     public $region;
-    /** @var \EnterSite\Model\MainMenu\Element[] */
+    /** @var Model\MainMenu\Element[] */
     public $mainMenuList = [];
 }
