@@ -73,7 +73,7 @@ $routeName = \App::request()->attributes->get('route');
 
             <? if (!$user->getEntity() && in_array($routeName, ['enterprize', 'enterprize.show', 'enterprize.form.show'])): ?>
                 <?= $page->render('enterprize/_auth') ?>
-                <div class="enterPrize__logIn">У тебя есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="bAuthLink">Войти</a></div>
+                <div class="enterPrize__logIn">У Вас есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="bAuthLink">Войти</a></div>
             <? endif ?>
 
             <? if (in_array($routeName, ['enterprize.confirmPhone.show', 'enterprize.confirmEmail.show'])): ?>
@@ -82,8 +82,8 @@ $routeName = \App::request()->attributes->get('route');
 
             <? if ('enterprize.complete' === $routeName): ?>
                 <div class="completeTitleEP">
-                    <div class="completeTitleEP__title jsCompleteTitleEP">Ты &#8212; в игре!</div>
-                    <p class="completeTitleEP__text">Мы отправили номер фишки на твой e-mail и мобильный</p>
+                    <div class="completeTitleEP__title jsCompleteTitleEP">Вы &#8212; в игре!</div>
+                    <p class="completeTitleEP__text">Мы отправили номер фишки на Ваш e-mail и мобильный</p>
                 </div>
             <? endif ?>
         </div>
