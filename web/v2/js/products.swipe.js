@@ -1,11 +1,4 @@
 $(function() {
-  var imgHeight = $('.productDescImgList__img').height();
-
-  //$('.productDescImgList__item').css({'height': imgHeight});
-  $(".productDescImgList").css({'height': imgHeight});
-  $('.productDescImgList__item:first').addClass('page-current');
-  $('.productDescImgList__item.page-current').next('.productDescImgList__item').addClass('page-right');
-  $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left');
  
   $.fn.swipe = function( options ) {
     // Default thresholds & swipe functions
@@ -68,6 +61,61 @@ $(function() {
     });
      
   };
+
+  var imgHeight = $('.productDescImgList__img').height(),
+
+      swipeItem = $('.productDescImgList__item'),
+      swipeItemLeft = $('.productDescImgList__item.page-left'),
+      swipeItemCurrent = $('.productDescImgList__item.page-current'),
+      swipeItemRight = $('.productDescImgList__item.page-right'),
+
+      leftClass = 'page-left',
+      currentClass = 'page-current',
+      rightClass = 'page-right',
+      animClass = 'page-animating',
+      currentAnimClass = 'page-current page-animating';
+
+    var imgHeight = $('.productDescImgList__img').height();
+
+    $(".productDescImgList").css({'height': imgHeight});
+    $('.productDescImgList__item').css({'opacity': '0'});
+    $('.productDescImgList__item:first').addClass(currentClass).css({'opacity':'1'});
+    $('.productDescImgList__item.page-current').next().addClass(rightClass);
+
+    
+
+    $('.leftSwipe').hide();
+
+    var 
+      slideSwipeLeft = function slideSwipeLeft() {
+        $('.rightSwipe').show();
+
+        $('.productDescImgList__item.page-right').removeClass('page-right').css({'opacity':'0'});
+        $('.productDescImgList__item.page-current').removeClass('page-current').removeClass('page-animating').addClass('page-right').css({'opacity':'0'});
+        $('.productDescImgList__item.page-left').removeClass('page-left').addClass('page-current page-animating').css({'opacity':'1'});
+        $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left').css({'opacity':'0'});
+
+        if( $('.productDescImgList__item').first().hasClass('page-current') ) {
+          $('.leftSwipe').hide();
+        }
+      },
+
+      slideSwipeRight = function slideSwipeRight() {
+        console.info("swipe/slide right");
+
+        $('.leftSwipe').show();
+
+        $('.productDescImgList__item.page-left').removeClass('page-left');
+        $('.productDescImgList__item.page-current').removeClass('page-current').removeClass('page-animating').addClass('page-left').css({'opacity':'0'});
+        $('.productDescImgList__item.page-right').removeClass('page-right').addClass('page-current page-animating').css({'opacity':'1'});
+        $('.productDescImgList__item.page-current').next('.productDescImgList__item').addClass('page-right').css({'opacity':'0'});
+        $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left').css({'opacity':'0'});
+
+        if( $('.productDescImgList__item').last().hasClass('page-current') ) {
+          $('.rightSwipe').hide();
+        }
+
+      };
      
   $.fn.swipe.options = {
     'threshold': {
@@ -76,20 +124,17 @@ $(function() {
     },
 
     'swipeLeft': function() {
-      $('.productDescImgList__item.page-current').removeClass('page-current').addClass('page-left');
-      $('.productDescImgList__item.page-right').removeClass('page-right').addClass('page-current page-animating');
-      $('.productDescImgList__item.page-current').next('.productDescImgList__item').addClass('page-right');
-      $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left');
+      slideSwipeRight();
     },
 
     'swipeRight': function() {
-      $('.productDescImgList__item.page-current').removeClass('page-current').addClass('page-right');
-      $('.productDescImgList__item.page-left').removeClass('page-left').addClass('page-current page-animating');
-      $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left');
+      slideSwipeLeft();
     }
   };
 
   $('.productDescImgList__item').swipe();
 
+  $('.leftSwipe').bind('click', slideSwipeLeft);
 
+  $('.rightSwipe').bind('click', slideSwipeRight);
 });

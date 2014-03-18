@@ -29,9 +29,9 @@
                         <li class="productDescImgList__item"><img class="productDescImgList__img" src="{{url}}" alt="{{&name}}" /></li>
                     {{/product.photos}}
                 </ul>
-
-                <span class="x"></span>
-                <span class="y"></span>
+                <div style="background: #000; width: 30px; height: 50px; display: inline-block; margin-right: 20px;" class="leftSwipe"></div>
+                
+                <div style="background: #000; width: 30px; height: 50px; display: inline-block;" class="rightSwipe"></div>
             </div>
             <!--/ Изображение товара -->
 
@@ -184,33 +184,37 @@
                     <!--/ Выбор варианта покупки, каунтер -->
 
                     <!-- Информация о доставке -->
-                    {{#product.deliveryBlock}}
                     <div class="deliveryInfo">
+
                         <ul class="deliveryList">
-                        {{#deliveries}}
-                            <li class="deliveryList__item deliveryList__item-{{token}}">
-                                {{#name}}
-                                    {{name}} {{#priceText}}<strong>{{priceText}}</strong>{{/priceText}}
-                                {{/name}}
-                                <span class="{{#name}}descText{{/name}}{{^name}}descTextDotted{{/name}}">{{deliveredAtText}}</span>
-
-                                {{#hasShops}}
-                                    <ul class="addressShopsList">
-                                    {{#shops}}
-                                        <li class="addressShopsList__item"><a class="" href="{{url}}">{{name}}</a></li>
-                                    {{/shops}}
-                                    </ul>
-                                {{/hasShops}}
+                            <li class="deliveryList__item deliveryList__item-standart">
+                                Доставка <strong>250 p</strong>
+                                <span class="descText">Завтра, 15.02.2014</span>
                             </li>
-                        {{/deliveries}}
 
-                            <!-- Нужно вынести из ul -->
+                            <li class="deliveryList__item deliveryList__item-self">
+                                Самовывоз <strong>бесплатно</strong>
+                                <span class="descText">Завтра, 15.02.2014</span>
+                            </li>
+
+                            <li class="deliveryList__item deliveryList__item-now">
+                                <span class="descTextDotted">Сегодня есть в магазинах</span>
+
+                                <ul class="addressShopsList">
+                                    <li class="addressShopsList__item"><a class="" href="">м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10</a></li>
+                                    <li class="addressShopsList__item"><a class="" href="">м. ВДНХ, пр-кт Мира, д. 211, ТРЦ "Золотой Вавилон"</a></li>
+                                    <li class="addressShopsList__item"><a class="" href="">м. Коньково, ул. Профсоюзная, вл. 118, ТЦ "Тропа"</a></li>
+                                    <li class="addressShopsList__item"><a class="" href="">м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10</a></li>
+                                    <li class="addressShopsList__item"><a class="" href="">м. ВДНХ, пр-кт Мира, д. 211, ТРЦ "Золотой Вавилон"</a></li>
+                                    <li class="addressShopsList__item"><a class="" href="">м. Коньково, ул. Профсоюзная, вл. 118, ТЦ "Тропа"</a></li>
+                                </ul>
+                            </li>
+
                             <li class="deliveryList__item deliveryList__item-oneClick">
                                 <a class="" href="">Купить в один клик</a>
                             </li>
                         </ul>
                     </div>
-                    {{/product.deliveryBlock}}
                     <!--/ Информация о доставке -->
                 </div>
             </div>
