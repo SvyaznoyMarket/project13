@@ -9475,7 +9475,6 @@
     color: #cbcbcb;
     border: 1px solid #f1f0f0;
     background: #f1f0f0;
-    width: 100px;
   }
   .btnBuy .btnBuy__eLink.mDisabled:hover {
     color: #cbcbcb;
@@ -11975,6 +11974,9 @@
     border: 1px solid #e6e6e6;
     background: #e6e6e6;
     color: #a6a6a6;
+  }
+  .bBtnLine .btnBuy__eLink.mDisabled {
+    width: 100px;
   }
   .bBtnLine .btnView {
     display: block;
