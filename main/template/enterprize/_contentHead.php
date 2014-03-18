@@ -7,6 +7,7 @@
  * @var $hasSeparateLine bool
  * @var $extendedMargin  bool
  * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null
+ * @var $member          bool
  */
 ?>
 
@@ -82,8 +83,12 @@ $routeName = \App::request()->attributes->get('route');
 
             <? if ('enterprize.complete' === $routeName): ?>
                 <div class="completeTitleEP">
-                    <div class="completeTitleEP__title jsCompleteTitleEP">Ты &#8212; в игре!</div>
-                    <p class="completeTitleEP__text">Мы отправили номер фишки на твой e-mail и мобильный</p>
+                    <? if (isset($member) && true === $member): ?>
+                        <p class="completeTitleEP__title">Мы отправили номер фишки на твой e-mail и мобильный</p>
+                    <? else: ?>
+                        <div class="completeTitleEP__title">Ты &#8212; в игре!</div>
+                        <p class="completeTitleEP__text">Мы отправили номер фишки на твой e-mail и мобильный</p>
+                    <? endif ?>
                 </div>
             <? endif ?>
         </div>

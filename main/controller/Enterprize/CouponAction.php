@@ -18,6 +18,9 @@ class CouponAction {
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
+        $user = \App::user()->getEntity();
+        $member = $user && $user->isEnterprizeMember() ? ['member' => 1] : [];
+
         $form = new \View\Enterprize\Form();
         $form->fromArray($data);
 
@@ -40,7 +43,7 @@ class CouponAction {
             );
             \App::logger()->info(['core.response' => $result], ['coupon', 'create']);
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete'));
+            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete', $member));
 
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
@@ -201,6 +204,7 @@ class CouponAction {
 
         $page = new \View\Enterprize\CouponCompletePage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
+        $page->setParam('member', (bool)$request->get('member', 0));
 
         return new \Http\Response($page->show());
     }
