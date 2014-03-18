@@ -2476,6 +2476,13 @@ img[height="0"] {
   .completeTitleEP__text {
     margin: 0;
   }
+  .lastFishka {
+    font-size: 14px;
+    margin: 0 0 20px 25px;
+  }
+  .lastFishka__link {
+    text-decoration: underline;
+  }
 }
 /*---END----Enter Prize---------*/
 /*------TCHIBO - верхнее меню Чибо, под продуктовым меню------*/
@@ -2493,7 +2500,7 @@ img[height="0"] {
     height: 42px;
     top: 9px;
     border-top: 1px solid #929292;
-    background: #002958;
+    background: #002a5a;
     color: #ffffff;
     position: relative;
   }
@@ -2567,7 +2574,7 @@ img[height="0"] {
     border-radius: 4px;
     padding: 5px 5px 8px;
     padding-left: 65px;
-    background: url("/styles/tchiboTitle/img/tchiboLogoTitle.png") no-repeat 10px 7px #002958;
+    background: url("/styles/tchiboTitle/img/tchiboLogoTitle.png") no-repeat 10px 7px #002a5a;
     color: #fff;
     font-size: 30px;
     line-height: 50px;
@@ -2641,13 +2648,13 @@ img[height="0"] {
     text-decoration: none;
   }
   .tchiboNav__list .link {
-    color: #000000;
+    color: #002a5a;
     display: block;
     font-size: 14px;
   }
   .tchiboNav__list .link:hover {
     text-decoration: underline;
-    color: #002958;
+    color: #002a5a;
   }
   .tchiboNav__list .itemText {
     display: inline-block;
@@ -2794,7 +2801,7 @@ img[height="0"] {
     border-radius: 4px;
     padding: 5px 5px 8px;
     padding-left: 125px;
-    background: url("/styles/tchibo/img/tchiboLogo.png") no-repeat 10px 7px #002958;
+    background: url("/styles/tchibo/img/tchiboLogo.png") no-repeat 10px 7px #002a5a;
     color: #fff;
     font-size: 14px;
     font-weight: 100;
@@ -2946,7 +2953,7 @@ img[height="0"] {
   }
   .bPromoCatalogSlider .bCatLine {
     position: absolute;
-    background-color: #002958;
+    background-color: #002a5a;
     background-color: rgba(0, 41, 88, 0.75);
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -3083,9 +3090,9 @@ img[height="0"] {
     padding: 5px 0;
   }
   .tchiboProducts .productInner__desc .inner {
-    width: 185px;
+    width: 200px;
     margin: 0 auto;
-    padding: 0 5px 0 10px;
+    padding: 0;
   }
   .tchiboProducts .productInner__desc .name {
     margin: 0 10px 2px 0;
@@ -3112,6 +3119,9 @@ img[height="0"] {
     height: 22px;
     font-size: 13px;
     line-height: 22px;
+  }
+  .tchiboProducts .productInner__desc .bBtnLine .btnBuy__eLink.mDisabled {
+    width: 100px;
   }
   .tchiboProducts .productInner__desc .bBtnLine .btnView {
     height: 22px;

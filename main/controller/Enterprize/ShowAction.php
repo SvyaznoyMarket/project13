@@ -13,6 +13,7 @@ class ShowAction {
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
+        $limit = null;
         if ($enterprizeToken) {
             \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
                 foreach ((array)$data as $item) {
@@ -21,11 +22,22 @@ class ShowAction {
                     }
                 }
             });
-            \App::dataStoreClient()->execute();
+
+            // получаем лимит для купона
+            \App::coreClientV2()->addQuery('coupon/limit', [], ['list' => [$enterprizeToken]], function($data) use (&$limit, $enterprizeToken){
+                if ((bool)$data && isset($data['detail'][$enterprizeToken])) {
+                    $limit = (int)$data['detail'][$enterprizeToken];
+                }
+            }, function(\Exception $e) {
+                \App::logger()->error($e->getMessage(), ['enterprize']);
+                \App::exception()->remove($e);
+            });
+            \App::coreClientV2()->execute();
         }
 
         $page = new \View\Enterprize\ShowPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
+        $page->setParam('limit', $limit);
 
         return new \Http\Response($page->show());
     }

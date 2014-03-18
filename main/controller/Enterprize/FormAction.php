@@ -211,9 +211,8 @@ class FormAction {
             'isEmailConfirmed' => isset($result['email_confirmed']) ? $result['email_confirmed'] : false,
         ]);
         $session->set($sessionName, $data);
+
         if ($form->isValid()) {
-
-
             $userToken = $data['token'];
             $data = $session->get($sessionName, []);
             if ($data['isPhoneConfirmed'] && $data['isEmailConfirmed']) {
@@ -314,19 +313,32 @@ class FormAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user()->getEntity();
+        $session = \App::session();
         $form = new \View\Enterprize\Form();
 
-        $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
-        $enterprizeToken = !empty($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+        $data = $session->get(\App::config()->enterprize['formDataSessionKey'], []);
 
-        // пользователь авторизован, заполняем форму данными пользователя
+        // заполняем форму данными с сессии
+        $form->fromArray($data);
+
+        // если пользователь авторизован, то заполняем поле по которому произошла авторизация
         if ($user) {
-            $form->fromEntity($user);
-            $form->setEnterprizeCoupon($enterprizeToken);
+            if (!$form->getName()) {
+                $form->setName($user->getFirstName());
+            }
+            if (!$form->getMobile()) {
+                $form->setMobile($user->getMobilePhone());
+            }
+            if (!$form->getEmail()) {
+                $form->setEmail($user->getEmail());
+            }
 
-            // иначе, заполняем форму данными с сессии
-        } else {
-            $form->fromArray($data);
+            $authSource = $session->get('authSource', null);
+            if ('phone' === $authSource) {
+                $form->setMobile($user->getMobilePhone());
+            } elseif ('email' === $authSource) {
+                $form->setEmail($user->getEmail());
+            }
         }
 
         return $form;

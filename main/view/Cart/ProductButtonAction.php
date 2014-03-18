@@ -31,7 +31,11 @@ class ProductButtonAction {
 
         $data['value'] = 'Купить';
 
-        if ($product->isInShopOnly()) {
+        /** @var $region \Model\Region\Entity|null */
+        $region = \App::user()->getRegion();
+        $forceDefaultBuy = $region ? $region->getForceDefaultBuy() : true;
+
+        if ($product->isInShopOnly() && $forceDefaultBuy) {
             $data['inShopOnly'] = true;
             $data['value'] = 'Резерв';
             $data['url'] = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
