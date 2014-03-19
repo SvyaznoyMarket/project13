@@ -134,10 +134,10 @@ class Action {
                     $cart->clearBlackcards();
                     $cart->setBlackcard($blackcard);
                 }
+            }
 
-                if (array_key_exists('action_list', $result)) {
-                    $cart->setActionData((array)$result['action_list']);
-                }
+            if (array_key_exists('action_list', $result) && !empty($result['action_list'])) {
+                $cart->setActionData((array)$result['action_list']);
             }
 
             // Типы доставок
