@@ -34,11 +34,11 @@ return function(
                 </a>
 
                 <? if ((bool)$category->getChild() && ($active || !$currentCategory)): ?>
-                    <ul class="tchiboNav__sublist mDefault<? if ($active): ?> active<? endif ?>">
+                    <ul class="tchiboNav__sublist mDefault<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
                     <? foreach ($category->getChild() as $child):
                         $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId()) ? true : false; ?>
 
-                        <li class="sublistItem jsItemListTchibo<? if ($last): ?> mLast<? endif ?><? if ($activeChild): ?> mActive<? endif ?>"><a class="link" href="<?= $child->getLink() ?>"><?= $child->getName() ?></a></li>
+                        <li class="sublistItem jsItemListTchibo<? if ($activeChild): ?> mActive<? endif ?>"><a class="link" href="<?= $child->getLink() ?>"><?= $child->getName() ?></a></li>
                     <? endforeach ?>
                     </ul>
                 <? endif ?>
