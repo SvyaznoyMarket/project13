@@ -34,7 +34,7 @@ return function(
                 </a>
 
                 <? if ((bool)$category->getChild() && ($active || !$currentCategory)): ?>
-                    <ul class="tchiboNav__sublist mDefault<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
+                    <ul class="tchiboNav__sublist<? if (!$last): ?> mDefault<? endif ?><? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
                     <? foreach ($category->getChild() as $child):
                         $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId()) ? true : false; ?>
 
