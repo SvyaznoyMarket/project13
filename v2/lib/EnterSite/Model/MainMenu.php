@@ -34,10 +34,16 @@ namespace EnterSite\Model\MainMenu {
         public $name;
         /** @var string */
         public $url;
+        /** @var int */
+        public $level = 1;
         /** @var string */
-        public $css;
+        public $style;
         /** @var string */
-        public $cssHover;
+        public $styleHover;
+        /** @var string */
+        public $class;
+        /** @var string */
+        public $classHover;
         /** @var Model\MainMenu\Element[] */
         public $children = [];
 
@@ -47,8 +53,10 @@ namespace EnterSite\Model\MainMenu {
         public function import(array $data) {
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
             if (array_key_exists('link', $data)) $this->url = (string)$data['link'];
-            if (array_key_exists('css', $data)) $this->css = (string)$data['css'];
-            if (array_key_exists('cssHover', $data)) $this->cssHover = (string)$data['cssHover'];
+            if (array_key_exists('style', $data)) $this->style = (string)$data['style'];
+            if (array_key_exists('styleHover', $data)) $this->styleHover = (string)$data['styleHover'];
+            if (array_key_exists('class', $data)) $this->class = (string)$data['class'];
+            if (array_key_exists('classHover', $data)) $this->classHover = (string)$data['classHover'];
         }
     }
 }

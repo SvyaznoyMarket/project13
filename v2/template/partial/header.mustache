@@ -12,52 +12,9 @@
         <!--/ Хлебные крошки -->
 
         <!-- Меню и логотип -->
-        <div class="headerLeftAside">
-            <div class="navIco"><span class="navIco__link"></span></div>
-
-            <nav class="nav">
-                <ul class="navList">
-                    <li class="navList__item">
-                        <span style="background-image: url('/v2/css/modules/header/img/breadCrumbs.gif');" class="navList__text">Электроника</span>
-
-                        <ul class="navListLevel2">
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Планшеты</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                        </ul>
-                    </li>
-
-
-                    <li class="navList__item">
-                        <span style="background-image: url('/v2/css/modules/header/img/breadCrumbs.gif');" class="navList__text">Бытовая техника</span>
-
-                        <ul class="navListLevel2">
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Планшеты</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="navList__item">
-                        <span style="background-image: url('/v2/css/modules/header/img/breadCrumbs.gif');" class="navList__text">Пипяка распипяка</span>
-                        
-                        <ul class="navListLevel2">
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Планшеты</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                            <li class="navListLevel2__item"><a class="navListLevel2__link" href="">Ноутбуки и моноблоки</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-
-            <a class="logo" href="/"><img class="logo__link" src="/v2/css/modules/header/img/logo.gif" alt="" /></a>
-        </div>
+        {{#mainMenu}}
+            {{>partial/main-menu/level-1}}
+        {{/mainMenu}}
         <!--/ Меню и логотип -->
 
         <!-- Панель юзера - личный кабинет, поиск, корзина -->

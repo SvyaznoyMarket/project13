@@ -8,5 +8,5 @@ class Request {
     /** @var Model\Region */
     public $region;
     /** @var Model\MainMenu\Element[] */
-    public $mainMenuList = [];
+    public $mainMenu = [];
 }

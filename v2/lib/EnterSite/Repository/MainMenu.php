@@ -66,15 +66,19 @@ class MainMenu {
 
                         $walkByMenuElementItem($elementItems, $parentElement);
                     }
-
-                    if (isset($elementItem['children'][0])) {
-                        $walkByMenuElementItem($elementItem['children'], $element);
-                    }
                 } else {
                     $element = new Model\MainMenu\Element($elementItem);
                 }
 
                 if (!$element) continue;
+
+                $element->class .= ((bool)$element->class ? ' ' : '') . 'mId' . md5(json_encode($element));
+
+                if (isset($elementItem['children'][0])) {
+                    $walkByMenuElementItem($elementItem['children'], $element);
+                }
+
+                $element->level = $parentElement ? ($parentElement->level + 1) : 1;
 
                 if ($parentElement) {
                     $parentElement->children[] = $element;

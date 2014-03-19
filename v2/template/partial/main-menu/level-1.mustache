@@ -1,0 +1,17 @@
+<div class="headerLeftAside">
+    <div class="navIco"><span class="navIco__link"></span></div>
+
+    <nav class="nav">
+        <ul class="navList">
+        {{#elements}}
+            <li class="navList__item">
+                <span style="background-image: url('/v2/css/modules/header/img/breadCrumbs.gif');" class="navList__text">{{name}}</span>
+
+                {{>partial/main-menu/level-2}}
+            </li>
+        {{/elements}}
+        </ul>
+    </nav>
+
+    <a class="logo" href="/"><img class="logo__link" src="/v2/css/modules/header/img/logo.gif" alt="" /></a>
+</div>

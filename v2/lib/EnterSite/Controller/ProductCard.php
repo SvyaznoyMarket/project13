@@ -59,8 +59,8 @@ class ProductCard {
         $curl->prepare($categoryListQuery);
 
         // запрос меню
-        $mainMenuListQuery = new Query\MainMenu\GetItem();
-        $curl->prepare($mainMenuListQuery);
+        $mainMenuQuery = new Query\MainMenu\GetItem();
+        $curl->prepare($mainMenuQuery);
 
         // запрос доставки товара
         $deliveryListQuery = null;
@@ -104,7 +104,7 @@ class ProductCard {
         $curl->execute(1, 2);
 
         // меню
-        $mainMenuList = (new Repository\MainMenu())->getObjectByQuery($mainMenuListQuery, $categoryListQuery);
+        $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
         // отзывы товара
         $reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
@@ -162,10 +162,11 @@ class ProductCard {
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCard\Request();
         $pageRequest->region = $region;
-        $pageRequest->mainMenuList = $mainMenuList;
+        $pageRequest->mainMenu = $mainMenu;
         $pageRequest->product = $product;
         $pageRequest->accessoryCategories = $accessoryCategories;
         $pageRequest->reviews = $reviews;
+        //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница
         $page = new Page();

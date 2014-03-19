@@ -4,8 +4,8 @@
     "items": [
         {
             "name": "Мебель",
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat 0 0;width: 37px;",
-            "cssHover": "background-position:0 -44px;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat 0 0;width: 37px;",
+            "styleHover": "background-position:0 -44px;",
             "source": "category/get?id=80",
             "children": [
                 {
@@ -15,8 +15,8 @@
         },
         {
             "name": "Товары<br/>для дома",
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -138px 0;width: 40px;",
-            "cssHover": "background-position:-138px -44px;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -138px 0;width: 40px;",
+            "styleHover": "background-position:-138px -44px;",
             "source": "category/get?id=443",
             "children": [
                 {
@@ -27,16 +27,42 @@
                     "source": "category/tree?root_id=443"
                 },
                 {
-                    "name": "Последняя ссылка",
+                    "name": "предпоследняя ссылка",
                     "link": "/last"
+                },
+                {
+                    "name": "Товары<br/>для дома еще раз",
+                    "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -138px 0;width: 40px;",
+                    "styleHover": "background-position:-138px -44px;",
+                    "source": "category/get?id=443"
                 }
             ]
         },
         {
             "name": "Спорт и отдых",
-            "css": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -898px 0;width: 32px;",
-            "cssHover": "background-position:-898px -44px;",
-            "link": "/slices/likvidatsiya/sport"
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -898px 0;width: 32px;",
+            "styleHover": "background-position:-898px -44px;",
+            "link": "/slices/likvidatsiya/sport",
+            "children": [
+                {
+                    "name": "Первая ссылка",
+                    "link": "/first",
+                    "children": [
+                        {
+                            "name": "Первая ссылка первой ссылки",
+                            "link": "/first/first"
+                        },
+                        {
+                            "name": "Вторая ссылка первой ссылки",
+                            "link": "/first/second"
+                        }
+                    ]
+                },
+                {
+                    "name": "Вторая ссылка",
+                    "link": "/second"
+                }
+            ]
         }
     ]
 }

@@ -25,5 +25,7 @@ class DefaultLayout {
             $page->header->regionLink->name = $request->region->name;
             $page->header->regionLink->url = $this->getRouter()->getUrlByRoute(new Routing\Region\Set($request->region->id));
         }
+
+        $page->mainMenu = $request->mainMenu;
     }
 }
