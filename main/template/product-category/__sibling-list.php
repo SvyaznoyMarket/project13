@@ -28,13 +28,13 @@ return function(
             $active = $currentCategory && in_array($category->getId(), [$currentCategory->getParentId(), $currentCategory->getId()]) ? true : false;
             $last = (count($categories) - ($i++)) <= 2; ?>
 
-            <li class="item jsItemListTchibo<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
+            <li class="item<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
                 <a class="link" href="<?= $category->getLink() ?>">
                     <span class="itemText"><?= $category->getName() ?></span>
                 </a>
 
                 <? if ((bool)$category->getChild() && ($active || !$currentCategory)): ?>
-                    <ul class="tchiboNav__sublist<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
+                    <ul class="tchiboNav__sublist mDefault<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
                     <? foreach ($category->getChild() as $child):
                         $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId()) ? true : false; ?>
 
