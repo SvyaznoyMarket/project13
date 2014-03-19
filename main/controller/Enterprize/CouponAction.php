@@ -18,6 +18,9 @@ class CouponAction {
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
+        $user = \App::user()->getEntity();
+        $member = $user && $user->isEnterprizeMember() ? ['member' => 1] : [];
+
         $form = new \View\Enterprize\Form();
         $form->fromArray($data);
 
@@ -40,7 +43,7 @@ class CouponAction {
             );
             \App::logger()->info(['core.response' => $result], ['coupon', 'create']);
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete'));
+            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete', $member));
 
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
@@ -55,7 +58,7 @@ class CouponAction {
                 } elseif (isset($detail['email_confirmed']) && !$detail['email_confirmed']) {
                     $response = (new \Controller\Enterprize\ConfirmEmailAction())->create($request);
                 } else {
-                    \App::session()->set('flash', ['errors' => $e->getMessage()]);
+                    \App::session()->set('flash', ['errors' => [$e->getMessage()]]);
                     $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.fail'));
                 }
 
@@ -123,7 +126,7 @@ class CouponAction {
                 $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.fail'));
 
             } else {
-                \App::session()->set('flash', ['errors' => $e->getMessage()]);
+                \App::session()->set('flash', ['errors' => [$e->getMessage()]]);
                 $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.fail'));
             }
         }
@@ -134,6 +137,10 @@ class CouponAction {
 
     public function fail(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!\App::config()->enterprize['enabled']) {
+            throw new \Exception\NotFoundException();
+        }
 
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
@@ -172,6 +179,10 @@ class CouponAction {
     public function complete(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        if (!\App::config()->enterprize['enabled']) {
+            throw new \Exception\NotFoundException();
+        }
+
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
 
@@ -193,6 +204,7 @@ class CouponAction {
 
         $page = new \View\Enterprize\CouponCompletePage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
+        $page->setParam('member', (bool)$request->get('member', 0));
 
         return new \Http\Response($page->show());
     }

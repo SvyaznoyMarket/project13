@@ -15,6 +15,7 @@
  * @var $mainProduct            \Model\Product\Entity
  * @var $line                   \Model\Line\Entity
  * @var $deliveryData           array
+ * @var $isTchibo               boolean
  */
 
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
@@ -128,7 +129,7 @@ $is_showed = [];
 
     <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
 
-    <? if (\App::config()->product['showRelated']): ?>
+    <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром также покупают',
@@ -141,7 +142,7 @@ $is_showed = [];
         ]) ?>
     <? endif ?>
 
-    <? if (\App::config()->product['pullRecommendation']): ?>
+    <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'similar',
             'title'    => 'Похожие товары',
@@ -176,7 +177,7 @@ $is_showed = [];
         <? endif ?>
     </div>
 
-    <? if (\App::config()->product['pullRecommendation']): ?>
+    <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'alsoViewed',
             'title'    => 'С этим товаром также смотрят',

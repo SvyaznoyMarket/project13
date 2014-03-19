@@ -19,6 +19,7 @@ class RecommendedAction {
             'similar'    => null,
             'alsoViewed' => null
         ];
+        $recommEngine = [];
         $productsCollection = $recommend;
         $ids = $recommend;
         $controller = array_merge($recommend, [
@@ -61,12 +62,41 @@ class RecommendedAction {
             }
             \App::curl()->execute(null, 1);
 
+            /**
+             * Для всех продуктов расставим и запомним источники (движок, Engine) рекомендаций
+             */
+            foreach ($ids as $type => $item) {
+                if (!is_array($item)) continue;
+                foreach($item as $id) {
+                    $recommEngine[$id] = [
+                        'id'        => $id,
+                        'engine'    => $controller[$type]->getEngine() ?: $controller[$type]->getName(),
+                        'name'      => $controller[$type]->getName(),
+                    ];
+                }
+            }
+            foreach ($product->getRelatedId() as $id) {
+                $recommEngine[$id] = [
+                    'id'        => $id,
+                    'engine'    => 'enter',
+                    'name'      => 'enter',
+                ];
+            }
+
             // запрашиваем $collection товаров для всех типов рекоммендаций
             $collection = [];
             $chunckedIds = array_chunk($allIds, \App::config()->coreV2['chunk_size']);
             foreach ($chunckedIds as $chunk) {
-                \RepositoryManager::product()->prepareCollectionById($chunk, $region, function($data) use(&$collection) {
+                \RepositoryManager::product()->prepareCollectionById($chunk, $region,
+                    function($data) use(&$collection, $recommEngine) {
                     foreach ($data as $value) {
+                        if (!isset($value['id']) || !isset($value['link'])) continue;
+                        $id = $value['id'];
+                        if (isset($recommEngine[$id])) {
+                            \Controller\Product\BasicRecommendedAction::prepareLink(
+                                $value['link'], $recommEngine[$id]
+                            );
+                        }
                         $entity = new \Model\Product\Entity($value);
                         $collection[$entity->getId()] = $entity;
                     }
@@ -76,6 +106,7 @@ class RecommendedAction {
 
             // разбиваем товары по типам рекомендаций
             foreach ($productsCollection as $type => $item) {
+                if (!isset($ids[$type]) || !is_array($ids[$type])) continue;
                 foreach ($ids[$type] as $id) {
                     $productsCollection[$type][] = $collection[$id];
                 }
@@ -153,7 +184,7 @@ class RecommendedAction {
                 continue;
             }
 
-            $link = $product->getLink();
+            /*$link = $product->getLink();
             $link = $link . (false === strpos($link, '?') ? '?' : '&') . 'sender=retailrocket|' . $product->getId();
 
             if ('upsale' == $recommendName) {
@@ -161,7 +192,10 @@ class RecommendedAction {
                 $product->setIsUpsale(true);
             }
 
-            $product->setLink($link);
+            $product->setLink($link);*/
+            if ('upsale' === $recommendName) {
+                $product->setIsUpsale(true);
+            }
         }
 
         if (!(bool)$products) {

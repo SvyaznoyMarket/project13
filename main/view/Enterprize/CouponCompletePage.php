@@ -41,4 +41,13 @@ class CouponCompletePage extends \View\DefaultLayout {
     public function slotUserbarEnterprizeContent() {
         return '';
     }
+
+    public function slotEnterprizeCompleteJs() {
+        $data = $this->getParam('enterprizeData');
+        if ($data) {
+            return '<div id="enterprizeCompleteJs" class="jsanalytics" data-value="' . $this->json($data) . '" ></div>';
+        }
+
+        return '';
+    }
 }

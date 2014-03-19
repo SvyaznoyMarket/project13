@@ -41,4 +41,13 @@ class ConfirmEmailPage extends \View\DefaultLayout {
     public function slotUserbarEnterprizeContent() {
         return '';
     }
+
+    public function slotEnterprizeConfirmJs() {
+        $data = $this->getParam('enterprizeData');
+        if ($data) {
+            return '<div id="enterprizeConfirmJs" class="jsanalytics" data-value="' . $this->json($data) . '" ></div>';
+        }
+
+        return '';
+    }
 }
