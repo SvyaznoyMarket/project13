@@ -2581,20 +2581,7 @@ img[height="0"] {
   .tchiboNav__list .item.active .tchiboNav__sublist.active .mActive .link:hover {
     text-decoration: none;
   }
-  .tchiboNav__list .item.mLast,
-  .tchiboNav__list .item:last-child,
-  .tchiboNav__list .item:nth-child(5) {
-    position: relative;
-  }
-  .tchiboNav__list .item.mLast .tchiboNav__sublist,
-  .tchiboNav__list .item:last-child .tchiboNav__sublist,
-  .tchiboNav__list .item:nth-child(5) .tchiboNav__sublist,
-  .tchiboNav__list .item.mLast .tchiboNav__sublist.mLast,
-  .tchiboNav__list .item:last-child .tchiboNav__sublist.mLast,
-  .tchiboNav__list .item:nth-child(5) .tchiboNav__sublist.mLast,
-  .tchiboNav__list .item.mLast .tchiboNav__sublist:last-child,
-  .tchiboNav__list .item:last-child .tchiboNav__sublist:last-child,
-  .tchiboNav__list .item:nth-child(5) .tchiboNav__sublist:last-child {
+  .tchiboNav__list .item.mLast .tchiboNav__sublist.mLast {
     right: -25px;
     text-align: right;
     width: 700px;
@@ -2631,8 +2618,6 @@ img[height="0"] {
     top: 15px;
     width: 850px;
     z-index: 0;
-  }
-  .tchiboNav__sublist.mDefault {
     left: 0;
   }
   .tchiboNav__sublist .sublistItem {
