@@ -42,12 +42,8 @@ class MainMenu {
         $walkByCategoryData($categoryData);
 
         $walkByMenuElementItem = function($elementItems, Model\MainMenu\Element $parentElement = null) use (&$menu, &$walkByMenuElementItem, &$categoryItemsById) {
-            $elementItem = null;
-            foreach ($elementItems as &$elementItem) {
+            foreach ($elementItems as $elementItem) {
                 $element = null;
-                if (!isset($elementItem['children'])) {
-                    $elementItem['children'] = [];
-                }
 
                 $source = (!empty($elementItem['source']) && is_scalar($elementItem['source'])) ? trim((string)$elementItem['source'], '/') : null;
                 if ($source) {
@@ -59,20 +55,23 @@ class MainMenu {
                         $element->name = (string)$categoryItemsById[$params['id']]['name'];
                         $element->url = rtrim((string)$categoryItemsById[$params['id']]['link'], '/');
                     } else if ((0 === strpos($source, 'category/tree')) && !empty($params['root_id']) && isset($categoryItemsById[$params['root_id']])) {
-                        $element = $parentElement;
-                        $parentElement = null;
+                        $elementItems = [];
                         $categoryItem = null;
-                        foreach ($categoryItemsById[$params['root_id']]['children'] as &$categoryItem) {
-                            $elementItem['children'][] = [
+                        foreach ($categoryItemsById[$params['root_id']]['children'] as $categoryItem) {
+                            $elementItems[] = [
                                 'source' => 'category/get?id=' . $categoryItem['id'],
                             ];
                         }
                         unset($categoryItem);
+
+                        $walkByMenuElementItem($elementItems, $parentElement);
                     }
 
                     if (isset($elementItem['children'][0])) {
                         $walkByMenuElementItem($elementItem['children'], $element);
                     }
+                } else {
+                    $element = new Model\MainMenu\Element($elementItem);
                 }
 
                 if (!$element) continue;
@@ -83,11 +82,10 @@ class MainMenu {
                     $menu->elements[] = $element;
                 }
             }
-            unset($elementItem);
         };
         $walkByMenuElementItem($menuData['items']);
 
-        //die(json_encode($menu->elements, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        die(json_encode($menu->elements, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
         return $menu;
     }
