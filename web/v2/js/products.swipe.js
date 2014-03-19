@@ -62,7 +62,7 @@ $(function() {
      
   };
 
-  var imgHeight = $('.productDescImgList__img').height(),
+  var //imgHeight = $('.productDescImgList__img').height(),
 
       swipeItem = $('.productDescImgList__item'),
       swipeItemLeft = $('.productDescImgList__item.page-left'),
@@ -75,9 +75,9 @@ $(function() {
       animClass = 'page-animating',
       currentAnimClass = 'page-current page-animating';
 
-    var imgHeight = $('.productDescImgList__img').height();
+    //var //imgHeight = $('.productDescImgList__img').height();
 
-    $(".productDescImgList").css({'height': imgHeight});
+    //$(".productDescImgList").css({'height': '100%'});
     $('.productDescImgList__item').css({'opacity': '0'});
     $('.productDescImgList__item:first').addClass(currentClass).css({'opacity':'1'});
     $('.productDescImgList__item.page-current').next().addClass(rightClass);
