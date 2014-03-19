@@ -159,7 +159,7 @@
 
 		.item {
 			display: inline-block;
-			margin: 0 25px 0 0;
+			margin: 0 50px 0 0;
 			position: relative;
 
 			&:hover,
@@ -204,12 +204,21 @@
 					}
 				}
 			}
+
+			&.mLast {
+
+				.tchiboNav__sublist.mLast {
+					right: -25px;
+				    text-align: right;
+				    width: 700px;
+				}
+			}
 		}
 
 		.link {
 			color: @tchiboBlue;
 			display: block;
-			font-size: 14px;
+			font-size: 16px;
 
 			&:hover {				
 				text-decoration: underline;
@@ -236,21 +245,13 @@
 	    top: 15px;
 	    width: 850px;
 	    z-index: 0;
-
-	    &.mDefault {
-		    left: 0;
-	    }
-
-	    &.mLast {
-		    right: 10px;
-		    text-align: right;
-		    width: 700px;
+		left: 0;
 	    }
 
 		.sublistItem {
 			vertical-align: top;
 			display: inline-block;
-			margin-right: 20px;
+			margin-right: 25px;
 		}
 	}
 }

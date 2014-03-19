@@ -2615,7 +2615,7 @@ img[height="0"] {
   }
   .tchiboNav__list .item {
     display: inline-block;
-    margin: 0 25px 0 0;
+    margin: 0 50px 0 0;
     position: relative;
   }
   .tchiboNav__list .item:hover .tchiboNav__sublist,
@@ -2647,10 +2647,28 @@ img[height="0"] {
   .tchiboNav__list .item.active .tchiboNav__sublist.active .mActive .link:hover {
     text-decoration: none;
   }
+  .tchiboNav__list .item.mLast,
+  .tchiboNav__list .item:last-child,
+  .tchiboNav__list .item:nth-child(5) {
+    position: relative;
+  }
+  .tchiboNav__list .item.mLast .tchiboNav__sublist,
+  .tchiboNav__list .item:last-child .tchiboNav__sublist,
+  .tchiboNav__list .item:nth-child(5) .tchiboNav__sublist,
+  .tchiboNav__list .item.mLast .tchiboNav__sublist.mLast,
+  .tchiboNav__list .item:last-child .tchiboNav__sublist.mLast,
+  .tchiboNav__list .item:nth-child(5) .tchiboNav__sublist.mLast,
+  .tchiboNav__list .item.mLast .tchiboNav__sublist:last-child,
+  .tchiboNav__list .item:last-child .tchiboNav__sublist:last-child,
+  .tchiboNav__list .item:nth-child(5) .tchiboNav__sublist:last-child {
+    right: -25px;
+    text-align: right;
+    width: 700px;
+  }
   .tchiboNav__list .link {
     color: #002a5a;
     display: block;
-    font-size: 14px;
+    font-size: 16px;
   }
   .tchiboNav__list .link:hover {
     text-decoration: underline;
@@ -2683,15 +2701,10 @@ img[height="0"] {
   .tchiboNav__sublist.mDefault {
     left: 0;
   }
-  .tchiboNav__sublist.mLast {
-    right: 10px;
-    text-align: right;
-    width: 700px;
-  }
   .tchiboNav__sublist .sublistItem {
     vertical-align: top;
     display: inline-block;
-    margin-right: 20px;
+    margin-right: 25px;
   }
 }
 /*---END----TCHIBO - слайдер-меню разделов Чибо---------*/
