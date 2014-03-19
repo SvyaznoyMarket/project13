@@ -18,7 +18,7 @@
             echo $page->tryRender('order/partner-counter/_actionpay-complete', array('orders' => $orders, 'productsById' => $productsById));
             break;
         case \Partner\Counter\CityAds::NAME:
-            echo $page->tryRender('order/partner-counter/_cityads-complete-pixel', array('orders' => $orders));
+            echo $page->tryRender('order/partner-counter/_cityads-complete-pixel', array('orders' => $orders, 'productsById' => $productsById));
             break;
         /*
         case \Partner\Counter\Reactive::NAME:
