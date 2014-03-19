@@ -62,9 +62,7 @@ $(function() {
      
   };
 
-  var //imgHeight = $('.productDescImgList__img').height(),
-
-      swipeItem = $('.productDescImgList__item'),
+  var swipeItem = $('.productDescImgList__item'),
       swipeItemLeft = $('.productDescImgList__item.page-left'),
       swipeItemCurrent = $('.productDescImgList__item.page-current'),
       swipeItemRight = $('.productDescImgList__item.page-right'),
@@ -74,48 +72,72 @@ $(function() {
       rightClass = 'page-right',
       animClass = 'page-animating',
       currentAnimClass = 'page-current page-animating';
+  // end var
 
-    //var //imgHeight = $('.productDescImgList__img').height();
-
-    //$(".productDescImgList").css({'height': '100%'});
-    $('.productDescImgList__item').css({'opacity': '0'});
-    $('.productDescImgList__item:first').addClass(currentClass).css({'opacity':'1'});
-    $('.productDescImgList__item.page-current').next().addClass(rightClass);
+  
 
     
+  $('.leftSwipe').hide();
 
-    $('.leftSwipe').hide();
+  var 
 
-    var 
-      slideSwipeLeft = function slideSwipeLeft() {
-        $('.rightSwipe').show();
+    addClassItem = function addClassItem() {
+      console.log(swipeItemCurrent.next());
+      swipeItem.css({'opacity': '0'});
+      swipeItem.first().addClass(currentClass).css({'opacity':'1'});
+      swipeItem.first().next().addClass(rightClass);
+    },
 
-        $('.productDescImgList__item.page-right').removeClass('page-right').css({'opacity':'0'});
-        $('.productDescImgList__item.page-current').removeClass('page-current').removeClass('page-animating').addClass('page-right').css({'opacity':'0'});
-        $('.productDescImgList__item.page-left').removeClass('page-left').addClass('page-current page-animating').css({'opacity':'1'});
-        $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left').css({'opacity':'0'});
+    /*
+     * Прокрутка swipe влево
+     */
+    slideSwipeLeft = function slideSwipeLeft() {
+      console.info("swipe/slide left");
+      $('.rightSwipe').show();
 
-        if( $('.productDescImgList__item').first().hasClass('page-current') ) {
-          $('.leftSwipe').hide();
-        }
-      },
+      $('.productDescImgList__item.page-right').removeClass('page-right').css({'opacity':'0'});
+      $('.productDescImgList__item.page-current').removeClass('page-current').removeClass('page-animating').addClass('page-right').css({'opacity':'0'});
+      $('.productDescImgList__item.page-left').removeClass('page-left').addClass('page-current page-animating').css({'opacity':'1'});
+      $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left').css({'opacity':'0'});
 
-      slideSwipeRight = function slideSwipeRight() {
-        console.info("swipe/slide right");
+      if( $('.productDescImgList__item').first().hasClass('page-current') ) {
+        $('.leftSwipe').hide();
+      }
+    },
 
-        $('.leftSwipe').show();
+    /*
+     * Прокрутка swipe вправо
+     */
+    slideSwipeRight = function slideSwipeRight() {
+      console.info("swipe/slide right");
 
-        $('.productDescImgList__item.page-left').removeClass('page-left');
-        $('.productDescImgList__item.page-current').removeClass('page-current').removeClass('page-animating').addClass('page-left').css({'opacity':'0'});
-        $('.productDescImgList__item.page-right').removeClass('page-right').addClass('page-current page-animating').css({'opacity':'1'});
-        $('.productDescImgList__item.page-current').next('.productDescImgList__item').addClass('page-right').css({'opacity':'0'});
-        $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left').css({'opacity':'0'});
+      $('.leftSwipe').show();
 
-        if( $('.productDescImgList__item').last().hasClass('page-current') ) {
-          $('.rightSwipe').hide();
-        }
+      $('.productDescImgList__item.page-left').removeClass('page-left');
+      $('.productDescImgList__item.page-current').removeClass('page-current').removeClass('page-animating').addClass('page-left').css({'opacity':'0'});
+      $('.productDescImgList__item.page-right').removeClass('page-right').addClass('page-current page-animating').css({'opacity':'1'});
+      $('.productDescImgList__item.page-current').next('.productDescImgList__item').addClass('page-right').css({'opacity':'0'});
+      $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left').css({'opacity':'0'});
 
-      };
+      if( $('.productDescImgList__item').last().hasClass('page-current') ) {
+        $('.rightSwipe').hide();
+      }
+    },
+
+    /*
+     * Функция изменяет высоту врапера swipe блока
+     */
+    getImageSize = function getImageSize() {
+
+      $(".productDescImgList img").each(function() {
+        console.log(imgHeight);
+        var $this = $(this),
+            imgHeight = $this.height();
+
+        $(".productDescImgList").css({'height': imgHeight});
+      });
+    };
+  // end var
      
   $.fn.swipe.options = {
     'threshold': {
@@ -132,9 +154,16 @@ $(function() {
     }
   };
 
+   $(window).on('load', addClassItem);
+
   $('.productDescImgList__item').swipe();
 
-  $('.leftSwipe').bind('click', slideSwipeLeft);
+  $('.leftSwipe').on('click', slideSwipeLeft);
 
-  $('.rightSwipe').bind('click', slideSwipeRight);
+  $('.rightSwipe').on('click', slideSwipeRight);
+
+  $(window).on('resize load', getImageSize);
+
+
+
 });

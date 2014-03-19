@@ -27,8 +27,8 @@ class RegisterShutdown {
             $endAt = microtime(true);
 
             // debug info
-            (new Action\TimerDebug())->execute($response, $startAt, $endAt);
-            (new Action\Debug())->execute($response, $startAt, $endAt);
+            // (new Action\TimerDebug())->execute($response, $startAt, $endAt);
+            // (new Action\Debug())->execute($response, $startAt, $endAt);
 
             // send response
             $response->send();
