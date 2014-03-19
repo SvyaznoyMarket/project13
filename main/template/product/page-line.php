@@ -27,7 +27,7 @@ $helper = new \Helper\TemplateHelper();
 	        <div class="bProductDescImgBig">
 		        <a href="<?= $mainProduct->getLink() ?>" title="<?= $mainProduct->getName() ?>">
 		            <? if ((bool)$mainProduct->getLabel()): ?>
-		                <img class="bProductDescSticker" src="<?= $mainProduct->getLabel()->getImageUrl(1) ?>" alt="<?= $mainProduct->getLabel()->getName() ?>" />
+		                <img class="bProductDescSticker" src="<?= $mainProduct->getLabel()->getImageUrl(0) ?>" alt="<?= $mainProduct->getLabel()->getName() ?>" />
 		            <? endif ?>
 		            <img class="bProductDescImgBig__eImg" src="<?= $mainProduct->getImageUrl(3) ?>" alt="<?= $page->escape($mainProduct->getName()) ?>" width="700" height="700" title="<?= $page->escape($mainProduct->getName()) ?>"/>
 		        </a>

@@ -15,12 +15,12 @@ class IndexAction {
             throw new \Exception\NotFoundException();
         }
 
-        $client = \App::dataStoreClient();
+        $client = \App::coreClientV2();
         $user = \App::user()->getEntity();
 
         /** @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[] */
         $enterpizeCoupons = [];
-        $client->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupons, $user) {
+        \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupons, $user) {
             foreach ((array)$data as $item) {
                 if (empty($item['token'])) continue;
 
@@ -34,7 +34,28 @@ class IndexAction {
                 }
             }
         });
+
+        // получаем лимиты купонов
+        $limits = [];
+        $client->addQuery('coupon/limits', [], [], function($data) use (&$limits){
+            if ((bool)$data && !empty($data['detail'])) {
+                $limits = $data['detail'];
+            }
+        }, function(\Exception $e) {
+            \App::logger()->error($e->getMessage(), ['enterprize']);
+            \App::exception()->remove($e);
+        });
         $client->execute();
+
+        // убераем купоны с нулевым кол-вом
+        foreach ($enterpizeCoupons as $key => $coupon) {
+            if (!array_key_exists($coupon->getToken(), $limits)) continue;
+
+            $limit = (int)$limits[$coupon->getToken()];
+            if (0 === $limit) {
+                unset($enterpizeCoupons[$key]);
+            }
+        }
 
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);

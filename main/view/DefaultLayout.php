@@ -491,7 +491,8 @@ class DefaultLayout extends Layout {
     }
 
     public function slotCriteo() {
-        return $this->render( 'partner-counter/_criteo',  ['criteoData' =>  (new \View\Partners\Criteo($this->params))->data()] );
+        return $this->render( 'partner-counter/_criteo',
+            ['criteoData' =>  (new \View\Partners\Criteo($this->params))->execute()] );
     }
 
 
@@ -651,4 +652,12 @@ class DefaultLayout extends Layout {
         return $this->breadcrumbsPath = $breadcrumbs;
     }
 
+
+    public function slotEnterprizeConfirmJs() {
+        return '';
+    }
+
+    public function slotEnterprizeCompleteJs() {
+        return '';
+    }
 }

@@ -11,6 +11,7 @@
  * @var $shopStates        \Model\Product\ShopState\Entity[]
  * @var $creditData        array
  * @var $deliveryData      array
+ * @var $isTchibo          boolean
  */
 ?>
 
@@ -42,7 +43,7 @@
 
     <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
 
-    <? if (\App::config()->product['showRelated']): ?>
+    <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром также покупают',
@@ -55,7 +56,7 @@
         ]) ?>
     <? endif ?>
 
-    <? if (\App::config()->product['pullRecommendation']): ?>
+    <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'similar',
             'title'    => 'Похожие товары',
@@ -85,7 +86,7 @@
         <? endif ?>
     </div>
 
-    <? if (\App::config()->product['pullRecommendation']): ?>
+    <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'alsoViewed',
             'title'    => 'С этим товаром также смотрят',
