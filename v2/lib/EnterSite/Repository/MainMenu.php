@@ -85,7 +85,7 @@ class MainMenu {
         };
         $walkByMenuElementItem($menuData['items']);
 
-        die(json_encode($menu->elements, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        //die(json_encode($menu->elements, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
         return $menu;
     }
