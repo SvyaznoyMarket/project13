@@ -24,10 +24,11 @@ return function(
 
 
         <ul class="tchiboNav__list clearfix">
-        <? foreach ($categories as $category):
-            $active = $currentCategory && in_array($category->getId(), [$currentCategory->getParentId(), $currentCategory->getId()]) ? true : false; ?>
+        <? $i = 0; foreach ($categories as $category):
+            $active = $currentCategory && in_array($category->getId(), [$currentCategory->getParentId(), $currentCategory->getId()]) ? true : false;
+            $last = (count($categories) - ($i++)) <= 2; ?>
 
-            <li class="item jsItemListTchibo<? if ($active): ?> active<? endif ?>">
+            <li class="item jsItemListTchibo<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
                 <a class="link" href="<?= $category->getLink() ?>">
                     <span class="itemText"><?= $category->getName() ?></span>
                 </a>
@@ -37,7 +38,7 @@ return function(
                     <? foreach ($category->getChild() as $child):
                         $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId()) ? true : false; ?>
 
-                        <li class="sublistItem jsItemListTchibo<? if ($activeChild): ?> mActive<? endif ?>"><a class="link" href="<?= $child->getLink() ?>"><?= $child->getName() ?></a></li>
+                        <li class="sublistItem jsItemListTchibo<? if ($last): ?> mLast<? endif ?><? if ($activeChild): ?> mActive<? endif ?>"><a class="link" href="<?= $child->getLink() ?>"><?= $child->getName() ?></a></li>
                     <? endforeach ?>
                     </ul>
                 <? endif ?>
