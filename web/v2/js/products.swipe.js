@@ -23,6 +23,8 @@ $(function() {
         finalCoord.x = touch.pageX; // Updated X,Y coordinates
         finalCoord.y = touch.pageY;
         event.preventDefault();
+
+        deltaSwipe();
       }
        
       // Done swiping
@@ -50,6 +52,19 @@ $(function() {
       function touchCancel() {
       //console.log('Canceling swipe gesture…')
       }
+
+      var 
+        deltaSwipe = function deltaSwipe() {
+          var changeX = originalCoord.x - finalCoord.x;
+
+          if ( changeX > 0 ) {
+            $('.productDescImgList__item.page-current').css({transform:'translate('+ changeX +'px, 0)'});
+          }
+
+          if ( changeX < 0 ) {
+            $('.productDescImgList__item.page-current').css({transform:'translate('+ changeX +'px, 0)'});
+          }
+      };
        
       // Add gestures to all swipable areas
       $(self).bind({
@@ -74,17 +89,15 @@ $(function() {
       currentAnimClass = 'page-current page-animating';
   // end var
 
-  
-
-    
   $('.leftSwipe').hide();
 
   var 
-
+    /*
+     * Добавляем классы к элементам списка swipe
+     */
     addClassItem = function addClassItem() {
       console.log(swipeItemCurrent.next());
-      swipeItem.css({'opacity': '0'});
-      swipeItem.first().addClass(currentClass).css({'opacity':'1'});
+      swipeItem.first().addClass(currentClass);
       swipeItem.first().next().addClass(rightClass);
     },
 
@@ -95,12 +108,12 @@ $(function() {
       console.info("swipe/slide left");
       $('.rightSwipe').show();
 
-      $('.productDescImgList__item.page-right').removeClass('page-right').css({'opacity':'0'});
-      $('.productDescImgList__item.page-current').removeClass('page-current').removeClass('page-animating').addClass('page-right').css({'opacity':'0'});
-      $('.productDescImgList__item.page-left').removeClass('page-left').addClass('page-current page-animating').css({'opacity':'1'});
-      $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left').css({'opacity':'0'});
+      $('.productDescImgList__item.page-right').removeClass(rightClass);
+      $('.productDescImgList__item.page-current').removeClass(currentClass).removeClass(animClass).addClass(rightClass);
+      $('.productDescImgList__item.page-left').removeClass(leftClass).addClass(currentAnimClass);
+      $('.productDescImgList__item.page-current').prev().addClass(leftClass);
 
-      if( $('.productDescImgList__item').first().hasClass('page-current') ) {
+      if( $('.productDescImgList__item').first().hasClass(currentClass) ) {
         $('.leftSwipe').hide();
       }
     },
@@ -113,13 +126,13 @@ $(function() {
 
       $('.leftSwipe').show();
 
-      $('.productDescImgList__item.page-left').removeClass('page-left');
-      $('.productDescImgList__item.page-current').removeClass('page-current').removeClass('page-animating').addClass('page-left').css({'opacity':'0'});
-      $('.productDescImgList__item.page-right').removeClass('page-right').addClass('page-current page-animating').css({'opacity':'1'});
-      $('.productDescImgList__item.page-current').next('.productDescImgList__item').addClass('page-right').css({'opacity':'0'});
-      $('.productDescImgList__item.page-current').prev('.productDescImgList__item').addClass('page-left').css({'opacity':'0'});
+      $('.productDescImgList__item.page-left').removeClass(leftClass);
+      $('.productDescImgList__item.page-current').removeClass(currentClass).removeClass(animClass).addClass(leftClass);
+      $('.productDescImgList__item.page-right').removeClass(rightClass).addClass(currentAnimClass);
+      $('.productDescImgList__item.page-current').next().addClass(rightClass);
+      $('.productDescImgList__item.page-current').prev().addClass(leftClass);
 
-      if( $('.productDescImgList__item').last().hasClass('page-current') ) {
+      if( $('.productDescImgList__item').last().hasClass(currentClass) ) {
         $('.rightSwipe').hide();
       }
     },
@@ -154,7 +167,7 @@ $(function() {
     }
   };
 
-   $(window).on('load', addClassItem);
+  $(window).on('load', addClassItem);
 
   $('.productDescImgList__item').swipe();
 
@@ -163,7 +176,4 @@ $(function() {
   $('.rightSwipe').on('click', slideSwipeRight);
 
   $(window).on('resize load', getImageSize);
-
-
-
 });

@@ -95,21 +95,24 @@
 				z-index: 22;
 				top: 0;
 				left: 0;
-				opacity: 1;
+				transform: translate(0, 0);
+    			transform: translate3d(0, 0, 0);
 			}
 
 			&.page-right {
-				opacity: 0;
     			right: 100%;
+    			transform: translate(100%, 0);
+    			transform: translate3d(100%, 0, 0);
 			}
 
 			&.page-left {
-				opacity: 0;
     			left: -100%;
+    			transform: translate(-100%, 0);
+    			transform: translate3d(-100%, 0, 0);
 			}
 
 			&.page-animating {
-			    transition: opacity 200ms linear;
+			    transition: translate 200ms linear;
 			}
 		}
 
