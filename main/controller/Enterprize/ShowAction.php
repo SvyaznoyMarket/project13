@@ -11,6 +11,10 @@ class ShowAction {
             throw new \Exception\NotFoundException();
         }
 
+        if (!$enterprizeToken) {
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+        }
+
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
         if ($enterprizeToken) {

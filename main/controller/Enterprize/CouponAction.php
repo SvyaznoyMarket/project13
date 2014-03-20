@@ -18,6 +18,10 @@ class CouponAction {
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
+        if (!$enterprizeToken) {
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+        }
+
         $user = \App::user()->getEntity();
         $member = $user && $user->isEnterprizeMember() ? ['member' => 1] : [];
 
@@ -148,8 +152,9 @@ class CouponAction {
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
-        $flash = $session->get('flash');
-        $session->remove('flash');
+        if (!$enterprizeToken) {
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+        }
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
@@ -167,6 +172,9 @@ class CouponAction {
         if (!$enterpizeCoupon) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
         }
+
+        $flash = $session->get('flash');
+        $session->remove('flash');
 
         $page = new \View\Enterprize\CouponFailPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
@@ -192,6 +200,10 @@ class CouponAction {
 
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+
+        if (!$enterprizeToken) {
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+        }
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
