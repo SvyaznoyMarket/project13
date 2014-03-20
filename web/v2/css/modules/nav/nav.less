@@ -23,18 +23,40 @@
 	&__text {
 		text-transform: uppercase;
 		font-size: 18px;
-		background-position: 0 50%;
-		background-repeat: no-repeat;
 		height: 40px;
 	    line-height: 40px;
-	    padding: 0 0 0 65px;
 		display: block;
 		cursor: pointer;
+
+		&:hover {
+			color: @firmOrange;
+		}
+	}
+
+	.navListIco {
+		background-position: 0 50%;
+		background-repeat: no-repeat;
+		display: inline-block;
+		height: 40px;
+	    vertical-align: top;
+	    width: 40px;
+	    margin: 0 5px 0 0;
+
+		*display: inline;
+		zoom: 1;
+	}
+
+	.navListName {
+		display: inline-block;
+	    vertical-align: top;
+
+	    *display: inline;
+		zoom: 1;
 	}
 }
 
 .navListLevel2 {
-	margin: 0 0 0 65px;
+	margin: 0 0 0 52px;
 
 	&__link {
 		color: #7e7e7e;

@@ -45,9 +45,10 @@ $(function(){
 
 			if ( ($(this).next(navSiteListLevel2)).is(':visible') ) {
 				navSiteListLevel2.slideUp();
+				return;
 			}
 
-			$(this).next(navSiteListLevel2).slideDown();
+			$(this).next(navSiteListLevel2).stop(true, false).slideDown();
 
 			return false;
 		},
