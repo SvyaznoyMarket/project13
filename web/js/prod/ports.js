@@ -1,4 +1,4 @@
-;(function () {
+//;(function () {
 	console.group('ports.js::VisitorSplit');
 	/**********************************************************************
 	 Visitor split, into groups, enabling separate targeting and remarketing.
@@ -177,8 +177,9 @@
 					lastScript.parentNode.appendChild( element );    //More reliable then document.body.appendChild()
 				}
 
-				async_load();
-				//window.attachEvent ? window.attachEvent( 'onload', async_load ) : document.addEventListener( 'load', async_load, false );
+				//async_load();
+				console.log('set Event');
+				window.attachEvent ? window.attachEvent( 'onload', async_load ) : window.addEventListener( 'load', async_load, false );
 			}
 		}
 	}
@@ -264,7 +265,7 @@
 	main();
 	//testInsertAllTags();
 	console.groupEnd();
-}());
+//}());
 
  
  
