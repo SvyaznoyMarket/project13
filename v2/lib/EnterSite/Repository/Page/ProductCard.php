@@ -177,8 +177,36 @@ class ProductCard {
 
         // модели товара
         if ((bool)$productModel->model && (bool)$productModel->model->properties) {
-            foreach ($productModel->model->properties as $modelPropertyEntity) {
+            $page->content->product->hasModel = true;
 
+            foreach ([
+                 0 => [0, 1], // первое свойство модели
+                 1 => [1, count($productModel->properties) - 1] // остальные свойства модели (будут скрыты по умолчанию)
+            ] as $i => $range) {
+                $modelBlock = new Page\Content\Product\ModelBlock();
+                foreach (array_slice($productModel->model->properties, $range[0], $range[1]) as $propertyModel) {
+                    /** @var Model\Product\ProductModel\Property $propertyModel */
+                    $property = new Page\Content\Product\ModelBlock\Property();
+                    $property->name = $propertyModel->name;
+                    foreach ($propertyModel->options as $optionModel) {
+                        $option = new Page\Content\Product\ModelBlock\Property\Option();
+                        $option->isActive = false; // FIXME
+                        $option->url = $optionModel->product ? $optionModel->product->link : null;
+                        $option->shownValue = $optionModel->value;
+
+                        $property->options[] = $option;
+                    }
+
+                    $modelBlock->properties[] = $property;
+                }
+
+                if (!(bool)$modelBlock->properties) continue;
+
+                if (0 === $i) {
+                    $page->content->product->modelBlock = $modelBlock;
+                } else if (1 === $i) {
+                    $page->content->product->moreModelBlock = $modelBlock;
+                }
             }
         }
 
