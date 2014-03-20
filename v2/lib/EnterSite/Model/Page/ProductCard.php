@@ -62,6 +62,12 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $accessorySlider;
         /** @var Product\ReviewBlock|null */
         public $reviewBlock;
+        /** @var bool */
+        public $hasModel;
+        /** @var Product\ModelBlock|null */
+        public $modelBlock;
+        /** @var Product\ModelBlock|null */
+        public $moreModelBlock;
     }
 }
 
@@ -95,6 +101,11 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
     class ReviewBlock {
         /** @var ReviewBlock\Review[] */
         public $reviews = [];
+    }
+
+    class ModelBlock {
+        /** @var ModelBlock\Property[] */
+        public $properties = [];
     }
 }
 
@@ -151,5 +162,25 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product\ReviewBlock {
         public $pros;
         /** @var string */
         public $cons;
+    }
+}
+
+namespace EnterSite\Model\Page\ProductCard\Content\Product\ModelBlock {
+    class Property {
+        /** @var string */
+        public $name;
+        /** @var Property\Option[] */
+        public $options = [];
+    }
+}
+
+namespace EnterSite\Model\Page\ProductCard\Content\Product\ModelBlock\Property {
+    class Option {
+        /** @var string */
+        public $shownValue;
+        /** @var string */
+        public $url;
+        /** @var bool */
+        public $isActive;
     }
 }
