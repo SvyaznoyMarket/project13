@@ -121,6 +121,16 @@
 
 				title.empty();
 				title.html(html);
+			},
+
+			countProducts: function ( html ) {
+				var
+					subminBtn = $('.bBtnPick__eLink', '.bFilter'),
+					count = html ? parseInt(html) : -1;
+
+				if ( count >= 0 && subminBtn.length ) {
+					subminBtn.text('Подобрать (' +  html + ')');
+				}
 			}
 		},
 
@@ -215,6 +225,11 @@
 				var title = data.title;
 
 				return title;
+			},
+
+			countProducts: function ( data ) {
+				console.info('render countProducts');
+				return data;
 			}
 		},
 
@@ -1130,9 +1145,11 @@
 ;(function( ENTER ) {
 	console.info('New catalog init: loader.js');
 
-	var pageConfig = ENTER.config.pageConfig,
+	var
+		pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog');
+		catalog = utils.extendApp('ENTER.catalog'),
+		filterSubminBtn = $('.bBtnPick__eLink', '.bFilter');
 	// end of vars
 
 	console.info('Mustache is '+ typeof Mustache);
@@ -1146,6 +1163,7 @@
 			}
 
 			catalog.loader._loader = $('<li>').addClass('mLoader');
+			filterSubminBtn.addClass('mButLoader').text('Подобрать');
 
 			if ( catalog.liveScroll ) {
 				catalog.listingWrap.append(catalog.loader._loader);
@@ -1161,7 +1179,8 @@
 				catalog.loader._loader.remove();
 				catalog.loader._loader = null;
 			}
-		}		
+			filterSubminBtn.removeClass('mButLoader');
+		}
 	};
 
 }(window.ENTER));
