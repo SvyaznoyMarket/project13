@@ -1,0 +1,17 @@
+{{#properties}}
+    <!-- Выбор цвета модели -->
+    <ul class="chooseModelColor clearfix">
+    {{#options}}
+        <li class="chooseModelColor__item{{#isActive}} chooseModelColor__item{{/isActive}}">
+            <a class="chooseModelColor__link{{#isActive}} chooseModelColor__link-active{{/isActive}}" href="{{url}}">
+                <img class="chooseModelColor__img" src="{{image}}" alt="{{&shownValue}}" />
+
+                {{#isActive}}
+                    <div class="sticker"></div>
+                {{/isActive}}
+            </a>
+        </li>
+    {{/options}}
+    </ul>
+    <!--/ Выбор цвета модели -->
+{{/properties}}

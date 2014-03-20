@@ -1,13 +1,7 @@
-{{#properties}}
-    <div class="chooseModel__title">
-        {{name}}
-    </div>
+{{^isImage}}
+    {{>partial/product-model-property-list/option-list/default}}
+{{/isImage}}
 
-    <ul class="chooseModelNum clearfix">
-        {{#options}}
-            <li class="chooseModelNum__item{{#isActive}} chooseModelNum__item-active{{/isActive}}">
-                <a class="chooseModelNum__link" href="{{url}}">{{shownValue}}</a>
-            </li>
-        {{/options}}
-    </ul>
-{{/properties}}
+{{#isImage}}
+    {{>partial/product-model-property-list/option-list/image}}
+{{/isImage}}

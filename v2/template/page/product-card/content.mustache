@@ -43,34 +43,14 @@
                         {{>partial/product-model-property-list/default}}
                     {{/product.modelBlock}}
 
-                    <!-- Выбор цвета модели -->
-                    <!--
-                    <ul class="chooseModelColor clearfix">
-                        <li class="chooseModelColor__item chooseModelColor__item">
-                            <a class="chooseModelColor__link chooseModelColor__link-active" href="">
-                                <img class="chooseModelColor__img" src="http://fs02.enter.ru/1/1/1500/d0/202993.jpg" />
-
-                                <div class="sticker"></div>
-                            </a>
-                        </li>
-
-                        <li class="chooseModelColor__item">
-                            <a class="chooseModelColor__link" href="">
-                                <img class="chooseModelColor__img" src="http://fs02.enter.ru/1/1/1500/d0/202993.jpg" />
-                            </a>
-                        </li>
-                    </ul>
-                    -->
-                    <!--/ Выбор цвета модели -->
-
-                    <!-- Другие параметры выбора модели -->
                     {{#product.moreModelBlock}}
-                    <div class="chooseModel__moreBox">
-                        {{>partial/product-model-property-list/default}}
-                    </div>
-                    <!--/ Другие параметры выбора модели -->
+                        <!-- Другие параметры выбора модели -->
+                        <div class="chooseModel__moreBox">
+                            {{>partial/product-model-property-list/default}}
+                        </div>
+                        <!--/ Другие параметры выбора модели -->
 
-                    <div class="chooseModel__moreLink">Ещё модели</div>
+                        <div class="chooseModel__moreLink">Ещё модели</div>
                     {{/product.moreModelBlock}}
                 </div>
                 {{/product.hasModel}}

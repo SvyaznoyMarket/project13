@@ -106,6 +106,8 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
     class ModelBlock {
         /** @var ModelBlock\Property[] */
         public $properties = [];
+        /** @var bool */
+        public $isImage;
     }
 }
 
@@ -169,6 +171,8 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product\ModelBlock {
     class Property {
         /** @var string */
         public $name;
+        /** @var bool */
+        public $isImage;
         /** @var Property\Option[] */
         public $options = [];
     }
@@ -182,5 +186,7 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product\ModelBlock\Property {
         public $url;
         /** @var bool */
         public $isActive;
+        /** @var string */
+        public $image;
     }
 }
