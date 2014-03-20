@@ -23,6 +23,8 @@ class Entity {
     private $endDate;
     /** @var string */
     private $link;
+    /** @var string */
+    private $linkName;
     /**
      * Только информационная ссылка без необходимости заполнения enterprize-формы
      * @var bool
@@ -55,6 +57,7 @@ class Entity {
         if (array_key_exists('startDate', $data)) $this->setStartDate($data['startDate'] ? new \DateTime($data['startDate']) : null);
         if (array_key_exists('endDate', $data)) $this->setEndDate($data['endDate'] ? new \DateTime($data['endDate']) : null);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
+        if (array_key_exists('linkName', $data)) $this->setLinkName($data['linkName']);
         if (array_key_exists('isInformationOnly', $data)) $this->setIsInformationOnly($data['isInformationOnly']);
         if (array_key_exists('isForMember', $data)) $this->setIsForMember($data['isForMember']);
         if (array_key_exists('isForNotMember', $data)) $this->setIsForNotMember($data['isForNotMember']);
@@ -199,6 +202,20 @@ class Entity {
      */
     public function getLink() {
         return $this->link;
+    }
+
+    /**
+     * @param string $linkName
+     */
+    public function setLinkName($linkName) {
+        $this->linkName = (string)$linkName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinkName() {
+        return $this->linkName;
     }
 
     /**
