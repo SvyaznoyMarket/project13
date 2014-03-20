@@ -9,7 +9,7 @@ class Entity {
     private $name;
     /** @var string */
     private $image;
-    /** @var int */
+    /** @var string */
     private $price;
     /** @var bool */
     private $isCurrency;
@@ -104,14 +104,14 @@ class Entity {
     }
 
     /**
-     * @param int $price
+     * @param string $price
      */
     public function setPrice($price) {
-        $this->price = (int)$price;
+        $this->price = (string)$price;
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getPrice() {
         return $this->price;
