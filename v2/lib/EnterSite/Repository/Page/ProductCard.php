@@ -187,6 +187,7 @@ class ProductCard {
                 foreach (array_slice($productModel->model->properties, $range[0], $range[1]) as $propertyModel) {
                     /** @var Model\Product\ProductModel\Property $propertyModel */
                     $property = new Page\Content\Product\ModelBlock\Property();
+                    //$property->name = !$propertyModel->isImage ? $propertyModel->name : null;
                     $property->name = $propertyModel->name;
                     $property->isImage = $propertyModel->isImage;
                     foreach ($propertyModel->options as $optionModel) {
@@ -195,7 +196,7 @@ class ProductCard {
                         $option->url = $optionModel->product ? $optionModel->product->link : null;
                         $option->shownValue = $optionModel->value;
                         $option->image = ($propertyModel->isImage && $optionModel->product)
-                            ? (string)(new Routing\Product\Media\GetPhoto($optionModel->product->image, $optionModel->product->id, 1))
+                            ? (string)(new Routing\Product\Media\GetPhoto($optionModel->product->image, $optionModel->product->id, 3))
                             : null
                         ;
 
