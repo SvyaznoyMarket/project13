@@ -82,6 +82,16 @@
 
 				title.empty();
 				title.html(html);
+			},
+
+			countProducts: function ( html ) {
+				var
+					subminBtn = $('.bBtnPick__eLink', '.bFilter'),
+					count = html ? parseInt(html) : -1;
+
+				if ( count >= 0 && subminBtn.length ) {
+					subminBtn.text('Подобрать (' +  html + ')');
+				}
 			}
 		},
 
@@ -176,6 +186,11 @@
 				var title = data.title;
 
 				return title;
+			},
+
+			countProducts: function ( data ) {
+				console.info('render countProducts');
+				return data;
 			}
 		},
 
