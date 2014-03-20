@@ -61,7 +61,8 @@ $routeName = \App::request()->attributes->get('route');
             </div>
 
             <div class="enterPrize__rules"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
-                Фишка со скидкой <strong><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на <strong><?= $enterpizeCoupon->getName() ?></strong><br />
+                Фишка со скидкой <strong><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на
+                <strong><a href="<?= $enterpizeCoupon->getLink() ?>"><?= $enterpizeCoupon->getLinkName() ? $enterpizeCoupon->getLinkName() : $enterpizeCoupon->getName() ?></a></strong><br />
                 Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
                 Действует
                 <? if ($enterpizeCoupon->getStartDate() instanceof \DateTime): ?>
