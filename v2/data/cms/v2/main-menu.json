@@ -4,7 +4,7 @@
     "items": [
         {
             "name": "Мебель",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat 0 0;width: 37px;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat 0 0;",
             "styleHover": "background-position:0 -44px;",
             "source": "category/get?id=80",
             "children": [
@@ -15,7 +15,7 @@
         },
         {
             "name": "Товары<br/>для дома",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -138px 0;width: 40px;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -138px 0;",
             "styleHover": "background-position:-138px -44px;",
             "source": "category/get?id=443",
             "children": [
@@ -40,7 +40,7 @@
         },
         {
             "name": "Спорт и отдых",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -898px 0;width: 32px;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -898px 0;",
             "styleHover": "background-position:-898px -44px;",
             "link": "/slices/likvidatsiya/sport",
             "children": [
