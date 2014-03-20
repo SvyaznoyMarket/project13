@@ -80,6 +80,8 @@
 		var
 			productDesc = $('.bProductDesc');
 
-		productDesc.addClass('.mNoCredit'); // добавим класс, дабы скрыть еркдитный чекбокс
+		if ( productDesc.length && !productDesc.hasClass('mNoCredit') ) {
+			productDesc.addClass('mNoCredit'); // добавим класс, дабы скрыть кредитный чекбокс
+		}
 	}
 }());
