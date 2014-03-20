@@ -66,6 +66,10 @@ class FormAction {
             \App::dataStoreClient()->execute();
         }
 
+        if (!$enterpizeCoupon) {
+            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+        }
+
         $page = new \View\Enterprize\FormPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('form', $this->getForm());

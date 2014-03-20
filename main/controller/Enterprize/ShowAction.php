@@ -35,6 +35,10 @@ class ShowAction {
             \App::coreClientV2()->execute();
         }
 
+        if (!$enterpizeCoupon) {
+            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+        }
+
         $page = new \View\Enterprize\ShowPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('limit', $limit);

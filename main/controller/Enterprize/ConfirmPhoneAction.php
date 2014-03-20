@@ -46,6 +46,10 @@ class ConfirmPhoneAction {
             \App::dataStoreClient()->execute();
         }
 
+        if (!$enterpizeCoupon) {
+            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+        }
+
         $enterprizeDataDefault = [
             'name'            => null,
             'mobile'          => null,
