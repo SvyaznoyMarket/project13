@@ -12,23 +12,40 @@ class FormAction {
     public function show($enterprizeToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $user = \App::user();
-
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
         }
 
         if (!$enterprizeToken) {
-            throw new \Exception\NotFoundException();
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
         }
 
+        $user = \App::user();
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
+
         if (!$session->has($sessionName)) {
             $session->set($sessionName, [
                 'isPhoneConfirmed' => false,
                 'isEmailConfirmed' => false,
             ]);
+        }
+
+        /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
+        $enterpizeCoupon = null;
+        if ($enterprizeToken) {
+            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
+                foreach ((array)$data as $item) {
+                    if ($enterprizeToken == $item['token']) {
+                        $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
+                    }
+                }
+            });
+            \App::dataStoreClient()->execute();
+        }
+
+        if (!$enterpizeCoupon) {
+            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
         }
 
         $data = array_merge((array)$session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
@@ -47,28 +64,10 @@ class FormAction {
 
             return new \Http\RedirectResponse(\App::router()->generate('enterprize.create'));
         }
-
         $session->set($sessionName, $data);
 
         $flash = $session->get('flash');
         $session->remove('flash');
-
-        /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
-        $enterpizeCoupon = null;
-        if ($enterprizeToken) {
-            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
-                foreach ((array)$data as $item) {
-                    if ($enterprizeToken == $item['token']) {
-                        $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute();
-        }
-
-        if (!$enterpizeCoupon) {
-            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
-        }
 
         $page = new \View\Enterprize\FormPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
@@ -95,9 +94,12 @@ class FormAction {
 
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
-
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+
+        if (!$enterprizeToken) {
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+        }
 
         if (!isset($userData['subscribe'])) {
             $form->setError('subscribe', 'Необходимо согласие');
@@ -224,7 +226,7 @@ class FormAction {
                 $link = \App::router()->generate('enterprize.create');
             } elseif ($data['isPhoneConfirmed']) {
                 // просим подтвердит email
-                $link = \App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $enterprizeToken]);
+                $link = \App::router()->generate('enterprize.confirmEmail.show');
                 try {
                     if (!isset($data['email']) || empty($data['email'])) {
                         throw new \Exception('Не получен email');
@@ -250,7 +252,7 @@ class FormAction {
                 }
             } else {
                 // просим подтвердить телефон
-                $link = \App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $enterprizeToken]);
+                $link = \App::router()->generate('enterprize.confirmPhone.show');
                 try {
                     if (!isset($data['mobile']) || empty($data['mobile'])) {
                         throw new \Exception('Не получен мобильный телефон');
