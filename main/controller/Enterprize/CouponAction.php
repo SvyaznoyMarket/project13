@@ -164,6 +164,10 @@ class CouponAction {
             \App::dataStoreClient()->execute();
         }
 
+        if (!$enterpizeCoupon) {
+            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+        }
+
         $page = new \View\Enterprize\CouponFailPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
@@ -200,6 +204,10 @@ class CouponAction {
                 }
             });
             \App::dataStoreClient()->execute();
+        }
+
+        if (!$enterpizeCoupon) {
+            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
         }
 
         $page = new \View\Enterprize\CouponCompletePage();
