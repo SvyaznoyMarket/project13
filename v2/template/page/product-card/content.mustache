@@ -40,19 +40,7 @@
                 {{#product.hasModel}}
                     <div class="chooseModel">
                     {{#product.modelBlock}}
-                        {{#properties}}
-                            <div class="chooseModel__title">
-                                {{name}}
-                            </div>
-
-                            <ul class="chooseModelNum clearfix">
-                                {{#options}}
-                                    <li class="chooseModelNum__item{{#isActive}} chooseModelNum__item-active{{/isActive}}">
-                                        <a class="chooseModelNum__link" href="{{url}}">{{shownValue}}</a>
-                                    </li>
-                                {{/options}}
-                            </ul>
-                        {{/properties}}
+                        {{>partial/product-model-property-list/default}}
                     {{/product.modelBlock}}
 
                     <!-- Выбор цвета модели -->
@@ -78,19 +66,7 @@
                     <!-- Другие параметры выбора модели -->
                     {{#product.moreModelBlock}}
                     <div class="chooseModel__moreBox">
-                        {{#properties}}
-                            <div class="chooseModel__title">
-                                {{name}}
-                            </div>
-
-                            <ul class="chooseModelNum clearfix">
-                            {{#options}}
-                                <li class="chooseModelNum__item{{#isActive}} chooseModelNum__item-active{{/isActive}}">
-                                    <a class="chooseModelNum__link" href="{{url}}">{{shownValue}}</a>
-                                </li>
-                            {{/options}}
-                            </ul>
-                        {{/properties}}
+                        {{>partial/product-model-property-list/default}}
                     </div>
                     <!--/ Другие параметры выбора модели -->
 
