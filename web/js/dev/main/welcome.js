@@ -258,6 +258,12 @@ $(document).ready(function () {
 				/** Сработает только при ручной смене баннера (при клике) */
 				_gaq.push(['_trackEvent', 'BannerClick', '' + currImg.pos ]);
 				console.log('GA: _trackEvent BannerClick', currImg.pos);
+
+				if ( 'function' === typeof(ga) ) {
+					/** Google Analytics Universal */
+					ga( 'send', 'event', 'Internal_Promo', currImg.pos );
+					console.log( 'GA: send', 'event', 'Internal_Promo', currImg.pos );
+				}
 			}
 		}
     }
