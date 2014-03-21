@@ -102,7 +102,15 @@ class FormAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize', [], true));
+            $link = \App::router()->generate('enterprize');
+
+            return $request->isXmlHttpRequest()
+                ? new \Http\JsonResponse([
+                    'success' => true,
+                    'error'   => null,
+                    'data'    => ['link' => $link],
+                ])
+                : new \Http\RedirectResponse($link);
         }
 
         if (!isset($userData['subscribe'])) {
