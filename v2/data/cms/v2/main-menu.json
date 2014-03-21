@@ -5,7 +5,7 @@
         {
             "name": "Мебель",
             "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat 0 0;",
-            "styleHover": "background-position:0 -44px;",
+            "styleHover": "background-position: 0 -44px;",
             "source": "category/get?id=80",
             "children": [
                 {
@@ -16,52 +16,141 @@
         {
             "name": "Товары<br/>для дома",
             "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -138px 0;",
-            "styleHover": "background-position:-138px -44px;",
+            "styleHover": "background-position: -138px -44px;",
             "source": "category/get?id=443",
             "children": [
                 {
-                    "name": "Первая ссылка",
-                    "link": "/first"
-                },
-                {
                     "source": "category/tree?root_id=443"
-                },
+                }
+            ]
+        },
+        {
+            "name": "Бытовая<br/>техника",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -38px 0;",
+            "styleHover": "background-position: -38px -44px;",
+            "source": "category/get?id=1",
+            "children": [
                 {
-                    "name": "предпоследняя ссылка",
-                    "link": "/last"
-                },
+                    "source": "category/tree?root_id=1"
+                }
+            ]
+        },
+        {
+            "name": "Электроника",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -322px 0;",
+            "styleHover": "background-position: -322px -44px;",
+            "source": "category/get?id=788",
+            "children": [
                 {
-                    "name": "Товары<br/>для дома еще раз",
-                    "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -138px 0;width: 40px;",
-                    "styleHover": "background-position:-138px -44px;",
-                    "source": "category/get?id=443"
+                    "source": "category/tree?root_id=788"
+                }
+            ]
+        },
+        {
+            "name": "Детские<br/>товары",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -180px 0;",
+            "styleHover": "background-position: -180px -44px;",
+            "source": "category/get?id=320",
+            "children": [
+                {
+                    "source": "category/tree?root_id=320"
+                }
+            ]
+        },
+        {
+            "name": "Украшения<br/>и часы",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -378px 0;",
+            "styleHover": "background-position: -378px -44px;",
+            "source": "category/get?id=923",
+            "children": [
+                {
+                    "source": "category/tree?root_id=923"
+                }
+            ]
+        },
+        {
+            "name": "Парфюмерия<br/>и косметика",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -725px 0;",
+            "styleHover": "background-position: -725px -44px;",
+            "source": "category/get?id=2545",
+            "children": [
+                {
+                    "source": "category/tree?root_id=2545"
+                }
+            ]
+        },
+        {
+            "name": "Подарки<br/>и хобби",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -471px 0;",
+            "styleHover": "background-position: -471px -44px;",
+            "source": "category/get?id=185",
+            "children": [
+                {
+                    "source": "category/tree?root_id=185"
+                }
+            ]
+        },
+        {
+            "name": "Сделай<br/>сам",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -274px 0;",
+            "styleHover": "background-position: -274px -44px;",
+            "source": "category/get?id=224",
+            "children": [
+                {
+                    "source": "category/tree?root_id=224"
+                }
+            ]
+        },
+        {
+            "name": "Зоотовары",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -231px 0;",
+            "styleHover": "background-position: -231px -44px;",
+            "source": "category/get?id=1438",
+            "children": [
+                {
+                    "source": "category/tree?root_id=1438"
                 }
             ]
         },
         {
             "name": "Спорт и отдых",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -898px 0;",
-            "styleHover": "background-position:-898px -44px;",
-            "link": "/slices/likvidatsiya/sport",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -420px 0;",
+            "styleHover": "background-position: -420px -44px;",
+            "source": "category/get?id=647",
             "children": [
                 {
-                    "name": "Первая ссылка",
-                    "link": "/first",
-                    "children": [
-                        {
-                            "name": "Первая ссылка первой ссылки",
-                            "link": "/first/first"
-                        },
-                        {
-                            "name": "Вторая ссылка первой ссылки",
-                            "link": "/first/second"
-                        }
-                    ]
-                },
-                {
-                    "name": "Вторая ссылка",
-                    "link": "/second"
+                    "source": "category/tree?root_id=647"
                 }
+            ]
+        },
+        {
+            "name": "Аксессуары для<br>авто",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/03/headersprite1.gif') no-repeat -561px 0;",
+            "styleHover": "ackground-position: -561px -44px;",
+            "source": "category/get?id=225",
+            "children": [
+                {
+                    "source": "category/tree?root_id=225"
+                }
+            ]
+        },
+        {
+            "name": "Сад<br/>и огород",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/04/leyka.png') no-repeat 0 0;width: 57px;",
+            "styleHover": "background-position: 0 -32px;",
+            "source": "category/get?id=311",
+            "children": [
+                {
+                    "source": "category/tree?root_id=311"
+                }
+            ]
+        },
+        {
+            "name": "Ликвидация!",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/07/icon_Liquidation2.gif');",
+            "styleHover": "background: url('http://content.enter.ru/wp-content/uploads/2013/07/l_hover.png') no-repeat 0px 0px;",
+            "link": "/slices/likvidatsiya",
+            "children": [
             ]
         }
     ]
