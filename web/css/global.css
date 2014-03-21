@@ -11524,13 +11524,13 @@
   .bCatalogRoot__eItemLink {
     display: block;
     padding: 10px;
-    width: 200px;
+    width: 198px;
     height: 260px;
   }
   .bCatalogRoot__eImgLink {
-    display: inline-block;
-    margin: 0 auto 10px;
-    width: 200px;
+    display: table-cell;
+    margin: 0 auto;
+    width: 198px;
     height: 200px;
     background: #ffffff;
     vertical-align: middle;
@@ -11538,12 +11538,13 @@
   }
   .bCatalogRoot__eImg {
     display: inline-block;
-    max-height: 180px;
-    width: 180px;
+    max-height: 200px;
+    max-width: 200px;
     vertical-align: middle;
   }
   .bCatalogRoot__eNameLink {
     font-size: 14px;
+    margin: 10px 0 0;
   }
   .bCatalogRoot__eCount {
     position: absolute;
