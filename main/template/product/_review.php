@@ -19,7 +19,7 @@ if (!$isEnter): ?>
         <div class="bReview__eText">
             <? if($review['origin'] != 'enter') { ?>
                 <span class="mark">&#171;</span>
-                <?= empty($review['extract']) ? '' : $page->helper->nofollowExternalLinks($review['extract']) ?>
+                <?= empty($review['extract']) ? '' : '<div>' . htmlentities($review['extract']) . '</div>' ?>
             <? } else { ?>
                 <span class="mark">&#171;</span>
                 <p><?= $review['extract'] ?></p>
