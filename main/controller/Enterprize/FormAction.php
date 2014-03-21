@@ -24,12 +24,16 @@ class FormAction {
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
 
-        if (!$session->has($sessionName)) {
-            $session->set($sessionName, [
+        $session->set($sessionName, array_merge(
+            [
                 'isPhoneConfirmed' => false,
                 'isEmailConfirmed' => false,
-            ]);
-        }
+            ],
+            $session->has($sessionName) ? $session->get($sessionName) : [],
+            [
+                'enterprizeToken' => $enterprizeToken,
+            ]
+        ));
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
