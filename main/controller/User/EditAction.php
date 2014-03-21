@@ -30,7 +30,7 @@ class EditAction {
             $redirect = 'http://' . $redirect;
         }
 
-        if ($request->isMethod('post') && !$form->getIsDisabled()) {
+        if ($request->isMethod('post')) {
             $userData = (array)$request->request->get('user');
 
             if (!array_key_exists('is_subscribe', $userData)) {
@@ -43,6 +43,14 @@ class EditAction {
                 $tmp = rtrim( $form->getEmail() ) . rtrim($form->getMobilePhone());
                 if ( empty($tmp) ) {
                     throw new \Exception("E-mail и телефон не могут быть одновременно пустыми. Укажите ваш мобильный телефон либо e-mail.");
+                }
+
+                // пользователь является EnterPrize Member
+                if (
+                    ($form->getIsDisabled() && $userEntity) &&
+                    ($userEntity->getEmail() !== $form->getEmail() || $userEntity->getMobilePhone() !== $form->getMobilePhone())
+                ) {
+                    throw new \Exception("E-mail и телефон не могут быть отредактированы.");
                 }
 
                 $response = $client->query(
