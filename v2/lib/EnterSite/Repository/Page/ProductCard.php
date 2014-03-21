@@ -196,7 +196,7 @@ class ProductCard {
                         $option->url = $optionModel->product ? $optionModel->product->link : null;
                         $option->shownValue = $optionModel->value;
                         $option->image = ($propertyModel->isImage && $optionModel->product)
-                            ? (string)(new Routing\Product\Media\GetPhoto($optionModel->product->image, $optionModel->product->id, 3))
+                            ? (string)(new Routing\Product\Media\GetPhoto($optionModel->product->image, $optionModel->product->id, 2))
                             : null
                         ;
 
