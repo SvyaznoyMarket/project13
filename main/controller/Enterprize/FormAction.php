@@ -102,7 +102,15 @@ class FormAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize', [], true));
+            $link = \App::router()->generate('enterprize', [], true);
+
+            return $request->isXmlHttpRequest()
+                ? new \Http\JsonResponse([
+                    'success' => true,
+                    'error'   => null,
+                    'data'    => ['link' => $link],
+                ])
+                : new \Http\RedirectResponse($link);
         }
 
         if (!isset($userData['subscribe'])) {
@@ -312,7 +320,15 @@ class FormAction {
             }
         }
 
-        return $response ? $response : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true));
+        return $response
+            ? $response
+            : ($request->isXmlHttpRequest()
+                ? new \Http\JsonResponse([
+                    'success' => true,
+                    'error'   => null,
+                    'data'    => ['link' => \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true)],
+                ])
+                : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true)));
     }
 
     /**
