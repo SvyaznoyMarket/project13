@@ -66,6 +66,7 @@ class ConfirmEmailAction {
         $page->setParam('error', !empty($flash['error']) ? $flash['error'] : null);
         $page->setParam('message', !empty($flash['message']) ? $flash['message'] : null);
         $page->setParam('enterprizeData', $enterprizeData);
+        $page->setParam('viewParams', ['showSideBanner' => false]);
 
         return new \Http\Response($page->show());
     }
