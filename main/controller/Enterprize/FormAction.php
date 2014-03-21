@@ -17,7 +17,7 @@ class FormAction {
         }
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize', [], true));
         }
 
         $user = \App::user();
@@ -62,7 +62,7 @@ class FormAction {
             ]);
             $session->set($sessionName, $data);
 
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize.create'));
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize.create', [], true));
         }
         $session->set($sessionName, $data);
 
@@ -98,7 +98,7 @@ class FormAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize', [], true));
         }
 
         if (!isset($userData['subscribe'])) {
@@ -252,7 +252,7 @@ class FormAction {
                 }
             } else {
                 // просим подтвердить телефон
-                $link = \App::router()->generate('enterprize.confirmPhone.show');
+                $link = \App::router()->generate('enterprize.confirmPhone.show', [], true);
                 try {
                     if (!isset($data['mobile']) || empty($data['mobile'])) {
                         throw new \Exception('Не получен мобильный телефон');
@@ -308,8 +308,7 @@ class FormAction {
             }
         }
 
-        return $response ? $response
-            : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]));
+        return $response ? $response : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true));
     }
 
     /**
