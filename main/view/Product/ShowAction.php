@@ -51,6 +51,7 @@ class ShowAction {
                 // Для регионов (привозит быстрее, но не за три дня)
                 $stateLabel = ['name' => 'Товар со склада'];
             }
+            //$showState = true; // включаем отображение шильдика для всех
         }
 
         $productItem = [
@@ -91,6 +92,8 @@ class ShowAction {
                 ? ['name' => $line->getName(), 'productCount' => $line->getLineCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
                 : null
         ];
+
+        //p($productItem, '', 'f');
 
         // oldPrice and priceSale
         if ( $product->getPriceOld() && !$user->getRegion()->getHasTransportCompany() ) {
