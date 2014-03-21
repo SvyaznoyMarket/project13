@@ -93,8 +93,6 @@ class ShowAction {
                 : null
         ];
 
-        //p($productItem, '', 'f');
-
         // oldPrice and priceSale
         if ( $product->getPriceOld() && !$user->getRegion()->getHasTransportCompany() ) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
