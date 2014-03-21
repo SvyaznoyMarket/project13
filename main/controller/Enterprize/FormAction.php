@@ -78,6 +78,7 @@ class FormAction {
         $page->setParam('form', $this->getForm());
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
         $page->setParam('authSource', $session->get('authSource', null));
+        $page->setParam('viewParams', ['showSideBanner' => false]);
 
         return new \Http\Response($page->show());
     }

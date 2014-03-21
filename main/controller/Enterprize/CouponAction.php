@@ -179,6 +179,7 @@ class CouponAction {
         $page = new \View\Enterprize\CouponFailPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
+        $page->setParam('viewParams', ['showSideBanner' => false]);
 
         return new \Http\Response($page->show());
     }
@@ -225,6 +226,7 @@ class CouponAction {
         $page = new \View\Enterprize\CouponCompletePage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('member', (bool)$request->get('member', 0));
+        $page->setParam('viewParams', ['showSideBanner' => false]);
 
         return new \Http\Response($page->show());
     }

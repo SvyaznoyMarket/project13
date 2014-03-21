@@ -47,6 +47,7 @@ class ShowAction {
         $page = new \View\Enterprize\ShowPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('limit', $limit);
+        $page->setParam('viewParams', ['showSideBanner' => false]);
 
         return new \Http\Response($page->show());
     }
