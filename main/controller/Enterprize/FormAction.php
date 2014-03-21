@@ -102,7 +102,7 @@ class FormAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
-            $link = \App::router()->generate('enterprize');
+            $link = \App::router()->generate('enterprize', [], true);
 
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
