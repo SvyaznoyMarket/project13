@@ -24,7 +24,7 @@ if ((bool)$siblingCategories) {
 }
 
 ?>
-<div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>" data-use-interval="true" data-use-hash="false">
+<div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>" data-use-interval="true" data-use-hash="false" data-use-carousel="true">
 
 	<script type="text/html" id="slide_tmpl">
         <?= file_get_contents(__DIR__ . '/slide.tmpl'); ?>
@@ -33,7 +33,7 @@ if ((bool)$siblingCategories) {
 	<div class="bPromoCatalogSlider mTchiboSlider ">
 	    <a href="#" class="bPromoCatalogSlider_eArrow mArLeft"></a>
 	    <a href="#" class="bPromoCatalogSlider_eArrow mArRight"></a>
-	    <div class="bPromoCatalogSliderWrap clearfix"></div>
+	    <div class="bPromoCatalogSliderWrap jsPromoCatalogSliderWrap clearfix"></div>
 	</div>
 
 	<div id="promoCatalogPaginator" class="bPaginator mTchiboPaginator clearfix"></div>
