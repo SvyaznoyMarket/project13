@@ -320,7 +320,15 @@ class FormAction {
             }
         }
 
-        return $response ? $response : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true));
+        return $response
+            ? $response
+            : ($request->isXmlHttpRequest()
+                ? new \Http\JsonResponse([
+                    'success' => true,
+                    'error'   => null,
+                    'data'    => ['link' => \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true)],
+                ])
+                : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true)));
     }
 
     /**
