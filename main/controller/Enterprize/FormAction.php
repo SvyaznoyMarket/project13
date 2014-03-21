@@ -52,7 +52,7 @@ class FormAction {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
         }
 
-        $data = array_merge((array)$session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
+        $data = (array)$session->get($sessionName, []);
 
         // если пользователь авторизован и уже является участником enterprize
         if ($user->getEntity() && $user->getEntity()->isEnterprizeMember()) {
