@@ -45,7 +45,7 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
 
                 <li class="enterPrizeList__item mGreen">
                     <strong>Контакт-сENTER 8 800 700 00 09</strong><br/>
-                    Скажите оператору Контакт-cENTER, что Вы — участник Enter Prize!
+                    Скажите оператору Контакт-cENTER, что Вы — участник Enter Prize!<br/>
                     Оператор поможет оформить заказ.
                 </li>
             </ul>
