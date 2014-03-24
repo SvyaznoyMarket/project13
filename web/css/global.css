@@ -7333,21 +7333,55 @@
   .bSubscribeLightboxPopupNotNow {
     position: absolute;
     top: 0;
-    right: -41px;
+    right: -40px;
     display: none;
-    width: 40px;
-    height: 36px;
-    background: url('/css/subscribeLightboxPopup/img/icon.png') no-repeat 0 0;
+    width: 39px;
+    height: 43px;
+    background: url('/css/subscribeLightboxPopup/img/EPicon.png') no-repeat 0 0;
     cursor: pointer;
   }
   .bSubscribeLightboxPopup {
     display: none;
-    width: 100%;
     height: 43px;
-    margin: 0 -10px 7px;
     padding: 0 10px;
+    margin: 0 0 0 -10px;
+    width: 100%;
     text-align: center;
     background: url('/css/subscribeLightboxPopup/img/bgSubscribeTop.png') repeat-x 0 0;
+  }
+  .bSubscribeLightboxPopup.mEnterPrize {
+    background: url('/css/subscribeLightboxPopup/img/epLogo.png') no-repeat 10px 50% #f79a20;
+    text-align: left;
+  }
+  .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eTitle {
+    font-family: "Enter";
+    font-size: 27px;
+    line-height: 43px;
+    margin: 0 0 0 135px;
+    padding-right: 100px;
+    background: url('/css/subscribeLightboxPopup/img/epFishki.png') no-repeat 100% 50%;
+    padding-right: 55px;
+  }
+  .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eLink {
+    background: #000000;
+    color: #ffffff;
+    text-transform: uppercase;
+    display: inline-block;
+    vertical-align: top;
+    font-family: "Enter";
+    font-size: 18px;
+    height: 29px;
+    line-height: 29px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 115px;
+    margin: 5px 0 0 15px;
+  }
+  .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eLink:hover {
+    text-decoration: none;
   }
   .bSubscribeLightboxPopup__eTitle {
     margin: 0 22px 0 0px;
@@ -7408,6 +7442,10 @@
     content: '✘';
     color: #ffffff;
     font-size: 15px;
+  }
+  #mainPage .bSubscribeLightboxPopup {
+    margin: 0;
+    width: auto;
   }
 }
 /*---------END ВСПЛЫВАЮЩЕЙ ПОДПИСКИ-----*/

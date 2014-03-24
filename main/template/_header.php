@@ -5,13 +5,21 @@
  * @var $subscribeForm   array
  */
 ?>
-
+<?php /*
 <div class="bSubscribeLightboxPopup clearfix">
     <h3 class="bSubscribeLightboxPopup__eTitle fl"><?= $subscribeForm['mainText'] ?></h3>
     <input class="bSubscribeLightboxPopup__eInput fl" placeholder="<?= $subscribeForm['inputText'] ?>"/>
     <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>"><?= $subscribeForm['buttonText'] ?></button>
     <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
 </div>
+*/?>
+
+<div class="bSubscribeLightboxPopup mEnterPrize clearfix">
+    <h3 class="bSubscribeLightboxPopup__eTitle fl">Лучшие предложения Enter для клиентов</h3>
+    <a class="bSubscribeLightboxPopup__eLink" href="/enterprize">выбрать</a>
+    <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
+</div>
+
 <!-- Topbar -->
 <div class="topbar clearfix">    
     <div class="bRegion">
