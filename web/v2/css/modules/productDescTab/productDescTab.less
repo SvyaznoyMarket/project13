@@ -10,18 +10,18 @@
 	behavior: url('js/display-table.min.htc');
 	dt-display: table;
 
-	&__item {
+	&_item {
 		display: table-cell;
 		text-align: center;
 		border-right: 1px solid @tabGreyBorder;
 		-dt-display: table-cell;
 
-		&-last {
+		&__last {
 			border-right: none;
 		}
 	}
 
-	&__link {
+	&_link {
 		display: block;
 		color: @tabGreyText;
 		font-size: 20px;
@@ -30,7 +30,7 @@
 		padding: 8px 0;
 
 		&:hover,
-		&-active {
+		&__active {
 			background-color: @white;
 			color: @darkGreyText;
 			text-decoration: none;
@@ -51,6 +51,10 @@
 
 		*display: inline;
 		zoom: 1;
+
+		&_view {
+			padding-top: 4px;
+		}
 	}
 
 	.reviews {

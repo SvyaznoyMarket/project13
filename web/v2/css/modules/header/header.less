@@ -27,7 +27,7 @@
 	*display: inline;
 	zoom: 1;
 
-	&__link {
+	&_link {
 		background: url("@{base-url}/header/img/menuIco1024.png") no-repeat 0 0;
 		height: 28px;
     	width: 33px;
@@ -45,7 +45,7 @@
 	*display: inline;
 	zoom: 1;
 
-	&__link {
+	&_img {
 		width: 50px;
 	}
 }
@@ -63,40 +63,21 @@
 }
 
 .breadCrumbs {
-	display: inline-block;
-	vertical-align: top;
-
 	padding: 0 0 0 20px;
 	border-left: 2px solid @white;
 	margin-left: 20px;
 	width: 1000px;
 
-	*display: inline;
-	zoom: 1;
-
-	&__item {
-	    display: inline-block;
-	    font-size: 1.4em;
-	    margin: 10px 0 0;
-	    vertical-align: top;
-
-	    *display: inline;
-		zoom: 1;
-	}
-
-	&__itemImg {
-		display: inline-block;
-		vertical-align: top;
-		margin: 0 10px 0 0;
-
-		*display: block;
-		zoom: 1;
-	}
-
-	&__link {
+	&_link {
 		text-transform: uppercase;
 		color: @white;
 		font-size: 17px;
+		padding: 8px 0;
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
 
 		&:hover {
 			color: @white;
@@ -126,19 +107,19 @@
     background: @black;
     
 
-	&__item {
+	&_item {
 		display: inline-block;
 		margin: 0 0 0 21px;
 
 		*display: inline;
 		zoom: 1;
 
-		&-first {
+		&__first {
 			margin: 0;
 		}
 	}
 
-	&__link {
+	&_link {
 		color: @white;
 		background: url("@{base-url}/header/img/menuIco1024.png") no-repeat 50% -37px;
 		display: block;
@@ -146,11 +127,11 @@
 		padding: 23px 0 0;
 		text-transform: uppercase;
 
-		&-auth {
+		&__auth {
 			background-position: 50% -80px;
 		}
 
-		&-cart {
+		&__cart {
 			background-position: 50% -122px;
 		}
 
@@ -160,7 +141,7 @@
 		}
 	}
 
-	&__text {
+	&_text {
 		 font-size: 11px;
 	}
 }

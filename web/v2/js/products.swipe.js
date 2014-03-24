@@ -1,140 +1,22 @@
 $(function() {
- 
-  $.fn.swipe = function( options ) {
-    // Default thresholds & swipe functions
-    options = $.extend(true, {}, $.fn.swipe.options, options);
-     
-    return this.each(function() {
-     
-      var self = this,
-          originalCoord = { 'x': 0, 'y': 0 },
-          finalCoord = { 'x': 0, 'y': 0 };
-       
-      // Screen touched, store the initial coordinates
-      function touchStart( event ) {
-        var touch = event.originalEvent.targetTouches[0];
-        originalCoord.x = touch.pageX;
-        originalCoord.y = touch.pageY;
-      }
-       
-      // Store coordinates as finger is swiping
-      function touchMove( event ) {
-        var touch = event.originalEvent.targetTouches[0];
-        finalCoord.x = touch.pageX; // Updated X,Y coordinates
-        finalCoord.y = touch.pageY;
-        event.preventDefault();
 
-        deltaSwipe();
-      }
-       
-      // Done swiping
-      // Swipe should only be on X axis, ignore if swipe on Y axis
-      // Calculate if the swipe was left or right
-      function touchEnd() {
-        var changeY = originalCoord.y - finalCoord.y,
-            changeX,
-            threshold = options.threshold,
-            y = threshold.y,
-            x = threshold.x;
+  var
+    swipeWrap = $(".productDescImgList"),
+    swipeItem = $(".productDescImgList").find('.productDescImgList_item'),
+    swipeItemWidth = swipeItem.width(),
 
-        if ( changeY < y && changeY > (- y) ) {
-          changeX = originalCoord.x - finalCoord.x;
+    IMG_WIDTH = swipeItemWidth,
+    currentImg = 0,
+    maxImages = swipeItem.size(),
+    speed= 500,
 
-          if ( changeX > x ) {
-            options.swipeLeft.call(self);
-          } else if ( changeX < (- x) ) {
-            options.swipeRight.call(self);
-          }
-        }
-      }
-       
-      // Swipe was canceled
-      function touchCancel() {
-      //console.log('Canceling swipe gesture…')
-      }
-
-      var 
-        deltaSwipe = function deltaSwipe() {
-          var changeX = originalCoord.x - finalCoord.x;
-
-          if ( changeX > 0 ) {
-            $('.productDescImgList__item.page-current').css({transform:'translate('+ changeX +'px, 0)'});
-          }
-
-          if ( changeX < 0 ) {
-            $('.productDescImgList__item.page-current').css({transform:'translate('+ changeX +'px, 0)'});
-          }
-      };
-       
-      // Add gestures to all swipable areas
-      $(self).bind({
-        'touchstart.swipe': touchStart,
-        'touchmove.swipe': touchMove,
-        'touchend.swipe': touchEnd,
-        'touchcancel.swipe': touchCancel
-      });
-    });
-     
-  };
-
-  var swipeItem = $('.productDescImgList__item'),
-      swipeItemLeft = $('.productDescImgList__item.page-left'),
-      swipeItemCurrent = $('.productDescImgList__item.page-current'),
-      swipeItemRight = $('.productDescImgList__item.page-right'),
-
-      leftClass = 'page-left',
-      currentClass = 'page-current',
-      rightClass = 'page-right',
-      animClass = 'page-animating',
-      currentAnimClass = 'page-current page-animating';
-  // end var
-
-  $('.leftSwipe').hide();
-
-  var 
-    /*
-     * Добавляем классы к элементам списка swipe
-     */
-    addClassItem = function addClassItem() {
-      console.log(swipeItemCurrent.next());
-      swipeItem.first().addClass(currentClass);
-      swipeItem.first().next().addClass(rightClass);
-    },
-
-    /*
-     * Прокрутка swipe влево
-     */
-    slideSwipeLeft = function slideSwipeLeft() {
-      console.info("swipe/slide left");
-      $('.rightSwipe').show();
-
-      $('.productDescImgList__item.page-right').removeClass(rightClass);
-      $('.productDescImgList__item.page-current').removeClass(currentClass).removeClass(animClass).addClass(rightClass);
-      $('.productDescImgList__item.page-left').removeClass(leftClass).addClass(currentAnimClass);
-      $('.productDescImgList__item.page-current').prev().addClass(leftClass);
-
-      if( $('.productDescImgList__item').first().hasClass(currentClass) ) {
-        $('.leftSwipe').hide();
-      }
-    },
-
-    /*
-     * Прокрутка swipe вправо
-     */
-    slideSwipeRight = function slideSwipeRight() {
-      console.info("swipe/slide right");
-
-      $('.leftSwipe').show();
-
-      $('.productDescImgList__item.page-left').removeClass(leftClass);
-      $('.productDescImgList__item.page-current').removeClass(currentClass).removeClass(animClass).addClass(leftClass);
-      $('.productDescImgList__item.page-right').removeClass(rightClass).addClass(currentAnimClass);
-      $('.productDescImgList__item.page-current').next().addClass(rightClass);
-      $('.productDescImgList__item.page-current').prev().addClass(leftClass);
-
-      if( $('.productDescImgList__item').last().hasClass(currentClass) ) {
-        $('.rightSwipe').hide();
-      }
+    imgs = $("#imgs"),
+      
+    swipeOptions = {
+      triggerOnTouchEnd : true, 
+      swipeStatus : swipeStatus,
+      allowPageScroll: "vertical",
+      threshold:75      
     },
 
     /*
@@ -142,38 +24,81 @@ $(function() {
      */
     getImageSize = function getImageSize() {
 
-      $(".productDescImgList img").each(function() {
+      swipeItem.each(function() {
         console.log(imgHeight);
         var $this = $(this),
-            imgHeight = $this.height();
+            imgHeight = $this.children().height(),
+            imgWidth = $this.width();
 
-        $(".productDescImgList").css({'height': imgHeight});
+        swipeWrap.css({
+          'height': imgHeight,
+          'width' : '100%'
+        });
       });
     };
   // end var
-     
-  $.fn.swipe.options = {
-    'threshold': {
-      'x': 30,
-      'y': 50
-    },
 
-    'swipeLeft': function() {
-      slideSwipeRight();
-    },
+/**
+* Catch each phase of the swipe.
+* move : we drag the div.
+* cancel : we animate back to where we were
+* end : we animate to the next image
+*/      
+function swipeStatus(event, phase, direction, distance) {
+  //If we are moving before swipe, and we are going Lor R in X mode, or U or D in Y mode then drag.
+  if( phase=="move" && (direction=="left" || direction=="right") )
+  {
+    var duration=0;
+    
+    if (direction == "left")
+      scrollImages((IMG_WIDTH * currentImg) + distance, duration);
+    
+    else if (direction == "right")
+      scrollImages((IMG_WIDTH * currentImg) - distance, duration);
+    
+  }
+  
+  else if ( phase == "cancel")
+  {
+    scrollImages(IMG_WIDTH * currentImg, speed);
+  }
+  
+  else if ( phase =="end" )
+  {
+    if (direction == "right")
+      previousImage()
+    else if (direction == "left")     
+      nextImage()
+  }
+};
+    
 
-    'swipeRight': function() {
-      slideSwipeLeft();
-    }
-  };
 
-  $(window).on('load', addClassItem);
+function previousImage() {
+  currentImg = Math.max(currentImg-1, 0);
+  scrollImages( IMG_WIDTH * currentImg, speed);
+};
 
-  $('.productDescImgList__item').swipe();
-
-  $('.leftSwipe').on('click', slideSwipeLeft);
-
-  $('.rightSwipe').on('click', slideSwipeRight);
+function nextImage() {
+  currentImg = Math.min(currentImg+1, maxImages-1);
+  scrollImages( IMG_WIDTH * currentImg, speed);
+};
+  
+/**
+* Manuallt update the position of the imgs on drag
+*/
+function scrollImages(distance, duration) {
+  imgs.css("transition-duration", (duration/1000).toFixed(1) + "s");
+  
+  //inverse the number we set in the css
+  var value = (distance<0 ? "" : "-") + Math.abs(distance).toString();
+  
+  imgs.css("transform", "translate3d("+value +"px,0px,0px)");
+};
 
   $(window).on('resize load', getImageSize);
+  imgs.swipe( swipeOptions );
+
+  console.log(maxImages);
+  console.log(swipeItemWidth);
 });
