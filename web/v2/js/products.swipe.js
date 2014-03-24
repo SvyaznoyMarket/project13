@@ -11,13 +11,14 @@ $(function() {
     speed= 500,
 
     imgs = $("#imgs"),
-      
-    swipeOptions = {
-      triggerOnTouchEnd : true, 
-      swipeStatus : swipeStatus,
-      allowPageScroll: "vertical",
-      threshold:75      
-    },
+
+    swipeOptions=
+        {
+          triggerOnTouchEnd : true, 
+          swipeStatus : swipeStatus,
+          allowPageScroll:"vertical",
+          threshold:75      
+          },
 
     /*
      * Функция изменяет высоту врапера swipe блока
@@ -39,40 +40,39 @@ $(function() {
   // end var
 
 /**
-* Catch each phase of the swipe.
-* move : we drag the div.
-* cancel : we animate back to where we were
-* end : we animate to the next image
-*/      
-function swipeStatus(event, phase, direction, distance) {
-  //If we are moving before swipe, and we are going Lor R in X mode, or U or D in Y mode then drag.
-  if( phase=="move" && (direction=="left" || direction=="right") )
-  {
-    var duration=0;
-    
-    if (direction == "left")
-      scrollImages((IMG_WIDTH * currentImg) + distance, duration);
-    
-    else if (direction == "right")
-      scrollImages((IMG_WIDTH * currentImg) - distance, duration);
-    
-  }
-  
-  else if ( phase == "cancel")
-  {
-    scrollImages(IMG_WIDTH * currentImg, speed);
-  }
-  
-  else if ( phase =="end" )
-  {
-    if (direction == "right")
-      previousImage()
-    else if (direction == "left")     
-      nextImage()
-  }
-};
-    
-
+        * Catch each phase of the swipe.
+        * move : we drag the div.
+        * cancel : we animate back to where we were
+        * end : we animate to the next image
+        */      
+        function swipeStatus(event, phase, direction, distance)
+        {
+          //If we are moving before swipe, and we are going Lor R in X mode, or U or D in Y mode then drag.
+          if( phase=="move" && (direction=="left" || direction=="right") )
+          {
+            var duration=0;
+            
+            if (direction == "left")
+              scrollImages((IMG_WIDTH * currentImg) + distance, duration);
+            
+            else if (direction == "right")
+              scrollImages((IMG_WIDTH * currentImg) - distance, duration);
+            
+          }
+          
+          else if ( phase == "cancel")
+          {
+            scrollImages(IMG_WIDTH * currentImg, speed);
+          }
+          
+          else if ( phase =="end" )
+          {
+            if (direction == "right")
+              previousImage()
+            else if (direction == "left")     
+              nextImage()
+          }
+        }
 
 function previousImage() {
   currentImg = Math.max(currentImg-1, 0);
@@ -97,7 +97,8 @@ function scrollImages(distance, duration) {
 };
 
   $(window).on('resize load', getImageSize);
-  imgs.swipe( swipeOptions );
+
+  imgs.swipe(swipeOptions);
 
   console.log(maxImages);
   console.log(swipeItemWidth);
