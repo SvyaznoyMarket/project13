@@ -383,6 +383,7 @@ class IndexAction {
         $page->setParam('viewParams', [
             'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
         ]);
+        $page->setGlobalParam('isTchibo', ($product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName()));
 
         return new \Http\Response($page->show());
     }

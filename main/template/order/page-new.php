@@ -282,7 +282,7 @@ if ($oneClick) {
 	                        <? endif ?>
 						</ul>
 
-						<input class="bBuyingLine__eText mSaleInput" type="text" id="" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
+						<input class="bBuyingLine__eText mSaleInput" type="text" id="coupon_number" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
 
 						<button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon">Применить</button>
 

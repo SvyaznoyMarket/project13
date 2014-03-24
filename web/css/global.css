@@ -11975,6 +11975,9 @@
     background: #e6e6e6;
     color: #a6a6a6;
   }
+  .bBtnLine .btnBuy__eLink.mDisabled {
+    width: 100px;
+  }
   .bBtnLine .btnView {
     display: block;
     float: right;

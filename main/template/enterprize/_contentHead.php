@@ -7,6 +7,7 @@
  * @var $hasSeparateLine bool
  * @var $extendedMargin  bool
  * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null
+ * @var $member          bool
  */
 ?>
 
@@ -14,6 +15,8 @@
 $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
 $hasSeparateLine = isset($hasSeparateLine) ? (bool)$hasSeparateLine : false;
 $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
+
+$routeName = \App::request()->attributes->get('route');
 ?>
 
 <div class="pagehead">
@@ -21,12 +24,12 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
     <? if ($hasSearch): ?>
-    <noindex>
-        <div class="searchbox">
-            <?= $page->render('search/form-default', ['searchQuery' => $page->getParam('searchQuery')]) ?>
-            <div id="searchAutocomplete"></div>
-        </div>
-    </noindex>
+        <noindex>
+            <div class="searchbox">
+                <?= $page->render('search/form-default', ['searchQuery' => $page->getParam('searchQuery')]) ?>
+                <div id="searchAutocomplete"></div>
+            </div>
+        </noindex>
     <? endif ?>
 
     <div class="clear"></div>
@@ -69,15 +72,23 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
                 <? endif ?>
             </div>
 
-            <? if (!$user->getEntity()): ?>
+            <? if (!$user->getEntity() && in_array($routeName, ['enterprize', 'enterprize.show', 'enterprize.form.show'])): ?>
                 <?= $page->render('enterprize/_auth') ?>
-                <div class="enterPrize__logIn">У тебя есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="bAuthLink">Войти</a></div>
+                <div class="enterPrize__logIn">У Вас есть логин и пароль? <a href="<?= \App::router()->generate('user.login') ?>" class="bAuthLink">Войти</a></div>
             <? endif ?>
 
-            <? if ('enterprize.complete' === \App::request()->attributes->get('route')): ?>
+            <? if (in_array($routeName, ['enterprize.confirmPhone.show', 'enterprize.confirmEmail.show'])): ?>
+                <div><a href="<?= \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterpizeCoupon->getToken()]) ?>">&lt; Вернуться к анкете</a></div>
+            <? endif ?>
+
+            <? if ('enterprize.complete' === $routeName): ?>
                 <div class="completeTitleEP">
-                    <div class="completeTitleEP__title">Ты &#8212; в игре!</div>
-                    <p class="completeTitleEP__text">Мы отправили номер фишки на твой e-mail и мобильный</p>
+                    <? if (isset($member) && true === $member): ?>
+                        <p class="completeTitleEP__title">Мы отправили номер фишки на Ваш e-mail и мобильный</p>
+                    <? else: ?>
+                        <div class="completeTitleEP__title">Вы &#8212; в игре!</div>
+                        <p class="completeTitleEP__text">Мы отправили номер фишки на Ваш e-mail и мобильный</p>
+                    <? endif ?>
                 </div>
             <? endif ?>
         </div>

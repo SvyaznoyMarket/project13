@@ -82,6 +82,7 @@ class GoogleAnalytics {
 
         } catch (\Exception $e) {
             \App::logger()->error($e, [__CLASS__]);
+            \App::exception()->remove($e);
         }
 
         if (empty($this->sendData['vars'])) {
@@ -110,6 +111,13 @@ class GoogleAnalytics {
      * Вызывается на всех страницах счётчика
      */
     private function routeAll() {
+        $enterCookie = \App::request()->cookies->get('enter');
+        if (empty($enterCookie)) {
+            $userEntity = $this->user->getEntity();
+            $this->sendData['vars']['dimension7'] = ($userEntity && $userEntity->getId()) ?
+                'Registered' :
+                'Anonymous';
+        }
     }
 
 
@@ -130,11 +138,17 @@ class GoogleAnalytics {
         // страница одного товара
         $this->sendData['vars']['dimension5'] = 'Item';
         $product = $this->getParam('product');
-        $category = $product->getMainCategory();
+        $categories = $product->getCategory();
+        $categoryUpper = reset($categories);
+        $categoryDown = end($categories);
+        /*
+        $categoryMain = $product->getMainCategory();
+        if ( !$categoryMain ) {
+            $categoryMain = end( $categories );
+        }*/
 
-        if ( !$category ) {
-            $categories = $product->getCategory();
-            $category = reset( $categories );
+        if (strpos($_SERVER['HTTP_REFERER'],'search?q=') > 0) {
+            $this->sendData['afterSearch'] = 1;
         }
 
         if ($product instanceof \Model\Product\Entity) {
@@ -146,17 +160,18 @@ class GoogleAnalytics {
                     : 'YES';
         }
 
-        $this->addCategoryInfo($category);
+        $this->sendData['vars']['dimension6'] = $categoryUpper->getName();  // Имя верхней категории
+        $this->sendData['vars']['dimension12'] = $categoryDown->getName();  // Имя текущей подкатегории
+        $this->sendData['upperCat'] = $categoryUpper->getName();            // Имя верхней категории
     }
 
 
     /**
      * Добавляет инфу о категории и её родительской категори, если оная существует.
-     * Вызывается на стр. товара и стр. категории.
      *
      * @param $category
      */
-    private function addCategoryInfo($category) {
+    /*private function addCategoryInfo($category) {
         if ( $category instanceof \Model\Product\Category\Entity ) {
             $this->sendData['vars']['dimension12'] = $category->getName(); // Имя текущей категории
 
@@ -167,7 +182,7 @@ class GoogleAnalytics {
                 $this->sendData['vars']['dimension12'] = $category->getName(); // Если нет родительской
             }
         }
-    }
+    }*/
 
 
     /**
@@ -176,7 +191,14 @@ class GoogleAnalytics {
     private function routeCategory() {
         // страница каталога/категории/подкатегории
         $this->sendData['vars']['dimension5'] = 'Category';
-        $this->addCategoryInfo($this->getParam('category'));
+        $category = $this->getParam('category');
+        if ($category instanceof \Model\Product\Category\Entity) {
+            $categories = $category->getAncestor();
+            $categoryUpper = reset($categories);
+            $categoryDown = end($categories);
+            $this->sendData['vars']['dimension6'] = $categoryUpper->getName();  // Имя верхней категории
+            $this->sendData['vars']['dimension12'] = $categoryDown->getName();  // Имя текущей подкатегории
+        }
     }
 
 
@@ -195,26 +217,37 @@ class GoogleAnalytics {
      */
     private function routeCart() {
         // корзина
-        $this->sendData['vars']['dimension5'] = 'Search';
+        $this->sendData['vars']['dimension5'] = 'Cart';
 
         $total = 0;
+        $SKUs = '';
+        $userEntity = $this->user->getEntity();
         $cartProductsById = $this->getParam('cartProductsById');
-        $cartServicesById = $this->getParam('cartServicesById');
+        $products = $this->getParam('products');
+        //$cartServicesById = $this->getParam('cartServicesById');
 
-        foreach($cartProductsById as $item) {
-            /** @var $item \Model\Order\Product\Entity */
-            $total += $item->getSum();
+        if (!$cartProductsById /*&& !$cartServicesById*/) return false;
+
+        foreach ($products as $product) {
+            if (!isset($cartProductsById[$product->getId()])) continue;
+            //$cartProduct = $cartProductsById[$product->getId()];
+            /** @var $cartProduct \Model\Cart\Product\Entity */
+            /** @var $product \Model\Product\CartEntity */
+            $SKUs .= $product->getArticle() . ',';
+            $total += $product->getPrice();
         }
 
-        foreach($cartServicesById as $item) {
-            /** @var $product \Model\Order\Service\Entity */
+        /*foreach($cartServicesById as $item) {
+            // @var $product \Model\Order\Service\Entity
             $total += $item->getSum();
-        }
+        }*/
+
+        self::rmLastSeporator($SKUs);
 
         $this->sendData['cart'] = [
-            'totalSum'  => $total,
-            'SKUs'      => '',
-            'KissUIDs'  => '',
+            'sum'   => $total,
+            'SKUs'  => $SKUs,
+            'uid'   => $userEntity ? $userEntity->getId() : 0,
         ];
     }
 
@@ -225,61 +258,56 @@ class GoogleAnalytics {
 
 
     /**
-     * Вызывается на страницАХ заказа
+     * Метод не нужен, напрямую трекаем код на стр.
+     * main/template/error/page-404.php
      */
-    private function routeOrder() {
-        // оформление заказа
-
-        $orders = $this->getParam('orders');
-        if (!$orders) return false;
-        $orderNumbersArr = [];
-
-        $orderSum = 0;
-        foreach ($orders as $order) {
-            $orderNumbersArr[] = $order->getNumber();
-            $orderSum += $order->getPaySum();
-        }
-
-        $orderInfo = [
-          //'id'        =>  reset($orderNumbers),       // Берём номер первого заказа
-            'id'        => implode(", ", $orderNumbersArr), // Берём все номера заказов через запятую
-            'price'     => $orderSum,
-        ];
-
-        if ( empty($orderInfo) ) return false;
-        $this->sendData['orderInfo'] = $orderInfo;
-    }
-
-
+    /*
     private function route404() {
         $this->sendData['vars']['dimension5'] = '404';
-    }
+    }*/
+
 
     /**
      * Вызывается на страницЕ "Спасибо за заказ"
      */
     private function routeOrderComplete() {
-        $this->routeOrder();
+        if ($this->getParam('sessionIsReaded')) {
+            // Если этот параметр существует и тру, то юзер обновляет страницу, не нужно трекать заново
+            return false;
+        }
 
         $this->sendData['vars']['dimension5'] = 'ThankYou';
 
-        // последняя страница оформление заказа
-        //$this->sendData['pageType'] = 6;
-
-        $orders = $this->getParam('orders');
-        if (!$orders) return false;
+        $productsById = $this->getParam('productsById');
+        /** @var  $paymentMethod \Model\PaymentMethod\Entity  */
+        //$paymentMethod = $this->getParam('paymentMethod');
+        /** @var $ordersAll \Model\Order\Entity[] */
+        $ordersAll = $this->getParam('orders');
+        if (!$ordersAll) return false;
         /** @var $orders \Model\Order\Entity **/
 
-        $productsById = $this->getParam('productsById');
 
-        //$orders->getSum()
+        $this->sendData['ecommerce'] = [];
+        $purchasedProducts = []; // купленные товары
+        $completedOrders = []; // совершенные заказы
+        $addTransaction = [
+            'id'        => '', // Transaction ID. Required.
+            'revenue'   => 0, // Grand Total.
+            'shipping'  => 0, // Shipping.
+        ];
 
-        //купленные товары
-        $purchasedProducts = [];
 
-        foreach($orders as $ord) {
-            /** @var $ord \Model\Order\Entity **/
-            $products = $ord->getProduct();
+        foreach($ordersAll as $order) {
+            /** @var $order \Model\Order\Entity **/
+            $products = $order->getProduct();
+            $delivery = $order->getDelivery();
+            $delivery = reset($delivery);
+
+            $addTransaction['id'] .= $order->getId() . ',';
+            $addTransaction['revenue'] += $order->getSum();
+            if ( $delivery instanceof \Model\Order\Delivery\Entity ) {
+                $addTransaction['shipping'] += $delivery->getPrice();
+            }
 
             foreach($products as $orderProduct) {
                 /** @var $orderProduct  \Model\Order\Product\Entity **/
@@ -296,41 +324,57 @@ class GoogleAnalytics {
                 ];
             }
 
+            // $paymentMethod->getName(),// '<Тип оплаты>'
+
+            $delivery = $order->getDelivery();
+            /** @var $delivery \Model\Order\Delivery\Entity */
+            $delivery = reset($delivery);
+
+            $completedOrders[] = [
+                'dimension2' => $delivery->getTypeId(),// '<Тип доставки>',
+                'dimension3' => $order->getCouponNumber(),// '<Код купона>',
+                'dimension4' => $order->getPaymentId(),// '<Тип оплаты>'
+            ];
         }
 
-        if (empty($purchasedProducts)) return false;
+        /**
+         * Нужно не забывать, что пока купон может быть только у одного заказа (первого и последнего)
+         * если разбивается на несколько, то все скидки и купоны удаляются
+         */
 
-        $this->sendData['purchasedProducts'] = $purchasedProducts;
+        self::rmLastSeporator($addTransaction['id']);
+
+        $this->sendData['ecommerce']['addTransaction'] = $addTransaction;
+        $this->sendData['ecommerce']['items'] = $purchasedProducts;
+        $this->sendData['ecommerce']['send'] = $completedOrders;
     }
 
 
-
+    /**
+     * Удаляет последний символ в строке
+     *
+     * @param $str
+     * @return string
+     */
+    private function rmLastSeporator(&$str) {
+        $str = (string) $str;
+        if (isset($str[1])) {
+            $str = substr($str, 0, strlen($str)-1);
+        }
+        return $str;
+    }
 
 
     /**
+     * Возвращает параметр лэйаута.
+     * Метод нужен для связи между параметрами из Layout
+     * Т.о. настоящий класс имеет доступ ко всем параметрам, что и Layout из которого этот класс вызван
+     *
      * @param $name
      * @return null
      */
     private function getParam($name) {
         return array_key_exists($name, $this->params) ? $this->params[$name] : null;
     }
-
-
-    /**
-     * For debug
-     *
-     * @param null $var
-     * @param string $info
-     *
-    private function d($var = null, $info = '') {
-        print '<pre>Debug:';
-        if ($info) {
-            print '###';
-            print_r($info);
-            print ' - - - - ';
-        }
-        if ($var) print_r($var);
-        print '</pre>';
-    }*/
 
 }

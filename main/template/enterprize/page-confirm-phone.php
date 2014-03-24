@@ -32,6 +32,4 @@
 
         <input type="submit" class="newCode mBtnGrey" value="Отправить повторно" />
     </form>
-
-    <a class="backForm" href="<?= $page->url('enterprize.form.show', ['enterprizeToken' => $enterpizeCoupon ? $enterpizeCoupon->getToken() : null]) ?>">Исправить номер телефона и получить новый код</a>
 </div>

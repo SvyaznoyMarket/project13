@@ -652,4 +652,12 @@ class DefaultLayout extends Layout {
         return $this->breadcrumbsPath = $breadcrumbs;
     }
 
+
+    public function slotEnterprizeConfirmJs() {
+        return '';
+    }
+
+    public function slotEnterprizeCompleteJs() {
+        return '';
+    }
 }

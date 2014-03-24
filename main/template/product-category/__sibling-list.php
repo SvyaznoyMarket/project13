@@ -24,16 +24,17 @@ return function(
 
 
         <ul class="tchiboNav__list clearfix">
-        <? foreach ($categories as $category):
-            $active = $currentCategory && in_array($category->getId(), [$currentCategory->getParentId(), $currentCategory->getId()]) ? true : false; ?>
+        <? $i = 0; foreach ($categories as $category):
+            $active = $currentCategory && in_array($category->getId(), [$currentCategory->getParentId(), $currentCategory->getId()]) ? true : false;
+            $last = (count($categories) - ($i++)) <= 2; ?>
 
-            <li class="item jsItemListTchibo<? if ($active): ?> active<? endif ?>">
+            <li class="item jsItemListTchibo<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
                 <a class="link" href="<?= $category->getLink() ?>">
                     <span class="itemText"><?= $category->getName() ?></span>
                 </a>
 
                 <? if ((bool)$category->getChild() && ($active || !$currentCategory)): ?>
-                    <ul class="tchiboNav__sublist mDefault<? if ($active): ?> active<? endif ?>">
+                    <ul class="tchiboNav__sublist<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
                     <? foreach ($category->getChild() as $child):
                         $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId()) ? true : false; ?>
 
