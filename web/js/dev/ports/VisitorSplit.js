@@ -40,8 +40,8 @@
 	 */
 
 	//  VENDOR 2 - Sociomantic
-	var VENDOR_2_TAG_URL = '//eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
-	var VENDOR_2_TAG_TYPE = 'js';
+	var VENDOR_2_TAG_URL = "//eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru";
+	var VENDOR_2_TAG_TYPE = "js";
 
 	//  VENDOR 3 - Google conversion tag
 	//  Remove vendor if not required
