@@ -9698,7 +9698,6 @@
   .bReviews .bReview__eText div,
   .bReviews .bReview__eText p {
     float: left;
-    font-size: 12px;
     line-height: 1.5;
     margin: 2px 0 5px;
     width: 410px;
