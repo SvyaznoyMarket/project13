@@ -24,26 +24,18 @@
 
             <!-- Изображение товара -->
             <div class="productDescImg">
-                <ul class="productDescImgList" id="imgs">
+                <div class="productDescImgList jsSlides">
                     {{#product.photos}}
-                        <li class="productDescImgList_item">
-                            <img class="productDescImgList_img" src="{{url}}" alt="{{&name}}" />
-                        </li>
+                        <img class="productDescImgList_img" src="{{url}}" alt="{{&name}}" />
                     {{/product.photos}}
-                </ul>
-
-                <div style="background: #000; width: 30px; height: 50px; display: inline-block; margin-right: 20px;" class="leftSwipe"></div>
-                
-                <div style="background: #000; width: 30px; height: 50px; display: inline-block;" class="rightSwipe"></div>
-
-                <div class="info"></div>
+                </div>
             </div>
             <!--/ Изображение товара -->
 
             <!-- Информация о покупке -->
             <div class="productDescInfo clearfix">
                 {{#product.hasModel}}
-                    <div class="chooseModel">
+                <div class="chooseModel">
                     {{#product.modelBlock}}
                         {{>partial/product-model/property-list}}
                     {{/product.modelBlock}}
