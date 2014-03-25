@@ -349,6 +349,11 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
         }
 
+        // SITE-3381
+        if (1 < $category->getLevel() && false === strpos($categoryPath, '/')) {
+            throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
+        }
+
         // SITE-2634
         if (!empty($shopScriptSeo['link'])) {
             $category->setLink($shopScriptSeo['link']);
