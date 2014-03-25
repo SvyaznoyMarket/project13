@@ -23,17 +23,17 @@
   background: url('@{base-url}/subscribeLightboxPopup/img/bgSubscribeTop.png') repeat-x 0 0;
 
   &.mEnterPrize {
-    background: url('@{base-url}/subscribeLightboxPopup/img/epLogo.png') no-repeat 10px 50% #f79a20;
+    background: #f79a20;
     text-align: left;
 
     .bSubscribeLightboxPopup__eTitle {
       font-family: "Enter";
       font-size: 27px;
       line-height: 43px;
-      margin: 0 0 0 135px;
       padding-right: 100px;
       background: url('@{base-url}/subscribeLightboxPopup/img/epFishki.png') no-repeat 100% 50%;
       padding-right: 55px;
+      margin: 0 15px 0 0;
     }
 
     .bSubscribeLightboxPopup__eLink {
@@ -50,7 +50,7 @@
       border: 1px solid @white;
       .rounded(4px);
       width: 115px;
-      margin: 5px 0 0 15px;
+      margin: 5px 0 0 0;
 
       &:hover {
         text-decoration: none;
@@ -70,6 +70,11 @@
     &.mType{
       font-family: 'Enter Type';
     }
+  }
+
+  &__eImg {
+    display: block;
+    margin: 3px 15px 0 0;
   }
 
   &__eInput{

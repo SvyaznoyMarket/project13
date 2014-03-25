@@ -2383,13 +2383,13 @@
     position: relative;
     width: 90px;
     text-indent: -10000px;
-    margin-right: 10px;
+    margin-right: 0;
   }
   .bMainMenuLevel-1 {
     position: relative;
     display: table;
     float: left;
-    width: 850px;
+    width: 860px;
     z-index: 998;
     behavior: url("/css/common/display-table.min.htc");
     dt-display: table;
@@ -2405,7 +2405,7 @@
     background: url('/css/header/img/headerSeparator.gif') no-repeat center center;
     display: block;
     height: 100px;
-    margin: 0 0 0 10px;
+    margin: 0 0 0 5px;
     width: 1px;
     z-index: 99;
   }
@@ -7350,17 +7350,17 @@
     background: url('/css/subscribeLightboxPopup/img/bgSubscribeTop.png') repeat-x 0 0;
   }
   .bSubscribeLightboxPopup.mEnterPrize {
-    background: url('/css/subscribeLightboxPopup/img/epLogo.png') no-repeat 10px 50% #f79a20;
+    background: #f79a20;
     text-align: left;
   }
   .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eTitle {
     font-family: "Enter";
     font-size: 27px;
     line-height: 43px;
-    margin: 0 0 0 135px;
     padding-right: 100px;
     background: url('/css/subscribeLightboxPopup/img/epFishki.png') no-repeat 100% 50%;
     padding-right: 55px;
+    margin: 0 15px 0 0;
   }
   .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eLink {
     background: #000000;
@@ -7378,7 +7378,7 @@
     -moz-border-radius: 4px;
     border-radius: 4px;
     width: 115px;
-    margin: 5px 0 0 15px;
+    margin: 5px 0 0 0;
   }
   .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eLink:hover {
     text-decoration: none;
@@ -7394,6 +7394,10 @@
   }
   .bSubscribeLightboxPopup__eTitle.mType {
     font-family: 'Enter Type';
+  }
+  .bSubscribeLightboxPopup__eImg {
+    display: block;
+    margin: 3px 15px 0 0;
   }
   .bSubscribeLightboxPopup__eInput {
     -webkit-border-radius: 4px;
