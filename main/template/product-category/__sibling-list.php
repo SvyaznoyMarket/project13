@@ -13,11 +13,9 @@ return function(
 ?>
 
     <!-- TCHIBO - слайдер-меню разделов Чибо -->
-    <div class="tchiboNav">
+    <div class="tchiboNav clearfix">
         <? if ($rootCategoryInMenu): ?>
-            <a href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>">
-                <div class="tchiboNav__title"></div>
-            </a>
+            <div class="tchiboNav__title"><a class="tchiboNav__titleLink" href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>"></a></div>
         <? else: ?>
             <div class="tchiboNav__title"></div>
         <? endif ?>
@@ -28,17 +26,17 @@ return function(
             $active = $currentCategory && in_array($category->getId(), [$currentCategory->getParentId(), $currentCategory->getId()]) ? true : false;
             $last = (count($categories) - ($i++)) <= 2; ?>
 
-            <li class="item jsItemListTchibo<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
+            <li class="item<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
                 <a class="link" href="<?= $category->getLink() ?>">
                     <span class="itemText"><?= $category->getName() ?></span>
                 </a>
 
                 <? if ((bool)$category->getChild() && ($active || !$currentCategory)): ?>
-                    <ul class="tchiboNav__sublist mDefault<? if ($active): ?> active<? endif ?>">
+                    <ul class="tchiboNav__sublist<? if (!$last): ?> mDefault<? endif ?><? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
                     <? foreach ($category->getChild() as $child):
                         $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId()) ? true : false; ?>
 
-                        <li class="sublistItem jsItemListTchibo<? if ($last): ?> mLast<? endif ?><? if ($activeChild): ?> mActive<? endif ?>"><a class="link" href="<?= $child->getLink() ?>"><?= $child->getName() ?></a></li>
+                        <li class="sublistItem jsItemListTchibo<? if ($activeChild): ?> mActive<? endif ?>"><a class="link" href="<?= $child->getLink() ?>"><?= $child->getName() ?></a></li>
                     <? endforeach ?>
                     </ul>
                 <? endif ?>

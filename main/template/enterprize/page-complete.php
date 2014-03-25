@@ -29,7 +29,7 @@
 	</ul>
 </div>
 
-<p class="enterprizeMore">Ещё фишки для тебя! <a href="<?= \App::router()->generate('enterprize') ?>">Посмотреть</a></p>
+<p class="enterprizeMore">Еще фишки! <a href="<?= \App::router()->generate('enterprize') ?>">Посмотреть</a></p>
 </div>
 
 ﻿

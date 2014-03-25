@@ -80,8 +80,24 @@ class NewAction {
         /** @var $banks \Model\CreditBank\Entity[] */
         $banks = [];
         \RepositoryManager::creditBank()->prepareCollection(function($data) use (&$banks) {
+            // Последовательность сортировки банков
+            $sortOrder = [
+                'REN' => null,
+                'tcsbank'=> null,
+                'OTP' => null,
+            ];
             foreach ($data as $item) {
-                $banks[] = new \Model\CreditBank\Entity($item);
+                if (!isset($item['token'])) continue;
+                $token = $item['token'];
+                $banks[$token] = new \Model\CreditBank\Entity($item);
+            }
+            $banks = array_replace($sortOrder, $banks);
+
+            foreach($banks as $token => $item) {
+                // На всякий случай проверим и удаляем пустую инфу о банках
+                if (!isset($item)) {
+                    unset($banks[$token]);
+                }
             }
         });
 

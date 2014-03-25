@@ -121,7 +121,9 @@ class IndexAction {
         $reviewsData = [];
         if (\App::config()->product['reviewEnabled']) {
             \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
-                $reviewsData = (array)$data;
+                if ((bool)$data) {
+                    $reviewsData = (array)$data;
+                }
             });
         }
 

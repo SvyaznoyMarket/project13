@@ -307,7 +307,7 @@ $c->cart['productLimit'] = 30;
 
 $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
-$c->payment['blockedIds'] = [];
+$c->payment['blockedIds'] = [11, 12];
 
 $c->smartengine['cert']           = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 $c->smartengine['apiUrl']         = 'https://www.selightprod.smartengine.at/se-light/api/1.0/json/';
@@ -381,7 +381,7 @@ $c->lifeGift['regionId'] = 151021;
 $c->lifeGift['labelId'] = 17;
 $c->lifeGift['deliveryTypeId'] = 1077;
 
-$c->enterprize['enabled'] = false;
+$c->enterprize['enabled'] = true;
 $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
 
 $c->tchibo['rowWidth'] = 78;
