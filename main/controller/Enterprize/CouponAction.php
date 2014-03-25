@@ -77,7 +77,7 @@ class CouponAction {
 
             // Ошибка валидации
             } elseif (600 == $e->getCode()) {
-                $errors = [];
+                $errorList = [];
                 foreach ($detail as $fieldName => $errors) {
                     foreach ($errors as $errorType => $errorMess) {
                         switch ($fieldName) {
@@ -120,12 +120,12 @@ class CouponAction {
 //                            $message .= ': ' . print_r($errorMess, true);
 //                        }
 
-                        $errors[$fieldName] = $message;
+                        $errorList[$fieldName] = $message;
                         $form->setError($fieldName, $message);
                     }
                 }
 
-                \App::session()->set('flash', ['errors' => $errors]);
+                \App::session()->set('flash', ['errors' => $errorList]);
 //                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]));
                 $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.fail', [], true));
 
