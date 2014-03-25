@@ -756,11 +756,6 @@ return [
         'pattern' => '/enterprize/fail',
         'action'  => ['Enterprize\CouponAction', 'fail'],
     ],
-
-    'enterprize.show' => [
-        'pattern' => '/enterprize/{enterprizeToken}',
-        'action'  => ['Enterprize\ShowAction', 'execute'],
-    ],
     // enterprize form
     'enterprize.form.update' => [
         'pattern' => '/enterprize/form/update',
@@ -783,7 +778,7 @@ return [
         'method'  => ['POST'],
     ],
     'enterprize.confirmPhone.show' => [
-        'pattern' => '/enterprize/confirm-phone/{enterprizeToken}',
+        'pattern' => '/enterprize/confirm-phone',
         'action'  => ['Enterprize\ConfirmPhoneAction', 'show'],
     ],
     // enterprize confirmEmail
@@ -798,8 +793,12 @@ return [
         'method'  => ['POST'],
     ],
     'enterprize.confirmEmail.show' => [
-        'pattern' => '/enterprize/confirm-email/{enterprizeToken}',
+        'pattern' => '/enterprize/confirm-email',
         'action'  => ['Enterprize\ConfirmEmailAction', 'show'],
+    ],
+    'enterprize.show' => [
+        'pattern' => '/enterprize/{enterprizeToken}',
+        'action'  => ['Enterprize\ShowAction', 'execute'],
     ],
 
     // git pull

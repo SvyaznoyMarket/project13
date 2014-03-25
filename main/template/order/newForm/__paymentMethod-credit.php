@@ -23,7 +23,9 @@ return function (
                     <span class="bSelectInput__eImg" style="background-image: url('<?= $bank->getImage() ?>');"></span>
                     
                     <span class="bSelectInput__eDesc">
-                        <span class="bCreditPay">Ежемесячный платеж <span class="credit_pay"></span> <span class="rubl"> p</span></span>
+                        <!-- <span class="bCreditPay">
+                            Ежемесячный платеж <span class="credit_pay"></span> <span class="rubl"> p</span>
+                        </span> -->
                         <a class="bBankLink" target="_blank" href="<?= $helper->escape($bank->getLink()) ?>">Условия кредита</a>
                     </span>
                 </label>
