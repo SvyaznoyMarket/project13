@@ -82,42 +82,26 @@ class ReviewsAction {
 
             if ($form->isValid()) {
                 try {
-                    $reviewsClient = \App::reviewsClient();
-                    $result = [];
-                    $exception = null;
-                    $reviewsClient->addQuery(
-                        'add',
-                        [
-                            'product_id' => $productId
-                        ],
-                        [
-                            'advantage'     => $form->getAdvantage(),
-                            'disadvantage'  => $form->getDisadvantage(),
-                            'extract'       => $form->getExtract(),
-                            'score'         => $form->getScore(),
-                            'author_name'   => $form->getAuthorName(),
-                            'author_email'  => $form->getAuthorEmail(),
-                            'date'          => $form->getDate(),
-                        ],
-                        function($data) use(&$result) {
-                            $result = $data;
-                        },
-                        function(\Exception $e) use (&$exception) {
-                            \App::exception()->remove($e);
-                            $exception = $e;
-                        }
-                    );
-                    $reviewsClient->execute();
+                    $data = [
+                        'advantage'     => $form->getAdvantage(),
+                        'disadvantage'  => $form->getDisadvantage(),
+                        'extract'       => $form->getExtract(),
+                        'score'         => $form->getScore(),
+                        'author_name'   => $form->getAuthorName(),
+                        'author_email'  => $form->getAuthorEmail(),
+                        'date'          => $form->getDate(),
+                    ];
 
-                    if ($exception instanceof \Exception) {
-                        throw new \Exception('Не удалось обработать запрос' . (\App::config()->debug ? sprintf(': %s', $exception->getMessage()) : ''), $exception->getCode());
-                    }
+                    \App::reviewsClient()->query('add', ['product_id' => $productId], $data, \App::config()->coreV2['hugeTimeout']);
 
                     return new \Http\JsonResponse([
                         'success'   => true,
                         'notice'    => ['message' => 'Спасибо! Ваш отзыв появится на сайте после проверки модератором.', 'type' => 'info'],
                     ]);
                 } catch(\Exception $e) {
+                    \App::exception()->remove($e);
+                    \App::logger()->error('Не удалось обработать запрос' . (\App::config()->debug ? sprintf(': %s', $e->getMessage()) : ''));
+
                     $form->setError('global', 'Отзыв не отправлен' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
                 }
             }
