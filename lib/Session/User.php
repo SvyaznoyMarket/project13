@@ -115,6 +115,9 @@ class User {
         }
 
         \App::session()->set($this->tokenName, $token);
+
+        // SITE-2895
+        \App::session()->set(\App::config()->kissmentrics['sessionKey']['needUpdate'], true);
     }
 
     /**

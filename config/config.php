@@ -116,9 +116,10 @@ $c->company['icq'] = '648198963';
 $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
 $c->analytics['optimizelyEnabled'] = true;
-$c->kissmentrics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
+$c->kissmentrics['enabled'] = true;
+$c->kissmentrics['sessionKey']['needUpdate'] = 'kissNeedUpdate';
 
 $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru

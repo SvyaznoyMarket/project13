@@ -147,7 +147,10 @@ class AppConfig {
     ];
     /** @var array */
     public $kissmentrics = [
-        'enabled'   =>  null,
+        'enabled'    =>  null,
+        'sessionKey' => [
+            'needUpdate' => null,
+        ],
     ];
     /** @var array */
     public $pickpoint = [
