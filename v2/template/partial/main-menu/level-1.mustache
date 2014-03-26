@@ -1,12 +1,16 @@
 <ul class="navList">
-{{#elements}}
-    <li class="navList_item">
-        <span class="navList_text">
-            <span class="navListIco" style="{{style}}"></span>
-            <span class="navListName">{{name}}</span>
-        </span>
-
-        {{>partial/main-menu/level-2}}
+    <li class="navList_item navList_item__first">
+        <a class="navList_text navList_text__ico" href="/"><img class="navList_img" src="/v2/css/modules/header/img/logo.gif" /></a>
     </li>
-{{/elements}}
+
+    {{#elements}}
+        <li class="navList_item">
+            <span class="navList_text">
+                <span class="navListIco" style="{{style}}"></span>
+                <span class="navListName">{{name}}</span>
+            </span>
+
+            {{>partial/main-menu/level-2}}
+        </li>
+    {{/elements}}
 </ul>

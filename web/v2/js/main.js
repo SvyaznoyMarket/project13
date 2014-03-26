@@ -19,11 +19,15 @@ $(function(){
 	
 	var navIco = $('.navIco'),
 		navSite = $('.nav'),
+		navSiteLeft = navSite.width(),
+
+		fader = $('.fader'),
+
 		navSiteItemLevel1 = navSite.find('.navList_text'),
 		navSiteListLevel2 = navSite.find('.navListLevel2');
 	// end of vars
 
-	navSite.hide();
+	navSite.css({'left' : -navSiteLeft});
 	navSiteListLevel2.hide();
 
 	var
@@ -31,9 +35,9 @@ $(function(){
 		 * Показываем/скрываем навигацию
 		 */
 		slideNav = function slideNav() {
-			navSite.slideToggle();
-			navSiteListLevel2.slideUp();
-
+			fader.show(0);
+			navSite.stop(true, true).show(0).animate({'left' : 0},300);
+			$('html,body').addClass('noScroll');
 			return false;
 		},
 
@@ -49,21 +53,17 @@ $(function(){
 			}
 
 			$(this).next(navSiteListLevel2).stop(true, false).slideDown();
-
 			return false;
 		},
 
 		/**
 		 * Скрываем навигацию при клике в любом месте кроме .nav
 		 */
-	    closeNav = function closeNav( e ) {
-			if( $(e.target).closest(navSite).length ) 
-			return;
-
-			navSite.slideUp();
+	    closeNav = function closeNav() {
+			fader.hide(0);
+			$('html,body').removeClass('noScroll');
+			navSite.stop(true, true).animate({'left' : -navSiteLeft},300).hide(0);
 			navSiteListLevel2.slideUp();
-
-			e.stopPropagation();
 		};
 	// end of vars
 	
@@ -71,5 +71,5 @@ $(function(){
 
 	navSiteItemLevel1.click(slideNavLevel2);
 
-	$(document).bind('click', closeNav);
+	fader.live('click touchend', closeNav);
 });
