@@ -16,9 +16,11 @@
         <!--/ Хлебные крошки -->
 
         <!-- Меню и логотип -->
-        {{#mainMenu}}
-            {{>partial/main-menu/level-1}}
-        {{/mainMenu}}
+        <div class="headerLeftAside">
+            <div class="navIco"><span class="navIco_link"></span></div>
+
+            <a class="logo" href="/"><img class="logo_img" src="/v2/css/modules/header/img/logo.gif" alt="" /></a>
+        </div>
         <!--/ Меню и логотип -->
 
         <!-- Панель юзера - личный кабинет, поиск, корзина -->
@@ -34,3 +36,9 @@
         <!--/ Панель юзера - личный кабинет, поиск, корзина -->
     </div><!--/ Обертка в 940 px-->
 </header><!--/ Шапка-->
+
+<nav class="nav">
+    {{#mainMenu}}
+        {{>partial/main-menu/level-1}}
+    {{/mainMenu}}
+</nav>

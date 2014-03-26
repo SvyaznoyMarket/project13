@@ -1,20 +1,12 @@
-<div class="headerLeftAside">
-    <div class="navIco"><span class="navIco_link"></span></div>
+<ul class="navList">
+{{#elements}}
+    <li class="navList_item">
+        <span class="navList_text">
+            <span class="navListIco" style="{{style}}"></span>
+            <span class="navListName">{{name}}</span>
+        </span>
 
-    <nav class="nav">
-        <ul class="navList">
-        {{#elements}}
-            <li class="navList_item">
-                <span class="navList_text">
-                    <span class="navListIco" style="{{style}}"></span> 
-                    <span class="navListName">{{name}}</span>
-                </span>
-
-                {{>partial/main-menu/level-2}}
-            </li>
-        {{/elements}}
-        </ul>
-    </nav>
-
-    <a class="logo" href="/"><img class="logo_img" src="/v2/css/modules/header/img/logo.gif" alt="" /></a>
-</div>
+        {{>partial/main-menu/level-2}}
+    </li>
+{{/elements}}
+</ul>
