@@ -32,7 +32,7 @@ if (!isset($titlePrefix)) $titlePrefix = null;
         <div class="bPageHead__eSubtitle"><?= $product->getPrefix() ?></div>
         <? endif ?>
         <div class="bPageHead__eTitle clearfix">
-            <h1><?= $product->getWebName() ?></h1>
+            <h1 itemprop="name"><?= $product->getWebName() ?></h1>
             <? if(!empty($trustfactorTop)) { ?>
                 <img src="<?= $trustfactorTop ?>" class="bPageHead__eImgTrast" />
             <? } ?>
