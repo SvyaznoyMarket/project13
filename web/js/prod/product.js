@@ -21,21 +21,21 @@
 			},
 
 			init: function() {
-				var self = this,
-					creditd = $('input[name=dc_buy_on_credit]').data('model');
+				var
+					self = this,
+					creditd = $('input[name=dc_buy_on_credit]').data('model'),
+					label = $('.creditbox label');
 				// end of vars
 
-				$('.creditbox label').click(function( e ) {
-					var target = $(e.target);
+				$('input[type=radio][name=price_or_credit]').change(function( e ) {
+					e.preventDefault();
 
-					e.stopPropagation();
-
-					if ( target.is('input') ) {
-						return false;
+					if ( !label.length ) {
+						return;
 					}
-					
-					$(this).toggleClass('checked');
-					self.toggleCookie( $(this).hasClass('checked') );
+
+					label.toggleClass('checked');
+					self.toggleCookie( label.hasClass('checked') );
 				});
 
 				if ( this.getState() === 1 ) {
@@ -1213,24 +1213,46 @@ $(document).ready(function() {
  * @requires jQuery
  */
 (function() {
-	var productInfo = {},
-		toKISS = {};
+	var
+		productInfo = $('#jsProductCard').data('value') || {},
+		toKISS = {
+			'Viewed Product SKU': productInfo.article,
+			'Viewed Product Product Name': productInfo.name,
+			'Viewed Product Product Status': productInfo.stockState
+		},
 	// end of vars
+
+		reviewsYandexClick = function ( e ) {
+			console.log('reviewsYandexClick');
+			var
+				link = this //, url = link.href
+			;
+
+			if ( 'undefined' !==  productInfo.article ) {
+				_gaq.push(['_trackEvent', 'YM_link', productInfo.article]);
+				e.preventDefault();
+				if ( 'undefined' !== link ) {
+					setTimeout(function () {
+						//document.location.href = url; // не подходит, нужно в новом окне открывать
+						link.click(); // эмулируем клик по ссылке
+					}, 500);
+				}
+			}
+		};
+	// end of functions and vars
 	
 	if ( !$('#jsProductCard').length ) {
 		return false;
 	}
 
-	productInfo = $('#jsProductCard').data('value');
-			
-	toKISS = {
-		'Viewed Product SKU': productInfo.article,
-		'Viewed Product Product Name': productInfo.name,
-		'Viewed Product Product Status': productInfo.stockState
-	};
-
 	if ( typeof _kmq !== 'undefined' ) {
 		_kmq.push(['record', 'Viewed Product', toKISS]);
+	}
+	if ( typeof _gaq !== 'undefined' ) {
+		// GoogleAnalitycs for review click
+		$( 'a.reviewLink.yandex' ).each(function() {
+			$(this).one( "click", reviewsYandexClick); // переопределяем только первый клик
+		});
 	}
 })();
 

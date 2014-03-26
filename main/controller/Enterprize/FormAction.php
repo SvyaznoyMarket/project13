@@ -17,23 +17,23 @@ class FormAction {
         }
 
         if (!$enterprizeToken) {
-            throw new \Exception\NotFoundException();
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize', [], true));
         }
 
+        $user = \App::user();
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
-        if (!$session->has($sessionName)) {
-            $session->set($sessionName, [
+
+        $session->set($sessionName, array_merge(
+            [
                 'isPhoneConfirmed' => false,
                 'isEmailConfirmed' => false,
-            ]);
-        }
-
-        $data = array_merge($session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
-        $session->set($sessionName, $data);
-
-        $flash = $session->get('flash');
-        $session->remove('flash');
+            ],
+            $session->has($sessionName) ? $session->get($sessionName) : [],
+            [
+                'enterprizeToken' => $enterprizeToken,
+            ]
+        ));
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
@@ -48,11 +48,37 @@ class FormAction {
             \App::dataStoreClient()->execute();
         }
 
+        if (!$enterpizeCoupon) {
+            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+        }
+
+        $data = (array)$session->get($sessionName, []);
+
+        // если пользователь авторизован и уже является участником enterprize
+        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember()) {
+            $data = array_merge($data, [
+                'token'            => $user->getToken(),
+                'name'             => $user->getEntity()->getFirstName(),
+                'email'            => $user->getEntity()->getEmail(),
+                'mobile'           => $user->getEntity()->getMobilePhone(),
+                'isPhoneConfirmed' => true,
+                'isEmailConfirmed' => true,
+            ]);
+            $session->set($sessionName, $data);
+
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize.create', [], true));
+        }
+        $session->set($sessionName, $data);
+
+        $flash = $session->get('flash');
+        $session->remove('flash');
+
         $page = new \View\Enterprize\FormPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('form', $this->getForm());
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
         $page->setParam('authSource', $session->get('authSource', null));
+        $page->setParam('viewParams', ['showSideBanner' => false]);
 
         return new \Http\Response($page->show());
     }
@@ -73,9 +99,20 @@ class FormAction {
 
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
-
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+
+        if (!$enterprizeToken) {
+            $link = \App::router()->generate('enterprize', [], true);
+
+            return $request->isXmlHttpRequest()
+                ? new \Http\JsonResponse([
+                    'success' => true,
+                    'error'   => null,
+                    'data'    => ['link' => $link],
+                ])
+                : new \Http\RedirectResponse($link);
+        }
 
         if (!isset($userData['subscribe'])) {
             $form->setError('subscribe', 'Необходимо согласие');
@@ -114,16 +151,16 @@ class FormAction {
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
 
-            $form->setError('global', $e->getMessage());
+            $errorContent = $e->getContent();
+            $detail = isset($errorContent['detail']) && is_array($errorContent['detail']) ? $errorContent['detail'] : [];
 
             if (401 == $e->getCode()) {
+                $form->setError('global', $e->getMessage());
                 $needAuth = true;
 
             } elseif (600 == $e->getCode()) {
-                $errorContent = $e->getContent();
-                $detail = isset($errorContent['detail']) && is_array($errorContent['detail']) ? $errorContent['detail'] : [];
+                $form->setError('global', $e->getMessage());
 
-                $errors = [];
                 foreach ($detail as $fieldName => $errors) {
                     foreach ($errors as $errorType => $errorMess) {
                         switch ($fieldName) {
@@ -166,27 +203,35 @@ class FormAction {
 //                            $message .= ': ' . print_r($errorMess, true);
 //                        }
 
-                        $errors[$fieldName] = $message;
                         $form->setError($fieldName, $message);
                     }
                 }
-
-                \App::session()->set('flash', ['errors' => $errors]);
+            } elseif (409 == $e->getCode()) {
+                $error = 'Уже зарегистрирован в ENTER PRIZE. <a class="bAuthLink" href="'. \App::router()->generate('user.login') .'">Войти</a>';
+                if (isset($detail['mobile_in_enter_prize']) && $detail['mobile_in_enter_prize']) {
+                    $form->setError('mobile', $error);
+                } elseif (isset($detail['email_in_enter_prize']) && $detail['email_in_enter_prize']) {
+                    $form->setError('email', $error);
+                } else {
+                    $form->setError('global', $error);
+                }
+            } else {
+                $form->setError('global', $e->getMessage());
             }
         }
 
-        if ($form->isValid()) {
-            // Запоминаем данные enterprizeForm
-            $data = array_merge($data, [
-                'token'            => isset($result['token']) ? $result['token'] : null,
-                'name'             => $form->getName(),
-                'email'            => $form->getEmail(),
-                'mobile'           => $form->getMobile(),
-                'isPhoneConfirmed' => isset($result['mobile_confirmed']) ? $result['mobile_confirmed'] : false,
-                'isEmailConfirmed' => isset($result['email_confirmed']) ? $result['email_confirmed'] : false,
-            ]);
-            $session->set($sessionName, $data);
+        // Запоминаем данные enterprizeForm
+        $data = array_merge($data, [
+            'token'            => isset($result['token']) ? $result['token'] : null,
+            'name'             => $form->getName(),
+            'email'            => $form->getEmail(),
+            'mobile'           => $form->getMobile(),
+            'isPhoneConfirmed' => isset($result['mobile_confirmed']) ? $result['mobile_confirmed'] : false,
+            'isEmailConfirmed' => isset($result['email_confirmed']) ? $result['email_confirmed'] : false,
+        ]);
+        $session->set($sessionName, $data);
 
+        if ($form->isValid()) {
             $userToken = $data['token'];
             $data = $session->get($sessionName, []);
             if ($data['isPhoneConfirmed'] && $data['isEmailConfirmed']) {
@@ -194,7 +239,7 @@ class FormAction {
                 $link = \App::router()->generate('enterprize.create');
             } elseif ($data['isPhoneConfirmed']) {
                 // просим подтвердит email
-                $link = \App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $enterprizeToken]);
+                $link = \App::router()->generate('enterprize.confirmEmail.show');
                 try {
                     if (!isset($data['email']) || empty($data['email'])) {
                         throw new \Exception('Не получен email');
@@ -220,7 +265,7 @@ class FormAction {
                 }
             } else {
                 // просим подтвердить телефон
-                $link = \App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $enterprizeToken]);
+                $link = \App::router()->generate('enterprize.confirmPhone.show', [], true);
                 try {
                     if (!isset($data['mobile']) || empty($data['mobile'])) {
                         throw new \Exception('Не получен мобильный телефон');
@@ -266,11 +311,25 @@ class FormAction {
                     'form'     => ['error' => $formErrors],
                     'needAuth' => $needAuth && !\App::user()->getEntity() ? true : false,
                 ]);
+            } else {
+                $errors = [];
+                foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                    if (!$errorMessage) continue;
+                    $errors[$fieldName] = $errorMessage;
+                }
+                \App::session()->set('flash', ['errors' => $errors]);
             }
         }
 
-        return $response ? $response
-            : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]));
+        return $response
+            ? $response
+            : ($request->isXmlHttpRequest()
+                ? new \Http\JsonResponse([
+                    'success' => true,
+                    'error'   => null,
+                    'data'    => ['link' => \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true)],
+                ])
+                : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true)));
     }
 
     /**
@@ -280,19 +339,32 @@ class FormAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user()->getEntity();
+        $session = \App::session();
         $form = new \View\Enterprize\Form();
 
-        $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
-        $enterprizeToken = !empty($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+        $data = $session->get(\App::config()->enterprize['formDataSessionKey'], []);
 
-        // пользователь авторизован, заполняем форму данными пользователя
+        // заполняем форму данными с сессии
+        $form->fromArray($data);
+
+        // если пользователь авторизован, то заполняем поле по которому произошла авторизация
         if ($user) {
-            $form->fromEntity($user);
-            $form->setEnterprizeCoupon($enterprizeToken);
+            if (!$form->getName()) {
+                $form->setName($user->getFirstName());
+            }
+            if (!$form->getMobile()) {
+                $form->setMobile($user->getMobilePhone());
+            }
+            if (!$form->getEmail()) {
+                $form->setEmail($user->getEmail());
+            }
 
-            // иначе, заполняем форму данными с сессии
-        } else {
-            $form->fromArray($data);
+            $authSource = $session->get('authSource', null);
+            if ('phone' === $authSource) {
+                $form->setMobile($user->getMobilePhone());
+            } elseif ('email' === $authSource) {
+                $form->setEmail($user->getEmail());
+            }
         }
 
         return $form;

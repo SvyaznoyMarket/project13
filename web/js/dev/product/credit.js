@@ -21,21 +21,21 @@
 			},
 
 			init: function() {
-				var self = this,
-					creditd = $('input[name=dc_buy_on_credit]').data('model');
+				var
+					self = this,
+					creditd = $('input[name=dc_buy_on_credit]').data('model'),
+					label = $('.creditbox label');
 				// end of vars
 
-				$('.creditbox label').click(function( e ) {
-					var target = $(e.target);
+				$('input[type=radio][name=price_or_credit]').change(function( e ) {
+					e.preventDefault();
 
-					e.stopPropagation();
-
-					if ( target.is('input') ) {
-						return false;
+					if ( !label.length ) {
+						return;
 					}
-					
-					$(this).toggleClass('checked');
-					self.toggleCookie( $(this).hasClass('checked') );
+
+					label.toggleClass('checked');
+					self.toggleCookie( label.hasClass('checked') );
 				});
 
 				if ( this.getState() === 1 ) {

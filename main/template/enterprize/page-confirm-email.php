@@ -9,7 +9,7 @@
 
 <? $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []) ?>
 
-<div class="titleForm">Подтверди e-mail</div>
+<!--div class="titleForm">Подтверди e-mail</div-->
 
 <? if ($error): ?>
     <p class="red enterprizeWar"><?= $error ?></p>
@@ -21,13 +21,15 @@
 <div class="enterprizeConfirm">
     <p class="textConfirm">Мы отправили специальное письмо на  <strong><?= isset($data['email']) ? $data['email'] : '' ?></strong></p>
 
-    <p class="textConfirm">Ещё какой-то текст про то, почему письмо может не дойти, попасть в спам и т.д. Сайт рыбатекст поможет дизайнеру, верстальщику, вебмастеру сгенерировать несколько абзацев более менее осмысленного текста рыбы на русском ...</p>
+    <p class="textConfirm">Как только e-mail будет подтвержден, мы отправим фишку по e-mail и в SMS.</p>
 
-    <form action="<?= $page->url('enterprize.confirmEmail.create') ?>" method="post">
+    <form class="confirmForm" action="<?= $page->url('enterprize.confirmEmail.create') ?>" method="post">
         <input type="hidden" name="isRepeatRending" value="true" />
 
-        <input class="confirmCode bigbutton" type="submit" value="Отправить повторно" />
+        <input style="margin-left: 0;" class="confirmCode bigbutton" type="submit" value="Отправить повторно" />
     </form>
+
+    <p style="margin: 30px 0 0 0; font-size: 12px;" class="textConfirm">Если письмо затерялось или обнаружили ошибку, пожалуйста, напишите нам на <a style="text-decoration: underline;" href="mailto:feedback@enter.ru">feedback@enter.ru</a>.</p>
 </div>
 
 </div>

@@ -9,6 +9,7 @@
  * @var $subways        \Model\Subway\Entity[]
  * @var $banks          \Model\CreditBank\Entity[]
  * @var $creditData     array
+ * @var $selectCredit   bool
  */
 ?>
 
@@ -404,7 +405,7 @@ if ($oneClick) {
 					<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
 						<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
 						<div class="bBuyingLine__eRight mSClub">
-							<input id="sclub-number" type="text" class="bBuyingLine__eText" name="order[sclub_card_number]" />
+							<input id="sclub-number" type="text" class="bBuyingLine__eText" placeholder="2 98хххх ххххxx" name="order[sclub_card_number]" />
 							<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
 						</div>
 					</div>
@@ -512,8 +513,8 @@ if ($oneClick) {
                         data-bind="paymentMethodVisible: totalSum"
                         data-value="<?= $page->json(['min-sum' => \App::config()->product['minCreditPrice'], 'method_id' => \Model\PaymentMethod\Entity::CREDIT_ID, 'isAvailableToPickpoint' => true]) ?>" >
 
-                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[payment_method_id]" value="<?= \Model\PaymentMethod\Entity::CREDIT_ID ?>" id="order_payment_method_id_6"/>
-                        <label class="bCustomLabel mCustomLabelBig" for="order_payment_method_id_6">
+                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[payment_method_id]" value="<?= \Model\PaymentMethod\Entity::CREDIT_ID ?>" id="order_payment_method_id_6" <? if ($selectCredit): ?>checked="checked"<? endif ?> />
+                        <label class="bCustomLabel mCustomLabelBig<? if ($selectCredit): ?> mChecked<? endif ?>" for="order_payment_method_id_6">
                             Купить в кредит
                         </label>
 

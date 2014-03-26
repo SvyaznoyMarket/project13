@@ -208,6 +208,18 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotUserbarEnterprize() {
+        if (!\App::config()->enterprize['enabled']) return '';
+
+        return $this->render('__userbarEnterprize', $this->params);
+    }
+
+    public function slotUserbarEnterprizeContent() {
+        if (!\App::config()->enterprize['enabled']) return '';
+
+        return $this->render('___userbarEnterprizeContent', $this->params);
+    }
+
     public function slotYandexMetrika() {
         return (\App::config()->yandexMetrika['enabled']) ? $this->render('_yandexMetrika') : '';
     }
@@ -479,7 +491,8 @@ class DefaultLayout extends Layout {
     }
 
     public function slotCriteo() {
-        return $this->render( 'partner-counter/_criteo',  ['criteoData' =>  (new \View\Partners\Criteo($this->params))->data()] );
+        return $this->render( 'partner-counter/_criteo',
+            ['criteoData' =>  (new \View\Partners\Criteo($this->params))->execute()] );
     }
 
 
@@ -639,4 +652,12 @@ class DefaultLayout extends Layout {
         return $this->breadcrumbsPath = $breadcrumbs;
     }
 
+
+    public function slotEnterprizeConfirmJs() {
+        return '';
+    }
+
+    public function slotEnterprizeCompleteJs() {
+        return '';
+    }
 }

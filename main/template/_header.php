@@ -5,13 +5,22 @@
  * @var $subscribeForm   array
  */
 ?>
-
+<?php /*
 <div class="bSubscribeLightboxPopup clearfix">
     <h3 class="bSubscribeLightboxPopup__eTitle fl"><?= $subscribeForm['mainText'] ?></h3>
     <input class="bSubscribeLightboxPopup__eInput fl" placeholder="<?= $subscribeForm['inputText'] ?>"/>
     <button class="bSubscribeLightboxPopup__eBtn fl" data-url="<?= $page->url('subscribe.create') ?>"><?= $subscribeForm['buttonText'] ?></button>
     <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
 </div>
+*/?>
+
+<div class="bSubscribeLightboxPopup mEnterPrize clearfix">
+    <img class="bSubscribeLightboxPopup__eImg fl" src="/css/subscribeLightboxPopup/img/epLogo.png" />
+    <h3 class="bSubscribeLightboxPopup__eTitle fl">Лучшие предложения Enter для клиентов</h3>
+    <a class="bSubscribeLightboxPopup__eLink" href="/enterprize">выбрать</a>
+    <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
+</div>
+
 <!-- Topbar -->
 <div class="topbar clearfix">    
     <div class="bRegion">
@@ -53,18 +62,7 @@
                 <a href="/login" class="fixedTopBar__logInLink bAuthLink">Личный кабинет</a>
                 <span class="transGrad"></span>
 
-                <? if (\App::config()->enterprize['enabled']): ?>
-                    <div class="fixedTopBar__dd fixedTopBar__logOut">
-                        <div class="enterPrize">
-                            <div class="enterPrize__text">
-                                <strong class="title">Enter Prize</strong>
-                                Выбери фишку со скидкой на любой товар в ENTER!
-                            </div>
-
-                            <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
-                        </div>
-                    </div>
-                <? endif ?>
+                <?= $page->slotUserbarEnterprize() ?>
             </div>
         </div>
     </noindex>
@@ -147,22 +145,11 @@
 
 <!-- Данные пользователя -->
 <script id="userbar_user_tmpl" type="text/html">
-    <a href="{{link}}" class="fixedTopBar__logInLink"><span class="name__hidden">{{name}}</span></a>
+    <a href="{{link}}" class="fixedTopBar__logInLink{{#hasEnterprizeCoupon}} enterprizeMember{{/hasEnterprizeCoupon}}"><span class="name__hidden">{{name}}</span></a>
     <span class="transGrad"></span>
 
     <div class="fixedTopBar__dd fixedTopBar__logOut">
-        <? if (\App::config()->enterprize['enabled']): ?>
-            {{^hasEnterprizeCoupon}}
-                <div class="enterPrize">
-                    <div class="enterPrize__text">
-                        <strong class="title">Enter Prize</strong>
-                        Выбери фишку со скидкой на любой товар в ENTER!
-                    </div>
-
-                    <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Выбрать</a>
-                </div>
-            {{/hasEnterprizeCoupon}}
-        <? endif ?>
+        {{^hasEnterprizeCoupon}}<?= $page->slotUserbarEnterprizeContent() ?>{{/hasEnterprizeCoupon}}
 
         <a class="mBtnGrey fixedTopBar__logOutLink" href="<?= $page->url('user.logout') ?>">Выйти</a>
     </div>

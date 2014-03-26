@@ -6,8 +6,10 @@ return function(
     array $reviewsData
 ) {
     $rating = empty($reviewsData['avg_star_score']) ? 0 : $reviewsData['avg_star_score'];
-    //$reviewCount = $reviewsData['num_reviews'];
-    $reviewCount = !empty($reviewsData['review_list']) ? count($reviewsData['review_list']) : 0;
+
+    $reviewCount = !empty($reviewsData['num_reviews'])
+        ? $reviewsData['num_reviews']
+        : (!empty($reviewsData['review_list']) ? count($reviewsData['review_list']) : 0);
 ?>
 
 <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" class="bReviewSection clearfix">

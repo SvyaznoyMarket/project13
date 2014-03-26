@@ -1,52 +1,76 @@
 <?php
 /**
- * @var $page     \View\ProductCategory\RootPage
- * @var $category \Model\Product\Category\Entity
+ * @var $page                   \View\ProductCategory\RootPage
+ * @var $category               \Model\Product\Category\Entity
+ * @var $relatedCategories      array
+ * @var $categoryConfigById     array
  */
 
-?>
+$links = [];
+$categories = $category->getChild();
+if (!empty($relatedCategories)) $categories = array_merge($categories, $relatedCategories);
 
+foreach ($categories as $child) {
+    /** @var $child \Model\Product\Category\Entity */
+
+    $config = isset($categoryConfigById[$child->getId()]) ? $categoryConfigById[$child->getId()] : null;
+    $productCount = $child->getProductCount() ? : $child->getGlobalProductCount();
+    $totalText = '';
+
+    if ( $productCount > 0 ) {
+        $totalText = $productCount . ' ' . ($child->getHasLine()
+                ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
+                : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
+            );
+    }
+    
+    $links[] = [
+        'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
+        //'url'           => $child->getLink(),
+        'url'           => $child->getLink() . (\App::request()->get('instore') ? '?instore=1' : ''),
+        'image'         => (is_array($config) && array_key_exists('image', $config)) ? $config['image'] : $child->getImageUrl(),
+        //'active'        => false, // пока тут не используется
+        'css'           => isset($config['css']) ? $config['css'] : null,
+        'totalText'     => $totalText,
+    ];
+}
+
+?>
 <h1 class="bTitlePage"><?= $category->getName() ?></h1>
 
 <!-- Баннер --><div id="adfox683" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
 
-<? if (count($category->getChild())): ?>
+<? if (count($links)): ?>
     <ul class="bCatalogRoot clearfix">
+        <? /*
         <!--li class="bCatalogRoot__eItem mBannerItem" style="width: 0px;"><-div class="adfoxWrapper" id="adfox215"></div></li-->
         <!-- место для баннеры 460х260, при этом родительский элемент имеет ширину 240 -->
+        */ ?>
         <? $j = 0; ?>
-        <? foreach ($category->getChild() as $child): ?>
-            <?php
-            $productCount = $child->getProductCount() ? : $child->getGlobalProductCount();
-
-            $totalText = $productCount . ' ' . ($child->getHasLine()
-                ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
-                : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
-            );
-
-            $link = $child->getLink() . (\App::request()->get('instore') ? '?instore=1' : '');
-
-            ?>
-
+        <? foreach ($links as $child): ?>
             <li class="bCatalogRoot__eItem">
                 <a class="bCatalogRoot__eItemLink"
-                   href="<?= $link ?>"
-                   title="<?= $child->getName() ?> - <?= $category->getName() ?>">
+                   href="<?= $child['url'] ?>"<?
+                   if(isset($child['css']['link'])): ?> style="<?= $child['css']['link'] ?>"<? endif
+                    ?> title="<?= $child['name'] ?> - <?= $category->getName() ?>">
 
                     <div class="bCatalogRoot__eImgLink">
                         <img class="bCatalogRoot__eImg"
-                         src="<?= $child->getImageUrl() ?>"
-                         alt="<?= $child->getName() ?> - <?= $category->getName() ?>"/>
+                         src="<?= $child['image'] ?>"
+                         alt="<?= $child['name'] ?> - <?= $category->getName() ?>"/>
                     </div>
 
                     <div class="bCatalogRoot__eNameLink">
-                        <?= $child->getName() ?>
+                        <?= $child['name'] ?>
                     </div>
 
-                    <div class="bCatalogRoot__eCount"><?= $totalText ?></div>
+                    <div class="bCatalogRoot__eCount"<?
+                        if(isset($child['css']['name'])): ?> style="<?= $child['css']['name'] ?>"<? endif
+                        ?>>
+                        <?= $child['totalText'] ?>
+                    </div>
                 </a>
             </li>
-
         <? endforeach ?>
     </ul>
     <? if(!empty($seoContent)): ?>

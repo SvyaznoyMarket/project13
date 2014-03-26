@@ -1,25 +1,62 @@
 .bSubscribeLightboxPopupNotNow{
   position: absolute;
   top: 0;
-  right: -41px;
+  right: -40px;
   display: none;
-  width: 40px;
-  height: 36px;
-  background: url('@{base-url}/subscribeLightboxPopup/img/icon.png') no-repeat 0 0;
+  width: 39px;
+  height: 43px;
+  //background: url('@{base-url}/subscribeLightboxPopup/img/icon.png') no-repeat 0 0;
+  background: url('@{base-url}/subscribeLightboxPopup/img/EPicon.png') no-repeat 0 0;
   cursor: pointer;
 }
 
 .bSubscribeLightboxPopup{
   display: none;
 
-  width: 100%;
   height: 43px;
-  margin: 0 -10px 7px;
   padding: 0 10px;
+  margin: 0 0 0 -10px;
+  width: 100%;
 
   text-align: center;
 
   background: url('@{base-url}/subscribeLightboxPopup/img/bgSubscribeTop.png') repeat-x 0 0;
+
+  &.mEnterPrize {
+    background: #f79a20;
+    text-align: left;
+
+    .bSubscribeLightboxPopup__eTitle {
+      font-family: "Enter";
+      font-size: 27px;
+      line-height: 43px;
+      padding-right: 100px;
+      background: url('@{base-url}/subscribeLightboxPopup/img/epFishki.png') no-repeat 100% 50%;
+      padding-right: 55px;
+      margin: 0 15px 0 0;
+    }
+
+    .bSubscribeLightboxPopup__eLink {
+      background: @black;
+      color: @white;
+      text-transform: uppercase;
+      display: inline-block;
+      vertical-align: top;
+      font-family: "Enter";
+      font-size: 18px;
+      height: 29px;
+      line-height: 29px;
+      text-align: center;
+      border: 1px solid @white;
+      .rounded(4px);
+      width: 115px;
+      margin: 5px 0 0 0;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  } 
 
   &__eTitle{
     margin: 0 22px 0 0px;
@@ -33,6 +70,11 @@
     &.mType{
       font-family: 'Enter Type';
     }
+  }
+
+  &__eImg {
+    display: block;
+    margin: 3px 15px 0 0;
   }
 
   &__eInput{
@@ -97,3 +139,10 @@
   }
 }
 
+#mainPage {
+
+  .bSubscribeLightboxPopup {
+    margin: 0;
+    width: auto;
+  }
+}

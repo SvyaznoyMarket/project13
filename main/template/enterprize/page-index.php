@@ -17,74 +17,62 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
     <div class="bgPage"></div>
 
     <? if ($isEnterprizeMember): ?>
-        <div class="enterPrizeHello" style="display: none;">СКИДКИ от <span>3 до 70% </span>ДЛЯ ЗАЯДЛЫХ ИГРОКОВ!</div>
+        <div class="enterPrizeHello" style="display: none;">Всё, что вы хотели, со скидкой до 70%</div>
     <? endif ?>
 
-    <div class="enterPrizeHello mReg">СКИДКИ от 3 до 70%!</div>
-
-    <ul class="enterPrize__rules clearfix">
-        <li class="enterPrize__rules__item">
-            1. Выбери фишку со скидкой.<br/>
-            2. Заполни три поля.<br/>
-            3. Лови фишку на e-mail и в СМС.<br/>
-            Разыграй фишку в заказе и получи скидку.
-        </li>
-
-        <!--li class="enterPrize__rules__sep"></li>
-        <li class="enterPrize__rules__item" style="width: 168px;"><span class="sep">Получи</span> номер фишки на E-mail и мобильный телефон, которые укажешь для участия в Enter Prize!</li>
-        <li class="enterPrize__rules__sep"></li>
-        <li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li-->
-    </ul>
+    <div class="enterPrizeHello mReg">Всё, что вы хотели, со скидкой до 70%</div>
+    
+    <? if (!$user->getEntity()): ?>
+        <p class="enterPrizeDesc">Уже в ENTER PRIZE? <a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войдите и получите ещё скидки</a></p>
+    <? endif ?>
 
     <? if ($isEnterprizeMember): ?>
-        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как ещё получать фишки?</span></p>
+        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как получить больше фишек?</span></p>
 
         <div class="enterPrizeListWrap">
             <ul class="enterPrizeList">
                 <li class="enterPrizeList__item mBlue">
                     <strong>Сайт www.enter.ru</strong><br/>
-                    Всегда входи в личный кабинет.<br/>
-                    Заказывай товары как обычно.
+                    Всегда входите в личный кабинет.<br/>
+                    Заказывайте товары как обычно.
                 </li>
 
                 <li class="enterPrizeList__item mOrange">
                     <strong>Розничные магазины ENTER</strong><br/>
-                    Входи в личный кабинет в терминале.<br/>
-                    Заказывай товары через терминал.
+                    Входите в личный кабинет в терминале.<br/>
+                    Заказывайте товары через терминал.
                 </li>
 
                 <li class="enterPrizeList__item mGreen">
                     <strong>Контакт-сENTER 8 800 700 00 09</strong><br/>
-                    Скажи оператору Контакт-cENTER, что ты — участник ENTER PRIZE!<br/>
+                    Скажите оператору Контакт-cENTER, что Вы — участник Enter Prize!<br/>
                     Оператор поможет оформить заказ.
                 </li>
             </ul>
 
-            <div class="enterPrizeFinish">ЛОВИ НОМЕР ФИШКИ В ЧЕКЕ ПОСЛЕ ОПЛАТЫ ЗАКАЗА!</div>
+            <div class="enterPrizeFinish">Ловите номер фишки в чеке после оплаты заказа!</div>
         </div>
 
-        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как играть фишкамии получать скидки?</span></p>
+        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как играть фишками и получать скидки?</span></p>
 
         <div class="enterPrizeListWrap">
-            <div class="enterPrizeListTitle">Как получить скидку?</div>
-
             <ul class="enterPrizeList">
                 <li class="enterPrizeList__item mBlue">
                     <strong>Сайт www.enter.ru</strong><br/>
-                    Входи в личный кабинет на www.enter.ru!<br/>
-                    При оформлении Заказа в поле КУПОН или ФИШКА вводи номер фишки!
+                    Входите в личный кабинет на www.enter.ru!<br/>
+                    При оформлении Заказа в поле КУПОН или ФИШКА вводите номер фишки! 
                 </li>
 
                 <li class="enterPrizeList__item mOrange">
                     <strong>Розничные магазины ENTER</strong><br/>
-                    Скажи сотруднику магазина, что ты — участник ENTER PRIZE!<br/>
-                    И сообщи номер Фишки при оплате заказа!
+                    Скажите сотруднику магазина, что Вы — участник Enter Prize!<br/>
+                    И сообщите номер Фишки при оплате заказа! 
                 </li>
 
                 <li class="enterPrizeList__item mGreen">
                     <strong>Контакт-сENTER 8 800 700 00 09</strong><br/>
-                    Скажи оператору Контакт-cENTER, что ты — участник ENTER PRIZE!<br/>
-                    И при оформлении заказа сообщи номер Фишки!
+                    Скажите оператору Контакт-cENTER, что Вы — участник Enter Prize!<br/>
+                    И при оформлении заказа сообщите номер Фишки! 
                 </li>
             </ul>
         </div>
@@ -104,14 +92,14 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
             }
 
             $couponLink = $page->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]);
-            if ($coupon->isInformationOnly()) {
-                if ($coupon->getDescriptionToken()) {
-                    $couponLink = $page->url('content', ['token' => $coupon->getDescriptionToken()]);
-                } else {
-                    $couponLink = null;
-                }
+            if ($isEnterprizeMember) {
+                $couponLink = $page->url('enterprize.show', ['enterprizeToken' => $coupon->getToken()]);
             }
-            ?>
+            if ($coupon->isInformationOnly()) {
+                $couponLink = $coupon->getDescriptionToken()
+                    ? $page->url('content', ['token' => $coupon->getDescriptionToken()])
+                    : null;
+            } ?>
 
             <li class="<?= $itemClass ?>">
                 <a class="enterPrize__list__link" href="<?= $couponLink ? $couponLink : '#' ?>">
@@ -138,4 +126,6 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
             </li>
         <? endforeach ?>
     </ul>
+
+    <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>
 </div>

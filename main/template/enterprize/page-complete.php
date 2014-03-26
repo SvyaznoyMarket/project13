@@ -6,30 +6,30 @@
 
 <div class="enterPrize">
 <div class="enterPrizeListWrap mComplete" style="display: block;">
-	<div class="enterPrizeListTitle">Как получить скидку?</div>
+	<div class="enterPrizeListTitle">Как играть фишками и получать скидки?</div>
 
 	<ul class="enterPrizeList">
 	    <li class="enterPrizeList__item mBlue">
 	        <strong>Сайт www.enter.ru</strong><br/>
-	        Входи в личный кабинет на www.enter.ru!<br/>
-	        При оформлении Заказа в поле КУПОН или ФИШКА вводи номер фишки!
+	        Входите в личный кабинет на www.enter.ru!<br/>
+	        При оформлении Заказа в поле КУПОН или ФИШКА вводите номер фишки! 
 	    </li>
 
 	    <li class="enterPrizeList__item mOrange">
 	        <strong>Розничные магазины ENTER</strong><br/>
-	        Скажи сотруднику магазина, что ты — участник ENTER PRIZE!<br/>
-	        И сообщи номер Фишки при оплате заказа!
+	        Скажите сотруднику магазина, что Вы — участник Enter Prize!<br/>
+	        И сообщите номер Фишки при оплате заказа! 
 	    </li>
 
 	    <li class="enterPrizeList__item mGreen">
 	        <strong>Контакт-сENTER 8 800 700 00 09</strong><br/>
-	        Скажи оператору Контакт-cENTER, что ты — участник ENTER PRIZE!<br/>
-	        И при оформлении заказа сообщи номер Фишки!
+	        Скажите оператору Контакт-cENTER, что Вы — участник Enter Prize!<br/>
+	        И при оформлении заказа сообщите номер Фишки! 
 	    </li>
 	</ul>
 </div>
 
-<p class="enterprizeMore">Кстати, у нас есть ещё фишки! <a href="<?= \App::router()->generate('enterprize') ?>">Посмотреть</a></p>
+<p class="enterprizeMore">Еще фишки! <a href="<?= \App::router()->generate('enterprize') ?>">Посмотреть</a></p>
 </div>
 
 ﻿

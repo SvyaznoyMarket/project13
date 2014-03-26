@@ -3,11 +3,12 @@
 	position: relative;
 
 	&__logo {
-		background: url("@{base-url}/enterPrize/img/bgLogo.gif") no-repeat 0 0;
+		background: url("@{base-url}/enterPrize/img/bgLogo.png") no-repeat 0 0;
 		display: inline-block;
-		height: 88px;
+		height: 76px;
 	    text-indent: -9999px;
-	    width: 271px;
+	    width: 264px;
+	    margin-left: 7px;
 
 		vertical-align: top;
 		*display: inline;
@@ -88,17 +89,21 @@
 
 	    &.mReg {
 	    	margin: 0 0 14px 32px;
-	    	font-size: 46px;
 	    }
 	}
 
 	.enterPrizeDesc {
-		color: @white;
+		color: #ddd;
 		margin: 15px 0 0 31px;
 		font-size: 14px;
 		cursor: pointer;
 
 		&__text {
+			text-decoration: underline;
+		}
+
+		a {
+			color: @white;
 			text-decoration: underline;
 		}
 	}
@@ -122,28 +127,26 @@
 
 	.enterPrizeListTitle {
 		font-size: 16px;
-		color: @white;
+		color: #bbb;
 		font-weight: bold;
 		margin: 0 0 15px 36px;
 	}
 
 	.enterPrizeFinish {
-		font-family: "Enter";
-	    font-size: 30px;
-	    text-transform: uppercase;
-	    color: @white;
-	    margin: 0 0 50px 54px;
+		color: #BBBBBB;
+	    font-size: 14px;
+	    margin: 0 0 50px 39px;
 	}
 
 	.enterPrizeList {
 		margin: 0 0 20px 0;
 
 		&__item {
-			color: @white;
+			color: #bbb;
 			margin: 0 0 15px 36px;
 			border-left: 3px solid;
 			padding-left: 10px;
-			font-size: 14px;
+			font-size: 12px;
 
 			&.mBlue {
 				border-color: @firmBlue;
@@ -210,12 +213,12 @@
 		z-index: 17;
 
 			&__inner {
-				width: 188px;
-				position: relative;
 				display: block;
-				height: 186px;
-				left: 7px;
-				top: 6px;
+			    height: 188px;
+			    left: 7px;
+			    position: relative;
+			    top: 6px;
+			    width: 190px;
 			}
 		}
 
@@ -276,11 +279,16 @@
 
 	.cuponIco {
 		position: absolute;
-		top: 29px;
+		top: 33px;
 		text-align: center;
 		width: 100%;
 		left: 0;
 		height: 43px;
+
+		img {
+			max-width: 75px;
+			max-height: 55px;
+		}
 	}
 
 	.cuponDesc {
@@ -289,6 +297,7 @@
 		text-align: center;
 		width: 143px;
 		left: 23px;
+		line-height: 1.1;
 	}
 
 	.cuponPrice {
@@ -298,11 +307,11 @@
 		text-align: center;
 		left: 0;
 		width: 100%;
-		top: 108px;
+		top: 110px;
 	}
 
 	&.mPrivate {
-		margin: 40px 0;
+		margin: 40px 0 20px;
 		background: #eaeaea;
 		.rounded(4px);
 		padding: 10px;
@@ -310,7 +319,7 @@
 		.enterPrize__list {
 		    position: absolute;
 		    right: 0;
-		    top: -63px;
+		    top: -80px;
 		}
 
 		.enterPrize__logo {
@@ -318,14 +327,19 @@
 		}
 
 		.enterPrize__rules {
-			width: 450px;
+			width: 550px;
 			height: auto;
 			padding: 15px;
 			border-bottom: 1px solid #bbbbbb;
 			float: none;
 			background: @white;
 			font-size: 16px;
+			line-height: 1.6;
 			margin: 13px 0;
+
+			strong {
+				font-size: 18px;
+			}
 		}
 
 		.enterPrize__logIn {
@@ -337,27 +351,50 @@
     		}
 		}
 	}
+
+	.rulesEP {
+		font-size: 14px;
+		color: @white;
+		margin: 20px 0 12px 31px;
+
+		a {
+			color: @white;
+			text-decoration: underline;
+		}
+	}
 }
 
 .enterprizeConfirm {
-	margin: 0 0 30px 25px;
+	margin: 0 0 200px 25px;
 	font-size: 14px;
 
-	.confirmForm {
-		display: inline-block; 
-		vertical-align: top;
+	.backForm {
+		font-size: 12px;
+		display: inline-block;
+		text-decoration: underline;
 
-		*display: inline;
-		zoom: 1;
+		margin: 15px 0 0;
+
+    	*display: inline;
+    	zoom: 1;
+	}
+
+	.confirmForm {
+		margin: 0 0 15px;		
 	}
 
 	.labelCode {
-		margin: 0 5px 0 0;
+		display: inline-block;
+    	margin: 5px 5px 0 0;
+
+    	*display: inline;
+    	zoom: 1;
 	}
 
 	.text {
 	    height: 31px;
 	    line-height: 31px;
+	    width: 50px;
 	}
 
 	.newCode {
@@ -393,16 +430,18 @@
 }
 
 .titleForm {
-	font-size: 2em;
+	font-family: "Enter";
+    font-size: 26px;
     font-weight: normal;
-    margin: 10px 0 20px 25px;
+    margin: 40px 0 20px 25px;
+    text-transform: uppercase;
 }
 
 .jsEnterprizeForm {
 	margin: 0 0 0 25px;
 
 	.formDefault__btnSubmit {
-		margin: 20px 0 15px 269px;
+		margin: 20px 0 100px 269px;
 	}
 
 	.red {
@@ -412,6 +451,11 @@
 
 .enterprize {
 	background: @black;
+
+	.bSubscribeLightboxPopupNotNow,
+	.bSubscribeLightboxPopup {
+		display: none !important;
+	}
 
 	.wrapper {
 		background: @black;
@@ -503,11 +547,11 @@
 .enterprizeAuthBox {
 
 	&__title {
-		background: url("@{base-url}/enterPrize/img/bgLogo.gif") no-repeat 0 0;
+		background: url("@{base-url}/enterPrize/img/bgLogo.png") no-repeat 50% 0;
 		text-transform: uppercase;
 		font-size: 24px;
 		padding-left: 280px;
-		line-height: 88px;
+		height: 88px;
 		font-weight: bold;
 	}
 
@@ -523,10 +567,48 @@
 }
 
 .enterprizeMore {
-	margin: 20px 0 30px 25px;
-	font-size: 16px;
+	font-family: "Enter";
+    font-size: 20px;
+    margin: 40px 0 50px 25px;
+    text-transform: uppercase;
 
 	a {
 		text-decoration: underline;
 	}
+}
+
+.enterprizeMember {	
+
+	.bSubscribeLightboxPopupNotNow,
+	.bSubscribeLightboxPopup {
+		display: none !important;
+	}
+}
+
+.getCuponEP {
+	margin: 0 auto 200px;
+	width: 100px;
+}
+
+.completeTitleEP {
+    margin: 0 0 0 15px;
+
+    &__title {
+    	font-family: "Enter";
+    	text-transform: uppercase;
+    	font-size: 22px;
+    }
+
+    &__text {
+    	margin: 0;
+    }
+}
+
+.lastFishka {
+	font-size: 14px;
+    margin: 0 0 20px 25px;
+
+    &__link {
+    	text-decoration: underline;
+    }
 }
