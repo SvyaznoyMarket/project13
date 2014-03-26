@@ -4,8 +4,8 @@ namespace EnterSite\Model\Page {
     use EnterSite\Model\Page;
 
     class DefaultLayout extends Page {
-        /** @var DefaultLayout\Header */
-        public $header;
+        /** @var DefaultLayout\BreadcrumbBlock */
+        public $breadcrumbBlock;
         /** @var DefaultLayout\MainMenu */
         public $mainMenu;
         /** @var DefaultLayout\Search */
@@ -16,7 +16,6 @@ namespace EnterSite\Model\Page {
         public function __construct() {
             parent::__construct();
 
-            $this->header = new DefaultLayout\Header();
             $this->mainMenu = new DefaultLayout\MainMenu();
             $this->search = new DefaultLayout\Search();
             $this->content = new DefaultLayout\Content();
@@ -25,13 +24,9 @@ namespace EnterSite\Model\Page {
 }
 
 namespace EnterSite\Model\Page\DefaultLayout {
-    class Header {
-        /** @var Header\RegionLink */
-        public $regionLink;
-
-        public function __construct() {
-            $this->regionLink = new Header\RegionLink();
-        }
+    class BreadcrumbBlock {
+        /** @var BreadcrumbBlock\Breadcrumb[] */
+        public $breadcrumbs = [];
     }
 
     class MainMenu {
@@ -52,8 +47,8 @@ namespace EnterSite\Model\Page\DefaultLayout {
     }
 }
 
-namespace EnterSite\Model\Page\DefaultLayout\Header {
-    class RegionLink {
+namespace EnterSite\Model\Page\DefaultLayout\BreadcrumbBlock {
+    class Breadcrumb {
         /** @var string */
         public $name;
         /** @var string */

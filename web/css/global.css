@@ -2383,13 +2383,13 @@
     position: relative;
     width: 90px;
     text-indent: -10000px;
-    margin-right: 10px;
+    margin-right: 0;
   }
   .bMainMenuLevel-1 {
     position: relative;
     display: table;
     float: left;
-    width: 850px;
+    width: 860px;
     z-index: 998;
     behavior: url("/css/common/display-table.min.htc");
     dt-display: table;
@@ -2405,7 +2405,7 @@
     background: url('/css/header/img/headerSeparator.gif') no-repeat center center;
     display: block;
     height: 100px;
-    margin: 0 0 0 10px;
+    margin: 0 0 0 5px;
     width: 1px;
     z-index: 99;
   }
@@ -7333,21 +7333,55 @@
   .bSubscribeLightboxPopupNotNow {
     position: absolute;
     top: 0;
-    right: -41px;
+    right: -40px;
     display: none;
-    width: 40px;
-    height: 36px;
-    background: url('/css/subscribeLightboxPopup/img/icon.png') no-repeat 0 0;
+    width: 39px;
+    height: 43px;
+    background: url('/css/subscribeLightboxPopup/img/EPicon.png') no-repeat 0 0;
     cursor: pointer;
   }
   .bSubscribeLightboxPopup {
     display: none;
-    width: 100%;
     height: 43px;
-    margin: 0 -10px 7px;
     padding: 0 10px;
+    margin: 0 0 0 -10px;
+    width: 100%;
     text-align: center;
     background: url('/css/subscribeLightboxPopup/img/bgSubscribeTop.png') repeat-x 0 0;
+  }
+  .bSubscribeLightboxPopup.mEnterPrize {
+    background: #f79a20;
+    text-align: left;
+  }
+  .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eTitle {
+    font-family: "Enter";
+    font-size: 27px;
+    line-height: 43px;
+    padding-right: 100px;
+    background: url('/css/subscribeLightboxPopup/img/epFishki.png') no-repeat 100% 50%;
+    padding-right: 55px;
+    margin: 0 15px 0 0;
+  }
+  .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eLink {
+    background: #000000;
+    color: #ffffff;
+    text-transform: uppercase;
+    display: inline-block;
+    vertical-align: top;
+    font-family: "Enter";
+    font-size: 18px;
+    height: 29px;
+    line-height: 29px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 115px;
+    margin: 5px 0 0 0;
+  }
+  .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eLink:hover {
+    text-decoration: none;
   }
   .bSubscribeLightboxPopup__eTitle {
     margin: 0 22px 0 0px;
@@ -7360,6 +7394,10 @@
   }
   .bSubscribeLightboxPopup__eTitle.mType {
     font-family: 'Enter Type';
+  }
+  .bSubscribeLightboxPopup__eImg {
+    display: block;
+    margin: 3px 15px 0 0;
   }
   .bSubscribeLightboxPopup__eInput {
     -webkit-border-radius: 4px;
@@ -7408,6 +7446,10 @@
     content: '✘';
     color: #ffffff;
     font-size: 15px;
+  }
+  #mainPage .bSubscribeLightboxPopup {
+    margin: 0;
+    width: auto;
   }
 }
 /*---------END ВСПЛЫВАЮЩЕЙ ПОДПИСКИ-----*/
@@ -9107,6 +9149,7 @@
     margin-top: 4px;
     width: 120px;
     height: 210px;
+    position: relative;
   }
   .bSlider__eItem .product__inner {
     -webkit-transition: box-shadow 0.05s linear;
@@ -9659,7 +9702,6 @@
   .bReviews .bReview__eText div,
   .bReviews .bReview__eText p {
     float: left;
-    font-size: 12px;
     line-height: 1.5;
     margin: 2px 0 5px;
     width: 410px;
@@ -10959,6 +11001,9 @@
   .mPayMethods .bBankWrap {
     margin: 5px 0 0 15px;
   }
+  .mPayMethods .bBankWrap .bUnchecked {
+    opacity: .4;
+  }
   .mPayMethods .bBankWrap .bSelectInput {
     height: 60px;
   }
@@ -11523,13 +11568,13 @@
   .bCatalogRoot__eItemLink {
     display: block;
     padding: 10px;
-    width: 200px;
+    width: 198px;
     height: 260px;
   }
   .bCatalogRoot__eImgLink {
-    display: inline-block;
-    margin: 0 auto 10px;
-    width: 200px;
+    display: table-cell;
+    margin: 0 auto;
+    width: 198px;
     height: 200px;
     background: #ffffff;
     vertical-align: middle;
@@ -11537,12 +11582,13 @@
   }
   .bCatalogRoot__eImg {
     display: inline-block;
-    max-height: 180px;
-    width: 180px;
+    max-height: 200px;
+    max-width: 200px;
     vertical-align: middle;
   }
   .bCatalogRoot__eNameLink {
     font-size: 14px;
+    margin: 10px 0 0;
   }
   .bCatalogRoot__eCount {
     position: absolute;

@@ -21,27 +21,13 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
     <? endif ?>
 
     <div class="enterPrizeHello mReg">Всё, что вы хотели, со скидкой до 70%</div>
-
-    <!-- <ul class="enterPrize__rules clearfix">
-        <li class="enterPrize__rules__item">
-            1. Выбери фишку со скидкой.<br/>
-            2. Заполни три поля.<br/>
-            3. Лови фишку на e-mail и в СМС.<br/>
-            Разыграй фишку в заказе и получи скидку.
-        </li>
-
-        <li class="enterPrize__rules__sep"></li>
-        <li class="enterPrize__rules__item" style="width: 168px;"><span class="sep">Получи</span> номер фишки на E-mail и мобильный телефон, которые укажешь для участия в Enter Prize!</li>
-        <li class="enterPrize__rules__sep"></li>
-        <li class="enterPrize__rules__item"><span class="sep">Покупай</span> со скидкой, используя номер фишки при оплате!</li>
-    </ul> -->
-
+    
     <? if (!$user->getEntity()): ?>
         <p class="enterPrizeDesc">Уже в ENTER PRIZE? <a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войдите и получите ещё скидки</a></p>
     <? endif ?>
 
     <? if ($isEnterprizeMember): ?>
-        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как ещё получать фишки?</span></p>
+        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как получить больше фишек?</span></p>
 
         <div class="enterPrizeListWrap">
             <ul class="enterPrizeList">
@@ -59,7 +45,7 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
 
                 <li class="enterPrizeList__item mGreen">
                     <strong>Контакт-сENTER 8 800 700 00 09</strong><br/>
-                    Скажите оператору Контакт-cENTER, что Вы — участник Enter Prize!
+                    Скажите оператору Контакт-cENTER, что Вы — участник Enter Prize!<br/>
                     Оператор поможет оформить заказ.
                 </li>
             </ul>

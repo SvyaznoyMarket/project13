@@ -12,46 +12,28 @@ class FormAction {
     public function show($enterprizeToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $user = \App::user();
-
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
         }
 
         if (!$enterprizeToken) {
-            throw new \Exception\NotFoundException();
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize', [], true));
         }
 
+        $user = \App::user();
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
-        if (!$session->has($sessionName)) {
-            $session->set($sessionName, [
+
+        $session->set($sessionName, array_merge(
+            [
                 'isPhoneConfirmed' => false,
                 'isEmailConfirmed' => false,
-            ]);
-        }
-
-        $data = array_merge((array)$session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
-
-        // если пользователь авторизован и уже является участником enterprize
-        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember()) {
-            $data = array_merge($data, [
-                'token'            => $user->getToken(),
-                'name'             => $user->getEntity()->getFirstName(),
-                'email'            => $user->getEntity()->getEmail(),
-                'mobile'           => $user->getEntity()->getMobilePhone(),
-                'isPhoneConfirmed' => true,
-                'isEmailConfirmed' => true,
-            ]);
-            $session->set($sessionName, $data);
-
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize.create'));
-        }
-
-        $session->set($sessionName, $data);
-
-        $flash = $session->get('flash');
-        $session->remove('flash');
+            ],
+            $session->has($sessionName) ? $session->get($sessionName) : [],
+            [
+                'enterprizeToken' => $enterprizeToken,
+            ]
+        ));
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
@@ -66,11 +48,37 @@ class FormAction {
             \App::dataStoreClient()->execute();
         }
 
+        if (!$enterpizeCoupon) {
+            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+        }
+
+        $data = (array)$session->get($sessionName, []);
+
+        // если пользователь авторизован и уже является участником enterprize
+        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember()) {
+            $data = array_merge($data, [
+                'token'            => $user->getToken(),
+                'name'             => $user->getEntity()->getFirstName(),
+                'email'            => $user->getEntity()->getEmail(),
+                'mobile'           => $user->getEntity()->getMobilePhone(),
+                'isPhoneConfirmed' => true,
+                'isEmailConfirmed' => true,
+            ]);
+            $session->set($sessionName, $data);
+
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize.create', [], true));
+        }
+        $session->set($sessionName, $data);
+
+        $flash = $session->get('flash');
+        $session->remove('flash');
+
         $page = new \View\Enterprize\FormPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('form', $this->getForm());
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
         $page->setParam('authSource', $session->get('authSource', null));
+        $page->setParam('viewParams', ['showSideBanner' => false]);
 
         return new \Http\Response($page->show());
     }
@@ -91,9 +99,20 @@ class FormAction {
 
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
-
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+
+        if (!$enterprizeToken) {
+            $link = \App::router()->generate('enterprize', [], true);
+
+            return $request->isXmlHttpRequest()
+                ? new \Http\JsonResponse([
+                    'success' => true,
+                    'error'   => null,
+                    'data'    => ['link' => $link],
+                ])
+                : new \Http\RedirectResponse($link);
+        }
 
         if (!isset($userData['subscribe'])) {
             $form->setError('subscribe', 'Необходимо согласие');
@@ -220,7 +239,7 @@ class FormAction {
                 $link = \App::router()->generate('enterprize.create');
             } elseif ($data['isPhoneConfirmed']) {
                 // просим подтвердит email
-                $link = \App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $enterprizeToken]);
+                $link = \App::router()->generate('enterprize.confirmEmail.show');
                 try {
                     if (!isset($data['email']) || empty($data['email'])) {
                         throw new \Exception('Не получен email');
@@ -246,7 +265,7 @@ class FormAction {
                 }
             } else {
                 // просим подтвердить телефон
-                $link = \App::router()->generate('enterprize.confirmPhone.show', ['enterprizeToken' => $enterprizeToken]);
+                $link = \App::router()->generate('enterprize.confirmPhone.show', [], true);
                 try {
                     if (!isset($data['mobile']) || empty($data['mobile'])) {
                         throw new \Exception('Не получен мобильный телефон');
@@ -302,8 +321,15 @@ class FormAction {
             }
         }
 
-        return $response ? $response
-            : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]));
+        return $response
+            ? $response
+            : ($request->isXmlHttpRequest()
+                ? new \Http\JsonResponse([
+                    'success' => true,
+                    'error'   => null,
+                    'data'    => ['link' => \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true)],
+                ])
+                : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true)));
     }
 
     /**

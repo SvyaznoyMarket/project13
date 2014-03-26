@@ -30,6 +30,18 @@ class ProductCard {
 
         $productModel = $request->product;
 
+        // хлебные крошки
+        if ($categoryModel = $productModel->category) {
+            $page->breadcrumbBlock = new Model\Page\DefaultLayout\BreadcrumbBlock();
+
+            $breadcrumb = new Model\Page\DefaultLayout\BreadcrumbBlock\Breadcrumb();
+            $breadcrumb->name = $categoryModel->name;
+            $breadcrumb->url = $categoryModel->link;
+
+            $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
+        }
+
+        // содержание
         $page->content->product->title = $productModel->name;
         $page->content->product->article = $productModel->article;
         $page->content->product->description = $productModel->description;

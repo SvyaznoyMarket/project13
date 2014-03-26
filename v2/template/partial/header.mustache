@@ -4,9 +4,13 @@
         <!-- Хлебные крошки -->
         <div class="headerCenterWrap">
             <div class="headerCenter">
-                <div class="breadCrumbs">
-                    <a class="breadCrumbs_link" href="">Радиотелефоны DECT и проводные телефоны</a>
-                </div>
+                {{#breadcrumbBlock}}
+                    <div class="breadCrumbs">
+                    {{#breadcrumbs}}
+                        <a class="breadCrumbs_link" href="{{url}}">{{name}}</a>
+                    {{/breadcrumbs}}
+                    </div>
+                {{/breadcrumbBlock}}
             </div>
         </div>
         <!--/ Хлебные крошки -->
