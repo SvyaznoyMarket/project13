@@ -231,7 +231,7 @@
 			// end of vars
 
 			if ( OrderModel.hasDeliveryBox(newToken) ) {
-				// запонимаем массив ids продуктов
+				// запоминаем массив ids продуктов
 				for ( i = self.products.length - 1; i >= 0; i-- ) {
 					self.products[i].id && productIds.push(self.products[i].id);
 				}
@@ -322,6 +322,8 @@
 				token = null,
 				firstAvaliblePoint = null,
 				tempProductArray = [],
+				nowTotalSum,
+				deletedBlock,
 
 				choosenBlock = null,
 
@@ -344,14 +346,25 @@
 				tempProductArray.push(product);
 
 				if ( OrderModel.hasDeliveryBox(token) ) {
-					console.log('Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок');
+					console.log('Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок' , token);
 
 					choosenBlock = OrderModel.getDeliveryBoxByToken(token);
+					//choosenBlock.addProductGroup( tempProductArray ); //массив на вход нужен // добавим ниже
+					//OrderModel.removeDeliveryBox(self.token); // не находит и не удаляет никогда
+
+					// Удаляем неполный блок и добавляем (push) полный
+					//deletedBlock = OrderModel.deliveryBoxes.pop(); // удалит последний (обычно он и есть неполный)
+					deletedBlock = OrderModel.removeDeliveryBox(token); // удалит по токену нужный
+
+					// пересчитываем и обновляем общую сумму всех блоков
+					nowTotalSum = OrderModel.totalSum() - deletedBlock.fullPrice - choosenBlock.deliveryPrice;
+					OrderModel.totalSum(nowTotalSum);
+
 					choosenBlock.addProductGroup( tempProductArray ); //массив на вход нужен
-					OrderModel.removeDeliveryBox(self.token);
+					OrderModel.deliveryBoxes.push( choosenBlock );
 				}
 				else {
-					console.log('Блока для этого типа доставки в этот пункт еще существует');
+					console.log('Блока для этого типа доставки в этот пункт еще не существует');
 
 					new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
 				}

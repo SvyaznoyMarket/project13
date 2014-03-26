@@ -45,7 +45,7 @@ class InflectAction {
                 }
 
                 if (!file_put_contents($file, json_encode($inflect, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT))) {
-                    throw new \Exception(sprintf('task.%s: неудалось записать данные в %s', $taskName, $file));
+                    throw new \Exception(sprintf('task.%s: не удалось записать данные в %s', $taskName, $file));
                 }
             }
         }, $limit);
