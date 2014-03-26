@@ -17,12 +17,12 @@ return function(
 <? elseif (\App::config()->product['showAveragePrice'] && !$product->getPriceOld() && $product->getPriceAverage()): ?>
 
 <? endif ?>
-<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-    <div itemprop="price" class="bPrice5321a13ebb1e5 bInputList">
+<span>
+    <div class="bPrice5321a13ebb1e5 bInputList">
     	<input class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="price" name="price_or_credit" />
 
-    	<label for="price" class="bCustomLabel mCustomLabelRadioBig mChecked">
-	    	<strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> 
+    	<label itemprop="offers" itemscope itemtype="http://schema.org/Offer" for="price" class="bCustomLabel mCustomLabelRadioBig mChecked">
+	    	<strong itemprop="price" class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong>
 	    	<span class="rubl">p</span>
 	    </label>
     </div>

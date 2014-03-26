@@ -541,8 +541,10 @@ class DefaultLayout extends Layout {
         return $return;
     }
 
-
-
+    public function slotSociaPlus()
+    {
+        return '<div id="sociaPlusJs" class="jsanalytics"></div>';
+    }
 
     public function slotAdmitad()
     {

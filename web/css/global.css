@@ -8995,7 +8995,7 @@
   .bProductDesc.mNoCredit .bPrice {
     margin: 0 0 15px;
   }
-  .bProductDesc.mNoCredit .bPrice.bInputList .bCustomLabel {
+  .bProductDesc.mNoCredit .bCustomLabel {
     background: none;
     padding-left: 0;
     cursor: text;

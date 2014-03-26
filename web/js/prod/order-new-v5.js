@@ -865,7 +865,7 @@
 			// end of vars
 
 			if ( OrderModel.hasDeliveryBox(newToken) ) {
-				// запонимаем массив ids продуктов
+				// запоминаем массив ids продуктов
 				for ( i = self.products.length - 1; i >= 0; i-- ) {
 					self.products[i].id && productIds.push(self.products[i].id);
 				}
@@ -956,6 +956,8 @@
 				token = null,
 				firstAvaliblePoint = null,
 				tempProductArray = [],
+				nowTotalSum,
+				deletedBlock,
 
 				choosenBlock = null,
 
@@ -978,14 +980,25 @@
 				tempProductArray.push(product);
 
 				if ( OrderModel.hasDeliveryBox(token) ) {
-					console.log('Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок');
+					console.log('Блок для этого типа доставки в этот пункт уже существует. Добавляем продукт в блок' , token);
 
 					choosenBlock = OrderModel.getDeliveryBoxByToken(token);
+					//choosenBlock.addProductGroup( tempProductArray ); //массив на вход нужен // добавим ниже
+					//OrderModel.removeDeliveryBox(self.token); // не находит и не удаляет никогда
+
+					// Удаляем неполный блок и добавляем (push) полный
+					//deletedBlock = OrderModel.deliveryBoxes.pop(); // удалит последний (обычно он и есть неполный)
+					deletedBlock = OrderModel.removeDeliveryBox(token); // удалит по токену нужный
+
+					// пересчитываем и обновляем общую сумму всех блоков
+					nowTotalSum = OrderModel.totalSum() - deletedBlock.fullPrice - choosenBlock.deliveryPrice;
+					OrderModel.totalSum(nowTotalSum);
+
 					choosenBlock.addProductGroup( tempProductArray ); //массив на вход нужен
-					OrderModel.removeDeliveryBox(self.token);
+					OrderModel.deliveryBoxes.push( choosenBlock );
 				}
 				else {
-					console.log('Блока для этого типа доставки в этот пункт еще существует');
+					console.log('Блока для этого типа доставки в этот пункт еще не существует');
 
 					new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
 				}
@@ -1568,6 +1581,7 @@
 			this.deliveryStates = this.orderData.deliveryStates;
 			this.pointsByDelivery = this.orderData.pointsByDelivery;
 			this.products = this.orderData.products;
+			this.defPoints = this.orderData.defPoints || {};
 		}
 
 		/**
@@ -1597,6 +1611,16 @@
 		 */
 		OrderDictionary.prototype.getToday = function() {
 			return this.serverTime;
+		};
+
+		/**
+		 * Стандартная точка для метода доставки
+		 * 
+		 * @param token
+		 * @returns {*}
+		 */
+		OrderDictionary.prototype.getDefaultPointId = function( token ) {
+			return this.defPoints.hasOwnProperty(token) ? this.defPoints[token] : 0;
 		};
 
 		/**
@@ -1689,7 +1713,6 @@
 			var
 				points = this.getAllPointsByState(state);
 			// end of vars
-			
 			return ( points[0] ) ? ENTER.utils.cloneObject(points[0]) : false;
 		};
 
@@ -2091,6 +2114,10 @@
 			'default': function( res ) {
 				console.log('Обработчик ошибки');
 
+				if ( 'undefined' === typeof(res.redirect) ) {
+					res.redirect = '/cart';
+				}
+
 				if ( res.error && res.error.message ) {
 					showError(res.error.message, function() {
 						if ( 0 !== res.redirect ) {
@@ -2299,10 +2326,10 @@
 				success: processingResponse,
 				statusCode: {
 					500: function() {
-						showError('Неудалось создать заказ. Попробуйте позднее.');
+						showError('Не удалось создать заказ. Попробуйте позднее. 500');
 					},
 					504: function() {
-						showError('Неудалось создать заказ. Попробуйте позднее.');
+						showError('Не удалось создать заказ. Попробуйте позднее. 504');
 					}
 				}
 			});
@@ -2537,7 +2564,7 @@
 			isUnique = null,
 			nowProductsToNewBox = [],
 
-			discounts = ENTER.OrderModel.orderDictionary.orderData.discounts;
+			discounts = ENTER.OrderModel.orderDictionary.orderData.discounts || [];
 		// end of vars
 		
 		if ( ENTER.OrderModel.paypalECS() ) {
@@ -2607,7 +2634,9 @@
 			}
 
 			if ( productsToNewBox.length ) {
-				choosenPointForBox = ( ENTER.OrderModel.orderDictionary.hasPointDelivery(nowState) ) ? ENTER.OrderModel.choosenPoint() : 0;
+				choosenPointForBox = ( ENTER.OrderModel.orderDictionary.hasPointDelivery(nowState) ) ?
+					ENTER.OrderModel.choosenPoint() :
+					ENTER.OrderModel.orderDictionary.getDefaultPointId(nowState);
 
 				token = nowState+'_'+choosenPointForBox;
 
@@ -2617,7 +2646,7 @@
 					choosenBlock.addProductGroup( productsToNewBox );
 				}
 				else if ( isUnique ) {
-					// Блока для этого типа доставки в этот пункт еще существует, создадим его:
+					// Блока для этого типа доставки в этот пункт еще не существует, создадим его:
 					// Если есть флаг уникальности, каждый товар в отдельном блоке будет
 
 					// Разделим товары, продуктом считаем уникальную единицу товара:
@@ -2629,7 +2658,7 @@
 					}
 
 				} else {
-					// Блока для этого типа доставки в этот пункт еще существует, создадим его:
+					// Блока для этого типа доставки в этот пункт еще не существует, создадим его:
 					// Без флага уникальности, все товары скопом:
 					// Пример: 5 тетрадок ==> 1 товар количеством 5 шт
 					ENTER.constructors.DeliveryBox(productsToNewBox, nowState, choosenPointForBox);
@@ -2640,8 +2669,6 @@
 		console.info('Созданные блоки:');
 		console.log(ENTER.OrderModel.deliveryBoxes());
 
-		// Добавляем купоны
-		ENTER.OrderModel.couponsBox(discounts);
 
 		// Добавляем купоны
 		ENTER.OrderModel.couponsBox(discounts);
@@ -2933,14 +2960,14 @@
 			if ( $('.bSaleList__eItem.hidden').length === $('.bSaleList__eItem').length ||
 				$('.bSaleList__eItem:hidden').length === $('.bSaleList__eItem').length ) {
 				// если все скидки применены
-				
+
 				fieldNode.attr('disabled', 'disabled');
 				buttonNode.attr('disabled', 'disabled').addClass('mDisabled');
 				emptyBlock.show();
 			}
 			else {
 				// не все скидки применены
-				
+
 				fieldNode.removeAttr('disabled');
 				buttonNode.removeAttr('disabled').removeClass('mDisabled');
 				emptyBlock.hide();
@@ -3128,19 +3155,29 @@
 		 * Удаление блока доставки по токену
 		 * 
 		 * @param	String}		token	Токен блока доставки
+		 * @returns	{*}			DeliveryBox (удалённый блок доставки либо null)
 		 */
 		removeDeliveryBox: function( token ) {
-			console.info('Удаление блока по токену '+token);
+			console.info('Поиск для удаления блока по токену ' + token);
 
-			var i = null;
+			var
+				i,
+				ret = null,
+				dBoxes = ENTER.OrderModel.deliveryBoxes(),
+				dBCount = dBoxes.length;
 
-			for ( i = ENTER.OrderModel.deliveryBoxes().length - 1; i >= 0; i--) {
-				if ( ENTER.OrderModel.deliveryBoxes()[i].token === token ) {
-					ENTER.OrderModel.deliveryBoxes().splice(i, 1);
-
-					return;
+			for ( i = dBCount - 1; i >= 0; i-- ) {
+				if ( dBoxes[i].token === token ) {
+					console.info('Удаление блока по токену ' + token);
+					ret = ENTER.OrderModel.deliveryBoxes.splice(i, 1);
+					if ( 'object' === typeof(ret[0]) ) {
+						ret = ret[0];
+					}
+					break;
 				}
 			}
+
+			return ret;
 		},
 
 		/**
