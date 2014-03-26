@@ -51,7 +51,7 @@ class ProductCard {
         // товар
         $product = $productRepository->getObjectByQuery($productItemQuery);
         if ($product->link !== $request->getPathInfo()) {
-            return (new Controller\Redirect())->execute($product->link. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 301);
+            return (new Controller\Redirect())->execute($product->link. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
         }
 
         // запрос дерева категорий для меню
