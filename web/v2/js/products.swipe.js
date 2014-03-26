@@ -86,7 +86,7 @@ $(function() {
         }
 
         if( curSlide <= (countItem - 1) ) {
-          $('.slidesItemsList').animate({'left' : slideListLeftNew});
+          $('.slidesItemsList').stop(true, false).animate({'left' : slideListLeftNew});
 
             slidePagItemActive.removeClass(pagActive);
             slidePagItemActive.next().addClass(pagActive);
@@ -115,7 +115,7 @@ $(function() {
         }
 
         if( curSlide >= 0 ) {
-          $('.slidesItemsList').animate({'left' : slideListLeftNew});
+          $('.slidesItemsList').stop(true, false).animate({'left' : slideListLeftNew});
 
           slidePagItemActive.removeClass(pagActive);
           slidePagItemActive.prev().addClass(pagActive);

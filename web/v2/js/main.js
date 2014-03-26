@@ -1,9 +1,9 @@
 $(function(){
 
 	var chooseModelWrap = $('.chooseModel'),
-	    chooseModelMoreLink = chooseModelWrap.find('.chooseModel__moreLink'),
-	    chooseModelMoreBox = chooseModelWrap.find('.chooseModel__moreBox'),
-	    chooseModelMoreBoxDown = chooseModelWrap.find('.chooseModel__moreBox.more'),
+	    chooseModelMoreLink = chooseModelWrap.find('.chooseModel_moreLink'),
+	    chooseModelMoreBox = chooseModelWrap.find('.chooseModel_moreBox'),
+	    chooseModelMoreBoxDown = chooseModelWrap.find('.chooseModel_moreBox.more'),
 
 		chooseModelMoreModel = function chooseModelMoreModel() {
 			chooseModelMoreBox.slideToggle('800');
@@ -19,7 +19,7 @@ $(function(){
 	
 	var navIco = $('.navIco'),
 		navSite = $('.nav'),
-		navSiteItemLevel1 = navSite.find('.navList__text'),
+		navSiteItemLevel1 = navSite.find('.navList_text'),
 		navSiteListLevel2 = navSite.find('.navListLevel2');
 	// end of vars
 
