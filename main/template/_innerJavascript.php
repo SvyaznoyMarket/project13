@@ -10,3 +10,4 @@
 <?= $page->slotAdmitad() ?>
 <?= $page->slotMarinLandingPageTagJS() ?>
 <?= $page->slotMarinConversionTagJS() ?>
+<?= $page->slotSociaPlus() ?>
