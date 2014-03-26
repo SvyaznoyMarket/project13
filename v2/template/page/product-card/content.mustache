@@ -23,12 +23,19 @@
         <div class="productDesc clearfix">
 
             <!-- Изображение товара -->
-            <div class="productDescImg">
-                <div class="productDescImgList jsSlides">
+            <div class="productDescImg slidesItems">
+                <ul class="slidesItemsList">
                     {{#product.photos}}
-                        <img class="productDescImgList_img" src="{{url}}" alt="{{&name}}" />
+                        <li class="slidesItemsList_item">
+                            <img class="slidesItemsList_img" src="{{url}}" alt="{{&name}}" />
+                        </li>
                     {{/product.photos}}
-                </div>
+                </ul>
+
+                <div class="slidesItemsBtn slidesItemsBtn_left jsBtnSlidesLeft"></div>
+                <div class="slidesItemsBtn slidesItemsBtn_right jsBtnSlidesRight"></div>
+
+                <ul class="slidesItemsBtnPag"></ul>
             </div>
             <!--/ Изображение товара -->
 
