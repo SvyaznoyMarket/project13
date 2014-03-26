@@ -14,7 +14,7 @@ $(function() {
       resizeSlides = function resizeSlides() {
         var slideList = $('.slidesItemsList'),
             slideWrap = $('.slidesItems'),
-            slideWrapHeight = 500;
+            slideWrapHeight = 400;
         
         slideWrapWidth = $('.slidesItems').width()   
 

@@ -95,6 +95,27 @@ class DeliveryAction {
             ];
 
             $shopData = &$result['shop_list'];
+            $shops = [];
+
+            // получаем список магазинов
+            \RepositoryManager::shop()->prepareCollectionById(
+                array_map(function($shopItem){
+                    return (int)$shopItem['id'];
+                }, $shopData),
+                function($data) use (&$shops) {
+                    foreach ($data as $item) {
+                        if (!isset($item['id'])) continue;
+                        $shop = new \Model\Shop\Entity($item);
+                        $id = $shop->getId();
+                        if ( !isset($shops[$id]) ) {
+                            $shops[$id] = $shop;
+                        }
+                    }
+                }
+            );
+
+            \App::coreClientV2()->execute();
+
             foreach ($result['product_list'] as $item) {
                 $product = [
                     'id'    => $item['id'],
@@ -146,11 +167,6 @@ class DeliveryAction {
                             }
 
                             // добавляем url к магазинам
-                            $shops = \RepositoryManager::shop()->getCollectionById(
-                                array_map(function($shopItem){
-                                    return (int)$shopItem['id'];
-                                }, $dateItem['shop_list'])
-                            );
                             foreach ($shops as $shop) {
                                 foreach ($delivery['shop'] as $key => $shopItem) {
                                     if($shopItem['id'] == $shop->getId()) {
