@@ -119,7 +119,7 @@ $c->analytics['optimizelyEnabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->kissmentrics['enabled'] = true;
-$c->kissmentrics['sessionKey']['needUpdate'] = 'kissNeedUpdate';
+$c->kissmentrics['cookieName']['needUpdate'] = 'kissNeedUpdate';
 
 $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru

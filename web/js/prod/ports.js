@@ -1416,6 +1416,8 @@ window.ANALYTICS = {
 		if (typeof _kmq !== undefined) {
 			_kmq.push(['alias', KM.i(), data.entity_id]);
 			_kmq.push(['set', {'enter_id': data.entity_id}]);
+
+			data.cookieName !== undefined && window.docCookies.removeItem(data.cookieName, '/');
 		}
 	},
 

@@ -51,15 +51,18 @@ class DefaultLayout extends Layout {
     }
 
     public function slotKissMetrics() {
-        $session = \App::session();
-        $sessionName = \App::config()->kissmentrics['sessionKey']['needUpdate'];
+        $cookie = \App::request()->cookies;
+        $cookieName = \App::config()->kissmentrics['cookieName']['needUpdate'];
 
         $return = $this->tryRender('_kissMetrics');
 
         // SITE-2895
-        if ($session->get($sessionName) && \App::user()->getToken()) {
-            $return .= "<div id='kissUpdateJS' class='jsanalytics' data-value='" . json_encode(['entity_id' => \App::user()->getToken()]) . "'></div>";
-            $session->set($sessionName, false);
+        if ((bool)$cookie->get($cookieName) && \App::user()->getToken()) {
+            $data = [
+                'entity_id' => \App::user()->getToken(),
+                'cookieName' => $cookieName
+            ];
+            $return .= "<div id='kissUpdateJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
         }
 
         return $return;

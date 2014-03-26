@@ -148,7 +148,7 @@ class AppConfig {
     /** @var array */
     public $kissmentrics = [
         'enabled'    =>  null,
-        'sessionKey' => [
+        'cookieName' => [
             'needUpdate' => null,
         ],
     ];
