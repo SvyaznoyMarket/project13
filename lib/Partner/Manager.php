@@ -30,6 +30,61 @@ class Manager {
 
             $utmSource = $getParams['utm_source'];
 
+            // SITE-3215
+            if (!$utmSource) {
+                $referer = parse_url($request->server->get('HTTP_REFERER'));
+                $refererHost = $referer && !empty($referer['host']) ? $referer['host'] : null;
+
+                // реферал пустой
+                if (!empty($refererHost) && false === strpos($refererHost, 'enter')) {
+                    // прямой трафик. уничтожаем партнерскую куку
+                    if (\App::request()->cookies->has($this->cookieName)) {
+                        \App::request()->cookies->remove($this->cookieName);
+                    }
+
+                    // реферал не пустой
+                } elseif (!empty($refererHost)) {
+                    // список поисковиков
+                    $searchersList = [
+                        'yandex.ru',
+                        'google.ru',
+                        'google.com',
+                        'nova.rambler.ru',
+                        'go.mail.ru',
+                        'nigma.ru',
+                        'webalta.ru',
+                        'aport.ru',
+                        'poisk.ru',
+                        'km.ru',
+                        'liveinternet.ru',
+                        'quintura.ru',
+                        'search.qip.ru',
+                        'gde.ru',
+                        'gogo.ru',
+                        'ru.yahoo.com',
+                        'images.yandex.ru',
+                        'blogsearch.google.ru',
+                        'blogs.yandex.ru',
+                        'ru.search.yahoo.com',
+                        'ya.ru',
+                        'm.yandex.ru',
+                    ];
+
+                    $data = \App::request()->cookies->get($this->cookieName, []);
+
+                    // реферал находится в списке поисковиков
+                    if (in_array($refererHost, $searchersList)) {
+                        $data[] = $refererHost;
+                        \App::request()->cookies->set($this->cookieName, $data);
+
+                        // ссылочный трафик
+                    } else {
+                        $data[] = $refererHost;
+                        \App::request()->cookies->set($this->cookieName, $data);
+                    }
+                }
+            }
+
             foreach( $getParams as $key => $value ){
                 if (!empty($value)) {
                     $response->headers->setCookie(new \Http\Cookie(

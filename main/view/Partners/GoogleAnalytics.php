@@ -160,9 +160,13 @@ class GoogleAnalytics {
                     : 'YES';
         }
 
-        $this->sendData['vars']['dimension6'] = $categoryUpper->getName();  // Имя верхней категории
-        $this->sendData['vars']['dimension12'] = $categoryDown->getName();  // Имя текущей подкатегории
-        $this->sendData['upperCat'] = $categoryUpper->getName();            // Имя верхней категории
+        if ($categoryUpper) {
+            $this->sendData['vars']['dimension6'] = $categoryUpper->getName();  // Имя верхней категории
+            $this->sendData['upperCat'] = $categoryUpper->getName();            // Имя верхней категории
+        }
+        if ($categoryDown) {
+            $this->sendData['vars']['dimension12'] = $categoryDown->getName();  // Имя текущей подкатегории
+        }
     }
 
 
@@ -196,8 +200,13 @@ class GoogleAnalytics {
             $categories = $category->getAncestor();
             $categoryUpper = reset($categories);
             $categoryDown = end($categories);
-            $this->sendData['vars']['dimension6'] = $categoryUpper->getName();  // Имя верхней категории
-            $this->sendData['vars']['dimension12'] = $categoryDown->getName();  // Имя текущей подкатегории
+
+            if ($categoryUpper) {
+                $this->sendData['vars']['dimension6'] = $categoryUpper->getName();  // Имя верхней категории
+            }
+            if ($categoryDown) {
+                $this->sendData['vars']['dimension12'] = $categoryDown->getName();  // Имя текущей подкатегории
+            }
         }
     }
 
