@@ -1,44 +1,8 @@
-<div class="bCatalog{{#hasCustomStyle}} mCustomCss{{/hasCustomStyle}}" id="bCatalog" data-lastpage="{{pager.lastPage}}">
-
-    {{#bradcrumbBlock}}
-        {{> bradcrumbs }}
-    {{/bradcrumbBlock}}
-
-    <div class="bCustomFilter"{{#promoStyle.bCustomFilter}} style="{{promoStyle.bCustomFilter}}"{{/promoStyle.bCustomFilter}}>
-        <h1 class="bTitlePage"{{#promoStyle.bTitlePage}} style="{{promoStyle.bTitlePage}}"{{/promoStyle.bTitlePage}}>{{title}}</h1>
-
-        {{#hasAdFoxBanner}}
-            <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
-        {{/hasAdFoxBanner}}
-
-        {{#promoContent}}
-            {{promoContent}}
-        {{/promoContent}}
-
-        {{#categoryBlock}}
-            {{> partial/product-catalog/category-list}}
-        {{/categoryBlock}}
-
-        {{#filterBlock}}
-            {{> partial/product-catalog/filter-list}}
-        {{/filterBlock}}
-
-        {{> partial/product-catalog/action-list}}
+<div class="content">
+    <div class="contentBox940">
+        {{#productBlock}}
+            {{> partial/product-list/default }}
+        {{/productBlock}}
     </div>
-
-    {{#productBlock}}
-        {{> partial/product-list/default }}
-    {{/productBlock}}
-
-    <div class="bSortingLine mPagerBottom clearfix">
-    {{#pagerBlock}}
-        {{> partial/product-catalog/pagination}}
-    {{/pagerBlock}}
-    </div>
-
-    {{#seoContent}}
-    <div class="bSeoText">
-        {{seoContent}}
-    </div>
-    {{/seoContent}}
 </div>
+

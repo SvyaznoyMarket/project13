@@ -127,7 +127,7 @@ class ChildCategory {
         $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
 
         // меню
-        $mainMenuList = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
         // настройки каталога
         $catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
@@ -143,7 +143,7 @@ class ChildCategory {
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\ChildCategory\Request();
         $pageRequest->region = $region;
-        $pageRequest->mainMenu = $mainMenuList;
+        $pageRequest->mainMenu = $mainMenu;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->requestFilters = $requestFilters;
         $pageRequest->sorting = $sorting;
