@@ -89,7 +89,29 @@ class Product {
     public function setVideoForObjectByQuery(Model\Product $product, Query $videoListQuery) {
         try {
             foreach ($videoListQuery->getResult() as $videoItem) {
+                if (empty($videoItem['content'])) continue;
+
+                $videoItem['product_id'] = $product->id;
                 $product->media->videos[] = new Model\Product\Media\Video($videoItem);
+            }
+        } catch (\Exception $e) {
+            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+        }
+    }
+
+    /**
+     * @param Model\Product $product
+     * @param Query $photo3dListQuery
+     */
+    public function setPhoto3dForObjectByQuery(Model\Product $product, Query $photo3dListQuery) {
+        try {
+            foreach ($photo3dListQuery->getResult() as $photo3dItem) {
+                if (empty($photo3dItem['maybe3d'])) continue;
+
+                $product->media->photo3ds[] = new Model\Product\Media\Photo3d([
+                    'product_id' => $product->id,
+                    'source'     => $photo3dItem['maybe3d'],
+                ]);
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);

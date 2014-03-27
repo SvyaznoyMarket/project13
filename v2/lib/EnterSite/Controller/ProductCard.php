@@ -111,6 +111,8 @@ class ProductCard {
 
         // видео товара
         $productRepository->setVideoForObjectByQuery($product, $videoListQuery);
+        // 3d фото товара (maybe3d)
+        $productRepository->setPhoto3dForObjectByQuery($product, $videoListQuery);
 
         // доставка товара
         if ($deliveryListQuery) {

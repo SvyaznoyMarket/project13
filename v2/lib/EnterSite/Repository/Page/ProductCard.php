@@ -105,6 +105,28 @@ class ProductCard {
             $page->content->product->photos[] = $photo;
         }
 
+        // видео товара
+        if ((bool)$productModel->media->videos) {
+            $page->content->product->hasVideo = true;
+            foreach ($productModel->media->videos as $videoModel) {
+                $video = new Page\Content\Product\Video();
+                $video->content = $videoModel->content;
+
+                $page->content->product->videos[] = $video;
+            }
+        }
+
+        // 3d фото товара (maybe3d)
+        if ((bool)$productModel->media->photo3ds) {
+            $page->content->product->hasPhoto3d = true;
+            foreach ($productModel->media->photo3ds as $photo3dModel) {
+                $photo3d = new Page\Content\Product\Photo3d();
+                $photo3d->source = $photo3dModel->source;
+
+                $page->content->product->photo3ds[] = $photo3d;
+            }
+        }
+
         // характеристики товара
         $groupedPropertyModels = [];
         foreach ($productModel->properties as $propertyModel) {

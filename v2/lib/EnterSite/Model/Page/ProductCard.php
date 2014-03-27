@@ -54,6 +54,14 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $description;
         /** @var Product\Photo[] */
         public $photos = [];
+        /** @var bool */
+        public $hasVideo;
+        /** @var Product\Video[] */
+        public $videos = [];
+        /** @var bool */
+        public $hasPhoto3d;
+        /** @var Product\Photo3d[] */
+        public $photo3ds = [];
         /** @var Product\PropertyChunk[] */
         public $propertyChunks = [];
         /** @var Product\Rating|null */
@@ -84,6 +92,16 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
         public $name;
         /** @var string */
         public $url;
+    }
+
+    class Video {
+        /** @var string */
+        public $content;
+    }
+
+    class Photo3d {
+        /** @var string */
+        public $source;
     }
 
     class PropertyChunk {
