@@ -2514,9 +2514,11 @@ $(document).ready(function() {
 ;(function() {
 	var
 		body = $('body'),
-		subscribeCookieName = 'subscribed',
-		lboxCheckSubscribe = function lboxCheckSubscribe( event ) {
+		subscribeCookieName = 'subscribed';
+	// end of vars
 
+	var
+		lboxCheckSubscribe = function lboxCheckSubscribe( event ) {
 			var
 				notNowShield = $('.bSubscribeLightboxPopupNotNow'),
 				subPopup = $('.bSubscribeLightboxPopup'),
@@ -2538,7 +2540,6 @@ $(document).ready(function() {
 				});
 			// end of vars
 
-
 			var
 				subscribing = function subscribing() {
 					var
@@ -2551,7 +2552,7 @@ $(document).ready(function() {
 						 * Обработчик ответа пришедшего с сервера
 						 * @param res Ответ с сервера
 						 */
-							serverResponseHandler = function serverResponseHandler( res ) {
+						serverResponseHandler = function serverResponseHandler( res ) {
 							if( !res.success ) {
 								return false;
 							}
@@ -2570,7 +2571,7 @@ $(document).ready(function() {
 
 							// subPopup.append('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'/" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
 						};
-					// end of vars
+					// end of functions
 
 					if ( submitBtn.hasClass('mDisabled') ) {
 						return false;
@@ -2628,6 +2629,7 @@ $(document).ready(function() {
 				subscribeNow();
 			}
 		};
+	// end of functions
 
 	body.bind('showsubscribe', lboxCheckSubscribe);
 	body.trigger('showsubscribe');
