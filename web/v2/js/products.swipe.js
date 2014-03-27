@@ -3,6 +3,7 @@ $(function() {
       countItem = 0,
       slideWrap = $('.slidesItems'),
       slideWrapWidth = $('.slidesItems').width(),
+      slideList = $('.slidesItemsList'),
       slideWrapItem = $('.slidesItems').find('.slidesItemsList_item'),
 
       btnSlidesLeft = $('.jsBtnSlidesLeft'),
@@ -16,7 +17,7 @@ $(function() {
             slideWrap = $('.slidesItems'),
             slideWrapHeight = 400;
         
-        slideWrapWidth = $('.slidesItems').width()   
+        slideWrapWidth = $('.slidesItems').width();   
 
         if ( slideWrapWidth < 360 ) {
             slideWrapHeight = slideWrapWidth;
@@ -29,20 +30,21 @@ $(function() {
         slideWrapItem.each(function() {
           countItem++;
 
-          var slideImg = $(this).find('.slidesItemsList_img'),
-              slideImgWidth = slideImg.width(),
-              slideImgHeight = slideImg.height();
+          var slideImg = $(this).find('.slidesItemsList_img');
 
           slideList.css({'width' : slideWrapWidth * countItem});
-          $(this).css({'width' : slideWrapWidth});
+          $(this).css({'width' : slideWrapWidth, 'left' : slideWrapWidth * countItem - slideWrapWidth});
           slideImg.css({'height' : slideWrapHeight});
+
+          if ( countItem == 1 ) {
+              $(this).css({'left' : 0});
+          }
         });
 
         if ( countItem <= 1 ) {
             btnSlidesLeft.hide();
             btnSlidesRight.hide();
         };
-
         var slideListLeftNew = -1 * slideWrapWidth * curSlide;
 
         $('.slidesItemsList').css({'left' : slideListLeftNew});
@@ -86,7 +88,7 @@ $(function() {
         }
 
         if( curSlide <= (countItem - 1) ) {
-          $('.slidesItemsList').stop(true, false).animate({'left' : slideListLeftNew});
+          $('.slidesItemsList').stop(true, true).animate({'left' : slideListLeftNew});
 
             slidePagItemActive.removeClass(pagActive);
             slidePagItemActive.next().addClass(pagActive);
@@ -103,7 +105,7 @@ $(function() {
       prevSlides = function prevSlides() {
         curSlide--;
 
-        var slideListLeft = $('.slidesItemsList').css('left');
+        var slideListLeft = $('.slidesItemsList').css('left'),
             slideListLeftNew = -1 * slideWrapWidth * curSlide,
 
             slidePag = $('.slidesItemsBtnPag'),
@@ -115,7 +117,7 @@ $(function() {
         }
 
         if( curSlide >= 0 ) {
-          $('.slidesItemsList').stop(true, false).animate({'left' : slideListLeftNew});
+          $('.slidesItemsList').stop(true, true).animate({'left' : slideListLeftNew});
 
           slidePagItemActive.removeClass(pagActive);
           slidePagItemActive.prev().addClass(pagActive);
@@ -126,11 +128,33 @@ $(function() {
         }
       };
   // end var
+
+  var swipeOptions = {
+        triggerOnTouchEnd: true, 
+        swipeStatus: swipeStatus,
+        allowPageScroll: "vertical",
+        threshold: 75      
+      };
+  // end var
+
+  function swipeStatus( event, phase, direction, distance ) {
+    if ( phase =="end" ) {
+      if ( direction == "right" && curSlide > 0 ) {
+        prevSlides();
+      }
+      else if ( direction == "left" && curSlide < countItem-1 )  {   
+        nextSlides();
+      }
+    }
+  };
       
   $(window).on('load resize', resizeSlides);
+
   btnSlidesRight.bind('click', nextSlides);
+
   btnSlidesLeft.bind('click', prevSlides);
+  
   paginationSlides();
+
+  slideList.swipe( swipeOptions );
 });
-
-

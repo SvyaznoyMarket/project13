@@ -144,10 +144,47 @@
 		&:hover {
 			color: @white;
 			text-decoration: none;
+			animation: 0.2s linear 0s normal none 1 resize
 		}
 	}
 
 	&_text {
 		 font-size: 11px;
 	}
+}
+
+@keyframes resize {
+0% {
+    transform: scale(1, 1);
+}
+50% {
+    transform: scale(1.1, 0.9);
+}
+100% {
+    transform: scale(1, 1);
+}
+}
+
+@-moz-keyframes resize {
+0% {
+    transform: scale(1, 1);
+}
+50% {
+    transform: scale(1.1, 0.9);
+}
+100% {
+    transform: scale(1, 1);
+}
+}
+
+@-webkit-keyframes resize {
+0% {
+    transform: scale(1, 1);
+}
+50% {
+    transform: scale(1.1, 0.9);
+}
+100% {
+    transform: scale(1, 1);
+}
 }
