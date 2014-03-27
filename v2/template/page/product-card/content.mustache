@@ -154,8 +154,14 @@
             <li class="productDescTab_item">
                 <a class="productDescTab_link productDescTab_link__active" href="">
                     <span class="tabText">Подробности</span>
-                    <img class="tabImg tabImg_view" src="/v2/css/modules/productDescTab/img/video.png" />
-                    <img class="tabImg tabImg_view" src="/v2/css/modules/productDescTab/img/grad260.png" />
+
+                    {{#product.hasVideo}}
+                        <img class="tabImg tabImg_view" src="/v2/css/modules/productDescTab/img/video.png" />
+                    {{/product.hasVideo}}
+
+                    {{#product.hasPhoto3d}}
+                        <img class="tabImg tabImg_view" src="/v2/css/modules/productDescTab/img/grad260.png" />
+                    {{/product.hasPhoto3d}}
                 </a>
             </li>
 
@@ -185,7 +191,14 @@
         <!-- Таб - Подробнее -->
         <div class="tabContent specifications clearfix">
             <div class="specificationspMedia">
-                Видео и остальной треш
+            <!--
+            {{#product.videos}}
+                {{&content}}
+            {{/product.videos}}
+            {{#product.photo3ds}}
+                {{&source}}
+            {{/product.photo3ds}}
+            -->
             </div>
 
             <div class="specificationsListCol">

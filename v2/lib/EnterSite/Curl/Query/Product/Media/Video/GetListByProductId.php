@@ -27,9 +27,9 @@ class GetListByProductId extends Query {
 
         $this->result = [];
         foreach ($data as $item) {
-            if (empty($item['content'])) continue;
+            if (!is_array($item)) continue;
 
-            $this->result[] = ['content' => $item['content']];
+            $this->result[] = $item;
         }
     }
 }
