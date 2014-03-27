@@ -335,12 +335,8 @@ class GoogleAnalytics {
 
             // $paymentMethod->getName(),// '<Тип оплаты>'
 
-            $delivery = $order->getDelivery();
-            /** @var $delivery \Model\Order\Delivery\Entity */
-            $delivery = reset($delivery);
-
             $completedOrders[] = [
-                'dimension2' => $delivery->getTypeId(),// '<Тип доставки>',
+                'dimension2' => $order->getDeliveryTypeId(),// '<Тип доставки>',
                 'dimension3' => $order->getCouponNumber(),// '<Код купона>',
                 'dimension4' => $order->getPaymentId(),// '<Тип оплаты>'
             ];
