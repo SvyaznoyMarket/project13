@@ -23,7 +23,7 @@ class CouponAction {
         }
 
         $user = \App::user()->getEntity();
-        $member = $user && $user->isEnterprizeMember() ? ['member' => 1] : [];
+        $params = $user && $user->isEnterprizeMember() ? ['member' => 1] : [];
 
         $form = new \View\Enterprize\Form();
         $form->fromArray($data);
@@ -47,7 +47,14 @@ class CouponAction {
             );
             \App::logger()->info(['core.response' => $result], ['coupon', 'create']);
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete', $member, true));
+            // _utm метки
+            $params['utm_source'] = $request->query->get('utm_source');
+            $params['utm_term'] = $request->query->get('utm_term');
+            $params['utm_medium'] = $request->query->get('utm_medium');
+            $params['utm_content'] = $request->query->get('utm_content');
+            $params['utm_campaign'] = $request->query->get('utm_campaign');
+
+            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete', $params, true));
 
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
