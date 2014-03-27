@@ -16,10 +16,11 @@ class NotFound {
     }
 
     /**
+     * @param string|null $message
      * @return Http\Response
      */
-    public function execute() {
-        $response = new Http\Response('Страница не найдена');
+    public function execute($message = null) {
+        $response = new Http\Response($message ?: 'Страница не найдена');
         $response->statusCode = Http\Response::STATUS_NOT_FOUND;
 
         // TODO: использование шаблона

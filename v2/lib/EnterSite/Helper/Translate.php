@@ -4,7 +4,7 @@ namespace EnterSite\Helper;
 
 class Translate {
     /**
-     * @param int   $number  Например: 1, 43, 112
+     * @param int $number  Например: 1, 43, 112
      * @param array $choices Например: ['товар', 'товара', 'товаров']
      * @return mixed
      */

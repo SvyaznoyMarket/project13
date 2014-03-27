@@ -223,7 +223,6 @@ class Client {
 
     /**
      * @param Query $query
-     * @param Query $query
      * @return $this
      * @throws \Exception
      */

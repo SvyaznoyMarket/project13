@@ -45,17 +45,13 @@ class Product {
     /**
      * @param Query $query
      * @return Model\Product
-     * @throws Exception\NotFound
      */
     public function getObjectByQuery(Query $query) {
         $product = null;
 
-        $item = $query->getResult();
-        if (!$item) {
-            throw new Exception\NotFound('Товар не найден');
+        if ($item = $query->getResult()) {
+            $product = new Model\Product($item);
         }
-
-        $product = new Model\Product($item);
 
         return $product;
     }

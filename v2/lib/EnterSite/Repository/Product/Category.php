@@ -23,19 +23,15 @@ class Category {
     }
 
     /**
-     * @param Query $query
-     * @throws Exception\NotFound
+     * @param \Enter\Curl\Query $query
      * @return Model\Product\Category
      */
     public function getAncestryObjectByQuery(Query $query) {
         $category = null;
 
-        $item = $query->getResult();
-        if (!$item) {
-            throw new Exception\NotFound('Категория товара не найдена');
+        if ($item = $query->getResult()) {
+            $category = new Model\Product\Category($item);
         }
-
-        $category = new Model\Product\Category($item);
 
         return $category;
     }
@@ -44,25 +40,21 @@ class Category {
      * @param Query $coreQuery
      * @param Query $adminQuery
      * @return Model\Product\Category
-     * @throws Exception\NotFound
      */
     public function getObjectByQuery(Query $coreQuery, Query $adminQuery = null) {
         $category = null;
 
-        $item = $coreQuery->getResult();
-        if (!$item) {
-            throw new Exception\NotFound('Категория товара не найдена');
-        }
-
-        if ($adminQuery) {
-            try {
-                $item = array_merge($item, $adminQuery->getResult());
-            } catch (\Exception $e) {
-                trigger_error($e, E_USER_ERROR);
+        if ($item = $coreQuery->getResult()) {
+            if ($adminQuery) {
+                try {
+                    $item = array_merge($item, $adminQuery->getResult());
+                } catch (\Exception $e) {
+                    trigger_error($e, E_USER_ERROR);
+                }
             }
-        }
 
-        $category = new Model\Product\Category($item);
+            $category = new Model\Product\Category($item);
+        }
 
         return $category;
     }
