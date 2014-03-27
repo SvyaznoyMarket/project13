@@ -1,5 +1,4 @@
-//;(function () {
-	console.group('ports.js::VisitorSplit');
+;(function () {
 	/**********************************************************************
 	 Visitor split, into groups, enabling separate targeting and remarketing.
 	 Groups can be compared, checking for cost-per-conversion, and remarketing effectiveness.
@@ -177,9 +176,9 @@
 					lastScript.parentNode.appendChild( element );    //More reliable then document.body.appendChild()
 				}
 
-				//async_load();
-				console.log('set Event');
-				window.attachEvent ? window.attachEvent( 'onload', async_load ) : window.addEventListener( 'load', async_load, false );
+				async_load();
+				//console.log('set Event');
+				//window.attachEvent ? window.attachEvent( 'onload', async_load ) : window.addEventListener( 'load', async_load, false );
 			}
 		}
 	}
@@ -234,6 +233,7 @@
 	 main function
 	 **********************************************************************/
 	function main() {
+		console.group('ports.js::VisitorSplit');
 		var
 			selectedGroup = getVisitorGroup(),
 			vendors, i, url, type;
@@ -260,9 +260,26 @@
 				console.log( 'Params: ', i, url, type );
 			}
 		}
+		console.groupEnd();
 	}
 
-	main();
-	//testInsertAllTags();
-	console.groupEnd();
-//}());
+	/**
+	 * Head to head test partners
+	 */
+	// Очерёдность загрузки партнёров:
+	// Google (before)
+	// sociomantic (before)
+	// Visitor Split !!! main()
+	// Criteo  (after)
+
+	if ( $('#smanticPageJS').length ) {
+		window.ANALYTICS.smanticPageJS();
+	}
+	main(); // run Visitor Split
+	if ( $('#criteoJS' ).length ) {
+		window.ANALYTICS.criteoJS();
+	}
+
+	//testInsertAllTags(); // for partners pixels debug
+
+}());
