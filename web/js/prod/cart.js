@@ -274,16 +274,16 @@ $(document).ready(function() {
 			this.quantum = $(nodes.quan).val() * 1
 		// var price    = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
 		// if( ( 'price' in nodes ) && $(nodes.price).length )
-		//     price    = $(nodes.price).html().replace(/\s/,'')
+		//     price    = $(nodes.price).html().replace(/\s/g,'')
 		// this.price   = price
 		this.noview  = false
 		var dropflag = false
 
 		if( !$(nodes.sum).length ) {
-			this.price = $(nodes.price).html().replace(/\s/,'')
+			this.price = $(nodes.price).html().replace(/\s/g,'')
 			this.sum = this.quantum * this.price
 		} else {
-			this.sum     = $(nodes.sum).html().replace(/\s/,'')
+			this.sum     = $(nodes.sum).html().replace(/\s/g,'')
 			this.price = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
 		}
 		totalCash += this.sum * 1
