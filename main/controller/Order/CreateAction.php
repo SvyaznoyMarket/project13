@@ -8,6 +8,8 @@ class CreateAction {
     use ResponseDataTrait;
     use FormTrait;
 
+    const TYPE_PAYMENT_CREDIT = 6;
+
     /**
      * @param \Http\Request $request
      * @return \Http\JsonResponse|\Http\RedirectResponse|\Http\Response
@@ -130,6 +132,14 @@ class CreateAction {
             $this->failResponseData($e, $responseData);
 
             $this->logErrors($request, $e, $form, __METHOD__);
+
+            // в этом месте важно передать редирект, его ждёт от нас JS
+            if (!isset($responseData['redirect'])) {
+                $responseData['redirect'] = \App::router()->generate('order');
+                //$responseData['redirect'] = \App::router()->generate('cart');
+            }
+            // можно добавить сохранение в куку введённого адреса и метро,
+            // дабы пользователю не вводить их заново при повторном заказе
         }
 
         // JsonResponse
@@ -211,6 +221,12 @@ class CreateAction {
                     'qiwi_phone' => $form->getQiwiPhone(),
                 ],
             ];
+
+            // Валидация формы на сервере до запроса к ядру
+            if ( self::TYPE_PAYMENT_CREDIT === $orderData['payment_id'] && empty($orderData['credit_bank_id']) ) {
+                // ошибка. если не указан ли банк для кредита
+                throw new \Exception('Не выбран банк!', 729); // текст ошибки заменится, см main/controller/Order/ResponseDataTrait.php
+            }
 
             // станция метро
             if ($user->getRegion()->getHasSubway()) {
@@ -337,7 +353,7 @@ class CreateAction {
                     }
                     $bMeta = true;
                 }
-            }
+            } // end of foreach ($productId)
 
             if ( !empty($orderData) ) {
                 $data[] = $orderData;

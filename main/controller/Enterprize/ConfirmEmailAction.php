@@ -6,32 +6,28 @@ class ConfirmEmailAction {
 
     /**
      * @param \Http\Request $request
-     * @param null $enterprizeToken
      * @return \Http\RedirectResponse|\Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function show(\Http\Request $request, $enterprizeToken = null) {
+    public function show(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
         }
 
+        $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        $data = $session->get($sessionName, []);
+        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+
         if (!$enterprizeToken) {
-            throw new \Exception\NotFoundException();
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
         }
 
         if ($this->isEmailConfirmed()) {
             return (new \Controller\Enterprize\ConfirmPhoneAction())->create($request);
         }
-
-        $session = \App::session();
-        $sessionName = \App::config()->enterprize['formDataSessionKey'];
-        $flash = $session->get('flash');
-        $session->remove('flash');
-
-        $data = array_merge($session->get($sessionName, []), ['enterprizeToken' => $enterprizeToken]);
-        $session->set($sessionName, $data);
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
@@ -46,6 +42,10 @@ class ConfirmEmailAction {
             \App::dataStoreClient()->execute();
         }
 
+        if (!$enterpizeCoupon) {
+            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+        }
+
         $enterprizeDataDefault = [
             'name'            => null,
             'mobile'          => null,
@@ -58,11 +58,15 @@ class ConfirmEmailAction {
         ];
         $enterprizeData = array_merge($enterprizeDataDefault, array_intersect_key($data, $enterprizeDataDefault));
 
+        $flash = $session->get('flash');
+        $session->remove('flash');
+
         $page = new \View\Enterprize\ConfirmEmailPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('error', !empty($flash['error']) ? $flash['error'] : null);
         $page->setParam('message', !empty($flash['message']) ? $flash['message'] : null);
         $page->setParam('enterprizeData', $enterprizeData);
+        $page->setParam('viewParams', ['showSideBanner' => false]);
 
         return new \Http\Response($page->show());
     }
@@ -84,7 +88,6 @@ class ConfirmEmailAction {
         }
 
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
-        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         $response = null;
         try {
@@ -115,7 +118,7 @@ class ConfirmEmailAction {
             \App::session()->set('flash', ['error' => $e->getMessage()]);
         }
 
-        return new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $enterprizeToken]));
+        return new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show', [], true));
     }
 
     /**
@@ -133,11 +136,6 @@ class ConfirmEmailAction {
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
         $data = $session->get($sessionName, []);
-        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
-
-        if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
-        }
 
         $response = null;
         try {
@@ -177,16 +175,23 @@ class ConfirmEmailAction {
             $data = array_merge($data, ['isEmailConfirmed' => true]);
             $session->set($sessionName, $data);
 
-            $response = (new \Controller\Enterprize\CouponAction())->create($request);
+            if ($userToken==null) {
 
-            // авторизовываем пользователя
-            if ($userToken && !\App::user()->getEntity()) {
-                $user = \RepositoryManager::user()->getEntityByToken($userToken);
-                if ($user) {
-                    $user->setToken($userToken);
-                    \App::user()->signIn($user, $response);
-                } else {
-                    \App::logger()->error(sprintf('Не удалось получить пользователя по токену %s', $userToken));
+                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.warn', [], true));
+
+            } else {
+
+                $response = (new \Controller\Enterprize\CouponAction())->create($request);
+
+                // авторизовываем пользователя
+                if ($userToken && !\App::user()->getEntity()) {
+                    $user = \RepositoryManager::user()->getEntityByToken($userToken);
+                    if ($user) {
+                        $user->setToken($userToken);
+                        \App::user()->signIn($user, $response);
+                    } else {
+                        \App::logger()->error(sprintf('Не удалось получить пользователя по токену %s', $userToken));
+                    }
                 }
             }
 
@@ -194,8 +199,29 @@ class ConfirmEmailAction {
             \App::exception()->remove($e);
             \App::session()->set('flash', ['error' => $e->getMessage()]);
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show', ['enterprizeToken' => $enterprizeToken]));
+            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show', [], true));
         }
+
+        return $response;
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return \Http\RedirectResponse|void
+     * @throws \Exception\NotFoundException
+     */
+    public function warn(\Http\Request $request) {
+
+        $response = null;
+
+        $page = new \View\Enterprize\ConfirmEmailPageWarn();
+        $page->setParam('enterpizeCoupon', null);
+        $page->setParam('error', !empty($flash['error']) ? $flash['error'] : null);
+        $page->setParam('message', !empty($flash['message']) ? $flash['message'] : null);
+        $page->setParam('enterprizeData', null);
+        $page->setParam('viewParams', ['showSideBanner' => false]);
+
+        $response = new \Http\Response($page->show());
 
         return $response;
     }
@@ -207,6 +233,29 @@ class ConfirmEmailAction {
         \App::logger()->debug('Exec ' . __METHOD__);
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
 
-        return (isset($data['isEmailConfirmed']) && $data['isEmailConfirmed']) ? $data['isEmailConfirmed'] : false;
+        $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
+
+        if (isset($data['email'])) {
+            $status = \App::coreClientV2()->query(
+                'confirm/status',
+                [
+                    'client_id' => \App::config()->coreV2['client_id'],
+                    'token' => $userToken,
+                ],
+                [
+                    'criteria' => $data['email'],
+                    'type' => 'email',
+                ],
+                \App::config()->coreV2['hugeTimeout']
+            );
+        }
+
+        if (isset($status['is_confirmed'])) {
+            $result = $status['is_confirmed'];
+        } else {
+            $result = false;
+        }
+
+        return $result;
     }
 }

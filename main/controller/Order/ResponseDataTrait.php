@@ -52,7 +52,7 @@ trait ResponseDataTrait {
                 switch ($errorItem['code']) {
                     case 705: case 708:
                         $quantity = isset($errorItem['quantity_available']) ? $errorItem['quantity_available'] : 0;
-                        $quantitiesByProduct[(int)$errorItem['id']] = $errorItem['quantity_available'];
+                        $quantitiesByProduct[(int)$errorItem['id']] = $quantity;
                         $errorItem['message'] = !empty($quantity) ? sprintf('Доступно только %s шт.', $quantity) : $errorItem['message'];
                         break;
                     case 800:
@@ -145,6 +145,9 @@ trait ResponseDataTrait {
             } else if ($cart->isEmpty()) { // если корзина пустая, то редирект на страницу корзины
                 $responseData['redirect'] = $router->generate('cart');
                 $message = 'Пустая корзина';
+            } else {
+                // Например, для ответа ядра с кодом code: 705 (Одного или нескольких товаров нет в наличии)
+                $responseData['redirect'] = $router->generate('cart');
             }
         }
 
@@ -162,6 +165,14 @@ trait ResponseDataTrait {
                 case 770:
                     $message = 'Невозможно расчитать доставку';
                     break;
+                case 729:
+                    $message = 'Не указан банк для кредита. Выберите, пожалуйста, банк';
+                    // это ошибка валидации, не будем перезагружать стр, дадим пользавателю выбрать-таки банк
+                    $responseData['redirect'] = 0;
+                    break;
+                /*case 729: // можно перечислить коды ошибок с понятным юзеру описанием от ядра
+                    $message = $exception->getMessage();
+                    break;*/
                 default:
                     $message = 'Ошибка формирования заказа';
                     break;

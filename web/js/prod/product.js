@@ -6,7 +6,9 @@
  */
 ;(function() {
 	if( $('.creditbox').length ) {
-		var creditBoxNode = $('.creditbox'),
+		console.log('## Product has creditbox');
+		var
+			creditBoxNode = $('.creditbox'),
 			priceNode = creditBoxNode.find('.creditbox__sum strong');
 		// end of vars
 
@@ -72,6 +74,15 @@
 		};
 		
 		creditBox.init();
+	}
+	else {
+		console.log('## Product does not have creditbox');
+		var
+			productDesc = $('.bProductDesc');
+
+		if ( productDesc.length && !productDesc.hasClass('mNoCredit') ) {
+			productDesc.addClass('mNoCredit'); // добавим класс, дабы скрыть кредитный чекбокс
+		}
 	}
 }());
  

@@ -37,6 +37,11 @@ class Entity {
         if (array_key_exists('productBuyMethod', $data)) $this->setProductBuyMethod($data['productBuyMethod']);
         if (array_key_exists('category_id', $data)) $this->setCategoryId($data['category_id']);
         if (array_key_exists('content', $data)) $this->setContent($data['content']);
+        if (array_key_exists('show_state', $data)) {
+            $this->setShowProductState($data['show_state']);
+        } else {
+            $this->setShowProductState(true);
+        }
     }
 
     /**

@@ -2165,6 +2165,7 @@ $(document).ready(function() {
 		console.log('promoCatalog promoSlider');
 
 		var
+			body = $('body'),
 			promoCatalog = $('#promoCatalog'),
 			data = promoCatalog.data('slides'),
 
@@ -2175,11 +2176,26 @@ $(document).ready(function() {
 			activeInterval = promoCatalog.data('use-interval') !== undefined ? promoCatalog.data('use-interval') : false,
 			interval = null,
 			toSlide = null,
+			nowSlide = 0,//текущий слайд
 
 			// Флаг под которым реализована дорисовка hash к url
 			activeHash = promoCatalog.data('use-hash') !== undefined ? promoCatalog.data('use-hash') : true,
 			hash,
-			scrollingDuration = 500;
+			scrollingDuration = 500,
+
+			/**
+			 * Флаг включения карусели (бесконечная листалка влево/вправо).
+			 * Если флаг отключен, то когда слайдер долистался до конца, он визуально перемещается в начало
+			 * @type {Boolean}
+			 */
+			activeCarousel = promoCatalog.data('use-carousel') !== undefined ? promoCatalog.data('use-carousel') : false,
+			slideId,// id слайда
+			shift = 0,// сдвиг
+
+			slider_SlideW,// ширина одного слайда
+			slider_WrapW,// ширина обертки
+
+			disabledBtns = false;// Активность кнопок для пролистования и пагинатора.
 		// end of vars
 
 		var
@@ -2189,8 +2205,17 @@ $(document).ready(function() {
 					slideTmpl;
 				// end of vars
 
+				if ( activeCarousel ) {
+					$('.bPromoCatalogSlider_eArrow.mArLeft').show();
+					$('.bPromoCatalogSlider_eArrow.mArRight').show();
+				}
+
 				for ( slide in data ) {
 					slideTmpl = tmpl('slide_tmpl', data[slide]);
+
+					if ( $(slideTmpl).length ) {
+						slideTmpl = $(slideTmpl).attr("id", 'slide_id_' + slide);
+					}
 
 					$('.bPromoCatalogSliderWrap').append(slideTmpl);
 
@@ -2200,6 +2225,9 @@ $(document).ready(function() {
 
 					$('.bPromoCatalogNav').append('<a id="promoCatalogSlide' + slide + '" href="#' + slide + '" class="bPromoCatalogNav_eLink">' + ((slide * 1) + 1) + '</a>');
 				}
+
+				slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width();
+				slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (940/2 - slider_SlideW/2));
 			},
 
 			/**
@@ -2228,8 +2256,10 @@ $(document).ready(function() {
 				interval = setTimeout(function(){
 					slide++;
 
-					if ( slider_SlideCount <= slide ) {
-						slide = 0;
+					if ( !activeCarousel ) {
+						if ( slider_SlideCount <= slide ) {
+							slide = 0;
+						}
 					}
 
 					moveSlide(slide);
@@ -2241,78 +2271,179 @@ $(document).ready(function() {
 			 * Убираем интервал для пролистывания слайдов
 			 */
 			removeScrollInterval = function removeScrollInterval() {
-				if ( !activeInterval ) {
+				if ( !interval ) {
 					return;
 				}
 
 				clearTimeout(interval);
+			},
+
+			/**
+			 * Click кнопки для листания
+			 *
+			 * @param e
+			 */
+			btnsClick = function( e ) {
+				var
+					pos = ( $(this).hasClass('mArLeft') ) ? '-1' : '1',
+					slide = nowSlide + pos * 1;
+				// end of vars
+
+				e.preventDefault();
+
+				if ( disabledBtns ) {
+					return false;
+				}
+
+				removeScrollInterval();
+				moveSlide(slide);
+				setScrollInterval(slide);
+			},
+
+			/**
+			 * Click пагинатора
+			 *
+			 * @param e
+			 */
+			paginatorClick = function( e ) {
+				var
+					link;
+				// end of vars
+
+				e.preventDefault();
+
+				if ( $(this).hasClass('active') ) {
+					return false;
+				}
+
+				if ( disabledBtns ) {
+					return false;
+				}
+
+				link = $(this).attr('href').slice(1) * 1;
+				removeScrollInterval();
+
+				if ( activeCarousel ) {
+					moveToSlideId(link);
+				}
+				else {
+					moveSlide(link);
+				}
+
+				setScrollInterval(link);
+			},
+
+			/**
+			 * Перемещение слайдов на указанный slideId.
+			 * Данная функция должна использоваться только при включенном activeCarousel
+			 *
+			 * @param id Id слайда
+			 */
+			moveToSlideId = function( id ){
+				var
+					slidesWrap = $(".jsPromoCatalogSliderWrap"),
+					slides = $(".bPromoCatalogSliderWrap_eSlide", slidesWrap),
+					slide;
+				// end of vars
+
+				if ( id === undefined ) {
+					id = 0;
+				}
+
+				slide = slides.index($('#slide_id_' + id, slidesWrap));
+				moveSlide(slide);
+			},
+
+			/**
+			 * Перемещение слайдов на указанный слайд
+			 *
+			 * @param slide Позиция слайда
+			 */
+			moveSlide = function moveSlide( slide ) {
+				var
+					leftBtn = $('.bPromoCatalogSlider_eArrow.mArLeft'),
+					rightBtn = $('.bPromoCatalogSlider_eArrow.mArRight'),
+					slidesWrap = $(".jsPromoCatalogSliderWrap"),
+					buff;
+				// end of vars
+
+				var
+					/**
+					 * Перемещение последнего слайда в начало wrapper элемента
+					 */
+					moveLastSlideToStart = function() {
+						var
+							slides = $(".bPromoCatalogSliderWrap_eSlide", slidesWrap);
+						// end of vars
+
+						buff = slides.last();
+						slides.last().remove();
+						slidesWrap.prepend(buff);
+						slidesWrap.css({left: slidesWrap.position().left - slider_SlideW});
+					},
+
+					/**
+					 * Перемещение первого слайда в конец wrapper элемента
+					 */
+					moveFirstSlideToEnd = function() {
+						var
+							slides = $(".bPromoCatalogSliderWrap_eSlide", slidesWrap);
+						// end of vars
+
+						buff = slides.first();
+						slides.first().remove();
+						slidesWrap.append(buff);
+						slidesWrap.css({left: slidesWrap.position().left + slider_SlideW});
+					};
+				// end of functions
+
+				slideId = slide;
+				nowSlide = slide;
+
+				if ( !activeCarousel) {
+					if ( slide === 0 ) leftBtn.hide();
+					else leftBtn.show();
+
+					if ( slide === slider_SlideCount - 1 ) rightBtn.hide();
+					else rightBtn.show();
+				}
+				else {
+					if ( slide > slider_SlideCount - 1 ) {
+						moveFirstSlideToEnd();
+						shift++;
+						slide = 0;
+						nowSlide = slider_SlideCount - 1;
+					}
+					else if ( slide < 0 ) {
+						moveLastSlideToStart();
+						shift--;
+						slide = slider_SlideCount - 1;
+						nowSlide = 0;
+					}
+
+					slideId = $(".jsPromoCatalogSliderWrap .bPromoCatalogSliderWrap_eSlide").eq(nowSlide).attr("id").replace('slide_id_', '');
+				}
+
+				// деактивируем кнопочки для пролистывания
+				disabledBtns = true;
+
+				$('.bPromoCatalogSliderWrap').animate({'left': -(slider_SlideW * nowSlide)}, scrollingDuration, function() {
+					// активируем кнопочки для пролистывания
+					disabledBtns = false;
+				});
+
+				catalogPaginator.setActive(slideId);
+
+				if ( activeHash ) {
+					window.location.hash = 'slide' + ((slideId * 1) + 1);
+				}
 			};
+		// end of functions
 
 		initSlider(); //запуск слайдера
 
-		var slider_SlideW = $('.bPromoCatalogSliderWrap_eSlide').width(),	// ширина одного слайда
-			slider_WrapW = $('.bPromoCatalogSliderWrap').width( slider_SlideW * slider_SlideCount + (940/2 - slider_SlideW/2)),	// установка ширины обертки
-			nowSlide = 0;	//текущий слайд
-		// end of vars
-
-		//листание стрелками
-		$('.bPromoCatalogSlider_eArrow').bind('click', function() {
-			var
-				pos = ( $(this).hasClass('mArLeft') ) ? '-1' : '1',
-				slide = nowSlide + pos * 1;
-			// end of vars
-
-			removeScrollInterval();
-			moveSlide(slide);
-			setScrollInterval(slide);
-
-			return false;
-		});
-
-		//пагинатор
-		$('.bPaginator_eLink').bind('click', function() {
-			var link;
-			// end of vars
-
-			if ( $(this).hasClass('active') ) {
-				return false;
-			}
-
-			link = $(this).attr('href').slice(1) * 1;
-
-			removeScrollInterval();
-			moveSlide(link);
-			setScrollInterval(link);
-
-			return false;
-		});
-
-		//перемещение слайдов на указанный слайд
-		var moveSlide = function moveSlide( slide ) {
-			if ( slide === 0 ) {
-				$('.bPromoCatalogSlider_eArrow.mArLeft').hide();
-			}
-			else{
-				$('.bPromoCatalogSlider_eArrow.mArLeft').show();
-			}
-
-			if ( slide === slider_SlideCount - 1 ) {
-				$('.bPromoCatalogSlider_eArrow.mArRight').hide();
-			}
-			else {
-				$('.bPromoCatalogSlider_eArrow.mArRight').show();
-			}
-
-			$('.bPromoCatalogSliderWrap').animate({'left': -(slider_SlideW * slide)}, scrollingDuration, function() {
-				nowSlide = slide;
-			});
-
-			catalogPaginator.setActive(slide);
-
-			if ( activeHash ) {
-				window.location.hash = 'slide' + (slide + 1);
-			}
-		};
+		body.on('click', '.bPromoCatalogSlider_eArrow', btnsClick);
+		body.on('click', '.bPaginator_eLink', paginatorClick);
 
 		if ( activeHash ) {
 			hash = window.location.hash;

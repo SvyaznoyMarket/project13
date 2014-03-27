@@ -14,10 +14,12 @@ class ChangePasswordAction {
 
         $session = \App::session();
 
-        $message = $session->get('flash');
+        $flash = $session->get('flash');
         $session->remove('flash');
 
-        $error = null;
+        $message = !empty($flash['message']) ? $flash['message'] : null;
+        $error = !empty($flash['error']) ? $flash['error'] : null;
+        $redirect = $request->get('redirect_to');
 
         $oldPassword = trim((string)$request->get('password_old'));
         $newPassword = trim((string)$request->get('password_new'));
@@ -36,7 +38,11 @@ class ChangePasswordAction {
                     throw new \Exception('Не удалось сохранить форму');
                 }
 
-                $session->set('flash', 'Пароль успешно изменен');
+                if (!empty($redirect)) {
+                    return new \Http\RedirectResponse($redirect);
+                }
+
+                $session->set('flash', ['message' => 'Пароль успешно изменен']);
 
                 return new \Http\RedirectResponse(\App::router()->generate('user.changePassword'));
             } catch (\Exception $e) {
@@ -53,12 +59,22 @@ class ChangePasswordAction {
                         $error = 'Не удалось сохранить форму';
                         break;
                 }
+
+                $params = [];
+                if (!empty($redirect)) {
+                    $params['redirect_to'] = $redirect;
+                }
+
+                $session->set('flash', ['error' => $error]);
+
+                return new \Http\RedirectResponse(\App::router()->generate('user.changePassword', $params));
             }
         }
 
         $page = new \View\User\ChangePasswordPage();
         $page->setParam('message', $message);
         $page->setParam('error', $error);
+        $page->setParam('redirect', $redirect);
 
         return new \Http\Response($page->show());
     }
