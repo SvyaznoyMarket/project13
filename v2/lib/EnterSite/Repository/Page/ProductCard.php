@@ -42,7 +42,8 @@ class ProductCard {
         }
 
         // содержание
-        $page->content->product->title = $productModel->name;
+        $page->content->product->name = $productModel->webName;
+        $page->content->product->namePrefix = $productModel->namePrefix;
         $page->content->product->article = $productModel->article;
         $page->content->product->description = $productModel->description;
         $page->content->product->price = $productModel->price;

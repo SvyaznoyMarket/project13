@@ -3,7 +3,10 @@
         <!-- Название товара, артикул, отзывы -->
         <div class="productDescHead">
 
-            <h1 class="productDescHead__name">{{product.title}}</h1>
+            <h1 class="productDescHead__name">
+                {{#product.namePrefix}}{{product.namePrefix}}<br />{{/product.namePrefix}}
+                {{product.name}}
+            </h1>
 
             {{#product.article}}
                 <div class="productDescHead__article">Артикул: {{product.article}}</div>

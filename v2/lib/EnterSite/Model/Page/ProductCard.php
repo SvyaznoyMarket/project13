@@ -35,7 +35,9 @@ namespace EnterSite\Model\Page\ProductCard\Content {
 
     class Product {
         /** @var string */
-        public $title;
+        public $name;
+        /** @var string */
+        public $namePrefix;
         /** @var string */
         public $article;
         /** @var int */
