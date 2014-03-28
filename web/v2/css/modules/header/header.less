@@ -95,14 +95,14 @@
 /* Панель юзера */
 .headerRightAside {
 	float: left;
-    margin-left: -270px;
+    margin-left: -275px;
     position: relative;
-    width: 270px;
+    width: 275px;
     z-index: 5;
 }
 
 .transBg {
-	float: left;
+	float: right;
 	background: url("@{base-url}/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
 	height: 30px;
 	width: 20px;
@@ -114,13 +114,10 @@
     
 
 	&_item {
-		display: inline-block;
+		float: right;
 		margin: 0 0 0 21px;
 
-		*display: inline;
-		zoom: 1;
-
-		&__first {
+		&__last {
 			margin: 0;
 		}
 	}
