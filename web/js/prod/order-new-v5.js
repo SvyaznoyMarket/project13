@@ -2150,7 +2150,7 @@
 					return;
 				}
 
-				showError(res.error.message);
+				//showError(res.error.message);
 
 				for ( var i = res.form.error.length - 1; i >= 0; i-- ) {
 					formError = res.form.error[i];
