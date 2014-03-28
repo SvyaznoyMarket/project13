@@ -20,7 +20,7 @@ class RecommendedAction {
             'alsoViewed' => null
         ];
 
-        if (!\App::session()->has('authSource')) $recommend['personal'] = null;
+        if (!\App::user()->getToken()) $recommend['personal'] = null;
 
         $recommEngine = [];
         $productsCollection = $recommend;

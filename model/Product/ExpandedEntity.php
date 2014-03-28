@@ -23,6 +23,7 @@ class ExpandedEntity extends BasicEntity {
     protected $model;
 
     public function __construct(array $data = []) {
+        if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
         if (array_key_exists('label_id', $data)) $this->setLabelId($data['label_id']);

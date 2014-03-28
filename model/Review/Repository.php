@@ -53,11 +53,11 @@ class Repository {
         return $result;
     }
 
-    public function prepareData($productId, $reviewsType = '', $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE, $done) {
+    public function prepareData($productUi, $reviewsType = '', $currentPage = 0, $perPage = self::NUM_REVIEWS_ON_PAGE, $done) {
         $this->client->addQuery(
             'list',
             [
-                'product_id'   => $productId,
+                'product_ui'   => $productUi,
                 'current_page' => $currentPage,
                 'page_size'    => $perPage,
                 'type'         => $reviewsType,
