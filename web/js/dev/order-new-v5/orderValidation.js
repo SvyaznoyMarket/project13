@@ -60,7 +60,11 @@
 				{
 					fieldNode: orderAgreed,
 					require: true,
-					customErr: 'Необходимо согласие',
+					customErr: 'Необходимо согласие'
+				},
+				{
+					fieldNode: sclub,
+					customErr: 'Некорректно введен номер карты Связного клуба'
 				}
 			]
 		},
@@ -176,7 +180,7 @@
 					return;
 				}
 
-				showError(res.error.message);
+				//showError(res.error.message);
 
 				for ( var i = res.form.error.length - 1; i >= 0; i-- ) {
 					formError = res.form.error[i];

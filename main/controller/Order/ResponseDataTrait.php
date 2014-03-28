@@ -173,6 +173,10 @@ trait ResponseDataTrait {
                 /*case 729: // можно перечислить коды ошибок с понятным юзеру описанием от ядра
                     $message = $exception->getMessage();
                     break;*/
+                case 735:
+                    $message = $exception->getMessage();
+                    $responseData['redirect'] = 0;
+                    break;
                 default:
                     $message = 'Ошибка формирования заказа';
                     break;
@@ -181,7 +185,7 @@ trait ResponseDataTrait {
 
         if (isset($responseData['form']['error']) && (bool)$responseData['form']['error']) {
             $exception = new \Exception('Форма заполнена неверно', 0);
-            unset($responseData['redirect']);
+            $responseData['redirect'] = 0;
         } else {
             $exception = new \Exception($message, $exception->getCode());
         }

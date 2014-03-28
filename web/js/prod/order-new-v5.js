@@ -2030,7 +2030,11 @@
 				{
 					fieldNode: orderAgreed,
 					require: true,
-					customErr: 'Необходимо согласие',
+					customErr: 'Необходимо согласие'
+				},
+				{
+					fieldNode: sclub,
+					customErr: 'Некорректно введен номер карты Связного клуба'
 				}
 			]
 		},
@@ -2146,7 +2150,7 @@
 					return;
 				}
 
-				showError(res.error.message);
+				//showError(res.error.message);
 
 				for ( var i = res.form.error.length - 1; i >= 0; i-- ) {
 					formError = res.form.error[i];
@@ -2691,7 +2695,7 @@
 		 */
 		if ( ( ENTER.OrderModel.hasCoupons() && ENTER.OrderModel.deliveryBoxes().length > 1 ) || 
 			( ENTER.OrderModel.appliedCoupon() && ENTER.OrderModel.appliedCoupon().sum && 
-			( parseFloat(ENTER.OrderModel.totalSum()) <= parseFloat(ENTER.OrderModel.appliedCoupon().sum) ) ) ) {
+			( parseFloat(ENTER.OrderModel.totalSum())+parseFloat(ENTER.OrderModel.appliedCoupon().sum) <= parseFloat(ENTER.OrderModel.appliedCoupon().sum) ) ) ) {
 			console.warn('Нужно удалить купон');
 
 			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';
