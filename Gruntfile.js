@@ -273,6 +273,7 @@ module.exports = function( grunt ) {
 				tasks: ['less:compileV2', 'less:compressV2']
 			},
 
+
 			partnerScripts: {
 				files: ['../web/js/partner/*.js'],
 				tasks: ['concat:partnerScripts', 'jshint', 'uglify:partnerScripts', 'connect', 'qunit', 'exec:getVersion']
