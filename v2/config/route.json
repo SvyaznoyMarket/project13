@@ -3,11 +3,18 @@
         "name": "Главная",
         "pattern": "/"
     },
-    "Region\\Set": {
-        "name": "Установить регион",
-        "pattern": "/region/change/{regionId}",
+    "ProductCard\\Get": {
+        "name": "Карточка товара",
+        "pattern": "/product/{productPath}",
         "require": {
-            "regionId": "[\\w\\d-_]+"
+            "productPath": "[\\w\\d-_]+/{1}[\\w\\d-_]+"
+        }
+    },
+    "Product\\GetRecommendedList": {
+        "name": "Рекомеендации товара",
+        "pattern": "/product-recommended/{productId}",
+        "require": {
+            "productId": "[\\w\\d-_]+"
         }
     },
     "ProductCatalog\\GetRootCategory": {
@@ -24,25 +31,11 @@
             "categoryPath": "[\\w\\d-_]+/[\\w\\d-_]+"
         }
     },
-    "ProductCard\\Get": {
-        "name": "Карточка товара",
-        "pattern": "/product/{productPath}",
+    "Region\\Set": {
+        "name": "Установить регион",
+        "pattern": "/region/change/{regionId}",
         "require": {
-            "productPath": "[\\w\\d-_]+/{1}[\\w\\d-_]+"
-        }
-    },
-    "Product\\GetRecommendedList": {
-        "name": "Рекомеендации товара",
-        "pattern": "/product-recommended/{productId}",
-        "require": {
-            "productId": "[\\w\\d-_]+"
-        }
-    },
-    "Product\\GetUpsale": {
-        "name": "Upsale-товары",
-        "pattern": "/ajax/upsale/{productId}",
-        "require": {
-            "productId": "[\\w\\d-_]+"
+            "regionId": "[\\w\\d-_]+"
         }
     },
     "Cart\\SetProduct": {

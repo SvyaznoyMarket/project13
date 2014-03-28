@@ -94,17 +94,14 @@
 
                         <div class="buyInfoBuy clearfix">
                             <!-- Каунтер -->
-                            <div class="counter">
-                                <button class="counter__btn counter__btn-plus">-</button>
-                                <input class="counter__input" type="text" id="" name="" value="1" />
-                                <button class="counter__btn counter__btn-minus">+</button>
-                                <span class="counter__num">шт.</span>
-                            </div>
+                            {{#product.cartSpinner}}
+                                {{>partial/cart/spinner}}
+                            {{/product.cartSpinner}}
                             <!--/ Каунтер -->
 
                             <!-- Кнопка купить -->
                             {{#product.cartButton}}
-                                {{>partial/cart/product-button}}
+                                {{>partial/cart/button}}
                             {{/product.cartButton}}
                             <!--/ Кнопка купить -->
                         </div>

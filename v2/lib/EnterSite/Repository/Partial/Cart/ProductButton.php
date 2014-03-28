@@ -34,10 +34,8 @@ class ProductButton {
 
         $button = new Partial\Cart\ProductButton();
 
-        $button->data['group'] = $product->id;
-        $button->data['upsale'] = $this->helper->json([
-            'url'        => $this->router->getUrlByRoute(new Routing\Product\GetUpsale($product->id)),
-            //'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false, // TODO
+        $button->dataValue = $this->helper->json([
+            'id' => $product->id,
         ]);
         $button->class = self::getId($product->id);
         $button->value = 'Купить';
@@ -67,6 +65,6 @@ class ProductButton {
      * @return string
      */
     public static function getId($productId) {
-        return sprintf('id-cartButton-product-%s', $productId);
+        return 'idCartProductButton' . $productId;
     }
 }
