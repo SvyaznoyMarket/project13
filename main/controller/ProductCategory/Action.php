@@ -960,6 +960,7 @@ class Action {
                 'page'          => [
                     'title'     => $this->getPageTitle()
                 ],
+                'countProducts' => ($hasBanner) ? ( $productPager->count() - 1 ) : $productPager->count(),
             ];
 
             // если установлена настройка что бы показывать фасеты, то в ответ добавляем "disabledFilter"
