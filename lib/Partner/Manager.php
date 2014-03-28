@@ -141,6 +141,15 @@ class Manager {
                     false,
                     true
                 ));
+                $response->headers->setCookie(new \Http\Cookie(
+                    'click_id',
+                    $request->get('click_id'),
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                ));
 
                 $cookie = new \Http\Cookie(
                     $this->cookieName,
