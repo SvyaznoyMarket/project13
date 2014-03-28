@@ -6,7 +6,9 @@
  */
 ;(function() {
 	if( $('.creditbox').length ) {
-		var creditBoxNode = $('.creditbox'),
+		console.log('## Product has creditbox');
+		var
+			creditBoxNode = $('.creditbox'),
 			priceNode = creditBoxNode.find('.creditbox__sum strong');
 		// end of vars
 
@@ -72,6 +74,15 @@
 		};
 		
 		creditBox.init();
+	}
+	else {
+		console.log('## Product does not have creditbox');
+		var
+			productDesc = $('.bProductDesc');
+
+		if ( productDesc.length && !productDesc.hasClass('mNoCredit') ) {
+			productDesc.addClass('mNoCredit'); // добавим класс, дабы скрыть кредитный чекбокс
+		}
 	}
 }());
  
@@ -785,7 +796,7 @@
 						// Если существует имя, значит юзер точно зарегистрирован и его данные получены
 						if( userInfo.isSubscribed ) {
 							// Если юзер уже подписан на акции, то не дадим подписыться повторно
-							subscribe.attr('checked', false).hide();
+							subscribe.parent('label').hide();
 						}
 						notiferWrapper.show();
 					}
