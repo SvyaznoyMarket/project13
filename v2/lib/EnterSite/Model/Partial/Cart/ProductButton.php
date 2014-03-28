@@ -8,7 +8,7 @@ class ProductButton {
     /** @var string */
     public $url;
     /** @var array */
-    public $data = [];
+    public $dataValue = [];
     /** @var string */
     public $class;
 }

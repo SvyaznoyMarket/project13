@@ -50,6 +50,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $shownOldPrice;
         /** @var Partial\Cart\ProductButton|null */
         public $cartButton;
+        /** @var Partial\Cart\ProductSpinner|null */
+        public $cartSpinner;
         /** @var Product\DeliveryBlock */
         public $deliveryBlock;
         /** @var string */

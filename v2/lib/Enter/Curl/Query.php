@@ -2,7 +2,7 @@
 
 namespace Enter\Curl;
 
-class Query implements \JsonSerializable {
+abstract class Query implements \JsonSerializable {
     /** @var string|null */
     protected $id;
     /** @var string|null */
@@ -93,8 +93,7 @@ class Query implements \JsonSerializable {
     /**
      * @return $this
      */
-    public function incCall()
-    {
+    public function incCall() {
         $this->call += 1;
 
         return $this;
@@ -103,8 +102,7 @@ class Query implements \JsonSerializable {
     /**
      * @return int
      */
-    public function getCall()
-    {
+    public function getCall() {
         return $this->call;
     }
 
