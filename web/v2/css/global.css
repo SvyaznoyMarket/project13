@@ -675,13 +675,13 @@ body.noScroll {
 /* Панель юзера */
 .headerRightAside {
   float: left;
-  margin-left: -270px;
+  margin-left: -275px;
   position: relative;
-  width: 270px;
+  width: 275px;
   z-index: 5;
 }
 .transBg {
-  float: left;
+  float: right;
   background: url("modules/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
   height: 30px;
   width: 20px;
@@ -691,12 +691,10 @@ body.noScroll {
   background: #000000;
 }
 .userBox_item {
-  display: inline-block;
+  float: right;
   margin: 0 0 0 21px;
-  *display: inline;
-  zoom: 1;
 }
-.userBox_item__first {
+.userBox_item__last {
   margin: 0;
 }
 .userBox_link {
@@ -934,7 +932,7 @@ body.noScroll {
   -moz-border-radius: 5px;
   border-radius: 5px;
   display: block;
-  width: 110px;
+  width: 120px;
   height: 38px;
   text-align: center;
   color: #ffffff;
@@ -1408,7 +1406,7 @@ body.noScroll {
    ========================================================================== */
 .counter {
   color: #5e5d5d;
-  width: 150px;
+  width: 155px;
 }
 .counter__btn {
   float: left;

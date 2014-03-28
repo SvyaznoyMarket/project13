@@ -5,7 +5,12 @@
  * 
  * @requires	jQuery, ENTER.utils.BlackBox
  */
+
+var ENTER = ENTER || {}; 
+
 ;(function( ENTER ) {
+	
+
 	var
 		body = $('body'),
 		clientCart = ENTER.config.clientCart;
