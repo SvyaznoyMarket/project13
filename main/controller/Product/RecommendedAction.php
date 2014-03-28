@@ -19,13 +19,17 @@ class RecommendedAction {
             'similar'    => null,
             'alsoViewed' => null
         ];
+
+        if (!\App::user()->getToken()) $recommend['personal'] = null;
+
         $recommEngine = [];
         $productsCollection = $recommend;
         $ids = $recommend;
         $controller = array_merge($recommend, [
             'alsoBought' => new \Controller\Product\UpsaleAction(),
             'similar'    => new \Controller\Product\SimilarAction(),
-            'alsoViewed' => new \Controller\Product\AlsoViewedAction()
+            'alsoViewed' => new \Controller\Product\AlsoViewedAction(),
+            'personal' => new \Controller\Product\PersonalAction()
         ]);
 
         $responseData = [];
@@ -45,7 +49,12 @@ class RecommendedAction {
             $allIds = [];
             foreach ($ids as $type => $item) {
                 $method = $controller[$type]->getRetailrocketMethodName();
-                $queryUrl = "{$rrConfig['apiUrl']}Recomendation/$method/{$rrConfig['account']}/$productId";
+
+                if ("personal" === $type) {
+                    $queryUrl = "{$rrConfig['apiUrl']}Recomendation/$method/{$rrConfig['account']}/?rrUserId=" . $request->cookies->get('rrpusid');
+                } else {
+                    $queryUrl = "{$rrConfig['apiUrl']}Recomendation/$method/{$rrConfig['account']}/$productId";
+                }
 
                 \App::curl()->addQuery($queryUrl, [], function ($data) use (&$ids, &$allIds, $type, $product) {
                     $ids[$type] = $data;

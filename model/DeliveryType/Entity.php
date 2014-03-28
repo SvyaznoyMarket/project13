@@ -38,7 +38,7 @@ class Entity {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('short_name', $data)) $this->setShortName($data['short_name']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
-        if (array_key_exists('method_tokens', $data)) $this->setMethodTokens((array)$data['method_tokens']);
+        if (array_key_exists('methods', $data)) $this->setMethodTokens((array)$data['methods']);
         if (array_key_exists('possible_method_tokens', $data)) $this->setPossibleMethodTokens((array)$data['possible_method_tokens']);
         if (array_key_exists('button_name', $data)) $this->setButtonName($data['button_name']);
     }
@@ -142,8 +142,8 @@ class Entity {
     }
 
     /**
-    * @param string $buttonName
-    */
+     * @param string $buttonName
+     */
     public function setButtonName($buttonName) {
         $this->buttonName = (string)$buttonName;
     }

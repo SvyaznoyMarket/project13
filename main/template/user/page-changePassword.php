@@ -1,9 +1,10 @@
 <?php
 /**
- * @var $page    \View\User\ChangePasswordPage
- * @var $user    \Session\User
- * @var $error   string
- * @var $message string
+ * @var $page     \View\User\ChangePasswordPage
+ * @var $user     \Session\User
+ * @var $error    string
+ * @var $message  string
+ * @var $redirect string
  */
 ?>
 
@@ -14,6 +15,8 @@
 <? endif ?>
 
 <form class="userInfoEdit clearfix" action="<?= $page->url('user.changePassword') ?>" method="post">
+        <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
+
         <div class="pr fr">
             <div class="help helpfr">
                 Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные

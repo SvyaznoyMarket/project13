@@ -81,7 +81,7 @@ class IndexAction extends \Controller\Product\IndexAction {
         $reviewsData = [];
         $reviewsDataSummary = [];
         if (\App::config()->product['reviewEnabled']) {
-            \RepositoryManager::review()->prepareData($product->getId(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
+            \RepositoryManager::review()->prepareData($product->getUi(), 'user', 0, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
                 $reviewsData = (array)$data;
             });
 

@@ -792,6 +792,10 @@ return [
         'action'  => ['Enterprize\ConfirmEmailAction', 'check'],
         'method'  => ['POST'],
     ],
+    'enterprize.confirmEmail.warn' => [
+        'pattern' => '/enterprize/confirm-email/warn',
+        'action'  => ['Enterprize\ConfirmEmailAction', 'warn'],
+        ],
     'enterprize.confirmEmail.show' => [
         'pattern' => '/enterprize/confirm-email',
         'action'  => ['Enterprize\ConfirmEmailAction', 'show'],
