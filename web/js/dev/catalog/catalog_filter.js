@@ -399,15 +399,8 @@
 
 			if ( e.isTrigger ) {
 				console.warn('it\'s trigger');
-
-				filterSubminBtn.animate({
-					boxShadow: '1px 1px 20px #ffa901'
-				}, 300, 'swing', function() {
-					filterSubminBtn.animate({
-						boxShadow: '1px 1px 3px #C7C7C7'
-					}, 300, 'swing');
-				});
 			}
+			
 			else if ( typeof e === 'object' && catalog.enableHistoryAPI ) {
 				console.warn('it\'s true event and HistoryAPI enable');
 
