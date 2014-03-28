@@ -2412,6 +2412,12 @@
   .bMainMenuLevel-1__eItem.bMainMenuLevel-1__eSeparator:hover .bMainMenuLevel-2 {
     display: none;
   }
+  .bMainMenuLevel-1__eItem:last-child {
+    z-index: 998;
+  }
+  .bMainMenuLevel-1__eItem:last-child .bMainMenuLevel-2 {
+    margin-left: -148px;
+  }
   .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-1__eIcon,
   .bMainMenuLevel-1__eItem:hover .bMainMenuLevel-1__eTitle {
     color: #ffa901;
