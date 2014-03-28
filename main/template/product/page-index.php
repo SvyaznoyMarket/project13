@@ -32,7 +32,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']));
 
 <? if (\App::config()->analytics['enabled']): ?>
     <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
-    <?= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
+    <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
 <? endif ?>
 
 <? if (false && \App::config()->product['pushRecommendation']): //TODO: почистить ?>

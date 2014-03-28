@@ -311,11 +311,11 @@ class Manager {
                     $prefix . '.' . \Partner\Counter\Admitad::NAME . '.cpamit_uid' => $request->cookies->get('cpamit_uid'),
                 ];
                 break;
-            case \Partner\Counter\Recreative::NAME:
+            /*case \Partner\Counter\Recreative::NAME:
                 $return = [
                     $prefix => [\Partner\Counter\Recreative::NAME],
                 ];
-                break;
+                break;*/
             case \Partner\Counter\MyThings::NAME:
                 $return = [
                     $prefix => [\Partner\Counter\MyThings::NAME],
@@ -326,11 +326,11 @@ class Manager {
                     $prefix => [\Smartengine\Client::NAME],
                 ];
                 break;
-            case \Partner\Counter\Reactive::NAME:
+            /*case \Partner\Counter\Reactive::NAME:
                 $return = [
                     'name' => \Partner\Counter\Reactive::NAME,
                 ];
-                break;
+                break;*/
         }
 
         if ((bool)$product) {
