@@ -1,9 +1,9 @@
 <?php
 
 namespace EnterSite\Model\Page\Product {
-    use EnterSite\Model\Page;
+    use EnterSite\Model\JsonPage;
 
-    class RecommendedList extends Page {
+    class RecommendedList extends JsonPage {
         /** @var RecommendedList\Block */
         public $alsoBought;
         /** @var RecommendedList\Block */

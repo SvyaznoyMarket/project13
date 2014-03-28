@@ -7,14 +7,16 @@ use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\MustacheRendererTrait;
+use EnterSite\ViewHelperTrait;
 
 class Debug {
     use ConfigTrait;
     use LoggerTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof LoggerTrait, MustacheRendererTrait;
     }
+    use ViewHelperTrait;
 
-    public function execute(Http\Response $response, $startAt, $endAt) {
+    public function execute(Http\Request $request = null, Http\Response $response = null, $startAt, $endAt) {
         $logger = $this->getLogger();
 
         $debugData = [];
@@ -55,6 +57,14 @@ class Debug {
             }
         }
 
-        $response->content = str_replace('</body>', PHP_EOL . '<pre>' . json_encode($debugData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . '</pre>' . PHP_EOL . '</body>', $response->content);
+        if ($response) {
+            if ($response instanceof Http\JsonResponse) {
+                $response->data['debug'] = $debugData;
+            } else {
+                $response->content = str_replace('</body>', PHP_EOL . $this->getRenderer()->render('partial/debug', [
+                    'debugData' => $this->getViewHelper()->json($debugData),
+                ]) . PHP_EOL . '</body>', $response->content);
+            }
+        }
     }
 }

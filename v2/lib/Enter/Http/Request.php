@@ -54,6 +54,13 @@ class Request {
     }
 
     /**
+     * @return bool
+     */
+    public function isXmlHttpRequest() {
+        return 'XMLHttpRequest' == $this->server['HTTP_X_REQUESTED_WITH'];
+    }
+
+    /**
      * @return string
      */
     public function getHost() {

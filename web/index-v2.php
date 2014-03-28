@@ -30,7 +30,7 @@ $request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
 //(new \EnterSite\Action\LoadCachedConfig())->execute($applicationDir . '/v2/config/config-local.json');
 
 // shutdown handler, send response
-(new \EnterSite\Action\RegisterShutdown())->execute($response, $startAt);
+(new \EnterSite\Action\RegisterShutdown())->execute($request, $response, $startAt);
 
 // error handler
 (new \EnterSite\Action\HandleError())->execute($response);

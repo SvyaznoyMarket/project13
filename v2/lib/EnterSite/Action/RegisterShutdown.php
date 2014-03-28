@@ -8,11 +8,12 @@ use EnterSite\Controller;
 
 class RegisterShutdown {
     /**
+     * @param Http\Request|null $request
      * @param Http\Response|null $response
      * @param float $startAt
      */
-    public function execute(Http\Response &$response = null, $startAt = null) {
-        register_shutdown_function(function () use (&$response, $startAt) {
+    public function execute(Http\Request &$request = null, Http\Response &$response = null, $startAt = null) {
+        register_shutdown_function(function () use (&$request, &$response, $startAt) {
             if (!$response instanceof Http\Response) {
                 $response = new Http\Response();
             }
@@ -28,7 +29,7 @@ class RegisterShutdown {
 
             // debug info
             //(new Action\TimerDebug())->execute($response, $startAt, $endAt);
-            //(new Action\Debug())->execute($response, $startAt, $endAt);
+            (new Action\Debug())->execute($request, $response, $startAt, $endAt);
 
             // send response
             $response->send();
