@@ -796,7 +796,7 @@
 						// Если существует имя, значит юзер точно зарегистрирован и его данные получены
 						if( userInfo.isSubscribed ) {
 							// Если юзер уже подписан на акции, то не дадим подписыться повторно
-							subscribe.attr('checked', false).hide();
+							subscribe.parent('label').hide();
 						}
 						notiferWrapper.show();
 					}
