@@ -70,7 +70,7 @@ class Manager {
                         'm.yandex.ru',
                     ];
 
-                    $data = \App::request()->cookies->get($this->cookieName, []);
+                    $data = (array) \App::request()->cookies->get($this->cookieName, []);
 
                     // реферал находится в списке поисковиков
                     if (in_array($refererHost, $searchersList)) {
