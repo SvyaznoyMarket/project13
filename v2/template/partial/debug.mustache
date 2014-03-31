@@ -1,1 +1,39 @@
-<div class="jsDebug" data-value="{{&debugData}}"></div>
+{{={{{ }}}=}}
+<script id="tplDebugContainer" type="text/html">
+    <table style="background: #ffffff">
+        <tr>
+            <td>{{requestId}}</td>
+        </tr>
+        <tr>
+            <td>
+                {{>content}}
+            </td>
+        </tr>
+    </table>
+</script>
+
+<script id="tplDebugContainerQuery" type="text/html">
+    <div class="debug__queryMap">
+        {{#queries}}
+            <div title="{{url}}" style="border: solid 1px #ededed; background: {{css.color1}}; margin-left: {{css.left}}%; top: {{css.top}}px; width: {{css.width1}}%; height: 28px;">
+        <span style="position: absolute; z-index: 9999; font: normal 12px Tahoma; line-height: 28px;">
+            {{path}}
+            <span style="color: #9b59bb;">{{time}}ms</span>
+            <span style="color: #9b59bb;">{{call}}call</span>
+        </span>
+                <div style="position: relative; background: {{css.color2}}; width: {{css.width2}}%; height: 28px;"></div>
+            </div>
+        {{/queries}}
+        <div style="margin-left: 95%;">
+            <span style="color: #9b59bb;">{{time}}ms</span>
+        </div>
+    </div>
+</script>
+{{{={{ }}=}}}
+
+<div class="jsDebug debug">
+    <a href="#">debug</a>
+    <div class="debug__container" style="display: block;">
+        <div data-value="{{&debug}}"></div>
+    </div>
+</div>

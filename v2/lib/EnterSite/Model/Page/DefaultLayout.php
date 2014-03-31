@@ -1,9 +1,9 @@
 <?php
 
 namespace EnterSite\Model\Page {
-    use EnterSite\Model\Page;
+    use EnterSite\Model\HtmlPage;
 
-    class DefaultLayout extends Page {
+    class DefaultLayout extends HtmlPage {
         /** @var DefaultLayout\BreadcrumbBlock */
         public $breadcrumbBlock;
         /** @var DefaultLayout\MainMenu */

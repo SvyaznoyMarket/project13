@@ -2026,3 +2026,18 @@ body.noScroll {
     background-size: 8px 14px;
   }
 }
+/* ==========================================================================
+   Панель отладки
+   ========================================================================== */
+.debug {
+  position: fixed;
+  bottom: 0;
+  background: #ededed;
+  padding: 4px 6px;
+}
+.debug__queryMap {
+  width: 961px;
+  margin: 5px auto;
+  border: #ededed;
+  background: #ffffff url('/debug/grid.gif');
+}

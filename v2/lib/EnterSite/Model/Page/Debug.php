@@ -1,0 +1,87 @@
+<?php
+
+namespace EnterSite\Model\Page {
+    use EnterSite\Model\JsonPage;
+
+    class Debug extends JsonPage {
+        /** @var string */
+        public $name;
+        /** @var Debug\Error|null */
+        public $error;
+        /** @var Debug\Time[] */
+        public $times = [];
+        /** @var Debug\Memory|null */
+        public $memory;
+        /** @var Debug\Query[] */
+        public $queries = [];
+
+        public function __construct() {
+            parent::__construct();
+
+        }
+    }
+}
+
+namespace EnterSite\Model\Page\Debug {
+    class Error {
+        /** @var int */
+        public $type;
+        /** @var string */
+        public $message;
+        /** @var string */
+        public $file;
+        /** @var string */
+        public $line;
+
+        /**
+         * @param $data
+         */
+        public function __construct($data) {
+            if (array_key_exists('type', $data)) $this->type = $data['type'];
+            if (array_key_exists('message', $data)) $this->message = $data['message'];
+            if (array_key_exists('file', $data)) $this->file = $data['file'];
+            if (array_key_exists('line', $data)) $this->line = $data['line'];
+        }
+    }
+}
+
+namespace EnterSite\Model\Page\Debug {
+    class Time {
+        /** @var float */
+        public $value;
+        /** @var string */
+        public $unit;
+    }
+}
+
+namespace EnterSite\Model\Page\Debug {
+    class Memory {
+        /** @var float */
+        public $value;
+        /** @var string */
+        public $unit;
+    }
+}
+
+namespace EnterSite\Model\Page\Debug {
+    use EnterSite\Model\Page\Debug;
+
+    class Query {
+        /** @var string */
+        public $url;
+        /** @var string */
+        public $path;
+        /** @var float */
+        public $time;
+        /** @var int */
+        public $call;
+        /** @var array */
+        public $css = [
+            'top'    => null,
+            'left'   => null,
+            'width1' => null,
+            'color1' => null,
+            'color2' => null,
+        ];
+    }
+}
