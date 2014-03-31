@@ -155,7 +155,7 @@ class RecommendedAction {
                     throw new \Exception(sprintf('Not found products data in response. ActionType: %s', $controller[$type]->getActionType()));
                 }
 
-                    $products = array_filter($products, function($product) {
+                $products = array_filter($products, function($product) {
                     return $product instanceof \Model\Product\BasicEntity;
                 });
 
