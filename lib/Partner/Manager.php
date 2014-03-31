@@ -78,7 +78,7 @@ class Manager {
                         $data[] = $refererHost;
                         $response->headers->setCookie(new \Http\Cookie(
                             $this->cookieName,
-                            $data, time() + $this->cookieLifetime, '/', null, false, true
+                            $refererHost, time() + $this->cookieLifetime, '/', null, false, true
                         ));
 
                         // ссылочный трафик
@@ -86,7 +86,7 @@ class Manager {
                         $data[] = $refererHost;
                         $response->headers->setCookie(new \Http\Cookie(
                             $this->cookieName,
-                            $data, time() + $this->cookieLifetime, '/', null, false, true
+                            $refererHost, time() + $this->cookieLifetime, '/', null, false, true
                         ));
                     }
                 }
