@@ -121,6 +121,14 @@ class RecommendedAction {
                 }
             }
 
+            // SITE-3221 Исключить повторяющиеся товары из рекомендаций RR
+            if (is_array($productsCollection['similar']) && is_array($productsCollection['alsoViewed'])) {
+                $compareFunc = function($a, $b){
+                    return $a->getId() - $b->getId();
+                };
+                $productsCollection['alsoViewed'] = array_udiff($productsCollection['alsoViewed'], array_slice($productsCollection['similar'], 0, 5), $compareFunc);
+            }
+
             // подготавливаем контент для всех типов рекомендаций
             foreach ($recommend as $type => $item) {
                 if (empty($productsCollection[$type])) {
@@ -147,7 +155,7 @@ class RecommendedAction {
                     throw new \Exception(sprintf('Not found products data in response. ActionType: %s', $controller[$type]->getActionType()));
                 }
 
-                $products = array_filter($products, function($product) {
+                    $products = array_filter($products, function($product) {
                     return $product instanceof \Model\Product\BasicEntity;
                 });
 
