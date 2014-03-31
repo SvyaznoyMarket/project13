@@ -894,31 +894,6 @@ window.ANALYTICS = {
         initTagMan();
 	},
 
-	desertJS : function() {
-		window._paq = window._paq || [];
-
-		_paq.push(["setCookieDomain", "*.enter.ru"]);
-		_paq.push(["trackPageView"]);
-		_paq.push(["enableLinkTracking"]);
-
-		(function(){
-			var
-				u=(("https:" == document.location.protocol) ? "https" : "http") + "://desert-st.cdn.ngenix.net/",
-				d=document,
-				g=d.createElement("script"),
-				s=d.getElementsByTagName("script")[0];
-
-			_paq.push(["setTrackerUrl", "http://scales.desert.ru/scales.php"]);
-			_paq.push(["setSiteId", 369]);
-
-			g.type="text/javascript";
-			g.defer=true;
-			g.async=true;
-			g.src=u+"js/scales.js";
-			s.parentNode.insertBefore(g,s);
-		})();
-	},
-
     RetailRocketJS : function() {
     	console.group('ports.js::RetailRocketJS');
 
