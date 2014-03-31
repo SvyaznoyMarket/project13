@@ -33,7 +33,19 @@ class ProductAction {
             }
 
             // не учитываем является ли товар набором или нет - за это отвечает ядро
-            $cart->setProduct($product, $quantity);
+            //$cart->setProduct($product, $quantity);
+
+            // Добавляем товар с проверкой
+            if (!$cart->setProduct($product, $quantity)) {
+                // Если setProduct не удалось, сразу возвращаем ошибку
+                return new \Http\JsonResponse([
+                    'success' => false,
+                    'error' => [
+                        'code' => 507,
+                        'message' => 'Не удалось добавить новый товар'
+                    ],
+                ]);
+            }
             $cartProduct = $cart->getProductById($product->getId());
             $this->updateCartWarranty($product, $cartProduct, $quantity);
 
