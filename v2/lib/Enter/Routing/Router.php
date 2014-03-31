@@ -117,6 +117,9 @@ class Router {
 
                     $arguments = [];
                     foreach ((new \ReflectionMethod($routeClass, '__construct'))->getParameters() as $reflectedParameter) {
+                        if ($reflectedParameter->isDefaultValueAvailable()) {
+                            $vars[$reflectedParameter->name] = $reflectedParameter->getDefaultValue();
+                        }
                         if (!array_key_exists($reflectedParameter->name, $vars)) {
                             throw new \RuntimeException(sprintf('Маршруту %s необходим обязательный параметр %s', $routeClass, $reflectedParameter->name));
                         }
