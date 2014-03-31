@@ -285,7 +285,7 @@ class DeliveryAction {
                         if (!isset($productIdsByShop[$pointId])) {
                             $productIdsByShop[$pointId] = [];
                         }
-                        $productIdsByShop[$pointId][$deliveryItemTokenPrefix] = $productId;
+                        $productIdsByShop[$pointId][$deliveryItemTokenPrefix][] = $productId;
                     }
 
                     // если пикпоинт, то добавляем ид товара в соответствующий пикпоинт
