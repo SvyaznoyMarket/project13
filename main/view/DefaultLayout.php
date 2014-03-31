@@ -352,12 +352,12 @@ class DefaultLayout extends Layout {
             }
 
             // на всех страницах сайта, кроме shop.*
-            if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
+            /*if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
                 'order',
                 'order.complete',
             ])) {
                 $return .= "\n\n" . $this->tryRender('partner-counter/_reactive');
-            }
+            }*/
 
             // на всех страницах сайта, кроме...
             if (!in_array($routeName, [

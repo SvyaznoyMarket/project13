@@ -125,6 +125,6 @@ if ($orderProduct && $product){
         </div>
     </div>
 
-    <?= $page->tryRender('order/partner-counter/_reactive-oneClick', ['orderSum' => $orderSum, 'orderNum' => $order->getNumber()]) ?>
+    <?//= $page->tryRender('order/partner-counter/_reactive-oneClick', ['orderSum' => $orderSum, 'orderNum' => $order->getNumber()]) ?>
 </div>
 <?
