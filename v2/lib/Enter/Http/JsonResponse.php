@@ -3,11 +3,13 @@
 namespace Enter\Http;
 
 class JsonResponse extends Response {
-    /** @var array */
-    public $data = [];
+    /** @var \ArrayObject */
+    public $data;
 
     public function __construct($data = null, $statusCode = self::STATUS_OK) {
         parent::__construct(null, $statusCode);
+
+        $this->data = new \ArrayObject($data);
 
         $this->headers['Content-Type'] = 'application/json';
     }
