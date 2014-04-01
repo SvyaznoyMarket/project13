@@ -1,6 +1,7 @@
-;(function(window) {
+;(function(window, $, _, mustache, backbone) {
+
     window.Enter = {
-        Events: _.clone(Backbone.Events)
+        Event: _.clone(Backbone.Events)
     }
 
-}(window));
+}(window, window.jQuery, window._, window.Mustache, window.Backbone));
