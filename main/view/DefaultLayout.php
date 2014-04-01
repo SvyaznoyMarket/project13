@@ -399,7 +399,6 @@ class DefaultLayout extends Layout {
                 '"></div>';
 
             $return .= '<div id="TagManJS" class="jsanalytics"></div>';
-            $return .= '<div id="desertJS" class="jsanalytics"></div>';
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
