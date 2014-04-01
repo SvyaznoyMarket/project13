@@ -606,6 +606,17 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotСpaexchangeJS () {
+        return '';
+    }
+
+    /**
+     * Сpaexchange. Конверсионный пиксель.
+     * Данный пиксель устанавливается на страницу «спасибо за заказ»
+     */
+    public function slotСpaexchangeConversionJS () {
+        return '';
+    }
 
     public function slotAdFoxBground() {
         $viewParams = $this->getParam('viewParams');
