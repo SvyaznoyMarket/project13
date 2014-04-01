@@ -35,7 +35,10 @@ class ProductButton {
         $button = new Partial\Cart\ProductButton();
 
         $button->dataValue = $this->helper->json([
-            'id' => $product->id,
+            'id'   => $product->id,
+            'cart' => [
+                'setUrl'  => $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id, 1)),
+            ],
         ]);
         $button->class = self::getId($product->id);
         $button->value = 'Купить';
