@@ -408,4 +408,6 @@ $c->abtest['test']       = [
     ],
 ];
 
+$c->preview = false;
+
 return $c;
