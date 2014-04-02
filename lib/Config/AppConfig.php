@@ -490,6 +490,9 @@ class AppConfig {
         'rowPadding' => null,
     ];
 
+    /** @var boolean */
+    public $preview = null;
+
     public function __construct() {
         //$this->vkontakteOauth = new OAuth\VkontakteConfig();
         //$this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
