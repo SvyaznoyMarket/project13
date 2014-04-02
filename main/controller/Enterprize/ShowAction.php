@@ -34,7 +34,7 @@ class ShowAction {
 
         // получаем лимит для купона
         $limit = null;
-        \App::coreClientV2()->addQuery('coupon/limit', [], ['list' => [$enterpizeCoupon->getToken()]], function($data) use (&$limit, $enterprizeToken){
+        \App::coreClientV2()->addQuery('coupon/limits', [], ['list' => [$enterpizeCoupon->getToken()]], function($data) use (&$limit, $enterprizeToken){
             if ((bool)$data && isset($data['detail'][$enterprizeToken])) {
                 $limit = (int)$data['detail'][$enterprizeToken];
             }
