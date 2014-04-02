@@ -127,12 +127,19 @@ $(document).ready(function() {
 				console.info('payPal click');
 
 				var button = $(this),
-					url = button.attr('href');
+					url = button.attr('href'),
+					quantityBlock = $('.bCountSection__eNum'),
+					data = {};
 				// end of vars
 
 				window.ENTER.utils.blockScreen.block('Загрузка');
 
-				$.get(url, successHandler);
+				// если количество товаров > 1, то передаем его на сервер
+				if ( quantityBlock.length && $.isNumeric(quantityBlock.val()) && quantityBlock.val() * 1 > 1 ) {
+					data.quantity = quantityBlock.val();
+				}
+
+				$.get(url, data, successHandler);
 
 				return false;
 			};
