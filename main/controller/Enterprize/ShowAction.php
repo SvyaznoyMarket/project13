@@ -12,7 +12,7 @@ class ShowAction {
         }
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize', [], true));
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
         }
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
