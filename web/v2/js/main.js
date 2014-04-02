@@ -1,75 +1,29 @@
-$(function(){
+window.Enter = {};
 
-	var chooseModelWrap = $('.chooseModel'),
-	    chooseModelMoreLink = chooseModelWrap.find('.chooseModel_moreLink'),
-	    chooseModelMoreBox = chooseModelWrap.find('.chooseModel_moreBox'),
-	    chooseModelMoreBoxDown = chooseModelWrap.find('.chooseModel_moreBox.more'),
+;(function(app, window, $, _, mustache, backbone) {
 
-		chooseModelMoreModel = function chooseModelMoreModel() {
-			chooseModelMoreBox.slideToggle('800');
-			chooseModelMoreLink.toggleClass('more');
-		};
-	// end of vars
-		
-	chooseModelMoreLink.click(chooseModelMoreModel);
+    app.Event = _.clone(Backbone.Events);
 
-	/**
-	 * Навигация сайта, показывается при клике по иконке .navIco
-	 */
-	
-	var navIco = $('.navIco'),
-		navSite = $('.nav'),
-		navSiteLeft = navSite.width(),
+    app.Model = {};
+    app.Collection = {};
+    app.View = {};
 
-		fader = $('.fader'),
+    app.Model.Cart = backbone.Model.extend({});
 
-		navSiteItemLevel1 = navSite.find('.navList_text'),
-		navSiteListLevel2 = navSite.find('.navListLevel2');
-	// end of vars
+    app.View.Cart = {};
+    app.View.Cart.BuyButton = backbone.View.extend({
+        template: '#tplCartBuyButton',
 
-	navSite.css({'left' : -navSiteLeft});
-	navSiteListLevel2.hide();
+        render: function() {
+            this.$el.html(mustache.render($(this.template), this.model.toJSON()));
 
-	var
-		/**
-		 * Показываем/скрываем навигацию
-		 */
-		slideNav = function slideNav() {
-			fader.show(0);
-			navSite.stop(true, true).show(0).animate({'left' : 0},300);
-			$('html,body').addClass('noScroll');
-			return false;
-		},
+            return this;
+        }
+    });
 
-		/**
-		 * Показываем/скрываем навигацию второго уравня
-		 */
-		slideNavLevel2 = function slideNavLevel2() {
-			navSiteListLevel2.slideUp();
+}(this.Enter, this, this.jQuery, this._, this.Mustache, this.Backbone));
 
-			if ( ($(this).next(navSiteListLevel2)).is(':visible') ) {
-				navSiteListLevel2.slideUp();
-				return;
-			}
 
-			$(this).next(navSiteListLevel2).stop(true, false).slideDown();
-			return false;
-		},
+$(function() {
 
-		/**
-		 * Скрываем навигацию при клике в любом месте кроме .nav
-		 */
-	    closeNav = function closeNav() {
-			fader.hide(0);
-			$('html,body').removeClass('noScroll');
-			navSite.stop(true, true).animate({'left' : -navSiteLeft},300).hide(0);
-			navSiteListLevel2.slideUp();
-		};
-	// end of vars
-	
-	navIco.click(slideNav);
-
-	navSiteItemLevel1.click(slideNavLevel2);
-
-	fader.live('click touchend', closeNav);
 });

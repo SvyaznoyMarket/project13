@@ -17,6 +17,9 @@ class HandleError {
                     }
 
                     return true;
+
+                case E_WARNING:
+                    throw new \ErrorException($message, 0, $code, $file, $line);
             }
 
             return false;
