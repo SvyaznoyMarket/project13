@@ -412,8 +412,7 @@ class DefaultLayout extends Layout {
     }
 
 
-    public function slotSociomantic()
-    {
+    public function slotSociomantic() {
         $smantic_path = 'partner-counter/sociomantic/';
         $routeName = \App::request()->attributes->get('route');
         $breadcrumbs = $this->getBreadcrumbsPath();
@@ -496,8 +495,7 @@ class DefaultLayout extends Layout {
     }
 
 
-    public function slotRetailRocket()
-    {
+    public function slotRetailRocket() {
         $routeName = \App::request()->attributes->get('route');
         $rrObj = new \View\Partners\RetailRocket($routeName);
         $return = '';
@@ -530,13 +528,11 @@ class DefaultLayout extends Layout {
         return $return;
     }
 
-    public function slotSociaPlus()
-    {
+    public function slotSociaPlus() {
         return '<div id="sociaPlusJs" class="jsanalytics"></div>';
     }
 
-    public function slotAdmitad()
-    {
+    public function slotAdmitad() {
         if ( \App::config()->partners['Admitad']['enabled'] ) {
             $return = '';
             $adData = [];
@@ -580,8 +576,7 @@ class DefaultLayout extends Layout {
     }
 
 
-    public function slotEnterleads()
-    {
+    public function slotEnterleads() {
         $routeToken = \App::request()->attributes->get('token');
         $onPages = [
             'internet_price',
@@ -594,18 +589,27 @@ class DefaultLayout extends Layout {
     }
 
 
-    public function slotMarinLandingPageTagJS()
-    {
+    public function slotMarinLandingPageTagJS() {
         return '<div id="marinLandingPageTagJS" class="jsanalytics">
             <noscript><img src="https://tracker.marinsm.com/tp?act=1&cid=7saq97byg0&script=no" ></noscript></div>';
     }
 
 
-    public function slotMarinConversionTagJS()
-    {
+    public function slotMarinConversionTagJS() {
         return '';
     }
 
+    public function slotСpaexchangeJS () {
+        return '';
+    }
+
+    /**
+     * Сpaexchange. Конверсионный пиксель.
+     * Данный пиксель устанавливается на страницу «спасибо за заказ»
+     */
+    public function slotСpaexchangeConversionJS () {
+        return '';
+    }
 
     public function slotAdFoxBground() {
         $viewParams = $this->getParam('viewParams');
