@@ -28,23 +28,10 @@ window.Enter = {};
             //this.render();
         },
         render: function() {
-            console.info('View.Cart.BuyButton:render');
+            console.info('View.Cart.BuyButton:render', this.model.toJSON());
             this.$el.html(mustache.render(this.template, this.model.toJSON()));
-            console.info(this.model.toJSON());
 
             return this;
-        }
-    });
-    app.View.Cart.BuyButtonCollection = backbone.View.extend({
-        render: function() {
-            this.collection.each(this.addOne, this);
-
-            return this;
-        },
-        addOne: function(model) {
-            var view = new app.View.Cart.BuyButton({model: model, el: '.idCartProductButton' + model.get('id')});
-
-            view.render();
         }
     });
 
@@ -52,17 +39,14 @@ window.Enter = {};
     app.initialize = function() {
         var buttons = new app.Collection.Cart.BuyButton;
         $('.jsBuyButton').each(function(i, el) {
-            buttons.add({id: $(el).data('id')});
+            var $el = $(el);
+            var button = new app.Model.Cart.BuyButton({id: $el.data('id'), value: $el.text(), dataValue: $el.find('>').attr('data-value')});
+            buttons.add(button);
+            new app.View.Cart.BuyButton({model: button, el: el});
         });
-        //console.info(buttons);
+        console.info(buttons);
 
-        var buttonCollectionView = new app.View.Cart.BuyButtonCollection({collection: buttons});
-        //buttonCollectionView.render();
-
-        setTimeout(function() {
-            buttons.at(1).set('value', 'Buy');
-            console.info(buttons.at(1));
-        }, 4000);
+        buttons.at(1).set({'value': 'Недоступен', 'class': 'mDisabled'});
 
         //var button = new app.Model.Cart.BuyButton({});
         //var buttonView = new app.View.Cart.BuyButton({model: button, el: '.idCartProductButton141316'});
