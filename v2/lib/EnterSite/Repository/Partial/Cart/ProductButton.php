@@ -40,7 +40,7 @@ class ProductButton {
                 'setUrl'  => $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id, 1)),
             ],
         ]);
-        $button->class = self::getId($product->id);
+        $button->id = self::getId($product->id);
         $button->value = 'Купить';
 
         if ($product->isInShopOnly) {
@@ -52,11 +52,10 @@ class ProductButton {
 
         if (!$product->isBuyable) {
             $button->url = '#';
-            $button->class .= ' jsBuyButton mDisabled';
+            $button->class .= ' mDisabled';
             $button->value = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
         } else if (!$button->url) {
             $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id, 1));
-            $button->class .= ' jsBuyButton';
         }
 
 

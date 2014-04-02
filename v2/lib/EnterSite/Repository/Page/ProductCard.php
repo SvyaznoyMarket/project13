@@ -175,7 +175,7 @@ class ProductCard {
         if ((bool)$productModel->relation->accessories) {
             $page->content->product->accessorySlider = new Partial\ProductSlider();
             foreach ($productModel->relation->accessories as $accessoryModel) {
-                $page->content->product->accessorySlider->productCards[] = $productCardRepository->getObject($accessoryModel, $cartProductButtonRepository->getObject($productModel));
+                $page->content->product->accessorySlider->productCards[] = $productCardRepository->getObject($accessoryModel, $cartProductButtonRepository->getObject($accessoryModel));
             }
 
             foreach ($request->accessoryCategories as $categoryModel) {
