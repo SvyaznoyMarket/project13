@@ -65,6 +65,9 @@ class Repository {
             $params['geo_id'] = $region->getId();
         }
 
+        // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru
+        if (\App::config()->preview) $params['load_inactive'] = 1;
+
         $this->client->addQuery('category/get', $params, [], $callback);
     }
 
@@ -82,6 +85,9 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['geo_id'] = $region->getId();
         }
+
+        // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru
+        if (\App::config()->preview) $params['load_inactive'] = 1;
 
         $this->client->addQuery('category/get', $params, [], $callback);
     }
@@ -318,6 +324,9 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['region_id'] = $region->getId();
         }
+
+        // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru
+        if (\App::config()->preview === true) $params = array_merge($params, ['load_inactive' => 1, 'load_empty' => 1]);
 
         $this->client->addQuery('category/tree', $params, [], $done, $fail);
     }
