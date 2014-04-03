@@ -182,6 +182,7 @@ class ProductCard {
         $renderer = $this->getRenderer();
         $renderer->setPartials([
             'content' => 'page/product-card/content',
+            'jsModel' => 'page/product-card/jsModel',
         ]);
         $content = $renderer->render('layout/default', $page);
 

@@ -34,6 +34,7 @@ class DefaultLayout {
         $page->mainMenu = $request->mainMenu;
 
         // шаблоны mustache
+
         try {
             $page->templateBlock->cartBuyButton = file_get_contents($templateDir . '/partial/cart/button.mustache');
         } catch (\Exception $e) {

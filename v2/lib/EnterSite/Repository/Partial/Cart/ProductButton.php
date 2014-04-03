@@ -31,21 +31,15 @@ class ProductButton {
     public function getObject(
         Model\Product $product
     ) {
-
         $button = new Partial\Cart\ProductButton();
 
-        $button->dataValue = $this->helper->json([
-            'id'   => $product->id,
-            'cart' => [
-                'setUrl'  => $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id, 1)),
-            ],
-        ]);
+        $button->class = '';
         $button->id = self::getId($product->id);
-        $button->value = 'Купить';
+        $button->text = 'Купить';
 
         if ($product->isInShopOnly) {
             $button->class .= ' mShopsOnly';
-            $button->value = 'Резерв';
+            $button->text = 'Резерв';
             //$button->url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]); // TODO
             $button->class .= ' jsOneClickButton';
         }
@@ -53,9 +47,9 @@ class ProductButton {
         if (!$product->isBuyable) {
             $button->url = '#';
             $button->class .= ' mDisabled';
-            $button->value = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
+            $button->text = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
         } else if (!$button->url) {
-            $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id, 1));
+            $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id));
         }
 
 
@@ -67,6 +61,6 @@ class ProductButton {
      * @return string
      */
     public static function getId($productId) {
-        return 'idCartProductButton' . $productId;
+        return 'idCartProductBuyButton' . $productId;
     }
 }
