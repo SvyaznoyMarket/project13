@@ -29,7 +29,7 @@ return function(
             <? if (in_array($optionId, $values) || $optionId === $categoryId) { ?> checked="checked"<? } ?>
         />
         <label class="bFilterCheckbox<? if (!$filter->getIsMultiple()) { ?> mCustomLabelRadio<? } ?>" for="<?= $viewId ?>">
-            <?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " ({$option->getQuantity()})" : '' ?>
+            <?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " <span class='facet'>({$option->getQuantity()})</span>" : '' ?>
         </label>
     </div>
     <? $i++; endforeach ?>

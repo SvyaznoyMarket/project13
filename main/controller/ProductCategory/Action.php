@@ -7,6 +7,8 @@ use View\Product\FilterForm;
 class Action {
     private static $globalCookieName = 'global';
     protected $pageTitle;
+    protected $disabledFilter = [];
+    protected $changedFilter = [];
 
     /**
      * @param string        $categoryPath
@@ -382,14 +384,73 @@ class Action {
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $filterParams, function($data) use (&$filters) {
+        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, []/*$filterParams*/, function($data) use (&$filters) {
             foreach ($data as $item) {
-                $filters[] = new \Model\Product\Filter\Entity($item);
+                $item = new \Model\Product\Filter\Entity($item);
+                $filters[$item->getId()] = $item;
             }
         });
 
         // выполнение 3-го пакета запросов
         $client->execute();
+
+        // запрашиваем фильтры с учетом пользовательских фильтров
+        $disabledFilter = [];
+        $changedFilter = [];
+        if (!empty($filterParams) && \App::config()->sphinx['showFacets']) {
+            /** @var $filtersWithParams \Model\Product\Filter\Entity[] */
+            $filtersWithParams = [];
+            \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $filterParams, function ($data) use (&$filtersWithParams) {
+                foreach ($data as $item) {
+                    $item = new \Model\Product\Filter\Entity($item);
+                    $filtersWithParams[$item->getId()] = $item;
+                }
+            });
+            $client->execute();
+
+            foreach ($filters as $filterKey => $filter) {
+//                if ($filter->getTypeId() !== \Model\Product\Filter\Entity::TYPE_LIST) continue;
+
+                // подготавливаем массивы опций
+                $options = [];
+                foreach ($filter->getOption() as $option) {
+                    $options[$option->getId()] = $option;
+                }
+
+                $optionsWithParams = [];
+                if (isset($filtersWithParams[$filterKey])) {
+                    foreach ($filtersWithParams[$filterKey]->getOption() as $option) {
+                        $optionsWithParams[$option->getId()] = $option;
+                    }
+                }
+
+                foreach ($options as $optionKey => $option) {
+                    $paramName = \View\Name::productCategoryFilter($filter, $option);
+
+                    if (!isset($filtersWithParams[$filterKey]) || !isset($optionsWithParams[$optionKey])) {
+                        // при запросе пользовательских фильтров данные фильтры не вернулись,
+                        // поетому добавляем их в disabledFilter
+                        if ('brand' == $filterKey) continue;
+//                        $paramName = \View\Name::productCategoryFilter($filter, $option);
+                        $disabledFilter['values'][$paramName] = $option->getId();
+                    } elseif (isset($optionsWithParams[$optionKey]) && 0 == $optionsWithParams[$optionKey]->getQuantity()) {
+                        // в фильтре 0 товаров
+//                        $paramName = \View\Name::productCategoryFilter($filter, $option);
+
+                        if ('shop' == $filterKey) {
+                            $disabledFilter['values'][$paramName][] = $option->getId();
+                        } else {
+                            $disabledFilter['values'][$paramName] = $option->getId();
+                        }
+                    } elseif (isset($optionsWithParams[$optionKey]) && isset($options[$optionKey]) && $optionsWithParams[$optionKey]->getQuantity() !== $options[$optionKey]->getQuantity()) {
+                        $changedFilter['quantity'][$paramName] = $optionsWithParams[$optionKey]->getQuantity();
+                    }
+                }
+            }
+
+            $this->disabledFilter = $disabledFilter;
+            $this->changedFilter = $changedFilter;
+        }
 
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
@@ -568,7 +629,8 @@ class Action {
             &$shopScriptSeo,
             &$shop,
             &$relatedCategories,
-            &$categoryConfigById
+            &$categoryConfigById,
+            &$disabledFilter
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -586,6 +648,7 @@ class Action {
             $page->setParam('viewParams', [
                 'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
             ]);
+            $page->setParam('disabledFilter', $disabledFilter);
         };
 
         // полнотекстовый поиск через сфинкс
@@ -605,7 +668,7 @@ class Action {
             $page = new \View\ProductCategory\LeafPage();
             $setPageParameters($page);
 
-            return $this->leafCategory($category, $productFilter, $page, $request);
+            return $this->leafCategory($category, $productFilter, $disabledFilter, $page, $request);
         }
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
@@ -613,7 +676,7 @@ class Action {
             $page->setParam('forceSliders', true);
             $setPageParameters($page);
 
-            return $this->leafCategory($category, $productFilter, $page, $request);
+            return $this->leafCategory($category, $productFilter, $disabledFilter, $page, $request);
         }
         // иначе, если категория самого верхнего уровня
         else if ($category->isRoot()) {
@@ -626,7 +689,7 @@ class Action {
         $page = new \View\ProductCategory\LeafPage();
         $setPageParameters($page);
 
-        return $this->leafCategory($category, $productFilter, $page, $request);
+        return $this->leafCategory($category, $productFilter, $disabledFilter, $page, $request);
     }
 
     /**
@@ -755,7 +818,7 @@ class Action {
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, $disabledFilter=[], \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
@@ -939,24 +1002,24 @@ class Action {
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $data = [
                 'list'           => (new \View\Product\ListAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
-                    $productPager,
-                    $productVideosByProduct,
-                    !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : []
-                ),
+                        \App::closureTemplating()->getParam('helper'),
+                        $productPager,
+                        $productVideosByProduct,
+                        !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : []
+                    ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
-                    $productFilter,
-                    \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
-                ),
+                        \App::closureTemplating()->getParam('helper'),
+                        $productFilter,
+                        \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
+                    ),
                 'pagination'     => (new \View\PaginationAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
-                    $productPager
-                ),
+                        \App::closureTemplating()->getParam('helper'),
+                        $productPager
+                    ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
-                    $productSorting
-                ),
+                        \App::closureTemplating()->getParam('helper'),
+                        $productSorting
+                    ),
                 'page'          => [
                     'title'     => $this->getPageTitle()
                 ],
@@ -965,10 +1028,13 @@ class Action {
 
             // если установлена настройка что бы показывать фасеты, то в ответ добавляем "disabledFilter"
             if (true === \App::config()->sphinx['showFacets']) {
-                $data['disabledFilter'] = (new \View\ProductCategory\DisabledFilterAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
-                    $productFilter
-                );
+                $data['disabledFilter'] = $this->disabledFilter;
+                $data['changedFilter'] = $this->changedFilter;
+
+                //$data['disabledFilter'] = (new \View\ProductCategory\DisabledFilterAction())->execute(
+                //    \App::closureTemplating()->getParam('helper'),
+                //    $productFilter
+                //);
             }
 
             return new \Http\JsonResponse($data);

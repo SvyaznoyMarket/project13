@@ -194,6 +194,196 @@
 			}
 		},
 
+
+//		/**
+//		 * Отключение фильтров
+//		 *
+//		 * @param {Object} filters Фильтры которые нужно скрыть
+//		 */
+//		disableFilters: function ( filters ) {
+//			var
+//				optionName,
+//				shopOptionName,
+//				field,
+//				inputWrapClass = '.bFilterValuesCol',
+////				inputWrap = $(inputWrapClass),
+//				wrap;
+//			// end of vars
+//
+//			if ( !filters ) {
+//				return;
+//			}
+//
+////			console.warn('********************************');
+////			console.warn(filters);
+////			console.warn('********************************');
+//
+//			//$('.bCustomInput').parent(inputWrapClass).show();
+//			for ( optionName in filters ) {
+//				if ( optionName === 'shop' ) {
+//					for ( shopOptionName in filters[optionName] ) {
+//						field = $('input[name="' + optionName + '"][value="' + filters[optionName][shopOptionName] + '"]');
+//						wrap = field.parent(inputWrapClass);
+//						wrap.length && wrap.hide();
+//					}
+//				}
+//				else {
+//					field = $('input[name="' + optionName + '"][value="' + filters[optionName] + '"]');
+//					wrap = field.parent(inputWrapClass);
+//					wrap.length && wrap.hide();
+//				}
+//			}
+//		},
+
+		/**
+		 * Обновление видимости опций фильтров
+		 *
+		 * @param {Object} disabledFilters Фильтры которые нужно скрыть
+		 */
+		refreshFilterOptionsVisibility: function ( disabledFilters ) {
+			var
+				inputWrapClass = '.bFilterValuesCol',
+				inputs = $(inputWrapClass).find('input'),
+				optionName,
+				arOptionName = [],
+				shopOptionName,
+				arShopValue = [],
+				wrap;
+			// end of var
+
+			var
+				/**
+				 * Отобразить input wrapper
+				 * @param input
+				 */
+				showWrap = function( input ) {
+					wrap = input.parent(inputWrapClass);
+					wrap.length && wrap.show();
+				},
+
+				/**
+				 * Скрыть input wrapper
+				 * @param input
+				 */
+				hideWrap = function( input ) {
+					wrap = input.parent(inputWrapClass);
+					wrap.length && wrap.hide();
+				},
+
+				/**
+				 * Обновить отображение опций фильтров
+				 */
+				filterOptionsVisibilityUpdate = function () {
+					var
+						self = $(this);
+					// end of vars
+
+					// данный фильтр присутствует в списке фильтров которые нужно скрыть
+					if ( -1 !== $.inArray(self.attr('name'), arOptionName) ) {
+						// shop
+						if ( 'shop' === self.attr('name') ) {
+							// данный магазин присутствует в списке магазинов которые нужно скрыть
+							if ( -1 !== $.inArray(parseInt(self.attr('value')), arShopValue) ) {
+								hideWrap(self);
+							} else {
+								showWrap(self);
+							}
+
+							return true;
+						}
+
+						hideWrap(self);
+
+						return true;
+					}
+
+					showWrap(self);
+				};
+			// end of functions
+
+			if ( !inputs.length ) {
+				return;
+			}
+
+			// заполняем массив class-ов которые должны быть задисейблены
+			if ( disabledFilters ) {
+				for ( optionName in disabledFilters ) {
+					if ( 'shop' === optionName ) {
+						for ( shopOptionName in disabledFilters[optionName] ) {
+							arShopValue.push(disabledFilters[optionName][shopOptionName]);
+						}
+					}
+
+					arOptionName.push(optionName);
+				}
+			}
+
+			// Обновляем видимость опций фильтров
+			inputs.each(filterOptionsVisibilityUpdate);
+
+			// Обновляем видимость фильтров
+			catalog.filter.refreshFiltersVisibility();
+		},
+
+
+		/**
+		 * Обновление видимости фильтров
+		 */
+		refreshFiltersVisibility: function () {
+			$('.bFilterParams li').each(function () {
+				var
+					self = $(this),
+					ref = self.data('ref'),
+					optionsBlock = $("#" + ref),
+					needHide = true;
+				// end of vars
+
+				if ( !optionsBlock.length ) {
+					return true;
+				}
+
+				optionsBlock.find('.bFilterValuesCol').each(function () {
+					if ( 'none' !== $(this).css('display') ) {
+						needHide = false;
+					}
+				});
+
+				if ( needHide ) {
+					self.hide();
+				} else {
+					self.show();
+				}
+			});
+		},
+
+		refreshFacets: function ( facets ) {
+			var
+				input,
+				inputName,
+				facet;
+			// end of vars
+
+			if ( !facets ) {
+				return;
+			}
+
+			for ( inputName in facets) {
+				input = $('[name=' + inputName + ']');
+				if ( !input.length ) {
+					continue;
+				}
+
+				facet = input.parent('.bFilterValuesCol').find('.facet');
+				if ( !facet.length ) {
+					continue;
+				}
+
+				facet.html('(' + facets[inputName] + ')');
+			}
+
+
+		},
+
 		/**
 		 * Отрисовка шаблона продуктов
 		 * 
@@ -209,6 +399,12 @@
 			// end of vars
 
 			catalog.filter.resetForm();
+
+			// обновляем видимость фильтров
+			undefined !== res['disabledFilter']['values'] && catalog.filter.refreshFilterOptionsVisibility( res['disabledFilter']['values'] );
+
+			// задаем новые значяения фасетов
+			undefined !== res['changedFilter']['quantity'] && catalog.filter.refreshFacets( res['changedFilter']['quantity'] );
 
 			for ( key in dataToRender ) {
 				if ( catalog.filter.render.hasOwnProperty(key) ) {
