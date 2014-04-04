@@ -256,16 +256,26 @@ class ProductCard {
         }
 
         // данные о товарах для js
-        $page->jsModel->productCollection = $viewHelper->json(array_map(function(Model\Product $product) use(&$router, &$cartProductButtonRepository) {
+        $page->jsModel->productCollection = $viewHelper->json(array_map(function(Model\Product $product) use(
+            &$router,
+            &$cartProductButtonRepository,
+            &$cartProductSpinnerRepository
+        ) {
             return [
-                'id'                => $product->id,
-                'name'              => $product->name,
-                'cart'       => [
-                    'setUrl' => $router->getUrlByRoute(new Routing\Cart\SetProduct($product->id)),
+                'id'          => $product->id,
+                'name'        => $product->name,
+                'cart'        => [
+                    'quantity'  => 1,
+                    'setUrl'    => $router->getUrlByRoute(new Routing\Cart\SetProduct($product->id)),
+                    'deleteUrl' => $router->getUrlByRoute(new Routing\Cart\DeleteProduct($product->id)),
                 ],
-                'buyButton' => [
-                    'selector' => '.' . $cartProductButtonRepository::getId($product->id),
-                    'data'     => $cartProductButtonRepository->getObject($product),
+                'buyButton'  => [
+                    'selector'     => '.' . $cartProductButtonRepository::getId($product->id),
+                    'templateData' => $cartProductButtonRepository->getObject($product),
+                ],
+                'buySpinner' => [
+                    'selector'     => '.' . $cartProductSpinnerRepository::getId($product->id),
+                    'templateData' => $cartProductSpinnerRepository->getObject($product),
                 ],
             ];
         }, array_merge([$productModel], $productModel->relation->accessories)));

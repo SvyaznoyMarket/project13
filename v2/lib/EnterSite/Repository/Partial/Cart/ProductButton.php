@@ -61,6 +61,6 @@ class ProductButton {
      * @return string
      */
     public static function getId($productId) {
-        return 'idCartProductBuyButton' . $productId;
+        return 'id-cart-product-buyButton-' . $productId;
     }
 }
