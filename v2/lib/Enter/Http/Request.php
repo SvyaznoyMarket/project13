@@ -4,30 +4,40 @@ namespace Enter\Http;
 
 class Request {
     /**
-     * @name The GET parameters
+     * The GET parameters
      * @var Bag
      */
     public $query;
     /**
-     * @name The POST parameters
+     * The POST parameters
      * @var Bag
      */
     public $data;
     /**
-     * @name The COOKIE parameters
+     * The COOKIE parameters
      * @var Bag
      */
     public $cookies;
     /**
-     * @name The FILES parameters
+     * The FILES parameters
      * @var FileBag
      */
     public $files;
     /**
-     * @name The SERVER parameters
+     * The SERVER parameters
      * @var Bag
      */
     public $server;
+    /**
+     * php://input string
+     * @var string
+     */
+    protected $content;
+    /**
+     * php://input resource
+     * @var resource
+     */
+    protected $contentResource;
     /** @var string */
     protected $baseUrl;
     /** @var string */
@@ -211,6 +221,28 @@ class Request {
         }
 
         return $this->method;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent() {
+        if (null === $this->content) {
+            $this->content = file_get_contents('php://input');
+        }
+
+        return $this->content;
+    }
+
+    /**
+     * @return resource
+     */
+    public function getContentResource() {
+        if (null === $this->contentResource) {
+            $this->contentResource = fopen('php://input', 'rb');
+        }
+
+        return $this->contentResource;
     }
 
     /**
