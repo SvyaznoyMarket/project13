@@ -45,7 +45,10 @@
         },
         parse: function(response) {
             // TODO: сделать cart моделью, возможно использовать плагин
-            return response.result;
+            var data = response.result;
+            data.cart = new app.Model.Product.Cart(data.cart || {});
+
+            return data;
         }
     });
     app.Model.Product.Cart = backbone.Model.extend({
