@@ -1788,7 +1788,7 @@ $(document).ready(function(){
 
 					console.log(this.form.data('redirect'));
 					console.log(response.data.link);
-					if ( typeof(gaRun) && typeof(gaRun.register) === 'function' ) {
+					if ( typeof(gaRun) != 'undefined' && typeof(gaRun.register) === 'function' ) {
 						gaRun.register();
 					}
 
