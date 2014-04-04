@@ -318,7 +318,7 @@ window.ANALYTICS = {
 	},
 
 	sociomanticJS: function () {
-		(function () {
+		/*(function () {
 			var s = document.createElement('script'),
 				x = document.getElementsByTagName('script')[0];
 			s.type = 'text/javascript';
@@ -326,33 +326,34 @@ window.ANALYTICS = {
 			s.src = ('https:' == document.location.protocol ? 'https://' : 'http://')
 				+ 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
 			x.parentNode.insertBefore(s, x);
-		})();
+		})();*/
 	},
 
 	smanticPageJS: function() {
-		(function(){
-			var elem = $('#smanticPageJS'),
-				prod = elem.data('prod'),
-				prod_cats = elem.data('prod-cats'),
-				cart_prods = elem.data('cart-prods');
+		console.log('smanticPageJS');
+		var
+			elem = $('#smanticPageJS'),
+			prod = elem.data('prod'),
+			prod_cats = elem.data('prod-cats'),
+			cart_prods = elem.data('cart-prods');
 
-			window.sonar_product = window.sonar_product || {};
+		window.sonar_product = window.sonar_product || {};
 
-			if ( prod ) {
-				window.sonar_product = prod;
-			}
+		if ( prod ) {
+			window.sonar_product = prod;
+		}
 
-			if ( prod_cats ) {
-				window.sonar_product.category = prod_cats;
-			}
+		if ( prod_cats ) {
+			window.sonar_product.category = prod_cats;
+		}
 
-			if ( cart_prods ) {
-				window.sonar_basket = { products: cart_prods };
-			}
-		})();
+		if ( cart_prods ) {
+			window.sonar_basket = { products: cart_prods };
+		}
 	},
 
     criteoJS : function() {
+		console.log('criteoJS');
         window.criteo_q = window.criteo_q || [];
         var criteo_arr =  $('#criteoJS').data('value');
         if ( typeof(criteo_q) != "undefined" && !jQuery.isEmptyObject(criteo_arr) ) {
