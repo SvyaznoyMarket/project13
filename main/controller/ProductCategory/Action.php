@@ -7,7 +7,8 @@ use View\Product\FilterForm;
 class Action {
     private static $globalCookieName = 'global';
     protected $pageTitle;
-    protected $newFilter = [];
+    protected $disabledFilters = [];
+    protected $changedFilters = [];
 
     /**
      * @param string        $categoryPath
@@ -383,19 +384,13 @@ class Action {
         // запрашиваем фильтры без параметров
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = [];
-        // если ajax-запрос и включены фасеты то игнорируем запрос
-        if (
-            !\App::config()->sphinx['showFacets'] ||
-            \App::config()->sphinx['showFacets'] && !$request->isXmlHttpRequest()
-        ) {
-            $param = !\App::config()->sphinx['showFacets'] ? $filterParams : [];
-            \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $param, function($data) use (&$filters) {
-                foreach ($data as $item) {
-                    $item = new \Model\Product\Filter\Entity($item);
-                    $filters[$item->getId()] = $item;
-                }
-            });
-        }
+        $params = !\App::config()->sphinx['showFacets'] ? $filterParams : [];
+        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $params, function($data) use (&$filters) {
+            foreach ($data as $item) {
+                $item = new \Model\Product\Filter\Entity($item);
+                $filters[$item->getId()] = $item;
+            }
+        });
 
         // запрашиваем фильтры с учетом пользовательских фильтров
         /** @var $filtersWithParams \Model\Product\Filter\Entity[] */
@@ -459,30 +454,8 @@ class Action {
                 }
             }
 
-            $this->newFilter = [
-                'disabled' => $disabled,
-                'changed' => $changed,
-            ];
-
-        // Формируем спискок фильтров, которые нужно отобразить, на основании пользовательских фильтров
-        } elseif (empty($filters) && !empty($filtersWithParams)) {
-            $showed = [];
-            foreach ($filtersWithParams as $filterKey => $filter) {
-                foreach ($filter->getOption() as $option) {
-                    $paramName = \View\Name::productCategoryFilter($filter, $option);
-                    if ('shop' == $filterKey) {
-                        $showed[$paramName][$option->getId()] = $option->getQuantity();
-                    } else {
-                        $showed[$paramName] = $option->getQuantity();
-                    }
-                }
-            }
-
-            $this->newFilter = [
-                'showed' => $showed,
-            ];
-
-            $filters = $filtersWithParams;
+            $this->disabledFilters = $disabled;
+            $this->changedFilters = $changed;
         }
 
         // получаем catalog json для категории (например, тип раскладки)
@@ -1061,11 +1034,11 @@ class Action {
 
             // если установлена настройка что бы показывать фасеты, то в ответ добавляем "disabledFilter"
             if (true === \App::config()->sphinx['showFacets']) {
-//                $data['disabledFilter'] = $this->disabledFilter;
-//                $data['changedFilter'] = $this->changedFilter;
-//                $data['showedFilter'] = $this->showedFilter;
+                $data['newFilter'] = [
+                    'disabled' => $this->disabledFilters,
+                    'changed' => $this->changedFilters,
+                ];
 
-                $data['newFilter'] = $this->newFilter;
 
                 //$data['disabledFilter'] = (new \View\ProductCategory\DisabledFilterAction())->execute(
                 //    \App::closureTemplating()->getParam('helper'),
@@ -1074,6 +1047,10 @@ class Action {
             }
 
             return new \Http\JsonResponse($data);
+        }
+
+        if (true === \App::config()->sphinx['showFacets']) {
+            $page->setGlobalParam('disabledFilters', !empty($this->disabledFilters) ? $this->disabledFilters : []);
         }
 
         $page->setParam('productPager', $productPager);

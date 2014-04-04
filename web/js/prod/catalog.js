@@ -257,7 +257,7 @@
 							return true;
 						}
 
-						optionsBlock.find('.bFilterValuesCol').each(function () {
+						optionsBlock.find('.bFilterValuesCol, .bRangeSlider').each(function () {
 							if ( 'none' !== $(this).css('display') ) {
 								needHide = false;
 							}
@@ -322,10 +322,9 @@
 				/**
 				 * Обновление видимости опций фильтров
 				 *
-				 * @param {Object|Array}	filters	Список фильтров
-				 * @param {String}			type	Тип входного списка фильтров. Принимает значения: "disabled" или "showed".
+				 * @param {Object|Array}	filters	Список фильтров которые нужно скрыть
 				 */
-				updateOptions = function ( filters, type ) {
+				updateOptions = function ( filters ) {
 					var
 						inputWrapClass = '.bFilterValuesCol',
 						inputs = $(inputWrapClass).find('input'),
@@ -363,33 +362,29 @@
 								self = $(this);
 							// end of vars
 
-							// данный фильтр присутствует в списке фильтров
+							// данный фильтр присутствует в списке фильтров которые нужно скрыть
 							if ( -1 !== $.inArray(self.attr('name'), arOptionName) ) {
 								// shop
 								if ( 'shop' === self.attr('name') ) {
-									// данный магазин присутствует в списке магазинов
+									// данный магазин присутствует в списке магазинов которые нужно скрыть
 									if ( -1 !== $.inArray(parseInt(self.attr('value')), arShopValue) ) {
-										"disabled" === type ? hideWrap(self) : showWrap(self);
+										hideWrap(self);
 									} else {
-										"disabled" === type ? showWrap(self) : hideWrap(self);
+										showWrap(self);
 									}
 								} else {
-									"disabled" === type ? hideWrap(self) : showWrap(self);
+									hideWrap(self);
 								}
 
 								return true;
 							}
 
-							"disabled" === type ? showWrap(self) : hideWrap(self);
+							showWrap(self);
 						};
 					// end of functions
 
 					if ( !inputs.length ) {
 						return;
-					}
-
-					if ( undefined === type ) {
-						type = "disabled";
 					}
 
 					// заполняем массив name-ов
@@ -407,34 +402,6 @@
 
 					// Обновляем видимость опций фильтров
 					inputs.each(filterOptionsVisibilityUpdate);
-				},
-
-
-				/**
-				 * Обновление видимости опций фильтров в зависимости от списка показанных фильтров
-				 *
-				 * @param {Object} disabledFilters Фильтры которые нужно показать
-				 */
-				updateOptionsByShowList = function ( showedFilters ) {
-					if ( !showedFilters ) {
-						return;
-					}
-
-					updateOptions(showedFilters, "showed");
-				},
-
-
-				/**
-				 * Обновление видимости опций фильтров в зависимости от списка скрытых фильтров
-				 *
-				 * @param {Object} disabledFilters Фильтры которые нужно скрыть
-				 */
-				updateOptionsByDisabledList = function ( disabledFilters ) {
-					if ( !disabledFilters ) {
-						return;
-					}
-
-					updateOptions(disabledFilters, "disabled");
 				};
 			// end of functions
 
@@ -443,13 +410,8 @@
 				return;
 			}
 
-			if ( newFilter.disabled ) {
-				updateOptionsByDisabledList(newFilter.disabled);
-				newFilter.changed && updateFacets(newFilter.changed);
-			} else if ( newFilter.showed ) {
-				updateOptionsByShowList(newFilter.showed);
-				updateFacets(newFilter.showed);
-			}
+			newFilter.disabled && updateOptions(newFilter.disabled);
+			newFilter.changed && updateFacets(newFilter.changed);
 
 			// Обновляем видимость фильтров
 			updateFilters();
@@ -472,11 +434,7 @@
 			catalog.filter.resetForm();
 
 			// обновляем видимость фильтров
-//			undefined !== res['disabledFilter']['values'] && catalog.filter.refreshFilterOptionsVisibility( res['disabledFilter']['values'] );
 			undefined !== res['newFilter'] && catalog.filter.refreshFiltersVisibility(res['newFilter']);
-
-			// задаем новые значяения фасетов
-//			undefined !== res['changedFilter']['quantity'] && catalog.filter.updateFacets( res['changedFilter']['quantity'] );
 
 			for ( key in dataToRender ) {
 				if ( catalog.filter.render.hasOwnProperty(key) ) {
