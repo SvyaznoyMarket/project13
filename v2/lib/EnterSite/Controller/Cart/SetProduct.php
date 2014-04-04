@@ -3,6 +3,7 @@
 namespace EnterSite\Controller\Cart;
 
 use Enter\Http;
+use Enter\Util\JsonDecoderTrait;
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\Controller;
@@ -14,6 +15,7 @@ class SetProduct {
     use LoggerTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
+    use JsonDecoderTrait;
 
     public function execute(Http\Request $request) {
         $response = new Http\JsonResponse();
@@ -25,9 +27,12 @@ class SetProduct {
             return $response;
         }
 
-        // FIXME: заглушка
+        // TODO: похоже, придется модель описывать
+        $productData = $this->jsonToArray($request->getContent());
+        $productData['name'] = 'ok';
+
         return new Http\JsonResponse([
-            'success' => true,
+            'result' => $productData, // TODO: вынести на уровень JsonPage.result
         ]);
     }
 }

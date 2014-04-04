@@ -22,7 +22,15 @@
         },
         addProduct: function(product) {
             console.info('app.Model.Cart.addProduct', product);
-            this.get('products').create(product, {wait: true, type: 'POST', url: product.get('cart').get('setUrl')})
+            this.get('products').create(product, {
+                wait: true,
+                //merge: true,
+                type: 'POST',
+                url: product.get('cart').get('setUrl'),
+                success: function(response) {
+                    //console.info(response);
+                }
+            });
         }
     });
     app.Collection.Cart = {};
@@ -32,8 +40,12 @@
     });
 
     app.Model.Product = backbone.Model.extend({
-        initialize: function(config) {
-            this.set('cart', new app.Model.Product.Cart(config.cart || {}));
+        initialize: function(data) {
+            this.set('cart', new app.Model.Product.Cart(data.cart || {}));
+        },
+        parse: function(response) {
+            // TODO: сделать cart моделью, возможно использовать плагин
+            return response.result;
         }
     });
     app.Model.Product.Cart = backbone.Model.extend({
@@ -141,7 +153,6 @@
         });
 
         app.model.cart = new app.Model.Cart({});
-        console.info(app.model.cart);
     };
 
 

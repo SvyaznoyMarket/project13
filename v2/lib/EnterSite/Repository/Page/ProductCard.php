@@ -256,6 +256,7 @@ class ProductCard {
         }
 
         // данные о товарах для js
+        // TODO: похоже, придется модель описывать
         $page->jsModel->productCollection = $viewHelper->json(array_map(function(Model\Product $product) use(
             &$router,
             &$cartProductButtonRepository,
