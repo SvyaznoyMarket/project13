@@ -424,26 +424,28 @@ class Action {
                     }
                 }
 
+                $values = [];
                 foreach ($options as $optionKey => $option) {
                     $paramName = \View\Name::productCategoryFilter($filter, $option);
 
                     if (!isset($filtersWithParams[$filterKey]) || !isset($optionsWithParams[$optionKey])) {
                         // при запросе пользовательских фильтров данные фильтры не вернулись,
                         // поетому добавляем их в disabledFilter
-                        if ('brand' == $filterKey) continue;
-//                        $paramName = \View\Name::productCategoryFilter($filter, $option);
+                        //if ('brand' == $filterKey) continue;
                         $disabledFilter['values'][$paramName] = $option->getId();
                     } elseif (isset($optionsWithParams[$optionKey]) && 0 == $optionsWithParams[$optionKey]->getQuantity()) {
                         // в фильтре 0 товаров
-//                        $paramName = \View\Name::productCategoryFilter($filter, $option);
-
                         if ('shop' == $filterKey) {
                             $disabledFilter['values'][$paramName][] = $option->getId();
                         } else {
                             $disabledFilter['values'][$paramName] = $option->getId();
                         }
                     } elseif (isset($optionsWithParams[$optionKey]) && isset($options[$optionKey]) && $optionsWithParams[$optionKey]->getQuantity() !== $options[$optionKey]->getQuantity()) {
-                        $changedFilter['quantity'][$paramName] = $optionsWithParams[$optionKey]->getQuantity();
+                        if ('shop' == $filterKey) {
+                            $changedFilter['quantity'][$paramName][$option->getId()] = $optionsWithParams[$optionKey]->getQuantity();
+                        } else {
+                            $changedFilter['quantity'][$paramName] = $optionsWithParams[$optionKey]->getQuantity();
+                        }
                     }
                 }
             }
@@ -629,8 +631,8 @@ class Action {
             &$shopScriptSeo,
             &$shop,
             &$relatedCategories,
-            &$categoryConfigById,
-            &$disabledFilter
+            &$categoryConfigById
+            //&$disabledFilter
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -648,7 +650,7 @@ class Action {
             $page->setParam('viewParams', [
                 'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
             ]);
-            $page->setParam('disabledFilter', $disabledFilter);
+//            $page->setParam('disabledFilter', $disabledFilter);
         };
 
         // полнотекстовый поиск через сфинкс
@@ -668,7 +670,7 @@ class Action {
             $page = new \View\ProductCategory\LeafPage();
             $setPageParameters($page);
 
-            return $this->leafCategory($category, $productFilter, $disabledFilter, $page, $request);
+            return $this->leafCategory($category, $productFilter, $page, $request);
         }
         // иначе, если в запросе есть фильтрация
         else if ($request->get(\View\Product\FilterForm::$name)) {
@@ -676,7 +678,7 @@ class Action {
             $page->setParam('forceSliders', true);
             $setPageParameters($page);
 
-            return $this->leafCategory($category, $productFilter, $disabledFilter, $page, $request);
+            return $this->leafCategory($category, $productFilter, $page, $request);
         }
         // иначе, если категория самого верхнего уровня
         else if ($category->isRoot()) {
@@ -689,7 +691,7 @@ class Action {
         $page = new \View\ProductCategory\LeafPage();
         $setPageParameters($page);
 
-        return $this->leafCategory($category, $productFilter, $disabledFilter, $page, $request);
+        return $this->leafCategory($category, $productFilter, $page, $request);
     }
 
     /**
@@ -818,7 +820,7 @@ class Action {
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, $disabledFilter=[], \View\Layout $page, \Http\Request $request) {
+    protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
@@ -1084,6 +1086,10 @@ class Action {
 
         $values = [];
         foreach ($requestData as $k => $v) {
+            if ('shop' === $k) {
+                $values[$k][] = $v;
+            }
+
             if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
             $parts = array_pad(explode('-', $k), 3, null);
 

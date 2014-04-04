@@ -288,11 +288,10 @@
 							} else {
 								showWrap(self);
 							}
-
-							return true;
 						}
-
-						hideWrap(self);
+						else {
+							hideWrap(self);
+						}
 
 						return true;
 					}
@@ -356,32 +355,52 @@
 			});
 		},
 
+
+		/**
+		 * Обновление фасетов (кол-во товаров у фильтров)
+		 *
+		 * @param {Array|Object} facets Набор фильтров у которых изменились quantity
+		 */
 		refreshFacets: function ( facets ) {
 			var
 				input,
 				inputName,
+				shopInputValue,
 				facet;
 			// end of vars
+
+			var
+				/**
+				 * Задаем фасет
+				 * @param field		Поле опции фильтра
+				 * @param quantity	Количество товаров
+				 */
+				setFacet = function ( field, quantity ) {
+					if ( !field.length ) {
+						return;
+					}
+
+					facet = field.parent('.bFilterValuesCol').find('.facet');
+					facet.length && facet.html('(' + quantity + ')');
+				};
+			// end of functions
 
 			if ( !facets ) {
 				return;
 			}
 
-			for ( inputName in facets) {
-				input = $('[name=' + inputName + ']');
-				if ( !input.length ) {
-					continue;
+			for ( inputName in facets ) {
+				if ( 'shop' === inputName ) {
+					for ( shopInputValue in facets[inputName] ) {
+						input = $('input[name="' + inputName + '"][value="' + shopInputValue + '"]');
+						setFacet(input, facets[inputName][shopInputValue]);
+					}
 				}
-
-				facet = input.parent('.bFilterValuesCol').find('.facet');
-				if ( !facet.length ) {
-					continue;
+				else {
+					input = $('input[name="' + inputName + '"]');
+					setFacet(input, facets[inputName]);
 				}
-
-				facet.html('(' + facets[inputName] + ')');
 			}
-
-
 		},
 
 		/**
