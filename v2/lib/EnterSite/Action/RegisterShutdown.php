@@ -20,15 +20,15 @@ class RegisterShutdown {
 
             $error = error_get_last();
             if ($error && (error_reporting() & $error['type'])) {
-                $response = (new Controller\Error\InternalServerError())->execute();
+                $response = (new Controller\Error\InternalServerError())->execute($request);
             }
 
             // logger
             (new Action\DumpLogger())->execute();
+
             $endAt = microtime(true);
 
             // debug info
-            //(new Action\TimerDebug())->execute($response, $startAt, $endAt);
             (new Action\Debug())->execute($request, $response, $startAt, $endAt);
 
             // send response

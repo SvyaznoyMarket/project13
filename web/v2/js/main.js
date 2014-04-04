@@ -2,13 +2,29 @@
     app.Event = _.clone(Backbone.Events);
 
     app.Event.on('product:change', function(data) {
-        console.info('event', data);
+        var product = data.product;
+        if (!product instanceof app.Model.Product) {
+            console.error('app.Event.product:change', 'Неверный параметр product', data);
+            return;
+        }
+
+        app.model.cart.addProduct(product);
     });
 
     app.Model = {};
     app.Collection = {};
     app.View = {};
 
+    // Model & Collection
+    app.Model.Cart = backbone.Model.extend({
+        initialize: function(config) {
+            this.set('products', new app.Collection.Product(config.product || []));
+        },
+        addProduct: function(product) {
+            console.info('app.Model.Cart.addProduct', product);
+            this.get('products').create(product, {wait: true, type: 'POST', url: product.get('cart').get('setUrl')})
+        }
+    });
     app.Collection.Cart = {};
     app.Collection.Cart.Product = backbone.Collection.extend({
         model: app.Model.Product,
@@ -35,6 +51,7 @@
         model: app.Model.Product
     });
 
+    // View
     app.View.Cart = {};
     app.View.Cart.BuyButton = backbone.View.extend({
         events: {
@@ -55,6 +72,7 @@
         },
         setProduct: function(e) {
             console.info('app.View.Cart.BuyButton.setProduct', this.$el, this.model);
+            e.preventDefault(); // TODO: убрать
 
             this.$el.addClass('mProgress');
 
@@ -62,7 +80,7 @@
                 product: this.model
             });
 
-            e.preventDefault();
+            //e.preventDefault();
         }
     });
     app.View.Cart.BuySpinner = backbone.View.extend({
@@ -122,8 +140,8 @@
             new app.View.Cart.BuySpinner({model: model, el: model.get('buySpinner').selector});
         });
 
-        app.collection.cart = {};
-        app.collection.cart.product = new app.Collection.Cart.Product;
+        app.model.cart = new app.Model.Cart({});
+        console.info(app.model.cart);
     };
 
 

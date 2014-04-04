@@ -28,7 +28,7 @@ class Product {
      * @return string
      */
     public function getIdByHttpRequest(Http\Request $request) {
-        return is_scalar($request->query['productId']) ? (string)$request->query['productId'] : null;
+        return is_scalar($request->query['productId']) ? trim((string)$request->query['productId']) : null;
     }
 
     /**

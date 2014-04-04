@@ -9,7 +9,7 @@ class JsonResponse extends Response {
     public function __construct($data = null, $statusCode = self::STATUS_OK) {
         parent::__construct(null, $statusCode);
 
-        $this->data = new \ArrayObject($data);
+        $this->data = new \ArrayObject($data ?: []);
 
         $this->headers['Content-Type'] = 'application/json';
     }
