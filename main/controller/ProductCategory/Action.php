@@ -636,7 +636,6 @@ class Action {
             &$shop,
             &$relatedCategories,
             &$categoryConfigById
-            //&$disabledFilter
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -654,7 +653,6 @@ class Action {
             $page->setParam('viewParams', [
                 'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
             ]);
-//            $page->setParam('disabledFilter', $disabledFilter);
         };
 
         // полнотекстовый поиск через сфинкс
@@ -1008,24 +1006,24 @@ class Action {
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $data = [
                 'list'           => (new \View\Product\ListAction())->execute(
-                        \App::closureTemplating()->getParam('helper'),
-                        $productPager,
-                        $productVideosByProduct,
-                        !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : []
-                    ),
+                    \App::closureTemplating()->getParam('helper'),
+                    $productPager,
+                    $productVideosByProduct,
+                    !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : []
+                ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
-                        \App::closureTemplating()->getParam('helper'),
-                        $productFilter,
-                        \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
-                    ),
+                    \App::closureTemplating()->getParam('helper'),
+                    $productFilter,
+                    \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
+                ),
                 'pagination'     => (new \View\PaginationAction())->execute(
-                        \App::closureTemplating()->getParam('helper'),
-                        $productPager
-                    ),
+                    \App::closureTemplating()->getParam('helper'),
+                    $productPager
+                ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
-                        \App::closureTemplating()->getParam('helper'),
-                        $productSorting
-                    ),
+                    \App::closureTemplating()->getParam('helper'),
+                    $productSorting
+                ),
                 'page'          => [
                     'title'     => $this->getPageTitle()
                 ],
