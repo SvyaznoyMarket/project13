@@ -234,212 +234,225 @@
 		},
 
 
-//		/**
-//		 * Отключение фильтров
-//		 *
-//		 * @param {Object} filters Фильтры которые нужно скрыть
-//		 */
-//		disableFilters: function ( filters ) {
-//			var
-//				optionName,
-//				shopOptionName,
-//				field,
-//				inputWrapClass = '.bFilterValuesCol',
-////				inputWrap = $(inputWrapClass),
-//				wrap;
-//			// end of vars
-//
-//			if ( !filters ) {
-//				return;
-//			}
-//
-////			console.warn('********************************');
-////			console.warn(filters);
-////			console.warn('********************************');
-//
-//			//$('.bCustomInput').parent(inputWrapClass).show();
-//			for ( optionName in filters ) {
-//				if ( optionName === 'shop' ) {
-//					for ( shopOptionName in filters[optionName] ) {
-//						field = $('input[name="' + optionName + '"][value="' + filters[optionName][shopOptionName] + '"]');
-//						wrap = field.parent(inputWrapClass);
-//						wrap.length && wrap.hide();
-//					}
-//				}
-//				else {
-//					field = $('input[name="' + optionName + '"][value="' + filters[optionName] + '"]');
-//					wrap = field.parent(inputWrapClass);
-//					wrap.length && wrap.hide();
-//				}
-//			}
-//		},
-
 		/**
-		 * Обновление видимости опций фильтров
+		 * Обновление видимости фильтров и их опций
 		 *
-		 * @param {Object} disabledFilters Фильтры которые нужно скрыть
+		 * @param newFilter
 		 */
-		refreshFilterOptionsVisibility: function ( disabledFilters ) {
-			var
-				inputWrapClass = '.bFilterValuesCol',
-				inputs = $(inputWrapClass).find('input'),
-				optionName,
-				arOptionName = [],
-				shopOptionName,
-				arShopValue = [],
-				wrap;
-			// end of var
-
+		refreshFiltersVisibility: function ( newFilter ) {
 			var
 				/**
-				 * Отобразить input wrapper
-				 * @param input
+				 * Обновление видимости фильтров
 				 */
-				showWrap = function( input ) {
-					wrap = input.parent(inputWrapClass);
-					wrap.length && wrap.show();
+				updateFilters = function () {
+					$('.bFilterParams li').each(function () {
+						var
+							self = $(this),
+							ref = self.data('ref'),
+							optionsBlock = $("#" + ref),
+							needHide = true;
+						// end of vars
+
+						if ( !optionsBlock.length ) {
+							return true;
+						}
+
+						optionsBlock.find('.bFilterValuesCol').each(function () {
+							if ( 'none' !== $(this).css('display') ) {
+								needHide = false;
+							}
+						});
+
+						if ( needHide ) {
+							self.hide();
+						} else {
+							self.show();
+						}
+					});
 				},
 
 				/**
-				 * Скрыть input wrapper
-				 * @param input
+				 * Обновление фасетов (кол-во товаров у фильтров)
+				 *
+				 * @param {Array|Object} facets Набор фильтров у которых изменились quantity
 				 */
-				hideWrap = function( input ) {
-					wrap = input.parent(inputWrapClass);
-					wrap.length && wrap.hide();
-				},
-
-				/**
-				 * Обновить отображение опций фильтров
-				 */
-				filterOptionsVisibilityUpdate = function () {
+				updateFacets = function ( facets ) {
 					var
-						self = $(this);
+						input,
+						inputName,
+						shopInputValue,
+						facet;
 					// end of vars
 
-					// данный фильтр присутствует в списке фильтров которые нужно скрыть
-					if ( -1 !== $.inArray(self.attr('name'), arOptionName) ) {
-						// shop
-						if ( 'shop' === self.attr('name') ) {
-							// данный магазин присутствует в списке магазинов которые нужно скрыть
-							if ( -1 !== $.inArray(parseInt(self.attr('value')), arShopValue) ) {
-								hideWrap(self);
-							} else {
-								showWrap(self);
+					var
+						/**
+						 * Задаем фасет
+						 * @param field		Поле опции фильтра
+						 * @param quantity	Количество товаров
+						 */
+							setFacet = function ( field, quantity ) {
+							if ( !field.length ) {
+								return;
 							}
-						}
-						else {
-							hideWrap(self);
-						}
 
-						return true;
-					}
+							facet = field.parent('.bFilterValuesCol').find('.facet');
+							facet.length && facet.html('(' + quantity + ')');
+						};
+					// end of functions
 
-					showWrap(self);
-				};
-			// end of functions
-
-			if ( !inputs.length ) {
-				return;
-			}
-
-			// заполняем массив class-ов которые должны быть задисейблены
-			if ( disabledFilters ) {
-				for ( optionName in disabledFilters ) {
-					if ( 'shop' === optionName ) {
-						for ( shopOptionName in disabledFilters[optionName] ) {
-							arShopValue.push(disabledFilters[optionName][shopOptionName]);
-						}
-					}
-
-					arOptionName.push(optionName);
-				}
-			}
-
-			// Обновляем видимость опций фильтров
-			inputs.each(filterOptionsVisibilityUpdate);
-
-			// Обновляем видимость фильтров
-			catalog.filter.refreshFiltersVisibility();
-		},
-
-
-		/**
-		 * Обновление видимости фильтров
-		 */
-		refreshFiltersVisibility: function () {
-			$('.bFilterParams li').each(function () {
-				var
-					self = $(this),
-					ref = self.data('ref'),
-					optionsBlock = $("#" + ref),
-					needHide = true;
-				// end of vars
-
-				if ( !optionsBlock.length ) {
-					return true;
-				}
-
-				optionsBlock.find('.bFilterValuesCol').each(function () {
-					if ( 'none' !== $(this).css('display') ) {
-						needHide = false;
-					}
-				});
-
-				if ( needHide ) {
-					self.hide();
-				} else {
-					self.show();
-				}
-			});
-		},
-
-
-		/**
-		 * Обновление фасетов (кол-во товаров у фильтров)
-		 *
-		 * @param {Array|Object} facets Набор фильтров у которых изменились quantity
-		 */
-		refreshFacets: function ( facets ) {
-			var
-				input,
-				inputName,
-				shopInputValue,
-				facet;
-			// end of vars
-
-			var
-				/**
-				 * Задаем фасет
-				 * @param field		Поле опции фильтра
-				 * @param quantity	Количество товаров
-				 */
-				setFacet = function ( field, quantity ) {
-					if ( !field.length ) {
+					if ( !facets ) {
 						return;
 					}
 
-					facet = field.parent('.bFilterValuesCol').find('.facet');
-					facet.length && facet.html('(' + quantity + ')');
+					for ( inputName in facets ) {
+						if ( 'shop' === inputName ) {
+							for ( shopInputValue in facets[inputName] ) {
+								input = $('input[name="' + inputName + '"][value="' + shopInputValue + '"]');
+								setFacet(input, facets[inputName][shopInputValue]);
+							}
+						}
+						else {
+							input = $('input[name="' + inputName + '"]');
+							setFacet(input, facets[inputName]);
+						}
+					}
+				},
+
+
+				/**
+				 * Обновление видимости опций фильтров
+				 *
+				 * @param {Object|Array}	filters	Список фильтров
+				 * @param {String}			type	Тип входного списка фильтров. Принимает значения: "disabled" или "showed".
+				 */
+				updateOptions = function ( filters, type ) {
+					var
+						inputWrapClass = '.bFilterValuesCol',
+						inputs = $(inputWrapClass).find('input'),
+						optionName,
+						wrap,
+						arOptionName = [],
+						shopOptionName,
+						arShopValue = [];
+					// end of var
+
+					var
+						/**
+						 * Отобразить input wrapper
+						 * @param input
+						 */
+						showWrap = function( input ) {
+							wrap = input.parent(inputWrapClass);
+							wrap.length && wrap.show();
+						},
+
+						/**
+						 * Скрыть input wrapper
+						 * @param input
+						 */
+						hideWrap = function( input ) {
+							wrap = input.parent(inputWrapClass);
+							wrap.length && wrap.hide();
+						},
+
+						/**
+						 * Обновить отображение опций фильтров
+						 */
+						filterOptionsVisibilityUpdate = function () {
+							var
+								self = $(this);
+							// end of vars
+
+							// данный фильтр присутствует в списке фильтров
+							if ( -1 !== $.inArray(self.attr('name'), arOptionName) ) {
+								// shop
+								if ( 'shop' === self.attr('name') ) {
+									// данный магазин присутствует в списке магазинов
+									if ( -1 !== $.inArray(parseInt(self.attr('value')), arShopValue) ) {
+										"disabled" === type ? hideWrap(self) : showWrap(self);
+									} else {
+										"disabled" === type ? showWrap(self) : hideWrap(self);
+									}
+								} else {
+									"disabled" === type ? hideWrap(self) : showWrap(self);
+								}
+
+								return true;
+							}
+
+							"disabled" === type ? showWrap(self) : hideWrap(self);
+						};
+					// end of functions
+
+					if ( !inputs.length ) {
+						return;
+					}
+
+					if ( undefined === type ) {
+						type = "disabled";
+					}
+
+					// заполняем массив name-ов
+					if ( filters ) {
+						for ( optionName in filters ) {
+							if ( 'shop' === optionName ) {
+								for ( shopOptionName in filters[optionName] ) {
+									arShopValue.push(filters[optionName][shopOptionName]);
+								}
+							}
+
+							arOptionName.push(optionName);
+						}
+					}
+
+					// Обновляем видимость опций фильтров
+					inputs.each(filterOptionsVisibilityUpdate);
+				},
+
+
+				/**
+				 * Обновление видимости опций фильтров в зависимости от списка показанных фильтров
+				 *
+				 * @param {Object} disabledFilters Фильтры которые нужно показать
+				 */
+				updateOptionsByShowList = function ( showedFilters ) {
+					if ( !showedFilters ) {
+						return;
+					}
+
+					updateOptions(showedFilters, "showed");
+				},
+
+
+				/**
+				 * Обновление видимости опций фильтров в зависимости от списка скрытых фильтров
+				 *
+				 * @param {Object} disabledFilters Фильтры которые нужно скрыть
+				 */
+				updateOptionsByDisabledList = function ( disabledFilters ) {
+					if ( !disabledFilters ) {
+						return;
+					}
+
+					updateOptions(disabledFilters, "disabled");
 				};
 			// end of functions
 
-			if ( !facets ) {
+
+			if ( !newFilter ) {
 				return;
 			}
 
-			for ( inputName in facets ) {
-				if ( 'shop' === inputName ) {
-					for ( shopInputValue in facets[inputName] ) {
-						input = $('input[name="' + inputName + '"][value="' + shopInputValue + '"]');
-						setFacet(input, facets[inputName][shopInputValue]);
-					}
-				}
-				else {
-					input = $('input[name="' + inputName + '"]');
-					setFacet(input, facets[inputName]);
-				}
+			if ( newFilter.disabled ) {
+				updateOptionsByDisabledList(newFilter.disabled);
+				newFilter.changed && updateFacets(newFilter.changed);
+			} else if ( newFilter.showed ) {
+				updateOptionsByShowList(newFilter.showed);
+				updateFacets(newFilter.showed);
 			}
+
+			// Обновляем видимость фильтров
+			updateFilters();
 		},
 
 		/**
@@ -459,10 +472,11 @@
 			catalog.filter.resetForm();
 
 			// обновляем видимость фильтров
-			undefined !== res['disabledFilter']['values'] && catalog.filter.refreshFilterOptionsVisibility( res['disabledFilter']['values'] );
+//			undefined !== res['disabledFilter']['values'] && catalog.filter.refreshFilterOptionsVisibility( res['disabledFilter']['values'] );
+			undefined !== res['newFilter'] && catalog.filter.refreshFiltersVisibility(res['newFilter']);
 
 			// задаем новые значяения фасетов
-			undefined !== res['changedFilter']['quantity'] && catalog.filter.refreshFacets( res['changedFilter']['quantity'] );
+//			undefined !== res['changedFilter']['quantity'] && catalog.filter.updateFacets( res['changedFilter']['quantity'] );
 
 			for ( key in dataToRender ) {
 				if ( catalog.filter.render.hasOwnProperty(key) ) {
