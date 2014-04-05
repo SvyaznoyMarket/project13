@@ -1,15 +1,10 @@
-;(function(app, window, $, _, mustache, backbone, undefined) {
+;
+(function (app, window, $, _, mustache, backbone, undefined) {
+    backbone.Model.prototype.parse = function (data) {
+        return data.result;
+    };
+
     app.Event = _.clone(Backbone.Events);
-
-    app.Event.on('product:change', function(data) {
-        var product = data.product;
-        if (!product instanceof app.Model.Product) {
-            console.error('app.Event.product:change', 'Неверный параметр product', data);
-            return;
-        }
-
-        app.model.cart.addProduct(product);
-    });
 
     app.Model = {};
     app.Collection = {};
@@ -17,18 +12,18 @@
 
     // Model & Collection
     app.Model.Cart = backbone.Model.extend({
-        initialize: function(config) {
+        initialize: function (config) {
             this.set('products', new app.Collection.Product(config.product || []));
         },
-        addProduct: function(product) {
+        addProduct: function (product) {
             console.info('app.Model.Cart.addProduct', product);
             this.get('products').create(product, {
                 wait: true,
                 //merge: true,
                 type: 'POST',
                 url: product.get('cart').get('setUrl'),
-                success: function(response) {
-                    //console.info(response);
+                success: function (model) {
+
                 }
             });
         }
@@ -36,23 +31,24 @@
     app.Collection.Cart = {};
     app.Collection.Cart.Product = backbone.Collection.extend({
         model: app.Model.Product,
-        initialize: function() {}
+        initialize: function () {
+        }
     });
 
     app.Model.Product = backbone.Model.extend({
-        initialize: function(data) {
+        initialize: function (data) {
             this.set('cart', new app.Model.Product.Cart(data.cart || {}));
         },
-        parse: function(response) {
-            // TODO: сделать cart моделью, возможно использовать плагин
-            var data = response.result;
+        parse: function (data) {
+            data = app.Model.Product.__super__.parse.call(this, data);
+
             data.cart = new app.Model.Product.Cart(data.cart || {});
 
             return data;
         }
     });
     app.Model.Product.Cart = backbone.Model.extend({
-        validate: function(attrs) {
+        validate: function (attrs) {
             console.info('app.Model.Product.Cart.validate', attrs, typeof attrs.quantity);
             if (!_.isFinite(attrs.quantity) || attrs.quantity <= 0) {
                 var error = {message: 'Количество должно быть большим нуля'};
@@ -70,32 +66,32 @@
     app.View.Cart = {};
     app.View.Cart.BuyButton = backbone.View.extend({
         events: {
-            'click .js-link': 'setProduct'
+            'click .js-link': 'onClick'
         },
-        initialize: function() {
+        initialize: function () {
             this.template = $('#tplCartBuyButton').html();
 
-            //this.model.get('cart').on('change', this.render, this);
-
-            //this.render();
+            this.model.on('change:buyButton', this.render, this);
+            this.model.on('change:inCart', function() {
+                if (true === this.model.get('inCart')) {
+                    this.$el.removeClass('mProgress');
+                }
+            }, this);
         },
-        render: function() {
+        render: function () {
             console.info('app.View.Cart.BuyButton.render', this.template, this.model.get('buyButton').templateData);
             this.$el.html(mustache.render(this.template, this.model.get('buyButton').templateData));
 
             return this;
         },
-        setProduct: function(e) {
-            console.info('app.View.Cart.BuyButton.setProduct', this.$el, this.model);
-            e.preventDefault(); // TODO: убрать
+        onClick: function (e) {
+            console.info('app.View.Cart.BuyButton.onClick', this.$el, this.model);
 
-            this.$el.addClass('mProgress');
-
-            app.Event.trigger('product:change', {
-                product: this.model
-            });
-
-            //e.preventDefault();
+            if (true !== this.model.get('inCart')) {
+                this.$el.addClass('mProgress');
+                app.model.cart.addProduct(this.model);
+                e.preventDefault();
+            }
         }
     });
     app.View.Cart.BuySpinner = backbone.View.extend({
@@ -104,27 +100,30 @@
             'click .js-down': 'decQuantity',
             'change .js-value': 'setQuantity'
         },
-        initialize: function() {
-            this.model.get('cart').on('change', this.render, this);
+        initialize: function () {
+            //this.model.get('cart').on('change', this.render, this);
             this.model.get('cart').on('invalid', this.render, this);
+            this.model.get('cart').on('change:quantity', function() {
+                app.model.cart.addProduct(this.model);
+            }, this);
         },
-        render: function() {
+        render: function () {
             console.info('app.View.Cart.BuySpinner.render', this.$el, this.model);
             this.$el.find('.js-value').val(this.model.get('cart').get('quantity'));
 
             return this;
         },
-        incQuantity: function() {
+        incQuantity: function () {
             console.info('app.View.Cart.BuySpinner.incQuantity', this.$el, this.model);
 
             this.model.get('cart').set('quantity', this.model.get('cart').get('quantity') - 1, {validate: true});
         },
-        decQuantity: function() {
+        decQuantity: function () {
             console.info('app.View.Cart.BuySpinner.decQuantity', this.$el, this.model);
 
             this.model.get('cart').set('quantity', this.model.get('cart').get('quantity') + 1, {validate: true});
         },
-        setQuantity: function() {
+        setQuantity: function () {
             console.info('app.View.Cart.BuySpinner.setQuantity', this.$el, this.model);
 
             this.model.get('cart').set('quantity', parseInt(this.$el.find('.js-value').val()), {validate: true});
@@ -137,9 +136,9 @@
     app.view = {};
 
 
-    app.initialize = function() {
+    app.initialize = function () {
         // инициализация коллекций
-        $('.js-collection').each(function(i, el) {
+        $('.js-collection').each(function (i, el) {
             var $el = $(el);
             var collectionName = $el.data('collection');
 
@@ -150,7 +149,7 @@
             app.collection[collectionName[0].toLowerCase() + collectionName.slice(1)] = new app.Collection[collectionName]($el.data('value'));
         });
 
-        app.collection.product.each(function(model) {
+        app.collection.product.each(function (model) {
             new app.View.Cart.BuyButton({model: model, el: model.get('buyButton').selector});
             new app.View.Cart.BuySpinner({model: model, el: model.get('buySpinner').selector});
         });
@@ -159,7 +158,7 @@
     };
 
 
-    $(function() {
+    $(function () {
         app.initialize();
     });
 

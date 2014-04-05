@@ -26,10 +26,12 @@ class ProductButton {
 
     /**
      * @param Model\Product $product
+     * @param Model\Cart\Product|null $cartProduct
      * @return Partial\Cart\ProductButton
      */
     public function getObject(
-        Model\Product $product
+        Model\Product $product,
+        Model\Cart\Product $cartProduct = null
     ) {
         $button = new Partial\Cart\ProductButton();
 
@@ -37,21 +39,26 @@ class ProductButton {
         $button->id = self::getId($product->id);
         $button->text = 'Купить';
 
-        if ($product->isInShopOnly) {
-            $button->class .= ' mShopsOnly';
-            $button->text = 'Резерв';
-            //$button->url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]); // TODO
-            $button->class .= ' jsOneClickButton';
-        }
+        // если товар в корзине
+        if ($cartProduct) {
+            $button->text = 'В корзине';
+            $button->url = '/cart'; // TODO: route
+        } else {
+            if ($product->isInShopOnly) {
+                $button->class .= ' mShopsOnly';
+                $button->text = 'Резерв';
+                //$button->url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]); // TODO
+                $button->class .= ' jsOneClickButton';
+            }
 
-        if (!$product->isBuyable) {
-            $button->url = '#';
-            $button->class .= ' mDisabled';
-            $button->text = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
-        } else if (!$button->url) {
-            $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id));
+            if (!$product->isBuyable) {
+                $button->url = '#';
+                $button->class .= ' mDisabled';
+                $button->text = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
+            } else if (!$button->url) {
+                $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id));
+            }
         }
-
 
         return $button;
     }
