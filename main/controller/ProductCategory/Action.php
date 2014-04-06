@@ -3,6 +3,7 @@
 namespace Controller\ProductCategory;
 
 use View\Product\FilterForm;
+use Model\Product\Filter\Entity as FilterEntity;
 
 class Action {
     private static $globalCookieName = 'global';
@@ -413,45 +414,94 @@ class Action {
             $disabled = [];
             $changed = [];
             foreach ($filters as $filterKey => $filter) {
-//                if ($filter->getTypeId() !== \Model\Product\Filter\Entity::TYPE_LIST) continue;
+                switch ($filter->getTypeId()) {
+                    case FilterEntity::TYPE_NUMBER:
+                    case FilterEntity::TYPE_SLIDER:
+                        $paramNameFrom = \View\Name::productCategoryFilter($filter, 'from');
+                        $paramNameTo = \View\Name::productCategoryFilter($filter, 'to');
 
-                // подготавливаем массивы опций
-                $options = [];
-                foreach ($filter->getOption() as $option) {
-                    $options[$option->getId()] = $option;
-                }
+                        // фильтр есть в общем списке фильтров, но не пришел при запросе пользовательских фильтров, дисейблим
+                        if (!isset($filtersWithParams[$filterKey])) {
+                            $disabled['slider'][$paramNameFrom] = $filter->getTypeId();
+                            $disabled['slider'][$paramNameTo] = $filter->getTypeId();
 
-                $optionsWithParams = [];
-                if (isset($filtersWithParams[$filterKey])) {
-                    foreach ($filtersWithParams[$filterKey]->getOption() as $option) {
-                        $optionsWithParams[$option->getId()] = $option;
-                    }
-                }
-
-                foreach ($options as $optionKey => $option) {
-                    $paramName = \View\Name::productCategoryFilter($filter, $option);
-
-                    // фильтр есть в общем списке фильтров, но не пришел при запросе пользовательских фильтров, дисейблим
-                    if (!isset($filtersWithParams[$filterKey]) || !isset($optionsWithParams[$optionKey])) {
-                        $disabled[$paramName] = $option->getId();
-
-                    // в фильтре 0 товаров
-                    } elseif (isset($optionsWithParams[$optionKey]) && 0 == $optionsWithParams[$optionKey]->getQuantity()) {
-                        if ('shop' == $filterKey) {
-                            $disabled[$paramName][] = $option->getId();
-                        } else {
-                            $disabled[$paramName] = $option->getId();
+                            // в фильтре изменилось кол-во товаров
+                        } elseif (isset($filtersWithParams[$filterKey])) {
+                            if ($filter->getMin() !== $filtersWithParams[$filterKey]->getMin()) {
+                                $changed['slider'][$paramNameFrom] = $filtersWithParams[$filterKey]->getMin();
+                            }
+                            if ($filter->getMax() !== $filtersWithParams[$filterKey]->getMax()) {
+                                $changed['slider'][$paramNameTo] = $filtersWithParams[$filterKey]->getMax();
+                            }
+                        }
+                        break;
+                    case FilterEntity::TYPE_LIST:
+                        // подготавливаем массив опций
+                        $options = [];
+                        foreach ($filter->getOption() as $option) {
+                            $options[$option->getId()] = $option;
                         }
 
-                    // в фильтре изменилось кол-во товаров
-                    } elseif (isset($optionsWithParams[$optionKey]) && isset($options[$optionKey]) && $optionsWithParams[$optionKey]->getQuantity() !== $options[$optionKey]->getQuantity()) {
-                        if ('shop' == $filterKey) {
-                            $changed[$paramName][$option->getId()] = $optionsWithParams[$optionKey]->getQuantity();
-                        } else {
-                            $changed[$paramName] = $optionsWithParams[$optionKey]->getQuantity();
+                        $optionsWithParams = [];
+                        if (isset($filtersWithParams[$filterKey])) {
+                            foreach ($filtersWithParams[$filterKey]->getOption() as $option) {
+                                $optionsWithParams[$option->getId()] = $option;
+                            }
                         }
-                    }
+
+                        foreach ($options as $optionKey => $option) {
+                            $paramName = \View\Name::productCategoryFilter($filter, $option);
+
+                            // фильтр есть в общем списке фильтров, но не пришел при запросе пользовательских фильтров, дисейблим
+                            if (!isset($filtersWithParams[$filterKey]) || !isset($optionsWithParams[$optionKey])) {
+                                $disabled['list'][$paramName] = $option->getId();
+
+                            // в фильтре 0 товаров
+                            } elseif (isset($optionsWithParams[$optionKey]) && 0 == $optionsWithParams[$optionKey]->getQuantity()) {
+                                if ('shop' == $filterKey) {
+                                    $disabled['list'][$paramName][] = $option->getId();
+                                } else {
+                                    $disabled['list'][$paramName] = $option->getId();
+                                }
+
+                            // в фильтре изменилось кол-во товаров
+                            } elseif (isset($optionsWithParams[$optionKey]) && isset($options[$optionKey]) && $optionsWithParams[$optionKey]->getQuantity() !== $options[$optionKey]->getQuantity()) {
+                                if ('shop' == $filterKey) {
+                                    $changed['list'][$paramName][$option->getId()] = $optionsWithParams[$optionKey]->getQuantity();
+                                } else {
+                                    $changed['list'][$paramName] = $optionsWithParams[$optionKey]->getQuantity();
+                                }
+                            }
+                        }
+                        break;
+                    case FilterEntity::TYPE_BOOLEAN:
+                        foreach ([1 => 'да', 0 => 'нет'] as $value => $name) {
+                            $paramName = \View\Name::productCategoryFilter($filter, $value);
+                            $quantity = $filter->getQuantity();
+                            $quantityWithParams = isset($filtersWithParams[$filterKey]) ? $filtersWithParams[$filterKey]->getQuantity() : [];
+
+                            // фильтр есть в общем списке фильтров, но не пришел при запросе пользовательских фильтров, дисейблим
+                            if (!isset($filtersWithParams[$filterKey])) {
+                                $disabled['choice'][$paramName] = $filter->getTypeId();
+
+                            // в фильтре 0 товаров
+                            } elseif (!empty($quantityWithParams) && is_array($quantityWithParams) && 0 == $quantityWithParams[$value]) {
+                                    $disabled['choice'][$paramName] = $filter->getTypeId();
+
+                                // в фильтре изменилось кол-во товаров
+                            } elseif (isset($filtersWithParams[$filterKey])) {
+                                if (
+                                    !empty($quantity) && is_array($quantity) && !empty($quantityWithParams) && is_array($quantityWithParams) &&
+                                    $quantity[$value] !== $quantityWithParams[$value]
+                                ) {
+                                    $changed['choice'][$paramName] = $quantityWithParams[$value];
+                                }
+                            }
+                        }
+                        break;
                 }
+
+
             }
 
             $this->disabledFilters = $disabled;
@@ -1049,6 +1099,7 @@ class Action {
 
         if (true === \App::config()->sphinx['showFacets']) {
             $page->setGlobalParam('disabledFilters', !empty($this->disabledFilters) ? $this->disabledFilters : []);
+            $page->setGlobalParam('changedFilters', !empty($this->changedFilters) ? $this->changedFilters : []);
         }
 
         $page->setParam('productPager', $productPager);

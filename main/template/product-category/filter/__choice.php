@@ -8,6 +8,13 @@ return function(
 
     $values = $productFilter->getValue($filter);
     $disabledFilters = $helper->getParam('disabledFilters');
+    $disabledFilters = isset($disabledFilters['choice']) ? $disabledFilters['choice'] : null;
+
+    $changedFilters = $helper->getParam('changedFilters');
+    $changedFilters = isset($changedFilters['choice']) ? $changedFilters['choice'] : null;
+
+    $showFacets = \App::config()->sphinx['showFacets'];
+    $quantities = $filter->getQuantity();
 ?>
 
 
@@ -17,14 +24,21 @@ return function(
         $inputName = \View\Name::productCategoryFilter($filter, $value);
 
         $hideOption = false;
-        if (
-            \App::config()->sphinx['showFacets'] && $disabledFilters &&
-            in_array($inputName, array_keys($disabledFilters))
-        ) {
-            $hideOption = true;
+        $quantity = is_array($quantities) && isset($quantities[$value]) ? $quantities[$value] : null;
+        if ($showFacets) {
+            if ($disabledFilters && in_array($inputName, array_keys($disabledFilters))) {
+                $hideOption = true;
+            }
+
+            // обновление значений
+            if ((bool)$changedFilters) {
+                if (in_array($inputName, array_keys($changedFilters))) {
+                    $quantity = $changedFilters[$inputName];
+                }
+            }
         }
     ?>
-        <div class="bFilterValuesCol"<? if ($hideOption): ?> style="display:none;"<? endif ?>>
+        <div class="bFilterValuesCol jsFilterChoice"<? if ($hideOption): ?> style="display:none;"<? endif ?>>
             <input
                 class="bInputHidden bCustomInput jsCustomRadio"
                 type="checkbox"
@@ -35,6 +49,7 @@ return function(
                 />
             <label class="bFilterCheckbox" for="<?= $viewId ?>">
                 <?= $name ?>
+                <? if ($showFacets && $quantity): ?> <span class='facet'>(<?= $quantity ?>)</span><? endif ?>
             </label>
         </div>
     <? endforeach ?>
