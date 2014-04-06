@@ -382,7 +382,7 @@ class Action {
             }
         }
 
-        // запрашиваем фильтры без параметров
+        // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = [];
         $params = !\App::config()->sphinx['showFacets'] ? $filterParams : [];
@@ -1084,12 +1084,6 @@ class Action {
                     'disabled' => $this->disabledFilters,
                     'changed' => $this->changedFilters,
                 ];
-
-
-                //$data['disabledFilter'] = (new \View\ProductCategory\DisabledFilterAction())->execute(
-                //    \App::closureTemplating()->getParam('helper'),
-                //    $productFilter
-                //);
             }
 
             return new \Http\JsonResponse($data);
