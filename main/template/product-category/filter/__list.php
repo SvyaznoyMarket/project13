@@ -29,7 +29,7 @@ return function(
         if ($showFasets) {
             if ($disabledFilters) {
                 if ('shop' === $filter->getId()) {
-                    if (isset($disabledFilters[$filter->getId()]) && in_array($optionId, array_keys($disabledFilters[$filter->getId()]))) {
+                    if (isset($disabledFilters[$filter->getId()]) && in_array($optionId, $disabledFilters[$filter->getId()])) {
                         $hideOption =  true;
                     }
                 } elseif (in_array($name, array_keys($disabledFilters))) {

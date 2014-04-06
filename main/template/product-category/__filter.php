@@ -120,35 +120,46 @@ return function(
 
                 $hideFilter = false;
                 $disabledFilters = $helper->getParam('disabledFilters');
-                if ($disabledFilters && \App::config()->sphinx['showFacets']) {
-                    $hideFilter = true;
+                if (\App::config()->sphinx['showFacets']) {
                     switch ($filter->getTypeId()) {
                         case \Model\Product\Filter\Entity::TYPE_NUMBER:
                         case \Model\Product\Filter\Entity::TYPE_SLIDER:
-                            $nameFrom = \View\Name::productCategoryFilter($filter, 'from');
-                            $nameTo = \View\Name::productCategoryFilter($filter, 'to');
-                            if (!in_array($nameFrom, array_keys($disabledFilters)) && !in_array($nameTo, array_keys($disabledFilters))) {
-                                $hideFilter = false;
-                            }
+//                            $disabledFilters = isset($disabledFilters['slider']) ? $disabledFilters['slider'] : null;
+//                            if ($disabledFilters) {
+//                                $hideFilter = true;
+//                                $nameFrom = \View\Name::productCategoryFilter($filter, 'from');
+//                                $nameTo = \View\Name::productCategoryFilter($filter, 'to');
+//                                if (!in_array($nameFrom, array_keys($disabledFilters)) && !in_array($nameTo, array_keys($disabledFilters))) {
+//                                    $hideFilter = false;
+//                                }
+//                            }
                             break;
                         case \Model\Product\Filter\Entity::TYPE_LIST:
-                            foreach ($filter->getOption() as $option) {
-                                $name = \View\Name::productCategoryFilter($filter, $option);
-                                if (
-                                    'shop' === $filter->getId() && isset($disabledFilters[$filter->getId()]) &&
-                                    !in_array($option->getId(), $disabledFilters[$filter->getId()])
-                                ) {
-                                    $hideFilter = false;
-                                } elseif (!in_array($name, array_keys($disabledFilters))) {
-                                    $hideFilter = false;
+                            $disabledFilters = isset($disabledFilters['list']) ? $disabledFilters['list'] : null;
+                            if ($disabledFilters) {
+                                $hideFilter = true;
+                                foreach ($filter->getOption() as $option) {
+                                    $name = \View\Name::productCategoryFilter($filter, $option);
+                                    if (
+                                        'shop' === $filter->getId() && isset($disabledFilters[$filter->getId()]) &&
+                                        !in_array($option->getId(), $disabledFilters[$filter->getId()])
+                                    ) {
+                                        $hideFilter = false;
+                                    } elseif (!in_array($name, array_keys($disabledFilters))) {
+                                        $hideFilter = false;
+                                    }
                                 }
                             }
                             break;
                         case \Model\Product\Filter\Entity::TYPE_BOOLEAN:
-                            foreach ([1 => 'да', 0 => 'нет'] as $value => $name) {
-                                $inputName = \View\Name::productCategoryFilter($filter, $value);
-                                if (!in_array($inputName, array_keys($disabledFilters))) {
-                                    $hideFilter = false;
+                            $disabledFilters = isset($disabledFilters['choice']) ? $disabledFilters['choice'] : null;
+                            if ($disabledFilters) {
+                                $hideFilter = true;
+                                foreach ([1 => 'да', 0 => 'нет'] as $value => $name) {
+                                    $inputName = \View\Name::productCategoryFilter($filter, $value);
+                                    if (!in_array($inputName, array_keys($disabledFilters))) {
+                                        $hideFilter = false;
+                                    }
                                 }
                             }
                             break;

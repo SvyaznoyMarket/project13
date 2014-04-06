@@ -500,8 +500,6 @@ class Action {
                         }
                         break;
                 }
-
-
             }
 
             $this->disabledFilters = $disabled;
