@@ -683,7 +683,8 @@ class Action {
             &$shopScriptSeo,
             &$shop,
             &$relatedCategories,
-            &$categoryConfigById
+            &$categoryConfigById,
+            &$categoryPath
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -701,6 +702,7 @@ class Action {
             $page->setParam('viewParams', [
                 'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
             ]);
+            $page->setParam('categoryPath', $categoryPath);
         };
 
         // полнотекстовый поиск через сфинкс

@@ -118,7 +118,7 @@ class ConfirmEmailAction {
             \App::session()->set('flash', ['error' => $e->getMessage()]);
         }
 
-        return new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show', [], true));
+        return new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show'));
     }
 
     /**
@@ -177,7 +177,7 @@ class ConfirmEmailAction {
 
             if ($userToken==null) {
 
-                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.warn', [], true));
+                $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.warn'));
 
             } else {
 
@@ -199,7 +199,7 @@ class ConfirmEmailAction {
             \App::exception()->remove($e);
             \App::session()->set('flash', ['error' => $e->getMessage()]);
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show', [], true));
+            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.show'));
         }
 
         return $response;

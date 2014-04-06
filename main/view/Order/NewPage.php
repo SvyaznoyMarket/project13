@@ -19,7 +19,7 @@ class NewPage extends Layout {
         // return (\App::config()->yandexMetrika['enabled']) ? $this->render('order/_yandexMetrika') : '';
     // }
 
-    public function slotInnerJavascript() {
+//    public function slotInnerJavascript() {
         /** @var $productsForRetargeting \Model\Product\Entity */
 
         /*
@@ -40,5 +40,9 @@ class NewPage extends Layout {
             . "\n\n"
             . $this->render('_innerJavascript');
         */
+//    }
+
+    public function slotСpaexchangeJS () {
+        return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25014]) . '"></div>';
     }
 }

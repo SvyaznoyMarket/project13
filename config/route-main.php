@@ -725,6 +725,11 @@ return [
         'method'  => ['POST'],
     ],
 
+    'debug.info' => [
+        'pattern' => '/debug/info',
+        'action'  => ['DebugAction', 'info'],
+    ],
+
     //cron
     'cron-index' => [
         'pattern' => '/cron',

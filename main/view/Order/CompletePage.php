@@ -106,4 +106,12 @@ class CompletePage extends Layout {
                 <noscript><img src="https://tracker.marinsm.com/tp?act=2&cid=7saq97byg0&script=no" ></noscript></div>';
 
     }
+
+    public function slotСpaexchangeConversionJS () {
+        return $this->tryRender('partner-counter/_cpaexchange_conversion');
+    }
+
+    public function slotСpaexchangeJS () {
+        return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25015]) . '"></div>';
+    }
 }
