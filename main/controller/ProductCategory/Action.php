@@ -3,10 +3,13 @@
 namespace Controller\ProductCategory;
 
 use View\Product\FilterForm;
+use Model\Product\Filter\Entity as FilterEntity;
 
 class Action {
     private static $globalCookieName = 'global';
     protected $pageTitle;
+    protected $disabledFilters = [];
+    protected $changedFilters = [];
 
     /**
      * @param string        $categoryPath
@@ -382,14 +385,126 @@ class Action {
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $filterParams, function($data) use (&$filters) {
+        $params = !\App::config()->sphinx['showFacets'] ? $filterParams : [];
+        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $params, function($data) use (&$filters) {
             foreach ($data as $item) {
-                $filters[] = new \Model\Product\Filter\Entity($item);
+                $item = new \Model\Product\Filter\Entity($item);
+                $filters[$item->getId()] = $item;
             }
         });
 
+        // запрашиваем фильтры с учетом пользовательских фильтров
+        /** @var $filtersWithParams \Model\Product\Filter\Entity[] */
+        $filtersWithParams = [];
+        if (!empty($filterParams) && \App::config()->sphinx['showFacets']) {
+            \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $filterParams, function ($data) use (&$filtersWithParams) {
+                foreach ($data as $item) {
+                    $item = new \Model\Product\Filter\Entity($item);
+                    $filtersWithParams[$item->getId()] = $item;
+                }
+            });
+        }
+
         // выполнение 3-го пакета запросов
         $client->execute();
+
+
+        // Сравниваем фильтры с пользовательскими фильтрами
+        if (!empty($filters) && !empty($filtersWithParams)) {
+            $disabled = [];
+            $changed = [];
+            foreach ($filters as $filterKey => $filter) {
+                switch ($filter->getTypeId()) {
+                    case FilterEntity::TYPE_NUMBER:
+                    case FilterEntity::TYPE_SLIDER:
+                        $paramNameFrom = \View\Name::productCategoryFilter($filter, 'from');
+                        $paramNameTo = \View\Name::productCategoryFilter($filter, 'to');
+
+                        // фильтр есть в общем списке фильтров, но не пришел при запросе пользовательских фильтров, дисейблим
+                        if (!isset($filtersWithParams[$filterKey])) {
+                            $disabled['slider'][$paramNameFrom] = $filter->getTypeId();
+                            $disabled['slider'][$paramNameTo] = $filter->getTypeId();
+
+                            // в фильтре изменилось кол-во товаров
+                        } elseif (isset($filtersWithParams[$filterKey])) {
+                            if ($filter->getMin() !== $filtersWithParams[$filterKey]->getMin()) {
+                                $changed['slider'][$paramNameFrom] = $filtersWithParams[$filterKey]->getMin();
+                            }
+                            if ($filter->getMax() !== $filtersWithParams[$filterKey]->getMax()) {
+                                $changed['slider'][$paramNameTo] = $filtersWithParams[$filterKey]->getMax();
+                            }
+                        }
+                        break;
+                    case FilterEntity::TYPE_LIST:
+                        // подготавливаем массив опций
+                        $options = [];
+                        foreach ($filter->getOption() as $option) {
+                            $options[$option->getId()] = $option;
+                        }
+
+                        $optionsWithParams = [];
+                        if (isset($filtersWithParams[$filterKey])) {
+                            foreach ($filtersWithParams[$filterKey]->getOption() as $option) {
+                                $optionsWithParams[$option->getId()] = $option;
+                            }
+                        }
+
+                        foreach ($options as $optionKey => $option) {
+                            $paramName = \View\Name::productCategoryFilter($filter, $option);
+
+                            // фильтр есть в общем списке фильтров, но не пришел при запросе пользовательских фильтров, дисейблим
+                            if (!isset($filtersWithParams[$filterKey]) || !isset($optionsWithParams[$optionKey])) {
+                                $disabled['list'][$paramName] = $option->getId();
+
+                            // в фильтре 0 товаров
+                            } elseif (isset($optionsWithParams[$optionKey]) && 0 == $optionsWithParams[$optionKey]->getQuantity()) {
+                                if ('shop' == $filterKey) {
+                                    $disabled['list'][$paramName][] = $option->getId();
+                                } else {
+                                    $disabled['list'][$paramName] = $option->getId();
+                                }
+
+                            // в фильтре изменилось кол-во товаров
+                            } elseif (isset($optionsWithParams[$optionKey]) && isset($options[$optionKey]) && $optionsWithParams[$optionKey]->getQuantity() !== $options[$optionKey]->getQuantity()) {
+                                if ('shop' == $filterKey) {
+                                    $changed['list'][$paramName][$option->getId()] = $optionsWithParams[$optionKey]->getQuantity();
+                                } else {
+                                    $changed['list'][$paramName] = $optionsWithParams[$optionKey]->getQuantity();
+                                }
+                            }
+                        }
+                        break;
+                    case FilterEntity::TYPE_BOOLEAN:
+                        foreach ([1 => 'да', 0 => 'нет'] as $value => $name) {
+                            $paramName = \View\Name::productCategoryFilter($filter, $value);
+                            $quantity = $filter->getQuantity();
+                            $quantityWithParams = isset($filtersWithParams[$filterKey]) ? $filtersWithParams[$filterKey]->getQuantity() : [];
+
+                            // фильтр есть в общем списке фильтров, но не пришел при запросе пользовательских фильтров, дисейблим
+                            if (!isset($filtersWithParams[$filterKey])) {
+                                $disabled['choice'][$paramName] = $filter->getTypeId();
+
+                            // в фильтре 0 товаров
+                            } elseif (!empty($quantityWithParams) && is_array($quantityWithParams) && 0 == $quantityWithParams[$value]) {
+                                    $disabled['choice'][$paramName] = $filter->getTypeId();
+
+                                // в фильтре изменилось кол-во товаров
+                            } elseif (isset($filtersWithParams[$filterKey])) {
+                                if (
+                                    !empty($quantity) && is_array($quantity) && !empty($quantityWithParams) && is_array($quantityWithParams) &&
+                                    $quantity[$value] !== $quantityWithParams[$value]
+                                ) {
+                                    $changed['choice'][$paramName] = $quantityWithParams[$value];
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+
+            $this->disabledFilters = $disabled;
+            $this->changedFilters = $changed;
+        }
 
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
@@ -967,13 +1082,18 @@ class Action {
 
             // если установлена настройка что бы показывать фасеты, то в ответ добавляем "disabledFilter"
             if (true === \App::config()->sphinx['showFacets']) {
-                $data['disabledFilter'] = (new \View\ProductCategory\DisabledFilterAction())->execute(
-                    \App::closureTemplating()->getParam('helper'),
-                    $productFilter
-                );
+                $data['newFilter'] = [
+                    'disabled' => $this->disabledFilters,
+                    'changed' => $this->changedFilters,
+                ];
             }
 
             return new \Http\JsonResponse($data);
+        }
+
+        if (true === \App::config()->sphinx['showFacets']) {
+            $page->setGlobalParam('disabledFilters', !empty($this->disabledFilters) ? $this->disabledFilters : []);
+            $page->setGlobalParam('changedFilters', !empty($this->changedFilters) ? $this->changedFilters : []);
         }
 
         $page->setParam('productPager', $productPager);
@@ -1020,6 +1140,10 @@ class Action {
 
         $values = [];
         foreach ($requestData as $k => $v) {
+            if ('shop' === $k) {
+                $values[$k][] = $v;
+            }
+
             if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
             $parts = array_pad(explode('-', $k), 3, null);
 

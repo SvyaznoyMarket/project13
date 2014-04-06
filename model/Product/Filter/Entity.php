@@ -39,6 +39,8 @@ class Entity {
 
     /** @var  string */
     private $stepType;
+    /** @var array */
+    private $quantity = [];
 
     public function __construct(array $data = []) {
         if (array_key_exists('filter_id', $data)) $this->setId($data['filter_id']);
@@ -55,6 +57,7 @@ class Entity {
             }
         }
         if (array_key_exists('step', $data)) $this->setStepType($data['step']);
+        if (array_key_exists('quantity', $data)) $this->setQuantity($data['quantity']);
     }
 
     public function toArray() {
@@ -272,5 +275,19 @@ class Entity {
      */
     public function isBrand() {
         return 'brand' == $this->getId();
+    }
+
+    /**
+     * @param array $quantity
+     */
+    public function setQuantity($quantity) {
+        $this->quantity = $quantity;
+    }
+
+    /**
+     * @return array
+     */
+    public function getQuantity() {
+        return $this->quantity;
     }
 }
