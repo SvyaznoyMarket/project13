@@ -15,7 +15,8 @@
     <script src="/js/prod/LAB.min.js" type="text/javascript"></script>
     <script src="/js/vendor/html5.js" type="text/javascript"></script>
 </head>
-<body class='b404' data-template="page404">
+<body class='b404' data-template="page404" data-debug="<?= $page->json(\App::config()->debug); ?>">
+<? if (\App::config()->debug) echo \App::templating()->render('_config',['page'=> $page]); ?>
 <table class='b404InnerWrap'>
     <td>
         <a class='b404__eLogo' href='/'></a>

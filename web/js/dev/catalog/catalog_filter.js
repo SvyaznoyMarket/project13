@@ -82,6 +82,16 @@
 
 				title.empty();
 				title.html(html);
+			},
+
+			countProducts: function ( html ) {
+				var
+					subminBtn = $('.bBtnPick__eLink', '.bFilter'),
+					count = html ? parseInt(html) : -1;
+
+				if ( count >= 0 && subminBtn.length ) {
+					subminBtn.text('Подобрать (' +  html + ')');
+				}
 			}
 		},
 
@@ -176,6 +186,11 @@
 				var title = data.title;
 
 				return title;
+			},
+
+			countProducts: function ( data ) {
+				console.info('render countProducts');
+				return data;
 			}
 		},
 
@@ -384,15 +399,8 @@
 
 			if ( e.isTrigger ) {
 				console.warn('it\'s trigger');
-
-				filterSubminBtn.animate({
-					boxShadow: '1px 1px 20px #ffa901'
-				}, 300, 'swing', function() {
-					filterSubminBtn.animate({
-						boxShadow: '1px 1px 3px #C7C7C7'
-					}, 300, 'swing');
-				});
 			}
+			
 			else if ( typeof e === 'object' && catalog.enableHistoryAPI ) {
 				console.warn('it\'s true event and HistoryAPI enable');
 

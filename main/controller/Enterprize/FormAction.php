@@ -17,7 +17,7 @@ class FormAction {
         }
 
         if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize', [], true));
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
         }
 
         $user = \App::user();
@@ -66,7 +66,7 @@ class FormAction {
             ]);
             $session->set($sessionName, $data);
 
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize.create', [], true));
+            return new \Http\RedirectResponse(\App::router()->generate('enterprize.create'));
         }
         $session->set($sessionName, $data);
 
@@ -103,7 +103,7 @@ class FormAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
-            $link = \App::router()->generate('enterprize', [], true);
+            $link = \App::router()->generate('enterprize');
 
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
@@ -265,7 +265,7 @@ class FormAction {
                 }
             } else {
                 // просим подтвердить телефон
-                $link = \App::router()->generate('enterprize.confirmPhone.show', [], true);
+                $link = \App::router()->generate('enterprize.confirmPhone.show');
                 try {
                     if (!isset($data['mobile']) || empty($data['mobile'])) {
                         throw new \Exception('Не получен мобильный телефон');
@@ -327,9 +327,9 @@ class FormAction {
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'error'   => null,
-                    'data'    => ['link' => \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true)],
+                    'data'    => ['link' => \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken])],
                 ])
-                : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken], true)));
+                : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken])));
     }
 
     /**

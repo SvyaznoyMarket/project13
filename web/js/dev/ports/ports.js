@@ -318,7 +318,7 @@ window.ANALYTICS = {
 	},
 
 	sociomanticJS: function () {
-		(function () {
+		/*(function () {
 			var s = document.createElement('script'),
 				x = document.getElementsByTagName('script')[0];
 			s.type = 'text/javascript';
@@ -326,33 +326,34 @@ window.ANALYTICS = {
 			s.src = ('https:' == document.location.protocol ? 'https://' : 'http://')
 				+ 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
 			x.parentNode.insertBefore(s, x);
-		})();
+		})();*/
 	},
 
 	smanticPageJS: function() {
-		(function(){
-			var elem = $('#smanticPageJS'),
-				prod = elem.data('prod'),
-				prod_cats = elem.data('prod-cats'),
-				cart_prods = elem.data('cart-prods');
+		console.log('smanticPageJS');
+		var
+			elem = $('#smanticPageJS'),
+			prod = elem.data('prod'),
+			prod_cats = elem.data('prod-cats'),
+			cart_prods = elem.data('cart-prods');
 
-			window.sonar_product = window.sonar_product || {};
+		window.sonar_product = window.sonar_product || {};
 
-			if ( prod ) {
-				window.sonar_product = prod;
-			}
+		if ( prod ) {
+			window.sonar_product = prod;
+		}
 
-			if ( prod_cats ) {
-				window.sonar_product.category = prod_cats;
-			}
+		if ( prod_cats ) {
+			window.sonar_product.category = prod_cats;
+		}
 
-			if ( cart_prods ) {
-				window.sonar_basket = { products: cart_prods };
-			}
-		})();
+		if ( cart_prods ) {
+			window.sonar_basket = { products: cart_prods };
+		}
 	},
 
     criteoJS : function() {
+		console.log('criteoJS');
         window.criteo_q = window.criteo_q || [];
         var criteo_arr =  $('#criteoJS').data('value');
         if ( typeof(criteo_q) != "undefined" && !jQuery.isEmptyObject(criteo_arr) ) {
@@ -894,31 +895,6 @@ window.ANALYTICS = {
         initTagMan();
 	},
 
-	desertJS : function() {
-		window._paq = window._paq || [];
-
-		_paq.push(["setCookieDomain", "*.enter.ru"]);
-		_paq.push(["trackPageView"]);
-		_paq.push(["enableLinkTracking"]);
-
-		(function(){
-			var
-				u=(("https:" == document.location.protocol) ? "https" : "http") + "://desert-st.cdn.ngenix.net/",
-				d=document,
-				g=d.createElement("script"),
-				s=d.getElementsByTagName("script")[0];
-
-			_paq.push(["setTrackerUrl", "http://scales.desert.ru/scales.php"]);
-			_paq.push(["setSiteId", 369]);
-
-			g.type="text/javascript";
-			g.defer=true;
-			g.async=true;
-			g.src=u+"js/scales.js";
-			s.parentNode.insertBefore(g,s);
-		})();
-	},
-
     RetailRocketJS : function() {
     	console.group('ports.js::RetailRocketJS');
 
@@ -1399,14 +1375,43 @@ window.ANALYTICS = {
 
 	sociaPlusJs: function() {
 		var _spapi = _spapi || [];
-		_spapi.push(['_partner', 'example']);
+		_spapi.push(['_partner', 'enter']);
 
 		(function() {
 			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 			ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') +
-				'example.api.sociaplus.com/partner.js';
+				'enter.api.sociaplus.com/partner.js';
 			var s = document.getElementsByTagName('script')[0];
 			s.parentNode.insertBefore(ga, s);
+		})();
+	},
+
+	cpaexchangeJS: function () {
+		(function () {
+			var
+				cpaexchange = $('#cpaexchangeJS'),
+				data = {},
+				s, b, c;
+			// end of vars
+
+			if ( !cpaexchange.length ) {
+				return;
+			}
+
+			data = cpaexchange.data('value');
+			if ( !data || !$.isNumeric(data.id) ) {
+				return;
+			}
+
+			s = document.createElement('script');
+			b = document.getElementsByTagName('body')[0];
+			c = document.createComment('HUBRUS RTB Segments Pixel V2.3');
+
+			s.type = 'text/javascript';
+			s.async = true;
+			s.src = 'http://track.hubrus.com/pixel?id=' + data.id + '&type=js';
+			b.appendChild(c);
+			b.appendChild(s);
 		})();
 	},
 

@@ -25,6 +25,98 @@ class CityAds {
         return $link;
     }
 
+
+    /**
+     * @param \Model\Order\Entity $order
+     * @param array $productsById
+     * @param bool $isScript
+     * @return bool|null|string
+     */
+    public static function getCityAdspixLink(\Model\Order\Entity $order,  array &$productsById = [], $page, $isScript = false) {
+        /** @var  $page \View\Order\CreatePage*/
+
+        $request = \App::request();
+        $click_id = $request->cookies->get('click_id');
+        $prx = $request->cookies->get('prx');
+
+        if (!$click_id || !$prx){
+            return false;
+        }
+
+        $userEntity = \App::user()->getEntity();
+        $uid = $userEntity ? $userEntity->getId() : 0;
+        $paymentMethod = null;
+        $link = null;
+        $basket = [];
+
+        switch ($order->getPaymentId())
+        {
+            case \Model\PaymentMethod\Entity::CASH_ID:
+                $paymentMethod = 'Cash';
+                break;
+            case \Model\PaymentMethod\Entity::CARD_ID:
+            case \Model\PaymentMethod\Entity::CREDIT_ID:
+                $paymentMethod = 'Credit Card';
+                break;
+            case \Model\PaymentMethod\Entity::CERTIFICATE_ID:
+                $paymentMethod = 'Debit Card';
+                break;
+            case \Model\PaymentMethod\Entity::WEBMONEY_ID:
+            case \Model\PaymentMethod\Entity::QIWI_ID:
+            case \Model\PaymentMethod\Entity::PAYPAL_ID:
+                $paymentMethod = 'Webmoney/Paypal';
+                break;
+        }
+
+
+        try {
+
+            foreach ($order->getProduct() as $orderProduct)
+            {
+                /** @var $product \Model\Product\Entity */
+                $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
+                if (!$product) continue;
+
+                if ($product->getMainCategory()) {
+                    $category = $product->getMainCategory();
+                } else {
+                    $category = $product->getCategory();
+                    $category = reset($category);
+                }
+                /** @var $category \Model\Product\Category\Entity*/
+
+                $basket[] = [
+                    'pid' => $product->getId(),
+                    'pn' => $product->getName(),
+                    'up' => $product->getPrice(),
+                    'pc' => $category->getId(),
+                    'qty' => $orderProduct->getQuantity()
+                ];
+            }
+
+            $link = strtr('https://cityadspix.com/track/{order_id}/ct/q1/c/2085?click_id={click_id}&prx={prx}&customer_type={customer_type}&payment_method={payment_method}&price={price}&currency={currency}&basket={basket}', [
+                '{order_id}'        => $order->getNumber(),
+                '{click_id}'        => $click_id,
+                '{prx}'             =>  $prx,
+                '{customer_type}'   => ($uid)  ? 'returned' : 'new',
+                '{payment_method}'  => $paymentMethod,
+                '{price}'           => $order->getSum(),
+                '{currency}'        => 'RUB',
+                //'{basket}'          => str_replace( '\"' ,  '\'', json_encode($basket, JSON_UNESCAPED_UNICODE)),
+                '{basket}'          => $page->json($basket),
+            ]);
+
+            if ($isScript) $link .= '&md=' . count($order->getProduct());
+
+        } catch (\Exception $e) {
+            \App::logger()->error($e, ['partner', 'cityads']);
+            \App::exception()->remove($e);
+        }
+
+        return $link;
+    }
+
+
     /**
      * Возвращает ссылку для страницы подписки /subscribe_friends
      *

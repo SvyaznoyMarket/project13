@@ -58,4 +58,8 @@ class IndexPage extends \View\DefaultLayout {
             . "\n\n"
             . $this->render('_innerJavascript');
     }
+
+    public function slotСpaexchangeJS () {
+        return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 22249]) . '"></div>';
+    }
 }

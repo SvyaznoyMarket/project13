@@ -727,7 +727,7 @@ $productVideo = reset($productVideos);
 
 <? if (\App::config()->analytics['enabled']): ?>
     <?= $page->tryrender('jewel/product/partner-counter/_cityads', ['product' => $product]) ?>
-    <?= $page->tryrender('jewel/product/partner-counter/_recreative', ['product' => $product]) ?>
+    <?//= $page->tryrender('jewel/product/partner-counter/_recreative', ['product' => $product]) ?>
 <? endif ?>
 
 </div>
