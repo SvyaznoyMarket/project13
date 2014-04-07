@@ -58,7 +58,10 @@
             'openFilter'    => false,
             'promoStyle'    => $promoStyle,
         ]) // фильтры ?>
-    
+
+        <?= $helper->render('product/_smartChoice', [
+            'smartChoiceProducts' => $smartChoiceProducts,
+        ]); ?>
 
         <?= $helper->render('product/__listAction', [
             'pager'          => $productPager,

@@ -859,6 +859,28 @@ class Action {
             }
         }
 
+        $smartChoiceEnabled = true;
+        $smartChoiceData = [];
+
+        if ($smartChoiceEnabled) {
+            // TODO получение продуктов по фильтру
+            // Получаем продукты для Smart Choice
+            $smartChoiceData = [
+                ['name' => 'Выгодное предложение', 'products' => ['id' => 64686]],
+                ['name' => 'Хит продаж', 'products' => ['id' => 111348]],
+                ['name' => 'Самым разборчивым', 'products' => ['id' => 139048]],
+            ];
+            $smartChoiceProductsIds = array_map(function($a){ return $a['products']['id'];}, $smartChoiceData);
+            $repository->prepareCollectionById($smartChoiceProductsIds, $region, function ($data) use (&$smartChoiceProducts, &$smartChoiceData) {
+                foreach ($data as $item) {
+                    $smartChoiceProduct = new \Model\Product\Entity($item);
+                    array_walk($smartChoiceData, function (&$item, $key, $smartChoiceProduct) {
+                        if ($item['products']['id'] == $smartChoiceProduct->getId()) $item['product'] = $smartChoiceProduct;
+                    }, $smartChoiceProduct);
+                }
+            });
+        }
+
         if (!empty($pagerAll)) {
             $productPager = $pagerAll;
         } else {
@@ -974,6 +996,7 @@ class Action {
             return new \Http\JsonResponse($data);
         }
 
+        $page->setParam('smartChoiceProducts', $smartChoiceData);
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
