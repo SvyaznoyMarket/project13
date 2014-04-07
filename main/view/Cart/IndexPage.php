@@ -67,6 +67,10 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotСpaexchangeJS () {
+        if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {
+           return;
+        }
+
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25013]) . '"></div>';
     }
 }
