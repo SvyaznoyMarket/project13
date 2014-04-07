@@ -2041,3 +2041,25 @@ body.noScroll {
   border: #ededed;
   background: #ffffff url('/debug/grid.gif');
 }
+/* ==========================================================================
+   Стили при отключенном JavaScript
+   ========================================================================== */
+.no-js .slidesItemsList {
+  position: relative;
+}
+.no-js .slidesItemsList_item {
+  position: relative;
+  display: none;
+}
+.no-js .slidesItemsList_item:first-child {
+  display: block;
+}
+.no-js .slidesItemsList_img {
+  width: 100%;
+  height: auto;
+  max-width: 350px;
+}
+.no-js .slidesItemsBtn,
+.no-js .slidesItemsBtnPag {
+  display: none;
+}
