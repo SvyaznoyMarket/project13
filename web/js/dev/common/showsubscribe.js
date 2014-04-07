@@ -85,19 +85,32 @@
 			},
 
 			subscribeNow = function subscribeNow() {
+				var
+					notNow = $('.bSubscribeLightboxPopup__eNotNow');
+				// end of vars
+
+				var
+					/**
+					 * Обработчик клика на ссылку "Спасибо, не сейчас"
+					 * @param e
+					 */
+					notNowClickHandler = function( e ) {
+						e.preventDefault();
+
+						var url = $(this).data('url');
+
+						subPopup.slideUp(300, subscribeLater);
+						window.docCookies.setItem('subscribed', 0, 157680000, '/');
+						$.post(url);
+					};
+				// end of functions
+
 				subPopup.slideDown(300);
 
 				submitBtn.bind('click', subscribing);
 
-				$('.bSubscribeLightboxPopup__eNotNow').bind('click', function() {
-					var url = $(this).data('url');
-
-					subPopup.slideUp(300, subscribeLater);
-					window.docCookies.setItem('subscribed', 0, 157680000, '/');
-					$.post(url);
-
-					return false;
-				});
+				notNow.off('click');
+				notNow.bind('click', notNowClickHandler);
 			},
 
 			subscribeLater = function subscribeLater() {
