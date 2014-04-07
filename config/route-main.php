@@ -620,6 +620,12 @@ return [
         'action' => ['Product\UpsaleAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
+
+    // smartchoice
+    'product/smartchoice' => [
+        'pattern' => '/ajax/product-smartchoice',
+        'action' => ['Product\SmartChoiceAction', 'execute'],
+    ],
     /*
     'smartengine.pull.product_similar' => [
         'pattern' => '/product-similar/{productId}',
@@ -723,6 +729,11 @@ return [
         'pattern' => '/debug/log/{id}',
         'action'  => ['LogAction', 'execute'],
         'method'  => ['POST'],
+    ],
+
+    'debug.info' => [
+        'pattern' => '/debug/info',
+        'action'  => ['DebugAction', 'info'],
     ],
 
     //cron

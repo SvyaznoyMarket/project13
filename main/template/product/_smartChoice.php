@@ -7,20 +7,45 @@ return function(
 
     if (count($smartChoiceProducts) == 3) :
         ?>
-        <div class="clearfix">
+        <div class="specialPrice">
         <?
 
         $showAction = new \View\Product\SmartChoiceAction();
-        foreach ($smartChoiceProducts as $product) {
-            echo $product['name'].'<br />';
-            $productShowArr = $showAction->execute($helper, $product['product']);
-            echo $helper->renderWithMustache('product/_smartChoice', $productShowArr);
+        $typeMod = [
+            'Хит продаж' => '',
+            'Выгодное предложение' => 'mProfit',
+            'Самым разборчивым' => 'mSpec'
+        ];
+
+        $cartButtonAction = new \View\Cart\ProductButtonAction();
+
+        foreach ($smartChoiceProducts as $key => $product) {
+            $productShowArr = $showAction->execute($helper, $product['product'], null, $cartButtonAction);
+            echo $helper->renderWithMustache(
+                'product/_smartChoice', array(
+                    'product' => $productShowArr,
+                    'name' => $product['name'],
+                    'typeMod' => $typeMod[$product['name']],
+                    'first'=>$key == 0,
+                    'last' => $key == 2,
+                ));
         }
 
         ?>
         </div>
-        <div class="smartChoiceForProduct clearfix">
-            
+
+        <div class="specialBorderBox">
+            <!-- Сюда нужно вывести реальный слайдер и передать мне на доработку -->
+            <div class="bSlider">
+                <div class="bSlider__eInner">
+                    <ul class="bSlider__eList clearfix" style="width: 1200px; left: 0px;">
+
+                    </ul>
+                </div>
+
+                <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>
+                <div class="bSlider__eBtn mNext"><span></span></div>
+            </div>
         </div>
         <?
 

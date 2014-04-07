@@ -3308,6 +3308,7 @@ $(document).ready(function() {
 		w = $(window),
 		infoShowing = false,
 		overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
+		newOverlay = false,
 
 		scrollTarget,
 		scrollTargetOffset;
@@ -3395,6 +3396,84 @@ $(document).ready(function() {
 		},
 
 		/**
+		 * Закрытие окна о совершенной покупке
+		 */
+		closeBuyInfo = function closeBuyInfo() {
+			var
+				wrap = userBarFixed.find('.fixedTopBar__cart'),
+				wrapLogIn = userBarFixed.find('.fixedTopBar__logIn'),
+				openClass = 'mOpenedPopup',
+				upsaleWrap = wrap.find('.hintDd');
+			// end of vars
+
+			var
+				/**
+				 * Удаление выпадающей плашки для корзины
+				 */
+				removeBuyInfoBlock = function removeBuyInfoBlock() {
+					var
+						buyInfo = $('.fixedTopBar__cartOn');
+					// end of vars
+
+					if ( !buyInfo.length ) {
+						return;
+					}
+
+					buyInfo.slideUp(300, function() {
+						//checkScroll();
+//						buyInfo.remove();
+						infoShowing = false;
+					});
+				},
+
+				/**
+				 * Удаление Overlay блока
+				 */
+				removeOverlay = function removeOverlay() {
+					overlay.fadeOut(100, function() {
+						userBar.showOverlay = false;
+
+						if ( newOverlay ) {
+							newOverlay = false;
+
+							return;
+						}
+
+						overlay.off('click');
+						overlay.remove();
+						userBar.showOverlay = false;
+						checkScroll();
+					});
+				};
+			// end of function
+
+			// только BuyInfoBlock
+			if ( !upsaleWrap.hasClass('mhintDdOn') ) {
+				removeBuyInfoBlock();
+
+				if ( userBar.showOverlay ) {
+					removeOverlay();
+				}
+
+				return;
+			}
+
+			upsaleWrap.removeClass('mhintDdOn');
+			wrapLogIn.removeClass(openClass);
+			wrap.removeClass(openClass);
+
+			if ( infoShowing ) {
+				removeBuyInfoBlock();
+			}
+
+			if ( userBar.showOverlay ) {
+				removeOverlay();
+			}
+
+			return false;
+		},
+
+		/**
 		 * Показ окна о совершенной покупке
 		 */
 		showBuyInfo = function showBuyInfo( e ) {
@@ -3413,44 +3492,6 @@ $(document).ready(function() {
 
 			dataToRender.products = utils.cloneObject(clientCart.products);
 			dataToRender.showTransparent = !!( dataToRender.products.length > 3 );
-
-			var
-				/**
-				 * Закрытие окна о совершенной покупке
-				 */
-				closeBuyInfo = function closeBuyInfo() {
-					var
-						upsaleWrap = wrap.find('.hintDd');
-					// end of vars
-
-					upsaleWrap.removeClass('mhintDdOn');
-					wrapLogIn.removeClass(openClass);
-					wrap.removeClass(openClass);
-
-					buyInfo.slideUp(300, function() {
-						//checkScroll();
-						buyInfo.remove();
-
-						infoShowing = false;
-					});
-
-					if ( !userBar.showOverlay ) {
-						return;
-					}
-					
-					overlay.fadeOut(300, function() {
-						overlay.off('click');
-						overlay.remove();
-						checkScroll();
-
-						userBar.showOverlay = false;
-					});
-
-					return false;
-				};
-			// end of function
-
-
 			dataToRender.products.reverse();
 			console.log(dataToRender);
 
@@ -3636,6 +3677,14 @@ $(document).ready(function() {
 				upsaleWrap.append(slider);
 				upsaleWrap.addClass('mhintDdOn');
 				$(slider).goodsSlider();
+
+				// показываем overlay для блока рекомендаций
+				body.append(overlay);
+				newOverlay = true;
+				overlay.fadeIn(300);
+				overlay.on('click', closeBuyInfo);
+//				checkScroll();
+				userBar.showOverlay = true;
 
 				if ( !data.product.article ) {
 					console.warn('Не получен article продукта');

@@ -3141,6 +3141,182 @@ img[height="0"] {
   }
 }
 /*---END----TCHIBO - листинг Чибо---------*/
+/*---------Хиты продаж/Выгодное предложение/Самым разборчивым----------*/
+@media all {
+  .specialPrice {
+    font-size: 0;
+    margin: 0 0 10px;
+  }
+  .specialPriceItem {
+    display: inline-block;
+    vertical-align: top;
+    width: 299px;
+    border-right: 1px solid #c7c7c7;
+    padding: 0 10px;
+    font-size: 12px;
+    *display: inline;
+    zoom: 1;
+  }
+  .specialPriceItem.mLast {
+    border-right: none;
+    padding-right: 0;
+  }
+  .specialPriceItem.mFirst {
+    padding-left: 0;
+  }
+  .specialPriceItemCont_imgLink {
+    display: block;
+    margin: 0 0 5px;
+  }
+  .specialPriceItemCont_img {
+    width: 280px;
+  }
+  .specialPriceItemCont_desc {
+    height: 65px;
+    overflow: hidden;
+  }
+  .specialPriceItemCont_name {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 14px;
+    height: 39px;
+    line-height: 20px;
+    margin: 0 0 5px;
+    overflow: hidden;
+    *display: inline;
+    zoom: 1;
+  }
+  .specialPriceItemCont_name .catName {
+    display: block;
+  }
+  .specialPriceItemCont_buy {
+    height: 52px;
+    margin: 0 0 10px;
+  }
+  .specialPriceItemCont_buy .priceBox {
+    display: inline-block;
+    vertical-align: top;
+    width: 140px;
+    text-align: right;
+    *display: inline;
+    zoom: 1;
+  }
+  .specialPriceItemCont_buy .priceBox_old {
+    display: block;
+    color: #919291;
+    font-size: 16px;
+  }
+  .specialPriceItemCont_buy .priceBox_new {
+    color: #e62b34;
+    font-size: 24px;
+  }
+  .specialPriceItemCont_buy .priceBox_new.mStatic {
+    display: inline-block;
+    font-size: 24px;
+    margin: 8px 0 0;
+    vertical-align: top;
+    color: #000000;
+    *display: inline;
+    zoom: 1;
+  }
+  .specialPriceItemCont_buy .btnBuy {
+    display: inline-block;
+    height: 18px;
+    margin: 15px 0 0 20px;
+    vertical-align: top;
+    width: 130px;
+    *display: inline;
+    zoom: 1;
+  }
+  .specialPriceItemCont_buy .btnBuy_link {
+    width: 110px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAQCAYAAAAMJL+VAAAACXBIWXMAAAsTAAALEwEAmpwYAAADVElEQVQ4Ea1US2iVRxQ+58z/uDfJjbnGYK4uxECrpbpoowFJoZFaBR+LLCKli64KpRt37oTUhbi2UGgtKC4EMRuVmFCsxCJUEERLF74wEY2aUNNruHnc15zTbxSNMUo3Hph/zpyZ+b7z+od3X332hVf9holiYv/D+a4Vd+g9SuTV/yRJZh15T1Ynt3eAvj7dR/59cfCOK1PfCtFXAOxicY2qfj8znU5NIi8VBLYgTlMLtpdz2HmbXlMzca58fnPbBJsZffn76DLXtOxwFKffm69XTPUuMTeQWYXIIiYmY1J8HLS6EUdEqkQMnbJwaJ6NBFAJ9CpsTSR8YqgrfwDOE13Y1jHNPjmiteq4S7Mp8G6xqccYBdFTOPQMxyYBMqMmj0htBusnYBwVshrA7qnROBnNw5Ex7C3H9auY6TlBUIa7c7cBfNRXy8CUXmN+CKc+MuMGFhH4n1dWFdbV5KyOqFoc8zpkYIK8rhemVYApYnQD52Ecp38G3FcEYcHif1Xvx9hFDstmFkbElMDjDE4mAI1NMIyhU2JenbFk4bkQW4zzOdQxZaWhUikXol5MEIoiLEcQApnaBiMLLTsH6hpAiiE0pOlxyDcqME0i90CaR+4f4MwEUlYAQdWbXhzpofoSgmCIGuNTWinfdGkmBdCH8KwJI0Wxl6OuEVLSjhQ4FmrBvAb2sggX4EzBxZlmq1buxMw3AlaQRSkKhrMbGidx8SQ8AT63whQ6JRTSWLmMIoKEUShoRg04FPKeRX6TqDHriN31wS2tjwNWELTbUtGaHWOa/YSdK6gHPMSUZixUxmgW4CgLz2M1BZpgfUTeuFr895aYnMGNF5ew8fw/wLxEtl66n8nlUnmKjK5IHJdK0ZJow6W2tM2Po0NzpVjS1pV2rpMC8f8ThMt7rkyt5iRZO0/1vy905qeD7XXhgwelr7d/zVylVKgV5/76bfvK2df3g/5Wr8LGrkv/tHuWYbwYl+MaH9909Foc7C8lgO/cvu/jmbniCEduxOXiQ99dw4P5hryTwMe+FcXeqPjx8GR81rGxc1G9ej7vF430A+AVzHs8IfRpkYoNb+C/O4LmfPtdtN4vAMfvb4cHthCYFiT0eTaX/GGmwyBAJ/HPA4M/lhZOvND+A7CpgnE5J2ASAAAAAElFTkSuQmCC) no-repeat 0 4px;
+    color: #49c7ed;
+    font-size: 18px;
+    height: 18px;
+    line-height: 18px;
+    padding: 0 0 0 30px;
+    border: none;
+    text-align: left;
+  }
+  .specialPriceItemTitle {
+    text-align: center;
+    color: #ffffff;
+    font-size: 16px;
+    background: url("/styles/specialPrice/img/hits.png") no-repeat 50% 0;
+    height: 45px;
+    line-height: 45px;
+    margin: 0 0 10px;
+  }
+  .specialPriceItemTitle.mProfit {
+    background-image: url("/styles/specialPrice/img/spec.png");
+  }
+  .specialPriceItemTitle.mSpec {
+    background-image: url("/styles/specialPrice/img/vigoda.png");
+  }
+  .specialPriceItemFoot {
+    text-align: center;
+  }
+  .specialPriceItemFoot_link {
+    background: #cef0fb;
+    display: block;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAJCAYAAAD+WDajAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAVElEQVQYGWNgYGBYC8SS////Z0DHQHGG/0D8HohTgJgRWQGQD5YEKQDhfUCsAlMAZKNIghR8A+IyIGZhhEoCKQwwFyQCMxJGw3WiS2K1E6drcfoTAPakViq6WCtvAAAAAElFTkSuQmCC);
+    background-repeat: no-repeat;
+    background-position: 83px 8px;
+    height: 21px;
+    padding: 5px 0 0;
+  }
+  .specialPriceItemFoot_link:hover {
+    background-color: #87dbf5;
+    text-decoration: none;
+  }
+  .specialPriceItemFoot_link.mActive {
+    background-color: #87dbf5;
+    background-position: 83px 10px;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAHCAYAAADam2dgAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAWElEQVQYGWNgYGBYC8T/8WCQPIMkEL/HoQgkLsnw/z/IEIYUHIpSwPJQRYxARfvRFIL4jHBFUIUqQMFvUIUgWgUkjqIIqrAMqqgMpgCbIhagojlAzIKsCABph1slGNqD+gAAAABJRU5ErkJggg==);
+  }
+  .specialPriceItemFoot_text {
+    border-bottom: 1px dotted;
+    font-size: 14px;
+    line-height: 1;
+  }
+  .specialBorderBox {
+    border-top: 3px solid #87dbf5;
+    border-bottom: 3px solid #87dbf5;
+    width: 960px;
+    margin: -10px 0 10px -10px;
+    padding: 10px 0;
+  }
+  .specialBorderBox .bSlider {
+    height: 195px;
+  }
+  .specialBorderBox .bSlider__eInner {
+    padding: 0;
+    width: 960px;
+  }
+  .specialBorderBox .bSlider__eBtn {
+    background: none;
+    height: 26px;
+    width: 26px;
+  }
+  .specialBorderBox .bSlider__eBtn.mNext {
+    right: 10px;
+  }
+  .specialBorderBox .bSlider__eBtn.mNext span {
+    height: 26px;
+    width: 26px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAACXBIWXMAAAsTAAALEwEAmpwYAAACuElEQVRIDa1WTWsUQRCtrpnZybobhhgPhpCDsuApVyWC6EEQQZEEAnoxIv4P8XfoITkpBPGg6MlD8CAB8WBOomBEFgWXJJpddnemp9vq6Z30fvZ2cOsy3VOvqrqmq+oNk1KCVZ6eOwUYVwD5HEg2AwhTGV5AC5jcB+H/BFH4Cnc+12x+2MhAmwvzALgEIE7bHBgd/iLse1j9UTXvzArNMl89QthcuEy7ZfcgyjY70LK2JR990pvR+pkpKPHrhKFs/kuq0PDfwL1vrdxLV2Q6xWSCKN/z2pfJzGSkP9difoL+p+A4zZPyBT88eIuIYyroyHqH7mxL7XRG2cXDyCAKmLajq5IXb6XNkytq7yiLdGfZNXQ+naouu3jFvZfA0l0hwitJs3Teju7Wat8Ir6hPHEoYkfEg3H8smfgteOl20i5WQIhujyPWVI3UiwgNakZHwSD96wf1DQDJZTy9xtPCrJMpNTxmHe+E1iA/bH5Hv/WcBkpZtKO7ImV6Uth80FTBbKzYQEN0QfFwW3rxtpT+2aQd3RwC6X1Fo4sy6syuXpV1R1fjeapgpRQgHUqdYnQ1rNW3UTLBZBwtpcK/SFX4JSjuvTDK0SsENYVdhVJJmsUKj8MVxmQtKP/ZQIR0rDnFwGzUj0VqAJeFWZlEa2TDPao+qvhDJ1OiE8qI+MRB1AgSjZn7NHtCLDSfqepzMNMQikGDlEjLQeJWdE0yNkckuBWE9Y8OJgZCxIhwQzGjIi27BEGyC0x8Ck4cvLYj+7Xkm9i3U3XEjGPEC+sfwnJtHRmVz7FE+9aBNP3uHMveDaxoIqN200erD96R7VC+d/M5gKqC9pkpTCB4KDL6nUwwTeXKZ0cMw+ZvQP2cPLlEWysRHsEHF/S51NcxQRRkSKCO5YR/t0YHyk+qiFFxlu0HUvVi1ia50eDzH95ZEIXud3csAAAAAElFTkSuQmCC) no-repeat 0 0;
+  }
+  .specialBorderBox .bSlider__eBtn.mPrev {
+    left: 10px;
+  }
+  .specialBorderBox .bSlider__eBtn.mPrev span {
+    height: 26px;
+    width: 26px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpGN0IwMDAwM0I2NUMxMUUzOEZDOUU0MUMwQ0QyQ0FFMyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpGN0IwMDAwNEI2NUMxMUUzOEZDOUU0MUMwQ0QyQ0FFMyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkY3QjAwMDAxQjY1QzExRTM4RkM5RTQxQzBDRDJDQUUzIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkY3QjAwMDAyQjY1QzExRTM4RkM5RTQxQzBDRDJDQUUzIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+P2tbVwAAAl5JREFUeNq8VkFr1FAQnpm8pBt2q21ZoaWIFRRPepBC6UF68KTooUjBntqD/g7p/xCxXhQELxVE8FARXPTak7DoQZb1YCmxu2azSd5z8ra6UNtkYhfnFJL35ss375v3DRpjIDdeXqpDt38BKJkBg5NAULHvNfQAzR5o1Yaq14Rbn77npcFjgZ6fnQWgRc44DaKgb7y2AStfW0d+/fvVBjHIEj8sy0EsxWm7x+7doHxGj89XoJrc4KdZOFm0oKtewfqX3hGM+C9GAwI2h801ZDZkNCjXZRht7PCZvR0ysgc/chCwOQe5f5cuU1eJYzdAUae+nka1eYEaFwdAT7lPSqkLIP45cRMMXYljd06kRu5FAuJmLAMS1a6C9pb4cNteJXgt2sQNr2zHCyOJ/HO6799FgIiqe4/I0fuyXk5myF4ronNR42lcW+P1Ct1gU2F/V1wGxqA/d1ceiAYn7pxeMwbryoteuH7YBCJ5vRlDtDoOp5bBOBcdSt6jFzRYCKaszsnewkWBGgGRUl7MRNLS3cQYZK/6gnDHgi3E5DOm3kIcji+UBmIMsn5SRNsxPRoLniBCRyeVO5n6yjFSbQZi0xKEcvq76O1v8u+phNWnY+eUGIiNkWA1c8bMtIpoEZcwbJLqPkNDZ+Jo8r5mzYsMkd33QHXsjMJw/e5HomibVTiXhlO3BXVr/LNNaK0xiSauK7fzgVTu7XDIJrJYuffOOqOkJ4iM5/94UwDSOsh52GEfaGu/QjCRlWc5j5+CsuHk4bUTGOHOgMkQ5L+OW1g4QGbGSAUDZNaLq/kD5C8BBgDQ3AfdIbGSowAAAABJRU5ErkJggg==) no-repeat 0 0;
+  }
+}
+/*---END----Хиты продаж/Выгодное предложение/Самым разборчивым---------*/
 @media all {
   .notBuying {
     position: relative;

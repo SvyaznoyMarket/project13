@@ -11,3 +11,4 @@
 <?= $page->slotMarinLandingPageTagJS() ?>
 <?= $page->slotMarinConversionTagJS() ?>
 <?= $page->slotSociaPlus() ?>
+<?= $page->slotСpaexchangeJS() ?>
