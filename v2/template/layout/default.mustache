@@ -28,13 +28,20 @@
     <meta name="apple-mobile-web-app-title" content="yes">
 
     <link rel="stylesheet" href="/v2/css/global.min.css">
-    <script src="/v2/js/vendor/jquery-1.8.3.min.js"></script>
-    <script src="/v2/js/touch/jquery.touchwipe.min.js"></script>
-    <script src="/v2/js/vendor/html5.js"></script>
+
+    <script src="/v2/js/vendor/ymodules-0.0.15.js"></script>
+    <script src="/v2/js/vendor/jquery-1.8.3.js"></script>
+    <!--<script src="/v2/js/touch/jquery.touchwipe.min.js"></script>-->
+    <script src="/v2/js/vendor/html5-3.6.2.js"></script>
+    <script src="/v2/js/vendor/underscore-1.6.0.js"></script>
+    <script src="/v2/js/vendor/mustache-0.8.2.js"></script>
+    <script src="/v2/js/vendor/backbone-1.1.2.js"></script>
+    <script src="/v2/js/module/cart.common.js"></script>
     <script src="/v2/js/main.js"></script>
-    <script src="/v2/js/products.swipe.js"></script>
-     <script src="/v2/js/loadjs.js"></script>
-    <script src="/v2/js/cart/buyButton.js"></script>
+    <!--<script src="/v2/js/~main.js"></script>-->
+    <!--<script src="/v2/js/products.swipe.js"></script>-->
+    <!--<script src="/v2/js/loadjs.js"></script>-->
+    <!--<script src="/v2/js/cart/buyButton.js"></script>-->
 </head>
 <body>
     <div class="wrapper">
@@ -44,6 +51,14 @@
             {{>content}}
         {{/content}}
     </div><!--/ Оболочка -->
+
+    {{#templateBlock}}
+        {{>partial/template}}
+    {{/templateBlock}}
+
+    {{#jsModel}}
+        {{>jsModel}}
+    {{/jsModel}}
 
     {{>partial/footer}}
 </body>

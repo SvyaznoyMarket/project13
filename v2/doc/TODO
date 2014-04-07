@@ -1,4 +1,5 @@
 -+ env, debug
++  простой маршрутизатор для EnterPartner; маршруты типа EnterSite\Partner\CityAds\GetOrderComplete
 -? сделать view-классы, которые работают с рендером
 -  array_key_exists -> isset
 -+ импорт конфигурации из v1

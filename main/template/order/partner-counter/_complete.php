@@ -18,16 +18,16 @@
             echo $page->tryRender('order/partner-counter/_actionpay-complete', array('orders' => $orders, 'productsById' => $productsById));
             break;
         case \Partner\Counter\CityAds::NAME:
-            echo $page->tryRender('order/partner-counter/_cityads-complete-pixel', array('orders' => $orders));
+            echo $page->tryRender('order/partner-counter/_cityads-complete-pixel', array('orders' => $orders, 'productsById' => $productsById));
             break;
         /*
         case \Partner\Counter\Reactive::NAME:
             echo $page->tryRender('order/partner-counter/_reactive-complete', array('orders' => $orders));
             break;
         */
-        case \Partner\Counter\Recreative::NAME:
+        /*case \Partner\Counter\Recreative::NAME:
             echo $page->tryRender('order/partner-counter/_recreative-complete', array('orders' => $orders));
-            break;
+            break;*/
         /*case \Partner\Counter\MyThings::NAME:
             echo $page->tryRender('order/partner-counter/_mythings-complete', array('orders' => $orders, 'productsById' => $productsById));
             break;*/
@@ -39,9 +39,9 @@
     }
     ?>
     <?= $page->tryRender('order/partner-counter/_ad4u-complete', array('orders' => $orders)) ?>
-    <?= $page->tryRender('order/partner-counter/_reactive-complete', array('orders' => $orders)) ?>
+    <?//= $page->tryRender('order/partner-counter/_reactive-complete', array('orders' => $orders)) ?>
     <?= $page->tryRender('order/partner-counter/_cityads-complete-counter', array('orders' => $orders)) ?>
-    <? foreach ($orders as $order) { ?>
+    <? /*foreach ($orders as $order) { ?>
         <?= $page->tryRender('order/partner-counter/_reactive-oneClick', ['orderSum' => str_replace(',', '.', $order->getPaySum()), 'orderNum' => $order->getNumber()]) ?>
-    <? } ?>
+    <? }*/ ?>
 <? endif ?>

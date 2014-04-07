@@ -1,75 +1,165 @@
-$(function(){
+;
+(function (app, window, $, _, mustache, backbone, undefined) {
+    backbone.Model.prototype.parse = function (data) {
+        return data.result;
+    };
 
-	var chooseModelWrap = $('.chooseModel'),
-	    chooseModelMoreLink = chooseModelWrap.find('.chooseModel_moreLink'),
-	    chooseModelMoreBox = chooseModelWrap.find('.chooseModel_moreBox'),
-	    chooseModelMoreBoxDown = chooseModelWrap.find('.chooseModel_moreBox.more'),
+    app.Event = _.clone(Backbone.Events);
 
-		chooseModelMoreModel = function chooseModelMoreModel() {
-			chooseModelMoreBox.slideToggle('800');
-			chooseModelMoreLink.toggleClass('more');
-		};
-	// end of vars
-		
-	chooseModelMoreLink.click(chooseModelMoreModel);
+    app.Model = {};
+    app.Collection = {};
+    app.View = {};
 
-	/**
-	 * Навигация сайта, показывается при клике по иконке .navIco
-	 */
-	
-	var navIco = $('.navIco'),
-		navSite = $('.nav'),
-		navSiteLeft = navSite.width(),
+    // Model & Collection
+    app.Model.Cart = backbone.Model.extend({
+        initialize: function (config) {
+            this.set('products', new app.Collection.Product(config.product || []));
+        },
+        addProduct: function (product) {
+            console.info('app.Model.Cart.addProduct', product);
+            this.get('products').create(product, {
+                wait: true,
+                //merge: true,
+                type: 'POST',
+                url: product.get('cart').get('setUrl'),
+                success: function (model) {
 
-		fader = $('.fader'),
+                }
+            });
+        }
+    });
+    app.Collection.Cart = {};
+    app.Collection.Cart.Product = backbone.Collection.extend({
+        model: app.Model.Product,
+        initialize: function () {
+        }
+    });
 
-		navSiteItemLevel1 = navSite.find('.navList_text'),
-		navSiteListLevel2 = navSite.find('.navListLevel2');
-	// end of vars
+    app.Model.Product = backbone.Model.extend({
+        initialize: function (data) {
+            this.set('cart', new app.Model.Product.Cart(data.cart || {}));
+        },
+        parse: function (data) {
+            data = app.Model.Product.__super__.parse.call(this, data);
 
-	navSite.css({'left' : -navSiteLeft});
-	navSiteListLevel2.hide();
+            data.cart = new app.Model.Product.Cart(data.cart || {});
 
-	var
-		/**
-		 * Показываем/скрываем навигацию
-		 */
-		slideNav = function slideNav() {
-			fader.show(0);
-			navSite.stop(true, true).show(0).animate({'left' : 0},300);
-			$('html,body').addClass('noScroll');
-			return false;
-		},
+            return data;
+        }
+    });
+    app.Model.Product.Cart = backbone.Model.extend({
+        validate: function (attrs) {
+            console.info('app.Model.Product.Cart.validate', attrs, typeof attrs.quantity);
+            if (!_.isFinite(attrs.quantity) || attrs.quantity <= 0) {
+                var error = {message: 'Количество должно быть большим нуля'};
+                console.warn('app.Model.Product.Cart.validate', error);
 
-		/**
-		 * Показываем/скрываем навигацию второго уравня
-		 */
-		slideNavLevel2 = function slideNavLevel2() {
-			navSiteListLevel2.slideUp();
+                return error;
+            }
+        }
+    });
+    app.Collection.Product = backbone.Collection.extend({
+        model: app.Model.Product
+    });
 
-			if ( ($(this).next(navSiteListLevel2)).is(':visible') ) {
-				navSiteListLevel2.slideUp();
-				return;
-			}
+    // View
+    app.View.Cart = {};
+    app.View.Cart.BuyButton = backbone.View.extend({
+        events: {
+            'click .js-link': 'onClick'
+        },
+        initialize: function () {
+            this.template = $('#tplCartBuyButton').html();
 
-			$(this).next(navSiteListLevel2).stop(true, false).slideDown();
-			return false;
-		},
+            this.model.on('change:buyButton', this.render, this);
+            this.model.on('change:inCart', function() {
+                if (true === this.model.get('inCart')) {
+                    this.$el.removeClass('mProgress');
+                }
+            }, this);
+        },
+        render: function () {
+            console.info('app.View.Cart.BuyButton.render', this.template, this.model.get('buyButton').templateData);
+            this.$el.html(mustache.render(this.template, this.model.get('buyButton').templateData));
 
-		/**
-		 * Скрываем навигацию при клике в любом месте кроме .nav
-		 */
-	    closeNav = function closeNav() {
-			fader.hide(0);
-			$('html,body').removeClass('noScroll');
-			navSite.stop(true, true).animate({'left' : -navSiteLeft},300).hide(0);
-			navSiteListLevel2.slideUp();
-		};
-	// end of vars
-	
-	navIco.click(slideNav);
+            return this;
+        },
+        onClick: function (e) {
+            console.info('app.View.Cart.BuyButton.onClick', this.$el, this.model);
 
-	navSiteItemLevel1.click(slideNavLevel2);
+            if (true !== this.model.get('inCart')) {
+                this.$el.addClass('mProgress');
+                app.model.cart.addProduct(this.model);
+                e.preventDefault();
+            }
+        }
+    });
+    app.View.Cart.BuySpinner = backbone.View.extend({
+        events: {
+            'click .js-up': 'incQuantity',
+            'click .js-down': 'decQuantity',
+            'change .js-value': 'setQuantity'
+        },
+        initialize: function () {
+            //this.model.get('cart').on('change', this.render, this);
+            this.model.get('cart').on('invalid', this.render, this);
+            this.model.get('cart').on('change:quantity', function() {
+                app.model.cart.addProduct(this.model);
+            }, this);
+        },
+        render: function () {
+            console.info('app.View.Cart.BuySpinner.render', this.$el, this.model);
+            this.$el.find('.js-value').val(this.model.get('cart').get('quantity'));
 
-	fader.live('click touchend', closeNav);
-});
+            return this;
+        },
+        incQuantity: function () {
+            console.info('app.View.Cart.BuySpinner.incQuantity', this.$el, this.model);
+
+            this.model.get('cart').set('quantity', this.model.get('cart').get('quantity') - 1, {validate: true});
+        },
+        decQuantity: function () {
+            console.info('app.View.Cart.BuySpinner.decQuantity', this.$el, this.model);
+
+            this.model.get('cart').set('quantity', this.model.get('cart').get('quantity') + 1, {validate: true});
+        },
+        setQuantity: function () {
+            console.info('app.View.Cart.BuySpinner.setQuantity', this.$el, this.model);
+
+            this.model.get('cart').set('quantity', parseInt(this.$el.find('.js-value').val()), {validate: true});
+        }
+    });
+
+
+    app.model = {};
+    app.collection = {};
+    app.view = {};
+
+
+    app.initialize = function () {
+        // инициализация коллекций
+        $('.js-collection').each(function (i, el) {
+            var $el = $(el);
+            var collectionName = $el.data('collection');
+
+            if (!collectionName || !app.Collection[collectionName]) return; // continue
+
+            console.info('app.initialize collection ', collectionName);
+
+            app.collection[collectionName[0].toLowerCase() + collectionName.slice(1)] = new app.Collection[collectionName]($el.data('value'));
+        });
+
+        app.collection.product.each(function (model) {
+            new app.View.Cart.BuyButton({model: model, el: model.get('buyButton').selector});
+            new app.View.Cart.BuySpinner({model: model, el: model.get('buySpinner').selector});
+        });
+
+        app.model.cart = new app.Model.Cart({});
+    };
+
+
+    $(function () {
+        app.initialize();
+    });
+
+}(window.Enter = window.Enter || {}, window, window.jQuery, window._, window.Mustache, window.Backbone));

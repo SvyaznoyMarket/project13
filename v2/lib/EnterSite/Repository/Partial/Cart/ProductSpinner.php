@@ -16,8 +16,16 @@ class ProductSpinner {
     ) {
         $spinner = new Partial\Cart\ProductSpinner();
 
-        $spinner->dataTarget = Repository\Partial\Cart\ProductButton::getId($product->id);
+        $spinner->id = self::getId($product->id);
 
         return $spinner;
+    }
+
+    /**
+     * @param $productId
+     * @return string
+     */
+    public static function getId($productId) {
+        return 'id-cart-product-buySpinner-' . $productId;
     }
 }

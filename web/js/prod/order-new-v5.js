@@ -795,7 +795,7 @@
 				res = true,
 				tmpPoint = null,
 				point,
-				i;
+				i, j;
 			// end of vars
 
 			/**
@@ -817,7 +817,21 @@
 				if ( res ) {
 					// Точка достаки доступна для всех товаров в блоке
 					tmpPoint = OrderModel.orderDictionary.getPointByStateAndId(self.state, point);
-					self.pointList.push( tmpPoint );
+
+					if ( self.isUniquePointIdInPointList(point, self.pointList) ) {
+						console.warn('Add point ' + point + ' to pointList');
+						self.pointList.push( tmpPoint );
+					}
+				}
+				else {
+					for ( j in self.pointList ) {
+						if (undefined === self.pointList[j]['id']) continue;
+
+						if ( point === self.pointList[j]['id'] ) {
+							console.warn('Delete point ' + point + ' from pointList');
+							self.pointList.splice(j);
+						}
+					}
 				}
 			}
 
@@ -825,6 +839,31 @@
 			console.log(self.pointList);
 		};
 
+		/**
+		 * Проверяем наличие точки доставки (pointId) в массиве pointList
+		 *
+		 * @param	{String}	pointId		Идентификатор точки доставки
+		 * @param 	{Array}		pointList	Массив точек доставок
+		 * @returns {boolean}
+		 */
+		DeliveryBox.prototype.isUniquePointIdInPointList = function ( pointId, pointList ) {
+			var
+				defaultValue = true,
+				point;
+			//end of vars
+
+			if ( undefined === pointId || undefined === pointList ) {
+				return defaultValue;
+			}
+
+			for ( point in pointList ) {
+				if ( pointList[point]['id'] == pointId ) {
+					return false;
+				}
+			}
+
+			return true;
+		}
 
 		/**
 		 * Генерирует случайное окончание (суффикс) для строки
@@ -2030,7 +2069,11 @@
 				{
 					fieldNode: orderAgreed,
 					require: true,
-					customErr: 'Необходимо согласие',
+					customErr: 'Необходимо согласие'
+				},
+				{
+					fieldNode: sclub,
+					customErr: 'Некорректно введен номер карты Связного клуба'
 				}
 			]
 		},
@@ -2691,7 +2734,7 @@
 		 */
 		if ( ( ENTER.OrderModel.hasCoupons() && ENTER.OrderModel.deliveryBoxes().length > 1 ) || 
 			( ENTER.OrderModel.appliedCoupon() && ENTER.OrderModel.appliedCoupon().sum && 
-			( parseFloat(ENTER.OrderModel.totalSum()) <= parseFloat(ENTER.OrderModel.appliedCoupon().sum) ) ) ) {
+			( parseFloat(ENTER.OrderModel.totalSum())+parseFloat(ENTER.OrderModel.appliedCoupon().sum) <= parseFloat(ENTER.OrderModel.appliedCoupon().sum) ) ) ) {
 			console.warn('Нужно удалить купон');
 
 			var msg = 'Купон не может быть применен при текущем разбиении заказа и будет удален';

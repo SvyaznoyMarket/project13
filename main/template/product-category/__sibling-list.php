@@ -15,7 +15,7 @@ return function(
     <!-- TCHIBO - слайдер-меню разделов Чибо -->
     <div class="tchiboNav clearfix">
         <? if ($rootCategoryInMenu): ?>
-            <div class="tchiboNav__title"><a class="tchiboNav__titleLink" href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>"></a></div>
+            <a class="tchiboNav__titleLink" href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>"><div class="tchiboNav__title"></div></a>
         <? else: ?>
             <div class="tchiboNav__title"></div>
         <? endif ?>

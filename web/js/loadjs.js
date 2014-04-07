@@ -681,7 +681,7 @@
 	}
 	else {
 		console.log('Шаблон '+templateType+' не найден. Загрузка стандартного набора скриптов');
-		loadScripts['default']
+		loadScripts['default']();
 	}
 
 }(this));

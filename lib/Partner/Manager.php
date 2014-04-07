@@ -31,7 +31,8 @@ class Manager {
             $utmSource = $getParams['utm_source'];
 
             // SITE-3215
-            if (!$utmSource) {
+            $utmSourceCookie = \App::request()->cookies->get($this->cookieName);
+            if (!$utmSource && !(bool)$utmSourceCookie) {
                 $referer = parse_url($request->server->get('HTTP_REFERER'));
                 $refererHost = $referer && !empty($referer['host']) ? $referer['host'] : null;
 
@@ -39,7 +40,7 @@ class Manager {
                 if (!empty($refererHost) && false === strpos($refererHost, 'enter')) {
                     // прямой трафик. уничтожаем партнерскую куку
                     if (\App::request()->cookies->has($this->cookieName)) {
-                        \App::request()->cookies->remove($this->cookieName);
+                        $response->headers->clearCookie($this->cookieName, '/', null);
                     }
 
                     // реферал не пустой
@@ -70,17 +71,23 @@ class Manager {
                         'm.yandex.ru',
                     ];
 
-                    $data = \App::request()->cookies->get($this->cookieName, []);
+                    $data = (array) \App::request()->cookies->get($this->cookieName, []);
 
                     // реферал находится в списке поисковиков
                     if (in_array($refererHost, $searchersList)) {
                         $data[] = $refererHost;
-                        \App::request()->cookies->set($this->cookieName, $data);
+                        $response->headers->setCookie(new \Http\Cookie(
+                            $this->cookieName,
+                            $refererHost, time() + $this->cookieLifetime, '/', null, false, true
+                        ));
 
                         // ссылочный трафик
                     } else {
                         $data[] = $refererHost;
-                        \App::request()->cookies->set($this->cookieName, $data);
+                        $response->headers->setCookie(new \Http\Cookie(
+                            $this->cookieName,
+                            $refererHost, time() + $this->cookieLifetime, '/', null, false, true
+                        ));
                     }
                 }
             }
@@ -141,6 +148,15 @@ class Manager {
                     false,
                     true
                 ));
+                $response->headers->setCookie(new \Http\Cookie(
+                    'click_id',
+                    $request->get('click_id'),
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                ));
 
                 $cookie = new \Http\Cookie(
                     $this->cookieName,
@@ -194,22 +210,66 @@ class Manager {
                     false,
                     true
                 );
-            // Recreative
-            } else if (0 === strpos($utmSource, 'recreative')) {
+//            // Recreative
+//            } else if (0 === strpos($utmSource, 'recreative')) {
+//                $cookie = new \Http\Cookie(
+//                    $this->cookieName,
+//                    \Partner\Counter\Recreative::NAME,
+//                    time() + $this->cookieLifetime,
+//                    '/',
+//                    null,
+//                    false,
+//                    true
+//                );
+//            // Reactive
+//            } else if ((0 === strpos($utmSource, 'vk.com')) && (0 === strpos($request->get('utm_campaing'), 'social_target'))) {
+//                $cookie = new \Http\Cookie(
+//                    $this->cookieName,
+//                    \Partner\Counter\Reactive::NAME,
+//                    time() + $this->cookieLifetime,
+//                    '/',
+//                    null,
+//                    false,
+//                    true
+//                );
+            // Myragon
+            } else if (0 === strpos($utmSource, 'myragon')) {
                 $cookie = new \Http\Cookie(
                     $this->cookieName,
-                    \Partner\Counter\Recreative::NAME,
+                    \Partner\Counter\Myragon::NAME,
                     time() + $this->cookieLifetime,
                     '/',
                     null,
                     false,
                     true
                 );
-            // Reactive
-            } else if ((0 === strpos($utmSource, 'vk.com')) && (0 === strpos($request->get('utm_campaing'), 'social_target'))) {
+            // Tradetracker
+            } else if (0 === strpos($utmSource, 'tradetracker')) {
                 $cookie = new \Http\Cookie(
                     $this->cookieName,
-                    \Partner\Counter\Reactive::NAME,
+                    \Partner\Counter\Tradetracker::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            // Unilead
+            } else if (0 === strpos($utmSource, 'unilead')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\Counter\Unilead::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            // Leadgid
+            } else if (0 === strpos($utmSource, 'leadgid')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\Counter\Leadgid::NAME,
                     time() + $this->cookieLifetime,
                     '/',
                     null,
@@ -260,11 +320,11 @@ class Manager {
                     $prefix . '.' . \Partner\Counter\Admitad::NAME . '.cpamit_uid' => $request->cookies->get('cpamit_uid'),
                 ];
                 break;
-            case \Partner\Counter\Recreative::NAME:
+            /*case \Partner\Counter\Recreative::NAME:
                 $return = [
                     $prefix => [\Partner\Counter\Recreative::NAME],
                 ];
-                break;
+                break;*/
             case \Partner\Counter\MyThings::NAME:
                 $return = [
                     $prefix => [\Partner\Counter\MyThings::NAME],
@@ -275,11 +335,11 @@ class Manager {
                     $prefix => [\Smartengine\Client::NAME],
                 ];
                 break;
-            case \Partner\Counter\Reactive::NAME:
+            /*case \Partner\Counter\Reactive::NAME:
                 $return = [
                     'name' => \Partner\Counter\Reactive::NAME,
                 ];
-                break;
+                break;*/
         }
 
         if ((bool)$product) {

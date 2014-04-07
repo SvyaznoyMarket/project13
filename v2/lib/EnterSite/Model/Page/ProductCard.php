@@ -4,12 +4,15 @@ namespace EnterSite\Model\Page {
     use EnterSite\Model\Page;
 
     class ProductCard extends Page\DefaultLayout {
+        /** @var ProductCard\JsModel */
+        public $jsModel;
         /** @var ProductCard\Content */
         public $content;
 
         public function __construct() {
             parent::__construct();
 
+            $this->jsModel = new Productcard\JsModel();
             $this->content = new ProductCard\Content();
         }
     }
@@ -17,6 +20,14 @@ namespace EnterSite\Model\Page {
 
 namespace EnterSite\Model\Page\ProductCard {
     use EnterSite\Model\Page;
+
+    class JsModel extends Page\DefaultLayout\JsModel {
+        /**
+         * json-encoded строка для [data-value]
+         * @var string
+         */
+        public $productCollection;
+    }
 
     class Content extends Page\DefaultLayout\Content {
         /** @var Content\Product */

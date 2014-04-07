@@ -5,6 +5,7 @@ namespace EnterSite\Repository\Page;
 use EnterSite\RouterTrait;
 use EnterSite\DateHelperTrait;
 use EnterSite\TranslateHelperTrait;
+use EnterSite\ViewHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -12,7 +13,7 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use RouterTrait, DateHelperTrait, TranslateHelperTrait;
+    use RouterTrait, DateHelperTrait, TranslateHelperTrait, ViewHelperTrait;
 
     /**
      * @param Page $page
@@ -24,6 +25,7 @@ class ProductCard {
         $router = $this->getRouter();
         $dateHelper = $this->getDateHelper();
         $translateHelper = $this->getTranslateHelper();
+        $viewHelper = $this->getViewHelper();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $cartProductSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
         $productCardRepository = new Repository\Partial\ProductCard();
@@ -175,7 +177,7 @@ class ProductCard {
         if ((bool)$productModel->relation->accessories) {
             $page->content->product->accessorySlider = new Partial\ProductSlider();
             foreach ($productModel->relation->accessories as $accessoryModel) {
-                $page->content->product->accessorySlider->productCards[] = $productCardRepository->getObject($accessoryModel, $cartProductButtonRepository->getObject($productModel));
+                $page->content->product->accessorySlider->productCards[] = $productCardRepository->getObject($accessoryModel, $cartProductButtonRepository->getObject($accessoryModel));
             }
 
             foreach ($request->accessoryCategories as $categoryModel) {
@@ -252,6 +254,32 @@ class ProductCard {
                 }
             }
         }
+
+        // данные о товарах для js
+        // TODO: похоже, придется модель описывать
+        $page->jsModel->productCollection = $viewHelper->json(array_map(function(Model\Product $product) use(
+            &$router,
+            &$cartProductButtonRepository,
+            &$cartProductSpinnerRepository
+        ) {
+            return [
+                'id'          => $product->id,
+                'name'        => $product->name,
+                'cart'        => [
+                    'quantity'  => 1,
+                    'setUrl'    => $router->getUrlByRoute(new Routing\Cart\SetProduct($product->id)),
+                    'deleteUrl' => $router->getUrlByRoute(new Routing\Cart\DeleteProduct($product->id)),
+                ],
+                'buyButton'  => [
+                    'selector'     => '.' . $cartProductButtonRepository::getId($product->id),
+                    'templateData' => $cartProductButtonRepository->getObject($product),
+                ],
+                'buySpinner' => [
+                    'selector'     => '.' . $cartProductSpinnerRepository::getId($product->id),
+                    'templateData' => $cartProductSpinnerRepository->getObject($product),
+                ],
+            ];
+        }, array_merge([$productModel], $productModel->relation->accessories)));
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

@@ -45,6 +45,13 @@
             "productId": "[\\w\\d-_]+"
         }
     },
+    "Cart\\DeleteProduct": {
+        "name": "Удалить товар из корзины",
+        "pattern": "/cart/delete-product/{productId}",
+        "require": {
+            "productId": "[\\w\\d-_]+"
+        }
+    },
     "ShopCard\\Get": {
         "name": "Карточка магазина",
         "pattern": "/shops/{regionToken}/{shopToken}",

@@ -4,11 +4,11 @@ namespace EnterSite\Model\Partial\Cart;
 
 class ProductButton {
     /** @var string */
-    public $value;
+    public $id;
+    /** @var string */
+    public $text;
     /** @var string */
     public $url;
-    /** @var array */
-    public $dataValue = [];
     /** @var string */
     public $class;
 }

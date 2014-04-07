@@ -7,9 +7,8 @@ use Enter\Routing\Route;
 class SetProduct extends Route {
     /**
      * @param string $productId
-     * @param int $quantity
      */
-    public function __construct($productId, $quantity = 1) {
+    public function __construct($productId) {
         $this->action = ['Cart\\SetProduct', 'execute'];
         $this->parameters = [
             'productId' => $productId,

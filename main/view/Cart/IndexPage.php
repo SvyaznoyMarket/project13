@@ -65,4 +65,8 @@ class IndexPage extends \View\DefaultLayout {
     public function slotUserbar() {
         return '';
     }
+
+    public function slotСpaexchangeJS () {
+        return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25013]) . '"></div>';
+    }
 }
