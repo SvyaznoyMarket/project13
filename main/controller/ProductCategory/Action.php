@@ -454,7 +454,11 @@ class Action {
 
                             // фильтр есть в общем списке фильтров, но не пришел при запросе пользовательских фильтров, дисейблим
                             if (!isset($filtersWithParams[$filterKey]) || !isset($optionsWithParams[$optionKey])) {
-                                $disabled['list'][$paramName] = $option->getId();
+                                if ('shop' == $filterKey) {
+                                    $disabled['list'][$paramName][] = $option->getId();
+                                } else {
+                                    $disabled['list'][$paramName] = $option->getId();
+                                }
 
                             // в фильтре 0 товаров
                             } elseif (isset($optionsWithParams[$optionKey]) && 0 == $optionsWithParams[$optionKey]->getQuantity()) {
