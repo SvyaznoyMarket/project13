@@ -610,6 +610,10 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotAdLensJS () {
+        return;
+    }
+
     public function slotAdFoxBground() {
         $viewParams = $this->getParam('viewParams');
         $show = (bool) ( $viewParams && isset($viewParams['showSideBanner']) ) ? $viewParams['showSideBanner'] : true;
