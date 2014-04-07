@@ -19,12 +19,8 @@
             console.info('app.Model.Cart.addProduct', product);
             this.get('products').create(product, {
                 wait: true,
-                //merge: true,
-                type: 'POST',
-                url: product.get('cart').get('setUrl'),
-                success: function (model) {
-
-                }
+                type: product.get('inCart') ? 'PUT' : 'POST',
+                url: product.get('cart').get('setUrl')
             });
         }
     });
@@ -42,7 +38,8 @@
         parse: function (data) {
             data = app.Model.Product.__super__.parse.call(this, data);
 
-            data.cart = new app.Model.Product.Cart(data.cart || {});
+            this.get('cart').set(data.cart);
+            data.cart = this.get('cart');
 
             return data;
         }
@@ -50,10 +47,14 @@
     app.Model.Product.Cart = backbone.Model.extend({
         validate: function (attrs) {
             console.info('app.Model.Product.Cart.validate', attrs, typeof attrs.quantity);
-            if (!_.isFinite(attrs.quantity) || attrs.quantity <= 0) {
-                var error = {message: 'Количество должно быть большим нуля'};
-                console.warn('app.Model.Product.Cart.validate', error);
 
+            var error = null;
+            if (!_.isFinite(attrs.quantity) || attrs.quantity <= 0) {
+                error = {message: 'Количество должно быть большим нуля'};
+            }
+
+            if (error) {
+                console.warn('app.Model.Product.Cart.validate', error);
                 return error;
             }
         }
@@ -69,14 +70,9 @@
             'click .js-link': 'onClick'
         },
         initialize: function () {
-            this.template = $('#tplCartBuyButton').html();
+            this.template = $('#tpl-cart-buyButton').html();
 
             this.model.on('change:buyButton', this.render, this);
-            this.model.on('change:inCart', function() {
-                if (true === this.model.get('inCart')) {
-                    this.$el.removeClass('mProgress');
-                }
-            }, this);
         },
         render: function () {
             console.info('app.View.Cart.BuyButton.render', this.template, this.model.get('buyButton').templateData);
@@ -88,7 +84,6 @@
             console.info('app.View.Cart.BuyButton.onClick', this.$el, this.model);
 
             if (true !== this.model.get('inCart')) {
-                this.$el.addClass('mProgress');
                 app.model.cart.addProduct(this.model);
                 e.preventDefault();
             }
@@ -96,16 +91,14 @@
     });
     app.View.Cart.BuySpinner = backbone.View.extend({
         events: {
-            'click .js-up': 'incQuantity',
-            'click .js-down': 'decQuantity',
-            'change .js-value': 'setQuantity'
+            'click .js-inc': 'incQuantity',
+            'click .js-dec': 'decQuantity',
+            'change .js-value': 'setQuantity',
+            'keyup .js-value': 'setQuantity'
         },
         initialize: function () {
-            //this.model.get('cart').on('change', this.render, this);
+            this.model.get('cart').on('change', this.render, this);
             this.model.get('cart').on('invalid', this.render, this);
-            this.model.get('cart').on('change:quantity', function() {
-                app.model.cart.addProduct(this.model);
-            }, this);
         },
         render: function () {
             console.info('app.View.Cart.BuySpinner.render', this.$el, this.model);
