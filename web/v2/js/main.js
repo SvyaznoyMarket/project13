@@ -19,12 +19,8 @@
             console.info('app.Model.Cart.addProduct', product);
             this.get('products').create(product, {
                 wait: true,
-                //merge: true,
-                type: 'POST',
-                url: product.get('cart').get('setUrl'),
-                success: function (model) {
-
-                }
+                type: product.get('inCart') ? 'PUT' : 'POST',
+                url: product.get('cart.setUrl')
             });
         }
     });
@@ -35,25 +31,20 @@
         }
     });
 
-    app.Model.Product = backbone.Model.extend({
-        initialize: function (data) {
-            this.set('cart', new app.Model.Product.Cart(data.cart || {}));
-        },
-        parse: function (data) {
-            data = app.Model.Product.__super__.parse.call(this, data);
-
-            data.cart = new app.Model.Product.Cart(data.cart || {});
-
-            return data;
-        }
-    });
-    app.Model.Product.Cart = backbone.Model.extend({
+    app.Model.Product = backbone.NestedModel.extend({
         validate: function (attrs) {
-            console.info('app.Model.Product.Cart.validate', attrs, typeof attrs.quantity);
-            if (!_.isFinite(attrs.quantity) || attrs.quantity <= 0) {
-                var error = {message: 'Количество должно быть большим нуля'};
-                console.warn('app.Model.Product.Cart.validate', error);
+            console.info('app.Model.Product.validate', attrs, typeof attrs.quantity);
 
+            var error = null;
+            if (!_.isFinite(attrs.cart.quantity) || attrs.cart.quantity <= 0) {
+                error = {message: 'Количество должно быть большим нуля'};
+            }
+            if (attrs.inCart && (attrs.cart.quantity != this.get('cart.quantity'))) {
+                error = {message: 'Товар уже в корзине'};
+            }
+
+            if (error) {
+                console.warn('app.Model.Product.validate', error);
                 return error;
             }
         }
@@ -69,18 +60,14 @@
             'click .js-link': 'onClick'
         },
         initialize: function () {
-            this.template = $('#tplCartBuyButton').html();
+            this.template = $('#tpl-cart-buyButton').html();
 
-            this.model.on('change:buyButton', this.render, this);
-            this.model.on('change:inCart', function() {
-                if (true === this.model.get('inCart')) {
-                    this.$el.removeClass('mProgress');
-                }
-            }, this);
+            this.model.on('change:buyButton change:inCart', this.render, this);
         },
         render: function () {
             console.info('app.View.Cart.BuyButton.render', this.template, this.model.get('buyButton').templateData);
             this.$el.html(mustache.render(this.template, this.model.get('buyButton').templateData));
+            this.$el.toggleClass('mDisabled', this.model.get('inCart'));
 
             return this;
         },
@@ -88,7 +75,6 @@
             console.info('app.View.Cart.BuyButton.onClick', this.$el, this.model);
 
             if (true !== this.model.get('inCart')) {
-                this.$el.addClass('mProgress');
                 app.model.cart.addProduct(this.model);
                 e.preventDefault();
             }
@@ -96,37 +82,37 @@
     });
     app.View.Cart.BuySpinner = backbone.View.extend({
         events: {
-            'click .js-up': 'incQuantity',
-            'click .js-down': 'decQuantity',
-            'change .js-value': 'setQuantity'
+            'click .js-inc': 'incQuantity',
+            'click .js-dec': 'decQuantity',
+            'change .js-value': 'setQuantity',
+            'keyup .js-value': 'setQuantity'
         },
         initialize: function () {
-            //this.model.get('cart').on('change', this.render, this);
-            this.model.get('cart').on('invalid', this.render, this);
-            this.model.get('cart').on('change:quantity', function() {
-                app.model.cart.addProduct(this.model);
-            }, this);
+            this.model.on('change:cart change:inCart invalid:cart', this.render, this);
         },
         render: function () {
             console.info('app.View.Cart.BuySpinner.render', this.$el, this.model);
-            this.$el.find('.js-value').val(this.model.get('cart').get('quantity'));
+            this.$el.find('.js-value').val(this.model.get('cart.quantity'));
+            if (this.model.get('inCart')) {
+                this.$el.addClass('mDisabled');
+            }
 
             return this;
         },
         incQuantity: function () {
             console.info('app.View.Cart.BuySpinner.incQuantity', this.$el, this.model);
 
-            this.model.get('cart').set('quantity', this.model.get('cart').get('quantity') - 1, {validate: true});
+            this.model.set('cart.quantity', this.model.get('cart.quantity') - 1, {validate: true});
         },
         decQuantity: function () {
             console.info('app.View.Cart.BuySpinner.decQuantity', this.$el, this.model);
 
-            this.model.get('cart').set('quantity', this.model.get('cart').get('quantity') + 1, {validate: true});
+            this.model.set('cart.quantity', this.model.get('cart.quantity') + 1, {validate: true});
         },
         setQuantity: function () {
             console.info('app.View.Cart.BuySpinner.setQuantity', this.$el, this.model);
 
-            this.model.get('cart').set('quantity', parseInt(this.$el.find('.js-value').val()), {validate: true});
+            this.model.set('cart.quantity', parseInt(this.$el.find('.js-value').val()), {validate: true});
         }
     });
 

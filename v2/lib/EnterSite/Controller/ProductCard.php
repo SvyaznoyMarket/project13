@@ -51,7 +51,7 @@ class ProductCard {
         // товар
         $product = $productRepository->getObjectByQuery($productItemQuery);
         if (!$product) {
-            return (new Controller\Error\NotFound())->execute(sprintf('Товар @%s не найден', $productToken));
+            return (new Controller\Error\NotFound())->execute($request, sprintf('Товар @%s не найден', $productToken));
         }
         if ($product->link !== $request->getPathInfo()) {
             return (new Controller\Redirect())->execute($product->link. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);

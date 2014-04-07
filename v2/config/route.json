@@ -38,19 +38,20 @@
             "regionId": "[\\w\\d-_]+"
         }
     },
-    "Cart\\SetProduct": {
-        "name": "Установить товар в корзине",
-        "pattern": "/cart/set-product/{productId}",
-        "require": {
-            "productId": "[\\w\\d-_]+"
-        }
+    "User\\Get": {
+        "name": "Информация о пользователе, его корзине, ...",
+        "pattern": "/ajax/user",
+        "method": ["GET"]
     },
-    "Cart\\DeleteProduct": {
+    "User\\Cart\\Product\\Set": {
+        "name": "Установить товар в корзине",
+        "pattern": "/ajax/user/cart/product",
+        "method": ["POST", "PUT"]
+    },
+    "User\\Cart\\Product\\Delete": {
         "name": "Удалить товар из корзины",
-        "pattern": "/cart/delete-product/{productId}",
-        "require": {
-            "productId": "[\\w\\d-_]+"
-        }
+        "pattern": "/ajax/user/cart/product",
+        "method": ["DELETE"]
     },
     "ShopCard\\Get": {
         "name": "Карточка магазина",
@@ -58,6 +59,22 @@
         "require": {
             "regionToken": "[\\w\\d-_]+",
             "shopToken": "[\\w\\d-_]+"
+        }
+    },
+    "Cart\\SetProduct": {
+        "name": "Установить товар в корзине",
+        "pattern": "/cart/set-product/{productId}",
+        "method": ["GET"],
+        "require": {
+            "productId": "[\\w\\d-_]+"
+        }
+    },
+    "Cart\\DeleteProduct": {
+        "name": "Удалить товар из корзины",
+        "pattern": "/cart/delete-product/{productId}",
+        "method": ["GET"],
+        "require": {
+            "productId": "[\\w\\d-_]+"
         }
     }
 }

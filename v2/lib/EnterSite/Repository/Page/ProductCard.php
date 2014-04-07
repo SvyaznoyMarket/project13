@@ -256,29 +256,31 @@ class ProductCard {
         }
 
         // данные о товарах для js
-        // TODO: похоже, придется модель описывать
         $page->jsModel->productCollection = $viewHelper->json(array_map(function(Model\Product $product) use(
             &$router,
             &$cartProductButtonRepository,
             &$cartProductSpinnerRepository
         ) {
-            return [
-                'id'          => $product->id,
-                'name'        => $product->name,
-                'cart'        => [
-                    'quantity'  => 1,
-                    'setUrl'    => $router->getUrlByRoute(new Routing\Cart\SetProduct($product->id)),
-                    'deleteUrl' => $router->getUrlByRoute(new Routing\Cart\DeleteProduct($product->id)),
-                ],
-                'buyButton'  => [
-                    'selector'     => '.' . $cartProductButtonRepository::getId($product->id),
-                    'templateData' => $cartProductButtonRepository->getObject($product),
-                ],
-                'buySpinner' => [
-                    'selector'     => '.' . $cartProductSpinnerRepository::getId($product->id),
-                    'templateData' => $cartProductSpinnerRepository->getObject($product),
-                ],
-            ];
+            $jsProduct = new Model\JsModel\Product();
+
+            $jsProduct->id = $product->id;
+            $jsProduct->token = $product->token;
+            $jsProduct->name = $product->name;
+
+            $jsProduct->cart = new Model\JsModel\Product\Cart();
+            $jsProduct->cart->quantity = 1;
+            $jsProduct->cart->setUrl = $router->getUrlByRoute(new Routing\User\Cart\Product\Set());
+            $jsProduct->cart->deleteUrl = $router->getUrlByRoute(new Routing\User\Cart\Product\Delete());
+
+            $jsProduct->buyButton = new Model\JsModel\Product\BuyButton();
+            $jsProduct->buyButton->selector = '.' . $cartProductButtonRepository::getId($product->id);
+            $jsProduct->buyButton->templateData = $cartProductButtonRepository->getObject($product);
+
+            $jsProduct->buySpinner = new Model\JsModel\Product\BuySpinner();
+            $jsProduct->buySpinner->selector = '.' . $cartProductSpinnerRepository::getId($product->id);
+            $jsProduct->buySpinner->templateData = $cartProductSpinnerRepository->getObject($product);
+
+            return $jsProduct;
         }, array_merge([$productModel], $productModel->relation->accessories)));
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));

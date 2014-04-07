@@ -16,14 +16,34 @@ class NotFound {
     }
 
     /**
+     * @param Http\Request $request
      * @param string|null $message
-     * @return Http\Response
+     * @return Http\Response|Http\JsonResponse
      */
-    public function execute($message = null) {
-        $response = new Http\Response($message ?: 'Страница не найдена');
+    public function execute(Http\Request $request, $message = null) {
+        $response = ($request && $request->isXmlHttpRequest()) ? new Http\JsonResponse() : new Http\Response();
         $response->statusCode = Http\Response::STATUS_NOT_FOUND;
 
-        // TODO: использование шаблона
+        $page = [
+            'error' => [
+                'message' => $message ?: 'Страница не найдена',
+            ],
+        ];
+
+        if ($response instanceof Http\JsonResponse) {
+            $response->data['error'] = [
+                'code'    => 404,
+                'message' => 'Not Found',
+            ];
+        } else {
+            // рендер
+            $renderer = $this->getRenderer();
+            $renderer->setPartials([
+                'content' => 'page/error',
+            ]);
+            $response->content = $renderer->render('page/error', $page);
+        }
+
         return $response;
     }
 }
