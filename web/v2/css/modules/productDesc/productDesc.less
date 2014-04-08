@@ -80,6 +80,7 @@
 	overflow: hidden;
 	position: relative;
 	padding-bottom: 20px;
+	min-height: 350px;
 }
 
 .slidesItemsList {
@@ -87,13 +88,13 @@
 	top: 0;
 	left: 0;
 	font-size: 0;
-	width: 10000px;
 
 	&_item {
-		display: inline-block;
-		vertical-align: top;
-		*display: inline;
-		zoom: 1;
+		display: none;
+
+		&:first-child {
+			display: inline-block;
+		}
 	}
 
 	&_img {
@@ -118,6 +119,7 @@
 	background-color: rgba(255,255,255,0.7);
 	padding: 4px;
 	cursor: pointer;
+	display: none;
 
 	&_left {
 		left: 0;
