@@ -1,4 +1,5 @@
-;(function($){
+$(function() {
+
   var curSlide = 0,
       countItem = 0,
       slideWrap = $('.slidesItems'),
@@ -10,7 +11,8 @@
 
       btnSlidesLeft = $('.jsBtnSlidesLeft'),
       btnSlidesRight = $('.jsBtnSlidesRight');
-
+  // end vars
+  
   slideWrap.css({'background' : 'url("/v2/css/modules/mainStyles/img/ajaxnoti.gif") no-repeat 50% 50%'});
   slideWrapItem.css({'display' : 'inline-block'});
   slideList.css({'display' : 'none'});
@@ -163,4 +165,4 @@
 
   slideList.swipe( swipeOptions );
 
-})(jQuery);
+});

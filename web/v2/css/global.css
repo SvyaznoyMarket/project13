@@ -1065,14 +1065,16 @@ body.noScroll {
 }
 .slidesItemsList_item {
   display: none;
+  vertical-align: top;
+  zoom: 1;
 }
 .slidesItemsList_item:first-child {
   display: inline-block;
+  *display: inline;
 }
 .slidesItemsList_img {
   text-align: center;
   width: 100%;
-  max-width: 350px;
 }
 .slidesItemsBtn {
   position: absolute;
