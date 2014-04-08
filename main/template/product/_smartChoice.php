@@ -6,6 +6,10 @@ return function(
 ) {
 
     if (count($smartChoiceProducts) == 3) :
+        $smartChoiceIds = array_map(function($item){
+            return $item['product']->getId();
+        }, $smartChoiceProducts);
+
         ?>
         <div class="specialPrice">
         <?
@@ -34,9 +38,9 @@ return function(
         ?>
         </div>
 
-        <div class="specialBorderBox">
+        <div class="specialBorderBox jsDataSmartChoice" data-smartchoice="<?= $helper->json($smartChoiceIds); ?>">
             <!-- Сюда нужно вывести реальный слайдер и передать мне на доработку -->
-            <div class="bSlider">
+<!--            <div class="bSlider">
                 <div class="bSlider__eInner">
                     <ul class="bSlider__eList clearfix" style="width: 1200px; left: 0px;">
 
@@ -45,7 +49,7 @@ return function(
 
                 <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>
                 <div class="bSlider__eBtn mNext"><span></span></div>
-            </div>
+            </div>-->
         </div>
         <?
 

@@ -865,19 +865,14 @@ class Action {
         $smartChoiceData = [];
 
         if ($smartChoiceEnabled) {
-            // TODO получение продуктов по фильтру
-            // Получаем продукты для Smart Choice
-            $smartChoiceData = [
-                ['name' => 'Выгодное предложение', 'products' => ['id' => 64686]],
-                ['name' => 'Хит продаж', 'products' => ['id' => 111348]],
-                ['name' => 'Самым разборчивым', 'products' => ['id' => 139048]],
-            ];
-            $smartChoiceProductsIds = array_map(function($a){ return $a['products']['id'];}, $smartChoiceData);
+            $smartChoiceData = null;
+            $smartChoiceData = \App::coreClientV2()->query('listing/smart-choice',['region_id'=>$region->getId(), 'client_id'=>'site', 'filter' => ['filters'=>$filters]]);
+            $smartChoiceProductsIds = array_map(function($a){ return $a['products'][0]['id'];}, $smartChoiceData);
             $repository->prepareCollectionById($smartChoiceProductsIds, $region, function ($data) use (&$smartChoiceProducts, &$smartChoiceData) {
                 foreach ($data as $item) {
                     $smartChoiceProduct = new \Model\Product\Entity($item);
                     array_walk($smartChoiceData, function (&$item, $key, $smartChoiceProduct) {
-                        if ($item['products']['id'] == $smartChoiceProduct->getId()) $item['product'] = $smartChoiceProduct;
+                        if ($item['products'][0]['id'] == $smartChoiceProduct->getId()) $item['product'] = $smartChoiceProduct;
                     }, $smartChoiceProduct);
                 }
             });

@@ -72,6 +72,7 @@ class SmartChoiceAction {
                     'content' => \App::closureTemplating()->render('product/__slider', [
                             'title' => null,
                             'products' => $products,
+                            'class' => 'smartChoiceSlider smartChoiceId-'.$id,
                         ]),
                 ];
             }
