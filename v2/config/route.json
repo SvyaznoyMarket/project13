@@ -3,6 +3,11 @@
         "name": "Главная",
         "pattern": "/"
     },
+    "Router": {
+        "name": "Маршрутизатор нескольких запросов",
+        "pattern": "/ajax/router",
+        "method": ["POST"]
+    },
     "ProductCard\\Get": {
         "name": "Карточка товара",
         "pattern": "/product/{productPath}",

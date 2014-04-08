@@ -35,6 +35,18 @@ class ProductButton {
     ) {
         $button = new Partial\Cart\ProductButton();
 
+        $button->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\Set());
+        $button->dataValue = $this->helper->json([
+            'product' => [
+                'id'       => $product->id,
+                'name'     => $product->name,
+                'token'    => $product->token,
+                'price'    => $product->price,
+                'url'      => $product->link,
+                'quantity' => 1,
+            ],
+        ]);
+
         $button->class = '';
         $button->id = self::getId($product->id);
         $button->text = 'Купить';
@@ -43,6 +55,7 @@ class ProductButton {
         if ($cartProduct) {
             $button->text = 'В корзине';
             $button->url = '/cart'; // TODO: route
+            $button->dataUrl = '';
         } else {
             if ($product->isInShopOnly) {
                 $button->class .= ' mShopsOnly';

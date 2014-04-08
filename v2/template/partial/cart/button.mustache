@@ -1,3 +1,7 @@
-<div class="{{id}}" data-id="{{id}}">
-    <a href="{{url}}" data-method="put" class="js-link btnBuy {{class}}">{{text}}</a>
-</div>
+<a
+    href="{{url}}"
+    class="js-buyButton {{id}} btnBuy {{class}}"
+    data-id-selector=".{{id}}"
+    data-url="{{&dataUrl}}"
+    data-value="{{&dataValue}}"
+>{{text}}</a>

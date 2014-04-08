@@ -4,8 +4,6 @@ namespace EnterSite\Model\Page {
     use EnterSite\Model\HtmlPage;
 
     class DefaultLayout extends HtmlPage {
-        /** @var DefaultLayout\JsModel */
-        public $jsModel;
         /** @var DefaultLayout\TemplateBlock */
         public $templateBlock;
         /** @var DefaultLayout\BreadcrumbBlock|null */
@@ -20,7 +18,6 @@ namespace EnterSite\Model\Page {
         public function __construct() {
             parent::__construct();
 
-            $this->jsModel = new DefaultLayout\JsModel();
             $this->templateBlock = new DefaultLayout\TemplateBlock();
             $this->mainMenu = new DefaultLayout\MainMenu();
             $this->search = new DefaultLayout\Search();
@@ -30,9 +27,6 @@ namespace EnterSite\Model\Page {
 }
 
 namespace EnterSite\Model\Page\DefaultLayout {
-    class JsModel {
-    }
-
     /**
      * Шаблоны mustache для блоков <script id="templateId" type="text/html" />
      */
