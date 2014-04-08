@@ -335,12 +335,18 @@
 
 			var
 				addToCart = function addToCart( data ) {
-					var groupBtn = button.data('group'),
+					var
+						groupBtn = button.data('group'),
 						upsale = button.data('upsale') ? button.data('upsale') : null,
 						product = button.parents('.jsSliderItem').data('product');
 					//end of vars
 
 					if ( !data.success ) {
+						console.warn( 'addToCart error' );
+						if ( data.error && data.error.message ) {
+							console.warn( data.error.message );
+							// TODO: сообщение об ошибке для пользователя
+						}
 						return false;
 					}
 
