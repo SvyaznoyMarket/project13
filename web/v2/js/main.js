@@ -7,11 +7,11 @@
             //var response = JSON.parse(xhr.responseText);
         });
 
-        $body.on('click', '.js-cart-buyButton', function(e) {
+        $body.on('click', '.js-buyButton', function(e) {
             var $el = $(e.currentTarget);
-            var data = $el.find('.js-link').data();
+            var data = $el.data();
 
-            console.info('click:js-cart-buyButton', $el, data);
+            console.info('click:js-buyButton', $el, data);
 
             if (data.url) {
                 $.post(data.url, data.value, function(response) {
@@ -22,12 +22,13 @@
             }
         });
 
-        $body.on('render', '.js-cart-buyButton', function(e, data) {
-            var $el = $(e.currentTarget);
+        $body.on('render', '.js-buyButton', function(e, data) {
+            var idSelector = $(e.currentTarget).data('idSelector');
+            var $el = $(idSelector);
 
-            console.info('render:js-cart-buyButton', $el, data);
+            console.info('render:js-buyButton', $el, data);
 
-            $el.html($(mustache.render($('#tpl-cart-buyButton').html(), data)).find('.js-link'));
+            $el.replaceWith(mustache.render($('#tpl-cart-buyButton').html(), data));
         });
     };
 
