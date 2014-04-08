@@ -15,7 +15,9 @@
 
             if (data.url) {
                 $.post(data.url, data.value, function(response) {
-                    $el.trigger('render', response.result)
+                    if (_.isObject(response.result.buyButton)) {
+                        $el.trigger('render', response.result.buyButton);
+                    }
                 });
 
                 e.preventDefault();

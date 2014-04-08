@@ -9,14 +9,21 @@ use EnterSite\Model\Partial;
 class ProductSpinner {
     /**
      * @param Model\Product $product
+     * @param Model\Cart\Product|null $cartProduct
      * @return Partial\Cart\ProductSpinner
      */
     public function getObject(
-        Model\Product $product
+        Model\Product $product,
+        Model\Cart\Product $cartProduct = null
     ) {
         $spinner = new Partial\Cart\ProductSpinner();
 
         $spinner->id = self::getId($product->id);
+        $spinner->targetId = Repository\Partial\Cart\ProductButton::getId($product->id);
+
+        if ($cartProduct) {
+            $spinner->class = ' mDisabled';
+        }
 
         return $spinner;
     }

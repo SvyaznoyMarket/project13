@@ -56,6 +56,7 @@ class ProductButton {
             $button->text = 'В корзине';
             $button->url = '/cart'; // TODO: route
             $button->dataUrl = '';
+            $button->class = ' mDisabled';
         } else {
             if ($product->isInShopOnly) {
                 $button->class .= ' mShopsOnly';
