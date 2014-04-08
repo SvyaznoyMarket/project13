@@ -26,8 +26,18 @@ class SetProduct {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
+        $productData = array_merge([
+            'id'       => null,
+            'quantity' => null,
+        ], (array)$request->data['product']);
+
+        $product = new Model\Product();
+        $product->id = $productData['id'];
+
+        $cartProduct = new Model\Cart\Product();
+
         return new Http\JsonResponse([
-            'result' => [], // TODO: вынести на уровень JsonPage.result
+            'result' => (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct), // TODO: вынести на уровень JsonPage.result
         ]);
     }
 }
