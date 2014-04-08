@@ -1057,16 +1057,22 @@ body.noScroll {
   padding-bottom: 20px;
 }
 .slidesItemsList {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
+  font-size: 0;
+  width: 10000px;
 }
 .slidesItemsList_item {
-  position: absolute;
-  top: 0;
+  display: inline-block;
+  vertical-align: top;
+  *display: inline;
+  zoom: 1;
 }
 .slidesItemsList_img {
   text-align: center;
+  width: 100%;
+  max-width: 350px;
 }
 .slidesItemsBtn {
   position: absolute;
