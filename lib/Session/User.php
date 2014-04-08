@@ -101,6 +101,19 @@ class User {
         //\RepositoryManager::getUser()->saveEntity($user);
 
         $this->setCacheCookie($response);
+
+        // SITE-2895
+        $cookie = new \Http\Cookie(
+            \App::config()->kissmentrics['cookieName']['needUpdate'],
+            1,
+            time() + \App::config()->session['cookie_lifetime'],
+            '/',
+            null,
+            false,
+            false
+        );
+
+        $response->headers->setCookie($cookie);
     }
 
     /**
