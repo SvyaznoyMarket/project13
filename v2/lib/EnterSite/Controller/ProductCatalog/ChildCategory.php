@@ -63,7 +63,7 @@ class ChildCategory {
         // категория
         $category = (new Repository\Product\Category())->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
         if (!$category) {
-            return (new Controller\Error\NotFound())->execute(sprintf('Категория товара @%s не найдена', $categoryToken));
+            return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
         }
         if ($category->redirectLink) {
             return (new Controller\Redirect())->execute($category->redirectLink. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
