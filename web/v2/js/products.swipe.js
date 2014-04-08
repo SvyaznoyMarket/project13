@@ -6,9 +6,17 @@ $(function() {
       slideList = $('.slidesItemsList'),
       slideWrapItem = $('.slidesItems').find('.slidesItemsList_item'),
 
-      btnSlidesLeft = $('.jsBtnSlidesLeft'),
-      btnSlidesRight = $('.jsBtnSlidesRight'),
+      slidePag = $('.slidesItemsBtnPag'),
 
+      btnSlidesLeft = $('.jsBtnSlidesLeft'),
+      btnSlidesRight = $('.jsBtnSlidesRight');
+
+  slideWrap.css({'background' : 'url("/v2/css/modules/mainStyles/img/ajaxnoti.gif") no-repeat 50% 50%'});
+  slideWrapItem.css({'display' : 'inline-block'});
+  slideList.css({'display' : 'none'});
+  slidePag.css({'display' : 'none'});
+
+  var
       /*
         * Функция ресайза блока слайдера изображений товара
        */
@@ -23,7 +31,7 @@ $(function() {
             slideWrapHeight = slideWrapWidth;
         };
 
-        slideWrap.css({'height' : slideWrapHeight});
+        slideWrap.css({'height' : slideWrapHeight, 'background' : 'none'});
 
         countItem = 0;
 
@@ -32,19 +40,20 @@ $(function() {
 
           var slideImg = $(this).find('.slidesItemsList_img');
 
-          slideList.css({'width' : slideWrapWidth * countItem});
-          $(this).css({'width' : slideWrapWidth, 'left' : slideWrapWidth * countItem - slideWrapWidth});
+          slideList.fadeIn('300').css({'width' : slideWrapWidth * countItem});
+          $(this).css({'width' : slideWrapWidth});
           slideImg.css({'height' : slideWrapHeight});
-
-          if ( countItem == 1 ) {
-              $(this).css({'left' : 0});
-          }
         });
 
         if ( countItem <= 1 ) {
             btnSlidesLeft.hide();
             btnSlidesRight.hide();
+        }
+        else {
+          btnSlidesRight.fadeIn('300');
+          slidePag.fadeIn('300');
         };
+
         var slideListLeftNew = -1 * slideWrapWidth * curSlide;
 
         $('.slidesItemsList').css({'left' : slideListLeftNew});
@@ -54,8 +63,6 @@ $(function() {
         * Пагинация слайдера
        */
       paginationSlides = function paginationSlides() {
-        var slidePag = $('.slidesItemsBtnPag'),
-            i;
      
         slideWrapItem.each(function() {
           countItem++;

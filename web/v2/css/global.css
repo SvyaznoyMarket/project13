@@ -1055,19 +1055,19 @@ body.noScroll {
   overflow: hidden;
   position: relative;
   padding-bottom: 20px;
+  min-height: 350px;
 }
 .slidesItemsList {
   position: relative;
   top: 0;
   left: 0;
   font-size: 0;
-  width: 10000px;
 }
 .slidesItemsList_item {
+  display: none;
+}
+.slidesItemsList_item:first-child {
   display: inline-block;
-  vertical-align: top;
-  *display: inline;
-  zoom: 1;
 }
 .slidesItemsList_img {
   text-align: center;
@@ -1091,6 +1091,7 @@ body.noScroll {
   background-color: rgba(255, 255, 255, 0.7);
   padding: 4px;
   cursor: pointer;
+  display: none;
 }
 .slidesItemsBtn_left {
   left: 0;
@@ -1166,10 +1167,6 @@ body.noScroll {
   }
 }
 @media only screen and (max-width: 570px) {
-  .productDesc .slidesItems {
-    float: none;
-    width: auto;
-  }
   .productDesc .buyInfoWrap {
     float: none;
   }
@@ -1180,6 +1177,13 @@ body.noScroll {
     float: none;
     margin-left: 0;
     width: auto;
+  }
+  .slidesItems {
+    float: none;
+    width: auto;
+  }
+  .slidesItems {
+    min-height: auto;
   }
   .btnBuyOneClick {
     display: block;
@@ -2067,22 +2071,3 @@ body.noScroll {
 /* ==========================================================================
    Стили при отключенном JavaScript
    ========================================================================== */
-.no-js .slidesItemsList {
-  position: relative;
-}
-.no-js .slidesItemsList_item {
-  position: relative;
-  display: none;
-}
-.no-js .slidesItemsList_item:first-child {
-  display: block;
-}
-.no-js .slidesItemsList_img {
-  width: 100%;
-  height: auto;
-  max-width: 350px;
-}
-.no-js .slidesItemsBtn,
-.no-js .slidesItemsBtnPag {
-  display: none;
-}
