@@ -699,35 +699,40 @@ window.ANALYTICS = {
 					addTransaction,
 					items,
 					send,
-					count, i;
+					count, i,
+					order, j;
+				// end of vars
 
-				if ( ecommerce ) {
-					addTransaction = ecommerce.addTransaction;
-					items = ecommerce.items;
-					send = ecommerce.send;
+				if ( !ecommerce ) {
+					return;
 				}
 
 				console.log( 'gaJS orderComplete (require ecommerce)' );
 				ga('require', 'ecommerce', 'ecommerce.js');
 
-				if ( addTransaction ) {
-					console.log('ecommerce:addTransaction', addTransaction);
-					ga('ecommerce:addTransaction', addTransaction);
-				}
+				for ( j in ecommerce ) {
+					order = ecommerce[j];
 
-				if ( items ) {
-					count = items.length;
-					for ( i = 0; i < count; i++ ) {
-						console.log('ecommerce:addItem', items[i]);
-						ga('ecommerce:addItem', items[i]);
+					addTransaction = order.addTransaction;
+					items = order.items;
+					send = order.send;
+
+					if ( addTransaction ) {
+						console.log('ecommerce:addTransaction', addTransaction);
+						ga('ecommerce:addTransaction', addTransaction);
 					}
-				}
 
-				if ( send ) {
-					count = send.length;
-					for ( i = 0; i < count; i++ ) {
-						console.log('ecommerce:send', send[i]);
-						ga('ecommerce:send', send[i]);
+					if ( items ) {
+						count = items.length;
+						for ( i = 0; i < count; i++ ) {
+							console.log('ecommerce:addItem', items[i]);
+							ga('ecommerce:addItem', items[i]);
+						}
+					}
+
+					if ( send ) {
+						console.log('ecommerce:send', send);
+						ga('ecommerce:send', send);
 					}
 				}
 			},
