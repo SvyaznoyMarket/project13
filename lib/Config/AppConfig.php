@@ -147,7 +147,10 @@ class AppConfig {
     ];
     /** @var array */
     public $kissmentrics = [
-        'enabled'   =>  null,
+        'enabled'    =>  null,
+        'cookieName' => [
+            'needUpdate' => null,
+        ],
     ];
     /** @var array */
     public $pickpoint = [
@@ -189,7 +192,21 @@ class AppConfig {
         ],
         'criteo' => [
             'enabled' => null,
-        ]
+        ],
+        'RetailRocket' => [
+            'account' => null,
+            'apiUrl' => null,
+            'timeout' => null,
+        ],
+        'Admitad' => [
+            'enabled' => null,
+        ],
+        'AdLens' => [
+            'enabled' => null,
+        ],
+        'Сpaexchange' => [
+            'enabled' => null,
+        ],
     ];
 
 

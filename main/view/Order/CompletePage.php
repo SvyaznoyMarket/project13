@@ -108,10 +108,70 @@ class CompletePage extends Layout {
     }
 
     public function slotСpaexchangeConversionJS () {
+        if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {
+            return;
+        }
+
         return $this->tryRender('partner-counter/_cpaexchange_conversion');
     }
 
     public function slotСpaexchangeJS () {
+        if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {
+            return;
+        }
+
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25015]) . '"></div>';
+    }
+
+    public function slotAdLensJS () {
+        if ( !\App::config()->partners['AdLens']['enabled'] ) {
+            return;
+        }
+
+        $orders = $this->getParam('orders');
+        if (empty($orders)) {
+            return;
+        }
+
+        $dataOrders = [
+            'orders'  => null,//обозначение факта заказа
+            'revenue' => null,//текущая сумма заказа в корзине
+            'margin'  => 0,   //прибыль заказа
+            'items'   => null,//количество товаров в заказе
+            'transid' => null,//уникальный идентификатор транзакции
+        ];
+
+        $transid = null;
+        $revenue = 0;
+        $items = 0;
+        foreach ($orders as $order) {
+            if (!$order instanceof \Model\Order\Entity) {continue;}
+
+            $revenue += $order->getSum();
+
+            foreach ($order->getProduct() as $product) {
+                $items += $product->getQuantity();
+            }
+
+            if (!$transid) {
+                $transid = $order->getId();
+            }
+        }
+
+        if (!$revenue || !$items || !$transid) {
+            return;
+        }
+
+        $dataOrders = array_merge($dataOrders, [
+            'orders' => 1,
+            'revenue' => $revenue,
+            'items' => $items,
+            'transid' => $transid,
+        ]);
+
+        return
+            '<div id="AdLensJS" class="jsanalytics" data-value="' . $this->json($dataOrders) . '">
+                <noscript><img src="http://pixel.everesttech.net/245/t?ev_Orders='.$dataOrders['orders'].'&ev_Revenue='.$dataOrders['revenue'].'&ev_Margin='.$dataOrders['margin'].'&ev_Items='.$dataOrders['items'].'&ev_transid='.$dataOrders['transid'].'" width="1" height="1"/></noscript>
+            </div>';
     }
 }

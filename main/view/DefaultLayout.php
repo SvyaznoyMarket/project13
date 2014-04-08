@@ -51,7 +51,21 @@ class DefaultLayout extends Layout {
     }
 
     public function slotKissMetrics() {
-        return $this->tryRender('_kissMetrics');
+        $cookie = \App::request()->cookies;
+        $cookieName = \App::config()->kissmentrics['cookieName']['needUpdate'];
+
+        $return = $this->tryRender('_kissMetrics');
+
+        // SITE-2895
+        if ((bool)$cookie->get($cookieName) && \App::user()->getToken()) {
+            $data = [
+                'entity_id' => \App::user()->getToken(),
+                'cookieName' => $cookieName
+            ];
+            $return .= "<div id='kissUpdateJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+        }
+
+        return $return;
     }
 
     public function slotBodyDataAttribute() {
@@ -251,17 +265,27 @@ class DefaultLayout extends Layout {
 
             $isFailed = false;
             $content = '';
-            $client->addQuery('http://' . \App::config()->mainHost . \App::router()->generate('category.mainMenu'), [], function($data) use (&$content, &$isFailed) {
-                isset($data['content']) ? $content = $data['content'] : $isFailed = true;
-            }, function(\Exception $e) use (&$isFailed) {
-                \App::exception()->remove($e);
-                $isFailed = true;
-            }, 2);
+            $client->addQuery(
+                'http://' . \App::config()->mainHost
+                . (\App::user()->getRegion()
+                    ? \App::router()->generate('category.mainMenu.region', ['regionId' => \App::user()->getRegion()->getId()])
+                    : \App::router()->generate('category.mainMenu')
+                ),
+                [],
+                function($data) use (&$content, &$isFailed) {
+                    isset($data['content']) ? $content = $data['content'] : $isFailed = true;
+                },
+                function(\Exception $e) use (&$isFailed) {
+                    \App::exception()->remove($e);
+                    $isFailed = true;
+                },
+                2
+            );
             $client->execute(1, 2);
 
             if ($isFailed) {
                 $content = $renderer->render('__mainMenu', [
-                    'menu'            => (new Menu())->generate(),
+                    'menu'            => (new Menu())->generate(\App::user()->getRegion()),
                     'catalogJsonBulk' => $catalogJsonBulk,
                     'promoHtmlBulk'   => $promoHtmlBulk,
                 ]);
@@ -270,7 +294,7 @@ class DefaultLayout extends Layout {
 
             \Debug\Timer::start('main-menu');
             $content = $renderer->render('__mainMenu', [
-                'menu'            => (new Menu())->generate(),
+                'menu'            => (new Menu())->generate(\App::user()->getRegion()),
                 'catalogJsonBulk' => $catalogJsonBulk,
                 'promoHtmlBulk'   => $promoHtmlBulk,
             ]);
@@ -608,6 +632,10 @@ class DefaultLayout extends Layout {
      */
     public function slotСpaexchangeConversionJS () {
         return '';
+    }
+
+    public function slotAdLensJS () {
+        return;
     }
 
     public function slotAdFoxBground() {
