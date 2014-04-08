@@ -26,27 +26,8 @@ class SetProduct {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $jsProduct = new Model\JsModel\Product($this->jsonToArray($request->getContent()));
-        if (!$jsProduct->id) {
-            return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $jsProduct->id));
-        }
-
-        $product = new Model\Product();
-        $product->id = $jsProduct->id;
-
-        $cartProduct = new Model\Cart\Product();
-        $cartProduct->id = $jsProduct->id;
-        $cartProduct->quantity = $jsProduct->cart ? $jsProduct->cart->quantity : 1;
-        // TODO: положить товар в корзину
-
-
-        if ($jsProduct->buyButton) {
-            $jsProduct->buyButton->templateData = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
-        }
-        $jsProduct->inCart = true;
-
         return new Http\JsonResponse([
-            'result' => $jsProduct, // TODO: вынести на уровень JsonPage.result
+            'result' => [], // TODO: вынести на уровень JsonPage.result
         ]);
     }
 }
