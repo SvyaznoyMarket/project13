@@ -1074,7 +1074,6 @@ body.noScroll {
 }
 .slidesItemsList_img {
   text-align: center;
-  width: 100%;
 }
 .slidesItemsBtn {
   position: absolute;
@@ -1185,7 +1184,7 @@ body.noScroll {
     width: auto;
   }
   .slidesItems {
-    min-height: auto;
+    min-height: 300px;
   }
   .btnBuyOneClick {
     display: block;
