@@ -453,7 +453,8 @@
 							registerForm.hide();
 							this.showLoginForm();
 
-							document.location.href = window.location.href;
+							// Закомментил следующую строку так как изза нее возникает баг SITE-3389
+							// document.location.href = window.location.href;
 						}
 					}
 					else {

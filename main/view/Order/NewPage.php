@@ -43,6 +43,10 @@ class NewPage extends Layout {
 //    }
 
     public function slotСpaexchangeJS () {
+        if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {
+            return;
+        }
+
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25014]) . '"></div>';
     }
 }

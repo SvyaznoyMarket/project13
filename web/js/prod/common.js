@@ -335,12 +335,18 @@
 
 			var
 				addToCart = function addToCart( data ) {
-					var groupBtn = button.data('group'),
+					var
+						groupBtn = button.data('group'),
 						upsale = button.data('upsale') ? button.data('upsale') : null,
 						product = button.parents('.jsSliderItem').data('product');
 					//end of vars
 
 					if ( !data.success ) {
+						console.warn( 'addToCart error' );
+						if ( data.error && data.error.message ) {
+							console.warn( data.error.message );
+							// TODO: сообщение об ошибке для пользователя
+						}
 						return false;
 					}
 
@@ -1810,7 +1816,8 @@ $(document).ready(function(){
 							registerForm.hide();
 							this.showLoginForm();
 
-							document.location.href = window.location.href;
+							// Закомментил следующую строку так как изза нее возникает баг SITE-3389
+							// document.location.href = window.location.href;
 						}
 					}
 					else {
@@ -2505,7 +2512,7 @@ $(document).ready(function() {
  *
  * @author		Zaytsev Alexandr
  * @requires	jQuery, FormValidator, docCookies
- * 
+ *
  * @param		{event}		event
  * @param		{Object}	subscribe			Информация о подписке
  * @param		{Boolean}	subscribe.agreed	Было ли дано согласие на подписку в прошлый раз
@@ -2514,130 +2521,135 @@ $(document).ready(function() {
 ;(function() {
 	var
 		body = $('body'),
-		subscribeCookieName = 'subscribed',
+		subscribeCookieName = 'subscribed';
+	// end of vars
+
+	var
 		lboxCheckSubscribe = function lboxCheckSubscribe( event ) {
-
-		var
-			notNowShield = $('.bSubscribeLightboxPopupNotNow'),
-			subPopup = $('.bSubscribeLightboxPopup'),
-			input = $('.bSubscribeLightboxPopup__eInput'),
-			submitBtn = $('.bSubscribeLightboxPopup__eBtn' ),
-			subscribe = {
-				'show': !window.docCookies.hasItem(subscribeCookieName),
-				'agreed': 1 === window.docCookies.getItem(subscribeCookieName)
-			},
-			inputValidator = new FormValidator({
-				fields: [
-					{
-						fieldNode: input,
-						customErr: 'Неправильный емейл',
-						required: true,
-						email: true,
-						validBy: 'isEmail'
-					}
-				]
-			} ),
-			runValidation = function runValidation() {
-				inputValidator.validate({
-					onInvalid: function( err ) {
-						console.log('Email is invalid');
-						console.log(err);
-					},
-					onValid: function() {
-						console.log('Email is valid');
-					}
+			var
+				notNowShield = $('.bSubscribeLightboxPopupNotNow'),
+				subPopup = $('.bSubscribeLightboxPopup'),
+				input = $('.bSubscribeLightboxPopup__eInput'),
+				submitBtn = $('.bSubscribeLightboxPopup__eBtn'),
+				subscribe = {
+					'show': !window.docCookies.hasItem(subscribeCookieName),
+					'agreed': 1 === window.docCookies.getItem(subscribeCookieName)
+				},
+				inputValidator = new FormValidator({
+					fields: [
+						{
+							fieldNode: input,
+							customErr: 'Неправильный емейл',
+							require: true,
+							validBy: 'isEmail'
+						}
+					]
 				});
-			};
-		// end of vars
+			// end of vars
 
+			var
+				subscribing = function subscribing() {
+					var
+						email = input.val(),
+						url = $(this).data('url');
+					//end of vars
 
-		var
-			subscribing = function subscribing() {
-				var
-					email = input.val(),
-					url = $(this).data('url');
-				//end of vars
-				
-				if ( submitBtn.hasClass('mDisabled') ) {
-					return false;
-				}
+					var
+						/**
+						 * Обработчик ответа пришедшего с сервера
+						 * @param res Ответ с сервера
+						 */
+							serverResponseHandler = function serverResponseHandler( res ) {
+							if( !res.success ) {
+								return false;
+							}
 
-				$.post(url, {email: email}, function( res ) {
-					if( !res.success ) {
+							subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>');
+							window.docCookies.setItem('subscribed', 1, 157680000, '/');
+
+							setTimeout(function() {
+								subPopup.slideUp(300);
+							}, 3000);
+
+							// analytics
+							if ( typeof _gaq !== 'undefined' ) {
+								_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
+							}
+
+							// subPopup.append('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'/" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
+						};
+					// end of functions
+
+					if ( submitBtn.hasClass('mDisabled') ) {
 						return false;
 					}
-					
-					subPopup.html('<span class="bSubscribeLightboxPopup__eTitle mType">Спасибо! подтверждение подписки отправлено на указанный e-mail</span>');
-					window.docCookies.setItem('subscribed', 1, 157680000, '/');
 
-					setTimeout(function() {
-						subPopup.slideUp(300);
-					}, 3000);
+					inputValidator.validate({
+						onInvalid: function( err ) {
+							console.log('Email is invalid');
+							console.log(err);
+						},
+						onValid: function() {
+							console.log('Email is valid');
+							$.post(url, {email: email}, serverResponseHandler);
+						}
+					});
 
-					// analytics
-					if ( typeof _gaq !== 'undefined' ) {
-						_gaq.push(['_trackEvent', 'Account', 'Emailing sign up', 'Page top']);
-					}
+					return false;
+				},
 
-					// subPopup.append('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'/" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
-				});
+				subscribeNow = function subscribeNow() {
+					var
+						notNow = $('.bSubscribeLightboxPopup__eNotNow');
+					// end of vars
+
+					var
+						/**
+						 * Обработчик клика на ссылку "Спасибо, не сейчас"
+						 * @param e
+						 */
+							notNowClickHandler = function( e ) {
+							e.preventDefault();
+
+							var url = $(this).data('url');
+
+							subPopup.slideUp(300, subscribeLater);
+							window.docCookies.setItem('subscribed', 0, 157680000, '/');
+							$.post(url);
+						};
+					// end of functions
+
+					subPopup.slideDown(300);
+
+					submitBtn.bind('click', subscribing);
+
+					notNow.off('click');
+					notNow.bind('click', notNowClickHandler);
+				},
+
+				subscribeLater = function subscribeLater() {
+					notNowShield.slideDown(300);
+					notNowShield.bind('click', function() {
+						$(this).slideUp(300);
+						subscribeNow();
+					});
+				};
+			//end of functions
+
+			input.placeholder();
+
+			if ( !subscribe.show ) {
+				if ( !subscribe.agreed ) {
+					subscribeLater();
+				}
 
 				return false;
-			},
-
-			subscribeNow = function subscribeNow() {
-				var
-					notNow = $('.bSubscribeLightboxPopup__eNotNow');
-				// end of vars
-
-				var
-					/**
-					 * Обработчик клика на ссылку "Спасибо, не сейчас"
-					 * @param e
-					 */
-					notNowClickHandler = function( e ) {
-						e.preventDefault();
-
-						var url = $(this).data('url');
-
-						subPopup.slideUp(300, subscribeLater);
-						window.docCookies.setItem('subscribed', 0, 157680000, '/');
-						$.post(url);
-					};
-				// end of functions
-
-				subPopup.slideDown(300);
-
-				submitBtn.bind('click', subscribing);
-
-				notNow.off('click');
-				notNow.bind('click', notNowClickHandler);
-			},
-
-			subscribeLater = function subscribeLater() {
-				notNowShield.slideDown(300);
-				notNowShield.bind('click', function() {
-					$(this).slideUp(300);
-					subscribeNow();
-				});
-			};
-		//end of functions
-
-		input.placeholder();
-
-		if ( !subscribe.show ) {
-			if ( !subscribe.agreed ) {
-				subscribeLater();
 			}
-
-			return false;
-		}
-		else {
-			subscribeNow();
-		}
-
-		input.bind('keyup', runValidation);
-	};
+			else {
+				subscribeNow();
+			}
+		};
+	// end of functions
 
 	body.bind('showsubscribe', lboxCheckSubscribe);
 	body.trigger('showsubscribe');

@@ -20,12 +20,17 @@ class Menu {
     }
 
     /**
+     * @param \Model\Region\Entity $region
      * @return \Model\Menu\Entity[]
      */
-    public function generate() {
+    public function generate(\Model\Region\Entity $region = null) {
         static $instance;
         if ($instance) {
             return $instance;
+        }
+
+        if (!$region) {
+            $region = \App::user()->getRegion();
         }
 
         $isFailed = false;
@@ -43,7 +48,7 @@ class Menu {
         }
 
         // сбор категорий для ACTION_PRODUCT_CATALOG
-        \RepositoryManager::productCategory()->prepareTreeCollection(\App::user()->getRegion(), 3, function($data) {
+        \RepositoryManager::productCategory()->prepareTreeCollection($region, 3, function($data) {
             foreach ($data as $item) {
                 $category = new \Model\Product\Category\MenuEntity($item);
                 foreach ($category->getChild() as $childCat) {
@@ -54,7 +59,7 @@ class Menu {
         });
 
         // сбор категорий для ACTION_PRODUCT_CATEGORY
-        \RepositoryManager::productCategory()->prepareCollectionById(array_keys($this->categoriesById), \App::user()->getRegion(), function($data) {
+        \RepositoryManager::productCategory()->prepareCollectionById(array_keys($this->categoriesById), $region, function($data) {
             foreach ($data as $item) {
                 $this->categoriesById[$item['id']] = new \Model\Product\Category\MenuEntity($item);
             }
