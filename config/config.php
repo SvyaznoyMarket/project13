@@ -121,9 +121,6 @@ $c->yandexMetrika['enabled'] = true;
 $c->kissmentrics['enabled'] = true;
 $c->kissmentrics['cookieName']['needUpdate'] = 'kissNeedUpdate';
 
-$c->partners['livetex']['enabled'] = true;
-$c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
-//$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
 $c->pickpoint['timeout'] = 60;
@@ -162,6 +159,11 @@ $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 $c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
 $c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
 $c->partners['Admitad']['enabled'] = true;
+$c->partners['livetex']['enabled'] = true;
+$c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
+//$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
+$c->partners['AdLens']['enabled'] = true;
+$c->partners['Сpaexchange']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [

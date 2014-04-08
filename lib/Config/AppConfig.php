@@ -192,7 +192,21 @@ class AppConfig {
         ],
         'criteo' => [
             'enabled' => null,
-        ]
+        ],
+        'RetailRocket' => [
+            'account' => null,
+            'apiUrl' => null,
+            'timeout' => null,
+        ],
+        'Admitad' => [
+            'enabled' => null,
+        ],
+        'AdLens' => [
+            'enabled' => null,
+        ],
+        'Сpaexchange' => [
+            'enabled' => null,
+        ],
     ];
 
 

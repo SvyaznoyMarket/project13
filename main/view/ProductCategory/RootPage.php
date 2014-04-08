@@ -10,6 +10,10 @@ class RootPage extends Layout {
     }
 
     public function slotСpaexchangeJS () {
+        if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {
+            return;
+        }
+
         $return = null;
         if ($this->hasParam('categoryPath')) {
             switch ($this->getParam('categoryPath')) {
