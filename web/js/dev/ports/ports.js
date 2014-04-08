@@ -1316,7 +1316,7 @@ window.ANALYTICS = {
 				'[Ent_Req] Token number': data.enterprizeToken,
 				'[Ent_Req] Date': data.date,// Текущая дата
 				'[Ent_Req] Time': data.time,//Текущее время
-				'[Ent_Req] enter_id': data.client_id//идентификаgтор клиента в cookie сайта
+				'[Ent_Req] enter_id': data.enter_id//идентификаgтор клиента в cookie сайта
 			};
 
 			_kmq.push(['record', 'Enterprize Token Request', toKiss]);
@@ -1324,7 +1324,7 @@ window.ANALYTICS = {
 
 		// --- GA ---
 		if (typeof ga !== undefined) {
-			ga('send', 'event', 'Enterprize Token Request', 'Номер фишки', data.client_id);
+			ga('send', 'event', 'Enterprize Token Request', 'Номер фишки', data.enter_id);
 		}
 	},
 
@@ -1355,7 +1355,7 @@ window.ANALYTICS = {
 				'[Ent_Gr] Token number': data.enterprizeToken,
 				'[Ent_Gr] Date': data.date,// Текущая дата
 				'[Ent_Gr] Time': data.time,//Текущее время
-				'[Ent_Gr] enter_id': data.client_id//идентификатор клиента в cookie сайта
+				'[Ent_Gr] enter_id': data.enter_id//идентификатор клиента в cookie сайта
 			};
 
 			_kmq.push(['record', 'Enterprize Token Granted', toKiss]);
@@ -1364,7 +1364,7 @@ window.ANALYTICS = {
 			if (data.mobile != KM.i()) {
 				old_identity = KM.i()
 				_kmq.push(['identify', data.mobile]);
-				_kmq.push(['set', {'enter_id': data.client_id}]);
+				_kmq.push(['set', {'enter_id': data.enter_id}]);
 				_kmq.push(['set', {'user name': data.name}]);
 				_kmq.push(['set', {'user email': data.email}]);
 				_kmq.push(['alias', old_identity, KM.i()]);
@@ -1373,8 +1373,32 @@ window.ANALYTICS = {
 
 		// --- GA ---
 		if (typeof ga !== undefined) {
-			ga('send', 'event', 'Enterprize Token Granted', 'Номер фишки', data.client_id);
-			ga('set', '&uid', data.client_id);
+			ga('send', 'event', 'Enterprize Token Granted', 'Номер фишки', data.enter_id);
+			ga('set', '&uid', data.enter_id);
+		}
+	},
+
+	kissUpdateJS: function () {
+		var
+			kiss = $('#kissUpdateJS'),
+			data = {};
+		// end of vars
+
+		if ( !kiss.length ) {
+			return;
+		}
+
+		data = kiss.data('value')
+
+		if ( undefined === data.entity_id ) {
+			return;
+		}
+
+		if (typeof _kmq !== undefined) {
+			_kmq.push(['alias', KM.i(), data.entity_id]);
+			_kmq.push(['set', {'enter_id': data.entity_id}]);
+
+			data.cookieName !== undefined && window.docCookies.removeItem(data.cookieName, '/');
 		}
 	},
 
@@ -1418,6 +1442,49 @@ window.ANALYTICS = {
 			b.appendChild(c);
 			b.appendChild(s);
 		})();
+	},
+
+	AdLensJS: function () {
+		var
+			adLens = $('#AdLensJS'),
+			data = {},
+			ef_event_type="transaction",
+			ef_transaction_properties,
+			ef_segment = "",
+			ef_search_segment = "",
+			ef_userid = "    ",
+			ef_pixel_host="pixel.everesttech.net",
+			ef_fb_is_app = 0,
+			ef_allow_3rd_party_pixels = 1;
+		// end of vars
+
+		if ( !adLens.length ) {
+			return;
+		}
+
+		data = adLens.data('value');
+
+		var al = document.createElement('script'); al.type = 'text/javascript';
+		al.src = 'http://www.everestjs.net/static/st.v2.js';
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(al, s);
+
+		al.onload = function() {
+			if ( data.orders == undefined || data.revenue == undefined || data.margin == undefined || data.items == undefined || data.transid == undefined ) {
+				return;
+			}
+
+			ef_event_type="transaction";
+			ef_transaction_properties = "ev_Orders="+data.orders+"&ev_Revenue="+data.revenue+"&ev_Margin="+data.margin+"&ev_Items="+data.items+"&ev_transid="+data.transid;
+			ef_segment = "";
+			ef_search_segment = "";
+			ef_userid="245";
+			ef_pixel_host="pixel.everesttech.net";
+			ef_fb_is_app = 0;
+			ef_allow_3rd_party_pixels = 1;
+
+			'function' === typeof(effp) && effp();
+		}
 	},
 
 	enable : true

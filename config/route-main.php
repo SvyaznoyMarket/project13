@@ -12,6 +12,14 @@ return [
         'action'  => ['ProductCategory\MainMenuAction', 'execute'],
     ],
 
+    'category.mainMenu.region' => [
+        'pattern' => '/category/main_menu/{regionId}',
+        'action'  => ['ProductCategory\MainMenuAction', 'execute'],
+        'require' => [
+            'regionId'   => '\d+',
+        ],
+    ],
+
     // поиск
     'search' => [
         'pattern' => '/search',
