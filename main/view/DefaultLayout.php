@@ -275,7 +275,7 @@ class DefaultLayout extends Layout {
 
             if ($isFailed) {
                 $content = $renderer->render('__mainMenu', [
-                    'menu'            => (new Menu())->generate(),
+                    'menu'            => (new Menu())->generate(\App::user()->getRegion()),
                     'catalogJsonBulk' => $catalogJsonBulk,
                     'promoHtmlBulk'   => $promoHtmlBulk,
                 ]);
@@ -284,7 +284,7 @@ class DefaultLayout extends Layout {
 
             \Debug\Timer::start('main-menu');
             $content = $renderer->render('__mainMenu', [
-                'menu'            => (new Menu())->generate(),
+                'menu'            => (new Menu())->generate(\App::user()->getRegion()),
                 'catalogJsonBulk' => $catalogJsonBulk,
                 'promoHtmlBulk'   => $promoHtmlBulk,
             ]);
