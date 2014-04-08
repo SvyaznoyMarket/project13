@@ -160,7 +160,7 @@ $c->partners['criteo']['account'] = 10442;
 $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 $c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
 $c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
-$c->partners['Admitad']['enabled'] = true;
+$c->partners['Admitad']['enabled'] = false;
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
