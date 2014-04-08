@@ -832,15 +832,20 @@ body.noScroll {
   margin: 0;
   z-index: 1025;
   -webkit-overflow-scrolling: touch;
+  -webkit-box-shadow: 5px 0 25px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 5px 0 25px rgba(0, 0, 0, 0.6);
+  box-shadow: 5px 0 25px rgba(0, 0, 0, 0.6);
 }
 .navList {
-  min-width: 290px;
+  min-width: 320px;
 }
 .navList_item {
   padding: 7px 0;
 }
 .navList_item__first {
   border-bottom: 1px solid #404040;
+  height: 28px;
+  padding: 13px 0;
 }
 .navList_text {
   text-transform: uppercase;
@@ -859,6 +864,18 @@ body.noScroll {
   color: #ffa901;
   text-decoration: none;
   outline: none;
+}
+.navList_col {
+  color: #ffffff;
+}
+.navList_col:first-child {
+  display: inline-block;
+  margin: 0 12px 0 25px;
+}
+.navList_col__reg {
+  border-bottom: 1px dotted #ffffff;
+  font-size: 14px;
+  cursor: pointer;
 }
 .navList_img {
   width: 50px;

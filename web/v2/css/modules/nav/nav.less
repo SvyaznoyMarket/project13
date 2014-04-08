@@ -14,16 +14,19 @@
 	margin: 0;
 	z-index: 1025;
 	-webkit-overflow-scrolling: touch;
+	.box-shadow(5px 0 25px rgba(0, 0, 0, 0.6));
 }
 
 .navList {
-	min-width: 290px;
+	min-width: 320px;
 
 	&_item {
 		padding: 7px 0;
 
 		&__first {
 			border-bottom: 1px solid #404040;
+			height: 28px;
+    		padding: 13px 0;
 		}
 	}
 
@@ -46,6 +49,21 @@
 			outline: none;
 		}
 	}
+
+	&_col {
+		color: @white;
+
+		&:first-child {
+			display: inline-block;
+    		margin: 0 12px 0 25px;
+		}
+
+		&__reg {
+			border-bottom: 1px dotted @white;
+			font-size: 14px;
+			cursor: pointer;
+		} 
+	} 
 
 	&_img {
 		width: 50px;
