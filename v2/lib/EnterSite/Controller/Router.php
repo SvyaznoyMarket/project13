@@ -29,7 +29,7 @@ class Router {
         }
 
         $actionResponses = [];
-        foreach ($actions as $action) {
+        foreach ($actions as $actionId => $action) {
             $actionResponse = [];
 
             $action = array_merge([
@@ -65,13 +65,11 @@ class Router {
                 ];
             }
 
-            $actionResponses[] = $actionResponse;
+            $actionResponses[$actionId] = $actionResponse;
         }
 
         return new Http\JsonResponse([
-            'result' => [
-                'actions' => $actionResponses
-            ],
+            'result' => $actionResponses,
         ]);
     }
 }

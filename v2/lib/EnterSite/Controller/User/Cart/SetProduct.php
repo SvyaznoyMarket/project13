@@ -7,11 +7,10 @@ use Enter\Util\JsonDecoderTrait;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
-use EnterSite\Controller;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
-//use EnterSite\Model\JsonPage as Page;
 use EnterSite\Repository;
+use EnterSite\Model\Page\User\Cart\SetProduct as Page;
 
 class SetProduct {
     use ConfigTrait;
@@ -36,8 +35,15 @@ class SetProduct {
 
         $cartProduct = new Model\Cart\Product();
 
+        $page = new Page();
+        $page->buyButton = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
+        $page->buySpinner = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
+
+        // TODO Controller\V1Proxy - положить в корзину
+
+        // TODO: вынести на уровень JsonPage.result
         return new Http\JsonResponse([
-            'result' => (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct), // TODO: вынести на уровень JsonPage.result
+            'result' => $page,
         ]);
     }
 }
