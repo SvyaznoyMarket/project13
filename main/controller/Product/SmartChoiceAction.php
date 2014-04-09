@@ -59,7 +59,7 @@ class SmartChoiceAction {
                         foreach ($data as $key => &$product) {
                             $product = new \Model\Product\Entity($product);
                             if (!$product instanceof \Model\Product\Entity) continue;
-                            if ($product->isInShopOnly() || $product->isInShopStockOnly() || !$product->getIsBuyable()) {
+                            if ( !$product->getIsBuyable()) {
                                 unset($data[$key]);
                             }
                         }
