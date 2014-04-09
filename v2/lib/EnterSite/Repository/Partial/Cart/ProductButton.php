@@ -43,7 +43,7 @@ class ProductButton {
                 'token'    => $product->token,
                 'price'    => $product->price,
                 'url'      => $product->link,
-                'quantity' => 1,
+                'quantity' => $cartProduct ? $cartProduct->quantity : 1,
             ],
         ]);
 

@@ -34,6 +34,8 @@ class SetProduct {
         $product->id = $productData['id'];
 
         $cartProduct = new Model\Cart\Product();
+        $cartProduct->id = $productData['id'];
+        $cartProduct->quantity = (int)$productData['quantity'];
 
         $page = new Page();
         $page->buyButton = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);

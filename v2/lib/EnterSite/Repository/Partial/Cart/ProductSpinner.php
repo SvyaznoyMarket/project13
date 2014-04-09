@@ -20,9 +20,11 @@ class ProductSpinner {
 
         $spinner->id = self::getId($product->id);
         $spinner->targetId = Repository\Partial\Cart\ProductButton::getId($product->id);
+        $spinner->value = 1;
 
         if ($cartProduct) {
             $spinner->class = ' mDisabled';
+            $spinner->value = $cartProduct->quantity;
         }
 
         return $spinner;

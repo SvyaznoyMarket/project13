@@ -34,9 +34,14 @@ class DefaultLayout {
         $page->mainMenu = $request->mainMenu;
 
         // шаблоны mustache
+        try {
+            $page->templateBlock->productBuyButton = file_get_contents($templateDir . '/partial/cart/button.mustache');
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['template']]);
+        }
 
         try {
-            $page->templateBlock->cartBuyButton = file_get_contents($templateDir . '/partial/cart/button.mustache');
+            $page->templateBlock->productBuySpinner = file_get_contents($templateDir . '/partial/cart/spinner.mustache');
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['template']]);
         }
