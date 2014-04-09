@@ -60,6 +60,8 @@
 
             $target.trigger('changeProductQuantityData', targetDataValue.product.quantity + 1);
             $parent.trigger('renderValue', targetDataValue.product);
+
+            $el.blur();
         }).on('click', '.js-buySpinner .js-dec', function(e) {
             var $el = $(e.currentTarget),
                 $parent = $el.parent('.js-buySpinner'),
@@ -68,8 +70,10 @@
 
             console.info('click:js-buySpinner js-dec', $el, $target);
 
-                $target.trigger('changeProductQuantityData', targetDataValue.product.quantity - 1);
+            $target.trigger('changeProductQuantityData', targetDataValue.product.quantity - 1);
             $parent.trigger('renderValue', $target.data('value').product);
+
+            $el.blur();
         }).on('change keyup', '.js-buySpinner .js-value', function(e) {
             var $el = $(e.currentTarget),
                 $parent = $el.parent('.js-buySpinner'),
