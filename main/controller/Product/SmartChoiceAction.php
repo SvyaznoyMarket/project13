@@ -41,7 +41,7 @@ class SmartChoiceAction {
 
             // Запрашиваем рекомендации для существующих продуктов
             foreach ($productIds as $id) {
-                $queryUrl = "{$rrConfig['apiUrl']}Recomendation/ItemToItems/{$rrConfig['account']}/$id";
+                $queryUrl = "{$rrConfig['apiUrl']}Recomendation/UpSellItemToItems/{$rrConfig['account']}/$id";
 
                 \App::curl()->addQuery($queryUrl, [], function ($data) use (&$recommendedIds, $id) {
                     $recommendedIds[$id] = $data;
@@ -56,8 +56,12 @@ class SmartChoiceAction {
             if (count($recommendedIds)) {
                 foreach ($recommendedIds as $key => &$value) {
                     \RepositoryManager::product()->prepareCollectionById($value, $region, function ($data) use (&$value) {
-                        foreach ($data as &$product) {
+                        foreach ($data as $key => &$product) {
                             $product = new \Model\Product\Entity($product);
+                            if (!$product instanceof \Model\Product\Entity) continue;
+                            if ($product->isInShopOnly() || $product->isInShopStockOnly() || !$product->getIsBuyable()) {
+                                unset($data[$key]);
+                            }
                         }
                         $value = $data;
                     });
