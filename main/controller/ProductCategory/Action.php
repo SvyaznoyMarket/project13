@@ -862,7 +862,7 @@ class Action {
         }
 
         $smartChoiceEnabled = true;
-        $smartChoiceData = null;
+        $smartChoiceData = [];
 
         if ($smartChoiceEnabled) {
             try {
@@ -871,19 +871,23 @@ class Action {
                     return $a['products'][0]['id'];
                 }, $smartChoiceData);
                 $repository->prepareCollectionById($smartChoiceProductsIds, $region, function ($data) use (&$smartChoiceProducts, &$smartChoiceData) {
-                    if (count($data) === 3) {
-                        foreach ($data as $item) {
-                            $smartChoiceProduct = new \Model\Product\Entity($item);
-                            array_walk($smartChoiceData, function (&$item, $key, $smartChoiceProduct) {
-                                if ($item['products'][0]['id'] == $smartChoiceProduct->getId()) $item['product'] = $smartChoiceProduct;
-                            }, $smartChoiceProduct);
+                    try {
+                        if (count($data) === 3) {
+                            foreach ($data as $item) {
+                                $smartChoiceProduct = new \Model\Product\Entity($item);
+                                array_walk($smartChoiceData, function (&$item, $key, $smartChoiceProduct) {
+                                    if ($item['products'][0]['id'] == $smartChoiceProduct->getId()) $item['product'] = $smartChoiceProduct;
+                                }, $smartChoiceProduct);
+                            }
+                        } else {
+                            throw new \Exception('[Smartchoice] Не получены товары из базы');
                         }
-                    } else {
-                        throw new \Exception\ActionException('Не получены товары из базы');
+                    } catch (\Exception $e) {
+                        $smartChoiceData = [];
                     }
                 });
-            } catch (Exception $e) {
-                $smartChoiceData = null;
+            } catch (\Exception $e) {
+                $smartChoiceData = [];
             }
         }
 
