@@ -7,13 +7,15 @@ use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\MustacheRendererTrait;
+use EnterSite\SessionTrait;
 use EnterSite\ViewHelperTrait;
 use EnterSite\Model\Page\Debug as Page;
 
 class Debug {
     use ConfigTrait;
-    use LoggerTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, MustacheRendererTrait;
+    use LoggerTrait, MustacheRendererTrait, SessionTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, SessionTrait, MustacheRendererTrait;
+        LoggerTrait::getLogger insteadof SessionTrait;
     }
     use ViewHelperTrait;
 
@@ -24,20 +26,29 @@ class Debug {
         $totalTime = $endAt - $startAt;
 
         $page = new Page();
-        $page->requestId = $config->requestId;
 
+        // error
         if ($error = error_get_last()) {
             $page->error = new Page\Error($error);
         }
 
+        // times
         $page->times['total'] = new Page\Time();
         $page->times['total']->value = round($endAt - $startAt, 3);
         $page->times['total']->unit = 'ms';
 
+        // memory
         $page->memory = new Page\Memory();
         $page->memory->value = round(memory_get_peak_usage() / 1048576, 2);
         $page->memory->unit = 'Mb';
 
+        // session
+        if (isset($GLOBALS['EnterSite\SessionTrait::getSession'])) {
+            $page->session = $this->getSession()->all();
+        }
+
+        // config
+        $page->config = (array)$config;
 
         // curl query
         $i = 0;

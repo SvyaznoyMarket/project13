@@ -12,6 +12,10 @@ namespace EnterSite\Model\Page {
         public $times = [];
         /** @var Debug\Memory|null */
         public $memory;
+        /** @var array|null */
+        public $session;
+        /** @var array|null */
+        public $config;
         /** @var Debug\Query[] */
         public $queries = [];
 
