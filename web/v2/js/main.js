@@ -1,15 +1,16 @@
 ;(function (app, window, $, _, mustache, undefined) {
     app.initialize = function () {
-        var $document = $(document);
-        var $body = $('body');
+        var $document = $(document),
+            $body = $('body');
 
         $document.ajaxSuccess(function(e, xhr, settings) {
             //var response = JSON.parse(xhr.responseText);
         });
 
+        // кнопка купить
         $body.on('click', '.js-buyButton', function(e) {
-            var $el = $(e.currentTarget);
-            var data = $el.data();
+            var $el = $(e.currentTarget),
+                data = $el.data();
 
             console.info('click:js-buyButton', $el, data);
 
@@ -17,20 +18,88 @@
                 $.post(data.url, data.value, function(response) {
                     if (_.isObject(response.result.buyButton)) {
                         $el.trigger('render', response.result.buyButton);
+                        $('.js-buySpinner').filter('[data-target-selector="' + data.idSelector + '"]').trigger('render', response.result.buySpinner);
                     }
                 });
 
                 e.preventDefault();
             }
+        }).on('changeProductQuantityData', '.js-buyButton', function(e, quantity) {
+            var idSelector = $(e.currentTarget).data('idSelector'),
+                $el = $(idSelector),
+                dataValue = $el.data('value');
+
+            console.info('changeProductQuantityData:js-buyButton', $el, quantity);
+
+            if (!_.isFinite(quantity) || (quantity <= 0)) {
+                var error = {code: 'invalid', message: 'Количество должно быть большим нуля'};
+
+                console.info('changeProductQuantityData:js-buyButton', error, quantity, $el);
+
+                return error;
+            }
+
+            dataValue.product.quantity = quantity;
+        }).on('render', '.js-buyButton', function(e, templateData) {
+            var idSelector = $(e.currentTarget).data('idSelector'),
+                $el = $(idSelector);
+
+            console.info('render:js-buyButton', $el, templateData);
+
+            $el.replaceWith(mustache.render($('#tpl-product-buyButton').html(), templateData));
         });
 
-        $body.on('render', '.js-buyButton', function(e, data) {
+        // спиннер для кнопки купить
+        $body.on('click', '.js-buySpinner .js-inc', function(e) {
+            var $el = $(e.currentTarget),
+                $parent = $el.parent('.js-buySpinner'),
+                $target = $($parent.data('targetSelector')),
+                targetDataValue = $target.data('value');
+
+            console.info('click:js-buySpinner js-inc', $el, $target);
+
+            $target.trigger('changeProductQuantityData', targetDataValue.product.quantity + 1);
+            $parent.trigger('renderValue', targetDataValue.product);
+
+            $el.blur();
+        }).on('click', '.js-buySpinner .js-dec', function(e) {
+            var $el = $(e.currentTarget),
+                $parent = $el.parent('.js-buySpinner'),
+                $target = $($parent.data('targetSelector')),
+                targetDataValue = $target.data('value');
+
+            console.info('click:js-buySpinner js-dec', $el, $target);
+
+            $target.trigger('changeProductQuantityData', targetDataValue.product.quantity - 1);
+            $parent.trigger('renderValue', $target.data('value').product);
+
+            $el.blur();
+        }).on('change keyup', '.js-buySpinner .js-value', function(e) {
+            var $el = $(e.currentTarget),
+                $parent = $el.parent('.js-buySpinner'),
+                $target = $($parent.data('targetSelector'));
+
+            console.info('change:js-buySpinner js-value', $el, $target);
+
+            var value = $el.val();
+            if ('' != value) {
+                $target.trigger('changeProductQuantityData', parseInt(value));
+                $parent.trigger('renderValue', $target.data('value').product);
+            }
+        }).on('renderValue', '.js-buySpinner', function(e, product) {
             var idSelector = $(e.currentTarget).data('idSelector');
             var $el = $(idSelector);
 
-            console.info('render:js-buyButton', $el, data);
+            console.info('render:js-buySpinner', $el, product);
 
-            $el.replaceWith(mustache.render($('#tpl-cart-buyButton').html(), data));
+            $el.find('.js-value').val(product.quantity);
+        }).on('render', '.js-buySpinner', function(e, templateData) {
+            var idSelector = $(e.currentTarget).data('idSelector'),
+                $el = $(idSelector);
+
+            console.info('render:js-buySpinner', $el, templateData);
+
+            $el.replaceWith(mustache.render($('#tpl-product-buySpinner').html(), templateData));
         });
     };
 

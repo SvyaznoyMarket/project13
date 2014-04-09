@@ -32,7 +32,9 @@ namespace EnterSite\Model\Page\DefaultLayout {
      */
     class TemplateBlock {
         /** @var string */
-        public $cartBuyButton;
+        public $productBuyButton;
+        /** @var string */
+        public $productBuySpinner;
     }
 
     class BreadcrumbBlock {

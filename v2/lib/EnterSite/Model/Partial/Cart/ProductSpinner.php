@@ -9,4 +9,6 @@ class ProductSpinner {
     public $targetId;
     /** @var string */
     public $class;
+    /** @var int */
+    public $value;
 }
