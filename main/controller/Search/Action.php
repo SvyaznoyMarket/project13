@@ -124,6 +124,7 @@ class Action {
         // категории (фильтруем дубли, оставляем из дублей ту категорию, которая вернулась первой)
         $categoriesFoundTmp = empty($resultCategories['data']) ? [] : \RepositoryManager::productCategory()->getCollectionById($resultCategories['data']);
         $categoriesFound = [];
+        $categoriesConfigById = [];
         foreach ($categoriesFoundTmp as $category) {
             $tokenPrefix = str_replace('-'.$category->getId(), '', $category->getToken());
             $doubleFound = (bool)array_filter($categoriesFound, function($cat) use (&$tokenPrefix) {
@@ -131,6 +132,12 @@ class Action {
             });
             if(!$doubleFound) {
                 $categoriesFound[] = $category;
+
+                \RepositoryManager::productCategory()->prepareCatalogJson($category, function ($data) use (&$categoriesConfigById, $category) {
+                    if (!empty($data['listing_css'])) {
+                        $categoriesConfigById[$category->getId()] = $data['listing_css'];
+                    }
+                });
             }
         }
 
@@ -268,6 +275,7 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('categories', $categoriesById);
         $page->setParam('categoriesFound', $categoriesFound);
+        $page->setParam('categoriesConfigById', $categoriesConfigById);
         $page->setGlobalParam('selectedCategory', $selectedCategory);
         $page->setParam('productView', $productView);
         $page->setParam('productCount', $selectedCategory && !is_null($selectedCategory->getProductCount()) ? $selectedCategory->getProductCount() : $result['count']);

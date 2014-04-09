@@ -448,6 +448,22 @@ class Action {
                         }
                     }
                 );
+                $client->execute();
+
+                if ((bool)$relatedCategories) {
+                    foreach ($relatedCategories as $entity) {
+                        if (!$entity instanceof \Model\Product\Category\Entity) continue;
+                        if (!isset($categoryConfigById[$entity->getId()])) continue;
+
+                        \RepositoryManager::productCategory()->prepareCatalogJson($entity, function ($data) use (&$categoryConfigById, $entity) {
+                            if ($data) {
+                                $listing_css = !empty($data['listing_css']) ? $data['listing_css'] : [];
+                                $categoryConfigById[$entity->getId()] = array_merge($categoryConfigById[$entity->getId()], $listing_css);
+                            }
+                        });
+                    }
+                    $client->execute();
+                }
             }
         }
 

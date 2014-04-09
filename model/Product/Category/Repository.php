@@ -558,6 +558,30 @@ class Repository {
     }
 
     /**
+     * @param $category
+     * @param $callback
+     */
+    public function prepareCatalogJson($category, $callback, $fail = null) {
+        if(empty($category) || !is_object($category)) return [];
+
+        // формируем ветку категорий для последующего формирования запроса к json-апи
+        $branch = [$category->getToken()];
+        if(!$category->isRoot()) {
+            $currentCategory = $category;
+            while($currentCategory = $currentCategory->getParent()) {
+                array_unshift($branch, $currentCategory->getToken());
+            }
+            $root = $category->getRoot();
+            if($root && !in_array($root->getToken(), $branch)) {
+                array_unshift($branch, $root->getToken());
+            }
+        }
+
+        $query = sprintf('catalog/%s.json', implode('/', $branch));
+        \App::dataStoreClient()->addQuery($query, [], $callback, $fail);
+    }
+
+    /**
      * Получает catalog json для всех категорий
      * Возвращает массив с токенами категорий в качестве ключей и их catalogJson'ом (raw)
      * в качестве значений
