@@ -1,5 +1,5 @@
 {{={{{ }}}=}}
-<script id="tplDebugContainer" type="text/html">
+<script id="tpl-debug-container" type="text/html">
     <table style="background: #ffffff">
         <tr>
             <td>{{requestId}}</td>
@@ -12,7 +12,7 @@
     </table>
 </script>
 
-<script id="tplDebugContainerQuery" type="text/html">
+<script id="tpl-debug-container-query" type="text/html">
     <div class="debug__queryMap">
         {{#queries}}
             <div title="{{url}}" style="border: solid 1px #ededed; background: {{css.color1}}; margin-left: {{css.left}}%; top: {{css.top}}px; width: {{css.width1}}%; height: 28px;">
@@ -31,7 +31,7 @@
 </script>
 {{{={{ }}=}}}
 
-<div class="jsDebug debug">
+<div class="js-debug debug">
     <a href="#">debug</a>
     <div class="debug__container" style="display: block;">
         <div data-value="{{&debug}}"></div>
