@@ -67,14 +67,16 @@ class SmartChoiceAction {
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             foreach ($recommendedIds as $id => $products) {
-                $recommend[$id] = [
-                    'success' => true,
-                    'content' => \App::closureTemplating()->render('product/__slider', [
-                            'title' => null,
-                            'products' => $products,
-                            'class' => 'smartChoiceSlider smartChoiceId-'.$id,
-                        ]),
-                ];
+                if (count($products)>0) {
+                    $recommend[$id] = [
+                        'success' => true,
+                        'content' => \App::closureTemplating()->render('product/__slider', [
+                                'title' => null,
+                                'products' => $products,
+                                'class' => 'smartChoiceSlider smartChoiceId-' . $id,
+                            ]),
+                    ];
+                }
             }
 
             $response['success'] = true;
