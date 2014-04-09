@@ -9,6 +9,8 @@
 
 namespace View\Partners;
 
+use \Model\Order\Delivery\Entity as Delivery;
+
 class GoogleAnalytics {
 
     private $routeName;
@@ -295,39 +297,43 @@ class GoogleAnalytics {
         if (!$ordersAll) return false;
         /** @var $orders \Model\Order\Entity **/
 
-
         $this->sendData['ecommerce'] = [];
-        $purchasedProducts = []; // купленные товары
-        $completedOrders = []; // совершенные заказы
-        $addTransaction = [
-            'id'        => '', // Transaction ID. Required.
-            'revenue'   => 0, // Grand Total.
-            'shipping'  => 0, // Shipping.
-        ];
-
 
         foreach($ordersAll as $order) {
             /** @var $order \Model\Order\Entity **/
-            $products = $order->getProduct();
+            if (!$order->getNumber()) {
+                continue;
+            }
+
             $delivery = $order->getDelivery();
             $delivery = reset($delivery);
 
-            $addTransaction['id'] .= $order->getId() . ',';
-            $addTransaction['revenue'] += $order->getSum();
-            if ( $delivery instanceof \Model\Order\Delivery\Entity ) {
-                $addTransaction['shipping'] += $delivery->getPrice();
-            }
+            $addTransaction = [
+                'id'        => $order->getNumber(), // Transaction ID. Required.
+                'revenue'   => $order->getSum(), // Grand Total.
+                'shipping'  => $delivery instanceof Delivery ? $delivery->getPrice() : 0, // Shipping.
+            ];
 
+            $products = $order->getProduct();
+            $purchasedProducts = []; // купленные товары
             foreach($products as $orderProduct) {
                 /** @var $orderProduct  \Model\Order\Product\Entity **/
                 /** @var $product       \Model\Product\Entity       **/
 
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : false;
 
+                $categoryName = null;
+                $mainCategory = $product ? $product->getMainCategory() : null;
+                $parentCategory = $product ? $product->getParentCategory() : null;
+                if ($mainCategory || $parentCategory) {
+                    $categoryName .= implode(array_filter([$mainCategory->getName(), $parentCategory->getName()]), ' ');
+                }
+
                 $purchasedProducts[] = [
                     'id'        => $orderProduct->getId(),
-                    //'name'      => $orderProduct->getName(), // нет такого метода
                     'name'      => $product ? $product->getName() : '',
+                    'sku'       => $product ? $product->getArticle() : null,
+                    'category'  => $categoryName,
                     'price'     => $orderProduct->getPrice(),
                     'quantity'  => $orderProduct->getQuantity(),
                 ];
@@ -335,10 +341,17 @@ class GoogleAnalytics {
 
             // $paymentMethod->getName(),// '<Тип оплаты>'
 
-            $completedOrders[] = [
+            // совершенный заказ
+            $completedOrders = [
                 'dimension2' => $order->getDeliveryTypeId(),// '<Тип доставки>',
                 'dimension3' => $order->getCouponNumber(),// '<Код купона>',
                 'dimension4' => $order->getPaymentId(),// '<Тип оплаты>'
+            ];
+
+            $this->sendData['ecommerce'][] = [
+                'addTransaction' => $addTransaction,
+                'items'          => $purchasedProducts,
+                'send'           => $completedOrders,
             ];
         }
 
@@ -346,12 +359,6 @@ class GoogleAnalytics {
          * Нужно не забывать, что пока купон может быть только у одного заказа (первого и последнего)
          * если разбивается на несколько, то все скидки и купоны удаляются
          */
-
-        self::rmLastSeporator($addTransaction['id']);
-
-        $this->sendData['ecommerce']['addTransaction'] = $addTransaction;
-        $this->sendData['ecommerce']['items'] = $purchasedProducts;
-        $this->sendData['ecommerce']['send'] = $completedOrders;
     }
 
 
