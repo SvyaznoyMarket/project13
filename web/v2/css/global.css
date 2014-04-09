@@ -1067,6 +1067,7 @@ body.noScroll {
   display: none;
   vertical-align: top;
   zoom: 1;
+  float: left;
 }
 .slidesItemsList_item:first-child {
   display: inline-block;
