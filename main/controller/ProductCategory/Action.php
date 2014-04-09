@@ -862,20 +862,29 @@ class Action {
         }
 
         $smartChoiceEnabled = true;
-        $smartChoiceData = [];
+        $smartChoiceData = null;
 
         if ($smartChoiceEnabled) {
-            $smartChoiceData = null;
-            $smartChoiceData = \App::coreClientV2()->query('listing/smart-choice',['region_id'=>$region->getId(), 'client_id'=>'site', 'filter' => ['filters'=>$filters]]);
-            $smartChoiceProductsIds = array_map(function($a){ return $a['products'][0]['id'];}, $smartChoiceData);
-            $repository->prepareCollectionById($smartChoiceProductsIds, $region, function ($data) use (&$smartChoiceProducts, &$smartChoiceData) {
-                foreach ($data as $item) {
-                    $smartChoiceProduct = new \Model\Product\Entity($item);
-                    array_walk($smartChoiceData, function (&$item, $key, $smartChoiceProduct) {
-                        if ($item['products'][0]['id'] == $smartChoiceProduct->getId()) $item['product'] = $smartChoiceProduct;
-                    }, $smartChoiceProduct);
-                }
-            });
+            try {
+                $smartChoiceData = \App::coreClientV2()->query('listing/smart-choice', ['region_id' => $region->getId(), 'client_id' => 'site', 'filter' => ['filters' => $filters]]);
+                $smartChoiceProductsIds = array_map(function ($a) {
+                    return $a['products'][0]['id'];
+                }, $smartChoiceData);
+                $repository->prepareCollectionById($smartChoiceProductsIds, $region, function ($data) use (&$smartChoiceProducts, &$smartChoiceData) {
+                    if (count($data) === 3) {
+                        foreach ($data as $item) {
+                            $smartChoiceProduct = new \Model\Product\Entity($item);
+                            array_walk($smartChoiceData, function (&$item, $key, $smartChoiceProduct) {
+                                if ($item['products'][0]['id'] == $smartChoiceProduct->getId()) $item['product'] = $smartChoiceProduct;
+                            }, $smartChoiceProduct);
+                        }
+                    } else {
+                        throw new \Exception\ActionException('Не получены товары из базы');
+                    }
+                });
+            } catch (Exception $e) {
+                $smartChoiceData = null;
+            }
         }
 
         if (!empty($pagerAll)) {
