@@ -44,6 +44,8 @@
 
     <script src="/v2/js/main.js"></script>
     <script src="/v2/js/nav.js"></script>
+    <script src="/v2/js/popup.js"></script>
+    <script src="/v2/js/common/selectCity.js"></script>
 
     <script src="/v2/js/touch/products.swipe.js"></script>
 </head>
@@ -62,5 +64,30 @@
     {{/templateBlock}}
 
     {{>partial/footer}}
+
+    <!-- popup - выбор регина -->
+    <div class="popupBox"> 
+        <div class="popupBox_close"></div>
+
+        <div class="popupBox_title">Ваш город</div>
+        <p class="popupBox_text">Выберите город, в котором собираетесь получать товары.<br/>От выбора зависит стоимость товаров и доставки.</p>
+
+        <form action="" id="" class="regionForm clearfix">
+            <button class="regionForm_btn btnStyle">Сохранить</button>
+
+            <div class="regionForm_selectCity">
+                <div class="regionForm_selectCityInner">
+                    <input type="text" class="regionForm_selectCityInput" placeholder="Название города" id="" />
+                    <span class="regionForm_selectCityDel"></span>
+                </div>
+            </div>
+        </form>
+
+        <ul class="regionList">
+            <li class="regionList_item"><a class="regionList_link" href="">Москва</a></li>
+            <li class="regionList_item"><a class="regionList_link" href="">Санкт-Петербург</a></li>
+        </ul>
+    </div> 
+    <!--/ popup - выбор регина -->
 </body>
 </html>

@@ -334,6 +334,10 @@ input::-moz-focus-inner {
  * 1. Remove default vertical scrollbar in IE 8/9.
  * 2. Improve readability and alignment in all browsers.
  */
+textarea:focus,
+input:focus {
+  outline: none;
+}
 textarea {
   overflow: auto;
   /* 1 */
@@ -341,6 +345,9 @@ textarea {
   vertical-align: top;
   /* 2 */
 
+}
+input:-webkit-autofill {
+  color: #ffffff !important;
 }
 /* ==========================================================================
    Tables
@@ -2073,3 +2080,121 @@ body.noScroll {
 /* ==========================================================================
    Стили при отключенном JavaScript
    ========================================================================== */
+/* ==========================================================================
+   Стили при отключенном JavaScript
+   ========================================================================== */
+.popupOverlay {
+  background: #000000;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  -moz-opacity: 0.75;
+  -khtml-opacity: 0.75;
+  -webkit-opacity: 0.75;
+  opacity: 0.75;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=75);
+  filter: alpha(opacity=75);
+  z-index: 1030;
+  left: 0;
+  top: 0;
+  display: none;
+}
+.popupBox {
+  background: #ffffff;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  position: fixed;
+  top: 50%;
+  left: 10px;
+  padding: 10px;
+  z-index: 1035;
+  width: 100%;
+  min-height: 100px;
+  display: none;
+}
+.popupBox_close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 19px;
+  height: 19px;
+  cursor: pointer;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAACS0lEQVQ4EZVUPW8aQRCdO8SHEAiCkBA6yUhYKeAPpLBCJJwqLkwq/wI3cRE37uI+dhzJken8C9Ig0VA5BY6pnAaJjyKioEA0CDcnPgXkPaQ7wx52kpGWZWfnvZudnbfaYrGQDeZuNBo57OWwt4MRx5hg3dE07Rbjezqd/qHiNJWs2Wy+n8/nX0Kh0HYwGBS32y0AL3GMnUwm0u/3ZTAYlF0u12Eqlfptka6S6cjms9frPYnFYoJAK2bjPB6PpdPpPOBD+8jyJ4NsMhCdBwKBk2g0ameykWXFOZvNpN1uP+i6/ooZ6tzj0ZjR/xARx+wNw3gB0muumZm7Xq83E4nE9t+ORsAm63a7MhqN3rJOORZbJeIRptOpAwuQwxeJRARJHej4yfHWVKtUKpLP54WFtuzX/b2cn50JP7RqHo+HZBnWbIfXr1omk5HE1pZ8u7yU4XAoJC8Wi/Lh6Mhx02wdDEOr1WrjZDLpUcmsdalUksrdnfDrH4+PJRwOW1trc6vVEmY2WfMqC7YrjqB4nUtkZrJmnaeCC4WCVKtV+XR6KtlsVr5eXEiv13MwEU8eHYy3lIhq5XJZmDqP5vf75TVq+G5vT/JXV44LIJ48Gnps1+fz3cTj1PKjsS2gUUEzPzrxzzRNgVLWfHafUf0U7WoLMJI3rBLRrxIRRzx5lnJCwx5StGr/EPycMZ444hm3JKNIceZ9ilbN8CkyxjGeOOsZsl8NgiD4l/jaNQr+hhJhbyHY5uOt/et7ZoOg110ADzAyIDMwBzCbmJ99af8ArqY5ldB+T2sAAAAASUVORK5CYII=) no-repeat 0 0;
+}
+.popupBox_title {
+  font-size: 28px;
+}
+.popupBox_text {
+  font-size: 14px;
+}
+.regionForm {
+  margin: 10px 0 15px;
+}
+.regionForm_selectCity {
+  padding-right: 110px;
+}
+.regionForm_selectCityInner {
+  border: 1px solid #000000;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  position: relative;
+  padding: 7px 10px 8px;
+}
+.regionForm_selectCityInput {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 16px;
+  line-height: 16px;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+.regionForm_selectCityDel {
+  position: absolute;
+  right: 8px;
+  top: 7px;
+  width: 19px;
+  height: 19px;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB0ElEQVQ4EZ1UsWoCQRDdPY54CELsbLQwRYikvloLIYV9KvtImvyB+A0pEtLapQ4oWMT60CrE0kKb6ywEOSOceW/jXpb1jJiBvb3dee8xO7OzcrvdihST4/H4crPZ3EopGxhXwITABhjdKIreq9VqZPOkLTYaja7jOH4FkAKHbA3HQ6/Xe2m327EGmWIyCIJ7OB6189iMQAa5XK5RqVS+iHU04VQh8nD8+nK5fOt0OkpHRbY72ocW/sfc8n3/mWI83icEkhyVy2WxWq1EGIZ7uoVCQWSzWTGdTk3fGvhzh1UzhYigUKlUEiSaxjX36bcs43lezWX5HSdJncLoiEikca2FZrNZasTIX9PlPVIM62MKomIin8+LQ0KkQsenWJIrS09FoIUWi0VqRAanyPPtZ3mH4NEYEYU42zk0hPg7d1HNANFdWI69HOmcEadTYHKo4+DTNTf5r4lmjijAdVqVyaGOy6bFvWGvZbhJ4z0yhX52fyOi37I1dVQH4NLewflkAU5Zqg5QF4zdjzAHp7A1ljzyuU5ejclkcsamRTHqGnhsplDqq8FnpN/v30CghcEc/mX0t4jXzw/BSWQmczgcotW8GqJsYvjwFTHmiOTPl/YbgvcD/BF3fDQAAAAASUVORK5CYII=) no-repeat 0 0;
+}
+.regionForm_btn {
+  float: right;
+  width: 98px;
+}
+.regionList {
+  margin: 0 0 10px 11px;
+}
+.regionList_item {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 14px;
+  margin: 0 10px 0 0;
+  *display: inline;
+  zoom: 1;
+}
+.regionList_link {
+  border-bottom: 1px dotted #000000;
+}
+.btnStyle {
+  background: #ffc000;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
+  background: -ms-linear-gradient(bottom, #ffaa01, #ffc000);
+  background: -moz-linear-gradient(center bottom, #ffaa01 0%, #ffc000 100%);
+  background: -o-linear-gradient(#ffc000, #ffaa01);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  display: block;
+  width: 98px;
+  height: 35px;
+  text-align: center;
+  color: #ffffff;
+  border: 1px solid #fb9c00;
+  font-size: 14px;
+  line-height: 34px;
+}
