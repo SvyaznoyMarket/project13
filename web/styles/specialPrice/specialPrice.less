@@ -4,15 +4,11 @@
 }
 
 .specialPriceItem {
-	display: inline-block;
-	vertical-align: top;
+	float: left;
 	width: 299px;
 	border-right: 1px solid #c7c7c7;
 	padding: 0 10px;
 	font-size: 12px;
-
-	*display: inline;
-	zoom: 1;
 
 	&.mLast {
 		border-right: none;
@@ -78,6 +74,10 @@
 				display: block;
 				color: #919291;
 				font-size: 16px;
+
+				.price {
+					text-decoration: line-through;
+				}
 			}
 
 			&_new {

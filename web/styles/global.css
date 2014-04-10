@@ -3148,14 +3148,11 @@ img[height="0"] {
     margin: 0 0 10px;
   }
   .specialPriceItem {
-    display: inline-block;
-    vertical-align: top;
+    float: left;
     width: 299px;
     border-right: 1px solid #c7c7c7;
     padding: 0 10px;
     font-size: 12px;
-    *display: inline;
-    zoom: 1;
   }
   .specialPriceItem.mLast {
     border-right: none;
@@ -3205,6 +3202,9 @@ img[height="0"] {
     display: block;
     color: #919291;
     font-size: 16px;
+  }
+  .specialPriceItemCont_buy .priceBox_old .price {
+    text-decoration: line-through;
   }
   .specialPriceItemCont_buy .priceBox_new {
     color: #e62b34;
