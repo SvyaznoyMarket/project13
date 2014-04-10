@@ -19,7 +19,6 @@
 	padding: 10px;
 	z-index: 1035;
 	width: 100%;
-	min-height: 100px;
 	display: none;
 
 	&_close {
@@ -52,7 +51,7 @@
 		border: 1px solid @black;
 		.rounded(4px);
 		position: relative;
-		padding: 7px 10px 8px;
+		padding: 8px 10px;
 	}
 
 	&_input {
@@ -64,7 +63,6 @@
 		height: 16px;
 		line-height: 16px;
 		font-size: 14px;
-		text-transform: capitalize;
 	}
 
 	&_btn {
@@ -110,19 +108,32 @@
 	}
 }
 
-.btnStyle {
-	.gradient(#ffc000, #ffaa01, #ffc000);
-    .rounded(4px);
-    display: block;
+.jsSearchBox {
+	
+	.popupBox_close {
+		display: none;
+	}
+}
 
-    width: 98px;
-    height: 35px;
+.searchForm {
+	margin: 10px 0 4px;
 
-    text-align: center;
+	&_searchField {
+    	padding: 0 80px 5px 0;
+	}
 
-    color: #ffffff;
-    border: 1px solid #fb9c00;
+	&_searchFieldInner {
+		padding-left: 45px;
+		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAAACXBIWXMAAAsTAAALEwEAmpwYAAADoklEQVRIDb1WXUhUQRS+M3N3dYsIjYR+IAIpCEzwxQT7g4p6s4dVydVdoV6K2iSCCNQNwkBfBIN6CNddXRTBfnzwuYdegqgglF7SCoqgH0Ui2XbuTN+5613uLrvuBurA3Tsz55z5zvnOOXOXaa2NzRp8s4AIZ1PBzHyRMcZ4KBQ6rJSqY1rv1kpJZprzqVTqVSKRmM9nU8oezsrOWXt7e5PgvAvGDUIID4DtcwBsWEotw2BGKtU3Njb2rhQAt04GrLm52esrK+vnQoQ5T7NrWZYBZ37jAa7wufYXlZTheCIx6j6s2Nw+Fd4zAA2aHk+YIgHIkiXloNL6hGlZtYioFvOmlJRTUkoDoBXcNIeDwWBLMQC33I6so6OjFdSNE5CyrDkmRFs0Gn3rVnTmwUAgAPlDAG4Ftd/hRH08Hl9w5Gu9OejzAeQ2UYSIfiAf/kJAdFAMyUKk10GtNk1zJ7wNrwXglvHy8vIGlEANkmPgPYSz5twK+ebV1dXDqNAXwDMMxs7D4e359HL3KGchOyqlksowHucq5Fv39vaCPT1FMrCy1+v1Hsinl7vHEc1p8hDPImj8kqtQaK0Ze0/tADBuMrarkJ57n4OI5OoGCsws+UZhSmV04ShIKT44EvyUqhCjEkb7i5ukNTTnNUQ/orMMIUpihIOOcRgoREVhtZUCRhcA9Oweg6NzsVjsTSl23OfzvUZEL21lxi6iURuLGaKCb5hC1FHOYLvS2dnZjV49XszObupQIHAGjTrDOBcw/oo+uoRGnck1tq80n68LpN+FzIQuFQhYFNSjdLdN4Hq5NzIyMptrS2sbjCbwrAfe3qE57CQK5xnX+onU+iNuY4/ivBYgrTj8CAFAhwqLisRDNjSQCdpfRg8+4MnkYHRy8ltakv7NgNESFN7kjEWQ+C20Js/JYcd72qMB+uYR/VVMezymWU/3pTMcXex9gnMDv5aWotPT039InilfWiDRA39TqZM4aAIgPwmMvKWqg7HG3gIu6H5pWY1EMzi/BeAPpEMgNMhm9bLehy/I/R2Vlc/x2TpLsqzIaMMZiHIPV+oQPi5VOIBc/wywWVxny44OvUF/FTy+BrTLyF2FO0qS2/lUaoVJebQgGCn+z4D3BwUudOT6AgDwZbIy5hS5TKX61g3MORl/J46By27QeiqLWss6t+5gBIoWEejfFtB7BfRuQ3U+io2ODtkJpaRuxBOJRLjf7/c6Z29IZA6lue+s0s8Vrvf6H21+ExBITxUkAAAAAElFTkSuQmCC) no-repeat 10px 2px;
+	}
 
-    font-size: 14px;
-    line-height: 34px;
+	&_searchInput {
+
+	}
+
+	&_btn {
+		font-size: 16px;
+		line-height: 16px;
+		width: 68px;
+	}
 }
