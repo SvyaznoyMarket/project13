@@ -335,7 +335,9 @@ input::-moz-focus-inner {
  * 2. Improve readability and alignment in all browsers.
  */
 textarea:focus,
-input:focus {
+input:focus,
+button:focus,
+select:focus {
   outline: none;
 }
 textarea {

@@ -6,7 +6,8 @@
 
 	app.selectCity = function() {
 		var body = $('body'),
-			popupCity = $('.popupBox');
+			popupCity = $('.popupBox'),
+			jsSelectCity = $('.jsSelectCity');
 		// end of vars	
 
 		var
@@ -22,7 +23,7 @@
 		};
 		//end of functions
 
-		body.on('click', '.jsSelectCity', selectCityPopup);
+		jsSelectCity.bind('click', selectCityPopup);
 	};
 
 	$(function () {
