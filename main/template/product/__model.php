@@ -17,6 +17,18 @@ return function(
         ?>
 
         <? endif ?>
+
+        <?
+        $attrOptionValue = null;
+        if ($productAttribute) {
+            $attrOption = $productAttribute->getOption();
+            $attrOption = is_array($attrOption) ? reset($attrOption) : null;
+            if ($attrOption instanceof \Model\Product\Property\Option\Entity) {
+                $attrOptionValue = $attrOption->getValue();
+            }
+        }
+        ?>
+
         <div class="bDescSelectItem clearfix">
             <strong class="bDescSelectItem__eName"><?= $property->getName() ?></strong>
 
@@ -27,7 +39,7 @@ return function(
                     <option class="bDescSelectItem__eOption"
                             value="<?= $option->getHumanizedName() ?>"
                             data-url="<?= $option->getProduct()->getLink() ?>"<?
-                            if ($option->getValue() == $productAttribute->getValue()):
+                            if ($attrOptionValue && $option->getValue() == $attrOptionValue):
                                 ?> selected="selected"<? endif
                             ?>>
                         <?= $option->getHumanizedName() ?>
