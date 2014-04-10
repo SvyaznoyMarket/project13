@@ -22,6 +22,9 @@ class ImportConfig {
 
         $config->logger->fileAppender->file = $config->dir . '/log/main.log';
 
+        $config->session->name = $importedConfig->session['name'];
+        $config->session->cookieLifetime = $importedConfig->session['cookie_lifetime'];
+
         $config->region->defaultId = (string)$importedConfig->region['defaultId'];
         $config->region->cookieName = $importedConfig->region['cookieName'];
 

@@ -8,6 +8,9 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->logger->fileAppender->file = $config->dir . '/log/main.log';
 
+    $config->session->name = 'enter';
+    $config->session->cookieLifetime = 15552000;
+
     $config->region->defaultId = '14974';
     $config->region->cookieName = 'geoshop';
 

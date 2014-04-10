@@ -7,6 +7,7 @@ use Enter\Util\JsonDecoderTrait;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
+use EnterSite\SessionTrait;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
 use EnterSite\Repository;
@@ -14,9 +15,9 @@ use EnterSite\Model\Page\User\Cart\SetProduct as Page;
 
 class SetProduct {
     use ConfigTrait;
-    use LoggerTrait, CurlClientTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait;
+    use LoggerTrait, CurlClientTrait, SessionTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait;
+        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
     }
     use JsonDecoderTrait;
 
@@ -41,7 +42,13 @@ class SetProduct {
         $page->buyButton = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
         $page->buySpinner = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
 
-        // TODO Controller\V1Proxy - положить в корзину
+        // TODO вынести в класс корзины
+        $session = $this->getSession();
+        $cartData = $session->get('userCart', [
+            'productList' => [],
+        ]);
+        $cartData['productList'][$cartProduct->id] = $cartProduct->quantity;
+        $session->set('userCart', $cartData);
 
         // TODO: вынести на уровень JsonPage.result
         return new Http\JsonResponse([

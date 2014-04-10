@@ -10,6 +10,8 @@ namespace EnterSite\Config {
         public $hostname;
         /** @var Application\Logger */
         public $logger;
+        /** @var Application\Session */
+        public $session;
         /** @var Application\Region */
         public $region;
         /** @var Application\Curl */
@@ -38,6 +40,8 @@ namespace EnterSite\Config {
         public function __construct() {
             $this->logger = new Application\Logger();
 
+            $this->session = new Application\Session();
+
             $this->region = new Application\Region();
 
             $this->curl = new Application\Curl();
@@ -65,6 +69,13 @@ namespace EnterSite\Config\Application {
         public function __construct() {
             $this->fileAppender = new Logger\FileAppender();
         }
+    }
+
+    class Session {
+        /** @var string */
+        public $name;
+        /** @var int */
+        public $cookieLifetime;
     }
 
     class Region {
