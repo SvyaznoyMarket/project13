@@ -159,12 +159,22 @@ class RecommendedAction {
                     return $product instanceof \Model\Product\BasicEntity;
                 });
 
+                $method = $controller[$type]->getRetailrocketMethodName() ? $controller[$type]->getRetailrocketMethodName() : null;
+
                 $recommend[$type] = [
                     'success' => true,
                     'content' => \App::closureTemplating()->render('product/__slider', [
                         'title' => $controller[$type]->getActionTitle(),
                         'products' => $products,
+                        'isRetailrocketRecommendation' => true,
+                        'retailrocketMethod' => $method,
+                        'retailrocketIds' => $ids[$type] ? $ids[$type] : [],
                     ]),
+                    'data' => [
+                        'id' => $product->getId(),//id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
+                        'method' => $method,//алгоритм (ItemToItems, UpSellItemToItems, CrossSellItemToItems и т.д.)
+                        'recommendations' => $ids[$type] ? $ids[$type] : [],//массив ids от Retail Rocket
+                    ],
                 ];
             }
 

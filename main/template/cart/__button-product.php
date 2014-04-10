@@ -6,7 +6,8 @@ return function (
     $url = null,
     $class = null,
     $value = 'Купить',
-    $directLink = false
+    $directLink = false,
+    $onClick = null
 ) {
     /** @var $region \Model\Region\Entity|null */
     $region = \App::user()->getRegion();
@@ -22,6 +23,7 @@ return function (
         $class .= ' mShopsOnly';
         $value = 'Резерв';
         $url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
+        $onClick = null;
     } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
     }
@@ -36,6 +38,7 @@ return function (
         $url = '#';
         $class .= ' mDisabled';
         $value = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет в наличии';
+        $onClick = null;
     } else if (!isset($url)) {
         $urlParams = [
             'productId' => $product->getId(),
@@ -52,7 +55,7 @@ return function (
     ];
     ?>
     <div class="bWidgetBuy__eBuy btnBuy">
-        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-upsale='<?= json_encode($upsaleData) ?>'><?= $value ?></a>
+        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-upsale='<?= json_encode($upsaleData) ?>'<? if (!empty($onClick)): ?> onclick="<?= $onClick ?>" <? endif ?>><?= $value ?></a>
     </div>
 
 <? };

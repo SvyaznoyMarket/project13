@@ -58,7 +58,15 @@ class UpsaleAction extends BasicRecommendedAction {
                 'content' => \App::closureTemplating()->render('product/__slider', [
                     'title' => $this->actionTitle,
                     'products' => $products,
+                    'isRetailrocketRecommendation' => true,
+                    'retailrocketMethod' => $this->retailrocketMethodName,
+                    'retailrocketIds' => $recommendationRR,
                 ]),
+                'data' => [
+                    'id' => $product->getId(),//идентификатор товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
+                    'method' => $this->retailrocketMethodName,//название алгоритма по которому сформированны рекомендации (ItemToItems, UpSellItemToItems, CrossSellItemToItems и т.д.)
+                    'recommendations' => $recommendationRR,//массив идентификаторов рекомендованных товаров, полученных от Retail Rocket
+                ],
             ];
 
         } catch (\Exception $e) {
