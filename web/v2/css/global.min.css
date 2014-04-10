@@ -85,9 +85,9 @@ body{width:100%;height:100%;}body.noScroll{overflow:hidden;overflow-y:hidden;ove
 .navList{min-width:320px;}.navList_item{padding:7px 0;}.navList_item__first{border-bottom:1px solid #404040;height:28px;padding:13px 0;}
 .navList_text{text-transform:uppercase;font-size:17px;height:40px;line-height:40px;padding:0 15px 0 30px;color:#ffffff;display:block;cursor:pointer;outline:none;}.navList_text:hover,.navList_text:active,.navList_text:focus{color:#ffa901;text-decoration:none;outline:none;}
 .navList_col{color:#ffffff;}.navList_col:first-child{display:inline-block;margin:0 12px 0 25px;}
-.navList_col__reg{border-bottom:1px dotted #ffffff;font-size:14px;cursor:pointer;}
+.navList_col__reg{border-bottom:1px dotted #ffffff;font-size:17px;cursor:pointer;}
 .navList_img{width:50px;display:inline-block;margin:-4px 0 0;}
-.navList .navListIco{background-position:0 50%;background-repeat:no-repeat;display:inline-block;height:40px;vertical-align:top;width:40px;margin:0 5px 0 0;*display:inline;zoom:1;}
+.navList .navListIco{background-position:0 50%;background-repeat:no-repeat;display:inline-block;height:40px;vertical-align:top;width:45px;margin:0 5px 0 0;*display:inline;zoom:1;}
 .navList .navListName{display:inline-block;vertical-align:top;*display:inline;zoom:1;}
 .navListLevel2_link{color:#7e7e7e;padding:5px 15px 5px 81px;margin:2px 0;display:block;font-size:14px;}.navListLevel2_link:hover{color:#ffffff;background:#333333;text-decoration:none;outline:none;}
 .fader{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1020;background:#ffffff;-moz-opacity:0.5;-khtml-opacity:0.5;-webkit-opacity:0.5;opacity:0.5;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);filter:alpha(opacity=50);display:none;}
