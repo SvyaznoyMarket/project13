@@ -1203,12 +1203,18 @@
 
     $('.jsSmartChoiceSliderToggle a').click(function(e){
         e.preventDefault();
-        $target = $(e.target);
-        id = $target.closest('div').data('smartchoice');
-        console.log($target, id);
-        $('.specialPriceItemFoot_link').removeClass('mActive');
-        $target.closest('a').addClass('mActive');
-        $('.bGoodsSlider').hide();
-        $('.smartChoiceId-'+id).parent().show();
+        var $target = $(e.target),
+            id = $target.closest('div').data('smartchoice'),
+            $link = $target.closest('a'),
+            $specialPriceItemFoot_links = $('.specialPriceItemFoot_link');
+        if (!$link.hasClass('mActive')) {
+            $specialPriceItemFoot_links.removeClass('mActive');
+            $link.addClass('mActive');
+            $('.bGoodsSlider').hide();
+            $('.smartChoiceId-' + id).parent().show();
+        } else {
+            $specialPriceItemFoot_links.removeClass('mActive');
+            $('.smartChoiceId-' + id).parent().hide();
+        }
     })
 });
