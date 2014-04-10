@@ -25,6 +25,7 @@ class SetProduct {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
+        $curl = $this->getCurlClient();
         $cartRepository = new Repository\Cart();
 
         $productData = array_merge([
@@ -32,8 +33,21 @@ class SetProduct {
             'quantity' => null,
         ], (array)$request->data['product']);
 
-        $product = new Model\Product();
-        $product->id = $productData['id'];
+        // ид региона
+        $regionId = (new Repository\Region())->getIdByHttpRequest($request);
+
+        $productItemQuery = new Query\Product\GetItemById($productData['id'], $regionId);
+        $curl->prepare($productItemQuery);
+
+        $curl->execute(1, 2);
+
+        $product = (new Repository\Product())->getObjectByQuery($productItemQuery);
+        if (!$product) {
+            $product = new Model\Product();
+            $product->id = $productData['id'];
+
+            throw new \Exception(sprintf('Товар #%s не найден', $productData['id']));
+        }
 
         $cartProduct = new Model\Cart\Product();
         $cartProduct->id = $productData['id'];

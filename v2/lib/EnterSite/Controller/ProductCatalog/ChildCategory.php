@@ -96,7 +96,7 @@ class ChildCategory {
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
 
         // запрос списка товаров
-        $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $region);
+        $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $region->id);
         $curl->prepare($productListQuery);
 
         // запрос меню

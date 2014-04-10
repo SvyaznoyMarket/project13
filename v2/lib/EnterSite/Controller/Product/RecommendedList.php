@@ -42,7 +42,7 @@ class RecommendedList {
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
         // запрос товара
-        $productItemQuery = new Query\Product\GetItemById($productId, $region);
+        $productItemQuery = new Query\Product\GetItemById($productId, $region->id);
         $curl->prepare($productItemQuery);
 
         $curl->execute(1, 2);
@@ -94,7 +94,7 @@ class RecommendedList {
         // запрос списка товаров
         $productListQueries = [];
         foreach (array_chunk($productIds, $config->curl->queryChunkSize) as $idsInChunk) {
-            $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region);
+            $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id);
             $curl->prepare($productListQuery);
 
             $productListQueries[] = $productListQuery;

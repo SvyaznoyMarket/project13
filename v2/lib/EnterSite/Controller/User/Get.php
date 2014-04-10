@@ -32,15 +32,31 @@ class Get {
 
         $page = new Page();
 
+        // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequest($request);
 
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);
 
+        $productsById = [];
+        foreach ($cart->product as $cartProduct) {
+            $productsById[$cartProduct->id] = null;
+        }
+
+        $productListQuery = null;
+        if ((bool)$productsById) {
+            $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId);
+            $curl->prepare($productListQuery);
+        }
+
         $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
         $curl->prepare($cartItemQuery);
 
         $curl->execute(1, 2);
+
+        if ($productListQuery) {
+            $productsById = (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+        }
 
         // корзина из ядра
         $cart = $cartRepository->getObjectByQuery($cartItemQuery);
@@ -48,9 +64,11 @@ class Get {
         // TODO: загрузка товаров
 
         foreach ($cart->product as $cartProduct) {
-            $product = new Model\Product([
-                'id' => $cartProduct->id,
-            ]);
+            $product = !empty($productsById[$cartProduct->id])
+                ? $productsById[$cartProduct->id]
+                : new Model\Product([
+                    'id' => $cartProduct->id,
+                ]);
 
             $page->buyButtons['.' . Repository\Partial\Cart\ProductButton::getId($product->id)] = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
             $page->buySpinners['.' . Repository\Partial\Cart\ProductSpinner::getId($product->id)] = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);

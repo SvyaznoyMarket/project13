@@ -15,17 +15,17 @@ class GetListByIdList extends Query {
 
     /**
      * @param array $ids
-     * @param Model\Region $region
+     * @param string|null $regionId
      */
-    public function __construct(array $ids, Model\Region $region = null) {
+    public function __construct(array $ids, $regionId = null) {
         $this->url = new Url();
         $this->url->path = 'v2/product/get';
         $this->url->query = [
             'select_type' => 'id',
             'id'          => $ids,
         ];
-        if ($region) {
-            $this->url->query['geo_id'] = $region->id;
+        if ($regionId) {
+            $this->url->query['geo_id'] = $regionId;
         }
 
         $this->init();

@@ -45,8 +45,7 @@
     },
     "User\\Get": {
         "name": "Информация о пользователе, его корзине, ...",
-        "pattern": "/ajax/user",
-        "method": ["POST"]
+        "pattern": "/ajax/user"
     },
     "User\\Cart\\Product\\Set": {
         "name": "Установить товар в корзине",

@@ -86,7 +86,7 @@ class ProductCard {
         // запрос аксессуаров товара
         $accessoryListQuery = null;
         if ((bool)$product->accessoryIds) {
-            $accessoryListQuery = new Query\Product\GetListByIdList(array_slice($product->accessoryIds, 0, $config->product->itemsInSlider), $region);
+            $accessoryListQuery = new Query\Product\GetListByIdList(array_slice($product->accessoryIds, 0, $config->product->itemsInSlider), $region->id);
             $curl->prepare($accessoryListQuery);
         }
 
