@@ -41,21 +41,21 @@
 	}
 }
 
-.regionForm {
+.form2col {
 	margin: 10px 0 15px;
 
-	&_selectCity {
+	&_boxWrap {
 		padding-right: 110px
 	}
 
-	&_selectCityInner {
+	&_boxInner {
 		border: 1px solid @black;
 		.rounded(4px);
 		position: relative;
 		padding: 7px 10px 8px;
 	}
 
-	&_selectCityInput {
+	&_input {
 		border: none;
 		background: none;
 		padding: 0;
@@ -67,6 +67,18 @@
 		text-transform: capitalize;
 	}
 
+	&_btn {
+		float: right;
+	    width: 98px;
+	}
+}
+
+.regionForm {
+
+	&_selectCity {
+		padding-right: 110px
+	}
+
 	&_selectCityDel {
 		position: absolute;
 		right: 8px;
@@ -75,11 +87,6 @@
 		height: 19px;
 
 		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB0ElEQVQ4EZ1UsWoCQRDdPY54CELsbLQwRYikvloLIYV9KvtImvyB+A0pEtLapQ4oWMT60CrE0kKb6ywEOSOceW/jXpb1jJiBvb3dee8xO7OzcrvdihST4/H4crPZ3EopGxhXwITABhjdKIreq9VqZPOkLTYaja7jOH4FkAKHbA3HQ6/Xe2m327EGmWIyCIJ7OB6189iMQAa5XK5RqVS+iHU04VQh8nD8+nK5fOt0OkpHRbY72ocW/sfc8n3/mWI83icEkhyVy2WxWq1EGIZ7uoVCQWSzWTGdTk3fGvhzh1UzhYigUKlUEiSaxjX36bcs43lezWX5HSdJncLoiEikca2FZrNZasTIX9PlPVIM62MKomIin8+LQ0KkQsenWJIrS09FoIUWi0VqRAanyPPtZ3mH4NEYEYU42zk0hPg7d1HNANFdWI69HOmcEadTYHKo4+DTNTf5r4lmjijAdVqVyaGOy6bFvWGvZbhJ4z0yhX52fyOi37I1dVQH4NLewflkAU5Zqg5QF4zdjzAHp7A1ljzyuU5ejclkcsamRTHqGnhsplDqq8FnpN/v30CghcEc/mX0t4jXzw/BSWQmczgcotW8GqJsYvjwFTHmiOTPl/YbgvcD/BF3fDQAAAAASUVORK5CYII=) no-repeat 0 0;
-	}
-
-	&_btn {
-		float: right;
-	    width: 98px;
 	}
 }
 

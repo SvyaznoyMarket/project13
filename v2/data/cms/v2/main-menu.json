@@ -15,7 +15,7 @@
         },
         {
             "name": "Товары<br/>для дома",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -138px 0;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -150px 0;",
             "styleHover": "background-position: -150px -44px;",
             "source": "category/get?id=443",
             "children": [
@@ -26,7 +26,7 @@
         },
         {
             "name": "Бытовая<br/>техника",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -38px 0;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -51px 0;",
             "styleHover": "background-position: -51px -44px;",
             "source": "category/get?id=1",
             "children": [
@@ -37,7 +37,7 @@
         },
         {
             "name": "Электроника",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -322px 0;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -349px 0;",
             "styleHover": "background-position: -349px -44px;",
             "source": "category/get?id=788",
             "children": [
@@ -48,7 +48,7 @@
         },
         {
             "name": "Детские<br/>товары",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -180px 0;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -201px 0;",
             "styleHover": "background-position: -201px -44px;",
             "source": "category/get?id=320",
             "children": [
@@ -59,7 +59,7 @@
         },
         {
             "name": "Украшения<br/>и часы",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -378px 0;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -403px 0;",
             "styleHover": "background-position: -403px -44px;",
             "source": "category/get?id=923",
             "children": [
@@ -70,7 +70,7 @@
         },
         {
             "name": "Парфюмерия<br/>и косметика",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -725px 0;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -602px 0;",
             "styleHover": "background-position: -602px -44px;",
             "source": "category/get?id=2545",
             "children": [
@@ -81,7 +81,7 @@
         },
         {
             "name": "Подарки<br/>и хобби",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -471px 0;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -502px 0;",
             "styleHover": "background-position: -502px -44px;",
             "source": "category/get?id=185",
             "children": [
@@ -92,7 +92,7 @@
         },
         {
             "name": "Сделай<br/>сам",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -274px 0;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -301px 0;",
             "styleHover": "background-position: -301px -44px;",
             "source": "category/get?id=224",
             "children": [
@@ -103,7 +103,7 @@
         },
         {
             "name": "Зоотовары",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -231px 0;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -251px 0;",
             "styleHover": "background-position: -251px -44px;",
             "source": "category/get?id=1438",
             "children": [
@@ -114,7 +114,7 @@
         },
         {
             "name": "Спорт и отдых",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -420px 0;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -450px 0;",
             "styleHover": "background-position: -450px -44px;",
             "source": "category/get?id=647",
             "children": [
@@ -125,7 +125,7 @@
         },
         {
             "name": "Аксессуары для<br>авто",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -561px 0;",
+            "style": "background: url('http://content.enter.ru/wp-content/uploads/2014/04/navIco1.png') no-repeat -650px 0;",
             "styleHover": "ackground-position: -650px -44px;",
             "source": "category/get?id=225",
             "children": [

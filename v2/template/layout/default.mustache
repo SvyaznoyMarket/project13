@@ -41,11 +41,13 @@
     <script src="/v2/js/vendor/html5-3.6.2.js"></script>
     <script src="/v2/js/vendor/underscore-1.6.0.js"></script>
     <script src="/v2/js/vendor/mustache-0.8.2.js"></script>
+    <script src="/v2/js/vendor/jquery-ui-1.10.4.custom.min.js"></script>
 
     <script src="/v2/js/main.js"></script>
     <script src="/v2/js/plugins/popup.js"></script>
     <script src="/v2/js/common/nav.js"></script>
     <script src="/v2/js/common/selectCity.js"></script>
+    <script src="/v2/js/common/search.js"></script>
 
     <script src="/v2/js/touch/products.swipe.js"></script>
 </head>
@@ -66,18 +68,18 @@
     {{>partial/footer}}
 
     <!-- popup - выбор регина -->
-    <div class="popupBox"> 
+    <div class="popupBox jsCitySelectBox"> 
         <div class="popupBox_close"></div>
 
         <div class="popupBox_title">Ваш город</div>
         <p class="popupBox_text">Выберите город, в котором собираетесь получать товары.<br/>От выбора зависит стоимость товаров и доставки.</p>
 
-        <form action="" id="" class="regionForm clearfix">
-            <button class="regionForm_btn btnStyle">Сохранить</button>
+        <form action="" id="" class="regionForm form2col clearfix">
+            <button class="regionForm_btn form2col_btn btnStyle">Сохранить</button>
 
-            <div class="regionForm_selectCity">
-                <div class="regionForm_selectCityInner">
-                    <input type="text" class="regionForm_selectCityInput" placeholder="Название города" id="" />
+            <div class="regionForm_selectCity form2col_boxWrap">
+                <div class="regionForm_selectCityInner form2col_boxInner">
+                    <input type="text" class="regionForm_selectCityInput form2col_input" placeholder="Название города" id="" />
                     <span class="regionForm_selectCityDel"></span>
                 </div>
             </div>
@@ -89,5 +91,20 @@
         </ul>
     </div> 
     <!--/ popup - выбор регина -->
+
+    <!-- popup - выбор регина -->
+    <div class="popupBox jsSearchBox"> 
+        <div class="popupBox_close"></div>
+
+        <form action="" id="" class="searchForm form2col clearfix">
+            <button class="regionForm_btn form2col_btn btnStyle">Сохранить</button>
+
+            <div class="regionForm_search form2col_inputWrap">
+                <input type="text" class="regionForm_selectCityInput form2col_input" placeholder="Найти" id="" />
+            </div>
+        </form>
+    </div> 
+    <!--/ popup - выбор регина -->
+    
 </body>
 </html>
