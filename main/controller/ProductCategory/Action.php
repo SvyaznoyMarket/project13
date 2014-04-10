@@ -935,7 +935,7 @@ class Action {
         }
 
         // Если товаров слишком мало (меньше 3 строк в листинге), то не показываем SmartChoice
-        if ($productPager->count() < 9) $smartChoiceData = [];
+        if ($productPager->count() < 8) $smartChoiceData = [];
 
         if ($hasBanner) {
             $productPager->setCount($productPager->count() + 1);
