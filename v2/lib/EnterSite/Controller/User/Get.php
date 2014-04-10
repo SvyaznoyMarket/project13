@@ -26,22 +26,30 @@ class Get {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
+        $session = $this->getSession();
+        $curl = $this->getCurlClient();
+        $cartRepository = new Repository\Cart();
 
         $page = new Page();
 
-        // TODO вынести в класс корзины
-        $session = $this->getSession();
-        $cartData = $session->get('userCart', [
-            'productList' => [],
-        ]);
+        $regionId = (new Repository\Region())->getIdByHttpRequest($request);
 
-        foreach ($cartData['productList'] as $productId => $quantity) {
+        // корзина из сессии
+        $cart = $cartRepository->getObjectByHttpSession($session);
+
+        $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
+        $curl->prepare($cartItemQuery);
+
+        $curl->execute(1, 2);
+
+        // корзина из ядра
+        $cart = $cartRepository->getObjectByQuery($cartItemQuery);
+
+        // TODO: загрузка товаров
+
+        foreach ($cart->product as $cartProduct) {
             $product = new Model\Product([
-                'id' => $productId,
-            ]);
-            $cartProduct = new Model\Cart\Product([
-                'id'       => $productId,
-                'quantity' => $quantity,
+                'id' => $cartProduct->id,
             ]);
 
             $page->buyButtons['.' . Repository\Partial\Cart\ProductButton::getId($product->id)] = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);

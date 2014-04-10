@@ -25,6 +25,7 @@ class SetProduct {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
+        $cartRepository = new Repository\Cart();
 
         $productData = array_merge([
             'id'       => null,
@@ -44,11 +45,9 @@ class SetProduct {
 
         // TODO вынести в класс корзины
         $session = $this->getSession();
-        $cartData = $session->get('userCart', [
-            'productList' => [],
-        ]);
-        $cartData['productList'][$cartProduct->id] = $cartProduct->quantity;
-        $session->set('userCart', $cartData);
+        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart->product[$cartProduct->id] = $cartProduct;
+        $cartRepository->saveObjectToHttpSession($session, $cart);
 
         // response
         $response = new Http\JsonResponse([

@@ -9,20 +9,21 @@ class Cart {
     use ImportArrayConstructorTrait;
 
     /** @var Model\Cart\Product[] */
-    public $product;
-    /** @var int */
-    public $sum = 0;
+    public $product = [];
+    /** @var float */
+    public $sum;
 
     /**
      * @param array $data
      */
     public function import(array $data) {
-        if (isset($data['product'][0])) {
-            foreach ($data['product'] as $productData) {
+        if (isset($data['product_list'][0])) {
+            foreach ($data['product_list'] as $productData) {
                 if (empty($productData['id'])) continue;
 
                 $this->product[] = new Model\Cart\Product($productData);
             }
         }
+        if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];
     }
 }
