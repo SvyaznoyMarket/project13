@@ -3,7 +3,6 @@
 namespace EnterSite\Controller\User\Cart;
 
 use Enter\Http;
-use Enter\Util\JsonDecoderTrait;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
@@ -19,7 +18,6 @@ class SetProduct {
         ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
     }
-    use JsonDecoderTrait;
 
     /**
      * @param Http\Request $request

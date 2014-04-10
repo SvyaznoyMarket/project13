@@ -87,8 +87,8 @@
                 $parent.trigger('renderValue', $target.data('value').product);
             }
         }).on('renderValue', '.js-buySpinner', function(e, product) {
-            var idSelector = $(e.currentTarget).data('idSelector');
-            var $el = $(idSelector);
+            var idSelector = $(e.currentTarget).data('idSelector'),
+                $el = $(idSelector);
 
             console.info('render:js-buySpinner', $el, product);
 
@@ -113,12 +113,24 @@
 
         console.info('config', config);
 
-        var hasUserInfo = ('1' === $.cookie(config.user.infoCookie));
+        var hasUserInfo = ('1' === $.cookie(config.user.infoCookie)),
+            userInfoUrl = config.user.infoUrl;
 
         console.info('hasUserInfo', hasUserInfo);
 
-        if (hasUserInfo) {
-
+        if (hasUserInfo && userInfoUrl) {
+            $.post(userInfoUrl).done(function(response) {
+                if (_.isObject(response.result.buyButtons)) {
+                    _.each(response.result.buyButtons, function(templateData, idSelector) {
+                        $(idSelector).trigger('render', templateData);
+                    });
+                }
+                if (_.isObject(response.result.buySpinners)) {
+                    _.each(response.result.buySpinners, function(templateData, idSelector) {
+                        $(idSelector).trigger('render', templateData);
+                    });
+                }
+            });
         }
     };
 
