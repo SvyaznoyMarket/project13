@@ -861,7 +861,7 @@ class Action {
             }
         }
 
-        $smartChoiceEnabled = true;
+        $smartChoiceEnabled = isset($catalogJson['smartchoice']) ? $catalogJson['smartchoice'] : false;
         $smartChoiceData = [];
 
         if ($smartChoiceEnabled) {

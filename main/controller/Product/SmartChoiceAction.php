@@ -83,12 +83,14 @@ class SmartChoiceAction {
                 }
             }
 
-            $response['success'] = true;
-            $response['result'] = $recommend;
+            $responseData['success'] = true;
+            $responseData['result'] = $recommend;
 
+        } else {
+            $responseData['success'] = false;
         }
 
-        return new \Http\JsonResponse($response);
+        return new \Http\JsonResponse($responseData);
 
     }
 
