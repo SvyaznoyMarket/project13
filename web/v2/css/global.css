@@ -713,6 +713,7 @@ body.noScroll {
   text-align: center;
   padding: 23px 0 0;
   text-transform: uppercase;
+  outline: none;
 }
 .userBox_link__auth {
   background-position: 50% -80px;
@@ -723,7 +724,8 @@ body.noScroll {
 .userBox_link:hover {
   color: #ffffff;
   text-decoration: none;
-  animation: 0.2s linear 0s normal none 1 resize;
+  animation: 0.3s linear 0s normal none 1 resize;
+  outline: none;
 }
 .userBox_text {
   font-size: 11px;
@@ -733,7 +735,7 @@ body.noScroll {
     transform: scale(1, 1);
   }
   50% {
-    transform: scale(1.1, 0.9);
+    transform: scale(1.2, 1.2);
   }
   100% {
     transform: scale(1, 1);
@@ -744,7 +746,7 @@ body.noScroll {
     transform: scale(1, 1);
   }
   50% {
-    transform: scale(1.1, 0.9);
+    transform: scale(1.2, 1.2);
   }
   100% {
     transform: scale(1, 1);
@@ -755,7 +757,7 @@ body.noScroll {
     transform: scale(1, 1);
   }
   50% {
-    transform: scale(1.1, 0.9);
+    transform: scale(1.2, 1.2);
   }
   100% {
     transform: scale(1, 1);
@@ -2130,13 +2132,13 @@ body.noScroll {
 .popupBox_text {
   font-size: 14px;
 }
-.regionForm {
+.form2col {
   margin: 10px 0 15px;
 }
-.regionForm_selectCity {
+.form2col_boxWrap {
   padding-right: 110px;
 }
-.regionForm_selectCityInner {
+.form2col_boxInner {
   border: 1px solid #000000;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -2144,7 +2146,7 @@ body.noScroll {
   position: relative;
   padding: 7px 10px 8px;
 }
-.regionForm_selectCityInput {
+.form2col_input {
   border: none;
   background: none;
   padding: 0;
@@ -2155,6 +2157,13 @@ body.noScroll {
   font-size: 14px;
   text-transform: capitalize;
 }
+.form2col_btn {
+  float: right;
+  width: 98px;
+}
+.regionForm_selectCity {
+  padding-right: 110px;
+}
 .regionForm_selectCityDel {
   position: absolute;
   right: 8px;
@@ -2162,10 +2171,6 @@ body.noScroll {
   width: 19px;
   height: 19px;
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB0ElEQVQ4EZ1UsWoCQRDdPY54CELsbLQwRYikvloLIYV9KvtImvyB+A0pEtLapQ4oWMT60CrE0kKb6ywEOSOceW/jXpb1jJiBvb3dee8xO7OzcrvdihST4/H4crPZ3EopGxhXwITABhjdKIreq9VqZPOkLTYaja7jOH4FkAKHbA3HQ6/Xe2m327EGmWIyCIJ7OB6189iMQAa5XK5RqVS+iHU04VQh8nD8+nK5fOt0OkpHRbY72ocW/sfc8n3/mWI83icEkhyVy2WxWq1EGIZ7uoVCQWSzWTGdTk3fGvhzh1UzhYigUKlUEiSaxjX36bcs43lezWX5HSdJncLoiEikca2FZrNZasTIX9PlPVIM62MKomIin8+LQ0KkQsenWJIrS09FoIUWi0VqRAanyPPtZ3mH4NEYEYU42zk0hPg7d1HNANFdWI69HOmcEadTYHKo4+DTNTf5r4lmjijAdVqVyaGOy6bFvWGvZbhJ4z0yhX52fyOi37I1dVQH4NLewflkAU5Zqg5QF4zdjzAHp7A1ljzyuU5ejclkcsamRTHqGnhsplDqq8FnpN/v30CghcEc/mX0t4jXzw/BSWQmczgcotW8GqJsYvjwFTHmiOTPl/YbgvcD/BF3fDQAAAAASUVORK5CYII=) no-repeat 0 0;
-}
-.regionForm_btn {
-  float: right;
-  width: 98px;
 }
 .regionList {
   margin: 0 0 10px 11px;

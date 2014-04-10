@@ -4,30 +4,32 @@
  */
 ;(function (app, window, $, _, undefined) {
 
-	app.selectCity = function() {
+	app.searchForm = function() {
 		var body = $('body'),
-			popupCity = $('.jsCitySelectBox'),
-			popupOpen = $('.jsSelectCity');
+			popupSearch = $('.jsSearchBox'),
+			popupOpen = $('.jsSearch');
 		// end of vars	
 
 		var
 		/**
 		 * Показываем попап выбора города
 		*/
-		selectCityPopup = function selectCityPopup() {
+		searchPopup = function searchPopup( event ) {
 			var topPopup = $('.header').height() + 20;
 
-			popupCity.enterPopup({
+			popupSearch.enterPopup({
 				popupCSS : {top: topPopup, marginTop: 0}
 			});
+
+			event.preventDefault();
 		};
 		//end of functions
 
-		popupOpen.on('click', selectCityPopup);
+		popupOpen.on('click', searchPopup);
 	};
 
 	$(function () {
-        app.selectCity();
+        app.searchForm();
     });
 
 }(window.Enter = window.Enter || {}, window, window.jQuery, window._));
