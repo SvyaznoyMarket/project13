@@ -11,7 +11,7 @@ return function(
         }, $smartChoiceProducts);
 
         ?>
-        <div class="specialPrice">
+        <div class="specialPrice clearfix">
         <?
 
         $showAction = new \View\Product\SmartChoiceAction();
