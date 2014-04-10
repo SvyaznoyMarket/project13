@@ -30,14 +30,14 @@ return function(
         }
 
         // обновление значений
-        if ((bool)$changedFilters) {
-            if (in_array($nameFrom, array_keys($changedFilters))) {
-                $valueFrom = $changedFilters[$nameFrom];
-            }
-            if (in_array($nameTo, array_keys($changedFilters))) {
-                $valueTo = $changedFilters[$nameTo];
-            }
-        }
+//        if ((bool)$changedFilters) {
+//            if (in_array($nameFrom, array_keys($changedFilters))) {
+//                $valueFrom = $changedFilters[$nameFrom];
+//            }
+//            if (in_array($nameTo, array_keys($changedFilters))) {
+//                $valueTo = $changedFilters[$nameTo];
+//            }
+//        }
     }
 ?>
 

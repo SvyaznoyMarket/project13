@@ -33,6 +33,10 @@ foreach ( $categories as $subCategory ) {
     ];
 }
 
+$basUrlParam = $helper->url('tag', $tagCategoryTokens);
+if ($selectedCategory) {
+    $basUrlParam = $helper->url('tag.category', array_merge( $tagCategoryTokens, ['categoryToken' => $selectedCategory->getToken()]));
+}
 ?>
 <div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
     <h1 class="bTitlePage"><?= $pageTitle ?></h1>
@@ -52,7 +56,7 @@ foreach ( $categories as $subCategory ) {
         'selectedCategory'  => $selectedCategory,
         'openFilter'        => true,
         'countUrl'          => $helper->url('tag.count', $tagCategoryTokens),
-        'baseUrl'           => $helper->url('tag', $tagCategoryTokens),
+        'baseUrl'           => $basUrlParam,
     ]); // фильтры ?>
 
     <?=

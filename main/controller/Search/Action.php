@@ -2,7 +2,12 @@
 
 namespace Controller\Search;
 
+use \Controller\ProductCategory\Action as ProductCategory;
+
 class Action {
+    protected $disabledFilters = [];
+    protected $changedFilters = [];
+
     /**
      * @param \Http\Request $request
      * @return \Http\Response
@@ -38,19 +43,68 @@ class Action {
 
         $selectedCategory = $categoryId ? \RepositoryManager::productCategory()->getEntityById($categoryId) : null;
 
-        // запрашиваем фильтры
-        /** @var $filters \Model\Product\Filter\Entity[] */
+        $region = \App::user()->getRegion();
+
+        // параметры по умолчанию
+        $defaultFilterParams = [
+            'text' => ['text', 3, $searchQuery],
+        ];
+
+        // заполняем параметры filters для запроса к ядру
+        $filterParams = ProductCategory::getFilterParams($request);
+        $filterParams = array_merge($defaultFilterParams, $filterParams);
+
+        /**
+         * @var $filters \Model\Product\Filter\Entity[]
+         * @var $filtersWithParams \Model\Product\Filter\Entity[]
+         */
         $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionBySearchText($searchQuery, \App::user()->getRegion(), function($data) use (&$filters) {
+        $filtersWithParams = [];
+
+        // запрашиваем фильтры
+        \RepositoryManager::productFilter()->prepareCollectionBySearchText($searchQuery, $region, [], function($data) use (&$filters) {
             foreach ($data as $item) {
-                $filters[] = new \Model\Product\Filter\Entity($item);
+                $item = new \Model\Product\Filter\Entity($item);
+                $filters[$item->getId()] = $item;
             }
         }, function (\Exception $e) { \App::exception()->remove($e); });
+
+        // категория выбрана
+        if ($selectedCategory) {
+            // запрашиваем фильтры с учетом пользовательских фильтров
+            if (!empty($filterParams) && \App::config()->sphinx['showFacets']) {
+                \RepositoryManager::productFilter()->prepareCollectionByCategory($selectedCategory, $region, $filterParams, function ($data) use (&$filtersWithParams) {
+                    foreach ($data as $item) {
+                        $item = new \Model\Product\Filter\Entity($item);
+                        $filtersWithParams[$item->getId()] = $item;
+                    }
+                });
+            }
+
+        // категория не выбрана
+        } else {
+            // запрашиваем фильтры с учетом пользовательских фильтров
+            if (!empty($filterParams) && \App::config()->sphinx['showFacets']) {
+                \RepositoryManager::productFilter()->prepareCollectionBySearchText($searchQuery, $region, $filterParams, function($data) use (&$filtersWithParams) {
+                    foreach ($data as $item) {
+                        $item = new \Model\Product\Filter\Entity($item);
+                        $filtersWithParams[$item->getId()] = $item;
+                    }
+                }, function (\Exception $e) { \App::exception()->remove($e); });
+            }
+        }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
+
+        // Сравниваем фильтры с пользовательскими фильтрами
+        if (!empty($filters) && !empty($filtersWithParams)) {
+            $comparedFilters = ProductCategory::compareFilters($filters, $filtersWithParams);
+            $this->disabledFilters = isset($comparedFilters['disabledFilters']) ? $comparedFilters['disabledFilters'] : [];
+            $this->changedFilters = isset($comparedFilters['changedFilters']) ? $comparedFilters['changedFilters'] : [];
+        }
 
         $shop = null;
         try {
-            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (!ProductCategory::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -59,7 +113,7 @@ class Action {
 
         // фильтры
         $brand = null;
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+        $productFilter = (new ProductCategory())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
 
 
         // параметры ядерного запроса
@@ -227,27 +281,36 @@ class Action {
             $templating->setParam('selectedCategory', $selectedCategory);
             $templating->setParam('shop', $shop);
 
-            return new \Http\JsonResponse([
+            $data = [
                 'list'           => (new \View\Product\ListAction())->execute(
-                    $helper,
-                    $productPager,
-                    $productVideosByProduct,
-                    !empty($bannerPlaceholder) ? $bannerPlaceholder : []
-                ),
+                        $helper,
+                        $productPager,
+                        $productVideosByProduct,
+                        !empty($bannerPlaceholder) ? $bannerPlaceholder : []
+                    ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
-                    $helper,
-                    $productFilter,
-                    \App::router()->generate('search', ['q' => $searchQuery])
-                ),
+                        $helper,
+                        $productFilter,
+                        \App::router()->generate('search', ['q' => $searchQuery])
+                    ),
                 'pagination'     => (new \View\PaginationAction())->execute(
-                    $helper,
-                    $productPager
-                ),
+                        $helper,
+                        $productPager
+                    ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
-                    $helper,
-                    $productSorting
-                ),
-            ]);
+                        $helper,
+                        $productSorting
+                    ),
+            ];
+
+            if (true === \App::config()->sphinx['showFacets']) {
+                $data['newFilter'] = [
+                    'disabled' => $this->disabledFilters,
+                    'changed' => $this->changedFilters,
+                ];
+            }
+
+            return new \Http\JsonResponse($data);
         }
 
         // если по поиску нашелся только один товар и это первая стр. поиска, то редиректим сразу в карточку товара
@@ -274,6 +337,11 @@ class Action {
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setGlobalParam('shop', $shop);
         $page->setParam('bannerPlaceholder', $bannerPlaceholder);
+
+        if (true === \App::config()->sphinx['showFacets']) {
+            $page->setGlobalParam('disabledFilters', !empty($this->disabledFilters) ? $this->disabledFilters : []);
+            $page->setGlobalParam('changedFilters', !empty($this->changedFilters) ? $this->changedFilters : []);
+        }
 
         return new \Http\Response($page->show());
     }
@@ -322,7 +390,7 @@ class Action {
         $shop = null;
         try {
             if (
-                !\Controller\ProductCategory\Action::isGlobal() &&
+                !ProductCategory::isGlobal() &&
                 \App::request()->get('shop') &&
                 \App::config()->shop['enabled']
             ) {
@@ -332,7 +400,7 @@ class Action {
 
         // фильтры
         $brand = null;
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+        $productFilter = (new ProductCategory())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 

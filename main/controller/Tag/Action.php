@@ -2,8 +2,12 @@
 
 namespace Controller\Tag;
 
+use \Controller\ProductCategory\Action as ProductCategory;
+
 class Action {
     private static $globalCookieName = 'global';
+    protected $disabledFilters = [];
+    protected $changedFilters = [];
 
     public function index($tagToken, \Http\Request $request, $categoryToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
@@ -107,29 +111,71 @@ class Action {
             }
         }
 
+        // параметры по умолчанию
+        $defaultFilterParams = [
+            'tag' => ['tag', 1, $tag->getId()],
+        ];
 
+        // заполняем параметры filters для запроса к ядру
+        $filterParams = ProductCategory::getFilterParams($request);
+        $filterParams = array_merge($defaultFilterParams, $filterParams);
 
         // фильтры
+        /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = []; // фильтр для тегов
         $filter = new \Model\Product\Filter\Entity();
         $filter->setId('tag');
         $filter->setIsInList(false);
+        $filters[$filter->getId()] = $filter;
 
-        $filters[] = $filter;
+        /** @var $filtersWithParams \Model\Product\Filter\Entity[] */
+        $filtersWithParams = [];
 
-        \RepositoryManager::productFilter()->prepareCollectionByTag( $tag,
-            \App::user()->getRegion(),
-            function($data) use (&$filters) {
-                foreach ($data as $item) {
-                    $filters[] = new \Model\Product\Filter\Entity($item);
-                }
-            }, function (\Exception $e) { \App::exception()->remove($e); });
+        // запрашиваем фильтры
+        \RepositoryManager::productFilter()->prepareCollectionByTag($tag, $region, [], function($data) use (&$filters) {
+            foreach ($data as $item) {
+                $item = new \Model\Product\Filter\Entity($item);
+                $filters[$item->getId()] = $item;
+            }
+        }, function (\Exception $e) { \App::exception()->remove($e); });
+
+        // категория выбрана
+        if ($selectedCategory) {
+            // запрашиваем фильтры с учетом пользовательских фильтров
+            if (!empty($filterParams) && \App::config()->sphinx['showFacets']) {
+                \RepositoryManager::productFilter()->prepareCollectionByCategory($selectedCategory, $region, $filterParams, function ($data) use (&$filtersWithParams) {
+                    foreach ($data as $item) {
+                        $item = new \Model\Product\Filter\Entity($item);
+                        $filtersWithParams[$item->getId()] = $item;
+                    }
+                });
+            }
+
+
+        // категория не выбрана
+        } else {
+            // запрашиваем фильтры с учетом пользовательских фильтров
+            if (!empty($filterParams) && \App::config()->sphinx['showFacets']) {
+                \RepositoryManager::productFilter()->prepareCollectionByTag($tag, $region, $filterParams, function($data) use (&$filtersWithParams) {
+                    foreach ($data as $item) {
+                        $item = new \Model\Product\Filter\Entity($item);
+                        $filtersWithParams[$item->getId()] = $item;
+                    }
+                }, function (\Exception $e) { \App::exception()->remove($e); });
+            }
+        }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
 
+        // Сравниваем фильтры с пользовательскими фильтрами
+        if (!empty($filters) && !empty($filtersWithParams)) {
+            $comparedFilters = ProductCategory::compareFilters($filters, $filtersWithParams);
+            $this->disabledFilters = isset($comparedFilters['disabledFilters']) ? $comparedFilters['disabledFilters'] : [];
+            $this->changedFilters = isset($comparedFilters['changedFilters']) ? $comparedFilters['changedFilters'] : [];
+        }
 
         $shop = null;
         try {
-            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (!ProductCategory::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -140,7 +186,7 @@ class Action {
 
         $brand = null;
 
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+        $productFilter = (new ProductCategory())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
         $productFilter->setValue( 'tag', $tag->getId() );
         if ($selectedCategory) {
             $productFilter->setCategory($selectedCategory);
@@ -238,28 +284,36 @@ class Action {
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
 
             $productVideosByProduct = [];
-
-            return new \Http\JsonResponse([
+            $data = [
                 'list'           => (new \View\Product\ListAction())->execute(
-                    $helper,
-                    $productPager,
-                    $productVideosByProduct,
-                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
-                ),
+                        $helper,
+                        $productPager,
+                        $productVideosByProduct,
+                        !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
+                    ),
                 'selectedFilter' => $selectedFilter,
                 'pagination'     => (new \View\PaginationAction())->execute(
-                    $helper,
-                    $productPager
-                ),
+                        $helper,
+                        $productPager
+                    ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
-                    $templating->getParam('helper'),
-                    $productSorting
-                ),
+                        $templating->getParam('helper'),
+                        $productSorting
+                    ),
                 'page'           => [
                     'title'      => 'Тег «'.$tag->getName() . '»' .
                         ( $selectedCategory ? ( ' — ' . $selectedCategory->getName() ) : '' )
                 ],
-            ]);
+            ];
+
+            if (true === \App::config()->sphinx['showFacets']) {
+                $data['newFilter'] = [
+                    'disabled' => $this->disabledFilters,
+                    'changed' => $this->changedFilters,
+                ];
+            }
+
+            return new \Http\JsonResponse($data);
         }
 
 
@@ -275,8 +329,6 @@ class Action {
             });
             $shopScript->execute();
         }
-
-
 
         // new
         $page = new \View\Tag\IndexPage();
@@ -297,6 +349,12 @@ class Action {
         $page->setParam('categoriesByToken', $categoriesByToken);
         $page->setParam('productView', $productView);
         $page->setParam('shopScriptSeo', $shopScriptSeo);
+
+        if (true === \App::config()->sphinx['showFacets']) {
+            $page->setGlobalParam('disabledFilters', !empty($this->disabledFilters) ? $this->disabledFilters : []);
+            $page->setGlobalParam('changedFilters', !empty($this->changedFilters) ? $this->changedFilters : []);
+        }
+
         return new \Http\Response($page->show());
 
 /*//old
@@ -707,7 +765,7 @@ class Action {
         // Product Filter
         $productFilter = new \Model\Product\Filter($filters, self::isGlobal(), self::inStore(), $shop);
         //$productFilter = $this->getFilter($filters, $category, $brand, $request, $shop); // old
-        //$productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
+        //$productFilter = (new ProductCategory())->getFilter($filters, $category, $brand, $request, $shop);
 
         $productFilter->setValue( 'tag', $tag->getId() );
         if (isset($selectedCategory)) {

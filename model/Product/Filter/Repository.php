@@ -60,7 +60,7 @@ class Repository {
         }
 
         if (!empty($filters)) {
-            $params['filters'] = $filters;
+            $params['filter']['filters'] = $filters;
         }
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }
@@ -71,7 +71,7 @@ class Repository {
      * @param                      $done
      * @param                      $fail
      */
-    public function prepareCollectionBySearchText($searchText, \Model\Region\Entity $region = null, $done, $fail = null) {
+    public function prepareCollectionBySearchText($searchText, \Model\Region\Entity $region = null, array $filters = [], $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
@@ -81,6 +81,11 @@ class Repository {
                 ],
             ],
         ];
+
+        if (!empty($filters)) {
+            $params['filter']['filters'] = array_merge($params['filter']['filters'], $filters);
+        }
+
         if ($region) {
             $params['region_id'] = $region->getId();
         }
@@ -94,7 +99,7 @@ class Repository {
      * @param function                  $done
      * @param function|null             $fail
      */
-    public function prepareCollectionByTag(\Model\Tag\Entity $tag, \Model\Region\Entity $region = null, $done, $fail = null) {
+    public function prepareCollectionByTag(\Model\Tag\Entity $tag, \Model\Region\Entity $region = null, array $filters = [], $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
@@ -105,6 +110,11 @@ class Repository {
                 ],
             ],
         ];
+
+        if (!empty($filters)) {
+            $params['filter']['filters'] = array_merge($params['filter']['filters'], $filters);
+        }
+
         if ($region) {
             $params['region_id'] = $region->getId();
         }
