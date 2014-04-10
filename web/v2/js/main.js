@@ -101,6 +101,25 @@
 
             $el.replaceWith(mustache.render($('#tpl-product-buySpinner').html(), templateData));
         });
+
+
+        // запрос инфы по пользователю
+        var config = _.extend({
+                user: {
+                    infoCookie: null,
+                    infoUrl: null
+                }
+            }, $body.data('config'));
+
+        console.info('config', config);
+
+        var hasUserInfo = ('1' === $.cookie(config.user.infoCookie));
+
+        console.info('hasUserInfo', hasUserInfo);
+
+        if (hasUserInfo) {
+
+        }
     };
 
 

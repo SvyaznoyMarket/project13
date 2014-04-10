@@ -4,6 +4,8 @@ namespace EnterSite\Model\Page {
     use EnterSite\Model\HtmlPage;
 
     class DefaultLayout extends HtmlPage {
+        /** @var string */
+        public $bodyDataConfig;
         /** @var DefaultLayout\TemplateBlock */
         public $templateBlock;
         /** @var DefaultLayout\BreadcrumbBlock|null */

@@ -435,6 +435,20 @@ class User {
             false
         );
         $response->headers->setCookie($cookie);
+
+        // мобильная версия сайта
+        if ($mobileHost = \App::config()->mobileHost) {
+            $cookie = new \Http\Cookie(
+                $cookie->getName(),
+                $cookie->getValue(), //cookieValue
+                $cookie->getExpiresTime(),
+                $cookie->getPath(),
+                $mobileHost,
+                $cookie->isSecure(),
+                $cookie->isHttpOnly()
+            );
+            $response->headers->setCookie($cookie);
+        }
     }
 
 
@@ -454,5 +468,19 @@ class User {
             false
         );
         $response->headers->setCookie($cookie);
+
+        // мобильная версия сайта
+        if ($mobileHost = \App::config()->mobileHost) {
+            $cookie = new \Http\Cookie(
+                $cookie->getName(),
+                $cookie->getValue(), //cookieValue
+                $cookie->getExpiresTime(),
+                $cookie->getPath(),
+                $mobileHost,
+                $cookie->isSecure(),
+                $cookie->isHttpOnly()
+            );
+            $response->headers->setCookie($cookie);
+        }
     }
 }

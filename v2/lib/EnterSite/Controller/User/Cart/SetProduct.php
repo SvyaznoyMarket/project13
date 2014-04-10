@@ -26,6 +26,8 @@ class SetProduct {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
+
         $productData = array_merge([
             'id'       => null,
             'quantity' => null,
@@ -50,9 +52,15 @@ class SetProduct {
         $cartData['productList'][$cartProduct->id] = $cartProduct->quantity;
         $session->set('userCart', $cartData);
 
-        // TODO: вынести на уровень JsonPage.result
-        return new Http\JsonResponse([
+        // response
+        $response = new Http\JsonResponse([
             'result' => $page,
         ]);
+
+        // информационная кука пользователя
+        $response->headers->setCookie(new Http\Cookie($config->userToken->infoCookieName, 1, time() + $config->session->cookieLifetime, '/', null, false, false));
+
+        // TODO: вынести на уровень JsonPage.result
+        return $response;
     }
 }

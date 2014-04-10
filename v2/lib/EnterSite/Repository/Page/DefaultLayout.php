@@ -5,6 +5,7 @@ namespace EnterSite\Repository\Page;
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\RouterTrait;
+use EnterSite\ViewHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -12,7 +13,7 @@ use EnterSite\Model\Page\DefaultLayout as Page;
 
 class DefaultLayout {
     use ConfigTrait;
-    use RouterTrait, LoggerTrait {
+    use RouterTrait, LoggerTrait, ViewHelperTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
 
@@ -22,6 +23,8 @@ class DefaultLayout {
      */
     public function buildObjectByRequest(Page $page, DefaultLayout\Request $request) {
         $config = $this->getConfig();
+        $helper = $this->getViewHelper();
+        $router = $this->getRouter();
         $templateDir = $config->mustacheRenderer->templateDir;
 
         // стили
@@ -29,6 +32,15 @@ class DefaultLayout {
 
         // заголовок
         $page->title = 'Enter - все товары для жизни по интернет ценам!';
+
+        // body[data-value]
+        $page->bodyDataConfig = $helper->json([
+            'requestId'      => $config->requestId,
+            'user' => [
+                'infoCookie' => $config->userToken->infoCookieName,
+                'infoUrl'    => $router->getUrlByRoute(new Routing\User\Get()),
+            ],
+        ]);
 
         // главное меню
         $page->mainMenu = $request->mainMenu;

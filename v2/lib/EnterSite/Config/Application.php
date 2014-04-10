@@ -12,6 +12,8 @@ namespace EnterSite\Config {
         public $logger;
         /** @var Application\Session */
         public $session;
+        /** @var Application\UserToken */
+        public $userToken;
         /** @var Application\Region */
         public $region;
         /** @var Application\Curl */
@@ -41,6 +43,7 @@ namespace EnterSite\Config {
             $this->logger = new Application\Logger();
 
             $this->session = new Application\Session();
+            $this->userToken = new Application\UserToken();
 
             $this->region = new Application\Region();
 
@@ -76,6 +79,19 @@ namespace EnterSite\Config\Application {
         public $name;
         /** @var int */
         public $cookieLifetime;
+    }
+
+    class UserToken {
+        /**
+         * Кука авторизованного пользователя
+         * @var string
+         */
+        public $authCookieName;
+        /**
+         * Кука для авторизованного пользователя и пользователя с непустой корзиной
+         * @var string
+         */
+        public $infoCookieName;
     }
 
     class Region {

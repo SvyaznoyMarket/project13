@@ -40,6 +40,8 @@ class SetProduct {
             $cartProduct = new Model\Cart\Product();
             $cartProduct->id = $productId;
             $cartProduct->quantity = $quantity;
+
+            // TODO положить товар в корзину
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['cart']]);
         }
