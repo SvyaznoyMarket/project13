@@ -50,6 +50,8 @@
             ) // дочерние категории and relatedCategories ?>
         <? endif ?>
 
+        <?= $helper->render('product/__smartChoice', ['smartChoiceProducts' => $smartChoiceProducts]); ?>
+
         <?= $helper->render('product-category/__filter', [
             'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
             'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
@@ -59,7 +61,6 @@
             'promoStyle'    => $promoStyle,
         ]) // фильтры ?>
         
-        <?= $helper->render('product/__smartChoice', ['smartChoiceProducts' => $smartChoiceProducts]); ?>
 
         <?= $helper->render('product/__listAction', [
             'pager'          => $productPager,
