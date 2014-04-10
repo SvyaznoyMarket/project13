@@ -1,0 +1,51 @@
+<div class="specialPriceItem {{# first}}mFirst{{/ first}} {{#last}}mLast{{/last}}">
+    <div class="specialPriceItemTitle {{typeMod}}">{{name}}</div><!--/ шапка -->
+
+    <div class="specialPriceItemCont">
+        <a class="specialPriceItemCont_imgLink" href="{{product.link}}">
+            <img class="specialPriceItemCont_img" src="{{product.image}}" alt="{{product.webname}}" />
+        </a><!--/ картинка продукта -->
+
+        <a class="specialPriceItemCont_name" href="{{product.link}}">
+            <span class="catName">{{product.prefix}}</span>
+            <strong class="prodName">{{product.webname}}</strong>
+        </a><!--/ название продукта -->
+
+        <p class="specialPriceItemCont_desc">
+            {{product.tagline}}
+        </p><!--/ описание продукта -->
+
+        <div class="specialPriceItemCont_buy">
+            <div class="priceBox">
+                {{#product.priceOld}}
+                <span class="priceBox_old">
+                    <span class="price">{{product.priceOld}}</span> <span class="rubl">p</span>
+                    <span class="persent">-{{product.priceSale}}%</span>
+                </span>
+                {{/product.priceOld}}
+                <span class="priceBox_new {{# product.onePrice}}mStatic{{/product.onePrice}}"><strong>{{product.price}}</strong> <span class="rubl">p</span></span><!-- если нет скидки то добавляем класс модификатор mStatic -->
+            </div>
+
+            {{# product.cartButton}}
+                <div class="btnBuy">
+                    <a
+                            href="{{url}}"
+                            class="{{class}} btnBuy_link{{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
+                            data-group="{{data.group}}"
+                            data-upsale='{{data.upsale}}'
+                            >
+                        {{value}}
+                    </a>
+                </div>
+            {{/product.cartButton}}
+
+        </div><!--/ купить продукт -->
+    </div><!--/ продукт -->
+
+    <div class="specialPriceItemFoot jsSmartChoiceSliderToggle smartChoiceSliderToggle-{{product.id}}" style="display: none;" data-smartchoice="{{product.id}}">
+        <a class="specialPriceItemFoot_link" href="">
+            <span class="specialPriceItemFoot_text">Похожие товары</span>
+        </a>
+    </div><!--/ кнопка - похожие товары -->
+</div><!--/ блок спец-предложения -->
+
