@@ -128,6 +128,17 @@ $response = null;
             (new \Debug\ShowAction())->execute($request, $response);
         }
 
+        // share session to mobile site
+        try {
+            if ($mobileHost = \App::config()->mobileHost) {
+                $session = \App::session();
+                $sessionParams = session_get_cookie_params();
+                $response->headers->setCookie(new \Http\Cookie($session->getName(), $session->getId(), 0 === $sessionParams['lifetime'] ? 0 : time() + $sessionParams['lifetime'], $sessionParams['path'], $mobileHost, $sessionParams['secure'], $sessionParams['httponly']));
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error($e, ['response']);
+        }
+
         $response->send();
     }
 
