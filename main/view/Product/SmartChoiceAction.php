@@ -23,6 +23,7 @@ class SmartChoiceAction {
         $productData = [];
 
         $productData['id']    = $product->getId();
+        $productData['article']    = $product->getArticle();
         $productData['link']    = $product->getLink();
         $productData['prefix']  = $product->getPrefix();
         $productData['webname'] = $product->getWebName();
