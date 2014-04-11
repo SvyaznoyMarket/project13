@@ -15,7 +15,7 @@ use EnterSite\Model\Page\ProductCard as Page;
 
 class ProductCard {
     use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait {
-        COnfigTrait::getConfig insteadof LoggerTrait;
+        ConfigTrait::getConfig insteadof LoggerTrait;
     }
 
     /**
@@ -258,7 +258,7 @@ class ProductCard {
             }
         }
 
-
+        // шаблоны mustache
         foreach ([
             ['id' => 'tpl-product-slider', 'file' => '/partial/product-slider/default.mustache'],
         ] as $templateItem) {

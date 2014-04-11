@@ -65,7 +65,6 @@
             "shopToken": "[\\w\\d-_]+"
         }
     },
-
     "Cart\\SetProduct": {
         "name": "Установить товар в корзине (когда js поломался)",
         "pattern": "/cart/set-product/{productId}",

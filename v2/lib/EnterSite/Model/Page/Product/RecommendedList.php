@@ -2,22 +2,14 @@
 
 namespace EnterSite\Model\Page\Product {
     use EnterSite\Model\JsonPage;
+    use EnterSite\Model\Partial;
 
     class RecommendedList extends JsonPage {
-        /** @var RecommendedList\Block */
-        public $alsoBought;
-        /** @var RecommendedList\Block */
-        public $alsoViewed;
-        /** @var RecommendedList\Block */
-        public $similar;
-    }
-}
-
-namespace EnterSite\Model\Page\Product\RecommendedList {
-    class Block {
-        /** @var string */
-        public $content;
-        /** @var int */
-        public $count = 0;
+        /** @var Partial\ProductSlider|null */
+        public $alsoBoughtSlider;
+        /** @var Partial\ProductSlider|null */
+        public $alsoViewedSlider;
+        /** @var Partial\ProductSlider|null */
+        public $similarSlider;
     }
 }

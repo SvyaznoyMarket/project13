@@ -118,18 +118,27 @@ class RecommendedList {
 
         $ids = null;
         foreach ([$alsoBoughtIdList, $similarIdList, $alsoViewedIdList] as &$ids) {
+            // удаляем ид товаров, которых нет в массиве $productsById
+            $ids = array_intersect($ids, array_keys($productsById));
+            // применяем лимит
             $ids = array_slice($ids, 0, $config->product->itemsInSlider);
         }
         unset($ids);
 
+        // запрос для получения страницы
+        $pageRequest = new Repository\Page\Product\RecommendedList\Request();
+        $pageRequest->productsById = $productsById;
+        $pageRequest->alsoBoughtIdList = $alsoBoughtIdList;
+        $pageRequest->alsoViewedIdList = $alsoViewedIdList;
+        $pageRequest->similarIdList = $similarIdList;
+        //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
         // страница
         $page = new Page();
+        (new Repository\Page\Product\RecommendedList())->buildObjectByRequest($page, $pageRequest);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
-        // http-ответ
-        $response = new Http\JsonResponse($page);
-
-        return $response;
+        return new Http\JsonResponse($page);
     }
 }
