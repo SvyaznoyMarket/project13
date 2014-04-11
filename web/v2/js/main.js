@@ -7,6 +7,25 @@
             //var response = JSON.parse(xhr.responseText);
         });
 
+        $body.on('render', function(e) {
+            e.stopPropagation();
+
+            var userData = $body.data('user');
+
+            console.info('render:body', userData);
+
+            if (_.isObject(userData.buyButtons)) {
+                _.each(userData.buyButtons, function(templateData, idSelector) {
+                    $(idSelector).trigger('render', templateData);
+                });
+            }
+            if (_.isObject(userData.buySpinners)) {
+                _.each(userData.buySpinners, function(templateData, idSelector) {
+                    $(idSelector).trigger('render', templateData);
+                });
+            }
+        });
+
         // кнопка купить
         $body.on('click', '.js-buyButton', function(e) {
             e.stopPropagation();
@@ -147,15 +166,9 @@
 
         if (hasUserInfo && userInfoUrl) {
             $.post(userInfoUrl).done(function(response) {
-                if (_.isObject(response.result.buyButtons)) {
-                    _.each(response.result.buyButtons, function(templateData, idSelector) {
-                        $(idSelector).trigger('render', templateData);
-                    });
-                }
-                if (_.isObject(response.result.buySpinners)) {
-                    _.each(response.result.buySpinners, function(templateData, idSelector) {
-                        $(idSelector).trigger('render', templateData);
-                    });
+                if (_.isObject(response.result)) {
+                    $body.data('user', response.result);
+                    $body.trigger('render');
                 }
             });
         }
@@ -179,6 +192,7 @@
                     console.info('slider', sliderName, sliderData, $el);
 
                     $el.trigger('render', sliderData);
+                    $body.trigger('render');
                 })
             });
         })
@@ -190,3 +204,5 @@
     });
 
 }(window.Enter = window.Enter || {}, window, window.jQuery, window._, window.Mustache));
+
+
