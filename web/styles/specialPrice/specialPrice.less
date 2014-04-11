@@ -18,6 +18,10 @@
 	&.mFirst {
 		padding-left: 0;
 	}
+
+	&_minHeight {
+		min-height: 555px;
+	}
 }
 
 .specialPriceItemCont {
@@ -25,6 +29,7 @@
 	&_imgLink {
 		display: block;
 		margin: 0 0 5px;
+		text-align: center;
 	}
 
 	&_img {
@@ -172,18 +177,22 @@
 }
 
 .specialBorderBox {
-	border-top: 3px solid #87dbf5;
-	border-bottom: 3px solid #87dbf5;
+	
 	width: 960px;
 	margin: -10px 0 10px -10px;
 	padding: 10px 0;
+
+	&_render {
+		border-top: 3px solid #87dbf5;
+	border-bottom: 3px solid #87dbf5;
+	}
 
 	.bSlider {
 		height: 195px;
 
 		&__eInner {
-		    padding: 0;
-		    width: 960px;
+		    padding: 0 5px;
+		    width: 840px;
 		}
 	}
 

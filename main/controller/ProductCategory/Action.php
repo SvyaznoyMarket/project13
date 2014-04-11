@@ -934,6 +934,9 @@ class Action {
             $productPager = new \Iterator\EntityPager($products, $productCount);
         }
 
+        // Если товаров слишком мало (меньше 3 строк в листинге), то не показываем SmartChoice
+        if ($productPager->count() < 7) $smartChoiceData = [];
+
         if ($hasBanner) {
             $productPager->setCount($productPager->count() + 1);
         }
