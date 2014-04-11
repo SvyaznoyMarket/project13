@@ -334,6 +334,47 @@
 			// end of vars
 
 			var
+				/**
+				 * Показ сообщений об ошибках
+				 *
+				 * @param	{String}	msg		Сообщение об ошибке
+				 * @return	{Object}			Deferred объект
+				 */
+				showError = function showError( msg ) {
+					var
+						content = '<div class="popupbox width290">' +
+							'<div class="font18 pb18"> '+msg+'</div>'+
+							'</div>' +
+							'<p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>',
+						block = $('<div>').addClass('popup').html(content),
+
+						popupIsClose = $.Deferred();
+					// end of vars
+
+					var
+						errorPopupCloser = function( e ) {
+							e.preventDefault();
+
+							block.trigger('close');
+							block.remove();
+
+							popupIsClose.resolve();
+						};
+					// end of functions
+
+					block.appendTo('body');
+
+					block.lightbox_me({
+						centered:true,
+						closeClick:false,
+						closeEsc:false
+					});
+
+					block.find('.closePopup').bind('click', errorPopupCloser);
+
+					return popupIsClose.promise();
+				},
+
 				addToCart = function addToCart( data ) {
 					var
 						groupBtn = button.data('group'),
@@ -346,7 +387,9 @@
 						if ( data.error && data.error.message ) {
 							console.warn( data.error.message );
 							// TODO: сообщение об ошибке для пользователя
+							showError(data.error.message);
 						}
+
 						return false;
 					}
 
