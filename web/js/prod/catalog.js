@@ -1186,10 +1186,12 @@
  
 ;$(document).ready(function(){
 
-    var $jsDataSmartChoice = $('.jsDataSmartChoice'); // div c каруселями smart-choice
+    var smartChoiceSlider = $('.jsDataSmartChoice'),
+        smartChoiceItem = $('.specialPriceItem'),
+        smartChoiceItemAttr = smartChoiceSlider.attr('data-smartchoice');
 
     $.getJSON('/ajax/product-smartchoice',{
-            "products[]": $jsDataSmartChoice.data('smartchoice') },
+            "products[]": smartChoiceSlider.data('smartchoice') },
         function(data){
             if (data.success) {
                 $.each(data.result, function(i, value){
@@ -1214,12 +1216,19 @@
             $specialPriceItemFoot_links.removeClass('mActive');
             $link.addClass('mActive');
             $('.bGoodsSlider').hide();
+            $('.specialBorderBox').addClass('specialBorderBox_render');
             $('.smartChoiceId-' + id).parent().show();
         } else {
             $specialPriceItemFoot_links.removeClass('mActive');
             $('.smartChoiceId-' + id).parent().hide();
+            $('.specialBorderBox').removeClass('specialBorderBox_render');
         }
     });
+
+    if ( typeof smartChoiceItemAttr !== 'undefined' && smartChoiceItemAttr !== false ) {
+        smartChoiceItem.addClass('specialPriceItem_minHeight');
+    }
+    else { smartChoiceItem.removeClass('specialPriceItem_minHeight') };
 
     function track(event, article) {
         var ga = window[window.GoogleAnalyticsObject],
@@ -1231,13 +1240,13 @@
     }
 
     // Tracking click on <a>
-    $('.specialPriceItem').on('click', '.specialPriceItemCont_imgLink, .specialPriceItemCont_name', function(){
+    smartChoiceItem.on('click', '.specialPriceItemCont_imgLink, .specialPriceItemCont_name', function(){
         var article = $(this).data('article');
         track('SmartChoice_click', article);
     });
 
     // Tracking click on <a> in similar carousel
-    $jsDataSmartChoice.on('click', '.productImg, .productName a', function(e){
+    smartChoiceSlider.on('click', '.productImg, .productName a', function(e){
         var article = $(e.target).closest('.bSlider__eItem').data('product').article;
         track('SmartChoice_similar_click', article);
     });
