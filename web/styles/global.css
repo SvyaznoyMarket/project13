@@ -3302,8 +3302,8 @@ img[height="0"] {
     height: 195px;
   }
   .specialBorderBox .bSlider__eInner {
-    padding: 0;
-    width: 960px;
+    padding: 0 5px;
+    width: 840px;
   }
   .specialBorderBox .bSlider__eBtn {
     background: none;
