@@ -74,7 +74,7 @@ trait TrustfactorsTrait
      * @param $elem
      */
     private function trustfactorQuery(&$contentClient, &$source, &$elem) {
-        if (!is_string($source)) return;
+        if (!isset($source)) return;
 
         $contentClient->addQuery(
             trim((string)$source),
