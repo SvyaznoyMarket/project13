@@ -116,14 +116,15 @@ class RecommendedList {
             }
         }
 
-        $ids = null;
-        foreach ([$alsoBoughtIdList, $similarIdList, $alsoViewedIdList] as &$ids) {
+        $chunkedIds = [$alsoBoughtIdList, $similarIdList, $alsoViewedIdList];
+        $ids = [];
+        foreach ($chunkedIds as &$ids) {
             // удаляем ид товаров, которых нет в массиве $productsById
             $ids = array_intersect($ids, array_keys($productsById));
             // применяем лимит
             $ids = array_slice($ids, 0, $config->product->itemsInSlider);
         }
-        unset($ids);
+        unset($ids, $chunkedIds);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Product\RecommendedList\Request();
