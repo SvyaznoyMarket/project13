@@ -628,6 +628,12 @@ return [
         'action' => ['Product\UpsaleAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
+
+    // smartchoice
+    'product/smartchoice' => [
+        'pattern' => '/ajax/product-smartchoice',
+        'action' => ['Product\SmartChoiceAction', 'execute'],
+    ],
     /*
     'smartengine.pull.product_similar' => [
         'pattern' => '/product-similar/{productId}',

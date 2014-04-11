@@ -15,18 +15,22 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
     <h1 class="enterPrize__logo">Enter Prize</h1>
 
     <div class="bgPage"></div>
-
-    <? if ($isEnterprizeMember): ?>
-        <div class="enterPrizeHello" style="display: none;">Всё, что вы хотели, со скидкой до 70%</div>
-    <? endif ?>
-
-    <div class="enterPrizeHello mReg">Всё, что вы хотели, со скидкой до 70%</div>
     
     <? if (!$user->getEntity()): ?>
-        <p class="enterPrizeDesc">Уже в ENTER PRIZE? <a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войдите и получите ещё скидки</a></p>
+        <div class="enterPrizeHello">Скидки до 70% начинаются здесь</div>
+
+        <p class="enterPrizeDesc">
+            В каждой фишке - код на скидку.<br/>
+            Купите дешевле iPhone, горный велосипед или многое другое.<br/>
+            Интересно? Жми на фишку!
+        </p>
+
+        <? /*p class="enterPrizeDesc">Уже в ENTER PRIZE? <a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войдите и получите ещё скидки</a></p */ ?>
     <? endif ?>
 
     <? if ($isEnterprizeMember): ?>
+        <div class="enterPrizeHello mReg">Всё, что вы хотели, со скидкой до 70%</div>
+
         <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как получить больше фишек?</span></p>
 
         <div class="enterPrizeListWrap">

@@ -4,15 +4,11 @@
 }
 
 .specialPriceItem {
-	display: inline-block;
-	vertical-align: top;
+	float: left;
 	width: 299px;
 	border-right: 1px solid #c7c7c7;
 	padding: 0 10px;
 	font-size: 12px;
-
-	*display: inline;
-	zoom: 1;
 
 	&.mLast {
 		border-right: none;
@@ -22,6 +18,10 @@
 	&.mFirst {
 		padding-left: 0;
 	}
+
+	&_minHeight {
+		min-height: 555px;
+	}
 }
 
 .specialPriceItemCont {
@@ -29,6 +29,7 @@
 	&_imgLink {
 		display: block;
 		margin: 0 0 5px;
+		text-align: center;
 	}
 
 	&_img {
@@ -78,6 +79,10 @@
 				display: block;
 				color: #919291;
 				font-size: 16px;
+
+				.price {
+					text-decoration: line-through;
+				}
 			}
 
 			&_new {
@@ -172,11 +177,15 @@
 }
 
 .specialBorderBox {
-	border-top: 3px solid #87dbf5;
-	border-bottom: 3px solid #87dbf5;
+	
 	width: 960px;
 	margin: -10px 0 10px -10px;
 	padding: 10px 0;
+
+	&_render {
+		border-top: 3px solid #87dbf5;
+	border-bottom: 3px solid #87dbf5;
+	}
 
 	.bSlider {
 		height: 195px;
