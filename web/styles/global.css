@@ -2617,6 +2617,7 @@ img[height="0"] {
     padding: 0;
     float: right;
     display: table;
+    position: relative;
   }
   .tchiboNav__list .item {
     display: table-cell;
@@ -2686,7 +2687,7 @@ img[height="0"] {
     visibility: hidden;
     padding: 27px 0 10px 0;
     position: absolute;
-    top: 62px;
+    top: 17px;
     width: 850px;
     z-index: 0;
   }
