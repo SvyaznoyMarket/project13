@@ -2103,6 +2103,7 @@ img[height="0"] {
     height: 236px;
     position: relative;
     margin-right: 26px;
+    z-index: 1;
   }
   .enterPrize__list__item:hover {
     z-index: 20;
