@@ -3,7 +3,7 @@
     var $jsDataSmartChoice = $('.jsDataSmartChoice'); // div c каруселями smart-choice
 
     $.getJSON('/ajax/product-smartchoice',{
-            "products[]": $jsDataSmartChoice.data('smartchoice') },
+            "products[]": $('.jsDataSmartChoice').data('smartchoice') },
         function(data){
             if (data.success) {
                 $.each(data.result, function(i, value){
@@ -28,12 +28,23 @@
             $specialPriceItemFoot_links.removeClass('mActive');
             $link.addClass('mActive');
             $('.bGoodsSlider').hide();
+            $('.specialBorderBox').addClass('specialBorderBox_render');
             $('.smartChoiceId-' + id).parent().show();
         } else {
             $specialPriceItemFoot_links.removeClass('mActive');
             $('.smartChoiceId-' + id).parent().hide();
+            $('.specialBorderBox').removeClass('specialBorderBox_render');
         }
     });
+
+    var smartChoiceSlider = $('.jsDataSmartChoice'),
+        smartChoiceItem = $('.specialPriceItem'),
+        smartChoiceItemAttr = smartChoiceSlider.attr('data-smartchoice');
+
+    if ( typeof smartChoiceItemAttr !== 'undefined' && smartChoiceItemAttr !== false ) {
+        smartChoiceItem.addClass('specialPriceItem_minHeight');
+    }
+    else { smartChoiceItem.removeClass('specialPriceItem_minHeight') };
 
     function track(event, article) {
         var ga = window[window.GoogleAnalyticsObject],
