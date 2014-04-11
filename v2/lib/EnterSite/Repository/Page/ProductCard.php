@@ -2,10 +2,11 @@
 
 namespace EnterSite\Repository\Page;
 
+use EnterSite\ConfigTrait;
+use EnterSite\LoggerTrait;
 use EnterSite\RouterTrait;
 use EnterSite\DateHelperTrait;
 use EnterSite\TranslateHelperTrait;
-use EnterSite\ViewHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -13,7 +14,9 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use RouterTrait, DateHelperTrait, TranslateHelperTrait, ViewHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait {
+        COnfigTrait::getConfig insteadof LoggerTrait;
+    }
 
     /**
      * @param Page $page
@@ -22,10 +25,10 @@ class ProductCard {
     public function buildObjectByRequest(Page $page, ProductCard\Request $request) {
         (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
 
+        $config = $this->getConfig();
         $router = $this->getRouter();
         $dateHelper = $this->getDateHelper();
         $translateHelper = $this->getTranslateHelper();
-        $viewHelper = $this->getViewHelper();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $cartProductSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
         $productCardRepository = new Repository\Partial\ProductCard();
@@ -252,6 +255,21 @@ class ProductCard {
                 } else if (1 === $i) {
                     $page->content->product->moreModelBlock = $modelBlock;
                 }
+            }
+        }
+
+
+        foreach ([
+            ['id' => 'tpl-product-slider', 'file' => '/partial/product-slider/default.mustache'],
+        ] as $templateItem) {
+            try {
+                $template = new Model\Page\DefaultLayout\Template();
+                $template->id = $templateItem['id'];
+                $template->content = file_get_contents($config->mustacheRenderer->templateDir . $templateItem['file']);
+
+                $page->templates[] = $template;
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['template']]);
             }
         }
 

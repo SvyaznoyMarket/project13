@@ -46,16 +46,19 @@ class DefaultLayout {
         $page->mainMenu = $request->mainMenu;
 
         // шаблоны mustache
-        try {
-            $page->templateBlock->productBuyButton = file_get_contents($templateDir . '/partial/cart/button.mustache');
-        } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['template']]);
-        }
+        foreach ([
+            ['id' => 'tpl-product-buyButton', 'file' => '/partial/cart/button.mustache'],
+            ['id' => 'tpl-product-buySpinner', 'file' => '/partial/cart/spinner.mustache'],
+        ] as $templateItem) {
+            try {
+                $template = new Model\Page\DefaultLayout\Template();
+                $template->id = $templateItem['id'];
+                $template->content = file_get_contents($templateDir . $templateItem['file']);
 
-        try {
-            $page->templateBlock->productBuySpinner = file_get_contents($templateDir . '/partial/cart/spinner.mustache');
-        } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['template']]);
+                $page->templates[] = $template;
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['template']]);
+            }
         }
     }
 }
