@@ -1,9 +1,11 @@
 ;$(document).ready(function(){
 
-    var $jsDataSmartChoice = $('.jsDataSmartChoice'); // div c каруселями smart-choice
+    var smartChoiceSlider = $('.jsDataSmartChoice'),
+        smartChoiceItem = $('.specialPriceItem'),
+        smartChoiceItemAttr = smartChoiceSlider.attr('data-smartchoice');
 
     $.getJSON('/ajax/product-smartchoice',{
-            "products[]": $('.jsDataSmartChoice').data('smartchoice') },
+            "products[]": smartChoiceSlider.data('smartchoice') },
         function(data){
             if (data.success) {
                 $.each(data.result, function(i, value){
@@ -37,10 +39,6 @@
         }
     });
 
-    var smartChoiceSlider = $('.jsDataSmartChoice'),
-        smartChoiceItem = $('.specialPriceItem'),
-        smartChoiceItemAttr = smartChoiceSlider.attr('data-smartchoice');
-
     if ( typeof smartChoiceItemAttr !== 'undefined' && smartChoiceItemAttr !== false ) {
         smartChoiceItem.addClass('specialPriceItem_minHeight');
     }
@@ -56,13 +54,13 @@
     }
 
     // Tracking click on <a>
-    $('.specialPriceItem').on('click', '.specialPriceItemCont_imgLink, .specialPriceItemCont_name', function(){
+    smartChoiceItem.on('click', '.specialPriceItemCont_imgLink, .specialPriceItemCont_name', function(){
         var article = $(this).data('article');
         track('SmartChoice_click', article);
     });
 
     // Tracking click on <a> in similar carousel
-    $jsDataSmartChoice.on('click', '.productImg, .productName a', function(e){
+    smartChoiceSlider.on('click', '.productImg, .productName a', function(e){
         var article = $(e.target).closest('.bSlider__eItem').data('product').article;
         track('SmartChoice_similar_click', article);
     });
