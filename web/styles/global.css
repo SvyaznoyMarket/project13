@@ -3340,6 +3340,8 @@ img[height="0"] {
     display: inline-block;
     vertical-align: top;
     font-size: 16px;
+    *display: inline;
+    zoom: 1;
   }
   .packageSetHead_change {
     float: right;
@@ -3362,6 +3364,8 @@ img[height="0"] {
     display: inline-block;
     vertical-align: top;
     width: 80px;
+    *display: inline;
+    zoom: 1;
   }
   .packageSetBodyItem_img img {
     width: 80px;
@@ -3370,6 +3374,8 @@ img[height="0"] {
     display: inline-block;
     vertical-align: top;
     width: 280px;
+    *display: inline;
+    zoom: 1;
   }
   .packageSetBodyItem_desc .name {
     font-size: 14px;
@@ -3379,6 +3385,8 @@ img[height="0"] {
     display: inline-block;
     vertical-align: top;
     line-height: 1.2;
+    *display: inline;
+    zoom: 1;
   }
   .packageSetBodyItem_desc .dimantion_name {
     color: #515151;
@@ -3398,6 +3406,8 @@ img[height="0"] {
     width: 180px;
     padding-top: 66px;
     color: #515151;
+    *display: inline;
+    zoom: 1;
   }
   .packageSetBodyItem_delivery strong {
     color: #000000;
@@ -3408,6 +3418,8 @@ img[height="0"] {
     width: 100px;
     line-height: 80px;
     font-size: 14px;
+    *display: inline;
+    zoom: 1;
   }
   .packageSetBodyItem_qnt {
     float: right;
