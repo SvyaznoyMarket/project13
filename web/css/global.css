@@ -12722,19 +12722,19 @@
   .bCatalog.mCustomCss .bFilterValues {
     width: 720px;
   }
-  .bCatalog .specialPrice {
+  .bCatalog.mCustomCss .specialPrice {
     background: #ffffff;
     margin: 0 0 10px -20px;
     padding: 10px 0 0 10px;
     width: 940px;
   }
-  .bCatalog .specialBorderBox {
+  .bCatalog.mCustomCss .specialBorderBox {
     background: #ffffff;
     margin: -10px 0 10px -20px;
     padding: 10px 0;
     width: 960px;
   }
-  .bCatalog .specialBorderBox_render {
+  .bCatalog.mCustomCss .specialBorderBox_render {
     border-bottom: none;
   }
 }
