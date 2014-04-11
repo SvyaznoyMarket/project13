@@ -147,6 +147,9 @@
 
 	&__titleLink {
 		display: block;
+		float: left;
+	    height: 80px;
+	    width: 80px;
 	}
 
 	&__list {
@@ -155,9 +158,10 @@
 		margin: 45px 0 0;
 		padding: 0;
 		float: right;
+		display: table;
 
 		.item {
-			display: inline-block;
+			display: table-cell;
 			margin: 0 40px 0 0;
 			position: relative;
 
@@ -241,13 +245,10 @@
 		visibility: hidden;
 	    padding: 27px 0 10px 0;
 	    position: absolute;
-	    top: 15px;
+	    top: 62px;
 	    width: 850px;
 	    z-index: 0;
 		
-		&.mDefault {
-			left: 0;
-		}
 
 		.sublistItem {
 			vertical-align: top;
