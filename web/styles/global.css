@@ -2042,7 +2042,7 @@ img[height="0"] {
     color: #ddd;
     margin: 15px 0 0 31px;
     font-size: 14px;
-    cursor: pointer;
+    line-height: 1.6;
   }
   .enterPrize .enterPrizeDesc__text {
     text-decoration: underline;
