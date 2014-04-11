@@ -3161,9 +3161,13 @@ img[height="0"] {
   .specialPriceItem.mFirst {
     padding-left: 0;
   }
+  .specialPriceItem_minHeight {
+    min-height: 555px;
+  }
   .specialPriceItemCont_imgLink {
     display: block;
     margin: 0 0 5px;
+    text-align: center;
   }
   .specialPriceItemCont_img {
     width: 280px;
@@ -3281,11 +3285,13 @@ img[height="0"] {
     line-height: 1;
   }
   .specialBorderBox {
-    border-top: 3px solid #87dbf5;
-    border-bottom: 3px solid #87dbf5;
     width: 960px;
     margin: -10px 0 10px -10px;
     padding: 10px 0;
+  }
+  .specialBorderBox_render {
+    border-top: 3px solid #87dbf5;
+    border-bottom: 3px solid #87dbf5;
   }
   .specialBorderBox .bSlider {
     height: 195px;

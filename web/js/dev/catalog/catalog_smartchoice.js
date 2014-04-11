@@ -25,10 +25,21 @@
             $specialPriceItemFoot_links.removeClass('mActive');
             $link.addClass('mActive');
             $('.bGoodsSlider').hide();
+            $('.specialBorderBox').addClass('specialBorderBox_render');
             $('.smartChoiceId-' + id).parent().show();
         } else {
             $specialPriceItemFoot_links.removeClass('mActive');
             $('.smartChoiceId-' + id).parent().hide();
+            $('.specialBorderBox').removeClass('specialBorderBox_render');
         }
-    })
+    });
+
+    var smartChoiceSlider = $('.jsDataSmartChoice'),
+        smartChoiceItem = $('.specialPriceItem'),
+        smartChoiceItemAttr = smartChoiceSlider.attr('data-smartchoice');
+
+    if ( typeof smartChoiceItemAttr !== 'undefined' && smartChoiceItemAttr !== false ) {
+        smartChoiceItem.addClass('specialPriceItem_minHeight');
+    }
+    else { smartChoiceItem.removeClass('specialPriceItem_minHeight') };
 });

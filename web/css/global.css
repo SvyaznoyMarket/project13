@@ -12681,7 +12681,6 @@
 @media all {
   .bCatalog.mCustomCss .bCustomFilter {
     position: relative;
-    overflow: hidden;
     background-repeat: no-repeat;
     background-position: 0 0;
     padding: 10px;
@@ -12722,6 +12721,21 @@
   }
   .bCatalog.mCustomCss .bFilterValues {
     width: 720px;
+  }
+  .bCatalog .specialPrice {
+    background: #ffffff;
+    margin: 0 0 10px -20px;
+    padding: 10px 0 0 10px;
+    width: 940px;
+  }
+  .bCatalog .specialBorderBox {
+    background: #ffffff;
+    margin: -10px 0 10px -20px;
+    padding: 10px 0;
+    width: 960px;
+  }
+  .bCatalog .specialBorderBox_render {
+    border-bottom: none;
   }
 }
 /*---END---СТИЛИ КАТАЛОГА---*/
