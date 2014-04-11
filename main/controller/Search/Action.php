@@ -95,6 +95,12 @@ class Action {
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
 
+        // если ajax-запрос и пользователь убрал все фильтры, нужно обновить фасеты
+        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax') && empty($filtersWithParams)) {
+            $facets = ProductCategory::getFacets($filters);
+            $this->changedFilters = $facets;
+        }
+
         // Сравниваем фильтры с пользовательскими фильтрами
         if (!empty($filters) && !empty($filtersWithParams)) {
             $comparedFilters = ProductCategory::compareFilters($filters, $filtersWithParams);

@@ -391,6 +391,11 @@ class Action {
         // выполнение 3-го пакета запросов
         $client->execute();
 
+        // если ajax-запрос и пользователь убрал все фильтры, нужно обновить фасеты
+        if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax') && empty($filtersWithParams)) {
+            $facets = $this->getFacets($filters);
+            $this->changedFilters = $facets;
+        }
 
         // Сравниваем фильтры с пользовательскими фильтрами
         if (!empty($filters) && !empty($filtersWithParams)) {
@@ -1197,6 +1202,48 @@ class Action {
             'disabledFilters' => $disabled,
             'changedFilters'  => $changed
         ];
+    }
+
+    /**
+     * Получение фасетов
+     * @param $filters  Список филтров
+     * @return array    Массив со списком фасетов
+     */
+    public static function getFacets($filters) {
+        $facets = [];
+        foreach ($filters as $filterKey => $filter) {
+            switch ($filter->getTypeId()) {
+                /*case FilterEntity::TYPE_NUMBER:
+                case FilterEntity::TYPE_SLIDER:
+                    $paramNameFrom = \View\Name::productCategoryFilter($filter, 'from');
+                    $paramNameTo = \View\Name::productCategoryFilter($filter, 'to');
+                    break;*/
+                case FilterEntity::TYPE_LIST:
+                    foreach ($filter->getOption() as $option) {
+                        $paramName = \View\Name::productCategoryFilter($filter, $option);
+                        $quantity = $option->getQuantity();
+
+                        if ('shop' == $filterKey) {
+                            $facets['list'][$paramName][$option->getId()] = $quantity;
+                        } else {
+                            $facets['list'][$paramName] = $quantity;
+                        }
+                    }
+                    break;
+                case FilterEntity::TYPE_BOOLEAN:
+                    foreach ([1 => 'да', 0 => 'нет'] as $value => $name) {
+                        $paramName = \View\Name::productCategoryFilter($filter, $value);
+                        $quantity = $filter->getQuantity();
+
+                        if (!empty($quantity) && is_array($quantity)) {
+                            $facets['choice'][$paramName] = $quantity[$value];
+                        }
+                    }
+                    break;
+            }
+        }
+
+        return $facets;
     }
 
     /**
