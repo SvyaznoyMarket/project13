@@ -38,7 +38,7 @@ $helper = new \Helper\TemplateHelper();
         <div class="packageSet">
             <div class="packageSetHead cleared">
                 <span class="packageSetHead_title">Базовая комплектация набора</span>
-                <span class="packageSetHead_change">Изменить комплектацию</span>
+                <span class="packageSetHead_change"><span class="packageSetHead_changeText">Изменить комплектацию</span></span>
             </div>
 
             <!-- элемент комплекта -->
