@@ -294,9 +294,23 @@
 
     <div class="contentBox940">
         <!-- Таб - С этим товаром покупают -->
-        {{#product.accessorySlider}}
+        {{#product.alsoBoughtSlider}}
             {{>partial/product-slider/default}}
-        {{/product.accessorySlider}}
+        {{/product.alsoBoughtSlider}}
+        <!--/ Таб - С этим товаром покупают -->
+    </div>
+
+    <div class="contentBox960" id="alsoTab">
+        <div class="tabTitle clearfix">
+            <div class="tabTitle__text">С этим товаром также смотрят</div>
+        </div>
+    </div>
+
+    <div class="contentBox940">
+        <!-- Таб - С этим товаром покупают -->
+        {{#product.alsoViewedSlider}}
+            {{>partial/product-slider/default}}
+        {{/product.alsoViewedSlider}}
         <!--/ Таб - С этим товаром покупают -->
     </div>
 </div><!--/ Контент -->

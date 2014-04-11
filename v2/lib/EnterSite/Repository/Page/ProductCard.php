@@ -5,6 +5,7 @@ namespace EnterSite\Repository\Page;
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\RouterTrait;
+use EnterSite\ViewHelperTrait;
 use EnterSite\DateHelperTrait;
 use EnterSite\TranslateHelperTrait;
 use EnterSite\Routing;
@@ -14,7 +15,7 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait {
+    use ConfigTrait, LoggerTrait, RouterTrait, ViewHelperTrait, DateHelperTrait, TranslateHelperTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
 
@@ -27,8 +28,11 @@ class ProductCard {
 
         $config = $this->getConfig();
         $router = $this->getRouter();
+        $viewHelper = $this->getViewHelper();
         $dateHelper = $this->getDateHelper();
         $translateHelper = $this->getTranslateHelper();
+
+        $templateDir = $config->mustacheRenderer->templateDir;
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $cartProductSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
         $productCardRepository = new Repository\Partial\ProductCard();
@@ -201,6 +205,24 @@ class ProductCard {
             }
         }
 
+        // рекомендации товара
+        $recommendListUrl = $router->getUrlByRoute(new Routing\Product\GetRecommendedList($productModel->id));
+        // alsoBought slider
+        $page->content->product->alsoBoughtSlider = new Partial\ProductSlider();
+        $page->content->product->alsoBoughtSlider->dataUrl = $recommendListUrl;
+        $page->content->product->alsoBoughtSlider->dataName = 'alsoBoughtSlider';
+        $page->content->product->alsoBoughtSlider->hasCategories = false;
+        // alsoViewed slider
+        $page->content->product->alsoViewedSlider = new Partial\ProductSlider();
+        $page->content->product->alsoViewedSlider->dataUrl = $recommendListUrl;
+        $page->content->product->alsoViewedSlider->dataName = 'alsoViewedSlider';
+        $page->content->product->alsoViewedSlider->hasCategories = false;
+        // similar slider
+        $page->content->product->similarSlider = new Partial\ProductSlider();
+        $page->content->product->similarSlider->dataUrl = $recommendListUrl;
+        $page->content->product->similarSlider->dataName = 'similarSlider';
+        $page->content->product->similarSlider->hasCategories = false;
+
         // отзывы товара
         if ((bool)$request->reviews) {
             $page->content->product->reviewBlock = new Page\Content\Product\ReviewBlock();
@@ -260,12 +282,25 @@ class ProductCard {
 
         // шаблоны mustache
         foreach ([
-            ['id' => 'tpl-product-slider', 'file' => '/partial/product-slider/default.mustache'],
+            [
+                'id'       => 'tpl-product-slider',
+                'name'     => 'partial/product-slider/default',
+                'partials' => [
+                    'partial/cart/button',
+                ],
+            ],
         ] as $templateItem) {
             try {
                 $template = new Model\Page\DefaultLayout\Template();
                 $template->id = $templateItem['id'];
-                $template->content = file_get_contents($config->mustacheRenderer->templateDir . $templateItem['file']);
+                $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
+
+                $partialData = [];
+                foreach ($templateItem['partials'] as $partial) {
+                    $partialData[$partial] = file_get_contents($templateDir . '/' . $partial . '.mustache');
+                }
+
+                $template->dataPartial = $viewHelper->json($partialData);
 
                 $page->templates[] = $template;
             } catch (\Exception $e) {

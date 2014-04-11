@@ -36,6 +36,8 @@ namespace EnterSite\Model\Page\DefaultLayout {
         public $id;
         /** @var string */
         public $content;
+        /** @var string */
+        public $dataPartial;
     }
 
     class BreadcrumbBlock {

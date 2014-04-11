@@ -72,6 +72,12 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $rating;
         /** @var Partial\ProductSlider|null */
         public $accessorySlider;
+        /** @var Partial\ProductSlider|null */
+        public $alsoBoughtSlider;
+        /** @var Partial\ProductSlider|null */
+        public $alsoViewedSlider;
+        /** @var Partial\ProductSlider|null */
+        public $similarSlider;
         /** @var Product\ReviewBlock|null */
         public $reviewBlock;
         /** @var bool */

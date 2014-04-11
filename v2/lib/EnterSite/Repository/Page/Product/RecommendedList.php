@@ -23,11 +23,16 @@ class RecommendedList {
      * @param RecommendedList\Request $request
      */
     public function buildObjectByRequest(Page $page, RecommendedList\Request $request) {
+        $router = $this->getRouter();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $productCardRepository = new Repository\Partial\ProductCard();
 
+        $url = $router->getUrlByRoute(new Routing\Product\GetRecommendedList($request->product->id));
+
         // alsoBought slider
         $page->alsoBoughtSlider = new Partial\ProductSlider();
+        $page->alsoBoughtSlider->dataUrl = $url;
+        $page->alsoBoughtSlider->dataName = 'alsoBoughtSlider';
         $page->alsoBoughtSlider->hasCategories = false;
         foreach ($request->alsoBoughtIdList as $productId) {
             /** @var Model\Product|null $productModel */
@@ -39,6 +44,8 @@ class RecommendedList {
 
         // alsoViewed slider
         $page->alsoViewedSlider = new Partial\ProductSlider();
+        $page->alsoViewedSlider->dataUrl = $url;
+        $page->alsoViewedSlider->dataName = 'alsoViewedSlider';
         $page->alsoViewedSlider->hasCategories = false;
         foreach ($request->alsoViewedIdList as $productId) {
             /** @var Model\Product|null $productModel */
@@ -50,6 +57,8 @@ class RecommendedList {
 
         // similar slider
         $page->similarSlider = new Partial\ProductSlider();
+        $page->similarSlider->dataUrl = $url;
+        $page->similarSlider->dataName = 'similarSlider';
         $page->similarSlider->hasCategories = false;
         foreach ($request->similarIdList as $productId) {
             /** @var Model\Product|null $productModel */

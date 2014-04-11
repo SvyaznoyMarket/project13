@@ -127,6 +127,7 @@ class RecommendedList {
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Product\RecommendedList\Request();
+        $pageRequest->product = $product;
         $pageRequest->productsById = $productsById;
         $pageRequest->alsoBoughtIdList = $alsoBoughtIdList;
         $pageRequest->alsoViewedIdList = $alsoViewedIdList;
@@ -139,6 +140,8 @@ class RecommendedList {
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
-        return new Http\JsonResponse($page);
+        return new Http\JsonResponse([
+            'result' => $page,
+        ]);
     }
 }

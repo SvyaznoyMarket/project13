@@ -4,6 +4,10 @@ namespace EnterSite\Model\Partial {
     use EnterSite\Model\Partial;
 
     class ProductSlider {
+        /** @var string */
+        public $dataName;
+        /** @var string */
+        public $dataUrl;
         /** @var Partial\ProductCard[] */
         public $productCards = [];
         /** @var ProductSlider\Category[] */

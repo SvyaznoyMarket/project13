@@ -25,6 +25,7 @@ class DefaultLayout {
         $config = $this->getConfig();
         $helper = $this->getViewHelper();
         $router = $this->getRouter();
+
         $templateDir = $config->mustacheRenderer->templateDir;
 
         // стили
@@ -35,8 +36,8 @@ class DefaultLayout {
 
         // body[data-value]
         $page->bodyDataConfig = $helper->json([
-            'requestId'      => $config->requestId,
-            'user' => [
+            'requestId' => $config->requestId,
+            'user'      => [
                 'infoCookie' => $config->userToken->infoCookieName,
                 'infoUrl'    => $router->getUrlByRoute(new Routing\User\Get()),
             ],
@@ -47,13 +48,19 @@ class DefaultLayout {
 
         // шаблоны mustache
         foreach ([
-            ['id' => 'tpl-product-buyButton', 'file' => '/partial/cart/button.mustache'],
-            ['id' => 'tpl-product-buySpinner', 'file' => '/partial/cart/spinner.mustache'],
+            [
+                'id'   => 'tpl-product-buyButton',
+                'name' => 'partial/cart/button',
+            ],
+            [
+                'id'   => 'tpl-product-buySpinner',
+                'name' => 'partial/cart/spinner',
+            ],
         ] as $templateItem) {
             try {
                 $template = new Model\Page\DefaultLayout\Template();
                 $template->id = $templateItem['id'];
-                $template->content = file_get_contents($templateDir . $templateItem['file']);
+                $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
 
                 $page->templates[] = $template;
             } catch (\Exception $e) {

@@ -9,6 +9,8 @@
 
         // кнопка купить
         $body.on('click', '.js-buyButton', function(e) {
+            e.stopPropagation();
+
             var $el = $(e.currentTarget),
                 data = $el.data();
 
@@ -25,6 +27,8 @@
                 e.preventDefault();
             }
         }).on('changeProductQuantityData', '.js-buyButton', function(e, quantity) {
+            e.stopPropagation();
+
             var idSelector = $(e.currentTarget).data('idSelector'),
                 $el = $(idSelector),
                 dataValue = $el.data('value');
@@ -41,6 +45,8 @@
 
             dataValue.product.quantity = quantity;
         }).on('render', '.js-buyButton', function(e, templateData) {
+            e.stopPropagation();
+
             var idSelector = $(e.currentTarget).data('idSelector'),
                 $el = $(idSelector);
 
@@ -51,6 +57,8 @@
 
         // спиннер для кнопки купить
         $body.on('click', '.js-buySpinner .js-inc', function(e) {
+            e.stopPropagation();
+
             var $el = $(e.currentTarget),
                 $parent = $el.parent('.js-buySpinner'),
                 $target = $($parent.data('targetSelector')),
@@ -63,6 +71,8 @@
 
             $el.blur();
         }).on('click', '.js-buySpinner .js-dec', function(e) {
+            e.stopPropagation();
+
             var $el = $(e.currentTarget),
                 $parent = $el.parent('.js-buySpinner'),
                 $target = $($parent.data('targetSelector')),
@@ -75,6 +85,8 @@
 
             $el.blur();
         }).on('change keyup', '.js-buySpinner .js-value', function(e) {
+            e.stopPropagation();
+
             var $el = $(e.currentTarget),
                 $parent = $el.parent('.js-buySpinner'),
                 $target = $($parent.data('targetSelector'));
@@ -87,6 +99,8 @@
                 $parent.trigger('renderValue', $target.data('value').product);
             }
         }).on('renderValue', '.js-buySpinner', function(e, product) {
+            e.stopPropagation();
+
             var idSelector = $(e.currentTarget).data('idSelector'),
                 $el = $(idSelector);
 
@@ -94,6 +108,8 @@
 
             $el.find('.js-value').val(product.quantity);
         }).on('render', '.js-buySpinner', function(e, templateData) {
+            e.stopPropagation();
+
             var idSelector = $(e.currentTarget).data('idSelector'),
                 $el = $(idSelector);
 
@@ -102,6 +118,17 @@
             $el.replaceWith(mustache.render($('#tpl-product-buySpinner').html(), templateData));
         });
 
+        // слайдер
+        $body.on('render', '.js-productSlider', function(e, templateData) {
+            e.stopPropagation();
+
+            var $el = $(e.currentTarget),
+                $template = $('#tpl-product-slider');
+
+            console.info('render:js-productSlider', $el, templateData);
+
+            $el.replaceWith(mustache.render($template.html(), templateData, $template.data('partial')));
+        });
 
         // запрос инфы по пользователю
         var config = _.extend({
@@ -135,6 +162,26 @@
 
 
         // запрос слайдеров
+        var recommendedUrls = [];
+        $('.js-productSlider').each(function(i, el) {
+            var url = $(el).data('url');
+            if (!url) return; // continue
+
+            recommendedUrls.push(url);
+        });
+        recommendedUrls = _.uniq(recommendedUrls);
+
+        _.each(recommendedUrls, function(url) {
+            $.get(url).done(function(response) {
+                _.each(response.result, function(sliderData, sliderName) {
+                    var $el = $('.js-productSlider').filter('[data-name="' + sliderName + '"]');
+
+                    console.info('slider', sliderName, sliderData, $el);
+
+                    $el.trigger('render', sliderData);
+                })
+            });
+        })
     };
 
 
