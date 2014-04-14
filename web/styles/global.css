@@ -2046,6 +2046,7 @@ img[height="0"] {
   }
   .enterPrize .enterPrizeDesc__text {
     text-decoration: underline;
+    cursor: pointer;
   }
   .enterPrize .enterPrizeDesc a {
     color: #ffffff;
@@ -2103,6 +2104,7 @@ img[height="0"] {
     height: 236px;
     position: relative;
     margin-right: 26px;
+    z-index: 1;
   }
   .enterPrize__list__item:hover {
     z-index: 20;
@@ -2616,6 +2618,7 @@ img[height="0"] {
     padding: 0;
     float: right;
     display: table;
+    position: relative;
   }
   .tchiboNav__list .item {
     display: table-cell;
@@ -2685,7 +2688,7 @@ img[height="0"] {
     visibility: hidden;
     padding: 27px 0 10px 0;
     position: absolute;
-    top: 62px;
+    top: 17px;
     width: 850px;
     z-index: 0;
   }
@@ -3300,8 +3303,8 @@ img[height="0"] {
     height: 195px;
   }
   .specialBorderBox .bSlider__eInner {
-    padding: 0;
-    width: 960px;
+    padding: 0 5px;
+    width: 840px;
   }
   .specialBorderBox .bSlider__eBtn {
     background: none;
