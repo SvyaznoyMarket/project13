@@ -126,7 +126,12 @@ class RecommendedAction {
                 $compareFunc = function($a, $b){
                     return $a->getId() - $b->getId();
                 };
-                $productsCollection['alsoViewed'] = array_udiff($productsCollection['alsoViewed'], array_slice($productsCollection['similar'], 0, 5), $compareFunc);
+                $filterFunc = function($product) {
+                    return $product instanceof \Model\Product\BasicEntity;
+                };
+                $filteredAlsoViewed = array_filter($productsCollection['alsoViewed'], $filterFunc);
+                $filteredSimilar = array_filter($productsCollection['similar'], $filterFunc);
+                $productsCollection['alsoViewed'] = array_udiff($filteredAlsoViewed, array_slice($filteredSimilar, 0, 5), $compareFunc);
             }
 
             // подготавливаем контент для всех типов рекомендаций
