@@ -71,8 +71,8 @@
                                 <input class="customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
 
                                 <label class="customLabel" for="buyprice">
-                                    {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} p</span>{{/product.shownOldPrice}}
-                                    <span class="nowPrice">{{product.shownPrice}} p</span>
+                                    {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
+                                    <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
                                 </label>
                             </div>
                             <!--/ Купить по полной цене -->
@@ -82,7 +82,7 @@
                                 <input class="customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
 
                                 <label class="customLabel" for="creditinput">
-                                    <span class="creditPrice">В кредит от <strong>2 232</strong> р в месяц</span>
+                                    <span class="creditPrice">В кредит от <strong>2 232</strong> <span class="rubl">p</span> в месяц</span>
                                 </label>
                             </div>
                             <!--/ Купить в кредит -->
