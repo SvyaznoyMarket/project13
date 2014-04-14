@@ -188,6 +188,7 @@ class IndexAction {
         $mainProduct = null;
         $line = null;
         $parts = [];
+        $kitProducts = [];
 
         if ($productLine instanceof \Model\Product\Line\Entity ) {
             $productRepository = \RepositoryManager::product();
@@ -201,7 +202,7 @@ class IndexAction {
 
             // Запрашиваю составные части набора
             if ($mainProduct && (bool)$mainProduct->getKit() ) {
-                $productRepository->setEntityClass('\Model\Product\CompactEntity');
+                $productRepository->setEntityClass('\Model\Product\Entity');
                 $partId = [];
                 foreach ($mainProduct->getKit() as $part) {
                     $partId[] = $part->getId();
@@ -212,6 +213,11 @@ class IndexAction {
                     \App::exception()->add($e);
                     \App::logger()->error($e);
                 }
+            }
+
+            // Данные для отображения набора продуктов (только если главный продукт набора - текущий продукт)
+            if ((bool)$mainProduct && $product->getId() == $mainProduct->getId()) {
+                $kitProducts = $this->prepareKit($parts, $mainProduct, $region);
             }
         }
 
@@ -360,6 +366,7 @@ class IndexAction {
         $page->setParam('accessories', $accessories);
         $page->setParam('accessoryCategory', $accessoryCategory);
         $page->setParam('kit', $kit);
+        $page->setParam('kitProducts', $kitProducts);
         $page->setParam('additionalData', $additionalData);
         $page->setParam('creditData', $creditData);
         $page->setParam('shopStates', $shopStates);
@@ -420,6 +427,57 @@ class IndexAction {
         );
         $result['creditIsAllowed'] = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
         $result['creditData'] = json_encode($dataForCredit);
+
+        return $result;
+    }
+
+    /**
+     * Подготовка данных для набора продуктов
+     * @var array $products
+     */
+    private function prepareKit($products, $mainProduct, $region) {
+        $result = [];
+
+        foreach ($products as $key => $product) {
+            $id = $product->getId();
+            $result[$id]['product'] = $product;
+            $result[$id]['price'] = $product->getPrice();
+            $result[$id]['Высота'] = '';
+            $result[$id]['Ширина'] = '';
+            $result[$id]['Глубина'] = '';
+
+            // добавляем размеры
+            if ($product->getProperty()) {
+                foreach ($product->getProperty() as $property) {
+                    if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
+                        $result[$id][$property->getName()] = $property->getValue();
+                    }
+                }
+            }
+        }
+
+        foreach ($mainProduct->getKit() as $kitPart) {
+            if (isset($result[$kitPart->getId()])) $result[$kitPart->getId()]['count'] = $kitPart->getCount();
+        }
+
+        $deliveryItems = [];
+        foreach ($result as $item) {
+            $deliveryItems[] = array(
+                'id'    => $item['product']->getId(),
+                'quantity' => $item['count']
+            );
+        }
+
+        $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData($deliveryItems, $region->getId());
+
+        if ($deliveryData['success']) {
+            foreach ($deliveryData['product'] as $product) {
+                $id = $product['id'];
+                $date = $product['delivery'][0]['date']['value'];
+                $result[$id]['deliveryDate'] = $date;
+            }
+
+        }
 
         return $result;
     }
