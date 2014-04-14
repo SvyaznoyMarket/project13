@@ -102,7 +102,7 @@ $is_showed = [];
     <div class="clear"></div>
 
     <? if ( $mainProduct && $mainProduct->getId() == $product->getId() ): // если это главный товар набора ?>
-        <?= $helper->render('product/__baseKit',['products' => $kitProducts]) ?>
+        <?= $helper->render('product/__baseKit',['products' => $kitProducts, 'mainProduct' => $product]) ?>
 
     <? elseif ( $mainProduct && count($mainProduct->getKit()) ): ?>
         <?= $helper->render('product/__slider', [
