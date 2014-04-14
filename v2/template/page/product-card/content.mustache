@@ -272,45 +272,67 @@
     </div>
     {{/product.reviewBlock}}
 
-    <div class="contentBox960" id="accessoriesTab">
-        <div class="tabTitle clearfix">
-            <div class="tabTitle__text">Аксессуары</div>
+    <div class="js-container" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}}>
+        <div class="contentBox960" id="accessoriesTab">
+            <div class="tabTitle clearfix">
+                <div class="tabTitle__text">Аксессуары</div>
+            </div>
+        </div>
+
+        <div class="contentBox940">
+            <!-- Таб - Аксессуары -->
+            {{#product.accessorySlider}}
+                {{>partial/product-slider/default}}
+            {{/product.accessorySlider}}
+            <!--/ Таб - Аксессуары -->
         </div>
     </div>
 
-    <div class="contentBox940">
-        <!-- Таб - Аксессуары -->
-        {{#product.accessorySlider}}
-            {{>partial/product-slider/default}}
-        {{/product.accessorySlider}}
-        <!--/ Таб - Аксессуары -->
-    </div>
+    <div class="js-container" style="display: block;">
+        <div class="contentBox960" id="alsoTab">
+            <div class="tabTitle clearfix">
+                <div class="tabTitle__text">С этим товаром покупают</div>
+            </div>
+        </div>
 
-    <div class="contentBox960" id="alsoTab">
-        <div class="tabTitle clearfix">
-            <div class="tabTitle__text">С этим товаром покупают</div>
+        <div class="contentBox940">
+            <!-- Таб - С этим товаром покупают -->
+            {{#product.alsoBoughtSlider}}
+                {{>partial/product-slider/default}}
+            {{/product.alsoBoughtSlider}}
+            <!--/ Таб - С этим товаром покупают -->
         </div>
     </div>
 
-    <div class="contentBox940">
-        <!-- Таб - С этим товаром покупают -->
-        {{#product.alsoBoughtSlider}}
-            {{>partial/product-slider/default}}
-        {{/product.alsoBoughtSlider}}
-        <!--/ Таб - С этим товаром покупают -->
-    </div>
+    <div class="js-container" style="display: block;">
+        <div class="contentBox960" id="alsoTab">
+            <div class="tabTitle clearfix">
+                <div class="tabTitle__text">Похожие товары</div>
+            </div>
+        </div>
 
-    <div class="contentBox960" id="alsoTab">
-        <div class="tabTitle clearfix">
-            <div class="tabTitle__text">С этим товаром также смотрят</div>
+        <div class="contentBox940">
+            <!-- Таб - С этим товаром покупают -->
+            {{#product.similarSlider}}
+                {{>partial/product-slider/default}}
+            {{/product.similarSlider}}
+            <!--/ Таб - С этим товаром покупают -->
         </div>
     </div>
 
-    <div class="contentBox940">
-        <!-- Таб - С этим товаром покупают -->
-        {{#product.alsoViewedSlider}}
-            {{>partial/product-slider/default}}
-        {{/product.alsoViewedSlider}}
-        <!--/ Таб - С этим товаром покупают -->
+    <div class="js-container" style="display: block;">
+        <div class="contentBox960" id="alsoTab">
+            <div class="tabTitle clearfix">
+                <div class="tabTitle__text">С этим товаром также смотрят</div>
+            </div>
+        </div>
+
+        <div class="contentBox940">
+            <!-- Таб - С этим товаром покупают -->
+            {{#product.alsoViewedSlider}}
+                {{>partial/product-slider/default}}
+            {{/product.alsoViewedSlider}}
+            <!--/ Таб - С этим товаром покупают -->
+        </div>
     </div>
 </div><!--/ Контент -->

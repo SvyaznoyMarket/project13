@@ -41,6 +41,7 @@ class RecommendedList {
 
             $page->alsoBoughtSlider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
         }
+        $page->alsoBoughtSlider->count = count($page->alsoBoughtSlider->productCards);
 
         // alsoViewed slider
         $page->alsoViewedSlider = new Partial\ProductSlider();
@@ -54,6 +55,7 @@ class RecommendedList {
 
             $page->alsoViewedSlider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
         }
+        $page->alsoViewedSlider->count = count($page->alsoViewedSlider->productCards);
 
         // similar slider
         $page->similarSlider = new Partial\ProductSlider();
@@ -67,5 +69,6 @@ class RecommendedList {
 
             $page->similarSlider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
         }
+        $page->similarSlider->count = count($page->similarSlider->productCards);
     }
 }

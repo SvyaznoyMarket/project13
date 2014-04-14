@@ -1,38 +1,40 @@
-<div class="js-productSlider sliderCat clearfix" data-url="{{&dataUrl}}" data-name="{{&dataName}}">
+<div class="js-container">
+    <div class="js-productSlider sliderCat clearfix" data-url="{{&dataUrl}}" data-name="{{&dataName}}">
 
-    {{#hasCategories}}
-    <div class="sliderCatWrap">
-        <ul class="sliderCatList">
-        {{#categories}}
-            <li class="sliderCatList__item" data-id="{{id}}">{{name}}<li>
-        {{/categories}}
-        </ul>
-    </div>
-    {{/hasCategories}}
-
-    <div class="sliderBox">
-        <div class="sliderBox__btnLeft"></div>
-
-        <div class="sliderBox__inner">
-            <ul class="sliderBoxItems">
-                {{#productCards}}
-                    <li class="sliderBoxItems__item" data-category="{{categoryId}}">
-                        <a class="productDesc" href="{{url}}">
-                            <img class="productDesc__img" src="{{image}}" />
-                            <span class="productDesc__name">{{name}} </span>
-                        </a>
-                        <div class="productPrice">{{shownPrice}} р</div>
-
-                        {{#cartButton}}
-                            {{>partial/cart/button}}
-                        {{/cartButton}}
-                    </li>
-                {{/productCards}}
+        {{#hasCategories}}
+        <div class="sliderCatWrap">
+            <ul class="sliderCatList">
+            {{#categories}}
+                <li class="sliderCatList__item" data-id="{{id}}">{{name}}<li>
+            {{/categories}}
             </ul>
         </div>
+        {{/hasCategories}}
 
-        <div class="sliderBox__trans"></div>
+        <div class="sliderBox">
+            <div class="sliderBox__btnLeft"></div>
 
-        <div class="sliderBox__btnRight"></div>
+            <div class="sliderBox__inner">
+                <ul class="sliderBoxItems">
+                    {{#productCards}}
+                        <li class="sliderBoxItems__item" data-category="{{categoryId}}">
+                            <a class="productDesc" href="{{url}}">
+                                <img class="productDesc__img" src="{{image}}" />
+                                <span class="productDesc__name">{{name}} </span>
+                            </a>
+                            <div class="productPrice">{{shownPrice}} р</div>
+
+                            {{#cartButton}}
+                                {{>partial/cart/button}}
+                            {{/cartButton}}
+                        </li>
+                    {{/productCards}}
+                </ul>
+            </div>
+
+            <div class="sliderBox__trans"></div>
+
+            <div class="sliderBox__btnRight"></div>
+        </div>
     </div>
 </div>

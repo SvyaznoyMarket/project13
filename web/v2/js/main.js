@@ -149,6 +149,20 @@
             $el.replaceWith(mustache.render($template.html(), templateData, $template.data('partial')));
         });
 
+        // контейнер слайдера
+        $body.on('render', '.js-productSlider', function(e, templateData) {
+            e.stopPropagation();
+
+            var $el = $(e.currentTarget),
+                $parent = $el.parents('.js-container');
+
+            console.info('render:js-productSlider parent', $parent, templateData);
+
+            if (templateData.count > 0) {
+                $parent.show();
+            }
+        });
+
         // запрос инфы по пользователю
         var config = _.extend({
                 user: {
