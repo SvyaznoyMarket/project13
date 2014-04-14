@@ -157,5 +157,6 @@ return function (
     </div>
     </div>
 
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
 
 <? }; ?>
