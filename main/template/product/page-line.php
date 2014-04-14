@@ -38,7 +38,7 @@ $helper = new \Helper\TemplateHelper();
         <div class="packageSet">
             <div class="packageSetHead cleared">
                 <span class="packageSetHead_title">Базовая комплектация набора</span>
-                <span class="packageSetHead_change"><span class="packageSetHead_changeText">Изменить комплектацию</span></span>
+                <span class="packageSetHead_change"><span class="packageSetHead_changeText jsChangePackageSet">Изменить комплектацию</span></span>
             </div>
 
             <!-- элемент комплекта -->
@@ -233,3 +233,8 @@ $helper = new \Helper\TemplateHelper();
     <? endif ?>
 </div>
 
+<div class="popup jsPackageSetPopup">
+    <a href="" class="close"></a>
+    <div class="popuptitle">ЮНабор мебели для спальни</div>
+
+</div>
