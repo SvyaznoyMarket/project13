@@ -11,7 +11,7 @@ return function(
 
 
 ?>
-    <? if ($rootCategoryInMenu && 0 == $rootCategoryInMenu->getProductCount()): ?>
+    <? if ($rootCategoryInMenu && "tchibo" === $rootCategoryInMenu->getToken() && 0 == $rootCategoryInMenu->getProductCount()): ?>
         <div>К сожалению, товары Tchibo недоступны к покупке в вашем городе <button>Где купить</button></div>
     <? endif ?>
 
