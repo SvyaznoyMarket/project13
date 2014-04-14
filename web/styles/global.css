@@ -2046,6 +2046,7 @@ img[height="0"] {
   }
   .enterPrize .enterPrizeDesc__text {
     text-decoration: underline;
+    cursor: pointer;
   }
   .enterPrize .enterPrizeDesc a {
     color: #ffffff;
