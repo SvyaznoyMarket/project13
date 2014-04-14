@@ -29,6 +29,11 @@ if ($product) {
     <? endif ?>
 
     <? if ($product->getIsBuyable()): ?>
-        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить ?>
+        <?= $helper->render('cart/__button-product', [
+            'product' => $product,
+            'class' => 'btnBuy__eLink',
+            'value' => 'Купить',
+            'onClick' => $addToCartJS ? $addToCartJS : null,
+        ]) // Кнопка купить ?>
     <? endif ?>
 </div>

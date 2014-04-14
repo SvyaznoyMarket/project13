@@ -75,6 +75,8 @@ class BasicRecommendedAction {
                 'content' => \App::closureTemplating()->render('product/__slider', [
                     'title' => $this->actionTitle,
                     'products' => $products,
+                    'isRetailrocketRecommendation' => true,
+                    'retailrocketMethod' => $this->retailrocketMethodName,
                 ]),
             ];
 
@@ -325,6 +327,11 @@ class BasicRecommendedAction {
         if ('upsale' == $recommName) {
             //$link = $link . (false === strpos($link, '?') ? '?' : '&') . 'from=cart_rec';
             $link = $link . '&from=cart_rec';
+
+            // если retailrocket, то передаем method
+            if ('retailrocket' === $senderName && !empty($params['method'])) {
+                $link = $link . '&rrMethod=' . $params['method'];
+            }
         }
 
         return $link;
