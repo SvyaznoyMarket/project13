@@ -2,6 +2,7 @@ $(function() {
 
   var curSlide = 0,
       countItem = 0,
+      body = $('body'),
       slideWrap = $('.slidesItems'),
       slideWrapWidth = $('.slidesItems').width(),
       slideList = $('.slidesItemsList'),
@@ -13,6 +14,7 @@ $(function() {
       btnSlidesRight = $('.jsBtnSlidesRight');
   // end vars
   
+  // базовые установки слайдера
   slideWrap.css({'background' : 'url("/v2/css/modules/mainStyles/img/ajaxnoti.gif") no-repeat 50% 50%'});
   slideWrapItem.css({'display' : 'inline-block'});
   slideList.css({'display' : 'none'});
@@ -26,6 +28,7 @@ $(function() {
         var slideList = $('.slidesItemsList'),
             slideWrap = $('.slidesItems'),
             slideWrapHeight = 400;
+        // end vars 
         
         slideWrapWidth = $('.slidesItems').width();   
 
@@ -33,10 +36,19 @@ $(function() {
             slideWrapHeight = slideWrapWidth;
         };
 
+        // ширина блока слайдера в зависимости от ширины окна
+        if ( body.width() <= 900 ) {
+          slideWrap.css({width: body.width()})
+        }
+        else {
+          slideWrap.css({width: 350})
+        }
+
         slideWrap.css({'height' : slideWrapHeight, 'background' : 'none'});
 
         countItem = 0;
 
+        // установка размеров элементам слайдера
         slideWrapItem.each(function() {
           countItem++;
 
@@ -47,6 +59,7 @@ $(function() {
           slideImg.css({'height' : slideWrapHeight});
         });
 
+        //скрываем кнопки и пагинатор, если слайдер имеет один элемент
         if ( countItem <= 1 ) {
             btnSlidesLeft.hide();
             btnSlidesRight.hide();
