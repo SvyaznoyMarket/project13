@@ -1,3 +1,4 @@
+-  js: tpl.render('#tpl-product-buySpinner', data, partials) + кеширование: template.html(), mustache.compile
 -+ env, debug
 +  простой маршрутизатор для EnterPartner; маршруты типа EnterSite\Partner\CityAds\GetOrderComplete
 -? сделать view-классы, которые работают с рендером
