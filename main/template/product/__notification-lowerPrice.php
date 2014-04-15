@@ -25,7 +25,7 @@ return function(
             <div class="uEntered">
                 <? if (empty($uEmail)): ?>
                     <div class="bLowPriceNotiferPopup__eTitle">
-                        Для этого укажите, пожалуйста, Ваш емейл в <a href="/private" title="Перейти в личный кабинет">личном кабинете</a>.
+                        Пожалуйста, укажите ваш e-mail в <a href="/private" title="Перейти в личный кабинет">личном кабинете</a>.
                     </div>
                 <? else: ?>
                     <div class="bLowPriceNotiferPopup__eTitle">
