@@ -5,22 +5,22 @@
         <div class="sliderCatWrap">
             <ul class="sliderCatList">
             {{#categories}}
-                <li class="sliderCatList__item" data-id="{{id}}">{{name}}<li>
+                <li class="sliderCatList_item" data-id="{{id}}">{{name}}<li>
             {{/categories}}
             </ul>
         </div>
         {{/hasCategories}}
 
         <div class="sliderBox">
-            <div class="sliderBox__btnLeft"></div>
+            <div class="sliderBox_btn sliderBox_btn__left"></div>
 
-            <div class="sliderBox__inner">
+            <div class="sliderBox_inner">
                 <ul class="sliderBoxItems">
                     {{#productCards}}
-                        <li class="sliderBoxItems__item" data-category="{{categoryId}}">
+                        <li class="sliderBoxItems_item" data-category="{{categoryId}}">
                             <a class="productDesc" href="{{url}}">
-                                <img class="productDesc__img" src="{{image}}" />
-                                <span class="productDesc__name">{{name}} </span>
+                                <img class="productDesc_img" src="{{image}}" />
+                                <span class="productDesc_name">{{name}} </span>
                             </a>
                             <div class="productPrice">{{shownPrice}} <span class="rubl">p</span></div>
 
@@ -32,9 +32,9 @@
                 </ul>
             </div>
 
-            <div class="sliderBox__trans"></div>
+            <div class="sliderBox_trans"></div>
 
-            <div class="sliderBox__btnRight"></div>
+            <div class="sliderBox_btn sliderBox_btn__right"></div>
         </div>
     </div>
 </div>

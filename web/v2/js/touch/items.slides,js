@@ -1,0 +1,36 @@
+$(function(){
+  var body = $('body'),
+      slidesWrap = $('.sliderBox'),
+      slidesList = $('.sliderBoxItems'),
+      slidesListItem = slidesList.find('.sliderBoxItems_item');
+  // end of vars
+  
+  var 
+  /*
+  Ресайз сладйдера
+   */
+  resizeItemSlides = function resizeItemSlides() {
+    var slidesItems = 0;
+
+    var body = $('body'),
+      slidesWrap = $('.sliderBox'),
+      slidesList = $('.sliderBoxItems'),
+      slidesListItem = slidesList.find('.sliderBoxItems_item');
+  // end of vars
+
+    slidesListItem.each(
+      function () {
+        slidesItems++;
+
+        slidesListItem.css({'width' : slidesWrap.width()/2 - 42})
+      }
+    ) 
+
+    console.log (slidesItems);
+
+    slidesList.css({'width' : slidesItems*slidesListItem.outerWidth()});
+    
+  };
+
+  $(window).on('load resize', resizeItemSlides);
+});
