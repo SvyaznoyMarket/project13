@@ -1945,7 +1945,7 @@ ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
 	function buildGoogleSmartPixelImgUrl() {
 		var url = "";
 		if ( google_conversion_id && google_conversion_label ) {
-			url = "//www.googleadservices.com/pagead/conversion/" + google_conversion_id + "/?label=" + google_conversion_label + "&amp;guid=ON&amp;script=0";
+			url = "//www.googleadservices.com/pagead/conversion/" + google_conversion_id + "/?label=" + google_conversion_label + "&guid=ON&script=0";
 		}
 		if ( url.length > 0 && google_custom_params ) {
 			var data = "";
@@ -1958,7 +1958,7 @@ ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
 				}
 			}
 		}
-		if ( data.length > 0 ) url = url + "&amp;data=" + data;
+		if ( data.length > 0 ) url = url + "&data=" + data;
 		return url;
 	}
 
