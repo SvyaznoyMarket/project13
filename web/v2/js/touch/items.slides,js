@@ -1,8 +1,12 @@
 $(function(){
   var body = $('body'),
+      bodyWidth = body.width(),
       slidesWrap = $('.sliderBox'),
       slidesList = $('.sliderBoxItems'),
-      slidesListItem = slidesList.find('.sliderBoxItems_item');
+      slidesListItem = slidesList.find('.sliderBoxItems_item'),
+
+      btnNext = slidesWrap.find('.sliderBox_btn__right'),
+      btnPrev = slidesWrap.find('.sliderBox_btn__left');
   // end of vars
   
   var 
@@ -10,27 +14,59 @@ $(function(){
   Ресайз сладйдера
    */
   resizeItemSlides = function resizeItemSlides() {
-    var slidesItems = 0;
-
-    var body = $('body'),
-      slidesWrap = $('.sliderBox'),
-      slidesList = $('.sliderBoxItems'),
-      slidesListItem = slidesList.find('.sliderBoxItems_item');
-  // end of vars
+    var slidesCount = 0,
+        slidesShadow = $('.sliderBox_trans'),
+        bodyWidth = body.width(),
+        slidesWrapWidth = slidesWrap.width(),
+        fitCount = 0;
 
     slidesListItem.each(
       function () {
-        slidesItems++;
-
-        slidesListItem.css({'width' : slidesWrap.width()/2 - 42})
+        slidesCount++;
       }
-    ) 
+    ); 
 
-    console.log (slidesItems);
-
-    slidesList.css({'width' : slidesItems*slidesListItem.outerWidth()});
+    if ( (bodyWidth < 700) && (bodyWidth > 400) ) {
+      slidesListItem.css({'padding' : '0 11px', 'width' : parseInt(slidesWrap.width()/3 - 22) });
+      slidesShadow.hide();
+    }
+    else if ( bodyWidth < 400 ) {
+      slidesListItem.css({'padding' : '0 41px', 'width' : parseInt(slidesWrap.width() - 82) });
+      slidesShadow.hide();
+    }
+    else {
+      slidesListItem.css({'padding' : '0 21px', 'width' : 190});
+      slidesShadow.show();
+    }
     
+    slidesItemWidth = slidesListItem.outerWidth();
+
+    sliderW = slidesCount*slidesItemWidth;
+
+    visibleWidth = slidesWrapWidth;
+
+    fitCount = Math.floor( visibleWidth / slidesItemWidth );
+
+    slidesList.css({'width' : sliderW, 'left' : 0});
+
+    console.log(visibleWidth,  fitCount , slidesItemWidth);
+    console.log (slidesCount);
+  },
+
+  nextRespSlide = function nextRespSlide() {
+    var slidesWrapWidth = slidesWrap.width();
+
+    slidesList.css({'left' : -slidesWrapWidth});
+
+    console.log(fitCount);
+
+  },
+
+
+  prevRespSlide = function prevRespSlide() {
+
   };
 
   $(window).on('load resize', resizeItemSlides);
+  btnNext.on('click', nextRespSlide);
 });

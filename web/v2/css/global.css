@@ -1840,6 +1840,7 @@ body.noScroll {
   position: relative;
   overflow: hidden;
   margin: 0 0 60px;
+  height: 200px;
 }
 .sliderBox_btn {
   width: 20px;
@@ -1860,6 +1861,7 @@ body.noScroll {
 .sliderBox_inner {
   overflow: hidden;
   position: relative;
+  height: 200px;
 }
 .sliderBox_trans {
   background: url("modules/sliderBox/img/trans.png") no-repeat 100% 0;
@@ -1872,6 +1874,9 @@ body.noScroll {
 .sliderBox .sliderBoxItems {
   width: 10000px;
   font-size: 0;
+  position: absolute;
+  height: 200px;
+  left: 0;
 }
 .sliderBox .sliderBoxItems_item {
   display: inline-block;
