@@ -75,7 +75,7 @@
         });
 
         // спиннер для кнопки купить
-        $body.on('click', '.js-buySpinner .js-inc', function(e) {
+        $body.on('click', '.js-buySpinner-inc', function(e) {
             e.stopPropagation();
 
             var $el = $(e.currentTarget),
@@ -83,13 +83,13 @@
                 $target = $($parent.data('targetSelector')),
                 targetDataValue = $target.data('value');
 
-            console.info('click:js-buySpinner js-inc', $el, $target);
+            console.info('click:js-buySpinner-inc', $el, $target);
 
             $target.trigger('changeProductQuantityData', targetDataValue.product.quantity + 1);
             $parent.trigger('renderValue', targetDataValue.product);
 
             $el.blur();
-        }).on('click', '.js-buySpinner .js-dec', function(e) {
+        }).on('click', '.js-buySpinner-dec', function(e) {
             e.stopPropagation();
 
             var $el = $(e.currentTarget),
@@ -97,20 +97,20 @@
                 $target = $($parent.data('targetSelector')),
                 targetDataValue = $target.data('value');
 
-            console.info('click:js-buySpinner js-dec', $el, $target);
+            console.info('click:js-buySpinner-dec', $el, $target);
 
             $target.trigger('changeProductQuantityData', targetDataValue.product.quantity - 1);
             $parent.trigger('renderValue', $target.data('value').product);
 
             $el.blur();
-        }).on('change keyup', '.js-buySpinner .js-value', function(e) {
+        }).on('change keyup', '.js-buySpinner-value', function(e) {
             e.stopPropagation();
 
             var $el = $(e.currentTarget),
                 $parent = $el.parent('.js-buySpinner'),
                 $target = $($parent.data('targetSelector'));
 
-            console.info('change:js-buySpinner js-value', $el, $target);
+            console.info('change:js-buySpinner-value', $el, $target);
 
             var value = $el.val();
             if ('' != value) {
@@ -125,7 +125,7 @@
 
             console.info('render:js-buySpinner', $el, product);
 
-            $el.find('.js-value').val(product.quantity);
+            $el.find('.js-buySpinner-value').val(product.quantity);
         }).on('render', '.js-buySpinner', function(e, templateData) {
             e.stopPropagation();
 
