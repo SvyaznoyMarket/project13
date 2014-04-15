@@ -239,7 +239,7 @@ class ProductAction {
                     'old_price'     => $cart->getOriginalSum(),
                     'link'          => \App::router()->generate('order'),
                 ],
-                'product'  => reset($productsInfo),
+                'product'  => $productsInfo,
             ];
 
 
