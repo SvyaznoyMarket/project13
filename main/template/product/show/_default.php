@@ -36,6 +36,7 @@ foreach ($product->getGroupedProperties() as $group) {
 }
 
 $is_showed = [];
+$isKitPage = $mainProduct && $mainProduct->getId() == $product->getId() ? true : false;
 
 ?>
 
@@ -101,7 +102,7 @@ $is_showed = [];
 
     <div class="clear"></div>
 
-    <? if ( $mainProduct && $mainProduct->getId() == $product->getId() ): // если это главный товар набора ?>
+    <? if ( $isKitPage ): // если это главный товар набора ?>
         <?= $helper->render('product/__baseKit',['products' => $kitProducts, 'mainProduct' => $product]) ?>
 
     <? elseif ( $mainProduct && count($mainProduct->getKit()) ): ?>
@@ -199,7 +200,11 @@ $is_showed = [];
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
         <? endif ?>
 
-        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+        <? if ($isKitPage) : ?>
+            <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+        <? else : ?>
+            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+        <? endif ?>
 
         <? if (!$hasFurnitureConstructor): ?>
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
