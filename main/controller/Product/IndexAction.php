@@ -209,6 +209,12 @@ class IndexAction {
                 }
                 try {
                     $parts = $productRepository->getCollectionById($partId);
+                    $restPartsIds = array_diff($line->getProductId(), $partId);
+                    if (count($restPartsIds) > 0) {
+                        $restParts = $productRepository->getCollectionById($restPartsIds);
+                    } else {
+                        $restParts = [];
+                    }
                 } catch (\Exception $e) {
                     \App::exception()->add($e);
                     \App::logger()->error($e);
@@ -217,7 +223,7 @@ class IndexAction {
 
             // Данные для отображения набора продуктов (только если главный продукт набора - текущий продукт)
             if ((bool)$mainProduct && $product->getId() == $mainProduct->getId()) {
-                $kitProducts = $this->prepareKit($parts, $mainProduct, $region);
+                $kitProducts = $this->prepareKit($parts, $restParts, $mainProduct, $region);
             }
         }
 
@@ -434,26 +440,38 @@ class IndexAction {
     /**
      * Подготовка данных для набора продуктов
      * @var array $products
+     * @var array $restProducts
+     * @var \Model\Product\Enitity $mainProduct
+     * @var \Model\Region\Entity $region
      */
-    private function prepareKit($products, $mainProduct, $region) {
+    private function prepareKit($products, $restProducts, $mainProduct, $region) {
         $result = [];
 
-        foreach ($products as $key => $product) {
-            $id = $product->getId();
-            $result[$id]['product'] = $product;
-            $result[$id]['price'] = $product->getPrice();
-            $result[$id]['Высота'] = '';
-            $result[$id]['Ширина'] = '';
-            $result[$id]['Глубина'] = '';
+        foreach (array('baseLine' => $products, 'restLine' => $restProducts) as $lineName => $products) {
 
-            // добавляем размеры
-            if ($product->getProperty()) {
-                foreach ($product->getProperty() as $property) {
-                    if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
-                        $result[$id][$property->getName()] = $property->getValue();
+            foreach ($products as $key => $product) {
+                $id = $product->getId();
+                $result[$id]['product'] = $product;
+                $result[$id]['price'] = $product->getPrice();
+                $result[$id]['lineName'] = $lineName;
+                $result[$id]['Высота'] = '';
+                $result[$id]['Ширина'] = '';
+                $result[$id]['Глубина'] = '';
+
+                // добавляем размеры
+                if ($product->getProperty()) {
+                    foreach ($product->getProperty() as $property) {
+                        if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
+                            $result[$id][$property->getName()] = $property->getValue();
+                        }
                     }
                 }
             }
+
+        }
+
+        foreach ($result as &$value) {
+            $value['count'] = 1;
         }
 
         foreach ($mainProduct->getKit() as $kitPart) {
@@ -464,7 +482,7 @@ class IndexAction {
         foreach ($result as $item) {
             $deliveryItems[] = array(
                 'id'    => $item['product']->getId(),
-                'quantity' => $item['count']
+                'quantity' => isset($item['count']) ? $item['count'] : 1
             );
         }
 

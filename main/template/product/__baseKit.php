@@ -17,7 +17,10 @@ return function (
         <span class="packageSetHead_change"><span class="packageSetHead_changeText jsChangePackageSet">Изменить комплектацию</span></span>
     </div>
 
-    <?php foreach ($products as $product) : ?>
+    <? foreach ($products as $product) : ?>
+
+        <? if ($product['lineName'] == 'baseLine') : ?>
+
         <div class="packageSetBodyItem">
             <a class="packageSetBodyItem_img" href="<?= $product['product']->getLink() ?>"><img src="<?= $product['product']->getImageUrl() ?>" /></a><!--/ изображение товара -->
 
@@ -61,7 +64,10 @@ return function (
 
             <div class="packageSetBodyItem_qnt"><?= $product['count'] ?> шт.</div><!--/ количество в наборе -->
         </div><!--/ элемент комплекта -->
-    <?php endforeach; ?>
+
+        <? endif; ?>
+
+    <? endforeach; ?>
     <!-- элемент комплекта -->
 
 </div>
@@ -91,11 +97,11 @@ return function (
     <? foreach ($products as $product) : ?>
 
     <!-- элемент комплекта -->
-    <div class="packageSetBodyItem">
+    <div class="packageSetBodyItem <?= $product['lineName'] == 'baseLine' ? '' : 'mDisabled'?>">
         <a class="packageSetBodyItem_img" href="<?= $product['product']->getLink() ?>"><img src="<?= $product['product']->getImageUrl() ?>" /></a><!--/ изображение товара -->
 
         <div class="packageSetBodyItem_desc">
-            <div class="name"><a class="<?= $product['product']->getLink() ?>" href=""><?= $product['product']->getName() ?></a></div><!--/ название товара -->
+            <div class="name"><a class="" href="<?= $product['product']->getLink() ?>"><?= $product['product']->getName() ?></a></div><!--/ название товара -->
 
             <!-- размеры товара -->
             <div class="column dimantion">
@@ -128,7 +134,7 @@ return function (
 
         <div class="bCountSection clearfix">
             <button class="bCountSection__eM">-</button>
-            <input type="text" value="<?= $product['count'] ?>" class="bCountSection__eNum">
+            <input type="text" value="<?= $product['lineName'] == 'baseLine' ? $product['count'] : '0' ?>" class="bCountSection__eNum">
             <button class="bCountSection__eP">+</button>
             <span>шт.</span>
         </div>
