@@ -14,6 +14,9 @@
 		display: inline-block;
 		vertical-align: top;
 
+		*display: inline;
+		zoom: 1;
+
 		.packageSetHead_title {
 			font-size: 20px;
 		}
@@ -51,6 +54,9 @@
 		    margin: 30px 0 10px;
 		    padding-left: 0;
 		    width: 115px;
+
+		    *display: inline;
+			zoom: 1;
 		}
 	}
 }
@@ -66,10 +72,9 @@
 		display: inline-block;
 		vertical-align: top;
 
-		font-size: 16px;
+		width: 300px;
 
-		*display: inline;
-		zoom: 1;
+		font-size: 16px;
 	}
 
 	&_change {
@@ -97,6 +102,8 @@
 	padding: 10px 0;
 	height: 80px;
 
+	font-size: 0;
+
 	&:last-child {
 		border: none;
 	}
@@ -114,6 +121,10 @@
 		.packageSetBodyItem_price {
 			text-decoration: line-through;
 		}
+	}
+
+	a, div {
+		font-size: 12px;
 	}
 
 	&_img {
@@ -224,6 +235,9 @@
 
 	width: 300px;
 	margin: 0 10px 0 0;
+
+	*display: inline;
+	zoom: 1;
 
 	img {
 		width: 300px;

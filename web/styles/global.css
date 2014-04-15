@@ -3340,6 +3340,8 @@ img[height="0"] {
     margin: 0 0 15px;
     display: inline-block;
     vertical-align: top;
+    *display: inline;
+    zoom: 1;
   }
   .packageSet.mPackageSetEdit .packageSetHead_title {
     font-size: 20px;
@@ -3368,6 +3370,8 @@ img[height="0"] {
     margin: 30px 0 10px;
     padding-left: 0;
     width: 115px;
+    *display: inline;
+    zoom: 1;
   }
   .packageSetHead {
     font-size: 14px;
@@ -3377,9 +3381,8 @@ img[height="0"] {
   .packageSetHead_title {
     display: inline-block;
     vertical-align: top;
+    width: 300px;
     font-size: 16px;
-    *display: inline;
-    zoom: 1;
   }
   .packageSetHead_change {
     float: right;
@@ -3394,6 +3397,7 @@ img[height="0"] {
     border-bottom: 1px solid #e6e6e6;
     padding: 10px 0;
     height: 80px;
+    font-size: 0;
   }
   .packageSetBodyItem:last-child {
     border: none;
@@ -3417,6 +3421,10 @@ img[height="0"] {
   }
   .packageSetBodyItem.mDisabled .packageSetBodyItem_price {
     text-decoration: line-through;
+  }
+  .packageSetBodyItem a,
+  .packageSetBodyItem div {
+    font-size: 12px;
   }
   .packageSetBodyItem_img {
     display: inline-block;
@@ -3493,6 +3501,8 @@ img[height="0"] {
     display: inline-block;
     width: 300px;
     margin: 0 10px 0 0;
+    *display: inline;
+    zoom: 1;
   }
   .packageSetMainImg img {
     width: 300px;
