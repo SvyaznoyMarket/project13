@@ -61,12 +61,19 @@ return function (
                         <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
                         <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
-                        <?= $helper->render('cart/__button-product', [
-                            'product'    => $product,
-                            'class'      => 'btnBuy__eLink',
-                            'value'      => 'Купить',
-                            'directLink' => true,
-                        ]) // Кнопка купить ?>
+                        <? if (!$product->getKit()) : ?>
+                            <?= $helper->render('cart/__button-product', [
+                                'product'    => $product,
+                                'class'      => 'btnBuy__eLink',
+                                'value'      => 'Купить',
+                                'directLink' => true,
+                            ]) // Кнопка купить ?>
+                        <? endif ?>
+                        <? if ($product->getKit()) : ?>
+                            <div class="">
+                                <a class="" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
+                            </div>
+                        <? endif ?>
                     </div>
                 </li>
             <? endforeach ?>
