@@ -141,7 +141,8 @@
 				document.location.href = data.redirect;
 			}
 			else if ( blackBox ) {
-				blackBox.basket().add( data );
+				if (data.product) blackBox.basket().add( data );  // если добавляем единичный продукт
+				if (data.products)  blackBox.basket().multipleAdd( data );  // если добавляем много продуктов за раз
 			}
 		},
 

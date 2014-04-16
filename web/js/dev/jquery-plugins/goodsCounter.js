@@ -183,10 +183,12 @@
 
 					// Массив продуктов
 					for ( i = products.length - 1; i >= 0; i-- ) {
-						spinner = $('[data-spinner-for="'+products[i].cartButton.id+'"]');
-						spinner.addClass('mDisabled');
-						input = spinner.find('input');
-						input.val(products[i].quantity).attr('disabled','disabled');
+                        if (products[i].cartButton != undefined) {
+                            spinner = $('[data-spinner-for="' + products[i].cartButton.id + '"]');
+                            spinner.addClass('mDisabled');
+                            input = spinner.find('input');
+                            input.val(products[i].quantity).attr('disabled', 'disabled');
+                        }
 					}
 				};
 			//end of functions
