@@ -48,6 +48,19 @@ class FormAction {
             \App::dataStoreClient()->execute();
         }
 
+        if ($enterpizeCoupon) {
+            $limitResponse = \App::coreClientV2()->query('coupon/limits', [], ['list' => array($enterpizeCoupon->getToken())]);
+        }
+
+        if ($enterpizeCoupon && isset($limitResponse['detail'][$enterpizeCoupon->getToken()])) {
+            $enterpizeCouponLimit = $limitResponse['detail'][$enterpizeCoupon->getToken()];
+            if ($enterpizeCouponLimit == 0) {
+                $session->set('flash', ['errors' => ['Эти фишки уже закончились, потому что количество фишек ограничено. <br />' .
+                'Вы можете выбрать другие фишки <a href="/enterprize">здесь</a>. <br />' .
+                'Успевайте получить лучшие предложения Enter Prize!']]);
+            }
+        }
+
         if (!$enterpizeCoupon) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
         }
