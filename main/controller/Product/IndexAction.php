@@ -451,18 +451,29 @@ class IndexAction {
 
             foreach ($products as $key => $product) {
                 $id = $product->getId();
+                $result[$id]['id'] = $id;
+                $result[$id]['name'] = $product->getName();
+                $result[$id]['article'] = $product->getArticle();
+                $result[$id]['token'] = $product->getToken();
+                $result[$id]['url'] = $product->getLink();
+                $result[$id]['image'] = $product->getImageUrl();
                 $result[$id]['product'] = $product;
                 $result[$id]['price'] = $product->getPrice();
                 $result[$id]['lineName'] = $lineName;
-                $result[$id]['Высота'] = '';
-                $result[$id]['Ширина'] = '';
-                $result[$id]['Глубина'] = '';
+                $result[$id]['height'] = '';
+                $result[$id]['width'] = '';
+                $result[$id]['depth'] = '';
 
                 // добавляем размеры
+                $dimensionsTranslate = [
+                    'Высота' => 'height',
+                    'Ширина' => 'width',
+                    'Глубина' => 'depth'
+                ];
                 if ($product->getProperty()) {
                     foreach ($product->getProperty() as $property) {
                         if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
-                            $result[$id][$property->getName()] = $property->getValue();
+                            $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getValue();
                         }
                     }
                 }
@@ -471,7 +482,7 @@ class IndexAction {
         }
 
         foreach ($result as &$value) {
-            $value['count'] = 1;
+            $value['count'] = 0;
         }
 
         foreach ($mainProduct->getKit() as $kitPart) {
