@@ -81,6 +81,7 @@ class RecommendedAction {
                         'id'        => $id,
                         'engine'    => $controller[$type]->getEngine() ?: $controller[$type]->getName(),
                         'name'      => $controller[$type]->getName(),
+                        'method'    => $controller[$type]->getRetailrocketMethodName(),
                     ];
                 }
             }
@@ -89,6 +90,7 @@ class RecommendedAction {
                     'id'        => $id,
                     'engine'    => 'enter',
                     'name'      => 'enter',
+                    'method'    => null,
                 ];
             }
 

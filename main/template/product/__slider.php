@@ -61,14 +61,6 @@ return function (
 
                     // Добавление товара в корзину из блока с рекомендациями
                     $addToCartJS = "try{rrApi.recomAddToCart({$product->getId()}, {methodName: '{$retailrocketMethod}'})}catch(e){}";
-
-                    // к product.link дорисовываем get-параметры, сообщающие что данный товар является рекоммендованым
-                    \Controller\Product\BasicRecommendedAction::prepareLink($link, [
-                        'id'        => $product->getId(),
-                        'engine'    => 'retailrocket',
-                        'name'      => 'upsale',
-                        'method'    =>  $retailrocketMethod
-                    ]);
                 }
 
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
