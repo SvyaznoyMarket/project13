@@ -27,7 +27,7 @@ $(function() {
       resizeSlides = function resizeSlides() {
         var slideList = $('.slidesItemsList'),
             slideWrap = $('.slidesItems'),
-            slideWrapHeight = 400;
+            slideWrapHeight = 350;
         // end vars 
         
         slideWrapWidth = $('.slidesItems').width();   
@@ -35,14 +35,6 @@ $(function() {
         if ( slideWrapWidth < 360 ) {
             slideWrapHeight = slideWrapWidth;
         };
-
-        // ширина блока слайдера в зависимости от ширины окна
-        if ( body.width() <= 900 ) {
-          slideWrap.css({width: body.width()})
-        }
-        else {
-          slideWrap.css({width: 350})
-        }
 
         slideWrap.css({'height' : slideWrapHeight, 'background' : 'none'});
 
