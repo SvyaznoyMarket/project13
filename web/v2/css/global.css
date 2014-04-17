@@ -1845,6 +1845,7 @@ body.noScroll {
 .sliderBox_btn {
   width: 20px;
   height: 50px;
+  display: none;
   cursor: pointer;
   position: absolute;
   top: 50%;
@@ -1896,7 +1897,6 @@ body.noScroll {
   line-height: 26px;
 }
 .sliderBoxItems {
-  width: 10000px;
   font-size: 0;
   position: absolute;
   left: 0;
