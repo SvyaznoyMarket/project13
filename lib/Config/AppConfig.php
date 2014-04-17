@@ -207,6 +207,9 @@ class AppConfig {
         'Сpaexchange' => [
             'enabled' => null,
         ],
+        'Revolvermarketing' => [
+            'enabled' => null,
+        ],
     ];
 
 

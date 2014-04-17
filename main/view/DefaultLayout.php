@@ -634,6 +634,10 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotRevolvermarketingConversionJS () {
+        return '';
+    }
+
     public function slotAdLensJS () {
         return;
     }

@@ -123,6 +123,14 @@ class CompletePage extends Layout {
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25015]) . '"></div>';
     }
 
+    public function slotRevolvermarketingConversionJS () {
+        if ( !\App::config()->partners['Revolvermarketing']['enabled'] ) {
+            return;
+        }
+
+        return $this->tryRender('partner-counter/_revolvermarketing_conversion');
+    }
+
     public function slotAdLensJS () {
         if ( !\App::config()->partners['AdLens']['enabled'] ) {
             return;
