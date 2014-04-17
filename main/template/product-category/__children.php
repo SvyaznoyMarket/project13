@@ -18,7 +18,7 @@ return function(
         $links[] = [
             'name'   => isset($config['name']) ? $config['name'] : $child->getName(),
             'url'    => $child->getLink(),
-            'image'  => (is_array($config) && array_key_exists('image', $config)) ? $config['image'] : $child->getImageUrl(),
+            'image'  => (is_array($config) && array_key_exists('image', $config) && !empty($config['image'])) ? $config['image'] : $child->getImageUrl(),
             'active' => false,
             'css'    => isset($config['css']) ? $config['css'] : null,
         ];
