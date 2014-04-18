@@ -14,6 +14,9 @@
 		display: inline-block;
 		vertical-align: top;
 
+		*display: inline;
+		zoom: 1;
+
 		.packageSetHead_title {
 			font-size: 20px;
 		}
@@ -51,6 +54,9 @@
 		    margin: 30px 0 10px;
 		    padding-left: 0;
 		    width: 115px;
+
+		    *display: inline;
+			zoom: 1;
 		}
 	}
 }
@@ -66,10 +72,9 @@
 		display: inline-block;
 		vertical-align: top;
 
-		font-size: 16px;
+		width: 300px;
 
-		*display: inline;
-		zoom: 1;
+		font-size: 16px;
 	}
 
 	&_change {
@@ -97,6 +102,8 @@
 	padding: 10px 0;
 	height: 80px;
 
+	font-size: 0;
+
 	&:last-child {
 		border: none;
 	}
@@ -114,6 +121,10 @@
 		.packageSetBodyItem_price {
 			text-decoration: line-through;
 		}
+	}
+
+	a, div {
+		font-size: 12px;
 	}
 
 	&_img {
@@ -225,6 +236,9 @@
 	width: 300px;
 	margin: 0 10px 0 0;
 
+	*display: inline;
+	zoom: 1;
+
 	img {
 		width: 300px;
 	}
@@ -253,4 +267,81 @@
     height: 35px;
     margin: 15px 0 0;
     width: 170px;
+}
+
+// кнопки купить
+.btnBuy {
+
+    &.mBuySet {
+	    .gradient(#ffc000, #ffaa01, #ffc000);
+	    .rounded(5px);
+
+	    width: 171px;
+	    height: 36px;
+
+	    &:hover {
+	        .gradient(#ffa200, #f79200, #ffa200);
+	    }
+
+	    &:active {
+	        background: #f79200;
+	    }
+
+	    .btnBuy__eLink {
+	        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=) no-repeat 41px 50%;
+	        
+	        text-align: left;
+
+	        padding-left: 71px;
+	        width: 99px;
+
+	        &:hover {
+	          background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=) no-repeat 41px 50%;
+	        }
+
+	        &:active {
+	          background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=) no-repeat 41px 50%;
+	        }
+
+	        &.mBought {
+	          padding-left: 0;
+	          width: 170px;
+	          text-align: center;
+	          background: @white;
+	        }
+	    }
+    }
+}
+
+.fixedTopBar {
+
+	.btnBuy {
+
+	    &.mBuySet {
+		    height: 26px;
+    		width: 80px;
+
+		    .btnBuy__eLink {
+		        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 13px 50%;
+
+		        padding-left: 29px;
+    			width: 50px;
+
+		        &:hover {
+		          background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 13px 50%;
+		        }
+
+		        &:active {
+		          background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 13px 50%;
+		        }
+
+		        &.mBought {
+		          padding-left: 0;
+		          width: 170px;
+		          text-align: center;
+		          background: @white;
+		        }
+		    }
+	    }
+	}
 }
