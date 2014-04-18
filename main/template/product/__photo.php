@@ -108,7 +108,7 @@ return function(
 <div class="bProductDescImg">
     <? if ($product->getMainCategory() && 'tchibo' === $product->getMainCategory()->getToken() && !$product->getIsBuyable()): ?>
         <div class="bProductDescSticker">
-            <img src="/images/shild sold out.png" alt="Нет в наличии" />
+            <img src="/images/shild_sold_out.png" alt="Нет в наличии" />
         </div>
     <? elseif ($product->getLabel()): ?>
         <div class="bProductDescSticker">
