@@ -31,6 +31,12 @@ $f = function(
         $product = ((isset($productsById[$cell->getId()]) && $productsById[$cell->getId()] instanceof \Model\Product\BasicEntity) ? $productsById[$cell->getId()] : null);
     ?>
         <? if ($product): ?>
+            <? if ($product->getMainCategory() && 'tchibo' === $product->getMainCategory()->getToken() && !$product->getIsBuyable()): ?>
+                <div class="bProductDescSticker">
+                    <img src="/images/shild sold out.png" alt="Нет в наличии" />
+                </div>
+            <? endif ?>
+
             <?= $helper->renderWithMustache('product/show/__grid', $showAction->execute(
                 $helper,
                 $product,
