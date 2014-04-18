@@ -1487,6 +1487,64 @@ window.ANALYTICS = {
 		}
 	},
 
+	RuTargetJS: function() {
+		(function(w,d,s,l,i){
+			w[l]=w[l]||[];
+			w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+			var 
+				f=d.getElementsByTagName(s)[0],
+				j=d.createElement(s),
+				dl=l!='dataLayer'?'&l='+l:'';
+
+			j.async=true;
+			j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;
+			f.parentNode.insertBefore(j,f);
+		})(window,document,'script','_rutarget','GTM­4SJX');
+	},
+
+	RuTargetProductJS: function() {
+		var
+			rutarget = $('#RuTargetProductJS'),
+			data = rutarget.data('value'),
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.id || !data.regionId ) {
+			return;
+		}
+
+		_rutarget.push({'event': 'showOffer', 'sku': data.id, 'regionId': data.regionId});
+	},
+
+	RuTargetProductCategoryJS: function() {
+		var
+			rutarget = $('#RuTargetProductCategoryJS'),
+			data = rutarget.data('value'),
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.id || !data.regionId || !data.name ) {
+			return;
+		}
+
+		_rutarget.push({'event': 'showCategory','categoryCodes': data.id, 'categoryNames': data.name, 'regionId': data.regionId});
+	},
+
+	RuTargetCartJS: function() {
+		var
+			rutarget = $('#RuTargetCartJS'),
+			data = rutarget.data('value'),
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.products || !data.regionId ) {
+			return;
+		}
+
+		_rutarget.push({'event': 'cart','products': data.products, 'regionId': data.regionId });
+	},
+
+
 	enable : true
 }
 

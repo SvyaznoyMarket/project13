@@ -15,3 +15,7 @@
 <?= $page->slotСpaexchangeConversionJS() ?>
 <?= $page->slotAdLensJS() ?>
 <?= $page->slotRevolvermarketingConversionJS() ?>
+<?= $page->slotRuTargetJS() ?>
+<?= $page->slotRuTargetProductJS() ?>
+<?= $page->slotRuTargetProductCategoryJS() ?>
+<?= $page->slotRuTargetCartJS() ?>

@@ -323,6 +323,10 @@ $(document).ready(function() {
 			main.remove()
 			self.noview = true
 			PubSub.publish( 'quantityChange', { q : 0, id : self.id } )
+
+			// analytics
+			self.analyticsDelete({id: self.id});
+
 			if( clearfunction ){ 
 				clearfunction()
 			}
@@ -359,6 +363,34 @@ $(document).ready(function() {
 			})
 		}
 
+		this.analyticsDelete = function( data ) {
+			var
+				region = $('.jsChangeRegion'),
+				regionId = region.length ? region.data('region-id') : false,
+				_rutarget = window._rutarget || [];
+			// end of vars
+
+			if ( !data || !regionId ) {
+				return;
+			}
+
+			_rutarget.push({'event': 'removeFromCart', 'sku': data.id, 'regionId': regionId});
+		}
+
+		this.analyticsUpdate = function( data ) {
+			var
+				region = $('.jsChangeRegion'),
+				regionId = region.length ? region.data('region-id') : false,
+				_rutarget = window._rutarget || [];
+			// end of vars
+
+			if ( !data || !regionId ) {
+				return;
+			}
+
+			_rutarget.push({'event': 'updateInCart', 'sku': data.id, 'qty': data.qty, 'regionId': regionId});
+		}
+
 		this.update = function( minimax, delta ) {
 			
 			if( delta > 0 && ( limit < ( self.quantum + delta ) ) ) {
@@ -386,6 +418,9 @@ $(document).ready(function() {
 			// }
 
 			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
+
+			// analytics
+			self.analyticsUpdate({ qty : self.quantum, id : self.id });
 
 			// if( $('#selectCredit').length ) {
 			// 	var sufx = ''

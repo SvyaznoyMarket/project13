@@ -1125,7 +1125,22 @@ $(document).ready(function() {
 	 * Обработчик кнопки PayPal в карточке товара
 	 */
 	(function() {
-		var successHandler = function successHandler( res ) {
+		var
+			oneClickAnalytics = function oneClickAnalytics( data ) {
+				var
+					product = data.product,
+					regionId = data.regionId,
+					_rutarget = window._rutarget || [];
+				// end of vars
+
+				if ( !product || !regionId ) {
+					return;
+				}
+
+				_rutarget.push({'event': 'buyNow', 'sku': product.id, 'qty': product.quantity,'regionId': regionId})
+			},
+
+			successHandler = function successHandler( res ) {
 				console.info('payPal ajax complete');
 
 				if ( !res.success || !res.redirect ) {
@@ -1133,6 +1148,9 @@ $(document).ready(function() {
 
 					return;
 				}
+
+				// analytics
+				oneClickAnalytics(res);
 
 				document.location.href = res.redirect;
 			},

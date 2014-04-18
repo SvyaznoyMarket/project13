@@ -294,7 +294,27 @@
 							utils.logError(dataToLog);
 						}
 					}
+				},
+
+				/**
+				 * Аналитика при нажатии кнопки "купить"
+				 * @param event
+				 * @param data
+				 */
+				addToRuTarget = function addToRuTarget( event, data ) {
+					var
+						product = data.product,
+						regionId = data.regionId,
+						_rutarget = window._rutarget || [];
+					// end of vars
+
+					if ( !product || !regionId ) {
+						return;
+					}
+
+					_rutarget.push({'event': 'addToCart', 'sku': product.id, 'qty': product.quantity, 'regionId': regionId});
 				}
+
 				/*,
 				addToVisualDNA = function addToVisualDNA( event, data ) {
 					var
@@ -323,6 +343,7 @@
 				adAdriver(event, data);
 				addToRetailRocket(event, data);
 				//addToVisualDNA(event, data);
+				addToRuTarget(event, data);
 			}
 			catch( e ) {
 				console.warn('addtocartAnalytics error');

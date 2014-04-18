@@ -622,6 +622,52 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    /**
+     * RuTarget
+     * Общий код для вставки на все страницы сайта
+     *
+     * @return string
+     */
+    public function slotRuTargetJS() {
+        if (!\App::config()->partners['RuTarget']['enabled']) return;
+
+        return '<div id="RuTargetJS" class="jsanalytics">
+            <!­­ RuTarget ­­> 
+            <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM­4SJX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <!­­ /RuTarget ­­> 
+        </div>';
+    }
+
+    /**
+     * RuTarget
+     * Коды для вставки на страницы товаров
+     *
+     * @return string
+     */
+    public function slotRuTargetProductJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Коды для страниц категорий любого уровня вложенности
+     *
+     * @return string
+     */
+    public function slotRuTargetProductCategoryJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Коды для страницы "Корзины"
+     *
+     * @return string
+     */
+    public function slotRuTargetCartJS() {
+        return '';
+    }
+
     public function slotСpaexchangeJS () {
         return '';
     }
