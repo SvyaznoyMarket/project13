@@ -46,23 +46,56 @@
             self.width = product.width;
             self.depth = product.depth;
             self.count = ko.observable(product.count);
+            self.maxCount = ko.observable(Infinity);
             self.deliveryDate = ko.observable(product.deliveryDate);
 
             self.plusClick = function() {
-                self.count(self.count()+1);
-                $.post('/ajax/product/delivery', {product:[{id:self.id, quantity:self.count()}] }, function(data){
-                    if (data.success) {
-                        self.deliveryDate(data.product[0].delivery[0].date.value);
-                        console.log('Delivery: id=',self.id,' quantity=',self.count(),' date: ', data.product[0].delivery)
-                    } else {
-                        self.count(self.count()-1); // TODO-zra сделать нормальный расчет максимального количества - блочить плюсовую кнопку
-                    }
-                })
+                if (self.maxCount() > self.count()) {
+                    self.count(parseInt(self.count()) + 1);
+                    $.post('/ajax/product/delivery', {product: [
+                        {id: self.id, quantity: self.count()}
+                    ] }, function (data) {
+                        if (data.success) {
+                            self.deliveryDate(data.product[0].delivery[0].date.value);
+                            console.log('Delivery: id=', self.id, ' quantity=', self.count(), ' date: ', data.product[0].delivery)
+                        } else {
+                            self.count(self.count() - 1);
+                            self.maxCount(self.count());
+                        }
+                    })
+                }
             };
 
             self.minusClick = function() {
                 if (self.count() > 0) self.count(self.count()-1);
             };
+
+            self.countKeydown = function(item, e) {
+                e.stopPropagation();
+
+                if ( e.which === 38 ) { // up arrow
+                    item.plusClick();
+                    return false;
+                }
+                else if ( e.which === 40 ) { // down arrow
+                    item.minusClick();
+                    return false;
+                }
+                else if ( (( (e.which >= 48) && (e.which <= 57) ) ||  //num keys
+                    ( (e.which >= 96) && (e.which <= 105) ) || //numpad keys
+                    (e.which === 8) ||
+                    (e.which === 46))
+                    ) {
+                    return true;
+                }
+                return false;
+            };
+
+/*            self.countKeyUp = function(item, e) {
+                //console.log('Keyup', item, e, item == self)
+                //item.count(parseInt(item.count()));
+                return false;
+            }*/
         }
 
         function ProductList(){
@@ -130,7 +163,7 @@
 
         }
 
-        window.prod = new ProductList();
+        window.prod = new ProductList(); // TODO-zra убрать это
 
         ko.applyBindings(window.prod);
     }
