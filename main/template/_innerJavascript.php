@@ -14,3 +14,4 @@
 <?= $page->slotСpaexchangeJS() ?>
 <?= $page->slotСpaexchangeConversionJS() ?>
 <?= $page->slotAdLensJS() ?>
+<?= $page->slotRevolvermarketingConversionJS() ?>
