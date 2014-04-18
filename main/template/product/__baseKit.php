@@ -22,9 +22,9 @@ return function (
         <? if ($product['lineName'] == 'baseLine') : ?>
 
         <div class="packageSetBodyItem">
-            <a class="packageSetBodyItem_img" href="<?= $product['product']->getLink() ?>"><img src="<?= $product['product']->getImageUrl() ?>" /></a><!--/ изображение товара -->
+            <a class="packageSetBodyItem_img rown" href="<?= $product['product']->getLink() ?>"><img src="<?= $product['product']->getImageUrl() ?>" /></a><!--/ изображение товара -->
 
-            <div class="packageSetBodyItem_desc">
+            <div class="packageSetBodyItem_desc rown">
                 <div class="name"><a class="" href="<?= $product['product']->getLink() ?>"><?= $product['product']->getName(); ?></a></div><!--/ название товара -->
 
                 <!-- размеры товара -->
@@ -54,15 +54,15 @@ return function (
                 <!--/ размеры товара -->
             </div>
 
-            <div class="packageSetBodyItem_delivery">
+            <div class="packageSetBodyItem_delivery rown">
                 Доставка <strong><?= $product['deliveryDate'] ?></strong>
             </div><!--/ доставка -->
 
-            <div class="packageSetBodyItem_price">
+            <div class="packageSetBodyItem_price rown">
                 <?= $helper->formatPrice($product['product']->getPrice()) ?>&nbsp;<span class="rubl">p</span>
             </div><!--/ цена -->
 
-            <div class="packageSetBodyItem_qnt"><?= $product['count'] ?> шт.</div><!--/ количество в наборе -->
+            <div class="packageSetBodyItem_qnt rown"><?= $product['count'] ?> шт.</div><!--/ количество в наборе -->
         </div><!--/ элемент комплекта -->
 
         <? endif; ?>
@@ -144,19 +144,22 @@ return function (
 
         </div>
 
+        <div class="packageSetFooter">
+            <div class="packageSetDefault">
+                <input type="checkbox" id="defaultSet" class="bInputHidden bCustomInput jsCustomRadio" data-bind="click: resetToBaseKit">
+                <label for="defaultSet" class="packageSetLabel" data-bind="css: { mChecked : isBaseKit }, click: resetToBaseKit">Базовый комплект</label>
+            </div>
+
+            <div class="packageSetPrice">Итого за <span data-bind="text: totalCount"></span> предметов: <strong data-bind="text: totalPrice"></strong> <span class="rubl">p</span></div>
+
+            <div class="packageSetBuy btnBuy">
+                <a class="btnBuy__eLink jsBuyButton" href="" data-bind="attr: { href: buyLink }">Купить</a>
+            </div>
+        </div>
     </div>
     <!--/ Состав комплекта -->
 
-    <div class="packageSetDefault bInputList">
-        <input type="checkbox" name="" id="defaultSet" class="jsCustomRadio bCustomInput mCustomCheckBig" data-bind="click: resetToBaseKit">
-        <label for="defaultSet" class="bCustomLabel mCustomLabelBig" data-bind="css: { mChecked : isBaseKit }, click: resetToBaseKit">Базовый комплект</label>
-    </div>
-
-    <div class="packageSetPrice">Итого за <span data-bind="text: totalCount"></span> предметов: <strong data-bind="text: totalPrice"></strong> <span class="rubl">p</span></div>
-
-    <div class="packageSetBuy btnBuy">
-        <a class="btnBuy__eLink jsBuyButton" href="" data-bind="attr: { href: buyLink }">Купить</a>
-    </div>
+    
 </div>
 
 <? }; ?>

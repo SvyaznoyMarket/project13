@@ -9367,6 +9367,14 @@
     margin-right: 3px;
     padding: 0;
   }
+  .bCountSection button.mDisabled {
+    -moz-opacity: 0.4;
+    -khtml-opacity: 0.4;
+    -webkit-opacity: 0.4;
+    opacity: 0.4;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=40);
+    filter: alpha(opacity=40);
+  }
   .bCountSection__eNum {
     border: 1px solid #c7c7c7;
     -webkit-border-radius: 3px;
@@ -9388,6 +9396,7 @@
     opacity: 0.3;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30);
     filter: alpha(opacity=30);
+    cursor: default;
   }
   .bCountSection.mDisabled button {
     cursor: default;

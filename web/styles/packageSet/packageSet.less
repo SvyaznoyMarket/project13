@@ -10,6 +10,7 @@
 		width: 600px;
 
 		margin: 0 0 15px;
+		border-bottom: none;
 
 		display: inline-block;
 		vertical-align: top;
@@ -43,6 +44,7 @@
 		    padding-right: 5px;
 
 		    text-align: right;
+		    font-size: 14px;
 
 		    width: 60px;
 		}
@@ -123,7 +125,7 @@
 		}
 	}
 
-	a, div {
+	.rown {
 		font-size: 12px;
 	}
 
@@ -214,6 +216,10 @@
 
 		*display: inline;
 		zoom: 1;
+
+		&.rown {
+			font-size: 14px;
+		}
 	}
 
 	&_qnt {
@@ -221,6 +227,10 @@
 
 		line-height: 80px;
 		font-size: 14px;
+
+		&.rown {
+			font-size: 14px;
+		}
 	}
 }
 
@@ -244,20 +254,55 @@
 	}
 }
 
+.packageSetFooter {
+	border-top: 1px solid #929292;
+	padding: 15px 0 0;
+}
+
 .packageSetDefault {
 	float: left;
 
-    margin: 0 0 0 310px;
-
     width: 200px;
+
+    .bInputHidden {
+	    font-size: 0;
+	    height: 0;
+	    line-height: 0;
+	    margin-top: 0;
+	    opacity: 0;
+	    overflow: hidden;
+	    padding: 0;
+	    float: right;
+	    width: 0;
+	}
+
+    .bInputHidden + .packageSetLabel {
+	    background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat scroll 0 3px;
+	}
+
+	.bInputHidden:checked + .packageSetLabel {
+	    background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat scroll 0 -24px;
+	}
+
+	.packageSetLabel.mChecked {
+	    background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat scroll 0 -24px;
+	}
+
+	.packageSetLabel {
+	    cursor: pointer;
+	    display: inline-block;
+	    font-size: 14px;
+	    margin: 0;
+	    padding: 0 0 0 20px;
+	    vertical-align: top;
+	    white-space: nowrap;
+	}
 }
 
 .packageSetPrice {
 	float: right;
 
 	font-size: 14px;
-
-	margin: 3px 0 0;
 }
 
 .packageSetBuy {

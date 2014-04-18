@@ -3338,6 +3338,7 @@ img[height="0"] {
   .packageSet.mPackageSetEdit {
     width: 600px;
     margin: 0 0 15px;
+    border-bottom: none;
     display: inline-block;
     vertical-align: top;
     *display: inline;
@@ -3362,6 +3363,7 @@ img[height="0"] {
   .packageSet.mPackageSetEdit .packageSetBodyItem_price {
     padding-right: 5px;
     text-align: right;
+    font-size: 14px;
     width: 60px;
   }
   .packageSet.mPackageSetEdit .bCountSection {
@@ -3422,8 +3424,7 @@ img[height="0"] {
   .packageSetBodyItem.mDisabled .packageSetBodyItem_price {
     text-decoration: line-through;
   }
-  .packageSetBodyItem a,
-  .packageSetBodyItem div {
+  .packageSetBodyItem .rown {
     font-size: 12px;
   }
   .packageSetBodyItem_img {
@@ -3488,9 +3489,15 @@ img[height="0"] {
     *display: inline;
     zoom: 1;
   }
+  .packageSetBodyItem_price.rown {
+    font-size: 14px;
+  }
   .packageSetBodyItem_qnt {
     float: right;
     line-height: 80px;
+    font-size: 14px;
+  }
+  .packageSetBodyItem_qnt.rown {
     font-size: 14px;
   }
   /* popup */
@@ -3507,15 +3514,46 @@ img[height="0"] {
   .packageSetMainImg img {
     width: 300px;
   }
+  .packageSetFooter {
+    border-top: 1px solid #929292;
+    padding: 15px 0 0;
+  }
   .packageSetDefault {
     float: left;
-    margin: 0 0 0 310px;
     width: 200px;
+  }
+  .packageSetDefault .bInputHidden {
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+    float: right;
+    width: 0;
+  }
+  .packageSetDefault .bInputHidden + .packageSetLabel {
+    background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat scroll 0 3px;
+  }
+  .packageSetDefault .bInputHidden:checked + .packageSetLabel {
+    background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat scroll 0 -24px;
+  }
+  .packageSetDefault .packageSetLabel.mChecked {
+    background: url("/css/customInput/img/bCustomCheckbox.png") no-repeat scroll 0 -24px;
+  }
+  .packageSetDefault .packageSetLabel {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    margin: 0;
+    padding: 0 0 0 20px;
+    vertical-align: top;
+    white-space: nowrap;
   }
   .packageSetPrice {
     float: right;
     font-size: 14px;
-    margin: 3px 0 0;
   }
   .packageSetBuy {
     clear: both;
