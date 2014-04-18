@@ -21,13 +21,6 @@ if ($product) {
 </div>
 
 <div class="fixedTopBar__buy">
-    <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
-
-
-    <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && !$product->getKit()): ?>
-        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
-    <? endif ?>
-
     <? if ($product->getIsBuyable() && !$product->getKit()): ?>
         <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить ?>
     <? endif ?>
@@ -35,4 +28,10 @@ if ($product) {
     <? if ($product->getKit()): ?>
         <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink mBuySet', 'value' => 'Купить']) // Кнопка купить ?>
     <? endif ?>
+
+    <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && !$product->getKit()): ?>
+        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
+    <? endif ?>
+
+    <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 </div>

@@ -70,9 +70,7 @@ return function (
                             ]) // Кнопка купить ?>
                         <? endif ?>
                         <? if ($product->getKit()) : ?>
-                            <div class="">
-                                <a class="" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
-                            </div>
+                        <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
                         <? endif ?>
                     </div>
                 </li>
