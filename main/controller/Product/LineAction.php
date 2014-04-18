@@ -53,7 +53,7 @@ class LineAction {
         //Запрашиваю составные части набора
         $parts = [];
         if ((bool)$mainProduct->getKit()) {
-            $productRepository->setEntityClass('\Model\Product\CompactEntity');
+            $productRepository->setEntityClass('\Model\Product\Entity');
             $partId = [];
             foreach ($mainProduct->getKit() as $part) {
                 $partId[] = $part->getId();

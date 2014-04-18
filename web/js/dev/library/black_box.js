@@ -127,6 +127,29 @@
 
 				},
 
+                multipleAdd = function multipleAdd ( data ) {
+
+                    var cart = data.cart,
+                        toClientCart = {},
+                        toBasketUpdate = {
+                            quantity: cart.full_quantity,
+                            sum: cart.full_price
+                        };
+
+                    for (var i in data.products) {
+                        var product = data.products[i],
+                            tmpCart = {
+                                formattedPrice: printPrice(product.price),
+                                image: product.img,
+                                url: product.link
+                            };
+                        toClientCart = $.extend({}, product, tmpCart);
+                        clientCart.products.push(toClientCart);
+                    }
+
+                    self.basket().update(toBasketUpdate);
+                },
+
 				deleteItem = function deleteItem( data ) {
 					console.log('deleteItem');
 					var
@@ -155,6 +178,7 @@
 			return {
 				'update': update,
 				'add': add,
+                'multipleAdd' : multipleAdd,
 				'deleteItem': deleteItem
 			};
 		};

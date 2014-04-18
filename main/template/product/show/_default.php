@@ -36,6 +36,7 @@ foreach ($product->getGroupedProperties() as $group) {
 }
 
 $is_showed = [];
+$isKitPage = $mainProduct && $mainProduct->getId() == $product->getId() ? true : false;
 
 ?>
 
@@ -101,12 +102,15 @@ $is_showed = [];
 
     <div class="clear"></div>
 
-    <? if ( $mainProduct && count($mainProduct->getKit()) ): ?>
+    <? if ( $isKitPage ): // если это главный товар набора ?>
+        <?= $helper->render('product/__baseKit',['products' => $kitProducts, 'mainProduct' => $product]) ?>
+
+    <? elseif ( $mainProduct && count($mainProduct->getKit()) ): ?>
         <?= $helper->render('product/__slider', [
             'title'     => 'Состав набора &laquo;' . $line->getName() . '&raquo;',
             'products'  => $parts,
         ]) ?>
-    <? endif ?>
+    <? else: endif ?>
 
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
         <?= $helper->render('product/__slider', [
@@ -192,13 +196,17 @@ $is_showed = [];
 
 <div class="bProductSectionRightCol">
     <div class="bWidgetBuy mWidget">
-        <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+        <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
         <? endif ?>
 
-        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+        <? if ($isKitPage) : ?>
+            <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить для набора продуктов ?>
+        <? else : ?>
+            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+        <? endif ?>
 
-        <? if (!$hasFurnitureConstructor): ?>
+        <? if (!$hasFurnitureConstructor && !$isKitPage): ?>
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
         <? endif ?>
 

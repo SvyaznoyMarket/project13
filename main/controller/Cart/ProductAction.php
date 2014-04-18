@@ -211,11 +211,17 @@ class ProductAction {
 
             $productsInfo = [];
             foreach ($productsById as $product) {
+                $cartProduct = $cart->getProductById($product->getId());
                 $productInfo = [
+                    'id'    => $product->getId(),
                     'name'  =>  $product->getName(),
                     'img'   =>  $product->getImageUrl(2),
                     'link'  =>  $product->getLink(),
                     'price' =>  $product->getPrice(),
+                    'deleteUrl' => $cartProduct  ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
+                    'cartButton'     => [
+                        'id' => \View\Id::cartButtonForProduct($product->getId()),
+                    ],
                 ];
                 if (\App::config()->kissmentrics['enabled']) {
                     try {
@@ -239,7 +245,7 @@ class ProductAction {
                     'old_price'     => $cart->getOriginalSum(),
                     'link'          => \App::router()->generate('order'),
                 ],
-                'product'  => reset($productsInfo),
+                'products'  => $productsInfo,
             ];
 
 
