@@ -160,6 +160,9 @@
 
             if (templateData.count > 0) {
                 $parent.show();
+
+                // вызов скрипта слайдер items.slides.js
+                $('.js-productSlider').enterSlides();
             }
         });
 
@@ -186,7 +189,6 @@
                 }
             });
         }
-
 
         // запрос слайдеров
         var recommendedUrls = [];

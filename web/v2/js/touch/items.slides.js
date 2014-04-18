@@ -37,6 +37,7 @@
          * Прокрутка слайдера к следующему слайду
          */
         nextSlides = function nextSlides() {
+          console.log('nextSlides');
         
           btnPrev.show();
 
@@ -51,9 +52,9 @@
 
           slidesList.stop(true, false).animate({'left' : -slideLeft});
 
-          console.log(slideLeft);
-          console.log(itemW);
-          console.log(fitCount)
+          console.log('nextSlides' + slideLeft);
+          // console.log(itemW);
+          // console.log(fitCount);
 
           return false;
 
@@ -63,6 +64,7 @@
          * Прокрутка слайдера к предыдущему слайду
          */
         prevSlides = function prevSlides() {
+          console.log('prevSlides');
 
           btnNext.show();
 
@@ -77,6 +79,8 @@
 
           slidesList.stop(true, false).animate({'left' : -slideLeft});
 
+          console.log('prevSlides' + slideLeft);
+
           return false;
 
         },
@@ -86,7 +90,6 @@
          */
         controlsSlides = function controlsSlides() {
           if ( itemCount <= fitCount ) {
-            btnPrev.hide();
             btnNext.hide();
           }
 
@@ -96,35 +99,49 @@
         };
       // end of function
 
-      // var swipeOptionsResp = {
-      //       triggerOnTouchEnd: true, 
-      //       swipeStatus: swipeStatusPesp,
-      //       allowPageScroll: "vertical",
-      //       threshold: 75      
-      //     },
+      var swipeOptionsResp = {
+            triggerOnTouchEnd: true, 
+            swipeStatus: swipeStatusPesp,
+            allowPageScroll: "vertical",
+            threshold: 75      
+          };
 
-      // swipeStatusPesp = function swipeStatusPesp( event, phase, direction, distance ) {
-      //   if ( phase =="end" ) {
-      //     if ( direction == "right" ) {
-      //       prevRespSlide();
-      //     }
-      //     else if ( direction == "left")  {   
-      //       nextRespSlide();
-      //     }
-      //   }
-      // };
+      function swipeStatusPesp( event, phase, direction, distance ) {
+        if ( phase =="end" ) {
+          if ( direction == "right" ) {
+            prevSlides();
+
+            return;
+          }
+          else if ( direction == "left")  {   
+            nextSlides();
+
+            return;
+          }
+        }
+      };
 
       controlsSlides();
       btnNext.on('click', nextSlides);
       btnPrev.on('click', prevSlides);
-      //slidesList.swipe( swipeOptionsResp );
+      slidesList.swipe( swipeOptionsResp );
     };
 
     return this.each(function() {
       var $self = $(this);
 
       new SlidesAction($self);
+
+      $(window).resize(function() {
+
+        $(window).load(function() {
+
+          new SlidesAction($self);
+
+        });
+      });
     });
+    
   };
 
   $.fn.enterSlides.defaults = {
@@ -136,7 +153,3 @@
   };
 
 })( window, jQuery );
-
-$(function(){
-    $(window).on('load resize', function() { $('.js-productSlider').enterSlides() });
-});
