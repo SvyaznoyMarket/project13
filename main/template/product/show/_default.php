@@ -201,12 +201,12 @@ $isKitPage = $mainProduct && $mainProduct->getId() == $product->getId() ? true :
         <? endif ?>
 
         <? if ($isKitPage) : ?>
-            <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+            <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить для набора продуктов ?>
         <? else : ?>
             <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
         <? endif ?>
 
-        <? if (!$hasFurnitureConstructor): ?>
+        <? if (!$hasFurnitureConstructor && !$isKitPage): ?>
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
         <? endif ?>
 

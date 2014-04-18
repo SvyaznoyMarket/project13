@@ -17,7 +17,8 @@
 	/**
 	 * Показ окна с изменение комплекта 
 	 */
-	var showPackageSetPopup = function showPackageSetPopup() {
+	var showPackageSetPopup = function showPackageSetPopup(event) {
+        event.preventDefault();
         $('.bCountSection').goodsCounter('destroy');
 			packageSetWindow.lightbox_me({
 				autofocus: true

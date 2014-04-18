@@ -13,10 +13,7 @@ return function (
     $forceDefaultBuy = $region ? $region->getForceDefaultBuy() : true;
 
     $class = \View\Id::cartButtonForProduct($product->getId()) . ' ' . $class;
-
-    if (!$directLink) {
-        $class .= $product->isInShopStockOnly() && $forceDefaultBuy ? ' jsOneClickButton' : ' jsBuyButton';
-    }
+    $class = $class . ' jsChangePackageSet';
 
     if ($product->isInShopStockOnly() && $forceDefaultBuy) {
         $class .= ' mShopsOnly';
@@ -26,9 +23,6 @@ return function (
         $class .= ' mShopsOnly';
     }
 
-    if (!$product->isInShopStockOnly() && false === strpos($class, 'jsBuyButton')) {
-        $class .= ' jsBuyButton';
-    }
 
     if (5 === $product->getStatusId()) { // SITE-2924
         return '';
@@ -59,7 +53,7 @@ return function (
         'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false,
     ];
     ?>
-    <div class="bWidgetBuy__eBuy btnBuy">
+    <div class="bWidgetBuy__eBuy btnBuy mBuySet">
         <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-upsale='<?= json_encode($upsaleData) ?>'><?= $value ?></a>
     </div>
 
