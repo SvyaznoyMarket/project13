@@ -52,11 +52,7 @@
     <?= $page->slotAdvanceSeoCounter() ?>
     <?= $page->slotMyThings() ?>
     <?= $page->slotPartnerCounter() ?>
-
-    <? if (\App::config()->analytics['enabled']): ?>
-        <div id="adblenderCommon" class="jsanalytics"></div>
-    <? endif ?>
-  
+    <?= $page->slotAdblender() ?>
     <?= $page->slotAdriver() ?>
   
 </body>
