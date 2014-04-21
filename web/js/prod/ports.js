@@ -234,7 +234,7 @@ window.ANALYTICS = {
 				}
 				delete vars.extraData;
 			}
-			window.APRT_DATA = vars;
+			if ($('body').data('template') != 'order_new') window.APRT_DATA = vars;
 
 			s.type  = 'text/javascript';
 			s.src = '//rt.actionpay.ru/code/enter/';
