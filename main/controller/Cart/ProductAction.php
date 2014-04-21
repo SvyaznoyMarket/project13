@@ -248,6 +248,12 @@ class ProductAction {
                 'products'  => $productsInfo,
             ];
 
+            if ($cart->getSum()) {
+                \Session\User::enableInfoCookie( new \Http\JsonResponse($responseData));
+            } else {
+                \Session\User::disableInfoCookie( new \Http\JsonResponse($responseData));
+            }
+
 
         } catch(\Exception $e) {
             $responseData = [

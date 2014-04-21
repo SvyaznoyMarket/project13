@@ -91,11 +91,11 @@
                 return false;
             };
 
-/*            self.countKeyUp = function(item, e) {
+            self.countKeyUp = function(item, e) {
                 //console.log('Keyup', item, e, item == self)
                 //item.count(parseInt(item.count()));
                 return false;
-            }*/
+            }
         }
 
         function ProductList(){
