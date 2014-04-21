@@ -162,7 +162,7 @@
                 $parent.show();
 
                 // вызов скрипта слайдер items.slides.js
-                $('.js-productSlider').enterSlides();
+                $('.js-productSlider').enterslide();
             }
         });
 

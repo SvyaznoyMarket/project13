@@ -1,4 +1,4 @@
-;(function( window, $, undefined ) {
+;(function( $, window, document, undefined ) {
 
   $.fn.enterSlides = function( params ) {
     console.log("enterSlides");
@@ -54,7 +54,7 @@
 
           console.log('nextSlides' + slideLeft);
           // console.log(itemW);
-          // console.log(fitCount);
+          console.log(fitCount);
 
           return false;
 
@@ -132,14 +132,12 @@
 
       new SlidesAction($self);
 
-      $(window).resize(function() {
+    });
 
-        $(window).load(function() {
+    $(window).on("resize", function(){
+        console.log('resize');
 
-          new SlidesAction($self);
-
-        });
-      });
+        SlidesAction();
     });
     
   };
@@ -152,4 +150,4 @@
     itemSelector: '.sliderBoxItems_item'
   };
 
-})( window, jQuery );
+})( jQuery, window, document );

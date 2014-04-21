@@ -143,31 +143,18 @@ $(function() {
       };
   // end var
 
-  var swipeOptions = {
-        triggerOnTouchEnd: true, 
-        swipeStatus: swipeStatus,
-        allowPageScroll: "vertical",
-        threshold: 75      
-      };
-  // end var
-
-  function swipeStatus( event, phase, direction, distance ) {
-    if ( phase =="end" ) {
-      if ( direction == "right" && curSlide > 0 ) {
-        prevSlides();
-      }
-      else if ( direction == "left" && curSlide < countItem-1 )  {   
-        nextSlides();
-      }
+  $('.productDescImg').touchwipe({
+    wipeLeft : function() {
+      nextSlides();
+    },
+    wipeRight : function() {
+      prevSlides();
     }
-  };
+  });
       
   $(window).on('load resize', resizeSlides);
 
   btnSlidesRight.on('click', nextSlides);
   btnSlidesLeft.on('click', prevSlides);
   paginationSlides();
-
-  slideList.swipe( swipeOptions );
-
 });
