@@ -222,7 +222,7 @@ class IndexAction {
             }
 
             // Данные для отображения набора продуктов (только если главный продукт набора - текущий продукт)
-            if ((bool)$mainProduct && $product->getId() == $mainProduct->getId()) {
+            if ((bool)$mainProduct && (bool)$mainProduct->getKit() && $product->getId() == $mainProduct->getId()) {
                 $kitProducts = $this->prepareKit($parts, $restParts, $mainProduct, $region);
             }
         }
