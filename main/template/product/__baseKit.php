@@ -153,7 +153,7 @@ return function (
             <div class="packageSetPrice">Итого за <span data-bind="text: totalCount"></span> предметов: <strong data-bind="text: totalPrice"></strong> <span class="rubl">p</span></div>
 
             <div class="packageSetBuy btnBuy">
-                <a class="btnBuy__eLink jsBuyButton" href="" data-bind="attr: { href: buyLink }">Купить</a>
+                <a class="btnBuy__eLink jsBuyButton" href="" data-bind="attr: { href: buyLink, 'data-upsale': dataUpsale(<?= $mainProduct->getId() ?>) }">Купить</a>
             </div>
         </div>
     </div>

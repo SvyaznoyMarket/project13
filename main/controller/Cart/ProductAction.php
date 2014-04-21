@@ -248,21 +248,24 @@ class ProductAction {
                 'products'  => $productsInfo,
             ];
 
+            $response = new \Http\JsonResponse($responseData);
+
             if ($cart->getSum()) {
-                \Session\User::enableInfoCookie( new \Http\JsonResponse($responseData));
+                \Session\User::enableInfoCookie($response);
             } else {
-                \Session\User::disableInfoCookie( new \Http\JsonResponse($responseData));
+                \Session\User::disableInfoCookie($response);
             }
 
 
         } catch(\Exception $e) {
             $responseData = [
                 'success' => false,
-                'data'    => ['error' => 'Не удалось товар услугу в корзину', 'debug' => $e->getMessage()],
+                'data'    => ['error' => 'Не удалось товар или услугу в корзину', 'debug' => $e->getMessage()],
             ];
+            return new \Http\JsonResponse($responseData);
         }
 
-        return new \Http\JsonResponse($responseData);
+        return $response;
     }
 
     /**

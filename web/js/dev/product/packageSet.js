@@ -139,6 +139,11 @@
                 return link;
             });
 
+            self.dataUpsale = function(mainId){
+                var url = '/ajax/upsale/' + mainId;
+                return ko.toJSON({url : url, fromUpsale: false});
+            };
+
             self.addProduct = function(product){
                 self.products.push(new ProductModel(product))
             };
@@ -163,9 +168,7 @@
 
         }
 
-        window.prod = new ProductList(); // TODO-zra убрать это
-
-        ko.applyBindings(window.prod);
+        ko.applyBindings(new ProductList());
     }
 
 }(window.ENTER));
