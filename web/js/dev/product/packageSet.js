@@ -27,6 +27,13 @@
 
 	packageSetBtn.on('click', showPackageSetPopup);
 
+    /**
+     * Закрытие окна
+     */
+    $('body').on('addtocart', function(){
+        packageSetWindow.trigger('close.lme');
+    });
+
     if (!window.ko) $.getScript(knockoutUrl, init); else init();
 
     function init() {

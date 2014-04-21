@@ -1041,6 +1041,13 @@
 
 	packageSetBtn.on('click', showPackageSetPopup);
 
+    /**
+     * Закрытие окна
+     */
+    $('body').on('addtocart', function(){
+        packageSetWindow.trigger('close.lme');
+    });
+
     if (!window.ko) $.getScript(knockoutUrl, init); else init();
 
     function init() {
@@ -1182,9 +1189,7 @@
 
         }
 
-        window.prod = new ProductList(); // TODO-zra убрать это
-
-        ko.applyBindings(window.prod);
+        ko.applyBindings(new ProductList());
     }
 
 }(window.ENTER));
