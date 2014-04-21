@@ -1434,15 +1434,11 @@ img[height="0"] {
     zoom: 1;
     width: 305px;
     margin: 12px 0 0 10px;
-    float: left;
   }
   .fixedTopBar__buy .btnBuy {
-    display: inline-block;
-    vertical-align: top;
-    *display: inline;
-    zoom: 1;
     width: 80px;
-    margin: 0 0 0 5px;
+    float: right;
+    margin: 0 5px;
   }
   .fixedTopBar__buy .btnBuy__eLink {
     width: 78px;
@@ -1451,16 +1447,13 @@ img[height="0"] {
     line-height: 24px;
   }
   .fixedTopBar__buy .bPrice {
-    float: left;
+    float: right;
     font-size: 20px;
     width: 100px;
     margin: 1px 0 0;
   }
   .fixedTopBar__buy .bCountSection {
-    display: inline-block;
-    vertical-align: top;
-    *display: inline;
-    zoom: 1;
+    float: right;
     width: 111px;
     padding-left: 0;
   }
