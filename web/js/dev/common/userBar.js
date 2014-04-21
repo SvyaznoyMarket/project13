@@ -402,6 +402,8 @@
 //				checkScroll();
 				userBar.showOverlay = true;
 
+                if ( !data.product ) return;
+
 				if ( !data.product.article ) {
 					console.warn('Не получен article продукта');
 
@@ -419,6 +421,7 @@
 			console.log(upsale);
 
 			if ( !upsale.url ) {
+                console.log('if upsale.url');
 				return;
 			}
 

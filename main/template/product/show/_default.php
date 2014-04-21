@@ -36,7 +36,7 @@ foreach ($product->getGroupedProperties() as $group) {
 }
 
 $is_showed = [];
-$isKitPage = $mainProduct && $mainProduct->getId() == $product->getId() ? true : false;
+$isKitPage = $mainProduct && (bool)$mainProduct->getKit() && $mainProduct->getId() == $product->getId() ? true : false;
 
 ?>
 

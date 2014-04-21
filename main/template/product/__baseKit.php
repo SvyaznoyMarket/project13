@@ -131,9 +131,9 @@ return function (
                 </div>
 
                 <div class="bCountSection clearfix">
-                    <button class="bCountSection__eM" data-bind="click: minusClick">-</button>
-                    <input type="text" value="" class="bCountSection__eNum" data-bind="value: count">
-                    <button class="bCountSection__eP" data-bind="click: plusClick">+</button>
+                    <button class="bCountSection__eM" data-bind="click: minusClick, css: { mDisabled : count() == 0 }">-</button>
+                    <input type="text" value="" class="bCountSection__eNum" data-bind="value: count, event: { keydown: countKeydown, keyup: countKeyUp }">
+                    <button class="bCountSection__eP" data-bind="click: plusClick, css: { mDisabled : count() == maxCount() }">+</button>
                     <span>шт.</span>
                 </div>
 
@@ -153,7 +153,7 @@ return function (
             <div class="packageSetPrice">Итого за <span data-bind="text: totalCount"></span> предметов: <strong data-bind="text: totalPrice"></strong> <span class="rubl">p</span></div>
 
             <div class="packageSetBuy btnBuy">
-                <a class="btnBuy__eLink jsBuyButton" href="" data-bind="attr: { href: buyLink }">Купить</a>
+                <a class="btnBuy__eLink jsBuyButton" href="" data-bind="attr: { href: buyLink, 'data-upsale': dataUpsale(<?= $mainProduct->getId() ?>) }">Купить</a>
             </div>
         </div>
     </div>
