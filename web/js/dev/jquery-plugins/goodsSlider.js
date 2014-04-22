@@ -52,7 +52,7 @@
 						url: url,
 						success: function( res ) {
 							var
-								i, type, callbF;
+								i, type, callbF, data;
 
 							try{
 								for ( i in recommendArray ) {
@@ -62,6 +62,17 @@
 									if ( 'undefined' !== typeof(callbF) ) {
 										if ( 'undefined' !== typeof(type) && 'undefined' !== typeof(res.recommend) && 'undefined' !== typeof(res.recommend[type]) ) {
 											callbF(res.recommend[type]);
+
+											data = res.recommend[type].data;
+											if ( data ) {
+												console.log('Показ товарных рекомендаций от Retailrocket для блока ' + type);
+												try {
+													rrApi.recomTrack(data.method, data.id, data.recommendations);
+												} catch( e ) {
+													console.warn('Retailrocket error');
+													console.log(e.message);
+												}
+											}
 										}
 										else {
 											callbF(res);

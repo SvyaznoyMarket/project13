@@ -164,6 +164,7 @@ $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 $c->partners['AdLens']['enabled'] = true;
 $c->partners['Сpaexchange']['enabled'] = true;
 $c->partners['Admitad']['enabled'] = false;
+$c->partners['Revolvermarketing']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [

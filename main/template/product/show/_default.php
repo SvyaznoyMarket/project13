@@ -16,6 +16,7 @@
  * @var $line                   \Model\Line\Entity
  * @var $deliveryData           array
  * @var $isTchibo               boolean
+ * @var $addToCartJS     string
  */
 
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
@@ -196,7 +197,13 @@ $is_showed = [];
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
         <? endif ?>
 
-        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+        <?= $helper->render('cart/__button-product', [
+            'product' => $product,
+            'class' => 'btnBuy__eLink',
+            'value' => 'Купить',
+            'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null,
+            'onClick' => isset($addToCartJS) ? $addToCartJS : null,
+        ]) // Кнопка купить ?>
 
         <? if (!$hasFurnitureConstructor): ?>
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>

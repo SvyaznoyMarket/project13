@@ -2606,7 +2606,7 @@
 			choosenBlock = null,
 			isUnique = null,
 			nowProductsToNewBox = [],
-
+            oldDeliveryBoxes = [],
 			discounts = ENTER.OrderModel.orderDictionary.orderData.discounts || [];
 		// end of vars
 		
@@ -2619,6 +2619,10 @@
 			window.docCookies.setItem('chStetesPriority_paypalECS', JSON.stringify(ENTER.OrderModel.statesPriority), 10 * 60);
 		}
 
+        if (ENTER.OrderModel.deliveryBoxes().length) {
+            oldDeliveryBoxes = ko.toJS(ENTER.OrderModel.deliveryBoxes());
+            console.info('[DeliveryBox] Существуют старые блоки доставки', oldDeliveryBoxes);
+        }
 
 		// очищаем объект созданых блоков, удаляем блоки из модели
 		ENTER.OrderModel.deliveryBoxes.removeAll();
@@ -2708,6 +2712,15 @@
 				}
 			}
 		}
+
+        for ( var a in oldDeliveryBoxes ) {
+            if (ENTER.OrderModel.hasDeliveryBox(oldDeliveryBoxes[a].token)) {
+                console.log('[Deliverybox] Обнаружен старый блок доставки: ', oldDeliveryBoxes[a].token, ' c выбранной датой ', oldDeliveryBoxes[a].choosenDate);
+                console.info('[Deliverybox] Применяю старую дату на блок ', oldDeliveryBoxes[a].token);
+                ENTER.OrderModel.getDeliveryBoxByToken(oldDeliveryBoxes[a].token).choosenDate(oldDeliveryBoxes[a].choosenDate);
+                console.log('[Deliverybox] Дата на новом блоке ', oldDeliveryBoxes[a].token, ': ', ENTER.OrderModel.getDeliveryBoxByToken(oldDeliveryBoxes[a].token).choosenDate());
+            }
+        }
 
 		console.info('Созданные блоки:');
 		console.log(ENTER.OrderModel.deliveryBoxes());
