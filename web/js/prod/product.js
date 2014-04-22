@@ -1130,6 +1130,7 @@ $(document).ready(function() {
 				var
 					product = data.product,
 					regionId = data.regionId,
+					result,
 					_rutarget = window._rutarget || [];
 				// end of vars
 
@@ -1137,7 +1138,11 @@ $(document).ready(function() {
 					return;
 				}
 
-				_rutarget.push({'event': 'buyNow', 'sku': product.id, 'qty': product.quantity,'regionId': regionId})
+				result = {'event': 'buyNow', 'sku': product.id, 'qty': product.quantity,'regionId': regionId};
+
+				console.info('RuTarget buyNow');
+				console.log(result);
+				_rutarget.push(result);
 			},
 
 			successHandler = function successHandler( res ) {

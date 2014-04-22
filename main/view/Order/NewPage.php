@@ -2,6 +2,9 @@
 
 namespace View\Order;
 
+use \Model\Product\Entity as Product;
+use \Model\Cart\Product\Entity as CartProduct;
+
 class NewPage extends Layout {
     public function prepare() {
         $this->setTitle('Оформление заказа - Enter');
@@ -48,5 +51,38 @@ class NewPage extends Layout {
         }
 
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25014]) . '"></div>';
+    }
+
+    public function slotRuTargetOrderOneClickJS() {
+        if (!\App::config()->partners['RuTarget']['enabled']) return;
+
+        $oneClick = $this->getParam('oneClick');
+        if (!$oneClick) return;
+
+        /** @var $products Product[] */
+        $products = $this->getParam('productsById');
+        if (!$products || empty($products) || !is_array($products)) return;
+
+        /** @var $product Product */
+        $product = reset($products);
+        if (!$product instanceof Product) return;
+
+        $user = \App::user();
+        $cart = $user->getOneClickCart();
+        $cart->getProductById($product->getId());
+
+        /** @var $cartProduct CartProduct */
+        $cartProduct = $cart->getProductById($product->getId()) ?: null;
+        if (!$cartProduct instanceof CartProduct) return;
+
+        $data = [
+            'product' => [
+                'quantity' => $cartProduct->getQuantity(),
+                'id' => $cartProduct->getId(),
+            ],
+            'regionId' => $user->getRegionId(),
+        ];
+
+        return "<div id='RuTargetOrderOneClickJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
     }
 }

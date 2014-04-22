@@ -19,3 +19,4 @@
 <?= $page->slotRuTargetProductJS() ?>
 <?= $page->slotRuTargetProductCategoryJS() ?>
 <?= $page->slotRuTargetCartJS() ?>
+<?= $page->slotRuTargetOrderOneClickJS() ?>

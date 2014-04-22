@@ -668,6 +668,16 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    /**
+     * RuTarget
+     * Код для страницы оформления покупки в один клик
+     *
+     * @return string
+     */
+    public function slotRuTargetOrderOneClickJS() {
+        return '';
+    }
+
     public function slotСpaexchangeJS () {
         return '';
     }

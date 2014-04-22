@@ -1506,6 +1506,7 @@ window.ANALYTICS = {
 		var
 			rutarget = $('#RuTargetProductJS'),
 			data = rutarget.data('value'),
+			result,
 			_rutarget = window._rutarget || [];
 		// end of vars
 
@@ -1513,13 +1514,18 @@ window.ANALYTICS = {
 			return;
 		}
 
-		_rutarget.push({'event': 'showOffer', 'sku': data.id, 'regionId': data.regionId});
+		result = {'event': 'showOffer', 'sku': data.id, 'regionId': data.regionId};
+
+		console.info('RuTargetProduct');
+		console.log(result);
+		_rutarget.push(result);
 	},
 
 	RuTargetProductCategoryJS: function() {
 		var
 			rutarget = $('#RuTargetProductCategoryJS'),
 			data = rutarget.data('value'),
+			result,
 			_rutarget = window._rutarget || [];
 		// end of vars
 
@@ -1527,13 +1533,18 @@ window.ANALYTICS = {
 			return;
 		}
 
-		_rutarget.push({'event': 'showCategory','categoryCodes': data.id, 'categoryNames': data.name, 'regionId': data.regionId});
+		result = {'event': 'showCategory','categoryCodes': data.id, 'categoryNames': data.name, 'regionId': data.regionId};
+
+		console.info('RuTargetProductCategory');
+		console.log(result);
+		_rutarget.push(result);
 	},
 
 	RuTargetCartJS: function() {
 		var
 			rutarget = $('#RuTargetCartJS'),
 			data = rutarget.data('value'),
+			result,
 			_rutarget = window._rutarget || [];
 		// end of vars
 
@@ -1541,7 +1552,30 @@ window.ANALYTICS = {
 			return;
 		}
 
-		_rutarget.push({'event': 'cart','products': data.products, 'regionId': data.regionId });
+		result = {'event': 'cart','products': data.products, 'regionId': data.regionId};
+
+		console.info('RuTargetCart');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetOrderOneClickJS: function() {
+		var
+			rutarget = $('#RuTargetOrderOneClickJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.product || !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'confirmOrder', 'products': [{'qty': data.product.quantity, 'sku': data.product.id}], 'regionId': data.regionId};
+
+		console.info('RuTargetOrderOneClick');
+		console.log(result);
+		_rutarget.push(result);
 	},
 
 

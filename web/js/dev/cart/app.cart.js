@@ -367,6 +367,7 @@ $(document).ready(function() {
 			var
 				region = $('.jsChangeRegion'),
 				regionId = region.length ? region.data('region-id') : false,
+				result,
 				_rutarget = window._rutarget || [];
 			// end of vars
 
@@ -374,13 +375,18 @@ $(document).ready(function() {
 				return;
 			}
 
-			_rutarget.push({'event': 'removeFromCart', 'sku': data.id, 'regionId': regionId});
+			result = {'event': 'removeFromCart', 'sku': data.id, 'regionId': regionId};
+
+			console.info('RuTarget removeFromCart');
+			console.log(result);
+			_rutarget.push(result);
 		}
 
 		this.analyticsUpdate = function( data ) {
 			var
 				region = $('.jsChangeRegion'),
 				regionId = region.length ? region.data('region-id') : false,
+				result,
 				_rutarget = window._rutarget || [];
 			// end of vars
 
@@ -388,7 +394,11 @@ $(document).ready(function() {
 				return;
 			}
 
-			_rutarget.push({'event': 'updateInCart', 'sku': data.id, 'qty': data.qty, 'regionId': regionId});
+			result = {'event': 'updateInCart', 'sku': data.id, 'qty': data.qty, 'regionId': regionId};
+
+			console.info('RuTarget updateInCart. Клики кнопок увеличения/уменьшения кол-ва товара.');
+			console.log(result);
+			_rutarget.push(result);
 		}
 
 		this.update = function( minimax, delta ) {

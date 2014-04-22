@@ -616,6 +616,7 @@
 					var
 						product = data.product,
 						regionId = data.regionId,
+						result,
 						_rutarget = window._rutarget || [];
 					// end of vars
 
@@ -623,7 +624,11 @@
 						return;
 					}
 
-					_rutarget.push({'event': 'addToCart', 'sku': product.id, 'qty': product.quantity, 'regionId': regionId});
+					result = {'event': 'addToCart', 'sku': product.id, 'qty': product.quantity, 'regionId': regionId};
+
+					console.info('RuTarget addToCart');
+					console.log(result);
+					_rutarget.push(result);
 				}
 
 				/*,
