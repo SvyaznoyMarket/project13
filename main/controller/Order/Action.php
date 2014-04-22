@@ -17,6 +17,9 @@ class Action {
         \App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $user = \App::user();
+        $userEntity = $user->getEntity();
+        $client = \App::coreClientPrivate();
+        $helper = new \Helper\TemplateHelper();
 
         $form = $this->getForm(); // подключаем данные формы, чтобы знать данные покупателя
 
@@ -141,6 +144,58 @@ class Action {
                 }
 
             }
+
+            // PaymentConfig
+            $paymentForm = null;
+            if (in_array($paymentMethod->getId(), [5, 8, 14])) {
+                try {
+                    $result = [];
+                    $client->addQuery('site-integration/payment-config',
+                        [
+                            'method_id' => $paymentMethod->getId(),
+                            'order_id'  => $order->getId(),
+                        ],
+                        [
+                            'back_ref'    => $helper->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true),// обратная ссылка
+                            'email'       => $userEntity ? $userEntity->getEmail() : null,
+                            'card_number' => $userEntity ? $userEntity->getSclubCardnumber() : null,// карта лояльности
+                            'user_token'  => $user->getToken(),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
+                        ],
+                        function($data) use (&$result) {
+                            if ((bool)$data) {
+                                $result = $data;
+                            }
+                        },
+                        function(\Exception $e) {
+                            \App::exception()->remove($e);
+                        }
+                    );
+                    $client->execute(\App::config()->corePrivate['retryTimeout']['default'], \App::config()->corePrivate['retryCount']);
+
+                    if (!$result || empty($result) || !is_array($result) || !isset($result['detail'])) {
+                        throw new \Exception(sprintf('Не получены payment конфигурация для метода method_id=%s, заказ id=%s', $paymentMethod->getId(), $order->getId()));
+                    }
+
+                    // онлайн оплата через psb
+                    if (5 == $paymentMethod->getId()) {
+                        $paymentForm = new \Payment\Psb\Form();
+                        $paymentForm->fromArray($result['detail']);
+
+                    // онлайн оплата через psb invoice
+                    } else if (8 == $paymentMethod->getId()) {
+                        $paymentForm = new \Payment\PsbInvoice\Form();
+                        $paymentForm->fromArray($result['detail']);
+
+                    // оплаты баллами Связного-Клуба
+                    } else if (14 == $paymentForm) {
+                        $paymentForm = $result['detail'];
+                    }
+
+                } catch (\Exception $e) {
+                    \App::logger()->error($e);
+                    \App::exception()->remove($e);
+                }
+            }
         }
 
         $paymentUrl = $order->getPaymentUrl(); // раньше было: $paymentUrl = \App::session()->get('paymentUrl');
@@ -153,6 +208,7 @@ class Action {
         $page->setParam('servicesById', $servicesById);
         $page->setParam('paymentMethod', $paymentMethod);
         $page->setParam('paymentProvider', $paymentProvider);
+        $page->setParam('paymentForm', $paymentForm);
         $page->setParam('creditData', $creditData);
         $page->setParam('paymentUrl', $paymentUrl);
         $page->setParam('paymentPageType', 'complete');
