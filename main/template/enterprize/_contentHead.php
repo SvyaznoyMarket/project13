@@ -35,7 +35,7 @@ $routeName = \App::request()->attributes->get('route');
     <div class="clear"></div>
 
     <? if ($enterpizeCoupon): ?>
-        <div class="enterPrize mPrivate">
+        <div class="enterPrize mPrivate <?= isset($limit) && $limit === 0 ? 'mDisabled' : ''?>">
             <a class="enterPrize__logo" href="<?= $page->url('enterprize') ?>"></a>
 
             <div class="enterPrize__list clearfix">
@@ -61,16 +61,26 @@ $routeName = \App::request()->attributes->get('route');
             </div>
 
             <div class="enterPrize__rules"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
-                Фишка со скидкой <strong><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на
-                <strong><a target="_blank" style="text-decoration: underline;" href="<?= $enterpizeCoupon->getLink() ?>"><?= $enterpizeCoupon->getLinkName() ? $enterpizeCoupon->getLinkName() : $enterpizeCoupon->getName() ?></a></strong><br />
-                Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
-                Действует
-                <? if ($enterpizeCoupon->getStartDate() instanceof \DateTime): ?>
-                    c <?= $enterpizeCoupon->getStartDate()->format('d.m.Y') ?>
-                <? endif ?>
-                <? if ($enterpizeCoupon->getEndDate() instanceof \DateTime): ?>
-                    по <?= $enterpizeCoupon->getEndDate()->format('d.m.Y') ?>
-                <? endif ?>
+                <div class="rulesText">
+                    Фишка со скидкой <strong><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на
+                    <strong><a target="_blank" style="text-decoration: underline;" href="<?= $enterpizeCoupon->getLink() ?>"><?= $enterpizeCoupon->getLinkName() ? $enterpizeCoupon->getLinkName() : $enterpizeCoupon->getName() ?></a></strong><br />
+                    Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
+                    Действует
+                    <? if ($enterpizeCoupon->getStartDate() instanceof \DateTime): ?>
+                        c <?= $enterpizeCoupon->getStartDate()->format('d.m.Y') ?>
+                    <? endif ?>
+                    <? if ($enterpizeCoupon->getEndDate() instanceof \DateTime): ?>
+                        по <?= $enterpizeCoupon->getEndDate()->format('d.m.Y') ?>
+                    <? endif ?>
+                </div>
+
+                <? if (isset($limit) && $limit === 0) : ?>
+                    <div class="finishedBox">
+                        <strong>Фишка закончилась!</strong>
+
+                        <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange">Посмотреть другие фишки</a>
+                    </div>
+                <? endif; ?>
             </div>
 
             <? if (!$user->getEntity() && in_array($routeName, ['enterprize', 'enterprize.show', 'enterprize.form.show'])): ?>
