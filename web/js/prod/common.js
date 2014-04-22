@@ -342,11 +342,6 @@
 					//end of vars
 
 					if ( !data.success ) {
-						console.warn( 'addToCart error' );
-						if ( data.error && data.error.message ) {
-							console.warn( data.error.message );
-							// TODO: сообщение об ошибке для пользователя
-						}
 						return false;
 					}
 
@@ -2512,7 +2507,7 @@ $(document).ready(function() {
  *
  * @author		Zaytsev Alexandr
  * @requires	jQuery, FormValidator, docCookies
- * 
+ *
  * @param		{event}		event
  * @param		{Object}	subscribe			Информация о подписке
  * @param		{Boolean}	subscribe.agreed	Было ли дано согласие на подписку в прошлый раз
@@ -2559,7 +2554,7 @@ $(document).ready(function() {
 						 * Обработчик ответа пришедшего с сервера
 						 * @param res Ответ с сервера
 						 */
-						serverResponseHandler = function serverResponseHandler( res ) {
+							serverResponseHandler = function serverResponseHandler( res ) {
 							if( !res.success ) {
 								return false;
 							}
@@ -2599,19 +2594,32 @@ $(document).ready(function() {
 				},
 
 				subscribeNow = function subscribeNow() {
+					var
+						notNow = $('.bSubscribeLightboxPopup__eNotNow');
+					// end of vars
+
+					var
+						/**
+						 * Обработчик клика на ссылку "Спасибо, не сейчас"
+						 * @param e
+						 */
+							notNowClickHandler = function( e ) {
+							e.preventDefault();
+
+							var url = $(this).data('url');
+
+							subPopup.slideUp(300, subscribeLater);
+							window.docCookies.setItem('subscribed', 0, 157680000, '/');
+							$.post(url);
+						};
+					// end of functions
+
 					subPopup.slideDown(300);
 
 					submitBtn.bind('click', subscribing);
 
-					$('.bSubscribeLightboxPopup__eNotNow').bind('click', function() {
-						var url = $(this).data('url');
-
-						subPopup.slideUp(300, subscribeLater);
-						window.docCookies.setItem('subscribed', 0, 157680000, '/');
-						$.post(url);
-
-						return false;
-					});
+					notNow.off('click');
+					notNow.bind('click', notNowClickHandler);
 				},
 
 				subscribeLater = function subscribeLater() {
@@ -3680,7 +3688,7 @@ $(document).ready(function() {
 				if ( !response.success ) {
 					return;
 				}
-				
+
 				console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
 
 				upsaleWrap.find('.bGoodsSlider').remove();
@@ -3705,10 +3713,21 @@ $(document).ready(function() {
 				}
 
 				console.log('Трекинг товара при показе блока рекомендаций');
+
+				// Retailrocket. Показ товарных рекомендаций
+				if ( response.data ) {
+					try {
+						rrApi.recomTrack(response.data.method, response.data.id, response.data.recommendations);
+					} catch( e ) {
+						console.warn('showUpsell() Retailrocket error');
+						console.log(e);
+					}
+				}
+
 				// google analytics
-				_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
+				typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
 				// Kissmetrics
-				_kmq && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
+				typeof _kmq == 'function' && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
 			};
 			//end functions
 

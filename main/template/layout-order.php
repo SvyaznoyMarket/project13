@@ -76,6 +76,7 @@
 <?= $page->slotAdvanceSeoCounter() ?>
 <?= $page->slotAdriver() ?>
 <?= $page->slotPartnerCounter() ?>
+<?= $page->slotAdblender() ?>
 
 </body>
 </html>

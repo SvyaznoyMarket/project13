@@ -35,15 +35,59 @@ class UpsaleAction extends BasicRecommendedAction {
                 $relatedId = array_unique(array_merge($product->getRelatedId(), $recommendationRR));
             }
 
+            $collection = [];
             if (empty($relatedId)) {
                 throw new \Exception('Not fount related IDs for this product.');
             } else {
-                $products = \RepositoryManager::product()->getCollectionById($relatedId);
+                /**
+                 * Для всех продуктов расставим и запомним источники (движок, Engine) рекомендаций
+                 */
+                foreach($relatedId as $id) {
+                    $recommEngine[$id] = [
+                        'id'        => $id,
+                        'engine'    => $this->getEngine() ?: $this->getName(),
+                        'name'      => $this->getName(),
+                        'method'    => $this->getRetailrocketMethodName(),
+                    ];
+                }
+                foreach ($product->getRelatedId() as $id) {
+                    $recommEngine[$id] = [
+                        'id'        => $id,
+                        'engine'    => 'enter',
+                        'name'      => 'enter',
+                        'method'    => null,
+                    ];
+                }
+
+                $chunckedIds = array_chunk($relatedId, \App::config()->coreV2['chunk_size']);
+                foreach ($chunckedIds as $chunk) {
+                    \RepositoryManager::product()->prepareCollectionById($chunk, \App::user()->getRegion(),
+                        function($data) use(&$collection, $recommEngine) {
+                            foreach ($data as $value) {
+                                if (!isset($value['id']) || !isset($value['link'])) continue;
+                                $id = $value['id'];
+                                if (isset($recommEngine[$id])) {
+                                    \Controller\Product\BasicRecommendedAction::prepareLink(
+                                        $value['link'], $recommEngine[$id]
+                                    );
+                                }
+                                $entity = new \Model\Product\Entity($value);
+                                $collection[$entity->getId()] = $entity;
+                            }
+                        });
+                }
+                \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+            }
+
+            $products = [];
+            foreach ($relatedId as $id) {
+                if (!isset($collection[$id])) continue;
+                $products[] = $collection[$id];
             }
 
             // SITE-2818 Из блока "С этим товаром также покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
             foreach ($products as $key => $item) {
-                if ($item->isInShopOnly() || $item->isInShopStockOnly()) {
+                if ($item->isInShopOnly() || $item->isInShopStockOnly() || !$item->getIsBuyable()) {
                     unset($products[$key]);
                 }
             }
@@ -58,7 +102,15 @@ class UpsaleAction extends BasicRecommendedAction {
                 'content' => \App::closureTemplating()->render('product/__slider', [
                     'title' => $this->actionTitle,
                     'products' => $products,
+                    'isRetailrocketRecommendation' => true,
+                    'retailrocketMethod' => $this->retailrocketMethodName,
+                    'retailrocketIds' => $recommendationRR,
                 ]),
+                'data' => [
+                    'id' => $product->getId(),//идентификатор товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
+                    'method' => $this->retailrocketMethodName,//название алгоритма по которому сформированны рекомендации (ItemToItems, UpSellItemToItems, CrossSellItemToItems и т.д.)
+                    'recommendations' => $recommendationRR,//массив идентификаторов рекомендованных товаров, полученных от Retail Rocket
+                ],
             ];
 
         } catch (\Exception $e) {

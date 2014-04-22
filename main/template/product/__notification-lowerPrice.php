@@ -23,9 +23,9 @@ return function(
         <div class="bLowPriceNotiferPopup popup">
             <i class="close"></i>
             <div class="uEntered">
-                <? if (empty($uEmail)): ?>
+                <? if (empty($uEmail) && $user->getEntity()): ?>
                     <div class="bLowPriceNotiferPopup__eTitle">
-                        Для этого укажите, пожалуйста, Ваш емейл в <a href="/private" title="Перейти в личный кабинет">личном кабинете</a>.
+                        Пожалуйста, укажите ваш e-mail в <a href="<?= $helper->url('user') ?>" title="Перейти в личный кабинет">личном кабинете</a>.
                     </div>
                 <? else: ?>
                     <div class="bLowPriceNotiferPopup__eTitle">
