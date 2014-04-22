@@ -916,7 +916,7 @@ class Action {
             if ((bool)$productIds) {
                 $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                     foreach ($data as $item) {
-                        $products[] = new \Model\Product\CompactEntity($item);
+                        $products[] = new \Model\Product\Entity($item);
                     }
                 });
 
