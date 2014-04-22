@@ -2287,6 +2287,22 @@ img[height="0"] {
   .enterPrize.mPrivate .enterPrize__logIn a {
     text-decoration: underline;
   }
+  .enterPrize.mDisabled .rulesText,
+  .enterPrize.mDisabled .enterPrize__list {
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    -webkit-opacity: 0.5;
+    opacity: 0.5;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    filter: alpha(opacity=50);
+  }
+  .enterPrize .finishedBox {
+    margin: 8px 0 0;
+  }
+  .enterPrize .finishedBox .mBtnOrange {
+    margin: 8px 0 0;
+    width: 250px;
+  }
   .enterPrize .rulesEP {
     font-size: 14px;
     color: #ffffff;
