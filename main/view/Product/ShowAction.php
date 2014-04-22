@@ -90,7 +90,10 @@ class ShowAction {
             'line'     =>
             ($line = $product->getLine())
                 ? ['name' => $line->getName(), 'productCount' => $line->getLineCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
-                : null
+                : null,
+            'hasKit'       => count($product->getKit()) !== 0
+                ? true
+                : false
         ];
 
         // oldPrice and priceSale
