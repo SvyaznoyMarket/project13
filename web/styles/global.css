@@ -3424,11 +3424,12 @@ img[height="0"] {
     display: inline-block;
     vertical-align: top;
     width: 80px;
+    padding-top: 5px;
     *display: inline;
     zoom: 1;
   }
   .packageSetBodyItem_img img {
-    width: 80px;
+    width: 70px;
   }
   .packageSetBodyItem_desc {
     display: inline-block;
@@ -3445,6 +3446,7 @@ img[height="0"] {
     display: inline-block;
     vertical-align: top;
     line-height: 1.2;
+    font-size: 12px;
     *display: inline;
     zoom: 1;
   }
