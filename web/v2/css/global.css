@@ -1944,10 +1944,6 @@ body.noScroll {
   .sliderCat .sliderCatWrap {
     display: none;
   }
-  .sliderBoxItems_item {
-    width: 170px;
-    padding: 0 10px;
-  }
 }
 /* ==========================================================================
    Стили слайдера товаров .footer

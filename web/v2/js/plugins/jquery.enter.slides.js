@@ -1,4 +1,4 @@
-(function( window, $, undefined ) {
+;(function( window, $, undefined ) {
 
   $.enterslide = function( options, element ) {
     this.$el = $( element );
@@ -22,7 +22,6 @@
       this._configure(); // установка парметров слайдера
       this._addControls(); // добавляем стрелки слайдера
       this._initEvents(); // пересчет параметров, скрытие показ кнопок
-      this._slideToCurrent( false ); //текущая позиция слайдера
 
       var slideLeft = 0;
     },
@@ -53,7 +52,7 @@
       this.itemW  = this.$items.outerWidth(true); // ширина элемента списка
       this.sliderW  = this.itemW * this.itemsCount; // ширина списка ul
       this.visibleWidth = this.$slider.width(); // ширина sliderBox_inner
-      this.fitCount   = Math.floor( this.visibleWidth / this.itemW ); // количество видимых элементов списка
+      this.fitCount = Math.floor( this.visibleWidth / this.itemW ); // количество видимых элементов списка
     },
 
     /**
@@ -69,20 +68,6 @@
     },
 
     /**
-     * Метод проверки показа контролов
-     */
-    _toggleControls : function( dir, status ) {
-      if( dir && status ) {
-        if( status === 1 )
-          ( dir === 'right' ) ? this.$navNext.show() : this.$navPrev.show();
-        else
-          ( dir === 'right' ) ? this.$navNext.hide() : this.$navPrev.hide();
-      }
-      else if( this.current === this.itemsCount - 1 || this.fitCount >= this.itemsCount )
-          this.$navNext.hide();
-    },
-
-    /**
      * Метод инициализации событий (resize, клики по контролам)
      */
     _initEvents : function() {
@@ -91,9 +76,25 @@
       // window resize
       $(window).on('resize.enterslide', function( event ) {
         instance._reload();
-        instance._slideToCurrent();
+        instance.$list.css({'left' : 0});
+
+        if (instance.itemsCount == instance.fitCount) {
+          instance.$navNext.hide();
+        }
+        else {
+          instance.$navNext.show();
+        }
       });
-      
+
+      instance.$navPrev.hide();
+
+      if (instance.itemsCount == instance.fitCount) {
+        instance.$navNext.hide();
+      }
+      else {
+        instance.$navNext.show();
+      }
+
       // клики по контролам
       this.$navNext.on('click.enterslide', function( event ) {
         instance._slide('right');
@@ -133,104 +134,62 @@
       }
     },
 
+    /**
+     * Метод прокрутки слайдера
+     */
     _slide : function( dir ) {
       // текущее значение прокрутки
         var slideLeft = parseFloat( this.$list.css('left') );
         var amount  = this.fitCount * this.itemW;
-
-        console.log('nextSlides');
-            console.log(this.sliderW);
-            console.log('slideLeft' + slideLeft);
-            console.log(this.visibleWidth);
         
         if( dir === 'right' ) {
-          //btnPrev.show();
+          console.log('nextSlides');
+          this.$navPrev.show();
 
           if ( this.sliderW - ( Math.abs( slideLeft ) + amount ) < this.visibleWidth ) {
+
             slideLeft = this.$list.width() - this.fitCount * this.itemW;
-
-            console.log('nextSlides');
-            console.log(this.sliderW);
-            console.log('slideLeft' + slideLeft);
-            console.log(this.visibleWidth);
-
+            this.$list.stop(true, false).animate({'left' : -slideLeft});
+            this.$navNext.hide();
           }
+
           else {
+
             slideLeft = slideLeft - this.fitCount * this.itemW;
-
-            console.log('nextSlides');
-            console.log(this.sliderW);
-            console.log(this.itemW);
-            console.log('slideLeft' + slideLeft);
-            console.log(this.visibleWidth);
+            this.$list.stop(true, false).animate({'left' : slideLeft});
+            this.$navNext.show();
           }
-
-          this.$list.stop(true, false).animate({'left' : slideLeft});
-
-          console.log('nextSlides' + slideLeft);
-          console.log(this.fitCount);
 
           return false;
         }
 
         else if( dir === 'left') {        
           console.log('prevSlides');
-
-          //btnNext.show();
+          this.$navNext.show();
           slideLeft  = Math.abs( slideLeft );
-          console.log(slideLeft);
 
           if ( slideLeft - this.fitCount * this.itemW <= 0 ) {
+
             slideLeft = 0;
-            //btnPrev.hide();
+            this.$navPrev.hide();
           }
+
           else {
+
             slideLeft = slideLeft - this.fitCount * this.itemW;
-            //btnPrev.show();
+            this.$navPrev.show();
           }
 
           this.$list.stop(true, false).animate({'left' : -slideLeft});
 
-          console.log('prevSlides' + slideLeft);
-
           return false;
         }
-    },
-
-    _slideToCurrent : function( anim ) {
-      var amount  = this.current * this.itemW;
-      this._slide('', -amount, anim );
-    },
-
-    setCurrent : function( idx, callback ) {
-      
-      this.current = idx;
-      
-      var mleft    = Math.abs( parseFloat( this.$list.css('margin-left') ) ),
-        posR  = mleft + this.visibleWidth,
-        fmleft   = Math.abs( this.current * this.itemW );
-      
-      if( fmleft + this.itemW > posR || fmleft < mleft ) {
-        this._slideToCurrent();
-      }
-      
-      if ( callback ) callback.call();
-      
-    },
-
-    destroy : function( callback ) {
-      
-      this._destroy( callback );
-      
-    },
-
-    _destroy : function( callback ) {
-      this.$el.off('.enterslide').removeData('enterslide');
-      $(window).off('.enterslide');
-      if ( callback ) callback.call();
     }
   };
   
+  /**
+    * Вызов плагина, создание нового экземпляра конструктора
+  */
   $.fn.enterslide = function( options ) {
     if ( typeof options === 'string' ) {
       var args = Array.prototype.slice.call( arguments, 1 );

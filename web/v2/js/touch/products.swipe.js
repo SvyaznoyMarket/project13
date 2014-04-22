@@ -1,12 +1,12 @@
 $(function() {
 
   var curSlide = 0,
-      countItem = 0,
       body = $('body'),
       slideWrap = $('.slidesItems'),
-      slideWrapWidth = $('.slidesItems').width(),
+      slideWrapWidth = slideWrap.width(),
       slideList = $('.slidesItemsList'),
-      slideWrapItem = $('.slidesItems').find('.slidesItemsList_item'),
+      slideWrapItem = slideList.find('.slidesItemsList_item'),
+      countItem = slideWrapItem.length,
 
       slidePag = $('.slidesItemsBtnPag'),
 
@@ -25,9 +25,8 @@ $(function() {
         * Функция ресайза блока слайдера изображений товара
        */
       resizeSlides = function resizeSlides() {
-        var slideList = $('.slidesItemsList'),
-            slideWrap = $('.slidesItems'),
-            slideWrapHeight = 350;
+        var slideWrapHeight = 350,
+            slideImg = slideWrapItem.find('.slidesItemsList_img');
         // end vars 
         
         slideWrapWidth = $('.slidesItems').width();   
@@ -37,19 +36,9 @@ $(function() {
         };
 
         slideWrap.css({'height' : slideWrapHeight, 'background' : 'none'});
-
-        countItem = 0;
-
-        // установка размеров элементам слайдера
-        slideWrapItem.each(function() {
-          countItem++;
-
-          var slideImg = $(this).find('.slidesItemsList_img');
-
-          slideList.fadeIn('300').css({'width' : slideWrapWidth * countItem});
-          $(this).css({'width' : slideWrapWidth});
-          slideImg.css({'height' : slideWrapHeight});
-        });
+        slideList.fadeIn('300').css({'width' : slideWrapWidth * countItem});
+        slideWrapItem.css({'width' : slideWrapWidth});
+        slideImg.css({'height' : slideWrapHeight - 30});
 
         //скрываем кнопки и пагинатор, если слайдер имеет один элемент
         if ( countItem <= 1 ) {
@@ -63,17 +52,13 @@ $(function() {
 
         var slideListLeftNew = -1 * slideWrapWidth * curSlide;
 
-        $('.slidesItemsList').css({'left' : slideListLeftNew});
+        slideList.css({'left' : slideListLeftNew});
       },
 
       /*
         * Пагинация слайдера
        */
       paginationSlides = function paginationSlides() {
-     
-        slideWrapItem.each(function() {
-          countItem++;
-        });
 
         if ( countItem > 1 ) { 
             for ( var i = 1; i <= countItem; i++) {
@@ -102,10 +87,10 @@ $(function() {
         }
 
         if( curSlide <= (countItem - 1) ) {
-          $('.slidesItemsList').stop(true, true).animate({'left' : slideListLeftNew});
+          slideList.stop(true, true).animate({'left' : slideListLeftNew});
 
-            slidePagItemActive.removeClass(pagActive);
-            slidePagItemActive.next().addClass(pagActive);
+          slidePagItemActive.removeClass(pagActive);
+          slidePagItemActive.next().addClass(pagActive);
         }
 
         if( curSlide > 0 ) {
@@ -131,7 +116,7 @@ $(function() {
         }
 
         if( curSlide >= 0 ) {
-          $('.slidesItemsList').stop(true, true).animate({'left' : slideListLeftNew});
+          slideList.stop(true, true).animate({'left' : slideListLeftNew});
 
           slidePagItemActive.removeClass(pagActive);
           slidePagItemActive.prev().addClass(pagActive);
@@ -145,10 +130,14 @@ $(function() {
 
   $('.productDescImg').touchwipe({
     wipeLeft : function() {
-      nextSlides();
+      if ( curSlide < countItem - 1 ) {
+        nextSlides();
+      }
     },
     wipeRight : function() {
-      prevSlides();
+      if ( curSlide > 0 ) {
+        prevSlides();
+      }
     }
   });
       
