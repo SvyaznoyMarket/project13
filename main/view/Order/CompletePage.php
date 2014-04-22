@@ -182,4 +182,9 @@ class CompletePage extends Layout {
                 <noscript><img src="http://pixel.everesttech.net/245/t?ev_Orders='.$dataOrders['orders'].'&ev_Revenue='.$dataOrders['revenue'].'&ev_Margin='.$dataOrders['margin'].'&ev_Items='.$dataOrders['items'].'&ev_transid='.$dataOrders['transid'].'" width="1" height="1"/></noscript>
             </div>';
     }
+
+    public function slotAdblender() {
+        // For ports.js analytics
+        return \App::config()->analytics['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' => 'layout-order-complete']).'"></div>' : '';
+    }
 }
