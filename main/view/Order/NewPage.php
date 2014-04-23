@@ -54,10 +54,7 @@ class NewPage extends Layout {
     }
 
     public function slotRuTargetOrderOneClickJS() {
-        if (!\App::config()->partners['RuTarget']['enabled']) return;
-
-        $oneClick = $this->getParam('oneClick');
-        if (!$oneClick) return;
+        if (!$this->isOneClick() || !\App::config()->partners['RuTarget']['enabled']) return;
 
         /** @var $products Product[] */
         $products = $this->getParam('productsById');
@@ -84,5 +81,41 @@ class NewPage extends Layout {
         ];
 
         return "<div id='RuTargetOrderOneClickJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+    }
+
+    public function slotRuTargetOrderJS() {
+        if ($this->isOneClick() || !\App::config()->partners['RuTarget']['enabled']) return;
+
+        /** @var $products Product[] */
+        $products = $this->getParam('productsById');
+        if (!$products || empty($products) || !is_array($products)) return;
+
+        $user = \App::user();
+        $cart = $user->getCart();
+
+        $productList = [];
+        foreach ($products as $product) {
+            if (!$product instanceof Product) continue;
+
+            /** @var $cartProduct CartProduct */
+            $cartProduct = $cart->getProductById($product->getId()) ?: null;
+            if (!$cartProduct instanceof CartProduct) continue;
+
+            $productList[] = [
+                'qty' => $cartProduct->getQuantity(),
+                'sku' => $cartProduct->getId(),
+            ];
+        }
+
+        $data = [
+            'products' => $productList,
+            'regionId' => $user->getRegionId(),
+        ];
+
+        return "<div id='RuTargetOrderJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+    }
+
+    public function isOneClick() {
+        return (bool)$this->getParam('oneClick');
     }
 }

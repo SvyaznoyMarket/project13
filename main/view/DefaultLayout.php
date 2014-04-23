@@ -678,6 +678,78 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    /**
+     * RuTarget
+     * Код для страницы оформления покупки
+     *
+     * @return string
+     */
+    public function slotRuTargetOrderJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Код для страницы благодарности за заказ
+     *
+     * @return string
+     */
+    public function slotRuTargetOrderCompleteJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Коды для страницы поиска
+     *
+     * @return string
+     */
+    public function slotRuTargetSearchJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Код для главной страницы
+     *
+     * @return string
+     */
+    public function slotRuTargetHomepageJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Код для всех остальных страниц
+     *
+     * @return string
+     */
+    public function slotRuTargetOtherPageJS() {
+        if (!\App::config()->partners['RuTarget']['enabled']) return;
+
+        $pixels = [
+            $this->slotRuTargetProductJS(),
+            $this->slotRuTargetProductCategoryJS(),
+            $this->slotRuTargetCartJS(),
+            $this->slotRuTargetOrderOneClickJS(),
+            $this->slotRuTargetOrderJS(),
+            $this->slotRuTargetOrderCompleteJS(),
+            $this->slotRuTargetSearchJS(),
+            $this->slotRuTargetHomepageJS(),
+        ];
+
+        // отсекаем с массива все отсутствующие на странице пиксели RuTarget
+        $pixels = array_filter($pixels);
+
+        // если на странице уже присутствует RuTarget пиксель, то не выводим наш пиксель RuTargetOtherPage
+        if (!empty($pixels)) {
+            return;
+        }
+
+        return "<div id='RuTargetOtherPageJS' class='jsanalytics' data-value='" . json_encode(['regionId' => \App::user()->getRegionId()]) . "'></div>";
+    }
+
+
     public function slotСpaexchangeJS () {
         return '';
     }

@@ -2,6 +2,9 @@
 
 namespace View\Order;
 
+use \Model\Order\Product\Entity as OrderProduct;
+use \Model\Order\Entity as Order;
+
 class CompletePage extends Layout {
     public function prepare() {
         $orders = is_array($this->getParam('orders')) ? $this->getParam('orders') : [];
@@ -181,5 +184,35 @@ class CompletePage extends Layout {
             '<div id="AdLensJS" class="jsanalytics" data-value="' . $this->json($dataOrders) . '">
                 <noscript><img src="http://pixel.everesttech.net/245/t?ev_Orders='.$dataOrders['orders'].'&ev_Revenue='.$dataOrders['revenue'].'&ev_Margin='.$dataOrders['margin'].'&ev_Items='.$dataOrders['items'].'&ev_transid='.$dataOrders['transid'].'" width="1" height="1"/></noscript>
             </div>';
+    }
+
+    public function slotRuTargetOrderCompleteJS() {
+        if (!\App::config()->partners['RuTarget']['enabled']) return;
+
+        /** @var $orders Order[] */
+        $orders = $this->getParam('orders');
+        if (!$orders || empty($orders) || !is_array($orders)) return;
+
+        $productList = [];
+        foreach ($orders as $order) {
+            if (!$order instanceof Order) continue;
+
+            foreach ($order->getProduct() as $product) {
+                if (!$product instanceof OrderProduct) continue;
+
+                $productList[] = [
+                    'qty' => $product->getQuantity(),
+                    'sku' => $product->getId(),
+                ];
+            }
+        }
+
+        $data = [
+            'products' => $productList,
+            'regionId' => \App::user()->getRegionId(),
+        ];
+
+        return "<div id='RuTargetOrderCompleteJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+
     }
 }

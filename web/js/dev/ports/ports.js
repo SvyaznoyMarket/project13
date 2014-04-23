@@ -1578,6 +1578,101 @@ window.ANALYTICS = {
 		_rutarget.push(result);
 	},
 
+	RuTargetOrderJS: function() {
+		var
+			rutarget = $('#RuTargetOrderJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.products || !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'confirmOrder', 'products': data.products, 'regionId': data.regionId};
+
+		console.info('RuTargetOrder');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetOrderCompleteJS: function() {
+		var
+			rutarget = $('#RuTargetOrderCompleteJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.products || !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'thankYou', 'products': data.products, 'regionId': data.regionId};
+
+		console.info('RuTargetOrderComplete');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetSearchJS: function() {
+		var
+			rutarget = $('#RuTargetSearchJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'otherPage', 'regionId': data.regionId};
+
+		console.info('RuTargetSearch');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetHomepageJS: function() {
+		var
+			rutarget = $('#RuTargetHomepageJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'otherPage', 'regionId': data.regionId};
+
+		console.info('RuTargetHomepage');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetOtherPageJS: function() {
+		var
+			rutarget = $('#RuTargetOtherPageJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'otherPage', 'regionId': data.regionId};
+
+		console.info('RuTargetOtherPage');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
 
 	enable : true
 }
