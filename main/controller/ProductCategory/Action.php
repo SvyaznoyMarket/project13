@@ -565,13 +565,12 @@ class Action {
         $slideData = null;
         if (array_key_exists('promo_slider', $catalogJson)) {
             $show = isset($catalogJson['promo_slider']['show']) ? (bool)$catalogJson['promo_slider']['show'] : false;
-            $name = isset($catalogJson['promo_slider']['name']) ? trim($catalogJson['promo_slider']['name']) : null;
+            $promoCategoryToken = isset($catalogJson['promo_slider']['promo_token']) ? trim($catalogJson['promo_slider']['promo_token']) : null;
 
-            if ($show && !empty($name)) {
+            if ($show && !empty($promoCategoryToken)) {
                 try {
                     $promoRepository = \RepositoryManager::promo();
                     $promo = null;
-                    $promoCategoryToken = $name;
 
                     $promoRepository->prepareEntityByToken($promoCategoryToken, function($data) use (&$promo, &$promoCategoryToken) {
                         if (is_array($data)) {
