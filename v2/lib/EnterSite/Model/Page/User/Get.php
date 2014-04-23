@@ -1,10 +1,9 @@
 <?php
 
 namespace EnterSite\Model\Page\User {
-    use EnterSite\Model\JsonPage;
     use EnterSite\Model\Partial;
 
-    class Get extends JsonPage {
+    class Get {
         /** @var Partial\Cart\ProductButton[] */
         public $buyButtons = [];
         /** @var Partial\Cart\ProductSpinner[] */
