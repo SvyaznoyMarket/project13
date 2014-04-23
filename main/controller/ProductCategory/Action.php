@@ -561,6 +561,64 @@ class Action {
             $promoContent = '';
         }
 
+        // promo slider
+        $slideData = null;
+        if (array_key_exists('promo_slider', $catalogJson)) {
+            $show = isset($catalogJson['promo_slider']['show']) ? (bool)$catalogJson['promo_slider']['show'] : false;
+            $name = isset($catalogJson['promo_slider']['name']) ? trim($catalogJson['promo_slider']['name']) : null;
+
+            if ($show && !empty($name)) {
+                try {
+                    $promoRepository = \RepositoryManager::promo();
+                    $promo = null;
+                    $promoCategoryToken = $name;
+
+                    $promoRepository->prepareEntityByToken($promoCategoryToken, function($data) use (&$promo, &$promoCategoryToken) {
+                        if (is_array($data)) {
+                            $data['token'] = $promoCategoryToken;
+                            $promo = new \Model\Promo\Entity($data);
+                        }
+                    });
+                    $client->execute();
+
+                    if (!$promo) {
+                        throw new \Exception\NotFoundException(sprintf('Промо-каталог @%s не найден.', $promoCategoryToken));
+                    }
+                    /** @var $promo \Model\Promo\Entity */
+
+                    // перевариваем данные изображений для слайдера в $slideData
+                    foreach ($promo->getImage() as $image) {
+                        if (!$image instanceof \Model\Promo\Image\Entity) continue;
+
+                        $itemProducts = [];
+                        foreach($image->getProducts() as $productId) {
+                            if (!isset($products[$productId])) continue;
+                            $product = $products[$productId];
+                            /** @var $product \Model\Product\Entity */
+                            $itemProducts[] = [
+                                'image' => $product->getImageUrl(2), // 163х163 seize
+                                'link'  => $product->getLink(),
+                                'name'  => $product->getName(),
+                                'price' => $product->getPrice(),
+                            ];
+                        }
+
+                        $slideData[] = [
+                            'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
+                            'title'   => $image->getName(),
+                            'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
+                            'time'    => $image->getTime() ? $image->getTime() : 3000,
+                            'products'=> $itemProducts,
+                            // Пока не нужно, но в будущем, возможно понадобится делать $repositoryPromo->setEntityImageLink() как в /main/controller/Promo/IndexAction.php
+                        ];
+                    }
+                } catch (\Exception $e) {
+                    \App::exception()->remove($e);
+                    \App::logger()->error($e);
+                }
+            }
+        }
+
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,
@@ -574,7 +632,8 @@ class Action {
             &$shop,
             &$relatedCategories,
             &$categoryConfigById,
-            &$categoryPath
+            &$categoryPath,
+            &$slideData
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -593,6 +652,7 @@ class Action {
                 'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
             ]);
             $page->setParam('categoryPath', $categoryPath);
+            $page->setGlobalParam('slideData', $slideData);
         };
 
         // полнотекстовый поиск через сфинкс

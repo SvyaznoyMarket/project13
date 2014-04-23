@@ -23,22 +23,10 @@ if ((bool)$siblingCategories) {
     /* <!--/ TCHIBO - слайдер-меню разделов Чибо -->*/
 }
 
-?>
-<div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $page->json($slideData) ?>" data-use-interval="true" data-use-hash="false" data-use-carousel="true">
-
-	<script type="text/html" id="slide_tmpl">
-        <?= file_get_contents(__DIR__ . '/slide.tmpl'); ?>
-	</script>
-
-	<div class="bPromoCatalogSlider mTchiboSlider ">
-	    <a href="#" class="bPromoCatalogSlider_eArrow mArLeft"></a>
-	    <a href="#" class="bPromoCatalogSlider_eArrow mArRight"></a>
-	    <div class="bPromoCatalogSliderWrap jsPromoCatalogSliderWrap clearfix"></div>
-	</div>
-
-	<div id="promoCatalogPaginator" class="bPaginator mTchiboPaginator clearfix"></div>
-</div>
-<!--/ TCHIBO - крутилка разделов Чибо на рутовой странице -->
+// TCHIBO - крутилка разделов Чибо на рутовой странице
+if ((bool)$slideData) {
+    echo $helper->render('tchibo/promo-catalog', ['slideData' => $slideData]);
+} ?>
 
 <!--TCHIBO - каталог разделов, баннеров, товаров Чибо -->
 <div class="tchiboCatalog clearfix">
