@@ -1,9 +1,7 @@
 <?php
 
 namespace EnterSite\Model\Page {
-    use EnterSite\Model\JsonPage;
-
-    class Debug extends JsonPage {
+    class Debug {
         /** @var string */
         public $name;
         /** @var Debug\Error|null */
@@ -19,10 +17,7 @@ namespace EnterSite\Model\Page {
         /** @var Debug\Query[] */
         public $queries = [];
 
-        public function __construct() {
-            parent::__construct();
-
-        }
+        public function __construct() {}
     }
 }
 

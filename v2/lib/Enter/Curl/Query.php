@@ -8,12 +8,12 @@ abstract class Query implements \JsonSerializable {
     /** @var string|null */
     protected $url;
     /**
-     * @name Массив параметров для POST-запроса
+     * Массив параметров для POST-запроса
      * @var array
      */
     protected $data = [];
     /**
-     * @name Строка вида user:password
+     * Строка вида user:password
      * @var string
      */
     protected $auth;
@@ -22,7 +22,7 @@ abstract class Query implements \JsonSerializable {
     /** @var \Exception|null */
     protected $error;
     /**
-     * @name Таймаут, мс
+     * Таймаут, мс
      * @var int|null
      */
     protected $timeout;
@@ -31,12 +31,11 @@ abstract class Query implements \JsonSerializable {
      */
     protected $retry = 0;
     /**
-     * @name Счетчик вызовов
+     * Счетчик вызовов
      * @var int
      */
     protected $call = 0;
     /**
-     * @name
      * @var mixed
      */
     protected $result;

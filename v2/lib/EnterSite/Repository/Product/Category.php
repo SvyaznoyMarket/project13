@@ -4,7 +4,6 @@ namespace EnterSite\Repository\Product;
 
 use Enter\Http;
 use Enter\Curl\Query;
-use Enter\Exception;
 use EnterSite\ConfigTrait;
 use EnterSite\Model;
 

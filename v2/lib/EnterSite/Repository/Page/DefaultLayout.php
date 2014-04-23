@@ -46,6 +46,19 @@ class DefaultLayout {
         // главное меню
         $page->mainMenu = $request->mainMenu;
 
+        // регион
+        $page->regionBlock->autocompleteUrl = $router->getUrlByRoute(new Routing\Region\Autocomplete());
+        foreach ([
+            ['id' => '14974', 'name' => 'Москва'],
+            ['id' => '108136', 'name' => 'Санкт-Петербург'],
+        ] as $regionItem) {
+            $region = new Page\RegionBlock\Region();
+            $region->name = $regionItem['name'];
+            $region->url = $router->getUrlByRoute(new Routing\Region\Set($regionItem['id']));
+
+            $page->regionBlock->regions[] = $region;
+        }
+
         // шаблоны mustache
         foreach ([
             [

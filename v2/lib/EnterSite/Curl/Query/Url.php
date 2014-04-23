@@ -11,7 +11,7 @@ class Url {
     /** @var string */
     public $path;
     /**
-     * @name после знака вопроса ?
+     * после знака вопроса ?
      * @var array
      */
     public $query = [];

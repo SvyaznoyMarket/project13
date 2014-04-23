@@ -1,0 +1,45 @@
+<!-- popup - выбор регина -->
+<div class="popupBox jsCitySelectBox">
+    <div class="popupBox_close"></div>
+
+    <div class="popupBox_title">Ваш город</div>
+    <p class="popupBox_text">Выберите город, в котором собираетесь получать товары.<br/>От выбора зависит стоимость товаров и доставки.</p>
+
+    <form action="" id="" class="regionForm form2col clearfix">
+        <button class="regionForm_btn form2col_btn btnStyle">Сохранить</button>
+
+        <div class="regionForm_selectCity form2col_boxWrap">
+            <div class="regionForm_selectCityInner form2col_boxInner">
+                <input id="js-region-input" data-url="{{autocompleteUrl}}" name="q" type="text" class="regionForm_selectCityInput form2col_input" placeholder="Название города" />
+                <span class="regionForm_selectCityDel"></span>
+            </div>
+        </div>
+
+        <div id="js-region-autocomplete"></div>
+    </form>
+
+    <ul class="regionList">
+    {{#regions}}
+        <li class="regionList_item">
+            <a class="regionList_link" href="{{url}}">{{name}}</a>
+        </li>
+    {{/regions}}
+    </ul>
+</div>
+<!--/ popup - выбор регина -->
+
+<!-- popup - выбор регина -->
+<div class="popupBox jsSearchBox">
+    <div class="popupBox_close"></div>
+
+    <form action="" id="" class="searchForm form2col clearfix">
+        <button class="searchForm_btn form2col_btn btnStyleBlack">Найти</button>
+
+        <div class="searchForm_searchField form2col_boxWrap">
+            <div class="searchForm_searchFieldInner form2col_boxInner">
+                <input type="text" class="searchForm_searchInput form2col_input" placeholder="Поиск" id="" />
+            </div>
+        </div>
+    </form>
+</div>
+<!--/ popup - выбор регина -->

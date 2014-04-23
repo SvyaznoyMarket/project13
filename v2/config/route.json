@@ -16,7 +16,7 @@
         }
     },
     "Product\\GetRecommendedList": {
-        "name": "Рекомеендации товара",
+        "name": "Рекомендации товара",
         "pattern": "/product-recommended/{productId}",
         "require": {
             "productId": "[\\w\\d-_]+"
@@ -35,6 +35,10 @@
         "require": {
             "categoryPath": "[\\w\\d-_]+/[\\w\\d-_]+"
         }
+    },
+    "Region\\Autocomplete": {
+        "name": "Автоподстановка региона",
+        "pattern": "/ajax/region/autocomplete"
     },
     "Region\\Set": {
         "name": "Установить регион",
