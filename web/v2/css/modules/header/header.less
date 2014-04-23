@@ -139,12 +139,69 @@
 			background-position: 50% -122px;
 		}
 
+		&__cartVal {
+			text-transform: none;
+			font-size: 11px;
+			position: relative;
+	
+			.userBox_text {
+				font-size: 12px;
+				color: @firmOrange;
+			}
+
+			.rubl {
+				font-size: 12px;
+			}
+
+			.qnt {
+				background: #f88a08;
+
+				.rounded(4px);
+
+			    font-size: 12px;
+			    font-weight: bold;
+
+			    height: 15px;
+			    line-height: 15px;
+
+			    padding: 0 6px;
+
+			    position: absolute;
+			    right: 0;
+			    top: -6px;
+			}
+		}
+
+		&__authVal {
+			max-width: 90px;
+			position: relative;
+			overflow: hidden;
+			text-align: left;
+
+			.userBox_text {
+				color: @firmOrange;
+				width: 500px;
+				display: inline-block;
+			}
+		}
+
 		&:hover {
 			color: @white;
 			text-decoration: none;
 			animation: 0.3s linear 0s normal none 1 resize;
 			outline: none;
 		}
+	}
+
+	.transBg {
+		background-position: 0 0;
+	    
+	    height: 15px;
+	    position: absolute;
+	    right: 0;
+
+	    width: 8px;
+	    bottom: 0;
 	}
 
 	&_text {
