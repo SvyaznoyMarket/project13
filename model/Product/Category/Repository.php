@@ -293,6 +293,7 @@ class Repository {
 
         $params = [
             'is_load_parents' => true,
+            'count_local' => 0 // HOTFIX for SITE-3621 TODO-zra в будущем передавать параметр из контроллера
         ];
         if (null !== $maxLevel) {
             $params['max_level'] = $maxLevel;

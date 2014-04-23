@@ -84,10 +84,10 @@
 <?= $page->slotMyThings() ?>
 <?= $page->slotAdriver() ?>
 <?= $page->slotPartnerCounter() ?>
+<?= $page->slotAdblender() ?>
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="yandexMetrika" class="jsanalytics"></div>
-    <div id="adblenderCommon" class="jsanalytics"></div>
 <? endif ?>
 
 </body>

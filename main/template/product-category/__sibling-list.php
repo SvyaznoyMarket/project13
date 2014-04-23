@@ -11,6 +11,9 @@ return function(
 
 
 ?>
+    <? if ($rootCategoryInMenu && "tchibo" === $rootCategoryInMenu->getToken() && 0 == $rootCategoryInMenu->getProductCount()): ?>
+        <div>К сожалению, товары Tchibo недоступны к покупке в вашем городе <button>Где купить</button></div>
+    <? endif ?>
 
     <!-- TCHIBO - слайдер-меню разделов Чибо -->
     <div class="tchiboNav clearfix">

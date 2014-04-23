@@ -10,5 +10,5 @@
         Здесь скидки до 70%<br/> в ENTER!
     </div>
 
-    <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange enterPrize__reglink">Получить</a>
+    <a href="<?= $page->url('enterprize', ['from' => 'enterprize-dropdown-banner']) ?>" class="mBtnOrange enterPrize__reglink">Получить</a>
 </div>

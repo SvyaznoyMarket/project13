@@ -70,9 +70,9 @@ class CompletePage extends Layout {
         }
 
         return ''
-            . ($isOrderAnalytics ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
-            . "\n\n"
-            . $this->render('_innerJavascript');
+        . ($isOrderAnalytics ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
+        . "\n\n"
+        . $this->render('_innerJavascript');
     }
 
     public function slotAdriver() {
@@ -184,6 +184,11 @@ class CompletePage extends Layout {
             '<div id="AdLensJS" class="jsanalytics" data-value="' . $this->json($dataOrders) . '">
                 <noscript><img src="http://pixel.everesttech.net/245/t?ev_Orders='.$dataOrders['orders'].'&ev_Revenue='.$dataOrders['revenue'].'&ev_Margin='.$dataOrders['margin'].'&ev_Items='.$dataOrders['items'].'&ev_transid='.$dataOrders['transid'].'" width="1" height="1"/></noscript>
             </div>';
+    }
+
+    public function slotAdblender() {
+        // For ports.js analytics
+        return \App::config()->analytics['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' => 'layout-order-complete']).'"></div>' : '';
     }
 
     public function slotRuTargetOrderCompleteJS() {

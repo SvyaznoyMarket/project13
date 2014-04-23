@@ -48,6 +48,16 @@ class FormAction {
             \App::dataStoreClient()->execute();
         }
 
+        if ($enterpizeCoupon) {
+            $limitResponse = \App::coreClientV2()->query('coupon/limits', [], ['list' => array($enterpizeCoupon->getToken())]);
+        }
+
+        if ($enterpizeCoupon && isset($limitResponse['detail'][$enterpizeCoupon->getToken()])) {
+            $enterpizeCouponLimit = $limitResponse['detail'][$enterpizeCoupon->getToken()];
+        } else {
+            $enterpizeCouponLimit = null;
+        }
+
         if (!$enterpizeCoupon) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
         }
@@ -55,7 +65,7 @@ class FormAction {
         $data = (array)$session->get($sessionName, []);
 
         // если пользователь авторизован и уже является участником enterprize
-        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember()) {
+        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember() && $enterpizeCouponLimit != 0) {
             $data = array_merge($data, [
                 'token'            => $user->getToken(),
                 'name'             => $user->getEntity()->getFirstName(),
@@ -75,6 +85,7 @@ class FormAction {
 
         $page = new \View\Enterprize\FormPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
+        $page->setParam('limit', $enterpizeCouponLimit);
         $page->setParam('form', $this->getForm());
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
         $page->setParam('authSource', $session->get('authSource', null));
