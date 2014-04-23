@@ -188,7 +188,7 @@
                         return;
                     }
 
-                    if (sliderData.count <= 0) {
+                    if (sliderData.count <= 0 && $widget) {
                         $widget.remove();
                         return;
                     }
