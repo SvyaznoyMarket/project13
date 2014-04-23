@@ -162,11 +162,11 @@ class ProductAction {
                 $productQuantity = isset($productQuantitiesById[$productId]) ? $productQuantitiesById[$productId] : null;
                 if (!$productQuantity) continue;
 
-                $cart->setProduct($product, $productQuantity);
+                $cart->setProduct($product, $productQuantity + $cart->getQuantityByProduct($productId));
                 $cartProduct = $cart->getProductById($product->getId());
                 $this->updateCartWarranty($product, $cartProduct, $productQuantity);
 
-                $quantity += $productQuantity;
+                $quantity += $cart->getQuantityByProduct($productId);
             }
             $cart->fill();
 
