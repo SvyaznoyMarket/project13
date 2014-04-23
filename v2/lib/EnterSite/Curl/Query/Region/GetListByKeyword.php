@@ -9,7 +9,7 @@ use EnterSite\Curl\Query\Url;
 class GetListByKeyword extends Query {
     use CoreQueryTrait;
 
-    /** @var array|null */
+    /** @var array */
     protected $result;
 
     /**
