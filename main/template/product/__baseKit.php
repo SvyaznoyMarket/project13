@@ -147,7 +147,7 @@ return function (
 
                 <div class="bCountSection clearfix">
                     <button class="bCountSection__eM" data-bind="click: minusClick, css: { mDisabled : count() == 0 }">-</button>
-                    <input type="text" value="" class="bCountSection__eNum" data-bind="value: count, event: { keydown: countKeydown, keyup: countKeyUp }">
+                    <input type="text" value="" class="bCountSection__eNum" data-bind="value: count, valueUpdate: 'input', event: { keydown: countKeydown, keyup: countKeyUp }">
                     <button class="bCountSection__eP" data-bind="click: plusClick, css: { mDisabled : count() == maxCount() }">+</button>
                     <span>шт.</span>
                 </div>

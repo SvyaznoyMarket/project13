@@ -47,13 +47,15 @@
             self.name = product.name;
             self.line = product.lineName;
             self.price = product.price;
-            self.prettyPrice = window.printPrice(self.price);
             self.image = product.image;
             self.height = product.height;
             self.width = product.width;
             self.depth = product.depth;
             self.count = ko.observable(product.count);
             self.maxCount = ko.observable(Infinity);
+            self.prettyPrice = ko.computed(function(){
+                return window.printPrice(parseInt(self.price) * parseInt(self.count()));
+            });
             self.deliveryDate = ko.observable(product.deliveryDate);
 
             self.plusClick = function() {
@@ -93,14 +95,14 @@
                     (e.which === 8) ||
                     (e.which === 46))
                     ) {
+                    if (item.count().toString().length < 2 && (e.which == 8 || e.which == 46)) return false; // предотвращаем пустую строку ввода
                     return true;
                 }
                 return false;
             };
 
             self.countKeyUp = function(item, e) {
-                //console.log('Keyup', item, e, item == self)
-                //item.count(parseInt(item.count()));
+                // TODO-zra сделать проверку доставки
                 return false;
             }
         }
