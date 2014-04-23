@@ -34,7 +34,7 @@ class LineAction {
         $globalProducts = [];
         $productRepository->prepareCollectionById($productInLineIds, \App::user()->getRegion(), function($data) use(&$globalProducts) {
             foreach ($data as $item) {
-                $globalProducts[] = new \Model\Product\ExpandedEntity($item);
+                $globalProducts[] = new \Model\Product\Entity($item);
             }
         });
         \App::coreClientV2()->execute();
@@ -47,7 +47,7 @@ class LineAction {
 
         // фильтрация связанных товаров
         $productsInLine = array_filter($productsInLine, function ($product) {
-            return $product instanceof \Model\Product\ExpandedEntity;
+            return $product instanceof \Model\Product\Entity;
         });
 
         //Запрашиваю составные части набора
