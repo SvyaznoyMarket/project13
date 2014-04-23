@@ -191,6 +191,11 @@ class Action {
                         $paymentForm = $result['detail'];
                     }
 
+                    // перезаписываем PayUrl значением пришедшим с ядра
+                    if ($paymentProvider instanceof \Payment\ProviderInterface && !empty($result['url'])) {
+                        $paymentProvider->setPayUrl($result['url']);
+                    }
+
                 } catch (\Exception $e) {
                     \App::logger()->error($e);
                     \App::exception()->remove($e);
@@ -802,7 +807,7 @@ class Action {
                 }
 
                 // дополнительные гарантии для товара
-                $warrantyTotal = 0; $warrantyQuan = 0; 
+                $warrantyTotal = 0; $warrantyQuan = 0;
                 if ($cartItem instanceof \Model\Cart\Product\Entity) {
                     /** @var $product \Model\Product\CartEntity */
                     $product = $productsById[$cartItem->getId()];
