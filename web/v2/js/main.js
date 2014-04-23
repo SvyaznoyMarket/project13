@@ -188,16 +188,17 @@
                         return;
                     }
 
-                    if (sliderData.count <= 0) {
+                    var $widget = $('.' + sliderData.widgetId); // TODO: исправить
+
+                    if (sliderData.count <= 0 && $widget) {
                         $widget.remove();
                         return;
                     }
 
-                    var $widget = $('.' + sliderData.widgetId); // TODO: исправить
-
                     console.info('slider', sliderData, $widget);
 
                     $widget.trigger('render', sliderData);
+                    console.warn($widget.parents('.js-container'));
                     $widget.parents('.js-container').show();
                     $body.trigger('render');
                 });
