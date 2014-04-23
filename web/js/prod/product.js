@@ -1073,7 +1073,7 @@
             self.deliveryDate = ko.observable(product.deliveryDate);
 
             self.plusClick = function() {
-                if (self.maxCount() > self.count()) {
+                if (self.maxCount() > self.count() && self.count() < 99) {
                     self.count(parseInt(self.count()) + 1);
                     $.post('/ajax/product/delivery', {product: [
                         {id: self.id, quantity: self.count()}
@@ -1110,6 +1110,7 @@
                     (e.which === 46))
                     ) {
                     if (item.count().toString().length < 2 && (e.which == 8 || e.which == 46)) return false; // предотвращаем пустую строку ввода
+                    if (item.count().toString().length > 1 && !(e.which == 8 || e.which == 46)) return false;
                     return true;
                 }
                 return false;
