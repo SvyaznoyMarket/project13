@@ -2,7 +2,6 @@
 
 namespace EnterSite\Repository;
 
-use Enter\Exception;
 use Enter\Http;
 use Enter\Curl\Query;
 use Enter\Logging\Logger;

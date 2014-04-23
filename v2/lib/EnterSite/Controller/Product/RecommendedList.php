@@ -2,7 +2,6 @@
 
 namespace EnterSite\Controller\Product;
 
-use Enter\Exception;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;

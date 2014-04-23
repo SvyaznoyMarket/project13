@@ -198,14 +198,55 @@
                     console.info('slider', sliderData, $widget);
 
                     $widget.trigger('render', sliderData);
-                    console.warn($widget.parents('.js-container'));
                     $widget.parents('.js-container').show();
                     $body.trigger('render');
                 });
 
                 $('.js-productSlider').enterslide();
             });
-        })
+        });
+
+
+        // автоподстановка регионов
+        $regionInput = $('#js-region-input');
+        $regionInput.autocomplete({
+            autoFocus: true,
+            appendTo: '#js-region-autocomplete',
+            source: function(request, response) {
+                $.ajax({
+                    url: $regionInput.data('url'),
+                    dataType: 'json',
+                    data: {
+                        q: request.term
+                    },
+                    success: function(data) {
+                        response($.map(data.result, function(item) {
+                            return {
+                                label: item.name,
+                                value: item.name,
+                                url: item.url
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 3,
+            select: function(e, ui) {
+                console.info('select:regionInput', e, ui);
+            },
+            open: function() {
+                //$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+            },
+            close: function() {
+                //$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+            },
+            messages: {
+                noResults: '',
+                results: function(amount) {
+                    return '';
+                }
+            }
+        });
     };
 
 

@@ -24,7 +24,7 @@ class RetailRocketUrl {
      */
     public $itemId;
     /**
-     * @name после знака вопроса ?
+     * после знака вопроса ?
      * @var array
      */
     public $query = [];

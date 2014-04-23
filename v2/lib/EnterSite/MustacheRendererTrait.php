@@ -2,7 +2,7 @@
 
 namespace EnterSite;
 
-use \Enter\Mustache\Loader\FilesystemAliasLoader;
+use Enter\Mustache\Loader\FilesystemAliasLoader;
 
 trait MustacheRendererTrait {
     use ConfigTrait;

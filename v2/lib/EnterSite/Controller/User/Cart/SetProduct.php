@@ -21,6 +21,7 @@ class SetProduct {
 
     /**
      * @param Http\Request $request
+     * @throws \Exception
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {

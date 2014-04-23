@@ -10,6 +10,8 @@ namespace EnterSite\Model\Page {
         public $templates = [];
         /** @var DefaultLayout\BreadcrumbBlock|null */
         public $breadcrumbBlock;
+        /** @var DefaultLayout\RegionBlock */
+        public $regionBlock;
         /** @var DefaultLayout\MainMenu */
         public $mainMenu;
         /** @var DefaultLayout\Search */
@@ -21,6 +23,7 @@ namespace EnterSite\Model\Page {
             parent::__construct();
 
             $this->mainMenu = new DefaultLayout\MainMenu();
+            $this->regionBlock = new DefaultLayout\RegionBlock();
             $this->search = new DefaultLayout\Search();
             $this->content = new DefaultLayout\Content();
         }
@@ -29,7 +32,7 @@ namespace EnterSite\Model\Page {
 
 namespace EnterSite\Model\Page\DefaultLayout {
     /**
-     * Шаблоны mustache для блоков <script id="templateId" type="text/html" />
+     * Шаблоны mustache для блоков <script id="{{id}}" type="text/html">{{content}}</script>
      */
     class Template {
         /** @var string */
@@ -43,6 +46,13 @@ namespace EnterSite\Model\Page\DefaultLayout {
     class BreadcrumbBlock {
         /** @var BreadcrumbBlock\Breadcrumb[] */
         public $breadcrumbs = [];
+    }
+
+    class RegionBlock {
+        /** @var string */
+        public $autocompleteUrl;
+        /** @var RegionBlock\Region[] */
+        public $regions = [];
     }
 
     class MainMenu {
@@ -65,6 +75,15 @@ namespace EnterSite\Model\Page\DefaultLayout {
 
 namespace EnterSite\Model\Page\DefaultLayout\BreadcrumbBlock {
     class Breadcrumb {
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $url;
+    }
+}
+
+namespace EnterSite\Model\Page\DefaultLayout\RegionBlock {
+    class Region {
         /** @var string */
         public $name;
         /** @var string */
