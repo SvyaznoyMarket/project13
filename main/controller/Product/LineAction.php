@@ -82,6 +82,7 @@ class LineAction {
         $page->setParam('productView', $productView);
         $page->setParam('productPager', $productPager);
         $page->setParam('title', 'Серия ' . $line->getName());
+        $page->setGlobalParam('addToCartJS', null);
 
         return new \Http\Response($page->show());
     }
