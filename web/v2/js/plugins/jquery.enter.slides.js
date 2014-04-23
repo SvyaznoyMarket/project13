@@ -11,7 +11,7 @@
     onClick   : function() { return false; } // callback
   };
   
-  $.enterslide.prototype   = {
+  $.enterslide.prototype = {
 
     _init : function( options ) {
       this.options    = $.extend( true, {}, $.enterslide.defaults, options );
@@ -20,11 +20,16 @@
       this.$items  = this.$list.children('.sliderBoxItems_item'); // элемент списка товаров (ul > li)
       this.itemsCount = this.$items.length; // количество элементов в списке
 
+      this.$cat = this.$el.prev('.sliderCatWrap').children('.sliderCatList');
+      this.$catItem = this.$cat.children('.sliderCatList_item');
+
       this._configure(); // установка парметров слайдера
       this._addControls(); // добавляем стрелки слайдера
       this._initEvents(); // пересчет параметров, скрытие показ кнопок
 
       var slideLeft = 0;
+
+      console.log(this.$catItem);
     },
 
     /**
@@ -44,6 +49,7 @@
       }
     
       this.$list.css({width : this.sliderW}); // ширина списка ul
+      this.$catItem.first().addClass('sliderCatList_item__active');
     },
 
     /**
@@ -78,24 +84,10 @@
       $(window).on('resize.enterslide', function( event ) {
         instance._reload();
         instance.$list.css({'left' : 0});
-        instance.$navPrev.hide();
-
-        if ( instance.itemsCount == instance.fitCount ||  instance.itemsCount < instance.fitCount ) {
-          instance.$navNext.hide();
-        }
-        else {
-          instance.$navNext.show();
-        }
+        instance._toggleBtn();
       });
 
-      instance.$navPrev.hide();
-
-      if ( instance.itemsCount == instance.fitCount ||  instance.itemsCount < instance.fitCount ) {
-        instance.$navNext.hide();
-      }
-      else {
-        instance.$navNext.show();
-      }
+      instance._toggleBtn();
 
       // клики по контролам
       this.$navNext.on('click.enterslide', function( event ) {
@@ -105,6 +97,22 @@
       this.$navPrev.on('click.enterslide', function( event ) {
         instance._slide('left');
       });
+
+      // выборка аксессуаров для категории
+      this.$catItem.on('click.enterslide', function( event ) {
+        instance._getCatShow();
+
+        var thisItem = $( event.target );
+        if ( thisItem.is(this) ) {
+          thisItem.addClass('sliderCatList_item__active');
+
+          var itemId = thisItem.filter('.sliderCatList_item__active').data('id'),
+              showAll = ( thisItem.filter('.sliderCatList_item__active').data('id') == 0 ),
+              showItem = ( showAll ) ? instance.$items : instance.$items.filter('[data-category="'+itemId+'"]');
+          instance.$items.hide();
+          instance._reWidthSlider(showItem);
+        }
+      })
       
       // touch
       instance.$list.touchwipe({
@@ -116,6 +124,44 @@
         }
       });
       
+    },
+
+    _getCatShow : function() {
+      this.$catItem.removeClass('sliderCatList_item__active');
+    },
+
+    /**
+     * Метод пересчета ширины слайдера для блока аксерруаров
+     */
+    _reWidthSlider : function ( nowItems ) {
+      this.$navNext.hide();
+      this.$navPrev.hide();
+
+      if ( nowItems.length > this.fitCount ) {
+        this.$navNext.show();
+      }
+
+      this.sliderW  = nowItems.length * this.itemW; // ширина списка ul
+      this.$list.css({width : this.sliderW});
+      slideLeft = 0;
+      this.$list.css({'left':slideLeft});
+      nowItems.show();
+    },
+
+    /**
+     * Метод показать/скрыть контролы
+     */
+    _toggleBtn : function() {
+      var instance  = this;
+
+      instance.$navPrev.hide();
+
+      if ( instance.itemsCount == instance.fitCount ||  instance.itemsCount < instance.fitCount ) {
+        instance.$navNext.hide();
+      }
+      else {
+        instance.$navNext.show();
+      }
     },
 
     /**
