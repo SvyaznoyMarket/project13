@@ -202,7 +202,7 @@
                     $body.trigger('render');
                 });
 
-                $('.js-productSlider').enterslide();
+                $('.js-productSliderList').enterslide();
             });
         });
 
