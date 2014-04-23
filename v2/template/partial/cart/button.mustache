@@ -1,8 +1,9 @@
-<div class="js-container">
+<div class="js-widget {{widgetId}}" data-template-selector="#tpl-product-buyButton">
     <a
         href="{{url}}"
-        class="js-buyButton {{id}} btnBuy {{class}}"
-        data-id-selector=".{{id}}"
+        class="js-buyButton btnBuy {{id}} {{class}}"
+        data-widget-selector=".{{widgetId}}"
+        data-spinner-widget-selector=".{{spinnerWidgetId}}"
         data-url="{{&dataUrl}}"
         data-value="{{&dataValue}}"
     >{{text}}</a>

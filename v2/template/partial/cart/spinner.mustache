@@ -1,8 +1,20 @@
-<div class="js-container">
-    <div class="js-buySpinner {{id}} {{class}} counter" data-id-selector=".{{id}}" data-target-selector=".{{targetId}}">
-        <button class="js-buySpinner-dec counter__btn counter__btn-plus">-</button>
-        <input class="js-buySpinner-value counter__input" type="text" id="" name="" value="{{value}}" />
-        <button class="js-buySpinner-inc counter__btn counter__btn-minus">+</button>
+<div class="js-widget js-buySpinner {{widgetId}}" data-template-selector="#tpl-product-buySpinner">
+    <div class="{{class}} counter">
+        <button
+            class="js-buySpinner-dec counter__btn counter__btn-plus"
+            data-widget-selector=".{{widgetId}}"
+            data-button-selector=".{{buttonId}}"
+        >-</button>
+        <input class="js-buySpinner-value counter__input"
+           type="text"
+           value="{{value}}"
+           data-widget-selector=".{{widgetId}}"
+           data-button-selector=".{{buttonId}}"
+        />
+        <button class="js-buySpinner-inc counter__btn counter__btn-minus"
+            data-widget-selector=".{{widgetId}}"
+            data-button-selector=".{{buttonId}}"
+        >+</button>
         <span class="counter__num">шт.</span>
     </div>
 </div>

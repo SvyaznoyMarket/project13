@@ -19,7 +19,8 @@ class ProductSpinner {
         $spinner = new Partial\Cart\ProductSpinner();
 
         $spinner->id = self::getId($product->id);
-        $spinner->targetId = Repository\Partial\Cart\ProductButton::getId($product->id);
+        $spinner->widgetId = self::getWidgetId($product->id);
+        $spinner->buttonId = Repository\Partial\Cart\ProductButton::getId($product->id);
         $spinner->value = 1;
 
         if ($cartProduct) {
@@ -36,5 +37,13 @@ class ProductSpinner {
      */
     public static function getId($productId) {
         return 'id-cart-product-buySpinner-' . $productId;
+    }
+
+    /**
+     * @param $productId
+     * @return string
+     */
+    public static function getWidgetId($productId) {
+        return self::getId($productId) . '-widget';
     }
 }

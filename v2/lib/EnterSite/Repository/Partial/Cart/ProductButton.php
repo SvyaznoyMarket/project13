@@ -7,6 +7,7 @@ use Enter\Helper;
 use EnterSite\RouterTrait;
 use EnterSite\ViewHelperTrait;
 use EnterSite\Routing;
+use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
@@ -49,6 +50,8 @@ class ProductButton {
 
         $button->class = '';
         $button->id = self::getId($product->id);
+        $button->widgetId = self::getWidgetId($product->id);
+        $button->spinnerWidgetId = Repository\Partial\Cart\ProductSpinner::getWidgetId($product->id);
         $button->text = 'Купить';
 
         // если товар в корзине
@@ -83,5 +86,13 @@ class ProductButton {
      */
     public static function getId($productId) {
         return 'id-cart-product-buyButton-' . $productId;
+    }
+
+    /**
+     * @param $productId
+     * @return string
+     */
+    public static function getWidgetId($productId) {
+        return self::getId($productId) . '-widget';
     }
 }

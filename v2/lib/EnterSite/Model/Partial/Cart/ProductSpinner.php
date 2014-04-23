@@ -6,7 +6,9 @@ class ProductSpinner {
     /** @var string */
     public $id;
     /** @var string */
-    public $targetId;
+    public $widgetId;
+    /** @var string */
+    public $buttonId;
     /** @var string */
     public $class;
     /** @var int */

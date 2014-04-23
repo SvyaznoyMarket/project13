@@ -26,13 +26,12 @@ class RecommendedList {
         $router = $this->getRouter();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $productCardRepository = new Repository\Partial\ProductCard();
+        $productSliderRepository = new Repository\Partial\ProductSlider();
 
         $url = $router->getUrlByRoute(new Routing\Product\GetRecommendedList($request->product->id));
 
         // alsoBought slider
-        $page->alsoBoughtSlider = new Partial\ProductSlider();
-        $page->alsoBoughtSlider->dataUrl = $url;
-        $page->alsoBoughtSlider->dataName = 'alsoBoughtSlider';
+        $page->alsoBoughtSlider = $productSliderRepository->getObject('alsoBoughtSlider', $url);
         $page->alsoBoughtSlider->hasCategories = false;
         foreach ($request->alsoBoughtIdList as $productId) {
             /** @var Model\Product|null $productModel */
@@ -44,9 +43,7 @@ class RecommendedList {
         $page->alsoBoughtSlider->count = count($page->alsoBoughtSlider->productCards);
 
         // alsoViewed slider
-        $page->alsoViewedSlider = new Partial\ProductSlider();
-        $page->alsoViewedSlider->dataUrl = $url;
-        $page->alsoViewedSlider->dataName = 'alsoViewedSlider';
+        $page->alsoViewedSlider = $productSliderRepository->getObject('alsoViewedSlider', $url);
         $page->alsoViewedSlider->hasCategories = false;
         foreach ($request->alsoViewedIdList as $productId) {
             /** @var Model\Product|null $productModel */
@@ -58,9 +55,7 @@ class RecommendedList {
         $page->alsoViewedSlider->count = count($page->alsoViewedSlider->productCards);
 
         // similar slider
-        $page->similarSlider = new Partial\ProductSlider();
-        $page->similarSlider->dataUrl = $url;
-        $page->similarSlider->dataName = 'similarSlider';
+        $page->similarSlider = $productSliderRepository->getObject('similarSlider', $url);;
         $page->similarSlider->hasCategories = false;
         foreach ($request->similarIdList as $productId) {
             /** @var Model\Product|null $productModel */

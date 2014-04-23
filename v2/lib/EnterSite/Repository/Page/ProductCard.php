@@ -37,6 +37,7 @@ class ProductCard {
         $cartProductSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
         $productCardRepository = new Repository\Partial\ProductCard();
         $ratingRepository = new Repository\Partial\Rating();
+        $productSliderRepository = new Repository\Partial\ProductSlider();
 
         $productModel = $request->product;
 
@@ -182,7 +183,7 @@ class ProductCard {
 
         // аксессуары товара
         if ((bool)$productModel->relation->accessories) {
-            $page->content->product->accessorySlider = new Partial\ProductSlider();
+            $page->content->product->accessorySlider = $productSliderRepository->getObject('accessorySlider');
             $page->content->product->accessorySlider->count = count($productModel->relation->accessories);
             foreach ($productModel->relation->accessories as $accessoryModel) {
                 $page->content->product->accessorySlider->productCards[] = $productCardRepository->getObject($accessoryModel, $cartProductButtonRepository->getObject($accessoryModel));
@@ -209,22 +210,16 @@ class ProductCard {
         // рекомендации товара
         $recommendListUrl = $router->getUrlByRoute(new Routing\Product\GetRecommendedList($productModel->id));
         // alsoBought slider
-        $page->content->product->alsoBoughtSlider = new Partial\ProductSlider();
+        $page->content->product->alsoBoughtSlider = $productSliderRepository->getObject('alsoBoughtSlider', $recommendListUrl);
         $page->content->product->alsoBoughtSlider->count = 0;
-        $page->content->product->alsoBoughtSlider->dataUrl = $recommendListUrl;
-        $page->content->product->alsoBoughtSlider->dataName = 'alsoBoughtSlider';
         $page->content->product->alsoBoughtSlider->hasCategories = false;
         // alsoViewed slider
-        $page->content->product->alsoViewedSlider = new Partial\ProductSlider();
+        $page->content->product->alsoViewedSlider = $productSliderRepository->getObject('alsoViewedSlider', $recommendListUrl);
         $page->content->product->alsoViewedSlider->count = 0;
-        $page->content->product->alsoViewedSlider->dataUrl = $recommendListUrl;
-        $page->content->product->alsoViewedSlider->dataName = 'alsoViewedSlider';
         $page->content->product->alsoViewedSlider->hasCategories = false;
         // similar slider
-        $page->content->product->similarSlider = new Partial\ProductSlider();
+        $page->content->product->similarSlider = $productSliderRepository->getObject('similarSlider', $recommendListUrl);
         $page->content->product->similarSlider->count = 0;
-        $page->content->product->similarSlider->dataUrl = $recommendListUrl;
-        $page->content->product->similarSlider->dataName = 'similarSlider';
         $page->content->product->similarSlider->hasCategories = false;
 
         // отзывы товара

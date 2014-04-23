@@ -70,8 +70,8 @@ class Get {
                     'id' => $cartProduct->id,
                 ]);
 
-            $page->buyButtons['.' . Repository\Partial\Cart\ProductButton::getId($product->id)] = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
-            $page->buySpinners['.' . Repository\Partial\Cart\ProductSpinner::getId($product->id)] = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
+            $page->buyButtons['.' . Repository\Partial\Cart\ProductButton::getWidgetId($product->id)] = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
+            $page->buySpinners['.' . Repository\Partial\Cart\ProductSpinner::getWidgetId($product->id)] = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
         }
 
         // TODO: вынести на уровень JsonPage.result
