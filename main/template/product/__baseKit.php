@@ -33,14 +33,20 @@ return function (
                     <span class="dimantion_val"><?= $product['height'] ?></span>
                 </div>
 
-                <div class="column separation">x</div>
+                <div class="column dimantion">
+                    <span class="dimantion_name">&nbsp;</span>
+                    <span class="dimantion_val separation">x</span>
+                </div>
 
                 <div class="column dimantion">
                     <span class="dimantion_name">Ширина</span>
                     <span class="dimantion_val"><?= $product['width'] ?></span>
                 </div>
 
-                <div class="column separation">x</div>
+                <div class="column dimantion">
+                    <span class="dimantion_name">&nbsp;</span>
+                    <span class="dimantion_val separation">x</span>
+                </div>
 
                 <div class="column dimantion">
                     <span class="dimantion_name">Глубина</span>
@@ -107,14 +113,20 @@ return function (
                         <span class="dimantion_val" data-bind="text: height"></span>
                     </div>
 
-                    <div class="column separation">x</div>
+                    <div class="column dimantion">
+                        <span class="dimantion_name">&nbsp;</span>
+                        <span class="dimantion_val separation">x</span>
+                    </div>
 
                     <div class="column dimantion">
                         <span class="dimantion_name">Ширина</span>
                         <span class="dimantion_val" data-bind="text: width"></span>
                     </div>
 
-                    <div class="column separation">x</div>
+                    <div class="column dimantion">
+                        <span class="dimantion_name">&nbsp;</span>
+                        <span class="dimantion_val separation">x</span>
+                    </div>
 
                     <div class="column dimantion">
                         <span class="dimantion_name">Глубина</span>
@@ -127,7 +139,10 @@ return function (
                     </div>
                     <!--/ размеры товара -->
 
-                    <div class="column delivery">Доставка <strong data-bind="text: deliveryDate"></strong></div><!--/ доставка -->
+                    <div class="column delivery">
+                        <span class="dimantion_name">&nbsp;</span>
+                        <span class="dimantion_val">Доставка <strong data-bind="text: deliveryDate"></strong></span>
+                    </div><!--/ доставка -->
                 </div>
 
                 <div class="bCountSection clearfix">
