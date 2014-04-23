@@ -12,6 +12,7 @@
   };
   
   $.enterslide.prototype   = {
+
     _init : function( options ) {
       this.options    = $.extend( true, {}, $.enterslide.defaults, options );
       this.$slider = this.$el.find('.sliderBox_inner'); // sliderBox_inner
@@ -77,8 +78,9 @@
       $(window).on('resize.enterslide', function( event ) {
         instance._reload();
         instance.$list.css({'left' : 0});
+        instance.$navPrev.hide();
 
-        if (instance.itemsCount == instance.fitCount) {
+        if ( instance.itemsCount == instance.fitCount ||  instance.itemsCount < instance.fitCount ) {
           instance.$navNext.hide();
         }
         else {
@@ -88,7 +90,7 @@
 
       instance.$navPrev.hide();
 
-      if (instance.itemsCount == instance.fitCount) {
+      if ( instance.itemsCount == instance.fitCount ||  instance.itemsCount < instance.fitCount ) {
         instance.$navNext.hide();
       }
       else {
@@ -139,51 +141,56 @@
      */
     _slide : function( dir ) {
       // текущее значение прокрутки
-        var slideLeft = parseFloat( this.$list.css('left') );
-        var amount  = this.fitCount * this.itemW;
-        
-        if( dir === 'right' ) {
-          console.log('nextSlides');
-          this.$navPrev.show();
+      var slideLeft = parseFloat( this.$list.css('left') );
+      var amount  = this.fitCount * this.itemW;
+      
+      if( dir === 'right' ) {
+        console.log('nextSlides');
+        this.$navPrev.show();
 
-          if ( this.sliderW - ( Math.abs( slideLeft ) + amount ) < this.visibleWidth ) {
+        if ( this.sliderW - ( Math.abs( slideLeft ) + 2 * amount ) < this.visibleWidth ) {
 
-            slideLeft = this.$list.width() - this.fitCount * this.itemW;
-            this.$list.stop(true, false).animate({'left' : -slideLeft});
-            this.$navNext.hide();
-          }
-
-          else {
-
-            slideLeft = slideLeft - this.fitCount * this.itemW;
-            this.$list.stop(true, false).animate({'left' : slideLeft});
-            this.$navNext.show();
-          }
-
-          return false;
-        }
-
-        else if( dir === 'left') {        
-          console.log('prevSlides');
-          this.$navNext.show();
-          slideLeft  = Math.abs( slideLeft );
-
-          if ( slideLeft - this.fitCount * this.itemW <= 0 ) {
-
-            slideLeft = 0;
-            this.$navPrev.hide();
-          }
-
-          else {
-
-            slideLeft = slideLeft - this.fitCount * this.itemW;
-            this.$navPrev.show();
-          }
-
+          slideLeft = this.$list.width() - this.fitCount * this.itemW;
           this.$list.stop(true, false).animate({'left' : -slideLeft});
-
-          return false;
+          this.$navNext.hide();
         }
+
+        else {
+
+          slideLeft = slideLeft - this.fitCount * this.itemW;
+          this.$list.stop(true, false).animate({'left' : slideLeft});
+          this.$navNext.show();
+        }
+
+        console.log(amount);
+        console.log(this.visibleWidth);
+        console.log(this.sliderW);
+        console.log(slideLeft);
+
+        return false;
+      }
+
+      else if( dir === 'left') {        
+        console.log('prevSlides');
+        this.$navNext.show();
+        slideLeft  = Math.abs( slideLeft );
+
+        if ( slideLeft - this.fitCount * this.itemW <= 0 ) {
+
+          slideLeft = 0;
+          this.$navPrev.hide();
+        }
+
+        else {
+
+          slideLeft = slideLeft - this.fitCount * this.itemW;
+          this.$navPrev.show();
+        }
+
+        this.$list.stop(true, false).animate({'left' : -slideLeft});
+
+        return false;
+      }
     }
   };
   
