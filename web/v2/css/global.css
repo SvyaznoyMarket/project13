@@ -766,11 +766,56 @@ body.noScroll {
 .userBox_link__cart {
   background-position: 50% -122px;
 }
+.userBox_link__cartVal {
+  text-transform: none;
+  font-size: 11px;
+  position: relative;
+}
+.userBox_link__cartVal .userBox_text {
+  font-size: 12px;
+  color: #ffa901;
+}
+.userBox_link__cartVal .rubl {
+  font-size: 12px;
+}
+.userBox_link__cartVal .qnt {
+  background: #f88a08;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  height: 15px;
+  line-height: 15px;
+  padding: 0 6px;
+  position: absolute;
+  right: 0;
+  top: -6px;
+}
+.userBox_link__authVal {
+  max-width: 90px;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+.userBox_link__authVal .userBox_text {
+  color: #ffa901;
+  width: 500px;
+  display: inline-block;
+}
 .userBox_link:hover {
   color: #ffffff;
   text-decoration: none;
   animation: 0.3s linear 0s normal none 1 resize;
   outline: none;
+}
+.userBox .transBg {
+  background-position: 0 0;
+  height: 15px;
+  position: absolute;
+  right: 0;
+  width: 8px;
+  bottom: 0;
 }
 .userBox_text {
   font-size: 11px;

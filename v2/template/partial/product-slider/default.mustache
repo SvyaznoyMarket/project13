@@ -1,5 +1,5 @@
 <div class="js-widget {{widgetId}}" data-template-selector="#tpl-product-slider">
-    <div class="js-productSlider sliderCat clearfix" data-url="{{&dataUrl}}" data-name="{{&dataName}}">
+    <div class="js-productSlider {{#hasCategories}}sliderCat{{/hasCategories}} clearfix" data-url="{{&dataUrl}}" data-name="{{&dataName}}">
 
         {{#hasCategories}}
         <div class="sliderCatWrap">
