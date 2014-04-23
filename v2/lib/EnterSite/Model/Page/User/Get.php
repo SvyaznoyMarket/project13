@@ -8,6 +8,6 @@ namespace EnterSite\Model\Page\User {
         /** @var Partial\Cart\ProductButton[] */
         public $buyButtons = [];
         /** @var Partial\Cart\ProductSpinner[] */
-        public $buySpinners;
+        public $buySpinners = [];
     }
 }
