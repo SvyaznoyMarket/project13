@@ -1215,8 +1215,13 @@
  
  
 ;$(document).ready(function(){
+
+    var smartChoiceSlider = $('.jsDataSmartChoice'),
+        smartChoiceItem = $('.specialPriceItem'),
+        smartChoiceItemAttr = smartChoiceSlider.attr('data-smartchoice');
+
     $.getJSON('/ajax/product-smartchoice',{
-            "products[]": $('.jsDataSmartChoice').data('smartchoice') },
+            "products[]": smartChoiceSlider.data('smartchoice') },
         function(data){
             if (data.success) {
                 $.each(data.result, function(i, value){
@@ -1250,12 +1255,30 @@
         }
     });
 
-    var smartChoiceSlider = $('.jsDataSmartChoice'),
-        smartChoiceItem = $('.specialPriceItem'),
-        smartChoiceItemAttr = smartChoiceSlider.attr('data-smartchoice');
-
     if ( typeof smartChoiceItemAttr !== 'undefined' && smartChoiceItemAttr !== false ) {
         smartChoiceItem.addClass('specialPriceItem_minHeight');
     }
     else { smartChoiceItem.removeClass('specialPriceItem_minHeight') };
+
+    function track(event, article) {
+        var ga = window[window.GoogleAnalyticsObject],
+            _gaq = window['_gaq'],
+            loc = window.location.href;
+
+        if (ga) ga('send', 'event', event, loc, article);
+        if (_gaq) _gaq.push(['_trackEvent', event, loc, article]);
+    }
+
+    // Tracking click on <a>
+    smartChoiceItem.on('click', '.specialPriceItemCont_imgLink, .specialPriceItemCont_name', function(){
+        var article = $(this).data('article');
+        track('SmartChoice_click', article);
+    });
+
+    // Tracking click on <a> in similar carousel
+    smartChoiceSlider.on('click', '.productImg, .productName a', function(e){
+        var article = $(e.target).closest('.bSlider__eItem').data('product').article;
+        track('SmartChoice_similar_click', article);
+    });
+
 });

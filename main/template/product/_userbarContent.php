@@ -33,5 +33,13 @@ if ($product) {
         <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
     <? endif ?>
 
+    <? if ($product->getIsBuyable()): ?>
+        <?= $helper->render('cart/__button-product', [
+            'product' => $product,
+            'class' => 'btnBuy__eLink',
+            'value' => 'Купить',
+            'onClick' => $addToCartJS ? $addToCartJS : null,
+        ]) // Кнопка купить ?>
+    <? endif ?>
     <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 </div>

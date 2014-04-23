@@ -340,8 +340,10 @@ class IndexAction {
             $productVideos = [];
         }
 
-        // пишем в сессию id товара на который был переход с блока рекомендаций, в юзербаре
+        // на товар перешли с блока рекомендаций
+        $addToCartJS = null;
         if ('cart_rec' === $request->get('from')) {
+            // пишем в сессию id товара
             if ($sessionName = \App::config()->product['recommendationSessionKey']) {
                 $storage = \App::session();
                 $limit = \App::config()->cart['productLimit'];
@@ -357,6 +359,11 @@ class IndexAction {
                 }
 
                 $storage->set($sessionName, $data);
+            }
+
+            // Retailrocket. Добавление товара в корзину
+            if ($request->get('rrMethod')) {
+                $addToCartJS = "try{rrApi.recomAddToCart({$product->getId()}, {methodName: '{$request->get('rrMethod')}'})}catch(e){}";
             }
         }
 
@@ -399,6 +406,7 @@ class IndexAction {
             'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
         ]);
         $page->setGlobalParam('isTchibo', ($product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName()));
+        $page->setGlobalParam('addToCartJS', $addToCartJS);
 
         return new \Http\Response($page->show());
     }

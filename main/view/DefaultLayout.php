@@ -634,6 +634,10 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotRevolvermarketingConversionJS () {
+        return '';
+    }
+
     public function slotAdLensJS () {
         return;
     }
@@ -692,5 +696,9 @@ class DefaultLayout extends Layout {
 
     public function slotEnterprizeCompleteJs() {
         return '';
+    }
+
+    public function slotAdblender() {
+        return \App::config()->analytics['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' =>$this->layout]).'"></div>' : '';
     }
 }

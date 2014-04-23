@@ -31,11 +31,6 @@
 					//end of vars
 
 					if ( !data.success ) {
-						console.warn( 'addToCart error' );
-						if ( data.error && data.error.message ) {
-							console.warn( data.error.message );
-							// TODO: сообщение об ошибке для пользователя
-						}
 						return false;
 					}
 

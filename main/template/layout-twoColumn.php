@@ -82,10 +82,7 @@
         <?= $page->slotPartnerCounter() ?>
         <?= $page->slotEnterprizeConfirmJs() ?>
         <?= $page->slotEnterprizeCompleteJs() ?>
-
-        <? if (\App::config()->analytics['enabled']): ?>
-            <div id="adblenderCommon" class="jsanalytics"></div>
-        <? endif ?>
+        <?= $page->slotAdblender() ?>
     </div>
 </body>
 </html>

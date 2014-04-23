@@ -384,7 +384,7 @@
 				if ( !response.success ) {
 					return;
 				}
-				
+
 				console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
 
 				upsaleWrap.find('.bGoodsSlider').remove();
@@ -411,10 +411,21 @@
 				}
 
 				console.log('Трекинг товара при показе блока рекомендаций');
+
+				// Retailrocket. Показ товарных рекомендаций
+				if ( response.data ) {
+					try {
+						rrApi.recomTrack(response.data.method, response.data.id, response.data.recommendations);
+					} catch( e ) {
+						console.warn('showUpsell() Retailrocket error');
+						console.log(e);
+					}
+				}
+
 				// google analytics
-				_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
+				typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
 				// Kissmetrics
-				_kmq && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
+				typeof _kmq == 'function' && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
 			};
 			//end functions
 
