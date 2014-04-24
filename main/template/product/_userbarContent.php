@@ -5,6 +5,7 @@
  */
 $helper = new \Helper\TemplateHelper();
 $links = [];
+if (!isset($line)) $line = false;
 
 if ($product) {
     $links[] = ['name' => $product->getPrefix(), 'url' => $product->getParentCategory() ? $product->getParentCategory()->getLink() : null, 'last' => false];
@@ -20,7 +21,7 @@ if ($product) {
     </div>
 </div>
 
-<div class="fixedTopBar__buy">
+<div class="fixedTopBar__buy <?= $line ? 'hidden' : 'none' ?>">
 
     <? if ($product->getIsBuyable() && !$product->getKit()): ?>
         <?= $helper->render('cart/__button-product', [
