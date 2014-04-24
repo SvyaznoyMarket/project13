@@ -14,18 +14,23 @@
 
             console.info('render:body', userData);
 
-            if (_.isObject(userData.buyButtons)) {
-                _.each(userData.buyButtons, function(templateData, widgetSelector) {
-                    $(widgetSelector).trigger('render', templateData);
+            if (_.isObject(userData.widgetContainer)) {
+                _.each(userData.widgetContainer, function(widgets, containerName) {
+                    if (!_.isArray(widgets)) {
+                        console.warn('widgetContainer', containerName, widgets);
+                        return; // continue
+                    }
+                    console.info('widgetContainer', containerName, widgets);
+
+                    _.each(widgets, function(templateData) {
+                        if (!templateData.widgetId) {
+                            console.warn('widget', templateData);
+                            return; // continue
+                        }
+
+                        $('.' + templateData.widgetId).trigger('render', templateData);
+                    });
                 });
-            }
-            if (_.isObject(userData.buySpinners)) {
-                _.each(userData.buySpinners, function(templateData, widgetSelector) {
-                    $(widgetSelector).trigger('render', templateData);
-                });
-            }
-            if (_.isObject(userData.userBlock)) {
-                $('.' + userData.userBlock.widgetId).trigger('render', userData.userBlock);
             }
         });
 

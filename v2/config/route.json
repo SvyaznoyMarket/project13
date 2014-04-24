@@ -47,6 +47,10 @@
             "regionId": "[\\w\\d-_]+"
         }
     },
+    "Cart\\Index": {
+        "name": "Корзина",
+        "pattern": "/cart"
+    },
     "User\\Get": {
         "name": "Информация о пользователе, его корзине, ...",
         "pattern": "/ajax/user"

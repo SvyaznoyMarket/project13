@@ -75,14 +75,23 @@ class Get {
         // корзина из ядра
         $cart = $cartRepository->getObjectByQuery($cartItemQuery);
 
-        // build page
+        // сборка страницы
+        $userBlock = new Model\Partial\UserBlock();
         if ($user) {
-            $page->userBlock->isAuthorized = true;
-            $page->userBlock->userLink->name = $user->firstName ?: $user->lastName;
-            $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Index());
-        } else {
-            $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Auth());
+            $userBlock->isUserAuthorized = true;
+            $userBlock->userLink->name = $user->firstName ?: $user->lastName;
+            $userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Index());
         }
+
+        $userBlock->isCartNotEmpty = (bool)$cart->product;
+        if ($userBlock->isCartNotEmpty) {
+            $userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
+            $userBlock->cart->quantity = count($cart->product);
+            $userBlock->cart->shownSum = $cart->sum ? number_format((float)$cart->sum, 0, ',', ' ') : null;
+            $userBlock->cart->sum = $cart->sum;
+        }
+
+        $page->widgetContainer->userBlocks[] = $userBlock;
 
         foreach ($cart->product as $cartProduct) {
             $product = !empty($productsById[$cartProduct->id])
@@ -91,8 +100,8 @@ class Get {
                     'id' => $cartProduct->id,
                 ]);
 
-            $page->buyButtons['.' . Repository\Partial\Cart\ProductButton::getWidgetId($product->id)] = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
-            $page->buySpinners['.' . Repository\Partial\Cart\ProductSpinner::getWidgetId($product->id)] = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
+            $page->widgetContainer->buyButtons[] = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
+            $page->widgetContainer->buySpinners[] = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
         }
 
         // TODO: вынести на уровень JsonPage.result
