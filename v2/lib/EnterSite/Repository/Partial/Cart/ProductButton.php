@@ -59,10 +59,10 @@ class ProductButton {
             $button->text = 'В корзине';
             $button->url = '/cart'; // TODO: route
             $button->dataUrl = '';
-            $button->class = ' mDisabled';
+            $button->class = ' btnBuy__incart';
         } else {
             if ($product->isInShopOnly) {
-                $button->class .= ' mShopsOnly';
+                $button->class .= ' btnBuy__inshop';
                 $button->text = 'Резерв';
                 //$button->url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]); // TODO
                 $button->class .= ' jsOneClickButton';
@@ -70,7 +70,7 @@ class ProductButton {
 
             if (!$product->isBuyable) {
                 $button->url = '#';
-                $button->class .= ' mDisabled';
+                $button->class .= ' btnBuy__disabled';
                 $button->text = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
             } else if (!$button->url) {
                 $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id));
