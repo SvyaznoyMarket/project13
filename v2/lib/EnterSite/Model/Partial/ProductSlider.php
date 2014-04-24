@@ -3,9 +3,7 @@
 namespace EnterSite\Model\Partial {
     use EnterSite\Model\Partial;
 
-    class ProductSlider {
-        /** @var string */
-        public $widgetId;
+    class ProductSlider extends Partial\Widget {
         /** @var int */
         public $count = 0;
         /** @var string */

@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterSite\Routing\User\Cart\Product;
+namespace EnterSite\Routing\User\Cart\Product; // FIXME: изменить namespace на EnterSite\Routing\Cart
 
 use Enter\Routing\Route;
 
