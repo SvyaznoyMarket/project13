@@ -244,6 +244,7 @@
             },
             open: function() {
                 //$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+                $('.ui-autocomplete').css({'left' : 0, 'top' : '5px', 'width' : '100%'});
             },
             close: function() {
                 //$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
