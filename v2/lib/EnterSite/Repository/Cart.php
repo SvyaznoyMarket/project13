@@ -62,4 +62,12 @@ class Cart {
 
         return $cart;
     }
+
+    /**
+     * @param Model\Cart $cart
+     * @param Model\Cart\Product $cartProduct
+     */
+    public function setProductForObject(Model\Cart $cart, Model\Cart\Product $cartProduct) {
+        $cart->product[$cartProduct->id] = $cartProduct;
+    }
 }

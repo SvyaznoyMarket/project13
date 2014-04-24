@@ -40,11 +40,11 @@ class SetProduct {
 
         // создание товара для корзины
         $cartProduct = new Model\Cart\Product();
-        $cartProduct->id = $productData['id'];
+        $cartProduct->id = (string)$productData['id'];
         $cartProduct->quantity = (int)$productData['quantity'];
 
         // добавление товара в корзину
-        $cart->product[$cartProduct->id] = $cartProduct;
+        $cartRepository->setProductForObject($cart, $cartProduct);
 
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequest($request);

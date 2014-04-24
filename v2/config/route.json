@@ -81,6 +81,11 @@
         "name": "Личный кабинет",
         "pattern": "/private"
     },
+    "User\\Cart\\Clear": {
+        "name": "Очистить корзину",
+        "pattern": "/ajax/user/cart/clear",
+        "method": ["DELETE"]
+    },
 
     "Cart\\SetProduct": {
         "name": "Установить товар в корзине (когда js поломался)",
