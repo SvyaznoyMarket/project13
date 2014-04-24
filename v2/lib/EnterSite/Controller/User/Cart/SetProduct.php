@@ -54,15 +54,18 @@ class SetProduct {
         $cartProduct->id = $productData['id'];
         $cartProduct->quantity = (int)$productData['quantity'];
 
-        $page = new Page();
-        $page->buyButton = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
-        $page->buySpinner = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
-
-        // TODO вынести в класс корзины
         $session = $this->getSession();
         $cart = $cartRepository->getObjectByHttpSession($session);
         $cart->product[$cartProduct->id] = $cartProduct;
         $cartRepository->saveObjectToHttpSession($session, $cart);
+
+        $page = new Page();
+        // кнопка купить
+        $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
+        $page->widgets['.' . $widget->widgetId] = $widget;
+        // спиннер
+        $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
+        $page->widgets['.' . $widget->widgetId] = $widget;
 
         // response
         $response = new Http\JsonResponse([

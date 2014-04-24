@@ -1,4 +1,4 @@
-;(function (app, window, $, _, mustache, undefined) {
+(function (app, window, $, _, mustache, undefined) {
     app.initialize = function () {
         var $document = $(document),
             $body = $('body');
@@ -15,14 +15,14 @@
             console.info('render:body', widgets);
 
             if (_.isObject(widgets)) {
-                _.each(widgets, function(templateData, widgetSelector) {
-                    if (!widgetSelector) {
-                        console.warn('widget', widgetSelector, templateData);
+                _.each(widgets, function(templateData, selector) {
+                    if (!selector) {
+                        console.warn('widget', selector, templateData);
                         return; // continue
                     }
-                    console.info('widget', widgetSelector, templateData);
+                    console.info('widget', selector, templateData);
 
-                    $(widgetSelector).trigger('render', templateData);
+                    $(selector).trigger('render', templateData);
                 });
             }
         });
@@ -53,12 +53,14 @@
 
             if (data.url) {
                 $.post(data.url, data.value, function(response) {
-                    if (_.isObject(response.result.buyButton)) {
-                        $widget.trigger('render', response.result.buyButton);
+                    if (_.isObject(response.result.widgets)) {
+                        _.each(response.result.widgets, function(templateData, selector) {
+                            if (!selector) {
+                                return;
+                            }
 
-                        if (data.spinnerWidgetSelector) {
-                            $(data.spinnerWidgetSelector).trigger('render', response.result.buySpinner);
-                        }
+                            $(selector).trigger('render', templateData);
+                        });
                     }
                 });
 
