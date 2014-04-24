@@ -111,7 +111,7 @@
 
             self.countKeyUp = function(item, e) {
                 // TODO-zra сделать проверку доставки
-                if (self.count() == "") self.count(1); // если поле ввода вдруг окажется пустым
+                if (self.count() === "") self.count(1); // если поле ввода вдруг окажется пустым
                 return false;
             }
         }
