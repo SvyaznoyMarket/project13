@@ -43,12 +43,9 @@ class DefaultLayout {
             ],
         ]);
 
-        // главное меню
-        $page->mainMenu = $request->mainMenu;
-
         // регион
         $page->regionBlock->autocompleteUrl = $router->getUrlByRoute(new Routing\Region\Autocomplete());
-        foreach ([
+        foreach ([ // TODO: вынести в конфиг
             ['id' => '14974', 'name' => 'Москва'],
             ['id' => '108136', 'name' => 'Санкт-Петербург'],
         ] as $regionItem) {
@@ -59,6 +56,12 @@ class DefaultLayout {
             $page->regionBlock->regions[] = $region;
         }
 
+        // главное меню
+        $page->mainMenu = $request->mainMenu;
+
+        // пользователь
+        $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Auth());
+
         // шаблоны mustache
         foreach ([
             [
@@ -68,6 +71,10 @@ class DefaultLayout {
             [
                 'id'   => 'tpl-product-buySpinner',
                 'name' => 'partial/cart/spinner',
+            ],
+            [
+                'id'   => 'tpl-user',
+                'name' => 'partial/user',
             ],
         ] as $templateItem) {
             try {

@@ -69,6 +69,15 @@
             "shopToken": "[\\w\\d-_]+"
         }
     },
+    "User\\Auth": {
+        "name": "Авторизация",
+        "pattern": "/login"
+    },
+    "User\\Index": {
+        "name": "Личный кабинет",
+        "pattern": "/private"
+    },
+
     "Cart\\SetProduct": {
         "name": "Установить товар в корзине (когда js поломался)",
         "pattern": "/cart/set-product/{productId}",
