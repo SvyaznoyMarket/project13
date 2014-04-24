@@ -91,7 +91,7 @@ class Get {
             $userBlock->cart->sum = $cart->sum;
         }
 
-        $page->widgetContainer->userBlocks[] = $userBlock;
+        $page->widgets['.' . $userBlock->widgetId] = $userBlock;
 
         foreach ($cart->product as $cartProduct) {
             $product = !empty($productsById[$cartProduct->id])
@@ -100,8 +100,11 @@ class Get {
                     'id' => $cartProduct->id,
                 ]);
 
-            $page->widgetContainer->buyButtons[] = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
-            $page->widgetContainer->buySpinners[] = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
+            $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
+            $page->widgets['.' . $widget->widgetId] = $widget;
+
+            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
+            $page->widgets['.' . $widget->widgetId] = $widget;
         }
 
         // TODO: вынести на уровень JsonPage.result

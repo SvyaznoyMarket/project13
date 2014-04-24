@@ -10,26 +10,19 @@
         $body.on('render', function(e) {
             e.stopPropagation();
 
-            var userData = $body.data('user');
+            var widgets = $body.data('widget');
 
-            console.info('render:body', userData);
+            console.info('render:body', widgets);
 
-            if (_.isObject(userData.widgetContainer)) {
-                _.each(userData.widgetContainer, function(widgets, containerName) {
-                    if (!_.isArray(widgets)) {
-                        console.warn('widgetContainer', containerName, widgets);
+            if (_.isObject(widgets)) {
+                _.each(widgets, function(templateData, widgetSelector) {
+                    if (!widgetSelector) {
+                        console.warn('widget', widgetSelector, templateData);
                         return; // continue
                     }
-                    console.info('widgetContainer', containerName, widgets);
+                    console.info('widget', widgetSelector, templateData);
 
-                    _.each(widgets, function(templateData) {
-                        if (!templateData.widgetId) {
-                            console.warn('widget', templateData);
-                            return; // continue
-                        }
-
-                        $('.' + templateData.widgetId).trigger('render', templateData);
-                    });
+                    $(widgetSelector).trigger('render', templateData);
                 });
             }
         });
@@ -171,8 +164,8 @@
 
         if (hasUserInfo && userInfoUrl) {
             $.post(userInfoUrl).done(function(response) {
-                if (_.isObject(response.result)) {
-                    $body.data('user', response.result);
+                if (_.isObject(response.result) && _.isObject(response.result.widgets)) {
+                    $body.data('widget', response.result.widgets);
                     $body.trigger('render');
                 }
             });
@@ -216,7 +209,7 @@
 
 
         // автоподстановка регионов
-        $regionInput = $('#js-region-input');
+        var $regionInput = $('#js-region-input');
         $regionInput.autocomplete({
             autoFocus: true,
             appendTo: '#js-region-autocomplete',

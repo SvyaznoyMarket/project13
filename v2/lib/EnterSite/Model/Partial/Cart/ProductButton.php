@@ -4,10 +4,9 @@ namespace EnterSite\Model\Partial\Cart {
     use EnterSite\Model\Partial;
 
     class ProductButton extends Partial\Widget {
+        public $widgetType = 'productButton';
         /** @var string */
         public $id;
-        /** @var string */
-        public $widgetId;
         /** @var string */
         public $spinnerWidgetId;
         /** @var string */

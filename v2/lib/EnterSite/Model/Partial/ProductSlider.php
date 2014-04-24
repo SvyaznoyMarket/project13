@@ -4,6 +4,7 @@ namespace EnterSite\Model\Partial {
     use EnterSite\Model\Partial;
 
     class ProductSlider extends Partial\Widget {
+        public $widgetType = 'productSlider';
         /** @var int */
         public $count = 0;
         /** @var string */

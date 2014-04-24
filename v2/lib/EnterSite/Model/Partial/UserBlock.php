@@ -4,6 +4,7 @@ namespace EnterSite\Model\Partial {
     use EnterSite\Model\Partial;
 
     class UserBlock extends Partial\Widget {
+        public $widgetType = 'userBlock';
         /** @var bool */
         public $isUserAuthorized;
         /** @var bool */
