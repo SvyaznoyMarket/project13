@@ -31,39 +31,42 @@ class RecommendedList {
         $url = $router->getUrlByRoute(new Routing\Product\GetRecommendedList($request->product->id));
 
         // alsoBought slider
-        $page->alsoBoughtSlider = $productSliderRepository->getObject('alsoBoughtSlider', $url);
-        $page->alsoBoughtSlider->hasCategories = false;
+        $slider = $productSliderRepository->getObject('alsoBoughtSlider', $url);
+        $slider->hasCategories = false;
         foreach ($request->alsoBoughtIdList as $productId) {
             /** @var Model\Product|null $productModel */
             $productModel = !empty($request->productsById[$productId]) ? $request->productsById[$productId] : null;
             if (!$productModel) continue;
 
-            $page->alsoBoughtSlider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
+            $slider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
         }
-        $page->alsoBoughtSlider->count = count($page->alsoBoughtSlider->productCards);
+        $slider->count = count($slider->productCards);
+        $page->widgets['.' . $slider->widgetId] = $slider;
 
         // alsoViewed slider
-        $page->alsoViewedSlider = $productSliderRepository->getObject('alsoViewedSlider', $url);
-        $page->alsoViewedSlider->hasCategories = false;
+        $slider = $productSliderRepository->getObject('alsoViewedSlider', $url);
+        $slider->hasCategories = false;
         foreach ($request->alsoViewedIdList as $productId) {
             /** @var Model\Product|null $productModel */
             $productModel = !empty($request->productsById[$productId]) ? $request->productsById[$productId] : null;
             if (!$productModel) continue;
 
-            $page->alsoViewedSlider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
+            $slider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
         }
-        $page->alsoViewedSlider->count = count($page->alsoViewedSlider->productCards);
+        $slider->count = count($slider->productCards);
+        $page->widgets['.' . $slider->widgetId] = $slider;
 
         // similar slider
-        $page->similarSlider = $productSliderRepository->getObject('similarSlider', $url);;
-        $page->similarSlider->hasCategories = false;
+        $slider = $productSliderRepository->getObject('similarSlider', $url);;
+        $slider->hasCategories = false;
         foreach ($request->similarIdList as $productId) {
             /** @var Model\Product|null $productModel */
             $productModel = !empty($request->productsById[$productId]) ? $request->productsById[$productId] : null;
             if (!$productModel) continue;
 
-            $page->similarSlider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
+            $slider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
         }
-        $page->similarSlider->count = count($page->similarSlider->productCards);
+        $slider->count = count($slider->productCards);
+        $page->widgets['.' . $slider->widgetId] = $slider;
     }
 }
