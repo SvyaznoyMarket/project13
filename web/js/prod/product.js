@@ -1061,17 +1061,22 @@
             self.name = product.name;
             self.line = product.lineName;
             self.price = product.price;
-            self.prettyPrice = window.printPrice(self.price);
             self.image = product.image;
             self.height = product.height;
             self.width = product.width;
             self.depth = product.depth;
             self.count = ko.observable(product.count);
             self.maxCount = ko.observable(Infinity);
+            self.prettyPrice = ko.computed(function(){
+                return window.printPrice(parseInt(self.price) * parseInt(self.count()));
+            });
+            self.prettyItemPrice = ko.computed(function(){
+                return window.printPrice(parseInt(self.price));
+            });
             self.deliveryDate = ko.observable(product.deliveryDate);
 
             self.plusClick = function() {
-                if (self.maxCount() > self.count()) {
+                if (self.maxCount() > self.count() && self.count() < 99) {
                     self.count(parseInt(self.count()) + 1);
                     $.post('/ajax/product/delivery', {product: [
                         {id: self.id, quantity: self.count()}
@@ -1107,14 +1112,15 @@
                     (e.which === 8) ||
                     (e.which === 46))
                     ) {
+                    if (item.count().toString().length < 2 && (e.which == 8 || e.which == 46)) return false; // предотвращаем пустую строку ввода
+                    if (item.count().toString().length > 1 && !(e.which == 8 || e.which == 46)) return false;
                     return true;
                 }
                 return false;
             };
 
             self.countKeyUp = function(item, e) {
-                //console.log('Keyup', item, e, item == self)
-                //item.count(parseInt(item.count()));
+                // TODO-zra сделать проверку доставки
                 return false;
             }
         }

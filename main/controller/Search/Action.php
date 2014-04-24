@@ -180,7 +180,7 @@ class Action {
         $productRepository->setEntityClass(
             \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
             ? '\\Model\\Product\\ExpandedEntity'
-            : '\\Model\\Product\\CompactEntity'
+            : '\\Model\\Product\\Entity'
         );
         $products = $productRepository->getCollectionById($result['data']);
         $productPager = new \Iterator\EntityPager($products, $productCount);

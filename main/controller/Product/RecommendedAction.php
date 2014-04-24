@@ -81,6 +81,7 @@ class RecommendedAction {
                         'id'        => $id,
                         'engine'    => $controller[$type]->getEngine() ?: $controller[$type]->getName(),
                         'name'      => $controller[$type]->getName(),
+                        'method'    => $controller[$type]->getRetailrocketMethodName(),
                     ];
                 }
             }
@@ -89,6 +90,7 @@ class RecommendedAction {
                     'id'        => $id,
                     'engine'    => 'enter',
                     'name'      => 'enter',
+                    'method'    => null,
                 ];
             }
 
@@ -126,7 +128,12 @@ class RecommendedAction {
                 $compareFunc = function($a, $b){
                     return $a->getId() - $b->getId();
                 };
-                $productsCollection['alsoViewed'] = array_udiff($productsCollection['alsoViewed'], array_slice($productsCollection['similar'], 0, 5), $compareFunc);
+                $filterFunc = function($product) {
+                    return $product instanceof \Model\Product\BasicEntity;
+                };
+                $filteredAlsoViewed = array_filter($productsCollection['alsoViewed'], $filterFunc);
+                $filteredSimilar = array_filter($productsCollection['similar'], $filterFunc);
+                $productsCollection['alsoViewed'] = array_udiff($filteredAlsoViewed, array_slice($filteredSimilar, 0, 5), $compareFunc);
             }
 
             // подготавливаем контент для всех типов рекомендаций
@@ -159,12 +166,22 @@ class RecommendedAction {
                     return $product instanceof \Model\Product\BasicEntity;
                 });
 
+                $method = $controller[$type]->getRetailrocketMethodName() ? $controller[$type]->getRetailrocketMethodName() : null;
+
                 $recommend[$type] = [
                     'success' => true,
                     'content' => \App::closureTemplating()->render('product/__slider', [
                         'title' => $controller[$type]->getActionTitle(),
                         'products' => $products,
+                        'isRetailrocketRecommendation' => true,
+                        'retailrocketMethod' => $method,
+                        'retailrocketIds' => $ids[$type] ? $ids[$type] : [],
                     ]),
+                    'data' => [
+                        'id' => $product->getId(),//id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
+                        'method' => $method,//алгоритм (ItemToItems, UpSellItemToItems, CrossSellItemToItems и т.д.)
+                        'recommendations' => $ids[$type] ? $ids[$type] : [],//массив ids от Retail Rocket
+                    ],
                 ];
             }
 

@@ -9,7 +9,10 @@ return function (
     $count = null,
     $limit = null,
     $url = null,
-    $type = null
+    $type = null,
+    $isRetailrocketRecommendation = false,
+    $retailrocketMethod = null,
+    $retailrocketIds = []
 ) {
 /**
  * @var $products   \Model\Product\Entity[]
@@ -46,6 +49,20 @@ return function (
             <ul class="bSlider__eList clearfix">
             <? foreach ($products as $product): ?>
             <?
+                $link = $helper->url('product', ['productPath' => $product->getPath()]);
+
+                // Retailrocket
+                $isRetailrocketProduct = is_array($retailrocketIds) && in_array($product->getId(), $retailrocketIds);
+                $linkClickJS = null;
+                $addToCartJS = null;
+                if ($isRetailrocketRecommendation && !empty($retailrocketMethod) && $isRetailrocketProduct) {
+                    // Клик по гиперссылке с товарной рекомендацией
+                    $linkClickJS = "try{rrApi.recomMouseDown({$product->getId()}, {methodName: '{$retailrocketMethod}'})}catch(e){}";
+
+                    // Добавление товара в корзину из блока с рекомендациями
+                    $addToCartJS = "try{rrApi.recomAddToCart({$product->getId()}, {methodName: '{$retailrocketMethod}'})}catch(e){}";
+                }
+
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
                 <li class="bSlider__eItem jsSliderItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>" data-product="<?= $helper->json([
@@ -57,20 +74,23 @@ return function (
                         <? if ((bool)$product->getLabel()): ?>
                             <img class="bProductDescSticker" src="<?= $product->getLabel()->getImageUrl(0) ?>" alt="<?= $product->getLabel()->getName() ?>" />
                         <? endif ?>
-                        <a class="productImg<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" /></a>
-                        <div class="productName"><a href="<?= $helper->url('product', ['productPath' => $product->getPath()]) ?>"><?= $product->getName() ?></a></div>
+                        <a class="productImg<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>>
+                            <img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
+                        </a>
+                        <div class="productName"><a href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
                         <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
-                        <? if (!$product->getKit()) : ?>
-                            <?= $helper->render('cart/__button-product', [
-                                'product'    => $product,
-                                'class'      => 'btnBuy__eLink',
-                                'value'      => 'Купить',
-                                'directLink' => true,
-                            ]) // Кнопка купить ?>
-                        <? endif ?>
+                    <? if (!$product->getKit()) : ?>
+                        <?= $helper->render('cart/__button-product', [
+                            'product'    => $product,
+                            'class'      => 'btnBuy__eLink',
+                            'value'      => 'Купить',
+                            'directLink' => true,
+                            'onClick'    => $addToCartJS ? $addToCartJS : null,
+                        ]) // Кнопка купить ?>
+                    <? endif ?>
                         <? if ($product->getKit()) : ?>
-                        <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
+                            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
                         <? endif ?>
                     </div>
                 </li>

@@ -13,7 +13,7 @@ return function (
     foreach ($categories as $category) {
         $links[] = [
             'name'   => $category->getName(),
-            'url'    => $helper->url('search', ['q' => $searchQuery, 'category' => $category->getId()]),
+            'url'    => $category->getLink(),//$helper->url('search', ['q' => $searchQuery, 'category' => $category->getId()]),
             'image'  => $category->getImageUrl(),
             'active' => $category->getId() === $selectedId,
         ];

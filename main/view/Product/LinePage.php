@@ -87,6 +87,7 @@ class LinePage extends \View\DefaultLayout {
 
         return $this->render('product/_userbarContent', [
             'product'   => $product,
+            'line'      => true
         ]);
     }
 

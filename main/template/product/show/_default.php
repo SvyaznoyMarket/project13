@@ -16,6 +16,7 @@
  * @var $line                   \Model\Line\Entity
  * @var $deliveryData           array
  * @var $isTchibo               boolean
+ * @var $addToCartJS     string
  */
 
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
@@ -199,11 +200,18 @@ $isKitPage = $mainProduct && (bool)$mainProduct->getKit() && $mainProduct->getId
         <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
         <? endif ?>
-
+        
         <? if ($isKitPage) : ?>
             <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить для набора продуктов ?>
         <? else : ?>
-            <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+        
+            <?= $helper->render('cart/__button-product', [
+                'product' => $product,
+                'class' => 'btnBuy__eLink',
+                'value' => 'Купить',
+                'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null,
+                'onClick' => isset($addToCartJS) ? $addToCartJS : null,
+            ]) // Кнопка купить ?>
         <? endif ?>
 
         <? if (!$hasFurnitureConstructor && !$isKitPage): ?>

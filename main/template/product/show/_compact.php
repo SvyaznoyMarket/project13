@@ -55,7 +55,9 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
         </div>
         <div class="bBtnLine clearfix">
-            <?= $page->render('cart/_button', ['product' => $product]) ?>
+            <? if (!$product->getKit()) : ?>
+                <?= $page->render('cart/_button', ['product' => $product]) ?>
+            <? endif; ?>
             <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a>
         </div>
 

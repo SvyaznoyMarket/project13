@@ -12,6 +12,7 @@
  * @var $creditData        array
  * @var $deliveryData      array
  * @var $isTchibo          boolean
+ * @var $addToCartJS string
  */
 ?>
 
@@ -111,7 +112,13 @@
             <?//= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
         </div>
 
-        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить', 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null]) // Кнопка купить ?>
+        <?= $helper->render('cart/__button-product', [
+            'product' => $product,
+            'class' => 'btnBuy__eLink',
+            'value' => 'Купить',
+            'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null,
+            'onClick' => isset($addToCartJS) ? $addToCartJS : null,
+        ]) // Кнопка купить ?>
 
         <div id="coupeError" class="red" style="display:none"></div>
 

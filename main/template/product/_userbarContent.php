@@ -5,6 +5,7 @@
  */
 $helper = new \Helper\TemplateHelper();
 $links = [];
+if (!isset($line)) $line = false;
 
 if ($product) {
     $links[] = ['name' => $product->getPrefix(), 'url' => $product->getParentCategory() ? $product->getParentCategory()->getLink() : null, 'last' => false];
@@ -20,9 +21,15 @@ if ($product) {
     </div>
 </div>
 
-<div class="fixedTopBar__buy">
+<div class="fixedTopBar__buy <?= $line ? 'hidden' : 'none' ?>">
+
     <? if ($product->getIsBuyable() && !$product->getKit()): ?>
-        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить ?>
+        <?= $helper->render('cart/__button-product', [
+            'product' => $product,
+            'class' => 'btnBuy__eLink',
+            'value' => 'Купить',
+            'onClick' => $addToCartJS ? $addToCartJS : null,
+        ]) // Кнопка купить ?>
     <? endif ?>
 
     <? if ($product->getKit()): ?>
@@ -34,4 +41,5 @@ if ($product) {
     <? endif ?>
 
     <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+
 </div>
