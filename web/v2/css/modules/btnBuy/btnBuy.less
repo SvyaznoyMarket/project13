@@ -28,6 +28,46 @@
         background: #f79200;
         text-decoration: none;
     }
+
+    // в корзине
+    &__incart {
+        border-color: @black;
+        color: @black;
+        background: @white;
+
+        &:hover,
+        &:active {
+            border-color: @black;
+            color: @black;
+            background: @white;
+        }
+    }
+
+    // резерв и на витрине
+    &__inshop {
+        .blackGrad();
+
+        border: 1px solid #a1a1a1;
+
+        &:hover,
+        &:active {
+            background: @black;
+        }
+    }
+
+    // недоступен
+    &__disabled {
+        background: @white;
+        border-color: @white;
+        color: @typGray;
+
+        &:hover,
+        &:active {
+            background: @white;
+            border-color: @white;
+            color: @typGray;
+        }
+    }
 }
 
 .btnBuyOneClick {
