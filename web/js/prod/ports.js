@@ -1987,7 +1987,7 @@ ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
 
 	/**********************************************************************
 	 Test function. All vendors are activated, and visit tagged
-	 **********************************************************************
+	 **********************************************************************/
 	function testInsertAllTags() {
 		var
 			i, url, type;
@@ -2003,7 +2003,7 @@ ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
 			console.log( 'VisitorSplit Error, params: ', i, url, type );
 			alert( ex );
 		}
-	}*/
+	}
 
 
 	/**********************************************************************
