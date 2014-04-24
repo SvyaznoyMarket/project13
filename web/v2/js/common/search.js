@@ -1,5 +1,5 @@
 /**
- * Окно смены региона
+ * Окно поиска
  *
  */
 ;(function (app, window, $, _, undefined) {
@@ -12,7 +12,7 @@
 
 		var
 		/**
-		 * Показываем попап выбора города
+		 * Показываем попап формы поиска
 		*/
 		searchPopup = function searchPopup( event ) {
 			var topPopup = $('.header').height() + 20;
