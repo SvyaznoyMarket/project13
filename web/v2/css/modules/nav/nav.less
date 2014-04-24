@@ -18,7 +18,7 @@
 }
 
 .navList {
-	min-width: 230px;
+	min-width: 290px;
 	max-width: 315px;
 
 	&_item {
@@ -27,7 +27,11 @@
 		&__first {
 			border-bottom: 1px solid #404040;
 			height: 28px;
-    		padding: 13px 0;
+    		padding: 13px 0 13px 15px;
+
+    		.navIco {
+    			margin: 0 12px 0 0;
+    		}
 		}
 	}
 
@@ -36,7 +40,7 @@
 		font-size: 15px;
 		height: 40px;
 	    line-height: 40px;
-	    padding: 0 5px 0 15px;
+	    padding: 0 5px 0 10px;
 	    color: @white;
 		display: block;
 		cursor: pointer;
@@ -61,8 +65,17 @@
 
 		&__reg {
 			border-bottom: 1px dotted @white;
-			font-size: 17px;
+			display: inline-block;
+
+		    font-size: 16px;
+
+		    margin: 0 0 0 15px;
 			cursor: pointer;
+
+			vertical-align: top;
+
+		    *display: inline;
+			zoom: 1;
 		} 
 	} 
 

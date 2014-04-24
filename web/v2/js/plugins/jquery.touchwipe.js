@@ -27,9 +27,6 @@
       } 
      
       function onTouchMove(e) {
-        if(config.preventDefaultEvents) {
-          e.preventDefault();
-        }
         if(isMoving) {
           var x = e.touches[0].pageX;
           var y = e.touches[0].pageY;
@@ -39,9 +36,15 @@
             cancelTouch();
             if(dx > 0) {
               config.wipeLeft();
+              if(config.preventDefaultEvents) {
+                e.preventDefault();
+              }
             }
             else {
               config.wipeRight();
+              if(config.preventDefaultEvents) {
+                e.preventDefault();
+              }
             }
           }
           else if(Math.abs(dy) >= config.min_move_y) {
