@@ -183,22 +183,22 @@
 
         _.each(recommendedUrls, function(url) {
             $.get(url).done(function(response) {
-                _.each(response.result, function(sliderData) {
-                    if (!_.isObject(sliderData) || !sliderData.widgetId) {
-                        console.warn('slider', sliderData);
+                _.each(response.result.widgets, function(templateData, widgetSelector) {
+                    if (!_.isObject(templateData) || !widgetSelector) {
+                        console.warn('slider', widgetSelector, templateData);
                         return;
                     }
 
-                    var $widget = $('.' + sliderData.widgetId); // TODO: исправить
+                    var $widget = $(widgetSelector);
 
-                    if (sliderData.count <= 0 && $widget) {
+                    if (templateData.count <= 0 && $widget) {
                         $widget.remove();
                         return;
                     }
 
-                    console.info('slider', sliderData, $widget);
+                    console.info('slider', templateData, $widget);
 
-                    $widget.trigger('render', sliderData);
+                    $widget.trigger('render', templateData);
                     $widget.parents('.js-container').show();
                     $body.trigger('render');
                 });
