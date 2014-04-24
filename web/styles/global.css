@@ -3370,6 +3370,15 @@ img[height="0"] {
   .packageSet.mPackageSetEdit .packageSetBodyItem_desc .delivery strong {
     color: #000000;
   }
+  .packageSet.mPackageSetEdit .packageSetBodyItem_desc .name {
+    height: 20px;
+    margin: 0 0 6px;
+  }
+  .packageSet.mPackageSetEdit .packageSetBodyItem_desc .price {
+    height: 26px;
+    font-size: 14px;
+    color: #515151;
+  }
   .packageSet.mPackageSetEdit .packageSetBodyItem_delivery {
     width: 115px;
   }
@@ -3461,6 +3470,7 @@ img[height="0"] {
   .packageSetBodyItem_desc .name {
     font-size: 14px;
     height: 52px;
+    overflow: hidden;
   }
   .packageSetBodyItem_desc .column {
     display: inline-block;
