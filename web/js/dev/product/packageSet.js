@@ -56,6 +56,9 @@
             self.prettyPrice = ko.computed(function(){
                 return window.printPrice(parseInt(self.price) * parseInt(self.count()));
             });
+            self.prettyItemPrice = ko.computed(function(){
+                return window.printPrice(parseInt(self.price));
+            });
             self.deliveryDate = ko.observable(product.deliveryDate);
 
             self.plusClick = function() {

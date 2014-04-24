@@ -107,6 +107,8 @@ return function (
                 <div class="packageSetBodyItem_desc">
                     <div class="name"><a class="" href="" data-bind="text: name, attr: { href : url }"></a></div><!--/ название товара -->
 
+                    <div class=""><span data-bind="text: prettyItemPrice"></span>&nbsp;<span class="rubl">p</span></div> <!-- Цена за единицу товара -->
+
                     <!-- размеры товара -->
                     <div class="column dimantion">
                         <span class="dimantion_name">Высота</span>
