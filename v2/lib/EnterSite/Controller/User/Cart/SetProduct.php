@@ -27,6 +27,7 @@ class SetProduct {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
+        $session = $this->getSession();
         $cartRepository = new Repository\Cart();
 
         $productData = array_merge([
@@ -34,14 +35,45 @@ class SetProduct {
             'quantity' => null,
         ], (array)$request->data['product']);
 
+        // корзина из сессии
+        $cart = $cartRepository->getObjectByHttpSession($session);
+
+        // создание товара для корзины
+        $cartProduct = new Model\Cart\Product();
+        $cartProduct->id = $productData['id'];
+        $cartProduct->quantity = (int)$productData['quantity'];
+
+        // добавление товара в корзину
+        $cart->product[$cartProduct->id] = $cartProduct;
+
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequest($request);
 
         $productItemQuery = new Query\Product\GetItemById($productData['id'], $regionId);
         $curl->prepare($productItemQuery);
 
+        // токен пользователя
+        $userToken = (new Repository\User)->getTokenByHttpSession($session);
+
+        // запрос пользователя
+        $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
+        // запрос корзины
+        $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
+        $curl->prepare($cartItemQuery);
+
         $curl->execute(1, 2);
 
+        // корзина из ядра
+        $cart = $cartRepository->getObjectByQuery($cartItemQuery);
+
+        // сохранение корзины в сессию
+        $cartRepository->saveObjectToHttpSession($session, $cart);
+
+        // товар
         $product = (new Repository\Product())->getObjectByQuery($productItemQuery);
         if (!$product) {
             $product = new Model\Product();
@@ -50,14 +82,8 @@ class SetProduct {
             throw new \Exception(sprintf('Товар #%s не найден', $productData['id']));
         }
 
-        $cartProduct = new Model\Cart\Product();
-        $cartProduct->id = $productData['id'];
-        $cartProduct->quantity = (int)$productData['quantity'];
-
-        $session = $this->getSession();
-        $cart = $cartRepository->getObjectByHttpSession($session);
-        $cart->product[$cartProduct->id] = $cartProduct;
-        $cartRepository->saveObjectToHttpSession($session, $cart);
+        // пользователь
+        $user = $userItemQuery ? (new Repository\User())->getObjectByQuery($userItemQuery) : null;
 
         $page = new Page();
         // кнопка купить
@@ -65,6 +91,9 @@ class SetProduct {
         $page->widgets['.' . $widget->widgetId] = $widget;
         // спиннер
         $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
+        $page->widgets['.' . $widget->widgetId] = $widget;
+        // пользователь, корзина
+        $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
         $page->widgets['.' . $widget->widgetId] = $widget;
 
         // response
