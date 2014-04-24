@@ -1,0 +1,34 @@
+<div class="js-widget {{widgetId}}" data-template-selector="#tpl-user">
+    <ul class="userBox">
+        <!--li class="userBox_item">
+            <a class="userBox_link userBox_link__cart" href="">
+                <span class="userBox_text">Корзина</span>
+            </a>
+        </li--><!-- пустая корзина -->
+
+        <li class="userBox_item">
+            <a class="userBox_link userBox_link__cart userBox_link__cartVal" href="">
+                <span class="qnt">12</span>
+                <span class="userBox_text"><strong>10 343</strong> <span class="rubl">p</span></span>
+            </a>
+        </li><!-- полная корзина -->
+
+        {{#isAuthorized}}
+            <li class="userBox_item">
+                <a class="userBox_link userBox_link__auth userBox_link__authVal" href="{{userLink.url}}">
+                    <span class="userBox_text">{{userLink.name}}</span>
+                    <div class="transBg"></div>
+                </a>
+            </li><!-- пользователь залогинен -->
+        {{/isAuthorized}}
+        {{^isAuthorized}}
+            <li class="userBox_item">
+                <a class="userBox_link userBox_link__auth" href="{{userLink.url}}">
+                    <span class="userBox_text">Личный кабинет</span>
+                </a>
+            </li><!-- пользователь не залогинен -->
+        {{/isAuthorized}}
+
+        <li class="userBox_item userBox_item__last"><a class="userBox_link jsSearch" href=""><span class="userBox_text">Поиск</span></a></li>
+    </ul>
+</div>

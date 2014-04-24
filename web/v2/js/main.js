@@ -24,6 +24,9 @@
                     $(widgetSelector).trigger('render', templateData);
                 });
             }
+            if (_.isObject(userData.userBlock)) {
+                $('.' + userData.userBlock.widgetId).trigger('render', userData.userBlock);
+            }
         });
 
         $body.on('render', '.js-widget', function(e, templateData) {

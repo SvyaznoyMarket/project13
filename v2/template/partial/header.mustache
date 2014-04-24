@@ -25,36 +25,9 @@
 
         <!-- Панель юзера - личный кабинет, поиск, корзина -->
         <div class="headerRightAside">
-            <ul class="userBox">
-                <!--li class="userBox_item">
-                    <a class="userBox_link userBox_link__cart" href="">
-                        <span class="userBox_text">Корзина</span>
-                    </a>
-                </li--><!-- пустая корзина -->
-
-                <li class="userBox_item">
-                    <a class="userBox_link userBox_link__cart userBox_link__cartVal" href="">
-                        <span class="qnt">12</span>
-                        <span class="userBox_text"><strong>10 343</strong> <span class="rubl">p</span></span>
-                    </a>
-                </li><!-- полная корзина -->
-
-                <!--li class="userBox_item">
-                    <a class="userBox_link userBox_link__auth" href="">
-                        <span class="userBox_text">Личный кабинет</span>
-                    </a>
-                </li--><!-- пользователь не залогинен -->
-
-                <li class="userBox_item">
-                    <a class="userBox_link userBox_link__auth userBox_link__authVal" href="">
-                        <span class="userBox_text">Бурлакова Татьяна</span>
-                        <div class="transBg"></div>
-                    </a>
-                </li><!-- пользователь залогинен -->
-
-                <li class="userBox_item userBox_item__last"><a class="userBox_link jsSearch" href=""><span class="userBox_text">Поиск</span></a></li>
-            </ul>
-
+            {{#userBlock}}
+                {{>partial/user}}
+            {{/userBlock}}
             <div class="transBg"></div>
         </div>
         <!--/ Панель юзера - личный кабинет, поиск, корзина -->

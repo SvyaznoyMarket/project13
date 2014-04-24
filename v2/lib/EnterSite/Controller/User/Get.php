@@ -7,16 +7,18 @@ use Enter\Util\JsonDecoderTrait;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
+use EnterSite\RouterTrait;
 use EnterSite\SessionTrait;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
 use EnterSite\Repository;
 use EnterSite\Model\Page\User\Get as Page;
+use EnterSite\Routing;
 
 class Get {
     use ConfigTrait;
-    use LoggerTrait, CurlClientTrait, SessionTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait;
+    use LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
     }
 
@@ -28,6 +30,7 @@ class Get {
         $config = $this->getConfig();
         $session = $this->getSession();
         $curl = $this->getCurlClient();
+        $router = $this->getRouter();
         $cartRepository = new Repository\Cart();
 
         $page = new Page();
@@ -37,6 +40,15 @@ class Get {
 
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);
+
+        // токен пользователя
+        $userToken = (new Repository\User)->getTokenByHttpSession($session);
+
+        // запрос пользователя
+        $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
 
         $productsById = [];
         foreach ($cart->product as $cartProduct) {
@@ -54,6 +66,8 @@ class Get {
 
         $curl->execute(1, 2);
 
+        $user = $userItemQuery ? (new Repository\User())->getObjectByQuery($userItemQuery) : null;
+
         if ($productListQuery) {
             $productsById = (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
         }
@@ -61,7 +75,14 @@ class Get {
         // корзина из ядра
         $cart = $cartRepository->getObjectByQuery($cartItemQuery);
 
-        // TODO: загрузка товаров
+        // build page
+        if ($user) {
+            $page->userBlock->isAuthorized = true;
+            $page->userBlock->userLink->name = $user->firstName ?: $user->lastName;
+            $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Index());
+        } else {
+            $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Auth());
+        }
 
         foreach ($cart->product as $cartProduct) {
             $product = !empty($productsById[$cartProduct->id])

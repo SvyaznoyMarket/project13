@@ -2,18 +2,21 @@
 
 namespace EnterSite\Model\Page {
     use EnterSite\Model\HtmlPage;
+    use EnterSite\Model\Partial;
 
     class DefaultLayout extends HtmlPage {
         /** @var string */
         public $bodyDataConfig;
         /** @var DefaultLayout\Template[] */
         public $templates = [];
-        /** @var DefaultLayout\BreadcrumbBlock|null */
-        public $breadcrumbBlock;
         /** @var DefaultLayout\RegionBlock */
         public $regionBlock;
         /** @var DefaultLayout\MainMenu */
         public $mainMenu;
+        /** @var Partial\UserBlock */
+        public $userBlock;
+        /** @var DefaultLayout\BreadcrumbBlock|null */
+        public $breadcrumbBlock;
         /** @var DefaultLayout\Search */
         public $search;
         /** @var DefaultLayout\Content */
@@ -22,8 +25,9 @@ namespace EnterSite\Model\Page {
         public function __construct() {
             parent::__construct();
 
-            $this->mainMenu = new DefaultLayout\MainMenu();
             $this->regionBlock = new DefaultLayout\RegionBlock();
+            $this->mainMenu = new DefaultLayout\MainMenu();
+            $this->userBlock = new Partial\UserBlock();
             $this->search = new DefaultLayout\Search();
             $this->content = new DefaultLayout\Content();
         }
