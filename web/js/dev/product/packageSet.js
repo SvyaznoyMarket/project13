@@ -84,6 +84,7 @@
 
             self.countKeydown = function(item, e) {
                 e.stopPropagation();
+                var isTextSelected = e.target.selectionStart - e.target.selectionEnd != 0;
 
                 if ( e.which === 38 ) { // up arrow
                     item.plusClick();
@@ -98,8 +99,10 @@
                     (e.which === 8) ||
                     (e.which === 46))
                     ) {
-                    if (item.count().toString().length < 2 && (e.which == 8 || e.which == 46)) return false; // предотвращаем пустую строку ввода
-                    if (item.count().toString().length > 1 && !(e.which == 8 || e.which == 46)) return false;
+                    if (!isTextSelected) { // если текст не выделен
+                        if (item.count().toString().length < 2 && (e.which == 8 || e.which == 46)) return false; // предотвращаем пустую строку ввода
+                        if (item.count().toString().length > 1 && !(e.which == 8 || e.which == 46)) return false;
+                    }
                     return true;
                 }
                 return false;
@@ -107,6 +110,7 @@
 
             self.countKeyUp = function(item, e) {
                 // TODO-zra сделать проверку доставки
+                if (self.count() == "") self.count(1); // если поле ввода вдруг окажется пустым
                 return false;
             }
         }
