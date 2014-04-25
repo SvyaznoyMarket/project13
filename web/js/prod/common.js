@@ -447,7 +447,8 @@
 				document.location.href = data.redirect;
 			}
 			else if ( blackBox ) {
-				blackBox.basket().add( data );
+				if (data.product) blackBox.basket().add( data );  // если добавляем единичный продукт
+				if (data.products)  blackBox.basket().multipleAdd( data );  // если добавляем много продуктов за раз
 			}
 		},
 
@@ -3706,6 +3707,8 @@ $(document).ready(function() {
 //				checkScroll();
 				userBar.showOverlay = true;
 
+                if ( !data.product ) return;
+
 				if ( !data.product.article ) {
 					console.warn('Не получен article продукта');
 
@@ -3734,6 +3737,7 @@ $(document).ready(function() {
 			console.log(upsale);
 
 			if ( !upsale.url ) {
+                console.log('if upsale.url');
 				return;
 			}
 
