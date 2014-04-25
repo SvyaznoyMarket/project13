@@ -1,0 +1,42 @@
+<?php
+
+namespace Controller;
+
+class MobileRedirectAction {
+    /**
+     * @param \Http\Request $request
+     * @throws \Exception\NotFoundException
+     * @return \Http\Response
+     */
+    public function execute(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $config = \App::config();
+
+        $routeName = $request->attributes->get('route');
+
+        $hasRedirect = $routeName && (false
+            || ('product' === $routeName)
+        );
+        if (!$hasRedirect) {
+            return null;
+        }
+
+        $classFile = $config->appDir . '/vendor/Mobile-Detect/Mobile_Detect.php';
+        if (!file_exists($classFile)) {
+            \App::logger()->error('Класс Mobile_Detect не найден', ['mobile']);
+
+            return null;
+        }
+        include_once $classFile;
+
+        $mobileDetect = new \Mobile_Detect();
+        if (!$mobileDetect->isMobile()) {
+            return null;
+        }
+
+        $redirectUrl = str_replace($config->mainHost, $config->mobileHost, $request->getSchemeAndHttpHost()) . $request->getRequestUri();
+
+        return new \Http\RedirectResponse($redirectUrl, 301);
+    }
+}

@@ -155,14 +155,25 @@ $request = \App::request();
 $router = \App::router();
 
 try {
-    // проверка редиректа
-    if (\App::config()->redirect301['enabled']) {
+    $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
+
+    // проверка редиректа для мобильного устройства
+    if (!$response instanceof \Http\Response && \App::config()->mobileRedirect['enabled']) {
+        $response = (new \Controller\MobileRedirectAction())->execute($request);
+    }
+
+    // проверка редиректа из cms
+    if (!$response instanceof \Http\Response && \App::config()->redirect301['enabled']) {
         $response = (new \Controller\RedirectAction())->execute($request);
     }
+
     // если предыдущие контроллеры не вернули Response, ...
     if (!$response instanceof \Http\Response) {
-        $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
         \App::logger()->info(['message' => 'Match route', 'route' => $request->attributes->get('route'), 'uri' => $request->getRequestUri(), 'method' => $request->getMethod()]);
+
+        if (\App::config()->mobileRedirect['enabled']) {
+            $response = (new \Controller\MobileRedirectAction())->execute($request);
+        }
 
         // action resolver
         $resolver = \App::actionResolver();
