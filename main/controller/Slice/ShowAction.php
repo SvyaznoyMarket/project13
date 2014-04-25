@@ -547,11 +547,7 @@ class ShowAction {
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
         $repository = \RepositoryManager::product();
-        $repository->setEntityClass(
-            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-                ? '\\Model\\Product\\ExpandedEntity'
-                : '\\Model\\Product\\CompactEntity'
-        );
+        $repository->setEntityClass('\\Model\\Product\\Entity');
 
         if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
             $productIds = [];
