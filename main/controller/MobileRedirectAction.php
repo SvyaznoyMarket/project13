@@ -35,7 +35,11 @@ class MobileRedirectAction {
             return null;
         }
 
-        $redirectUrl = str_replace($config->mainHost, $config->mobileHost, $request->getSchemeAndHttpHost()) . $request->getRequestUri();
+        //$redirectUrl = str_replace($config->mainHost, $config->mobileHost, $request->getSchemeAndHttpHost()) . $request->getRequestUri();
+        $redirectUrl = strtr($request->getSchemeAndHttpHost(), [
+            $config->mainHost => $config->mobileHost,
+            ':8080'           => '', //FIXME: костыль для nginx-а
+        ]) . $request->getRequestUri();
 
         return new \Http\RedirectResponse($redirectUrl, 301);
     }
