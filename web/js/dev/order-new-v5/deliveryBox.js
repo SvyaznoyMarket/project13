@@ -363,6 +363,7 @@
 				tempProductArray = [],
 				nowTotalSum,
 				deletedBlock,
+				newState,
 
 				choosenBlock = null,
 
@@ -403,9 +404,19 @@
 					OrderModel.deliveryBoxes.push( choosenBlock );
 				}
 				else {
-					console.log('Блока для этого типа доставки в этот пункт еще не существует');
+					console.info('Блока для этого типа доставки в этот пункт еще не существует');
+					console.warn('Необходимо попробовать найти другую доставку в тот же магазин');
+					newState = OrderModel.orderDictionary.getStateToProductByDeliveryID(product.id, self.choosenPoint().id);
+					console.info('newState complete');
+					console.log(newState);
 
-					new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
+					if ( newState ) {
+						console.log('Найден вариант доставки в тот же магазин но способом ' + newState);
+						new DeliveryBox( tempProductArray, newState, self.choosenPoint().id );
+					} else {
+						console.warn('Не найден вариант доставки в тот же магазин. Будет выбран тот же способ доставки, но первый доступный магазин');
+						new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
+					}
 				}
 
 				return;

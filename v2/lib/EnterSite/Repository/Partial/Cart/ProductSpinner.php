@@ -26,6 +26,7 @@ class ProductSpinner {
         if ($cartProduct) {
             $spinner->class = ' mDisabled';
             $spinner->value = $cartProduct->quantity;
+            $spinner->isDisabled = true;
         }
 
         return $spinner;

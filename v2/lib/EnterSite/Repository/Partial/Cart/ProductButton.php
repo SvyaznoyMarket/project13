@@ -51,7 +51,6 @@ class ProductButton {
         $button->class = '';
         $button->id = self::getId($product->id);
         $button->widgetId = self::getWidgetId($product->id);
-        $button->spinnerWidgetId = Repository\Partial\Cart\ProductSpinner::getWidgetId($product->id);
         $button->text = 'Купить';
 
         // если товар в корзине
