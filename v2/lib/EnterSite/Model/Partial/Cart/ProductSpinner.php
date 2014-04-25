@@ -13,5 +13,7 @@ namespace EnterSite\Model\Partial\Cart {
         public $class;
         /** @var int */
         public $value;
+        /** @var bool */
+        public $isDisabled;
     }
 }

@@ -1,17 +1,20 @@
 <div class="js-widget js-buySpinner {{widgetId}}" data-template-selector="#tpl-product-buySpinner">
     <div class="{{class}} counter">
         <button
+            {{#isDisabled}}disabled="disabled"{{/isDisabled}}
             class="js-buySpinner-dec counter__btn counter__btn-plus"
             data-widget-selector=".{{widgetId}}"
             data-button-selector=".{{buttonId}}"
         >-</button>
         <input class="js-buySpinner-value counter__input"
+           {{#isDisabled}}disabled="disabled"{{/isDisabled}}
            type="text"
            value="{{value}}"
            data-widget-selector=".{{widgetId}}"
            data-button-selector=".{{buttonId}}"
         />
         <button class="js-buySpinner-inc counter__btn counter__btn-minus"
+            {{#isDisabled}}disabled="disabled"{{/isDisabled}}
             data-widget-selector=".{{widgetId}}"
             data-button-selector=".{{buttonId}}"
         >+</button>
