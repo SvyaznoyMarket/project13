@@ -82,6 +82,10 @@ class AppConfig {
     public $redirect301 = [
         'enabled' => null,
     ];
+    /** @var array */
+    public $mobileRedirect = [
+        'enabled' => null,
+    ];
 
     /**
      * @var array

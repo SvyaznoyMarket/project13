@@ -34,6 +34,7 @@ $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
 $c->redirect301['enabled'] = true;
+$c->mobileRedirect['enabled'] = true;
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
