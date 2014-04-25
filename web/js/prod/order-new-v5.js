@@ -997,6 +997,7 @@
 				tempProductArray = [],
 				nowTotalSum,
 				deletedBlock,
+				newState,
 
 				choosenBlock = null,
 
@@ -1037,9 +1038,19 @@
 					OrderModel.deliveryBoxes.push( choosenBlock );
 				}
 				else {
-					console.log('Блока для этого типа доставки в этот пункт еще не существует');
+					console.info('Блока для этого типа доставки в этот пункт еще не существует');
+					console.warn('Необходимо попробовать найти другую доставку в тот же магазин');
+					newState = OrderModel.orderDictionary.getStateToProductByDeliveryID(product.id, self.choosenPoint().id);
+					console.info('newState complete');
+					console.log(newState);
 
-					new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
+					if ( newState ) {
+						console.log('Найден вариант доставки в тот же магазин но способом ' + newState);
+						new DeliveryBox( tempProductArray, newState, self.choosenPoint().id );
+					} else {
+						console.warn('Не найден вариант доставки в тот же магазин. Будет выбран тот же способ доставки, но первый доступный магазин');
+						new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
+					}
 				}
 
 				return;
@@ -1833,6 +1844,37 @@
 			}
 
 			return this.products[productId];
+		};
+
+		/**
+		 * Метод ищет у продукта любую возможность забрать из конкретной точки доставки
+		 * Если метод доставки находится - возвращается метод доставки,
+		 * Если нет - возвращатеся false
+		 *
+		 * @param	{Number}	productId		Идентификатор продукта
+		 * @param	{Number}	pointId			Идентификатор точки доставки
+		 */
+		OrderDictionary.prototype.getStateToProductByDeliveryID = function( productId, pointId ) {
+			console.info('Перебираем все методы доставок и ищем среди них со схожим типом точек доставок');
+			var
+				productDeliveries = this.products[productId].deliveries,
+				deliveriesType;
+			// end of vars
+
+			console.log('productId ' + productId);
+			console.log('pointId ' + pointId);
+			console.log(productDeliveries);
+
+			for ( deliveriesType in productDeliveries ) {
+				console.log('ищем в ' + deliveriesType);
+				if ( productDeliveries.hasOwnProperty(deliveriesType) && productDeliveries[deliveriesType].hasOwnProperty(pointId) ) {
+					console.log('возвращаем ' + deliveriesType);
+					return deliveriesType;
+				}
+			}
+
+			console.warn('не нашли...((');
+			return false;
 		};
 
 

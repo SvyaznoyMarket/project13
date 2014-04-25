@@ -83,7 +83,7 @@
 	 **********************************************************************/
 	//var MAX_GROUPS  = 10;  //  Limit to 10 max groups to avoid page-slow-loading
 	//var MAX_VENDORS = 10;  //  Limit to 10 max vendors
-	var VISITOR_ASSIGNED_TO_GROUP_FOR_DAYS = 30; //  visitor assigned to same group
+	var VISITOR_ASSIGNED_TO_GROUP_FOR_DAYS = 60; //  visitor assigned to same group
 
 
 	/**********************************************************************
@@ -93,6 +93,11 @@
 		var selectedGroup;
 		if ( ASSIGN_VISITOR_TO_GROUP ) {  //Read from cookie
 			selectedGroup = read_cookie( "visitorSplitGroup" );
+
+			// перезаписываем куку
+			if (selectedGroup) {
+				setVisitorGroup(selectedGroup);
+			}
 		}
 		if ( !selectedGroup ) {
 			var marker = Math.random() * 100;
@@ -210,7 +215,7 @@
 
 	/**********************************************************************
 	 Test function. All vendors are activated, and visit tagged
-	 **********************************************************************
+	 **********************************************************************/
 	function testInsertAllTags() {
 		var
 			i, url, type;
@@ -226,7 +231,7 @@
 			console.log( 'VisitorSplit Error, params: ', i, url, type );
 			alert( ex );
 		}
-	}*/
+	}
 
 
 	/**********************************************************************

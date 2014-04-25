@@ -27,7 +27,7 @@
     _gaq.push(['_addOrganic', 'ya.ru', 'q']);
     _gaq.push(['_addOrganic', 'm.yandex.ru','query']);
 <? if (\App::config()->abtest['enabled']): ?>
-    _gaq.push(['_setCustomVar', 1, 'User segment', '<?= \App::abTest()->getCase()->getGaEvent() ?>', 2]);
+    _gaq.push(['_setCustomVar', 2, 'User segment', '<?= \App::abTest()->getCase()->getGaEvent() ?>', 2]);
 <? endif ?>
 <? if (\App::abtestJson() && \App::abtestJson()->isActive()) : ?>
     _gaq.push(['_setCustomVar', 1, 'User segment', '<?= \App::abTestJson()->getCase()->getGaEvent() ?>', 2]);

@@ -54,11 +54,8 @@ class FormAction {
 
         if ($enterpizeCoupon && isset($limitResponse['detail'][$enterpizeCoupon->getToken()])) {
             $enterpizeCouponLimit = $limitResponse['detail'][$enterpizeCoupon->getToken()];
-            if ($enterpizeCouponLimit == 0) {
-                $session->set('flash', ['errors' => ['Эти фишки уже закончились, потому что количество фишек ограничено. <br />' .
-                'Вы можете выбрать другие фишки <a href="/enterprize">здесь</a>. <br />' .
-                'Успевайте получить лучшие предложения Enter Prize!']]);
-            }
+        } else {
+            $enterpizeCouponLimit = null;
         }
 
         if (!$enterpizeCoupon) {
@@ -68,7 +65,7 @@ class FormAction {
         $data = (array)$session->get($sessionName, []);
 
         // если пользователь авторизован и уже является участником enterprize
-        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember()) {
+        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember() && $enterpizeCouponLimit != 0) {
             $data = array_merge($data, [
                 'token'            => $user->getToken(),
                 'name'             => $user->getEntity()->getFirstName(),
@@ -88,6 +85,7 @@ class FormAction {
 
         $page = new \View\Enterprize\FormPage();
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
+        $page->setParam('limit', $enterpizeCouponLimit);
         $page->setParam('form', $this->getForm());
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
         $page->setParam('authSource', $session->get('authSource', null));
