@@ -55,8 +55,6 @@ $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
 
 $c->database['host'] = 'localhost';
 
-$c->mobileHost = 'm.ent3.ru';
-
 $c->loadMediaHost = false;
 
 $c->jsonLog['enabled'] = false;

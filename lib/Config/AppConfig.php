@@ -75,6 +75,7 @@ class AppConfig {
     public $session = [
         'name'            => null,
         'cookie_lifetime' => null,
+        'cookie_domain'   => null,
     ];
     /** @var string */
     public $cacheCookieName = null;

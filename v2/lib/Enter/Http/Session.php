@@ -26,7 +26,7 @@ class Session {
             'auto_start'              => true,
             'session_cookie_lifetime' => (null === $this->config->cookieLifetime) ? $cookieDefaults['lifetime'] : $this->config->cookieLifetime,
             'session_cookie_path'     => $cookieDefaults['path'],
-            'session_cookie_domain'   => $cookieDefaults['domain'],
+            'session_cookie_domain'   => $this->config->cookieDomain ?: $cookieDefaults['domain'],
             'session_cookie_secure'   => $cookieDefaults['secure'],
             'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,
             'session_cache_limiter'   => null,

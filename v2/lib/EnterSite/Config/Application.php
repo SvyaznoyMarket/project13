@@ -79,6 +79,8 @@ namespace EnterSite\Config\Application {
         public $name;
         /** @var int */
         public $cookieLifetime;
+        /** @var string */
+        public $cookieDomain;
     }
 
     class UserToken {

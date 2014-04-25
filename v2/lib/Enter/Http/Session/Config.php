@@ -7,4 +7,6 @@ class Config {
     public $name;
     /** @var int */
     public $cookieLifetime;
+    /** @var string */
+    public $cookieDomain;
 }

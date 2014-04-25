@@ -15,9 +15,12 @@ trait SessionTrait {
      */
     protected function getSession() {
         if (!isset($GLOBALS[__METHOD__])) {
+            $globalConfig = $this->getConfig();
+
             $config = new Http\Session\Config();
-            $config->name = $this->getConfig()->session->name;
-            $config->cookieLifetime = $this->getConfig()->session->cookieLifetime;
+            $config->name = $globalConfig->session->name;
+            $config->cookieLifetime = $globalConfig->session->cookieLifetime;
+            $config->cookieDomain = $globalConfig->session->cookieDomain;
 
             $instance = new Http\Session($config);
             try {

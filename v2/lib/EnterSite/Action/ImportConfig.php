@@ -24,6 +24,7 @@ class ImportConfig {
 
         $config->session->name = $importedConfig->session['name'];
         $config->session->cookieLifetime = $importedConfig->session['cookie_lifetime'];
+        $config->session->cookieDomain = $importedConfig->session['cookie_domain'];
 
         $config->userToken->authCookieName = $importedConfig->authToken['name'];
         $config->userToken->infoCookieName = $importedConfig->authToken['authorized_cookie'];

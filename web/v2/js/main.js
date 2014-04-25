@@ -157,7 +157,7 @@
 
         console.info('config', config);
 
-        var hasUserInfo = ('1' === $.cookie(config.user.infoCookie)),
+        var hasUserInfo = -1 !== _.indexOf([undefined, '1'], $.cookie(config.user.infoCookie)),
             userInfoUrl = config.user.infoUrl;
 
         console.info('hasUserInfo', hasUserInfo);

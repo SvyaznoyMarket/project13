@@ -10,6 +10,7 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->session->name = 'enter';
     $config->session->cookieLifetime = 15552000;
+    $config->session->cookieDomain = '.enter.ru';
 
     $config->userToken->authCookieName = '_token';
     $config->userToken->infoCookieName = '_authorized';

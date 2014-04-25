@@ -14,7 +14,7 @@ class Session implements \Http\SessionInterface {
             'auto_start'              => true,
             'session_cookie_lifetime' => is_null(\App::config()->session['cookie_lifetime'])? $cookieDefaults['lifetime'] : \App::config()->session['cookie_lifetime'],
             'session_cookie_path'     => $cookieDefaults['path'],
-            'session_cookie_domain'   => $cookieDefaults['domain'],
+            'session_cookie_domain'   => \App::config()->session['cookie_domain'] ?: $cookieDefaults['domain'],
             'session_cookie_secure'   => $cookieDefaults['secure'],
             'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,
             'session_cache_limiter'   => null,

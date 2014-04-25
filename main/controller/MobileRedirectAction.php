@@ -42,6 +42,8 @@ class MobileRedirectAction {
         ]) . $request->getRequestUri();
 
         $response =  new \Http\RedirectResponse($redirectUrl, 301);
+
+        /*
         if ($mobileHost = \App::config()->mobileHost) {
             $cookie = new \Http\Cookie(
                 \App::config()->authToken['authorized_cookie'],
@@ -54,6 +56,7 @@ class MobileRedirectAction {
             );
             $response->headers->setCookie($cookie);
         }
+        */
 
         return $response;
     }
