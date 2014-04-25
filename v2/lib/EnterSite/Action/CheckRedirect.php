@@ -36,7 +36,11 @@ class CheckRedirect {
         }
 
         // FIXME
-        $url = str_replace('m.', '', $request->getSchemeAndHttpHost() . $request->getRequestUri());
+        //$url = str_replace('m.', '', $request->getSchemeAndHttpHost() . $request->getRequestUri());
+        $url = strtr($request->getSchemeAndHttpHost(), [
+            'm.'    => '',
+            ':8080' => '', //FIXME: костыль для nginx-а
+        ]) . $request->getRequestUri();
 
         return (new Controller\Redirect())->execute($url, 302);
     }
