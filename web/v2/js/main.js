@@ -147,8 +147,6 @@
             $el.find('.js-buySpinner-value').val(product.quantity);
         });
 
-
-
         // запрос инфы по пользователю
         var config = _.extend({
                 user: {
