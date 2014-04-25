@@ -1108,7 +1108,7 @@
                     item.minusClick();
                     return false;
                 }
-                else if ( e.which === 39 || e.which === 37 ) return true; 
+                else if ( e.which === 39 || e.which === 37 ) return true;
                 else if ( (( (e.which >= 48) && (e.which <= 57) ) ||  //num keys
                     ( (e.which >= 96) && (e.which <= 105) ) || //numpad keys
                     (e.which === 8) ||
@@ -1125,7 +1125,7 @@
 
             self.countKeyUp = function(item, e) {
                 // TODO-zra сделать проверку доставки
-                if (self.count() == "") self.count(1); // если поле ввода вдруг окажется пустым
+                if (self.count() === "") self.count(1); // если поле ввода вдруг окажется пустым
                 return false;
             }
         }
