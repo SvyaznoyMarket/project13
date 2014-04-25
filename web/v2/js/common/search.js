@@ -15,13 +15,15 @@
 		 * Показываем попап формы поиска
 		*/
 		searchPopup = function searchPopup( event ) {
+			console.log('show search popup');
+
+			event.preventDefault();
+
 			var topPopup = $('.header').height() + 20;
 
 			popupSearch.enterPopup({
 				popupCSS : {top: topPopup, marginTop: 0}
 			});
-
-			event.preventDefault();
 		};
 		//end of functions
 
@@ -29,6 +31,7 @@
 	};
 
 	$(function () {
+		console.log('show search popup app');
         app.searchForm();
     });
 
