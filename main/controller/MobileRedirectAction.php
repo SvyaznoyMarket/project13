@@ -41,6 +41,20 @@ class MobileRedirectAction {
             ':8080'           => '', //FIXME: костыль для nginx-а
         ]) . $request->getRequestUri();
 
-        return new \Http\RedirectResponse($redirectUrl, 301);
+        $response =  new \Http\RedirectResponse($redirectUrl, 301);
+        if ($mobileHost = \App::config()->mobileHost) {
+            $cookie = new \Http\Cookie(
+                \App::config()->authToken['authorized_cookie'],
+                0, //cookieValue
+                time() + \App::config()->session['cookie_lifetime'],
+                '/',
+                $mobileHost,
+                false,
+                false
+            );
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
     }
 }
