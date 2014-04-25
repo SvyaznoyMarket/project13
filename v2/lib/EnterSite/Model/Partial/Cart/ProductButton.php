@@ -8,8 +8,6 @@ namespace EnterSite\Model\Partial\Cart {
         /** @var string */
         public $id;
         /** @var string */
-        public $spinnerWidgetId;
-        /** @var string */
         public $text;
         /** @var string */
         public $url;
