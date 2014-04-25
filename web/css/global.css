@@ -8732,9 +8732,10 @@
     top: 0;
   }
   .bSpecifications.mSimpleProperty .bSpecificationsList__eValue {
-    width: 125px;
+    width: 126px;
     margin: 0 0 5px;
     padding: 0;
+    word-wrap: break-word;
   }
   .pluso {
     margin: 15px 0 0;

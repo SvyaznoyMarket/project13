@@ -250,6 +250,37 @@
 			return this.products[productId];
 		};
 
+		/**
+		 * Метод ищет у продукта любую возможность забрать из конкретной точки доставки
+		 * Если метод доставки находится - возвращается метод доставки,
+		 * Если нет - возвращатеся false
+		 *
+		 * @param	{Number}	productId		Идентификатор продукта
+		 * @param	{Number}	pointId			Идентификатор точки доставки
+		 */
+		OrderDictionary.prototype.getStateToProductByDeliveryID = function( productId, pointId ) {
+			console.info('Перебираем все методы доставок и ищем среди них со схожим типом точек доставок');
+			var
+				productDeliveries = this.products[productId].deliveries,
+				deliveriesType;
+			// end of vars
+
+			console.log('productId ' + productId);
+			console.log('pointId ' + pointId);
+			console.log(productDeliveries);
+
+			for ( deliveriesType in productDeliveries ) {
+				console.log('ищем в ' + deliveriesType);
+				if ( productDeliveries.hasOwnProperty(deliveriesType) && productDeliveries[deliveriesType].hasOwnProperty(pointId) ) {
+					console.log('возвращаем ' + deliveriesType);
+					return deliveriesType;
+				}
+			}
+
+			console.warn('не нашли...((');
+			return false;
+		};
+
 
 		return OrderDictionary;
 	
