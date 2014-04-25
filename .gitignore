@@ -25,4 +25,4 @@ erase_barcode.cmd
 /web/js/docs
 /web/plan
 /web/survey
-/node/node_modules
+/node/node_modules/*
