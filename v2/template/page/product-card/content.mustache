@@ -147,9 +147,9 @@
 
     <!-- Информация о товаре - табы -->
     <div class="contentBox960">
-        <ul class="productDescTab">
+        <ul class="productDescTab js-tabs">
             <li class="productDescTab_item">
-                <a class="productDescTab_link productDescTab_link__active" href="">
+                <a class="productDescTab_link productDescTab_link__active js-tabs-link" data-tab="specifications" href="">
                     <span class="tabText">Подробности</span>
 
                     {{#product.hasVideo}}
@@ -163,7 +163,7 @@
             </li>
 
             <li class="productDescTab_item">
-                <a class="productDescTab_link" href="#reviewsTab">
+                <a class="productDescTab_link js-tabs-link" data-tab="reviews" href="">
                     <span class="tabText">Отзывы</span>
                     <span class="tabImg reviews">
                         {{#product.rating}}
@@ -174,129 +174,100 @@
             </li>
 
             <li class="productDescTab_item">
-                <a class="productDescTab_link" href="#accessoriesTab">Аксессуары</a>
+                <a class="productDescTab_link js-tabs-link" data-tab="accessories" href="">Аксессуары</a>
             </li>
 
             <li class="productDescTab_item productDescTab_item__last">
-                <a href="#alsoTab" class="productDescTab_link">С этим товаром покупают</a>
+                <a href="" data-tab="also" class="productDescTab_link js-tabs-link">С этим товаром покупают</a>
             </li>
         </ul>
     </div>
     <!-- Информация о товаре - табы -->
 
     <div class="contentBox940">
-        <!-- Таб - Подробнее -->
-        <div class="tabContent specifications clearfix">
-            <div class="specificationspMedia">
-            <!--
-            {{#product.videos}}
-                {{&content}}
-            {{/product.videos}}
-            {{#product.photo3ds}}
-                {{&source}}
-            {{/product.photo3ds}}
-            -->
-            </div>
+        <div class="tabContentWrap js-tab-wrap">
+            <div class="tabContentInner js-tab">
+                <!-- Таб - Подробнее -->
+                <div class="tabContent js-cont" data-desc="specifications">
+                    <div class="specificationsListCol">
+                        {{#product.propertyChunks}}
+                            <ul class="specificationsList">
+                            {{#properties}}
+                                {{#isTitle}}
+                                    <li class="specificationsList__item specificationsList__item-title">{{name}}</li>
+                                {{/isTitle}}
 
-            <div class="specificationsListCol">
-            {{#product.propertyChunks}}
-                <ul class="specificationsList">
-                {{#properties}}
-                    {{#isTitle}}
-                        <li class="specificationsList__item specificationsList__item-title">{{name}}</li>
-                    {{/isTitle}}
+                                {{^isTitle}}
+                                    <li class="specificationsList__item">{{name}} : {{value}}</li>
+                                {{/isTitle}}
+                            {{/properties}}
+                            </ul>
+                        {{/product.propertyChunks}}
 
-                    {{^isTitle}}
-                        <li class="specificationsList__item">{{name}} : {{value}}</li>
-                    {{/isTitle}}
-                {{/properties}}
-                </ul>
-            {{/product.propertyChunks}}
-
-                <p class="specificationsText">{{product.description}}</p>
-            </div>
-        </div>
-        <!--/ Таб - Подробнее -->
-    </div>
-
-    <div class="contentBox960" id="reviewsTab">
-        <div class="tabTitle clearfix">
-            <div class="tabTitle__text">Отзывы пользователей</div>
-            <!--<a class="tabTitle__add" href="">Добавить отзыв</a>-->
-        </div>
-    </div>
-
-    {{#product.reviewBlock}}
-
-    <div class="contentBox940">
-        <!-- Таб - Отзывы -->
-        <div class="tabContent tabContent-reviews">
-        {{#product.reviewBlock.reviews}}
-            <div class="reviewsBox">
-                <div class="reviewsBox__left">
-                    <div class="reviews">
-                        {{>partial/rating/star-list}}
-                    </div>
-
-                    <div class="reviewsName">{{author}}</div>
-
-                    <div class="reviewsDate">{{createdAt}}</div>
-                </div>
-
-                <div class="reviewsBox__right">
-                    <div class="reviewsText">
-                        <span class="reviewsText__mark">«</span>
-                        <p class="reviewsText__par">
-                            {{extract}}
-                        </p>
-                    </div>
-
-                    <div class="reviewsText">
-                        <span class="reviewsText__mark">+</span>
-                        <p class="reviewsText__par">
-                            {{pros}}
-                        </p>
-                    </div>
-
-                    <div class="reviewsText">
-                        <span class="reviewsText__mark">−</span>
-                        <p class="reviewsText__par">
-                            {{cons}}
-                        </p>
+                        <p class="specificationsText">{{product.description}}</p>
                     </div>
                 </div>
+                <!--/ Таб - Подробнее -->
+
+                <!-- Таб - Отзывы -->
+                {{#product.reviewBlock}}
+                <div class="tabContent js-cont" data-desc="reviews">
+                {{#product.reviewBlock.reviews}}
+                    <div class="reviewsBox clearfix">
+                        <div class="reviewsBox__left">
+                            <div class="reviews">
+                                {{>partial/rating/star-list}}
+                            </div>
+
+                            <div class="reviewsName">{{author}}</div>
+
+                            <div class="reviewsDate">{{createdAt}}</div>
+                        </div>
+
+                        <div class="reviewsBox__right">
+                            <div class="reviewsText">
+                                <span class="reviewsText__mark">«</span>
+                                <p class="reviewsText__par">
+                                    {{extract}}
+                                </p>
+                            </div>
+
+                            <div class="reviewsText">
+                                <span class="reviewsText__mark">+</span>
+                                <p class="reviewsText__par">
+                                    {{pros}}
+                                </p>
+                            </div>
+
+                            <div class="reviewsText">
+                                <span class="reviewsText__mark">−</span>
+                                <p class="reviewsText__par">
+                                    {{cons}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {{/product.reviewBlock.reviews}}
+                </div>
+                {{/product.reviewBlock}}
+                <!--/ Таб - Отзывы -->
+
+                <!-- Таб - Аксессуары -->
+                <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}} data-desc="accessories">
+                    {{#product.accessorySlider}}
+                        {{>partial/product-slider/default}}
+                    {{/product.accessorySlider}}
+                </div>
+                <!--/ Таб - Аксессуары -->
+            
+                <!-- Таб - С этим товаром покупают -->
+                <div class="tabContent js-container js-cont" style="display: none;" data-desc="also">
+                    {{#product.alsoBoughtSlider}}
+                        {{>partial/product-slider/default}}
+                    {{/product.alsoBoughtSlider}}
+                </div>
+                <!--/ Таб - С этим товаром покупают -->
             </div>
-        {{/product.reviewBlock.reviews}}
-        </div>
-        <!--/ Таб - Отзывы -->
-    </div>
-    {{/product.reviewBlock}}
-
-    <div class="js-container" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}}>
-        <div class="contentBox960" id="accessoriesTab">
-            <div class="tabTitle clearfix">
-                <div class="tabTitle__text">Аксессуары</div>
-            </div>
-
-            <!-- Таб - Аксессуары -->
-            {{#product.accessorySlider}}
-                {{>partial/product-slider/default}}
-            {{/product.accessorySlider}}
-            <!--/ Таб - Аксессуары -->
-        </div>
-    </div>
-
-    <div class="js-container" style="display: none;">
-        <div class="contentBox960" id="alsoTab">
-            <div class="tabTitle clearfix">
-                <div class="tabTitle__text">С этим товаром покупают</div>
-            </div>
-
-            <!-- Таб - С этим товаром покупают -->
-            {{#product.alsoBoughtSlider}}
-                {{>partial/product-slider/default}}
-            {{/product.alsoBoughtSlider}}
-            <!--/ Таб - С этим товаром покупают -->
         </div>
     </div>
 

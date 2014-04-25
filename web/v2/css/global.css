@@ -67,6 +67,9 @@ html {
 body {
   margin: 0;
 }
+body > * {
+  white-space: 0;
+}
 /* ==========================================================================
    Links
    ========================================================================== */
@@ -1789,9 +1792,6 @@ body.noScroll {
 /* ==========================================================================
    Стили характеристик товара в карточке товара .specifications
    ========================================================================== */
-.specificationsListCol {
-  padding-right: 350px;
-}
 .specificationsListRow {
   display: inline-block;
   vertical-align: top;
@@ -1801,11 +1801,17 @@ body.noScroll {
   zoom: 1;
 }
 .specificationsList {
+  display: inline-block;
   margin: 0 0 20px;
+  vertical-align: top;
+  width: 48%;
+  *display: block;
+  zoom: 1;
 }
 .specificationsList__item {
   font-size: 14px;
   margin: 0 0 5px;
+  padding: 0 15px 0 0;
 }
 .specificationsList__item-title {
   font-weight: bold;
@@ -1843,8 +1849,22 @@ body.noScroll {
 /* ==========================================================================
    Стили отзывов в карточке товара .tabContent-reviews
    ========================================================================== */
+.tabContentWrap {
+  overflow: hidden;
+  width: 100%;
+}
+.tabContentInner {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 10000px;
+  font-size: 0;
+}
 .tabContent {
+  display: inline-block;
+  font-size: 12px;
   margin: 0 0 30px;
+  vertical-align: top;
 }
 .tabTitle {
   border-bottom: 1px solid #b1b1b1;
