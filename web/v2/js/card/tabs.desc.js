@@ -2,31 +2,73 @@
  * Окно смены региона
  *
  */
-$(function() {
+$(function(){
 
 		var body = $('body'),
+
 			tabWrap = $('.js-tab-wrap'),
+			tabWrapWidth = $('.js-tab-selector').width(),
+
 			tabList = tabWrap.find('.js-tab'),
-			tab = tabList.find('.js-cont');
+
+			tab = tabList.find('.js-cont'),
+			tabCount = tab.length,
+			
+			tabLink = $('.js-tabs-link'),
+
+			posLeft = 0;
 		// end of vars	
-
 	
-		function tabsToggle() {
-			console.log('tabsToggle');
+		var 
+			tabsToggle = function tabsToggle() {
+				console.log('tabsToggle');
 
-			var tabWrapWidth = tabWrap.width(),
-				tabCount = tab.length;
+				tabWrapWidth = $('.js-tab-selector').width();
+				tabWrap.css({'height' : tab.first().height() })
 
-			tab.css({'width': tabWrapWidth});	
-			tabList.css({'width' : tabWrapWidth * tabCount});
+				tabWrap.css({'width' : tabWrapWidth})
+				tab.css({'width': tabWrapWidth});	
+				tabList.css({'width' : tabWrapWidth * tabCount});
+				
+				tabLink.removeClass('productDescTab_link__active');
+				tabLink.first().addClass('productDescTab_link__active');
+				tabList.stop(true, true).animate({'left' : 0});
+				tabWrap.stop(true, true).animate({'height' : tab.first().height() })
 
-			console.log(tabWrapWidth);
-		};
+				console.log(tabWrapWidth);
+			},
+
+			tabsSlide = function tabsSlide( event, inx ) {
+					
+				event.preventDefault();
+					
+				var $self = $(this),
+					tabLinkId = $self.data('tab'),
+					tabId = tab.filter('[data-desc="js-cont-'+tabLinkId+'"]');
+
+				if ( tabLinkId == 0) {
+					posLeft = 0;
+				}
+				else {
+					posLeft = tabWrapWidth * tabLinkId;
+				}
+				
+				$('html,body').animate({
+					scrollTop: $self.offset().top - $('.header').outerHeight()}, 400, 
+					function(){
+                		$('html,body').clearQueue();
+            		}
+            	); 
+
+				tabLink.removeClass('productDescTab_link__active');
+				$self.addClass('productDescTab_link__active');
+				tabList.stop(true, true).animate({'left' : -posLeft});
+				tabWrap.stop(true, true).animate({'height' : tabId.height() });
+
+				console.log(tabLinkId);
+			};
 		//end of function
-
-	$('body').on('load resize', tabsToggle);
-
-});
-
 		
-    
+	$(window).on('load resize', tabsToggle);
+	tabLink.on('click', tabsSlide);
+});
