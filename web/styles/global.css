@@ -3361,7 +3361,7 @@ img[height="0"] {
     font-size: 20px;
   }
   .packageSet.mPackageSetEdit .packageSetBodyItem_desc {
-    width: 312px;
+    width: 310px;
   }
   .packageSet.mPackageSetEdit .packageSetBodyItem_desc .delivery {
     margin: 15px 0 0 10px;
@@ -3393,7 +3393,7 @@ img[height="0"] {
     vertical-align: top;
     margin: 30px 0 10px;
     padding-left: 0;
-    width: 115px;
+    width: 110px;
     *display: inline;
     zoom: 1;
   }
