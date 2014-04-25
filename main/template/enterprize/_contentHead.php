@@ -35,7 +35,7 @@ $routeName = \App::request()->attributes->get('route');
     <div class="clear"></div>
 
     <? if ($enterpizeCoupon): ?>
-        <div class="enterPrize mPrivate mDisabled">
+        <div class="enterPrize mPrivate <?= isset($limit) && $limit === 0 ? 'mDisabled' : ''?>">
             <a class="enterPrize__logo" href="<?= $page->url('enterprize') ?>"></a>
 
             <div class="enterPrize__list clearfix">
@@ -74,11 +74,13 @@ $routeName = \App::request()->attributes->get('route');
                     <? endif ?>
                 </div>
 
-                <div class="finishedBox">
-                    <strong>Фишка закончилась!</strong>
+                <? if (isset($limit) && $limit === 0) : ?>
+                    <div class="finishedBox">
+                        <strong>Фишка закончилась!</strong>
 
-                    <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange">Посмотреть другие фишки</a>
-                </div>
+                        <a href="<?= $page->url('enterprize') ?>" class="mBtnOrange">Посмотреть другие фишки</a>
+                    </div>
+                <? endif; ?>
             </div>
 
             <? if (!$user->getEntity() && in_array($routeName, ['enterprize', 'enterprize.show', 'enterprize.form.show'])): ?>
