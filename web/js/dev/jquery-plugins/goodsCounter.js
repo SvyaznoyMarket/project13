@@ -1,6 +1,8 @@
 ;(function($) {
 	/**
 	 * jQuery плагин спиннера количества товаров
+     * Установка обработчиков $(elems).goodsCounter(options)
+     * Удаление обработчиков $(elems).goodsCounter('destroy')
 	 *
 	 * @author		Zaytsev Alexandr
 	 * @requires	jQuery
@@ -13,6 +15,12 @@
 	 * @return		{jQuery}
 	 */
 	$.fn.goodsCounter = function(params) {
+
+        if (params === 'destroy') {
+            return this.each(function(){
+                $(this).find('*').off('.goodsCounter');
+            })
+        }
 
 		return this.each(function() {
 			var options = $.extend(
@@ -183,19 +191,21 @@
 
 					// Массив продуктов
 					for ( i = products.length - 1; i >= 0; i-- ) {
-						spinner = $('[data-spinner-for="'+products[i].cartButton.id+'"]');
-						spinner.addClass('mDisabled');
-						input = spinner.find('input');
-						input.val(products[i].quantity).attr('disabled','disabled');
+                        if (products[i].cartButton != undefined) {
+                            spinner = $('[data-spinner-for="' + products[i].cartButton.id + '"]');
+                            spinner.addClass('mDisabled');
+                            input = spinner.find('input');
+                            input.val(products[i].quantity).attr('disabled', 'disabled');
+                        }
 					}
 				};
 			//end of functions
 
-			plusBtn.bind('click', plusHandler);
-			minusBtn.bind('click',minusHandler);
-			input.bind('keydown', keydownHandler);
-			input.bind('keyup', keyupHandler);
-			$('body').bind('updatespinner', updatespinner);
+			plusBtn.on('click.goodsCounter', plusHandler);
+			minusBtn.on('click.goodsCounter',minusHandler);
+			input.on('keydown.goodsCounter', keydownHandler);
+			input.on('keyup.goodsCounter', keyupHandler);
+			$('body').on('updatespinner.goodsCounter', updatespinner);
 		});
 	};
 

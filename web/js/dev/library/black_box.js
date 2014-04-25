@@ -127,6 +127,35 @@
 
 				},
 
+                multipleAdd = function multipleAdd ( data ) {
+
+                    var cart = data.cart,
+                        toClientCart = {},
+                        toBasketUpdate = {
+                            quantity: cart.full_quantity,
+                            sum: cart.full_price
+                        };
+
+                    for (var i in data.products) {
+                        var product = data.products[i],
+                            tmpCart = {
+                                formattedPrice: printPrice(product.price),
+                                image: product.img,
+                                url: product.link
+                            };
+                        toClientCart = $.extend({}, product, tmpCart);
+
+                        var productInBasket = $.grep(clientCart.products, function(elem){ return elem.id === product.id });
+                        if (productInBasket.length == 0) {
+                            clientCart.products.push(toClientCart); // добавляем в корзину только уникальные элементы
+                        } else {
+                            for (var a in clientCart.products) if (clientCart.products[a].id === product.id) clientCart.products[a].quantity = product.quantity; // обновляем количество для существующих
+                        }
+                    }
+
+                    self.basket().update(toBasketUpdate);
+                },
+
 				deleteItem = function deleteItem( data ) {
 					console.log('deleteItem');
 					var
@@ -155,6 +184,7 @@
 			return {
 				'update': update,
 				'add': add,
+                'multipleAdd' : multipleAdd,
 				'deleteItem': deleteItem
 			};
 		};

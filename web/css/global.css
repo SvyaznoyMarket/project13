@@ -9058,6 +9058,8 @@
     width: 700px;
     height: 700px;
     box-shadow: 1px 1px 5px #bababa;
+    float: none;
+    margin: 0 0 20px;
   }
   .mProductSectionSet .bProductDescImgBig {
     width: 700px;
@@ -9083,7 +9085,7 @@
   .mProductSectionSet .bProductList {
     margin: 20px 0 0;
   }
-  .mSliderAction840 .bSliderAction__eInner {
+  .mSliderAction840 .bSlider__eInner {
     width: 840px;
   }
 }
@@ -9150,6 +9152,17 @@
     font-size: 14px;
     line-height: 25px;
   }
+  .bSlider__eList .btnView {
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    -webkit-transition: all 0.05s linear;
+    -moz-transition: all 0.05s linear;
+    transition: all 0.05s linear;
+  }
   .bSlider__eItem {
     display: none;
     float: left;
@@ -9175,7 +9188,8 @@
     border: 1px solid #d6d6d6;
     background: #ffffff;
   }
-  .bSlider__eItem .product__inner:hover .btnBuy {
+  .bSlider__eItem .product__inner:hover .btnBuy,
+  .bSlider__eItem .product__inner:hover .btnView {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -9366,6 +9380,14 @@
     margin-right: 3px;
     padding: 0;
   }
+  .bCountSection button.mDisabled {
+    -moz-opacity: 0.4;
+    -khtml-opacity: 0.4;
+    -webkit-opacity: 0.4;
+    opacity: 0.4;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=40);
+    filter: alpha(opacity=40);
+  }
   .bCountSection__eNum {
     border: 1px solid #c7c7c7;
     -webkit-border-radius: 3px;
@@ -9387,6 +9409,7 @@
     opacity: 0.3;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30);
     filter: alpha(opacity=30);
+    cursor: default;
   }
   .bCountSection.mDisabled button {
     cursor: default;
@@ -9454,7 +9477,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
     filter: alpha(opacity=50);
   }
-  .btnBuy .btnBuy__eLink {
+  .btnBuy__eLink {
     background: #ffc000;
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
     background: -ms-linear-gradient(bottom, #ffaa01, #ffc000);
@@ -9471,7 +9494,7 @@
     font-size: 18px;
     line-height: 35px;
   }
-  .btnBuy .btnBuy__eLink.mBought {
+  .btnBuy__eLink.mBought {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -9479,10 +9502,10 @@
     border: 1px solid #b3b3b3;
     background: #ffffff;
   }
-  .btnBuy .btnBuy__eLink.mBought:hover {
+  .btnBuy__eLink.mBought:hover {
     background: #ffffff;
   }
-  .btnBuy .btnBuy__eLink.mShopsOnly {
+  .btnBuy__eLink.mShopsOnly {
     background: #040404;
     /* Old browsers */
   
@@ -9513,11 +9536,11 @@
     zoom: 1;
     *display: inline;
   }
-  .btnBuy .btnBuy__eLink.mShopsOnly:hover,
-  .btnBuy .btnBuy__eLink.mShopsOnly:active {
+  .btnBuy__eLink.mShopsOnly:hover,
+  .btnBuy__eLink.mShopsOnly:active {
     background: #000000;
   }
-  .btnBuy .btnBuy__eLink.mDisabled {
+  .btnBuy__eLink.mDisabled {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -9526,23 +9549,23 @@
     border: 1px solid #f1f0f0;
     background: #f1f0f0;
   }
-  .btnBuy .btnBuy__eLink.mDisabled:hover {
+  .btnBuy__eLink.mDisabled:hover {
     color: #cbcbcb;
     border: 1px solid #f1f0f0;
     background: #f1f0f0;
   }
-  .btnBuy .btnBuy__eLink:hover {
+  .btnBuy__eLink:hover {
     background: #ffa200;
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f79200), color-stop(1, #ffa200));
     background: -ms-linear-gradient(bottom, #f79200, #ffa200);
     background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
     text-decoration: none;
   }
-  .btnBuy .btnBuy__eLink:active {
+  .btnBuy__eLink:active {
     background: #f79200;
     text-decoration: none;
   }
-  .jewel .btnBuy .btnBuy__eLink.mDisabled {
+  .jewel .btnBuy__eLink.mDisabled {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -9551,7 +9574,7 @@
     border: 1px solid #e6e6e6;
     background: #e6e6e6;
   }
-  .jewel .btnBuy .btnBuy__eLink.mDisabled:hover {
+  .jewel .btnBuy__eLink.mDisabled:hover {
     color: #a6a6a6;
     border: 1px solid #e6e6e6;
     background: #e6e6e6;
@@ -12032,10 +12055,13 @@
     width: 100px;
   }
   .bBtnLine .btnView {
-    display: block;
     float: right;
     width: 90px;
+  }
+  .btnView {
     height: 25px;
+    width: 98px;
+    display: block;
     text-align: center;
     font-size: 13px;
     line-height: 25px;
