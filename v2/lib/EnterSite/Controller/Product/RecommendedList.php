@@ -54,12 +54,18 @@ class RecommendedList {
         $curl->prepare($crossSellItemToItemsListQuery);
 
         // запрос идетификаторов товаров "похожие товары"
-        $upSellItemToItemsListQuery = new Query\Product\Relation\UpSellItemToItems\GetIdListByProductId($product->id);
-        $curl->prepare($upSellItemToItemsListQuery);
+        //$upSellItemToItemsListQuery = new Query\Product\Relation\UpSellItemToItems\GetIdListByProductId($product->id);
+        $upSellItemToItemsListQuery = null;
+        if ($upSellItemToItemsListQuery) {
+            $curl->prepare($upSellItemToItemsListQuery);
+        }
 
         // запрос идетификаторов товаров "с этим товаром также смотрят"
-        $itemToItemsListQuery = new Query\Product\Relation\ItemToItems\GetIdListByProductId($product->id);
-        $curl->prepare($itemToItemsListQuery);
+        //$itemToItemsListQuery = new Query\Product\Relation\ItemToItems\GetIdListByProductId($product->id);
+        $itemToItemsListQuery = null;
+        if ($itemToItemsListQuery) {
+            $curl->prepare($itemToItemsListQuery);
+        }
 
         $curl->execute(1, 2);
 
@@ -74,7 +80,7 @@ class RecommendedList {
         // идетификаторы товаров "похожие товары"
         $similarIdList = [];
         try {
-            $similarIdList = array_unique($upSellItemToItemsListQuery->getResult());
+            $similarIdList = $upSellItemToItemsListQuery ? array_unique($upSellItemToItemsListQuery->getResult()) : [];
         } catch (\Exception $e) {
             $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
         }
@@ -82,7 +88,7 @@ class RecommendedList {
         // идетификаторы товаров "с этим товаром также смотрят"
         $alsoViewedIdList = [];
         try {
-            $alsoViewedIdList = array_unique($itemToItemsListQuery->getResult());
+            $alsoViewedIdList = $itemToItemsListQuery ? array_unique($itemToItemsListQuery->getResult()) : [];
         } catch (\Exception $e) {
             $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
         }
