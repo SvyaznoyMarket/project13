@@ -1851,7 +1851,6 @@ body.noScroll {
    ========================================================================== */
 .tabContentWrap {
   overflow: hidden;
-  width: 100%;
 }
 .tabContentInner {
   position: relative;
@@ -2049,7 +2048,7 @@ body.noScroll {
 .sliderCat .sliderCatWrap {
   float: left;
   width: 220px;
-  height: 230px;
+  height: 250px;
   overflow: auto;
   position: relative;
 }

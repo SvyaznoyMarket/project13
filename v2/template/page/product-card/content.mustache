@@ -149,7 +149,7 @@
     <div class="contentBox960">
         <ul class="productDescTab js-tabs">
             <li class="productDescTab_item">
-                <a class="productDescTab_link productDescTab_link__active js-tabs-link" data-tab="specifications" href="">
+                <a class="productDescTab_link productDescTab_link__active js-tabs-link" data-tab="0" href="">
                     <span class="tabText">Подробности</span>
 
                     {{#product.hasVideo}}
@@ -163,7 +163,7 @@
             </li>
 
             <li class="productDescTab_item">
-                <a class="productDescTab_link js-tabs-link" data-tab="reviews" href="">
+                <a class="productDescTab_link js-tabs-link" data-tab="1" href="">
                     <span class="tabText">Отзывы</span>
                     <span class="tabImg reviews">
                         {{#product.rating}}
@@ -174,21 +174,21 @@
             </li>
 
             <li class="productDescTab_item">
-                <a class="productDescTab_link js-tabs-link" data-tab="accessories" href="">Аксессуары</a>
+                <a class="productDescTab_link js-tabs-link" data-tab="2" href="">Аксессуары</a>
             </li>
 
             <li class="productDescTab_item productDescTab_item__last">
-                <a href="" data-tab="also" class="productDescTab_link js-tabs-link">С этим товаром покупают</a>
+                <a href="" data-tab="3" class="productDescTab_link js-tabs-link">С этим товаром покупают</a>
             </li>
         </ul>
     </div>
     <!-- Информация о товаре - табы -->
 
-    <div class="contentBox940">
+    <div class="contentBox940 js-tab-selector">
         <div class="tabContentWrap js-tab-wrap">
             <div class="tabContentInner js-tab">
                 <!-- Таб - Подробнее -->
-                <div class="tabContent js-cont" data-desc="specifications">
+                <div class="tabContent js-cont" data-desc="js-cont-0">
                     <div class="specificationsListCol">
                         {{#product.propertyChunks}}
                             <ul class="specificationsList">
@@ -211,7 +211,7 @@
 
                 <!-- Таб - Отзывы -->
                 {{#product.reviewBlock}}
-                <div class="tabContent js-cont" data-desc="reviews">
+                <div class="tabContent js-cont" data-desc="js-cont-1">
                 {{#product.reviewBlock.reviews}}
                     <div class="reviewsBox clearfix">
                         <div class="reviewsBox__left">
@@ -253,7 +253,7 @@
                 <!--/ Таб - Отзывы -->
 
                 <!-- Таб - Аксессуары -->
-                <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}} data-desc="accessories">
+                <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}} data-desc="js-cont-2">
                     {{#product.accessorySlider}}
                         {{>partial/product-slider/default}}
                     {{/product.accessorySlider}}
@@ -261,7 +261,7 @@
                 <!--/ Таб - Аксессуары -->
             
                 <!-- Таб - С этим товаром покупают -->
-                <div class="tabContent js-container js-cont" style="display: none;" data-desc="also">
+                <div class="tabContent js-container js-cont" style="display: none;" data-desc="js-cont-3">
                     {{#product.alsoBoughtSlider}}
                         {{>partial/product-slider/default}}
                     {{/product.alsoBoughtSlider}}
