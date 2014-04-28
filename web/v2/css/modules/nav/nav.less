@@ -17,22 +17,47 @@
 	.box-shadow(5px 0 25px rgba(0, 0, 0, 0.6));
 }
 
+.navHead {
+	border-bottom: 1px solid #404040;
+	height: 28px;
+	padding: 13px 0 13px 15px;
+
+	.navIco {
+		margin: 0 12px 0 0;
+	}
+
+	&_col {
+		color: @white;
+
+		&-text {
+			border-bottom: 1px dotted @white;
+			display: inline-block;
+
+		    font-size: 16px;
+
+		    margin: 0 0 0 15px;
+			cursor: pointer;
+
+			vertical-align: top;
+
+		    *display: inline;
+			zoom: 1;
+		} 
+	} 
+
+	&_icoImg {
+		width: 50px;
+		display: inline-block;
+    	margin: -4px 0 0;
+	}
+}
+
 .navList {
 	min-width: 290px;
 	max-width: 315px;
 
 	&_item {
 		padding: 7px 0;
-
-		&__first {
-			border-bottom: 1px solid #404040;
-			height: 28px;
-    		padding: 13px 0 13px 15px;
-
-    		.navIco {
-    			margin: 0 12px 0 0;
-    		}
-		}
 	}
 
 	&_text {
@@ -54,37 +79,7 @@
 			outline: none;
 		}
 	}
-
-	&_col {
-		color: @white;
-
-		&:first-child {
-			display: inline-block;
-    		margin: 0 12px 0 15px;
-		}
-
-		&__reg {
-			border-bottom: 1px dotted @white;
-			display: inline-block;
-
-		    font-size: 16px;
-
-		    margin: 0 0 0 15px;
-			cursor: pointer;
-
-			vertical-align: top;
-
-		    *display: inline;
-			zoom: 1;
-		} 
-	} 
-
-	&_img {
-		width: 50px;
-		display: inline-block;
-    	margin: -4px 0 0;
-	}
-
+	
 	.navListIco {
 		background-position: 0 50%;
 		background-repeat: no-repeat;
