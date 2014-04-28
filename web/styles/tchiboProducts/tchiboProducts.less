@@ -1,24 +1,53 @@
 .tchiboProducts {
 
 	.productInner {
+		z-index: 98;
 
 		&:hover {
+			z-index: 100;
 
 			.bBtnLine,
 			.bOptionsSection {
 				display: block;
 			}
+
+			.productInner__hover {
+				.box-shadow(0 0 4px rgba(0,0,0,0.5));
+				.rounded(4px);
+				background: @white;
+			}
+		}
+
+		&__hover {
+			display: block;
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		    overflow: hidden;
+		    width: 98%;
+
+			&:hover {
+				z-index: 100;
+
+				padding: 5px;
+
+				left: -5px;
+				top: -5px;
+			}
 		}
 
 		&__imgBox {
-			position: absolute;
+			//position: absolute;
 			width: 100%;
-			height: 100%;
-			top: 0;
-			left: 0;
+			//height: 100%;
+			//top: 0;
+			//left: 0;
 			text-align: center;
-			vertical-align: middle;
-			display: table;
+
+			margin: 10px 0;
+
+			//vertical-align: middle;
+			//display: table;
 		}
 
 		&__imgLink {
@@ -33,12 +62,12 @@
 		}
 
 		&__desc {
-			background: url("@{base-url}/tchiboNavSlider/img/bgWhiteIe.png");
+			//background: url("@{base-url}/tchiboNavSlider/img/bgWhiteIe.png");
 			width: 100%;
-			position: absolute;
-			left: 0;
-			bottom: 0;
-			padding: 5px 0;
+			// position: absolute;
+			// left: 0;
+			// bottom: 0;
+			padding: 5px 0 5px;
 
 			.inner {
 				width: 200px;
@@ -60,7 +89,7 @@
 			}
 
 			.bOptions {
-				background-image: url("@{base-url}/tchiboProducts/img/options.png")
+				background-image: url("@{base-url}/tchiboProducts/img/options.png");
 			}
 
 			.bBtnLine {
@@ -68,6 +97,19 @@
 
 				.btnBuy {
 					height: 22px;
+
+					.btnBuy__eLink {
+						.orangeGradLight();
+						border-color: #002958;
+
+						&.mBought {
+						    background: none repeat scroll 0 0 #E6E6E6;
+						    border: 1px solid #E6E6E6;
+						    box-shadow: none;
+						    color: #A6A6A6;
+						    cursor: default;
+						}
+					}
 				}
 
 				.btnBuy__eLink {
