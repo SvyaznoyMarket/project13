@@ -3095,6 +3095,8 @@ img[height="0"] {
   }
   .tchiboProducts .productInner .bProductDescSticker {
     z-index: 102;
+    top: 5px;
+    left: 5px;
   }
   .tchiboProducts .productInner__hover {
     display: block;
@@ -3178,6 +3180,42 @@ img[height="0"] {
     box-shadow: none;
     color: #A6A6A6;
     cursor: default;
+  }
+  .tchiboProducts .productInner__desc .bBtnLine .btnBuy .btnBuy__eLink.mDisabled {
+    background: none repeat scroll 0 0 #F1F0F0;
+    border: 1px solid #F1F0F0;
+    box-shadow: none;
+    color: #CBCBCB;
+    cursor: default;
+  }
+  .tchiboProducts .productInner__desc .bBtnLine .btnBuy .btnBuy__eLink.mShopsOnly {
+    background: #040404;
+    /* Old browsers */
+  
+    background: -moz-linear-gradient(top, #505050 0%, #040404 100%);
+    /* FF3.6+ */
+  
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #505050), color-stop(100%, #040404));
+    /* Chrome,Safari4+ */
+  
+    background: -webkit-linear-gradient(top, #505050 0%, #040404 100%);
+    /* Chrome10+,Safari5.1+ */
+  
+    background: -o-linear-gradient(top, #505050 0%, #040404 100%);
+    /* Opera 11.10+ */
+  
+    background: -ms-linear-gradient(top, #505050 0%, #040404 100%);
+    /* IE10+ */
+  
+    background: linear-gradient(to bottom, #505050 0%, #040404 100%);
+    /* W3C */
+  
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#505050', endColorstr='#040404', GradientType=0);
+    /* IE6-9 */
+  
+    border: 1px solid #A1A1A1;
+    display: inline-block;
+    vertical-align: top;
   }
   .tchiboProducts .productInner__desc .bBtnLine .btnBuy__eLink {
     width: 70px;

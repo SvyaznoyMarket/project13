@@ -20,6 +20,8 @@
 
 		.bProductDescSticker {
 			z-index: 102;
+			top: 5px;
+    		left: 5px;
 		}
 
 		&__hover {
@@ -60,7 +62,7 @@
 
 		&__desc {
 			width: 100%;
-			
+
 			padding: 5px 0 5px;
 
 			.inner {
@@ -102,6 +104,21 @@
 						    box-shadow: none;
 						    color: #A6A6A6;
 						    cursor: default;
+						}
+
+						&.mDisabled {
+						    background: none repeat scroll 0 0 #F1F0F0;
+						    border: 1px solid #F1F0F0;
+						    box-shadow: none;
+						    color: #CBCBCB;
+						    cursor: default;
+						}
+
+						&.mShopsOnly {
+						    .blackGrad();
+						    border: 1px solid #A1A1A1;
+						    display: inline-block;
+						    vertical-align: top;
 						}
 					}
 				}
