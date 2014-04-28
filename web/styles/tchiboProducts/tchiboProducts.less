@@ -10,11 +10,6 @@
 			.bOptionsSection {
 				display: block;
 			}
-
-			.productInner__hover {
-				.box-shadow(0 0 3px rgba(0,0,0,0.5));
-				background: @white;
-			}
 		}
 
 		.bProductDescSticker {
@@ -30,14 +25,12 @@
 		    left: 0;
 		    overflow: hidden;
 		    width: 98%;
+		    padding-bottom: 5px;
 
 			&:hover {
 				z-index: 100;
-
-				padding: 5px;
-
-				left: -5px;
-				top: -5px;
+				.box-shadow(0 0 3px rgba(0,0,0,0.5));
+				background: @white;
 			}
 		}
 
