@@ -3093,6 +3093,9 @@ img[height="0"] {
     border-radius: 4px;
     background: #ffffff;
   }
+  .tchiboProducts .productInner .bProductDescSticker {
+    z-index: 102;
+  }
   .tchiboProducts .productInner__hover {
     display: block;
     position: absolute;
