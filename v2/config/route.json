@@ -42,7 +42,7 @@
     },
     "Region\\Set": {
         "name": "Установить регион",
-        "pattern": "/region/change/{regionId}",
+        "pattern": "/region/set/{regionId}",
         "require": {
             "regionId": "[\\w\\d-_]+"
         }

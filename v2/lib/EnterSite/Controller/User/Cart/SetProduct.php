@@ -47,7 +47,7 @@ class SetProduct {
         $cartRepository->setProductForObject($cart, $cartProduct);
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequest($request);
+        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
 
         $productItemQuery = new Query\Product\GetItemById($productData['id'], $regionId);
         $curl->prepare($productItemQuery);

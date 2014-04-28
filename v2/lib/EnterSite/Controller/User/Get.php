@@ -36,7 +36,7 @@ class Get {
         $page = new Page();
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequest($request);
+        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
 
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);

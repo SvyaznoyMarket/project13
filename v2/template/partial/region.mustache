@@ -5,12 +5,12 @@
     <div class="popupBox_title">Ваш город</div>
     <p class="popupBox_text">Выберите город, в котором собираетесь получать товары.<br/>От выбора зависит стоимость товаров и доставки.</p>
 
-    <form action="" id="" class="regionForm form2col clearfix">
-        <button class="regionForm_btn form2col_btn btnStyle">Сохранить</button>
+    <form action="" class="js-regionSet-form regionForm form2col clearfix">
+        <button type="submit" class="regionForm_btn form2col_btn btnStyle">Сохранить</button>
 
         <div class="regionForm_selectCity form2col_boxWrap">
             <div class="regionForm_selectCityInner form2col_boxInner">
-                <input id="js-region-input" data-url="{{autocompleteUrl}}" name="q" type="text" class="regionForm_selectCityInput form2col_input" placeholder="Название города" />
+                <input id="js-regionSet-input" data-url="{{autocompleteUrl}}" data-form-selector=".js-regionSet-form" name="q" type="text" class="regionForm_selectCityInput form2col_input" placeholder="Название города" />
                 <span class="regionForm_selectCityDel"></span>
 
                 <div class="regionForm_autocomplete" id="js-region-autocomplete"></div>

@@ -26,7 +26,7 @@ class RecommendedList {
         $productRepository = new Repository\Product();
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequest($request);
+        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
 
         // ид товара
         $productId = $productRepository->getIdByHttpRequest($request);

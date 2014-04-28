@@ -209,13 +209,13 @@
 
 
         // автоподстановка регионов
-        var $regionInput = $('#js-region-input');
-        $regionInput.autocomplete({
+        var $regionSetInput = $('#js-regionSet-input');
+        $regionSetInput.autocomplete({
             autoFocus: true,
             appendTo: '#js-region-autocomplete',
             source: function(request, response) {
                 $.ajax({
-                    url: $regionInput.data('url'),
+                    url: $regionSetInput.data('url'),
                     dataType: 'json',
                     data: {
                         q: request.term
@@ -233,7 +233,10 @@
             },
             minLength: 3,
             select: function(e, ui) {
-                console.info('select:regionInput', e, ui);
+                console.info('select:js-regionSet-input', e, ui);
+
+                $($regionSetInput.data('formSelector'))
+                    .attr('action', ui.item.url);
             },
             open: function() {
                 //$(this).removeClass('ui-corner-all').addClass('ui-corner-top');

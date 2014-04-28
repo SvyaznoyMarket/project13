@@ -12,12 +12,22 @@ class Region {
 
     /**
      * @param Http\Request $request
-     * @return int
+     * @return string
      */
-    public function getIdByHttpRequest(Http\Request $request) {
+    public function getIdByHttpRequestCookie(Http\Request $request) {
         $config = $this->getConfig()->region;
 
-        $id = (int)$request->cookies[$config->cookieName] ?: $config->defaultId;
+        $id = (string)$request->cookies[$config->cookieName] ?: $config->defaultId;
+
+        return $id;
+    }
+
+    /**
+     * @param Http\Request $request
+     * @return string
+     */
+    public function getIdByHttpRequestQuery(Http\Request $request) {
+        $id = trim((string)$request->query['regionId']);
 
         return $id;
     }

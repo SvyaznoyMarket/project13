@@ -35,7 +35,7 @@ class Autocomplete {
 
         $i = 0;
         foreach ($regionListQuery->getResult() as $regionItem) {
-            if ($i >= 10) break;
+            if ($i >= 20) break;
 
             $result[] = [
                 'name'  => $regionItem['name'] . ((!empty($regionItem['region']['name']) && ($regionItem['name'] != $regionItem['region']['name'])) ? (" ({$regionItem['region']['name']})") : ''),
