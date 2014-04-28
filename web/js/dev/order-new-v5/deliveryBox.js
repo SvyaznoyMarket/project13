@@ -718,6 +718,7 @@
                     if (tempDate == currFirstDate) {
                         arr.splice(index, 1);
                         previousValue.push(currentValue);
+                        self.fullPrice = ENTER.utils.numMethods.sumDecimal(self.fullPrice, -currentValue.price);
                     }
                     return previousValue;
                 },[]);
