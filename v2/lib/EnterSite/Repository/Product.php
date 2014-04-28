@@ -171,6 +171,9 @@ class Product {
                 foreach ($item['delivery_mode_list'] as $deliveryItem) {
                     if (!isset($deliveryItem['date_list']) || !is_array($deliveryItem['date_list'])) continue;
 
+                    // FIXME: SITE-3708
+                    if (in_array($deliveryItem['token'], ['now'])) continue;
+
                     $delivery = new Model\Product\NearestDelivery();
                     $delivery->productId = $productId;
                     $delivery->id = (string)$deliveryItem['id'];
