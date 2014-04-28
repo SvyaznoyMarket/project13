@@ -435,7 +435,7 @@ class IndexAction {
             'price'        => $product->getPrice(),
             //'articul'      => $product->getArticle(),
             'name'         => $product->getName(),
-            'count'        => $cart->getQuantityByProduct($product->getId()),
+            'count'        => 1, //$cart->getQuantityByProduct($product->getId()),
             'product_type' => $productType,
             'session_id'   => session_id()
         );

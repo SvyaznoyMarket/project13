@@ -74,5 +74,9 @@ class ImportConfig {
 
         $config->product->itemsInSlider = 60;
         $config->productReview->itemsInCard = 7;
+
+        $config->directCredit->enabled = (bool)$importedConfig->payment['creditEnabled'];
+        $config->directCredit->minPrice = $importedConfig->product['minCreditPrice'];
+        $config->directCredit->partnerId = '4427';
     }
 }

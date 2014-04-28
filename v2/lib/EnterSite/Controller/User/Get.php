@@ -33,8 +33,6 @@ class Get {
         $router = $this->getRouter();
         $cartRepository = new Repository\Cart();
 
-        $page = new Page();
-
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
 
@@ -75,7 +73,11 @@ class Get {
         // корзина из ядра
         $cart = $cartRepository->getObjectByQuery($cartItemQuery);
 
-        // сборка страницы
+        // страница
+        $page = new Page();
+
+        $page->user->sessionId = $session->getId();
+
         $userBlock = (new Repository\Partial\UserBlock())->getObject($cart, $user);
         $page->widgets['.' . $userBlock->widgetId] = $userBlock;
 

@@ -72,4 +72,8 @@ return function(\EnterSite\Config\Application $config) {
     ];
     $config->productReview->enabled = true;
     $config->productReview->itemsInCard = 7;
+
+    $config->directCredit->enabled = true;
+    $config->directCredit->minPrice = 3000;
+    $config->directCredit->partnerId = '4427';
 };
