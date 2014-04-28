@@ -671,8 +671,7 @@
 			}
 			// constructor body
 			
-			console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
-			console.log(this);
+			console.info('Cоздание блока доставки %s для %s', state, choosenPointForBox, this);
 
 
 			OrderModel = ENTER.OrderModel;
@@ -1156,13 +1155,14 @@
 				i;
 			// end of vars
 			
-			console.info('добавляем товары в блок');
+			console.groupCollapsed('Добавление товаров в блок, количество товаров: %s', products.length);
 			// добавляем товары в блок
 			for ( i = products.length - 1; i >= 0; i-- ) {
-				console.log(i+'ый пошел...');
-				console.log(products[i]);
+				console.log(i+'-ый товар: ', products[i]);
 				self._addProduct(products[i]);
 			}
+
+            console.groupEnd();
 
 			if ( !self.products.length ) {
 				console.warn('в блоке '+self.token+' нет товаров');
@@ -1234,7 +1234,9 @@
 			/**
 			 * Перебор всех продуктов в блоке
 			 */
-			for ( i = self.products.length - 1; i >= 0; i-- ) {
+			for ( i = 0; i < self.products.length ; i++ ) {
+                //console.groupCollapsed('Проверка существования даты доставки продукта %s в других продуктах', self.products[i].name);
+
 				nowProductDates = self.products[i].deliveries[self.state][self.choosenPoint().id].dates;
 
 				/**
@@ -1242,6 +1244,7 @@
 				 */
 				for ( j = 0, len = nowProductDates.length; j < len; j++ ) {
 					nowTS = nowProductDates[j].value;
+                    //console.log('Diff dates: %s', nowTS - checkTS)
 
 					if ( nowTS === checkTS ) {
 						res = true;
@@ -1252,6 +1255,8 @@
 						res = false;
 					}
 				}
+
+                //console.groupEnd();
 
 				if ( !res ) {
 					break;
@@ -1306,6 +1311,7 @@
 
 				newToken = '',
 				tempProduct = null,
+                tempDate = null,
 				tempProductArray = [],
 				dateFromCookie = null,
 				chooseDate = null,
@@ -1333,10 +1339,20 @@
 			}
 
 			if ( !self.allDatesForBlock().length ) {
-				console.warn('нет общих дат для блока. Необходимо разделить продукты в блоке');
+				console.warn('нет общих дат для блока.', self.products ,' Необходимо разделить продукты в блоке');
 
-				tempProduct = self.products.pop();
-				tempProductArray.push(tempProduct);
+                tempProductArray = self.products.reduceRight(function(previousValue, currentValue, index, arr) {
+                    var currFirstDate = currentValue.deliveries[self.state][self.choosenPoint().id].dates[0].value;
+                    if (tempDate === null) tempDate = currFirstDate;
+                    if (tempDate == currFirstDate) {
+                        arr.splice(index, 1);
+                        previousValue.push(currentValue);
+                    }
+                    return previousValue;
+                },[]);
+
+                console.log('Продукты в новом блоке:', tempProductArray);
+
 				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();
 				console.log('новый токен '+newToken);
 				console.log(self);
@@ -1394,7 +1410,7 @@
 		 * @this	{DeliveryBox}
 		 */
 		DeliveryBox.prototype.makeCalendar = function() {
-			console.info('Создание календаря, округление до целых недель');
+			console.groupCollapsed('Создание календаря, округление до целых недель');
 
 			var
 				self = this,
@@ -1492,6 +1508,8 @@
 					self.allDatesForBlock.push(tmpDay);
 				}
 			}
+
+            console.groupEnd();
 		};
 
 
