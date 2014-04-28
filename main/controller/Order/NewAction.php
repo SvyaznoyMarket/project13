@@ -35,33 +35,52 @@ class NewAction {
             }
         });
 
-        // запрашиваем список способов оплаты
-        /** @var $paymentMethods \Model\PaymentMethod\Entity[] */
+        // запрашиваем группы способов оплаты
+        /**
+         * @var $paymentGroups \Model\PaymentMethod\Group\Entity[]
+         * @var $paymentMethods \Model\PaymentMethod\Entity[]
+         */
+        $paymentGroups = [];
         $paymentMethods = [];
         $isCreditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) >= \App::config()->product['minCreditPrice'];
-        \RepositoryManager::paymentMethod()->prepareCollection(null, $user->getEntity() ? $user->getEntity()->getIsCorporative() : false, function($data) use (
-            &$paymentMethods,
-            &$isCreditAllowed,
-            &$user
-        ) {
-            $blockedIds = (array)\App::config()->payment['blockedIds'];
-
-            foreach ($data as $item) {
-                $paymentMethod = new \Model\PaymentMethod\Entity($item);
-                if (in_array($paymentMethod->getId(), $blockedIds)) continue;
-
-                // кредит
-                if ($paymentMethod->getIsCredit() && !$isCreditAllowed) {
-                    continue;
-                }
-                // подарочный сертификат
-                if ($user->getRegion()->getHasTransportCompany() && $paymentMethod->isCertificate()) {
-                    //continue; // SITE-3074
+        \RepositoryManager::paymentGroup()->prepareCollection($region,
+            [
+                'is_corporative' => $user->getEntity() ? $user->getEntity()->getIsCorporative() : false,
+                'is_credit'      => !$isCreditAllowed ? false : null,
+            ],
+            function($data) use (
+                &$paymentGroups,
+                &$paymentMethods
+            ) {
+                if (!isset($data['detail']) || !is_array($data['detail'])) {
+                    return;
                 }
 
-                $paymentMethods[] = $paymentMethod;
+                foreach ($data['detail'] as $group) {
+                    $paymentGroup = new \Model\PaymentMethod\Group\Entity($group);
+                    if (!$paymentGroup->getPaymentMethods()) {
+                        continue;
+                    }
+
+                    // выкидываем заблокированные методы
+                    $blockedIds = (array)\App::config()->payment['blockedIds'];
+                    $filteredMethods = array_filter($paymentGroup->getPaymentMethods(), function(\Model\PaymentMethod\Entity $method) use ($blockedIds) {
+                        if (in_array($method->getId(), $blockedIds)) return;
+                        return $method;
+                    });
+                    $paymentGroup->setPaymentMethods($filteredMethods);
+
+                    if (!empty($filteredMethods)) {
+                        $paymentGroups[$paymentGroup->getId()] = $paymentGroup;
+
+                        // заполняем отдельно массив $paymentMethods
+                        foreach ($filteredMethods as $method) {
+                            $paymentMethods[] = $method;
+                        }
+                    }
+                }
             }
-        });
+        );
 
         // запрашиваем список станций метро
         /** @var $subways \Model\Subway\Entity[] */
@@ -142,6 +161,7 @@ class NewAction {
         $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(false));
         $page->setParam('productsById', $productsById);
         $page->setParam('paymentMethods', $paymentMethods);
+        $page->setParam('paymentGroups', $paymentGroups);
         $page->setParam('subways', $subways);
         $page->setParam('banks', $banks);
         $page->setParam('creditData', $creditData);
