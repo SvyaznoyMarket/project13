@@ -697,6 +697,7 @@ body.noScroll {
 .headerCenter {
   padding: 0 285px 0 120px;
   overflow: hidden;
+  min-height: 5px;
 }
 .breadCrumbs {
   padding: 0 0 0 20px;
