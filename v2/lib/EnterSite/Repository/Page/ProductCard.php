@@ -307,6 +307,23 @@ class ProductCard {
             }
         }
 
+        // direct credit
+        if ((new Repository\DirectCredit())->isEnabledForProduct($productModel)) {
+            /** @var Model\Product\Category|null $rootCategory */
+            $rootCategory = ($productModel->category && !empty($productModel->category->ascendants[0])) ? $productModel->category->ascendants[0] : null;
+            $page->content->product->credit = new Page\Content\Product\DirectCredit();
+            $page->content->product->credit->widgetId = 'id-creditPayment-' . $productModel->id;
+            $page->content->product->credit->dataValue = $viewHelper->json([
+                'partnerId' => $config->directCredit->partnerId,
+                'product' => [
+                    'id'    => $productModel->id,
+                    'name'  => $productModel->name,
+                    'price' => $productModel->price,
+                    'type'  => $rootCategory ? (new Repository\DirectCredit())->getTypeByCategoryToken($rootCategory->token) : null,
+                ],
+            ]);
+        }
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

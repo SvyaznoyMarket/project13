@@ -68,24 +68,39 @@
                         <div class="buyInfoPrice">
                             <!-- Купить по полной цене -->
                             <div class="buyInfoPrice__item">
+                                {{#product.credit}}
                                 <input class="customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
 
                                 <label class="customLabel" for="buyprice">
                                     {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
                                     <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
                                 </label>
+                                {{/product.credit}}
+
+                                {{^product.credit}}
+                                    {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
+                                    <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
+                                {{/product.credit}}
                             </div>
                             <!--/ Купить по полной цене -->
 
+                            {{#product.credit}}
                             <!-- Купить в кредит -->
-                            <div class="buyInfoPrice__item">
+                            <div class="js-creditPayment buyInfoPrice__item" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
                                 <input class="customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
 
-                                <label class="customLabel" for="creditinput">
-                                    <span class="creditPrice">В кредит от <strong>2 232</strong> <span class="rubl">p</span> в месяц</span>
+                                <label class="{{product.credit.widgetId}} customLabel" for="creditinput">
+                                    <span class="creditPrice">В кредит</span>
                                 </label>
+
+                                <script id="tpl-creditPayment" type="text/html">
+                                {{={{{ }}}=}}
+                                    <span class="creditPrice">В кредит от <strong>{{shownPrice}}</strong> <span class="rubl">p</span> в месяц</span>
+                                {{{={{ }}=}}}
+                                </script>
                             </div>
                             <!--/ Купить в кредит -->
+                            {{/product.credit}}
                         </div>
 
                         <!-- Купить дешевле -->
@@ -162,6 +177,7 @@
                 </a>
             </li>
 
+            {{#product.reviewBlock}}
             <li class="productDescTab_item">
                 <a class="productDescTab_link js-tabs-link" data-tab="1" href="">
                     <span class="tabText">Отзывы</span>
@@ -172,13 +188,16 @@
                     </span>
                 </a>
             </li>
+            {{/product.reviewBlock}}
 
+            {{#product.accessorySlider}}
             <li class="productDescTab_item">
                 <a class="productDescTab_link js-tabs-link" data-tab="2" href="">Аксессуары</a>
             </li>
+            {{/product.accessorySlider}}
 
             <li class="productDescTab_item productDescTab_item__last">
-                <a href="" data-tab="3" class="productDescTab_link js-tabs-link">С этим товаром покупают</a>
+                <a class="productDescTab_link js-tabs-link" data-tab="3" href="">С этим товаром покупают</a>
             </li>
         </ul>
     </div>

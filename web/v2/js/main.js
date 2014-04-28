@@ -162,11 +162,17 @@
 
         console.info('hasUserInfo', hasUserInfo);
 
-        if (hasUserInfo && userInfoUrl) {
+        if (true || hasUserInfo && userInfoUrl) {
             $.post(userInfoUrl).done(function(response) {
-                if (_.isObject(response.result) && _.isObject(response.result.widgets)) {
-                    $body.data('widget', response.result.widgets);
-                    $body.trigger('render');
+                if (_.isObject(response.result)) {
+                    if (_.isObject(response.result.widgets)) {
+                        $body.data('widget', response.result.widgets);
+                        $body.trigger('render');
+                    }
+
+                    if (_.isObject(response.result.user)) {
+                        $body.data('user', response.result.user);
+                    }
                 }
             });
         }
@@ -252,6 +258,39 @@
                 }
             }
         });
+
+        // direct-credit
+        $creditPayment = $('.js-creditPayment');
+        console.info('creditPayment', $creditPayment);
+        var dataValue = $creditPayment.data('value');
+        if (_.isObject(dataValue)) {
+            dc_getCreditForTheProduct(
+                dataValue.partnerId,
+                $body.data('user').sessionId,
+                'getPayment',
+                {
+                    price: dataValue.product.price,
+                    count: 1,
+                    type: dataValue.product.type
+                },
+                function(result) {
+                    console.info('dc_getCreditForTheProduct', result);
+                    if (!'payment' in result || (result.payment <= 0)) {
+                        return;
+                    }
+
+                    var $template = $($creditPayment.data('templateSelector')),
+                        $price = $($creditPayment.data('priceSelector')),
+                        price = Math.ceil(result.payment);
+
+                    $price.html(mustache.render($template.html(), {
+                        shownPrice: price
+                    }));
+
+                    $creditPayment.show();
+                }
+            );
+        }
     };
 
 

@@ -38,6 +38,8 @@ namespace EnterSite\Config {
         public $productReview;
         /** @var Application\ProductPhoto */
         public $productPhoto;
+        /** @var Application\DirecCredit */
+        public $directCredit;
 
         public function __construct() {
             $this->logger = new Application\Logger();
@@ -60,6 +62,8 @@ namespace EnterSite\Config {
             $this->product = new Application\Product();
             $this->productPhoto = new Application\ProductPhoto();
             $this->productReview = new Application\ProductReview();
+
+            $this->directCredit = new Application\DirecCredit();
         }
     }
 }
@@ -189,6 +193,15 @@ namespace EnterSite\Config\Application {
          * @var int
          */
         public $itemsInCard;
+    }
+
+    class DirecCredit {
+        /** @var bool */
+        public $enabled;
+        /** @var int */
+        public $minPrice;
+        /** @var string */
+        public $partnerId;
     }
 }
 

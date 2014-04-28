@@ -44,6 +44,7 @@ class DefaultLayout {
         ]);
 
         // регион
+        $page->regionBlock->regionName = $request->region->name;
         $page->regionBlock->autocompleteUrl = $router->getUrlByRoute(new Routing\Region\Autocomplete());
         foreach ([ // TODO: вынести в конфиг
             ['id' => '14974', 'name' => 'Москва'],
