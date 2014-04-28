@@ -177,6 +177,7 @@
                 </a>
             </li>
 
+            {{#product.reviewBlock}}
             <li class="productDescTab_item">
                 <a class="productDescTab_link js-tabs-link" data-tab="1" href="">
                     <span class="tabText">Отзывы</span>
@@ -187,13 +188,16 @@
                     </span>
                 </a>
             </li>
+            {{/product.reviewBlock}}
 
+            {{#product.accessorySlider}}
             <li class="productDescTab_item">
                 <a class="productDescTab_link js-tabs-link" data-tab="2" href="">Аксессуары</a>
             </li>
+            {{/product.accessorySlider}}
 
             <li class="productDescTab_item productDescTab_item__last">
-                <a href="" data-tab="3" class="productDescTab_link js-tabs-link">С этим товаром покупают</a>
+                <a class="productDescTab_link js-tabs-link" data-tab="3" href="">С этим товаром покупают</a>
             </li>
         </ul>
     </div>
