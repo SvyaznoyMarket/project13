@@ -1037,6 +1037,10 @@
 					OrderModel.deliveryBoxes.push( choosenBlock );
 				}
 				else {
+                    /* приоритет разбивки по типу доставки */
+                    new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
+
+                    /* приоритет разбивки по магазину
 					console.info('Блока для этого типа доставки в этот пункт еще не существует');
 					console.warn('Необходимо попробовать найти другую доставку в тот же магазин');
 					newState = OrderModel.orderDictionary.getStateToProductByDeliveryID(product.id, self.choosenPoint().id);
@@ -1050,6 +1054,7 @@
 						console.warn('Не найден вариант доставки в тот же магазин. Будет выбран тот же способ доставки, но первый доступный магазин');
 						new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
 					}
+					*/
 				}
 
 				return;
