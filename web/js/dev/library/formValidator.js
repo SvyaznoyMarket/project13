@@ -343,7 +343,7 @@ FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
  * @private
  */
 FormValidator.prototype._enableHandlers = function() {
-	console.info('_enableHandlers');
+	console.groupCollapsed('_enableHandlers');
 
 	var
 		self = this,
@@ -407,6 +407,7 @@ FormValidator.prototype._enableHandlers = function() {
 	}
 
 	console.log(self);
+    console.groupEnd();
 };
 
 /**
