@@ -64,7 +64,9 @@
             {{/hasVariations}}
 
             <div class="bBtnLine clearfix">
-                {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                {{^hasKit}}
+                    {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                {{/hasKit}}
                 <a class="btnView mBtnGrey" href="{{link}}">Посмотреть</a>
             </div>
         </div>

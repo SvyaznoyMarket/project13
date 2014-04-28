@@ -100,7 +100,7 @@ class Action {
         // листалка
         $limit = \App::config()->product['itemsInCategorySlider'];
         $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\CompactEntity');
+        $repository->setEntityClass('\\Model\\Product\\Entity');
 
         $productIds = [];
         $productCount = 0;
@@ -121,7 +121,7 @@ class Action {
         if ((bool)$productIds) {
             $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                 foreach ($data as $item) {
-                    $products[] = new \Model\Product\CompactEntity($item);
+                    $products[] = new \Model\Product\Entity($item);
                 }
             });
 
@@ -693,7 +693,7 @@ class Action {
         // листалки сгруппированные по идентификаторам категорий
         $limit = \App::config()->product['itemsInCategorySlider'] * 2;
         $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\CompactEntity');
+        $repository->setEntityClass('\\Model\\Product\\Entity');
         // массив фильтров для каждой дочерней категории
 
         $filterData = array_map(function(\Model\Product\Category\Entity $category) use ($productFilter) {
@@ -807,11 +807,7 @@ class Action {
         }
 
         $repository = \RepositoryManager::product();
-        $repository->setEntityClass(
-            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-                ? '\\Model\\Product\\ExpandedEntity'
-                : '\\Model\\Product\\CompactEntity'
-        );
+        $repository->setEntityClass('\\Model\\Product\\Entity');
 
         if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
             $productIds = [];
@@ -833,7 +829,7 @@ class Action {
             if ((bool)$productIds) {
                 $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                     foreach ($data as $item) {
-                        $products[] = new \Model\Product\CompactEntity($item);
+                        $products[] = new \Model\Product\Entity($item);
                     }
                 });
 
@@ -921,7 +917,7 @@ class Action {
             if ((bool)$productIds) {
                 $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                     foreach ($data as $item) {
-                        $products[] = new \Model\Product\CompactEntity($item);
+                        $products[] = new \Model\Product\Entity($item);
                     }
                 });
 

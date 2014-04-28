@@ -58,13 +58,10 @@ audio:not([controls]) {
 html {
   font-family: sans-serif;
   /* 1 */
-
   -webkit-text-size-adjust: 100%;
   /* 2 */
-
   -ms-text-size-adjust: 100%;
   /* 2 */
-
 }
 /**
  * Remove default margin.
@@ -227,10 +224,8 @@ fieldset {
 legend {
   border: 0;
   /* 1 */
-
   padding: 0;
   /* 2 */
-
 }
 /**
  * 1. Correct font family not being inherited in all browsers.
@@ -243,13 +238,10 @@ select,
 textarea {
   font-family: inherit;
   /* 1 */
-
   font-size: 100%;
   /* 2 */
-
   margin: 0;
   /* 3 */
-
 }
 /**
  * Address Firefox 4+ setting `line-height` on `input` using `!important` in
@@ -282,10 +274,8 @@ input[type="reset"],
 input[type="submit"] {
   -webkit-appearance: button;
   /* 2 */
-
   cursor: pointer;
   /* 3 */
-
 }
 /**
  * Re-set default cursor for disabled elements.
@@ -302,10 +292,8 @@ input[type="checkbox"],
 input[type="radio"] {
   box-sizing: border-box;
   /* 1 */
-
   padding: 0;
   /* 2 */
-
 }
 /**
  * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
@@ -315,11 +303,9 @@ input[type="radio"] {
 input[type="search"] {
   -webkit-appearance: textfield;
   /* 1 */
-
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   /* 2 */
-
   box-sizing: content-box;
 }
 /**
@@ -351,10 +337,8 @@ select:focus {
 textarea {
   overflow: auto;
   /* 1 */
-
   vertical-align: top;
   /* 2 */
-
 }
 input:-webkit-autofill {
   color: #ffffff !important;
@@ -646,7 +630,7 @@ body.noScroll {
    ========================================================================== */
 @media only screen and (max-width: 560px) {
   /* Middle
-  	-----------------------------------------------------------------------------*/
+	-----------------------------------------------------------------------------*/
   .content {
     padding-bottom: 439px;
   }
@@ -1103,28 +1087,20 @@ body.noScroll {
 .btnBuy__inshop {
   background: #040404;
   /* Old browsers */
-
   background: -moz-linear-gradient(top, #505050 0%, #040404 100%);
   /* FF3.6+ */
-
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #505050), color-stop(100%, #040404));
   /* Chrome,Safari4+ */
-
   background: -webkit-linear-gradient(top, #505050 0%, #040404 100%);
   /* Chrome10+,Safari5.1+ */
-
   background: -o-linear-gradient(top, #505050 0%, #040404 100%);
   /* Opera 11.10+ */
-
   background: -ms-linear-gradient(top, #505050 0%, #040404 100%);
   /* IE10+ */
-
   background: linear-gradient(to bottom, #505050 0%, #040404 100%);
   /* W3C */
-
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#505050', endColorstr='#040404', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#505050', endColorstr='#040404', GradientType=0);
   /* IE6-9 */
-
   border: 1px solid #a1a1a1;
 }
 .btnBuy__inshop:hover,
@@ -1180,7 +1156,6 @@ body.noScroll {
 .productDescHead {
   padding: 0 10px 0 41.48936%;
   /* Отзывы в карточке товара */
-
 }
 .productDescHead__name {
   margin-bottom: 10px;
@@ -2111,7 +2086,6 @@ body.noScroll {
 }
 .socLink__item {
   display: inline-block;
-  vertical-align: top;
   *display: inline;
   zoom: 1;
   color: #515151;

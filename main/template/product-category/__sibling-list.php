@@ -12,7 +12,7 @@ return function(
 
 ?>
     <? if ($rootCategoryInMenu && "tchibo" === $rootCategoryInMenu->getToken() && 0 == $rootCategoryInMenu->getProductCount()): ?>
-        <div>К сожалению, товары Tchibo недоступны к покупке в вашем городе <button>Где купить</button></div>
+        <img src="http://content.enter.ru/wp-content/uploads/2014/04/Tch_out.jpg" alt="К сожалению, товары Tchibo недоступны к покупке в вашем городе" />
     <? endif ?>
 
     <!-- TCHIBO - слайдер-меню разделов Чибо -->

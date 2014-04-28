@@ -313,7 +313,7 @@ $c->cart['productLimit'] = 30;
 
 $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
-$c->payment['blockedIds'] = [11, 12];
+$c->payment['blockedIds'] = [];
 
 $c->smartengine['cert']           = $c->dataDir . '/cert/gsorganizationvalg2.crt';
 $c->smartengine['apiUrl']         = 'https://www.selightprod.smartengine.at/se-light/api/1.0/json/';

@@ -805,8 +805,11 @@ window.ANALYTICS = {
 			body.on('addtocart', function ga_addtocart(event, data) {
 				var
 					productData = data.product;
-				console.log('GA: addtocart clicked', productData);
-				ga('send', 'event', '<button>', productData.name, productData.article, productData.price);
+                // TODO-zra productData = data.products
+                if (productData) {
+                    console.log('GA: addtocart clicked', productData);
+                    ga('send', 'event', '<button>', productData.name, productData.article, productData.price);
+                }
 			});
 
 			/** Событие выбора города */
