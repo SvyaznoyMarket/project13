@@ -2418,7 +2418,7 @@ FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
  * @private
  */
 FormValidator.prototype._enableHandlers = function() {
-	console.info('_enableHandlers');
+	console.groupCollapsed('_enableHandlers');
 
 	var
 		self = this,
@@ -2482,6 +2482,7 @@ FormValidator.prototype._enableHandlers = function() {
 	}
 
 	console.log(self);
+    console.groupEnd();
 };
 
 /**
@@ -4170,8 +4171,6 @@ if ( !Array.prototype.indexOf ) {
 			 */
 			sumDecimal = function sumDecimal( a, b ) {
 
-				console.group('sumDecimal');
-
 				var 
 					overA = ( ( parseFloat(a).toFixed(2) ).toString() ).replace(/\./,''),
 					overB = ( ( parseFloat(b).toFixed(2) ).toString() ).replace(/\./,''),
@@ -4181,23 +4180,12 @@ if ( !Array.prototype.indexOf ) {
 					res;
 				// end of vars
 
-				console.log(a);
-				console.log(overA);
-				console.log(b);
-				console.log(overB);
-				console.log(overSum);
-				console.log(lastNums);
-
 				if ( lastNums === '00' ) {
 					res = firstNums;
 				}
 				else {
 					res = firstNums + '.' + lastNums;
 				}
-
-				console.log(res);
-
-				console.groupEnd();
 
 				return res;
 			};

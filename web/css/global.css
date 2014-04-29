@@ -4699,6 +4699,9 @@
     position: absolute;
     z-index: 3;
   }
+  .bLowPriceNotiferPopup__eError {
+    max-width: 350px;
+  }
   .bLowPriceNotiferPopup__eInputEmail {
     background: #ffffff;
     border: 1px solid #C9C9C9;
