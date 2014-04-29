@@ -79,7 +79,7 @@ class ProductCard {
             $curl->prepare($reviewListQuery);
         }
 
-        // запрос ведео товара
+        // запрос видео товара
         $videoListQuery = new Query\Product\Media\Video\GetListByProductId($product->id);
         $curl->prepare($videoListQuery);
 
