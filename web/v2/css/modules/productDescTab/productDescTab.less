@@ -14,25 +14,22 @@
 		text-align: center;
 		border-right: 1px solid @tabGreyBorder;
 		-dt-display: table-cell;
-
-		&__last {
-			border-right: none;
-		}
-	}
-
-	&_link {
-		display: block;
 		color: @tabGreyText;
 		font-size: 20px;
 		border-bottom: 1px solid @tabGreyBorder;
 		background-color: @tabGrey;
 		padding: 8px 0;
+		cursor: pointer;
 
 		&:hover,
-		&__active {
+		&-active {
 			background-color: @white;
 			color: @darkGreyText;
 			text-decoration: none;
+		}
+
+		&:last-child {
+			border-right: none;
 		}
 	}
 

@@ -163,41 +163,37 @@
     <!-- Информация о товаре - табы -->
     <div class="contentBox960">
         <ul class="productDescTab js-tabs">
-            <li class="productDescTab_item">
-                <a class="productDescTab_link productDescTab_link__active js-tabs-link" data-tab="0" href="">
-                    <span class="tabText">Подробности</span>
+            <li class="productDescTab_item js-tabs-item productDescTab_item-active">
+                <span class="tabText">Подробности</span>
 
-                    {{#product.hasVideo}}
-                        <img class="tabImg tabImg_view" src="/v2/css/modules/productDescTab/img/video.png" />
-                    {{/product.hasVideo}}
+                {{#product.hasVideo}}
+                    <img class="tabImg tabImg_view" src="/v2/css/modules/productDescTab/img/video.png" />
+                {{/product.hasVideo}}
 
-                    {{#product.hasPhoto3d}}
-                        <img class="tabImg tabImg_view" src="/v2/css/modules/productDescTab/img/grad260.png" />
-                    {{/product.hasPhoto3d}}
-                </a>
+                {{#product.hasPhoto3d}}
+                    <img class="tabImg tabImg_view" src="/v2/css/modules/productDescTab/img/grad260.png" />
+                {{/product.hasPhoto3d}}
             </li>
 
             {{#product.reviewBlock}}
-            <li class="productDescTab_item">
-                <a class="productDescTab_link js-tabs-link" data-tab="1" href="">
-                    <span class="tabText">Отзывы</span>
-                    <span class="tabImg reviews">
-                        {{#product.rating}}
-                            {{>partial/rating/star-list}}
-                        {{/product.rating}}
-                    </span>
-                </a>
+            <li class="productDescTab_item js-tabs-item">
+                <span class="tabText">Отзывы</span>
+                <span class="tabImg reviews">
+                    {{#product.rating}}
+                        {{>partial/rating/star-list}}
+                    {{/product.rating}}
+                </span>
             </li>
             {{/product.reviewBlock}}
 
             {{#product.accessorySlider}}
-            <li class="productDescTab_item">
-                <a class="productDescTab_link js-tabs-link" data-tab="2" href="">Аксессуары</a>
+            <li class="productDescTab_item js-tabs-item">
+                Аксессуары
             </li>
             {{/product.accessorySlider}}
 
-            <li class="productDescTab_item productDescTab_item__last">
-                <a class="productDescTab_link js-tabs-link" data-tab="3" href="">С этим товаром покупают</a>
+            <li class="productDescTab_item js-tabs-item">
+                С этим товаром покупают
             </li>
         </ul>
     </div>
@@ -207,7 +203,7 @@
         <div class="tabContentWrap js-tab-wrap">
             <div class="tabContentInner js-tab">
                 <!-- Таб - Подробнее -->
-                <div class="tabContent js-cont" data-desc="js-cont-0">
+                <div class="tabContent js-cont">
                     <div class="specificationsListCol">
                         {{#product.propertyChunks}}
                             <ul class="specificationsList">
@@ -230,7 +226,7 @@
 
                 <!-- Таб - Отзывы -->
                 {{#product.reviewBlock}}
-                <div class="tabContent js-cont" data-desc="js-cont-1">
+                <div class="tabContent js-cont">
                 {{#product.reviewBlock.reviews}}
                     <div class="reviewsBox clearfix">
                         <div class="reviewsBox__left">
@@ -272,7 +268,7 @@
                 <!--/ Таб - Отзывы -->
 
                 <!-- Таб - Аксессуары -->
-                <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}} data-desc="js-cont-2">
+                <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}}>
                     {{#product.accessorySlider}}
                         {{>partial/product-slider/default}}
                     {{/product.accessorySlider}}
@@ -280,7 +276,7 @@
                 <!--/ Таб - Аксессуары -->
             
                 <!-- Таб - С этим товаром покупают -->
-                <div class="tabContent js-container js-cont" style="display: none;" data-desc="js-cont-3">
+                <div class="tabContent js-container js-cont" style="display: none;">
                     {{#product.alsoBoughtSlider}}
                         {{>partial/product-slider/default}}
                     {{/product.alsoBoughtSlider}}
