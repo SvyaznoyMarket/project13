@@ -22,7 +22,7 @@
 			var topPopup = $('.header').height() + 20;
 
 			popupSearch.enterPopup({
-				popupCSS : {top: topPopup, marginTop: 0}
+				popupCSS : {top: 0, marginTop: 0}
 			});
 		};
 		//end of functions

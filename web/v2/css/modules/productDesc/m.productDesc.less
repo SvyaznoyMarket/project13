@@ -8,7 +8,9 @@
 	.productDescInfo{
 		float: none;
 		width: auto;
-		padding: 0 10px;
+		padding: 10px 10px;
+		background: @tabGrey;
+		border-top: 1px solid @tabLightGreyBorder;
 	}
 
 	.slidesItems {
@@ -22,20 +24,6 @@
 		float: none;
 		width: auto;
 		padding: 0 10px;
-	}
-
-	.buyInfoBuy {
-
-		.btnBuy {
-			float: left;
-    		margin: 0 0 0 15px;
-			width: 132px;
-		}
-
-		.counter {
-			float: left;
-			margin: 0 0 20px;
-		}
 	}
 }
 
@@ -53,25 +41,31 @@
 		.deliveryInfo {
 			float: none;
 		    margin-left: 0;
+		    margin-top: 15px;
+		    padding-top: 15px;
 		    width: auto;
+		    border-top: 1px solid @tabLightGreyBorder;
 		}
 	}
 
 	.slidesItems {
 		min-height: 300px;
-	}
-
-	.btnBuyOneClick {
-		display: block;
 	}	
 
 	.deliveryList {
 
-		&__item {
+		&_item {
 
 			&-oneClick {
 				display: none;
 			}
 		}
+	}
+}
+
+@media only screen and (max-width: 330px) {
+	.buyInfoBuy .btnBuy {
+		width: 128px;
+		float: right;
 	}
 }

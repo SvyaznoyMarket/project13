@@ -67,11 +67,11 @@
                     <div class="buyInfo">
                         <div class="buyInfoPrice">
                             <!-- Купить по полной цене -->
-                            <div class="buyInfoPrice__item">
+                            <div class="buyInfoPrice_item">
                                 {{#product.credit}}
                                 <input class="customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
 
-                                <label class="customLabel" for="buyprice">
+                                <label class="customLabel customLabel-bigRadio" for="buyprice">
                                     {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
                                     <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
                                 </label>
@@ -86,10 +86,10 @@
 
                             {{#product.credit}}
                             <!-- Купить в кредит -->
-                            <div class="js-creditPayment buyInfoPrice__item" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
+                            <div class="js-creditPayment buyInfoPrice_item buyInfoPrice_item-credit" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
                                 <input class="customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
 
-                                <label class="{{product.credit.widgetId}} customLabel" for="creditinput">
+                                <label class="{{product.credit.widgetId}} customLabel customLabel-bigRadio" for="creditinput">
                                     <span class="creditPrice">В кредит</span>
                                 </label>
 
@@ -107,7 +107,7 @@
                         <!--<div class="buyInfoLess"><a class="buyInfoLess__link" href="">Хочешь дешевле?</a></div>-->
                         <!--/ Купить дешевле -->
 
-                        <div class="buyInfoBuy clearfix">
+                        <div class="buyInfoBuy">
                             <!-- Каунтер -->
                             {{#product.cartSpinner}}
                                 {{>partial/cart/spinner}}
@@ -121,7 +121,7 @@
                             <!--/ Кнопка купить -->
                         </div>
 
-                        <div class="btnBuyOneClick"><a class="btnBuyOneClick__link" href="">Купить в один клик</a></div>
+                        <div class="btnBuyOneClick"><a class="btnBuyOneClick_link" href="">Купить быстро в 1 клик</a></div>
                     </div>
                 </div>
                 <!--/ Выбор варианта покупки, каунтер -->
@@ -131,7 +131,7 @@
                     <div class="deliveryInfo">
                         <ul class="deliveryList">
                             {{#deliveries}}
-                                <li class="deliveryList__item deliveryList__item-{{token}}">
+                                <li class="deliveryList_item deliveryList_item-{{token}}">
                                     {{#name}}
                                         {{name}} {{#priceText}}<strong>{{priceText}}</strong>{{/priceText}}
                                     {{/name}}
@@ -140,17 +140,12 @@
                                     {{#hasShops}}
                                         <ul class="addressShopsList">
                                             {{#shops}}
-                                                <li class="addressShopsList__item"><a class="" href="{{url}}">{{name}}</a></li>
+                                                <li class="addressShopsList_item"><a class="" href="{{url}}">{{name}}</a></li>
                                             {{/shops}}
                                         </ul>
                                     {{/hasShops}}
                                 </li>
                             {{/deliveries}}
-
-                            <!-- Нужно вынести из ul -->
-                            <li class="deliveryList__item deliveryList__item-oneClick">
-                                <a class="" href="">Купить в один клик</a>
-                            </li>
                         </ul>
                     </div>
                 {{/product.deliveryBlock}}
@@ -205,7 +200,7 @@
                 <!-- Таб - Подробнее -->
                 <div class="tabContent js-cont">
                     <p class="specificationsText">{{product.description}}</p>
-                    
+
                     <div class="specificationsListCol">
                         {{#product.propertyChunks}}
                             <ul class="specificationsList">
@@ -215,7 +210,7 @@
                                 {{/isTitle}}
 
                                 {{^isTitle}}
-                                    <li class="specificationsList__item">{{name}} : {{value}}</li>
+                                    <li class="specificationsList__item">{{name}}: {{value}}</li>
                                 {{/isTitle}}
                             {{/properties}}
                             </ul>
