@@ -1015,7 +1015,7 @@
 			/**
 			 * Если для продукта нет доставки в выбранный пункт доставки, то нужно создать новый блок доставки
 			 */
-			if ( !product.deliveries[self.state].hasOwnProperty(self.choosenPoint().id) ) {
+			if ( !product.deliveries[self.state].hasOwnProperty(self.choosenPoint().id) && self.token != 'standart_furniture_shipped') {
 				console.warn('Для товара '+product.id+' нет пункта доставки '+self.choosenPoint().id+' Необходимо создать новый блок');
 
 				firstAvaliblePoint = self._getFirstPropertyName(product.deliveries[self.state]);
@@ -1074,8 +1074,10 @@
             }*/
 
 			// Определение стоимости доставки. Если стоимость доставки данного товара выше стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
-			productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
-			self.deliveryPrice = ( self.deliveryPrice < productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
+            if (self.token == 'standart_furniture_shipped') self.choosenPoint({id: 0});
+
+            productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
+            self.deliveryPrice = ( self.deliveryPrice < productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
 
 			tmpProduct = {
 				id: product.id,
@@ -1167,17 +1169,31 @@
 		DeliveryBox.prototype.addProductGroup = function( products ) {
 			var
 				self = this,
+                shipped = [],
 				i;
 			// end of vars
 			
 			console.groupCollapsed('Добавление товаров в блок, количество товаров: %s', products.length);
 			// добавляем товары в блок
-			for ( i = products.length - 1; i >= 0; i-- ) {
-				console.log(i+'-ый товар: ', products[i]);
-				self._addProduct(products[i]);
-			}
+            // первая итерация
+            if (self.token != 'standart_furniture_shipped') {
+                for (i = products.length - 1; i >= 0; i--) {
+                    console.log(i + '-ый товар: ', products[i]);
+                    if (products[i].stock != 9223372036854776000) self._addProduct(products[i]);
+                    else shipped.push(products[i]);
+                }
+            }
+            // вторая итерация, если есть товары от поставщика
+            if (self.token == 'standart_furniture_shipped') {
+                for ( i = products.length - 1; i >= 0; i-- ) {
+                    console.log(i+'-ый товар: ', products[i]);
+                    self._addProduct(products[i]);
+                }
+            }
 
             console.groupEnd();
+
+            if (shipped.length && self.token != 'standart_furniture_shipped') new DeliveryBox(shipped, self.state, 'shipped');
 
 			if ( !self.products.length ) {
 				console.warn('в блоке '+self.token+' нет товаров');
@@ -1343,6 +1359,7 @@
 			/**
 			 * Перебираем даты в первом товаре
 			 */
+            if (self.token == 'standart_furniture_shipped') self.choosenPoint({id: 0})
 			nowProductDates = self.products[0].deliveries[self.state][self.choosenPoint().id].dates;
 
 			for ( i = 0, len = nowProductDates.length; i < len; i++ ) {
