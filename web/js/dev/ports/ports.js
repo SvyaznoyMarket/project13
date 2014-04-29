@@ -1188,8 +1188,7 @@ window.ANALYTICS = {
     },
 
 	parseAllAnalDivs : function( nodes ) {
-		console.group('parseAllAnalDivs');
-		console.info('parseAllAnalDivs');
+		console.groupCollapsed('parseAllAnalDivs');
 
 		if ( !this.enable ) {
 			console.warn('Not enabled. Return');
@@ -1230,7 +1229,6 @@ window.ANALYTICS = {
 		document.writeln = function() {
 			$('body').append( $(arguments[0] + '') );
 		}
-		console.log('end parseAllAnalDivs');
 		console.groupEnd();
 	},
 

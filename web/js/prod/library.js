@@ -2388,7 +2388,7 @@ FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
  * @private
  */
 FormValidator.prototype._enableHandlers = function() {
-	console.info('_enableHandlers');
+	//console.groupCollapsed('_enableHandlers');
 
 	var
 		self = this,
@@ -2412,7 +2412,7 @@ FormValidator.prototype._enableHandlers = function() {
 				}
 			}
 			else {
-				console.log('поле не найдено или тип валидации не существует, хандлер нужно убрать');
+				//console.log('поле не найдено или тип валидации не существует, хандлер нужно убрать');
 				that.unbind('blur', validateOnBlur);
 			}
 
@@ -2442,7 +2442,7 @@ FormValidator.prototype._enableHandlers = function() {
 
 		if ( currentField.validateOnChange ) {
 			if ( self._validateOnChangeFields[ currentField.fieldNode.get(0).outerHTML ] ) {
-				console.log('уже вешали');
+				//console.log('уже вешали');
 				continue;
 			}
 
@@ -2451,7 +2451,8 @@ FormValidator.prototype._enableHandlers = function() {
 		}
 	}
 
-	console.log(self);
+	//console.log(self);
+    //console.groupEnd();
 };
 
 /**
