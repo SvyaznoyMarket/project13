@@ -8,6 +8,7 @@ use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\MustacheRendererTrait;
 use EnterSite\RouterTrait;
+use EnterSite\SessionTrait;
 use EnterSite\Routing;
 use EnterSite\Controller;
 use EnterSite\Curl\Query;
@@ -16,9 +17,9 @@ use EnterSite\Model\Page\Cart\Index as Page;
 use EnterSite\Repository;
 
 class Index {
-    use ConfigTrait, RouterTrait, LoggerTrait, CurlClientTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof RouterTrait, LoggerTrait, CurlClientTrait, MustacheRendererTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait;
+    use ConfigTrait, RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait, MustacheRendererTrait {
+        ConfigTrait::getConfig insteadof RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait, MustacheRendererTrait;
+        LoggerTrait::getLogger insteadof SessionTrait, CurlClientTrait;
     }
 
     /**
@@ -28,18 +29,34 @@ class Index {
      */
     public function execute(Http\Request $request) {
         $curl = $this->getCurlClient();
+        $session = $this->getSession();
+        $cartRepository = new Repository\Cart();
 
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+
+        // корзина из сессии
+        $cart = $cartRepository->getObjectByHttpSession($session);
 
         // запрос региона
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
+        $curl->prepare($cartItemQuery);
+
         $curl->execute(1, 2);
 
         // регион
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+
+        $productListQuery = (bool)$cart->product ? new Query\Product\GetListByIdList(array_values(array_map(function(Model\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product)), $region->id) : null;
+        if ($productListQuery) {
+            $curl->prepare($productListQuery);
+        }
+
+        // корзина из ядра
+        $cart = $cartRepository->getObjectByQuery($cartItemQuery);
 
         // запрос дерева категорий для меню
         $categoryListQuery = new Query\Product\Category\GetTreeList($region, 3);
@@ -51,13 +68,22 @@ class Index {
 
         $curl->execute(1, 2);
 
+        $cartProducts = $cart->product;
+        $productsById = $productListQuery ? (new Repository\Product)->getIndexedObjectListByQueryList([$productListQuery]) : [];
+
         // меню
         $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
-        // build page
-        $page = new Page();
+        // запрос для получения страницы
+        $pageRequest = new Repository\Page\Cart\Index\Request();
+        $pageRequest->region = $region;
+        $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->productsById = $productsById;
+        $pageRequest->cartProducts = $cartProducts;
 
-        $page->mainMenu = $mainMenu;
+        // страница
+        $page = new Page();
+        (new Repository\Page\Cart\Index())->buildObjectByRequest($page, $pageRequest);
 
         // рендер
         $renderer = $this->getRenderer();
