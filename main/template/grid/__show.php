@@ -20,7 +20,7 @@ $f = function(
 ?>
 
 <? foreach ($gridCells as $cell): ?>
-<div class="productInner" style="position: absolute; overflow: hidden;
+<div class="productInner" style="position: absolute;
     <?= 'left: ' . (($cell->getColumn() - 1) *  $step + ($cell->getColumn() - 1) * $offset) . 'px;' ?>
     <?= 'top: ' . (($cell->getRow() - 1) *  $step + ($cell->getRow() - 1) * $offset) . 'px;' ?>
     <?= 'width:' . ($cell->getSizeX() * $step + ($cell->getSizeX() - 1) * $offset) . 'px;' ?>

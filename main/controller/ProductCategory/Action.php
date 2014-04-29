@@ -354,10 +354,11 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
         }
 
-        // SITE-2634
-        if (!empty($shopScriptSeo['link'])) {
-            $category->setLink($shopScriptSeo['link']);
-        }
+        // TODO Закомментировал проверку по причине бага SITE-3683. Когда шопскрипт будет отдавать link с учетом родительской категории, условие нужно будет откомментить
+//        // SITE-2634
+//        if (!empty($shopScriptSeo['link'])) {
+//            $category->setLink($shopScriptSeo['link']);
+//        }
 
         // подготовка 3-го пакета запросов
 

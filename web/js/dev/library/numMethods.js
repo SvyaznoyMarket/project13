@@ -27,8 +27,6 @@
 			 */
 			sumDecimal = function sumDecimal( a, b ) {
 
-				console.group('sumDecimal');
-
 				var 
 					overA = ( ( parseFloat(a).toFixed(2) ).toString() ).replace(/\./,''),
 					overB = ( ( parseFloat(b).toFixed(2) ).toString() ).replace(/\./,''),
@@ -38,23 +36,12 @@
 					res;
 				// end of vars
 
-				console.log(a);
-				console.log(overA);
-				console.log(b);
-				console.log(overB);
-				console.log(overSum);
-				console.log(lastNums);
-
 				if ( lastNums === '00' ) {
 					res = firstNums;
 				}
 				else {
 					res = firstNums + '.' + lastNums;
 				}
-
-				console.log(res);
-
-				console.groupEnd();
 
 				return res;
 			};
