@@ -1,0 +1,40 @@
+<?php
+
+namespace EnterSite\Repository\Partial\Cart;
+
+use EnterSite\Routing;
+use EnterSite\Model;
+use EnterSite\Model\Partial;
+
+class ProductCard {
+    /**
+     * @param Model\Cart\Product $cartProduct
+     * @param Model\Product $product
+     * @param Partial\Cart\ProductSpinner|null $cartSpinner
+     * @return Partial\ProductCard
+     */
+    public function getObject(
+        Model\Cart\Product $cartProduct,
+        Model\Product $product,
+        Partial\Cart\ProductSpinner $cartSpinner = null
+    ) {
+        $card = new Partial\Cart\ProductCard();
+
+        $card->name = $product->name;
+        $card->url = $product->link;
+        $card->price = $product->price;
+        $card->shownPrice = $product->price ? number_format((float)$product->price, 0, ',', ' ') : null;
+        $card->sum = $cartProduct->sum;
+        $card->shownSum = $cartProduct->sum ? number_format((float)$cartProduct->sum, 0, ',', ' ') : null;
+        $card->oldPrice = $product->oldPrice;
+        $card->shownOldPrice = $product->oldPrice ? number_format((float)$product->oldPrice, 0, ',', ' ') : null;
+        if ($photo = reset($product->media->photos)) {
+            /** @var Model\Product\Media\Photo $photo */
+            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 1));
+        }
+        $card->id = $product->id;
+        $card->cartSpinner = $cartSpinner;
+
+        return $card;
+    }
+}

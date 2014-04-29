@@ -16,8 +16,7 @@ use EnterSite\Model\Page\User\Get as Page;
 use EnterSite\Routing;
 
 class Get {
-    use ConfigTrait;
-    use LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait {
+    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait {
         ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
     }
