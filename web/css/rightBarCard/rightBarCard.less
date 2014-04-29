@@ -114,7 +114,12 @@
         float: left;
         margin-right: 3px;
         padding: 0;
+
+        &.mDisabled {
+            .opacity(0.4);
+        }
     }
+
     &__eNum {
         border: 1px solid #c7c7c7;
         .rounded(3px);
@@ -130,11 +135,14 @@
 
     &.mDisabled{
         .opacity(0.3);
+        cursor: default;
+
         button {
             cursor: default;
         }
     }
 }
+
 // widget services
 .bWidgetService {
     border: 1px solid #41c7ef;

@@ -162,11 +162,11 @@ class ProductAction {
                 $productQuantity = isset($productQuantitiesById[$productId]) ? $productQuantitiesById[$productId] : null;
                 if (!$productQuantity) continue;
 
-                $cart->setProduct($product, $productQuantity);
+                $cart->setProduct($product, $productQuantity + $cart->getQuantityByProduct($productId));
                 $cartProduct = $cart->getProductById($product->getId());
                 $this->updateCartWarranty($product, $cartProduct, $productQuantity);
 
-                $quantity += $productQuantity;
+                $quantity += $cart->getQuantityByProduct($productId);
             }
             $cart->fill();
 
@@ -199,11 +199,17 @@ class ProductAction {
 
             $productsInfo = [];
             foreach ($productsById as $product) {
+                $cartProduct = $cart->getProductById($product->getId());
                 $productInfo = [
+                    'id'    => $product->getId(),
                     'name'  =>  $product->getName(),
                     'img'   =>  $product->getImageUrl(2),
                     'link'  =>  $product->getLink(),
                     'price' =>  $product->getPrice(),
+                    'deleteUrl' => $cartProduct  ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,
+                    'cartButton'     => [
+                        'id' => \View\Id::cartButtonForProduct($product->getId()),
+                    ],
                 ];
                 if (\App::config()->kissmentrics['enabled']) {
                     try {
@@ -227,18 +233,27 @@ class ProductAction {
                     'old_price'     => $cart->getOriginalSum(),
                     'link'          => \App::router()->generate('order'),
                 ],
-                'product'  => reset($productsInfo),
+                'products'  => $productsInfo,
             ];
+
+            $response = new \Http\JsonResponse($responseData);
+
+            if ($cart->getSum()) {
+                \Session\User::enableInfoCookie($response);
+            } else {
+                \Session\User::disableInfoCookie($response);
+            }
 
 
         } catch(\Exception $e) {
             $responseData = [
                 'success' => false,
-                'data'    => ['error' => 'Не удалось товар услугу в корзину', 'debug' => $e->getMessage()],
+                'data'    => ['error' => 'Не удалось товар или услугу в корзину', 'debug' => $e->getMessage()],
             ];
+            return new \Http\JsonResponse($responseData);
         }
 
-        return new \Http\JsonResponse($responseData);
+        return $response;
     }
 
     /**

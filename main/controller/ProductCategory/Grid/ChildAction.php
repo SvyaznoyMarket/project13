@@ -85,7 +85,7 @@ class ChildAction {
                     if (!isset($productsById[$item['id']])) {
                         continue;
                     }
-                    $productsById[$item['id']] = new \Model\Product\CompactEntity($item);
+                    $productsById[$item['id']] = new \Model\Product\Entity($item);
                 }
             });
         }

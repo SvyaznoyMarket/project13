@@ -71,6 +71,22 @@ class RecommendedAction {
             }
             \App::curl()->execute(null, 1);
 
+            $uniqueIds = array_unique(array_merge($ids['alsoBought'], $ids['similar'], $ids['alsoViewed'], $ids['personal']));
+
+            // SITE-3221 Исключить повторяющиеся товары из рекомендаций RR
+            if (is_array($ids['similar']) && is_array($ids['alsoViewed'])) {
+                $ids['alsoViewed'] = array_diff($ids['alsoViewed'], array_slice($ids['similar'], 0, 5));
+            }
+
+            // SITE-3625 Персонализация рекомендаций
+            foreach ($ids as $type => &$item) {
+                if (isset($ids['personal']) && $type !== 'personal') {
+                    $personalIntersect = array_intersect($ids['personal'], $item); // пересечение рекомендаций
+                    $personalDiff = array_diff($item, $ids['personal']); // diff рекомендаций
+                    $item = array_merge($personalIntersect, $personalDiff); // персонализированный результат
+                }
+            }
+
             /**
              * Для всех продуктов расставим и запомним источники (движок, Engine) рекомендаций
              */
@@ -121,19 +137,6 @@ class RecommendedAction {
                 foreach ($ids[$type] as $id) {
                     $productsCollection[$type][] = $collection[$id];
                 }
-            }
-
-            // SITE-3221 Исключить повторяющиеся товары из рекомендаций RR
-            if (is_array($productsCollection['similar']) && is_array($productsCollection['alsoViewed'])) {
-                $compareFunc = function($a, $b){
-                    return $a->getId() - $b->getId();
-                };
-                $filterFunc = function($product) {
-                    return $product instanceof \Model\Product\BasicEntity;
-                };
-                $filteredAlsoViewed = array_filter($productsCollection['alsoViewed'], $filterFunc);
-                $filteredSimilar = array_filter($productsCollection['similar'], $filterFunc);
-                $productsCollection['alsoViewed'] = array_udiff($filteredAlsoViewed, array_slice($filteredSimilar, 0, 5), $compareFunc);
             }
 
             // подготавливаем контент для всех типов рекомендаций

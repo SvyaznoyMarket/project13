@@ -177,11 +177,7 @@ class Action {
 
         // товары
         $productRepository = \RepositoryManager::product();
-        $productRepository->setEntityClass(
-            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-            ? '\\Model\\Product\\ExpandedEntity'
-            : '\\Model\\Product\\CompactEntity'
-        );
+        $productRepository->setEntityClass('\\Model\\Product\\Entity');
         $products = $productRepository->getCollectionById($result['data']);
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);

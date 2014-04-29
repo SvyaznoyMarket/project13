@@ -671,8 +671,7 @@
 			}
 			// constructor body
 			
-			console.info('Cоздание блока доставки '+state+' для '+choosenPointForBox);
-			console.log(this);
+			console.info('Cоздание блока доставки %s для %s', state, choosenPointForBox, this);
 
 
 			OrderModel = ENTER.OrderModel;
@@ -693,7 +692,7 @@
 			// Продукты в блоке
 			self.products = [];
 			// Общая стоимость товаров в блоке
-			self.fullPrice = 0;
+			self.fullPrice = ko.observable(0);
 			// Полная стоимость блока с учетом доставки
 			self.totalBlockSum = 0;
 			// Метод доставки
@@ -718,7 +717,12 @@
 			self.hasPointDelivery = OrderModel.orderDictionary.hasPointDelivery(state);
 
 			// Стоимость заказа равна или больше напр. 100 тыс. руб.
-			self.isExpensiveOrder = false;
+			self.isExpensiveOrder = ko.computed(function(){
+                if ( prepayment.enabled ) {
+                    // отображение/скрытие блока предоплаты
+                    return prepayment.priceLimit <= (parseInt(self.fullPrice(), 10) + parseInt(self.deliveryPrice, 10)) ? true : false;
+                } else return false;
+            });
 
 			// Есть ли в заказе товар, требующий предоплату (шильдик предоплата)
 			self.hasProductWithPrepayment = false;
@@ -1031,13 +1035,17 @@
 					deletedBlock = OrderModel.removeDeliveryBox(token); // удалит по токену нужный
 
 					// пересчитываем и обновляем общую сумму всех блоков
-					nowTotalSum = OrderModel.totalSum() - deletedBlock.fullPrice - choosenBlock.deliveryPrice;
+					nowTotalSum = OrderModel.totalSum() - deletedBlock.fullPrice() - choosenBlock.deliveryPrice;
 					OrderModel.totalSum(nowTotalSum);
 
 					choosenBlock.addProductGroup( tempProductArray ); //массив на вход нужен
 					OrderModel.deliveryBoxes.push( choosenBlock );
 				}
 				else {
+                    /* приоритет разбивки по типу доставки */
+                    new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
+
+                    /* приоритет разбивки по магазину
 					console.info('Блока для этого типа доставки в этот пункт еще не существует');
 					console.warn('Необходимо попробовать найти другую доставку в тот же магазин');
 					newState = OrderModel.orderDictionary.getStateToProductByDeliveryID(product.id, self.choosenPoint().id);
@@ -1051,10 +1059,19 @@
 						console.warn('Не найден вариант доставки в тот же магазин. Будет выбран тот же способ доставки, но первый доступный магазин');
 						new DeliveryBox( tempProductArray, self.state, firstAvaliblePoint );
 					}
+					*/
 				}
 
 				return;
 			}
+
+/*            if (product.stock == 9223372036854776000 && self.token != 'standart_furniture_1') {
+                console.log('Есть продукт от поставщика, необходимо добавить в другой блок доставки: ', product);
+                token = self.state+'_'+'1';
+                tempProductArray.push(product);
+                if (!OrderModel.hasDeliveryBox(token)) new DeliveryBox(tempProductArray, self.state, '1');
+                return;
+            }*/
 
 			// Определение стоимости доставки. Если стоимость доставки данного товара выше стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
 			productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
@@ -1065,6 +1082,7 @@
 				name: product.name,
 				price: (product.sum) ? product.sum : product.price,
 				quantity: product.quantity,
+                stock: product.stock,
 				deleteUrl: product.deleteUrl,
 				setUrl: product.setUrl,
 				productUrl: product.url,
@@ -1088,14 +1106,10 @@
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
 			// Добавляем стоимость продукта к общей стоимости блока доставки
-			self.fullPrice = ENTER.utils.numMethods.sumDecimal(tmpProduct.price, self.fullPrice);
+			self.fullPrice(ENTER.utils.numMethods.sumDecimal(tmpProduct.price, self.fullPrice()));
 
 			self.products.push(tmpProduct);
 
-			if ( prepayment.enabled ) {
-				// отображение/скрытие блока предоплаты
-				self.isExpensiveOrder = (prepayment.priceLimit <= (parseInt(self.fullPrice, 10) + parseInt(self.deliveryPrice, 10))) ? true : false;
-			}
 		};
 
 		/**
@@ -1135,7 +1149,7 @@
 				nowTotalSum = OrderModel.totalSum();
 			// end of vars
 
-			self.totalBlockSum = ENTER.utils.numMethods.sumDecimal(self.fullPrice, self.deliveryPrice);
+			self.totalBlockSum = ENTER.utils.numMethods.sumDecimal(self.fullPrice(), self.deliveryPrice);
 			nowTotalSum = ENTER.utils.numMethods.sumDecimal(self.totalBlockSum, nowTotalSum);
 			OrderModel.totalSum(nowTotalSum);
 
@@ -1156,13 +1170,14 @@
 				i;
 			// end of vars
 			
-			console.info('добавляем товары в блок');
+			console.groupCollapsed('Добавление товаров в блок, количество товаров: %s', products.length);
 			// добавляем товары в блок
 			for ( i = products.length - 1; i >= 0; i-- ) {
-				console.log(i+'ый пошел...');
-				console.log(products[i]);
+				console.log(i+'-ый товар: ', products[i]);
 				self._addProduct(products[i]);
 			}
+
+            console.groupEnd();
 
 			if ( !self.products.length ) {
 				console.warn('в блоке '+self.token+' нет товаров');
@@ -1234,7 +1249,9 @@
 			/**
 			 * Перебор всех продуктов в блоке
 			 */
-			for ( i = self.products.length - 1; i >= 0; i-- ) {
+			for ( i = 0; i < self.products.length ; i++ ) {
+                //console.groupCollapsed('Проверка существования даты доставки продукта %s в других продуктах', self.products[i].name);
+
 				nowProductDates = self.products[i].deliveries[self.state][self.choosenPoint().id].dates;
 
 				/**
@@ -1242,6 +1259,7 @@
 				 */
 				for ( j = 0, len = nowProductDates.length; j < len; j++ ) {
 					nowTS = nowProductDates[j].value;
+                    //console.log('Diff dates: %s', nowTS - checkTS)
 
 					if ( nowTS === checkTS ) {
 						res = true;
@@ -1252,6 +1270,8 @@
 						res = false;
 					}
 				}
+
+                //console.groupEnd();
 
 				if ( !res ) {
 					break;
@@ -1306,6 +1326,7 @@
 
 				newToken = '',
 				tempProduct = null,
+                tempDate = null,
 				tempProductArray = [],
 				dateFromCookie = null,
 				chooseDate = null,
@@ -1333,10 +1354,48 @@
 			}
 
 			if ( !self.allDatesForBlock().length ) {
-				console.warn('нет общих дат для блока. Необходимо разделить продукты в блоке');
+				console.warn('Нет общих дат для блока. Необходимо разделить продукты в блоке.');
+                console.groupCollapsed('Разделяемый блок');
+                var consoleProducts = [];
+                for (var a in self.products) {
+                    var temp = self.products[a];
+                    temp.firstDate = self.products[a].deliveries[self.state][self.choosenPoint().id].dates[0].name;
+                    temp.lastDate = self.products[a].deliveries[self.state][self.choosenPoint().id].dates[self.products[a].deliveries[self.state][self.choosenPoint().id].dates.length-1].name;
+                    consoleProducts.push(temp);
+                }
+                console.table(consoleProducts);
+                console.groupEnd();
 
-				tempProduct = self.products.pop();
-				tempProductArray.push(tempProduct);
+                /* [start] Новый метод разделения */
+                console.info('Выделяем в отдельный блок товары от поставщика');
+                var shipperProductArray = [];
+                shipperProductArray = self.products.reduceRight(function(previousValue, currentValue, index, arr) {
+                    if (9223372036854776000 == currentValue.stock) {
+                        arr.splice(index, 1);
+                        previousValue.push(currentValue);
+                        self.fullPrice(ENTER.utils.numMethods.sumDecimal(self.fullPrice(), -currentValue.price));
+                    }
+                    return previousValue;
+                },[]);
+                console.log('Количество товаров от поставщика = %s', shipperProductArray.length);
+                if (shipperProductArray.length) {
+                    new DeliveryBox( shipperProductArray, self.state, self.choosenPoint().id );
+                }
+                /* [end] Новый метод разделения */
+
+                tempProductArray = self.products.reduceRight(function(previousValue, currentValue, index, arr) {
+                    var currFirstDate = currentValue.deliveries[self.state][self.choosenPoint().id].dates[0].value;
+                    if (tempDate === null) tempDate = currFirstDate;
+                    if (tempDate == currFirstDate) {
+                        arr.splice(index, 1);
+                        previousValue.push(currentValue);
+                        self.fullPrice(ENTER.utils.numMethods.sumDecimal(self.fullPrice(), -currentValue.price));
+                    }
+                    return previousValue;
+                },[]);
+
+                console.log('Продукты в новом блоке:', tempProductArray);
+
 				newToken = self.state + '_' + self.choosenPoint().id + '_' + self.addUniqueSuffix();
 				console.log('новый токен '+newToken);
 				console.log(self);
@@ -1394,7 +1453,7 @@
 		 * @this	{DeliveryBox}
 		 */
 		DeliveryBox.prototype.makeCalendar = function() {
-			console.info('Создание календаря, округление до целых недель');
+			console.groupCollapsed('Создание календаря, округление до целых недель');
 
 			var
 				self = this,
@@ -1492,6 +1551,8 @@
 					self.allDatesForBlock.push(tmpDay);
 				}
 			}
+
+            console.groupEnd();
 		};
 
 

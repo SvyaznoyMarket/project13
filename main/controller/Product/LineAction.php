@@ -34,7 +34,7 @@ class LineAction {
         $globalProducts = [];
         $productRepository->prepareCollectionById($productInLineIds, \App::user()->getRegion(), function($data) use(&$globalProducts) {
             foreach ($data as $item) {
-                $globalProducts[] = new \Model\Product\ExpandedEntity($item);
+                $globalProducts[] = new \Model\Product\Entity($item);
             }
         });
         \App::coreClientV2()->execute();
@@ -47,13 +47,13 @@ class LineAction {
 
         // фильтрация связанных товаров
         $productsInLine = array_filter($productsInLine, function ($product) {
-            return $product instanceof \Model\Product\ExpandedEntity;
+            return $product instanceof \Model\Product\Entity;
         });
 
         //Запрашиваю составные части набора
         $parts = [];
         if ((bool)$mainProduct->getKit()) {
-            $productRepository->setEntityClass('\Model\Product\CompactEntity');
+            $productRepository->setEntityClass('\Model\Product\Entity');
             $partId = [];
             foreach ($mainProduct->getKit() as $part) {
                 $partId[] = $part->getId();
@@ -82,6 +82,7 @@ class LineAction {
         $page->setParam('productView', $productView);
         $page->setParam('productPager', $productPager);
         $page->setParam('title', 'Серия ' . $line->getName());
+        $page->setGlobalParam('addToCartJS', null);
 
         return new \Http\Response($page->show());
     }

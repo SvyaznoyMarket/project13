@@ -1861,6 +1861,35 @@ window.MapInterface = (function() {
 
 				},
 
+                multipleAdd = function multipleAdd ( data ) {
+
+                    var cart = data.cart,
+                        toClientCart = {},
+                        toBasketUpdate = {
+                            quantity: cart.full_quantity,
+                            sum: cart.full_price
+                        };
+
+                    for (var i in data.products) {
+                        var product = data.products[i],
+                            tmpCart = {
+                                formattedPrice: printPrice(product.price),
+                                image: product.img,
+                                url: product.link
+                            };
+                        toClientCart = $.extend({}, product, tmpCart);
+
+                        var productInBasket = $.grep(clientCart.products, function(elem){ return elem.id === product.id });
+                        if (productInBasket.length == 0) {
+                            clientCart.products.push(toClientCart); // добавляем в корзину только уникальные элементы
+                        } else {
+                            for (var a in clientCart.products) if (clientCart.products[a].id === product.id) clientCart.products[a].quantity = product.quantity; // обновляем количество для существующих
+                        }
+                    }
+
+                    self.basket().update(toBasketUpdate);
+                },
+
 				deleteItem = function deleteItem( data ) {
 					console.log('deleteItem');
 					var
@@ -1889,6 +1918,7 @@ window.MapInterface = (function() {
 			return {
 				'update': update,
 				'add': add,
+                'multipleAdd' : multipleAdd,
 				'deleteItem': deleteItem
 			};
 		};
@@ -2388,7 +2418,7 @@ FormValidator.prototype._markFieldError = function( fieldNode, errorMsg ) {
  * @private
  */
 FormValidator.prototype._enableHandlers = function() {
-	console.info('_enableHandlers');
+	console.groupCollapsed('_enableHandlers');
 
 	var
 		self = this,
@@ -2452,6 +2482,7 @@ FormValidator.prototype._enableHandlers = function() {
 	}
 
 	console.log(self);
+    console.groupEnd();
 };
 
 /**
@@ -4140,8 +4171,6 @@ if ( !Array.prototype.indexOf ) {
 			 */
 			sumDecimal = function sumDecimal( a, b ) {
 
-				console.group('sumDecimal');
-
 				var 
 					overA = ( ( parseFloat(a).toFixed(2) ).toString() ).replace(/\./,''),
 					overB = ( ( parseFloat(b).toFixed(2) ).toString() ).replace(/\./,''),
@@ -4151,23 +4180,12 @@ if ( !Array.prototype.indexOf ) {
 					res;
 				// end of vars
 
-				console.log(a);
-				console.log(overA);
-				console.log(b);
-				console.log(overB);
-				console.log(overSum);
-				console.log(lastNums);
-
 				if ( lastNums === '00' ) {
 					res = firstNums;
 				}
 				else {
 					res = firstNums + '.' + lastNums;
 				}
-
-				console.log(res);
-
-				console.groupEnd();
 
 				return res;
 			};
