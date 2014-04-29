@@ -448,6 +448,7 @@
 				name: product.name,
 				price: (product.sum) ? product.sum : product.price,
 				quantity: product.quantity,
+                stock: product.stock,
 				deleteUrl: product.deleteUrl,
 				setUrl: product.setUrl,
 				productUrl: product.url,
@@ -719,7 +720,34 @@
 			}
 
 			if ( !self.allDatesForBlock().length ) {
-				console.warn('нет общих дат для блока.', self.products ,' Необходимо разделить продукты в блоке');
+				console.warn('Нет общих дат для блока. Необходимо разделить продукты в блоке.');
+                console.groupCollapsed('Разделяемый блок');
+                var consoleProducts = [];
+                for (var a in self.products) {
+                    var temp = self.products[a];
+                    temp.firstDate = self.products[a].deliveries[self.state][self.choosenPoint().id].dates[0].name;
+                    temp.lastDate = self.products[a].deliveries[self.state][self.choosenPoint().id].dates[self.products[a].deliveries[self.state][self.choosenPoint().id].dates.length-1].name;
+                    consoleProducts.push(temp);
+                }
+                console.table(consoleProducts);
+                console.groupEnd();
+
+                /* [start] Новый метод разделения */
+                console.info('Выделяем в отдельный блок товары от поставщика');
+                var shipperProductArray = [];
+                shipperProductArray = self.products.reduceRight(function(previousValue, currentValue, index, arr) {
+                    if (9223372036854776000 == currentValue.stock) {
+                        arr.splice(index, 1);
+                        previousValue.push(currentValue);
+                        self.fullPrice(ENTER.utils.numMethods.sumDecimal(self.fullPrice(), -currentValue.price));
+                    }
+                    return previousValue;
+                },[]);
+                console.log('Количество товаров от поставщика = %s', shipperProductArray.length);
+                if (shipperProductArray.length) {
+                    new DeliveryBox( shipperProductArray, self.state, self.choosenPoint().id );
+                }
+                /* [end] Новый метод разделения */
 
                 tempProductArray = self.products.reduceRight(function(previousValue, currentValue, index, arr) {
                     var currFirstDate = currentValue.deliveries[self.state][self.choosenPoint().id].dates[0].value;
