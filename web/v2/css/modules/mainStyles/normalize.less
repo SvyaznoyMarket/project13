@@ -304,6 +304,14 @@ input {
     line-height: normal;
 }
 
+input[type="text"], 
+input[type="email"], 
+input[type="search"], 
+input[type="password"] {
+  -webkit-appearance: caret;
+  -moz-appearance: caret; /* mobile firefox too! */
+}
+
 /**
  * Address inconsistent `text-transform` inheritance for `button` and `select`.
  * All other form control elements do not inherit `text-transform` values.

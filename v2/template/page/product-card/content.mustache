@@ -204,6 +204,8 @@
             <div class="tabContentInner js-tab">
                 <!-- Таб - Подробнее -->
                 <div class="tabContent js-cont">
+                    <p class="specificationsText">{{product.description}}</p>
+                    
                     <div class="specificationsListCol">
                         {{#product.propertyChunks}}
                             <ul class="specificationsList">
@@ -218,8 +220,6 @@
                             {{/properties}}
                             </ul>
                         {{/product.propertyChunks}}
-
-                        <p class="specificationsText">{{product.description}}</p>
                     </div>
                 </div>
                 <!--/ Таб - Подробнее -->
