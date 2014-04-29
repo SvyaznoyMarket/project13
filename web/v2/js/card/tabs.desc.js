@@ -54,7 +54,7 @@ $(function(){
 				console.log('tabsToggle');
 
 				tabWrapWidth = $('.js-tab-selector').width();
-				tabWrap.css({'height' : tab.first().height() })
+				tabWrap.css({'height' : tab.first().height(), 'min-height' : 350 })
 
 				tabWrap.css({'width' : tabWrapWidth})
 				tab.css({'width': tabWrapWidth});	

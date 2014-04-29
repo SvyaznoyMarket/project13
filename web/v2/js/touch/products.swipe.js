@@ -35,7 +35,7 @@ $(function() {
             slideWrapHeight = slideWrapWidth;
         };
 
-        slideWrap.css({'height' : slideWrapHeight, 'background' : 'none'});
+        slideWrap.css({'background' : 'none'});
         slideList.fadeIn('300').css({'width' : slideWrapWidth * countItem});
         slideWrapItem.css({'width' : slideWrapWidth});
         slideImg.css({'height' : slideWrapHeight - 30});
