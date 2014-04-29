@@ -238,7 +238,7 @@
 	 main function
 	 **********************************************************************/
 	function main() {
-		console.group('ports.js::VisitorSplit');
+		console.groupCollapsed('ports.js::VisitorSplit');
 		var
 			selectedGroup = getVisitorGroup(),
 			vendors, i, url, type;
