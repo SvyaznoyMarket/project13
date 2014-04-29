@@ -496,7 +496,7 @@
 			field;
 		// end of vars
 
-		console.info('defaultValueToField');
+		console.groupCollapsed('Подстановка значений в поля defaultValueToField()');
 		for ( field in fields ) {
 			console.log('поле '+field);
 			
@@ -515,6 +515,7 @@
 				fieldNode.val( fields[field] );
 			}
 		}
+        console.groupEnd();
 	};
 	defaultValueToField($('#jsOrderForm').data('value'));
 

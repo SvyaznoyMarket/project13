@@ -1316,7 +1316,7 @@
 		 * @this	{DeliveryBox}
 		 */
 		DeliveryBox.prototype.calculateDate = function() {
-			console.info('Вычисление общей даты для продуктов в блоке');
+			console.info('Вычисление общей даты для продуктов в блоке', this);
 
 			var
 				self = this,
@@ -1334,7 +1334,10 @@
 				len,
 				i;
 			// end of vars
-
+            if (!self.products.length) {
+                console.warn('Нет продуктов для этого блока, выходим из calculateDate()');
+                return;
+            }
 			console.log('Сегодняшняя дата с сервера '+todayTS);
 
 			/**
@@ -1420,7 +1423,7 @@
 			}
 
 			console.log('Выбранная дата (chooseDate) ', chooseDate);
-			if ( true === chooseDate.avalible ) {
+			if ( chooseDate && true === chooseDate.avalible ) {
 				self.choosenDate( chooseDate );
 			}
 			else {
@@ -2608,7 +2611,7 @@
 			field;
 		// end of vars
 
-		console.info('defaultValueToField');
+		console.groupCollapsed('Подстановка значений в поля defaultValueToField()');
 		for ( field in fields ) {
 			console.log('поле '+field);
 			
@@ -2627,6 +2630,7 @@
 				fieldNode.val( fields[field] );
 			}
 		}
+        console.groupEnd();
 	};
 	defaultValueToField($('#jsOrderForm').data('value'));
 
