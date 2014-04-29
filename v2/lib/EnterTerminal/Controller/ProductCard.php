@@ -5,7 +5,6 @@ namespace EnterTerminal\Controller;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
-use EnterSite\MustacheRendererTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
@@ -13,14 +12,14 @@ use EnterSite\Model;
 use EnterTerminal\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, CurlClientTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait;
+    use ConfigTrait, CurlClientTrait {
+        ConfigTrait::getConfig insteadof CurlClientTrait;
     }
 
     /**
      * @param Http\Request $request
      * @throws \Exception
-     * @return Http\Response
+     * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
@@ -29,6 +28,9 @@ class ProductCard {
 
         // ид региона
         $regionId = trim((string)$request->query['regionId']);
+        if (!$regionId) {
+            throw new \Exception('Не указан параметр regionId');
+        }
 
         // ид товара
         $productId = trim((string)$request->query['productId']);
@@ -145,7 +147,6 @@ class ProductCard {
         $page->region = $region;
         $page->product = $product;
         $page->reviews = $reviews;
-        //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         return new Http\JsonResponse($page);
     }
