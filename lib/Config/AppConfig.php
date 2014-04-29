@@ -513,6 +513,11 @@ class AppConfig {
     /** @var boolean */
     public $preview = null;
 
+    /** @var array */
+    public $svyaznoyClub = [
+        'cookieLifetime' => null,
+    ];
+
     public function __construct() {
         //$this->vkontakteOauth = new OAuth\VkontakteConfig();
         //$this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
