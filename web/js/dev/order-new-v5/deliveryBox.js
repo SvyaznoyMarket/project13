@@ -58,7 +58,7 @@
 			// Продукты в блоке
 			self.products = [];
 			// Общая стоимость товаров в блоке
-			self.fullPrice = 0;
+			self.fullPrice = ko.observable(0);
 			// Полная стоимость блока с учетом доставки
 			self.totalBlockSum = 0;
 			// Метод доставки
@@ -83,7 +83,12 @@
 			self.hasPointDelivery = OrderModel.orderDictionary.hasPointDelivery(state);
 
 			// Стоимость заказа равна или больше напр. 100 тыс. руб.
-			self.isExpensiveOrder = false;
+			self.isExpensiveOrder = ko.computed(function(){
+                if ( prepayment.enabled ) {
+                    // отображение/скрытие блока предоплаты
+                    return prepayment.priceLimit <= (parseInt(self.fullPrice(), 10) + parseInt(self.deliveryPrice, 10)) ? true : false;
+                } else return false;
+            });
 
 			// Есть ли в заказе товар, требующий предоплату (шильдик предоплата)
 			self.hasProductWithPrepayment = false;
@@ -396,7 +401,7 @@
 					deletedBlock = OrderModel.removeDeliveryBox(token); // удалит по токену нужный
 
 					// пересчитываем и обновляем общую сумму всех блоков
-					nowTotalSum = OrderModel.totalSum() - deletedBlock.fullPrice - choosenBlock.deliveryPrice;
+					nowTotalSum = OrderModel.totalSum() - deletedBlock.fullPrice() - choosenBlock.deliveryPrice;
 					OrderModel.totalSum(nowTotalSum);
 
 					choosenBlock.addProductGroup( tempProductArray ); //массив на вход нужен
@@ -425,6 +430,14 @@
 
 				return;
 			}
+
+/*            if (product.stock == 9223372036854776000 && self.token != 'standart_furniture_1') {
+                console.log('Есть продукт от поставщика, необходимо добавить в другой блок доставки: ', product);
+                token = self.state+'_'+'1';
+                tempProductArray.push(product);
+                if (!OrderModel.hasDeliveryBox(token)) new DeliveryBox(tempProductArray, self.state, '1');
+                return;
+            }*/
 
 			// Определение стоимости доставки. Если стоимость доставки данного товара выше стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
 			productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
@@ -458,14 +471,10 @@
 			tmpProduct.deliveries[self.state] = product.deliveries[self.state];
 
 			// Добавляем стоимость продукта к общей стоимости блока доставки
-			self.fullPrice = ENTER.utils.numMethods.sumDecimal(tmpProduct.price, self.fullPrice);
+			self.fullPrice(ENTER.utils.numMethods.sumDecimal(tmpProduct.price, self.fullPrice()));
 
 			self.products.push(tmpProduct);
 
-			if ( prepayment.enabled ) {
-				// отображение/скрытие блока предоплаты
-				self.isExpensiveOrder = (prepayment.priceLimit <= (parseInt(self.fullPrice, 10) + parseInt(self.deliveryPrice, 10))) ? true : false;
-			}
 		};
 
 		/**
@@ -505,7 +514,7 @@
 				nowTotalSum = OrderModel.totalSum();
 			// end of vars
 
-			self.totalBlockSum = ENTER.utils.numMethods.sumDecimal(self.fullPrice, self.deliveryPrice);
+			self.totalBlockSum = ENTER.utils.numMethods.sumDecimal(self.fullPrice(), self.deliveryPrice);
 			nowTotalSum = ENTER.utils.numMethods.sumDecimal(self.totalBlockSum, nowTotalSum);
 			OrderModel.totalSum(nowTotalSum);
 
@@ -718,7 +727,7 @@
                     if (tempDate == currFirstDate) {
                         arr.splice(index, 1);
                         previousValue.push(currentValue);
-                        self.fullPrice = ENTER.utils.numMethods.sumDecimal(self.fullPrice, -currentValue.price);
+                        self.fullPrice(ENTER.utils.numMethods.sumDecimal(self.fullPrice(), -currentValue.price));
                     }
                     return previousValue;
                 },[]);
