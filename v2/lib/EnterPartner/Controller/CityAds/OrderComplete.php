@@ -10,8 +10,7 @@ use Enter\Http;
 
 class OrderComplete {
     /*
-    use ConfigTrait;
-    use MustacheRendererTrait {
+    use ConfigTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof MustacheRendererTrait;
     }
     */

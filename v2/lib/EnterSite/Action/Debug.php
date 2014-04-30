@@ -12,8 +12,7 @@ use EnterSite\ViewHelperTrait;
 use EnterSite\Model\Page\Debug as Page;
 
 class Debug {
-    use ConfigTrait;
-    use LoggerTrait, MustacheRendererTrait, SessionTrait {
+    use ConfigTrait, LoggerTrait, MustacheRendererTrait, SessionTrait {
         ConfigTrait::getConfig insteadof LoggerTrait, SessionTrait, MustacheRendererTrait;
         LoggerTrait::getLogger insteadof SessionTrait;
     }

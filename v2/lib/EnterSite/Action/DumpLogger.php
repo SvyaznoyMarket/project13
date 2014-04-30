@@ -6,8 +6,7 @@ use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 
 class DumpLogger {
-    use ConfigTrait;
-    use LoggerTrait {
+    use ConfigTrait, LoggerTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
 

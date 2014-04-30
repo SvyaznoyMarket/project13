@@ -121,7 +121,9 @@
                             <!--/ Кнопка купить -->
                         </div>
 
-                        <div class="btnBuyOneClick"><a class="btnBuyOneClick_link" href="">Купить быстро в 1 клик</a></div>
+                        {{#product.cartQuickButton}}
+                            {{>partial/cart/quickButton}}
+                        {{/product.cartQuickButton}}
                     </div>
                 </div>
                 <!--/ Выбор варианта покупки, каунтер -->

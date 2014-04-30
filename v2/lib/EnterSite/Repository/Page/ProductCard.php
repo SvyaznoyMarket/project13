@@ -35,6 +35,7 @@ class ProductCard {
         $templateDir = $config->mustacheRenderer->templateDir;
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $cartProductSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
+        $cartProductQuickButtonRepository = new Repository\Partial\Cart\ProductQuickButton();
         $productCardRepository = new Repository\Partial\ProductCard();
         $ratingRepository = new Repository\Partial\Rating();
         $productSliderRepository = new Repository\Partial\ProductSlider();
@@ -63,6 +64,7 @@ class ProductCard {
         $page->content->product->shownOldPrice = $productModel->oldPrice ? number_format((float)$productModel->oldPrice, 0, ',', ' ') : null;
         $page->content->product->cartButton = $cartProductButtonRepository->getObject($productModel);
         $page->content->product->cartSpinner = $cartProductSpinnerRepository->getObject($productModel);
+        $page->content->product->cartQuickButton = $cartProductQuickButtonRepository->getObject($productModel);
 
         // доставка товара
         if ((bool)$productModel->nearestDeliveries) {

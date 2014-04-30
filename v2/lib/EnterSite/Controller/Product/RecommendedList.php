@@ -13,8 +13,7 @@ use EnterSite\Model;
 use EnterSite\Model\Page\Product\RecommendedList as Page;
 
 class RecommendedList {
-    use ConfigTrait;
-    use LoggerTrait, CurlClientTrait, MustacheRendererTrait {
+    use ConfigTrait, LoggerTrait, CurlClientTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, MustacheRendererTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait;
     }

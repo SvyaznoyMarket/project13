@@ -5,8 +5,7 @@ namespace EnterSite;
 use Enter\Curl;
 
 trait CurlClientTrait {
-    use ConfigTrait;
-    use LoggerTrait {
+    use ConfigTrait, LoggerTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
 

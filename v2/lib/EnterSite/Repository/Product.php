@@ -10,8 +10,7 @@ use EnterSite\LoggerTrait;
 use EnterSite\Model;
 
 class Product {
-    use ConfigTrait;
-    use LoggerTrait {
+    use ConfigTrait, LoggerTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
 

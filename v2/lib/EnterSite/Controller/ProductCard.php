@@ -13,8 +13,7 @@ use EnterSite\Model;
 use EnterSite\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait;
-    use CurlClientTrait, MustacheRendererTrait {
+    use ConfigTrait, CurlClientTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait;
     }
 

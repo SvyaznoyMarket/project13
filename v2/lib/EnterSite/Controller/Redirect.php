@@ -7,8 +7,7 @@ use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 
 class Redirect {
-    use ConfigTrait;
-    use LoggerTrait {
+    use ConfigTrait, LoggerTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
 

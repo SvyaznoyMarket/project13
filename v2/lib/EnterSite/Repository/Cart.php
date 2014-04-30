@@ -10,6 +10,28 @@ use EnterSite\Model;
 class Cart {
     use ConfigTrait;
 
+    public function getProductObjectByHttpRequest(Http\Request $request) {
+        $cartProduct = null;
+
+        $productData = [
+            'id'       => null,
+            'quantity' => null,
+        ];
+        if (!empty($request->query['product']['id'])) {
+            $productData = array_merge($productData, $request->query['product']);
+        } else if (!empty($request->data['product']['id'])) {
+            $productData = array_merge($productData, $request->data['product']);
+        }
+
+        if ($productData['id']) {
+            $cartProduct = new Model\Cart\Product();
+            $cartProduct->id = (string)$productData['id'];
+            $cartProduct->quantity = (int)$productData['quantity'];
+        }
+
+        return $cartProduct;
+    }
+
     /**
      * @param Http\Session $session
      * @return Model\Cart

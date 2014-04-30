@@ -10,8 +10,7 @@ use EnterSite\SessionTrait;
 use EnterSite\Repository;
 
 class Clear {
-    use ConfigTrait;
-    use LoggerTrait, CurlClientTrait, SessionTrait {
+    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait {
         ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
     }

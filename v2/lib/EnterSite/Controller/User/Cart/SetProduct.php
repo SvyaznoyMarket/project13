@@ -13,8 +13,7 @@ use EnterSite\Repository;
 use EnterSite\Model\Page\User\Cart\SetProduct as Page;
 
 class SetProduct {
-    use ConfigTrait;
-    use LoggerTrait, CurlClientTrait, SessionTrait {
+    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait {
         ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
     }
@@ -30,18 +29,11 @@ class SetProduct {
         $session = $this->getSession();
         $cartRepository = new Repository\Cart();
 
-        $productData = array_merge([
-            'id'       => null,
-            'quantity' => null,
-        ], (array)$request->data['product']);
-
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);
 
-        // создание товара для корзины
-        $cartProduct = new Model\Cart\Product();
-        $cartProduct->id = (string)$productData['id'];
-        $cartProduct->quantity = (int)$productData['quantity'];
+        // товара для корзины
+        $cartProduct = $cartRepository->getProductObjectByHttpRequest($request);
 
         // добавление товара в корзину
         $cartRepository->setProductForObject($cart, $cartProduct);
@@ -49,7 +41,7 @@ class SetProduct {
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
 
-        $productItemQuery = new Query\Product\GetItemById($productData['id'], $regionId);
+        $productItemQuery = new Query\Product\GetItemById($cartProduct->id, $regionId);
         $curl->prepare($productItemQuery);
 
         // токен пользователя
@@ -77,9 +69,9 @@ class SetProduct {
         $product = (new Repository\Product())->getObjectByQuery($productItemQuery);
         if (!$product) {
             $product = new Model\Product();
-            $product->id = $productData['id'];
+            $product->id = $cartProduct->id;
 
-            throw new \Exception(sprintf('Товар #%s не найден', $productData['id']));
+            throw new \Exception(sprintf('Товар #%s не найден', $cartProduct->id));
         }
 
         // пользователь

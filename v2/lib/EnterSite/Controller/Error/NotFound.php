@@ -10,8 +10,7 @@ use EnterSite\Model;
 //use EnterSite\Model\Page\Error\NotFound as Page;
 
 class NotFound {
-    use ConfigTrait;
-    use MustacheRendererTrait {
+    use ConfigTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof MustacheRendererTrait;
     }
 
