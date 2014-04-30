@@ -159,7 +159,7 @@ class Action {
                             'back_ref'    => $helper->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true),// обратная ссылка
                             'email'       => $userEntity ? $userEntity->getEmail() : null,
                             'card_number' => $userEntity ? $userEntity->getSclubCardnumber() : null,// карта лояльности
-                            'user_token'  => $user->getToken(),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
+                            'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
                         ],
                         function($data) use (&$result) {
                             if ((bool)$data) {

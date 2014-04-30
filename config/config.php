@@ -414,4 +414,6 @@ $c->abtest['test']       = [
 
 $c->preview = false;
 
+$c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
+
 return $c;
