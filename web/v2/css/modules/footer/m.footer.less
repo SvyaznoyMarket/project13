@@ -1,14 +1,18 @@
 @media only screen and (max-width: 900px) {
+	.footer {
+	    height: 213px;
+	    margin: -213px auto 0;
+	}
+
 	.socLink {
-	    display: block;
 	    float: none;
 	    margin: 15px auto;
 	    width: 125px;
 	}
 
 	.aboutList {
-	    display: block;
 	    text-align: center;
+	    float: none;
 
 	    &__item {
 			margin-right: 15px;
@@ -24,10 +28,20 @@
 	}
 }
 
-@media only screen and (max-width: 560px) {
+@media only screen and (max-width: 610px) {
 	.footer {
-	    height: 409px;
-	    margin: -409px auto 0;
+	    height: 628px;
+	    margin: -628px auto 0;
+	}
+
+	.aboutList {
+		width: auto;
+
+		&__item {
+			display: block;
+    		margin: 0 0 15px;
+    		text-align: center;
+		}
 	}
 
 	.appList {
@@ -38,5 +52,19 @@
     		margin: 0 0 15px;
     		text-align: center;
 		}
+	}
+
+	.publicInfoList {
+		width: auto;
+
+		&__item {
+			display: block;
+    		margin: 0 0 15px;
+    		text-align: center;
+		}
+	}
+
+	.footerCopy__link {
+		display: none;
 	}
 }
