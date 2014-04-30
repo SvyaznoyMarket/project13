@@ -48,7 +48,7 @@ class ProductCard {
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
         // запрос товара
-        $productItemQuery = new Query\Product\GetItemById($productId, $region);
+        $productItemQuery = new Query\Product\GetItemById($productId, $region->id);
         $curl->prepare($productItemQuery);
 
         $curl->execute(1, 2);

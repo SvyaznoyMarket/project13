@@ -15,14 +15,14 @@ class GetItemById extends Query {
 
     /**
      * @param $id
-     * @param Model\Region $region
+     * @param $regionId
      */
-    public function __construct($id, Model\Region $region) {
+    public function __construct($id, $regionId) {
         $this->url = new Url();
         $this->url->path = 'v2/category/get';
         $this->url->query = [
             'id'     => [$id],
-            'geo_id' => $region->id,
+            'geo_id' => $regionId,
         ];
 
         $this->init();

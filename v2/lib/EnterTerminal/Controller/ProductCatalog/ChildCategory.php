@@ -60,7 +60,7 @@ class ChildCategory {
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
         // запрос категории
-        $categoryItemQuery = new Query\Product\Category\GetItemById($categoryId, $region);
+        $categoryItemQuery = new Query\Product\Category\GetItemById($categoryId, $region->id);
         $curl->prepare($categoryItemQuery);
 
         $categoryAdminItemQuery = null;
