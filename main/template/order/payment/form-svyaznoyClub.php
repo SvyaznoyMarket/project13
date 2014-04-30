@@ -11,7 +11,7 @@ if (!$form instanceof \Payment\SvyaznoyClub\Form) {
     $form = $provider->getForm($order);
 } ?>
 
-<form class="form" method="post" action="<?= $provider->getPayUrl() ?>">
+<form class="form" method="get" action="<?= $provider->getPayUrl() ?>">
     <input type="hidden" name="ShopId" value="<?= $form->getShopId() ?>" />
     <input type="hidden" name="OrderId" value="<?= $form->getOrderId() ?>" />
     <input type="hidden" name="MaxDiscount" value="<?= $form->getMaxDiscount() ?>" />
