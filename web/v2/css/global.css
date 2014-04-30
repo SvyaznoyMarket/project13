@@ -681,6 +681,11 @@ body.noScroll {
 /* ==========================================================================
    Layout - default styles
    ========================================================================== */
+@media only screen and (max-width: 900px) {
+  .content {
+    padding-bottom: 243px;
+  }
+}
 @media only screen and (max-width: 700px) {
   /* Middle
 	-----------------------------------------------------------------------------*/
@@ -688,11 +693,11 @@ body.noScroll {
     display: block;
   }
 }
-@media only screen and (max-width: 560px) {
+@media only screen and (max-width: 610px) {
   /* Middle
 	-----------------------------------------------------------------------------*/
   .content {
-    padding-bottom: 439px;
+    padding-bottom: 658px;
   }
 }
 /* ==========================================================================
@@ -2171,10 +2176,7 @@ body.noScroll {
   padding: 15px 0 0;
 }
 .aboutList {
-  display: inline-block;
-  vertical-align: top;
-  *display: inline;
-  zoom: 1;
+  float: left;
   margin: 6px 0 0;
 }
 .aboutList__item {
@@ -2188,10 +2190,6 @@ body.noScroll {
   float: right;
   font-size: 0;
   margin: 0 0 15px;
-  display: inline-block;
-  vertical-align: top;
-  *display: inline;
-  zoom: 1;
 }
 .socLink__item {
   display: inline-block;
@@ -2262,15 +2260,18 @@ body.noScroll {
   color: #ffffff;
 }
 @media only screen and (max-width: 900px) {
+  .footer {
+    height: 213px;
+    margin: -213px auto 0;
+  }
   .socLink {
-    display: block;
     float: none;
     margin: 15px auto;
     width: 125px;
   }
   .aboutList {
-    display: block;
     text-align: center;
+    float: none;
   }
   .aboutList__item {
     margin-right: 15px;
@@ -2282,10 +2283,18 @@ body.noScroll {
     margin-right: 15px;
   }
 }
-@media only screen and (max-width: 560px) {
+@media only screen and (max-width: 610px) {
   .footer {
-    height: 409px;
-    margin: -409px auto 0;
+    height: 628px;
+    margin: -628px auto 0;
+  }
+  .aboutList {
+    width: auto;
+  }
+  .aboutList__item {
+    display: block;
+    margin: 0 0 15px;
+    text-align: center;
   }
   .appList {
     width: auto;
@@ -2294,6 +2303,17 @@ body.noScroll {
     float: none;
     margin: 0 0 15px;
     text-align: center;
+  }
+  .publicInfoList {
+    width: auto;
+  }
+  .publicInfoList__item {
+    display: block;
+    margin: 0 0 15px;
+    text-align: center;
+  }
+  .footerCopy__link {
+    display: none;
   }
 }
 /* ==========================================================================
