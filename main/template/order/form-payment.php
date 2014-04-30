@@ -8,7 +8,9 @@
  */
 ?>
 
-<? if ($provider instanceof \Payment\Psb\Provider): ?>
+<? if ($provider instanceof \Payment\SvyaznoyClub\Provider): ?>
+    <?= $page->render('order/payment/form-svyaznoyClub', array('provider' => $provider, 'order' => $order, 'form' => $form)) ?>
+<? elseif ($provider instanceof \Payment\Psb\Provider): ?>
     <?= $page->render('order/payment/form-psb', array('provider' => $provider, 'order' => $order, 'form' => $form)) ?>
 <? elseif ($provider instanceof \Payment\PsbInvoice\Provider): ?>
     <?= $page->render('order/payment/form-psbInvoice', array('provider' => $provider, 'order' => $order, 'form' => $form)) ?>

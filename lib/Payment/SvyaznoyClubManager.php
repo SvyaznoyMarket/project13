@@ -4,10 +4,11 @@ namespace Payment;
 
 class SvyaznoyClubManager {
     private $cookieLifetime;
-    private $params4get = ['UserTicket'];
+    private $params4get = [];
 
     public function __construct() {
         $this->cookieLifetime = \App::config()->svyaznoyClub['cookieLifetime'];
+        $this->params4get[] = \App::config()->svyaznoyClub['userTicket']['cookieName'];
     }
 
     /**
