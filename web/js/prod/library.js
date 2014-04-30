@@ -924,6 +924,7 @@ var DirectCredit = {
 				PubSub.publish( 'bankAnswered', null ); // hack
 				return;
 			}
+			item.price = item.price/item.count;
 			item.count = data.q;
 		} else {
 			var key = self.findProductKey( self.basketPull, data.id );
