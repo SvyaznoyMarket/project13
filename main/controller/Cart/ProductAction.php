@@ -253,6 +253,10 @@ class ProductAction {
             return new \Http\JsonResponse($responseData);
         }
 
+        if (!$request->isXmlHttpRequest()) {
+            return new \Http\RedirectResponse(\App::router()->generate('cart'));
+        }
+
         return $response;
     }
 
