@@ -244,6 +244,12 @@ class ProductCard {
         if ((bool)$productModel->model && (bool)$productModel->model->properties) {
             $page->content->product->hasModel = true;
 
+            // значения свойств, индексированные по ид
+            $propertyValuesById = [];
+            foreach ($productModel->properties as $propertyModel) {
+                $propertyValuesById[$propertyModel->id] = $propertyModel->value;
+            }
+
             foreach ([
                  0 => [0, 1], // первое свойство модели
                  1 => [1, count($productModel->properties) - 1] // остальные свойства модели (будут скрыты по умолчанию)
@@ -257,7 +263,7 @@ class ProductCard {
                     $property->isImage = $propertyModel->isImage;
                     foreach ($propertyModel->options as $optionModel) {
                         $option = new Page\Content\Product\ModelBlock\Property\Option();
-                        $option->isActive = false; // FIXME
+                        $option->isActive = isset($propertyValuesById[$propertyModel->id]) && ($propertyValuesById[$propertyModel->id] == $optionModel->value);
                         $option->url = $optionModel->product ? $optionModel->product->link : null;
                         $option->shownValue = $optionModel->value;
                         $option->unit = $propertyModel->unit;
