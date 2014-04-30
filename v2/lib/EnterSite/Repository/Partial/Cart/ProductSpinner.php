@@ -10,11 +10,13 @@ class ProductSpinner {
     /**
      * @param Model\Product $product
      * @param Model\Cart\Product|null $cartProduct
+     * @param bool $isDisabled
      * @return Partial\Cart\ProductSpinner
      */
     public function getObject(
         Model\Product $product,
-        Model\Cart\Product $cartProduct = null
+        Model\Cart\Product $cartProduct = null,
+        $isDisabled = false
     ) {
         $spinner = new Partial\Cart\ProductSpinner();
 
@@ -23,9 +25,14 @@ class ProductSpinner {
         $spinner->buttonId = Repository\Partial\Cart\ProductButton::getId($product->id);
         $spinner->value = 1;
 
+        // если товар есть в корзине
         if ($cartProduct) {
-            $spinner->class = ' mDisabled';
             $spinner->value = $cartProduct->quantity;
+        }
+
+        // если спеннер заблокирован
+        if ($isDisabled) {
+            $spinner->class = ' mDisabled';
             $spinner->isDisabled = true;
         }
 

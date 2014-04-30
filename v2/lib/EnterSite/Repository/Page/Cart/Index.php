@@ -24,7 +24,7 @@ class Index {
                 continue;
             }
 
-            $productCard = $productCardRepository->getObject($cartProduct, $product, $productSpinnerRepository->getObject($product, $cartProduct));
+            $productCard = $productCardRepository->getObject($cartProduct, $product, $productSpinnerRepository->getObject($product, $cartProduct, false));
             $page->content->productBlock->products[] = $productCard;
         }
 
