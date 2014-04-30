@@ -199,6 +199,8 @@
             <div class="tabContentInner js-tab">
                 <!-- Таб - Подробнее -->
                 <div class="tabContent js-cont">
+                    <div class="tabContent_title">Подробности</div>
+
                     <p class="specificationsText">{{product.description}}</p>
 
                     <div class="specificationsListCol">
@@ -222,48 +224,53 @@
                 <!-- Таб - Отзывы -->
                 {{#product.reviewBlock}}
                 <div class="tabContent js-cont">
-                {{#product.reviewBlock.reviews}}
-                    <div class="reviewsBox clearfix">
-                        <div class="reviewsBox__left">
-                            <div class="reviews">
-                                {{>partial/rating/star-list}}
+                    <div class="tabContent_title">Отзывы</div>
+
+                    {{#product.reviewBlock.reviews}}
+                        <div class="reviewsBox clearfix">
+                            <div class="reviewsBox__left">
+                                <div class="reviews">
+                                    {{>partial/rating/star-list}}
+                                </div>
+
+                                <div class="reviewsName">{{author}}</div>
+
+                                <div class="reviewsDate">{{createdAt}}</div>
                             </div>
 
-                            <div class="reviewsName">{{author}}</div>
+                            <div class="reviewsBox__right">
+                                <div class="reviewsText">
+                                    <span class="reviewsText__mark">«</span>
+                                    <p class="reviewsText__par">
+                                        {{extract}}
+                                    </p>
+                                </div>
 
-                            <div class="reviewsDate">{{createdAt}}</div>
+                                <div class="reviewsText">
+                                    <span class="reviewsText__mark">+</span>
+                                    <p class="reviewsText__par">
+                                        {{pros}}
+                                    </p>
+                                </div>
+
+                                <div class="reviewsText">
+                                    <span class="reviewsText__mark">−</span>
+                                    <p class="reviewsText__par">
+                                        {{cons}}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="reviewsBox__right">
-                            <div class="reviewsText">
-                                <span class="reviewsText__mark">«</span>
-                                <p class="reviewsText__par">
-                                    {{extract}}
-                                </p>
-                            </div>
-
-                            <div class="reviewsText">
-                                <span class="reviewsText__mark">+</span>
-                                <p class="reviewsText__par">
-                                    {{pros}}
-                                </p>
-                            </div>
-
-                            <div class="reviewsText">
-                                <span class="reviewsText__mark">−</span>
-                                <p class="reviewsText__par">
-                                    {{cons}}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                {{/product.reviewBlock.reviews}}
+                    {{/product.reviewBlock.reviews}}
                 </div>
                 {{/product.reviewBlock}}
                 <!--/ Таб - Отзывы -->
 
                 <!-- Таб - Аксессуары -->
                 <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}}>
+
+                    <div class="tabContent_title">Аксессуары</div>
+
                     {{#product.accessorySlider}}
                         {{>partial/product-slider/default}}
                     {{/product.accessorySlider}}
@@ -272,6 +279,9 @@
             
                 <!-- Таб - С этим товаром покупают -->
                 <div class="tabContent js-container js-cont" style="display: none;">
+
+                    <div class="tabContent_title">С этим товаром покупают</div>
+
                     {{#product.alsoBoughtSlider}}
                         {{>partial/product-slider/default}}
                     {{/product.alsoBoughtSlider}}

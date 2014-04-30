@@ -1859,6 +1859,9 @@ body.noScroll {
   vertical-align: top;
   min-height: 350px;
 }
+.tabContent_title {
+  display: none;
+}
 .tabTitle {
   border-bottom: 1px solid #b1b1b1;
   border-top: 1px solid #b1b1b1;
@@ -1949,6 +1952,35 @@ body.noScroll {
   }
   .reviewsBox__right {
     padding: 0;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .productDescInfo {
+    border-bottom: 1px solid #d8d8d8;
+  }
+  .productDescTab {
+    display: none;
+  }
+  .tabContentWrap {
+    height: auto !important;
+    overflow: visible;
+  }
+  .tabContentInner {
+    width: 100% !important;
+    left: 0 !important;
+  }
+  .tabContent {
+    display: block;
+  }
+  .tabContent_title {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 30px 0 20px;
+  }
+  .specificationsList {
+    display: block;
+    width: 100%;
   }
 }
 /* ==========================================================================
