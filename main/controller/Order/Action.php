@@ -82,6 +82,7 @@ class Action {
             throw new \Exception(sprintf('Не найден метод оплаты для заказа #%s', $order->getId()));
         }
 
+        $cookie = null;
         $paymentProvider = null;
         $creditData = [];
         if (1 == count($orders)) {
@@ -187,8 +188,18 @@ class Action {
                         $paymentForm->fromArray($result['detail']);
 
                     // оплаты баллами Связного-Клуба
-                    } else if (14 == $paymentForm) {
-                        $paymentForm = $result['detail'];
+                    } else if (14 == $paymentMethod->getId()) {
+                        $paymentForm = new \Payment\SvyaznoyClub\Form();
+                        $paymentForm->fromArray($result['detail']);
+                        $paymentProvider = new \Payment\SvyaznoyClub\Provider($paymentForm);
+
+                        // если пришел UserTicket, то пишем в куку
+                        if ($paymentForm->getUserTicket()) {
+                            $cookie = new \Http\Cookie(
+                                \App::config()->svyaznoyClub['userTicket']['cookieName'],
+                                $paymentForm->getUserTicket(), time() + \App::config()->svyaznoyClub['cookieLifetime'], '/', null, false, true
+                            );
+                        }
                     }
 
                     // перезаписываем PayUrl значением пришедшим с ядра
@@ -222,7 +233,13 @@ class Action {
             $page->setParam('isOrderAnalytics', false);
         }
 
-        return new \Http\Response($page->show());
+        $response = new \Http\Response($page->show());
+
+        if ($cookie) {
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
     }
 
     /**

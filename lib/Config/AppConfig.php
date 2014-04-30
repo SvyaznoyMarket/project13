@@ -516,6 +516,9 @@ class AppConfig {
     /** @var array */
     public $svyaznoyClub = [
         'cookieLifetime' => null,
+        'userTicket' => [
+            'cookieName' => null,
+        ]
     ];
 
     public function __construct() {
