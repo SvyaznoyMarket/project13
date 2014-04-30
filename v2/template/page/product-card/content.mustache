@@ -3,17 +3,17 @@
         <!-- Название товара, артикул, отзывы -->
         <div class="productDescHead">
 
-            <h1 class="productDescHead__name">
+            <h1 class="productDescHead_name">
                 {{#product.namePrefix}}{{product.namePrefix}}<br />{{/product.namePrefix}}
                 {{product.name}}
             </h1>
 
             {{#product.article}}
-                <div class="productDescHead__article">Артикул: {{product.article}}</div>
+                <div class="productDescHead_article">Артикул: {{product.article}}</div>
             {{/product.article}}
 
             {{#product.rating}}
-                <div class="productDescHead__reviews">
+                <div class="productDescHead_reviews">
                     {{#product.rating}}
                         {{>partial/rating/star-list}}
                     {{/product.rating}}
@@ -62,96 +62,99 @@
                 </div>
                 {{/product.hasModel}}
 
-                <!-- Выбор варианта покупки, каунтер -->
-                <div class="buyInfoWrap clearfix">
-                    <div class="buyInfo">
-                        <div class="buyInfoPrice">
-                            <!-- Купить по полной цене -->
-                            <div class="buyInfoPrice_item">
+                <div class="buyWidth">
+                    <!-- Выбор варианта покупки, каунтер -->
+                    <div class="buyInfoWrap clearfix">
+                        <div class="buyInfo">
+                            <div class="buyInfoPrice">
+                                <!-- Купить по полной цене -->
+                                <div class="buyInfoPrice_item">
+                                    {{#product.credit}}
+                                    <input class="customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
+
+                                    <label class="customLabel customLabel-bigRadio" for="buyprice">
+                                        {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
+                                        <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
+                                    </label>
+                                    {{/product.credit}}
+
+                                    {{^product.credit}}
+                                        {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
+                                        <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
+                                    {{/product.credit}}
+                                </div>
+                                <!--/ Купить по полной цене -->
+
                                 {{#product.credit}}
-                                <input class="customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
+                                <!-- Купить в кредит -->
+                                <div class="js-creditPayment buyInfoPrice_item buyInfoPrice_item-credit" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
+                                    <input class="customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
 
-                                <label class="customLabel customLabel-bigRadio" for="buyprice">
-                                    {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
-                                    <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
-                                </label>
-                                {{/product.credit}}
+                                    <label class="{{product.credit.widgetId}} customLabel customLabel-bigRadio" for="creditinput">
+                                        <span class="creditPrice">В кредит</span>
+                                    </label>
 
-                                {{^product.credit}}
-                                    {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
-                                    <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
+                                    <script id="tpl-creditPayment" type="text/html">
+                                    {{={{{ }}}=}}
+                                        <span class="creditPrice">В кредит от <strong>{{shownPrice}}</strong> <span class="rubl">p</span> в месяц</span>
+                                    {{{={{ }}=}}}
+                                    </script>
+                                </div>
+                                <!--/ Купить в кредит -->
                                 {{/product.credit}}
                             </div>
-                            <!--/ Купить по полной цене -->
 
-                            {{#product.credit}}
-                            <!-- Купить в кредит -->
-                            <div class="js-creditPayment buyInfoPrice_item buyInfoPrice_item-credit" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
-                                <input class="customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
+                            <!-- Купить дешевле -->
+                            <!--<div class="buyInfoLess"><a class="buyInfoLess__link" href="">Хочешь дешевле?</a></div>-->
+                            <!--/ Купить дешевле -->
 
-                                <label class="{{product.credit.widgetId}} customLabel customLabel-bigRadio" for="creditinput">
-                                    <span class="creditPrice">В кредит</span>
-                                </label>
+                            <div class="buyInfoBuy">
+                                <!-- Каунтер -->
+                                {{#product.cartSpinner}}
+                                    {{>partial/cart/spinner}}
+                                {{/product.cartSpinner}}
+                                <!--/ Каунтер -->
 
-                                <script id="tpl-creditPayment" type="text/html">
-                                {{={{{ }}}=}}
-                                    <span class="creditPrice">В кредит от <strong>{{shownPrice}}</strong> <span class="rubl">p</span> в месяц</span>
-                                {{{={{ }}=}}}
-                                </script>
+                                <!-- Кнопка купить -->
+                                {{#product.cartButton}}
+                                    {{>partial/cart/button}}
+                                {{/product.cartButton}}
+                                <!--/ Кнопка купить -->
                             </div>
-                            <!--/ Купить в кредит -->
-                            {{/product.credit}}
+
+                            {{#product.cartQuickButton}}
+                                {{>partial/cart/quickButton}}
+                            {{/product.cartQuickButton}}
                         </div>
-
-                        <!-- Купить дешевле -->
-                        <!--<div class="buyInfoLess"><a class="buyInfoLess__link" href="">Хочешь дешевле?</a></div>-->
-                        <!--/ Купить дешевле -->
-
-                        <div class="buyInfoBuy">
-                            <!-- Каунтер -->
-                            {{#product.cartSpinner}}
-                                {{>partial/cart/spinner}}
-                            {{/product.cartSpinner}}
-                            <!--/ Каунтер -->
-
-                            <!-- Кнопка купить -->
-                            {{#product.cartButton}}
-                                {{>partial/cart/button}}
-                            {{/product.cartButton}}
-                            <!--/ Кнопка купить -->
-                        </div>
-
-                        {{#product.cartQuickButton}}
-                            {{>partial/cart/quickButton}}
-                        {{/product.cartQuickButton}}
                     </div>
+                    <!--/ Выбор варианта покупки, каунтер -->
+
+                    <!-- Информация о доставке -->
+                    {{#product.deliveryBlock}}
+                        <div class="deliveryInfo">
+                            <ul class="deliveryList">
+                                {{#deliveries}}
+                                    <li class="deliveryList_item deliveryList_item-{{token}}">
+                                        {{#name}}
+                                            {{name}} {{#priceText}}<strong>{{priceText}}</strong>{{/priceText}}
+                                        {{/name}}
+                                        <span class="{{#name}}descText{{/name}}{{^name}}descTextDotted{{/name}}">{{deliveredAtText}}
+                                        </span>
+
+                                        {{#hasShops}}
+                                            <ul class="addressShopsList">
+                                                {{#shops}}
+                                                    <li class="addressShopsList_item"><a class="" href="{{url}}">{{name}}</a></li>
+                                                {{/shops}}
+                                            </ul>
+                                        {{/hasShops}}
+                                    </li>
+                                {{/deliveries}}
+                            </ul>
+                        </div>
+                    {{/product.deliveryBlock}}
+                    <!--/ Информация о доставке -->
                 </div>
-                <!--/ Выбор варианта покупки, каунтер -->
-
-                <!-- Информация о доставке -->
-                {{#product.deliveryBlock}}
-                    <div class="deliveryInfo">
-                        <ul class="deliveryList">
-                            {{#deliveries}}
-                                <li class="deliveryList_item deliveryList_item-{{token}}">
-                                    {{#name}}
-                                        {{name}} {{#priceText}}<strong>{{priceText}}</strong>{{/priceText}}
-                                    {{/name}}
-                                    <span class="{{#name}}descText{{/name}}{{^name}}descTextDotted{{/name}}">{{deliveredAtText}}</span>
-
-                                    {{#hasShops}}
-                                        <ul class="addressShopsList">
-                                            {{#shops}}
-                                                <li class="addressShopsList_item"><a class="" href="{{url}}">{{name}}</a></li>
-                                            {{/shops}}
-                                        </ul>
-                                    {{/hasShops}}
-                                </li>
-                            {{/deliveries}}
-                        </ul>
-                    </div>
-                {{/product.deliveryBlock}}
-                <!--/ Информация о доставке -->
             </div>
             <!--/ Информация о покупке -->
         </div>
