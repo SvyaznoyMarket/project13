@@ -2,107 +2,40 @@
     <div class="contentBox960">
         <div class="pageTitle">Корзина</div>
 
-    	<!-- товар в корзине -->
-    	<div class="cartItem clearfix">
-    		<a href="" class="cartItem_col cartItem_col-img">
-                <img class="img" src="http://fs01.enter.ru/1/1/120/bb/277081.jpg" />
-            </a>
-
-            <div class="cartItem_col cartItem_col-desc">
-                <a class="name" href="">
-                    <span class="name_cat">Сушилка для овощей и фруктов</span>
-                    Для овощей и фруктов Alcatel OT8020D черный
+        {{#productBlock}}
+            {{#products}}
+            <!-- товар в корзине -->
+            <div class="cartItem clearfix">
+                <a href="{{url}}" class="cartItem_col cartItem_col-img">
+                    <img class="img" src="{{image}}" alt="{{&name}}" />
                 </a>
 
-                <div class="price">3 232 <span class="rubl">p</span></div>
-            </div>
+                <div class="cartItem_col cartItem_col-desc">
+                    <a class="name" href="{{url}}">
+                        {{#namePrefix}}<span class="name_cat">{{namePrefix}}</span>{{/namePrefix}}
+                        {{name}}
+                    </a>
 
-    		<div class="cartItem_col cartItem_col-price">
-                <div class="priceNum">2 232 <span class="rubl">p</span></div><!--/ дубль для мобилки -->
-
-				<div class="price">2 232 <span class="rubl">p</span></div>
-
-                <div class="change">
-    				<div class="counter">
-                        <button class="js-buySpinner-dec counter__btn counter__btn-plus">-</button>
-                        <input type="text" value="1" class="js-buySpinner-value counter__input">
-                        <button class="js-buySpinner-inc counter__btn counter__btn-minus">+</button>
-                        <span class="counter__num">шт.</span>
-                    </div>
-
-                    <a class="delete" href="">Удалить</a>
+                    <div class="price">{{shownSum}} <span class="rubl">p</span></div>
                 </div>
-    		</div>
-    	</div>
-    	<!--/ товар в корзине -->
 
-    	<!-- товар в корзине -->
-        <div class="cartItem clearfix">
-            <a href="" class="cartItem_col cartItem_col-img">
-                <img class="img" src="http://fs01.enter.ru/1/1/120/bb/277081.jpg" />
-            </a>
+                <div class="cartItem_col cartItem_col-price">
+                    <div class="priceNum">{{shownPrice}} <span class="rubl">p</span></div><!--/ дубль для мобилки -->
 
-            <div class="cartItem_col cartItem_col-desc">
-                <a class="name" href="">
-                    <span class="name_cat">Сушилка для овощей и фруктов</span>
-                    Для овощей и фруктов Alcatel OT8020D черный
-                </a>
+                    <div class="price">{{shownPrice}} <span class="rubl">p</span></div>
 
-                <div class="price">3 232 <span class="rubl">p</span></div>
-            </div>
+                    <div class="change">
+                        {{#cartSpinner}}
+                            {{>partial/cart/spinner}}
+                        {{/cartSpinner}}
 
-            <div class="cartItem_col cartItem_col-price">
-                <div class="priceNum">2 232 <span class="rubl">p</span></div><!--/ дубль для мобилки -->
-
-                <div class="price">2 232 <span class="rubl">p</span></div>
-
-                <div class="change">
-                    <div class="counter">
-                        <button class="js-buySpinner-dec counter__btn counter__btn-plus">-</button>
-                        <input type="text" value="1" class="js-buySpinner-value counter__input">
-                        <button class="js-buySpinner-inc counter__btn counter__btn-minus">+</button>
-                        <span class="counter__num">шт.</span>
+                        <a class="delete" href="">Удалить</a>
                     </div>
-
-                    <a class="delete" href="">Удалить</a>
                 </div>
             </div>
-        </div>
-        <!--/ товар в корзине -->
-
-    	<!-- товар в корзине -->
-        <div class="cartItem clearfix">
-            <a href="" class="cartItem_col cartItem_col-img">
-                <img class="img" src="http://fs01.enter.ru/1/1/120/bb/277081.jpg" />
-            </a>
-
-            <div class="cartItem_col cartItem_col-desc">
-                <a class="name" href="">
-                    <span class="name_cat">Сушилка для овощей и фруктов</span>
-                    Для овощей и фруктов Alcatel OT8020D черный
-                </a>
-
-                <div class="price">3 232 <span class="rubl">p</span></div>
-            </div>
-
-            <div class="cartItem_col cartItem_col-price">
-                <div class="priceNum">2 232 <span class="rubl">p</span></div><!--/ дубль для мобилки -->
-
-                <div class="price">2 232 <span class="rubl">p</span></div>
-
-                <div class="change">
-                    <div class="counter">
-                        <button class="js-buySpinner-dec counter__btn counter__btn-plus">-</button>
-                        <input type="text" value="1" class="js-buySpinner-value counter__input">
-                        <button class="js-buySpinner-inc counter__btn counter__btn-minus">+</button>
-                        <span class="counter__num">шт.</span>
-                    </div>
-
-                    <a class="delete" href="">Удалить</a>
-                </div>
-            </div>
-        </div>
-        <!--/ товар в корзине -->
+            <!--/ товар в корзине -->
+            {{/products}}
+        {{/productBlock}}
 
         <!-- итоговая стоимость заказа/купить в кредит -->
         <div class="cartLine clearfix">
@@ -126,7 +59,9 @@
         <!--/ итоговая стоимость заказа/купить в кредит -->
 
         <!-- оформить заказ -->
-        <div class="cartBuy"><a class="btnStyleOrange cartBuy_btn" href="">Оформление заказа</a></div>
+        <div class="cartBuy">
+            <a class="btnStyleOrange cartBuy_btn" href="">Оформление заказа</a>
+        </div>
         <!--/ оформить заказ -->
     </div>
 </div>
