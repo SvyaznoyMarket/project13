@@ -98,6 +98,8 @@ $(function(){
 				tabList.stop(true, true).animate({'left' : -posLeft});
 				tabWrap.stop(true, true).animate({'height' : tabId.height() });
 			};
+
+			
 		//end of function
 	
 	$(window).on('load', addData);
