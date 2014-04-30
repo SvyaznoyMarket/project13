@@ -260,6 +260,7 @@ class ProductCard {
                         $option->isActive = false; // FIXME
                         $option->url = $optionModel->product ? $optionModel->product->link : null;
                         $option->shownValue = $optionModel->value;
+                        $option->unit = $propertyModel->unit;
                         $option->image = ($propertyModel->isImage && $optionModel->product)
                             ? (string)(new Routing\Product\Media\GetPhoto($optionModel->product->image, $optionModel->product->id, 2))
                             : null

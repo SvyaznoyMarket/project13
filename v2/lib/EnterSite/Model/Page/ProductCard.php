@@ -227,5 +227,7 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product\ModelBlock\Property {
         public $isActive;
         /** @var string */
         public $image;
+        /** @var string */
+        public $unit;
     }
 }

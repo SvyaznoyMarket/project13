@@ -10,7 +10,7 @@
     <ul class="chooseModelNum clearfix">
         {{#options}}
             <li class="chooseModelNum__item{{#isActive}} chooseModelNum__item-active{{/isActive}}">
-                <a class="chooseModelNum__link" href="{{url}}">{{shownValue}}</a>
+                <a class="chooseModelNum__link" href="{{url}}">{{shownValue}}{{#unit}} {{unit}}{{/unit}}</a>
             </li>
         {{/options}}
     </ul>
