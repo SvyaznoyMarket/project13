@@ -1234,7 +1234,7 @@ body.noScroll {
   *display: inline;
   zoom: 1;
 }
-.productDescHead_reviews .reviewsCount {
+.reviewsCount {
   display: inline-block;
   vertical-align: top;
   color: #a6a6a6;
@@ -1244,7 +1244,7 @@ body.noScroll {
   *display: inline;
   zoom: 1;
 }
-.productDescHead_reviews .reviewsStar {
+.reviewsStar {
   display: inline-block;
   vertical-align: top;
   height: 15px;
@@ -1599,7 +1599,7 @@ body.noScroll {
   display: inline-block;
   vertical-align: top;
   font-size: 12px;
-  margin: 5px 0 0;
+  margin: 6px 0 0;
   *display: inline;
   zoom: 1;
 }
@@ -1612,6 +1612,9 @@ body.noScroll {
    ========================================================================== */
 @media only screen and (max-width: 800px) {
   .productDescTab .tabImg {
+    display: none;
+  }
+  .productDescTab .reviewsCount {
     display: none;
   }
 }
