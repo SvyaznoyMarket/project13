@@ -8,8 +8,7 @@ use EnterSite\LoggerTrait;
 use EnterSite\Controller;
 
 class Index {
-    use ConfigTrait;
-    use LoggerTrait {
+    use ConfigTrait, LoggerTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
 

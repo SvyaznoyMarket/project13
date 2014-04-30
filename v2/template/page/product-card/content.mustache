@@ -122,7 +122,9 @@
                                 <!--/ Кнопка купить -->
                             </div>
 
-                            <div class="btnBuyOneClick"><a class="btnBuyOneClick_link" href="">Купить быстро в 1 клик</a></div>
+                            {{#product.cartQuickButton}}
+                                {{>partial/cart/quickButton}}
+                            {{/product.cartQuickButton}}
                         </div>
                     </div>
                     <!--/ Выбор варианта покупки, каунтер -->
@@ -245,23 +247,17 @@
                             <div class="reviewsBox__right">
                                 <div class="reviewsText">
                                     <span class="reviewsText__mark">«</span>
-                                    <p class="reviewsText__par">
-                                        {{extract}}
-                                    </p>
+                                    <p class="reviewsText__par">{{extract}}</p>
                                 </div>
 
                                 <div class="reviewsText">
                                     <span class="reviewsText__mark">+</span>
-                                    <p class="reviewsText__par">
-                                        {{pros}}
-                                    </p>
+                                    <p class="reviewsText__par">{{pros}}</p>
                                 </div>
 
                                 <div class="reviewsText">
                                     <span class="reviewsText__mark">−</span>
-                                    <p class="reviewsText__par">
-                                        {{cons}}
-                                    </p>
+                                    <p class="reviewsText__par">{{cons}}</p>
                                 </div>
                             </div>
                         </div>

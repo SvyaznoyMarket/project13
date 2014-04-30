@@ -15,8 +15,7 @@ use EnterSite\Model;
 use EnterSite\Repository;
 
 class SetProduct {
-    use ConfigTrait;
-    use RouterTrait, LoggerTrait, CurlClientTrait {
+    use ConfigTrait, RouterTrait, LoggerTrait, CurlClientTrait {
         ConfigTrait::getConfig insteadof RouterTrait, LoggerTrait, CurlClientTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait;
     }

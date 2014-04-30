@@ -13,8 +13,7 @@ use EnterSite\Model;
 use EnterSite\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait;
-    use CurlClientTrait, MustacheRendererTrait {
+    use ConfigTrait, CurlClientTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait;
     }
 
@@ -123,7 +122,8 @@ class ProductCard {
         }
 
         // если у товара нет доставок, запрашиваем список магазинов, в которых товар может быть на витрине
-        if (!(bool)$product->nearestDeliveries) {
+        // FIXME: временно недоступно
+        if (false && !(bool)$product->nearestDeliveries) {
             $shopsIds = [];
             foreach ($product->stock as $stock) {
                 if ($stock->shopId && ($stock->showroomQuantity > 0)) {

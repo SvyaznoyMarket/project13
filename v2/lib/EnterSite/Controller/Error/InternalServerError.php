@@ -10,8 +10,7 @@ use EnterSite\MustacheRendererTrait;
 //use EnterSite\Model\Page\Error\InternalServerError as Page;
 
 class InternalServerError {
-    use ConfigTrait;
-    use MustacheRendererTrait {
+    use ConfigTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof MustacheRendererTrait;
     }
 

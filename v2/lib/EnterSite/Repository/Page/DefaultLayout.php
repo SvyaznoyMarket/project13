@@ -12,8 +12,7 @@ use EnterSite\Model;
 use EnterSite\Model\Page\DefaultLayout as Page;
 
 class DefaultLayout {
-    use ConfigTrait;
-    use RouterTrait, LoggerTrait, ViewHelperTrait {
+    use ConfigTrait, RouterTrait, LoggerTrait, ViewHelperTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
 

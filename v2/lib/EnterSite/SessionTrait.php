@@ -5,8 +5,7 @@ namespace EnterSite;
 use Enter\Http;
 
 trait SessionTrait {
-    use ConfigTrait;
-    use LoggerTrait {
+    use ConfigTrait, LoggerTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
 

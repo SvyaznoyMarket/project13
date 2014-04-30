@@ -52,6 +52,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $cartButton;
         /** @var Partial\Cart\ProductSpinner|null */
         public $cartSpinner;
+        /** @var Partial\Cart\ProductQuickButton|null */
+        public $cartQuickButton;
         /** @var Product\DeliveryBlock */
         public $deliveryBlock;
         /** @var string */
@@ -225,5 +227,7 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product\ModelBlock\Property {
         public $isActive;
         /** @var string */
         public $image;
+        /** @var string */
+        public $unit;
     }
 }

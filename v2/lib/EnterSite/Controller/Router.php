@@ -9,8 +9,7 @@ use EnterSite\RouterTrait;
 use EnterSite\Action;
 
 class Router {
-    use ConfigTrait;
-    use LoggerTrait, RouterTrait {
+    use ConfigTrait, LoggerTrait, RouterTrait {
         ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait;
     }
 

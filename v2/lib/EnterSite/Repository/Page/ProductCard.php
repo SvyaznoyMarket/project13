@@ -35,6 +35,7 @@ class ProductCard {
         $templateDir = $config->mustacheRenderer->templateDir;
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $cartProductSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
+        $cartProductQuickButtonRepository = new Repository\Partial\Cart\ProductQuickButton();
         $productCardRepository = new Repository\Partial\ProductCard();
         $ratingRepository = new Repository\Partial\Rating();
         $productSliderRepository = new Repository\Partial\ProductSlider();
@@ -63,6 +64,7 @@ class ProductCard {
         $page->content->product->shownOldPrice = $productModel->oldPrice ? number_format((float)$productModel->oldPrice, 0, ',', ' ') : null;
         $page->content->product->cartButton = $cartProductButtonRepository->getObject($productModel);
         $page->content->product->cartSpinner = $cartProductSpinnerRepository->getObject($productModel);
+        $page->content->product->cartQuickButton = $cartProductQuickButtonRepository->getObject($productModel);
 
         // доставка товара
         if ((bool)$productModel->nearestDeliveries) {
@@ -242,6 +244,12 @@ class ProductCard {
         if ((bool)$productModel->model && (bool)$productModel->model->properties) {
             $page->content->product->hasModel = true;
 
+            // значения свойств, индексированные по ид
+            $propertyValuesById = [];
+            foreach ($productModel->properties as $propertyModel) {
+                $propertyValuesById[$propertyModel->id] = $propertyModel->value;
+            }
+
             foreach ([
                  0 => [0, 1], // первое свойство модели
                  1 => [1, count($productModel->properties) - 1] // остальные свойства модели (будут скрыты по умолчанию)
@@ -255,9 +263,10 @@ class ProductCard {
                     $property->isImage = $propertyModel->isImage;
                     foreach ($propertyModel->options as $optionModel) {
                         $option = new Page\Content\Product\ModelBlock\Property\Option();
-                        $option->isActive = false; // FIXME
+                        $option->isActive = isset($propertyValuesById[$propertyModel->id]) && ($propertyValuesById[$propertyModel->id] == $optionModel->value);
                         $option->url = $optionModel->product ? $optionModel->product->link : null;
                         $option->shownValue = $optionModel->value;
+                        $option->unit = $propertyModel->unit;
                         $option->image = ($propertyModel->isImage && $optionModel->product)
                             ? (string)(new Routing\Product\Media\GetPhoto($optionModel->product->image, $optionModel->product->id, 2))
                             : null

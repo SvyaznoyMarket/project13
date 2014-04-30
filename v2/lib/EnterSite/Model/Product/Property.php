@@ -44,7 +44,7 @@ class Property {
         if (array_key_exists('value_hint', $data)) $this->valueHint = (string)$data['value_hint'];
         if (array_key_exists('is_multiple', $data)) $this->isMultiple = (bool)$data['is_multiple'];
         if (array_key_exists('value', $data)) $this->value = $data['value'];
-        if (array_key_exists('group_id', $data)) $this->groupId = (string)$data['group_id'];
+        if (array_key_exists('group_id', $data)) $this->groupId = $data['group_id'] ? (string)$data['group_id'] : null;
         if (array_key_exists('group_position', $data)) $this->groupPosition = (int)$data['group_position'];
         if (array_key_exists('position', $data)) $this->position = (int)$data['position'];
         if (array_key_exists('is_view_list', $data)) $this->isInList = (bool)$data['is_view_list'];
