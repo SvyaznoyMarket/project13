@@ -254,7 +254,7 @@ class ProductAction {
         }
 
         if (!$request->isXmlHttpRequest()) {
-            return new \Http\RedirectResponse(\App::router()->generate('cart'));
+            return new \Http\RedirectResponse(\App::router()->generate('order'));
         }
 
         return $response;

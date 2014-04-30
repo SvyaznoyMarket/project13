@@ -14,7 +14,9 @@ return function (
         return '';
     }
 
-    $class = \View\Id::cartButtonForProduct($product->getId() . '-oneClick') . ' jsOneClickButton ' . $class;
+    if (!$product->getKit()) {
+        $class = \View\Id::cartButtonForProduct($product->getId() . '-oneClick') . ' jsOneClickButton ' . $class;
+    }
 
     if ($product->isInShopStockOnly()) {
         $class .= ' mShopsOnly';
@@ -34,6 +36,14 @@ return function (
             $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
         }
         $url = $helper->url('cart.oneClick.product.set', $urlParams);
+    }
+
+    if ($product->getKit()) {
+        $urlParams = [];
+        foreach ($product->getKit() as $kitItem) {
+            $urlParams['product'][] = ['id' => $kitItem->getId(), 'quantity' => $kitItem->getCount()];
+        }
+        $url = $helper->url('cart.product.setList', $urlParams);
     }
 
 ?>
