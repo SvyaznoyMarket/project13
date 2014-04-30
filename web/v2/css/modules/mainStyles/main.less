@@ -186,6 +186,44 @@ textarea[contenteditable] {
 
     font-size: 14px;
     line-height: 34px;
+
+    &:hover {
+        .gradient(#ffa200, #f79200, #ffa200);
+        text-decoration: none;
+        color: @white;
+    }
+
+    &:active {
+        background: #f79200;
+        text-decoration: none;
+    }
+}
+
+.btnStyleOrange {
+    background: #f89b1c;
+    .rounded(4px);
+    display: block;
+
+    height: 35px;
+
+    text-align: center;
+
+    color: #ffffff;
+    border: 1px solid #e26500;
+
+    font-size: 14px;
+    line-height: 34px;
+
+    &:hover {
+        .gradient(#ffa200, #f79200, #ffa200);
+        text-decoration: none;
+        color: @white;
+    }
+
+    &:active {
+        background: #f79200;
+        text-decoration: none;
+    }
 }
 
 .btnStyleBlack {

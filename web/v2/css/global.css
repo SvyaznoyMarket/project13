@@ -541,6 +541,47 @@ textarea[contenteditable] {
   font-size: 14px;
   line-height: 34px;
 }
+.btnStyle:hover {
+  background: #ffa200;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f79200), color-stop(1, #ffa200));
+  background: -ms-linear-gradient(bottom, #f79200, #ffa200);
+  background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
+  background: -o-linear-gradient(#ffa200, #f79200);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
+  text-decoration: none;
+  color: #ffffff;
+}
+.btnStyle:active {
+  background: #f79200;
+  text-decoration: none;
+}
+.btnStyleOrange {
+  background: #f89b1c;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  display: block;
+  height: 35px;
+  text-align: center;
+  color: #ffffff;
+  border: 1px solid #e26500;
+  font-size: 14px;
+  line-height: 34px;
+}
+.btnStyleOrange:hover {
+  background: #ffa200;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f79200), color-stop(1, #ffa200));
+  background: -ms-linear-gradient(bottom, #f79200, #ffa200);
+  background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
+  background: -o-linear-gradient(#ffa200, #f79200);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
+  text-decoration: none;
+  color: #ffffff;
+}
+.btnStyleOrange:active {
+  background: #f79200;
+  text-decoration: none;
+}
 .btnStyleBlack {
   background: #000000;
   -webkit-border-radius: 4px;
@@ -613,6 +654,12 @@ body.noScroll {
   padding: 25px 0 200px;
   margin: 35px 0 0;
 }
+.pageTitle {
+  font-size: 19px;
+  border-bottom: 1px solid #b1b1b1;
+  line-height: 40px;
+  padding: 0 10px;
+}
 .contentBox940 {
   max-width: 940px;
   padding: 0 10px;
@@ -634,6 +681,13 @@ body.noScroll {
 /* ==========================================================================
    Layout - default styles
    ========================================================================== */
+@media only screen and (max-width: 700px) {
+  /* Middle
+	-----------------------------------------------------------------------------*/
+  .pageTitle {
+    display: block;
+  }
+}
 @media only screen and (max-width: 560px) {
   /* Middle
 	-----------------------------------------------------------------------------*/
@@ -2463,6 +2517,9 @@ body.noScroll {
 /* ==========================================================================
    Стили корзины
    ========================================================================== */
+/* ==========================================================================
+   Стили корзины .cartItem
+   ========================================================================== */
 .cartItem {
   border-bottom: 1px solid #b1b1b1;
   padding: 20px 0;
@@ -2498,6 +2555,9 @@ body.noScroll {
   width: 290px;
   padding: 15px 0 0;
 }
+.cartItem_col-price .priceNum {
+  display: none;
+}
 .cartItem_col-price .price {
   display: inline-block;
   vertical-align: middle;
@@ -2519,11 +2579,15 @@ body.noScroll {
 .cartLine {
   background: #f6f6f6;
   border-bottom: 1px solid #b1b1b1;
+  margin: 0 0 10px;
 }
 .cartLine_left {
   float: right;
   margin: 2px 30px 0 0;
   font-size: 14px;
+}
+.cartLine_left-double {
+  display: none;
 }
 .cartLine_left .price {
   font-size: 22px;
@@ -2537,6 +2601,24 @@ body.noScroll {
 .cartLine_right .customLabel {
   line-height: 1.9;
 }
+.cartLine_right .creditText {
+  display: block;
+}
+.cartBuy {
+  text-align: right;
+  padding: 0 10px;
+}
+.cartBuy_btn {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 38px;
+  width: 248px;
+  height: 38px;
+  display: inline-block;
+}
+/* ==========================================================================
+   Адаптиыне стили корзины .cartItem
+   ========================================================================== */
 @media only screen and (max-width: 700px) {
   .cartItem {
     border-bottom: 1px solid #b1b1b1;
@@ -2553,13 +2635,26 @@ body.noScroll {
   }
   .cartItem_col-desc {
     padding: 0 10px 0 120px;
+    min-height: 100px;
+  }
+  .cartItem_col-desc .price {
+    display: none;
   }
   .cartItem_col-price {
     width: 100%;
     padding: 0;
   }
-  .cartItem_col-price .price {
+  .cartItem_col-price .priceNum {
+    display: block;
+    float: left;
+    width: 100px;
+    color: #777777;
+    font-size: 20px;
+    line-height: 41px;
     text-align: center;
+    margin-right: 10px;
+  }
+  .cartItem_col-price .price {
     float: right;
     margin-right: 10px;
     text-align: right;
@@ -2576,7 +2671,6 @@ body.noScroll {
   }
   .cartItem_col-price .change {
     float: left;
-    margin-left: 110px;
   }
 }
 @media only screen and (max-width: 500px) {
@@ -2588,18 +2682,63 @@ body.noScroll {
     width: 80px;
   }
   .cartItem_col-desc {
-    font-size: 18px;
+    font-size: 16px;
     padding: 0 10px 0 90px;
+    min-height: 90px;
   }
   .cartItem_col-desc .name {
     font-size: 16px;
     min-height: 70px;
   }
-  .cartItem_col-price .change {
-    margin-left: 90px;
+  .cartItem_col-price .priceNum {
+    float: left;
+    width: 80px;
+    font-size: 15px;
+    margin-right: 10px;
   }
   .cartItem_col-price .price {
-    font-size: 18px;
-    width: 90px;
+    font-size: 15px;
+    width: 65px;
+  }
+  .cartLine {
+    background: #f6f6f6;
+    border-bottom: 1px solid #b1b1b1;
+    margin: 0 0 10px;
+  }
+  .cartLine_left {
+    float: none;
+    padding: 10px;
+    margin: 0;
+    line-height: 22px;
+    display: none;
+  }
+  .cartLine_left-double {
+    display: block;
+  }
+  .cartLine_left .price {
+    float: right;
+  }
+  .cartLine_right {
+    float: none;
+    padding: 10px 10px 8px 10px;
+  }
+  .cartLine_right .customLabel {
+    display: block;
+    line-height: 1;
+    padding: 6px 0 7px 29px;
+  }
+  .cartLine_right .creditText {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .cartLine_right .creditSum {
+    float: right;
+  }
+  .cartLine_right .creditSum .price {
+    font-size: 14px;
+  }
+  .cartBuy {
+    padding: 0 10px;
+    text-align: center;
   }
 }

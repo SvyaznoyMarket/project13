@@ -1,5 +1,7 @@
 <div class="content">
     <div class="contentBox960">
+        <div class="pageTitle">Корзина</div>
+
     	<!-- товар в корзине -->
     	<div class="cartItem clearfix">
     		<a href="" class="cartItem_col cartItem_col-img">
@@ -16,6 +18,8 @@
             </div>
 
     		<div class="cartItem_col cartItem_col-price">
+                <div class="priceNum">2 232 <span class="rubl">p</span></div><!--/ дубль для мобилки -->
+
 				<div class="price">2 232 <span class="rubl">p</span></div>
 
                 <div class="change">
@@ -48,6 +52,8 @@
             </div>
 
             <div class="cartItem_col cartItem_col-price">
+                <div class="priceNum">2 232 <span class="rubl">p</span></div><!--/ дубль для мобилки -->
+
                 <div class="price">2 232 <span class="rubl">p</span></div>
 
                 <div class="change">
@@ -80,6 +86,8 @@
             </div>
 
             <div class="cartItem_col cartItem_col-price">
+                <div class="priceNum">2 232 <span class="rubl">p</span></div><!--/ дубль для мобилки -->
+
                 <div class="price">2 232 <span class="rubl">p</span></div>
 
                 <div class="change">
@@ -96,21 +104,29 @@
         </div>
         <!--/ товар в корзине -->
 
+        <!-- итоговая стоимость заказа/купить в кредит -->
         <div class="cartLine clearfix">
-            <div class="cartLine_right">
+            <div class="cartLine_left cartLine_left-double clearfix">
+                Итого 4 товара на сумму: <span class="price">55 555 <span class="rubl">p</span></span>
+            </div><!--/ дубль для мобилки -->
+
+            <div class="cartLine_right clearfix">
                 <input class="customInput customInput-checkbox jsCustomRadio" type="checkbox" id="creditinput" name="" />
 
                 <label class="customLabel" for="creditinput">
-                    <strong>Купить в кредит</strong><br/>
-                    от <span class="price">3 443 <span class="rubl">p</span></span> в месяц
+                    <strong class="creditText">Купить в кредит</strong>
+                    <span class="creditSum">от <span class="price">3 443 <span class="rubl">p</span></span> в месяц</span>
                 </label>
             </div>
 
-            <div class="cartLine_left">
+            <div class="cartLine_left clearfix">
                 Итого 4 товара на сумму: <span class="price">55 555 <span class="rubl">p</span></span>
             </div>
         </div>
+        <!--/ итоговая стоимость заказа/купить в кредит -->
 
-        <div class=""><a class="btnStyle " href="">Оформление заказа</a></div>
+        <!-- оформить заказ -->
+        <div class="cartBuy"><a class="btnStyleOrange cartBuy_btn" href="">Оформление заказа</a></div>
+        <!--/ оформить заказ -->
     </div>
 </div>

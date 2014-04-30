@@ -1,3 +1,8 @@
+/* ==========================================================================
+   Стили корзины .cartItem
+   ========================================================================== */
+
+ // товары в корзине
 .cartItem {
 	border-bottom: 1px solid @tabGreyBorder;
 	padding: 20px 0;
@@ -39,6 +44,10 @@
 			width: 290px;
 			padding: 15px 0 0;
 
+			.priceNum {
+				display: none;
+			}
+
 			.price {
 				display: inline-block;
 				vertical-align: middle;
@@ -66,14 +75,20 @@
 	}
 }
 
+//итогая стоимость/купить в кредит
 .cartLine {
 	background: @tabGrey;
 	border-bottom: 1px solid @tabGreyBorder;
+	margin: 0 0 10px;
 
 	&_left {
 		float: right;
 		margin: 2px 30px 0 0;
 		font-size: 14px;
+
+		&-double {
+			display: none;
+		}
 
 		.price {
 			font-size: 22px;
@@ -89,5 +104,25 @@
 		.customLabel {
 			line-height: 1.9;
 		}
+
+		.creditText {
+			display: block;
+		}
+	}
+}
+
+//кнопка - оформление заказа
+.cartBuy {
+	text-align: right;
+	padding: 0 10px;
+
+	&_btn {
+		font-size: 20px;
+		font-weight: bold;
+		line-height: 38px;
+
+		width: 248px;
+		height: 38px;
+		display: inline-block;
 	}
 }

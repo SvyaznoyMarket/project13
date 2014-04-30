@@ -1,3 +1,6 @@
+/* ==========================================================================
+   Адаптиыне стили корзины .cartItem
+   ========================================================================== */
 @media only screen and (max-width: 700px) {
     .cartItem {
 		border-bottom: 1px solid @tabGreyBorder;
@@ -15,16 +18,35 @@
 
 			&-desc {
 				padding: 0 10px 0 120px;
+				min-height: 100px;
+
+				.price {
+					display: none;
+				}
 			}
 
 			&-price {
 				width: 100%;
 				padding: 0;
 
-				.price {
+				.priceNum {
+					display: block;
+					float: left;
+					width: 100px;
+
+					color: #777777;
+					font-size: 20px;
+					line-height: 41px;
 					text-align: center;
+
+					margin-right: 10px;
+				}
+
+				.price {
 					float: right;
+
 				    margin-right: 10px;
+
 				    text-align: right;
 				}
 
@@ -45,7 +67,6 @@
 
 				.change {
 					float: left;
-				    margin-left: 110px;
 				}
 			}
 		}
@@ -67,8 +88,9 @@
 			}
 
 			&-desc {
-				font-size: 18px;
+				font-size: 16px;
 	    		padding: 0 10px 0 90px;
+	    		min-height: 90px;
 
 				.name {
 					font-size: 16px;
@@ -78,15 +100,69 @@
 
 			&-price {
 
-				.change {
-				    margin-left: 90px;
+				.priceNum {
+					float: left;
+					width: 80px;
+					font-size: 15px;
+					margin-right: 10px;
 				}
 
 				.price {
-				    font-size: 18px;
-				    width: 90px;
+				    font-size: 15px;
+				    width: 65px;
 				}
 			}
 		}
+	}
+
+	.cartLine {
+		background: @tabGrey;
+		border-bottom: 1px solid @tabGreyBorder;
+		margin: 0 0 10px;
+
+		&_left {
+			float: none;
+			padding: 10px;
+    		margin: 0;
+    		line-height: 22px;
+    		display: none;
+
+    		&-double {
+    			display: block;
+    		}
+
+			.price {
+				float: right;
+			}
+		}
+
+		&_right {
+			float: none;
+			padding: 10px 10px 8px 10px;
+
+			.customLabel {
+			    display: block;
+			    line-height: 1;
+    			padding: 6px 0 7px 29px;
+			}
+
+			.creditText {
+			   display: inline-block;
+			   vertical-align: top;
+			}
+
+			.creditSum {
+				float: right;
+
+				.price {
+					font-size: 14px;
+				}
+			}
+		}
+	}
+
+	.cartBuy {
+	    padding: 0 10px;
+	    text-align: center;
 	}
 }
