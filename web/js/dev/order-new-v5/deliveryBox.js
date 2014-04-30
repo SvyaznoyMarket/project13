@@ -545,7 +545,7 @@
             if (self.token != 'standart_furniture_shipped') {
                 for (i = products.length - 1; i >= 0; i--) {
                     console.log(i + '-ый товар: ', products[i]);
-                    if (products[i].stock != 9223372036854776000) self._addProduct(products[i]);
+                    if (products[i].stock != 9223372036854776000 || self.state == 'standart_other') self._addProduct(products[i]);
                     else shipped.push(products[i]);
                 }
             }
