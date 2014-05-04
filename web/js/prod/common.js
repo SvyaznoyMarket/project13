@@ -2213,7 +2213,7 @@ $(document).ready(function() {
 					$('.bPromoCatalogSlider_eArrow.mArRight').show();
 				}
 
-				for ( slide in data ) {
+				for ( slide = 0; slide < data.length; slide++ ) {
 					slideTmpl = tmpl('slide_tmpl', data[slide]);
 
 					if ( $(slideTmpl).length ) {
