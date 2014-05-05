@@ -1030,7 +1030,35 @@ window.ANALYTICS = {
 					apiJs.src = "//cdn.retailrocket.ru/javascript/tracking.js";
 					ref.parentNode.insertBefore( apiJs, ref );
 				}( document ));
-            }
+            },
+
+			/**
+			 * SITE-3672. Передаем email пользователя
+			 */
+			userEmailSend: function () {
+				var
+					rr_data = $('#RetailRocketJS').data('value'),
+					email,
+					cookieName;
+				// end of vars
+
+				if ( undefined == rr_data.emailCookieName ) return;
+
+				cookieName = rr_data.emailCookieName;
+				if ( !window.docCookies.hasItem(cookieName) ) return;
+
+				email = window.docCookies.getItem(cookieName);
+				if ( !email ) return;
+
+				console.info('RetailRocketJS userEmailSend');
+				console.log(email);
+
+				rrApiOnReady.push(function () {
+					rrApi.setEmail(email);
+				});
+
+				window.docCookies.removeItem(cookieName, '/');
+			}
 
         }// end of window.RetailRocket object
 
@@ -1050,6 +1078,9 @@ window.ANALYTICS = {
 				body.on('userLogged', RetailRocket.action);
 			}
         }
+
+		// Передаем email пользователя для RetailRocket
+		RetailRocket.userEmailSend();
 
         console.groupEnd();
     },
