@@ -1,0 +1,40 @@
+/* ==========================================================================
+   Стили нижнего бара корзины
+   ========================================================================== */
+
+.cartBar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+
+	padding: 15px 0;
+	width: 100%;
+
+	z-index: 1009;
+
+	background: rgb(255,255,255);
+	background: rgba(255,255,255,0.9);
+	.box-shadow(0 0 12px rgba(0,0,0,0.2));
+
+	&_text {
+		padding-right: 170px;
+
+		font-size: 14px;
+		line-height: 30px;
+		text-align: right;
+
+		.price {
+			font-size: 18px;
+		}
+	}
+
+	&_btn {
+		width: 148px;
+		float: right;
+		height: 28px;
+
+		line-height: 28px;
+		font-weight: bold;
+		font-size: 12px;
+	}
+}
