@@ -6,7 +6,9 @@ namespace EnterSite\Model\Page {
 
     class DefaultLayout extends HtmlPage {
         /** @var string */
-        public $bodyDataConfig;
+        public $dataModule;
+        /** @var string */
+        public $dataConfig;
         /** @var DefaultLayout\Template[] */
         public $templates = [];
         /** @var DefaultLayout\RegionBlock */
