@@ -2777,3 +2777,44 @@ body.noScroll {
     text-align: center;
   }
 }
+/* ==========================================================================
+   Стили нижнего бара корзины
+   ========================================================================== */
+.cartBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 15px 0;
+  width: 100%;
+  z-index: 1009;
+  background: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+.cartBar_text {
+  padding-right: 170px;
+  font-size: 14px;
+  line-height: 30px;
+  text-align: right;
+}
+.cartBar_text .price {
+  font-size: 18px;
+}
+.cartBar_btn {
+  width: 148px;
+  float: right;
+  height: 28px;
+  line-height: 28px;
+  font-weight: bold;
+  font-size: 12px;
+}
+/* ==========================================================================
+   Стили нижнего бара корзины
+   ========================================================================== */
+@media only screen and (max-width: 500px) {
+  .cartBar_text .visible {
+    display: none;
+  }
+}
