@@ -33,7 +33,6 @@
   .bGrayButton {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-    border-radius: 5px;
     background: #f4f4f4;
     border-radius: 5px;
     border: 1px solid #ddd;
@@ -143,7 +142,7 @@
     background: -o-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
     background: -ms-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #ebebeb 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebebeb', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebebeb', GradientType=0);
     border-color: #c9c9c9;
     color: #010101;
     display: inline-block;
@@ -160,7 +159,7 @@
     background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
     text-decoration: none;
   }
   .yellowbutton {
@@ -171,7 +170,7 @@
     background: -o-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: -ms-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: linear-gradient(to bottom, #ffc000 0%, #ffaa01 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
     border-color: #f28900;
     color: #ffffff;
     font-size: 11px;
@@ -186,7 +185,7 @@
     background: -o-linear-gradient(top, #ffa200 0%, #f79200 100%);
     background: -ms-linear-gradient(top, #ffa200 0%, #f79200 100%);
     background: linear-gradient(to bottom, #ffa200 0%, #f79200 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
   }
   .yellowbutton.mDisabled {
     -moz-opacity: 0.5;
@@ -195,7 +194,7 @@
     opacity: 0.5;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
     filter: alpha(opacity=50);
-    filter: progid:dximagetransform.microsoft.alpha(opacity=50);
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
     color: #a6a6a6;
     cursor: default;
     background: #f3f3f3;
@@ -209,7 +208,7 @@
     background: -o-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
     background: -ms-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #ebebeb 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebebeb', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebebeb', GradientType=0);
     border-color: #c9c9c9;
     color: #010101;
     font-size: 11px;
@@ -224,7 +223,7 @@
     background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
   }
   .bigbutton {
     background: #ffc000;
@@ -234,7 +233,7 @@
     background: -o-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: -ms-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: linear-gradient(to bottom, #ffc000 0%, #ffaa01 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
     border-color: #f28900;
     color: #ffffff;
     font-size: 14px;
@@ -252,7 +251,7 @@
     background: -o-linear-gradient(top, #ffa200 0%, #f79200 100%);
     background: -ms-linear-gradient(top, #ffa200 0%, #f79200 100%);
     background: linear-gradient(to bottom, #ffa200 0%, #f79200 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
   }
   .bigbutton.mDisabled {
     background: #f9f9f9;
@@ -268,7 +267,7 @@
     background: -o-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: -ms-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: linear-gradient(to bottom, #ffc000 0%, #ffaa01 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
     border-color: #f28900;
     color: #ffffff;
     display: inline-block;
@@ -284,7 +283,7 @@
     background: -o-linear-gradient(top, #ffa200 0%, #f79200 100%);
     background: -ms-linear-gradient(top, #ffa200 0%, #f79200 100%);
     background: linear-gradient(to bottom, #ffa200 0%, #f79200 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
     color: #ffffff;
     text-decoration: none;
   }
@@ -340,7 +339,7 @@
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    filter: progid:dximagetransform.microsoft.alpha(opacity=0);
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     background-color: transparent;
     border: none;
     box-shadow: none;
@@ -357,7 +356,7 @@
     cursor: default;
   }
   .bSelect option {
-    filter: progid:dximagetransform.microsoft.alpha(opacity=100);
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     background-color: #FFFFFF;
     color: black;
     display: block;
@@ -382,16 +381,16 @@
 /*-----СТИЛИ jQuery UI-----*/
 @media all {
   /*!
-   * jQuery UI CSS Framework 1.8.20
-   *
-   * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
-   * Dual licensed under the MIT or GPL Version 2 licenses.
-   * http://jquery.org/license
-   *
-   * http://docs.jquery.com/UI/Theming/API
-   */
+ * jQuery UI CSS Framework 1.8.20
+ *
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Theming/API
+ */
   /* Layout helpers
-  ----------------------------------*/
+----------------------------------*/
   .ui-css .ui-helper-hidden {
     display: none;
   }
@@ -431,12 +430,12 @@
     filter: alpha(opacity=0);
   }
   /* Interaction Cues
-  ----------------------------------*/
+----------------------------------*/
   .ui-css .ui-state-disabled {
     cursor: default !important;
   }
   /* Icons
-  ----------------------------------*/
+----------------------------------*/
   /* states and images */
   .ui-css .ui-icon {
     display: block;
@@ -445,7 +444,7 @@
     background-repeat: no-repeat;
   }
   /* Misc visuals
-  ----------------------------------*/
+----------------------------------*/
   /* Overlays */
   .ui-css .ui-widget-overlay {
     position: absolute;
@@ -455,18 +454,18 @@
     height: 100%;
   }
   /*!
-   * jQuery UI CSS Framework 1.8.20
-   *
-   * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
-   * Dual licensed under the MIT or GPL Version 2 licenses.
-   * http://jquery.org/license
-   *
-   * http://docs.jquery.com/UI/Theming/API
-   *
-   * To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Verdana,Arial,sans-serif&fwDefault=normal&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=cccccc&bgTextureHeader=03_highlight_soft.png&bgImgOpacityHeader=75&borderColorHeader=aaaaaa&fcHeader=222222&iconColorHeader=222222&bgColorContent=ffffff&bgTextureContent=01_flat.png&bgImgOpacityContent=75&borderColorContent=aaaaaa&fcContent=222222&iconColorContent=222222&bgColorDefault=e6e6e6&bgTextureDefault=02_glass.png&bgImgOpacityDefault=75&borderColorDefault=d3d3d3&fcDefault=555555&iconColorDefault=888888&bgColorHover=dadada&bgTextureHover=02_glass.png&bgImgOpacityHover=75&borderColorHover=999999&fcHover=212121&iconColorHover=454545&bgColorActive=ffffff&bgTextureActive=02_glass.png&bgImgOpacityActive=65&borderColorActive=aaaaaa&fcActive=212121&iconColorActive=454545&bgColorHighlight=fbf9ee&bgTextureHighlight=02_glass.png&bgImgOpacityHighlight=55&borderColorHighlight=fcefa1&fcHighlight=363636&iconColorHighlight=2e83ff&bgColorError=fef1ec&bgTextureError=02_glass.png&bgImgOpacityError=95&borderColorError=cd0a0a&fcError=cd0a0a&iconColorError=cd0a0a&bgColorOverlay=aaaaaa&bgTextureOverlay=01_flat.png&bgImgOpacityOverlay=0&opacityOverlay=30&bgColorShadow=aaaaaa&bgTextureShadow=01_flat.png&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
-   */
+ * jQuery UI CSS Framework 1.8.20
+ *
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Theming/API
+ *
+ * To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Verdana,Arial,sans-serif&fwDefault=normal&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=cccccc&bgTextureHeader=03_highlight_soft.png&bgImgOpacityHeader=75&borderColorHeader=aaaaaa&fcHeader=222222&iconColorHeader=222222&bgColorContent=ffffff&bgTextureContent=01_flat.png&bgImgOpacityContent=75&borderColorContent=aaaaaa&fcContent=222222&iconColorContent=222222&bgColorDefault=e6e6e6&bgTextureDefault=02_glass.png&bgImgOpacityDefault=75&borderColorDefault=d3d3d3&fcDefault=555555&iconColorDefault=888888&bgColorHover=dadada&bgTextureHover=02_glass.png&bgImgOpacityHover=75&borderColorHover=999999&fcHover=212121&iconColorHover=454545&bgColorActive=ffffff&bgTextureActive=02_glass.png&bgImgOpacityActive=65&borderColorActive=aaaaaa&fcActive=212121&iconColorActive=454545&bgColorHighlight=fbf9ee&bgTextureHighlight=02_glass.png&bgImgOpacityHighlight=55&borderColorHighlight=fcefa1&fcHighlight=363636&iconColorHighlight=2e83ff&bgColorError=fef1ec&bgTextureError=02_glass.png&bgImgOpacityError=95&borderColorError=cd0a0a&fcError=cd0a0a&iconColorError=cd0a0a&bgColorOverlay=aaaaaa&bgTextureOverlay=01_flat.png&bgImgOpacityOverlay=0&opacityOverlay=30&bgColorShadow=aaaaaa&bgTextureShadow=01_flat.png&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
+ */
   /* Component containers
-  ----------------------------------*/
+----------------------------------*/
   .ui-css .ui-widget {
     font-family: Verdana, Arial, sans-serif;
     font-size: 1.1em;
@@ -499,7 +498,7 @@
     color: #222222;
   }
   /* Interaction states
-  ----------------------------------*/
+----------------------------------*/
   .ui-css .ui-state-default,
   .ui-css .ui-widget-content .ui-state-default,
   .ui-css .ui-widget-header .ui-state-default {
@@ -548,7 +547,7 @@
     outline: none;
   }
   /* Interaction Cues
-  ----------------------------------*/
+----------------------------------*/
   .ui-css .ui-state-highlight,
   .ui-css .ui-widget-content .ui-state-highlight,
   .ui-css .ui-widget-header .ui-state-highlight {
@@ -598,7 +597,7 @@
     background-image: none;
   }
   /* Icons
-  ----------------------------------*/
+----------------------------------*/
   /* states and images */
   .ui-icon {
     width: 16px;
@@ -1153,7 +1152,7 @@
     background-position: -80px -224px;
   }
   /* Misc visuals
-  ----------------------------------*/
+----------------------------------*/
   /* Corner radius */
   .ui-css .ui-corner-all,
   .ui-css .ui-corner-top,
@@ -1209,14 +1208,14 @@
     border-radius: 8px;
   }
   /*!
-   * jQuery UI Autocomplete 1.8.20
-   *
-   * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
-   * Dual licensed under the MIT or GPL Version 2 licenses.
-   * http://jquery.org/license
-   *
-   * http://docs.jquery.com/UI/Autocomplete#theming
-   */
+ * jQuery UI Autocomplete 1.8.20
+ *
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Autocomplete#theming
+ */
   .ui-css .ui-autocomplete {
     position: absolute;
     cursor: default;
@@ -1226,15 +1225,13 @@
     max-height: 150px;
     overflow-y: auto;
     /* prevent horizontal scrollbar */
-  
     overflow-x: hidden;
     /* add padding to account for vertical scrollbar */
-  
     padding-right: 20px;
   }
   /* IE 6 doesn't support max-height
-   * we use height instead, but this forces the menu to always be this tall
-   */
+ * we use height instead, but this forces the menu to always be this tall
+ */
   * html .ui-autocomplete {
     height: 100px;
   }
@@ -1244,14 +1241,14 @@
   }
   /* without this, the menu expands to 100% in IE6 */
   /*
-   * jQuery UI Menu 1.8.20
-   *
-   * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
-   * Dual licensed under the MIT or GPL Version 2 licenses.
-   * http://jquery.org/license
-   *
-   * http://docs.jquery.com/UI/Menu#theming
-   */
+ * jQuery UI Menu 1.8.20
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Menu#theming
+ */
   .ui-css .ui-menu {
     list-style: none;
     padding: 2px;
@@ -1283,30 +1280,30 @@
     margin: -1px;
   }
   /*!
-   * jQuery UI Slider 1.8.20
-   *
-   * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
-   * Dual licensed under the MIT or GPL Version 2 licenses.
-   * http://jquery.org/license
-   *
-   * http://docs.jquery.com/UI/Slider#theming
-  
-  .ui-slider { position: relative; text-align: left; }
-  .ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; }
-  .ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
-  
-  .ui-slider-horizontal { height: .8em; }
-  .ui-slider-horizontal .ui-slider-handle { top: -.3em; margin-left: -.6em; }
-  .ui-slider-horizontal .ui-slider-range { top: 0; height: 100%; }
-  .ui-slider-horizontal .ui-slider-range-min { left: 0; }
-  .ui-slider-horizontal .ui-slider-range-max { right: 0; }
-  
-  .ui-slider-vertical { width: .8em; height: 100px; }
-  .ui-slider-vertical .ui-slider-handle { left: -.3em; margin-left: 0; margin-bottom: -.6em; }
-  .ui-slider-vertical .ui-slider-range { left: 0; width: 100%; }
-  .ui-slider-vertical .ui-slider-range-min { bottom: 0; }
-  .ui-slider-vertical .ui-slider-range-max { top: 0; }
-   */
+ * jQuery UI Slider 1.8.20
+ *
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Slider#theming
+
+.ui-slider { position: relative; text-align: left; }
+.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; }
+.ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
+
+.ui-slider-horizontal { height: .8em; }
+.ui-slider-horizontal .ui-slider-handle { top: -.3em; margin-left: -.6em; }
+.ui-slider-horizontal .ui-slider-range { top: 0; height: 100%; }
+.ui-slider-horizontal .ui-slider-range-min { left: 0; }
+.ui-slider-horizontal .ui-slider-range-max { right: 0; }
+
+.ui-slider-vertical { width: .8em; height: 100px; }
+.ui-slider-vertical .ui-slider-handle { left: -.3em; margin-left: 0; margin-bottom: -.6em; }
+.ui-slider-vertical .ui-slider-range { left: 0; width: 100%; }
+.ui-slider-vertical .ui-slider-range-min { bottom: 0; }
+.ui-slider-vertical .ui-slider-range-max { top: 0; }
+ */
 }
 /*---END--СТИЛИ jQuery UI--*/
 /*------СТИЛИ ВСПЛЫВАЮЩИХ ОКОН------*/
@@ -1773,39 +1770,39 @@
     width: 26px;
   }
   /*
-   * Эта кнопка скрыта
-  .popup_leftpanel a.link1 {
-    .rounded(5px);
-    background-color: #ffaa01;
-    background: url("@{base-url}/common/img/bg_buttons.png") repeat-x;
-    border: 1px solid #f28900;
-    color: @white;
-    display: block;
-    font-size: 11px;
-    font-weight: bold;
-    height: 16px;
-    overflow: visible;
-    padding: 3px 7px;
-    text-align: center;
-    width: 70px;
-    &:hover {
-      background-color: @firmOrange;
-      background-position: 0px -32px;
-      text-decoration: none;
-    }
-    &.active {
-      background-color: @firmOrange;
-      background-position: 0px -64px;
-    }
-    &.disabled {
-      background-color: #ececec;
-      background-position: 0px -96px;
-      border-color: #e4e4e4;
-      color: #e1e1e1;
-    }
+ * Эта кнопка скрыта
+.popup_leftpanel a.link1 {
+  .rounded(5px);
+  background-color: #ffaa01;
+  background: url("@{base-url}/common/img/bg_buttons.png") repeat-x;
+  border: 1px solid #f28900;
+  color: @white;
+  display: block;
+  font-size: 11px;
+  font-weight: bold;
+  height: 16px;
+  overflow: visible;
+  padding: 3px 7px;
+  text-align: center;
+  width: 70px;
+  &:hover {
+    background-color: @firmOrange;
+    background-position: 0px -32px;
+    text-decoration: none;
   }
-   * 
-   */
+  &.active {
+    background-color: @firmOrange;
+    background-position: 0px -64px;
+  }
+  &.disabled {
+    background-color: #ececec;
+    background-position: 0px -96px;
+    border-color: #e4e4e4;
+    color: #e1e1e1;
+  }
+}
+ * 
+ */
 }
 /*окно купить в один клик*/
 @media all {
@@ -1982,7 +1979,6 @@
   }
   .bFast__ePrice {
     /* font: 16px 'EnterTypeRegular';*/
-  
     font-size: 16px;
     margin: 7px 0px;
   }
@@ -2134,18 +2130,18 @@
     margin: 15px 0px 0px;
   }
   /*
-  .bInShop__eBottom .bMapShops__eMapWrap, 
-  .mMapPopup .bMapShops__eMapWrap,
-  .bFast .bMapShops__eMapWrap {
-    .inner-shadow(0px, 0px, 5px, #777);
-    
-    float: right;
-    height: 550px;
-    overflow: hidden;
-    position: relative;
-    width: 660px;
-  }
-  */
+.bInShop__eBottom .bMapShops__eMapWrap, 
+.mMapPopup .bMapShops__eMapWrap,
+.bFast .bMapShops__eMapWrap {
+  .inner-shadow(0px, 0px, 5px, #777);
+  
+  float: right;
+  height: 550px;
+  overflow: hidden;
+  position: relative;
+  width: 660px;
+}
+*/
 }
 /*окно maybe 3D*/
 @media all {
@@ -2962,16 +2958,15 @@
     padding: 5px 5px 5px 10px;
   }
   /*.bigfilter DT.first {
-    border: 0px;
-  }
-  */
+  border: 0px;
+}
+*/
   .bSlide .pb5,
   .bSlide .pb5 span {
     text-align: center;
   }
   .bSlide .pb5 span {
     /* color: @typGray; */
-  
     background: none repeat scroll 0px 0px transparent;
     border: 0px none;
     font-size: 11px;
@@ -2983,9 +2978,9 @@
     width: 194px;
   }
   /*.sliderbox span {
-    display: block; padding-top: 8px; font-size: 10px; color: @typGray;
-  }
-  */
+  display: block; padding-top: 8px; font-size: 10px; color: @typGray;
+}
+*/
   .filter-range {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -3073,7 +3068,6 @@
     background-position: 0 0;
   }
   input.hiddenCheckbox {
-    position: absolute;
     filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     -moz-opacity: 0;
     -khtml-opacity: 0;
@@ -3298,11 +3292,11 @@
     font-size: 10px;
   }
   /*.ratingview {
-    background: url("interpolation1__") no-repeat 0px 0px;
-    display: block;
-    height: 11px;
-    margin-bottom: 10px;
-  }*/
+  background: url("interpolation1__") no-repeat 0px 0px;
+  display: block;
+  height: 11px;
+  margin-bottom: 10px;
+}*/
   .goodsbox__rating {
     position: relative;
     width: 65px;
@@ -3364,7 +3358,6 @@
   .goodsbox .photo a {
     display: block;
     /* width: 191px;*/
-  
     height: 163px;
     text-align: center;
   }
@@ -3870,50 +3863,36 @@
     right: 0;
     background: -moz-linear-gradient(left, rgba(255, 255, 255, 0.75) 0%, #ffffff 100%);
     /* FF3.6+ */
-  
     background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0.75)), color-stop(100%, #ffffff));
     /* Chrome,Safari4+ */
-  
     background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.75) 0%, #ffffff 100%);
     /* Chrome10+,Safari5.1+ */
-  
     background: -o-linear-gradient(left, rgba(255, 255, 255, 0.75) 0%, #ffffff 100%);
     /* Opera 11.10+ */
-  
     background: -ms-linear-gradient(left, rgba(255, 255, 255, 0.75) 0%, #ffffff 100%);
     /* IE10+ */
-  
     background: linear-gradient(to right, rgba(255, 255, 255, 0.75) 0%, #ffffff 100%);
     /* W3C */
-  
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#bfffffff', endColorstr='#ffffff', GradientType=1);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bfffffff', endColorstr='#ffffff', GradientType=1);
     /* IE6-9 */
-  
   }
   .mLeft {
     top: 0;
     left: 0;
     background: -moz-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
     /* FF3.6+ */
-  
     background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ffffff), color-stop(100%, rgba(255, 255, 255, 0.75)));
     /* Chrome,Safari4+ */
-  
     background: -webkit-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
     /* Chrome10+,Safari5.1+ */
-  
     background: -o-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
     /* Opera 11.10+ */
-  
     background: -ms-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
     /* IE10+ */
-  
     background: linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
     /* W3C */
-  
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#bfffffff', GradientType=1);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#bfffffff', GradientType=1);
     /* IE6-9 */
-  
   }
   .bPaginator {
     margin: 20px auto;
@@ -4574,7 +4553,6 @@
     display: inline-block;
     vertical-align: top;
     /*** принудительное форматирование подсказок ***/
-  
   }
   .bHint_eLink {
     background: #ffffff url('/css/item/img/hintQ.gif') no-repeat left center;
@@ -5433,7 +5411,7 @@
     background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
   }
   .bProductCardRightCol .bCountSet .bCountSet__eP.disabled,
   .bProductCardRightCol .bCountSet .bCountSet__eM.disabled {
@@ -5445,7 +5423,7 @@
     background: -o-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
     background: -ms-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #ebebeb 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebebeb', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebebeb', GradientType=0);
   }
   .bProductCardRightCol .bCountSet span {
     display: inline-block;
@@ -5484,7 +5462,7 @@
     background: -o-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
     background: -ms-linear-gradient(top, #ffffff 0%, #ebebeb 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #ebebeb 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebebeb', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebebeb', GradientType=0);
     border-radius: 5px;
     border: 1px solid #C9C9C9;
     color: #4fcbf4;
@@ -5505,7 +5483,7 @@
     background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
     text-decoration: none;
   }
 }
@@ -5798,7 +5776,7 @@
   .bInShop__eNoTime a {
     text-decoration: underline;
   }
-  .bInShop__eNoTime.bInShop__eMap h2 {
+  .bInShop__eNoTime .bInShop__eMap h2 {
     font-size: 12px;
   }
   .bInShop__eMap .bigmark div {
@@ -6815,7 +6793,6 @@
     text-align: center;
     *position: absolute;
     /*  *top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");*/
-  
   }
   .bMobDownWrapRel {
     top: 25%;
@@ -7588,7 +7565,6 @@
   }
   .flybox .corner {
     /* bottom: -14px;*/
-  
     background: url("/css/lightbox/img/lightboxSprite.png") no-repeat -906px -80px;
     bottom: -15px;
     display: block;
@@ -7602,7 +7578,6 @@
   }
   .flybox .close {
     /* right: -2px;*/
-  
     background: url("/css/common/img/closeBtnOrange.png") no-repeat 0 0;
     cursor: pointer;
     display: block;
@@ -7636,8 +7611,8 @@
     padding-top: 18px;
   }
   /**
-   * New styles for BlackBox
-   */
+ * New styles for BlackBox
+ */
   .bBlackBox {
     height: 41px;
     width: 940px;
@@ -7810,28 +7785,20 @@
     -webkit-appearance: none;
     background: #242424;
     /* Old browsers */
-  
     background: -moz-linear-gradient(top, #242424 0%, #141414 100%);
     /* FF3.6+ */
-  
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #242424), color-stop(100%, #141414));
     /* Chrome,Safari4+ */
-  
     background: -webkit-linear-gradient(top, #242424 0%, #141414 100%);
     /* Chrome10+,Safari5.1+ */
-  
     background: -o-linear-gradient(top, #242424 0%, #141414 100%);
     /* Opera 11.10+ */
-  
     background: -ms-linear-gradient(top, #242424 0%, #141414 100%);
     /* IE10+ */
-  
     background: linear-gradient(to bottom, #242424 0%, #141414 100%);
     /* W3C */
-  
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#242424', endColorstr='#141414', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#242424', endColorstr='#141414', GradientType=0);
     /* IE6-8 */
-  
     border: 0 none;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -7972,7 +7939,6 @@
   #mainPage {
     background: #000000;
     /*--- ПОИСК ---*/
-  
   }
   #mainPage .allpage {
     background: #000000;
@@ -8428,7 +8394,7 @@
     background: -o-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: -ms-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: linear-gradient(to bottom, #ffc000 0%, #ffaa01 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
     border: 1px solid #DB8A00;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -8451,7 +8417,7 @@
     background: -o-linear-gradient(top, #ffa200 0%, #f79200 100%);
     background: -ms-linear-gradient(top, #ffa200 0%, #f79200 100%);
     background: linear-gradient(to bottom, #ffa200 0%, #f79200 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
   }
   .share-section {
     margin: 80px 0 0;
@@ -8960,7 +8926,7 @@
     background-color: transparent;
     box-shadow: none;
     font-size: 12px;
-    filter: progid:dximagetransform.microsoft.alpha(opacity=0);
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     -webkit-appearance: none;
   }
   .bProductDesc .bDescSelectItem__eOption {
@@ -8972,7 +8938,7 @@
     text-align: right;
     color: black;
     background-color: #FFFFFF;
-    filter: progid:dximagetransform.microsoft.alpha(opacity=100);
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     -webkit-appearance: none;
   }
   .bProductDesc .bDescSelectItem__eValue {
@@ -9239,8 +9205,8 @@
     background: #f2f2f2;
   }
   /**
-   * Если есть категории
-   */
+ * Если есть категории
+ */
   .bGoodsSlider.mWithCategory {
     border-bottom: 1px solid #c7c7c7;
   }
@@ -9398,7 +9364,6 @@
     border-radius: 3px;
     height: 22px;
     line-height: 22px;
-    padding: 0;
     text-align: center;
     width: 33px;
     padding: 0;
@@ -9511,28 +9476,20 @@
   .btnBuy__eLink.mShopsOnly {
     background: #040404;
     /* Old browsers */
-  
     background: -moz-linear-gradient(top, #505050 0%, #040404 100%);
     /* FF3.6+ */
-  
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #505050), color-stop(100%, #040404));
     /* Chrome,Safari4+ */
-  
     background: -webkit-linear-gradient(top, #505050 0%, #040404 100%);
     /* Chrome10+,Safari5.1+ */
-  
     background: -o-linear-gradient(top, #505050 0%, #040404 100%);
     /* Opera 11.10+ */
-  
     background: -ms-linear-gradient(top, #505050 0%, #040404 100%);
     /* IE10+ */
-  
     background: linear-gradient(to bottom, #505050 0%, #040404 100%);
     /* W3C */
-  
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#505050', endColorstr='#040404', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#505050', endColorstr='#040404', GradientType=0);
     /* IE6-9 */
-  
     display: inline-block;
     border: 1px solid #a1a1a1;
     vertical-align: top;
@@ -9867,7 +9824,6 @@
     background: #000;
     text-shadow: none;
     font: normal 12px tahoma, verdana, arial, helvetica, sans-serif;
-    line-height: 21px;
     line-height: 21px;
   }
   .bBrandCatalog .goodsbox__inner .btnBuy__eLink.mBought {
@@ -10447,7 +10403,6 @@
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    font-size: 11px;
     line-height: 20px;
     color: #ffffff;
     background: #000000;
@@ -10474,7 +10429,6 @@
     border: 1px solid #c7c7c7;
     background-color: #ffffff;
     background-image: none;
-    font-size: 11px;
     line-height: 20px;
     float: none;
     padding: 0;
@@ -10750,7 +10704,6 @@
   }
   .bBuyingLine__eLabel {
     display: inline-block;
-    zoom: 1;
     width: 460px;
     vertical-align: top;
     font-family: Tahoma, sans-serif;
@@ -10918,8 +10871,8 @@
     background: url("/css/leftNav/img/leftNavSprite.png") no-repeat -38px 0;
   }
   /*
-  Стили для метода доставки PickPoint
-   */
+Стили для метода доставки PickPoint
+ */
   .bPickPointHint {
     margin: 30px 0 0 0;
     width: 500px;
@@ -11641,7 +11594,7 @@
     background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
     background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -11655,7 +11608,7 @@
     background: -o-linear-gradient(top, #f5f5f5 0%, #d7d7d7 100%);
     background: -ms-linear-gradient(top, #f5f5f5 0%, #d7d7d7 100%);
     background: linear-gradient(to bottom, #f5f5f5 0%, #d7d7d7 100%);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#d7d7d7', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#d7d7d7', GradientType=0);
     text-decoration: none;
   }
   .mBtnGrey:active {
@@ -11909,7 +11862,6 @@
     background: #000;
     text-shadow: none;
     font: normal 12px tahoma, verdana, arial, helvetica, sans-serif;
-    line-height: 21px;
     line-height: 21px;
   }
   .bListing.mPandora .btnBuy__eLink.mBought {
@@ -12206,7 +12158,6 @@
     width: 242px;
     height: 106px;
     vertical-align: middle;
-    zoom: 1;
     zoom: 1;
     *display: inline;
   }
@@ -12560,25 +12511,18 @@
     border-radius: 3px;
     background: #cbcbcb;
     /* Old browsers */
-  
     background: -moz-linear-gradient(top, #cbcbcb 0%, #ebebeb 100%);
     /* FF3.6+ */
-  
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #cbcbcb), color-stop(100%, #ebebeb));
     /* Chrome,Safari4+ */
-  
     background: -webkit-linear-gradient(top, #cbcbcb 0%, #ebebeb 100%);
     /* Chrome10+,Safari5.1+ */
-  
     background: -o-linear-gradient(top, #cbcbcb 0%, #ebebeb 100%);
     /* Opera 11.10+ */
-  
     background: -ms-linear-gradient(top, #cbcbcb 0%, #ebebeb 100%);
     /* IE10+ */
-  
     background: linear-gradient(to bottom, #cbcbcb 0%, #ebebeb 100%);
     /* W3C */
-  
     position: relative;
     display: inline-block;
     margin: 12px 10px 0 10px;
