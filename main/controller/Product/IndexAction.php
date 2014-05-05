@@ -471,6 +471,7 @@ class IndexAction {
                 $result[$id]['height'] = '';
                 $result[$id]['width'] = '';
                 $result[$id]['depth'] = '';
+                $result[$id]['deliveryDate'] = '';
 
                 // добавляем размеры
                 $dimensionsTranslate = [
