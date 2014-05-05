@@ -13,17 +13,6 @@ class SvyaznoyClubAction {
 
         $response = null;
         try {
-            // обязательные параметры которые должны прийти
-            $requiredParams = ['OrderId', 'Status', 'CardNumber', 'Signature'];
-
-            // определяем непришедшие параметры
-            $missingParams = array_filter($requiredParams, function($param) use ($request) {
-                return !(bool)$request->get($param);
-            });
-            if (!empty($missingParams)) {
-                throw new \Exception(sprintf('Связной-клуб не передал параметры: [%s]', implode(', ', $missingParams)));
-            }
-
             $orderId = $request->get('OrderId');
             $status = $request->get('Status');
             $discount = $request->get('Discount');

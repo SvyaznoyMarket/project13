@@ -10,14 +10,7 @@ class PaypalAction {
 
         try {
             $token = trim((string)$request->get('token'));
-            if (!$token) {
-                throw new \Exception\NotFoundException('Не передан параметр token');
-            }
-
             $payerId = trim((string)$request->get('PayerID'));
-            if (!$token) {
-                throw new \Exception\NotFoundException('Не передан параметр PayerID');
-            }
 
             $result = $client->query(
                 'payment/paypal-get-info',
