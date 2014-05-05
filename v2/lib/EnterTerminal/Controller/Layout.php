@@ -6,7 +6,7 @@ use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\Controller;
-use EnterSite\Repository;
+use EnterTerminal\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
 use EnterTerminal\Model\Layout as Page;
@@ -24,7 +24,6 @@ class Layout {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
-        $productRepository = new Repository\Product();
 
         // ид региона
         $regionId = trim((string)$request->query['regionId']);
