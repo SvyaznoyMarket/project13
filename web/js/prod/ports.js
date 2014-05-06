@@ -1042,13 +1042,16 @@ window.ANALYTICS = {
 					cookieName;
 				// end of vars
 
-				if ( undefined == rr_data.emailCookieName ) return;
+				if ( 'object' != typeof(rr_data) || !rr_data.hasOwnProperty('emailCookieName') ) {
+					return;
+				}
 
 				cookieName = rr_data.emailCookieName;
-				if ( !window.docCookies.hasItem(cookieName) ) return;
 
 				email = window.docCookies.getItem(cookieName);
-				if ( !email ) return;
+				if ( !email ) {
+					return;
+				}
 
 				console.info('RetailRocketJS userEmailSend');
 				console.log(email);
@@ -1064,6 +1067,9 @@ window.ANALYTICS = {
 
         RetailRocket.init();
 
+		// Передаем email пользователя для RetailRocket
+		RetailRocket.userEmailSend();
+
         if ( ENTER.config.userInfo && ENTER.config.userInfo.id ) {
 			// ок, берём userInfo-данные из памяти
             RetailRocket.action(null, ENTER.config.userInfo);
@@ -1078,9 +1084,6 @@ window.ANALYTICS = {
 				body.on('userLogged', RetailRocket.action);
 			}
         }
-
-		// Передаем email пользователя для RetailRocket
-		RetailRocket.userEmailSend();
 
         console.groupEnd();
     },
@@ -1235,13 +1238,13 @@ window.ANALYTICS = {
 			self = this;
 
 		$.each(  nodes , function() {
-//console.info( this.id, this.id+'' in self  )
-			
+			//console.info( this.id, this.id+'' in self  )
+
 			// document.write is overwritten in loadjs.js to document.writeln
 			var
 				anNode = $(this);
 			// end of vars
-			
+
 			console.log(anNode);
 
 			if ( anNode.is('.parsed') ) {
@@ -1445,18 +1448,21 @@ window.ANALYTICS = {
 			return;
 		}
 
-		data = kiss.data('value')
+		data = kiss.data('value');
 
-		if ( undefined === data.entity_id ) {
+		if (
+			'object' != typeof(data) ||
+			!data.hasOwnProperty('entity_id') ||
+			!data.hasOwnProperty('cookieName') ||
+			'undefined' == typeof(_kmq)
+			) {
 			return;
 		}
 
-		if (typeof _kmq !== undefined) {
-			_kmq.push(['alias', KM.i(), data.entity_id]);
-			_kmq.push(['set', {'enter_id': data.entity_id}]);
+		_kmq.push(['alias', KM.i(), data.entity_id]);
+		_kmq.push(['set', {'enter_id': data.entity_id}]);
 
-			data.cookieName !== undefined && window.docCookies.removeItem(data.cookieName, '/');
-		}
+		window.docCookies.removeItem(data.cookieName, '/');
 	},
 
 	sociaPlusJs: function() {

@@ -21,7 +21,11 @@ class Manager {
 
             $response->headers->setCookie(new \Http\Cookie(
                 $this->cookieName,
-                $email, time() + $this->cookieLifetime, '/', null, false, true
+                $email, time() + $this->cookieLifetime,
+                '/',
+                null,
+                false,
+                false // важно httpOnly=false, чтобы js мог получить куку
             ));
 
         } catch (\Exception $e) {
