@@ -8,7 +8,7 @@
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD
-        define(['jquery'], factory);
+        define([''], factory);
     } else if (typeof exports === 'object') {
         // CommonJS
         factory(require('jquery'));
