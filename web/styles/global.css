@@ -3447,6 +3447,10 @@ img[height="0"] {
     margin: 15px 0 0 10px;
     color: #515151;
   }
+  .packageSet.mPackageSetEdit .packageSetBodyItem_desc .delivery-nodate {
+    width: 142px;
+    margin-top: 0;
+  }
   .packageSet.mPackageSetEdit .packageSetBodyItem_desc .delivery strong {
     color: #000000;
   }
@@ -3583,6 +3587,10 @@ img[height="0"] {
   }
   .packageSetBodyItem_delivery strong {
     color: #000000;
+  }
+  .packageSetBodyItem_delivery-nodate {
+    line-height: 1.2;
+    padding-top: 52px;
   }
   .packageSetBodyItem_price {
     display: inline-block;
