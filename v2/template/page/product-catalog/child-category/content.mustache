@@ -4,7 +4,7 @@
         	<div class="catalogHead_title">Бренды и параметры</div>
 
         	<a class="catalogHead_btn btnStyleOrange" href="">Показать товар (29)</a>
-        	<a class="catalogHead_btn btnStyleGrey" href="">Еще параметры</a>
+        	<a class="catalogHead_btn btnStyleGrey" href=""><span class="arrow">Еще параметры</span></a>
         </div>
 
         <div class="filter">
@@ -42,31 +42,50 @@
         		<li class="filterTags_clear"><a class="link" href=""><span class="text">Очистить все</span></a></li>
         	</ul>
 
-        	<script src="/v2/js/vendor/jquery.ui.touch-punch.js"></script>
-
         	<script>
 				$(function() {
 					$( "#slider-range" ).slider({
 						range: true,
 						min: 0,
 						max: 500,
-						values: [ 0, 500 ],
-						slide: function( event, ui ) {
-					$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-					}
+						values: [ 0, 500 ]
 					});
-					$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-					" - $" + $( "#slider-range" ).slider( "values", 1 ) );
 				});
 			</script>
 
 			<div class="priceRange">
-	        	<p>
-					<label for="amount">Price range:</label>
-					<input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;">
-				</p>
+
+				<span class="priceRange_title">Цена</span>
+
+				<input type="text" class="priceRange_amount" />
 
 				<div class="priceRange_slider" id="slider-range"></div>
+
+				<input type="text" class="priceRange_amount" />
+
+				<span class="priceRange_rubl rubl">p</span>
+			</div>
+
+			<ul class="sorting sortingFull">
+				<li class="sorting_title">Сортировать</li>
+
+				<li class="sorting_item sorting_item-active">Автоматически</li>
+				<li class="sorting_item">Хиты продаж</li>
+				<li class="sorting_item"><span class="top">По цене</span></li>
+				<li class="sorting_item"><span class="drop">По цене</span></li>
+			</ul>
+
+			<div class="sorting sortingAbb">
+				<span class="sorting_title">Сортировать</span>
+
+				<div class="sortingSelect">Автоматически</div>
+				
+				<ul class="sortingList">
+					<li class="sortingList_item">Автоматически</li>
+					<li class="sortingList_item">Хиты продаж</li>
+					<li class="sortingList_item"><span class="top">По цене</span></li>
+					<li class="sortingList_item"><span class="drop">По цене</span></li>
+				</ul>
 			</div>
         </div>
 
@@ -231,6 +250,8 @@
         		<a class="img" href=""><img src="http://fs01.enter.ru/1/1/163/bb/277081.jpg" /></a>
         	</div>
         </div>
+
+        <a href="" class="catalogMore btnStyleGrey">Показать еще 20</a>
     </div>
 </div>
 
