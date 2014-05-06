@@ -42,6 +42,9 @@ class Category {
         // номер страницы
         $pageNum = (int)$request->query['page'] ?: 1;
 
+        // количество товаров на страницу
+        $limit = (int)$request->query['limit'] ?: 10;
+
         // сортировка
         $sorting = null;
         if (!empty($request->query['sort']['token']) && !empty($request->query['sort']['direction'])) {
@@ -84,7 +87,6 @@ class Category {
         $curl->prepare($ancestryCategoryItemQuery);
 
         // запрос листинга идентификаторов товаров
-        $limit = $config->product->itemPerPage;
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
