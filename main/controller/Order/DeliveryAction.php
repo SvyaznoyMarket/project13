@@ -194,7 +194,7 @@ class DeliveryAction {
                         'products' => [],
                     ],
                     'standart_other'     => [
-                        'name'     => 'Плановая дата доставки',
+                        'name'     => 'Доставим',
                         'unique'     => false,
                         'products' => [],
                     ],
