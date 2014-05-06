@@ -3051,10 +3051,6 @@ img[height="0"] {
   .tchiboProducts .productInner:hover {
     z-index: 100;
   }
-  .tchiboProducts .productInner:hover .bBtnLine,
-  .tchiboProducts .productInner:hover .bOptionsSection {
-    display: block;
-  }
   .tchiboProducts .productInner .bProductDescSticker {
     z-index: 102;
     top: 5px;
@@ -3076,6 +3072,10 @@ img[height="0"] {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     background: #ffffff;
   }
+  .tchiboProducts .productInner__hover:hover .bBtnLine,
+  .tchiboProducts .productInner__hover:hover .bOptionsSection {
+    display: block;
+  }
   .tchiboProducts .productInner__imgBox {
     width: 100%;
     text-align: center;
@@ -3091,6 +3091,7 @@ img[height="0"] {
   }
   .tchiboProducts .productInner__desc {
     width: 100%;
+    background: #ffffff;
     background: rgba(255, 255, 255, 0.5);
     margin: -20px 0 0;
     position: relative;
