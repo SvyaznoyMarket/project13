@@ -3436,14 +3436,14 @@ img[height="0"] {
     font-size: 20px;
   }
   .packageSet.mPackageSetEdit .packageSetBodyItem_desc {
-    width: 310px;
+    width: 315px;
   }
   .packageSet.mPackageSetEdit .packageSetBodyItem_desc .delivery {
     margin: 15px 0 0 10px;
     color: #515151;
   }
   .packageSet.mPackageSetEdit .packageSetBodyItem_desc .delivery-nodate {
-    width: 137px;
+    width: 142px;
     margin-top: 0;
   }
   .packageSet.mPackageSetEdit .packageSetBodyItem_desc .delivery strong {
@@ -3472,7 +3472,7 @@ img[height="0"] {
     vertical-align: top;
     margin: 30px 0 10px;
     padding-left: 0;
-    width: 110px;
+    width: 107px;
     *display: inline;
     zoom: 1;
   }
