@@ -26,7 +26,7 @@ class CheckRedirect {
         $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod());
 
         $hasRedirect = false
-            || ($route instanceof Routing\ProductCatalog\GetChildCategory)
+            //|| ($route instanceof Routing\ProductCatalog\GetChildCategory)
             //|| ($route instanceof Routing\Cart\Index)
             || ($route instanceof Routing\Index)
             || ($route instanceof Routing\User\Auth)

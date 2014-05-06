@@ -1,0 +1,75 @@
+/* ==========================================================================
+   Стили каталога
+   ========================================================================== */
+
+.catalogList {
+	font-size: 0;
+
+	&_item {
+		display: inline-block;
+		vertical-align: top;
+
+		padding: 0 20px 20px;
+		width: 199px;
+		margin: 0 0 30px;
+
+		border-right: 1px solid #e1e1e1;
+
+		&:nth-child(4n),
+		&:last-child {
+			border: none;
+		}
+	}
+
+	.name {
+		font-size: 16px;
+
+		margin: 0 0 10px;
+
+		display: inline-block;
+		vertical-align: top;
+	}
+
+	.reviews {
+		margin: 0 0 10px;
+
+		&_star {
+			display: inline-block;
+		    vertical-align: top;
+
+		    margin: 0 2px 0 0;
+
+		    line-height: 14px;
+		    height: 14px;
+		}
+
+		&_count {
+			display: inline-block;
+		    vertical-align: top;
+		    margin: 0 0 0 5px;
+
+			font-size: 14px;
+			line-height: 1;
+			color: #6b6b6b;
+		}
+	}
+
+	.price {
+		margin: 15px 0 20px;
+
+		&_old {
+			font-size: 14px;
+			color: #6b6b6b;
+		}
+
+		&_now {
+			font-size: 22px;
+			font-weight: bold;
+		}
+	}
+
+	.img {
+		display: block;
+		text-align: center;
+	}
+}
