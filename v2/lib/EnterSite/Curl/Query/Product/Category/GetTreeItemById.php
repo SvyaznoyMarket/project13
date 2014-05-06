@@ -23,7 +23,7 @@ class GetTreeItemById extends Query {
         $this->url->path = 'v2/category/tree';
         $this->url->query = [
             'root_id'         => $id,
-            'is_load_parents' => true,
+            'is_load_parents' => false,
         ];
         $this->url->query['max_level'] = $maxLevel ?: 6;
         if ($regionId) {
