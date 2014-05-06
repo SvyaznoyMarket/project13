@@ -33,8 +33,11 @@ class DefaultLayout {
         // заголовок
         $page->title = 'Enter - все товары для жизни по интернет ценам!';
 
+        // body[data-module]
+        $page->dataModule = 'enter.product.card';
+
         // body[data-value]
-        $page->bodyDataConfig = $helper->json([
+        $page->dataConfig = $helper->json([
             'requestId' => $config->requestId,
             'user'      => [
                 'infoCookie' => $config->userToken->infoCookieName,
