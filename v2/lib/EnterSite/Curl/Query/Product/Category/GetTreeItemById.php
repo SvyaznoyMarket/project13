@@ -7,21 +7,27 @@ use EnterSite\Curl\Query\CoreQueryTrait;
 use EnterSite\Curl\Query\Url;
 use EnterSite\Model;
 
-class GetTreeList extends Query {
+class GetTreeItemById extends Query {
     use CoreQueryTrait;
 
     /** @var array|null */
     protected $result;
 
-    public function __construct(Model\Region $region = null, $maxLevel = null) {
+    /**
+     * @param string $id
+     * @param string|null $regionId
+     * @param int|null $maxLevel
+     */
+    public function __construct($id, $regionId = null, $maxLevel = null) {
         $this->url = new Url();
         $this->url->path = 'v2/category/tree';
         $this->url->query = [
+            'root_id'         => $id,
             'is_load_parents' => true,
         ];
         $this->url->query['max_level'] = $maxLevel ?: 6;
-        if ($region) {
-            $this->url->query['region_id'] = $region->id;
+        if ($regionId) {
+            $this->url->query['region_id'] = $regionId;
         }
 
         $this->init();
@@ -33,6 +39,6 @@ class GetTreeList extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]) ? $data : [];
+        $this->result = isset($data[0]) ? $data[0] : null;
     }
 }

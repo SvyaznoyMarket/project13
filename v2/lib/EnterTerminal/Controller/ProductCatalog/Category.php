@@ -12,7 +12,7 @@ use EnterSite\Curl\Query;
 use EnterSite\Model;
 use EnterTerminal\Model\Page\ProductCatalog\ChildCategory as Page;
 
-class ChildCategory {
+class Category {
     use ConfigTrait, CurlClientTrait {
         ConfigTrait::getConfig insteadof CurlClientTrait;
     }
@@ -60,7 +60,7 @@ class ChildCategory {
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
         // запрос категории
-        $categoryItemQuery = new Query\Product\Category\GetItemById($categoryId, $region->id);
+        $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryId, $region->id);
         $curl->prepare($categoryItemQuery);
 
         $categoryAdminItemQuery = null;
@@ -71,9 +71,6 @@ class ChildCategory {
         $category = (new Repository\Product\Category())->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
         if (!$category) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
-        }
-        if ($category->redirectLink) {
-            return (new Controller\Redirect())->execute($category->redirectLink. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
         }
 
         // фильтры в запросе
