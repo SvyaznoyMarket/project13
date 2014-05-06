@@ -1,0 +1,20 @@
+/* ==========================================================================
+   Стили каталога
+   ========================================================================== */
+@media only screen and (max-width: 800px) {
+	.catalogList {
+
+		&_item {
+			width: 215px;
+
+			&:nth-child(4n) {
+				border-right: 1px solid #e1e1e1;
+			}
+
+			&:nth-child(3n),
+			&:last-child {
+				border: none;
+			}
+		}
+	}
+}
