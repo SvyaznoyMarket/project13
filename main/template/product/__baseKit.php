@@ -60,9 +60,12 @@ return function (
                 <!--/ размеры товара -->
             </div>
 
-            <div class="packageSetBodyItem_delivery rown"><!-- добавляем класс packageSetBodyItem_delivery-nodate если невозможно расчитать дату доставки -->
+            <div class="packageSetBodyItem_delivery rown <?= $product['deliveryDate'] == '' ? 'packageSetBodyItem_delivery-nodate' : ''?>">
+                <? if ($product['deliveryDate'] == '') : ?>
+                Уточните дату доставки в Контакт-сEnter
+                <? else :?>
                 Доставка <strong><?= $product['deliveryDate'] ?></strong>
-                <!--Уточните дату доставки в Контакт-сEnter-->
+                <? endif; ?>
             </div><!--/ доставка -->
 
             <div class="packageSetBodyItem_price rown">
@@ -142,9 +145,9 @@ return function (
                     </div>
                     <!--/ размеры товара -->
 
-                    <div class="column delivery"><!-- добавляем класс модификатор delivery-nodate если невозможно расчитать дату доставки -->
-                        <span class="dimantion_val">Доставка <strong data-bind="text: deliveryDate"></strong></span>
-                        <!--span class="dimantion_val">Уточните дату доставки в Контакт-сEnter</span-->
+                    <div class="column delivery" data-bind="css: { 'delivery-nodate': deliveryDate() == '' } ">
+                        <span class="dimantion_val" data-bind="if: deliveryDate() != '' ">Доставка <strong data-bind="text: deliveryDate()"></strong></span>
+                        <span class="dimantion_val" data-bind="if: deliveryDate() == '' ">Уточните дату доставки в Контакт-сEnter</span>
                     </div><!--/ доставка -->
                 </div>
 
