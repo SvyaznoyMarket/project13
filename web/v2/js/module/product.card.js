@@ -1,7 +1,14 @@
 define(
-    ['jquery', 'underscore', 'module/config'],
-    function ($, _, config){
-
+    [
+        'require', 'jquery', 'underscore', 'mustache',
+        'module/config',
+        'jquery.touchwipe', 'jquery.enterslide', 'jquery.photoswipe',
+        'module/product.card.tab',
+    ],
+    function (
+        require, $, _, mustache,
+        config
+    ) {
         var $document = $(document),
             $body = $('body');
 
@@ -266,32 +273,34 @@ define(
         console.info('creditPayment', $creditPayment);
         var dataValue = $creditPayment.data('value');
         if (_.isObject(dataValue)) {
-            dc_getCreditForTheProduct(
-                dataValue.partnerId,
-                $body.data('user').sessionId,
-                'getPayment',
-                {
-                    price: dataValue.product.price,
-                    count: 1,
-                    type: dataValue.product.type
-                },
-                function(result) {
-                    console.info('dc_getCreditForTheProduct', result);
-                    if (!'payment' in result || (result.payment <= 0)) {
-                        return;
+            require(['direct-credit'], function() {
+                dc_getCreditForTheProduct(
+                    dataValue.partnerId,
+                    $body.data('user').sessionId,
+                    'getPayment',
+                    {
+                        price: dataValue.product.price,
+                        count: 1,
+                        type: dataValue.product.type
+                    },
+                    function(result) {
+                        console.info('dc_getCreditForTheProduct', result);
+                        if (!'payment' in result || (result.payment <= 0)) {
+                            return;
+                        }
+
+                        var $template = $($creditPayment.data('templateSelector')),
+                            $price = $($creditPayment.data('priceSelector')),
+                            price = Math.ceil(result.payment);
+
+                        $price.html(mustache.render($template.html(), {
+                            shownPrice: price
+                        }));
+
+                        $creditPayment.show();
                     }
-
-                    var $template = $($creditPayment.data('templateSelector')),
-                        $price = $($creditPayment.data('priceSelector')),
-                        price = Math.ceil(result.payment);
-
-                    $price.html(mustache.render($template.html(), {
-                        shownPrice: price
-                    }));
-
-                    $creditPayment.show();
-                }
-            );
+                );
+            });
         }
 
     }

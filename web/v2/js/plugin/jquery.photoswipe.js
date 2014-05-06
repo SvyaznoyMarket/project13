@@ -13,7 +13,7 @@ $(function() {
       btnSlidesLeft = $('.jsBtnSlidesLeft'),
       btnSlidesRight = $('.jsBtnSlidesRight');
   // end vars
-  
+
   // базовые установки слайдера
   slideWrap.css({'background' : 'url("/v2/css/modules/mainStyles/img/ajaxnoti.gif") no-repeat 50% 50%'});
   slideWrapItem.css({'display' : 'inline-block'});
@@ -27,9 +27,9 @@ $(function() {
       resizeSlides = function resizeSlides() {
         var slideWrapHeight = 350,
             slideImg = slideWrapItem.find('.slidesItemsList_img');
-        // end vars 
-        
-        slideWrapWidth = $('.slidesItems').width();   
+        // end vars
+
+        slideWrapWidth = $('.slidesItems').width();
 
         if ( slideWrapWidth < 360 ) {
             slideWrapHeight = slideWrapWidth;
@@ -60,7 +60,7 @@ $(function() {
        */
       paginationSlides = function paginationSlides() {
 
-        if ( countItem > 1 ) { 
+        if ( countItem > 1 ) {
             for ( var i = 1; i <= countItem; i++) {
               slidePag.append('<li class="slidesItemsBtnPag_item"></li>')
             };
@@ -81,7 +81,7 @@ $(function() {
             slidePag = $('.slidesItemsBtnPag'),
             slidePagItemActive = slidePag.find('.slidesItemsBtnPag_item__active'),
             pagActive = 'slidesItemsBtnPag_item__active';
-       
+
         if( curSlide >= (countItem - 1) ) {
           $('.jsBtnSlidesRight').hide();
         }
@@ -110,7 +110,7 @@ $(function() {
             slidePag = $('.slidesItemsBtnPag'),
             slidePagItemActive = slidePag.find('.slidesItemsBtnPag_item__active'),
             pagActive = 'slidesItemsBtnPag_item__active';
-         
+
         if ( curSlide <= 0 ) {
             $('.jsBtnSlidesLeft').hide();
         }
@@ -140,7 +140,7 @@ $(function() {
       }
     }
   });
-      
+
   $(window).on('load resize', resizeSlides);
 
   btnSlidesRight.on('click', nextSlides);
