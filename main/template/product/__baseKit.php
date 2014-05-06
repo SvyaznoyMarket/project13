@@ -60,8 +60,9 @@ return function (
                 <!--/ размеры товара -->
             </div>
 
-            <div class="packageSetBodyItem_delivery rown">
+            <div class="packageSetBodyItem_delivery rown"><!-- добавляем класс packageSetBodyItem_delivery-nodate если невозможно расчитать дату доставки -->
                 Доставка <strong><?= $product['deliveryDate'] ?></strong>
+                <!--Уточните дату доставки в Контакт-сEnter-->
             </div><!--/ доставка -->
 
             <div class="packageSetBodyItem_price rown">
@@ -141,9 +142,9 @@ return function (
                     </div>
                     <!--/ размеры товара -->
 
-                    <div class="column delivery">
-                        <span class="dimantion_name">&nbsp;</span>
+                    <div class="column delivery"><!-- добавляем класс модификатор delivery-nodate если невозможно расчитать дату доставки -->
                         <span class="dimantion_val">Доставка <strong data-bind="text: deliveryDate"></strong></span>
+                        <!--span class="dimantion_val">Уточните дату доставки в Контакт-сEnter</span-->
                     </div><!--/ доставка -->
                 </div>
 
