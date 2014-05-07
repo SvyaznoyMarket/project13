@@ -2,7 +2,7 @@ define(
     [
         'require', 'jquery', 'underscore', 'mustache',
         'module/config',
-        'jquery.touchwipe', 'jquery.enterslide', 'jquery.photoswipe',
+        'jquery.enterslide', 'jquery.photoswipe',
         'module/product.card.tab',
     ],
     function (

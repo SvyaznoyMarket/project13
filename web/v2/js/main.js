@@ -4,13 +4,14 @@ require.config({
     paths: {
         //'jquery': 'http://yandex.st/jquery/2.1.0/jquery',
         //'jquery'            : 'vendor/jquery-1.11.0',
-        'jquery'           : 'vendor/jquery-1.8.3',
-        'jquery.ui'         : 'vendor/jquery/jquery-ui-1.10.4.custom',
-        'jquery.cookie'     : 'vendor/jquery/jquery.cookie-1.4.1',
-        'jquery.popup'      : 'plugin/jquery.popup',
-        'jquery.enterslide' : 'plugin/jquery.enterslide',
-        'jquery.touchwipe'  : 'plugin/jquery.touchwipe',
-        'jquery.photoswipe' : 'plugin/jquery.photoswipe',
+        'jquery'                : 'vendor/jquery-1.8.3',
+        'jquery.cookie'         : 'vendor/jquery/jquery.cookie-1.4.1',
+        'jquery.ui'             : 'vendor/jquery/jquery.ui-1.10.4.custom',
+        'jquery.ui.touch-punch' : 'vendor/jquery/jquery.ui.touch-punch-0.2.3',
+        'jquery.popup'          : 'plugin/jquery.popup',
+        'jquery.enterslide'     : 'plugin/jquery.enterslide',
+        'jquery.touchwipe'      : 'plugin/jquery.touchwipe',
+        'jquery.photoswipe'     : 'plugin/jquery.photoswipe',
 
         'underscore'         : 'vendor/underscore-1.6.0',
         'mustache'           : 'vendor/mustache-0.8.2',
@@ -26,6 +27,9 @@ require.config({
         },
         'jquery.ui': {
             deps: ['jquery']
+        },
+        'jquery.ui.touch-punch': {
+            deps: ['jquery', 'jquery.ui']
         },
         'jquery.enterslide': {
             deps: ['jquery']
@@ -58,8 +62,19 @@ require.config({
 
 var moduleName = 'module/' + (document.getElementById('js-enter-module').getAttribute('content') || 'default');
 
+require([
+    'html5',
+    'boilerplate.helper',
+    'jquery.cookie',
+    'jquery.ui', 'jquery.ui.touch-punch', 'jquery.popup',
+    'jquery.touchwipe',
+    'module/navigation',
+    'module/region',
+    'module/search'
+]);
+
 require(
-    [moduleName, 'html5', 'jquery.ui', 'jquery.cookie', 'boilerplate.helper', 'jquery.popup', 'module/navigation'],
+    [moduleName],
     function(module) {
         console.info(module);
     }
