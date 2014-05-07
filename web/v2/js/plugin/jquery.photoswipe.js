@@ -1,5 +1,7 @@
 $(function() {
 
+  console.warn("photo");
+
   var curSlide = 0,
       body = $('body'),
       slideWrap = $('.slidesItems'),
@@ -14,17 +16,14 @@ $(function() {
       btnSlidesRight = $('.jsBtnSlidesRight');
   // end vars
 
-  // базовые установки слайдера
-  slideWrap.css({'background' : 'url("/v2/css/modules/mainStyles/img/ajaxnoti.gif") no-repeat 50% 50%'});
-  slideWrapItem.css({'display' : 'inline-block'});
-  slideList.css({'display' : 'none'});
-  slidePag.css({'display' : 'none'});
-
   var
       /*
         * Функция ресайза блока слайдера изображений товара
        */
       resizeSlides = function resizeSlides() {
+        slideWrapItem.css({'display' : 'inline-block'});
+
+        console.warn("photo resize")
         var slideWrapHeight = 350,
             slideImg = slideWrapItem.find('.slidesItemsList_img');
         // end vars
@@ -35,10 +34,8 @@ $(function() {
             slideWrapHeight = slideWrapWidth;
         };
 
-        slideWrap.css({'background' : 'none'});
-        slideList.fadeIn('300').css({'width' : slideWrapWidth * countItem});
+        slideList.css({'width' : slideWrapWidth * countItem});
         slideWrapItem.css({'width' : slideWrapWidth});
-        slideImg.css({'height' : slideWrapHeight - 30});
 
         //скрываем кнопки и пагинатор, если слайдер имеет один элемент
         if ( countItem <= 1 ) {
@@ -46,13 +43,15 @@ $(function() {
             btnSlidesRight.hide();
         }
         else {
-          btnSlidesRight.fadeIn('300');
-          slidePag.fadeIn('300');
+          btnSlidesRight.show();
+          slidePag.show();
         };
 
         var slideListLeftNew = -1 * slideWrapWidth * curSlide;
 
         slideList.css({'left' : slideListLeftNew});
+
+        
       },
 
       /*
@@ -141,9 +140,13 @@ $(function() {
     }
   });
 
-  $(window).on('load resize', resizeSlides);
+  console.warn('window', $(window) );
+
+  $(window).on('resize', resizeSlides);
+  resizeSlides();
 
   btnSlidesRight.on('click', nextSlides);
   btnSlidesLeft.on('click', prevSlides);
+
   paginationSlides();
 });

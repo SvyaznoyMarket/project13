@@ -1296,7 +1296,7 @@ body.noScroll {
   zoom: 1;
 }
 .slidesItemsList_img {
-  text-align: center;
+  width: 90%;
 }
 .slidesItemsBtn {
   position: absolute;
