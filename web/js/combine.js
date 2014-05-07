@@ -1,1 +1,1 @@
-window.release = { "version":"t71.2-188-g78e404e"}
+window.release = { "version":"t71.2-189-g2267e0d"}
