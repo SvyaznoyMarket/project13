@@ -1,8 +1,6 @@
-/**
- * Окно смены региона
- *
- */
-$(function(){
+define(
+    ['jquery'],
+    function ($) {
 
 		var body = $('body'),
 
@@ -102,7 +100,9 @@ $(function(){
 			
 		//end of function
 	
-	$(window).on('load', addData);
-	$(window).on('load resize', tabsToggle);
-	tabItem.on('click', tabsSlide);
-});
+	    $(window).on('load', addData);
+	    $(window).on('load resize', tabsToggle);
+	    tabItem.on('click', tabsSlide);
+
+    }
+);
