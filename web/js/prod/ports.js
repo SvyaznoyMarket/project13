@@ -1498,6 +1498,193 @@ window.ANALYTICS = {
 		}
 	},
 
+	RuTargetJS: function() {
+		(function(w,d,s,l,i){
+			w[l]=w[l]||[];
+			w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+			var 
+				f=d.getElementsByTagName(s)[0],
+				j=d.createElement(s),
+				dl=l!='dataLayer'?'&l='+l:'';
+
+			j.async=true;
+			j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;
+			f.parentNode.insertBefore(j,f);
+		})(window,document,'script','_rutarget','GTM­4SJX');
+	},
+
+	RuTargetProductJS: function() {
+		var
+			rutarget = $('#RuTargetProductJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.id || !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'showOffer', 'sku': data.id, 'regionId': data.regionId};
+
+		console.info('RuTargetProduct');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetProductCategoryJS: function() {
+		var
+			rutarget = $('#RuTargetProductCategoryJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.id || !data.regionId || !data.name ) {
+			return;
+		}
+
+		result = {'event': 'showCategory','categoryCodes': data.id, 'categoryNames': data.name, 'regionId': data.regionId};
+
+		console.info('RuTargetProductCategory');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetCartJS: function() {
+		var
+			rutarget = $('#RuTargetCartJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.products || !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'cart','products': data.products, 'regionId': data.regionId};
+
+		console.info('RuTargetCart');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetOrderOneClickJS: function() {
+		var
+			rutarget = $('#RuTargetOrderOneClickJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.product || !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'confirmOrder', 'products': [{'qty': data.product.quantity, 'sku': data.product.id}], 'regionId': data.regionId};
+
+		console.info('RuTargetOrderOneClick');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetOrderJS: function() {
+		var
+			rutarget = $('#RuTargetOrderJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.products || !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'confirmOrder', 'products': data.products, 'regionId': data.regionId};
+
+		console.info('RuTargetOrder');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetOrderCompleteJS: function() {
+		var
+			rutarget = $('#RuTargetOrderCompleteJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.products || !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'thankYou', 'products': data.products, 'regionId': data.regionId};
+
+		console.info('RuTargetOrderComplete');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetSearchJS: function() {
+		var
+			rutarget = $('#RuTargetSearchJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'otherPage', 'regionId': data.regionId};
+
+		console.info('RuTargetSearch');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetHomepageJS: function() {
+		var
+			rutarget = $('#RuTargetHomepageJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'otherPage', 'regionId': data.regionId};
+
+		console.info('RuTargetHomepage');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+	RuTargetOtherPageJS: function() {
+		var
+			rutarget = $('#RuTargetOtherPageJS'),
+			data = rutarget.data('value'),
+			result,
+			_rutarget = window._rutarget || [];
+		// end of vars
+
+		if ( !data.regionId ) {
+			return;
+		}
+
+		result = {'event': 'otherPage', 'regionId': data.regionId};
+
+		console.info('RuTargetOtherPage');
+		console.log(result);
+		_rutarget.push(result);
+	},
+
+
 	enable : true
 }
 

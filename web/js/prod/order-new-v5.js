@@ -2919,6 +2919,28 @@
 
 				var
 					/**
+					 * RuTarget analytics
+					 *
+					 * @param {Object}	data	Данные, пришедшие с ответа от сервера
+					 */
+					spinnerAnalytics = function spinnerAnalytics( data ) {
+						var
+							_rutarget = window._rutarget || [],
+							result;
+						// end of vars
+
+						if ( !data.product || !data.regionId ) {
+							return;
+						}
+
+						result = {'event': 'updateInCart', 'sku': data.product.id, 'qty': data.product.quantity, 'regionId': data.regionId};
+
+						console.info('RuTarget updateInCart. Клики кнопок увеличения/уменьшения кол-ва товара.');
+						console.log(result);
+						_rutarget.push(result);
+					},
+
+					/**
 					 * Обработка ответа измеения количества товаров
 					 * 
 					 * @param	{Object}	res		Ответ от сервера
@@ -2932,6 +2954,8 @@
 						}
 
 						ENTER.OrderModel.couponNumber('');
+
+						spinnerAnalytics(res);
 					};
 				// end of functions
 
@@ -3563,12 +3587,14 @@
 
 			utils.blockScreen.block('Удаляем');
 
-			var itemDeleteAnalytics = function itemDeleteAnalytics() {
+			var itemDeleteAnalytics = function itemDeleteAnalytics( data ) {
 					var products = ENTER.OrderModel.orderDictionary.products,
 						totalPrice = 0,
 						totalQuan = 0,
 
-						toKISS = {};
+						toKISS = {},
+						_rutarget = window._rutarget || [],
+						result;
 					// end of vars
 
 					if ( !data.product ) {
@@ -3576,8 +3602,8 @@
 					}
 
 					for ( var product in products ) {
-						totalPrice += product[product].price;
-						totalQuan += product[product].quantity;
+						totalPrice += products[product].price;
+						totalQuan += products[product].quantity;
 					}
 
 					toKISS = {
@@ -3592,6 +3618,15 @@
 					if ( typeof _gaq !== 'undefined' ) {
 						_gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
 					}
+
+					/* RuTarget */
+					if ( !data.regionId ) return;
+
+					result = {'event': 'removeFromCart', 'sku': data.product.id, 'regionId': data.regionId}
+
+					console.info('RuTarget removeFromCart');
+					console.log(result);
+					_rutarget.push(result);
 				},
 
 				deleteItemResponceHandler = function deleteItemResponceHandler( res ) {
@@ -3606,9 +3641,7 @@
 					}
 
 					// запуск аналитики
-					if ( typeof _gaq !== 'undefined' || typeof _kmq !== 'undefined' ) {
-						itemDeleteAnalytics();
-					}
+					itemDeleteAnalytics(res);
 
 					if ( res.product ) {
 						var productId = res.product.id;

@@ -2,6 +2,9 @@
 
 namespace View\Order;
 
+use \Model\Order\Product\Entity as OrderProduct;
+use \Model\Order\Entity as Order;
+
 class CompletePage extends Layout {
     public function prepare() {
         $orders = is_array($this->getParam('orders')) ? $this->getParam('orders') : [];
@@ -67,9 +70,9 @@ class CompletePage extends Layout {
         }
 
         return ''
-            . ($isOrderAnalytics ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
-            . "\n\n"
-            . $this->render('_innerJavascript');
+        . ($isOrderAnalytics ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
+        . "\n\n"
+        . $this->render('_innerJavascript');
     }
 
     public function slotAdriver() {
@@ -186,5 +189,35 @@ class CompletePage extends Layout {
     public function slotAdblender() {
         // For ports.js analytics
         return \App::config()->analytics['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' => 'layout-order-complete']).'"></div>' : '';
+    }
+
+    public function slotRuTargetOrderCompleteJS() {
+        if (!\App::config()->partners['RuTarget']['enabled']) return;
+
+        /** @var $orders Order[] */
+        $orders = $this->getParam('orders');
+        if (!$orders || empty($orders) || !is_array($orders)) return;
+
+        $productList = [];
+        foreach ($orders as $order) {
+            if (!$order instanceof Order) continue;
+
+            foreach ($order->getProduct() as $product) {
+                if (!$product instanceof OrderProduct) continue;
+
+                $productList[] = [
+                    'qty' => $product->getQuantity(),
+                    'sku' => $product->getId(),
+                ];
+            }
+        }
+
+        $data = [
+            'products' => $productList,
+            'regionId' => \App::user()->getRegionId(),
+        ];
+
+        return "<div id='RuTargetOrderCompleteJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+
     }
 }

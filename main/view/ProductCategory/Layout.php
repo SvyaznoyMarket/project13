@@ -210,4 +210,22 @@ class Layout extends \View\DefaultLayout {
             "<meta property=\"og:type\" content=\"website\"/>\r\n";
 
     }
+
+    public function slotRuTargetProductCategoryJS() {
+        if (!\App::config()->partners['RuTarget']['enabled']) return;
+
+        /** @var $category \Model\Product\Category\Entity */
+        $category = $this->getParam('category');
+        if (!$category) {
+            return;
+        }
+
+        $data = [
+            'id' => $category->getId(),
+            'name' => $category->getName(),
+            'regionId' => \App::user()->getRegionId(),
+        ];
+
+        return "<div id='RuTargetProductCategoryJS' class='jsanalytics' data-value='" . json_encode($data) . "'><div>";
+    }
 }
