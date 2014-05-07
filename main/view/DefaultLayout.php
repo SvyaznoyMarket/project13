@@ -838,7 +838,11 @@ class DefaultLayout extends Layout {
     public function slotLamodaJS() {
         if (!\App::config()->partners['Lamoda']['enabled']) return;
 
-        return '<div id="LamodaJS" class="jsanalytics"></div>';
+        $data = [
+            'lamodaID' => \App::config()->partners['Lamoda']['lamodaID'],
+        ];
+
+        return "<div id='LamodaJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
     }
 
     /**
@@ -879,6 +883,7 @@ class DefaultLayout extends Layout {
             $this->slotLamodaCategoryJS(),
             $this->slotLamodaSearchJS(),
             $this->slotLamodaProductJS(),
+            $this->slotLamodaCompleteJS(),
         ];
 
         // отсекаем с массива все отсутствующие на странице пиксели Lamoda
@@ -890,5 +895,14 @@ class DefaultLayout extends Layout {
         }
 
         return "<div id='LamodaOtherPageJS' class='jsanalytics'></div>";
+    }
+
+    /**
+     * Lamoda
+     * Заказ (success page)
+     * @return string
+     */
+    public function slotLamodaCompleteJS() {
+        return '';
     }
 }

@@ -1687,12 +1687,21 @@ window.ANALYTICS = {
 
 	LamodaJS: function () {
 		(function() {
+			var
+				lamoda = $('#LamodaJS'),
+				data = lamoda.data('value');
+			// end of vars
+
+			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('lamodaID') ) {
+				return;
+			}
+
 			console.log('LamodaJS');
 
 			window.JSREObject = window.JSREObject || function() { window.JSREObject.q.push(arguments) };
 			window.JSREObject.q = window.JSREObject.q || [];
 			window.JSREObject.l = +new Date;
-			JSREObject('create','11640775691088171491', 'r24-tech.com');
+			JSREObject('create', data.lamodaID, 'r24-tech.com');
 			$.getScript("//r24-tech.com/static/dsp/min/js/jsre-min.js");
 		})();
 	},
@@ -1704,7 +1713,7 @@ window.ANALYTICS = {
 				data = lamoda.data('value');
 			// end of vars
 
-			if ('undefined' == typeof(data) || !data.hasOwnProperty('id') || 'undefined' == typeof(JSREObject)) {
+			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('id') || 'undefined' == typeof(JSREObject) ) {
 				return;
 			}
 
@@ -1721,7 +1730,7 @@ window.ANALYTICS = {
 				data = lamoda.data('value');
 			// end of vars
 
-			if ('undefined' == typeof(data) || !data.hasOwnProperty('query') || 'undefined' == typeof(JSREObject)) {
+			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('query') || 'undefined' == typeof(JSREObject) ) {
 				return;
 			}
 
@@ -1738,7 +1747,7 @@ window.ANALYTICS = {
 				data = lamoda.data('value');
 			// end of vars
 
-			if ('undefined' == typeof(data) || !data.hasOwnProperty('id') || 'undefined' == typeof(JSREObject)) {
+			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('id') || 'undefined' == typeof(JSREObject) ) {
 				return;
 			}
 
@@ -1750,10 +1759,20 @@ window.ANALYTICS = {
 
 	LamodaOtherPageJS: function () {
 		(function() {
-			if ('undefined' == typeof(JSREObject)) return;
+			if ( 'undefined' == typeof(JSREObject) ) return;
 
 			console.log('LamodaOtherPageJS');
 			JSREObject('pageview');
+		})();
+	},
+
+	LamodaCompleteJS: function () {
+		(function() {
+			if ( 'undefined' == typeof(JSREObject) ) return;
+
+			console.log('LamodaCompleteJS');
+			JSREObject('cart_checkout');
+			JSREObject('conversion');
 		})();
 	},
 

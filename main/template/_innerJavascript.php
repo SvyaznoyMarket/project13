@@ -35,4 +35,5 @@
 <?= $page->slotLamodaSearchJS() ?>
 <?= $page->slotLamodaProductJS() ?>
 <?= $page->slotLamodaOtherPageJS() ?>
+<?= $page->slotLamodaCompleteJS() ?>
 <!-- Lamoda End -->

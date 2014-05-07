@@ -167,6 +167,7 @@ $c->partners['Admitad']['enabled'] = false;
 $c->partners['Revolvermarketing']['enabled'] = true;
 $c->partners['RuTarget']['enabled'] = true;
 $c->partners['Lamoda']['enabled'] = true;
+$c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
