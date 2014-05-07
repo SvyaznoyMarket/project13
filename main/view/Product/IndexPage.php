@@ -329,4 +329,20 @@ class IndexPage extends \View\DefaultLayout {
 
         return "<div id='RuTargetProductJS' class='jsanalytics' data-value='" . json_encode($data) . "'><div>";
     }
+
+    public function slotLamodaProductJS() {
+        if (!\App::config()->partners['Lamoda']['enabled']) return;
+
+        /** @var $product \Model\Product\Entity */
+        $product = $this->getParam('product');
+        if (!$product) {
+            return;
+        }
+
+        $data = [
+            'id' => $product->getId(),
+        ];
+
+        return "<div id='LamodaProductJS' class='jsanalytics' data-value='" . json_encode($data) . "'><div>";
+    }
 }
