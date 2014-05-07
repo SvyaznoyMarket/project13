@@ -99,8 +99,8 @@ define(
 
 			
 		//end of function
-	
-	    $(window).on('load', addData);
+
+        addData();
 	    $(window).on('resize', tabsToggle);
 	    tabsToggle();
 	    tabItem.on('click', tabsSlide);
