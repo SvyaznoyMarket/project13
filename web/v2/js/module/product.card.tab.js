@@ -101,7 +101,8 @@ define(
 		//end of function
 	
 	    $(window).on('load', addData);
-	    $(window).on('load resize', tabsToggle);
+	    $(window).on('resize', tabsToggle);
+	    tabsToggle();
 	    tabItem.on('click', tabsSlide);
 
     }
