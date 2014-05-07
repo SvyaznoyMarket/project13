@@ -16,7 +16,10 @@ class MobileRedirectAction {
         $routeName = $request->attributes->get('route');
 
         $hasRedirect = $routeName && (false
-            || ('product' === $routeName)
+            || in_array($routeName, [
+                'product.category',
+                'product',
+            ])
         );
         if (!$hasRedirect) {
             return null;

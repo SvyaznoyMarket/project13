@@ -25,4 +25,6 @@ class ProductCard {
     public $categoryId;
     /** @var Partial\Cart\ProductButton|null */
     public $cartButton;
+    /** @var Partial\Rating|null */
+    public $rating;
 }

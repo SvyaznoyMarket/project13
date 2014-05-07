@@ -86,183 +86,31 @@
 			</div>
         </div>
 
+        {{#productBlock}}
         <div class="catalogList">
-        	<a href="" class="catalogList_item">
-    			<div class="img"><img src="http://fs01.enter.ru/1/1/163/bb/277081.jpg" /></div>
+            {{#products}}
+        	<a href="{{url}}" class="catalogList_item">
+    			<div class="img"><img src="{{image}}" /></div>
 
         		<div class="catalogList_desc">
-	        		<span href="" class="name">Планшетный компьютер Explay Surfer 8.01</span>
+	        		<span href="{{url}}" class="name">{{name}}</span>
 
 	        		<div class="reviews">
-	        			<img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/starEmpty.png" class="reviews_star">
-	                    <span class="reviews_count">16</span>
+                        {{#rating}}
+                            {{>partial/rating/star-list}}
+                        {{/rating}}
+                        <span class="reviews_count">{{rating.reviewCount}}</span>
 	                </div>
 
 	        		<div class="price">
-	        			<div class="price_old">29 999 <span class="rubl">p</span></div>
-	        			<div class="price_now">19 999 <span class="rubl">p</span></div>
+                        {{#oldPrice}}<div class="price_old">{{shownOldPrice}} <span class="rubl">p</span></div>{{/oldPrice}}
+                        {{#price}}<div class="price_now">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
 	        		</div>
 	        	</div>
         	</a>
-
-        	<a href="" class="catalogList_item">
-    			<div class="img"><img src="http://fs01.enter.ru/1/1/163/bb/277081.jpg" /></div>
-
-        		<div class="catalogList_desc">
-	        		<span href="" class="name">Планшетный компьютер Explay Surfer 8.01</span>
-
-	        		<div class="reviews">
-	        			<img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/starEmpty.png" class="reviews_star">
-	                    <span class="reviews_count">16</span>
-	                </div>
-
-	        		<div class="price">
-	        			<div class="price_old">29 999 <span class="rubl">p</span></div>
-	        			<div class="price_now">19 999 <span class="rubl">p</span></div>
-	        		</div>
-	        	</div>
-        	</a>
-
-        	<a href="" class="catalogList_item">
-    			<div class="img"><img src="http://fs01.enter.ru/1/1/163/bb/277081.jpg" /></div>
-
-        		<div class="catalogList_desc">
-	        		<span href="" class="name">Планшетный компьютер Explay Surfer 8.01</span>
-
-	        		<div class="reviews">
-	        			<img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/starEmpty.png" class="reviews_star">
-	                    <span class="reviews_count">16</span>
-	                </div>
-
-	        		<div class="price">
-	        			<div class="price_old">29 999 <span class="rubl">p</span></div>
-	        			<div class="price_now">19 999 <span class="rubl">p</span></div>
-	        		</div>
-	        	</div>
-        	</a>
-
-        	<a href="" class="catalogList_item">
-    			<div class="img"><img src="http://fs01.enter.ru/1/1/163/bb/277081.jpg" /></div>
-
-        		<div class="catalogList_desc">
-	        		<span href="" class="name">Планшетный компьютер Explay Surfer 8.01</span>
-
-	        		<div class="reviews">
-	        			<img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/starEmpty.png" class="reviews_star">
-	                    <span class="reviews_count">16</span>
-	                </div>
-
-	        		<div class="price">
-	        			<div class="price_old">29 999 <span class="rubl">p</span></div>
-	        			<div class="price_now">19 999 <span class="rubl">p</span></div>
-	        		</div>
-	        	</div>
-        	</a>
-
-        	<a href="" class="catalogList_item">
-    			<div class="img"><img src="http://fs01.enter.ru/1/1/163/bb/277081.jpg" /></div>
-
-        		<div class="catalogList_desc">
-	        		<span href="" class="name">Планшетный компьютер Explay Surfer 8.01</span>
-
-	        		<div class="reviews">
-	        			<img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/starEmpty.png" class="reviews_star">
-	                    <span class="reviews_count">16</span>
-	                </div>
-
-	        		<div class="price">
-	        			<div class="price_old">29 999 <span class="rubl">p</span></div>
-	        			<div class="price_now">19 999 <span class="rubl">p</span></div>
-	        		</div>
-	        	</div>
-        	</a>
-
-        	<a href="" class="catalogList_item">
-    			<div class="img"><img src="http://fs01.enter.ru/1/1/163/bb/277081.jpg" /></div>
-
-        		<div class="catalogList_desc">
-	        		<span href="" class="name">Планшетный компьютер Explay Surfer 8.01</span>
-
-	        		<div class="reviews">
-	        			<img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/starEmpty.png" class="reviews_star">
-	                    <span class="reviews_count">16</span>
-	                </div>
-
-	        		<div class="price">
-	        			<div class="price_old">29 999 <span class="rubl">p</span></div>
-	        			<div class="price_now">19 999 <span class="rubl">p</span></div>
-	        		</div>
-	        	</div>
-        	</a>
-
-        	<a href="" class="catalogList_item">
-    			<div class="img"><img src="http://fs01.enter.ru/1/1/163/bb/277081.jpg" /></div>
-
-        		<div class="catalogList_desc">
-	        		<span href="" class="name">Планшетный компьютер Explay Surfer 8.01</span>
-
-	        		<div class="reviews">
-	        			<img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/starEmpty.png" class="reviews_star">
-	                    <span class="reviews_count">16</span>
-	                </div>
-
-	        		<div class="price">
-	        			<div class="price_old">29 999 <span class="rubl">p</span></div>
-	        			<div class="price_now">19 999 <span class="rubl">p</span></div>
-	        		</div>
-	        	</div>
-        	</a>
-
-        	<a href="" class="catalogList_item">
-    			<div class="img"><img src="http://fs01.enter.ru/1/1/163/bb/277081.jpg" /></div>
-
-        		<div class="catalogList_desc">
-	        		<span href="" class="name">Планшетный компьютер Explay Surfer 8.01</span>
-
-	        		<div class="reviews">
-	        			<img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/star.png" class="reviews_star">
-		                <img src="/v2/css/modules/productDesc/img/starEmpty.png" class="reviews_star">
-	                    <span class="reviews_count">16</span>
-	                </div>
-
-	        		<div class="price">
-	        			<div class="price_old">29 999 <span class="rubl">p</span></div>
-	        			<div class="price_now">19 999 <span class="rubl">p</span></div>
-	        		</div>
-	        	</div>
-        	</a>
+            {{/products}}
         </div>
+        {{/productBlock}}
 
         <a href="" class="catalogMore btnStyleGrey">Показать еще 20</a>
     </div>

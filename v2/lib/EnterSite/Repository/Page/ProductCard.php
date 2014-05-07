@@ -176,7 +176,7 @@ class ProductCard {
 
         // рейтинг товара
         if ($productModel->rating) {
-            $rating = new Page\Content\Product\Rating();
+            $rating = new Partial\Rating();
             $rating->reviewCount = $productModel->rating->reviewCount;
             $rating->stars = $ratingRepository->getStarList($productModel->rating->starScore);
 

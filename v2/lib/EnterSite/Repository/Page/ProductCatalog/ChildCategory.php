@@ -17,8 +17,19 @@ class ChildCategory {
 
         $productCardRepository = new Repository\Partial\ProductCard();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
-        foreach ($request->products as $product) {
-            $productCard = $productCardRepository->getObject($product, $cartProductButtonRepository->getObject($product));
+        $ratingRepository = new Repository\Partial\Rating();
+
+        foreach ($request->products as $productModel) {
+            $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
+            // рейтинг товара
+            if ($productModel->rating) {
+                $rating = new Partial\Rating();
+                $rating->reviewCount = $productModel->rating->reviewCount;
+                $rating->stars = $ratingRepository->getStarList($productModel->rating->starScore);
+
+                $productCard->rating = $rating;
+            }
+
             $page->content->productBlock->products[] = $productCard;
         }
 

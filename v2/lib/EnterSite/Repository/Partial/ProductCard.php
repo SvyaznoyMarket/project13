@@ -26,7 +26,7 @@ class ProductCard {
         $card->shownOldPrice = $product->oldPrice ? number_format((float)$product->oldPrice, 0, ',', ' ') : null;
         if ($photo = reset($product->media->photos)) {
             /** @var Model\Product\Media\Photo $photo */
-            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 1));
+            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 2));
         }
         $card->id = $product->id;
         $card->categoryId = $product->category ? $product->category->id : null;

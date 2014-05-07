@@ -70,7 +70,7 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $photo3ds = [];
         /** @var Product\PropertyChunk[] */
         public $propertyChunks = [];
-        /** @var Product\Rating|null */
+        /** @var Partial\Rating|null */
         public $rating;
         /** @var Partial\ProductSlider|null */
         public $accessorySlider;
@@ -121,13 +121,6 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
     class PropertyChunk {
         /** @var PropertyChunk\Property[] */
         public $properties = [];
-    }
-
-    class Rating {
-        /** @var int */
-        public $reviewCount;
-        /** @var Partial\Rating\Star[] */
-        public $stars = [];
     }
 
     class ReviewBlock {
