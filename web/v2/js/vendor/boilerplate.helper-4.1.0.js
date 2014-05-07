@@ -31,11 +31,11 @@
      * MIT License
      */
 
-    // If we split this up into two functions we can reuse
-    // this function if we aren't doing full page reloads.
+        // If we split this up into two functions we can reuse
+        // this function if we aren't doing full page reloads.
 
-    // If we cache this we don't need to re-calibrate everytime we call
-    // the hide url bar
+        // If we cache this we don't need to re-calibrate everytime we call
+        // the hide url bar
     MBP.BODY_SCROLL_TOP = false;
 
     // So we don't redefine this function everytime we
@@ -304,7 +304,7 @@
     /**
      * Prevent default scrolling on document window
      */
-     
+
     MBP.preventScrolling = function() {
         document.addEventListener('touchmove', function(e) {
             if (e.target.type === 'range') { return; }
