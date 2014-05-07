@@ -904,7 +904,7 @@ window.ANALYTICS = {
 	},
 
     RetailRocketJS : function() {
-    	console.group('ports.js::RetailRocketJS');
+    	console.groupCollapsed('ports.js::RetailRocketJS');
 
         window.rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // rrPartnerId — по ТЗ должна быть глобальной
         
@@ -1036,20 +1036,7 @@ window.ANALYTICS = {
 
         RetailRocket.init();
 
-        if ( ENTER.config.userInfo && ENTER.config.userInfo.id ) {
-			// ок, берём userInfo-данные из памяти
-            RetailRocket.action(null, ENTER.config.userInfo);
-        }
-        else {
-			if (false === ENTER.config.userInfo) {
-				// если === false, то данных юзера не узнаем , поэтому запустим RetailRocket.action() без параметров
-				RetailRocket.action(null);
-			}
-			else {
-				// попробуем получить данные при срабатывании события
-				body.on('userLogged', RetailRocket.action);
-			}
-        }
+        RetailRocket.action(null);
 
         console.groupEnd();
     },
@@ -1191,8 +1178,7 @@ window.ANALYTICS = {
     },
 
 	parseAllAnalDivs : function( nodes ) {
-		console.group('parseAllAnalDivs');
-		console.info('parseAllAnalDivs');
+		console.groupCollapsed('parseAllAnalDivs');
 
 		if ( !this.enable ) {
 			console.warn('Not enabled. Return');
@@ -1233,7 +1219,6 @@ window.ANALYTICS = {
 		document.writeln = function() {
 			$('body').append( $(arguments[0] + '') );
 		}
-		console.log('end parseAllAnalDivs');
 		console.groupEnd();
 	},
 
@@ -2018,7 +2003,7 @@ ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
 	 main function
 	 **********************************************************************/
 	function main() {
-		console.group('ports.js::VisitorSplit');
+		console.groupCollapsed('ports.js::VisitorSplit');
 		var
 			selectedGroup = getVisitorGroup(),
 			vendors, i, url, type;

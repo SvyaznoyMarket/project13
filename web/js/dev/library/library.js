@@ -121,11 +121,12 @@ var DirectCredit = {
 		for( var i=0, l=input.length; i < l; i++ ) {
 			var tmp = {
 				id : input[i].id,
+				unit_price : input[i].price,
 				price : input[i].price,
 				count : input[i].quantity,
 				type : input[i].type
 			};
-			
+
 			this.basketPull.push( tmp );
 		}
 		this.sendCredit();
@@ -139,6 +140,14 @@ var DirectCredit = {
 				PubSub.publish( 'bankAnswered', null ); // hack
 				return;
 			}
+
+			/*
+			  TODO Костыль для задачи SITE-3686
+			  Функция dc_getCreditForTheProduct(), внешнего JS, переопределяет значение "price".
+			  Выставляем значение поля "price" в исходную позицию.
+			 */
+			item.price = item.unit_price;
+
 			item.count = data.q;
 		} else {
 			var key = self.findProductKey( self.basketPull, data.id );
@@ -176,8 +185,8 @@ var DirectCredit = {
 			'none',
 			'getPayment', 
 			{ products : self.basketPull },
-			function(result){            
-			console.info('sendCredit');     
+			function(result){
+				console.info('sendCredit');
 
 				if ( result.payment > 0) {
 					self.output.text( window.printPrice( Math.ceil( result.payment ) ) );

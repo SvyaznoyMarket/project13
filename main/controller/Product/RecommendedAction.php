@@ -73,11 +73,6 @@ class RecommendedAction {
 
             $uniqueIds = array_unique(array_merge($ids['alsoBought'], $ids['similar'], $ids['alsoViewed'], $ids['personal']));
 
-            // SITE-3221 Исключить повторяющиеся товары из рекомендаций RR
-            if (is_array($ids['similar']) && is_array($ids['alsoViewed'])) {
-                $ids['alsoViewed'] = array_diff($ids['alsoViewed'], array_slice($ids['similar'], 0, 5));
-            }
-
             // SITE-3625 Персонализация рекомендаций
             foreach ($ids as $type => &$item) {
                 if (isset($ids['personal']) && $type !== 'personal') {
@@ -85,6 +80,11 @@ class RecommendedAction {
                     $personalDiff = array_diff($item, $ids['personal']); // diff рекомендаций
                     $item = array_merge($personalIntersect, $personalDiff); // персонализированный результат
                 }
+            }
+
+            // SITE-3221 Исключить повторяющиеся товары из рекомендаций RR
+            if (is_array($ids['similar']) && is_array($ids['alsoViewed'])) {
+                $ids['alsoViewed'] = array_diff($ids['alsoViewed'], array_slice($ids['similar'], 0, 5));
             }
 
             /**

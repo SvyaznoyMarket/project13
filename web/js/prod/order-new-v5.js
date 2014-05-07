@@ -671,7 +671,7 @@
 			}
 			// constructor body
 			
-			console.info('Cоздание блока доставки %s для %s', state, choosenPointForBox, this);
+			console.info('Cоздание блока доставки %s (state) для %s (choosenPointForBox)', state, choosenPointForBox, this);
 
 
 			OrderModel = ENTER.OrderModel;
@@ -762,6 +762,25 @@
 
 			// Отступ слайдера дат
 			self.calendarSliderLeft = ko.observable(0);
+
+            try {
+                console.groupCollapsed('Таблица продуктов для блока %s', self.token);
+                var consoleProducts = [];
+                for (var a in products) {
+                    var temp = products[a];
+                    temp.deliveries_types = JSON.stringify(Object.keys(products[a].deliveries));
+                    temp.firstDate = products[a].deliveries[self.state][0].dates[0].name;
+                    temp.lastDate = products[a].deliveries[self.state][0].dates[products[a].deliveries[self.state][0].dates.length - 1].name;
+                    consoleProducts.push(temp);
+                }
+                console.table(consoleProducts, ['id', 'name', 'price', 'sum', 'quantity', 'stock', 'isPrepayment', 'deliveries_types', 'firstDate', 'lastDate']);
+                console.groupEnd();
+            } catch (e) {
+                console.log('Delivery\'s box self.state: %s, self.choosenPoint.id: %s', self.state, self.choosenPoint().id);
+                console.log('Products', products);
+                console.error(e);
+                console.groupEnd();
+            }
 
 			self.addProductGroup(products);
 
@@ -1015,7 +1034,7 @@
 			/**
 			 * Если для продукта нет доставки в выбранный пункт доставки, то нужно создать новый блок доставки
 			 */
-			if ( !product.deliveries[self.state].hasOwnProperty(self.choosenPoint().id) ) {
+			if ( !product.deliveries[self.state].hasOwnProperty(self.choosenPoint().id) && !/_shipped$/.test(self.token) ) {
 				console.warn('Для товара '+product.id+' нет пункта доставки '+self.choosenPoint().id+' Необходимо создать новый блок');
 
 				firstAvaliblePoint = self._getFirstPropertyName(product.deliveries[self.state]);
@@ -1074,8 +1093,10 @@
             }*/
 
 			// Определение стоимости доставки. Если стоимость доставки данного товара выше стоимости доставки блока, то стоимость доставки блока становится равной стоимости доставки данного товара
-			productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
-			self.deliveryPrice = ( self.deliveryPrice < productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
+            if (/_shipped$/.test(self.token)) self.choosenPoint({id: 0});
+
+            productDeliveryPrice = parseInt(product.deliveries[self.state][self.choosenPoint().id].price, 10);
+            self.deliveryPrice = ( self.deliveryPrice < productDeliveryPrice ) ? productDeliveryPrice : self.deliveryPrice;
 
 			tmpProduct = {
 				id: product.id,
@@ -1167,17 +1188,31 @@
 		DeliveryBox.prototype.addProductGroup = function( products ) {
 			var
 				self = this,
+                shipped = [],
 				i;
 			// end of vars
 			
 			console.groupCollapsed('Добавление товаров в блок, количество товаров: %s', products.length);
 			// добавляем товары в блок
-			for ( i = products.length - 1; i >= 0; i-- ) {
-				console.log(i+'-ый товар: ', products[i]);
-				self._addProduct(products[i]);
-			}
+            // первая итерация
+            if ( !/_shipped$/.test(self.token) ) {
+                for (i = products.length - 1; i >= 0; i--) {
+                    console.log(i + '-ый товар: ', products[i]);
+                    if (products[i].stock != 9223372036854776000) self._addProduct(products[i]);
+                    else shipped.push(products[i]);
+                }
+            }
+            // вторая итерация, если есть товары от поставщика
+            if ( /_shipped$/.test(self.token) ) {
+                for ( i = products.length - 1; i >= 0; i-- ) {
+                    console.log(i+'-ый товар: ', products[i]);
+                    self._addProduct(products[i]);
+                }
+            }
 
             console.groupEnd();
+
+            if (shipped.length && !/_shipped$/.test(self.token) ) new DeliveryBox(shipped, self.state, 'shipped');
 
 			if ( !self.products.length ) {
 				console.warn('в блоке '+self.token+' нет товаров');
@@ -1316,7 +1351,7 @@
 		 * @this	{DeliveryBox}
 		 */
 		DeliveryBox.prototype.calculateDate = function() {
-			console.info('Вычисление общей даты для продуктов в блоке');
+			console.info('Вычисление общей даты для продуктов в блоке', this);
 
 			var
 				self = this,
@@ -1334,12 +1369,16 @@
 				len,
 				i;
 			// end of vars
-
+            if (!self.products.length) {
+                console.warn('Нет продуктов для этого блока, выходим из calculateDate()');
+                return;
+            }
 			console.log('Сегодняшняя дата с сервера '+todayTS);
 
 			/**
 			 * Перебираем даты в первом товаре
 			 */
+            if ( /_shipped$/.test(self.token) ) self.choosenPoint({id: 0});
 			nowProductDates = self.products[0].deliveries[self.state][self.choosenPoint().id].dates;
 
 			for ( i = 0, len = nowProductDates.length; i < len; i++ ) {
@@ -1355,16 +1394,7 @@
 
 			if ( !self.allDatesForBlock().length ) {
 				console.warn('Нет общих дат для блока. Необходимо разделить продукты в блоке.');
-                console.groupCollapsed('Разделяемый блок');
-                var consoleProducts = [];
-                for (var a in self.products) {
-                    var temp = self.products[a];
-                    temp.firstDate = self.products[a].deliveries[self.state][self.choosenPoint().id].dates[0].name;
-                    temp.lastDate = self.products[a].deliveries[self.state][self.choosenPoint().id].dates[self.products[a].deliveries[self.state][self.choosenPoint().id].dates.length-1].name;
-                    consoleProducts.push(temp);
-                }
-                console.table(consoleProducts);
-                console.groupEnd();
+
 
                 /* [start] Новый метод разделения */
                 console.info('Выделяем в отдельный блок товары от поставщика');
@@ -1420,7 +1450,7 @@
 			}
 
 			console.log('Выбранная дата (chooseDate) ', chooseDate);
-			if ( true === chooseDate.avalible ) {
+			if ( chooseDate && true === chooseDate.avalible ) {
 				self.choosenDate( chooseDate );
 			}
 			else {
@@ -2608,7 +2638,7 @@
 			field;
 		// end of vars
 
-		console.info('defaultValueToField');
+		console.groupCollapsed('Подстановка значений в поля defaultValueToField()');
 		for ( field in fields ) {
 			console.log('поле '+field);
 			
@@ -2627,6 +2657,7 @@
 				fieldNode.val( fields[field] );
 			}
 		}
+        console.groupEnd();
 	};
 	defaultValueToField($('#jsOrderForm').data('value'));
 
