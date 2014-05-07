@@ -47,15 +47,47 @@ class IndexAction {
         });
         $client->execute();
 
-        // убераем купоны с нулевым кол-вом
-        foreach ($enterpizeCoupons as $key => $coupon) {
-            if (!array_key_exists($coupon->getToken(), $limits)) continue;
+        // получаем купоны ренее выданные пользователю
+        $userCouponSeries = [];
+        $userCoupons = [];
+        try {
+            $client->addQuery(
+                'user/get-discount-coupons',
+                [
+                    'client_id' => 'site',
+                    'token' => \App::user()->getToken()
+                ],
+                [],
+                function ($data) use (&$userCoupons, &$userCouponSeries) {
+                    if (!isset($data['detail']) || !is_array($data['detail'])) {
+                        return;
+                    }
 
-            $limit = (int)$limits[$coupon->getToken()];
-            if (0 === $limit) {
-                unset($enterpizeCoupons[$key]);
-            }
+                    foreach($data['detail'] as $item) {
+                        $entity = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
+                        $userCoupons[] = $entity;
+                        $userCouponSeries[] = $entity->getSeries();
+                    }
+                }
+            );
+            $client->execute();
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+            \App::exception()->remove($e);
         }
+
+        // отфильтровываем ненужные купоны
+        $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries) {
+            if (!$coupon instanceof \Model\EnterprizeCoupon\Entity || !array_key_exists($coupon->getToken(), $limits)) return false;
+
+            // убераем купоны с кол-вом <= 0
+            if ($limits[$coupon->getToken()] <= 0) return false;
+
+            // убераем купоны ренее выданные пользователю
+            if (in_array($coupon->getToken(), $userCouponSeries)) return false;
+
+            return true;
+        });
 
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
