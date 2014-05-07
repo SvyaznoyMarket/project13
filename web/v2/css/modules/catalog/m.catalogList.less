@@ -1,11 +1,12 @@
 /* ==========================================================================
    Стили каталога
    ========================================================================== */
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 959px) {
 	.catalogList {
 
 		&_item {
-			width: 215px;
+			padding: 0 2% 20px;
+    		width: 29%;
 
 			&:nth-child(4n) {
 				border-right: 1px solid #e1e1e1;
@@ -13,8 +14,53 @@
 
 			&:nth-child(3n),
 			&:last-child {
-				border: none;
+				border-right: none;
 			}
 		}
+	}
+}
+
+@media only screen and (max-width: 700px) {
+	.catalogList {
+
+		&_item {
+			padding: 0 2.5% 20px;
+    		width: 44.2%;
+
+			&:nth-child(3n) {
+				border-right: 1px solid #e1e1e1;
+			}
+
+			&:nth-child(2n),
+			&:last-child {
+				border-right: none;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.catalogList {
+
+		&_item {
+			padding: 0 0 30px;
+    		width: 100%;
+    		border-right: none !important;
+    		border-bottom: 1px solid #e1e1e1;
+    	}
+
+    	&_desc {
+    		float: right;
+    		width: 60%;
+    	}
+
+    	.img {
+		    float: left;
+		    width: 40%;
+
+		    img {
+		    	width: 90%;
+		    }
+    	}
 	}
 }
