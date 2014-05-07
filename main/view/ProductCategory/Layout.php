@@ -226,6 +226,6 @@ class Layout extends \View\DefaultLayout {
             'regionId' => \App::user()->getRegionId(),
         ];
 
-        return "<div id='RuTargetProductCategoryJS' class='jsanalytics' data-value='" . json_encode($data) . "'><div>";
+        return "<div id='RuTargetProductCategoryJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
     }
 }

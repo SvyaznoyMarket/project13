@@ -327,6 +327,6 @@ class IndexPage extends \View\DefaultLayout {
             'regionId' => \App::user()->getRegionId(),
         ];
 
-        return "<div id='RuTargetProductJS' class='jsanalytics' data-value='" . json_encode($data) . "'><div>";
+        return "<div id='RuTargetProductJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
     }
 }
