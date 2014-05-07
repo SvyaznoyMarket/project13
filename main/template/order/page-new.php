@@ -222,7 +222,7 @@ if ($oneClick) {
 				<li class="bSumOrderInfo__eLine">
 					Итого с доставкой:&nbsp;&nbsp;
 
-					<span class="bDelivery"<? if (\App::config()->order['prepayment']['enabled']): ?> data-bind="css: box.isExpensiveOrder ? 'mSelect' : ''"<? endif ?>>
+					<span class="bDelivery"<? if (\App::config()->order['prepayment']['enabled']): ?> data-bind="css: { 'mSelect' : box.isExpensiveOrder() }"<? endif ?>>
 						<span data-bind="text: window.printPrice( box.totalBlockSum )"></span>&nbsp;<span class="rubl">p</span>
 					</span>
 				</li>

@@ -213,6 +213,9 @@ class AppConfig {
         'Lamoda' => [
             'enabled' => null,
         ],
+        'RuTarget' => [
+            'enabled' => null,
+        ],
     ];
 
 

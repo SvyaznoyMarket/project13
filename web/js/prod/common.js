@@ -613,6 +613,30 @@
 				 * @param event
 				 * @param data
 				 */
+				addToRuTarget = function addToRuTarget( event, data ) {
+					var
+						product = data.product,
+						regionId = data.regionId,
+						result,
+						_rutarget = window._rutarget || [];
+					// end of vars
+
+					if ( !product || !regionId ) {
+						return;
+					}
+
+					result = {'event': 'addToCart', 'sku': product.id, 'qty': product.quantity, 'regionId': regionId};
+
+					console.info('RuTarget addToCart');
+					console.log(result);
+					_rutarget.push(result);
+				},
+
+				/**
+				 * Аналитика при нажатии кнопки "купить"
+				 * @param event
+				 * @param data
+				 */
 				addToLamoda = function addToLamoda( event, data ) {
 					var
 						product = data.product;
@@ -626,6 +650,7 @@
 					console.log('product_id=' + product.id);
 					JSREObject('cart_add', product.id);
 				}
+
 				/*,
 				addToVisualDNA = function addToVisualDNA( event, data ) {
 					var
@@ -654,6 +679,7 @@
 				adAdriver(event, data);
 				addToRetailRocket(event, data);
 				//addToVisualDNA(event, data);
+				addToRuTarget(event, data);
 				addToLamoda(event, data);
 			}
 			catch( e ) {
@@ -3604,6 +3630,25 @@ $(document).ready(function() {
 			// end of vars
 			
 			var
+				deleteProductAnalytics = function deleteProductAnalytics( data ) {
+					var
+						region = $('.jsChangeRegion'),
+						regionId = region.length ? region.data('region-id') : false,
+						result,
+						_rutarget = window._rutarget || [];
+					// end of vars
+
+					if ( !data || !regionId ) {
+						return;
+					}
+
+					result = {'event': 'removeFromCart', 'sku': data.product.id, 'regionId': regionId};
+
+					console.info('RuTarget removeFromCart');
+					console.log(result);
+					_rutarget.push(result);
+				},
+
 				authFromServer = function authFromServer( res, data ) {
 					console.warn( res );
 					if ( !res.success ) {
@@ -3611,6 +3656,9 @@ $(document).ready(function() {
 
 						return;
 					}
+
+					// аналитика
+					deleteProductAnalytics(res);
 
 					utils.blackBox.basket().deleteItem(res);
 
