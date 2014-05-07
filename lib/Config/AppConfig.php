@@ -210,6 +210,9 @@ class AppConfig {
         'Revolvermarketing' => [
             'enabled' => null,
         ],
+        'Lamoda' => [
+            'enabled' => null,
+        ],
     ];
 
 

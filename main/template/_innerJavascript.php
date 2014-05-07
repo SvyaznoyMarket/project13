@@ -15,3 +15,8 @@
 <?= $page->slotСpaexchangeConversionJS() ?>
 <?= $page->slotAdLensJS() ?>
 <?= $page->slotRevolvermarketingConversionJS() ?>
+<?= $page->slotLamodaJS() ?>
+<?= $page->slotLamodaCategoryJS() ?>
+<?= $page->slotLamodaSearchJS() ?>
+<?= $page->slotLamodaProductJS() ?>
+<?= $page->slotLamodaOtherPageJS() ?>

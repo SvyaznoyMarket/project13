@@ -295,6 +295,25 @@
 							utils.logError(dataToLog);
 						}
 					}
+				},
+
+				/**
+				 * Аналитика при нажатии кнопки "купить"
+				 * @param event
+				 * @param data
+				 */
+				addToLamoda = function addToLamoda( event, data ) {
+					var
+						product = data.product;
+					// end of vars
+
+					if ( 'undefined' == typeof(product) || !product.hasOwnProperty('id') || 'undefined' == typeof(JSREObject) ) {
+						return;
+					}
+
+					console.info('Lamoda addToCart');
+					console.log('product_id=' + product.id);
+					JSREObject('cart_add', product.id);
 				}
 				/*,
 				addToVisualDNA = function addToVisualDNA( event, data ) {
@@ -324,6 +343,7 @@
 				adAdriver(event, data);
 				addToRetailRocket(event, data);
 				//addToVisualDNA(event, data);
+				addToLamoda(event, data);
 			}
 			catch( e ) {
 				console.warn('addtocartAnalytics error');

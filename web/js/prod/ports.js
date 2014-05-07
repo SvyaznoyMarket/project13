@@ -1513,6 +1513,78 @@ window.ANALYTICS = {
 		}
 	},
 
+	LamodaJS: function () {
+		(function() {
+			console.log('LamodaJS');
+
+			window.JSREObject = window.JSREObject || function() { window.JSREObject.q.push(arguments) };
+			window.JSREObject.q = window.JSREObject.q || [];
+			window.JSREObject.l = +new Date;
+			JSREObject('create','11640775691088171491', 'r24-tech.com');
+			$.getScript("//r24-tech.com/static/dsp/min/js/jsre-min.js");
+		})();
+	},
+
+	LamodaCategoryJS: function () {
+		(function() {
+			var
+				lamoda = $('#LamodaCategoryJS'),
+				data = lamoda.data('value');
+			// end of vars
+
+			if ('undefined' == typeof(data) || !data.hasOwnProperty('id') || 'undefined' == typeof(JSREObject)) {
+				return;
+			}
+
+			console.info('LamodaCategoryJS');
+			console.log('category_id=' + data.id);
+			JSREObject('pageview_catalog', 'category', data.id);
+		})();
+	},
+
+	LamodaSearchJS: function () {
+		(function() {
+			var
+				lamoda = $('#LamodaSearchJS'),
+				data = lamoda.data('value');
+			// end of vars
+
+			if ('undefined' == typeof(data) || !data.hasOwnProperty('query') || 'undefined' == typeof(JSREObject)) {
+				return;
+			}
+
+			console.info('LamodaSearchJS');
+			console.log('search_query=' + data.query);
+			JSREObject('pageview_catalog', 'category', data.query);
+		})();
+	},
+
+	LamodaProductJS: function () {
+		(function() {
+			var
+				lamoda = $('#LamodaProductJS'),
+				data = lamoda.data('value');
+			// end of vars
+
+			if ('undefined' == typeof(data) || !data.hasOwnProperty('id') || 'undefined' == typeof(JSREObject)) {
+				return;
+			}
+
+			console.info('LamodaProductJS');
+			console.log('product_id=' + data.id);
+			JSREObject('pageview_product', data.id);
+		})();
+	},
+
+	LamodaOtherPageJS: function () {
+		(function() {
+			if ('undefined' == typeof(JSREObject)) return;
+
+			console.log('LamodaOtherPageJS');
+			JSREObject('pageview');
+		})();
+	},
+
 	enable : true
 }
 

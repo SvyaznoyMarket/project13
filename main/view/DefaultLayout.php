@@ -701,4 +701,66 @@ class DefaultLayout extends Layout {
     public function slotAdblender() {
         return \App::config()->analytics['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' =>$this->layout]).'"></div>' : '';
     }
+
+    /**
+     * Lamoda
+     * Общая часть кода - выполнить на всех страницах:
+     * @return string
+     */
+    public function slotLamodaJS() {
+        if (!\App::config()->partners['Lamoda']['enabled']) return;
+
+        return '<div id="LamodaJS" class="jsanalytics"></div>';
+    }
+
+    /**
+     * На страницы КАТЕГОРИЙ (помимо общего)
+     * @return string
+     */
+    public function slotLamodaCategoryJS() {
+        return '';
+    }
+
+    /**
+     * Lamoda
+     * На страницу результата поиска (помимо общего)
+     * @return string
+     */
+    public function slotLamodaSearchJS() {
+        return '';
+    }
+
+    /**
+     * Lamoda
+     * На продуктовые страницы (помимо общего)
+     * @return string
+     */
+    public function slotLamodaProductJS() {
+        return '';
+    }
+
+    /**
+     * Lamoda
+     * На все ОСТАЛЬНЫЕ страницы (помимо общего)
+     * @return string
+     */
+    public function slotLamodaOtherPageJS() {
+        if (!\App::config()->partners['Lamoda']['enabled']) return;
+
+        $pixels = [
+            $this->slotLamodaCategoryJS(),
+            $this->slotLamodaSearchJS(),
+            $this->slotLamodaProductJS(),
+        ];
+
+        // отсекаем с массива все отсутствующие на странице пиксели Lamoda
+        $pixels = array_filter($pixels);
+
+        // если на странице уже присутствует Lamoda пиксель, то не выводим наш пиксель LamodaOtherPage
+        if (!empty($pixels)) {
+            return;
+        }
+
+        return "<div id='LamodaOtherPageJS' class='jsanalytics'></div>";
+    }
 }

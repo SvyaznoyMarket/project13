@@ -83,4 +83,19 @@ class IndexPage extends \View\DefaultLayout {
             'target' => '#productCatalog-filter-form',
         ];
     }
+
+    public function slotLamodaSearchJS() {
+        if (!\App::config()->partners['Lamoda']['enabled']) return;
+
+        $searchQuery = $this->getParam('searchQuery');
+        if (!$searchQuery || empty($searchQuery)) {
+            return;
+        }
+
+        $data = [
+            'query' => $searchQuery,
+        ];
+
+        return "<div id='LamodaSearchJS' class='jsanalytics' data-value='" . json_encode($data) . "'><div>";
+    }
 }
