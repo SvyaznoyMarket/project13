@@ -13,15 +13,34 @@ return function(
     if (!empty($relatedCategories)) $categories = array_merge($categories, $relatedCategories);
 
     foreach ($categories as $child) {
-        $config = isset($categoryConfigById[$child->getId()]) ? $categoryConfigById[$child->getId()] : null;
-
-        $links[] = [
-            'name'   => isset($config['name']) ? $config['name'] : $child->getName(),
+        $link = [
+            'name'   => $child->getName(),
             'url'    => $child->getLink(),
-            'image'  => (is_array($config) && array_key_exists('image', $config) && !empty($config['image'])) ? $config['image'] : $child->getImageUrl(),
+            'image'  => $child->getImageUrl(),
             'active' => false,
-            'css'    => isset($config['css']) ? $config['css'] : null,
+            'css'    => null,
         ];
+
+        // подставляем данные с json-a
+        if (is_array($categoryConfigById) && array_key_exists($child->getId(), $categoryConfigById)) {
+            $config = $categoryConfigById[$child->getId()];
+
+            $linkNew = [];
+            if (array_key_exists('name', $config) && !empty($config['name'])) $linkNew['name'] = $config['name'];
+            if (array_key_exists('css', $config) && !empty($config['css'])) {
+                $linkNew['css'] = $config['css'];
+
+                // если в json-е задана css-настройка с background-ом, то затираем изображение по умолчанию
+                if (array_key_exists('link', $config['css']) && false !== strpos($config['css']['link'], 'background')) {
+                    $linkNew['image'] = "";
+                }
+            }
+            if (array_key_exists('image', $config) && !empty($config['image'])) $linkNew['image'] = $config['image'];
+
+            $link = array_merge($link, $linkNew);
+        }
+
+        $links[] = $link;
     }
 ?>
 
