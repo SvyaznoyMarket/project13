@@ -166,6 +166,7 @@ $c->partners['Сpaexchange']['enabled'] = true;
 $c->partners['Admitad']['enabled'] = false;
 $c->partners['Revolvermarketing']['enabled'] = true;
 $c->partners['RuTarget']['enabled'] = true;
+$c->partners['TagMan']['enabled'] = false;
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
