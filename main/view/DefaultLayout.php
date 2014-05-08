@@ -473,7 +473,7 @@ class DefaultLayout extends Layout {
                 $category = $product->getMainCategory();
                 $categories = $product->getCategory();
                 if (!$category) $category = reset($categories);
-                $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'product');
+                $prod_cats = array_map(function($a){ return $a->getName(); }, $categories);
                 $prod = $smantic->makeProdInfo($product, $prod_cats);
                 $return .= $this->render($smantic_path . 'smanticPage', ['prod' => $prod, 'prod_cats' => $prod_cats]);
             }
