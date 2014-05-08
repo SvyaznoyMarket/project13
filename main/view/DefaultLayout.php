@@ -473,7 +473,7 @@ class DefaultLayout extends Layout {
                 $category = $product->getMainCategory();
                 $categories = $product->getCategory();
                 if (!$category) $category = reset($categories);
-                $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'product');
+                $prod_cats = array_map(function($a){ return $a->getName(); }, $categories);
                 $prod = $smantic->makeProdInfo($product, $prod_cats);
                 $return .= $this->render($smantic_path . 'smanticPage', ['prod' => $prod, 'prod_cats' => $prod_cats]);
             }
@@ -487,7 +487,10 @@ class DefaultLayout extends Layout {
                 $return .= $this->render($smantic_path . 'smanticPage', ['cart_prods' => $cart_prods]);
             }
 
-        }/* else if ($routeName == 'order.complete') {
+        } else if ($routeName == 'tchibo') {
+            $return .= $this->render($smantic_path . 'smanticPage', ['prod_cats' => ['Tchibo']]);
+        }
+        /* else if ($routeName == 'order.complete') {
 
             // !!! На этих страницах подключается через js — /web/js/dev/order/order.js
 
