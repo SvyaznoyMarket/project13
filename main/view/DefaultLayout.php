@@ -487,7 +487,10 @@ class DefaultLayout extends Layout {
                 $return .= $this->render($smantic_path . 'smanticPage', ['cart_prods' => $cart_prods]);
             }
 
-        }/* else if ($routeName == 'order.complete') {
+        } else if ($routeName == 'tchibo') {
+            $return .= $this->render($smantic_path . 'smanticPage', ['prod_cats' => ['Tchibo']]);
+        }
+        /* else if ($routeName == 'order.complete') {
 
             // !!! На этих страницах подключается через js — /web/js/dev/order/order.js
 
