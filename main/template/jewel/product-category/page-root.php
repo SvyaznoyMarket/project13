@@ -23,3 +23,9 @@
 <? endif ?>
 
 <?= $page->tryRender('product-category/_categoryData', array('page' => $page, 'category' => $category)) ?>
+
+<? if(!empty($seoContent)): ?>
+    <div class="bSeoText">
+        <?= $seoContent ?>
+    </div>
+<? endif ?>
