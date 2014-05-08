@@ -172,11 +172,7 @@ class Action {
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
         $repository = \RepositoryManager::product();
-        $repository->setEntityClass(
-            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-                ? '\\Model\\Product\\ExpandedEntity'
-                : '\\Model\\Product\\CompactEntity'
-        );
+        $repository->setEntityClass('\\Model\\Product\\Entity');
 
         $productIds = [];
         $productCount = 0;
@@ -197,7 +193,7 @@ class Action {
         if ((bool)$productIds) {
             $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                 foreach ($data as $item) {
-                    $products[] = new \Model\Product\CompactEntity($item);
+                    $products[] = new \Model\Product\Entity($item);
                 }
             });
 

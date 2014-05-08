@@ -215,6 +215,9 @@ class AppConfig {
         'Revolvermarketing' => [
             'enabled' => null,
         ],
+        'RuTarget' => [
+            'enabled' => null,
+        ],
     ];
 
 

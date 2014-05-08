@@ -622,6 +622,134 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    /**
+     * RuTarget
+     * Общий код для вставки на все страницы сайта
+     *
+     * @return string
+     */
+    public function slotRuTargetJS() {
+        if (!\App::config()->partners['RuTarget']['enabled']) return;
+
+        return '<div id="RuTargetJS" class="jsanalytics">
+            <!­­ RuTarget ­­> 
+            <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM­4SJX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <!­­ /RuTarget ­­> 
+        </div>';
+    }
+
+    /**
+     * RuTarget
+     * Коды для вставки на страницы товаров
+     *
+     * @return string
+     */
+    public function slotRuTargetProductJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Коды для страниц категорий любого уровня вложенности
+     *
+     * @return string
+     */
+    public function slotRuTargetProductCategoryJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Коды для страницы "Корзины"
+     *
+     * @return string
+     */
+    public function slotRuTargetCartJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Код для страницы оформления покупки в один клик
+     *
+     * @return string
+     */
+    public function slotRuTargetOrderOneClickJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Код для страницы оформления покупки
+     *
+     * @return string
+     */
+    public function slotRuTargetOrderJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Код для страницы благодарности за заказ
+     *
+     * @return string
+     */
+    public function slotRuTargetOrderCompleteJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Коды для страницы поиска
+     *
+     * @return string
+     */
+    public function slotRuTargetSearchJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Код для главной страницы
+     *
+     * @return string
+     */
+    public function slotRuTargetHomepageJS() {
+        return '';
+    }
+
+    /**
+     * RuTarget
+     * Код для всех остальных страниц
+     *
+     * @return string
+     */
+    public function slotRuTargetOtherPageJS() {
+        if (!\App::config()->partners['RuTarget']['enabled']) return;
+
+        $pixels = [
+            $this->slotRuTargetProductJS(),
+            $this->slotRuTargetProductCategoryJS(),
+            $this->slotRuTargetCartJS(),
+            $this->slotRuTargetOrderOneClickJS(),
+            $this->slotRuTargetOrderJS(),
+            $this->slotRuTargetOrderCompleteJS(),
+            $this->slotRuTargetSearchJS(),
+            $this->slotRuTargetHomepageJS(),
+        ];
+
+        // отсекаем с массива все отсутствующие на странице пиксели RuTarget
+        $pixels = array_filter($pixels);
+
+        // если на странице уже присутствует RuTarget пиксель, то не выводим наш пиксель RuTargetOtherPage
+        if (!empty($pixels)) {
+            return;
+        }
+
+        return "<div id='RuTargetOtherPageJS' class='jsanalytics' data-value='" . json_encode(['regionId' => \App::user()->getRegionId()]) . "'></div>";
+    }
+
+
     public function slotСpaexchangeJS () {
         return '';
     }

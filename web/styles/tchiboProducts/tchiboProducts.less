@@ -5,11 +5,6 @@
 
 		&:hover {
 			z-index: 100;
-
-			.bBtnLine,
-			.bOptionsSection {
-				display: block;
-			}
 		}
 
 		.bProductDescSticker {
@@ -19,18 +14,17 @@
 		}
 
 		&__hover {
-			display: block;
-		    position: absolute;
-		    top: 0;
-		    left: 0;
-		    overflow: hidden;
 		    width: 98%;
-		    padding-bottom: 5px;
 
 			&:hover {
 				z-index: 100;
 				.box-shadow(0 0 3px rgba(0,0,0,0.5));
 				background: @white;
+
+				.bBtnLine,
+				.bOptionsSection {
+					display: block;
+				}
 			}
 		}
 
@@ -52,6 +46,7 @@
 
 		&__desc {
 			width: 100%;
+			background: @white;
 			background: rgba(255, 255, 255, 0.5);
 		    margin: -20px 0 0;
 		    position: relative;

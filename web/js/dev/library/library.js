@@ -125,7 +125,7 @@ var DirectCredit = {
 				count : input[i].quantity,
 				type : input[i].type
 			};
-			
+
 			this.basketPull.push( tmp );
 		}
 		this.sendCredit();
@@ -176,8 +176,8 @@ var DirectCredit = {
 			'none',
 			'getPayment', 
 			{ products : self.basketPull },
-			function(result){            
-			console.info('sendCredit');     
+			function(result){
+				console.info('sendCredit');
 
 				if ( result.payment > 0) {
 					self.output.text( window.printPrice( Math.ceil( result.payment ) ) );

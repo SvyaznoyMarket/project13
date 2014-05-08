@@ -83,4 +83,10 @@ class IndexPage extends \View\DefaultLayout {
             'target' => '#productCatalog-filter-form',
         ];
     }
+
+    public function slotRuTargetSearchJS() {
+        if (!\App::config()->partners['RuTarget']['enabled']) return;
+
+        return "<div id='RuTargetSearchJS' class='jsanalytics' data-value='" . json_encode(['regionId' => \App::user()->getRegionId()]) . "'></div>";
+    }
 }

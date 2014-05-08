@@ -41,10 +41,10 @@
 <script id="tplDebugFirstLevelQuery" type="text/html">
     <tr>
         <td style="background-image: url({{iconUrl}});" class="property-name">
-            <a class="jsExpandValue jsOpened" href="#">{{name}}</a>
+            <a class="jsExpandValue" href="#">{{name}}</a>
         </td>
         <td class="property-value">
-            <div class="jsExpandedValue property-value-expanded" style="display:block;">
+            <div class="jsExpandedValue property-value-expanded">
                 <table>
                     <tbody>
                         {{#value}}
@@ -100,10 +100,10 @@
 <script id="tplDebugFirstLevelTimer" type="text/html">
     <tr>
         <td style="background-image: url({{iconUrl}});" class="property-name">
-            <a class="jsExpandValue jsOpened" href="#">{{name}}</a>
+            <a class="jsExpandValue" href="#">{{name}}</a>
         </td>
         <td class="property-value">
-            <div class="jsExpandedValue property-value-expanded" style="display:block;">
+            <div class="jsExpandedValue property-value-expanded">
                 <table>
                     <tbody>
                         {{#value}}
@@ -257,7 +257,7 @@
     .debug-panel .property-value-expanded {
         color: limegreen;
         display: none;
-        max-height: 400px;
+        max-height: 130px;
         max-width: 1000px;
         overflow: auto;
     }
