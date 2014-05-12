@@ -21,7 +21,7 @@ class HandleResponse {
             'query'  => $request->query,
             'data'   => $request->data,
             'cookie' => $request->cookies,
-        ], 'action' => __METHOD__, 'tag' => ['repository']]);
+        ], 'action' => __METHOD__, 'tag' => ['request']]);
 
         // check redirect
         $response = (new Action\CheckRedirect())->execute($request);
