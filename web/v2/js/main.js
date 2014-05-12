@@ -65,13 +65,17 @@ var moduleName = 'module/' + (document.getElementById('js-enter-module').getAttr
 require([
     'html5',
     'boilerplate.helper',
+    'jquery',
     'jquery.cookie',
     'jquery.ui', 'jquery.ui.touch-punch', 'jquery.popup',
     'jquery.touchwipe',
     'module/navigation',
     'module/region',
     'module/search',
-    'module/catalog.common'
+    'module/catalog.common',
+    'module/widget',      // виджеты
+    'module/user.common', // инфо о пользователе
+    'module/cart.common', // кнопка купить, спиннер
 ]);
 
 require(
