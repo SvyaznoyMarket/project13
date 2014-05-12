@@ -2,8 +2,6 @@
 
 namespace Controller\Order;
 
-use RetailRocket\Exception;
-
 class SvyaznoyClubAction {
 
     /**
