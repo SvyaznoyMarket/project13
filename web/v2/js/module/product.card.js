@@ -2,6 +2,7 @@ define(
     [
         'require', 'jquery', 'underscore', 'mustache',
         'module/config',
+        'module/widget',
         'jquery.enterslide', 'jquery.photoswipe',
         'module/product.card.tab',
     ],
@@ -9,73 +10,69 @@ define(
         require, $, _, mustache,
         config
     ) {
-        var $document = $(document),
-            $body = $('body');
+        var $body = $('body'),
 
-        $document.ajaxSuccess(function(e, xhr, settings) {
-            //var response = JSON.parse(xhr.responseText);
-        });
+            renderBody = function(e) {
+                e.stopPropagation();
 
-        $body.on('render', function(e) {
-            e.stopPropagation();
+                var widgets = $body.data('widget');
 
-            var widgets = $body.data('widget');
+                console.info('render:body', widgets);
 
-            console.info('render:body', widgets);
+                if (_.isObject(widgets)) {
+                    _.each(widgets, function(templateData, selector) {
+                        if (!selector) {
+                            console.warn('widget', selector, templateData);
+                            return; // continue
+                        }
+                        console.info('widget', selector, templateData);
 
-            if (_.isObject(widgets)) {
-                _.each(widgets, function(templateData, selector) {
-                    if (!selector) {
-                        console.warn('widget', selector, templateData);
-                        return; // continue
-                    }
-                    console.info('widget', selector, templateData);
+                        $(selector).trigger('render', templateData);
+                    });
+                }
+            },
 
-                    $(selector).trigger('render', templateData);
-                });
-            }
-        });
+            renderWidget = function(e, templateData) {
+                e.stopPropagation();
 
-        $body.on('render', '.js-widget', function(e, templateData) {
-            e.stopPropagation();
+                var $el = $(e.currentTarget),
+                    $template = $($el.data('templateSelector'));
 
-            var $el = $(e.currentTarget),
-                $template = $($el.data('templateSelector'));
+                console.info('render', $template, $el, templateData);
 
-            console.info('render', $template, $el, templateData);
+                //$el.replaceWith(mustache.render($template.html(), templateData, $template.data('partial')));
+                $el.html(
+                    $(mustache.render($template.html(), templateData, $template.data('partial'))).html()
+                );
+            },
 
-            //$el.replaceWith(mustache.render($template.html(), templateData, $template.data('partial')));
-            $el.html(
-                $(mustache.render($template.html(), templateData, $template.data('partial'))).html()
-            );
-        });
+            addProductToCart = function(e) {
+                e.stopPropagation();
 
-        // кнопка купить
-        $body.on('click', '.js-buyButton', function(e) {
-            e.stopPropagation();
+                var $el = $(e.currentTarget),
+                    data = $el.data(),
+                    $widget = $($el.data('widgetSelector'));
 
-            var $el = $(e.currentTarget),
-                data = $el.data(),
-                $widget = $($el.data('widgetSelector'));
+                console.info('click:js-buyButton', $el, $widget, data);
 
-            console.info('click:js-buyButton', $el, $widget, data);
+                if (data.url) {
+                    $.post(data.url, data.value, function(response) {
+                        if (_.isObject(response.result.widgets)) {
+                            _.each(response.result.widgets, function(templateData, selector) {
+                                if (!selector) {
+                                    return;
+                                }
 
-            if (data.url) {
-                $.post(data.url, data.value, function(response) {
-                    if (_.isObject(response.result.widgets)) {
-                        _.each(response.result.widgets, function(templateData, selector) {
-                            if (!selector) {
-                                return;
-                            }
+                                $(selector).trigger('render', templateData);
+                            });
+                        }
+                    });
 
-                            $(selector).trigger('render', templateData);
-                        });
-                    }
-                });
+                    e.preventDefault();
+                }
+            },
 
-                e.preventDefault();
-            }
-        }).on('changeProductQuantityData', '.js-buyButton', function(e, quantity) {
+            changeProductQuantity = function(e, quantity) {
                 e.stopPropagation();
 
                 var idSelector = $(e.currentTarget),
@@ -93,26 +90,27 @@ define(
                 }
 
                 dataValue.product.quantity = quantity;
-            });
+            },
 
-        // спиннер для кнопки купить
-        $body.on('click', '.js-buySpinner-inc', function(e) {
-            e.stopPropagation();
+            incSpinnerValue = function(e) {
+                e.stopPropagation();
 
-            var $el = $(e.currentTarget),
-                $widget = $($el.data('widgetSelector')),
-                $target = $($el.data('buttonSelector')),
-                targetDataValue = $target.data('value');
+                var $el = $(e.currentTarget),
+                    $widget = $($el.data('widgetSelector')),
+                    $target = $($el.data('buttonSelector')),
+                    targetDataValue = $target.data('value');
 
-            console.info('click:js-buySpinner-inc', $el, $target);
+                console.info('click:js-buySpinner-inc', $el, $target);
 
-            if (targetDataValue) {
-                $target.trigger('changeProductQuantityData', targetDataValue.product.quantity + 1);
-                $widget.trigger('renderValue', targetDataValue.product);
-            }
+                if (targetDataValue) {
+                    $target.trigger('changeProductQuantityData', targetDataValue.product.quantity + 1);
+                    $widget.trigger('renderValue', targetDataValue.product);
+                }
 
-            $el.blur();
-        }).on('click', '.js-buySpinner-dec', function(e) {
+                $el.blur();
+            },
+
+            decSpinnerValue = function(e) {
                 e.stopPropagation();
 
                 var $el = $(e.currentTarget),
@@ -128,7 +126,9 @@ define(
                 }
 
                 $el.blur();
-            }).on('change keyup', '.js-buySpinner-value', function(e) {
+            },
+
+            changeSpinnerValue = function(e) {
                 e.stopPropagation();
 
                 var $el = $(e.currentTarget),
@@ -146,7 +146,9 @@ define(
                         $widget.trigger('renderValue', targetDataValue.product);
                     }
                 }
-            }).on('renderValue', '.js-buySpinner', function(e, product) {
+            },
+
+            renderSpinnerValue = function(e, product) {
                 e.stopPropagation();
 
                 var $el = $(e.currentTarget);
@@ -154,37 +156,25 @@ define(
                 console.info('render:js-buySpinner', $el, product);
 
                 $el.find('.js-buySpinner-value').val(product.quantity);
-            });
+            };
 
-        // запрос инфы по пользователю
-        var config = _.extend({
-            user: {
-                infoCookie: null,
-                infoUrl: null
-            }
-        }, $body.data('config'));
 
-        console.info('config', config);
+        $body.on('render', renderBody);
+        $body.on('render', '.js-widget', renderWidget);
 
-        var hasUserInfo = -1 !== _.indexOf([undefined, '1'], $.cookie(config.user.infoCookie)),
-            userInfoUrl = config.user.infoUrl;
+        // кнопка купить
+        $body
+            .on('click', '.js-buyButton', addProductToCart)
+            .on('changeProductQuantityData', '.js-buyButton', changeProductQuantity);
 
-        console.info('hasUserInfo', hasUserInfo);
+        // спиннер для кнопки купить
+        $body
+            .on('click', '.js-buySpinner-inc', incSpinnerValue)
+            .on('click', '.js-buySpinner-dec', decSpinnerValue)
+            .on('change keyup', '.js-buySpinner-value', changeSpinnerValue)
+            .on('renderValue', '.js-buySpinner', renderSpinnerValue);
 
-        if (true || hasUserInfo && userInfoUrl) {
-            $.post(userInfoUrl).done(function(response) {
-                if (_.isObject(response.result)) {
-                    if (_.isObject(response.result.widgets)) {
-                        $body.data('widget', response.result.widgets);
-                        $body.trigger('render');
-                    }
 
-                    if (_.isObject(response.result.user)) {
-                        $body.data('user', response.result.user);
-                    }
-                }
-            });
-        }
 
         // запрос слайдеров
         var recommendedUrls = [];
@@ -222,51 +212,6 @@ define(
             });
         });
 
-
-        // автоподстановка регионов
-        var $regionSetInput = $('#js-regionSet-input');
-        $regionSetInput.autocomplete({
-            autoFocus: true,
-            appendTo: '#js-region-autocomplete',
-            source: function(request, response) {
-                $.ajax({
-                    url: $regionSetInput.data('url'),
-                    dataType: 'json',
-                    data: {
-                        q: request.term
-                    },
-                    success: function(data) {
-                        response($.map(data.result, function(item) {
-                            return {
-                                label: item.name,
-                                value: item.name,
-                                url: item.url
-                            };
-                        }));
-                    }
-                });
-            },
-            minLength: 3,
-            select: function(e, ui) {
-                console.info('select:js-regionSet-input', e, ui);
-
-                $($regionSetInput.data('formSelector'))
-                    .attr('action', ui.item.url);
-            },
-            open: function() {
-                //$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
-                $('.ui-autocomplete').css({'left' : 0, 'top' : '5px', 'width' : '100%'});
-            },
-            close: function() {
-                //$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
-            },
-            messages: {
-                noResults: '',
-                results: function(amount) {
-                    return '';
-                }
-            }
-        });
 
         // direct-credit
         $creditPayment = $('.js-creditPayment');
