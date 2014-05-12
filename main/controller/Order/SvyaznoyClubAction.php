@@ -2,6 +2,8 @@
 
 namespace Controller\Order;
 
+use RetailRocket\Exception;
+
 class SvyaznoyClubAction {
 
     /**
@@ -13,27 +15,26 @@ class SvyaznoyClubAction {
 
         $response = null;
         try {
-            $orderId = $request->get('OrderId');
-            $status = $request->get('Status');
-            $discount = $request->get('Discount');
-            $cardNumber = $request->get('CardNumber');
-            $error = $request->get('Error');
-            $signature = $request->get('Signature');
+            $data = [
+                'OrderId'    => $request->get('OrderId'),
+                'Status'     => $request->get('Status'),
+                'Discount'   => $request->get('Discount'),
+                'CardNumber' => $request->get('CardNumber'),
+                'Error'      => $request->get('Error'),
+                'Signature'  => $request->get('Signature'),
+            ];
 
-            $result = \App::coreClientV2()->query(
-                'payment/svyaznoy-club',
-                [],
-                [
-                    'OrderId'    => $orderId,
-                    'Status'     => $status,
-                    'Discount'   => $discount,
-                    'CardNumber' => $cardNumber,
-                    'Error'      => $error,
-                    'Signature'  => $signature,
-                ],
-                \App::config()->coreV2['hugeTimeout']
+//            $result = \App::coreClientV2()->query('payment/svyaznoy-club', [], $data, \App::config()->coreV2['hugeTimeout']);
+
+            $result = null;
+            \App::coreClientV2()->addQuery('payment/svyaznoy-club', [], $data,
+                function($data) use (&$result) {
+                    if ($data) {
+                        $result = $data;
+                    }
+                }, function(\Exception $e) {\App::exception()->remove($e);}
             );
-
+            \App::coreClientV2()->execute(\App::config()->coreV2['hugeTimeout'], 1);
 
             if (!isset($result['order']) || !is_array($result['order'])) {
                 throw new \Exception('Не получена информация о заказе');
