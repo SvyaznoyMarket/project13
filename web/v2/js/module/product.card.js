@@ -32,20 +32,6 @@ define(
                 }
             },
 
-            renderWidget = function(e, templateData) {
-                e.stopPropagation();
-
-                var $el = $(e.currentTarget),
-                    $template = $($el.data('templateSelector'));
-
-                console.info('render', $template, $el, templateData);
-
-                //$el.replaceWith(mustache.render($template.html(), templateData, $template.data('partial')));
-                $el.html(
-                    $(mustache.render($template.html(), templateData, $template.data('partial'))).html()
-                );
-            },
-
             addProductToCart = function(e) {
                 e.stopPropagation();
 
@@ -158,9 +144,6 @@ define(
                 $el.find('.js-buySpinner-value').val(product.quantity);
             };
 
-
-        $body.on('render', renderBody);
-        $body.on('render', '.js-widget', renderWidget);
 
         // кнопка купить
         $body
