@@ -316,6 +316,11 @@
 				self.token = newToken;
 				self.choosenPoint(OrderModel.orderDictionary.getPointByStateAndId(self.state, data.id));
 				ENTER.OrderModel.choosenPoint(data.id);
+
+				choosenBlock = OrderModel.getDeliveryBoxByToken(newToken);
+				choosenBlock.allDatesForBlock([]);
+				choosenBlock.calculateDate();
+
 				console.log(OrderModel.deliveryBoxes());
 
 				if ( OrderModel.paypalECS() ) {
@@ -812,10 +817,11 @@
 				chooseDate = JSON.parse(dateFromCookie);
 			}
 			else {
-				chooseDate = self.allDatesForBlock()[0];
+				chooseDate = self.getFirstAvalibleDate();
 			}
 
 			console.log('Выбранная дата (chooseDate) ', chooseDate);
+			console.log('Все даты для блока ', self.allDatesForBlock());
 			if ( chooseDate && true === chooseDate.avalible ) {
 				self.choosenDate( chooseDate );
 			}
@@ -841,6 +847,21 @@
 			}
 
 			self.makeCalendar();
+		};
+
+		DeliveryBox.prototype.getFirstAvalibleDate = function() {
+			var
+				self = this,
+				i;
+			// end of vars
+
+			for ( i = 0; i < self.allDatesForBlock().length; i++ ) {
+				if ( self.allDatesForBlock()[i].avalible ) {
+					return self.allDatesForBlock()[i];
+				}
+			}
+
+			return false;
 		};
 
 		/**
