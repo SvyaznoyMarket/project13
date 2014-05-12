@@ -1,0 +1,110 @@
+.params {
+	padding: 0 10px 0;
+
+	height: 0;
+	overflow: hidden;
+
+	-moz-transition: height 0.3s ease;
+	-webkit-transition: height 0.3s ease;
+	transition: height 0.3s ease;
+
+	&-open {
+		height: auto;
+	}
+
+	&_title {
+		font-size: 17px;
+
+		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQCAYAAADNo/U5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo0NEZBOTk0QkJFRTAxMUUzOUFCREE2NEFFNDZFRTFFNSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo0NEZBOTk0Q0JFRTAxMUUzOUFCREE2NEFFNDZFRTFFNSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjQ0RkE5OTQ5QkVFMDExRTM5QUJEQTY0QUU0NkVFMUU1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjQ0RkE5OTRBQkVFMDExRTM5QUJEQTY0QUU0NkVFMUU1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+T9cAFgAAAH9JREFUeNpiYGBgkAZiDgYSwVsgvgvE3qRo+o+E1wGxHKmaQPgzEJcBMSspmmD4MhDbkqoJhP8B8QIgFiVFEwy/A+J0IGYiRRMMnwBiCUYoh1jwB4itSbHpJBAbEus8DP8wkBNyuDRdwRdHDOSkBliIkJTuQCAfiD1JSeEAAQYAU6hdXm6clNgAAAAASUVORK5CYII=) no-repeat 0 50%;
+		
+		padding: 10px 0 10px 25px;
+
+		cursor: pointer;
+
+		border-top: 1px solid #c7c7c7;
+
+		&:first-child {
+			border-top: none;
+		}
+
+		&-open {
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAANCAYAAACgu+4kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo0NEZBOTk0RkJFRTAxMUUzOUFCREE2NEFFNDZFRTFFNSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo0NEZBOTk1MEJFRTAxMUUzOUFCREE2NEFFNDZFRTFFNSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjQ0RkE5OTREQkVFMDExRTM5QUJEQTY0QUU0NkVFMUU1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjQ0RkE5OTRFQkVFMDExRTM5QUJEQTY0QUU0NkVFMUU1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+vsi2ygAAAIxJREFUeNpiYmBgkAXid0D8n0T8G4hzmIDEGyD+xEA6YAHiOzCOHxkuWINu4iYSNH8GYml0AxSA+CuRBhTh8lclEZovQv2PFbAB8XU8mv8BsTWh0HWEKsRmwFxio2gJFs2g6BYh1gAJIH6PZkAqqQklG0nzMSBmJNUAZiA+A02yBgxkAnEgNsOnACDAACmUW/jSKaXdAAAAAElFTkSuQmCC);
+			background-position: 0 16px;
+		}
+	}
+
+	&_cont {
+		height: 0;
+		overflow: hidden;
+
+		-moz-transition: height 0.3s ease;
+		-webkit-transition: height 0.3s ease;
+		transition: height 0.3s ease;
+
+		&-open {
+			height: auto;
+		}
+	}
+
+	&_foot {
+		border-top: 1px solid #c7c7c7;
+
+		padding: 20px 0;
+	}
+
+	&_footBtn {
+		float: right;
+
+		font-size: 17px;
+		line-height: 38px;
+
+		height: 38px;
+		padding: 0 25px;
+		margin-left: 10px;
+	}
+}
+
+.paramsList {
+	margin: 0 0 20px;
+
+	&_item {
+		display: inline-block;
+		vertical-align: top;
+
+		font-size: 14px;
+		color: #666666;
+
+		margin: 10px 5px 0 0;
+
+		cursor: pointer;
+	}
+
+	.customLabel {
+		padding: 5px 10px;
+
+		.rounded(4px);
+
+		&:hover {
+			background: #fcebd1;
+			border: 1px solid #f2b586;
+		}
+	}
+
+	.customInput+.customLabel {
+	    background: #eaeaea;
+		border: 1px solid #b6b6b6;
+	}
+
+	.customInput:checked+.customLabel {
+	    background: #fcebd1;
+		border: 1px solid #f2b586;
+	}
+
+
+	&-col {
+
+		.paramsList_item {
+			display: block;
+		}
+	}
+}

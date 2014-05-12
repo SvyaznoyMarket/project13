@@ -72,6 +72,7 @@ require([
     'module/navigation',
     'module/region',
     'module/search',
+    'module/catalog.common',
     'module/widget',      // виджеты
     'module/user.common', // инфо о пользователе
     'module/cart.common', // кнопка купить, спиннер

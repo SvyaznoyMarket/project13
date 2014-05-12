@@ -21,7 +21,7 @@ $(function() {
         * Функция ресайза блока слайдера изображений товара
        */
       resizeSlides = function resizeSlides() {
-        slideWrapItem.css({'display' : 'inline-block'});
+        slideWrapItem.css({'display' : 'inline-block', 'float' : 'left'});
 
         console.warn("photo resize")
         var slideWrapHeight = 350,
