@@ -295,7 +295,7 @@ class Action {
                 }
 
                 // если shopscript вернул редирект
-                if (!empty($shopScriptSeo['redirect']['link'])) {
+                if (!empty($shopScriptSeo['redirect']['link']) && 'true' != $request->get('ajax')) {
                     $redirect = $shopScriptSeo['redirect']['link'];
                     if(!preg_match('/^http/', $redirect)) {
                         $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
