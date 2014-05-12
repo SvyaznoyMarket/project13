@@ -182,8 +182,8 @@ return [
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
 
-    // tchobo
-    'tchobo' => [
+    // tchibo
+    'tchibo' => [
         'pattern' => '/catalog/tchibo',
         'action'  => ['Tchibo\IndexAction', 'execute'],
     ],

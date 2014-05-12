@@ -83,6 +83,7 @@ class ProductAction {
                     ],
                     'product'  => $productInfo,
                     'category_id' => $parentCategoryId,
+                    'regionId' => \App::user()->getRegionId(),
                 ]);
             } else {
                 $response = new \Http\RedirectResponse($returnRedirect);

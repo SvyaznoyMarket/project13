@@ -71,8 +71,6 @@ class RecommendedAction {
             }
             \App::curl()->execute(null, 1);
 
-            $uniqueIds = array_unique(array_merge($ids['alsoBought'], $ids['similar'], $ids['alsoViewed'], $ids['personal']));
-
             // SITE-3625 Персонализация рекомендаций
             foreach ($ids as $type => &$item) {
                 if (isset($ids['personal']) && $type !== 'personal') {

@@ -21,6 +21,8 @@ return function(
         <?
         $attrOptionValue = null;
         if ($productAttribute) {
+            $attrOptionValue = $productAttribute->getValue();
+
             $attrOption = $productAttribute->getOption();
             $attrOption = is_array($attrOption) ? reset($attrOption) : null;
             if ($attrOption instanceof \Model\Product\Property\Option\Entity) {
