@@ -70,7 +70,8 @@ require([
     'jquery.touchwipe',
     'module/navigation',
     'module/region',
-    'module/search'
+    'module/search',
+    'module/catalog.common'
 ]);
 
 require(
