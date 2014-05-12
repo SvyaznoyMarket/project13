@@ -214,7 +214,7 @@ $isKitPage = $mainProduct && (bool)$mainProduct->getKit() && $mainProduct->getId
             ]) // Кнопка купить ?>
         <? endif ?>
 
-        <? if (!$hasFurnitureConstructor && !$isKitPage): ?>
+        <? if (!$hasFurnitureConstructor): ?>
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
         <? endif ?>
 

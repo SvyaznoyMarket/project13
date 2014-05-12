@@ -58,6 +58,11 @@ class ProductAction {
                 'link'          => $product->getLink(),
                 'category_id'   => $parentCategoryId,
             ];
+            $responseData['regionId'] = \App::user()->getRegionId();
+            $responseData['product'] = [
+                'id'        => $product->getId(),
+                'quantity'  => $quantity,
+            ];
         } catch (\Exception $e) {
             \App::logger()->error($e, ['order', 'one-click']);
             $responseData = [

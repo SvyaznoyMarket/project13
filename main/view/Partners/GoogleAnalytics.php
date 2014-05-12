@@ -330,7 +330,7 @@ class GoogleAnalytics {
                 }
 
                 $purchasedProducts[] = [
-                    'id'        => $orderProduct->getId(),
+                    'id'        => $order->getNumber(),
                     'name'      => $product ? $product->getName() : '',
                     'sku'       => $product ? $product->getArticle() : null,
                     'category'  => $categoryName,
