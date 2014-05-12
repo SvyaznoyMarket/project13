@@ -1,11 +1,9 @@
 define(
     [
         'jquery', 'underscore', 'mustache',
-        'module/config'
     ],
     function (
-        $, _, mustache,
-        config
+        $, _, mustache
     ) {
         var $body = $('body'),
 
@@ -46,19 +44,5 @@ define(
 
         $body.on('render', renderBody);
         $body.on('render', '.js-widget', renderWidget);
-
-        $.post(config.user.infoUrl).done(function(response) {
-            if (_.isObject(response.result)) {
-                if (_.isObject(response.result.widgets)) {
-                    $body.data('widget', response.result.widgets);
-                    $body.trigger('render');
-                }
-
-                if (_.isObject(response.result.user)) {
-                    $body.data('user', response.result.user);
-                }
-            }
-        });
-
     }
 );

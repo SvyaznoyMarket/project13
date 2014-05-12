@@ -71,7 +71,10 @@ require([
     'jquery.touchwipe',
     'module/navigation',
     'module/region',
-    'module/search'
+    'module/search',
+    'module/widget',      // виджеты
+    'module/user.common', // инфо о пользователе
+    'module/cart.common', // кнопка купить, спиннер
 ]);
 
 require(
