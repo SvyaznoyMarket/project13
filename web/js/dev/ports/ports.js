@@ -564,6 +564,14 @@ window.ANALYTICS = {
 						butType = $(this).hasClass('mShopsOnly') ? 'reserve' : 'add2basket';
 
 					if ( 'undefined' !== product ) {
+
+                        /* На наборах выполняется другой трекинговый код */
+                        if ($(this).hasClass('jsChangePackageSet')) {
+                            console.log('GA: send event addedCollection collection %s', product.article);
+                            ga('send', 'event', 'addedCollection', 'collection', product.article);
+                            return ;
+                        }
+
 						console.log('GA: btn Buy');
 						ga('send', 'event', butType, product.name, product.article, product.price);
 					}
