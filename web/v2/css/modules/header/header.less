@@ -118,7 +118,7 @@
 		float: right;
 		margin: 0 0 0 21px;
 
-		&__last {
+		&-last {
 			margin: 0;
 		}
 	}
@@ -132,15 +132,15 @@
 		text-transform: uppercase;
 		outline: none;
 
-		&__auth {
+		&-auth {
 			background-position: 50% -80px;
 		}
 
-		&__cart {
+		&-cart {
 			background-position: 50% -122px;
 		}
 
-		&__cartVal {
+		&-cartVal {
 			text-transform: none;
 			font-size: 11px;
 			position: relative;
@@ -173,8 +173,8 @@
 			}
 		}
 
-		&__authVal {
-			max-width: 90px;
+		&-authVal {
+			max-width: 50px;
 			position: relative;
 			overflow: hidden;
 			text-align: left;
@@ -190,7 +190,7 @@
 		&:hover {
 			color: @white;
 			text-decoration: none;
-			animation: 0.3s linear 0s normal none 1 resize;
+			//animation: 0.3s linear 0s normal none 1 resize;
 			outline: none;
 		}
 	}
@@ -212,38 +212,38 @@
 }
 
 //action
-@keyframes resize {
-	0% {
-	    transform: scale(1, 1);
-	}
-	50% {
-	    transform: scale(1.2, 1.2);
-	}
-	100% {
-	    transform: scale(1, 1);
-	}
-}
+// @keyframes resize {
+// 	0% {
+// 	    transform: scale(1, 1);
+// 	}
+// 	50% {
+// 	    transform: scale(1.2, 1.2);
+// 	}
+// 	100% {
+// 	    transform: scale(1, 1);
+// 	}
+// }
 
-@-moz-keyframes resize {
-	0% {
-	    transform: scale(1, 1);
-	}
-	50% {
-	    transform: scale(1.2, 1.2);
-	}
-	100% {
-	    transform: scale(1, 1);
-	}
-}
+// @-moz-keyframes resize {
+// 	0% {
+// 	    transform: scale(1, 1);
+// 	}
+// 	50% {
+// 	    transform: scale(1.2, 1.2);
+// 	}
+// 	100% {
+// 	    transform: scale(1, 1);
+// 	}
+// }
 
-@-webkit-keyframes resize {
-	0% {
-	    transform: scale(1, 1);
-	}
-	50% {
-	    transform: scale(1.2, 1.2);
-	}
-	100% {
-	    transform: scale(1, 1);
-	}
-}
+// @-webkit-keyframes resize {
+// 	0% {
+// 	    transform: scale(1, 1);
+// 	}
+// 	50% {
+// 	    transform: scale(1.2, 1.2);
+// 	}
+// 	100% {
+// 	    transform: scale(1, 1);
+// 	}
+// }
