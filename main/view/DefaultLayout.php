@@ -911,4 +911,24 @@ class DefaultLayout extends Layout {
     public function slotLamodaCompleteJS() {
         return '';
     }
+
+    public function slotGoogleTagManagerJS() {
+        if (!\App::config()->googleTagManager['enabled'] || !\App::config()->analytics['enabled']) return;
+
+        $containerId = \App::config()->googleTagManager['containerId'];
+        if (!$containerId) {
+            return;
+        }
+
+        $data = [
+            'containerId' => $containerId,
+        ];
+
+        return
+            "<div id='googleTagManagerJS' class='jsanalytics' data-value='" . json_encode($data) . "'>
+                <!-- Google Tag Manager -->
+                <noscript><iframe src='//www.googletagmanager.com/ns.html?id=" . $containerId . "' height='0' width='0' style='display:none;visibility:hidden'></iframe></noscript>
+                <!-- End Google Tag Manager -->
+            </div>";
+    }
 }
