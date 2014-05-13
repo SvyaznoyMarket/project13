@@ -5,8 +5,6 @@ namespace EnterTerminal\Config {
 
     class Application extends BaseApplicationConfig {
         /** @var string */
-        public $shopId;
-        /** @var string */
         public $clientId;
 
         public function __construct() {

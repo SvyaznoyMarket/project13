@@ -27,11 +27,8 @@ class Category {
         $curl = $this->getCurlClient();
         $productRepository = new Repository\Product();
 
-        // ид региона
-        $regionId = trim((string)$request->query['regionId']);
-        if (!$regionId) {
-            throw new \Exception('Не указан параметр regionId');
-        }
+        // ид магазина
+        $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
 
         // ид товара
         $categoryId = trim((string)$request->query['categoryId']);
@@ -54,16 +51,19 @@ class Category {
         }
 
         // запрос региона
-        $regionQuery = new Query\Region\GetItemById($regionId);
-        $curl->prepare($regionQuery);
+        $shopItemQuery = new Query\Shop\GetItemById($shopId);
+        $curl->prepare($shopItemQuery);
 
         $curl->execute(1, 2);
 
-        // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        // магазин
+        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
+        if (!$shop) {
+            throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+        }
 
         // запрос категории
-        $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryId, $region->id);
+        $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryId, $shop->regionId);
         $curl->prepare($categoryItemQuery);
 
         $categoryAdminItemQuery = null;
@@ -83,11 +83,11 @@ class Category {
         $requestFilters['category']->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
 
         // запрос предка категории
-        $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region->id);
+        $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $shop->regionId);
         $curl->prepare($ancestryCategoryItemQuery);
 
         // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
+        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
         $curl->execute(1, 2);
@@ -99,7 +99,7 @@ class Category {
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
 
         // запрос списка товаров
-        $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $region->id);
+        $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $shop->regionId);
         $curl->prepare($productListQuery);
 
         // запрос настроек каталога
@@ -138,7 +138,6 @@ class Category {
 
         // страница
         $page = new Page();
-        $page->region = $region;
         $page->category = $category;
         $page->catalogConfig = $catalogConfig;
         $page->products = array_values($productsById);

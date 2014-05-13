@@ -12,13 +12,16 @@ class HandleResponse {
     /**
      * @param \Enter\Http\Request $request
      * @param Http\Response|null $response
+     * @throws \Exception
      */
     public function execute(Http\Request $request, Http\Response &$response = null) {
         $config = $this->getConfig();
 
         if ($request) {
             $config->clientId = is_scalar($request->query['clientId']) ? $request->query['clientId'] : null;
-            $config->shopId = is_scalar($request->query['shopId']) ? $request->query['shopId'] : null;
+            if (!$config->clientId) {
+                throw new \Exception('Не указан параметр clientId');
+            }
 
             $config->coreService->clientId = $config->clientId;
         }

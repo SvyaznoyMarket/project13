@@ -15,7 +15,7 @@ class RegisterShutdown {
     public function execute(Http\Request &$request = null, Http\Response &$response = null, $startAt = null) {
         register_shutdown_function(function () use (&$request, &$response, $startAt) {
             if (!$response instanceof Http\Response) {
-                $response = new Http\Response();
+                $response = new Http\JsonResponse();
             }
 
             $error = error_get_last();

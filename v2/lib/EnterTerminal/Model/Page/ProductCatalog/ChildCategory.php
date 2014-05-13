@@ -4,8 +4,6 @@ namespace EnterTerminal\Model\Page\ProductCatalog {
     use EnterSite\Model;
 
     class ChildCategory {
-        /** @var Model\Region */
-        public $region;
         /** @var Model\Product\Category */
         public $category;
         /** @var Model\Product\Catalog\Config */

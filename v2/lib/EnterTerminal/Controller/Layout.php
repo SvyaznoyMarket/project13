@@ -25,23 +25,23 @@ class Layout {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
 
-        // ид региона
-        $regionId = trim((string)$request->query['regionId']);
-        if (!$regionId) {
-            throw new \Exception('Не указан параметр regionId');
-        }
+        // ид магазина
+        $shopId = (new Repository\Shop())->getIdByHttpRequest($request);
 
-        // запрос региона
-        $regionQuery = new Query\Region\GetItemById($regionId);
-        $curl->prepare($regionQuery);
+        // запрос магазина
+        $shopItemQuery = new Query\Shop\GetItemById($shopId);
+        $curl->prepare($shopItemQuery);
 
         $curl->execute(1, 2);
 
-        // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        // магазин
+        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
+        if (!$shop) {
+            throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+        }
 
         // запрос дерева категорий для меню
-        $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
+        $categoryListQuery = new Query\Product\Category\GetTreeList($shop->regionId, 3);
         $curl->prepare($categoryListQuery);
 
         // запрос меню
@@ -55,7 +55,8 @@ class Layout {
 
         // страница
         $page = new Page();
-        $page->region = $region;
+        $page->region = $shop->region;
+        $page->shop = $shop;
         $page->mainMenu = $mainMenu;
 
         return new Http\JsonResponse($page);
