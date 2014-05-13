@@ -6,7 +6,7 @@
 	bottom: 0;
     display: none;
     left: 0;
-    min-width: 160px;
+    width: 300px;
     overflow: auto;
     position: fixed;
     top: 0;
@@ -30,7 +30,6 @@
 		color: @white;
 
 		&-text {
-			border-bottom: 1px dotted @white;
 			display: inline-block;
 
 		    font-size: 16px;
@@ -38,10 +37,18 @@
 		    margin: 0 0 0 15px;
 			cursor: pointer;
 
+			width: 500px;
+
 			vertical-align: top;
 
 		    *display: inline;
 			zoom: 1;
+
+			.text {
+				border-bottom: 1px dotted @white;
+
+				display: inline-block;
+			}
 		} 
 	} 
 
@@ -50,11 +57,32 @@
 		display: inline-block;
     	margin: -4px 0 0;
 	}
+
+	&_colWrap {
+		width: 172px;
+
+		overflow: hidden;
+		position: relative;
+
+		display: inline-block;
+		vertical-align: top;
+
+		*display: inline;
+		zoom: 1;
+
+		.transBg {
+		    background-position: 0 0;
+
+		    bottom: 0;
+		    height: 20px;
+		    position: absolute;
+		    right: 0;
+		    width: 18px;
+		}
+	}
 }
 
 .navList {
-	min-width: 290px;
-	max-width: 315px;
 
 	&_item {
 		padding: 7px 0;
@@ -91,7 +119,7 @@
 	    margin: 0 5px 0 0;
 
 	    font-family: 'menuIconFont';
-	    font-size: 20px;
+	    font-size: 80px;
 
 		*display: inline;
 		zoom: 1;
@@ -110,7 +138,7 @@
 
 	&_link {
 		color: #7e7e7e;
-		padding: 5px 15px 5px 81px;
+		padding: 5px 15px 5px 65px;
 		margin: 2px 0;
 		display: block;
 		font-size: 14px;

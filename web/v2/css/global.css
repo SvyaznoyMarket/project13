@@ -630,8 +630,8 @@ textarea[contenteditable] {
 }
 @font-face {
   font-family: 'menuIconFont';
-  src: url('/v2/css/modules/mainStyles/fonts/iconFont/newfont-regular-webfont.eot');
-  src: local('menuIconFont'), url('/v2/css/modules/mainStyles/fonts/iconFont/newfont-regular-webfont.woff') format('woff'), url('/v2/css/modules/mainStyles/fonts/iconFont/newfont-regular-webfont.ttf') format('truetype'), url('/v2/css/modules/mainStyles/fonts/iconFont/newfont-regular-webfont.svg#menuIconFont') format('svg');
+  src: url('/v2/css/modules/mainStyles/fonts/iconFont/entericon-regular-webfont.eot');
+  src: local('menuIconFont'), url('/v2/css/modules/mainStyles/fonts/iconFont/entericon-regular-webfont.woff') format('woff'), url('/v2/css/modules/mainStyles/fonts/iconFont/entericon-regular-webfont.ttf') format('truetype'), url('/v2/css/modules/mainStyles/fonts/iconFont/entericon-regular-webfont.svg#menuIconFont') format('svg');
 }
 /** Основнаые стили, вспомогательные классы **/
 /* ==========================================================================
@@ -854,7 +854,7 @@ body.noScroll {
   float: right;
   margin: 0 0 0 21px;
 }
-.userBox_item__last {
+.userBox_item-last {
   margin: 0;
 }
 .userBox_link {
@@ -866,25 +866,25 @@ body.noScroll {
   text-transform: uppercase;
   outline: none;
 }
-.userBox_link__auth {
+.userBox_link-auth {
   background-position: 50% -80px;
 }
-.userBox_link__cart {
+.userBox_link-cart {
   background-position: 50% -122px;
 }
-.userBox_link__cartVal {
+.userBox_link-cartVal {
   text-transform: none;
   font-size: 11px;
   position: relative;
 }
-.userBox_link__cartVal .userBox_text {
+.userBox_link-cartVal .userBox_text {
   font-size: 12px;
   color: #ffa901;
 }
-.userBox_link__cartVal .rubl {
+.userBox_link-cartVal .rubl {
   font-size: 12px;
 }
-.userBox_link__cartVal .qnt {
+.userBox_link-cartVal .qnt {
   background: #f88a08;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -898,14 +898,14 @@ body.noScroll {
   right: 0;
   top: -6px;
 }
-.userBox_link__authVal {
-  max-width: 90px;
+.userBox_link-authVal {
+  max-width: 50px;
   position: relative;
   overflow: hidden;
   text-align: left;
   background-position: 50% -165px;
 }
-.userBox_link__authVal .userBox_text {
+.userBox_link-authVal .userBox_text {
   color: #ffa901;
   width: 500px;
   display: inline-block;
@@ -913,7 +913,6 @@ body.noScroll {
 .userBox_link:hover {
   color: #ffffff;
   text-decoration: none;
-  animation: 0.3s linear 0s normal none 1 resize;
   outline: none;
 }
 .userBox .transBg {
@@ -926,39 +925,6 @@ body.noScroll {
 }
 .userBox_text {
   font-size: 11px;
-}
-@keyframes resize {
-  0% {
-    transform: scale(1, 1);
-  }
-  50% {
-    transform: scale(1.2, 1.2);
-  }
-  100% {
-    transform: scale(1, 1);
-  }
-}
-@-moz-keyframes resize {
-  0% {
-    transform: scale(1, 1);
-  }
-  50% {
-    transform: scale(1.2, 1.2);
-  }
-  100% {
-    transform: scale(1, 1);
-  }
-}
-@-webkit-keyframes resize {
-  0% {
-    transform: scale(1, 1);
-  }
-  50% {
-    transform: scale(1.2, 1.2);
-  }
-  100% {
-    transform: scale(1, 1);
-  }
 }
 /** адаптивные стили шапки **/
 /* ==========================================================================
@@ -993,6 +959,9 @@ body.noScroll {
     height: 24px;
     padding: 0;
     width: 34px;
+  }
+  .userBox_link-authVal .userBox_text {
+    display: none;
   }
   /* Хлебные крошки */
   .breadCrumbs_item {
@@ -1032,7 +1001,7 @@ body.noScroll {
   bottom: 0;
   display: none;
   left: 0;
-  min-width: 160px;
+  width: 300px;
   overflow: auto;
   position: fixed;
   top: 0;
@@ -1055,23 +1024,40 @@ body.noScroll {
   color: #ffffff;
 }
 .navHead_col-text {
-  border-bottom: 1px dotted #ffffff;
   display: inline-block;
   font-size: 16px;
   margin: 0 0 0 15px;
   cursor: pointer;
+  width: 500px;
   vertical-align: top;
   *display: inline;
   zoom: 1;
+}
+.navHead_col-text .text {
+  border-bottom: 1px dotted #ffffff;
+  display: inline-block;
 }
 .navHead_icoImg {
   width: 50px;
   display: inline-block;
   margin: -4px 0 0;
 }
-.navList {
-  min-width: 290px;
-  max-width: 315px;
+.navHead_colWrap {
+  width: 172px;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  *display: inline;
+  zoom: 1;
+}
+.navHead_colWrap .transBg {
+  background-position: 0 0;
+  bottom: 0;
+  height: 20px;
+  position: absolute;
+  right: 0;
+  width: 18px;
 }
 .navList_item {
   padding: 7px 0;
@@ -1103,7 +1089,7 @@ body.noScroll {
   width: 45px;
   margin: 0 5px 0 0;
   font-family: 'menuIconFont';
-  font-size: 20px;
+  font-size: 80px;
   *display: inline;
   zoom: 1;
 }
@@ -1115,7 +1101,7 @@ body.noScroll {
 }
 .navListLevel2_link {
   color: #7e7e7e;
-  padding: 5px 15px 5px 81px;
+  padding: 5px 15px 5px 65px;
   margin: 2px 0;
   display: block;
   font-size: 14px;
@@ -2540,6 +2526,7 @@ body.noScroll {
 }
 .regionForm_autocomplete .ui-autocomplete .ui-menu-item {
   padding: 5px 0;
+  cursor: pointer;
 }
 .regionForm_autocomplete .ui-autocomplete .ui-menu-item a {
   font-size: 14px;
