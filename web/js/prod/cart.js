@@ -363,7 +363,8 @@ $(document).ready(function() {
 			})
 		}
 
-		this.analyticsDelete = function( data ) {
+		// analytics
+		this.deleteFromRutarget = function( data ) {
 			var
 				region = $('.jsChangeRegion'),
 				regionId = region.length ? region.data('region-id') : false,
@@ -371,7 +372,7 @@ $(document).ready(function() {
 				_rutarget = window._rutarget || [];
 			// end of vars
 
-			if ( !data || !regionId ) {
+			if ( !regionId || !data.hasOwnProperty('id') ) {
 				return;
 			}
 
@@ -380,6 +381,26 @@ $(document).ready(function() {
 			console.info('RuTarget removeFromCart');
 			console.log(result);
 			_rutarget.push(result);
+		}
+
+		// analytics
+		this.deleteFromLamoda = function( data ) {
+			if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('id') ) {
+				return;
+			}
+
+			console.info('Lamoda removeFromCart');
+			console.log('product_id=' + data.id);
+			JSREObject('cart_remove', data.id);
+		}
+
+		this.analyticsDelete = function( data ) {
+			if ('undefined' == typeof(data) ) {
+				return;
+			}
+
+			self.deleteFromRutarget(data);
+			self.deleteFromLamoda(data);
 		}
 
 		this.analyticsUpdate = function( data ) {
