@@ -9,7 +9,8 @@
 
     if ($('.packageSet').length === 0) return; // выходим из функции
 
-	var packageSetBtn = $('.jsChangePackageSet'),
+	var product = $('#jsProductCard').data('value'),
+        packageSetBtn = $('.jsChangePackageSet'),
 		packageSetWindow = $('.jsPackageSetPopup'),
         packageProducts = $('.mPackageSetEdit').data('value'),
         knockoutUrl = ENTER.config.debug ? '/js/vendor/knockout.js' :'/js/prod/knockout.min.js'; // TODO-zra говнокод
@@ -23,7 +24,12 @@
 			packageSetWindow.lightbox_me({
 				autofocus: true
 			});
-		};
+        // Google Analytics
+        if (typeof _gaq !== 'undefined' && typeof product !== 'undefined') {
+            console.log('_gaq:_trackEvent addedCollection collection %s', product.article);
+            _gaq.push(['_trackEvent', 'addedCollection', 'collection', product.article]);
+        }
+    };
 
 	packageSetBtn.on('click', showPackageSetPopup);
 

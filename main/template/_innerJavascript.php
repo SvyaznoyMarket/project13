@@ -15,6 +15,7 @@
 <?= $page->slotСpaexchangeConversionJS() ?>
 <?= $page->slotAdLensJS() ?>
 <?= $page->slotRevolvermarketingConversionJS() ?>
+<?= $page->slotGoogleTagManagerJS() ?>
 
 <!-- RuTarget Start -->
 <?= $page->slotRuTargetJS() ?>
@@ -28,3 +29,12 @@
 <?= $page->slotRuTargetHomepageJS() ?>
 <?= $page->slotRuTargetOtherPageJS() ?>
 <!-- RuTarget End -->
+
+<!-- Lamoda Start -->
+<?= $page->slotLamodaJS() ?>
+<?= $page->slotLamodaCategoryJS() ?>
+<?= $page->slotLamodaSearchJS() ?>
+<?= $page->slotLamodaProductJS() ?>
+<?= $page->slotLamodaOtherPageJS() ?>
+<?= $page->slotLamodaCompleteJS() ?>
+<!-- Lamoda End -->

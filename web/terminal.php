@@ -26,12 +26,12 @@ call_user_func(require $applicationDir . '/v2/config/autoload.php', $application
 $request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, [], $_SERVER);
 
 // config
-(new \EnterSite\Action\ImportConfig())->execute($applicationDir, $applicationDir . '/config/config-local.php');
-//(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . '/v2/config/config-local.php');
+//(new \EnterSite\Action\ImportConfig())->execute($applicationDir, $applicationDir . '/config/config-local.php');
+(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . '/v2/config/terminal/config-local.php');
 //(new \EnterSite\Action\LoadCachedConfig())->execute($applicationDir . '/v2/config/config-local.json');
 
 // shutdown handler, send response
-(new \EnterSite\Action\RegisterShutdown())->execute($request, $response, $startAt);
+(new \EnterTerminal\Action\RegisterShutdown())->execute($request, $response, $startAt);
 
 // error handler
 (new \EnterSite\Action\HandleError())->execute($response);

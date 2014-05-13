@@ -95,7 +95,7 @@ class Client {
                 'data'    => $data,
                 'info'    => isset($info) ? $info : null,
                 'header'  => isset($header) ? $header : null,
-                'resonse' => $response,
+                'resonse' => mb_substr($response, 0, 512),
                 'timeout' => $timeout,
                 'startAt' => $startedAt,
                 'endAt'   => microtime(true),
@@ -232,7 +232,7 @@ class Client {
                             'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
                             'info'         => isset($info) ? $info : null,
                             'header'       => isset($header) ? $header : null,
-                            //'resonse'      => isset($content) ? $content : null,
+                            //'response'      => isset($content) ? $content : null,
                             'retryTimeout' => $retryTimeout,
                             'retryCount'   => $retryCount,
                             'timeout'      => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['timeout']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['timeout'] : null,
@@ -253,7 +253,7 @@ class Client {
                             'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
                             'info'         => isset($info) ? $info : null,
                             'header'       => isset($header) ? $header : null,
-                            'resonse'      => isset($content) ? $content : null,
+                            'response'      => isset($content) ? mb_substr($content, 0, 512) : null,
                             'retryTimeout' => $retryTimeout,
                             'retryCount'   => $retryCount,
                             'timeout'      => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['timeout']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['timeout'] : null,
@@ -329,7 +329,7 @@ class Client {
         $this->resources = [];
         if (!is_null($error)) {
             \App::exception()->add($error);
-            $this->logger->error(['message' => 'Curl response', 'response' => isset($content) ? $content : null], ['curl']);
+            $this->logger->error(['message' => 'Curl response', 'response' => isset($content) ? mb_substr($content, 0, 512) : null], ['curl']);
         }
 
         $spend = \Debug\Timer::stop('curl');

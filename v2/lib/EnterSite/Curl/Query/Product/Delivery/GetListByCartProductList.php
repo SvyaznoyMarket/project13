@@ -15,13 +15,13 @@ class GetListByCartProductList extends Query {
 
     /**
      * @param Model\Cart\Product[] $cartProducts
-     * @param Model\Region $region
+     * @param string|null $regionId
      */
-    public function __construct(array $cartProducts, Model\Region $region = null) {
+    public function __construct(array $cartProducts, $regionId = null) {
         $this->url = new Url();
         $this->url->path = 'v2/delivery/calc';
-        if ($region) {
-            $this->url->query['geo_id'] = $region->id;
+        if ($regionId) {
+            $this->url->query['geo_id'] = $regionId;
         }
         $this->data['product_list'] = array_map(function(Model\Cart\Product $cartProduct) {
             return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity];

@@ -9,13 +9,13 @@ use EnterSite\Model\Partial;
 class ProductSpinner {
     /**
      * @param Model\Product $product
-     * @param Model\Cart\Product|null $cartProduct
+     * @param int $count
      * @param bool $isDisabled
      * @return Partial\Cart\ProductSpinner
      */
     public function getObject(
         Model\Product $product,
-        Model\Cart\Product $cartProduct = null,
+        $count = 1,
         $isDisabled = false
     ) {
         $spinner = new Partial\Cart\ProductSpinner();
@@ -23,18 +23,8 @@ class ProductSpinner {
         $spinner->id = self::getId($product->id);
         $spinner->widgetId = self::getWidgetId($product->id);
         $spinner->buttonId = Repository\Partial\Cart\ProductButton::getId($product->id);
-        $spinner->value = 1;
-
-        // если товар есть в корзине
-        if ($cartProduct) {
-            $spinner->value = $cartProduct->quantity;
-        }
-
-        // если спеннер заблокирован
-        if ($isDisabled) {
-            $spinner->class = ' mDisabled';
-            $spinner->isDisabled = true;
-        }
+        $spinner->value = $count;
+        $spinner->isDisabled = (bool)$isDisabled;
 
         return $spinner;
     }

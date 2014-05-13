@@ -13,15 +13,19 @@ class GetTreeList extends Query {
     /** @var array|null */
     protected $result;
 
-    public function __construct(Model\Region $region = null, $maxLevel = null) {
+    /**
+     * @param string|null $regionId
+     * @param int|null $maxLevel
+     */
+    public function __construct($regionId = null, $maxLevel = null) {
         $this->url = new Url();
         $this->url->path = 'v2/category/tree';
         $this->url->query = [
             'is_load_parents' => true,
         ];
         $this->url->query['max_level'] = $maxLevel ?: 6;
-        if ($region) {
-            $this->url->query['region_id'] = $region->id;
+        if ($regionId) {
+            $this->url->query['region_id'] = $regionId;
         }
 
         $this->init();

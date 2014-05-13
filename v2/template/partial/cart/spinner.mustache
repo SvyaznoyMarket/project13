@@ -1,5 +1,5 @@
 <div class="js-widget js-buySpinner {{widgetId}}" data-template-selector="#tpl-product-buySpinner">
-    <div class="{{class}} counter">
+    <div class="{{class}} counter{{#isDisabled}} mDisabled{{/isDisabled}}">
         <button
             {{#isDisabled}}disabled="disabled"{{/isDisabled}}
             class="js-buySpinner-dec counter__btn counter__btn-plus"

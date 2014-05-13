@@ -82,7 +82,7 @@ class SetProduct {
         $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
         $page->widgets['.' . $widget->widgetId] = $widget;
         // спиннер
-        $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct, true);
+        $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct->quantity, true);
         $page->widgets['.' . $widget->widgetId] = $widget;
         // пользователь, корзина
         $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
@@ -90,14 +90,9 @@ class SetProduct {
 
         // response
         $response = new Http\JsonResponse([
-            'result' => $page,
+            'result' => $page, // TODO: вынести на уровень JsonPage.result
         ]);
 
-        // информационная кука пользователя
-        // TODO: вынести в Action\HandleResponse
-        $response->headers->setCookie(new Http\Cookie($config->userToken->infoCookieName, 1, time() + $config->session->cookieLifetime, '/', null, false, false));
-
-        // TODO: вынести на уровень JsonPage.result
         return $response;
     }
 }

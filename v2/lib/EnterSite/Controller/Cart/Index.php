@@ -59,7 +59,7 @@ class Index {
         $cart = $cartRepository->getObjectByQuery($cartItemQuery);
 
         // запрос дерева категорий для меню
-        $categoryListQuery = new Query\Product\Category\GetTreeList($region, 3);
+        $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
         $curl->prepare($categoryListQuery);
 
         // запрос меню

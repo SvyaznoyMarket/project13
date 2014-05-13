@@ -4,7 +4,7 @@ return function(\EnterSite\Config\Application $config) {
     $config->requestId = uniqid();
 
     $config->dir = realpath(__DIR__ . '/../..');
-    $config->hostname = 'enter.loc';
+    $config->hostname = 'enter.ru';
 
     $config->logger->fileAppender->file = $config->dir . '/log/main.log';
 
@@ -13,7 +13,6 @@ return function(\EnterSite\Config\Application $config) {
     $config->session->cookieDomain = '.enter.ru';
 
     $config->userToken->authCookieName = '_token';
-    $config->userToken->infoCookieName = '_authorized';
 
     $config->region->defaultId = '14974';
     $config->region->cookieName = 'geoshop';

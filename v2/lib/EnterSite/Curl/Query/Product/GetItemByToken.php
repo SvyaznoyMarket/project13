@@ -15,17 +15,17 @@ class GetItemByToken extends Query {
 
     /**
      * @param $token
-     * @param Model\Region $region
+     * @param string|null $regionId
      */
-    public function __construct($token, Model\Region $region = null) {
+    public function __construct($token, $regionId = null) {
         $this->url = new Url();
         $this->url->path = 'v2/product/get';
         $this->url->query = [
             'select_type' => 'slug',
             'slug'        => $token,
         ];
-        if ($region) {
-            $this->url->query['geo_id'] = $region->id;
+        if ($regionId) {
+            $this->url->query['geo_id'] = $regionId;
         }
 
         $this->init();

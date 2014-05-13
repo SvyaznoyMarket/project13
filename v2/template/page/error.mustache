@@ -6,7 +6,10 @@
     <body>
         <h1>Ошибка</h1>
         <pre>
-            {{error.message}}
+{{#error.type}}<strong>type:</strong> {{error.type}}{{/error.type}}
+{{#error.message}}<strong>message:</strong> {{error.message}}{{/error.message}}
+{{#error.file}}<strong>file:</strong> {{error.file}}{{/error.file}}
+{{#error.line}}<strong>line:</strong> {{error.line}}{{/error.line}}
         </pre>
     </body>
 </html>

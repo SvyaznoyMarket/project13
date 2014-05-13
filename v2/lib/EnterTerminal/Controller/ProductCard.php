@@ -3,7 +3,7 @@
 namespace EnterTerminal\Controller;
 
 use Enter\Http;
-use EnterSite\ConfigTrait;
+use EnterTerminal\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
@@ -26,11 +26,8 @@ class ProductCard {
         $curl = $this->getCurlClient();
         $productRepository = new Repository\Product();
 
-        // ид региона
-        $regionId = trim((string)$request->query['regionId']);
-        if (!$regionId) {
-            throw new \Exception('Не указан параметр regionId');
-        }
+        // ид магазина
+        $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
 
         // ид товара
         $productId = trim((string)$request->query['productId']);
@@ -38,17 +35,20 @@ class ProductCard {
             throw new \Exception('Не указан параметр productId');
         }
 
-        // запрос региона
-        $regionQuery = new Query\Region\GetItemById($regionId);
-        $curl->prepare($regionQuery);
+        // запрос магазина
+        $shopItemQuery = new Query\Shop\GetItemById($shopId);
+        $curl->prepare($shopItemQuery);
 
         $curl->execute(1, 2);
 
-        // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        // магазин
+        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
+        if (!$shop) {
+            throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+        }
 
         // запрос товара
-        $productItemQuery = new Query\Product\GetItemById($productId, $region->id);
+        $productItemQuery = new Query\Product\GetItemById($productId, $shop->regionId);
         $curl->prepare($productItemQuery);
 
         $curl->execute(1, 2);
@@ -62,7 +62,7 @@ class ProductCard {
         // запрос доставки товара
         $deliveryListQuery = null;
         if ($product->isBuyable) {
-            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $region);
+            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $shop->regionId);
             $curl->prepare($deliveryListQuery);
         }
 
@@ -80,7 +80,7 @@ class ProductCard {
         // запрос аксессуаров товара
         $accessoryListQuery = null;
         if ((bool)$product->accessoryIds) {
-            $accessoryListQuery = new Query\Product\GetListByIdList(array_slice($product->accessoryIds, 0, $config->product->itemsInSlider), $region->id);
+            $accessoryListQuery = new Query\Product\GetListByIdList(array_slice($product->accessoryIds, 0, $config->product->itemsInSlider), $shop->regionId);
             $curl->prepare($accessoryListQuery);
         }
 
@@ -144,7 +144,6 @@ class ProductCard {
 
         // страница
         $page = new Page();
-        $page->region = $region;
         $page->product = $product;
         $page->reviews = $reviews;
 

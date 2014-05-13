@@ -40,7 +40,6 @@ class DefaultLayout {
         $page->dataConfig = $helper->json([
             'requestId' => $config->requestId,
             'user'      => [
-                'infoCookie' => $config->userToken->infoCookieName,
                 'infoUrl'    => $router->getUrlByRoute(new Routing\User\Get()),
             ],
         ]);
@@ -63,6 +62,7 @@ class DefaultLayout {
         $page->mainMenu = $request->mainMenu;
 
         // пользователь
+        $page->userBlock->isUserAuthorized = false;
         $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Auth());
         $page->userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
 

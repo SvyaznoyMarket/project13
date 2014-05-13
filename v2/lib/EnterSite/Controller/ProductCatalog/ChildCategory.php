@@ -48,12 +48,12 @@ class ChildCategory {
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
         // запрос категории
-        $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region);
+        $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region->id);
         $curl->prepare($categoryItemQuery);
 
         $categoryAdminItemQuery = null;
         if ($config->adminService->enabled) {
-            $categoryAdminItemQuery = new Query\Product\Category\GetAdminItemByToken($categoryToken, $region);
+            $categoryAdminItemQuery = new Query\Product\Category\GetAdminItemByToken($categoryToken, $region->id);
             $curl->prepare($categoryAdminItemQuery);
         }
 
@@ -74,16 +74,16 @@ class ChildCategory {
         $requestFilters['category']->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
 
         // запрос предка категории
-        $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region);
+        $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region->id);
         $curl->prepare($ancestryCategoryItemQuery);
 
         // запрос листинга идентификаторов товаров
         $limit = $config->product->itemPerPage;
-        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region, ($pageNum - 1) * $limit, $limit);
+        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
         // запрос дерева категорий для меню
-        $categoryListQuery = new Query\Product\Category\GetTreeList($region, 3);
+        $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
         $curl->prepare($categoryListQuery);
 
         $curl->execute(1, 2);

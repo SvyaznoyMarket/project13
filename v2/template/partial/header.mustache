@@ -34,7 +34,7 @@
     </div><!--/ Обертка в 940 px-->
 </header><!--/ Шапка-->
 
-<nav class="nav">
+<nav id="nav" class="nav">
     <div class="navHead">
         <div class="navHead_col navIco"><span class="navIco_link"></span></div>
 
@@ -42,7 +42,11 @@
             <img class="navHead_icoImg" src="/v2/css/modules/header/img/logo.gif" />
         </a>
 
-        <span class="navHead_col navHead_col-text jsSelectCity">{{regionBlock.regionName}}</span>
+        <div class="navHead_colWrap">
+            <span class="navHead_col navHead_col-text jsSelectCity"><span class="text">{{regionBlock.regionName}}</span></span>
+
+            <div class="transBg"></div>
+        </div>
     </div>
 
     {{#mainMenu}}

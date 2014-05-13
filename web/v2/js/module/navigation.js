@@ -37,9 +37,17 @@ define(
              * Показываем/скрываем навигацию
              */
             slideNav = function slideNav() {
-                fader.show(0);
-                navSite.stop(true, true).show(0).animate({'left' : 0},300);
-                $('html,body').addClass('noScroll');
+
+                if ( navSite.css('display') == 'block' ) {
+                    closeNav();
+                }
+
+                else {
+                    fader.show(0);
+                    navSite.stop(true, true).show(0).animate({'left' : 0},300);
+                    $('html,body').addClass('noScroll');
+                }
+
                 return false;
             },
 
@@ -69,9 +77,9 @@ define(
             };
         // end of vars
 
-        navIco.click(slideNav);
+        navIco.on('click', slideNav);
 
-        navSiteItemLevel1.click(slideNavLevel2);
+        navSiteItemLevel1.on('click', slideNavLevel2);
 
         fader.live('click touchend', closeNav);
 

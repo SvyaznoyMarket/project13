@@ -422,7 +422,9 @@ class DefaultLayout extends Layout {
                 $this->json( (new \View\Partners\GoogleAnalytics($routeName, $this->params))->execute() ) .
                 '"></div>';
 
-            $return .= '<div id="TagManJS" class="jsanalytics"></div>';
+            if (\App::config()->partners['TagMan']['enabled']) {
+                $return .= '<div id="TagManJS" class="jsanalytics"></div>';
+            }
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
@@ -473,7 +475,7 @@ class DefaultLayout extends Layout {
                 $category = $product->getMainCategory();
                 $categories = $product->getCategory();
                 if (!$category) $category = reset($categories);
-                $prod_cats = $smantic->makeCategories($breadcrumbs, $category, 'product');
+                $prod_cats = array_map(function($a){ return $a->getName(); }, $categories);
                 $prod = $smantic->makeProdInfo($product, $prod_cats);
                 $return .= $this->render($smantic_path . 'smanticPage', ['prod' => $prod, 'prod_cats' => $prod_cats]);
             }
@@ -487,7 +489,10 @@ class DefaultLayout extends Layout {
                 $return .= $this->render($smantic_path . 'smanticPage', ['cart_prods' => $cart_prods]);
             }
 
-        }/* else if ($routeName == 'order.complete') {
+        } else if ($routeName == 'tchibo') {
+            $return .= $this->render($smantic_path . 'smanticPage', ['prod_cats' => ['Tchibo']]);
+        }
+        /* else if ($routeName == 'order.complete') {
 
             // !!! На этих страницах подключается через js — /web/js/dev/order/order.js
 
@@ -541,6 +546,7 @@ class DefaultLayout extends Layout {
         }
         $rrObj = null;
 
+        $rrData['emailCookieName'] = \App::config()->partners['RetailRocket']['userEmail']['cookieName'];
 
         $return .= '<div id="RetailRocketJS" class="jsanalytics"';
         if ($rrData) {
@@ -828,5 +834,101 @@ class DefaultLayout extends Layout {
 
     public function slotAdblender() {
         return \App::config()->analytics['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' =>$this->layout]).'"></div>' : '';
+    }
+
+    /**
+     * Lamoda
+     * Общая часть кода - выполнить на всех страницах:
+     * @return string
+     */
+    public function slotLamodaJS() {
+        if (!\App::config()->partners['Lamoda']['enabled']) return;
+
+        $data = [
+            'lamodaID' => \App::config()->partners['Lamoda']['lamodaID'],
+        ];
+
+        return "<div id='LamodaJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+    }
+
+    /**
+     * На страницы КАТЕГОРИЙ (помимо общего)
+     * @return string
+     */
+    public function slotLamodaCategoryJS() {
+        return '';
+    }
+
+    /**
+     * Lamoda
+     * На страницу результата поиска (помимо общего)
+     * @return string
+     */
+    public function slotLamodaSearchJS() {
+        return '';
+    }
+
+    /**
+     * Lamoda
+     * На продуктовые страницы (помимо общего)
+     * @return string
+     */
+    public function slotLamodaProductJS() {
+        return '';
+    }
+
+    /**
+     * Lamoda
+     * На все ОСТАЛЬНЫЕ страницы (помимо общего)
+     * @return string
+     */
+    public function slotLamodaOtherPageJS() {
+        if (!\App::config()->partners['Lamoda']['enabled']) return;
+
+        $pixels = [
+            $this->slotLamodaCategoryJS(),
+            $this->slotLamodaSearchJS(),
+            $this->slotLamodaProductJS(),
+            $this->slotLamodaCompleteJS(),
+        ];
+
+        // отсекаем с массива все отсутствующие на странице пиксели Lamoda
+        $pixels = array_filter($pixels);
+
+        // если на странице уже присутствует Lamoda пиксель, то не выводим наш пиксель LamodaOtherPage
+        if (!empty($pixels)) {
+            return;
+        }
+
+        return "<div id='LamodaOtherPageJS' class='jsanalytics'></div>";
+    }
+
+    /**
+     * Lamoda
+     * Заказ (success page)
+     * @return string
+     */
+    public function slotLamodaCompleteJS() {
+        return '';
+    }
+
+    public function slotGoogleTagManagerJS() {
+        if (!\App::config()->googleTagManager['enabled'] || !\App::config()->analytics['enabled']) return;
+
+        $containerId = \App::config()->googleTagManager['containerId'];
+        if (!$containerId) {
+            return;
+        }
+
+        $data = [
+            'containerId' => $containerId,
+        ];
+
+        return
+            "<div id='googleTagManagerJS' class='jsanalytics' data-value='" . json_encode($data) . "'>
+                <!-- Google Tag Manager -->
+                <noscript><iframe src='//www.googletagmanager.com/ns.html?id=" . $containerId . "' height='0' width='0' style='display:none;visibility:hidden'></iframe></noscript>
+                <!-- End Google Tag Manager -->
+            </div>";
     }
 }

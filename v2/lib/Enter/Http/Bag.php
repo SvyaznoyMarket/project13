@@ -2,6 +2,12 @@
 
 namespace Enter\Http;
 
-class Bag implements \ArrayAccess, \IteratorAggregate, \Countable {
+use JsonSerializable;
+
+class Bag implements \ArrayAccess, \IteratorAggregate, \Countable, JsonSerializable {
     use BagTrait;
+
+    public function jsonSerialize() {
+        return $this->container;
+    }
 }

@@ -90,25 +90,13 @@ class Get {
             $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
             $page->widgets['.' . $widget->widgetId] = $widget;
 
-            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct, true);
+            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct->quantity, true);
             $page->widgets['.' . $widget->widgetId] = $widget;
         }
 
         $response = new Http\JsonResponse([
             'result' => $page,
         ]);
-
-        // информационная кука пользователя
-        // TODO: вынести в Action\HandleResponse
-        $needCookie = (bool)$cart->product || $user;
-        $changeCookie = false
-            || !isset($request->cookies[$config->userToken->infoCookieName])
-            || ((bool)$request->cookies[$config->userToken->infoCookieName] && !$needCookie)
-            || (!(bool)$request->cookies[$config->userToken->infoCookieName] && $needCookie)
-        ;
-        if ($changeCookie) {
-            $response->headers->setCookie(new Http\Cookie($config->userToken->infoCookieName, $needCookie ? 1: 0, time() + $config->session->cookieLifetime, '/', null, false, false));
-        }
 
         return $response;
     }

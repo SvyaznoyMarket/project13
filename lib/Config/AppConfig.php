@@ -186,7 +186,11 @@ class AppConfig {
     public $yandexMetrika = [
         'enabled' => null,
     ];
-
+    /** @var array */
+    public $googleTagManager = [
+        'enabled' => null,
+        'containerId' => null,
+    ];
     /** @var array */
     public $partners = [
         'livetex' => [
@@ -202,6 +206,10 @@ class AppConfig {
             'account' => null,
             'apiUrl' => null,
             'timeout' => null,
+            'cookieLifetime' => null,
+            'userEmail' => [
+                'cookieName' => null,
+            ],
         ],
         'Admitad' => [
             'enabled' => null,
@@ -215,9 +223,16 @@ class AppConfig {
         'Revolvermarketing' => [
             'enabled' => null,
         ],
+        'Lamoda' => [
+            'enabled' => null,
+            'lamodaID' => null,
+        ],
         'RuTarget' => [
             'enabled' => null,
         ],
+        'TagMan' => [
+
+        ],'enabled' => null,
     ];
 
 

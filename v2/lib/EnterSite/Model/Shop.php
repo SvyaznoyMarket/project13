@@ -54,7 +54,10 @@ class Shop {
         if (array_key_exists('way_walk', $data)) $this->walkWay = (string)$data['way_walk'];
         if (array_key_exists('way_auto', $data)) $this->carWay = (string)$data['way_auto'];
 
-        if (isset($data['geo']['id'])) $this->region = new Model\Region($data['geo']);
+        if (isset($data['geo']['id'])) {
+            $this->region = new Model\Region($data['geo']);
+            $this->regionId = $this->region->id; // FIXME: костыль для ядра: иногда не отдает geo_id
+        };
 
         if (isset($data['images'][0])) {
             foreach ($data['images'] as $photoItem) {
