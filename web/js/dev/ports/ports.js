@@ -6,80 +6,6 @@ console.log('ports.js inited');
 
 window.ANALYTICS = {
 	
-	// todo SITE-1049
-	heiasMain : function() {
-		(function(d){
-			var HEIAS_PARAMS = [];
-			HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
-			HEIAS_PARAMS.push(['pb', '1']);
-			if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
-			window.HEIAS.push(HEIAS_PARAMS);
-			var scr = d.createElement('script');
-			scr.async = true;
-			scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
-			var elem = d.getElementsByTagName('script')[0];
-			elem.parentNode.insertBefore(scr, elem);
-		}(document)); 
-	},
-
-	heiasProduct : function() {
-		var product = arguments[0];
-		(function(d){
-			var HEIAS_PARAMS = [];
-			HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
-			HEIAS_PARAMS.push(['pb', '1']);
-			HEIAS_PARAMS.push(['product_id', product]);
-			if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
-			window.HEIAS.push(HEIAS_PARAMS);
-			var scr = d.createElement('script');
-			scr.async = true;
-			scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
-			var elem = d.getElementsByTagName('script')[0];
-			elem.parentNode.insertBefore(scr, elem);
-		}(document));
-	},
-
-	heiasOrder : function() {
-		var orderArticle = arguments[0];
-
-		(function(d){
-			var HEIAS_PARAMS = [];
-			HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
-			HEIAS_PARAMS.push(['pb', '1']);
-			HEIAS_PARAMS.push(['order_article', orderArticle]);
-			if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
-			window.HEIAS.push(HEIAS_PARAMS);
-			var scr = d.createElement('script');
-			scr.async = true;
-			scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
-			var elem = d.getElementsByTagName('script')[0];
-			elem.parentNode.insertBefore(scr, elem);
-		}(document));            
-	},
-
-	heiasComplete : function() {
-		var a = arguments[0];
-
-		HEIAS_T=Math.random(); HEIAS_T=HEIAS_T*10000000000000000000;
-		var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + a.order_article + '|product_quantity|' + a.product_quantity + '|order_id|' + a.order_id + '|order_total|' + a.order_total + '';
-		document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
-		
-		(function(d) {
-			var HEIAS_PARAMS = [];
-			HEIAS_PARAMS.push(['type', 'cpx'], ['ssl', 'force'], ['n', '12564'], ['cus', '14935']);
-			HEIAS_PARAMS.push(['pb', '1']);
-			HEIAS_PARAMS.push(['order_article',  a.order_article ]);
-			HEIAS_PARAMS.push(['order_id', a.order_id ]);
-			HEIAS_PARAMS.push(['order_total', a.order_total ]);
-			HEIAS_PARAMS.push(['product_quantity', a.product_quantity ]);
-			if (typeof window.HEIAS == 'undefined') window.HEIAS = []; window.HEIAS.push(HEIAS_PARAMS);
-			var scr = d.createElement('script');
-			scr.async = true;
-			scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js'; var elem = d.getElementsByTagName('script')[0];
-			elem.parentNode.insertBefore(scr, elem);
-		}(document));
-	},
-	
 	mixmarket : function() {
 		document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>')
 	},
@@ -638,6 +564,14 @@ window.ANALYTICS = {
 						butType = $(this).hasClass('mShopsOnly') ? 'reserve' : 'add2basket';
 
 					if ( 'undefined' !== product ) {
+
+                        /* На наборах выполняется другой трекинговый код */
+                        if ($(this).hasClass('jsChangePackageSet')) {
+                            console.log('GA: send event addedCollection collection %s', product.article);
+                            ga('send', 'event', 'addedCollection', 'collection', product.article);
+                            return ;
+                        }
+
 						console.log('GA: btn Buy');
 						ga('send', 'event', butType, product.name, product.article, product.price);
 					}
