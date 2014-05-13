@@ -5,7 +5,7 @@
 return function (
     \Helper\TemplateHelper $helper,
     array $products,
-    $mainProduct
+    $product
 ) {
 
 ?>
@@ -17,20 +17,20 @@ return function (
         <span class="packageSetHead_change"><span class="packageSetHead_changeText jsChangePackageSet">Изменить комплектацию</span></span>
     </div>
 
-    <? foreach ($products as $product) : ?>
+    <? foreach ($products as $p) : ?>
 
-        <? if ($product['lineName'] == 'baseLine') : ?>
+        <? if ($p['lineName'] == 'baseLine') : ?>
 
         <div class="packageSetBodyItem">
-            <a class="packageSetBodyItem_img rown" href="<?= $product['product']->getLink() ?>"><img src="<?= $product['product']->getImageUrl() ?>" /></a><!--/ изображение товара -->
+            <a class="packageSetBodyItem_img rown" href="<?= $p['product']->getLink() ?>"><img src="<?= $p['product']->getImageUrl() ?>" /></a><!--/ изображение товара -->
 
             <div class="packageSetBodyItem_desc rown">
-                <div class="name"><a class="" href="<?= $product['product']->getLink() ?>"><?= $product['product']->getName(); ?></a></div><!--/ название товара -->
+                <div class="name"><a class="" href="<?= $p['product']->getLink() ?>"><?= $p['product']->getName(); ?></a></div><!--/ название товара -->
 
                 <!-- размеры товара -->
                 <div class="column dimantion">
                     <span class="dimantion_name">Высота</span>
-                    <span class="dimantion_val"><?= $product['height'] ?></span>
+                    <span class="dimantion_val"><?= $p['height'] ?></span>
                 </div>
 
                 <div class="column dimantion">
@@ -40,7 +40,7 @@ return function (
 
                 <div class="column dimantion">
                     <span class="dimantion_name">Ширина</span>
-                    <span class="dimantion_val"><?= $product['width'] ?></span>
+                    <span class="dimantion_val"><?= $p['width'] ?></span>
                 </div>
 
                 <div class="column dimantion">
@@ -50,7 +50,7 @@ return function (
 
                 <div class="column dimantion">
                     <span class="dimantion_name">Глубина</span>
-                    <span class="dimantion_val"><?= $product['depth'] ?></span>
+                    <span class="dimantion_val"><?= $p['depth'] ?></span>
                 </div>
 
                 <div class="column dimantion">
@@ -60,19 +60,19 @@ return function (
                 <!--/ размеры товара -->
             </div>
 
-            <div class="packageSetBodyItem_delivery rown <?= $product['deliveryDate'] == '' ? 'packageSetBodyItem_delivery-nodate' : ''?>">
-                <? if ($product['deliveryDate'] == '') : ?>
+            <div class="packageSetBodyItem_delivery rown <?= $p['deliveryDate'] == '' ? 'packageSetBodyItem_delivery-nodate' : ''?>">
+                <? if ($p['deliveryDate'] == '') : ?>
                 Уточните дату доставки в Контакт-сEnter
                 <? else :?>
-                Доставка <strong><?= $product['deliveryDate'] ?></strong>
+                Доставка <strong><?= $p['deliveryDate'] ?></strong>
                 <? endif; ?>
             </div><!--/ доставка -->
 
             <div class="packageSetBodyItem_price rown">
-                <?= $helper->formatPrice($product['product']->getPrice()) ?>&nbsp;<span class="rubl">p</span>
+                <?= $helper->formatPrice($p['product']->getPrice()) ?>&nbsp;<span class="rubl">p</span>
             </div><!--/ цена -->
 
-            <div class="packageSetBodyItem_qnt rown"><?= $product['count'] ?> шт.</div><!--/ количество в наборе -->
+            <div class="packageSetBodyItem_qnt rown"><?= $p['count'] ?> шт.</div><!--/ количество в наборе -->
         </div><!--/ элемент комплекта -->
 
         <? endif; ?>
@@ -88,13 +88,13 @@ return function (
     <a href="" class="close"></a>
 
     <div class="bPageHead">
-        <div class="bPageHead__eSubtitle"><?= $mainProduct->getPrefix() ?></div>
+        <div class="bPageHead__eSubtitle"><?= $product->getPrefix() ?></div>
         <div class="bPageHead__eTitle clearfix">
-            <h1 itemprop="name"><?= $mainProduct->getWebname() ?></h1>
+            <h1 itemprop="name"><?= $product->getWebname() ?></h1>
         </div>
     </div>
 
-    <div class="packageSetMainImg"><img src="<?= $mainProduct->getImageUrl(3) ?>" /></div>
+    <div class="packageSetMainImg"><img src="<?= $product->getImageUrl(3) ?>" /></div>
 
     <!-- Состав комплекта -->
     <div class="packageSet mPackageSetEdit" data-value="<?= $helper->json($products) ?>">
@@ -174,7 +174,7 @@ return function (
             <div class="packageSetPrice">Итого за <span data-bind="text: totalCount"></span> предметов: <strong data-bind="text: totalPrice"></strong> <span class="rubl">p</span></div>
 
             <div class="packageSetBuy btnBuy">
-                <a class="btnBuy__eLink jsBuyButton" href="" data-bind="css: { mDisabled: totalCount() == 0 }, attr: { href: buyLink, 'data-upsale': dataUpsale(<?= $mainProduct->getId() ?>) }">Купить</a>
+                <a class="btnBuy__eLink jsBuyButton" href="" data-bind="css: { mDisabled: totalCount() == 0 }, attr: { href: buyLink, 'data-upsale': dataUpsale(<?= $product->getId() ?>) }">Купить</a>
             </div>
         </div>
     </div>
