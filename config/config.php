@@ -120,7 +120,8 @@ $c->googleAnalytics['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->kissmentrics['enabled'] = true;
 $c->kissmentrics['cookieName']['needUpdate'] = 'kissNeedUpdate';
-
+$c->googleTagManager['enabled'] = true;
+$c->googleTagManager['containerId'] = 'GTM-P65PBR';
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/api/';
 $c->pickpoint['timeout'] = 60;
