@@ -926,13 +926,20 @@
 					}
 
 					/* RuTarget */
-					if ( !data.regionId ) return;
+					if ( data.regionId ) {
+						result = {'event': 'removeFromCart', 'sku': data.product.id, 'regionId': data.regionId}
 
-					result = {'event': 'removeFromCart', 'sku': data.product.id, 'regionId': data.regionId}
+						console.info('RuTarget removeFromCart');
+						console.log(result);
+						_rutarget.push(result);
+					}
 
-					console.info('RuTarget removeFromCart');
-					console.log(result);
-					_rutarget.push(result);
+					/* Lamoda */
+					if ( 'undefined' != typeof(JSREObject) ) {
+						console.info('Lamoda removeFromCart');
+						console.log('product_id=' + data.product.id);
+						JSREObject('cart_remove', data.product.id);
+					}
 				},
 
 				deleteItemResponceHandler = function deleteItemResponceHandler( res ) {

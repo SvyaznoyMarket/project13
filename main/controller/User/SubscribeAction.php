@@ -86,7 +86,15 @@ class SubscribeAction {
                     throw new \Exception(self::SAVE_FAILED_ERROR);
                 }
 
-                return new \Http\RedirectResponse(\App::router()->generate('user'));
+                $response = new \Http\RedirectResponse(\App::router()->generate('user'));
+
+                // передаем email пользователя для RetailRocket
+                if (!empty($email)) {
+                    \App::retailrocket()->setUserEmail($response, $email);
+                }
+
+                return $response;
+
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
                 \App::logger()->error($e);

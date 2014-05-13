@@ -355,6 +355,19 @@ class App {
     }
 
     /**
+     * @return \RetailRocket\Manager
+     */
+    public static function retailrocket() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \RetailRocket\Manager();
+        }
+
+        return $instance;
+    }
+
+    /**
      * @static
      * @return \Pickpoint\Client
      */

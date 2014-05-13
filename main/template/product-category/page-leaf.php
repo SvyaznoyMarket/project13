@@ -12,6 +12,7 @@
  * @var $seoContent             string
  * @var $relatedCategories      array
  * @var $categoryConfigById     array
+ * @var $slideData              array
  */
 ?>
 
@@ -67,6 +68,10 @@
             'productSorting' => $productSorting,
         ]) // сортировка, режим просмотра, режим листания ?>
     </div>
+
+    <? if((bool)$slideData): ?>
+        <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData]) // promo slider ?>
+    <? endif ?>
 
     <?= $helper->render('product/__list', [
         'pager'                  => $productPager,
