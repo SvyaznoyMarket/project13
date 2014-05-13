@@ -62,7 +62,7 @@ class ProductCard {
         // запрос доставки товара
         $deliveryListQuery = null;
         if ($product->isBuyable) {
-            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $region);
+            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $region->id);
             $curl->prepare($deliveryListQuery);
         }
 

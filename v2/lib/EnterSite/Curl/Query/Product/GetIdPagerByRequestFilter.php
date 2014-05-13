@@ -16,11 +16,11 @@ class GetIdPagerByRequestFilter extends Query {
     /**
      * @param Model\Product\RequestFilter[] $filters
      * @param Model\Product\Sorting $sorting
-     * @param Model\Region $region
+     * @param string|null $regionId
      * @param $offset
      * @param $limit
      */
-    public function __construct(array $filters, Model\Product\Sorting $sorting = null, Model\Region $region = null, $offset = null, $limit = null) {
+    public function __construct(array $filters, Model\Product\Sorting $sorting = null, $regionId = null, $offset = null, $limit = null) {
         $filterData = [];
         foreach ($filters as $key => $filter) {
             if (isset($filter->value['from']) || isset($filter->value['to'])) {
@@ -45,8 +45,8 @@ class GetIdPagerByRequestFilter extends Query {
                 'limit'   => $limit,
             ],
         ];
-        if ($region) {
-            $this->url->query['region_id'] = $region->id;
+        if ($regionId) {
+            $this->url->query['region_id'] = $regionId;
         }
 
         $this->init();

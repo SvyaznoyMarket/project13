@@ -15,9 +15,9 @@ class GetAncestryItemByCategoryObject extends Query {
 
     /**
      * @param Model\Product\Category $category
-     * @param Model\Region $region
+     * @param string $regionId
      */
-    public function __construct(Model\Product\Category $category, Model\Region $region = null) {
+    public function __construct(Model\Product\Category $category, $regionId = null) {
         $this->url = new Url();
         $this->url->path = 'v2/category/tree';
         $this->url->query = [
@@ -25,8 +25,8 @@ class GetAncestryItemByCategoryObject extends Query {
             'max_level'       => $category->level - 1,
             'is_load_parents' => true,
         ];
-        if ($region) {
-            $this->url->query['region_id'] = $region->id;
+        if ($regionId) {
+            $this->url->query['region_id'] = $regionId;
         }
 
         $this->init();

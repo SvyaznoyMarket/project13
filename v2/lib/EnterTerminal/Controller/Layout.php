@@ -41,7 +41,7 @@ class Layout {
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
         // запрос дерева категорий для меню
-        $categoryListQuery = new Query\Product\Category\GetTreeList($region, 3);
+        $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
         $curl->prepare($categoryListQuery);
 
         // запрос меню

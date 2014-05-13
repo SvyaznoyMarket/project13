@@ -23,9 +23,12 @@ class InternalServerError {
         $response->statusCode = Http\Response::STATUS_INTERNAL_SERVER_ERROR;
 
         $page = [
-            'error' => [
-                'message' => isset(error_get_last()['message']) ? error_get_last()['message'] : 'Неизвестная ошибка',
-            ],
+            'error' => array_merge([
+                'type'    => null,
+                'message' => null,
+                'file'    => null,
+                'line'    => null,
+            ], (array)error_get_last()),
         ];
 
         if ($response instanceof Http\JsonResponse) {

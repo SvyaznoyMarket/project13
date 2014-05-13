@@ -83,11 +83,11 @@ class Category {
         $requestFilters['category']->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
 
         // запрос предка категории
-        $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region);
+        $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region->id);
         $curl->prepare($ancestryCategoryItemQuery);
 
         // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region, ($pageNum - 1) * $limit, $limit);
+        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
         $curl->execute(1, 2);

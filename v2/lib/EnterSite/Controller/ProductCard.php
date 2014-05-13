@@ -42,7 +42,7 @@ class ProductCard {
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
         // запрос товара
-        $productItemQuery = new Query\Product\GetItemByToken($productToken, $region);
+        $productItemQuery = new Query\Product\GetItemByToken($productToken, $region->id);
         $curl->prepare($productItemQuery);
 
         $curl->execute(1, 2);
@@ -57,7 +57,7 @@ class ProductCard {
         }
 
         // запрос дерева категорий для меню
-        $categoryListQuery = new Query\Product\Category\GetTreeList($region, 3);
+        $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
         $curl->prepare($categoryListQuery);
 
         // запрос меню
@@ -67,7 +67,7 @@ class ProductCard {
         // запрос доставки товара
         $deliveryListQuery = null;
         if ($product->isBuyable) {
-            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $region);
+            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $region->id);
             $curl->prepare($deliveryListQuery);
         }
 
