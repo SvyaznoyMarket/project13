@@ -104,7 +104,13 @@ $isKitPage = (bool)$product->getKit();
 
     <? if ( $isKitPage ): // если это набор пакет ?>
         <?= $helper->render('product/__baseKit',['products' => $kitProducts, 'product' => $product]) ?>
-    <? endif ?>
+
+    <? elseif ( (bool)$line ): ?>
+        <?= $helper->render('product/__slider', [
+            'title'     => 'Состав набора &laquo;' . $line->getName() . '&raquo;',
+            'products'  => $parts,
+        ]) ?>
+    <? else: endif ?>
 
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
         <?= $helper->render('product/__slider', [
