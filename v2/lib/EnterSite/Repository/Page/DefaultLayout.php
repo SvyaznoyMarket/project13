@@ -40,7 +40,6 @@ class DefaultLayout {
         $page->dataConfig = $helper->json([
             'requestId' => $config->requestId,
             'user'      => [
-                'infoCookie' => $config->userToken->infoCookieName,
                 'infoUrl'    => $router->getUrlByRoute(new Routing\User\Get()),
             ],
         ]);

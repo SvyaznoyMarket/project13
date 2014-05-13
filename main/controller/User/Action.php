@@ -117,6 +117,11 @@ class Action {
                         ])
                         : new \Http\RedirectResponse($this->redirect);
 
+                    // передаем email пользователя для RetailRocket
+                    if (isset($params['email']) && !empty($params['email'])) {
+                        \App::retailrocket()->setUserEmail($response, $params['email']);
+                    }
+
                     \App::user()->signIn($userEntity, $response);
                     //\Session\User::enableInfoCookie($response); // — делаем внутри signIn()
 
@@ -260,6 +265,11 @@ class Action {
                             'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
                         ])
                         : new \Http\RedirectResponse($this->redirect);
+
+                    // передаем email пользователя для RetailRocket
+                    if (isset($data['email']) && !empty($data['email'])) {
+                        \App::retailrocket()->setUserEmail($response, $data['email']);
+                    }
 
                     //\App::user()->signIn($user, $response); // SITE-2279
 
