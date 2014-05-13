@@ -18,7 +18,7 @@ class HandleResponse {
 
         if ($request) {
             $config->clientId = is_scalar($request->query['clientId']) ? $request->query['clientId'] : null;
-            $config->terminalId = is_scalar($request->query['terminalId']) ? $request->query['terminalId'] : null;
+            $config->shopId = is_scalar($request->query['shopId']) ? $request->query['shopId'] : null;
 
             $config->coreService->clientId = $config->clientId;
         }

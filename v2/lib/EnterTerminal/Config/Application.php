@@ -5,7 +5,7 @@ namespace EnterTerminal\Config {
 
     class Application extends BaseApplicationConfig {
         /** @var string */
-        public $terminalId;
+        public $shopId;
         /** @var string */
         public $clientId;
 
