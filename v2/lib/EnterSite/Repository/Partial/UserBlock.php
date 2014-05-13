@@ -22,10 +22,14 @@ class UserBlock {
         $router = $this->getRouter();
 
         $userBlock = new Model\Partial\UserBlock();
+
         if ($user) {
             $userBlock->isUserAuthorized = true;
             $userBlock->userLink->name = $user->firstName ?: $user->lastName;
             $userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Index());
+        } else {
+            $userBlock->isUserAuthorized = false;
+            $userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Auth());
         }
 
         $userBlock->isCartNotEmpty = (bool)$cart->product;

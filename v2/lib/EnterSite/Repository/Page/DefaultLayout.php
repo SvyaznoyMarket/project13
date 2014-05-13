@@ -62,6 +62,7 @@ class DefaultLayout {
         $page->mainMenu = $request->mainMenu;
 
         // пользователь
+        $page->userBlock->isUserAuthorized = false;
         $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Auth());
         $page->userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
 
