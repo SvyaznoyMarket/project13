@@ -225,6 +225,20 @@ class IndexAction {
             if ((bool)$mainProduct && (bool)$mainProduct->getKit() && $product->getId() == $mainProduct->getId()) {
                 $kitProducts = $this->prepareKit($parts, $restParts, $mainProduct, $region);
             }
+        } else if ((bool)$product->getKit()) {
+            $productRepository = \RepositoryManager::product();
+            $mainProduct = $product;
+            $partId = [];
+            foreach ($mainProduct->getKit() as $part) {
+                $partId[] = $part->getId();
+            }
+            try {
+                $parts = $productRepository->getCollectionById($partId);
+            } catch (\Exception $e) {
+                \App::exception()->add($e);
+                \App::logger()->error($e);
+            }
+            $kitProducts = $this->prepareKit($parts, [], $mainProduct, $region);
         }
 
         /*
