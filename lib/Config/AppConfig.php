@@ -181,7 +181,11 @@ class AppConfig {
     public $yandexMetrika = [
         'enabled' => null,
     ];
-
+    /** @var array */
+    public $googleTagManager = [
+        'enabled' => null,
+        'containerId' => null,
+    ];
     /** @var array */
     public $partners = [
         'livetex' => [
