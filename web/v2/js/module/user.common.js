@@ -9,7 +9,6 @@ define(
     ) {
         var $body = $('body');
 
-
         $.post(config.user.infoUrl).done(function(response) {
             if (_.isObject(response.result)) {
                 if (_.isObject(response.result.widgets)) {

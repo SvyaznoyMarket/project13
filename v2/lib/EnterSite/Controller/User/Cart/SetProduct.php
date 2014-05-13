@@ -82,7 +82,7 @@ class SetProduct {
         $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
         $page->widgets['.' . $widget->widgetId] = $widget;
         // спиннер
-        $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct, true);
+        $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct->quantity, true);
         $page->widgets['.' . $widget->widgetId] = $widget;
         // пользователь, корзина
         $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);

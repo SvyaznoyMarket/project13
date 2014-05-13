@@ -90,7 +90,7 @@ class Get {
             $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
             $page->widgets['.' . $widget->widgetId] = $widget;
 
-            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct, true);
+            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct->quantity, true);
             $page->widgets['.' . $widget->widgetId] = $widget;
         }
 
