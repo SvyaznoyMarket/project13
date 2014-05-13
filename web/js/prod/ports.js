@@ -1030,11 +1030,45 @@ window.ANALYTICS = {
 					apiJs.src = "//cdn.retailrocket.ru/javascript/tracking.js";
 					ref.parentNode.insertBefore( apiJs, ref );
 				}( document ));
-            }
+            },
+
+			/**
+			 * SITE-3672. Передаем email пользователя
+			 */
+			userEmailSend: function () {
+				var
+					rr_data = $('#RetailRocketJS').data('value'),
+					email,
+					cookieName;
+				// end of vars
+
+				if ( 'object' != typeof(rr_data) || !rr_data.hasOwnProperty('emailCookieName') ) {
+					return;
+				}
+
+				cookieName = rr_data.emailCookieName;
+
+				email = window.docCookies.getItem(cookieName);
+				if ( !email ) {
+					return;
+				}
+
+				console.info('RetailRocketJS userEmailSend');
+				console.log(email);
+
+				rrApiOnReady.push(function () {
+					rrApi.setEmail(email);
+				});
+
+				window.docCookies.removeItem(cookieName, '/');
+			}
 
         }// end of window.RetailRocket object
 
         RetailRocket.init();
+
+		// Передаем email пользователя для RetailRocket
+		RetailRocket.userEmailSend();
 
         RetailRocket.action(null);
 
@@ -1190,13 +1224,13 @@ window.ANALYTICS = {
 			self = this;
 
 		$.each(  nodes , function() {
-//console.info( this.id, this.id+'' in self  )
-			
+			//console.info( this.id, this.id+'' in self  )
+
 			// document.write is overwritten in loadjs.js to document.writeln
 			var
 				anNode = $(this);
 			// end of vars
-			
+
 			console.log(anNode);
 
 			if ( anNode.is('.parsed') ) {
@@ -1399,18 +1433,21 @@ window.ANALYTICS = {
 			return;
 		}
 
-		data = kiss.data('value')
+		data = kiss.data('value');
 
-		if ( undefined === data.entity_id ) {
+		if (
+			'object' != typeof(data) ||
+			!data.hasOwnProperty('entity_id') ||
+			!data.hasOwnProperty('cookieName') ||
+			'undefined' == typeof(_kmq)
+			) {
 			return;
 		}
 
-		if (typeof _kmq !== undefined) {
-			_kmq.push(['alias', KM.i(), data.entity_id]);
-			_kmq.push(['set', {'enter_id': data.entity_id}]);
+		_kmq.push(['alias', KM.i(), data.entity_id]);
+		_kmq.push(['set', {'enter_id': data.entity_id}]);
 
-			data.cookieName !== undefined && window.docCookies.removeItem(data.cookieName, '/');
-		}
+		window.docCookies.removeItem(data.cookieName, '/');
 	},
 
 	sociaPlusJs: function() {

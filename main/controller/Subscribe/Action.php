@@ -15,6 +15,7 @@ class Action {
         $responseData = ['success' => false];
         $channelId = (int)$request->get('channel', 1);
 
+        $email = null;
         try {
             $email = trim((string)$request->get('email'));
             if (empty($email)) {
@@ -48,7 +49,14 @@ class Action {
             $responseData = ['success' => false];
         }
 
-        return new \Http\JsonResponse($responseData);
+        $response = new \Http\JsonResponse($responseData);
+
+        // передаем email пользователя для RetailRocket
+        if (true === $responseData['success'] && !empty($email)) {
+            \App::retailrocket()->setUserEmail($response, $email);
+        }
+
+        return $response;
     }
 
     /**
@@ -144,6 +152,11 @@ class Action {
         $promo = $request->get('promo', null);
         if ('enter_prize' == $promo) {
             $response = (new \Controller\Enterprize\ConfirmEmailAction())->check($request);
+        }
+
+        // передаем email пользователя для RetailRocket
+        if (empty($error) && !empty($email)) {
+            \App::retailrocket()->setUserEmail($response, $email);
         }
 
         return $response;

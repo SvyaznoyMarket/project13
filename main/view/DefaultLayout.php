@@ -544,6 +544,7 @@ class DefaultLayout extends Layout {
         }
         $rrObj = null;
 
+        $rrData['emailCookieName'] = \App::config()->partners['RetailRocket']['userEmail']['cookieName'];
 
         $return .= '<div id="RetailRocketJS" class="jsanalytics"';
         if ($rrData) {

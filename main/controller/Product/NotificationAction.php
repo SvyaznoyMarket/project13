@@ -27,6 +27,7 @@ class NotificationAction {
             throw new \Exception\NotFoundException(sprintf('Товар #%s не найден', $productId));
         }
 
+        $email = null;
         try {
             $email = trim((string)$request->get('email'));
             if (empty($email)) {
@@ -90,6 +91,13 @@ class NotificationAction {
             }
         }
 
-        return new \Http\JsonResponse($responseData);
+        $response = new \Http\JsonResponse($responseData);
+
+        // передаем email пользователя для RetailRocket
+        if (true === $responseData['success'] && !empty($email)) {
+            \App::retailrocket()->setUserEmail($response, $email);
+        }
+
+        return $response;
     }
 }

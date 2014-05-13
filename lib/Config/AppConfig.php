@@ -197,6 +197,10 @@ class AppConfig {
             'account' => null,
             'apiUrl' => null,
             'timeout' => null,
+            'cookieLifetime' => null,
+            'userEmail' => [
+                'cookieName' => null,
+            ],
         ],
         'Admitad' => [
             'enabled' => null,

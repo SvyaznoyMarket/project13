@@ -195,6 +195,9 @@ class ConfirmEmailAction {
                 }
             }
 
+            // передаем email пользователя для RetailRocket
+            \App::retailrocket()->setUserEmail($response, $email);
+
         } catch (\Exception $e) {
             \App::exception()->remove($e);
             \App::session()->set('flash', ['error' => $e->getMessage()]);
