@@ -188,12 +188,12 @@ class IndexAction {
         $line = null;
         $parts = [];
         $kitProducts = [];
+        $productRepository = \RepositoryManager::product();
+        $productRepository->setEntityClass('\Model\Product\Entity');
 
         /* Набор пакеты */
         if ((bool)$product->getKit()) {
             $restParts = [];
-            $productRepository = \RepositoryManager::product();
-            $productRepository->setEntityClass('\Model\Product\Entity');
 
             // Получим основные товары набора
             $productPartsIds = [];
@@ -222,6 +222,19 @@ class IndexAction {
 
             // Приготовим набор для отображения на сайте
             $kitProducts = $this->prepareKit($parts, $restParts, $product, $region);
+        }
+
+        // Если товар просто принадлежит линейке, то запросим продукты из этой линейки (для слайдера)
+        if ($productLine instanceof \Model\Product\Line\Entity ) {
+            try {
+                $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
+                $lineMainProductId = $line->getMainProductId();
+                $lineParts = array_map(function($a){ return $a->getId(); }, $productRepository->getEntityById($lineMainProductId)->getKit());
+                $parts = $productRepository->getCollectionById($lineParts);
+            } catch (\Exception $e) {
+                \App::exception()->add($e);
+                \App::logger()->error($e);
+            }
         }
 
         /*
