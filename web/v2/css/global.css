@@ -628,6 +628,11 @@ textarea[contenteditable] {
   font-size: 90%;
   margin: 0 0 0 -5px;
 }
+@font-face {
+  font-family: 'menuIconFont';
+  src: url('/v2/css/modules/mainStyles/fonts/iconFont/newfont-regular-webfont.eot');
+  src: local('menuIconFont'), url('/v2/css/modules/mainStyles/fonts/iconFont/newfont-regular-webfont.woff') format('woff'), url('/v2/css/modules/mainStyles/fonts/iconFont/newfont-regular-webfont.ttf') format('truetype'), url('/v2/css/modules/mainStyles/fonts/iconFont/newfont-regular-webfont.svg#menuIconFont') format('svg');
+}
 /** Основнаые стили, вспомогательные классы **/
 /* ==========================================================================
    Кастомные стили
@@ -1097,6 +1102,8 @@ body.noScroll {
   vertical-align: top;
   width: 45px;
   margin: 0 5px 0 0;
+  font-family: 'menuIconFont';
+  font-size: 20px;
   *display: inline;
   zoom: 1;
 }
@@ -2968,6 +2975,7 @@ body.noScroll {
 .catalogList .price_old {
   font-size: 14px;
   color: #6b6b6b;
+  text-decoration: line-through;
 }
 .catalogList .price_now {
   font-size: 22px;
