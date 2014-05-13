@@ -220,4 +220,10 @@ class CompletePage extends Layout {
         return "<div id='RuTargetOrderCompleteJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
 
     }
+
+    public function slotLamodaCompleteJS() {
+        if (!\App::config()->partners['Lamoda']['enabled']) return;
+
+        return '<div id="LamodaCompleteJS" class="jsanalytics"></div>';
+    }
 }

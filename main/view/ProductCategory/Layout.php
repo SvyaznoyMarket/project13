@@ -228,4 +228,20 @@ class Layout extends \View\DefaultLayout {
 
         return "<div id='RuTargetProductCategoryJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
     }
+
+    public function slotLamodaCategoryJS() {
+        if (!\App::config()->partners['Lamoda']['enabled']) return;
+
+        /** @var \Model\Product\Category\Entity $category */
+        $category = $this->getParam('category');
+        if (!$category) {
+            return;
+        }
+
+        $data = [
+            'id' => $category->getId(),
+        ];
+
+        return "<div id='LamodaCategoryJS' class='jsanalytics' data-value='" . json_encode($data) . "'><div>";
+    }
 }
