@@ -93,11 +93,6 @@ namespace EnterSite\Config\Application {
          * @var string
          */
         public $authCookieName;
-        /**
-         * Кука для авторизованного пользователя и пользователя с непустой корзиной
-         * @var string
-         */
-        public $infoCookieName;
     }
 
     class Region {

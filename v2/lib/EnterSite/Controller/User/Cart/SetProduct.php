@@ -93,10 +93,6 @@ class SetProduct {
             'result' => $page, // TODO: вынести на уровень JsonPage.result
         ]);
 
-        // информационная кука пользователя
-        // TODO: вынести в Action\HandleResponse
-        $response->headers->setCookie(new Http\Cookie($config->userToken->infoCookieName, 1, time() + $config->session->cookieLifetime, '/', null, false, false));
-
         return $response;
     }
 }

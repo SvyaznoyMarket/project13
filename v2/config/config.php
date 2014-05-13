@@ -13,7 +13,6 @@ return function(\EnterSite\Config\Application $config) {
     $config->session->cookieDomain = '.enter.ru';
 
     $config->userToken->authCookieName = '_token';
-    $config->userToken->infoCookieName = '_authorized';
 
     $config->region->defaultId = '14974';
     $config->region->cookieName = 'geoshop';
