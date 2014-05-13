@@ -532,6 +532,7 @@
 						return;
 					}
 
+                    console.log ("_gaq: _trackEvent Add2Basket product %s", productData.article);
 					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
 
 					productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
@@ -673,11 +674,25 @@
 			//end of functions
 
 			try{
-				kissAnalytics(event, data);
-				googleAnalytics(event, data);
-				myThingsAnalytics(event, data);
-				adAdriver(event, data);
-				addToRetailRocket(event, data);
+                if (data.product) {
+                    kissAnalytics(event, data);
+                    googleAnalytics(event, data);
+                    myThingsAnalytics(event, data);
+                    adAdriver(event, data);
+                    addToRetailRocket(event, data);
+                }
+                if (data.products) {
+                    console.groupCollapsed('Аналитика для набора продуктов');
+                    for (var i in data.products) {
+                        /* Google Analytics */
+                        googleAnalytics(event, { product: data.products[i] });
+                        if (typeof window.ga != 'undefined') {
+                            console.log("GA: send event Add2Basket product %s", data.products[i].article);
+                            window.ga('send', 'event', 'Add2Basket', 'product', data.products[i].article);
+                        }
+                    }
+                    console.groupEnd();
+                }
 				//addToVisualDNA(event, data);
 				addToRuTarget(event, data);
 				addToLamoda(event, data);
