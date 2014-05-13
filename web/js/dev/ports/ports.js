@@ -1747,6 +1747,32 @@ window.ANALYTICS = {
 		})();
 	},
 
+	googleTagManagerJS: function () {
+		var
+			manager = $('#googleTagManagerJS'),
+			data = manager.data('value');
+		// end of vars
+
+		console.groupCollapsed('ports.js::googleTagManagerJS');
+
+		if ("undefined" == typeof(data) || !data.hasOwnProperty('containerId')) {
+			console.warn('Не переданы данные для googleTagManager (containerId, ...) ');
+			return;
+		}
+
+		(function(w,d,s,l,i){
+			w[l]=w[l]||[];
+			w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+			var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+			j.async=true;
+			j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;
+			f.parentNode.insertBefore(j,f);
+
+			console.log('googleTagManagerJS init');
+			console.groupEnd();
+		})(window,document,'script','dataLayer', data.containerId);
+	},
+
 	enable : true
 }
 
