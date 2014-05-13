@@ -99,7 +99,7 @@ class Get {
         ]);
 
         // информационная кука пользователя
-        // TODO: вынести в Action\HandleResponse
+        // TODO: вынести в Action\HandleResponse; TODO: выпилить
         $needCookie = (bool)$cart->product || $user;
         $changeCookie = false
             || !isset($request->cookies[$config->userToken->infoCookieName])
