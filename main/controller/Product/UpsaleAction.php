@@ -93,7 +93,7 @@ class UpsaleAction extends BasicRecommendedAction {
             }
             $products = array_slice($products, 0, \App::config()->product['itemsInSlider'] * 2);
 
-            if ( !is_array($products) ) {
+            if ( !(bool)$products ) {
                 throw new \Exception(sprintf('Not found products data in response. ActionType: %s', $this->actionType));
             }
 

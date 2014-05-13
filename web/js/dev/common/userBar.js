@@ -252,6 +252,44 @@
 			// end of vars
 			
 			var
+				deleteFromRutarget = function deleteFromRutarget( data ) {
+					var
+						region = $('.jsChangeRegion'),
+						regionId = region.length ? region.data('region-id') : false,
+						result,
+						_rutarget = window._rutarget || [];
+					// end of vars
+
+					if ( !regionId || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
+						return;
+					}
+
+					result = {'event': 'removeFromCart', 'sku': data.product.id, 'regionId': regionId};
+
+					console.info('RuTarget removeFromCart');
+					console.log(result);
+					_rutarget.push(result);
+				},
+
+				deleteFromLamoda = function deleteFromLamoda( data ) {
+					if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
+						return;
+					}
+
+					console.info('Lamoda removeFromCart');
+					console.log('product_id=' + data.product.id);
+					JSREObject('cart_remove', data.product.id);
+				},
+
+				deleteProductAnalytics = function deleteProductAnalytics( data ) {
+					if ('undefined' == typeof(data) ) {
+						return;
+					}
+
+					deleteFromRutarget(data);
+					deleteFromLamoda(data);
+				},
+
 				authFromServer = function authFromServer( res, data ) {
 					console.warn( res );
 					if ( !res.success ) {
@@ -259,6 +297,9 @@
 
 						return;
 					}
+
+					// аналитика
+					deleteProductAnalytics(res);
 
 					utils.blackBox.basket().deleteItem(res);
 

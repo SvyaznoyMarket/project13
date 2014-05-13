@@ -606,7 +606,51 @@
 							utils.logError(dataToLog);
 						}
 					}
+				},
+
+				/**
+				 * Аналитика при нажатии кнопки "купить"
+				 * @param event
+				 * @param data
+				 */
+				addToRuTarget = function addToRuTarget( event, data ) {
+					var
+						product = data.product,
+						regionId = data.regionId,
+						result,
+						_rutarget = window._rutarget || [];
+					// end of vars
+
+					if ( !product || !regionId ) {
+						return;
+					}
+
+					result = {'event': 'addToCart', 'sku': product.id, 'qty': product.quantity, 'regionId': regionId};
+
+					console.info('RuTarget addToCart');
+					console.log(result);
+					_rutarget.push(result);
+				},
+
+				/**
+				 * Аналитика при нажатии кнопки "купить"
+				 * @param event
+				 * @param data
+				 */
+				addToLamoda = function addToLamoda( event, data ) {
+					var
+						product = data.product;
+					// end of vars
+
+					if ( 'undefined' == typeof(product) || !product.hasOwnProperty('id') || 'undefined' == typeof(JSREObject) ) {
+						return;
+					}
+
+					console.info('Lamoda addToCart');
+					console.log('product_id=' + product.id);
+					JSREObject('cart_add', product.id);
 				}
+
 				/*,
 				addToVisualDNA = function addToVisualDNA( event, data ) {
 					var
@@ -635,6 +679,8 @@
 				adAdriver(event, data);
 				addToRetailRocket(event, data);
 				//addToVisualDNA(event, data);
+				addToRuTarget(event, data);
+				addToLamoda(event, data);
 			}
 			catch( e ) {
 				console.warn('addtocartAnalytics error');
@@ -2213,7 +2259,7 @@ $(document).ready(function() {
 					$('.bPromoCatalogSlider_eArrow.mArRight').show();
 				}
 
-				for ( slide in data ) {
+				for ( slide = 0; slide < data.length; slide++ ) {
 					slideTmpl = tmpl('slide_tmpl', data[slide]);
 
 					if ( $(slideTmpl).length ) {
@@ -2936,6 +2982,33 @@ $(document).ready(function() {
  */
  
  
+;(function(){
+
+    // https://jira.enter.ru/browse/SITE-3508
+    // SITE-3508 Закрепить товары в листинге чибы
+
+    if ( /catalog\/tchibo/.test(document.location.href) && window.history) {
+
+        var history = window.history;
+
+        $(window).on('beforeunload', function () {
+            history.replaceState({pageYOffset: pageYOffset}, '');
+        });
+
+        if (history && history.state.pageYOffset) {
+            window.scrollTo(0, history.state.pageYOffset);
+        }
+
+    }
+
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
 /* Top Menu */
 (function(){
 	var menuDelayLvl1 = 300; //ms
@@ -3557,6 +3630,44 @@ $(document).ready(function() {
 			// end of vars
 			
 			var
+				deleteFromRutarget = function deleteFromRutarget( data ) {
+					var
+						region = $('.jsChangeRegion'),
+						regionId = region.length ? region.data('region-id') : false,
+						result,
+						_rutarget = window._rutarget || [];
+					// end of vars
+
+					if ( !regionId || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
+						return;
+					}
+
+					result = {'event': 'removeFromCart', 'sku': data.product.id, 'regionId': regionId};
+
+					console.info('RuTarget removeFromCart');
+					console.log(result);
+					_rutarget.push(result);
+				},
+
+				deleteFromLamoda = function deleteFromLamoda( data ) {
+					if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
+						return;
+					}
+
+					console.info('Lamoda removeFromCart');
+					console.log('product_id=' + data.product.id);
+					JSREObject('cart_remove', data.product.id);
+				},
+
+				deleteProductAnalytics = function deleteProductAnalytics( data ) {
+					if ('undefined' == typeof(data) ) {
+						return;
+					}
+
+					deleteFromRutarget(data);
+					deleteFromLamoda(data);
+				},
+
 				authFromServer = function authFromServer( res, data ) {
 					console.warn( res );
 					if ( !res.success ) {
@@ -3564,6 +3675,9 @@ $(document).ready(function() {
 
 						return;
 					}
+
+					// аналитика
+					deleteProductAnalytics(res);
 
 					utils.blackBox.basket().deleteItem(res);
 

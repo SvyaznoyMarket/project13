@@ -155,9 +155,14 @@ $c->shopScript['retryTimeout'] = [
 // TODO: Вынести сюда же настройки для sociomantic and get4click
 $c->partners['criteo']['enabled'] = true;
 $c->partners['criteo']['account'] = 10442;
+
+// RetailRocket
 $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 $c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
 $c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
+$c->partners['RetailRocket']['cookieLifetime'] = 2592000; // 30 дней
+$c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
+
 $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
@@ -165,6 +170,10 @@ $c->partners['AdLens']['enabled'] = true;
 $c->partners['Сpaexchange']['enabled'] = true;
 $c->partners['Admitad']['enabled'] = false;
 $c->partners['Revolvermarketing']['enabled'] = true;
+$c->partners['RuTarget']['enabled'] = true;
+$c->partners['Lamoda']['enabled'] = true;
+$c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
+$c->partners['TagMan']['enabled'] = false;
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [

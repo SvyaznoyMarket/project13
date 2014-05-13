@@ -296,7 +296,51 @@
 							utils.logError(dataToLog);
 						}
 					}
+				},
+
+				/**
+				 * Аналитика при нажатии кнопки "купить"
+				 * @param event
+				 * @param data
+				 */
+				addToRuTarget = function addToRuTarget( event, data ) {
+					var
+						product = data.product,
+						regionId = data.regionId,
+						result,
+						_rutarget = window._rutarget || [];
+					// end of vars
+
+					if ( !product || !regionId ) {
+						return;
+					}
+
+					result = {'event': 'addToCart', 'sku': product.id, 'qty': product.quantity, 'regionId': regionId};
+
+					console.info('RuTarget addToCart');
+					console.log(result);
+					_rutarget.push(result);
+				},
+
+				/**
+				 * Аналитика при нажатии кнопки "купить"
+				 * @param event
+				 * @param data
+				 */
+				addToLamoda = function addToLamoda( event, data ) {
+					var
+						product = data.product;
+					// end of vars
+
+					if ( 'undefined' == typeof(product) || !product.hasOwnProperty('id') || 'undefined' == typeof(JSREObject) ) {
+						return;
+					}
+
+					console.info('Lamoda addToCart');
+					console.log('product_id=' + product.id);
+					JSREObject('cart_add', product.id);
 				}
+
 				/*,
 				addToVisualDNA = function addToVisualDNA( event, data ) {
 					var
@@ -339,6 +383,8 @@
                     console.groupEnd();
                 }
 				//addToVisualDNA(event, data);
+				addToRuTarget(event, data);
+				addToLamoda(event, data);
 			}
 			catch( e ) {
 				console.warn('addtocartAnalytics error');

@@ -323,6 +323,10 @@ $(document).ready(function() {
 			main.remove()
 			self.noview = true
 			PubSub.publish( 'quantityChange', { q : 0, id : self.id } )
+
+			// analytics
+			self.analyticsDelete({id: self.id});
+
 			if( clearfunction ){ 
 				clearfunction()
 			}
@@ -359,6 +363,65 @@ $(document).ready(function() {
 			})
 		}
 
+		// analytics
+		this.deleteFromRutarget = function( data ) {
+			var
+				region = $('.jsChangeRegion'),
+				regionId = region.length ? region.data('region-id') : false,
+				result,
+				_rutarget = window._rutarget || [];
+			// end of vars
+
+			if ( !regionId || !data.hasOwnProperty('id') ) {
+				return;
+			}
+
+			result = {'event': 'removeFromCart', 'sku': data.id, 'regionId': regionId};
+
+			console.info('RuTarget removeFromCart');
+			console.log(result);
+			_rutarget.push(result);
+		}
+
+		// analytics
+		this.deleteFromLamoda = function( data ) {
+			if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('id') ) {
+				return;
+			}
+
+			console.info('Lamoda removeFromCart');
+			console.log('product_id=' + data.id);
+			JSREObject('cart_remove', data.id);
+		}
+
+		this.analyticsDelete = function( data ) {
+			if ('undefined' == typeof(data) ) {
+				return;
+			}
+
+			self.deleteFromRutarget(data);
+			self.deleteFromLamoda(data);
+		}
+
+		this.analyticsUpdate = function( data ) {
+			var
+				region = $('.jsChangeRegion'),
+				regionId = region.length ? region.data('region-id') : false,
+				result,
+				_rutarget = window._rutarget || [];
+			// end of vars
+
+			if ( !data || !regionId ) {
+				return;
+			}
+
+			result = {'event': 'updateInCart', 'sku': data.id, 'qty': data.qty, 'regionId': regionId};
+
+			console.info('RuTarget updateInCart. Клики кнопок увеличения/уменьшения кол-ва товара.');
+			console.log(result);
+			_rutarget.push(result);
+		}
+
 		this.update = function( minimax, delta ) {
 			
 			if( delta > 0 && ( limit < ( self.quantum + delta ) ) ) {
@@ -386,6 +449,9 @@ $(document).ready(function() {
 			// }
 
 			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
+
+			// analytics
+			self.analyticsUpdate({ qty : self.quantum, id : self.id });
 
 			// if( $('#selectCredit').length ) {
 			// 	var sufx = ''
