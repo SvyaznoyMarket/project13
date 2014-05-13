@@ -15,7 +15,9 @@ class Shop {
         $shop = null;
 
         $item = $query->getResult();
-        $shop = new Model\Shop($item);
+        if ($item) {
+            $shop = new Model\Shop($item);
+        }
 
         return $shop;
     }
