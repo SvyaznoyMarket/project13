@@ -221,6 +221,9 @@ class AppConfig {
         'RuTarget' => [
             'enabled' => null,
         ],
+        'TagMan' => [
+
+        ],'enabled' => null,
     ];
 
 

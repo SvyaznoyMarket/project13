@@ -422,7 +422,9 @@ class DefaultLayout extends Layout {
                 $this->json( (new \View\Partners\GoogleAnalytics($routeName, $this->params))->execute() ) .
                 '"></div>';
 
-            $return .= '<div id="TagManJS" class="jsanalytics"></div>';
+            if (\App::config()->partners['TagMan']['enabled']) {
+                $return .= '<div id="TagManJS" class="jsanalytics"></div>';
+            }
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
