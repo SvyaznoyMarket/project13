@@ -3,7 +3,7 @@
 namespace EnterTerminal\Repository;
 
 use Enter\Curl\Query;
-use EnterSite\ConfigTrait;
+use EnterTerminal\ConfigTrait;
 use EnterTerminal\Model;
 
 class MainMenu {

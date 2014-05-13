@@ -4,8 +4,7 @@ namespace EnterTerminal\Action;
 
 use Enter\Http;
 use EnterSite\LoggerTrait;
-use EnterSite\Controller;
-//use EnterTerminal\Controller;
+use EnterTerminal\Controller;
 
 class MatchRoute {
     use LoggerTrait;
@@ -25,7 +24,8 @@ class MatchRoute {
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['routing']]);
 
-            $callable = [new Controller\Error\NotFound(), 'execute'];
+            //$callable = [new Controller\Error\NotFound(), 'execute'];
+            throw $e;
         }
 
         return $callable;

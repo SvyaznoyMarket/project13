@@ -2,7 +2,7 @@
 
 namespace EnterSite\Action;
 
-use EnterSite\ConfigTrait;
+use EnterTerminal\ConfigTrait;
 
 class LoadConfig {
     use ConfigTrait;

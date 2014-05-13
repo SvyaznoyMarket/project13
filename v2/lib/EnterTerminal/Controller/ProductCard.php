@@ -3,7 +3,7 @@
 namespace EnterTerminal\Controller;
 
 use Enter\Http;
-use EnterSite\ConfigTrait;
+use EnterTerminal\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;

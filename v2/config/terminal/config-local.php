@@ -1,11 +1,10 @@
 <?php
 
-return function(\EnterSite\Config\Application $config) {
+return function(\EnterTerminal\Config\Application $config) {
     /** @var \Closure $handler */
     $handler = include __DIR__ . '/config-dev.php';
     $handler($config);
 
-    $config->hostname = 'enter.loc';
-
     // local config
+    $config->hostname = 't.enter.loc';
 };

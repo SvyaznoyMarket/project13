@@ -1,26 +1,26 @@
 <?php
 
-return function(\EnterSite\Config\Application $config) {
+return function(\EnterTerminal\Config\Application $config) {
     $config->requestId = uniqid();
 
-    $config->dir = realpath(__DIR__ . '/../..');
-    $config->hostname = 'enter.ru';
+    $config->dir = realpath(__DIR__ . '/../../..');
+    $config->hostname = 't.enter.ru';
 
-    $config->logger->fileAppender->file = $config->dir . '/log/main.log';
+    $config->logger->fileAppender->file = $config->dir . '/log/terminal.log';
 
     $config->session->name = 'enter';
     $config->session->cookieLifetime = 15552000;
-    $config->session->cookieDomain = '.enter.ru';
+    $config->session->cookieDomain = null; // TODO: убрать из настроек терминала
 
-    $config->userToken->authCookieName = '_token';
+    $config->userToken->authCookieName = null; // TODO: убрать из настроек терминала
 
     $config->region->defaultId = '14974';
-    $config->region->cookieName = 'geoshop';
+    $config->region->cookieName = null; // TODO: убрать из настроек терминала
 
     $config->coreService->url = 'http://api.enter.ru/';
     $config->coreService->timeout = 5;
     $config->coreService->retryCount = 2;
-    $config->coreService->clientId = 'site';
+    $config->coreService->clientId = 'terminal'; // переопределяется из http.request
 
     $config->cmsService->url = 'http://cms.enter.ru/';
     $config->cmsService->timeout = 1;
@@ -41,10 +41,8 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->curl->queryChunkSize = 50;
 
-    $config->mustacheRenderer->dir = $config->dir . '/v2/vendor/mustache';
-    $config->mustacheRenderer->templateDir = $config->dir . '/v2/template';
-    $config->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';
-    $config->mustacheRenderer->templateClassPrefix = preg_replace('/[^\w]/', '_', $config->hostname . '_v2' . '-');
+    // TODO: убрать из настроек терминала
+    //$config->mustacheRenderer;
 
     $config->mediaHosts = [
         0 => 'http://fs01.enter.ru',
@@ -71,8 +69,4 @@ return function(\EnterSite\Config\Application $config) {
     ];
     $config->productReview->enabled = true;
     $config->productReview->itemsInCard = 7;
-
-    $config->directCredit->enabled = true;
-    $config->directCredit->minPrice = 3000;
-    $config->directCredit->partnerId = '4427';
 };
