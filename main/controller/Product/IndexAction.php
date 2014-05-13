@@ -185,60 +185,43 @@ class IndexAction {
         // Если набор, то получим $productLine
         $productLine = $product->getLine();
 
-        $mainProduct = null;
         $line = null;
         $parts = [];
         $kitProducts = [];
 
-        if ($productLine instanceof \Model\Product\Line\Entity ) {
+        /* Набор пакеты */
+        if ((bool)$product->getKit()) {
+            $restParts = [];
             $productRepository = \RepositoryManager::product();
-            $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
-            if ($line && !$product->getKit()) {
-                // Если набор, то получаем главный продукт
-                $mainProduct = $productRepository->getEntityById($line->getMainProductId());
-            } else {
-                $mainProduct = $product;
+            $productRepository->setEntityClass('\Model\Product\Entity');
+
+            // Получим основные товары набора
+            $productPartsIds = [];
+            foreach ($product->getKit() as $part) {
+                $productPartsIds[] = $part->getId();
             }
 
-            // Запрашиваю составные части набора
-            if ($mainProduct && (bool)$mainProduct->getKit() ) {
-                $productRepository->setEntityClass('\Model\Product\Entity');
-                $partId = [];
-                foreach ($mainProduct->getKit() as $part) {
-                    $partId[] = $part->getId();
-                }
-                try {
-                    $parts = $productRepository->getCollectionById($partId);
-                    $restPartsIds = array_diff($line->getProductId(), $partId);
-                    if (count($restPartsIds) > 0) {
-                        $restParts = $productRepository->getCollectionById($restPartsIds);
-                    } else {
-                        $restParts = [];
-                    }
-                } catch (\Exception $e) {
-                    \App::exception()->add($e);
-                    \App::logger()->error($e);
-                }
+            // Если товар находится в какой-либо линии, то запросим остальные продукты линии
+            if ($productLine instanceof \Model\Product\Line\Entity ) {
+                $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
+                $restPartsIds = array_diff($line->getProductId(), $productPartsIds);
             }
 
-            // Данные для отображения набора продуктов (только если главный продукт набора - текущий продукт)
-            if ((bool)$mainProduct && (bool)$mainProduct->getKit() && $product->getId() == $mainProduct->getId()) {
-                $kitProducts = $this->prepareKit($parts, $restParts, $mainProduct, $region);
-            }
-        } else if ((bool)$product->getKit()) {
-            $productRepository = \RepositoryManager::product();
-            $mainProduct = $product;
-            $partId = [];
-            foreach ($mainProduct->getKit() as $part) {
-                $partId[] = $part->getId();
-            }
+            // Получим сущности по id
             try {
-                $parts = $productRepository->getCollectionById($partId);
+                $parts = $productRepository->getCollectionById($productPartsIds);
+                if (isset($restPartsIds) && count($restPartsIds) > 0) {
+                    $restParts = $productRepository->getCollectionById($restPartsIds);
+                } else {
+                    $restParts = [];
+                }
             } catch (\Exception $e) {
                 \App::exception()->add($e);
                 \App::logger()->error($e);
             }
-            $kitProducts = $this->prepareKit($parts, [], $mainProduct, $region);
+
+            // Приготовим набор для отображения на сайте
+            $kitProducts = $this->prepareKit($parts, $restParts, $product, $region);
         }
 
         /*
@@ -411,7 +394,6 @@ class IndexAction {
         $page->setParam('trustfactorMain', $trustfactors['main']);
         $page->setParam('trustfactorRight', $trustfactors['right']);
         $page->setParam('trustfactorContent', $trustfactors['content']);
-        $page->setParam('mainProduct', $mainProduct);
         $page->setParam('parts', $parts);
         $page->setParam('line', $line);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId()));
@@ -463,7 +445,7 @@ class IndexAction {
      * Подготовка данных для набора продуктов
      * @var array $products
      * @var array $restProducts
-     * @var \Model\Product\Enitity $mainProduct
+     * @var \Model\Product\Enitity $product
      * @var \Model\Region\Entity $region
      */
     private function prepareKit($products, $restProducts, $mainProduct, $region) {
