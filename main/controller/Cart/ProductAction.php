@@ -83,6 +83,7 @@ class ProductAction {
                     ],
                     'product'  => $productInfo,
                     'category_id' => $parentCategoryId,
+                    'regionId' => \App::user()->getRegionId(),
                 ]);
             } else {
                 $response = new \Http\RedirectResponse($returnRedirect);
@@ -251,6 +252,10 @@ class ProductAction {
                 'data'    => ['error' => 'Не удалось товар или услугу в корзину', 'debug' => $e->getMessage()],
             ];
             return new \Http\JsonResponse($responseData);
+        }
+
+        if (!$request->isXmlHttpRequest()) {
+            return new \Http\RedirectResponse(\App::router()->generate('order'));
         }
 
         return $response;

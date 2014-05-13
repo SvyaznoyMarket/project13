@@ -15,3 +15,16 @@
 <?= $page->slotСpaexchangeConversionJS() ?>
 <?= $page->slotAdLensJS() ?>
 <?= $page->slotRevolvermarketingConversionJS() ?>
+
+<!-- RuTarget Start -->
+<?= $page->slotRuTargetJS() ?>
+<?= $page->slotRuTargetProductJS() ?>
+<?= $page->slotRuTargetProductCategoryJS() ?>
+<?= $page->slotRuTargetCartJS() ?>
+<?= $page->slotRuTargetOrderOneClickJS() ?>
+<?= $page->slotRuTargetOrderJS() ?>
+<?= $page->slotRuTargetOrderCompleteJS() ?>
+<?= $page->slotRuTargetSearchJS() ?>
+<?= $page->slotRuTargetHomepageJS() ?>
+<?= $page->slotRuTargetOtherPageJS() ?>
+<!-- RuTarget End -->

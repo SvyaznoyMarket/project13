@@ -370,12 +370,12 @@ class CreateAction {
         }
 
         try {
-            $result = \App::coreClientV2()->query('order/create-packet', $params, $data, \App::config()->coreV2['hugeTimeout']);
+            $result = \App::coreClientV2()->query((\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'), $params, $data, \App::config()->coreV2['hugeTimeout']);
         } catch(\Exception $e) {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([
                     'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
-                    'url'     => 'order/create-packet' . ((bool)$params ? ('?' . http_build_query($params)) : ''),
+                    'url'     => (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet') . ((bool)$params ? ('?' . http_build_query($params)) : ''),
                     'data'    => $data,
                     'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
                         'HTTP_USER_AGENT',

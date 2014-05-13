@@ -170,6 +170,7 @@ $c->partners['AdLens']['enabled'] = true;
 $c->partners['Сpaexchange']['enabled'] = true;
 $c->partners['Admitad']['enabled'] = false;
 $c->partners['Revolvermarketing']['enabled'] = true;
+$c->partners['RuTarget']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [

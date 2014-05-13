@@ -73,4 +73,26 @@ class IndexPage extends \View\DefaultLayout {
 
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25013]) . '"></div>';
     }
+
+    public function slotRuTargetCartJS() {
+        if (!\App::config()->partners['RuTarget']['enabled']) return;
+
+        $productsInfo = [];
+        $cart = \App::user()->getCart();
+        foreach ($cart->getProducts() as $product) {
+            if (!$product instanceof \Model\Cart\Product\Entity) continue;
+
+            $productsInfo[] = [
+                'sky' => $product->getId(),//product id
+                'qty' => $product->getQuantity(),//product quantity
+            ];
+        }
+
+        $data = [
+            'products' => $productsInfo,
+            'regionId' => \App::user()->getRegionId(),
+        ];
+
+        return "<div id='RuTargetCartJS' class='jsanalytics' data-value='" . json_encode($data) . "'><div>";
+    }
 }

@@ -606,7 +606,32 @@
 							utils.logError(dataToLog);
 						}
 					}
+				},
+
+				/**
+				 * Аналитика при нажатии кнопки "купить"
+				 * @param event
+				 * @param data
+				 */
+				addToRuTarget = function addToRuTarget( event, data ) {
+					var
+						product = data.product,
+						regionId = data.regionId,
+						result,
+						_rutarget = window._rutarget || [];
+					// end of vars
+
+					if ( !product || !regionId ) {
+						return;
+					}
+
+					result = {'event': 'addToCart', 'sku': product.id, 'qty': product.quantity, 'regionId': regionId};
+
+					console.info('RuTarget addToCart');
+					console.log(result);
+					_rutarget.push(result);
 				}
+
 				/*,
 				addToVisualDNA = function addToVisualDNA( event, data ) {
 					var
@@ -635,6 +660,7 @@
 				adAdriver(event, data);
 				addToRetailRocket(event, data);
 				//addToVisualDNA(event, data);
+				addToRuTarget(event, data);
 			}
 			catch( e ) {
 				console.warn('addtocartAnalytics error');
@@ -2936,6 +2962,33 @@ $(document).ready(function() {
  */
  
  
+;(function(){
+
+    // https://jira.enter.ru/browse/SITE-3508
+    // SITE-3508 Закрепить товары в листинге чибы
+
+    if ( /catalog\/tchibo/.test(document.location.href) && window.history) {
+
+        var history = window.history;
+
+        $(window).on('beforeunload', function () {
+            history.replaceState({pageYOffset: pageYOffset}, '');
+        });
+
+        if (history && history.state.pageYOffset) {
+            window.scrollTo(0, history.state.pageYOffset);
+        }
+
+    }
+
+}());
+ 
+ 
+/** 
+ * NEW FILE!!! 
+ */
+ 
+ 
 /* Top Menu */
 (function(){
 	var menuDelayLvl1 = 300; //ms
@@ -3557,6 +3610,25 @@ $(document).ready(function() {
 			// end of vars
 			
 			var
+				deleteProductAnalytics = function deleteProductAnalytics( data ) {
+					var
+						region = $('.jsChangeRegion'),
+						regionId = region.length ? region.data('region-id') : false,
+						result,
+						_rutarget = window._rutarget || [];
+					// end of vars
+
+					if ( !data || !regionId ) {
+						return;
+					}
+
+					result = {'event': 'removeFromCart', 'sku': data.product.id, 'regionId': regionId};
+
+					console.info('RuTarget removeFromCart');
+					console.log(result);
+					_rutarget.push(result);
+				},
+
 				authFromServer = function authFromServer( res, data ) {
 					console.warn( res );
 					if ( !res.success ) {
@@ -3564,6 +3636,9 @@ $(document).ready(function() {
 
 						return;
 					}
+
+					// аналитика
+					deleteProductAnalytics(res);
 
 					utils.blackBox.basket().deleteItem(res);
 
