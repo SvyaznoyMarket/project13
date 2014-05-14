@@ -1004,7 +1004,13 @@ window.ANALYTICS = {
 		// Передаем email пользователя для RetailRocket
 		RetailRocket.userEmailSend();
 
-        RetailRocket.action(null);
+        if (ENTER.config.userInfo === false) {
+            RetailRocket.action(null);
+        } else {
+            $('body').on('userLogged', function(){
+                RetailRocket.action(null, ENTER.config.userInfo);
+            });
+        }
 
         console.groupEnd();
     },
