@@ -37,7 +37,6 @@
 </head>
 
 <body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
-<div id="IE9-template" class="<?= $page->slotBodyDataAttribute() ?>" style="display: none"></div>
 <?= $page->slotConfig() ?>
 
 <div class="graying" style="opacity: 0.5; display: none;"></div>
