@@ -8730,6 +8730,11 @@
   .bProductDescSticker {
     position: absolute;
     top: 0;
+  }
+  .bProductDescSticker.mRight {
+    right: 0;
+  }
+  .bProductDescSticker.mLeft {
     left: 0;
   }
   .bPhotoAction {
@@ -9000,7 +9005,6 @@
     background-position: 0 50%;
   }
   .priceSale {
-    display: none;
     margin: 5px 0 10px;
     cursor: pointer;
   }

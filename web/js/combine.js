@@ -1,1 +1,1 @@
-window.release = { "version":"t3216-productCard-174-g36e08e2"}
+window.release = { "version":"t72.3-71-gb131d54"}
