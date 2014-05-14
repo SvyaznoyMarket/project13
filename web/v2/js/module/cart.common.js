@@ -52,6 +52,15 @@ define(
                                 $(selector).trigger('render', templateData);
                             });
                         }
+
+                        if ($el.data('parentContainerSelector')) {
+                            var $parentContainer = $el.parents($el.data('parentContainerSelector'));
+                            if ($parentContainer.length) {
+                                $parentContainer.slideUp(300, function() {
+                                    $parentContainer.remove();
+                                });
+                            }
+                        }
                     });
 
                     e.preventDefault();
