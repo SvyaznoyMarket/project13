@@ -3416,6 +3416,7 @@ img[height="0"] {
   .packageSet.mPackageSetEdit .packageSetBodyItem_desc .name {
     height: 20px;
     margin: 0 0 6px;
+    width: 510px;
   }
   .packageSet.mPackageSetEdit .packageSetBodyItem_desc .price {
     height: 26px;
