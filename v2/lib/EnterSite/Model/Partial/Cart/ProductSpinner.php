@@ -7,6 +7,8 @@ namespace EnterSite\Model\Partial\Cart {
         public $widgetType = 'productSpinner';
         /** @var string */
         public $id;
+        /** @var bool */
+        public $hasBuyButton;
         /** @var string */
         public $buttonId;
         /** @var string */
@@ -15,5 +17,9 @@ namespace EnterSite\Model\Partial\Cart {
         public $value;
         /** @var bool */
         public $isDisabled;
+        /** @var string */
+        public $dataUrl;
+        /** @var string */
+        public $dataValue;
     }
 }

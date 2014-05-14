@@ -6,12 +6,14 @@
             data-widget-selector=".{{widgetId}}"
             data-button-selector=".{{buttonId}}"
         >-</button>
-        <input class="js-buySpinner-value counter__input"
+        <input class="js-buySpinner-value counter__input{{^hasBuyButton}} {{buttonId}}{{/hasBuyButton}}"
            {{#isDisabled}}disabled="disabled"{{/isDisabled}}
            type="text"
            value="{{value}}"
            data-widget-selector=".{{widgetId}}"
            data-button-selector=".{{buttonId}}"
+           data-url="{{&dataUrl}}"
+           data-value="{{&dataValue}}"
         />
         <button class="js-buySpinner-inc counter__btn counter__btn-minus"
             {{#isDisabled}}disabled="disabled"{{/isDisabled}}
