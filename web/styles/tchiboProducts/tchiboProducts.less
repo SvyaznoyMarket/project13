@@ -10,7 +10,14 @@
 		.bProductDescSticker {
 			z-index: 102;
 			top: 5px;
-    		left: 5px;
+    		
+    		&.mLeft {
+    			left: 5px;
+    		}
+
+    		&.mRight {
+    			right: 5px;
+    		}
 		}
 
 		&__hover {
@@ -30,17 +37,17 @@
 
 		&__imgBox {
 			width: 100%;
-			text-align: center;
 		}
 
 		&__imgLink {
-			display: table-cell;
-			vertical-align: middle;
+			display: block;
+			text-align: center;
 		}
 
 		&__img {
 			width: 70%;
-			height: auto;
+			position: relative;
+			//height: auto;
 			vertical-align: middle;
 		}
 
