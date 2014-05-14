@@ -308,13 +308,13 @@ return [
     ],
     //reviews
     'product.review.create' => [
-        'pattern' => '/product-reviews/create/{productId}',
-        'require' => ['productId' => '\d+'],
+        'pattern' => '/product-reviews/create/{productUi}',
+        'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
         'action'  => ['Product\ReviewsAction', 'create'],
     ],
     'product.reviews' => [
-        'pattern' => '/product-reviews/{productId}',
-        'require' => ['productId' => '\d+'],
+        'pattern' => '/product-reviews/{productUi}',
+        'require' => ['productUi' => '[\w\d-_]+\/?[\w\d-_]+'],
         'action'  => ['Product\ReviewsAction', 'execute'],
     ],
     'product.notification.lowerPrice' => [

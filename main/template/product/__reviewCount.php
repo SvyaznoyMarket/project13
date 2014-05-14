@@ -34,7 +34,7 @@ return function(
 
             <div class="productName"><span class="productName__inner"><?= $product->getPrefix() . ' ' . $product->getWebName() ?></span></div>
 
-            <form action="<?= $helper->url('product.review.create', ['productId' => $product->getId()]) ?>" id="" class="reviewForm clearfix jsReviewForm" method="post">
+            <form action="<?= $helper->url('product.review.create', ['productUi' => $product->getUi()]) ?>" id="" class="reviewForm clearfix jsReviewForm" method="post">
                 <ul class="error_list"></ul>
 
                 <fieldset class="reviewForm__place">

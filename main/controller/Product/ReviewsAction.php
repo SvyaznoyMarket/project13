@@ -6,17 +6,21 @@ class ReviewsAction {
 
     /**
      * @param \Http\Request $request
-     * @param int $productId
+     * @param string $productUi
      * @return \Http\JsonResponse
      */
-    public function execute(\Http\Request $request, $productId) {
+    public function execute(\Http\Request $request, $productUi) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $page = $request->get('page', 0);
         $reviewsType = $request->get('type', 'user');
         $layout = $request->get('layout', false);
 
-        $reviewsData = \RepositoryManager::review()->getReviews($productId, $reviewsType, $page);
+        $reviewsData = [];
+        \RepositoryManager::review()->prepareData($productUi, $reviewsType, $page, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
+            $reviewsData = (array)$data;
+        });
+        \App::curl()->execute();
 
         $response = $reviewsType == 'user' ? 'Нет отзывов' : 'Нет обзоров';
 
@@ -38,14 +42,14 @@ class ReviewsAction {
 
     /**
      * @param \Http\Request $request
-     * @param int $productId
+     * @param string $productUi
      * @return \Http\JsonResponse
      */
-    public function create(\Http\Request $request, $productId) {
+    public function create(\Http\Request $request, $productUi) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (!$productId) {
-            throw new \Exception('Не удалось получить id продукта');
+        if (!$productUi) {
+            throw new \Exception('Не удалось получить ui продукта');
         }
 
         $responseData = [];
@@ -92,7 +96,7 @@ class ReviewsAction {
                         'date'          => $form->getDate(),
                     ];
 
-                    \App::reviewsClient()->query('add', ['product_id' => $productId], $data, \App::config()->coreV2['hugeTimeout']);
+                    \App::reviewsClient()->query('add', ['product_ui' => $productUi], $data, \App::config()->coreV2['hugeTimeout']);
 
                     return new \Http\JsonResponse([
                         'success'   => true,
