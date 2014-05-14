@@ -33,6 +33,31 @@ define(
                 }
             },
 
+            deleteProductFromCart = function(e) {
+                e.stopPropagation();
+
+                var $el = $(e.currentTarget),
+                    data = $el.data();
+
+                console.info('deleteProductFromCart', $el, data);
+
+                if (data.url) {
+                    $.post(data.url, data.value, function(response) {
+                        if (_.isObject(response.result.widgets)) {
+                            _.each(response.result.widgets, function(templateData, selector) {
+                                if (!selector) {
+                                    return;
+                                }
+
+                                $(selector).trigger('render', templateData);
+                            });
+                        }
+                    });
+
+                    e.preventDefault();
+                }
+            },
+
             changeProductQuantity = function(e, quantity) {
                 e.stopPropagation();
 
@@ -125,6 +150,7 @@ define(
             .on('click', '.js-buyButton', addProductToCart)
             .on('changeProductQuantityData', '.js-buyButton', changeProductQuantity)
             .on('changeProductQuantityData', '.js-buySpinner-value', changeProductQuantity)
+            .on('click', '.js-deleteButton', deleteProductFromCart)
 
         // спиннер для кнопки купить
         $body

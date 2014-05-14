@@ -17,6 +17,8 @@ class Index {
 
         $productCardRepository = new Repository\Partial\Cart\ProductCard();
         $productSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
+        $productDeleteButtonRepository = new Repository\Partial\Cart\ProductDeleteButton();
+
         foreach ($request->cartProducts as $cartProduct) {
             $product = isset($request->productsById[$cartProduct->id]) ? $request->productsById[$cartProduct->id] : null;
             if (!$product) {
@@ -24,7 +26,12 @@ class Index {
                 continue;
             }
 
-            $productCard = $productCardRepository->getObject($cartProduct, $product, $productSpinnerRepository->getObject($product, $cartProduct->quantity, false, false));
+            $productCard = $productCardRepository->getObject(
+                $cartProduct,
+                $product,
+                $productSpinnerRepository->getObject($product, $cartProduct->quantity, false, false),
+                $productDeleteButtonRepository->getObject($product)
+            );
             $page->content->productBlock->products[] = $productCard;
         }
 

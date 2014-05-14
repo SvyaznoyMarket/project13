@@ -62,8 +62,8 @@
     },
     "User\\Cart\\Product\\Delete": {
         "name": "Удалить товар из корзины",
-        "pattern": "/ajax/user/cart/product",
-        "method": ["DELETE"]
+        "pattern": "/ajax/user/cart/product/delete",
+        "method": ["POST"]
     },
     "Order\\Quick\\Index": {
         "name": "Оформление заказа в один клик",

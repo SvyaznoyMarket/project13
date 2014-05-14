@@ -29,7 +29,9 @@
                             {{>partial/cart/spinner}}
                         {{/cartSpinner}}
 
-                        <a class="delete" href="">Удалить</a>
+                        {{#cartDeleteButton}}
+                            {{>partial/cart/deleteButton}}
+                        {{/cartDeleteButton}}
                     </div>
                 </div>
             </div>

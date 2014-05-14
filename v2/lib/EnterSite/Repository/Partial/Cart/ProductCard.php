@@ -11,12 +11,14 @@ class ProductCard {
      * @param Model\Cart\Product $cartProduct
      * @param Model\Product $product
      * @param Partial\Cart\ProductSpinner|null $cartSpinner
+     * @param Partial\Cart\ProductDeleteButton|null $cartDeleteButton
      * @return Partial\ProductCard
      */
     public function getObject(
         Model\Cart\Product $cartProduct,
         Model\Product $product,
-        Partial\Cart\ProductSpinner $cartSpinner = null
+        Partial\Cart\ProductSpinner $cartSpinner = null,
+        Partial\Cart\ProductDeleteButton $cartDeleteButton = null
     ) {
         $card = new Partial\Cart\ProductCard();
 
@@ -34,6 +36,7 @@ class ProductCard {
         }
         $card->id = $product->id;
         $card->cartSpinner = $cartSpinner;
+        $card->cartDeleteButton = $cartDeleteButton;
 
         return $card;
     }

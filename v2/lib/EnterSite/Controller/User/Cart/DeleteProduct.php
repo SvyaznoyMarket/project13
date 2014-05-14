@@ -12,7 +12,7 @@ use EnterSite\Model;
 use EnterSite\Repository;
 use EnterSite\Model\Page\User\Cart\SetProduct as Page;
 
-class SetProduct {
+class DeleteProduct {
     use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait {
         ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
@@ -37,6 +37,7 @@ class SetProduct {
         if (!$cartProduct) {
             throw new \Exception('Товар не получен');
         }
+        $cartProduct->quantity = 0;
 
         // добавление товара в корзину
         $cartRepository->setProductForObject($cart, $cartProduct);

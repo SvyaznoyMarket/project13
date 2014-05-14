@@ -27,4 +27,6 @@ class ProductCard {
     public $id;
     /** @var Partial\Cart\ProductSpinner|null */
     public $cartSpinner;
+    /** @var Partial\Cart\ProductDeleteButton|null */
+    public $cartDeleteButton;
 }
