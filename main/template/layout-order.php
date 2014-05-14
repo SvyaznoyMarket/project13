@@ -34,10 +34,10 @@
     <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
-    <?= $page->slotKissMetrics() ?>
 </head>
 
 <body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
+<div id="IE9-template" class="<?= $page->slotBodyDataAttribute() ?>" style="display: none"></div>
 <?= $page->slotConfig() ?>
 
 <div class="graying" style="opacity: 0.5; display: none;"></div>
@@ -77,6 +77,7 @@
 <?= $page->slotAdriver() ?>
 <?= $page->slotPartnerCounter() ?>
 <?= $page->slotAdblender() ?>
+<?= $page->slotKissMetrics() ?>
 
 </body>
 </html>

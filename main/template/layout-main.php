@@ -33,7 +33,6 @@
     <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
-    <?= $page->slotKissMetrics() ?>
 
 </head>
 
@@ -85,6 +84,7 @@
 <?= $page->slotAdriver() ?>
 <?= $page->slotPartnerCounter() ?>
 <?= $page->slotAdblender() ?>
+<?= $page->slotKissMetrics() ?>
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="yandexMetrika" class="jsanalytics"></div>
