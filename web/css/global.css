@@ -8730,6 +8730,11 @@
   .bProductDescSticker {
     position: absolute;
     top: 0;
+  }
+  .bProductDescSticker.mRight {
+    right: 0;
+  }
+  .bProductDescSticker.mLeft {
     left: 0;
   }
   .bPhotoAction {
