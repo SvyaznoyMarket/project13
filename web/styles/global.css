@@ -3054,7 +3054,12 @@ img[height="0"] {
   .tchiboProducts .productInner .bProductDescSticker {
     z-index: 102;
     top: 5px;
+  }
+  .tchiboProducts .productInner .bProductDescSticker.mLeft {
     left: 5px;
+  }
+  .tchiboProducts .productInner .bProductDescSticker.mRight {
+    right: 5px;
   }
   .tchiboProducts .productInner__hover {
     width: 98%;
@@ -3072,15 +3077,14 @@ img[height="0"] {
   }
   .tchiboProducts .productInner__imgBox {
     width: 100%;
-    text-align: center;
   }
   .tchiboProducts .productInner__imgLink {
-    display: table-cell;
-    vertical-align: middle;
+    display: block;
+    text-align: center;
   }
   .tchiboProducts .productInner__img {
     width: 70%;
-    height: auto;
+    position: relative;
     vertical-align: middle;
   }
   .tchiboProducts .productInner__desc {
