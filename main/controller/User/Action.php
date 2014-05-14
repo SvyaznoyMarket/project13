@@ -364,9 +364,9 @@ class Action {
             if (!$form->getCorpINN()) {
                 $form->setError('corp_inn', 'Укажите ИНН');
             }
-            /*if (!$form->getCorpKPP()) {
-                $form->setError('corp_kpp', 'Укажите КПП');
-            }*/
+            if (!$form->getCorpKPP()) {
+                //$form->setError('corp_kpp', 'Укажите КПП');
+            }
             if (!$form->getCorpAccount()) {
                 $form->setError('corp_account', 'Укажите расчетный счет');
             }
@@ -377,7 +377,7 @@ class Action {
                 $form->setError('corp_bik', 'Укажите БИК');
             }
             if (!$form->getCorpOKPO()) {
-                $form->setError('corp_okpo', 'Укажите ОКПО');
+                //$form->setError('corp_okpo', 'Укажите ОКПО');
             }
 
             if ($form->isValid()) {
