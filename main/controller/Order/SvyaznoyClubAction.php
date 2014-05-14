@@ -24,11 +24,11 @@ class SvyaznoyClubAction {
 
             $result = \App::coreClientV2()->query('payment/svyaznoy-club', [], $data, \App::config()->coreV2['hugeTimeout']);
 
-            if (!isset($result['order']) || !is_array($result['order'])) {
+            if (!isset($result['detail']['order']) || !is_array($result['detail']['order'])) {
                 throw new \Exception('Не получена информация о заказе');
             }
 
-            $order = new \Model\Order\CreatedEntity($result['order']);
+            $order = new \Model\Order\CreatedEntity($result['detail']['order']);
 
             $orders = [
                 $order,
