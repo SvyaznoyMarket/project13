@@ -1,4 +1,4 @@
-/** Reset styles **/
+/** base **/
 /*! normalize.css v2.1.0 | MIT License | git.io/normalize */
 /* ==========================================================================
    HTML5 display definitions
@@ -376,16 +376,14 @@ ul li {
   margin: 0;
   padding: 0;
 }
-/** Reset styles **/
-/** Mix styles **/
+/** mix **/
 /*---------------------------------------------------
     LESS Elements 0.9
   ---------------------------------------------------
     A set of useful LESS mixins
     More info at: http://lesselements.com
   ---------------------------------------------------*/
-/** Mix styles **/
-/** Основнаые стили, вспомогательные классы **/
+/** основные стили, вспомогательные классы **/
 /* ==========================================================================
    Base styles: opinionated defaults
    ========================================================================== */
@@ -611,13 +609,11 @@ textarea[contenteditable] {
 .btnStyleGrey:hover {
   text-decoration: none;
 }
-/** Основнаые стили, вспомогательные классы **/
-/** Основнаые стили, вспомогательные классы **/
+/** цвета **/
 /* ==========================================================================
    Стили используемых цветов
    ========================================================================== */
-/** Основнаые стили, вспомогательные классы **/
-/** Основнаые стили, вспомогательные классы **/
+/** шрифты **/
 @font-face {
   font-family: 'Rouble';
   src: url('/v2/css/modules/common/fonts/rouble.eot');
@@ -633,11 +629,10 @@ textarea[contenteditable] {
   src: url('/v2/css/modules/common/fonts/iconFont/entericon-regular-webfont.eot');
   src: local('menuIconFont'), url('/v2/css/modules/common/fonts/iconFont/entericon-regular-webfont.woff') format('woff'), url('/v2/css/modules/common/fonts/iconFont/entericon-regular-webfont.ttf') format('truetype'), url('/v2/css/modules/common/fonts/iconFont/entericon-regular-webfont.svg#menuIconFont') format('svg');
 }
-/** Основнаые стили, вспомогательные классы **/
 /* ==========================================================================
    Кастомные стили
    ========================================================================== */
-/** Стили шаблона карточки товара **/
+/** стили шаблона **/
 /* ==========================================================================
    Layout - default styles
    ========================================================================== */
@@ -749,11 +744,10 @@ body.noScroll {
   }
 }
 /* ==========================================================================
-   Стили шапки сайта .header
+   Шапка сайта .header
    ========================================================================== */
-/** стили шапки **/
 /* ==========================================================================
-   Стили шапки сайта .header
+   Шапка сайта .header
    ========================================================================== */
 .header {
   background: #000000;
@@ -926,9 +920,8 @@ body.noScroll {
 .userBox_text {
   font-size: 11px;
 }
-/** адаптивные стили шапки **/
 /* ==========================================================================
-   Адаптиыне стили шапки сайта .header
+   Шапка сайта .header
    ========================================================================== */
 @media only screen and (max-width: 800px) {
   /* Панель юзера */
@@ -993,9 +986,11 @@ body.noScroll {
     width: 160px;
   }
 }
-/** стили навигации **/
 /* ==========================================================================
-   Стили навигации сайта .nav
+   Навигации .nav
+   ========================================================================== */
+/* ==========================================================================
+   Навигации .nav
    ========================================================================== */
 .nav {
   bottom: 0;
@@ -1128,15 +1123,14 @@ body.noScroll {
   filter: alpha(opacity=50);
   display: none;
 }
-/** адаптивные навигации **/
 /* ==========================================================================
-   Адаптиыне стили навигации сайта .nav
+   Навигации .nav
    ========================================================================== */
 /* ==========================================================================
-   Стили кнопок купить .btnBuy
+   Кнопка купить .btnBuy
    ========================================================================== */
 /* ==========================================================================
-   Стили кнопок купить .btnBuy
+   Кнопка купить .btnBuy
    ========================================================================== */
 .btnBuy {
   background: #ffc000;
@@ -1224,11 +1218,11 @@ body.noScroll {
   font-size: 14px;
 }
 /* ==========================================================================
-   Стили карточки товара .productDesc, .productDescTab
+   Карточка товара
    ========================================================================== */
-/** стили описания товара **/
+/** описание товара .productDesc .productDescHead **/
 /* ==========================================================================
-   Стили шапки сайта .header
+   Карточка товара -> описание товара .productDesc .productDescHead
    ========================================================================== */
 .productDesc {
   margin: 0 0 40px;
@@ -1393,8 +1387,9 @@ body.noScroll {
   *display: inline;
   zoom: 1;
 }
-/** адаптивные описания товара **/
-/** стили блоков выбора модели **/
+/* ==========================================================================
+   Карточка товара -> описание товара .productDesc .productDescHead
+   ========================================================================== */
 @media only screen and (max-width: 900px) {
   .productDesc {
     margin-bottom: 0;
@@ -1450,8 +1445,10 @@ body.noScroll {
     float: right;
   }
 }
-/** стили блоков выбора модели **/
-/** стили блоков выбора модели **/
+/** выбор модели .chooseModel, .chooseModelColor, .chooseModelNum **/
+/* ==========================================================================
+   Карточка товара -> выбор модели .chooseModel, .chooseModelColor, .chooseModelNum
+   ========================================================================== */
 .chooseModel {
   border-top: 1px solid #d8d8d8;
   border-bottom: 1px solid #d8d8d8;
@@ -1573,9 +1570,8 @@ body.noScroll {
   border: 1px solid #ffa901;
   text-decoration: none;
 }
-/** стили блоков выбора модели **/
 /* ==========================================================================
-   Адаптивные стили описания товара .productDesc
+   Карточка товара -> выбор модели .chooseModel, .chooseModelColor, .chooseModelNum
    ========================================================================== */
 @media only screen and (max-width: 900px) {
   .chooseModel {
@@ -1585,9 +1581,9 @@ body.noScroll {
     padding: 0 10px 10px;
   }
 }
-/** стили табов подробного описания товара **/
+/** табы подробного описания товара .productDescTab  **/
 /* ==========================================================================
-   Табы подробностей о товаре .productDescTab
+   Карточка товара -> табы подробного описания товара .productDescTab 
    ========================================================================== */
 .productDescTab {
   display: table;
@@ -1644,9 +1640,8 @@ body.noScroll {
 .productDescTab .reviewsStar {
   height: 16px;
 }
-/** адаптивные стили табов подробного описания товара **/
 /* ==========================================================================
-   Адаптивные стили табов подробностей о товаре .productDescTab
+   Карточка товара -> табы подробного описания товара .productDescTab 
    ========================================================================== */
 @media only screen and (max-width: 800px) {
   .productDescTab .tabImg {
@@ -1679,177 +1674,9 @@ body.noScroll {
     background-color: #f6f6f6;
   }
 }
+/** информация о доставке .deliveryInfo .deliveryList .addressShopsList **/
 /* ==========================================================================
-   Стили блока редактирования количества товаров .counter
-   ========================================================================== */
-/* ==========================================================================
-   Стили блока редактирования количества товаров .counter
-   ========================================================================== */
-.counter {
-  color: #5e5d5d;
-  width: 155px;
-}
-.counter__btn {
-  float: left;
-  margin: 0;
-  padding: 0;
-  width: 40px;
-  height: 40px;
-  border: 1px solid #d8d8d8;
-  background: #f6f6f6;
-  color: #5e5d5d;
-  text-align: center;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 38px;
-}
-.counter__btn-plus {
-  -webkit-border-radius: 4px 0 0 4px;
-  -moz-border-radius: 4px 0 0 4px;
-  border-radius: 4px 0 0 4px;
-}
-.counter__btn-minus {
-  -webkit-border-radius: 0 4px 4px 0;
-  -moz-border-radius: 0 4px 4px 0;
-  border-radius: 0 4px 4px 0;
-}
-.counter__input {
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  float: left;
-  padding: 0;
-  width: 40px;
-  height: 38px;
-  border: 1px solid #d8d8d8;
-  border-right: none;
-  border-left: none;
-  background: #ffffff;
-  color: #5e5d5d;
-  text-align: center;
-  font-size: 18px;
-  line-height: 38px;
-}
-.counter__num {
-  display: inline-block;
-  padding: 0 0 0 6px;
-  color: #a6a6a6;
-  vertical-align: top;
-  font-size: 15px;
-  line-height: 40px;
-}
-/* ==========================================================================
-   Стили пользовательских input[type=radio], input[type=checkbox] .customInput
-   ========================================================================== */
-/* ==========================================================================
-   Стили пользовательских input[type=radio], input[type=checkbox] .customInput
-   ========================================================================== */
-.customInput {
-  -moz-opacity: 0;
-  -khtml-opacity: 0;
-  -webkit-opacity: 0;
-  opacity: 0;
-  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-  filter: alpha(opacity=0);
-  position: relative;
-  z-index: -1;
-  float: right;
-  overflow: hidden;
-  margin-top: 0;
-  padding: 0;
-  width: 0;
-  height: 0;
-  font-size: 0;
-  line-height: 0;
-  zoom: 1;
-}
-.customLabel {
-  display: inline-block;
-  margin: 0;
-  padding: 0 0 0 29px;
-  cursor: pointer;
-  *display: inline;
-  zoom: 1;
-}
-.customLabel-bigRadio {
-  padding: 5px 10px 5px 38px;
-  height: 29px;
-}
-.customInput-radio + .customLabel {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpGRjA2RTc0NDgwN0MxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpGRjA2RTc0NTgwN0MxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkU1MkIzMDk3ODA3QTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkU1MkIzMDk4ODA3QTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+ElWMcwAAAhNJREFUeNqslc1rWkEUxW+egor43ChoAgWlXaUli2YtATfiOuR/6CrdFLrIotBNod114f8QutVkoxRB9/kQRANiKCrGTRXxA3V6jswLqTGN1XfgMjBvzu/Om/fm3i2llDylTCazh+EIkUDsIlyIEaKEOEecJpPJi6f8W8vggB5geGea5lE4HJZAICA+n08Mw5DZbCa9Xk86nY40m03pdrunWJtCkp+PQIQ/jHQ6/SmXy6lGo6FWEddxPX2LrEXwt2KxqEajkfofcT199C+F48FJoVBQk8lErSP6dIITizk/c5zxjtPp/BWLxcTtdsu6Gg6Hks/nBYl28A0ahp4/jkajG4Ep+smB3s//FryGD7vuxuNxcTgcsqmm06lks1nu3uTOE8Fg0BYwRQ555BL+Fv+z2Cm/389hn/DtTc96US4XL7KECDdx5rbCNc9PeHs8HtsK17w7wq9YK+yU5l0SftZut22Fa96ZdfUzmFB2iBzyyLVuaKpcLsu/avsqop8c8v4qucj2vVKpbLRr+smxmMaDxJ+r1arU6/W1dk0f/eRYc/dwVDF+hTelUimFmNeIVWsJ19NHv+Ysb3Mov0z4Bbf2QyQSkVAoJB6P5xF0MBhIq9WSWq3GUvsVUx8Bnj3bQ3WSl+yjiEP0zxder3d+81DtpN/v81++xbMfun/erNyglyR6jeEVrzTiN6IK4PVzvj8CDAAigVcsj+tQhgAAAABJRU5ErkJggg==);
-  background-position: 5px 50%;
-  background-repeat: no-repeat;
-}
-.customInput-radio:checked + .customLabel {
-  background-position: 5px 50%;
-  background-repeat: no-repeat;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAXCAYAAAARIY8tAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFNTJCMzA5NTgwN0ExMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFNTJCMzA5NjgwN0ExMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkU1MkIzMDkzODA3QTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkU1MkIzMDk0ODA3QTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+VN/K1QAAAutJREFUeNqclc1vElEQwGcXKPULii0fChIOGjy00eJFjBovmpakZ/Wg8dSEf0Ft02i8NXrs0Rjj10EParGHpgc0IR6gxpAWTA/QQmxJmhVCQwnsPmfoQnhdNtBOMnnszJvfsPNm5wmMMegmkUjEhssoqks1baIuh0IhqVusoJcAoQIut1HDJpPpusViAbPZ3PBVq1UolUpQq9Wi+DiH+gGTsZ4TIPwOLu9cLhf4fD6w2WwgCAK3h+IkSYJMJgObm/RCcBeTvNfAaGO7zs/PTy8tLbHt7W3Wq9BeiqHY/bz98IfRaJTt7u6ygwrFUCwxOiZAx9ji4iKrVCrssEKxxCBWk2tsq1Z4eHgY+vv7tWUsrYHy5yUw6ffewZ28AOK5ByBYznL7KJYY8Xg8jI8LrUPGQ72KB/k9GAxq4PKvZyAvzwAodd4hGsEwOgOGi480MbFYjBrgGh76D1G1TXq9Xi08+QLk+GMtnARt5JOTzzUulTXZ+B+qbdxut/NlqRQQMNX1I5Tj04297aKyQo0EWB4P1m6or6+PT7DxFaC+0zUB7WHrnzkTsZA5iOwz9AY2/FK1BysloVdh/1Y0NpU5QAmUjuPCeKznBGA8qpubEmzgR6KdIc4rPfMFh3YvfhO0rIvYSqV6vb5SLpf5Ljx9E4SB893hVj+I7lucjVjEJHaziz6qA4vrc+ONN1jM4/p09DX2iEbOrLI+tbfpXDabBVmW+X83GADTRAxLEOxQluCeb+gS37bIIJY6xrlZNJtKpXTnjCKtMHntbUPpt56srq7SLJptclv3AfasBWd+MRAIgNPphMPI1tYWJBIJAp/A+pc1Fw4mGRNF8dvIyAi43e4DwXO5HCSTSVAUZRzhC7o3Gia5TJPV4/Hc9/v9rWtST+j6TKfTlOAV1R3hP3u9k6cMBsMTehOHwwFWq5W7k4vFIhQKBcjn83Sw0wh+eqBLX01yBJd7qBOo1C6nVNdf1DjqF9TXCK/oMf4LMABKKmXKuNvR/QAAAABJRU5ErkJggg==);
-}
-.customInput-checkbox + .customLabel {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAq0lEQVQ4EWP8//8/w9OnT9V+//7dAWS7MDAw8AIxKeAzIyPjHlZW1gppaelbjE+ePFH78+fPSQkJCQE2NjYGoCQphjGAHPTr1y+GFy9efGBhYTFnuH///rofP34AxSkDIDNAZjEBjXEBuYxSADIDZBYT0CBeUr2JzXKoGbwgA6kKRg2kPDhHw3CkhOFnYKam2K9QMz4zgQpHUHlGKQCZATKL6gUsI8ip1KwCAKdFpeXGvM06AAAAAElFTkSuQmCC);
-  background-position: 0 2px;
-  background-repeat: no-repeat;
-}
-.customInput-checkbox:checked + .customLabel {
-  background-position: 0 2px;
-  background-repeat: no-repeat;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB60lEQVQ4Ea2Vv0scQRTHvzPOraBcjFh4cKIJhutSmEaFgAqHioU/AhaSIvgHpLdRAmnS2RgsrAS1CGJhoYKCIIjYKIgg2JzoHZwIRjxjNrezN87bPVbv3DuynF/Y3bdv3/vsd2Z3Z5lSCqlUKmZZ1g8dxwGE9RZEGcbYVigUmohGo6csmUzGpJT7kUjktWEY0BeDwECGstks0un0jRCiHYlEYsU0TZ2vTMQgFteYODmrVMQgFtegcNBhAgq5xC/YB1PAv9+OlzwjLII6U38uILfHoC53nVbeMgJWXe9hAgHV9RHkRi/U30sX9nYUrKHNg1FAQ36UdQd1tQ9Yt4+5fKTuzmCtxz0Yq38P8XHuWV0B0D6ehrXagexiozs/ynYb5D3k5hBgXjnn7NU7iL41wKgrD+StY4CoBWwT9uF3yL2vukFB7nwBDZfEapsgBrado5Mo2hU4dO7cs0RtTlnuZFY7G9ZPdNltEzWOM4KWUgGQinjzIKo+fPPqc+erXiw6Z0BzV07PgFRc1TYJeh2eir/5BB4bf5ryjX2BNGTRNe/OJ7UxDtH50xdQnCwB1GWhMIzhA/DWzxD9W0BNpLjX97z8i10Xg+he8G0slSSHGf1Rl7r+3/k8I8NpcaT1rFIRg1gvvsAysvqSv4AHRV4DFNYsSZsAAAAASUVORK5CYII=);
-}
-/* ==========================================================================
-   Стили цен .buyInfoPrice, .buyInfoLess
-   ========================================================================== */
-/* ==========================================================================
-   Стили цен .buyInfoPrice
-   ========================================================================== */
-.buyInfoPrice {
-  margin-bottom: 10px;
-}
-.buyInfoPrice_item {
-  font-size: 15px;
-  margin: 0 0 5px;
-}
-.buyInfoPrice_item-credit {
-  background-color: #FFEFCB;
-}
-.buyInfoPrice .oldPrice {
-  color: #6C6C6C;
-  display: inline-block;
-  padding: 5px 5px 0 0;
-  text-decoration: line-through;
-  vertical-align: top;
-  *display: inline;
-  zoom: 1;
-}
-.buyInfoPrice .nowPrice {
-  font-size: 27px;
-  font-weight: bold;
-  line-height: 1;
-}
-.buyInfoPrice .creditPrice {
-  display: inline-block;
-  padding: 5px 0 0;
-  vertical-align: top;
-  *display: inline;
-  zoom: 1;
-}
-/* Купить дешевле */
-.buyInfoLess {
-  padding: 0 0 0 32px;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAANCAYAAABLjFUnAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpGRjA2RTc0ODgwN0MxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpGRjA2RTc0OTgwN0MxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZGMDZFNzQ2ODA3QzExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkZGMDZFNzQ3ODA3QzExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+6nf/BQAAARxJREFUeNpiNDY29mBgYJgHxJIM5IMXQJzKBCSmAXEJEDNSgINADgIZpgjE+kDMQaar2IHYF4hFmaACc4F4OdRgUoAcEC8C4oUgDsywW0CcBcTzgdibSIPcgHgmEOcD8U2QAAuS5HMg9gfitUBsDsQNQPwPiyGgMKoGYjMgDgXiLzAJJjSFH4G4BYhBMbwNiIXR5AWAeBM0jIKQDcJmmC0QW0FtnQzEW4DYBCpnAMTboUFRDsRN0MCHA2RvOkJjtQ3K3wrEx4G4C5oG30KD4RVU/h4Q9wBxOxA/A/sfmGj/A2l3aMzMITE2OaBhuwFkMcibIMMkyDAIBH4AcQU0CMDevAq1QYmC7PQdiO+ADIuFhks5BYY9BOIogAADAPYMMW+p/tjAAAAAAElFTkSuQmCC) no-repeat 0 50%;
-  margin: 0 0 15px 6px;
-}
-.buyInfoLess__link {
-  border-bottom: 1px dotted;
-  font-size: 14px;
-}
-.buyInfoLess__link:hover {
-  text-decoration: none;
-}
-/* ==========================================================================
-   Стили блока вариантов доставки в карточке товара .btnBuy
-   ========================================================================== */
-/* ==========================================================================
-   Стили юлока вариантов доставки в карточке товара .btnBuy
+   Карточка товара -> информация о доставке .deliveryInfo .deliveryList .addressShopsList 
    ========================================================================== */
 .deliveryList_item {
   background-repeat: no-repeat;
@@ -1884,11 +1711,9 @@ body.noScroll {
 .addressShopsList_item {
   font-size: 12px;
 }
+/** характеристики товара .specifications .specificationsListCol .specificationsListRow .specificationsList **/
 /* ==========================================================================
-   Стили характеристик товара в карточке товара .specifications
-   ========================================================================== */
-/* ==========================================================================
-   Стили характеристик товара в карточке товара .specifications
+   Карточка товара -> характеристики товара .specifications .specificationsListCol .specificationsListRow .specificationsList
    ========================================================================== */
 .specificationsListRow {
   display: inline-block;
@@ -1930,7 +1755,7 @@ body.noScroll {
   margin: 0 0 10px;
 }
 /* ==========================================================================
-   Стили характеристик товара в карточке товара .specifications
+   Карточка товара -> характеристики товара .specifications .specificationsListCol .specificationsListRow .specificationsList
    ========================================================================== */
 @media only screen and (max-width: 760px) {
   .specifications .specificationsListCol {
@@ -1942,11 +1767,9 @@ body.noScroll {
     width: 100%;
   }
 }
+/** контент табов описания товара .tabContentWrap .tabContentInner .tabContent **/
 /* ==========================================================================
-   Стили отзывов в карточке товара .tabContent-reviews
-   ========================================================================== */
-/* ==========================================================================
-   Стили отзывов в карточке товара .tabContent-reviews
+   Карточка товара -> контент табов описания товара .tabContentWrap .tabContentInner .tabContent
    ========================================================================== */
 .tabContentWrap {
   overflow: hidden;
@@ -2027,7 +1850,7 @@ body.noScroll {
   font-size: 14px;
 }
 /* ==========================================================================
-   Стили отзывов в карточке товара .tabContent-reviews
+   Карточка товара -> контент табов описания товара .tabContentWrap .tabContentInner .tabContent
    ========================================================================== */
 @media only screen and (max-width: 450px) {
   .reviewsBox {
@@ -2090,10 +1913,182 @@ body.noScroll {
   }
 }
 /* ==========================================================================
-   Стили слайдера товаров .sliderBox
+   Блока каунтера .counter
    ========================================================================== */
 /* ==========================================================================
-   Стили слайдера товаров .sliderBox
+   Блока каунтера .counter
+   ========================================================================== */
+.counter {
+  color: #5e5d5d;
+  width: 155px;
+}
+.counter__btn {
+  float: left;
+  margin: 0;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #d8d8d8;
+  background: #f6f6f6;
+  color: #5e5d5d;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 38px;
+}
+.counter__btn-plus {
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+.counter__btn-minus {
+  -webkit-border-radius: 0 4px 4px 0;
+  -moz-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+}
+.counter__input {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  float: left;
+  padding: 0;
+  width: 40px;
+  height: 38px;
+  border: 1px solid #d8d8d8;
+  border-right: none;
+  border-left: none;
+  background: #ffffff;
+  color: #5e5d5d;
+  text-align: center;
+  font-size: 18px;
+  line-height: 38px;
+}
+.counter__num {
+  display: inline-block;
+  padding: 0 0 0 6px;
+  color: #a6a6a6;
+  vertical-align: top;
+  font-size: 15px;
+  line-height: 40px;
+}
+/* ==========================================================================
+   Блока каунтера .counter
+   ========================================================================== */
+/* ==========================================================================
+   Пользовательских input[type=radio], input[type=checkbox] .customInput
+   ========================================================================== */
+/* ==========================================================================
+   Пользовательских input[type=radio], input[type=checkbox] .customInput
+   ========================================================================== */
+.customInput {
+  -moz-opacity: 0;
+  -khtml-opacity: 0;
+  -webkit-opacity: 0;
+  opacity: 0;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+  filter: alpha(opacity=0);
+  position: relative;
+  z-index: -1;
+  float: right;
+  overflow: hidden;
+  margin-top: 0;
+  padding: 0;
+  width: 0;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
+  zoom: 1;
+}
+.customLabel {
+  display: inline-block;
+  margin: 0;
+  padding: 0 0 0 29px;
+  cursor: pointer;
+  *display: inline;
+  zoom: 1;
+}
+.customLabel-bigRadio {
+  padding: 5px 10px 5px 38px;
+  height: 29px;
+}
+.customInput-radio + .customLabel {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpGRjA2RTc0NDgwN0MxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpGRjA2RTc0NTgwN0MxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkU1MkIzMDk3ODA3QTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkU1MkIzMDk4ODA3QTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+ElWMcwAAAhNJREFUeNqslc1rWkEUxW+egor43ChoAgWlXaUli2YtATfiOuR/6CrdFLrIotBNod114f8QutVkoxRB9/kQRANiKCrGTRXxA3V6jswLqTGN1XfgMjBvzu/Om/fm3i2llDylTCazh+EIkUDsIlyIEaKEOEecJpPJi6f8W8vggB5geGea5lE4HJZAICA+n08Mw5DZbCa9Xk86nY40m03pdrunWJtCkp+PQIQ/jHQ6/SmXy6lGo6FWEddxPX2LrEXwt2KxqEajkfofcT199C+F48FJoVBQk8lErSP6dIITizk/c5zxjtPp/BWLxcTtdsu6Gg6Hks/nBYl28A0ahp4/jkajG4Ep+smB3s//FryGD7vuxuNxcTgcsqmm06lks1nu3uTOE8Fg0BYwRQ555BL+Fv+z2Cm/389hn/DtTc96US4XL7KECDdx5rbCNc9PeHs8HtsK17w7wq9YK+yU5l0SftZut22Fa96ZdfUzmFB2iBzyyLVuaKpcLsu/avsqop8c8v4qucj2vVKpbLRr+smxmMaDxJ+r1arU6/W1dk0f/eRYc/dwVDF+hTelUimFmNeIVWsJ19NHv+Ysb3Mov0z4Bbf2QyQSkVAoJB6P5xF0MBhIq9WSWq3GUvsVUx8Bnj3bQ3WSl+yjiEP0zxder3d+81DtpN/v81++xbMfun/erNyglyR6jeEVrzTiN6IK4PVzvj8CDAAigVcsj+tQhgAAAABJRU5ErkJggg==);
+  background-position: 5px 50%;
+  background-repeat: no-repeat;
+}
+.customInput-radio:checked + .customLabel {
+  background-position: 5px 50%;
+  background-repeat: no-repeat;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAXCAYAAAARIY8tAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFNTJCMzA5NTgwN0ExMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFNTJCMzA5NjgwN0ExMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkU1MkIzMDkzODA3QTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkU1MkIzMDk0ODA3QTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+VN/K1QAAAutJREFUeNqclc1vElEQwGcXKPULii0fChIOGjy00eJFjBovmpakZ/Wg8dSEf0Ft02i8NXrs0Rjj10EParGHpgc0IR6gxpAWTA/QQmxJmhVCQwnsPmfoQnhdNtBOMnnszJvfsPNm5wmMMegmkUjEhssoqks1baIuh0IhqVusoJcAoQIut1HDJpPpusViAbPZ3PBVq1UolUpQq9Wi+DiH+gGTsZ4TIPwOLu9cLhf4fD6w2WwgCAK3h+IkSYJMJgObm/RCcBeTvNfAaGO7zs/PTy8tLbHt7W3Wq9BeiqHY/bz98IfRaJTt7u6ygwrFUCwxOiZAx9ji4iKrVCrssEKxxCBWk2tsq1Z4eHgY+vv7tWUsrYHy5yUw6ffewZ28AOK5ByBYznL7KJYY8Xg8jI8LrUPGQ72KB/k9GAxq4PKvZyAvzwAodd4hGsEwOgOGi480MbFYjBrgGh76D1G1TXq9Xi08+QLk+GMtnARt5JOTzzUulTXZ+B+qbdxut/NlqRQQMNX1I5Tj04297aKyQo0EWB4P1m6or6+PT7DxFaC+0zUB7WHrnzkTsZA5iOwz9AY2/FK1BysloVdh/1Y0NpU5QAmUjuPCeKznBGA8qpubEmzgR6KdIc4rPfMFh3YvfhO0rIvYSqV6vb5SLpf5Ljx9E4SB893hVj+I7lucjVjEJHaziz6qA4vrc+ONN1jM4/p09DX2iEbOrLI+tbfpXDabBVmW+X83GADTRAxLEOxQluCeb+gS37bIIJY6xrlZNJtKpXTnjCKtMHntbUPpt56srq7SLJptclv3AfasBWd+MRAIgNPphMPI1tYWJBIJAp/A+pc1Fw4mGRNF8dvIyAi43e4DwXO5HCSTSVAUZRzhC7o3Gia5TJPV4/Hc9/v9rWtST+j6TKfTlOAV1R3hP3u9k6cMBsMTehOHwwFWq5W7k4vFIhQKBcjn83Sw0wh+eqBLX01yBJd7qBOo1C6nVNdf1DjqF9TXCK/oMf4LMABKKmXKuNvR/QAAAABJRU5ErkJggg==);
+}
+.customInput-checkbox + .customLabel {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAq0lEQVQ4EWP8//8/w9OnT9V+//7dAWS7MDAw8AIxKeAzIyPjHlZW1gppaelbjE+ePFH78+fPSQkJCQE2NjYGoCQphjGAHPTr1y+GFy9efGBhYTFnuH///rofP34AxSkDIDNAZjEBjXEBuYxSADIDZBYT0CBeUr2JzXKoGbwgA6kKRg2kPDhHw3CkhOFnYKam2K9QMz4zgQpHUHlGKQCZATKL6gUsI8ip1KwCAKdFpeXGvM06AAAAAElFTkSuQmCC);
+  background-position: 0 2px;
+  background-repeat: no-repeat;
+}
+.customInput-checkbox:checked + .customLabel {
+  background-position: 0 2px;
+  background-repeat: no-repeat;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB60lEQVQ4Ea2Vv0scQRTHvzPOraBcjFh4cKIJhutSmEaFgAqHioU/AhaSIvgHpLdRAmnS2RgsrAS1CGJhoYKCIIjYKIgg2JzoHZwIRjxjNrezN87bPVbv3DuynF/Y3bdv3/vsd2Z3Z5lSCqlUKmZZ1g8dxwGE9RZEGcbYVigUmohGo6csmUzGpJT7kUjktWEY0BeDwECGstks0un0jRCiHYlEYsU0TZ2vTMQgFteYODmrVMQgFtegcNBhAgq5xC/YB1PAv9+OlzwjLII6U38uILfHoC53nVbeMgJWXe9hAgHV9RHkRi/U30sX9nYUrKHNg1FAQ36UdQd1tQ9Yt4+5fKTuzmCtxz0Yq38P8XHuWV0B0D6ehrXagexiozs/ynYb5D3k5hBgXjnn7NU7iL41wKgrD+StY4CoBWwT9uF3yL2vukFB7nwBDZfEapsgBrado5Mo2hU4dO7cs0RtTlnuZFY7G9ZPdNltEzWOM4KWUgGQinjzIKo+fPPqc+erXiw6Z0BzV07PgFRc1TYJeh2eir/5BB4bf5ryjX2BNGTRNe/OJ7UxDtH50xdQnCwB1GWhMIzhA/DWzxD9W0BNpLjX97z8i10Xg+he8G0slSSHGf1Rl7r+3/k8I8NpcaT1rFIRg1gvvsAysvqSv4AHRV4DFNYsSZsAAAAASUVORK5CYII=);
+}
+/* ==========================================================================
+   Пользовательских input[type=radio], input[type=checkbox] .customInput
+   ========================================================================== */
+/* ==========================================================================
+   Стили цен .buyInfoPrice, .buyInfoLess
+   ========================================================================== */
+/* ==========================================================================
+   Стили цен .buyInfoPrice, .buyInfoLess
+   ========================================================================== */
+.buyInfoPrice {
+  margin-bottom: 10px;
+}
+.buyInfoPrice_item {
+  font-size: 15px;
+  margin: 0 0 5px;
+}
+.buyInfoPrice_item-credit {
+  background-color: #FFEFCB;
+}
+.buyInfoPrice .oldPrice {
+  color: #6C6C6C;
+  display: inline-block;
+  padding: 5px 5px 0 0;
+  text-decoration: line-through;
+  vertical-align: top;
+  *display: inline;
+  zoom: 1;
+}
+.buyInfoPrice .nowPrice {
+  font-size: 27px;
+  font-weight: bold;
+  line-height: 1;
+}
+.buyInfoPrice .creditPrice {
+  display: inline-block;
+  padding: 5px 0 0;
+  vertical-align: top;
+  *display: inline;
+  zoom: 1;
+}
+/* Купить дешевле */
+.buyInfoLess {
+  padding: 0 0 0 32px;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAANCAYAAABLjFUnAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpGRjA2RTc0ODgwN0MxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpGRjA2RTc0OTgwN0MxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZGMDZFNzQ2ODA3QzExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkZGMDZFNzQ3ODA3QzExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+6nf/BQAAARxJREFUeNpiNDY29mBgYJgHxJIM5IMXQJzKBCSmAXEJEDNSgINADgIZpgjE+kDMQaar2IHYF4hFmaACc4F4OdRgUoAcEC8C4oUgDsywW0CcBcTzgdibSIPcgHgmEOcD8U2QAAuS5HMg9gfitUBsDsQNQPwPiyGgMKoGYjMgDgXiLzAJJjSFH4G4BYhBMbwNiIXR5AWAeBM0jIKQDcJmmC0QW0FtnQzEW4DYBCpnAMTboUFRDsRN0MCHA2RvOkJjtQ3K3wrEx4G4C5oG30KD4RVU/h4Q9wBxOxA/A/sfmGj/A2l3aMzMITE2OaBhuwFkMcibIMMkyDAIBH4AcQU0CMDevAq1QYmC7PQdiO+ADIuFhks5BYY9BOIogAADAPYMMW+p/tjAAAAAAElFTkSuQmCC) no-repeat 0 50%;
+  margin: 0 0 15px 6px;
+}
+.buyInfoLess__link {
+  border-bottom: 1px dotted;
+  font-size: 14px;
+}
+.buyInfoLess__link:hover {
+  text-decoration: none;
+}
+/* ==========================================================================
+   Слайдер товаров .sliderBox, .sliderControls, .sliderCat
+   ========================================================================== */
+/* ==========================================================================
+   Слайдер товаров .sliderBox, .sliderControls, .sliderCat
    ========================================================================== */
 .sliderControls {
   position: absolute;
@@ -2198,7 +2193,7 @@ body.noScroll {
   border-left: 1px solid #d8d8d8;
 }
 /* ==========================================================================
-   Стили слайдера товаров .sliderBox
+   Слайдер товаров .sliderBox, .sliderControls, .sliderCat
    ========================================================================== */
 @media only screen and (max-width: 500px) {
   .sliderCat .sliderCatWrap {
@@ -2209,7 +2204,10 @@ body.noScroll {
   }
 }
 /* ==========================================================================
-   Стили слайдера товаров .footer
+   Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
+   ========================================================================== */
+/* ==========================================================================
+   Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
    ========================================================================== */
 .footer {
   border-top: 1px solid #b1b1b1;
@@ -2300,6 +2298,9 @@ body.noScroll {
   float: right;
   color: #ffffff;
 }
+/* ==========================================================================
+   Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
+   ========================================================================== */
 @media only screen and (max-width: 900px) {
   .footer {
     height: 213px;
@@ -2358,7 +2359,7 @@ body.noScroll {
   }
 }
 /* ==========================================================================
-   Стили картинок для дисплеев ретина
+   Картинки для дисплеев ретина
    ========================================================================== */
 /* ==========================================================================
    адаптация картинок под ретина
@@ -2430,7 +2431,10 @@ body.noScroll {
    Стили при отключенном JavaScript
    ========================================================================== */
 /* ==========================================================================
-   Стили попапов
+   Попапы .popupOverlay, .popupBox
+   ========================================================================== */
+/* ==========================================================================
+   Попапы .popupOverlay, .popupBox
    ========================================================================== */
 .popupOverlay {
   background: #000000;
@@ -2565,7 +2569,7 @@ body.noScroll {
   width: 68px;
 }
 /* ==========================================================================
-   Адаптиыне стили попапов .popup
+   Попапы .popupOverlay, .popupBox
    ========================================================================== */
 @media only screen and (max-width: 500px) {
   .regionForm_selectCity {
@@ -2578,10 +2582,10 @@ body.noScroll {
   }
 }
 /* ==========================================================================
-   Стили корзины
+   Корзина .cartItem .cartLine .cartBuy
    ========================================================================== */
 /* ==========================================================================
-   Стили корзины .cartItem
+   Корзина .cartItem .cartLine .cartBuy
    ========================================================================== */
 .cartItem {
   border-bottom: 1px solid #b1b1b1;
@@ -2688,7 +2692,7 @@ body.noScroll {
   zoom: 1;
 }
 /* ==========================================================================
-   Адаптиыне стили корзины .cartItem
+   Корзина .cartItem .cartLine .cartBuy
    ========================================================================== */
 @media only screen and (max-width: 700px) {
   .cartItem {
@@ -2815,9 +2819,9 @@ body.noScroll {
     text-align: center;
   }
 }
-/** попап корзины **/
+/** попап корзины .cartBar **/
 /* ==========================================================================
-   Стили нижнего бара корзины
+   Корзина -> попап корзины .cartBar
    ========================================================================== */
 .cartBar {
   position: fixed;
@@ -2850,7 +2854,7 @@ body.noScroll {
   font-size: 12px;
 }
 /* ==========================================================================
-   Стили нижнего бара корзины
+   Корзина -> попап корзины .cartBar
    ========================================================================== */
 @media only screen and (max-width: 500px) {
   .cartBar_text .visible {
@@ -2858,11 +2862,11 @@ body.noScroll {
   }
 }
 /* ==========================================================================
-   Стили каталога
+   Каталог
    ========================================================================== */
 /** основные стили каталога .catalogHead .catalogMore **/
 /* ==========================================================================
-   Стили каталога .catalogHead .catalogMore
+   Каталог .catalogHead .catalogMore
    ========================================================================== */
 .catalogHead {
   padding: 0 10px;
@@ -2897,7 +2901,7 @@ body.noScroll {
   width: 268px;
 }
 /* ==========================================================================
-   Адаптивные стили каталога
+   Каталог .catalogHead .catalogMore
    ========================================================================== */
 @media only screen and (max-width: 700px) {
   .catalogHead {
@@ -2913,9 +2917,9 @@ body.noScroll {
     display: none;
   }
 }
-/** стили листинга товаров .catalogList **/
+/** листинг товаров .catalogList **/
 /* ==========================================================================
-   Стили каталога -> стили листинга товаров .catalogList 
+   Каталог -> листинг товаров .catalogList 
    ========================================================================== */
 .catalogList {
   font-size: 0;
@@ -2976,7 +2980,7 @@ body.noScroll {
   margin: 0 0 15px;
 }
 /* ==========================================================================
-   Адаптивные стили -> стили листинга товаров .catalogList 
+   Каталог -> листинг товаров .catalogList 
    ========================================================================== */
 @media only screen and (max-width: 959px) {
   .catalogList_item {
@@ -3028,9 +3032,9 @@ body.noScroll {
     width: 90%;
   }
 }
-/** стили фильтров .filter .filterBox .filterTags .filterChecked **/
+/** фильтры .filter .filterBox .filterTags .filterChecked **/
 /* ==========================================================================
-   Стили каталога -> стили фильтров .filter .filterBox .filterTags .filterChecked
+   Каталог -> фильтры .filter .filterBox .filterTags .filterChecked
    ========================================================================== */
 .filter {
   background: #f6f6f6;
@@ -3115,9 +3119,9 @@ body.noScroll {
   color: #6B6B6B;
   line-height: 40px;
 }
-/** стили слайдера цены .priceRange **/
+/** слайдер цен .priceRange **/
 /* ==========================================================================
-   Стили каталога -> стили слайдера цены .priceRange
+   Каталог -> слайдер цен .priceRange
    ========================================================================== */
 .priceRange {
   display: inline-block;
@@ -3184,16 +3188,16 @@ body.noScroll {
   vertical-align: top;
 }
 /* ==========================================================================
-   Адаптивные стили каталога -> стили слайдера цены .priceRange
+   Каталог -> слайдер цен .priceRange
    ========================================================================== */
 @media only screen and (max-width: 700px) {
   .priceRange {
     display: none;
   }
 }
-/** стили сортировки .sorting .sortingAbb .sortingFull **/
+/** сортировка .sorting .sortingAbb .sortingFull **/
 /* ==========================================================================
-   Стили каталога -> стили сортировки .sorting .sortingAbb .sortingFull
+   Каталог -> сортировка .sorting .sortingAbb .sortingFull
    ========================================================================== */
 .sorting {
   display: inline-block;
@@ -3245,7 +3249,7 @@ body.noScroll {
   display: none;
 }
 /* ==========================================================================
-   Адаптивные стили каталога -> стили сортировки .sorting .sortingAbb .sortingFull
+   Каталог -> сортировка .sorting .sortingAbb .sortingFull
    ========================================================================== */
 @media only screen and (max-width: 930px) {
   .sortingFull {
@@ -3316,9 +3320,9 @@ body.noScroll {
     display: inline-block;
   }
 }
-/** стили блоков с параметрами фильтра .params .paramsList **/
+/** блок с параметрами фильтра .params .paramsList **/
 /* ==========================================================================
-   Стили каталога -> стили блоков с параметрами фильтра .params .paramsList
+   Каталог -> блок с параметрами фильтра .params .paramsList
    ========================================================================== */
 .params {
   padding: 0 10px 0;
@@ -3400,7 +3404,7 @@ body.noScroll {
   display: block;
 }
 /* ==========================================================================
-   Адаптивные стили каталога -> стили блоков с параметрами фильтра .params .paramsList
+   Каталог -> блок с параметрами фильтра .params .paramsList
    ========================================================================== */
 @media only screen and (max-width: 600px) {
   .params_footBtn {
