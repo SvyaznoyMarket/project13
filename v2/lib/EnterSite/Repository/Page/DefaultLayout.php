@@ -34,7 +34,7 @@ class DefaultLayout {
         $page->title = 'Enter - все товары для жизни по интернет ценам!';
 
         // body[data-module]
-        $page->dataModule = 'product.card';
+        $page->dataModule = 'default';
 
         // body[data-value]
         $page->dataConfig = $helper->json([
