@@ -25,8 +25,8 @@ $helper = new \Helper\TemplateHelper();
 
     <? if (!empty($promoContent)): ?>
         <?= $promoContent ?>
-    <? elseif ($productPager->getLastPage() > 1): ?>
-        <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
+    <? /*elseif ($productPager->getLastPage() > 1): ?>
+        <?= $helper->render('product-category/__children', ['category' => $category])*/ // дочерние категории ?>
     <? endif ?>
 
     <?/*= $helper->render('product-category/__filter', [
