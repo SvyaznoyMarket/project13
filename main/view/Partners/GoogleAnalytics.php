@@ -311,7 +311,7 @@ class GoogleAnalytics {
             $addTransaction = [
                 'id'        => $order->getNumber(), // Transaction ID. Required.
                 'revenue'   => $order->getSum(), // Grand Total.
-                'shipping'  => $delivery instanceof Delivery ? $delivery->getPrice() : 0, // Shipping.
+                'shipping'  => 0, //$delivery instanceof Delivery ? $delivery->getPrice() : 0, // Shipping.
             ];
 
             $products = $order->getProduct();

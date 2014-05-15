@@ -34,11 +34,11 @@
     <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
-    <?= $page->slotKissMetrics() ?>
     <?= $page->slotMetaOg() ?>
 </head>
 
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
+
     <?= $page->slotConfig() ?>
 
     <?= $page->slotAdFoxBground() ?>
@@ -157,6 +157,7 @@
         <?= $page->slotEnterprizeConfirmJs() ?>
         <?= $page->slotEnterprizeCompleteJs() ?>
         <?= $page->slotAdblender() ?>
+        <?= $page->slotKissMetrics() ?>
     </div>
 </body>
 </html>

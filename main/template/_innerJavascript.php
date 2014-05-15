@@ -15,6 +15,7 @@
 <?= $page->slotСpaexchangeConversionJS() ?>
 <?= $page->slotAdLensJS() ?>
 <?= $page->slotRevolvermarketingConversionJS() ?>
+<?= $page->slotGoogleTagManagerJS() ?>
 
 <!-- RuTarget Start -->
 <?= $page->slotRuTargetJS() ?>

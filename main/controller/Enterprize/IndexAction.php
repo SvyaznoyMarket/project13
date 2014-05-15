@@ -45,36 +45,30 @@ class IndexAction {
             \App::logger()->error($e->getMessage(), ['enterprize']);
             \App::exception()->remove($e);
         });
-        $client->execute();
 
         // получаем купоны ренее выданные пользователю
         $userCouponSeries = [];
         $userCoupons = [];
-        try {
-            $client->addQuery(
-                'user/get-discount-coupons',
-                [
-                    'client_id' => 'site',
-                    'token' => \App::user()->getToken()
-                ],
-                [],
-                function ($data) use (&$userCoupons, &$userCouponSeries) {
-                    if (!isset($data['detail']) || !is_array($data['detail'])) {
-                        return;
-                    }
-
-                    foreach($data['detail'] as $item) {
-                        $entity = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
-                        $userCoupons[] = $entity;
-                        $userCouponSeries[] = $entity->getSeries();
-                    }
+        $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken()], [],
+            function ($data) use (&$userCoupons, &$userCouponSeries) {
+                if (!isset($data['detail']) || !is_array($data['detail'])) {
+                    return;
                 }
-            );
-            $client->execute();
-        } catch (\Exception $e) {
-            \App::logger()->error($e);
-            \App::exception()->remove($e);
-        }
+
+                foreach($data['detail'] as $item) {
+                    $entity = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
+                    $userCoupons[] = $entity;
+                    $userCouponSeries[] = $entity->getSeries();
+                }
+            },
+            function(\Exception $e) {
+                \App::logger()->error($e->getMessage(), ['enterprize']);
+                \App::exception()->remove($e);
+            }
+        );
+
+        // выполнение пакета запросов
+        $client->execute();
 
         // отфильтровываем ненужные купоны
         $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries) {

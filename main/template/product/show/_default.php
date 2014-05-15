@@ -12,7 +12,6 @@
  * @var $shopStates             \Model\Product\ShopState\Entity[]
  * @var $creditData             array
  * @var $parts                  \Model\Product\CompactEntity[]
- * @var $mainProduct            \Model\Product\Entity
  * @var $line                   \Model\Line\Entity
  * @var $deliveryData           array
  * @var $isTchibo               boolean
@@ -37,7 +36,7 @@ foreach ($product->getGroupedProperties() as $group) {
 }
 
 $is_showed = [];
-$isKitPage = $mainProduct && (bool)$mainProduct->getKit() && $mainProduct->getId() == $product->getId() ? true : false;
+$isKitPage = (bool)$product->getKit();
 
 ?>
 
@@ -103,10 +102,10 @@ $isKitPage = $mainProduct && (bool)$mainProduct->getKit() && $mainProduct->getId
 
     <div class="clear"></div>
 
-    <? if ( $isKitPage ): // если это главный товар набора ?>
-        <?= $helper->render('product/__baseKit',['products' => $kitProducts, 'mainProduct' => $product]) ?>
+    <? if ( $isKitPage ): // если это набор пакет ?>
+        <?= $helper->render('product/__baseKit',['products' => $kitProducts, 'product' => $product]) ?>
 
-    <? elseif ( $mainProduct && count($mainProduct->getKit()) ): ?>
+    <? elseif ( (bool)$line ): ?>
         <?= $helper->render('product/__slider', [
             'title'     => 'Состав набора &laquo;' . $line->getName() . '&raquo;',
             'products'  => $parts,

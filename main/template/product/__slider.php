@@ -47,8 +47,9 @@ return function (
 
         <div class="bSlider__eInner mLoader">
             <ul class="bSlider__eList clearfix">
-            <? foreach ($products as $product): ?>
-            <?
+            <? foreach ($products as $product):
+                if (!$product instanceof \Model\Product\Entity) continue;
+
                 $link = $helper->url('product', ['productPath' => $product->getPath()]);
 
                 // Retailrocket
