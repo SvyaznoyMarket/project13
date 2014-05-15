@@ -57,7 +57,7 @@ class Client {
                 throw new \RuntimeException(curl_error($connection), curl_errno($connection));
             }
             $info = curl_getinfo($connection);
-            //$this->logger->info([isset($info['url']) ? $info['url'] : null, $response], ['curl']);
+            $this->logger->info([isset($info['url']) ? $info['url'] : null, $response], ['curl', 'curl-response']);
 
             if ($info['http_code'] >= 300) {
                 throw new \RuntimeException('Invalid http code: ' . $info['http_code']);
@@ -66,7 +66,7 @@ class Client {
             if (null === $response) {
                 throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($data)));
             }
-            $header = $this->header($response, true);
+            //$header = $this->header($response, true);
 
             $decodedResponse = $this->decode($response);
             curl_close($connection);
@@ -208,7 +208,7 @@ class Client {
                         }
 
                         $content = curl_multi_getcontent($handler);
-                        $header = $this->header($content, true);
+                        //$header = $this->header($content, true);
 
                         if (null === $content) {
                             throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($this->queries[$this->queryIndex[(string)$handler]]['query']['data'])));
@@ -363,7 +363,10 @@ class Client {
         ], ['curl']);
 
         $connection = curl_init();
-        curl_setopt($connection, CURLOPT_HEADER, 1);
+        curl_setopt($connection, CURLOPT_HEADER, false);
+        curl_setopt($connection, CURLOPT_HEADERFUNCTION, function($connection, $header) {
+            return mb_strlen($header);
+        });
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($connection, CURLOPT_URL, $url);
