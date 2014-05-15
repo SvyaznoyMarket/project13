@@ -2,12 +2,15 @@
 
 namespace EnterSite\Repository\Page\Cart;
 
+use EnterSite\TranslateHelperTrait;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 use EnterSite\Model\Page\Cart\Index as Page;
 
 class Index {
+    use TranslateHelperTrait;
+
     /**
      * @param Page $page
      * @param Index\Request $request
@@ -21,6 +24,15 @@ class Index {
 
         // body[data-module]
         $page->dataModule = 'cart';
+
+        if (count($request->cart)) {
+            $page->content->cart->sum = $request->cart->sum;
+            $page->content->cart->shownSum = number_format((float)$request->cart->sum, 0, ',', ' ');
+            $page->content->cart->quantity = count($request->cart);
+            $page->content->cart->shownQuantity = $page->content->cart->quantity . ' ' . $this->getTranslateHelper()->numberChoice($page->content->cart->quantity, ['товар', 'товара', 'товаров']);
+        } else {
+            $page->content->cart = false;
+        }
 
         foreach (array_reverse($request->cartProducts) as $cartProduct) {
             $product = isset($request->productsById[$cartProduct->id]) ? $request->productsById[$cartProduct->id] : null;

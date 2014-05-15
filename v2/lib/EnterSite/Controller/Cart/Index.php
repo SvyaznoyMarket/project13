@@ -78,6 +78,7 @@ class Index {
         $pageRequest = new Repository\Page\Cart\Index\Request();
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->cart = $cart;
         $pageRequest->productsById = $productsById;
         $pageRequest->cartProducts = $cartProducts;
 

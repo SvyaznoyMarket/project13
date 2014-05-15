@@ -5,7 +5,7 @@ namespace EnterSite\Model;
 use EnterSite\Model\ImportArrayConstructorTrait;
 use EnterSite\Model;
 
-class Cart {
+class Cart implements \Countable {
     use ImportArrayConstructorTrait;
 
     /** @var Model\Cart\Product[] */
@@ -25,5 +25,12 @@ class Cart {
             }
         }
         if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];
+    }
+
+    /**
+     * @return int
+     */
+    public function count() {
+        return count($this->product);
     }
 }

@@ -39,10 +39,11 @@
             {{/products}}
         {{/productBlock}}
 
+        {{#cart}}
         <!-- итоговая стоимость заказа/купить в кредит -->
         <div class="cartLine clearfix">
             <div class="cartLine_left cartLine_left-double clearfix">
-                Итого 4 товара на сумму: <span class="price">55 555 <span class="rubl">p</span></span>
+                Итого {{cart.shownQuantity}} на сумму: <span class="price">{{cart.shownSum}} <span class="rubl">p</span></span>
             </div><!--/ дубль для мобилки -->
 
             <div class="cartLine_right clearfix">
@@ -55,7 +56,7 @@
             </div>
 
             <div class="cartLine_left clearfix">
-                Итого 4 товара на сумму: <span class="price">55 555 <span class="rubl">p</span></span>
+                Итого {{cart.shownQuantity}} на сумму: <span class="price">{{cart.shownSum}} <span class="rubl">p</span></span>
             </div>
         </div>
         <!--/ итоговая стоимость заказа/купить в кредит -->
@@ -65,13 +66,22 @@
             <a class="btnStyleOrange cartBuy_btn" href="">Оформление заказа</a>
         </div>
         <!--/ оформить заказ -->
+        {{/cart}}
+
+        {{^cart}}
+        <div>
+            <p>В вашей корзине еще нет товаров</p>
+        </div>
+        {{/cart}}
     </div>
 </div>
 
+{{#cart}}
 <div class="cartBar">
     <div class="contentBox940">
         <a class="btnStyleOrange cartBar_btn" href="">Оформление заказа</a>
 
-        <div class="cartBar_text">Итого <span class="visible">4 товара на сумму</span>: <span class="price">55 555 <span class="rubl">p</span></span></div>
+        <div class="cartBar_text">Итого <span class="visible">{{cart.shownQuantity}} на сумму</span>: <span class="price">{{cart.shownSum}} <span class="rubl">p</span></span></div>
     </div>
 </div>
+{{/cart}}
