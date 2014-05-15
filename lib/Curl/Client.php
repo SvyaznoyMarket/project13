@@ -57,6 +57,7 @@ class Client {
                 throw new \RuntimeException(curl_error($connection), curl_errno($connection));
             }
             $info = curl_getinfo($connection);
+            //$this->logger->info([isset($info['url']) ? $info['url'] : null, $response], ['curl']);
 
             if ($info['http_code'] >= 300) {
                 throw new \RuntimeException('Invalid http code: ' . $info['http_code']);
