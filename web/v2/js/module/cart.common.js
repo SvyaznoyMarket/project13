@@ -12,7 +12,8 @@ define(
 
                 var $el = $(e.currentTarget),
                     data = $el.data(),
-                    $widget = $($el.data('widgetSelector'));
+                    $widget = $($el.data('widgetSelector'))
+                ;
 
                 console.info('addProductToCart', $el, $widget, data);
 
@@ -37,7 +38,8 @@ define(
                 e.stopPropagation();
 
                 var $el = $(e.currentTarget),
-                    data = $el.data();
+                    data = $el.data()
+                ;
 
                 console.info('deleteProductFromCart', $el, data);
 
@@ -72,9 +74,24 @@ define(
 
                 var idSelector = $(e.currentTarget),
                     $el = $(idSelector),
-                    dataValue = $el.data('value');
+                    dataValue = $el.data('value'),
+                    $widget = $($el.data('widgetSelector')),
+                    timer = parseInt($widget.data('timer'))
+                ;
 
                 console.info('changeProductQuantity', $el, quantity);
+
+                if (_.isFinite(timer) && (timer > 0)) {
+                    try {
+                        clearTimeout(timer);
+                    } catch (error) {
+                        console.warn(error);
+                    }
+
+                    timer = setTimeout(function() { addProductToCart(e); }, 1000);
+
+                    $widget.data('timer', timer);
+                }
 
                 if (!_.isFinite(quantity) || (quantity <= 0)) {
                     var error = {code: 'invalid', message: 'Количество должно быть большим нуля'};
@@ -151,7 +168,8 @@ define(
                 console.info('renderSpinnerValue', $el, product);
 
                 $el.find('.js-buySpinner-value').val(product.quantity);
-            };
+            }
+        ;
 
 
         // кнопка купить
