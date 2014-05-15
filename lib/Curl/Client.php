@@ -50,14 +50,23 @@ class Client {
         $startedAt = \Debug\Timer::start('curl');
 
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
-        $connection = $this->create($url, $data, $timeout);
+        $headers = [];
+        $connection = $this->create($url, $data, $timeout, function ($connection, $header) use (&$headers) {
+            $return = mb_strlen($header);
+
+            $header = trim((string)$header);
+            if ($header) {
+                $headers[] = $header;
+            }
+
+            return $return;
+        });
         $response = curl_exec($connection);
         try {
             if (curl_errno($connection) > 0) {
                 throw new \RuntimeException(curl_error($connection), curl_errno($connection));
             }
             $info = curl_getinfo($connection);
-            $this->logger->info([isset($info['url']) ? $info['url'] : null, $response], ['curl', 'curl-response']);
 
             if ($info['http_code'] >= 300) {
                 throw new \RuntimeException('Invalid http code: ' . $info['http_code']);
@@ -77,7 +86,7 @@ class Client {
                 'url'     => $url,
                 'data'    => $data,
                 'info'    => isset($info) ? $info : null,
-                'header'  => isset($header) ? $header : null,
+                'header'  => isset($headers) ? $headers : null,
                 'timeout' => $timeout,
                 'startAt' => $startedAt,
                 'endAt'   => microtime(true),
@@ -95,7 +104,7 @@ class Client {
                 'url'     => $url,
                 'data'    => $data,
                 'info'    => isset($info) ? $info : null,
-                'header'  => isset($header) ? $header : null,
+                'header'  => isset($headers) ? $headers : null,
                 'resonse' => mb_substr($response, 0, 512),
                 'timeout' => $timeout,
                 'startAt' => $startedAt,
@@ -144,6 +153,7 @@ class Client {
                     'url'     => $url,
                     'data'    => $data,
                     'timeout' => $timeout,
+                    'header'  => [],
                 ],
             ];
         } else {
@@ -232,7 +242,7 @@ class Client {
                             'url'          => isset($info['url']) ? $info['url'] : null,
                             'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
                             'info'         => isset($info) ? $info : null,
-                            'header'       => isset($header) ? $header : null,
+                            'header'       => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['header']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['header'] : null,
                             //'response'      => isset($content) ? $content : null,
                             'retryTimeout' => $retryTimeout,
                             'retryCount'   => $retryCount,
@@ -253,8 +263,8 @@ class Client {
                             'url'          => isset($info['url']) ? $info['url'] : null,
                             'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
                             'info'         => isset($info) ? $info : null,
-                            'header'       => isset($header) ? $header : null,
-                            'response'      => isset($content) ? mb_substr($content, 0, 512) : null,
+                            'header'       => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['header']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['header'] : null,
+                            'response'     => isset($content) ? mb_substr($content, 0, 512) : null,
                             'retryTimeout' => $retryTimeout,
                             'retryCount'   => $retryCount,
                             'timeout'      => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['timeout']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['timeout'] : null,
@@ -346,12 +356,13 @@ class Client {
     }
 
     /**
-     * @param string     $url
-     * @param array      $data
+     * @param string $url
+     * @param array $data
      * @param float|null $timeout
+     * @param callable|null $parseHeader
      * @return resource
      */
-    private function create($url, array $data = [], $timeout = null) {
+    private function create($url, array $data = [], $timeout = null, $parseHeader = null) {
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
 
         $this->logger->info([
@@ -364,9 +375,7 @@ class Client {
 
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_HEADER, false);
-        curl_setopt($connection, CURLOPT_HEADERFUNCTION, function($connection, $header) {
-            return mb_strlen($header);
-        });
+        curl_setopt($connection, CURLOPT_HEADERFUNCTION, $parseHeader ?: [$this, 'parseHeader']);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($connection, CURLOPT_URL, $url);
@@ -423,6 +432,22 @@ class Client {
         }
 
         return $header;
+    }
+
+    /**
+     * @param $connection
+     * @param $header
+     * @return int
+     */
+    public function parseHeader($connection, $header)  {
+        $return = mb_strlen($header);
+
+        $header = trim((string)$header);
+        if ($header && isset($this->queries[$this->queryIndex[(string)$connection]]['query']['header'])) {
+            $this->queries[$this->queryIndex[(string)$connection]]['query']['header'][] = $header;
+        }
+
+        return $return;
     }
 
     /**
