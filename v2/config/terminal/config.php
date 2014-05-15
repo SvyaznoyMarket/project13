@@ -8,9 +8,9 @@ return function(\EnterTerminal\Config\Application $config) {
 
     $config->logger->fileAppender->file = $config->dir . '/log/terminal.log';
 
-    $config->session->name = 'enter';
+    $config->session->name = 'clientId';
     $config->session->cookieLifetime = 15552000;
-    $config->session->cookieDomain = null; // TODO: убрать из настроек терминала
+    $config->session->cookieDomain = null;
 
     $config->userToken->authCookieName = null; // TODO: убрать из настроек терминала
 

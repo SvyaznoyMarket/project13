@@ -9,6 +9,11 @@ $applicationDir = realpath(__DIR__ . '/..');
 // environment
 $environment = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'dev';
 
+// session settings FIXME: вынести в конфиг
+ini_set('session.use_cookies', false);
+ini_set('session.use_only_cookies', false);
+ini_set('session.use_trans_sid', true);
+
 // response
 $response = null;
 
