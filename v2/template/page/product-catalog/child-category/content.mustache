@@ -4,30 +4,19 @@
     	<div class="pageNav">
     		<a class="pageNav_link" href=""><span class="pageNav_text">Электроника</span></a>    
     		<a class="pageNav_link" href=""><span class="pageNav_text">Планшеты</span></a>
-    	</div>
+    	</div><!--/ хлебные крошки -->
 
         <div class="catalogHead clearfix">
         	<div class="catalogHead_title js-action-params">Бренды и параметры</div>
 
         	<a class="catalogHead_btn btnStyleGrey js-action-params" href=""><span class="arrow">Еще параметры</span></a>
-        </div>
-
+        </div><!--/ кнопки - показать фильтры -->
+		
+		<!-- параметры фильтрации -->
         <div class="params">
         	<div class="params_title">Цена</div>
 
         	<div class="params_cont">
-        		<!--div class="priceRange">
-
-					<span class="priceRange_title">Цена</span>
-
-					<input type="text" class="priceRange_amount" />
-
-					<div class="priceRange_slider" id="slider-range"></div>
-
-					<input type="text" class="priceRange_amount" />
-
-					<span class="priceRange_rubl rubl">p</span>
-				</div-->
         	</div>
 
         	<div class="params_title">Бренд</div>
@@ -157,7 +146,9 @@
         		<a class="params_footBtn btnStyleGrey" href="">Очистить</a>
         	</div>
         </div>
-
+        <!--/ параметры фильтрации -->
+		
+		<!-- фильтры  -->
         <div class="filter clearfix">
         	<div class="filterBox">
 	        	<ul class="filterTags clearfix">
@@ -174,7 +165,7 @@
 	        			<a href="" class="filterTags_link"><span class="filterTags_text">для того</span></a>
 	        			<a href="" class="filterTags_link"><span class="filterTags_text">для этого</span></a>
 	        		</li>
-	        	</ul>
+	        	</ul><!--/ бфстрая фильтрация  -->
 
 	        	<ul class="filterChecked">
 			        <li class="filterChecked_item filterChecked_item-title">Бренд</li>
@@ -188,12 +179,12 @@
 	                </li>
 
 	                <li class="filterChecked_item filterChecked_item-clear"><a class="link" href=""><span class="text">Очистить все</span></a></li>
-			    </ul>
+			    </ul><!--/ выбранные фильтры  -->
 			</div>
 
 			<div class="viewNum">
 				Показано: 26 моделей
-			</div>
+			</div><!--/ показано моделей на странице -->
 
 			<div class="priceRange">
 
@@ -206,7 +197,7 @@
 				<input type="text" class="priceRange_amount" />
 
 				<span class="priceRange_rubl rubl">p</span>
-			</div>
+			</div><!--/ фильтр цен -->
 
 			<ul class="sorting sortingFull">
 				<li class="sorting_title">Сортировать</li>
@@ -215,7 +206,7 @@
 				<li class="sorting_item"><a class="sorting_link" href="">Хиты продаж</a></li>
 				<li class="sorting_item"><a class="sorting_link" href=""><span class="top">По цене</span></a></li>
 				<li class="sorting_item"><a class="sorting_link" href=""><span class="drop">По цене</span></a></li>
-			</ul>
+			</ul><!--/ сортировка -->
 
 			<div class="sorting sortingAbb">
 				<span class="sorting_title">Сортировать</span>
@@ -228,9 +219,11 @@
 					<li class="sortingList_item"><a class="sortingList_link" href=""><span class="top">По цене</span></a></li>
 					<li class="sortingList_item"><a class="sortingList_link" href=""><span class="drop">По цене</span></a></li>
 				</ul>
-			</div>
+			</div><!--/ сортировка моб версия -->
         </div>
-
+        <!--/ фильтры  -->
+		
+		<!-- листинг товаров  -->
         {{#productBlock}}
         <div class="catalogList">
             {{#products}}
@@ -256,6 +249,7 @@
             {{/products}}
         </div>
         {{/productBlock}}
+        <!--/ листинг товаров  -->
 
         <a href="" class="catalogMore btnStyleGrey">Показать еще 20</a>
     </div>
