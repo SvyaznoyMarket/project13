@@ -7,98 +7,95 @@
 
 @displayTable:"display-table.min.htc";
 
-/** Reset styles **/
+/** base **/
 @import "modules/common/normalize.less";
-/** Reset styles **/
 
-/** Mix styles **/
+/** mix **/
 @import "modules/common/elements.less";
-/** Mix styles **/
 
-/** Основнаые стили, вспомогательные классы **/
+/** основные стили, вспомогательные классы **/
 @import "modules/common/main.less";
-/** Основнаые стили, вспомогательные классы **/
 
-/** Основнаые стили, вспомогательные классы **/
+/** цвета **/
 @import "modules/common/color.less";
-/** Основнаые стили, вспомогательные классы **/
 
-/** Основнаые стили, вспомогательные классы **/
+/** шрифты **/
 @import "modules/common/fonts.less";
-/** Основнаые стили, вспомогательные классы **/
+
 
 /* ==========================================================================
    Кастомные стили
    ========================================================================== */
 
-/** Стили шаблона карточки товара **/
+/** стили шаблона **/
 @import "modules/common/layout.less";
-
 @import "modules/common/m.layout.less";
 
 
 /* ==========================================================================
-   Стили шапки сайта .header
+   Шапка сайта .header
    ========================================================================== */
 
-/** стили шапки **/
 @import "modules/header/header.less";
-
-/** адаптивные стили шапки **/
 @import "modules/header/m.header.less";
 
-/** стили навигации **/
-@import "modules/nav/nav.less";
 
-/** адаптивные навигации **/
+/* ==========================================================================
+   Навигации .nav
+   ========================================================================== */
+
+@import "modules/nav/nav.less";
 @import "modules/nav/m.nav.less";
 
 
 /* ==========================================================================
-   Стили кнопок купить .btnBuy
+   Кнопка купить .btnBuy
    ========================================================================== */
 
 @import "modules/btnBuy/btnBuy.less";
 
 
 /* ==========================================================================
-   Стили карточки товара .productDesc, .productDescTab
+   Карточка товара
    ========================================================================== */
 
-/** стили описания товара **/
+/** описание товара .productDesc .productDescHead **/
 @import "modules/product-card/productDesc/productDesc.less";
- 
-/** адаптивные описания товара **/
 @import "modules/product-card/productDesc/m.productDesc.less";
 
-/** стили блоков выбора модели **/
+/** выбор модели .chooseModel, .chooseModelColor, .chooseModelNum **/
 @import "modules/product-card/chooseModel/chooseModel.less";
-
-/** стили блоков выбора модели **/
 @import "modules/product-card/chooseModel/m.chooseModel.less";
 
-/** стили табов подробного описания товара **/
+/** табы подробного описания товара .productDescTab  **/
 @import "modules/product-card/productDescTab/productDescTab.less";
-
-/** адаптивные стили табов подробного описания товара **/
 @import "modules/product-card/productDescTab/m.productDescTab.less";
+
+/** информация о доставке .deliveryInfo .deliveryList .addressShopsList **/
+@import "modules/product-card/deliveryInfo/deliveryInfo.less";
+
+/** характеристики товара .specifications .specificationsListCol .specificationsListRow .specificationsList **/
+@import "modules/product-card/specifications/specifications.less";
+@import "modules/product-card/specifications/m.specifications.less";
+
+/** контент табов описания товара .tabContentWrap .tabContentInner .tabContent **/
+@import "modules/product-card/tabContentReviews/tabContentReviews.less";
+@import "modules/product-card/tabContentReviews/m.tabContentReviews.less";
 
 
 /* ==========================================================================
-   Стили блока редактирования количества товаров .counter
+   Блока каунтера .counter
    ========================================================================== */
 
 @import "modules/counter/counter.less";
-
 @import "modules/counter/m.counter.less";
 
 
 /* ==========================================================================
-   Стили пользовательских input[type=radio], input[type=checkbox] .customInput
+   Пользовательских input[type=radio], input[type=checkbox] .customInput
    ========================================================================== */
 
 @import "modules/customInput/customInput.less";
-
 @import "modules/customInput/m.customInput.less";
 
 
@@ -110,52 +107,27 @@
 
 
 /* ==========================================================================
-   Стили блока вариантов доставки в карточке товара .btnBuy
-   ========================================================================== */
-
-@import "modules/product-card/deliveryInfo/deliveryInfo.less";
-
-
-/* ==========================================================================
-   Стили характеристик товара в карточке товара .specifications
-   ========================================================================== */
-
-@import "modules/product-card/specifications/specifications.less";
-
-@import "modules/product-card/specifications/m.specifications.less";
-
-
-/* ==========================================================================
-   Стили отзывов в карточке товара .tabContent-reviews
-   ========================================================================== */
-
-@import "modules/product-card/tabContentReviews/tabContentReviews.less";
-
-@import "modules/product-card/tabContentReviews/m.tabContentReviews.less";
-
-
-/* ==========================================================================
-   Стили слайдера товаров .sliderBox
+   Слайдер товаров .sliderBox, .sliderControls, .sliderCat
    ========================================================================== */
 
 @import "modules/sliderBox/sliderBox.less";
-
 @import "modules/sliderBox/m.sliderBox.less";
 
 
 /* ==========================================================================
-   Стили слайдера товаров .footer
+   Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
    ========================================================================== */
 
 @import "modules/footer/footer.less";
-
 @import "modules/footer/m.footer.less";
 
+
 /* ==========================================================================
-   Стили картинок для дисплеев ретина
+   Картинки для дисплеев ретина
    ========================================================================== */
 
 @import "modules/retina/retina.less";
+
 
 /* ==========================================================================
    Панель отладки
@@ -163,63 +135,59 @@
 
 @import "modules/debug/debug.less";
 
+
 /* ==========================================================================
    Стили при отключенном JavaScript
    ========================================================================== */
 
 @import "modules/no-js/no-js.less";
 
+
 /* ==========================================================================
-   Стили попапов
+   Попапы .popupOverlay, .popupBox
    ========================================================================== */
 
 @import "modules/popup/popup.less";
-
 @import "modules/popup/m.popup.less";
 
+
 /* ==========================================================================
-   Стили корзины
+   Корзина .cartItem .cartLine .cartBuy
    ========================================================================== */
 
 @import "modules/cart/cart.less";
-
 @import "modules/cart/m.cart.less";
 
-/** попап корзины **/
+/** попап корзины .cartBar **/
 @import "modules/cart/cartBar.less";
-
 @import "modules/cart/m.cartBar.less";
 
+
 /* ==========================================================================
-   Стили каталога
+   Каталог
    ========================================================================== */
 
 /** основные стили каталога .catalogHead .catalogMore **/
 @import "modules/catalog/catalog.less";
-
 @import "modules/catalog/m.catalog.less";
 
-/** стили листинга товаров .catalogList **/
+/** листинг товаров .catalogList **/
 @import "modules/catalog/catalogList.less";
-
 @import "modules/catalog/m.catalogList.less";
 
-/** стили фильтров .filter .filterBox .filterTags .filterChecked **/
+/** фильтры .filter .filterBox .filterTags .filterChecked **/
 @import "modules/catalog/filter.less";
 
-/** стили слайдера цены .priceRange **/ 
+/** слайдер цен .priceRange **/ 
 @import "modules/catalog/priceRange.less";
-
 @import "modules/catalog/m.priceRange.less";
 
-/** стили сортировки .sorting .sortingAbb .sortingFull **/
+/** сортировка .sorting .sortingAbb .sortingFull **/
 @import "modules/catalog/sorting.less";
-
 @import "modules/catalog/m.sorting.less";
 
-/** стили блоков с параметрами фильтра .params .paramsList **/
+/** блок с параметрами фильтра .params .paramsList **/
 @import "modules/catalog/params.less";
-
 @import "modules/catalog/m.params.less";
 
 
