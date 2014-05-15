@@ -22,7 +22,7 @@ class Index {
         // body[data-module]
         $page->dataModule = 'cart';
 
-        foreach ($request->cartProducts as $cartProduct) {
+        foreach (array_reverse($request->cartProducts) as $cartProduct) {
             $product = isset($request->productsById[$cartProduct->id]) ? $request->productsById[$cartProduct->id] : null;
             if (!$product) {
                 // TODO: журналирование

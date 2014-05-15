@@ -76,7 +76,7 @@ class Cart {
 
         $page->sum = $cart->sum;
 
-        foreach ($cart->product as $cartProduct) {
+        foreach (array_reverse($cart->product) as $cartProduct) {
             $product = !empty($productsById[$cartProduct->id])
                 ? $productsById[$cartProduct->id]
                 : new Model\Product([
