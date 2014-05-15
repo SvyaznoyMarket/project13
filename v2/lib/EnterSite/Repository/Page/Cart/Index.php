@@ -19,6 +19,9 @@ class Index {
         $productSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
         $productDeleteButtonRepository = new Repository\Partial\Cart\ProductDeleteButton();
 
+        // body[data-module]
+        $page->dataModule = 'cart';
+
         foreach ($request->cartProducts as $cartProduct) {
             $product = isset($request->productsById[$cartProduct->id]) ? $request->productsById[$cartProduct->id] : null;
             if (!$product) {

@@ -42,6 +42,9 @@ class ProductCard {
 
         $productModel = $request->product;
 
+        // body[data-module]
+        $page->dataModule = 'product.card';
+
         // хлебные крошки
         if ($categoryModel = $productModel->category) {
             $page->breadcrumbBlock = new Model\Page\DefaultLayout\BreadcrumbBlock();
