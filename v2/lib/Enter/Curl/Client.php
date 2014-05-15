@@ -69,7 +69,7 @@ class Client {
             }
 
             $headers = [];
-            $this->parseResponce($connection, $response, $headers);
+            $this->parseResponse($connection, $response, $headers);
 
             curl_close($connection);
 
@@ -152,7 +152,7 @@ class Client {
                         }
 
                         $headers = [];
-                        $this->parseResponce($connection, $response, $headers);
+                        $this->parseResponse($connection, $response, $headers);
 
                         // TODO: отложенный запуск обработчиков
                         $this->queries[$queryId]->callback($response);
@@ -296,7 +296,7 @@ class Client {
      * @param string $response
      * @param array|null $headers
      */
-    private function parseResponce($connection, &$response, &$headers = null) {
+    private function parseResponse($connection, &$response, &$headers = null) {
         $size = curl_getinfo($connection, CURLINFO_HEADER_SIZE);
 
         if (is_array($headers)) {
