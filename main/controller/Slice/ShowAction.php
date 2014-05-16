@@ -703,7 +703,7 @@ class ShowAction {
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
-        $page->setParam('hasCategoryChildren', in_array($request->get('route', []), ['slice.show', 'slice.category']));
+        $page->setParam('hasCategoryChildren', in_array($request->get('route'), ['slice.show', 'slice.category']));
 
         $page->setParam('myThingsData', [
             'EventType'   => 'MyThings.Event.Visit',
