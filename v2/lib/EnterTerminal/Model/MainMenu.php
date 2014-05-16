@@ -37,6 +37,8 @@ namespace EnterTerminal\Model\MainMenu {
         /** @var string */
         public $name;
         /** @var string */
+        public $char;
+        /** @var string */
         public $url;
         /** @var int */
         public $level = 1;
@@ -58,6 +60,7 @@ namespace EnterTerminal\Model\MainMenu {
             if (array_key_exists('type', $data)) $this->type = (string)$data['type'];
             if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
+            if (array_key_exists('char', $data)) $this->char = (string)$data['char'];
             if (array_key_exists('link', $data)) $this->url = (string)$data['link'];
             if (array_key_exists('style', $data)) $this->style = (string)$data['style'];
             if (array_key_exists('styleHover', $data)) $this->styleHover = (string)$data['styleHover'];
