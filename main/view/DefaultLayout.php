@@ -207,7 +207,10 @@ class DefaultLayout extends Layout {
 
 
     public function slotAuth() {
-        return ('user.login' != \App::request()->attributes->get('route')) ? $this->render('_auth') : '';
+        // SITE-3676
+        return (!in_array(\App::request()->attributes->get('route'), ['user.login', 'user.register'])) ? $this->render('_auth') : '';
+
+//        return ('user.login' != \App::request()->attributes->get('route')) ? $this->render('_auth') : '';
     }
 
     public function slotUserbar() {
