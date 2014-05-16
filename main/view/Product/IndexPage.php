@@ -327,7 +327,7 @@ class IndexPage extends \View\DefaultLayout {
             'regionId' => \App::user()->getRegionId(),
         ];
 
-        return "<div id='RuTargetProductJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+        return "<div id=\"RuTargetProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 
     public function slotLamodaProductJS() {
@@ -343,6 +343,6 @@ class IndexPage extends \View\DefaultLayout {
             'id' => $product->getId(),
         ];
 
-        return "<div id='LamodaProductJS' class='jsanalytics' data-value='" . json_encode($data) . "'><div>";
+        return "<div id=\"LamodaProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 }

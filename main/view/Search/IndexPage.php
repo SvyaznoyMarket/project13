@@ -87,7 +87,7 @@ class IndexPage extends \View\DefaultLayout {
     public function slotRuTargetSearchJS() {
         if (!\App::config()->partners['RuTarget']['enabled']) return;
 
-        return "<div id='RuTargetSearchJS' class='jsanalytics' data-value='" . json_encode(['regionId' => \App::user()->getRegionId()]) . "'></div>";
+        return "<div id=\"RuTargetSearchJS\" class=\"jsanalytics\" data-value=\"" . $this->json(['regionId' => \App::user()->getRegionId()]) . "\"></div>";
     }
 
     public function slotLamodaSearchJS() {
@@ -102,6 +102,6 @@ class IndexPage extends \View\DefaultLayout {
             'query' => $searchQuery,
         ];
 
-        return "<div id='LamodaSearchJS' class='jsanalytics' data-value='" . json_encode($data) . "'><div>";
+        return "<div id=\"LamodaSearchJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"><div>";
     }
 }

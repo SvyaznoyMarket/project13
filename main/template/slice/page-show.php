@@ -8,6 +8,7 @@
  * @var $productPager     \Iterator\EntityPager
  * @var $categories       \Model\Product\Category\Entity[]
  * @var $productView      string
+ * @var $hasCategoryChildren bool
  **/
 ?>
 
@@ -25,7 +26,7 @@ $helper = new \Helper\TemplateHelper();
 
     <? if (!empty($promoContent)): ?>
         <?= $promoContent ?>
-    <? elseif ($productPager->getLastPage() > 1): ?>
+    <? elseif ($productPager->getLastPage() > 1 && $hasCategoryChildren): // SITE-2644, SITE-3558 ?>
         <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
     <? endif ?>
 

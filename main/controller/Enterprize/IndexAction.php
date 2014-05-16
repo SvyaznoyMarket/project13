@@ -64,7 +64,8 @@ class IndexAction {
             function(\Exception $e) {
                 \App::logger()->error($e->getMessage(), ['enterprize']);
                 \App::exception()->remove($e);
-            }
+            },
+            \App::config()->coreV2['timeout'] * 2
         );
 
         // выполнение пакета запросов

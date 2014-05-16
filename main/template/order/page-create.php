@@ -53,7 +53,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 <div class="bBuyingLine"><a class="bBackCart" href="<?= $backLink ?>">&lt; Вернуться к покупкам</a></div>
 
 
-<input id="order-delivery_map-data" type="hidden" data-value='<?= $page->json($deliveryMap) ?>'/>
+<input id="order-delivery_map-data" type="hidden" data-value="<?= $page->json($deliveryMap) ?>"/>
 <?= $page->render('order/_formTemplate') ?>
 
 <form id="order-form" style="display:none" data-validator="#order-validator" method="post" action="<?= $page->url('order') ?>">
