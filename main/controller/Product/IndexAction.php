@@ -229,7 +229,7 @@ class IndexAction {
             try {
                 $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
                 $lineMainProductId = $line->getMainProductId();
-                $lineParts = array_map(function($a){ return $a->getId(); }, $productRepository->getEntityById($lineMainProductId)->getKit());
+                $lineParts = $productRepository->getEntityById($lineMainProductId) ? array_map(function($a){ return $a->getId(); }, $productRepository->getEntityById($lineMainProductId)->getKit()) : [];
                 $parts = $productRepository->getCollectionById($lineParts);
             } catch (\Exception $e) {
                 \App::exception()->add($e);

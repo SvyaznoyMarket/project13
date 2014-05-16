@@ -80,7 +80,7 @@ class NewPage extends Layout {
             'regionId' => $user->getRegionId(),
         ];
 
-        return "<div id='RuTargetOrderOneClickJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+        return "<div id=\"RuTargetOrderOneClickJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 
     public function slotRuTargetOrderJS() {
@@ -112,7 +112,7 @@ class NewPage extends Layout {
             'regionId' => $user->getRegionId(),
         ];
 
-        return "<div id='RuTargetOrderJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+        return "<div id=\"RuTargetOrderJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 
     public function isOneClick() {

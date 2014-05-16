@@ -136,15 +136,17 @@ class ShowAction {
             $categoryId = $slice->getCategoryId();
             $category = $categoryId ? $productCategoryRepository->getEntityById($categoryId) : null;
 
-            // запрашиваем дерево категорий
-            $productCategoryRepository->prepareEntityBranch($category, $region);
+            if ($category) {
+                // запрашиваем дерево категорий
+                $productCategoryRepository->prepareEntityBranch($category, $region);
 
-            $page = new \View\Slice\ShowPage();
-            $page->setParam('category', $category);
-            $page->setParam('slice', $slice);
-            $page->setParam('seoContent', $slice->getContent());
+                $page = new \View\Slice\ShowPage();
+                $page->setParam('category', $category);
+                $page->setParam('slice', $slice);
+                $page->setParam('seoContent', $slice->getContent());
 
-            return $this->leafCategory($category, $page, $request, $filterData, $region, $slice);
+                return $this->leafCategory($category, $page, $request, $filterData, $region, $slice);
+            }
         }
 
 
@@ -701,6 +703,7 @@ class ShowAction {
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
+        $page->setParam('hasCategoryChildren', in_array($request->get('route'), ['slice.show', 'slice.category']));
 
         $page->setParam('myThingsData', [
             'EventType'   => 'MyThings.Event.Visit',
