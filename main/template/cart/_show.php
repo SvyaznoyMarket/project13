@@ -84,7 +84,7 @@ foreach ($products as $product) {
 </script>
 
 <? if ($creditEnabled): ?>
-    <div id="tsCreditCart" data-value='<?= json_encode($creditData) ?>'></div>
+    <div id="tsCreditCart" data-value="<?= $page->json($creditData) ?>"></div>
 <? endif ?>
 
 

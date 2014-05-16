@@ -217,7 +217,7 @@ class CompletePage extends Layout {
             'regionId' => \App::user()->getRegionId(),
         ];
 
-        return "<div id='RuTargetOrderCompleteJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+        return "<div id=\"RuTargetOrderCompleteJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
 
     }
 
