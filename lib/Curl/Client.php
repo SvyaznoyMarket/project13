@@ -50,17 +50,7 @@ class Client {
         $startedAt = \Debug\Timer::start('curl');
 
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
-        $headers = [];
-        $connection = $this->create($url, $data, $timeout, function ($connection, $header) use (&$headers) {
-            $return = mb_strlen($header);
-
-            $header = trim((string)$header);
-            if ($header) {
-                $headers[] = $header;
-            }
-
-            return $return;
-        });
+        $connection = $this->create($url, $data, $timeout);
         $response = curl_exec($connection);
         try {
             if (curl_errno($connection) > 0) {
@@ -75,7 +65,8 @@ class Client {
             if (null === $response) {
                 throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($data)));
             }
-            //$header = $this->header($response, true);
+            $header = [];
+            $this->parseResponse($connection, $response, $header);
 
             $decodedResponse = $this->decode($response);
             curl_close($connection);
@@ -86,7 +77,7 @@ class Client {
                 'url'     => $url,
                 'data'    => $data,
                 'info'    => isset($info) ? $info : null,
-                'header'  => isset($headers) ? $headers : null,
+                'header'  => isset($header) ? $header : null,
                 'timeout' => $timeout,
                 'startAt' => $startedAt,
                 'endAt'   => microtime(true),
@@ -104,7 +95,7 @@ class Client {
                 'url'     => $url,
                 'data'    => $data,
                 'info'    => isset($info) ? $info : null,
-                'header'  => isset($headers) ? $headers : null,
+                'header'  => isset($header) ? $header : null,
                 'resonse' => mb_substr($response, 0, 512),
                 'timeout' => $timeout,
                 'startAt' => $startedAt,
@@ -153,7 +144,6 @@ class Client {
                     'url'     => $url,
                     'data'    => $data,
                     'timeout' => $timeout,
-                    'header'  => [],
                 ],
             ];
         } else {
@@ -218,7 +208,8 @@ class Client {
                         }
 
                         $content = curl_multi_getcontent($handler);
-                        //$header = $this->header($content, true);
+                        $header = [];
+                        $this->parseResponse($handler, $content, $header);
 
                         if (null === $content) {
                             throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($this->queries[$this->queryIndex[(string)$handler]]['query']['data'])));
@@ -242,7 +233,7 @@ class Client {
                             'url'          => isset($info['url']) ? $info['url'] : null,
                             'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
                             'info'         => isset($info) ? $info : null,
-                            'header'       => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['header']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['header'] : null,
+                            'header'       => isset($header) ? $header : null,
                             //'response'      => isset($content) ? $content : null,
                             'retryTimeout' => $retryTimeout,
                             'retryCount'   => $retryCount,
@@ -263,8 +254,8 @@ class Client {
                             'url'          => isset($info['url']) ? $info['url'] : null,
                             'data'         => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['data']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['data'] : [],
                             'info'         => isset($info) ? $info : null,
-                            'header'       => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['header']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['header'] : null,
-                            'response'     => isset($content) ? mb_substr($content, 0, 512) : null,
+                            'header'       => isset($header) ? $header : null,
+                            'response'      => isset($content) ? mb_substr($content, 0, 512) : null,
                             'retryTimeout' => $retryTimeout,
                             'retryCount'   => $retryCount,
                             'timeout'      => isset($this->queries[$this->queryIndex[(string)$handler]]['query']['timeout']) ? $this->queries[$this->queryIndex[(string)$handler]]['query']['timeout'] : null,
@@ -356,13 +347,12 @@ class Client {
     }
 
     /**
-     * @param string $url
-     * @param array $data
+     * @param string     $url
+     * @param array      $data
      * @param float|null $timeout
-     * @param callable|null $parseHeader
      * @return resource
      */
-    private function create($url, array $data = [], $timeout = null, $parseHeader = null) {
+    private function create($url, array $data = [], $timeout = null) {
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
 
         $this->logger->info([
@@ -374,8 +364,7 @@ class Client {
         ], ['curl']);
 
         $connection = curl_init();
-        curl_setopt($connection, CURLOPT_HEADER, false);
-        curl_setopt($connection, CURLOPT_HEADERFUNCTION, $parseHeader ?: [$this, 'parseHeader']);
+        curl_setopt($connection, CURLOPT_HEADER, 1);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($connection, CURLOPT_URL, $url);
@@ -406,48 +395,27 @@ class Client {
         return $connection;
     }
 
-
-
     /**
-     * @param string $plainResponse Ответ с заголовком (header) и телом (body)
-     * @param bool   $isUpdateResponse Нужно ли вырезать из ответа заголовок (header), если true, то в $plainResponse по окончании работы будет содержаться тело (body)
-     * @return array
-     * @throws \RuntimeException
+     * @param $connection
+     * @param $response
+     * @param null $headers
      */
-    private function header(&$plainResponse, $isUpdateResponse = true) {
-        $header = [];
-        $response = explode("\r\n\r\n", $plainResponse, 2);
-        if ($isUpdateResponse) $plainResponse = isset($response[1]) ? $response[1] : null;
+    private function parseResponse($connection, &$response, &$headers = null) {
+        $size = curl_getinfo($connection, CURLINFO_HEADER_SIZE);
 
-        $plainHeader = explode("\r\n", $response[0]);
-        foreach ($plainHeader as $line) {
-            $pos = strpos($line, ':');
-            if ($pos) {
-                $key = substr($line, 0, $pos);
-                $value = trim(substr($line, $pos + 1));
-                $header[$key] = $value;
-            } else {
-                $header[] = $line;
+        if (is_array($headers)) {
+            foreach (explode("\r\n", mb_substr($response, 0, $size)) as $line) {
+                if ($pos = strpos($line, ':')) {
+                    $key = substr($line, 0, $pos);
+                    $value = trim(substr($line, $pos + 1));
+                    $headers[$key] = $value;
+                } else {
+                    $headers[] = $line;
+                }
             }
         }
 
-        return $header;
-    }
-
-    /**
-     * @param $connection
-     * @param $header
-     * @return int
-     */
-    public function parseHeader($connection, $header)  {
-        $return = mb_strlen($header);
-
-        $header = trim((string)$header);
-        if ($header && isset($this->queries[$this->queryIndex[(string)$connection]]['query']['header'])) {
-            $this->queries[$this->queryIndex[(string)$connection]]['query']['header'][] = $header;
-        }
-
-        return $return;
+        $response = mb_substr($response, $size);
     }
 
     /**
