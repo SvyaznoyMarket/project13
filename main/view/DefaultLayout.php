@@ -62,7 +62,7 @@ class DefaultLayout extends Layout {
                 'entity_id' => \App::user()->getToken(),
                 'cookieName' => $cookieName
             ];
-            $return .= "<div id='kissUpdateJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+            $return .= "<div id=\"kissUpdateJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
         }
 
         return $return;
@@ -752,7 +752,7 @@ class DefaultLayout extends Layout {
             return;
         }
 
-        return "<div id='RuTargetOtherPageJS' class='jsanalytics' data-value='" . json_encode(['regionId' => \App::user()->getRegionId()]) . "'></div>";
+        return "<div id=\"RuTargetOtherPageJS\" class=\"jsanalytics\" data-value=\"" . $this->json(['regionId' => \App::user()->getRegionId()]) . "\"></div>";
     }
 
 
@@ -848,7 +848,7 @@ class DefaultLayout extends Layout {
             'lamodaID' => \App::config()->partners['Lamoda']['lamodaID'],
         ];
 
-        return "<div id='LamodaJS' class='jsanalytics' data-value='" . json_encode($data) . "'></div>";
+        return "<div id=\"LamodaJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 
     /**
@@ -925,9 +925,9 @@ class DefaultLayout extends Layout {
         ];
 
         return
-            "<div id='googleTagManagerJS' class='jsanalytics' data-value='" . json_encode($data) . "'>
+            "<div id=\"googleTagManagerJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\">
                 <!-- Google Tag Manager -->
-                <noscript><iframe src='//www.googletagmanager.com/ns.html?id=" . $containerId . "' height='0' width='0' style='display:none;visibility:hidden'></iframe></noscript>
+                <noscript><iframe src=\"//www.googletagmanager.com/ns.html?id=" . $containerId . "\" height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"></iframe></noscript>
                 <!-- End Google Tag Manager -->
             </div>";
     }

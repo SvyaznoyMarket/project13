@@ -226,7 +226,7 @@ class Layout extends \View\DefaultLayout {
             'regionId' => \App::user()->getRegionId(),
         ];
 
-        return "<div id='RuTargetProductCategoryJS' class='jsanalytics' data-value='" . $this->json($data) . "'></div>";
+        return "<div id=\"RuTargetProductCategoryJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 
     public function slotLamodaCategoryJS() {
@@ -242,6 +242,6 @@ class Layout extends \View\DefaultLayout {
             'id' => $category->getId(),
         ];
 
-        return "<div id='LamodaCategoryJS' class='jsanalytics' data-value='" . $this->json($data) . "'></div>";
+        return "<div id=\"LamodaCategoryJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 }
