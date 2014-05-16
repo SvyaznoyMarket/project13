@@ -136,7 +136,7 @@
                             sum: cart.full_price
                         };
 
-                    for (var i in data.products) {
+                    for (var i = 0, len = data.products.length; i < len; i++) {
                         var product = data.products[i],
                             tmpCart = {
                                 formattedPrice: printPrice(product.price),
