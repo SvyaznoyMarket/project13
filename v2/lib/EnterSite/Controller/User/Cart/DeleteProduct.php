@@ -92,6 +92,9 @@ class DeleteProduct {
         $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
         $page->widgets['.' . $widget->widgetId] = $widget;
 
+        $widget = (new Repository\Partial\Cart())->getObject($cart);
+        $page->widgets['.' . $widget->widgetId] = $widget;
+
         // response
         $response = new Http\JsonResponse([
             'result' => $page, // TODO: вынести на уровень JsonPage.result

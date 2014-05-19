@@ -65,6 +65,10 @@ class Index {
             'id'   => 'tpl-cart-total',
             'name' => 'partial/cart/total',
             ],
+            [
+            'id'   => 'tpl-cart-bar',
+            'name' => 'partial/cart/bar',
+            ],
         ] as $templateItem) {
             try {
                 $template = new Model\Page\DefaultLayout\Template();

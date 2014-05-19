@@ -99,7 +99,7 @@ define(
                         console.warn(error);
                     }
 
-                    timer = setTimeout(function() { addProductToCart(e); }, 1000);
+                    timer = setTimeout(function() { addProductToCart(e); }, 600);
 
                     $widget.data('timer', timer);
                 }

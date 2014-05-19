@@ -54,11 +54,5 @@
 </div>
 
 {{#cart}}
-<div class="cartBar">
-    <div class="contentBox940">
-        <a class="btnStyleOrange cartBar_btn" href="">Оформление заказа</a>
-
-        <div class="cartBar_text">Итого <span class="visible">{{cart.shownQuantity}} на сумму</span>: <span class="price">{{cart.shownSum}} <span class="rubl">p</span></span></div>
-    </div>
-</div>
+    {{>partial/cart/bar}}
 {{/cart}}
