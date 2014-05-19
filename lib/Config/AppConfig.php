@@ -531,6 +531,12 @@ class AppConfig {
         'rowWidth'   => null,
         'rowHeight'  => null,
         'rowPadding' => null,
+        'analyticsEnabled' => null,
+    ];
+
+    /** @var array */
+    public $tchiboSlider = [
+        'analyticsEnabled' => null,
     ];
 
     /** @var boolean */

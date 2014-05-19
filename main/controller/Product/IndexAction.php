@@ -112,9 +112,15 @@ class IndexAction {
         // получаем catalog json
         $catalogJson = [];
         $dataStore = \App::dataStoreClient();
-        $query = sprintf('catalog/%s/%s.json', implode('/', $productCategoryTokens), $product->getToken());
-        $dataStore->addQuery($query, [], function ($data) use (&$catalogJson) {
-            if($data) $catalogJson = $data;
+        $dataStore->addQuery(sprintf('catalog/%s.json', implode('/', $productCategoryTokens)), [], function ($data) use (&$catalogJson) {
+            if (is_array($data)) $catalogJson = $data;
+        });
+
+        // настройки товара
+        $productConfig = [];
+        $dataStore = \App::dataStoreClient();
+        $dataStore->addQuery(sprintf('product/%s.json', $product->getToken()), [], function ($data) use (&$productConfig) {
+            if (is_array($data)) $productConfig = $data;
         });
 
         // получаем отзывы для товара
@@ -151,6 +157,7 @@ class IndexAction {
 
         // выполнение 3-го пакета запросов
         \App::curl()->execute();
+        $catalogJson = array_merge_recursive($catalogJson, $productConfig);
 
         // получаем рейтинги
         $reviewsDataSummary = [];

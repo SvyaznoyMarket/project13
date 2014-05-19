@@ -403,6 +403,7 @@ $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
+$c->tchiboSlider['analyticsEnabled'] = true;
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
