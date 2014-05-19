@@ -5,7 +5,7 @@ return function(
     array $slideData
 ) { ?>
 
-    <div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $helper->json($slideData) ?>" data-use-interval="true" data-use-hash="false" data-use-carousel="true">
+    <div id="promoCatalog" class="bPromoCatalog" data-slides="<?= $helper->json($slideData) ?>" data-use-interval="true" data-use-hash="false" data-use-carousel="true" data-use-tchibo-analytics="<?= (bool)\App::config()->tchiboSlider['analyticsEnabled'] ?>">
 
         <script type="text/html" id="slide_tmpl">
             <?= file_get_contents(__DIR__ . '/slide.tmpl'); ?>
