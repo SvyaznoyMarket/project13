@@ -13,10 +13,8 @@ class ProductCard {
     public $price;
     /** @var string */
     public $shownPrice;
-    /** @var int */
+    /** @var Partial\Cart\ProductSum|null */
     public $sum;
-    /** @var string */
-    public $shownSum;
     /** @var int */
     public $oldPrice;
     /** @var string */

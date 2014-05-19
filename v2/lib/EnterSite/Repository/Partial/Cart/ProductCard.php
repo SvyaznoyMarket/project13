@@ -5,6 +5,7 @@ namespace EnterSite\Repository\Partial\Cart;
 use EnterSite\Routing;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
+use EnterSite\Repository;
 
 class ProductCard {
     /**
@@ -26,8 +27,7 @@ class ProductCard {
         $card->url = $product->link;
         $card->price = $product->price;
         $card->shownPrice = $product->price ? number_format((float)$product->price, 0, ',', ' ') : null;
-        $card->sum = $cartProduct->sum;
-        $card->shownSum = $cartProduct->sum ? number_format((float)$cartProduct->sum, 0, ',', ' ') : null;
+        $card->sum = (new Repository\Partial\Cart\ProductSum())->getObject($cartProduct);
         $card->oldPrice = $product->oldPrice;
         $card->shownOldPrice = $product->oldPrice ? number_format((float)$product->oldPrice, 0, ',', ' ') : null;
         if ($photo = reset($product->media->photos)) {

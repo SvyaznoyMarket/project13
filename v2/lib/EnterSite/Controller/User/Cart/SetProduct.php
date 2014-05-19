@@ -65,6 +65,13 @@ class SetProduct {
         // корзина из ядра
         $cart = $cartRepository->getObjectByQuery($cartItemQuery);
 
+        // товар в корзине из ядра
+        $cartProduct = $cartRepository->getProductById($cartProduct->id, $cart);
+        if (!$cartProduct) {
+            // FIXME: костыль
+            $cartProduct = $cartRepository->getProductObjectByHttpRequest($request);
+        }
+
         // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart);
 
@@ -89,6 +96,9 @@ class SetProduct {
         $page->widgets['.' . $widget->widgetId] = $widget;
         // пользователь, корзина
         $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
+        $page->widgets['.' . $widget->widgetId] = $widget;
+
+        $widget = (new Repository\Partial\Cart\ProductSum())->getObject($cartProduct);
         $page->widgets['.' . $widget->widgetId] = $widget;
 
         // response

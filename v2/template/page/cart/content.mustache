@@ -16,7 +16,9 @@
                         {{name}}
                     </a>
 
-                    <div class="price">{{shownSum}} <span class="rubl">p</span></div>
+                    {{#sum}}
+                        {{>partial/cart/productSum}}
+                    {{/sum}}
                 </div>
 
                 <div class="cartItem_col cartItem_col-price">

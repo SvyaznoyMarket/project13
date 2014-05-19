@@ -96,4 +96,23 @@ class Cart {
             $cart->product[$cartProduct->id] = $cartProduct;
         }
     }
+
+    /**
+     * @param $id
+     * @param Model\Cart $cart
+     * @return Model\Cart\Product|null
+     */
+    public function getProductById($id, Model\Cart $cart) {
+        $return = null;
+
+        foreach ($cart->product as $cartProduct) {
+            if ($cartProduct->id === $id) {
+                $return = $cartProduct;
+
+                break;
+            }
+        }
+
+        return $return;
+    }
 }
