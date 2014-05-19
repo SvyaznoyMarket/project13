@@ -55,13 +55,7 @@ define(
             directCredit.getPayment(
                 { partnerId: dataValue.partnerId },
                 $body.data('user'),
-                [
-                    {
-                        price: dataValue.product.price,
-                        count: dataValue.product.quantity,
-                        type: dataValue.product.type
-                    }
-                ],
+                dataValue.product,
                 function (result) {
                     var $template = $($creditPayment.data('templateSelector')),
                         $price = $($creditPayment.data('priceSelector')),

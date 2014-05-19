@@ -321,7 +321,9 @@ class ProductCard {
 
         // direct credit
         if ((new Repository\DirectCredit())->isEnabledForProduct($productModel)) {
-            $page->content->product->credit = (new Repository\Partial\DirectCredit())->getObject($productModel);
+            $page->content->product->credit = (new Repository\Partial\DirectCredit())->getObject([
+                $productModel->id => $productModel,
+            ]);
         }
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));

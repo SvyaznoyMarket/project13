@@ -11,25 +11,37 @@ use EnterSite\Model\Partial;
 class DirectCredit {
     use ConfigTrait, ViewHelperTrait;
 
+    /**
+     * @param Model\Product[] $products
+     * @param Model\Cart\Product[] $productCartsById
+     * @return Partial\DirectCredit
+     */
     public function getObject(
-        Model\Product $product,
-        Model\Cart\Product $productCart = null
+        $products = [],
+        $productCartsById = []
     ) {
         $directCredit = new Partial\DirectCredit();
 
-        /** @var Model\Product\Category|null $rootCategory */
-        $rootCategory = ($product->category && !empty($product->category->ascendants[0])) ? $product->category->ascendants[0] : null;
+        $productData = [];
+        foreach ($products as $product) {
+            /** @var Model\Product\Category|null $rootCategory */
+            $rootCategory = ($product->category && !empty($product->category->ascendants[0])) ? $product->category->ascendants[0] : null;
+            /** @var Model\Cart\Product|null $cartProduct */
+            $cartProduct = !empty($productCartsById[$product->id]) ? $productCartsById[$product->id] : null;
 
-        $directCredit->widgetId = 'id-creditPayment-' . $product->id;
+            $productData[] = [
+                'id'    => $product->id,
+                'name'  => $product->name,
+                'price' => $product->price,
+                'count' => $cartProduct ? $cartProduct->quantity : 1,
+                'type'  => $rootCategory ? (new Repository\DirectCredit())->getTypeByCategoryToken($rootCategory->token) : null,
+            ];
+        }
+
+        $directCredit->widgetId = 'id-creditPayment';
         $directCredit->dataValue = $this->getViewHelper()->json([
             'partnerId' => $this->getConfig()->directCredit->partnerId,
-            'product' => [
-                'id'       => $product->id,
-                'name'     => $product->name,
-                'price'    => $product->price,
-                'quantity' => $productCart ? $productCart->quantity : 1,
-                'type'     => $rootCategory ? (new Repository\DirectCredit())->getTypeByCategoryToken($rootCategory->token) : null,
-            ],
+            'product'   => $productData,
         ]);
 
         return $directCredit;
