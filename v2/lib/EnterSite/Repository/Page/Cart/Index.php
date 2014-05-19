@@ -34,10 +34,7 @@ class Index {
         $page->dataModule = 'cart';
 
         if (count($request->cart)) {
-            $page->content->cart->sum = $request->cart->sum;
-            $page->content->cart->shownSum = number_format((float)$request->cart->sum, 0, ',', ' ');
-            $page->content->cart->quantity = count($request->cart);
-            $page->content->cart->shownQuantity = $page->content->cart->quantity . ' ' . $this->getTranslateHelper()->numberChoice($page->content->cart->quantity, ['товар', 'товара', 'товаров']);
+            $page->content->cart = (new Repository\Partial\Cart())->getObject($request->cart);
         } else {
             $page->content->cart = false;
         }
@@ -63,6 +60,10 @@ class Index {
             [
             'id'   => 'tpl-cart-productSum',
             'name' => 'partial/cart/productSum',
+            ],
+            [
+            'id'   => 'tpl-cart-total',
+            'name' => 'partial/cart/total',
             ],
         ] as $templateItem) {
             try {

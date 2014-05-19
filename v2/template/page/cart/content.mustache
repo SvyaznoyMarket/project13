@@ -42,32 +42,7 @@
         {{/productBlock}}
 
         {{#cart}}
-        <!-- итоговая стоимость заказа/купить в кредит -->
-        <div class="cartLine clearfix">
-            <div class="cartLine_left cartLine_left-double clearfix">
-                Итого {{cart.shownQuantity}} на сумму: <span class="price">{{cart.shownSum}} <span class="rubl">p</span></span>
-            </div><!--/ дубль для мобилки -->
-
-            <div class="cartLine_right clearfix">
-                <input class="customInput customInput-checkbox jsCustomRadio" type="checkbox" id="creditinput" name="" />
-
-                <label class="customLabel" for="creditinput">
-                    <strong class="creditText">Купить в кредит</strong>
-                    <span class="creditSum">от <span class="price">3 443 <span class="rubl">p</span></span> в месяц</span>
-                </label>
-            </div>
-
-            <div class="cartLine_left clearfix">
-                Итого {{cart.shownQuantity}} на сумму: <span class="price">{{cart.shownSum}} <span class="rubl">p</span></span>
-            </div>
-        </div>
-        <!--/ итоговая стоимость заказа/купить в кредит -->
-
-        <!-- оформить заказ -->
-        <div class="cartBuy">
-            <a class="btnStyleOrange cartBuy_btn" href="">Оформление заказа</a>
-        </div>
-        <!--/ оформить заказ -->
+            {{>partial/cart/total}}
         {{/cart}}
 
         {{^cart}}
