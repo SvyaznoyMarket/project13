@@ -23,8 +23,19 @@ class DirectCredit {
      * @return bool
      */
     public function isEnabledForProduct(Model\Product $product) {
+        // FIXME: использовать cartProduct.sum
         $config = $this->getConfig();
 
         return $config->directCredit->enabled && ($product->price >= $config->directCredit->minPrice);
+    }
+
+    /**
+     * @param Model\Cart $cart
+     * @return bool
+     */
+    public function isEnabledForCart(Model\Cart $cart) {
+        $config = $this->getConfig();
+
+        return $config->directCredit->enabled && ($cart->sum >= $config->directCredit->minPrice);
     }
 }

@@ -88,7 +88,7 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $modelBlock;
         /** @var Product\ModelBlock|null */
         public $moreModelBlock;
-        /** @var Product\DirectCredit|null */
+        /** @var Partial\DirectCredit|null */
         public $credit;
     }
 }
@@ -133,13 +133,6 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
         public $properties = [];
         /** @var bool */
         public $isImage;
-    }
-
-    class DirectCredit {
-        /** string */
-        public $widgetId;
-        /** string */
-        public $dataValue;
     }
 }
 
