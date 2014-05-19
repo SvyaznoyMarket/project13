@@ -34,7 +34,7 @@ class Index {
         $page->dataModule = 'cart';
 
         if (count($request->cart)) {
-            $page->content->cart = (new Repository\Partial\Cart())->getObject($request->cart);
+            $page->content->cart = (new Repository\Partial\Cart())->getObject($request->cart, $request->productsById);
         } else {
             $page->content->cart = false;
         }

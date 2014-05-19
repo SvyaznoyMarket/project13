@@ -13,10 +13,12 @@ class Cart {
 
     /**
      * @param Model\Cart $cartModel
+     * @param Model\Product[] $products
      * @return Partial\Cart
      */
     public function getObject(
-        Model\Cart $cartModel
+        Model\Cart $cartModel,
+        $products = []
     ) {
         $cart = new Partial\Cart();
         $cart->widgetId = self::getWidgetId();
@@ -24,7 +26,12 @@ class Cart {
         $cart->shownSum = number_format((float)$cartModel->sum, 0, ',', ' ');
         $cart->quantity = count($cartModel);
         $cart->shownQuantity = $cart->quantity . ' ' . $this->getTranslateHelper()->numberChoice($cart->quantity, ['товар', 'товара', 'товаров']);
-        $cart->credit = (new Repository\DirectCredit())->isEnabledForCart($cartModel);
+
+        $cartProductsById = [];
+        foreach ($cartModel->product as $cartProduct) {
+            $cartProductsById[$cartProduct->id] = $cartProduct;
+        }
+        $cart->credit = (new Repository\Partial\DirectCredit())->getObject($products, $cartProductsById);
 
         return $cart;
     }
