@@ -4,6 +4,7 @@ namespace EnterSite\Repository\Partial;
 
 use EnterSite\TranslateHelperTrait;
 use EnterSite\Routing;
+use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
@@ -23,6 +24,7 @@ class Cart {
         $cart->shownSum = number_format((float)$cartModel->sum, 0, ',', ' ');
         $cart->quantity = count($cartModel);
         $cart->shownQuantity = $cart->quantity . ' ' . $this->getTranslateHelper()->numberChoice($cart->quantity, ['товар', 'товара', 'товаров']);
+        $cart->credit = (new Repository\DirectCredit())->isEnabledForCart($cartModel);
 
         return $cart;
     }

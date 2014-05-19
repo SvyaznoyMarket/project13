@@ -5,14 +5,16 @@
             Итого {{shownQuantity}} на сумму: <span class="price">{{shownSum}} <span class="rubl">p</span></span>
         </div><!--/ дубль для мобилки -->
 
-        <div class="cartLine_right clearfix">
+        {{#credit}}
+        <div class="js-creditPayment cartLine_right clearfix" data-template-selector="#tpl-creditPayment" data-value="{{&dataValue}}" data-price-selector=".{{widgetId}}">
             <input class="customInput customInput-checkbox jsCustomRadio" type="checkbox" id="creditinput" name="" />
 
             <label class="customLabel" for="creditinput">
                 <strong class="creditText">Купить в кредит</strong>
-                <span class="creditSum">от <span class="price">3 443 <span class="rubl">p</span></span> в месяц</span>
             </label>
+
         </div>
+        {{/credit}}
 
         <div class="cartLine_left clearfix">
             Итого {{shownQuantity}} на сумму: <span class="price">{{shownSum}} <span class="rubl">p</span></span>
@@ -26,3 +28,10 @@
     </div>
     <!--/ оформить заказ -->
 </div>
+
+<script id="tpl-creditPayment" type="text/html">
+    {{={{{ }}}=}}
+    <strong class="creditText">Купить в кредит</strong>
+    <span class="creditSum">от <span class="price">{{shownPrice}} <span class="rubl">p</span></span> в месяц</span>
+    {{{={{ }}=}}}
+</script>
