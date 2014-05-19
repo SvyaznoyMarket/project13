@@ -38,7 +38,8 @@ define(
                 e.stopPropagation();
 
                 var $el = $(e.currentTarget),
-                    data = $el.data()
+                    data = $el.data(),
+                    $spinnerWidget = $($el.data('spinnerSelector'))
                 ;
 
                 console.info('deleteProductFromCart', $el, data);
@@ -66,6 +67,16 @@ define(
                     });
 
                     e.preventDefault();
+
+                    if ($spinnerWidget.length) {
+                        var timer = $spinnerWidget.data('timer');
+
+                        try {
+                            clearTimeout(timer);
+                        } catch (error) {
+                            console.warn(error);
+                        }
+                    }
                 }
             },
 

@@ -15,5 +15,7 @@ namespace EnterSite\Model\Partial\Cart {
         public $dataUrl;
         /** @var string */
         public $dataValue;
+        /** @var string */
+        public $spinnerSelector;
     }
 }

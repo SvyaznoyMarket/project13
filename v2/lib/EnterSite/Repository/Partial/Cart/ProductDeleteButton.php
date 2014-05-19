@@ -50,6 +50,7 @@ class ProductDeleteButton {
         $button->id = self::getId($product->id);
         $button->widgetId = self::getWidgetId($product->id);
         $button->url = $this->router->getUrlByRoute(new Routing\Cart\DeleteProduct($product->id));
+        $button->spinnerSelector = Repository\Partial\Cart\ProductSpinner::getWidgetId($product->id, false);
 
         return $button;
     }
