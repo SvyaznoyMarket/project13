@@ -378,6 +378,7 @@ class Client {
         if ($timeout) {
             curl_setopt($connection, CURLOPT_NOSIGNAL, 1);
             curl_setopt($connection, CURLOPT_TIMEOUT_MS, $timeout * 1000);
+            curl_setopt($connection, CURLOPT_CONNECTTIMEOUT_MS, $timeout * 1000);
         }
 
         if ((bool)$data) {
