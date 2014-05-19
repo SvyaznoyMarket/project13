@@ -120,7 +120,7 @@
 
 			activeInterval = promoCatalog.data('use-interval') !== undefined ? promoCatalog.data('use-interval') : false,
 			interval = null,
-			toSlide = null,
+			toSlide = 0,
 			nowSlide = 0,//текущий слайд
 
 			// Флаг под которым реализована дорисовка hash к url
@@ -140,7 +140,12 @@
 			slider_SlideW,// ширина одного слайда
 			slider_WrapW,// ширина обертки
 
-			disabledBtns = false;// Активность кнопок для пролистования и пагинатора.
+			disabledBtns = false,// Активность кнопок для пролистования и пагинатора.
+
+			// Флаг для аналитики Tchibo
+			tchiboAnalyticsEnabled = promoCatalog.data('use-tchibo-analytics') !== undefined ? promoCatalog.data('use-tchibo-analytics') : false,
+            // Буфер, для коллекций. Пока _gaq не подгрузился, делаем запись в буфер. Затем трекаем все скопом.
+			tchiboAnalyticsBuffer = [];
 		// end of vars
 
 		var
@@ -180,7 +185,7 @@
 			 */
 			setScrollInterval = function setScrollInterval( slide ) {
 				var
-					time,
+					time = 3000,
 					additionalTime = 0;
 				// end of vars
 
@@ -195,7 +200,10 @@
 					additionalTime = scrollingDuration;
 				}
 
-				time = data[slide]['time'] ? data[slide]['time'] : 3000;
+				if ( data.hasOwnProperty(slide) && data[slide].hasOwnProperty('time') ) {
+					time = data[slide]['time'];
+				}
+
 				time = time + additionalTime;
 
 				interval = setTimeout(function(){
@@ -309,7 +317,8 @@
 					leftBtn = $('.bPromoCatalogSlider_eArrow.mArLeft'),
 					rightBtn = $('.bPromoCatalogSlider_eArrow.mArRight'),
 					slidesWrap = $(".jsPromoCatalogSliderWrap"),
-					buff;
+					buff,
+					slideData;
 				// end of vars
 
 				var
@@ -382,10 +391,177 @@
 				if ( activeHash ) {
 					window.location.hash = 'slide' + ((slideId * 1) + 1);
 				}
+
+				slideData = data[slideId];
+				if ( slideData.hasOwnProperty('title') && slideData.hasOwnProperty('time') ) {
+					tchiboAnalytics.collectionShow(slideData.title, (slideId*1)+1, slideData.time);
+				}
+			},
+
+			tchiboAnalytics = {
+				init: function() {
+					if ( !tchiboAnalyticsEnabled ){
+						return;
+					}
+
+					var
+						collectionClickHandler = function() {
+							var
+								self = $(this),
+								slide = self.parent('.bPromoCatalogSliderWrap_eSlide'),
+								slideId,
+								slideData;
+							// end of vars
+
+							if ( !slide.length || !slide.attr('id') ) {
+								return;
+							}
+
+							slideId = slide.attr('id').replace('slide_id_', '');
+							slideData = data[slideId];
+
+							if ( slideData.hasOwnProperty('title') ) {
+								tchiboAnalytics.collectionClick(slideData.title, (slideId*1)+1);
+							}
+						},
+
+						productClickHandler = function(e) {
+							e.preventDefault();
+							var
+								self = $(this),
+								slide = self.parents('.bPromoCatalogSliderWrap_eSlide'),
+								slideElementId,
+								slideId,
+								slideData,
+								productIndex;
+							// end of vars
+
+							if ( !slide.length || !slide.attr('id') ) {
+								return;
+							}
+
+							slideElementId = slide.attr('id');
+							slideId = slideElementId.replace('slide_id_', '');
+							slideData = data[slideId];
+
+							productIndex = $('.mTchiboSlider #'+slideElementId+' .prodItem > a').index(this);
+							if ( -1 == productIndex ) {
+								return;
+							}
+
+							if ( slideData.hasOwnProperty('title') && undefined != typeof(slideData.products[productIndex].name) ) {
+								tchiboAnalytics.productClick(slideData.title, slideData.products[productIndex].name, (productIndex*1)+1);
+							}
+						};
+					// end of functions
+
+					body.on('click', '.mTchiboSlider .bPromoCatalogSliderWrap_eSlideLink', collectionClickHandler);
+					body.on('click', '.mTchiboSlider .prodItem > a', productClickHandler);
+				},
+
+				/**
+				 * @param collection_name		название коллекции
+				 * @param collection_position	позиция в слайдере
+				 * @param delay					текущая задержка на данном слайдере
+				 */
+				collectionShow: function(collection_name, collection_position, delay) {
+					var
+						item,
+						i;
+					// end of vars
+
+					var
+						collectionViewPush = function collectionViewPush( item ) {
+							if ( !item ) {
+								return;
+							}
+
+							console.info('TchiboSliderAnalytics collection_view');
+							console.log(item);
+							_gaq.push(item);
+						};
+					// end of functions
+
+					if (
+						!tchiboAnalyticsEnabled ||
+						'undefined' == typeof(collection_name) ||
+						'undefined' == typeof(collection_position) ||
+						'undefined' == typeof(delay)
+						) {
+						return;
+					}
+
+					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay];
+
+					if ( 'undefined' == typeof(_gaq) ) {
+						tchiboAnalyticsBuffer.push(item);
+
+						return;
+					}
+
+					if ( tchiboAnalyticsBuffer.length > 0 ) {
+						for ( i=0; i<tchiboAnalyticsBuffer.length; i++ ) {
+							collectionViewPush(tchiboAnalyticsBuffer[i]);
+						}
+						tchiboAnalyticsBuffer = [];
+					}
+
+					collectionViewPush(item);
+				},
+
+				/**
+				 * @param collection_name		название коллекции
+				 * @param collection_position	позиция в слайдере
+				 */
+				collectionClick: function(collection_name, collection_position) {
+					var item;
+
+					if (
+						!tchiboAnalyticsEnabled ||
+						'undefined' == typeof(_gaq) ||
+						'undefined' == typeof(collection_name) ||
+						'undefined' == typeof(collection_position)
+						) {
+						return;
+					}
+
+					item = ['_trackEvent', 'collection_click', collection_name+'_'+collection_position]
+
+					console.info('TchiboSliderAnalytics collection_click');
+					console.log(item);
+					_gaq.push(item);
+				},
+
+				/**
+				 * @param collection_name	название коллекции
+				 * @param item_name			название товара
+				 * @param position			позиция товара на слайдере (1, 2, 3 слева направо)
+				 */
+				productClick: function(collection_name, item_name, position) {
+					var item;
+
+					if (
+						!tchiboAnalyticsEnabled ||
+						'undefined' == typeof(_gaq) ||
+						'undefined' == typeof(collection_name) ||
+						'undefined' == typeof(item_name) ||
+						'undefined' == typeof(position)
+						) {
+						return;
+					}
+
+					item = ['_trackEvent', 'item_click', collection_name+'_'+item_name, position];
+
+					console.info('TchiboSliderAnalytics item_click');
+					console.log(item);
+					_gaq.push(item);
+				}
 			};
 		// end of functions
 
 		initSlider(); //запуск слайдера
+
+		tchiboAnalytics.init();
 
 		body.on('click', '.bPromoCatalogSlider_eArrow', btnsClick);
 		body.on('click', '.bPaginator_eLink', paginatorClick);
@@ -398,6 +574,11 @@
 			}
 		}
 
-		setScrollInterval( toSlide ? (toSlide) : null);
+		setScrollInterval(toSlide);
+
+		// аналитика показа первого слайда
+		if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') ) {
+			tchiboAnalytics.collectionShow(data[toSlide].title, ((toSlide*1)+1), data[toSlide].time);
+		}
 	}
 })(jQuery);
