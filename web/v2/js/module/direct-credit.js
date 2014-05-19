@@ -2,15 +2,13 @@ define(
     ['direct-credit'],
     function () {
         return {
-            getPayment: function(config, user, product, done) {
+            getPayment: function(config, user, products, done) {
                 dc_getCreditForTheProduct (
                     config.partnerId,
                     user.sessionId,
                     'getPayment',
                     {
-                        price: product.price,
-                        count: 1,
-                        type: product.type
+                        products: products
                     },
                     function(result) {
                         console.info('dc_getCreditForTheProduct', result);
