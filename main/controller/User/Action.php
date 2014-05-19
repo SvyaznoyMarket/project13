@@ -208,108 +208,111 @@ class Action {
     public function register(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $checkRedirect = $this->checkRedirect($request);
-        if ($checkRedirect) return $checkRedirect;
+        // SITE-3676
+        return $this->login($request);
 
-        $form = new \View\User\RegistrationForm();
-        if ($request->isMethod('post')) {
-            $form->fromArray((array)$request->request->get('register'));
-            if (!$form->getFirstName()) {
-                $form->setError('first_name', 'Не указано имя');
-            }
-            if (!$form->getUsername()) {
-                $form->setError('username', 'Не указан номер телефона или email');
-            }
-
-            if ($form->isValid()) {
-                $data = [
-                    'first_name' => $form->getFirstName(),
-                    'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
-                ];
-
-                $isSubscribe = (bool)$request->get('subscribe', false);
-
-                if (strpos($form->getUsername(), '@')) {
-                    $data['email'] = $form->getUsername();
-                    $data['is_subscribe'] = $isSubscribe;
-                }
-                else {
-                    $phone = $form->getUsername();
-                    $phone = preg_replace('/^\+7/', '8', $phone);
-                    $phone = preg_replace('/[^\d]/', '', $phone);
-                    $data['mobile'] = $phone;
-                    $data['is_sms_subscribe'] = $isSubscribe;
-                }
-
-                try {
-                    $result = \App::coreClientV2()->query('user/create', [], $data, \App::config()->coreV2['hugeTimeout']);
-                    if (empty($result['token'])) {
-                        throw new \Exception('Не удалось получить токен');
-                    }
-
-                    $user = \RepositoryManager::user()->getEntityByToken($result['token']);
-                    if (!$user) {
-                        throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
-                    }
-                    $user->setToken($result['token']);
-
-                    $response = $request->isXmlHttpRequest()
-                        ? new \Http\JsonResponse([
-                            'success' => true,
-                            'message' => sprintf('Пароль отправлен на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
-
-                            'data'    => [
-                                //'link' => $this->redirect,
-                            ],
-                            'error' => null,
-                            'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
-                        ])
-                        : new \Http\RedirectResponse($this->redirect);
-
-                    // передаем email пользователя для RetailRocket
-                    if (isset($data['email']) && !empty($data['email'])) {
-                        \App::retailrocket()->setUserEmail($response, $data['email']);
-                    }
-
-                    //\App::user()->signIn($user, $response); // SITE-2279
-
-                    return $response;
-                } catch(\Exception $e) {
-                    \App::exception()->remove($e);
-                    $errorMess = $e->getMessage();
-                    switch ($e->getCode()) {
-                        case 686:
-                        case 684:
-                        case 689:
-                        case 690:
-                            $form->setError('username', $errorMess );
-                            break;
-                        case 609:
-                        default:
-                            $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $errorMess) : '') );
-                            break;
-                    }
-                }
-            }
-
-            $formErrors = [];
-            foreach ($form->getErrors() as $fieldName => $errorMessage) {
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
-            }
-
-            // xhr
-            if ($request->isXmlHttpRequest()) {
-                return new \Http\JsonResponse([
-                    'form' => ['error' => $formErrors],
-                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
-                ]);
-            }
-        }
-
-        $page = new \View\User\LoginPage();
-        $page->setParam('form', $form);
-
-        return new \Http\Response($page->show());
+//        $checkRedirect = $this->checkRedirect($request);
+//        if ($checkRedirect) return $checkRedirect;
+//
+//        $form = new \View\User\RegistrationForm();
+//        if ($request->isMethod('post')) {
+//            $form->fromArray((array)$request->request->get('register'));
+//            if (!$form->getFirstName()) {
+//                $form->setError('first_name', 'Не указано имя');
+//            }
+//            if (!$form->getUsername()) {
+//                $form->setError('username', 'Не указан номер телефона или email');
+//            }
+//
+//            if ($form->isValid()) {
+//                $data = [
+//                    'first_name' => $form->getFirstName(),
+//                    'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
+//                ];
+//
+//                $isSubscribe = (bool)$request->get('subscribe', false);
+//
+//                if (strpos($form->getUsername(), '@')) {
+//                    $data['email'] = $form->getUsername();
+//                    $data['is_subscribe'] = $isSubscribe;
+//                }
+//                else {
+//                    $phone = $form->getUsername();
+//                    $phone = preg_replace('/^\+7/', '8', $phone);
+//                    $phone = preg_replace('/[^\d]/', '', $phone);
+//                    $data['mobile'] = $phone;
+//                    $data['is_sms_subscribe'] = $isSubscribe;
+//                }
+//
+//                try {
+//                    $result = \App::coreClientV2()->query('user/create', [], $data, \App::config()->coreV2['hugeTimeout']);
+//                    if (empty($result['token'])) {
+//                        throw new \Exception('Не удалось получить токен');
+//                    }
+//
+//                    $user = \RepositoryManager::user()->getEntityByToken($result['token']);
+//                    if (!$user) {
+//                        throw new \Exception(sprintf('Не удалось получить пользователя по токену %s', $result['token']));
+//                    }
+//                    $user->setToken($result['token']);
+//
+//                    $response = $request->isXmlHttpRequest()
+//                        ? new \Http\JsonResponse([
+//                            'success' => true,
+//                            'message' => sprintf('Пароль отправлен на ваш %s', !empty($data['email']) ? 'email' : 'телефон'),
+//
+//                            'data'    => [
+//                                //'link' => $this->redirect,
+//                            ],
+//                            'error' => null,
+//                            'notice' => ['message' => 'Изменения успешно сохранены', 'type' => 'info'],
+//                        ])
+//                        : new \Http\RedirectResponse($this->redirect);
+//
+//                    // передаем email пользователя для RetailRocket
+//                    if (isset($data['email']) && !empty($data['email'])) {
+//                        \App::retailrocket()->setUserEmail($response, $data['email']);
+//                    }
+//
+//                    //\App::user()->signIn($user, $response); // SITE-2279
+//
+//                    return $response;
+//                } catch(\Exception $e) {
+//                    \App::exception()->remove($e);
+//                    $errorMess = $e->getMessage();
+//                    switch ($e->getCode()) {
+//                        case 686:
+//                        case 684:
+//                        case 689:
+//                        case 690:
+//                            $form->setError('username', $errorMess );
+//                            break;
+//                        case 609:
+//                        default:
+//                            $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $errorMess) : '') );
+//                            break;
+//                    }
+//                }
+//            }
+//
+//            $formErrors = [];
+//            foreach ($form->getErrors() as $fieldName => $errorMessage) {
+//                $formErrors[] = ['code' => 'invalid', 'message' => $errorMessage, 'field' => $fieldName];
+//            }
+//
+//            // xhr
+//            if ($request->isXmlHttpRequest()) {
+//                return new \Http\JsonResponse([
+//                    'form' => ['error' => $formErrors],
+//                    'error' => ['code' => 0, 'message' => 'Форма заполнена неверно'],
+//                ]);
+//            }
+//        }
+//
+//        $page = new \View\User\LoginPage();
+//        $page->setParam('form', $form);
+//
+//        return new \Http\Response($page->show());
     }
 
     /**
