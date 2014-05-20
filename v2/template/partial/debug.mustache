@@ -1,39 +1,33 @@
+<div class="js-debug debug">
+    <a class="js-debug-link" href="#">debug</a>
+    <div class="js-widget id-debug-{{requestId}} debug__container" data-value="{{&debug}}" data-template-selector="#tpl-debug-container" style="display: none;"></div>
+</div>
+
 {{={{{ }}}=}}
 <script id="tpl-debug-container" type="text/html">
-    <table style="background: #ffffff">
-        <tr>
-            <td>{{requestId}}</td>
-        </tr>
-        <tr>
-            <td>
-                {{>content}}
-            </td>
-        </tr>
-    </table>
-</script>
+    <div class="js-widget id-debug-{{requestId}} debug__container" style="display: block;">
 
-<script id="tpl-debug-container-query" type="text/html">
-    <div class="debug__queryMap">
-        {{#queries}}
-            <div title="{{url}}" style="border: solid 1px #ededed; background: {{css.color1}}; margin-left: {{css.left}}%; top: {{css.top}}px; width: {{css.width1}}%; height: 28px;">
-        <span style="position: absolute; z-index: 9999; font: normal 12px Tahoma; line-height: 28px;">
-            {{path}}
-            <span style="color: #9b59bb;">{{time}}ms</span>
-            <span style="color: #9b59bb;">{{call}}call</span>
-        </span>
-                <div style="position: relative; background: {{css.color2}}; width: {{css.width2}}%; height: 28px;"></div>
+        <div class="debug__item">{{requestId}}</div>
+
+        <div class="debug__queryMap">
+            {{#queries}}
+                <div title="{{url}}" style="border: solid 1px #ededed; background: {{css.color1}}; margin-left: {{css.left}}%; top: {{css.top}}px; width: {{css.width1}}%; height: 28px;">
+                    <span class="debug__queryMap__line">
+                        {{path}}
+                        <span style="color: #9b59bb;">{{time}}ms</span>
+                        <span style="color: #9b59bb;">{{call}}call</span>
+                    </span>
+                    <div style="position: relative; background: {{css.color2}}; width: {{css.width2}}%; height: 28px;"></div>
+                </div>
+            {{/queries}}
+
+            {{#times.total}}
+            <div style="margin-left: 2px;">
+                total <span style="color: #9b59bb;">{{value}}{{unit}}</span>
             </div>
-        {{/queries}}
-        <div style="margin-left: 95%;">
-            <span style="color: #9b59bb;">{{time}}ms</span>
+            {{/times.total}}
         </div>
+
     </div>
 </script>
 {{{={{ }}=}}}
-
-<div class="js-debug debug">
-    <a href="#">debug</a>
-    <div class="debug__container" style="display: block;">
-        <div data-value="{{&debug}}"></div>
-    </div>
-</div>

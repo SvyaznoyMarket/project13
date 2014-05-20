@@ -19,12 +19,19 @@ class Debug {
     use ViewHelperTrait;
 
     public function execute(Http\Request $request = null, Http\Response $response = null, $startAt, $endAt) {
-        $logger = $this->getLogger();
         $config = $this->getConfig();
+        $logger = $this->getLogger();
+
+        if (!$config->debug) {
+            return;
+        }
 
         $totalTime = $endAt - $startAt;
 
         $page = new Page();
+
+        // request id
+        $page->requestId = $config->requestId;
 
         // error
         if ($error = error_get_last()) {
@@ -86,7 +93,8 @@ class Debug {
                 $response->data['debug'] = $page;
             } else {
                 $response->content = str_replace('</body>', PHP_EOL . $this->getRenderer()->render('partial/debug', [
-                    'debug' => $this->getViewHelper()->json($page),
+                    'requestId' => $page->requestId,
+                    'debug'     => $this->getViewHelper()->json($page),
                 ]) . PHP_EOL . '</body>', $response->content);
             }
         }

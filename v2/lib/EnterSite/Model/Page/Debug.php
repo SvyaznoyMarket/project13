@@ -3,6 +3,8 @@
 namespace EnterSite\Model\Page {
     class Debug {
         /** @var string */
+        public $requestId;
+        /** @var string */
         public $name;
         /** @var Debug\Error|null */
         public $error;

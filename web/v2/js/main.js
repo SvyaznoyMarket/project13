@@ -95,9 +95,9 @@ require([
 ]);
 
 require(
-    [moduleName],
-    function(module) {
-        console.info(module);
+    ['require', 'module/config', moduleName],
+    function(require, config, module) {
+        config.debug && require(['module/debug']);
     }
 );
 

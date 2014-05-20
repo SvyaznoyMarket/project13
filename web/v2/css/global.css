@@ -2417,15 +2417,26 @@ body.noScroll {
    ========================================================================== */
 .debug {
   position: fixed;
-  bottom: 0;
+  bottom: 20px;
   background: #ededed;
-  padding: 4px 6px;
+  padding: 4px 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 1020;
 }
 .debug__queryMap {
   width: 961px;
   margin: 5px auto;
   border: #ededed;
   background: #ffffff url('/debug/grid.gif');
+}
+.debug__queryMap__line {
+  position: absolute;
+  z-index: 9999;
+  font: normal 12px Tahoma;
+  line-height: 28px;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 400px;
 }
 /* ==========================================================================
    Стили при отключенном JavaScript
