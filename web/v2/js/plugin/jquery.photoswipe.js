@@ -1,7 +1,5 @@
 $(function() {
 
-  console.warn("photo");
-
   var curSlide = 0,
       body = $('body'),
       slideWrap = $('.slidesItems'),
@@ -23,7 +21,6 @@ $(function() {
       resizeSlides = function resizeSlides() {
         slideWrapItem.css({'display' : 'inline-block', 'float' : 'left'});
 
-        console.warn("photo resize")
         var slideWrapHeight = 350,
             slideImg = slideWrapItem.find('.slidesItemsList_img');
         // end vars
@@ -139,8 +136,6 @@ $(function() {
       }
     }
   });
-
-  console.warn('window', $(window) );
 
   $(window).on('resize', resizeSlides);
   resizeSlides();

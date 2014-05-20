@@ -31,10 +31,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="yes">
 
+    <meta id="js-enter-version" name="enter-version" content="{{&dataVersion}}">
     <meta id="js-enter-module" name="enter-module" content="{{&dataModule}}">
     <link rel="stylesheet" href="/v2/css/global.min.css">
 
-    <script data-main="/v2/js/main.js" src="/v2/js/vendor/require-2.1.11.js"></script>
+    <script data-main="/v2/js/main.js?t={{&dataVersion}}" src="/v2/js/vendor/require-2.1.11.js"></script>
 </head>
 
 <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="">

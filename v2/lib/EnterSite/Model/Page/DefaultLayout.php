@@ -6,6 +6,8 @@ namespace EnterSite\Model\Page {
 
     class DefaultLayout extends HtmlPage {
         /** @var string */
+        public $dataVersion;
+        /** @var string */
         public $dataModule;
         /** @var string */
         public $dataConfig;

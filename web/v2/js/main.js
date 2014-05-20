@@ -1,6 +1,14 @@
+var
+    date = new Date(),
+    version = document.getElementById('js-enter-version').getAttribute('content'),
+    moduleName = 'module/' + (document.getElementById('js-enter-module').getAttribute('content') || 'default')
+;
+
+console.info('Init app', version, moduleName);
 
 require.config({
-    baseUrl: "/v2/js",
+    urlArgs: 't=' + version,
+    baseUrl: '/v2/js',
     paths: {
         //'jquery': 'http://yandex.st/jquery/2.1.0/jquery',
         //'jquery'            : 'vendor/jquery-1.11.0',
@@ -59,8 +67,6 @@ require.config({
         'direct-credit': []
     }
 });
-
-var moduleName = 'module/' + (document.getElementById('js-enter-module').getAttribute('content') || 'default');
 
 require([
     'html5',
