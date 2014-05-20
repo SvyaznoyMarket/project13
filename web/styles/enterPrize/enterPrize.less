@@ -92,77 +92,6 @@
 	    }
 	}
 
-	.enterPrizeDesc {
-		color: #ddd;
-		margin: 15px 0 0 31px;
-		font-size: 14px;
-		line-height: 1.6;
-
-		&__text {
-			text-decoration: underline;
-			cursor: pointer;
-		}
-
-		a {
-			color: @white;
-			text-decoration: underline;
-		}
-	}
-
-	.enterPrizeListWrap {
-		display: none;
-		margin: 20px 0 0;
-
-		&.mComplete {
-			color: #000;
-			display: block;
-
-			.enterPrizeListTitle,
-			.enterPrizeList__item {
-				color: #000;
-				margin-left: 25px;
-			}
-			
-		}
-	}
-
-	.enterPrizeListTitle {
-		font-size: 16px;
-		color: #bbb;
-		font-weight: bold;
-		margin: 0 0 15px 36px;
-	}
-
-	.enterPrizeFinish {
-		color: #BBBBBB;
-	    font-size: 14px;
-	    margin: 0 0 50px 39px;
-	}
-
-	.enterPrizeList {
-		margin: 0 0 20px 0;
-
-		&__item {
-			color: #bbb;
-			margin: 0 0 15px 36px;
-			border-left: 3px solid;
-			padding-left: 10px;
-			font-size: 12px;
-
-			&.mBlue {
-				border-color: @firmBlue;
-			}
-
-			&.mOrange {
-				border-color: @firmOrange;
-			}
-
-			&.mGreen {
-				border-color: @firmGreen;
-			}
-		}
-	}
-
 	&__list {
 		margin: 65px 0 0 2px;
 
@@ -449,18 +378,21 @@
 }
 
 .titleForm {
-	font-family: "Enter";
+	font-family: 'Enter';
     font-size: 26px;
     font-weight: normal;
-    margin: 40px 0 20px 25px;
+    text-align: center;
     text-transform: uppercase;
+
+    margin: 40px 0 20px 0;
 }
 
 .jsEnterprizeForm {
-	margin: 0 0 0 25px;
+	margin: 0 auto;
+    width: 368px;
 
 	.formDefault__btnSubmit {
-		margin: 20px 0 100px 269px;
+		margin: 20px auto 30px;
 	}
 
 	.red {
@@ -563,6 +495,8 @@
 	}
 }
 
+
+
 .enterprizeAuthBox {
 
 	&__title {
@@ -630,4 +564,13 @@
     &__link {
     	text-decoration: underline;
     }
+}
+
+.epSliderTitle {
+	font-size: 16px;
+	margin: 0 0 10px 25px;
+}
+
+.epSliderBody {
+	margin: 0 0 50px 25px;
 }
