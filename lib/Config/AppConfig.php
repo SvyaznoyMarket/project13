@@ -512,6 +512,9 @@ class AppConfig {
      */
     public $enterprize = [
         'enabled' => null,
+        'formDataSessionKey' => null,
+        'itemsInSlider' => null,
+        'showSlider' => null,
     ];
 
     /** @var array */

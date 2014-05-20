@@ -5,7 +5,10 @@
  * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
  * @var $errors           array
  * @var $authSource       string|null
+ * @var $products         \Model\Product\Entity[]
  */
+$products = !empty($products) && is_array($products) ? $products : [];
+$helper = new \Helper\TemplateHelper();
 ?>
 
 <div class="titleForm">Мы отправим код на скидку в SMS и e-mail</div>
@@ -102,7 +105,14 @@
 <div class="epSliderTitle">Фишка действует на товары</div>
 
 <div class="epSliderBody">
-
-<!-- Код слайдера -->
-
+    <!-- Код слайдера -->
+    <? if (\App::config()->enterprize['showSlider']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'enterprize',
+//            'title'    => 'Фишка действует на товары',
+            'products' => $products,
+            'count'    => null,
+            'limit'    => \App::config()->enterprize['itemsInSlider'],
+        ]) ?>
+    <? endif ?>
 </div>

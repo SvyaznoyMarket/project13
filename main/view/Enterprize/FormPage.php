@@ -14,11 +14,11 @@ class FormPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        if ($this->params['limit'] !== 0) {
+        if ($this->params['limit'] > 0) {
             return $this->render('enterprize/page-form', $this->params);
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     public function slotBodyClassAttribute() {

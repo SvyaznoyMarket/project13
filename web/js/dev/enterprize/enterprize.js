@@ -289,4 +289,9 @@
 
 	body.on('submit', '.jsEnterprizeForm', formSubmit);
 	body.on('click', '.jsEnterprizeAuthLink', openAuth);
+
+	// Подключение слайдера товаров
+	if ( $('.bGoodsSlider').length ) {
+		$('.bGoodsSlider').goodsSlider();
+	}
 }(window.ENTER));
