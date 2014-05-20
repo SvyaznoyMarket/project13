@@ -42,6 +42,8 @@ class DefaultLayout {
         // body[data-value]
         $page->dataConfig = $helper->json([
             'requestId' => $config->requestId,
+            'debug'     => $config->debug,
+            'env'       => $config->environment,
             'user'      => [
                 'infoUrl'    => $router->getUrlByRoute(new Routing\User\Get()),
             ],

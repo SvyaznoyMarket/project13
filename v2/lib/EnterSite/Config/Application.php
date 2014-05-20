@@ -7,6 +7,10 @@ namespace EnterSite\Config {
         /** @var string */
         public $dir;
         /** @var string */
+        public $environment;
+        /** @var bool */
+        public $debug;
+        /** @var string */
         public $hostname;
         /** @var Application\Logger */
         public $logger;

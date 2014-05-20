@@ -6,6 +6,8 @@ return function(\EnterSite\Config\Application $config) {
     $config->dir = realpath(__DIR__ . '/../..');
     $config->hostname = 'enter.ru';
 
+    $config->debug = false;
+
     $config->logger->fileAppender->file = $config->dir . '/log/main.log';
 
     $config->session->name = 'enter';

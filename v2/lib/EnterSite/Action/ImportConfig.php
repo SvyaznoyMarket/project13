@@ -20,6 +20,8 @@ class ImportConfig {
         $config->dir = $applicationDir;
         $config->hostname = $importedConfig->mainHost;
 
+        $config->debug = $importedConfig->debug;
+
         $config->logger->fileAppender->file = $config->dir . '/log/main.log';
 
         $config->session->name = $importedConfig->session['name'];

@@ -4,16 +4,20 @@ namespace EnterSite\Action;
 
 use Enter\Http;
 use EnterSite\Action;
+use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 
 class HandleResponse {
-    use LoggerTrait;
+    use ConfigTrait, LoggerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait;
+    }
 
     /**
      * @param \Enter\Http\Request $request
      * @param Http\Response|null $response
      */
     public function execute(Http\Request $request, Http\Response &$response = null) {
+        $config = $this->getConfig();
         $logger = $this->getLogger();
 
         $logger->push(['request' => [
@@ -32,6 +36,34 @@ class HandleResponse {
 
             // response
             $response = call_user_func($controllerCall, $request);
+        }
+
+        // debug cookie
+        try {
+            if (
+                $response
+                && (
+                    ($request->cookies['debug'] && !$config->debug)
+                    || (!$request->cookies['debug'] && $config->debug)
+                )
+            ) {
+                $cookie = new Http\Cookie(
+                    'debug',
+                    $config->debug ? 1 : 0,
+                    strtotime('+7 days' ),
+                    '/',
+                    null,
+                    false,
+                    false
+                );
+                $response->headers->setCookie($cookie);
+            }
+        } catch (\Exception $e) {
+            $logger->push([
+                'type'   => 'error',
+                'action' => __METHOD__,
+                'error'  => $e,
+            ]);
         }
     }
 }
