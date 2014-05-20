@@ -109,6 +109,8 @@ namespace EnterSite\Config\Application {
     class Curl {
         /** @var int */
         public $queryChunkSize;
+        /** @var bool */
+        public $logResponse;
     }
 
     class CurlService {

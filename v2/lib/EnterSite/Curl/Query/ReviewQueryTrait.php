@@ -11,6 +11,7 @@ use Enter\Util\JsonDecoderTrait;
  * @property int $timeout
  * @property string $auth
  * @property \Exception|null $error
+ * @property string $response
  */
 trait ReviewQueryTrait {
     use JsonDecoderTrait;
@@ -26,7 +27,15 @@ trait ReviewQueryTrait {
         }
     }
 
+    /**
+     * @param $response
+     * @return array
+     */
     protected function parse($response) {
+        if ($this->getConfig()->curl->logResponse) {
+            $this->response = $response;
+        }
+
         try {
             $response = $this->jsonToArray($response);
             if (array_key_exists('error', $response)) {

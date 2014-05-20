@@ -34,6 +34,7 @@ class ImportConfig {
         $config->region->cookieName = $importedConfig->region['cookieName'];
 
         $config->curl->queryChunkSize = $importedConfig->coreV2['chunk_size'];
+        $config->curl->logResponse = false;
 
         $config->coreService->url = str_replace('/v2/', '/', $importedConfig->coreV2['url']);
         $config->coreService->timeout = $importedConfig->coreV2['timeout'];

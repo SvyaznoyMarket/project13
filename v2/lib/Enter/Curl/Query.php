@@ -39,6 +39,10 @@ abstract class Query implements \JsonSerializable {
      * @var mixed
      */
     protected $result;
+    /**
+     * @var string
+     */
+    protected $response;
     /** @var array */
     protected $info = [];
     /** @var float */
@@ -62,7 +66,9 @@ abstract class Query implements \JsonSerializable {
         ];
         if ($this->error instanceof \Exception) {
             $return['error'] = ['code' => $this->error->getCode(), 'message' => $this->error->getMessage()];
-            $return['result'] = $this->result;
+        }
+        if ($this->response) {
+            $return['response'] = $this->response;
         }
 
         return $return;

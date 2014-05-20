@@ -10,6 +10,7 @@ use Enter\Util\JsonDecoderTrait;
  * @property array $data
  * @property int $timeout
  * @property \Exception|null $error
+ * @property string $response
  */
 trait CmsQueryTrait {
     use JsonDecoderTrait;
@@ -22,7 +23,15 @@ trait CmsQueryTrait {
         $this->timeout = $config->timeout;
     }
 
+    /**
+     * @param $response
+     * @return array
+     */
     protected function parse($response) {
+        if ($this->getConfig()->curl->logResponse) {
+            $this->response = $response;
+        }
+
         try {
             $response = $this->jsonToArray($response);
         } catch (\Exception $e) {

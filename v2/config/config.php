@@ -42,6 +42,7 @@ return function(\EnterSite\Config\Application $config) {
     $config->retailRocketService->timeout = 0.5;
 
     $config->curl->queryChunkSize = 50;
+    $config->curl->logResponse = false;
 
     $config->mustacheRenderer->dir = $config->dir . '/v2/vendor/mustache';
     $config->mustacheRenderer->templateDir = $config->dir . '/v2/template';

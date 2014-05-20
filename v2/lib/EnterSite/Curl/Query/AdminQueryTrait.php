@@ -3,6 +3,7 @@
 namespace EnterSite\Curl\Query;
 
 use EnterSite\ConfigTrait;
+use EnterSite\LoggerTrait;
 use Enter\Util\JsonDecoderTrait;
 
 /**
@@ -11,6 +12,7 @@ use Enter\Util\JsonDecoderTrait;
  * @property int $timeout
  * @property string $auth
  * @property \Exception|null $error
+ * @property string $response
  */
 trait AdminQueryTrait {
     use JsonDecoderTrait;
@@ -26,7 +28,15 @@ trait AdminQueryTrait {
         }
     }
 
+    /**
+     * @param $response
+     * @return array
+     */
     protected function parse($response) {
+        if ($this->getConfig()->curl->logResponse) {
+            $this->response = $response;
+        }
+
         try {
             $response = $this->jsonToArray($response);
             if (array_key_exists('error', $response)) {

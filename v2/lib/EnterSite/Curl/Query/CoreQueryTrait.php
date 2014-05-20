@@ -9,6 +9,7 @@ use Enter\Util\JsonDecoderTrait;
  * @property Url $url
  * @property int $timeout
  * @property \Exception|null $error
+ * @property string $response
  */
 trait CoreQueryTrait {
     use JsonDecoderTrait;
@@ -27,6 +28,10 @@ trait CoreQueryTrait {
      * @return array
      */
     protected function parse($response) {
+        if ($this->getConfig()->curl->logResponse) {
+            $this->response = $response;
+        }
+
         try {
             $response = $this->jsonToArray($response);
             if (array_key_exists('error', $response)) {

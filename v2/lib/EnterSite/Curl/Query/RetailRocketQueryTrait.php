@@ -11,6 +11,7 @@ use Enter\Util\JsonDecoderTrait;
  * @property int $timeout
  * @property string $auth
  * @property \Exception|null $error
+ * @property string $response
  */
 trait RetailRocketQueryTrait {
     use JsonDecoderTrait;
@@ -24,7 +25,15 @@ trait RetailRocketQueryTrait {
         $this->timeout = $config->timeout;
     }
 
+    /**
+     * @param $response
+     * @return array
+     */
     protected function parse($response) {
+        if ($this->getConfig()->curl->logResponse) {
+            $this->response = $response;
+        }
+
         try {
             $response = $this->jsonToArray($response);
             // TODO: обработка ошибок
