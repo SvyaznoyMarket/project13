@@ -1,9 +1,9 @@
 define(
     [
-        'require', 'jquery',
-        'module/config', 'jquery.photoswipe'
+        'jquery',
+        'module/config', 'jquery.ui', 'jquery.photoswipe'
     ],
-    function (require, $, config) {
+    function ($, config) {
 		$( "#slider-range" ).slider({
 			range: true,
 			min: 0,

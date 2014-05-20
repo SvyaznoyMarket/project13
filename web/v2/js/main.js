@@ -26,6 +26,9 @@ require.config({
         'html5'              : 'vendor/html5-3.6.2',
         'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
 
+        'browserstate.history'         : 'vendor/browserstate.history-1.8b2',
+        'browserstate.history.adapter' : 'vendor/browserstate.history.adapter.jquery-1.8b2',
+
         'direct-credit' : 'http://direct-credit.ru/widget/api_script_utf'
     },
 
@@ -64,6 +67,12 @@ require.config({
         },
         'html5': [],
         'boilerplate.helper': [],
+
+        'browserstate.history': [],
+        'browserstate.history.adapter': {
+            deps: ['browserstate.history', 'jquery']
+        },
+
         'direct-credit': []
     }
 });
@@ -79,10 +88,10 @@ require([
     'module/navigation',
     'module/region',
     'module/search',
-    'module/catalog.common',
     'module/widget',      // виджеты
     'module/user.common', // инфо о пользователе
     'module/cart.common', // кнопка купить, спиннер
+    'module/product.catalog.common',
 ]);
 
 require(
