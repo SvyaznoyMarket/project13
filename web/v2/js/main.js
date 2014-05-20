@@ -12,7 +12,7 @@ require.config({
     paths: {
         //'jquery': 'http://yandex.st/jquery/2.1.0/jquery',
         //'jquery'            : 'vendor/jquery-1.11.0',
-        'jquery'                : 'vendor/jquery-1.8.3',
+        'jquery'                : ['http://yandex.st/jquery/1.8.3/jquery', 'vendor/jquery-1.8.3'],
         'jquery.cookie'         : 'vendor/jquery/jquery.cookie-1.4.1',
         'jquery.ui'             : 'vendor/jquery/jquery.ui-1.10.4.custom',
         'jquery.ui.touch-punch' : 'vendor/jquery/jquery.ui.touch-punch-0.2.3',
@@ -21,7 +21,7 @@ require.config({
         'jquery.touchwipe'      : 'plugin/jquery.touchwipe',
         'jquery.photoswipe'     : 'plugin/jquery.photoswipe',
 
-        'underscore'         : 'vendor/underscore-1.6.0',
+        'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
         'html5'              : 'vendor/html5-3.6.2',
         'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
