@@ -61,6 +61,17 @@ class DeleteProduct {
         $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
         $curl->prepare($cartItemQuery);
 
+        $productsById = [];
+        foreach ($cart->product as $cartProduct) {
+            $productsById[$cartProduct->id] = null;
+        }
+
+        $productListQuery = null;
+        if ((bool)$productsById) {
+            $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId);
+            $curl->prepare($productListQuery);
+        }
+
         $curl->execute(1, 2);
 
         // корзина из ядра
@@ -78,6 +89,11 @@ class DeleteProduct {
             throw new \Exception(sprintf('Товар #%s не найден', $cartProduct->id));
         }
 
+        // товары
+        if ($productListQuery) {
+            $productsById = (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+        }
+
         // пользователь
         $user = $userItemQuery ? (new Repository\User())->getObjectByQuery($userItemQuery) : null;
 
@@ -92,7 +108,7 @@ class DeleteProduct {
         $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
         $page->widgets['.' . $widget->widgetId] = $widget;
 
-        $widget = (new Repository\Partial\Cart())->getObject($cart);
+        $widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById));
         $page->widgets['.' . $widget->widgetId] = $widget;
 
         // response

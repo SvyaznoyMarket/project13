@@ -69,6 +69,7 @@ require([
     'jquery.cookie',
     'jquery.ui', 'jquery.ui.touch-punch', 'jquery.popup',
     'jquery.touchwipe',
+    'module/util',
     'module/navigation',
     'module/region',
     'module/search',

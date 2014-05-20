@@ -1,10 +1,10 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache',
+        'require', 'jquery', 'underscore', 'mustache', 'module/util',
         'jquery.enterslide', 'jquery.photoswipe', 'module/product.card.tab'
     ],
     function (
-        require, $, _, mustache
+        require, $, _, mustache, util
     ) {
         var $body = $('body');
 
@@ -62,7 +62,7 @@ define(
                         price = Math.ceil(result.payment);
 
                     $price.html(mustache.render($template.html(), {
-                        shownPrice: price
+                        shownPrice: util.formatCurrency(price)
                     }));
 
                     $creditPayment.show();

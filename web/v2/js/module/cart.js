@@ -1,36 +1,44 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache',
+        'require', 'jquery', 'underscore', 'mustache', 'module/util'
     ],
     function (
-        require, $, _, mustache
+        require, $, _, mustache, util
     ) {
-        var $body = $('body');
+        var $body = $('body'),
 
+            getCreditPayment = function() {
+                // direct-credit
+                $creditPayment = $('.js-creditPayment');
+                console.info('creditPayment', $creditPayment);
+                var dataValue = $creditPayment.data('value');
+                _.isObject(dataValue) && require(['module/direct-credit', 'direct-credit'], function(directCredit) {
+                    dataValue.product.quantity = 1;
 
-        // direct-credit
-        $creditPayment = $('.js-creditPayment');
-        console.info('creditPayment', $creditPayment);
-        var dataValue = $creditPayment.data('value');
-        _.isObject(dataValue) && require(['module/direct-credit', 'direct-credit'], function(directCredit) {
-            dataValue.product.quantity = 1;
+                    directCredit.getPayment(
+                        { partnerId: dataValue.partnerId },
+                        $body.data('user'),
+                        dataValue.product,
+                        function (result) {
+                            var $template = $($creditPayment.data('templateSelector')),
+                                $price = $($creditPayment.data('priceSelector')),
+                                price = Math.ceil(result.payment);
 
-            directCredit.getPayment(
-                { partnerId: dataValue.partnerId },
-                $body.data('user'),
-                dataValue.product,
-                function (result) {
-                    var $template = $($creditPayment.data('templateSelector')),
-                        $price = $($creditPayment.data('priceSelector')),
-                        price = Math.ceil(result.payment);
+                            $price.html(mustache.render($template.html(), {
+                                shownPrice: util.formatCurrency(price)
+                            }));
 
-                    $price.html(mustache.render($template.html(), {
-                        shownPrice: price
-                    }));
+                            $creditPayment.show();
+                        }
+                    );
+                });
+            }
+        ;
 
-                    $creditPayment.show();
-                }
-            );
-        });
+        $body
+            .on('render', '.js-cart-total', getCreditPayment)
+
+        getCreditPayment();
+
     }
 );

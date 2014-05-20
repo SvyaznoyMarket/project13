@@ -13,12 +13,12 @@ class Cart {
 
     /**
      * @param Model\Cart $cartModel
-     * @param Model\Product[] $products
+     * @param Model\Product[] $productModels
      * @return Partial\Cart
      */
     public function getObject(
         Model\Cart $cartModel,
-        $products = []
+        $productModels = []
     ) {
         $cart = new Partial\Cart();
         $cart->widgetId = self::getWidgetId();
@@ -31,7 +31,7 @@ class Cart {
         foreach ($cartModel->product as $cartProduct) {
             $cartProductsById[$cartProduct->id] = $cartProduct;
         }
-        $cart->credit = (new Repository\Partial\DirectCredit())->getObject($products, $cartProductsById);
+        $cart->credit = (new Repository\Partial\DirectCredit())->getObject($productModels, $cartProductsById);
 
         return $cart;
     }
