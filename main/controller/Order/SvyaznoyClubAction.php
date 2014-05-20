@@ -11,17 +11,17 @@ class SvyaznoyClubAction {
     public function complete(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $data = [
+            'OrderId'    => $request->get('OrderId'),
+            'Status'     => $request->get('Status'),
+            'Discount'   => $request->get('Discount'),
+            'CardNumber' => $request->get('CardNumber'),
+            'Error'      => $request->get('Error'),
+            'Signature'  => $request->get('Signature'),
+        ];
+
         $response = null;
         try {
-            $data = [
-                'OrderId'    => $request->get('OrderId'),
-                'Status'     => $request->get('Status'),
-                'Discount'   => $request->get('Discount'),
-                'CardNumber' => $request->get('CardNumber'),
-                'Error'      => $request->get('Error'),
-                'Signature'  => $request->get('Signature'),
-            ];
-
             $result = \App::coreClientV2()->query('payment/svyaznoy-club', [], $data, \App::config()->coreV2['hugeTimeout']);
 
             if (!isset($result['detail']['order']) || !is_array($result['detail']['order'])) {
@@ -44,6 +44,11 @@ class SvyaznoyClubAction {
             \App::exception()->remove($e);
 
             $page = new \View\Order\PaymentFailPage();
+
+            if (503 == $e->getCode()) {
+                $page = new \View\Order\SvyaznoyServiceMixFailPage();
+                $page->setParam('paymentData', $data);
+            }
         }
 
         return new \Http\Response($page->show());
