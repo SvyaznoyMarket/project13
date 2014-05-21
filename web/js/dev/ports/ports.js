@@ -65,37 +65,75 @@ window.ANALYTICS = {
 	LiveTexJS: function () {
 		console.group('ports.js::LiveTexJS log');
 
-		var LTData = $('#LiveTexJS').data('value');
-		window.liveTexID = LTData.livetexID;
-		window.liveTex_object = true;
+		var
+			LTData = $('#LiveTexJS').data('value');
+		// end of vars
 
-		window.LiveTex = {
-			onLiveTexReady: function () {
-				window.LiveTex.setName(LTData.username);
+		var
+			liveTexAction = function() {
+				if ( !LTData ) {
+					return;
+				}
+
+				console.info('liveTex action');
+				console.log(LTData);
+
+				window.liveTexID = LTData.livetexID;
+				window.liveTex_object = true;
+
+				window.LiveTex = {
+					onLiveTexReady: function () {
+						window.LiveTex.setName(LTData.username);
+					},
+
+					invitationShowing: true,
+
+					addToCart: function (productData) {
+						var userid = ( LTData.userid ) ? LTData.userid : 0;
+						if ( !productData.name || !productData.article ) {
+							return false;
+						}
+						window.LiveTex.setManyPrechatFields({
+							'Department': 'Marketing',
+							'Product': productData.article,
+							'Ref': window.location.href,
+							'userid': userid
+						});
+
+						if ( (!window.LiveTex.invitationShowing) && (typeof(window.LiveTex.showInvitation) === 'function') ) {
+							LiveTex.showInvitation('Здравствуйте! Вы добавили корзину ' + productData.name + '. Может, у вас возникли вопросы и я могу чем-то помочь?');
+							LiveTex.invitationShowing = true;
+						}
+					} // end of addToCart function
+				}; // end of LiveTex Object
 			},
 
-			invitationShowing: false,
+			/**
+			 * @param {Object}	event		Данные о событии
+			 * @param {Object}	userInfo	Данные пользователя
+			 */
+			liveTexUserInfo = function( event, userInfo ) {
+				try {
+					LTData.username = 'undefined' != typeof(userInfo.name) ? userInfo.name : null;
+					LTData.userid = 'undefined' != typeof(userInfo.id) ? userInfo.id : null;
 
-			addToCart: function (productData) {
-				var userid = ( LTData.userid ) ? LTData.userid : 0;
-				if ( !productData.name || !productData.article ) {
-					return false;
+					liveTexAction();
+
+				} catch ( err ) {
+					ENTER.utils.logError({
+						event: 'liveTex_error',
+						type:'ошибка в action',
+						err: err
+					});
 				}
-				window.LiveTex.setManyPrechatFields({
-					'Department': 'Marketing',
-					'Product': productData.article,
-					'Ref': window.location.href,
-					'userid': userid
-				});
+			};
+		// end of functions
 
-				if ( (!window.LiveTex.invitationShowing) && (typeof(window.LiveTex.showInvitation) === 'function') ) {
-					LiveTex.showInvitation('Здравствуйте! Вы добавили корзину ' + productData.name + '. Может, у вас возникли вопросы и я могу чем-то помочь?');
-					LiveTex.invitationShowing = true;
-				}
-
-			} // end of addToCart function
-
-		}; // end of LiveTex Object
+		if (ENTER.config.userInfo === false) {
+			liveTexAction();
+		} else {
+			$('body').on('userLogged', liveTexUserInfo);
+		}
 
 		//$(document).load(function() {
 		(function () {
