@@ -356,13 +356,15 @@ class Action {
                 \App::logger()->error('Рассчитанное значение $pickpointProductIds пусто', ['pickpoints']);
             } else {
                 $deliveryRegions = [];
-                foreach (reset($result['products'])['delivery_methods'] as $deliveryMethod) {
-                    if ('pickpoint' !== $deliveryMethod['token']) continue;
-                    if (!$deliveryMethod['points']) continue;
+                foreach ($result['products'] as $p) {
+                    foreach ($p['delivery_methods'] as $deliveryMethod) {
+                        if ('pickpoint' !== $deliveryMethod['token']) continue;
+                        if (!$deliveryMethod['points']) continue;
 
-                    foreach ($deliveryMethod['points'] as $pointItem) {
-                        foreach ($pointItem['regions'] as $regionItem) {
-                            $deliveryRegions[] = $regionItem['region'];
+                        foreach ($deliveryMethod['points'] as $pointItem) {
+                            foreach ($pointItem['regions'] as $regionItem) {
+                                $deliveryRegions[] = $regionItem['region'];
+                            }
                         }
                     }
                 }

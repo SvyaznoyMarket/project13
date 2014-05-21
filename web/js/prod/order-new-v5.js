@@ -767,18 +767,20 @@
                 console.groupCollapsed('Таблица продуктов для блока %s', self.token);
                 var consoleProducts = [];
                 for (var a in products) {
-                    var temp = products[a];
+                    var temp = products[a],
+                        chPoint = Object.keys(products[a].deliveries[self.state])[0];
+                    temp.choosenPoint = chPoint;
                     temp.deliveries_types = JSON.stringify(Object.keys(products[a].deliveries));
-                    temp.firstDate = products[a].deliveries[self.state][0].dates[0].name;
-                    temp.lastDate = products[a].deliveries[self.state][0].dates[products[a].deliveries[self.state][0].dates.length - 1].name;
+                    temp.firstDate = products[a].deliveries[self.state][chPoint].dates[0].name;
+                    temp.lastDate = products[a].deliveries[self.state][chPoint].dates[products[a].deliveries[self.state][chPoint].dates.length - 1].name;
                     consoleProducts.push(temp);
                 }
-                console.table(consoleProducts, ['id', 'name', 'price', 'sum', 'quantity', 'stock', 'isPrepayment', 'deliveries_types', 'firstDate', 'lastDate']);
-                console.groupEnd();
+                console.table(consoleProducts, ['id', 'name', 'price', 'sum', 'quantity', 'stock', 'isPrepayment', 'choosenPoint', 'deliveries_types', 'firstDate', 'lastDate']);
             } catch (e) {
-                console.log('Delivery\'s box self.state: %s, self.choosenPoint.id: %s', self.state, self.choosenPoint().id);
-                console.log('Products', products);
+                console.debug('Delivery\'s box self.state: %s, self.choosenPoint.id: %s', self.state, self.choosenPoint().id);
+                console.debug('Products', products);
                 console.error(e);
+            } finally {
                 console.groupEnd();
             }
 
@@ -1569,6 +1571,7 @@
 					tmpDate = new Date(tmpVal);
 
 					tmpDay = {
+                        value: tmpVal,
 						avalible: false,
 						humanDayOfWeek: self._getNameDayOfWeek(tmpDate.getDay()),
 						dayOfWeek: tmpDate.getDay(),
@@ -1593,6 +1596,7 @@
 					tmpDate = new Date(tmpVal);
 
 					tmpDay = {
+                        value: tmpVal,
 						avalible: false,
 						humanDayOfWeek: self._getNameDayOfWeek(tmpDate.getDay()),
 						dayOfWeek: tmpDate.getDay(),
