@@ -192,8 +192,8 @@ define(
 
         // спиннер для кнопки купить
         $body
-            .on('click', '.js-buySpinner-inc', incSpinnerValue)
-            .on('click', '.js-buySpinner-dec', decSpinnerValue)
+            .on('click dblclick contextmenu', '.js-buySpinner-inc', incSpinnerValue)
+            .on('click dblclick contextmenu', '.js-buySpinner-dec', decSpinnerValue)
             .on('change keyup', '.js-buySpinner-value', changeSpinnerValue)
             .on('renderValue', '.js-buySpinner', renderSpinnerValue)
     }
