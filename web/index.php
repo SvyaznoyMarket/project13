@@ -117,6 +117,7 @@ $response = null;
             }
         } else {
             \App::partner()->set($response);
+            \App::sclubManager()->set($response);
         }
 
         // debug panel

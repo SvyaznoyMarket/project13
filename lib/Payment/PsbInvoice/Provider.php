@@ -25,6 +25,13 @@ class Provider implements \Payment\ProviderInterface {
     }
 
     /**
+     * @param string $payUrl
+     */
+    public function setPayUrl($payUrl) {
+        $this->config['payUrl'] = $payUrl;
+    }
+
+    /**
      * @param \Model\Order\Entity $order
      * @param string              $backUrl
      * @return Form

@@ -570,6 +570,12 @@ return [
         'action'  => ['Order\PaypalAction', 'fail'],
     ],
 
+    'order.svyaznoyClub.complete' => [
+        'pattern' => '/orders/svyaznoy-club',
+        'action'  => ['Order\SvyaznoyClubAction', 'complete'],
+        'method'  => ['GET'],
+    ],
+
     // услуги
     'service' => [
         'pattern' => '/f1',

@@ -67,6 +67,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     <div class="pt10">
         <?= $page->render('order/form-payment', [
             'provider' => $paymentProvider,
+            'form' => isset($paymentForm) ? $paymentForm : null,
             'order' => reset($orders),
             'paymentUrl' => $paymentUrl,
             'paymentMethod' => $paymentMethod

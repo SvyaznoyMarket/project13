@@ -6,6 +6,7 @@
  * @var $deliveryData   array
  * @var $productsById   \Model\Product\Entity[]
  * @var $paymentMethods \Model\PaymentMethod\Entity[]
+ * @var $paymentGroups \Model\PaymentMethod\Group\Entity[]
  * @var $subways        \Model\Subway\Entity[]
  * @var $banks          \Model\CreditBank\Entity[]
  * @var $creditData     array
@@ -527,7 +528,12 @@ if ($oneClick) {
                 <div class="bBuyingLine clearfix mPayMethods" data-bind="css: { hidden: paypalECS }">
                     <div class="bBuyingLine__eLeft"></div>
                     <div class="bBuyingLine__eRight bInputList">
-                        <?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
+                        <?= $helper->render('order/newForm/__paymentGroup', [
+                            'form' => $form,
+                            'paymentGroups' => $paymentGroups,
+                            'banks'         => $banks,
+                            'creditData'    => $creditData
+                        ]) // методы оплаты ?>
                     </div>
                 </div>
 			<? endif ?>

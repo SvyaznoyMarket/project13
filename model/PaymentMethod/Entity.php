@@ -11,9 +11,9 @@ class Entity {
     const QIWI_ID = 12;
     const PAYPAL_ID = 13;
 
-    const TYPE_NOW = 0;
+    const TYPE_NOW = 2;
     const TYPE_ON_RECEIPT = 1;
-    const TYPE_ALL = 2;
+    const TYPE_ALL = 0;
 
     /** @var int */
     private $id;
@@ -27,10 +27,12 @@ class Entity {
     private $isOnline;
     /** @var bool */
     private $isCorporative;
-    /** @var int */
-    private $payOnReceipt;
     /** @var bool */
     private $isAvailableToPickpoint = true;
+    /** @var bool */
+    private $isPersonal;
+    /** @var bool */
+    private $isLegal;
 
     /**
      * @param array $data
@@ -42,9 +44,9 @@ class Entity {
         if (array_key_exists('is_credit', $data)) $this->setIsCredit($data['is_credit']);
         if (array_key_exists('is_online', $data)) $this->setIsOnline($data['is_online']);
         if (array_key_exists('is_corporative', $data)) $this->setIsCorporative($data['is_corporative']);
-        if (array_key_exists('pay_on_receipt', $data)) $this->setPayOnReceipt($data['pay_on_receipt']);
         if (array_key_exists('available_to_pickpoint', $data)) $this->setIsAvailableToPickpoint($data['available_to_pickpoint']);
-
+        if (array_key_exists('is_personal', $data)) $this->setIsPersonal($data['is_personal']);
+        if (array_key_exists('is_legal', $data)) $this->setIsLegal($data['is_legal']);
     }
 
     /**
@@ -167,20 +169,6 @@ class Entity {
     }
 
     /**
-     * @param int $payOnReceipt
-     */
-    public function setPayOnReceipt($payOnReceipt) {
-        $this->payOnReceipt = (int)$payOnReceipt;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPayOnReceipt() {
-        return $this->payOnReceipt;
-    }
-
-    /**
      * @return bool
      */
     public function getIsAvailableToPickpoint() {
@@ -198,5 +186,33 @@ class Entity {
             $ret = $val;
         }
         $this->isAvailableToPickpoint = (bool)$ret;
+    }
+
+    /**
+     * @param boolean $isLegal
+     */
+    public function setIsLegal($isLegal) {
+        $this->isLegal = $isLegal;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsLegal() {
+        return $this->isLegal;
+    }
+
+    /**
+     * @param boolean $isPersonal
+     */
+    public function setIsPersonal($isPersonal) {
+        $this->isPersonal = $isPersonal;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPersonal() {
+        return $this->isPersonal;
     }
 }
