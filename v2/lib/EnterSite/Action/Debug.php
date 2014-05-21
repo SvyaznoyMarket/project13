@@ -33,6 +33,8 @@ class Debug {
         // request id
         $page->requestId = $config->requestId;
 
+        $page->path = $request ? $request->getPathInfo() : null;
+
         // error
         if ($error = error_get_last()) {
             $page->error = new Page\Error($error);

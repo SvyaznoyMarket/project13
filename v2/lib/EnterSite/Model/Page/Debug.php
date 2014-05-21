@@ -5,6 +5,8 @@ namespace EnterSite\Model\Page {
         /** @var string */
         public $requestId;
         /** @var string */
+        public $path;
+        /** @var string */
         public $name;
         /** @var Debug\Error|null */
         public $error;
