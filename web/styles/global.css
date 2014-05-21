@@ -2420,6 +2420,9 @@ img[height="0"] {
   .epSliderBody {
     margin: 0 0 50px 25px;
   }
+  .epSliderBody  .bSlider__eInner {
+    width: 845px;
+  }
 }
 @media all {
   .enterPrizeDesc {
