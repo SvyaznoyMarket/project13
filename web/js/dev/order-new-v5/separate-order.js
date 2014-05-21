@@ -157,7 +157,7 @@
             if (ENTER.OrderModel.hasDeliveryBox(oldDeliveryBoxes[a].token)) {
                 console.log('[Deliverybox] Обнаружен старый блок доставки: ', oldDeliveryBoxes[a].token, ' c выбранной датой ', oldDeliveryBoxes[a].choosenDate);
                 console.info('[Deliverybox] Применяю старую дату на блок ', oldDeliveryBoxes[a].token);
-                ENTER.OrderModel.getDeliveryBoxByToken(oldDeliveryBoxes[a].token).choosenDate(oldDeliveryBoxes[a].choosenDate);
+                ENTER.OrderModel.getDeliveryBoxByToken(oldDeliveryBoxes[a].token).choosenDate(oldDeliveryBoxes[a].choosenDate());
                 console.log('[Deliverybox] Дата на новом блоке ', oldDeliveryBoxes[a].token, ': ', ENTER.OrderModel.getDeliveryBoxByToken(oldDeliveryBoxes[a].token).choosenDate());
             }
         }
