@@ -5,29 +5,30 @@
 
 {{={{{ }}}=}}
 <script id="tpl-debug-container" type="text/html">
-    <div class="js-widget id-debug-{{requestId}} debug__container" style="display: block;">
-
-        <div class="debug__item">{{requestId}}</div>
-
-        <div class="debug__queryMap">
-            {{#queries}}
-                <div title="{{url}}" style="border: solid 1px #ededed; background: {{css.color1}}; margin-left: {{css.left}}%; top: {{css.top}}px; width: {{css.width1}}%; height: 28px;">
+    <div class="js-widget id-debug-{{requestId}} debug__container" style="display: none;">
+        <div class="debug__title">
+            <a class="js-debug-container-link" href="#" data-content-selector=".id-debug-content-{{requestId}}">{{requestId}}</a>
+        </div>
+        <div class="js-debug-container-content id-debug-content-{{requestId}}" style="display: none;">
+            <div class="debug__queryMap">
+                {{#queries}}
+                    <div title="{{url}}" style="border: solid 1px #ededed; background: {{css.color1}}; margin-left: {{css.left}}%; top: {{css.top}}px; width: {{css.width1}}%; height: 28px;">
                     <span class="debug__queryMap__line">
                         {{path}}
                         <span style="color: #9b59bb;">{{time}}ms</span>
                         <span style="color: #9b59bb;">{{call}}call</span>
                     </span>
-                    <div style="position: relative; background: {{css.color2}}; width: {{css.width2}}%; height: 28px;"></div>
-                </div>
-            {{/queries}}
+                        <div style="position: relative; background: {{css.color2}}; width: {{css.width2}}%; height: 28px;"></div>
+                    </div>
+                {{/queries}}
 
-            {{#times.total}}
-            <div style="margin-left: 2px;">
-                total <span style="color: #9b59bb;">{{value}}{{unit}}</span>
+                {{#times.total}}
+                    <div style="margin-left: 2px;">
+                        total <span style="color: #9b59bb;">{{value}}{{unit}}</span>
+                    </div>
+                {{/times.total}}
             </div>
-            {{/times.total}}
         </div>
-
     </div>
 </script>
 {{{={{ }}=}}}

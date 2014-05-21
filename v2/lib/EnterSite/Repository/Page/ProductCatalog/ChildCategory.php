@@ -19,7 +19,6 @@ class ChildCategory {
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $ratingRepository = new Repository\Partial\Rating();
 
-        // body[data-module]
         $page->dataModule = 'product.catalog';
 
         foreach ($request->products as $productModel) {

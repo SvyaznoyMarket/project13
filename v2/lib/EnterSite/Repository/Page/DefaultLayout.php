@@ -33,10 +33,8 @@ class DefaultLayout {
         // заголовок
         $page->title = 'Enter - все товары для жизни по интернет ценам!';
 
-        // body[data-version]
+        $page->dataDebug = $config->debug ? 'true' : '';
         $page->dataVersion = date('ymd');
-
-        // body[data-module]
         $page->dataModule = 'default';
 
         // body[data-value]
