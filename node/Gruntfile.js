@@ -418,6 +418,11 @@ module.exports = function( grunt ) {
 		 * @link https://github.com/gruntjs/grunt-contrib-uglify
 		 */
 		uglify: {
+			options: {
+				compress: {
+					drop_console: true
+				}
+			},
 			partnerScripts: {
 				files: [
 					{
