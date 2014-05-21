@@ -102,14 +102,14 @@ $helper = new \Helper\TemplateHelper();
     </div>
 </div>
 
-<div class="epSliderTitle">Фишка действует на товары</div>
+<!--<div class="epSliderTitle">Фишка действует на товары</div>-->
 
 <div class="epSliderBody">
     <!-- Код слайдера -->
     <? if (\App::config()->enterprize['showSlider']): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'enterprize',
-//            'title'    => 'Фишка действует на товары',
+            'title'    => 'Фишка действует на товары',
             'products' => $products,
             'count'    => null,
             'limit'    => \App::config()->enterprize['itemsInSlider'],
