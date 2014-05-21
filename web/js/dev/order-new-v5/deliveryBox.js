@@ -818,6 +818,10 @@
 				dateFromCookie = window.docCookies.getItem('chDate_paypalECS');
 				chooseDate = JSON.parse(dateFromCookie);
 			}
+			// else if ( self.choosenDate() && self.choosenDate().avalible ) {
+			// 	console.warn('======= self.choosenDate() уже была =========');
+			// 	chooseDate = self.choosenDate();
+			// }
 			else {
 				chooseDate = self.getFirstAvalibleDate();
 			}

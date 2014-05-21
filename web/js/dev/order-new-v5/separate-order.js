@@ -47,7 +47,8 @@
 			isUnique = null,
 			nowProductsToNewBox = [],
             oldDeliveryBoxes = [],
-			discounts = ENTER.OrderModel.orderDictionary.orderData.discounts || [];
+			discounts = ENTER.OrderModel.orderDictionary.orderData.discounts || [],
+			deliveryBoxFound;
 		// end of vars
 		
 		if ( ENTER.OrderModel.paypalECS() ) {
@@ -155,10 +156,13 @@
 
         for ( var a in oldDeliveryBoxes ) {
             if (ENTER.OrderModel.hasDeliveryBox(oldDeliveryBoxes[a].token)) {
+            	deliveryBoxFound = ENTER.OrderModel.getDeliveryBoxByToken(oldDeliveryBoxes[a].token);
+
                 console.log('[Deliverybox] Обнаружен старый блок доставки: ', oldDeliveryBoxes[a].token, ' c выбранной датой ', oldDeliveryBoxes[a].choosenDate);
                 console.info('[Deliverybox] Применяю старую дату на блок ', oldDeliveryBoxes[a].token);
-                ENTER.OrderModel.getDeliveryBoxByToken(oldDeliveryBoxes[a].token).choosenDate(oldDeliveryBoxes[a].choosenDate());
-                console.log('[Deliverybox] Дата на новом блоке ', oldDeliveryBoxes[a].token, ': ', ENTER.OrderModel.getDeliveryBoxByToken(oldDeliveryBoxes[a].token).choosenDate());
+
+                deliveryBoxFound.choosenDate(oldDeliveryBoxes[a].choosenDate);
+                deliveryBoxFound.allDatesForBlock(oldDeliveryBoxes[a].allDatesForBlock);
             }
         }
 
@@ -669,6 +673,8 @@
 					return ENTER.OrderModel.deliveryBoxes()[i];
 				}
 			}
+
+			return false;
 		},
 
 		/**
