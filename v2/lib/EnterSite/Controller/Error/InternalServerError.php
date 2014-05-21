@@ -24,7 +24,7 @@ class InternalServerError {
 
         $page = [
             'dataDebug' => $this->getConfig()->debug ? 'true' : '',
-            'error' => array_merge([
+            'error'     => array_merge([
                 'type'    => null,
                 'message' => null,
                 'file'    => null,
