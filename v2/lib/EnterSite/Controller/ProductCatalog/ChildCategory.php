@@ -65,7 +65,7 @@ class ChildCategory {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
         }
         if ($category->redirectLink) {
-            return (new Controller\Redirect())->execute($category->redirectLink. ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
+            return (new Controller\Redirect())->execute($category->redirectLink . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
         }
 
         // фильтры в запросе
@@ -78,7 +78,10 @@ class ChildCategory {
         $curl->prepare($ancestryCategoryItemQuery);
 
         // запрос листинга идентификаторов товаров
-        $limit = $config->product->itemPerPage;
+        $limit = (int)$request->query['limit'];
+        if (($limit >= 400) || ($limit <= 0)) {
+            $limit = $config->product->itemPerPage;
+        }
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
@@ -95,8 +98,11 @@ class ChildCategory {
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
 
         // запрос списка товаров
-        $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $region->id);
-        $curl->prepare($productListQuery);
+        $productListQuery = null;
+        if ((bool)$productIdPager->ids) {
+            $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $region->id);
+            $curl->prepare($productListQuery);
+        }
 
         // запрос меню
         $mainMenuQuery = new Query\MainMenu\GetItem();
@@ -123,7 +129,7 @@ class ChildCategory {
         $curl->execute(1, 2);
 
         // список товаров
-        $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
+        $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
 
         // меню
         $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);

@@ -19,15 +19,13 @@ namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
     use EnterSite\Model\Page;
 
     class Content extends Page\DefaultLayout\Content {
-        /** @var Content\ProductBlock */
+        /** @var Content\ProductBlock|null */
         public $productBlock;
         /** @var bool */
         public $hasCustomStyle;
 
         public function __construct() {
             parent::__construct();
-
-            $this->productBlock = new Content\ProductBlock();
         }
     }
 }
@@ -38,5 +36,9 @@ namespace EnterSite\Model\Page\ProductCatalog\ChildCategory\Content {
     class ProductBlock {
         /** @var Partial\ProductCard[] */
         public $products = [];
+        /** @var int */
+        public $limit;
+        /** @var string */
+        public $url;
     }
 }

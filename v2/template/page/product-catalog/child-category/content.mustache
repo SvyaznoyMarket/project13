@@ -225,7 +225,7 @@
 		
 		<!-- листинг товаров  -->
         {{#productBlock}}
-        <div class="catalogList">
+        <div class="js-productList-container catalogList" data-url="{{url}}">
             {{#products}}
         	<a href="{{url}}" class="catalogList_item">
     			<div class="img"><img src="{{image}}" /></div>
@@ -248,10 +248,10 @@
         	</a>
             {{/products}}
         </div>
-        {{/productBlock}}
         <!--/ листинг товаров  -->
 
-        <a href="" class="catalogMore btnStyleGrey">Показать еще 20</a>
+        <a href="" class="js-productList-more catalogMore btnStyleGrey" data-limit="{{&limit}}" data-filter-selector="" data-container-selector=".js-productList-container">Показать еще {{limit}}</a>
+        {{/productBlock}}
     </div>
 </div>
 
