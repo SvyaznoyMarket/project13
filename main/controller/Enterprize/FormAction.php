@@ -392,6 +392,7 @@ class FormAction {
         $client = \App::coreClientV2();
         $shopScript = \App::shopScriptClient();
         $region = \App::user()->getRegion();
+
         $productCategoryRepository = \RepositoryManager::productCategory();
         $productCategoryRepository->setEntityClass('\\Model\\Product\\Category\\Entity');
 
@@ -404,91 +405,26 @@ class FormAction {
         }
 
         $products = [];
-//        if ($enterpizeCoupon->getCategoryId()) {
-//            $category = \RepositoryManager::productCategory()->getEntityById($enterpizeCoupon->getCategoryId());
-//            if ($category) {
-//                $limit = null;
-//                if (!empty(\App::config()->enterprize['itemsInSlider'])) {
-//                    $limit = \App::config()->enterprize['itemsInSlider'] * 3;
-//                }
-//
-//                $repository = \RepositoryManager::product();
-//                $repository->setEntityClass('\\Model\\Product\\Entity');
-//
-//                $productIds = [];
-//                $productCount = 0;
-//                $repository->PrepareIteratorByFilter(
-//                    ["category" => [1, $enterpizeCoupon->getCategoryId()]],
-//                    [],
-//                    null,
-//                    $limit,
-//                    $region,
-//                    function($data) use (&$productIds, &$productCount) {
-//                        if (isset($data['list'][0])) $productIds = $data['list'];
-//                        if (isset($data['count'])) $productCount = (int)$data['count'];
-//                    },
-//                    function(\Exception $e) {
-//                        \App::logger()->error($e);
-//                        \App::exception()->remove($e);
-//                    }
-//                );
-//                \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-//
-//                if (!empty($productIds)) {
-//                    $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-//                        foreach ($data as $item) {
-//                            $products[] = new \Model\Product\Entity($item);
-//                        }
-//                    });
-//                }
-//                \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-//            }
-//        }
-
-
-//$coupon->setLink('/catalog/appliances');
-//$coupon->setLink('/slices/likvidatsiya/do_it_yourself');
-//$coupon->setLink('/catalog/electronics/kompyuteri-i-plansheti-plansheti-817');
-
+        $productIds = [];
+        $productCount = 0;
         if ($coupon && $coupon->getLink()) {
             $linkParts = explode('/', $coupon->getLink());
             $linkParts = array_values(array_filter($linkParts));
 
             /** @var $category \Model\Product\Category\Entity */
             $category = null;
+            $filters = [];
             switch ($linkParts[0]) {
                 case 'catalog':
                     $categoryToken = end($linkParts);
-
                     $category = $productCategoryRepository->getEntityByToken($categoryToken);
-//                    if ($category) {
-//                        $filters = ['category' => [1, $category->getId()]];
-//                        $productIds = [];
-//                        $productCount = 0;
-//                        $productRepository->prepareIteratorByFilter($filters, [], null, $limit, $region,
-//                            function($data) use (&$productIds, &$productCount) {
-//                                if (isset($data['list'][0])) $productIds = $data['list'];
-//                                if (isset($data['count'])) $productCount = (int)$data['count'];
-//                            }
-//                        );
-//                        $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-//
-//                        if (!empty($productIds)) {
-//                            $productRepository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-//                                foreach ($data as $item) {
-//                                    $products[] = new \Model\Product\Entity($item);
-//                                }
-//                            });
-//                            $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-//                        }
-//                    }
-
                     break;
 
                 case 'slices':
                     $sliceToken = $linkParts[1];
                     $categoryToken = isset($linkParts[2]) ? $linkParts[2] : null;
 
+                    // получение среза
                     /** @var $slice \Model\Slice\Entity|null */
                     $slice = null;
                     \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
@@ -500,49 +436,59 @@ class FormAction {
                     \App::dataStoreClient()->execute();
 
                     if ($slice) {
+                        // добавляем фильтры среза к общему списку фильтров
+                        $sliceFilters = \Controller\Slice\ShowAction::getSliceFilters($slice);
+                        foreach ($sliceFilters as $filter) {
+                            $filters[] = $filter;
+                        }
+
+                        // если у среза задана category_id, то запрашиваем категорию
                         if ($slice->getCategoryId()) {
                             $categoryId = $slice->getCategoryId();
                             $category = $categoryId ? $productCategoryRepository->getEntityById($categoryId) : null;
+
+                        // пытаемся получить категорию от shopScript
+                        } elseif ($categoryToken) {
+                            $shopScriptException = null;
+                            $shopScriptSeo = [];
+                            if ($categoryToken && \App::config()->shopScript['enabled']) {
+                                try {
+                                    $shopScript->addQuery(
+                                        'category/get-seo',
+                                        [
+                                            'slug' => $categoryToken,
+                                            'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
+                                        ],
+                                        [],
+                                        function ($data) use (&$shopScriptSeo) {
+                                            if ($data && is_array($data)) $shopScriptSeo = reset($data);
+                                        },
+                                        function (\Exception $e) use (&$shopScriptException) {
+                                            $shopScriptException = $e;
+                                        }
+                                    );
+                                    $shopScript->execute();
+
+                                    if ($shopScriptException instanceof \Exception) {
+                                        throw $shopScriptException;
+                                    }
+
+                                    if (empty($shopScriptSeo['ui'])) {
+                                        throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
+                                    }
+
+                                    // запрашиваем категорию по ui
+                                    $category = $productCategoryRepository->getEntityByUi($shopScriptSeo['ui']);
+                                } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
+                                    $category = $productCategoryRepository->getEntityByToken($categoryToken);
+                                }
+                            } elseif (!empty($categoryToken)) {
+                                $category = $productCategoryRepository->getEntityByToken($categoryToken);
+                            }
+
+                        // токена категории нету, пытаемся получить листинг по фильтрам среза
                         } else {
-                            // добывание фильтров из среза
-                            $requestData = [];
-                            parse_str($slice->getFilterQuery(), $requestData);
-
-                            $values = [];
-                            foreach ($requestData as $k => $v) {
-                                if (0 === strpos($k, \View\Product\FilterForm::$name)) {
-                                    $parts = array_pad(explode('-', $k), 3, null);
-
-                                    if (!isset($values[$parts[1]])) {
-                                        $values[$parts[1]] = [];
-                                    }
-                                    if (('from' == $parts[2]) || ('to' == $parts[2])) {
-                                        $values[$parts[1]][$parts[2]] = $v;
-                                    } else {
-                                        $values[$parts[1]][] = $v;
-                                    }
-                                } elseif (0 === strpos($k, 'tag-')) {
-                                    // добавляем теги в фильтр
-                                    if (isset($values['tag'])) {
-                                        $values['tag'][] = $v;
-                                    } else {
-                                        $values['tag'] = [$v];
-                                    }
-                                }
-                            }
-
-                            $filterData = [];
-                            foreach ($values as $k => $v) {
-                                if (isset($v['from']) || isset($v['to'])) {
-                                    $filterData[] = [$k, 2, isset($v['from']) ? $v['from'] : null, isset($v['to']) ? $v['to'] : null];
-                                } else {
-                                    $filterData[] = [$k, 1, $v];
-                                }
-                            }
-
-                            $productIds = [];
-                            $productCount = 0;
-                            $productRepository->prepareIteratorByFilter($filterData, [], null, $limit, $region,
+                            $productRepository->prepareIteratorByFilter($sliceFilters, [], null, $limit, $region,
                                 function($data) use (&$productIds, &$productCount) {
                                     if (isset($data['list'][0])) $productIds = $data['list'];
                                     if (isset($data['count'])) $productCount = (int)$data['count'];
@@ -558,60 +504,8 @@ class FormAction {
                                 });
                                 $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
                             }
-
                         }
                     }
-
-
-
-
-/*
-//                    // если в слайсе задан category_id, то отображаем листинг данной категории
-//                    if ($slice && $slice->getCategoryId()) {
-//                        $categoryId = $slice->getCategoryId();
-//                        $category = $categoryId ? $productCategoryRepository->getEntityById($categoryId) : null;
-//                    } else {
-//                        $shopScriptException = null;
-//                        $shopScriptSeo = [];
-//                        if ($categoryToken && \App::config()->shopScript['enabled']) {
-//                            try {
-//                                $shopScript->addQuery(
-//                                    'category/get-seo',
-//                                    [
-//                                        'slug' => $categoryToken,
-//                                        'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-//                                    ],
-//                                    [],
-//                                    function ($data) use (&$shopScriptSeo) {
-//                                        if ($data && is_array($data)) $shopScriptSeo = reset($data);
-//                                    },
-//                                    function (\Exception $e) use (&$shopScriptException) {
-//                                        $shopScriptException = $e;
-//                                    }
-//                                );
-//                                $shopScript->execute();
-//
-//                                if ($shopScriptException instanceof \Exception) {
-//                                    throw $shopScriptException;
-//                                }
-//
-//                                if (empty($shopScriptSeo['ui'])) {
-//                                    throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
-//                                }
-//
-//                                // запрашиваем категорию по ui
-//                                $category = $productCategoryRepository->getEntityByUi($shopScriptSeo['ui']);
-//                            } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
-//                                $category = $productCategoryRepository->getEntityByToken($categoryToken);
-//                            }
-//
-//                        } elseif (!is_null($categoryToken)) {
-//                            $category = $productCategoryRepository->getEntityByToken($categoryToken);
-//                        } else {
-//                            $category = new \Model\Product\Category\Entity();
-//                        }
-//                    }
-*/
                     break;
 
                 case 'products':
@@ -638,14 +532,12 @@ class FormAction {
                         });
                     }
                     $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
                     break;
             }
 
-            if (empty($products) && $category) {
-                $filters = ['category' => [1, $category->getId()]];
-                $productIds = [];
-                $productCount = 0;
+            if (empty($products) && $category && $category->getId()) {
+                $filters[] = ['category', 1, [$category->getId()]];
+
                 $productRepository->prepareIteratorByFilter($filters, [], null, $limit, $region,
                     function($data) use (&$productIds, &$productCount) {
                         if (isset($data['list'][0])) $productIds = $data['list'];
