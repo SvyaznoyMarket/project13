@@ -38,6 +38,10 @@
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
         <? endif ?>
 
+        <? if((bool)$slideData): ?>
+            <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData]) // promo slider ?>
+        <? endif ?>
+
         <? if (!empty($promoContent)): ?>
             <?= $promoContent ?>
         <? elseif ($productPager->getLastPage() > 1): ?>
@@ -68,10 +72,6 @@
             'productSorting' => $productSorting,
         ]) // сортировка, режим просмотра, режим листания ?>
     </div>
-
-    <? if((bool)$slideData): ?>
-        <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData]) // promo slider ?>
-    <? endif ?>
 
     <?= $helper->render('product/__list', [
         'pager'                  => $productPager,
