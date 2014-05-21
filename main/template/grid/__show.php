@@ -3,12 +3,12 @@
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\GridCell\Entity[] $gridCells
- * @param \Model\Product\CompactEntity[] $productsById
+ * @param \Model\Product\CompactEntity[] $productsByUi
  */
 $f = function(
     \Helper\TemplateHelper $helper,
     array $gridCells,
-    array $productsById = []
+    array $productsByUi = []
 ) {
     $config = \App::config()->tchibo;
 
@@ -28,7 +28,7 @@ $f = function(
 ">
     <? if (\Model\GridCell\Entity::TYPE_PRODUCT === $cell->getType()): ?>
     <?
-        $product = ((isset($productsById[$cell->getId()]) && $productsById[$cell->getId()] instanceof \Model\Product\BasicEntity) ? $productsById[$cell->getId()] : null);
+        $product = ((isset($productsByUi[$cell->getUi()]) && $productsByUi[$cell->getUi()] instanceof \Model\Product\BasicEntity) ? $productsByUi[$cell->getUi()] : null);
     ?>
         <? if ($product): ?>
             <? if ($product->getMainCategory() && 'tchibo' === $product->getMainCategory()->getToken() && !$product->getIsBuyable()): ?>
