@@ -1,10 +1,11 @@
 var
     date = new Date(),
+    debug = 'true' == document.getElementById('js-enter-debug').getAttribute('content'),
     version = document.getElementById('js-enter-version').getAttribute('content'),
     moduleName = 'module/' + (document.getElementById('js-enter-module').getAttribute('content') || 'default')
 ;
 
-console.info('Init app', version, moduleName);
+console.info('Init app', debug, version, moduleName);
 
 require.config({
     urlArgs: 't=' + version,
@@ -77,27 +78,36 @@ require.config({
     }
 });
 
-require([
-    'html5',
-    'boilerplate.helper',
-    'jquery',
-    'jquery.cookie',
-    'jquery.ui', 'jquery.ui.touch-punch', 'jquery.popup',
-    'jquery.touchwipe',
-    'module/util',
-    'module/navigation',
-    'module/region',
-    'module/search',
-    'module/widget',      // виджеты
-    'module/user.common', // инфо о пользователе
-    'module/cart.common', // кнопка купить, спиннер
-    'module/product.catalog.common',
-]);
+if (debug) {
+    require(['module/debug']);
+}
 
 require(
-    ['require', 'module/config', moduleName],
-    function(require, config, module) {
-        config.debug && require(['module/debug']);
+    [
+        'require',
+        'html5',
+        'boilerplate.helper',
+        'jquery',
+        'jquery.cookie',
+        'jquery.ui', 'jquery.ui.touch-punch', 'jquery.popup',
+        'jquery.touchwipe',
+        'module/config',
+        'module/util',
+        'module/navigation',
+        'module/region',
+        'module/search',
+        'module/widget',      // виджеты
+        'module/user.common', // инфо о пользователе
+        'module/cart.common', // кнопка купить, спиннер
+        'module/product.catalog.common',
+    ],
+    function(require) {
     }
 );
 
+require(
+    [moduleName],
+    function(module) {
+
+    }
+);

@@ -42,7 +42,6 @@ class ProductCard {
 
         $productModel = $request->product;
 
-        // body[data-module]
         $page->dataModule = 'product.card';
 
         // хлебные крошки

@@ -30,7 +30,6 @@ class Index {
 
         $templateDir = $config->mustacheRenderer->templateDir;
 
-        // body[data-module]
         $page->dataModule = 'cart';
 
         if (count($request->cart)) {
