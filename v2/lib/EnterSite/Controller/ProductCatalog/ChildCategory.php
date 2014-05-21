@@ -78,10 +78,7 @@ class ChildCategory {
         $curl->prepare($ancestryCategoryItemQuery);
 
         // запрос листинга идентификаторов товаров
-        $limit = (int)$request->query['limit'];
-        if (($limit >= 400) || ($limit <= 0)) {
-            $limit = $config->product->itemPerPage;
-        }
+        $limit = (new Repository\Product\Catalog\Config())->getLimitByHttpRequest($request);
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
