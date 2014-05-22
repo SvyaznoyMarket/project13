@@ -4,6 +4,7 @@ namespace EnterSite\Repository\Page\ProductCatalog;
 
 use EnterSite\ConfigTrait;
 use EnterSite\RouterTrait;
+use EnterSite\ViewHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -11,8 +12,8 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\ProductCatalog\ChildCategory as Page;
 
 class ChildCategory {
-    use ConfigTrait, RouterTrait {
-        ConfigTrait::getConfig insteadof RouterTrait;
+    use ConfigTrait, RouterTrait, ViewHelperTrait {
+        ConfigTrait::getConfig insteadof RouterTrait, ViewHelperTrait;
     }
 
     /**
@@ -24,6 +25,7 @@ class ChildCategory {
 
         $config = $this->getConfig();
         $router = $this->getRouter();
+        $viewHelper = $this->getViewHelper();
 
         $productCardRepository = new Repository\Partial\ProductCard();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
@@ -35,7 +37,13 @@ class ChildCategory {
         if ((bool)$request->products) {
             $page->content->productBlock = new Page\Content\ProductBlock();
             $page->content->productBlock->limit = $config->product->itemPerPage;
-            $page->content->productBlock->url = $router->getUrlByRoute(new Routing\ProductCatalog\GetChildCategory($request->category->path));
+            $page->content->productBlock->url = $router->getUrlByRoute(new Routing\Product\GetListByFilter());
+            $page->content->productBlock->dataValue = $viewHelper->json([
+                'limit'      => $page->content->productBlock->limit,
+                'offset'     => 0,
+                'f-category' => $request->category->id,
+                'sort'       => null,
+            ]);
 
             foreach ($request->products as $productModel) {
                 $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));

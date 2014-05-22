@@ -2427,8 +2427,9 @@ body.noScroll {
 .debug__title a:hover {
   color: #00bce1;
 }
-.debug__title__error a,
-.debug__title__error a:hover {
+.debug__error,
+.debug__error a,
+.debug__error a:hover {
   color: #ff0000;
 }
 .debug__queryMap {

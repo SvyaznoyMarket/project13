@@ -40,5 +40,7 @@ namespace EnterSite\Model\Page\ProductCatalog\ChildCategory\Content {
         public $limit;
         /** @var string */
         public $url;
+        /** @var string */
+        public $dataValue;
     }
 }

@@ -225,7 +225,7 @@
 		
 		<!-- листинг товаров  -->
         {{#productBlock}}
-        <div class="js-productList-container catalogList" data-url="{{url}}">
+        <div class="js-productList-container catalogList" data-url="{{url}}" data-value="{{&dataValue}}">
             {{#products}}
         	<a href="{{url}}" class="catalogList_item">
     			<div class="img"><img src="{{image}}" /></div>

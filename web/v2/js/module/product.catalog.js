@@ -8,15 +8,19 @@ define(
         var $body = $('body'),
 
             loadMoreProduct = function(e) {
-                var $el = $(e.currentTarget),
-                    $container = $el.data('containerSelector')
-                ;
-
                 e.stopPropagation();
 
-                console.info('loadMoreProduct', e);
+                var $el = $(e.currentTarget),
+                    $container = $($el.data('containerSelector')),
+                    url = $container.data('url'),
+                    dataValue = $container.data('value')
+                ;
 
+                console.info('loadMoreProduct', $el, $container);
 
+                url && $.get(url, dataValue).done(function(response) {
+
+                });
 
                 e.preventDefault();
             }

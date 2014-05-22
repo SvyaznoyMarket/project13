@@ -12,16 +12,27 @@ define(
         ;
 
         $document.ajaxComplete(function(e, xhr, options) {
-            var response = JSON.parse(xhr.responseText),
-                $template = $('#tpl-debug-container').html()
-            ;
+            try {
+                var response = JSON.parse(xhr.responseText),
+                    $template = $('#tpl-debug-container').html()
+                    ;
 
-            if (response && response.debug) {
-                var $widget = $(mustache.render($template, response.debug));
-                $widget.appendTo($debug);
-                if ($debug.data('opened')) {
-                    $widget.slideDown(200);
+                if (response && response.debug) {
+                    var templateData = response.debug || {}
+
+                    ;
+
+                    templateData.status = 200 === xhr.status ? false : { code: xhr.status, text: xhr.statusText };
+
+                    var $widget = $(mustache.render($template, templateData));
+
+                    $widget.appendTo($debug);
+                    if ($debug.data('opened')) {
+                        $widget.slideDown(200);
+                    }
                 }
+            } catch (error) {
+                console.error(error);
             }
         });
 
