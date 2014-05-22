@@ -492,11 +492,35 @@ if ($oneClick) {
 						<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
 					</div>
 
-					<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
-						<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
+					<label class="bBuyingLine__eLeft">Карта программы лояльности</label>
+
+					<div class="bBuyingLine__eRight">
+						<ul class="bSaleList bInputList clearfix">
+							<li class="bSaleList__eItem">
+								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon1" name="add_cupon" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon1">Связной-клуб</label>
+							</li>
+
+							<li class="bSaleList__eItem">
+								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon2" name="add_cupon" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon2">Польза</label>
+							</li>
+
+							<li class="bSaleList__eItem">
+								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon3" name="add_cupon" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon3">Homecredit</label>
+							</li>
+
+							<li class="bSaleList__eItem">
+								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon4" name="add_cupon" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon4">Какая-то карта</label>
+							</li>
+						</ul>
+
 						<div class="bBuyingLine__eRight mSClub">
+							<label class="bPlaceholder">Номер</label>
 							<input id="sclub-number" type="text" placeholder="2 98хххх ххххxx" class="bBuyingLine__eText" name="order[sclub_card_number]" />
-							<div class="bText">Получайте от 1% плюсами на Вашу карту<br/> &laquo;Связной-Клуб&raquo;. Для этого введите номер карты,<br/> расположенный на обороте, под штрихкодом.</div>
+							<div class="bText">Вы получите от 1% плюсами на карту<br/> &laquo;Связной-Клуб&raquo;. Номер карты указан<br/> на обороте под штрихкодом.</div>
 						</div>
 					</div>
 				<? endif ?>
