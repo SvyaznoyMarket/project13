@@ -10,6 +10,8 @@ namespace EnterTerminal\Model\Page\ProductCatalog {
         public $catalogConfig;
         /** @var Model\Product[] */
         public $products = [];
+        /** @var int */
+        public $productCount;
         /** @var Model\Product\Sorting[] */
         public $sorting = [];
     }

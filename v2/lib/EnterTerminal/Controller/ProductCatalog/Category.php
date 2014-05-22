@@ -141,6 +141,7 @@ class Category {
         $page->category = $category;
         $page->catalogConfig = $catalogConfig;
         $page->products = array_values($productsById);
+        $page->productCount = $productIdPager->count;
 
         return new Http\JsonResponse($page);
     }
