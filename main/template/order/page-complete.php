@@ -125,12 +125,13 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     <? endforeach ?>
 <? endif ?>
 
-<?
-if (!$sessionIsReaded) {
+<? if (!$sessionIsReaded) {
     // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
     echo $page->tryRender('order/partner-counter/_complete', [
         'orders'       => $orders,
         'productsById' => $productsById,
     ]);
     echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]);
-}
+} ?>
+
+<div id="flocktory_exchange"></div>
