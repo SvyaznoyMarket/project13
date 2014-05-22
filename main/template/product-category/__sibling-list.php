@@ -27,7 +27,7 @@ return function(
         <ul class="tchiboNav__list clearfix">
         <? $i = 0; foreach ($categories as $category):
             $active = $currentCategory && in_array($category->getId(), [$currentCategory->getParentId(), $currentCategory->getId()]) ? true : false;
-            $last = (count($categories) - ($i++)) <= 2; ?>
+            $last = (count($categories) - ($i++)) <= 1; ?>
 
             <li class="item<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
                 <a class="link" href="<?= $category->getLink() ?>">
