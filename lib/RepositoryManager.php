@@ -327,4 +327,17 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    /**
+     * @return \Model\Order\LoyaltyCard\Repository
+     */
+    static function loyaltyCard() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Order\LoyaltyCard\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
 }

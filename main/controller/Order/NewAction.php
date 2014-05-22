@@ -157,6 +157,30 @@ class NewAction {
             ];
         }
 
+        // получение карт лояльности
+        try {
+            $loyaltyCards = \RepositoryManager::loyaltyCard()->getCollection();
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+            \App::exception()->remove($e);
+
+            $loyaltyCards = [];
+        }
+
+        // подготавливаем массив данных для JS
+        $loyaltyCardsData = [];
+        foreach ($loyaltyCards as $card) {
+            if (!$card instanceof \Model\Order\LoyaltyCard\Entity) continue;
+
+            $loyaltyCardsData[] = [
+                'name' => $card->getName(),
+                'description' => $card->getDescription(),
+                'image' => $card->getImage(),
+                'mask' => $card->getMask(),
+                'prefix' => $card->getPrefix(),
+            ];
+        }
+
         $page = new \View\Order\NewPage();
         $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(false));
         $page->setParam('productsById', $productsById);
@@ -166,6 +190,8 @@ class NewAction {
         $page->setParam('banks', $banks);
         $page->setParam('creditData', $creditData);
         $page->setParam('form', $form);
+        $page->setParam('loyaltyCards', $loyaltyCards);
+        $page->setParam('loyaltyCardsData', $loyaltyCardsData);
 
         return new \Http\Response($page->show());
     }
