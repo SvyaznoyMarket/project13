@@ -5,7 +5,6 @@
  * @var $catalogCategories  \Model\Product\Category\TreeEntity[]
  * @var $catalogConfig      array
  * @var $slideData          array
- * @var $content            string
  * @var $bannerBottom       string
  */
 
