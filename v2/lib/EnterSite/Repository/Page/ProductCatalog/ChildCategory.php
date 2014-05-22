@@ -3,6 +3,7 @@
 namespace EnterSite\Repository\Page\ProductCatalog;
 
 use EnterSite\ConfigTrait;
+use EnterSite\LoggerTrait;
 use EnterSite\RouterTrait;
 use EnterSite\ViewHelperTrait;
 use EnterSite\Routing;
@@ -12,8 +13,8 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\ProductCatalog\ChildCategory as Page;
 
 class ChildCategory {
-    use ConfigTrait, RouterTrait, ViewHelperTrait {
-        ConfigTrait::getConfig insteadof RouterTrait, ViewHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, ViewHelperTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait, ViewHelperTrait;
     }
 
     /**
@@ -27,9 +28,10 @@ class ChildCategory {
         $router = $this->getRouter();
         $viewHelper = $this->getViewHelper();
 
+        $templateDir = $config->mustacheRenderer->templateDir;
+
         $productCardRepository = new Repository\Partial\ProductCard();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
-        $ratingRepository = new Repository\Partial\Rating();
 
         $page->dataModule = 'product.catalog';
 
@@ -39,24 +41,37 @@ class ChildCategory {
             $page->content->productBlock->limit = $config->product->itemPerPage;
             $page->content->productBlock->url = $router->getUrlByRoute(new Routing\Product\GetListByFilter());
             $page->content->productBlock->dataValue = $viewHelper->json([
+                'page'       => 2,
                 'limit'      => $page->content->productBlock->limit,
-                'offset'     => 0,
+                'count'      => $request->count,
                 'f-category' => $request->category->id,
                 'sort'       => null,
             ]);
 
             foreach ($request->products as $productModel) {
                 $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
-                // рейтинг товара
-                if ($productModel->rating) {
-                    $rating = new Partial\Rating();
-                    $rating->reviewCount = $productModel->rating->reviewCount;
-                    $rating->stars = $ratingRepository->getStarList($productModel->rating->starScore);
-
-                    $productCard->rating = $rating;
-                }
 
                 $page->content->productBlock->products[] = $productCard;
+            }
+        }
+
+        $page->content->productBlock->moreLink = (new Repository\Partial\ProductList\MoreLink())->getObject($request->pageNum, $request->limit, $request->count) ?: false;
+
+        // шаблоны mustache
+        foreach ([
+            [
+                'id'   => 'tpl-productList-moreLink',
+                'name' => 'partial/product-list/moreLink',
+            ],
+        ] as $templateItem) {
+            try {
+                $template = new Model\Page\DefaultLayout\Template();
+                $template->id = $templateItem['id'];
+                $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
+
+                $page->templates[] = $template;
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['template']]);
             }
         }
 

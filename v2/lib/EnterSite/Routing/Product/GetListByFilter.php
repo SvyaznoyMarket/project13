@@ -6,6 +6,6 @@ use Enter\Routing\Route;
 
 class GetListByFilter extends Route {
     public function __construct() {
-        $this->action = ['Product\\GetListByFilter', 'execute'];
+        $this->action = ['Product\\ListByFilter', 'execute'];
     }
 }

@@ -1,0 +1,20 @@
+<?php
+
+namespace EnterSite\Repository\Page\Product\ListByFilter;
+
+use EnterSite\Model;
+
+class Request {
+    /** @var Model\Product\RequestFilter[] */
+    public $requestFilters = [];
+    /** @var Model\Product\Sorting */
+    public $sorting;
+    /** @var int */
+    public $pageNum;
+    /** @var int */
+    public $limit;
+    /** @var Model\Product[] */
+    public $products = [];
+    /** @var int */
+    public $count;
+}

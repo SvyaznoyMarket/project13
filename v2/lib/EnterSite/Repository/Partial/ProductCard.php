@@ -5,8 +5,16 @@ namespace EnterSite\Repository\Partial;
 use EnterSite\Routing;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
+use EnterSite\Repository;
 
 class ProductCard {
+    /** @var Repository\Partial\Rating */
+    private $ratingRepository;
+
+    public function __construct() {
+        $this->ratingRepository = new Repository\Partial\Rating();
+    }
+
     /**
      * @param Model\Product $product
      * @param Partial\Cart\ProductButton|null $cartButton
@@ -31,6 +39,15 @@ class ProductCard {
         $card->id = $product->id;
         $card->categoryId = $product->category ? $product->category->id : null;
         $card->cartButton = $cartButton;
+
+        // рейтинг товара
+        if ($product->rating) {
+            $rating = new Partial\Rating();
+            $rating->reviewCount = $product->rating->reviewCount;
+            $rating->stars = $this->ratingRepository->getStarList($product->rating->starScore);
+
+            $card->rating = $rating;
+        }
 
         return $card;
     }

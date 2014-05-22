@@ -70,7 +70,7 @@ class Debug {
 
                 $query = new Page\Query();
 
-                $query->url = (string)$curlQuery->getUrl();
+                $query->url = urldecode((string)$curlQuery->getUrl());
                 $query->path = ltrim(parse_url((string)$curlQuery->getUrl(), PHP_URL_PATH), '/');
                 $query->call = $curlQuery->getCall();
                 $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;

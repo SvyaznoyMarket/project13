@@ -16,6 +16,10 @@ class Request extends Repository\Page\DefaultLayout\Request {
     public $sorting;
     /** @var int */
     public $pageNum;
+    /** @var int */
+    public $limit;
+    /** @var int */
+    public $count;
     /** @var Model\Product[] */
     public $products = [];
 }
