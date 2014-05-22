@@ -48,18 +48,23 @@ class Get {
         }
 
         $productsById = [];
-        foreach ($cart->product as $cartProduct) {
-            $productsById[$cartProduct->id] = null;
+        if ((bool)$cart->product) {
+            foreach ($cart->product as $cartProduct) {
+                $productsById[$cartProduct->id] = null;
+            }
         }
 
         $productListQuery = null;
-        if ((bool)$productsById) {
+        if ((bool)$cart->product) {
             $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId);
             $curl->prepare($productListQuery);
         }
 
-        $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
-        $curl->prepare($cartItemQuery);
+        $cartItemQuery = null;
+        if ((bool)$cart->product) {
+            $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
+            $curl->prepare($cartItemQuery);
+        }
 
         $curl->execute(1, 2);
 
@@ -70,7 +75,9 @@ class Get {
         }
 
         // корзина из ядра
-        $cart = $cartRepository->getObjectByQuery($cartItemQuery);
+        if ($cartItemQuery) {
+            $cart = $cartRepository->getObjectByQuery($cartItemQuery);
+        }
 
         // страница
         $page = new Page();
