@@ -2599,7 +2599,7 @@ img[height="0"] {
     width: 940px;
     position: relative;
     overflow: hidden;
-    height: 118px;
+    height: 101px;
     font-size: 0;
     z-index: 10;
   }
@@ -2616,20 +2616,19 @@ img[height="0"] {
     float: left;
     height: 80px;
     width: 80px;
+    margin: 1px 0 0;
   }
   .tchiboNav__list {
     width: 838px;
     border-bottom: 1px solid #e8e8e8;
-    margin: 45px 0 0;
+    margin: 0;
     padding: 0;
     float: right;
-    display: table;
     position: relative;
   }
   .tchiboNav__list .item {
-    display: table-cell;
-    margin: 0 40px 0 0;
-    position: relative;
+    margin: 0 35px 0 0;
+    float: left;
   }
   .tchiboNav__list .item:hover .tchiboNav__sublist,
   .tchiboNav__list .item.active .tchiboNav__sublist {
@@ -2660,10 +2659,9 @@ img[height="0"] {
   .tchiboNav__list .item.active .tchiboNav__sublist.active .mActive .link:hover {
     text-decoration: none;
   }
-  .tchiboNav__list .item.mLast .tchiboNav__sublist.mLast {
-    right: -25px;
-    text-align: right;
-    width: 700px;
+  .tchiboNav__list .item:last-child {
+    float: right;
+    margin: 0;
   }
   .tchiboNav__list .link {
     color: #002a5a;
@@ -2676,7 +2674,7 @@ img[height="0"] {
   }
   .tchiboNav__list .itemText {
     display: inline-block;
-    padding-bottom: 14px;
+    padding-bottom: 10px;
   }
   .tchiboNav__list .itemText:hover {
     text-decoration: underline;
@@ -2694,14 +2692,26 @@ img[height="0"] {
     visibility: hidden;
     padding: 27px 0 10px 0;
     position: absolute;
-    top: 17px;
-    width: 850px;
+    top: 13px;
     z-index: 0;
+  }
+  .tchiboNav__sublist.mDefault {
+    left: 0;
+    width: 850px;
+  }
+  .tchiboNav__sublist.mLast {
+    right: 0;
   }
   .tchiboNav__sublist .sublistItem {
     vertical-align: top;
     display: inline-block;
-    margin-right: 25px;
+    margin: 0 25px 5px 0;
+  }
+  .tchiboNav__sublist .sublistItem:last-child {
+    margin-right: 0;
+  }
+  .tchiboNav__sublist .link {
+    font-size: 14px;
   }
 }
 /*---END----TCHIBO - слайдер-меню разделов Чибо---------*/
