@@ -161,8 +161,15 @@
                 console.log('[Deliverybox] Обнаружен старый блок доставки: ', oldDeliveryBoxes[a].token, ' c выбранной датой ', oldDeliveryBoxes[a].choosenDate);
                 console.info('[Deliverybox] Применяю старую дату на блок ', oldDeliveryBoxes[a].token);
 
+                console.warn(oldDeliveryBoxes[a].allDatesForBlock);
+                console.warn(oldDeliveryBoxes[a].allDatesForBlock.length);
+
                 deliveryBoxFound.choosenDate(oldDeliveryBoxes[a].choosenDate);
+                deliveryBoxFound.allDatesForBlock.removeAll();
                 deliveryBoxFound.allDatesForBlock(oldDeliveryBoxes[a].allDatesForBlock);
+
+                console.log(deliveryBoxFound.allDatesForBlock());
+                console.log(deliveryBoxFound.allDatesForBlock().length);
             }
         }
 

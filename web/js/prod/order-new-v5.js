@@ -1351,6 +1351,16 @@
 			self.choosenDate(data);
 		};
 
+		DeliveryBox.prototype._hasDateInAllDatesForBlock = function( date ) {
+			for (var i = 0; i < this.allDatesForBlock().length; i++) {
+				if (this.allDatesForBlock()[i].value === date.value) {
+					return true
+				}
+			}
+
+			return false;
+		};
+
 		/**
 		 * Получение общей ближайшей даты доставки
 		 * Заполнение массива общих дат
@@ -1374,6 +1384,7 @@
 				chooseDate = null,
 
 				len,
+				j,
 				i;
 			// end of vars
             if (!self.products.length) {
@@ -1391,7 +1402,7 @@
 			for ( i = 0, len = nowProductDates.length; i < len; i++ ) {
 				nowTS = nowProductDates[i].value;
 
-				if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
+				if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS && !self._hasDateInAllDatesForBlock(nowProductDates[i]) ) {
 					nowProductDates[i].avalible = true;
 					nowProductDates[i].humanDayOfWeek = self._getNameDayOfWeek(nowProductDates[i].dayOfWeek);
 
@@ -1511,7 +1522,7 @@
 		 */
 		DeliveryBox.prototype.makeCalendar = function() {
 			console.groupCollapsed('Создание календаря, округление до целых недель');
-
+			console.log(this);
 			var
 				self = this,
 				addCountDays = 0,
@@ -1523,12 +1534,15 @@
 
 				i, j, k;
 			// end of vars
-			
+
+			console.info(self.allDatesForBlock());
+
 			/**
 			 * Проверка дат на разрывы  в числах
 			 * Если меются разрывы в числах - заполнить пробелы датами
 			 */
-			for ( k = 0; k <= self.allDatesForBlock().length - 1; k++ ) {
+			for ( k = 0; k < self.allDatesForBlock().length; k++ ) {
+				console.log('k',k);
 				if ( self.allDatesForBlock()[k + 1] === undefined ) {
 					console.info('Следущая дата последняя. заканчиваем цикл');
 					
@@ -1543,7 +1557,14 @@
 				tmpVal = self.allDatesForBlock()[k].value + ONE_DAY;
 				tmpDate = new Date(tmpVal);
 
+				if (tmpVal > self.allDatesForBlock()[k + 1].value) {
+					console.warn('однозначная ошибка, следующая дата меньше текущей');
+					break;
+				}
+
 				if ( tmpVal !== self.allDatesForBlock()[k + 1].value ) {
+					console.info('следующая дата', self.allDatesForBlock()[k + 1].value);
+					console.info('текущая дата', tmpVal, tmpDate);
 					tmpDay = {
 						value: tmpVal,
 						avalible: false,
@@ -1570,6 +1591,8 @@
 				addCountDays = ( self.allDatesForBlock()[0].dayOfWeek === 0 ) ? 6 : self.allDatesForBlock()[0].dayOfWeek - 1;
 				tmpVal = self.allDatesForBlock()[0].value;
 
+				console.info('добавляем в начало', addCountDays);
+
 				for ( i = addCountDays; i > 0; i-- ) {
 					tmpVal -= ONE_DAY;
 					tmpDate = new Date(tmpVal);
@@ -1593,6 +1616,8 @@
 			if ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek !== 0 ) {
 				addCountDays = 7 - self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek;
 				tmpVal = self.allDatesForBlock()[self.allDatesForBlock().length - 1].value;
+
+				console.info('добавляем в конец', addCountDays);
 
 				for ( j = addCountDays; j > 0; j-- ) {
 					// dayOfWeek = ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1 === 7 ) ? 0 : self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1;
@@ -2884,8 +2909,15 @@
                 console.log('[Deliverybox] Обнаружен старый блок доставки: ', oldDeliveryBoxes[a].token, ' c выбранной датой ', oldDeliveryBoxes[a].choosenDate);
                 console.info('[Deliverybox] Применяю старую дату на блок ', oldDeliveryBoxes[a].token);
 
+                console.warn(oldDeliveryBoxes[a].allDatesForBlock);
+                console.warn(oldDeliveryBoxes[a].allDatesForBlock.length);
+
                 deliveryBoxFound.choosenDate(oldDeliveryBoxes[a].choosenDate);
+                deliveryBoxFound.allDatesForBlock.removeAll();
                 deliveryBoxFound.allDatesForBlock(oldDeliveryBoxes[a].allDatesForBlock);
+
+                console.log(deliveryBoxFound.allDatesForBlock());
+                console.log(deliveryBoxFound.allDatesForBlock().length);
             }
         }
 
