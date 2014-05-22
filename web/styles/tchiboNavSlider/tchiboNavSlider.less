@@ -130,7 +130,7 @@
 	width: 940px;
 	position: relative;
 	overflow: hidden;
-	height: 118px;
+	height: 101px;
 	//background: url("@{base-url}/tchiboNavSlider/img/shadow.png") no-repeat 50% 100%;
 	font-size: 0;
 	//margin-bottom: -13px;
@@ -148,23 +148,24 @@
 	&__titleLink {
 		display: block;
 		float: left;
+
 	    height: 80px;
 	    width: 80px;
+
+	    margin: 1px 0 0;
 	}
 
 	&__list {
 		width: 838px;
 		border-bottom: 1px solid #e8e8e8;
-		margin: 45px 0 0;
+		margin: 0;
 		padding: 0;
 		float: right;
-		display: table;
 		position: relative;
 
 		.item {
-			display: table-cell;
-			margin: 0 40px 0 0;
-			position: relative;
+			margin: 0 35px 0 0;
+			float: left;
 
 			&:hover,
 			&.active {
@@ -209,13 +210,10 @@
 				}
 			}
 
-			&.mLast {
+			&:last-child {
+				float: right;
 
-				.tchiboNav__sublist.mLast {
-					right: -25px;
-				    text-align: right;
-				    width: 700px;
-				}
+				margin: 0;
 			}
 		}
 
@@ -232,7 +230,7 @@
 
 		.itemText {
 			display: inline-block;
-			padding-bottom: 14px;
+			padding-bottom: 10px;
 
 			&:hover {
 				text-decoration: underline;
@@ -243,18 +241,36 @@
 	&__sublist {
 		.opacity(0);
 		.transition(opacity 0.2s ease-in-out);
+
 		visibility: hidden;
 	    padding: 27px 0 10px 0;
+
 	    position: absolute;
-	    top: 17px;
-	    width: 850px;
+	    top: 13px;
 	    z-index: 0;
-		
+
+	    &.mDefault {
+	    	left: 0;
+	    	width: 850px;
+	    }
+
+	    &.mLast {
+	    	right: 0;
+	    }
 
 		.sublistItem {
 			vertical-align: top;
 			display: inline-block;
-			margin-right: 25px;
+
+			margin: 0 25px 5px 0;
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+
+		.link {
+			font-size: 14px;
 		}
 	}
 }

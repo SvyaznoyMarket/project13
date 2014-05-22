@@ -50,11 +50,7 @@ class NotificationAction {
                 $params['token'] = $userEntity->getToken();
             }
 
-            $exception = null;
-            $client->addQuery('subscribe/create', $params, [], function($data) {}, function(\Exception $e) use (&$exception) {
-                $exception = $e;
-                \App::exception()->remove($e);
-            });
+            $result = $client->query('subscribe/create', $params, []);
 
             // если отмечена галочка подписки на "Акции и суперпредложения"
             $subscribe = trim((string)$request->get('subscribe'));
@@ -64,19 +60,14 @@ class NotificationAction {
                     'geo_id'     => $region->getId(),
                     'channel_id' => 1,
                 ];
-                $client->addQuery('subscribe/create', $params, [], function($data) {}, function(\Exception $e) use (&$exception) {
-                    $exception = $e;
-                    \App::exception()->remove($e);
-                });
-            }
-            $client->execute(\App::config()->coreV2['retryTimeout']['huge'], \App::config()->coreV2['retryCount']);
 
-            if ($exception instanceof \Exception) {
-                throw $exception;
+                $mainSubscribeResult = $client->query('subscribe/create', $params, []);
             }
 
             $responseData = ['success' => true];
         } catch (\Exception $e) {
+            \App::exception()->remove($e);
+
             if($e->getCode() == self::SUBSCRIPTION_EXISTS_CODE) {
                 $responseData = ['success' => true];
             } else {

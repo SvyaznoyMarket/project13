@@ -399,6 +399,8 @@ $c->lifeGift['deliveryTypeId'] = 1077;
 
 $c->enterprize['enabled'] = true;
 $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
+$c->enterprize['itemsInSlider'] = 7;
+$c->enterprize['showSlider'] = true;
 
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
@@ -426,5 +428,8 @@ $c->abtest['test']       = [
 ];
 
 $c->preview = false;
+
+$c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
+$c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 
 return $c;

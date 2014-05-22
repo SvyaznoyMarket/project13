@@ -497,6 +497,19 @@ class App {
     }
 
     /**
+     * @return \Payment\SvyaznoyClubManager
+     */
+    public static function sclubManager() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Payment\SvyaznoyClubManager();
+        }
+
+        return $instance;
+    }
+
+    /**
      * @return Mustache_Engine
      */
     public static function mustache() {

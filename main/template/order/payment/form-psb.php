@@ -4,10 +4,12 @@
  * @var $user     \Session\User
  * @var $provider \Payment\Psb\Provider
  * @var $order    \Model\Order\Entity
+ * @var $form     \Payment\Psb\Form|null
  */
-?>
 
-<? $form = $provider->getForm($order, $page->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true)) ?>
+if (!$form instanceof \Payment\Psb\Form) {
+    $form = $provider->getForm($order, $page->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true));
+} ?>
 
 <form class="form" method="post" action="<?= $provider->getPayUrl() ?>">
     <input type="hidden" name="AMOUNT" value="<?= $form->getAmount() ?>" />

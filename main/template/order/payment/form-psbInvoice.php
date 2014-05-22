@@ -4,10 +4,12 @@
  * @var $user     \Session\User
  * @var $provider \Payment\PsbInvoice\Provider
  * @var $order    \Model\Order\Entity
+ * @var $form     \Payment\PsbInvoice\Form
  */
-?>
 
-<? $form = $provider->getForm($order, $page->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true)) ?>
+if (!$form instanceof \Payment\PsbInvoice\Form) {
+    $form = $provider->getForm($order, $page->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true));
+} ?>
 
 <form class="form" method="post" action="<?= $provider->getPayUrl() ?>">
     <input type="hidden" name="ContractorID" value="<?= $form->getContractorId() ?>" />

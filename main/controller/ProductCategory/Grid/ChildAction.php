@@ -40,8 +40,8 @@ class ChildAction {
         );
         \App::shopScriptClient()->execute();
 
-        /** @var $productsById \Model\Product\Entity[] */
-        $productsById = [];
+        /** @var $productsByUi \Model\Product\Entity[] */
+        $productsByUi = [];
         /** @var $grid \Model\GridCell\Entity[] */
         $gridCells = [];
         foreach ($result as $item) {
@@ -49,25 +49,25 @@ class ChildAction {
             $gridCell = new \Model\GridCell\Entity($item);
             $gridCells[] = $gridCell;
 
-            if ((\Model\GridCell\Entity::TYPE_PRODUCT === $gridCell->getType()) && $gridCell->getId()) {
-                $productsById[$gridCell->getId()] = $gridCell->getId();
+            if ((\Model\GridCell\Entity::TYPE_PRODUCT === $gridCell->getType()) && $gridCell->getUi()) {
+                $productsByUi[$gridCell->getUi()] = $gridCell->getId();
             }
         }
 
         // SITE-2996 учет моделей
         // внимание! получаем ключи массива
-        foreach (array_chunk(array_keys($productsById), \App::config()->coreV2['chunk_size']) as $idsInChunk) {
+        foreach (array_chunk(array_keys($productsByUi), \App::config()->coreV2['chunk_size']) as $uisInChunk) {
             \App::coreClientV2()->addQuery(
                 'product/from-model',
                 [
-                    'ids'       => $idsInChunk,
+                    'uis'       => $uisInChunk,
                     'region_id' => $region->getId(),
                 ],
                 [],
-                function($data) use (&$productsById) {
-                    foreach ($data as $productId => $replaceId) {
-                        if (array_key_exists($productId, $productsById) && $replaceId) {
-                            $productsById[$productId] = $replaceId;
+                function($data) use (&$productsByUi) {
+                    foreach ($data as $productUi => $replaceUi) {
+                        if (array_key_exists($productUi, $productsByUi) && $replaceUi) {
+                            $productsByUi[$productUi] = $replaceUi;
                         }
                     }
                 },
@@ -79,18 +79,18 @@ class ChildAction {
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         // внимание! получаем значения массива
-        foreach (array_chunk($productsById, \App::config()->coreV2['chunk_size'], true) as $idsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById(array_values($idsInChunk), \App::user()->getRegion(), function($data) use (&$productsById, &$idsInChunk) {
+        foreach (array_chunk($productsByUi, \App::config()->coreV2['chunk_size'], true) as $uisInChunk) {
+            \RepositoryManager::product()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
                 foreach ($data as $item) {
-                    if (!isset($productsById[$item['id']])) {
+                    if (!isset($productsByUi[$item['ui']])) {
                         continue;
                     }
-                    $productsById[$item['id']] = new \Model\Product\Entity($item);
+                    $productsByUi[$item['ui']] = new \Model\Product\Entity($item);
                 }
             });
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-        $productsById = array_filter($productsById, function($product) {
+        $productsByUi = array_filter($productsByUi, function($product) {
             return $product instanceof \Model\Product\BasicEntity;
         });
 
@@ -98,7 +98,7 @@ class ChildAction {
         $page->setParam('gridCells', $gridCells);
         $page->setParam('category', $category);
         $page->setParam('catalogConfig', $catalogConfig);
-        $page->setParam('productsById', $productsById);
+        $page->setParam('productsByUi', $productsByUi);
         $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
 
         return new \Http\Response($page->show());
