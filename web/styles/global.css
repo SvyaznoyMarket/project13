@@ -2659,7 +2659,7 @@ img[height="0"] {
   .tchiboNav__list .item.active .tchiboNav__sublist.active .mActive .link:hover {
     text-decoration: none;
   }
-  .tchiboNav__list .item:last-child {
+  .tchiboNav__list .item.mLast {
     float: right;
     margin: 0;
   }
