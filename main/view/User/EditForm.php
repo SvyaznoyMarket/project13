@@ -25,24 +25,24 @@ class EditForm {
     private $skype;
     /** @var bool */
     private $isSubscribed;
-    /** @var string */
-    private $sclubCardnumber;
+    /** @var array */
+    private $bonusCard;
     /** @var array */
     private $errors = array(
-        'global'                    => null,
-        'first_name'                => null,
-        'middle_name'               => null,
-        'last_name'                 => null,
-        'sex'                       => null,
-        'birthday'                  => null,
-        'occupation'                => null,
-        'email'                     => null,
-        'mobile_phone'              => null,
-        'home_phone'                => null,
-        'skype'                     => null,
-        'svyaznoy_club_card_number' => null,
-        'guid'                      => null,
-        'is_subscribe'              => null,
+        'global'        => null,
+        'first_name'    => null,
+        'middle_name'   => null,
+        'last_name'     => null,
+        'sex'           => null,
+        'birthday'      => null,
+        'occupation'    => null,
+        'email'         => null,
+        'mobile_phone'  => null,
+        'home_phone'    => null,
+        'skype'         => null,
+        'bonus_card'    => null,
+        'guid'          => null,
+        'is_subscribe'  => null,
     );
     /**
      * Флаг запрещения редактирования личных данных для user.enterprizeCoupon
@@ -81,7 +81,7 @@ class EditForm {
         if (array_key_exists('home_phone', $data)) $this->setHomePhone($data['home_phone']);
         if (array_key_exists('skype', $data)) $this->setSkype($data['skype']);
         if (array_key_exists('is_subscribe', $data)) $this->setIsSubscribed($data['is_subscribe']);
-        if (array_key_exists('svyaznoy_club_card_number', $data)) $this->setSclubCardnumber($data['svyaznoy_club_card_number']);
+        if (array_key_exists('bonus_card', $data)) $this->setBonusCard($data['bonus_card']);
         if (array_key_exists('is_disabled', $data)) $this->setIsDisabled($data['is_disabled']);
     }
 
@@ -97,7 +97,7 @@ class EditForm {
         $this->setHomePhone($entity->getHomePhone());
         $this->setSkype($entity->getSkype());
         $this->setIsSubscribed($entity->getIsSubscribed());
-        $this->setSclubCardnumber($entity->getSclubCardnumber());
+        $this->setBonusCard($entity->getBonusCard());
         $this->setIsDisabled($entity->isEnterprizeMember());
     }
 
@@ -329,17 +329,17 @@ class EditForm {
     }
 
     /**
-     * @param string $sclubCardnumber
+     * @param array $bonusCard
      */
-    public function setSclubCardnumber($sclubCardnumber) {
-        $this->sclubCardnumber = str_replace(' ','', (string)$sclubCardnumber);
+    public function setBonusCard(array $bonusCard) {
+        $this->bonusCard = $bonusCard;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getSclubCardnumber() {
-        return $this->sclubCardnumber;
+    public function getBonusCard() {
+        return $this->bonusCard;
     }
 
 }

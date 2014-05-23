@@ -87,8 +87,11 @@
             </div>
         </div>
 
+        <? // TODO (SITE-3792) Ядерный метод больше не работает с полем "svyaznoy_club_card_number" появилось поле "bonus_card", поэтому пока что поле закомменчено
+        /*
         <label class="userInfoEdit__label" for="user_sclub_card_number">Номер карты Связной-Клуб:</label>
         <div><input type="text" id="user_sclub_card_number" value="<?= $form->getSclubCardnumber() ?>" name="user[svyaznoy_club_card_number]" class="text jsCardNumber" /></div>
+        */ ?>
 
         <label class="userInfoEdit__label" for="user_occupation">Род деятельности:</label>
 
