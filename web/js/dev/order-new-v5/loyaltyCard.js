@@ -21,6 +21,41 @@
 				activeCardDescription = $('.jsActiveCard .jsDescription');
 			// end of vars
 
+			var
+				changeCardImage = function changeCardImage() {
+					if ( !activeCard.length || !newCardData.hasOwnProperty('image') ) {
+						return;
+					}
+
+					activeCard.css('background', 'url(' + newCardData.image + ') 260px -3px no-repeat');
+				},
+
+				changeCardMask = function changeCardMask() {
+					if ( !activeCardNumber.length || !newCardData.hasOwnProperty('mask') ) {
+						return;
+					}
+
+					activeCardNumber.attr('placeholder', newCardData.mask);
+					activeCardNumber.mask(newCardData.mask, {placeholder: '*'});
+				},
+
+				changeCardDescription = function changeCardDescription() {
+					if ( !activeCardDescription.length || !newCardData.hasOwnProperty('description') ) {
+						return;
+					}
+
+					activeCardDescription.text(newCardData.description);
+				},
+
+				changeCardValue = function changeCardValue() {
+					if ( !activeCardNumber.length || !newCardData.hasOwnProperty('value') || '' == newCardData.value ) {
+						return;
+					}
+
+					activeCardNumber.val(newCardData.value);
+				};
+			// end of function
+
 			if ( !activeCard.length ) {
 				return;
 			}
@@ -39,38 +74,44 @@
 			console.info('cardChange');
 			console.log(newCardData);
 
-			if ( newCardData.hasOwnProperty('image') ) {
-				activeCard.css('background', 'url(' + newCardData.image + ') 260px -3px no-repeat');
-			}
-
-			if ( activeCardNumber.length && newCardData.hasOwnProperty('mask') ) {
-				activeCardNumber.attr('placeholder', newCardData.mask);
-
-				activeCardNumber.val('');
-				activeCardNumber.mask(newCardData.mask, {placeholder: '*'});
-			}
-
-			if ( activeCardDescription.length && newCardData.hasOwnProperty('description') ) {
-				activeCardDescription.text(newCardData.description);
-			}
+			changeCardValue();
+			changeCardImage();
+			changeCardMask();
+			changeCardDescription();
 		},
 
-		addMaskForDefaultCard = function addMaskForDefaultCard() {
+		setDefaults = function setDefaults() {
 			var
 				activeCardNumber = $('.jsActiveCard .jsCardNumber');
 			// end of vars
 
-			if ( !activeCardNumber.length ) {
+			var
+				setMask = function setMask() {
+					if ( !data[0].hasOwnProperty('mask') ) {
+						return;
+					}
+
+					activeCardNumber.mask(data[0].mask, {placeholder: '*'});
+				},
+
+				setValue = function setValue() {
+					if ( !data[0].hasOwnProperty('value') ) {
+						return;
+					}
+
+					activeCardNumber.val(data[0].value);
+				};
+			// end of functions
+
+			if ( !activeCardNumber.length || !data || !data.hasOwnProperty(0) ) {
 				return;
 			}
 
-			if ( !data.hasOwnProperty(0) || !data[0].hasOwnProperty('mask') ) {
-				return;
-			}
+			console.info('setDefaults');
+			console.log(data[0]);
 
-			console.info('addMaskForDefaultCard');
-			console.log(data[0].mask);
-			activeCardNumber.mask(data[0].mask, {placeholder: '*'});
+			setValue();
+			setMask();
 		};
 	// end of functions
 
@@ -86,7 +127,7 @@
 	console.groupCollapsed('LoyaltyCard');
 
 	$.mask.definitions['x'] = '[0-9]';
-	addMaskForDefaultCard();
+	setDefaults();
 
 	body.on('change', '.jsLoyaltyCard input[name="loyalty_card"]', cardChangeHandler);
 	console.groupEnd();

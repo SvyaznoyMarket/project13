@@ -178,6 +178,7 @@ class NewAction {
                 'image' => $card->getImage(),
                 'mask' => $card->getMask(),
                 'prefix' => $card->getPrefix(),
+                'value' => '',// TODO Когда ядро будет готово отдавать номера карт пользователя то их нужно будет подставлять в данное поле (SITE-3792)
             ];
         }
 
