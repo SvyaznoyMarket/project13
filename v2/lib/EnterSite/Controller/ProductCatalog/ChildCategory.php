@@ -75,8 +75,8 @@ class ChildCategory {
         $requestFilters['category']->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
 
         // запрос предка категории
-        $ancestryCategoryItemQuery = new Query\Product\Category\GetAncestryItemByCategoryObject($category, $region->id);
-        $curl->prepare($ancestryCategoryItemQuery);
+        $ascendantCategoryItemQuery = new Query\Product\Category\GetAscendantItemByCategoryObject($category, $region->id);
+        $curl->prepare($ascendantCategoryItemQuery);
 
         // запрос листинга идентификаторов товаров
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
@@ -88,8 +88,8 @@ class ChildCategory {
 
         $curl->execute(1, 2);
 
-        // предок категории
-        $ancestryCategory = (new Repository\Product\Category())->getAncestryObjectByQuery($ancestryCategoryItemQuery);
+        // предки категории
+        $category->ascendants = (new Repository\Product\Category())->getAscendantListByQuery($ascendantCategoryItemQuery);
 
         // листинг идентификаторов товаров
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
@@ -106,11 +106,8 @@ class ChildCategory {
         $curl->prepare($mainMenuQuery);
 
         // запрос настроек каталога
-        $catalogConfigQuery = null;
-        if ($ancestryCategory) {
-            $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge([$ancestryCategory], (bool)$ancestryCategory->children ? $ancestryCategory->children : []));
-            $curl->prepare($catalogConfigQuery);
-        }
+        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($category->ascendants, [$category]));
+        $curl->prepare($catalogConfigQuery);
 
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
@@ -132,7 +129,7 @@ class ChildCategory {
         $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
         // настройки каталога
-        $catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
+        $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
 
         // список рейтингов товаров
         if ($ratingListQuery) {
