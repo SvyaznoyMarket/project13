@@ -53,6 +53,6 @@ define(
         ;
 
 
-        $body.on('click', '.js-productList-more', loadMoreProduct)
+        $body.on('click dblclick', '.js-productList-more', loadMoreProduct)
     }
 );
