@@ -32,7 +32,7 @@ class ListByFilter {
         foreach ($request->products as $productModel) {
             $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
 
-            $page->productCards[] = $renderer->render('partial/product-list/default', $productCard);
+            $page->productCards[] = $renderer->render('partial/product-card/default', $productCard);
         }
 
         // виджеты
