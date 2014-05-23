@@ -132,6 +132,9 @@ class ChildCategory {
         // настройки каталога
         $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
 
+        // список сортировок
+        $sortings = (new Repository\Product\Sorting())->getObjectList();
+
         // список рейтингов товаров
         if ($ratingListQuery) {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
@@ -149,6 +152,7 @@ class ChildCategory {
         $pageRequest->count = $productIdPager->count;
         $pageRequest->requestFilters = $requestFilters;
         $pageRequest->sorting = $sorting;
+        $pageRequest->sortings = $sortings;
         $pageRequest->category = $category;
         $pageRequest->catalogConfig = $catalogConfig;
         $pageRequest->products = $productsById;

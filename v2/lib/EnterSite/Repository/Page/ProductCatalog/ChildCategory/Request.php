@@ -14,6 +14,8 @@ class Request extends Repository\Page\DefaultLayout\Request {
     public $requestFilters = [];
     /** @var Model\Product\Sorting */
     public $sorting;
+    /** @var Model\Product\Sorting[] */
+    public $sortings = [];
     /** @var int */
     public $pageNum;
     /** @var int */
