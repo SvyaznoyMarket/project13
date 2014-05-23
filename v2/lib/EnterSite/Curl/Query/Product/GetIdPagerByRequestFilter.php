@@ -19,8 +19,9 @@ class GetIdPagerByRequestFilter extends Query {
      * @param string|null $regionId
      * @param $offset
      * @param $limit
+     * @param Model\Product\Catalog\Config|null $catalogConfig
      */
-    public function __construct(array $filters, Model\Product\Sorting $sorting = null, $regionId = null, $offset = null, $limit = null) {
+    public function __construct(array $filters, Model\Product\Sorting $sorting = null, $regionId = null, $offset = null, $limit = null, $catalogConfig = null) {
         $filterData = [];
         foreach ($filters as $key => $filter) {
             if (isset($filter->value['from']) || isset($filter->value['to'])) {
@@ -32,7 +33,12 @@ class GetIdPagerByRequestFilter extends Query {
 
         $sortingData = [];
         if ($sorting) {
-            $sortingData = [$sorting->token => $sorting->direction];
+            if (('default' == $sorting->token) && $catalogConfig && (bool)$catalogConfig->sortings) {
+                // специальная сортировка
+                $sortingData = $catalogConfig->sortings;
+            } else {
+                $sortingData = [$sorting->token => $sorting->direction];
+            }
         }
 
         $this->url = new Url();

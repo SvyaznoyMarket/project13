@@ -37,8 +37,14 @@ class ChildCategory {
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
         $limit = (new Repository\Product\Catalog\Config())->getLimitByHttpRequest($request);
 
+        // список сортировок
+        $sortings = (new Repository\Product\Sorting())->getObjectList();
+
         // сортировка
         $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
+        if (!$sorting) {
+            $sorting = reset($sortings);
+        }
 
         // запрос региона
         $regionQuery = new Query\Region\GetItemById($regionId);
@@ -131,9 +137,6 @@ class ChildCategory {
 
         // настройки каталога
         $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
-
-        // список сортировок
-        $sortings = (new Repository\Product\Sorting())->getObjectList();
 
         // список рейтингов товаров
         if ($ratingListQuery) {
