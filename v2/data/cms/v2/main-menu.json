@@ -16,7 +16,7 @@
         },
         {
             "name": "Товары<br/>для дома",
-            "char": "B",
+            "char": "A",
             "style": "",
             "styleHover": "",
             "source": "category/get?id=443",
@@ -28,7 +28,7 @@
         },
         {
             "name": "Бытовая<br/>техника",
-            "char": "A",
+            "char": "B",
             "style": "",
             "styleHover": "",
             "source": "category/get?id=1",
