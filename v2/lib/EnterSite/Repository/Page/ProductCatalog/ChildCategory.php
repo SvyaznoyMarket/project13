@@ -38,6 +38,7 @@ class ChildCategory {
         $page->content->productBlock = false;
         $page->content->sortingBlock = false;
         if ((bool)$request->products) {
+            // TODO: вынести productBlock в репозиторий
             $page->content->productBlock = new Page\Content\ProductBlock();
             $page->content->productBlock->limit = $config->product->itemPerPage;
             $page->content->productBlock->url = $router->getUrlByRoute(new Routing\Product\GetListByFilter());
@@ -46,7 +47,7 @@ class ChildCategory {
                 'limit'      => $page->content->productBlock->limit,
                 'count'      => $request->count,
                 'f-category' => $request->category->id,
-                'sort'       => null,
+                'sort'       => ('default' == $request->sorting->token) ? null : ($request->sorting->token . '-' . $request->sorting->direction),
             ]);
 
             foreach ($request->products as $productModel) {
