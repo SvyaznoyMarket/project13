@@ -195,7 +195,7 @@ trait FormTrait {
         switch ($e->getCode()) {
             case 735:
                 \App::exception()->remove($e);
-                $form->setError('sclub_card_number', 'Неверный код карты &laquo;Связной-Клуб&raquo;');
+                $form->setError('bonus_card_number', 'Неверный код карты лояльности');
                 break;
             case 742:
                 \App::exception()->remove($e);

@@ -26,7 +26,7 @@ return function (
             <? if ($activeCard && $activeCard instanceof \Model\Order\LoyaltyCard\Entity): ?>
                 <div class="bBuyingLine__eRight mSClub jsActiveCard"<? if ((bool)$activeCard->getImage()): ?> style="background: url(<?= $activeCard->getImage() ?>) 260px -3px no-repeat"<? endif ?>>
                     <label class="bPlaceholder">Номер</label>
-                    <input id="sclub-number" type="text" placeholder="<?= $activeCard->getMask() ?>" class="bBuyingLine__eText jsCardNumber" name="order[sclub_card_number]" />
+                    <input id="sclub-number" type="text" placeholder="<?= $activeCard->getMask() ?>" class="bBuyingLine__eText jsCardNumber" name="order[bonus_card_number]" />
                     <div class="bText jsDescription"><?= $activeCard->getDescription() ?></div>
                 </div>
             <? endif ?>
