@@ -408,7 +408,7 @@ if ($oneClick) {
 					<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
 						<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
 						<div class="bBuyingLine__eRight mSClub">
-							<input id="sclub-number" type="text" class="bBuyingLine__eText" placeholder="2 98хххх ххххxx" name="order[bonus_card_number]" />
+							<input id="bonus-card-number" type="text" class="bBuyingLine__eText" placeholder="2 98хххх ххххxx" name="order[bonus_card_number]" />
 							<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
 						</div>
 					</div>
