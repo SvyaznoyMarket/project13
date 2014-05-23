@@ -2,7 +2,7 @@
 
 namespace EnterSite\Routing\Product\Media;
 
-use Enter\Routing\Route;
+use EnterSite\Routing\Route;
 use EnterSite\ConfigTrait;
 use EnterSite\Config;
 

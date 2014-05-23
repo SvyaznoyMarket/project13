@@ -2,6 +2,7 @@
 
 namespace EnterSite\Repository\Page\ProductCatalog\ChildCategory;
 
+use Enter\Http;
 use EnterSite\Model;
 use EnterSite\Repository;
 
@@ -24,4 +25,6 @@ class Request extends Repository\Page\DefaultLayout\Request {
     public $count;
     /** @var Model\Product[] */
     public $products = [];
+    /** @var Http\Request */
+    public $httpRequest;
 }

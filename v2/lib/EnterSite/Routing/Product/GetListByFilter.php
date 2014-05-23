@@ -2,7 +2,7 @@
 
 namespace EnterSite\Routing\Product;
 
-use Enter\Routing\Route;
+use EnterSite\Routing\Route;
 
 class GetListByFilter extends Route {
     public function __construct() {

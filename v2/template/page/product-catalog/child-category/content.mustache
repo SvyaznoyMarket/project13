@@ -199,27 +199,9 @@
 				<span class="priceRange_rubl rubl">p</span>
 			</div><!--/ фильтр цен -->
 
-			<ul class="sorting sortingFull">
-				<li class="sorting_title">Сортировать</li>
-
-				<li class="sorting_item"><a class="sorting_link sorting_link-active" href="">Автоматически</a></li>
-				<li class="sorting_item"><a class="sorting_link" href="">Хиты продаж</a></li>
-				<li class="sorting_item"><a class="sorting_link" href=""><span class="top">По цене</span></a></li>
-				<li class="sorting_item"><a class="sorting_link" href=""><span class="drop">По цене</span></a></li>
-			</ul><!--/ сортировка -->
-
-			<div class="sorting sortingAbb">
-				<span class="sorting_title">Сортировать</span>
-
-				<div class="sortingSelect">Автоматически</div>
-
-				<ul class="sortingList">
-					<li class="sortingList_item"><a class="sortingList_link" href="">Автоматически</a></li>
-					<li class="sortingList_item"><a class="sortingList_link" href="">Хиты продаж</a></li>
-					<li class="sortingList_item"><a class="sortingList_link" href=""><span class="top">По цене</span></a></li>
-					<li class="sortingList_item"><a class="sortingList_link" href=""><span class="drop">По цене</span></a></li>
-				</ul>
-			</div><!--/ сортировка моб версия -->
+            {{#sortingBlock}}
+                {{>partial/product-list/sorting}}
+            {{/sortingBlock}}
         </div>
         <!--/ фильтры  -->
 		

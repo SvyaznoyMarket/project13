@@ -2,7 +2,7 @@
 
 namespace EnterSite\Routing\User;
 
-use Enter\Routing\Route;
+use EnterSite\Routing\Route;
 
 class Get extends Route {
     public function __construct() {

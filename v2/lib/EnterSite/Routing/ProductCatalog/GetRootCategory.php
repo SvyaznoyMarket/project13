@@ -2,7 +2,7 @@
 
 namespace EnterSite\Routing\ProductCatalog;
 
-use Enter\Routing\Route;
+use EnterSite\Routing\Route;
 
 class GetRootCategory extends Route {
     /**

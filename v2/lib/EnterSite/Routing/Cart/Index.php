@@ -2,7 +2,7 @@
 
 namespace EnterSite\Routing\Cart;
 
-use Enter\Routing\Route;
+use EnterSite\Routing\Route;
 
 class Index extends Route {
     public function __construct() {

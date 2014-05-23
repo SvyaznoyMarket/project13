@@ -2,7 +2,7 @@
 
 namespace EnterSite\Routing\ProductCard;
 
-use Enter\Routing\Route;
+use EnterSite\Routing\Route;
 
 class Get extends Route {
     /**

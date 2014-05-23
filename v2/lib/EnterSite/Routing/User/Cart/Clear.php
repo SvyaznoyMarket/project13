@@ -2,7 +2,7 @@
 
 namespace EnterSite\Routing\User\Cart;
 
-use Enter\Routing\Route;
+use EnterSite\Routing\Route;
 
 class Clear extends Route {
     public function __construct() {

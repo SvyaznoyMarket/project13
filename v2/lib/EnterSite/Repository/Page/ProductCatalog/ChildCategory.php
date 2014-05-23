@@ -36,6 +36,7 @@ class ChildCategory {
         $page->dataModule = 'product.catalog';
 
         $page->content->productBlock = false;
+        $page->content->sortingBlock = false;
         if ((bool)$request->products) {
             $page->content->productBlock = new Page\Content\ProductBlock();
             $page->content->productBlock->limit = $config->product->itemPerPage;
@@ -53,6 +54,14 @@ class ChildCategory {
 
                 $page->content->productBlock->products[] = $productCard;
             }
+
+            $page->content->sortingBlock = new Page\Content\SortingBlock();
+            $page->content->sortingBlock->sortings = (new Repository\Partial\Sorting())->getList(
+                $request->sortings,
+                $request->sorting,
+                new Routing\ProductCatalog\GetChildCategory($request->category->path),
+                $request->httpRequest
+            );
         }
 
         $page->content->productBlock->moreLink = (new Repository\Partial\ProductList\MoreLink())->getObject($request->pageNum, $request->limit, $request->count) ?: false;

@@ -159,6 +159,7 @@ class ChildCategory {
         $pageRequest->category = $category;
         $pageRequest->catalogConfig = $catalogConfig;
         $pageRequest->products = $productsById;
+        $pageRequest->httpRequest = $request;
 
         // страница
         $page = new Page();

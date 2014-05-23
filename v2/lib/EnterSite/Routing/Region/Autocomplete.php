@@ -2,7 +2,7 @@
 
 namespace EnterSite\Routing\Region;
 
-use Enter\Routing\Route;
+use EnterSite\Routing\Route;
 
 class Autocomplete extends Route {
     public function __construct() {

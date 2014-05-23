@@ -18,15 +18,5 @@
         "token": "price",
         "name": "По цене &#8593;",
         "direction": "desc"
-    },
-    "creator-asc": {
-        "token": "creator",
-        "name": "Бренды А&#8594;Я",
-        "direction": "asc"
-    },
-    "creator-desc": {
-        "token": "creator",
-        "name": "Бренды Я&#8592;А",
-        "direction": "desc"
     }
 }
