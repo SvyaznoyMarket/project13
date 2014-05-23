@@ -25,12 +25,13 @@ class ChildCategory {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
         $productRepository = new Repository\Product();
+        $productCategoryRepository = new Repository\Product\Category();
 
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
 
         // токен категории
-        $categoryToken = (new Repository\Product\Category())->getTokenByHttpRequest($request);
+        $categoryToken = $productCategoryRepository->getTokenByHttpRequest($request);
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
@@ -61,7 +62,7 @@ class ChildCategory {
         $curl->execute(1, 2);
 
         // категория
-        $category = (new Repository\Product\Category())->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
+        $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
         if (!$category) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
         }
@@ -89,7 +90,7 @@ class ChildCategory {
         $curl->execute(1, 2);
 
         // предки категории
-        $category->ascendants = (new Repository\Product\Category())->getAscendantListByQuery($ascendantCategoryItemQuery);
+        $category->ascendants = $productCategoryRepository->getAscendantListByQuery($ascendantCategoryItemQuery);
 
         // листинг идентификаторов товаров
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);

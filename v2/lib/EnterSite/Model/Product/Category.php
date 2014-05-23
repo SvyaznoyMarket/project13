@@ -33,7 +33,9 @@ class Category {
     public $productCount;
     /** @var int */
     public $productGlobalCount;
-    /** @var array Category[] */
+    /** @var Category|null */
+    public $parent;
+    /** @var Category[] */
     public $ascendants = [];
 
     /**

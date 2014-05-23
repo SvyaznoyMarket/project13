@@ -26,6 +26,7 @@ class Category {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
         $productRepository = new Repository\Product();
+        $productCategoryRepository = new Repository\Product\Category();
 
         // ид магазина
         $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -66,12 +67,10 @@ class Category {
         $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryId, $shop->regionId);
         $curl->prepare($categoryItemQuery);
 
-        $categoryAdminItemQuery = null;
-
         $curl->execute(1, 2);
 
         // категория
-        $category = (new Repository\Product\Category())->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
+        $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, null);
         if (!$category) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
         }
@@ -86,6 +85,13 @@ class Category {
         $ascendantCategoryItemQuery = new Query\Product\Category\GetAscendantItemByCategoryObject($category, $shop->regionId);
         $curl->prepare($ascendantCategoryItemQuery);
 
+        // запрос родителя категории
+        $parentCategoryItemQuery = null;
+        if ($category->parentId) {
+            $parentCategoryItemQuery = new Query\Product\Category\GetTreeItemById($category->parentId, $shop->regionId);
+            $curl->prepare($parentCategoryItemQuery);
+        }
+
         // запрос листинга идентификаторов товаров
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
@@ -93,7 +99,10 @@ class Category {
         $curl->execute(1, 2);
 
         // предки категории
-        $category->ascendants = (new Repository\Product\Category())->getAscendantListByQuery($ascendantCategoryItemQuery);
+        $category->ascendants = $productCategoryRepository->getAscendantListByQuery($ascendantCategoryItemQuery);
+
+        // родитель категории
+        $category->parent = $parentCategoryItemQuery ? $productCategoryRepository->getObjectByQuery($parentCategoryItemQuery) : null;
 
         // листинг идентификаторов товаров
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);

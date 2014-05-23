@@ -22,6 +22,7 @@ class RegisterShutdown {
             if ($error && (error_reporting() & $error['type'])) {
                 //$response = (new Controller\Error\InternalServerError())->execute($request);
                 $response->statusCode = Http\Response::STATUS_INTERNAL_SERVER_ERROR;
+                $response->data['error'] = ['code' => 500, 'message' => isset($error['message']) ? $error['message'] : ''];
             }
 
             // logger

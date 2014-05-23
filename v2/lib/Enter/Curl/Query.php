@@ -86,7 +86,7 @@ abstract class Query implements \JsonSerializable {
      */
     final public function getResult() {
         if (0 === $this->call) {
-            throw new \Exception(sprintf('Запрос не подготовлен %s', $this->url));
+            $this->error = new \Exception(sprintf('Запрос не подготовлен %s', $this->url));
         }
         if ($this->error) {
             throw $this->error;
