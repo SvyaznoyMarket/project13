@@ -36,6 +36,6 @@ class GetListByCategoryId extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['id']) ? $data : [];
+        $this->result = isset($data[0]['filter_id']) ? $data : [];
     }
 }

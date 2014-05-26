@@ -8,10 +8,31 @@ use EnterSite\Model;
 class Filter {
     use ImportArrayConstructorTrait;
 
+    const TYPE_BOOLEAN = 1;
+    const TYPE_DATE = 2;
+    const TYPE_NUMBER = 3;
+    const TYPE_STRING = 4;
+    const TYPE_LIST = 5;
+    const TYPE_SLIDER = 6;
+    const TYPE_STEP_INTEGER = 'integer';
+    const TYPE_STEP_FLOAT = 'fractional';
+
     /** @var string */
-    public $id;
+    public $token;
     /** @var string */
     public $name;
+    /** @var int */
+    public $typeId;
+    /** @var string */
+    public $stepType;
+    /** @var int */
+    public $min;
+    /** @var int */
+    public $max;
+    /** @var int */
+    public $globalMin;
+    /** @var int */
+    public $globalMax;
     /** @var Model\Product\Filter\Option[] */
     public $option = [];
 
@@ -19,8 +40,14 @@ class Filter {
      * @param array $data
      */
     public function import(array $data) {
-        if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('filter_id', $data)) $this->token = (string)$data['filter_id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
+        if (array_key_exists('type_id', $data)) $this->typeId = (int)$data['type_id'];
+        if (array_key_exists('step', $data)) $this->stepType = (string)$data['step'];
+        if (array_key_exists('min', $data)) $this->min = (int)$data['min'];
+        if (array_key_exists('max', $data)) $this->max = (int)$data['max'];
+        if (array_key_exists('min_global', $data)) $this->globalMin = (int)$data['min_global'];
+        if (array_key_exists('max_global', $data)) $this->globalMax = (int)$data['max_global'];
         if (isset($data['options'][0])) {
             foreach ($data['options'] as $optionItem) {
                 $this->option[] = new Model\Product\Filter\Option($optionItem);

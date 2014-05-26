@@ -161,6 +161,7 @@ class ChildCategory {
         $pageRequest->limit = $limit;
         $pageRequest->count = $productIdPager->count;
         $pageRequest->requestFilters = $requestFilters;
+        $pageRequest->filters = $filters;
         $pageRequest->sorting = $sorting;
         $pageRequest->sortings = $sortings;
         $pageRequest->category = $category;
