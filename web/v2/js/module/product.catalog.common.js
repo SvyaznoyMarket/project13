@@ -4,7 +4,7 @@ define(
         'module/config', 'jquery.ui', 'jquery.photoswipe'
     ],
     function ($, config) {
-		$( "#slider-range" ).slider({
+		$( '.js-rangeSlider' ).slider({
 			range: true,
 			min: 0,
 			max: 500,
