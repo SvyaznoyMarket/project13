@@ -2545,7 +2545,7 @@ $(document).ready(function() {
 						},
 
 						productClickHandler = function(e) {
-							e.preventDefault();
+							//e.preventDefault();
 							var
 								self = $(this),
 								slide = self.parents('.bPromoCatalogSliderWrap_eSlide'),
