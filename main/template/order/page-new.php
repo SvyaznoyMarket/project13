@@ -11,8 +11,8 @@
  * @var $banks          \Model\CreditBank\Entity[]
  * @var $creditData     array
  * @var $selectCredit   bool
- * @var $loyaltyCards   \Model\Order\LoyaltyCard\Entity[]
- * @var $loyaltyCardsData array
+ * @var $bonusCards   \Model\Order\BonusCard\Entity[]
+ * @var $bonusCardsData array
  */
 ?>
 
@@ -494,7 +494,7 @@ if ($oneClick) {
 						<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
 					</div>
 
-                    <?= $helper->render('order/_loyaltyCard', ['loyaltyCards' => $loyaltyCards, 'loyaltyCardsData' => $loyaltyCardsData]) // карты лояльности ?>
+                    <?= $helper->render('order/_bonusCard', ['bonusCards' => $bonusCards, 'bonusCardsData' => $bonusCardsData]) // карты лояльности ?>
 				<? endif ?>
 			</div>
 		

@@ -2,28 +2,28 @@
 
 return function (
     \Helper\TemplateHelper $helper,
-    array $loyaltyCards = [],
-    array $loyaltyCardsData = []
+    array $bonusCards = [],
+    array $bonusCardsData = []
 ) {
-    if (!empty($loyaltyCards)):
+    if (!empty($bonusCards)):
 
-        $activeCard = reset($loyaltyCards); ?>
+        $activeCard = reset($bonusCards); ?>
 
         <label class="bBuyingLine__eLeft">Карта программы лояльности</label>
 
-        <div class="bBuyingLine__eRight jsLoyaltyCard" data-value="<?= $helper->json($loyaltyCardsData) ?>">
+        <div class="bBuyingLine__eRight jsBonusCard" data-value="<?= $helper->json($bonusCardsData) ?>">
             <ul class="bSaleList bInputList clearfix">
-                <? $i=1; foreach ($loyaltyCards as $card): ?>
-                    <? if (!$card instanceof \Model\Order\LoyaltyCard\Entity) continue ?>
+                <? $i=1; foreach ($bonusCards as $card): ?>
+                    <? if (!$card instanceof \Model\Order\BonusCard\Entity) continue ?>
 
                     <li class="bSaleList__eItem">
-                        <input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon<?= $i ?>" name="loyalty_card" <?= 1===$i ? 'checked="checked"' : ''?> />
+                        <input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon<?= $i ?>" name="bonus_card" <?= 1===$i ? 'checked="checked"' : ''?> />
                         <label class="bCustomLabel mCustomLabelRadioBig" for="cupon<?= $i ?>"><?= $card->getName() ?></label>
                     </li>
                 <? $i++; endforeach ?>
             </ul>
 
-            <? if ($activeCard && $activeCard instanceof \Model\Order\LoyaltyCard\Entity): ?>
+            <? if ($activeCard && $activeCard instanceof \Model\Order\BonusCard\Entity): ?>
                 <div class="bBuyingLine__eRight mSClub jsActiveCard"<? if ((bool)$activeCard->getImage()): ?> style="background: url(<?= $activeCard->getImage() ?>) 260px -3px no-repeat"<? endif ?>>
                     <label class="bPlaceholder">Номер</label>
                     <input id="bonus-card-number" type="text" placeholder="<?= $activeCard->getMask() ?>" class="bBuyingLine__eText jsCardNumber" name="order[bonus_card_number]" />

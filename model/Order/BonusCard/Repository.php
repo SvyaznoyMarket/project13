@@ -1,6 +1,6 @@
 <?php
 
-namespace Model\Order\LoyaltyCard;
+namespace Model\Order\BonusCard;
 
 class Repository {
     /** @var \Core\ClientInterface */

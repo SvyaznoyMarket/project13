@@ -81,7 +81,7 @@ class EditForm {
         if (array_key_exists('home_phone', $data)) $this->setHomePhone($data['home_phone']);
         if (array_key_exists('skype', $data)) $this->setSkype($data['skype']);
         if (array_key_exists('is_subscribe', $data)) $this->setIsSubscribed($data['is_subscribe']);
-        if (array_key_exists('bonus_card', $data)) $this->setBonusCard($data['bonus_card']);
+        if (array_key_exists('bonus_card', $data) && is_array($data['bonus_card'])) $this->setBonusCard($data['bonus_card']);
         if (array_key_exists('is_disabled', $data)) $this->setIsDisabled($data['is_disabled']);
     }
 
@@ -318,7 +318,6 @@ class EditForm {
      */
     public function setIsSubscribed($isSubscribed) {
         $this->isSubscribed = (bool)$isSubscribed;
-        //file_put_contents('/tmp/logger.txt', print_r($this->isSubscribed, true).PHP_EOL, FILE_APPEND);
     }
 
     /**
@@ -331,7 +330,7 @@ class EditForm {
     /**
      * @param array $bonusCard
      */
-    public function setBonusCard(array $bonusCard) {
+    public function setBonusCard($bonusCard) {
         $this->bonusCard = $bonusCard;
     }
 

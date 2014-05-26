@@ -7,7 +7,7 @@
 (function($) {
 	var
 		body = $('body'),
-		loyaltyCard = $('.jsLoyaltyCard'),
+		bonusCard = $('.jsBonusCard'),
 		data;
 	// end of vars
 
@@ -48,7 +48,7 @@
 				},
 
 				changeCardValue = function changeCardValue() {
-					if ( !activeCardNumber.length || !newCardData.hasOwnProperty('value') || '' == newCardData.value ) {
+					if ( !activeCardNumber.length || !newCardData.hasOwnProperty('value') ) {
 						return;
 					}
 
@@ -60,7 +60,7 @@
 				return;
 			}
 
-			cardIndex = $('.jsLoyaltyCard input[name="loyalty_card"]').index(this);
+			cardIndex = $('.jsBonusCard input[name="bonus_card"]').index(this);
 			if ( -1 == cardIndex ) {
 				return;
 			}
@@ -115,21 +115,21 @@
 		};
 	// end of functions
 
-	if ( !loyaltyCard.length ) {
+	if ( !bonusCard.length ) {
 		return;
 	}
 
-	data = loyaltyCard.data('value');
+	data = bonusCard.data('value');
 	if ( !data.length ) {
 		return;
 	}
 
-	console.groupCollapsed('LoyaltyCard');
+	console.groupCollapsed('BonusCard');
 
 	$.mask.definitions['x'] = '[0-9]';
 	setDefaults();
 
-	body.on('change', '.jsLoyaltyCard input[name="loyalty_card"]', cardChangeHandler);
+	body.on('change', '.jsBonusCard input[name="bonus_card"]', cardChangeHandler);
 	console.groupEnd();
 
 })(jQuery);

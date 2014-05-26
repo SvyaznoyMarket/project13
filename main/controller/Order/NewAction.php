@@ -159,26 +159,41 @@ class NewAction {
 
         // получение карт лояльности
         try {
-            $loyaltyCards = \RepositoryManager::loyaltyCard()->getCollection();
+            $bonusCards = \RepositoryManager::bonusCard()->getCollection();
         } catch (\Exception $e) {
             \App::logger()->error($e);
             \App::exception()->remove($e);
 
-            $loyaltyCards = [];
+            $bonusCards = [];
+        }
+
+        $userCards = [];
+        if ($user->getEntity() && $user->getEntity()->getBonusCard()) {
+            foreach ($user->getEntity()->getBonusCard() as $card) {
+                if (
+                    !array_key_exists('bonus_card_id', $card) || !(bool)$card['bonus_card_id'] ||
+                    !array_key_exists('number', $card) || !(bool)$card['number']
+                ) {
+                    continue;
+                }
+
+                $userCards[$card['bonus_card_id']] = $card['number'];
+            }
         }
 
         // подготавливаем массив данных для JS
-        $loyaltyCardsData = [];
-        foreach ($loyaltyCards as $card) {
-            if (!$card instanceof \Model\Order\LoyaltyCard\Entity) continue;
+        $bonusCardsData = [];
+        foreach ($bonusCards as $card) {
+            if (!$card instanceof \Model\Order\BonusCard\Entity) continue;
 
-            $loyaltyCardsData[] = [
+            $bonusCardsData[] = [
+                'id' => $card->getId(),
                 'name' => $card->getName(),
                 'description' => $card->getDescription(),
                 'image' => $card->getImage(),
                 'mask' => $card->getMask(),
                 'prefix' => $card->getPrefix(),
-                'value' => '',// TODO Когда ядро будет готово отдавать номера карт пользователя то их нужно будет подставлять в данное поле (SITE-3792)
+                'value' => array_key_exists($card->getId(), $userCards) ? $userCards[$card->getId()] : '',
             ];
         }
 
@@ -191,8 +206,8 @@ class NewAction {
         $page->setParam('banks', $banks);
         $page->setParam('creditData', $creditData);
         $page->setParam('form', $form);
-        $page->setParam('loyaltyCards', $loyaltyCards);
-        $page->setParam('loyaltyCardsData', $loyaltyCardsData);
+        $page->setParam('bonusCards', $bonusCards);
+        $page->setParam('bonusCardsData', $bonusCardsData);
 
         return new \Http\Response($page->show());
     }

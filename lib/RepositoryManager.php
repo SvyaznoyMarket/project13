@@ -329,13 +329,13 @@ class RepositoryManager {
     }
 
     /**
-     * @return \Model\Order\LoyaltyCard\Repository
+     * @return \Model\Order\BonusCard\Repository
      */
-    static function loyaltyCard() {
+    static function bonusCard() {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Model\Order\LoyaltyCard\Repository(\App::coreClientV2());
+            $instance = new \Model\Order\BonusCard\Repository(\App::coreClientV2());
         }
 
         return $instance;

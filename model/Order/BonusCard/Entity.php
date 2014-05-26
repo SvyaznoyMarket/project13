@@ -1,8 +1,10 @@
 <?php
 
-namespace Model\Order\LoyaltyCard;
+namespace Model\Order\BonusCard;
 
 class Entity {
+    /** @var int */
+    private $id;
     /** @var string */
     private $name;
     /** @var string */
@@ -15,11 +17,26 @@ class Entity {
     private $prefix;
 
     public function __construct(array $data = []) {
+        if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('img', $data)) $this->setImage($data['img']);
         if (array_key_exists('mask', $data)) $this->setMask($data['mask']);
         if (array_key_exists('prefix', $data)) $this->setPrefix($data['prefix']);
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
     }
 
     /**

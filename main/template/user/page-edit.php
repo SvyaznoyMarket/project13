@@ -1,8 +1,9 @@
 <?php
 /**
- * @var $page    \View\User\EditPage
- * @var $form    \View\User\EditForm
- * @var $message string
+ * @var $page       \View\User\EditPage
+ * @var $form       \View\User\EditForm
+ * @var $message    string
+ * @var $bonusCards array
  */
 ?>
 
@@ -87,11 +88,29 @@
             </div>
         </div>
 
-        <? // TODO (SITE-3792) Ядерный метод больше не работает с полем "svyaznoy_club_card_number" появилось поле "bonus_card", поэтому пока что поле закомменчено
-        /*
-        <label class="userInfoEdit__label" for="user_sclub_card_number">Номер карты Связной-Клуб:</label>
-        <div><input type="text" id="user_sclub_card_number" value="<?= $form->getSclubCardnumber() ?>" name="user[svyaznoy_club_card_number]" class="text jsCardNumber" /></div>
-        */ ?>
+        <? if (isset($bonusCards) && is_array($bonusCards)): ?>
+            <? foreach ($bonusCards as $card):
+                if (!$card instanceof \Model\Order\BonusCard\Entity) continue;
+
+                $userCardNumber = null;
+                if ((bool)$form->getBonusCard() && is_array($form->getBonusCard())) {
+                    foreach ($form->getBonusCard() as $userCard) {
+                        if (
+                            !array_key_exists('bonus_card_id', $userCard) ||
+                            !array_key_exists('number', $userCard) ||
+                            $userCard['bonus_card_id'] != $card->getId()
+                        ) {
+                            continue;
+                        }
+
+                        $userCardNumber = $userCard['number'];
+                    }
+                } ?>
+
+                <label class="userInfoEdit__label" for="user_bonus_card_<?= $card->getId() ?>">Номер карты &quot;<?= $page->escape($card->getName()) ?>&quot;:</label>
+                <div><input type="text" id="user_bonus_card_<?= $card->getId() ?>" value="<?= $page->escape($userCardNumber) ?>" name="user[bonus_card][<?= $card->getId() ?>]" data-mask="<?= $card->getMask() ?>" class="text jsCardNumber" /></div>
+            <? endforeach ?>
+        <? endif ?>
 
         <label class="userInfoEdit__label" for="user_occupation">Род деятельности:</label>
 
