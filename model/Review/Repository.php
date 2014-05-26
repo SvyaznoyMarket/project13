@@ -114,6 +114,27 @@ class Repository {
         );
     }
 
+    /**
+     * @param array $productUIs
+     * @param $done
+     * @return array
+     */
+    public function prepareScoreCollectionByUi(array $productUIs = [], $done) {
+        if(!(bool)$productUIs) return [];
+
+        $this->client->addQuery(
+            'scores-list',
+            [
+                'product_ui' => implode(',', $productUIs),
+            ],
+            [],
+            $done,
+            function(\Exception $e) use (&$exception) {
+                $exception = $e;
+                \App::exception()->remove($e);
+            }
+        );
+    }
 
     /**
      * Устанавливает коллекции товаров рейтинги
