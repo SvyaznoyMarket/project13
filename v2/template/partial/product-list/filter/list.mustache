@@ -1,0 +1,8 @@
+<ul class="paramsList">
+{{#elements}}
+    <li class="paramsList_item">
+        <input class="customInput jsCustomRadio" type="{{#isMultiple}}checkbox{{/isMultiple}}{{^isMultiple}}radio{{/isMultiple}}" name="{{name}}" id="{{id}}" value="{{value}}" />
+        <label class="customLabel" for="{{id}}">{{title}}</label>
+    </li>
+{{/elements}}
+</ul>

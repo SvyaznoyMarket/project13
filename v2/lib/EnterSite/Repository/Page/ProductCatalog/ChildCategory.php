@@ -63,9 +63,13 @@ class ChildCategory {
                 new Routing\ProductCatalog\GetChildCategory($request->category->path),
                 $request->httpRequest
             );
-        }
 
-        $page->content->productBlock->moreLink = (new Repository\Partial\ProductList\MoreLink())->getObject($request->pageNum, $request->limit, $request->count) ?: false;
+            $page->content->productBlock->moreLink = (new Repository\Partial\ProductList\MoreLink())->getObject($request->pageNum, $request->limit, $request->count) ?: false;
+
+            // фильтры
+            $page->content->filterBlock = new Page\Content\FilterBlock();
+            $page->content->filterBlock->filters = (new Repository\Partial\ProductFilter())->getList($request->filters, $request->requestFilters);
+        }
 
         // шаблоны mustache
         foreach ([

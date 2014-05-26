@@ -21,6 +21,8 @@ namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
     class Content extends Page\DefaultLayout\Content {
         /** @var Content\ProductBlock|null */
         public $productBlock;
+        /** @var Content\FilterBlock|null */
+        public $filterBlock;
         /** @var Content\SortingBlock|null */
         public $sortingBlock;
         /** @var bool */
@@ -46,6 +48,11 @@ namespace EnterSite\Model\Page\ProductCatalog\ChildCategory\Content {
         public $dataValue;
         /** @var Partial\Link|null */
         public $moreLink;
+    }
+
+    class FilterBlock {
+        /** @var Partial\ProductFilter[] */
+        public $filters = [];
     }
 
     class SortingBlock {

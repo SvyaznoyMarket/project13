@@ -23,6 +23,8 @@ class Filter {
     public $name;
     /** @var int */
     public $typeId;
+    /** @var bool */
+    public $isMultiple;
     /** @var string */
     public $stepType;
     /** @var int */
@@ -43,6 +45,9 @@ class Filter {
         if (array_key_exists('filter_id', $data)) $this->token = (string)$data['filter_id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('type_id', $data)) $this->typeId = (int)$data['type_id'];
+        //if (array_key_exists('is_multiple', $data)) $this->isMultiple = (bool)$data['is_multiple'];
+        // FIXME: костыль для ядра
+        $this->isMultiple = in_array($this->typeId, [self::TYPE_LIST, self::TYPE_BOOLEAN]) && !in_array($this->token, ['shop', 'category']);
         if (array_key_exists('step', $data)) $this->stepType = (string)$data['step'];
         if (array_key_exists('min', $data)) $this->min = (int)$data['min'];
         if (array_key_exists('max', $data)) $this->max = (int)$data['max'];
