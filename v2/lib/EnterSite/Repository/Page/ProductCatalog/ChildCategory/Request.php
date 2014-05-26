@@ -13,6 +13,8 @@ class Request extends Repository\Page\DefaultLayout\Request {
     public $catalogConfig;
     /** @var Model\Product\RequestFilter[] */
     public $requestFilters = [];
+    /** @var Model\Product\Filter[] */
+    public $filters = [];
     /** @var Model\Product\Sorting */
     public $sorting;
     /** @var Model\Product\Sorting[] */

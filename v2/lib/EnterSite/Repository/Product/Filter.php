@@ -3,9 +3,16 @@
 namespace EnterSite\Repository\Product;
 
 use Enter\Http;
+use Enter\Curl\Query;
+use EnterSite\ConfigTrait;
+use EnterSite\LoggerTrait;
 use EnterSite\Model;
 
 class Filter {
+    use ConfigTrait, LoggerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait;
+    }
+
     /**
      * @param Http\Request $request
      * @return Model\Product\RequestFilter[]
@@ -36,5 +43,25 @@ class Filter {
         }
 
         return $filters;
+    }
+
+    /**
+     * @param Query $query
+     * @return Model\Product\Filter[]
+     */
+    public function getObjectListByQuery(Query $query) {
+        $reviews = [];
+
+        try {
+            foreach ($query->getResult() as $item) {
+                $reviews[] = new Model\Product\Filter($item);
+            }
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+
+            trigger_error($e, E_USER_ERROR);
+        }
+
+        return $reviews;
     }
 }

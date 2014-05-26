@@ -81,6 +81,10 @@ class ChildCategory {
         $requestFilters['category'] = new Model\Product\RequestFilter();
         $requestFilters['category']->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
 
+        // запрос фильтров
+        $filterListQuery = new Query\Product\Filter\GetListByCategoryId($category->id, $region->id);
+        $curl->prepare($filterListQuery);
+
         // запрос предка категории
         $ascendantCategoryItemQuery = new Query\Product\Category\GetAscendantItemByCategoryObject($category, $region->id);
         $curl->prepare($ascendantCategoryItemQuery);
@@ -94,6 +98,9 @@ class ChildCategory {
         $curl->prepare($categoryListQuery);
 
         $curl->execute(1, 2);
+
+        // фильтры
+        $filters = (new Repository\Product\Filter())->getObjectListByQuery($filterListQuery);
 
         // предки категории
         $category->ascendants = $productCategoryRepository->getAscendantListByQuery($ascendantCategoryItemQuery);
