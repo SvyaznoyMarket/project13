@@ -19,7 +19,7 @@
 		metroIdFiled = $('#order_subway_id'),
 		streetField = $('#order_address_street'),
 		buildingField = $('#order_address_building'),
-		sclub = $('#sclub-number'),
+		bonusCardNumber = $('#bonus-card-number'),
 		paymentRadio = $('.jsCustomRadio[name="order[payment_method_id]"]'),
 		qiwiPhone = $('#qiwi-phone'),
 		orderAgreed = $('#order_agreed'),
@@ -63,8 +63,8 @@
 					customErr: 'Необходимо согласие'
 				},
 				{
-					fieldNode: sclub,
-					customErr: 'Некорректно введен номер карты Связного клуба'
+					fieldNode: bonusCardNumber,
+					customErr: 'Некорректно введен номер карты лояльности'
 				}
 			]
 		},
@@ -468,9 +468,9 @@
 	// end of functions
 	
 	$.mask.definitions['n'] = '[0-9]';
-	sclub.mask('2 98nnnn nnnnnn', {
-		placeholder: '*'
-	});
+//	bonusCardNumber.mask('2 98nnnn nnnnnn', {
+//		placeholder: '*'
+//	});
 	qiwiPhone.mask('(nnn) nnn-nn-nn');
 	phoneField.mask('(nnn) nnn-nn-nn');
 

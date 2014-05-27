@@ -79,17 +79,17 @@ class OneClickAction {
             }
 
             $data = [
-                'geo_id'                    => \App::user()->getRegion()->getId(),
-                'type_id'                   => \Model\Order\Entity::TYPE_1CLICK,
-                'delivery_type_id'          => $deliveryTypeId,
-                'payment_id'                => \Model\PaymentMethod\Entity::CASH_ID, // оплата наличными
-                'delivery_date'             => (string)$formData['delivered_at'],
-                'first_name'                => (string)$formData['recipient_first_name'],
-                'mobile'                    => trim((string)$formData['recipient_phonenumbers']),
-                'svyaznoy_club_card_number' => str_replace(' ','', (string)$formData['recipient_scCard']),
-                'product'                   => $productsInCart,
-                'extra'                     => 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.',
-                'ip'                        => $request->getClientIp(),
+                'geo_id'            => \App::user()->getRegion()->getId(),
+                'type_id'           => \Model\Order\Entity::TYPE_1CLICK,
+                'delivery_type_id'  => $deliveryTypeId,
+                'payment_id'        => \Model\PaymentMethod\Entity::CASH_ID, // оплата наличными
+                'delivery_date'     => (string)$formData['delivered_at'],
+                'first_name'        => (string)$formData['recipient_first_name'],
+                'mobile'            => trim((string)$formData['recipient_phonenumbers']),
+                'bonus_card_number' => str_replace(' ','', (string)$formData['recipient_scCard']),
+                'product'           => $productsInCart,
+                'extra'             => 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.',
+                'ip'                => $request->getClientIp(),
             ];
             if ($formData['shop_id']) {
                 $data['shop_id'] = (int)$formData['shop_id'];
