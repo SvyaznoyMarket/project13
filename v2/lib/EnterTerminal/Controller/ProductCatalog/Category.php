@@ -27,6 +27,7 @@ class Category {
         $curl = $this->getCurlClient();
         $productRepository = new Repository\Product();
         $productCategoryRepository = new Repository\Product\Category();
+        $filterRepository = new Repository\Product\Filter();
 
         // ид магазина
         $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -77,9 +78,12 @@ class Category {
 
         // фильтры в запросе
         // TODO: доделать фильтры
-        $requestFilters = []; //(new Repository\Product\Filter())->getRequestObjectListByHttpRequest($request);
-        $requestFilters['category'] = new Model\Product\RequestFilter();
-        $requestFilters['category']->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
+        $requestFilters = []; //$filterRepository->getRequestObjectListByHttpRequest($request);
+        // фильтр категории в http-запросе
+        $categoryFilter = new Model\Product\RequestFilter();
+        $categoryFilter->name = 'category';
+        $categoryFilter->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
+        $requestFilters[] = $categoryFilter;
 
         // запрос предка категории
         $ascendantCategoryItemQuery = new Query\Product\Category\GetAscendantItemByCategoryObject($category, $shop->regionId);
@@ -93,7 +97,7 @@ class Category {
         }
 
         // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
+        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
         $curl->execute(1, 2);
