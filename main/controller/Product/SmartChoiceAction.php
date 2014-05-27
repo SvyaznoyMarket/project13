@@ -34,7 +34,7 @@ class SmartChoiceAction {
             foreach ($products as $id) {
                 $product = \RepositoryManager::product()->getEntityById($id);
                 if (!$product) {
-                    throw new \Exception(sprintf('Товар #%s не найден', $id));
+                    \App::logger()->error(sprintf('Товар #%s не найден', $id), ['SmartChoice']);
                 }
                 $productIds[] = $product->getId();
             }
@@ -44,7 +44,9 @@ class SmartChoiceAction {
                 $queryUrl = "{$rrConfig['apiUrl']}Recomendation/UpSellItemToItems/{$rrConfig['account']}/$id";
 
                 \App::curl()->addQuery($queryUrl, [], function ($data) use (&$recommendedIds, $id) {
-                    $recommendedIds[$id] = $data;
+                    if ((bool)$data) {
+                        $recommendedIds[$id] = $data;
+                    }
                 }, function(\Exception $e) {
                     \App::exception()->remove($e);
                 }, $rrConfig['timeout']);
