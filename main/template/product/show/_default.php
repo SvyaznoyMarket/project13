@@ -174,7 +174,7 @@ $isKitPage = (bool)$product->getKit();
             </div>
 
             <? if (!empty($reviewsData['review_list'])) { ?>
-                <div class="bReviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
+                <div class="bReviewsWrapper" data-product-ui="<?= $product->getUi() ?>" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
                     <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
                 </div>
             <? } ?>

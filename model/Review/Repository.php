@@ -85,7 +85,7 @@ class Repository {
         $result = [];
 
         $client->addQuery('scores-list', [
-                'product_list' => $productIdList,
+                'product_ui' => $productIdList,
             ], [], function($data) use(&$result) {
                 $result = $data;
             },  function(\Exception $e) use (&$exception) {
@@ -137,25 +137,25 @@ class Repository {
     }
 
     /**
-     * Устанавливает коллекции товаров рейтинги
+     * Устанавливает рейтинги для коллекции товаров
      *
      * @param array $products
      * @return array $products
      */
     public function addScores(&$products, &$scoreData = null) {
         if (null === $scoreData) {
-            $scoreData = \App::config()->product['reviewEnabled'] ? $this->getScores(implode(',', array_map(function($product){ return $product->getId(); }, $products))) : [];
+            $scoreData = \App::config()->product['reviewEnabled'] ? $this->getScores(implode(',', array_map(function($product){ return $product->getUi(); }, $products))) : [];
         }
 
         if(empty($scoreData['product_scores'])) return $products;
 
-        $scoredIds = array_map(function($score){ return (int)$score['product_id']; }, $scoreData['product_scores']);
+        $scoredUis = array_map(function($score){ return $score['product_ui']; }, $scoreData['product_scores']);
 
         foreach ($products as $product) {
-            if(in_array($product->getId(), $scoredIds)) {
+            if(in_array($product->getUi(), $scoredUis)) {
                 $productScore = null;
                 foreach ($scoreData['product_scores'] as $key => $score) {
-                    if($score['product_id'] == $product->getId()) {
+                    if($score['product_ui'] == $product->getUi()) {
                         $productScore = $score;
                         unset($scoreData['product_scores'][$key]);
                     }

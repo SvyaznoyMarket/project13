@@ -1599,7 +1599,7 @@ $(document).ready(function() {
 			user: 0,
 			pro: 0
 		},
-		reviewsProductId = null,
+		reviewsProductUi = null,
 		reviewsType = null,
 		reviewsContainerClass = null,
 
@@ -1620,7 +1620,7 @@ $(document).ready(function() {
 		var page = reviewCurrentPage[type] + 1,
 			layout = false,
 			url = '/product-reviews/'+productId,
-			dataToSend = {};
+			dataToSend;
 		// end of vars
 		
 		var reviewsResponse = function reviewsResponse( data ) {
@@ -1667,7 +1667,7 @@ $(document).ready(function() {
 			moreReviewsButton.show();
 		}
 
-		reviewsProductId = reviewWrap.attr('data-product-id');
+		reviewsProductUi = reviewWrap.attr('data-product-ui');
 		reviewsType = reviewWrap.attr('data-reviews-type');
 		reviewsContainerClass = reviewWrap.attr('data-container');
 
@@ -1691,7 +1691,7 @@ $(document).ready(function() {
 			}
 
 			if ( !$('.'+reviewsContainerClass).html() ) {
-				getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
+				getReviews(reviewsProductUi, reviewsType, reviewsContainerClass);
 			}
 			else {
 				// проверяем что делать с кнопкой "показать еще" - скрыть/показать
@@ -1705,7 +1705,7 @@ $(document).ready(function() {
 		});
 
 		moreReviewsButton.click(function() {
-			getReviews(reviewsProductId, reviewsType, reviewsContainerClass);
+			getReviews(reviewsProductUi, reviewsType, reviewsContainerClass);
 		});
 	}
 
@@ -1740,7 +1740,7 @@ $(document).ready(function() {
  *
  * @author		Shaposhnik Vitaly
  */
-;(function() {
+(function() {
 	var body = $('body'),
 		reviewPopup = $('.jsReviewPopup'),
 		form = reviewPopup.find('.jsReviewForm'),
