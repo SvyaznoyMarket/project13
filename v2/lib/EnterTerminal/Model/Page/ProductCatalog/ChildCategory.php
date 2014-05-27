@@ -14,5 +14,7 @@ namespace EnterTerminal\Model\Page\ProductCatalog {
         public $productCount;
         /** @var Model\Product\Sorting[] */
         public $sorting = [];
+        /** @var Model\Product\Filter[] */
+        public $filters = [];
     }
 }

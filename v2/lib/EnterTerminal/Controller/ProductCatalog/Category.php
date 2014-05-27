@@ -76,6 +76,10 @@ class Category {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
         }
 
+        // запрос фильтров
+        $filterListQuery = new Query\Product\Filter\GetListByCategoryId($category->id, $shop->regionId);
+        $curl->prepare($filterListQuery);
+
         // фильтры в запросе
         // TODO: доделать фильтры
         $requestFilters = []; //$filterRepository->getRequestObjectListByHttpRequest($request);
@@ -101,6 +105,9 @@ class Category {
         $curl->prepare($productIdPagerQuery);
 
         $curl->execute(1, 2);
+
+        // фильтры
+        $filters = $filterRepository->getObjectListByQuery($filterListQuery);
 
         // предки категории
         $category->ascendants = $productCategoryRepository->getAscendantListByQuery($ascendantCategoryItemQuery);
@@ -152,6 +159,7 @@ class Category {
         $page->catalogConfig = $catalogConfig;
         $page->products = array_values($productsById);
         $page->productCount = $productIdPager->count;
+        $page->filters = $filters;
 
         return new Http\JsonResponse($page);
     }
