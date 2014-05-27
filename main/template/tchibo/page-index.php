@@ -41,7 +41,7 @@ if ((bool)$slideData) {
 
         $categoryChildren = $catalogCategory->getChild();
         if (count($categoryChildren) > 5) {
-            $categoryChildren = array_slice($categoryChildren, 5);
+            //$categoryChildren = array_slice($categoryChildren, 5); // SITE-3840
         }
         ?>
         <div class="tchiboCatalogInner">
