@@ -10,6 +10,8 @@ namespace EnterSite\Model\Partial {
         public $isListType;
         /** @var bool */
         public $isMultiple;
+        /** @var string */
+        public $dataValue;
         /** @var ProductFilter\Element[] */
         public $elements = [];
     }
@@ -25,5 +27,7 @@ namespace EnterSite\Model\Partial\ProductFilter {
         public $value;
         /** @var string */
         public $id;
+        /** @var bool */
+        public $isActive;
     }
 }

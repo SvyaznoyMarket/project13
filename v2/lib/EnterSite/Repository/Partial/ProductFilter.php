@@ -4,10 +4,13 @@ namespace EnterSite\Repository\Partial;
 
 use Enter\Http;
 use Enter\Util;
+use EnterSite\ViewHelperTrait;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
 class ProductFilter {
+    use ViewHelperTrait;
+
     /**
      * @param Model\Product\Filter[] $filterModels
      * @param Model\Product\RequestFilter[] $requestFilterModels
@@ -15,9 +18,17 @@ class ProductFilter {
      */
     public function getList(
         array $filterModels,
-        array $requestFilterModels = null
+        array $requestFilterModels = []
     ) {
+        $viewHelper = $this->getViewHelper();
+
         $filters = [];
+
+        /** @var Model\Product\RequestFilter[] $requestFilterModelsByName */
+        $requestFilterModelsByName = [];
+        foreach ($requestFilterModels as $requestFilterModel) {
+            $requestFilterModelsByName[$requestFilterModel->name] = $requestFilterModel;
+        }
 
         foreach ($filterModels as $filterModel) {
             $filter = new Partial\ProductFilter();
@@ -46,13 +57,28 @@ class ProductFilter {
             }
 
             foreach ($filterModel->option as $optionModel) {
-                $option = new Partial\ProductFilter\Element();
-                $option->title = $optionModel->name;
-                $option->name = self::getName($filterModel, $optionModel);
-                $option->value = $optionModel->id;
-                $option->id = 'id-productFilter-' . $filterModel->token . '-' . $optionModel->id;
+                $element = new Partial\ProductFilter\Element();
+                $element->title = $optionModel->name;
+                $element->name = self::getName($filterModel, $optionModel);
+                $element->id = 'id-productFilter-' . $filterModel->token . '-' . $optionModel->id;
 
-                $filter->elements[] = $option;
+                if (isset($requestFilterModelsByName[$element->name])) {
+                    $element->value = $requestFilterModelsByName[$element->name]->value;
+                    $element->isActive = $requestFilterModelsByName[$element->name]->value == $optionModel->id;
+                } else {
+                    $element->value = $optionModel->id;
+                    $element->isActive = false;
+                }
+
+                // максимальное и минимальное значения для слайдера
+                if (in_array($filterModel->typeId, [Model\Product\Filter::TYPE_SLIDER, Model\Product\Filter::TYPE_NUMBER])) {
+                    $filter->dataValue = $viewHelper->json([
+                        'min' => $filterModel->min,
+                        'max' => $filterModel->max,
+                    ]);
+                }
+
+                $filter->elements[] = $element;
             }
 
             $filters[] = $filter;

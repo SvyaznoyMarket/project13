@@ -4,12 +4,27 @@ define(
         'module/config', 'jquery.ui', 'jquery.photoswipe'
     ],
     function ($, config) {
-		$( '.js-rangeSlider' ).slider({
-			range: true,
-			min: 0,
-			max: 500,
-			values: [ 0, 500 ]
-		});
+        var $slider = $('.js-rangeSlider');
+
+        $slider.each(function(i, el) {
+            var $el = $(el),
+                dataValue = $el.data('value')
+            ;
+
+            if (!dataValue) {
+                console.warn('slider', $el, dataValue);
+                return true;
+            } else {
+                console.info('slider', $el, dataValue);
+            }
+
+            $el.slider({
+                range: true,
+                min: dataValue.min,
+                max: dataValue.max,
+                values: [ 0, 500 ]
+            });
+        });
 
 		var paramsBtn = $('.js-action-params'),
 			params = $('.params'),
