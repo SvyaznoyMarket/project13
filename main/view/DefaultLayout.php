@@ -635,9 +635,14 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotRuTargetJS() {
-        if (!\App::config()->partners['RuTarget']['enabled']) return;
+        if (
+            !\App::config()->partners['RuTarget']['enabled'] ||
+            !(bool)\App::config()->partners['RuTarget']['containerId']
+        ) {
+            return;
+        }
 
-        return '<div id="RuTargetJS" class="jsanalytics">
+        return '<div id="RuTargetJS" class="jsanalytics" data-id="' . \App::config()->partners['RuTarget']['containerId'] . '">
             <!­­ RuTarget ­­> 
             <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM­4SJX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <!­­ /RuTarget ­­> 
