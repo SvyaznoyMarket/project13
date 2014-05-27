@@ -25,6 +25,7 @@ class ListByFilter {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
         $productRepository = new Repository\Product();
+        $filterRepository = new Repository\Product\Filter();
 
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
@@ -48,10 +49,10 @@ class ListByFilter {
         $curl->execute(1, 2);
 
         // фильтры в запросе
-        $requestFilters = (new Repository\Product\Filter())->getRequestObjectListByHttpRequest($request);
+        $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
         // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
+        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
         $curl->execute(1, 2);

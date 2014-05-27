@@ -21,24 +21,19 @@ class Filter {
         $filters = [];
 
         foreach ($request->query as $key => $value) {
-            if (0 === strpos($key, 'f-')) {
-                $parts = array_pad(explode('-', $key), 3, null);
+            if (
+                is_scalar($value)
+                && (
+                    (0 === strpos($key, 'f-'))
+                    || (0 === strpos($key, 'tag-'))
+                    || (in_array($key, ['shop', 'category']))
+                )
+            ) {
+                $filter = new Model\Product\RequestFilter();
+                $filter->name = $key;
+                $filter->value = $value;
 
-                if (!isset($filters[$parts[1]])) {
-                    $filters[$parts[1]] = new Model\Product\RequestFilter();
-                }
-
-                if (('from' == $parts[2]) || ('to' == $parts[2])) {
-                    $filters[$parts[1]]->value[$parts[2]] = $value;
-                } else {
-                    $filters[$parts[1]]->value[] = $value;
-                }
-            } else if (0 === strpos($key, 'tag-')) {
-                if (!isset($filters['tag'])) {
-                    $filters['tag'] = new Model\Product\RequestFilter();
-                }
-
-                $filters['tag']->value[] = $value;
+                $filters[] = $filter;
             }
         }
 
@@ -63,5 +58,61 @@ class Filter {
         }
 
         return $reviews;
+    }
+
+    /**
+     * @param Model\Product\RequestFilter[] $requestFilters
+     * @return array
+     */
+    public function dumpRequestObjectList(array $requestFilters) {
+        $return = [];
+
+        // TODO: перевести все на f-
+        $filterData = [];
+        foreach ($requestFilters as $requestFilter) {
+            $key = $requestFilter->name;
+            $value = $requestFilter->value;
+
+            if (0 === strpos($key, 'f-')) {
+                $parts = array_pad(explode('-', $key), 3, null);
+
+                if (!isset($filterData[$parts[1]])) {
+                    $filterData[$parts[1]] = [
+                        'value' => [],
+                    ];
+                }
+
+                if (('from' == $parts[2]) || ('to' == $parts[2])) {
+                    $filterData[$parts[1]]['value'][$parts[2]] = $value;
+                } else {
+                    $filterData[$parts[1]]['value'][] = $value;
+                }
+            } else if (0 === strpos($key, 'tag-')) {
+                if (!isset($filterData['tag'])) {
+                    $filterData['tag'] = [
+                        'value' => [],
+                    ];
+                }
+
+                $filterData['tag']['value'][] = $value;
+            } else if (in_array($key, ['category', 'shop'])) {
+                if (!isset($filterData[$key])) {
+                    $filterData[$key] = [
+                        'value' => [],
+                    ];
+                }
+                $filterData[$key]['value'][] = $value;
+            }
+        }
+
+        foreach ($filterData as $key => $filter) {
+            if (isset($filter['value']['from']) || isset($filter['value']['to'])) {
+                $return[] = [$key, 2, isset($filter['value']['from']) ? $filter['value']['from'] : null, isset($filter['value']['to']) ? $filter['value']['to'] : null];
+            } else {
+                $return[] = [$key, 1, $filter['value']];
+            }
+        }
+
+        return $return;
     }
 }

@@ -42,13 +42,21 @@ class ChildCategory {
             $page->content->productBlock = new Page\Content\ProductBlock();
             $page->content->productBlock->limit = $config->product->itemPerPage;
             $page->content->productBlock->url = $router->getUrlByRoute(new Routing\Product\GetListByFilter());
-            $page->content->productBlock->dataValue = $viewHelper->json([
+            // [data-value]
+            $dataValue = [
                 'page'       => 2,
                 'limit'      => $page->content->productBlock->limit,
                 'count'      => $request->count,
-                'f-category' => $request->category->id,
                 'sort'       => ('default' == $request->sorting->token) ? null : ($request->sorting->token . '-' . $request->sorting->direction),
-            ]);
+            ];
+            foreach ($request->requestFilters as $requestFilter) {
+                if (!$requestFilter->name) {
+                    $this->getLogger()->push(['type' => 'warn', 'message' => 'Пустой токен', 'requestFilter' => $requestFilter, 'action' => __METHOD__, 'tag' => ['repository']]);
+                    continue;
+                }
+                $dataValue[$requestFilter->name] = $requestFilter->value;
+            }
+            $page->content->productBlock->dataValue = $viewHelper->json($dataValue);
 
             foreach ($request->products as $productModel) {
                 $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));

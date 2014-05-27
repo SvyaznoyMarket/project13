@@ -6,22 +6,41 @@ define(
         $, _, mustache
     ) {
         var $body = $('body'),
+            $listContainer = $('.js-productList-container'), // FIXME: хардкод
+
+            setFilter = function(e) {
+                var $el = $(e.currentTarget),
+                    dataValue = $listContainer.data('value')
+                ;
+
+                console.info('setFilter', $el);
+
+                if ($el.is(':radio, :checkbox')) {
+                    if ($el.is(':checked')) {
+                        dataValue[$el.attr('name')] = $el.val();
+                    } else {
+                        delete dataValue[$el.attr('name')];
+                    }
+
+                    dataValue.page = 1;
+                }
+            },
 
             loadMoreProduct = function(e) {
                 e.stopPropagation();
 
                 var $el = $(e.currentTarget),
-                    $container = $($el.data('containerSelector')),
-                    url = $container.data('url'),
-                    dataValue = $container.data('value')
+                    //$container = $($el.data('containerSelector')),
+                    url = $listContainer.data('url'),
+                    dataValue = $listContainer.data('value')
                 ;
 
-                console.info('loadMoreProduct', $el.data('disabled'), $el, $container);
+                console.info('loadMoreProduct', $el.data('disabled'), $el, $listContainer);
 
                 if (url && (true !== $el.data('disabled'))) {
                     $.get(url, dataValue)
                         .done(function(response) {
-                            if (_.isObject(response.result) && dataValue && $container.length) {
+                            if (_.isObject(response.result) && dataValue && $listContainer.length) {
                                 console.info(response.result);
                                 dataValue.page = response.result.page;
                                 dataValue.count = response.result.count;
@@ -31,7 +50,7 @@ define(
                                 }
 
                                 _.each(response.result.productCards, function(content) {
-                                    $container.append(content);
+                                    $listContainer.append(content);
                                 });
 
                                 if (_.isObject(response.result.widgets)) {
@@ -53,6 +72,8 @@ define(
         ;
 
 
-        $body.on('click dblclick', '.js-productList-more', loadMoreProduct)
+        $body
+            .on('click dblclick', '.js-productList-more', loadMoreProduct)
+            .on('change', '.js-productFilter', setFilter)
     }
 );

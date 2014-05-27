@@ -26,6 +26,7 @@ class ChildCategory {
         $curl = $this->getCurlClient();
         $productRepository = new Repository\Product();
         $productCategoryRepository = new Repository\Product\Category();
+        $filterRepository = new Repository\Product\Filter();
 
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
@@ -76,10 +77,13 @@ class ChildCategory {
             return (new Controller\Redirect())->execute($category->redirectLink . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
         }
 
-        // фильтры в запросе
-        $requestFilters = (new Repository\Product\Filter())->getRequestObjectListByHttpRequest($request);
-        $requestFilters['category'] = new Model\Product\RequestFilter();
-        $requestFilters['category']->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
+        // фильтры в http-запросе
+        $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
+        // фильтр категории в http-запросе
+        $categoryFilter = new Model\Product\RequestFilter();
+        $categoryFilter->name = 'category';
+        $categoryFilter->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
+        $requestFilters[] = $categoryFilter;
 
         // запрос фильтров
         $filterListQuery = new Query\Product\Filter\GetListByCategoryId($category->id, $region->id);
@@ -90,7 +94,7 @@ class ChildCategory {
         $curl->prepare($ascendantCategoryItemQuery);
 
         // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($requestFilters, $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
+        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
         // запрос дерева категорий для меню
@@ -100,7 +104,7 @@ class ChildCategory {
         $curl->execute(1, 2);
 
         // фильтры
-        $filters = (new Repository\Product\Filter())->getObjectListByQuery($filterListQuery);
+        $filters = $filterRepository->getObjectListByQuery($filterListQuery);
 
         // предки категории
         $category->ascendants = $productCategoryRepository->getAscendantListByQuery($ascendantCategoryItemQuery);
