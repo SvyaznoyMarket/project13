@@ -9,11 +9,15 @@ define(
             $listContainer = $('.js-productList-container'), // FIXME: хардкод
 
             setFilter = function(e) {
+                e.stopPropagation();
+
                 var $el = $(e.currentTarget),
                     dataValue = $listContainer.data('value')
                 ;
 
                 console.info('setFilter', $el);
+
+                dataValue.page = 1;
 
                 if ($el.is(':radio, :checkbox')) {
                     if ($el.is(':checked')) {
@@ -21,32 +25,48 @@ define(
                     } else {
                         delete dataValue[$el.attr('name')];
                     }
-
-                    dataValue.page = 1;
+                } else if ($el.is(':text')) {
+                    dataValue[$el.attr('name')] = $el.val();
                 }
+
+                loadProducts(e, {clear: true});
             },
 
-            loadMoreProduct = function(e) {
+            loadMoreProducts = function(e) {
                 e.stopPropagation();
 
-                var $el = $(e.currentTarget),
+                loadProducts(e, {clear: false, });
+
+                e.preventDefault();
+            },
+
+            loadProducts = function(e, options) {
+                var $moreLink = $('.js-productList-more'),
                     //$container = $($el.data('containerSelector')),
                     url = $listContainer.data('url'),
                     dataValue = $listContainer.data('value')
                 ;
 
-                console.info('loadMoreProduct', $el.data('disabled'), $el, $listContainer);
+                options = _.extend({clear: false}, options);
 
-                if (url && (true !== $el.data('disabled'))) {
+                console.info('loadMoreProduct', $moreLink.data('disabled'), $moreLink, $listContainer);
+
+                if (url && (true !== $moreLink.data('disabled'))) {
                     $.get(url, dataValue)
                         .done(function(response) {
                             if (_.isObject(response.result) && dataValue && $listContainer.length) {
-                                console.info(response.result);
+                                if (true === options.clear) {
+                                    $listContainer.empty();
+                                }
+
+
                                 dataValue.page = response.result.page;
                                 dataValue.count = response.result.count;
 
                                 if (dataValue.count <= dataValue.page * dataValue.limit) {
-                                    $el.hide();
+                                    $moreLink.hide();
+                                } else {
+                                    $moreLink.show();
                                 }
 
                                 _.each(response.result.productCards, function(content) {
@@ -60,20 +80,18 @@ define(
                             }
                         })
                         .always(function() {
-                            $el.data('disabled', false);
+                            $moreLink.data('disabled', false);
                         })
                     ;
 
-                    $el.data('disabled', true);
+                    $moreLink.data('disabled', true);
                 }
-
-                e.preventDefault();
             }
         ;
 
 
         $body
-            .on('click dblclick', '.js-productList-more', loadMoreProduct)
+            .on('click dblclick', '.js-productList-more', loadMoreProducts)
             .on('change', '.js-productFilter', setFilter)
     }
 );

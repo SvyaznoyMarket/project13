@@ -128,7 +128,7 @@ class Category {
 
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
-        if ($config->productReview->enabled) {
+        if ($config->productReview->enabled && (bool)$productIdPager->ids) {
             $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($productIdPager->ids);
             $curl->prepare($ratingListQuery);
         }
