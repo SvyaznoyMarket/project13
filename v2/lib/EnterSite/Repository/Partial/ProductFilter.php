@@ -4,12 +4,15 @@ namespace EnterSite\Repository\Partial;
 
 use Enter\Http;
 use Enter\Util;
+use EnterSite\RouterTrait;
+use EnterSite\UrlHelperTrait;
 use EnterSite\ViewHelperTrait;
+use EnterSite\Routing;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
 class ProductFilter {
-    use ViewHelperTrait;
+    use RouterTrait, UrlHelperTrait, ViewHelperTrait;
 
     /**
      * @param Model\Product\Filter[] $filterModels
@@ -32,6 +35,7 @@ class ProductFilter {
 
         foreach ($filterModels as $filterModel) {
             $filter = new Partial\ProductFilter();
+            $filter->token = $filterModel->token;
             $filter->name = $filterModel->name;
             $filter->isSliderType = in_array($filterModel->typeId, [Model\Product\Filter::TYPE_NUMBER, Model\Product\Filter::TYPE_SLIDER]);
             $filter->isListType = in_array($filterModel->typeId, [Model\Product\Filter::TYPE_LIST, Model\Product\Filter::TYPE_BOOLEAN]);
@@ -85,6 +89,68 @@ class ProductFilter {
         }
 
         return $filters;
+    }
+
+    /**
+     * @param Model\Product\Filter[] $filterModels
+     * @param Model\Product\RequestFilter[] $requestFilterModels
+     * @param Routing\Route|null $route
+     * @param Http\Request|null $httpRequest
+     * @return Partial\ProductFilter[]
+     */
+    public function getSelectedList(
+        array $filterModels,
+        array $requestFilterModels = [],
+        Routing\Route $route = null,
+        Http\Request $httpRequest = null
+    ) {
+        $router = $this->getRouter();
+        $urlHelper = $this->getUrlHelper();
+
+        $selectedFiltersByToken = [];
+
+        // TODO: оптимизировать
+        if ((bool)$requestFilterModels) {
+            /** @var Model\Product\Filter[] $filterModelsByToken */
+            $filterModelsByToken = [];
+            foreach ($filterModels as $filterModel) {
+                $filterModelsByToken[$filterModel->token] = $filterModel;
+            }
+
+            foreach ($requestFilterModels as $requestFilterModel) {
+                $filterModel = isset($filterModelsByToken[$requestFilterModel->token]) ? $filterModelsByToken[$requestFilterModel->token] : null;
+                if (!$filterModel) {
+                    continue;
+                }
+
+                if (!isset($selectedFiltersByToken[$requestFilterModel->token])) {
+                    $filter = new Partial\ProductFilter();
+                    $filter->token = $filterModel->token;
+                    $filter->name = $filterModel->name;
+
+                    $selectedFiltersByToken[$requestFilterModel->token] = $filter;
+                }
+                $filter = $selectedFiltersByToken[$requestFilterModel->token];
+
+                foreach ($filterModel->option as $optionModel) {
+                    if ($optionModel->id == $requestFilterModel->value) {
+                        $element = new Partial\ProductFilter\Element();
+                        $element->title = $optionModel->name;
+                        $element->name = self::getName($filterModel, $optionModel);
+                        if ($httpRequest && $route) {
+                            $element->deleteUrl = $router->getUrlByRoute($route, $urlHelper->replace($route, $httpRequest, [
+                                $element->name => null,
+                            ]));
+                        }
+
+                        $filter->elements[] = $element;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return array_values($selectedFiltersByToken);
     }
 
     /**

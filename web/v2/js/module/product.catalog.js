@@ -49,7 +49,7 @@ define(
 
                 options = _.extend({clear: false}, options);
 
-                console.info('loadMoreProduct', $moreLink.data('disabled'), $moreLink, $listContainer);
+                console.info('loadProduct', $moreLink, $listContainer, dataValue);
 
                 if (url && (true !== $moreLink.data('disabled'))) {
                     $.get(url, dataValue)

@@ -51,11 +51,21 @@ class ListByFilter {
         // фильтры в запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
+        // запрос фильтров
+        $filterListQuery = null;
+        if ($categoryFilter = $filterRepository->getCategoryRequestObjectByRequestList($requestFilters)) {
+            $filterListQuery = new Query\Product\Filter\GetListByCategoryId($categoryFilter->value, $region->id);
+            $curl->prepare($filterListQuery);
+        }
+
         // запрос листинга идентификаторов товаров
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
         $curl->execute(1, 2);
+
+        // фильтры
+        $filters = $filterListQuery ? $filterRepository->getObjectListByQuery($filterListQuery) : [];
 
         // листинг идентификаторов товаров
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
@@ -95,6 +105,7 @@ class ListByFilter {
         $pageRequest = new Repository\Page\Product\ListByFilter\Request();
         $pageRequest->pageNum = $pageNum + 1;
         $pageRequest->limit = $limit;
+        $pageRequest->filters = $filters;
         $pageRequest->requestFilters = $requestFilters;
         $pageRequest->sorting = $sorting;
         $pageRequest->products = $productsById;

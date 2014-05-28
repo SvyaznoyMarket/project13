@@ -1,0 +1,18 @@
+<div class="js-widget {{widgetId}}" data-template-selector="#tpl-product-selectedFilter">
+    {{#filters}}
+        <ul class="filterChecked">
+            <li class="filterChecked_item filterChecked_item-title">{{name}}</li>
+
+            {{#elements}}
+                <li class="filterChecked_item filterChecked_item-param">
+                    <a href="{{deleteUrl}}" class="delete">{{title}}</a>
+                </li>
+            {{/elements}}
+
+        </ul><!--/ выбранные фильтры  -->
+    {{/filters}}
+
+    <div class="filterChecked_item filterChecked_item-clear">
+        <a class="link" href=""><span class="text">Очистить все</span></a>
+    </div>
+</div>

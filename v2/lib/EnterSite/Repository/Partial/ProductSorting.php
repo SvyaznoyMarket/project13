@@ -10,7 +10,7 @@ use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
-class Sorting {
+class ProductSorting {
     use RouterTrait, UrlHelperTrait;
 
     /**

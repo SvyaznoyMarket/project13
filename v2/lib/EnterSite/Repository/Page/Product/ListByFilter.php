@@ -40,6 +40,13 @@ class ListByFilter {
             $page->widgets['.' . $widget->widgetId] = $widget;
         }
 
+        $widget = new Partial\SelectedFilterBlock();
+        $widget->filters = (new Repository\Partial\ProductFilter())->getSelectedList(
+            $request->filters,
+            $request->requestFilters
+        );
+        $page->widgets['.' . $widget->widgetId] = $widget;
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

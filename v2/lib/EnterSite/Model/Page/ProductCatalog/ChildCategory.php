@@ -17,12 +17,15 @@ namespace EnterSite\Model\Page\ProductCatalog {
 
 namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
     use EnterSite\Model\Page;
+    use EnterSite\Model\Partial;
 
     class Content extends Page\DefaultLayout\Content {
         /** @var Content\ProductBlock|null */
         public $productBlock;
         /** @var Content\FilterBlock|null */
         public $filterBlock;
+        /** @var Partial\SelectedFilterBlock|null */
+        public $selectedFilterBlock;
         /** @var Content\SortingBlock|null */
         public $sortingBlock;
         /** @var bool */

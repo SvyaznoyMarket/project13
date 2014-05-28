@@ -33,11 +33,46 @@ class Filter {
                 $filter->name = $key;
                 $filter->value = $value;
 
+                $keyParts = array_pad(explode('-', $key), 2, null);
+                $filter->token = $keyParts[1] ?: $keyParts[0];
+
                 $filters[] = $filter;
             }
         }
 
         return $filters;
+    }
+
+    /**
+     * @param Model\Product\Category $category
+     * @return Model\Product\RequestFilter
+     */
+    public function getRequestObjectByCategory(Model\Product\Category $category) {
+        $filter = new Model\Product\RequestFilter();
+        $filter->token = 'category';
+        $filter->name = 'category';
+        $filter->value = $category->id;
+
+        return $filter;
+    }
+
+    /**
+     * Возвращает фильтр из http-запроса, который относится к категории товара
+     *
+     * @param Model\Product\RequestFilter[] $filters
+     * @return Model\Product\RequestFilter
+     */
+    public function getCategoryRequestObjectByRequestList($filters) {
+        $return = null;
+
+        foreach ($filters as $filter) {
+            if ('category' == $filter->token) {
+                $return = $filter;
+                break;
+            }
+        }
+
+        return $return;
     }
 
     /**

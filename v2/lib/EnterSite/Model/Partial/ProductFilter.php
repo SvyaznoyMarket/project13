@@ -3,6 +3,8 @@
 namespace EnterSite\Model\Partial {
     class ProductFilter {
         /** @var string */
+        public $token;
+        /** @var string */
         public $name;
         /** @var bool */
         public $isSliderType;
@@ -29,5 +31,7 @@ namespace EnterSite\Model\Partial\ProductFilter {
         public $id;
         /** @var bool */
         public $isActive;
+        /** @var string */
+        public $deleteUrl;
     }
 }

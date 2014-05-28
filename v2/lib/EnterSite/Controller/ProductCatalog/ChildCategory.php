@@ -80,10 +80,7 @@ class ChildCategory {
         // фильтры в http-запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
         // фильтр категории в http-запросе
-        $categoryFilter = new Model\Product\RequestFilter();
-        $categoryFilter->name = 'category';
-        $categoryFilter->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
-        $requestFilters[] = $categoryFilter;
+        $requestFilters[] = $filterRepository->getRequestObjectByCategory($category);
 
         // запрос фильтров
         $filterListQuery = new Query\Product\Filter\GetListByCategoryId($category->id, $region->id);

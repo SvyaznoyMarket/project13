@@ -44,19 +44,9 @@
             </li>
         </ul><!--/ быстрая фильтрация  -->
 
-        <ul class="filterChecked">
-            <li class="filterChecked_item filterChecked_item-title">Бренд</li>
-
-            <li class="filterChecked_item filterChecked_item-param">
-                <a href="" class="delete">Huawei</a>
-            </li>
-
-            <li class="filterChecked_item filterChecked_item-param">
-                <a href="" class="delete">Apple</a>
-            </li>
-
-            <li class="filterChecked_item filterChecked_item-clear"><a class="link" href=""><span class="text">Очистить все</span></a></li>
-        </ul><!--/ выбранные фильтры  -->
+        {{#selectedFilterBlock}}
+            {{>partial/product-list/selectedFilter}}
+        {{/selectedFilterBlock}}
     </div>
 
     <div class="viewNum">

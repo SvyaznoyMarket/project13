@@ -35,6 +35,8 @@ class ChildCategory {
 
         $page->dataModule = 'product.catalog';
 
+        $currentRoute = new Routing\ProductCatalog\GetChildCategory($request->category->path);
+
         $page->content->productBlock = false;
         $page->content->sortingBlock = false;
         if ((bool)$request->products) {
@@ -65,10 +67,10 @@ class ChildCategory {
             }
 
             $page->content->sortingBlock = new Page\Content\SortingBlock();
-            $page->content->sortingBlock->sortings = (new Repository\Partial\Sorting())->getList(
+            $page->content->sortingBlock->sortings = (new Repository\Partial\ProductSorting())->getList(
                 $request->sortings,
                 $request->sorting,
-                new Routing\ProductCatalog\GetChildCategory($request->category->path),
+                $currentRoute,
                 $request->httpRequest
             );
 
@@ -77,6 +79,15 @@ class ChildCategory {
             // фильтры
             $page->content->filterBlock = new Page\Content\FilterBlock();
             $page->content->filterBlock->filters = (new Repository\Partial\ProductFilter())->getList($request->filters, $request->requestFilters);
+
+            // выбранные фильтры
+            $page->content->selectedFilterBlock = new Partial\SelectedFilterBlock();
+            $page->content->selectedFilterBlock->filters = (new Repository\Partial\ProductFilter())->getSelectedList(
+                $request->filters,
+                $request->requestFilters,
+                $currentRoute,
+                $request->httpRequest
+            );
         }
 
         // шаблоны mustache
@@ -84,6 +95,10 @@ class ChildCategory {
             [
                 'id'   => 'tpl-productList-moreLink',
                 'name' => 'partial/product-list/moreLink',
+            ],
+            [
+                'id'   => 'tpl-product-selectedFilter',
+                'name' => 'partial/product-list/selectedFilter',
             ],
         ] as $templateItem) {
             try {
