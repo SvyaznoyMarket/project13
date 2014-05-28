@@ -12,7 +12,7 @@ return function(
 <? else: ?>
     <link itemprop="availability" href="http://schema.org/OutOfStock" />
     <?php if ( $product->getMainCategory() && 'Tchibo' == $product->getMainCategory()->getName() ) { ?>
-        <div class="OutStock">Нет в наличии</div>
+        <img src="/images/shild_sold_out.png" alt="Нет в наличии" />
     <? } ?>
 <? endif ?>
 
