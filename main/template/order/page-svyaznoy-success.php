@@ -26,7 +26,7 @@
     <? endif ?>
 
     <!--<p class="font16">Сумма заказа: <span class="mBold"><?//= $page->helper->formatPrice($order->getSum()) ?></span> <span class="rubl">p</span></p>-->
-    <p class="font16">Сумма оплаты: <span class="mBold" id="paymentWithCard"><?= $page->helper->formatPrice($order->getPaySum(), is_int($order->getPaySum()) ? 0 : 2) ?></span> <span class="rubl">p</span></p>
+    <p class="font16">Сумма оплаты: <span class="mBold" id="paymentWithCard"><?= $page->helper->formatPrice($order->getPaySum(), false === strpos((string)$order->getPaySum(), '.') ? 0 : 2) ?></span> <span class="rubl">p</span></p>
     <p class="font16">Способ оплаты: <span class="mBold">Оплата баллами Связной Клуб</span></p>
 
     <div class="line pb15"></div>
