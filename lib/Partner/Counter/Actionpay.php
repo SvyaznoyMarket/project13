@@ -50,46 +50,52 @@ class Actionpay {
                     if ($category) {
                         switch ($category->getId()) {
                             case 80:  // Мебель
-                                $categoryRate = 0.136;
+                                $categoryRate = 0.1236;
                                 break;
                             case 224:  // Сделай сам
-                                $categoryRate = 0.084;
+                                $categoryRate = 0.0532;
                                 break;
                             case 225:  // Аксессуары для авто
-                                $categoryRate = 0.084;
+                                $categoryRate = 0.0532;
                                 break;
                             case 1438: // Зоотовары
-                                $categoryRate = 0.078;
+                                $categoryRate = 0.0532;
                                 break;
                             case 320: // Детские товары
-                                $categoryRate = 0.091;
+                                $categoryRate = 0.0827;
                                 break;
                             case 443: // Товары для дома
-                                $categoryRate = 0.136;
+                                $categoryRate = 0.1236;
                                 break;
                             case 788: // Электроника
-                                $categoryRate = 0.065;
+                                $categoryRate = 0.0234;
                                 break;
-                            /*case 1024: //Электроника => Аксессуары
-                                $categoryRate = 0.065;
-                                break;*/
+                            case 1024: //Электроника => Аксессуары
+                                $categoryRate = 0.0591;
+                                break;
                             case 185:  // Подарки и хобби
-                                $categoryRate = 0.127;
+                                $categoryRate = 0.0591;
                                 break;
                             case 1: // Бытовая техника
-                                $categoryRate = 0.049;
+                                $categoryRate = 0.0492;
                                 break;
                             case 21:  // Красота и здоровье
-                                $categoryRate = 0.083;
+                                $categoryRate = 0.0355;
                                 break;
                             case 923: // Украшения и часы
-                                $categoryRate = 0.161;
+                                $categoryRate = 0.1182;
                                 break;
                             case 2545: // Парфюмерия и косметика
-                                $categoryRate = 0.08;
+                                $categoryRate = 0.0709;
                                 break;
                             case 647: // Спорт и отдых
-                                $categoryRate = 0.148;
+                                $categoryRate = 0.09;
+                                break;
+                            case 868: // Электроника => Портативная электроника
+                                $categoryRate = 0.0473;
+                                break;
+                            case 4506: // Товары Tchibo
+                                $categoryRate = 0.104;
                                 break;
                             default:
                                 if ( 'cpo' == \App::request()->cookies->get('utm_medium') ) {
