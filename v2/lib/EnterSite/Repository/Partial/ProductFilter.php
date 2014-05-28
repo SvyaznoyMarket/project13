@@ -41,25 +41,6 @@ class ProductFilter {
             $filter->isListType = in_array($filterModel->typeId, [Model\Product\Filter::TYPE_LIST, Model\Product\Filter::TYPE_BOOLEAN]);
             $filter->isMultiple = $filterModel->isMultiple;
 
-            if (($filterModel->typeId == Model\Product\Filter::TYPE_BOOLEAN) && !(bool)$filterModel->option) {
-                foreach ([1 => 'да', 0 => 'нет'] as $id => $name) {
-                    $optionModel = new Model\Product\Filter\Option();
-                    $optionModel->id = $id;
-                    $optionModel->token = $id;
-                    $optionModel->name = $name;
-
-                    $filterModel->option[] = $optionModel;
-                }
-            } else if (in_array($filterModel->typeId, [Model\Product\Filter::TYPE_SLIDER, Model\Product\Filter::TYPE_NUMBER])) {
-                foreach ([$filterModel->min => 'from', $filterModel->max => 'to'] as $id => $token) {
-                    $optionModel = new Model\Product\Filter\Option();
-                    $optionModel->id = $id;
-                    $optionModel->token = $token;
-
-                    $filterModel->option[] = $optionModel;
-                }
-            }
-
             foreach ($filterModel->option as $optionModel) {
                 $element = new Partial\ProductFilter\Element();
                 $element->title = $optionModel->name;

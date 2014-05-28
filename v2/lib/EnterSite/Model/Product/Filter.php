@@ -58,5 +58,25 @@ class Filter {
                 $this->option[] = new Model\Product\Filter\Option($optionItem);
             }
         }
+
+        // TODO: осторожно, дополнение данных
+        if (($this->typeId == self::TYPE_BOOLEAN) && !(bool)$this->option) {
+            foreach ([1 => 'да', 0 => 'нет'] as $id => $name) {
+                $option = new Model\Product\Filter\Option();
+                $option->id = $id;
+                $option->token = $id;
+                $option->name = $name;
+
+                $this->option[] = $option;
+            }
+        } else if (in_array($this->typeId, [self::TYPE_SLIDER, self::TYPE_NUMBER])) {
+            foreach ([$this->min => 'from', $this->max => 'to'] as $id => $token) {
+                $option = new Model\Product\Filter\Option();
+                $option->id = $id;
+                $option->token = $token;
+
+                $this->option[] = $option;
+            }
+        }
     }
 }
