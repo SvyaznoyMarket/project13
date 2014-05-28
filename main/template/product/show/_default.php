@@ -8,10 +8,10 @@
  * @var $accessories            \Model\Product\Entity[]
  * @var $accessoryCategory      \Model\Product\Category\Entity[]
  * @var $kit                    \Model\Product\Entity[]
+ * @var $relatedKits            array
  * @var $additionalData         array
  * @var $shopStates             \Model\Product\ShopState\Entity[]
  * @var $creditData             array
- * @var $parts                  \Model\Product\CompactEntity[]
  * @var $line                   \Model\Line\Entity
  * @var $deliveryData           array
  * @var $isTchibo               boolean
@@ -104,13 +104,11 @@ $isKitPage = (bool)$product->getKit();
 
     <? if ( $isKitPage ): // если это набор пакет ?>
         <?= $helper->render('product/__baseKit',['products' => $kitProducts, 'product' => $product]) ?>
+    <? endif ?>
 
-    <? elseif ( (bool)$line ): ?>
-        <?= $helper->render('product/__slider', [
-            'title'     => 'Состав набора &laquo;' . $line->getName() . '&raquo;',
-            'products'  => $parts,
-        ]) ?>
-    <? else: endif ?>
+    <? if ( (bool)$relatedKits ) : // если есть родительские пакеты ?>
+        <?= $helper->render('product/__relatedKits',['kits' => $relatedKits, 'product' => $product]) ?>
+    <? endif ?>
 
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
         <?= $helper->render('product/__slider', [
