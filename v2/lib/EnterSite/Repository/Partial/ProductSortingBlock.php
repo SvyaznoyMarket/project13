@@ -45,7 +45,13 @@ class ProductSortingBlock {
             if ($route && $httpRequest) {
                 $sorting->url = $router->getUrlByRoute($route, $urlHelper->replace($route, $httpRequest, $urlParams));
             }
-            $sorting->isActive = $currentSortingModel && ($currentSortingModel->token == $sortingModel->token) && ($currentSortingModel->direction == $sortingModel->direction);
+
+            if ($currentSortingModel && ($currentSortingModel->token == $sortingModel->token) && ($currentSortingModel->direction == $sortingModel->direction)) {
+                $block->sorting = $sorting;
+                $sorting->isActive = true;
+            } else {
+                $sorting->isActive = false;
+            }
 
             $block->sortings[] = $sorting;
         }

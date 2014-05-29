@@ -6,6 +6,8 @@ namespace EnterSite\Model\Partial {
 
     class SortingBlock extends Partial\Widget {
         public $widgetType = 'productSorting';
+        /** @var SortingBlock\Sorting */
+        public $sorting;
         /** @var SortingBlock\Sorting[] */
         public $sortings = [];
     }
