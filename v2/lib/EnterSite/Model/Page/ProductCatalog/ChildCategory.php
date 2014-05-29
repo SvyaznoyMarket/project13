@@ -49,6 +49,8 @@ namespace EnterSite\Model\Page\ProductCatalog\ChildCategory\Content {
         public $url;
         /** @var string */
         public $dataValue;
+        /** @var string */
+        public $dataReset;
         /** @var Partial\Link|null */
         public $moreLink;
     }

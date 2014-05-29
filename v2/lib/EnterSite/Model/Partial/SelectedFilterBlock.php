@@ -11,4 +11,6 @@ class SelectedFilterBlock extends Partial\Widget {
     public $widgetType = 'product-selectedFilter';
     /** @var Partial\ProductFilter[] */
     public $filters = [];
+    /** @var bool */
+    public $hasFilter;
 }

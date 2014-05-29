@@ -44,21 +44,28 @@ class ChildCategory {
             $page->content->productBlock = new Page\Content\ProductBlock();
             $page->content->productBlock->limit = $config->product->itemPerPage;
             $page->content->productBlock->url = $router->getUrlByRoute(new Routing\Product\GetListByFilter());
-            // [data-value]
-            $dataValue = [
-                'page'       => 2,
+            // [data-reset] && [data-value]
+            $dataReset = [
+                'page'       => 1,
                 'limit'      => $page->content->productBlock->limit,
                 'count'      => $request->count,
                 'sort'       => ('default' == $request->sorting->token) ? null : ($request->sorting->token . '-' . $request->sorting->direction),
             ];
+
+            $dataValue = $dataReset;
+            $dataValue['page']++;
             foreach ($request->requestFilters as $requestFilter) {
                 if (!$requestFilter->name) {
                     $this->getLogger()->push(['type' => 'warn', 'message' => 'Пустой токен', 'requestFilter' => $requestFilter, 'action' => __METHOD__, 'tag' => ['repository']]);
                     continue;
                 }
                 $dataValue[$requestFilter->name] = $requestFilter->value;
+                if ('category' == $requestFilter->token) {
+                    $dataReset[$requestFilter->name] = $requestFilter->value;
+                }
             }
             $page->content->productBlock->dataValue = $viewHelper->json($dataValue);
+            $page->content->productBlock->dataReset = $viewHelper->json($dataReset);
 
             foreach ($request->products as $productModel) {
                 $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
@@ -88,6 +95,7 @@ class ChildCategory {
                 $currentRoute,
                 $request->httpRequest
             );
+            $page->content->selectedFilterBlock->hasFilter = (bool)$page->content->selectedFilterBlock->filters;
         }
 
         // шаблоны mustache

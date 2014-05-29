@@ -32,10 +32,31 @@ define(
                 loadProducts(e, {clear: true});
             },
 
+            clearFilter = function(e) {
+                e.stopPropagation();
+
+                var dataValue = $listContainer.data('value'),
+                    dataReset = $listContainer.data('reset')
+                ;
+
+                console.info('clearFilter', e, dataValue);
+
+                $listContainer.data('value', _.extend({}, dataReset));
+                console.info(dataValue);
+
+                dataValue.page = 1;
+
+                loadProducts(e, {clear: true});
+
+                e.preventDefault();
+            },
+
             loadMoreProducts = function(e) {
                 e.stopPropagation();
 
-                loadProducts(e, {clear: false, });
+                console.info('loadMoreProducts', e);
+
+                loadProducts(e, {clear: false});
 
                 e.preventDefault();
             },
@@ -93,5 +114,6 @@ define(
         $body
             .on('click dblclick', '.js-productList-more', loadMoreProducts)
             .on('change', '.js-productFilter', setFilter)
+            .on('click', '.js-productFilter-clear', clearFilter)
     }
 );
