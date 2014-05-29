@@ -85,6 +85,7 @@ class ChildCategory {
             // фильтры
             $page->content->filterBlock = new Partial\ProductFilterBlock();
             $page->content->filterBlock->filters = (new Repository\Partial\ProductFilter())->getList($request->filters, $request->requestFilters);
+            $page->content->filterBlock->actionBlock->shownProductCount = sprintf('Показать %s (%s)', ($request->count > 1) ? 'товары' : 'товар', $request->count);
 
             // выбранные фильтры
             $page->content->selectedFilterBlock = new Partial\SelectedFilterBlock();
@@ -110,6 +111,10 @@ class ChildCategory {
             [
                 'id'   => 'tpl-productSorting',
                 'name' => 'partial/product-list/sorting',
+            ],
+            [
+                'id'   => 'tpl-productFilter-action',
+                'name' => 'partial/product-list/filterAction',
             ],
         ] as $templateItem) {
             try {

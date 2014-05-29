@@ -55,6 +55,10 @@ class ListByFilter {
         );
         $page->widgets['.' . $widget->widgetId] = $widget;
 
+        $widget = new Partial\ProductFilterActionBlock();
+        $widget->shownProductCount = sprintf('Показать %s (%s)', ($request->count > 1) ? 'товары' : 'товар', $request->count);
+        $page->widgets['.' . $widget->widgetId] = $widget;
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

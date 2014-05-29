@@ -18,7 +18,9 @@
         </div>
     {{/filters}}
 
-    {{>partial/product-list/filterAction}}
+    {{#actionBlock}}
+        {{>partial/product-list/filterAction}}
+    {{/actionBlock}}
 </div>
 <!--/ параметры фильтрации -->
 
@@ -32,6 +34,7 @@
         {{/selectedFilterBlock}}
     </div>
 
+    <!--
     <div class="viewNum">
         Показано: 26 моделей
     </div><!--/ показано моделей на странице -->
