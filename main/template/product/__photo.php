@@ -113,7 +113,7 @@ return function(
         </div>
     <? endif ?>
 
-    <? if ($product->getBrand()->getImage()) : ?>
+    <? if ($product->getBrand() && $product->getBrand()->getImage()) : ?>
         <div class="bProductDescSticker mRight">
             <img src="<?= $product->getBrand()->getImage() ?>" alt="<?= $helper->escape($product->getBrand()->getName()) ?>" />
         </div>
