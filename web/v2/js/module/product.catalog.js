@@ -54,7 +54,7 @@ define(
 
                     var $filter = $('.js-productFilter-set').filter('[data-name="' + currentName + '"]');
                     if ($filter.length) {
-                        if ($filter.is(':checkbox')) {
+                        if ($filter.is(':radio, :checkbox')) {
                             $filter.removeAttr('checked');
                         }
                     }
