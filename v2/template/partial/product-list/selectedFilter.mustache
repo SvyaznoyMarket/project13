@@ -6,7 +6,7 @@
 
                 {{#elements}}
                     <li class="filterChecked_item filterChecked_item-param">
-                        <a href="{{deleteUrl}}" class="delete">{{title}}</a>
+                        <a href="{{deleteUrl}}" data-name="{{name}}" class="js-productFilter-delete delete">{{title}}</a>
                     </li>
                 {{/elements}}
 
@@ -15,7 +15,7 @@
 
 
         <div class="filterChecked_item filterChecked_item-clear">
-            <a class="js-productFilter-clear link" href="{{clearUrl}}"><span class="text">Очистить все</span></a>
+            <a class="js-productFilter-clear link" href="#"><span class="text">Очистить все</span></a>
         </div>
     {{/hasFilter}}
 </div>

@@ -32,6 +32,39 @@ define(
                 loadProducts(e, {clear: true});
             },
 
+            deleteFilter = function(e) {
+                e.stopPropagation();
+
+                var $el = $(e.currentTarget),
+                    currentName = $el.data('name'),
+                    dataValue = $listContainer.data('value')
+                ;
+
+                console.info('deleteFilter', e, dataValue);
+
+                if (currentName) {
+                    dataValue.page = 1;
+
+                    _.each(dataValue, function(value, name) {
+                        if (name == currentName) {
+                            delete dataValue[currentName];
+                            return true;
+                        }
+                    });
+
+                    var $filter = $('.js-productFilter-set').filter('[data-name="' + currentName + '"]');
+                    if ($filter.length) {
+                        if ($filter.is(':checkbox')) {
+                            $filter.removeAttr('checked');
+                        }
+                    }
+
+                    loadProducts(e, {clear: true});
+
+                    e.preventDefault();
+                }
+            },
+
             clearFilter = function(e) {
                 e.stopPropagation();
 
@@ -113,7 +146,8 @@ define(
 
         $body
             .on('click dblclick', '.js-productList-more', loadMoreProducts)
-            .on('change', '.js-productFilter', setFilter)
+            .on('change', '.js-productFilter-set', setFilter)
+            .on('click', '.js-productFilter-delete', deleteFilter)
             .on('click', '.js-productFilter-clear', clearFilter)
     }
 );
