@@ -104,6 +104,8 @@ class ProductFilter {
                     continue;
                 }
 
+                $isSlider = in_array($filterModel->typeId, [Model\Product\Filter::TYPE_SLIDER, Model\Product\Filter::TYPE_NUMBER]);
+
                 if (!isset($selectedFiltersByToken[$requestFilterModel->token])) {
                     $filter = new Partial\ProductFilter();
                     $filter->token = $filterModel->token;
@@ -114,9 +116,23 @@ class ProductFilter {
                 $filter = $selectedFiltersByToken[$requestFilterModel->token];
 
                 foreach ($filterModel->option as $optionModel) {
-                    if ($optionModel->id == $requestFilterModel->value) {
+                    // Если фильтр - слайдер, то сравниваем по optionToken, иначе - по value
+                    if (
+                        ($optionModel->id == $requestFilterModel->value)
+                        || ($isSlider && ($requestFilterModel->optionToken == $optionModel->token))
+                    ) {
                         $element = new Partial\ProductFilter\Element();
-                        $element->title = $optionModel->name;
+
+                        if ($isSlider) {
+                            if ('price' == $filterModel->token) {
+                                $element->title = $optionModel->name . ' ' . number_format((float)$requestFilterModel->value, 0, ',', ' ') . 'р';
+                            } else {
+                                $element->title = $optionModel->name . ' ' . $requestFilterModel->value . ($filterModel->unit ? $filterModel->unit : '');
+                            }
+                        } else {
+                            $element->title = $optionModel->name;
+                        }
+
                         $element->name = self::getName($filterModel, $optionModel);
                         if ($httpRequest && $route) {
                             $element->deleteUrl = $router->getUrlByRoute($route, $urlHelper->replace($route, $httpRequest, [

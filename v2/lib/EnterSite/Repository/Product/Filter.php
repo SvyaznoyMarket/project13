@@ -33,8 +33,9 @@ class Filter {
                 $filter->name = $key;
                 $filter->value = $value;
 
-                $keyParts = array_pad(explode('-', $key), 2, null);
+                $keyParts = array_pad(explode('-', $key), 3, null);
                 $filter->token = $keyParts[1] ?: $keyParts[0];
+                $filter->optionToken = $keyParts[2];
 
                 $filters[] = $filter;
             }

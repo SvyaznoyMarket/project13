@@ -8,5 +8,7 @@ class RequestFilter {
     /** @var string */
     public $name;
     /** @var string */
+    public $optionToken;
+    /** @var string */
     public $value;
 }

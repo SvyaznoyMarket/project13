@@ -35,6 +35,8 @@ class Filter {
     public $globalMin;
     /** @var int */
     public $globalMax;
+    /** @var string|null */
+    public $unit;
     /** @var Model\Product\Filter\Option[] */
     public $option = [];
 
@@ -53,6 +55,7 @@ class Filter {
         if (array_key_exists('max', $data)) $this->max = (int)$data['max'];
         if (array_key_exists('min_global', $data)) $this->globalMin = (int)$data['min_global'];
         if (array_key_exists('max_global', $data)) $this->globalMax = (int)$data['max_global'];
+        if (array_key_exists('unit', $data)) $this->unit = $data['unit'] ? (string)$data['unit'] : null;
         if (isset($data['options'][0])) {
             foreach ($data['options'] as $optionItem) {
                 $this->option[] = new Model\Product\Filter\Option($optionItem);
@@ -61,19 +64,26 @@ class Filter {
 
         // TODO: осторожно, дополнение данных
         if (($this->typeId == self::TYPE_BOOLEAN) && !(bool)$this->option) {
-            foreach ([1 => 'да', 0 => 'нет'] as $id => $name) {
+            foreach ([
+                ['id' => 1, 'token' => '1', 'name' => 'Да'],
+                ['id' => 0, 'token' => '0', 'name' => 'Нет'],
+            ] as $optionItem) {
                 $option = new Model\Product\Filter\Option();
-                $option->id = $id;
-                $option->token = $id;
-                $option->name = $name;
+                $option->id = $optionItem['id'];
+                $option->token = $optionItem['token'];
+                $option->name = $optionItem['name'];
 
                 $this->option[] = $option;
             }
         } else if (in_array($this->typeId, [self::TYPE_SLIDER, self::TYPE_NUMBER])) {
-            foreach ([$this->min => 'from', $this->max => 'to'] as $id => $token) {
+            foreach ([
+                ['id' => $this->min, 'token' => 'from', 'name' => 'От'],
+                ['id' => $this->max, 'token' => 'to', 'name' => 'До'],
+            ] as $optionItem) {
                 $option = new Model\Product\Filter\Option();
-                $option->id = $id;
-                $option->token = $token;
+                $option->id = $optionItem['id'];
+                $option->token = $optionItem['token'];
+                $option->name = $optionItem['name'];
 
                 $this->option[] = $option;
             }
