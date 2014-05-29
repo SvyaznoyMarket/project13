@@ -41,7 +41,7 @@ class ChildCategory {
         $page->content->sortingBlock = false;
         if ((bool)$request->products) {
             // TODO: вынести productBlock в репозиторий
-            $page->content->productBlock = new Page\Content\ProductBlock();
+            $page->content->productBlock = new Partial\ProductBlock();
             $page->content->productBlock->limit = $config->product->itemPerPage;
             $page->content->productBlock->url = $router->getUrlByRoute(new Routing\Product\GetListByFilter());
             // [data-reset] && [data-value]
@@ -83,7 +83,7 @@ class ChildCategory {
             $page->content->productBlock->moreLink = (new Repository\Partial\ProductList\MoreLink())->getObject($request->pageNum, $request->limit, $request->count) ?: false;
 
             // фильтры
-            $page->content->filterBlock = new Page\Content\FilterBlock();
+            $page->content->filterBlock = new Partial\ProductFilterBlock();
             $page->content->filterBlock->filters = (new Repository\Partial\ProductFilter())->getList($request->filters, $request->requestFilters);
 
             // выбранные фильтры
