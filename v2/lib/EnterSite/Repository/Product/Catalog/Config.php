@@ -5,10 +5,13 @@ namespace EnterSite\Repository\Product\Catalog;
 use Enter\Curl\Query;
 use Enter\Http;
 use EnterSite\ConfigTrait;
+use EnterSite\LoggerTrait;
 use EnterSite\Model;
 
 class Config {
-    use ConfigTrait;
+    use ConfigTrait, LoggerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait;
+    }
 
     /**
      * @param Query $query
@@ -17,9 +20,14 @@ class Config {
     public function getObjectByQuery(Query $query) {
         $object = null;
 
-        $item = $query->getResult();
-        if ($item) {
-            $object = new Model\Product\Catalog\Config($item);
+        try {
+            $item = $query->getResult();
+            if ($item) {
+                $object = new Model\Product\Catalog\Config($item);
+            }
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            trigger_error($e, E_USER_ERROR);
         }
 
         return $object;
