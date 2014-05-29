@@ -226,4 +226,36 @@ class CompletePage extends Layout {
 
         return '<div id="LamodaCompleteJS" class="jsanalytics"></div>';
     }
+
+    public function slotMyragonOrderCompleteJS() {
+        $config = \App::config()->partners['Myragon'];
+        if (!$config['enabled'] || !$config['enterNumber'] || !$config['secretWord'] || !$config['subdomainNumber']) {
+            return;
+        }
+
+        /** @var $orders Order[] */
+        $orders = $this->getParam('orders');
+        if (!$orders || empty($orders) || !is_array($orders)) return;
+
+        $orderList = [];
+        foreach ($orders as $order) {
+            if (!$order instanceof Order || !$order->getId()) continue;
+
+            $orderList[] = [
+                'order_id' => $order->getId(),
+                'hash' => md5($config['enterNumber'] . $config['secretWord'] . $order->getId()),
+            ];
+        }
+
+        $data = [
+            'config' => [
+                'enterNumber' => $config['enterNumber'], // номер Вашей кампании
+                'secretWord' => $config['secretWord'], // секретное слово
+                'subdomainNumber' => $config['subdomainNumber'], // номер поддомена в сервисе Myragon
+            ],
+            'orderList' => $orderList,
+        ];
+
+        return '<div id="myragonOrderCompleteJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+    }
 }

@@ -939,4 +939,31 @@ class DefaultLayout extends Layout {
                 <!-- End Google Tag Manager -->
             </div>";
     }
+
+    public function slotMyragonOrderCompleteJS() {
+        return;
+    }
+
+    public function slotMyragonPageJS() {
+        $config = \App::config()->partners['Myragon'];
+        if (!$config['enabled'] || !$config['enterNumber'] || !$config['secretWord'] || !$config['subdomainNumber']) {
+            return;
+        }
+
+        $data = [
+            'config' => [
+                'enterNumber' => $config['enterNumber'], // номер Вашей кампании
+                'secretWord' => $config['secretWord'], // секретное слово
+                'subdomainNumber' => $config['subdomainNumber'], // номер поддомена в сервисе Myragon
+            ],
+            'page' => [
+                'url' => null,
+                'pageType' => 0,
+                'pageTitle' => $this->getTitle(),
+                'categories' => [],
+            ],
+        ];
+
+        return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+    }
 }

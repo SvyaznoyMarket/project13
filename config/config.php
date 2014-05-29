@@ -177,6 +177,12 @@ $c->partners['Lamoda']['enabled'] = true;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
 
+// Myragon
+$c->partners['Myragon']['enabled'] = true;
+$c->partners['Myragon']['enterNumber'] = 1402;
+$c->partners['Myragon']['secretWord'] = 'RdjJBC9FLE';
+$c->partners['Myragon']['subdomainNumber'] = 49;
+
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [
     80      => 0.105,   //Мебель
