@@ -26,7 +26,7 @@ namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
         public $filterBlock;
         /** @var Partial\SelectedFilterBlock|null */
         public $selectedFilterBlock;
-        /** @var Content\SortingBlock|null */
+        /** @var Partial\SortingBlock|null */
         public $sortingBlock;
         /** @var bool */
         public $hasCustomStyle;
@@ -58,10 +58,5 @@ namespace EnterSite\Model\Page\ProductCatalog\ChildCategory\Content {
     class FilterBlock {
         /** @var Partial\ProductFilter[] */
         public $filters = [];
-    }
-
-    class SortingBlock {
-        /** @var Partial\Sorting[] */
-        public $sortings = [];
     }
 }

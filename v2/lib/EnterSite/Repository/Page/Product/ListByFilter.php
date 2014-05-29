@@ -49,6 +49,12 @@ class ListByFilter {
         $widget->hasFilter = (bool)$widget->filters;
         $page->widgets['.' . $widget->widgetId] = $widget;
 
+        $widget = (new Repository\Partial\ProductSortingBlock())->getObject(
+            $request->sortings,
+            $request->sorting
+        );
+        $page->widgets['.' . $widget->widgetId] = $widget;
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

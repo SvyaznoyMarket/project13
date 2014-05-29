@@ -5,22 +5,23 @@ namespace EnterSite\Repository\Partial;
 use Enter\Http;
 use EnterSite\RouterTrait;
 use EnterSite\UrlHelperTrait;
+use EnterSite\ViewHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
-class ProductSorting {
-    use RouterTrait, UrlHelperTrait;
+class ProductSortingBlock {
+    use RouterTrait, UrlHelperTrait, ViewHelperTrait;
 
     /**
      * @param Model\Product\Sorting[] $sortingModels
      * @param Model\Product\Sorting|null $currentSortingModel
      * @param Routing\Route|null $route
      * @param Http\Request|null $httpRequest
-     * @return Partial\Sorting[]
+     * @return \EnterSite\Model\Partial\SortingBlock
      */
-    public function getList(
+    public function getObject(
         array $sortingModels,
         Model\Product\Sorting $currentSortingModel = null,
         Routing\Route $route = null,
@@ -28,22 +29,27 @@ class ProductSorting {
     ) {
         $router = $this->getRouter();
         $urlHelper = $this->getUrlHelper();
+        $viewHelper = $this->getViewHelper();
 
-        $sortings = [];
+        $block = new Partial\SortingBlock();
+        $block->widgetId = 'id-productSorting';
 
         foreach ($sortingModels as $sortingModel) {
-            $sorting = new Partial\Sorting();
+            $urlParams = [
+                'sort' => ('default' == $sortingModel->token) ? null : ($sortingModel->token . '-' . $sortingModel->direction),
+            ];
+
+            $sorting = new Partial\SortingBlock\Sorting();
             $sorting->name = $sortingModel->name;
+            $sorting->dataValue = $viewHelper->json($urlParams);
             if ($route && $httpRequest) {
-                $sorting->url = $router->getUrlByRoute($route, $urlHelper->replace($route, $httpRequest, [
-                    'sort' => ('default' == $sortingModel->token) ? null : ($sortingModel->token . '-' . $sortingModel->direction),
-                ]));
+                $sorting->url = $router->getUrlByRoute($route, $urlHelper->replace($route, $httpRequest, $urlParams));
             }
             $sorting->isActive = $currentSortingModel && ($currentSortingModel->token == $sortingModel->token) && ($currentSortingModel->direction == $sortingModel->direction);
 
-            $sortings[] = $sorting;
+            $block->sortings[] = $sorting;
         }
 
-        return $sortings;
+        return $block;
     }
 }

@@ -17,8 +17,6 @@ define(
 
                 console.info('setFilter', $el);
 
-                dataValue.page = 1;
-
                 if ($el.is(':radio, :checkbox')) {
                     if ($el.is(':checked')) {
                         dataValue[$el.attr('name')] = $el.val();
@@ -29,6 +27,7 @@ define(
                     dataValue[$el.attr('name')] = $el.val();
                 }
 
+                dataValue.page = 1;
                 loadProducts(e, {clear: true});
             },
 
@@ -43,8 +42,6 @@ define(
                 console.info('deleteFilter', e, dataValue);
 
                 if (currentName) {
-                    dataValue.page = 1;
-
                     _.each(dataValue, function(value, name) {
                         if (name == currentName) {
                             delete dataValue[currentName];
@@ -59,6 +56,7 @@ define(
                         }
                     }
 
+                    dataValue.page = 1;
                     loadProducts(e, {clear: true});
 
                     e.preventDefault();
@@ -78,10 +76,31 @@ define(
                 console.info(dataValue);
 
                 dataValue.page = 1;
-
                 loadProducts(e, {clear: true});
 
                 e.preventDefault();
+            },
+
+            setSorting = function(e) {
+                e.stopPropagation();
+
+                var $el = $(e.currentTarget),
+                    sortingValue = $el.data('value'),
+                    dataValue = $listContainer.data('value')
+                ;
+
+                console.info('setSorting', $el);
+
+                if (_.isObject(sortingValue)) {
+                    _.each(sortingValue, function(value, name) {
+                        dataValue[name] = value;
+                    });
+
+                    dataValue.page = 1;
+                    loadProducts(e, {clear: true});
+
+                    e.preventDefault();
+                }
             },
 
             loadMoreProducts = function(e) {
@@ -149,5 +168,6 @@ define(
             .on('change', '.js-productFilter-set', setFilter)
             .on('click', '.js-productFilter-delete', deleteFilter)
             .on('click', '.js-productFilter-clear', clearFilter)
+            .on('click', '.js-productFilter-sort', setSorting)
     }
 );

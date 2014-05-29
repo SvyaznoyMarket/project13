@@ -34,8 +34,14 @@ class ListByFilter {
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
         $limit = (new Repository\Product\Catalog\Config())->getLimitByHttpRequest($request);
 
+        // список сортировок
+        $sortings = (new Repository\Product\Sorting())->getObjectList();
+
         // сортировка
         $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
+        if (!$sorting) {
+            $sorting = reset($sortings);
+        }
 
         // запрос региона
         $regionQuery = new Query\Region\GetItemById($regionId);
@@ -108,6 +114,7 @@ class ListByFilter {
         $pageRequest->filters = $filters;
         $pageRequest->requestFilters = $requestFilters;
         $pageRequest->sorting = $sorting;
+        $pageRequest->sortings = $sortings;
         $pageRequest->products = $productsById;
         $pageRequest->count = $productIdPager->count;
 

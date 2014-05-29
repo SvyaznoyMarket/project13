@@ -73,8 +73,7 @@ class ChildCategory {
                 $page->content->productBlock->products[] = $productCard;
             }
 
-            $page->content->sortingBlock = new Page\Content\SortingBlock();
-            $page->content->sortingBlock->sortings = (new Repository\Partial\ProductSorting())->getList(
+            $page->content->sortingBlock = (new Repository\Partial\ProductSortingBlock())->getObject(
                 $request->sortings,
                 $request->sorting,
                 $currentRoute,
@@ -107,6 +106,10 @@ class ChildCategory {
             [
                 'id'   => 'tpl-product-selectedFilter',
                 'name' => 'partial/product-list/selectedFilter',
+            ],
+            [
+                'id'   => 'tpl-productSorting',
+                'name' => 'partial/product-list/sorting',
             ],
         ] as $templateItem) {
             try {
