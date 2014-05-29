@@ -69,6 +69,8 @@ class Entity extends BasicEntity {
     protected $service = [];
     /** @var Kit\Entity[] */
     protected $kit = [];
+    /** @var bool */
+    protected $isKitLocked = false;
     /** @var Model\Entity */
     protected $model;
     /** @var [] */
@@ -168,6 +170,7 @@ class Entity extends BasicEntity {
         }
         if (array_key_exists('ean', $data)) $this->setEan($data['ean']);
         if (array_key_exists('is_upsale', $data)) $this->setIsUpsale($data['is_upsale']);
+        if (array_key_exists('is_kit_locked', $data)) $this->setIsKitLocked($data['is_kit_locked']);
 
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
@@ -905,6 +908,22 @@ class Entity extends BasicEntity {
 
     public function addNearestCity(\Model\Region\Entity $city) {
         $this->nearestCity[] = $city;
+    }
+
+    /**
+     * @param boolean $isKitLocked
+     */
+    public function setIsKitLocked($isKitLocked)
+    {
+        $this->isKitLocked = (bool)$isKitLocked;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsKitLocked()
+    {
+        return $this->isKitLocked;
     }
 
 }
