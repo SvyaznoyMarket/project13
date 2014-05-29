@@ -199,6 +199,8 @@ class IndexAction {
         $productRepository = \RepositoryManager::product();
         $productRepository->setEntityClass('\Model\Product\Entity');
 
+        if ($product->getId() == 146713) $product->setIsKitLocked(true);
+
         /* Набор пакеты */
         if ((bool)$product->getKit()) {
             $restParts = [];

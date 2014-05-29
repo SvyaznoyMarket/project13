@@ -198,7 +198,7 @@ $isKitPage = (bool)$product->getKit();
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
         <? endif ?>
         
-        <? if ($isKitPage) : ?>
+        <? if ($isKitPage && !$product->getIsKitLocked()) : ?>
             <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить для набора продуктов ?>
         <? else : ?>
         
