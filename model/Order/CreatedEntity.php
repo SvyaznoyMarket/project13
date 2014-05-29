@@ -13,7 +13,7 @@ class CreatedEntity {
     private $userId;
     /** @var int */
     private $sum;
-    /** @var int */
+    /** @var float */
     private $paySum;
     /** @var string */
     private $paymentUrl;
@@ -97,14 +97,14 @@ class CreatedEntity {
     }
 
     /**
-     * @param int $paySum
+     * @param float $paySum
      */
     public function setPaySum($paySum) {
-        $this->paySum = (int)$paySum;
+        $this->paySum = floatval($paySum);
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getPaySum() {
         return $this->paySum;

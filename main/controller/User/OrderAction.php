@@ -117,6 +117,7 @@ class OrderAction {
             [
                 'is_corporative' => $user->getEntity() ? $user->getEntity()->getIsCorporative() : false,
             ],
+            [],
             function($data) use (
                 &$paymentGroups,
                 &$paymentMethodsById

@@ -229,6 +229,7 @@ class AppConfig {
         ],
         'RuTarget' => [
             'enabled' => null,
+            'containerId' => null,
         ],
         'TagMan' => [
 

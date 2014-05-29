@@ -36,7 +36,8 @@ $helper = new \Helper\TemplateHelper();
 
         <ul class="bInputList mEnterPrizeSubscr">
             <li class="bInputList__eListItem ">
-                <input class="jsCustomRadio bCustomInput mCustomCheckBig jsSubscribe" id="subscribe" name="user[subscribe]" type="checkbox" checked="checked" />
+                <input type="hidden" name="user[subscribe]" value="1" />
+                <input class="jsCustomRadio bCustomInput mCustomCheckBig jsSubscribe" id="subscribe" type="checkbox" checked="checked" disabled="disabled" />
                 <label class="bCustomLabel mCustomLabelBig mChecked" for="subscribe">Получить рекламную рассылку</label>
             </li>
 
