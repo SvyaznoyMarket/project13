@@ -29,6 +29,7 @@ class Manager {
             }
 
             $utmSource = $getParams['utm_source'];
+            $utmMedium = $request->get('utm_medium');
 
             // SITE-3215
             $utmSourceCookie = \App::request()->cookies->get($this->cookieName);
@@ -270,6 +271,85 @@ class Manager {
                 $cookie = new \Http\Cookie(
                     $this->cookieName,
                     \Partner\Counter\Leadgid::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            // Yandex cpc
+            } else if (0 === strpos($utmSource, 'yandex') && $utmMedium && 0 === strpos($utmMedium, 'cpc')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\PromoSource\Yandex::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            // YandexMarket
+            } else if (0 === strpos($utmSource, 'yandex_market')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\PromoSource\YandexMarket::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            // Pricelist
+            } else if (0 === strpos($utmSource, 'pricelist')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\PromoSource\Pricelist::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            // Criteo
+            } else if (0 === strpos($utmSource, 'criteo')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\PromoSource\Criteo::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            // Sociomantic
+            } else if (0 === strpos($utmSource, 'sociomantic')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\PromoSource\Sociomantic::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            // Flocktory
+            } else if (0 === strpos($utmSource, 'flocktory')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\PromoSource\Flocktory::NAME,
+                    time() + $this->cookieLifetime,
+                    '/',
+                    null,
+                    false,
+                    true
+                );
+            }
+
+            // Google cpc
+            if ($request->get('gclid')) {
+                $cookie = new \Http\Cookie(
+                    $this->cookieName,
+                    \Partner\PromoSource\Google::NAME,
                     time() + $this->cookieLifetime,
                     '/',
                     null,
