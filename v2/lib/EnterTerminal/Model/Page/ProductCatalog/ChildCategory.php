@@ -13,7 +13,7 @@ namespace EnterTerminal\Model\Page\ProductCatalog {
         /** @var int */
         public $productCount;
         /** @var Model\Product\Sorting[] */
-        public $sorting = [];
+        public $sortings = [];
         /** @var Model\Product\Filter[] */
         public $filters = [];
     }

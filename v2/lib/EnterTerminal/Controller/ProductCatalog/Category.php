@@ -44,6 +44,9 @@ class Category {
         // количество товаров на страницу
         $limit = (int)$request->query['limit'] ?: 10;
 
+        // сортировки
+        $sortings = (new Repository\Product\Sorting())->getObjectList();
+
         // сортировка
         $sorting = null;
         if (!empty($request->query['sort']['token']) && !empty($request->query['sort']['direction'])) {
@@ -160,6 +163,7 @@ class Category {
         $page->products = array_values($productsById);
         $page->productCount = $productIdPager->count;
         $page->filters = $filters;
+        $page->sortings = $sortings;
 
         return new Http\JsonResponse($page);
     }
