@@ -488,7 +488,7 @@ class FormAction {
 
                         // токена категории нету, пытаемся получить листинг по фильтрам среза
                         } else {
-                            $productRepository->prepareIteratorByFilter($sliceFilters, [], null, $limit, $region,
+                            $productRepository->prepareIteratorByFilter($sliceFilters, [], null, $limit*3, $region,
                                 function($data) use (&$productIds, &$productCount) {
                                     if (isset($data['list'][0])) $productIds = $data['list'];
                                     if (isset($data['count'])) $productCount = (int)$data['count'];
@@ -528,8 +528,6 @@ class FormAction {
                         $productRepository->prepareCollectionByBarcode($chunk, $region, function($data) use (&$products, $limit) {
                             if (!empty($data) && is_array($data)) {
                                 foreach ($data as $item) {
-                                    if ($limit <= count($products)) continue;
-
                                     $entity = new \Model\Product\Entity($item);
                                     if ($entity->isInShopOnly() || $entity->isInShopStockOnly() || !$entity->getIsBuyable()) {
                                         continue;
@@ -547,7 +545,7 @@ class FormAction {
             if (empty($products) && $category && $category->getId()) {
                 $filters[] = ['category', 1, [$category->getId()]];
 
-                $productRepository->prepareIteratorByFilter($filters, [], null, $limit, $region,
+                $productRepository->prepareIteratorByFilter($filters, [], null, $limit*3, $region,
                     function($data) use (&$productIds, &$productCount) {
                         if (isset($data['list'][0])) $productIds = $data['list'];
                         if (isset($data['count'])) $productCount = (int)$data['count'];
@@ -569,6 +567,10 @@ class FormAction {
                     $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
                 }
             }
+        }
+
+        if (is_array($products) && $limit < count($products)) {
+            $products = array_slice($products, 0, $limit);
         }
 
         return $products;
