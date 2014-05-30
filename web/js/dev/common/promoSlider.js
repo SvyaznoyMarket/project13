@@ -425,8 +425,7 @@
 							}
 						},
 
-						productClickHandler = function(e) {
-							//e.preventDefault();
+						productClickHandler = function() {
 							var
 								self = $(this),
 								slide = self.parents('.bPromoCatalogSliderWrap_eSlide'),

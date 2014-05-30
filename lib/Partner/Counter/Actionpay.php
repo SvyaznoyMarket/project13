@@ -63,59 +63,59 @@ class Actionpay {
                     if ($secondLevelCategory) {
                         switch ($secondLevelCategory->getId()) {
                             case 225:  // Аксессуары для авто
-                                $categoryRate = 0.0532;
+                                $categoryRate = 0.0585;
                                 $isRateSet = true;
                                 break;
                             case 2989:  // Красота и здоровье
-                                $categoryRate = 0.0355;
+                                $categoryRate = 0.039;
                                 $isRateSet = true;
                                 break;
-                            /*case 1024: //Электроника => Аксессуары
-                                $categoryRate = 0.0591;
+                            case 1024: //Электроника => Аксессуары
+                                $categoryRate = 0.065;
                                 break;
                             case 868: // Электроника => Портативная электроника
-                                $categoryRate = 0.0473;
-                                break;*/
+                                $categoryRate = 0.052;
+                                break;
                         }
                     }
 
                     if ($mainCategory && !$isRateSet) {
                         switch ($mainCategory->getId()) {
                             case 80:  // Мебель
-                                $categoryRate = 0.1236;
+                                $categoryRate = 0.136;
                                 break;
                             case 224:  // Сделай сам
-                                $categoryRate = 0.0532;
+                                $categoryRate = 0.0585;
                                 break;
                             case 1438: // Зоотовары
-                                $categoryRate = 0.0532;
+                                $categoryRate = 0.0585;
                                 break;
                             case 320: // Детские товары
-                                $categoryRate = 0.0827;
+                                $categoryRate = 0.091;
                                 break;
                             case 443: // Товары для дома
-                                $categoryRate = 0.1236;
+                                $categoryRate = 0.136;
                                 break;
                             case 788: // Электроника
-                                $categoryRate = 0.0234;
+                                $categoryRate = 0.0257;
                                 break;
                             case 185:  // Подарки и хобби
-                                $categoryRate = 0.0591;
+                                $categoryRate = 0.065;
                                 break;
                             case 1: // Бытовая техника
-                                $categoryRate = 0.0492;
+                                $categoryRate = 0.0541;
                                 break;
                             case 923: // Украшения и часы
-                                $categoryRate = 0.1182;
+                                $categoryRate = 0.13;
                                 break;
                             case 2545: // Парфюмерия и косметика
-                                $categoryRate = 0.0709;
+                                $categoryRate = 0.078;
                                 break;
                             case 647: // Спорт и отдых
-                                $categoryRate = 0.09;
+                                $categoryRate = 0.099;
                                 break;
                             case 4506: // Товары Tchibo
-                                $categoryRate = 0.104;
+                                $categoryRate = 0.1144;
                                 break;
                             default:
                                 if ( 'cpo' == \App::request()->cookies->get('utm_medium') ) {

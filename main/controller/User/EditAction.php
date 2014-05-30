@@ -37,6 +37,18 @@ class EditAction {
                 $userData['is_subscribe'] = false;
             }
 
+            if (array_key_exists('bonus_card', $userData) && (bool)$userData['bonus_card'] && is_array($userData['bonus_card'])) {
+                $bonusCards = [];
+                foreach ($userData['bonus_card'] as $id => $number) {
+                    $bonusCards[] = [
+                        'bonus_card_id' => $id,
+                        'number' => $number,
+                    ];
+                }
+
+                $userData['bonus_card'] = $bonusCards;
+            }
+
             $form->fromArray($userData);
 
             try {
@@ -57,17 +69,17 @@ class EditAction {
                     'user/update',
                     ['token' => \App::user()->getToken()],
                     [
-                        'first_name'                => $form->getFirstName(),
-                        'middle_name'               => $form->getMiddleName(),
-                        'last_name'                 => $form->getLastName(),
-                        'sex'                       => $form->getSex(),
-                        'email'                     => $form->getEmail(),
-                        'mobile'                    => $form->getMobilePhone(),
-                        'phone'                     => $form->getHomePhone(),
-                        'birthday'                  => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
-                        'occupation'                => $form->getOccupation(),
-                        'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
-                        'is_subscribe'              => $form->getIsSubscribed(),
+                        'first_name'    => $form->getFirstName(),
+                        'middle_name'   => $form->getMiddleName(),
+                        'last_name'     => $form->getLastName(),
+                        'sex'           => $form->getSex(),
+                        'email'         => $form->getEmail(),
+                        'mobile'        => $form->getMobilePhone(),
+                        'phone'         => $form->getHomePhone(),
+                        'birthday'      => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
+                        'occupation'    => $form->getOccupation(),
+                        'bonus_card'    => $form->getBonusCard(),
+                        'is_subscribe'  => $form->getIsSubscribed(),
                     ],
                     \App::config()->coreV2['hugeTimeout']
                 );
@@ -88,10 +100,19 @@ class EditAction {
             }
         }
 
+        $bonusCards = [];
+        try {
+            $bonusCards = \RepositoryManager::bonusCard()->getCollection();
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+            \App::exception()->remove($e);
+        }
+
         $page = new \View\User\EditPage();
         $page->setParam('form', $form);
         $page->setParam('message', $message);
         $page->setParam('redirect', $redirect);
+        $page->setParam('bonusCards', $bonusCards);
 
         return new \Http\Response($page->show());
     }
