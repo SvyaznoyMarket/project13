@@ -35,6 +35,13 @@ class ChildCategory {
 
         $page->dataModule = 'product.catalog';
 
+        // хлебные крошки
+        $page->breadcrumbBlock = new Model\Page\DefaultLayout\BreadcrumbBlock();
+        $breadcrumb = new Model\Page\DefaultLayout\BreadcrumbBlock\Breadcrumb();
+        $breadcrumb->name = $request->category->name;
+        $breadcrumb->url = $request->category->link;
+        $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
+
         $currentRoute = new Routing\ProductCatalog\GetChildCategory($request->category->path);
 
         $page->content->productBlock = false;
