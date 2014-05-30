@@ -196,9 +196,18 @@ class Action {
                     $products[] = new \Model\Product\Entity($item);
                 }
             });
+        }
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $scoreData = [];
-            \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+        $scoreData = [];
+        if ((bool)$products) {
+            $productUIs = [];
+            foreach ($products as $product) {
+                if (!$product instanceof \Model\Product\BasicEntity) continue;
+                $productUIs[] = $product->getUi();
+            }
+
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
                 if (isset($data['product_scores'][0])) {
                     $scoreData = $data;
                 }
@@ -576,9 +585,18 @@ class Action {
                     $products[] = new \Model\Product\CompactEntity($item);
                 }
             });
+        }
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $scoreData = [];
-            \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+        $scoreData = [];
+        if ((bool)$products) {
+            $productUIs = [];
+            foreach ($products as $product) {
+                if (!$product instanceof \Model\Product\BasicEntity) continue;
+                $productUIs[] = $product->getUi();
+            }
+
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
                 if (isset($data['product_scores'][0])) {
                     $scoreData = $data;
                 }
@@ -908,9 +926,18 @@ class Action {
                         $products[] = new \Model\Product\CompactEntity($item);
                     }
                 });
+            }
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                $scoreData = [];
-                \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+            $scoreData = [];
+            if ((bool)$products) {
+                $productUIs = [];
+                foreach ($products as $product) {
+                    if (!$product instanceof \Model\Product\BasicEntity) continue;
+                    $productUIs[] = $product->getUi();
+                }
+
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
                     if (isset($data['product_scores'][0])) {
                         $scoreData = $data;
                     }
@@ -951,9 +978,18 @@ class Action {
                         $products[] = new \Model\Product\CompactEntity($item);
                     }
                 });
+            }
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                $scoreData = [];
-                \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+            $scoreData = [];
+            if ((bool)$products) {
+                $productUIs = [];
+                foreach ($products as $product) {
+                    if (!$product instanceof \Model\Product\BasicEntity) continue;
+                    $productUIs[] = $product->getUi();
+                }
+
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
                     if (isset($data['product_scores'][0])) {
                         $scoreData = $data;
                     }

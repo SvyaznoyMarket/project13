@@ -16,7 +16,6 @@ class IndexAction {
         $categoryToken = 'tchibo';
         $category = null;
         $promo = null;
-        $content = null;
         $bannerBottom = null;
 
         // подготовка для 1-го пакета запросов в ядро
@@ -27,21 +26,6 @@ class IndexAction {
                 $promo = new \Model\Promo\Entity($data);
             }
         });
-
-        // content
-        \App::contentClient()->addQuery(
-            'tchibo_root',
-            [],
-            function($data) use (&$content) {
-                if (!empty($data['content'])) {
-                    $content = $data['content'];
-                }
-            },
-            function(\Exception $e) {
-                \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
-                \App::exception()->add($e);
-            }
-        );
 
         // получим данные category
         \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
@@ -154,7 +138,6 @@ class IndexAction {
         $page = new \View\Tchibo\IndexPage();
         $page->setParam('slideData', $slideData);
         $page->setParam('catalogConfig', $catalogJson);
-        $page->setParam('content', $content);
         $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setGlobalParam('bannerBottom', $bannerBottom);
