@@ -28,6 +28,10 @@ namespace EnterSite\Model\Partial\ProductFilter {
         /** @var string */
         public $value;
         /** @var string */
+        public $minValue;
+        /** @var string */
+        public $maxValue;
+        /** @var string */
         public $id;
         /** @var bool */
         public $isActive;

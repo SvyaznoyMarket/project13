@@ -1,6 +1,6 @@
-<div class="priceRange">
-    <input type="text" class="js-productFilter-set priceRange_amount" name="{{elements.0.name}}" value="{{elements.0.value}}" />
-    <div class="js-rangeSlider priceRange_slider" data-value="{{&dataValue}}"></div>
-    <input type="text" class="js-productFilter-set priceRange_amount" name="{{elements.1.name}}" value="{{elements.1.value}}" />
+<div class="js-rangeSlider-container priceRange" data-value="{{&dataValue}}">
+    <input type="text" class="js-productFilter-set js-rangeSlider-from priceRange_amount" name="{{elements.0.name}}" data-value="{{elements.0.minValue}}" value="{{elements.0.value}}" />
+    <div class="js-rangeSlider priceRange_slider"></div>
+    <input type="text" class="js-productFilter-set js-rangeSlider-to priceRange_amount" name="{{elements.1.name}}"  data-value="{{elements.0.maxValue}}" value="{{elements.1.value}}" />
     <span class="priceRange_rubl rubl">p</span>
 </div><!--/ фильтр цен -->

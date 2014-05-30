@@ -39,7 +39,7 @@ define(
                     dataValue = $listContainer.data('value')
                 ;
 
-                console.info('deleteFilter', e, dataValue);
+                console.info('deleteFilter', e, dataValue, currentName);
 
                 if (currentName) {
                     _.each(dataValue, function(value, name) {
@@ -49,10 +49,13 @@ define(
                         }
                     });
 
-                    var $filter = $('.js-productFilter-set').filter('[data-name="' + currentName + '"]');
+                    var $filter = $('.js-productFilter-set').filter('[name="' + currentName + '"]');
                     if ($filter.length) {
                         if ($filter.is(':radio, :checkbox')) {
                             $filter.removeAttr('checked');
+                        } else if ($filter.is(':text')) {
+                            $filter.val($filter.data('value'));
+                            $filter.trigger('change');
                         }
                     }
 

@@ -27,6 +27,8 @@ class Filter {
     public $isMultiple;
     /** @var string */
     public $stepType;
+    /** @var int|float */
+    public $step;
     /** @var int */
     public $min;
     /** @var int */
@@ -56,6 +58,15 @@ class Filter {
         if (array_key_exists('min_global', $data)) $this->globalMin = (int)$data['min_global'];
         if (array_key_exists('max_global', $data)) $this->globalMax = (int)$data['max_global'];
         if (array_key_exists('unit', $data)) $this->unit = $data['unit'] ? (string)$data['unit'] : null;
+
+        if ('price' == $this->token) {
+            $this->step = 100;
+        } else if ($this->stepType === self::TYPE_STEP_INTEGER) {
+            $this->step = 1;
+        } else if ($this->stepType === self::TYPE_STEP_FLOAT) {
+            $this->step = 0.1;
+        }
+
         if (isset($data['options'][0])) {
             foreach ($data['options'] as $optionItem) {
                 $this->option[] = new Model\Product\Filter\Option($optionItem);
@@ -88,5 +99,5 @@ class Filter {
                 $this->option[] = $option;
             }
         }
-    }
+     }
 }

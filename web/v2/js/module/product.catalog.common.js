@@ -4,26 +4,73 @@ define(
         'module/config', 'jquery.ui', 'jquery.photoswipe'
     ],
     function ($, config) {
-        var $slider = $('.js-rangeSlider');
+        var $slider = $('.js-rangeSlider-container');
 
         $slider.each(function(i, el) {
             var $el = $(el),
-                dataValue = $el.data('value')
+                $slider = $el.find('.js-rangeSlider'),
+                $fromInput = $el.find('.js-rangeSlider-from'),
+                $toInput = $el.find('.js-rangeSlider-to'),
+                dataValue = $el.data('value'),
+
+                updateInput = function(e) {
+                    var value = '0' + $(this).val();
+
+                    value = parseFloat(value);
+                    value =
+                        (value > dataValue.max) ? dataValue.max :
+                        ( value < dataValue.min ) ? dataValue.min :
+                        value;
+
+                    $(this).val(value);
+
+                    $slider.slider({
+                        values: [
+                            $fromInput.val(),
+                            $toInput.val()
+                        ]
+                    });
+                }
             ;
 
-            if (!dataValue) {
+            if (!dataValue || !$slider.length) {
                 console.warn('slider', $el, dataValue);
                 return true;
             } else {
                 console.info('slider', $el, dataValue);
             }
 
-            $el.slider({
+            $slider.slider({
                 range: true,
+                step: dataValue.step,
                 min: dataValue.min,
                 max: dataValue.max,
-                values: [ 0, 500 ]
+                values: [
+                    $fromInput.val(),
+                    $toInput.val()
+                ],
+
+                slide: function(e, ui) {
+                    $fromInput.val(ui.values[0]);
+                    $toInput.val(ui.values[1]);
+                },
+
+                change: function(e, ui) {
+                    if (e.originalEvent) {
+                        console.info('js-rangeSlider', $slider, ui, e);
+
+                        if (ui.value == ui.values[0]) {
+                            $fromInput.trigger('change');
+                        }
+                        if (ui.value == ui.values[1]) {
+                            $toInput.trigger('change');
+                        }
+                    }
+                }
             });
+
+            $fromInput.on('change', updateInput);
+            $toInput.on('change', updateInput);
         });
 
 		var paramsBtn = $('.js-action-params'),

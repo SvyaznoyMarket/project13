@@ -58,9 +58,13 @@ class ProductFilter {
                 // максимальное и минимальное значения для слайдера
                 if (in_array($filterModel->typeId, [Model\Product\Filter::TYPE_SLIDER, Model\Product\Filter::TYPE_NUMBER])) {
                     $filter->dataValue = $viewHelper->json([
-                        'min' => $filterModel->min,
-                        'max' => $filterModel->max,
+                        'min'  => $filterModel->min,
+                        'max'  => $filterModel->max,
+                        'step' => $filterModel->step,
                     ]);
+
+                    $element->minValue = $filterModel->min;
+                    $element->maxValue = $filterModel->max;
                 }
 
                 $filter->elements[] = $element;
@@ -88,7 +92,8 @@ class ProductFilter {
         $router = $this->getRouter();
         $urlHelper = $this->getUrlHelper();
 
-        $selectedFiltersByToken = [];
+        /** @var Partial\ProductFilter[] $filtersByToken */
+        $filtersByToken = [];
 
         // TODO: оптимизировать
         if ((bool)$requestFilterModels) {
@@ -106,14 +111,14 @@ class ProductFilter {
 
                 $isSlider = in_array($filterModel->typeId, [Model\Product\Filter::TYPE_SLIDER, Model\Product\Filter::TYPE_NUMBER]);
 
-                if (!isset($selectedFiltersByToken[$requestFilterModel->token])) {
+                if (!isset($filtersByToken[$requestFilterModel->token])) {
                     $filter = new Partial\ProductFilter();
                     $filter->token = $filterModel->token;
                     $filter->name = $filterModel->name;
 
-                    $selectedFiltersByToken[$requestFilterModel->token] = $filter;
+                    $filtersByToken[$requestFilterModel->token] = $filter;
                 }
-                $filter = $selectedFiltersByToken[$requestFilterModel->token];
+                $filter = $filtersByToken[$requestFilterModel->token];
 
                 foreach ($filterModel->option as $optionModel) {
                     // Если фильтр - слайдер, то сравниваем по optionToken, иначе - по value
@@ -124,6 +129,9 @@ class ProductFilter {
                         $element = new Partial\ProductFilter\Element();
 
                         if ($isSlider) {
+                            // Игнорирование фильтра с мин или макс значением
+                            if (($filterModel->min == $requestFilterModel->value) || ($filterModel->max == $requestFilterModel->value)) continue;
+
                             if ('price' == $filterModel->token) {
                                 $element->title = $optionModel->name . ' ' . number_format((float)$requestFilterModel->value, 0, ',', ' ') . 'р';
                             } else {
@@ -147,7 +155,13 @@ class ProductFilter {
             }
         }
 
-        return array_values($selectedFiltersByToken);
+        foreach ($filtersByToken as $i => $filter) {
+            if (!(bool)$filter->elements) {
+                unset($filtersByToken[$i]);
+            }
+        }
+
+        return array_values($filtersByToken);
     }
 
     /**
