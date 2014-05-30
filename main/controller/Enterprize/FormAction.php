@@ -499,7 +499,12 @@ class FormAction {
                             if (!empty($productIds)) {
                                 $productRepository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                                     foreach ($data as $item) {
-                                        $products[] = new \Model\Product\Entity($item);
+                                        $entity = new \Model\Product\Entity($item);
+                                        if ($entity->isInShopOnly() || $entity->isInShopStockOnly() || !$entity->getIsBuyable()) {
+                                            continue;
+                                        }
+
+                                        $products[] = $entity;
                                     }
                                 });
                                 $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
@@ -526,6 +531,10 @@ class FormAction {
                                     if ($limit <= count($products)) continue;
 
                                     $entity = new \Model\Product\Entity($item);
+                                    if ($entity->isInShopOnly() || $entity->isInShopStockOnly() || !$entity->getIsBuyable()) {
+                                        continue;
+                                    }
+
                                     $products[$entity->getId()] = $entity;
                                 }
                             }
@@ -549,7 +558,12 @@ class FormAction {
                 if (!empty($productIds)) {
                     $productRepository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                         foreach ($data as $item) {
-                            $products[] = new \Model\Product\Entity($item);
+                            $entity = new \Model\Product\Entity($item);
+                            if ($entity->isInShopOnly() || $entity->isInShopStockOnly() || !$entity->getIsBuyable()) {
+                                continue;
+                            }
+
+                            $products[] = $entity;
                         }
                     });
                     $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
