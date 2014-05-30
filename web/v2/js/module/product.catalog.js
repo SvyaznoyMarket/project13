@@ -79,8 +79,17 @@ define(
                 dataReset.sort = dataValue.sort;
 
                 $listContainer.data('value', _.extend({}, dataReset));
-                //$listContainer.data('value', _.extend(dataReset, {sort: dataValue.sort}));
-                console.info(dataValue);
+
+                $('.js-productFilter-set').each(function(i, el) {
+                    var $el = $(el);
+
+                    if ($el.is(':radio, :checkbox')) {
+                        $el.removeAttr('checked');
+                    } else if ($el.is(':text')) {
+                        $el.val($el.data('value'));
+                        $el.trigger('change');
+                    }
+                });
 
                 dataValue.page = 1;
                 loadProducts(e, {clear: true});
