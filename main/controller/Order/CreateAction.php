@@ -212,6 +212,7 @@ class CreateAction {
                 'extra'                     => $form->getComment(),
                 'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
                 'delivery_type_id'          => $deliveryType->getId(),
+                'delivery_price'            => $orderPart->getDeliveryPrice(),
                 'delivery_period'           => $orderPart->getInterval() ? [$orderPart->getInterval()->getStartAt(), $orderPart->getInterval()->getEndAt()] : null,
                 'delivery_date'             => $orderPart->getDate() instanceof \DateTime ? $orderPart->getDate()->format('Y-m-d') : null,
                 'ip'                        => $request->getClientIp(),
