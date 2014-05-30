@@ -384,6 +384,24 @@ $(document).ready(function() {
 		}
 
 		// analytics
+		this.deleteFromMyragon = function( data ) {
+			if ( !data.hasOwnProperty('id') ) {
+				return;
+			}
+
+			window.rbnt_rt_params = {
+				url: window.location.href,
+				pageType: 9,
+				pageTitle: $(document).find("title").text(),
+				basketProducts: [{id: data.product.id}]
+			};
+			typeof rbnt_rt != "undefined" && rbnt_rt.send();
+
+			console.info('Myragon removeFromCart');
+			console.log(window.rbnt_rt_params);
+		}
+
+		// analytics
 		this.deleteFromLamoda = function( data ) {
 			if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('id') ) {
 				return;

@@ -258,4 +258,57 @@ class CompletePage extends Layout {
 
         return '<div id="myragonOrderCompleteJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
+
+    public function slotMyragonPageJS() {
+        $config = \App::config()->partners['Myragon'];
+        if (!$config['enabled'] || !$config['enterNumber'] || !$config['secretWord'] || !$config['subdomainNumber']) {
+            return;
+        }
+
+        /** @var $orders Order[] */
+        $orders = $this->getParam('orders');
+        if (!$orders || empty($orders) || !is_array($orders)) return;
+
+        $orderInfo = [];
+        $purchasedProducts = [];
+        foreach ($orders as $order) {
+            if (!$order instanceof Order || !$order->getId()) continue;
+
+            $orderInfo[] = [
+                'id' => $order->getId(),
+                'totalPrice' => $order->getSum(),
+                'currency' => 'RUB',
+            ];
+
+            if ($order->getProduct()) {
+                foreach ($order->getProduct() as $product) {
+                    if (!$product instanceof \Model\Order\Product\Entity) continue;
+
+                    $purchasedProducts[] = [
+                        'id' => $product->getId(),
+                        'price' => $product->getPrice(),
+                        'currency' => 'RUB',
+                        'amount' => $product->getQuantity(),
+                    ];
+                }
+            }
+        }
+
+        $data = [
+            'config' => [
+                'enterNumber' => $config['enterNumber'],
+                'secretWord' => $config['secretWord'],
+                'subdomainNumber' => $config['subdomainNumber'],
+            ],
+            'page' => [
+                'url' => null,
+                'pageType' => 6,
+                'pageTitle' => $this->getTitle(),
+                'orderInfo' => 1 == count($orderInfo) ? reset($orderInfo) : $orderInfo,
+                'purchasedProducts' => $purchasedProducts,
+            ],
+        ];
+
+        return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+    }
 }

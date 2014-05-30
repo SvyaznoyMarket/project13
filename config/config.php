@@ -179,9 +179,9 @@ $c->partners['TagMan']['enabled'] = false;
 
 // Myragon
 $c->partners['Myragon']['enabled'] = true;
-$c->partners['Myragon']['enterNumber'] = 1402;
-$c->partners['Myragon']['secretWord'] = 'RdjJBC9FLE';
-$c->partners['Myragon']['subdomainNumber'] = 49;
+$c->partners['Myragon']['enterNumber'] = 1402;// номер Вашей кампании
+$c->partners['Myragon']['secretWord'] = 'RdjJBC9FLE';// секретное слово
+$c->partners['Myragon']['subdomainNumber'] = 49;// номер поддомена в сервисе Myragon
 
 $c->adFox['enabled'] = true;
 $c->myThings['feeByCategory'] = [

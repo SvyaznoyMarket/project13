@@ -944,6 +944,37 @@ class DefaultLayout extends Layout {
         return;
     }
 
+    /**
+     * Myragon
+     *
+     * url – адрес основной страницы
+     * pageType – тип отображаемой страницы
+     * 1 – главная страница сайта
+     * 2 – страница конкретного товара (не popup)
+     * 3 – страница каталога/категории/подкатегории
+     * 4 – корзина
+     * 5 – оформление заказа (после корзины и до последней страницы заказа)
+     * 6 – последняя страница оформления заказа (thank you page),
+     * 7 – окно быстрого просмотра товара (popup)
+     * 8 - действие: нажата кнопка "добавить в корзину"
+     * 9 - действие: нажата кнопка "удалить из корзины"
+     * 0 – другая страница (ни одна из вышеперечисленных)
+     *
+     * pageTitle – заголовок страницы
+     *
+     * currentProduct – просматриваемый товар (передавать в случае pageType=2 или 7), должен содержать поля:
+     * id  - ID товара в каталоге магазина
+     * name – название товара
+     * description – описание товара
+     * price – цена текущая, десятичный делитель – точка
+     * price_old – цена старая, десятичный делитель – точка
+     * currency – валюта товара, в формате ISO, например RUB, USD, EUR
+     * vendor – производитель товара, например Sony
+     * img – ссылка(и) на картинку с товарами (массив)
+     * available – доступность товара, 0 или 1
+     *
+     * @return string
+     */
     public function slotMyragonPageJS() {
         $config = \App::config()->partners['Myragon'];
         if (!$config['enabled'] || !$config['enterNumber'] || !$config['secretWord'] || !$config['subdomainNumber']) {
@@ -952,9 +983,9 @@ class DefaultLayout extends Layout {
 
         $data = [
             'config' => [
-                'enterNumber' => $config['enterNumber'], // номер Вашей кампании
-                'secretWord' => $config['secretWord'], // секретное слово
-                'subdomainNumber' => $config['subdomainNumber'], // номер поддомена в сервисе Myragon
+                'enterNumber' => $config['enterNumber'],
+                'secretWord' => $config['secretWord'],
+                'subdomainNumber' => $config['subdomainNumber'],
             ],
             'page' => [
                 'url' => null,
