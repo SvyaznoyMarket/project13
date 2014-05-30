@@ -75,7 +75,11 @@ define(
 
                 console.info('clearFilter', e, dataValue);
 
+                // FIXME
+                dataReset.sort = dataValue.sort;
+
                 $listContainer.data('value', _.extend({}, dataReset));
+                //$listContainer.data('value', _.extend(dataReset, {sort: dataValue.sort}));
                 console.info(dataValue);
 
                 dataValue.page = 1;
