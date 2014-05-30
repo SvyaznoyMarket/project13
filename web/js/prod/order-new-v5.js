@@ -2494,7 +2494,8 @@
 						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : ''
 					],
 					point_id: choosePoint.id,
-					products : []
+					products : [],
+                    deliveryPrice : currentDeliveryBox.deliveryPrice
 				};
 
 				console.log('choosePoint:');
