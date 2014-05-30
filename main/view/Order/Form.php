@@ -32,7 +32,7 @@ class Form {
     /** @var int */
     private $creditBankId;
     /** @var string */
-    private $sclubCardnumber;
+    private $bonusCardnumber;
     /** @var string */
     private $certificateCardnumber;
     /** @var string */
@@ -59,7 +59,7 @@ class Form {
         'address_floor'          => null,
         'extra'                  => null,
         'credit_bank_id'         => null,
-        'sclub_card_number'      => null,
+        'bonus_card_number'      => null,
         'payment_method_id'      => null,
         'agreed'                 => null,
         'cardnumber'             => null,
@@ -86,7 +86,7 @@ class Form {
         if (array_key_exists('address_floor', $data))          $this->setAddressFloor($data['address_floor']);
         if (array_key_exists('extra', $data))                  $this->setComment($data['extra']);
         if (array_key_exists('credit_bank_id', $data))         $this->setCreditBankId($data['credit_bank_id']);
-        if (array_key_exists('sclub_card_number', $data))      $this->setSclubCardnumber($data['sclub_card_number']);
+        if (array_key_exists('bonus_card_number', $data))      $this->setBonusCardnumber($data['bonus_card_number']);
         if (array_key_exists('payment_method_id', $data))      $this->setPaymentMethodId($data['payment_method_id']);
         if (array_key_exists('agreed', $data))                 $this->setAgreed($data['agreed']);
         if (array_key_exists('cardnumber', $data))             $this->setCertificateCardnumber($data['cardnumber']);
@@ -307,17 +307,17 @@ class Form {
     }
 
     /**
-     * @param string $sclubCardnumber
+     * @param string $bonusCardnumber
      */
-    public function setSclubCardnumber($sclubCardnumber) {
-        $this->sclubCardnumber = str_replace(' ','', (string)$sclubCardnumber);
+    public function setBonusCardnumber($bonusCardnumber) {
+        $this->bonusCardnumber = str_replace(' ','', (string)$bonusCardnumber);
     }
 
     /**
      * @return string
      */
-    public function getSclubCardnumber() {
-        return $this->sclubCardnumber;
+    public function getBonusCardnumber() {
+        return $this->bonusCardnumber;
     }
 
     /**

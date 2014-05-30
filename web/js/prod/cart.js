@@ -418,6 +418,7 @@ $(document).ready(function() {
 			}
 
 			self.deleteFromRutarget(data);
+			self.deleteFromMyragon(data);
 			self.deleteFromLamoda(data);
 		}
 

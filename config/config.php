@@ -376,7 +376,7 @@ $c->order['prepayment'] = [
     'labelId'    => 15, // id шильдика "предоплата"
 ];
 
-$c->newDeliveryCalc = false;
+$c->newDeliveryCalc = true;
 
 $c->kladr = [
     'token' => '52b04de731608f2773000000',

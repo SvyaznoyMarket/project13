@@ -29,8 +29,8 @@ class Repository {
                 'name'                   => $hasTransportCompany ? 'Доставка заказа транспортной компанией' : 'Доставка заказа курьером',
                 'description'            => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
                 //'description'            => 'DHL, DPD, СПСР-Экспресс',
-                'methods'                => ['standart_furniture', 'standart_other', 'standart'],
-                'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now', 'standart'],
+                'methods'                => ['standart_furniture', 'standart_other', 'standart', 'standart_svyaznoy'],
+                'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now', 'standart','standart_svyaznoy'],
             ],
             /*
             [
@@ -44,8 +44,8 @@ class Repository {
                 'short_name'             => 'самовывоз',
                 'name'                   => 'Самостоятельно заберу в магазине',
                 'description'            => 'Вы можете самостоятельно забрать товар из ближайшего к вам магазина Enter. Услуга бесплатная! Резерв товара сохраняется 3 дня. Пожалуйста, выберите магазин.',
-                'methods'                => ['self'],
-                'possible_method_tokens' => ['self', 'now', 'standart_furniture', 'standart_other', 'standart'],
+                'methods'                => ['self', 'self_svyaznoy'],
+                'possible_method_tokens' => ['self', 'now', 'standart_furniture', 'standart_other', 'standart', 'self_svyaznoy'],
             ],
             [
                 'id'                     => 4,
@@ -73,6 +73,16 @@ class Repository {
                 'methods'                => ['pickpoint'],
                 'possible_method_tokens' => ['pickpoint', 'now', 'self', 'standart_furniture', 'standart_other', 'standart'],
             ],
+/*            [
+                'id'                     => 7,
+                'token'                  => 'standart_svyaznoy',
+                'short_name'             => 'доставка',
+                'name'                   => $hasTransportCompany ? 'Доставка заказа транспортной компанией' : 'Доставка заказа курьером',
+                'description'            => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
+                //'description'            => 'DHL, DPD, СПСР-Экспресс',
+                'methods'                => ['standart_furniture', 'standart_other', 'standart', 'standart_svyaznoy'],
+                'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now', 'standart', 'standart_svyaznoy'],
+            ],*/
         ];
 
         $collection = [];
