@@ -187,6 +187,7 @@ class Action {
             // Points By Delivery
             $responseData['pointsByDelivery'] = [
                 'self'      => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
+                'self_svyaznoy'      => ['token' => 'shops_svyaznoy', 'changeName' => 'Сменить магазин'],
                 'now'       => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
                 'pickpoint' => ['token' => 'pickpoints', 'changeName' => 'Сменить постамат'],
             ];
@@ -249,7 +250,7 @@ class Action {
                             $points[$point['id']] = $point;
 
                             // если самовывоз, то добавляем ид товара в соответствующий магазин
-                            if (in_array($deliveryMethod['token'], ['self', 'now'])) {
+                            if (in_array($deliveryMethod['token'], ['self', 'now', 'self_svyaznoy'])) {
                                 if (!isset($productIdsByShop[$point['id']])) {
                                     $productIdsByShop[$point['id']] = [];
                                 }
@@ -315,9 +316,13 @@ class Action {
                 ];
             }
 
+            //if (isset($result['shops_svyaznoy'])) $result['shops'] = array_merge($result['shops'], $result['shops_svyaznoy']);
+
             // Магазины
-            if (isset($result['shops'])) {
-                foreach ($result['shops'] as $shopItem) {
+            foreach (['shops', 'shops_svyaznoy'] as $shopToken) {
+
+            if (isset($result[$shopToken])) {
+                foreach ($result[$shopToken] as $shopItem) {
                     $shopId = (string)$shopItem['id'];
                     if (!isset($productIdsByShop[$shopId])) continue;
                     if (empty($shopItem['coord_lat']) || empty($shopItem['coord_long'])) {
@@ -325,9 +330,9 @@ class Action {
                         continue;
                     }
 
-                    $responseData['shops'][] = [
+                    $responseData[$shopToken][] = [
                         'id'         => $shopId,
-                        'name'       => $shopItem['name'],
+                        'name'       => $shopToken == 'shops_svyaznoy' ? $shopItem['address'] .'; '. $shopItem['name'] : $shopItem['name'],
                         'address'    => $shopItem['address'],
                         'regtime'    => $shopItem['working_time'],
                         'latitude'   => (float)$shopItem['coord_lat'],
@@ -339,8 +344,8 @@ class Action {
                     ];
                 }
                 // сортировка магазинов
-                if (\App::config()->region['defaultId'] != $region->getId() && $region->getLatitude() && $region->getLongitude() && !empty($responseData['shops'])) {
-                    usort($responseData['shops'], function($a, $b) use (&$region) {
+                if (\App::config()->region['defaultId'] != $region->getId() && $region->getLatitude() && $region->getLongitude() && !empty($responseData[$shopToken])) {
+                    usort($responseData[$shopToken], function($a, $b) use (&$region) {
                         if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
                             return 0;
                         }
@@ -348,6 +353,8 @@ class Action {
                         return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
                     });
                 }
+            }
+
             }
 
             // Пикпоинты

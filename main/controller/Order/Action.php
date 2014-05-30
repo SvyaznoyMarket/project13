@@ -212,7 +212,7 @@ class Action {
                     \App::exception()->remove($e);
                 }
             }
-        }
+        } else $paymentForm = null;
 
         $paymentUrl = $order->getPaymentUrl(); // раньше было: $paymentUrl = \App::session()->get('paymentUrl');
 
