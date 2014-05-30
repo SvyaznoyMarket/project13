@@ -48,6 +48,9 @@ class NewAction {
                 'is_corporative' => $user->getEntity() ? $user->getEntity()->getIsCorporative() : false,
                 'is_credit'      => !$isCreditAllowed ? false : null,
             ],
+            [
+                'product_list'    => array_map(function(\Model\Cart\Product\Entity $v) { return [ 'id'=>$v->getId(), 'quantity' => $v->getQuantity() ]; }, $cart->getProducts())
+            ],
             function($data) use (
                 &$paymentGroups,
                 &$paymentMethods

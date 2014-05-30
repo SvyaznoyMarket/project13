@@ -8729,7 +8729,9 @@
   }
   .bProductDescSticker {
     position: absolute;
+    z-index: 999;
     top: 0;
+    background: none;
   }
   .bProductDescSticker.mRight {
     right: 0;

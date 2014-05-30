@@ -54,6 +54,7 @@ class NewAction {
                 [
                     'is_corporative' => $user->getEntity() ? $user->getEntity()->getIsCorporative() : false,
                 ],
+                [],
                 function($data) use (
                     &$paymentGroups,
                     &$paymentMethods

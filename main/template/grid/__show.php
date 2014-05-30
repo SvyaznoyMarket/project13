@@ -31,6 +31,12 @@ $f = function(
         $product = ((isset($productsByUi[$cell->getUi()]) && $productsByUi[$cell->getUi()] instanceof \Model\Product\BasicEntity) ? $productsByUi[$cell->getUi()] : null);
     ?>
         <? if ($product): ?>
+            <? if ($product->getLabel()): ?>
+                <div class="bProductDescSticker mRight">
+                    <img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>" />
+                </div>
+            <? endif ?>
+
             <? if ($product->getMainCategory() && 'tchibo' === $product->getMainCategory()->getToken() && !$product->getIsBuyable()): ?>
                 <div class="bProductDescSticker">
                     <img src="/images/shild_sold_out.png" alt="Нет в наличии" />
