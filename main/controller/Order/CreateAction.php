@@ -212,6 +212,8 @@ class CreateAction {
                 'extra'             => $form->getComment(),
                 'bonus_card_number' => $form->getBonusCardnumber(),
                 'delivery_type_id'  => $deliveryType->getId(),
+                'delivery_type_token' => $orderPart->getDeliveryMethodToken(),
+                'delivery_price'      => $orderPart->getDeliveryPrice(),
                 'delivery_period'   => $orderPart->getInterval() ? [$orderPart->getInterval()->getStartAt(), $orderPart->getInterval()->getEndAt()] : null,
                 'delivery_date'     => $orderPart->getDate() instanceof \DateTime ? $orderPart->getDate()->format('Y-m-d') : null,
                 'ip'                => $request->getClientIp(),

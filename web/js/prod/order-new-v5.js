@@ -1919,6 +1919,8 @@
 			this.pointsByDelivery = this.orderData.pointsByDelivery;
 			this.products = this.orderData.products;
 			this.defPoints = this.orderData.defPoints || {};
+
+            console.debug('OrderDictionary', this);
 		}
 
 		/**
@@ -2074,7 +2076,7 @@
 			 SITE-2499 Некорректный первоначальный список магазинов при оформлении заказа
 			 Фильтруем точки для типов доставки "now" и "self"
 			 */
-			if ( state == "now" || state == "self" ) {
+			if ( state == "now" || state == "self" || state == 'self_svyaznoy') {
 				for ( i in ret ) {
 					for ( type in ret[i].products ) {
 						type == state && retNew.push(ret[i]);
@@ -2636,7 +2638,8 @@
 						( currentDeliveryBox.choosenInterval() ) ? currentDeliveryBox.choosenInterval().end : ''
 					],
 					point_id: choosePoint.id,
-					products : []
+					products : [],
+                    deliveryPrice : currentDeliveryBox.deliveryPrice
 				};
 
 				console.log('choosePoint:');
