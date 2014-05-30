@@ -23,7 +23,7 @@ if ($product) {
 
 <div class="fixedTopBar__buy <?= $line ? 'hidden' : 'none' ?>">
 
-    <? if ($product->getIsBuyable() && !$product->getKit()): ?>
+    <? if ($product->getIsBuyable() && (!$product->getKit()) || $product->getIsKitLocked()): ?>
         <?= $helper->render('cart/__button-product', [
             'product' => $product,
             'class' => 'btnBuy__eLink',
@@ -32,11 +32,11 @@ if ($product) {
         ]) // Кнопка купить ?>
     <? endif ?>
 
-    <? if ($product->getKit()): ?>
+    <? if ($product->getKit() && !$product->getIsKitLocked()): ?>
         <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink mBuySet', 'value' => 'Купить']) // Кнопка купить ?>
     <? endif ?>
 
-    <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && !$product->getKit()): ?>
+    <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit()) || $product->getIsKitLocked()): ?>
         <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
     <? endif ?>
 
