@@ -9,12 +9,7 @@
     {{#filters}}
         <div class="params_title">{{name}}</div>
         <div class="params_cont">
-            {{#isSliderType}}
-                {{>partial/product-list/filter/slider}}
-            {{/isSliderType}}
-            {{#isListType}}
-                {{>partial/product-list/filter/list}}
-            {{/isListType}}
+            {{>partial/product-list/filter}}
         </div>
     {{/filters}}
 
@@ -39,18 +34,9 @@
         Показано: 26 моделей
     </div><!--/ показано моделей на странице -->
 
-    <div class="priceRange">
-
-        <span class="priceRange_title">Цена</span>
-
-        <input type="text" class="priceRange_amount" />
-
-        <div class="js-rangeSlider priceRange_slider"></div>
-
-        <input type="text" class="priceRange_amount" />
-
-        <span class="priceRange_rubl rubl">p</span>
-    </div><!--/ фильтр цен -->
+    {{#openedFilters}}
+        {{>partial/product-list/filter}}
+    {{/openedFilters}}
 
     {{#sortingBlock}}
         {{>partial/product-list/sorting}}

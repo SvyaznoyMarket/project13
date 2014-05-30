@@ -17,15 +17,21 @@ class ProductFilter {
     /**
      * @param Model\Product\Filter[] $filterModels
      * @param Model\Product\RequestFilter[] $requestFilterModels
+     * @param bool $isOpened
      * @return Partial\ProductFilter[]
      */
     public function getList(
         array $filterModels,
-        array $requestFilterModels = []
+        array $requestFilterModels = [],
+        $isOpened = false
     ) {
         $viewHelper = $this->getViewHelper();
 
         $filters = [];
+
+        $openedFilterTokens = [
+            'price',
+        ];
 
         /** @var Model\Product\RequestFilter[] $requestFilterModelsByName */
         $requestFilterModelsByName = [];
@@ -34,12 +40,22 @@ class ProductFilter {
         }
 
         foreach ($filterModels as $filterModel) {
+            if (
+                ($isOpened && !in_array($filterModel->token, $openedFilterTokens))
+                || (!$isOpened && in_array($filterModel->token, $openedFilterTokens))
+            ) {
+                continue;
+            }
+
             $filter = new Partial\ProductFilter();
             $filter->token = $filterModel->token;
             $filter->name = $filterModel->name;
+            $filter->unit = $filterModel->unit;
             $filter->isSliderType = in_array($filterModel->typeId, [Model\Product\Filter::TYPE_NUMBER, Model\Product\Filter::TYPE_SLIDER]);
             $filter->isListType = in_array($filterModel->typeId, [Model\Product\Filter::TYPE_LIST, Model\Product\Filter::TYPE_BOOLEAN]);
             $filter->isMultiple = $filterModel->isMultiple;
+            $filter->isOpened = $isOpened;
+            $filter->isPrice = 'price' == $filterModel->token;
 
             foreach ($filterModel->option as $optionModel) {
                 $element = new Partial\ProductFilter\Element();

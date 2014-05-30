@@ -6,12 +6,18 @@ namespace EnterSite\Model\Partial {
         public $token;
         /** @var string */
         public $name;
+        /** @var string */
+        public $unit;
         /** @var bool */
         public $isSliderType;
         /** @var bool */
         public $isListType;
         /** @var bool */
         public $isMultiple;
+        /** @var bool */
+        public $isOpened;
+        /** @var bool */
+        public $isPrice;
         /** @var string */
         public $dataValue;
         /** @var ProductFilter\Element[] */
