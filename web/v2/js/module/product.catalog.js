@@ -11,7 +11,7 @@ define(
             setFilter = function(e) {
                 e.stopPropagation();
 
-                var $el = $(e.currentTarget),
+                var $el = $(e.target),
                     dataValue = $listContainer.data('value')
                 ;
 
@@ -34,7 +34,7 @@ define(
             deleteFilter = function(e) {
                 e.stopPropagation();
 
-                var $el = $(e.currentTarget),
+                var $el = $(e.target),
                     currentName = $el.data('name'),
                     dataValue = $listContainer.data('value')
                 ;
@@ -87,7 +87,7 @@ define(
             setSorting = function(e) {
                 e.stopPropagation();
 
-                var $el = $(e.currentTarget),
+                var $el = $(e.target),
                     sortingValue = $el.data('value'),
                     dataValue = $listContainer.data('value')
                 ;

@@ -39,7 +39,7 @@ define(
         $('.js-debug-link').on('click', function(e) {
             e.stopPropagation();
 
-            var $el = $(e.currentTarget)
+            var $el = $(e.target)
             ;
 
             $debug.data('opened', true);
@@ -52,7 +52,7 @@ define(
         $body.on('click', '.js-debug-container-link', function(e) {
             e.stopPropagation();
 
-            var $el = $(e.currentTarget);
+            var $el = $(e.target);
 
             $el.blur();
 

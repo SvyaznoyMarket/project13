@@ -10,7 +10,7 @@ define(
             addProductToCart = function(e) {
                 e.stopPropagation();
 
-                var $el = $(e.currentTarget),
+                var $el = $(e.target),
                     data = $el.data(),
                     $widget = $($el.data('widgetSelector'))
                 ;
@@ -37,7 +37,7 @@ define(
             deleteProductFromCart = function(e) {
                 e.stopPropagation();
 
-                var $el = $(e.currentTarget),
+                var $el = $(e.target),
                     data = $el.data(),
                     $spinnerWidget = $($el.data('spinnerSelector'))
                 ;
@@ -83,7 +83,7 @@ define(
             changeProductQuantity = function(e, quantity) {
                 e.stopPropagation();
 
-                var idSelector = $(e.currentTarget),
+                var idSelector = $(e.target),
                     $el = $(idSelector),
                     dataValue = $el.data('value'),
                     $widget = $($el.data('widgetSelector')),
@@ -118,7 +118,7 @@ define(
             incSpinnerValue = function(e) {
                 e.stopPropagation();
 
-                var $el = $(e.currentTarget),
+                var $el = $(e.target),
                     $widget = $($el.data('widgetSelector')),
                     $target = $($el.data('buttonSelector')),
                     targetDataValue = $target.data('value');
@@ -136,7 +136,7 @@ define(
             decSpinnerValue = function(e) {
                 e.stopPropagation();
 
-                var $el = $(e.currentTarget),
+                var $el = $(e.target),
                     $widget = $($el.data('widgetSelector')),
                     $target = $($el.data('buttonSelector')),
                     targetDataValue = $target.data('value');
@@ -154,7 +154,7 @@ define(
             changeSpinnerValue = function(e) {
                 e.stopPropagation();
 
-                var $el = $(e.currentTarget),
+                var $el = $(e.target),
                     $widget = $($el.data('widgetSelector')),
                     $target = $($el.data('buttonSelector')),
                     targetDataValue = $target.data('value');
@@ -174,7 +174,7 @@ define(
             renderSpinnerValue = function(e, product) {
                 e.stopPropagation();
 
-                var $el = $(e.currentTarget);
+                var $el = $(e.target);
 
                 console.info('renderSpinnerValue', $el, product);
 
