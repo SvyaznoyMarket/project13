@@ -1,4 +1,4 @@
-<div class="js-widget {{widgetId}}" data-template-selector="#tpl-product-selectedFilter">
+<div class="js-widget {{widgetId}} clearfix" data-template-selector="#tpl-product-selectedFilter">
     {{#hasFilter}}
         {{#filters}}
             <ul class="filterChecked">
@@ -13,8 +13,7 @@
             </ul><!--/ выбранные фильтры  -->
         {{/filters}}
 
-
-        <div class="filterChecked_item filterChecked_item-clear">
+        <div class="filterCheckedClear">
             <a class="js-productFilter-clear link" href="#"><span class="text">Очистить все</span></a>
         </div>
     {{/hasFilter}}

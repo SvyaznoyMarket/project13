@@ -44,3 +44,64 @@
 	height: 40px;
 	width: 268px;
 }
+
+.catalogCategories {
+	border-bottom: 1px solid #D8D8D8;
+	
+    padding: 20px 10px;
+
+	&_item {
+		width: 304px;
+		height: 78px;
+
+		border: 1px solid #b8b8b8;
+
+		float: left;
+
+		margin: 0 10px 10px 0;
+
+		.rounded(4px);
+
+		font-size: 16px;
+
+		&:nth-child(3n) {
+			margin-right: 0;
+		}
+	}
+
+	&_img {
+		display: inline-block;
+
+		float: left;
+
+	    margin: 4px 5px 0;
+
+	    vertical-align: middle;
+
+	    width: 70px;
+	}
+
+	&_text {
+		line-height: 1.2;
+
+		display: table-cell;
+		vertical-align: middle;
+
+		background: @tabGrey;
+
+		padding: 0 10px;
+
+		width: 208px;
+		height: 78px;
+
+		.rounded(0 4px 4px 0);
+	}
+
+	&_link {
+		display: block;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}

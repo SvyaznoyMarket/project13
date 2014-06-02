@@ -1,6 +1,91 @@
 /* ==========================================================================
    Каталог .catalogHead .catalogMore
    ========================================================================== */
+
+@media only screen and (max-width: 959px) {
+	.catalogCategories {
+
+		&_item {
+			width: 347px;
+
+			&:nth-child(3n) {
+				margin-right: 10px;
+			}
+
+			&:nth-child(2n) {
+				margin-right: 0;
+			}
+		}
+
+		&_text {
+			width: 247px;
+		}
+	}
+}
+
+@media only screen and (max-width: 727px) {
+	.catalogCategories {
+
+		&_item {
+			width: 100%;
+			height: 63px;
+
+			margin: 0;
+
+			border-bottom: none;
+
+			.rounded(0);
+
+			&:first-child {
+				.rounded (4px 4px 0 0);
+
+				.catalogCategories_img {
+					.rounded (4px 4px 0 0);
+				}
+
+				.catalogCategories_text {
+					.rounded (4px 4px 0 0);
+				}
+			}
+
+			&:last-child {
+				.rounded (0 0 4px 4px);
+
+				border-bottom: 1px solid #b8b8b8;
+
+				.catalogCategories_img {
+					.rounded (0 0 4px 4px);
+				}
+
+				.catalogCategories_text {
+					.rounded (0 0 4px 4px);
+				}
+			}
+		}
+
+		&_link {
+			display: table;
+			width: 100%;
+		}
+
+		&_text {
+		    height: 53px;
+		    width: 89%;
+		}
+
+		&_img {
+			display: table-cell;
+
+			height: 58px;
+			width: auto;
+
+			background: @white;
+
+		    margin: 0;
+		    padding: 2px 5px 3px;
+		}
+	}
+}
    
 @media only screen and (max-width: 700px) {
 	.catalogHead {

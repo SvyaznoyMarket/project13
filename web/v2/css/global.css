@@ -553,6 +553,11 @@ textarea[contenteditable] {
   background: #f79200;
   text-decoration: none;
 }
+.widgetFr {
+  display: inline-block;
+  vertical-align: top;
+  float: right;
+}
 .btnStyleOrange {
   background: #f89b1c;
   -webkit-border-radius: 4px;
@@ -2923,9 +2928,124 @@ body.noScroll {
   height: 40px;
   width: 268px;
 }
+.catalogCategories {
+  border-bottom: 1px solid #D8D8D8;
+  padding: 20px 10px;
+}
+.catalogCategories_item {
+  width: 304px;
+  height: 78px;
+  border: 1px solid #b8b8b8;
+  float: left;
+  margin: 0 10px 10px 0;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.catalogCategories_item:nth-child(3n) {
+  margin-right: 0;
+}
+.catalogCategories_img {
+  display: inline-block;
+  float: left;
+  margin: 4px 5px 0;
+  vertical-align: middle;
+  width: 70px;
+}
+.catalogCategories_text {
+  line-height: 1.2;
+  display: table-cell;
+  vertical-align: middle;
+  background: #f6f6f6;
+  padding: 0 10px;
+  width: 208px;
+  height: 78px;
+  -webkit-border-radius: 0 4px 4px 0;
+  -moz-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+}
+.catalogCategories_link {
+  display: block;
+}
+.catalogCategories_link:hover {
+  text-decoration: none;
+}
 /* ==========================================================================
    Каталог .catalogHead .catalogMore
    ========================================================================== */
+@media only screen and (max-width: 959px) {
+  .catalogCategories_item {
+    width: 347px;
+  }
+  .catalogCategories_item:nth-child(3n) {
+    margin-right: 10px;
+  }
+  .catalogCategories_item:nth-child(2n) {
+    margin-right: 0;
+  }
+  .catalogCategories_text {
+    width: 247px;
+  }
+}
+@media only screen and (max-width: 727px) {
+  .catalogCategories_item {
+    width: 100%;
+    height: 63px;
+    margin: 0;
+    border-bottom: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+  }
+  .catalogCategories_item:first-child {
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+  }
+  .catalogCategories_item:first-child .catalogCategories_img {
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+  }
+  .catalogCategories_item:first-child .catalogCategories_text {
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+  }
+  .catalogCategories_item:last-child {
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+    border-bottom: 1px solid #b8b8b8;
+  }
+  .catalogCategories_item:last-child .catalogCategories_img {
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+  }
+  .catalogCategories_item:last-child .catalogCategories_text {
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+  }
+  .catalogCategories_link {
+    display: table;
+    width: 100%;
+  }
+  .catalogCategories_text {
+    height: 53px;
+    width: 89%;
+  }
+  .catalogCategories_img {
+    display: table-cell;
+    height: 58px;
+    width: auto;
+    background: #ffffff;
+    margin: 0;
+    padding: 2px 5px 3px;
+  }
+}
 @media only screen and (max-width: 700px) {
   .catalogHead {
     margin: 10px 10px 10px 0;
@@ -3106,21 +3226,6 @@ body.noScroll {
   color: #6B6B6B;
   line-height: 27px;
 }
-.filterChecked_item-clear {
-  float: right;
-  padding: 8px 0 0;
-  font-size: 12px;
-  line-height: 1;
-}
-.filterChecked_item-clear .link {
-  display: inline-block;
-  vertical-align: top;
-  padding: 0 0 0 15px;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAYAAAALpr0TAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowMUJGRUFGN0JFNTUxMUUzOUFCREE2NEFFNDZFRTFFNSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowMUJGRUFGOEJFNTUxMUUzOUFCREE2NEFFNDZFRTFFNSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkEyRDBDNzUyQkM2NzExRTM5QUJEQTY0QUU0NkVFMUU1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjAxQkZFQUY2QkU1NTExRTM5QUJEQTY0QUU0NkVFMUU1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+pO2sZQAAAKFJREFUeNpkjjsKAjEQQGeXNHZ6B/HTaq2w4ucMsbLSdrXyEGJlo4cRb6E3sVzfyAwMGniBJI/JK3LOQxGZwE3+Vw+WcCnZpnCF8480gAccoUg2SS/3JhzsfFcBFtCo2NijmNyBlUkzeOpDMsHlNmzgDSN4eUcZmvo2SaUW7GJwCuHeNIYt1CHnK3aDVNl33lx7ln49t0MVmrz5BGsd8hFgAJ3QHizHZcqSAAAAAElFTkSuQmCC) no-repeat 0 2px;
-}
-.filterChecked_item-clear .text {
-  border-bottom: 1px dotted;
-}
 .filterChecked_item-param {
   background: #fcebd1;
   border: 1px solid #f2b586;
@@ -3135,6 +3240,20 @@ body.noScroll {
   font-size: 12px;
   color: #262626;
   padding: 5px 10px 5px 20px;
+}
+.filterCheckedClear {
+  text-align: right;
+  font-size: 12px;
+  line-height: 1;
+}
+.filterCheckedClear .link {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 0 0 15px;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAYAAAALpr0TAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowMUJGRUFGN0JFNTUxMUUzOUFCREE2NEFFNDZFRTFFNSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowMUJGRUFGOEJFNTUxMUUzOUFCREE2NEFFNDZFRTFFNSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkEyRDBDNzUyQkM2NzExRTM5QUJEQTY0QUU0NkVFMUU1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjAxQkZFQUY2QkU1NTExRTM5QUJEQTY0QUU0NkVFMUU1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+pO2sZQAAAKFJREFUeNpkjjsKAjEQQGeXNHZ6B/HTaq2w4ucMsbLSdrXyEGJlo4cRb6E3sVzfyAwMGniBJI/JK3LOQxGZwE3+Vw+WcCnZpnCF8480gAccoUg2SS/3JhzsfFcBFtCo2NijmNyBlUkzeOpDMsHlNmzgDSN4eUcZmvo2SaUW7GJwCuHeNIYt1CHnK3aDVNl33lx7ln49t0MVmrz5BGsd8hFgAJ3QHizHZcqSAAAAAElFTkSuQmCC) no-repeat 0 2px;
+}
+.filterCheckedClear .text {
+  border-bottom: 1px dotted;
 }
 .viewNum {
   vertical-align: top;
@@ -3382,6 +3501,9 @@ body.noScroll {
 .params_cont-open {
   height: auto;
 }
+.params_cont .priceRange {
+  margin: 10px 0 20px;
+}
 .params_foot {
   border-top: 1px solid #c7c7c7;
   padding: 20px 0;
@@ -3429,10 +3551,3 @@ body.noScroll {
 /* ==========================================================================
    Каталог -> блок с параметрами фильтра .params .paramsList
    ========================================================================== */
-@media only screen and (max-width: 600px) {
-  .params_footBtn {
-    float: none;
-    margin-bottom: 20px;
-    margin-left: 0;
-  }
-}
