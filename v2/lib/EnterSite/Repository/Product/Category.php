@@ -60,7 +60,9 @@ class Category {
         if ($item = $coreQuery->getResult()) {
             if ($adminQuery) {
                 try {
-                    $item = array_merge($item, $adminQuery->getResult());
+                    $adminItem = $adminQuery->getResult();
+
+                    $item = array_merge($item, $adminItem ?: []);
                 } catch (\Exception $e) {
                     trigger_error($e, E_USER_ERROR);
                 }
