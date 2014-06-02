@@ -253,7 +253,7 @@ foreach ($productsById as $product) {
 	<? if (!$oneClick && !$onlyPartnersProducts): ?>
 	    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 		<!-- Sale section -->
-		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift(), ">
+		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length == 1 && !/svyaznoy/.test(deliveryBoxes()[0].state) && !$root.lifeGift(), ">
 			<div class="bBuyingLine">
 				<div class="bBuyingLine__eLeft">
 					<h2 class="bBuyingSteps__eTitle">

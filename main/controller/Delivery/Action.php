@@ -346,7 +346,7 @@ class Action {
                         'latitude'   => (float)$shopItem['coord_lat'],
                         'longitude'  => (float)$shopItem['coord_long'],
                         'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
-                        'pointImage' => '/images/marker.png',
+                        'pointImage' => $shopToken == 'shops_svyaznoy' ? '/images/marker-svyaznoy.png' : '/images/marker.png',
                         'buttonName' => isset($responseData['deliveryTypes']['now']['buttonName']) ? $responseData['deliveryTypes']['now']['buttonName'] :
                             (isset($responseData['deliveryTypes']['standart']['buttonName']) ? $responseData['deliveryTypes']['standart']['buttonName'] : ''),
                     ];
