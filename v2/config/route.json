@@ -71,7 +71,11 @@
     },
     "Order\\Quick\\Index": {
         "name": "Оформление заказа в один клик",
-        "pattern": "/order/quick"
+        "pattern": "/orders/one-click/new"
+    },
+    "Order\\Index": {
+        "name": "Оформление заказа",
+        "pattern": "/orders/new"
     },
     "ShopCard\\Get": {
         "name": "Карточка магазина",

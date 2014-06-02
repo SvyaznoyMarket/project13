@@ -15,6 +15,11 @@ class Index {
         LoggerTrait::getLogger insteadof SessionTrait;
     }
 
+    /**
+     * @param Http\Request $request
+     * @return Http\Response
+     * @throws \Exception
+     */
     public function execute(Http\Request $request) {
         $session = $this->getSession();
 
