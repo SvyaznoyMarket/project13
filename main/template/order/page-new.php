@@ -48,6 +48,11 @@ if ($oneClick) {
     $createUrl = $page->url('order.create');
     $deliveryUrl = $page->url('order.delivery');
 }
+
+$onlyPartnersProducts = true;
+foreach ($productsById as $product) {
+    if (count($product->getPartnersOffer()) == 0) $onlyPartnersProducts = false;
+}
 ?>
 
 <!-- Header -->
@@ -245,7 +250,7 @@ if ($oneClick) {
 	</div>
 	<!-- /Delivery boxes --> 
 	
-	<? if (!$oneClick): ?>
+	<? if (!$oneClick && !$onlyPartnersProducts): ?>
 	    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 		<!-- Sale section -->
 		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift(), ">
