@@ -70,7 +70,7 @@
                                 <!-- Купить по полной цене -->
                                 <div class="buyInfoPrice_item">
                                     {{#product.credit}}
-                                    <input class="customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
+                                    <input class="js-creditButton-remove customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
 
                                     <label class="customLabel customLabel-bigRadio" for="buyprice">
                                         {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
@@ -88,7 +88,7 @@
                                 {{#product.credit}}
                                 <!-- Купить в кредит -->
                                 <div class="js-creditPayment buyInfoPrice_item buyInfoPrice_item-credit" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
-                                    <input class="customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
+                                    <input class="js-creditButton customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
 
                                     <label class="{{product.credit.widgetId}} customLabel customLabel-bigRadio" for="creditinput">
                                         <span class="creditPrice">В кредит</span>

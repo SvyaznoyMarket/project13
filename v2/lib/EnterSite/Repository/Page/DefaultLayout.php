@@ -42,8 +42,15 @@ class DefaultLayout {
             'requestId' => $config->requestId,
             'debug'     => $config->debug,
             'env'       => $config->environment,
+            'cookie'     => [
+                'domain'   => $config->session->cookieDomain,
+                'lifetime' => $config->session->cookieLifetime,
+            ],
             'user'      => [
                 'infoUrl'    => $router->getUrlByRoute(new Routing\User\Get()),
+            ],
+            'credit'     => [
+                'cookieName' => $config->credit->cookieName,
             ],
         ]);
 

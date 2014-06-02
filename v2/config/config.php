@@ -19,6 +19,8 @@ return function(\EnterSite\Config\Application $config) {
     $config->region->defaultId = '14974';
     $config->region->cookieName = 'geoshop';
 
+    $config->credit->cookieName = 'credit_on';
+
     $config->coreService->url = 'http://api.enter.ru/';
     $config->coreService->timeout = 5;
     $config->coreService->retryCount = 2;
