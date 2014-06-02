@@ -101,8 +101,8 @@ require(
         'module/cart.common', // кнопка купить, спиннер
         'module/product.catalog.common',
     ],
-    function(require) {
-    }
+    
+    function(require) {}
 );
 
 require(

@@ -70,6 +70,7 @@ class Client {
 
             $headers = [];
             $this->parseResponse($connection, $response, $headers);
+            $query->setHeaders($headers);
 
             curl_close($connection);
 
@@ -153,6 +154,7 @@ class Client {
 
                         $headers = [];
                         $this->parseResponse($connection, $response, $headers);
+                        $this->queries[$queryId]->setHeaders($headers);
 
                         // TODO: отложенный запуск обработчиков
                         $this->queries[$queryId]->callback($response);

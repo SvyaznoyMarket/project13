@@ -43,20 +43,60 @@ class NewAction {
                 }
             });
 
-            // запрашиваем список способов оплаты
-            /** @var $paymentMethods \Model\PaymentMethod\Entity[] */
+            // запрашиваем группы способов оплаты
+            /**
+             * @var $paymentGroups \Model\PaymentMethod\Group\Entity[]
+             * @var $paymentMethods \Model\PaymentMethod\Entity[]
+             */
+            $paymentGroups = [];
             $paymentMethods = [];
-            \RepositoryManager::paymentMethod()->prepareCollection(null, $user->getEntity() ? $user->getEntity()->getIsCorporative() : false, function($data) use (
-                &$paymentMethods,
-                &$user
-            ) {
-                foreach ($data as $item) {
-                    $paymentMethod = new \Model\PaymentMethod\Entity($item);
-                    if ($paymentMethod->getPayOnReceipt() != \Model\PaymentMethod\Entity::TYPE_NOW) continue;
+            \RepositoryManager::paymentGroup()->prepareCollection($region,
+                [
+                    'is_corporative' => $user->getEntity() ? $user->getEntity()->getIsCorporative() : false,
+                ],
+                [],
+                function($data) use (
+                    &$paymentGroups,
+                    &$paymentMethods
+                ) {
+                    if (!isset($data['detail'])) {
+                        return;
+                    }
 
-                    $paymentMethods[] = $paymentMethod;
+                    foreach ($data['detail'] as $group) {
+                        $paymentGroup = new \Model\PaymentMethod\Group\Entity($group);
+                        if (!$paymentGroup->getPaymentMethods()) {
+                            continue;
+                        }
+
+                        // отфильтровываем методы которые нам не подходят
+                        $blockedIds = (array)\App::config()->payment['blockedIds'];
+                        $filteredMethods = array_filter(
+                            $paymentGroup->getPaymentMethods(),
+                            function(\Model\PaymentMethod\Entity $method) use ($blockedIds, $paymentGroup) {
+                                // выкидываем заблокированные методы
+                                if (in_array($method->getId(), $blockedIds)) return;
+
+                                // оставляем только методы оплаты "При получении заказа"
+                                if ($paymentGroup->getId() != \Model\PaymentMethod\Entity::TYPE_NOW) return;
+
+                                return $method;
+                            }
+                        );
+
+                        $paymentGroup->setPaymentMethods($filteredMethods);
+
+                        if (!empty($filteredMethods)) {
+                            $paymentGroups[$paymentGroup->getId()] = $paymentGroup;
+
+                            // заполняем отдельно массив $paymentMethods
+                            foreach ($filteredMethods as $method) {
+                                $paymentMethods[] = $method;
+                            }
+                        }
+                    }
                 }
-            });
+            );
 
             // запрашиваем список станций метро
             /** @var $subways \Model\Subway\Entity[] */
@@ -95,6 +135,7 @@ class NewAction {
             $page->setParam('deliveryData', $deliveryData);
             $page->setParam('productsById', $productsById);
             $page->setParam('paymentMethods', $paymentMethods);
+            $page->setParam('paymentGroups', $paymentGroups);
             $page->setParam('subways', $subways);
             $page->setParam('banks', $banks);
             $page->setParam('creditData', $creditData);

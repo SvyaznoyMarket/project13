@@ -36,13 +36,15 @@ abstract class Query implements \JsonSerializable {
      */
     protected $call = 0;
     /**
+     * Декодированный response
+     *
      * @var mixed
      */
     protected $result;
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $response;
+    /** @var array */
+    protected $headers = [];
     /** @var array */
     protected $info = [];
     /** @var float */
@@ -63,6 +65,7 @@ abstract class Query implements \JsonSerializable {
             'startAt' => $this->startAt,
             'endAt'   => $this->endAt,
             'info'    => $this->info,
+            'header'  => $this->headers,
         ];
         if ($this->error instanceof \Exception) {
             $return['error'] = ['code' => $this->error->getCode(), 'message' => $this->error->getMessage()];
@@ -86,7 +89,7 @@ abstract class Query implements \JsonSerializable {
      */
     final public function getResult() {
         if (0 === $this->call) {
-            throw new \Exception(sprintf('Запрос не подготовлен %s', $this->url));
+            $this->error = new \Exception(sprintf('Запрос не подготовлен %s', $this->url));
         }
         if ($this->error) {
             throw $this->error;
@@ -246,6 +249,20 @@ abstract class Query implements \JsonSerializable {
      */
     public function getAuth() {
         return $this->auth;
+    }
+
+    /**
+     * @param array $headers
+     */
+    public function setHeaders(array $headers) {
+        $this->headers = $headers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders() {
+        return $this->headers;
     }
 
     /**

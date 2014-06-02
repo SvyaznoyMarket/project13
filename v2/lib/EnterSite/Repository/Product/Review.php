@@ -6,6 +6,10 @@ use Enter\Curl\Query;
 use EnterSite\Model;
 
 class Review {
+    /**
+     * @param Query $query
+     * @return Model\Product\Review[]
+     */
     public function getObjectListByQuery(Query $query) {
         $reviews = [];
 

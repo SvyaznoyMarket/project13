@@ -14,25 +14,22 @@ class GetIdPagerByRequestFilter extends Query {
     protected $result;
 
     /**
-     * @param Model\Product\RequestFilter[] $filters
+     * @param array $filterData
      * @param Model\Product\Sorting $sorting
      * @param string|null $regionId
      * @param $offset
      * @param $limit
+     * @param Model\Product\Catalog\Config|null $catalogConfig
      */
-    public function __construct(array $filters, Model\Product\Sorting $sorting = null, $regionId = null, $offset = null, $limit = null) {
-        $filterData = [];
-        foreach ($filters as $key => $filter) {
-            if (isset($filter->value['from']) || isset($filter->value['to'])) {
-                $filterData[] = [$key, 2, isset($filter->value['from']) ? $filter->value['from'] : null, isset($filter->value['to']) ? $filter->value['to'] : null];
-            } else {
-                $filterData[] = [$key, 1, $filter->value];
-            }
-        }
-
-        $sortingData = [];
+    public function __construct(array $filterData, Model\Product\Sorting $sorting = null, $regionId = null, $offset = null, $limit = null, $catalogConfig = null) {
+        $sortingData = []; // TODO: вынести в Repository\Product\Sorting::dumpObjectList
         if ($sorting) {
-            $sortingData = [$sorting->token => $sorting->direction];
+            if (('default' == $sorting->token) && $catalogConfig && (bool)$catalogConfig->sortings) {
+                // специальная сортировка
+                $sortingData = $catalogConfig->sortings;
+            } else {
+                $sortingData = [$sorting->token => $sorting->direction];
+            }
         }
 
         $this->url = new Url();

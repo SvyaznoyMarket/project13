@@ -107,13 +107,36 @@ class OrderAction {
         // подготовка 3-го пакета запросов
 
         // методы оплаты
+        /**
+         * @var $paymentGroups \Model\PaymentMethod\Group\Entity[]
+         * @var $paymentMethodsById \Model\PaymentMethod\Entity[]
+         */
+        $paymentGroups = [];
         $paymentMethodsById = [];
-        \RepositoryManager::paymentMethod()->prepareCollection(
-            $region->getId() == \App::config()->region['defaultId'] ? $region : \RepositoryManager::region()->getDefaultEntity(),
-            false,
-            function($data) use(&$paymentMethodsById) {
-                foreach($data as $item){
-                    $paymentMethodsById[$item['id']] = new \Model\PaymentMethod\Entity($item);
+        \RepositoryManager::paymentGroup()->prepareCollection($region,
+            [
+                'is_corporative' => $user->getEntity() ? $user->getEntity()->getIsCorporative() : false,
+            ],
+            [],
+            function($data) use (
+                &$paymentGroups,
+                &$paymentMethodsById
+            ) {
+                if (!isset($data['detail'])) {
+                    return;
+                }
+
+                foreach ($data['detail'] as $group) {
+                    $paymentGroup = new \Model\PaymentMethod\Group\Entity($group);
+                    if (!$paymentGroup->getPaymentMethods()) continue;
+
+                    $paymentGroups[$paymentGroup->getId()] = $paymentGroup;
+
+                    // заполняем отдельно массив $paymentMethodsById
+                    foreach ($paymentGroup->getPaymentMethods() as $method) {
+                        if (!$method instanceof \Model\PaymentMethod\Entity) continue;
+                        $paymentMethodsById[$method->getId()] = $method;
+                    }
                 }
             }
         );
@@ -149,6 +172,7 @@ class OrderAction {
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('deliveryTypesById', $deliveryTypesById);
         $page->setParam('paymentMethodsById', $paymentMethodsById);
+        $page->setParam('paymentGroups', $paymentGroups);
         $page->setParam('orders', $orders);
         $page->setParam('productsById', $productsById);
         $page->setParam('servicesById', $servicesById);

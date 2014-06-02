@@ -4,15 +4,17 @@ namespace EnterSite\Repository\Page\Cart;
 
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
+use EnterSite\RouterTrait;
 use EnterSite\TranslateHelperTrait;
+use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 use EnterSite\Model\Page\Cart\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, TranslateHelperTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, TranslateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, TranslateHelperTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait, TranslateHelperTrait;
     }
 
     /**
@@ -23,6 +25,7 @@ class Index {
         (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
 
         $config = $this->getConfig();
+        $router = $this->getRouter();
 
         $productCardRepository = new Repository\Partial\Cart\ProductCard();
         $productSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
@@ -37,6 +40,7 @@ class Index {
         } else {
             $page->content->cart = false;
         }
+        $page->content->orderUrl = $router->getUrlByRoute(new Routing\Order\Index());
 
         foreach (array_reverse($request->cartProducts) as $cartProduct) {
             $product = isset($request->productsById[$cartProduct->id]) ? $request->productsById[$cartProduct->id] : null;
@@ -57,16 +61,16 @@ class Index {
         // шаблоны mustache
         foreach ([
             [
-            'id'   => 'tpl-cart-productSum',
-            'name' => 'partial/cart/productSum',
+                'id'   => 'tpl-cart-productSum',
+                'name' => 'partial/cart/productSum',
             ],
             [
-            'id'   => 'tpl-cart-total',
-            'name' => 'partial/cart/total',
+                'id'   => 'tpl-cart-total',
+                'name' => 'partial/cart/total',
             ],
             [
-            'id'   => 'tpl-cart-bar',
-            'name' => 'partial/cart/bar',
+                'id'   => 'tpl-cart-bar',
+                'name' => 'partial/cart/bar',
             ],
         ] as $templateItem) {
             try {

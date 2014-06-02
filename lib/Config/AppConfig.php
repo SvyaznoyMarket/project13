@@ -229,6 +229,7 @@ class AppConfig {
         ],
         'RuTarget' => [
             'enabled' => null,
+            'containerId' => null,
         ],
         'TagMan' => [
 
@@ -517,6 +518,9 @@ class AppConfig {
      */
     public $enterprize = [
         'enabled' => null,
+        'formDataSessionKey' => null,
+        'itemsInSlider' => null,
+        'showSlider' => null,
     ];
 
     /** @var array */
@@ -541,6 +545,14 @@ class AppConfig {
 
     /** @var boolean */
     public $preview = null;
+
+    /** @var array */
+    public $svyaznoyClub = [
+        'cookieLifetime' => null,
+        'userTicket' => [
+            'cookieName' => null,
+        ]
+    ];
 
     public function __construct() {
         //$this->vkontakteOauth = new OAuth\VkontakteConfig();

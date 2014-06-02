@@ -22,17 +22,31 @@ class Category {
     }
 
     /**
+     * Преобразовывает древовидную структуру данных в линейную
+     * и возвращает список категорий от верхнего уровня до нижнего (branch)
+     *
      * @param \Enter\Curl\Query $query
-     * @return Model\Product\Category
+     * @return Model\Product\Category[]
      */
-    public function getAncestryObjectByQuery(Query $query) {
-        $category = null;
+    public function getAscendantListByQuery(Query $query) {
+        $categories = [];
+
+        $walk = function(array $item) use (&$walk, &$categories) {
+            $childItem = isset($item['children'][0]['id']) ? $item['children'][0] : null;
+            // удаляем children, т.к. он не загружен полностью - в нем только один элемент
+            if (isset($item['children'])) unset($item['children']);
+            $categories[] = new Model\Product\Category($item);
+
+            if ($childItem) {
+                $walk($childItem);
+            }
+        };
 
         if ($item = $query->getResult()) {
-            $category = new Model\Product\Category($item);
+            $walk($item);
         }
 
-        return $category;
+        return $categories;
     }
 
     /**

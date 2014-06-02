@@ -7,7 +7,7 @@ use EnterSite\Curl\Query\CoreQueryTrait;
 use EnterSite\Curl\Query\Url;
 use EnterSite\Model;
 
-class GetAncestryItemByCategoryObject extends Query {
+class GetAscendantItemByCategoryObject extends Query {
     use CoreQueryTrait;
 
     /** @var array|null */

@@ -37,15 +37,13 @@ class Action {
             }
             */
 
-            $client->addQuery('subscribe/create', $params, [], function($data) {}, function(\Exception $e) {
-                \App::logger()->error($e);
-                \App::exception()->remove($e);
-            });
-            $client->execute(\App::config()->coreV2['retryTimeout']['huge']);
-    
+            $result = $client->query('subscribe/create', $params, []);
+
             $responseData = ['success' => true];
         } catch (\Exception $e) {
             \App::logger()->error($e);
+            \App::exception()->remove($e);
+
             $responseData = ['success' => false];
         }
 

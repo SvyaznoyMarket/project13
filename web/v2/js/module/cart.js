@@ -10,8 +10,8 @@ define(
             getCreditPayment = function() {
                 // direct-credit
                 $creditPayment = $('.js-creditPayment');
-                console.info('creditPayment', $creditPayment);
                 var dataValue = $creditPayment.data('value');
+                console.info('creditPayment', $creditPayment, dataValue);
                 _.isObject(dataValue) && require(['module/direct-credit', 'direct-credit'], function(directCredit) {
                     dataValue.product.quantity = 1;
 

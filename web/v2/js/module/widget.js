@@ -30,7 +30,7 @@ define(
             renderWidget = function(e, templateData) {
                 e.stopPropagation();
 
-                var $el = $(e.currentTarget),
+                var $el = $(e.target),
                     $template = $($el.data('templateSelector'));
 
                 console.info('render', $template, $el, templateData);

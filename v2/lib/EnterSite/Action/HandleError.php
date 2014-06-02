@@ -6,16 +6,13 @@ use Enter\Http;
 
 class HandleError {
     /**
-     * @param Http\Response|null $response
+     * @param $error
      */
-    public function execute(Http\Response &$response = null) {
-        set_error_handler(function($code, $message, $file, $line) use (&$response) {
+    public function execute(&$error) {
+        set_error_handler(function($code, $message, $file, $line) use (&$error) {
             switch ($code) {
                 case E_USER_ERROR:
-                    if ($response instanceof Http\Response) {
-                        $response->statusCode = Http\Response::STATUS_INTERNAL_SERVER_ERROR;
-                    }
-
+                    $error = new \ErrorException($message, 0, $code, $file, $line);
                     return true;
 
                 case E_WARNING:

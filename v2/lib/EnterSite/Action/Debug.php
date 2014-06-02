@@ -33,6 +33,8 @@ class Debug {
         // request id
         $page->requestId = $config->requestId;
 
+        $page->path = $request ? ltrim($request->getPathInfo(), '/') : null;
+
         // error
         if ($error = error_get_last()) {
             $page->error = new Page\Error($error);
@@ -68,8 +70,8 @@ class Debug {
 
                 $query = new Page\Query();
 
-                $query->url = (string)$curlQuery->getUrl();
-                $query->path = parse_url((string)$curlQuery->getUrl(), PHP_URL_PATH);
+                $query->url = urldecode((string)$curlQuery->getUrl());
+                $query->path = ltrim(parse_url((string)$curlQuery->getUrl(), PHP_URL_PATH), '/');
                 $query->call = $curlQuery->getCall();
                 $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;
 

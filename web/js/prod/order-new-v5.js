@@ -1351,6 +1351,16 @@
 			self.choosenDate(data);
 		};
 
+		DeliveryBox.prototype._hasDateInAllDatesForBlock = function( date ) {
+			for (var i = 0; i < this.allDatesForBlock().length; i++) {
+				if (this.allDatesForBlock()[i].value === date.value) {
+					return true
+				}
+			}
+
+			return false;
+		};
+
 		/**
 		 * Получение общей ближайшей даты доставки
 		 * Заполнение массива общих дат
@@ -1374,6 +1384,7 @@
 				chooseDate = null,
 
 				len,
+				j,
 				i;
 			// end of vars
             if (!self.products.length) {
@@ -1391,7 +1402,7 @@
 			for ( i = 0, len = nowProductDates.length; i < len; i++ ) {
 				nowTS = nowProductDates[i].value;
 
-				if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS ) {
+				if ( self._hasDateInAllProducts(nowTS) && nowTS >= todayTS && !self._hasDateInAllDatesForBlock(nowProductDates[i]) ) {
 					nowProductDates[i].avalible = true;
 					nowProductDates[i].humanDayOfWeek = self._getNameDayOfWeek(nowProductDates[i].dayOfWeek);
 
@@ -1452,6 +1463,10 @@
 				dateFromCookie = window.docCookies.getItem('chDate_paypalECS');
 				chooseDate = JSON.parse(dateFromCookie);
 			}
+			// else if ( self.choosenDate() && self.choosenDate().avalible ) {
+			// 	console.warn('======= self.choosenDate() уже была =========');
+			// 	chooseDate = self.choosenDate();
+			// }
 			else {
 				chooseDate = self.getFirstAvalibleDate();
 			}
@@ -1507,7 +1522,7 @@
 		 */
 		DeliveryBox.prototype.makeCalendar = function() {
 			console.groupCollapsed('Создание календаря, округление до целых недель');
-
+			console.log(this);
 			var
 				self = this,
 				addCountDays = 0,
@@ -1519,12 +1534,15 @@
 
 				i, j, k;
 			// end of vars
-			
+
+			console.info(self.allDatesForBlock());
+
 			/**
 			 * Проверка дат на разрывы  в числах
 			 * Если меются разрывы в числах - заполнить пробелы датами
 			 */
-			for ( k = 0; k <= self.allDatesForBlock().length - 1; k++ ) {
+			for ( k = 0; k < self.allDatesForBlock().length; k++ ) {
+				console.log('k',k);
 				if ( self.allDatesForBlock()[k + 1] === undefined ) {
 					console.info('Следущая дата последняя. заканчиваем цикл');
 					
@@ -1539,7 +1557,14 @@
 				tmpVal = self.allDatesForBlock()[k].value + ONE_DAY;
 				tmpDate = new Date(tmpVal);
 
+				if (tmpVal > self.allDatesForBlock()[k + 1].value) {
+					console.warn('однозначная ошибка, следующая дата меньше текущей');
+					break;
+				}
+
 				if ( tmpVal !== self.allDatesForBlock()[k + 1].value ) {
+					console.info('следующая дата', self.allDatesForBlock()[k + 1].value);
+					console.info('текущая дата', tmpVal, tmpDate);
 					tmpDay = {
 						value: tmpVal,
 						avalible: false,
@@ -1566,6 +1591,8 @@
 				addCountDays = ( self.allDatesForBlock()[0].dayOfWeek === 0 ) ? 6 : self.allDatesForBlock()[0].dayOfWeek - 1;
 				tmpVal = self.allDatesForBlock()[0].value;
 
+				console.info('добавляем в начало', addCountDays);
+
 				for ( i = addCountDays; i > 0; i-- ) {
 					tmpVal -= ONE_DAY;
 					tmpDate = new Date(tmpVal);
@@ -1589,6 +1616,8 @@
 			if ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek !== 0 ) {
 				addCountDays = 7 - self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek;
 				tmpVal = self.allDatesForBlock()[self.allDatesForBlock().length - 1].value;
+
+				console.info('добавляем в конец', addCountDays);
 
 				for ( j = addCountDays; j > 0; j-- ) {
 					// dayOfWeek = ( self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1 === 7 ) ? 0 : self.allDatesForBlock()[self.allDatesForBlock().length - 1].dayOfWeek + 1;
@@ -2766,7 +2795,8 @@
 			isUnique = null,
 			nowProductsToNewBox = [],
             oldDeliveryBoxes = [],
-			discounts = ENTER.OrderModel.orderDictionary.orderData.discounts || [];
+			discounts = ENTER.OrderModel.orderDictionary.orderData.discounts || [],
+			deliveryBoxFound;
 		// end of vars
 		
 		if ( ENTER.OrderModel.paypalECS() ) {
@@ -2874,10 +2904,20 @@
 
         for ( var a in oldDeliveryBoxes ) {
             if (ENTER.OrderModel.hasDeliveryBox(oldDeliveryBoxes[a].token)) {
+            	deliveryBoxFound = ENTER.OrderModel.getDeliveryBoxByToken(oldDeliveryBoxes[a].token);
+
                 console.log('[Deliverybox] Обнаружен старый блок доставки: ', oldDeliveryBoxes[a].token, ' c выбранной датой ', oldDeliveryBoxes[a].choosenDate);
                 console.info('[Deliverybox] Применяю старую дату на блок ', oldDeliveryBoxes[a].token);
-                ENTER.OrderModel.getDeliveryBoxByToken(oldDeliveryBoxes[a].token).choosenDate(oldDeliveryBoxes[a].choosenDate);
-                console.log('[Deliverybox] Дата на новом блоке ', oldDeliveryBoxes[a].token, ': ', ENTER.OrderModel.getDeliveryBoxByToken(oldDeliveryBoxes[a].token).choosenDate());
+
+                console.warn(oldDeliveryBoxes[a].allDatesForBlock);
+                console.warn(oldDeliveryBoxes[a].allDatesForBlock.length);
+
+                deliveryBoxFound.choosenDate(oldDeliveryBoxes[a].choosenDate);
+                deliveryBoxFound.allDatesForBlock.removeAll();
+                deliveryBoxFound.allDatesForBlock(oldDeliveryBoxes[a].allDatesForBlock);
+
+                console.log(deliveryBoxFound.allDatesForBlock());
+                console.log(deliveryBoxFound.allDatesForBlock().length);
             }
         }
 
@@ -3388,6 +3428,8 @@
 					return ENTER.OrderModel.deliveryBoxes()[i];
 				}
 			}
+
+			return false;
 		},
 
 		/**

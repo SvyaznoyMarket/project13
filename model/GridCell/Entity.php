@@ -8,6 +8,8 @@ class Entity {
 
     /** @var int */
     private $id;
+    /** @var string */
+    private $ui;
     /** @var int */
     private $column;
     /** @var int */
@@ -21,12 +23,16 @@ class Entity {
     /** @var array */
     private $content = [];
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data = []) {
         if (array_key_exists('col', $data)) $this->setColumn($data['col']);
         if (array_key_exists('row', $data)) $this->setRow($data['row']);
         if (array_key_exists('size_x', $data)) $this->setSizeX($data['size_x']);
         if (array_key_exists('size_y', $data)) $this->setSizeY($data['size_y']);
         if (isset($data['meta']['id'])) $this->setId($data['meta']['id']);
+        if (isset($data['meta']['ui'])) $this->setUi($data['meta']['ui']);
         if (isset($data['meta']['type'])) $this->setType($data['meta']['type']);
         if (array_key_exists('meta', $data) && is_array($data['meta'])) $this->setContent($data['meta']);
     }
@@ -127,5 +133,19 @@ class Entity {
      */
     public function getContent() {
         return $this->content;
+    }
+
+    /**
+     * @param string $ui
+     */
+    public function setUi($ui) {
+        $this->ui = (string)$ui;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUi() {
+        return $this->ui;
     }
 }

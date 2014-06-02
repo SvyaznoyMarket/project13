@@ -96,12 +96,11 @@ class ProductCard {
             $curl->prepare($ratingListQuery);
         }
 
+        // TODO: загрузка предков категории как в каталоге
+
         // запрос настроек каталога
-        $catalogConfigQuery = null;
-        if ($product->category) {
-            $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge((bool)$product->category->ascendants ? $product->category->ascendants : [], [$product->category]), $product);
-            $curl->prepare($catalogConfigQuery);
-        }
+        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($product->category ? $product->category->ascendants : [], [$product->category]), $product);
+        $curl->prepare($catalogConfigQuery);
 
         $curl->execute(1, 2);
 

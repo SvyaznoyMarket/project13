@@ -65,7 +65,8 @@ class Client {
             if (null === $response) {
                 throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($data)));
             }
-            $header = $this->header($response, true);
+            $header = [];
+            $this->parseResponse($connection, $response, $header);
 
             $decodedResponse = $this->decode($response);
             curl_close($connection);
@@ -207,7 +208,8 @@ class Client {
                         }
 
                         $content = curl_multi_getcontent($handler);
-                        $header = $this->header($content, true);
+                        $header = [];
+                        $this->parseResponse($handler, $content, $header);
 
                         if (null === $content) {
                             throw new \RuntimeException(sprintf('Пустой ответ от %s %s', $info['url'], http_build_query($this->queries[$this->queryIndex[(string)$handler]]['query']['data'])));
@@ -382,6 +384,7 @@ class Client {
         }
 
         if ((bool)$data) {
+            curl_setopt($connection, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
             curl_setopt($connection, CURLOPT_POST, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data));
         }
@@ -393,32 +396,27 @@ class Client {
         return $connection;
     }
 
-
-
     /**
-     * @param string $plainResponse Ответ с заголовком (header) и телом (body)
-     * @param bool   $isUpdateResponse Нужно ли вырезать из ответа заголовок (header), если true, то в $plainResponse по окончании работы будет содержаться тело (body)
-     * @return array
-     * @throws \RuntimeException
+     * @param $connection
+     * @param $response
+     * @param null $headers
      */
-    private function header(&$plainResponse, $isUpdateResponse = true) {
-        $header = [];
-        $response = explode("\r\n\r\n", $plainResponse, 2);
-        if ($isUpdateResponse) $plainResponse = isset($response[1]) ? $response[1] : null;
+    private function parseResponse($connection, &$response, &$headers = null) {
+        $size = curl_getinfo($connection, CURLINFO_HEADER_SIZE);
 
-        $plainHeader = explode("\r\n", $response[0]);
-        foreach ($plainHeader as $line) {
-            $pos = strpos($line, ':');
-            if ($pos) {
-                $key = substr($line, 0, $pos);
-                $value = trim(substr($line, $pos + 1));
-                $header[$key] = $value;
-            } else {
-                $header[] = $line;
+        if (is_array($headers)) {
+            foreach (explode("\r\n", mb_substr($response, 0, $size)) as $line) {
+                if ($pos = strpos($line, ':')) {
+                    $key = substr($line, 0, $pos);
+                    $value = trim(substr($line, $pos + 1));
+                    $headers[$key] = $value;
+                } else {
+                    $headers[] = $line;
+                }
             }
         }
 
-        return $header;
+        $response = mb_substr($response, $size);
     }
 
     /**

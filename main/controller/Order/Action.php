@@ -17,6 +17,9 @@ class Action {
         \App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $user = \App::user();
+        $userEntity = $user->getEntity();
+        $client = \App::coreClientPrivate();
+        $helper = new \Helper\TemplateHelper();
 
         $form = $this->getForm(); // подключаем данные формы, чтобы знать данные покупателя
 
@@ -79,6 +82,7 @@ class Action {
             throw new \Exception(sprintf('Не найден метод оплаты для заказа #%s', $order->getId()));
         }
 
+        $cookie = null;
         $paymentProvider = null;
         $creditData = [];
         if (1 == count($orders)) {
@@ -141,6 +145,73 @@ class Action {
                 }
 
             }
+
+            // PaymentConfig
+            $paymentForm = null;
+            if (in_array($paymentMethod->getId(), [5, 8, 14])) {
+                try {
+                    $result = [];
+                    $client->addQuery('site-integration/payment-config',
+                        [
+                            'method_id' => $paymentMethod->getId(),
+                            'order_id'  => $order->getId(),
+                        ],
+                        [
+                            'back_ref'    => $helper->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true),// обратная ссылка
+                            'email'       => $userEntity ? $userEntity->getEmail() : null,
+                            'card_number' => $userEntity ? $userEntity->getSclubCardnumber() : null,// карта лояльности
+                            'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
+                        ],
+                        function($data) use (&$result) {
+                            if ((bool)$data) {
+                                $result = $data;
+                            }
+                        },
+                        function(\Exception $e) {
+                            \App::exception()->remove($e);
+                        }
+                    );
+                    $client->execute(\App::config()->corePrivate['retryTimeout']['default'], \App::config()->corePrivate['retryCount']);
+
+                    if (!$result || empty($result) || !is_array($result) || !isset($result['detail'])) {
+                        throw new \Exception(sprintf('Не получены payment конфигурация для метода method_id=%s, заказ id=%s', $paymentMethod->getId(), $order->getId()));
+                    }
+
+                    // онлайн оплата через psb
+                    if (5 == $paymentMethod->getId()) {
+                        $paymentForm = new \Payment\Psb\Form();
+                        $paymentForm->fromArray($result['detail']);
+
+                    // онлайн оплата через psb invoice
+                    } else if (8 == $paymentMethod->getId()) {
+                        $paymentForm = new \Payment\PsbInvoice\Form();
+                        $paymentForm->fromArray($result['detail']);
+
+                    // оплаты баллами Связного-Клуба
+                    } else if (14 == $paymentMethod->getId()) {
+                        $paymentForm = new \Payment\SvyaznoyClub\Form();
+                        $paymentForm->fromArray($result['detail']);
+                        $paymentProvider = new \Payment\SvyaznoyClub\Provider($paymentForm);
+
+                        // если пришел UserTicket, то пишем в куку
+                        if ($paymentForm->getUserTicket()) {
+                            $cookie = new \Http\Cookie(
+                                \App::config()->svyaznoyClub['userTicket']['cookieName'],
+                                $paymentForm->getUserTicket(), time() + \App::config()->svyaznoyClub['cookieLifetime'], '/', null, false, true
+                            );
+                        }
+                    }
+
+                    // перезаписываем PayUrl значением пришедшим с ядра
+                    if ($paymentProvider instanceof \Payment\ProviderInterface && !empty($result['url'])) {
+                        $paymentProvider->setPayUrl($result['url']);
+                    }
+
+                } catch (\Exception $e) {
+                    \App::logger()->error($e);
+                    \App::exception()->remove($e);
+                }
+            }
         }
 
         $paymentUrl = $order->getPaymentUrl(); // раньше было: $paymentUrl = \App::session()->get('paymentUrl');
@@ -153,6 +224,7 @@ class Action {
         $page->setParam('servicesById', $servicesById);
         $page->setParam('paymentMethod', $paymentMethod);
         $page->setParam('paymentProvider', $paymentProvider);
+        $page->setParam('paymentForm', $paymentForm);
         $page->setParam('creditData', $creditData);
         $page->setParam('paymentUrl', $paymentUrl);
         $page->setParam('paymentPageType', 'complete');
@@ -161,7 +233,13 @@ class Action {
             $page->setParam('isOrderAnalytics', false);
         }
 
-        return new \Http\Response($page->show());
+        $response = new \Http\Response($page->show());
+
+        if ($cookie) {
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
     }
 
     /**
@@ -746,7 +824,7 @@ class Action {
                 }
 
                 // дополнительные гарантии для товара
-                $warrantyTotal = 0; $warrantyQuan = 0; 
+                $warrantyTotal = 0; $warrantyQuan = 0;
                 if ($cartItem instanceof \Model\Cart\Product\Entity) {
                     /** @var $product \Model\Product\CartEntity */
                     $product = $productsById[$cartItem->getId()];

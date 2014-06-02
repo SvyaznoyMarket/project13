@@ -2,7 +2,7 @@
 
 namespace EnterSite\Routing\User\Cart\Product; // FIXME: изменить namespace на EnterSite\Routing\Cart
 
-use Enter\Routing\Route;
+use EnterSite\Routing\Route;
 
 class Delete extends Route {
     public function __construct() {

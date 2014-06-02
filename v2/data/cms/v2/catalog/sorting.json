@@ -1,0 +1,22 @@
+{
+    "default-desc": {
+        "token": "default",
+        "name": "Автоматически",
+        "direction": "desc"
+    },
+    "hits-desc": {
+        "token": "hits",
+        "name": "Хиты продаж",
+        "direction": "desc"
+    },
+    "price-asc": {
+        "token": "price",
+        "name": "По цене &#8595;",
+        "direction": "asc"
+    },
+    "price-desc": {
+        "token": "price",
+        "name": "По цене &#8593;",
+        "direction": "desc"
+    }
+}

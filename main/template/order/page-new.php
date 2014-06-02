@@ -6,6 +6,7 @@
  * @var $deliveryData   array
  * @var $productsById   \Model\Product\Entity[]
  * @var $paymentMethods \Model\PaymentMethod\Entity[]
+ * @var $paymentGroups \Model\PaymentMethod\Group\Entity[]
  * @var $subways        \Model\Subway\Entity[]
  * @var $banks          \Model\CreditBank\Entity[]
  * @var $creditData     array
@@ -405,7 +406,7 @@ if ($oneClick) {
 					<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
 						<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
 						<div class="bBuyingLine__eRight mSClub">
-							<input id="sclub-number" type="text" class="bBuyingLine__eText" placeholder="2 98хххх ххххxx" name="order[sclub_card_number]" />
+							<input id="sclub-number" type="text" class="bBuyingLine__eText" placeholder="2 98хххх ххххxx" name="order[sclub_card_number]"<? if ($user->getEntity()): ?> value="<?= $user->getEntity()->getSclubCardnumber() ?>"<? endif ?>/>
 							<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
 						</div>
 					</div>
@@ -491,11 +492,35 @@ if ($oneClick) {
 						<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
 					</div>
 
-					<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
-						<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
+					<label class="bBuyingLine__eLeft">Карта программы лояльности</label>
+
+					<div class="bBuyingLine__eRight">
+						<ul class="bSaleList bInputList clearfix">
+							<li class="bSaleList__eItem">
+								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon1" name="add_cupon" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon1">Связной-клуб</label>
+							</li>
+
+							<li class="bSaleList__eItem">
+								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon2" name="add_cupon" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon2">Польза</label>
+							</li>
+
+							<li class="bSaleList__eItem">
+								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon3" name="add_cupon" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon3">Homecredit</label>
+							</li>
+
+							<li class="bSaleList__eItem">
+								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon4" name="add_cupon" />
+								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon4">Какая-то карта</label>
+							</li>
+						</ul>
+
 						<div class="bBuyingLine__eRight mSClub">
-							<input id="sclub-number" type="text" placeholder="2 98хххх ххххxx" class="bBuyingLine__eText" name="order[sclub_card_number]" />
-							<div class="bText">Получайте от 1% плюсами на Вашу карту<br/> &laquo;Связной-Клуб&raquo;. Для этого введите номер карты,<br/> расположенный на обороте, под штрихкодом.</div>
+                            <label class="bPlaceholder">Номер</label>
+							<input id="sclub-number" type="text" placeholder="2 98хххх ххххxx" class="bBuyingLine__eText" name="order[sclub_card_number]"<? if ($user->getEntity()): ?> value="<?= $user->getEntity()->getSclubCardnumber() ?>"<? endif ?> />
+							<div class="bText">Вы получите от 1% плюсами на карту<br/> &laquo;Связной-Клуб&raquo;. Номер карты указан<br/> на обороте под штрихкодом.</div>
 						</div>
 					</div>
 				<? endif ?>
@@ -527,7 +552,12 @@ if ($oneClick) {
                 <div class="bBuyingLine clearfix mPayMethods" data-bind="css: { hidden: paypalECS }">
                     <div class="bBuyingLine__eLeft"></div>
                     <div class="bBuyingLine__eRight bInputList">
-                        <?= $helper->render('order/newForm/__paymentMethod', ['form' => $form, 'paymentMethods' => $paymentMethods, 'banks' => $banks, 'creditData' => $creditData]) ?>
+                        <?= $helper->render('order/newForm/__paymentGroup', [
+                            'form' => $form,
+                            'paymentGroups' => $paymentGroups,
+                            'banks'         => $banks,
+                            'creditData'    => $creditData
+                        ]) // методы оплаты ?>
                     </div>
                 </div>
 			<? endif ?>

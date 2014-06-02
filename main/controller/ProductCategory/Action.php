@@ -124,9 +124,18 @@ class Action {
                     $products[] = new \Model\Product\Entity($item);
                 }
             });
+        }
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $scoreData = [];
-            \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+        $scoreData = [];
+        if ((bool)$products) {
+            $productUIs = [];
+            foreach ($products as $product) {
+                if (!$product instanceof \Model\Product\BasicEntity) continue;
+                $productUIs[] = $product->getUi();
+            }
+
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
                 if (isset($data['product_scores'][0])) {
                     $scoreData = $data;
                 }
@@ -571,6 +580,7 @@ class Action {
             if ($show && !empty($promoCategoryToken)) {
                 try {
                     $promoRepository = \RepositoryManager::promo();
+                    /** @var $promo \Model\Promo\Entity */
                     $promo = null;
 
                     $promoRepository->prepareEntityByToken($promoCategoryToken, function($data) use (&$promo, &$promoCategoryToken) {
@@ -584,7 +594,24 @@ class Action {
                     if (!$promo) {
                         throw new \Exception\NotFoundException(sprintf('Промо-каталог @%s не найден.', $promoCategoryToken));
                     }
-                    /** @var $promo \Model\Promo\Entity */
+
+                    $products = [];
+                    $productsIds = [];
+                    // перевариваем данные изображений
+                    // используя айдишники товаров из секции image.products, получим мини-карточки товаров
+                    foreach ($promo->getImage() as $image) {
+                        $productsIds = array_merge($productsIds, $image->getProducts());
+                    }
+                    $productsIds = array_unique($productsIds);
+                    if (count($productsIds) > 0) {
+                        \RepositoryManager::product()->prepareCollectionById($productsIds, $region, function ($data) use (&$products) {
+                            foreach ($data as $item) {
+                                if (!isset($item['id'])) continue;
+                                $products[ $item['id'] ] = new \Model\Product\Entity($item);
+                            }
+                        });
+                        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+                    }
 
                     // перевариваем данные изображений для слайдера в $slideData
                     foreach ($promo->getImage() as $image) {
@@ -892,9 +919,18 @@ class Action {
                         $products[] = new \Model\Product\Entity($item);
                     }
                 });
+            }
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                $scoreData = [];
-                \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+            $scoreData = [];
+            if ((bool)$products) {
+                $productUIs = [];
+                foreach ($products as $product) {
+                    if (!$product instanceof \Model\Product\BasicEntity) continue;
+                    $productUIs[] = $product->getUi();
+                }
+
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
                     if (isset($data['product_scores'][0])) {
                         $scoreData = $data;
                     }
@@ -980,9 +1016,18 @@ class Action {
                         $products[] = new \Model\Product\Entity($item);
                     }
                 });
+            }
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-                $scoreData = [];
-                \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use (&$scoreData) {
+            $scoreData = [];
+            if ((bool)$products) {
+                $productUIs = [];
+                foreach ($products as $product) {
+                    if (!$product instanceof \Model\Product\BasicEntity) continue;
+                    $productUIs[] = $product->getUi();
+                }
+
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
                     if (isset($data['product_scores'][0])) {
                         $scoreData = $data;
                     }

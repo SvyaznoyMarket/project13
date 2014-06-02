@@ -26,7 +26,7 @@ $c->authToken['authorized_cookie'] = '_authorized';
 $c->sessionToken = 'enter';
 
 $c->session['name']            = 'enter';
-$c->session['cookie_lifetime'] = 15552000;
+$c->session['cookie_lifetime'] = 259200; //15552000;
 $c->session['cookie_domain'] = '.enter.ru';
 
 $c->cacheCookieName = 'enter_auth';
@@ -174,6 +174,7 @@ $c->partners['Сpaexchange']['enabled'] = true;
 $c->partners['Admitad']['enabled'] = false;
 $c->partners['Revolvermarketing']['enabled'] = true;
 $c->partners['RuTarget']['enabled'] = true;
+$c->partners['RuTarget']['containerId'] = 'GTM-4SJX';
 $c->partners['Lamoda']['enabled'] = true;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
@@ -399,6 +400,8 @@ $c->lifeGift['deliveryTypeId'] = 1077;
 
 $c->enterprize['enabled'] = true;
 $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
+$c->enterprize['itemsInSlider'] = 7;
+$c->enterprize['showSlider'] = true;
 
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
@@ -426,5 +429,8 @@ $c->abtest['test']       = [
 ];
 
 $c->preview = false;
+
+$c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
+$c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 
 return $c;

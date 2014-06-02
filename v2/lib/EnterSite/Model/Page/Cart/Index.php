@@ -24,6 +24,8 @@ namespace EnterSite\Model\Page\Cart\Index {
         public $productBlock;
         /** @var Partial\Cart */
         public $cart;
+        /** @var string */
+        public $orderUrl;
 
         public function __construct() {
             parent::__construct();

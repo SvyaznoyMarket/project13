@@ -12,23 +12,35 @@ define(
         ;
 
         $document.ajaxComplete(function(e, xhr, options) {
-            var response = JSON.parse(xhr.responseText),
-                $template = $('#tpl-debug-container').html()
-            ;
 
-            if (response && response.debug) {
-                var $widget = $(mustache.render($template, response.debug));
-                $widget.appendTo($debug);
-                if ($debug.data('opened')) {
-                    $widget.slideDown(200);
+            try {
+                var response = JSON.parse(xhr.responseText),
+                    $template = $('#tpl-debug-container').html()
+                    ;
+
+                if (response && response.debug) {
+                    var templateData = response.debug || {}
+
+                    ;
+
+                    templateData.status = 200 === xhr.status ? false : { code: xhr.status, text: xhr.statusText };
+
+                    var $widget = $(mustache.render($template, templateData));
+
+                    $widget.appendTo($debug);
+                    if ($debug.data('opened')) {
+                        $widget.slideDown(200);
+                    }
                 }
+            } catch (error) {
+                console.error(error);
             }
         });
 
         $('.js-debug-link').on('click', function(e) {
             e.stopPropagation();
 
-            var $el = $(e.currentTarget)
+            var $el = $(e.target)
             ;
 
             $debug.data('opened', true);
@@ -41,7 +53,7 @@ define(
         $body.on('click', '.js-debug-container-link', function(e) {
             e.stopPropagation();
 
-            var $el = $(e.currentTarget);
+            var $el = $(e.target);
 
             $el.blur();
 

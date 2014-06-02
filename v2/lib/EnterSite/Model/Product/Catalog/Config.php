@@ -2,29 +2,36 @@
 
 namespace EnterSite\Model\Product\Catalog {
     use EnterSite\Model\ImportArrayConstructorTrait;
-    use EnterSite\Model\Product\Catalog\Config\BannerPlaceholder;
-    use EnterSite\Model\Product\Catalog\Config\PromoStyle;
 
     class Config {
         use ImportArrayConstructorTrait;
 
-        /** @var BannerPlaceholder */
+        /** @var Config\BannerPlaceholder */
         public $bannerPlaceholder;
-        /** @var PromoStyle */
+        /** @var Config\PromoStyle */
         public $promoStyle;
         /** @var string */
         public $listingStyle;
         /** @var array */
         public $accessoryCategoryTokens = [];
+        /** @var array */
+        public $sortings = [];
 
         public function import(array $data) {
-            if (isset($data['bannerPlaceholder']) && is_array($data['bannerPlaceholder'])) $this->bannerPlaceholder = new BannerPlaceholder($data['bannerPlaceholder']);
-            if (isset($data['promo_style']) && is_array($data['promo_style'])) $this->promoStyle = new PromoStyle($data['promo_style']);
+            if (isset($data['bannerPlaceholder']) && is_array($data['bannerPlaceholder'])) $this->bannerPlaceholder = new Config\BannerPlaceholder($data['bannerPlaceholder']);
+            if (isset($data['promo_style']) && is_array($data['promo_style'])) $this->promoStyle = new Config\PromoStyle($data['promo_style']);
             if (isset($data['listing_style'])) $this->listingStyle = (string)$data['listing_style'];
             if (isset($data['accessory_category_token'][0])) {
                 foreach (array_unique($data['accessory_category_token']) as $accessoryCategoryToken) {
                     if (!is_scalar($accessoryCategoryToken)) continue;
                     $this->accessoryCategoryTokens[] = trim((string)$accessoryCategoryToken);
+                }
+            }
+            if (isset($data['sort']) && is_array($data['sort'])) {
+                foreach ($data['sort'] as $sortingName => $sortingItem) {
+                    if (!$sortingName) continue;
+
+                    $this->sortings[$sortingName] = $sortingItem;
                 }
             }
         }

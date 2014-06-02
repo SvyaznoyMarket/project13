@@ -24,6 +24,9 @@ call_user_func(require $applicationDir . '/v2/config/autoload.php', $application
 // request
 $request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
 
+// exception
+$error = null;
+
 // config
 (new \EnterSite\Action\ImportConfig())->execute($applicationDir, $applicationDir . sprintf('/config/config-%s.php', $environment));
 //(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . sprintf('/v2/config/config-local.php', $environment));
@@ -32,11 +35,11 @@ $request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
 // config post-handler
 (new \EnterSite\Action\HandleConfig())->execute($environment, $debug);
 
-// shutdown handler, send response
-(new \EnterSite\Action\RegisterShutdown())->execute($request, $response, $startAt);
-
 // error handler
-(new \EnterSite\Action\HandleError())->execute($response);
+(new \EnterSite\Action\HandleError())->execute($error);
+
+// shutdown handler, send response
+(new \EnterSite\Action\RegisterShutdown())->execute($request, $response, $error, $startAt);
 
 // response
 (new \EnterSite\Action\HandleResponse())->execute($request, $response);

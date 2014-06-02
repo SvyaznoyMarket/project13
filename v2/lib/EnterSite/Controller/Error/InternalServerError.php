@@ -23,7 +23,8 @@ class InternalServerError {
         $response->statusCode = Http\Response::STATUS_INTERNAL_SERVER_ERROR;
 
         $page = [
-            'error' => array_merge([
+            'dataDebug' => $this->getConfig()->debug ? 'true' : '',
+            'error'     => array_merge([
                 'type'    => null,
                 'message' => null,
                 'file'    => null,

@@ -18,6 +18,8 @@ class Category {
     /** @var string */
     public $link;
     /** @var string */
+    public $path;
+    /** @var string */
     public $image;
     /** @var int */
     public $level;
@@ -31,7 +33,9 @@ class Category {
     public $productCount;
     /** @var int */
     public $productGlobalCount;
-    /** @var array Category[] */
+    /** @var Category|null */
+    public $parent;
+    /** @var Category[] */
     public $ascendants = [];
 
     /**
@@ -43,6 +47,7 @@ class Category {
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
+        $this->path = trim(preg_replace('/^\/catalog\//' , '', $this->link), '/');
         if (array_key_exists('media_image', $data)) $this->image = (string)$data['media_image'];
         if (array_key_exists('level', $data)) $this->level = (int)$data['level'];
         if (array_key_exists('has_children', $data)) $this->hasChildren = (bool)$data['has_children'];

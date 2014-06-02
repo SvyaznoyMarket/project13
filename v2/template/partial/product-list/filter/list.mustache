@@ -1,0 +1,8 @@
+<ul class="paramsList">
+{{#elements}}
+    <li class="paramsList_item">
+        <input class="js-productFilter-set customInput jsCustomRadio" type="{{#isMultiple}}checkbox{{/isMultiple}}{{^isMultiple}}radio{{/isMultiple}}" name="{{name}}" id="{{id}}" value="{{value}}"{{#isActive}} checked="checked"{{/isActive}} />
+        <label class="customLabel" for="{{id}}">{{title}}</label>
+    </li>
+{{/elements}}
+</ul>

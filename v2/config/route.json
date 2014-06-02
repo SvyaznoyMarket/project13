@@ -36,6 +36,10 @@
             "categoryPath": "[\\w\\d-_]+/[\\w\\d-_]+"
         }
     },
+    "Product\\GetListByFilter": {
+        "name": "Список товаров",
+        "pattern": "/ajax/product-list"
+    },
     "Region\\Autocomplete": {
         "name": "Автоподстановка региона",
         "pattern": "/ajax/region/autocomplete"
@@ -67,7 +71,11 @@
     },
     "Order\\Quick\\Index": {
         "name": "Оформление заказа в один клик",
-        "pattern": "/order/quick"
+        "pattern": "/orders/one-click/new"
+    },
+    "Order\\Index": {
+        "name": "Оформление заказа",
+        "pattern": "/orders/new"
     },
     "ShopCard\\Get": {
         "name": "Карточка магазина",

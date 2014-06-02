@@ -5,9 +5,10 @@
 
 {{={{{ }}}=}}
 <script id="tpl-debug-container" type="text/html">
-    <div class="js-widget id-debug-{{requestId}} debug__container" style="display: none;">
-        <div class="debug__title">
+    <div class="js-widget debug__container id-debug-{{requestId}} debug__container" style="display: none;">
+        <div class="debug__title {{#error}}debug__error{{/error}}">
             <a class="js-debug-container-link" href="#" data-content-selector=".id-debug-content-{{requestId}}">{{requestId}}</a>
+            {{#status}}<span class="debug__error" title="{{&status.text}}">{{status.code}}</span> {{/status}}{{path}}
         </div>
         <div class="js-debug-container-content id-debug-content-{{requestId}}" style="display: none;">
             <div class="debug__queryMap">

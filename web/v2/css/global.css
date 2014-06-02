@@ -2423,6 +2423,18 @@ body.noScroll {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   z-index: 1020;
 }
+.debug__title a,
+.debug__title a:hover {
+  color: #00bce1;
+}
+.debug__error,
+.debug__error a,
+.debug__error a:hover {
+  color: #ff0000;
+}
+.debug__container {
+  margin-bottom: 4px;
+}
 .debug__queryMap {
   width: 961px;
   margin: 5px auto;

@@ -17,26 +17,23 @@ namespace EnterSite\Model\Page\ProductCatalog {
 
 namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
     use EnterSite\Model\Page;
+    use EnterSite\Model\Partial;
 
     class Content extends Page\DefaultLayout\Content {
-        /** @var Content\ProductBlock */
+        /** @var Partial\ProductBlock|null */
         public $productBlock;
+        /** @var Partial\ProductFilterBlock|null */
+        public $filterBlock;
+        /** @var Partial\SelectedFilterBlock|null */
+        public $selectedFilterBlock;
+        /** @var Partial\SortingBlock|null */
+        public $sortingBlock;
         /** @var bool */
         public $hasCustomStyle;
 
         public function __construct() {
             parent::__construct();
-
-            $this->productBlock = new Content\ProductBlock();
         }
     }
 }
 
-namespace EnterSite\Model\Page\ProductCatalog\ChildCategory\Content {
-    use EnterSite\Model\Partial;
-
-    class ProductBlock {
-        /** @var Partial\ProductCard[] */
-        public $products = [];
-    }
-}

@@ -212,6 +212,19 @@ class RepositoryManager {
     }
 
     /**
+     * @return Model\PaymentMethod\Repository
+     */
+    static function paymentGroup() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\PaymentMethod\Group\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
+
+    /**
      * @return Model\Banner\Repository
      */
     static function banner() {
