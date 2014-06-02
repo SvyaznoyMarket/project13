@@ -85,13 +85,13 @@ if (debug) {
 require(
     [
         'require',
+        'module/config',
         'html5',
         'boilerplate.helper',
         'jquery',
         'jquery.cookie',
         'jquery.ui', 'jquery.ui.touch-punch', 'jquery.popup',
         'jquery.touchwipe',
-        'module/config',
         'module/util',
         'module/navigation',
         'module/region',
@@ -101,12 +101,13 @@ require(
         'module/cart.common', // кнопка купить, спиннер
         'module/product.catalog.common',
     ],
-    function(require) {}
+    function(require, config) {
+        $.cookie.defaults.path = '/';
+        $.cookie.defaults.domain = config.cookie.domain;
+    }
 );
 
 require(
     [moduleName],
-    function(module) {
-
-    }
+    function(module) {}
 );

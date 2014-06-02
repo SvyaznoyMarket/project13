@@ -1,9 +1,9 @@
 define(
     [
-        'jquery', 'underscore',
+        'jquery', 'underscore', 'module/config',
         'module/widget'
     ],
-    function ($, _) {
+    function ($, _, config) {
 
         var $body = $('body'),
 
@@ -179,6 +179,36 @@ define(
                 console.info('renderSpinnerValue', $el, product);
 
                 $el.find('.js-buySpinner-value').val(product.quantity);
+            },
+
+            setCredit = function(e) {
+                e.stopPropagation();
+
+                var $el = $(e.target);
+
+                if ($el.is(':checked')) {
+                    $.cookie(config.credit.cookieName, 1, {expires: 7});
+                } else {
+                    $.removeCookie(config.credit.cookieName);
+                }
+
+                e.preventDefault();
+            },
+
+            removeCredit = function(e) {
+                e.stopPropagation();
+
+                $.removeCookie(config.credit.cookieName);
+
+                e.preventDefault();
+            },
+
+            initCredit = function($elements) {
+                if (1 == $.cookie(config.credit.cookieName)) {
+                    $elements.attr('checked', true);
+                } else {
+                    $elements.removeAttr('checked');
+                }
             }
         ;
 
@@ -187,7 +217,6 @@ define(
         $body
             .on('click', '.js-buyButton', addProductToCart)
             .on('changeProductQuantityData', '.js-buyButton', changeProductQuantity)
-            .on('changeProductQuantityData', '.js-buySpinner-value', changeProductQuantity)
             .on('click', '.js-deleteButton', deleteProductFromCart)
 
         // спиннер для кнопки купить
@@ -196,5 +225,13 @@ define(
             .on('click dblclick contextmenu', '.js-buySpinner-dec', decSpinnerValue)
             .on('change keyup', '.js-buySpinner-value', changeSpinnerValue)
             .on('renderValue', '.js-buySpinner', renderSpinnerValue)
+            .on('changeProductQuantityData', '.js-buySpinner-value', changeProductQuantity)
+
+        // купить в кредит
+        $body
+            .on('change', '.js-creditButton', setCredit)
+            .on('change', '.js-creditButton-remove', removeCredit)
+
+        initCredit($('.js-creditButton'));
     }
 );

@@ -20,6 +20,8 @@ namespace EnterSite\Config {
         public $userToken;
         /** @var Application\Region */
         public $region;
+        /** @var Application\Credit */
+        public $credit;
         /** @var Application\Curl */
         public $curl;
         /** @var Application\CoreService */
@@ -52,6 +54,7 @@ namespace EnterSite\Config {
             $this->userToken = new Application\UserToken();
 
             $this->region = new Application\Region();
+            $this->credit = new Application\Credit();
 
             $this->curl = new Application\Curl();
 
@@ -102,6 +105,11 @@ namespace EnterSite\Config\Application {
     class Region {
         /** @var string */
         public $defaultId;
+        /** @var string */
+        public $cookieName;
+    }
+
+    class Credit {
         /** @var string */
         public $cookieName;
     }

@@ -1,11 +1,16 @@
 define(
     ['jquery', 'underscore'],
     function ($, _) {
-        console.info('config', $('body').data('config'));
-
         return _.extend({
+            cookie: {
+                domain: null,
+                lifetime: null
+            },
             user: {
                 infoUrl: null
+            },
+            credit: {
+                cookieName: null
             }
         }, $('body').data('config'));
     }

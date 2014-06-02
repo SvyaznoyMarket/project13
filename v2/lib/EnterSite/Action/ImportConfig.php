@@ -33,6 +33,8 @@ class ImportConfig {
         $config->region->defaultId = (string)$importedConfig->region['defaultId'];
         $config->region->cookieName = $importedConfig->region['cookieName'];
 
+        $config->credit->cookieName = 'credit_on';
+
         $config->curl->queryChunkSize = $importedConfig->coreV2['chunk_size'];
         $config->curl->logResponse = false;
 
