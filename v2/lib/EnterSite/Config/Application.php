@@ -44,6 +44,8 @@ namespace EnterSite\Config {
         public $productReview;
         /** @var Application\ProductPhoto */
         public $productPhoto;
+        /** @var Application\ProductCategoryPhoto */
+        public $productCategoryPhoto;
         /** @var Application\DirecCredit */
         public $directCredit;
 
@@ -67,8 +69,9 @@ namespace EnterSite\Config {
             $this->mustacheRenderer = new Application\MustacheRenderer();
 
             $this->product = new Application\Product();
-            $this->productPhoto = new Application\ProductPhoto();
             $this->productReview = new Application\ProductReview();
+            $this->productPhoto = new Application\ProductPhoto();
+            $this->productCategoryPhoto = new Application\ProductCategoryPhoto();
 
             $this->directCredit = new Application\DirecCredit();
         }
@@ -202,6 +205,13 @@ namespace EnterSite\Config\Application {
          * @var int
          */
         public $itemsInCard;
+    }
+
+    class ProductCategoryPhoto {
+        /**
+         * @var array
+         */
+        public $urlPaths = [];
     }
 
     class DirecCredit {

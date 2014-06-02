@@ -87,8 +87,8 @@ class ChildCategory {
         $curl->prepare($filterListQuery);
 
         // запрос предка категории
-        $ascendantCategoryItemQuery = new Query\Product\Category\GetAscendantItemByCategoryObject($category, $region->id);
-        $curl->prepare($ascendantCategoryItemQuery);
+        $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($category, $region->id);
+        $curl->prepare($branchCategoryItemQuery);
 
         // запрос листинга идентификаторов товаров
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
@@ -103,8 +103,8 @@ class ChildCategory {
         // фильтры
         $filters = $filterRepository->getObjectListByQuery($filterListQuery);
 
-        // предки категории
-        $category->ascendants = $productCategoryRepository->getAscendantListByQuery($ascendantCategoryItemQuery);
+        // предки и дети категории
+        $productCategoryRepository->setBranchForObjectByQuery($category, $branchCategoryItemQuery);
 
         // листинг идентификаторов товаров
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);

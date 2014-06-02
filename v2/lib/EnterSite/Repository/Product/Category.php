@@ -75,6 +75,44 @@ class Category {
     }
 
     /**
+     * К переданной категории добавляет предков и детей
+     *
+     * @param Model\Product\Category $category
+     * @param Query $query
+     */
+    public function setBranchForObjectByQuery(Model\Product\Category $category, Query $query) {
+        $walk = function($item) use (&$walk, &$category) {
+            if (!$item) {
+                return;
+            }
+
+            $id = isset($item['id']) ? (string)$item['id'] : null;
+            $level = isset($item['level']) ? (int)$item['level'] : null;
+            if ($id == $category->id) {
+                if (!empty($item['children'])) {
+                    foreach ($item['children'] as $childItem) {
+                        if (!isset($childItem['id'])) continue;
+
+                        $category->children[] = new Model\Product\Category($childItem);
+                    }
+                }
+            } else if ($level < $category->level) {
+                if (isset($item['children'][0]['id'])) {
+                    $childItem = $item['children'][0];
+
+                    $walk($childItem);
+                    unset($item['children']);
+                }
+                $category->ascendants[] = new Model\Product\Category($item);
+            }
+        };
+
+        $walk($query->getResult(), $category);
+
+        $category->ascendants = array_reverse($category->ascendants, true);
+    }
+
+    /**
      * @param Model\Product[] $products
      * @param string[] $categoryTokens
      * @return Model\Product\Category[]

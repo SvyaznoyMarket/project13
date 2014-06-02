@@ -65,8 +65,9 @@ class ImportConfig {
 
         $config->product->itemPerPage = $importedConfig->product['itemsPerPage'];
         $config->product->itemsInSlider = $importedConfig->product['itemsInSlider'] * 2;
-        $config->productPhoto->urlPaths = $importedConfig->productPhoto['url'];
         $config->productReview->enabled = $importedConfig->product['reviewEnabled'];
+        $config->productPhoto->urlPaths = $importedConfig->productPhoto['url'];
+        $config->productCategoryPhoto->urlPaths = $importedConfig->productCategory['url'];
 
         // собственные настройки
         $config->requestId = uniqid();

@@ -66,6 +66,8 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;
+    $config->productReview->enabled = true;
+    $config->productReview->itemsInCard = 7;
     $config->productPhoto->urlPaths = [
         0 => '/1/1/60/',
         1 => '/1/1/120/',
@@ -74,8 +76,10 @@ return function(\EnterSite\Config\Application $config) {
         4 => '/1/1/2500/',
         5 => '/1/1/1500/',
     ];
-    $config->productReview->enabled = true;
-    $config->productReview->itemsInCard = 7;
+    $config->productCategoryPhoto->urlPaths = [
+        0 => '/6/1/163/',
+        3 => '/6/1/500/',
+    ];
 
     $config->directCredit->enabled = true;
     $config->directCredit->minPrice = 3000;
