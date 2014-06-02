@@ -93,7 +93,7 @@ class ChildCategory {
             $page->content->filterBlock = new Partial\ProductFilterBlock();
             $page->content->filterBlock->filters = (new Repository\Partial\ProductFilter())->getList($request->filters, $request->requestFilters, false);
             $page->content->filterBlock->openedFilters = (new Repository\Partial\ProductFilter())->getList($request->filters, $request->requestFilters, true);
-            $page->content->filterBlock->actionBlock->shownProductCount = sprintf('Показать %s (%s)', ($request->count > 1) ? 'товары' : 'товар', $request->count);
+            $page->content->filterBlock->actionBlock->shownProductCount = sprintf('Показать (%s)', $request->count);
 
             // выбранные фильтры
             $page->content->selectedFilterBlock = new Partial\SelectedFilterBlock();
