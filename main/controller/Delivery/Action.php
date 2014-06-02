@@ -167,17 +167,25 @@ class Action {
                 foreach ($result['delivery_methods'] as $item) {
                     $token = $item['token'];
 
-                    // TODO standart_other - Плановая дата доставки
+                    // TODO перенести в модель
                     switch (true) {
-                        case (false !== strpos($token, 'standart')):
+                        case ($token == 'standart'):
                             $item['name'] = 'Доставим';
                             break;
-                        case (false !== strpos($token, 'self')):
-                        case (false !== strpos($token, 'now')):
+                        case ($token == 'self'):
+                        case ($token == 'now'):
                             $item['name'] = 'Самовывоз';
                             break;
-                        case (false !== strpos($token, 'pickpoint')):
+                        case ($token == 'pickpoint'):
                             $item['name'] = 'PickPoint';
+                            break;
+                        case ($token == 'self_svyaznoy'):
+                            $item['name'] = "Самовывоз (ООО «Связной-Логистика»)";
+                            break;
+                        case ($token == 'standart_svyaznoy'):
+                            $item['name'] = "Доставим (ООО «Связной-Логистика»)";
+                            break;
+                        default: $item['name'] = "";
                     }
 
                     $responseData['deliveryStates'][$token] = $item;
