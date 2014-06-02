@@ -38,8 +38,17 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 <!-- /Header -->
 
 <? foreach ($orders as $order): ?>
-    <p class="title-font16 font16">Сейчас он отправлен на склад для сборки!<br/>
-Ожидайте смс или звонок от оператора контакт-сEnter по статусу заказа!</p>
+    <? if ($order->getIsPartner()) : ?>
+        <p class="title-font16 font16">
+            Ваш заказ передан на исполнение в ЗАО «Связной-Логистика».<br/>
+            Контакт-центр «Связной» свяжется с Вами.
+        </p>
+    <? else : ?>
+        <p class="title-font16 font16">
+            Сейчас он отправлен на склад для сборки!<br/>
+            Ожидайте смс или звонок от оператора контакт-сEnter по статусу заказа!
+        </p>
+    <? endif; ?>
     <p class="font19">Номер заказа: <?= $order->getNumberErp() ?></p>
 
     <? if ($order->getDeliveredAt() instanceof \DateTime): ?>

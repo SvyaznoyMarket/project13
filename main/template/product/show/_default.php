@@ -211,7 +211,7 @@ $isKitPage = (bool)$product->getKit();
             ]) // Кнопка купить ?>
         <? endif ?>
 
-        <? if (!$hasFurnitureConstructor): ?>
+        <? if (!$hasFurnitureConstructor && count($product->getPartnersOffer()) == 0): ?>
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
         <? endif ?>
 
