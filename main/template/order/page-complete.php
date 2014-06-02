@@ -32,7 +32,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 
     <div class="bBuyingHead__eTitle">
         <span class="bSubTitle">Оформление заказа</span><br>
-        <span class="bTitle"><?= $isCredit ? 'Покупка в кредит' : 'Ваш заказ принят, спасибо!' ?></span>
+        <span class="bTitle"><?= $isCredit ? 'Покупка в кредит' : 'Спасибо за ваш заказ!' ?></span>
     </div>
 </div>
 <!-- /Header -->
@@ -40,8 +40,11 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 <? foreach ($orders as $order): ?>
     <? if ($order->getIsPartner()) : ?>
         <p class="title-font16 font16">
-            Ваш заказ передан на исполнение в ЗАО «Связной-Логистика».<br/>
-            Контакт-центр «Связной» свяжется с Вами.
+            Ваш заказ передан продавцу, он обязательно свяжется с Вами.<br/>
+            <b>Продавец:</b> Закрытое акционерное общество «Связной Логистика».<br/>
+            Адрес: 115280, г. Москва, ул. Ленинская слобода, д. 19<br/>
+            ИНН: 7703567318, ОГРН 1057748731336<br/>
+            Связной-Поддержка 8 (800) 700 50 00
         </p>
     <? else : ?>
         <p class="title-font16 font16">
