@@ -12,6 +12,7 @@ define(
         ;
 
         $document.ajaxComplete(function(e, xhr, options) {
+
             try {
                 var response = JSON.parse(xhr.responseText),
                     $template = $('#tpl-debug-container').html()
