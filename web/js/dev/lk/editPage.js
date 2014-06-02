@@ -6,14 +6,34 @@
 ;(function() {
 	var
 		mobilePhoneField = $('#user_mobile_phone'),
-		cardField = $('#user_sclub_card_number');
+		bonusCardFields = $('.jsCardNumber');
 	// end of vars
 
-	$.mask.definitions['n'] = '[0-9]';
+	var
+		setMask = function setMask(field, mask) {
+			if ( undefined == typeof(field) || undefined == typeof(mask) ) return;
+			field.mask(mask, { placeholder: '*' });
+		},
+
+		addCardMask = function addCardMask() {
+			var
+				self = $(this),
+				mask = self.data('mask');
+			// end of vars
+
+			if ( undefined == typeof(mask) ) {
+				return;
+			}
+
+			setMask(self, mask);
+		};
+	// end of functions
+
+	$.mask.definitions['x'] = '[0-9]';
 
 	// устанавливаем маску для поля "Ваш мобильный телефон"
-	//mobilePhoneField.length && mobilePhoneField.mask('8nnnnnnnnnn');
+	//mobilePhoneField.length && mobilePhoneField.mask('8xxxxxxxxxx');
 
-	// устанавливаем маску для поля "Номер карты Связной-Клуб"
-	cardField.length && cardField.mask('2 98nnnn nnnnnn', { placeholder: '*' });
+	// устанавливаем маски для карт лояльности
+	bonusCardFields.length && bonusCardFields.each(addCardMask);
 }());

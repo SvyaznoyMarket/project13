@@ -159,7 +159,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
             <div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
             
             <div class="bBuyingLine__eRight bSClub">
-                <input type="text" id="order_sclub_card_number" class="bBuyingLine__eText mInputShort mb15" name="order[sclub_card_number]" />
+                <input type="text" id="order_sclub_card_number" class="bBuyingLine__eText mInputShort mb15" name="order[bonus_card_number]" />
                 <div class="mILong">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
             </div>
         </div>

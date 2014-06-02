@@ -11216,6 +11216,9 @@
     position: relative;
     text-indent: 70px;
   }
+  .mSClub .bText {
+    width: 255px;
+  }
 }
 @media all {
   .bBuyingSale {
