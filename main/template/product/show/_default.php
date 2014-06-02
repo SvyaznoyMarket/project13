@@ -52,7 +52,9 @@ $isKitPage = (bool)$product->getKit();
 
         <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
 
-        <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
+        <? if (count($product->getPartnersOffer()) == 0) : ?>
+            <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
+        <? endif; ?>
 
             <?
             // new Card Properties Begin {
