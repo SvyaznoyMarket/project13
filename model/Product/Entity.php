@@ -85,6 +85,10 @@ class Entity extends BasicEntity {
     protected $warranty = [];
     /** @var \Model\Region\Entity */
     protected $nearestCity = [];
+    /** $var array */
+    protected $partnersOffer = [];
+
+
 
     public function __construct(array $data = []) {
         if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
@@ -171,6 +175,7 @@ class Entity extends BasicEntity {
         if (array_key_exists('ean', $data)) $this->setEan($data['ean']);
         if (array_key_exists('is_upsale', $data)) $this->setIsUpsale($data['is_upsale']);
         if (array_key_exists('is_kit_locked', $data)) $this->setIsKitLocked($data['is_kit_locked']);
+        if (array_key_exists('partners_offer', $data)) $this->setPartnersOffer(array_map(function($v) { return $v; }, $data['partners_offer']));
 
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
@@ -925,5 +930,25 @@ class Entity extends BasicEntity {
     {
         return $this->isKitLocked;
     }
+
+    /**
+     * @param array $partnersOffer
+     */
+    public function setPartnersOffer($partnersOffer)
+    {
+        $this->partnersOffer = [];
+        foreach ($partnersOffer as $offer) {
+            $this->partnersOffer[] = $offer;
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getPartnersOffer()
+    {
+        return $this->partnersOffer;
+    }
+
 
 }
