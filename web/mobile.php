@@ -7,7 +7,7 @@ $startAt = microtime(true);
 $applicationDir = realpath(__DIR__ . '/..');
 
 // environment
-$environment = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'dev';
+$environment = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'live';
 
 // response
 $response = null;
