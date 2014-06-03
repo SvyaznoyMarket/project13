@@ -17,5 +17,11 @@ namespace EnterSite\Model\Partial\Cart {
         public $dataUrl;
         /** @var string */
         public $dataValue;
+        /** @var bool */
+        public $isDisabled;
+        /** @var bool */
+        public $isInShopOnly;
+        /** @var bool */
+        public $isInCart;
     }
 }
