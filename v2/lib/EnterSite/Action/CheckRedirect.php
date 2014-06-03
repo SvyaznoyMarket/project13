@@ -31,6 +31,8 @@ class CheckRedirect {
             //|| ($route instanceof Routing\Index)
             || ($route instanceof Routing\User\Auth)
             || ($route instanceof Routing\User\Index)
+            || ($route instanceof Routing\ShopCard\Get)
+            || ($route instanceof Routing\Shop\Index)
         ;
 
         if (!$hasRedirect) {

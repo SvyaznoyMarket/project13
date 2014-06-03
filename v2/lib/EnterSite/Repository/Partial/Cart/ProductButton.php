@@ -48,7 +48,6 @@ class ProductButton {
             ],
         ]);
 
-        $button->class = '';
         $button->id = self::getId($product->id);
         $button->widgetId = self::getWidgetId($product->id);
         $button->text = 'Купить';

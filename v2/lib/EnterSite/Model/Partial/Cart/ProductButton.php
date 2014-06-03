@@ -12,8 +12,6 @@ namespace EnterSite\Model\Partial\Cart {
         /** @var string */
         public $url;
         /** @var string */
-        public $class;
-        /** @var string */
         public $dataUrl;
         /** @var string */
         public $dataValue;
