@@ -150,6 +150,9 @@ class Action {
             $paymentForm = null;
             if (in_array($paymentMethod->getId(), [5, 8, 14])) {
                 try {
+                    $bonusCards = $userEntity ? $userEntity->getBonusCard() : [];
+                    $bonusCard = reset($bonusCards);
+
                     $result = [];
                     $client->addQuery('site-integration/payment-config',
                         [
@@ -159,7 +162,7 @@ class Action {
                         [
                             'back_ref'    => $helper->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true),// обратная ссылка
                             'email'       => $userEntity ? $userEntity->getEmail() : null,
-                            'card_number' => $userEntity ? $userEntity->getSclubCardnumber() : null,// карта лояльности
+                            'card_number' => $bonusCard,// карта лояльности
                             'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
                         ],
                         function($data) use (&$result) {

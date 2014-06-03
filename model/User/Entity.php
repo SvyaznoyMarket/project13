@@ -64,8 +64,6 @@ class Entity {
     private $city;
     /** @var bool */
     private $isEnterprizeMember;
-    /** @var string */
-    private $sclubCardnumber;
     /** @var array */
     private $bonusCard;
     /** @var bool */
