@@ -23,7 +23,10 @@ class CheckRedirect {
         $config = $this->getConfig();
         $router = $this->getRouter();
 
-        $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod());
+        $route = null;
+        try {
+            $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod());
+        } catch (\Exception $e) {}
 
         $hasRedirect = false
             //|| ($route instanceof Routing\ProductCatalog\GetChildCategory)
