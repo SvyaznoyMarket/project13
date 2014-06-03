@@ -3071,6 +3071,7 @@ body.noScroll {
   display: inline-block;
   vertical-align: top;
   position: relative;
+  z-index: 10;
   margin: 0 0 50px;
   padding: 0 20px 1px;
   width: 199px;
@@ -3424,6 +3425,7 @@ body.noScroll {
   }
   .sorting {
     position: relative;
+    z-index: 12;
   }
   .sorting:hover .sortingList {
     display: block;
@@ -3555,6 +3557,7 @@ body.noScroll {
   -moz-transition: bottom 0.3s ease;
   -webkit-transition: bottom 0.3s ease;
   transition: bottom 0.3s ease;
+  z-index: 100;
 }
 .paramsBtnFixed-show {
   bottom: 0;
