@@ -35,8 +35,8 @@ $error = null;
 
 // config
 //(new \EnterSite\Action\ImportConfig())->execute($applicationDir, $applicationDir . sprintf('/config/config-%s.php', $environment));
-(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . sprintf('/v2/config/config-%s.php', $environment));
-//(new \EnterSite\Action\LoadCachedConfig())->execute($applicationDir . sprintf('/v2/config/config-%s.php', $environment));
+(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . sprintf('/v2/config/terminal/config-%s.php', $environment));
+//(new \EnterSite\Action\LoadCachedConfig())->execute($applicationDir . sprintf('/v2/config/terminal/config-%s.json', $environment));
 
 // config post-handler
 (new \EnterSite\Action\HandleConfig())->execute($environment, $debug);
