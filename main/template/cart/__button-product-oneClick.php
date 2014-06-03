@@ -2,7 +2,7 @@
 
 return function (
     \Helper\TemplateHelper $helper,
-    \Model\Product\BasicEntity $product,
+    \Model\Product\Entity $product,
     $url = null,
     $class = null,
     $value = 'Купить быстро в 1 клик'
@@ -38,7 +38,7 @@ return function (
         $url = $helper->url('cart.oneClick.product.set', $urlParams);
     }
 
-    if ($product->getKit()) {
+    if ($product->getKit() && !$product->getIsKitLocked()) {
         $urlParams = [];
         foreach ($product->getKit() as $kitItem) {
             $urlParams['product'][] = ['id' => $kitItem->getId(), 'quantity' => $kitItem->getCount()];
