@@ -8,10 +8,10 @@
  * @var $accessories            \Model\Product\Entity[]
  * @var $accessoryCategory      \Model\Product\Category\Entity[]
  * @var $kit                    \Model\Product\Entity[]
+ * @var $relatedKits            array
  * @var $additionalData         array
  * @var $shopStates             \Model\Product\ShopState\Entity[]
  * @var $creditData             array
- * @var $parts                  \Model\Product\CompactEntity[]
  * @var $line                   \Model\Line\Entity
  * @var $deliveryData           array
  * @var $isTchibo               boolean
@@ -52,7 +52,9 @@ $isKitPage = (bool)$product->getKit();
 
         <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
 
-        <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
+        <? if (count($product->getPartnersOffer()) == 0) : ?>
+            <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
+        <? endif; ?>
 
             <?
             // new Card Properties Begin {
@@ -104,13 +106,11 @@ $isKitPage = (bool)$product->getKit();
 
     <? if ( $isKitPage ): // если это набор пакет ?>
         <?= $helper->render('product/__baseKit',['products' => $kitProducts, 'product' => $product]) ?>
+    <? endif ?>
 
-    <? elseif ( (bool)$line ): ?>
-        <?= $helper->render('product/__slider', [
-            'title'     => 'Состав набора &laquo;' . $line->getName() . '&raquo;',
-            'products'  => $parts,
-        ]) ?>
-    <? else: endif ?>
+    <? if ( (bool)$relatedKits ) : // если есть родительские пакеты ?>
+        <?= $helper->render('product/__relatedKits',['kits' => $relatedKits, 'product' => $product]) ?>
+    <? endif ?>
 
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
         <?= $helper->render('product/__slider', [
@@ -200,7 +200,7 @@ $isKitPage = (bool)$product->getKit();
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
         <? endif ?>
         
-        <? if ($isKitPage) : ?>
+        <? if ($isKitPage && !$product->getIsKitLocked()) : ?>
             <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить для набора продуктов ?>
         <? else : ?>
         
@@ -213,7 +213,7 @@ $isKitPage = (bool)$product->getKit();
             ]) // Кнопка купить ?>
         <? endif ?>
 
-        <? if (!$hasFurnitureConstructor): ?>
+        <? if (!$hasFurnitureConstructor && count($product->getPartnersOffer()) == 0): ?>
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
         <? endif ?>
 

@@ -150,6 +150,9 @@ class Action {
             $paymentForm = null;
             if (in_array($paymentMethod->getId(), [5, 8, 14])) {
                 try {
+                    $bonusCards = $userEntity ? $userEntity->getBonusCard() : [];
+                    $bonusCard = reset($bonusCards);
+
                     $result = [];
                     $client->addQuery('site-integration/payment-config',
                         [
@@ -159,7 +162,7 @@ class Action {
                         [
                             'back_ref'    => $helper->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true),// обратная ссылка
                             'email'       => $userEntity ? $userEntity->getEmail() : null,
-                            'card_number' => $userEntity ? $userEntity->getSclubCardnumber() : null,// карта лояльности
+                            'card_number' => $bonusCard,// карта лояльности
                             'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
                         ],
                         function($data) use (&$result) {
@@ -212,7 +215,7 @@ class Action {
                     \App::exception()->remove($e);
                 }
             }
-        }
+        } else $paymentForm = null;
 
         $paymentUrl = $order->getPaymentUrl(); // раньше было: $paymentUrl = \App::session()->get('paymentUrl');
 
@@ -386,30 +389,30 @@ class Action {
 
             // общие данные заказа
             $orderData = [
-                'type_id'                   => \Model\Order\Entity::TYPE_ORDER,
-                'geo_id'                    => $user->getRegion()->getId(),
-                'user_id'                   => $userEntity ? $userEntity->getId() : null,
-                'is_legal'                  => $userEntity ? $userEntity->getIsCorporative() : false,
-                'payment_id'                => $form->getPaymentMethodId(),
-                'credit_bank_id'            => $form->getCreditBankId(),
-                'last_name'                 => $form->getLastName(),
-                'first_name'                => $form->getFirstName(),
-                'email'                     => $form->getEmail(),
-                'mobile'                    => $form->getMobilePhone(),
-                'address_street'            => $form->getAddressStreet(),
-                'address_number'            => $form->getAddressNumber(),
-                'address_building'          => $form->getAddressBuilding(),
-                'address_apartment'         => $form->getAddressApartment(),
-                'address_floor'             => $form->getAddressFloor(),
-                'extra'                     => $form->getComment(),
-                'svyaznoy_club_card_number' => $form->getSclubCardnumber(),
-                'delivery_type_id'          => $deliveryType->getId(),
-                'delivery_period'           => !empty($deliveryItem['interval']) ? explode(',', $deliveryItem['interval']) : null,
-                'delivery_date'             => !empty($deliveryItem['date']) ? $deliveryItem['date'] : null,
-                'ip'                        => $request->getClientIp(),
-                'product'                   => [],
-                'service'                   => [],
-                'payment_params'            => [
+                'type_id'           => \Model\Order\Entity::TYPE_ORDER,
+                'geo_id'            => $user->getRegion()->getId(),
+                'user_id'           => $userEntity ? $userEntity->getId() : null,
+                'is_legal'          => $userEntity ? $userEntity->getIsCorporative() : false,
+                'payment_id'        => $form->getPaymentMethodId(),
+                'credit_bank_id'    => $form->getCreditBankId(),
+                'last_name'         => $form->getLastName(),
+                'first_name'        => $form->getFirstName(),
+                'email'             => $form->getEmail(),
+                'mobile'            => $form->getMobilePhone(),
+                'address_street'    => $form->getAddressStreet(),
+                'address_number'    => $form->getAddressNumber(),
+                'address_building'  => $form->getAddressBuilding(),
+                'address_apartment' => $form->getAddressApartment(),
+                'address_floor'     => $form->getAddressFloor(),
+                'extra'             => $form->getComment(),
+                'bonus_card_number' => $form->getBonusCardnumber(),
+                'delivery_type_id'  => $deliveryType->getId(),
+                'delivery_period'   => !empty($deliveryItem['interval']) ? explode(',', $deliveryItem['interval']) : null,
+                'delivery_date'     => !empty($deliveryItem['date']) ? $deliveryItem['date'] : null,
+                'ip'                => $request->getClientIp(),
+                'product'           => [],
+                'service'           => [],
+                'payment_params'    => [
                     'qiwi_phone' => $form->getQiwiPhone(),
                 ],
             ];

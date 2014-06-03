@@ -64,8 +64,8 @@ class Entity {
     private $city;
     /** @var bool */
     private $isEnterprizeMember;
-    /** @var string */
-    private $sclubCardnumber;
+    /** @var array */
+    private $bonusCard;
     /** @var bool */
     private $isEmailConfirmed;
     /** @var bool */
@@ -100,7 +100,7 @@ class Entity {
         if (array_key_exists('updated', $data)) $this->setUpdatedAt($data['updated'] ? new \DateTime($data['updated']) : null);
         if (array_key_exists('geo', $data) && is_array($data['geo'])) $this->setCity(new \Model\Region\Entity($data['geo']));
         if (array_key_exists('is_enter_prize_member', $data)) $this->setIsEnterprizeMember($data['is_enter_prize_member']);
-        if (array_key_exists('svyaznoy_club_card_number', $data)) $this->setSclubCardnumber($data['svyaznoy_club_card_number']);
+        if (array_key_exists('bonus_card', $data)) $this->setBonusCard($data['bonus_card']);
         if (array_key_exists('is_email_confirmed', $data)) $this->setIsEmailConfirmed($data['is_email_confirmed']);
         if (array_key_exists('is_phone_confirmed', $data)) $this->setIsPhoneConfirmed($data['is_phone_confirmed']);
     }
@@ -533,17 +533,17 @@ class Entity {
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getSclubCardnumber() {
-        return $this->sclubCardnumber;
+    public function getBonusCard() {
+        return $this->bonusCard;
     }
 
     /**
-     * @param string $sclubCardnumber
+     * @param array $bonusCard
      */
-    public function setSclubCardnumber($sclubCardnumber) {
-        $this->sclubCardnumber = str_replace(' ','', (string)$sclubCardnumber);
+    public function setBonusCard(array $bonusCard) {
+        $this->bonusCard = $bonusCard;
     }
 
     /**
