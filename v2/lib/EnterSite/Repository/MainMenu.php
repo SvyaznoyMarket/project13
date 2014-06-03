@@ -42,6 +42,10 @@ class MainMenu {
 
         $walkByMenuElementItem = function($elementItems, Model\MainMenu\Element $parentElement = null) use (&$menu, &$walkByMenuElementItem, &$categoryItemsById) {
             foreach ($elementItems as $elementItem) {
+                if (isset($elementItem['disabled']) && (true === $elementItem['disabled'])) {
+                    continue;
+                }
+
                 $element = null;
 
                 $source = (!empty($elementItem['source']) && is_scalar($elementItem['source'])) ? trim((string)$elementItem['source'], '/') : null;

@@ -135,7 +135,7 @@
             ]
         },
         {
-            "name": "Аксессуары для<br>авто",
+            "name": "Авто",
             "char": "M",
             "style": "",
             "styleHover": "",
@@ -159,6 +159,7 @@
             ]
         },
         {
+            "disabled": true,
             "name": "Ликвидация!",
             "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/07/icon_Liquidation2.gif');",
             "styleHover": "background: url('http://content.enter.ru/wp-content/uploads/2013/07/l_hover.png') no-repeat 0px 0px;",
