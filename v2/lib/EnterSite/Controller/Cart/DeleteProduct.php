@@ -5,8 +5,8 @@ namespace EnterSite\Controller\Cart;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
 use EnterSite\SessionTrait;
+use EnterSite\LoggerTrait;
 use EnterSite\RouterTrait;
 use EnterSite\Routing;
 use EnterSite\Controller;
@@ -15,7 +15,7 @@ use EnterSite\Model;
 //use EnterSite\Model\JsonPage as Page;
 use EnterSite\Repository;
 
-class SetProduct {
+class DeleteProduct {
     use ConfigTrait, RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait {
         ConfigTrait::getConfig insteadof RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
@@ -35,17 +35,13 @@ class SetProduct {
             if (!$productId) {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
-            $quantity = (int)$request->query['quantity'];
-            if ($quantity <= 0) {
-                $quantity = 1;
-            }
 
             // корзина из сессии
             $cart = $cartRepository->getObjectByHttpSession($session);
 
             $cartProduct = new Model\Cart\Product();
             $cartProduct->id = $productId;
-            $cartProduct->quantity = $quantity;
+            $cartProduct->quantity = 0;
 
             // добавление товара в корзину
             $cartRepository->setProductForObject($cart, $cartProduct);
