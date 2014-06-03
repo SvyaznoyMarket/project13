@@ -6,4 +6,5 @@ return function(\EnterSite\Config\Application $config) {
     $handler($config);
 
     // live config
+    $config->debug = false;
 };
