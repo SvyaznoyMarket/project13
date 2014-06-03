@@ -82,11 +82,42 @@ define(
 		
 		var paramsAction = function paramsAction( event ) {
 
+            var paramsBtnFixed = $('.paramsBtnFixed');
+
 			event.preventDefault();
 
 			params.toggleClass('params-open');
 			paramsTitle.removeClass('params_title-open');
 			paramsCont.removeClass('params_cont-open');
+
+            paramsBtnFixed.toggleClass('paramsBtnFixed-show');
+
+            var w = $(window),
+            scrollTarget,
+            scrollTargetOffset;
+
+            var checkScroll = function checkScroll() {
+                var
+                    nowScroll = w.scrollTop();
+                    nowScrollHeight = w.height();
+                // end of vars
+
+                if ( nowScroll <= Math.abs(nowScrollHeight - scrollTargetOffset) ) {
+                    $('.paramsBtnFixed').addClass('paramsBtnFixed-show');
+                }
+                else {
+                    $('.paramsBtnFixed').removeClass('paramsBtnFixed-show');
+                }
+            };
+
+            if ( $('.paramsBtnFixed').length ) {
+                scrollTarget = $('#productCatalog-filter-form');
+
+                if ( scrollTarget.length ) {
+                    scrollTargetOffset = scrollTarget.offset().top;
+                    w.on('scroll', checkScroll);
+                }
+            }
 		},
 
 		paramsItem = function paramsItem() {
@@ -96,6 +127,8 @@ define(
 			$self.toggleClass('params_title-open').next('.params_cont').toggleClass('params_cont-open');
 		};
 		// end of functions
+        
+        
 
 		paramsBtn.on('click', paramsAction);
 		paramsTitle.on('click', paramsItem);
