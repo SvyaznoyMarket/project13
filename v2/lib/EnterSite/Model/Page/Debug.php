@@ -39,7 +39,7 @@ namespace EnterSite\Model\Page\Debug {
         /**
          * @param $data
          */
-        public function __construct($data) {
+        public function __construct($data = []) {
             if (array_key_exists('type', $data)) $this->type = $data['type'];
             if (array_key_exists('message', $data)) $this->message = $data['message'];
             if (array_key_exists('file', $data)) $this->file = $data['file'];

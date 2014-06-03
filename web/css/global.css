@@ -8729,7 +8729,9 @@
   }
   .bProductDescSticker {
     position: absolute;
+    z-index: 999;
     top: 0;
+    background: none;
   }
   .bProductDescSticker.mRight {
     right: 0;
@@ -11213,6 +11215,9 @@
     width: 230px;
     position: relative;
     text-indent: 70px;
+  }
+  .mSClub .bText {
+    width: 255px;
   }
 }
 @media all {

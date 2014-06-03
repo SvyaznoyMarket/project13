@@ -38,6 +38,11 @@ class PartField {
      */
     private $pointAddress;
 
+    /** Стоимость доставки
+     * @var int
+     */
+    private $deliveryPrice;
+
     /**
      * @param array $data
      */
@@ -57,6 +62,7 @@ class PartField {
         if (array_key_exists('point_name', $data)) $this->setPointName( $data['point_name'] );
         if (array_key_exists('point_address', $data)) $this->setPointAddress( $data['point_address'] );
         if (array_key_exists('products', $data)) $this->setProductIds((array)$data['products']);
+        if (array_key_exists('deliveryPrice', $data)) $this->setDeliveryPrice($data['deliveryPrice']);
     }
 
     /**
@@ -157,6 +163,22 @@ class PartField {
     public function getPointAddress()
     {
         return $this->pointAddress;
+    }
+
+    /**
+     * @param int $deliveryPrice
+     */
+    public function setDeliveryPrice($deliveryPrice)
+    {
+        $this->deliveryPrice = (int)$deliveryPrice;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeliveryPrice()
+    {
+        return $this->deliveryPrice;
     }
 
 }

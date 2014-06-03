@@ -327,4 +327,17 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    /**
+     * @return \Model\Order\BonusCard\Repository
+     */
+    static function bonusCard() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\Order\BonusCard\Repository(\App::coreClientV2());
+        }
+
+        return $instance;
+    }
 }

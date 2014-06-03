@@ -44,6 +44,19 @@ class ChildCategory {
 
         $currentRoute = new Routing\ProductCatalog\GetChildCategory($request->category->path);
 
+        $page->content->childCategoryBlock = false;
+        if ((bool)$request->category->children) {
+            $page->content->childCategoryBlock = new Partial\ProductCatalog\ChildCategoryBlock();
+            foreach ($request->category->children as $childCategoryModel) {
+                $childCategory = new Partial\ProductCatalog\ChildCategoryBlock\Category();
+                $childCategory->name = $childCategoryModel->name;
+                $childCategory->url = $childCategoryModel->link;
+                $childCategory->image = (string)(new Routing\Product\Category\GetImage($childCategoryModel->image, $childCategoryModel->id, 1));
+
+                $page->content->childCategoryBlock->categories[] = $childCategory;
+            }
+        }
+
         $page->content->productBlock = false;
         $page->content->sortingBlock = false;
         if ((bool)$request->products) {

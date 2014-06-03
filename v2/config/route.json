@@ -77,6 +77,10 @@
         "name": "Оформление заказа",
         "pattern": "/orders/new"
     },
+    "Shop\\Index": {
+        "name": "Магазины",
+        "pattern": "/shops"
+    },
     "ShopCard\\Get": {
         "name": "Карточка магазина",
         "pattern": "/shops/{regionToken}/{shopToken}",

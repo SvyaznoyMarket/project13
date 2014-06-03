@@ -18,7 +18,7 @@ class Debug {
     }
     use ViewHelperTrait;
 
-    public function execute(Http\Request $request = null, Http\Response $response = null, $startAt, $endAt) {
+    public function execute(Http\Request $request = null, Http\Response $response = null, \Exception $error = null, $startAt, $endAt) {
         $config = $this->getConfig();
         $logger = $this->getLogger();
 
@@ -36,8 +36,16 @@ class Debug {
         $page->path = $request ? ltrim($request->getPathInfo(), '/') : null;
 
         // error
-        if ($error = error_get_last()) {
-            $page->error = new Page\Error($error);
+        if ($error) {
+            $page->error = new Page\Error([
+                'message' => $error->getMessage(),
+                'type'    => $error->getCode(),
+                'file'    => $error->getFile(),
+                'line'    => $error->getLine(),
+            ]);
+        }
+        else if ($lastError = error_get_last()) {
+            $page->error = new Page\Error($lastError);
         }
 
         // times

@@ -11,6 +11,8 @@
  * @var $banks          \Model\CreditBank\Entity[]
  * @var $creditData     array
  * @var $selectCredit   bool
+ * @var $bonusCards   \Model\Order\BonusCard\Entity[]
+ * @var $bonusCardsData array
  */
 ?>
 
@@ -45,6 +47,11 @@ if ($oneClick) {
 } else {
     $createUrl = $page->url('order.create');
     $deliveryUrl = $page->url('order.delivery');
+}
+
+$onlyPartnersProducts = true;
+foreach ($productsById as $product) {
+    if (count($product->getPartnersOffer()) == 0) $onlyPartnersProducts = false;
 }
 ?>
 
@@ -243,10 +250,10 @@ if ($oneClick) {
 	</div>
 	<!-- /Delivery boxes --> 
 	
-	<? if (!$oneClick): ?>
+	<? if (!$oneClick && !$onlyPartnersProducts): ?>
 	    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 		<!-- Sale section -->
-		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift(), ">
+		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length == 1 && !/svyaznoy/.test(deliveryBoxes()[0].state) && !$root.lifeGift(), ">
 			<div class="bBuyingLine">
 				<div class="bBuyingLine__eLeft">
 					<h2 class="bBuyingSteps__eTitle">
@@ -406,7 +413,7 @@ if ($oneClick) {
 					<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
 						<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
 						<div class="bBuyingLine__eRight mSClub">
-							<input id="sclub-number" type="text" class="bBuyingLine__eText" placeholder="2 98хххх ххххxx" name="order[sclub_card_number]"<? if ($user->getEntity()): ?> value="<?= $user->getEntity()->getSclubCardnumber() ?>"<? endif ?>/>
+							<input id="bonus-card-number" type="text" class="bBuyingLine__eText" placeholder="2 98хххх ххххxx" name="order[bonus_card_number]" />
 							<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
 						</div>
 					</div>
@@ -492,37 +499,7 @@ if ($oneClick) {
 						<textarea id="order_extra" class="bBuyingLine__eTextarea" name="order[extra]" cols="30" rows="4"></textarea>
 					</div>
 
-					<label class="bBuyingLine__eLeft">Карта программы лояльности</label>
-
-					<div class="bBuyingLine__eRight">
-						<ul class="bSaleList bInputList clearfix">
-							<li class="bSaleList__eItem">
-								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon1" name="add_cupon" />
-								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon1">Связной-клуб</label>
-							</li>
-
-							<li class="bSaleList__eItem">
-								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon2" name="add_cupon" />
-								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon2">Польза</label>
-							</li>
-
-							<li class="bSaleList__eItem">
-								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon3" name="add_cupon" />
-								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon3">Homecredit</label>
-							</li>
-
-							<li class="bSaleList__eItem">
-								<input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon4" name="add_cupon" />
-								<label class="bCustomLabel mCustomLabelRadioBig" for="cupon4">Какая-то карта</label>
-							</li>
-						</ul>
-
-						<div class="bBuyingLine__eRight mSClub">
-                            <label class="bPlaceholder">Номер</label>
-							<input id="sclub-number" type="text" placeholder="2 98хххх ххххxx" class="bBuyingLine__eText" name="order[sclub_card_number]"<? if ($user->getEntity()): ?> value="<?= $user->getEntity()->getSclubCardnumber() ?>"<? endif ?> />
-							<div class="bText">Вы получите от 1% плюсами на карту<br/> &laquo;Связной-Клуб&raquo;. Номер карты указан<br/> на обороте под штрихкодом.</div>
-						</div>
-					</div>
+                    <?= $helper->render('order/_bonusCard', ['bonusCards' => $bonusCards, 'bonusCardsData' => $bonusCardsData]) // карты лояльности ?>
 				<? endif ?>
 			</div>
 		

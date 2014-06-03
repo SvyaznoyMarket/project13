@@ -5,7 +5,7 @@
 return function (
     \Helper\TemplateHelper $helper,
     array $products,
-    $product
+    \Model\Product\Entity $product
 ) {
 
 ?>
@@ -14,7 +14,9 @@ return function (
 <div class="packageSet">
     <div class="packageSetHead cleared">
         <span class="packageSetHead_title">Базовая комплектация набора</span>
-        <span class="packageSetHead_change"><span class="packageSetHead_changeText jsChangePackageSet">Изменить комплектацию</span></span>
+        <? if (!$product->getIsKitLocked()) : ?>
+            <span class="packageSetHead_change"><span class="packageSetHead_changeText jsChangePackageSet">Изменить комплектацию</span></span>
+        <? endif ?>
     </div>
 
     <? foreach ($products as $p) : ?>
@@ -26,6 +28,8 @@ return function (
 
             <div class="packageSetBodyItem_desc rown">
                 <div class="name"><a class="" href="<?= $p['product']->getLink() ?>"><?= $p['product']->getName(); ?></a></div><!--/ название товара -->
+
+                <? if ($p['height']!='' || $p['width']!='' || $p['depth']!='') : ?>
 
                 <!-- размеры товара -->
                 <div class="column dimantion">
@@ -58,6 +62,8 @@ return function (
                     <span class="dimantion_val">см</span>
                 </div>
                 <!--/ размеры товара -->
+
+                <? endif; ?>
             </div>
 
             <div class="packageSetBodyItem_delivery rown <?= $p['deliveryDate'] == '' ? 'packageSetBodyItem_delivery-nodate' : ''?>">

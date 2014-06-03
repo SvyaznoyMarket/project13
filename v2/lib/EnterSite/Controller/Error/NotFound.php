@@ -5,6 +5,7 @@ namespace EnterSite\Controller\Error;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\MustacheRendererTrait;
+use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Model;
 //use EnterSite\Model\Page\Error\NotFound as Page;
@@ -44,6 +45,15 @@ class NotFound {
             $response->content = $renderer->render('page/error', $page);
         }
 
-        return $response;
+        //return $response;
+
+        // FIXME: убрать
+        //$url = str_replace('m.', '', $request->getSchemeAndHttpHost() . $request->getRequestUri());
+        $url = strtr($request->getSchemeAndHttpHost(), [
+            'm.'    => '',
+            ':8080' => '', //FIXME: костыль для nginx-а
+        ]) . $request->getRequestUri();
+
+        return (new Controller\Redirect())->execute($url, 302);
     }
 }

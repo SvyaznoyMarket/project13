@@ -167,17 +167,25 @@ class Action {
                 foreach ($result['delivery_methods'] as $item) {
                     $token = $item['token'];
 
-                    // TODO standart_other - Плановая дата доставки
+                    // TODO перенести в модель
                     switch (true) {
-                        case (false !== strpos($token, 'standart')):
+                        case ($token == 'standart'):
                             $item['name'] = 'Доставим';
                             break;
-                        case (false !== strpos($token, 'self')):
-                        case (false !== strpos($token, 'now')):
+                        case ($token == 'self'):
+                        case ($token == 'now'):
                             $item['name'] = 'Самовывоз';
                             break;
-                        case (false !== strpos($token, 'pickpoint')):
+                        case ($token == 'pickpoint'):
                             $item['name'] = 'PickPoint';
+                            break;
+                        case ($token == 'self_svyaznoy'):
+                            $item['name'] = "Самовывоз (ООО «Связной-Логистика»)";
+                            break;
+                        case ($token == 'standart_svyaznoy'):
+                            $item['name'] = "Доставим (ООО «Связной-Логистика»)";
+                            break;
+                        default: $item['name'] = "";
                     }
 
                     $responseData['deliveryStates'][$token] = $item;
@@ -187,6 +195,7 @@ class Action {
             // Points By Delivery
             $responseData['pointsByDelivery'] = [
                 'self'      => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
+                'self_svyaznoy'      => ['token' => 'shops_svyaznoy', 'changeName' => 'Сменить магазин'],
                 'now'       => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
                 'pickpoint' => ['token' => 'pickpoints', 'changeName' => 'Сменить постамат'],
             ];
@@ -249,7 +258,7 @@ class Action {
                             $points[$point['id']] = $point;
 
                             // если самовывоз, то добавляем ид товара в соответствующий магазин
-                            if (in_array($deliveryMethod['token'], ['self', 'now'])) {
+                            if (in_array($deliveryMethod['token'], ['self', 'now', 'self_svyaznoy'])) {
                                 if (!isset($productIdsByShop[$point['id']])) {
                                     $productIdsByShop[$point['id']] = [];
                                 }
@@ -315,9 +324,13 @@ class Action {
                 ];
             }
 
+            //if (isset($result['shops_svyaznoy'])) $result['shops'] = array_merge($result['shops'], $result['shops_svyaznoy']);
+
             // Магазины
-            if (isset($result['shops'])) {
-                foreach ($result['shops'] as $shopItem) {
+            foreach (['shops', 'shops_svyaznoy'] as $shopToken) {
+
+            if (isset($result[$shopToken])) {
+                foreach ($result[$shopToken] as $shopItem) {
                     $shopId = (string)$shopItem['id'];
                     if (!isset($productIdsByShop[$shopId])) continue;
                     if (empty($shopItem['coord_lat']) || empty($shopItem['coord_long'])) {
@@ -325,22 +338,22 @@ class Action {
                         continue;
                     }
 
-                    $responseData['shops'][] = [
+                    $responseData[$shopToken][] = [
                         'id'         => $shopId,
-                        'name'       => $shopItem['name'],
+                        'name'       => $shopToken == 'shops_svyaznoy' ? $shopItem['address'] .'; '. $shopItem['name'] : $shopItem['name'],
                         'address'    => $shopItem['address'],
                         'regtime'    => $shopItem['working_time'],
                         'latitude'   => (float)$shopItem['coord_lat'],
                         'longitude'  => (float)$shopItem['coord_long'],
                         'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
-                        'pointImage' => '/images/marker.png',
+                        'pointImage' => $shopToken == 'shops_svyaznoy' ? '/images/marker-svyaznoy.png' : '/images/marker.png',
                         'buttonName' => isset($responseData['deliveryTypes']['now']['buttonName']) ? $responseData['deliveryTypes']['now']['buttonName'] :
                             (isset($responseData['deliveryTypes']['standart']['buttonName']) ? $responseData['deliveryTypes']['standart']['buttonName'] : ''),
                     ];
                 }
                 // сортировка магазинов
-                if (\App::config()->region['defaultId'] != $region->getId() && $region->getLatitude() && $region->getLongitude() && !empty($responseData['shops'])) {
-                    usort($responseData['shops'], function($a, $b) use (&$region) {
+                if (\App::config()->region['defaultId'] != $region->getId() && $region->getLatitude() && $region->getLongitude() && !empty($responseData[$shopToken])) {
+                    usort($responseData[$shopToken], function($a, $b) use (&$region) {
                         if (!$a['latitude'] || !$a['longitude'] || !$b['latitude'] || !$b['longitude']) {
                             return 0;
                         }
@@ -348,6 +361,8 @@ class Action {
                         return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
                     });
                 }
+            }
+
             }
 
             // Пикпоинты

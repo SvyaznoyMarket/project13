@@ -48,29 +48,32 @@ class ProductButton {
             ],
         ]);
 
-        $button->class = '';
         $button->id = self::getId($product->id);
         $button->widgetId = self::getWidgetId($product->id);
         $button->text = 'Купить';
+        $button->isDisabled = false;
+        $button->isInShopOnly = false;
+        $button->isInCart = false;
+        $button->isQuick = false;
 
         // если товар в корзине
         if ($cartProduct) {
             $button->text = 'В корзине';
             $button->url = '/cart'; // TODO: route
             $button->dataUrl = '';
-            $button->class = ' btnBuy__incart';
+            $button->isInCart = true;
         } else {
             if ($product->isInShopOnly) {
-                $button->class .= ' btnBuy__inshop';
+                $button->isInShopOnly = true;
                 $button->text = 'Резерв';
-                //$button->url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]); // TODO
-                $button->class .= ' jsOneClickButton';
+                $button->url = $this->router->getUrlByRoute(new Routing\Order\Quick\Index(), ['product' => ['id' => $product->id, 'quantity' => 1]]);
+                $button->isQuick = true;
             }
 
             if (!$product->isBuyable) {
                 $button->url = '#';
-                $button->class .= ' btnBuy__disabled';
                 $button->text = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
+                $button->isDisabled = true;
             } else if (!$button->url) {
                 $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id));
             }

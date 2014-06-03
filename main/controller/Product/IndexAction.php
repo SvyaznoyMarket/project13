@@ -195,8 +195,11 @@ class IndexAction {
         $line = null;
         $parts = [];
         $kitProducts = [];
+        $relatedKits = [];
         $productRepository = \RepositoryManager::product();
         $productRepository->setEntityClass('\Model\Product\Entity');
+
+        if ($product->getId() == 146713) $product->setIsKitLocked(true);
 
         /* Набор пакеты */
         if ((bool)$product->getKit()) {
@@ -231,13 +234,16 @@ class IndexAction {
             $kitProducts = $this->prepareKit($parts, $restParts, $product, $region);
         }
 
-        // Если товар просто принадлежит линейке, то запросим продукты из этой линейки (для слайдера)
+        // Если у товара есть линия, то получим киты, в которые он входит
         if ($productLine instanceof \Model\Product\Line\Entity ) {
             try {
                 $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
-                $lineMainProductId = $line->getMainProductId();
-                $lineParts = $productRepository->getEntityById($lineMainProductId) ? array_map(function($a){ return $a->getId(); }, $productRepository->getEntityById($lineMainProductId)->getKit()) : [];
-                $parts = $productRepository->getCollectionById($lineParts);
+                $lineKits = $productRepository->getCollectionById($line->getKitId());
+                $relatedKitsIds = [];
+                foreach ($lineKits as $kit) {
+                    if (in_array($product->getId(), array_map(function($v){ return $v->getId(); }, $kit->getKit()))) $relatedKitsIds[] = $kit->getId();
+                }
+                if ((bool)$relatedKitsIds) $relatedKits = $productRepository->getCollectionById($relatedKitsIds);
             } catch (\Exception $e) {
                 \App::exception()->add($e);
                 \App::logger()->error($e);
@@ -397,6 +403,7 @@ class IndexAction {
         $page->setParam('accessoryCategory', $accessoryCategory);
         $page->setParam('kit', $kit);
         $page->setParam('kitProducts', $kitProducts);
+        $page->setParam('relatedKits', $relatedKits);
         $page->setParam('additionalData', $additionalData);
         $page->setParam('creditData', $creditData);
         $page->setParam('shopStates', $shopStates);
@@ -414,7 +421,6 @@ class IndexAction {
         $page->setParam('trustfactorMain', $trustfactors['main']);
         $page->setParam('trustfactorRight', $trustfactors['right']);
         $page->setParam('trustfactorContent', $trustfactors['content']);
-        $page->setParam('parts', $parts);
         $page->setParam('line', $line);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId()));
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);

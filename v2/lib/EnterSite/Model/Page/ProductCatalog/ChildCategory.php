@@ -20,6 +20,8 @@ namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
     use EnterSite\Model\Partial;
 
     class Content extends Page\DefaultLayout\Content {
+        /** @var Partial\ProductCatalog\ChildCategoryBlock|null */
+        public $childCategoryBlock;
         /** @var Partial\ProductBlock|null */
         public $productBlock;
         /** @var Partial\ProductFilterBlock|null */
