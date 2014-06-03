@@ -12,7 +12,7 @@
 	// end of vars
 
 	var
-		cardChangeHandler = function cardChangeHandler() {
+		cardChangeHandler = function cardChangeHandlerF() {
 			var
 				newCardData,
 				cardIndex,
@@ -22,7 +22,7 @@
 			// end of vars
 
 			var
-				changeCardImage = function changeCardImage() {
+				changeCardImage = function changeCardImageF() {
 					if ( !activeCard.length || !newCardData.hasOwnProperty('image') ) {
 						return;
 					}
@@ -30,7 +30,7 @@
 					activeCard.css('background', 'url(' + newCardData.image + ') 260px -3px no-repeat');
 				},
 
-				changeCardMask = function changeCardMask() {
+				changeCardMask = function changeCardMaskF() {
 					if ( !activeCardNumber.length || !newCardData.hasOwnProperty('mask') ) {
 						return;
 					}
@@ -39,7 +39,7 @@
 					activeCardNumber.mask(newCardData.mask, {placeholder: '*'});
 				},
 
-				changeCardDescription = function changeCardDescription() {
+				changeCardDescription = function changeCardDescriptionF() {
 					if ( !activeCardDescription.length || !newCardData.hasOwnProperty('description') ) {
 						return;
 					}
@@ -47,7 +47,7 @@
 					activeCardDescription.text(newCardData.description);
 				},
 
-				changeCardValue = function changeCardValue() {
+				changeCardValue = function changeCardValueF() {
 					if ( !activeCardNumber.length || !newCardData.hasOwnProperty('value') ) {
 						return;
 					}
@@ -80,13 +80,13 @@
 			changeCardDescription();
 		},
 
-		setDefaults = function setDefaults() {
+		setDefaults = function setDefaultsF() {
 			var
 				activeCardNumber = $('.jsActiveCard .jsCardNumber');
 			// end of vars
 
 			var
-				setMask = function setMask() {
+				setMask = function setMaskF() {
 					if ( !data[0].hasOwnProperty('mask') ) {
 						return;
 					}
@@ -94,7 +94,7 @@
 					activeCardNumber.mask(data[0].mask, {placeholder: '*'});
 				},
 
-				setValue = function setValue() {
+				setValue = function setValueF() {
 					if ( !data[0].hasOwnProperty('value') ) {
 						return;
 					}
