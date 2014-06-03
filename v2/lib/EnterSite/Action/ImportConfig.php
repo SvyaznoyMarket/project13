@@ -22,7 +22,7 @@ class ImportConfig {
 
         $config->debug = $importedConfig->debug;
 
-        $config->logger->fileAppender->file = $config->dir . '/log/main.log';
+        $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile.log';
 
         $config->session->name = $importedConfig->session['name'];
         $config->session->cookieLifetime = $importedConfig->session['cookie_lifetime'];
