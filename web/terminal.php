@@ -34,9 +34,9 @@ $request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, [], $_SERVER);
 $error = null;
 
 // config
-//(new \EnterSite\Action\ImportConfig())->execute($applicationDir, $applicationDir . '/config/config-local.php');
-(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . '/v2/config/terminal/config-local.php');
-//(new \EnterSite\Action\LoadCachedConfig())->execute($applicationDir . '/v2/config/config-local.json');
+//(new \EnterSite\Action\ImportConfig())->execute($applicationDir, $applicationDir . sprintf('/config/config-%s.php', $environment));
+(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . sprintf('/v2/config/config-%s.php', $environment));
+//(new \EnterSite\Action\LoadCachedConfig())->execute($applicationDir . sprintf('/v2/config/config-%s.php', $environment));
 
 // config post-handler
 (new \EnterSite\Action\HandleConfig())->execute($environment, $debug);
