@@ -134,6 +134,46 @@ class NewAction {
                 ];
             }
 
+            // получение карт лояльности
+            try {
+                $bonusCards = \RepositoryManager::bonusCard()->getCollection();
+            } catch (\Exception $e) {
+                \App::logger()->error($e);
+                \App::exception()->remove($e);
+
+                $bonusCards = [];
+            }
+
+            $userCards = [];
+            if ($user->getEntity() && $user->getEntity()->getBonusCard()) {
+                foreach ($user->getEntity()->getBonusCard() as $card) {
+                    if (
+                        !array_key_exists('bonus_card_id', $card) || !(bool)$card['bonus_card_id'] ||
+                        !array_key_exists('number', $card) || !(bool)$card['number']
+                    ) {
+                        continue;
+                    }
+
+                    $userCards[$card['bonus_card_id']] = $card['number'];
+                }
+            }
+
+            // подготавливаем массив данных для JS
+            $bonusCardsData = [];
+            foreach ($bonusCards as $card) {
+                if (!$card instanceof \Model\Order\BonusCard\Entity) continue;
+
+                $bonusCardsData[] = [
+                    'id' => $card->getId(),
+                    'name' => $card->getName(),
+                    'description' => $card->getDescription(),
+                    'image' => $card->getImage(),
+                    'mask' => $card->getMask(),
+                    'prefix' => $card->getPrefix(),
+                    'value' => array_key_exists($card->getId(), $userCards) ? $userCards[$card->getId()] : '',
+                ];
+            }
+
             $page = new \View\Order\NewPage();
             $page->setParam('paypalECS', false);
             $page->setParam('oneClick', true);
@@ -146,6 +186,8 @@ class NewAction {
             $page->setParam('creditData', $creditData);
             $page->setParam('form', $form);
             $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
+            $page->setParam('bonusCards', $bonusCards);
+            $page->setParam('bonusCardsData', $bonusCardsData);
 
             return new \Http\Response($page->show());
 
