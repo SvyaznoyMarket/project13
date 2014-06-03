@@ -5,10 +5,10 @@
 </div><!--/ кнопки - показать фильтры -->
 
 <!-- параметры фильтрации -->
-<div class="params">
+<div class="params js-params">
     {{#filters}}
-        <div class="params_title">{{name}}</div>
-        <div class="params_cont">
+        <div class="params_title js-params-title">{{name}}</div>
+        <div class="params_cont js-params-cont">
             {{>partial/product-list/filter}}
         </div>
     {{/filters}}

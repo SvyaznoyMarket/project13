@@ -73,64 +73,69 @@ define(
             $toInput.on('change', updateInput);
         });
 
-		var paramsBtn = $('.js-action-params'),
-			params = $('.params'),
+        var paramsBtn = $('.js-action-params'),
+            params = $('.js-params'),
 
-			paramsTitle = $('.params_title'),
-			paramsCont = $('.params_cont');
-		// end of vars
-		
-		var paramsAction = function paramsAction( event ) {
+            w = $(window),
+            paramsBtnFixed = $('.js-params-btns-fixed'),
+            scrollTarget = $('.js-params-btns'),
+            scrollTargetOffset,
 
-            var paramsBtnFixed = $('.paramsBtnFixed');
-
-			event.preventDefault();
-
-			params.toggleClass('params-open');
-			paramsTitle.removeClass('params_title-open');
-			paramsCont.removeClass('params_cont-open');
-
-            paramsBtnFixed.toggleClass('paramsBtnFixed-show');
-
-            var w = $(window),
-            scrollTarget,
-            scrollTargetOffset;
-
-            var checkScroll = function checkScroll() {
+            paramsTitle = $('.js-params-title'),
+            paramsCont = $('.js-params-cont');
+        // end of vars
+        
+        var 
+            /**
+             * Показать/скрыть доп понельку кнопок для фильтрации
+             */
+            paramsBtnShow = function paramsBtnShow() {
                 var
-                    nowScroll = w.scrollTop();
+                    nowScroll = w.scrollTop(),
                     nowScrollHeight = w.height();
-                // end of vars
+                // end of vars   
+                
+                scrollTargetOffset = scrollTarget.offset().top + scrollTarget.height();
 
-                if ( nowScroll <= Math.abs(nowScrollHeight - scrollTargetOffset) ) {
-                    $('.paramsBtnFixed').addClass('paramsBtnFixed-show');
+                if ( nowScroll <= Math.abs(nowScrollHeight - scrollTargetOffset) && scrollTargetOffset >= nowScrollHeight ) {
+                    paramsBtnFixed.addClass('paramsBtnFixed-show');
+                } else {
+                    paramsBtnFixed.removeClass('paramsBtnFixed-show');
                 }
-                else {
-                    $('.paramsBtnFixed').removeClass('paramsBtnFixed-show');
-                }
+            },
+
+            /**
+             * Показать/скрыть параметры фильтрации
+             */
+            paramsAction = function paramsAction( event ) { 
+                event.preventDefault();
+
+                params.toggleClass('params-open');
+                paramsTitle.removeClass('params_title-open');
+                paramsCont.removeClass('params_cont-open');
+
+                if ( params.hasClass('params-open') ) {
+                    scrollTargetOffset = scrollTarget.offset().top + scrollTarget.height();
+                    paramsBtnShow();
+                    w.on('scroll', paramsBtnShow);
+                } else {
+                    paramsBtnFixed.removeClass('paramsBtnFixed-show');
+                } 
+            },
+
+            /**
+             * Показать/скрыть подробности параметров фильтрации
+             */
+            paramsItem = function paramsItem() {
+                var $self = $(this);
+
+                $self.toggleClass('params_title-open').next('.params_cont').toggleClass('params_cont-open');
+
+                paramsBtnShow(); /** пересчет scrollTargetOffset при открытии параметра **/
             };
-
-            if ( $('.paramsBtnFixed').length ) {
-                scrollTarget = $('#productCatalog-filter-form');
-
-                if ( scrollTarget.length ) {
-                    scrollTargetOffset = scrollTarget.offset().top;
-                    w.on('scroll', checkScroll);
-                }
-            }
-		},
-
-		paramsItem = function paramsItem() {
-
-			var $self = $(this);
-
-			$self.toggleClass('params_title-open').next('.params_cont').toggleClass('params_cont-open');
-		};
-		// end of functions
+        // end of functions
         
-        
-
-		paramsBtn.on('click', paramsAction);
-		paramsTitle.on('click', paramsItem);
+        paramsBtn.on('click', paramsAction);
+        paramsTitle.on('click', paramsItem);
     }
 );
