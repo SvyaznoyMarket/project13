@@ -120,6 +120,7 @@ define(
                     w.on('scroll', paramsBtnShow);
                 } else {
                     paramsBtnFixed.removeClass('paramsBtnFixed-show');
+                    w.on('scroll', function() {paramsBtnFixed.removeClass('paramsBtnFixed-show');});
                 } 
             },
 

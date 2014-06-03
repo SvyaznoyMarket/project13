@@ -9,10 +9,14 @@
 		display: inline-block;
 		vertical-align: top;
 
-		padding: 0 20px 20px;
-		width: 199px;
-		margin: 0 0 30px;
+		position: relative;
 
+		margin: 0 0 50px;
+		padding: 0 20px 1px;
+
+		width: 199px;
+		height: 370px;
+		
 		border-right: 1px solid #e1e1e1;
 
 		&:nth-child(4n),
@@ -22,6 +26,19 @@
 
 		&:hover {
 			text-decoration: none;
+		}
+
+		&:after {
+			position: absolute;
+			bottom: -25px;
+			left: 0;
+
+			width: 101%;
+			height: 1px;
+
+			background: #E1E1E1;
+
+			content: "";
 		}
 	}
 
