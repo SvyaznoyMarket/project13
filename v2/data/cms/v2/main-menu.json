@@ -15,7 +15,7 @@
             ]
         },
         {
-            "name": "Товары<br/>для дома",
+            "name": "Товары для дома",
             "char": "A",
             "style": "",
             "styleHover": "",
@@ -27,7 +27,7 @@
             ]
         },
         {
-            "name": "Бытовая<br/>техника",
+            "name": "Бытовая техника",
             "char": "B",
             "style": "",
             "styleHover": "",
@@ -51,7 +51,7 @@
             ]
         },
         {
-            "name": "Детские<br/>товары",
+            "name": "Детские товары",
             "char": "D",
             "style": "",
             "styleHover": "",
@@ -63,7 +63,7 @@
             ]
         },
         {
-            "name": "Украшения<br/>и часы",
+            "name": "Украшения и часы",
             "char": "H",
             "style": "",
             "styleHover": "",
@@ -75,7 +75,7 @@
             ]
         },
         {
-            "name": "Парфюмерия<br/>и косметика",
+            "name": "Парфюмерия и косметика",
             "char": "L",
             "style": "",
             "styleHover": "",
@@ -87,7 +87,7 @@
             ]
         },
         {
-            "name": "Подарки<br/>и хобби",
+            "name": "Подарки и хобби",
             "char": "J",
             "style": "",
             "styleHover": "",
@@ -99,7 +99,7 @@
             ]
         },
         {
-            "name": "Сделай<br/>сам",
+            "name": "Сделай сам",
             "char": "F",
             "style": "",
             "styleHover": "",
@@ -147,7 +147,7 @@
             ]
         },
         {
-            "name": "Сад<br/>и огород",
+            "name": "Сад и огород",
             "char": "",
             "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/04/leyka.png') no-repeat 0 0;",
             "styleHover": "background-position: 0 -32px;",

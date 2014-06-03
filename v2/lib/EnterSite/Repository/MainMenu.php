@@ -55,7 +55,9 @@ class MainMenu {
 
                     if ((0 === strpos($source, 'category/get')) && !empty($params['id']) && isset($categoryItemsById[$params['id']])) {
                         $element = new Model\MainMenu\Element($elementItem);
-                        $element->name = (string)$categoryItemsById[$params['id']]['name'];
+                        if (!$element->name) {
+                            $element->name = (string)$categoryItemsById[$params['id']]['name'];
+                        }
                         $element->url = rtrim((string)$categoryItemsById[$params['id']]['link'], '/');
                     } else if ((0 === strpos($source, 'category/tree')) && !empty($params['root_id']) && isset($categoryItemsById[$params['root_id']])) {
                         $elementItems = [];
