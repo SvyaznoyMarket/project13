@@ -290,9 +290,9 @@ foreach ($productsById as $product) {
 	                        <? endif ?>
 						</ul>
 
-						<input class="bBuyingLine__eText mSaleInput" type="text" id="coupon_number" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
+						<input class="bBuyingLine__eText mSaleInput" type="text" id="coupon_number" data-bind="value: couponNumber, valueUpdate: 'afterkeydown', disable: couponsBox().length " />
 
-						<button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon">Применить</button>
+						<button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon, disable: couponsBox().length">Применить</button>
 
 						<p class="bSaleError" data-bind="text: couponError"></p>
 					</div>
