@@ -55,6 +55,7 @@ class ProductButton {
         $button->isDisabled = false;
         $button->isInShopOnly = false;
         $button->isInCart = false;
+        $button->isQuick = false;
 
         // если товар в корзине
         if ($cartProduct) {
@@ -66,8 +67,8 @@ class ProductButton {
             if ($product->isInShopOnly) {
                 $button->isInShopOnly = true;
                 $button->text = 'Резерв';
-                //$button->url = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]); // TODO
-                $button->class .= ' jsOneClickButton';
+                $button->url = $this->router->getUrlByRoute(new Routing\Order\Quick\Index(), ['product' => ['id' => $product->id, 'quantity' => 1]]);
+                $button->isQuick = true;
             }
 
             if (!$product->isBuyable) {

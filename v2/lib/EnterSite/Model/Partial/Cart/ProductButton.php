@@ -23,5 +23,7 @@ namespace EnterSite\Model\Partial\Cart {
         public $isInShopOnly;
         /** @var bool */
         public $isInCart;
+        /** @var bool */
+        public $isQuick;
     }
 }
