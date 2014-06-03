@@ -17,9 +17,8 @@ class MainMenu {
     public function getObjectByQuery(Query $menuListQuery, Query $categoryListQuery = null) {
         $menu = new Model\MainMenu();
 
-        //$menuData = $menuListQuery->getResult();
-        // TODO: исправить
-        $menuData = json_decode(file_get_contents($this->getConfig()->dir . '/v2/data/cms/v2/main-menu.json'), true);
+        $menuData = $menuListQuery->getResult();
+        //$menuData = json_decode(file_get_contents($this->getConfig()->dir . '/v2/data/cms/v2/main-menu.json'), true);
         $categoryData = $categoryListQuery->getResult();
 
         $categoryItemsById = [];
