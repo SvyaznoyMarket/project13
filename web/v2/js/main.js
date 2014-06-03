@@ -9,6 +9,7 @@ console.info('Init app', debug, version, moduleName);
 
 require.config({
     urlArgs: 't=' + version,
+    //baseUrl: '/v2/js' + (debug ? '' : '/build'),
     baseUrl: '/v2/js',
     paths: {
         //'jquery': 'http://yandex.st/jquery/2.1.0/jquery',
