@@ -1,0 +1,2 @@
+cd web/v2/js
+r.js -o build.js

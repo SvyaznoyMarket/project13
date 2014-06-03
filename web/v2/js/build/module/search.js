@@ -1,0 +1,1 @@
+define(["jquery"],function(o){searchForm=function(){var e=(o("body"),o(".jsSearchBox")),p=o(".jsSearch"),r=function(p){console.log("show search popup"),p.preventDefault();o(".header").height()+20;e.enterPopup({popupCSS:{top:0,marginTop:0}})};p.on("click",r)},console.log("show search popup app"),searchForm()});

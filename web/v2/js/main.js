@@ -9,8 +9,8 @@ console.info('Init app', debug, version, moduleName);
 
 require.config({
     urlArgs: 't=' + version,
-    //baseUrl: '/v2/js' + (debug ? '' : '/build'),
-    baseUrl: '/v2/js',
+    baseUrl: '/v2/js' + (debug ? '' : '/build'),
+    //baseUrl: '/v2/js',
     paths: {
         //'jquery': 'http://yandex.st/jquery/2.1.0/jquery',
         //'jquery'            : 'vendor/jquery-1.11.0',
@@ -100,7 +100,7 @@ require(
         'module/widget',      // виджеты
         'module/user.common', // инфо о пользователе
         'module/cart.common', // кнопка купить, спиннер
-        'module/product.catalog.common',
+        'module/product.catalog.common'
     ],
     function(require, config) {
         $.cookie.defaults.path = '/';
