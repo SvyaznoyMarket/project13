@@ -49,24 +49,26 @@ class IndexAction {
         // получаем купоны ренее выданные пользователю
         $userCouponSeries = [];
         $userCoupons = [];
-        $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken()], [],
-            function ($data) use (&$userCoupons, &$userCouponSeries) {
-                if (!isset($data['detail']) || !is_array($data['detail'])) {
-                    return;
-                }
+        if ( \App::user()->getToken() ) {
+            $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken()], [],
+                function ($data) use (&$userCoupons, &$userCouponSeries) {
+                    if (!isset($data['detail']) || !is_array($data['detail'])) {
+                        return;
+                    }
 
-                foreach($data['detail'] as $item) {
-                    $entity = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
-                    $userCoupons[] = $entity;
-                    $userCouponSeries[] = $entity->getSeries();
-                }
-            },
-            function(\Exception $e) {
-                \App::logger()->error($e->getMessage(), ['enterprize']);
-                \App::exception()->remove($e);
-            },
-            \App::config()->coreV2['timeout'] * 2
-        );
+                    foreach ($data['detail'] as $item) {
+                        $entity = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
+                        $userCoupons[] = $entity;
+                        $userCouponSeries[] = $entity->getSeries();
+                    }
+                },
+                function (\Exception $e) {
+                    \App::logger()->error($e->getMessage(), ['enterprize']);
+                    \App::exception()->remove($e);
+                },
+                \App::config()->coreV2['timeout'] * 2
+            );
+        }
 
         // выполнение пакета запросов
         $client->execute();
