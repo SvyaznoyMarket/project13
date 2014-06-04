@@ -21,7 +21,8 @@ class MoreLink {
             $link = new Partial\Link();
             $link->widgetId = self::getWidgetId();
 
-            $link->name = sprintf('Показать еще %s', $rest < $limit ? $rest : $limit);
+            //$link->name = sprintf('Показать еще %s', $rest < $limit ? $rest : $limit);
+            $link->name = 'Показать еще';
         }
 
         return $link;
