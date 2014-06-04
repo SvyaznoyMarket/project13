@@ -27,7 +27,7 @@ class Category {
         $curl = $this->getCurlClient();
         $productRepository = new Repository\Product();
         $productCategoryRepository = new Repository\Product\Category();
-        $filterRepository = new Repository\Product\Filter();
+        $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME
 
         // ид магазина
         $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -84,13 +84,9 @@ class Category {
         $curl->prepare($filterListQuery);
 
         // фильтры в запросе
-        // TODO: доделать фильтры
-        $requestFilters = []; //$filterRepository->getRequestObjectListByHttpRequest($request);
+        $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
         // фильтр категории в http-запросе
-        $categoryFilter = new Model\Product\RequestFilter();
-        $categoryFilter->name = 'category';
-        $categoryFilter->value = $category->id; // TODO: Model\Product\RequestFilterCollection::offsetSet
-        $requestFilters[] = $categoryFilter;
+        $requestFilters[] = $filterRepository->getRequestObjectByCategory($category);
 
         // запрос предка категории
         $ascendantCategoryItemQuery = new Query\Product\Category\GetAscendantItemByCategoryObject($category, $shop->regionId);
