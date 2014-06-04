@@ -3,7 +3,7 @@
 namespace EnterTerminal\Model\Page\ProductCatalog {
     use EnterSite\Model;
 
-    class ChildCategory {
+    class Category {
         /** @var Model\Product\Category */
         public $category;
         /** @var Model\Product\Catalog\Config */

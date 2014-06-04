@@ -10,7 +10,7 @@ use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
-use EnterTerminal\Model\Page\ProductCatalog\ChildCategory as Page;
+use EnterTerminal\Model\Page\ProductCatalog\Category as Page;
 
 class Category {
     use ConfigTrait, CurlClientTrait {
@@ -107,6 +107,8 @@ class Category {
 
         // фильтры
         $filters = $filterRepository->getObjectListByQuery($filterListQuery);
+        // значения для фильтров
+        $filterRepository->setValueForObjectList($filters, $requestFilters);
 
         // предки категории
         $category->ascendants = $productCategoryRepository->getAscendantListByQuery($ascendantCategoryItemQuery);

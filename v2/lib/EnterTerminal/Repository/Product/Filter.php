@@ -65,4 +65,38 @@ class Filter extends BaseRepository {
 
         return $return;
     }
+
+    /**
+     * @param Model\Product\Filter[] $filters
+     * @param Model\Product\RequestFilter[] $requestFilters
+     */
+    public function setValueForObjectList(array $filters, array $requestFilters) {
+        if (!(bool)$requestFilters) {
+            return;
+        }
+
+        $filtersByToken =[];
+        foreach ($filters as $filter) {
+            $filtersByToken[$filter->token] = $filter;
+        }
+
+        foreach ($requestFilters as $requestFilter) {
+            $filter = isset($filtersByToken[$requestFilter->token]) ? $filtersByToken[$requestFilter->token] : null;
+            if (!$filter) {
+                continue;
+            }
+
+            // FIXME
+            $filter->isSelected = true;
+            if (!isset($filter->value)) {
+                $filter->value;
+            }
+
+            if ($requestFilter->optionToken) {
+                $filter->value[$requestFilter->optionToken] = $requestFilter->value;
+            } else {
+                $filter->value[] = $requestFilter->value;
+            }
+        }
+    }
 }
