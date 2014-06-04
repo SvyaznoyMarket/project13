@@ -13,11 +13,13 @@
         <div class="js-debug-container-content id-debug-{{requestId}}-content" style="display: none;">
             <ul>
                 <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-query">query</a></li>
-                <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-session">session</a></li>
-                <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-config">config</a></li>
                 {{#error}}
                     <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-error">error</a></li>
                 {{/error}}
+                {{#session}}
+                    <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-session">session</a></li>
+                {{/session}}
+                <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-config">config</a></li>
             </ul>
 
             <div class="debug__tab__content" id="debug-{{requestId}}-content-query">
@@ -41,14 +43,6 @@
                 </div>
             </div>
 
-            <div class="debug__tab__content" id="debug-{{requestId}}-content-session" style="display: none;">
-                <pre>{{&session}}</pre>
-            </div>
-
-            <div class="debug__tab__content" id="debug-{{requestId}}-content-config" style="display: none;">
-                <pre>{{&config}}</pre>
-            </div>
-
             {{#error}}
             <div class="debug__tab__content" id="debug-{{requestId}}-content-error" style="display: none;">
                 <pre>
@@ -59,6 +53,16 @@
                 </pre>
             </div>
             {{/error}}
+
+            {{#session}}
+                <div class="debug__tab__content" id="debug-{{requestId}}-content-session" style="display: none;">
+                    <pre>{{&session}}</pre>
+                </div>
+            {{/session}}
+
+            <div class="debug__tab__content" id="debug-{{requestId}}-content-config" style="display: none;">
+                <pre>{{&config}}</pre>
+            </div>
 
         </div>
     </div>
