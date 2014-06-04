@@ -348,7 +348,7 @@ class EditForm {
         $numbers = [];
         if (is_array($this->bonusCard)) {
             foreach ($this->bonusCard as $item) {
-                if (isset($item['number']) && $item['number'] != '') $numbers[] = (string)$item['number'];
+                if (isset($item['number']) && $item['number'] != '') $numbers[] = str_replace(' ', '', $item['number']);
             }
         }
         return $numbers;
