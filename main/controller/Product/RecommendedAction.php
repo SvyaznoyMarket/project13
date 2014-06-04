@@ -60,7 +60,7 @@ class RecommendedAction {
                     $ids[$type] = $data;
 
                     // для блока "С этим товаром также покупают" к $ids добавляем связные товары
-                    if ('alsoBought' === $type) {
+                    if ('alsoBought' === $type && is_array($ids[$type])) {
                         $ids[$type] = array_unique(array_merge($product->getRelatedId(), $ids[$type]));
                     }
 

@@ -341,4 +341,17 @@ class EditForm {
         return $this->bonusCard;
     }
 
+    /**
+     * @return string[]
+     */
+    public function getBonusCardNumbers() {
+        $numbers = [];
+        if (is_array($this->bonusCard)) {
+            foreach ($this->bonusCard as $item) {
+                if ($item['number'] != '') $numbers[] = $item['number'];
+            }
+        }
+        return $numbers;
+    }
+
 }
