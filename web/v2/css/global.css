@@ -2428,6 +2428,9 @@ body.noScroll {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   z-index: 1020;
 }
+.debug__title {
+  padding-bottom: 4px;
+}
 .debug__title a,
 .debug__title a:hover {
   color: #00bce1;
@@ -2439,6 +2442,28 @@ body.noScroll {
 }
 .debug__container {
   margin-bottom: 4px;
+  border-bottom: 1px solid #ffffff;
+}
+.debug__container:first-child {
+  padding-top: 7px;
+}
+.debug__container:last-child {
+  border-bottom: 0 none;
+}
+.debug__tab__title {
+  display: inline;
+}
+.debug__tab__title a,
+.debug__tab__title a:hover {
+  border: #a0a0a0 1px solid;
+  padding: 1px 2px;
+  border-bottom: 0 none;
+  color: #a0a0a0;
+  text-decoration: none;
+}
+.debug__tab__content {
+  max-height: 500px;
+  overflow: auto;
 }
 .debug__queryMap {
   width: 961px;

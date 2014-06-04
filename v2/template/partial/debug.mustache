@@ -7,28 +7,59 @@
 <script id="tpl-debug-container" type="text/html">
     <div class="js-widget debug__container id-debug-{{requestId}} debug__container" style="display: none;">
         <div class="debug__title {{#error}}debug__error{{/error}}">
-            <a class="js-debug-container-link" href="#" data-content-selector=".id-debug-content-{{requestId}}">{{requestId}}</a>
+            <a class="js-debug-container-link" href="#" data-content-selector=".id-debug-{{requestId}}-content">{{requestId}}</a>
             {{#status}}<span class="debug__error" title="{{&status.text}}">{{status.code}}</span> {{/status}}{{path}}
         </div>
-        <div class="js-debug-container-content id-debug-content-{{requestId}}" style="display: none;">
-            <div class="debug__queryMap">
-                {{#queries}}
-                    <div title="{{url}}" style="border: solid 1px #ededed; background: {{css.color1}}; margin-left: {{css.left}}%; top: {{css.top}}px; width: {{css.width1}}%; height: 28px;">
-                    <span class="debug__queryMap__line">
-                        {{path}}
-                        <span style="color: #9b59bb;">{{time}}ms</span>
-                        <span style="color: #9b59bb;">{{call}}call</span>
-                    </span>
-                        <div style="position: relative; background: {{css.color2}}; width: {{css.width2}}%; height: 28px;"></div>
-                    </div>
-                {{/queries}}
+        <div class="js-debug-container-content id-debug-{{requestId}}-content" style="display: none;">
+            <ul>
+                <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-query">query</a></li>
+                <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-session">session</a></li>
+                <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-config">config</a></li>
+                {{#error}}
+                    <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-error">error</a></li>
+                {{/error}}
+            </ul>
 
-                {{#times.total}}
-                    <div style="margin-left: 2px;">
-                        total <span style="color: #9b59bb;">{{value}}{{unit}}</span>
-                    </div>
-                {{/times.total}}
+            <div class="debug__tab__content" id="debug-{{requestId}}-content-query">
+                <div class="debug__queryMap">
+                    {{#queries}}
+                        <div title="{{url}}" style="border: solid 1px #ededed; background: {{css.color1}}; margin-left: {{css.left}}%; top: {{css.top}}px; width: {{css.width1}}%; height: 28px;">
+                        <span class="debug__queryMap__line">
+                            {{path}}
+                            <span style="color: #9b59bb;">{{time}}ms</span>
+                            <span style="color: #9b59bb;">{{call}}call</span>
+                        </span>
+                            <div style="position: relative; background: {{css.color2}}; width: {{css.width2}}%; height: 28px;"></div>
+                        </div>
+                    {{/queries}}
+
+                    {{#times.total}}
+                        <div style="margin-left: 2px;">
+                            total <span style="color: #9b59bb;">{{value}}{{unit}}</span>
+                        </div>
+                    {{/times.total}}
+                </div>
             </div>
+
+            <div class="debug__tab__content" id="debug-{{requestId}}-content-session" style="display: none;">
+                <pre>{{&session}}</pre>
+            </div>
+
+            <div class="debug__tab__content" id="debug-{{requestId}}-content-config" style="display: none;">
+                <pre>{{&config}}</pre>
+            </div>
+
+            {{#error}}
+            <div class="debug__tab__content" id="debug-{{requestId}}-content-error" style="display: none;">
+                <pre>
+<strong>type:</strong> {{error.type}}
+<strong>message:</strong> {{error.message}}
+<strong>file:</strong> {{error.file}}
+<strong>line:</strong> {{error.line}}
+                </pre>
+            </div>
+            {{/error}}
+
         </div>
     </div>
 </script>

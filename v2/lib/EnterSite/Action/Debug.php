@@ -12,15 +12,15 @@ use EnterSite\ViewHelperTrait;
 use EnterSite\Model\Page\Debug as Page;
 
 class Debug {
-    use ConfigTrait, LoggerTrait, MustacheRendererTrait, SessionTrait {
+    use ConfigTrait, LoggerTrait, MustacheRendererTrait, SessionTrait, ViewHelperTrait {
         ConfigTrait::getConfig insteadof LoggerTrait, SessionTrait, MustacheRendererTrait;
         LoggerTrait::getLogger insteadof SessionTrait;
     }
-    use ViewHelperTrait;
 
     public function execute(Http\Request $request = null, Http\Response $response = null, \Exception $error = null, $startAt, $endAt) {
         $config = $this->getConfig();
         $logger = $this->getLogger();
+        $viewHelper = $this->getViewHelper();
 
         if (!$config->debug) {
             return;
@@ -60,11 +60,11 @@ class Debug {
 
         // session
         if (isset($GLOBALS['EnterSite\SessionTrait::getSession'])) {
-            $page->session = $this->getSession()->all();
+            $page->session = json_encode($this->getSession()->all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
         }
 
         // config
-        $page->config = (array)$config;
+        $page->config = json_encode((array)$config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 
         // curl query
         $i = 0;

@@ -68,12 +68,31 @@ define(
         });
 
         $body.on('click', function(e) {
-            if (true === $debug.data('opened')) {
+            var $el = $(e.target)
+            ;
+
+            if (!$el.closest('.js-debug').length) {
                 $debug.data('opened', false);
                 $debug.find('.js-widget').slideUp(100, function() {
                     $('.js-debug-link').show();
                 });
             }
+        });
+
+        $body.on('click', '.js-debug-tab', function(e) {
+            e.stopPropagation();
+
+            var $el = $(e.target);
+
+            $el.parents('.js-widget').find('.js-debug-tab').each(function(i, el) {
+                var $el = $(el);
+
+                $($el.attr('href')).hide();
+            });
+
+            $($el.attr('href')).show();
+
+            e.preventDefault();
         });
 
         $debug.find('.js-widget').each(function(i, el) {
