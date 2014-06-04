@@ -71,6 +71,17 @@ class ChildCategory {
         // категория
         $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
         if (!$category) {
+            // костыль для ядра
+            $categoryUi = isset($categoryAdminItemQuery->getResult()['ui']) ? $categoryAdminItemQuery->getResult()['ui'] : null;
+            $categoryItemQuery = $categoryUi ? new Query\Product\Category\GetItemByUi($categoryUi, $region->id) : null;
+
+            if ($categoryItemQuery) {
+                $curl->prepare($categoryItemQuery)->execute();
+                $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
+            }
+        }
+
+        if (!$category) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
         }
         if ($category->redirectLink) {
