@@ -156,7 +156,7 @@ class User {
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getToken() {
         return \App::session()->get($this->tokenName, null);
