@@ -39,7 +39,7 @@ class ProductCard {
         $shopItemQuery = new Query\Shop\GetItemById($shopId);
         $curl->prepare($shopItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // магазин
         $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
@@ -51,7 +51,7 @@ class ProductCard {
         $productItemQuery = new Query\Product\GetItemById($productId, $shop->regionId);
         $curl->prepare($productItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // товар
         $product = $productRepository->getObjectByQuery($productItemQuery);
@@ -91,7 +91,7 @@ class ProductCard {
             $curl->prepare($ratingListQuery);
         }
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // отзывы товара
         $reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
@@ -119,7 +119,7 @@ class ProductCard {
                 $shopListQuery = new Query\Shop\GetListByIdList($shopsIds);
                 $curl->prepare($shopListQuery);
 
-                $curl->execute(1, 2);
+                $curl->execute();
 
                 $productRepository->setShowroomDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
             }

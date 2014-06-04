@@ -32,7 +32,7 @@ class Layout {
         $shopItemQuery = new Query\Shop\GetItemById($shopId);
         $curl->prepare($shopItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // магазин
         $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
@@ -48,7 +48,7 @@ class Layout {
         $mainMenuQuery = new Query\MainMenu\GetItem();
         $curl->prepare($mainMenuQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // меню
         $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);

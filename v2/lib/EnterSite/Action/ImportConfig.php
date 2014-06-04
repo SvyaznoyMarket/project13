@@ -37,25 +37,23 @@ class ImportConfig {
 
         $config->curl->queryChunkSize = $importedConfig->coreV2['chunk_size'];
         $config->curl->logResponse = false;
+        $config->curl->retryTimeout = $importedConfig->coreV2['retryTimeout']['medium'];
+        $config->curl->retryCount = $importedConfig->coreV2['retryCount'];
 
         $config->coreService->url = str_replace('/v2/', '/', $importedConfig->coreV2['url']);
         $config->coreService->timeout = $importedConfig->coreV2['timeout'];
         $config->coreService->hugeTimeout = $importedConfig->coreV2['hugeTimeout'];
-        $config->coreService->retryCount = $importedConfig->coreV2['retryCount'];
         $config->coreService->clientId = $importedConfig->coreV2['client_id'];
 
         $config->cmsService->url = str_replace('/v1/', '/', $importedConfig->dataStore['url']);
         $config->cmsService->timeout = $importedConfig->dataStore['timeout'];
-        $config->cmsService->retryCount = $importedConfig->dataStore['retryCount'];
 
         $config->adminService->enabled = $importedConfig->shopScript['enabled'];
         $config->adminService->url = str_replace('/v2/', '/', $importedConfig->shopScript['url']);
         $config->adminService->timeout = $importedConfig->shopScript['timeout'];
-        $config->adminService->retryCount = $importedConfig->shopScript['retryCount'];
 
         $config->reviewService->url = $importedConfig->reviewsStore['url'];
         $config->reviewService->timeout = $importedConfig->reviewsStore['timeout'];
-        $config->reviewService->retryCount = $importedConfig->reviewsStore['retryCount'];
 
         $config->retailRocketService->account = $importedConfig->partners['RetailRocket']['account'];
         $config->retailRocketService->url = $importedConfig->partners['RetailRocket']['apiUrl'];

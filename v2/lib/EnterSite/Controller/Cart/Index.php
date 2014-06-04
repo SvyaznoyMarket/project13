@@ -45,7 +45,7 @@ class Index {
         $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
         $curl->prepare($cartItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // регион
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
@@ -66,7 +66,7 @@ class Index {
         $mainMenuQuery = new Query\MainMenu\GetItem();
         $curl->prepare($mainMenuQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         $cartProducts = $cart->product;
         $productsById = $productListQuery ? (new Repository\Product)->getIndexedObjectListByQueryList([$productListQuery]) : [];

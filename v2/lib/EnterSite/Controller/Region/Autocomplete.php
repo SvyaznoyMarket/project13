@@ -31,7 +31,7 @@ class Autocomplete {
         $regionListQuery = new Query\Region\GetListByKeyword($keyword);
         $curl->prepare($regionListQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         $i = 0;
         foreach ($regionListQuery->getResult() as $regionItem) {

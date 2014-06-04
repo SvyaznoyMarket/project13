@@ -34,7 +34,7 @@ class RecommendedList {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // регион
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
@@ -43,7 +43,7 @@ class RecommendedList {
         $productItemQuery = new Query\Product\GetItemById($productId, $region->id);
         $curl->prepare($productItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // товар
         $product = $productRepository->getObjectByQuery($productItemQuery);
@@ -66,7 +66,7 @@ class RecommendedList {
             $curl->prepare($itemToItemsListQuery);
         }
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // идетификаторы товаров "с этим товаром также покупают"
         $alsoBoughtIdList = $product->relatedIds;
@@ -104,7 +104,7 @@ class RecommendedList {
             $productListQueries[] = $productListQuery;
         }
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // товары
         $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);

@@ -48,7 +48,7 @@ class SetProduct {
         $shopItemQuery = new Query\Shop\GetItemById($shopId);
         $curl->prepare($shopItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // магазин
         $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
@@ -72,7 +72,7 @@ class SetProduct {
         $cartItemQuery = new Query\Cart\GetItem($cart, $shop->regionId);
         $curl->prepare($cartItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // корзина из ядра
         $cart = $cartRepository->getObjectByQuery($cartItemQuery);

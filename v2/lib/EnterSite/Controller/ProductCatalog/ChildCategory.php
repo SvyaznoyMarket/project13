@@ -51,7 +51,7 @@ class ChildCategory {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // регион
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
@@ -66,7 +66,7 @@ class ChildCategory {
             $curl->prepare($categoryAdminItemQuery);
         }
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // категория
         $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
@@ -98,7 +98,7 @@ class ChildCategory {
         $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
         $curl->prepare($categoryListQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // фильтры
         $filters = $filterRepository->getObjectListByQuery($filterListQuery);
@@ -135,7 +135,7 @@ class ChildCategory {
         $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($productIdPager->ids);
         $curl->prepare($videoGroupedListQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // список товаров
         $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];

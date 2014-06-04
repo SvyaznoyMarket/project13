@@ -39,7 +39,7 @@ class Set {
         $regionItemQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // response
         $response = (new Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);

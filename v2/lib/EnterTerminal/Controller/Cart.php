@@ -37,7 +37,7 @@ class Cart {
         $shopItemQuery = new Query\Shop\GetItemById($shopId);
         $curl->prepare($shopItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // магазин
         $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
@@ -62,7 +62,7 @@ class Cart {
         $cartItemQuery = new Query\Cart\GetItem($cart, $shop->regionId);
         $curl->prepare($cartItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         if ($productListQuery) {
             $productsById = (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]);

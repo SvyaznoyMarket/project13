@@ -59,7 +59,7 @@ class Category {
         $shopItemQuery = new Query\Shop\GetItemById($shopId);
         $curl->prepare($shopItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // магазин
         $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
@@ -71,7 +71,7 @@ class Category {
         $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryId, $shop->regionId);
         $curl->prepare($categoryItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // категория
         $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, null);
@@ -107,7 +107,7 @@ class Category {
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // фильтры
         $filters = $filterRepository->getObjectListByQuery($filterListQuery);
@@ -140,7 +140,7 @@ class Category {
         $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($productIdPager->ids);
         $curl->prepare($videoGroupedListQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // список товаров
         $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);

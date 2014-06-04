@@ -72,7 +72,7 @@ class SetProduct {
             $curl->prepare($productListQuery);
         }
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // корзина из ядра
         $cart = $cartRepository->getObjectByQuery($cartItemQuery);

@@ -122,6 +122,10 @@ namespace EnterSite\Config\Application {
         public $queryChunkSize;
         /** @var bool */
         public $logResponse;
+        /** @var float */
+        public $retryTimeout;
+        /** @var int */
+        public $retryCount;
     }
 
     class CurlService {
@@ -131,18 +135,12 @@ namespace EnterSite\Config\Application {
         public $user;
         /** @var string */
         public $password;
-        /** @var int */
+        /** @var float */
         public $timeout;
-        /** @var int */
+        /** @var float */
         public $hugeTimeout;
-        /** @var int */
-        public $retryTimeout;
-        /** @var int */
-        public $retryCount;
 
-        public function __construct() {
-            $this->retryTimeout = new CurlService\RetryTimeout();
-        }
+        public function __construct() {}
     }
 
     class CoreService extends CurlService {
@@ -228,22 +226,5 @@ namespace EnterSite\Config\Application\Logger {
     class FileAppender {
         /** @var string */
         public $file;
-    }
-}
-
-namespace EnterSite\Config\Application\CurlService {
-    class RetryTimeout {
-        /** @var int */
-        public $default;
-        /** @var int */
-        public $tiny;
-        /** @var int */
-        public $short;
-        /** @var int */
-        public $medium;
-        /** @var int */
-        public $long;
-        /** @var int */
-        public $huge;
     }
 }

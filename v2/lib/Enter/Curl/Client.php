@@ -107,6 +107,13 @@ class Client {
             return $this;
         }
 
+        if (null === $retryTimeout) {
+            $retryTimeout = $this->config->retryTimeout;
+        }
+        if (null === $retryCount) {
+            $retryCount = $this->config->retryCount;
+        }
+
         try {
             $absoluteTimeout = microtime(true);
 

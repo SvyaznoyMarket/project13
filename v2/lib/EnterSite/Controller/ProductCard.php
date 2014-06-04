@@ -36,7 +36,7 @@ class ProductCard {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // регион
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
@@ -45,7 +45,7 @@ class ProductCard {
         $productItemQuery = new Query\Product\GetItemByToken($productToken, $region->id);
         $curl->prepare($productItemQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // товар
         $product = $productRepository->getObjectByQuery($productItemQuery);
@@ -102,7 +102,7 @@ class ProductCard {
         $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($product->category ? $product->category->ascendants : [], [$product->category]), $product);
         $curl->prepare($catalogConfigQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // меню
         $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
@@ -134,7 +134,7 @@ class ProductCard {
                 $shopListQuery = new Query\Shop\GetListByIdList($shopsIds);
                 $curl->prepare($shopListQuery);
 
-                $curl->execute(1, 2);
+                $curl->execute();
 
                 $productRepository->setShowroomDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
             }

@@ -47,12 +47,12 @@ class ListByFilter {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // регион
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // фильтры в запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
@@ -68,7 +68,7 @@ class ListByFilter {
         $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // фильтры
         $filters = $filterListQuery ? $filterRepository->getObjectListByQuery($filterListQuery) : [];
@@ -94,7 +94,7 @@ class ListByFilter {
         $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($productIdPager->ids);
         $curl->prepare($videoGroupedListQuery);
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         // список товаров
         $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];

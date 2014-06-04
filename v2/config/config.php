@@ -21,30 +21,28 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->credit->cookieName = 'credit_on';
 
+    $config->curl->queryChunkSize = 50;
+    $config->curl->logResponse = false;
+    $config->curl->retryTimeout = 0.5;
+    $config->curl->retryCount = 2;
+
     $config->coreService->url = 'http://api.enter.ru/';
     $config->coreService->timeout = 5;
-    $config->coreService->retryCount = 2;
     $config->coreService->clientId = 'site';
 
     $config->cmsService->url = 'http://cms.enter.ru/';
     $config->cmsService->timeout = 1;
-    $config->cmsService->retryCount = 2;
 
     $config->adminService->enabled = true;
     $config->adminService->url = 'http://admin.enter.ru/';
     $config->adminService->timeout = 2;
-    $config->adminService->retryCount = 2;
 
     $config->reviewService->url = 'http://admin.enter.ru/reviews/';
     $config->reviewService->timeout = 2;
-    $config->reviewService->retryCount = 2;
 
     $config->retailRocketService->account = '519c7f3c0d422d0fe0ee9775';
     $config->retailRocketService->url = 'http://api.retailrocket.ru/api/';
     $config->retailRocketService->timeout = 0.5;
-
-    $config->curl->queryChunkSize = 50;
-    $config->curl->logResponse = false;
 
     $config->mustacheRenderer->dir = $config->dir . '/v2/vendor/mustache';
     $config->mustacheRenderer->templateDir = $config->dir . '/v2/template';

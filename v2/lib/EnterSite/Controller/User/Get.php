@@ -66,7 +66,7 @@ class Get {
             $curl->prepare($cartItemQuery);
         }
 
-        $curl->execute(1, 2);
+        $curl->execute();
 
         $user = $userItemQuery ? (new Repository\User())->getObjectByQuery($userItemQuery) : null;
 
