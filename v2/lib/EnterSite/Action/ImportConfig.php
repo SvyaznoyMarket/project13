@@ -37,6 +37,7 @@ class ImportConfig {
 
         $config->curl->queryChunkSize = $importedConfig->coreV2['chunk_size'];
         $config->curl->logResponse = false;
+        $config->curl->timeout = 90;
         $config->curl->retryTimeout = $importedConfig->coreV2['retryTimeout']['medium'];
         $config->curl->retryCount = $importedConfig->coreV2['retryCount'];
 

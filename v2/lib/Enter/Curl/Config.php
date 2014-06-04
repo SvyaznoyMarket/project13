@@ -9,6 +9,8 @@ class Config {
     public $referer;
     /** @var array */
     public $httpheader = [];
+    /** @var float */
+    public $timeout;
     /** @var int */
     public $retryCount;
     /** @var float */

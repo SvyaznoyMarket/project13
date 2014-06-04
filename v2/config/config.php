@@ -23,6 +23,7 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->curl->queryChunkSize = 50;
     $config->curl->logResponse = false;
+    $config->curl->timeout = 90;
     $config->curl->retryTimeout = 0.5;
     $config->curl->retryCount = 2;
 

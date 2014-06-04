@@ -123,6 +123,8 @@ namespace EnterSite\Config\Application {
         /** @var bool */
         public $logResponse;
         /** @var float */
+        public $timeout;
+        /** @var float */
         public $retryTimeout;
         /** @var int */
         public $retryCount;

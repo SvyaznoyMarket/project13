@@ -48,6 +48,11 @@ class Client {
      * @throws \Exception
      */
     public function query(Query $query) {
+        // таймаут по умолчанию
+        if (!$query->getTimeout()) {
+            $query->setTimeout($this->config->timeout);
+        }
+
         $query->incCall();
 
         $connection = $this->create($query);
