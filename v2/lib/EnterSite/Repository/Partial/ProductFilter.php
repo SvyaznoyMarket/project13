@@ -171,10 +171,14 @@ class ProductFilter {
             }
         }
 
+        // удаление пустых фильтров
         foreach ($filtersByToken as $i => $filter) {
             if (!(bool)$filter->elements) {
                 unset($filtersByToken[$i]);
+                continue;
             }
+
+            // TODO: сортировка элементов slider-фильтра: сначала from, потом to
         }
 
         return array_values($filtersByToken);
