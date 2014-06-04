@@ -118,8 +118,11 @@ class Category {
         $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
 
         // запрос списка товаров
-        $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $shop->regionId);
-        $curl->prepare($productListQuery);
+        $productListQuery = null;
+        if ((bool)$productIdPager->ids) {
+            $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $shop->regionId);
+            $curl->prepare($productListQuery);
+        }
 
         // запрос настроек каталога
         $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($category->ascendants, [$category]));
@@ -139,7 +142,7 @@ class Category {
         $curl->execute();
 
         // список товаров
-        $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
+        $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
 
         // настройки каталога
         $catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
