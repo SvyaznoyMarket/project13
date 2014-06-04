@@ -36,8 +36,13 @@ define(
                     console.info('slider', templateData, $widget);
 
                     $widget.trigger('render', templateData);
-                    $widget.parents('.js-container').show();
                     $body.trigger('render');
+
+                    var $parent = $widget.parents('.js-container');
+                    if ($parent.length) {
+                        $parent.show();
+                        $($parent.data('tabSelector')).animate({width: 'show'});
+                    }
                 });
 
                 $('.js-productSliderList').enterslide();

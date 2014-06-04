@@ -1609,6 +1609,8 @@ body.noScroll {
   background-color: #f6f6f6;
   padding: 8px 0;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .productDescTab_item:hover,
 .productDescTab_item-active {
@@ -2462,7 +2464,7 @@ body.noScroll {
   text-decoration: none;
 }
 .debug__tab__content {
-  max-height: 500px;
+  max-height: 400px;
   overflow: auto;
 }
 .debug__queryMap {

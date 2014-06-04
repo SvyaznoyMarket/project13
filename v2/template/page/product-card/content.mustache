@@ -193,7 +193,7 @@
             </li>
             {{/product.accessorySlider}}
 
-            <li class="productDescTab_item js-tabs-item">
+            <li id="id-product-alsoBoughtTab" class="productDescTab_item js-tabs-item" style="display: none;">
                 С этим товаром покупают
             </li>
         </ul>
@@ -278,7 +278,7 @@
                 <!--/ Таб - Аксессуары -->
             
                 <!-- Таб - С этим товаром покупают -->
-                <div class="tabContent js-container js-cont" style="display: none;">
+                <div class="tabContent js-container js-cont" data-tab-selector="#id-product-alsoBoughtTab" style="display: none;">
 
                     <div class="tabContent_title">С этим товаром покупают</div>
 
