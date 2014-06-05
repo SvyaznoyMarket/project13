@@ -3,11 +3,7 @@
         "name": "Главная",
         "pattern": "/"
     },
-    "Router": {
-        "name": "Маршрутизатор нескольких запросов",
-        "pattern": "/ajax/router",
-        "method": ["POST"]
-    },
+
     "ProductCard\\Get": {
         "name": "Карточка товара",
         "pattern": "/product/{productPath}",
@@ -40,6 +36,7 @@
         "name": "Список товаров",
         "pattern": "/ajax/product-list"
     },
+
     "Region\\Autocomplete": {
         "name": "Автоподстановка региона",
         "pattern": "/ajax/region/autocomplete"
@@ -51,6 +48,7 @@
             "regionId": "[\\w\\d-_]+"
         }
     },
+
     "Cart\\Index": {
         "name": "Корзина",
         "pattern": "/cart"
@@ -69,6 +67,7 @@
         "pattern": "/ajax/user/cart/product/delete",
         "method": ["POST"]
     },
+
     "Order\\Quick\\Index": {
         "name": "Оформление заказа в один клик",
         "pattern": "/orders/one-click/new"
@@ -77,6 +76,7 @@
         "name": "Оформление заказа",
         "pattern": "/orders/new"
     },
+
     "Shop\\Index": {
         "name": "Магазины",
         "pattern": "/shops"
@@ -89,6 +89,7 @@
             "shopToken": "[\\w\\d-_]+"
         }
     },
+
     "User\\Auth": {
         "name": "Авторизация",
         "pattern": "/login"
@@ -101,6 +102,11 @@
         "name": "Очистить корзину",
         "pattern": "/ajax/user/cart/clear",
         "method": ["DELETE"]
+    },
+
+    "Search\\Index": {
+        "name": "Поиск",
+        "pattern": "/search"
     },
 
     "Cart\\SetProduct": {
@@ -118,5 +124,11 @@
         "require": {
             "productId": "[\\w\\d-_]+"
         }
+    },
+
+    "Router": {
+        "name": "Маршрутизатор нескольких запросов",
+        "pattern": "/ajax/router",
+        "method": ["POST"]
     }
 }
