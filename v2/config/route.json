@@ -4,6 +4,14 @@
         "pattern": "/"
     },
 
+    "Promo\\Redirect": {
+        "name": "Редирект с баннера",
+        "pattern": "/banner-click/{promoId}",
+        "require": {
+            "promoId": "[\\w\\d-_]+"
+        }
+    },
+
     "ProductCard\\Get": {
         "name": "Карточка товара",
         "pattern": "/product/{productPath}",

@@ -11,6 +11,14 @@ class Promo {
     use LoggerTrait;
 
     /**
+     * @param Http\Request $request
+     * @return string|null
+     */
+    public function getIdByHttpRequest(Http\Request $request) {
+        return is_scalar($request->query['promoId']) ? (string)$request->query['promoId'] : null;
+    }
+
+    /**
      * @param Query $query
      * @return Model\Promo[]
      */
@@ -27,5 +35,28 @@ class Promo {
         }
 
         return $promos;
+    }
+
+    /**
+     * @param $id
+     * @param Query $query
+     * @return Model\Promo
+     */
+    public function getObjectByIdAndQuery($id, Query $query) {
+        $promo = null;
+
+        try {
+            foreach ($query->getResult() as $item) {
+                if (isset($item['id']) && ($id == $item['id'])) {
+                    $promo = new Model\Promo($item);
+                    break;
+                }
+            }
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            //trigger_error($e, E_USER_ERROR);
+        }
+
+        return $promo;
     }
 }

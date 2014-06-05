@@ -22,6 +22,8 @@ namespace EnterSite\Model\Page\Index {
     class Content extends Page\DefaultLayout\Content {
         /** @var Partial\ProductCatalog\CategoryBlock|null */
         public $categoryBlock;
+        /** @var string */
+        public $promoDataValue;
 
         public function __construct() {
             parent::__construct();

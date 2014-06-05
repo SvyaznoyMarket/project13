@@ -45,6 +45,17 @@ class Index {
             }
         }
 
+        $promoData = [];
+        foreach ($request->promos as $promoModel) {
+            $promoItem = [
+                'url'   => $router->getUrlByRoute(new Routing\Promo\Redirect($promoModel->id)),
+                'image' => null, // TODO
+            ];
+
+            $promoData[] = $promoItem;
+        }
+        $page->content->promoDataValue = $viewHelper->json($promoData);
+
         // шаблоны mustache
         foreach ([
 
