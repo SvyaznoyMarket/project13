@@ -10,6 +10,10 @@ use EnterSite\Model;
 class Cart {
     use ConfigTrait;
 
+    /**
+     * @param Http\Request $request
+     * @return Model\Cart\Product|null
+     */
     public function getProductObjectByHttpRequest(Http\Request $request) {
         $cartProduct = null;
 
