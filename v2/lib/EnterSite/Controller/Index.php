@@ -21,8 +21,8 @@ class Index {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
-        $productRepository = new Repository\Product();
         $productCategoryRepository = new Repository\Product\Category();
+        $promoRepository = new Repository\Promo();
 
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
@@ -40,6 +40,14 @@ class Index {
         $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
         $curl->prepare($categoryListQuery);
 
+        // запрос баннеров
+        $promoListQuery = new Query\Promo\GetList($region->id);
+        $curl->prepare($promoListQuery);
+
+        // запрос меню
+        $mainMenuQuery = new Query\MainMenu\GetItem();
+        $curl->prepare($mainMenuQuery);
+
         $curl->execute();
 
         // категории
@@ -51,11 +59,8 @@ class Index {
             trigger_error($e, E_USER_ERROR);
         }
 
-        // запрос меню
-        $mainMenuQuery = new Query\MainMenu\GetItem();
-        $curl->prepare($mainMenuQuery);
-
-        $curl->execute();
+        // баннеры
+        $promos = $promoRepository->getObjectListByQuery($promoListQuery);
 
         // меню
         $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
@@ -65,6 +70,7 @@ class Index {
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->categories = $categories;
+        $pageRequest->promos = $promos;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница
