@@ -29,9 +29,7 @@ class CheckRedirect {
         } catch (\Exception $e) {}
 
         $hasRedirect = false
-            //|| ($route instanceof Routing\ProductCatalog\GetChildCategory)
-            //|| ($route instanceof Routing\Cart\Index)
-            //|| ($route instanceof Routing\Index)
+            || ($route instanceof Routing\Index)
             || ($route instanceof Routing\User\Auth)
             || ($route instanceof Routing\User\Index)
             || ($route instanceof Routing\ShopCard\Get)
