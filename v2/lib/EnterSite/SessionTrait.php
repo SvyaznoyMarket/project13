@@ -25,7 +25,7 @@ trait SessionTrait {
             try {
                 $instance->start();
             } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'critical', 'error' => $e, 'action' => __METHOD__, 'tag' => ['session']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['critical', 'session']]);
             }
 
             $GLOBALS[__METHOD__] = $instance;

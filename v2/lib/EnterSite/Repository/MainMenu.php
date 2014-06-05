@@ -4,10 +4,13 @@ namespace EnterSite\Repository;
 
 use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
+use EnterSite\LoggerTrait;
 use EnterSite\Model;
 
 class MainMenu {
-    use ConfigTrait;
+    use ConfigTrait, LoggerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait;
+    }
 
     /**
      * @param Query $menuListQuery
@@ -17,8 +20,16 @@ class MainMenu {
     public function getObjectByQuery(Query $menuListQuery, Query $categoryListQuery = null) {
         $menu = new Model\MainMenu();
 
-        $menuData = $menuListQuery->getResult();
-        //$menuData = json_decode(file_get_contents($this->getConfig()->dir . '/v2/data/cms/v2/main-menu.json'), true);
+        try {
+            $menuData = $menuListQuery->getResult();
+            if (!(bool)$menuData) {
+                throw new \Exception('Пустое главное меню');
+            }
+        } catch (\Exception $e) {
+            $menuData = json_decode(file_get_contents($this->getConfig()->dir . '/v2/data/cms/v2/main-menu.json'), true);
+
+            trigger_error($e, E_USER_ERROR);
+        }
         $categoryData = $categoryListQuery->getResult();
 
         $categoryItemsById = [];

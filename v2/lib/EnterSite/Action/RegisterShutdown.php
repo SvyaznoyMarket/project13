@@ -3,10 +3,13 @@
 namespace EnterSite\Action;
 
 use Enter\Http;
+use EnterSite\LoggerTrait;
 use EnterSite\Action;
 use EnterSite\Controller;
 
 class RegisterShutdown {
+    use LoggerTrait;
+
     /**
      * @param Http\Request|null $request
      * @param Http\Response|null $response
@@ -22,10 +25,12 @@ class RegisterShutdown {
             $lastError = error_get_last();
             if ($lastError && (error_reporting() & $lastError['type'])) {
                 $response = (new Controller\Error\InternalServerError())->execute($request);
+                $this->getLogger()->push(['type' => 'error', 'error' => $lastError, 'tag' => ['critical']]);
             }
 
             if ($error) {
                 $response->statusCode = Http\Response::STATUS_INTERNAL_SERVER_ERROR;
+                $this->getLogger()->push(['type' => 'error', 'error' => $error, 'tag' => ['critical']]);
             }
 
             // logger
