@@ -108,7 +108,7 @@ class ChildCategory {
                 $page->content->filterBlock = new Partial\ProductFilterBlock();
                 $page->content->filterBlock->filters = $filters;
                 $page->content->filterBlock->openedFilters = (new Repository\Partial\ProductFilter())->getList($request->filters, $request->requestFilters, true);
-                $page->content->filterBlock->actionBlock->shownProductCount = sprintf('Показать (%s)', $request->count);
+                $page->content->filterBlock->actionBlock->shownProductCount = sprintf('Показать (%s)', $request->count > 999 ? '&infin;' : $request->count);
             }
 
             // выбранные фильтры

@@ -56,7 +56,7 @@ class ListByFilter {
         $page->widgets['.' . $widget->widgetId] = $widget;
 
         $widget = new Partial\ProductFilterActionBlock();
-        $widget->shownProductCount = sprintf('Показать (%s)', $request->count);
+        $widget->shownProductCount = sprintf('Показать (%s)', $request->count > 999 ? '&infin;' : $request->count);
         $page->widgets['.' . $widget->widgetId] = $widget;
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
