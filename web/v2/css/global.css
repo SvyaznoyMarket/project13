@@ -675,6 +675,9 @@ body.noScroll {
   padding: 25px 0 200px;
   margin: 35px 0 0;
 }
+.content-main {
+  background: #000000;
+}
 .pageTitle {
   font-size: 19px;
   border-bottom: 1px solid #b1b1b1;
@@ -3627,3 +3630,51 @@ body.noScroll {
 /* ==========================================================================
    Каталог -> блок с параметрами фильтра .params .paramsList
    ========================================================================== */
+/* ==========================================================================
+   Попапы .popupOverlay, .popupBox
+   ========================================================================== */
+.menuCat_item {
+  width: 25%;
+  float: left;
+}
+.menuCat_link {
+  display: block;
+  border-bottom: 1px solid #858585;
+  border-right: 1px solid #858585;
+  color: #ffffff;
+  text-align: center;
+  padding: 25px 0;
+}
+.menuCat_link:hover,
+.menuCat_link:active,
+.menuCat_link:focus {
+  color: #ffa901;
+  text-decoration: none;
+  outline: none;
+}
+.menuCat_link:nth-child(4n) {
+  border-right: 0 none;
+}
+.menuCat_chartWrap {
+  height: 80px;
+  line-height: 80px;
+}
+.menuCat_chart {
+  display: inline-block;
+  height: 80px;
+  vertical-align: top;
+  font-family: 'menuIconFont';
+  font-size: 220px;
+  margin: 0 0 15px;
+}
+.menuCat_name {
+  font-size: 16px;
+  display: block;
+}
+.mainBanner {
+  width: 100%;
+}
+.mainBanner img {
+  width: 100%;
+  height: auto;
+}
