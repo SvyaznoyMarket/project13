@@ -464,13 +464,6 @@ class Action extends \Controller\ProductCategory\Action {
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
 
-        $page->setParam('myThingsData', [
-            'EventType'   => 'MyThings.Event.Visit',
-            'Action'      => '1011',
-            'Category'    => isset($category->getAncestor()[0]) ? $category->getAncestor()[0]->getName() : null,
-            'SubCategory' => $category->getName()
-        ]);
-
         return new \Http\Response($page->show());
     }
 

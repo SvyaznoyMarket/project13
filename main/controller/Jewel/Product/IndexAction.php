@@ -257,11 +257,6 @@ class IndexAction extends \Controller\Product\IndexAction {
         $page->setParam('additionalData', $additionalData);
         $page->setParam('dataForCredit', $dataForCredit);
         $page->setParam('shopsWithQuantity', $shopsWithQuantity);
-        $page->setParam('myThingsData', array(
-            'EventType' => 'MyThings.Event.Visit',
-            'Action' => '1010',
-            'ProductId' => $product->getId(),
-        ));
         $page->setParam('reviewsData', $reviews['reviewsData']);
         $page->setParam('reviewsDataSummary', $reviews['reviewsDataSummary']);
         $page->setParam('viewParams', [

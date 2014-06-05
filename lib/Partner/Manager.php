@@ -11,7 +11,6 @@ class Manager {
     public function __construct() {
         $this->cookieName = \App::config()->partner['cookieName'];
         $this->cookieLifetime = \App::config()->partner['cookieLifetime'];
-        $this->cookieNames[\Partner\Counter\MyThings::NAME] = \App::config()->myThings['cookieName'];
     }
 
     /**
@@ -126,18 +125,6 @@ class Manager {
                 }
             }
 
-            // myThings
-            if (0 === strpos($utmSource, 'mythinqs')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieNames[\Partner\Counter\MyThings::NAME],
-                    \Partner\Counter\MyThings::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            }
             // CityAds
             if (0 === strpos($utmSource, 'cityads')) {
                 $response->headers->setCookie(new \Http\Cookie(
@@ -405,11 +392,6 @@ class Manager {
                     $prefix => [\Partner\Counter\Recreative::NAME],
                 ];
                 break;*/
-            case \Partner\Counter\MyThings::NAME:
-                $return = [
-                    $prefix => [\Partner\Counter\MyThings::NAME],
-                ];
-                break;
             case \Smartengine\Client::NAME:
                 $return = [
                     $prefix => [\Smartengine\Client::NAME],

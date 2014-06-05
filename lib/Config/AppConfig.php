@@ -236,15 +236,6 @@ class AppConfig {
         ],'enabled' => null,
     ];
 
-
-    /**
-     * @var array
-     * @hidden
-     */
-    public $myThings = [
-        'feeByCategory' => [],
-        'cookieName'    =>  null,
-    ];
     /** @var array */
     public $adFox = [
         'enabled' => null,
