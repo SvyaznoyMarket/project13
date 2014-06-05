@@ -56,8 +56,3 @@
 	};	
 
 })( jQuery );
-
-
-$(function(){
-    $('.popup').on('click', function() { $('.popupBox').enterPopup() } );
-});

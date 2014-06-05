@@ -1,35 +1,21 @@
 define(
-    ['jquery'],
+    ['jquery', 'jquery.popup'],
     function ($) {
+        var $body = $('body'),
 
-        searchForm = function() {
-            var body = $('body'),
-                popupSearch = $('.jsSearchBox'),
-                popupOpen = $('.jsSearch');
-            // end of vars
+            showPopup = function (e) {
+                e.stopPropagation();
 
-            var
-            /**
-             * Показываем попап формы поиска
-            */
-            searchPopup = function searchPopup( event ) {
-                console.log('show search popup');
+                console.log('showPopup');
 
-                event.preventDefault();
-
-                var topPopup = $('.header').height() + 20;
-
-                popupSearch.enterPopup({
-                    popupCSS : {top: 0, marginTop: 0}
+                $('.js-searchWindow').enterPopup({
+                    popupCSS : {top: $('.header').height() + 20, marginTop: 0}
                 });
-            };
-            //end of functions
 
-            popupOpen.on('click', searchPopup);
-        };
+                e.preventDefault();
+            }
+        ;
 
-		console.log('show search popup app');
-        searchForm();
-
+        $body.on('click', '.js-searchLink', showPopup);
     }
 );
