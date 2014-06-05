@@ -4,16 +4,31 @@ namespace EnterSite\Controller;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\Controller;
+use EnterSite\CurlClientTrait;
+use EnterSite\MustacheRendererTrait;
+use EnterSite\Repository;
+use EnterSite\Curl\Query;
+use EnterSite\Model;
+//use EnterSite\Model\Page\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
+    use ConfigTrait, CurlClientTrait, MustacheRendererTrait {
+        ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait;
     }
 
     public function execute() {
-        // FIXME: заглушка
-        return (new Controller\Redirect())->execute('/catalog/electronics/plansheti-3434', Http\Response::STATUS_FOUND);
+        $page = ['content' => ['categories' => []]];
+
+        // рендер
+        $renderer = $this->getRenderer();
+        $renderer->setPartials([
+            'content' => 'page/main/content',
+        ]);
+        $content = $renderer->render('layout/default', $page);
+
+        // http-ответ
+        $response = new Http\Response($content);
+
+        return $response;
     }
 }

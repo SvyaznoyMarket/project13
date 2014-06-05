@@ -29,7 +29,7 @@ class CheckRedirect {
         } catch (\Exception $e) {}
 
         $hasRedirect = false
-            || ($route instanceof Routing\Index)
+            //|| ($route instanceof Routing\Index)
             || ($route instanceof Routing\Search\Index)
             || ($route instanceof Routing\User\Auth)
             || ($route instanceof Routing\User\Index)
