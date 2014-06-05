@@ -3635,7 +3635,12 @@ body.noScroll {
    ========================================================================== */
 .menuCat_item {
   width: 25%;
+  height: 158px;
+  overflow: hidden;
   float: left;
+}
+.menuCat_item:nth-child(4n) .menuCat_link {
+  border-right: 0 none;
 }
 .menuCat_link {
   display: block;
@@ -3643,7 +3648,8 @@ body.noScroll {
   border-right: 1px solid #858585;
   color: #ffffff;
   text-align: center;
-  padding: 25px 0;
+  height: 127px;
+  padding: 15px 0;
 }
 .menuCat_link:hover,
 .menuCat_link:active,
@@ -3651,9 +3657,6 @@ body.noScroll {
   color: #ffa901;
   text-decoration: none;
   outline: none;
-}
-.menuCat_link:nth-child(4n) {
-  border-right: 0 none;
 }
 .menuCat_chartWrap {
   height: 80px;
@@ -3677,4 +3680,58 @@ body.noScroll {
 .mainBanner img {
   width: 100%;
   height: auto;
+}
+.bannersLine {
+  width: 100%;
+  padding: 25px 0;
+}
+.bannersLine_item {
+  float: left;
+  width: 25%;
+}
+.bannersLine_link {
+  display: block;
+  padding: 0 15px;
+}
+.bannersLine_img {
+  width: 100%;
+}
+@media only screen and (max-width: 650px) {
+  .menuCat_item {
+    width: 50%;
+  }
+  .menuCat_item:nth-child(2n) .menuCat_link {
+    border-right: 0 none;
+  }
+  .mainBanner {
+    width: 100%;
+  }
+  .mainBanner img {
+    width: 100%;
+    height: auto;
+  }
+  .bannersLine {
+    width: 100%;
+    padding: 0;
+  }
+  .bannersLine_item {
+    float: left;
+    width: 50%;
+    height: 158px;
+    overflow: hidden;
+  }
+  .bannersLine_item:nth-child(2n) .bannersLine_link {
+    border-right: 0 none;
+  }
+  .bannersLine_link {
+    padding: 15px 0;
+    border-bottom: 1px solid #858585;
+    border-right: 1px solid #858585;
+    text-align: center;
+    line-height: 127px;
+    height: 127px;
+  }
+  .bannersLine_img {
+    width: 80%;
+  }
 }

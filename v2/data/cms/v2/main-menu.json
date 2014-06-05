@@ -148,9 +148,9 @@
         },
         {
             "name": "Сад и огород",
-            "char": "",
-            "style": "background: url('http://content.enter.ru/wp-content/uploads/2013/04/leyka.png') no-repeat 0 0;",
-            "styleHover": "background-position: 0 -32px;",
+            "char": "K",
+            "style": "",
+            "styleHover": "",
             "source": "category/get?id=311",
             "children": [
                 {
