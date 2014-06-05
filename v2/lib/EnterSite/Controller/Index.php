@@ -50,15 +50,6 @@ class Index {
 
         $curl->execute();
 
-        // категории
-        $categories = $productCategoryRepository->getListByQuery($categoryListQuery);
-        if (!(bool)$categories) {
-            $e = new \Exception('На главной нет категорий');
-
-            $this->getLogger()->push(['type' => 'critical', 'error' => $e, 'action' => __METHOD__, 'tag' => ['controller']]);
-            trigger_error($e, E_USER_ERROR);
-        }
-
         // баннеры
         $promos = $promoRepository->getObjectListByQuery($promoListQuery);
 
@@ -69,7 +60,6 @@ class Index {
         $pageRequest = new Repository\Page\Index\Request();
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
-        $pageRequest->categories = $categories;
         $pageRequest->promos = $promos;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 

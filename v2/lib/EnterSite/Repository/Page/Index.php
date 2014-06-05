@@ -32,19 +32,6 @@ class Index {
 
         $page->dataModule = 'index';
 
-        $page->content->categoryBlock = false;
-        if ((bool)$request->categories) {
-            $page->content->categoryBlock = new Partial\ProductCatalog\CategoryBlock();
-            foreach ($request->categories as $categoryModel) {
-                $childCategory = new Partial\ProductCatalog\CategoryBlock\Category();
-                $childCategory->name = $categoryModel->name;
-                $childCategory->url = $categoryModel->link;
-                $childCategory->image = (string)(new Routing\Product\Category\GetImage($categoryModel->image, $categoryModel->id, 1));
-
-                $page->content->categoryBlock->categories[] = $childCategory;
-            }
-        }
-
         $promoData = [];
         foreach ($request->promos as $promoModel) {
             $promoItem = [

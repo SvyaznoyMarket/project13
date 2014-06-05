@@ -20,8 +20,6 @@ namespace EnterSite\Model\Page\Index {
     use EnterSite\Model\Partial;
 
     class Content extends Page\DefaultLayout\Content {
-        /** @var Partial\ProductCatalog\CategoryBlock|null */
-        public $categoryBlock;
         /** @var string */
         public $promoDataValue;
 
