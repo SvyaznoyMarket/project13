@@ -75,9 +75,11 @@ foreach ( $categories as $subCategory ) {
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
 
-    <? if(!empty($seoContent)): ?>
+    <? if (!empty($seoContent) || (bool)$hotlinks): ?>
         <div class="bSeoText">
             <?= $seoContent ?>
+
+            <?= $helper->render('product-category/__hotlink', ['hotlinks' => $hotlinks, 'promoStyle' => []]) // hotlinks ?>
         </div>
     <? endif ?>
 
