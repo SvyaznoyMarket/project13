@@ -1,0 +1,65 @@
+<?php
+
+namespace EnterSite\Repository\Page;
+
+use EnterSite\ConfigTrait;
+use EnterSite\LoggerTrait;
+use EnterSite\RouterTrait;
+use EnterSite\ViewHelperTrait;
+use EnterSite\Routing;
+use EnterSite\Repository;
+use EnterSite\Model;
+use EnterSite\Model\Partial;
+use EnterSite\Model\Page\Index as Page;
+
+class Index {
+    use ConfigTrait, LoggerTrait, RouterTrait, ViewHelperTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait, ViewHelperTrait;
+    }
+
+    /**
+     * @param Page $page
+     * @param Index\Request $request
+     */
+    public function buildObjectByRequest(Page $page, Index\Request $request) {
+        (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
+
+        $config = $this->getConfig();
+        $router = $this->getRouter();
+        $viewHelper = $this->getViewHelper();
+
+        $templateDir = $config->mustacheRenderer->templateDir;
+
+        $page->dataModule = 'index';
+
+        $page->content->categoryBlock = false;
+        if ((bool)$request->categories) {
+            $page->content->categoryBlock = new Partial\ProductCatalog\CategoryBlock();
+            foreach ($request->categories as $categoryModel) {
+                $childCategory = new Partial\ProductCatalog\CategoryBlock\Category();
+                $childCategory->name = $categoryModel->name;
+                $childCategory->url = $categoryModel->link;
+                $childCategory->image = (string)(new Routing\Product\Category\GetImage($categoryModel->image, $categoryModel->id, 1));
+
+                $page->content->categoryBlock->categories[] = $childCategory;
+            }
+        }
+
+        // шаблоны mustache
+        foreach ([
+
+        ] as $templateItem) {
+            try {
+                $template = new Model\Page\DefaultLayout\Template();
+                $template->id = $templateItem['id'];
+                $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
+
+                $page->templates[] = $template;
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['template']]);
+            }
+        }
+
+        //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    }
+}

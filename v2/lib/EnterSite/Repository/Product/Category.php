@@ -22,6 +22,24 @@ class Category {
     }
 
     /**
+     * Возвращает список категорий без дочерних узлов
+     *
+     * @param Query $query
+     * @return Model\Product\Category[]
+     */
+    public function getListByQuery(Query $query) {
+        $categories = [];
+
+        foreach ($query->getResult() as $item) {
+            if (isset($item['children'])) unset($item['children']);
+
+            $categories[] = new Model\Product\Category($item);
+        }
+
+        return $categories;
+    }
+
+    /**
      * Преобразовывает древовидную структуру данных в линейную
      * и возвращает список категорий от верхнего уровня до нижнего (branch)
      *

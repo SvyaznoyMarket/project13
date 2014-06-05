@@ -3,13 +3,13 @@
 namespace EnterSite\Model\Partial\ProductCatalog {
     use EnterSite\Model\Partial;
 
-    class ChildCategoryBlock {
-        /** @var ChildCategoryBlock\Category[] */
+    class CategoryBlock {
+        /** @var CategoryBlock\Category[] */
         public $categories = [];
     }
 }
 
-namespace EnterSite\Model\Partial\ProductCatalog\ChildCategoryBlock {
+namespace EnterSite\Model\Partial\ProductCatalog\CategoryBlock {
     use EnterSite\Model\Partial;
 
     class Category {
