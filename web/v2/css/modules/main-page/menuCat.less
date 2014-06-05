@@ -1,0 +1,63 @@
+.menuCat {
+
+	&_item {
+		width: 25%;
+
+		float: left;
+	}
+
+	&_link {
+		display: block;
+
+		border-bottom: 1px solid #858585;
+		border-right: 1px solid #858585;
+
+		color: @white;
+		text-align: center;
+
+		padding: 25px 0;
+
+		&:hover, 
+		&:active,
+		&:focus {
+			color: @firmOrange;
+			text-decoration: none;
+			outline: none;
+		}
+
+		&:nth-child(4n) {
+			border-right: 0 none;
+		}
+	}
+	
+	&_chartWrap {
+		height: 80px;
+		line-height: 80px;
+	}
+
+	&_chart {
+		display: inline-block;
+		height: 80px;
+	    vertical-align: top;
+
+	    font-family: 'menuIconFont';
+	    font-size: 220px;
+
+	    margin: 0 0 15px;
+	}
+
+	&_name {
+		font-size: 16px;
+
+		display: block;
+	}
+}
+
+.mainBanner {
+	width: 100%;
+
+	img {
+		width: 100%;
+		height: auto;
+	}
+} 
