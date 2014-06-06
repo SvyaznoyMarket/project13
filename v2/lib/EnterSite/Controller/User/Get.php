@@ -9,6 +9,7 @@ use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\RouterTrait;
 use EnterSite\SessionTrait;
+use EnterSite\DebugContainerTrait;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
 use EnterSite\Repository;
@@ -16,8 +17,8 @@ use EnterSite\Model\Page\User\Get as Page;
 use EnterSite\Routing;
 
 class Get {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait;
+    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait, DebugContainerTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
     }
 

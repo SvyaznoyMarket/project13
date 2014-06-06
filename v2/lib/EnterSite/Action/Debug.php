@@ -9,11 +9,12 @@ use EnterSite\LoggerTrait;
 use EnterSite\MustacheRendererTrait;
 use EnterSite\SessionTrait;
 use EnterSite\ViewHelperTrait;
+use EnterSite\DebugContainerTrait;
 use EnterSite\Model\Page\Debug as Page;
 
 class Debug {
-    use ConfigTrait, LoggerTrait, MustacheRendererTrait, SessionTrait, ViewHelperTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, SessionTrait, MustacheRendererTrait;
+    use ConfigTrait, LoggerTrait, MustacheRendererTrait, SessionTrait, ViewHelperTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait;
         LoggerTrait::getLogger insteadof SessionTrait;
     }
 
@@ -96,6 +97,16 @@ class Debug {
 
                 $i++;
             }
+        }
+
+        // данные из контейнера отладки
+        foreach (get_object_vars($this->getDebugContainer()) as $key => $value) {
+            if (isset($page->{$key})) {
+                $logger->push(['type' => 'warn', 'error' => sprintf('Свойство %s уже существует', $key), 'action' => __METHOD__, 'tag' => ['debug']]);
+                continue;
+            }
+
+            $page->{$key} = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
         }
 
         if ($response) {

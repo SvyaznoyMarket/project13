@@ -12,7 +12,7 @@
         </div>
         <div class="js-debug-container-content id-debug-{{requestId}}-content" style="display: none;">
             <ul>
-                <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-query">query</a></li>
+                <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-time">time</a></li>
                 {{#error}}
                     <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-error">error</a></li>
                 {{/error}}
@@ -20,9 +20,12 @@
                     <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-session">session</a></li>
                 {{/session}}
                 <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-config">config</a></li>
+                {{#page}}
+                    <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-page">page</a></li>
+                {{/page}}
             </ul>
 
-            <div class="debug__tab__content" id="debug-{{requestId}}-content-query">
+            <div class="debug__tab__content" id="debug-{{requestId}}-content-time">
                 <div class="debug__queryMap">
                     {{#queries}}
                         <div title="{{url}}" style="border: solid 1px #ededed; background: {{css.color1}}; margin-left: {{css.left}}%; top: {{css.top}}px; width: {{css.width1}}%; height: 28px;">
@@ -63,6 +66,12 @@
             <div class="debug__tab__content" id="debug-{{requestId}}-content-config" style="display: none;">
                 <pre>{{&config}}</pre>
             </div>
+
+            {{#page}}
+                <div class="debug__tab__content" id="debug-{{requestId}}-content-page" style="display: none;">
+                    <pre>{{&page}}</pre>
+                </div>
+            {{/page}}
 
         </div>
     </div>
