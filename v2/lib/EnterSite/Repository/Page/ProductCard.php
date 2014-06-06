@@ -302,9 +302,9 @@ class ProductCard {
                 'id'       => 'tpl-product-buyButtonBlock',
                 'name'     => 'page/product-card/buttonBlock',
                 'partials' => [
-                    'partial/cart/button',
-                    'partial/cart/spinner',
-                    'partial/cart/quickButton',
+                    //'partial/cart/button',
+                    //'partial/cart/spinner',
+                    //'partial/cart/quickButton',
                 ],
             ],
         ] as $templateItem) {
