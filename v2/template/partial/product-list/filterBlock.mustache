@@ -1,7 +1,7 @@
-<div class="catalogHead clearfix">
-    <div class="catalogHead_title js-action-params">Бренды и параметры</div>
+<div class="catalogHead js-action-params clearfix">
+    <div class="catalogHead_title">Бренды и параметры</div>
 
-    <a class="catalogHead_btn btnStyleGrey js-action-params" href=""><span class="arrow">Еще параметры</span></a>
+    <span class="catalogHead_btn btnStyleGrey"><span class="arrow">Еще параметры</span></span>
 </div><!--/ кнопки - показать фильтры -->
 
 <!-- параметры фильтрации -->
@@ -21,13 +21,12 @@
 
 <!-- фильтры  -->
 <div class="filter clearfix">
-    <div class="filterBox">
-        {{>partial/product-list/hotlink}}
+    
+    {{>partial/product-list/hotlink}}
 
-        {{#selectedFilterBlock}}
-            {{>partial/product-list/selectedFilter}}
-        {{/selectedFilterBlock}}
-    </div>
+    {{#selectedFilterBlock}}
+        {{>partial/product-list/selectedFilter}}
+    {{/selectedFilterBlock}}
 
     <!--
     <div class="viewNum">
