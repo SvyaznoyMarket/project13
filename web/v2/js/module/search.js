@@ -3,18 +3,18 @@ define(
     function ($) {
         var $body = $('body'),
 
-            showPopup = function (e) {
-                e.stopPropagation();
+        showPopup = function (e) {
+            e.stopPropagation();
 
-                console.log('showPopup');
+            console.log('showPopup');
 
-                $('.js-searchWindow').enterPopup({
-                    popupCSS : {top: $('.header').height() + 20, marginTop: 0}
-                });
+            $('.js-searchWindow').enterPopup({
+                popupCSS : {top: $('.header').height() + 20, marginTop: 0},
+                closeBtn: false
+            });
 
-                e.preventDefault();
-            }
-        ;
+            e.preventDefault();
+        };
 
         $body.on('click', '.js-searchLink', showPopup);
     }

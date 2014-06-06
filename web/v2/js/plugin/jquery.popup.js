@@ -40,6 +40,10 @@
                 $overlay.click(function(e) { closePopup(); e.preventDefault; });
                 $self.find(options.closeSelector).click(function(e) { closePopup(); e.preventDefault; });
             };
+
+            if(options.closeBtn) {
+                $self.find(options.closeSelector).css({'display' : 'block'});
+            };
   		});
     };
 
@@ -47,6 +51,7 @@
     	// закрыть popup
         closeSelector: ".popupBox_close",
         closeClick: true,
+        closeBtn: true,
 
         // поведение
         showOverlay: true,
