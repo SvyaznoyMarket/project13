@@ -40,7 +40,7 @@ class Promo {
     /**
      * @param $id
      * @param Query $query
-     * @return Model\Promo
+     * @return Model\Promo|null
      */
     public function getObjectByIdAndQuery($id, Query $query) {
         $promo = null;
