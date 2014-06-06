@@ -21,6 +21,7 @@ class Redirect {
 
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
+        $logger = $this->getLogger();
         $curl = $this->getCurlClient();
         $router = $this->getRouter();
         $productCategoryRepository = new Repository\Product\Category();
@@ -68,16 +69,68 @@ class Redirect {
                 }
             }
 
-            if ((bool)$productIds) {
-                $productListQuery = new Query\Product\GetListByIdList($productIds);
+            // запрос списка товаров
+            $productListQueries = [];
+            foreach (array_chunk($productIds, $config->curl->queryChunkSize) as $idsInChunk) {
+                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id);
                 $curl->prepare($productListQuery);
+
+                $productListQueries[] = $productListQuery;
             }
+
+            $productCategoryListQuery = null;
             if ((bool)$productCategoryIds) {
-                $productCategoryListQuery = new Query\Product\Category\GetListByIdList($productCategoryIds);
+                $productCategoryListQuery = new Query\Product\Category\GetListByIdList($productCategoryIds, $region->id);
                 $curl->prepare($productCategoryListQuery);
             }
 
             $curl->execute();
+
+            if ((bool)$productListQueries) {
+                if (1 == count($productIds)) {
+                    /** @var \Enter\Curl\Query $productListQuery */
+                    $productListQuery = reset($productListQueries);
+                    try {
+                        $item = $productListQuery->getResult();
+                        $item = reset($item);
+                        if (!empty($item['link'])) {
+                            $url = rtrim((string)$item['link'], '/');
+                        }
+
+                    } catch (\Exception $e) {
+                        $logger->push(['type' => 'error', 'error' => $e, 'tag' => ['controller', ['promo']]]);
+                    }
+                } else {
+                    $barcodes = [];
+                    array_walk($productListQueries, function(\Enter\Curl\Query $query) use (&$barcodes, &$logger) {
+                            try {
+                                foreach ($query->getResult() as $item) {
+                                    if (empty($item['bar_code'])) continue;
+
+                                    $barcodes[] = (string)$item['bar_code'];
+                                }
+                            } catch (\Exception $e) {
+                                $logger->push(['type' => 'error', 'error' => $e, 'tag' => ['controller', ['promo']]]);
+                            }
+                        });
+
+                    if ((bool)$barcodes) {
+                        // FIXME: использовать маршрут
+                        $url = sprintf('/products/set/%s', implode(',', $barcodes));
+                    }
+                }
+            } else if ((bool)$productCategoryListQuery) {
+                try {
+                    $item = $productCategoryListQuery->getResult();
+                    $item = reset($item);
+                    if (!empty($item['link'])) {
+                        $url = rtrim((string)$item['link'], '/');
+                    }
+
+                } catch (\Exception $e) {
+                    $logger->push(['type' => 'error', 'error' => $e, 'tag' => ['controller', ['promo']]]);
+                }
+            }
         }
 
         return (new Controller\Redirect())->execute($url, 302);
