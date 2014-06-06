@@ -121,6 +121,9 @@ class SetProduct {
         $widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById));
         $page->widgets['.' . $widget->widgetId] = $widget;
 
+        $widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct);
+        $page->widgets['.' . $widget->widgetId] = $widget;
+
         // response
         $response = new Http\JsonResponse([
             'result' => $page, // TODO: вынести на уровень JsonPage.result

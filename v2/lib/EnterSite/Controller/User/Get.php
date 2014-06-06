@@ -95,6 +95,9 @@ class Get {
                     'id' => $cartProduct->id,
                 ]);
 
+            $widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct);
+            $page->widgets['.' . $widget->widgetId] = $widget;
+
             $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
             $page->widgets['.' . $widget->widgetId] = $widget;
 

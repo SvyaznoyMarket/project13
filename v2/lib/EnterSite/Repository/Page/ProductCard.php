@@ -33,6 +33,7 @@ class ProductCard {
         $translateHelper = $this->getTranslateHelper();
 
         $templateDir = $config->mustacheRenderer->templateDir;
+        $cartProductLinkRepository = new Repository\Partial\Cart\ProductLink();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $cartProductSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
         $cartProductQuickButtonRepository = new Repository\Partial\Cart\ProductQuickButton();
@@ -64,9 +65,7 @@ class ProductCard {
         $page->content->product->shownPrice = $productModel->price ? number_format((float)$productModel->price, 0, ',', ' ') : null;
         $page->content->product->oldPrice = $productModel->oldPrice;
         $page->content->product->shownOldPrice = $productModel->oldPrice ? number_format((float)$productModel->oldPrice, 0, ',', ' ') : null;
-        $page->content->product->cartButton = $cartProductButtonRepository->getObject($productModel);
-        $page->content->product->cartSpinner = $cartProductSpinnerRepository->getObject($productModel);
-        $page->content->product->cartQuickButton = $cartProductQuickButtonRepository->getObject($productModel);
+        $page->content->product->cartButtonBlock = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($productModel);
 
         // доставка товара
         if ((bool)$productModel->nearestDeliveries) {
@@ -297,6 +296,15 @@ class ProductCard {
                 'name'     => 'partial/product-slider/default',
                 'partials' => [
                     'partial/cart/button',
+                ],
+            ],
+            [
+                'id'       => 'tpl-product-buyButtonBlock',
+                'name'     => 'page/product-card/buttonBlock',
+                'partials' => [
+                    'partial/cart/button',
+                    'partial/cart/spinner',
+                    'partial/cart/quickButton',
                 ],
             ],
         ] as $templateItem) {

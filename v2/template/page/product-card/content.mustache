@@ -108,7 +108,9 @@
                             <!--<div class="buyInfoLess"><a class="buyInfoLess__link" href="">Хочешь дешевле?</a></div>-->
                             <!--/ Купить дешевле -->
 
-                            {{>page/product-card/buttonBlock}}
+                            {{#product.cartButtonBlock}}
+                                {{>page/product-card/buttonBlock}}
+                            {{/product.cartButtonBlock}}
                         </div>
                     </div>
                     <!--/ Выбор варианта покупки, каунтер -->

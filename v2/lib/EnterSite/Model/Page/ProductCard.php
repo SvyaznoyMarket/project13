@@ -48,12 +48,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $oldPrice;
         /** @var string */
         public $shownOldPrice;
-        /** @var Partial\Cart\ProductButton|null */
-        public $cartButton;
-        /** @var Partial\Cart\ProductSpinner|null */
-        public $cartSpinner;
-        /** @var Partial\Cart\ProductQuickButton|null */
-        public $cartQuickButton;
+        /** @var Partial\ProductCard\CartButtonBlock|null */
+        public $cartButtonBlock;
         /** @var Product\DeliveryBlock */
         public $deliveryBlock;
         /** @var string */
@@ -90,6 +86,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $moreModelBlock;
         /** @var Partial\DirectCredit|null */
         public $credit;
+
+        public function __construct() {}
     }
 }
 

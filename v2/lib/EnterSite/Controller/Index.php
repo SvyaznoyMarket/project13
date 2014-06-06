@@ -7,14 +7,15 @@ use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\MustacheRendererTrait;
+use EnterSite\DebugContainerTrait;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, MustacheRendererTrait;
+    use ConfigTrait, LoggerTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait;
     }
 
@@ -66,6 +67,9 @@ class Index {
         // страница
         $page = new Page();
         (new Repository\Page\Index())->buildObjectByRequest($page, $pageRequest);
+
+        // debug
+        if ($config->debug) $this->getDebugContainer()->page = $page;
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         // рендер

@@ -6,6 +6,7 @@ use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\MustacheRendererTrait;
+use EnterSite\DebugContainerTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
@@ -13,8 +14,8 @@ use EnterSite\Model;
 use EnterSite\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, CurlClientTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait;
+    use ConfigTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait, DebugContainerTrait;
     }
 
     /**
@@ -175,6 +176,9 @@ class ProductCard {
         // страница
         $page = new Page();
         (new Repository\Page\ProductCard())->buildObjectByRequest($page, $pageRequest);
+
+        // debug
+        if ($config->debug) $this->getDebugContainer()->page = $page;
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         // рендер
