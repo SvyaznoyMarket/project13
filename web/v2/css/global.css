@@ -521,6 +521,12 @@ textarea[contenteditable] {
 .clearfix {
   *zoom: 1;
 }
+.borderBd {
+  border-bottom: 1px dotted;
+}
+.borderBs {
+  border-bottom: 1px solid;
+}
 .btnStyle {
   background: #ffc000;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
@@ -1230,6 +1236,24 @@ body.noScroll {
 .btnBuyOneClick_link {
   text-decoration: underline;
   font-size: 14px;
+}
+.buyingBtn {
+  background: #f6f6f6;
+  border: 1px solid #d8d8d8;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  height: 27px;
+  font-size: 18px;
+  line-height: 27px;
+  text-align: center;
+  padding: 5px 0;
+}
+.buyingBtn_cart {
+  display: inline-block;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAQCAYAAAD9L+QYAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB8klEQVQ4Ea2TPU8UYRCAdwU8QREUEgQjFyIhNLS0WhB7Gv4Cf4LSDq2IJbnG1gQKCohSQUKoKGggJEY+YgJC+JZP1+fZ7F6W3TOxYJInMzszNzPvvO+FQRA8gnfQBN+iKNpD35tUqBQlVCge3Bf1FJ2BAeiHkTAMv6JnwYYhKKmtVvRnfdk84+dwETolBev4GIVPOmETbHwNxh7UsI3b4A+Yo7bJFYzBlD9yDbeoCqyCP9qCtMkv7DOw4REcwg84hn3YBuO7CdbcpGYUF+fDBr9RH8Hib+AnvIKHYFHtG7BpGcx34g44hcfwGhxsDeLjqlOZxlgCm3aDx/QVtSX2U/QzUFrhCTiMdjNcwgKD2qxQ/ATfBwNIO3wHj+/anMhpLeCKvA/zPaG2JzJ3HmKprsUvOnrsOTChBfrAi3K3nWBxp3oJFjbmSSzeC65jBWLxSHnxGY3DW7Dgc3DyEnRBlNgv0A4n6QDVleAL4qeokZXkaQ7ia0z8XpxFs+9Z26Kp3xezzukP0LHULJ4G1TRq4geepiDEnLpE3HUVhUDh706WU/msFmEDhvN5+Hw5E+Ce30NjISfv8BvxLkbADy/rcz4PXxl8QeYsQ08+p9aFkhdf4AJ6CrzUSciLL0j/EHyBHbgj/7PzBiZy+oKwc9dX/6/4X7dIL7WKihT+AAAAAElFTkSuQmCC) no-repeat 0 8px;
+  padding-left: 27px;
+  font-size: 18px;
 }
 /* ==========================================================================
    Карточка товара
