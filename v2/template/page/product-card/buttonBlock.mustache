@@ -1,0 +1,21 @@
+<div class="buyInfoBuy">
+    <!-- Каунтер -->
+    {{#product.cartSpinner}}
+        {{>partial/cart/spinner}}
+    {{/product.cartSpinner}}
+    <!--/ Каунтер -->
+
+    <!-- Кнопка купить -->
+    {{#product.cartButton}}
+        {{>partial/cart/button}}
+    {{/product.cartButton}}
+    <!--/ Кнопка купить -->
+
+    {{#product.cartQuickButton}}
+        {{>partial/cart/quickButton}}
+    {{/product.cartQuickButton}}
+</div>
+
+<div class="buyingBtn">
+    <strong>1</strong> шт. в <span class="buyingBtn_cart"><a href="/cart" class="borderBs">корзине</a></span>
+</div>
