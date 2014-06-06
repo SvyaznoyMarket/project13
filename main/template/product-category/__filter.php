@@ -88,25 +88,6 @@ return function(
             <div class="bBtnPick clearfix">
                 <button type="submit" class="bBtnPick__eLink mBtnGrey">Подобрать</button>
             </div>
-
-            <!-- SEO теги -->
-            <? if(!empty($hotlinks)): ?>
-                <?
-                $hotlinksGroups = [];
-                foreach ($hotlinks as $hotlink) {
-                    $hotlinksGroups[$hotlink['group_name']][] = $hotlink;
-                } ?>
-
-                <? foreach($hotlinksGroups as $groupName => $group): ?>
-                    <?= !empty($groupName) ? "<br><b>$groupName:</b> " : '' ?>
-                    <ul class="bPopularSection"<? if(!empty($promoStyle['bPopularSection'])): ?> style="<?= $promoStyle['bPopularSection'] ?>"<? endif ?>>
-                        <? foreach ($group as $hotlink): ?>
-                            <li class="bPopularSection__eItem"><a class="bPopularSection__eText" href="<?= $hotlink['url'] ?>"><?= $hotlink['title'] ?></a></li>
-                        <? endforeach ?>
-                    </ul>
-                <? endforeach ?>
-            <? endif ?>
-            <!-- SEO теги -->
         </div>
 
         <!-- Фильтр по выбранным параметрам -->

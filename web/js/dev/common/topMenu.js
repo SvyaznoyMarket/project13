@@ -50,6 +50,11 @@
 				activateItemLvl1(el);
 			}
 		}, menuDelayLvl1 + 20);
+
+        el.find('.lazyMenuImg').each(function(i, elem) {
+            var $el = $(elem);
+            $el.attr('src', $el.data('src'))
+        })
 	};
 
 	/**

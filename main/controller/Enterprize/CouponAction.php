@@ -53,6 +53,7 @@ class CouponAction {
             $params['utm_medium'] = $request->query->get('utm_medium');
             $params['utm_content'] = $request->query->get('utm_content');
             $params['utm_campaign'] = $request->query->get('utm_campaign');
+            $params['utm_nooverride'] = '1'; // SITE-3478
 
             $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete', $params));
 
