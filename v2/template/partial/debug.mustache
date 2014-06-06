@@ -19,10 +19,15 @@
                 {{#session}}
                     <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-session">session</a></li>
                 {{/session}}
-                <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-config">config</a></li>
+                {{#git}}
+                    <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-git">git</a></li>
+                {{/git}}
                 {{#page}}
                     <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-page">page</a></li>
                 {{/page}}
+                {{#config}}
+                    <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-config">config</a></li>
+                {{/config}}
             </ul>
 
             <div class="debug__tab__content" id="debug-{{requestId}}-content-time">
@@ -63,9 +68,12 @@
                 </div>
             {{/session}}
 
-            <div class="debug__tab__content" id="debug-{{requestId}}-content-config" style="display: none;">
-                <pre>{{&config}}</pre>
-            </div>
+            {{#git}}
+                <div class="debug__tab__content" id="debug-{{requestId}}-content-git" style="display: none;">
+                    tag: {{tag}}<br />
+                    branch: {{branch}}<br />
+                </div>
+            {{/git}}
 
             {{#page}}
                 <div class="debug__tab__content" id="debug-{{requestId}}-content-page" style="display: none;">
@@ -73,6 +81,11 @@
                 </div>
             {{/page}}
 
+            {{#config}}
+                <div class="debug__tab__content" id="debug-{{requestId}}-content-config" style="display: none;">
+                    <pre>{{&config}}</pre>
+                </div>
+            {{/config}}
         </div>
     </div>
 </script>

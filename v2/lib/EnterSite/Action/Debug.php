@@ -49,6 +49,15 @@ class Debug {
             $page->error = new Page\Error($lastError);
         }
 
+        // git
+        try {
+            $page->git = new Page\Git();
+            $page->git->branch = trim(shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath($config->dir))));
+            $page->git->tag = trim(shell_exec(sprintf('cd %s && git describe --always --tag', realpath($config->dir))));
+        } catch (\Exception $e) {
+            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['debug']]);
+        }
+
         // times
         $page->times['total'] = new Page\Time();
         $page->times['total']->value = round($endAt - $startAt, 3);
