@@ -108,9 +108,11 @@ define(
              * Показать/скрыть параметры фильтрации
              */
             paramsAction = function paramsAction( event ) { 
-                event.preventDefault();
+                var $self = $(this);
 
                 params.toggleClass('params-open');
+                $self.toggleClass('catalogHead-open');
+
                 paramsTitle.removeClass('params_title-open');
                 paramsCont.removeClass('params_cont-open');
 
@@ -122,6 +124,8 @@ define(
                     paramsBtnFixed.removeClass('paramsBtnFixed-show');
                     w.on('scroll', function() {paramsBtnFixed.removeClass('paramsBtnFixed-show');});
                 } 
+
+                console.warn('params open')
             },
 
             /**
