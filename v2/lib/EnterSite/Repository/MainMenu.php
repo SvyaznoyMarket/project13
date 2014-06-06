@@ -30,6 +30,7 @@ class MainMenu {
 
             trigger_error($e, E_USER_ERROR);
         }
+        $menuData = json_decode(file_get_contents($this->getConfig()->dir . '/v2/data/cms/v2/main-menu.json'), true);
         $categoryData = $categoryListQuery->getResult();
 
         $categoryItemsById = [];

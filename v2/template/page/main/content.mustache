@@ -8,7 +8,10 @@
         {{#elements}}
             <li class="menuCat_item">
                 <a class="menuCat_link" href="{{url}}">
-                    <span class="menuCat_chartWrap"><span class="menuCat_chart" style="{{style}}">{{char}}</span></span>
+                    <span class="menuCat_chartWrap">
+                        <span class="menuCat_chart" style="{{style}}">{{char}}</span>
+                        {{#image}}<img src="{{image}}" />{{/image}}
+                    </span>
                     <span class="menuCat_name">{{&name}}</span>
                 </a>
             </li>

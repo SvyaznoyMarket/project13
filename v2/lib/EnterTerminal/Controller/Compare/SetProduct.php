@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterTerminal\Controller\Cart;
+namespace EnterTerminal\Controller\Compare;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
@@ -27,19 +27,19 @@ class SetProduct {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
         $session = $this->getSession();
-        $cartRepository = new Repository\Cart();
+        $compareRepository = new Repository\Compare();
 
-        // корзина из сессии
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        // сравнение из сессии
+        $compare = $compareRepository->getObjectByHttpSession($session);
 
-        // товара для корзины
-        $cartProduct = $cartRepository->getProductObjectByHttpRequest($request);
-        if (!$cartProduct) {
+        // товара для сравнения
+        $compareProduct = $compareRepository->getProductObjectByHttpRequest($request);
+        if (!$compareProduct) {
             throw new \Exception('Товар не получен');
         }
 
-        // добавление товара в корзину
-        $cartRepository->setProductForObject($cart, $cartProduct);
+        // добавление товара к сравнению
+        $compareRepository->setProductForObject($compare, $compareProduct);
 
         // ид магазина
         $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -56,22 +56,15 @@ class SetProduct {
             throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
         }
 
-        $productItemQuery = new Query\Product\GetItemById($cartProduct->id, $shop->regionId);
+        $productItemQuery = new Query\Product\GetItemById($compareProduct->id, $shop->regionId);
         $curl->prepare($productItemQuery);
-
-        // запрос корзины
-        $cartItemQuery = new Query\Cart\GetItem($cart, $shop->regionId);
-        $curl->prepare($cartItemQuery);
 
         $curl->execute();
 
-        // корзина из ядра
-        $cart = $cartRepository->getObjectByQuery($cartItemQuery);
-
-        // сохранение корзины в сессию
-        $cartRepository->saveObjectToHttpSession($session, $cart);
+        // сохранение сравнения в сессию
+        $compareRepository->saveObjectToHttpSession($session, $compare);
 
         // response
-        return (new Controller\Cart())->execute($request);
+        return (new Controller\Compare())->execute($request);
     }
 }
