@@ -56,18 +56,23 @@ class Product {
 
     /**
      * @param Query[] $queries
+     * @param callable|null $parser
      * @return Model\Product[]
      */
-    public function getIndexedObjectListByQueryList(array $queries) {
+    public function getIndexedObjectListByQueryList(array $queries, $parser = null) {
+        $parser = is_callable($parser) ? $parser : function(&$item) {
+            // оптимизация по умолчанию для листинга
+            $item['description'] = null;
+            $item['property'] = [];
+            $item['property_group'] = [];
+            $item['media'] = [reset($item['media'])];
+        };
+
         $products = [];
 
         foreach ($queries as $query) {
             foreach ($query->getResult() as $item) {
-                // оптимизация
-                $item['description'] = null;
-                $item['property'] = [];
-                $item['property_group'] = [];
-                $item['media'] = [reset($item['media'])];
+                $parser($item);
 
                 $products[$item['id']] = new Model\Product($item);
             }
