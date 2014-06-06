@@ -1096,6 +1096,12 @@ body.noScroll {
   *display: inline;
   zoom: 1;
 }
+.navList .navListIco img {
+  display: inline-block;
+  margin: 2px 0 0;
+  vertical-align: top;
+  width: 105%;
+}
 .navList .navListName {
   display: inline-block;
   vertical-align: top;
