@@ -4,31 +4,40 @@
 
 .productDescTab {
 	display: table;
-	border-top: 1px solid @tabGreyBorder;
+
 	width: 100%;
 	margin: 0 0 30px;
+
+	border-top: 1px solid @tabGreyBorder;
+
 	behavior: url('js/display-table.min.htc');
 	dt-display: table;
 
 	&_item {
 		display: table-cell;
+        overflow: hidden;
+
+		padding: 8px 0;
+
+		cursor: pointer;
 		text-align: center;
-		border-right: 1px solid @tabGreyBorder;
-		-dt-display: table-cell;
+        white-space: nowrap;
+
 		color: @tabGreyText;
-		font-size: 20px;
+		border-right: 1px solid @tabGreyBorder;
 		border-bottom: 1px solid @tabGreyBorder;
 		background-color: @tabGrey;
-		padding: 8px 0;
-		cursor: pointer;
-        white-space: nowrap;
-        overflow: hidden;
+
+		font-size: 20px;
+
+		-dt-display: table-cell;
 
 		&:hover,
 		&-active {
-			background-color: @white;
-			color: @darkGreyText;
 			text-decoration: none;
+
+			color: @darkGreyText;
+			background-color: @white;
 		}
 
 		&:last-child {
@@ -38,18 +47,20 @@
 
 	.tabText {
 		display: inline-block;
+		zoom: 1;
+
 		vertical-align: top;
 
 		*display: inline;
-		zoom: 1;
 	}
 
 	.tabImg {
 		display: inline-block;
+		zoom: 1;
+
 		vertical-align: top;
 
 		*display: inline;
-		zoom: 1;
 
 		&_view {
 			padding-top: 4px;
@@ -58,12 +69,15 @@
 
 	.reviews {
 		display: inline-block;
-	    vertical-align: top;
-	    font-size: 12px;
+		zoom: 1;
+
 	    margin: 6px 0 0;
 
+	    vertical-align: top;
+
+	    font-size: 12px;
+
 	    *display: inline;
-		zoom: 1;
 	}
 
 	.reviewsStar {
