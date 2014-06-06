@@ -1238,6 +1238,7 @@ body.noScroll {
   font-size: 14px;
 }
 .buyingBtn {
+  display: block;
   background: #f6f6f6;
   border: 1px solid #d8d8d8;
   -webkit-border-radius: 4px;
@@ -1248,6 +1249,9 @@ body.noScroll {
   line-height: 27px;
   text-align: center;
   padding: 5px 0;
+}
+.buyingBtn:hover {
+  text-decoration: none;
 }
 .buyingBtn_cart {
   display: inline-block;
