@@ -110,6 +110,7 @@ class Get {
         ]);
 
         // FIXME: осторожно
+        /*
         if (!$request->cookies[$config->session->name]) {
             $response->headers->setCookie(new Http\Cookie(
                 $config->session->name,
@@ -121,6 +122,7 @@ class Get {
                 false
             ));
         }
+        */
 
         return $response;
     }
