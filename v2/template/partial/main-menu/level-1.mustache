@@ -2,7 +2,7 @@
     {{#elements}}
         <li class="navList_item">
             <span class="navList_text">
-                <span class="navListIco" style="{{style}}">
+                <span class="navListIco"{{#style}} style="{{style}}"{{/style}}>
                     {{char}}
                     {{#image}}<img src="{{image}}" />{{/image}}
                 </span>

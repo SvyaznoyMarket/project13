@@ -98,4 +98,37 @@ class Compare {
 
         return $return;
     }
+
+    /**
+     * @param Model\Compare $compare
+     * @param Model\Product[] $productsById
+     */
+    public function compareProductObjectList(Model\Compare $compare, array $productsById) {
+        $compareFunction = function(Model\Product $product, Model\Product $productToCompare) {
+            foreach ($product->properties as $property) {
+                foreach ($productToCompare->properties as $propertyToCompare) {
+                    if (!isset($property->equalProductIds)) {
+                        $property->equalProductIds = [];
+                    }
+
+                    if ($property->id != $propertyToCompare->id) continue;
+
+                    if ($property->value == $propertyToCompare->value) {
+                        $property->equalProductIds[] = $productToCompare->id;
+                    }
+                }
+            }
+        };
+
+        foreach ($compare->product as $comparedProduct) {
+            /** @var Model\Product|null $product */
+            $product = isset($productsById[$comparedProduct->id]) ? $productsById[$comparedProduct->id] : null;
+            if (!$product) continue;
+
+            foreach ($productsById as $productToCompare) {
+                if ($product->id == $productToCompare->id) continue;
+                $compareFunction($product, $productToCompare);
+            }
+        }
+    }
 }

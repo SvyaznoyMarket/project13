@@ -68,6 +68,9 @@ class Compare {
             });
         }
 
+        // сравнение свойств товара
+        $compareRepository->compareProductObjectList($compare, $productsById);
+
         // страница
         $page = new Page();
 

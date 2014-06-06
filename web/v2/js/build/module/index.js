@@ -1,0 +1,1 @@
+define(["require","jquery","underscore","mustache"],function(e,r){r("body")});

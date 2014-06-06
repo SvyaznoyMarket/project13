@@ -1,1 +1,1 @@
-define(["jquery","jquery.popup"],function(o){var e=o("body"),p=function(e){e.stopPropagation(),console.log("showPopup"),o(".js-searchWindow").enterPopup({popupCSS:{top:o(".header").height()+20,marginTop:0}}),e.preventDefault()};e.on("click",".js-searchLink",p)});
+define(["jquery","jquery.popup"],function(o){var e=o("body"),p=function(e){e.stopPropagation(),console.log("showPopup"),o(".js-searchWindow").enterPopup({popupCSS:{top:o(".header").height()+20,marginTop:0},closeBtn:!1}),e.preventDefault()};e.on("click",".js-searchLink",p)});
