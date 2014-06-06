@@ -28,8 +28,6 @@
       this._initEvents(); // пересчет параметров, скрытие показ кнопок
 
       var slideLeft = 0;
-
-      console.log(this.$catItem);
     },
 
     /**
@@ -207,11 +205,6 @@
           this.$list.stop(true, false).animate({'left' : slideLeft});
           this.$navNext.show();
         }
-
-        console.log(amount);
-        console.log(this.visibleWidth);
-        console.log(this.sliderW);
-        console.log(slideLeft);
 
         return false;
       }
