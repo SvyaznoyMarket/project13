@@ -120,11 +120,15 @@
                                     {{>partial/cart/button}}
                                 {{/product.cartButton}}
                                 <!--/ Кнопка купить -->
+
+                                {{#product.cartQuickButton}}
+                                    {{>partial/cart/quickButton}}
+                                {{/product.cartQuickButton}}
                             </div>
 
-                            {{#product.cartQuickButton}}
-                                {{>partial/cart/quickButton}}
-                            {{/product.cartQuickButton}}
+                            <div style="" class="buyingBtn">
+                                <strong>1</strong> шт. в <span class="buyingBtn_cart"><span class="borderBs">корзине</span></span>
+                            </div>
                         </div>
                     </div>
                     <!--/ Выбор варианта покупки, каунтер -->
