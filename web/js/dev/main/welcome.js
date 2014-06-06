@@ -85,13 +85,6 @@ $(document).ready(function () {
             });
         return;
     }
-    /* Preload */
-    var hb = $('<div>').css('display', 'none');
-    for (i = 0; i < l; i++) {
-        $('<img>').attr('src', promos[i].imgb).appendTo(hb)
-        $('<img>').attr('src', promos[i].imgs).appendTo(hb)
-    }
-    $('body').append(hb);
 
     /* Init */
     $('.leftImage').attr({ "src":promos[l - 1].imgs, "alt":promos[l - 1].alt, "title":promos[l - 1].alt});
