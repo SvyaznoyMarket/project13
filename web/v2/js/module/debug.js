@@ -1,7 +1,7 @@
 define(
     [
         'jquery', 'underscore', 'mustache',
-        'module/widget'
+        'module/widget', 'jquery.scrollTo'
     ],
     function (
         $, _, mustache
@@ -91,6 +91,19 @@ define(
             });
 
             $($el.attr('href')).show();
+
+            e.preventDefault();
+        });
+
+        $body.on('click', '.js-debug-query', function(e) {
+            e.stopPropagation();
+
+            var $el = $(e.target);
+
+            $('.js-debug-tab-query').click();
+            setTimeout(function() {
+                $('.js-debug-tab-content-query').scrollTo($($el.attr('href')));
+            }, 100);
 
             e.preventDefault();
         });

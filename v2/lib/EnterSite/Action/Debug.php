@@ -93,6 +93,9 @@ class Debug {
                 $query->call = $curlQuery->getCall();
                 $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;
 
+                $query->info = json_encode($curlQuery->getInfo(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                $query->id = md5($curlQuery->getId());
+
                 $query->css = [
                     'top'          => $i * 24,
                     'left'         => ($curlQuery->getStartAt() - $startAt) / $totalTime * 100,

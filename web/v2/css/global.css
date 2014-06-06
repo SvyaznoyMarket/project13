@@ -2485,6 +2485,12 @@ body.noScroll {
   max-height: 400px;
   overflow: auto;
 }
+.debug__tab__content td {
+  vertical-align: top;
+}
+.debug__tab__content pre {
+  margin-top: 1px;
+}
 .debug__queryMap {
   width: 961px;
   margin: 5px auto;

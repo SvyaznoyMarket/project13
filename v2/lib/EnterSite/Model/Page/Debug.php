@@ -95,5 +95,9 @@ namespace EnterSite\Model\Page\Debug {
             'color1' => null,
             'color2' => null,
         ];
+        /** @var string */
+        public $info;
+        /** @var string */
+        public $id;
     }
 }
