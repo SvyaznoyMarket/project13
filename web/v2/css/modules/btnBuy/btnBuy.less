@@ -3,25 +3,25 @@
    ========================================================================== */
 
 .btnBuy {
-	.gradient(#ffc000, #ffaa01, #ffc000);
+    .gradient(#ffc000, #ffaa01, #ffc000);
     .rounded(5px);
     display: block;
 
     width: 120px;
     height: 38px;
-
-    text-align: center;
+    border: 1px solid #fb9c00;
 
     color: @white;
-    border: 1px solid #fb9c00;
+
+    text-align: center;
 
     font-size: 21px;
     line-height: 38px;
 
     &:hover {
         .gradient(#ffa200, #f79200, #ffa200);
-        text-decoration: none;
         color: @white;
+        text-decoration: none;
     }
 
     &:active {
@@ -32,14 +32,14 @@
     // в корзине
     &__incart {
         border-color: @black;
-        color: @black;
         background: @white;
+        color: @black;
 
         &:hover,
         &:active {
             border-color: @black;
-            color: @black;
             background: @white;
+            color: @black;
         }
     }
 
@@ -57,14 +57,14 @@
 
     // недоступен
     &__disabled {
-        background: @white;
         border-color: @white;
+        background: @white;
         color: @typGray;
 
         &:hover,
         &:active {
-            background: @white;
             border-color: @white;
+            background: @white;
             color: @typGray;
         }
     }
@@ -80,20 +80,20 @@
 }
 
 .buyingBtn {
-    display: block;
-
-    background: @tabGrey;
-    border: 1px solid @tabLightGreyBorder;
 
     .rounded(4px);
+    display: block;
+
+    padding: 5px 0;
 
     height: 27px;
+    border: 1px solid @tabLightGreyBorder;
+
+    background: @tabGrey;
+    text-align: center;
     
     font-size: 18px;
     line-height: 27px;
-    text-align: center;
-
-    padding: 5px 0;
 
     &:hover {
         text-decoration: none;
@@ -101,10 +101,10 @@
     
     &_cart {
         display: inline-block;
-
-        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAQCAYAAAD9L+QYAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB8klEQVQ4Ea2TPU8UYRCAdwU8QREUEgQjFyIhNLS0WhB7Gv4Cf4LSDq2IJbnG1gQKCohSQUKoKGggJEY+YgJC+JZP1+fZ7F6W3TOxYJInMzszNzPvvO+FQRA8gnfQBN+iKNpD35tUqBQlVCge3Bf1FJ2BAeiHkTAMv6JnwYYhKKmtVvRnfdk84+dwETolBev4GIVPOmETbHwNxh7UsI3b4A+Yo7bJFYzBlD9yDbeoCqyCP9qCtMkv7DOw4REcwg84hn3YBuO7CdbcpGYUF+fDBr9RH8Hib+AnvIKHYFHtG7BpGcx34g44hcfwGhxsDeLjqlOZxlgCm3aDx/QVtSX2U/QzUFrhCTiMdjNcwgKD2qxQ/ATfBwNIO3wHj+/anMhpLeCKvA/zPaG2JzJ3HmKprsUvOnrsOTChBfrAi3K3nWBxp3oJFjbmSSzeC65jBWLxSHnxGY3DW7Dgc3DyEnRBlNgv0A4n6QDVleAL4qeokZXkaQ7ia0z8XpxFs+9Z26Kp3xezzukP0LHULJ4G1TRq4geepiDEnLpE3HUVhUDh706WU/msFmEDhvN5+Hw5E+Ce30NjISfv8BvxLkbADy/rcz4PXxl8QeYsQ08+p9aFkhdf4AJ6CrzUSciLL0j/EHyBHbgj/7PzBiZy+oKwc9dX/6/4X7dIL7WKihT+AAAAAElFTkSuQmCC) no-repeat 0 8px;
     
         padding-left: 27px;
+
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAQCAYAAAD9L+QYAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB8klEQVQ4Ea2TPU8UYRCAdwU8QREUEgQjFyIhNLS0WhB7Gv4Cf4LSDq2IJbnG1gQKCohSQUKoKGggJEY+YgJC+JZP1+fZ7F6W3TOxYJInMzszNzPvvO+FQRA8gnfQBN+iKNpD35tUqBQlVCge3Bf1FJ2BAeiHkTAMv6JnwYYhKKmtVvRnfdk84+dwETolBev4GIVPOmETbHwNxh7UsI3b4A+Yo7bJFYzBlD9yDbeoCqyCP9qCtMkv7DOw4REcwg84hn3YBuO7CdbcpGYUF+fDBr9RH8Hib+AnvIKHYFHtG7BpGcx34g44hcfwGhxsDeLjqlOZxlgCm3aDx/QVtSX2U/QzUFrhCTiMdjNcwgKD2qxQ/ATfBwNIO3wHj+/anMhpLeCKvA/zPaG2JzJ3HmKprsUvOnrsOTChBfrAi3K3nWBxp3oJFjbmSSzeC65jBWLxSHnxGY3DW7Dgc3DyEnRBlNgv0A4n6QDVleAL4qeokZXkaQ7ia0z8XpxFs+9Z26Kp3xezzukP0LHULJ4G1TRq4geepiDEnLpE3HUVhUDh706WU/msFmEDhvN5+Hw5E+Ce30NjISfv8BvxLkbADy/rcz4PXxl8QeYsQ08+p9aFkhdf4AJ6CrzUSciLL0j/EHyBHbgj/7PzBiZy+oKwc9dX/6/4X7dIL7WKihT+AAAAAElFTkSuQmCC) no-repeat 0 8px;
 
         font-size: 18px;
     }

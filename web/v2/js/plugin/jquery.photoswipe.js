@@ -19,7 +19,7 @@ $(function() {
         * Функция ресайза блока слайдера изображений товара
        */
       resizeSlides = function resizeSlides() {
-        slideWrapItem.css({'display' : 'inline-block', 'float' : 'left'});
+        slideWrapItem.css({'display' : 'block', 'float' : 'left'});
 
         var slideWrapHeight = 350,
             slideImg = slideWrapItem.find('.slidesItemsList_img');
@@ -38,8 +38,7 @@ $(function() {
         if ( countItem <= 1 ) {
             btnSlidesLeft.hide();
             btnSlidesRight.hide();
-        }
-        else {
+        } else {
           btnSlidesRight.show();
           slidePag.show();
         };
@@ -47,8 +46,6 @@ $(function() {
         var slideListLeftNew = -1 * slideWrapWidth * curSlide;
 
         slideList.css({'left' : slideListLeftNew});
-
-        
       },
 
       /*
