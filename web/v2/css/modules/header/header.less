@@ -3,53 +3,64 @@
    ========================================================================== */
 
 .header {
-	background: @black;
-	color: @white;
-	padding: 10px 0;
 	position: fixed;
-    width: 100%;
+    z-index: 1010;
     top: 0;
     left: 0;
-    z-index: 1010;
+
+    width: 100%;
     height: 35px;
+	padding: 10px 0;
+
+	color: @white;
+	background: @black;
 }
 
 /* Иконка меню */
-.headerLeftAside {
-	float: left; 
-	margin-left: -100%; 
-	position: relative; 
-	width: 110px;
+.headerLeftAside { 
+	position: relative;
+
+	float: left;
+ 
+	width: 110px; 
+	margin-left: -100%;
 } 
 
 .navIco {
 	display: inline-block;
-	vertical-align: top;
-	height: 28px;
-    width: 33px;
-	margin: 3px 20px 0 0;
-	cursor: pointer;
-
-	*display: inline;
 	zoom: 1;
 
+    width: 33px;
+	height: 28px;
+	margin: 3px 20px 0 0;
+
+	cursor: pointer;
+	vertical-align: top;
+
+	*display: inline;
+
 	&_link {
-		background: url("@{base-url}/header/img/menuIco1024.png") no-repeat 0 0;
-		height: 28px;
-    	width: 33px;
 		display: block;
+
+    	width: 33px;
+		height: 28px;
+
 		cursor: pointer;
+
+		background: url("@{base-url}/header/img/menuIco1024.png") no-repeat 0 0;
 	}
 }
 
 /* Логотип */
 .logo {
 	display: inline-block;
-	vertical-align: top;
+	zoom: 1;
+
 	width: 50px;
 
+	vertical-align: top;
+
 	*display: inline;
-	zoom: 1;
 
 	&_img {
 		width: 50px;
@@ -59,63 +70,77 @@
 /* Хлебные крошки */
 .headerCenterWrap {
 	float: left; 
-	overflow: hidden; 
+	overflow: hidden;
+ 
 	width: 100%;
 }
 
-.headerCenter {
-	padding: 0 285px 0 120px; 
+.headerCenter { 
 	overflow: hidden;
+
 	min-height: 5px;
+	padding: 0 285px 0 120px;
 }
 
 .breadCrumbs {
-	padding: 0 0 0 20px;
-	border-left: 2px solid @white;
-	margin-left: 20px;
 	width: 1000px;
+	margin-left: 20px;
+	padding: 0 0 0 20px;
+
+	border-left: 2px solid @white;
 
 	&_link {
-		text-transform: uppercase;
-		color: @white;
-		font-size: 17px;
-		padding: 5px 0;
 		display: inline-block;
-		vertical-align: top;
-
-		*display: inline;
 		zoom: 1;
 
+		padding: 5px 0;
+
+		vertical-align: top;
+		text-transform: uppercase;
+
+		color: @white;
+
+		font-size: 17px;
+
+		*display: inline;
+
 		&:hover {
-			color: @white;
 			text-decoration: none;
+
+			color: @white;
 		}
 	}
 }
 
 /* Панель юзера */
 .headerRightAside {
-	float: left;
-    margin-left: -275px;
     position: relative;
-    width: 275px;
     z-index: 5;
+
+	float: left;
+
+    width: 275px;
+    margin-left: -275px;
 }
 
 .transBg {
 	float: right;
-	background: url("@{base-url}/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
-	height: 30px;
+
 	width: 20px;
+	height: 30px;
+
+	background: url("@{base-url}/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
 }
 
 .userBox {
 	float: right;
+
     background: @black;
     
 
 	&_item {
 		float: right;
+
 		margin: 0 0 0 21px;
 
 		&-last {
@@ -124,13 +149,16 @@
 	}
 
 	&_link {
-		color: @white;
-		background: url("@{base-url}/header/img/menuIco1024.png") no-repeat 50% -37px;
 		display: block;
-		text-align: center;
+
 		padding: 23px 0 0;
+
+		text-align: center;
 		text-transform: uppercase;
+
+		color: @white;
 		outline: none;
+		background: url("@{base-url}/header/img/menuIco1024.png") no-repeat 50% -37px;
 
 		&-auth {
 			background-position: 50% -80px;
@@ -141,13 +169,16 @@
 		}
 
 		&-cartVal {
-			text-transform: none;
-			font-size: 11px;
 			position: relative;
+
+			text-transform: none;
+
+			font-size: 11px;
 	
 			.userBox_text {
-				font-size: 12px;
 				color: @firmOrange;
+
+				font-size: 12px;
 			}
 
 			.rubl {
@@ -155,55 +186,62 @@
 			}
 
 			.qnt {
-				background: #f88a08;
 
 				.rounded(4px);
+			    position: absolute;
+			    top: -6px;
+			    right: 0;
+
+			    height: 15px;
+			    padding: 0 6px;
+
+				background: #f88a08;
 
 			    font-size: 12px;
 			    font-weight: bold;
-
-			    height: 15px;
 			    line-height: 15px;
-
-			    padding: 0 6px;
-
-			    position: absolute;
-			    right: 0;
-			    top: -6px;
 			}
 		}
 
 		&-authVal {
-			max-width: 50px;
 			position: relative;
+
 			overflow: hidden;
+
+			max-width: 50px;
+
 			text-align: left;
+
 			background-position: 50% -165px;
 
 			.userBox_text {
-				color: @firmOrange;
-				width: 500px;
 				display: inline-block;
+
+				width: 500px;
+
+				color: @firmOrange;
 			}
 		}
 
 		&:hover {
-			color: @white;
 			text-decoration: none;
+
+			color: @white;
+
 			//animation: 0.3s linear 0s normal none 1 resize;
 			outline: none;
 		}
 	}
 
 	.transBg {
-		background-position: 0 0;
-	    
-	    height: 15px;
 	    position: absolute;
 	    right: 0;
+	    bottom: 0;
 
 	    width: 8px;
-	    bottom: 0;
+	    height: 15px;
+
+		background-position: 0 0;
 	}
 
 	&_text {

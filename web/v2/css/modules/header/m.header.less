@@ -5,8 +5,8 @@
 @media only screen and (max-width: 800px) {
 	/* Панель юзера */
 	.headerRightAside {
-	    margin-left: -160px;
 	    width: 160px;
+	    margin-left: -160px;
 	}
 
 	.headerCenter {
@@ -15,14 +15,16 @@
 
 	.transBg {
 		float: left;
-		background: url("@{base-url}/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
-		height: 30px;
+
 		width: 20px;
+		height: 30px;
+
+		background: url("@{base-url}/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
 	}
 	
     .userBox {
-		margin: 8px 0 0;
 		width: 140px;
+		margin: 8px 0 0;
 
 		&_item {
 			margin: 2px 0 0 10px;
@@ -33,9 +35,9 @@
 		}
 
 		&_link {
+		    width: 34px;
 			height: 24px;
 		    padding: 0;
-		    width: 34px;
 
 		    &-authVal {
 
@@ -62,8 +64,9 @@
 @media only screen and (max-width: 580px) {
     /* Хлебные крошки */
 	.breadCrumbs {
-		border: none;
 		padding: 0;
+
+		border: none;
 	}
 }
 
@@ -75,12 +78,14 @@
 
 	.headerLeftAside {
     	float: left;
+
 	    margin-left: 0;
 	}
 
 	.headerRightAside {
 	    float: right;
-	    margin-left: 0;
+
 	    width: 160px;
+	    margin-left: 0;
 	}
 }

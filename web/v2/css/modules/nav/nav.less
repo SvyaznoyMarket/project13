@@ -3,24 +3,28 @@
    ========================================================================== */
 
 .nav {
-	bottom: 0;
-    display: none;
-    left: 0;
-    width: 300px;
-    overflow: auto;
-    position: fixed;
-    top: 0;
-	background: @black;
-	margin: 0;
-	z-index: 1025;
 	//-webkit-overflow-scrolling: touch;
 	.box-shadow(5px 0 25px rgba(0, 0, 0, 0.6));
+    position: fixed;
+	z-index: 1025;
+    top: 0;
+	bottom: 0;
+    left: 0;
+
+    display: none;
+    overflow: auto;
+
+    width: 300px;
+	margin: 0;
+
+	background: @black;
 }
 
 .navHead {
-	border-bottom: 1px solid #404040;
 	height: 28px;
 	padding: 13px 0 13px 15px;
+
+	border-bottom: 1px solid #404040;
 
 	.navIco {
 		margin: 0 12px 0 0;
@@ -31,53 +35,55 @@
 
 		&-text {
 			display: inline-block;
+			zoom: 1;
+
+			width: 500px;
+		    margin: 0 0 0 15px;
+
+			cursor: pointer;
+			vertical-align: top;
 
 		    font-size: 16px;
 
-		    margin: 0 0 0 15px;
-			cursor: pointer;
-
-			width: 500px;
-
-			vertical-align: top;
-
 		    *display: inline;
-			zoom: 1;
 
 			.text {
-				border-bottom: 1px dotted @white;
-
 				display: inline-block;
+
+				border-bottom: 1px dotted @white;
 			}
 		} 
 	} 
 
 	&_icoImg {
-		width: 50px;
 		display: inline-block;
+
+		width: 50px;
     	margin: -4px 0 0;
 	}
 
 	&_colWrap {
-		width: 172px;
-
-		overflow: hidden;
 		position: relative;
 
 		display: inline-block;
+		overflow: hidden;
+		zoom: 1;
+
+		width: 172px;
+
 		vertical-align: top;
 
 		*display: inline;
-		zoom: 1;
 
 		.transBg {
-		    background-position: 0 0;
-
-		    bottom: 0;
-		    height: 20px;
 		    position: absolute;
 		    right: 0;
+		    bottom: 0;
+
 		    width: 18px;
+		    height: 20px;
+
+		    background-position: 0 0;
 		}
 	}
 }
@@ -89,85 +95,102 @@
 	}
 
 	&_text {
-		text-transform: uppercase;
-		font-size: 15px;
-		height: 40px;
-	    line-height: 40px;
-	    padding: 0 5px 0 10px;
-	    color: @white;
 		display: block;
+
+		height: 40px;
+	    padding: 0 5px 0 10px;
+
 		cursor: pointer;
+		text-transform: uppercase;
+
+	    color: @white;
 		outline: none;
+
+		font-size: 15px;
+	    line-height: 40px;
 
 		&:hover, 
 		&:active,
 		&:focus {
-			color: @firmOrange;
 			text-decoration: none;
+
+			color: @firmOrange;
 			outline: none;
 		}
 	}
 	
 	.navListIco {
-		background-position: 0 50%;
-		background-repeat: no-repeat;
-
 		display: inline-block;
-		height: 40px;
-	    vertical-align: top;
+		zoom: 1;
+
 	    width: 45px;
+		height: 40px;
 	    margin: 0 5px 0 0;
+
+	    vertical-align: top;
+
+		background-repeat: no-repeat;
+		background-position: 0 50%;
 
 	    font-family: 'menuIconFont';
 	    font-size: 80px;
 
 		*display: inline;
-		zoom: 1;
 
 		img {
 			display: inline-block;
-		    margin: 2px 0 0;
-		    vertical-align: top;
+
 		    width: 105%;
+		    margin: 2px 0 0;
+
+		    vertical-align: top;
 		}
 	}
 
 	.navListName {
 		display: inline-block;
+		zoom: 1;
+
 	    vertical-align: top;
 
 	    *display: inline;
-		zoom: 1;
 	}
 }
 
 .navListLevel2 {
 
 	&_link {
-		color: #7e7e7e;
-		padding: 5px 15px 5px 65px;
-		margin: 2px 0;
 		display: block;
+
+		margin: 2px 0;
+		padding: 5px 15px 5px 65px;
+
+		color: #7e7e7e;
+
 		font-size: 14px;
 
 		&:hover {
-			color: @white;
-			background: #333333;
 			text-decoration: none;
+
+			color: @white;
 			outline: none;
+			background: #333333;
 		}
 	}
 }
 
 .fader {
+	.opacity(0.5);
 	position: fixed;
+	z-index: 1020;
 	top: 0;
 	left: 0;
+
+	display: none;
+
 	width: 100%;
 	height: 100%;
-	z-index: 1020;
+
 	background: @white;
-	.opacity(0.5);
-	display: none;
 }
 

@@ -10,16 +10,21 @@
 	position: relative;
 	top: 0;
 	left: 0;
+
 	width: 10000px;
+
 	font-size: 0;
 }
 
 .tabContent {
 	display: inline-block;
-    font-size: 12px;
-    margin: 0 0 30px;
-    vertical-align: top;
+
     min-height: 350px;
+    margin: 0 0 30px;
+
+    vertical-align: top;
+
+    font-size: 12px;
 
     &_title {
     	display: none;
@@ -27,31 +32,37 @@
 }
 
 .tabTitle {
-	border-bottom: 1px solid @tabGreyBorder;
-	border-top: 1px solid @tabGreyBorder;
-	background: @tabGrey;
-	padding: 10px;
 	margin: 0 0 20px;
+	padding: 10px;
+
+	border-top: 1px solid @tabGreyBorder;
+	border-bottom: 1px solid @tabGreyBorder;
+	background: @tabGrey;
 
 	&__text {
 	    display: inline-block;
-	    font-size: 16px;
-	    font-weight: bold;
+		zoom: 1;
+
 		text-align: center;
+
 		border-bottom: none;
 
+	    font-size: 16px;
+	    font-weight: bold;
+
 		*display: inline;
-		zoom: 1;
 	}
 
 	&__add {
 		display: inline-block;
 	    float: right;
-	    font-size: 14px;
+		zoom: 1;
+
 	    border-bottom: 1px dotted;
 
+	    font-size: 14px;
+
 	    *display: inline;
-		zoom: 1;
 	}
 }
 
@@ -61,6 +72,7 @@
 
 	&__left {
 		float: left;
+
 		width: 110px; 
 	}
 
@@ -72,8 +84,9 @@
 	}
 
 	.reviewsName {
-		font-size: 14px;
 	    margin: 6px 0;
+
+		font-size: 14px;
 	}
 
 	.reviewsDate {
@@ -87,18 +100,23 @@
 	.reviewsText {
 
 		&__mark {
-			color: @typBoxShadowColor;
 		    display: block;
 		    float: left;
-		    font: bold 24px/24px Tahoma;
-		    margin-right: 5px;
-		    margin-top: -2px;
-		    text-align: right;
+
 		    width: 30px;
+		    margin-top: -2px;
+		    margin-right: 5px;
+
+		    text-align: right;
+
+			color: @typBoxShadowColor;
+
+		    font: bold 24px/24px Tahoma;
 		}
 
 		&__par {
 			padding: 0 0 0 40px;
+
 			font-size: 14px;
 		}
 	}
