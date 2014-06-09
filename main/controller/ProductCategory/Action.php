@@ -749,12 +749,6 @@ class Action {
         }
         $page->setParam('catalogJsonBulk', $catalogJsonBulk);
 
-        $page->setParam('myThingsData', [
-            'EventType' => 'MyThings.Event.Visit',
-            'Action'    => '1011',
-            'Category'  => $category->getName(),
-        ]);
-
         return new \Http\Response($page->show());
     }
 
@@ -825,18 +819,6 @@ class Action {
             $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
         }
         $page->setParam('catalogJsonBulk', $catalogJsonBulk);
-
-        $myThingsData = [
-            'EventType' => 'MyThings.Event.Visit',
-            'Action'    => '1011',
-        ];
-        if ($category->isRoot()) {
-            $myThingsData['Category'] = $category->getName();
-        } else {
-            $myThingsData['Category'] = isset($category->getAncestor()[0]) ? $category->getAncestor()[0]->getName() : null;
-            $myThingsData['SubCategory'] = $category->getName();
-        }
-        $page->setParam('myThingsData', $myThingsData);
 
         return new \Http\Response($page->show());
     }
@@ -1122,13 +1104,6 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
-
-        $page->setParam('myThingsData', [
-            'EventType'   => 'MyThings.Event.Visit',
-            'Action'      => '1011',
-            'Category'    => isset($category->getAncestor()[0]) ? $category->getAncestor()[0]->getName() : null,
-            'SubCategory' => $category->getName()
-        ]);
 
         return new \Http\Response($page->show());
     }

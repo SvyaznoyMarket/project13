@@ -16,13 +16,19 @@
                 {{#error}}
                     <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-error">error</a></li>
                 {{/error}}
+                <li class="debug__tab__title"><a class="js-debug-tab js-debug-tab-query" href="#debug-{{requestId}}-content-query">query</a></li>
                 {{#session}}
                     <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-session">session</a></li>
                 {{/session}}
-                <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-config">config</a></li>
+                {{#git}}
+                    <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-git">git</a></li>
+                {{/git}}
                 {{#page}}
                     <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-page">page</a></li>
                 {{/page}}
+                {{#config}}
+                    <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-config">config</a></li>
+                {{/config}}
             </ul>
 
             <div class="debug__tab__content" id="debug-{{requestId}}-content-time">
@@ -30,7 +36,7 @@
                     {{#queries}}
                         <div title="{{url}}" style="border: solid 1px #ededed; background: {{css.color1}}; margin-left: {{css.left}}%; top: {{css.top}}px; width: {{css.width1}}%; height: 28px;">
                         <span class="debug__queryMap__line">
-                            {{path}}
+                            <a class="js-debug-query" href="#query-{{id}}">{{path}}</a>
                             <span style="color: #9b59bb;">{{time}}ms</span>
                             <span style="color: #9b59bb;">{{call}}call</span>
                         </span>
@@ -40,7 +46,7 @@
 
                     {{#times.total}}
                         <div style="margin-left: 2px;">
-                            total <span style="color: #9b59bb;">{{value}}{{unit}}</span>
+                            total <span style="color: #9b59bb;">{{value}}{{unit}}</span> {{memory.value}}{{memory.unit}}
                         </div>
                     {{/times.total}}
                 </div>
@@ -57,22 +63,41 @@
             </div>
             {{/error}}
 
+            <div class="debug__tab__content js-debug-tab-content-query" id="debug-{{requestId}}-content-query" style="display: none; max-width: 800px;">
+                <table>
+                {{#queries}}
+                    <tr>
+                        <td id="query-{{id}}">{{path}}</td>
+                        <td><pre>{{&info}}</pre></td>
+                    </tr>
+                {{/queries}}
+                </table>
+            </div>
+
             {{#session}}
                 <div class="debug__tab__content" id="debug-{{requestId}}-content-session" style="display: none;">
                     <pre>{{&session}}</pre>
                 </div>
             {{/session}}
 
-            <div class="debug__tab__content" id="debug-{{requestId}}-content-config" style="display: none;">
-                <pre>{{&config}}</pre>
-            </div>
+            {{#git}}
+                <div class="debug__tab__content" id="debug-{{requestId}}-content-git" style="display: none;">
+                    tag: {{tag}}<br />
+                    branch: {{branch}}<br />
+                </div>
+            {{/git}}
 
             {{#page}}
-                <div class="debug__tab__content" id="debug-{{requestId}}-content-page" style="display: none;">
+                <div class="debug__tab__content" id="debug-{{requestId}}-content-page" style="display: none; max-width: 800px;">
                     <pre>{{&page}}</pre>
                 </div>
             {{/page}}
 
+            {{#config}}
+                <div class="debug__tab__content" id="debug-{{requestId}}-content-config" style="display: none;">
+                    <pre>{{&config}}</pre>
+                </div>
+            {{/config}}
         </div>
     </div>
 </script>

@@ -508,9 +508,6 @@ class Action {
                             if ($partnerName = \App::partner()->getName()) {
                                 $partners[] = \App::partner()->getName();
                             }
-                            if (\Partner\Counter\MyThings::isTracking()) {
-                                $partners[] = \Partner\Counter\MyThings::NAME;
-                            }
 
                             foreach ( \Controller\Product\BasicRecommendedAction::$recomendedPartners as $recomPartnerName) {
                                 if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {

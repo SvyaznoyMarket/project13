@@ -230,22 +230,6 @@
 
 
 				/**
-				 * myThings аналитика добавления в корзину
-				 */
-					myThingsAnalytics = function myThingsAnalytics( event, data ) {
-					var
-						productData = data.product;
-
-					if ( productData && typeof(productData.id) && typeof MyThings !== 'undefined' ) {
-						MyThings.Track({
-							EventType: MyThings.Event.Visit,
-							Action: '1013',
-							ProductId: productData.id
-						});
-					}
-				},
-
-				/**
 				 * Soloway аналитика добавления в корзину
 				 */
 					adAdriver = function adAdriver( event, data ) {
@@ -366,7 +350,6 @@
                 if (data.product) {
                     kissAnalytics(event, data);
                     googleAnalytics(event, data);
-                    myThingsAnalytics(event, data);
                     adAdriver(event, data);
                     addToRetailRocket(event, data);
                 }

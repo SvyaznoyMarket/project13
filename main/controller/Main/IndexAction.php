@@ -186,10 +186,6 @@ class IndexAction {
 
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);
-        $page->setParam('myThingsData', [
-            'EventType' => 'MyThings.Event.Visit',
-            'Action'    => '200'
-        ]);
         $page->setParam('seoPage', $seoPage);
 
         return new \Http\Response($page->show());

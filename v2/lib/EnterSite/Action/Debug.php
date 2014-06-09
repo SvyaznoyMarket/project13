@@ -49,6 +49,15 @@ class Debug {
             $page->error = new Page\Error($lastError);
         }
 
+        // git
+        try {
+            $page->git = new Page\Git();
+            $page->git->branch = trim(shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath($config->dir))));
+            $page->git->tag = trim(shell_exec(sprintf('cd %s && git describe --always --tag', realpath($config->dir))));
+        } catch (\Exception $e) {
+            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['debug']]);
+        }
+
         // times
         $page->times['total'] = new Page\Time();
         $page->times['total']->value = round($endAt - $startAt, 3);
@@ -83,6 +92,46 @@ class Debug {
                 $query->path = ltrim(parse_url((string)$curlQuery->getUrl(), PHP_URL_PATH), '/');
                 $query->call = $curlQuery->getCall();
                 $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;
+
+                $headers = [];
+                foreach ($curlQuery->getHeaders() as $key => $value) {
+                    if (empty($value)) continue;
+
+                    $headers[$key] = $value;
+                }
+
+                $info = $curlQuery->getInfo();
+                $info = [
+                    'code'         => $info['http_code'],
+                    'error'        => $curlQuery->getError(),
+                    'url'          => $info['url'],
+                    'data'         => $curlQuery->getData(),
+                    'header'       => $headers,
+                    //'content_type' => $info['content_type'],
+                    'time' => [
+                        'total'         => $info['total_time'],
+                        'namelookup'    => $info['namelookup_time'],
+                        'connect'       => $info['connect_time'],
+                        'pretransfer'   => $info['pretransfer_time'],
+                        'starttransfer' => $info['starttransfer_time'],
+                        'redirect'      => $info['redirect_time'],
+                    ],
+                    'size' => [
+                        'upload'   => $info['size_upload'],
+                        'download' => $info['size_download'],
+                    ],
+                    'speed' => [
+                        'download' => $info['speed_download'],
+                        'upload'   => $info['speed_upload'],
+                    ],
+                ];
+
+                if ($config->curl->logResponse) {
+                    $info['response'] = $curlQuery->getResult();
+                }
+
+                $query->info = json_encode($info, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                $query->id = md5($curlQuery->getId());
 
                 $query->css = [
                     'top'          => $i * 24,

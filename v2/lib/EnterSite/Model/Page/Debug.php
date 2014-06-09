@@ -10,6 +10,8 @@ namespace EnterSite\Model\Page {
         public $name;
         /** @var Debug\Error|null */
         public $error;
+        /** @var Debug\Git|null */
+        public $git;
         /** @var Debug\Time[] */
         public $times = [];
         /** @var Debug\Memory|null */
@@ -45,6 +47,13 @@ namespace EnterSite\Model\Page\Debug {
             if (array_key_exists('file', $data)) $this->file = $data['file'];
             if (array_key_exists('line', $data)) $this->line = $data['line'];
         }
+    }
+
+    class Git {
+        /** @var string */
+        public $branch;
+        /** @var string */
+        public $tag;
     }
 }
 
@@ -86,5 +95,9 @@ namespace EnterSite\Model\Page\Debug {
             'color1' => null,
             'color2' => null,
         ];
+        /** @var string */
+        public $info;
+        /** @var string */
+        public $id;
     }
 }

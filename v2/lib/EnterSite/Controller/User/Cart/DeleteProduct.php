@@ -7,14 +7,16 @@ use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\SessionTrait;
+use EnterSite\RouterTrait;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
+use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model\Page\User\Cart\SetProduct as Page;
 
 class DeleteProduct {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait;
+    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait;
         LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
     }
 
@@ -79,6 +81,13 @@ class DeleteProduct {
 
         // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart);
+
+        // если корзина пустая
+        if (!count($cart)) {
+            return new Http\JsonResponse([
+                'redirect' => $this->getRouter()->getUrlByRoute(new Routing\Cart\Index()),
+            ]);
+        }
 
         // товар
         $product = (new Repository\Product())->getObjectByQuery($productItemQuery);
