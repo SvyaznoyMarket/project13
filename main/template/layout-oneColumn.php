@@ -151,7 +151,6 @@
         <?= $page->slotInnerJavascript() ?>
         <?= $page->slotYandexMetrika() ?>
         <?= $page->slotAdvanceSeoCounter() ?>
-        <?= $page->slotMyThings() ?>
         <?= $page->slotAdriver() ?>
         <?= $page->slotPartnerCounter() ?>
         <?= $page->slotEnterprizeConfirmJs() ?>

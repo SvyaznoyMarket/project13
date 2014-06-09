@@ -80,7 +80,6 @@
 <?= $page->slotYandexMetrika() ?>
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
-<?= $page->slotMyThings() ?>
 <?= $page->slotAdriver() ?>
 <?= $page->slotPartnerCounter() ?>
 <?= $page->slotAdblender() ?>

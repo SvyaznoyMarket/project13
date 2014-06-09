@@ -407,11 +407,6 @@ class IndexAction {
         $page->setParam('additionalData', $additionalData);
         $page->setParam('creditData', $creditData);
         $page->setParam('shopStates', $shopStates);
-        $page->setParam('myThingsData', [
-            'EventType' => 'MyThings.Event.Visit',
-            'Action'    => '1010',
-            'ProductId' => $product->getId(),
-        ]);
         $page->setParam('reviewsData', $reviewsData);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);

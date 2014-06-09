@@ -49,7 +49,6 @@
     <?= $page->slotAuth() ?>
     <?= $page->slotYandexMetrika() ?>
     <?= $page->slotAdvanceSeoCounter() ?>
-    <?= $page->slotMyThings() ?>
     <?= $page->slotPartnerCounter() ?>
     <?= $page->slotAdblender() ?>
     <?= $page->slotAdriver() ?>
