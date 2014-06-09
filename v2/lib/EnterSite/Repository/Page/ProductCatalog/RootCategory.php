@@ -26,6 +26,8 @@ class RootCategory {
 
         $page->dataModule = 'product.catalog';
 
+        $page->content->title = $request->category->name;
+
         // хлебные крошки
         $page->breadcrumbBlock = new Model\Page\DefaultLayout\BreadcrumbBlock();
         $breadcrumb = new Model\Page\DefaultLayout\BreadcrumbBlock\Breadcrumb();
