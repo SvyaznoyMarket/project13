@@ -93,7 +93,36 @@ class Debug {
                 $query->call = $curlQuery->getCall();
                 $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;
 
-                $query->info = json_encode($curlQuery->getInfo(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                $info = $curlQuery->getInfo();
+                $info = [
+                    'code'         => $info['http_code'],
+                    'error'        => $curlQuery->getError(),
+                    'url'          => $info['url'],
+                    'data'         => $curlQuery->getData(),
+                    'content_type' => $info['content_type'],
+                    'time' => [
+                        'total'         => $info['total_time'],
+                        'namelookup'    => $info['namelookup_time'],
+                        'connect'       => $info['connect_time'],
+                        'pretransfer'   => $info['pretransfer_time'],
+                        'starttransfer' => $info['starttransfer_time'],
+                        'redirect'      => $info['redirect_time'],
+                    ],
+                    'size' => [
+                        'upload'   => $info['size_upload'],
+                        'download' => $info['size_download'],
+                    ],
+                    'speed' => [
+                        'download' => $info['speed_download'],
+                        'upload'   => $info['speed_upload'],
+                    ],
+                ];
+
+                if ($config->curl->logResponse) {
+                    $info['response'] = $curlQuery->getResult();
+                }
+
+                $query->info = json_encode($info, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
                 $query->id = md5($curlQuery->getId());
 
                 $query->css = [
