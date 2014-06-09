@@ -1,6 +1,6 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache'
+        'require', 'jquery', 'underscore', 'mustache', 'jquery.slides'
     ],
     function (
         require, $, _, mustache

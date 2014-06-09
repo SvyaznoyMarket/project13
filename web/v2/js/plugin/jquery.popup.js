@@ -1,4 +1,4 @@
-(function( $ ){
+; (function( $ ){
 
     $.fn.enterPopup = function( params ) {
     	console.log("popup");

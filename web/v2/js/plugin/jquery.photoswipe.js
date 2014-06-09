@@ -1,4 +1,4 @@
-$(function() {
+; (function( $ ){
 
   var curSlide = 0,
       body = $('body'),
@@ -12,7 +12,7 @@ $(function() {
 
       btnSlidesLeft = $('.jsBtnSlidesLeft'),
       btnSlidesRight = $('.jsBtnSlidesRight');
-  // end vars
+  // end of vars
 
   var
       /*
@@ -23,7 +23,7 @@ $(function() {
 
         var slideWrapHeight = 350,
             slideImg = slideWrapItem.find('.slidesItemsList_img');
-        // end vars
+        // end of vars
 
         slideWrapWidth = $('.slidesItems').width();
 
@@ -119,7 +119,7 @@ $(function() {
           $('.jsBtnSlidesRight').show();
         }
       };
-  // end var
+  // end of vars
 
   $('.productDescImg').touchwipe({
     wipeLeft : function() {
@@ -141,4 +141,4 @@ $(function() {
   btnSlidesLeft.on('click', prevSlides);
 
   paginationSlides();
-});
+})( jQuery );

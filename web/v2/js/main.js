@@ -22,6 +22,7 @@ require.config({
         'jquery.enterslide'     : 'plugin/jquery.enterslide',
         'jquery.touchwipe'      : 'plugin/jquery.touchwipe',
         'jquery.photoswipe'     : 'plugin/jquery.photoswipe',
+        'jquery.slides'         : 'plugin/jquery.slides',
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
@@ -56,11 +57,9 @@ require.config({
         'jquery.photoswipe': {
             deps: ['jquery', 'jquery.touchwipe']
         },
-        /*
-        'jquery.cookie': {
-            deps: ['jquery']
+        'jquery.slides': {
+            deps: ['jquery', 'jquery.touchwipe']
         },
-        */
         'underscore': {
             exports: '_'
         },
