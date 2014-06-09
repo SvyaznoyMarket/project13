@@ -46,7 +46,11 @@ define(
 
                 if (data.url) {
                     $.post(data.url, data.value, function(response) {
-                        if (_.isObject(response.result.widgets)) {
+                        if (response.redirect && (-1 !== response.redirect.indexOf('/'))) {
+                            window.location.href = response.redirect;
+                        }
+
+                        if (_.isObject(response.result) && _.isObject(response.result.widgets)) {
                             _.each(response.result.widgets, function(templateData, selector) {
                                 if (!selector) {
                                     return;
