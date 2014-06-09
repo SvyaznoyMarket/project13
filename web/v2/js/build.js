@@ -11,6 +11,7 @@
         'jquery.enterslide'     : 'plugin/jquery.enterslide',
         'jquery.touchwipe'      : 'plugin/jquery.touchwipe',
         'jquery.photoswipe'     : 'plugin/jquery.photoswipe',
+        'jquery.slides'         : 'plugin/jquery.slides',
 
         'underscore'         : 'empty:',
         'mustache'           : 'vendor/mustache-0.8.2',

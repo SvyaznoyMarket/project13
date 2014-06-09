@@ -4,22 +4,26 @@
    
 @media only screen and (max-width: 700px) {
     .cartItem {
-		border-bottom: 1px solid @tabGreyBorder;
-		padding: 20px 0;
-		display: block;
 		position: relative;
+
+		display: block;
+
+		padding: 20px 0;
+
+		border-bottom: 1px solid @tabGreyBorder;
 
 		&_col {
 			display: block;
 
 			&-img {
 				float: left;
+
     			width: 100px;
 			}
 
 			&-desc {
-				padding: 0 10px 0 120px;
 				min-height: 100px;
+				padding: 0 10px 0 120px;
 
 				.price {
 					display: none;
@@ -33,14 +37,16 @@
 				.priceNum {
 					display: block;
 					float: left;
-					width: 100px;
 
-					color: #777777;
-					font-size: 20px;
-					line-height: 41px;
+					width: 100px;
+					margin-right: 10px;
+
 					text-align: center;
 
-					margin-right: 10px;
+					color: #777777;
+
+					font-size: 20px;
+					line-height: 41px;
 				}
 
 				.price {
@@ -52,18 +58,18 @@
 				}
 
 				.delete {
-					display: block;
-
-					text-indent: -99999px;
-
 					position: absolute;
 					top: -10px;
 					right: 10px;
 
-					background-position: 100% 0;
+					display: block;
 
 					width: 19px;
 					height: 19px;
+
+					text-indent: -99999px;
+
+					background-position: 100% 0;
 				}
 
 				.change {
@@ -89,13 +95,15 @@
 			}
 
 			&-desc {
-				font-size: 16px;
-	    		padding: 0 10px 0 90px;
 	    		min-height: 90px;
+	    		padding: 0 10px 0 90px;
+
+				font-size: 16px;
 
 				.name {
-					font-size: 16px;
 					min-height: 70px;
+
+					font-size: 16px;
 				}
 			}
 
@@ -103,30 +111,36 @@
 
 				.priceNum {
 					float: left;
+
 					width: 80px;
-					font-size: 15px;
 					margin-right: 10px;
+
+					font-size: 15px;
 				}
 
 				.price {
-				    font-size: 15px;
 				    width: 65px;
+
+				    font-size: 15px;
 				}
 			}
 		}
 	}
 
 	.cartLine {
-		background: @tabGrey;
-		border-bottom: 1px solid @tabGreyBorder;
 		margin: 0 0 10px;
 
+		border-bottom: 1px solid @tabGreyBorder;
+		background: @tabGrey;
+
 		&_left {
-			float: none;
-			padding: 10px;
-    		margin: 0;
-    		line-height: 22px;
     		display: none;
+			float: none;
+
+    		margin: 0;
+			padding: 10px;
+
+    		line-height: 22px;
 
     		&-double {
     			display: block;
@@ -139,20 +153,24 @@
 
 		&_right {
 			float: none;
+
 			padding: 10px 10px 8px 10px;
 
 			.customLabel {
 			    display: block;
-			    line-height: 1;
+
     			padding: 6px 0 7px 29px;
+
+			    line-height: 1;
 			}
 
 			.creditText {
 			   display: inline-block;
+				zoom: 1;
+
 			   vertical-align: top;
 
 			   *display: inline;
-				zoom: 1;
 			}
 
 			.creditSum {
@@ -167,6 +185,7 @@
 
 	.cartBuy {
 	    padding: 0 10px;
+
 	    text-align: center;
 	}
 }

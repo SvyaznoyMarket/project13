@@ -11,19 +11,21 @@ textarea {
 }
 
 body {
+    font-family: Tahoma,Geneva,Kalimati,sans-serif,helvetica,sans-serif;
     font-size: 12px;
     line-height: 1.4;
-    font-family: Tahoma,Geneva,Kalimati,sans-serif,helvetica,sans-serif;
 }
 
 a {
-    color: @black;
     text-decoration: none;
-}
 
-a:hover {
     color: @black;
-    text-decoration: underline;
+
+    &:hover {
+        text-decoration: none;
+
+        color: @black;
+    }
 }
 
 /*
@@ -39,9 +41,10 @@ img {
  */
 
 fieldset {
-    border: 0;
     margin: 0;
     padding: 0;
+
+    border: 0;
 }
 
 /*
@@ -60,6 +63,7 @@ textarea {
 /* Prevent callout */
 
 .nocallout {
+
     -webkit-touch-callout: none;
 }
 
@@ -70,6 +74,7 @@ textarea {
 /* A hack for HTML5 contenteditable attribute on mobile */
 
 textarea[contenteditable] {
+
     -webkit-appearance: none;
 }
 
@@ -86,14 +91,17 @@ textarea[contenteditable] {
  */
 
 .ir {
-    background-color: transparent;
-    background-repeat: no-repeat;
-    border: 0;
-    direction: ltr;
     display: block;
     overflow: hidden;
+
     text-align: left;
     text-indent: -999em;
+
+    border: 0;
+    background-color: transparent;
+    background-repeat: no-repeat;
+
+    direction: ltr;
 }
 
 .ir br {
@@ -114,14 +122,17 @@ textarea[contenteditable] {
  */
 
 .visuallyhidden {
-    border: 0;
+    position: absolute;
+
+    overflow: hidden;
     clip: rect(0 0 0 0);
+
+    width: 1px;
     height: 1px;
     margin: -1px;
-    overflow: hidden;
     padding: 0;
-    position: absolute;
-    width: 1px;
+
+    border: 0;
 }
 
 /*
@@ -131,12 +142,14 @@ textarea[contenteditable] {
 
 .visuallyhidden.focusable:active,
 .visuallyhidden.focusable:focus {
+    position: static;
+
+    overflow: visible;
     clip: auto;
+
+    width: auto;
     height: auto;
     margin: 0;
-    overflow: visible;
-    position: static;
-    width: auto;
 }
 
 /*
@@ -154,8 +167,9 @@ textarea[contenteditable] {
 
 .clearfix:before,
 .clearfix:after {
-    content: "";
     display: table;
+
+    content: "";
 }
 
 .clearfix:after {
@@ -168,6 +182,7 @@ textarea[contenteditable] {
  */
 
 .clearfix {
+
     *zoom: 1;
 }
 
@@ -197,24 +212,25 @@ textarea[contenteditable] {
     &:hover {
         .gradient(#ffa200, #f79200, #ffa200);
         text-decoration: none;
+
         color: @white;
     }
 
     &:active {
-        background: #f79200;
         text-decoration: none;
+
+        background: #f79200;
     }
 }
 
 .widgetFr {
     display: inline-block;
-    vertical-align: top;
-
     float: right;
+
+    vertical-align: top;
 }
 
 .btnStyleOrange {
-    background: #f89b1c;
     .rounded(4px);
     display: block;
 
@@ -224,6 +240,7 @@ textarea[contenteditable] {
 
     color: #ffffff;
     border: 1px solid #e26500;
+    background: #f89b1c;
 
     font-size: 14px;
     line-height: 34px;
@@ -231,17 +248,18 @@ textarea[contenteditable] {
     &:hover {
         .gradient(#ffa200, #f79200, #ffa200);
         text-decoration: none;
+
         color: @white;
     }
 
     &:active {
-        background: #f79200;
         text-decoration: none;
+
+        background: #f79200;
     }
 }
 
 .btnStyleBlack {
-    background: @black;
     .rounded(4px);
     display: block;
 
@@ -251,13 +269,13 @@ textarea[contenteditable] {
 
     color: @white;
     border: 1px solid @black;
+    background: @black;
 
     font-size: 14px;
     line-height: 34px;
 }
 
 .btnStyleGrey {
-    background: @tabGrey;
     .rounded(4px);
     display: block;
 
@@ -267,6 +285,7 @@ textarea[contenteditable] {
 
     color: @black;
     border: 1px solid @tabLightGreyBorder;
+    background: @tabGrey;
 
     font-size: 14px;
     line-height: 34px;

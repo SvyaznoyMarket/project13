@@ -3,9 +3,10 @@
    ========================================================================== */
 
 .footer {
+	padding: 15px 0 0;
+
 	border-top: 1px solid @tabGreyBorder;
 	background: @tabGrey;
-	padding: 15px 0 0;
 }
 
 .aboutList {
@@ -15,33 +16,38 @@
 
 	&__item {
 		display: inline-block;
-		vertical-align: top;
-
-		*display: inline;
 		zoom: 1;
 
 		margin-right: 20px;
+
+		vertical-align: top;
+
+		*display: inline;
 	}
 }
 
 .socLink {
 	float: right;
-	font-size: 0;
+
 	margin: 0 0 15px;
+
+	font-size: 0;
 
 	&__item {
 		display: inline-block;
-		vertical-align: top;
-
-		*display: inline;
 		zoom: 1;
+
+		width: 26px;
+		height: 26px;
+		margin-right: 5px;
+
+		vertical-align: top;
+		vertical-align: top;
 
 		color: #515151;
 		background: url("@{base-url}/footer/img/socialicon.png") no-repeat 0 0;
-		width: 26px;
-		height: 26px;
-		vertical-align: top;
-		margin-right: 5px;
+
+		*display: inline;
 
 		&.mTw {
 			background-position: -27px 0;
@@ -58,6 +64,7 @@
 
 	&__link {
 		display: block;
+
 		width: 26px;
 		height: 26px;
 	}
@@ -65,15 +72,18 @@
 
 .publicInfoList {
 	clear: both;
+
 	margin: 0 0 20px;
 
 	&__item {
 		display: inline-block;
-		vertical-align: top;
+		zoom: 1;
+
 		margin: 0 20px 0 0;
 
+		vertical-align: top;
+
 		*display: inline;
-		zoom: 1;
 	}
 
 	&__link {
@@ -82,12 +92,14 @@
 }
 
 .appList {
-	text-align: center;
-	margin: 0 auto;
 	width: 550px;
+	margin: 0 auto;
+
+	text-align: center;
 
 	&__item {
 		float: left;
+
 		//width: 18.0851%;
 		margin-right: 15px;
 
@@ -102,16 +114,19 @@
 }
 
 .publicInfoText {
-	color: #8c8b8b;
 	text-align: center;
+
+	color: #8c8b8b;
 }
 
 .footerCopy {
-	background: @black;
 	padding: 2px 0;
+
+	background: @black;
 
 	&__link {
 		float: right;
+
 		color: @white;
 	}
 }
