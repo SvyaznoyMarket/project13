@@ -2485,6 +2485,9 @@ body.noScroll {
   max-height: 400px;
   overflow: auto;
 }
+.debug__tab__content tr:nth-child(2n) {
+  background: #cccccc;
+}
 .debug__tab__content td {
   vertical-align: top;
 }
