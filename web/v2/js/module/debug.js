@@ -98,12 +98,14 @@ define(
         $body.on('click', '.js-debug-query', function(e) {
             e.stopPropagation();
 
-            var $el = $(e.target);
+            var $el = $(e.target)
+                $parent = $el.parents('.js-widget');
 
-            $('.js-debug-tab-query').click();
+            $parent.find('.js-debug-tab-query').click();
+            console.info($parent, $parent.find('.js-debug-tab-query'), $parent.find('.js-debug-tab-content-query'));
             setTimeout(function() {
-                $('.js-debug-tab-content-query').scrollTo($($el.attr('href')));
-            }, 100);
+                $parent.find('.js-debug-tab-content-query').scrollTo($($el.attr('href')), {duration: 'fast'});
+            }, 200);
 
             e.preventDefault();
         });

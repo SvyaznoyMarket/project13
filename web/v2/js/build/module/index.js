@@ -1,1 +1,1 @@
-define(["require","jquery","underscore","mustache"],function(e,r){r("body")});
+define(["require","jquery","underscore","mustache","jquery.slides"],function(e,r){r("body")});
