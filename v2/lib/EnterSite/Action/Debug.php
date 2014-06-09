@@ -93,13 +93,21 @@ class Debug {
                 $query->call = $curlQuery->getCall();
                 $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;
 
+                $headers = [];
+                foreach ($curlQuery->getHeaders() as $key => $value) {
+                    if (empty($value)) continue;
+
+                    $headers[$key] = $value;
+                }
+
                 $info = $curlQuery->getInfo();
                 $info = [
                     'code'         => $info['http_code'],
                     'error'        => $curlQuery->getError(),
                     'url'          => $info['url'],
                     'data'         => $curlQuery->getData(),
-                    'content_type' => $info['content_type'],
+                    'header'       => $headers,
+                    //'content_type' => $info['content_type'],
                     'time' => [
                         'total'         => $info['total_time'],
                         'namelookup'    => $info['namelookup_time'],
