@@ -1,21 +1,21 @@
 <?php
 
-namespace EnterSite\Model\Page\ProductCatalog {
+namespace EnterSite\Model\Page\Search {
     use EnterSite\Model\Page;
 
-    class ChildCategory extends Page\DefaultLayout {
-        /** @var ChildCategory\Content */
+    class Index extends Page\DefaultLayout {
+        /** @var Index\Content */
         public $content;
 
         public function __construct() {
             parent::__construct();
 
-            $this->content = new ChildCategory\Content();
+            $this->content = new Index\Content();
         }
     }
 }
 
-namespace EnterSite\Model\Page\ProductCatalog\ChildCategory {
+namespace EnterSite\Model\Page\Search\Index {
     use EnterSite\Model\Page;
     use EnterSite\Model\Partial;
 

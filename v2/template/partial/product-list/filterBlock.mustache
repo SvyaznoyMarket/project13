@@ -7,10 +7,16 @@
 <!-- параметры фильтрации -->
 <div class="params js-params">
     {{#filters}}
-        <div class="params_title js-params-title">{{name}}</div>
-        <div class="params_cont js-params-cont">
+        {{^isHiddenType}}
+            <div class="params_title js-params-title">{{name}}</div>
+            <div class="params_cont js-params-cont">
+                {{>partial/product-list/filter}}
+            </div>
+        {{/isHiddenType}}
+
+        {{#isHiddenType}}
             {{>partial/product-list/filter}}
-        </div>
+        {{/isHiddenType}}
     {{/filters}}
 
     {{#actionBlock}}

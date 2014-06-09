@@ -22,7 +22,7 @@ class MatchRoute {
         $callable = null;
 
         try {
-            $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod());
+            $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod(), $request->query->all());
 
             if (isset($route->action[0])) {
                 $controllerClass = '\\EnterSite\\Controller\\' . $route->action[0]; // TODO: перенести в настройки

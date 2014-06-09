@@ -36,4 +36,8 @@ trait BagTrait {
     public function count() {
         return count($this->container);
     }
+
+    public function all() {
+        return $this->container;
+    }
 }

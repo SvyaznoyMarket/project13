@@ -104,25 +104,26 @@ class Product {
 
         if (isset($data['property'][0])) {
             foreach ($data['property'] as $propertyItem) {
-                $this->properties[] = new Model\Product\Property($propertyItem);
+                $this->properties[] = new Model\Product\Property((array)$propertyItem);
             }
         }
 
         if (isset($data['property_group'][0])) {
             foreach ($data['property_group'] as $propertyGroupItem) {
-                $this->propertyGroups[] = new Model\Product\Property\Group($propertyGroupItem);
+                $this->propertyGroups[] = new Model\Product\Property\Group((array)$propertyGroupItem);
             }
         }
 
         if (isset($data['media'][0])) {
             foreach ($data['media'] as $mediaItem) {
+                if (!isset($mediaItem['id'])) continue;
                 $this->media->photos[] = new Model\Product\Media\Photo($mediaItem);
             }
         }
 
         if (isset($data['stock'][0])) {
             foreach ($data['stock'] as $stockItem) {
-                $this->stock[] = new Model\Product\Stock($stockItem);
+                $this->stock[] = new Model\Product\Stock((array)$stockItem);
             }
         }
 

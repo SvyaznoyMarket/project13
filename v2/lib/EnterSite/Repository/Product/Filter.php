@@ -58,6 +58,19 @@ class Filter {
     }
 
     /**
+     * @param string $searchPhrase
+     * @return Model\Product\RequestFilter
+     */
+    public function getRequestObjectBySearchPhrase($searchPhrase) {
+        $filter = new Model\Product\RequestFilter();
+        $filter->token = 'q';
+        $filter->name = 'q';
+        $filter->value = $searchPhrase;
+
+        return $filter;
+    }
+
+    /**
      * Возвращает фильтр из http-запроса, который относится к категории товара
      *
      * @param Model\Product\RequestFilter[] $filters
@@ -131,7 +144,7 @@ class Filter {
                 }
 
                 $filterData['tag']['value'][] = $value;
-            } else if (in_array($key, ['category', 'shop'])) {
+            } else if (in_array($key, ['category', 'shop', 'q'])) {
                 if (!isset($filterData[$key])) {
                     $filterData[$key] = [
                         'value' => [],
@@ -144,6 +157,8 @@ class Filter {
         foreach ($filterData as $key => $filter) {
             if (isset($filter['value']['from']) || isset($filter['value']['to'])) {
                 $return[] = [$key, 2, isset($filter['value']['from']) ? $filter['value']['from'] : null, isset($filter['value']['to']) ? $filter['value']['to'] : null];
+            } else if ('q' == $key) {
+                $return[] = ['text', 3, reset($filter['value'])];
             } else {
                 $return[] = [$key, 1, $filter['value']];
             }

@@ -13,6 +13,8 @@ namespace EnterSite\Model\Partial {
         /** @var bool */
         public $isListType;
         /** @var bool */
+        public $isHiddenType;
+        /** @var bool */
         public $isMultiple;
         /** @var bool */
         public $isOpened;

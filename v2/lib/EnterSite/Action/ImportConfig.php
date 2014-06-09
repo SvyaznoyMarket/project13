@@ -67,6 +67,7 @@ class ImportConfig {
         $config->productReview->enabled = $importedConfig->product['reviewEnabled'];
         $config->productPhoto->urlPaths = $importedConfig->productPhoto['url'];
         $config->productCategoryPhoto->urlPaths = $importedConfig->productCategory['url'];
+        $config->search->minPhraseLength = $importedConfig->search['queryStringLimit'];
 
         // собственные настройки
         $config->requestId = uniqid();

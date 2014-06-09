@@ -80,6 +80,8 @@ return function(\EnterSite\Config\Application $config) {
         3 => '/6/1/500/',
     ];
 
+    $config->search->minPhraseLength = 1;
+
     $config->directCredit->enabled = true;
     $config->directCredit->minPrice = 3000;
     $config->directCredit->partnerId = '4427';

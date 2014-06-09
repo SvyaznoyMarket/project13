@@ -51,8 +51,18 @@ class ProductFilter {
             $filter->token = $filterModel->token;
             $filter->name = $filterModel->name;
             $filter->unit = $filterModel->unit;
-            $filter->isSliderType = in_array($filterModel->typeId, [Model\Product\Filter::TYPE_NUMBER, Model\Product\Filter::TYPE_SLIDER]);
-            $filter->isListType = in_array($filterModel->typeId, [Model\Product\Filter::TYPE_LIST, Model\Product\Filter::TYPE_BOOLEAN]);
+
+            $filter->isSliderType = false;
+            $filter->isListType = false;
+            $filter->isHiddenType = false;
+            if (in_array($filterModel->typeId, [Model\Product\Filter::TYPE_NUMBER, Model\Product\Filter::TYPE_SLIDER])) {
+                $filter->isSliderType = true;
+            } else if (in_array($filterModel->typeId, [Model\Product\Filter::TYPE_LIST, Model\Product\Filter::TYPE_BOOLEAN])) {
+                $filter->isListType = true;
+            } else if ('q' === $filter->token) {
+                $filter->isHiddenType = true;
+            }
+
             $filter->isMultiple = $filterModel->isMultiple;
             $filter->isOpened = $isOpened;
             $filter->isPrice = 'price' == $filterModel->token;
@@ -204,6 +214,8 @@ class ProductFilter {
                             . $filter->token
                             . ($filter->isMultiple ? ('-' . Util\String::slugify($option->name)) : '')
                         ));
+            case Model\Product\Filter::TYPE_STRING:
+                return $filter->token;
             default:
                 return 'f-' . $filter->token;
         }

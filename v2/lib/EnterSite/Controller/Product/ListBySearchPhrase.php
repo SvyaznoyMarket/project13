@@ -12,7 +12,7 @@ use EnterSite\Curl\Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\Product\ListByFilter as Page;
 
-class ListByFilter {
+class ListBySearchPhrase {
     use ConfigTrait, CurlClientTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait;
     }
@@ -27,10 +27,8 @@ class ListByFilter {
         $productRepository = new Repository\Product();
         $filterRepository = new Repository\Product\Filter();
 
-        // поисковая фраза
-        if ($searchPhrase = (new Repository\Search())->getPhraseByHttpRequest($request)) {
-            return (new Controller\Product\ListBySearchPhrase())->execute($request);
-        }
+        // поисковая строка
+        $searchPhrase = (new Repository\Search())->getPhraseByHttpRequest($request);
 
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
@@ -61,17 +59,17 @@ class ListByFilter {
 
         // фильтры в запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
+        $filterData = $filterRepository->dumpRequestObjectList($requestFilters);
+        // фильтр поисковой фразы
+        $requestFilters[] = $filterRepository->getRequestObjectBySearchPhrase($searchPhrase);
 
         // запрос фильтров
-        $filterListQuery = null;
-        if ($categoryFilter = $filterRepository->getCategoryRequestObjectByRequestList($requestFilters)) {
-            $filterListQuery = new Query\Product\Filter\GetListByCategoryId($categoryFilter->value, $region->id);
-            $curl->prepare($filterListQuery);
-        }
+        $filterListQuery = new Query\Product\Filter\GetListBySearchPhrase($searchPhrase, $region->id);
+        $curl->prepare($filterListQuery);
 
-        // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPager($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
-        $curl->prepare($productIdPagerQuery);
+        // запрос результатов поиска
+        $searchResultQuery = new Query\Search\GetItemByPhrase($searchPhrase, $filterData, $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
+        $curl->prepare($searchResultQuery);
 
         $curl->execute();
 
@@ -79,24 +77,24 @@ class ListByFilter {
         $filters = $filterListQuery ? $filterRepository->getObjectListByQuery($filterListQuery) : [];
 
         // листинг идентификаторов товаров
-        $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
+        $searchResult = (new Repository\Search())->getObjectByQuery($searchResultQuery);
 
         // запрос списка товаров
         $productListQuery = null;
-        if ((bool)$productIdPager->ids) {
-            $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $region->id);
+        if ((bool)$searchResult->productIds) {
+            $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $region->id);
             $curl->prepare($productListQuery);
         }
 
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
-        if ($config->productReview->enabled && (bool)$productIdPager->ids) {
-            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($productIdPager->ids);
+        if ($config->productReview->enabled && (bool)$searchResult->productIds) {
+            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($searchResult->productIds);
             $curl->prepare($ratingListQuery);
         }
 
         // запрос списка видео для товаров
-        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($productIdPager->ids);
+        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($searchResult->productIds);
         $curl->prepare($videoGroupedListQuery);
 
         $curl->execute();
@@ -121,7 +119,7 @@ class ListByFilter {
         $pageRequest->sorting = $sorting;
         $pageRequest->sortings = $sortings;
         $pageRequest->products = $productsById;
-        $pageRequest->count = $productIdPager->count;
+        $pageRequest->count = $searchResult->productCount;
 
         // страница
         $page = new Page();

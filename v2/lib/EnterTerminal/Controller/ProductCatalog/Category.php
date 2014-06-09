@@ -100,7 +100,7 @@ class Category {
         }
 
         // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPagerByRequestFilter($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
+        $productIdPagerQuery = new Query\Product\GetIdPager($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
         $curl->prepare($productIdPagerQuery);
 
         $curl->execute();

@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterSite\Controller\ProductCatalog;
+namespace EnterSite\Controller\Search;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
@@ -11,9 +11,9 @@ use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
-use EnterSite\Model\Page\ProductCatalog\ChildCategory as Page;
+use EnterSite\Model\Page\Search\Index as Page;
 
-class ChildCategory {
+class Index {
     use ConfigTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait {
         ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait, DebugContainerTrait;
     }
@@ -26,14 +26,13 @@ class ChildCategory {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
         $productRepository = new Repository\Product();
-        $productCategoryRepository = new Repository\Product\Category();
         $filterRepository = new Repository\Product\Filter();
 
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
 
-        // токен категории
-        $categoryToken = $productCategoryRepository->getTokenByHttpRequest($request);
+        // поисковая строка
+        $searchPhrase = (new Repository\Search())->getPhraseByHttpRequest($request);
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
@@ -57,54 +56,19 @@ class ChildCategory {
         // регион
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
-        // запрос категории
-        $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region->id);
-        $curl->prepare($categoryItemQuery);
-
-        $categoryAdminItemQuery = null;
-        if ($config->adminService->enabled) {
-            $categoryAdminItemQuery = new Query\Product\Category\GetAdminItemByToken($categoryToken, $region->id);
-            $curl->prepare($categoryAdminItemQuery);
-        }
-
-        $curl->execute();
-
-        // категория
-        $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
-        if (!$category) {
-            // костыль для ядра
-            $categoryUi = isset($categoryAdminItemQuery->getResult()['ui']) ? $categoryAdminItemQuery->getResult()['ui'] : null;
-            $categoryItemQuery = $categoryUi ? new Query\Product\Category\GetItemByUi($categoryUi, $region->id) : null;
-
-            if ($categoryItemQuery) {
-                $curl->prepare($categoryItemQuery)->execute();
-                $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
-            }
-        }
-
-        if (!$category) {
-            return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
-        }
-        if ($category->redirectLink) {
-            return (new Controller\Redirect())->execute($category->redirectLink . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
-        }
-
         // фильтры в http-запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
-        // фильтр категории в http-запросе
-        $requestFilters[] = $filterRepository->getRequestObjectByCategory($category);
+        $filterData = $filterRepository->dumpRequestObjectList($requestFilters);
+        // фильтр поисковой фразы
+        $requestFilters[] = $filterRepository->getRequestObjectBySearchPhrase($searchPhrase);
 
         // запрос фильтров
-        $filterListQuery = new Query\Product\Filter\GetListByCategoryId($category->id, $region->id);
+        $filterListQuery = new Query\Product\Filter\GetListBySearchPhrase($searchPhrase, $region->id);
         $curl->prepare($filterListQuery);
 
-        // запрос предка категории
-        $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($category, $region->id);
-        $curl->prepare($branchCategoryItemQuery);
-
-        // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPager($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
-        $curl->prepare($productIdPagerQuery);
+        // запрос результатов поиска
+        $searchResultQuery = new Query\Search\GetItemByPhrase($searchPhrase, $filterData, $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
+        $curl->prepare($searchResultQuery);
 
         // запрос дерева категорий для меню
         $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
@@ -114,17 +78,22 @@ class ChildCategory {
 
         // фильтры
         $filters = $filterRepository->getObjectListByQuery($filterListQuery);
-
-        // предки и дети категории
-        $productCategoryRepository->setBranchForObjectByQuery($category, $branchCategoryItemQuery);
+        $filters[] = new Model\Product\Filter([
+            'filter_id' => 'q',
+            'name'      => 'Поисковая строка',
+            'type_id'   => Model\Product\Filter::TYPE_STRING,
+            'options'   => [
+                ['id' => null],
+            ],
+        ]);
 
         // листинг идентификаторов товаров
-        $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
+        $searchResult = (new Repository\Search())->getObjectByQuery($searchResultQuery);
 
         // запрос списка товаров
         $productListQuery = null;
-        if ((bool)$productIdPager->ids) {
-            $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $region->id);
+        if ((bool)$searchResult->productIds) {
+            $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $region->id);
             $curl->prepare($productListQuery);
         }
 
@@ -132,19 +101,15 @@ class ChildCategory {
         $mainMenuQuery = new Query\MainMenu\GetItem();
         $curl->prepare($mainMenuQuery);
 
-        // запрос настроек каталога
-        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($category->ascendants, [$category]));
-        $curl->prepare($catalogConfigQuery);
-
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
-        if ($config->productReview->enabled && (bool)$productIdPager->ids) {
-            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($productIdPager->ids);
+        if ($config->productReview->enabled && (bool)$searchResult->productIds) {
+            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($searchResult->productIds);
             $curl->prepare($ratingListQuery);
         }
 
         // запрос списка видео для товаров
-        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($productIdPager->ids);
+        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($searchResult->productIds);
         $curl->prepare($videoGroupedListQuery);
 
         $curl->execute();
@@ -155,9 +120,6 @@ class ChildCategory {
         // меню
         $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
-        // настройки каталога
-        $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
-
         // список рейтингов товаров
         if ($ratingListQuery) {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
@@ -167,24 +129,23 @@ class ChildCategory {
         $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
 
         // запрос для получения страницы
-        $pageRequest = new Repository\Page\ProductCatalog\ChildCategory\Request();
+        $pageRequest = new Repository\Page\Search\Request();
+        $pageRequest->searchPhrase = $searchPhrase;
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->limit = $limit;
-        $pageRequest->count = $productIdPager->count; // TODO: передавать productIdPager
+        $pageRequest->count = $searchResult->productCount; // TODO: передавать searchResult
         $pageRequest->requestFilters = $requestFilters;
         $pageRequest->filters = $filters;
         $pageRequest->sorting = $sorting;
         $pageRequest->sortings = $sortings;
-        $pageRequest->category = $category;
-        $pageRequest->catalogConfig = $catalogConfig;
         $pageRequest->products = $productsById;
         $pageRequest->httpRequest = $request;
 
         // страница
         $page = new Page();
-        (new Repository\Page\ProductCatalog\ChildCategory())->buildObjectByRequest($page, $pageRequest);
+        (new Repository\Page\Search())->buildObjectByRequest($page, $pageRequest);
 
         // debug
         if ($config->debug) $this->getDebugContainer()->page = $page;
@@ -193,8 +154,7 @@ class ChildCategory {
         // рендер
         $renderer = $this->getRenderer();
         $renderer->setPartials([
-            'content' => 'page/product-catalog/child-category/content',
-            //'content' => file_get_contents($this->getConfig()->mustacheRenderer->templateDir . '/page/product-catalog/child-category/content.mustache'),
+            'content' => 'page/search/content',
         ]);
         $content = $renderer->render('layout/default', $page);
 

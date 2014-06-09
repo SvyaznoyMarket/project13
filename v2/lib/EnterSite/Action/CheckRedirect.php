@@ -25,12 +25,12 @@ class CheckRedirect {
 
         $route = null;
         try {
-            $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod());
+            $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod(), $request->query->all());
         } catch (\Exception $e) {}
 
         $hasRedirect = false
             //|| ($route instanceof Routing\Index)
-            || ($route instanceof Routing\Search\Index)
+            //|| ($route instanceof Routing\Search\Index)
             || ($route instanceof Routing\User\Auth)
             || ($route instanceof Routing\User\Index)
             || ($route instanceof Routing\ShopCard\Get)

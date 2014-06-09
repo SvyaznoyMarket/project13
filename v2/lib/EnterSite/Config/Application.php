@@ -46,6 +46,8 @@ namespace EnterSite\Config {
         public $productPhoto;
         /** @var Application\ProductCategoryPhoto */
         public $productCategoryPhoto;
+        /** @var Application\Search */
+        public $search;
         /** @var Application\DirecCredit */
         public $directCredit;
 
@@ -72,6 +74,7 @@ namespace EnterSite\Config {
             $this->productReview = new Application\ProductReview();
             $this->productPhoto = new Application\ProductPhoto();
             $this->productCategoryPhoto = new Application\ProductCategoryPhoto();
+            $this->search = new Application\Search();
 
             $this->directCredit = new Application\DirecCredit();
         }
@@ -212,6 +215,11 @@ namespace EnterSite\Config\Application {
          * @var array
          */
         public $urlPaths = [];
+    }
+
+    class Search {
+        /** @var int */
+        public $minPhraseLength;
     }
 
     class DirecCredit {

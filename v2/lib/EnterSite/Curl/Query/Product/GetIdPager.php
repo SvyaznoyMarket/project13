@@ -7,7 +7,7 @@ use EnterSite\Curl\Query\CoreQueryTrait;
 use EnterSite\Curl\Query\Url;
 use EnterSite\Model;
 
-class GetIdPagerByRequestFilter extends Query {
+class GetIdPager extends Query {
     use CoreQueryTrait;
 
     /** @var array */
