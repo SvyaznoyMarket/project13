@@ -117,6 +117,12 @@ define(
                 }
 
                 dataValue.product.quantity = quantity;
+
+                // FIXME: осторожно, гкод
+                if ($el.hasClass('js-quickBuyButton')) {
+                    var url = $el.attr('href').replace(/\d+$/, quantity);
+                    $el.attr('href', url);
+                }
             },
 
             incSpinnerValue = function(e) {
@@ -221,6 +227,7 @@ define(
         $body
             .on('click', '.js-buyButton', addProductToCart)
             .on('changeProductQuantityData', '.js-buyButton', changeProductQuantity)
+            .on('changeProductQuantityData', '.js-quickBuyButton', changeProductQuantity)
             .on('click', '.js-deleteButton', deleteProductFromCart)
 
         // спиннер для кнопки купить
