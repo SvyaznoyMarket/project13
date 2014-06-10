@@ -73,11 +73,13 @@ class ListBySearchPhrase {
 
         $curl->execute();
 
-        // фильтры
-        $filters = $filterListQuery ? $filterRepository->getObjectListByQuery($filterListQuery) : [];
-
         // листинг идентификаторов товаров
         $searchResult = (new Repository\Search())->getObjectByQuery($searchResultQuery);
+
+        // фильтры
+        $filters = $filterListQuery ? $filterRepository->getObjectListByQuery($filterListQuery) : [];
+        // добавление фильтров категории
+        $filters = array_merge($filters, $filterRepository->getObjectListByCategoryList((new Repository\Product\Category())->getObjectListBySearchResult($searchResult)));
 
         // запрос списка товаров
         $productListQuery = null;
