@@ -73,7 +73,7 @@ class Compare {
 
         // страница
         $page = new Page();
-
+        $page->groups = $compareRepository->getGroupListByObject($compare, $productsById);
         foreach ($compare->product as $compareProduct) {
             $product = !empty($productsById[$compareProduct->id])
                 ? $productsById[$compareProduct->id]

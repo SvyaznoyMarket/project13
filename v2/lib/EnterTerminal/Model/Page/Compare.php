@@ -5,6 +5,8 @@ namespace EnterTerminal\Model\Page {
 
     class Compare {
         /** @var Model\Product[] */
+        public $groups = [];
+        /** @var Model\Product[] */
         public $products = [];
     }
 }
