@@ -71,6 +71,7 @@ class ImportConfig {
         $config->productPhoto->urlPaths = $importedConfig->productPhoto['url'];
         $config->productCategoryPhoto->urlPaths = $importedConfig->productCategory['url'];
         $config->search->minPhraseLength = $importedConfig->search['queryStringLimit'];
+        $config->promo->urlPaths = $importedConfig->banner['url'];
 
         // собственные настройки
         $config->requestId = uniqid();
