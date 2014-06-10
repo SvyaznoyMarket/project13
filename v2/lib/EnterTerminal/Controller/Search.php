@@ -106,6 +106,9 @@ class Search {
         $categoryFilters = $filterRepository->getObjectListByCategoryList((new Repository\Product\Category())->getObjectListBySearchResult($searchResult));
         $filters = array_merge($filters, $categoryFilters);
 
+        // значения для фильтров
+        $filterRepository->setValueForObjectList($filters, $requestFilters);
+
         // запрос списка товаров
         $productListQuery = null;
         if ((bool)$searchResult->productIds) {
