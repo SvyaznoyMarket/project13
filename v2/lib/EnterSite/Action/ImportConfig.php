@@ -59,6 +59,9 @@ class ImportConfig {
         $config->reviewService->url = $importedConfig->reviewsStore['url'];
         $config->reviewService->timeout = $importedConfig->reviewsStore['timeout'];
 
+        $config->contentService->url = $importedConfig->wordpress['url'];
+        $config->contentService->timeout = $importedConfig->wordpress['timeout'];
+
         $config->retailRocketService->account = $importedConfig->partners['RetailRocket']['account'];
         $config->retailRocketService->url = $importedConfig->partners['RetailRocket']['apiUrl'];
         $config->retailRocketService->timeout = $importedConfig->partners['RetailRocket']['timeout'];

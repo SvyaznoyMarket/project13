@@ -41,6 +41,8 @@ return function(\EnterSite\Config\Application $config) {
     $config->reviewService->url = 'http://admin.enter.ru/reviews/';
     $config->reviewService->timeout = 2;
 
+    $config->contentService->url = 'http://content.enter.ru/';
+
     $config->retailRocketService->account = '519c7f3c0d422d0fe0ee9775';
     $config->retailRocketService->url = 'http://api.retailrocket.ru/api/';
     $config->retailRocketService->timeout = 0.5;
