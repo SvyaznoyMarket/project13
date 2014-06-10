@@ -123,6 +123,7 @@ class Filter {
                 'token'    => $category->id,
                 'name'     => $category->name,
                 'quantity' => $category->productCount,
+                'image'    => $category->image,
             ];
         }
         $filters[] = new Model\Product\Filter([

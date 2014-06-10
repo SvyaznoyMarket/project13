@@ -169,6 +169,7 @@ class Category {
             $category->id = $searchCategory->id;
             $category->name = $searchCategory->name;
             $category->productCount = $searchCategory->productCount;
+            $category->image = $searchCategory->image;
 
             $categories[] = $category;
         }

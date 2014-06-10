@@ -103,7 +103,8 @@ class Search {
             ],
         ]);
         // добавление фильтров категории
-        $filters = array_merge($filters, $filterRepository->getObjectListByCategoryList((new Repository\Product\Category())->getObjectListBySearchResult($searchResult)));
+        $categoryFilters = $filterRepository->getObjectListByCategoryList((new Repository\Product\Category())->getObjectListBySearchResult($searchResult));
+        $filters = array_merge($filters, $categoryFilters);
 
         // запрос списка товаров
         $productListQuery = null;
