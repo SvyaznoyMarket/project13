@@ -27,7 +27,7 @@ class Category {
      * @param Query $query
      * @return Model\Product\Category[]
      */
-    public function getListByQuery(Query $query) {
+    public function getObjectListByQuery(Query $query) {
         $categories = [];
 
         foreach ($query->getResult() as $item) {
@@ -156,5 +156,24 @@ class Category {
         }
 
         return $categoriesById;
+    }
+
+    /**
+     * @param Model\SearchResult $searchResult
+     * @return Model\Product\Category[]
+     */
+    public function getObjectListBySearchResult(Model\SearchResult $searchResult) {
+        $categories = [];
+        foreach ($searchResult->categories as $searchCategory) {
+            $category = new Model\Product\Category();
+            $category->id = $searchCategory->id;
+            $category->name = $searchCategory->name;
+            $category->productCount = $searchCategory->productCount;
+            $category->image = $searchCategory->image;
+
+            $categories[] = $category;
+        }
+
+        return $categories;
     }
 }

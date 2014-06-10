@@ -125,10 +125,37 @@ class Compare {
             $product = isset($productsById[$comparedProduct->id]) ? $productsById[$comparedProduct->id] : null;
             if (!$product) continue;
 
+            // FIXME
+            $product->compareGroupId = $product->category ? $product->category->id : null;
+
             foreach ($productsById as $productToCompare) {
                 if ($product->id == $productToCompare->id) continue;
                 $compareFunction($product, $productToCompare);
             }
         }
+    }
+
+    /**
+     * @param Model\Compare $compare
+     * @param Model\Product[] $productsById
+     * @return Model\Compare\Group[]
+     */
+    public function getGroupListByObject(Model\Compare $compare, array $productsById) {
+        $groups = [];
+
+        foreach ($compare->product as $comparedProduct) {
+            /** @var Model\Product|null $product */
+            $product = isset($productsById[$comparedProduct->id]) ? $productsById[$comparedProduct->id] : null;
+            if (!$product) continue;
+            if (!$product->category) continue;
+
+            $group = new Model\Compare\Group();
+            $group->id = $product->category->id;
+            $group->name = $product->category->name;
+
+            $groups[] = $group;
+        }
+
+        return $groups;
     }
 }

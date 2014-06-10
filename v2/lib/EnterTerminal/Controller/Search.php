@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterTerminal\Controller\ProductCatalog;
+namespace EnterTerminal\Controller;
 
 use Enter\Http;
 use EnterTerminal\ConfigTrait;
@@ -10,9 +10,9 @@ use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
-use EnterTerminal\Model\Page\ProductCatalog\Category as Page;
+use EnterTerminal\Model\Page\Search as Page;
 
-class Category {
+class Search {
     use ConfigTrait, CurlClientTrait {
         ConfigTrait::getConfig insteadof CurlClientTrait;
     }
@@ -33,9 +33,10 @@ class Category {
         $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
 
         // ид категории
-        $categoryId = trim((string)$request->query['categoryId']);
-        if (!$categoryId) {
-            throw new \Exception('Не указан параметр categoryId');
+        // поисковая строка
+        $searchPhrase = (new Repository\Search())->getPhraseByHttpRequest($request, 'phrase');
+        if (!$searchPhrase) {
+            throw new \Exception('Не передана поисковая фраза');
         }
 
         // номер страницы
@@ -67,41 +68,19 @@ class Category {
             throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
         }
 
-        // запрос категории
-        $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryId, $shop->regionId);
-        $curl->prepare($categoryItemQuery);
-
-        $curl->execute();
-
-        // категория
-        $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, null);
-        if (!$category) {
-            return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
-        }
-
-        // фильтры в запросе
+        // фильтры в http-запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
-        // фильтр категории в http-запросе
-        $requestFilters[] = $filterRepository->getRequestObjectByCategory($category);
+        $filterData = $filterRepository->dumpRequestObjectList($requestFilters);
+        // фильтр поисковой фразы
+        $requestFilters[] = $filterRepository->getRequestObjectBySearchPhrase($searchPhrase);
 
         // запрос фильтров
-        $filterListQuery = new Query\Product\Filter\GetListByCategoryId($category->id, $shop->regionId);
+        $filterListQuery = new Query\Product\Filter\GetListBySearchPhrase($searchPhrase, $shop->regionId);
         $curl->prepare($filterListQuery);
 
-        // запрос предка категории
-        $ascendantCategoryItemQuery = new Query\Product\Category\GetAscendantItemByCategoryObject($category, $shop->regionId);
-        $curl->prepare($ascendantCategoryItemQuery);
-
-        // запрос родителя категории
-        $parentCategoryItemQuery = null;
-        if ($category->parentId) {
-            $parentCategoryItemQuery = new Query\Product\Category\GetTreeItemById($category->parentId, $shop->regionId);
-            $curl->prepare($parentCategoryItemQuery);
-        }
-
-        // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPager($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
-        $curl->prepare($productIdPagerQuery);
+        // запрос результатов поиска
+        $searchResultQuery = new Query\Search\GetItemByPhrase($searchPhrase, $filterData, $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
+        $curl->prepare($searchResultQuery);
 
         $curl->execute();
 
@@ -110,44 +89,45 @@ class Category {
         // значения для фильтров
         $filterRepository->setValueForObjectList($filters, $requestFilters);
 
-        // предки категории
-        $category->ascendants = $productCategoryRepository->getAscendantListByQuery($ascendantCategoryItemQuery);
-
-        // родитель категории
-        $category->parent = $parentCategoryItemQuery ? $productCategoryRepository->getObjectByQuery($parentCategoryItemQuery) : null;
-
         // листинг идентификаторов товаров
-        $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
+        $searchResult = (new Repository\Search())->getObjectByQuery($searchResultQuery);
+
+        // фильтры
+        $filters = $filterRepository->getObjectListByQuery($filterListQuery);
+        $filters[] = new Model\Product\Filter([
+            'filter_id' => 'phrase',
+            'name'      => 'Поисковая строка',
+            'type_id'   => Model\Product\Filter::TYPE_STRING,
+            'options'   => [
+                ['id' => null],
+            ],
+        ]);
+        // добавление фильтров категории
+        $categoryFilters = $filterRepository->getObjectListByCategoryList((new Repository\Product\Category())->getObjectListBySearchResult($searchResult));
+        $filters = array_merge($filters, $categoryFilters);
 
         // запрос списка товаров
         $productListQuery = null;
-        if ((bool)$productIdPager->ids) {
-            $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $shop->regionId);
+        if ((bool)$searchResult->productIds) {
+            $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $shop->regionId);
             $curl->prepare($productListQuery);
         }
 
-        // запрос настроек каталога
-        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($category->ascendants, [$category]));
-        $curl->prepare($catalogConfigQuery);
-
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
-        if ($config->productReview->enabled && (bool)$productIdPager->ids) {
-            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($productIdPager->ids);
+        if ($config->productReview->enabled && (bool)$searchResult->productIds) {
+            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($searchResult->productIds);
             $curl->prepare($ratingListQuery);
         }
 
         // запрос списка видео для товаров
-        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($productIdPager->ids);
+        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($searchResult->productIds);
         $curl->prepare($videoGroupedListQuery);
 
         $curl->execute();
 
         // список товаров
         $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
-
-        // настройки каталога
-        $catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
 
         // список рейтингов товаров
         if ($ratingListQuery) {
@@ -159,10 +139,9 @@ class Category {
 
         // страница
         $page = new Page();
-        $page->category = $category;
-        $page->catalogConfig = $catalogConfig;
+        $page->searchPhrase = $searchPhrase;
         $page->products = array_values($productsById);
-        $page->productCount = $productIdPager->count;
+        $page->productCount = $searchResult->productCount;
         $page->filters = $filters;
         $page->sortings = $sortings;
 

@@ -76,6 +76,9 @@ class Index {
 
         $curl->execute();
 
+        // листинг идентификаторов товаров
+        $searchResult = (new Repository\Search())->getObjectByQuery($searchResultQuery);
+
         // фильтры
         $filters = $filterRepository->getObjectListByQuery($filterListQuery);
         $filters[] = new Model\Product\Filter([
@@ -86,9 +89,8 @@ class Index {
                 ['id' => null],
             ],
         ]);
-
-        // листинг идентификаторов товаров
-        $searchResult = (new Repository\Search())->getObjectByQuery($searchResultQuery);
+        // добавление фильтров категории
+        $filters = array_merge($filters, $filterRepository->getObjectListByCategoryList((new Repository\Product\Category())->getObjectListBySearchResult($searchResult)));
 
         // запрос списка товаров
         $productListQuery = null;
