@@ -12,50 +12,85 @@
 							params ),
 				$self = $(this),
 
-				leftBtn = $self.find(options.leftBtnControl),
-				rightBtn = $self.find(options.rightBtnControl),
 				item = $self.find(options.itemControl),
 				cont = $self.find(options.slidesContControl),
 				pager = $self.find(options.pagerControl),
 
-				slidesCount = item.length,
+				changeClass = 'slidesImg_item-change'
 
-				curSlides = 1;
+				slidesData = $self.data('value'),
+				slidesDataLength = $self.data('value').length,
+
+				curSlides = 0;
 			// end of vars
 
 			var
+				/**
+				 * Изменение размеров блока слайдера, при ресайзе окна.
+				 */
 				slidesResize = function slidesResize() {
-					var slidesH = cont.height();
-
+					slidesH = cont.height();
 					$self.css({ 'height' : slidesH });
 				},
 
+				/**
+				 * Получение данные баннера, переключение анимационного класса.
+				 */
+				setData = function setData() {
+					itemUrl = $self.data('value')[curSlides].url;
+					contSrc = $self.data('value')[curSlides].image;
+					item.attr('href' , itemUrl);
+					cont.attr('src' , contSrc);
+
+					item.addClass(changeClass).delay(500).queue(function() {
+                       $(this).removeClass(changeClass);
+                       $(this).dequeue();
+                   });
+				},
+
+				/**
+				 * Переключение на следующий слайд.
+				 */
 			  	nextSlides = function nextSlides() {
 			  		curSlides++;
-
-					slidesCenter = $self.find('.slidesImg_item-center');
-
-			  		slidesCenter.removeClass('slidesImg_item-center').addClass('slidesImg_item-left');
-			  		slidesCenter.next().removeClass('slidesImg_item-right').addClass('slidesImg_item-center');
-
+			  		setData();
 			  		pagerCustom();
 			  	},
 
+			  	/**
+				 * Переключение на предыдущий слайд.
+				 */
 			  	prevSlides = function prevSlides() {
 			  		curSlides--;
-			  		
-					slidesCenter = $self.find('.slidesImg_item-center');
-
-			  		slidesCenter.removeClass('slidesImg_item-center').addClass('slidesImg_item-right');
-			  		slidesCenter.prev().removeClass('slidesImg_item-left').addClass('slidesImg_item-center');
-
+			  		setData();
 			  		pagerCustom();
 			  	},
 
+			  	/**
+				 * Добавляем пагинатор.
+				 */
+			  	addPager = function addPager() {
+			  		var pagerHtml = '';
+
+			  		sliderPager = $('<div class="js-slides-img-pag slidesImg_pager" />');
+
+			  		if ( slidesDataLength > 0 ) {
+			  			$self.append(sliderPager);
+			  		};
+
+					for ( var i = 0; i <= slidesDataLength - 1; i++ ) {
+						pagerHtml += '<div class="js-slides-img-pag-item slidesImg_pager_item" data-slide-index="' + i + '" />';
+					}; 
+
+					sliderPager.html(pagerHtml);
+			  	},
+
+			  	/**
+				 * Управление активным классом пагинатора.
+				 */
 			  	pagerCustom = function pagerCustom() {
-			  		var pager = $('.js-slides-img-pag'),
-					    pagerItem = pager.find('.js-slides-img-pag-item'),
-					    pagerItemData = pagerItem.data('slide-index');
+			  		pagerItem = $self.find('.js-slides-img-pag-item'),
+					pagerItemData = pagerItem.data('slide-index');
 
 					pagerItem.first().addClass('slidesImg_pager_item-active');
 
@@ -66,66 +101,41 @@
 			  				$(this).addClass('slidesImg_pager_item-active');
 			  			}
 			  		});
-			  	},
-
-			  	slidesImgNext = function slidesImgNext() {
-			  		if( curSlides <= slidesCount - 1 ) {
-			  			nextSlides();
-			  		}
-			  	},
-
-			  	slidesImgPrev = function slidesImgPrev() {
-			  		if( curSlides >= 2 ) {
-			  			prevSlides();
-			  		}
-			  	},
-
-			  	addPager = function addPager() {
-			  		var pagerHtml = '';
-
-			  		sliderPager = $('<div class="js-slides-img-pag slidesImg_pager" />');
-
-			  		if ( slidesCount > 1 ) {
-			  			$self.append(sliderPager);
-			  		};
-
-					for ( var i = 1; i <= slidesCount; i++ ) {
-						pagerHtml += '<div class="js-slides-img-pag-item slidesImg_pager_item" data-slide-index="' + i + '" />';
-					}; 
-
-					sliderPager.html(pagerHtml);
 			  	};
 			//end of functions
 
+			setData();
 			addPager();
 			pagerCustom();
-
-			$('.js-slides-img-pag').css({'margin-left' : - $('.js-slides-img-pag').width() / 2 })
+			
+			$self.find(options.pagerControl).css({
+				'margin-left' : - $self.find(options.pagerControl).width() / 2 
+			});
 
 			$self.touchwipe({
 			    wipeLeft : function() {
-			    	slidesImgNext();
+			    	if( curSlides <= slidesDataLength - 2) {
+			  			nextSlides();
+			  		}
 			    },
 			    wipeRight : function() {
-			    	slidesImgPrev();
+			    	if( curSlides >= 1 ) {
+			  			prevSlides();
+			  		}
 			    }
 			});
 
-			rightBtn.on('click', slidesImgNext);
-			leftBtn.on('click', slidesImgPrev);
-			w.on('resize', slidesResize);
-		  	slidesResize();
+			w.on('load resize', slidesResize);
+			slidesResize();
 		});
-
 	};
 
 	$.fn.slidesbox.defaults = {
-		leftBtnControl: '.js-slides-img-left',
-		rightBtnControl: '.js-slides-img-right',
+		slidesControl: '.js-slides-img',
 		pagerControl: '.js-slides-img-pag',
 		itemControl: '.js-slides-img-item',
 		slidesContControl: '.js-slides-img-cont'
 	};
 
-	$('.slidesImg').slidesbox();
+	$('.js-slides-img').slidesbox();
 })( jQuery );
