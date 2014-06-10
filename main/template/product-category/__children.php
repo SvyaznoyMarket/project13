@@ -6,13 +6,13 @@ return function(
     array $promoStyle = [],
     array $relatedCategories = [],
     array $categoryConfigById = [],
-    \Iterator\EntityPager $productPager
+    \Iterator\EntityPager $productPager = null
 ) {
 
     $links = [];
     $categories = $category->getChild();
     if (!empty($relatedCategories))  {
-        if ($productPager->getLastPage() > 1) $categories = array_merge($categories, $relatedCategories);
+        if ($productPager && ($productPager->getLastPage() > 1)) $categories = array_merge($categories, $relatedCategories);
         else $categories = $relatedCategories;
     }
 
