@@ -4,7 +4,8 @@
 		utils = ENTER.utils,
 		OrderModel,
 		pageConfig = ENTER.config.pageConfig,
-		prepayment = pageConfig.prepayment;
+		prepayment = pageConfig.prepayment,
+        $body = $(document.body);
 	// end of vars
 
 	console.info('deliveryBox.js init');
@@ -699,12 +700,21 @@
 		 */
 		DeliveryBox.prototype.clickCalendarDay = function( data ) {
 			var
-				self = this;
+				self = this,
+                oldDate = self.choosenDate(),
+                daysDiff;
 			// end of vars
 			
 			if ( !data.avalible ) {
 				return false;
 			}
+
+            try {
+                daysDiff = (data.value - oldDate.value) / (24*60*60*1000);
+                $body.trigger('trackUserAction', ['1_4_1 Смена даты', daysDiff]);
+            } catch (e) {
+                console.error(e);
+            }
 
 			// Если включен PayPal ECS необходимо сохранить выбранную дату в cookie
 			if ( OrderModel.paypalECS() ) {

@@ -13,7 +13,7 @@
 	var
 		serverData = $('#jsOrderDelivery').data('value'),
 		utils = ENTER.utils,
-		body = $('body');
+		body = $(document.body);
 	// end of vars
 
 
@@ -173,9 +173,9 @@
             }
         }
 
-		console.info('Созданные блоки:');
-		console.log(ENTER.OrderModel.deliveryBoxes());
+		console.info('Созданные блоки:', ENTER.OrderModel.deliveryBoxes());
 
+        if (ENTER.OrderModel.deliveryBoxes().length > 1) body.trigger('trackUserAction', ['1_2 Доставка, заказ разбит', ENTER.OrderModel.deliveryBoxes().length]);
 
 		// Добавляем купоны
 		ENTER.OrderModel.couponsBox(discounts);
@@ -222,8 +222,9 @@
 
 		$('.bCountSection').goodsCounter({
 			onChange:function( count ) {
-				console.info('counter change');
-				console.log(count);
+				console.info('counter change', count);
+
+                body.trigger('trackUserAction', ['1_4_3 Число товаров']);
 
 				var
 					seturl = $(this).data('seturl') || '',
@@ -732,10 +733,10 @@
 				if ( !res.success ) {
 					ENTER.OrderModel.couponError(res.error.message);
 					utils.blockScreen.unblock();
-
+                    body.trigger('trackUserAction', ['2 Купон', 'Отказ']);
 					return;
 				}
-
+                body.trigger('trackUserAction', ['2 Купон', 'Принят']);
 				ENTER.OrderModel.couponNumber('');
 			};
 
@@ -837,6 +838,8 @@
 
 			console.log(priorityState);
 			console.log(checkedInputId);
+
+            body.trigger('trackUserAction', ['1_1 Доставка', data.shortName]);
 
 			if ( $('#'+checkedInputId).attr('checked') ) {
 				console.warn('Этот пункт '+checkedInputId+' уже был выбран');

@@ -305,7 +305,7 @@ module.exports = function( grunt ) {
 			},
 			orderNewV5JS:{
 				files: [jsDevPath+'order-new-v5/*.js'],
-				tasks: ['concat:orderNewV5JS', 'jshint', 'uglify:orderNewV5JS',  'connect', 'qunit', 'exec:getVersion']
+				tasks: ['jsmin-sourcemap:order_new_v5']
 			},
 			pandoraJS:{
 				files: [jsDevPath+'pandora/*.js'],

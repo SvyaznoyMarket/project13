@@ -212,6 +212,7 @@
 			if ( typeof window.yaCounter10503055 !== 'undefined' ) {
 				window.yaCounter10503055.reachGoal('\\orders\\complete');
 			}
+            $(document.body).trigger('trackUserAction', ['9 Завершение - успех']);
 		},
 
 		/**
@@ -229,6 +230,7 @@
 
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
+                $(document.body).trigger('trackUserAction', ['8 Завершение - ошибка', res.error.code]);
 
 				utils.blockScreen.unblock();
 
