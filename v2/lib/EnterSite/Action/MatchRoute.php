@@ -3,13 +3,17 @@
 namespace EnterSite\Action;
 
 use Enter\Http;
+use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
+use EnterSite\DebugContainerTrait;
 use EnterSite\RouterTrait;
 use EnterSite\Controller;
 
 class MatchRoute {
-    use RouterTrait;
-    use LoggerTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait, DebugContainerTrait;
+        LoggerTrait::getLogger insteadof ConfigTrait;
+    }
 
     /**
      * @param Http\Request $request
@@ -23,6 +27,11 @@ class MatchRoute {
 
         try {
             $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod(), $request->query->all());
+            if ($this->getConfig()->debug) $this->getDebugContainer()->route = [
+                'name'       => get_class($route),
+                'action'     => $route->action,
+                'parameters' => $route->parameters,
+            ];
 
             if (isset($route->action[0])) {
                 $controllerClass = '\\EnterSite\\Controller\\' . $route->action[0]; // TODO: перенести в настройки

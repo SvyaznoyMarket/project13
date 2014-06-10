@@ -59,11 +59,7 @@ class HandleResponse {
                 $response->headers->setCookie($cookie);
             }
         } catch (\Exception $e) {
-            $logger->push([
-                'type'   => 'error',
-                'action' => __METHOD__,
-                'error'  => $e,
-            ]);
+            $logger->push(['type' => 'error', 'action' => __METHOD__, 'error'  => $e]);
         }
     }
 }
