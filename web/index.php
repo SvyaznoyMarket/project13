@@ -39,6 +39,8 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
 
 // app name
 \App::$name = isset($_SERVER['APPLICATION_NAME']) ? $_SERVER['APPLICATION_NAME'] : 'main';
+// FIXME
+\App::$name = 'photocontest';
 if ('main' == \App::$name) {
     // определение флага {десктопное|мобильное приложение} на основе домена
     /* // TODO: временно убрал проверку на мобильное приложение
@@ -62,6 +64,12 @@ if ('main' == \App::$name) {
     $config->templateDir = $config->appDir . '/terminal/template';
     $config->controllerPrefix = 'Terminal\\Controller';
     $config->routePrefix = 'terminal';
+} else if ('photocontest' == \App::$name) {
+    $config->coreV2['client_id'] = 'photocontest';
+
+    //$config->templateDir = $config->appDir . '/template';
+    //$config->controllerPrefix = '\\Controller';
+    $config->routePrefix = '';
 }
 
 // response
