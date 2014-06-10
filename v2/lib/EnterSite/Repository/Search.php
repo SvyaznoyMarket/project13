@@ -10,8 +10,8 @@ use EnterSite\Model;
 class Search {
     use ConfigTrait;
 
-    public function getPhraseByHttpRequest(Http\Request $request) {
-        $phrase = (string)$request->query['q'];
+    public function getPhraseByHttpRequest(Http\Request $request, $key = 'q') {
+        $phrase = (string)$request->query[$key];
 
         $encode = mb_detect_encoding($phrase, array('UTF-8', 'Windows-1251'), true);
         switch ($encode) {
