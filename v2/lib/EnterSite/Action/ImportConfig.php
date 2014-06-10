@@ -14,7 +14,10 @@ class ImportConfig {
         $importedConfig = include $configFile;
 
         if (!$importedConfig instanceof \Config\AppConfig) {
-            throw new \Exception('не удалось импортировать настройки');
+            $e = new \Exception('Не удалось импортировать настройки из ' . $configFile);
+            die($e->getMessage());
+
+            //throw $e;
         }
 
         $config->dir = $applicationDir;
