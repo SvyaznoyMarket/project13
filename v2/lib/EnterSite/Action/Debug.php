@@ -105,7 +105,7 @@ class Debug {
                     'code'         => $info['http_code'],
                     'error'        => $curlQuery->getError(),
                     'url'          => $info['url'],
-                    'data'         => $curlQuery->getData(),
+                    'data'         => (bool)$curlQuery->getData() ? $curlQuery->getData() : null,
                     'header'       => $headers,
                     //'content_type' => $info['content_type'],
                     'time' => [

@@ -32,11 +32,18 @@ class Index {
 
         $page->dataModule = 'index';
 
+        $hosts = $config->mediaHosts;
+        $host = reset($hosts);
+
         $promoData = [];
         foreach ($request->promos as $promoModel) {
+            if (!$promoModel->image) {
+                $this->getLogger()->push(['type' => 'warn', 'error' => sprintf('Нет картинки у промо #', $promoModel->id), 'action' => __METHOD__, 'tag' => ['promo']]);
+                continue;
+            }
             $promoItem = [
                 'url'   => $router->getUrlByRoute(new Routing\Promo\Redirect($promoModel->id)),
-                'image' => null, // TODO
+                'image' => $host . $config->promo->urlPaths[1] . $promoModel->image,
             ];
 
             $promoData[] = $promoItem;

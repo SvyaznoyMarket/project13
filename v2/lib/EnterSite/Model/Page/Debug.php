@@ -8,6 +8,8 @@ namespace EnterSite\Model\Page {
         public $path;
         /** @var string */
         public $name;
+        /** @var string */
+        public $route;
         /** @var Debug\Error|null */
         public $error;
         /** @var Debug\Git|null */

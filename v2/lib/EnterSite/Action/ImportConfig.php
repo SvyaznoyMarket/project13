@@ -14,7 +14,10 @@ class ImportConfig {
         $importedConfig = include $configFile;
 
         if (!$importedConfig instanceof \Config\AppConfig) {
-            throw new \Exception('не удалось импортировать настройки');
+            $e = new \Exception('Не удалось импортировать настройки из ' . $configFile);
+            die($e->getMessage());
+
+            //throw $e;
         }
 
         $config->dir = $applicationDir;
@@ -68,6 +71,7 @@ class ImportConfig {
         $config->productPhoto->urlPaths = $importedConfig->productPhoto['url'];
         $config->productCategoryPhoto->urlPaths = $importedConfig->productCategory['url'];
         $config->search->minPhraseLength = $importedConfig->search['queryStringLimit'];
+        $config->promo->urlPaths = $importedConfig->banner['url'];
 
         // собственные настройки
         $config->requestId = uniqid();

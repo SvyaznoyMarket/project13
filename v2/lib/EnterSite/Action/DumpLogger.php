@@ -11,6 +11,10 @@ class DumpLogger {
     }
 
     public function execute() {
-        $this->getLogger()->dump();
+        try {
+            $this->getLogger()->dump();
+        } catch (\Exception $e) {
+            trigger_error($e, E_USER_ERROR);
+        }
     }
 }

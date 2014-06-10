@@ -102,7 +102,6 @@ define(
                 $parent = $el.parents('.js-widget');
 
             $parent.find('.js-debug-tab-query').click();
-            console.info($parent, $parent.find('.js-debug-tab-query'), $parent.find('.js-debug-tab-content-query'));
             setTimeout(function() {
                 $parent.find('.js-debug-tab-content-query').scrollTo($($el.attr('href')), {duration: 'fast'});
             }, 200);

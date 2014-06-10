@@ -22,6 +22,9 @@ class RegisterShutdown {
                 $response = new Http\Response();
             }
 
+            // logger
+            (new Action\DumpLogger())->execute();
+
             $lastError = error_get_last();
             if ($lastError && (error_reporting() & $lastError['type'])) {
                 $response = (new Controller\Error\InternalServerError())->execute($request);
@@ -32,9 +35,6 @@ class RegisterShutdown {
                 $response->statusCode = Http\Response::STATUS_INTERNAL_SERVER_ERROR;
                 $this->getLogger()->push(['type' => 'error', 'error' => $error, 'tag' => ['critical']]);
             }
-
-            // logger
-            (new Action\DumpLogger())->execute();
 
             $endAt = microtime(true);
 

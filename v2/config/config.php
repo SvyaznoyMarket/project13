@@ -82,6 +82,12 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->search->minPhraseLength = 1;
 
+    $config->promo->urlPaths =[
+        0 => '/4/1/230x302/',
+        1 => '/4/1/768x302/',
+        2 => '/4/1/920x320/',
+    ];
+
     $config->directCredit->enabled = true;
     $config->directCredit->minPrice = 3000;
     $config->directCredit->partnerId = '4427';
