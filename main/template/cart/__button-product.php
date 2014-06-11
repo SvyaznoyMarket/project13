@@ -41,6 +41,7 @@ return function (
         $urlParams = [
             'productId' => $product->getId(),
         ];
+        if ($product->getStatusId() === 5) $class .= ' mDisabled';
         if ($helper->hasParam('sender')) {
             $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
         }
