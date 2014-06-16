@@ -14,6 +14,13 @@
 $cart = $user->getCart();
 $creditEnabled = ($cart->getTotalProductPrice() >= \App::config()->product['minCreditPrice']) && \App::config()->payment['creditEnabled'] && !$user->getRegion()->getHasTransportCompany();
 
+foreach ($products as $product) {
+    if ((bool) $product->getPartnersOffer()) {
+        $creditEnabled = false;
+        break;
+    }
+}
+
 $backLink = $page->url('homepage');
 foreach (array_reverse($products) as $product) {
     /** @var $product \Model\Product\Entity */
