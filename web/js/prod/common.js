@@ -2592,7 +2592,7 @@ $(document).ready(function() {
 						return;
 					}
 
-					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay];
+					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay.toString()];
 
 					if ( 'undefined' == typeof(_gaq) ) {
 						tchiboAnalyticsBuffer.push(item);
@@ -2651,7 +2651,7 @@ $(document).ready(function() {
 						return;
 					}
 
-					item = ['_trackEvent', 'item_click', collection_name+'_'+item_name, position];
+					item = ['_trackEvent', 'item_click', collection_name+'_'+item_name, position.toString()];
 
 					console.info('TchiboSliderAnalytics item_click');
 					console.log(item);
