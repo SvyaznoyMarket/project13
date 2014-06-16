@@ -67,6 +67,9 @@
                 {{^hasKit}}
                     {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
                 {{/hasKit}}
+                {{#isKitLocked}}
+                    {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                {{/isKitLocked}}
                 <a class="btnView mBtnGrey" href="{{link}}">Посмотреть</a>
             </div>
         </div>
