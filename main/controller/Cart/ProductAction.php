@@ -92,7 +92,7 @@ class ProductAction {
             if ($cart->getSum()) {
                 \Session\User::enableInfoCookie($response);
             } else {
-                \Session\User::disableInfoCookie($response);
+//                \Session\User::disableInfoCookie($response); // SITE-3926
             }
 
             return $response;
