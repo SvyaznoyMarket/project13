@@ -2,6 +2,7 @@
 /config/databases.yml
 /cache
 /log
+/nbproject
 /plugins/.registry/
 /plugins/.channels/
 /plugins/sfWordpressPlugin/lib/vendor/wordpress/wp-content/uploads/*

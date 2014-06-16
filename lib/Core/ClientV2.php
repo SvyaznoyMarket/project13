@@ -46,7 +46,7 @@ class ClientV2 implements ClientInterface {
         if ($this->config['debug']) {
             $params['log4php'] = 1;
         }
-
+		
         $response = $this->curl->query($this->getUrl($action, $params), $data, $timeout);
 
         \Debug\Timer::stop('core');

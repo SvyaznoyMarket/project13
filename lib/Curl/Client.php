@@ -68,7 +68,7 @@ class Client {
             $header = [];
             $this->parseResponse($connection, $response, $header);
 
-            $decodedResponse = $this->decode($response);
+			$decodedResponse = $this->decode($response);
             curl_close($connection);
 
             $spend = \Debug\Timer::stop('curl');
@@ -352,7 +352,7 @@ class Client {
      * @param float|null $timeout
      * @return resource
      */
-    private function create($url, array $data = [], $timeout = null) {
+    protected function create($url, array $data = [], $timeout = null) {
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
 
         $this->logger->info([
@@ -425,7 +425,7 @@ class Client {
      * @throws Exception
      * @return mixed
      */
-    private function decode($response) {
+    protected function decode($response) {
         if (is_null($response)) {
             throw new \RuntimeException('Пустой ответ');
         }

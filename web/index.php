@@ -1,4 +1,8 @@
 <?php
+// FIXME
+$_SERVER['APPLICATION_ENV'] = $_SERVER['APPLICATION_NAME'] = 'photocontest';
+
+
 
 set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, [
     realpath(__DIR__ . '/../v2/Enter'),
@@ -39,8 +43,6 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
 
 // app name
 \App::$name = isset($_SERVER['APPLICATION_NAME']) ? $_SERVER['APPLICATION_NAME'] : 'main';
-// FIXME
-\App::$name = 'photocontest';
 if ('main' == \App::$name) {
     // определение флага {десктопное|мобильное приложение} на основе домена
     /* // TODO: временно убрал проверку на мобильное приложение

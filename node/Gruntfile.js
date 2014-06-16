@@ -225,7 +225,31 @@ module.exports = function( grunt ) {
 				files: {
 					'../web/v2/css/global.min.css': ['../web/v2/css/global.less']
 				}
+			},
+			
+			/**
+			 * Фото конкурс
+			 */
+			// компиляция
+			photoContestCompile: {
+				options: {
+					paths: ['../web/css/photoContest/']
+				},
+				files: {
+					'../web/css/photoContest/style.css': ['../web/css/photoContest/style.less']
+				}
+			},
+			// минификация LESS
+			photoContestCompress: {
+				options: {
+					paths: ['../web/css/photoContest/'],
+					compress: true
+				},
+				files: {
+					'../web/css/photoContest/style.min.css': ['../web/css/photoContest/style.less']
+				}
 			}
+			
 		},
 
 
@@ -249,6 +273,11 @@ module.exports = function( grunt ) {
 			stylesV2: {
 				files: ['../web/v2/css/*.less', '../web/v2/css/modules/**/*.less'],
 				tasks: ['less:compileV2', 'less:compressV2']
+			},
+			
+			photoContest: {
+				files: ['../web/css/photoContest/*.less'],
+				tasks: ['less:photoContestCompile', 'less:photoContestCompress']
 			},
 
 			partnerScripts: {

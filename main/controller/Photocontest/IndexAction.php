@@ -3,44 +3,66 @@
 namespace Controller\Photocontest;
 
 class IndexAction {
+	
+	public function index(\Http\Request $request){
+		\App::logger()->debug('Exec ' . __METHOD__);
+		
+		$curl = \App::photoContestClient();
+		$r = $curl->query('contest/lastActive');
+		$request->query->set('id', $r->id);
+		
+		return $this->show($request);
+	}
+	
+	
     /**
      * @param \Http\Request $request
      * @return \Http\Response
      */
-    public function execute(\Http\Request $request) {
+    public function show(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $curl = \App::coreClientV2();
-        $user = \App::user();
-        $region = $user->getRegion();
-
+		$curl	= \App::photoContestClient();
+		
         // подготовка 1-го пакета запросов
         // FIXME
-        $photos = [];
-        $curl->addQuery(
-            'product/get',
-            [
-                'select_type' => 'slug',
-                'slug'        => 'planshetniy-kompyuter-wexler-tab-7id-8gb-3g-cherniy-2060101016995',
-                'geo_id'      => $region->getId(),
-            ],
-            [],
-            function($data) use (&$photos) {
-                // Наполнение $photos
-                $data = reset($data);
-                $photos[] = [
-                    'id' => $data['id'],
-                ];
-            }
-        );
-
-        // выполнение 1-го пакета запросов
-        $curl->execute();
+		$contest = $curl->query('contest/'.$request->get('id'));
+//        $curl->addQuery('contest/'.$request->get('id'), [], [],
+//            function($result) use (&$contest) {
+//			      не отдает данные гадина
+//                $contest = $result;
+//            }
+//        );
+//
+//        // выполнение 1-го пакета запросов
+//        $curl->execute();
+		
         // теперь переменная $photos наполнена данными
-
+		
         // страница
         $page = new \View\Photocontest\IndexPage();
-        $page->setParam('photos', $photos);
+        $page->setParam('contest', $contest);
+		
+		// спрашиваем топ
+        $page->setParam('top', 
+			$curl->query(
+				'image/list/'.$request->get('id'),
+				['order'=>'r','orderType'=>'d','limit'=>3]
+			)
+		);
+		
+		// спрашиваем страницу
+        $page->setParam('list',
+			$curl->query(
+				'image/list/'.$request->get('id'),
+				[
+					'order'=>$request->get('order','d'),'orderType'=>'d',
+					'limit'=>18,'page'=>$request->get('page',0)
+				]
+			)
+		);
+		
+		$page->setParam('request', $request);
 
         return new \Http\Response($page->show());
     }

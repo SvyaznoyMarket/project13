@@ -291,6 +291,27 @@ class App {
 
         return $instance;
     }
+	
+	
+	/**
+     * @static
+     * @return \Content\Client
+     */
+    public static function photoContestClient() {
+        static $instance;
+		static $curl;	// используем скорректированного клиента
+		
+		if(!$curl) {
+			 $curl = new \Curl\ClientPhotoContest(\App::logger());
+		}
+		
+        if (!$instance) {
+            $instance = new \Core\ClientV2(self::config()->photoContest['client'], $curl);
+        }
+
+        return $instance;
+    }
+	
 
     /**
      * @static
