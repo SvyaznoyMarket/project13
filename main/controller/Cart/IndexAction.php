@@ -84,7 +84,7 @@ class IndexAction {
         if ((bool)$productIds) {
             \RepositoryManager::product()->prepareCollectionById($productIds, $region, function($data) use(&$products, $cartProductsById, &$productEntities) {
                 foreach ($data as $item) {
-                    $products[] = new \Model\Product\CartEntity($item);
+                    $products[] = new \Model\Product\Entity($item);
                     $productEntities[] = new \Model\Product\Entity($item);
                 }
             });

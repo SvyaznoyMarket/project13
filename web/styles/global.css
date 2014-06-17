@@ -2706,7 +2706,7 @@ img[height="0"] {
   }
   .tchiboNav__sublist.mDefault {
     left: 0;
-    width: 850px;
+    width: 838px;
   }
   .tchiboNav__sublist.mLast {
     right: 0;
@@ -3091,10 +3091,10 @@ img[height="0"] {
 /*---------TCHIBO - листинг Чибо----------*/
 @media all {
   .tchiboProducts .productInner {
-    z-index: 98;
+    z-index: 5;
   }
   .tchiboProducts .productInner:hover {
-    z-index: 100;
+    z-index: 10;
   }
   .tchiboProducts .productInner .bProductDescSticker {
     z-index: 102;
