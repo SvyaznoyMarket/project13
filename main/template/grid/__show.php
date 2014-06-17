@@ -32,7 +32,7 @@ $f = function(
     ?>
         <? if ($product): ?>
             <? if ($product->getLabel()): ?>
-                <div class="bProductDescSticker mRight">
+                <div class="bProductDescSticker mLeft">
                     <img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>" />
                 </div>
             <? endif ?>
