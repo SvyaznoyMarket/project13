@@ -43,7 +43,10 @@
 					})
 				},
 
+				curSlides = 1,
+
 				setDataD = function setDataD() {
+
 					itemUrl = $self.data('value')[curSlides].url;
 					contSrc = $self.data('value')[curSlides].image;
 					$(this).attr('href' , itemUrl);
@@ -60,7 +63,10 @@
 
 			  	nextSlides = function nextSlides() {
 					curSlides++;
-					setDataD();
+
+					if ( curSlides <= slidesDataLength -1 ) {
+						setDataD();
+					};
 
 					slidesImgCenter = $self.find('.slidesImg_item-center');
 					slidesImgCenter.removeClass(centerClass).addClass(leftClass);
@@ -74,8 +80,11 @@
 					console.log(curSlides);
 				},
 
+				curSlides = curSlides - 2,
+
 				prevSlides = function prevSlides() {
 					curSlides--;
+					
 					setDataD();
 
 					slidesImgCenter = $self.find('.slidesImg_item-center');
@@ -118,6 +127,8 @@
 					sliderPager.html(pagerHtml);
 			  	},
 
+			  	curSlides = 0,
+
 			  	pagerCustom = function pagerCustom() {
 			  		pagerItem = $self.find('.js-slides-img-pag-item'),
 					pagerItemData = pagerItem.data('slide-index');
@@ -125,6 +136,7 @@
 					pagerItem.first().addClass('slidesImg_pager_item-active');
 
 			  		pagerItem.each(function () {
+
 			  			$(this).removeClass('slidesImg_pager_item-active');
 
 			  			if ( curSlides == $(this).data('slide-index')) {
