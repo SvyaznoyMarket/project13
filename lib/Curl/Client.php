@@ -19,6 +19,8 @@ class Client {
     private $queryIndex = [];
     /** @var bool */
     private $stillExecuting = false;
+	/** @var bool активация нативного POST запроса */
+	private $nativePost = false;
 
     /**
      * @param \Logger\LoggerInterface $logger
@@ -37,6 +39,11 @@ class Client {
         $this->queryIndex = [];
         $this->stillExecuting = false;
     }
+	
+	
+	public function setNativePost($val=true) {
+		$this->nativePost = true;
+	}
 
     /**
      * @param string $url
@@ -383,11 +390,14 @@ class Client {
             curl_setopt($connection, CURLOPT_CONNECTTIMEOUT_MS, $timeout * 1000);
         }
 
-        if ((bool)$data) {
+        if (!$this->nativePost && (bool)$data) {
             curl_setopt($connection, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
             curl_setopt($connection, CURLOPT_POST, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data));
-        }
+        } elseif ($this->nativePost && (bool)$data) {
+			curl_setopt($connection, CURLOPT_POST, true);
+            curl_setopt($connection, CURLOPT_POSTFIELDS, $data);
+		}
 
         if ($referer = \App::config()->mainHost) {
             curl_setopt($connection, CURLOPT_REFERER, $referer);
