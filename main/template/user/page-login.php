@@ -18,6 +18,6 @@
         <br/>
         <a class="font18 dashed jsShowLoginForm" href="#">У меня уже есть логин и пароль</a>
         <div class="clearfix"><?= $page->render('form-forgot') ?></div>
-        <?= $page->render('form-login') ?>
+        <?= $page->render('form-login',['redirect'=>$redirect]) ?>
     </div>
 </div>
