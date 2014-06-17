@@ -545,6 +545,11 @@ class AppConfig {
         ]
     ];
 
+    /** @var array */
+    public $flocktoryExchange = [
+        'enabled' => null,
+    ];
+
     public function __construct() {
         //$this->vkontakteOauth = new OAuth\VkontakteConfig();
         //$this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();

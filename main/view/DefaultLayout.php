@@ -935,4 +935,8 @@ class DefaultLayout extends Layout {
                 <!-- End Google Tag Manager -->
             </div>";
     }
+
+    public function slotFlocktoryExchangeJS() {
+        return;
+    }
 }
