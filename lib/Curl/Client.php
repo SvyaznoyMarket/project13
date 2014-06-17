@@ -390,7 +390,7 @@ class Client {
             curl_setopt($connection, CURLOPT_CONNECTTIMEOUT_MS, $timeout * 1000);
         }
 
-        if (!$this->nativePost && (bool)$data) {
+		if (!$this->nativePost && (bool)$data) {
             curl_setopt($connection, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
             curl_setopt($connection, CURLOPT_POST, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data));

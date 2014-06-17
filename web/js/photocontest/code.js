@@ -110,8 +110,8 @@
 	 */
 	$.fn.vote = function(options) {
 		var set = $.extend({
-			routeVote: '/vote/{id}',
-			routeUnvote: '/unvote/{id}',
+			routeVote: '/vote/{id}?{key}',
+			routeUnvote: '/unvote/{id}?{key}',
 			routeSk: '/sk',
 		}, options || {});
 		
@@ -140,7 +140,7 @@
 				success: function(data,status,xhr){
 					$.ajax({
 						type: "POST",
-						url: route.replace(/{id}/g,$(el).attr('data-id')),
+						url: route.replace(/{id}/g,$(el).attr('data-id')).replace(/{key}/g,data.result),
 						headers: {
 							// передаем ключик
 							'X-Referer': document.location + ' ' + xhr.getResponseHeader('x-page-id')

@@ -295,7 +295,7 @@ class App {
 	
 	/**
      * @static
-     * @return \Content\Client
+     * @return \Content\ClientV2
      */
     public static function photoContestClient() {
         static $instance;

@@ -10,7 +10,7 @@
 if (!isset($form)) $form = new \View\User\LoginForm();
 ?>
 
-<form action="<?= $page->url('user.login',['redirect_to'=>$redirect]) ?>" class="form bFormLogin__ePlace jsLoginForm" method="post">
+<form action="<?= $page->url('user.login',['redirect_to'=>(isset($redirect_to)?$redirect_to:null)]) ?>" class="form bFormLogin__ePlace jsLoginForm" method="post">
     <fieldset class="bFormLogin__ePlace">
         <legend class="bFormLogin__ePlaceTitle">Мои логин и пароль</legend>
 

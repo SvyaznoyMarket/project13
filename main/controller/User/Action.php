@@ -155,7 +155,7 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
-		$page->setParam('redirect', $this->redirect);
+		$page->setParam('redirect_to', $this->redirect);
 
         return new \Http\Response($page->show());
     }

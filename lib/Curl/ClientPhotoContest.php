@@ -21,8 +21,6 @@ class ClientPhotoContest extends Client {
 		}
 		
 		curl_setopt($connection, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-		
-//		curl_setopt($connection, CURLOPT_COOKIE, gzencode($_SERVER['HTTP_COOKIE'],5));
 		curl_setopt($connection, CURLOPT_COOKIE, $_SERVER['HTTP_COOKIE']);
 		
 		return $connection;
