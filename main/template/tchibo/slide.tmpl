@@ -7,6 +7,13 @@
     <% for( var i = 0; i < products.length; i++ ) { %>
         <div class="prodItem">
             <a href="<%= products[ i ].link %>" title="<%= products[ i ].name %>">
+
+                <% if ( !products[ i ].isBuyable ) { %>
+                <div class="bProductDescSticker">
+                    <img src="/images/shild_sold_out.png" alt="Нет в наличии" />
+                </div>
+                <% } %>
+
                 <div class="prodImg">
                     <img src="<%= products[ i ].image %>" alt="<%= products[ i ].name %>" />
                 </div>
