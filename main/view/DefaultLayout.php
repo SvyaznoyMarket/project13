@@ -427,6 +427,7 @@ class DefaultLayout extends Layout {
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
+        $return .= $this->slotSociaPlus();
 
         return $return;
     }
