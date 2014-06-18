@@ -34,6 +34,7 @@ foreach (array_reverse($productsById) as $product) {
 		break;
 	}
 }
+if ($oneClick && strpos($request->headers->get('referer'), '/product/') > 0) $backLink = $product->getLink();
 
 if ($oneClick) {
     $createUrl = $page->url('order.oneClick.create');
