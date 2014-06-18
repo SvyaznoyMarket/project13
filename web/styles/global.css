@@ -492,6 +492,12 @@ table {
 .fr {
   float: right;
 }
+.ta-c {
+  text-align: center;
+}
+.mb5 {
+  margin-bottom: 5px;
+}
 /*--END---БАЗОВЫЕ СТИЛИ---*/
 /*---ОСНОВНЫЕ ПРАВИЛА---*/
 /**
@@ -586,12 +592,6 @@ img[height="0"] {
 }
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
 /*---ПРИМЕСИ---*/
-.inlineBlock {
-  display: inline-block;
-  vertical-align: top;
-  *display: inline;
-  zoom: 1;
-}
 /*--END---ПРИМЕСИ---*/
 /*---ОСНОВНЫЕ ЦВЕТА---*/
 /*--END---ОСНОВНЫЕ ЦВЕТА---*/
@@ -3741,6 +3741,93 @@ img[height="0"] {
   }
 }
 /*---END----Наборы пакетов/лини мебели/наборы мебели---------*/
+/*---------Стили попапов и их содержимого----------*/
+@media all {
+  .markerList-table {
+    display: table;
+    width: 605px;
+  }
+  .markerList_row {
+    display: table-row;
+    font-size: 14px;
+  }
+  .markerList_row:hover {
+    background: #fff7e6;
+  }
+  .markerList_col {
+    display: table-cell;
+    padding: 5px;
+    vertical-align: middle;
+  }
+  .markerList_col-left {
+    width: 390px;
+    vertical-align: top;
+  }
+  .markerList_col-mark {
+    vertical-align: top;
+  }
+  .markerList_col-center {
+    min-width: 110px;
+    text-align: right;
+  }
+  .markerList_col-right {
+    min-width: 80px;
+    text-align: center;
+    color: #929292;
+    font-size: 12px;
+  }
+  .markerList .markColor {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 10px;
+    height: 10px;
+    vertical-align: middle;
+  }
+  .markerList_light {
+    display: block;
+    color: #616161;
+  }
+  .markerList .btnOneClickBuy {
+    margin: 0;
+  }
+  .markerList .btnBuy__eLink {
+    width: 66px;
+    height: 23px;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 23px;
+  }
+  .markerList .btnText {
+    text-transform: lowercase;
+    font-weight: bold;
+  }
+  .markerList-left .markColor {
+    width: 7px;
+    height: 7px;
+  }
+  .markerList-left .markDesc {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    margin: 0 0 3px 5px;
+  }
+  .markerList-left .markerList_light {
+    margin: 0 0 5px 16px;
+  }
+  .markerList-left .btnBuy {
+    text-align: center;
+    height: auto;
+  }
+}
+/*---END----Стили попапов и их содержимого---------*/
 @media all {
   .notBuying {
     position: relative;

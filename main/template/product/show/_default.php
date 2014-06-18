@@ -197,7 +197,7 @@ $isKitPage = (bool)$product->getKit();
 <div class="bProductSectionRightCol">
 
     <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
-    <div class="bWidgetBuy bWidgetShops mWidget">
+    <div class="bWidgetBuy bWidgetBuy-shops mWidget">
         <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
     </div>
     <? endif ?>

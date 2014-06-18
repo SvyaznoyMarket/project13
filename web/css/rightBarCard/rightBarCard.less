@@ -1,12 +1,15 @@
 // widget delivery
 .bWidgetBuy {
-    border: 1px solid #c7c7c7;
-    padding: 10px 5px; 
+    padding: 10px 5px;
+
+    border: 1px solid #c7c7c7; 
 
     &__eClick {
-        font-size: 14px;
-        text-align: center;
         margin: 15px 0 0;
+
+        text-align: center;
+
+        font-size: 14px;
 
         a {
             border-bottom: 1px dotted;
@@ -16,15 +19,46 @@
         }
     }
 
+    .shopsVar {
+        
+        &-center {
+            text-align: center;
+        }
+
+        .button {
+            width: 148px;
+            margin: 0 auto;
+
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        &_title {
+            display: block;
+
+            margin: 0 0 5px;
+
+            color: #616161;
+
+            font-size: 14px;
+        }
+    }
+
+    &-shops {
+        padding: 10px;
+    }
+
     .bDelivery {
         margin: 30px 0 20px;
 
         &__eItem {
-            padding-left: 25px;
             margin: 0 0 15px 4px;
-            background-repeat: no-repeat;
-            line-height: 1.2;
+            padding-left: 25px;
+
             background-image: url("@{base-url}/rightBarCard/img/ico.png");
+            background-repeat: no-repeat;
+
+            line-height: 1.2;
 
             span {
                 font-size: 14px;
@@ -35,8 +69,9 @@
             }
 
             .bJustText {
-                color: @typBoxShadowColor;
                 margin: 4px 0 0;
+
+                color: @typBoxShadowColor;
             }
         }
 
@@ -68,8 +103,9 @@
     }
 
     .bAwardSection {
-        text-align: center;
         margin: 20px 0 10px;
+
+        text-align: center;
     }
 }
 
@@ -77,8 +113,9 @@
     margin: 10px 0 10px;
 
     &__eShop {
-        font-size: 11px;
         padding: 0 0 10px;
+
+        font-size: 11px;
     }
 
     &__eLink {
@@ -97,23 +134,27 @@
 
 // counter
 .bCountSection {
-    font-size: 14px;
+    width: 115px;
     margin: 0 0 10px 0;
     padding-left: 59px;
+
+    font-size: 14px;
     line-height: 24px;
-    width: 115px;
 
     button {
-        background: url("@{base-url}/rightBarCard/img/bg_count_btn.png") no-repeat 0 0;
         display: block;
+        float: left;
+
         width: 20px;
         height: 24px;
-        cursor: pointer;
-        text-align: center;
-        border: none;
-        float: left;
         margin-right: 3px;
         padding: 0;
+
+        cursor: pointer;
+        text-align: center;
+
+        border: none;
+        background: url("@{base-url}/rightBarCard/img/bg_count_btn.png") no-repeat 0 0;
 
         &.mDisabled {
             .opacity(0.4);
@@ -121,16 +162,20 @@
     }
 
     &__eNum {
-        border: 1px solid #c7c7c7;
         .rounded(3px);
-        height: 22px;
-        line-height: 22px;
-        padding: 0;
-        text-align: center;
-        width: 33px;
-        padding: 0;
         float: left;
+
+        width: 33px;
+        height: 22px;
         margin-right: 3px;
+        padding: 0;
+        padding: 0;
+
+        text-align: center;
+
+        border: 1px solid #c7c7c7;
+
+        line-height: 22px;
     }
 
     &.mDisabled{
@@ -145,12 +190,15 @@
 
 // widget services
 .bWidgetService {
-    border: 1px solid #41c7ef;
     padding: 0 0 10px;
+
+    border: 1px solid #41c7ef;
     &__eHead {
-        background: url("@{base-url}/rightBarCard/img/ico.png") #41c7ef no-repeat 8px -81px;
         padding: 7px 10px 8px 33px;
+
         color: #fff;
+        background: url("@{base-url}/rightBarCard/img/ico.png") #41c7ef no-repeat 8px -81px;
+
         font-size: 14px;
         line-height: 1.2;
         strong {

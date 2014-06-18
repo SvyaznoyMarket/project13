@@ -1525,9 +1525,7 @@
   }
   .bPopupTitle {
     margin: 0 0 15px;
-    text-transform: uppercase;
-    font-size: 30px;
-    font-family: "Enter";
+    font-size: 24px;
   }
   .bFormLogin__eComplete {
     display: none;
@@ -7496,12 +7494,6 @@
     padding-left: 9%;
     width: 89%;
   }
-  .bPopupTitle {
-    margin: 0 0 15px;
-    text-transform: uppercase;
-    font-size: 30px;
-    font-family: "Enter";
-  }
   .bPageLogin {
     padding: 30px 0 55px;
   }
@@ -9262,13 +9254,13 @@
 /*------СТИЛИ ПРАВОЙ КОЛОНКИ КАРТОЧКИ ТОВАРА------*/
 @media all {
   .bWidgetBuy {
-    border: 1px solid #c7c7c7;
     padding: 10px 5px;
+    border: 1px solid #c7c7c7;
   }
   .bWidgetBuy__eClick {
-    font-size: 14px;
-    text-align: center;
     margin: 15px 0 0;
+    text-align: center;
+    font-size: 14px;
   }
   .bWidgetBuy__eClick a {
     border-bottom: 1px dotted;
@@ -9276,15 +9268,33 @@
   .bWidgetBuy__eClick a:hover {
     text-decoration: none;
   }
+  .bWidgetBuy .shopsVar-center {
+    text-align: center;
+  }
+  .bWidgetBuy .shopsVar .button {
+    width: 148px;
+    margin: 0 auto;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .bWidgetBuy .shopsVar_title {
+    display: block;
+    margin: 0 0 5px;
+    color: #616161;
+    font-size: 14px;
+  }
+  .bWidgetBuy-shops {
+    padding: 10px;
+  }
   .bWidgetBuy .bDelivery {
     margin: 30px 0 20px;
   }
   .bWidgetBuy .bDelivery__eItem {
-    padding-left: 25px;
     margin: 0 0 15px 4px;
+    padding-left: 25px;
+    background-image: url("/css/rightBarCard/img/ico.png");
     background-repeat: no-repeat;
     line-height: 1.2;
-    background-image: url("/css/rightBarCard/img/ico.png");
   }
   .bWidgetBuy .bDelivery__eItem span {
     font-size: 14px;
@@ -9293,8 +9303,8 @@
     color: #000000;
   }
   .bWidgetBuy .bDelivery__eItem .bJustText {
-    color: #616161;
     margin: 4px 0 0;
+    color: #616161;
   }
   .bWidgetBuy .bDelivery .mDeliveryPrice {
     background-position: 0 -34px;
@@ -9317,15 +9327,15 @@
     cursor: pointer;
   }
   .bWidgetBuy .bAwardSection {
-    text-align: center;
     margin: 20px 0 10px;
+    text-align: center;
   }
   .bDeliveryFreeAddress {
     margin: 10px 0 10px;
   }
   .bDeliveryFreeAddress__eShop {
-    font-size: 11px;
     padding: 0 0 10px;
+    font-size: 11px;
   }
   .bDeliveryFreeAddress__eLink {
     text-decoration: none;
@@ -9337,23 +9347,23 @@
     display: block;
   }
   .bCountSection {
-    font-size: 14px;
+    width: 115px;
     margin: 0 0 10px 0;
     padding-left: 59px;
+    font-size: 14px;
     line-height: 24px;
-    width: 115px;
   }
   .bCountSection button {
-    background: url("/css/rightBarCard/img/bg_count_btn.png") no-repeat 0 0;
     display: block;
+    float: left;
     width: 20px;
     height: 24px;
+    margin-right: 3px;
+    padding: 0;
     cursor: pointer;
     text-align: center;
     border: none;
-    float: left;
-    margin-right: 3px;
-    padding: 0;
+    background: url("/css/rightBarCard/img/bg_count_btn.png") no-repeat 0 0;
   }
   .bCountSection button.mDisabled {
     -moz-opacity: 0.4;
@@ -9364,17 +9374,17 @@
     filter: alpha(opacity=40);
   }
   .bCountSection__eNum {
-    border: 1px solid #c7c7c7;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    height: 22px;
-    line-height: 22px;
-    text-align: center;
-    width: 33px;
-    padding: 0;
     float: left;
+    width: 33px;
+    height: 22px;
     margin-right: 3px;
+    padding: 0;
+    text-align: center;
+    border: 1px solid #c7c7c7;
+    line-height: 22px;
   }
   .bCountSection.mDisabled {
     -moz-opacity: 0.3;
@@ -9389,13 +9399,13 @@
     cursor: default;
   }
   .bWidgetService {
-    border: 1px solid #41c7ef;
     padding: 0 0 10px;
+    border: 1px solid #41c7ef;
   }
   .bWidgetService__eHead {
-    background: url("/css/rightBarCard/img/ico.png") #41c7ef no-repeat 8px -81px;
     padding: 7px 10px 8px 33px;
     color: #fff;
+    background: url("/css/rightBarCard/img/ico.png") #41c7ef no-repeat 8px -81px;
     font-size: 14px;
     line-height: 1.2;
   }
@@ -9468,17 +9478,6 @@
     font-size: 18px;
     line-height: 35px;
   }
-  .btnBuy__eLink.mBought {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    color: #000000;
-    border: 1px solid #b3b3b3;
-    background: #ffffff;
-  }
-  .btnBuy__eLink.mBought:hover {
-    background: #ffffff;
-  }
   .btnBuy__eLink.mShopsOnly {
     background: #040404;
     /* Old browsers */
@@ -9505,6 +9504,17 @@
   .btnBuy__eLink.mShopsOnly:hover,
   .btnBuy__eLink.mShopsOnly:active {
     background: #000000;
+  }
+  .btnBuy__eLink.mBought {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    color: #000000;
+    border: 1px solid #b3b3b3;
+    background: #ffffff;
+  }
+  .btnBuy__eLink.mBought:hover {
+    background: #ffffff;
   }
   .btnBuy__eLink.mDisabled {
     -webkit-box-shadow: none;

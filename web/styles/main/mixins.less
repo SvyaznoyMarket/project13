@@ -134,10 +134,11 @@
   -webkit-box-sizing: @argument;
 }
 
-.inlineBlock {
+.inline-block() {
   display: inline-block;
   vertical-align: top;
 
+  /* IE6-8 */
   *display: inline;
-  zoom: 1;
+  *zoom: 1;
 }
