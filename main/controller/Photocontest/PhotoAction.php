@@ -62,6 +62,10 @@ class PhotoAction {
 			unset($form->mobile);
 		}
 		
+		$curl = \App::photoContestClient();
+		
+		$contest = $curl->query('contest/'.$request->get('contestId'));
+		//@todo Если нет то прокидываем 404
 		
 		$page = new \View\Photocontest\PhotoCreatePage();
 		$page->setParam('breadcrumbs', [
@@ -73,12 +77,6 @@ class PhotoAction {
 				'url'	=> \App::router()->generate('pc.contest',['id'=>$contest->id]),
 			],
 		]);
-		
-		
-		$curl = \App::photoContestClient();
-		
-		$contest = $curl->query('contest/'.$request->get('contestId'));
-		//@todo Если нет то прокидываем 404
 		
 		
 		/**
