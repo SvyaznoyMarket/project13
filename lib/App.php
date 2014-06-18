@@ -546,4 +546,17 @@ class App {
 
         return $instance;
     }
+
+    /**
+     * @return \Coupon\CouponManager
+     */
+    public static function couponManager() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Coupon\CouponManager();
+        }
+
+        return $instance;
+   }
 }
