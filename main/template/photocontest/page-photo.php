@@ -27,7 +27,7 @@
 
 <div class="pc_photo">
 	<div class="pc_date"><?=date('d.m.Y H:i',$item->udCreate)?></div>
-	<div class="pc_vote<?=$item->vote?' active':null?>" data-id="<?=$item->id?>"><i><?=$item->meta->voteCounter?$item->meta->voteCounter:0?></i></div>
+	<div class="<?=$contest->setup->voteEnabled?'__vote ':'disabled '?>pc_vote<?=$item->vote?' active':null?>" data-id="<?=$item->id?>"><i><?=$item->meta->voteCounter?$item->meta->voteCounter:0?></i></div>
 	<img src="<?=$item->fileUrlView?>" title="<?=$item->title?>"/>
 </div>
 
@@ -55,8 +55,6 @@
 
 <!-- Комментарии facebook -->
 <div id="fb-root"></div>
-
-
 <script>
 	(function(d, s, id) {
 		var js, fjs = d.getElementsByTagName(s)[0];
@@ -66,8 +64,6 @@
 		fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));
 </script>
-
-
 <div id="photo-comments-box">
 	<div class="bCommentSn mFb fb-comments" data-href="<?=$request->getRequestUri()?>" data-numposts="10" data-width="460"></div>
 </div>

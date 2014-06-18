@@ -13,7 +13,8 @@
 	'title'		=> 'Лидеры конкурса',
 	'list'		=> $top,
 	'filter'	=> false,
-	'pagination'=> false
+	'pagination'=> false,
+	'contest'	=> $contest
 ));?>
 
 
@@ -22,7 +23,8 @@
 	'list'		=> $list,
 	'filter'	=> true,
 	'pagination'=> true,
-	'route'		=> 'homepage'
+	'route'		=> 'homepage',
+	'contest'	=> $contest
 ));?>
 
 

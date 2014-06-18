@@ -179,5 +179,5 @@ $(function() {
 		step: 3
 	});
 	
-	$('.pc_vote').vote({});
+	$('.__vote').vote({});
 });

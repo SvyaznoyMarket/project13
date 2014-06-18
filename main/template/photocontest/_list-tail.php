@@ -65,7 +65,7 @@ function routeParams ($list,array $params=[]){
 		<li>
 			<a href="<?=\App::router()->generate('pc.photo.show',['id'=>$v->id,'contestId'=>$v->contestId])?>" class="pc_photo" title="<?=$v->title?>">
 				<div class="pc_date"><?=date('d.m.Y H:i',$v->udCreate)?></div>
-				<div class="pc_vote<?=$v->vote?' active':null?>" data-id="<?=$v->id?>"><i><?=$v->meta->voteCounter?$v->meta->voteCounter:0?></i></div>
+				<div class="<?=$contest->setup->voteEnabled?'__vote ':'disabled '?> pc_vote<?=$v->vote?' active':null?>" data-id="<?=$v->id?>"><i><?=$v->meta->voteCounter?$v->meta->voteCounter:0?></i></div>
 				<img src="<?=$v->fileUrlPreview?>" title="<?=$v->title?>"/>
 			</a>
 		</li>
