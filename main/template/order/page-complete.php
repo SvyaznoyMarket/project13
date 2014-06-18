@@ -147,4 +147,4 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]);
 } ?>
 
-<div id="flocktory_exchange"></div>
+<?= $page->slotFlocktoryExchangeJS() ?>

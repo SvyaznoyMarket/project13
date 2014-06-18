@@ -4,6 +4,7 @@ namespace View\Order;
 
 use \Model\Order\Product\Entity as OrderProduct;
 use \Model\Order\Entity as Order;
+use \View\Order\Form as OrderForm;
 
 class CompletePage extends Layout {
     public function prepare() {
@@ -225,5 +226,38 @@ class CompletePage extends Layout {
         if (!\App::config()->partners['Lamoda']['enabled']) return;
 
         return '<div id="LamodaCompleteJS" class="jsanalytics"></div>';
+    }
+
+    public function slotFlocktoryExchangeJS() {
+        if (!\App::config()->flocktoryExchange['enabled']) return;
+
+        $orders = $this->getParam('orders');
+        if (empty($orders) || !is_array($orders)) {
+            return;
+        }
+
+        /** @var $order Order */
+        $order = reset($orders);
+        /** @var $form OrderForm */
+        $form = $this->getParam('form');
+        if (!$order instanceof Order || !$form instanceof OrderForm) {
+            return;
+        }
+
+        $email = $form->getEmail();
+        if (!$email) {
+            $email = $order->getMobilePhone() . '@unknown.email';
+        }
+
+        $data = [
+            'spot' => 'thankyou',
+            'email' => $email,
+            'name' => $form->getFirstName() . ' ' . $form->getLastName(),
+            'container' => 'flocktory_exchange' // DOM element in which banner will be inserted.
+        ];
+
+        return
+            '<div id="flocktory_exchange"></div>
+            <div id="flocktoryExchangeJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
 }

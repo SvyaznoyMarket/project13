@@ -1802,6 +1802,28 @@ window.ANALYTICS = {
 		})(window,document,'script','dataLayer', data.containerId);
 	},
 
+	flocktoryExchangeJS: function () {
+		var
+			flocktoryExchange = $('#flocktoryExchangeJS'),
+			data = flocktoryExchange.data('value'),
+			_flocktory = window._flocktory = _flocktory || [];
+		// end of vars
+
+		if ( !flocktoryExchange.length || undefined == typeof(data) ) {
+			return;
+		}
+
+		console.info('flocktoryExchange');
+		console.log(['exchange', data]);
+
+		_flocktory.push(['exchange', data]);
+		(function() {
+			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+			s.src = "//api.flocktory.com/1/hello.js";
+			var l = document.getElementsByTagName('script')[0]; l.parentNode.insertBefore(s, l);
+		})();
+	},
+
 	enable : true
 }
 
