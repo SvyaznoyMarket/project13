@@ -3,9 +3,11 @@
  * @var $request \Http\Request 
  */
 ?>
-
-<h1><?=$contest->name?></h1>
-<p><?=$contest->annot?></p>
+<a href="<?=\App::router()->generate('pc.photo.create',['contestId'=>$contest->id])?>" class="pc_button pc_right">Участвовать</a>
+<div class="pc_head">
+	<h1><?=$contest->name?></h1>
+</div>
+<p class="pc_info"><?=$contest->annot?></p>
 
 <?=\App::templating()->render('photocontest/_list-tail', array(
 	'title'		=> 'Лидеры конкурса',

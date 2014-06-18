@@ -9,7 +9,7 @@
 	<h1>Стань участником</h1>
 	
 	<?php if(isset($message)): ?>
-	<p><?=$message?></p>
+	<p class="pc_info"><?=$message?></p>
 	<?php endif; ?>
 
 	<?php if(isset($form)): ?>

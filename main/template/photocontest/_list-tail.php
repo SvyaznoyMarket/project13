@@ -33,6 +33,17 @@ function routeParams ($list,array $params=[]){
 
 	<?php if ($filter): ?>
 	<div class="bSortingLine clearfix">
+		<!-- AddThis Button BEGIN -->
+		<div class="addthis_toolbox addthis_default_style ">
+			<a fb:like:layout="button_count" class="addthis_button_facebook_like" style="display:block; float:left; width: 80px;"></a>
+			<a class="addthis_button_tweet" style="width: 83px;"></a>
+			<a class="addthis_button_pinterest_pinit" style="width: 50px;"></a>
+			<a class="addthis_counter addthis_pill_style"></a>
+		</div>
+
+		<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1" type="text/javascript"></script>
+		<!-- AddThis Button END -->
+		
 		<ul class="bSortingList mSorting">
 			<li class="bSortingList__eItem mTitle">Показать сначала:</li>
 			<li class="bSortingList__eItem mSortItem<?=$list->order==='d'?' mActive':null?>">

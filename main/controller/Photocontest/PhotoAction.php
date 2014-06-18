@@ -13,11 +13,16 @@ class PhotoAction {
 		$page = new \View\Photocontest\PhotoPage();
 		
 		$page->setParam('breadcrumbs', [
-			array(
+			[
+				'name'	=> 'Главная',
+				'url'	=> '/',
+			],[
 				'name'	=> $contest->name,
 				'url'	=> \App::router()->generate('pc.contest',['id'=>$request->get('contestId')]),
-			),
+			],
 		]);
+		
+		$page->setParam('contest',$contest);
 		
 		$page->setParam('item',
 			$curl->query('image/item',['id'=>$request->get('id')])
@@ -60,10 +65,13 @@ class PhotoAction {
 		
 		$page = new \View\Photocontest\PhotoCreatePage();
 		$page->setParam('breadcrumbs', [
-			array(
+			[
+				'name'	=> 'Главная',
+				'url'	=> '/',
+			],[
 				'name'	=> $contest->name,
 				'url'	=> \App::router()->generate('pc.contest',['id'=>$contest->id]),
-			),
+			],
 		]);
 		
 		
@@ -81,12 +89,14 @@ class PhotoAction {
 			// активируем стандартный POST запрос
 			$curl->getCurl()->setNativePost();
 			
+			// записываем имеющиеся значения в форму
 			$form->title->value		= $request->get('title');
 			$form->orderIds->value	= $request->get('orderIds');
 			if(isset($form->email))
 				$form->email->value	= $request->get('email');
 			if(isset($form->mobile))
 				$form->mobile->value= $request->get('mobile');
+			
 			
 			// Если не хватает контакта у пользователя, то валидируем и добавляем
 			try {
@@ -161,7 +171,7 @@ class PhotoAction {
 				}
 				
 			} catch (Exception $e) {
-
+				
 			}
 		}
 		

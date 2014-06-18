@@ -12,7 +12,7 @@ class _Layout extends \View\DefaultLayout {
 		$this->addJavascript('/js/photocontest/code.js');
 	}
 	
-	public function slotMainMenu(){}
+//	public function slotMainMenu(){}
 
 	public function slotContentHead() {
 		// заголовок контента страницы

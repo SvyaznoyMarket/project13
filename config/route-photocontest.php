@@ -13,7 +13,7 @@ return array_merge([
 
 	'pc.contest'	=> [
 		'pattern'	=> '/{id}',
-		'action'  => ['Photocontest\IndexAction', 'show'],
+		'action'  => ['Photocontest\IndexAction', 'contest'],
 		'require' => [
             'id'	=> '\d+',
 			'order'	=> '\w{1}',

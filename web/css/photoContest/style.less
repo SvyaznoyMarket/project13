@@ -9,17 +9,55 @@
 @import "../common/mixins.less";
 
 
-/*
-	Переопределяем некоторые правила
-*/
+/* Переопределяем некоторые правила */
+.content {
+	padding-top: 10px;
+}
+
 .bSortingList__eItem.mTitle {
 	float: left; 
-	line-height: 20px; height: 20px;
+	line-height: 20px; height: 20px; 
 	margin-right: 10px;
 }
 
-.content {
-	padding-top: 10px;
+.bSortingLine {
+	.addthis_toolbox {
+		margin: 0;
+		float: right;
+	}
+}
+
+
+
+/* Базовые классы которых не хватает */
+.pc_left {float: left;}
+.pc_right {float: right;}
+
+.pc_button, .pc_form button, .pc_form input[type=submit] {
+	/* Скопировано с кнопки заказа */
+	background: none repeat scroll 0 0 #F89B1C;
+	border: 1px solid #E26500; 
+	.rounded(5px); 
+	color: #FFFFFF;
+	display: inline-block;
+	font: bold 24px Tahoma, sans-serif;
+	padding: 6px 80px;
+	text-align: center;
+}
+
+
+
+.pc_info {
+	background: #E6E6E6;
+	border: 2px dashed #E6E6E6;
+	.rounded(4px);
+	padding: 15px;
+}
+
+.pc_head {
+	h1 {
+		margin-top: 0;
+	}
 }
 
 
@@ -101,7 +139,7 @@ ul.pc_tail {
 	
 }
 
-
+/* прокрутка фоток */
 #pc_photostream {
 	padding: 0; margin: 0 0 15px; 
 	list-style: none outside none;
@@ -163,21 +201,5 @@ ul.pc_tail {
 				margin: -2px -2px -1px;
 			}
 		}
-	}
-}
-
-
-
-form.pc_form {
-	input[type=submit] {
-		/* Скопировано с кнопки заказа */
-		background: none repeat scroll 0 0 #F89B1C;
-		border: 1px solid #E26500;
-		.rounded(5px); 
-		color: #FFFFFF;
-		display: inline-block;
-		font: bold 24px Tahoma, sans-serif;
-		padding: 6px 80px;
-		text-align: center;
 	}
 }

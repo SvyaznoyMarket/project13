@@ -11,7 +11,7 @@ class IndexAction {
 		$r = $curl->query('contest/lastActive');
 		$request->query->set('id', $r->id);
 		
-		return $this->show($request);
+		return $this->contest($request);
 	}
 	
 	
@@ -19,7 +19,7 @@ class IndexAction {
      * @param \Http\Request $request
      * @return \Http\Response
      */
-    public function show(\Http\Request $request) {
+    public function contest(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
 		$curl	= \App::photoContestClient();
