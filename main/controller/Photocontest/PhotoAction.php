@@ -135,10 +135,10 @@ class PhotoAction {
 					$form->title->error = 'Необходимо указать заголовок';
 				}
 				
-				if(!$request->get('orderIds')) {
-					$hasError = true;
-					$form->orderIds->error = 'Необходимо указать номера Ваших заказов';
-				}
+//				if(!$request->get('orderIds')) {
+//					$hasError = true;
+//					$form->orderIds->error = 'Необходимо указать номера Ваших заказов';
+//				}
 				
 				if(!$_FILES['file']['name']) {
 					$hasError = true;
@@ -164,7 +164,7 @@ class PhotoAction {
 						]
 					))
 				) {
-					$page->setParam('message', $r->message);
+					$page->setParam('message', 'Вы стали участником фотоконкурса. Ваше фото на модерации и появиться в течение 24 часов');
 					return new \Http\Response($page->show());
 				}
 				

@@ -31,26 +31,26 @@
 	<img src="<?=$item->fileUrlView?>" title="<?=$item->title?>"/>
 </div>
 
-<!-- AddThis Button BEGIN -->
-<div class="addthis_toolbox addthis_default_style pc_right">
-	<a class="addthis_button_facebook_like" fb:like:layout="button_count" style="display:block; float:left; width: 117px;"></a>
-	<a class="addthis_button_tweet" style="width: 83px;"></a>
-	<a class="addthis_button_pinterest_pinit" style="width: 50px;"></a>
-	<a class="addthis_counter addthis_pill_style"></a>
-</div>
-
-<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1" type="text/javascript"></script>
-<!-- AddThis Button END -->
+<!-- Button BEGIN -->
+<script type="text/javascript">(function() {
+  if (window.pluso)if (typeof window.pluso.start == "function") return;
+  if (window.ifpluso==undefined) { window.ifpluso = 1;
+    var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+    s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+    s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+    var h=d[g]('body')[0];
+    h.appendChild(s);
+  }})();</script>
+<div class="pluso pc_buttons" data-background="transparent" data-options="small,square,line,horizontal,nocounter,theme=08" data-services="facebook,vkontakte,odnoklassniki,twitter,email"></div>
+<!-- Button END -->
 
 <h2 class="pc_left">Вы можете оставить свой комментарий к этой фотографии</h2>
 
 <!-- Комментарии вконтакте -->
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?101"></script>
+<script type="text/javascript">VK.init({apiId: 3969147, onlyWidgets: true});</script>
 <div class="bCommentSn mVk" id="vk_comments"></div>
-
-
-<script type="text/javascript">
-	VK.Widgets.Comments("vk_comments", {limit: 10, width: "460", attach: "*"});
-</script>
+<script type="text/javascript">VK.Widgets.Comments("vk_comments", {limit: 10, width: "460", attach: "*"});</script>
 
 
 <!-- Комментарии facebook -->

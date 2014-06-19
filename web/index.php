@@ -67,11 +67,8 @@ if ('main' == \App::$name) {
     $config->controllerPrefix = 'Terminal\\Controller';
     $config->routePrefix = 'terminal';
 } else if ('photocontest' == \App::$name) {
-    $config->coreV2['client_id'] = 'photocontest';
-
     //$config->templateDir = $config->appDir . '/template';
     //$config->controllerPrefix = '\\Controller';
-    $config->routePrefix = '';
 }
 
 // response

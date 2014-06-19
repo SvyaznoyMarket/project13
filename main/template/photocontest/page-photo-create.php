@@ -25,6 +25,7 @@
 				<input type="text" value="<?=$form->title->value?>" name="title" class="bBuyingLine__eText mInputLong">
 			</div>
 			
+			<?php if (0===1): // скрываем поле?>
 			<label class="bBuyingLine__eLeft" for=""><?=$form->orderIds->title?></label>
 			<div class="bBuyingLine__eRight">
 				<span class="bFeildStarImg">*</span>
@@ -33,6 +34,7 @@
 				<?php endif; ?>
 				<input type="text" value="<?=$form->orderIds->value?>" name="orderIds" class="bBuyingLine__eText mInputLong">
 			</div>
+			<?php endif; ?>
 
 			<label class="bBuyingLine__eLeft" for=""><?=$form->file->title?></label>
 			<div class="bBuyingLine__eRight">
@@ -70,7 +72,7 @@
 			<div class="bBuyingLine mConfirm clearfix">
 				<div class="bBuyingLine__eLeft"></div>
 
-				<input type="submit" value="Участвовать"/>
+				<input type="submit" value="Загрузить фотографию"/>
 			</div>
 		</div>
 	</form>

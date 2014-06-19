@@ -14,15 +14,17 @@
  * @param array $params - массив параметров для маршрута
  * @return array
  */
-function routeParams ($list,array $params=[]){
-	if($params['page']==0)
-		unset($params['page']);
-	elseif(!isset($params['page']) && $list->page>0)
-		$params['page']	= $list->page;
-	
-	if(!isset($params['order']))
-		$params['order'] = $list->order;
-	return $params;
+if(!function_exists('routeParams')) {
+	function routeParams ($list,array $params=[]){
+		if($params['page']==0)
+			unset($params['page']);
+		elseif(!isset($params['page']) && $list->page>0)
+			$params['page']	= $list->page;
+
+		if(!isset($params['order']))
+			$params['order'] = $list->order;
+		return $params;
+	}
 }
 ?>
 
@@ -33,16 +35,18 @@ function routeParams ($list,array $params=[]){
 
 	<?php if ($filter): ?>
 	<div class="bSortingLine clearfix">
-		<!-- AddThis Button BEGIN -->
-		<div class="addthis_toolbox addthis_default_style ">
-			<a fb:like:layout="button_count" class="addthis_button_facebook_like" style="display:block; float:left; width: 80px;"></a>
-			<a class="addthis_button_tweet" style="width: 83px;"></a>
-			<a class="addthis_button_pinterest_pinit" style="width: 50px;"></a>
-			<a class="addthis_counter addthis_pill_style"></a>
-		</div>
-
-		<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51b040940ada4cd1" type="text/javascript"></script>
-		<!-- AddThis Button END -->
+		<!-- Button BEGIN -->
+		<script type="text/javascript">(function() {
+		  if (window.pluso)if (typeof window.pluso.start == "function") return;
+		  if (window.ifpluso==undefined) { window.ifpluso = 1;
+			var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+			s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+			s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+			var h=d[g]('body')[0];
+			h.appendChild(s);
+		  }})();</script>
+		<div class="pluso pc_buttons" data-background="transparent" data-options="small,square,line,horizontal,nocounter,theme=08" data-services="facebook,vkontakte,odnoklassniki,twitter,email"></div>
+		<!-- Button END -->
 		
 		<ul class="bSortingList mSorting">
 			<li class="bSortingList__eItem mTitle">Показать сначала:</li>
