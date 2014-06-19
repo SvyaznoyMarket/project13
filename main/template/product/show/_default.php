@@ -195,6 +195,13 @@ $isKitPage = (bool)$product->getKit();
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
+
+    <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
+    <div class="bWidgetBuy bWidgetBuy-shops mWidget">
+        <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
+    </div>
+    <? endif ?>
+
     <div class="bWidgetBuy mWidget">
         <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>

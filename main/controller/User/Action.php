@@ -118,8 +118,8 @@ class Action {
                         : new \Http\RedirectResponse($this->redirect);
 
                     // передаем email пользователя для RetailRocket
-                    if (isset($params['email']) && !empty($params['email'])) {
-                        \App::retailrocket()->setUserEmail($response, $params['email']);
+                    if ($userEntity->getEmail() != '') {
+                        \App::retailrocket()->setUserEmail($response, $userEntity->getEmail());
                     }
 
                     \App::user()->signIn($userEntity, $response);

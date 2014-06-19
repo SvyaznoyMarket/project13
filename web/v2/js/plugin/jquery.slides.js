@@ -1,175 +1,172 @@
-(function( $ ){
-	$.fn.slidesbox = function( params ) {
-		var 
-		    w = $(window);
-	    // end of vars
+(function($) {
+    $.fn.slidesbox = function(params) {
+        var
+        w = $(window);
+        // end of vars
 
-		return this.each(function() {
-			var
-				options = $.extend(
-							{},
-							$.fn.slidesbox.defaults,
-							params ),
-				$self = $(this),
+        return this.each(function() {
+            var
+            options = $.extend({},
+	                  $.fn.slidesbox.defaults,
+	                  params),
 
-				leftBtn = $self.find(options.leftBtnControl),
-				rightBtn = $self.find(options.rightBtnControl),
-				slides = $self.find(options.slidesControl),
-				item = $self.find(options.itemControl),
-				cont = $self.find(options.slidesContControl),
-				pager = $self.find(options.pagerControl),
+                $self = $(this),
 
-				leftClass = 'slidesImg_item-left',
-				centerClass = 'slidesImg_item-center',
-				rightClass = 'slidesImg_item-right',
-				changeClass = 'slidesImg_item-change'
+                slides = $self.find(options.slidesSelector),
+                item = $self.find(options.itemSelector),
+                cont = $self.find(options.slidesContSelector),
 
-				slidesData = $self.data('value'),
-				slidesDataLength = $self.data('value').length,
+                leftBtn = $self.find(options.leftBtnSelector),
+                rightBtn = $self.find(options.rightBtnSelector),
+                pager = $self.find(options.pagerSelector),
 
-				curSlides = 0,
-				index = 0;
-			// end of vars
+                leftClass = 'slidesImg_item-left',
+                centerClass = 'slidesImg_item-center',
+                rightClass = 'slidesImg_item-right',
+                changeClass = 'slidesImg_item-change',
 
-			var
-				setData = function setData() {
-					item.each(function () {
-						itemUrl = $self.data('value')[index].url;
-						contSrc = $self.data('value')[index].image;
-						$(this).attr('href' , itemUrl);
-						$(this).find(cont).attr('src' , contSrc);
+                slidesDataLength = $self.data('value').length,
 
-						index++;
-					})
-				},
+                curSlides = 0,
+                index = 1;
+            // end of vars
 
-				setDataD = function setDataD() {
-					itemUrl = $self.data('value')[curSlides].url;
-					contSrc = $self.data('value')[curSlides].image;
-					$(this).attr('href' , itemUrl);
-					$(this).find(cont).attr('src' , contSrc);
+            var
+	            setData = function setData() {
+	            	var i = 0;
 
-					console.log(curSlides);
-				},
+	                item.each(function() {
+	                    itemUrl = $self.data('value')[i].url;
+	                    contSrc = $self.data('value')[i].image;
+	                    $(this).attr('href', itemUrl);
+	                    $(this).find(cont).attr('src', contSrc);
 
-				slidesResize = function slidesResize() {
-					slidesH = cont.height();
-					$self.css({ 'height' : slidesH });
-					slides.css({ 'height' : slidesH });
-				},
+	                    i++;
+	                });
 
-			  	nextSlides = function nextSlides() {
-					curSlides++;
-					setDataD();
+	                slidesResize();
+	                console.log(slides);
 
-					slidesImgCenter = $self.find('.slidesImg_item-center');
-					slidesImgCenter.removeClass(centerClass).addClass(leftClass);
-					slidesImgCenter.next().removeClass(rightClass).addClass(centerClass);
+	                console.log(slidesDataLength);
+	            },
 
-					slides.append('<a href="'+ itemUrl +'" class="js-slides-img-item slidesImg_item slidesImg_item-right"><img src="'+ contSrc +'" class="js-slides-img-cont slidesImg_cont"></a>');
-					$('.slidesImg_item-left').prev().remove();
+                slidesResize = function slidesResize() {
+                    slidesH = cont.height();
 
-					pagerCustom();
+                    $self.css({'height': slidesH});
+                    slides.css({'height': slidesH});
+                },
 
-					console.log(curSlides);
-				},
+                nextSlides = function nextSlides() {
+                	curSlides++;
 
-				prevSlides = function prevSlides() {
-					curSlides--;
-					setDataD();
+                	if (curSlides <= slidesDataLength - 1) {
+	                	index++;
 
-					slidesImgCenter = $self.find('.slidesImg_item-center');
-					slidesImgCenter.removeClass(centerClass).addClass(rightClass);
-					slidesImgCenter.prev().removeClass(leftClass).addClass(centerClass);
+	                    if (index <= slidesDataLength - 1) {
+	                        itemUrl = $self.data('value')[index].url;
+	                    	contSrc = $self.data('value')[index].image;
+	                    };
 
-					slides.prepend('<a href="'+ itemUrl +'" class="js-slides-img-item slidesImg_item slidesImg_item-left"><img src="'+ contSrc +'" class="js-slides-img-cont slidesImg_cont"></a>');
-					$('.slidesImg_item-right').next().remove();
-					
-					pagerCustom();
+	                    slidesImgCenter = $self.find('.slidesImg_item-center');
+	                    slidesImgCenter.removeClass(centerClass).addClass(leftClass);
+	                    slidesImgCenter.next().removeClass(rightClass).addClass(centerClass);
 
-					console.log(curSlides);
-				},
+	                    slides.append('<a href="' + itemUrl + '" class="js-slides-img-item slidesImg_item slidesImg_item-right"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
+		               	$('.slidesImg_item-left').prev().remove();
 
-			  	slidesImgNext = function slidesImgNext() {
-			  		if( curSlides <= slidesDataLength ) {
-			  			nextSlides();
-			  		}
-			  	},
+	                    pagerCustom();
 
-			  	slidesImgPrev = function slidesImgPrev() {
-			  		if( curSlides >= 0 ) {
-			  			prevSlides();
-			  		}
-			  	},
+	                    console.log('nextSlides index=' + index);
+	                }
+                },
 
-			  	addPager = function addPager() {
-			  		var pagerHtml = '';
+                prevSlides = function prevSlides() {
+                	curSlides--;
 
-			  		sliderPager = $('<div class="js-slides-img-pag slidesImg_pager" />');
+                	if (curSlides >= 0) {
+	                    index-- ;
 
-			  		if ( slidesDataLength > 0 ) {
-			  			$self.append(sliderPager);
-			  		};
+	                    itemUrl = $self.data('value')[index].url;
+	                    contSrc = $self.data('value')[index].image;
 
-					for ( var i = 0; i <= slidesDataLength; i++ ) {
-						pagerHtml += '<div class="js-slides-img-pag-item slidesImg_pager_item" data-slide-index="' + i + '" />';
-					}; 
+	                    slidesImgCenter = $self.find('.slidesImg_item-center');
+	                    slidesImgCenter.removeClass(centerClass).addClass(rightClass);
+	                    slidesImgCenter.prev().removeClass(leftClass).addClass(centerClass);
 
-					sliderPager.html(pagerHtml);
-			  	},
+	                    slides.prepend('<a href="' + itemUrl + '" class="js-slides-img-item slidesImg_item slidesImg_item-left"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
+	                    $('.slidesImg_item-right').next().remove();
 
-			  	pagerCustom = function pagerCustom() {
-			  		pagerItem = $self.find('.js-slides-img-pag-item'),
-					pagerItemData = pagerItem.data('slide-index');
+	                    pagerCustom();
+	                    
+	                    console.log('prevSlides index=' + index);
+	                }
+                },
 
-					pagerItem.first().addClass('slidesImg_pager_item-active');
+                addPager = function addPager() {
+                    var pagerHtml = '';
 
-			  		pagerItem.each(function () {
-			  			$(this).removeClass('slidesImg_pager_item-active');
+                    sliderPager = $('<div class="js-slides-img-pag slidesImg_pager" />');
 
-			  			if ( curSlides == $(this).data('slide-index')) {
-			  				$(this).addClass('slidesImg_pager_item-active');
-			  			}
-			  		});
-			  	};
-			//end of functions
+                    if (slidesDataLength > 0) {
+                        $self.append(sliderPager);
+                    };
 
-			console.log(slidesDataLength);
+                    for (var i = 0; i <= slidesDataLength - 1; i++) {
+                        pagerHtml += '<div class="js-slides-img-pag-item slidesImg_pager_item" data-slide-index="' + i + '" />';
+                    };
 
-			setData();
-			addPager();
-			pagerCustom();
-			
-			$self.find(options.pagerControl).css({
-				'margin-left' : - $self.find(options.pagerControl).width() / 2 
-			});
+                    sliderPager.html(pagerHtml);
 
-			$self.touchwipe({
-			    wipeLeft : function() {
-			    	slidesImgNext();
-			    },
-			    wipeRight : function() {
-			    	slidesImgPrev();
-			    }
-			});
+                    pagerCustom();
+                },
 
-			rightBtn.on('click', slidesImgNext);
-			leftBtn.on('click', slidesImgPrev);
-			w.on('resize', slidesResize);
+                pagerCustom = function pagerCustom() {
+                    var pagerItem = $self.find('.js-slides-img-pag-item'),
+                        pagerItemData = pagerItem.data('slide-index');
 
-			slidesResize();
-		});
+                    pagerItem.each(function() {
+                        $(this).removeClass('slidesImg_pager_item-active');
 
-	};
+                        if (curSlides == $(this).data('slide-index')) {
+                            $(this).addClass('slidesImg_pager_item-active');
+                        }
+                    });
+                };
+            //end of functions
 
-	$.fn.slidesbox.defaults = {
-		leftBtnControl: '.js-slides-img-left',
-		rightBtnControl: '.js-slides-img-right',
-		slidesControl: '.js-slides-img-list',
-		pagerControl: '.js-slides-img-pag',
-		itemControl: '.js-slides-img-item',
-		slidesContControl: '.js-slides-img-cont'
-	};
+            setData();
+            addPager();
 
-	$('.slidesImg').slidesbox();
-})( jQuery );
+            $self.find(options.pagerControl).css({
+                'margin-left': -$self.find(options.pagerControl).width() / 2
+            });
+
+            $self.touchwipe({
+                wipeLeft: function() {
+                    nextSlides();
+                },
+                wipeRight: function() {
+                    prevSlides();Selector
+                }
+            });
+
+            rightBtn.on('click', nextSlides);
+            leftBtn.on('click', prevSlides);
+            w.on('resize', slidesResize);
+        });
+
+    };
+
+    $.fn.slidesbox.defaults = {
+    	slidesSelector: '.js-slides-img-list',
+    	itemSelector: '.js-slides-img-item',
+    	slidesContSelector: '.js-slides-img-cont',
+
+        leftBtnSelector: '.js-slides-img-left',
+        rightBtnSelector: '.js-slides-img-right',
+        pagerSelector: '.js-slides-img-pag'
+    };
+
+    $('.slidesImg').slidesbox();
+})(jQuery);

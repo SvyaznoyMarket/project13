@@ -10,7 +10,6 @@
 <?= $page->slotAdmitad() ?>
 <?= $page->slotMarinLandingPageTagJS() ?>
 <?= $page->slotMarinConversionTagJS() ?>
-<?= $page->slotSociaPlus() ?>
 <?= $page->slotСpaexchangeJS() ?>
 <?= $page->slotСpaexchangeConversionJS() ?>
 <?= $page->slotAdLensJS() ?>

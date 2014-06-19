@@ -427,6 +427,7 @@ class DefaultLayout extends Layout {
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
+        $return .= $this->slotSociaPlus();
 
         return $return;
     }
@@ -934,5 +935,9 @@ class DefaultLayout extends Layout {
                 <noscript><iframe src=\"//www.googletagmanager.com/ns.html?id=" . $containerId . "\" height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"></iframe></noscript>
                 <!-- End Google Tag Manager -->
             </div>";
+    }
+
+    public function slotFlocktoryExchangeJS() {
+        return;
     }
 }

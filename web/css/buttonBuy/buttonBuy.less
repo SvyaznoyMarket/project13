@@ -42,17 +42,6 @@
         font-size: 18px;
         line-height: 35px;
 
-        &.mBought {
-            .box-shadow(none);
-            color: @black;
-            border: 1px solid lighten(@black, 70);
-            background: @white;
-
-            &:hover {
-                background: @white;
-            }
-        }
-
         &.mShopsOnly {
             .blackGrad();
             display: inline-block;
@@ -68,6 +57,17 @@
             &:hover,
             &:active {
                 background: @black;
+            }
+        }
+
+        &.mBought {
+            .box-shadow(none);
+            color: @black;
+            border: 1px solid lighten(@black, 70);
+            background: @white;
+
+            &:hover {
+                background: @white;
             }
         }
 

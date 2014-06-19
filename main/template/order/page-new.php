@@ -34,6 +34,7 @@ foreach (array_reverse($productsById) as $product) {
 		break;
 	}
 }
+if ($oneClick && strpos($request->headers->get('referer'), '/product/') > 0) $backLink = $product->getLink();
 
 if ($oneClick) {
     $createUrl = $page->url('order.oneClick.create');
@@ -306,7 +307,7 @@ foreach ($productsById as $product) {
 
 							<div class="bItemsRow mItemInfo" data-bind="text: (coupon.error && coupon.error.message) || coupon.name"></div>
 
-							<div class="bItemsRow mCountItem"></div>
+<!--							<div class="bItemsRow mCountItem"></div>-->
 
 							<div class="bItemsRow mDelItem">
 								<a class="bDelItem" data-bind="attr: { 'href': coupon.deleteUrl }, click: $root.deleteItem">удалить</a>

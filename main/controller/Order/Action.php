@@ -242,6 +242,10 @@ class Action {
             $response->headers->setCookie($cookie);
         }
 
+        if ($form->getEmail() != '') {
+            \App::retailrocket()->setUserEmail($response, $form->getEmail());
+        }
+
         return $response;
     }
 

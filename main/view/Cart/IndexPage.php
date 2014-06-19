@@ -93,6 +93,6 @@ class IndexPage extends \View\DefaultLayout {
             'regionId' => \App::user()->getRegionId(),
         ];
 
-        return "<div id=\"RuTargetCartJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"><div>";
+        return "<div id=\"RuTargetCartJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 }

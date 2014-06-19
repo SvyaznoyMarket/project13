@@ -24,7 +24,7 @@ class ShowAction {
         $reviewtAction = null,
         $imageSize = 2
     ) {
-        /** @var $product \Model\Product\CompactEntity */
+        /** @var $product \Model\Product\Entity */
 
         $user = \App::user();
 
@@ -91,7 +91,8 @@ class ShowAction {
             ($line = $product->getLine())
                 ? ['name' => $line->getName(), 'productCount' => $line->getLineCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
                 : null,
-            'hasKit'       => (bool)$product->getKit()
+            'hasKit'       => (bool)$product->getKit(),
+            'isKitLocked'   => (bool)$product->getIsKitLocked()
         ];
 
         // oldPrice and priceSale

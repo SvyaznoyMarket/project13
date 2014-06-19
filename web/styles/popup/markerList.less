@@ -1,0 +1,108 @@
+.markerList {
+
+	&-table {
+		display: table;
+
+		width: 605px;
+	}
+
+	&_row {
+		display: table-row;
+
+		font-size: 14px;
+
+		&:hover {
+			background: #fff7e6;
+		}
+	}
+
+	&_col {
+		display: table-cell;
+
+		padding: 5px;
+
+		vertical-align: middle;
+
+		&-left {
+			width: 390px;
+
+			vertical-align: top;
+		}
+
+		&-mark {
+			vertical-align: top;
+		}
+
+		&-center {
+			min-width: 110px;
+			text-align: right;
+		}
+
+		&-right {
+			min-width: 80px;
+ 
+			text-align: center;
+
+			color: #929292;
+
+			font-size: 12px;
+		}
+	}
+
+	.markColor {
+		.rounded(50%);
+	    .inline-block();
+	    width: 10px;
+	    height: 10px;
+
+		vertical-align: middle;
+	}
+
+	&_light {
+    	display: block;
+
+		color: #616161;
+	}
+
+	.btnOneClickBuy {
+	    margin: 0;
+	}
+
+	.btnBuy__eLink {
+	    width: 66px;
+	    height: 23px;
+
+	    text-decoration: none;
+
+	    font-size: 12px;
+	    line-height: 23px;
+	}
+
+	.btnText {
+		text-transform: lowercase;
+
+		font-weight: bold;
+	}
+
+	&-left {
+
+		.markColor {
+			width: 7px;
+			height: 7px;
+		}
+
+		.markDesc {
+			.inline-block();
+			margin: 0 0 3px 5px;
+		}
+
+		.markerList_light {
+		    margin: 0 0 5px 16px;
+		}
+
+		.btnBuy {
+		    text-align: center;
+		    height: auto;
+		}
+	}
+}

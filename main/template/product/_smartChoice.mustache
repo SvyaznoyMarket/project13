@@ -27,15 +27,21 @@
             </div>
 
             {{# product.cartButton}}
-                <div class="btnBuy">
+                <div class="btnBox">
                     <a
                             href="{{url}}"
-                            class="{{class}} btnBuy_link{{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
+                            class="{{class}} btnBox_link btnBox_link-buy {{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
                             data-group="{{data.group}}"
                             data-upsale='{{data.upsale}}'
                             >
                         {{value}}
                     </a>
+                    
+                    {{! кнопка посмотреть для наборов-пакетов }}
+
+                    {{! <a href="" class="btnBox_link btnBox_link-view">
+                        Посмотреть
+                    </a> }}
                 </div>
             {{/product.cartButton}}
 

@@ -39,6 +39,8 @@ class Entity {
     private $region;
     /* @var string */
     private $subwayName;
+    /* @var array */
+    private $subway = [];
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -60,6 +62,9 @@ class Entity {
             }
         }
         if (array_key_exists('geo', $data)) $this->setRegion(new Region\Entity($data['geo']));
+        if (array_key_exists('subway', $data)) {
+            foreach ($data['subway'] as $subwayData) $this->setSubway(new Subway\Entity($subwayData));
+        }
     }
 
     /**
@@ -327,5 +332,22 @@ class Entity {
     {
         $this->subwayName = (string)$swName;
     }
+
+    /**
+     * @param \Model\Shop\Subway\Entity $subway
+     */
+    public function setSubway($subway)
+    {
+        $this->subway[] = $subway;
+    }
+
+    /**
+     * @return \Model\Shop\Subway\Entity[]
+     */
+    public function getSubway()
+    {
+        return $this->subway;
+    }
+
 
 }
