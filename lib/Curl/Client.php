@@ -395,6 +395,32 @@ class Client {
             curl_setopt($connection, CURLOPT_POST, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data));
         } elseif ($this->nativePost && (bool)$data) {
+			
+			/**
+			 * The usage of the @filename API for file uploading is deprecated for php >=5.5
+			 * Но мы поддержим, т.к. не очень понимаю как тут нормально добавить эту фичу пишу тут
+			 */
+			if((float)PHP_VERSION>=5.5) {
+				foreach($data as $k => $v) {
+					if($v[0] !=='@')
+						continue;
+					
+					// не силен в регулярках, не осилил в одну строчку
+					$t = explode(';',$v);
+					$file = substr($t[0], 1);
+					$fileParams  = [
+						'type' => null,
+						'filename' => null
+					];
+					foreach($t as $vv) {
+						$tt = explode('=',$vv);
+						$fileParams[$tt[0]] = $tt[1];
+					}
+					
+					$data[$k] = curl_file_create($file, $fileParams['type'], $fileParams['type']);
+				}
+			}
+			
 			curl_setopt($connection, CURLOPT_POST, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, $data);
 		}
