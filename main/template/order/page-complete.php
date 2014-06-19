@@ -92,7 +92,12 @@ if (!isset($paymentUrl)) $paymentUrl = null;
         <? } ?>
     <? } ?>
     <div class="mt32" style="text-align: center">
-        <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
+        <? if ($isCredit): ?>
+            <a class='bBigOrangeButton jsCreditBtn' href="#">Перейти к оформлению кредита</a>
+            <p>Виджет оформления кредита откроется автоматически через несколько секунд</p>
+        <? else: ?>
+            <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
+        <? endif ?>
     </div>
 <? endif ?>
 

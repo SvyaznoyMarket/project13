@@ -494,6 +494,28 @@
 
 		/* Credit Widget */
 		;(function () {
+			var
+				creditWidget,
+				i, item,
+				backURL,
+				callback_close,
+				callback_decision,
+				vkredit,
+				creditBtn = $('.jsCreditBtn');
+			// end of vars
+
+			var
+				openWidget = function openWidget() {
+					dc_getCreditForTheProduct(
+						'4427',
+						creditWidget.vars.number ,// session
+						'orderProductToBuyOnCredit',
+						{ order_id: creditWidget.vars.number,
+							region: creditWidget.vars.region }
+					);
+				};
+			// end of functios
+
 			//window.onbeforeunload = function (){ return false }    // DEBUG
 			if ( ! $('#credit-widget').length ) {
 				console.warn('кредитный виджет не найден');
@@ -501,7 +523,7 @@
 				return;
 			}
 
-			var creditWidget = $('#credit-widget').data('value');
+			creditWidget = $('#credit-widget').data('value');
 
 			if ( ! 'widget' in creditWidget ) {
 				console.warn('тип виджета не найден в данных');
@@ -518,8 +540,8 @@
 				.wait( function() {
 					console.info('скрипты загружены для кредитного виджета. начинаем обработку');
 					// fill cart
-					for ( var i = creditWidget.vars.items.length - 1; i >= 0; i-- ) {
-						var item = creditWidget.vars.items[i];
+					for ( i = creditWidget.vars.items.length - 1; i >= 0; i-- ) {
+						item = creditWidget.vars.items[i];
 
 						dc_getCreditForTheProduct(
 							'4427',
@@ -539,23 +561,23 @@
 						);
 					}
 
-					function openWidget() {
-						dc_getCreditForTheProduct(
-							'4427',
-							creditWidget.vars.number ,// session
-							'orderProductToBuyOnCredit',
-							{ order_id: creditWidget.vars.number,
-							region: creditWidget.vars.region }
-						);
-					}
+//					function openWidget() {
+//						dc_getCreditForTheProduct(
+//							'4427',
+//							creditWidget.vars.number ,// session
+//							'orderProductToBuyOnCredit',
+//							{ order_id: creditWidget.vars.number,
+//							region: creditWidget.vars.region }
+//						);
+//					}
 				});
 			}
 
-			var backURL = 'http://' + window.location.hostname;
+			backURL = 'http://' + window.location.hostname;
 
 			if ( creditWidget.widget === 'kupivkredit' ) {
 				//console.info('kupivkredit')
-				var callback_close = function( decision ) {
+				callback_close = function( decision ) {
 					setTimeout(function() {
 						document.location = backURL;
 					}, 3000);
@@ -580,13 +602,13 @@
 					// alert(result)
 				};
 
-				var callback_decision = function(decision) {
+				callback_decision = function(decision) {
 					//console.info( 'Пришел статус: ' + decision )
 				};
 
 				$LAB.script( 'https://www.kupivkredit.ru/widget/vkredit.js')
 				.wait( function() {
-					var vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
+					vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
 						order: creditWidget.vars.order,
 						sig: creditWidget.vars.sig,
 						callbackUrl: window.location.href,
@@ -595,6 +617,13 @@
 					});
 
 					vkredit.openWidget();
+				});
+			}
+
+			if ( creditBtn.length ) {
+				$('body').on('click', '.jsCreditBtn', function( e ) {
+					e.preventDefault();
+					!$('#dc_frame_block').length && openWidget();
 				});
 			}
 		})();
