@@ -39,12 +39,19 @@ class Action {
 
             $result = $client->query('subscribe/create', $params, []);
 
-            $responseData = ['success' => true];
+            $responseData = [
+                'success' => true,
+                'data' => 'Спасибо! подтверждение подписки отправлено на указанный e-mail',
+            ];
         } catch (\Exception $e) {
             \App::logger()->error($e);
             \App::exception()->remove($e);
 
             $responseData = ['success' => false];
+
+            if (910 == $e->getCode()) {
+                $responseData['data'] = 'Промокод уже отправлен на ваш email. Пожалуйста, проверьте почту.';
+            }
         }
 
         $response = new \Http\JsonResponse($responseData);
