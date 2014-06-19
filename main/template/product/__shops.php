@@ -27,7 +27,7 @@ return function (
                 <div class="ta-c mb5"><?= $shop->getRegime() ?></div>
 
                 <!--  Кнопка Резерв -->
-                <?= $helper->render('cart/__button-product',['product' => $product, 'url' => null, 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']) ?>
+                <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => null, 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']) ?>
             </div>
         </div>
     <? endif; ?>
