@@ -10627,6 +10627,7 @@
   }
   .bBuyingLine {
     margin: 20px 0px;
+    clear: both;
   }
   .bBuyingLine__eLeft {
     display: block;
@@ -11244,71 +11245,86 @@
     font-size: 18px;
   }
   .bBuyingSale .mOldPrice {
-    color: #898989;
     text-decoration: line-through;
+    color: #898989;
     font-size: 14px;
   }
   .bBuyingSale .mItemImg {
-    background: url("/css/bBuyingSteps/img/bgStatusSale.gif") no-repeat 0 0;
     height: 20px;
+    width: 19px !important;
+    background: url("/css/bBuyingSteps/img/bgStatusSale.gif") no-repeat 0 0;
   }
   .bBuyingSale .mItemImg.mError {
     background-position: 0 -35px;
   }
+  .bBuyingSale .bItemsRow {
+    padding-top: 2px !important;
+  }
   .bBuyingSale .bSumOrderInfo {
     margin-top: 15px;
   }
+  .bBuyingSale .bOrderItems {
+    margin: 5px 0;
+  }
   .bSaleData {
     display: inline-block;
-    width: 427px;
+    zoom: 1;
+    width: 330px;
+    padding: 55px 0 0;
     vertical-align: top;
     *display: inline;
-    zoom: 1;
   }
   .bSaleData .bTitle {
     margin: 0 0 10px;
   }
   .bSaleData__eEmptyBlock {
-    display: block;
-    padding: 13px 0 0;
+    padding: 8px 0 10px;
     font-size: 14px;
   }
   .bSaleData .mSaleInput {
     display: inline-block;
-    width: 288px;
-    *display: inline;
     zoom: 1;
+    width: 190px;
+    *display: inline;
   }
   .bSaleData .mSaleBtn {
     display: inline-block;
+    zoom: 1;
     width: 95px;
     height: 33px;
     padding: 0;
-    vertical-align: top;
     cursor: pointer;
+    vertical-align: top;
     font: normal 14px/33px Tahoma;
     *display: inline;
-    zoom: 1;
   }
   .bSaleData .mSaleBtn.mDisabled {
-    background: #f3f3f3;
-    border: 1px solid #a6a6a6;
-    color: #a6a6a6;
     cursor: default;
+    color: #a6a6a6;
+    border: 1px solid #a6a6a6;
+    background: #f3f3f3;
   }
   .bSaleList {
+    height: 0;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    overflow: hidden;
     width: 500px;
   }
   .bSaleList__eItem {
-    border: 1px solid #9e9e9e;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     float: left;
+    width: 143px;
     margin: 0 10px 10px 0;
     padding: 5px 0 5px 8px;
     vertical-align: top;
-    width: 143px;
+    border: 1px solid #9e9e9e;
   }
   .bSaleList__eItem:nth-child(3n+1) {
     clear: left;
@@ -11319,13 +11335,19 @@
   .bSaleList .mEnterSpa .bCustomLabel {
     color: #fff;
   }
-  .bSaleCheck {
-    background: url("/css/bBuyingSteps/img/bCheck.jpg") no-repeat 0 0;
-    width: 178px;
-    height: 95px;
+  .bSalePreview {
     float: right;
-    display: inline-block;
     margin: 20px 0 0;
+  }
+  .bSalePreview_img {
+    display: inline-block;
+    zoom: 1;
+    margin-left: 5px;
+    vertical-align: middle;
+    *display: inline;
+  }
+  .bSalePreview_img-eprize {
+    width: 112px;
   }
   .bSaleError {
     color: #ec434f;

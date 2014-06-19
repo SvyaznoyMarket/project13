@@ -255,23 +255,19 @@ foreach ($productsById as $product) {
 	    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 		<!-- Sale section -->
 		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length == 1 && !/svyaznoy/.test(deliveryBoxes()[0].state) && !$root.lifeGift(), ">
-			<div class="bBuyingLine">
+			<div class="bBuyingLine clearfix">
 				<div class="bBuyingLine__eLeft">
 					<h2 class="bBuyingSteps__eTitle">
 						Скидки
 					</h2>
 
-					Если у вас есть
 	                <? if (\App::config()->blackcard['enabled']): ?> карта Enter SPA <? endif ?>
 	                <? if (\App::config()->coupon['enabled'] && \App::config()->blackcard['enabled']): ?> или<? endif ?>
-	                <? if (\App::config()->coupon['enabled']): ?> купон, <? endif ?>
-					укажите номер и получите скидку.
+	                <? if (\App::config()->coupon['enabled']): ?> Код фишки, купон, промокод <? endif ?>
 				</div>
 
 				<div class="bBuyingLine__eRight">
 					<div class="bSaleData" data-bind="couponsVisible: couponsBox()">
-
-						<div class="bTitle">Вид скидки:</div>
 						
 						<div class="bSaleData__eEmptyBlock">Скидок больше нет</div>
 
@@ -298,7 +294,10 @@ foreach ($productsById as $product) {
 						<p class="bSaleError" data-bind="text: couponError"></p>
 					</div>
 
-					<div class="bSaleCheck"></div>
+					<div class="bSalePreview">
+						<img class="bSalePreview_img" src="/css/bBuyingSteps/img/bCheck.jpg" />
+						<img class="bSalePreview_img bSalePreview_img-eprize" src="/css/bBuyingSteps/img/fishka.jpg" />
+					</div>
 
 					 <!-- Coupons -->
 					<div class="bBuyingLine mCouponsLine" data-bind="foreach: { data: couponsBox(), as: 'coupon' }">
