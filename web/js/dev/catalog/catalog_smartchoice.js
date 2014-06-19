@@ -4,21 +4,23 @@
         smartChoiceItem = $('.specialPriceItem'),
         smartChoiceItemAttr = smartChoiceSlider.attr('data-smartchoice');
 
-    $.getJSON('/ajax/product-smartchoice',{
-            "products[]": smartChoiceSlider.data('smartchoice') },
-        function(data){
-            if (data.success) {
-                $.each(data.result, function(i, value){
-                        $slider = $.parseHTML(value.content);
-                        $($slider).hide();
-                        $('.specialBorderBox').append($slider);
-                        $('.smartChoiceSliderToggle-'+i).show();
-                    });
-                $('.bGoodsSlider').goodsSlider();
-                console.info('smartchoice ajax: ', data.result);
-            }
-        }
-    );
+	if ( typeof smartChoiceSlider.data('smartchoice') !== 'undefined' ) {
+		$.getJSON('/ajax/product-smartchoice',{
+				"products[]": smartChoiceSlider.data('smartchoice') },
+			function(data){
+				if (data.success) {
+					$.each(data.result, function(i, value){
+						$slider = $.parseHTML(value.content);
+						$($slider).hide();
+						$('.specialBorderBox').append($slider);
+						$('.smartChoiceSliderToggle-'+i).show();
+					});
+					$('.bGoodsSlider').goodsSlider();
+					console.info('smartchoice ajax: ', data.result);
+				}
+			}
+		);
+	}
 
     $('.jsSmartChoiceSliderToggle a').click(function(e){
         e.preventDefault();
