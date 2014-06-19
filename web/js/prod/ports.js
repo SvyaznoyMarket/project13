@@ -475,22 +475,6 @@ window.ANALYTICS = {
 			data		= $('#gaJS').data('vars'),
 		// end of vars
 
-			ga_init = function ga_init() {
-				console.log( 'gaJS init' );
-
-				(function (i, s, o, g, r, a, m) {
-					i['GoogleAnalyticsObject'] = r;
-					i[r] = i[r] || function () {
-						(i[r].q = i[r].q || []).push( arguments )
-					}, i[r].l = 1 * new Date();
-					a = s.createElement( o ),
-						m = s.getElementsByTagName( o )[0];
-					a.async = 1;
-					a.src = g;
-					m.parentNode.insertBefore( a, m )
-				})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
-			},
-
 			gaBannerClick = function gaBannerClick( BannerId ) {
 				console.log( 'GA: send', 'event', 'Internal_Promo', BannerId );
 				ga( 'send', 'event', 'Internal_Promo', BannerId );
@@ -750,9 +734,8 @@ window.ANALYTICS = {
 
 		console.group('ports.js::gaJS');
 		try{
-			ga_init(); // блок инициализации аналитики для всех страниц
 			if ( 'function' !== typeof(ga) ) {
-				console.warn('GA: init error');
+				console.error('GA: init error');
 				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
 			}
 			ga( 'create', 'UA-25485956-5', 'enter.ru' );
