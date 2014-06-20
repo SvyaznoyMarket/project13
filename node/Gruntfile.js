@@ -145,23 +145,6 @@ module.exports = function( grunt ) {
 
 
 		/**
-		 * Выполнение BASH команд
-		 * 
-		 * @link http://github.com/jharding/grunt-exec
-		 */
-		exec: {
-			// текущая версия в combine.js
-			getVersion: {
-				stdout: true,
-				stderr: true,
-				command: function(){
-					grunt.log.writeln('getVersion ');
-					return 'filename="../web/js/combine.js"; rm ../web/js/combine.js; printf \'window.release = { "version":"\'>> $filename \r; res=$(git describe --always --tag); printf $res >> $filename \r; printf \'"}\'>> $filename \r;';
-				}
-			}
-		},
-
-		/**
 		 * Компиляция LESS
 		 *
 		 * @link http://github.com/gruntjs/grunt-contrib-less
@@ -850,10 +833,10 @@ module.exports = function( grunt ) {
 	 */
 	// Компиляция LESS
 	grunt.registerTask('css', ['less']);
-	// Тестирование JS, валидация JS, компиляция bigjquery, минификация JS, версионность
-	grunt.registerTask('js', ['concat', 'connect', 'qunit', 'jshint', 'uglify', 'exec:getVersion']);
-	// Компиляция LESS, тестирование JS, валидация, минификация JS, версионность
-	grunt.registerTask('default', ['less', 'concat', 'jshint', 'uglify', 'connect', 'qunit', 'exec:getVersion']);
+	// Тестирование JS, валидация JS, компиляция bigjquery, минификация JS
+	grunt.registerTask('js', ['concat', 'connect', 'qunit', 'jshint', 'uglify']);
+	// Компиляция LESS, тестирование JS, валидация, минификация JS
+	grunt.registerTask('default', ['less', 'concat', 'jshint', 'uglify', 'connect', 'qunit']);
 	// Генерация рандомных полигонов яндекс карт
 	grunt.registerTask('ymaps', ['ymaps_generate']);
 	// Тестирование JS, валидация JS
