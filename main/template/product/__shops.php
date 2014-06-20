@@ -27,7 +27,7 @@ return function (
                 <div class="ta-c mb5"><?= $shop->getRegime() ?></div>
 
                 <!--  Кнопка Резерв -->
-                <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => null, 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']) ?>
+                <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']) ?>
             </div>
         </div>
     <? endif; ?>
@@ -69,7 +69,7 @@ return function (
                     <!--  Кнопка "Резерв" или "На витрине"  -->
                     <span class="markerList_col markerList_col-right">
                         <? if ( $shopState->getQuantity() > 0 ) : ?>
-                            <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => null, 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']); ?>
+                            <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']); ?>
                         <? else : ?>
                             <span class="btnText">На витрине</span>
                         <? endif; ?>
