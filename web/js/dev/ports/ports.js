@@ -1053,51 +1053,51 @@ window.ANALYTICS = {
         console.groupEnd();
     },
 
-    AdmitadJS : function() {
-        window._retag = window._retag || [];
-        var ad_data = $('#AdmitadJS').data('value');
-
-        if (ad_data) {
-
-            if (ad_data.ad_data) {
-                /**
-                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
-                 */
-                if (ad_data.ad_data.ad_category) {
-                    window.ad_category = ad_data.ad_data.ad_category;
-                }
-
-                if (ad_data.ad_data.ad_product) {
-                    window.ad_product = ad_data.ad_data.ad_product;
-                }
-
-                if (ad_data.ad_data.ad_products) {
-                    window.ad_products = ad_data.ad_data.ad_products;
-                }
-
-                if (ad_data.ad_data.ad_order) {
-                    window.ad_order = ad_data.ad_data.ad_order;
-                }
-
-                if (ad_data.ad_data.ad_amount) {
-                    window.ad_amount = ad_data.ad_data.ad_amount;
-                }
-
-            }
-
-            if (ad_data.pushData) {
-                window._retag.push(ad_data.pushData);
-            }
-        }
-
-        (function(d){
-            var s=document.createElement("script");
-            s.async=true;
-            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
-            var a=d.getElementsByTagName("script")[0];
-            a.parentNode.insertBefore(s, a);
-        }(document));
-    },
+//    AdmitadJS : function() {
+//        window._retag = window._retag || [];
+//        var ad_data = $('#AdmitadJS').data('value');
+//
+//        if (ad_data) {
+//
+//            if (ad_data.ad_data) {
+//                /**
+//                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
+//                 */
+//                if (ad_data.ad_data.ad_category) {
+//                    window.ad_category = ad_data.ad_data.ad_category;
+//                }
+//
+//                if (ad_data.ad_data.ad_product) {
+//                    window.ad_product = ad_data.ad_data.ad_product;
+//                }
+//
+//                if (ad_data.ad_data.ad_products) {
+//                    window.ad_products = ad_data.ad_data.ad_products;
+//                }
+//
+//                if (ad_data.ad_data.ad_order) {
+//                    window.ad_order = ad_data.ad_data.ad_order;
+//                }
+//
+//                if (ad_data.ad_data.ad_amount) {
+//                    window.ad_amount = ad_data.ad_data.ad_amount;
+//                }
+//
+//            }
+//
+//            if (ad_data.pushData) {
+//                window._retag.push(ad_data.pushData);
+//            }
+//        }
+//
+//        (function(d){
+//            var s=document.createElement("script");
+//            s.async=true;
+//            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
+//            var a=d.getElementsByTagName("script")[0];
+//            a.parentNode.insertBefore(s, a);
+//        }(document));
+//    },
 
 	AlexaJS: function () {
 		_atrk_opts = {
