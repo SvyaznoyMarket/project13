@@ -169,6 +169,14 @@ class IndexAction {
             $lifeGiftProduct = null;
         }
 
+        // SITE-3982
+        // Трастфактор "Спасибо от Сбербанка" не должен отображаться на карточке товара от Связного
+        if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) !== 0 && (bool)$catalogJson['trustfactor_right']) {
+            $catalogJson['trustfactor_right'] = array_filter($catalogJson['trustfactor_right'], function ($trustfactor) {
+                return 'trust_sber' === $trustfactor ? false : true;
+            });
+        }
+
         $trustfactors = $this->getTrustfactors($catalogJson, $productCategoryTokens);
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
