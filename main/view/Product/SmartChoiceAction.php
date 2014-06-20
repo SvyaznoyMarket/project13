@@ -22,15 +22,16 @@ class SmartChoiceAction {
 
         $productData = [];
 
-        $productData['id']    = $product->getId();
-        $productData['article']    = $product->getArticle();
-        $productData['link']    = $product->getLink();
-        $productData['prefix']  = $product->getPrefix();
-        $productData['webname'] = $product->getWebName();
-        $productData['image']   = $product->getImageUrl(3);
-        $productData['tagline']   = $product->getTagline();
-        $productData['price']   = $helper->formatPrice($product->getPrice());
-        $productData['onePrice']   = true;
+        $productData['id']          = $product->getId();
+        $productData['article']     = $product->getArticle();
+        $productData['link']        = $product->getLink();
+        $productData['prefix']      = $product->getPrefix();
+        $productData['webname']     = $product->getWebName();
+        $productData['image']       = $product->getImageUrl(3);
+        $productData['tagline']     = $product->getTagline();
+        $productData['price']       = $helper->formatPrice($product->getPrice());
+        $productData['onePrice']    = true;
+        $productData['isKit']       = false;
 
         if ($product->getPriceOld()) {
             $productData['onePrice'] = false;
@@ -45,8 +46,12 @@ class SmartChoiceAction {
             $productData['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product) : null;
         }
 
-        return $productData;
+        // kit
+        if ($product->getKit() && !$product->getIsKitLocked()) {
+            $productData['isKit'] = true;
+        }
 
+        return $productData;
     }
 
 } 

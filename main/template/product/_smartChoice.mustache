@@ -28,20 +28,19 @@
 
             {{# product.cartButton}}
                 <div class="btnBox">
-                    <a
-                            href="{{url}}"
-                            class="{{class}} btnBox_link btnBox_link-buy {{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
-                            data-group="{{data.group}}"
-                            data-upsale='{{data.upsale}}'
-                            >
-                        {{value}}
-                    </a>
-                    
-                    {{! кнопка посмотреть для наборов-пакетов }}
-
-                    {{! <a href="" class="btnBox_link btnBox_link-view">
-                        Посмотреть
-                    </a> }}
+                    {{# product.isKit}}
+                        <a href="{{product.link}}" class="btnBox_link btnBox_link-view">Посмотреть</a>
+                    {{/ product.isKit}}
+                    {{^product.isKit}}
+                        <a
+                                href="{{url}}"
+                                class="{{class}} btnBox_link btnBox_link-buy {{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
+                                data-group="{{data.group}}"
+                                data-upsale='{{data.upsale}}'
+                                >
+                            {{value}}
+                        </a>
+                    {{/product.isKit}}
                 </div>
             {{/product.cartButton}}
 
