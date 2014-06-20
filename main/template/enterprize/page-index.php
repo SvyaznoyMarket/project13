@@ -3,6 +3,7 @@
  * @var $page             \View\DefaultLayout
  * @var $user             \Session\User
  * @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[]
+ * @var $isCouponSent     bool
  */
 ?>
 
@@ -15,6 +16,15 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
     <h1 class="enterPrize__logo">Enter Prize</h1>
 
     <div class="bgPage"></div>
+
+    <? if ((bool)$isCouponSent): ?>
+        <div class="popup" id="enterprize-info-block">
+            <div class="popupbox">
+                <div class="font18 pb18">Вы можете заказать прямо сейчас любой товар Enter c фишкой, которую Вы получили по e-mail и в SMS. Или выбрать еще фишки <a href="#" class="closePopup">ЗДЕСЬ!</a></div>
+            </div>
+            <p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>
+        </div>
+    <? endif ?>
     
     <? if (!$user->getEntity()): ?>
         <div class="enterPrizeHello">Всё, что вы хотели, со скидкой до 70%</div>
