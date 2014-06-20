@@ -26,3 +26,4 @@ erase_barcode.cmd
 /web/plan
 /web/survey
 /node/node_modules
+/web/version.txt
