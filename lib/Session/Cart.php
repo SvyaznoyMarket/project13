@@ -5,7 +5,7 @@ namespace Session;
 class Cart {
 
     /** @var string */
-    private $sessionName = 'userCart';
+    private $sessionName;
     /** @var \Http\Session */
     private $storage;
     /** @var \Model\Cart\Product\Entity[]|null */
@@ -30,6 +30,7 @@ class Cart {
     private $productLimit = null;
 
     public function __construct() {
+        $this->sessionName = \App::config()->cart['sessionName'];
         $this->storage = \App::session();
         $session = $this->storage->all();
 
