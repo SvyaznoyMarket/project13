@@ -18,8 +18,8 @@
 	}
 
 	.mItemImg {
-		height: 20px;
 		width: 19px !important;
+		height: 20px;
 
 		background: url("@{base-url}/bBuyingSteps/img/bgStatusSale.gif") no-repeat 0 0;
 
@@ -42,15 +42,10 @@
 }
 
 .bSaleData {
-	display: inline-block;
-	zoom: 1;
+	float: left;
 
 	width: 330px;
 	padding: 55px 0 0;
-
-	vertical-align: top;
-
-	*display: inline;
 
 	.bTitle {
 		margin: 0 0 10px;	
@@ -97,11 +92,12 @@
 }
 
 .bSaleList {
-	width: 500px;
-	height: 0;
     .opacity(0);
     overflow: hidden;
+
+	width: 500px;
     width: 500px;
+	height: 0;
 
 	&__eItem {
 	    .rounded(4px);

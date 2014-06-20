@@ -11250,8 +11250,8 @@
     font-size: 14px;
   }
   .bBuyingSale .mItemImg {
-    height: 20px;
     width: 19px !important;
+    height: 20px;
     background: url("/css/bBuyingSteps/img/bgStatusSale.gif") no-repeat 0 0;
   }
   .bBuyingSale .mItemImg.mError {
@@ -11267,12 +11267,9 @@
     margin: 5px 0;
   }
   .bSaleData {
-    display: inline-block;
-    zoom: 1;
+    float: left;
     width: 330px;
     padding: 55px 0 0;
-    vertical-align: top;
-    *display: inline;
   }
   .bSaleData .bTitle {
     margin: 0 0 10px;
@@ -11305,7 +11302,6 @@
     background: #f3f3f3;
   }
   .bSaleList {
-    height: 0;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
@@ -11314,6 +11310,7 @@
     filter: alpha(opacity=0);
     overflow: hidden;
     width: 500px;
+    height: 0;
   }
   .bSaleList__eItem {
     -webkit-border-radius: 4px;
