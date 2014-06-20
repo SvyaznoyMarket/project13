@@ -17,8 +17,8 @@ return function (
                     <? if (!$card instanceof \Model\Order\BonusCard\Entity) continue ?>
 
                     <li class="bSaleList__eItem">
-                        <input value="" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="cupon<?= $i ?>" name="bonus_card" <?= 1===$i ? 'checked="checked"' : ''?> />
-                        <label class="bCustomLabel mCustomLabelRadioBig" for="cupon<?= $i ?>"><?= $card->getName() ?></label>
+                        <input value="<?= $card->getId() ?>" class="jsCustomRadio bCustomInput mCustomRadioBig jsCard" type="radio" id="card_id_<?= $card->getId() ?>" name="order[bonus_card_id]" <?= 1===$i ? 'checked="checked"' : ''?> />
+                        <label class="bCustomLabel mCustomLabelRadioBig" for="card_id_<?= $card->getId() ?>"><?= $card->getName() ?></label>
                     </li>
                 <? $i++; endforeach ?>
             </ul>

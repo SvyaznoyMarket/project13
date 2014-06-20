@@ -60,7 +60,7 @@
 				return;
 			}
 
-			cardIndex = $('.jsBonusCard input[name="bonus_card"]').index(this);
+			cardIndex = $('.jsBonusCard .jsCard').index(this);
 			if ( -1 == cardIndex ) {
 				return;
 			}
@@ -129,7 +129,7 @@
 	$.mask.definitions['x'] = '[0-9]';
 	setDefaults();
 
-	body.on('change', '.jsBonusCard input[name="bonus_card"]', cardChangeHandler);
+	body.on('change', '.jsBonusCard .jsCard', cardChangeHandler);
 	console.groupEnd();
 
 })(jQuery);
