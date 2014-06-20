@@ -405,19 +405,7 @@ class Client {
 					if($v[0] !=='@')
 						continue;
 					
-					// не силен в регулярках, не осилил в одну строчку
-					$t = explode(';',$v);
-					$file = substr($t[0], 1);
-					$fileParams  = [
-						'type' => null,
-						'filename' => null
-					];
-					foreach($t as $vv) {
-						$tt = explode('=',$vv);
-						$fileParams[$tt[0]] = $tt[1];
-					}
-					
-					$data[$k] = curl_file_create($file, $fileParams['type'], $fileParams['type']);
+					$data[$k] = $this->initPostFile($v);
 				}
 			}
 			
@@ -431,6 +419,25 @@ class Client {
 
         return $connection;
     }
+	
+	
+	private function initPostFile($curlString) {
+		$fileParams  = [
+			'type' => null,
+			'filename' => null
+		];
+
+		// не силен в регулярках, не осилил в одну строчку
+		$t = explode(';',$curlString);
+		$file = substr($t[0], 1);
+		
+		foreach($t as $vv) {
+			$tt = explode('=',$vv);
+			$fileParams[$tt[0]] = $tt[1];
+		}
+		
+		return curl_file_create($file, $fileParams['type'], $fileParams['type']);
+	}
 
     /**
      * @param $connection
