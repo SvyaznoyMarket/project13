@@ -150,8 +150,28 @@ class Action {
             $paymentForm = null;
             if (in_array($paymentMethod->getId(), [5, 8, 14])) {
                 try {
-                    $bonusCards = $userEntity ? $userEntity->getBonusCard() : [];
-                    $bonusCard = reset($bonusCards);
+                    $sclub_card_number = null;
+
+                    // пытаемся получить sclub_card_number с данных формы
+                    if ((bool)$form->getBonusCardnumber() && \Model\Order\BonusCard\Entity::SVYAZNOY_ID == $form->getBonusCardId()) {
+                        $sclub_card_number = $form->getBonusCardnumber();
+
+                    // если авторизован, пытаемся получить sclub_card_number с пользовательских данных
+                    } elseif ($userEntity) {
+                        $bonusCards = $userEntity->getBonusCard();
+                        if ((bool)$bonusCards && is_array($bonusCards)) {
+                            foreach ($bonusCards as $card) {
+                                if (
+                                    !isset($card['bonus_card_id']) || !isset($card['number']) || empty($card['number']) ||
+                                    \Model\Order\BonusCard\Entity::SVYAZNOY_ID != $card['bonus_card_id']
+                                ) {
+                                    continue;
+                                }
+
+                                $sclub_card_number = $card['number'];
+                            }
+                        }
+                    }
 
                     $result = [];
                     $client->addQuery('site-integration/payment-config',
@@ -162,7 +182,7 @@ class Action {
                         [
                             'back_ref'    => $helper->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true),// обратная ссылка
                             'email'       => $userEntity ? $userEntity->getEmail() : null,
-                            'card_number' => $bonusCard,// карта лояльности
+                            'card_number' => $sclub_card_number,
                             'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
                         ],
                         function($data) use (&$result) {
@@ -682,6 +702,8 @@ class Action {
                      'address_apartment',
                      'address_floor',
                      'subway_id',
+                     'bonus_card_number',
+                     'bonus_card_id',
                 ] as $k) {
                     if (array_key_exists($k, $cookieValue)) {
                         if (('subway_id' == $k) && !$region->getHasSubway()) {
