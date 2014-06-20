@@ -92,7 +92,8 @@ class ShowAction {
                 ? ['name' => $line->getName(), 'productCount' => $line->getLineCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
                 : null,
             'hasKit'       => (bool)$product->getKit(),
-            'isKitLocked'   => (bool)$product->getIsKitLocked()
+            'isKitLocked'   => (bool)$product->getIsKitLocked(),
+            'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null
         ];
 
         // oldPrice and priceSale
