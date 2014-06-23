@@ -45,7 +45,7 @@ class Cart {
 
         $cartData = array_merge([
             'productList' => [],
-        ], (array)$session->get(\App::config()->cart['sessionName']));
+        ], (array)$session->get('userCart'));
 
         foreach ($cartData['productList'] as $productId => $productQuantity) {
             $cartProduct = new Model\Cart\Product();
@@ -73,7 +73,7 @@ class Cart {
             $cartData['productList'][$cartProduct->id] = $cartProduct->quantity;
         }
 
-        $session->set(\App::config()->cart['sessionName'], $cartData);
+        $session->set('userCart', $cartData);
     }
 
     /**
