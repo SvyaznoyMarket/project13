@@ -137,7 +137,7 @@ class ProductCard {
 
                 $curl->execute();
 
-                $productRepository->setShowroomDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
+                $productRepository->setNowDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
             }
         }
 

@@ -223,7 +223,7 @@ class Product {
      * @param Model\Product[] $productsById
      * @param Query $shopListQuery
      */
-    public function setShowroomDeliveryForObjectListByQuery(array $productsById, Query $shopListQuery) {
+    public function setNowDeliveryForObjectListByQuery(array $productsById, Query $shopListQuery) {
         try {
             foreach ($productsById as $product) {
                 $delivery = new Model\Product\NearestDelivery();
