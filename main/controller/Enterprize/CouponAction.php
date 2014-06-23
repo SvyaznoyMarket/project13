@@ -57,11 +57,9 @@ class CouponAction {
 
             $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete', $params));
 
-            // SITE-3931
-            if (\App::user()->getEntity()) {
-                $cookie = new \Http\Cookie(\App::config()->enterprize['cookieName'], 1, strtotime('+1 days'));
-                $response->headers->setCookie($cookie);
-            }
+            // SITE-3931, SITE-3934
+            $cookie = new \Http\Cookie(\App::config()->enterprize['cookieName'], 1, strtotime('+1 days'));
+            $response->headers->setCookie($cookie);
 
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
@@ -210,45 +208,48 @@ class CouponAction {
             throw new \Exception\NotFoundException();
         }
 
-        $session = \App::session();
-        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
 
-        $data = $session->get($sessionName, []);
-        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
-
-        if (!$enterprizeToken) {
-            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
-        }
-
-        /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
-        $enterpizeCoupon = null;
-        if ($enterprizeToken) {
-            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
-                foreach ((array)$data as $item) {
-                    if ($enterprizeToken == $item['token']) {
-                        $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute();
-        }
-
-        if (!$enterpizeCoupon) {
-            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
-        }
-
-        // SITE-3931
-        if (\App::user()->getEntity() && (bool)$request->cookies->get(\App::config()->enterprize['cookieName'])) {
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize'));
-
-            return $response;
-        }
-
-        $page = new \View\Enterprize\CouponCompletePage();
-        $page->setParam('enterpizeCoupon', $enterpizeCoupon);
-        $page->setParam('member', (bool)$request->get('member', 0));
-        $page->setParam('viewParams', ['showSideBanner' => false]);
-
-        return new \Http\Response($page->show());
+        // TODO - deprecated, по причине таска SITE-3934
+//        $session = \App::session();
+//        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+//
+//        $data = $session->get($sessionName, []);
+//        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+//
+//        if (!$enterprizeToken) {
+//            return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+//        }
+//
+//        /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
+//        $enterpizeCoupon = null;
+//        if ($enterprizeToken) {
+//            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
+//                foreach ((array)$data as $item) {
+//                    if ($enterprizeToken == $item['token']) {
+//                        $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
+//                    }
+//                }
+//            });
+//            \App::dataStoreClient()->execute();
+//        }
+//
+//        if (!$enterpizeCoupon) {
+//            throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+//        }
+//
+//        // SITE-3931, SITE-3934
+//        if (\App::user()->getEntity() && (bool)$request->cookies->get(\App::config()->enterprize['cookieName'])) {
+//            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+//
+//            return $response;
+//        }
+//
+//        $page = new \View\Enterprize\CouponCompletePage();
+//        $page->setParam('enterpizeCoupon', $enterpizeCoupon);
+//        $page->setParam('member', (bool)$request->get('member', 0));
+//        $page->setParam('viewParams', ['showSideBanner' => false]);
+//
+//        return new \Http\Response($page->show());
     }
 }

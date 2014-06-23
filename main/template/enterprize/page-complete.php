@@ -2,6 +2,8 @@
 /**
  * @var $page \View\DefaultLayout
  */
+
+// TODO - deprecated, по причине таска SITE-3934
 ?>
 
 <div class="enterPrize">
