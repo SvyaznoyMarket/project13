@@ -1,20 +1,20 @@
 /**
  * Catalog infinity scroll
  *
- * @requires jQuery, Mustache, docCookies, ENTER.utils, ENTER.config, ENTER.catalog.history
+ * @requires jQuery, jquery.visible, Mustache, docCookies, ENTER.utils, ENTER.config, ENTER.catalog.history
  * 
  * @author	Zaytsev Alexandr
  *
  * @param	{Object}	ENTER	Enter namespace
  */
 ;(function( ENTER ) {
-	console.info('Catalog init: catalog_infinityScroll.js');
+	console.info('[Catalog] Init catalog_infinityScroll.js');
 
 	var
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
-
-		viewParamPanel = $('.bSortingLine');
+		viewParamPanel = $('.bSortingLine'),
+        bottomInfButton = $('.jsInfinityEnable').last();
 	// end of vars
 
 	
@@ -24,9 +24,8 @@
 		nowPage: 1,
 
 		checkInfinity: function() {
-			console.info('checkInfinity '+ window.docCookies.getItem( 'infScroll' ));
+			console.info('Infinity scroll cookie = '+ window.docCookies.getItem( 'infScroll' ));
 			if ( window.docCookies.getItem( 'infScroll' ) === '1' ) {
-				console.warn('inf cookie == 1');
 				catalog.infScroll.enable();
 			}
 		},
@@ -38,8 +37,7 @@
 				d = $(document);
 			// end of vars
 
-			if ( !catalog.infScroll.loading && w.scrollTop() + 800 > d.height() - w.height() &&
-				//&& ( catalog.infScroll.nowPage + 1 - catalog.lastPage !== 0 )
+			if ( !catalog.infScroll.loading && bottomInfButton.visible() &&
 				( catalog.lastPage - catalog.infScroll.nowPage > 0 || null === catalog.lastPage ) ) {
 				console.warn('checkscroll true. load');
 				catalog.infScroll.nowPage += 1;
@@ -70,7 +68,6 @@
 		},
 
 		enable: function() {
-			console.info('enable...');
 
 			var activeClass = 'mActive',
 				infBtn = viewParamPanel.find('.mInfinity'),
@@ -98,11 +95,11 @@
 				catalog.history.gotoUrl(url);
 			}
 
-			console.log('infinity scroll enable');
+			console.log('Infinity scroll enabled');
 		},
 
 		disable: function() {
-			console.info('disable infinity...');
+			console.info('Infinity scroll disabling');
 
 			var url = catalog.filter.getFilterUrl();
 			// end of vars
