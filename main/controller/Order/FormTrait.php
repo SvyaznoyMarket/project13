@@ -181,6 +181,8 @@ trait FormTrait {
             'address_apartment'      => $form->getAddressApartment(),
             'address_floor'          => $form->getAddressFloor(),
             'subway_id'              => $form->getSubwayId(),
+            'bonus_card_number'      => $form->getBonusCardnumber(),
+            'bonus_card_id'   => $form->getBonusCardId(),
         ];
         $cookies[] = new \Http\Cookie(\App::config()->order['cookieName'] ?: 'last_order', strtr(base64_encode(serialize($cookieValue)), '+/', '-_'), strtotime('+1 year' ));
     }

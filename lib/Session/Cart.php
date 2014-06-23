@@ -712,6 +712,12 @@ class Cart {
         return $this->actions ?: [];
     }
 
+    public function clearActionData() {
+        $data = $this->storage->get($this->sessionName);
+        $data['actionData'] = [];
+        $this->storage->set($this->sessionName, $data);
+    }
+
     public function fill() {
         // получаем список цен
         $default = [
@@ -833,6 +839,8 @@ class Cart {
 
         if (array_key_exists('action_list', $response)) {
             $this->setActionData((array)$response['action_list']);
+        } else {
+
         }
 
         $this->certificates = [];

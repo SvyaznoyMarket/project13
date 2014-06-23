@@ -5,8 +5,8 @@ namespace Partner;
 class Manager {
     private $cookieName;
     private $cookieLifetime;
-    private $cookieNames = [];
-    private $params4get = [ 'utm_source','utm_content','utm_term', 'actionpay', 'prx', 'aip', 'webmaster_id', /*'admitad_uid', 'cpamit_uid',*/ 'affiliate_id' ];
+    private $cookieArray = [];
+    private $params4get = [ 'utm_source','utm_content','utm_term', 'actionpay', 'prx', 'aip', 'webmaster_id', 'affiliate_id' ];
 
     public function __construct() {
         $this->cookieName = \App::config()->partner['cookieName'];
@@ -20,9 +20,10 @@ class Manager {
         try {
             $request = \App::request();
             $cookie = null;
-            //$session = \App::session(); // Можно сделать и через сессию
+            $alreadyHasCookie = (bool) $request->cookies->get($this->cookieName);
+            $lastPartner = null;
 
-            $getParams = [];
+            $getParams = []; // TODO непонятная логика
             foreach( $this->params4get as $param ){
                 $getParams[$param] = $request->get($param) ?: '';
             }
@@ -76,29 +77,28 @@ class Manager {
                     // реферал находится в списке поисковиков
                     if (in_array($refererHost, $searchersList)) {
                         $data[] = $refererHost;
-                        $response->headers->setCookie(new \Http\Cookie(
+                        $this->cookieArray[] = new \Http\Cookie(
                             $this->cookieName,
                             $refererHost, time() + $this->cookieLifetime, '/', null, false, true
-                        ));
+                        );
 
                         // ссылочный трафик
                     } else {
                         $data[] = $refererHost;
-                        $response->headers->setCookie(new \Http\Cookie(
+                        $this->cookieArray[] = new \Http\Cookie(
                             $this->cookieName,
                             $refererHost, time() + $this->cookieLifetime, '/', null, false, true
-                        ));
+                        );
                     }
                 }
             }
 
-            foreach( $getParams as $key => $value ){
+            foreach( $getParams as $key => $value ){ // TODO непонятная логика
                 if (!empty($value)) {
-                    $response->headers->setCookie(new \Http\Cookie(
+                    $this->cookieArray[] = new \Http\Cookie(
                         $key,
                         $value, time() + $this->cookieLifetime, '/', null, false, true
-                    ));
-                    // $session->remove($key); $session->set($key, $value); // Можно сделать и через сессию
+                    );
                 }
             }
 
@@ -125,9 +125,39 @@ class Manager {
                 }
             }
 
-            // CityAds
+            $cookieValueArray = [
+                'cityads' => \Partner\Counter\CityAds::NAME,
+                'actionpay' => \Partner\Counter\Actionpay::NAME,
+                'myragon' => \Partner\Counter\Myragon::NAME,
+                'tradetracker' => \Partner\Counter\Tradetracker::NAME,
+                'unilead' => \Partner\Counter\Unilead::NAME,
+                'leadgid' => \Partner\Counter\Leadgid::NAME,
+                'yandex_market' => \Partner\PromoSource\YandexMarket::NAME,
+                'pricelist' => \Partner\PromoSource\Pricelist::NAME,
+                'criteo' => \Partner\PromoSource\Criteo::NAME,
+                'sociomantic' => \Partner\PromoSource\Sociomantic::NAME,
+                'flocktory' => \Partner\PromoSource\Flocktory::NAME,
+            ];
+
+            foreach ($cookieValueArray as $key => $value) {
+                if (0 === strpos($utmSource, $key)) {
+                    $lastPartner = $value;
+                    $this->cookieArray[] = new \Http\Cookie(
+                        $this->cookieName,
+                        $value,
+                        $this->cookieLifetime,
+                        '/',                            // ???
+                        null,                           // ???
+                        false,
+                        true
+                    );
+                    break;
+                }
+            }
+
+            // Дополнительные куки или сложные условия
             if (0 === strpos($utmSource, 'cityads')) {
-                $response->headers->setCookie(new \Http\Cookie(
+                $this->cookieArray[] = new \Http\Cookie(
                     'prx',
                     $request->get('prx'),
                     time() + $this->cookieLifetime,
@@ -135,20 +165,10 @@ class Manager {
                     null,
                     false,
                     true
-                ));
-                $response->headers->setCookie(new \Http\Cookie(
+                );
+                $this->cookieArray[] = new \Http\Cookie(
                     'click_id',
                     $request->get('click_id'),
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                ));
-
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\Counter\CityAds::NAME,
                     time() + $this->cookieLifetime,
                     '/',
                     null,
@@ -157,7 +177,7 @@ class Manager {
                 );
             // Actionpay
             } else if (0 === strpos($utmSource, 'actionpay')) {
-                $response->headers->setCookie(new \Http\Cookie(
+                $this->cookieArray[] = new \Http\Cookie(
                     'actionpay',
                     $request->get('actionpay'),
                     time() + $this->cookieLifetime,
@@ -165,165 +185,13 @@ class Manager {
                     null,
                     false,
                     true
-                ));
-
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\Counter\Actionpay::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
                 );
-//            // Admitad
-//            } else if (0 === strpos($utmSource, 'cpamit') || 0 === strpos($utmSource, 'admitad')) {
-//                // используем \Partner\Counter\Admitad::NAME || \Partner\Counter\Admitad::NAME_SYNONYM
-//                $response->headers->setCookie(new \Http\Cookie(
-//                    'cpamit_uid',
-//                    $request->get('cpamit_uid'),
-//                    time() + $this->cookieLifetime,
-//                    '/',
-//                    null,
-//                    false,
-//                    true
-//                ));
-//
-//                $cookie = new \Http\Cookie(
-//                    $this->cookieName,
-//                    \Partner\Counter\Admitad::NAME,
-//                    time() + $this->cookieLifetime,
-//                    '/',
-//                    null,
-//                    false,
-//                    true
-//                );
-//            // Recreative
-//            } else if (0 === strpos($utmSource, 'recreative')) {
-//                $cookie = new \Http\Cookie(
-//                    $this->cookieName,
-//                    \Partner\Counter\Recreative::NAME,
-//                    time() + $this->cookieLifetime,
-//                    '/',
-//                    null,
-//                    false,
-//                    true
-//                );
-//            // Reactive
-//            } else if ((0 === strpos($utmSource, 'vk.com')) && (0 === strpos($request->get('utm_campaing'), 'social_target'))) {
-//                $cookie = new \Http\Cookie(
-//                    $this->cookieName,
-//                    \Partner\Counter\Reactive::NAME,
-//                    time() + $this->cookieLifetime,
-//                    '/',
-//                    null,
-//                    false,
-//                    true
-//                );
-            // Myragon
-            } else if (0 === strpos($utmSource, 'myragon')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\Counter\Myragon::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // Tradetracker
-            } else if (0 === strpos($utmSource, 'tradetracker')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\Counter\Tradetracker::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // Unilead
-            } else if (0 === strpos($utmSource, 'unilead')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\Counter\Unilead::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // Leadgid
-            } else if (0 === strpos($utmSource, 'leadgid')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\Counter\Leadgid::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // Yandex cpc
-            } else if (0 === strpos($utmSource, 'yandex') && $utmMedium && 0 === strpos($utmMedium, 'cpc')) {
-                $cookie = new \Http\Cookie(
+            // Yandex
+            }  else if (0 === strpos($utmSource, 'yandex') && $utmMedium && 0 === strpos($utmMedium, 'cpc')) {
+                $lastPartner = \Partner\PromoSource\Yandex::NAME;
+                $this->cookieArray[] = new \Http\Cookie(
                     $this->cookieName,
                     \Partner\PromoSource\Yandex::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // YandexMarket
-            } else if (0 === strpos($utmSource, 'yandex_market')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\PromoSource\YandexMarket::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // Pricelist
-            } else if (0 === strpos($utmSource, 'pricelist')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\PromoSource\Pricelist::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // Criteo
-            } else if (0 === strpos($utmSource, 'criteo')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\PromoSource\Criteo::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // Sociomantic
-            } else if (0 === strpos($utmSource, 'sociomantic')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\PromoSource\Sociomantic::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // Flocktory
-            } else if (0 === strpos($utmSource, 'flocktory')) {
-                $cookie = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\PromoSource\Flocktory::NAME,
                     time() + $this->cookieLifetime,
                     '/',
                     null,
@@ -334,7 +202,8 @@ class Manager {
 
             // Google cpc
             if ($request->get('gclid')) {
-                $cookie = new \Http\Cookie(
+                $lastPartner = \Partner\PromoSource\Google::NAME;
+                $this->cookieArray[] = new \Http\Cookie(
                     $this->cookieName,
                     \Partner\PromoSource\Google::NAME,
                     time() + $this->cookieLifetime,
@@ -345,9 +214,14 @@ class Manager {
                 );
             }
 
-            if ($cookie instanceof \Http\Cookie) {
-                $response->headers->setCookie($cookie);
+            foreach ($this->cookieArray as $cookie) {
+                if ($cookie instanceof \Http\Cookie) {
+                    if ($lastPartner) $response->headers->setCookie(new \Http\Cookie('last_partner', $lastPartner, 0));
+                    if ($cookie->getName() == $this->cookieName && $alreadyHasCookie) continue; // оставим существующую куку для трекинга изначального партнера
+                    $response->headers->setCookie($cookie);
+                }
             }
+
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner']);
         }
@@ -356,8 +230,8 @@ class Manager {
     public function getName() {
         $request = \App::request();
 
-        return $request->cookies->has($this->cookieName)
-            ? $request->cookies->get($this->cookieName)
+        return $request->cookies->has('last_partner')
+            ? $request->cookies->get('last_partner')
             : null;
     }
 

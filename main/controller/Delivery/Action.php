@@ -138,6 +138,8 @@ class Action {
 
             if (array_key_exists('action_list', $result) && !empty($result['action_list'])) {
                 $cart->setActionData((array)$result['action_list']);
+            } else {
+                $cart->clearActionData();
             }
 
             // Типы доставок

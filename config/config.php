@@ -181,7 +181,7 @@ $c->partners['TagMan']['enabled'] = false;
 
 $c->adFox['enabled'] = true;
 
-$c->partner['cookieName'] = '_partner';
+$c->partner['cookieName'] = 'utm_source';
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = false;
