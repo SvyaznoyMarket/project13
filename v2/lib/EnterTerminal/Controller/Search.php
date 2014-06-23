@@ -92,6 +92,18 @@ class Search {
         // листинг идентификаторов товаров
         $searchResult = (new Repository\Search())->getObjectByQuery($searchResultQuery);
 
+        // TODO: убрать когда поиск будет возвращать картинки категорий
+        $categoryListQuery =
+            (bool)$searchResult->categories
+            ? new Query\Product\Category\GetListByIdList(
+                array_map(function(Model\SearchResult\Category $category) { return $category->id; }, $searchResult->categories),
+                $shop->regionId
+            )
+            : null;
+        if ($categoryListQuery) {
+            $curl->prepare($categoryListQuery)->execute();
+        }
+
         // фильтры
         $filters = $filterRepository->getObjectListByQuery($filterListQuery);
         $filters[] = new Model\Product\Filter([
@@ -103,7 +115,9 @@ class Search {
             ],
         ]);
         // добавление фильтров категории
-        $categoryFilters = $filterRepository->getObjectListByCategoryList((new Repository\Product\Category())->getObjectListBySearchResult($searchResult));
+        //$categories = (new Repository\Product\Category())->getObjectListBySearchResult($searchResult); // TODO: вернуть когда поиск будет возвращать картинки категорий
+        $categories = $categoryListQuery ? (new Repository\Product\Category())->getObjectListByQuery($categoryListQuery) : [];
+        $categoryFilters = $filterRepository->getObjectListByCategoryList($categories);
         $filters = array_merge($filters, $categoryFilters);
 
         // значения для фильтров
