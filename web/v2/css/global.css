@@ -3749,8 +3749,8 @@ body.noScroll {
   display: block;
   overflow: hidden;
   width: 100%;
-  -webkit-transition: -webkit-transform 600ms linear;
-  transition: transform 600ms linear;
+  -webkit-transition: -webkit-transform 200ms linear;
+  transition: transform 200ms linear;
 }
 .slidesImg_item-left {
   -webkit-transform: translate(-100%, 0);
@@ -3769,16 +3769,6 @@ body.noScroll {
   -webkit-transform: translate3d(100%, 0, 0);
   transform: translate(100%, 0);
   transform: translate3d(100%, 0, 0);
-}
-.slidesImg_item-change {
-  -webkit-animation: opacity 2s;
-  /* Safari 4+ */
-  -moz-animation: opacity 2s;
-  /* Fx 5+ */
-  -o-animation: opacity 2s;
-  /* Opera 12+ */
-  animation: opacity 2s;
-  /* IE 10+ */
 }
 .slidesImg_cont {
   width: 100%;
@@ -3811,46 +3801,16 @@ body.noScroll {
 .slidesImgBtn {
   position: absolute;
   top: 0;
-  width: 100px;
+  width: 50px;
   height: 100%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 }
 .slidesImgBtn-left {
   left: 0;
 }
 .slidesImgBtn-right {
   right: 0;
-}
-@-webkit-keyframes opacity {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@-moz-keyframes opacity {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@-o-keyframes opacity {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes opacity {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 /* ==========================================================================
    Главная страница

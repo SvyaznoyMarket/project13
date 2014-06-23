@@ -1,1 +1,0 @@
-window.release = { "version":"t76.2-104-ge6ca5ee"}

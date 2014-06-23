@@ -9,6 +9,7 @@
 		body = $('body'),
 		mobilePhoneField = $('.jsMobile'),
 		authBlock = $('#enterprize-auth-block'),
+		infoBlock = $('#enterprize-info-block'),
 
 		/**
 		 * Конфигурация валидатора для формы ЛК Enterprize
@@ -280,6 +281,16 @@
 			});
 
 			return false;
+		},
+
+		openInfoBlock = function openInfoBlock() {
+			infoBlock.lightbox_me({
+				centered: true,
+				autofocus: true,
+				closeSelector: ".closePopup"
+			});
+
+			return false;
 		};
 	// end of functions
 
@@ -294,4 +305,10 @@
 	if ( $('.bGoodsSlider').length ) {
 		$('.bGoodsSlider').goodsSlider();
 	}
+
+	// Открываем информационный попап
+	if ( infoBlock.length ) {
+		openInfoBlock();
+	}
+
 }(window.ENTER));

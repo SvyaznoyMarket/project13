@@ -54,7 +54,10 @@ class Content {
 
         // страница
         $page = new Page();
-        $page->content = $contentItemQuery->getResult();
+
+        $item = $contentItemQuery->getResult();
+        $page->content = preg_replace('/<a(\s+[^>]*href="http:\/\/www\.enter\.ru\/)([^"\s]*)/i', '<a$1$2" data-content-token="$2"', $item['content']);
+        $page->title = isset($item['title']) ? $item['title'] : null;
 
         return new Http\JsonResponse($page);
     }

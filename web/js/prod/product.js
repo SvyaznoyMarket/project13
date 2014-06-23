@@ -101,7 +101,7 @@
  */
 (function() {
 
-    $('.bDeliveryNowClick').on('click', function() {
+    $('.js-show-shops').on('click', function() {
         var popup = $('.shopsPopup'),
             buyButtons = $('.shopsPopup .jsBuyButton');
 

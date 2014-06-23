@@ -5,7 +5,7 @@ namespace Session;
 class Cart {
 
     /** @var string */
-    private $sessionName = 'userCart';
+    private $sessionName;
     /** @var \Http\Session */
     private $storage;
     /** @var \Model\Cart\Product\Entity[]|null */
@@ -30,6 +30,7 @@ class Cart {
     private $productLimit = null;
 
     public function __construct() {
+        $this->sessionName = \App::config()->cart['sessionName'];
         $this->storage = \App::session();
         $session = $this->storage->all();
 
@@ -711,6 +712,12 @@ class Cart {
         return $this->actions ?: [];
     }
 
+    public function clearActionData() {
+        $data = $this->storage->get($this->sessionName);
+        $data['actionData'] = [];
+        $this->storage->set($this->sessionName, $data);
+    }
+
     public function fill() {
         // получаем список цен
         $default = [
@@ -832,6 +839,8 @@ class Cart {
 
         if (array_key_exists('action_list', $response)) {
             $this->setActionData((array)$response['action_list']);
+        } else {
+
         }
 
         $this->certificates = [];

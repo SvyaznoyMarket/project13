@@ -109,14 +109,13 @@
 		 */
 		getWithVersion = function getWithVersion( filename ) {
 			if ( typeof( global.release['version']) !== 'undefined' ) {
+
 				if ( !debug ) {
 					filename = filename.replace('js', 'min.js');
-					filename += '?t=' + global.release['version'];
 				}
-				else {
-					filename += '?t=' + global.release['version'];
-				}
-			} 
+
+                filename += '?t=' + global.release['version'];
+			}
 
 			return filename;
 		},
@@ -264,15 +263,6 @@
 		event: 'page_load'
 	});
 
-	/**
-	 * Логирование времени до начала работы JS
-	 */
-	logError({
-		event: 'html time before js',
-		time: jsStartTime - window.htmlStartTime
-	});
-
-
 	// Если продуктивный режим - заглушить консоль
 	if ( !debug ) {
 		console.disable();
@@ -291,7 +281,6 @@
 	extendApp('ENTER.config');
 	global.ENTER.config.debug = debug;
 	global.ENTER.config.jsStartTime = jsStartTime;
-	global.ENTER.config.htmlStartTime = window.htmlStartTime;
 	global.ENTER.config.pageConfig = pageConfig;
 
 	extendApp('ENTER.constructors');
@@ -307,8 +296,6 @@
 	 * Первоначальная настройка LAB
 	 */
 	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder: true, UseLocalXHR: false, BasePath: '/js/prod/'})
-		.queueScript('/js/combine.js')
-		// .queueWait(loadDebugPanel)
 		.queueWait(newDocumentWrite);
 
 

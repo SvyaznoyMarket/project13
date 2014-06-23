@@ -135,6 +135,16 @@ window.ANALYTICS = {
 			$('body').on('userLogged', liveTexUserInfo);
 		}
 
+		LiveTex.on("chat_open", function(e){
+			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', 'chat_open']);
+			undefined != typeof(ga) && ga('send', 'event', 'webchat', 'chat_open');
+		});
+
+		LiveTex.on("chat_invitation_action", function(e){
+			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', e.data.action]);
+			undefined != typeof(ga) && ga('send', 'event', 'webchat', e.data.action);
+		});
+
 		//$(document).load(function() {
 		(function () {
 			console.info('LiveTexJS init');
@@ -475,22 +485,6 @@ window.ANALYTICS = {
 			data		= $('#gaJS').data('vars'),
 		// end of vars
 
-			ga_init = function ga_init() {
-				console.log( 'gaJS init' );
-
-				(function (i, s, o, g, r, a, m) {
-					i['GoogleAnalyticsObject'] = r;
-					i[r] = i[r] || function () {
-						(i[r].q = i[r].q || []).push( arguments )
-					}, i[r].l = 1 * new Date();
-					a = s.createElement( o ),
-						m = s.getElementsByTagName( o )[0];
-					a.async = 1;
-					a.src = g;
-					m.parentNode.insertBefore( a, m )
-				})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
-			},
-
 			gaBannerClick = function gaBannerClick( BannerId ) {
 				console.log( 'GA: send', 'event', 'Internal_Promo', BannerId );
 				ga( 'send', 'event', 'Internal_Promo', BannerId );
@@ -750,9 +744,8 @@ window.ANALYTICS = {
 
 		console.group('ports.js::gaJS');
 		try{
-			ga_init(); // блок инициализации аналитики для всех страниц
 			if ( 'function' !== typeof(ga) ) {
-				console.warn('GA: init error');
+				console.error('GA: init error');
 				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
 			}
 			ga( 'create', 'UA-25485956-5', 'enter.ru' );
@@ -1053,51 +1046,51 @@ window.ANALYTICS = {
         console.groupEnd();
     },
 
-    AdmitadJS : function() {
-        window._retag = window._retag || [];
-        var ad_data = $('#AdmitadJS').data('value');
-
-        if (ad_data) {
-
-            if (ad_data.ad_data) {
-                /**
-                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
-                 */
-                if (ad_data.ad_data.ad_category) {
-                    window.ad_category = ad_data.ad_data.ad_category;
-                }
-
-                if (ad_data.ad_data.ad_product) {
-                    window.ad_product = ad_data.ad_data.ad_product;
-                }
-
-                if (ad_data.ad_data.ad_products) {
-                    window.ad_products = ad_data.ad_data.ad_products;
-                }
-
-                if (ad_data.ad_data.ad_order) {
-                    window.ad_order = ad_data.ad_data.ad_order;
-                }
-
-                if (ad_data.ad_data.ad_amount) {
-                    window.ad_amount = ad_data.ad_data.ad_amount;
-                }
-
-            }
-
-            if (ad_data.pushData) {
-                window._retag.push(ad_data.pushData);
-            }
-        }
-
-        (function(d){
-            var s=document.createElement("script");
-            s.async=true;
-            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
-            var a=d.getElementsByTagName("script")[0];
-            a.parentNode.insertBefore(s, a);
-        }(document));
-    },
+//    AdmitadJS : function() {
+//        window._retag = window._retag || [];
+//        var ad_data = $('#AdmitadJS').data('value');
+//
+//        if (ad_data) {
+//
+//            if (ad_data.ad_data) {
+//                /**
+//                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
+//                 */
+//                if (ad_data.ad_data.ad_category) {
+//                    window.ad_category = ad_data.ad_data.ad_category;
+//                }
+//
+//                if (ad_data.ad_data.ad_product) {
+//                    window.ad_product = ad_data.ad_data.ad_product;
+//                }
+//
+//                if (ad_data.ad_data.ad_products) {
+//                    window.ad_products = ad_data.ad_data.ad_products;
+//                }
+//
+//                if (ad_data.ad_data.ad_order) {
+//                    window.ad_order = ad_data.ad_data.ad_order;
+//                }
+//
+//                if (ad_data.ad_data.ad_amount) {
+//                    window.ad_amount = ad_data.ad_data.ad_amount;
+//                }
+//
+//            }
+//
+//            if (ad_data.pushData) {
+//                window._retag.push(ad_data.pushData);
+//            }
+//        }
+//
+//        (function(d){
+//            var s=document.createElement("script");
+//            s.async=true;
+//            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
+//            var a=d.getElementsByTagName("script")[0];
+//            a.parentNode.insertBefore(s, a);
+//        }(document));
+//    },
 
 	AlexaJS: function () {
 		_atrk_opts = {

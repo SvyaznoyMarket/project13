@@ -10,75 +10,73 @@ return function (
     ?>
 
     <? if (count($shopStates) == 1) : $shop = $shopStates[0]->getShop(); ?>
-        Есть в магазине <br />
+        <div class="shopsVar">
+            <span class="shopsVar_title">Есть в магазине</span>
+            
+            <div class="markerList markerList-left">
+                <? if ((bool)$shop->getSubway()) : ?>
+                    <!--  Метро  -->
+                    <i class="markColor" style="background-color: <?= $shop->getSubway()[0]->getLine()->getColor() ?>"></i>
+                    <span class="markDesc">м. <?= $shop->getSubway()[0]->getName(); ?></span>
+                <? endif; ?>
 
-        <? if ((bool)$shop->getSubway()) : ?>
-            <!--  Метро  -->
-            <div>
-                <div style="display: inline-block; border-radius: 50%; width: 10px; height: 10px; background: <?= $shop->getSubway()[0]->getLine()->getColor() ?>"></div>
-                м. <?= $shop->getSubway()[0]->getName(); ?>
-            </div>
-        <? endif; ?>
+                <!--  Адрес  -->
+                <a class="markerList_light" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a>
+                
+                <!--  Время работы  -->
+                <div class="ta-c mb5"><?= $shop->getRegime() ?></div>
 
-            <!--  Адрес  -->
-            <div>
-                <a href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a>
+                <!--  Кнопка Резерв -->
+                <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']) ?>
             </div>
-            <!--  Время работы  -->
-            <div>
-                <?= $shop->getRegime() ?>
-            </div>
-            <!--  Кнопка Резерв           -->
-            <div>
-                <?= $helper->render('cart/__button-product',['product' => $product, 'url' => null, 'class' => null, 'value' => 'Резерв']) ?>
-            </div>
-
+        </div>
     <? endif; ?>
 
     <? if (count($shopStates) > 1) : ?>
-
-        Есть в <?= count($shopStates) ?> магазинах
-        <input type="button" class="btnMore button whitebutton bDeliveryNowClick" id="whitebutton" value="Забрать сегодня">
+        <div class="shopsVar shopsVar-center">
+            <span class="shopsVar_title">Есть в <?= count($shopStates) ?> магазинах</span>
+            <input type="button" class="button whitebutton js-show-shops" id="whitebutton" value="Забрать сегодня" />
+        </div>
 
         <div style="display: none" class="popup shopsPopup">
             <i title="Закрыть" class="close">Закрыть</i>
             <div class="bPopupTitle">Забрать сегодня</div>
+
             <!--  Магазины  -->
-            <ul>
+            <ul class="markerList markerList-table">
             <? foreach ($shopStates as $shopState) : $shop = $shopState->getShop(); ?>
+
                 <!--  Магазин -->
-                <li>
+                <li class="markerList_row">
+                    <span class="markerList_col markerList_col-mark">
+                        <i class="markColor" style="background-color: <?= $shop->getSubway()[0]->getLine()->getColor() ?>"></i>
+                    </span>
 
                     <!--  Адрес  -->
-                    <div style="display: inline-block">
+                    <span class="markerList_col markerList_col-left">
                         <? if ((bool)$shop->getSubway()) : ?>
                             <!--  Метро  -->
-                            <div>
-                                <div style="display: inline-block; border-radius: 50%; width: 10px; height: 10px; background: <?= $shop->getSubway()[0]->getLine()->getColor() ?>"></div>
-                                м. <?= $shop->getSubway()[0]->getName(); ?>
-                            </div>
+                            м. <?= $shop->getSubway()[0]->getName(); ?>
                         <? endif; ?>
-                        <a href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a>
-                    </div>
+                        <a class="markerList_light" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a>
+                    </span>
 
                     <!--  Время работы  -->
-                    <div style="display: inline-block">
+                    <span class="markerList_col markerList_col-center">
                         <?= $shop->getRegime() ?>
-                    </div>
+                    </span>
+                    
                     <!--  Кнопка "Резерв" или "На витрине"  -->
-                    <div style="display: inline-block">
+                    <span class="markerList_col markerList_col-right">
                         <? if ( $shopState->getQuantity() > 0 ) : ?>
-                            <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => null, 'class' => null, 'value' => 'Резерв']); ?>
+                            <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']); ?>
                         <? else : ?>
-                            На витрине
+                            <span class="btnText">На витрине</span>
                         <? endif; ?>
-                    </div>
-
+                    </span>
                 </li>
             <? endforeach; ?>
             </ul>
         </div>
-
     <? endif; ?>
-
 <?};

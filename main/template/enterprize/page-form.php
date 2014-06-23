@@ -52,55 +52,7 @@ $helper = new \Helper\TemplateHelper();
 </form>
 
 <div class="epToggleRules">
-    <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как получить больше фишек?</span></p>
-
-    <div class="enterPrizeListWrap">
-        <ul class="enterPrizeList">
-            <li class="enterPrizeList__item mBlue">
-                <strong>Сайт www.enter.ru</strong><br>
-                Всегда входите в личный кабинет.<br>
-                Заказывайте товары как обычно.
-            </li>
-
-            <li class="enterPrizeList__item mOrange">
-                <strong>Розничные магазины ENTER</strong><br>
-                Входите в личный кабинет в терминале.<br>
-                Заказывайте товары через терминал.
-            </li>
-
-            <li class="enterPrizeList__item mGreen">
-                <strong>Контакт-сENTER 8 800 700 00 09</strong><br>
-                Скажите оператору Контакт-cENTER, что Вы &mdash; участник Enter Prize!<br>
-                Оператор поможет оформить заказ.
-            </li>
-        </ul>
-
-        <div class="enterPrizeFinish">Ловите номер фишки в чеке после оплаты заказа!</div>
-    </div>
-
-    <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как играть фишками и получать скидки?</span></p>
-
-    <div class="enterPrizeListWrap">
-        <ul class="enterPrizeList">
-            <li class="enterPrizeList__item mBlue">
-                <strong>Сайт www.enter.ru</strong><br>
-                Входите в личный кабинет на www.enter.ru!<br>
-                При оформлении Заказа в поле КУПОН или ФИШКА вводите номер фишки! 
-            </li>
-
-            <li class="enterPrizeList__item mOrange">
-                <strong>Розничные магазины ENTER</strong><br>
-                Скажите сотруднику магазина, что Вы &mdash; участник Enter Prize!<br>
-                И сообщите номер Фишки при оплате заказа! 
-            </li>
-
-            <li class="enterPrizeList__item mGreen">
-                <strong>Контакт-сENTER 8 800 700 00 09</strong><br>
-                Скажите оператору Контакт-cENTER, что Вы &mdash; участник Enter Prize!<br>
-                И при оформлении заказа сообщите номер Фишки! 
-            </li>
-        </ul>
-    </div>
+    <?= $page->render('enterprize/_contentDescription') ?>
 </div>
 
 <!--<div class="epSliderTitle">Фишка действует на товары</div>-->

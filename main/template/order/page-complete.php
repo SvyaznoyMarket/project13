@@ -51,6 +51,9 @@ if (!isset($paymentUrl)) $paymentUrl = null;
             Сейчас он отправлен на склад для сборки!<br/>
             Ожидайте смс или звонок от оператора контакт-сEnter по статусу заказа!
         </p>
+        <p style="margin: 10px 0;">Внимание! Важная информация об акции 1 + 1 = 3 на товары Tchibo.<br/>
+            На сайте скидка не показывается.<br/>
+            Скидка будет обязательно отражена в чеке на покупку по акции.</p>
     <? endif; ?>
     <p class="font19">Номер заказа: <?= $order->getNumberErp() ?></p>
 
@@ -92,7 +95,12 @@ if (!isset($paymentUrl)) $paymentUrl = null;
         <? } ?>
     <? } ?>
     <div class="mt32" style="text-align: center">
-        <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
+        <? if ($isCredit): ?>
+            <a class='bBigOrangeButton jsCreditBtn' href="#">Перейти к оформлению кредита</a>
+            <p>Виджет оформления кредита откроется автоматически через несколько секунд</p>
+        <? else: ?>
+            <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
+        <? endif ?>
     </div>
 <? endif ?>
 

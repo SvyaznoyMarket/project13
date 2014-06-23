@@ -37,6 +37,8 @@ class Form implements \JsonSerializable {
     private $creditBankId;
     /** @var string */
     private $bonusCardnumber;
+    /** @var int */
+    private $bonusCardId;
     /** @var string */
     private $certificateCardnumber;
     /** @var string */
@@ -68,6 +70,7 @@ class Form implements \JsonSerializable {
         'extra'                  => null,
         'credit_bank_id'         => null,
         'bonus_card_number'      => null,
+        'bonus_card_id'          => null,
         'payment_method_id'      => null,
         'agreed'                 => null,
         'cardnumber'             => null,
@@ -124,6 +127,7 @@ class Form implements \JsonSerializable {
         if (array_key_exists('extra', $data))                  $this->setComment($data['extra']);
         if (array_key_exists('credit_bank_id', $data))         $this->setCreditBankId($data['credit_bank_id']);
         if (array_key_exists('bonus_card_number', $data))      $this->setBonusCardnumber($data['bonus_card_number']);
+        if (array_key_exists('bonus_card_id', $data))          $this->setBonusCardId($data['bonus_card_id']);
         if (array_key_exists('payment_method_id', $data))      $this->setPaymentMethodId($data['payment_method_id']);
         if (array_key_exists('agreed', $data))                 $this->setAgreed($data['agreed']);
         if (array_key_exists('lifeGift_agreed', $data))        $this->setLifeGiftAgreed($data['lifeGift_agreed']);
@@ -378,6 +382,20 @@ class Form implements \JsonSerializable {
      */
     public function getBonusCardnumber() {
         return $this->bonusCardnumber;
+    }
+
+    /**
+     * @param int $bonusCardId
+     */
+    public function setBonusCardId($bonusCardId) {
+        $this->bonusCardId = $bonusCardId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBonusCardId() {
+        return $this->bonusCardId;
     }
 
     /**

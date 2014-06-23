@@ -138,6 +138,8 @@ class Action {
 
             if (array_key_exists('action_list', $result) && !empty($result['action_list'])) {
                 $cart->setActionData((array)$result['action_list']);
+            } else {
+                $cart->clearActionData();
             }
 
             // Типы доставок
@@ -509,10 +511,44 @@ class Action {
                     }
                 }
             }
+
+            if ($oneClick && \App::request()->get('shopId')) $responseData = $this->filterForReserve($responseData, \App::request()->get('shopId'));
+
         } catch(\Exception $e) {
             $this->failResponseData($e, $responseData);
         }
 
         return $responseData;
+    }
+
+    /**
+     * Функция, фильтрующая результат для кнопки "Резерв" ( SITE-3950 )
+     * Оставляет только deliveryType['now'], ставит магазин с id == $shopId первым в списке
+     *
+     * @param $data mixed
+     * @param $shopId string
+     * @return mixed
+     */
+    private function filterForReserve($data, $shopId) {
+        $result = $data;
+
+        /* Unset deliveryTypes */
+        $result['deliveryTypes'] = [];
+        $arrayWithNow = array_filter($data['deliveryTypes'], function($type) {
+            return $type['token'] == 'now';
+        });
+        $result['deliveryTypes'][] = reset($arrayWithNow);
+
+        /* Sorting shops */
+        $firstShop = $lastShops = [];
+
+        array_walk($result['shops'], function ($val) use (&$firstShop, &$lastShops, $shopId){
+            if ($val['id'] == $shopId) $firstShop[] = $val;
+            else $lastShops[] = $val;
+        });
+
+        $result['shops'] = array_merge($firstShop, $lastShops);
+
+        return $result;
     }
 }

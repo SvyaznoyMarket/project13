@@ -147,7 +147,6 @@ class Product {
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
-            //trigger_error($e, E_USER_ERROR);
         }
     }
 
@@ -217,7 +216,6 @@ class Product {
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
-            //trigger_error($e, E_USER_ERROR);
         }
     }
 
@@ -272,7 +270,6 @@ class Product {
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
-            //trigger_error($e, E_USER_ERROR);
         }
     }
 }

@@ -81,6 +81,16 @@ class Compare {
     }
 
     /**
+     * @param Model\Compare $compare
+     * @param Model\Compare\Product $compareProduct
+     */
+    public function deleteProductForObject(Model\Compare $compare, Model\Compare\Product $compareProduct) {
+        if (array_key_exists($compareProduct->id, $compare->product)) {
+            unset($compare->product[$compareProduct->id]);
+        }
+    }
+
+    /**
      * @param $id
      * @param Model\Compare $compare
      * @return Model\Compare\Product|null
@@ -141,21 +151,23 @@ class Compare {
      * @return Model\Compare\Group[]
      */
     public function getGroupListByObject(Model\Compare $compare, array $productsById) {
-        $groups = [];
+        $groupsById = [];
 
         foreach ($compare->product as $comparedProduct) {
             /** @var Model\Product|null $product */
             $product = isset($productsById[$comparedProduct->id]) ? $productsById[$comparedProduct->id] : null;
             if (!$product) continue;
-            if (!$product->category) continue;
+
+            $groupId = $product->category ? $product->category->id : null;
+            if (!$groupId || isset($groupsById[$groupId])) continue;
 
             $group = new Model\Compare\Group();
-            $group->id = $product->category->id;
+            $group->id = $groupId;
             $group->name = $product->category->name;
 
-            $groups[] = $group;
+            $groupsById[$groupId] = $group;
         }
 
-        return $groups;
+        return array_values($groupsById);
     }
 }

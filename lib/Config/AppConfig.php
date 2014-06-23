@@ -411,7 +411,8 @@ class AppConfig {
     ];
     /** @var array */
     public $cart = [
-        'productLimit'    => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
+        'productLimit' => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
+        'sessionName'  => null,
     ];
     /** @var array */
     public $user = [
@@ -512,6 +513,7 @@ class AppConfig {
         'formDataSessionKey' => null,
         'itemsInSlider' => null,
         'showSlider' => null,
+        'cookieName' => null,
     ];
 
     /** @var array */
@@ -548,6 +550,12 @@ class AppConfig {
     /** @var array */
     public $flocktoryExchange = [
         'enabled' => null,
+    ];
+
+    /** @var array */
+    public $flocktoryCoupon = [
+        'enabled' => null,
+        'paramName' => null,
     ];
 
     public function __construct() {

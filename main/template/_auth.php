@@ -9,7 +9,7 @@
 <div class="popup" id="auth-block">
     <i title="Закрыть" class="close">Закрыть</i>
 
-    <div class="bPopupTitle">ВХОД В ENTER</div>
+    <div class="bPopupTitle">Вход в Enter</div>
 
     <div class="bFormLogin">
         <?= $page->render('form-forgot') ?>

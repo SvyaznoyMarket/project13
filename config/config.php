@@ -181,7 +181,7 @@ $c->partners['TagMan']['enabled'] = false;
 
 $c->adFox['enabled'] = true;
 
-$c->partner['cookieName'] = '_partner';
+$c->partner['cookieName'] = 'utm_source';
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = false;
@@ -303,6 +303,7 @@ $c->banner['url'] = [
 ];
 
 $c->cart['productLimit'] = 30;
+$c->cart['sessionName'] = 'userCart';
 
 $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
@@ -384,6 +385,7 @@ $c->enterprize['enabled'] = true;
 $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
 $c->enterprize['itemsInSlider'] = 7;
 $c->enterprize['showSlider'] = true;
+$c->enterprize['cookieName'] = 'enterprize_coupon_sent';
 
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
@@ -416,5 +418,8 @@ $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
 $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 
 $c->flocktoryExchange['enabled'] = true;
+
+$c->flocktoryCoupon['enabled'] = true;
+$c->flocktoryCoupon['paramName'] = 'utm_coupon';
 
 return $c;

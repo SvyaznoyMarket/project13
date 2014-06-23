@@ -57,6 +57,12 @@ class CouponAction {
 
             $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete', $params));
 
+            // SITE-3931
+            if (\App::user()->getEntity()) {
+                $cookie = new \Http\Cookie(\App::config()->enterprize['cookieName'], 1, strtotime('+1 days'));
+                $response->headers->setCookie($cookie);
+            }
+
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
 
@@ -229,6 +235,13 @@ class CouponAction {
 
         if (!$enterpizeCoupon) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+        }
+
+        // SITE-3931
+        if (\App::user()->getEntity() && (bool)$request->cookies->get(\App::config()->enterprize['cookieName'])) {
+            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize'));
+
+            return $response;
         }
 
         $page = new \View\Enterprize\CouponCompletePage();

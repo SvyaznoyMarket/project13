@@ -86,10 +86,20 @@ class IndexAction {
             return true;
         });
 
+        // SITE-3931
+        $isCouponSent = (bool)$request->cookies->get(\App::config()->enterprize['cookieName']);
+
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
         $page->setParam('viewParams', ['showSideBanner' => false]);
+        $page->setParam('isCouponSent', $isCouponSent);
 
-        return new \Http\Response($page->show());
+        $response = new \Http\Response($page->show());
+
+        if ($isCouponSent) {
+            $response->headers-> clearCookie(\App::config()->enterprize['cookieName']);
+        }
+
+        return $response;
     }
 }

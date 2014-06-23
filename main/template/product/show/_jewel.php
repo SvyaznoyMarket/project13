@@ -191,6 +191,8 @@ $is_showed = [];
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
+
+    <? if ( $product->isInShopStockOnly() || !$product->getIsBuyable() ) : else : ?>
     <div class="bWidgetBuy mWidget">
         <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
@@ -214,6 +216,7 @@ $is_showed = [];
 
         <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
     </div><!--/widget delivery -->
+    <? endif; ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 

@@ -15,6 +15,7 @@ module.exports = function( grunt ) {
             jsDevPath+'jquery-plugins/jquery.scrollto.js',
             jsDevPath+'jquery-plugins/jquery.placeholder.js',
             jsDevPath+'jquery-plugins/jquery.infinityCarousel.js',
+            jsDevPath+'jquery-plugins/jquery.visible.js',
             jsDevPath+'jquery-plugins/typewriter.js',
             jsDevPath+'jquery-plugins/jquery.maskedinput.js',
             jsDevPath+'jquery-plugins/jquery.put_cursor_at_end.js',
@@ -145,23 +146,6 @@ module.exports = function( grunt ) {
 
 
 		/**
-		 * Выполнение BASH команд
-		 * 
-		 * @link http://github.com/jharding/grunt-exec
-		 */
-		exec: {
-			// текущая версия в combine.js
-			getVersion: {
-				stdout: true,
-				stderr: true,
-				command: function(){
-					grunt.log.writeln('getVersion ');
-					return 'filename="../web/js/combine.js"; rm ../web/js/combine.js; printf \'window.release = { "version":"\'>> $filename \r; res=$(git describe --always --tag); printf $res >> $filename \r; printf \'"}\'>> $filename \r;';
-				}
-			}
-		},
-
-		/**
 		 * Компиляция LESS
 		 *
 		 * @link http://github.com/gruntjs/grunt-contrib-less
@@ -277,7 +261,7 @@ module.exports = function( grunt ) {
 			},
 			jqueryPluginsJS:{
 				files: [jsDevPath+'jquery-plugins/*.js'],
-				tasks: ['exec:compileBJ', 'jshint', 'exec:getVersion']
+				tasks: ['jsmin-sourcemap:jqueryPlugins']
 			},
 			libraryJS:{
 				files: [jsDevPath+'library/*.js'],
@@ -317,7 +301,7 @@ module.exports = function( grunt ) {
 			},
 			catalogJS:{
 				files: [jsDevPath+'catalog/*.js'],
-				tasks: ['concat:catalogJS', 'jshint', 'uglify:catalogJS',  'connect', 'qunit', 'exec:getVersion']
+				tasks: ['jsmin-sourcemap:catalog']
 			},
 			productJS:{
 				files: [jsDevPath+'product/*.js'],
@@ -507,6 +491,7 @@ module.exports = function( grunt ) {
                     'dev/jquery-plugins/jquery.scrollto.js',
                     'dev/jquery-plugins/jquery.placeholder.js',
                     'dev/jquery-plugins/jquery.infinityCarousel.js',
+                    'dev/jquery-plugins/jquery.visible.js',
                     'dev/jquery-plugins/typewriter.js',
                     'dev/jquery-plugins/jquery.maskedinput.js',
                     'dev/jquery-plugins/jquery.put_cursor_at_end.js',
@@ -814,48 +799,14 @@ module.exports = function( grunt ) {
 	require('load-grunt-tasks')(grunt);
 
 	/**
-	 * Генерация xml файла с полигонами для яндекс карт
-	 */
-	grunt.registerTask('ymaps_generate', 'Generate Ymap XML', function(){
-		// LONGITUDE -180 to + 180
-		// LATITUDE -90 to +90
-		function generateRandom(from, to, fixed) {
-				return (Math.random() * (to - from) + from).toFixed(fixed);
-		}
-		
-		var count = 2000;
-		grunt.log.writeln('Generate '+count+' random polygons');
-		var outXML = '<ymaps:ymaps xmlns:ymaps="http://maps.yandex.ru/ymaps/1.x" xmlns:repr="http://maps.yandex.ru/representation/1.x" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maps.yandex.ru/schemas/ymaps/1.x/ymaps.xsd"><ymaps:GeoObjectCollection><gml:featureMember>';
-		for (var i=0; i<count; i++){
-			grunt.log.writeln('Generating '+i+' polygon...');
-			outXML += '<ymaps:GeoObject>'+
-							'<gml:name>Многоугольник '+i+'</gml:name>'+
-							'<gml:description>'+i+'ый многоугольник из '+count+'</gml:description>'+
-							'<gml:Polygon>'+
-									'<gml:exterior>'+
-											'<gml:LinearRing>'+
-													'<gml:posList>'+generateRandom(-180, 180, 3)+' '+generateRandom(-90, 90, 3)+' '+generateRandom(-180, 180, 3)+' '+generateRandom(-90, 90, 3)+' '+generateRandom(-180, 180, 3)+' '+generateRandom(-90, 90, 3)+' '+generateRandom(-180, 180, 3)+' '+generateRandom(-90, 90, 3)+'</gml:posList>'+
-											'</gml:LinearRing>'+
-									'</gml:exterior>'+
-							'</gml:Polygon>'+
-					'</ymaps:GeoObject>';
-		}
-		outXML += '</gml:featureMember></ymaps:GeoObjectCollection></ymaps:ymaps>';
-		grunt.file.write('../web/js/tests/polygons'+count+'.xml' , outXML);
-		grunt.log.writeln('Done');
-	});
-
-	/**
 	 * Tasks
 	 */
 	// Компиляция LESS
 	grunt.registerTask('css', ['less']);
-	// Тестирование JS, валидация JS, компиляция bigjquery, минификация JS, версионность
-	grunt.registerTask('js', ['concat', 'connect', 'qunit', 'jshint', 'uglify', 'exec:getVersion']);
-	// Компиляция LESS, тестирование JS, валидация, минификация JS, версионность
-	grunt.registerTask('default', ['less', 'concat', 'jshint', 'uglify', 'connect', 'qunit', 'exec:getVersion']);
-	// Генерация рандомных полигонов яндекс карт
-	grunt.registerTask('ymaps', ['ymaps_generate']);
+	// Тестирование JS, валидация JS, компиляция bigjquery, минификация JS
+	grunt.registerTask('js', ['concat', 'connect', 'qunit', 'jshint', 'uglify']);
+	// Компиляция LESS, тестирование JS, валидация, минификация JS
+	grunt.registerTask('default', ['less', 'concat', 'jshint', 'uglify', 'connect', 'qunit']);
 	// Тестирование JS, валидация JS
 	grunt.registerTask('test', ['connect', 'qunit', 'jshint']);
     // Source maps
