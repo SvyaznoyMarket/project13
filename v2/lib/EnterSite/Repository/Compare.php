@@ -81,6 +81,16 @@ class Compare {
     }
 
     /**
+     * @param Model\Compare $compare
+     * @param Model\Compare\Product $compareProduct
+     */
+    public function deleteProductForObject(Model\Compare $compare, Model\Compare\Product $compareProduct) {
+        if (array_key_exists($compareProduct->id, $compare->product)) {
+            unset($compare->product[$compareProduct->id]);
+        }
+    }
+
+    /**
      * @param $id
      * @param Model\Compare $compare
      * @return Model\Compare\Product|null
