@@ -15,6 +15,7 @@ module.exports = function( grunt ) {
             jsDevPath+'jquery-plugins/jquery.scrollto.js',
             jsDevPath+'jquery-plugins/jquery.placeholder.js',
             jsDevPath+'jquery-plugins/jquery.infinityCarousel.js',
+            jsDevPath+'jquery-plugins/jquery.visible.js',
             jsDevPath+'jquery-plugins/typewriter.js',
             jsDevPath+'jquery-plugins/jquery.maskedinput.js',
             jsDevPath+'jquery-plugins/jquery.put_cursor_at_end.js',
@@ -260,7 +261,7 @@ module.exports = function( grunt ) {
 			},
 			jqueryPluginsJS:{
 				files: [jsDevPath+'jquery-plugins/*.js'],
-				tasks: ['exec:compileBJ', 'jshint', 'exec:getVersion']
+				tasks: ['jsmin-sourcemap:jqueryPlugins']
 			},
 			libraryJS:{
 				files: [jsDevPath+'library/*.js'],
@@ -300,7 +301,7 @@ module.exports = function( grunt ) {
 			},
 			catalogJS:{
 				files: [jsDevPath+'catalog/*.js'],
-				tasks: ['concat:catalogJS', 'jshint', 'uglify:catalogJS',  'connect', 'qunit', 'exec:getVersion']
+				tasks: ['jsmin-sourcemap:catalog']
 			},
 			productJS:{
 				files: [jsDevPath+'product/*.js'],
@@ -490,6 +491,7 @@ module.exports = function( grunt ) {
                     'dev/jquery-plugins/jquery.scrollto.js',
                     'dev/jquery-plugins/jquery.placeholder.js',
                     'dev/jquery-plugins/jquery.infinityCarousel.js',
+                    'dev/jquery-plugins/jquery.visible.js',
                     'dev/jquery-plugins/typewriter.js',
                     'dev/jquery-plugins/jquery.maskedinput.js',
                     'dev/jquery-plugins/jquery.put_cursor_at_end.js',
