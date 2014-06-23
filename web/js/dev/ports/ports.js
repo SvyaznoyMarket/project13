@@ -135,6 +135,16 @@ window.ANALYTICS = {
 			$('body').on('userLogged', liveTexUserInfo);
 		}
 
+		LiveTex.on("chat_open", function(e){
+			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', 'chat_open']);
+			undefined != typeof(ga) && ga('send', 'event', 'webchat', 'chat_open');
+		});
+
+		LiveTex.on("chat_invitation_action", function(e){
+			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', e.data.action]);
+			undefined != typeof(ga) && ga('send', 'event', 'webchat', e.data.action);
+		});
+
 		//$(document).load(function() {
 		(function () {
 			console.info('LiveTexJS init');
