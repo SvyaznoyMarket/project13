@@ -32,6 +32,10 @@ class ProductQuickButton {
     public function getObject(
         Model\Product $product
     ) {
+        if (!$product->isBuyable) {
+            return null;
+        }
+
         $button = new Partial\Cart\ProductQuickButton();
 
         $button->url = $this->router->getUrlByRoute(new Routing\Order\Quick\Index(), ['product' => ['id' => $product->id, 'quantity' => 1]]);
