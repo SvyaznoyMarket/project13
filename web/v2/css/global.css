@@ -3382,6 +3382,11 @@ body.noScroll {
     float: none;
   }
 }
+@media only screen and (max-width: 360px) {
+  .filterPrice .priceRange_slider {
+    width: 170px;
+  }
+}
 @media only screen and (max-width: 320px) {
   .filterPrice .priceRange_slider {
     width: 140px;
@@ -4013,6 +4018,7 @@ body.noScroll {
   .rootCategories_img {
     display: block;
     float: left;
+    overflow: hidden;
     width: 130px;
     height: 130px;
     padding: 10px;
@@ -4023,7 +4029,7 @@ body.noScroll {
   .rootCategories_name {
     display: table-cell;
     height: 130px;
-    padding: 10px 0;
+    padding: 10px;
     vertical-align: middle;
     font-size: 16px;
   }
