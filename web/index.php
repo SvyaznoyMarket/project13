@@ -1,9 +1,4 @@
 <?php
-// FIXME
-$_SERVER['APPLICATION_ENV'] = $_SERVER['APPLICATION_NAME'] = 'photocontest';
-
-
-
 set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, [
     realpath(__DIR__ . '/../v2/Enter'),
 ]));
