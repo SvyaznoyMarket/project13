@@ -142,5 +142,13 @@
         "name": "Маршрутизатор нескольких запросов",
         "pattern": "/ajax/router",
         "method": ["POST"]
+    },
+
+    "Log": {
+        "name": ":Журнал",
+        "pattern": "/log/{id}",
+        "require": {
+            "productId": "[\\w\\d-_]+"
+        }
     }
 }
