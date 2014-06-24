@@ -32,6 +32,15 @@ class Set {
 
         $regionId = $regionRepository->getIdByHttpRequestQuery($request);
         if (!$regionId) {
+            $keyword = trim((string)$request->query['q']);
+
+            $regionListQuery = new Query\Region\GetListByKeyword($keyword);
+            $curl->prepare($regionListQuery)->execute();
+
+            $regionData = $regionListQuery->getResult();
+            $regionId = isset($regionData[0]['id']) ? (string)$regionData[0]['id'] : null;
+        }
+        if (!$regionId) {
             throw new \Exception('Не указан ид региона');
         }
 

@@ -49,12 +49,16 @@
         "name": "Автоподстановка региона",
         "pattern": "/ajax/region/autocomplete"
     },
-    "Region\\Set": {
+    "Region\\SetById": {
         "name": "Установить регион",
         "pattern": "/region/set/{regionId}",
         "require": {
             "regionId": "[\\w\\d-_]+"
         }
+    },
+    "Region\\SetByName": {
+        "name": "Установить регион",
+        "pattern": "/region/set"
     },
 
     "Cart\\Index": {
