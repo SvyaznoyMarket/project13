@@ -175,7 +175,7 @@ class PhotoAction {
 				}
 				
 			} catch (Exception $e) {
-				
+				$page->setParam('message', 'К сожалению что-то пошло не так, попробуйте загрузить фото позднее.');
 			}
 		}
 		
