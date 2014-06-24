@@ -8,7 +8,11 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->debugLevel = 0;
 
+    $config->logger->fileAppender->enabled = true;
     $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile.log';
+
+    $config->logger->debugAppender->enabled = false;
+    $config->logger->debugAppender->file = realpath($config->dir . '/../logs') . '/mobile-debug.log';
 
     $config->session->name = 'enter';
     $config->session->cookieLifetime = 15552000;

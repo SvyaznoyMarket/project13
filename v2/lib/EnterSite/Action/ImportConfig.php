@@ -25,7 +25,11 @@ class ImportConfig {
 
         $config->debugLevel = $importedConfig->debug ? 1 : 0;
 
+        $config->logger->fileAppender->enabled = true;
         $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile.log';
+
+        $config->logger->debugAppender->enabled = false;
+        $config->logger->debugAppender->file = realpath($config->dir . '/../logs') . '/mobile-debug.log';
 
         $config->session->name = $importedConfig->session['name'];
         $config->session->cookieLifetime = $importedConfig->session['cookie_lifetime'];

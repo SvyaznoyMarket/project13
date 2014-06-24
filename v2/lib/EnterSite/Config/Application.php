@@ -94,9 +94,12 @@ namespace EnterSite\Config\Application {
     class Logger {
         /** @var Logger\FileAppender */
         public $fileAppender;
+        /** @var Logger\FileAppender */
+        public $debugAppender;
 
         public function __construct() {
             $this->fileAppender = new Logger\FileAppender();
+            $this->debugAppender = new Logger\FileAppender();
         }
     }
 
@@ -252,7 +255,12 @@ namespace EnterSite\Config\Application {
 }
 
 namespace EnterSite\Config\Application\Logger {
-    class FileAppender {
+    abstract class BaseAppender {
+        /** @var bool */
+        public $enabled;
+    }
+
+    class FileAppender extends BaseAppender {
         /** @var string */
         public $file;
     }
