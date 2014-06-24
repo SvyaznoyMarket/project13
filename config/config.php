@@ -390,6 +390,7 @@ $c->enterprize['cookieName'] = 'enterprize_coupon_sent';
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
+$c->tchibo['whereToBuyPage'] = 'where_buy_tchibo';
 $c->tchiboSlider['analyticsEnabled'] = true;
 
 // настройки для АБ-тестов могут быть переопределены в json
