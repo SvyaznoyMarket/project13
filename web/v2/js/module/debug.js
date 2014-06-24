@@ -8,34 +8,33 @@ define(
     ) {
         var $document = $(document),
             $body = $('body'),
-            $debug = $('.js-debug')
+            $debug = $('.js-debug'),
+
+            handleResponse = function(e, xhr, options, error) {
+                try {
+                    var response = JSON.parse(xhr.responseText),
+                        $template = $('#tpl-debug-container').html()
+                        ;
+
+                    if (response && response.debug) {
+                        var templateData = response.debug || {};
+
+                        templateData.status = 200 === xhr.status ? false : { code: xhr.status, text: xhr.statusText };
+
+                        var $widget = $(mustache.render($template, templateData));
+
+                        $widget.appendTo($debug);
+                        if ($debug.data('opened')) {
+                            $widget.slideDown(200);
+                        }
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
         ;
 
-        $document.ajaxComplete(function(e, xhr, options) {
-
-            try {
-                var response = JSON.parse(xhr.responseText),
-                    $template = $('#tpl-debug-container').html()
-                    ;
-
-                if (response && response.debug) {
-                    var templateData = response.debug || {}
-
-                    ;
-
-                    templateData.status = 200 === xhr.status ? false : { code: xhr.status, text: xhr.statusText };
-
-                    var $widget = $(mustache.render($template, templateData));
-
-                    $widget.appendTo($debug);
-                    if ($debug.data('opened')) {
-                        $widget.slideDown(200);
-                    }
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        });
+        $document.ajaxComplete(handleResponse);
 
         $('.js-debug-link').on('click', function(e) {
             e.stopPropagation();
