@@ -2783,6 +2783,21 @@ body.noScroll {
   line-height: 38px;
   *display: inline;
 }
+.cartEmpty {
+  padding: 105px 10px 0;
+  text-align: center;
+  background: url("modules/cart/img/emptyCart.gif") no-repeat 50% 15px;
+}
+.cartEmpty_title {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+.cartEmpty_now {
+  font-size: 22px;
+}
+.cartEmpty_now a {
+  text-decoration: underline;
+}
 /* ==========================================================================
    Корзина .cartItem .cartLine .cartBuy
    ========================================================================== */
@@ -2909,6 +2924,21 @@ body.noScroll {
   .cartBuy {
     padding: 0 10px;
     text-align: center;
+  }
+  .cartEmpty {
+    padding: 105px 10px 0;
+    text-align: center;
+    background: url("modules/cart/img/emptyCart.gif") no-repeat 50% 15px;
+  }
+  .cartEmpty_title {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  .cartEmpty_now {
+    font-size: 18px;
+  }
+  .cartEmpty_now a {
+    text-decoration: underline;
   }
 }
 /** попап корзины .cartBar **/
