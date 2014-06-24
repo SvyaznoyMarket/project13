@@ -3,7 +3,7 @@
 /** @var $c \Config\AppConfig */
 $c = require __DIR__ . '/config.php';
 
-$c->debug = true;
+$c->debug = false;
 
 $c->coreV2['client_id'] = 'photocontest';
 $c->session['cookie_domain'] = 'vadim.ent3.ru';
