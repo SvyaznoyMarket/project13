@@ -558,6 +558,14 @@ class AppConfig {
         'paramName' => null,
     ];
 
+    /** @var array */
+    public $scmsV2 = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+
     public function __construct() {
         //$this->vkontakteOauth = new OAuth\VkontakteConfig();
         //$this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
