@@ -244,5 +244,11 @@ define(
             .on('change', '.js-creditButton-remove', removeCredit)
 
         initCredit($('.js-creditButton'));
+
+        return {
+            initCredit: function() {
+                initCredit($('.js-creditButton'));
+            }
+        }
     }
 );

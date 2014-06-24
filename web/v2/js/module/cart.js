@@ -1,9 +1,9 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util'
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/cart.common'
     ],
     function (
-        require, $, _, mustache, util
+        require, $, _, mustache, util, cart
     ) {
         var $body = $('body'),
 
@@ -29,6 +29,7 @@ define(
                             }));
 
                             $creditPayment.show();
+                            cart.initCredit();
                         }
                     );
                 });

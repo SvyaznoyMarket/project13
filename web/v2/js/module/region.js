@@ -73,5 +73,15 @@ define(
         };
 
         selectCity();
+
+        // очистка поля ввода региона
+        $('.js-regionSet-clear').on('click', function(e) {
+            var $input = $($(e.target).data('inputSelector'))
+            ;
+
+            $input.val('');
+
+            e.preventDefault();
+        });
     }
 );
