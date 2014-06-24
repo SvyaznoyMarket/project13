@@ -2592,7 +2592,7 @@ $(document).ready(function() {
 						return;
 					}
 
-					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay.toString()];
+					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay.toString(), , true];
 
 					if ( 'undefined' == typeof(_gaq) ) {
 						tchiboAnalyticsBuffer.push(item);
