@@ -3,6 +3,7 @@
  * @var $page             \View\DefaultLayout
  * @var $user             \Session\User
  * @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[]
+ * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
  * @var $isCouponSent     bool
  */
 ?>
@@ -25,7 +26,7 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
             <p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>
         </div>
     <? endif ?>
-    
+
     <? if (!$user->getEntity()): ?>
         <div class="enterPrizeHello">Всё, что вы хотели, со скидкой до 70%</div>
 
@@ -41,6 +42,10 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
     <? if ($isEnterprizeMember): ?>
         <div class="enterPrizeHello mReg">Всё, что вы хотели, со скидкой до 70%</div>
         <?= $page->render('enterprize/_contentDescription') ?>
+    <? endif ?>
+
+    <? if ((bool)$isCouponSent): ?>
+        <?= $page->render('enterprize/_contentComplete') ?>
     <? endif ?>
 
     <ul class="enterPrize__list clearfix">
