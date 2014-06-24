@@ -17,6 +17,9 @@ class PhotoAction {
 				'name'	=> 'Главная',
 				'url'	=> '/',
 			],[
+				'name'	=> 'Конкурс',
+				'url'	=> \App::router()->generate('pc.homepage'),
+			],[
 				'name'	=> $contest->name,
 				'url'	=> \App::router()->generate('pc.contest',['contestRoute'=>$request->get('contestRoute')]),
 			],
@@ -72,6 +75,9 @@ class PhotoAction {
 			[
 				'name'	=> 'Главная',
 				'url'	=> '/',
+			],[
+				'name'	=> 'Конкурс',
+				'url'	=> \App::router()->generate('pc.homepage'),
 			],[
 				'name'	=> $contest->name,
 				'url'	=> \App::router()->generate('pc.contest',['contestRoute'=>$contest->route]),

@@ -132,6 +132,7 @@
 	}
 }
 
+
 ul.pc_tail {
 	font-size: 0;
     list-style: none outside none;
@@ -148,6 +149,30 @@ ul.pc_tail {
 	}
 	
 }
+
+.pc_photostream {
+	position: absolute;
+	list-style: none outside none;
+	margin-top: 2px;
+	margin-left: 2px;
+	
+	li {
+		float: left; 
+		padding-right: 5px;
+		img {
+			width: 48px; height: 48px; 
+			border-radius: 4px;
+		}
+		
+		&.selected {
+			img {
+				border: 2px solid #ffa901; 
+				margin: -2px -2px -1px;
+			}
+		}
+	}
+}
+
 
 /* прокрутка фоток */
 #pc_photostream {
@@ -191,25 +216,19 @@ ul.pc_tail {
 	}
 }
 
-.pc_photostream {
-	position: absolute;
-	list-style: none outside none;
-	margin-top: 2px;
-	margin-left: 2px;
-	
-	li {
-		float: left; 
-		padding-right: 5px;
-		img {
-			width: 48px; height: 48px; 
-			border-radius: 4px;
-		}
-		
-		&.selected {
-			img {
-				border: 2px solid #ffa901; 
-				margin: -2px -2px -1px;
-			}
-		}
+
+
+#pc_splash {
+	background: url('i/transOtake.jpg');
+	height: 380px;
+	position: relative;
+	> .mBtnOrange {
+		font-size: 21px;
+		font-weight: bold;
+		line-height: 1.8em;
+		display: inline-block;
+		padding: 8px 40px;
+		height: auto;
+		position: absolute; bottom: 30px; left: 70px;
 	}
 }
