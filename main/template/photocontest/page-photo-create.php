@@ -72,7 +72,7 @@
 			<div class="bBuyingLine mConfirm clearfix">
 				<div class="bBuyingLine__eLeft"></div>
 
-				<input type="submit" value="Загрузить фотографию"/>
+				<input type="submit" value="Загрузить фото"/>
 			</div>
 		</div>
 	</form>

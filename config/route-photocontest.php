@@ -3,61 +3,61 @@
 return array_merge([
     // главная страница
     'pc.homepage' => [
-        'pattern' => '/',
+        'pattern' => '/contest',
         'action'  => ['Photocontest\IndexAction', 'index'],
 		'require' => [
             'order'	=> '\w{1}',
 			'page'	=> '\d{1,2}'
         ],
     ],
-
-	'pc.contest'	=> [
-		'pattern'	=> '/{id}',
-		'action'  => ['Photocontest\IndexAction', 'contest'],
-		'require' => [
-            'id'	=> '\d+',
-			'order'	=> '\w{1}',
-			'page'	=> '\d{1,2}'
-        ],
-	],
 	
-	'pc.photo.show' => [
-        'pattern' => '/{contestId}/{id}',
-        'action'  => ['Photocontest\PhotoAction', 'show'],
-		'require' => [
-            'id'		=> '\d+',
-			'contestId'	=> '\d+',
-        ],
+	'pc.service.safeKey' => [
+        'pattern' => '/contest/sk',
+        'action'  => ['Photocontest\PhotoAction', 'safeKey'],
     ],
 	
-	'pc.photo.create' => [
-        'pattern' => '/{contestId}/add',
-        'action'  => ['Photocontest\PhotoAction', 'create'],
+	'pc.photo.unvote' => [
+        'pattern' => '/contest/unvote/{id}',
+        'action'  => ['Photocontest\PhotoAction', 'unvote'],
 		'require' => [
-            'contestId'   => '\d+',
+            'id'		=> '\d+'
         ],
     ],
 	
 	'pc.photo.vote' => [
-        'pattern' => '/vote/{id}',
+        'pattern' => '/contest/vote/{id}',
         'action'  => ['Photocontest\PhotoAction', 'vote'],
 		'require' => [
             'id'		=> '\d+'
         ],
     ],
 	
-	'pc.photo.unvote' => [
-        'pattern' => '/unvote/{id}',
-        'action'  => ['Photocontest\PhotoAction', 'unvote'],
+	'pc.photo.create' => [
+        'pattern' => '/contest/{contestRoute}/add',
+        'action'  => ['Photocontest\PhotoAction', 'create'],
 		'require' => [
-            'id'		=> '\d+'
+            'contestRoute'	=> '[A-z0-9_]+',
         ],
     ],
-    
 	
-	'pc.service.safeKey' => [
-        'pattern' => '/sk',
-        'action'  => ['Photocontest\PhotoAction', 'safeKey'],
+	
+	'pc.photo.show' => [
+        'pattern' => '/contest/{contestRoute}/{id}',
+        'action'  => ['Photocontest\PhotoAction', 'show'],
+		'require' => [
+            'id'		=> '\d+',
+			'contestRoute'		=> '[A-z0-9_]+',
+        ],
     ],
+
+	'pc.contest'	=> [
+		'pattern'	=> '/contest/{contestRoute}',
+		'action'  => ['Photocontest\IndexAction', 'contest'],
+		'require' => [
+            'contestRoute'	=> '[A-z0-9_]+',
+			'order'	=> '\w{1}',
+			'page'	=> '\d{1,2}'
+        ],
+	],
 	
 ],require __DIR__ . '/route-main.php');

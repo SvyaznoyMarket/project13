@@ -9,7 +9,7 @@ class IndexAction {
 		
 		$curl = \App::photoContestClient();
 		$r = $curl->query('contest/lastActive');
-		$request->query->set('id', $r->id);
+		$request->query->set('contestRoute', $r->route);
 		
 		return $this->contest($request);
 	}
@@ -26,7 +26,7 @@ class IndexAction {
 		
         // подготовка 1-го пакета запросов
         // FIXME
-		$contest = $curl->query('contest/'.$request->get('id'));
+		$contest = $curl->query('contest/item/'.$request->get('contestRoute'));
 //        $curl->addQuery('contest/'.$request->get('id'), [], [],
 //            function($result) use (&$contest) {
 //			      не отдает данные гадина
@@ -46,7 +46,7 @@ class IndexAction {
 		// спрашиваем топ
         $page->setParam('top', 
 			$curl->query(
-				'image/list/'.$request->get('id'),
+				'image/list/'.$request->get('contestRoute'),
 				['order'=>'r','orderType'=>'d','limit'=>3]
 			)
 		);
@@ -54,7 +54,7 @@ class IndexAction {
 		// спрашиваем страницу
         $page->setParam('list',
 			$curl->query(
-				'image/list/'.$request->get('id'),
+				'image/list/'.$request->get('contestRoute'),
 				[
 					'order'=>$request->get('order','d'),'orderType'=>'d',
 					'limit'=>18,'page'=>$request->get('page',0)

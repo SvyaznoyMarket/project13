@@ -8,7 +8,6 @@ $c->debug = true;
 $c->coreV2['client_id'] = 'photocontest';
 $c->session['cookie_domain'] = 'vadim.ent3.ru';
 $c->mainHost = 'vadim.ent3.ru';
-//$c->routePrefix = 'photo';
 
 $c->photoContest = [
 	'client' => [

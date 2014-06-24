@@ -110,9 +110,9 @@
 	 */
 	$.fn.vote = function(options) {
 		var set = $.extend({
-			routeVote: '/vote/{id}?{key}',
-			routeUnvote: '/unvote/{id}?{key}',
-			routeSk: '/sk',
+			routeVote: '/contest/vote/{id}?{key}',
+			routeUnvote: '/contest/unvote/{id}?{key}',
+			routeSk: '/contest/sk',
 		}, options || {});
 		
 		var self = this;

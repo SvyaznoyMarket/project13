@@ -8,7 +8,7 @@ class PhotoAction {
 		\App::logger()->debug('Exec ' . __METHOD__);
 		
 		$curl = \App::photoContestClient();
-		$contest = $curl->query('contest/'.$request->get('contestId'));
+		$contest = $curl->query('contest/item/'.$request->get('contestRoute'));
 		
 		$page = new \View\Photocontest\PhotoPage();
 		
@@ -18,7 +18,7 @@ class PhotoAction {
 				'url'	=> '/',
 			],[
 				'name'	=> $contest->name,
-				'url'	=> \App::router()->generate('pc.contest',['id'=>$request->get('contestId')]),
+				'url'	=> \App::router()->generate('pc.contest',['contestRoute'=>$request->get('contestRoute')]),
 			],
 		]);
 		
@@ -29,7 +29,7 @@ class PhotoAction {
 		);
 		
 		$page->setParam('list',
-			$curl->query('image/list/'.$request->get('contestId'),['limit'=>100])
+			$curl->query('image/list/'.$request->get('contestRoute'),['limit'=>100])
 		);
 		
 		return new \Http\Response($page->show());
@@ -64,7 +64,7 @@ class PhotoAction {
 		
 		$curl = \App::photoContestClient();
 		
-		$contest = $curl->query('contest/'.$request->get('contestId'));
+		$contest = $curl->query('contest/item/'.$request->get('contestRoute'));
 		//@todo Если нет то прокидываем 404
 		
 		$page = new \View\Photocontest\PhotoCreatePage();
@@ -74,7 +74,7 @@ class PhotoAction {
 				'url'	=> '/',
 			],[
 				'name'	=> $contest->name,
-				'url'	=> \App::router()->generate('pc.contest',['id'=>$contest->id]),
+				'url'	=> \App::router()->generate('pc.contest',['contestRoute'=>$contest->route]),
 			],
 		]);
 		
@@ -154,9 +154,9 @@ class PhotoAction {
 				if(
 					!$hasError 
 					&& ($r = $curl->query(
-						'image/create/'.$request->get('contestId'), [], 
+						'image/create/'.$contest->id, [], 
 						[
-							'title'		=> $request->get('title'),
+							'name'		=> $request->get('title'),
 							'orderIds'	=> $request->get('orderIds'),
 							'file'		=> '@'.$_FILES['file']['tmp_name']
 										.';filename='.$_FILES['file']['name']

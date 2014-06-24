@@ -3,7 +3,7 @@
  * @var $request \Http\Request 
  */
 ?>
-<a href="<?=\App::router()->generate('pc.photo.create',['contestId'=>$contest->id])?>" class="pc_button pc_right">Участвовать</a>
+<a href="<?=\App::router()->generate('pc.photo.create',['contestRoute'=>$contest->route])?>" class="pc_button pc_right">Загрузить фото</a>
 <div class="pc_head">
 	<h1><?=$contest->name?></h1>
 </div>
