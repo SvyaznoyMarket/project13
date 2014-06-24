@@ -46,9 +46,11 @@
         {{/cart}}
 
         {{^cart}}
-        <div>
-            <p>В вашей корзине еще нет товаров</p>
-        </div>
+        <div class="cartEmpty">
+            <div class="cartEmpty_title">В вашей корзине еще нет товаров.</div>
+
+            <div class="cartEmpty_now"><a href="/">Перейти к покупкам ></a></div>   
+        </div>     
         {{/cart}}
     </div>
 </div>

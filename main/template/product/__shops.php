@@ -24,7 +24,7 @@ return function (
                 <a class="markerList_light" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a>
                 
                 <!--  Время работы  -->
-                <div class="ta-c mb5"><?= $shop->getRegime() ?></div>
+                <div class="ta-c mb5">с <?= $shop->getWorkingTimeToday()['start_time'] ?> до <?= $shop->getWorkingTimeToday()['end_time'] ?></div>
 
                 <!--  Кнопка Резерв -->
                 <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']) ?>
@@ -63,7 +63,7 @@ return function (
 
                     <!--  Время работы  -->
                     <span class="markerList_col markerList_col-center">
-                        <?= $shop->getRegime() ?>
+                        с <?= $shop->getWorkingTimeToday()['start_time'] ?> до <?= $shop->getWorkingTimeToday()['end_time'] ?>
                     </span>
                     
                     <!--  Кнопка "Резерв" или "На витрине"  -->
