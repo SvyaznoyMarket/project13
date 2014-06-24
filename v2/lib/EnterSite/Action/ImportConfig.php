@@ -70,7 +70,7 @@ class ImportConfig {
 
         $config->product->itemPerPage = $importedConfig->product['itemsPerPage'];
         $config->product->itemsInSlider = $importedConfig->product['itemsInSlider'] * 2;
-        $config->productReview->enabled = $importedConfig->product['reviewEnabled'];
+        $config->productReview->enabled = false; //$importedConfig->product['reviewEnabled']; // TODO: вернуть, когда починят
         $config->productPhoto->urlPaths = $importedConfig->productPhoto['url'];
         $config->productCategoryPhoto->urlPaths = $importedConfig->productCategory['url'];
         $config->search->minPhraseLength = $importedConfig->search['queryStringLimit'];
