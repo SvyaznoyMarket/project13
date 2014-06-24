@@ -353,12 +353,17 @@ class IndexAction {
                     foreach ($data as $item) {
                         $shop = new \Model\Shop\Entity($item);
 
-                        $shopState = new \Model\Product\ShopState\Entity();
-                        $shopState->setShop($shop);
-                        $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
-                        $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
+                        if ($shop->getWorkingTimeToday()) {
 
-                        $shopStates[] = $shopState;
+                            $shopState = new \Model\Product\ShopState\Entity();
+
+                            $shopState->setShop($shop);
+                            $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
+                            $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
+
+                            $shopStates[] = $shopState;
+
+                        }
                     }
                 }
             );
@@ -474,7 +479,7 @@ class IndexAction {
      * Подготовка данных для набора продуктов
      * @var array $products
      * @var array $restProducts
-     * @var \Model\Product\Enitity $product
+     * @var \Model\Product\Entity $product
      * @var \Model\Region\Entity $region
      */
     private function prepareKit($products, $restProducts, $mainProduct, $region) {
