@@ -3161,6 +3161,8 @@ body.noScroll {
 }
 .catalogList .name {
   display: inline-block;
+  overflow: hidden;
+  max-height: 110px;
   margin: 0 0 10px;
   vertical-align: top;
   font-size: 16px;
@@ -3261,6 +3263,9 @@ body.noScroll {
   }
   .catalogList .img img {
     width: 90%;
+  }
+  .catalogList .name {
+    height: auto;
   }
 }
 /** фильтры .filter .filterBox .filterTags .filterChecked **/
@@ -3380,6 +3385,11 @@ body.noScroll {
   }
   .filter .widgetFr {
     float: none;
+  }
+}
+@media only screen and (max-width: 360px) {
+  .filterPrice .priceRange_slider {
+    width: 170px;
   }
 }
 @media only screen and (max-width: 320px) {
@@ -4013,6 +4023,7 @@ body.noScroll {
   .rootCategories_img {
     display: block;
     float: left;
+    overflow: hidden;
     width: 130px;
     height: 130px;
     padding: 10px;
@@ -4023,7 +4034,7 @@ body.noScroll {
   .rootCategories_name {
     display: table-cell;
     height: 130px;
-    padding: 10px 0;
+    padding: 10px;
     vertical-align: middle;
     font-size: 16px;
   }
