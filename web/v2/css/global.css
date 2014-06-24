@@ -3584,10 +3584,6 @@ body.noScroll {
     position: relative;
     z-index: 12;
   }
-  .sorting:hover .sortingList {
-    position: absolute;
-    display: block;
-  }
   .sorting_title {
     display: inline-block;
     vertical-align: top;
