@@ -35,12 +35,12 @@
 <div class="popupBox js-searchWindow">
     <div class="popupBox_close"></div>
 
-    <form action="/search" class="searchForm form2col clearfix">
+    <form action="/search" class="js-search-form searchForm form2col clearfix" data-input-selector="#js-search-input">
         <button class="searchForm_btn form2col_btn btnStyleBlack">Найти</button>
 
         <div class="searchForm_searchField form2col_boxWrap">
             <div class="searchForm_searchFieldInner form2col_boxInner">
-                <input type="text" class="searchForm_searchInput form2col_input" placeholder="Поиск" name="q" />
+                <input id="js-search-input" type="text" class="searchForm_searchInput form2col_input" placeholder="Поиск" name="q" />
             </div>
         </div>
     </form>
