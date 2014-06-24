@@ -3834,6 +3834,107 @@ img[height="0"] {
   }
 }
 /*---END----Стили попапов и их содержимого---------*/
+/*---------Личный кабинет пользователя----------*/
+@media all {
+  /*---------Личный кабинет пользователя----------*/
+  .personalControl {
+    margin: 0;
+    padding: 10px 10px 5px;
+    background: #e6e6e6;
+    font-size: 0;
+  }
+  .personalControl_link {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 10px 20px;
+    border-bottom: 5px solid #e6e6e6;
+    background: #ffffff;
+    font-size: 14px;
+  }
+  .personalControl_link:hover {
+    text-decoration: none;
+    border-color: #ffa901;
+  }
+  .personalControl_link-active {
+    border-color: #ffa901;
+  }
+}
+@media all {
+  .personalTitle {
+    margin: 20px 0 15px;
+    font-size: 20px;
+  }
+  .personalTitle_count {
+    color: #7f7f7f;
+  }
+  .personalOrders {
+    display: table;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *overflow: hidden;
+    *position: relative;
+    width: 100%;
+    margin: 0 0 60px;
+  }
+  .personalOrders_row {
+    display: table-row;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+  }
+  .personalOrders_row-head {
+    color: #515151;
+  }
+  .personalOrders_row-head .personalOrders_cell {
+    font-size: 12px;
+    height: auto;
+  }
+  .personalOrders_row-canceled .personalOrders_cell {
+    background: #f6f6f6;
+  }
+  .personalOrders_row-canceled .personalOrders_cell-strong {
+    color: #7f7f7f;
+  }
+  .personalOrders_row-canceled .personalOrders_cell-strong a {
+    color: #7f7f7f;
+  }
+  .personalOrders_row:nth-child(2) .personalOrders_cell {
+    background: #f6f6f6;
+  }
+  .personalOrders_cell {
+    display: table-cell;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *clear: right;
+    *zoom: 1;
+    padding: 5px;
+    line-height: 1.1;
+    vertical-align: middle;
+    border-bottom: 1px solid #c7c7c7;
+    font-size: 14px;
+    height: 40px;
+  }
+  .personalOrders_cell-text {
+    font-size: 12px;
+    max-width: 300px;
+  }
+  .personalOrders_cell-right {
+    text-align: right;
+  }
+  .personalOrders .orderCancel {
+    font-size: 12px;
+  }
+  .personalOrders .textStatus {
+    display: block;
+    font-size: 12px;
+  }
+  .personalOrders a {
+    text-decoration: underline;
+  }
+}
+/*---END----Личный кабинет пользователя---------*/
 @media all {
   .notBuying {
     position: relative;

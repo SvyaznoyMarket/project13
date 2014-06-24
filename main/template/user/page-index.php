@@ -4,81 +4,137 @@
  * @var $user       \Session\User
  * @var $orderCount int
  */
-
-
-$userEntity = $user->getEntity();
-$userMail = $userEntity->getEmail();
 ?>
 
-<div class="user fl width315">
+<menu class="personalControl">
+    <a href="" class="personalControl_link personalControl_link-active">Заказы</a>
+    <a href="" class="personalControl_link">Избранное</a>
+    <a href="" class="personalControl_link">Сравнение</a>
+    <a href="" class="personalControl_link">Личные данные</a>
+    <a href="" class="personalControl_link">Подписки e-mail и sms</a>
+    <a href="" class="personalControl_link">Фишки Enter Prize</a>
+</menu>
 
-    <div class="title">Моя персональная информация</div>
+<div class="personalTitle">Текущие заказы <span class="personalTitle_count">3</span></div>
 
-    <ul class="leftmenu userInfoAction">
-        <li>
-            <a href="<?= $page->url('user.edit') ?>">Изменить мои данные</a>
-        </li>
-        <li>
-            <a href="<?= $page->url('user.changePassword') ?>">Изменить пароль</a>
-        </li>
-        <? if ($user->getEntity()->getCity()): ?>
-        <li>
-            Регион: <strong><?= $user->getEntity()->getCity()->getName() ?></strong> (<a class="jsChangeRegion" data-url="<?= $page->url('region.init') ?>" data-autoresolve-url="<?= $page->url('region.autoresolve', ['nocache' => 1]) ?>" style="cursor: pointer">изменить</a>)
-        </li>
-        <? endif ?>
-    </ul>
+<div class="personalOrders">
+    <div class="personalOrders_row personalOrders_row-head">
+        <div class="personalOrders_cell">Дата</div>
+        <div class="personalOrders_cell">№ заказа</div>
+        <div class="personalOrders_cell">Состав</div>
+        <div class="personalOrders_cell">Сумма</div>
+        <div class="personalOrders_cell">Получение</div>
+        <div class="personalOrders_cell">Резерв до</div>
+        <div class="personalOrders_cell">Статус</div>
+        <div class="personalOrders_cell"></div>
+    </div>
 
-    <div class="title">Мои товары</div>
-    <ul class="userInfoAction leftmenu">
-        <li>
-            <a href="<?= $page->url('user.order') ?>">Мои заказы</a> (<?= $orderCount ?>)
-        </li>
-    </ul>
+    <div class="personalOrders_row">
+        <div class="personalOrders_cell">06.06.14</div>
+        <div class="personalOrders_cell"><a href="">COXD-305176</a></div>
+        <div class="personalOrders_cell personalOrders_cell-text">
+            <ul class="orderItem">
+                <li>Бумажный конструктор 3 шт.</li>
+                <li>Карта памяти microSDHC… 1 шт.</li>
+                <li><a href="">и ещё 3 товара</a></li>
+            </ul>
+        </div>
+        <div class="personalOrders_cell personalOrders_cell-right">46 740 <span class="rubl">p</span></div>
+        <div class="personalOrders_cell">Доставка</div>
+        <div class="personalOrders_cell">23:59 11.07.14</div>
+        <div class="personalOrders_cell">Принят</div>
+        <div class="personalOrders_cell"><a class="orderCancel" href="">Отменить</a></div>
+    </div>
 
-    <? if (\App::config()->subscribe['enabled']): ?>
-    <div class="title">Подписка</div>
+    <div class="personalOrders_row">
+        <div class="personalOrders_cell">06.06.14</div>
+        <div class="personalOrders_cell"><a href="">COXD-305176</a></div>
+        <div class="personalOrders_cell personalOrders_cell-text">
+            Бумажный конструктор 3 шт.
+        </div>
+        <div class="personalOrders_cell personalOrders_cell-right">740 <span class="rubl">p</span></div>
+        <div class="personalOrders_cell">Самовывоз</div>
+        <div class="personalOrders_cell"></div>
+        <div class="personalOrders_cell">Принят</div>
+        <div class="personalOrders_cell"><a class="orderCancel" href="">Отменить</a></div>
+    </div>
+</div>
 
-    <ul class="userInfoAction bInputList leftmenu">
-        <li>
-            Акции, новости и специальные предложения
-            <form class="clearfix" action="<?= $page->url('user.subscribe') ?>" method="post">
-                <label class="emailCheckbox bSubscibe clearfix <?=($userMail) ?
-                    (
-                        ($user->getEntity()->getIsSubscribed()) ? 'checked' : ''
-                    ) : 'hidden' ?>">
-                    <b></b> Email
-                    <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="bCustomInput subscibe"<? if ($user->getEntity()->getIsSubscribed()): ?> checked="checked" <? endif ?> />
-                </label>
+<div class="personalTitle">История</div>
 
-                <div id="emailWrapper" class="width418 <?= !empty($emailTmpCheck) ? '' : 'hf' ?>">
-                    <span class="width205">Email:</span>
-                    <input type="text" id="user_email" value="<?= $user->getEntity()->getEmail() ?>" name="email" class="text width205" />
-                </div>
+<div class="personalOrders">
+    <div class="personalOrders_row personalOrders_row-head personalOrders_row-center">
+        <div class="personalOrders_cell">Дата</div>
+        <div class="personalOrders_cell">№ заказа</div>
+        <div class="personalOrders_cell">Состав</div>
+        <div class="personalOrders_cell">Сумма</div>
+        <div class="personalOrders_cell">Получение</div>
+        <div class="personalOrders_cell">Статус</div>
+        <div class="personalOrders_cell"></div>
+    </div>
 
+    <div class="personalOrders_row">
+        <div class="personalOrders_cell">06.06.14</div>
+        <div class="personalOrders_cell"><a href="">COXD-305176</a></div>
+        <div class="personalOrders_cell personalOrders_cell-text">
+            <ul class="orderItem">
+                <li>Бумажный конструктор 3 шт.</li>
+                <li>Карта памяти microSDHC… 1 шт.</li>
+                <li><a href="">и ещё 3 товара</a></li>
+            </ul>
+        </div>
+        <div class="personalOrders_cell personalOrders_cell-right">
+            46 740 <span class="rubl">p</span><br/>
+            <span class="textStatus">оплачено</span>
+        </div>
+        <div class="personalOrders_cell">Доставка</div>
+        <div class="personalOrders_cell">Принят</div>
+        <div class="personalOrders_cell"><a class="orderCancel" href="">Добавить в корзину</a></div>
+    </div>
 
-                <label class="smsCheckbox bSubscibe clearfix <? if ($user->getEntity()->getIsSubscribedViaSms() || !empty($smsTmpCheck)): ?>checked<? endif ?>">
-                    <b></b> SMS
-                    <input type="checkbox" name="subscribe_sms" value="1" autocomplete="off" class="bCustomInput smsCheckbox subscibe"<? if ($user->getEntity()->getIsSubscribedViaSms() || !empty($smsTmpCheck)): ?> checked="checked" <? endif ?> />
-                </label>
+    <div class="personalOrders_row">
+        <div class="personalOrders_cell">06.06.14</div>
+        <div class="personalOrders_cell"><a href="">COXD-305176</a></div>
+        <div class="personalOrders_cell personalOrders_cell-text">
+            Бумажный конструктор 3 шт.
+        </div>
+        <div class="personalOrders_cell personalOrders_cell-right">
+            740 <span class="rubl">p</span><br/>
+            <span class="textStatus">оплачено</span>
+        </div>
+        <div class="personalOrders_cell">Самовывоз</div>
+        <div class="personalOrders_cell">Принят</div>
+        <div class="personalOrders_cell"><a class="orderCancel" href="">Добавить в корзину</a></div>
+    </div>
 
-                <div style="margin-top: 5px;" id="mobilePhoneWrapper" class="width418 <?= !empty($smsTmpCheck) ? '' : 'hf' ?>">
-                    <span style="line-height: 28px;" class="width205">Мобильный телефон:</span>
-                    <input type="text" id="user_mobile_phone" value="<?= $user->getEntity()->getMobilePhone() ?>" name="mobile_phone" class="text" />
-                </div>
+    <div class="personalOrders_row personalOrders_row-canceled">
+        <div class="personalOrders_cell personalOrders_cell-strong">06.06.14</div>
+        <div class="personalOrders_cell personalOrders_cell-strong"><a href="">COXD-305176</a></div>
+        <div class="personalOrders_cell personalOrders_cell-text personalOrders_cell-strong">
+            <ul class="orderItem">
+                <li>Бумажный конструктор 3 шт.</li>
+                <li>Карта памяти microSDHC… 1 шт.</li>
+                <li><a href="">и ещё 3 товара</a></li>
+            </ul>
+        </div>
+        <div class="personalOrders_cell personalOrders_cell-strong personalOrders_cell-right">46 740 <span class="rubl">p</span></div>
+        <div class="personalOrders_cell personalOrders_cell-strong">Доставка</div>
+        <div class="personalOrders_cell">Отменён</div>
+        <div class="personalOrders_cell"><a class="orderCancel" href="">Добавить в корзину</a></div>
+    </div>
 
-                <div class="red pt10 pb10 width418"><?= empty($error) ? '' : $error ?></div>
-
-                <input type="submit" class="btnSave button bigbutton" value="Сохранить" tabindex="10"/>
-            </form>
-        </li>
-    </ul>
-    <? endif ?>
-
-    <div class="title">cEnter защиты прав потребителей </div>
-    <ul class="userInfoAction leftmenu">
-        <li>
-            <a href="http://my.enter.ru/community/pravo">Адвокат клиента</a>
-        </li>
-    </ul>
-
+    <div class="personalOrders_row">
+        <div class="personalOrders_cell">06.06.14</div>
+        <div class="personalOrders_cell"><a href="">COXD-305176</a></div>
+        <div class="personalOrders_cell personalOrders_cell-text">
+            Бумажный конструктор 3 шт.
+        </div>
+        <div class="personalOrders_cell personalOrders_cell-right">
+            40 <span class="rubl">p</span>
+            <span class="textStatus">оплачено</span>
+        </div>
+        <div class="personalOrders_cell">Самовывоз</div>
+        <div class="personalOrders_cell">Принят</div>
+        <div class="personalOrders_cell"><a class="orderCancel" href="">Добавить в корзину</a></div>
+    </div>
 </div>
