@@ -9,12 +9,16 @@ class HandleConfig {
 
     /**
      * @param string $environment
-     * @param bool $debug
+     * @param bool $debugLevel
      */
-    public function execute($environment, $debug) {
+    public function execute($environment, $debugLevel) {
         $config = $this->getConfig();
 
         $config->environment = $environment;
-        $config->debug = $debug;
+        $config->debugLevel = $debugLevel;
+        if (2 == $config->debugLevel) {
+            $config->curl->logResponse = true;
+            $config->logger->debugAppender->enabled = true;
+        }
     }
 }

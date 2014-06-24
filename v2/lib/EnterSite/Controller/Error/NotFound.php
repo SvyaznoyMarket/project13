@@ -25,7 +25,7 @@ class NotFound {
         $response->statusCode = Http\Response::STATUS_NOT_FOUND;
 
         $page = [
-            'dataDebug' => $this->getConfig()->debug ? 'true' : '',
+            'dataDebug' => $this->getConfig()->debugLevel ? 'true' : '',
             'error'     => [
                 'message' => $message ?: 'Страница не найдена',
             ],

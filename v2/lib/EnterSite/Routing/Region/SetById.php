@@ -4,7 +4,7 @@ namespace EnterSite\Routing\Region;
 
 use EnterSite\Routing\Route;
 
-class Set extends Route {
+class SetById extends Route {
     /**
      * @param string $regionId
      */

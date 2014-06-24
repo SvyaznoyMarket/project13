@@ -8,8 +8,11 @@ namespace EnterSite\Config {
         public $dir;
         /** @var string */
         public $environment;
-        /** @var bool */
-        public $debug;
+        /**
+         * Уровень отладки: 0 - нет, 1 - по умолчанию, 2 - подробно
+         * @var int
+         */
+        public $debugLevel;
         /** @var string */
         public $hostname;
         /** @var Application\Logger */
@@ -91,9 +94,12 @@ namespace EnterSite\Config\Application {
     class Logger {
         /** @var Logger\FileAppender */
         public $fileAppender;
+        /** @var Logger\FileAppender */
+        public $debugAppender;
 
         public function __construct() {
             $this->fileAppender = new Logger\FileAppender();
+            $this->debugAppender = new Logger\FileAppender();
         }
     }
 
@@ -249,7 +255,12 @@ namespace EnterSite\Config\Application {
 }
 
 namespace EnterSite\Config\Application\Logger {
-    class FileAppender {
+    abstract class BaseAppender {
+        /** @var bool */
+        public $enabled;
+    }
+
+    class FileAppender extends BaseAppender {
         /** @var string */
         public $file;
     }

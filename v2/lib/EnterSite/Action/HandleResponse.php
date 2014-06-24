@@ -43,13 +43,13 @@ class HandleResponse {
             if (
                 $response
                 && (
-                    ($request->cookies['debug'] && !$config->debug)
-                    || (!$request->cookies['debug'] && $config->debug)
+                    ($request->cookies['debug'] && !$config->debugLevel)
+                    || (!$request->cookies['debug'] && $config->debugLevel)
                 )
             ) {
                 $cookie = new Http\Cookie(
                     'debug',
-                    $config->debug ? 1 : 0,
+                    $config->debugLevel,
                     strtotime('+7 days' ),
                     '/',
                     null,

@@ -25,24 +25,34 @@ class Set {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
+        $logger = $this->getLogger();
         $curl = $this->getCurlClient();
-        $router = $this->getRouter();
 
         $regionRepository = new Repository\Region();
 
         $regionId = $regionRepository->getIdByHttpRequestQuery($request);
+        $keyword = trim((string)$request->query['q']);
+
+        // response
+        $response = (new Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);
+
+        if (!$regionId && (mb_strlen($keyword) >= 3)) {
+            $regionListQuery = new Query\Region\GetListByKeyword($keyword);
+            $curl->prepare($regionListQuery)->execute();
+
+            $regionData = $regionListQuery->getResult();
+            $regionId = isset($regionData[0]['id']) ? (string)$regionData[0]['id'] : null;
+        }
         if (!$regionId) {
-            throw new \Exception('Не указан ид региона');
+            $e = new \Exception('Не указан ид региона');
+            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['region']]);
+
+            return $response;
         }
 
         // запрос региона
         $regionItemQuery = new Query\Region\GetItemById($regionId);
-        $curl->prepare($regionItemQuery);
-
-        $curl->execute();
-
-        // response
-        $response = (new Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);
+        $curl->prepare($regionItemQuery)->execute();
 
         // регион
         $region = $regionRepository->getObjectByQuery($regionItemQuery);

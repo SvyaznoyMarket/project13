@@ -62,6 +62,8 @@ namespace EnterSite\Model\Page\DefaultLayout {
         /** @var string */
         public $regionName;
         /** @var string */
+        public $setUrl;
+        /** @var string */
         public $autocompleteUrl;
         /** @var RegionBlock\Region[] */
         public $regions = [];

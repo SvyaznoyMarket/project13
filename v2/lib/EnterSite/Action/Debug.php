@@ -23,7 +23,7 @@ class Debug {
         $logger = $this->getLogger();
         $viewHelper = $this->getViewHelper();
 
-        if (!$config->debug) {
+        if (!$config->debugLevel) {
             return;
         }
 

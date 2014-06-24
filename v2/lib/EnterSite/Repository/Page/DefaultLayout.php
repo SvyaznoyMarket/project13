@@ -33,14 +33,14 @@ class DefaultLayout {
         // заголовок
         $page->title = 'Enter - все товары для жизни по интернет ценам!';
 
-        $page->dataDebug = $config->debug ? 'true' : '';
+        $page->dataDebug = $config->debugLevel ? 'true' : '';
         $page->dataVersion = date('ymd');
         $page->dataModule = 'default';
 
         // body[data-value]
         $page->dataConfig = $helper->json([
             'requestId' => $config->requestId,
-            'debug'     => $config->debug,
+            'debug'     => $config->debugLevel,
             'env'       => $config->environment,
             'cookie'     => [
                 'domain'   => $config->session->cookieDomain,
@@ -56,6 +56,7 @@ class DefaultLayout {
 
         // регион
         $page->regionBlock->regionName = $request->region->name;
+        $page->regionBlock->setUrl = $router->getUrlByRoute(new Routing\Region\SetByName());
         $page->regionBlock->autocompleteUrl = $router->getUrlByRoute(new Routing\Region\Autocomplete());
         foreach ([ // TODO: вынести в конфиг
             ['id' => '14974', 'name' => 'Москва'],
@@ -63,7 +64,7 @@ class DefaultLayout {
         ] as $regionItem) {
             $region = new Page\RegionBlock\Region();
             $region->name = $regionItem['name'];
-            $region->url = $router->getUrlByRoute(new Routing\Region\Set($regionItem['id']));
+            $region->url = $router->getUrlByRoute(new Routing\Region\SetById($regionItem['id']));
 
             $page->regionBlock->regions[] = $region;
         }

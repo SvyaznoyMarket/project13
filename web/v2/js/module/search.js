@@ -17,5 +17,13 @@ define(
         };
 
         $body.on('click', '.js-searchLink', showPopup);
+
+        $('.js-search-form').on('submit', function(e) {
+            var $input = $($(e.target).data('inputSelector'));
+
+            if ($input.length && ($input.val().length < 3)) { // FIXME: вынести в data-атрибут
+                e.preventDefault();
+            }
+        })
     }
 );
