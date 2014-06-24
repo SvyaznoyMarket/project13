@@ -109,6 +109,19 @@ $c->dataStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->scmsV2['url']          = 'http://scms.enter.ru/v2/';
+$c->scmsV2['retryCount']   = 2;
+$c->scmsV2['timeout']      = 0.36;
+$c->scmsV2['retryTimeout'] = [
+    'default' => 0.18,
+    'tiny'    => 0.18,
+    'short'   => 0.25,
+    'medium'  => 0.5,
+    'long'    => 1,
+    'huge'    => 2,
+    'forever' => 0,
+];
+
 $c->connectTerminal = true;
 
 $c->company['phone'] = '8 (800) 700-00-09';

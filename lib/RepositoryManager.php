@@ -340,4 +340,17 @@ class RepositoryManager {
 
         return $instance;
     }
+
+    /**
+     * @return Model\EnterprizeCoupon\Repository
+     */
+    static public function enterprize() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Model\EnterprizeCoupon\Repository(\App::scmsClientV2(), \App::coreClientV2());
+        }
+
+        return $instance;
+    }
 }

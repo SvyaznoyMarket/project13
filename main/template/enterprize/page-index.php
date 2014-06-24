@@ -53,6 +53,8 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
         <? $i = 0; foreach ($enterpizeCoupons as $coupon): $i++ ?>
 
             <?
+            $priceNumDecimals = false === strpos((string)$coupon->getPrice(), '.') ? 0 : 2;
+
             $itemClass = 'enterPrize__list__item';
             if (!($i % 4)) {
                 $itemClass .= ' mLast';
@@ -84,7 +86,11 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
                         <? endif ?>
 
                         <? if ($coupon->getPrice()): ?>
-                            <span class="cuponPrice"><?= $coupon->getPrice() . (!$coupon->getIsCurrency() ? '%' : '') ?> <? if ($coupon->getIsCurrency()): ?><span class="rubl">p</span><? endif ?></span>
+                            <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice(), $priceNumDecimals) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                <? if ($coupon->getIsCurrency()): ?>
+                                    <span class="rubl">p</span>
+                                <? endif ?>
+                            </span>
                         <? endif ?>
                     </span>
                 </span>
