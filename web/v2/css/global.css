@@ -1082,10 +1082,9 @@ body.noScroll {
   outline: none;
   font-size: 15px;
   line-height: 40px;
+  position: relative;
 }
-.navList_text:hover,
-.navList_text:active,
-.navList_text:focus {
+.navList_text:active {
   text-decoration: none;
   color: #ffa901;
   outline: none;
@@ -1122,7 +1121,11 @@ body.noScroll {
   color: #7e7e7e;
   font-size: 14px;
 }
+.navListLevel2_link:focus,
 .navListLevel2_link:hover {
+  color: #7e7e7e;
+}
+.navListLevel2_link:active {
   text-decoration: none;
   color: #ffffff;
   outline: none;
