@@ -529,6 +529,7 @@ class AppConfig {
         'rowHeight'  => null,
         'rowPadding' => null,
         'analyticsEnabled' => null,
+        'whereToBuyPage'    => null
     ];
 
     /** @var array */
