@@ -33,14 +33,14 @@ class DefaultLayout {
         // заголовок
         $page->title = 'Enter - все товары для жизни по интернет ценам!';
 
-        $page->dataDebug = $config->debug ? 'true' : '';
+        $page->dataDebug = $config->debugLevel ? 'true' : '';
         $page->dataVersion = date('ymd');
         $page->dataModule = 'default';
 
         // body[data-value]
         $page->dataConfig = $helper->json([
             'requestId' => $config->requestId,
-            'debug'     => $config->debug,
+            'debug'     => $config->debugLevel,
             'env'       => $config->environment,
             'cookie'     => [
                 'domain'   => $config->session->cookieDomain,

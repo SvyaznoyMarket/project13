@@ -116,7 +116,7 @@ class RootCategory {
         (new Repository\Page\ProductCatalog\RootCategory())->buildObjectByRequest($page, $pageRequest);
 
         // debug
-        if ($config->debug) $this->getDebugContainer()->page = $page;
+        if ($config->debugLevel) $this->getDebugContainer()->page = $page;
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         // рендер

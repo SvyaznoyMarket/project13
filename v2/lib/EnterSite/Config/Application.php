@@ -8,8 +8,11 @@ namespace EnterSite\Config {
         public $dir;
         /** @var string */
         public $environment;
-        /** @var bool */
-        public $debug;
+        /**
+         * Уровень отладки: 0 - нет, 1 - по умолчанию, 2 - подробно
+         * @var int
+         */
+        public $debugLevel;
         /** @var string */
         public $hostname;
         /** @var Application\Logger */

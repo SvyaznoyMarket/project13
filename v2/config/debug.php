@@ -1,17 +1,13 @@
 <?php
 
 return function() {
-    $debug = false;
+    $debugLevel = false;
 
     if (isset($_GET['APPLICATION_DEBUG'])) {
-        if (!empty($_GET['APPLICATION_DEBUG'])) {
-            $debug = true;
-        } else {
-            $debug = false;
-        }
+        $debugLevel = (int)$_GET['APPLICATION_DEBUG'];
     } else if (isset($_COOKIE['debug'])) {
-        $debug = !empty($_COOKIE['debug']);
+        $debugLevel = (int)$_COOKIE['debug'];
     }
 
-    return $debug;
+    return $debugLevel;
 };

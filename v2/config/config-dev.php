@@ -6,5 +6,5 @@ return function(\EnterSite\Config\Application $config) {
     $handler($config);
 
     // dev config
-    $config->debug = true;
+    $config->debugLevel = 1;
 };

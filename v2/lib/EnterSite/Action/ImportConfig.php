@@ -23,7 +23,7 @@ class ImportConfig {
         $config->dir = $applicationDir;
         $config->hostname = $importedConfig->mainHost;
 
-        $config->debug = $importedConfig->debug;
+        $config->debugLevel = $importedConfig->debug ? 1 : 0;
 
         $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile.log';
 

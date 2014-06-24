@@ -6,7 +6,7 @@ return function(\EnterSite\Config\Application $config) {
     $config->dir = realpath(__DIR__ . '/../..');
     $config->hostname = 'enter.ru';
 
-    $config->debug = false;
+    $config->debugLevel = 0;
 
     $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile.log';
 

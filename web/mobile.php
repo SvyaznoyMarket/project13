@@ -13,7 +13,7 @@ $environment = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] 
 $response = null;
 
 // debug
-$debug = true === call_user_func(require $applicationDir . '/v2/config/debug.php');
+$debug = call_user_func(require $applicationDir . '/v2/config/debug.php');
 
 // error reporting
 call_user_func(require $applicationDir . '/v2/config/error-report.php', $debug);
