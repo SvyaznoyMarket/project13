@@ -1,0 +1,22 @@
+default:
+  - 'newer:less'
+  - 'newer:concat'
+  - 'jshint'
+  - 'newer:uglify'
+
+all:
+  - 'less'
+  - 'concat'
+  - 'jshint'
+  - 'uglify'
+
+css:
+  - 'less'
+
+js:
+  - 'concat'
+  - 'jshint'
+  - 'uglify'
+
+sm:
+  - 'jsmin-sourcemap'
