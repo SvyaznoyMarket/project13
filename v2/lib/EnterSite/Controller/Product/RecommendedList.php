@@ -54,6 +54,7 @@ class RecommendedList {
 
         // запрос идетификаторов товаров "похожие товары"
         //$upSellItemToItemsListQuery = new Query\Product\Relation\UpSellItemToItems\GetIdListByProductId($product->id);
+        /** @var \Enter\Curl\Query|null $upSellItemToItemsListQuery */
         $upSellItemToItemsListQuery = null;
         if ($upSellItemToItemsListQuery) {
             $curl->prepare($upSellItemToItemsListQuery);
@@ -61,6 +62,7 @@ class RecommendedList {
 
         // запрос идетификаторов товаров "с этим товаром также смотрят"
         //$itemToItemsListQuery = new Query\Product\Relation\ItemToItems\GetIdListByProductId($product->id);
+        /** @var \Enter\Curl\Query|null $itemToItemsListQuery */
         $itemToItemsListQuery = null;
         if ($itemToItemsListQuery) {
             $curl->prepare($itemToItemsListQuery);
@@ -109,14 +111,14 @@ class RecommendedList {
         // товары
         $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
 
-        foreach ($alsoBoughtIdList as $productId) {
+        foreach ($alsoBoughtIdList as $i => $productId) {
             // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
             /** @var Model\Product|null $product */
             $product = isset($productsById[$productId]) ? $productsById[$productId] : null;
             if (!$product) continue;
 
             if ($product->isInShopOnly || !$product->isBuyable) {
-                unset($alsoBoughtIdList[$productId]);
+                unset($alsoBoughtIdList[$i]);
             }
         }
 
