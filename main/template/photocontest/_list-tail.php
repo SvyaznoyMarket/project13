@@ -93,9 +93,9 @@ if(!function_exists('routeParams')) {
 				<?php for($i=0,$k=0; $i<$list->total; $i+=$list->limit,$k++): ?>
 				<li class="bSortingList__eItem mPage<?=$list->page==$k?' mActive':null?>">
 					<?php if($k>0):?>
-					<a href="<?=\App::router()->generate($route,routeParams($list, ['page'=>$k]))?>" class="bSortingList__eLink jsPagination"><?=($k+1)?></a>
+					<a href="<?=\App::router()->generate($route,routeParams($list, ['page'=>$k]))?>#<?=$id?>" class="bSortingList__eLink jsPagination"><?=($k+1)?></a>
 					<?php else: ?>
-					<a href="<?=\App::router()->generate($route,routeParams($list))?>" class="bSortingList__eLink jsPagination">1</a>
+					<a href="<?=\App::router()->generate($route,routeParams($list))?>#<?=$id?>" class="bSortingList__eLink jsPagination">1</a>
 					<?php endif; ?>
 				</li>
 				<?php endfor; ?>
