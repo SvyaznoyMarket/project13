@@ -14,6 +14,11 @@ module.exports = {
         files: ['web/v2/css/*.less', 'web/v2/css/modules/**/*.less'],
         tasks: ['less:compileV2', 'less:compressV2']
     },
+	
+	photoContest: {
+		files: ['web/css/photoContest/*.less'],
+		tasks: ['less:photoContestCompile', 'less:photoContestCompress']
+	},
 
     partnerScripts: {
         files: ['web/js/partner/*.js'],
