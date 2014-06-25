@@ -42,7 +42,10 @@
 				console.warn('checkscroll true. load');
 				catalog.infScroll.nowPage += 1;
 				catalog.infScroll.load();
-			}
+			} else {
+                console.log(catalog)
+                console.log(bottomInfButton.visible())
+            }
 		},
 
 		load: function() {
@@ -94,6 +97,12 @@
 			if ( catalog.enableHistoryAPI && hasPaging ) {
 				catalog.history.gotoUrl(url);
 			}
+
+            bottomInfButton = $('.jsInfinityEnable').last();
+
+            if (bottomInfButton.visible()) {
+                this.load();
+            }
 
 			console.log('Infinity scroll enabled');
 		},
