@@ -94,6 +94,44 @@
 					height: 66px;
 				}
 			}
+
+			&.mMembers {
+
+				.cuponImg {
+					.opacity(0.45);
+				}
+
+				.cuponImgHover {
+					.opacity(0);
+					z-index: 18;
+					text-align: center;
+
+					background: none;
+					top: 60px;
+
+					.epTextLogo {
+						font-size: 25px;
+					}
+				}
+
+				.cuponText {
+					color: @white;
+					font-size: 20px;
+					text-align: center;
+					.text-shadow(0 2px 5px @black);
+				}
+
+				&:hover {
+
+					.cuponImgHover {
+						.opacity(1);
+
+						z-index: 18;
+
+						background: none;
+					}
+				}
+			} 
 		}
 
 		&__link {

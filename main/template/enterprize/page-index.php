@@ -216,6 +216,24 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
                 </a>
             </li>
         <? endforeach ?>
+
+        <li class="enterPrize__list__item mMembers">
+            <a href="" class="enterPrize__list__link">
+                <span style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);" class="cuponImg">
+                    <span class="cuponImg__inner">
+                        <span class="cuponIco"><img src="http://content.enter.ru/wp-content/uploads/2014/03/enterprize-icon-tchibo.jpg"></span>
+
+                        <span class="cuponDesc">Товары Tchibo</span>
+
+                        <span class="cuponPrice">10% </span>
+                    </span>
+                </span>
+
+                <span class="cuponImgHover">
+                    <span class="cuponText">Только<br/> для игроков<br/> <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span>
+                </span>
+            </a>
+        </li>
     </ul>
 
     <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>
