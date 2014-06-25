@@ -537,7 +537,16 @@ class Action {
         $arrayWithNow = array_filter($data['deliveryTypes'], function($type) {
             return $type['token'] == 'now';
         });
-        $result['deliveryTypes'][] = reset($arrayWithNow);
+
+        if (!(bool) $arrayWithNow) {
+            $product = reset($data['products']);
+            $name = $product['name'];
+            $quantity = $product['quantity'];
+            $data['error']['message'] = "Cегодня невозможно забрать $name в количестве $quantity шт. Вы можете попробовать другой тип доставки.";
+            return $data;
+        } else {
+            $result['deliveryTypes'][] = reset($arrayWithNow);
+        }
 
         /* Sorting shops */
         $firstShop = $lastShops = [];

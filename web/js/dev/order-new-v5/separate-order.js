@@ -1221,6 +1221,8 @@
 				return false;
 			}
 
+            if (res.error && res.error.message) showError(res.error.message);
+
 			console.info('Данные с сервера получены');
 
 			ENTER.OrderModel.orderDictionary = new ENTER.constructors.OrderDictionary(res);
