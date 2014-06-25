@@ -14,7 +14,7 @@ class Action {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $this->redirect = \App::router()->generate('user'); // default redirect to the /private page (Личный кабинет)
-        $redirectTo = $request->get('redirect_to');
+        $redirectTo = rawurldecode($request->get('redirect_to'));
         if ($redirectTo) {
             $this->redirect = $redirectTo;
             $this->requestRedirect = $redirectTo;
@@ -155,6 +155,7 @@ class Action {
 
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
+		$page->setParam('redirect_to', $this->redirect);
 
         return new \Http\Response($page->show());
     }

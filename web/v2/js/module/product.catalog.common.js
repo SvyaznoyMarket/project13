@@ -151,6 +151,6 @@ define(
         paramsBtn.on('click', paramsAction);
         paramsTitle.on('click', paramsItem);
 
-        sortBtn.on('click', showSortingList);
+        $('#id-productSorting').on('click', '.js-productSorting-select', showSortingList);
     }
 );

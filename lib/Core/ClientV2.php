@@ -28,6 +28,14 @@ class ClientV2 implements ClientInterface {
     public function __clone() {
         $this->curl = clone $this->curl;
     }
+	
+	
+	/**
+	 * @return \Curl\Client
+	 */
+	public function getCurl() {
+		return $this->curl;
+	}
 
     /**
      * @param string     $action
@@ -38,7 +46,7 @@ class ClientV2 implements ClientInterface {
      */
     public function query($action, array $params = [], array $data = [], $timeout = null) {
         \Debug\Timer::start('core');
-
+		
         if (null === $timeout) {
             $timeout = $this->config['timeout'];
         }
@@ -46,7 +54,7 @@ class ClientV2 implements ClientInterface {
         if ($this->config['debug']) {
             $params['log4php'] = 1;
         }
-
+		
         $response = $this->curl->query($this->getUrl($action, $params), $data, $timeout);
 
         \Debug\Timer::stop('core');

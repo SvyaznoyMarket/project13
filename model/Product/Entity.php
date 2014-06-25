@@ -85,10 +85,6 @@ class Entity extends BasicEntity {
     protected $warranty = [];
     /** @var \Model\Region\Entity */
     protected $nearestCity = [];
-    /** $var array */
-    protected $partnersOffer = [];
-
-
 
     public function __construct(array $data = []) {
         if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
@@ -929,25 +925,6 @@ class Entity extends BasicEntity {
     public function getIsKitLocked()
     {
         return $this->isKitLocked;
-    }
-
-    /**
-     * @param array $partnersOffer
-     */
-    public function setPartnersOffer($partnersOffer)
-    {
-        $this->partnersOffer = [];
-        foreach ($partnersOffer as $offer) {
-            $this->partnersOffer[] = $offer;
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function getPartnersOffer()
-    {
-        return $this->partnersOffer;
     }
 
 

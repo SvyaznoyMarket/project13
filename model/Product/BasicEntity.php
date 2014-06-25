@@ -35,6 +35,8 @@ class BasicEntity {
     protected $parentCategory;
     /** @var Stock\Entity[] */
     protected $stock = [];
+    /** $var array */
+    protected $partnersOffer = [];
     /** @var array */
     protected $ean;
     /** @var float */
@@ -47,6 +49,8 @@ class BasicEntity {
     protected $isInShowroomsOnly;
     /** @var bool */
     protected $isInShopsOnly;
+    /** @var bool */
+    protected $isOnlyFromPartner;
     /** @var bool */
     protected $isUpsale = false;
 
@@ -73,6 +77,7 @@ class BasicEntity {
         if (array_key_exists('stock', $data) && is_array($data['stock'])) $this->setStock(array_map(function($data) {
             return new Stock\Entity($data);
         }, $data['stock']));
+        if (array_key_exists('partners_offer', $data)) $this->setPartnersOffer(array_map(function($v) { return $v; }, $data['partners_offer']));
         if (array_key_exists('ean', $data)) $this->setEan($data['ean']);
         if (array_key_exists('avg_score', $data)) $this->setAvgScore($data['avg_score']);
         if (array_key_exists('avg_star_score', $data)) $this->setAvgStarScore($data['avg_star_score']);
@@ -80,6 +85,7 @@ class BasicEntity {
         if (array_key_exists('is_upsale', $data)) $this->setIsUpsale($data['is_upsale']);
 
         $this->calculateState();
+
     }
 
     /**
@@ -460,6 +466,20 @@ class BasicEntity {
             }
         }
 
+        $this->isOnlyFromPartner = false;
+        if (!(bool)$this->getStock()) {
+            foreach ($this->getPartnersOffer() as $partnerOffer) {
+                if (!isset($partnerOffer['stock'][0])) continue;
+
+                foreach ($partnerOffer['stock'] as $partnerStock) {
+                    if (!empty($partnerStock['quantity'])) {
+                        $this->isOnlyFromPartner = true;
+                        break;
+                    }
+                }
+            }
+        }
+
         $this->isInShopsOnly = !$inStore && $inShop;
         $this->isInShowroomsOnly = !$inStore && !$inShop && $inShowroom;
     }
@@ -476,5 +496,31 @@ class BasicEntity {
      */
     public function getIsUpsale() {
         return $this->isUpsale;
+    }
+
+    /**
+     * @param array $partnersOffer
+     */
+    public function setPartnersOffer($partnersOffer)
+    {
+        $this->partnersOffer = [];
+        foreach ($partnersOffer as $offer) {
+            $this->partnersOffer[] = $offer;
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getPartnersOffer()
+    {
+        return $this->partnersOffer;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isOnlyFromPartner() {
+        return $this->isOnlyFromPartner;
     }
 }

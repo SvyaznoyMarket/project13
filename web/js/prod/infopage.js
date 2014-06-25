@@ -61,13 +61,6 @@
 
 
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Форма подписки на уцененные товары
  * Cтраница /refurbished-sale
@@ -112,13 +105,6 @@
 		$('#subscribe-form').bind('submit', discountSubscribing);
 	});
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 $(document).ready(function(){
 	var
 		subscribeBtn = $('.subscribe-form__btn');
@@ -415,13 +401,6 @@ $(document).ready(function(){
 	}
 });
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Обработчик страницы со стоимостью услуг
  *

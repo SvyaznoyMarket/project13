@@ -19,6 +19,8 @@ class Client {
     private $queryIndex = [];
     /** @var bool */
     private $stillExecuting = false;
+	/** @var bool активация нативного POST запроса */
+	private $nativePost = false;
 
     /**
      * @param \Logger\LoggerInterface $logger
@@ -37,6 +39,11 @@ class Client {
         $this->queryIndex = [];
         $this->stillExecuting = false;
     }
+	
+	
+	public function setNativePost($val=true) {
+		$this->nativePost = true;
+	}
 
     /**
      * @param string $url
@@ -68,7 +75,7 @@ class Client {
             $header = [];
             $this->parseResponse($connection, $response, $header);
 
-            $decodedResponse = $this->decode($response);
+			$decodedResponse = $this->decode($response);
             curl_close($connection);
 
             $spend = \Debug\Timer::stop('curl');
@@ -352,7 +359,7 @@ class Client {
      * @param float|null $timeout
      * @return resource
      */
-    private function create($url, array $data = [], $timeout = null) {
+    protected function create($url, array $data = [], $timeout = null) {
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
 
         $this->logger->info([
@@ -383,11 +390,28 @@ class Client {
             curl_setopt($connection, CURLOPT_CONNECTTIMEOUT_MS, $timeout * 1000);
         }
 
-        if ((bool)$data) {
+		if (!$this->nativePost && (bool)$data) {
             curl_setopt($connection, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
             curl_setopt($connection, CURLOPT_POST, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data));
-        }
+        } elseif ($this->nativePost && (bool)$data) {
+			
+			/**
+			 * The usage of the @filename API for file uploading is deprecated for php >=5.5
+			 * Но мы поддержим, т.к. не очень понимаю как тут нормально добавить эту фичу пишу тут
+			 */
+			if((float)PHP_VERSION>=5.5) {
+				foreach($data as $k => $v) {
+					if($v[0] !=='@')
+						continue;
+					
+					$data[$k] = $this->initPostFile($v);
+				}
+			}
+			
+			curl_setopt($connection, CURLOPT_POST, true);
+            curl_setopt($connection, CURLOPT_POSTFIELDS, $data);
+		}
 
         if ($referer = \App::config()->mainHost) {
             curl_setopt($connection, CURLOPT_REFERER, $referer);
@@ -395,6 +419,25 @@ class Client {
 
         return $connection;
     }
+	
+	
+	private function initPostFile($curlString) {
+		$fileParams  = [
+			'type' => null,
+			'filename' => null
+		];
+
+		// не силен в регулярках, не осилил в одну строчку
+		$t = explode(';',$curlString);
+		$file = substr($t[0], 1);
+		
+		foreach($t as $vv) {
+			$tt = explode('=',$vv);
+			$fileParams[$tt[0]] = $tt[1];
+		}
+		
+		return curl_file_create($file, $fileParams['type'], $fileParams['type']);
+	}
 
     /**
      * @param $connection
@@ -425,7 +468,7 @@ class Client {
      * @throws Exception
      * @return mixed
      */
-    private function decode($response) {
+    protected function decode($response) {
         if (is_null($response)) {
             throw new \RuntimeException('Пустой ответ');
         }

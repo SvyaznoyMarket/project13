@@ -45,13 +45,6 @@
 		}
 	};
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /*
     json2.js
     2013-05-26
@@ -539,13 +532,6 @@ if (typeof JSON !== 'object') {
     }
 }());
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 //Copyright (c) 2010 Morgan Roderick http://roderick.dk
 var PubSub = {};
 (function(p){
@@ -609,13 +595,6 @@ var PubSub = {};
 		return false;
 	};
 }(PubSub));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Проверка является ли строка e-mail
  *
@@ -628,13 +607,6 @@ function isTrueEmail(){
 	return re.test(t);
 }
 String.prototype.isEmail = isTrueEmail; // добавляем методом для всех строк
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Разбиение числа по разрядам
  *
@@ -649,13 +621,6 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 		return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
 	};
 }(this));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /*\
 |*|
 |*|  :: cookies.js ::
@@ -739,13 +704,6 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 		}
 	};
 }(this));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 (function(){
 // Simple JavaScript Templating
 // John Resig - http://ejohn.org/ - MIT Licensed
@@ -776,13 +734,6 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
 		return data ? fn( data ) : fn;
 	};
 })();
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 function brwsr () {
 	var userag      = navigator.userAgent.toLowerCase();
 	this.isAndroid  = userag.indexOf("android") > -1;
@@ -1020,13 +971,6 @@ if ( !Date.prototype.toISOString ) {
 // 	return date.getTime();
 // };
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /* MAP Object */
 
 function MapGoogleWithShops( center, templateIWnode, DOMid, updateIWT ) {
@@ -1561,13 +1505,6 @@ window.MapInterface = (function() {
 		// TODO wrap fn calcMCenter as a method
 	};
 }() ); // singleton
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function( ENTER ) {
 	var userUrl = ENTER.config.pageConfig.userUrl,
 		constructors = ENTER.constructors;
@@ -1725,13 +1662,6 @@ window.MapInterface = (function() {
 	}());
 }(window.ENTER));
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Механика работы с корзиной и данными пользователя
  * Генерирует события и распределяет данные между функциями
@@ -2066,13 +1996,6 @@ window.MapInterface = (function() {
 	}
 
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Валидатор форм
  *
@@ -2669,13 +2592,6 @@ FormValidator.prototype.addFieldToValidate = function( field ) {
 	this.config.fields.push(field);
 	this._enableHandlers();
 };
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Добавить новый параметр в URL
  * 
@@ -2711,13 +2627,6 @@ var UpdateUrlString = function(key, value) {
 	}
 };
 String.prototype.addParameterToUrl = UpdateUrlString;
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Блокер экрана
  *
@@ -2765,13 +2674,6 @@ String.prototype.addParameterToUrl = UpdateUrlString;
 		}
 	};
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 // Copyright 2009-2012 by contributors, MIT License
 // vim: ts=4 sts=4 sw=4 expandtab
 
@@ -4104,13 +4006,6 @@ var toObject = function (o) {
 
 });
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * IE indexOf fix
  */
@@ -4135,13 +4030,6 @@ if ( !Array.prototype.indexOf ) {
 		return -1;
 	};
 }
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Работа с числами
  * 
@@ -4198,13 +4086,6 @@ if ( !Array.prototype.indexOf ) {
 	}());
 
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Пакетная отправка данных на сервер
  *
@@ -4278,13 +4159,6 @@ if ( !Array.prototype.indexOf ) {
 		});
 	};
 }(this));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function ( ENTER ) {
 	var
 		utils = ENTER.utils;

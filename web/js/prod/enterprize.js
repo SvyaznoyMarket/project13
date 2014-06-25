@@ -9,7 +9,6 @@
 		body = $('body'),
 		mobilePhoneField = $('.jsMobile'),
 		authBlock = $('#enterprize-auth-block'),
-//		infoBlock = $('#enterprize-info-block'),
 
 		/**
 		 * Конфигурация валидатора для формы ЛК Enterprize
@@ -218,19 +217,39 @@
 				};
 			// end of functions
 
-//			validator.validate({
-//				onInvalid: function( err ) {
-//					console.warn('invalid');
-//					console.log(err);
-//				},
-//				onValid: function() { $.post(action, formData, responseFromServer, 'json') }
-//			});
 			$.post(action, formData, responseFromServer, 'json');
 
 			// очищаем блок сообщений
 			clearMsg();
 
 			return false;
+		},
+
+		epHintPopup = function() {
+			console.log('hint');
+
+			var 
+				btnHintPopup = $('.js-ep-btn-hint-popup'),
+
+				hintPopup = $('.js-ep-hint-popup'),
+				hintPopupClose = hintPopup.find('.js-ep-hint-popup-close');
+			// end of vars
+
+			var 
+				showHintPopup = function showHintPopup() {
+					console.log('hint show');
+					hintPopup.fadeIn(100);
+				}.
+
+				closeHintPopup = function closeHintPopup() {
+					hintPopup.fadeOut(100);
+
+				};
+			// end of functions
+
+			btnHintPopup.on('click', showHintPopup);
+
+			hintPopupClose.on('click', closeHintPopup);
 		},
 
 		/**
@@ -282,17 +301,6 @@
 
 			return false;
 		};
-
-		// TODO - deprecated, по причине таска SITE-3934
-//		openInfoBlock = function openInfoBlock() {
-//			infoBlock.lightbox_me({
-//				centered: true,
-//				autofocus: true,
-//				closeSelector: ".closePopup"
-//			});
-//
-//			return false;
-//		};
 	// end of functions
 
 	// устанавливаем маску для поля "Ваш мобильный телефон"
@@ -305,6 +313,10 @@
 	// Подключение слайдера товаров
 	if ( $('.bGoodsSlider').length ) {
 		$('.bGoodsSlider').goodsSlider();
+	}
+
+	if ( $('.epHintPopup').length ) {
+		epHintPopup();
 	}
 
 	// Открываем информационный попап

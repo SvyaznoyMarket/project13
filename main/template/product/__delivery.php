@@ -26,6 +26,7 @@ return function (
 
         // флажек, открываем блок "Сегодня есть в магазинах" или нет
         $delivery['isInShopOnly'] = $product->isInShopOnly();
+        $delivery['isOnlyFromPartner'] = $product->isOnlyFromPartner();
 
         if (in_array('pickpoint', array_keys($delivery)) && in_array('self', array_keys($delivery))) {
             unset($delivery['pickpoint']);
@@ -33,5 +34,5 @@ return function (
     }
 
 ?>
-    <?= $helper->renderWithMustache('product/___delivery', ['delivery' => $delivery]); // список способов доставки ?>
+    <?= $helper->renderWithMustache('product/__delivery', ['delivery' => $delivery]); // список способов доставки ?>
 <? };

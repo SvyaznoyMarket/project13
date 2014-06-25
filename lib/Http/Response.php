@@ -124,7 +124,10 @@ class Response {
         $this->setContent($content);
         $this->setStatusCode($status);
         $this->setProtocolVersion('1.0');
-        $this->headers->set('X-Page-Id', \App::$id);
+		
+		if(!$this->headers->has('X-Page-Id')) {
+			$this->headers->set('X-Page-Id', \App::$id);
+		}
         //$this->headers->set('X-Server-Name', gethostname());
         if (!$this->headers->has('Date')) {
             $this->setDate(new \DateTime(null, new \DateTimeZone('UTC')));
