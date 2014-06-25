@@ -67,10 +67,10 @@ if(!function_exists('routeParams')) {
 	<ul class="pc_tail">
 		<?php foreach ($list->items as $v): ?>
 		<li>
-			<a href="<?=\App::router()->generate('pc.photo.show',['id'=>$v->id,'contestRoute'=>$contest->route])?>" class="pc_photo" title="<?=$v->title?>">
+			<a href="<?=\App::router()->generate('pc.photo.show',['id'=>$v->id,'contestRoute'=>$contest->route])?>" class="pc_photo" title="<?=$v->name?>">
 				<div class="pc_date"><?=date('d.m.Y H:i',$v->udCreate)?></div>
 				<div class="<?=$contest->voteEnabled?'__vote ':'disabled '?> pc_vote<?=$v->vote?' active':null?>" data-id="<?=$v->id?>"><i><?=$v->meta->voteCounter?$v->meta->voteCounter:0?></i></div>
-				<img src="<?=$v->fileUrlPreview?>" title="<?=$v->title?>"/>
+				<img src="<?=$v->fileUrlPreview?>" title="<?=$v->name?>"/>
 			</a>
 		</li>
 		<?php endforeach; ?>
