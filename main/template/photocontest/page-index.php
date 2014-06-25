@@ -12,6 +12,7 @@
 <p class="pc_info"><?=$contest->annot?></p>
 
 <?=\App::templating()->render('photocontest/_list-tail', array(
+	'id'		=> 'top',
 	'title'		=> 'Лидеры конкурса',
 	'list'		=> $top,
 	'filter'	=> false,
@@ -21,11 +22,12 @@
 
 
 <?=\App::templating()->render('photocontest/_list-tail', array(
+	'id'		=> 'tail',
 	'title'		=> 'Все фотографии',
 	'list'		=> $list,
 	'filter'	=> true,
 	'pagination'=> true,
-	'route'		=> 'homepage',
+	'route'		=> 'pc.homepage',
 	'contest'	=> $contest
 ));?>
 

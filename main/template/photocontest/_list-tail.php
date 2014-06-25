@@ -30,7 +30,7 @@ if(!function_exists('routeParams')) {
 
 
 <?php if(!empty($list)): ?>
-
+	<a name="<?=$id?>"></a>
 	<?=($title?'<h2>'.$title.'</h2>':null)?>
 
 	<?php if ($filter): ?>
@@ -51,12 +51,12 @@ if(!function_exists('routeParams')) {
 		<ul class="bSortingList mSorting">
 			<li class="bSortingList__eItem mTitle">Показать сначала:</li>
 			<li class="bSortingList__eItem mSortItem<?=$list->order==='d'?' mActive':null?>">
-				<a href="<?=\App::router()->generate($route, routeParams($list, ['order'=>'d']))?>" class="bSortingList__eLink jsSorting">
+				<a href="<?=\App::router()->generate($route, routeParams($list, ['order'=>'d']))?>#<?=$id?>" class="bSortingList__eLink jsSorting">
 					Свежие
 				</a>
 			</li>
 			<li class="bSortingList__eItem mSortItem<?=$list->order==='r'?' mActive':null?>">
-				<a href="<?=\App::router()->generate($route,routeParams($list, ['order'=>'r']))?>" class="bSortingList__eLink jsSorting">
+				<a href="<?=\App::router()->generate($route,routeParams($list, ['order'=>'r']))?>#<?=$id?>" class="bSortingList__eLink jsSorting">
 					Популярные
 				</a>
 			</li>
