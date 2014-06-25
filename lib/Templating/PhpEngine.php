@@ -24,7 +24,7 @@ class PhpEngine implements EngineInterface {
         extract($params, EXTR_REFS);
         ob_start();
         require $this->templateDir . '/' . $template . '.php';
-
+		
         return ob_get_clean();
     }
 

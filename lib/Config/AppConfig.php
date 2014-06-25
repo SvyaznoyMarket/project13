@@ -6,6 +6,7 @@ namespace Config;
 //require_once __DIR__ . '/Oauth/OdnoklassnikiConfig.php';
 //require_once __DIR__ . '/Oauth/FacebookConfig.php';
 
+
 class AppConfig {
     /**
      * @var string
@@ -232,8 +233,14 @@ class AppConfig {
             'containerId' => null,
         ],
         'TagMan' => [
-
-        ],'enabled' => null,
+            'enabled' => null,
+        ],
+        'Myragon' => [
+            'enabled' => null,
+            'enterNumber' => null,
+            'secretWord' => null,
+            'subdomainNumber' => null,
+        ],
     ];
 
     /** @var array */
@@ -547,6 +554,13 @@ class AppConfig {
             'cookieName' => null,
         ]
     ];
+	
+	/**
+	 * @var array настройки фотоконкурса
+	 */
+	public $photoContest = [
+		'client'	=> []
+	];
 
     /** @var array */
     public $flocktoryExchange = [
