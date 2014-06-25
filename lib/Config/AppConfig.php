@@ -232,8 +232,14 @@ class AppConfig {
             'containerId' => null,
         ],
         'TagMan' => [
-
-        ],'enabled' => null,
+            'enabled' => null,
+        ],
+        'Myragon' => [
+            'enabled' => null,
+            'enterNumber' => null,
+            'secretWord' => null,
+            'subdomainNumber' => null,
+        ],
     ];
 
     /** @var array */

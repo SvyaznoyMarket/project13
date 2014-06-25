@@ -95,4 +95,44 @@ class IndexPage extends \View\DefaultLayout {
 
         return "<div id=\"RuTargetCartJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
+
+    public function slotMyragonPageJS() {
+        $config = \App::config()->partners['Myragon'];
+        if (!$config['enabled'] || !$config['enterNumber'] || !$config['secretWord'] || !$config['subdomainNumber']) {
+            return;
+        }
+
+        $cart = \App::user()->getCart();
+        if (!$cart) {
+            return;
+        }
+
+        $basketProducts = [];
+        foreach ($cart->getProducts() as $product) {
+            if (!$product instanceof \Model\Cart\Product\Entity) continue;
+
+            $basketProducts[] = [
+                'id' => $product->getId(),
+                'price' => $product->getPrice(),
+                'currency' => 'RUB',
+                'amount' => $product->getQuantity(),
+            ];
+        }
+
+        $data = [
+            'config' => [
+                'enterNumber' => $config['enterNumber'],
+                'secretWord' => $config['secretWord'],
+                'subdomainNumber' => $config['subdomainNumber'],
+            ],
+            'page' => [
+                'url' => null,
+                'pageType' => 4,
+                'pageTitle' => $this->getTitle(),
+                'basketProducts' => $basketProducts,
+            ],
+        ];
+
+        return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+    }
 }
