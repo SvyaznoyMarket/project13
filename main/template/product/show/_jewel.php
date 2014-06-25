@@ -101,13 +101,6 @@ $is_showed = [];
 
     <div class="clear"></div>
 
-    <? if ( $mainProduct && count($mainProduct->getKit()) ): ?>
-        <?= $helper->render('product/__slider', [
-            'title'     => 'Состав набора &laquo;' . $line->getName() . '&raquo;',
-            'products'  => $parts,
-        ]) ?>
-    <? endif ?>
-
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'accessorize',
@@ -191,6 +184,12 @@ $is_showed = [];
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
+
+    <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
+        <div class="bWidgetBuy bWidgetBuy-shops mWidget">
+            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
+        </div>
+    <? endif ?>
 
     <? if ( $product->isInShopStockOnly() || !$product->getIsBuyable() ) : else : ?>
     <div class="bWidgetBuy mWidget">
