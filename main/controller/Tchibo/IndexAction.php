@@ -17,6 +17,7 @@ class IndexAction {
         $category = null;
         $promo = null;
         $bannerBottom = null;
+        $categoryTree = null;
 
         // подготовка для 1-го пакета запросов в ядро
         // promo
@@ -35,6 +36,10 @@ class IndexAction {
             }
         });
 
+        \RepositoryManager::productCategory()->prepareTreeCollection($region, 1, 1, function($data) use (&$categoryTree) {
+            $categoryTree = $data;
+        });
+
         // выполнение 1-го пакета запросов в ядро
         $client->execute();
 
@@ -48,7 +53,9 @@ class IndexAction {
         }
         /** @var $category  \Model\Product\Category\Entity */
 
-        if ($category->getProductCount() == 0) {
+        $categoriesTchibo = array_filter($categoryTree, function ($cat) use ($categoryToken) { return $cat['token'] === $categoryToken; } );
+
+        if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0) {
             return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => \App::config()->tchibo['whereToBuyPage']]));
         }
 
