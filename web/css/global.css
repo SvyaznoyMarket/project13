@@ -10149,6 +10149,12 @@
     padding: 0 15px;
     margin: 10px 0 35px;
   }
+  .jewel .markerList .btnBuy__eLink {
+    float: none;
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+  }
 }
 /*---END---СТИЛИ БРЕНД РАЗДЕЛА PANDORA---*/
 /*------СТИЛИ БРЕНД РАЗДЕЛА PANDORA - КАРТОЧКА ТОВАРА------*/
