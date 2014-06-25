@@ -48,7 +48,7 @@ class Menu {
         }
 
         // сбор категорий для ACTION_PRODUCT_CATALOG
-        \RepositoryManager::productCategory()->prepareTreeCollection($region, 3, function($data) {
+        \RepositoryManager::productCategory()->prepareTreeCollection($region, 3, 0, function($data) {
             foreach ($data as $item) {
                 $category = new \Model\Product\Category\MenuEntity($item);
                 foreach ($category->getChild() as $childCat) {

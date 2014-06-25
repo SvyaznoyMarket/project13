@@ -313,15 +313,16 @@ class Repository {
     /**
      * @param \Model\Region\Entity $region
      * @param int                  $maxLevel
+     * @param int                  $count_local
      * @param callback             $done
      * @param callback|null        $fail
      */
-    public function prepareTreeCollection(\Model\Region\Entity $region = null, $maxLevel = null, $done, $fail = null) {
+    public function prepareTreeCollection(\Model\Region\Entity $region = null, $maxLevel = null, $count_local = 0, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
             'is_load_parents' => true,
-            'count_local' => 0 // HOTFIX for SITE-3621 TODO-zra в будущем передавать параметр из контроллера
+            'count_local' => $count_local
         ];
         if (null !== $maxLevel) {
             $params['max_level'] = $maxLevel;
