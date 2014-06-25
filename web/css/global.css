@@ -10119,8 +10119,6 @@
   }
   .jewel .bProductSection .btnBuy__eLink,
   .jewel .bProductSection .btnBuy__eLink:hover {
-    float: right;
-    display: block;
     background: #000;
     color: #fff;
     box-shadow: none;
