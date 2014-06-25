@@ -33,5 +33,5 @@ return function (
     }
 
 ?>
-    <?= $helper->renderWithMustache('product/___delivery', ['delivery' => $delivery]); // список способов доставки ?>
+    <?= $helper->renderWithMustache('product/__delivery', ['delivery' => $delivery]); // список способов доставки ?>
 <? };
